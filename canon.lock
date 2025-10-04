@@ -1,10 +1,9 @@
 epoch: 2025.10.E1
-generated_at: '2025-10-04T21:30:04.669835'
-expires: '2025-10-18'
+generated_at: '2025-10-04T23:53:38.797531Z'
 docs:
 - path: docs/NORTH_STAR.md
-  sha256: TBD
+  sha256: 3cd169abf1739c2cbecbf1a7394c73fcf8cf0e35b1334bf583b9a0014e0c87b0
 - path: docs/directions/manager.md
-  sha256: TBD
+  sha256: 4e41fdef2724a4340037fdda339abfe5e1af8a05fcae2657daa655e264564200
 - path: docs/git_protocol.md
-  sha256: TBD
+  sha256: e0a10090242ef560287bb905f2c26981413a874427cb7cd8ed8ff6ded7609315
