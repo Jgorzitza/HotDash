@@ -1,0 +1,11 @@
+# Canon (manager only)
+docs/**                     @manager-team
+feedback/manager.md         @manager-team
+
+# App areas (customize teams as you grow)
+app/**                      @dashboard-team
+packages/**                 @tooling-team
+
+# CI/infra
+.github/**                  @tooling-team
+scripts/**                  @tooling-team

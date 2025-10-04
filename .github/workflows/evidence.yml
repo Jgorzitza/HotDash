@@ -1,0 +1,12 @@
+name: Evidence Gates
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+jobs:
+  artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require artifacts in PR body
+        run: |
+          node scripts/ci/require-artifacts.js --required vitest playwright lighthouse --optional metrics sse-soak

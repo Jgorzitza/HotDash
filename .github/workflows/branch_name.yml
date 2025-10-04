@@ -1,0 +1,10 @@
+name: Branch Name Policy
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  branchname:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: bash scripts/ci/branch-name-check.sh

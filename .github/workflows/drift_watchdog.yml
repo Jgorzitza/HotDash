@@ -1,0 +1,12 @@
+name: Drift Watchdog
+on:
+  pull_request:
+  schedule:
+    - cron: "*/30 * * * *"
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run drift watchdog
+        run: python3 scripts/ci/drift-watchdog.py --epoch 2025.10.E1 --strict
