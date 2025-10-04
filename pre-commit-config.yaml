@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+  - repo: local
+    hooks:
+      - id: commit-msg-lint
+        name: Conventional Commit (simple)
+        entry: python3 scripts/hooks/commit_msg_lint.py
+        language: system
+        stages: [commit-msg]

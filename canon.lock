@@ -1,0 +1,10 @@
+epoch: 2025.10.E1
+generated_at: '2025-10-04T21:30:04.669835'
+expires: '2025-10-18'
+docs:
+- path: docs/NORTH_STAR.md
+  sha256: TBD
+- path: docs/directions/manager.md
+  sha256: TBD
+- path: docs/git_protocol.md
+  sha256: TBD

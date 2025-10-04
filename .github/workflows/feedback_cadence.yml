@@ -1,0 +1,13 @@
+name: Feedback Cadence
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+jobs:
+  cadence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check feedback cadence
+        run: bash scripts/ci/feedback-cadence-check.sh
