@@ -12,3 +12,12 @@ repos:
         entry: python3 scripts/hooks/commit_msg_lint.py
         language: system
         stages: [commit-msg]
+
+# Guard-relative commits (optional; active only if ALLOWED_PATH_PREFIX is set in env)
+- repo: local
+  hooks:
+    - id: path-guard
+      name: Path Guard (respects $ALLOWED_PATH_PREFIX)
+      entry: python3 scripts/hooks/path_guard.py
+      language: system
+      stages: [commit]
