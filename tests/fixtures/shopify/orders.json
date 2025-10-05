@@ -1,0 +1,130 @@
+{
+  "data": {
+    "orders": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/Order/1001",
+            "name": "#1001",
+            "createdAt": "2025-10-05T10:30:00Z",
+            "displayFulfillmentStatus": "FULFILLED",
+            "financialStatus": "PAID",
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "125.50",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "sku": "SKU-001",
+                    "title": "Product A",
+                    "quantity": 2,
+                    "discountedTotalSet": {
+                      "shopMoney": {
+                        "amount": "80.00",
+                        "currencyCode": "USD"
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "sku": "SKU-002",
+                    "title": "Product B",
+                    "quantity": 1,
+                    "discountedTotalSet": {
+                      "shopMoney": {
+                        "amount": "45.50",
+                        "currencyCode": "USD"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/1002",
+            "name": "#1002",
+            "createdAt": "2025-10-05T08:15:00Z",
+            "displayFulfillmentStatus": "UNFULFILLED",
+            "financialStatus": "PENDING",
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "89.99",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "sku": "SKU-003",
+                    "title": "Product C",
+                    "quantity": 3,
+                    "discountedTotalSet": {
+                      "shopMoney": {
+                        "amount": "89.99",
+                        "currencyCode": "USD"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/1003",
+            "name": "#1003",
+            "createdAt": "2025-10-04T16:45:00Z",
+            "displayFulfillmentStatus": "PARTIAL",
+            "financialStatus": "PAID",
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "250.00",
+                "currencyCode": "USD"
+              }
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "sku": "SKU-001",
+                    "title": "Product A",
+                    "quantity": 5,
+                    "discountedTotalSet": {
+                      "shopMoney": {
+                        "amount": "200.00",
+                        "currencyCode": "USD"
+                      }
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "sku": null,
+                    "title": "Product D (No SKU)",
+                    "quantity": 1,
+                    "discountedTotalSet": {
+                      "shopMoney": {
+                        "amount": "50.00",
+                        "currencyCode": "USD"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

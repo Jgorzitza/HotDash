@@ -1,0 +1,52 @@
+{
+  "payload": [
+    {
+      "id": 101,
+      "inbox_id": 1,
+      "status": "open",
+      "created_at": 1727870400,
+      "tags": ["escalation", "urgent"],
+      "meta": {
+        "sender": {
+          "name": "Jane Doe"
+        }
+      },
+      "contacts": []
+    },
+    {
+      "id": 102,
+      "inbox_id": 1,
+      "status": "pending",
+      "created_at": 1728043200,
+      "tags": ["escalation"],
+      "meta": {},
+      "contacts": [
+        {
+          "name": "John Smith"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "inbox_id": 1,
+      "status": "open",
+      "created_at": 1728129600,
+      "tags": [],
+      "meta": {
+        "sender": {
+          "name": "Alice Johnson"
+        }
+      },
+      "contacts": []
+    },
+    {
+      "id": 104,
+      "inbox_id": 2,
+      "status": "pending",
+      "created_at": 1728000000,
+      "tags": ["priority"],
+      "meta": {},
+      "contacts": []
+    }
+  ]
+}

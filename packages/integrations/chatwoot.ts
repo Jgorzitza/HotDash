@@ -1,6 +1,14 @@
 // packages/integrations/chatwoot.ts
 export interface ChatwootConfig { baseUrl: string; token: string; accountId: number; }
-export interface Conversation { id: number; inbox_id: number; status: 'open'|'resolved'|'pending'; meta?: any; }
+export interface Conversation {
+  id: number;
+  inbox_id: number;
+  status: 'open'|'resolved'|'pending';
+  created_at: number;
+  meta?: any;
+  tags?: string[];
+  contacts?: Array<{ name?: string | null }>;
+}
 export interface Message { id: number; content: string; message_type: 0|1; created_at: number; }
 
 export function chatwootClient(cfg: ChatwootConfig) {

@@ -1,0 +1,63 @@
+{
+  "data": {
+    "productVariants": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/ProductVariant/1001",
+            "sku": "SKU-001",
+            "title": "Size M",
+            "inventoryQuantity": 15,
+            "product": {
+              "title": "Product A"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/ProductVariant/1002",
+            "sku": "SKU-002",
+            "title": "Size L",
+            "inventoryQuantity": 50,
+            "product": {
+              "title": "Product B"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/ProductVariant/1003",
+            "sku": "SKU-003",
+            "title": "Red",
+            "inventoryQuantity": 8,
+            "product": {
+              "title": "Product C"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/ProductVariant/1004",
+            "sku": null,
+            "title": "Default",
+            "inventoryQuantity": 100,
+            "product": {
+              "title": "Product D (No SKU)"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/ProductVariant/1005",
+            "sku": "SKU-005",
+            "title": "Blue",
+            "inventoryQuantity": 0,
+            "product": {
+              "title": "Product E"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
