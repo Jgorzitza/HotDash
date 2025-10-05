@@ -1,0 +1,23 @@
+---
+epoch: 2025.10.E1
+doc: docs/directions/data.md
+owner: manager
+last_reviewed: 2025-10-04
+doc_hash: TBD
+expires: 2025-10-18
+---
+# Data — Direction (Operator Control Center)
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- MCP Allowlist: docs/policies/mcp-allowlist.json
+
+> Manager authored. Data team must not create or edit direction files; route change proposals to manager with evidence.
+
+- Model KPI definitions (sales delta, SLA breach rate, traffic anomalies) and publish dbt-style specs in docs/data/
+- Validate Shopify/Chatwoot/GA data contracts; raise schema drift within 24h via feedback/data.md.
+- Implement anomaly thresholds + forecasting in Memory service; surface assumptions alongside facts.
+- Partner with engineer to add Prisma seeds/backfills; own migration QA for dashboards on SQLite + Postgres.
+- Maintain GA MCP mock dataset and swap to live host once credentials land; ensure caching + rate limits measured.
+- Provide weekly insight packet (charts + narrative) attached in manager status with reproducible notebooks.

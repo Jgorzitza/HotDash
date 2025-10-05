@@ -3,7 +3,27 @@ generated_at: '2025-10-04T23:53:38.797531Z'
 docs:
 - path: docs/NORTH_STAR.md
   sha256: 3cd169abf1739c2cbecbf1a7394c73fcf8cf0e35b1334bf583b9a0014e0c87b0
+- path: docs/directions/README.md
+  sha256: ef44f6a9bfa64f4f826e830d273e648c09d31c466e9e6833042d89fa09c6e296
 - path: docs/directions/manager.md
-  sha256: 4e41fdef2724a4340037fdda339abfe5e1af8a05fcae2657daa655e264564200
+  sha256: bebb673aeaab6fdbaec1ea070174d14c8f36cc1ed503e162d4975264eece622b
+- path: docs/directions/engineer.md
+  sha256: 7ee8f6959f733dd2dd54f00a3e26b1312acb6abd85671aee8211fc87d042ea78
+- path: docs/directions/designer.md
+  sha256: a2201ed54f3e5c86a45e87e34b9f75b6c5f49038dd51b5a6d00bbb5dc50851e9
+- path: docs/directions/qa.md
+  sha256: a823b0ff162fa811797fdd91cbe5a7aab9508b7c16e2c3124ceb44a64f88dfab
+- path: docs/directions/product.md
+  sha256: 233fbd4569e807b2f60a0a12ea2c6c910eb914f8fe6a4db4e1ecd03005536ac8
+- path: docs/directions/data.md
+  sha256: cb121fcf11d60ab68a900dc7606b1b7e84ac98c84af1048de5375fba8411dcc5
+- path: docs/directions/ai.md
+  sha256: 37707661065b6ea358b88e699ba110064baaabc00ce2c83475c414df4c8a24c7
+- path: docs/directions/reliability.md
+  sha256: d858f0fccf9ba93b8165694385c1c69efae27953db76aadb056b3fe112b9eccb
+- path: docs/directions/marketing.md
+  sha256: 0a2c675eee67855325104d58012ff0a14955e1b08b117308eedf3f670c05f70b
+- path: docs/directions/support.md
+  sha256: d8f3efc7878a3c3a05a5baf3c0df83e51d42e050f3ed9ce54d40b42dbd7abb4c
 - path: docs/git_protocol.md
   sha256: e0a10090242ef560287bb905f2c26981413a874427cb7cd8ed8ff6ded7609315

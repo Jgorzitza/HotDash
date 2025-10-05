@@ -1,253 +1,364 @@
-import { useEffect } from "react";
-import type {
-  ActionFunctionArgs,
-  HeadersFunction,
-  LoaderFunctionArgs,
-} from "react-router";
-import { useFetcher } from "react-router";
-import { useAppBridge } from "@shopify/app-bridge-react";
-import { authenticate } from "../shopify.server";
-import { boundary } from "@shopify/shopify-app-react-router/server";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
+import type { LoaderFunction } from "react-router";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+import "../styles/tokens.css";
+import {
+  TileCard,
+  SalesPulseTile,
+  FulfillmentHealthTile,
+  InventoryHeatmapTile,
+  CXEscalationsTile,
+  SEOContentTile,
+  OpsMetricsTile,
+} from "../components/tiles";
+import type { TileState, TileFact } from "../components/tiles";
 
-  return null;
+import type { EscalationConversation } from "../services/chatwoot/types";
+import { getEscalations } from "../services/chatwoot/escalations";
+import type { LandingPageAnomaly } from "../services/ga/ingest";
+import { getLandingPageAnomalies } from "../services/ga/ingest";
+import { getShopifyServiceContext } from "../services/shopify/client";
+import { getInventoryAlerts } from "../services/shopify/inventory";
+import type { InventoryAlert } from "../services/shopify/types";
+import type { FulfillmentIssue, OrderSummary } from "../services/shopify/types";
+import { recordDashboardSessionOpen } from "../services/dashboardSession.server";
+import { getPendingFulfillments, getSalesPulseSummary } from "../services/shopify/orders";
+import {
+  getOpsAggregateMetrics,
+  type OpsAggregateMetrics,
+} from "../services/metrics/aggregate";
+import type { ServiceResult } from "../services/types";
+import { ServiceError } from "../services/types";
+
+interface LoaderData {
+  mode: "live" | "mock";
+  sales: TileState<OrderSummary>;
+  fulfillment: TileState<FulfillmentIssue[]>;
+  inventory: TileState<InventoryAlert[]>;
+  escalations: TileState<EscalationConversation[]>;
+  seo: TileState<LandingPageAnomaly[]>;
+  opsMetrics: TileState<OpsAggregateMetrics>;
+}
+
+export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const useMock =
+    url.searchParams.get("mock") === "1" || process.env.DASHBOARD_USE_MOCK === "1";
+
+  if (useMock) {
+    return Response.json(buildMockDashboard());
+  }
+
+  const context = await getShopifyServiceContext(request);
+
+  const sales = await resolveTile(() => getSalesPulseSummary(context));
+  const fulfillment = await resolveTile(() => getPendingFulfillments(context));
+  const inventory = await resolveTile(() => getInventoryAlerts(context));
+  const seo = await resolveTile(() =>
+    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
+  );
+  const escalations = await resolveEscalations(context.shopDomain);
+  const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+
+  await recordDashboardSessionOpen({
+    shopDomain: context.shopDomain,
+    operatorEmail: context.operatorEmail,
+    requestId: request.headers.get("x-request-id"),
+  });
+
+  return Response.json({
+    mode: "live",
+    sales,
+    fulfillment,
+    inventory,
+    escalations,
+    seo,
+    opsMetrics,
+  });
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const { admin } = await authenticate.admin(request);
-  const color = ["Red", "Orange", "Yellow", "Green"][
-    Math.floor(Math.random() * 4)
+async function resolveTile<T>(
+  resolver: () => Promise<ServiceResult<T>>,
+): Promise<TileState<T>> {
+  try {
+    const result = await resolver();
+    return {
+      status: "ok",
+      data: result.data,
+      source: result.source,
+      fact: {
+        id: result.fact.id,
+        createdAt: result.fact.createdAt.toISOString(),
+      },
+    };
+  } catch (error) {
+    if (error instanceof Response) throw error;
+    if (error instanceof ServiceError) {
+      return { status: "error", error: error.message };
+    }
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+async function resolveEscalations(
+  shopDomain: string,
+): Promise<TileState<EscalationConversation[]>> {
+  try {
+    const result = await getEscalations(shopDomain);
+    return {
+      status: "ok",
+      data: result.data,
+      source: result.source,
+      fact: {
+        id: result.fact.id,
+        createdAt: result.fact.createdAt.toISOString(),
+      },
+    };
+  } catch (error) {
+    if (error instanceof Response) throw error;
+    if (error instanceof Error && error.message.includes("CHATWOOT")) {
+      return {
+        status: "unconfigured",
+        error: "Chatwoot credentials not configured",
+      };
+    }
+    if (error instanceof ServiceError) {
+      return { status: "error", error: error.message };
+    }
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+function buildMockDashboard(): LoaderData {
+  const now = new Date().toISOString();
+  const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
+  const breachThirtyMinutesAfter = new Date(
+    new Date(threeHoursAgo).getTime() + 30 * 60 * 1000,
+  ).toISOString();
+
+  const salesSummary: OrderSummary = {
+    shopDomain: "mock-shop",
+    totalRevenue: 8425.5,
+    currency: "USD",
+    orderCount: 58,
+    topSkus: [
+      { sku: "BOARD-XL", title: "Powder Board XL", quantity: 14, revenue: 2800 },
+      { sku: "GLOVE-PRO", title: "Thermal Gloves Pro", quantity: 32, revenue: 1920 },
+      { sku: "BOOT-INS", title: "Insulated Boots", quantity: 20, revenue: 1600 },
+    ],
+    pendingFulfillment: [
+      {
+        orderId: "gid://shopify/Order/7001",
+        name: "#7001",
+        displayStatus: "UNFULFILLED",
+        createdAt: now,
+      },
+    ],
+    generatedAt: now,
+  };
+
+  const fulfillmentIssues: FulfillmentIssue[] = [
+    {
+      orderId: "gid://shopify/Order/7001",
+      name: "#7001",
+      displayStatus: "UNFULFILLED",
+      createdAt: now,
+    },
+    {
+      orderId: "gid://shopify/Order/6998",
+      name: "#6998",
+      displayStatus: "IN_PROGRESS",
+      createdAt: now,
+    },
   ];
-  const response = await admin.graphql(
-    `#graphql
-      mutation populateProduct($product: ProductCreateInput!) {
-        productCreate(product: $product) {
-          product {
-            id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
-          }
-        }
-      }`,
+
+  const inventoryAlerts: InventoryAlert[] = [
     {
-      variables: {
-        product: {
-          title: `${color} Snowboard`,
-        },
-      },
+      sku: "BOARD-XL",
+      productId: "gid://shopify/Product/1",
+      variantId: "gid://shopify/ProductVariant/1",
+      title: "Powder Board XL — 158cm",
+      quantityAvailable: 6,
+      threshold: 10,
+      daysOfCover: 2.5,
+      generatedAt: now,
     },
-  );
-  const responseJson = await response.json();
-
-  const product = responseJson.data!.productCreate!.product!;
-  const variantId = product.variants.edges[0]!.node!.id!;
-
-  const variantResponse = await admin.graphql(
-    `#graphql
-    mutation shopifyReactRouterTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
-      productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-        productVariants {
-          id
-          price
-          barcode
-          createdAt
-        }
-      }
-    }`,
     {
-      variables: {
-        productId: product.id,
-        variants: [{ id: variantId, price: "100.00" }],
-      },
+      sku: "GLOVE-PRO",
+      productId: "gid://shopify/Product/2",
+      variantId: "gid://shopify/ProductVariant/2",
+      title: "Thermal Gloves Pro — Medium",
+      quantityAvailable: 12,
+      threshold: 15,
+      daysOfCover: 3.1,
+      generatedAt: now,
     },
-  );
+  ];
 
-  const variantResponseJson = await variantResponse.json();
+  const escalations: EscalationConversation[] = [
+    {
+      id: 101,
+      inboxId: 1,
+      status: "open",
+      customerName: "Jamie Lee",
+      createdAt: threeHoursAgo,
+      breachedAt: breachThirtyMinutesAfter,
+      lastMessageAt: now,
+      slaBreached: true,
+      tags: ["priority"],
+      suggestedReplyId: "ack_delay",
+      suggestedReply: "Hi Jamie, thanks for your patience. We're expediting your order update now.",
+    },
+  ];
+
+  const anomalies: LandingPageAnomaly[] = [
+    {
+      landingPage: "/collections/new-arrivals",
+      sessions: 420,
+      wowDelta: -0.24,
+      evidenceUrl: undefined,
+      isAnomaly: true,
+    },
+    {
+      landingPage: "/products/powder-board-xl",
+      sessions: 310,
+      wowDelta: -0.05,
+      evidenceUrl: undefined,
+      isAnomaly: false,
+    },
+  ];
+
+  const opsMetricsData: OpsAggregateMetrics = {
+    activation: {
+      windowStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      windowEnd: now,
+      totalActiveShops: 12,
+      activatedShops: 9,
+      activationRate: 0.75,
+    },
+    sla: {
+      windowStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      windowEnd: now,
+      sampleSize: 6,
+      medianMinutes: 32.5,
+      p90Minutes: 58.2,
+    },
+  };
+
+  const fact = (id: number): TileFact => ({ id, createdAt: now });
 
   return {
-    product: responseJson!.data!.productCreate!.product,
-    variant:
-      variantResponseJson!.data!.productVariantsBulkUpdate!.productVariants,
+    mode: "mock",
+    sales: {
+      status: "ok",
+      data: salesSummary,
+      source: "mock",
+      fact: fact(1),
+    },
+    fulfillment: {
+      status: "ok",
+      data: fulfillmentIssues,
+      source: "mock",
+      fact: fact(2),
+    },
+    inventory: {
+      status: "ok",
+      data: inventoryAlerts,
+      source: "mock",
+      fact: fact(3),
+    },
+    escalations: {
+      status: "ok",
+      data: escalations,
+      source: "mock",
+      fact: fact(4),
+    },
+    seo: {
+      status: "ok",
+      data: anomalies,
+      source: "mock",
+      fact: fact(5),
+    },
+    opsMetrics: {
+      status: "ok",
+      data: opsMetricsData,
+      source: "mock",
+      fact: fact(6),
+    },
   };
-};
+}
 
-export default function Index() {
-  const fetcher = useFetcher<typeof action>();
-
-  const shopify = useAppBridge();
-  const isLoading =
-    ["loading", "submitting"].includes(fetcher.state) &&
-    fetcher.formMethod === "POST";
-  const productId = fetcher.data?.product?.id.replace(
-    "gid://shopify/Product/",
-    "",
-  );
-
-  useEffect(() => {
-    if (productId) {
-      shopify.toast.show("Product created");
-    }
-  }, [productId, shopify]);
-  const generateProduct = () => fetcher.submit({}, { method: "POST" });
+export default function OperatorDashboard() {
+  const data = useLoaderData<LoaderData>();
 
   return (
-    <s-page heading="React Router app template">
-      <s-button slot="primary-action" onClick={generateProduct}>
-        Generate a product
-      </s-button>
+    <s-page heading="Operator Control Center">
+      {data.mode === "mock" && (
+        <div
+          style={{
+            marginBottom: "var(--occ-space-5)",
+            padding: "var(--occ-space-4)",
+            border: "1px dashed var(--occ-border-default)",
+            borderRadius: "var(--occ-radius-md)",
+            background: "var(--occ-bg-secondary)",
+          }}
+        >
+          <p style={{ margin: 0, color: "var(--occ-text-secondary)" }}>
+            Displaying sample data. Set <code>DASHBOARD_USE_MOCK=0</code> or append{" "}
+            <code>?mock=0</code> to load live integrations.
+          </p>
+        </div>
+      )}
+      <div className="occ-tile-grid">
+        <TileCard
+          title="Ops Pulse"
+          tile={data.opsMetrics}
+          render={(metrics) => <OpsMetricsTile metrics={metrics} />}
+          testId="tile-ops-metrics"
+        />
 
-      <s-section heading="Congrats on creating a new Shopify app 🎉">
-        <s-paragraph>
-          This embedded app template uses{" "}
-          <s-link
-            href="https://shopify.dev/docs/apps/tools/app-bridge"
-            target="_blank"
-          >
-            App Bridge
-          </s-link>{" "}
-          interface examples like an{" "}
-          <s-link href="/app/additional">additional page in the app nav</s-link>
-          , as well as an{" "}
-          <s-link
-            href="https://shopify.dev/docs/api/admin-graphql"
-            target="_blank"
-          >
-            Admin GraphQL
-          </s-link>{" "}
-          mutation demo, to provide a starting point for app development.
-        </s-paragraph>
-      </s-section>
-      <s-section heading="Get started with products">
-        <s-paragraph>
-          Generate a product with GraphQL and get the JSON output for that
-          product. Learn more about the{" "}
-          <s-link
-            href="https://shopify.dev/docs/api/admin-graphql/latest/mutations/productCreate"
-            target="_blank"
-          >
-            productCreate
-          </s-link>{" "}
-          mutation in our API references.
-        </s-paragraph>
-        <s-stack direction="inline" gap="base">
-          <s-button
-            onClick={generateProduct}
-            {...(isLoading ? { loading: true } : {})}
-          >
-            Generate a product
-          </s-button>
-          {fetcher.data?.product && (
-            <s-button
-              href={`shopify:admin/products/${productId}`}
-              target="_blank"
-              variant="tertiary"
-            >
-              View product
-            </s-button>
-          )}
-        </s-stack>
-        {fetcher.data?.product && (
-          <s-section heading="productCreate mutation">
-            <s-stack direction="block" gap="base">
-              <s-box
-                padding="base"
-                borderWidth="base"
-                borderRadius="base"
-                background="subdued"
-              >
-                <pre style={{ margin: 0 }}>
-                  <code>{JSON.stringify(fetcher.data.product, null, 2)}</code>
-                </pre>
-              </s-box>
+        <TileCard
+          title="Sales Pulse"
+          tile={data.sales}
+          render={(summary) => <SalesPulseTile summary={summary} />}
+          testId="tile-sales-pulse"
+        />
 
-              <s-heading>productVariantsBulkUpdate mutation</s-heading>
-              <s-box
-                padding="base"
-                borderWidth="base"
-                borderRadius="base"
-                background="subdued"
-              >
-                <pre style={{ margin: 0 }}>
-                  <code>{JSON.stringify(fetcher.data.variant, null, 2)}</code>
-                </pre>
-              </s-box>
-            </s-stack>
-          </s-section>
-        )}
-      </s-section>
+        <TileCard
+          title="Fulfillment Health"
+          tile={data.fulfillment}
+          render={(issues) => <FulfillmentHealthTile issues={issues} />}
+          testId="tile-fulfillment-health"
+        />
 
-      <s-section slot="aside" heading="App template specs">
-        <s-paragraph>
-          <s-text>Framework: </s-text>
-          <s-link href="https://reactrouter.com/" target="_blank">
-            React Router
-          </s-link>
-        </s-paragraph>
-        <s-paragraph>
-          <s-text>Interface: </s-text>
-          <s-link
-            href="https://shopify.dev/docs/api/app-home/using-polaris-components"
-            target="_blank"
-          >
-            Polaris web components
-          </s-link>
-        </s-paragraph>
-        <s-paragraph>
-          <s-text>API: </s-text>
-          <s-link
-            href="https://shopify.dev/docs/api/admin-graphql"
-            target="_blank"
-          >
-            GraphQL
-          </s-link>
-        </s-paragraph>
-        <s-paragraph>
-          <s-text>Database: </s-text>
-          <s-link href="https://www.prisma.io/" target="_blank">
-            Prisma
-          </s-link>
-        </s-paragraph>
-      </s-section>
+        <TileCard
+          title="Inventory Heatmap"
+          tile={data.inventory}
+          render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
+          testId="tile-inventory-heatmap"
+        />
 
-      <s-section slot="aside" heading="Next steps">
-        <s-unordered-list>
-          <s-list-item>
-            Build an{" "}
-            <s-link
-              href="https://shopify.dev/docs/apps/getting-started/build-app-example"
-              target="_blank"
-            >
-              example app
-            </s-link>
-          </s-list-item>
-          <s-list-item>
-            Explore Shopify&apos;s API with{" "}
-            <s-link
-              href="https://shopify.dev/docs/apps/tools/graphiql-admin-api"
-              target="_blank"
-            >
-              GraphiQL
-            </s-link>
-          </s-list-item>
-        </s-unordered-list>
-      </s-section>
+        <TileCard
+          title="CX Escalations"
+          tile={data.escalations}
+          render={(conversations) => <CXEscalationsTile conversations={conversations} />}
+          testId="tile-cx-escalations"
+        />
+
+        <TileCard
+          title="SEO & Content Watch"
+          tile={data.seo}
+          render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
+          testId="tile-seo-content"
+        />
+      </div>
     </s-page>
   );
 }
-
-export const headers: HeadersFunction = (headersArgs) => {
-  return boundary.headers(headersArgs);
-};

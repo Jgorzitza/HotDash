@@ -1,0 +1,194 @@
+/**
+ * Design Tokens — Operator Control Center
+ * Aligned with Shopify Polaris Design System
+ * Source: docs/design/tokens/design_tokens.md
+ */
+
+:root {
+  /* Colors - Status */
+  --occ-status-healthy-text: var(--p-color-text-success, #1a7f37);
+  --occ-status-healthy-bg: var(--p-color-bg-success-subdued, #e3f9e5);
+  --occ-status-healthy-border: var(--p-color-border-success, #2e844a);
+
+  --occ-status-attention-text: var(--p-color-text-critical, #d82c0d);
+  --occ-status-attention-bg: var(--p-color-bg-critical-subdued, #fff4f4);
+  --occ-status-attention-border: var(--p-color-border-critical, #e85c4a);
+
+  --occ-status-unconfigured-text: var(--p-color-text-subdued, #637381);
+  --occ-status-unconfigured-bg: var(--p-color-bg-surface-subdued, #f6f6f7);
+  --occ-status-unconfigured-border: var(--p-color-border-subdued, #d2d5d8);
+
+  /* Background & Surface */
+  --occ-bg-primary: var(--p-color-bg-surface, #ffffff);
+  --occ-bg-secondary: var(--p-color-bg-surface-subdued, #f6f6f7);
+  --occ-bg-hover: var(--p-color-bg-surface-hover, #f6f6f7);
+
+  /* Border Colors */
+  --occ-border-default: var(--p-color-border-subdued, #d2d5d8);
+  --occ-border-interactive: var(--p-color-border-interactive, #2c6ecb);
+  --occ-border-focus: var(--p-color-border-focus, #2c6ecb);
+
+  /* Text Colors */
+  --occ-text-primary: var(--p-color-text, #202223);
+  --occ-text-secondary: var(--p-color-text-subdued, #637381);
+  --occ-text-interactive: var(--p-color-text-interactive, #2c6ecb);
+  --occ-text-success: var(--p-color-text-success, #1a7f37);
+  --occ-text-critical: var(--p-color-text-critical, #d82c0d);
+  --occ-text-warning: var(--p-color-text-warning, #916a00);
+
+  /* Spacing */
+  --occ-space-1: var(--p-space-1, 4px);
+  --occ-space-2: var(--p-space-2, 8px);
+  --occ-space-3: var(--p-space-3, 12px);
+  --occ-space-4: var(--p-space-4, 16px);
+  --occ-space-5: var(--p-space-5, 20px);
+  --occ-space-6: var(--p-space-6, 24px);
+  --occ-space-8: var(--p-space-8, 32px);
+  --occ-space-10: var(--p-space-10, 40px);
+
+  /* Semantic Spacing */
+  --occ-tile-padding: var(--p-space-5, 20px);
+  --occ-tile-gap: var(--p-space-5, 20px);
+  --occ-tile-internal-gap: var(--p-space-4, 16px);
+  --occ-modal-padding: var(--p-space-6, 24px);
+  --occ-modal-gap: var(--p-space-4, 16px);
+
+  /* Typography */
+  --occ-font-family-primary: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --occ-font-family-monospace: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+
+  --occ-font-size-xs: 0.75rem;
+  --occ-font-size-sm: 0.85rem;
+  --occ-font-size-base: 1rem;
+  --occ-font-size-lg: 1.15rem;
+  --occ-font-size-xl: 1.5rem;
+  --occ-font-size-2xl: 2rem;
+
+  --occ-font-size-heading: 1.15rem;
+  --occ-font-size-metric: 1.5rem;
+  --occ-font-size-body: 1rem;
+  --occ-font-size-meta: 0.85rem;
+
+  --occ-font-weight-regular: 400;
+  --occ-font-weight-medium: 500;
+  --occ-font-weight-semibold: 600;
+  --occ-font-weight-bold: 700;
+
+  --occ-line-height-tight: 1.25;
+  --occ-line-height-normal: 1.5;
+  --occ-line-height-relaxed: 1.75;
+
+  /* Border Radius */
+  --occ-radius-sm: var(--p-border-radius-1, 8px);
+  --occ-radius-md: var(--p-border-radius-2, 12px);
+  --occ-radius-lg: var(--p-border-radius-3, 16px);
+  --occ-radius-full: 9999px;
+
+  --occ-radius-tile: var(--p-border-radius-2, 12px);
+  --occ-radius-modal: var(--p-border-radius-3, 16px);
+  --occ-radius-button: var(--p-border-radius-1, 8px);
+
+  /* Shadows */
+  --occ-shadow-sm: var(--p-shadow-100, 0 1px 2px rgba(15, 23, 42, 0.12));
+  --occ-shadow-md: var(--p-shadow-200, 0 2px 4px rgba(15, 23, 42, 0.12));
+  --occ-shadow-lg: var(--p-shadow-300, 0 4px 8px rgba(15, 23, 42, 0.12));
+  --occ-shadow-xl: var(--p-shadow-400, 0 8px 16px rgba(15, 23, 42, 0.12));
+
+  --occ-shadow-tile: var(--p-shadow-100, 0 1px 2px rgba(15, 23, 42, 0.12));
+  --occ-shadow-tile-hover: var(--p-shadow-200, 0 2px 4px rgba(15, 23, 42, 0.12));
+  --occ-shadow-modal: var(--p-shadow-400, 0 8px 16px rgba(15, 23, 42, 0.12));
+
+  /* Animation */
+  --occ-duration-fast: 150ms;
+  --occ-duration-normal: 250ms;
+  --occ-duration-slow: 350ms;
+
+  --occ-easing-default: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --occ-easing-in: cubic-bezier(0.4, 0.0, 1, 1);
+  --occ-easing-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --occ-easing-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  /* Component Tokens - Tile */
+  --occ-tile-min-width: 320px;
+  --occ-tile-min-height: 280px;
+  --occ-tile-bg: var(--p-color-bg-surface, #ffffff);
+  --occ-tile-border: var(--p-color-border-subdued, #d2d5d8);
+
+  /* Component Tokens - Button */
+  --occ-button-primary-bg: var(--p-color-bg-interactive, #2c6ecb);
+  --occ-button-primary-text: var(--p-color-text-on-interactive, #ffffff);
+  --occ-button-secondary-bg: transparent;
+  --occ-button-secondary-text: var(--p-color-text-interactive, #2c6ecb);
+  --occ-button-secondary-border: var(--p-color-border-interactive, #2c6ecb);
+
+  /* Component Tokens - Modal */
+  --occ-modal-width: 600px;
+  --occ-modal-max-width: 90vw;
+  --occ-modal-bg: var(--p-color-bg-surface, #ffffff);
+
+  /* Component Tokens - Toast */
+  --occ-toast-success-bg: var(--p-color-bg-success-subdued, #e3f9e5);
+  --occ-toast-success-text: var(--p-color-text-success, #1a7f37);
+  --occ-toast-success-border: var(--p-color-border-success, #2e844a);
+
+  --occ-toast-error-bg: var(--p-color-bg-critical-subdued, #fff4f4);
+  --occ-toast-error-text: var(--p-color-text-critical, #d82c0d);
+  --occ-toast-error-border: var(--p-color-border-critical, #e85c4a);
+
+  --occ-toast-info-bg: var(--p-color-bg-info-subdued, #e8f5fa);
+  --occ-toast-info-text: var(--p-color-text-info, #1f5d99);
+  --occ-toast-info-border: var(--p-color-border-info, #5c9ec7);
+}
+
+/* Utility Classes */
+.occ-tile {
+  min-width: var(--occ-tile-min-width);
+  min-height: var(--occ-tile-min-height);
+  background-color: var(--occ-tile-bg);
+  border: 1px solid var(--occ-tile-border);
+  border-radius: var(--occ-radius-tile);
+  box-shadow: var(--occ-shadow-tile);
+  padding: var(--occ-tile-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--occ-tile-internal-gap);
+  transition: box-shadow var(--occ-duration-fast) var(--occ-easing-default);
+}
+
+.occ-tile:hover {
+  box-shadow: var(--occ-shadow-tile-hover);
+}
+
+.occ-tile-grid {
+  display: grid;
+  gap: var(--occ-tile-gap);
+  grid-template-columns: repeat(auto-fit, minmax(var(--occ-tile-min-width), 1fr));
+}
+
+.occ-status-healthy {
+  color: var(--occ-status-healthy-text);
+  font-weight: var(--occ-font-weight-semibold);
+}
+
+.occ-status-attention {
+  color: var(--occ-status-attention-text);
+  font-weight: var(--occ-font-weight-semibold);
+}
+
+.occ-status-unconfigured {
+  color: var(--occ-status-unconfigured-text);
+  font-weight: var(--occ-font-weight-semibold);
+}
+
+.occ-text-meta {
+  font-size: var(--occ-font-size-meta);
+  color: var(--occ-text-secondary);
+}
+
+.occ-text-primary {
+  color: var(--occ-text-primary);
+}
+
+.occ-text-secondary {
+  color: var(--occ-text-secondary);
+}
