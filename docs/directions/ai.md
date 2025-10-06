@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/ai.md
 owner: manager
-last_reviewed: 2025-10-04
+last_reviewed: 2025-10-06
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,3 +21,9 @@ expires: 2025-10-18
 - Keep prompt libraries versioned under app/prompts/ with changelog and evaluation metrics.
 - Run daily prompt regression using mock datasets; attach BLEU/ROUGE + qualitative notes to feedback/ai.md.
 - Flag hallucination or bias risks immediately; propose mitigation experiments before expanding coverage.
+
+## Current Sprint Focus — 2025-10-06
+- Implement Supabase-backed AI recommendation logging (`app/services/ai-logging.server.ts`) and cover with Vitest.
+- Draft initial prompt libraries for Chatwoot replies and anomaly summaries; store under `app/prompts/` with CHANGELOG updates.
+- Generate first batch of AI reply suggestions for support review and capture feedback in Memory (scope `build`).
+- Stand up baseline regression harness (mock datasets + BLEU/ROUGE metrics) and report results in `feedback/ai.md`.

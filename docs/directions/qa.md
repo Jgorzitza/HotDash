@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/qa.md
 owner: manager
-last_reviewed: 2025-10-04
+last_reviewed: 2025-10-06
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,3 +21,9 @@ expires: 2025-10-18
 - Track regression matrix in `feedback/qa.md`; call out API rate-limit or credential blockers daily.
 - Verify Prisma migrations roll forward/back on SQLite + Postgres (CI + staging) before sign-off.
 - Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
+
+## Current Sprint Focus — 2025-10-06
+- Partner with engineer to close the Playwright heading failure; update `tests/playwright/dashboard.spec.ts` and record artifact.
+- Expand E2E coverage to include tile drill-ins and approval actions (start with CX Escalations + Inventory) using mock mode data.
+- Validate Prisma migrations forward/back on SQLite and Postgres; document results in `feedback/qa.md`.
+- Draft soak test plan (SSE + approval endurance) and prepare scripts for Week 3 execution.
