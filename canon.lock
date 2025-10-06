@@ -4,26 +4,26 @@ docs:
 - path: docs/NORTH_STAR.md
   sha256: 3cd169abf1739c2cbecbf1a7394c73fcf8cf0e35b1334bf583b9a0014e0c87b0
 - path: docs/directions/README.md
-  sha256: ef44f6a9bfa64f4f826e830d273e648c09d31c466e9e6833042d89fa09c6e296
+  sha256: fc5b042fd67627e54cb9654811bf560945b3abeee16dd344d85706749e8d388c
 - path: docs/directions/manager.md
-  sha256: bebb673aeaab6fdbaec1ea070174d14c8f36cc1ed503e162d4975264eece622b
+  sha256: f7021503b60788ea755d801c919092cde3a4c8db0ee8dba983c64dc9ac955fc0
 - path: docs/directions/engineer.md
-  sha256: 7ee8f6959f733dd2dd54f00a3e26b1312acb6abd85671aee8211fc87d042ea78
+  sha256: fb2f3e36766cca71e8ca0854a3a84f74adae7e2b6fcd7e2d04e7b5761efb0a7b
 - path: docs/directions/designer.md
-  sha256: a2201ed54f3e5c86a45e87e34b9f75b6c5f49038dd51b5a6d00bbb5dc50851e9
+  sha256: b1b646d9a969f795095d552eb9feea58bfca209cab7be1c1bf4403a5dc0dfeaf
 - path: docs/directions/qa.md
-  sha256: a823b0ff162fa811797fdd91cbe5a7aab9508b7c16e2c3124ceb44a64f88dfab
+  sha256: 6e3c13951bcced02376649566d8d8fb3ab171c95af81011cda7f307f3d3f06b2
 - path: docs/directions/product.md
-  sha256: 233fbd4569e807b2f60a0a12ea2c6c910eb914f8fe6a4db4e1ecd03005536ac8
+  sha256: 12f839215a4cdf8719a59c21e2784bf9a52a4c16c4c362bf7db3c2fea304501c
 - path: docs/directions/data.md
-  sha256: cb121fcf11d60ab68a900dc7606b1b7e84ac98c84af1048de5375fba8411dcc5
+  sha256: de0247adf0246bc64096de3624a0ac2c9d1ab77dba8f1a892a3d210dc4775dc5
 - path: docs/directions/ai.md
-  sha256: 37707661065b6ea358b88e699ba110064baaabc00ce2c83475c414df4c8a24c7
+  sha256: 9dc34cc81ebc3fabcd332b0eaa3f60de97b5f5bc0407828ee951f3f41a999e99
 - path: docs/directions/reliability.md
-  sha256: d858f0fccf9ba93b8165694385c1c69efae27953db76aadb056b3fe112b9eccb
+  sha256: 28975c6a0e193bc9006a46ecf5b1089fbda9d5d3448e5a0dace29ed69c4e64fa
 - path: docs/directions/marketing.md
-  sha256: 0a2c675eee67855325104d58012ff0a14955e1b08b117308eedf3f670c05f70b
+  sha256: 7fb81b6b45ee5cee40c9c9491153efc5ebeec1efeaf07374da1a0f34332b1e7f
 - path: docs/directions/support.md
-  sha256: d8f3efc7878a3c3a05a5baf3c0df83e51d42e050f3ed9ce54d40b42dbd7abb4c
+  sha256: 766262ea2fe19c74c05c813c2e95d9c401de209800f26f0713c99fa57d668c76
 - path: docs/git_protocol.md
   sha256: e0a10090242ef560287bb905f2c26981413a874427cb7cd8ed8ff6ded7609315

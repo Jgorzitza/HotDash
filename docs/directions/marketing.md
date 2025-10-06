@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/marketing.md
 owner: manager
-last_reviewed: 2025-10-04
+last_reviewed: 2025-10-06
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,3 +21,9 @@ expires: 2025-10-18
 - Supply copy variations and brand tone guidance; attach evidence (style guide, approvals) to feedback/marketing.md.
 - Coordinate with designer on localization; ensure strings shipped with translation keys + glossary context.
 - Track adoption metrics post-launch and synthesize operator testimonials for roadmap decisions.
+
+## Current Sprint Focus — 2025-10-06
+- Draft launch communications packet (email, blog, in-admin messaging) tied to mock → staging → production milestones.
+- Create release notes template capturing each tile milestone and required evidence links; review with product.
+- Assemble brand tone/talking points deck referencing copy deck + North Star; share with support for training.
+- Outline social sentiment integration plan (vendor options, data contract expectations) ahead of Phase 2 decisions.

@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/README.md
 owner: manager
-last_reviewed: 2025-10-04
+last_reviewed: 2025-10-06
 doc_hash: TBD
 expires: 2025-10-18
 ---
