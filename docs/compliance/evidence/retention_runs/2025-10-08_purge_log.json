@@ -1,0 +1,16 @@
+{
+  "event": "retention.purge",
+  "timestamp": "2025-10-08T23:42:46.503Z",
+  "durationMs": 21,
+  "config": {
+    "retentionFactsDays": 30,
+    "retentionEscalationsDays": 14,
+    "retentionSessionsDays": 90
+  },
+  "results": {
+    "shopifyDeleted": 0,
+    "gaDeleted": 0,
+    "chatwootDeleted": 0,
+    "sessionDeleted": 0
+  }
+}

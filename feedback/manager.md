@@ -8,6 +8,13 @@ expires: 2025-10-09
 ---
 # Manager Daily Status — 2025-10-08
 
+## Deployment Pipeline Status — 2025-10-08
+- **Staging pipeline online:** Added `.github/workflows/deploy-staging.yml` with verify → deploy jobs and Shopify CLI orchestration via `scripts/deploy/staging-deploy.sh`, emitting Playwright, Lighthouse, and synthetic smoke artifacts. Documentation captured in `docs/runbooks/deployment_staging.md` (overview references production hand-off).
+- **Production workflow drafted:** `.github/workflows/deploy-production.yml` enforces manual dispatch with release tag, go-live checklist link, and manager/reliability approvers; wraps `scripts/deploy/production-deploy.sh` plus Lighthouse + smoke evidence.
+- **Readiness docs published:** Environment matrix now tracks prod secret provisioning and smoke budgets (`docs/deployment/env_matrix.md`), and go-live checklist aligns with the new workflow inputs and performance targets (`docs/deployment/production_go_live_checklist.md`).
+- **Status log updated:** `feedback/deployment.md` reflects direction acknowledgement, shipped artifacts, outstanding risks, and next actions.
+- **Outstanding needs:** Reliability to populate GitHub `production` environment secrets by 2025-10-09, repo admins to set environment reviewers, deployment to generate service Shopify CLI token once creds land (see follow-ups in env matrix + deployment log).
+
 ## AI Escalation Enablement — Outstanding Requirements
 - **Supabase credentials:** `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are still unset on the AI workstation. `getSupabaseConfig()` now loads `.env`, but without real values decision logs remain in the in-memory fallback and never sync to Supabase/Memory MCP. Requesting staging (or prod-ready) credentials so we can validate persistence before the M1 dry run.
 - **QA artifact storage:** Prompt regression now auto-writes JSON artifacts to `artifacts/ai/prompt-regression-<timestamp>.json`. QA needs the canonical destination for bundling these with Playwright evidence. Please confirm if we keep them under `artifacts/ai/` in repo, publish to an external bucket, or adjust CI to collect them.
@@ -53,6 +60,7 @@ expires: 2025-10-09
 - **Marketing**: Secure product approval on the launch comms packet, release notes template, and brand tone deck; coordinate tooltip placement with design; align support training schedule for the new materials and confirm messaging stays English-only.
 - **Product**: Review marketing deliverables, escalate Figma access for design, supply the demo shop list to data, loop compliance/deployment into the dry-run release plan, and shape the operator dry-run plan once QA clears modals; remove localization tasks from the backlog.
 - **Support**: Begin drafting the CX escalation runbook skeleton using the new modal decision paths; prepare the template review cadence ahead of go-live and update materials to reflect the English-only strategy.
+- **Enablement** (Marie Dubois): Update runbooks to the English-only scope, produce CX Escalations/Sales Pulse job aids, and coordinate the 2025-10-16 operator dry run logistics; log updates in `feedback/enablement.md`.
 - **Compliance** (Casey Lin): Build the end-to-end data inventory, draft the incident response runbook with reliability/support, and review GA MCP/Supabase/Anthropic agreements for privacy gaps; log findings in `feedback/compliance.md`.
 - **Deployment** (Devon Ortiz): Execute the revised sprint focus in `docs/directions/deployment.md` (staging workflow + Postgres environment provision + env matrix + go-live checklist) and log evidence in `feedback/deployment.md`.
 - **Integrations** (Priya Singh): Secure GA MCP credentials, finalize the social sentiment vendor recommendation with marketing/reliability, and publish the integration readiness dashboard ahead of the 2025-10-08 review; record updates in `feedback/integrations.md`.
@@ -207,9 +215,11 @@ expires: 2025-10-09
 - Added dashboard-level manual refresh control calling `/app/actions/dashboard.refresh`, with aria-live status messaging and loader revalidation (app/routes/app._index.tsx#L44, app/routes/actions/dashboard.refresh.ts#L24).
 - Persisted refresh triggers to Prisma facts and mirrored to Supabase with structured latency/error logs covering view/refresh/get operations (app/routes/actions/dashboard.refresh.ts#L24, app/services/analytics.server.ts#L22).
 - Authored analytics parity script comparing Prisma vs Supabase counts and exposed npm script (`npm run ops:check-analytics-parity`) for Ops hand-off (scripts/ops/check-dashboard-analytics-parity.ts#L1, package.json#L18).
+- Delivered Postgres staging/test database scaffolding: new Prisma schema + npm helpers (`prisma/schema.postgres.prisma`, `db:*:postgres` scripts), `.env.staging.example`, and runbook (`docs/runbooks/prisma_staging_postgres.md`) with environment matrix cross-link.
 
 ### Evidence
-- Vitest: `npm run test:unit` (33/33 green)
+- Vitest: `npm run test:unit` → blocked by missing `app/config/featureFlags.ts` import in existing chatwoot specs (pre-existing repo gap).
+- Targeted Vitest: `npx vitest run tests/unit/supabase.config.spec.ts` ✅
 - Playwright: `npm run test:e2e` (7/7 green)
 - Parity probe: `npm run ops:check-analytics-parity` → highlights Supabase unconfigured locally (requires credentials)
 - Lighthouse: still gated by missing `LIGHTHOUSE_TARGET`; script exits early pending target definition
@@ -227,3 +237,26 @@ expires: 2025-10-09
 - Launch comms now match product-approved copy (banner/email/blog/tooltip) with FR variants captured for localization confirmation.
 - Tooltip placement pending designer annotations (due Oct 8 @ 12:00 ET); localization reviewing "Centre OCC" abbreviation by Oct 9.
 - Campaign calendar drafted with KPI targets and will be locked once product confirms launch date tomorrow.
+
+## Compliance Update — 2025-10-08 (Detailed)
+- **Deliverables completed**
+  - Data inventory & retention matrix (`docs/compliance/data_inventory.md`) documenting flows across Shopify, Chatwoot, Supabase, GA MCP, Anthropic, caches, and forthcoming Hootsuite tile with retention targets/classifications.
+  - Incident response runbook for breach scenarios (`docs/runbooks/incident_response_breach.md`) covering detection → notification → recovery with GDPR/CCPA compliance and evidence handling.
+  - Retention automation plan + tooling (`docs/compliance/retention_automation_plan.md`, new purge script `scripts/ops/purge-dashboard-data.ts`, npm task `npm run ops:purge-dashboard-data`). Baseline run output archived at `docs/compliance/evidence/retention_runs/2025-10-08_purge_log.json`; Supabase cron SQL draft ready (`docs/compliance/evidence/supabase/retention/cron_setup.sql`).
+  - DPIA for Chatwoot transcripts & Anthropic prompts (`docs/compliance/dpia_chatwoot_anthropic.md`) with mitigation requirements (prompt sanitizer, opt-out toggle, vendor DPAs).
+  - Privacy notice alignment: update deck (`docs/compliance/privacy_notice_updates.md`), launch FAQ disclosures (`docs/marketing/launch_faq.md`), rollout plan (`docs/marketing/privacy_toggle_rollout.md`), and publication-ready notice copy (`docs/compliance/evidence/privacy_notice/operator_notice_v2025-10-08.md`).
+- **Vendor contracts & evidence tracking**
+  - Request templates + status tracker published (`docs/compliance/evidence/vendor_dpa_requests.md`, `docs/compliance/evidence/vendor_dpa_status.md`).
+  - Initial outreach logged for GA MCP, Supabase, Anthropic (2025-10-07) with follow-ups recorded 2025-10-08 (`docs/compliance/evidence/vendor_followups_2025-10-08.md`). Awaiting ticket numbers—need escalation if no replies by 2025-10-10.
+- **Blockers needing manager support**
+  1. Vendor DPAs absent → production launch blocked until documents archived in evidence folders.
+  2. Analytics opt-out toggle + AI prompt sanitizer unbuilt; both are prerequisites from DPIA before enabling GA MCP or Anthropic in production.
+  3. Supabase retention cron deployment pending reliability resourcing; without it we rely on manual purge script runs.
+- **Action requests**
+  - Push vendors/partners for DPA packages and residency assurances.
+  - Prioritize engineering work on opt-out toggle (Settings → Privacy) and prompt sanitizer this sprint.
+  - Coordinate reliability to implement Supabase pg_cron jobs using provided SQL and capture first-run evidence.
+- **Upcoming deadlines**
+  - 2025-10-12: Publish privacy notice + opt-out messaging, update support documentation.
+  - 2025-10-14: Retention automations operational and vendor DPAs on file (see R1/R2 in `feedback/compliance.md`).
+  - 2025-10-16: Re-run DPIA after mitigations for Anthropic go-live decision.
