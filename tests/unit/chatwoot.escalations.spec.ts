@@ -5,6 +5,7 @@ import { clearCache } from "../../app/services/cache.server";
 
 const mockListOpenConversations = vi.fn();
 const mockListMessages = vi.fn();
+const mockIsFeatureEnabled = vi.fn();
 
 vi.mock("../../packages/integrations/chatwoot", () => ({
   chatwootClient: vi.fn(() => ({
@@ -28,6 +29,10 @@ vi.mock("../../app/services/facts.server", () => ({
   })),
 }));
 
+vi.mock("../../app/config/featureFlags", () => ({
+  isFeatureEnabled: (...args: unknown[]) => mockIsFeatureEnabled(...args),
+}));
+
 describe("getEscalations", () => {
   beforeEach(() => {
     process.env.CHATWOOT_BASE_URL = "https://chatwoot.example";
@@ -37,6 +42,8 @@ describe("getEscalations", () => {
     clearCache();
     mockListOpenConversations.mockReset();
     mockListMessages.mockReset();
+    mockIsFeatureEnabled.mockReset();
+    mockIsFeatureEnabled.mockReturnValue(false);
   });
 
   it("returns escalations when SLA breached", async () => {
@@ -67,10 +74,76 @@ describe("getEscalations", () => {
     expect(result.data).toHaveLength(1);
     expect(result.data[0]?.customerName).toBe("Jamie");
     expect(result.data[0]?.slaBreached).toBe(true);
+    expect(result.data[0]?.messages).toHaveLength(1);
+    expect(result.data[0]?.messages?.[0]?.author).toBe("contact");
+    expect(result.data[0]?.suggestedReplyId).toBe("ack_delay");
+    expect(result.data[0]?.suggestedReply).toContain("Hi Jamie");
+    expect(result.data[0]?.aiSuggestion).toBeNull();
+    expect(result.data[0]?.aiSuggestionEnabled).toBe(false);
+    expect(result.aiEnabled).toBe(false);
     expect(result.source).toBe("fresh");
 
     const cached = await getEscalations("test-shop");
     expect(cached.source).toBe("cache");
+    expect(cached.aiEnabled).toBe(false);
     expect(mockListOpenConversations).toHaveBeenCalledTimes(2);
+  });
+
+  it("selects ship_update template when shipping keywords detected", async () => {
+    const createdAt = Math.floor(Date.now() / 1000) - 90 * 60;
+    mockListOpenConversations
+      .mockResolvedValueOnce([
+        {
+          id: 20,
+          inbox_id: 2,
+          status: "open",
+          created_at: createdAt,
+          tags: ["shipping_delay"],
+          meta: { sender: { name: "Alex" } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    mockListMessages.mockResolvedValueOnce([
+      {
+        id: 2,
+        message_type: 0,
+        content: "Can you check the tracking number?",
+        created_at: createdAt,
+      },
+    ]);
+
+    const result = await getEscalations("ship-shop");
+
+    expect(result.data[0]?.suggestedReplyId).toBe("ship_update");
+    expect(result.data[0]?.suggestedReply).toContain("Alex");
+  });
+
+  it("selects refund_offer template when refund keywords detected", async () => {
+    const createdAt = Math.floor(Date.now() / 1000) - 120 * 60;
+    mockListOpenConversations
+      .mockResolvedValueOnce([
+        {
+          id: 30,
+          inbox_id: 3,
+          status: "open",
+          created_at: createdAt,
+          tags: [],
+          meta: { sender: { name: "Morgan" } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    mockListMessages.mockResolvedValueOnce([
+      {
+        id: 3,
+        message_type: 0,
+        content: "The product arrived damaged, I need a refund.",
+        created_at: createdAt,
+      },
+    ]);
+
+    const result = await getEscalations("refund-shop");
+
+    expect(result.data[0]?.suggestedReplyId).toBe("refund_offer");
+    expect(result.data[0]?.suggestedReply).toContain("Morgan");
   });
 });

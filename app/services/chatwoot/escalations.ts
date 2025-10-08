@@ -1,12 +1,19 @@
 import type { Conversation } from "../../../packages/integrations/chatwoot";
 import { chatwootClient } from "../../../packages/integrations/chatwoot";
 import { getChatwootConfig } from "../../config/chatwoot.server";
+import { isFeatureEnabled } from "../../config/featureFlags";
 import { setCached, getCached } from "../cache.server";
 import { recordDashboardFact } from "../facts.server";
 import { toInputJson } from "../json";
 import { ServiceError } from "../types";
 import { CHATWOOT_TEMPLATES } from "./templates";
-import type { EscalationConversation, EscalationResult } from "./types";
+import type { ReplyTemplate } from "./templates";
+import type {
+  ConversationAuthor,
+  ConversationMessage,
+  EscalationConversation,
+  EscalationResult,
+} from "./types";
 
 const CACHE_TTL_MS = Number(process.env.CHATWOOT_CACHE_TTL_MS ?? 60_000);
 const MAX_PAGES = Number(process.env.CHATWOOT_MAX_PAGES ?? 2);
@@ -30,12 +37,88 @@ function computeBreachTimestamp(
   return toIso(breachSeconds);
 }
 
-function resolveCustomerName(conversation: any) {
+function resolveCustomerName(conversation: Conversation): string {
   return (
     conversation.meta?.sender?.name ||
-    conversation.contacts?.find((contact: any) => contact?.name)?.name ||
+    conversation.contacts?.find((contact: { name?: string | null } | undefined) =>
+      Boolean(contact?.name),
+    )?.name ||
     "Customer"
   );
+}
+
+const SHIPPING_KEYWORDS = [
+  "ship",
+  "shipping",
+  "delivery",
+  "carrier",
+  "tracking",
+  "tracking number",
+  "in transit",
+  "delivered",
+];
+
+const REFUND_KEYWORDS = [
+  "refund",
+  "return",
+  "damage",
+  "damaged",
+  "broken",
+  "defective",
+  "replacement",
+  "store credit",
+  "exchange",
+];
+
+function normalise(value: string) {
+  return value.toLowerCase();
+}
+
+function hasKeyword(haystack: string, keywords: string[]) {
+  const text = normalise(haystack);
+  return keywords.some((keyword) => text.includes(keyword));
+}
+
+function findLatestCustomerMessage(messages: ConversationMessage[]) {
+  return [...messages]
+    .filter((message) => message.author === "contact")
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+}
+
+function pickTemplate(
+  tags: string[],
+  messages: ConversationMessage[],
+): ReplyTemplate | undefined {
+  const flattenedTags = tags.map((tag) => normalise(tag));
+  const latestCustomerMessage = findLatestCustomerMessage(messages);
+  const customerText = latestCustomerMessage?.content ?? "";
+
+  if (
+    flattenedTags.some((tag) => tag.includes("shipping") || tag.includes("delivery")) ||
+    hasKeyword(customerText, SHIPPING_KEYWORDS)
+  ) {
+    return CHATWOOT_TEMPLATES.find((template) => template.id === "ship_update");
+  }
+
+  if (
+    flattenedTags.some((tag) => tag.includes("refund") || tag.includes("return")) ||
+    hasKeyword(customerText, REFUND_KEYWORDS)
+  ) {
+    return CHATWOOT_TEMPLATES.find((template) => template.id === "refund_offer");
+  }
+
+  if (customerText.trim().length > 0) {
+    return CHATWOOT_TEMPLATES.find((template) => template.id === "ack_delay");
+  }
+
+  return CHATWOOT_TEMPLATES.find((template) => template.id === "ack_delay");
+}
+
+function renderTemplateBody(template: ReplyTemplate, variables: Record<string, string>) {
+  return template.body.replace(/{{(.*?)}}/g, (_, key) => {
+    const value = variables[key.trim()];
+    return value ?? "";
+  });
 }
 
 async function collectConversations() {
@@ -66,7 +149,9 @@ async function collectConversations() {
 
       const slaBreached = isSlaBreached(convo.created_at, config.slaMinutes);
       const tags: string[] = Array.isArray(convo.tags) ? convo.tags : [];
-      const needsEscalation = slaBreached || tags.includes("escalation");
+      const flattenedTags = tags.map((tag) => normalise(tag));
+      const needsEscalation =
+        slaBreached || flattenedTags.some((tag) => tag === "escalation" || tag === "escalated");
 
       if (!needsEscalation) continue;
 
@@ -82,7 +167,19 @@ async function collectConversations() {
       }
 
       const lastMessage = [...messages].sort((a, b) => b.created_at - a.created_at)[0];
-      const template = CHATWOOT_TEMPLATES[0];
+
+      const conversationMessages: ConversationMessage[] = [...messages]
+        .sort((a, b) => a.created_at - b.created_at)
+        .slice(-6)
+        .map((message) => {
+          const author: ConversationAuthor = message.message_type === 1 ? "agent" : "contact";
+          return {
+            id: message.id,
+            author,
+            content: message.content,
+            createdAt: toIso(message.created_at),
+          };
+        });
 
       const createdAt = toIso(convo.created_at);
       const breachedAt = computeBreachTimestamp(
@@ -91,18 +188,27 @@ async function collectConversations() {
         slaBreached,
       );
 
+      const customerName = resolveCustomerName(convo);
+      const suggestion = pickTemplate(tags, conversationMessages);
+      const renderedSuggestion = suggestion
+        ? renderTemplateBody(suggestion, { name: customerName })
+        : undefined;
+
       results.push({
         id: convo.id,
         inboxId: convo.inbox_id,
         status: convo.status,
-        customerName: resolveCustomerName(convo),
+        customerName,
         createdAt,
         breachedAt,
         lastMessageAt: lastMessage ? toIso(lastMessage.created_at) : toIso(convo.created_at),
         slaBreached,
         tags,
-        suggestedReplyId: template?.id,
-        suggestedReply: template?.body,
+        suggestedReplyId: suggestion?.id,
+        suggestedReply: renderedSuggestion,
+        messages: conversationMessages,
+        aiSuggestion: null,
+        aiSuggestionEnabled: false,
       });
     }
   }
@@ -118,6 +224,14 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
   }
 
   const { config, results } = await collectConversations();
+  const aiEnabled = isFeatureEnabled("ai_escalations");
+
+  for (const conversation of results) {
+    conversation.aiSuggestionEnabled = aiEnabled;
+    if (!aiEnabled) {
+      conversation.aiSuggestion = null;
+    }
+  }
 
   const fact = await recordDashboardFact({
     shopDomain,
@@ -142,6 +256,7 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
     data: results,
     fact,
     source: "fresh",
+    aiEnabled,
   };
 
   setCached(cacheKey, response, CACHE_TTL_MS);
