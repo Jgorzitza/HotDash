@@ -2,17 +2,32 @@
 epoch: 2025.10.E1
 doc: feedback/manager.md
 owner: manager
-last_reviewed: 2025-10-07
+last_reviewed: 2025-10-08
 doc_hash: TBD
-expires: 2025-10-08
+expires: 2025-10-09
 ---
+# Manager Daily Status — 2025-10-08
+
+## AI Escalation Enablement — Outstanding Requirements
+- **Supabase credentials:** `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are still unset on the AI workstation. `getSupabaseConfig()` now loads `.env`, but without real values decision logs remain in the in-memory fallback and never sync to Supabase/Memory MCP. Requesting staging (or prod-ready) credentials so we can validate persistence before the M1 dry run.
+- **QA artifact storage:** Prompt regression now auto-writes JSON artifacts to `artifacts/ai/prompt-regression-<timestamp>.json`. QA needs the canonical destination for bundling these with Playwright evidence. Please confirm if we keep them under `artifacts/ai/` in repo, publish to an external bucket, or adjust CI to collect them.
+- **Kill switch coordination:** `FEATURE_AI_ESCALATIONS` defaults to `0`. Turn it on per environment (`FEATURE_AI_ESCALATIONS=1`) once Supabase logging is active and QA has the artifact flow in place; otherwise the modal ships template-only.
+
+## Support / CX Escalations Update — 2025-10-08
+- **Template heuristics shipped:** Chatwoot escalations service now picks `ship_update`, `refund_offer`, or `ack_delay` based on tags/message keywords and renders customer names before approval flows. Unit tests updated to cover the paths (`app/services/chatwoot/escalations.ts`, `tests/unit/chatwoot.escalations.spec.ts`).
+- **Label alignment:** Escalation action now tags conversations with `escalation` (was `escalated`) to match SOP terminology and runbook guidance (`app/routes/actions/chatwoot.escalate.ts`).
+- **Runbook refresh:** Added annotated modal screenshots, approval heuristics, greeting checks, and validation notes so operators train against the live flow (`docs/runbooks/cx_escalations.md`).
+- **Outstanding items:** Product still owes confirmation on the 2025-10-16 dry run (`docs/runbooks/operator_training_agenda.md`). French template localization declared out-of-scope; localization cadence paused unless requirements change.
+- **Risks:** Heuristics rely on simple keyword detection; needs real-conversation validation post-staging seed. Modal still lacks template editing—operators must escalate when suggestions misfit.
+
 # Manager Daily Status — 2025-10-07
 
 ## Direction Update — 2025-10-07
 - Refresh sprint focus in `docs/directions/ai.md`, `docs/directions/data.md`, `docs/directions/designer.md`, `docs/directions/engineer.md`, `docs/directions/marketing.md`, `docs/directions/product.md`, `docs/directions/qa.md`, `docs/directions/reliability.md`, and `docs/directions/support.md` to align with the M1/M2 check-in.
 - Updated AI and QA sprint focus (2025-10-08) to reflect regression evidence sharing and compliance/deployment dependencies ahead of the M1/M2 review.
-- Added four supporting agents (Compliance, Localization, Deployment, Integrations) with direction docs under `docs/directions/compliance.md`, `docs/directions/localization.md`, `docs/directions/deployment.md`, and `docs/directions/integrations.md`; each must acknowledge in their feedback log once staffed.
+- Added supporting agents (Compliance, Deployment, Integrations) with direction docs under `docs/directions/compliance.md`, `docs/directions/deployment.md`, and `docs/directions/integrations.md`; localization workstream retired as the program is English-only.
 - All agents must review the updated direction doc for their role, acknowledge in their feedback log today, and raise blockers ahead of the 2025-10-08 sync.
+- Reminder: Manager direction updates now land in `feedback/manager.md`. When you need the latest assignments or sprint focus, check this file first.
 
 ## Summary
 - Playwright gate is green again (21/21 unit tests, 7/7 Playwright) after the engineer landed the accessible heading and modal flows; reliability confirms CI stability.
@@ -27,20 +42,18 @@ expires: 2025-10-08
 - Supabase decision sync monitor now wired to real logs; first run showed **25% error rate (critical)** — reliability + data need root cause and mitigation.
 - GA MCP credentials still pending, keeping analytics in mock mode.
 - Designer remains blocked on Figma workspace access, delaying the shared component library.
-- French translation review not yet engaged, leaving five overflow risks unresolved.
 
 ## Actions & Assignments
 - **Engineer**: Ship P0 accessibility fixes (ARIA roles, focus indicators, status icons) from `feedback/design_qa_report.md`; partner with data/reliability to expose Supabase analytics metrics and confirm alert logging; rerun Vitest/Playwright/Lighthouse after the fixes and attach artifacts.
-- **Designer**: Schedule a 2h pairing session with engineering on modal accessibility, prep interim status icon assets, and escalate the Figma access blocker; re-validate French label adjustments with the localization agent once engineering lands copy updates.
+- **Designer**: Schedule a 2h pairing session with engineering on modal accessibility, prep interim status icon assets, and escalate the Figma access blocker; ensure all design artifacts reflect the English-only scope.
 - **QA**: Execute the refreshed direction (Playwright coverage + migration validation + Supabase logging verification + AI regression evidence bundle) and keep artifacts logged in `feedback/qa.md`.
 - **Data**: Continue Markdown + SQL weekly insight format (approved); collaborate with reliability on Supabase monitoring instrumentation; hold Prisma seed run until demo shop list arrives by 2025-10-08 and loop integrations/compliance on GA MCP status.
 - **Reliability**: Respond to the Supabase monitoring request, wire `scripts/ci/synthetic-check.mjs` into a scheduled workflow, and publish the Supabase/Zoho/Shopify/Chatwoot secret rotation plan by 2025-10-10; log the first synthetic check metrics and share rotation cadence with deployment/compliance. Investigate the new Supabase critical alert with data/engineering and report mitigation plan by 2025-10-09. Coordinate with Shopify + Chatwoot owners for staging credentials so rotation dry-runs can start by 2025-10-15 (requests sent 2025-10-08, awaiting confirmation).
 - **AI**: Draft the integration plan with engineering for routing AI recommendations through modal approvals; defer external LLM calls until post M1/M2 sign-off; keep `npm run ai:regression` running daily and log outputs in Memory.
-- **Marketing**: Secure product approval on the launch comms packet, release notes template, and brand tone deck; coordinate tooltip placement with designer/localization; align support training schedule for the new materials.
-- **Product**: Review marketing deliverables, confirm translation service engagement for French adjustments, escalate Figma access for design, supply the demo shop list to data, loop compliance/deployment into the dry-run release plan, and shape the operator dry-run plan once QA clears modals.
-- **Support**: Begin drafting the CX escalation runbook skeleton using the new modal decision paths; prepare the template review cadence ahead of go-live with localization support on translations.
+- **Marketing**: Secure product approval on the launch comms packet, release notes template, and brand tone deck; coordinate tooltip placement with design; align support training schedule for the new materials and confirm messaging stays English-only.
+- **Product**: Review marketing deliverables, escalate Figma access for design, supply the demo shop list to data, loop compliance/deployment into the dry-run release plan, and shape the operator dry-run plan once QA clears modals; remove localization tasks from the backlog.
+- **Support**: Begin drafting the CX escalation runbook skeleton using the new modal decision paths; prepare the template review cadence ahead of go-live and update materials to reflect the English-only strategy.
 - **Compliance** (Casey Lin): Build the end-to-end data inventory, draft the incident response runbook with reliability/support, and review GA MCP/Supabase/Anthropic agreements for privacy gaps; log findings in `feedback/compliance.md`.
-- **Localization** (Marie Dubois): Deliver EN/FR coverage for new modal/toast strings, implement missing-key checks in CI, and partner with design/marketing/support to validate glossary alignment; track status in `feedback/localization.md`.
 - **Deployment** (Devon Ortiz): Execute the revised sprint focus in `docs/directions/deployment.md` (staging workflow + Postgres environment provision + env matrix + go-live checklist) and log evidence in `feedback/deployment.md`.
 - **Integrations** (Priya Singh): Secure GA MCP credentials, finalize the social sentiment vendor recommendation with marketing/reliability, and publish the integration readiness dashboard ahead of the 2025-10-08 review; record updates in `feedback/integrations.md`.
 
@@ -157,10 +170,9 @@ expires: 2025-10-08
    - Focus trap TypeScript code
    - Responsive behavior specifications
 
-3. **Localized Copy Deck - Modals** (docs/design/copy_deck_modals.md)
-   - 100+ modal/toast strings (EN/FR)
+3. **Copy Deck - Modals (English-only)** (docs/design/copy_deck_modals.md)
+   - 100+ modal/toast strings (EN)
    - Character count analysis + layout warnings
-   - 5 critical French label fixes identified
    - Responsive button text strategy
 
 ### Sprint Status: 75% Complete (3/4 goals)
@@ -172,13 +184,12 @@ expires: 2025-10-08
 ### Key Findings
 - **Token integration:** Excellent (no hardcoded values)
 - **P0 accessibility gaps:** ARIA attributes, focus indicators, status icons
-- **French label overflow:** 5 critical cases need shortening
+- **Button label overflow:** Identified several long-form phrases that need shortening for mobile
 - **Modal implementation:** Estimated 3-5 day effort (recommend phased approach)
 
 ### Designer Recommendations
 1. Prioritize P0 modals (CX Escalation + toasts) for M2
-2. Engage translation service by 2025-10-07 for French label review
-3. Budget for external a11y audit after M2 or provide NVDA training
+2. Budget for external a11y audit after M2 or provide NVDA training
 
 ## Next Actions
 - Engineer: Implement P0 accessibility fixes (ARIA, focus indicators, status icons)
@@ -187,8 +198,7 @@ expires: 2025-10-08
 - Designer: Create Figma library (when workspace access granted)
 - QA: Define test cases based on accessibility criteria + modal states
 - QA: Validate design token implementation against tokens.css
-- Product: Review copy deck for tone and approve French label abbreviations
-- Product: Engage translation service for French string review (P1)
+- Product: Review copy deck for tone and confirm English-only messaging
 
 ## Engineering Status — 2025-10-08
 
@@ -212,3 +222,8 @@ expires: 2025-10-08
 - Finalized launch comms copy per product approvals (banner/email/blog, EN & FR) and documented decisions in `docs/marketing/product_approval_packet_2025-10-07.md`.
 - Updated tooltip handoff + localization request; awaiting design annotations (due Oct 8 @ 12:00 ET) and FR review (due Oct 9 @ 18:00 ET).
 - Published October campaign calendar with KPI targets; holding distribution scheduling until product locks launch date tomorrow.
+
+## Marketing Update — 2025-10-07 (EOD)
+- Launch comms now match product-approved copy (banner/email/blog/tooltip) with FR variants captured for localization confirmation.
+- Tooltip placement pending designer annotations (due Oct 8 @ 12:00 ET); localization reviewing "Centre OCC" abbreviation by Oct 9.
+- Campaign calendar drafted with KPI targets and will be locked once product confirms launch date tomorrow.
