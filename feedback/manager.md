@@ -2,10 +2,56 @@
 epoch: 2025.10.E1
 doc: feedback/manager.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-07
 doc_hash: TBD
-expires: 2025-10-06
+expires: 2025-10-08
 ---
+# Manager Daily Status — 2025-10-07
+
+## Direction Update — 2025-10-07
+- Refresh sprint focus in `docs/directions/ai.md`, `docs/directions/data.md`, `docs/directions/designer.md`, `docs/directions/engineer.md`, `docs/directions/marketing.md`, `docs/directions/product.md`, `docs/directions/qa.md`, `docs/directions/reliability.md`, and `docs/directions/support.md` to align with the M1/M2 check-in.
+- Updated AI and QA sprint focus (2025-10-08) to reflect regression evidence sharing and compliance/deployment dependencies ahead of the M1/M2 review.
+- Added four supporting agents (Compliance, Localization, Deployment, Integrations) with direction docs under `docs/directions/compliance.md`, `docs/directions/localization.md`, `docs/directions/deployment.md`, and `docs/directions/integrations.md`; each must acknowledge in their feedback log once staffed.
+- All agents must review the updated direction doc for their role, acknowledge in their feedback log today, and raise blockers ahead of the 2025-10-08 sync.
+
+## Summary
+- Playwright gate is green again (21/21 unit tests, 7/7 Playwright) after the engineer landed the accessible heading and modal flows; reliability confirms CI stability.
+- CX Escalations and Sales Pulse modals plus Supabase Memory analytics logging are live, unlocking QA coverage and operator dry-run prep.
+- Data delivered the first weekly insight packet and Supabase monitoring brief; reliability staged synthetic checks and artifact retention.
+- Data insight highlights for operator readiness: Sales activation dipped 30% vs. baseline (critical anomaly) per `docs/insights/weekly_2025-10-07.md:31`, Chatwoot SLA breach rate holding at 50% warning per `docs/insights/weekly_2025-10-07.md:75`, and GA traffic anomaly alerts flag `/blogs/news/october-launch` at -27% WoW per `docs/insights/weekly_2025-10-07.md:100` — prep follow-up playbooks before live swap.
+- Demo shop seeds now cover Evergreen Outfitters, Belle Maison Décor, and Peak Performance Gear via `npm run seed` (multi-domain support in `prisma/seeds/dashboard-facts.seed.ts:1`), and GA MCP parity harness (`scripts/analytics/ga-mcp-schema-check.ts:1`) plus baseline artifact `artifacts/ga/mock_schema.json:1` are ready for credential hand-off to integrations/compliance.
+- Coordination brief issued to integrations & compliance (`feedback/data_to_integrations_coordination.md:1`) capturing the T0 go-live window (seed run, parity check, Supabase alert verification) so credential delivery can move directly into checklist execution.
+- AI prompt regression and logging services are ready; awaiting go/no-go on live generation pending M1/M2 alignment.
+
+## Blockers / Risks
+- Supabase decision sync monitor now wired to real logs; first run showed **25% error rate (critical)** — reliability + data need root cause and mitigation.
+- GA MCP credentials still pending, keeping analytics in mock mode.
+- Designer remains blocked on Figma workspace access, delaying the shared component library.
+- French translation review not yet engaged, leaving five overflow risks unresolved.
+
+## Actions & Assignments
+- **Engineer**: Ship P0 accessibility fixes (ARIA roles, focus indicators, status icons) from `feedback/design_qa_report.md`; partner with data/reliability to expose Supabase analytics metrics and confirm alert logging; rerun Vitest/Playwright/Lighthouse after the fixes and attach artifacts.
+- **Designer**: Schedule a 2h pairing session with engineering on modal accessibility, prep interim status icon assets, and escalate the Figma access blocker; re-validate French label adjustments with the localization agent once engineering lands copy updates.
+- **QA**: Execute the refreshed direction (Playwright coverage + migration validation + Supabase logging verification + AI regression evidence bundle) and keep artifacts logged in `feedback/qa.md`.
+- **Data**: Continue Markdown + SQL weekly insight format (approved); collaborate with reliability on Supabase monitoring instrumentation; hold Prisma seed run until demo shop list arrives by 2025-10-08 and loop integrations/compliance on GA MCP status.
+- **Reliability**: Respond to the Supabase monitoring request, wire `scripts/ci/synthetic-check.mjs` into a scheduled workflow, and publish the Supabase/Zoho/Shopify/Chatwoot secret rotation plan by 2025-10-10; log the first synthetic check metrics and share rotation cadence with deployment/compliance. Investigate the new Supabase critical alert with data/engineering and report mitigation plan by 2025-10-09. Coordinate with Shopify + Chatwoot owners for staging credentials so rotation dry-runs can start by 2025-10-15 (requests sent 2025-10-08, awaiting confirmation).
+- **AI**: Draft the integration plan with engineering for routing AI recommendations through modal approvals; defer external LLM calls until post M1/M2 sign-off; keep `npm run ai:regression` running daily and log outputs in Memory.
+- **Marketing**: Secure product approval on the launch comms packet, release notes template, and brand tone deck; coordinate tooltip placement with designer/localization; align support training schedule for the new materials.
+- **Product**: Review marketing deliverables, confirm translation service engagement for French adjustments, escalate Figma access for design, supply the demo shop list to data, loop compliance/deployment into the dry-run release plan, and shape the operator dry-run plan once QA clears modals.
+- **Support**: Begin drafting the CX escalation runbook skeleton using the new modal decision paths; prepare the template review cadence ahead of go-live with localization support on translations.
+- **Compliance** (Casey Lin): Build the end-to-end data inventory, draft the incident response runbook with reliability/support, and review GA MCP/Supabase/Anthropic agreements for privacy gaps; log findings in `feedback/compliance.md`.
+- **Localization** (Marie Dubois): Deliver EN/FR coverage for new modal/toast strings, implement missing-key checks in CI, and partner with design/marketing/support to validate glossary alignment; track status in `feedback/localization.md`.
+- **Deployment** (Devon Ortiz): Execute the revised sprint focus in `docs/directions/deployment.md` (staging workflow + Postgres environment provision + env matrix + go-live checklist) and log evidence in `feedback/deployment.md`.
+- **Integrations** (Priya Singh): Secure GA MCP credentials, finalize the social sentiment vendor recommendation with marketing/reliability, and publish the integration readiness dashboard ahead of the 2025-10-08 review; record updates in `feedback/integrations.md`.
+
+## Evidence Links
+- feedback/engineer.md — 2025-10-07 modal, analytics, and test status.
+- feedback/reliability.md — 2025-10-07 CI stability, synthetic check readiness.
+- feedback/data.md — 2025-10-06 weekly insight packet, monitoring coordination.
+- feedback/design_qa_report.md — 2025-10-06 accessibility gaps and priorities.
+- feedback/ai.md — 2025-10-06 logging + regression harness status.
+- feedback/marketing.md, feedback/support.md, feedback/product.md — outstanding deliverables awaiting direction.
+
 # Manager Daily Status — 2025-10-05
 
 ## Summary
@@ -143,3 +189,26 @@ expires: 2025-10-06
 - QA: Validate design token implementation against tokens.css
 - Product: Review copy deck for tone and approve French label abbreviations
 - Product: Engage translation service for French string review (P1)
+
+## Engineering Status — 2025-10-08
+
+### Completed
+- TileCard now exposes focusable `<article>` regions with `aria-labelledby`/`aria-describedby`, polite timestamp announcements, and status icons (app/components/tiles/TileCard.tsx#L62).
+- Added dashboard-level manual refresh control calling `/app/actions/dashboard.refresh`, with aria-live status messaging and loader revalidation (app/routes/app._index.tsx#L44, app/routes/actions/dashboard.refresh.ts#L24).
+- Persisted refresh triggers to Prisma facts and mirrored to Supabase with structured latency/error logs covering view/refresh/get operations (app/routes/actions/dashboard.refresh.ts#L24, app/services/analytics.server.ts#L22).
+- Authored analytics parity script comparing Prisma vs Supabase counts and exposed npm script (`npm run ops:check-analytics-parity`) for Ops hand-off (scripts/ops/check-dashboard-analytics-parity.ts#L1, package.json#L18).
+
+### Evidence
+- Vitest: `npm run test:unit` (33/33 green)
+- Playwright: `npm run test:e2e` (7/7 green)
+- Parity probe: `npm run ops:check-analytics-parity` → highlights Supabase unconfigured locally (requires credentials)
+- Lighthouse: still gated by missing `LIGHTHOUSE_TARGET`; script exits early pending target definition
+
+### Blockers / Requests
+- Need `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` for parity check to validate counts (<1% delta) before sign-off.
+- Require confirmed Lighthouse target URL to regenerate accessibility/perf artifact for the evidence bundle.
+
+## Marketing Update — 2025-10-07
+- Finalized launch comms copy per product approvals (banner/email/blog, EN & FR) and documented decisions in `docs/marketing/product_approval_packet_2025-10-07.md`.
+- Updated tooltip handoff + localization request; awaiting design annotations (due Oct 8 @ 12:00 ET) and FR review (due Oct 9 @ 18:00 ET).
+- Published October campaign calendar with KPI targets; holding distribution scheduling until product locks launch date tomorrow.
