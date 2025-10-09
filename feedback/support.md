@@ -14,10 +14,16 @@ expires: 2025-10-09
 ## Progress
 - Prepping updated CX Escalations runbook screenshots once staging seed is ready; confirmed template heuristics match current English-only scope.
 - Drafted operator enablement checklist updates so training reflects the trimmed template set.
+- Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
 
 ## Blockers / Dependencies
 - Awaiting product confirmation on 2025-10-16 dry run slot plus staging access to capture validation evidence.
 - Need seeded/staging conversations to regression-test Chatwoot heuristics beyond unit coverage.
+
+## 2025-10-08 — Product Coordination
+- Product request: please confirm staging access package delivery (operator shop creds + Chatwoot sandbox token handoff) and green-light the 2025-10-16 @ 13:00 ET dry run invite send no later than 2025-10-09 EOD so we can capture the Memory pre-read summary.
+- Once confirmed, share the final attendee list + agenda tweaks back so product can snapshot in Memory (scope `ops`) alongside the backlog links.
+- Pending reply from enablement/product on the above Slack ping.
 
 ## Next Steps
 - Capture modal screenshots and refresh runbook validation notes after staging verification.
