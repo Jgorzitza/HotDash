@@ -30,7 +30,14 @@ expires: 2025-10-10
 - 19:50 ET: Logged integrations prep work (GA MCP sync placeholder, reliability agenda, Hootsuite evidence scaffolding) and cross-linked blockers so manager/infra can act quickly once the 18:30 UTC sync wraps (`docs/integrations/ga_mcp_onboarding.md`, `docs/integrations/reliability_monitoring_agenda.md`, `artifacts/vendors/hootsuite/2025-10-09/`).
 
 ## Deployment Push Status — 2025-10-09
-- 20:00 ET: Final compliance + manager edits committed locally; pushing `main` now so remote evidence stays current and matches this log entry.
+- 10:15 ET: Attempted to push deployment updates (staging playbook + feedback log). Remote rejected (`non-fast-forward`). Holding local branch without pulling—awaiting manager guidance on reconciling with upstream and keeping local evidence intact.
+
+## Deployment Status — 2025-10-10
+- Re-read refreshed deployment direction (2025-10-08 sprint focus) and executing production blockers per today’s directive.
+- Authored QA rollback drill checklist in `docs/runbooks/prisma_staging_postgres.md` so QA can exercise migrations once staging credentials land.
+- Created `docs/deployment/environment_check_template.md` and updated `docs/deployment/production_go_live_checklist.md` to require env-check evidence + rollback drill before approvals.
+- Outstanding: reliability still owes GitHub `production` secrets (Shopify/Supabase/Chatwoot/Anthropic/GA), staging Postgres connection strings, and Shopify service credentials; repo admins still need to enforce environment reviewers.
+- Next once secrets arrive: run `scripts/deploy/check-production-env.sh`, attach log using new template, coordinate QA rollback drill, and prep production dry-run dispatch.
 
 ## 2025-10-10 Production Blocker Sweep
 - Supabase fix: reliability/engineering/data still waiting on monitor script + log export; keeping OCC-212 elevated and chasing owners for delivery times today.
