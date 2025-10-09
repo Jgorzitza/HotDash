@@ -27,6 +27,9 @@ expires: 2025-10-10
 - Enablement reported English-only audit completion, published Sales Pulse + CX Escalations modal job aids, and pinged product/support (14:35–14:36 ET) to lock the 2025-10-16 dry run agenda; design looped in for annotated visuals. Tracking responses due 2025-10-09 EOD.
 - 18:20 ET: preparing to push committed updates; still waiting on product/enablement staging access reply and reliability Supabase credential ETA before closing blockers.
 
+## Deployment Push Status — 2025-10-09
+- 18:35 ET: Rebasing completed cleanly; pushed the cross-role kickoff commits (AI samples, compliance follow-ups, deployment evidence, etc.) to `main`. Remote now includes updated feedback logs and supporting artifacts.
+
 ## 2025-10-08 — Sprint Focus Activation
 - Cross-checked each role’s sprint focus against current feedback entries and logged coordination pings to keep deliverables aligned per `docs/directions/manager.md:24`.
 - Opened thread with reliability to track Supabase/Zoho secret rotation schedule, supporting `docs/directions/manager.md:25`; awaiting their confirmed calendar.
@@ -93,6 +96,7 @@ expires: 2025-10-10
 - Stage the Shopify CLI token generation steps so we can populate the secret immediately after credentials arrive, then schedule a dry-run dispatch.
 - Draft env-check output template + QA rollback handoff notes so we can publish the results immediately when secrets land.
 - Escalate if reliability/admin ETAs slip beyond 2025-10-09; otherwise continue async logging in `feedback/deployment.md`.
+- Await manager guidance on reconciling the non-fast-forward push before attempting to publish deployment updates again.
 
 # Manager Daily Status — 2025-10-08
 
