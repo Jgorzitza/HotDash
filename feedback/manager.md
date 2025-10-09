@@ -33,6 +33,7 @@ expires: 2025-10-10
 - 10:15 ET: Attempted to push deployment updates (staging playbook + feedback log). Remote rejected (`non-fast-forward`). Holding local branch without pulling—awaiting manager guidance on reconciling with upstream and keeping local evidence intact.
 
 ## Deployment Status — 2025-10-10
+- Blocked: repo still carries cross-role edits (`git status` showing staged/unstaged changes in feedback logs), preventing deployment from branching off `origin/main` per git protocol. Requested responsible agents to stash/land their work so deployment can proceed.
 - Re-read refreshed deployment direction (2025-10-08 sprint focus) and executing production blockers per today’s directive.
 - Authored QA rollback drill checklist in `docs/runbooks/prisma_staging_postgres.md` so QA can exercise migrations once staging credentials land.
 - Created `docs/deployment/environment_check_template.md` and updated `docs/deployment/production_go_live_checklist.md` to require env-check evidence + rollback drill before approvals.
@@ -44,6 +45,8 @@ expires: 2025-10-10
 - Staging Postgres + secrets: deployment + reliability coordinating on GitHub environment secrets and Postgres credentials; expect follow-up this afternoon to unblock QA/deployment tasks.
 - GA MCP readiness: integrations pinged infra/compliance for OCC-INF-221 credential timeline; product/data remain blocked pending response.
 - Operator dry run: enablement/support awaiting staging access confirmation and annotated visuals before invites go out; marketing standing by with training script.
+- Integrations prepped monitoring agenda action log and Hootsuite evidence scaffolding; awaiting HS-44721 doc (ETA 12:00 UTC tomorrow) and OCC-INF-221 (infra on-call promised update by 22:00 UTC).
+- Compliance ready to ingest vendor packet + GA MCP evidence within one hour of receipt; integrations coordinating handoffs.
 
 ## 2025-10-08 — Sprint Focus Activation
 - Cross-checked each role’s sprint focus against current feedback entries and logged coordination pings to keep deliverables aligned per `docs/directions/manager.md:24`.
