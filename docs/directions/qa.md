@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/qa.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,9 +21,10 @@ expires: 2025-10-18
 - Track regression matrix in `feedback/qa.md`; call out API rate-limit or credential blockers daily.
 - Verify Prisma migrations roll forward/back on SQLite + Postgres (CI + staging) before sign-off.
 - Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
+- Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-06
-- Partner with engineer to close the Playwright heading failure; update `tests/playwright/dashboard.spec.ts` and record artifact.
-- Expand E2E coverage to include tile drill-ins and approval actions (start with CX Escalations + Inventory) using mock mode data.
-- Validate Prisma migrations forward/back on SQLite and Postgres; document results in `feedback/qa.md`.
-- Draft soak test plan (SSE + approval endurance) and prepare scripts for Week 3 execution.
+## Current Sprint Focus — 2025-10-08
+- Expand Playwright coverage for CX Escalations and Sales Pulse modal flows (open, approve, escalate) and include fixtures capturing AI suggestion states; attach run artifacts in `feedback/qa.md`.
+- Validate Prisma migrations forward/back on SQLite and the new Postgres staging environment once deployment provisions it; log procedures/results in `feedback/qa.md` and share evidence with deployment and compliance.
+- Finalize the SSE and approval endurance scripts in `scripts/qa/soak-test-plan.md`, ensuring assertions cover English-only copy and documenting readiness for Week 3 execution.
+- Partner with AI and reliability to verify Supabase decision logging (error/latency metrics, parity script) and record verification artefacts alongside the Playwright bundle.

@@ -1,0 +1,121 @@
+name: Deploy Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Context for this staging deployment'
+        required: false
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'packages/**'
+      - 'scripts/**'
+      - 'shopify.*'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-staging.yml'
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run Playwright tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_number }}
+          path: coverage/playwright
+          retention-days: 14
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: verify
+    environment:
+      name: staging
+      url: ${{ steps.envmeta.outputs.app_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application bundle
+        run: npm run build
+
+      - name: Capture environment metadata
+        id: envmeta
+        run: echo "app_url=$STAGING_APP_URL" >> "$GITHUB_OUTPUT"
+        env:
+          STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
+
+      - name: Deploy to Shopify staging
+        run: bash scripts/deploy/staging-deploy.sh
+        env:
+          SHOPIFY_CLI_AUTH_TOKEN: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN_STAGING }}
+          SHOPIFY_API_KEY: ${{ secrets.SHOPIFY_API_KEY_STAGING }}
+          SHOPIFY_API_SECRET: ${{ secrets.SHOPIFY_API_SECRET_STAGING }}
+          STAGING_SHOP_DOMAIN: ${{ secrets.STAGING_SHOP_DOMAIN }}
+          STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
+          STAGING_SMOKE_TEST_URL: ${{ secrets.STAGING_SMOKE_TEST_URL }}
+
+      - name: Run Lighthouse audit (staging)
+        env:
+          LIGHTHOUSE_TARGET: ${{ secrets.STAGING_SMOKE_TEST_URL }}
+        run: npm run test:lighthouse
+
+      - name: Upload deployment artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-deploy-${{ github.run_number }}
+          path: |
+            artifacts/deploy
+            coverage/lighthouse
+          retention-days: 14

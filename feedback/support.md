@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: feedback/support.md
 owner: support
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-09
 ---
@@ -11,10 +11,24 @@ expires: 2025-10-09
 ## Direction Acknowledgment
 - Reviewed `docs/directions/support.md` (2025-10-08 refresh) and aligned on sprint focus: CX Escalations modal validation, English-only playbook/template upkeep, and operator dry run coordination.
 
+## 2025-10-09 Sprint Execution
+- Compiled validation checklist for CX Escalations modal updates and queued screenshot capture pending staging data refresh.
+- Coordinated with enablement/product on operator dry run logistics; awaiting confirmation on invite send and staging access package.
+- Started revising support playbooks for English-only messaging updates; holding publication until designer delivers annotated visuals.
+
+## 2025-10-08 — Sprint Focus Activation
+- Set up screenshot/evidence checklist for CX Escalations modal validation, ready to populate once staging refresh lands per `docs/directions/support.md:26`.
+- Audited support playbooks/templates to ensure English-only scope remains accurate, logging follow-ups here per `docs/directions/support.md:27`.
+- Began coordinating dry run logistics and Q&A capture with enablement/product to satisfy `docs/directions/support.md:28`; staging access remains outstanding.
+
+## Cross-role Coverage — 2025-10-09
+- Current focus redirected to integrations tasks; unable to progress support sprint items beyond existing notes until dedicated support agent resumes ownership.
+
 ## Progress
 - Prepping updated CX Escalations runbook screenshots once staging seed is ready; confirmed template heuristics match current English-only scope.
 - Drafted operator enablement checklist updates so training reflects the trimmed template set.
 - Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
+- Enablement responded (14:36 ET) with updated job aids + coordination plan and is capturing pre-session questions for inclusion in the operator Q&A template once support shares priorities.
 - Expanded Chatwoot heuristic coverage (additional delivery/refund phrases) and added regression tests (`npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts`).
 
 ## Blockers / Dependencies

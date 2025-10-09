@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/support.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,9 +21,9 @@ expires: 2025-10-18
 - Gather operator feedback; funnel critical gaps into product backlog with evidence (screenshots, timestamps).
 - Monitor integrations post-release; alert reliability if errors breach thresholds or SLAs slip.
 - Keep feedback/support.md updated with incidents, resolution time, and follow-up tasks.
+- Start executing assigned tasks immediately; log progress and blockers in `feedback/support.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-06
-- Draft CX escalation runbook skeleton (docs/runbooks/cx_escalations.md) mapping dashboard actions to SOPs.
-- Prepare operator training agenda and Q&A capture template for the first dashboard dry run.
-- Review AI-generated reply roadmap with the AI agent; agree on approval criteria before templates go live.
-- Coordinate with marketing on localization glossary to keep support coaching aligned with copy deck tone.
+## Current Sprint Focus — 2025-10-08
+- Validate the live CX Escalations modal against `docs/runbooks/cx_escalations.md`, update the runbook with screenshots, and log any deviations in `feedback/support.md`.
+- Refresh support playbooks and templates to reflect the English-only scope, documenting any messaging changes and training notes for operators.
+- Coordinate with enablement and product to finalize the 2025-10-16 operator dry run logistics, capturing open questions in the Q&A template and ensuring follow-ups are assigned.

@@ -16,7 +16,10 @@ expires: 2025-10-10
 - Cross-referenced each role’s updated direction log to ensure sprint focus work started; flagged outstanding blockers (monitoring assets, credentials) for follow-up.
 - Coordinated escalation paths with reliability/data around Supabase monitoring/log export to keep mitigation thread moving; awaiting their updates before clearing OCC-212.
 - Drafted notes for secrets posture check-in covering Supabase/Zoho rotation status so once reliability delivers plan it can be reviewed immediately.
+- Logged daily sprint execution snippets across all role feedback files so progress and blockers are captured consistently; primary blockers remain Supabase monitor assets/log export, staging credential delivery, and launch window confirmation.
 - Catalogued tangible outputs from each role’s kickoff (AI samples, compliance follow-up log, data insight scaffold, deployment pipeline review, designer annotations, engineer triage checklist, integrations readiness dashboard, QA Playwright plan, reliability synthetic check log) so manager sync can reference work underway without reopening each repo path.
+- Enablement reported English-only audit completion, published Sales Pulse + CX Escalations modal job aids, and pinged product/support (14:35–14:36 ET) to lock the 2025-10-16 dry run agenda; design looped in for annotated visuals. Tracking responses due 2025-10-09 EOD.
+- 18:20 ET: preparing to push committed updates; still waiting on product/enablement staging access reply and reliability Supabase credential ETA before closing blockers.
 
 ## 2025-10-08 — Sprint Focus Activation
 - Cross-checked each role’s sprint focus against current feedback entries and logged coordination pings to keep deliverables aligned per `docs/directions/manager.md:24`.
@@ -51,7 +54,7 @@ expires: 2025-10-10
 - Launch comms packet updated with approval tracker and character-count guardrails for banner/email/blog so product can sign off on English-only copy without rework (`docs/marketing/launch_comms_packet.md`).
 - New support training script drafted for the 2025-10-16 dry run; aligns walkthrough with FAQ and flags pending staging credentials (`docs/marketing/support_training_script_2025-10-16.md`).
 - Launch timeline playbook published with relative T- milestones, KPIs, and risk matrix pending product launch date (`docs/marketing/launch_timeline_playbook.md`).
-- Awaiting product launch window confirmation (blocks calendar locking), design tooltip annotations (due Oct 8 @ 12:00 ET), and localization verdict on "Centre OCC" abbreviation (due Oct 9 @ 18:00 ET).
+- Awaiting product launch window confirmation (blocks calendar locking) and design tooltip annotations (due Oct 8 @ 12:00 ET). Localization ask paused per manager direction unless product reopens multi-language scope.
 - Ask: Can marketing drive the support training invite cadence directly, or should enablement own scheduling once slots are confirmed?
 
 ## Deployment Pipeline Status — 2025-10-09
@@ -65,9 +68,9 @@ expires: 2025-10-10
 
 ## Compliance Update — 2025-10-09
 - Direction refresh acknowledged; sprint focus remains data inventory upkeep, Supabase incident readiness, and vendor DPA audit (see `feedback/compliance.md` 2025-10-09 entry).
-- Supabase incident runbook published (`docs/runbooks/incident_response_supabase.md`); drafting tabletop template (`docs/compliance/evidence/tabletop_supabase_scenario.md`) once reliability/support confirm scope.
+- Supabase incident runbook published (`docs/runbooks/incident_response_supabase.md`) with companion tabletop template drafted at `docs/compliance/evidence/tabletop_supabase_scenario.md`; awaiting reliability/support confirmation on scenario scope and drill date.
 - Retention automation blocked on reliability deploying Supabase `pg_cron` jobs and sharing first-run logs; follow-up booked for 2025-10-10 14:00 ET, evidence to land under `docs/compliance/evidence/retention_runs/`.
-- Vendor DPAs/residency attestations still pending for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`); second reminder wave queued for 2025-10-10 AM.
+- Vendor DPAs/residency attestations still pending for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`); 2025-10-09 reminder log captured in `docs/compliance/evidence/vendor_followups_2025-10-09.md`, second reminder wave queued for 2025-10-10 AM.
 - Requests: 1) Manager to escalate vendor legal contacts for signed DPAs/residency statements, 2) Reliability to prioritize cron rollout + deliver logs, 3) Support to confirm tabletop participation so we can lock drill date.
 
 ### Outstanding Dependencies

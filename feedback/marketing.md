@@ -35,7 +35,7 @@ expires: 2025-10-10
 ## Blockers / Risks
 - **Launch window confirmation (Product):** Still waiting on production date to pin campaign calendar and move timeline playbook from relative T- dates to actuals.
 - **Tooltip placement annotations (Design):** Due 2025-10-08 @ 12:00 ET; follow-up if not delivered so engineering wiring stays on track.
-- **Localization verdict (Localization):** Needs decision on "Centre OCC" abbreviation by 2025-10-09 @ 18:00 ET to close translation review brief.
+- **Localization scope:** Paused per manager direction; resume only if product reopens multi-language launch requirement.
 
 ## Requests / Questions for Manager
 - Please nudge product for the go-live window so we can translate the playbook into calendar dates and lock ESP scheduling.
