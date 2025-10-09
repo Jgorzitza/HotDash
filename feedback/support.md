@@ -15,6 +15,7 @@ expires: 2025-10-09
 - Prepping updated CX Escalations runbook screenshots once staging seed is ready; confirmed template heuristics match current English-only scope.
 - Drafted operator enablement checklist updates so training reflects the trimmed template set.
 - Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
+- Expanded Chatwoot heuristic coverage (additional delivery/refund phrases) and added regression tests (`npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts`).
 
 ## Blockers / Dependencies
 - Awaiting product confirmation on 2025-10-16 dry run slot plus staging access to capture validation evidence.
@@ -28,6 +29,7 @@ expires: 2025-10-09
 ## Next Steps
 - Capture modal screenshots and refresh runbook validation notes after staging verification.
 - Coordinate with enablement/product on dry run logistics and calendar invites once access is unblocked.
+- Execute new runbook checklist items once Supabase credentials and staging seed land.
 
 # Support Daily Status — 2025-10-08
 
