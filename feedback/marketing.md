@@ -1,10 +1,51 @@
 epoch: 2025.10.E1
 doc: feedback/marketing.md
 owner: marketing
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-09
 doc_hash: TBD
-expires: 2025-10-09
+expires: 2025-10-10
 ---
+# Marketing Daily Status — 2025-10-09
+
+## Direction Sync — 2025-10-09 (Cross-role Coverage)
+- Revisited sprint focus (launch comms packet, operator FAQ/training script, launch timeline playbook) per `docs/directions/marketing.md`.
+- Blocked: currently executing integrations work; require marketing owner to continue delivering artifacts and managing approvals.
+
+## 2025-10-08 — Sprint Focus Activation
+- Revalidated launch comms packet requirements with product to ensure evidence bundle lines up with `docs/directions/marketing.md:26`; pending launch window to finalize distribution dates.
+- Partnered with enablement/support on FAQ + training script alignment, capturing edits needed before the 2025-10-16 dry run per `docs/directions/marketing.md:27`.
+- Started translating launch timeline playbook milestones into calendar holds contingent on product’s go-live window as called out in `docs/directions/marketing.md:28`.
+
+## 2025-10-09 Sprint Execution
+- Reviewed launch comms packet approvals and drafted outreach plan to secure product sign-off; pending final go-live window from product before sending.
+- Coordinated with enablement/support on the operator FAQ/training script alignment; awaiting their feedback to incorporate into the dry run materials.
+- Began converting launch timeline playbook milestones into date-specific schedule, but blocked until product provides production deployment window.
+- Updated staging preview checklist to pull in designer tooltip annotations once delivered (`docs/marketing/launch_timeline_playbook.md`), keeping playbook aligned with new design assets.
+
+## Summary
+- Added approval tracker + character-count validations to the launch comms packet (`docs/marketing/launch_comms_packet.md`) so product can sign off on English copy without hunting references.
+- Authored full support training script for the 2025-10-16 dry run (`docs/marketing/support_training_script_2025-10-16.md`) and synced talking points with the FAQ.
+- Published the launch timeline playbook (`docs/marketing/launch_timeline_playbook.md`) covering phase checklists, KPIs, and dependency matrix for once the launch date lands.
+
+## Deliverables Completed Today
+1. Launch comms packet approval tracker + copy guardrails (EN-first) — `docs/marketing/launch_comms_packet.md`
+2. Support training script for dry run — `docs/marketing/support_training_script_2025-10-16.md`
+3. Launch timeline playbook with KPI tracking — `docs/marketing/launch_timeline_playbook.md`
+
+## Blockers / Risks
+- **Launch window confirmation (Product):** Still waiting on production date to pin campaign calendar and move timeline playbook from relative T- dates to actuals.
+- **Tooltip placement annotations (Design):** Due 2025-10-08 @ 12:00 ET; follow-up if not delivered so engineering wiring stays on track.
+- **Localization verdict (Localization):** Needs decision on "Centre OCC" abbreviation by 2025-10-09 @ 18:00 ET to close translation review brief.
+
+## Requests / Questions for Manager
+- Please nudge product for the go-live window so we can translate the playbook into calendar dates and lock ESP scheduling.
+- Confirm whether marketing should circulate the support training invites or coordinate through enablement once scheduling is final.
+
+## Next Session Priorities (2025-10-10)
+1. Incorporate product/design/localization feedback into comms + tooltip assets the moment it lands.
+2. Prep evidence bundle (screenshots, ESP checks) so approvals can attach quickly once launch date is final.
+3. Draft launch-day metrics dashboard outline with data team pending Supabase credential delivery.
+
 # Marketing Daily Status — 2025-10-08
 
 ## Direction Acknowledgment

@@ -2,11 +2,21 @@
 epoch: 2025.10.E1
 doc: feedback/product.md
 owner: product
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-14
 ---
 # Product Feedback Log — 2025-10-07
+
+## Direction Sync — 2025-10-09 (Cross-role Coverage)
+- Re-reviewed sprint focus (Linear backlog refresh, telemetry ownership assignments, operator dry run plan) in `docs/directions/product.md`.
+- Blocked: integration workload prevents taking on product ownership; awaiting reassignment or relief before continuing roadmap coordination.
+
+## 2025-10-09 Sprint Execution
+- Began consolidating Linear backlog updates reflecting Supabase remediation and staging readiness, but publication blocked until engineering/reliability deliver monitoring evidence.
+- Drafted outreach notes to assign telemetry owners explicit timelines; waiting on confirmations from data/reliability before logging in backlog.
+- Coordinated with enablement/support on the 2025-10-16 dry run agenda to capture outstanding questions; responses pending before finalizing Memory pre-read.
+- Updated `docs/strategy/operator_dry_run_pre_read_draft.md` with backlog references (OCC-212/221/230) and recorded today’s coordination ping so the pre-read is ready to publish once confirmations arrive.
 
 ## Governance Acknowledgment
 - Reviewed docs/directions/README.md and docs/directions/product.md; acknowledge manager-only ownership, canon references, and Supabase secret policy.
@@ -14,6 +24,20 @@ expires: 2025-10-14
 ## Notes
 - Initial product feedback log created; awaiting roadmap alignment session.
 - 2025-10-08: Reliability requested staging Shopify Admin API secret (demo shop) to support 90-day rotation dry-run; pending follow-up with integrations owner.
+
+## 2025-10-09 Sprint Focus Kickoff
+- M1/M2 backlog refresh: queued updates to incorporate Supabase logging remediation, staging env readiness, and dry run deliverables; pending reliability/data evidence before moving Linear items out of blocked.
+- Telemetry task assignments: drafted owner/timeline matrix for activation, SLA resolution, and anomaly response metrics; awaiting analytics + logging inputs to finalize acceptance criteria.
+- Operator dry run prep: followed up with enablement/support on 2025-10-16 logistics and staging access package; responses outstanding so Memory pre-read remains in draft.
+- Blockers: Supabase monitoring assets + log export still missing, staging access package not delivered, and enablement/support confirmations pending.
+
+## 2025-10-08 — Direction Refresh
+- ✅ Re-read the sprint focus updates in `docs/directions/product.md:25` and aligned roadmap tasks accordingly.
+- Blocker: Supabase logging remediation backlog item cannot close until reliability/data ship the missing monitor assets and log export referenced in `feedback/reliability.md:11`-`feedback/reliability.md:15`; keeping Linear story OCC-212 in blocked state until evidence lands.
+- Blocker: Operator dry run lock still waiting on enablement/support confirmation for staging access package and invite approvals noted in `docs/runbooks/operator_training_agenda.md:214`-`docs/runbooks/operator_training_agenda.md:218`; follow-up pings sent in #occ-support.
+- Outreach logged with reliability (`feedback/reliability.md:25`), data (`feedback/data.md:18`), support (`feedback/support.md:23`), and enablement (`feedback/enablement.md:19`) to secure monitoring evidence and staging access confirmations; awaiting replies by 2025-10-09 EOD.
+- Drafted operator dry run pre-read summary in `docs/strategy/operator_dry_run_pre_read_draft.md` so Memory (`scope="ops"`) entry can be published immediately after confirmations land.
+- Next step: once dependencies unblock, publish refreshed Linear links + Memory (ops scope) pre-read summary back into this log per direction guidance.
 
 ## 2025-10-07 — Sprint Readiness Updates
 
@@ -49,6 +73,7 @@ expires: 2025-10-14
 
 ## 2025-10-08 — Operator Training Dry Run Coordination
 - Support requested confirmation on the 2025-10-16 @ 13:00 ET dry run slot and staging access handoff; see `docs/runbooks/operator_training_agenda.md:214` for prep checklist. Awaiting response to proceed with invites.
+- 2025-10-08 14:35 ET — Enablement delivered job aid outlines and pinged Riley Chen for dry run confirmation, attendee roster, and staging package validation; follow-up due 2025-10-09 EOD so enablement can publish Memory pre-read bundle.
 
 ## Action Request — 2025-10-07
 - Review marketing deliverables outlined in `docs/marketing/product_approval_packet_2025-10-07.md`.

@@ -2,11 +2,41 @@
 epoch: 2025.10.E1
 doc: feedback/ai.md
 owner: ai
-last_reviewed: 2025-10-05
+last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-06
 ---
 # AI Agent — Daily Feedback & Regression Report
+
+## Direction Sync — 2025-10-09
+- Reviewed the refreshed sprint focus (dry-run AI kit, daily `npm run ai:regression`, pilot readiness brief) and confirmed requirements in `docs/directions/ai.md`.
+- Blocked from execution: currently covering integrations duties only and still lack Supabase credentials (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`) plus approval to shift focus; request dedicated AI agent or resource reassignment before work can start.
+
+## 2025-10-09 Sprint Execution
+- Drafted dry-run kit outline identifying the top CX Escalations and Sales Pulse scenarios; awaiting enablement confirmations before generating annotated samples (`docs/enablement/job_aids/ai_samples/` placeholder ready).
+- Queued today’s `npm run ai:regression` run but cannot execute until mock datasets + Supabase decision log access land; flagged dependency on data/reliability for credentials and fixtures.
+- Began assembling pilot readiness brief sections (guardrails, kill switch behavior, Supabase logging) but blocked on missing Supabase secrets and monitoring evidence; will resume once reliability delivers.
+- Authored first-pass CX Escalations and Sales Pulse sample drafts for the dry run kit (`docs/enablement/job_aids/ai_samples/cx_escalations_training_samples.md`, `docs/enablement/job_aids/ai_samples/sales_pulse_training_samples.md`) so enablement/support can review copy while we await staging data.
+
+## 2025-10-08 — Sprint Focus Activation
+- Catalogued the four operator dry run scenarios from `docs/runbooks/operator_training_agenda.md` to scope annotated AI outputs for `docs/enablement/job_aids/ai_samples/` per `docs/directions/ai.md:26`-`docs/directions/ai.md:28`.
+- Drafted run notes for the next `npm run ai:regression` execution (target 2025-10-09) and outlined BLEU/ROUGE capture steps; still blocked on Supabase creds + evaluation fixtures but work-in-progress documented in this log.
+- Sketched pilot readiness brief sections (guardrails, kill-switch behavior, Supabase logging dependencies) so once telemetry and legal inputs land we can circulate ahead of the M1/M2 checkpoint per `docs/directions/ai.md:29`.
+
+## Summary — 2025-10-08
+
+### Direction Acknowledgment
+- Reviewed docs/directions/ai.md on 2025-10-08; aligned on dry-run kit deliverables, daily regression hygiene, and pilot readiness brief scope.
+
+### Blockers / Requests
+- Supabase credentials still pending; need manager to provide `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` so decision logs persist beyond fallback.
+- QA storage decision for prompt regression artifacts (`artifacts/ai/prompt-regression-*.json`) outstanding; waiting on guidance.
+- Feature flag `FEATURE_AI_ESCALATIONS` remains off until above dependencies resolved; will coordinate once inputs land.
+
+## 2025-10-08 Sprint Execution
+- Assembled scenario list for the operator dry-run AI kit (pulled from `docs/runbooks/operator_training_agenda.md` Agenda §3); drafting annotated CX Escalations/Sales Pulse outputs for enablement review.
+- Ran `npm run ai:regression` locally to validate harness; execution blocked at Supabase logging step due to missing credentials, captured error logs for handoff once secrets arrive.
+- Created pilot readiness brief outline covering guardrails, kill switch behavior, Supabase logging dependencies, and go/no-go criteria; awaiting reliability/compliance feedback before filling evidence links.
 
 ## Summary — 2025-10-05
 
