@@ -2,11 +2,26 @@
 epoch: 2025.10.E1
 doc: feedback/ai.md
 owner: ai
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-06
+expires: 2025-10-13
 ---
 # AI Agent — Daily Feedback & Regression Report
+
+## Direction Sync — 2025-10-10
+- Re-read `docs/directions/ai.md` after the staging push refresh; prioritizing Shopify dry-run kit, daily regression hygiene, and pilot readiness brief deliverables immediately.
+- Manager directive acknowledged: execute without waiting for further approval and follow the git protocol on `agent/<role>/<task>` branches.
+
+## 2025-10-10 Sprint Execution
+- Authored `docs/strategy/ai_pilot_readiness_brief.md` covering guardrails, kill switch posture, Supabase dependencies, and go/no-go criteria for the Shopify staging push.
+- Updated CX Escalations and Sales Pulse dry-run packets with staging checklists, Shopify cues, and evidence logging notes for the 2025-10-16 rehearsal (`docs/enablement/job_aids/ai_samples/cx_escalations_training_samples.md`, `docs/enablement/job_aids/ai_samples/sales_pulse_training_samples.md`).
+- Restored the prompt regression harness (`scripts/ai/run-prompt-regression.ts`) and wired `npm run ai:regression` so the daily metrics run succeeds.
+- Authored `docs/runbooks/supabase_staging_secret_handoff.md` to codify the staging Supabase secret delivery steps for reliability/deployment.
+
+## Regression Run — 2025-10-10
+- `npm run ai:regression` → PASS (`BLEU=0.9444`, `ROUGE-L=0.9565`); all 3 baseline cases cleared thresholds.
+- Artifact: `artifacts/ai/prompt-regression-2025-10-09-174559.json` (UTC timestamped).
+- Next: expand dataset with Sales Pulse scenarios and enable Supabase logging once secrets arrive.
 
 ## Direction Sync — 2025-10-09
 - Reviewed the refreshed sprint focus (dry-run AI kit, daily `npm run ai:regression`, pilot readiness brief) and confirmed requirements in `docs/directions/ai.md`.
