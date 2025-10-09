@@ -105,5 +105,5 @@ Each card references FAQ sections for quick answers; encourage agents to quote e
 ## Notes & Pending Inputs
 - Designer to deliver tooltip placement annotations by 2025-10-08 @ 12:00 ET; integrate into walkthrough slides once received.
 - Product to confirm production launch window (blocks final comms timing) - track in `feedback/marketing.md`.
-- Localization to validate FR terminology; keep English-only messaging during dry run.
+- Localization follow-up paused per manager direction; resume only if product reopens multi-language scope.
 - Reliability to provide staging smoke test logs so support can reference uptime data during Q&A.
