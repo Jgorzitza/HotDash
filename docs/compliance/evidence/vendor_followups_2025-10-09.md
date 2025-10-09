@@ -1,3 +1,11 @@
+---
+epoch: 2025.10.E1
+doc: docs/compliance/evidence/vendor_followups_2025-10-09.md
+owner: compliance
+last_reviewed: 2025-10-09
+doc_hash: TBD
+expires: 2025-10-23
+---
 # Vendor Follow-ups — 2025-10-09
 
 | Vendor | Contact | Request | Status | Next Action |

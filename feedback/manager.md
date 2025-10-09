@@ -71,6 +71,7 @@ expires: 2025-10-10
 - Postgres-backed staging/test database provisioning plan is documented (`docs/runbooks/prisma_staging_postgres.md`, `prisma/schema.postgres.prisma`) but still waiting on reliability to wire credentials so QA can begin migration rollback drills.
 - Authored `docs/deployment/production_environment_setup.md` covering vault provisioning, `gh` secret automation, Shopify CLI token generation, and required reviewer configuration; circulating to reliability + repo admins today.
 - Added `scripts/deploy/check-production-env.sh` so we can automatically verify GitHub environment coverage once reliability confirms secrets.
+- 09:40 ET: Shared the playbook + checker with reliability and repo admins; awaiting acknowledgment plus vault references for production secrets and staged Postgres credentials.
 
 ## Compliance Update — 2025-10-09
 - Direction refresh acknowledged; sprint focus remains data inventory upkeep, Supabase incident readiness, and vendor DPA audit (see `feedback/compliance.md` 2025-10-09 entry).
@@ -90,6 +91,8 @@ expires: 2025-10-10
 - Coordinate with repo admins to flip on environment reviewers and document the approval flow in the go-live checklist.
 - Run the new `scripts/deploy/check-production-env.sh` after provisioning to confirm coverage and attach the output to `feedback/deployment.md`.
 - Stage the Shopify CLI token generation steps so we can populate the secret immediately after credentials arrive, then schedule a dry-run dispatch.
+- Draft env-check output template + QA rollback handoff notes so we can publish the results immediately when secrets land.
+- Escalate if reliability/admin ETAs slip beyond 2025-10-09; otherwise continue async logging in `feedback/deployment.md`.
 
 # Manager Daily Status — 2025-10-08
 
@@ -134,6 +137,13 @@ expires: 2025-10-10
 - GA MCP readiness: coordination brief issued (`feedback/data_to_integrations_coordination.md`), pending integrations/compliance to confirm credential handoff window before executing `docs/data/ga_mcp_go_live_checklist.md` Step 1 parity checks.
 - Follow-ups sent 2025-10-08 to reliability (Supabase logs + service key) and integrations/compliance (credential ETA + evidence acknowledgment); escalation windows set for 19:00/20:00 UTC respectively if no response (`feedback/data_to_reliability_coordination.md`, `feedback/data_to_integrations_coordination.md`).
 - Escalations triggered to manager/reliability and manager/integrations/compliance requesting immediate delivery of Supabase artifacts and GA MCP credential plan; awaiting responses to unblock readiness workstreams.
+
+## Cross-Role Check-in — 2025-10-09
+- AI/Data/Engineer streams paused pending reliability’s Supabase log export and staging `SUPABASE_SERVICE_KEY`; escalations logged with 2025-10-09 deadlines for delivery (`feedback/data_to_reliability_coordination.md`).
+- GA MCP credential ETA and compliance acknowledgment still outstanding after escalation; integrations to report OCC-INF-221 outcome before EOD so parity checklist can proceed (`feedback/data_to_integrations_coordination.md`).
+- Designer ready with static component handoff/tooltip annotations once Figma access and staging screenshots land; enablement awaiting assets for job aids.
+- Deployment workflows prepped but production rehearsal blocked on GitHub `production` secrets and reviewer gating; playbook delivered to reliability/admin for action.
+- QA/Support/Enablement/Marketing logs refreshed; each waiting on upstream signals (staging seeds, launch window, dry run confirmations) to close sprint deliverables.
 
 # Manager Daily Status — 2025-10-07
 
