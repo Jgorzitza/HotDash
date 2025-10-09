@@ -146,4 +146,91 @@ describe("getEscalations", () => {
     expect(result.data[0]?.suggestedReplyId).toBe("refund_offer");
     expect(result.data[0]?.suggestedReply).toContain("Morgan");
   });
+
+  it("selects ship_update template using expanded heuristics for delivery delays", async () => {
+    const createdAt = Math.floor(Date.now() / 1000) - 75 * 60;
+    mockListOpenConversations
+      .mockResolvedValueOnce([
+        {
+          id: 40,
+          inbox_id: 4,
+          status: "open",
+          created_at: createdAt,
+          tags: [],
+          meta: { sender: { name: "Taylor" } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    mockListMessages.mockResolvedValueOnce([
+      {
+        id: 4,
+        message_type: 0,
+        content: "My package is a lost package and the delivery is delayed again",
+        created_at: createdAt,
+      },
+    ]);
+
+    const result = await getEscalations("delayed-delivery-shop");
+
+    expect(result.data[0]?.suggestedReplyId).toBe("ship_update");
+    expect(result.data[0]?.suggestedReply).toContain("Taylor");
+  });
+
+  it("falls back to ack_delay when no keywords match but text exists", async () => {
+    const createdAt = Math.floor(Date.now() / 1000) - 45 * 60;
+    mockListOpenConversations
+      .mockResolvedValueOnce([
+        {
+          id: 50,
+          inbox_id: 5,
+          status: "open",
+          created_at: createdAt,
+          tags: [],
+          meta: { sender: { name: "Jordan" } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    mockListMessages.mockResolvedValueOnce([
+      {
+        id: 5,
+        message_type: 0,
+        content: "Checking in on my order status, please advise.",
+        created_at: createdAt,
+      },
+    ]);
+
+    const result = await getEscalations("generic-inquiry-shop");
+
+    expect(result.data[0]?.suggestedReplyId).toBe("ack_delay");
+    expect(result.data[0]?.suggestedReply).toContain("Jordan");
+  });
+
+  it("uses tags when customer message is agent-only", async () => {
+    const createdAt = Math.floor(Date.now() / 1000) - 110 * 60;
+    mockListOpenConversations
+      .mockResolvedValueOnce([
+        {
+          id: 60,
+          inbox_id: 6,
+          status: "open",
+          created_at: createdAt,
+          tags: ["Refund Issue"],
+          meta: { sender: { name: "Quinn" } },
+        },
+      ])
+      .mockResolvedValueOnce([]);
+    mockListMessages.mockResolvedValueOnce([
+      {
+        id: 6,
+        message_type: 1,
+        content: "Agent followed up",
+        created_at: createdAt,
+      },
+    ]);
+
+    const result = await getEscalations("tag-only-shop");
+
+    expect(result.data[0]?.suggestedReplyId).toBe("refund_offer");
+    expect(result.data[0]?.suggestedReply).toContain("Quinn");
+  });
 });

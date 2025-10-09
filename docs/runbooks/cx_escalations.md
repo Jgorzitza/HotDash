@@ -184,7 +184,7 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 - Chatwoot service implementation: app/services/chatwoot/escalations.ts
 - Template definitions: app/services/chatwoot/templates.ts
 - Decision logging: app/services/decisions.server.ts
-- Copy deck (EN/FR): docs/design/copy_deck.md
+- Copy deck (English): docs/design/copy_deck.md
 - Accessibility criteria: docs/design/accessibility_criteria.md
 
 ---
@@ -203,7 +203,12 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 - [x] Add annotated screenshots for modal default and success states (2025-10-07)
 - [ ] Expand template library/AI suggestions beyond `ack_delay`
 - [x] Align Chatwoot escalation label with SOP terminology (2025-10-08)
-- [ ] Draft incident_response.md for integration outages
+- [x] Draft incident_response.md for integration outages (see docs/runbooks/incident_response_supabase.md)
+
+## Pending Validation — 2025-10-09
+- [ ] Capture updated modal screenshots once staging seed is live (Owner: Support)
+- [ ] Verify template heuristics against staged conversations and document edge cases (Owner: Support + Product)
+- [ ] Re-run decision log export to confirm `chatwoot.*` events land in analytics with Supabase credentials (Owner: Support + Reliability)
 
 ## Validation Notes — 2025-10-08
 - Modal launched with `FEATURE_MODAL_APPROVALS`; confirm flag enabled before training operators.

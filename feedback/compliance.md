@@ -38,3 +38,14 @@ expires: 2025-10-08
   - R1 (retention automations) — Engineering must deploy Supabase/Prisma purge jobs and capture first-run evidence (`docs/compliance/evidence/retention_runs/`).
   - Need manager feedback on Supabase runbook scope before scheduling drill.
 - **Next Actions**: Prepare drill outline + evidence template, escalate DPA/RLS gaps in manager update, coordinate with reliability on cron job deployment window, and backfill QA plan for purge script test harness.
+
+## 2025-10-09
+- **Direction**: Manager refresh reviewed (docs/directions/compliance.md; sprint focus unchanged). Acknowledgement + blocker summary relayed to manager via `feedback/manager.md` (2025-10-09 section).
+- **Retention Automation**: Pending reliability rollout of Supabase `pg_cron` jobs + evidence attachment. Follow-up scheduled with reliability owner for 2025-10-10 14:00 ET; will archive first-run logs under `docs/compliance/evidence/retention_runs/` once provided.
+- **Vendor Agreements**: No responses yet on GA MCP, Supabase, Anthropic DPA/residency requests (see `docs/compliance/evidence/vendor_followups_2025-10-08.md`). Added second reminder cadence for 2025-10-10 morning; continue to log receipts in `docs/compliance/evidence/vendor_dpa_status.md`.
+- **Incident Runbook**: Supabase decision logging runbook circulated (`docs/runbooks/incident_response_supabase.md`). Waiting on reliability/support sign-off + tabletop scheduling; drafting exercise template (`docs/compliance/evidence/tabletop_supabase_scenario.md` placeholder) for approval.
+- **Blockers / Risks**:
+  - Vendor DPAs + residency confirmations (R2) still unresolved; cannot green-light production.
+  - Retention automation (R1) will remain open until cron deployment evidence shared.
+  - Lack of test harness for purge script limits regression confidence; engineering help needed to scope stub dataset.
+- **Next Actions**: Prep tabletop outline, chase vendor/legal responses via manager escalation, partner with reliability to collect cron evidence, and pair with engineering on purge script test plan.

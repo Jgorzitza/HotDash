@@ -56,6 +56,10 @@ const SHIPPING_KEYWORDS = [
   "tracking number",
   "in transit",
   "delivered",
+  "delayed delivery",
+  "late delivery",
+  "lost package",
+  "delayed shipment",
 ];
 
 const REFUND_KEYWORDS = [
@@ -68,6 +72,8 @@ const REFUND_KEYWORDS = [
   "replacement",
   "store credit",
   "exchange",
+  "faulty",
+  "warranty",
 ];
 
 function normalise(value: string) {
