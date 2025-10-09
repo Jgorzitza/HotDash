@@ -13,6 +13,12 @@ expires: 2025-10-10
 - Blocked: currently executing integrations workload and lack capacity/authority to drive full manager program; maintaining visibility through integration status updates while requesting dedicated manager support.
 
 ## 2025-10-09 Sprint Execution
+## 2025-10-09 Cross-role Signals
+- Updated every role feedback log with sprint kickoff entries; alignment verified, but multiple teams remain blocked by missing Supabase credentials/log exports and staging access packages.
+- Designer, deployment, enablement, and reliability queues are still covered by integrations duties; need reassignment or capacity relief to keep sprint focus moving.
+- QA to confirm retention plan for AI regression artifacts; decision pending before automation can target final storage path.
+- Awaiting responses from reliability (Supabase secrets + monitor assets), QA (artifact storage), enablement/support/product (2025-10-16 dry run logistics), and infra (OCC-INF-221 GA MCP credentials); following up tomorrow if no updates.
+
 - Cross-referenced each role’s updated direction log to ensure sprint focus work started; flagged outstanding blockers (monitoring assets, credentials) for follow-up.
 - Coordinated escalation paths with reliability/data around Supabase monitoring/log export to keep mitigation thread moving; awaiting their updates before clearing OCC-212.
 - Drafted notes for secrets posture check-in covering Supabase/Zoho rotation status so once reliability delivers plan it can be reviewed immediately.
