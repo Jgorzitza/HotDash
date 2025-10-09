@@ -27,3 +27,14 @@ expires: 2025-10-08
 - **Progress Update**: Generated vendor DPA request templates & evidence tracker (`docs/compliance/evidence/vendor_dpa_status.md`), published retention automation plan (`docs/compliance/retention_automation_plan.md`), documented Chatwoot/Anthropic DPIA (`docs/compliance/dpia_chatwoot_anthropic.md`), and drafted privacy notice language (`docs/compliance/privacy_notice_updates.md`). Awaiting manager/vendor responses and engineering implementation.
 - **Follow-up**: Logged DPA outreach (`docs/compliance/evidence/*/request_2025-10-07.md`), added purge script (`scripts/ops/purge-dashboard-data.ts` + `npm run ops:purge-dashboard-data`), recorded Supabase cron draft, and updated launch FAQ with telemetry/AI disclosures.
 - **Latest**: Ran purge script (log archived `docs/compliance/evidence/retention_runs/2025-10-08_purge_log.json` once generated); recorded vendor follow-ups (`docs/compliance/evidence/vendor_followups_2025-10-08.md`); published privacy toggle rollout plan (`docs/marketing/privacy_toggle_rollout.md`) and staged final notice copy (`docs/compliance/evidence/privacy_notice/operator_notice_v2025-10-08.md`).
+
+## 2025-10-08
+- **Direction**: Re-read `docs/directions/compliance.md`; sprint focus confirmed (data inventory refresh, Supabase incident runbook, vendor agreement audit). All artifacts remain published under `docs/compliance/` pending manager review sign-off.
+- **Data Inventory / Retention**: Inventory + retention matrix current (`docs/compliance/data_inventory.md`, `docs/compliance/retention_automation_plan.md`). Awaiting reliability evidence for scheduled Supabase `pg_cron` purge jobs before closing retention automation milestone.
+- **Incident Response**: Supabase-specific incident runbook drafted at `docs/runbooks/incident_response_supabase.md` (covers detection, containment, comms, evidence). Need reliability/support review plus first tabletop entry.
+- **Vendor Agreements**: `docs/compliance/evidence/vendor_dpa_status.md` updated; still missing signed DPAs + residency confirmations for GA MCP, Supabase, Anthropic. Follow-up requests logged (`docs/compliance/evidence/vendor_followups_2025-10-08.md`).
+- **Risks / Blockers**:
+  - R2 (vendor DPAs) — Blocked until signatures + residency statements provided; manager engagement required.
+  - R1 (retention automations) — Engineering must deploy Supabase/Prisma purge jobs and capture first-run evidence (`docs/compliance/evidence/retention_runs/`).
+  - Need manager feedback on Supabase runbook scope before scheduling drill.
+- **Next Actions**: Prepare drill outline + evidence template, escalate DPA/RLS gaps in manager update, coordinate with reliability on cron job deployment window, and backfill QA plan for purge script test harness.

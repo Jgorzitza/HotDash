@@ -1,11 +1,39 @@
----
 epoch: 2025.10.E1
 doc: feedback/marketing.md
 owner: marketing
-last_reviewed: 2025-10-07
+last_reviewed: 2025-10-08
 doc_hash: TBD
-expires: 2025-10-08
+expires: 2025-10-09
 ---
+# Marketing Daily Status — 2025-10-08
+
+## Direction Acknowledgment
+- Reviewed `docs/directions/marketing.md` (2025-10-08 sprint refresh) and confirm focus on launch comms packet, operator FAQ + training script, and launch timeline playbook.
+
+## Summary
+- Prepped evidence bundle for the launch communications packet so we can attach proof once product signs off on the English-only strings.
+- Coordinated with enablement to align the operator FAQ/training script updates with the 2025-10-16 dry run agenda; awaiting their final notes.
+- Sketched launch timeline playbook structure (milestones, campaign triggers, KPI checkpoints) pending production window confirmation.
+
+### Deliverables In Flight
+1. Launch communications packet proof bundle (ties to `docs/marketing/launch_comms_packet.md` and approval packet).
+2. Operator FAQ + training script alignment with enablement feedback.
+3. Launch timeline playbook draft synced to campaign calendar + deployment milestones.
+
+## Blockers / Risks
+- **Launch window confirmation:** Product still needs to lock the production go-live window; blocks finalizing campaign calendar, comms timing, and the new playbook milestones.
+- **Tooltip placement annotations:** Awaiting designer overlays (due 2025-10-08 @ 12:00 ET) to complete engineering handoff in `docs/marketing/tooltip_placement_request_2025-10-07.md`.
+- **Localization QA:** FR review for "Centre OCC" abbreviation pending localization sign-off (due 2025-10-09 @ 18:00 ET).
+
+## Requests / Questions for Manager
+- Please confirm when product expects to lock the production launch window so marketing can finalize the timeline playbook and campaign calendar.
+- Should marketing coordinate directly with enablement on the 2025-10-16 training dry run logistics or loop you in on scheduling?
+
+## Next Session Priorities (2025-10-09)
+1. Integrate product/design/localization feedback into launch comms + tooltip documentation once received.
+2. Finalize the operator FAQ/training script package and attach evidence to this log.
+3. Flesh out the launch timeline playbook with campaign triggers and KPI checkpoints as soon as the launch window is confirmed.
+
 # Marketing Daily Status — 2025-10-07
 
 ## Summary

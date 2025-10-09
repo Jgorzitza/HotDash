@@ -2,9 +2,9 @@
 epoch: 2025.10.E1
 doc: feedback/manager.md
 owner: manager
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-09
 doc_hash: TBD
-expires: 2025-10-09
+expires: 2025-10-10
 ---
 # Manager Daily Status — 2025-10-09
 
@@ -13,6 +13,30 @@ expires: 2025-10-09
 - Preparing updated runbook screenshots once staging seed is ready; English-only template review cadence continues.
 - Blocked on product confirmation of the 2025-10-16 dry run slot and staging access needed for validation evidence.
 - Awaiting seeded conversations to regression-test Chatwoot heuristics beyond current unit coverage.
+- 10:45 ET: pinged product + enablement on Slack requesting dry-run confirmation and staging access ETA; awaiting response.
+
+## Marketing Update — 2025-10-09
+- Reviewed the refreshed marketing direction (`docs/directions/marketing.md`, sprint focus dated 2025-10-08) and confirmed alignment on three priorities: (1) lock the English-only launch comms packet with evidence, (2) finalize the operator FAQ + training script for the 2025-10-16 dry run, and (3) build the launch timeline playbook tied to campaign triggers/KPI checkpoints.
+- Evidence bundle prep for launch comms is underway so product can sign off quickly; enablement feedback pending on small FAQ/training adjustments before we ship the final package.
+- Blockers: waiting on product to lock the production launch window (gates campaign calendar + playbook dates), designer tooltip placement annotations due Oct 8 @ 12:00 ET, and localization confirmation on the "Centre OCC" abbreviation due Oct 9 @ 18:00 ET.
+- Request: confirm whether marketing should coordinate directly with enablement on the dry run logistics or keep the manager looped into scheduling touchpoints.
+
+## Deployment Pipeline Status — 2025-10-09
+- Re-read the refreshed deployment direction (`docs/directions/deployment.md`, sprint focus 2025-10-08) and confirmed our deliverables: staging pipeline, env matrix, prod go-live checklist, and Postgres staging configuration.
+- Staging deployment workflow remains healthy (`.github/workflows/deploy-staging.yml`) and continues to gate on smoke/Lighthouse artifacts via `scripts/deploy/staging-deploy.sh`; runbook guidance is live in `docs/runbooks/deployment_staging.md` for operator dry runs.
+- Production workflow draft (`.github/workflows/deploy-production.yml`) and CLI wrapper (`scripts/deploy/production-deploy.sh`) are ready, but we cannot schedule a rehearsal until GitHub `production` environment secrets and reviewers are configured.
+- Environment + secrets matrix (`docs/deployment/env_matrix.md`) and go-live checklist (`docs/deployment/production_go_live_checklist.md`) remain current; no delta from reliability yet on the pending secret rows.
+- Postgres-backed staging/test database provisioning plan is documented (`docs/runbooks/prisma_staging_postgres.md`, `prisma/schema.postgres.prisma`) but still waiting on reliability to wire credentials so QA can begin migration rollback drills.
+
+### Outstanding Dependencies
+1. Reliability to load Shopify, Supabase, and smoke test secrets into the GitHub `production` environment and document vault paths in `feedback/reliability.md` (refs `docs/deployment/env_matrix.md` rows 73-101).
+2. Repo admins to enforce manager + reliability as required reviewers on the GitHub `production` environment so the workflow matches the go-live checklist.
+3. Shopify service account credentials to generate `SHOPIFY_CLI_AUTH_TOKEN_PROD` and unblock the final GitHub secret population.
+
+### Upcoming Actions
+- Track reliability handoff and, once secrets land, validate the production smoke target + update the env matrix status column.
+- Coordinate with repo admins to flip on environment reviewers and document the approval flow in the go-live checklist.
+- Stage the Shopify CLI token generation steps so we can populate the secret immediately after credentials arrive, then schedule a dry-run dispatch.
 
 # Manager Daily Status — 2025-10-08
 
@@ -33,6 +57,15 @@ expires: 2025-10-09
 - **Supabase credentials:** `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are still unset on the AI workstation. `getSupabaseConfig()` now loads `.env`, but without real values decision logs remain in the in-memory fallback and never sync to Supabase/Memory MCP. Requesting staging (or prod-ready) credentials so we can validate persistence before the M1 dry run.
 - **QA artifact storage:** Prompt regression now auto-writes JSON artifacts to `artifacts/ai/prompt-regression-<timestamp>.json`. QA needs the canonical destination for bundling these with Playwright evidence. Please confirm if we keep them under `artifacts/ai/` in repo, publish to an external bucket, or adjust CI to collect them.
 - **Kill switch coordination:** `FEATURE_AI_ESCALATIONS` defaults to `0`. Turn it on per environment (`FEATURE_AI_ESCALATIONS=1`) once Supabase logging is active and QA has the artifact flow in place; otherwise the modal ships template-only.
+
+## Compliance Update — 2025-10-08
+- **Direction ack:** Re-read `docs/directions/compliance.md`; sprint focus confirmed (data inventory refresh, Supabase incident response, vendor DPA audit). Logged acknowledgement + blockers in `feedback/compliance.md`.
+- **Artifacts live:** Data inventory + retention plan refreshed (`docs/compliance/data_inventory.md`, `docs/compliance/retention_automation_plan.md`). New Supabase incident runbook drafted (`docs/runbooks/incident_response_supabase.md`); needs reliability + support review prior to tabletop scheduling.
+- **Evidence captured:** Vendor outreach + purge evidence stored (`docs/compliance/evidence/vendor_followups_2025-10-08.md`, `docs/compliance/evidence/retention_runs/2025-10-08_purge_log.json` placeholder pending cron output). DPIA + notice updates remain current.
+- **Open risks:**
+  - R2 (Vendor DPAs) — Missing executed agreements + residency attestations for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`).
+  - R1 (Retention automations) — Supabase `pg_cron` deployment + first-run evidence outstanding; reliability coordination required per `docs/compliance/retention_automation_plan.md`.
+- **Asks:** 1) Manager to secure vendor signatures/responses, 2) Reliability to schedule cron rollout + share logs, 3) Support to validate runbook scope + confirm tabletop participation.
 
 ## Support / CX Escalations Update — 2025-10-08
 - **Template heuristics shipped:** Chatwoot escalations service now picks `ship_update`, `refund_offer`, or `ack_delay` based on tags/message keywords and renders customer names before approval flows. Unit tests updated to cover the paths (`app/services/chatwoot/escalations.ts`, `tests/unit/chatwoot.escalations.spec.ts`).
