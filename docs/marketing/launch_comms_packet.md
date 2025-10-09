@@ -2,11 +2,21 @@
 epoch: 2025.10.E1
 doc: docs/marketing/launch_comms_packet.md
 owner: marketing
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-18
 ---
 # Launch Communications Packet — Operator Control Center
+
+## Approval & Evidence Tracker
+| Surface | Owner | Status (2025-10-09) | Evidence |
+|---------|-------|----------------------|----------|
+| In-app banner | Marketing | Ready for product sign-off (English copy finalized) | `docs/marketing/product_approval_packet_2025-10-07.md#banner` |
+| Launch email | Marketing | Ready for product sign-off (English copy finalized) | `docs/marketing/product_approval_packet_2025-10-07.md#email` |
+| Blog post | Marketing | Draft ready; awaiting product content review for CTA alignment | `docs/marketing/product_approval_packet_2025-10-07.md#blog-post` |
+| Inventory Heatmap tooltip | Marketing | Final copy delivered; engineering wiring pending design placement notes | `docs/marketing/tooltip_copy_handoff_2025-10-07.md` |
+
+**English-only scope:** Launch surfaces ship in English. French strings stay in this packet for localization QA only (see `docs/marketing/translation_review_request_2025-10-07.md`).
 
 ## Release Cadence Alignment
 
@@ -126,6 +136,8 @@ Your input directly shapes our roadmap. Looking forward to hearing what works—
 🎉 Centre OCC : votre vérité quotidienne est là. [Voir le tableau de bord →]
 ```
 
+**Character Counts:** EN 74 (<=80 limit), FR 75 (<=80 limit)
+
 **CTA Action:** Navigate to `/app/dashboard` route
 
 ---
@@ -137,6 +149,8 @@ Your input directly shapes our roadmap. Looking forward to hearing what works—
 **Subject (EN):** Your new operations command center is live in Shopify Admin
 
 **Subject (FR):** Votre nouveau centre de commande est en ligne dans l'administration Shopify
+
+**Subject Lengths:** EN 59 (<=60 recommended), FR 75 (flagged for localization review - exceeds 60 target)
 
 **Body (EN):**
 ```
@@ -221,6 +235,8 @@ Des questions ? Consultez notre [FAQ de lancement] ou répondez à cet e-mail.
 **Hero subhead (EN):** Know what changed overnight and act before issues escalate.
 
 **Hero subhead (FR):** Sachez ce qui a changé du jour au lendemain et agissez avant que les problèmes n'escaladent.
+
+**Hero Subhead Lengths:** EN 59 (<=90 target), FR 92 (needs localization trim to meet <=90 target)
 
 **SEO Metadata:**
 

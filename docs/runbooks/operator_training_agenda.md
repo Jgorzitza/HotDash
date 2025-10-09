@@ -215,7 +215,7 @@ See: docs/runbooks/operator_training_qa_template.md
 - **Primary proposal:** Wednesday, 2025-10-16 @ 13:00 ET (aligns with marketing's launch prep window)
 - **Owner:** Riley Chen (Product) — confirmation requested in `feedback/product.md`
 - **Support prep:** Send agenda + Q&A template by 2025-10-14, verify `FEATURE_MODAL_APPROVALS=1` in staging, confirm Chatwoot seed data covers shipping + refund scenarios.
-- **Dependencies:** FR template translations (`docs/marketing/chatwoot_template_localization_request_2025-10-08.md`), staging shop access package from product (OCC-214).
+- **Dependencies:** Latest English copy deck alignment (`docs/design/copy_deck.md`), Sales Pulse/CX Escalations job aids staged in `docs/enablement/job_aids/`, staging shop access package from product (OCC-214).
 
 ---
 
@@ -229,7 +229,7 @@ See: docs/runbooks/operator_training_qa_template.md
 
 ## Related Documentation
 - CX Escalations Runbook: docs/runbooks/cx_escalations.md
-- Copy Deck (EN/FR): docs/design/copy_deck.md
+- Copy Deck (English): docs/design/copy_deck.md
 - Accessibility Criteria: docs/design/accessibility_criteria.md
 - North Star: docs/NORTH_STAR.md
 

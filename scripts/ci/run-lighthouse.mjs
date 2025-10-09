@@ -3,12 +3,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 
-const target = process.env.LIGHTHOUSE_TARGET;
+const target = process.env.LIGHTHOUSE_TARGET || process.env.STAGING_SMOKE_TEST_URL;
 
 async function main() {
   if (!target) {
     console.log(
-      "Skipping Lighthouse audit: set LIGHTHOUSE_TARGET to enable once dashboard routing is live.",
+      "Skipping Lighthouse audit: set LIGHTHOUSE_TARGET or STAGING_SMOKE_TEST_URL once dashboard routing is live.",
     );
     return;
   }

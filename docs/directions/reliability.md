@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/reliability.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,9 +21,10 @@ expires: 2025-10-18
 - Manage disaster readiness: weekly backup drills for Prisma db + Supabase tables; document restore steps.
 - Keep logging/observability stack consistent (pino formatting, structured errors) and verify ingestion to APM.
 - Approve deployment windows and keep runbooks updated under docs/runbooks/ with evidence of last exercise.
+- Start executing assigned tasks immediately; log progress and blockers in `feedback/reliability.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-06
-- Validate new Supabase and Zoho secrets in CI; document verification in `feedback/reliability.md` and plan rotation cadence.
-- Set up synthetic check hitting `/app?mock=1` to monitor dashboard response time (<300ms mock) and log metrics.
-- Draft backup/restore runbook for Prisma + Supabase and schedule first drill for Week 3.
-- Collaborate with QA to ensure Lighthouse and Playwright artifacts are archived after each pipeline run.
+## Current Sprint Focus — 2025-10-08
+- Lead the Supabase decision sync incident response: analyze logs, coordinate with engineering/data to implement fixes, and update `feedback/reliability.md` with mitigation steps plus alert thresholds.
+- Run the synthetic check workflow (`scripts/ci/synthetic-check.mjs`) daily, capture metrics/alerts, and confirm the `<300ms` mock budget remains green; publish the first 3 runs as evidence.
+- Finalize the secret rotation plan for Supabase/Zoho/Shopify/Chatwoot, including calendar, owners, and dry-run schedule, and circulate it to deployment and compliance by 2025-10-10.
+- Prepare the Week 3 backup/restore drill by validating the runbook instructions and listing prerequisites (credentials, staging DB) so the exercise can execute without blockers.

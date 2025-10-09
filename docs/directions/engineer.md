@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/engineer.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -21,9 +21,10 @@ expires: 2025-10-18
 - For schema updates, pair migrations with Prisma client regen and data backfill scripts.
 - Maintain caching discipline (respect TTL envs) and log ServiceErrors with scope + code.
 - Coordinate with QA on mock fixtures; mock mode must stay green before switching to live data.
+- Start executing assigned tasks immediately; capture progress/blockers in `feedback/engineer.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-06
-- Fix the Playwright dashboard smoke failure by introducing an accessible `<h1>` (or equivalent) and updating tests; land in `agent/engineer/dashboard` branch by 2025-10-07.
-- Implement tile detail modals and approval flows starting with Sales Pulse and CX Escalations; wire to existing services and log decisions via `logDecision`.
-- Add feature flag scaffolding (`featureFlags.ts`) so each tile can be toggled per environment; ensure loader respects flags and mock mode.
-- Integrate Supabase Memory into dashboard analytics (e.g., log dashboard view + refresh events) and cover with Vitest.
+## Current Sprint Focus — 2025-10-08
+- Triage and resolve the Supabase decision sync failure spike: pair with data/reliability to capture structured errors, add retry/backoff if needed, and ship tests/evidence detailing the fix.
+- Collaborate with deployment to bring up the Postgres-backed staging/test database configuration (env files, Prisma overrides, smoke script) so QA can run forward/back migration checks.
+- Polish CX Escalations and Sales Pulse modals for the operator dry run by adding final accessibility refinements (ARIA labels, focus-visible styles, status icons) and ensuring decision logs emit the expected audit payloads.
+- Wire dashboard refresh telemetry end-to-end (loader, action, analytics service) and document how operators can trigger/observe events for the dry run.

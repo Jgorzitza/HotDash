@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/directions/product.md
 owner: manager
-last_reviewed: 2025-10-06
+last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-18
 ---
@@ -20,10 +20,10 @@ expires: 2025-10-18
 - Run weekly customer calls; capture quotes + decisions in packages/memory (scope `ops`).
 - Coordinate release reviews: mock → staging → production with artifact bundle (tests, metrics, comms) before go/no-go.
 - Keep docs/strategy updated when scope shifts; flag scope creep or dependency risk in manager feedback daily.
-- Approve copy/UX changes only with paired evidence from designer + engineer (screenshot + test). 
+- Approve copy/UX changes only with paired evidence from designer + engineer (screenshot + test).
+- Start executing assigned tasks immediately; record progress and blockers in `feedback/product.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-06
-- Build prioritized backlog (Linear) for M1 (data plumbing) and M2 (dashboard UI); link tickets to evidence/doc references.
-- Finalize success metric definitions and ensure telemetry stories are assigned to engineering for upcoming sprint.
-- Schedule first stakeholder review/dry run once Sales Pulse + CX Escalations modals ready; capture decisions in Memory (scope `ops`).
-- Align launch narrative with marketing (release notes + in-app messaging) and confirm approval workflow for copy updates.
+## Current Sprint Focus — 2025-10-08
+- Publish the updated M1/M2 backlog in Linear, incorporating the Supabase logging remediation, staging environment work, and operator dry run deliverables; circulate links in `feedback/product.md`.
+- Assign owners and timelines for activation, SLA resolution, and anomaly response telemetry tasks, and ensure acceptance criteria reference the latest analytics/logging artifacts.
+- Lock the 2025-10-16 operator dry run plan (attendees, agenda, success metrics) with enablement/support, and capture pre-read decisions in Memory (scope `ops`).
