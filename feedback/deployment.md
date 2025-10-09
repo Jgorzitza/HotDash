@@ -13,6 +13,12 @@ expires: 2025-10-10
 - Blocked: reallocated to integrations tasks; cannot execute deployment backlog until coverage is restored or priorities are realigned.
 
 ## 2025-10-09 Sprint Focus Kickoff
+## 2025-10-09 Production Blockers Update
+- Supabase fix dependency: coordinate with reliability on decision sync monitor scripts once credentials drop so staging deploy evidence can include fresh Supabase health checks.
+- Staging Postgres + secrets: confirmed Prisma override steps with engineer/QA; standing by for reliability to deliver connection strings and GitHub secret population before scheduling rehearsal.
+- GA MCP readiness support: ready to surface deploy requirements once integrations provides credential ETA; will add to env matrix/go-live checklist immediately.
+- Operator dry run: keeping staging workflow green and smoke artifact template ready so enablement/support get current evidence ahead of 2025-10-16.
+
 - Staging pipeline: reviewed latest workflow run and confirmed smoke/Lighthouse gates stay wired; queued artifact capture for next dispatch once Shopify token lands.
 - Postgres staging config: documented remaining env overrides and smoke script sequence so QA can run once reliability provisions credentials.
 - Env matrix + go-live checklist: prepared updates to include pending secret placeholders; awaiting reliability to populate values before publishing.
@@ -27,10 +33,25 @@ expires: 2025-10-10
 - Distributed `docs/deployment/production_environment_setup.md` to reliability + repo admin and requested confirmation of production secret provisioning steps; waiting on acknowledgements.
 - Validated staging workflow status (`.github/workflows/deploy-staging.yml`) and prepped smoke report template for next run so evidence is ready once production gating opens.
 - Drafted checklist for Postgres staging handoff (connection string, Prisma override instructions) but blocked on reliability delivering database credentials; follow-up scheduled for 2025-10-10.
+- Added QA rollback drill checklist to `docs/runbooks/prisma_staging_postgres.md` so QA can execute migration rollbacks immediately after credentials arrive.
+- Authored `docs/deployment/environment_check_template.md` to standardize evidence capture when running `scripts/deploy/check-production-env.sh` post-provisioning.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: ready to re-run staging deploy smoke once reliability/engineering ship the monitor script so we can attach fresh artifacts to the incident log.
+- Staging Postgres + secrets: pinging reliability today for GitHub `production` secret provisioning + Postgres connection strings; deployment env matrix updates queued for immediate commit once paths provided.
+- GA MCP readiness: monitoring integrations’ credential request so we can add GA MCP secrets to the production environment setup playbook as soon as the bundle arrives.
+- Operator dry run: keeping staging workflow evidence current to support the 2025-10-16 rehearsal; will log latest run results once the next deploy executes.
+- 19:20 ET: Sent follow-up in reliability thread requesting confirmation on secret drop + staging DB credentials; reminded repo admins about `production` environment reviewer requirement so we can run the env check script as soon as keys land.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: aligned with reliability on monitor asset restoration so deployment evidence bundles can include fresh Supabase health checks once logs drop.
+- Staging Postgres + secrets: finalized secret provisioning checklist and queued `scripts/deploy/check-production-env.sh` run pending reliability vault updates; documentation ready to capture evidence immediately after secrets land.
+- GA MCP readiness: confirmed deploy workflows reference the GA credential inputs; waiting on integrations to supply host/secret names before locking workflow secrets.
+- Operator dry run: scheduled next staging deploy rehearsal to capture smoke/Lighthouse artifacts for the 2025-10-16 session once staging access package arrives.
 - Captured current staging workflow review in `artifacts/logs/staging_pipeline_review_2025-10-09.md` to document outstanding smoke target + Slack webhook blockers ahead of the dry run.
 
 ## Summary
-- ✅ Re-read the refreshed deployment direction (`docs/directions/deployment.md`, 2025-10-08 focus) to stay aligned on sprint deliverables.
+- ✅ Re-read the refreshed deployment direction (`docs/directions/deployment.md`, 2025-10-08 focus) and acknowledged today’s directive to prioritize production blockers (Supabase logging readiness, staging Postgres credentials, secrets provisioning, operator dry run prep).
 - ✅ Staging deployment pipeline is live with smoke + Lighthouse gating (`.github/workflows/deploy-staging.yml`, `scripts/deploy/staging-deploy.sh`) and operator-ready runbook coverage (`docs/runbooks/deployment_staging.md`).
 - ✅ Env/secret matrix published (`docs/deployment/env_matrix.md`) and production go-live checklist finalized (`docs/deployment/production_go_live_checklist.md`); both kept current.
 - ✅ Postgres staging/test DB plan captured (`docs/runbooks/prisma_staging_postgres.md`, `prisma/schema.postgres.prisma`); awaiting reliability to deliver connection credentials before QA can exercise migrations.
@@ -51,13 +72,12 @@ expires: 2025-10-10
 4. **Postgres staging credentials (Reliability — ETA 2025-10-09)** — Need staged Postgres connection strings to unblock QA rollback drills against `prisma/schema.postgres.prisma`.
 
 ## Next Actions (2025-10-09)
-- Deliver playbook link to reliability + repo admin and capture acknowledgements.
+- Deliver playbook + new templates to reliability, repo admins, and QA; capture acknowledgements in this log.
 - Sync with reliability on secret ETA (production secrets + Postgres staging creds) and ensure updates land in `feedback/reliability.md` with vault paths.
 - Coordinate with repo admin on configuring `production` environment reviewers using the documented steps.
 - Run `scripts/deploy/check-production-env.sh` after provisioning to confirm coverage; capture output + vault references in this log.
 - Stage Shopify CLI token generation once service credentials arrive and log completion.
-- Provide QA with Postgres staging connection info immediately after reliability handoff; schedule rollback drill dry run (target 2025-10-10).
-- Draft env-check result template + QA rollback handoff checklist so updates can publish immediately once credentials land.
+- Provide QA with Postgres staging connection info immediately after reliability handoff; schedule rollback drill dry run (target 2025-10-10) using the new checklist.
 
 # Deployment Daily Status — 2025-10-07
 

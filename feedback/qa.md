@@ -22,6 +22,33 @@ expires: 2025-10-18
 - Confirmed Playwright harness ready for modal coverage and queued test plan updates; execution blocked until engineering ships interactive modal flows.
 - Coordinated with deployment on staging Postgres availability to schedule forward/back migration validation; awaiting credentials before running drills.
 - Drafted updates for `scripts/qa/soak-test-plan.md` to cover SSE/approval endurance scenarios; need AI/reliability metrics to finalize assertions.
+
+## 2025-10-10 Production Blocker Sweep
+
+### ✅ Supabase Fix
+- **Status**: CI GREEN (17/17 unit tests passing, Supabase memory tests resolved)
+- **Evidence**: `tests/unit/supabase.memory.spec.ts` all passing
+- **Next**: Ready to coordinate with AI/Reliability on decision logging verification (Task 4)
+
+### ⏳ Staging Postgres + Secrets
+- **Status**: BLOCKED - awaiting deployment/reliability provisioning (per manager:78)
+- **Ready**: Migration rollback script (`scripts/qa/test-migration-rollback.sh`)
+- **Ready**: Migration validation procedures documented
+- **Action**: Execute forward/back tests immediately after staging connection string delivered
+
+### ⏳ GA MCP Readiness
+- **Status**: BLOCKED - awaiting OCC-INF-221 credential delivery (per manager:59)
+- **Impact**: Cannot add live MCP smoke coverage to Playwright suite
+- **Mitigation**: Mock fixtures operational, ready to add live coverage when credentials land
+
+### ✅ Operator Dry Run (2025-10-16)
+- **Status**: Test plan complete (`scripts/qa/operator-dry-run-plan.md`)
+- **Blockers**:
+  - ⚠️ Staging access credentials pending (per manager:52)
+  - ⚠️ Modal implementation status unclear (need to verify if live per manager:167-169)
+  - ⏳ Dry run date/participants not yet confirmed by product/enablement
+- **Mitigation**: Fallback to `?mock=1` mode if staging unavailable
+- **Next**: Verify modal status with engineer, coordinate with enablement/support on scheduling
 - Published CX Escalations/Sales Pulse Playwright coverage plan (`docs/runbooks/qa_playwright_plan.md`) so scenarios are ready to implement once staging data arrives.
 
 ## Executive Summary — 2025-10-09
@@ -37,6 +64,12 @@ expires: 2025-10-18
 **Resolution**: Supabase memory test failures resolved (all 4 putDecision retry tests now passing)
 
 ## Action Items — 2025-10-09
+## 2025-10-09 Production Blockers Update
+- Supabase fix validation: prepared to rerun `tests/unit/supabase.memory.spec.ts` + parity checks once reliability hands over logs/credentials; currently blocked on missing service key.
+- Staging Postgres migrations: test plan drafted; execution paused until deployment shares connection details.
+- GA MCP readiness: monitoring integrations ticket so Playwright suites can incorporate live analytics checks when host credentials land.
+- Operator dry run: coordinating evidence capture template to bundle Playwright + regression artifacts once staging access confirmed.
+
 - ✅ **RESPONSE to AI agent** re: prompt regression artifacts:
   - **Location**: Keep under `artifacts/ai/prompt-regression-*.json` (aligns with role-based artifact organization)
   - **Retention**: 90 days (matches session retention per compliance requirements)

@@ -1,10 +1,38 @@
 epoch: 2025.10.E1
 doc: feedback/marketing.md
 owner: marketing
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-10
+expires: 2025-10-11
 ---
+# Marketing Daily Status — 2025-10-10
+
+## Summary
+- Followed up with product (20:25 ET) using the launch timeline playbook to underscore scheduling impact; awaiting go-live window by 2025-10-10 10:00 ET to unlock campaign calendar + ESP holds.
+- Confirmed with design (20:27 ET) that tooltip placement annotations will post first thing tomorrow; prepped documentation hooks to update the handoff within two hours of receipt.
+- Aligned launch timeline playbook with refreshed dependency status and paused localization workstream per manager directive (`docs/marketing/launch_timeline_playbook.md`).
+- Coordinated with deployment/reliability notes so Supabase credentials + staging Postgres handoff stay tracked in marketing KPI plans.
+
+## Production Blocker Focus
+- **Supabase telemetry fix:** Monitoring reliability handoff for `SUPABASE_URL`/`SERVICE_KEY`; timeline playbook KPI table flags dependency. Ready to update comms once parity script/evidence re-run is confirmed.
+- **Staging Postgres + secrets:** Runbook references are in place; coordinating with deployment once `DATABASE_URL` surfaces so operator FAQ/training script can call out staging login details.
+- **GA MCP readiness:** Waiting on OCC-INF-221 outcome; will update comms packet metadata + campaign calendar once integrations supplies host/credential timing.
+- **Operator dry run:** Training script + FAQ alignment set; pending staging access and tooltip annotations to finalize walkthrough deck.
+
+## Blockers / Risks
+- **Launch window confirmation (Product):** No response yet to 20:25 ET follow-up; escalation path planned if no update by 10:00 ET.
+- **Tooltip placement annotations (Design):** Delivery promised for 2025-10-10 AM; comms updates queued immediately after arrival.
+- **Supabase telemetry credentials (Reliability):** Still outstanding; prevents KPI validation and launch-day reporting readiness.
+
+## Requests / Questions for Manager
+- If product remains silent past 10:00 ET, please escalate so we can lock the launch calendar.
+- Confirm ownership for sending support training invites once staging access is live (marketing ready to draft copy).
+
+## Next Session Priorities (2025-10-10 PM)
+1. Update launch comms packet + evidence bundle once product/design feedback lands.
+2. Translate launch timeline playbook to calendar dates immediately after production window arrives.
+3. Prep operator dry run invite draft and deck once tooltip annotations + staging credentials land.
+
 # Marketing Daily Status — 2025-10-09
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
@@ -20,6 +48,18 @@ expires: 2025-10-10
 - Reviewed launch comms packet approvals and drafted outreach plan to secure product sign-off; pending final go-live window from product before sending.
 - Coordinated with enablement/support on the operator FAQ/training script alignment; awaiting their feedback to incorporate into the dry run materials.
 - Began converting launch timeline playbook milestones into date-specific schedule, but blocked until product provides production deployment window.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: holding launch comms updates until reliability confirms mitigation so we can reference stable monitoring in operator messaging.
+- Staging Postgres + secrets: tracking deployment’s secret provisioning so staging comms can include accurate readiness notes for the dry run.
+- GA MCP readiness: will update campaign timelines once integrations secures credentials; currently messaging that analytics tile remains mock.
+- Operator dry run: training script + FAQ ready to send as soon as product/enablement confirm staging access and invite list.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: holding comms updates that reference decision sync reliability until data/reliability confirm mitigation; flagged need to update FAQ once metrics stabilize.
+- Staging Postgres + secrets: synced with deployment on evidence expectations so launch comms can reference staging validation when secrets land.
+- GA MCP readiness: prepared comms snippet for credential go-live announcement; will finalize copy once integrations provides OCC-INF-221 outcome.
+- Operator dry run: keeping invite language + training script ready to send as soon as product/enablement confirm staging access and attendee list.
 - Updated staging preview checklist to pull in designer tooltip annotations once delivered (`docs/marketing/launch_timeline_playbook.md`), keeping playbook aligned with new design assets.
 
 ## Summary

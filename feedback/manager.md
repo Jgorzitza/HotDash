@@ -32,6 +32,12 @@ expires: 2025-10-10
 ## Deployment Push Status — 2025-10-09
 - 20:00 ET: Final compliance + manager edits committed locally; pushing `main` now so remote evidence stays current and matches this log entry.
 
+## 2025-10-10 Production Blocker Sweep
+- Supabase fix: reliability/engineering/data still waiting on monitor script + log export; keeping OCC-212 elevated and chasing owners for delivery times today.
+- Staging Postgres + secrets: deployment + reliability coordinating on GitHub environment secrets and Postgres credentials; expect follow-up this afternoon to unblock QA/deployment tasks.
+- GA MCP readiness: integrations pinged infra/compliance for OCC-INF-221 credential timeline; product/data remain blocked pending response.
+- Operator dry run: enablement/support awaiting staging access confirmation and annotated visuals before invites go out; marketing standing by with training script.
+
 ## 2025-10-08 — Sprint Focus Activation
 - Cross-checked each role’s sprint focus against current feedback entries and logged coordination pings to keep deliverables aligned per `docs/directions/manager.md:24`.
 - Opened thread with reliability to track Supabase/Zoho secret rotation schedule, supporting `docs/directions/manager.md:25`; awaiting their confirmed calendar.
@@ -69,6 +75,8 @@ expires: 2025-10-10
 - Ask: Can marketing drive the support training invite cadence directly, or should enablement own scheduling once slots are confirmed?
 - 20:25 ET: Followed up with product (Slack thread #occ-launch) referencing the launch timeline playbook impact on ESP scheduling; no response yet, will escalate if quiet by tomorrow 10:00 ET.
 - 20:27 ET: Nudged designer for tooltip placement annotations (referenced `docs/marketing/tooltip_placement_request_2025-10-07.md`); they confirmed delivery first thing tomorrow and will tag marketing once uploaded.
+- Supabase telemetry credentials still outstanding; marketing highlighted dependency in KPI table and will refresh comms evidence as soon as reliability shares secrets.
+- GA MCP readiness remains blocked on OCC-INF-221; marketing standing by to update comms metadata once integrations confirms host/credential ETA.
 
 ## Deployment Pipeline Status — 2025-10-09
 - Re-read the refreshed deployment direction (`docs/directions/deployment.md`, sprint focus 2025-10-08) and confirmed our deliverables: staging pipeline, env matrix, prod go-live checklist, and Postgres staging configuration.
@@ -84,7 +92,9 @@ expires: 2025-10-10
 - Direction refresh acknowledged; sprint focus remains data inventory upkeep, Supabase incident readiness, and vendor DPA audit (see `feedback/compliance.md` 2025-10-09 entry).
 - Supabase incident runbook published (`docs/runbooks/incident_response_supabase.md`) with companion tabletop template drafted at `docs/compliance/evidence/tabletop_supabase_scenario.md`; awaiting reliability/support confirmation on scenario scope and drill date.
 - Retention automation blocked on reliability deploying Supabase `pg_cron` jobs and sharing first-run logs; follow-up booked for 2025-10-10 14:00 ET, evidence to land under `docs/compliance/evidence/retention_runs/`.
-- Vendor DPAs/residency attestations still pending for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`); 2025-10-09 reminder log captured in `docs/compliance/evidence/vendor_followups_2025-10-09.md`, second reminder wave queued for 2025-10-10 AM.
+- Vendor DPAs/residency attestations still pending for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`); documented reminder cadence in `docs/compliance/evidence/vendor_followups_2025-10-09.md` and escalated today via `docs/compliance/evidence/vendor_followups_2025-10-10.md` with manager CC.
+- Coordinated with deployment on outstanding staging Postgres + production secret requirements (`docs/deployment/env_matrix.md`); compliance review ready once reliability supplies vault paths and smoke evidence.
+- Operator dry run compliance content (privacy notice + FAQ references) re-validated for the 2025-10-16 session; awaiting enablement/product confirmation on agenda and staging access before attaching final talking points.
 - Requests: 1) Manager to escalate vendor legal contacts for signed DPAs/residency statements, 2) Reliability to prioritize cron rollout + deliver logs, 3) Support to confirm tabletop participation so we can lock drill date.
 
 ### Outstanding Dependencies
@@ -113,7 +123,7 @@ expires: 2025-10-10
 
 ## Engineer Direction Sync — 2025-10-08
 - Engineer acknowledged the refreshed docs/directions/engineer.md focus (Supabase sync remediation, Postgres staging enablement, modal polish, telemetry wiring).
-- Action: Added `supabase/sql/analytics_facts_table.sql` and wired parity script guidance so data/reliability can create the Supabase `facts` table without guesswork; script now emits a `supabase.facts_table_missing` status on `PGRST205`.
+- Action: Added `supabase/sql/analytics_facts_table.sql` and wired parity script guidance so data/reliability can create the Supabase `facts` table without guesswork; reran `npm run ops:check-analytics-parity` and logged the `supabase.facts_table_missing` event (`artifacts/logs/supabase_parity_run_2025-10-10.json`) while we wait for reliability to execute the SQL.
 - Status: Feature flag module restored (`app/config/featureFlags.ts`) with unit coverage; targeted `npm run test:unit` specs now pass.
 - Status: Lighthouse runner now consumes `LIGHTHOUSE_TARGET` or `STAGING_SMOKE_TEST_URL`; awaiting staging secret hookup to resume evidence uploads.
 
@@ -158,6 +168,7 @@ expires: 2025-10-10
 - Refresh sprint focus in `docs/directions/ai.md`, `docs/directions/data.md`, `docs/directions/designer.md`, `docs/directions/engineer.md`, `docs/directions/marketing.md`, `docs/directions/product.md`, `docs/directions/qa.md`, `docs/directions/reliability.md`, and `docs/directions/support.md` to align with the M1/M2 check-in and the English-only scope.
 - Added direction coverage for Compliance, Deployment, Integrations, and Enablement (`docs/directions/compliance.md`, `docs/directions/deployment.md`, `docs/directions/integrations.md`, `docs/directions/enablement.md`) so every role has current marching orders.
 - Updated AI and QA sprint focus (2025-10-08) to reflect regression evidence sharing, Supabase logging dependencies, and dry-run preparation.
+- Strengthened git workflow guidance in `docs/git_protocol.md` and `docs/directions/README.md`; agents must follow the fetch/rebase/push steps and work from their own branches without waiting for additional approval.
 - All agents must review the updated direction doc for their role, acknowledge in their feedback log today, and raise blockers ahead of the 2025-10-08 sync.
 - Reminder: Manager direction updates now land in `feedback/manager.md`. When you need the latest assignments or sprint focus, check this file first.
 

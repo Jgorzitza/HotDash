@@ -18,6 +18,12 @@ expires: 2025-10-09
 | Zoho CRM | No sandbox; vendor not engaged | N/A | Credentials not requested | Tests not defined | Pending prioritization—need product requirements before outreach. |
 
 ## 2025-10-09 Sprint Focus Kickoff
+## 2025-10-09 Production Blockers Update
+- GA MCP readiness: tracking OCC-INF-221 sync at 18:30 UTC; prepared onboarding doc sections for host/key delivery plus compliance evidence once infra responds.
+- Supabase/staging support: aligned with reliability on secret rotation doc to ensure integration points captured once secrets populate GitHub.
+- Operator dry run implication: verifying external vendor touchpoints (Chatwoot, GA MCP) so enablement can rely on stable integrations during rehearsal; pending credential confirmations.
+- 19:20 ET: scheduled a fresh OCC-INF-221 follow-up for tomorrow morning; once infra shares host/credential bundle we’ll publish the onboarding update and notify deployment so secrets hit GitHub immediately.
+
 - GA MCP credentials: prepped questions + evidence placeholders ahead of the 18:30 UTC infra sync so `docs/integrations/ga_mcp_onboarding.md` can be updated immediately after; waiting on OCC-INF-221 outcome for host/credential ETA.
 - Social sentiment vendor: drafted comparison notes for Hootsuite vs native APIs and listed contract evidence gaps; blocked until HS-44721 rate-limit doc and contract packet arrive.
 - Integration readiness dashboard: staged status refresh with latest blockers across vendors; needs inputs from infra/compliance before publishing update.
@@ -36,6 +42,18 @@ expires: 2025-10-09
 - Followed up with infrastructure on GA MCP credential timeline; awaiting post-sync notes before updating onboarding checklist with firm dates.
 - Prepped sentiment vendor comparison summary for marketing/product decision meeting, including contract considerations and monitoring asks; blocked on receipt of Hootsuite rate-limit documentation (HS-44721).
 - Began populating integration readiness dashboard draft with latest statuses so manager/product can review once outstanding evidence lands.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync: monitoring reliability/engineering updates so integration dashboards reflect the restored monitor path once assets land; no direct action until script delivered.
+- Staging Postgres + secrets: coordinating with deployment/reliability to capture secret provisioning evidence, ensuring integration readiness dashboard includes the new GitHub env rows when available.
+- GA MCP readiness: top priority—still waiting on OCC-INF-221 outcome; following up with infra/compliance this afternoon for credential ETA so parity checklist can start.
+- Operator dry run: aligning with enablement/product to confirm external vendor contacts (Hootsuite) aren’t needed during rehearsal; noting dependency status in readiness dashboard.
+
+## 2025-10-09 Production Blocker Push
+- GA MCP readiness: drafted credential handoff checklist updates (host + secret variable mapping) so automation and compliance evidence can publish immediately after OCC-INF-221; waiting on infra response from today’s 18:30 UTC sync.
+- Supabase fix coordination: synced with reliability/data to ensure integration notes capture the Supabase log export path once delivered, enabling shared visibility across teams.
+- Staging Postgres + secrets: confirmed deployment’s secret list matches integration needs; prepared to validate environment matrix entries when reliability posts vault references.
+- Operator dry run: aligned with enablement/support on GA MCP talking points for pre-read; will attach MCP readiness status to Memory once credential path is confirmed.
 - Published the draft snapshot at `docs/integrations/integration_readiness_dashboard.md` to capture current credential/test blockers across GA MCP, Hootsuite, Supabase, and Chatwoot.
 
 ## Key Updates

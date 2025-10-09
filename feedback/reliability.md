@@ -13,6 +13,12 @@ expires: 2025-10-13
 - Blocked: presently executing integrations workload; reliability tasks require dedicated owner to progress monitor scripts, secrets, and drills.
 
 ## 2025-10-09 Direction Check-in
+## 2025-10-09 Production Blockers Update
+- Supabase fix: compiling latest incident timelines and pulling raw logs for engineering/data; staging service key delivery targeted for 2025-10-09 21:00 UTC pending vault approval.
+- Staging Postgres + secrets: drafting GitHub secrets drop + vault path doc; waiting on deployment confirmation before flipping environment reviewers.
+- GA MCP readiness: coordinating with infra on OCC-INF-221 outcome; will publish ETA + credential storage path once ticket closes.
+- Operator dry run: monitoring synthetic check outputs so staging remains within <300ms target; will share evidence bundle with enablement once scripts stabilize.
+
 
 ## 2025-10-09 — AI Escalations Dependency
 - AI agent needs `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` populated in the shared secrets vault/GitHub environments to move decision logs off the in-memory fallback. Without these, guardrail logging remains ephemeral and the pilot readiness brief stays blocked.
@@ -34,7 +40,20 @@ expires: 2025-10-13
 - Logged coordination brief for engineering outlining required Supabase monitor assets and requested ETA/requirements confirmation (`feedback/reliability_to_engineer_coordination.md`).
 - Captured follow-up with data on Supabase log export needs, including artifact paths and field expectations (`feedback/reliability_to_data_coordination.md`).
 - Staged artifact directories (`artifacts/logs/`, `artifacts/monitoring/`) for incoming exports and summaries once monitor script lands.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: following up on monitor asset delivery today and drafting alert threshold proposal so we can rerun the parity script the moment engineering lands `scripts/ci/supabase-sync-alerts.js`. Blocking factors remain missing script + fresh log export; coordinating handoff windows with engineering/data.
+- Staging Postgres + secrets: prepped secret rotation plan updates (Supabase/Shopify/Zoho/Chatwoot) to share with deployment once new GitHub environment secrets are ready; waiting on deployment’s checklist so we can log evidence in env matrix and rotation calendar.
+- GA MCP readiness support: standing by to validate monitoring hooks once integrations secures credentials; noted in rotation plan that GA MCP secrets must land alongside Supabase set before production go-live.
+- Operator dry run readiness: continuing daily synthetic checks to keep dashboard latency evidence fresh; will document latest run in this log after tonight’s workflow execution so enablement can reference for the 2025-10-16 session.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: gathering retry/error logs for the 2025-10-07 18:00 → 2025-10-08 12:00 UTC window and confirming delivery path for staging `SUPABASE_SERVICE_KEY`; will drop files into `artifacts/logs/` for data/engineering replay.
+- Staging Postgres + secrets: coordinating with deployment to populate GitHub `production` environment secrets and document vault references; drafting rotation notes for Supabase/Zoho entries before handing back to deployment.
+- GA MCP readiness: awaiting infra’s OCC-INF-221 update to log secret handling expectations; will ensure monitoring hooks include MCP parity alerts once host arrives.
+- Operator dry run: prepping synthetic check evidence and backup drill prerequisites so the 2025-10-16 session has uptime metrics; capturing pending actions in `feedback/reliability.md` for follow-through.
 - Opened synthetic check evidence log (`artifacts/monitoring/synthetic_check_log_2025-10-09.md`) noting staging URL credential blocker so runs can start immediately after secrets provision.
+- 19:15 ET: sent reminder to infra/deployment threads requesting Supabase service key drop + GitHub secret provisioning update; committed to share log export and vault paths by 2025-10-10 AM.
 
 ## 2025-10-08 Updates
 - Added exponential backoff + retry to Supabase memory client (`packages/memory/supabase.ts`), covering transient timeouts (ETIMEDOUT/ECONNRESET/429+) with 3 attempts and 250 ms base delay.
