@@ -13,9 +13,9 @@ expires: 2025-10-18
 - **Launch window:** Pending product confirmation (tracked in `feedback/marketing.md`). All timelines below assume `T0` = production go-live date.
 - **Scope:** English-only launch collateral (banner, email, blog, tooltip) plus enablement touchpoints.
 - **Dependencies:**
-  - Product to confirm production date and staging credentials.
-  - Design to deliver tooltip placement annotations (due 2025-10-08 @ 12:00 ET).
-  - Localization to validate "Centre OCC" abbreviation by 2025-10-09 @ 18:00 ET (impacts FR backlog only).
+  - Product to confirm production date and staging credentials (follow-up sent 2025-10-09 @ 20:25 ET; awaiting response by 2025-10-10 10:00 ET).
+  - Design to deliver tooltip placement annotations (confirmed for 2025-10-10 AM delivery).
+  - Localization follow-up paused per manager direction; resume only if product reopens multi-language scope.
 
 ## Timeline Summary
 | Phase | Relative Timing | Owner | Key Outputs | Readiness KPI |
@@ -80,16 +80,17 @@ expires: 2025-10-18
 | Tile interaction depth (>=2 tiles/session) | >= 60% | Telemetry pipeline | Data | Validate via `scripts/ops/check-dashboard-analytics-parity.ts` once Supabase schema fixed |
 | Support readiness CSAT | >= 4/5 | Post-training survey | Support | Send automatically after dry run |
 
-## 2025-10-09 Update
-- Added dependency on designer tooltip annotations to staging preview checklist.
-- Waiting on product go-live window before translating relative timings into calendar invites.
+## 2025-10-10 Update
+- Re-pinged product via #occ-launch Slack referencing scheduling impact; pending response before 2025-10-10 10:00 ET.
+- Designer confirmed tooltip annotations will post 2025-10-10 AM; checklist now assumes 2-hour turnaround to update comms once assets land.
+- Localization workstream remains on hold; FR tasks tracked separately in translation packet backlog.
 
 ## Risks & Mitigations
 | Risk | Impact | Mitigation | Owner |
 |------|--------|-----------|-------|
 | Launch date still unset | Blocks comms scheduling and partner invites | Manager to follow up with product lead (standing ping 2025-10-09 @ 10:45 ET) | Product + Manager |
 | Tooltip placement annotations late | Delays engineering wiring of tooltip copy | Designer to deliver annotated screenshots; marketing ready to update handoff within 2 hours | Design + Marketing |
-| Localization feedback requests FR headline change | Could require banner/email copy adjustment | Maintain English-only launch; queue FR revisions in translation packet | Localization + Marketing |
+| Localization feedback requests FR headline change | Could require banner/email copy adjustment | English-only launch; queue FR revisions in translation packet if scope reopens | Localization + Marketing |
 | Supabase telemetry credentials missing | Prevents KPI validation post-launch | Reliability to populate secrets (see `docs/deployment/env_matrix.md`, `feedback/reliability.md`) | Reliability |
 
 ## Communication Matrix
