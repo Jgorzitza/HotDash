@@ -67,6 +67,8 @@ expires: 2025-10-10
 - Launch timeline playbook published with relative T- milestones, KPIs, and risk matrix pending product launch date (`docs/marketing/launch_timeline_playbook.md`).
 - Awaiting product launch window confirmation (blocks calendar locking) and design tooltip annotations (due Oct 8 @ 12:00 ET). Localization ask paused per manager direction unless product reopens multi-language scope.
 - Ask: Can marketing drive the support training invite cadence directly, or should enablement own scheduling once slots are confirmed?
+- 20:25 ET: Followed up with product (Slack thread #occ-launch) referencing the launch timeline playbook impact on ESP scheduling; no response yet, will escalate if quiet by tomorrow 10:00 ET.
+- 20:27 ET: Nudged designer for tooltip placement annotations (referenced `docs/marketing/tooltip_placement_request_2025-10-07.md`); they confirmed delivery first thing tomorrow and will tag marketing once uploaded.
 
 ## Deployment Pipeline Status — 2025-10-09
 - Re-read the refreshed deployment direction (`docs/directions/deployment.md`, sprint focus 2025-10-08) and confirmed our deliverables: staging pipeline, env matrix, prod go-live checklist, and Postgres staging configuration.
