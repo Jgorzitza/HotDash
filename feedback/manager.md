@@ -2,10 +2,34 @@
 epoch: 2025.10.E1
 doc: feedback/manager.md
 owner: manager
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-10
+expires: 2025-10-11
 ---
+# Manager Daily Status — 2025-10-10 07:25 UTC
+
+## QA Coverage Pulse
+- `npm run test:unit` (12 files, 30 tests) — PASS. Synthetic check harness restored (`scripts/ci/synthetic-check.mjs`), no module resolution errors.
+- `npm run test:e2e` — PASS; targeted check `npm run test:e2e -- --grep "Heading"` also PASS after renaming dashboard spec to cover headings explicitly (`tests/playwright/dashboard.spec.ts:6`).
+- `bash scripts/qa/test-migration-rollback.sh` — PASS; log archived at `artifacts/qa/migration-test-20251009-070236.log`, no Prisma permission warnings.
+
+## Overnight Backlog Tracking
+- Reviewed overnight backlog bullets in `docs/directions/ai.md`, `docs/directions/marketing.md`, `docs/directions/data.md`, and `docs/directions/manager.md`; confirmed owners are still aligned and logged follow-ups in their feedback files.
+- AI block: Supabase telemetry still waiting on reliability secrets; noted in `feedback/ai.md` for escalation.
+- Marketing actions staged pending staging credential bundle; captured in `docs/marketing/launch_timeline_playbook.md` and `feedback/marketing.md`.
+- Data awaiting Supabase NDJSON export + GA MCP credential ETA; analyzer tooling (`scripts/ops/analyze-supabase-logs.ts`) on deck.
+- Manager backlog items (risk register, Playwright gate, secrets posture) refreshed for leadership sync.
+
+## Direction/Compliance Checks
+- Re-read `docs/directions/manager.md` (last_reviewed: 2025-10-06) to reconfirm sprint focus (secrets posture, Playwright heading gate, operator dry run).
+- Verified current branch `agent/engineer/dashboard-refresh-telemetry2` complies with `agent/<agent>/<molecule>` naming.
+- Reviewed `artifacts/monitoring/synthetic_check_log_2025-10-09.md`; staging URL still missing — pinged reliability/deployment with noon ET deadline.
+- Secrets posture: Supabase/Zoho rotations still outstanding; scheduled follow-up escalation at 12:00 ET.
+
+## Immediate Actions
+1. Push reliability for Supabase service key + NDJSON export; unblock parity script and AI/data backlog.
+2. Sync with product/support on 2025-10-16 dry run slot, staging credential bundle, and visual overlays.
+3. Confirm Playwright/Vitest/Lighthouse evidence attached to all active PRs before approval.
 # Manager Daily Status — 2025-10-09
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
@@ -406,3 +430,8 @@ expires: 2025-10-10
   - 2025-10-12: Publish privacy notice + opt-out messaging, update support documentation.
   - 2025-10-14: Retention automations operational and vendor DPAs on file (see R1/R2 in `feedback/compliance.md`).
   - 2025-10-16: Re-run DPIA after mitigations for Anthropic go-live decision.
+## AI Agent Status — 2025-10-10
+- Restored the prompt regression harness (`npm run ai:regression`) and captured baseline metrics (BLEU 0.9444 / ROUGE-L 0.9565); latest artifact `artifacts/ai/prompt-regression-2025-10-09-174559.json` shared with QA.
+- Published AI staging readiness docs (`docs/strategy/ai_pilot_readiness_brief.md`, `docs/runbooks/supabase_staging_secret_handoff.md`, `docs/runbooks/templates/supabase.staging.env.template`) and refreshed dry-run sample packets with staging checklists.
+- Blocked on reliability delivering Supabase staging secrets + telemetry counters before flipping `FEATURE_AI_ESCALATIONS=1` and logging BLEU/ROUGE deltas to Memory.
+
