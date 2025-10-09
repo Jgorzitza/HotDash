@@ -92,7 +92,8 @@ expires: 2025-10-14
 ## 2025-10-08 — Operator Training Dry Run Coordination
 - Support requested confirmation on the 2025-10-16 @ 13:00 ET dry run slot and staging access handoff; see `docs/runbooks/operator_training_agenda.md:214` for prep checklist. Awaiting response to proceed with invites.
 - 2025-10-08 14:35 ET — Enablement delivered job aid outlines and pinged Riley Chen for dry run confirmation, attendee roster, and staging package validation; follow-up due 2025-10-09 EOD so enablement can publish Memory pre-read bundle.
-- 2025-10-09 09:00 ET — Enablement sent reminder requesting dry run confirmation, attendee list, and staging access package by 12:00 ET; awaiting response.
+- 2025-10-09 09:00 ET — Enablement sent reminder requesting confirmation, attendee list, and staging package by 12:00 ET; awaiting response.
+- 2025-10-09 12:05 ET — Enablement escalated non-response in #occ-leadership and requested manager assistance to unblock confirmations.
 
 ## Action Request — 2025-10-07
 - Review marketing deliverables outlined in `docs/marketing/product_approval_packet_2025-10-07.md`.
