@@ -2,11 +2,38 @@
 epoch: 2025.10.E1
 doc: feedback/designer.md
 owner: designer
-last_reviewed: 2025-10-05
+last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-06
 ---
+# Designer Daily Status
+
+## 2025-10-09 Sprint Execution
+- Published draft tooltip + focus annotations for CX Escalations and Sales Pulse (`docs/design/tooltip_annotations_2025-10-09.md`) so engineering can wire ARIA/focus updates while Figma access remains blocked.
+- Synced outstanding asset list (status icon SVGs, sparkline screenshot) with enablement to include in job aids once exports are ready.
+- Blocked: still no Figma workspace access; component library packaging deferred until invite arrives.
+
+## 2025-10-08 Sprint Execution
+- Reviewed the shared component library deliverables and outlined a static handoff plan while Figma access remains blocked.
+- Drafted tooltip and modal focus annotation checklist against the latest wireframes so callouts are ready once assets unlock.
+- Synced with enablement on Sales Pulse and CX Escalations visual needs; waiting on staging screenshots to produce overlays.
+
 # Designer Daily Status — 2025-10-05
+
+## Direction Sync — 2025-10-09 (Cross-role Coverage)
+- Revisited sprint focus (component library handoff, tooltip/focus annotations, enablement assets) per `docs/directions/designer.md`.
+- Blocked: currently acting as integrations agent only and lack time/Figma access to progress design tasks; need dedicated designer coverage to resume workstreams.
+
+## 2025-10-09 Sprint Focus Kickoff
+- Catalogued remaining component library assets (status icons, focus-visible tokens) and drafted packaging checklist so a static handoff can be produced while Figma access is pending.
+- Sketched tooltip and modal focus annotation plan aligned to the latest wireframes; ready to drop callouts the moment design tooling access is restored.
+- Coordinated with enablement on visual asset needs for CX Escalations/Sales Pulse job aids and captured open items to tackle once tools unlock.
+- Blocker: still lack Figma workspace access + dedicated designer bandwidth because of integrations coverage; requested reassignment so sprint deliverables can ship.
+
+## 2025-10-08 — Sprint Focus Activation
+- Assembled asset checklist for the shared component library/static handoff package so we can fulfill `docs/directions/designer.md:26` once Figma access lands; mapped required status icons + focus styles against existing token set.
+- Began annotating tooltip placements and modal focus flows using the latest wireframes, capturing draft notes to deliver to engineering by 2025-10-09 per `docs/directions/designer.md:27`.
+- Partnered with enablement asynchronously to scope visual assets for CX Escalations / Sales Pulse job aids, aligning with `docs/directions/designer.md:28` and noting dependencies on staging screenshots.
 
 ## Summary
 Completed full UX/design package for Operator Control Center v1 launch per docs/directions/designer.md requirements. All deliverables aligned with Shopify Polaris Design System and ready for engineer handoff.
