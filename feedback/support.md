@@ -42,6 +42,7 @@ expires: 2025-10-09
 - Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
 - Enablement responded (14:36 ET) with updated job aids + coordination plan and is capturing pre-session questions for inclusion in the operator Q&A template once support shares priorities.
 - 2025-10-09 09:00 ET — Enablement sent follow-up reminder for dry run confirmations; awaiting action items from product/support before invites go out.
+- 2025-10-09 12:05 ET — Enablement escalated the silence to manager in #occ-leadership; support to share pre-session questions immediately after staging package confirmed.
 - Expanded Chatwoot heuristic coverage (additional delivery/refund phrases) and added regression tests (`npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts`).
 
 ## Blockers / Dependencies
