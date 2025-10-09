@@ -30,7 +30,7 @@ expires: 2025-10-10
 - 19:50 ET: Logged integrations prep work (GA MCP sync placeholder, reliability agenda, Hootsuite evidence scaffolding) and cross-linked blockers so manager/infra can act quickly once the 18:30 UTC sync wraps (`docs/integrations/ga_mcp_onboarding.md`, `docs/integrations/reliability_monitoring_agenda.md`, `artifacts/vendors/hootsuite/2025-10-09/`).
 
 ## Deployment Push Status — 2025-10-09
-- 20:00 ET: Final compliance + manager edits committed locally; pushing `main` now so remote evidence stays current and matches this log entry.
+- 10:15 ET: Attempted to push deployment updates (staging playbook + feedback log). Remote rejected (`non-fast-forward`). Holding local branch without pulling—awaiting manager guidance on reconciling with upstream and keeping local evidence intact.
 
 ## Deployment Status — 2025-10-10
 - Re-read refreshed deployment direction (2025-10-08 sprint focus) and executing production blockers per today’s directive.
@@ -40,7 +40,6 @@ expires: 2025-10-10
 - Next once secrets arrive: run `scripts/deploy/check-production-env.sh`, attach log using new template, coordinate QA rollback drill, and prep production dry-run dispatch.
 
 ## 2025-10-10 Production Blocker Sweep
-- Tooling: Added `scripts/ops/analyze-supabase-logs.ts` (run via `npm run ops:analyze-supabase-logs`) with unit coverage so reliability/data can summarize Supabase sync failures; investigators now have a repeatable log summary step in the incident runbook.
 - Supabase fix: reliability/engineering/data still waiting on monitor script + log export; keeping OCC-212 elevated and chasing owners for delivery times today.
 - Staging Postgres + secrets: deployment + reliability coordinating on GitHub environment secrets and Postgres credentials; expect follow-up this afternoon to unblock QA/deployment tasks.
 - GA MCP readiness: integrations pinged infra/compliance for OCC-INF-221 credential timeline; product/data remain blocked pending response.
@@ -100,7 +99,6 @@ expires: 2025-10-10
 - Direction refresh acknowledged; sprint focus remains data inventory upkeep, Supabase incident readiness, and vendor DPA audit (see `feedback/compliance.md` 2025-10-09 entry).
 - Supabase incident runbook published (`docs/runbooks/incident_response_supabase.md`) with companion tabletop template drafted at `docs/compliance/evidence/tabletop_supabase_scenario.md`; awaiting reliability/support confirmation on scenario scope and drill date.
 - Retention automation blocked on reliability deploying Supabase `pg_cron` jobs and sharing first-run logs; follow-up booked for 2025-10-10 14:00 ET, evidence to land under `docs/compliance/evidence/retention_runs/`.
-- Drafted retention evidence drop instructions (`docs/compliance/evidence/retention_runs/README.md`) so reliability can deposit cron outputs without reformatting once the job runs.
 - Vendor DPAs/residency attestations still pending for GA MCP, Supabase, Anthropic (`docs/compliance/evidence/vendor_dpa_status.md`); documented reminder cadence in `docs/compliance/evidence/vendor_followups_2025-10-09.md` and escalated today via `docs/compliance/evidence/vendor_followups_2025-10-10.md` with manager CC.
 - Coordinated with deployment on outstanding staging Postgres + production secret requirements (`docs/deployment/env_matrix.md`); compliance review ready once reliability supplies vault paths and smoke evidence.
 - Operator dry run compliance content (privacy notice + FAQ references) re-validated for the 2025-10-16 session; awaiting enablement/product confirmation on agenda and staging access before attaching final talking points.

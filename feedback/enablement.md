@@ -71,17 +71,15 @@ _Pending staffing update. Acknowledge `docs/directions/enablement.md` upon assig
 ## 2025-10-09
 
 **Progress**:
-- 09:00 ET — Sent follow-up Slack DM to Riley Chen and Morgan Patel reiterating the 2025-10-16 dry run dependencies (agenda confirmation, attendee list, staging access package) and requesting responses by 12:00 ET for same-day scheduling.
-- 12:05 ET — Escalated the silence in #occ-leadership, summarizing outstanding needs and requesting manager support to unblock confirmations.
+- 09:00 ET — Sent follow-up Slack DM to Riley Chen and Morgan Patel reiterating the 2025-10-16 dry run dependencies (agenda confirmation, attendee list, staging access package) and requesting responses by 12:00 ET for same-day scheduling. No replies yet as of this log.
+- Confirmed no replies yet from earlier outreach on the 2025-10-16 dry run; escalation draft prepped in case the 12:00 ET deadline passes without updates.
+- Noted from deployment/reliability logs that GitHub `production` secrets, Shopify CLI token, and staging Postgres credentials remain outstanding; job aid finalization depends on those handoffs so operators can reference accurate staging steps during the dry run.
 - Reviewed reliability/product logs to snapshot outstanding production blockers: Supabase decision sync monitoring scripts + secrets still pending, staging Postgres credentials awaiting deployment handoff, GA MCP credential delivery blocked on OCC-INF-221.
-- Highlighted that job aid finalization and pre-read distribution depend on GitHub `production` secrets, Shopify CLI token, and staging Postgres credentials landing so operators receive accurate staging guidance.
-- Authored `docs/enablement/dry_run_readiness_checklist.md` to track access, infrastructure, materials, and confirmation checkpoints ahead of the session.
 
 **Blockers / Dependencies**:
 - Need product to confirm the dry run slot, attendee list, and staging access package before sending invites or drafting Memory pre-read.
 - Require designer overlays once staging screenshots land to finalize the Sales Pulse/CX Escalations job aids ahead of the session.
 
 **Next Actions**:
-- Await manager guidance or direct responses from product/support; if still blocked by end of day, prep contingency communication for a potential reschedule.
-- Monitor reliability/deployment notes for Supabase/secrets progress and capture any enablement impacts in this log.
-- Populate the readiness checklist as confirmations arrive and outline contingency steps if infrastructure blockers persist through 2025-10-10.
+- Follow up with product/support tomorrow morning if confirmations are still missing; prepare escalation note for manager in parallel.
+- Monitor reliability/deployment notes for Supabase/secret progress and capture any enablement impacts in this log.
