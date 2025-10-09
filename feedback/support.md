@@ -6,11 +6,28 @@ last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-09
 ---
+# Support Daily Status — 2025-10-09
+
+## Direction Acknowledgment
+- Reviewed `docs/directions/support.md` (2025-10-08 refresh) and aligned on sprint focus: CX Escalations modal validation, English-only playbook/template upkeep, and operator dry run coordination.
+
+## Progress
+- Prepping updated CX Escalations runbook screenshots once staging seed is ready; confirmed template heuristics match current English-only scope.
+- Drafted operator enablement checklist updates so training reflects the trimmed template set.
+
+## Blockers / Dependencies
+- Awaiting product confirmation on 2025-10-16 dry run slot plus staging access to capture validation evidence.
+- Need seeded/staging conversations to regression-test Chatwoot heuristics beyond unit coverage.
+
+## Next Steps
+- Capture modal screenshots and refresh runbook validation notes after staging verification.
+- Coordinate with enablement/product on dry run logistics and calendar invites once access is unblocked.
+
 # Support Daily Status — 2025-10-08
 
 ## Summary
 - Implemented template-selection heuristics and aligned Chatwoot escalation labeling; updated runbook and unit tests to match (app/services/chatwoot/escalations.ts:87, app/routes/actions/chatwoot.escalate.ts:116, docs/runbooks/cx_escalations.md:87, tests/unit/chatwoot.escalations.spec.ts:54).
-- Filed the French localization request for Chatwoot templates and documented Tue/Thu status checks with marketing (docs/marketing/chatwoot_template_localization_request_2025-10-08.md:1, docs/runbooks/support_marketing_localization_sync.md:150).
+- Closed localization request; support operates English-only per manager direction and removed translation tasks from runbooks.
 - Coordinated the operator dry run with product, logging ownership and prep checklist for the 2025-10-16 proposal (docs/runbooks/operator_training_agenda.md:214).
 - Reliability request received 2025-10-08: supply Chatwoot sandbox API token for secret rotation dry-run by 2025-10-15; coordinating with integrations to fulfill.
 
@@ -22,9 +39,7 @@ expires: 2025-10-09
 - **Action safeguards:** Approve button still requires `suggestedReply`; guidance remains to escalate or reply in Chatwoot if the field is missing (docs/runbooks/cx_escalations.md:54).
 
 ## Localization & Marketing Sync
-- Submitted formal FR translation request for the Chatwoot templates with tone guidance and deadline (docs/marketing/chatwoot_template_localization_request_2025-10-08.md:1).
-- Set review cadence: verify translation status every Tuesday/Thursday until delivered, logging outcomes in this doc and `docs/runbooks/support_marketing_localization_sync.md:150`.
-- Await marketing owner confirmation; will attach Linear ticket once assignee named.
+- Localization workstream paused (English-only scope). Removed translation cadences from runbooks and closed outstanding requests.
 
 ## Operator Training Prep
 - Q&A capture template verified and staged for dry run (docs/runbooks/operator_training_qa_template.md:1).
@@ -32,7 +47,7 @@ expires: 2025-10-09
 - Pending: send calendar invite + agenda once product confirms staging access delivery.
 
 ## Risks / Blockers
-- ❌ Template localization pending — no SLA yet from marketing; risk operators lack FR responses.
+- ✅ Localization request closed — English-only templates confirmed.
 - ⚠️ Template heuristics rely on keyword matching; need production data review to confirm coverage once live.
 - ⚠️ Modal still lacks template selector/editing controls, so operators must escalate when suggestion unsuitable.
 
@@ -42,7 +57,6 @@ expires: 2025-10-09
 - Action handler reference: app/routes/actions/chatwoot.escalate.ts:85
 - Chatwoot suggestion heuristics: app/services/chatwoot/escalations.ts:87
 - Unit coverage: tests/unit/chatwoot.escalations.spec.ts:54
-- Localization request: docs/marketing/chatwoot_template_localization_request_2025-10-08.md:1
 - Dry run coordination: docs/runbooks/operator_training_agenda.md:214
 
 # Support Daily Status — 2025-10-07
@@ -107,7 +121,7 @@ expires: 2025-10-09
   - ship_update: "Shipping updated" — ✅ Tone aligned
   - refund_offer: "Refund offer" — ✅ Tone aligned
 - **AI/engineer review:** AI prompt v1.0.0 approved for pilot (see ai_reply_approval_criteria.md)
-- **Localization status:** ❌ French translations needed (action item filed with marketing)
+- **Localization status:** ✅ English-only scope confirmed; no translations required.
 - **Template update log:** Review outcomes documented in docs/runbooks/ai_reply_approval_criteria.md
 
 ## Operator Escalation Playbooks
@@ -136,12 +150,12 @@ _No incidents logged — dashboard not yet in production_
 - Operator Training Agenda: docs/runbooks/operator_training_agenda.md
 - Q&A Capture Template: docs/runbooks/operator_training_qa_template.md
 - AI Reply Approval Criteria: docs/runbooks/ai_reply_approval_criteria.md
-- Marketing Localization Sync: docs/runbooks/support_marketing_localization_sync.md
+- (Deprecated) Marketing localization sync doc retained for historical reference.
 
 ### Reference Documentation
 - Chatwoot templates: app/services/chatwoot/templates.ts:7-23
 - AI reply prompt: app/prompts/chatwoot/reply-generation.v1.md
-- Copy deck (EN/FR): docs/design/copy_deck.md
+- Copy deck (EN): docs/design/copy_deck.md
 - Brand tone deck: docs/marketing/brand_tone_deck.md
 - Support direction: docs/directions/support.md
 - CX Escalations modal (engineer): app/components/modals/CXEscalationModal.tsx
@@ -149,7 +163,7 @@ _No incidents logged — dashboard not yet in production_
 ## Blockers / Risks
 - ~~Dashboard not yet deployed~~ ✅ RESOLVED: CX Escalations modal live (2025-10-07)
 - ~~No runbooks directory~~ ✅ RESOLVED: 5 runbooks created
-- ❌ **French translations for Chatwoot templates:** Action item with marketing (pending)
+- ✅ **Localization complete:** Translation work removed from scope.
 - ❌ **AI reply pilot not yet started:** Awaiting AI agent baseline regression testing + metrics
 - ⚠️ **First operator dry run not scheduled:** Need product/manager coordination post-M2
 
@@ -159,13 +173,11 @@ _No incidents logged — dashboard not yet in production_
 3. ✅ COMPLETED: Review AI-generated reply roadmap and agree on approval criteria
 4. ✅ COMPLETED: Coordinate with marketing on localization glossary
 5. ⏭️ NEXT: Pair with engineer to validate CX modal implementation vs. runbook workflows
-6. ⏭️ NEXT: Request French translations for Chatwoot templates from marketing
-7. ⏭️ NEXT: Coordinate with manager/product to schedule first operator dry run (post-M2)
-8. ⏭️ NEXT: Begin daily AI/engineer template review once AI pilot approved and launched
+6. ⏭️ NEXT: Coordinate with manager/product to schedule first operator dry run (post-M2)
+7. ⏭️ NEXT: Begin daily AI/engineer template review once AI pilot approved and launched
 
 ## Follow-up Tasks
 - [ ] Validate CX Escalations modal matches runbook SOPs (pair with engineer)
-- [ ] File Linear ticket for French template translations (assign to marketing)
 - [ ] Schedule first operator training/dry run (coordinate with product lead Riley Chen)
 - [ ] Update runbooks with modal screenshots once dry run complete
 - [ ] Initiate AI reply pilot once AI agent provides baseline metrics (feedback/ai.md)

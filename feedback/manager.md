@@ -6,6 +6,14 @@ last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-09
 ---
+# Manager Daily Status — 2025-10-09
+
+## Support / CX Escalations Update — 2025-10-09
+- Direction refresh acknowledged; support aligned on sprint focus (CX Escalations modal validation, English-only collateral upkeep, dry run logistics).
+- Preparing updated runbook screenshots once staging seed is ready; English-only template review cadence continues.
+- Blocked on product confirmation of the 2025-10-16 dry run slot and staging access needed for validation evidence.
+- Awaiting seeded conversations to regression-test Chatwoot heuristics beyond current unit coverage.
+
 # Manager Daily Status — 2025-10-08
 
 ## Deployment Pipeline Status — 2025-10-08
@@ -14,6 +22,12 @@ expires: 2025-10-09
 - **Readiness docs published:** Environment matrix now tracks prod secret provisioning and smoke budgets (`docs/deployment/env_matrix.md`), and go-live checklist aligns with the new workflow inputs and performance targets (`docs/deployment/production_go_live_checklist.md`).
 - **Status log updated:** `feedback/deployment.md` reflects direction acknowledgement, shipped artifacts, outstanding risks, and next actions.
 - **Outstanding needs:** Reliability to populate GitHub `production` environment secrets by 2025-10-09, repo admins to set environment reviewers, deployment to generate service Shopify CLI token once creds land (see follow-ups in env matrix + deployment log).
+
+## Engineer Direction Sync — 2025-10-08
+- Engineer acknowledged the refreshed docs/directions/engineer.md focus (Supabase sync remediation, Postgres staging enablement, modal polish, telemetry wiring).
+- Blocker: Supabase parity script (`scripts/ops/check-dashboard-analytics-parity.ts`) still fails with `PGRST205` because the Supabase instance lacks a `facts` table; need data/reliability confirmation on target schema or migration.
+- Blocker: `npm run test:unit` remains blocked until `app/config/featureFlags.ts` is restored or replaced with approved flags plumbing.
+- Blocker: Lighthouse evidence collection awaits a defined `LIGHTHOUSE_TARGET` for staging/CI; automation short-circuits without it.
 
 ## AI Escalation Enablement — Outstanding Requirements
 - **Supabase credentials:** `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are still unset on the AI workstation. `getSupabaseConfig()` now loads `.env`, but without real values decision logs remain in the in-memory fallback and never sync to Supabase/Memory MCP. Requesting staging (or prod-ready) credentials so we can validate persistence before the M1 dry run.
@@ -27,12 +41,17 @@ expires: 2025-10-09
 - **Outstanding items:** Product still owes confirmation on the 2025-10-16 dry run (`docs/runbooks/operator_training_agenda.md`). French template localization declared out-of-scope; localization cadence paused unless requirements change.
 - **Risks:** Heuristics rely on simple keyword detection; needs real-conversation validation post-staging seed. Modal still lacks template editing—operators must escalate when suggestions misfit.
 
+## Data Update — 2025-10-08
+- Direction refresh acknowledged in `feedback/data.md`; sprint focus locked on Supabase decision sync reliability, weekly insight addendum, and GA MCP readiness.
+- Supabase spike investigation: instrumentation diff ready, but blocked until reliability provides Supabase retry/error logs plus a valid `SUPABASE_SERVICE_KEY` to reproduce the 25% failure rate in staging. Tracking alongside reliability pairing request.
+- Weekly insight addendum: narrative outline drafted; waiting on tonight's activation/SLA ETL to populate charts prior to attaching notebook links in `docs/insights/` by 2025-10-09 noon ET.
+- GA MCP readiness: coordination brief issued (`feedback/data_to_integrations_coordination.md`), pending integrations/compliance to confirm credential handoff window before executing `docs/data/ga_mcp_go_live_checklist.md` Step 1 parity checks.
+
 # Manager Daily Status — 2025-10-07
 
-## Direction Update — 2025-10-07
-- Refresh sprint focus in `docs/directions/ai.md`, `docs/directions/data.md`, `docs/directions/designer.md`, `docs/directions/engineer.md`, `docs/directions/marketing.md`, `docs/directions/product.md`, `docs/directions/qa.md`, `docs/directions/reliability.md`, and `docs/directions/support.md` to align with the M1/M2 check-in.
-- Updated AI and QA sprint focus (2025-10-08) to reflect regression evidence sharing and compliance/deployment dependencies ahead of the M1/M2 review.
-- Added supporting agents (Compliance, Deployment, Integrations) with direction docs under `docs/directions/compliance.md`, `docs/directions/deployment.md`, and `docs/directions/integrations.md`; localization workstream retired as the program is English-only.
+- Refresh sprint focus in `docs/directions/ai.md`, `docs/directions/data.md`, `docs/directions/designer.md`, `docs/directions/engineer.md`, `docs/directions/marketing.md`, `docs/directions/product.md`, `docs/directions/qa.md`, `docs/directions/reliability.md`, and `docs/directions/support.md` to align with the M1/M2 check-in and the English-only scope.
+- Added direction coverage for Compliance, Deployment, Integrations, and Enablement (`docs/directions/compliance.md`, `docs/directions/deployment.md`, `docs/directions/integrations.md`, `docs/directions/enablement.md`) so every role has current marching orders.
+- Updated AI and QA sprint focus (2025-10-08) to reflect regression evidence sharing, Supabase logging dependencies, and dry-run preparation.
 - All agents must review the updated direction doc for their role, acknowledge in their feedback log today, and raise blockers ahead of the 2025-10-08 sync.
 - Reminder: Manager direction updates now land in `feedback/manager.md`. When you need the latest assignments or sprint focus, check this file first.
 
@@ -51,19 +70,19 @@ expires: 2025-10-09
 - Designer remains blocked on Figma workspace access, delaying the shared component library.
 
 ## Actions & Assignments
-- **Engineer**: Ship P0 accessibility fixes (ARIA roles, focus indicators, status icons) from `feedback/design_qa_report.md`; partner with data/reliability to expose Supabase analytics metrics and confirm alert logging; rerun Vitest/Playwright/Lighthouse after the fixes and attach artifacts.
-- **Designer**: Schedule a 2h pairing session with engineering on modal accessibility, prep interim status icon assets, and escalate the Figma access blocker; ensure all design artifacts reflect the English-only scope.
-- **QA**: Execute the refreshed direction (Playwright coverage + migration validation + Supabase logging verification + AI regression evidence bundle) and keep artifacts logged in `feedback/qa.md`.
-- **Data**: Continue Markdown + SQL weekly insight format (approved); collaborate with reliability on Supabase monitoring instrumentation; hold Prisma seed run until demo shop list arrives by 2025-10-08 and loop integrations/compliance on GA MCP status.
-- **Reliability**: Respond to the Supabase monitoring request, wire `scripts/ci/synthetic-check.mjs` into a scheduled workflow, and publish the Supabase/Zoho/Shopify/Chatwoot secret rotation plan by 2025-10-10; log the first synthetic check metrics and share rotation cadence with deployment/compliance. Investigate the new Supabase critical alert with data/engineering and report mitigation plan by 2025-10-09. Coordinate with Shopify + Chatwoot owners for staging credentials so rotation dry-runs can start by 2025-10-15 (requests sent 2025-10-08, awaiting confirmation).
-- **AI**: Draft the integration plan with engineering for routing AI recommendations through modal approvals; defer external LLM calls until post M1/M2 sign-off; keep `npm run ai:regression` running daily and log outputs in Memory.
-- **Marketing**: Secure product approval on the launch comms packet, release notes template, and brand tone deck; coordinate tooltip placement with design; align support training schedule for the new materials and confirm messaging stays English-only.
-- **Product**: Review marketing deliverables, escalate Figma access for design, supply the demo shop list to data, loop compliance/deployment into the dry-run release plan, and shape the operator dry-run plan once QA clears modals; remove localization tasks from the backlog.
-- **Support**: Begin drafting the CX escalation runbook skeleton using the new modal decision paths; prepare the template review cadence ahead of go-live and update materials to reflect the English-only strategy.
-- **Enablement** (Marie Dubois): Update runbooks to the English-only scope, produce CX Escalations/Sales Pulse job aids, and coordinate the 2025-10-16 operator dry run logistics; log updates in `feedback/enablement.md`.
-- **Compliance** (Casey Lin): Build the end-to-end data inventory, draft the incident response runbook with reliability/support, and review GA MCP/Supabase/Anthropic agreements for privacy gaps; log findings in `feedback/compliance.md`.
-- **Deployment** (Devon Ortiz): Execute the revised sprint focus in `docs/directions/deployment.md` (staging workflow + Postgres environment provision + env matrix + go-live checklist) and log evidence in `feedback/deployment.md`.
-- **Integrations** (Priya Singh): Secure GA MCP credentials, finalize the social sentiment vendor recommendation with marketing/reliability, and publish the integration readiness dashboard ahead of the 2025-10-08 review; record updates in `feedback/integrations.md`.
+- **Engineer**: Resolve the Supabase decision sync failures with data/reliability collaboration, bring up the Postgres staging configuration for QA, finish accessibility polish on CX Escalations/Sales Pulse modals, and rerun Vitest/Playwright/Lighthouse with artifacts attached.
+- **Designer**: Deliver the shared component library (or static handoff) with status icon assets, annotate tooltip/focus flows for engineering, and supply visuals for enablement’s CX Escalations/Sales Pulse job aids.
+- **QA**: Extend Playwright coverage to modal approval flows (including AI suggestion states), validate migrations on SQLite + staging Postgres when deployment provides access, verify Supabase logging outputs with AI/reliability, and log the combined evidence bundle in `feedback/qa.md`.
+- **Data**: Lead the Supabase incident analysis (root cause + instrumentation), publish the 2025-10-09 insight addendum covering activation/SLA/anomaly trends, and finalize GA MCP readiness materials for integrations/compliance handoff.
+- **Reliability**: Drive Supabase mitigation and alert automation, run the synthetic check workflow daily with logged metrics, and ship the 2025-10-10 secret rotation plan while prepping prerequisites for the Week 3 backup drill.
+- **AI**: Assemble the operator dry-run AI kit (annotated suggestions stored under enablement), keep regression artifacts flowing to QA, and finalize the pilot readiness brief with guardrails/killswitch details before the M1/M2 checkpoint.
+- **Marketing**: Lock English-only launch comms with product sign-off, hand the operator FAQ/training script to enablement/support, and publish the launch timeline playbook with KPI checkpoints.
+- **Product**: Refresh the Linear backlog with Supabase/dry-run/telemetry work, assign metric owners, and finalize the 2025-10-16 operator dry run plan with enablement/support, logging decisions in Memory (scope `ops`).
+- **Support**: Update runbooks/templates for English-only messaging, validate the live modal workflows against SOPs, and coordinate dry run logistics with enablement/product (Q&A captured).
+- **Enablement** (Marie Dubois): Audit training materials for localization remnants, produce Sales Pulse/CX Escalations job aids, and own operator dry run logistics; track progress in `feedback/enablement.md`.
+- **Compliance** (Casey Lin): Publish the OCC data inventory, author the Supabase incident response runbook with reliability/support input, and summarize vendor agreement follow-ups in `feedback/compliance.md`.
+- **Deployment** (Devon Ortiz): Stand up the staging pipeline, provision the Postgres test database, document the environment/secrets matrix, and draft the production go-live checklist with rollback gates.
+- **Integrations** (Priya Singh): Secure GA MCP credentials or documented ETA, recommend the social sentiment vendor path with marketing/reliability, and share the integration readiness dashboard before the checkpoint.
 
 ## Evidence Links
 - feedback/engineer.md — 2025-10-07 modal, analytics, and test status.
