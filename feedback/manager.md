@@ -27,6 +27,7 @@ expires: 2025-10-10
 - Enablement reported English-only audit completion, published Sales Pulse + CX Escalations modal job aids, and pinged product/support (14:35–14:36 ET) to lock the 2025-10-16 dry run agenda; design looped in for annotated visuals. Tracking responses due 2025-10-09 EOD; no replies yet as of 19:45 ET.
 - 18:20 ET: preparing to push committed updates; still waiting on product/enablement staging access reply and reliability Supabase credential ETA before closing blockers.
 - Filed the Supabase tabletop template (`docs/compliance/evidence/tabletop_supabase_scenario.md`) and the 2025-10-09 vendor follow-up log so compliance can capture drill evidence + DPA outreach as soon as responses land.
+- 19:50 ET: Logged integrations prep work (GA MCP sync placeholder, reliability agenda, Hootsuite evidence scaffolding) and cross-linked blockers so manager/infra can act quickly once the 18:30 UTC sync wraps (`docs/integrations/ga_mcp_onboarding.md`, `docs/integrations/reliability_monitoring_agenda.md`, `artifacts/vendors/hootsuite/2025-10-09/`).
 
 ## Deployment Push Status — 2025-10-09
 - 19:55 ET: Final compliance + manager edits staged; pushing `main` immediately after this save so remote evidence stays current.
