@@ -13,10 +13,28 @@ expires: 2025-10-14
 - Blocked: integration workload prevents taking on product ownership; awaiting reassignment or relief before continuing roadmap coordination.
 
 ## 2025-10-09 Sprint Execution
+## 2025-10-09 Production Blockers Update
+- Supabase fix: holding OCC-212 in blocked until reliability/data supply monitoring assets + log export; ready to update Linear backlog immediately after evidence lands.
+- Staging Postgres/secrets: coordinating with deployment/reliability to capture production readiness checklist updates once secrets populate.
+- GA MCP readiness: tracking integrations' credential ETA so telemetry backlog items can move to in-progress with accurate acceptance criteria.
+- Operator dry run: waiting on enablement/support to confirm logistics + staging access package; Memory pre-read ready to publish once confirmations arrive.
+
 - Began consolidating Linear backlog updates reflecting Supabase remediation and staging readiness, but publication blocked until engineering/reliability deliver monitoring evidence.
 - Drafted outreach notes to assign telemetry owners explicit timelines; waiting on confirmations from data/reliability before logging in backlog.
 - Coordinated with enablement/support on the 2025-10-16 dry run agenda to capture outstanding questions; responses pending before finalizing Memory pre-read.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: tracking reliability/data escalation and holding OCC-212 in blocked until logs + mitigation evidence arrive; prepared to update backlog once metrics confirmed.
+- Staging Postgres + secrets: syncing with deployment to ensure Linear tasks capture secret provisioning acceptance criteria; will publish checklist updates when reliability posts vault references.
+- GA MCP readiness: coordinating with integrations/compliance to log OCC-INF-221 outcome and update the go-live readiness packet as soon as credential ETA confirmed.
+- Operator dry run: drafted Memory pre-read outline and success metrics; awaiting staging access confirmation before circulating invites.
 - Updated `docs/strategy/operator_dry_run_pre_read_draft.md` with backlog references (OCC-212/221/230) and recorded today’s coordination ping so the pre-read is ready to publish once confirmations arrive.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: no new evidence yet—continuing to hold OCC-212; once reliability/data share monitor outputs we’ll push backlog + mitigation summary updates.
+- Staging Postgres + secrets: touching base with deployment this afternoon for GitHub secret/postgres credential ETA; Linear checklist notes ready to flip to in-progress when paths arrive.
+- GA MCP readiness: following up with integrations for OCC-INF-221 outcome before EOD so telemetry stories can move forward.
+- Operator dry run: Memory pre-read draft stays staged; will publish and send invites immediately after enablement/support confirm staging access package.
 
 ## Governance Acknowledgment
 - Reviewed docs/directions/README.md and docs/directions/product.md; acknowledge manager-only ownership, canon references, and Supabase secret policy.
@@ -74,6 +92,7 @@ expires: 2025-10-14
 ## 2025-10-08 — Operator Training Dry Run Coordination
 - Support requested confirmation on the 2025-10-16 @ 13:00 ET dry run slot and staging access handoff; see `docs/runbooks/operator_training_agenda.md:214` for prep checklist. Awaiting response to proceed with invites.
 - 2025-10-08 14:35 ET — Enablement delivered job aid outlines and pinged Riley Chen for dry run confirmation, attendee roster, and staging package validation; follow-up due 2025-10-09 EOD so enablement can publish Memory pre-read bundle.
+- 2025-10-09 09:00 ET — Enablement sent reminder requesting dry run confirmation, attendee list, and staging access package by 12:00 ET; awaiting response.
 
 ## Action Request — 2025-10-07
 - Review marketing deliverables outlined in `docs/marketing/product_approval_packet_2025-10-07.md`.

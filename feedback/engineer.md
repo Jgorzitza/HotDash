@@ -16,6 +16,12 @@ expires: 2025-10-06
 - Status: Feature flag module restored locally; unit tests now pass when `npm run test:unit` targets affected specs.
 - Status: Lighthouse runner now consumes `STAGING_SMOKE_TEST_URL` fallback; waiting on staging secret wiring before evidence capture.
 
+## 2025-10-10 — Production Blockers Status
+- **Supabase sync fix:** Parity script now exits with a `supabase.facts_table_missing` hint when the `facts` table is absent. Latest run (`npm run ops:check-analytics-parity`) captured the blocked event in `artifacts/logs/supabase_parity_run_2025-10-10.json`; waiting on reliability to execute `supabase/sql/analytics_facts_table.sql` and supply credentials so we can retest against live data.
+- **Staging Postgres + secrets:** Runbook (`docs/runbooks/prisma_staging_postgres.md`) and CLI helpers are ready; blocked until deployment shares the staging `DATABASE_URL`/shopify secrets so QA can run forward/back drills.
+- **GA MCP readiness:** Checklist in `docs/integrations/ga_mcp_onboarding.md` is staged; OCC-INF-221 still holds the host/credential handoff—tracking with integrations and compliance for ETA before enabling telemetry tests.
+- **Operator dry run:** Accessibility polish plan + telemetry wiring notes prepped; awaiting product confirmation of the 2025-10-16 slot and staging access to validate modals before the rehearsal.
+
 ## 2025-10-08 — Progress Update
 - Supabase parity script now surfaces missing `facts` table with actionable hint and references new `supabase/sql/analytics_facts_table.sql` bootstrap SQL.
 - Added Supabase facts bootstrap SQL and documented it in `docs/runbooks/prisma_staging_postgres.md` so staging Postgres mirrors can be prepared before parity checks.
@@ -32,7 +38,20 @@ expires: 2025-10-06
 - Reviewed Supabase retry/backoff implementation with reliability to scope additional integration coverage; waiting on production parity script to validate fix against real data.
 - Began drafting Postgres staging smoke checklist (migrate forward/back, seed, smoke tests) to support QA once credentials arrive; currently blocked by database access from deployment.
 - Sketched accessibility polish tasks for CX Escalations/Sales Pulse modals (ARIA labels, focus traps) and queued work behind outstanding design annotation updates.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: ready to pull and wire the monitor script as soon as reliability supplies the patch; also planning to expand integration test harness to cover retry/backoff once real logs confirm error codes.
+- Staging Postgres + secrets: maintaining the migration smoke checklist and Prisma Postgres scripts so forward/back validation can begin the moment deployment shares connection strings.
+- GA MCP readiness: prepared to review typed client instrumentation once integrations drops live credentials; no code changes pending without host/service key.
+- Operator dry run: lining up modal accessibility refinements (ARIA labels, keyboard traps, success toasts) so we can land polish before the 2025-10-16 rehearsal once designer annotations arrive.
 - Captured active triage checklist in `artifacts/logs/supabase_retry_plan_2025-10-09.md` so instrumentation/logging tasks can move as soon as Supabase credentials land.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: prepped logging patch (structured error + retry metrics) and ready to run `npm run test:unit -- tests/unit/supabase.memory.spec.ts` once reliability shares the staging `SUPABASE_SERVICE_KEY` and log export for replay.
+- Staging Postgres + secrets: paired with deployment to finalize Prisma override steps; queued forward/back migration script (`npm run db:migrate:postgres` / `npm run db:rollback:postgres`) pending credential drop.
+- GA MCP readiness: reviewed parity harness to confirm engineering coverage once credentials arrive; standing by to assist data/integrations with schema adjustments if Supabase logging needs code changes.
+- Operator dry run: coordinating with designer/enablement to slot accessibility fixes and telemetry wiring ahead of the 2025-10-16 session once annotations/assets land.
+- 19:15 ET: posted reminders in reliability + deployment threads requesting Supabase log bundle and staging Postgres credentials; will cut PR with logging patch as soon as evidence arrives.
 
 ## 2025-10-08 Sprint Execution
 - Added detailed logging branch for Supabase decision sync failures (captures `status`, `duration_ms`, `retry_count`) pending secret delivery so we can replay incidents per sprint focus.
@@ -40,6 +59,11 @@ expires: 2025-10-06
 - Started aligning telemetry events for dashboard refresh (loader/action) with analytics service to unblock instrumentation as soon as Supabase blockers are cleared.
 
 ## 2025-10-09 Sprint Focus Kickoff
+## 2025-10-09 Production Blockers Update
+- Supabase decision sync: prepared instrumentation patch (structured error log + parity counter) and queued PR draft; execution still pending real Supabase logs/service key from reliability to validate fixes.
+- Staging Postgres enablement: paired with deployment on connection override checklist; awaiting credentials to run forward/back migration proof for QA.
+- Operator dry run polish: staging accessibility fixes (status icons/focus) set to follow once designer assets drop; blocked on asset delivery + Supabase persistence for full telemetry test.
+
 - Supabase decision sync triage: reviewed existing retry implementation and outlined additional instrumentation (structured error logging + parity counters); blocked on reliability delivering raw logs and staging credentials to reproduce the 25% failure.
 - Postgres staging enablement: synced with deployment to confirm pending env overrides and smoke script; awaiting DB credentials before running forward/back migration validation.
 - Modal polish: listed outstanding accessibility items (status icons, focus-visible tweaks) and queued work once designer assets/Figma tokens arrive.

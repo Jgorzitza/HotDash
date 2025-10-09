@@ -13,11 +13,23 @@ expires: 2025-10-06
 - Blocked: currently reassigned to integrations coverage and still missing Supabase credentials/log access; cannot progress data tasks until a dedicated data owner resumes or dependencies land.
 
 ## 2025-10-09 Sprint Focus Kickoff
+## 2025-10-09 Production Blockers Update
+- Supabase decision sync: awaiting reliability log dump + service key; analytics notebook ready to ingest once artifacts arrive.
+- GA MCP readiness: prepped schema parity script updates; blocked pending OCC-INF-221 credential drop to compare live vs mock.
+- Operator dry run insights: drafting metric narrative outline; needs staging telemetry and Supabase persistence before finishing.
+
 - **Supabase decision sync**: Reviewed the 25% failure sample set and sketched logging/retry patches; blocked until reliability shares raw logs and the staging `SUPABASE_SERVICE_KEY` to run reproductions.
 - **Weekly insight addendum**: Outlined charts + narrative sections and queued SQL notebook templates; waiting on tonight's ETL refresh before filling metrics.
 - **GA MCP readiness**: Updated the onboarding checklist structure and prepped parity validation queries; still waiting on OCC-INF-221 outcome to receive host/credential bundle.
 - **Next**: Follow up with reliability/infra on secrets + logs, then start the insight notebook once the ETL completes.
 - **Artifacts**: Published the addendum scaffold at `docs/insights/2025-10-09_supabase_decision_sync.md` so charts and commentary can drop in immediately after credentials arrive.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: drafted instrumentation diff (structured error payloads + retry counters) and prepared to replay failure IDs once reliability delivers the log export + staging `SUPABASE_SERVICE_KEY` (tracked via `feedback/data_to_reliability_coordination.md`).
+- Staging Postgres + secrets: confirmed parity queries ready to run against Postgres once deployment shares credentials; outlined data validation steps to attach evidence to the go-live checklist.
+- GA MCP readiness: updated go-live checklist notes with pending credential variables and queued schema parity script so execution can start the moment OCC-INF-221 resolves.
+- Operator dry run: synced with enablement on insight inputs for the pre-read; will inject activation/SLA trend callouts into the training packet once tonight’s ETL completes.
+- 19:15 ET: queued follow-up pings to reliability (Supabase logs + service key) and integrations/infra (OCC-INF-221 ETA) for early 2025-10-10; ready to drop evidence into the addendum/checklist immediately after responses land.
 
 ## Direction Acknowledgment — 2025-10-08
 - Reviewed `docs/directions/data.md` sprint focus covering Supabase decision sync investigation, weekly insight addendum, and GA MCP readiness deliverables.
@@ -30,6 +42,12 @@ expires: 2025-10-06
 - Drafted Supabase incident analysis plan (metrics, error-code breakdown, retry impact) and delivered data requirements to reliability/engineering; awaiting updated logs to begin validation queries.
 - Prepped structure for weekly insight addendum in `docs/insights/2025-10-09_supabase_decision_sync.md` (placeholder) so charts can be populated once ETL finishes; blocked by missing latest activation/SLA exports.
 - Updated GA MCP parity checklist to reflect outstanding credential handoff steps and pinged integrations for status; cannot execute parity queries until credentials unlock staging access.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: standing by to crunch the next log export; once reliability delivers NDJSON we’ll run the retry effectiveness queries and update mitigation notes here and in `docs/insights/`.
+- Staging Postgres + secrets: coordinating with deployment so Postgres connection info lands in time for data validation; will mirror env matrix updates once reliability publishes secret rotation calendar.
+- GA MCP readiness: parity notebook templates ready, still waiting on OCC-INF-221 outcome; following up with integrations later today for credential ETA before the weekend.
+- Operator dry run insights: maintaining placeholders for activation/SLA metrics in the addendum so enablement/support can cite fresh numbers during the 2025-10-16 session.
 
 ## 2025-10-08 — Sprint Focus Activation
 - Mapped failure IDs from `artifacts/logs/supabase_decision_sample.ndjson` to prioritize instrumentation patches with engineering/reliability, aligning with `docs/directions/data.md:26`.

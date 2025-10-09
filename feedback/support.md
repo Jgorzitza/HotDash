@@ -9,12 +9,24 @@ expires: 2025-10-09
 # Support Daily Status — 2025-10-09
 
 ## Direction Acknowledgment
+## 2025-10-09 Production Blockers Update
+- Operator dry run prep: drafted training checklist updates; pending staging access confirmation and enablement schedule before sending operator invites.
+- Supabase logging dependency: documenting current manual fallback so support can brief operators that decision logs remain in-memory until reliability delivers secrets.
+- Staging screenshots: awaiting deployment seed to refresh runbook imagery for CX Escalations modal validation.
+
 - Reviewed `docs/directions/support.md` (2025-10-08 refresh) and aligned on sprint focus: CX Escalations modal validation, English-only playbook/template upkeep, and operator dry run coordination.
 
 ## 2025-10-09 Sprint Execution
 - Compiled validation checklist for CX Escalations modal updates and queued screenshot capture pending staging data refresh.
 - Coordinated with enablement/product on operator dry run logistics; awaiting confirmation on invite send and staging access package.
 - Started revising support playbooks for English-only messaging updates; holding publication until designer delivers annotated visuals.
+- 19:25 ET: queued follow-up for Friday AM if product/enablement haven’t confirmed staging access + 2025-10-16 slot; ready to blast invites/Q&A prep as soon as package lands.
+
+## 2025-10-10 Production Blocker Sweep
+- Supabase decision sync fix: will capture operator-facing guidance once reliability publishes the monitor status so support can speak to expected recovery.
+- Staging Postgres + secrets: still waiting on staging seed/access package; support ready to validate templates as soon as credentials land.
+- GA MCP readiness: noting in FAQ that analytics tile remains mock until integrations provides go-live date; will update when credentials handed off.
+- Operator dry run: draft invites and agenda ready—sending immediately after product confirms staging access window.
 
 ## 2025-10-08 — Sprint Focus Activation
 - Set up screenshot/evidence checklist for CX Escalations modal validation, ready to populate once staging refresh lands per `docs/directions/support.md:26`.
@@ -29,6 +41,7 @@ expires: 2025-10-09
 - Drafted operator enablement checklist updates so training reflects the trimmed template set.
 - Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
 - Enablement responded (14:36 ET) with updated job aids + coordination plan and is capturing pre-session questions for inclusion in the operator Q&A template once support shares priorities.
+- 2025-10-09 09:00 ET — Enablement sent follow-up reminder for dry run confirmations; awaiting action items from product/support before invites go out.
 - Expanded Chatwoot heuristic coverage (additional delivery/refund phrases) and added regression tests (`npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts`).
 
 ## Blockers / Dependencies
@@ -39,6 +52,11 @@ expires: 2025-10-09
 - Product request: please confirm staging access package delivery (operator shop creds + Chatwoot sandbox token handoff) and green-light the 2025-10-16 @ 13:00 ET dry run invite send no later than 2025-10-09 EOD so we can capture the Memory pre-read summary.
 - Once confirmed, share the final attendee list + agenda tweaks back so product can snapshot in Memory (scope `ops`) alongside the backlog links.
 - Pending reply from enablement/product on the above Slack ping.
+
+## 2025-10-09 Production Blocker Push
+- Supabase fix: monitoring escalation updates so support runbooks can document expected behaviour once retries/logging land; ready to refresh CX Escalations guidance with resolution steps.
+- Staging Postgres + secrets: coordinating with deployment/reliability on staging access timing; will capture modal screenshots and validation notes as soon as seeds + credentials arrive.
+- Operator dry run: followed up on 2025-10-16 logistics and staging package; prepping invite draft so calendar can go out immediately after product/enablement confirms.
 
 ## Next Steps
 - Capture modal screenshots and refresh runbook validation notes after staging verification.
