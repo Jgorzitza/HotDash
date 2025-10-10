@@ -6,6 +6,13 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-11
 ---
+# Marketing/Enablement EOD — 2025-10-10 23:30 UTC
+- Launch comms, enablement packet, and support training script now reference the live Supabase NDJSON export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`), so telemetry storytelling stays accurate without further edits.
+- Staging readiness tables across comms/enablement/support include the latest `?mock=0` curl log (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log`); still HTTP 410, awaiting reliability’s sustained 200 + sub-300 ms synthetic evidence before we can close DEPLOY-147 and broadcast access.
+- Tooltip overlays/modals remain outstanding from design; marketing/enablement will swap placeholders and brief engineering the moment the annotated assets land.
+- Blocks to call out at stand-up: (1) Product launch window/go-no-go (Backlog #1) still silent; (2) tooltip overlays/modals from design (Backlog #2); (3) reliability owes green `?mock=0` smoke + synthetic JSON (Backlog #6). Everything else is staged to execute as soon as those three clear.
+- Next touchpoints prepped: campaign calendar send windows, staging rollout comms, and evidence bundle updates—ready to send immediately once the above blockers resolve.
+
 # Marketing Update — 2025-10-10 22:05 UTC
 - **Launch readiness:** Comms packet, launch timeline, and campaign calendar now include tentative launch-day send windows so we can publish within minutes once product delivers the go/no-go. All messaging continues to cite the Supabase parity + Fly smoke evidence already captured; distribution remains paused until the window arrives.
 - **Phase-2 GA MCP prep:** Authored `docs/marketing/phase2_ga_mcp_messaging.md` and added gated GA MCP callouts to the comms packet/FAQ so external copy stays blocked until OCC-INF-221 closes and parity checklist items 1-8 pass.
@@ -25,6 +32,18 @@ expires: 2025-10-11
   2. Track QA/Product/Support execution of the broadcast checklist and record confirmations in respective feedback docs.
   3. Maintain OCC-INF-221 pressure; if infra remains silent by 2025-10-11 09:00 UTC, escalate to CIO queue per plan and log response in onboarding tracker.
   4. Coordinate with data/reliability on GA MCP parity run so tests start immediately once credentials land (commands staged in `parity_commands.md`).
+
+## Integrations Wrap-up — 2025-10-10 23:59 UTC
+- **Status:** Credential broadcast complete, readiness dashboard/Linear updated, DEPLOY-147 constrained to latency proof only. GA MCP escalation queued for 09:00 UTC if infra stays quiet; parity command pack prepped. No further actions tonight.
+- **Evidence recap:** Broadcast (`install_broadcast_2025-10-10T073500Z.md:1`), invite audit (`store-invite-audit-20251010T0730Z.md:1`), readiness dashboard (`docs/integrations/integration_readiness_dashboard.md:1`), store access log (`artifacts/integrations/shopify/2025-10-10/store-access.md:1`), Linear comment (`DEPLOY-147-linear-comment-20251010T0736Z.md:1`).
+- **Overnight blockers:**
+  - Shopify smoke latency <300 ms (reliability running probes; depot: `artifacts/monitoring/synthetic-check-*.json`).
+  - OCC-INF-221 credentials pending; escalation ready for dispatch at 09:00 UTC tomorrow.
+- **Morning priorities:**
+  1. Check for reliability latency artifact; if compliant, attach to store-access log and close DEPLOY-147.
+  2. Confirm QA/Product/Support acknowledgements landed in their feedback logs; nudge recipients if absent by 10:00 UTC.
+  3. Re-run OCC-INF-221 escalation at 09:00 UTC if infra channel remains silent; log outcome in onboarding tracker + feedback.
+  4. Coordinate with data to trigger GA MCP parity script the moment credentials drop; archive results per checklist.
 
 # Product Update — 2025-10-10 13:15 UTC
 - **Status:** Backlog remains frozen per `docs/directions/product.md:25-29`. Install plan is fully linked with live artifact paths, the credential availability broadcast has been issued (archive: `docs/integrations/shopify_credential_broadcast_2025-10-10.md`), the go/no-go comms packet is staged (`docs/marketing/launch_window_go_no_go_draft.md`), and readiness dashboards/Linear entries are drafted so we can flip them live as soon as gates clear.
@@ -137,6 +156,12 @@ expires: 2025-10-11
 1. Re-run the staging smoke test when reliability signals a fix, then publish the dry-run packet and capture acknowledgements in `feedback/enablement.md` and `feedback/product.md`/`feedback/support.md`.
 2. Partner with design to review the overlay checklist draft and confirm naming/alt text before swapping assets in the facilitator bundle.
 3. Schedule a facilitator huddle to rehearse the new talking points and ensure Supabase evidence capture steps are understood prior to distribution.
+
+## End-of-Day Summary — 2025-10-10 09:10 UTC
+- All cross-functional packets (support, enablement, marketing) are staged for immediate send once the live smoke returns 200; announcement copy, acknowledgement tracker, and facilitator huddle agenda are in place.
+- Latest live staging probe (`curl -I https://hotdash-staging.fly.dev/app?mock=0`) still returns HTTP 410; evidence archived at `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log`. Monitoring reliability for fix + refreshed Supabase NDJSON export.
+- Overlay checklist drafted in `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md`; awaiting design sign-off and annotated screenshots before swapping assets inside job aids and comms.
+- Next touchpoint: when reliability signals green, rerun smoke, update evidence tables, send comms packet, and run facilitator huddle to rehearse Supabase evidence capture prior to distribution.
 4. Append the staging smoke evidence and acknowledgement log template to the dry-run packet so stakeholders see the verification trail alongside the materials.
 
 ## Reliability Update — 2025-10-10 07:20 UTC
@@ -181,6 +206,20 @@ expires: 2025-10-11
 - Staging screenshot checklist (`docs/design/staging_screenshot_checklist.md`) is ready for immediate execution once engineering wires modal entry points; evidence paths already aligned with enablement packet.
 - Figma workspace invite still outstanding; pinged manager via Slack (2025-10-12 14:05 UTC) so we can package the component library as soon as access lands.
 - Backlog progress while staging blocked: checklist now documents exact modal workflows + Playwright locators, and SVG overlay templates were pre-built under `docs/design/assets/templates/` for same-day annotation once captures unlock.
+
+## Designer EOD — 2025-10-12 21:05 UTC
+- Status unchanged on staging access: `?modal=sales` / `?modal=cx` still render the base dashboard, so capture window remains closed. Ready to execute the updated checklist immediately once feature flags expose dialogs.
+- Backlog tasks during blockade completed: modal capture playbook expanded (`docs/design/staging_screenshot_checklist.md`) and overlay templates staged (`docs/design/assets/templates/modal-*-overlay-template.svg`) for rapid annotation.
+- Coordination for tomorrow: waiting on engineering confirmation of modal ARIA/locator names (see `feedback/engineer.md:10-12`) and Figma invite follow-up.
+
+**Today’s Blockers**
+- Staging modal feature flags inactive (no dialogs to capture).
+- Figma workspace access pending for component library packaging.
+
+**Next Actions (pending unblock)**
+1. Re-test staging after engineering flips modal flags; execute capture checklist and drop evidence in `artifacts/ops/dry_run_2025-10-16/`.
+2. Update `docs/design/staging_screenshot_checklist.md` with final selector names once engineering confirms.
+3. Kick off component library packaging in Figma immediately after access granted and log handoff status.
 
 **Blockers**
 - Staging: modal feature flags/routes not exposed; cannot capture annotated screenshots or validate focus order.
@@ -398,6 +437,12 @@ expires: 2025-10-11
 - Pre-reviewed enablement callout draft (`docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md`) so localization sign-off can move immediately when annotated screenshots land; language currently adheres to English-only guardrails.
 - Direction updated (`docs/directions/localization.md:29-33`) to formally track the embed-token blocker; maintaining status and escalations in `feedback/localization.md` until reliability/deployment supply a sanctioned solution.
 - Logged the request in reliability and deployment feedback channels so the embed-token dependency is owned cross-functionally (`feedback/reliability.md`, `feedback/deployment.md`).
+
+## Localization Update — 2025-10-12 23:10 UTC
+- No net-new copy surfaced since the afternoon audit; `rg --stats "[À-ÿ]"` scans across app UI, modals, runbooks, and collateral still return 0 matches (logs in `feedback/localization.md:96-105`).
+- Marketing/support adoption of the English-only audit checklist is confirmed; both teams will post results back to localization after each run (`feedback/marketing.md`, `feedback/support.md`).
+- Embed-token blocker persists: Playwright staging sessions continue to redirect/403 without Shopify embed credentials. Reliabilty/deployment/engineering coordination is tracked in their respective logs; localization remains paused on modal screenshots pending their sanctioned token or host plan.
+- Next up once the token path arrives: re-run Playwright captures, attach evidence to localization log, and hand screenshots to enablement for the 16 Oct dry run packet.
 
 ## Enablement Update — 2025-10-10 06:38 UTC
 - AI facilitator packets, README, and dry-run packet embed Supabase sample decision IDs 101–104 (docs/enablement/job_aids/ai_samples/*, README, dry run packet lines 20 & 58). Evidence bundle location, staging probes, and change log documented in `feedback/enablement.md:13-41`.
