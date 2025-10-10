@@ -8,6 +8,9 @@ expires: 2025-10-06
 ---
 # Data Agent — Daily Feedback & Schema Drift Report
 
+## 2025-10-11 Reliability Follow-up
+- 2025-10-11T16:18Z — Populated `notebooks/weekly_insights_2025-10-16.ipynb` with the current decision-sync snapshot (4 records, 25% timeout rate) so the weekly packet carries live metrics while we wait for additional exports.
+
 ## 2025-10-10 Reliability Drop Ingestion
 - 2025-10-10T07:29Z — Ingested reliability’s NDJSON export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) via analyzer; refreshed summaries in `artifacts/monitoring/supabase-sync-summary-latest.json` and `docs/insights/2025-10-09_supabase_decision_sync.md` (25 % timeout rate, decisionId 103 remains outlier).
 - 2025-10-10T07:32Z — Synced with AI agent; confirmed regression harness now auto-embeds decision telemetry and shared artifact paths (`artifacts/ai/prompt-regression-2025-10-10-073452.json`).
