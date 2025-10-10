@@ -6,6 +6,17 @@ last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-06
 ---
+## 2025-10-12 — Modal Locator Hardening & Readiness Prep
+- 2025-10-12T18:45:00Z — Hardened CX Escalations/Sales Pulse triggers and dialogs with `data-testid` hooks (`cx-escalations-open`, `cx-escalation-dialog`, `sales-pulse-open`, `sales-pulse-dialog`) so Playwright selectors stay stable if copy shifts.
+- 2025-10-12T18:48:00Z — Updated `tests/playwright/modals.spec.ts` to target the new test IDs; tests now assert modal headings remain intact.
+- 2025-10-12T18:52:24Z — Executed `npx playwright test tests/playwright/modals.spec.ts`; suite passed (2/2) with mock data, artifact captured via CLI logs above. Full e2e remains mock-only until staging feature flags + credentials land.
+- Blockers: Staging credential bundle/feature flag enablement still pending; Supabase staging DSN continues to reject IPv4 which keeps Prisma smoke evidence blocked.
+
+### Recommendations
+1. Coordinate with deployment/QA to deliver the staging credential bundle and flip `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL`/`FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL` so we can capture live Playwright evidence.
+2. Pair with reliability on the Supabase IPv4 routing fix (or provision a dual-stack endpoint) so `npm run db:migrate:postgres` succeeds against staging.
+3. Once staging is reachable, rerun Playwright suite against live data (`?mock=0`) and archive the HTML report in `artifacts/playwright/` per evidence mandate.
+4. After DSN unblock, record Prisma migration smoke logs and attach them to `artifacts/migrations/` for QA handoff.
 ## 2025-10-10 — Supabase Staging Migration Attempt
 - 2025-10-10T07:25:05Z — Deployment enabled staging feature flags via `/home/justin/.fly/bin/flyctl secrets set FEATURE_MODAL_APPROVALS=1 FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL=1 FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL=1 --app hotdash-staging`; confirmation snapshot at `artifacts/deploy/fly-secrets-20251010T0725Z.txt`. Warm-up curls show 0.14–0.23 s but synthetic script still logs 341–434 ms (`artifacts/monitoring/synthetic-check-2025-10-10T07-51-30.529Z.json`, `...07-41-57.418Z.json`); awaiting reliability tuning before issuing the live QA bundle. Mock evidence refreshed at `artifacts/qa/staging-deploy-2025-10-10T0751Z.md`. Please verify modal behavior and log completion once QA signs off.
 - 2025-10-12T14:40:00Z — Designer needs CX Escalations & Sales Pulse modals exposed in staging ASAP for annotated capture per sprint focus. Please confirm once `FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL` and `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL` are enabled (or alternate staging toggle is available) so we can run `docs/design/staging_screenshot_checklist.md` end-to-end. Current behavior: `https://hotdash-staging.fly.dev/app?mock=1&modal=sales` and `...&modal=cx` still render the dashboard with no dialog.

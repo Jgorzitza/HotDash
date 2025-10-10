@@ -1,7 +1,11 @@
+import { useState } from "react";
+
 import type { OrderSummary } from "../../services/shopify/types";
+import { SalesPulseModal } from "../modals";
 
 interface SalesPulseTileProps {
   summary: OrderSummary;
+  enableModal?: boolean;
 }
 
 function formatCurrency(amount: number, currency: string): string {
@@ -16,7 +20,12 @@ function formatCurrency(amount: number, currency: string): string {
   }
 }
 
-export function SalesPulseTile({ summary }: SalesPulseTileProps) {
+export function SalesPulseTile({ summary, enableModal = false }: SalesPulseTileProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <>
       <div>
@@ -33,6 +42,16 @@ export function SalesPulseTile({ summary }: SalesPulseTileProps) {
         <p className="occ-text-meta" style={{ margin: "var(--occ-space-1) 0 0 0" }}>
           {summary.orderCount} orders in the current window.
         </p>
+        {enableModal ? (
+          <button
+            type="button"
+            className="occ-link-button"
+            onClick={openModal}
+            data-testid="sales-pulse-open"
+          >
+            View details
+          </button>
+        ) : null}
       </div>
       <div>
         <strong style={{ color: "var(--occ-text-primary)" }}>Top SKUs</strong>
@@ -86,6 +105,13 @@ export function SalesPulseTile({ summary }: SalesPulseTileProps) {
           </p>
         )}
       </div>
+      {enableModal && isModalOpen ? (
+        <SalesPulseModal
+          summary={summary}
+          open={isModalOpen}
+          onClose={closeModal}
+        />
+      ) : null}
     </>
   );
 }

@@ -2,12 +2,77 @@
 epoch: 2025.10.E1
 doc: feedback/integrations.md
 owner: integrations
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-09
+expires: 2025-10-10
 ---
 # Integrations Agent — Daily Status Log
 
+## 2025-10-10 Readiness Refresh (22:55 UTC)
+- Verified staging Shopify vault entries (`vault/occ/shopify/*.env`) and captured HTTP 200 `curl -I https://hotdash-staging.fly.dev/app?mock=1` evidence (`artifacts/integrations/shopify/2025-10-10/curl_hotdash-staging_2025-10-10T02-50-44Z.log`) to confirm Fly host reachability ahead of DEPLOY-147 delivery.
+- Drafted OCC-INF-221 escalation ping for the 2025-10-11 09:00 UTC window (`artifacts/integrations/ga-mcp/2025-10-10/escalation_draft.md`), updated onboarding tracker/contact log, and ready to dispatch if infra stays silent.
+- Integration readiness dashboard refreshed to reflect the new Shopify evidence, Supabase vault checks, and the pending infra response before the CIO escalation window.
+
+## 2025-10-10 Escalation & Evidence Refresh (07:23 UTC)
+- Captured Shopify CLI secret hash evidence at 07:18 UTC and stored transcript in `artifacts/integrations/shopify/2025-10-10/cli-secret-20251010T071858Z.log`; updated readiness doc to point at the new artifact.
+- Posted the DEPLOY-147 follow-up in `#deploy-ops` asking for timestamped QA/product/support invites and audit logs; logged the chase in `artifacts/integrations/shopify/2025-10-10/store-access.md`.
+- Delivered the 07:23 UTC OCC-INF-221 escalation ping in `#infra-requests` (see `artifacts/integrations/ga-mcp/2025-10-10/escalation_draft.md`) and updated the onboarding tracker/contact log accordingly.
+- Drafted GA MCP parity command checklist (`artifacts/integrations/ga-mcp/2025-10-10/parity_commands.md`) so connectivity, contract tests, and rate-limit probes can kick off as soon as infra delivers credentials.
+
+## 2025-10-10 Shopify Broadcast (07:35 UTC)
+- Logged Shopify store invites accepted via admin audit export (`artifacts/integrations/shopify/2025-10-10/store-invite-audit-20251010T0730Z.md`) and updated readiness dashboard/action log.
+- Sent install broadcast to QA/Product/Support (`artifacts/integrations/shopify/2025-10-10/install_broadcast_2025-10-10T073500Z.md`) with credential locations, action checklists, and note that DEPLOY-147 now tracks only smoke latency evidence.
+- Updated `docs/integrations/shopify_readiness.md` and `docs/integrations/integration_readiness_dashboard.md` to reflect credentials/live access delivered and outstanding latency proof.
+- Posted readiness snippet in Linear ticket DEPLOY-147 (`artifacts/integrations/shopify/2025-10-10/DEPLOY-147-linear-comment-20251010T0736Z.md`) to align with manager directive.
+
+## 2025-10-10 Direction Check (04:19 UTC)
+- Re-read `docs/directions/integrations.md`; sprint focus unchanged (OCC-INF-221 credential chase, Shopify staging bundle, readiness dashboard fidelity). Continuing escalation prep and readiness evidence capture per instructions.
+
+## 2025-10-10 Shopify Follow-up Prep (04:22 UTC)
+- Staged DEPLOY-147 follow-up draft (`artifacts/integrations/shopify/2025-10-10/deploy_followup_draft.md`) requesting Shopify staging bundle delivery or ETA before 09:00 UTC to keep readiness dashboard accurate and unblock QA handoff.
+- Updated Shopify readiness doc and evidence README with escalation prep details.
+
+## 2025-10-10 Early AM Refresh (06:26 UTC)
+- Re-ran Fly host curl at 06:20 UTC (`artifacts/integrations/shopify/2025-10-10/curl_hotdash-staging_2025-10-10T06-20-00Z.log`) to confirm staging availability ahead of install broadcast requirement; refreshed deployment follow-up draft with new evidence and note to notify QA/product/support once smoke goes green.
+- Updated GA MCP escalation draft at 06:24 UTC (`artifacts/integrations/ga-mcp/2025-10-10/escalation_draft.md`) and onboarding tracker contact log to reflect the pending 09:00 UTC escalation message if infra stays silent.
+- 06:34 UTC addendum: `https://hotdash-staging.fly.dev/app?mock=0` returns HTTP 410 (`curl_hotdash-staging_2025-10-10T06-34-12Z_mock0.log`), confirming live path still blocked pending DEPLOY-147 secrets; readiness docs updated to capture evidence.
+- 06:36 UTC: Staged install broadcast template (`artifacts/integrations/shopify/2025-10-10/install_broadcast_template.md`) and CLI secret evidence placeholder so we can drop timestamped artifacts immediately once deployment closes DEPLOY-147.
+
+## 2025-10-10 Direction Check (08:00 UTC)
+- Re-read `docs/directions/integrations.md`; no changes detected. Sprint focus and broadcast requirement unchanged. Continuing escalation prep and readiness updates per canon.
+
+## 2025-10-10 Next-Step Recommendations (07:30 UTC)
+- Track deployment response in `#deploy-ops`; if DEPLOY-147 bundle or invite timestamps still missing at 09:00 UTC, escalate to manager per direction and capture outcome in `artifacts/integrations/shopify/2025-10-10/store-access.md`.
+- Once deployment ships the bundle, grab Fly `secrets list` output + GitHub audit evidence, drop them next to `cli-secret-20251010T071858Z.log`, and update `docs/integrations/shopify_readiness.md` and broadcast template before notifying QA/product/support.
+- Monitor OCC-INF-221 for infra reply; log any updates in `docs/integrations/ga_mcp_onboarding.md` and prep CIO escalation note if no ETA arrives by 2025-10-11 09:00 UTC.
+- Coordinate with reliability/data to queue MCP contract test unskip + rate-limit probe so parity validation can commence immediately when credentials land; stage commands in `artifacts/integrations/ga-mcp/2025-10-10/`.
+
+## 2025-10-10 Direction Review
+- Re-read `docs/directions/integrations.md` (last_reviewed: 2025-10-10); priorities remain locked on GA MCP credential chase, Shopify secret delivery, and readiness dashboard upkeep.
+- Confirmed canonical restart guidance is tracked at `docs/runbooks/restart_cycle_checklist.md`; aligned integration restart notes with that checklist.
+- Direction lines 25-27 explicitly assign integrations to close `DEPLOY-147`, secure Shopify shop access, and keep the readiness dashboard current—tracking each in `docs/integrations/shopify_readiness.md` and today’s action items.
+
+## 2025-10-10 GA MCP Escalation
+- Infra missed the 17:00 UTC ETA for OCC-INF-221 credential delivery; manager re-escalated at 17:20 UTC requesting immediate status or fallback.
+- Updated onboarding tracker (`docs/integrations/ga_mcp_onboarding.md`) with missed deadline, new action items, and escalation plan; staged evidence folder (`artifacts/integrations/ga-mcp/2025-10-10/`).
+- Next follow-up: ping infra in #infra-requests at 18:05 UTC if ticket remains silent and prepare CIO escalation note for 2025-10-11 09:00 UTC.
+
+## 2025-10-10 Shopify Secret Bundle Follow-up
+- Sent deployment follow-up at 17:30 UTC to close `DEPLOY-147`, deliver Shopify shop access instructions, and confirm secret sync per `docs/directions/integrations.md:24-27`.
+- 19:05 UTC: No acknowledgement yet; flagged pending follow-up and drafting escalation note for manager if deployment stays silent.
+- Updated readiness brief (`docs/integrations/shopify_readiness.md`) action log with the follow-up and ensured readiness dashboard reflects the dependency.
+- 2025-10-10 04:41 UTC — forwarded product’s green smoke artifact (`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`) to deployment, restating DEPLOY-147 urgency and requesting timestamped store invite evidence; will escalate to manager if no response before 09:00 UTC checkpoint.
+
+## 2025-10-10 Evening Checkpoint (22:30 UTC)
+- Supabase staging `DATABASE_URL` confirmed in vault + GitHub; coordinating with QA to refresh `.env.staging` once Shopify credentials land.
+- Reliability scheduled to run `scripts/deploy/shopify-dev-mcp-staging-auth.sh`; awaiting host + credential bundle to drop evidence in `artifacts/integrations/ga-mcp/2025-10-10/`.
+- DEPLOY-147 remains open pending Shopify secrets + store access delivery from deployment; escalation request queued if no response after 19:15 UTC.
+- Next actions: ping infra at 18:05 UTC for GA MCP ETA, sync with reliability on MCP helper completion, close DEPLOY-147 immediately after credential handoff, and update readiness docs with evidence.
+
+## 2025-10-10 Direction Execution Refresh
+- Re-read `docs/directions/integrations.md` and confirmed sprint focus items: MCP helper coordination, DEPLOY-147 closure, readiness dashboard updates.
+- Requested reliability run the MCP staging auth helper with the staging bundle; awaiting host + CLI token to confirm live Shopify credentials drop.
+- Prepared store access distribution plan: once bundle arrives, update `vault/occ/shopify/shop_domain_staging.env` with `hotroddash.myshopify.com`, capture evidence in `artifacts/integrations/shopify/2025-10-10/store-access.md`, notify deployment/QA/product, and close DEPLOY-147.
 ## 2025-10-08 Integration Dashboard
 | Vendor | Sandbox Status | Live Status | Credentials | Tests | Blockers / Next Action |
 | --- | --- | --- | --- | --- | --- |
@@ -48,6 +113,11 @@ expires: 2025-10-09
 - Staging Postgres + secrets: coordinating with deployment/reliability to capture secret provisioning evidence, ensuring integration readiness dashboard includes the new GitHub env rows when available.
 - GA MCP readiness: top priority—still waiting on OCC-INF-221 outcome; following up with infra/compliance this afternoon for credential ETA so parity checklist can start.
 - Operator dry run: aligning with enablement/product to confirm external vendor contacts (Hootsuite) aren’t needed during rehearsal; noting dependency status in readiness dashboard.
+
+## Shopify Install Push — 2025-10-10 10:16 UTC
+- `DEPLOY-147`: coordinate with reliability to run `scripts/deploy/shopify-dev-mcp-staging-auth.sh` so the Shopify CLI generates staging credentials; once the helper outputs new values, confirm they’re vaulted/mirrored and capture timestamps + secret names in this log and `docs/integrations/shopify_readiness.md`.
+- Provide QA with the dedicated staging store access and document contact/permission details so Playwright flows can authenticate without manual intervention.
+- Notify deployment and product the moment the secret bundle is live so they can run sync + staging deploy steps; keep the readiness dashboard updated with evidence links.
 
 ## 2025-10-09 Production Blocker Push
 - GA MCP readiness: drafted credential handoff checklist updates (host + secret variable mapping) so automation and compliance evidence can publish immediately after OCC-INF-221; waiting on infra response from today’s 18:30 UTC sync.
