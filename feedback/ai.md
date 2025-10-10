@@ -9,8 +9,9 @@ expires: 2025-10-13
 # AI Agent — Daily Feedback & Regression Report
 
 ## Direction Sync — 2025-10-10
-- Re-read `docs/directions/ai.md` after the staging push refresh; prioritizing Shopify dry-run kit, daily regression hygiene, and pilot readiness brief deliverables immediately.
+- Re-read `docs/directions/ai.md` after the staging push refresh; prioritizing Shopify dry-run kit (Sales Pulse, CX Escalations, Inventory Heatmap), daily regression hygiene, and rate-limit mitigation follow-ups immediately.
 - Manager directive acknowledged: execute without waiting for further approval and follow the git protocol on `agent/<role>/<task>` branches.
+- Noted restart governance now lives in `docs/runbooks/restart_cycle_checklist.md`; referenced it while logging stash ID and evidence steps.
 
 ## 2025-10-10 Sprint Execution
 - Authored `docs/strategy/ai_pilot_readiness_brief.md` covering guardrails, kill switch posture, Supabase dependencies, and go/no-go criteria for the Shopify staging push.
@@ -18,10 +19,52 @@ expires: 2025-10-13
 - Restored the prompt regression harness (`scripts/ai/run-prompt-regression.ts`) and wired `npm run ai:regression` so the daily metrics run succeeds.
 - Authored `docs/runbooks/supabase_staging_secret_handoff.md` to codify the staging Supabase secret delivery steps for reliability/deployment.
 
-## Regression Run — 2025-10-10
-- `npm run ai:regression` → PASS (`BLEU=0.9444`, `ROUGE-L=0.9565`); all 3 baseline cases cleared thresholds.
-- Artifact: `artifacts/ai/prompt-regression-2025-10-09-174559.json` (UTC timestamped).
-- Next: expand dataset with Sales Pulse scenarios and enable Supabase logging once secrets arrive.
+## 2025-10-11 NDJSON Ingestion & Evidence Refresh
+- Coordinated with data on latest reliability drop — ingested `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` and confirmed analyzer parity via `artifacts/monitoring/supabase-sync-summary-latest.json`.
+- Logged AI-facing evidence references in the sales pulse and CX escalation job aids so facilitators point to the refreshed decision IDs during training.
+- Verified staging Supabase secrets now unlock the hourly monitor; parity output archived at `artifacts/monitoring/supabase-parity_2025-10-10T07-34-35Z.json` for AI regression provenance.
+- Prepping modal asset checklist with designer/localization to activate once QA confirms staging stays green; targeting prompt snippet QA alongside next regression run.
+
+## Prompt Library Update — 2025-10-10 06:53 UTC
+- Added modal prompt snippets at `app/prompts/modals/cx_escalations_modal_v1.prompt.md` and `.../sales_pulse_modal_v1.prompt.md` so the CX Escalations and Sales Pulse modals ship with guardrail-aware AI copy once feature flags flip.
+- Logged the addition in `app/prompts/CHANGELOG.md` (v1.1.0) with evaluation pending the next `npm run ai:regression` run (`cx_escalations_modal` + `sales_pulse_modal` scenarios).
+- Coordinated with enablement job aid refresh (2025-10-10) to ensure prompt variables align with facilitator guidance; Supabase decision ID capture remains consistent across docs.
+- Next: execute regression after staging telemetry is stable (still seeing HTTP 410) and attach BLEU/ROUGE metrics plus sample outputs.
+
+## Regression Run — 2025-10-10 02:50 UTC
+- `npm run ai:regression` → PASS (`BLEU=0.9444`, `ROUGE-L=0.9565`); 3/3 baseline cases cleared thresholds.
+- Artifact: `artifacts/ai/prompt-regression-2025-10-10-025007.json`.
+- Working tree clean after run (no stash needed this cycle). Next expansion still pending Supabase telemetry hook delivery.
+
+## Sprint Focus Update — 2025-10-10
+- Dry-run kit docs (`docs/enablement/job_aids/ai_samples/*`) remain staged with telemetry callouts; pending fact IDs/screenshots until data drops refreshed NDJSON export.
+- Awaiting reliability/deployment confirmation that CI can consistently reach `https://hotdash-staging.fly.dev/app` before appending rate-limit mitigation notes to enablement packets.
+- Will inject Supabase decision/fact IDs + staging URL references once data shares export + deployment confirms smoke stability; tracking dependency in this log per direction.
+
+## Direction Sync — 2025-10-10 05:05 UTC
+- Re-read `docs/directions/ai.md`; new requirement to coordinate with engineer/data so prompt regression logs capture latest decision-log telemetry alongside QA evidence.
+- Planning to draft telemetry log format (decision IDs, timestamps, fact types) once data delivers refreshed NDJSON export, then loop in engineering to wire logging into `scripts/ai/run-prompt-regression.ts`.
+- Verified Fly staging host behaviour: `mock=1` path returns HTTP 200 with mock dashboard, while `mock=0` still returns HTTP 410. Holding enablement updates until reliability/deployment confirm expected live-response contract.
+- Sprint focus restated: ship dry-run kit, maintain daily regression with artifacts, and append fact IDs/rate-limit notes/staging URL references after data export + host confirmation; noted in this log so the queue stays visible.
+
+## Direction Sync — 2025-10-10 07:21 UTC
+- Re-read sprint focus items (`docs/directions/ai.md:25-31`) to stay aligned on regression cadence, NDJSON ingestion, and modal prompt delivery sequencing.
+- `npm run ai:regression` reran at 07:21 UTC → PASS (BLEU 0.9444 / ROUGE-L 0.9565); artifact saved to `artifacts/ai/prompt-regression-2025-10-10-072145.json` and ready for QA bundle handoff.
+- Latest Supabase bundle (`artifacts/logs/supabase_ndjson_bundle_2025-10-10.tar.gz`) still resolves to the 2025-10-09 sample, so prompt log ingestion remains blocked; staging to ingest the refreshed export immediately once data drops the updated NDJSON.
+- Modal-specific prompt snippets already staged under `app/prompts/modals/`; holding enablement packet updates until QA confirms the flag flip so we can log live outputs alongside telemetry.
+- Next steps queued: confirm NDJSON delivery ETA with data, prep ingestion script run + prompt log update, then append fact IDs and staging references across enablement packets once `mock=0` returns 200.
+
+## Telemetry Ingestion — 2025-10-10 07:34 UTC
+- New Supabase export received (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`); regression harness now auto-detects the latest file and embeds decision telemetry in the artifact payload.
+- `npm run ai:regression` re-ran at 07:34 UTC → PASS (BLEU 0.9444 / ROUGE-L 0.9565); artifact stored at `artifacts/ai/prompt-regression-2025-10-10-073452.json` with decision log metadata (IDs 101–104, `TIMEOUT` breakdown, ISO timestamps).
+- Logged ingestion status + blockers (staging `?mock=0` still 410; modal flags pending QA) to the manager report; ready to append fact IDs and rate-limit notes to enablement packets once staging hosts return 200.
+- Next: update job aids/README to reference the refreshed export, coordinate with QA/design on screenshot timing, and monitor hourly Supabase alerts now that staging secrets are set.
+
+## Direction Sync — 2025-10-10 07:55 UTC
+- Re-read `docs/directions/ai.md` after manager appended the NDJSON coordination bullet; acknowledged reliability’s drop (path `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) and confirmed ingestion completed alongside data.
+- Verified regression artifact `artifacts/ai/prompt-regression-2025-10-10-073452.json` now satisfies the telemetry logging requirement so QA can cite decision evidence with Shopify admin tests.
+- Aligned with enablement to keep modal snippets staged and defer packet publication until QA confirms feature flags and staging `?mock=0` flips to 200.
+- Action items: track hourly alert output for parity docs, prep enablement packet diff once staging is green, and stay in daily sync with data for future NDJSON drops.
 
 ## Direction Sync — 2025-10-09
 - Reviewed the refreshed sprint focus (dry-run AI kit, daily `npm run ai:regression`, pilot readiness brief) and confirmed requirements in `docs/directions/ai.md`.
@@ -127,33 +170,13 @@ _This section will track any hallucination or bias risks detected in AI outputs_
 
 ## Next Actions
 
-Per `docs/directions/ai.md` requirements:
+Per updated sprint direction (`docs/directions/ai.md:25-37`):
 
-1. **Implement AI Recommendation Logging**
-   - Create service to log every AI output (template variant, brief, insight) to packages/memory
-   - Scope: `build`
-   - Include: inputs, outputs, timestamp, prompt version
-
-2. **Create Chatwoot Reply Prompt Library**
-   - Convert static templates to AI-generated variants
-   - Add evaluation metrics (BLEU/ROUGE baselines)
-   - Ingest latest facts from Memory before generation
-   - Version under `app/prompts/chatwoot/`
-
-3. **Implement Anomaly Summary Prompts**
-   - Create prompts for dashboard fact summarization
-   - Include severity assessment, trend detection, recommended actions
-   - Version under `app/prompts/anomaly/`
-
-4. **Build Evaluation Framework**
-   - Implement BLEU/ROUGE scoring utilities
-   - Create mock datasets (conversation examples, anomaly scenarios)
-   - Set up daily regression test script
-
-5. **Establish Guardrails**
-   - Route all AI outputs through engineer-owned approval flows
-   - No direct production writes
-   - Add hallucination detection (PII, fabricated data, over-commitment)
+1. Sync with data after each hourly NDJSON drop, append decision IDs + parity summary to job aids, and log ingestion evidence in this file.
+2. Run `npm run ai:regression` once staging telemetry clears (monitor hotdash-staging smoke) and attach BLEU/ROUGE metrics plus sample outputs.
+3. Prep modal asset bundle (copy variants, localization checklist, screenshots) for CX Escalations and Sales Pulse; queue release once QA confirms feature flags and staging stability.
+4. Wire prompt regression logs to include Supabase decision/fact references so QA can cite AI evidence alongside Shopify admin tests.
+5. Continue drafting AI recommendation logging service to capture inputs/outputs to Supabase Memory (`scope="build"`), aligning with guardrail requirements.
 
 ---
 

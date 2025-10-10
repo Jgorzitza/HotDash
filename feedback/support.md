@@ -2,13 +2,99 @@
 epoch: 2025.10.E1
 doc: feedback/support.md
 owner: support
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-09
+expires: 2025-10-11
 ---
+# Support Daily Status — 2025-10-12 (Checklist Adoption)
+
+## Summary
+- Adopted localization’s English-only audit checklist (`docs/marketing/english_only_audit_checklist.md`) as part of support’s dry run prep and Chatwoot template updates.
+- Logged reminder in CX escalation runbook and operator training agenda to execute the checklist before circulating revised materials.
+- Coordinated with marketing so both teams share audit evidence back to `feedback/localization.md` after each run.
+
+## Actions
+- Added checklist step to `docs/runbooks/shopify_dry_run_checklist.md` (pre-distribution section) and noted evidence path in the operator training Q&A template.
+- Sent acknowledgement in support backlog (`docs/runbooks/operator_training_agenda.md` updates) that English-only verification precedes every collateral revision.
+- Informed enablement that support will provide checklist output alongside training packet updates once the embed token unlocks modal screenshots.
+
+## Blockers / Next Steps
+- 2025-10-10T07:52:05Z — Deployment shared an updated mock smoke bundle (`artifacts/qa/staging-deploy-2025-10-10T0751Z.md`); holding comms until the live `?mock=0` latency drops below 300 ms.
+- Still waiting on deployment/reliability to provide the sanctioned Shopify embed token so localization can capture modal screenshots; support will attach screenshots to the dry run evidence bundle immediately after delivery.
+- Continue running curl probes and dry run rehearsals; document checklist results in `feedback/localization.md` to keep audit history centralized.
+
+# Support Daily Status — 2025-10-10
+
+## 2025-10-10 Direction Execution
+- Updated training agenda to incorporate the Shopify sync rate-limit coaching script and explicit `#occ-reliability` escalation path (`docs/runbooks/operator_training_agenda.md`).
+- Added escalation contact table to the rate-limit recovery playbook so support reps know the reliability channel and support lead handoff (`docs/runbooks/shopify_rate_limit_recovery.md`).
+- Synced dry run checklist with a new task to rehearse the staging validation queue using the Fly URL so enablement sees the dependency in one place (`docs/runbooks/shopify_dry_run_checklist.md`).
+- Direction reread 2025-10-10 04:25 UTC — newest sprint additions captured (QA artefact integration, modal validation).
+- Folded QA readiness evidence into CX Escalations playbook (`docs/runbooks/cx_escalations.md`) and operator training agenda (`docs/runbooks/operator_training_agenda.md`) with references to `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` and latest synthetic check JSON.
+- Reviewed CX Escalations & Sales Pulse modal implementations (`app/components/modals/CXEscalationModal.tsx`, `app/components/modals/SalesPulseModal.tsx`) against SOPs — flows, labels, and decision logging align; no discrepancies to escalate.
+- Added mock-mode transcript snippets + edge case checklist to CX Escalations runbook so operators can rehearse while `?mock=0` stays blocked (`docs/runbooks/cx_escalations.md`).
+- Staged evidence table in `docs/runbooks/shopify_dry_run_checklist.md` to track parity/smoke/curl artifacts and comms readiness ahead of staging rollout.
+
+## Shopify Validation Queue Rehearsal — 2025-10-10T02:52Z
+- `curl -I https://hotdash-staging.fly.dev/app?mock=1` → HTTP/2 200, `fly-request-id=01K760D3XJW8N1MDWW4HEY3GDN-ord`; staging host reachable without `--resolve` override.
+- Walked through `docs/integrations/shopify_readiness.md` checklist and mapped support-owned steps (capturing request IDs, logging evidence, prepping Slack comms) to the new dry run task; ready to execute once credentials drop.
+- Holding the `?mock=0` smoke until reliability posts sustained green synthetic checks; queued reminder to capture screenshot + comms snippet for operator update when released.
+- Re-ran curl against `https://hotdash-staging.fly.dev/app?mock=0` → HTTP/2 410 (no install) with `fly-request-id=01K765H8WH5KMF74TNJMZDYP4S-ord`; sharing with deployment/reliability so they can confirm expected pre-install response before we message operators.
+- Updated operator training Q&A template with staging walkthrough metadata (`docs/runbooks/operator_training_qa_template.md`) so facilitators/attendees have Fly URL + feature flags documented.
+- Spot-check 2025-10-10 07:18 UTC: `curl -I https://hotdash-staging.fly.dev/app?mock=0` still returns HTTP/2 410 (`fly-request-id=01K76FRR5Q2SCV97HAVB336M3M-ord`); pinged reliability thread to keep us looped once pipeline redeploy finishes.
+
+## Dry Run Logistics Sync
+- Reviewed operator training Q&A template to ensure space for rate-limit rehearsal notes; prepped to seed initial prompts after enablement shares facilitator roster.
+- Coordinating with product to confirm support facilitator assignment so we can finalize session metadata in `docs/runbooks/operator_training_qa_template.md` and the pre-read.
+- Pre-filled `docs/runbooks/operator_training_qa_template.md` with session metadata, T-48 open questions (DEPLOY-147 credentials, synthetic check ETA, facilitator owners), and action items so partners can update status inline.
+- Drafted operator invite list stub in `docs/strategy/operator_dry_run_pre_read_draft.md` and collected enablement’s provisional attendee notes; waiting on roster confirmation before sending calendar hold.
+- Opened Slack follow-up (2025-10-10 07:10 UTC) with enablement to lock facilitator availability for 2025-10-16 @ 13:00 ET; asked for confirmation on scribe + backup note-taker assignments.
+- Held provisional 30-minute slot on shared support calendar for 2025-10-10 15:30 UTC to walk roster + invite sequencing with enablement; will convert to formal invite once they confirm availability.
+- Coordinated with enablement on the new staging evidence table (`docs/enablement/dry_run_training_materials.md`) so support can drop the `?mock=0` curl log and synthetic JSON immediately after QA signs off.
+
+## Blockers / Next Steps
+- DEPLOY-147 still pending Shopify staging credential bundle (shop domain + install steps); cannot run live Admin validation until deployment delivers package.
+- Need reliability confirmation that synthetic checks stay green for `https://hotdash-staging.fly.dev/app?mock=0`; will rerun curl + capture evidence once posted.
+- Plan to draft operator comms snippet for rate-limit incident logging after enablement reviews the updated playbooks (target 2025-10-11).
+- Credential hand-off checklist now lives in `docs/deployment/shopify_staging_install_plan.md`; will mark items complete as deployment/integrations confirm deliveries.
+
+## Recommendations — 2025-10-10
+1. Keep polling `https://hotdash-staging.fly.dev/app?mock=0` after deployment’s redeploy to capture live-mode screenshots the moment we see HTTP 200 and archive the evidence in `artifacts/ops/dry_run_2025-10-16/`.
+2. Block time with enablement today to ratify facilitator roster + note-taking coverage, then update `docs/runbooks/operator_training_qa_template.md` and schedule the 2025-10-16 invites.
+3. Pre-stage operator comms packet (Slack copy + email draft) so we can broadcast staging readiness immediately after DEPLOY-147 lands.
+4. Inventory outstanding Shopify credential dependencies in `feedback/product.md` and confirm ownership so there’s a single thread to close once deployment hands off the bundle.
+
 # Support Daily Status — 2025-10-09
 
+## Direction Refresh — 2025-10-10 09:13 UTC
+- Manager directive: integrate the Shopify sync rate-limit coaching guidance into support playbooks today and log updates + escalations in this file.
+- Prepare to execute the Shopify validation queue once admin credentials arrive by reviewing `docs/integrations/shopify_readiness.md`; record credential receipt (vault path/timestamp) immediately when deployment shares it.
+- Coordinate with enablement/product on dry run logistics so operator comms and Q&A entries reflect the refreshed training kits.
+
+## Shopify Install Push — 2025-10-10 10:22 UTC
+- When integrations confirms staging store access, document login details + guardrails here and refresh operator playbooks with the Shopify install instructions and rate-limit recovery steps.
+- Partner with enablement to send dry-run invites referencing the live store; capture attendee confirmations and outstanding questions in the shared Q&A template.
+- Note any support tooling gaps (Chatwoot, telemetry dashboards) uncovered during validation so product can track them in the backlog.
+
+## 2025-10-10 Rate-Limit Coaching Integration
+- Authored `docs/runbooks/shopify_rate_limit_recovery.md` and cross-linked it in the Shopify dry run checklist so facilitators reference the scripts during T-24 prep.
+- Reviewed `docs/integrations/shopify_readiness.md` to confirm validation steps; awaiting staging bundle from product/deployment before flipping checklist items to in-progress.
+- Seeded evidence folders under `artifacts/ops/dry_run_2025-10-16/` to capture rate-limit incidents or rehearsal artifacts as soon as they occur.
+
+## 2025-10-10 Shopify Validation Queue Prep
+- Pulled action list from `docs/integrations/shopify_readiness.md`—ready to run staging deploy script, capture smoke evidence, and coordinate contract tests with data once credentials drop.
+- Drafted operator comms reminder (pending credentials) to highlight validation status and where rate-limit recovery steps live; will publish via Q&A template + training script once bundle arrives.
+- Staged checklist placeholders in `docs/runbooks/shopify_dry_run_checklist.md` for facilitator briefing and evidence capture.
+- Updated operator training agenda with staging install/login steps and a pre-session environment readiness check (Shopify Admin path, OCC mock flag, Supabase decision log verification).
+
+## 2025-10-10 Dry Run Coordination
+- Created live capture template at `docs/runbooks/operator_training_qa_template.md`; pre-filled session metadata placeholders for 2025-10-16 rehearsal.
+- Requested enablement/product to populate attendee roster, note-taking, and recording owners referencing the new template and checklist (pending responses).
+- Prepping to seed initial questions (staging access, rate-limit proof points) by 2025-10-12 once trainer inputs return.
+- Will dispatch invites and facilitator packet as soon as enablement flags readiness (design overlays + staging bundle) per direction; checklist row 6 pending staging credential delivery.
+
 ## Direction Acknowledgment
+- 2025-10-10 10:20 ET — Confirmed `docs/runbooks/restart_cycle_checklist.md` is tracked in repo and aligned with integrations restart tasks; ready to reference during Shopify prep.
 ## 2025-10-09 Production Blockers Update
 - Operator dry run prep: drafted training checklist updates; pending staging access confirmation and enablement schedule before sending operator invites.
 - Supabase logging dependency: documenting current manual fallback so support can brief operators that decision logs remain in-memory until reliability delivers secrets.
@@ -41,6 +127,7 @@ expires: 2025-10-09
 - Drafted operator enablement checklist updates so training reflects the trimmed template set.
 - Pinged product and enablement on Slack (10:45 ET) requesting confirmation on the 2025-10-16 dry run slot and staging access timeline.
 - Enablement responded (14:36 ET) with updated job aids + coordination plan and is capturing pre-session questions for inclusion in the operator Q&A template once support shares priorities.
+- 2025-10-10 18:45 ET — Received Shopify sync rate-limit coaching guide (`docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md`); reviewing tone and escalation steps, will deliver feedback to enablement before invitations send.
 - 2025-10-09 09:00 ET — Enablement sent follow-up reminder for dry run confirmations; awaiting action items from product/support before invites go out.
 - Expanded Chatwoot heuristic coverage (additional delivery/refund phrases) and added regression tests (`npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts`).
 
@@ -62,6 +149,7 @@ expires: 2025-10-09
 - Capture modal screenshots and refresh runbook validation notes after staging verification.
 - Coordinate with enablement/product on dry run logistics and calendar invites once access is unblocked.
 - Execute new runbook checklist items once Supabase credentials and staging seed land.
+- Update `docs/runbooks/shopify_dry_run_checklist.md` statuses with evidence links as soon as staging access, design overlays, and nightly metrics outputs arrive; drop corresponding notes in `artifacts/ops/dry_run_2025-10-16/` and partner feedback logs.
 
 # Support Daily Status — 2025-10-08
 
@@ -221,6 +309,12 @@ _No incidents logged — dashboard not yet in production_
 - [ ] Schedule first operator training/dry run (coordinate with product lead Riley Chen)
 - [ ] Update runbooks with modal screenshots once dry run complete
 - [ ] Initiate AI reply pilot once AI agent provides baseline metrics (feedback/ai.md)
+
+## Comms Packet Prep — 2025-10-10 08:05 UTC
+- Coordinated with marketing/enablement to stage the staging access rollout announcement and acknowledgement tracker (see `docs/enablement/dry_run_training_materials.md`).
+- Noted current staging smoke status (`https://hotdash-staging.fly.dev/app?mock=0` → HTTP 410 @ 2025-10-10T07:23Z) so support can immediately append a 200-level curl log once QA clears the environment.
+- Prepared facilitator roster sync (15:30 UTC hold) to finalize support presenters and scribe coverage; will update Q&A template ownership after the meeting.
+- Pending: capture Supabase NDJSON export path and update support escalation notes as soon as reliability shares the refreshed bundle.
 
 ## Governance Acknowledgment — 2025-10-07
 - Reviewed docs/directions/README.md and docs/directions/support.md (updated 2025-10-06)

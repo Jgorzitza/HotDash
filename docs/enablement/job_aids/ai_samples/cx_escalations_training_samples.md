@@ -1,9 +1,29 @@
 # CX Escalations — AI Dry Run Samples (2025-10-10 Draft)
 
+## Telemetry Callouts
+- Capture Supabase decision log IDs (`scope="ops"`, `decision_type="cx.escalation"`) after every approval or escalation; attach screenshots to the evidence bundle.
+- Note SLA timer values and Chatwoot conversation IDs in the Q&A template so product/QA can reconcile timestamps with Supabase rows.
+- Record any retries or fallback paths (e.g., manual reply, manager escalation) in `feedback/ai.md` to support post-session analysis.
+
+## Facilitation Notes
+- Before each scenario, confirm operators can see the `FEATURE_MODAL_APPROVALS` toast and remind them to narrate why they trust or edit the AI copy.
+- After every action, pause to document telemetry artifacts (Supabase ID, Chatwoot link) and ensure the scribe logs follow-ups in the shared Q&A template.
+- Call out guardrails when `FEATURE_AI_ESCALATIONS` toggles, emphasizing how telemetry should reflect abstain vs approve paths.
+
 ## Staging Checklist
 - Launch OCC staging with `?mock=1` and confirm `FEATURE_MODAL_APPROVALS=1`; keep `FEATURE_AI_ESCALATIONS=0` until telemetry sign-off, then flip to review AI copy.
 - Seed Chatwoot sandbox with conversations from the operator agenda (`docs/runbooks/operator_training_agenda.md:63-104`) so SLA timers match the scripted scenarios.
 - Open the staging Supabase decision log dashboard after each approval once secrets land; capture row screenshots for the dry-run evidence bundle.
+
+## Supabase Evidence Reference (2025-10-09 sample)
+Latest sample decisions live in `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` (summary at `artifacts/monitoring/supabase-sync-summary-latest.json`). Use the rows below during rehearsals until staging generates fresh IDs.
+
+| Scenario | decisionId | Status | Attempt | Duration (ms) | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Late Shipment (Scenario A) | 101 | SUCCESS | 1 | 241.12 | Demonstrate clean approval log and highlight timestamp capture in Q&A template. |
+| Refund Offer (Scenario B) | 104 | SUCCESS | 2 | 265.43 | Illustrate retry metadata (attempt=2) and remind operators to note refund escalation threshold. |
+| SLA Breach & Hold (Scenario C) | 103 | TIMEOUT | 3 | 1500.55 | Walk through timeout handling and fallback logging when Supabase records an error code (`ETIMEDOUT`). |
+| Policy Exception (Scenario D) | — | — | — | — | No Supabase entry expected when AI is disabled; confirm the absence of a row and log the manual escalation in the Q&A template. |
 
 ### Scenario A — Late Shipment (Alex Rivera)
 - **Shopify cues:** Order `#EVR-1045` shows label created 18h ago with no carrier movement.

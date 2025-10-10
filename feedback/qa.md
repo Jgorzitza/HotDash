@@ -2,11 +2,38 @@
 epoch: 2025.10.E1
 doc: feedback/qa.md
 owner: qa-agent
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
 # QA Regression Matrix — HotDash Operator Control Center
+
+## 2025-10-11 — QA Intake Check-in
+- 2025-10-10T02:48:48Z — Checked sprint directive for Fly IPv4 status; `curl -Is https://hotdash-staging.fly.dev/app?mock=0` exits 7 (host unreachable). `.env.staging` bundle still points at Supabase IPv4 DSN (`db.mmbjiyhsvniqxibzgyvx.supabase.co`), so Prisma forward/back drill (`scripts/qa/test-migration-rollback.sh`) remains on hold pending a responding staging host + updated deployment artifact. Logged curl failure; will rerun probe hourly and archive once site responds.
+- 2025-10-10T02:53:12Z — Preflighted migration tooling: confirmed `npx prisma --version` resolves (6.16.3) and reviewed `scripts/qa/test-migration-rollback.sh` to capture `tee artifacts/migrations/<timestamp>/qa-sqlite-forward-back.log` once staging host unblocks; evidence folder template ready under `artifacts/migrations/`.
+- 2025-10-10T02:55:36Z — Executed SQLite migration forward/back validation (`bash scripts/qa/test-migration-rollback.sh | tee artifacts/migrations/20251010T025536Z/qa-sqlite-forward-back.log`). All steps passed (reset, deploy, validate); backup stored at `prisma/dev.sqlite.backup-20251009-205536`. Ready to coordinate Postgres drill once staging DSN resolves.
+- 2025-10-10T04:19:02Z — Synthetic smoke PASS: `SYNTHETIC_CHECK_URL=https://hotdash-staging.fly.dev/app?mock=1 node scripts/ci/synthetic-check.mjs` returned HTTP 200 in 218 ms; artifact `artifacts/monitoring/synthetic-check-2025-10-10T04-19-02.703Z.json`.
+- 2025-10-10T04:20:37Z — Shopify readiness Playwright run PASS against Fly staging (`PLAYWRIGHT_BASE_URL=https://hotdash-staging.fly.dev`); evidence at `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log`.
+- 2025-10-10T06:27:35Z — Lighthouse audit PASS via manual Chrome bootstrap (`~/.cache/ms-playwright/chromium-1193/chrome-linux/chrome --remote-debugging-port=9222` + `npx lighthouse … --skip-autolaunch --port=9222`). Report saved to `coverage/lighthouse/report.json` (scores: Performance 92, Accessibility 95, Best Practices 96, SEO 80); console log `artifacts/playwright/shopify/lighthouse-staging-2025-10-10T06-27-35Z.log`.
+- 2025-10-10T06:30:52Z — Updated `scripts/ci/run-lighthouse.mjs` to auto-bootstrap Playwright Chromium (remote debugging fallback) and reran `node scripts/ci/run-lighthouse.mjs` with `LIGHTHOUSE_TARGET=https://hotdash-staging.fly.dev/app?mock=1`; report refreshed in `coverage/lighthouse/report.json`, console log `artifacts/playwright/shopify/lighthouse-staging-2025-10-10T06-30-52Z.log`. No manual steps required going forward.
+- 2025-10-10T06:36:48Z — Captured fresh synthetic evidence post-Lighthouse automation (`SYNTHETIC_CHECK_URL=https://hotdash-staging.fly.dev/app?mock=1 node scripts/ci/synthetic-check.mjs` → `artifacts/monitoring/synthetic-check-2025-10-10T06-36-48.923Z.json`, 283.96 ms). Monitoring for residual spikes per deployment notes.
+- 2025-10-10T06:40:12Z — Coordinated with engineer/data/AI via shared analyzer artifacts (`artifacts/logs/supabase_decision_sample.ndjson`, summary JSON) requesting decision ID + rate-limit annotations on next NDJSON drop; awaiting reliability’s export to append telemetry parity block to `artifacts/monitoring/supabase-sync-summary-latest.json`.
+- 2025-10-10T07:32:11Z — Confirmed with data agent that reliability’s NDJSON bundle was ingested; QA acknowledgement captured for `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` and ready for downstream telemetry updates.
+- 2025-10-10T07:37:02Z — Executed Supabase analytics parity rerun (08:20 UTC slot) using staging IPv4 Postgres DSN + service key; zero diff across view/refresh counts. Evidence stored at `artifacts/monitoring/supabase-parity_20251010T073700Z.json`.
+- 2025-10-10T06:51:50Z — Staging Postgres drill complete. Generated Prisma diff scripts (`npx prisma migrate diff --from-empty/--to-empty --schema prisma/schema.postgres.prisma`) and applied via `psql` against Supabase pooler DSN. Forward log: `artifacts/migrations/20251010T065150Z_postgres/forward.log`; rollback log: `.../rollback.log`; reapply log: `.../reapply.log`. Table snapshots stored in the same directory confirming clean rollback/reapply. Database returned to ready state post-drill.
+- 2025-10-10T02:57:40Z — Synced telemetry artifacts for decision log alignment: reviewed `artifacts/logs/supabase_decision_sample.ndjson` + `artifacts/monitoring/supabase-sync-summary-latest.json` (4 records, 1 timeout at decisionId 103). Will tag next validation run with matching decision IDs + rate-limit notes in this log and request engineer/data/AI to append parity annotations when new NDJSON bundle drops.
+- 2025-10-10T03:34:37Z — Revalidated `tests/unit/supabase.memory.spec.ts` post-mock alignment (`npx vitest run tests/unit/supabase.memory.spec.ts` → 5/5 passing). Waiting on reliability’s next NDJSON export to extend parity assertions.
+- 2025-10-10T06:21:15Z — Full Vitest suite green (`npm run test:unit` → 10 files / 25 tests). Supabase retry specs still passing; latest run covers supabase config, Shopify client, and GA ingest modules.
+- 2025-10-09T15:50:54-06:00 — Confirmed engineering linked Partner config + staging scopes (`shopify.app.toml`/`shopify.web.toml`); waiting on Postgres staging `DATABASE_URL` before pairing on live Shopify Admin validation per `docs/integrations/shopify_readiness.md`.
+- 2025-10-09T16:20:53-06:00 — Engineering pulled the new staging DSN but Prisma deploy against Supabase pooler returns `FATAL: Tenant or user not found`; parity script still reports `supabase.facts_table_missing`. Holding validation until reliability/deployment fix credentials and bootstrap `supabase/sql/analytics_facts_table.sql`.
+- Re-reviewed `docs/directions/qa.md` (epoch 2025.10.E1) and confirmed no scope changes since 2025-10-10; restart cycle runbook tracked at `docs/runbooks/restart_cycle_checklist.md` with metadata intact.
+- Queued staging migration forward/back validation run; still waiting on deployment to share the Postgres staging `DATABASE_URL` secret so scripts in `scripts/qa/test-migration-rollback.sh` can execute.
+- Updated `.env.staging` with Supabase DSN (`vault/occ/supabase/database_url_staging.env`) but Prisma Postgres drill blocked — `prisma migrate deploy` → `P1001 Can't reach db.mmbjiyhsvniqxibzgyvx.supabase.co:5432` (see artifacts/migrations/20251009T222451Z/db-migrate-latest.log); network allows IPv6 only, Supabase refuses connection.
+- Prisma forward/back rerun 2025-10-09T22:35Z with live DSN still fails: `npm run db:generate:postgres` hits root-owned `.prisma` unlink (`artifacts/migrations/20251009T223546Z/db-generate.log`), `npm run db:migrate:postgres` returns `P1001` (same IPv6-only host, `artifacts/migrations/20251009T223546Z/db-migrate.log`, DNS probe `artifacts/migrations/20251009T223546Z/nc-check.log`).
+- Playwright readiness smoke (`npm run test:e2e`) PASS with evidence at `artifacts/migrations/20251009T223546Z/test-e2e.log`; Lighthouse audit still blocked (`ChromeLauncher ECONNREFUSED`), see `artifacts/migrations/20251009T222451Z/lighthouse-cli.log` and fresh run `artifacts/migrations/20251009T223546Z/test-lighthouse.log` (no report generated).
+- Shopify GraphQL parity still pending Admin credentials; readiness doc updated but no token bundle to exercise live queries.
+- Synthetic telemetry check via `node scripts/ci/synthetic-check.mjs` fails `fetch` against staging (no reachable host); artifact recorded at `artifacts/monitoring/synthetic-check-2025-10-09T22-37-22.064Z.json`.
+- Coordinated with enablement/product on Supabase evidence capture for the 2025-10-16 dry run: QA to validate decision log IDs/screenshots supplied per scenario once staging secrets confirmed.
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
 - Reviewed sprint focus (modal Playwright coverage, Prisma forward/back validation, SSE/approval soak plan, Supabase logging verification) in `docs/directions/qa.md`.
@@ -31,7 +58,7 @@ expires: 2025-10-18
 - **Next**: Ready to coordinate with AI/Reliability on decision logging verification (Task 4)
 
 ### ⏳ Staging Postgres + Secrets
-- **Status**: BLOCKED - awaiting deployment/reliability provisioning (per manager:78)
+- **Status**: IN PROGRESS — Supabase `DATABASE_URL` now available via vault (`vault/occ/supabase/database_url_staging.env`) and GitHub `staging` secrets; awaiting deployment to refresh `.env.staging` and rerun staging deploy before executing migration drill.
 - **Ready**: Migration rollback script (`scripts/qa/test-migration-rollback.sh`)
 - **Ready**: Migration validation procedures documented
 - **Action**: Execute forward/back tests immediately after staging connection string delivered
@@ -50,6 +77,11 @@ expires: 2025-10-18
 - **Mitigation**: Fallback to `?mock=1` mode if staging unavailable
 - **Next**: Verify modal status with engineer, coordinate with enablement/support on scheduling
 - Published CX Escalations/Sales Pulse Playwright coverage plan (`docs/runbooks/qa_playwright_plan.md`) so scenarios are ready to implement once staging data arrives.
+
+## Shopify Install Push — 2025-10-10 10:19 UTC
+- After deployment confirms secret sync, log the GitHub `staging` environment timestamps + vault paths here, then execute Prisma forward/back scripts (`npm run db:migrate:postgres` + rollback) and archive logs under `artifacts/migrations/`.
+- Run the Shopify readiness plan (`docs/integrations/shopify_readiness.md`) immediately: Playwright admin validation, Lighthouse, and GraphQL parity captures; store outputs in `artifacts/integrations/shopify/` and reference them in this file.
+- Monitor Supabase decision logs and rate-limit telemetry during validation, coordinating with data/engineer if anomalies surface before signing off on Shopify readiness.
 
 ## Executive Summary — 2025-10-09
 
@@ -190,6 +222,14 @@ Per `docs/directions/qa.md` (last_reviewed: 2025-10-08):
   - Workaround: Playwright tile rendering test passing (1/1); ready to add modal tests when components ship
 
 ---
+
+## 2025-10-10 — Staging Shopify Deploy Evidence
+- 2025-10-10T07:19:30Z — Deployment shared refreshed staging deploy bundle (`artifacts/qa/staging-deploy-2025-10-10T0718Z.md`) captured with the rotated Shopify CLI token. Playwright config (`playwright.config.ts`) now defaults `PLAYWRIGHT_BASE_URL` to `https://hotdash-staging.fly.dev` when set and forces both modal feature flags on during runs.
+- 2025-10-10T07:25:18Z — Feature flags enabled in staging via Fly secrets (`FEATURE_MODAL_APPROVALS`, `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL`, `FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL`; evidence `artifacts/deploy/fly-secrets-20251010T0725Z.txt`). Synthetic smoke confirms mock flow 243.45 ms (`artifacts/monitoring/synthetic-check-2025-10-10T07-25-12.926Z.json`) and live flow HTTP 200 at 411.37 ms (`artifacts/monitoring/synthetic-check-2025-10-10T07-25-18.832Z.json`) — still above the 300 ms budget; tracking with reliability.
+- 2025-10-10T07:42:00Z — Warm-up curls (0.14–0.23 s) and a restarted secondary Fly machine still yield 367–434 ms in `node scripts/ci/synthetic-check.mjs` (`artifacts/monitoring/synthetic-check-2025-10-10T07-41-40.127Z.json`, `...07-41-57.418Z.json`); holding for reliability tuning.
+- 2025-10-10T07:52:05Z — Deployment delivered updated mock smoke evidence (`artifacts/qa/staging-deploy-2025-10-10T0751Z.md`) with 241.02 ms latency and new CLI log `artifacts/engineering/shopify_cli/2025-10-10T07-51-41.218Z-staging-app-deploy.json`; live smoke evidence still pending <300 ms before we unblock Playwright rerun.
+- Action: once engineering confirms `agent_engineer_sales_pulse_modal` / `agent_engineer_cx_escalations_modal` are enabled in staging, rerun the admin Playwright suite pointing at the staging base URL and attach output under `artifacts/playwright/shopify/`.
+- Tracking: mock synthetic remains within the 300 ms budget (`artifacts/monitoring/synthetic-check-2025-10-10T07-25-12.926Z.json`); live smoke still exceeds budget (367–434 ms) pending reliability’s fix. Playwright rerun deferred until the <300 ms evidence is captured.
 
 ## Prisma Migration Health
 

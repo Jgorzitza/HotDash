@@ -1,3 +1,19 @@
 # AI Dry-Run Sample Outputs
 
-_Placeholder for annotated CX Escalations and Sales Pulse suggestions once scenarios finalize with enablement._
+This folder houses the facilitator packets referenced in `docs/enablement/dry_run_training_materials.md` for the 2025-10-16 operator rehearsal. Each kit includes telemetry callouts, Supabase evidence reminders, and facilitation notes per the 2025-10-10 enablement direction.
+
+- `cx_escalations_training_samples.md` — CX Escalations scenarios A–D with Shopify/Chatwoot cues and AI copy
+- `sales_pulse_training_samples.md` — Sales Pulse KPI drills covering surge, dip, channel mix, and promo readiness
+- `inventory_heatmap_training_samples.md` — Inventory Heatmap drills for restock, transfer, and intentional low-stock workflows
+
+> Append annotated screenshots and Supabase decision IDs once staging secrets and design overlays land (dependency tracked in `feedback/enablement.md`).
+
+## Latest Supabase Evidence (2025-10-10 export)
+Use the refreshed log bundle while rehearsing (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`, summary in `artifacts/monitoring/supabase-sync-summary-latest.json`). Pair the sample IDs with the scenario tables inside each kit and note the hourly monitor now references the same dataset.
+
+| decisionId | Status | Attempt | Duration (ms) | Suggested usage |
+| --- | --- | --- | --- | --- |
+| 101 | SUCCESS | 1 | 241.12 | Baseline approval reference (Sales Surge, CX ship_update, Inventory restock). |
+| 102 | SUCCESS | 1 | 198.77 | Secondary success sample for marketing/intentional-low-stock narratives. |
+| 103 | TIMEOUT | 3 | 1500.55 | Use to illustrate escalation when Supabase logs `ETIMEDOUT` and operators must capture fallbacks. |
+| 104 | SUCCESS | 2 | 265.43 | Demonstrate retry metadata; call out documenting follow-up actions in Q&A templates. |

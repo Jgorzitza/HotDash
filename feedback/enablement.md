@@ -2,13 +2,115 @@
 epoch: 2025.10.E1
 doc: feedback/enablement.md
 owner: enablement
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
-expires: 2025-10-09
+expires: 2025-10-11
 ---
 # Enablement Agent — Daily Status Log
 
 _Pending staffing update. Acknowledge `docs/directions/enablement.md` upon assignment._
+
+## Distribution Hold — 2025-10-10 07:45 UTC
+
+**Progress**:
+- Added facilitator talking point blocks to the CX Escalations and Sales Pulse job aids so trainers can rehearse verbally while staging remains degraded.
+- Cross-checked dry-run packet assets; confirmed job aids and AI scenario packets are ready for distribution once `?mock=0` returns 200.
+- Repointed all AI kit references to the refreshed Supabase export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) so facilitators rehearse with the same dataset the hourly monitor now tracks.
+- Received support ping (2025-10-10 07:10 UTC) and tentatively accepted a 2025-10-10 15:30 UTC roster sync hold; will confirm facilitator + scribe coverage ahead of that slot.
+- Built a staging evidence table inside `docs/enablement/dry_run_training_materials.md` so curl logs, synthetic JSON, NDJSON export, and overlay swaps can be filled the minute QA reports green.
+- Expanded facilitator prep matrix + acknowledgement statuses in `docs/enablement/dry_run_training_materials.md` so packet can ship immediately once QA posts green smoke.
+
+**Blockers**:
+- `https://hotdash-staging.fly.dev/app?mock=0` still returns HTTP 410, so packet distribution and acknowledgement logging stay paused per manager direction.
+- Waiting on designer overlay checklists to replace the interim text callouts in `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md`.
+
+**Next Actions**:
+- Coordinate with design to lock the overlay checklist handoff time and capture any asset gaps (see `feedback/designer.md`).
+- Re-run staging smoke the moment reliability signals a fix; package the dry-run bundle and log stakeholder acknowledgements immediately after we see 200.
+- Draft invite copy so distribution can go out within minutes once staging stabilises.
+
+## Dry Run Prep — 2025-10-10 07:55 UTC
+
+**Progress**:
+- Reran staging smoke (`curl -I https://hotdash-staging.fly.dev/app?mock=0`) — still returning HTTP/2 410; saved output to `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log` for tracking until the response flips to 200.
+- Added draft overlay checklist to `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` so design can validate callout numbers/alt text ahead of screenshot swap.
+- Appended distribution announcement copy, acknowledgement log template, and smoke evidence checklist to the dry-run packet (`docs/enablement/dry_run_training_materials.md`).
+- Coordinated with marketing/support to ensure the staging access rollout comms row, announcement template, and evidence table align before QA greenlight; referenced in both `docs/marketing/launch_comms_packet.md` and this packet.
+
+**Blockers**:
+- Live staging (`?mock=0`) remains HTTP 410; cannot distribute materials until we have a 200 response and synthetic evidence.
+- Awaiting design confirmation on overlay checklist draft and final annotated assets.
+
+**Next Actions**:
+- Once reliability reports 200 OK, rerun smoke, archive evidence under `artifacts/integrations/shopify/<date>/`, and populate acknowledgement log.
+- Schedule facilitator huddle (target T-24h) to rehearse new talking points and Supabase evidence capture; draft agenda pending staging green light.
+- After design review, swap interim text callouts with final overlays and update job aids accordingly.
+
+## Enablement Activation — 2025-10-10 02:51 UTC
+- Confirmed latest direction canon (`docs/directions/enablement.md`, `docs/NORTH_STAR.md`, `docs/git_protocol.md`, `docs/directions/README.md`) and reviewed operator packet materials before resuming ownership.
+- Catalogued freshly shared Supabase evidence bundle (`artifacts/logs/supabase_decision_sample.ndjson`, `artifacts/monitoring/supabase-sync-summary-latest.json`) for use in AI training kits; preparing doc updates next.
+- Staging check blocked: curl to `https://hotdash-staging.fly.dev/app` returned `Failed to connect to server`, so training agenda updates stay on hold until deployment confirms host availability.
+
+## AI Kit Refresh — 2025-10-10 03:04 UTC
+- Updated all AI facilitator packets (`docs/enablement/job_aids/ai_samples/*`) with Supabase sample IDs 101–104 so operators rehearse success/retry/timeout evidence paths ahead of staging access.
+- Added evidence reminder blocks to the dry run training packet (`docs/enablement/dry_run_training_materials.md`) and README to point facilitators at the bundled NDJSON + summary.
+- Next step once staging host responds: fold access workflow into `docs/runbooks/operator_training_agenda.md` and circulate packet links to product/support; pending deployment confirmation.
+
+## Direction Check-in — 2025-10-10 04:19 UTC
+- Re-read `docs/directions/enablement.md` (last_reviewed 2025-10-10; no changes) and confirmed sprint focus priorities: AI kit publication, staging access integration, Supabase evidence alignment.
+- Standing tasks: awaiting staging host confirmation before updating `docs/runbooks/operator_training_agenda.md`; continue monitoring Supabase evidence drops for immediate job aid refresh.
+
+## Staging Host Probe — 2025-10-10 04:19 UTC
+- `curl -I https://hotdash-staging.fly.dev/app` now returns HTTP/2 410 (Gone). Host responds but still unusable for training agenda updates.
+- Holding on folding staging steps into the agenda and packet distribution until deployment signals the URL is stable again or provides alternate access.
+
+## Agenda Update — 2025-10-10 04:21 UTC
+- Refreshed `docs/runbooks/operator_training_agenda.md` with staging verification guidance (require 200/302, escalate on 410) and Supabase sample rehearsal note (IDs 101–104) so facilitators can keep prep moving despite degraded staging.
+- Packet distribution still waiting on deployment confirmation that the Fly host will return 200; will notify product/support as soon as the environment stabilizes.
+
+## Dry Run Packet Sync — 2025-10-10 04:21 UTC
+- Added staging reachability check and escalation guidance to `docs/enablement/dry_run_training_materials.md`; Q&A capture now calls out logging 410 responses and pausing if OCC fails inside Shopify Admin.
+- Packet + agenda now aligned on using sample Supabase IDs until live telemetry is back; next action is notifying stakeholders the moment deployment confirms a healthy response.
+
+## Direction Refresh — 2025-10-10 06:19 UTC
+- Re-read `docs/directions/enablement.md` (latest sprint focus now includes QA readiness evidence handoff) and confirmed priorities: distribute refreshed AI kits, verify staging host, sync Supabase evidence, and capture QA suite highlights once delivered.
+- Standing actions: waiting on deployment for stable staging response, prepping to append QA evidence to job aids when readiness suite lands, and ready to share packet with product/support once go-ahead received.
+
+## Staging Probe — 2025-10-10 06:20 UTC
+- Repeat curl check to `https://hotdash-staging.fly.dev/app` continues to return HTTP/2 410 (Gone). Deployment/reliability still needed before we can distribute the packet or run live agenda rehearsal.
+
+## Modal Job Aid Refresh — 2025-10-10 06:53 UTC
+- Updated CX Escalations and Sales Pulse modal job aids (`docs/enablement/job_aids/cx_escalations_modal.md`, `.../sales_pulse_modal.md`) to reflect the live modal layout (conversation history, internal note capture, action dropdown) and linked the annotated SVG assets.
+- Synced the dry-run annotation callouts doc (`docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md`) so facilitator scripts match the new button labels and internal note emphasis.
+- Coordinated with AI prompt owners on modal-specific prompt snippets (`app/prompts/modals/*`) to keep evidence capture and copy guidance aligned once staging stabilises.
+- Pending: distribution to product/support still blocked on staging HTTP 410; once deployment confirms 200/302 we will send the refreshed packet and solicit acknowledgements.
+
+## Direction Refresh — 2025-10-10 09:12 UTC
+- Manager directive: distribute the Shopify sync rate-limit coaching guide to support/product today; capture their feedback and required follow-ups in this log.
+- Link refreshed AI dry-run kits (Sales Pulse, CX Escalations, inventory heatmap) in the outreach and flag Supabase evidence placeholders so packets can be updated once secrets/decision logs land.
+- Coordinate with QA/deployment on Supabase staging evidence expectations so job aids are ready to update immediately after handoff.
+
+## Shopify Install Push — 2025-10-10 10:21 UTC
+- Once product/integrations confirm Shopify credentials live, send the rate-limit coaching snippet + AI training kit links to support/product; log acknowledgement times and any requested tweaks.
+- Prepare facilitator notes that reference the staging store login flow and Supabase telemetry evidence paths so dry-run participants have current instructions.
+- Capture outstanding questions or missing artefacts in this file and `docs/enablement/dry_run_training_materials.md` so follow-ups are traceable.
+
+## 2025-10-10 Enablement Agent Update (Dry Run Packet)
+- Acknowledged latest enablement direction (`docs/directions/enablement.md`) and confirmed `docs/runbooks/restart_cycle_checklist.md` is now staged; coordinating with integrations on adoption timeline.
+- Support circulated `docs/runbooks/shopify_dry_run_checklist.md`; reviewing dependencies and aligning enablement owners for T-24/T-12 prep tasks.
+- Need enablement owner assignments for dry run recording + Q&A notes (checklist T-24 item 4); please confirm names + backups so agenda can be updated before invites send.
+- Q&A capture template now live at `docs/runbooks/operator_training_qa_template.md`; enablement to populate attendee/owner fields and prep to log questions in real time.
+- Support waiting on enablement readiness signal (staging assets + owner assignments) before sending dry run invites; share go/no-go in this log so support can execute immediately.
+- Consolidated Sales Pulse and CX Escalations materials into `docs/enablement/dry_run_training_materials.md` and refreshed AI sample README to align distribution plan.
+- Logged outstanding dependencies (design overlays, Supabase secrets, attendee confirmations) and prepped evidence capture workflow ahead of the 2025-10-16 rehearsal.
+- Next: distribute packet once assets land, update job aids with annotated screenshots, and sync with product/support on facilitator assignments.
+- Update: designer provided annotated modal overlays (`docs/design/assets/modal-*.svg`) and sparkline hover asset; job aids now reference final files and are queued for distribution after staging access confirms.
+- Captured Supabase vault path (`vault/occ/supabase/service_key_staging.env`) and monitor bundle references inside the training packet for enablement evidence capture.
+- Facilitator roster confirmed with product/support (Product — Justin, Support — Morgan Patel, Enablement — Justin); pending staging access package before sending invites.
+- Re-reviewed 2025-10-10 enablement direction update (AI training kits, rate-limit coaching, Supabase evidence alignment) and noted restart cycle checklist availability at `docs/runbooks/restart_cycle_checklist.md`.
+- Refreshed AI training kits (CX Escalations, Sales Pulse, Inventory Heatmap) with telemetry callouts and facilitation notes; updated README to highlight coverage.
+- Circulated Shopify sync rate-limit coaching guide to product/support for feedback (`feedback/product.md`, `feedback/support.md`) ahead of dry-run scheduling.
+- Confirmed Supabase evidence capture expectations with product/QA (decision log IDs + screenshots per scenario); awaiting staging secrets validation before finalizing job aid updates.
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
 - Reviewed sprint focus (English-only audit, Sales Pulse/CX Escalations job aids, dry-run coordination) per `docs/directions/enablement.md`.

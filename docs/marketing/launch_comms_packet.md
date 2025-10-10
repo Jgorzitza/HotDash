@@ -2,21 +2,32 @@
 epoch: 2025.10.E1
 doc: docs/marketing/launch_comms_packet.md
 owner: marketing
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-18
 ---
 # Launch Communications Packet — Operator Control Center
 
 ## Approval & Evidence Tracker
-| Surface | Owner | Status (2025-10-09) | Evidence |
-|---------|-------|----------------------|----------|
+| Surface | Owner | Status (2025-10-10) | Evidence / Placeholder |
+|---------|-------|----------------------|------------------------|
 | In-app banner | Marketing | Ready for product sign-off (English copy finalized) | `docs/marketing/product_approval_packet_2025-10-07.md#banner` |
 | Launch email | Marketing | Ready for product sign-off (English copy finalized) | `docs/marketing/product_approval_packet_2025-10-07.md#email` |
 | Blog post | Marketing | Draft ready; awaiting product content review for CTA alignment | `docs/marketing/product_approval_packet_2025-10-07.md#blog-post` |
-| Inventory Heatmap tooltip | Marketing | Final copy delivered; engineering wiring pending design placement notes | `docs/marketing/tooltip_copy_handoff_2025-10-07.md` |
+| Tooltip overlays & modal visuals | Design | ⚠️ Pending annotated exports before engineering wiring | Placeholder → upload to `artifacts/design/tooltip-overlays/2025-10-10/` and link |
+| Telemetry & readiness evidence | Marketing + Reliability | ✅ Supabase parity + staging smoke (`?mock=1`) captured; Shopify staging secrets validated | `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`, `artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`, `feedback/reliability.md` (2025-10-10 01:14 UTC) |
+| Staging smoke (`?mock=0`) | Reliability | ⏳ Pending QA sign-off; capture immediately once HTTP 200 sustained | Placeholder → `artifacts/monitoring/synthetic-check-<timestamp>-mock0.json` + `artifacts/integrations/shopify/2025-10-10/curl_mock0_<timestamp>.log` |
+| Staging access rollout comms | Marketing + Support | Ready pending live smoke; announcement + acknowledgement tracker staged | `docs/enablement/dry_run_training_materials.md#draft-announcement-copy-hold-until-mock0-200`, `docs/enablement/dry_run_training_materials.md#acknowledgement-log-template` |
+| Supabase NDJSON export | Reliability + Data | ⏳ Pending refreshed bundle for launch evidence | Placeholder → `artifacts/logs/supabase_decision_export_<timestamp>.ndjson` (attach once delivered) |
+| Staging readiness broadcast (internal ops) | Support ↔ Marketing | Templates staged — awaiting `DEPLOY-147` evidence drop | §2B, `artifacts/ops/dry_run_2025-10-16/` (placeholder files noted) |
 
 **English-only scope:** Launch surfaces ship in English. French strings stay in this packet for localization QA only (see `docs/marketing/translation_review_request_2025-10-07.md`).
+**Readiness evidence:** Reference Supabase parity (01:25Z) + retry snapshot (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`), Fly staging smoke (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`), and Shopify staging validation (`feedback/reliability.md`, 2025-10-10 01:14 UTC) when answering telemetry questions.
+
+**Go-live trigger checklist (fill as QA signs off):**
+- Replace tooltip overlay placeholder with annotated screenshots from design handoff.
+- Attach the first sustained HTTP 200 artifact for `https://hotdash-staging.fly.dev/app?mock=0` (curl log + synthetic JSON).
+- Swap the Supabase NDJSON placeholder for the refreshed export bundle once reliability posts it in `artifacts/logs/`.
 
 ## Release Cadence Alignment
 
@@ -60,7 +71,7 @@ Mock review artifacts are ready for the Operator Control Center dashboard.
 - SEO & Content Watch tile
 
 ⚠️ Open Risks:
-- GA MCP host pending (mock mode active)
+- GA MCP host pending (mock mode active; hold external copy until gates in `docs/marketing/phase2_ga_mcp_messaging.md` clear)
 - [List any other blockers from feedback/manager.md]
 
 📅 Next: Staging review scheduled for [DATE]
@@ -107,12 +118,68 @@ This is your daily operations command center, embedded right in Shopify Admin. I
 We'll demo the dashboard, walk through approval workflows, and capture your feedback to refine the experience before general availability.
 
 🔗 Early Access Link:
-[Staging dashboard URL with sandbox credentials]
+https://hotdash-staging.fly.dev/app?mock=1 (credentials tracked in `vault/occ/shopify/app_url_staging.env`; share via enablement once invites send)
 
-Your input directly shapes our roadmap. Looking forward to hearing what works—and what doesn't.
+Your input directly shapes our roadmap. Looking forward to hearing what works—and what doesn't. We'll recap Supabase parity + staging smoke evidence at the walkthrough so you have telemetry context alongside UI feedback.
 
 — [Product Lead Name]
 ```
+
+---
+
+## 2B. Staging Readiness Broadcast (Internal Operators)
+
+**Trigger:** DEPLOY-147 credential bundle delivered and `https://hotdash-staging.fly.dev/app?mock=0` returning HTTP 200 with fresh evidence archived under `artifacts/ops/dry_run_2025-10-16/`.
+
+### Audience
+Support reps, CX leads, enablement facilitators preparing for the 16 Oct dry run
+
+### Channels
+- Slack: `#occ-ops`
+- Email: `occ-operators@hotdash.internal`
+
+### Slack Template (Support Lead)
+```
+:rocket: OCC staging is live — time to rehearse.
+
+✅ DEPLOY-147 credentials are in 1Password (Vault → occ/shopify/staging_access).
+✅ Reliability posted green smoke for https://hotdash-staging.fly.dev/app?mock=0 (see artifacts/ops/dry_run_2025-10-16/mock0-smoke.png).
+✅ QA uploaded walkthrough screenshots + modal evidence to artifacts/ops/dry_run_2025-10-16/screenshots/.
+
+Next steps:
+- Install the staging app (Shopify Admin → Apps → HotDash) before the 16 Oct dry run.
+- Walk the CX Escalations + Sales Pulse flows, logging gaps in feedback/support.md.
+- Review the rate-limit recovery playbook: docs/runbooks/shopify_rate_limit_recovery.md.
+
+Calendar invite + facilitator packet are landing separately today. RSVP so we can lock scribe/backup coverage.
+
+Questions → thread here or DM @support-lead.
+```
+
+### Email Template (Support & Enablement)
+```
+Subject: OCC staging ready — rehearse ahead of 16 Oct dry run
+
+Hi team,
+
+Staging access for the Operator Control Center is unlocked. Please complete the following today:
+
+1. Accept the DEPLOY-147 Shopify store invite (credentials in 1Password → occ/shopify/staging_access).
+2. Launch https://hotdash-staging.fly.dev/app?mock=0 and confirm tiles load with live data.
+3. Capture findings in feedback/support.md with request IDs + screenshots; escalate blocking issues in #occ-ops.
+4. Review the facilitator packet + agenda: docs/enablement/dry_run_training_materials.md and docs/runbooks/operator_training_agenda.md.
+
+Evidence bundle (smoke headers, screenshots, decision IDs) lives in artifacts/ops/dry_run_2025-10-16/.
+
+Reply-all to confirm once you’ve validated access. Ping @support-lead or @enablement-lead if anything blocks you.
+
+— Support & Enablement
+```
+
+### Attachments / Links
+- `artifacts/ops/dry_run_2025-10-16/mock0-smoke.png`
+- `artifacts/ops/dry_run_2025-10-16/screenshots/`
+- `docs/runbooks/shopify_rate_limit_recovery.md`
 
 ---
 
@@ -183,7 +250,9 @@ Catch pages losing >20% traffic WoW and assign fixes.
 
 Every action you take is logged in the decision audit trail—so your team always has context.
 
-Questions? Check our [launch FAQ] or reply to this email.
+Privacy note: Operator access stays inside Shopify Admin. We log limited operator telemetry (email, tile interactions, request IDs) in Supabase for up to 180 days so you have an auditable trail. Manage these settings anytime in Settings → Privacy and review our [Privacy Notice].
+
+Questions? Check our [launch FAQ] or reply to this email. Cite telemetry readiness (Supabase parity + staging smoke) when addressing reliability asks.
 
 — [Your Team Name]
 ```
@@ -218,6 +287,8 @@ Détectez les pages perdant >20 % de trafic SàS et assignez des corrections.
 3. Cliquez sur "Centre de contrôle opérateur" dans la navigation
 
 Chaque action que vous entreprenez est enregistrée dans le journal d'audit des décisions—pour que votre équipe ait toujours le contexte.
+
+Note de confidentialité : L'accès reste dans votre administration Shopify. Nous enregistrons un nombre limité de données opérateur (courriel, interactions avec les tuiles, identifiants de requête) dans Supabase pendant 180 jours afin de maintenir un journal d'audit exploitable. Gérez ces paramètres à tout moment dans Paramètres → Confidentialité et consultez notre [Avis de confidentialité].
 
 Des questions ? Consultez notre [FAQ de lancement] ou répondez à cet e-mail.
 
@@ -288,6 +359,10 @@ Detect landing pages with >20% session drop week-over-week. Assign content refre
 
 **Operator benefit:** Catch traffic declines before they hurt conversions. Turn data into action with CMS-linked task creation.
 
+## Privacy & Security
+
+Operator Control Center lives inside Shopify Admin, so your existing permissions decide who can view or take action on tiles. We log limited operator telemetry (email, tile interactions, request IDs) in Supabase for up to 180 days to power the decision audit trail and reliability monitoring. You can disable analytics at any time in Settings → Privacy, and our [Privacy Notice] details how data is handled across integrations.
+
 ## How It Works
 
 Every tile follows the same pattern:
@@ -315,11 +390,18 @@ No vanity metrics. Every tile owns a workflow that ends in a decision or logged 
 
 All credentials are stored securely per Shopify's app standards.
 
+### GA MCP Phase-2 Messaging (Hold)
+
+- Do not publish GA MCP availability until OCC-INF-221 delivers host + credentials and parity checklist items 1-8 pass.
+- Reference `docs/marketing/phase2_ga_mcp_messaging.md` for positioning pillars, evidence requirements, and asset updates.
+- Prep internal notes so once credentials land we can add landing-page insights copy to the launch email/blog without rework.
+
 ## What's Next
 
 This is v1. We're already working on:
 
 - **Social Sentiment (Phase 2):** Track campaign health across X/Meta
+- **GA MCP Integration (Phase 2):** Bring landing page + acquisition telemetry into OCC once credentials + parity checks clear (`docs/marketing/phase2_ga_mcp_messaging.md`)
 - **Advanced Automations:** Auto-approve low-risk actions based on your rules
 - **Custom Tiles:** Build your own tiles with our SDK
 
@@ -430,6 +512,15 @@ Per `docs/directions/marketing.md`, track:
 | Blog post traffic | >1000 visits | Google Analytics |
 | Beta partner feedback quality | 5+ actionable insights | Memory (scope `ops`) |
 | Operator activation rate | >70% | `dashboard.session.opened` fact |
+
+---
+
+## Readiness Evidence — 2025-10-10
+
+- Supabase telemetry snapshot (analyzer output) stored at `artifacts/monitoring/supabase-sync-summary-latest.json`; mirrors the latest retry/latency profile from `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` for post-launch KPI narratives.
+- Staging Supabase credentials (service key + Postgres DSN) now vaulted at `vault/occ/supabase/service_key_staging.env` and `vault/occ/supabase/database_url_staging.env`, with GitHub `staging` environment sync logged in `feedback/reliability.md`.
+- Shopify staging bundle (`SHOPIFY_API_KEY_STAGING`, `SHOPIFY_API_SECRET_STAGING`, `SHOPIFY_CLI_AUTH_TOKEN_STAGING`, `STAGING_APP_URL`, `STAGING_SHOP_DOMAIN`) synced via `scripts/deploy/sync-supabase-secret.sh`; evidence referenced in `feedback/reliability.md` and required for enablement dry run/tooltips QA.
+- Live staging smoke (`https://hotdash-staging.fly.dev/app?mock=0`) still returns HTTP 410; latest probe logged at `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log`. Marketing/support announcement templates remain queued to send once QA confirms a 200 response.
 
 ---
 

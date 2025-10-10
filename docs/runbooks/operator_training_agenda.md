@@ -25,11 +25,14 @@ expires: 2025-10-20
 - Operator Control Center vision: single source of truth across CX, sales, inventory, SEO
 - Approval workflow paradigm: every action requires explicit operator decision
 - Decision logging: all actions tracked for audit trail (decision_log table)
+- Staging install overview: Operator Control Center lives inside Shopify Admin (`Apps -> HotDash`). Support briefs participants on staging credentials (see `docs/integrations/shopify_readiness.md`) and verifies feature flags (`FEATURE_MODAL_APPROVALS`, `FEATURE_AI_ESCALATIONS`) before kickoff.
 
 **Key Points:**
 - Dashboard reduces tab fatigue by consolidating Shopify, Chatwoot, GA data
 - Mock mode vs. live mode: Start training in mock mode (`?mock=1`)
 - Evidence-based operations: every tile shows data source + refresh timestamp
+- Staging access verification: load `https://hotdash-staging.fly.dev/app?mock=1` ahead of the session; a 200 OK (or 302 to Shopify auth) is required. If you receive HTTP 410 or a network error, escalate to deployment/reliability immediately and document the outcome in `feedback/enablement.md`.
+- Staging evidence table: once QA posts green smoke (`?mock=0`) and the refreshed Supabase NDJSON export, replace the placeholders listed in `docs/enablement/dry_run_training_materials.md` so facilitators have the live artefacts in hand before distribution.
 
 ---
 
@@ -52,6 +55,8 @@ expires: 2025-10-20
 **Practice:**
 - Operators click through each tile
 - Identify status indicators (healthy, attention, error, unconfigured)
+- Confirm staging environment readiness: support lead walks through Shopify Admin login flow and staging credentials pre-check (demo shop domain, OCC staging URL with `?mock=1`, Supabase decision log access). Document confirmation in the Q&A template.
+- If Supabase telemetry is still syncing, rehearse using the sample IDs (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`, IDs 101–104) so facilitators can validate success, retry, and timeout scenarios before live data lands.
 
 **Q&A Capture:**
 - Any tile unclear or confusing?
@@ -102,6 +107,7 @@ expires: 2025-10-20
 - Shows order count, revenue for current window
 - Top SKUs list with units sold
 - Open fulfillment count (future: drill-in modal)
+- QA readiness evidence: Playwright staging run `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` covers modal open/close and decision logging paths.
 
 **Inventory Heatmap Tile:**
 - Low stock alerts with SKU, units left, days of cover
@@ -149,14 +155,17 @@ expires: 2025-10-20
 - Tile shows "Error" status → Integration failure (Shopify API down, Chatwoot unreachable)
 - "Configuration required" status → Missing credentials or setup incomplete
 - Empty state: "No SLA breaches detected" (normal, not an error)
+- Shopify banner "API rate limit exceeded." → Reference `docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md` and the support playbook `docs/runbooks/shopify_rate_limit_recovery.md`
 
 **Escalation Paths:**
 - Integration errors → Alert reliability team (Slack #incidents)
+- Shopify rate-limit persists after two retries → Capture headers and escalate to reliability via Slack `#occ-reliability` using the playbook
 - Data discrepancies → File Linear ticket with screenshots + timestamps
 - Persistent failures → Escalate to support lead
 
 **Practice:**
 - Show mock error state in tile
+- Role-play the Shopify rate-limit coaching script (first-hit reassurance + escalation) and document notes in the Q&A template
 - Operators practice filing ticket with evidence (screenshot + description)
 
 **Q&A Capture:**
@@ -173,6 +182,8 @@ expires: 2025-10-20
 2. **Inventory Alert:** SKU "HOODIE-BLK-M" at 15 units, 5 days of cover → identify as reorder needed
 3. **Manager Escalation:** Customer "Jordan Lee" requests refund >$500 → escalate to manager
 4. **Error Handling:** Chatwoot tile shows error → file ticket with screenshot
+
+**Evidence Reference:** QA staging validation log `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` demonstrates CX Escalations modal approve/escalate/resolve flows on Fly staging.
 
 **Trainer Observation:**
 - Note any confusion, hesitation, or incorrect actions
@@ -238,5 +249,6 @@ See: docs/runbooks/operator_training_qa_template.md
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-10 | support | Added staging install readiness steps and environment checks |
 | 2025-10-08 | support | Added dry run coordination details and ownership |
 | 2025-10-06 | support | Initial training agenda created per manager sprint focus |

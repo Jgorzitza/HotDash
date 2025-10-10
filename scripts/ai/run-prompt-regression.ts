@@ -23,6 +23,29 @@ type CaseResult = {
   notes?: string;
 };
 
+type DecisionTelemetryEntry = {
+  decisionId?: number;
+  status?: string;
+  attempt?: number;
+  durationMs?: number;
+  errorCode?: string | null;
+  timestamp?: string;
+};
+
+type DecisionTelemetry = {
+  source: string;
+  generatedAt: string;
+  totals: {
+    records: number;
+    byStatus: Record<string, number>;
+  };
+  timeWindow: {
+    start: string;
+    end: string;
+  } | null;
+  entries: DecisionTelemetryEntry[];
+};
+
 const BLEU_THRESHOLD = 0.4;
 const ROUGE_THRESHOLD = 0.6;
 
@@ -130,6 +153,128 @@ async function ensureDirectory(path: string) {
   await fs.mkdir(path, { recursive: true });
 }
 
+async function findLatestDecisionLog(): Promise<string | undefined> {
+  const logsDir = join(process.cwd(), "artifacts", "logs");
+  try {
+    const entries = await fs.readdir(logsDir);
+    const candidates = await Promise.all(
+      entries
+        .filter((name) => /^supabase_decision.*\.ndjson$/i.test(name))
+        .map(async (name) => {
+          const filePath = join(logsDir, name);
+          const stats = await fs.stat(filePath);
+          return { filePath, mtime: stats.mtimeMs };
+        }),
+    );
+
+    if (!candidates.length) {
+      return undefined;
+    }
+
+    const sorted = candidates.sort((a, b) => b.mtime - a.mtime);
+    return sorted[0]?.filePath;
+  } catch (error) {
+    // Logs directory missing or unreadable — treat as no telemetry available
+    console.warn("[ai:regression] unable to scan decision telemetry", error);
+    return undefined;
+  }
+}
+
+async function loadDecisionTelemetry(): Promise<DecisionTelemetry | undefined> {
+  const latestPath = await findLatestDecisionLog();
+  if (!latestPath) {
+    return undefined;
+  }
+
+  try {
+    const raw = await fs.readFile(latestPath, "utf8");
+    const lines = raw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+
+    if (!lines.length) {
+      return {
+        source: latestPath,
+        generatedAt: new Date().toISOString(),
+        totals: { records: 0, byStatus: {} },
+        timeWindow: null,
+        entries: [],
+      };
+    }
+
+    const entries: DecisionTelemetryEntry[] = [];
+    const statusCounts = new Map<string, number>();
+    let earliest: Date | undefined;
+    let latest: Date | undefined;
+
+    for (const line of lines) {
+      try {
+        const parsed = JSON.parse(line) as Record<string, unknown>;
+        const entry: DecisionTelemetryEntry = {
+          decisionId:
+            typeof parsed.decisionId === "number" ? parsed.decisionId : undefined,
+          status: typeof parsed.status === "string" ? parsed.status : undefined,
+          attempt: typeof parsed.attempt === "number" ? parsed.attempt : undefined,
+          durationMs:
+            typeof parsed.durationMs === "number" ? parsed.durationMs : undefined,
+          errorCode:
+            typeof parsed.errorCode === "string" || parsed.errorCode === null
+              ? (parsed.errorCode as string | null)
+              : undefined,
+          timestamp: typeof parsed.timestamp === "string" ? parsed.timestamp : undefined,
+        };
+
+        if (entry.status) {
+          statusCounts.set(entry.status, (statusCounts.get(entry.status) ?? 0) + 1);
+        }
+
+        if (entry.timestamp) {
+          const ts = new Date(entry.timestamp);
+          if (!Number.isNaN(ts.getTime())) {
+            if (!earliest || ts < earliest) {
+              earliest = ts;
+            }
+            if (!latest || ts > latest) {
+              latest = ts;
+            }
+            entry.timestamp = ts.toISOString();
+          }
+        }
+
+        entries.push(entry);
+      } catch (error) {
+        console.warn("[ai:regression] failed to parse decision log line", { line, error });
+      }
+    }
+
+    const totals: Record<string, number> = {};
+    for (const [status, count] of statusCounts.entries()) {
+      totals[status] = count;
+    }
+
+    return {
+      source: latestPath,
+      generatedAt: new Date().toISOString(),
+      totals: {
+        records: entries.length,
+        byStatus: totals,
+      },
+      timeWindow:
+        earliest && latest
+          ? {
+              start: earliest.toISOString(),
+              end: latest.toISOString(),
+            }
+          : null,
+      entries,
+    };
+  } catch (error) {
+    console.warn("[ai:regression] unable to read decision telemetry", error);
+    return undefined;
+  }
+}
+
 async function run(): Promise<void> {
   const results: CaseResult[] = CASES.map((testCase) => {
     const expectedTokens = tokenize(testCase.expected);
@@ -174,6 +319,8 @@ async function run(): Promise<void> {
   const artifactName = `prompt-regression-${formatTimestamp(timestamp)}.json`;
   const artifactPath = join(artifactDir, artifactName);
 
+  const telemetry = await loadDecisionTelemetry();
+
   const artifact = {
     generatedAt: timestamp.toISOString(),
     summary: {
@@ -191,6 +338,7 @@ async function run(): Promise<void> {
       reviews: results.filter((result) => result.status === "review").length,
     },
     cases: results,
+    telemetry,
   };
 
   await writeArtifact(artifactPath, artifact);
@@ -200,10 +348,20 @@ async function run(): Promise<void> {
     `[ai:regression] ${artifact.summary.status.toUpperCase()} — ${passCount}/${artifact.summary.totalCases} cases above thresholds (BLEU: ${artifact.summary.metrics.bleu1.toFixed(4)}, ROUGE-L: ${artifact.summary.metrics.rougeL.toFixed(4)})`,
   );
   console.log(`[ai:regression] artifact saved to ${artifactPath}`);
+  if (telemetry) {
+    const statusSummary = Object.entries(telemetry.totals.byStatus)
+      .map(([status, count]) => `${status}:${count}`)
+      .join(", ");
+    console.log(
+      `[ai:regression] ingested decision telemetry (${telemetry.totals.records} records)` +
+        (statusSummary ? ` — ${statusSummary}` : ""),
+    );
+  } else {
+    console.log("[ai:regression] no decision telemetry available");
+  }
 }
 
 run().catch((error) => {
   console.error("[ai:regression] failed", error);
   process.exitCode = 1;
 });
-

@@ -148,6 +148,54 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 
 ---
 
+## Mock Mode Transcript Snippets & Edge Cases
+
+> Pull these reference conversations from Playwright staging artefact `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` while `?mock=0` remains blocked. Use them to rehearse tone, notes, and escalation decisions.
+
+### Scenario Gallery
+
+#### Shipping Delay Reassurance (`ship_update`)
+```
+Customer (Evergreen Outfitters — #PWA-4092):
+"Hey team, my order still says processing. Do you have an update?"
+
+Support AI Suggestion:
+"Appreciate you reaching out, Alex. Your order is with our carrier and I'm expediting a status check right away."
+```
+- Approve AI reply, append operator note: "Requested UPS BOL via #occ-reliability @ 09:12 UTC" for audit trail.
+- If tracking ID missing, add manual sentence with link before approving; follow SOP-CX-002 for promise tracking.
+
+#### Refund Offer With Guardrails (`refund_offer`)
+```
+Customer (Peak Performance Gear — #PWA-4103):
+"The zipper broke on first use. Can you just refund me?"
+
+Support AI Suggestion:
+"I'm sorry for the trouble, Jamie. I can refund this immediately or offer store credit—let me know what works best."
+```
+- Approve suggestion, then verify refund amount; escalate if >$500 or customer mentions "chargeback".
+- Log Linear ticket (INC-SUPPORT-###) in operator note so L2/L3 can monitor reimbursement completion.
+
+#### Backlog Queue Check-In (`ack_delay`)
+```
+Customer (Atelier Belle Maison — #PWA-4110):
+"Just checking—did you get my earlier message about the wrong color?"
+
+Support AI Suggestion:
+"Hi Pat, thanks for your patience. I'm checking on your order now and will follow up with an update shortly."
+```
+- Approve reply, set Chatwoot reminder for 45 min follow-up, and document SLA timer in note.
+- If conversation already tagged `escalation`, skip approval and confirm manager action before responding.
+
+### Edge Case Checklist
+- **Missing AI Draft:** If `suggestedReply` is null, do not approve. Escalate via `Escalate to Manager`, capture console log, and file in `feedback/engineering.md`.
+- **Name Placeholder Fallback:** Templates default to "Customer" when Chatwoot lacks profile data; personalize manually or update contact record prior to approval.
+- **High-Risk Language:** Terms like "legal", "fraud", "chargeback", or threats require immediate escalation even if the draft appears suitable.
+- **Rapid Reopen:** If customer responds within 30 min after `chatwoot.mark_resolved`, the tile will re-surface with SLA breach 0. Reassess before marking resolved again.
+- **Rate Limit Toast:** Should the modal emit a Shopify rate-limit error, switch to `docs/runbooks/shopify_rate_limit_recovery.md` and log the incident (timestamp + request ID) in `feedback/support.md`.
+
+---
+
 ## Integration Monitoring & Alerts
 
 **Health Checks:**
@@ -159,6 +207,10 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 - Critical errors → Reliability team (Slack #incidents)
 - SLA threshold breaches → Support lead + Ops manager
 - Integration downtime → Immediate escalation per docs/runbooks/incident_response.md (pending)
+
+## QA Verification Evidence
+- 2025-10-10 Playwright staging run (`artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log`) validated approve/escalate/resolve flows against Fly host `https://hotdash-staging.fly.dev` using mock data.
+- Synthetic check `artifacts/monitoring/synthetic-check-2025-10-10T06-36-48.923Z.json` confirms dashboard load within 284 ms post-Playwright run; use these artifacts during operator rehearsals to demonstrate live readiness.
 
 ---
 
@@ -192,6 +244,8 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-10 | support | Added mock-mode transcript gallery and edge case checklist for operator rehearsal while live data blocked. |
+| 2025-10-10 | support | Added QA staging evidence references for modal verification |
 | 2025-10-08 | support | Added template heuristics, rendered customer names, aligned escalation label |
 | 2025-10-07 | support | Validated modal implementation, added screenshots, updated decision logging |
 | 2025-10-06 | support | Initial runbook skeleton created per manager sprint focus |

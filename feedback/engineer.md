@@ -6,7 +6,41 @@ last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-06
 ---
+## 2025-10-10 — Supabase Staging Migration Attempt
+- 2025-10-10T07:25:05Z — Deployment enabled staging feature flags via `/home/justin/.fly/bin/flyctl secrets set FEATURE_MODAL_APPROVALS=1 FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL=1 FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL=1 --app hotdash-staging`; confirmation snapshot at `artifacts/deploy/fly-secrets-20251010T0725Z.txt`. Warm-up curls show 0.14–0.23 s but synthetic script still logs 341–434 ms (`artifacts/monitoring/synthetic-check-2025-10-10T07-51-30.529Z.json`, `...07-41-57.418Z.json`); awaiting reliability tuning before issuing the live QA bundle. Mock evidence refreshed at `artifacts/qa/staging-deploy-2025-10-10T0751Z.md`. Please verify modal behavior and log completion once QA signs off.
+- 2025-10-12T14:40:00Z — Designer needs CX Escalations & Sales Pulse modals exposed in staging ASAP for annotated capture per sprint focus. Please confirm once `FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL` and `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL` are enabled (or alternate staging toggle is available) so we can run `docs/design/staging_screenshot_checklist.md` end-to-end. Current behavior: `https://hotdash-staging.fly.dev/app?mock=1&modal=sales` and `...&modal=cx` still render the dashboard with no dialog.
+- 2025-10-12T15:05:00Z — Added locator/ARIA expectations to the staging checklist for QA scripting: Sales Pulse trigger `role=button name="View details"`, dialog labelled `sales-pulse-modal-title`; CX Escalations trigger `Review` button with modal labelled `CX Escalation — <customer>` and reply textarea `aria-label="Reply text"`; Inventory Heatmap placeholder selectors `View heatmap` / `inventory-heatmap-modal-title` with actions `Confirm action | Mark as intentional | Snooze alert`. Please confirm final accessible names/test IDs (or share alternates) so Playwright hooks stay aligned once flags toggle on.
+- 2025-10-10T02:49:18Z — Pulled staged `DATABASE_URL` + service key from `vault/occ/supabase/`, executed `npm run db:migrate:postgres` with password encoding fixes; Prisma returned `P1001` (host unreachable). Logs stored in `artifacts/migrations/20251010T024918Z/` for QA.
+- 2025-10-10T02:50:05Z — Confirmed `psql` connectivity attempt hits IPv6-only endpoint (`Network is unreachable`). Waiting on reliability for IPv4 route confirmation before rerunning migrations/evidence capture.
+- 2025-10-10T11:05:00Z — Design delivered new Inventory Heatmap annotated modal asset (`docs/design/assets/modal-inventory-heatmap-annotations.svg`). Please pull latest `docs/design/tokens/design_tokens.md` asset table and mirror the SVG into the staging bundle prior to next deploy; confirm in this log once wired.
+- 2025-10-10T11:25:00Z — Staging dashboard reachable and baseline screenshot captured (`artifacts/ops/dry_run_2025-10-16/scenarios/2025-10-10T0421Z_dashboard-overview.png`). Modal overlays still pending because staging build lacks interactive modal routes/actions; need ETA on hooking up modal entry points so design can finish captures.
+- 2025-10-10T11:45:00Z — Confirmed `?modal=sales` / `?modal=cx` query params still render dashboard without opening modals. Please wire modal entry points (or expose an equivalent staging flag) so we can validate focus order + capture overlays per direction.
+
+## 2025-10-10 — Supabase Memory Unit Tests
+- 2025-10-10T03:10:36Z — Shared latest analyzer outputs with data (`artifacts/logs/supabase_decision_sample.ndjson`, summary at `artifacts/monitoring/supabase-sync-summary-latest.json`) so retry distributions align with mocks. Ran `npx vitest run tests/unit/supabase.memory.spec.ts`; suite passed (4 tests, 0 failures). Ready for QA to rerun full `npm run test:unit` once env allows.
+- 2025-10-10T03:34:37Z — Follow-up `npx vitest run tests/unit/supabase.memory.spec.ts` (5 tests now passing) after mock tweaks to confirm stability; awaiting expanded NDJSON export to widen coverage.
+
+## 2025-10-10 — Shopify Config Sync
+- 2025-10-10T02:52:30Z — Updated `shopify.app.toml` application URL + OAuth redirects to `https://hotdash-staging.fly.dev/...` and aligned scopes with staging bundle (`read_products,read_orders,read_inventory,read_fulfillments`); verified `shopify.web.toml` dev store/scopes already match.
+- 2025-10-10T02:53:23Z — Ran `SHOPIFY_FLAG_ENVIRONMENT=staging node scripts/ops/run-shopify-cli.mjs --label config-link -- app config link --client-id 4f72376ea61be956c860dd020552124d`; CLI confirmed link success. Evidence logged at `artifacts/engineering/shopify_cli/2025-10-10T02-53-23.512Z-config-link.json`.
+- 2025-10-10T02:55:40Z — Reviewed Playwright coverage plan (`docs/runbooks/qa_playwright_plan.md`); live Shopify admin scenario remains blocked pending QA-delivered staging login + green synthetic smoke for `https://hotdash-staging.fly.dev/app?mock=0`. No test committed yet to avoid brittle placeholder.
+
+## 2025-10-10 — Supabase Memory Telemetry
+- 2025-10-10T04:29:45Z — Instrumented `packages/memory/supabase.ts` to emit retry telemetry (decision IDs, fact keys, rate-limit flags) via optional `SUPABASE_TELEMETRY_LOG_PATH`; added `.select("id")` chaining so Supabase IDs surface in metadata for QA tagging.
+- 2025-10-10T04:29:45Z — Refactored supabase memory unit suite to cover telemetry sink + chained insert/select retries; `npm run test:unit` ✅ (25 tests). Evidence: command output in session, new coverage entry `tests/unit/supabase.memory.spec.ts` (telemetry assertions).
+
+## 2025-10-10 — CX & Sales Modal Implementation
+- 2025-10-10T06:30:28Z — Added CX Escalations + Sales Pulse modals behind `FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL` / `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL`. Tiles now surface `Review` / `View details` triggers with full approve/escalate/resolve flows (Chatwoot action reuse) and sales follow-up logging via `/actions/sales-pulse/decide`.
+- 2025-10-10T06:30:28Z — Introduced modal component suite (`app/components/modals/*`), token-aligned styles, and decision logging telemetry metadata. Updated unit coverage (`tests/unit/salesPulseTile.spec.tsx`, `tests/unit/cxEscalationsTile.spec.tsx`) and reran `npm run test:unit` ✅ (29 tests). Awaiting QA staging bundle + feature flag enablement before wiring Playwright scenarios.
+
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
+- 2025-10-09T15:07:08-06:00 — `git stash push --include-untracked --message "restart-cycle-2025-10-11"` (no local changes; no stash created, worktree already clean).
+- Re-read `docs/directions/engineer.md` and `docs/runbooks/restart_cycle_checklist.md` post-restart to confirm guardrails and backlog focus before resuming Shopify sync tasks.
+- 2025-10-09T15:18:00-06:00 — Implemented Shopify Admin GraphQL retry wrapper (`app/services/shopify/client.ts`) with exponential backoff + jitter; added unit coverage in `tests/unit/shopify.client.spec.ts` and captured `npm run test:unit` evidence.
+- 2025-10-09T15:30:33-06:00 — Reviewed refreshed `docs/directions/engineer.md` (sprint focus + guardrails) and `docs/runbooks/restart_cycle_checklist.md` (restart evidence requirements) to ensure alignment before continuing backlog execution.
+- 2025-10-09T15:35:56-06:00 — Added Shopify CLI wrapper (`scripts/ops/run-shopify-cli.mjs`) that emits structured logs in `artifacts/engineering/shopify_cli/` and integrated it into staging/production deploy scripts for observability.
+- 2025-10-09T15:50:54-06:00 — Linked repo to Partner app via `shopify app config link`, updated `shopify.app.toml`/`shopify.web.toml` with staging URL + scopes, reran SQLite migrations (`npx prisma migrate deploy --schema prisma/schema.prisma`), and noted Postgres deploy blocked pending `DATABASE_URL`; `npm run setup` currently fails (`EACCES` unlinking `node_modules/.prisma/client/index.js`) due to root-owned artifacts.
+- 2025-10-09T16:20:53-06:00 — Pulled staging DSN from `vault/occ/supabase/database_url_staging.env`; `npm run db:migrate:postgres` still fails with `FATAL: Tenant or user not found` against Supabase pooler. Logged parity attempt (`npm run ops:check-analytics-parity`) which remains blocked on missing `facts` table—JSON output recorded in terminal. Awaiting reliability/deployment to supply working Postgres credentials or bootstrap `supabase/sql/analytics_facts_table.sql` before retrying migrations/QA validation.
 - Reviewed sprint focus (Supabase sync fix, Postgres staging enablement, modal polish, telemetry wiring) per `docs/directions/engineer.md`.
 - Blocked: currently handling integrations workload; engineering execution paused until dedicated owner and pending dependencies (Supabase schema, Lighthouse target) are resolved.
 
@@ -21,6 +55,11 @@ expires: 2025-10-06
 - **Staging Postgres + secrets:** Runbook (`docs/runbooks/prisma_staging_postgres.md`) and CLI helpers are ready; blocked until deployment shares the staging `DATABASE_URL`/shopify secrets so QA can run forward/back drills.
 - **GA MCP readiness:** Checklist in `docs/integrations/ga_mcp_onboarding.md` is staged; OCC-INF-221 still holds the host/credential handoff—tracking with integrations and compliance for ETA before enabling telemetry tests.
 - **Operator dry run:** Accessibility polish plan + telemetry wiring notes prepped; awaiting product confirmation of the 2025-10-16 slot and staging access to validate modals before the rehearsal.
+
+## Shopify Install Push — 2025-10-10 10:18 UTC
+- Once deployment confirms secrets sync, run `shopify app config link` to bind the repo to the Partner app and update `shopify.app.toml`/`shopify.web.toml` with the real staging URLs + required scopes (`read_orders`, `read_inventory`, etc.).
+- After Supabase `DATABASE_URL` lands, execute `npm run db:migrate:postgres` (plus rollback check) against staging and log results; rerun `npm run ops:check-analytics-parity` once reliability applies the `facts` table migration.
+- Pair with QA on Shopify Admin Playwright coverage hitting live data and capture telemetry artefacts (decision logs, rate-limit events) for the evidence bundle.
 
 ## 2025-10-08 — Progress Update
 - Supabase parity script now surfaces missing `facts` table with actionable hint and references new `supabase/sql/analytics_facts_table.sql` bootstrap SQL.
@@ -62,7 +101,7 @@ expires: 2025-10-06
 ## 2025-10-09 Production Blockers Update
 - Supabase decision sync: prepared instrumentation patch (structured error log + parity counter) and queued PR draft; execution still pending real Supabase logs/service key from reliability to validate fixes.
 - Staging Postgres enablement: paired with deployment on connection override checklist; awaiting credentials to run forward/back migration proof for QA.
-- Operator dry run polish: staging accessibility fixes (status icons/focus) set to follow once designer assets drop; blocked on asset delivery + Supabase persistence for full telemetry test.
+- Operator dry run polish: integrated new status icons/focus ring utilities (`app/components/tiles/TileCard.tsx`, `app/styles/tokens.css`); remaining blocker is Supabase persistence for full telemetry test.
 
 - Supabase decision sync triage: reviewed existing retry implementation and outlined additional instrumentation (structured error logging + parity counters); blocked on reliability delivering raw logs and staging credentials to reproduce the 25% failure.
 - Postgres staging enablement: synced with deployment to confirm pending env overrides and smoke script; awaiting DB credentials before running forward/back migration validation.
