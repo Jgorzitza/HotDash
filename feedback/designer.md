@@ -8,10 +8,49 @@ expires: 2025-10-06
 ---
 # Designer Daily Status
 
+## Overlay Checklist Sync — 2025-10-10 07:47 UTC
+- Enablement flagged that the facilitator packet is holding until `?mock=0` returns green and needs overlay checklists ready for immediate swap when staging stabilises.
+- Requested annotated screenshot checklists for CX Escalations and Sales Pulse (callout numbers, alt text pairings, focus order) so we can replace interim text callouts without reworking narration.
+- Asked design to confirm export cadence and naming convention (`modal-<flow>_callout-<n>.png`) to keep assets aligned with the facilitator bundle.
+
+**Open Questions for Design**
+- Can we receive draft overlay bullet lists by 2025-10-11 even if final screenshots wait on staging access? That would let enablement pre-script narration.
+- Do you need any additional context from the new facilitator talking points before finalising the overlays?
+
+## Overlay Checklist Draft Posted — 2025-10-10 07:55 UTC
+- Enablement drafted interim overlay checklist bullets within `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` covering CX Escalations, Sales Pulse, and future Inventory Heatmap captures.
+- Please review callout numbering, alt text phrasing, and filename conventions; confirm whether design will use these as-is or supply updated copy when staging screenshots land.
+- Flag any mismatches with existing SVG annotation numbers so we can align facilitator narration before distribution resumes.
+
+## 2025-10-12 Sprint Execution
+- Re-read direction focus (`docs/directions/designer.md`, lines 25-32) to confirm priority on staging modal captures once feature flags flip; logged compliance here.
+- Quick smoke on staging (`https://hotdash-staging.fly.dev/app?mock=1`) confirms dashboard reachable but `?modal=sales` / `?modal=cx` continue to return the base view; dependency already flagged in `feedback/engineer.md` and remains the top blocker for annotated captures.
+- Penciled capture session for first staging window post-flag flip; checklist owners notified (enablement/support) to standby once engineering confirms modal availability.
+- Reviewed tooltip/focus annotation bundle (`docs/design/tooltip_annotations_2025-10-09.md`) and refreshed notes so CX Escalations, Sales Pulse, and Inventory Heatmap callouts remain Polaris-aligned while we wait on staging overlays.
+- Interim accessibility handoff (`docs/design/modal_alt_text.md`) and staging capture checklist (`docs/design/staging_screenshot_checklist.md`) remain current; ready to drop final alt text + evidence the moment modals load in staging.
+- Figma workspace invite still pending; nudged manager via Slack thread (2025-10-12 14:05 UTC) so we can package component library once access arrives.
+- Extended staging capture checklist with modal-by-modal workflows, Playwright locator references, and placeholder inventory modal expectations (`docs/design/staging_screenshot_checklist.md`).
+- Created SVG overlay templates for rapid annotation once captures land (`docs/design/assets/templates/modal-*-overlay-template.svg`); layers pre-grouped for screenshot + callouts.
+- Logged updated locator/ARIA requirements for engineering confirmation (`feedback/engineer.md`) so QA scripts align with design intent.
+
+## 2025-10-10 Sprint Execution
+- Re-reviewed updated direction (`docs/directions/designer.md`, last reviewed 2025-10-10) — sprint focus now centers on delivering final tooltip/focus annotations, coordinating rate-limit visuals with enablement/support, and continuing static asset handoffs while Figma access is blocked.
+- Delivered final tooltip + focus annotation bundle covering Inventory Heatmap alongside CX Escalations and Sales Pulse; new asset `docs/design/assets/modal-inventory-heatmap-annotations.svg` and doc refresh `docs/design/tooltip_annotations_2025-10-09.md` hand off paths to engineering/QA. Pending staging overlays before syncing alt text with enablement.
+- Synced enablement callout doc (`docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md`) to add Inventory Heatmap guidance + alt-text bullets so training team can prep captions ahead of staging screenshots.
+- Flagged engineering via shared token asset table (`docs/design/tokens/design_tokens.md`) to ensure the new Inventory Heatmap annotation SVG ships with the next staging build; awaiting confirmation once they pull latest design assets.
+- Authored staging screenshot/overlay checklist (`docs/design/staging_screenshot_checklist.md`) outlining capture prerequisites, filenames, tooltips, and alt text templates so we can execute immediately when QA clears staging. Waiting on staging host availability + Figma access (still blocked) to perform captures.
+- Staging host now reachable (`curl https://hotdash-staging.fly.dev/app?mock=1` → 200). Captured baseline dashboard overview screenshot via Playwright CLI and stored at `artifacts/ops/dry_run_2025-10-16/scenarios/2025-10-10T0421Z_dashboard-overview.png`. Modal captures remain blocked because staging build lacks interactive modal routes; logged need for engineering hookup before additional overlays can be produced.
+- Reviewed refreshed sprint focus in `docs/directions/designer.md` (lines 25-32) — timing modal asset handoff with engineering’s implementation and capturing annotated focus states/alt text once feature flags flip. Tracking dependency in this log; will execute full overlays + accessibility notes the moment staging exposes CX Escalations/Sales Pulse modals.
+- Authored interim modal alt text + focus order reference (`docs/design/modal_alt_text.md`) so enablement/QA have copy-ready descriptions while staging overlays are pending. Synced callout doc to link the template and flagged that final captions will update once staging screenshots are captured.
+- Verified `?modal=sales` / `?modal=cx` routes still render dashboard-only response (no modal). Documented fallback note in `docs/design/staging_screenshot_checklist.md` and reiterated blocker in `feedback/engineer.md` request.
+- Verified restart guidance reference remains `docs/runbooks/restart_cycle_checklist.md` for cross-role alignment.
+
 ## 2025-10-09 Sprint Execution
 - Published draft tooltip + focus annotations for CX Escalations and Sales Pulse (`docs/design/tooltip_annotations_2025-10-09.md`) so engineering can wire ARIA/focus updates while Figma access remains blocked.
 - Synced outstanding asset list (status icon SVGs, sparkline screenshot) with enablement to include in job aids once exports are ready.
 - Blocked: still no Figma workspace access; component library packaging deferred until invite arrives.
+- Delivered Shopify status icon set (`docs/design/assets/status-icon-*.svg`) and focus-visible token updates (`app/styles/tokens.css`, `docs/design/tokens/design_tokens.md`).
+- Exported annotated modal references and sparkline hover asset for enablement (`docs/design/assets/modal-*.svg`, `docs/design/assets/sales-pulse-sparkline-hover.svg`); wired references into enablement job aids.
 
 ## 2025-10-08 Sprint Execution
 - Reviewed the shared component library deliverables and outlined a static handoff plan while Figma access remains blocked.
