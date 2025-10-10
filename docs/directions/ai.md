@@ -23,7 +23,8 @@ expires: 2025-10-18
 - Flag hallucination or bias risks immediately; propose mitigation experiments before expanding coverage.
 - Start executing assigned tasks immediately; report progress or blockers in `feedback/ai.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Build the operator dry-run AI kit: generate annotated CX Escalations and Sales Pulse suggestions for the top training scenarios, store outputs under `docs/enablement/job_aids/ai_samples/`, and review with enablement/support before the 2025-10-16 session.
-- Keep `npm run ai:regression` green daily, writing BLEU/ROUGE deltas and qualitative notes to Memory (scope `build`) and `feedback/ai.md`; share regression artifacts with QA so they bundle alongside Playwright evidence.
-- Finalize the pilot readiness brief covering guardrails, kill-switch behavior (`FEATURE_AI_ESCALATIONS`), Supabase logging dependencies, and go/no-go criteria; review with product, compliance, and reliability ahead of the M1/M2 checkpoint.
+## Current Sprint Focus — 2025-10-10
+- Confirm the sanitized repo by running `git grep postgresql://` and document the clean check in `feedback/ai.md`; escalate immediately if any secret remnants persist.
+- Pause new prompt log ingestion until data delivers fresh NDJSON exports after tomorrow’s rotation; stage the ingestion script so it can run as soon as credentials are safe.
+- Update enablement packets with a security incident note explaining the temporary hold on staging evidence; gather acknowledgements from trainers in `feedback/ai.md`.
+- Coordinate with data/QA on the timeline for resuming regression evidence once rotated Supabase credentials land, outlining any follow-up tasks you’ll tackle.

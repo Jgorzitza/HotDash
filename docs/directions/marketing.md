@@ -23,7 +23,7 @@ expires: 2025-10-18
 - Track adoption metrics post-launch and synthesize operator testimonials for roadmap decisions.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/marketing.md` without waiting for additional manager confirmation.
 
-## Current Sprint Focus — 2025-10-08
-- Lock the production-ready launch communications packet (email, blog, in-admin banner/tooltip) with English-only copy, evidence references, and product sign-off; attach proof in `feedback/marketing.md`.
-- Deliver the finalized operator FAQ and training script to enablement/support, ensuring messaging lines up with the upcoming 2025-10-16 dry run.
-- Build the launch timeline playbook (mock → staging → production) with campaign triggers, KPI tracking points, and artifact requirements so we can execute immediately once product sets the go-live window.
+## Current Sprint Focus — 2025-10-10
+- Communicate the security incident status in the launch comms packet and campaign calendar, noting the git history scrub and pending credential rotation; log stakeholder acknowledgements in `feedback/marketing.md`.
+- Hold external messaging until product confirms rotated secrets and QA evidence; prep revised copy blocks that can ship immediately after clearance.
+- Stay synced with support/enablement on adjusted training timelines so marketing collateral references the updated schedule.

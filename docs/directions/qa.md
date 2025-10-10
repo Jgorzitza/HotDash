@@ -23,8 +23,8 @@ expires: 2025-10-18
 - Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Expand Playwright coverage for CX Escalations and Sales Pulse modal flows (open, approve, escalate) and include fixtures capturing AI suggestion states; attach run artifacts in `feedback/qa.md`.
-- Validate Prisma migrations forward/back on SQLite and the new Postgres staging environment once deployment provisions it; log procedures/results in `feedback/qa.md` and share evidence with deployment and compliance.
-- Finalize the SSE and approval endurance scripts in `scripts/qa/soak-test-plan.md`, ensuring assertions cover English-only copy and documenting readiness for Week 3 execution.
-- Partner with AI and reliability to verify Supabase decision logging (error/latency metrics, parity script) and record verification artefacts alongside the Playwright bundle.
+## Current Sprint Focus — 2025-10-10
+- Confirm the sanitized repo by running `git grep postgresql://` and logging the clean result in `feedback/qa.md`; flag the manager immediately if any secrets remain.
+- Pause staging Playwright/Prisma drills until reliability completes the Supabase rotation; prep updated env instructions so tests can resume as soon as new secrets land.
+- Draft the validation checklist for post-rotation: Prisma forward/back steps, Shopify readiness suite, and evidence capture order, ready to execute tomorrow.
+- Stay synced with engineering/data/AI on any test fixtures impacted by the incident and note pending dependencies in `feedback/qa.md`.

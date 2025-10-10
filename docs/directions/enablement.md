@@ -23,7 +23,7 @@ expires: 2025-10-18
 - Partner with support to keep escalation playbooks aligned to the latest code paths and approval heuristics.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/enablement.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Audit existing runbooks/training docs for outdated localization references; update them to reflect the English-only scope and current modal workflows.
-- Produce operator job aids for Sales Pulse and CX Escalations modals (one-pagers with workflow steps, screenshots, and decision tips) and stage them under `docs/enablement/job_aids/`.
-- Coordinate with product and support to finalize the 2025-10-16 operator dry run agenda, confirming logistics and capturing pre-session questions in `feedback/enablement.md`.
+## Current Sprint Focus — 2025-10-10
+- Document the secret exposure acknowledgement and git history scrub in `feedback/enablement.md`, noting any training impacts.
+- Update dry run packets with a temporary hold note (waiting on rotated Supabase credentials) and prepare to distribute the moment deployment releases the all-clear.
+- Sync with support/product to adjust facilitator timelines and ensure the Q&A template reflects the delay plus next-check window.

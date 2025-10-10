@@ -23,7 +23,7 @@ expires: 2025-10-18
 - Keep feedback/support.md updated with incidents, resolution time, and follow-up tasks.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/support.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Validate the live CX Escalations modal against `docs/runbooks/cx_escalations.md`, update the runbook with screenshots, and log any deviations in `feedback/support.md`.
-- Refresh support playbooks and templates to reflect the English-only scope, documenting any messaging changes and training notes for operators.
-- Coordinate with enablement and product to finalize the 2025-10-16 operator dry run logistics, capturing open questions in the Q&A template and ensuring follow-ups are assigned.
+## Current Sprint Focus — 2025-10-10
+- Log acknowledgement of the secret exposure and git history scrub in `feedback/support.md`, noting impacts on CX training timelines.
+- Pause staging rehearsals until rotated credentials arrive; update the operator checklist with a temporary hold notice and prep to resume once deployment gives the all-clear.
+- Coordinate with enablement/marketing to adjust comms and invite schedules, capturing revised timelines and owners in the shared Q&A template.

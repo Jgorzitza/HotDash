@@ -22,7 +22,7 @@ expires: 2025-10-18
 - Log integration status updates, blockers, and decisions in `feedback/integrations.md`.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/integrations.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Secure GA MCP production credentials (or written ETA) and update `docs/integrations/ga_mcp_onboarding.md` with required verification steps, contacts, and evidence for compliance.
-- Partner with marketing and product to finalize the social sentiment vendor recommendation (Hootsuite vs native APIs) and document the decision, contract considerations, and next steps.
-- Publish the integration readiness dashboard summarizing each vendor's status (sandbox/live, credentials, testing, blockers) and share it with manager/product before the 2025-10-08 check-in.
+## Current Sprint Focus — 2025-10-10
+- Note the git history scrub and pending Supabase rotation in `docs/integrations/integration_readiness_dashboard.md`; flag DEPLOY-147 as blocked until new credentials are delivered.
+- Coordinate tomorrow’s credential redistribution plan with reliability/deployment so every team knows where the rotated secrets will be published.
+- Review all integration docs to ensure no hard-coded DSNs/tokens remain; log confirmation or remediation actions in `feedback/integrations.md`.
