@@ -18,7 +18,7 @@ expires: 2025-10-18
 | Telemetry & readiness evidence | Marketing + Reliability | ✅ Supabase parity + staging smoke (`?mock=1`) captured; Shopify staging secrets validated | `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`, `artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`, `feedback/reliability.md` (2025-10-10 01:14 UTC) |
 | Staging smoke (`?mock=0`) | Reliability | ⏳ Pending QA sign-off; capture immediately once HTTP 200 sustained | Placeholder → `artifacts/monitoring/synthetic-check-<timestamp>-mock0.json` + `artifacts/integrations/shopify/2025-10-10/curl_mock0_<timestamp>.log` |
 | Staging access rollout comms | Marketing + Support | Ready pending live smoke; announcement + acknowledgement tracker staged | `docs/enablement/dry_run_training_materials.md#draft-announcement-copy-hold-until-mock0-200`, `docs/enablement/dry_run_training_materials.md#acknowledgement-log-template` |
-| Supabase NDJSON export | Reliability + Data | ✅ Delivered 2025-10-10 07:29 UTC; ready for comms bundle | `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` |
+| Supabase NDJSON export | Reliability + Data | ⏳ Pending refreshed bundle for launch evidence | Placeholder → `artifacts/logs/supabase_decision_export_<timestamp>.ndjson` (attach once delivered) |
 | Staging readiness broadcast (internal ops) | Support ↔ Marketing | Templates staged — awaiting `DEPLOY-147` evidence drop | §2B, `artifacts/ops/dry_run_2025-10-16/` (placeholder files noted) |
 
 **English-only scope:** Launch surfaces ship in English. French strings stay in this packet for localization QA only (see `docs/marketing/translation_review_request_2025-10-07.md`).
@@ -27,7 +27,7 @@ expires: 2025-10-18
 **Go-live trigger checklist (fill as QA signs off):**
 - Replace tooltip overlay placeholder with annotated screenshots from design handoff.
 - Attach the first sustained HTTP 200 artifact for `https://hotdash-staging.fly.dev/app?mock=0` (curl log + synthetic JSON).
-- Confirm Supabase NDJSON bundle (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) stays current; replace if reliability posts a newer export.
+- Swap the Supabase NDJSON placeholder for the refreshed export bundle once reliability posts it in `artifacts/logs/`.
 
 ## Release Cadence Alignment
 

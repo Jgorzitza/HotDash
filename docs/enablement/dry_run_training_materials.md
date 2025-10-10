@@ -27,9 +27,9 @@ expires: 2025-10-16
 ### Staging Evidence Table (update immediately after QA sign-off)
 | Evidence Item | Owner | Action on Green Light | Artifact Path / Placeholder |
 | --- | --- | --- | --- |
-| `https://hotdash-staging.fly.dev/app?mock=0` curl log | Reliability → Enablement | Latest probe 2025-10-10 07:57 UTC still 410; rerun and update once 200 lands | `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` |
+| `https://hotdash-staging.fly.dev/app?mock=0` curl log | Reliability → Enablement | Capture HTTP 200 headers and drop into staging integrations folder | Placeholder → `artifacts/integrations/shopify/2025-10-10/curl_mock0_<timestamp>.log` |
 | Synthetic check JSON (`?mock=0`) | Reliability | Archive sub-300 ms JSON alongside mock=1 evidence | Placeholder → `artifacts/monitoring/synthetic-check-<timestamp>-mock0.json` |
-| Supabase NDJSON export | Reliability + Data | Ready — 2025-10-10 07:29Z bundle ingested; keep watching for updates | `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` |
+| Supabase NDJSON export | Reliability + Data | Replace placeholder with refreshed bundle; notify facilitators in Slack | Placeholder → `artifacts/logs/supabase_decision_export_<timestamp>.ndjson` |
 | Annotated overlays (CX/Sales/Inventory) | Design + Enablement | Swap interim text callouts with final overlays in job aids | Placeholder → `artifacts/design/tooltip-overlays/2025-10-10/<file>.png` |
 | Stakeholder acknowledgements | Enablement | Fill acknowledgement table once packets send | See “Acknowledgement Log Template” below |
 
@@ -132,10 +132,10 @@ Thanks!
 ### Evidence Table — Ready for Immediate Rollout
 | Artifact | Purpose | Current Status (2025-10-10 08:05 UTC) | Path / Placeholder |
 | --- | --- | --- | --- |
-| `curl_mock0_2025-10-10T07-57-48Z.log` | Document sustained HTTP 200 live smoke | ⏳ Latest run still HTTP 410 | `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` |
+| `curl_mock0_<timestamp>.log` | Document sustained HTTP 200 live smoke | ⏳ Latest run still HTTP 410 | `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log` |
 | Synthetic check JSON | Verify latency < 300 ms post-warmup | ✅ Latest `?mock=1` pass 278 ms; rerun for `?mock=0` once green | `artifacts/monitoring/synthetic-check-2025-10-10T07-19-19.492Z.json` |
 | Supabase parity snapshot | Confirm data parity ahead of training | ✅ Latest snapshot stored | `artifacts/monitoring/supabase-parity_2025-10-10T07-19-29Z.json` |
-| Supabase decision export | Provide fact IDs for facilitator evidence | ✅ Reference current bundle | `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` |
+| Supabase decision export | Provide fact IDs for facilitator evidence | ⏳ Await refreshed NDJSON | Placeholder `artifacts/logs/supabase_decision_export_<timestamp>.ndjson` |
 | Overlay checklist + visuals | Swap interim text callouts with annotated screenshots | ⚠️ Checklist drafted; awaiting design sign-off + exports | `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` |
 | Acknowledgement tracker | Capture distribution receipts | ✅ Template staged | Table above in this doc |
 

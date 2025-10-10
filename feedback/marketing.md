@@ -42,8 +42,6 @@ expires: 2025-10-11
 - Launch comms packet now tracks the internal staging readiness broadcast with evidence placeholders so we can trigger operator comms as soon as DEPLOY-147 drops (`docs/marketing/launch_comms_packet.md` §Approval & Evidence Tracker).
 - Added go-live trigger checklist to `docs/marketing/launch_comms_packet.md` so marketing/support know exactly which artefacts to drop in once QA signs off.
 - Support training script now points facilitators at the same staging evidence table to keep packet handoffs in sync (`docs/marketing/support_training_script_2025-10-16.md`).
-- Supabase NDJSON row now points at the 2025-10-10 07:29Z export so comms bundle can embed the live telemetry without waiting on additional updates (`docs/marketing/launch_comms_packet.md`).
-- Captured the latest `?mock=0` curl probe (07:57 UTC, still 410) in the enablement evidence table so we can swap in the green log the second reliability posts it.
 
 ## Blockers
 - Product launch window/go-no-go decision (Backlog #1) — still escalated, prevents campaign calendar + ESP staging.

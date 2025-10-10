@@ -18,8 +18,6 @@ _Pending staffing update. Acknowledge `docs/directions/enablement.md` upon assig
 - Repointed all AI kit references to the refreshed Supabase export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) so facilitators rehearse with the same dataset the hourly monitor now tracks.
 - Received support ping (2025-10-10 07:10 UTC) and tentatively accepted a 2025-10-10 15:30 UTC roster sync hold; will confirm facilitator + scribe coverage ahead of that slot.
 - Built a staging evidence table inside `docs/enablement/dry_run_training_materials.md` so curl logs, synthetic JSON, NDJSON export, and overlay swaps can be filled the minute QA reports green.
-- Marked the NDJSON entry as ready in the evidence table (`docs/enablement/dry_run_training_materials.md`), pointing at the 2025-10-10 07:29Z export for facilitators.
-- Logged the 07:57 UTC `?mock=0` probe (still HTTP 410) in the evidence table with path `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` so we can swap immediately when green.
 - Expanded facilitator prep matrix + acknowledgement statuses in `docs/enablement/dry_run_training_materials.md` so packet can ship immediately once QA posts green smoke.
 
 **Blockers**:
