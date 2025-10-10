@@ -23,8 +23,8 @@ expires: 2025-10-18
 - Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-10
-- Confirm the sanitized repo by running `git grep postgresql://` and logging the clean result in `feedback/qa.md`; flag the manager immediately if any secrets remain.
-- Pause staging Playwright/Prisma drills until reliability completes the Supabase rotation; prep updated env instructions so tests can resume as soon as new secrets land.
-- Draft the validation checklist for post-rotation: Prisma forward/back steps, Shopify readiness suite, and evidence capture order, ready to execute tomorrow.
-- Stay synced with engineering/data/AI on any test fixtures impacted by the incident and note pending dependencies in `feedback/qa.md`.
+## Current Sprint Focus — 2025-10-11
+- After deployment force-pushes, run `git fetch --all --prune` and confirm `git status` is clean; log the sanitized head in `feedback/qa.md`.
+- Keep staging Playwright/Prisma drills paused until reliability rotates Supabase credentials; finalize the post-rotation checklist so execution can start immediately.
+- Coordinate with engineering/data/AI on fixture refresh needs and flag any blockers expected once new secrets land.
+- Prepare to capture evidence (Playwright, Lighthouse, Prisma) in the order agreed so DEPLOY-147 can close quickly post-rotation.

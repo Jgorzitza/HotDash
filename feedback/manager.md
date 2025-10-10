@@ -1290,3 +1290,4 @@ expires: 2025-10-11
 - **Regression + metrics:** `npm run ai:regression` green; latest artifact at `artifacts/ai/prompt-regression-2025-10-09-210754.json`. Will append BLEU/ROUGE deltas to Memory once the new telemetry set is logged.
 - **Supabase staging access:** Service key & Postgres DSN confirmed in vault and GitHub staging env. Awaiting reliability confirmation that (a) MCP staging auth helper ran (Shopify credentials delivered) and (b) Supabase facts migration executed successfully.
 - **Next actions on unblock:** Capture fact IDs/screenshots, update enablement docs with evidence links, log Memory entries, and note completion in `feedback/ai.md`. Until then, holding to avoid stale or fabricated data.
+- 2025-10-10T08:12Z: Force-pushed sanitized history (af1d9f1) to origin; instructed teams to fetch/reset and keep deploys paused until Supabase rotation completes tomorrow.

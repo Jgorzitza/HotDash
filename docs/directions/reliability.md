@@ -23,10 +23,10 @@ expires: 2025-10-18
 - Approve deployment windows and keep runbooks updated under docs/runbooks/ with evidence of last exercise.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/reliability.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-10
-- Record the 2025-10-10 git history scrub (manager executed) by running `git grep postgresql://` and `git log --oneline | head`; log confirmation and any anomalies in `feedback/reliability.md` before resuming other work.
-- Lead the Supabase decision sync incident response: analyze logs, coordinate with engineering/data to implement fixes, and update `feedback/reliability.md` with mitigation steps plus alert thresholds.
-- Run the synthetic check workflow (`scripts/ci/synthetic-check.mjs`) daily, capture metrics/alerts, and confirm the `<300ms` mock budget remains green; publish the first 3 runs as evidence.
-- Finalize the secret rotation plan for Supabase/Zoho/Shopify/Chatwoot, including calendar, owners, and dry-run schedule, and circulate it to deployment and compliance by 2025-10-10.
-- Stage tomorrow’s Supabase credential rotation (DATABASE_URL, service key, pooler password) but **do not** mint new values until the manager gives the go-ahead; prepare the vault + GitHub secret update commands and note the playbook path for the morning handoff.
-- Prepare the Week 3 backup/restore drill by validating the runbook instructions and listing prerequisites (credentials, staging DB) so the exercise can execute without blockers.
+## Current Sprint Focus — 2025-10-11
+- Verify the clean repo (`git fetch --all --prune`, `git grep postgresql://`), log the check in `feedback/reliability.md`, and assist teams if their local branches still reference the old history.
+- Pair with deployment after the push to confirm GitHub secrets show the old Supabase creds slated for rotation; note timestamps and prep replacement commands.
+- Execute the Supabase credential rotation once manager gives the green light tomorrow: generate new DATABASE_URL/service key/pooler password, update vault + GitHub `staging`, and capture evidence paths.
+- Re-run `scripts/ci/synthetic-check.mjs` and `scripts/ops/analyze-supabase-logs.ts` after rotation to prove staging remains healthy; attach artifacts and share with data/QA.
+- Continue logging the incident response and rotation timeline in `feedback/reliability.md` so compliance has end-to-end evidence.
+- Maintain readiness for Week 3 backup drill; update the runbook if rotation steps alter prerequisites.
