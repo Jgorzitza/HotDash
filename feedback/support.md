@@ -40,6 +40,7 @@ expires: 2025-10-11
 - Walked through `docs/integrations/shopify_readiness.md` checklist and mapped support-owned steps (capturing request IDs, logging evidence, prepping Slack comms) to the new dry run task; ready to execute once credentials drop.
 - Holding the `?mock=0` smoke until reliability posts sustained green synthetic checks; queued reminder to capture screenshot + comms snippet for operator update when released.
 - Re-ran curl against `https://hotdash-staging.fly.dev/app?mock=0` → HTTP/2 410 (no install) with `fly-request-id=01K765H8WH5KMF74TNJMZDYP4S-ord`; sharing with deployment/reliability so they can confirm expected pre-install response before we message operators.
+- Captured the latest check at 2025-10-10 07:57 UTC (still 410) and stored the headers at `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` so we can swap in a 200 run immediately.
 - Updated operator training Q&A template with staging walkthrough metadata (`docs/runbooks/operator_training_qa_template.md`) so facilitators/attendees have Fly URL + feature flags documented.
 - Spot-check 2025-10-10 07:18 UTC: `curl -I https://hotdash-staging.fly.dev/app?mock=0` still returns HTTP/2 410 (`fly-request-id=01K76FRR5Q2SCV97HAVB336M3M-ord`); pinged reliability thread to keep us looped once pipeline redeploy finishes.
 

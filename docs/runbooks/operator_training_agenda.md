@@ -32,7 +32,7 @@ expires: 2025-10-20
 - Mock mode vs. live mode: Start training in mock mode (`?mock=1`)
 - Evidence-based operations: every tile shows data source + refresh timestamp
 - Staging access verification: load `https://hotdash-staging.fly.dev/app?mock=1` ahead of the session; a 200 OK (or 302 to Shopify auth) is required. If you receive HTTP 410 or a network error, escalate to deployment/reliability immediately and document the outcome in `feedback/enablement.md`.
-- Staging evidence table: once QA posts green smoke (`?mock=0`) and the refreshed Supabase NDJSON export, replace the placeholders listed in `docs/enablement/dry_run_training_materials.md` so facilitators have the live artefacts in hand before distribution.
+- Staging evidence table: Supabase NDJSON entry is live (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`); monitor for the first green `?mock=0` run to swap in fresh curl + synthetic evidence (latest log `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` is still 410).
 
 ---
 
