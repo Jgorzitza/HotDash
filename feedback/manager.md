@@ -6,13 +6,20 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-11
 ---
+# Marketing/Enablement EOD — 2025-10-10 23:30 UTC
+- Launch comms packet, dry-run materials, and support training script now reference the live Supabase NDJSON export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) so telemetry storytelling is ready to publish as soon as we get the go-ahead.
+- Latest `?mock=0` probe at 2025-10-10 07:57 UTC still returns HTTP 410; evidence tables across marketing/enablement/support point at `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` and are prepped to swap in the green run + sub-300 ms synthetic JSON the moment reliability posts them.
+- Design tooltip overlays/modals remain outstanding; placeholders stay in the approval tracker and job aids, ready for an immediate swap once annotations land.
+- Standing blockers for tomorrow: (1) Product go/no-go window (Backlog #1), (2) design overlays/modals (Backlog #2), (3) reliability’s sustained `?mock=0` smoke + synthetic evidence (Backlog #6 / DEPLOY-147). Everything else is staged for instant execution once those unblock.
+- Next moves queued: hold campaign calendar/ESP staging until go/no-go arrives, keep evidence tables current with every smoke rerun, and brief engineering/enablement the second design ships overlays.
+
 # Marketing Update — 2025-10-10 22:05 UTC
 - **Launch readiness:** Comms packet, launch timeline, and campaign calendar now include tentative launch-day send windows so we can publish within minutes once product delivers the go/no-go. All messaging continues to cite the Supabase parity + Fly smoke evidence already captured; distribution remains paused until the window arrives.
 - **Phase-2 GA MCP prep:** Authored `docs/marketing/phase2_ga_mcp_messaging.md` and added gated GA MCP callouts to the comms packet/FAQ so external copy stays blocked until OCC-INF-221 closes and parity checklist items 1-8 pass.
 - **Escalations logged:** Pinged design in `#occ-design` at 18:42 UTC for tooltip overlays + modal visuals and recorded the follow-up in `docs/marketing/shopify_launch_comms_backlog.md` and `docs/marketing/tooltip_placement_request_2025-10-07.md`. Nudged reliability in `#occ-reliability` at 19:05 UTC for the refreshed Supabase NDJSON export plus confirmation that warm-machine synthetic checks stay under 300 ms; backlog item #6 now references this ask.
 - **Staging evidence prep:** Launch comms packet now includes placeholders for tooltip overlays, `?mock=0` smoke, and the refreshed NDJSON so marketing/support can drop artefacts the moment QA posts them; enablement mirrored the same table in the dry-run packet.
 - **Telemetry evidence:** Supabase NDJSON row now points at the 2025-10-10 07:29Z export across comms + enablement packets, so launch messaging can quote the live bundle without additional edits.
-- **Access rollout comms:** Added the staging access rollout row to the comms approval tracker with direct links to the enablement announcement + acknowledgement template so the send is turnkey once QA reports a 200; latest `?mock=0` curl log (HTTP 410 @ 07:23 UTC) captured for swap-in.
+- **Access rollout comms:** Added the staging access rollout row to the comms approval tracker with direct links to the enablement announcement + acknowledgement template so the send is turnkey once QA reports a 200; latest `?mock=0` curl log (HTTP 410 @ 07:57 UTC) captured for swap-in.
 - **Current blockers:** (1) Product launch window/go-no-go (Backlog #1) still escalated—campaign calendar, ESP staging, and announcement scheduling remain on hold. (2) Tooltip overlays + modal visuals (Backlog #2) pending from design before engineering handoff. (3) Telemetry evidence bundle (Backlog #6) waiting on reliability’s NDJSON export and a sustained sub-300 ms synthetic run before marketing can claim “staging green.”
 - **Next steps:** Hold comms scheduling until go/no-go lands, update tooltip docs + enablement packet immediately when design responds, and attach reliability evidence the moment it posts so the audit bundle and announcements can close out.
 
@@ -181,6 +188,20 @@ expires: 2025-10-11
 - Staging screenshot checklist (`docs/design/staging_screenshot_checklist.md`) is ready for immediate execution once engineering wires modal entry points; evidence paths already aligned with enablement packet.
 - Figma workspace invite still outstanding; pinged manager via Slack (2025-10-12 14:05 UTC) so we can package the component library as soon as access lands.
 - Backlog progress while staging blocked: checklist now documents exact modal workflows + Playwright locators, and SVG overlay templates were pre-built under `docs/design/assets/templates/` for same-day annotation once captures unlock.
+
+## Designer EOD — 2025-10-12 21:05 UTC
+- Staging modals still not rendering; latest smoke at 21:00 UTC reconfirmed `?modal=sales` / `?modal=cx` return base dashboard, so capture run remains blocked pending flag exposure.
+- Backlog work while waiting includes expanded capture playbook (`docs/design/staging_screenshot_checklist.md`) and new overlay templates (`docs/design/assets/templates/modal-*‑overlay-template.svg`) so annotated assets can ship same-day once staging flips.
+- Coordination for 2025-10-13: awaiting engineering confirmation of modal ARIA/locator names (`feedback/engineer.md:10-12`) and Figma workspace invite follow-up to resume component library packaging.
+
+**Today’s Blockers**
+- Staging modal feature flags/routes inactive; dialogs unavailable for capture.
+- Figma workspace access still outstanding; component library packaging paused.
+
+**Next Actions (pending unblock)**
+1. Re-test staging immediately after engineering flips modal flags; run checklist and drop captures into `artifacts/ops/dry_run_2025-10-16/`.
+2. Update capture playbook with final selector/ARIA names once engineering confirms so QA scripts stay aligned.
+3. Kick off component library packaging in Figma as soon as access arrives; log handoff evidence for manager review.
 
 **Blockers**
 - Staging: modal feature flags/routes not exposed; cannot capture annotated screenshots or validate focus order.
