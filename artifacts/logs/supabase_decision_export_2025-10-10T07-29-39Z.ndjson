@@ -1,0 +1,4 @@
+{"decisionId":101,"status":"SUCCESS","durationMs":241.12,"errorCode":null,"attempt":1,"timestamp":"2025-10-09T14:05:22.318Z"}
+{"decisionId":102,"status":"SUCCESS","durationMs":198.77,"errorCode":null,"attempt":1,"timestamp":"2025-10-09T14:10:41.904Z"}
+{"decisionId":103,"status":"TIMEOUT","durationMs":1500.55,"errorCode":"ETIMEDOUT","attempt":3,"timestamp":"2025-10-09T14:15:12.483Z"}
+{"decisionId":104,"status":"SUCCESS","durationMs":265.43,"errorCode":null,"attempt":2,"timestamp":"2025-10-09T14:22:57.118Z"}

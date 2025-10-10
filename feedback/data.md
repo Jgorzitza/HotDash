@@ -8,6 +8,21 @@ expires: 2025-10-06
 ---
 # Data Agent — Daily Feedback & Schema Drift Report
 
+## 2025-10-10 Reliability Drop Ingestion
+- 2025-10-10T07:29Z — Ingested reliability’s NDJSON export (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) via analyzer; refreshed summaries in `artifacts/monitoring/supabase-sync-summary-latest.json` and `docs/insights/2025-10-09_supabase_decision_sync.md` (25 % timeout rate, decisionId 103 remains outlier).
+- 2025-10-10T07:32Z — Synced with AI agent; confirmed regression harness now auto-embeds decision telemetry and shared artifact paths (`artifacts/ai/prompt-regression-2025-10-10-073452.json`).
+- 2025-10-10T07:34Z — Logged ingestion completion and outstanding blockers (staging mock=0 410, modal flag timing) in `feedback/ai.md`, `feedback/manager.md`, `feedback/enablement.md`.
+- 2025-10-10T07:36Z — Re-ran analyzer to publish updated summary (same latency profile) and confirmed the hourly monitor shared the refreshed output with reliability/QA.
+- 2025-10-10T07:40Z — Updated enablement/shopify fact ID references and weekly packet notebook to point at the new export so cross-functional docs cite the latest telemetry.
+
+## 2025-10-10 Supabase Decision Sync & QA Prep
+- 2025-10-10T02:52Z — Re-ran analyzer (`npx -y tsx scripts/ops/analyze-supabase-logs.ts --input artifacts/logs/supabase_decision_sample.ndjson`); summary written to `artifacts/monitoring/supabase-sync-summary-latest.json` and new mermaid chart + metrics appended to `docs/insights/2025-10-09_supabase_decision_sync.md`.
+- 2025-10-10T02:55Z — Seeded local Prisma dev store (`npx -y tsx prisma/seeds/dashboard-facts.seed.ts`) to surface latest fact IDs for enablement; updated `docs/enablement/shopify_admin_testing_fact_ids.md` with IDs `{sales:8, fulfillment:12, inventory:11, escalations:9, ga:10}` for QA dry runs.
+- 2025-10-10T02:58Z — Attempted telemetry parity script (`npm run ops:check-analytics-parity`); Supabase returned `Invalid API key` — placeholder env values in `.env` are insufficient. Blocking items: need staging `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` drop from reliability to verify Fly staging facts mirror Prisma counts. Logged blocker here and flagged in direction sync thread.
+- 2025-10-10T03:05Z — Published refreshed GA MCP parity checklist (`docs/data/ga_mcp_parity_checklist.md`) capturing credential ETA tracker, readiness gates, and post-credential validation steps so integrations/compliance can act immediately once OCC-INF-221 unblocks.
+- 2025-10-10T03:12Z — Shared analyzer sample + summary with engineering/QA (`artifacts/logs/supabase_decision_sample.ndjson`, `artifacts/monitoring/supabase-sync-summary-latest.json`) and confirmed `npx vitest run tests/unit/supabase.memory.spec.ts` passes (4/4 tests). Awaiting full NDJSON export + Supabase credentials to extend coverage beyond the sample.
+- 2025-10-10T03:34Z — Re-ran `npx vitest run tests/unit/supabase.memory.spec.ts` (5/5 passing) to keep mocks aligned; no new NDJSON path from reliability yet, so `artifacts/logs/supabase_decision_sample.ndjson` remains the latest reference.
+
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
 - Re-opened sprint focus (Supabase decision sync triage, weekly insights, GA MCP readiness) from `docs/directions/data.md`.
 - Blocked: currently reassigned to integrations coverage and still missing Supabase credentials/log access; cannot progress data tasks until a dedicated data owner resumes or dependencies land.
@@ -30,6 +45,12 @@ expires: 2025-10-06
 - GA MCP readiness: updated go-live checklist notes with pending credential variables and queued schema parity script so execution can start the moment OCC-INF-221 resolves.
 - Operator dry run: synced with enablement on insight inputs for the pre-read; will inject activation/SLA trend callouts into the training packet once tonight’s ETL completes.
 - 19:15 ET: queued follow-up pings to reliability (Supabase logs + service key) and integrations/infra (OCC-INF-221 ETA) for early 2025-10-10; ready to drop evidence into the addendum/checklist immediately after responses land.
+
+## Shopify Install Push — 2025-10-10 10:20 UTC
+- Once reliability delivers the staging NDJSON export + `DATABASE_URL`, rerun decision-sync effectiveness notebooks and attach charts/data outputs to `docs/insights/2025-10-09_supabase_decision_sync.md`; flag any anomalies to engineer/QA before validation continues.
+- Provide enablement/support with fact ID lists, trend screenshots, and rate-limit metrics so their training packets align with live Shopify telemetry.
+- ✅ Staging `DATABASE_URL` now stored in `vault/occ/supabase/database_url_staging.env` and mirrored to GitHub `staging` environment (updated 2025-10-09T21:58Z); waiting on Supabase `facts` migration so parity notebook can run end-to-end.
+- Update this log with timestamps + artefact paths when the parity script and notebooks finish, keeping product aware of readiness status.
 
 ## Direction Acknowledgment — 2025-10-08
 - Reviewed `docs/directions/data.md` sprint focus covering Supabase decision sync investigation, weekly insight addendum, and GA MCP readiness deliverables.
@@ -179,10 +200,11 @@ Per `docs/directions/data.md`, provide weekly insight packet (charts + narrative
 
 ## Next Actions
 
-1. **Coordinate with Engineer**: Establish CI pipeline for contract validation tests (reference: `docs/data/data_contracts.md` section 6)
-2. **Weekly Insight Packet**: Define format with manager and prepare first packet for 2025-10-07 delivery
-3. **GA MCP Integration**: Monitor for credentials; execute transition plan once available (reference: `docs/data/ga_mock_dataset.md` transition steps)
-4. **Monitoring Setup**: Collaborate with reliability agent to configure alerting for MCP error rate and cache hit rate metrics
+1. Monitor hourly NDJSON drops from reliability; rerun analyzer (`npm run ops:analyze-supabase -- --input <path>`) for each export and append findings + artifact links to the insight addendum.
+2. Schedule parity reruns alongside analyzer refreshes (at least daily) and archive each output in `artifacts/monitoring/` to prove Supabase vs Prisma alignment over time.
+3. Populate the weekly insights notebook (`notebooks/weekly_insights_2025-10-16.ipynb`) with live metrics as additional exports land; generate charts for the forthcoming manager packet.
+4. Continue daily AI/QA coordination to keep regression logs and NDJSON references aligned; summarize each touchpoint in the Daily Feedback section.
+5. Flesh out GA MCP contract assertions in `tests/unit/contracts/ga_mcp.spec.ts` once credentials arrive, covering fact parity + schema expectations.
 
 ---
 

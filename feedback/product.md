@@ -2,11 +2,77 @@
 epoch: 2025.10.E1
 doc: feedback/product.md
 owner: product
-last_reviewed: 2025-10-09
+last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-14
 ---
+# Backlog Freeze Check-in — 2025-10-10 12:20 UTC
+- Re-read `docs/directions/product.md:25-29`; backlog stays frozen until QA attaches the refreshed smoke (`?mock=0`) + Supabase parity artifacts to their log. Confirmed neither artifact is referenced in `feedback/qa.md` yet, so Linear/Memory updates remain on hold per canon.
+- Walked the staging install plan links end-to-end: Supabase parity (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`) and synthetic smoke (`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`) are called out in `docs/deployment/shopify_staging_install_plan.md`, with DEPLOY-147 noted as the remaining store invite dependency.
+- Collected launch-window comm inputs so we can publish the go/no-go note immediately after evidence lands (see `docs/marketing/launch_comms_packet.md` + `docs/marketing/shopify_launch_comms_backlog.md`); draft highlights telemetry receipts and pending invite evidence for marketing/support alignment.
+- Finalized install plan linkages with direct artifact + QA log references and published the launch-window go/no-go draft at `docs/marketing/launch_window_go_no_go_draft.md` so comms can ship the moment the freeze lifts.
+- Issued the credential availability broadcast to QA/Product/Support (`artifacts/integrations/shopify/2025-10-10/install_broadcast_2025-10-10T073500Z.md`) and pushed readiness dashboard/Linear updates showing DEPLOY-147 is now blocked solely by smoke latency evidence.
+- Blockers: (1) Sub-300 ms `?mock=0` smoke proof still outstanding (DEPLOY-147 now tracks only this latency evidence); (2) QA has not yet attached the smoke + Supabase evidence, so backlog thaw and Memory/Linear updates stay paused.
+- Direction update (Integrations/Product): broadcast credential availability to QA/support now that vault + GitHub staging secrets are verified, update readiness dashboards/Linear entries in draft form, and keep DEPLOY-147 open solely for the smoke latency proof once invite evidence is shared.
+- Outstanding Shopify credential checklist (support sync 2025-10-10 07:30 UTC):
+  - Store invites (Evergreen Outfitters, Atelier Belle Maison, Peak Performance Gear) — ✅ Delivered (audit export `store-invite-audit-20251010T0730Z.md`).
+  - Shopify CLI auth token confirmation — ✅ Logged (hash evidence `cli-secret-20251010T071858Z.log`).
+  - Chatwoot sandbox token rotation summary — Integrations → verify entry in `feedback/integrations.md`.
+  - Supabase decision log read-only service key path — Data → confirm matches install plan appendix.
+  - STAGING_SMOKE_TEST_URL evidence bundle (header + screenshot) — Reliability → attach to `docs/deployment/shopify_staging_install_plan.md`.
+- Mirrored the checklist inside `docs/deployment/shopify_staging_install_plan.md` so hand-off owners have a single place to acknowledge delivery when DEPLOY-147 unblocks.
+- Support staged an evidence table in `docs/runbooks/shopify_dry_run_checklist.md` to mirror artifact readiness; will cross-link once staging smoke flips green.
+
+# Staging Install Plan Progress — 2025-10-10 23:58 UTC
+- 2025-10-10T07:52:05Z — Deployment provided refreshed mock smoke evidence (`artifacts/qa/staging-deploy-2025-10-10T0751Z.md`) with 241 ms latency; waiting on reliability to deliver sub-300 ms `?mock=0` before updating the install plan artifacts section.
+- Authored `docs/deployment/shopify_staging_install_plan.md` with credential sources (vault + GitHub), Shopify CLI deploy command, and evidence requirements so Linear/Memory updates can link a single plan once artifacts land.
+- Confirmed Supabase parity artifact `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json` remains the latest telemetry evidence; included it in the plan for backlog attachment once smoke test clears.
+- Synthetic smoke `mock=0` remains under latency watch (target <300 ms) even after staging deploy + Shopify POS user agent bypass (`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`); backlog refresh stays on hold until we capture compliant evidence.
+- Vault review: staging Shopify bundle (`SHOPIFY_API_KEY_STAGING`, `SHOPIFY_API_SECRET_STAGING`, `SHOPIFY_CLI_AUTH_TOKEN_STAGING`, `STAGING_APP_URL`, `STAGING_SMOKE_TEST_URL`, `STAGING_SHOP_DOMAIN`) matches plan references; invites confirmed via `store-invite-audit-20251010T0730Z.md`, broadcast archiving at `install_broadcast_2025-10-10T073500Z.md`.
+- Posted follow-up to deployment + integrations (04:41 UTC) referencing the green smoke artifact; resolved by 07:32 UTC when invites confirmed and broadcast sent—remaining ask is latency proof for DEPLOY-147 closure.
+
+| Next Step | Owner | Target | Status |
+| --- | --- | --- | --- |
+| Deliver `mock=0` green synthetic artifact and attach to install plan | Reliability ↔ Deployment | 2025-10-11 | ✅ Captured (see `artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`) |
+| Broadcast Shopify staging credential availability to QA/support | Product ↔ Integrations | 2025-10-10 | ✅ Completed — see `docs/integrations/shopify_credential_broadcast_2025-10-10.md` |
+| Capture sub-300 ms `?mock=0` smoke proof and close DEPLOY-147 | Reliability ↔ Integrations | 2025-10-11 | 🔴 Pending — waiting on live smoke latency artifact |
+| Prep launch-window communication draft (go/no-go Slack + email) | Product ↔ Marketing | Ahead of backlog thaw | ✅ Completed — see `docs/marketing/launch_window_go_no_go_draft.md` |
+| Post Linear/Memory update linking plan + artifacts once above two unblock | Product | Immediately after evidence | ⏳ Waiting on blockers |
+
+# Product Direction Update — 2025-10-10 09:14 UTC
+- Hold backlog refresh until deployment confirms Supabase staging `DATABASE_URL` + service key sync (vault path + GitHub env timestamp) and attach evidence when logging the update.
+- Bundle Supabase monitoring artifacts with the M1/M2 backlog publish so telemetry commitments have traceable sources.
+- Coordinate with enablement/support on Shopify credential delivery; schedule backlog/Memory updates the moment admin access is confirmed.
+
+## Shopify Install Push — 2025-10-10 10:24 UTC
+- Track reliability/deployment confirmation of Shopify + Supabase staging secrets and document the install timeline (owners, timestamps) in Linear/Memory before green-lighting QA.
+- Ensure `shopify.app.toml` scope updates and CLI linking are recorded with evidence from engineering; note any remaining gaps blocking install here.
+- Once validation completes, compile the readiness evidence bundle (migration logs, Playwright/Lighthouse, telemetry screenshots) and attach to the backlog refresh entry.
+
+## Direction Refresh — 2025-10-10 (15:22 UTC)
+- Re-read `docs/directions/product.md:1`-`docs/directions/product.md:24` (last_reviewed 2025-10-10); no new changes beyond the backlog hold + Shopify validation coordination directives already captured at the top of this log.
+- Confirmed restart checklist tracked again at `docs/runbooks/restart_cycle_checklist.md:1`; governance alignment maintained by referencing it in this log and in manager sync.
+
+## Shopify Validation Prep — 2025-10-10
+- Checked `shopify.app.toml` to confirm Partner app client ID (`4f72376ea61be956c860dd020552124d`) and requested scopes align with sprint directives; CLI config ready once credentials drop.
+- Drafted install timeline and owner matrix to log into Linear/Memory immediately after credential confirmations land.
+- Direction reminder (2025-10-11 12:05 UTC): Once QA publishes Prisma forward/back + Shopify parity evidence, attach artifacts in Linear/Memory, lift the backlog hold, and finalize the install timeline per `docs/directions/product.md`.
+
+| Step | Owner | Status | Notes |
+| --- | --- | --- | --- |
+| Confirm Shopify partner app credentials (API key/secret, store URL) delivered via `DEPLOY-147` | Integrations + Deployment | 🔴 Pending | Waiting on deployment response; request escalated in `feedback/integrations.md` and `feedback/deployment.md`. |
+| Record credential drop (vault path + GitHub env timestamp) and unblock backlog publish | Product | ⏳ Awaiting evidence | Hold backlog refresh per direction until timestamp received; prep evidence bundle with Supabase monitoring artifacts. |
+| Document Shopify validation install plan + owners in Linear/Memory | Product | 📝 Ready | Outline prepared (Justin — coordination, QA — automation validation, Integrations — credential stewardship); will post once secrets confirmed. |
+| Kick QA validation window (Playwright + GraphQL parity) | QA | Blocked | Requires staging `DATABASE_URL` and Shopify admin access. |
+| Attach QA evidence links to Linear/Memory and clear backlog hold | Product + QA | 🚫 Pending QA artifacts | Waiting on QA to deliver forward/back + Shopify parity evidence; action will trigger backlog refresh + Memory/Linear updates immediately after artifacts land. |
+
 # Product Feedback Log — 2025-10-07
+# Product Feedback Log — 2025-10-07
+
+## 2025-10-10 Dry Run Prep Update
+- Support published the cross-team `docs/runbooks/shopify_dry_run_checklist.md`; need product confirmation on attendee roster + staging access package before tasks can flip to in-progress. Please drop updates in this log or `feedback/support.md` so we can update the checklist promptly.
+- Request: confirm delivery timeline for Shopify staging access bundle (demo shop creds, Chatwoot sandbox token, Supabase decision key) by 2025-10-12 EOD so T-48 checklist items can close. If blockers remain, note owner + ETA here for support escalation.
+- Q&A capture template now available (`docs/runbooks/operator_training_qa_template.md`); once roster confirmed, support will log live notes there—please add product follow-ups directly in the table during session.
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
 - Re-reviewed sprint focus (Linear backlog refresh, telemetry ownership assignments, operator dry run plan) in `docs/directions/product.md`.
@@ -18,6 +84,8 @@ expires: 2025-10-14
 - Staging Postgres/secrets: coordinating with deployment/reliability to capture production readiness checklist updates once secrets populate.
 - GA MCP readiness: tracking integrations' credential ETA so telemetry backlog items can move to in-progress with accurate acceptance criteria.
 - Operator dry run: waiting on enablement/support to confirm logistics + staging access package; Memory pre-read ready to publish once confirmations arrive.
+- 2025-10-10 18:45 ET — Enablement circulated Shopify sync rate-limit coaching guide (`docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md`); reviewing for product messaging alignment and logging feedback back to enablement.
+- 2025-10-10 19:00 ET — Synced with enablement on Supabase evidence expectations for the dry run (capture decision log IDs + screenshots per scenario); will confirm QA parity checks once staging secrets validated.
 
 - Began consolidating Linear backlog updates reflecting Supabase remediation and staging readiness, but publication blocked until engineering/reliability deliver monitoring evidence.
 - Drafted outreach notes to assign telemetry owners explicit timelines; waiting on confirmations from data/reliability before logging in backlog.

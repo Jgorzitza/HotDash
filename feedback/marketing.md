@@ -5,6 +5,103 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-11
 ---
+# Marketing Daily Status — 2025-10-12 (Checklist Distribution)
+
+## Summary
+- Received localization’s English-only audit checklist (`docs/marketing/english_only_audit_checklist.md`) and adopted it as the pre-publish gate for all marketing collateral updates.
+- Logged acknowledgment in backlog item `docs/marketing/shopify_launch_comms_backlog.md` so future tasks reference the checklist before circulation.
+- Notified enablement/support counterparts that marketing will run the checklist prior to sharing updated scripts or packets.
+
+## Actions
+- Added checklist reference to `docs/marketing/launch_comms_packet.md` approval tracker with a reminder that audit evidence lives in `feedback/localization.md`.
+- Posted internal note to campaign calendar draft highlighting the checklist requirement at each copy freeze checkpoint.
+- Coordinated with support to mirror the checklist in their dry run prep flow (see `feedback/support.md`).
+
+## Staging Access Rollout Prep — 2025-10-10 08:05 UTC
+- Extended the launch communications approval tracker with a staging access rollout comms row and linked the enablement announcement/acknowledgement templates so the send is turnkey once QA reports green (`docs/marketing/launch_comms_packet.md`).
+- Logged the most recent live smoke attempt (`https://hotdash-staging.fly.dev/app?mock=0` → HTTP 410 at 2025-10-10T07:23Z) and pointed to the stored curl log for instant replacement when we capture a 200 response.
+- Synced with support/enablement to ensure facilitator prep scripts reference the mock-mode fallback while staging is degraded; support training script now calls out the 410 condition.
+- Outstanding: ingest refreshed Supabase NDJSON export, attach sustained mock=0 evidence, and swap in final tooltip overlays once design delivers exports.
+
+## Blockers / Follow-ups
+- Still waiting on design modal overlays and reliability telemetry; checklist will remain in use once those assets arrive.
+- Need embed token resolution from reliability/deployment before localization can supply modal screenshots; marketing will attach evidence once provided.
+
+# Marketing Daily Status — 2025-10-10 (Evening Update)
+
+## Summary
+- Waiting on product’s go/no-go; comms packet + launch timeline already reference Supabase/Fly evidence so announcements can schedule immediately once the window lands.
+- Drafted the Phase-2 GA MCP messaging outline (`docs/marketing/phase2_ga_mcp_messaging.md`) so fallback work progresses while launch remains blocked.
+- Pinged design in `#occ-design` at 2025-10-10 18:42 UTC for the modal overlay visuals and tooltip annotations required for engineering handoff.
+- Nudged reliability in `#occ-reliability` at 2025-10-10 19:05 UTC for the refreshed Supabase NDJSON export and confirmation the staging synthetic stays sub-300 ms.
+- Updated the launch comms approval tracker with placeholders for tooltip overlays, `?mock=0` smoke, and the refreshed NDJSON so we can flip to distribution as soon as QA posts evidence.
+
+## Evidence Updates
+- New Phase-2 GA MCP messaging draft captures positioning, evidence gates, and required asset updates (`docs/marketing/phase2_ga_mcp_messaging.md`).
+- Backlog item #2 now notes the latest designer follow-up and timestamp (`docs/marketing/shopify_launch_comms_backlog.md`).
+- Launch comms packet now tracks the internal staging readiness broadcast with evidence placeholders so we can trigger operator comms as soon as DEPLOY-147 drops (`docs/marketing/launch_comms_packet.md` §Approval & Evidence Tracker).
+- Added go-live trigger checklist to `docs/marketing/launch_comms_packet.md` so marketing/support know exactly which artefacts to drop in once QA signs off.
+- Support training script now points facilitators at the same staging evidence table to keep packet handoffs in sync (`docs/marketing/support_training_script_2025-10-16.md`).
+
+## Blockers
+- Product launch window/go-no-go decision (Backlog #1) — still escalated, prevents campaign calendar + ESP staging.
+- Tooltip overlays + modal visuals (Backlog #2) — designer reply pending; engineering handoff on hold.
+- Reliability telemetry bundle — Supabase NDJSON export + stable staging synthetic run needed before packaging audit evidence (Backlog #6).
+
+## Next Actions
+1. Pre-populate `docs/marketing/campaign_calendar_2025-10.md` with tentative send windows so we can lock dates the moment product responds.
+2. Flesh Phase-2 GA MCP copy across the comms packet/FAQ once parity checklist items clear.
+3. Follow up with design for modal overlays; update tooltip handoff docs immediately upon receipt.
+4. Coordinate with reliability on NDJSON + synthetic rerun timing so evidence bundle can close.
+
+# Marketing Daily Status — 2025-10-10 (Midday Update)
+
+## Summary
+- Launch window still unconfirmed; escalated to manager at 2025-10-10 14:05 UTC referencing backlog item #1 (`docs/marketing/shopify_launch_comms_backlog.md`).
+- Documented readiness evidence (Supabase parity, Fly staging smoke, Shopify staging validation) across launch timeline + comms packet so marketing messaging tracks QA readiness.
+- Embedded Shopify rate-limit coaching snippet across training script/proposal/FAQ; ready to capture enablement/support approvals once invites send.
+
+## Evidence Updates
+- Refreshed `docs/marketing/launch_timeline_playbook.md` with Supabase parity (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`), retry snapshot (`artifacts/monitoring/supabase-sync-summary-latest.json`), Fly staging smoke pass (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`), and Shopify staging validation (`feedback/reliability.md`, 2025-10-10 01:14 UTC entry).
+- Added telemetry readiness row + staging link updates to `docs/marketing/launch_comms_packet.md`, citing the same artifacts for operator-facing comms.
+- Updated training materials with Shopify rate-limit snippet: `docs/marketing/support_training_script_2025-10-16.md`, `docs/marketing/support_training_session_proposal_2025-10-07.md`, and `docs/marketing/launch_faq.md` now reference `docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md`.
+- Synced backlog status to reflect new evidence + snippet progress (`docs/marketing/shopify_launch_comms_backlog.md`).
+
+## Launch Window Follow-up
+- Pinged product in #occ-product at 2025-10-10 13:45 UTC for launch window decision; no update by the 10:00 ET deadline.
+- Escalated to manager at 2025-10-10 14:05 UTC with summary of outstanding blockers (launch window, tooltip overlays); awaiting acknowledgement.
+
+## Next Actions (PM)
+1. Capture enablement/support approvals for the Shopify rate-limit coaching snippet once training invites distribute; log timestamps + approvers here.
+2. Update `docs/marketing/campaign_calendar_2025-10.md` immediately after product supplies launch window.
+3. Attach Supabase NDJSON export + telemetry rerun evidence to playbook/comms packet once reliability shares next drop.
+
+# Marketing Daily Status — 2025-10-10 (AM Update)
+
+## Summary
+- Re-read `docs/directions/marketing.md` (refresh dated 2025-10-10) to capture the sprint focus: secure 10:00 ET launch window, apply telemetry evidence updates, and embed Shopify rate-limit coaching in training comms.
+- Confirmed restart cycle runbook is restored at `docs/runbooks/restart_cycle_checklist.md`; backlog + feedback entries now reference the canonical path.
+- Published `docs/marketing/shopify_launch_comms_backlog.md` centralizing launch comms items with owners, next actions, evidence, and blockers.
+- Folded Supabase telemetry analyzer output (`artifacts/monitoring/supabase-sync-summary-latest.json`) and staging secret sync evidence (vault `occ/supabase`, `occ/shopify`) into the comms packet and timeline playbook.
+
+## Production Blocker Focus
+- **Launch window (Product):** Still waiting on reply to 2025-10-09 20:25 ET follow-up; backlog item #1 tracks timer to escalate at 2025-10-10 14:00 UTC (10:00 ET).
+- **Tooltip placement overlays (Design):** Assets overdue despite 2025-10-10 AM ET commitment; backlog item #2 will notify engineering within 2h once delivered.
+- **Telemetry evidence (Reliability/Data):** Supabase analyzer snapshot captured (see `artifacts/monitoring/supabase-sync-summary-latest.json`), staging secrets vaulted, but full NDJSON export + parity rerun still pending; backlog item #6 tracks remaining gap before citing KPIs in comms.
+
+## Requests / Questions for Manager
+- Ready to escalate product + design blockers at 10:00 ET if silence continues; confirm preferred escalation path.
+- Guidance requested on pre-staging ESP QA ahead of launch window confirmation or holding until window set.
+
+## Next Session Priorities (2025-10-10 PM)
+1. Update backlog entries immediately with any product/design responses.
+2. Apply telemetry timestamps to launch comms packet and timeline playbook once reliability/deployment drop evidence.
+3. Incorporate Shopify rate-limit coaching snippet + dry-run invite details into enablement handoff when credentials land.
+
+## Escalation Actions — 2025-10-10 14:00 UTC
+- Triggered manager escalation for missing product launch window decision and overdue design tooltip overlays; referenced `docs/marketing/shopify_launch_comms_backlog.md` items #1 and #2.
+- Awaiting manager response before staging ESP QA or delivering tooltip guidance to engineering.
+
 # Marketing Daily Status — 2025-10-10
 
 ## Summary
@@ -23,6 +120,11 @@ expires: 2025-10-11
 - **Launch window confirmation (Product):** No response yet to 20:25 ET follow-up; escalation path planned if no update by 10:00 ET.
 - **Tooltip placement annotations (Design):** Delivery promised for 2025-10-10 AM; comms updates queued immediately after arrival.
 - **Supabase telemetry credentials (Reliability):** Still outstanding; prevents KPI validation and launch-day reporting readiness.
+
+## Shopify Install Push — 2025-10-10 10:23 UTC
+- Track product’s confirmation that Shopify staging secrets + install window are live; update launch timeline playbook with exact timestamps and evidence links once deployment logs the staging smoke run.
+- Refresh the comms packet with Supabase telemetry/Lighthouse artefacts coming from QA/deployment so stakeholders see validation proof alongside messaging.
+- Coordinate with enablement/support to embed the rate-limit coaching snippet in operator comms and log approvals here.
 
 ## Requests / Questions for Manager
 - If product remains silent past 10:00 ET, please escalate so we can lock the launch calendar.
