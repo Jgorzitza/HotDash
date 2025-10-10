@@ -32,7 +32,7 @@ _Pending staffing update. Acknowledge `docs/directions/enablement.md` upon assig
 ## Dry Run Prep — 2025-10-10 07:55 UTC
 
 **Progress**:
-- Reran staging smoke (`curl -I https://hotdash-staging.fly.dev/app?mock=0`) — still returning HTTP/2 410; saved output to `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log` for tracking until the response flips to 200.
+- Reran staging smoke (`curl -I https://hotdash-staging.fly.dev/app?mock=0`) — still returning HTTP/2 410; latest capture lives at `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` so we can swap in the green run immediately.
 - Added draft overlay checklist to `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` so design can validate callout numbers/alt text ahead of screenshot swap.
 - Appended distribution announcement copy, acknowledgement log template, and smoke evidence checklist to the dry-run packet (`docs/enablement/dry_run_training_materials.md`).
 - Coordinated with marketing/support to ensure the staging access rollout comms row, announcement template, and evidence table align before QA greenlight; referenced in both `docs/marketing/launch_comms_packet.md` and this packet.

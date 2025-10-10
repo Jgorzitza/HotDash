@@ -12,7 +12,8 @@ expires: 2025-10-18
 - **Audience:** Support agents, enablement, marketing, product liaison
 - **Duration:** 90 minutes (aligns with primary slot in `docs/marketing/support_training_session_proposal_2025-10-07.md`)
 - **Objective:** Equip support to demo the Operator Control Center, answer top questions, and escalate blockers before GA.
-- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), staging credentials (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck)
+- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), staging credentials (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck), staging evidence table in `docs/enablement/dry_run_training_materials.md`
+- **Staging status note:** If `https://hotdash-staging.fly.dev/app?mock=0` continues returning HTTP 410, rehearse with mock mode (`?mock=1`) and reference the enablement facilitator script until reliability posts the green smoke.
 - **Recordings:** Save Zoom recording + chat log to Support KB per SOP
 
 ## 0:00-0:05 - Welcome & Objectives
@@ -25,7 +26,8 @@ expires: 2025-10-18
 4. Set parking lot expectations: capture unanswered questions in shared doc (`docs/runbooks/operator_training_qa_template.md`).
 
 ## 0:05-0:20 - Dashboard Orientation
-1. Share screen (staging dashboard) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
+1. Share screen (staging dashboard at `https://hotdash-staging.fly.dev/app`) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
+   - If live smoke remains 410, load `?mock=1` for demo purposes and call out the pending QA checklist; cite the latest curl log (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log`) so attendees know rollout is queued.
 2. Review global elements:
    - Mock/live indicator (top right)
    - Decision audit trail link (footer)

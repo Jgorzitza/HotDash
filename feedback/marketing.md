@@ -35,12 +35,13 @@ expires: 2025-10-11
 - Pinged design in `#occ-design` at 2025-10-10 18:42 UTC for the modal overlay visuals and tooltip annotations required for engineering handoff.
 - Nudged reliability in `#occ-reliability` at 2025-10-10 19:05 UTC for the refreshed Supabase NDJSON export and confirmation the staging synthetic stays sub-300 ms.
 - Updated the launch comms approval tracker with placeholders for tooltip overlays, `?mock=0` smoke, and the refreshed NDJSON so we can flip to distribution as soon as QA posts evidence.
+- Logged the latest `?mock=0` probe (2025-10-10 07:57 UTC, still 410) so the go-live checklist can swap in the green artefacts the moment reliability delivers them.
 
 ## Evidence Updates
 - New Phase-2 GA MCP messaging draft captures positioning, evidence gates, and required asset updates (`docs/marketing/phase2_ga_mcp_messaging.md`).
 - Backlog item #2 now notes the latest designer follow-up and timestamp (`docs/marketing/shopify_launch_comms_backlog.md`).
 - Launch comms packet now tracks the internal staging readiness broadcast with evidence placeholders so we can trigger operator comms as soon as DEPLOY-147 drops (`docs/marketing/launch_comms_packet.md` §Approval & Evidence Tracker).
-- Added go-live trigger checklist to `docs/marketing/launch_comms_packet.md` so marketing/support know exactly which artefacts to drop in once QA signs off.
+- Added go-live trigger checklist to `docs/marketing/launch_comms_packet.md` with live Supabase NDJSON + latest curl log references so marketing/support know exactly which artefacts to swap once QA signs off.
 - Support training script now points facilitators at the same staging evidence table to keep packet handoffs in sync (`docs/marketing/support_training_script_2025-10-16.md`).
 
 ## Blockers
