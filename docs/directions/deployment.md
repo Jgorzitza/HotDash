@@ -23,8 +23,9 @@ expires: 2025-10-18
 - Log deployment readiness updates, blockers, and approvals in `feedback/deployment.md`.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/deployment.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-10
-- Pull the rewritten history (post git-filter-repo) and reset local tooling (`git remote add origin <repo>` if needed); log confirmation in `feedback/deployment.md` that no `postgresql://` strings remain.
-- Freeze staging deploys until reliability rotates Supabase credentials tomorrow; queue the redeploy script with placeholders and outline evidence you need once new secrets land.
-- Update `docs/deployment/env_matrix.md` and the staging install runbook to flag that Supabase + Shopify secrets are invalidated pending rotation; coordinate handoff timing with product/support.
-- Audit GitHub Actions secrets for leftover DSNs or outdated tokens, noting any cleanup required in `feedback/deployment.md`, and be ready to re-run `scripts/deploy/staging-deploy.sh` immediately after the new bundle drops.
+## Current Sprint Focus — 2025-10-11
+- Re-add the GitHub remote (`git remote add origin https://github.com/Jgorzitza/HotDash.git`) and force-push the sanitized branch once reliability signs off; log the push hash in `feedback/deployment.md`.
+- After pushing, broadcast pull/reset instructions to all teams (`git fetch --all --prune`, `git reset --hard origin/<branch>`) so no one keeps the compromised history.
+- Keep staging deploy scripts frozen until reliability rotates Supabase credentials; stage the redeploy command with placeholders and list required evidence post-rotation.
+- Update `docs/deployment/env_matrix.md` and staging install runbook with a “credentials rotating” banner so downstream consumers know to wait.
+- Audit GitHub Actions secrets for leftover DSNs/outdated tokens; coordinate with reliability tomorrow to refresh `DATABASE_URL`, `SUPABASE_SERVICE_KEY`, and Shopify secrets right after rotation.
