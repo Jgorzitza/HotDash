@@ -1220,6 +1220,28 @@ expires: 2025-10-11
   3. Outline retention evidence handoff doc for reliability (fields to capture, expected pg_cron log formats) to unblock their delivery.
   4. Begin compiling DPIA addendum shell covering Shopify admin testing once SCC lands, so we can close the sprint quickly.
   5. If time allows, stage GA MCP DPA placeholder folder mirroring the Supabase pattern to keep evidence structure consistent.
+
+## Compliance Update — 2025-10-12 (EOD)
+- **Executed today:**
+  - Sent privacy comms confirmation requests to marketing/support and logged outreach plus DM snippet (`docs/compliance/evidence/operator_privacy_comms/sent_2025-10-12.md`).
+  - Delivered pg_cron evidence follow-up via `#occ-ops`, set 2025-10-13 reminder, and referenced the checklist so reliability knows the artefacts required (`docs/compliance/evidence/retention_runs/pg_cron_followup_2025-10-12.md`, `docs/compliance/evidence/retention_runs/pg_cron_evidence_checklist.md`).
+  - Filled in Supabase escalation draft with ticket #SUP-49213 and calendared the 2025-10-14 send window (`docs/compliance/evidence/supabase/scc/escalation_draft_2025-10-14.md`).
+  - Submitted GA MCP follow-up through the support portal; awaiting acknowledgement before the 2025-10-15 escalation (`docs/compliance/evidence/vendor_followups_2025-10-12.md`).
+  - Refreshed the Shopify Admin testing DPIA addendum so readiness blockers map to pending evidence (`docs/compliance/dpia_shopify_admin_testing_addendum.md`).
+- **Current blockers:**
+  1. Supabase countersigned SCC + region confirmation still outstanding; escalate if silent at 2025-10-14 17:00 UTC SLA.
+  2. Reliability has not yet delivered pg_cron first-run evidence; retention automation closure depends on their artefacts.
+  3. Marketing/support confirmations pending; sprint bullet remains open until responses archived.
+  4. GA MCP DPA + regional letter not yet supplied; tracking support ticket for ETA.
+- **Next actions (owner: compliance):**
+  1. Chase marketing/support for confirmations on 2025-10-13 and drop evidence into `docs/compliance/evidence/operator_privacy_comms/`.
+  2. Follow up with reliability if evidence folder not posted by 2025-10-13 22:00 UTC; hash artefacts immediately once available.
+  3. Fire Supabase escalation at SLA if no progress and notify manager for parallel escalation path.
+  4. Log GA MCP ticket response on arrival and archive DPA/residency documents with hashes.
+  5. Complete DPIA addendum approvals once outstanding evidence lands.
+- **Requests for manager:**
+  - Stay ready to escalate Supabase via exec channels on 2025-10-14 if support remains silent; compliance draft is prepared.
+  - Nudge marketing/support counterparts if they miss the 2025-10-13 confirmation deadline so sprint bullet can close on schedule.
 -## AI Agent Status — 2025-10-10 05:15 UTC
 - Daily regression executed 02:50 UTC (`npm run ai:regression` → PASS; BLEU 0.9444 / ROUGE-L 0.9565); artifact `artifacts/ai/prompt-regression-2025-10-10-025007.json` logged in `feedback/ai.md` for QA pickup.
 - Dry-run kit docs across CX Escalations, Sales Pulse, and Inventory remain staged with telemetry callouts; awaiting data’s refreshed Supabase NDJSON export to append fact IDs + screenshots without fabricating evidence.

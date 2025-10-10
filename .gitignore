@@ -21,6 +21,10 @@ pnpm-lock.yaml
 
 /extensions/*/dist
 
+# Secrets and evidence archives
+vault/
+artifacts/
+
 # Ignore shopify files created during app dev
 .shopify/*
 .shopify.lock

@@ -23,8 +23,8 @@ expires: 2025-10-18
 - Log deployment readiness updates, blockers, and approvals in `feedback/deployment.md`.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/deployment.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Stand up the staging deployment pipeline (GitHub Actions + Shopify CLI) with automated smoke verification and document the process in `docs/runbooks/deployment_staging.md`.
-- Provision the Postgres-backed staging/test database configuration, share connection details with QA/engineering, and add Prisma override documentation so migration rollback testing can begin.
-- Produce the environment + secrets matrix for dev/staging/prod, confirm values with reliability, and publish it in `docs/deployment/env_matrix.md`.
-- Draft the production go-live checklist covering evidence review, Supabase decision logging health, backup confirmation, and rollback triggers; circulate for product/manager approval before the M1/M2 checkpoint.
+## Current Sprint Focus — 2025-10-10
+- Pull the rewritten history (post git-filter-repo) and reset local tooling (`git remote add origin <repo>` if needed); log confirmation in `feedback/deployment.md` that no `postgresql://` strings remain.
+- Freeze staging deploys until reliability rotates Supabase credentials tomorrow; queue the redeploy script with placeholders and outline evidence you need once new secrets land.
+- Update `docs/deployment/env_matrix.md` and the staging install runbook to flag that Supabase + Shopify secrets are invalidated pending rotation; coordinate handoff timing with product/support.
+- Audit GitHub Actions secrets for leftover DSNs or outdated tokens, noting any cleanup required in `feedback/deployment.md`, and be ready to re-run `scripts/deploy/staging-deploy.sh` immediately after the new bundle drops.

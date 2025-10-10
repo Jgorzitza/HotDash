@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+  <title>Healthy status icon</title>
+  <desc>Green circle with a check mark indicating a healthy Shopify tile state.</desc>
+  <circle cx="12" cy="12" r="9" fill="#E3F9E5" stroke="#1A7F37" stroke-width="1.8"/>
+  <path d="M8.5 12.6l2.4 2.4 4.6-5.4" fill="none" stroke="#1A7F37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

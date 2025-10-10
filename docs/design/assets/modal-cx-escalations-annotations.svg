@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img">
+  <title>CX Escalations modal annotations</title>
+  <desc>Annotated layout showing focus flow, tooltip placement, and CTA hierarchy for the CX Escalations modal.</desc>
+  <rect x="40" y="40" width="360" height="340" rx="16" fill="#FFFFFF" stroke="#D2D5D8" stroke-width="2"/>
+  <rect x="56" y="60" width="328" height="40" rx="8" fill="#F6F6F7"/>
+  <text x="68" y="86" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600" fill="#202223">Customer: Jamie Rivera</text>
+  <rect x="56" y="112" width="328" height="72" rx="8" fill="#F6F6F7" stroke="#E5E8E9" stroke-dasharray="6 4"/>
+  <text x="68" y="138" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">Conversation preview (latest 3 messages)</text>
+  <rect x="56" y="196" width="328" height="64" rx="8" fill="#FFF4F4" stroke="#D82C0D" stroke-width="1.5"/>
+  <text x="68" y="220" font-family="Segoe UI, sans-serif" font-size="14" fill="#D82C0D">SLA breached 18 mins ago</text>
+  <text x="68" y="240" font-family="Segoe UI, sans-serif" font-size="12" fill="#637381">Tooltip: SLA badge (`top-start`)</text>
+  <rect x="56" y="272" width="328" height="68" rx="8" fill="#FFFFFF" stroke="#BBBFCC" stroke-dasharray="6 4"/>
+  <text x="68" y="296" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">Suggested reply editor</text>
+  <rect x="56" y="352" width="160" height="36" rx="8" fill="#2C6ECB"/>
+  <text x="70" y="376" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Approve &amp; Send Reply</text>
+  <rect x="224" y="352" width="88" height="36" rx="8" fill="none" stroke="#2C6ECB" stroke-width="1.4"/>
+  <text x="236" y="375" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#2C6ECB">Escalate</text>
+
+  <!-- Focus order annotations -->
+  <line x1="416" y1="92" x2="384" y2="92" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="96" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">1. Entry focus: customer name, uses `--occ-focus-ring`</text>
+
+  <line x1="416" y1="232" x2="384" y2="232" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="228" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">Tooltip placement `top-start` on SLA badge</text>
+  <text x="430" y="246" font-family="Segoe UI, sans-serif" font-size="13" fill="#637381">Status icon: status-critical.svg (24px)</text>
+
+  <line x1="416" y1="310" x2="384" y2="310" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="304" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">Focus step 2 → template tooltip (`right`)</text>
+
+  <line x1="416" y1="370" x2="384" y2="370" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="360" font-family="Segoe UI, sans-serif" font-size="13" fill="#202223">Focus step 3 → primary CTA, then secondary, then Close</text>
+  <text x="430" y="378" font-family="Segoe UI, sans-serif" font-size="13" fill="#637381">Primary CTA retains 44px min touch height</text>
+
+  <!-- Legend -->
+  <rect x="40" y="10" width="180" height="20" fill="none"/>
+  <text x="40" y="26" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">CX Escalations Modal (Annotated)</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L8 4L0 8z" fill="#2C6ECB"/>
+    </marker>
+  </defs>
+</svg>

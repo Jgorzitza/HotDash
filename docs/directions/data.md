@@ -23,7 +23,8 @@ expires: 2025-10-18
 - Provide weekly insight packet (charts + narrative) attached in manager status with reproducible notebooks.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/data.md` without waiting for additional manager confirmation.
 
-## Current Sprint Focus — 2025-10-08
-- Investigate the Supabase decision sync error spike (25% failure rate): pair with engineering/reliability to isolate root cause, ship instrumentation updates, and document findings plus mitigation plan in `feedback/data.md`.
-- Publish the 2025-10-09 weekly insight addendum highlighting activation, SLA, anomaly trends, and Supabase logging health; provide reproducible SQL/notebook links in `docs/insights/`.
-- Finalize GA MCP readiness by validating mock vs. live schema parity, updating `docs/data/ga_mcp_go_live_checklist.md`, and preparing the credential handoff package for integrations/compliance so the swap can execute within 24 hours of receipt.
+## Current Sprint Focus — 2025-10-10
+- Confirm the sanitized repo by running `git grep postgresql://`; log the clean check in `feedback/data.md` and alert the manager if anything surfaces.
+- Pause Supabase export regeneration until reliability rotates credentials; stage the scripts/notebooks so refreshed NDJSON and summaries can ship immediately after rotation.
+- Update the Supabase incident doc with today’s exposure details and pending follow-ups so leadership has a single source of truth.
+- Coordinate with AI/QA on revised timelines for regression data and validation evidence to keep dependencies aligned.

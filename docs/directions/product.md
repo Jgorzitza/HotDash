@@ -23,7 +23,7 @@ expires: 2025-10-18
 - Approve copy/UX changes only with paired evidence from designer + engineer (screenshot + test).
 - Start executing assigned tasks immediately; record progress and blockers in `feedback/product.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Publish the updated M1/M2 backlog in Linear, incorporating the Supabase logging remediation, staging environment work, and operator dry run deliverables; circulate links in `feedback/product.md`.
-- Assign owners and timelines for activation, SLA resolution, and anomaly response telemetry tasks, and ensure acceptance criteria reference the latest analytics/logging artifacts.
-- Lock the 2025-10-16 operator dry run plan (attendees, agenda, success metrics) with enablement/support, and capture pre-read decisions in Memory (scope `ops`).
+## Current Sprint Focus — 2025-10-10
+- Record the security incident in Linear/Memory: note the git history scrub, pending Supabase credential rotation, and impact on DEPLOY-147 timelines.
+- Coordinate with deployment/reliability for refreshed secrets once rotation completes; keep backlog items blocked until QA confirms new evidence bundles.
+- Update stakeholder comms (marketing/support/enablement) to reflect today’s deploy freeze and capture acknowledgements in `feedback/product.md`.

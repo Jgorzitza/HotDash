@@ -23,8 +23,8 @@ expires: 2025-10-18
 - Coordinate with QA on mock fixtures; mock mode must stay green before switching to live data.
 - Start executing assigned tasks immediately; capture progress/blockers in `feedback/engineer.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-08
-- Triage and resolve the Supabase decision sync failure spike: pair with data/reliability to capture structured errors, add retry/backoff if needed, and ship tests/evidence detailing the fix.
-- Collaborate with deployment to bring up the Postgres-backed staging/test database configuration (env files, Prisma overrides, smoke script) so QA can run forward/back migration checks.
-- Polish CX Escalations and Sales Pulse modals for the operator dry run by adding final accessibility refinements (ARIA labels, focus-visible styles, status icons) and ensuring decision logs emit the expected audit payloads.
-- Wire dashboard refresh telemetry end-to-end (loader, action, analytics service) and document how operators can trigger/observe events for the dry run.
+## Current Sprint Focus — 2025-10-10
+- Pull the sanitized branch (`git fetch --all --prune` after the rewrite) and confirm no Supabase credentials remain (`git grep postgresql://`); log the clean check in `feedback/engineer.md`.
+- Freeze new Prisma/Postgres work until fresh credentials arrive; prep migration scripts and tests so they can run immediately after tomorrow’s rotation.
+- Audit application config (`shopify.app.toml`, env helpers) for hard-coded DSNs or tokens and replace with vault lookups as needed.
+- Support QA by outlining what needs revalidation (modals Playwright spec, Vitest coverage) once the new secrets land, keeping backlog tasks updated with dependencies.
