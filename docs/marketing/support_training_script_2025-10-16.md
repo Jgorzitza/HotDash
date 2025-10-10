@@ -12,8 +12,7 @@ expires: 2025-10-18
 - **Audience:** Support agents, enablement, marketing, product liaison
 - **Duration:** 90 minutes (aligns with primary slot in `docs/marketing/support_training_session_proposal_2025-10-07.md`)
 - **Objective:** Equip support to demo the Operator Control Center, answer top questions, and escalate blockers before GA.
-- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), Shopify rate-limit coaching snippet (`docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md`), staging credentials for `https://hotdash-staging.fly.dev/app` (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck), staging evidence table in `docs/enablement/dry_run_training_materials.md`
-- **Staging status note:** If `https://hotdash-staging.fly.dev/app?mock=0` continues returning HTTP 410, rehearse with mock mode (`?mock=1`) and reference the enablement facilitator script until reliability posts the green smoke.
+- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), staging credentials (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck)
 - **Recordings:** Save Zoom recording + chat log to Support KB per SOP
 
 ## 0:00-0:05 - Welcome & Objectives
@@ -26,8 +25,7 @@ expires: 2025-10-18
 4. Set parking lot expectations: capture unanswered questions in shared doc (`docs/runbooks/operator_training_qa_template.md`).
 
 ## 0:05-0:20 - Dashboard Orientation
-1. Share screen (staging dashboard at `https://hotdash-staging.fly.dev/app`) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
-   - If live smoke remains 410, load `?mock=1` for demo purposes and call out the pending QA checklist; cite the latest curl log (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T072315Z.log`) so attendees know rollout is queued.
+1. Share screen (staging dashboard) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
 2. Review global elements:
    - Mock/live indicator (top right)
    - Decision audit trail link (footer)
@@ -61,13 +59,12 @@ expires: 2025-10-18
 1. Open `docs/marketing/launch_faq.md`; highlight sections by priority (Access, Integrations, AI & Automation).
 2. Map each FAQ item to escalation owner (Marketing/Product/Reliability). Use table in Appendix B.
 3. Call out analytics opt-out process and data retention timeline (per `docs/compliance/data_inventory.md`).
-4. Practice the Shopify rate-limit coaching snippet (first-hit + escalation) using `docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md`; ensure agents capture evidence in `feedback/support.md` during role-play.
-5. Reiterate messaging guardrails from brand tone deck (human, confident, never minimize risk).
+4. Reiterate messaging guardrails from brand tone deck (human, confident, never minimize risk).
 
 ## 1:10-1:20 - Enablement Logistics & Follow-Ups
 1. Confirm dry run outputs: updated FAQ links, support macros, trimmed email templates.
 2. Assign owners for outstanding tasks:
-   - Product: Share final staging credentials for `https://hotdash-staging.fly.dev/app` + seeded conversations for CX tile.
+   - Product: Share final staging credentials + seeded conversations for CX tile.
    - Marketing: Update communications evidence once product signs off on English copy (`docs/marketing/product_approval_packet_2025-10-07.md`).
    - Localization: Provide verdict on "Centre OCC" abbreviation by 2025-10-09 @ 18:00 ET.
 3. Review launch-day comms timeline (teaser, banner go-live, FAQ publish) referencing `docs/marketing/campaign_calendar_2025-10.md`.
@@ -109,5 +106,4 @@ Each card references FAQ sections for quick answers; encourage agents to quote e
 - Designer to deliver tooltip placement annotations by 2025-10-08 @ 12:00 ET; integrate into walkthrough slides once received.
 - Product to confirm production launch window (blocks final comms timing) - track in `feedback/marketing.md`.
 - Localization follow-up paused per manager direction; resume only if product reopens multi-language scope.
-- Reliability provided latest staging smoke artifact (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`); highlight during session intro for telemetry credibility.
-- Capture enablement/support approvals once rate-limit snippet walkthrough completes and log in `feedback/marketing.md`.
+- Reliability to provide staging smoke test logs so support can reference uptime data during Q&A.

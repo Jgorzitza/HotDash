@@ -2,63 +2,54 @@
 epoch: 2025.10.E1
 doc: docs/enablement/job_aids/cx_escalations_modal.md
 owner: enablement
-last_reviewed: 2025-10-10
+last_reviewed: 2025-10-08
 doc_hash: TBD
-expires: 2025-10-16
+expires: 2025-10-15
 ---
 # CX Escalations Modal — Operator Job Aid
 
 ## Overview
-Resolve at-risk conversations directly from the dashboard. The CX Escalations modal surfaces SLA context, message history, AI-suggested replies, and audit-note capture so operators can respond, escalate, or close conversations without leaving HotDash.
+Resolve at-risk conversations directly from the dashboard. The CX Escalations modal surfaces SLA context, recent messages, and AI-suggested replies so operators can respond, escalate, or close conversations without leaving HotDash.
 
-> Annotated visual: `docs/design/assets/modal-cx-escalations-annotations.svg` (focus + tooltip overlays). Pair with `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` when building facilitator packets.
-
-### Modal Layout Quick Reference
-- **Header:** Customer name, Chatwoot conversation ID, and status badge (breach indicator shown when SLA breached).
-- **Conversation history:** Scrollable log (role="log") alternating Agent/Customer labels with timestamps.
-- **Suggested reply:** Editable textarea seeded with AI copy when `FEATURE_AI_ESCALATIONS=1`; empty when AI abstains.
-- **Internal note:** Required audit summary that syncs to Supabase decision logs.
-- **Actions:** `Approve & send`, `Escalate`, `Mark resolved`, plus secondary `Cancel`. Primary button disabled until reply textarea contains text.
+> Screenshot callouts pending designer assets. Coordinate with design (docs/directions/designer.md) before distributing outside the enablement team.
 
 ---
 
 ## Pre-Flight Checklist
-- Chatwoot integration connected and `FEATURE_MODAL_APPROVALS=1` in the target environment (staging or production).
+- Chatwoot integration connected and `FEATURE_MODAL_APPROVALS` enabled in staging/prod.
 - Operators authenticated in Chatwoot (single sign-on or API token) to avoid send failures.
-- Confirm SLA threshold in `CHATWOOT_SLA_MINUTES` matches the training scenario (default 60 minutes).
-- Verify reply templates (`app/services/chatwoot/templates.ts`) align with marketing-approved copy and latest guardrails.
-- Confirm Supabase decision log syncing (`scope="ops"`, `decision_type="cx.escalation"`) so modal actions surface in evidence bundles.
+- Confirm SLA threshold in `CHATWOOT_SLA_MINUTES` matches training scenario (default 60 minutes).
+- Verify reply templates (`app/services/chatwoot/templates.ts`) are up to date with marketing-approved copy.
 
 ---
 
 ## Workflow Steps
-1. **Open conversation** — From the CX Escalations tile, click a breached conversation to launch the modal. Review the header for customer name, conversation ID, and status.
-2. **Scan conversation history** — Use the scrollable log to confirm the customer's latest request, tone, and any prior commitments. Capture timestamps needed for the audit note.
-3. **Evaluate or draft reply** — If AI copy exists, edit it directly in the Suggested reply textarea. When AI abstains, draft a manual response or plan to escalate.
-4. **Capture audit note** — Populate the Internal note textarea with promise details, owner handoffs, or escalation context. Notes sync to the Supabase decision log payload.
-5. **Choose an action**:
-   - `Approve & send` when the reply is accurate, policy compliant, and resolves the request.
-   - `Escalate` for policy exceptions, high-dollar refunds (> $500), repeat breaches, or tone concerns.
-   - `Mark resolved` when the customer confirms closure or a follow-up plan is locked.
-   - `Cancel` to exit without logging a decision (no Supabase write).
-6. **Confirm decision logging** — After submit, the modal closes automatically. Validate the Supabase decision row (use sample IDs 101–104 during rehearsal) and capture the ID + summary in the Q&A template.
-7. **Document next steps** — Record follow-up owners in the run-of-show doc and add Memory entries (`scope="ops"`, `decision_type="cx.escalation"`) within 2h.
+1. **Open conversation** — From the CX Escalations tile, click an item to launch the modal. Review the header for customer name, status, and SLA breach timestamp.
+2. **Scan context** — Read the last 3–5 messages in the Conversation Preview. Confirm the customer's latest request and tone.
+3. **Evaluate the suggested reply** — Compare the AI suggestion with the scenario. Check for correct customer name, promise, and next steps. Edit inline if adjustments are needed.
+4. **Choose an action**:
+   - `Approve & Send Reply` when the suggestion is accurate and resolves the request.
+   - `Edit Reply` to tailor tone or content before sending.
+   - `Escalate to Manager` for policy exceptions, high-dollar refunds, or dissatisfied tone after breach.
+   - `Mark Resolved` only after the customer confirms resolution or a follow-up plan is in place.
+5. **Confirm decision logging** — Wait for the success toast (`Reply sent to {customer}` or `Decision logged to audit trail`). If an error toast appears, retry once and escalate to reliability if it persists.
+6. **Document next steps** — Capture any follow-up tasks in the operator Q&A template and log decisions in Memory (`scope: ops`, `decision_type: cx.escalation`).
 
 ---
 
 ## Decision Guardrails
-- **Breach age > 2 hours** — Prioritize immediate reply; escalate if cross-team support or refunds are required.
-- **Refund or adjustment > $500** — Choose `Escalate`; let the manager approve financial exceptions.
-- **AI suggestion missing or inaccurate** — Never approve without edits. Escalate when tone, policy, or facts are uncertain.
-- **No customer acknowledgement within 24 hours** — Follow up, capture a fresh internal note, and re-log the decision.
-- **Repeat breaches (same customer within 7 days)** — Escalate and tag the support lead; capture pattern details in Memory for postmortem.
+- **Breach age > 2 hours** — Prioritize immediate reply; escalate if promise requires cross-team support.
+- **Customer requests supervisor or refund > $500** — Use `Escalate to Manager`; include summary in Chatwoot internal note.
+- **AI suggestion missing or mismatched** — Do not approve; either edit manually or escalate to ensure accuracy.
+- **No customer acknowledgement within 24 hours after approval** — Re-open the modal, follow up, and update the audit trail note.
+- **Repeated breaches from same customer in 7 days** — Flag to support lead for root-cause review.
 
 ---
 
 ## Escalation Path
 - **CX Lead (Morgan Patel):** High-priority breaches, policy exceptions, or template gaps.
 - **Operations Manager (Riley Chen):** Issues crossing into fulfillment delays or cross-functional blockers.
-- **Reliability On-Call:** Modal errors, Chatwoot API failures, or Supabase decision log discrepancies (`#incidents`). Attach decision ID + error payload when paging.
+- **Reliability On-Call:** Modal errors, Chatwoot API failures, or audit log discrepancies (`#incidents` channel).
 
 Record escalations in `feedback/enablement.md` with context, owner, and follow-up deadline.
 
@@ -67,17 +58,8 @@ Record escalations in `feedback/enablement.md` with context, owner, and follow-u
 ## Training Tips
 - Role-play conversation types: shipping delay, refund request, and angry customer scenarios.
 - Emphasize tone review before approving AI suggestions; have operators explain why the response is appropriate.
-- Prompt operators to capture internal notes before any action—this powers compliance reviews and Supabase evidence.
-- Track common edit patterns to inform future prompt tuning (log insights in Memory and `feedback/enablement.md`).
-
----
-
-## Facilitator Talking Points (Pre-Distribution)
-- Open with the current staging status: job aid remains in mock-only circulation until the `?mock=0` smoke case returns 200; rehearse using sample IDs 101–104.
-- Narrate the modal workflow end-to-end (history → reply → note → action) and press operators to verbalise why they selected `Approve & send`, `Escalate`, or `Mark resolved`.
-- Reinforce internal note must capture promise + owner; have facilitators write the exact Supabase decision ID in the Q&A template while the modal closes.
-- Highlight guardrail thresholds (refunds > $500, repeat breaches, tone uncertainty) before the first scenario so participants know when escalation is mandatory.
-- Close each scenario by logging a Memory entry (`scope="ops"`, `decision_type="cx.escalation"`) within 2h and flagging any unclear copy for AI prompt tuning follow-up.
+- Encourage operators to use the internal note field to capture promises—reinforce compliance expectations.
+- Track common edit patterns to inform future template updates (log insights in Memory and `feedback/enablement.md`).
 
 ---
 
