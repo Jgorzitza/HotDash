@@ -33,3 +33,10 @@ ARTIFACT: docs/compliance/evidence/tabletop_supabase_2025-10-11.md
 [2025-10-11T03:41:11Z] CMD: AI logging retention audit completed and docs updated
 ARTIFACT: artifacts/compliance/ai_retention_audit_2025-10-11.md
 
+## QA Stack Compliance Audit Notes - 2025-10-11
+- Item: CI guards present/active — Owner: DevOps — Due: +3d — Status: See artifacts/compliance/stack_audit_2025-10-11.md
+- Item: Secret incidents evidence completeness — Owner: SecOps — Due: +5d — Status: See secret_incidents_2025-10-11.*
+- Item: Vendor agreements follow-ups — Owner: Legal — Due: +7d — Status: Followups drafted
+- Item: Supabase retention evidence — Owner: Data — Due: +4d — Status: Hash register updated/gap noted
+- Item: AI logging 30-day purge — Owner: AI Platform — Due: +5d — Status: Audit recorded
+
