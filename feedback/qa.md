@@ -2174,3 +2174,41 @@ Per docs/directions/qa.md (MASSIVE EXPANSION - updated 15:56): Execute 15 additi
 **Next**: Monitor Engineer's Task 3 (LlamaIndex MCP), test immediately when complete
 **Standing By**: Ready to test actual features as they're built
 
+
+
+## 2025-10-11T23:00:00Z — P0 LAUNCH TESTING: Chatwoot Webhook Endpoint
+
+**Task P0-3**: Test Webhook Endpoints (Engineer Task Complete)
+
+**Implementation Found**: `supabase/functions/chatwoot-webhook/index.ts` (267 lines)
+
+### What Engineer Built
+
+✅ **Webhook Receiver** (Lines 1-267):
+- Signature validation with HMAC SHA-256  
+- CORS handling
+- Payload parsing and validation
+- Logging/observability integration
+- Customer message filtering
+
+🚧 **TODOs Identified** (Lines 171-227):
+- LlamaIndex knowledge context query (lines 171-181)
+- Agent SDK draft response generation (lines 183-197)
+- Chatwoot private note creation (lines 199-216)
+- Approval queue database insert (lines 218-227)
+
+### Testing Now: Webhook Security & Core Functionality
+
+**Test 1: Webhook Signature Validation**
+Command: `npm run test:integration tests/integration/chatwoot-webhook.spec.ts`
+
+
+**Result**: ❌ BLOCKER FOUND
+
+**Error**: Worker failed to boot (edge runtime)
+```
+{"code":"BOOT_ERROR","message":"Worker failed to boot (please check logs)"}
+```
+
+**Investigation**: Checking edge runtime logs for root cause...
+

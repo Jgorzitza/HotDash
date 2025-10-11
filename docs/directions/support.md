@@ -38,6 +38,14 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 - Keep feedback/support.md updated with incidents, resolution time, and follow-up tasks.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/support.md` without waiting for additional manager approval.
 
+## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
+
+**CEO Decision**: Emergency refocus on launch gates
+
+**Your Mission**: Basic operator training for pilot launch
+
+---
+
 ## Current Sprint Focus — 2025-10-10
 Own each item to completion—do not wait for other teams to close loops. Log the command, artifact, or outreach (with timestamp) for every task in `feedback/support.md`, and follow up until blockers clear.
 
@@ -47,7 +55,31 @@ Own each item to completion—do not wait for other teams to close loops. Log th
 - docs/AgentSDKopenAI.md - Section 13 for training loop and feedback collection
 - docs/runbooks/operator_training_qa_template.md
 
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/support.md and continue):
+**LAUNCH CRITICAL TASKS** (Do These FIRST):
+
+## 🚨 P0 OPERATOR TRAINING (Basics Only for Pilot)
+
+1. **Quick Start Guide for Approval Queue** (Launch Gate #6)
+   - Create 1-page guide: How to approve/reject agent actions
+   - Document decision criteria (when to approve vs reject)
+   - Basic escalation path
+   - Evidence: Quick start guide PDF
+   - Timeline: 2-4 hours
+
+2. **Pilot Operator Briefing** (For first customer)
+   - 30-minute training session outline
+   - Demo script for approval queue
+   - FAQ (top 5 questions)
+   - Evidence: Briefing materials ready
+   - Timeline: 2-3 hours
+
+**DO FIRST**: Tasks 1-2 above (basic training for launch)
+
+**PAUSE UNTIL AFTER LAUNCH**: Tasks 3-65 (all expanded support work)
+
+---
+
+**Tasks in Priority Order** (PAUSED - execute after launch):
 
 1. ✅ **Support Inbox Audit** - COMPLETE (2025-10-11)
    - Verified 112 references to customer.support@hotrodan.com

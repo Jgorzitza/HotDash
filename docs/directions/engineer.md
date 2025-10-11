@@ -84,73 +84,63 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 
 **Tasks in Priority Order** (execute sequentially, log blockers in feedback/engineer.md and continue):
 
-🚨 **URGENT P0 DEPLOY BLOCKER** - Added 2025-10-11T21:10Z - Fix BEFORE continuing other tasks
+## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
 
-**FIX SHOPIFY GRAPHQL QUERIES** - All 4 queries invalid, using deprecated 2023 API patterns
-- Evidence: artifacts/integrations/audit-2025-10-11/shopify_graphql_validation_failures.md
-- Impact: Sales Pulse, Fulfillment, Inventory tiles completely broken
-- Priority: Fix BEFORE resuming LlamaIndex MCP work
-- Fixes (in order):
-  1. app/services/shopify/orders.ts line 28: financialStatus → displayFinancialStatus (15 min)
-  2. app/services/shopify/inventory.ts lines 14-48: Add quantities(names:["available"]), fix field + function (30 min)
-  3. packages/integrations/shopify.ts lines 3-12: Remove edges/node from Fulfillment (30 min)
-  4. packages/integrations/shopify.ts lines 14-20: Migrate to productSet mutation (60 min)
-- Validation: Use Shopify Dev MCP to validate EACH fix before moving to next
-- Evidence: MCP validation confirmations, test results in feedback/engineer.md
-- Timeline: Complete all 4 within 3 hours, THEN resume LlamaIndex MCP
+**CEO Decision**: Emergency refocus on launch gates. Long task lists OK but ALIGNED to shipping.
 
-1. ✅ **GA Direct API Integration** - COMPLETE (2025-10-11, 2h)
+**Your Mission**: Complete 3 P0 tasks to enable launch. Nothing else until these ship.
+
+---
+
+1. ✅ **Shopify GraphQL Queries Fixed** - COMPLETE
+   - All 4 deprecated queries corrected and validated
+
+2. ✅ **GA Direct API Integration** - COMPLETE  
    - Evidence: artifacts/engineer/20251011T142951Z/ga-tests.log
-   - Files: app/services/ga/directClient.ts, mockClient.ts, client.ts
-   - Tests: 21 tests passing, 100% coverage
+   - 21 tests passing, 100% coverage
 
-2. **LlamaIndex RAG MCP Server** - Create HTTP MCP wrapper around existing llama-workflow CLI
-   - Scaffold apps/llamaindex-mcp-server/ with @modelcontextprotocol/sdk, express, zod
-   - Implement src/server.ts with MCP protocol handler for 3 tools (query_support, refresh_index, insight_report)
-   - Create thin wrappers in src/handlers/*.ts using execSync to call scripts/ai/llama-workflow/dist/cli.js
+3. **LlamaIndex RAG MCP Server** (P0 - LAUNCH GATE #3)
+   - Fix TypeScript compilation in scripts/ai/llama-workflow
+   - Scaffold apps/llamaindex-mcp-server/ with @modelcontextprotocol/sdk
+   - Implement MCP protocol handler for 3 tools (query_support, refresh_index, insight_report)
    - Create Dockerfile and fly.toml (512MB, auto-stop enabled)
-   - Deploy to Fly.io: `fly launch --no-deploy && fly secrets set OPENAI_API_KEY=... && fly deploy`
-   - Update .mcp.json with HTTP endpoint: "llamaindex-rag": {"type": "http", "url": "https://hotdash-llamaindex-mcp.fly.dev/mcp"}
-   - Test from Cursor: "Using llamaindex-rag MCP, query: test"
-   - Target: <500ms P95 response time
-   - Coordinate: Tag @ai in feedback/engineer.md for code review and optimization
-   - Evidence: MCP server responding, health checks passing, documented in feedback/engineer.md
+   - Deploy to Fly.io and verify queries work
+   - Test with Cursor MCP client
+   - **Evidence**: MCP server URL, test query result, deployment logs
+   - **Blocks**: AI agent (2 tasks), Integrations (1 task)
+   - **Timeline**: 8-12 hours
 
-3. **Agent SDK Service** - Build OpenAI Agent SDK customer support automation
-   - Scaffold apps/agent-service/src/{agents,tools,feedback} with @openai/agents, express, zod
-   - Implement tools/rag.ts (MCP wrapper pointing to llamaindex-rag server)
-   - Implement tools/shopify.ts (direct GraphQL from docs/AgentSDKopenAI.md section 5)
-   - Implement tools/chatwoot.ts (direct API from docs/AgentSDKopenAI.md section 4)
-   - Define agents in agents/index.ts: triageAgent, orderSupportAgent, productQAAgent with handoffs
-   - Implement server.ts with webhook endpoint (POST /webhooks/chatwoot) and approval endpoints (GET /approvals, POST /approvals/:id/:idx/:action)
-   - Implement feedback/store.ts for training data collection (Supabase tables from @data)
-   - Deploy to Fly.io with secrets: OPENAI_API_KEY, CHATWOOT_API_TOKEN, SHOPIFY_ADMIN_TOKEN
-   - Coordinate: Tag @chatwoot for webhook config, @data for schemas, @ai for RAG integration
-   - Evidence: Agent service responding to test webhooks, documented in feedback/engineer.md
+4. **Agent SDK Service** (P0 - LAUNCH GATE #2)
+   - Scaffold apps/agent-sdk/ per docs/AgentSDKopenAI.md
+   - Implement ONE basic customer support agent
+   - Create approval queue (pending_approvals table)
+   - Implement approval API endpoints
+   - Wire to Chatwoot webhooks (from Task 5)
+   - Deploy to Fly.io
+   - **Evidence**: Service running, one approval flow working
+   - **Timeline**: 12-16 hours
 
-4. **Approval Queue UI** - Build operator approval interface in dashboard
-   - Create app/routes/approvals.tsx with loader fetching from Agent SDK /approvals endpoint
-   - Implement app/components/ApprovalCard.tsx using Designer specs from feedback/designer.md
-   - Wire approve/reject actions to POST /approvals/:id/:idx/approve|reject
-   - Add real-time updates (polling every 5s or websockets)
-   - Implement loading, error, and empty states per Designer specs
-   - Test keyboard navigation and accessibility
-   - Coordinate: Tag @designer for component review, @qa for test scenarios
-   - Evidence: Working approval queue with screenshot, documented in feedback/engineer.md
+5. **Webhook Endpoints** (P0 - LAUNCH GATE #5)
+   - Create POST /api/webhooks/chatwoot
+   - Implement signature verification
+   - Route events to Agent SDK
+   - **Evidence**: Endpoint live, test webhook processed
+   - **Blocks**: Chatwoot agent
+   - **Timeline**: 4-6 hours
 
-5. **Fix Test Blockers** - Resolve QA-identified P0 issues
-   - Fix logger.server.spec.ts (mock fetch or configure Supabase test instance)
-   - Install @vitest/coverage-v8 dependency
-   - Add SCOPES to .env.example with documentation
-   - Re-run test suite and verify 100% pass rate
-   - Evidence: Clean test run logs
+6. **Approval Queue UI** (P0 - LAUNCH GATE #4)
+   - Build app/routes/approvals._index.tsx
+   - Create ApprovalCard component (basic version)
+   - Wire approve/reject to Task 4 APIs
+   - **Evidence**: UI working, one approval complete
+   - **Coordinate**: With Designer
+   - **Timeline**: 6-8 hours
 
-6. **End-to-End Testing** - Full system integration verification
-   - Test: Chatwoot webhook → Agent SDK → LlamaIndex MCP → Approval queue
-   - Test: Operator approves action → Agent executes → Chatwoot reply sent
-   - Test: Operator rejects action → Agent stops → Private note created
-   - Document test results and performance metrics
-   - Evidence: E2E test passing, performance within targets
+7. **Integration Testing** (P0 - LAUNCH GATE #7)
+   - E2E test: Webhook → Agent → Approval → Action
+   - Verify one complete customer support scenario works
+   - **Evidence**: E2E test passing
+   - **Timeline**: 4-6 hours
 
 **Ongoing Requirements**:
 - Use Context7 MCP to find existing patterns before implementing

@@ -44,6 +44,46 @@ QA operates as the audit arm of the team. Validate the health of the environment
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
+**LAUNCH CRITICAL TASKS** (Priority Order - Do These FIRST):
+
+## 🚨 P0 LAUNCH TESTING (Do Immediately as Engineer Completes)
+
+1. **Test LlamaIndex MCP Server** (when Engineer completes Task 3)
+   - Verify MCP server responds to queries
+   - Test all 3 tools (query_support, refresh_index, insight_report)
+   - Performance test (<500ms response)
+   - Evidence: Test results, response times logged
+
+2. **Test Agent SDK Service** (when Engineer completes Task 4)
+   - Test agent receives webhook, processes request
+   - Verify approval queue populates
+   - Test approval/reject endpoints work
+   - Evidence: E2E test passing
+
+3. **Test Webhook Endpoints** (when Engineer completes Task 5)
+   - Send test webhook to /api/webhooks/chatwoot
+   - Verify signature validation works
+   - Confirm event routing
+   - Evidence: Webhook processed successfully
+
+4. **Test Approval Queue UI** (when Engineer completes Task 6)
+   - Test operator can view pending approvals
+   - Test approve/reject buttons work
+   - Verify decision logs to Supabase
+   - Evidence: UI test passing, screenshots
+
+5. **Integration E2E Test** (when Engineer completes Task 7)
+   - Full workflow: Chatwoot → Agent → Approval → Response
+   - Verify all pieces work together
+   - Document any issues
+   - Evidence: Complete E2E passing
+
+**Timeline**: Shadow Engineer's work, test immediately as each completes
+
+---
+
+## 📋 QUALITY VALIDATION (Every 4 Hours - Ongoing)
+
 **Tasks in Priority Order** (execute sequentially, log blockers in feedback/qa.md and continue):
 
 1. ✅ **Test Suite Audit** - COMPLETE (2025-10-11, 45 min)
@@ -232,7 +272,11 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 - AT: Implement localization testing
 - AU: Design performance testing framework
 
-Execute R-AU + 4-hour validation cycles. Total: 54 tasks + validation, ~40 hours work.
+**DO FIRST**: P0 Launch Testing (Tasks 1-5 above) + 4-hour validation cycles
+
+**PAUSE UNTIL AFTER LAUNCH**: Tasks R-AU (advanced testing infrastructure)
+
+Total: 5 P0 tasks + validation duty + 30 post-launch tasks
 
 ## Previous Task List — 2025-10-11
 - Canonical toolkit checks

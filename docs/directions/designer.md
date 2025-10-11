@@ -45,7 +45,32 @@ Own each deliverable through sign-off; post the artifacts (Figma links, screensh
 - docs/AgentSDKopenAI.md - Section 12 for approval queue UI patterns
 - feedback/designer.md - Your completed approval queue designs
 
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/designer.md and continue):
+**LAUNCH CRITICAL TASKS** (Do These FIRST):
+
+## 🚨 P0 UI IMPLEMENTATION
+
+1. **Approval Queue UI Collaboration** (Work with Engineer Task 6)
+   - Provide ApprovalCard component specs to Engineer
+   - Review Engineer's implementation
+   - Provide styling guidance and assets
+   - Iterate on UI until launch-ready
+   - Evidence: Approval UI working, screenshots
+   - Timeline: Coordinate daily with Engineer
+
+2. **Agent SDK UI Polish** (After basic approval queue works)
+   - Refine approval card styling
+   - Add loading/error states
+   - Ensure accessibility (keyboard nav, screen readers)
+   - Mobile responsive check
+   - Evidence: Polished UI, accessibility audit
+
+**DO FIRST**: Tasks 1-2 above (approval queue)
+
+**PAUSE UNTIL AFTER LAUNCH**: Tasks 3-87 (all expanded design work)
+
+---
+
+**Tasks in Priority Order** (PAUSED - execute after launch gates):
 
 1. ✅ **UI Consistency Audit** - COMPLETE (2025-10-11)
    - Polaris alignment verified
