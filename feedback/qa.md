@@ -1950,3 +1950,27 @@ Per docs/directions/qa.md (MASSIVE EXPANSION - updated 15:56): Execute 15 additi
 **Evidence**: 12 comprehensive documents + 4 CI workflows + 5 test files
 **Ready**: Standing by for next manager direction
 
+
+## 2025-10-11T22:30:00Z — NEW CRITICAL RESPONSIBILITY: Quality Validation
+
+**Manager Assignment**: Validate all agent task completions for quality
+
+**New Duties**:
+- Every 4 hours: Review all agent feedback for completed tasks
+- Check evidence provided (file paths, test results, artifacts)
+- Random sample 3-5 tasks per agent, verify quality
+- Rate agents: 🟢 High quality, 🟡 Needs work, 🔴 Rework
+- Escalate issues immediately to Manager
+
+**Evidence Standards Enforced**:
+✅ Code: File paths + line numbers + description
+✅ Tests: Test file + passing status  
+✅ Docs: Document path + sections
+✅ Design: Asset paths + screenshots
+❌ NOT acceptable: "Done", "Complete", "Finished" without proof
+
+**First Validation Cycle**: Starting immediately (next 4 hours)
+
+**Process Document**: docs/runbooks/qa_validation_process.md
+
+**Status**: Validation system active, will report first findings in 4 hours

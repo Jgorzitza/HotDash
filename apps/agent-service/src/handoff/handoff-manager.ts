@@ -95,7 +95,10 @@ export class HandoffManager {
       'Triage': ['intent_classification', 'routing'],
     };
 
-    const capabilities = agentCapabilities[agentName] || [];
+    const capabilities = agentCapabilities[agentName];
+    if (!capabilities) {
+      return false;
+    }
     return capabilities.includes(capability);
   }
 }
@@ -107,7 +110,7 @@ export function createDefaultHandoffRules(handoffManager: HandoffManager): void 
   // High urgency orders -> Order Support
   handoffManager.addRule({
     priority: 100,
-    condition: (ctx) => ctx.urgency === 'high' && ctx.intent?.includes('order'),
+    condition: (ctx) => ctx.urgency === 'high' && (ctx.intent?.includes('order') || false),
     targetAgent: 'Order Support',
     reason: 'High urgency order issue',
   });
@@ -145,7 +148,7 @@ export function createDefaultHandoffRules(handoffManager: HandoffManager): void 
   // Negative sentiment + order context -> Order Support (priority)
   handoffManager.addRule({
     priority: 95,
-    condition: (ctx) => ctx.sentiment === 'negative' && ctx.intent?.includes('order'),
+    condition: (ctx) => ctx.sentiment === 'negative' && (ctx.intent?.includes('order') || false),
     targetAgent: 'Order Support',
     reason: 'Negative sentiment with order issue',
   });

@@ -6,7 +6,7 @@
  * with structured metadata for better observability.
  */
 
-import { ServiceError } from "~/services/types";
+import { ServiceError } from "../services/types";
 
 export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
 
