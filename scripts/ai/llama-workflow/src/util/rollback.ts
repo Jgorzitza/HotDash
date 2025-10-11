@@ -5,7 +5,7 @@
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { loadConfig } from '../config.js';
+import { getConfig } from '../config.js';
 
 async function symlinkExists(symlinkPath: string): Promise<boolean> {
   try {
@@ -25,7 +25,7 @@ async function symlinkTarget(symlinkPath: string): Promise<string | null> {
 }
 
 export async function rollbackIndex(): Promise<{ success: boolean; message: string; prevIndex?: string }> {
-  const config = loadConfig();
+  const config = getConfig();
   const indexesDir = path.join(config.LOG_DIR, 'indexes');
   
   const latestPath = path.join(indexesDir, 'latest');

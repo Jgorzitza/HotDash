@@ -1,21 +1,15 @@
-import { VectorStoreIndex, Settings, BaseQueryEngine } from 'llamaindex';
-import { OpenAI } from 'llamaindex';
-import { OpenAIEmbedding } from 'llamaindex';
+// Simplified imports to avoid version-specific issues
+export interface QueryResult {
+  query: string;
+  answer: string;  // Changed from response to answer for consistency
+  citations: QuerySource[];
+  confidence: number;
+}
 import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-export interface QueryResult {
-  query: string;
-  response: string;
-  sources: QuerySource[];
-  metadata: {
-    topK: number;
-    timestamp: string;
-    processingTime: number;
-  };
-}
 
 export interface QuerySource {
   id: string;

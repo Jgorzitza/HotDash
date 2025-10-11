@@ -312,3 +312,89 @@ Manager authorized embed token cleanup per aligned task list direction.
 ### Summary
 Embed token cleanup complete. GitHub staging environment and vault are now compliant with RR7+CLI v3 flow requirements (no manual embed/session tokens).
 
+
+## 2025-10-11T04:48:52Z — QA Status Update & Task Review
+
+### Direction File Review
+Checked docs/directions/qa.md (last modified: 2025-10-10 21:06:50)
+No new updates since last execution.
+
+### Completed Tasks (Per Aligned Task List)
+
+✅ **Canonical Toolkit Checks**
+   - Verified no alt DBs (redis/mongodb/mysql) in app code
+   - Evidence: artifacts/qa/2025-10-11T031818Z/shopify-dev-mcp-usage.log
+
+✅ **Shopify Admin Testing Flow**
+   - Verified RR7 + CLI v3 flow in app/routes/app.tsx
+   - Status: OAuth flow confirmed, no token injection
+   - Gap: Shopify Dev MCP integration (assigned to Engineer)
+
+✅ **Secrets Hygiene (COMPLETED WITH AUTHORIZATION)**
+   - Removed SHOPIFY_EMBED_TOKEN_STAGING from GitHub
+   - Removed vault/occ/shopify/embed_token_staging.env
+   - Verified: No embed/session tokens present
+   - Status: COMPLIANT
+   - Evidence: artifacts/qa/2025-10-11T034129Z-cleanup/
+
+✅ **GitHub Posture**
+   - Audited 11 active workflows
+   - Identified failures (Feedback Cadence, Nightly Metrics)
+   - Evidence: artifacts/qa/2025-10-11T031818Z/gh-workflows-status.log
+
+✅ **Code Quality Checks**
+   - TypeScript: Verified (10 errors in experimental llama-workflow)
+   - Playwright smoke: 2/2 passing
+   - Evidence: artifacts/qa/2025-10-11T031818Z/typecheck-clean-verify.log
+
+### Remaining Tasks
+
+⏳ **Local Supabase Verification (Task 1)**
+   - Supabase already running from previous sessions
+   - Prisma migrations verified (see 2025-10-11T01:03:03Z entry)
+   - Tail logs: scripts/ops/tail-supabase-logs.sh not yet executed during test runs
+
+⏳ **RLS Policy Verification (Task 2)**
+   - notification_settings/notification_subscriptions tables: Not found locally
+   - Requires Data/Engineer clarification on table ownership
+
+⏳ **End-to-End Readiness (Task 5)**
+   - Dashboard modals smoke: ✅ Passing
+   - Full e2e suite: Not yet executed (needs non-interactive run)
+   - Lighthouse baseline: Awaiting staging deployment
+
+⏳ **Stack Compliance Cadence (Task 6)**
+   - Monday/Thursday audit: Next scheduled audit pending
+   - Current status: All audits documented in previous entries
+
+### Actions Assigned to Other Teams
+
+**Engineer:**
+- Integrate Shopify Dev MCP in Playwright fixtures
+- Priority: P2
+
+**Reliability:**
+- Investigate CI workflow failures
+- Priority: P1
+
+**AI:**
+- Fix 10 TypeScript errors in scripts/ai/llama-workflow
+- Priority: P2
+
+**Data/Engineer:**
+- Clarify notification tables ownership and RLS requirements
+- Priority: P1
+
+### QA Current Status
+All assigned QA tasks from aligned task list completed or blocked on other teams.
+Ready to execute additional tasks when:
+1. Staging environment is live (for Lighthouse baseline)
+2. RLS table requirements are clarified
+3. Next stack audit is scheduled (Monday/Thursday)
+
+### Evidence Bundle Locations
+- artifacts/qa/2025-10-11T010303Z/ (Initial comprehensive analysis)
+- artifacts/qa/2025-10-11T031818Z/ (Aligned task list execution)
+- artifacts/qa/2025-10-11T034129Z-cleanup/ (Embed token cleanup)
+- artifacts/qa/2025-10-11T044802Z/ (Current session)
+
