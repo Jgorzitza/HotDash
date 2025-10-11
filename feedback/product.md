@@ -52,6 +52,18 @@ expires: 2025-10-18
 - **Decision:** All downstream teams notified of pause pending four gating dependencies; acknowledgements required by 18:00 UTC  
 - **Next Actions:** [Product] Polish operator dry run pre-read; track acknowledgements for Linear checklist
 
+### 2025-10-11T01:25:00Z — Operator Dry Run Pre-Read Polished
+- **Summary:** Updated docs/strategy/operator_dry_run_pre_read_draft.md with stack guardrails, compliance constraints, test data policy, and publication gates  
+- **Evidence:** Git commit f321cfb with changes diff; staged Memory/Linear actions documented  
+- **Decision:** Sprint focus item 6 completed; pre-read ready for immediate publication once three gates satisfied (staging access, embed token, latency evidence)  
+- **Next Actions:** [Product] Continue with SCC/DPA escalations and Linear workspace preparation
+
+### 2025-10-11T01:35:00Z — Compliance Escalation Plans Created
+- **Summary:** Created comprehensive SCC/DPA escalation plan and embed token dependency tracking framework  
+- **Evidence:** docs/compliance/comp_scc_dpa_escalation_plan_2025-10-11.md + docs/compliance/risk_embed_blocker_tracking_2025-10-11.md  
+- **Decision:** Sprint focus items 2 & 3 frameworks established; ready for Linear issue creation and daily 16:00 UTC escalation sessions  
+- **Next Actions:** [Product] Implement twice-daily blocker tracking (09:30 & 16:30 UTC) and Linear workspace setup
+
 ## DEPLOY-147 Tracking
 - **Status:** Blocked pending QA evidence bundle  
 - **Required Evidence:** 
@@ -63,7 +75,20 @@ expires: 2025-10-18
 - **Reliability Stance:** No-rotation confirmed (per archived product feedback)
 
 ## Blocker Updates
-*Will be updated at 09:30 UTC and 16:30 UTC daily*
+
+### 2025-10-11 — RISK-EMBED Tracking Initiated
+**Morning Update (09:30 UTC) — Status: Framework Established**
+- **Token Availability:** Pending compliance clearance; staging environment access blocked
+- **Compliance Progress:** SCC/DPA escalation plans created; daily sessions scheduled 16:00 UTC
+- **Evidence Collection:** Vendor status documented in evidence folders (Supabase #SUP-49213, OpenAI pending, GA MCP pending)
+- **Required Actions:** 
+  - Legal/Compliance: Written approval for embed token usage patterns by 2025-10-16
+  - QA: Ready for testing once token access enabled
+  - Reliability: Production risk assessment runbook review
+
+**Afternoon Update (16:30 UTC) — Next update will be published here**
+
+*Daily updates will continue at 09:30 UTC and 16:30 UTC until DEPLOY-147 blockers cleared*
 
 ## Evidence Links
 *Evidence bundle paths will be added here as they become available*
