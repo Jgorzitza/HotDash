@@ -24,3 +24,6 @@ ARTIFACT: docs/compliance/evidence/secret_incidents_2025-10-11.md
 [2025-10-11T03:41:11Z] CMD: Vendor follow-ups drafted and status updated
 ARTIFACT: docs/compliance/evidence/vendor_dpa_status.md
 
+[2025-10-11T03:41:11Z] CMD: Registered pg_cron hashes
+ARTIFACT: docs/compliance/evidence/pg_cron_hash_register_2025-10-11.md
+
