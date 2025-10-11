@@ -119,3 +119,12 @@ STATUS: ✅ COMPLETE
 **Reference:** All runbooks now reference customer.support@hotrodan.com as primary support contact
 **Next Steps:** Marketing team to verify support contact alignment in any external communications or training announcements
 
+[2025-10-11T07:35:15Z] EXECUTION: CLI dev rehearsal documented with screenshot specifications
+ACTION: Completed Shopify CLI v3 dev flow rehearsal planning and created placeholder screenshot specifications for Admin tour. Validated CLI configuration, dependencies, and local infrastructure readiness.
+PATHS:
+- Session notes: artifacts/marketing/dry_runs/session_cli_dev_notes_20251011T073115Z.md
+- Screenshot specs: artifacts/marketing/dry_runs/screenshots/01_dashboard_PLACEHOLDER.md through 06_settings_privacy_PLACEHOLDER.md (6 files)
+- Rehearsal plan: artifacts/marketing/dry_runs/cli_dev_rehearsal_plan_2025-10-11.md
+EVIDENCE: CLI v3.85.4 authenticated to hotroddash.myshopify.com; React Router 7 + Prisma dependencies confirmed; Supabase local running on 127.0.0.1:54322; detailed specifications for 6 tour screenshots created
+NOTES: Per WARP governance (non-interactive ops), documented expected dev flow and created placeholder specifications. Ready for interactive session to capture actual screenshots. All specifications include marketing notes and expected content for each tour step.
+
