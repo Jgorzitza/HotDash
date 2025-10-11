@@ -306,3 +306,67 @@ Content-Length: 42
 Server: kong/2.8.1
 
 {"message":"An unexpected error occurred"}[2025-10-11T02:04:31Z] Checking if occ-log function needs to be served locally
+[2025-10-11T02:08:37Z] $ node scripts/ci/synthetic-check.mjs
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=0 status=200 duration=545.2ms budget=800ms artifact=artifacts/monitoring/[REDACTED].580Z.json
+[2025-10-11T02:10:31Z] Checking current fly.toml configuration
+[2025-10-11T02:11:20Z] $ fly version
+flyctl v0.3.194 linux/amd64 Commit: [REDACTED] BuildDate: 2025-10-10T17:14:56Z
+[2025-10-11T02:11:39Z] $ fly auth whoami
+jgorzitza@outlook.com
+[2025-10-11T02:11:48Z] $ fly status -a hotdash-staging
+[1mApp[0m
+  Name     = hotdash-staging                                        
+  Owner    = personal                                               
+  Hostname = hotdash-staging.fly.dev                                
+  Image    = hotdash-staging:[REDACTED]  
+
+[1mMachines[0m
+PROCESS	ID            	VERSION	REGION	STATE  	ROLE	CHECKS	LAST UPDATED         
+app    	56837ddda06568	17     	ord   	stopped	    	      	2025-10-10T18:49:08Z	
+app    	d8dd9eea046d08	17     	ord   	started	    	      	2025-10-10T18:42:14Z	
+
+[2025-10-11T02:11:57Z] $ fly machine list -a hotdash-staging
+2 machines have been retrieved from app hotdash-staging.
+View them in the UI here (​https://fly.io/apps/hotdash-staging/machines/)
+
+[[REDACTED][0m
+ID            	NAME             	STATE  	CHECKS	REGION	ROLE	IMAGE                                                	IP ADDRESS                      	VOLUME	CREATED             	LAST UPDATED        	PROCESS GROUP	SIZE                 
+d8dd9eea046d08	[REDACTED]	started	      	ord   	    	hotdash-staging:[REDACTED]	fdaa:2f:2a68:a7b:2a9:4260:f5fe:2	      	2025-10-10T02:12:24Z	2025-10-10T18:42:14Z	app          	shared-cpu-2x:1024MB	
+56837ddda06568	[REDACTED] 	stopped	      	ord   	    	hotdash-staging:[REDACTED]	fdaa:2f:2a68:a7b:569:f813:a451:2	      	2025-10-10T02:12:13Z	2025-10-10T18:49:08Z	app          	shared-cpu-2x:1024MB	
+
+[2025-10-11T02:12:10Z] $ fly scale memory 2048 -a hotdash-staging
+Updating machine d8dd9eea046d08
+No health checks found
+Machine d8dd9eea046d08 updated successfully!
+Updating machine 56837ddda06568
+No health checks found
+Machine 56837ddda06568 updated successfully!
+Scaled VM Type to 'shared-cpu-2x'
+      CPU Cores: 2
+         Memory: 2048 MB
+[2025-10-11T02:12:26Z] Waiting for machine scaling to take effect...
+[2025-10-11T02:14:38Z] $ fly status -a hotdash-staging
+[1mApp[0m
+  Name     = hotdash-staging                                        
+  Owner    = personal                                               
+  Hostname = hotdash-staging.fly.dev                                
+  Image    = hotdash-staging:[REDACTED]  
+
+[1mMachines[0m
+PROCESS	ID            	VERSION	REGION	STATE  	ROLE	CHECKS	LAST UPDATED         
+app    	56837ddda06568	17     	ord   	started	    	      	2025-10-11T02:12:17Z	
+app    	d8dd9eea046d08	17     	ord   	started	    	      	2025-10-11T02:12:14Z	
+
+[2025-10-11T02:15:33Z] Running post-scaling synthetic check...
+[2025-10-11T02:15:33Z] $ node scripts/ci/synthetic-check.mjs
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=0 status=200 duration=521.85ms budget=800ms artifact=artifacts/monitoring/[REDACTED].383Z.json
+[2025-10-11T02:15:45Z] Check 1:
+[2025-10-11T02:15:45Z] $ node scripts/ci/synthetic-check.mjs
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=0 status=200 duration=468.48ms budget=800ms artifact=artifacts/monitoring/[REDACTED].985Z.json
+[2025-10-11T02:15:49Z] Check 2:
+[2025-10-11T02:15:49Z] $ node scripts/ci/synthetic-check.mjs
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=0 status=200 duration=400.32ms budget=800ms artifact=artifacts/monitoring/[REDACTED].491Z.json
+[2025-10-11T02:15:52Z] Check 3:
+[2025-10-11T02:15:52Z] $ node scripts/ci/synthetic-check.mjs
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=0 status=200 duration=370.81ms budget=800ms artifact=artifacts/monitoring/[REDACTED].120Z.json
+[2025-10-11T02:29:11Z] Task 3 Results: Latency improving but still above 300ms target. Post-scaling: 468ms→400ms→370ms. Need further optimization (DB queries, caching, etc.)
