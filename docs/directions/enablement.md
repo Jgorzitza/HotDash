@@ -31,7 +31,7 @@ expires: 2025-10-19
 Drive each deliverable to closure yourself; document artefacts, timestamps, and remaining follow-ups in `feedback/enablement.md`. If another team is required, open the loop and stay on it until the dependency is resolved.
 
 - Refresh the dry-run packet and job aids with the new support inbox (`customer.support@hotrodan.com`) and detail the Chatwoot-on-Supabase architecture; attach the updated files when you post the status.
-- Stage distribution drafts so the moment QA evidence + embed token land we can ship updated packets; include checklist links and ensure they reference the Session token workflow.
-- Coordinate with support/product on the 2025-10-16 rehearsal agenda, capture dependencies tied to Shopify embed token + Chatwoot smoke results, and log who owns each follow-up plus due dates.
+- Stage distribution drafts so the moment QA evidence lands we can ship updated packets; include checklist links and ensure they reference the current RR7 + Shopify CLI v3 dev flow (no session token workflow).
+- Coordinate with support/product on the 2025-10-16 rehearsal agenda, capture dependencies tied to Chatwoot smoke results, and log who owns each follow-up plus due dates (no embed/session token dependency).
 - Draft asynchronous training snippets (Loom/script outlines) while staging is blocked; store links in `feedback/enablement.md` and note the publish-ready status.
 - Join the stack compliance audit (Monday/Thursday) to ensure enablement collateral reflects the canonical toolkit; log discrepancies and track fixes until merged.

@@ -31,11 +31,11 @@ expires: 2025-10-19
 Work each item to completion and log progress in `feedback/product.md`, including timestamps, evidence links, and next actions. If a dependency blocks you, schedule the follow-up and chase it until resolved instead of reassigning it.
 
 1. Log the sanitized history push and reliability’s no-rotation stance in Linear/Memory so DEPLOY-147 remains anchored on QA evidence.
-2. Drive SCC/DPA escalations with compliance/legal, tracking embed-token risks and nightly AI logging/index cadence in the evidence plan.
-3. Keep the Shopify Admin embed-token dependency visible to deployment/integrations/QA until evidence clears, updating the blocker log at least twice daily with timestamps and the latest follow-up outcome.
+2. Drive SCC/DPA escalations with compliance/legal; track nightly AI logging/index cadence in the evidence plan (embed/session tokens are not required under the current dev flow).
+3. Remove any remaining references to Shopify Admin embed/session token dependency from dashboards and blockers; ensure teams align to the RR7 + Shopify CLI v3 dev flow.
 4. Sync nightly AI logging + index cadence with QA/data so evidence bundles include the latest artifacts.
 5. Keep marketing/support/enablement aligned on the paused schedule and record acknowledgements.
-6. While blockers persist, polish `docs/strategy/operator_dry_run_pre_read_draft.md`, align release timing, and stage Memory/Linear updates for immediate publication once staging access, embed token, and latency evidence arrive—include a pre-filled status section that you update the moment reliability posts proof (run `/app/tools/session-token` yourself to confirm once they announce completion).
+6. While blockers persist, polish `docs/strategy/operator_dry_run_pre_read_draft.md`, align release timing, and stage Memory/Linear updates for immediate publication once staging access and latency evidence arrive—include a pre-filled status section updated the moment reliability posts proof (no token validation required under the current dev flow).
 7. Participate in the Monday/Thursday stack compliance audit to ensure roadmap assumptions match the canonical toolkit and credential posture.
 
 ### 2025-10-11 Execution Snapshot

@@ -22,7 +22,7 @@ expires: 2025-10-17
 - Coordinate credential requests, sandbox validation, and rate-limit testing with engineering, data, and reliability before production handoff.
 - Maintain typed client contract summaries and ensure they stay in sync with upstream changes.
 - Provide go-live checklists and contact logs for each integration so deployment can execute quickly when windows open.
-- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Reference Shopify docs: docs/dev/appreact.md, docs/dev/authshop.md, docs/dev/session-storage.md for current guidance.
+- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Reference Shopify docs: docs/dev/appreact.md, docs/dev/authshop.md, docs/dev/session-storage.md for current guidance. Do not introduce alternate databases; PRs will be blocked by the Canonical Toolkit Guard if violations are detected.
 - Maintain API contracts using docs/dev/admin-graphql.md (Admin), docs/dev/storefront-mcp.md (Storefront MCP), and docs/dev/webpixels-shopify.md (pixels).
 
 - Do not spin up alternate databases or MCPs without manager approval.

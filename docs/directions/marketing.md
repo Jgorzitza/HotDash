@@ -31,7 +31,7 @@ expires: 2025-10-19
 Work through these items now and document progress in `feedback/marketing.md`; include timestamps, approvals, and the assets you deliver. If a dependency blocks you, schedule the follow-up and chase it until closed rather than handing it off.
 
 1. Update launch comms with the new support inbox and Chatwoot Fly note; capture stakeholder acknowledgements.
-2. Pre-stage external messaging (press/email/social) so it can ship instantly once QA evidence and embed token clear, and rehearse the launch-day checklist by pulling a token from `/app/tools/session-token` so you can validate the Admin tour before publishing.
+2. Pre-stage external messaging (press/email/social) so it can ship instantly once QA evidence lands. Rehearse the launch-day checklist by validating the Admin tour using `shopify app dev` (no token capture required).
 3. Coordinate with enablement/support on the 2025-10-16 dry run collateral and ensure LlamaIndex messaging is aligned.
 4. Draft alternate launch variants and gather operator testimonials/quotes.
 5. Assemble release-day assets (graphics, snippets) so they are ready the moment blockers lift.

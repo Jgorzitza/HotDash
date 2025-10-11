@@ -1,0 +1,13 @@
+name: Canonical Toolkit Guard
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  stackguard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Enforce canonical toolkit (no alt DBs or direct redis in app)
+        run: node scripts/ci/stack-guard.mjs

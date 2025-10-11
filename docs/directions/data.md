@@ -24,7 +24,7 @@ expires: 2025-10-17
 - Maintain GA MCP mock dataset and swap to live host once credentials land; ensure caching + rate limits measured.
 - Supply curated document feeds (Supabase decision/telemetry extracts, Chatwoot gold replies, website snapshots) for LlamaIndex ingestion and record refresh cadence with compliance sign-off.
 - Tail Supabase logs (`scripts/ops/tail-supabase-logs.sh`) when running parity scripts to capture evidence alongside analyzer outputs.
-- Stack guardrails: follow `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex); no Fly Postgres provisioning.
+- Stack guardrails: follow `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex); no Fly Postgres provisioning. PRs that introduce alternate databases will be blocked by the Canonical Toolkit Guard.
 - Reference docs/dev/admin-graphql.md for admin data contracts and docs/dev/storefront-mcp.md for customer-facing datasets.
 - Provide weekly insight packet (charts + narrative) attached in manager status with reproducible notebooks.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/data.md` without waiting for additional manager confirmation.

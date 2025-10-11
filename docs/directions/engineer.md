@@ -32,16 +32,18 @@ expires: 2025-10-19
 - Develop against the local Supabase stack: run `supabase start`, export `.env.local`, run migrations with `npm run setup`, and tail events with `scripts/ops/tail-supabase-logs.sh` (see `docs/runbooks/supabase_local.md`). SQLite is no longer supported.
 - Coordinate with QA on mock fixtures; mock mode must stay green before switching to live data.
 - Stack guardrails: follow `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex); do not introduce alternate stacks.
+- Prohibited: adding MySQL/MongoDB/SQLite datasources, or direct Redis clients in app code. Redis is only permitted for Chatwoot under deploy/chatwoot/.
 - Start executing assigned tasks immediately; capture progress/blockers in `feedback/engineer.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
 Own each engineering deliverable end-to-end. Capture the command/output for every change in `feedback/engineer.md`, retry failures twice, and only escalate with the captured logs and mitigation attempts.
 - Reconfirm sanitized history (`git fetch --all --prune`, `git grep postgresql://`) and log the clean check in `feedback/engineer.md`.
 - Land the Supabase memory retry fixes (`packages/memory/supabase.ts`) with unit + e2e evidence; record command outputs.
-- Update Shopify helpers (`shopify.app.toml`, env utilities) to align with embed-token mirroring + React Router 7 flows; attach diffs. Follow the current App Bridge configuration documented in [`@shopify/app-bridge-react`](https://www.npmjs.com/package/@shopify/app-bridge-react#configuration) when updating the client bootstrap.
+- Update Shopify helpers (`shopify.app.toml`, env utilities) to align with React Router 7 + App Bridge v3 flows (no manual token capture required); attach diffs. Follow the current App Bridge configuration documented in [`@shopify/app-bridge-react`](https://www.npmjs.com/package/@shopify/app-bridge-react#configuration) when updating the client bootstrap.
 - Update Playwright fixtures so local runs stay in `mock=1` without embed tokens; for live (`mock=0`) smoke use the Admin login credentials (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) instead of manual tokens.
-- Pair with QA on modal Playwright coverage; ensure fixtures align with canonical toolkit and embed token workflow.
-- Prep mock fixtures and staging toggles so DEPLOY-147 can close once latency + embed token unblock.
+- Pair with QA on modal Playwright coverage; ensure fixtures align with the canonical toolkit and the current dev flow (React Router 7 + Shopify CLI v3).
+- Prep mock fixtures and staging toggles so DEPLOY-147 can close once latency thresholds are met and Fly memory scaling is complete.
 - Wire the Supabase edge function (`supabase/functions/occ-log`) into the app logging pipeline and document deployment steps.
 - Participate in the Monday/Thursday stack compliance audit, focusing on code references to deprecated stacks or secrets; log remediation steps.
 - Clear the outstanding TypeScript build failures (`npm run typecheck`) by repairing the Chatwoot escalation types, Supabase memory client promises, and AI script typings before handing back to QA; log each fix + command output in `feedback/engineer.md` and re-run the full typecheck until it exits 0.
+- Run the Canonical Toolkit Guard locally (`node scripts/ci/stack-guard.mjs`) and remove any violations (alt DBs, direct redis calls in app code). PRs will fail if violations remain.

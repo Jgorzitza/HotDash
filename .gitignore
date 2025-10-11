@@ -1,3 +1,25 @@
+# Local environment and vault
+.env.local
+vault/
+
+# Sensitive artifacts and distributions
+staging/distribution/**
+artifacts/**/*secret*
+artifacts/**/fly-secrets-*.txt
+artifacts/**/github-*-secrets-*.txt
+
+# Logs and transient evidence
+artifacts/**/*.log
+artifacts/**/*.txt
+artifacts/**/*.ndjson
+artifacts/**/*.json
+
+# Playwright reports
+playwright-report/
+
+# Node
+node_modules/
+
 node_modules
 
 /.cache

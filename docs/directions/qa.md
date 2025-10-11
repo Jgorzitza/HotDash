@@ -37,18 +37,18 @@ QA operates as the audit arm of the team. Validate the health of the environment
 
 2. **Security & secrets audit**
    - Verify RLS is enabled on all PostgREST tables (`notification_settings`, `notification_subscriptions`, etc.) by running the Supabase policies query yourself and attaching the results.
-   - Check vault/GitHub secrets for accuracy (embed token, Supabase DSN, OpenAI key). Confirm the refreshed `SHOPIFY_EMBED_TOKEN_STAGING` matches what reliability captured via `/app/tools/session-token`; raise an incident if it drifts. Confirm no secrets leak into git history and file an immediate scrub plan if you discover one. Reference `docs/runbooks/shopify_embed_capture.md` for the canonical capture workflow.
+   - Check vault/GitHub secrets for accuracy (Supabase DSN, OpenAI key). Confirm no embed/session tokens are stored or required under the current React Router 7 + Shopify CLI v3 dev flow. Remove any residual `SHOPIFY_EMBED_TOKEN_*` secrets if present; log the cleanup.
 
 3. **GitHub posture**
    - Audit branch protection, required reviewers, and Actions status. Flag missing reviewers or failing workflows.
-   - Ensure new secrets (e.g., `SHOPIFY_EMBED_TOKEN_STAGING`) appear in the environment once deployment mirrors them.
+   - Ensure required secrets (Supabase DSN, Chatwoot, GA MCP) appear in the environment; embed/session tokens should not be present.
 
 4. **Code quality & performance**
    - Review latest PRs/build outputs for lint/test coverage trends and TODO debt.
    - Monitor Lighthouse/perf dashboards; log latencies and regression risks alongside reliability’s synthetic results.
 
 5. **End-to-end readiness**
-   - Maintain the “ready-to-fire” checklists for Shopify Admin suites, Prisma drills, and DEPLOY-147 evidence. Execute immediately when reliability clears the embed token + latency thresholds, and log the full command/output bundle.
+   - Maintain the “ready-to-fire” checklists for Shopify Admin suites, Prisma drills, and DEPLOY-147 evidence. Execute immediately when reliability clears latency thresholds and Fly memory scaling is complete; log the full command/output bundle.
    - Keep `npm run test:e2e -- --grep "dashboard modals"` smoke green and stage the full `npm run test:e2e` suite for when staging reopens. Use the Admin login credentials (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) for live runs—no manual tokens. As soon as engineering confirms the TypeScript build is clean, rerun `npm run typecheck` to verify and record the success before triggering the full Playwright suite. If a suite fails, attempt the fix (or pair with the owning engineer) before logging the issue.
 
 6. **Stack compliance cadence**
