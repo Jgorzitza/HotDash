@@ -40,6 +40,10 @@ References:
 - Reference variables by name only (e.g., $SUPABASE_DB_URL). Do not echo secrets or check them into git.
 
 ## Retry and escalation policy
+
+## Correlation with performance metrics
+- When possible, include or link a `run_id` (UUID) that also appears in the `agent_run` metrics row, so evidence entries and KPIs can be correlated.
+- Do not print secrets in logs; sanitize payload snippets. Reference variable names and run IDs only.
 - Retry a failing step up to two times with small, safe adjustments.
 - If still failing, escalate by adding a new feedback entry that includes:
   - The failing command(s)

@@ -46,6 +46,36 @@ Proposed next steps (require manager/deployment coordination):
 
 I will proceed with non-disruptive tasks (e.g., readiness docs, smoke script prep) while awaiting approval/instructions on the migration path.
 
+## 2025-10-11 07:13 UTC — Overnight Execution (Auto-Run, Local Only)
+Artifacts root: artifacts/integrations/chatwoot-overnight-2025-10-11T07:13:15Z/
+
+Task 1: Readiness checklist updates (docs/integrations/)
+- Current readiness doc: docs/integrations/chatwoot_readiness.md captured in readiness/current_docs.txt
+- No local changes made per overnight policy
+
+Task 2: API token + Redis keys plan (placeholders)
+- Created detailed execution plan with placeholders only (plans/api_token_redis_plan.md)
+- Includes: Redis key init, super admin creation, API token generation, GitHub secret mirroring
+- Vault paths and evidence requirements documented
+- Prerequisites listed: Supabase pool limit fix, migration success, health check 200
+
+Original direction tasks attempted:
+- Validated Fly auth: jgorzitza@outlook.com authenticated (logs/fly_auth_check.txt)
+- Migration attempt blocked: per overnight policy, no remote Fly changes permitted
+- Next step: Await direct Postgres DSN or session pool increase during day shift
+
+## 2025-10-11 04:47 UTC — Read-only Status Check (Auto-Run)
+Artifacts root: artifacts/integrations/chatwoot-status-2025-10-11T04:47:20Z/
+Commands executed (read-only):
+- fly status --json → logs/fly_status.json (web: 2GB, health check path=/api passing; worker present, earlier OOM restart noted)
+- fly secrets list → logs/fly_secrets_list.txt (POSTGRES_*, REDIS_URL, SECRET_KEY_BASE present)
+- fly logs --no-tail → logs/fly_logs_single.txt (web /api 200; worker shows IMAP job warnings; periodical PG pool limit warnings)
+Observations:
+- Health endpoint: /api returns 200, /hc is a knowledge-center route (404 without slug); fly.toml correctly uses path=/api.
+- Migrations remain pending due to Supabase session pooler limits during db:chatwoot_prepare.
+Next (pending approval):
+- Run one-off maintenance migration or use direct Postgres DSN to bypass session pool limits; otherwise request pool size bump during migration window.
+
 ---
 epoch: 2025.10.E1
 doc: feedback/chatwoot.md

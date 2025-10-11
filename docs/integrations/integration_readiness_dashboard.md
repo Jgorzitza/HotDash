@@ -6,7 +6,7 @@
 | Shopify Admin App | Staging credentials live; broadcast sent 07:35 UTC | Vault + GitHub secrets confirmed (`cli-secret-20251010T071858Z.log`); store invites accepted (`store-invite-audit-20251010T0730Z.md`) | QA/Product/Support action items broadcast; waiting on sub-300 ms smoke to green-light contract tests | DEPLOY-147 open only for smoke latency proof (`...?mock=0` <300 ms). Latest curls at 19:26Z added (`curl_mock0_2025-10-10T19-26-34Z.log` returns 410 despite 173 ms latency). |
 | Hootsuite | Sandbox verified | API key expiring 2025-10-15 | Monitoring agenda drafted | Contract addendum + security questionnaire pending |
 | Supabase | Staging partial (DSN delivered) | Service key present in vault; rotation evidence pending git scrub sign-off | Decision sync failure analysis underway | Git history scrub queued with reliability; waiting on MCP helper run + secret rotation artifacts |
-| Chatwoot | Fly app deployed; health check returning 503 | Secrets mirroring blocked on DB DSN fix; API token pending | Template heuristics validated via unit tests | Web machine still pointed at Supabase pooler; rerun migrations after correcting Postgres secrets |
+| Chatwoot | Fly app deployed; web /api health passing (200); /hc not applicable | Secrets aligned to Supabase DSN; API token pending migrations | Template heuristics validated via unit tests | Migrations blocked by Supabase session pooler (MaxClientsInSessionMode); memory 2GB; worker stable |
 
 ## Actions Today
 - Logged 19:25Z OCC-INF-221 follow-up in `#infra-requests` with escalation draft staged for 20:30Z if silent; captured both artifacts under `artifacts/integrations/ga-mcp/2025-10-10/`.

@@ -43,13 +43,13 @@ begin
 end$$;
 
 -- Insert allowed only for webhook role
-create policy if not exists support_curated_replies_insert_by_webhook
+create policy support_curated_replies_insert_by_webhook
   on public.support_curated_replies
   for insert
   with check (coalesce((auth.jwt() ->> 'role'),'') = 'support_webhook');
 
 -- Read allowed for ai_readonly or any authenticated user
-create policy if not exists support_curated_replies_read_ai
+create policy support_curated_replies_read_ai
   on public.support_curated_replies
   for select
   using ((coalesce((auth.jwt() ->> 'role'),'') = 'ai_readonly') or (auth.role() = 'authenticated'));

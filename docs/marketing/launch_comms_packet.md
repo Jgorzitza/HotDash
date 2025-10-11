@@ -51,6 +51,11 @@ expires: 2025-10-18
 
 - Curated testimonials (placeholders): docs/marketing/testimonials_curated.md
 
+## Release Day Operations
+
+- Release day playbook: artifacts/marketing/assets/release_day_playbook.md
+- Manual send playbook: artifacts/marketing/assets/social/send_playbook.md
+
 ## Release Cadence Alignment
 
 Per `docs/directions/product_operating_plan.md`, releases follow **Mock → Staging → Production** with communications tied to each milestone.
