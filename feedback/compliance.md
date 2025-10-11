@@ -40,3 +40,6 @@ ARTIFACT: artifacts/compliance/ai_retention_audit_2025-10-11.md
 - Item: Supabase retention evidence — Owner: Data — Due: +4d — Status: Hash register updated/gap noted
 - Item: AI logging 30-day purge — Owner: AI Platform — Due: +5d — Status: Audit recorded
 
+[2025-10-11T03:41:11Z] CMD: Prepared PR body locally
+ARTIFACT: artifacts/compliance/pr_body_2025-10-11.md
+
