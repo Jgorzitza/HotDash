@@ -21,3 +21,6 @@ ARTIFACT: artifacts/compliance/stack_audit_2025-10-11.md, artifacts/compliance/s
 [2025-10-11T03:41:11Z] CMD: Secret incidents sweep complete (targeted)
 ARTIFACT: docs/compliance/evidence/secret_incidents_2025-10-11.md
 
+[2025-10-11T03:41:11Z] CMD: Vendor follow-ups drafted and status updated
+ARTIFACT: docs/compliance/evidence/vendor_dpa_status.md
+
