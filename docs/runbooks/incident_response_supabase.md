@@ -149,3 +149,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 - [ ] Ensure purge script dry-run test harness executed and results stored.
 
 Escalate any unchecked item to manager with remediation ETA.
+
+## Verification - 2025-10-11
+- Tabletop drill: docs/compliance/evidence/tabletop_supabase_2025-10-11.md
+- Retention hash register: docs/compliance/evidence/pg_cron_hash_register_2025-10-11.md
