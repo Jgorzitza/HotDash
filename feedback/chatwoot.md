@@ -123,3 +123,27 @@ Asks/clarifications for manager:
 - Confirm Data-provided Supabase webhook endpoint and secret path
 
 Ready state: On approval, will begin preflight and halt if any credentials are missing; all steps will be logged with commands and artifact paths as required by direction.
+
+## 2025-10-11 07:38 UTC — Migration Progress Update
+Status: Migration completed with Supabase-only DSN, super admin created, API token pending UI access
+
+Commands executed (artifacts/integrations/chatwoot-execution-2025-10-11T07:22:13Z/):
+1. **Migration attempt**: Successfully completed with worker scaled to 0
+2. **Super admin creation**: Created superadmin+staging@hotrodan.com (credentials in vault)
+3. **Health check**: /api endpoint responding with 200
+4. **Worker restore**: Scaled back to 1 after successful migration
+
+Evidence paths:
+- Migration logs: migrations/db_prepare_attempt1.txt, db_prepare_attempt2.txt
+- Super admin creation: migrations/create_super_admin_v3.txt
+- Health checks: logs/health_check_api.json
+- Scale operations: logs/scale_worker_down.txt, scale_worker_up.txt
+
+Credentials stored:
+- vault/occ/chatwoot/super_admin_staging.env (email + password)
+
+Next tasks:
+1. Complete API token generation via UI (Rails console attempts unsuccessful)
+2. Configure inbound email for customer.support@hotrodan.com
+3. Set up webhook for Supabase integration
+4. Run smoke tests once token is available
