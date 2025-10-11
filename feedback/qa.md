@@ -2139,3 +2139,38 @@ Per docs/directions/qa.md (MASSIVE EXPANSION - updated 15:56): Execute 15 additi
 **Evidence**: artifacts/qa/validation/2025-10-11T223000Z/validation-notes.txt
 
 
+## 2025-10-11T22:50:00Z — NORTH STAR ALIGNMENT CORRECTION
+
+**Manager Feedback**: QA deviated from North Star by focusing on abstract testing frameworks instead of testing actual product features.
+
+**Drift Identified**:
+❌ **What I Did**: Created 192KB of testing infrastructure documentation (Tasks C-Q)
+✅ **What I Should Do**: Test actual features as Engineer builds them (P0 Launch Testing Tasks 1-5)
+
+**North Star**: "Deliver a trustworthy, operator-first control center embedded inside Shopify Admin"
+
+**Corrected Focus**:
+- ✅ Test LlamaIndex MCP Server (when ready)
+- ✅ Test Agent SDK Service (when ready)
+- ✅ Test Webhook endpoints (when ready)
+- ✅ Test Approval Queue UI (when ready)
+- ✅ Test Full E2E Integration (when ready)
+
+**Tasks C-Q Status**: PAUSE until after launch (per manager direction)
+**Tasks R-AU**: PAUSE until after launch (advanced infrastructure)
+
+**Immediate Action**:
+1. Monitor Engineer's progress on Tasks 3-7 (LlamaIndex, Agent SDK, webhooks, UI)
+2. Test each component immediately as it's completed
+3. Focus on **product testing**, not framework building
+4. Continue 4-hour validation cycles
+
+**Lesson Learned**: Always check: "Does this directly test a feature users will interact with?" If no, pause and refocus on North Star.
+
+**Apology to Manager**: I should have flagged this drift myself. Will maintain North Star focus going forward.
+
+---
+**QA Status**: REFOCUSED on P0 Launch Testing
+**Next**: Monitor Engineer's Task 3 (LlamaIndex MCP), test immediately when complete
+**Standing By**: Ready to test actual features as they're built
+
