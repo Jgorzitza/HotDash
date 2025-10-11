@@ -27,3 +27,6 @@ ARTIFACT: docs/compliance/evidence/vendor_dpa_status.md
 [2025-10-11T03:41:11Z] CMD: Registered pg_cron hashes
 ARTIFACT: docs/compliance/evidence/pg_cron_hash_register_2025-10-11.md
 
+[2025-10-11T03:41:11Z] CMD: Tabletop drill documented and runbook updated
+ARTIFACT: docs/compliance/evidence/tabletop_supabase_2025-10-11.md
+
