@@ -467,3 +467,250 @@ Priority tasks for next session:
 
 ✅ End of day - QA signing off at 2025-10-11T07:46:59Z
 
+
+## 2025-10-11T14:29:42Z — Comprehensive QA Audit (Priorities 1-4)
+
+### Scope
+Executed parallel QA audit per docs/directions/qa.md priorities 1-4:
+1. Test Suite Audit
+2. Security Audit  
+3. Smoke Test Verification
+4. Performance Baseline
+
+### Priority 1: Test Suite Audit
+
+#### Unit Tests (Vitest)
+- **Command**: `npm run test:unit`
+- **Status**: ⚠️ PARTIAL PASS (7 failures)
+- **Results**: 43 passed, 7 failed, 1 skipped (85.7% pass rate)
+- **Duration**: 7.69s
+- **Evidence**: artifacts/qa/2025-10-11T142942Z/test-unit-*.log
+
+**Failed Tests** (all in logger.server.spec.ts):
+1. should log info messages with metadata
+2. should log errors with appropriate level
+3. should log ServiceError with structured metadata
+4. should include additional metadata when provided
+5. should capture request context
+6. should fall back to console logging when edge function fails
+7. should handle HTTP error responses gracefully
+
+**Root Cause**: Logger tests expect Supabase edge function (occ-log) but SUPABASE_URL/SUPABASE_SERVICE_KEY not configured in test environment.
+
+**Remediation Attempt 1**: Reviewed test configuration
+- Finding: Tests make actual fetch() calls to edge function
+- Recommendation: Mock fetch() in test setup or configure test Supabase instance
+
+#### E2E Tests (Playwright)
+- **Command**: `npm run test:e2e`
+- **Status**: ❌ BLOCKED
+- **Blocker**: Missing SCOPES environment variable
+- **Error**: `Error: SCOPES environment variable is required` (build server failed, exit code 1)
+- **Evidence**: artifacts/qa/2025-10-11T142942Z/test-e2e-*.log
+
+**Test Infrastructure**:
+- 27 test files present
+- Mock mode enabled (MOCK=1)
+- Issue: Build requires core env vars even in mock mode
+
+**Remediation Attempt 1**: Checked .env.example
+- Finding: SCOPES not documented in .env.example
+- Recommendation: Add SCOPES to .env.example with documentation
+
+#### Coverage Analysis
+- **Command**: `npm run test:unit -- --coverage`
+- **Status**: ❌ TOOL MISSING
+- **Error**: `MISSING DEPENDENCY Cannot find dependency '@vitest/coverage-v8'`
+- **Evidence**: artifacts/qa/2025-10-11T142942Z/test-coverage-*.log
+
+**Manual Count**:
+- Test files: 27
+- Test suites: 14
+- Total tests: 51
+
+**Target**: >80% coverage (per direction)
+**Actual**: UNKNOWN (requires @vitest/coverage-v8)
+
+**Remediation Attempt 1**: 
+- Issue: Coverage dependency not installed
+- Recommendation: `npm install -D @vitest/coverage-v8`
+
+### Priority 2: Security Audit
+
+#### npm audit
+- **Command**: `npm audit`
+- **Status**: ⚠️ 5 MODERATE VULNERABILITIES
+- **Evidence**: artifacts/qa/2025-10-11T142942Z/npm-audit-*.log
+
+**Vulnerabilities**:
+1. esbuild <=0.24.2 (GHSA-67mh-4wv8-2f99) - dev server request exposure
+2. vite 0.11.0 - 6.1.6 (depends on vulnerable esbuild)
+3. @vitest/mocker <=3.0.0-beta.4
+4. vitest 0.0.1 - 3.0.0-beta.4  
+5. vite-node <=2.2.0-beta.2
+
+**Fix Available**: `npm audit fix --force`
+- Warning: Breaking change (vitest 2.1.9 → 3.2.4)
+
+**Risk Assessment**:
+- Severity: MODERATE (not high/critical)
+- Scope: Development dependencies only
+- Exploitation: Requires dev server running and accessible
+- Context: Local development environment
+
+**Recommendation**: 
+- Accept risk short-term (dev-only)
+- Plan vitest 3.x upgrade after testing
+
+#### .env.example Review
+- **Status**: ✅ SECURE
+- No hardcoded secrets
+- Clear placeholder format
+- Compliant with docs/ops/credential_index.md
+
+#### feedback/ Credential Scan
+- **Command**: `grep -rE '(api[_-]?key|secret|password|token).*=.*[a-zA-Z0-9]{20,}' feedback/`
+- **Status**: ✅ NO CREDENTIALS LEAKED
+- **Evidence**: 0 matches for actual credential values
+- 40+ mentions of credential keywords (all documentation references)
+
+**Verification**:
+- SHOPIFY_EMBED_TOKEN_STAGING removed from GitHub ✅ (per 2025-10-11T03:41:29Z entry)
+- vault/occ/shopify/embed_token_staging.env removed ✅
+
+### Priority 3: Smoke Test Verification
+- **Status**: ⊘ NOT EXECUTED (blocked by environment setup)
+
+**Blocker**: E2E infrastructure requires:
+- SCOPES environment variable
+- .env.local configuration
+- Supabase local instance running
+
+**Planned Tests** (pending unblock):
+- [ ] Test mock mode: `DASHBOARD_USE_MOCK=1 npm run dev`
+- [ ] Verify all tiles render without errors
+- [ ] Check browser console for warnings
+- [ ] Test Shopify Admin embed flow
+
+### Priority 4: Performance Baseline
+- **Status**: ⊘ NOT EXECUTED (requires running server)
+
+**Blocker**: Lighthouse requires LIGHTHOUSE_TARGET or STAGING_SMOKE_TEST_URL
+- Script: scripts/ci/run-lighthouse.mjs
+- Output: coverage/lighthouse/report.json
+
+**Planned Tests** (pending server startup):
+- [ ] Run Lighthouse against local dev
+- [ ] Document P95 latency for all routes
+- [ ] Identify slow queries/components
+- [ ] Create baseline report for comparison
+
+### Critical Findings Summary
+
+#### P0 BLOCKERS (Must Fix Before PRs)
+1. **7 failing unit tests** (logger.server.spec.ts)
+   - Impact: 85.7% pass rate (target: 100%)
+   - Fix: Mock fetch() or configure test Supabase
+   - Timeline: 1-2 hours
+
+2. **Missing coverage tooling**
+   - Impact: Cannot verify >80% coverage target
+   - Fix: `npm install -D @vitest/coverage-v8`
+   - Timeline: 5 minutes
+
+3. **E2E tests blocked**
+   - Impact: Cannot run Playwright smoke tests
+   - Fix: Add SCOPES to .env.example, create .env.local guide
+   - Timeline: 1 hour
+
+#### P1 HIGH PRIORITY (Fix This Sprint)
+4. **5 moderate security vulnerabilities**
+   - Impact: Dev environment exposure risk
+   - Fix: Test vitest 3.x upgrade
+   - Timeline: 2-4 hours
+
+5. **Smoke tests not executed**
+   - Impact: No visual regression baseline
+   - Fix: Unblock e2e environment
+   - Timeline: 2 hours (after P0 fixes)
+
+6. **Performance baseline missing**
+   - Impact: No latency/score benchmarks
+   - Fix: Run Lighthouse after smoke tests
+   - Timeline: 1 hour
+
+### Test Infrastructure Assessment
+
+**Working**:
+- ✅ Vitest 2.1.9 (unit tests)
+- ✅ Playwright 1.48.2 (e2e framework)
+- ✅ Lighthouse 12.3.0 (performance)
+- ✅ Mock mode infrastructure
+- ✅ CI scripts defined
+
+**Broken**:
+- ❌ Coverage reporting (missing dep)
+- ❌ E2E execution (env vars)
+- ❌ Logger tests (Supabase edge function)
+
+**Test Files**: 27 total
+- Unit: 20 files
+- E2E: 3 files (dashboard, admin-embed, modals)
+- Contracts: 1 file (skipped)
+
+### Recommendations
+
+**Immediate Actions** (QA can execute):
+1. ✅ Document all findings with evidence ← DONE
+2. Create .env.local setup guide for QA environment
+3. Re-run full audit after environment fixes
+
+**Engineering Actions Required**:
+1. Fix logger.server.spec.ts (mock fetch or configure Supabase)
+2. Install @vitest/coverage-v8 dependency
+3. Add SCOPES to .env.example with documentation
+4. Review security vulnerabilities, plan vitest upgrade
+
+**Manager Actions Required**:
+1. Review P0 blockers
+2. Approve security upgrade timeline (vitest 3.x)
+3. Confirm test coverage targets (>80% still valid?)
+
+### Evidence Bundle
+
+**Location**: artifacts/qa/2025-10-11T142942Z/
+
+**Files**:
+- qa-audit-summary.md (comprehensive report)
+- test-unit-*.log (Vitest output)
+- test-e2e-*.log (Playwright blocker)
+- test-coverage-*.log (coverage tool error)
+- npm-audit-*.log (security scan)
+
+### Compliance Status
+
+Per docs/directions/qa.md:
+- [x] Test suite executed (partial)
+- [x] Security audit completed
+- [ ] Smoke tests executed (blocked)
+- [ ] Performance baseline captured (blocked)
+- [x] Findings logged with evidence
+- [x] Remediation attempts documented
+
+**Overall**: 67% (4/6 requirements met, 2 blocked by environment)
+
+### Next Actions
+
+**QA will**:
+1. Monitor for environment setup fixes
+2. Re-run e2e tests when SCOPES available
+3. Execute Lighthouse baseline after smoke tests pass
+4. Update this log with follow-up results
+
+**Escalation**: None required (all blockers documented with clear owners)
+
+---
+**QA Status**: Audit complete. Awaiting Engineering fixes for P0 blockers.
+**Evidence**: All artifacts captured per evidence gate requirements.
+**Test Pass Rate**: 85.7% (43/50 executable tests passing)
+
