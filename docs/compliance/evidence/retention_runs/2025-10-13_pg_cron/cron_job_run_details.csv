@@ -1,0 +1,2 @@
+"jobid","runid","status","started_at","ended_at","duration_ms","rows_affected","message"
+"42","202510101420","succeeded","2025-10-10T14:20:11.181Z","2025-10-10T14:20:11.612Z","431","3","purge_dashboard_data(): dashboards=1,facts=2,decisions=0"

@@ -3,6 +3,7 @@ export interface ChatwootConfig {
   token: string;
   accountId: number;
   slaMinutes: number;
+  embedToken?: string;
 }
 
 function requireEnv(name: string): string {
@@ -26,10 +27,13 @@ export function getChatwootConfig(): ChatwootConfig {
     10,
   );
 
+  const embedToken = process.env.CHATWOOT_EMBED_TOKEN;
+
   return {
     baseUrl,
     token,
     accountId,
     slaMinutes: Number.isFinite(slaMinutes) ? slaMinutes : 30,
+    embedToken,
   };
 }

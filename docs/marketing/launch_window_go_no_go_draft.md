@@ -17,7 +17,7 @@ Provide ready-to-send messaging for unlocking the Shopify backlog once QA posts 
 - ✅ Supabase parity artifact: [`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`](../../artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json).
 - ✅ Synthetic smoke artifact: [`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`](../../artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json).
 
-## Slack Draft — #occ-launch
+## # Draft — #occ-launch
 ```
 ✅ **Go for Shopify staging backlog thaw**
 

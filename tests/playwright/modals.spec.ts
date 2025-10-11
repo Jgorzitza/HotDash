@@ -1,10 +1,8 @@
-import { expect, test } from "@playwright/test";
-
-const DASHBOARD_PATH = "/app";
+import { expect, test } from "../fixtures/shopify-admin";
 
 test.describe("dashboard modals", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto(`${DASHBOARD_PATH}?mock=1`);
+  test.beforeEach(async ({ shopifyAdmin }) => {
+    await shopifyAdmin.goto("/app", { mock: "1" });
   });
 
   test("opens CX escalation modal from tile", async ({ page }) => {

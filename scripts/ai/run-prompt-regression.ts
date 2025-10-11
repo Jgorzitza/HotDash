@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import { join } from "path";
+import { bleu1, rougeL, tokenize } from "../../packages/ai/metrics";
 
 type RegressionCase = {
   id: string;
@@ -75,63 +76,6 @@ const CASES: RegressionCase[] = [
       "Hi Taylor, thank you for staying patient. I'm checking on your order details right now and will follow up with the exact status shortly.",
   },
 ];
-
-function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")
-    .split(/\s+/)
-    .filter(Boolean);
-}
-
-function bleu1(referenceTokens: string[], candidateTokens: string[]): number {
-  if (!referenceTokens.length || !candidateTokens.length) {
-    return 0;
-  }
-
-  const referenceCounts = new Map<string, number>();
-  for (const token of referenceTokens) {
-    referenceCounts.set(token, (referenceCounts.get(token) ?? 0) + 1);
-  }
-
-  let matchCount = 0;
-  const candidateCounts = new Map<string, number>();
-  for (const token of candidateTokens) {
-    candidateCounts.set(token, (candidateCounts.get(token) ?? 0) + 1);
-  }
-
-  for (const [token, count] of candidateCounts.entries()) {
-    const refCount = referenceCounts.get(token) ?? 0;
-    matchCount += Math.min(count, refCount);
-  }
-
-  return matchCount / candidateTokens.length;
-}
-
-function longestCommonSubsequenceLength(a: string[], b: string[]): number {
-  const dp: number[][] = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
-
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      if (a[i - 1] === b[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
-    }
-  }
-
-  return dp[a.length][b.length];
-}
-
-function rougeL(referenceTokens: string[], candidateTokens: string[]): number {
-  if (!referenceTokens.length || !candidateTokens.length) {
-    return 0;
-  }
-
-  const lcs = longestCommonSubsequenceLength(referenceTokens, candidateTokens);
-  return lcs / referenceTokens.length;
-}
 
 function formatTimestamp(date: Date): string {
   const pad = (value: number) => value.toString().padStart(2, "0");

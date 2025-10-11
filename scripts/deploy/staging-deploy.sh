@@ -15,6 +15,39 @@ require_env() {
   fi
 }
 
+maybe_source_env() {
+  local file="$1"
+  if [[ -f "$file" ]]; then
+    # shellcheck disable=SC1090
+    source "$file"
+  fi
+}
+
+promote_secret() {
+  local src="$1"
+  local dest="$2"
+  if [[ -z "${!dest:-}" && -n "${!src:-}" ]]; then
+    export "$dest=${!src}"
+  fi
+}
+
+# Auto-load canonical vault secrets when present to keep local runs aligned with CI.
+maybe_source_env "vault/occ/shopify/api_key_staging.env"
+maybe_source_env "vault/occ/shopify/api_secret_staging.env"
+maybe_source_env "vault/occ/shopify/cli_auth_token_staging.env"
+maybe_source_env "vault/occ/shopify/app_url_staging.env"
+maybe_source_env "vault/occ/shopify/smoke_test_url_staging.env"
+maybe_source_env "vault/occ/shopify/shop_domain_staging.env"
+maybe_source_env "vault/occ/supabase/service_key_staging.env"
+maybe_source_env "vault/occ/supabase/database_url_staging.env"
+
+promote_secret SHOPIFY_API_KEY_STAGING SHOPIFY_API_KEY
+promote_secret SHOPIFY_API_SECRET_STAGING SHOPIFY_API_SECRET
+promote_secret SHOPIFY_CLI_AUTH_TOKEN_STAGING SHOPIFY_CLI_AUTH_TOKEN
+promote_secret STAGING_APP_URL STAGING_APP_URL
+promote_secret STAGING_SMOKE_TEST_URL STAGING_SMOKE_TEST_URL
+promote_secret STAGING_SHOP_DOMAIN STAGING_SHOP_DOMAIN
+
 require_env SHOPIFY_CLI_AUTH_TOKEN
 require_env SHOPIFY_API_KEY
 require_env SHOPIFY_API_SECRET

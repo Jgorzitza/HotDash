@@ -15,6 +15,7 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
 - **Fly host:** `https://hotdash-staging.fly.dev/app` (`fly.toml` primary region `ord`) with dedicated IPv4 `149.248.193.17` (see `feedback/deployment.md`).
 - **Supabase parity:** [`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`](../../artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json) shows `view`/`refresh` deltas at `0` after the pooler DSN apply.
 - **Synthetic smoke:** Latest run succeeded ([`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`](../../artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json)) with HTTP 200 against `https://hotdash-staging.fly.dev/app?mock=0`; attach alongside the Supabase parity artifact before lifting the backlog hold.
+- **Credentials status:** Reliability confirmed existing Supabase + Shopify staging secrets remain authoritative; deployments proceed with current bundle while evidence gates (sub-300 ms live smoke + QA artifacts) still block release clearance.
 - **Credential bundle:** Vault/GitHub `staging` secrets refreshed 2025-10-09 21:49-21:58 UTC (`feedback/reliability.md`); store access handoff (`DEPLOY-147`) still pending delivery to QA/support.
 
 ## Prerequisites
@@ -22,22 +23,23 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
 |------|----------|-------|
 | Shopify client ID | `shopify.app.toml:client_id` | `4f72376ea61be956c860dd020552124d` — matches staging API key vault entry. |
 | Shopify staging API key & secret | `vault/occ/shopify/api_key_staging.env`, `vault/occ/shopify/api_secret_staging.env` | Confirm GitHub `staging` environment mirrors (`SHOPIFY_API_KEY_STAGING`, `SHOPIFY_API_SECRET_STAGING`). |
-| Shopify CLI auth token | `vault/occ/shopify/cli_auth_token_staging.env` | Token `shpat_staging_cli_token_2025_10_10`; re-run MCP auth helper if rotated. |
+| Shopify CLI auth token | `vault/occ/shopify/cli_auth_token_staging.env` | Confirm latest rotation timestamp in vault; attach CLI output screenshot in `artifacts/integrations/shopify/<date>/cli-token.png`. |
 | Staging shop domain | `vault/occ/shopify/shop_domain_staging.env` | `hotroddash.myshopify.com`; ensure invite delivered before QA validation. |
 | Staging app URL / smoke target | `vault/occ/shopify/app_url_staging.env`, GitHub secret `STAGING_SMOKE_TEST_URL` | `https://hotdash-staging.fly.dev/app` / `...?mock=0`. |
 | Supabase staging credentials | `vault/occ/supabase/database_url_staging.env`, `vault/occ/supabase/service_key_staging.env` | Evidence bundle at `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`. |
 | Synthetic check script | `scripts/ci/synthetic-check.mjs` | Budget 800 ms with warmup delay; rerun until green artifact captured for `?mock=0`. |
+| Shopify embed token (Playwright) | `vault/occ/shopify/embed_token_staging.env`, GitHub secret `SHOPIFY_EMBED_TOKEN_STAGING` | Enables Admin iframe loads during QA/localization Playwright suites; rotate every 30 days. |
 
 ## Credential Hand-off Checklist (DEPLOY-147)
 | Item | Owner | Delivery Evidence | Pending Actions |
 |------|-------|-------------------|-----------------|
-| Shopify store invites (Evergreen Outfitters, Atelier Belle Maison, Peak Performance Gear) | Deployment ↔ Integrations | `artifacts/integrations/shopify/2025-10-10/store-access.md` + Slack permalink in `feedback/deployment.md` | 🔴 Pending DEPLOY-147 closeout; escalate if not delivered by 2025-10-11 19:00 UTC. |
-| Shopify CLI auth token (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) | Deployment | 1Password entry `occ/shopify/cli_auth_token_staging`, timestamp screenshot stored in `artifacts/integrations/shopify/<date>/cli-token.png` | Await confirmation of latest rotation; log timestamp in `feedback/product.md`. |
+| Shopify store invites (Evergreen Outfitters, Atelier Belle Maison, Peak Performance Gear) | Deployment ↔ Integrations | `artifacts/integrations/shopify/2025-10-10/store-access.md` + # permalink in `feedback/deployment.md` | 🔴 Pending DEPLOY-147 closeout; escalate if not delivered by 2025-10-11 19:00 UTC. |
+| Shopify CLI auth token (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) | Deployment | Vault `occ/shopify/cli_auth_token_staging.env` + timestamp screenshot stored in `artifacts/integrations/shopify/<date>/cli-token.png` | Await confirmation of latest rotation; log timestamp in `feedback/product.md`. |
 | Chatwoot sandbox token rotation | Integrations | Vault entry `occ/chatwoot/token_sandbox_staging.env` + note in `feedback/integrations.md` | Verify token aligns with 2025-10-16 dry run scenarios; request acknowledgement once rotated. |
 | Supabase decision log read-only service key | Data | Vault entry `occ/supabase/service_key_staging.env` + parity artefact `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json` | Confirm read-only scope documented; attach vault timestamp screenshot before sharing with support. |
 | STAGING_SMOKE_TEST_URL evidence bundle | Reliability | `artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json` + screenshot `artifacts/ops/dry_run_2025-10-16/mock0-smoke.png` | Capture new screenshot once `?mock=0` returns 200 and notify support/enablement. |
 | QA walkthrough screenshots + modal evidence | QA | `artifacts/ops/dry_run_2025-10-16/screenshots/` + entry in `feedback/qa.md` | Prep mock-mode captures now; replace with live-mode set post-credential delivery. |
-| Operator comms packet acknowledgement | Support ↔ Enablement | Slack permalink for internal broadcast (`#occ-ops`) + email send log | Stage templates (docs/marketing/launch_comms_packet.md §2B); send once checklist items above marked complete. |
+| Operator comms packet acknowledgement | Support ↔ Enablement | # permalink for internal broadcast (`#occ-ops`) + email send log | Stage templates (docs/marketing/launch_comms_packet.md §2B); send once checklist items above marked complete. |
 
 ## Execution Timeline
 1. **Credential Confirmation (Product ↔ Deployment/Integrations/Reliability)**
@@ -72,7 +74,7 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
 - Mirror the above in Memory (`scope="ops"`, topic `staging_install_plan`) once artifacts exist.
 - Record progress + blockers daily in [`feedback/product.md`](../../feedback/product.md) per direction; include timestamps for secret validation, CLI deploy, and synthetic smoke outcomes.
 - Keep the backlog frozen until QA notes both artifacts in [`feedback/qa.md`](../../feedback/qa.md) and product publishes the combined evidence bundle.
-- Notify QA/support via Slack with vault paths + GitHub secret timestamps when access bundle is live; capture permalink in feedback log.
+- Notify QA/support via # with vault paths + GitHub secret timestamps when access bundle is live; capture permalink in feedback log.
 
 ## Blockers & Dependencies
 - **Synthetic smoke (`mock=0`)** — hold backlog refresh until `artifacts/monitoring` contains a green run for the Fly host.

@@ -8,6 +8,7 @@ embedded = true
 [build]
 automatically_update_urls_on_dev = true
 include_config_on_deploy = true
+dev_store_url = "hotroddash.myshopify.com"
 
 [webhooks]
 api_version = "2026-01"

@@ -21,7 +21,7 @@ As a CX lead, I need to see conversations breaching SLA thresholds and respond w
 4. For each conversation, fetch most recent messages to surface sentiment/last reply time.
 5. Service returns `EscalationTileData` (list + metadata) and writes summary fact to `DashboardFact` table.
 6. UI tile renders list, SLA countdown, and CTA buttons (`Send templated reply`, `Escalate to Ops`).
-7. Approvals go through Remix action `app/routes/actions/chatwoot.escalate.ts` writing to Supabase memory + Chatwoot reply API when approved.
+7. Approvals go through React Router data action `app/routes/actions/chatwoot.escalate.ts` writing to Supabase memory + Chatwoot reply API when approved.
 
 ## Configuration
 - Environment variables: `CHATWOOT_BASE_URL`, `CHATWOOT_TOKEN`, `CHATWOOT_ACCOUNT_ID`, `CHATWOOT_SLA_MINUTES`.
@@ -55,5 +55,5 @@ As a CX lead, I need to see conversations breaching SLA thresholds and respond w
 ## Deliverables
 1. `app/services/chatwoot/` directory with `escalations.ts`, `templates.ts`, `types.ts`.
 2. `app/components/tiles/CxEscalationsTile.tsx` with actions + tests.
-3. Approval Remix action + integration tests.
+3. Approval React Router action + integration tests.
 4. Evidence artifacts (Vitest, Playwright, Lighthouse reports) attached to PR.

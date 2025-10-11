@@ -8,7 +8,7 @@ expires: 2025-12-31
 ---
 # Supabase pg_cron Evidence Follow-up — Sent 2025-10-12
 
-Slack message delivered to reliability via `#occ-ops` at 2025-10-12 19:45 UTC, referencing the evidence checklist at `docs/compliance/evidence/retention_runs/pg_cron_evidence_checklist.md`.
+# message delivered to reliability via `#occ-ops` at 2025-10-12 19:45 UTC, referencing the evidence checklist at `docs/compliance/evidence/retention_runs/pg_cron_evidence_checklist.md`.
 
 ```
 Hi Reliability,

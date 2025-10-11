@@ -2,6 +2,7 @@ import type { ActionFunctionArgs } from "react-router";
 
 import { authenticate } from "../../shopify.server";
 import { logDecision } from "../../services/decisions.server";
+import { toInputJson } from "../../services/json";
 
 function jsonResponse(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), {
@@ -63,7 +64,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     action: decisionInfo.decisionAction,
     rationale: typeof note === "string" && note.trim() ? note.trim() : undefined,
     shopDomain: session.shop,
-    payload,
+    payload: toInputJson(payload),
   });
 
   return jsonResponse({ ok: true });

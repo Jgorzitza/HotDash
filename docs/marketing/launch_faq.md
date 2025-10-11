@@ -62,9 +62,9 @@ A: For CX Escalations, the system reads conversation history from Chatwoot and d
 **Evidence:** Brand tone deck — AI messaging section (`docs/marketing/brand_tone_deck.md`).
 
 ### Q: What data is shared with the AI provider?
-A: We send only the most recent messages needed for context and automatically strip payment details, emails, and phone numbers before the prompt goes to Anthropic. Drafts and approvals are retained for audit purposes for up to 12 months.
+A: We send only the most recent messages needed for context and automatically strip payment details, emails, and phone numbers before the prompt goes to OpenAI (via our LlamaIndex service). Drafts and approvals are retained for audit purposes for up to 12 months.
 
-**Evidence:** DPIA (`docs/compliance/dpia_chatwoot_anthropic.md`).
+**Evidence:** DPIA (`docs/compliance/dpia_chatwoot_openai.md`).
 
 ### Q: Is the suggested reply logged anywhere?
 A: Yes. When you approve or edit an AI reply, the final message and decision are captured in the decision audit trail.
@@ -110,7 +110,7 @@ A: We log limited telemetry (operator email, tile interactions, request IDs) so 
 **Evidence:** Privacy notice update draft (`docs/compliance/privacy_notice_updates.md`).
 
 ### Q: Can I opt out of analytics tracking?
-A: Yes. Toggle "Share usage analytics" off in Settings → Privacy. You can also email privacy@hotdash.io to request manual removal. Opting out doesn’t affect dashboard access.
+A: Yes. Toggle "Share usage analytics" off in Settings → Privacy. You can also email customer.support@hotrodan.com to request manual removal. Opting out doesn’t affect dashboard access.
 
 **Evidence:** Privacy notice update draft (`docs/compliance/privacy_notice_updates.md`).
 
@@ -134,7 +134,7 @@ A: Key metrics include Operator activation rate (>70%), in-app banner CTR (>15%)
 **Evidence:** Launch comms packet — Metrics & Success Tracking (`docs/marketing/launch_comms_packet.md`).
 
 ### Q: How do we report bugs or feedback?
-A: Use the "Have feedback?" link in the dashboard (routes to support@hotdash.example.com) or log an issue in GitHub (`https://github.com/Jgorzitza/HotDash/issues`). For beta partners, #occ-feedback Slack channel is monitored.
+A: Use the "Have feedback?" link in the dashboard (routes to customer.support@hotrodan.com) or log an issue in GitHub (`https://github.com/Jgorzitza/HotDash/issues`). For beta partners, #occ-feedback internal channel is monitored.
 
 **Evidence:** Release notes template (Support section) (`docs/marketing/release_notes_template.md`).
 

@@ -215,6 +215,9 @@ function buildMockDashboard(): LoaderData {
       tags: ["priority"],
       suggestedReplyId: "ack_delay",
       suggestedReply: "Hi Jamie, thanks for your patience. We're expediting your order update now.",
+      messages: [],
+      aiSuggestion: null,
+      aiSuggestionEnabled: false,
     },
   ];
 
@@ -327,7 +330,7 @@ export default function OperatorDashboard() {
         <TileCard
           title="Sales Pulse"
           tile={data.sales}
-          render={(summary) => <SalesPulseTile summary={summary} />}
+          render={(summary) => <SalesPulseTile summary={summary} enableModal />}
           testId="tile-sales-pulse"
         />
 
@@ -348,7 +351,9 @@ export default function OperatorDashboard() {
         <TileCard
           title="CX Escalations"
           tile={data.escalations}
-          render={(conversations) => <CXEscalationsTile conversations={conversations} />}
+          render={(conversations) => (
+            <CXEscalationsTile conversations={conversations} enableModal />
+          )}
           testId="tile-cx-escalations"
         />
 

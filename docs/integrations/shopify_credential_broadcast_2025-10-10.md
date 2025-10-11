@@ -9,7 +9,7 @@ expires: 2025-10-12
 # Shopify Staging Credential Broadcast — 2025-10-10
 
 ## Recipients & Channels
-- QA/Product/Support distros via Slack #launch-readiness (mirrored to qa-team@ / product@ / support@ aliases)
+- QA/Product/Support distros via #launch-readiness (internal channel) (mirrored to qa-team@ / product@ / support@ aliases)
 - Archive: `feedback/product.md`, `feedback/integrations.md`, Linear DEPLOY-147 comment
 
 ## Message (2025-10-10T07:35Z)

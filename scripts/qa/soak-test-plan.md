@@ -245,7 +245,7 @@ artifacts/qa/
    - Impact: Full soak testing limited to local SQLite
    - Workaround: Run on local dev with `?mock=1` mode
 
-3. **AI Integration**: Anthropic API keys not configured
+3. **AI Integration**: OpenAI API keys not configured
    - Owner: Manager
    - Impact: Cannot validate AI suggestion rendering in approval flow
    - Workaround: Mock AI suggestions using fixtures (see `tests/fixtures/ai/`)

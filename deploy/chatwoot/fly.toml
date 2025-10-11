@@ -1,0 +1,44 @@
+app = "hotdash-chatwoot"
+primary_region = "ord"
+
+[build]
+  image = "chatwoot/chatwoot:latest"
+
+[env]
+  RAILS_ENV = "production"
+  NODE_ENV = "production"
+  INSTALLATION_ENV = "fly"
+  ENABLE_ACCOUNT_SIGNUP = "false"
+  # FRONTEND_URL / BACKEND_URL, database, redis, smtp, and secret values are provided via fly secrets.
+
+[processes]
+  web = "bundle exec rails server -b 0.0.0.0 -p 3000"
+  worker = "bundle exec sidekiq -C config/sidekiq.yml"
+
+[vm]
+  memory = "512mb"
+  cpus = 1
+
+[[services]]
+  processes = ["web"]
+  internal_port = 3000
+  protocol = "tcp"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.http_checks]]
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/api"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443

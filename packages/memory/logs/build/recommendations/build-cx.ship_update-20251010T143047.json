@@ -1,0 +1,8 @@
+{
+  "id": "build-cx.ship_update-20251010T143047",
+  "caseId": "cx.ship_update",
+  "summary": "Logged regression template output for CX ship_update scenario.",
+  "output": "Hi Alex, thanks for flagging the delay. I've escalated this to our carrier and will email you a fresh tracking update as soon as they reply — I'll follow up within the next few hours.",
+  "artifact": "artifacts/ai/prompt-regression-2025-10-10-134723.json",
+  "createdAt": "2025-10-10T14:30:47.060Z"
+}

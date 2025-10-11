@@ -1,0 +1,6 @@
+2025-10-10T14:20:11.789Z INFO  Starting dashboard purge dry-run (retentionEscalationsDays=30)
+2025-10-10T14:20:11.912Z INFO  Supabase: chatwoot.escalations - records evaluated: 12, toDelete: 0
+2025-10-10T14:20:11.913Z INFO  Supabase: shopify.sales_pulse - records evaluated: 18, toDelete: 0
+2025-10-10T14:20:11.913Z INFO  Supabase: analytics.ga_summary - records evaluated: 6, toDelete: 0
+2025-10-10T14:20:11.914Z INFO  SQLite: session cache rows evaluated: 42, toDelete: 0
+2025-10-10T14:20:11.914Z INFO  Dry-run finished — no deletions required; retention windows satisfied.

@@ -1,0 +1,8 @@
+{
+  "id": "build-cx.refund_offer-20251010T145854",
+  "caseId": "cx.refund_offer",
+  "summary": "Daily log capture (2025-10-12) for cx.refund_offer template.",
+  "output": "I'm really sorry this item arrived faulty, Jordan. I can process a refund right away or ship a replacement if you prefer — let me know which works best and I’ll queue it immediately.",
+  "artifact": "artifacts/ai/prompt-regression-2025-10-10-134723.json",
+  "createdAt": "2025-10-10T14:58:54.316Z"
+}

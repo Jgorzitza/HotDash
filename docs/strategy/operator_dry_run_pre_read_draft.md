@@ -68,6 +68,6 @@ expires: 2025-10-15
 3. Publish link to finalized pre-read in #occ-product 24h before session and include in daily manager sync notes.
 
 ## 2025-10-09 Update
-- Pinged enablement/support/product Slack thread (10:45 ET) to confirm slot + staging access timeline; waiting on response before locking attendee roster.
+- Pinged enablement/support/product internal channel thread (10:45 ET) to confirm slot + staging access timeline; waiting on response before locking attendee roster.
 - Added backlog references (OCC-212, OCC-221, OCC-230) to ensure dry run dependencies tracked in Linear.
 - Drafted success metric survey questions for post-session follow-up; will attach once facilitator list is confirmed.

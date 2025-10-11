@@ -2,8 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { CXEscalationsTile } from "../../app/components/tiles/CXEscalationsTile";
+import type { EscalationConversation } from "../../app/services/chatwoot/types";
 
-const conversations = [
+const conversations: EscalationConversation[] = [
   {
     id: 101,
     inboxId: 1,

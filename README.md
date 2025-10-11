@@ -12,8 +12,9 @@ This repo contains the full web application, service layer integrations, agent d
 - **Node.js** ≥ 20.10
 - **npm** (ships with Node) or pnpm/yarn if you prefer
 - **Shopify CLI** (`npm install -g @shopify/cli@latest`)
+- **Supabase CLI** (`npm install -g supabase`)
 - **Shopify Partner account** + development store
-- **Supabase project** (for decision/fact persistence)
+- **Supabase project** (remote) _and_ the local Supabase containers started via `supabase start`
 
 ### 1. Clone & Install
 ```bash
@@ -23,34 +24,56 @@ npm install
 ```
 
 ### 2. Configure Environment
-Create a `.env` file (or export the values) with the following variables:
+1. Start the Supabase containers (first run can take ~2 minutes):
 
-```dotenv
-# Shopify app configuration
-SHOPIFY_API_KEY=your_app_key
-SHOPIFY_API_SECRET=your_app_secret
-SHOPIFY_APP_URL=https://your-ngrok-or-hosted-url
-SCOPES=write_products,read_orders
+   ```bash
+   supabase start
+   ```
 
-# Supabase memory / decisions
-SUPABASE_URL=https://your-supabase-project.supabase.co
-SUPABASE_SERVICE_KEY=your_service_role_key
+   Local services expose:
 
-# Optional: override default SQLITE dev db
-DATABASE_URL=file:dev.sqlite
-```
+   - Postgres: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`
+   - REST: `http://127.0.0.1:54321`
+   - Studio: `http://127.0.0.1:54323`
 
-> ℹ️  CI uses `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, and `DATABASE_URL`. Mirror these values in GitHub Actions secrets so workflows succeed.
+   You can confirm any time with `supabase status`.
+
+2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Keep this file out of git — `.env*` is already ignored.
+
+3. Load the env file when working locally:
+
+   ```bash
+   export $(grep -v '^#' .env.local | xargs)
+   ```
+
+   > CI pulls secrets from GitHub environments; no manual export required in pipelines.
 
 ### 3. Initialize the Project
 ```bash
 npm run setup   # prisma generate + migrate deploy
-npm run dev     # starts Shopify dev tunnel + Remix/React Router app
+npm run dev     # starts Shopify dev tunnel + React Router 7 app
 ```
 Press `p` in the CLI output to open the embedded admin URL and complete app installation in your development store.
 
 ### 4. Verification
 Once the dashboard loads, ensure tiles render in mock mode. Add real credentials (Shopify, Chatwoot, GA) to move to live data.
+
+### 5. Tail Supabase logs (optional)
+```bash
+scripts/ops/tail-supabase-logs.sh
+```
+The helper uses the Supabase CLI to stream local events. Pass a project ref to target a remote instance: `scripts/ops/tail-supabase-logs.sh <project-ref>`.
+
+---
+
+## Shopify Integration Guardrails
+- Always reference the Shopify developer MCP (`shopify-dev-mcp`) for APIs, schema, and CLI workflows—no guessing or undocumented endpoints.
+- React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
+- Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
+
+### AI Integration Notes
+- Retrieve the staging OpenAI API key from `vault/occ/openai/api_key_staging.env` before running AI tooling.
+- Set `OPENAI_API_KEY` in your shell (`source vault/occ/openai/api_key_staging.env`) so `npm run ai:build-index` and regression scripts can talk to OpenAI.
 
 ---
 
@@ -60,11 +83,13 @@ Once the dashboard loads, ensure tiles render in mock mode. Add real credentials
 | ---- | ------- | ----- |
 | Start dev server | `npm run dev` | Spins up Shopify CLI + Vite dev server |
 | Run unit tests | `npm run test:unit` | Vitest test suite |
-| Run Playwright smoke | `npm run test:e2e` | Browser tests with mock data |
+| Run Playwright smoke | `npm run test:e2e` | Browser tests with mock data (automatically logs into Admin using `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) |
+| Shopify Admin embed smoke | `npx playwright test tests/playwright/admin-embed.spec.ts` | Uses the Shopify CLI tunnel and staging store credentials; LOGIN must be provided via `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`. |
 | Lint | `npm run lint` | ESLint configured with project rules |
 | Type check | `npm run typecheck` | React Router typegen + `tsc --noEmit` |
 | Nightly metrics rollup | `npm run ops:nightly-metrics` | Writes aggregate facts (`metrics.activation.rolling7d`, `metrics.sla_resolution.rolling7d`) |
 | Backfill Chatwoot facts | `npm run ops:backfill-chatwoot` | One-time script to add breach timestamps |
+| Tail Supabase logs | `scripts/ops/tail-supabase-logs.sh` | Streams local or remote Supabase logs via the CLI |
 
 GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). Ensure repository secrets include the environment variables listed above before enabling schedules.
 
@@ -73,10 +98,10 @@ GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). E
 ## Project Structure Highlights
 
 ```
-app/                    # Remix/React Router app code
+app/                    # React Router 7 app code
   components/tiles/     # Dashboard tiles (Sales, Inventory, Ops Pulse, etc.)
   services/             # Shopify, Chatwoot, GA clients & metrics aggregation
-  routes/               # Remix route loaders/actions
+  routes/               # React Router data routes and actions
 packages/               # Shared integrations + memory adapters
 docs/                   # Direction docs, strategy, design specs
 scripts/ops/            # Operational scripts (backfill, nightly metrics)
@@ -89,14 +114,40 @@ Canonical workflow documentation lives in:
 - `docs/strategy/initial_delivery_plan.md` – roadmap
 - `docs/data/nightly_metrics.md` – telemetry automation playbook
 
+### Supabase Edge Function — Observability
+We ship a lightweight edge function (`supabase/functions/occ-log`) that centralises structured logs in Supabase.
+
+Deploy locally:
+
+```bash
+supabase functions serve occ-log --env-file .env.local
+```
+
+Deploy to a remote project:
+
+```bash
+supabase functions deploy occ-log --project-ref <your-project-ref>
+supabase secrets set --project-ref <your-project-ref> SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+```
+
+After deployment, call it from the app or scripts:
+
+```bash
+curl -X POST "https://<project>.functions.supabase.co/occ-log" \
+  -H "Content-Type: application/json" \
+  -d '{"level":"INFO","message":"playwright smoke started","metadata":{"suite":"admin"}}'
+```
+
+> Run `psql` (or Supabase SQL editor) with `supabase/sql/observability_logs.sql` once per project to create the backing table.
+
 ---
 
 ## Working With Shopify & Supabase
 
-1. Run `npm run dev` to start the Shopify CLI tunnel and obtain the install URL.
-2. Install the app in your development store.
-3. Populate `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` so decision logs and telemetry facts persist beyond SQLite.
-4. To switch to production, set `NODE_ENV=production`, configure a persistent database (e.g., Postgres), and update `shopify.app.toml`/`shopify.web.toml` as outlined in Shopify’s deployment docs.
+1. Start the Supabase containers locally (`supabase start`) and export `.env.local` so `DATABASE_URL` points at the local Postgres instance (`postgresql://postgres:postgres@127.0.0.1:54322/postgres`).
+2. Run `npm run dev` to start the Shopify CLI tunnel and obtain the install URL.
+3. Install the app in your development store (press `p` in the CLI prompt) and use the embedded admin experience.
+4. For staging/production, mirror secrets from vault to GitHub (`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`) and update `shopify.app.toml`/`shopify.web.toml` according to Shopify’s deployment docs.
 
 ---
 

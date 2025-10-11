@@ -12,8 +12,8 @@ expires: 2025-10-17
 - **Connection Secrets:** Staging `DATABASE_URL` delivered (vault/occ/supabase/database_url_staging.env) and mirrored to GitHub `staging` environment; coordinate with QA to refresh `.env.staging` and begin migrations.
 - **Admin Store Access:** QA, Product, and Support service accounts confirmed invited + accepted (audit log `artifacts/integrations/shopify/2025-10-10/store-invite-audit-20251010T0730Z.md`); access instructions broadcast 07:35 UTC.
 - **Fixtures:** Offline fixtures for orders, inventory, and approvals stored under `tests/fixtures/shopify/`; require refresh once Admin data connects to staging Postgres.
-- **Fly Staging Host:** Verified `https://hotdash-staging.fly.dev/app?mock=1` reachable (HTTP 200 captured at 02:50 UTC and refreshed at 06:20 UTC — see `artifacts/integrations/shopify/2025-10-10/curl_hotdash-staging_2025-10-10T02-50-44Z.log` and `...T06-20-00Z.log`); access instructions distributed via 07:35 UTC broadcast.
-- **Live Path Check:** `https://hotdash-staging.fly.dev/app?mock=0` still under latency watch (410 → pending sub-300 ms evidence); reliability running follow-up smoke to close DEPLOY-147.
+- **Fly Staging Host:** Verified `https://hotdash-staging.fly.dev/app?mock=1` reachable (HTTP 200 captured at 02:50 UTC, 06:20 UTC, and 19:26 UTC — see `artifacts/integrations/shopify/2025-10-10/curl_hotdash-staging_2025-10-10T02-50-44Z.log`, `...T06-20-00Z.log`, and `curl_mock1_2025-10-10T19-26-14Z.log`); access instructions distributed via 07:35 UTC broadcast.
+- **Live Path Check:** `https://hotdash-staging.fly.dev/app?mock=0` still under latency watch (410 → pending sub-300 ms evidence); latest probe at 19:26 UTC returned 410 in 173 ms (`curl_mock0_2025-10-10T19-26-34Z.log`); reliability running follow-up smoke to close DEPLOY-147.
 - **CLI Secret Evidence:** Captured 07:18 UTC sha256 for `vault/occ/shopify/cli_auth_token_staging.env` (`artifacts/integrations/shopify/2025-10-10/cli-secret-20251010T071858Z.log`); pending Fly `secrets list` attachment after DEPLOY-147 closure.
 
 ## Validation Scope
@@ -48,6 +48,7 @@ expires: 2025-10-17
 - **2025-10-10 07:36 UTC:** Logged Linear note on DEPLOY-147 confirming credentials/invites complete and latency evidence outstanding (`DEPLOY-147-linear-comment-20251010T0736Z.md`).
 - **2025-10-10 17:30 UTC:** Followed direction `docs/directions/integrations.md:24-27`; pinged deployment to close `DEPLOY-147`, deliver Shopify shop access details, and confirm readiness dashboard updates. Awaiting acknowledgment; escalate to manager if no response by 2025-10-10 19:00 UTC.
 - **2025-10-10 19:05 UTC:** No deployment response yet; documented pending follow-up and preparing escalation note for manager per direction if silence persists.
+- **2025-10-10 19:26 UTC:** Re-ran `curl` probes on staging (`mock=1` 200 in 349 ms, `mock=0` 410 in 173 ms) and archived outputs (`curl_mock1_2025-10-10T19-26-14Z.log`, `curl_mock0_2025-10-10T19-26-34Z.log`) for DEPLOY-147 evidence.
 - **2025-10-10 22:30 UTC:** Supabase staging `DATABASE_URL` confirmed delivered (vault + GitHub). Next step: coordinate with QA to start migrations once Shopify credentials land; DEPLOY-147 closure remains blocking store access.
 - **2025-10-10 22:45 UTC:** Direction re-read; coordinating with reliability to execute MCP staging auth helper and capture credential bundle + store invite details before closing DEPLOY-147 and distributing to deployment/QA/product (resolved 07:32 UTC).
 - **2025-10-10 22:55 UTC:** Verified staging Shopify vault entries (domain, API key, secret, CLI token) and captured HTTP 200 `curl -I https://hotdash-staging.fly.dev/app?mock=1` evidence for readiness artifacts; awaiting credential bundle before notifying QA/product (broadcast sent 07:35 UTC).

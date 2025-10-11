@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
 import { spawn } from 'node:child_process'
-import path from 'node:path'
-import fs from 'node:fs'
 
 const env = { ...process.env }
 if (!env.HOST) env.HOST = '0.0.0.0'
 if (!env.PORT) env.PORT = '3000'
 
-// place Sqlite3 database on volume
-const source = path.resolve('/dev.sqlite')
-const target = '/data/' + path.basename(source)
-if (!fs.existsSync(source) && fs.existsSync('/data')) fs.symlinkSync(target, source)
+if (!env.DATABASE_URL) {
+  env.DATABASE_URL = 'postgresql://postgres:postgres@127.0.0.1:54322/postgres'
+  console.warn('[dbsetup] DATABASE_URL not set, defaulting to local Supabase Postgres.');
+}
 
 // prepare database
 await exec('npx prisma migrate deploy')

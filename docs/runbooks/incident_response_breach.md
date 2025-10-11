@@ -9,11 +9,11 @@ expires: 2025-10-14
 # Incident Response Runbook — Data Breach & Privacy Events
 
 ## Purpose
-Provide a step-by-step playbook for detecting, containing, and notifying stakeholders about security or privacy incidents impacting HotDash data (Shopify, Chatwoot, Supabase, Google Analytics MCP, Anthropic). This runbook aligns with GDPR/CCPA timelines and manager direction requiring evidence of drills in `docs/runbooks/`.
+Provide a step-by-step playbook for detecting, containing, and notifying stakeholders about security or privacy incidents impacting HotDash data (Shopify, Chatwoot, Supabase, Google Analytics MCP, OpenAI). This runbook aligns with GDPR/CCPA timelines and manager direction requiring evidence of drills in `docs/runbooks/`.
 
 ## Scope
 - Unauthorized access, exfiltration, or modification of personal data (operator emails, Chatwoot transcripts, Shopify data, Supabase decision logs).
-- Credential exposures (Shopify, Supabase, Chatwoot, GA MCP, Anthropic) with evidence of misuse or high risk.
+- Credential exposures (Shopify, Supabase, Chatwoot, GA MCP, OpenAI) with evidence of misuse or high risk.
 - Third-party processor incidents reported via vendor status pages or contracts.
 
 ---
@@ -24,7 +24,7 @@ Provide a step-by-step playbook for detecting, containing, and notifying stakeho
 - **Engineering Lead** — Provides forensic support, log extraction, and patches.
 - **Support Lead** — Handles operator/internal communications and customer inquiries.
 - **Marketing/Comms** — Approves external messaging once compliance signs off.
-- **Vendors** — Supabase support, Shopify Partner Support, Chatwoot success, Anthropic support, GA MCP contact (see vendor sheet in progress).
+- **Vendors** — Supabase support, Shopify Partner Support, Chatwoot success, OpenAI enterprise support, GA MCP contact (see vendor sheet in progress).
 
 Document contact list in `docs/compliance/vendor_contacts.md` (placeholder) before production launch.
 
@@ -53,7 +53,7 @@ Document contact list in `docs/compliance/vendor_contacts.md` (placeholder) befo
 2. Disable compromised integrations:
    - Revoke Shopify app credentials in Partner dashboard.
    - Regenerate Supabase service key; restrict RLS to read-only until validated.
-   - Disable Chatwoot tokens via admin UI; pause Anthropic key if prompts leaked.
+   - Disable Chatwoot tokens via admin UI; revoke OpenAI key (via LlamaIndex service config) if prompts leaked.
 3. Block access to affected tiles/features by toggling feature flags (`app/config/featureFlags.ts`) or environment variables.
 4. Snapshot current databases (Prisma + Supabase) for forensics before modifications.
 

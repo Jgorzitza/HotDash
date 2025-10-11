@@ -40,15 +40,16 @@ Best,
 Casey Lin
 Compliance Lead, HotDash
 
-## Anthropic
-Subject: Anthropic Enterprise Terms & Data Handling Confirmation
+## OpenAI
+Subject: OpenAI Enterprise Terms & Data Handling Confirmation
 
-Hi Anthropic Team,
+Hi OpenAI Team,
 
-We're integrating Anthropic via the HotDash CX Escalations workflow. To complete our DPIA, please send:
+We're integrating OpenAI via the HotDash CX Escalations workflow. To complete our DPIA, please send:
 1. Enterprise Terms and Data Processing Addendum.
 2. Statement on prompt retention/logging (ability to opt out).
 3. Supported regional endpoints for API traffic (we prefer EU availability) and any cross-border transfer safeguards.
+4. SOC 2 Type II executive summary or equivalent assurance report.
 
 Our aim is to begin staged rollout after 2025-10-18 pending compliance sign-off.
 

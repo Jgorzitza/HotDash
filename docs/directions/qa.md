@@ -2,9 +2,9 @@
 epoch: 2025.10.E1
 doc: docs/directions/qa.md
 owner: manager
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-12
 doc_hash: TBD
-expires: 2025-10-18
+expires: 2025-10-19
 ---
 # QA — Direction (Operator Control Center)
 ## Canon
@@ -12,19 +12,47 @@ expires: 2025-10-18
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
 - MCP Allowlist: docs/policies/mcp-allowlist.json
+- Credential Map: docs/ops/credential_index.md
+- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
 
 > Manager authored. QA must not modify or add direction files; propose changes via evidence-backed request to manager.
 
 - Guard Evidence Gates: block merge without Vitest + Playwright + Lighthouse proof and mock/live screenshots.
-- Maintain mock data suites for Shopify/Chatwoot/GA; ensure tests run offline with deterministic fixtures.
+- Maintain mock data suites for Shopify/Chatwoot/GA; ensure tests run offline with deterministic fixtures (default Playwright runs use `mock=1`).
+- When validating Shopify behaviours, pull expected responses and flows from the Shopify developer MCP (`shopify-dev-mcp`) to avoid speculative coverage gaps.
 - Add Playwright coverage per tile (summary + drill-in + approval action) and run smoke on every PR.
 - Track regression matrix in `feedback/qa.md`; call out API rate-limit or credential blockers daily.
-- Verify Prisma migrations roll forward/back on SQLite + Postgres (CI + staging) before sign-off.
+- Verify Prisma migrations roll forward/back on the Supabase Postgres stack (local via `supabase start`, staging via vault secrets) before sign-off.
 - Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval.
+- Stack guardrails: audit against `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex) and flag any divergence.
+- Reference docs/dev/admin-graphql.md when validating Admin API flows and docs/dev/storefront-mcp.md for storefront agent coverage.
+- Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval. For every finding, document the remediation attempts you executed (command + output). Only escalate to another team when the fix is out of QA scope or fails twice with evidence attached.
 
-## Current Sprint Focus — 2025-10-11
-- After deployment force-pushes, run `git fetch --all --prune` and confirm `git status` is clean; log the sanitized head in `feedback/qa.md`.
-- Keep staging Playwright/Prisma drills paused until reliability rotates Supabase credentials; finalize the post-rotation checklist so execution can start immediately.
-- Coordinate with engineering/data/AI on fixture refresh needs and flag any blockers expected once new secrets land.
-- Prepare to capture evidence (Playwright, Lighthouse, Prisma) in the order agreed so DEPLOY-147 can close quickly post-rotation.
+## Current Sprint Focus — 2025-10-12
+QA operates as the audit arm of the team. Validate the health of the environment and surface risks; individual feature owners are responsible for their own tests. Execute the steps below in parallel and log findings in `feedback/qa.md`.
+
+1. **Local Supabase verification**
+   - Run `supabase start` and export `.env.local` before executing test suites (see `docs/runbooks/supabase_local.md`). Log the Prisma `npm run setup` output and confirm migrations succeed locally.
+   - Tail logs via `scripts/ops/tail-supabase-logs.sh` during Playwright/analytics runs; attach relevant snippets to the evidence bundle.
+
+2. **Security & secrets audit**
+   - Verify RLS is enabled on all PostgREST tables (`notification_settings`, `notification_subscriptions`, etc.) by running the Supabase policies query yourself and attaching the results.
+   - Check vault/GitHub secrets for accuracy (embed token, Supabase DSN, OpenAI key). Confirm the refreshed `SHOPIFY_EMBED_TOKEN_STAGING` matches what reliability captured via `/app/tools/session-token`; raise an incident if it drifts. Confirm no secrets leak into git history and file an immediate scrub plan if you discover one. Reference `docs/runbooks/shopify_embed_capture.md` for the canonical capture workflow.
+
+3. **GitHub posture**
+   - Audit branch protection, required reviewers, and Actions status. Flag missing reviewers or failing workflows.
+   - Ensure new secrets (e.g., `SHOPIFY_EMBED_TOKEN_STAGING`) appear in the environment once deployment mirrors them.
+
+4. **Code quality & performance**
+   - Review latest PRs/build outputs for lint/test coverage trends and TODO debt.
+   - Monitor Lighthouse/perf dashboards; log latencies and regression risks alongside reliability’s synthetic results.
+
+5. **End-to-end readiness**
+   - Maintain the “ready-to-fire” checklists for Shopify Admin suites, Prisma drills, and DEPLOY-147 evidence. Execute immediately when reliability clears the embed token + latency thresholds, and log the full command/output bundle.
+   - Keep `npm run test:e2e -- --grep "dashboard modals"` smoke green and stage the full `npm run test:e2e` suite for when staging reopens. Use the Admin login credentials (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) for live runs—no manual tokens. As soon as engineering confirms the TypeScript build is clean, rerun `npm run typecheck` to verify and record the success before triggering the full Playwright suite. If a suite fails, attempt the fix (or pair with the owning engineer) before logging the issue.
+
+6. **Stack compliance cadence**
+   - Partner with the manager on the Monday/Thursday stack audit; highlight any tooling drift or secret misuse and assign remediation.
+
+7. **Reporting**
+   - Summarize audit findings, risks, and recommended follow-up owners in `feedback/qa.md` and notify impacted teams.

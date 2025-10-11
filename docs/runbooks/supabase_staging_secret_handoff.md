@@ -16,7 +16,7 @@ expires: 2025-10-17
 | Variable | Environment | Owner | Notes |
 | --- | --- | --- | --- |
 | `SUPABASE_URL` | Local development / CI | Reliability → AI | Staging project URL (e.g., `https://<project>.supabase.co`) with Row Level Security enabled. |
-| `SUPABASE_SERVICE_KEY` | Local development / CI | Reliability → AI | Service role key scoped to `decision_log` and `facts` tables. Store in 1Password vault and mirror into local `.env`. |
+| `SUPABASE_SERVICE_KEY` | Local development / CI | Reliability → AI | Service role key scoped to `decision_log` and `facts` tables. Store in `vault/occ/supabase/service_key_staging.env` and mirror into local `.env`. |
 | `SUPABASE_URL_STAGING` | GitHub `staging` environment | Reliability → Deployment | Optional alias if staging differs from dev; reuse `SUPABASE_URL` if identical. |
 | `SUPABASE_SERVICE_KEY_STAGING` | GitHub `staging` environment | Reliability → Deployment | Service role key for staging deploys; follow 90-day rotation cadence per `docs/runbooks/secret_rotation.md`. |
 

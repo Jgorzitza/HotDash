@@ -1,73 +1,23 @@
 {
-  "generatedAt": "2025-10-10T07:36:05.925Z",
-  "source": "/home/justin/HotDash/hot-dash/artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson",
-  "timeWindow": {
-    "start": "2025-10-09T14:05:22.318Z",
-    "end": "2025-10-09T14:22:57.118Z"
-  },
+  "generatedAt": "2025-10-10T19:26:50.307Z",
+  "source": "/home/justin/HotDash/hot-dash/artifacts/logs/supabase_decision_log_export_2025-10-10T14-50-23Z.ndjson",
+  "timeWindow": null,
   "totals": {
-    "records": 4,
-    "success": 3,
-    "failure": 1,
+    "records": 0,
+    "success": 0,
+    "failure": 0,
     "unknown": 0,
-    "failureRate": 0.25
+    "failureRate": 0
   },
-  "statusBreakdown": [
-    {
-      "status": "SUCCESS",
-      "count": 3
-    },
-    {
-      "status": "TIMEOUT",
-      "count": 1
-    }
-  ],
+  "statusBreakdown": [],
   "scopeBreakdown": [],
-  "durationsMs": {
-    "count": 4,
-    "average": 551.47,
-    "p50": 241.12,
-    "p95": 1500.55,
-    "max": 1500.55
-  },
-  "retries": {
-    "count": 4,
-    "average": 0.75,
-    "max": 2,
-    "distribution": {
-      "0": 2,
-      "1": 1,
-      "2": 1
-    }
-  },
+  "durationsMs": null,
+  "retries": null,
   "errors": {
-    "byCode": [
-      {
-        "code": "ETIMEDOUT",
-        "count": 1,
-        "percentage": 100,
-        "sampleMessages": []
-      }
-    ]
+    "byCode": []
   },
-  "hourlyBuckets": [
-    {
-      "hour": "2025-10-09T14:00:00.000Z",
-      "total": 4,
-      "success": 3,
-      "failure": 1
-    }
-  ],
-  "failureSamples": [
-    {
-      "lineNumber": 3,
-      "timestamp": "2025-10-09T14:15:12.483Z",
-      "decisionId": "103",
-      "errorCode": "ETIMEDOUT",
-      "retryCount": 2,
-      "durationMs": 1500.55
-    }
-  ],
+  "hourlyBuckets": [],
+  "failureSamples": [],
   "parse": {
     "skippedLines": 0,
     "samples": []
