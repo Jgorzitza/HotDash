@@ -33,3 +33,8 @@ expires: 2025-10-21
 1. Manager to provide signed agreements or download links.
 2. Archive documents in respective folders and update status with receipt date.
 3. Log summary in `feedback/compliance.md` when evidence arrives.
+
+## Status as of 2025-10-11
+- Supabase (#SUP-49213): Follow-up logged docs/compliance/evidence/vendor_followups_2025-10-11_supabase.md
+- GA MCP (OCC-INF-221): Follow-up logged docs/compliance/evidence/vendor_followups_2025-10-11_ga_mcp.md
+- OpenAI DPA: Follow-up logged docs/compliance/evidence/vendor_followups_2025-10-11_openai.md
