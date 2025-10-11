@@ -40,6 +40,7 @@
     "node": ">=20.10"
   },
   "dependencies": {
+    "@google-analytics/data": "^4.12.1",
     "@prisma/client": "^6.2.1",
     "@react-router/dev": "^7.9.1",
     "@react-router/fs-routes": "^7.9.1",
@@ -71,6 +72,7 @@
     "@types/react-dom": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
+    "@vitest/coverage-v8": "^2.1.9",
     "dotenv": "^16.4.5",
     "eslint": "^8.38.0",
     "eslint-import-resolver-typescript": "^3.6.1",
