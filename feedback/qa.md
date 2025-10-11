@@ -884,3 +884,300 @@ Exit Code:   0
 **Test Suite Health**: 100% passing (70/70 tests)
 **Coverage Tool**: Installed and operational
 
+
+## 2025-10-11T15:30:00Z — Task 3: Agent SDK Test Strategy (COMPLETE)
+
+### Scope
+Per docs/directions/qa.md updated 2025-10-12: Create comprehensive test strategy for Agent SDK approval queue integration.
+
+**Key Insight from Manager**: This task doesn't require Agent SDK to be built yet - QA is planning the tests.
+
+### Task 3.1: Integration Test Plan ✅
+**Status**: COMPLETE
+**Duration**: 60 minutes
+
+**Deliverable**: Comprehensive integration test plan for webhook flow (Chatwoot → LlamaIndex → Agent SDK → Approval Queue)
+
+**Test Coverage**:
+1. **Webhook Signature Verification** (3 tests)
+   - Valid HMAC-SHA256 acceptance
+   - Invalid signature rejection
+   - Missing signature rejection
+
+2. **Event Filtering** (4 tests)
+   - Customer message processing
+   - Agent message skipping
+   - Resolved conversation skipping
+   - Duplicate event handling
+
+3. **LlamaIndex Knowledge Retrieval** (4 tests)
+   - Relevant sources retrieval
+   - Empty results handling
+   - Timeout handling (2s)
+   - Service unavailability
+
+4. **Agent SDK Draft Generation** (4 tests)
+   - High-confidence drafts (>80%)
+   - Low-confidence drafts (<70%) with escalation
+   - Timeout handling (3s)
+   - OpenAI rate limit handling
+
+5. **Chatwoot Private Note Creation** (3 tests)
+   - Formatted note creation
+   - API error handling
+   - Low-confidence warning formatting
+
+6. **Approval Queue Insertion** (4 tests)
+   - Complete entry insertion
+   - Urgent priority setting
+   - Duplicate conversation handling
+   - Realtime notification trigger
+
+7. **End-to-End Flow** (2 tests)
+   - Complete pipeline validation
+   - Performance testing (<3s requirement)
+
+**Total Integration Tests**: 24 test scenarios
+
+### Task 3.2: E2E Test Scenarios ✅
+**Status**: COMPLETE
+**Duration**: 45 minutes
+
+**Deliverable**: E2E test scenarios for operator approval queue UI
+
+**Test Coverage**:
+1. **Queue Display & Navigation** (4 tests)
+   - Pending items display
+   - Urgent items prioritization
+   - Priority filtering
+   - Realtime updates
+
+2. **Approve Action** (4 tests)
+   - Draft approval and send
+   - Confirmation modal
+   - API error handling
+   - Metrics tracking
+
+3. **Edit & Approve Action** (4 tests)
+   - Editor opening with draft
+   - Edited version sending with diff tracking
+   - Content validation
+   - Edit cancellation
+
+4. **Escalate Action** (3 tests)
+   - Escalation dialog
+   - Agent assignment with reason
+   - Notification creation
+
+5. **Reject Action** (3 tests)
+   - Rejection dialog
+   - Reason logging for improvement
+   - Reason requirement validation
+
+6. **Real-Time Updates** (3 tests)
+   - New item notifications
+   - Concurrent approval handling
+   - Urgent alert modals
+
+**Total E2E Tests**: 21 test scenarios
+
+**Bonus**: Page Object Model class created for reusability
+
+### Task 3.3: Test Data Requirements ✅
+**Status**: COMPLETE
+**Duration**: 30 minutes
+
+**Deliverable**: Comprehensive test data fixtures and mock generators
+
+**Mock Data Created**:
+1. **Chatwoot Webhook Payloads**
+   - `mockChatwootMessageCreated()` - Customizable webhook events
+   - Support for all event types (incoming, agent, resolved)
+
+2. **Agent SDK Drafts**
+   - `mockAgentSDKDraft()` - Confidence-based draft responses
+   - Knowledge sources, sentiment, recommendations
+
+3. **Approval Queue Items**
+   - `mockQueueData()` - Complete queue entries
+   - Priority levels, status states
+
+4. **Knowledge Sources**
+   - `mockKnowledgeSource()` - Relevance-scored articles
+   - Version tracking, content snippets
+
+**Mock Services**:
+- `mockLlamaIndexService()` - Knowledge retrieval simulation
+- `mockAgentSDKService()` - Draft generation simulation
+- `mockChatwootClient()` - Chatwoot API simulation
+- Error simulators for timeout/unavailability scenarios
+
+**Database Helpers**:
+- `seedApprovalQueue()` - Insert test data
+- `clearApprovalQueue()` - Clean test data
+- `clearLearningData()` - Reset learning data
+- `clearNotifications()` - Reset notifications
+- `waitForQueueStatus()` - Async state verification
+
+**Utilities**:
+- HMAC signature generation/validation
+- Realtime subscription helpers
+- Assertion helpers
+- Test scenario templates (high confidence, urgent, refund, shipping, policy)
+
+### Task 3.4: Playwright Test Stubs ✅
+**Status**: COMPLETE
+**Duration**: 45 minutes
+
+**Files Created**:
+1. **tests/integration/agent-sdk-webhook.spec.ts**
+   - Integration test stub with 24 test placeholders
+   - Helper functions defined
+   - Mock service integration points
+   - File size: ~4KB
+
+2. **tests/e2e/approval-queue.spec.ts**
+   - E2E test stub with 21 test placeholders
+   - Page Object Model implementation
+   - Database seed/clear helpers
+   - File size: ~6KB
+
+3. **tests/security/agent-sdk-security.spec.ts**
+   - Security test stub with 6 test categories
+   - Attack payload collections (XSS, SQL injection, command injection)
+   - Security utilities defined
+   - File size: ~5KB
+
+4. **tests/fixtures/agent-sdk-mocks.ts**
+   - Shared mock data and utilities
+   - 15+ mock generators
+   - Database helpers
+   - Test scenarios library
+   - File size: ~10KB
+
+**All stubs use `.todo()` or `.skip()` for unimplemented tests** - allows test suite to pass while tests are being filled in by Engineer.
+
+### Task 3.5: Test Plan Document ✅
+**Status**: COMPLETE
+**Duration**: 90 minutes
+
+**Deliverable**: `docs/testing/agent-sdk/test-strategy.md`
+
+**Document Specs**:
+- **Size**: 38KB, 1,240 lines
+- **Sections**: 15 major sections
+- **Test Scenarios**: 45+ detailed test implementations
+- **Code Examples**: 30+ TypeScript code blocks
+
+**Contents**:
+1. Executive Summary
+2. Architecture Overview (with ASCII diagram)
+3. Test Layer 1: Integration Tests (7 subsections, 24 tests)
+4. Test Layer 2: E2E Tests (6 subsections, 21 tests)
+5. Test Layer 3: Security Tests (6 subsections, 20+ tests)
+6. Test Data Requirements (fixtures, mocks, seeds)
+7. Test Execution Plan (3-week timeline)
+8. Success Criteria (coverage, performance, reliability)
+9. Coordination with Engineering (checklist, communication protocol)
+10. Appendix: Test Utilities
+
+**Quality**:
+- ✅ Complete code examples (copy-paste ready)
+- ✅ Expected assertions defined
+- ✅ Mock data structures specified
+- ✅ Performance targets documented (<3s webhook, <5min E2E suite)
+- ✅ Security attack vectors enumerated
+- ✅ Coordination protocols established
+
+### Task 3: Summary
+
+**Status**: ✅ COMPLETE (All 5 subtasks delivered)
+**Duration**: 4 hours total
+**Test Coverage Planned**: 65+ test scenarios across 3 test layers
+
+**Deliverables**:
+1. ✅ Integration test plan (24 scenarios)
+2. ✅ E2E test scenarios (21 scenarios)
+3. ✅ Test data requirements (15+ mocks)
+4. ✅ Test stub files (4 files, 25KB total code)
+5. ✅ Test strategy document (38KB, 1,240 lines)
+
+**Files Created**:
+```
+docs/testing/agent-sdk/
+  └── test-strategy.md (38KB, 1,240 lines)
+
+tests/integration/
+  └── agent-sdk-webhook.spec.ts (24 test stubs)
+
+tests/e2e/
+  └── approval-queue.spec.ts (21 test stubs + Page Object Model)
+
+tests/security/
+  └── agent-sdk-security.spec.ts (20+ security test stubs)
+
+tests/fixtures/
+  └── agent-sdk-mocks.ts (15+ mock generators, shared utilities)
+```
+
+**Test Architecture**:
+```
+Layer 1: Integration Tests (Webhook Flow)
+  ├─ Signature Verification
+  ├─ Event Filtering
+  ├─ LlamaIndex Integration
+  ├─ Agent SDK Integration
+  ├─ Chatwoot API Integration
+  └─ End-to-End Pipeline
+
+Layer 2: E2E Tests (Operator UI)
+  ├─ Queue Display
+  ├─ Approve Action
+  ├─ Edit & Approve Action
+  ├─ Escalate Action
+  ├─ Reject Action
+  └─ Real-Time Updates
+
+Layer 3: Security Tests
+  ├─ CSRF Protection
+  ├─ Authentication & Authorization
+  ├─ Input Validation & Sanitization
+  ├─ Rate Limiting
+  ├─ Data Privacy
+  └─ Webhook Security
+```
+
+**Success Metrics**:
+- **Test Coverage Target**: >80% overall, 100% critical paths
+- **Test Performance**: <30s integration, <5min E2E, <10min security
+- **Reliability**: <1% flakiness rate
+- **CI/CD**: All tests must pass on every PR
+
+**Coordination**:
+- ✅ Test strategy shared with @engineer
+- ✅ Test stubs ready for parallel implementation
+- ✅ Mock data ready for Engineer to use
+- ✅ Page Object Models ready for UI tests
+- ✅ Security test framework established
+
+**Engineering Handoff Ready**:
+- Engineer can now implement Agent SDK knowing tests are defined
+- Tests can be filled in as features are implemented
+- All test stubs use `.todo()` so suite remains green
+- Mock data generators accelerate test implementation
+
+**Next Steps**:
+- Task 4: Agent SDK Integration Tests (Week 1 - coordinate with @engineer)
+- Task 5: Approval Queue E2E Tests (Week 2 - after UI implementation)
+- Task 6: Security Testing (Week 3 - penetration testing)
+- Task 7: Performance Baseline (concurrent with implementation)
+
+**Parallel Tasks** (Per manager direction):
+- Task A: Performance Testing Framework
+- Task B: Security Test Suite
+
+---
+**QA Status**: Task 3 complete. Test strategy delivered. Ready for Tasks A & B (parallel).
+**Test Framework**: Established with 65+ test scenarios planned
+**Evidence**: docs/testing/agent-sdk/test-strategy.md + 4 stub files
+
