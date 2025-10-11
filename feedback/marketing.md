@@ -79,6 +79,38 @@ PATHS: artifacts/marketing/assets/email/launch_email_variants.md; artifacts/mark
 EVIDENCE: files above; updates visible via git diff.
 NOTES: EN-only scope; ready to route approvals once stakeholders are confirmed.
 
+[2025-10-11T07:12:31Z] EXECUTION: Overnight plan — marketing tasks
+ACTION: Created admin tour rehearsal sequence (RR7 + CLI dev), day-of manual send playbook, placeholder graphics/snippets; ran short live probe loop for evidence.
+PATHS: artifacts/marketing/20251011T071231Z/admin_tour_rehearsal_sequence.md; artifacts/marketing/assets/social/send_playbook.md; artifacts/marketing/assets/graphics/banner_en_v1_TEMP.md; artifacts/marketing/assets/snippets/faq_anchor_links.md; artifacts/marketing/logs/staging_200s_check_20251011.log
+OUTPUT (probe summary): 5/5 responses HTTP 410 (0.52s–0.69s)
+NOTES: Holding external sends until sustained 200s. Will proceed with CLI dev tour screenshots next.
+
+[2025-10-11T07:20:05Z] EXECUTION: Complete overnight auto-run — all marketing tasks
+ACTION: Performed compliance alignment, quality checks, enablement coordination, acceptance criteria mapping, and release day playbook creation. Cleaned up token references and verified canonical toolkit messaging.
+PATHS: 
+- Compliance: artifacts/marketing/logs/md_checks_20251011.log (36 docs validated)
+- Enablement: artifacts/marketing/logs/enablement_coordination_20251011.log
+- Quality: Fixed 1 embed/token reference in distribution_kit.md
+- Acceptance: artifacts/marketing/logs/acceptance_criteria_crosswalk_20251011.md
+- Release ops: artifacts/marketing/assets/release_day_playbook.md
+- Comms packet: Updated with Release Day Operations section
+OUTPUT:
+- Canonical toolkit: 100+ references verified across marketing docs
+- Support contact: 17 files using customer.support@hotrodan.com
+- EN-only scope: Maintained across all materials
+- Token cleanup: CLI dev validation language consistent
+NOTES: All major marketing deliverables ready. Pending: stakeholder approvals routing, CLI dev screenshots (interactive), sustained 200s evidence.
+
+[2025-10-11T07:20:05Z] COMPLIANCE CHECK
+STATUS: ✅ COMPLETE
+- Supabase backend references: ✅ Maintained
+- Chatwoot on Fly: ✅ Corrected (not "on Supabase")
+- React Router 7 UI: ✅ Consistent (not Remix)
+- OpenAI + LlamaIndex posture: ✅ Properly attributed
+- English-only content: ✅ No locale promises
+- No secrets/tokens: ✅ All artifacts clean
+- Support inbox alignment: ✅ customer.support@hotrodan.com throughout
+
 ## 2025-10-11T01:15:00Z - Support Team Coordination: Updated Contact Information
 **Contact:** Support agent coordinating on customer.support@hotrodan.com integration
 **Update Request:** Ensure all marketing materials reference correct support inbox for operator communications

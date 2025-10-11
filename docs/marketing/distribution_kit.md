@@ -8,7 +8,7 @@ expires: 2025-10-18
 ---
 # OCC Launch Distribution Kit (Hold Until QA + Embed Token Greenlights)
 
-Use this packet to ship internal/external notifications within minutes once QA posts the sustained mock=0 (<300 ms) evidence and reliability delivers the Shopify embed token. Update the placeholders with live timestamps + evidence links before sending.
+Use this packet to ship internal/external notifications within minutes once QA posts the sustained mock=0 (<300 ms) evidence and reliability confirms Admin tour validation via Shopify CLI 3 dev flow. Update the placeholders with live timestamps + evidence links before sending.
 
 ## 1. Internal Clearance Email Draft — occ-launch@hotrodan.com
 ```

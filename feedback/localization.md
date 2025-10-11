@@ -9,6 +9,38 @@ expires: 2025-10-21
 
 <!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
 
+## 2025-10-11T07:13:42Z — Overnight English-only audit (RR7 + CLI v3)
+
+### 1. Scan Results
+- Command: `grep -RInE "\b(fr|fr-FR|fr_CA)\b|Résumé|Bonjour" app/ docs/`
+- Scan evidence:
+  - Results: artifacts/localization/20251011T071342Z/scan.txt
+  - Analysis: artifacts/localization/20251011T071342Z/ui_copy_audit.md
+- Findings: ✅ ENGLISH-ONLY MAINTAINED
+  - No violations in app/ UI code
+  - No violations in user-facing docs outside sanctioned references
+  - All FR strings are in sanctioned QA files or technical metadata
+
+### 2. Shopify Admin Screenshot Workflow (RR7 + CLI v3)
+- Command: `shopify app dev` will open embedded app in Admin automatically
+- Evidence: artifacts/localization/shopify/screenshots/20251011T071342Z/README.txt
+- ✅ Workflow uses only Shopify CLI v3; no token injection required
+
+### 3. Partner/Vendor Touchpoint Tracker
+| Owner | Partner | Ask | Due | Status | Links |
+|-------|---------|-----|-----|--------|-------|
+| Localization | Chatwoot | Confirm macros remain English-only; align tone to copy deck | 2025-10-12 | 🟡 Pending | app/services/chatwoot/templates.ts |
+| Localization | LlamaIndex | Confirm terminology guardrails in any prompt templates | 2025-10-13 | 🟡 Pending | scripts/ai/* |
+| Marketing | Support Enablement | Acknowledge FR scope paused (RR7 + CLI v3 flow; no tokens) | 2025-10-16 | 🟡 Pending | docs/marketing/english_only_audit_checklist.md |
+
+### 4. Monday/Thursday Stack Compliance Audit
+- Next audit dates: 2025-10-14 (Mon), 2025-10-17 (Thu)
+- Focus areas:
+  1. Supabase terminology across stack docs
+  2. Chatwoot on Supabase references and macros alignment
+  3. React Router 7 nomenclature and consistency
+- Any remediation items will be logged here after each audit.
+
 ## 2025-10-11T04:47:30Z — Manager-updated tasks executed (RR7 + Shopify CLI v3; English-only audit)
 - Actions:
   - Ran a repo-wide non-ASCII proxy check to reconfirm English-only compliance, focusing on shipping UI and Chatwoot templates.
