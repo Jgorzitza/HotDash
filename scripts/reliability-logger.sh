@@ -13,5 +13,6 @@ log() {
 
 logcmd() {
     log "$ $*"
-    { eval "$*" 2>&1 | sed 's/[A-Za-z0-9_\-]\{16,\}/[REDACTED]/g'; test ${PIPESTATUS[0]} -eq 0; } | tee -a feedback/reliability.md
+    bash -c "$*" 2>&1 | sed 's/[A-Za-z0-9_\-]\{16,\}/[REDACTED]/g' | tee -a feedback/reliability.md
+    return ${PIPESTATUS[0]}
 }
