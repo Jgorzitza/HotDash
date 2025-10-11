@@ -110,7 +110,7 @@ export async function rollbackIndex(): Promise<{ success: boolean; message: stri
 export async function verifyRollback(): Promise<{ success: boolean; message: string; details?: any }> {
   console.log('🔍 Verifying rollback status...');
   
-  const config = loadConfig();
+  const config = getConfig();
   const indexesDir = path.join(config.LOG_DIR, 'indexes');
   
   const latestPath = path.join(indexesDir, 'latest');
