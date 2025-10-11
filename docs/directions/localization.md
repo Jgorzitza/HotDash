@@ -20,6 +20,16 @@ expires: 2025-10-19
 
 > Manager authored. Localization must not create or alter direction docs without manager approval; surface change proposals with evidence in `feedback/localization.md`.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive audit and export commands without approval. Guardrails:
+
+- Scope: local repo; do not change remote infra or git under auto-run.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/localization.md; save audits under artifacts/localization/.
+- Secrets: never print values; reference names only.
+- Retry: 2 attempts then escalate with evidence.
+
 - Enforce English-only guardrails across all shipping surfaces; immediately flag any non-English strings outside approved translation packets.
 - Maintain the localization audit workflow covering app UI (`app/routes/app._index.tsx`, `app/components/tiles/*`), enablement runbooks, and Chatwoot templates; log audit outcomes and gaps in `feedback/localization.md`.
 - Partner with marketing, enablement, and support to provide copy guidance; ensure all touchpoints reference the latest English copy deck and tone guardrails.
@@ -31,6 +41,10 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Own each action until the evidence is published—log the artifacts, timestamps, and follow-up owners in `feedback/localization.md`. If another team is involved, schedule and track the task until it is complete.
+
+## Aligned Task List — 2025-10-11
+- Ensure all copy and screenshot workflows use RR7 + CLI v3 (no token flows). English-only remains enforced.
+- Evidence in `feedback/localization.md`.
 - Reconfirm English-only compliance (UI, runbooks, Chatwoot templates) with the new support inbox; attach audit proof to `feedback/localization.md`.
 - Align with marketing/enablement on the 2025-10-16 dry-run collateral incorporating the Supabase-backed Chatwoot plan and the current React Router 7 + Shopify CLI v3 dev flow (remove any embed-token references).
 - Update the partner touchpoint tracker to show Chatwoot/LlamaIndex status and capture acknowledgements that translation scope remains paused.

@@ -1,0 +1,56 @@
+{
+  "scenarios": [
+    {
+      "name": "template_suggestion_available",
+      "description": "Agent has suggested reply with high confidence",
+      "conversation_id": 201,
+      "has_suggestion": true,
+      "suggestion_confidence": 0.85,
+      "expected_actions": ["show_template", "allow_send", "log_decision"],
+      "telemetry_events": [
+        "template_suggested",
+        "user_action_approve",
+        "message_sent"
+      ]
+    },
+    {
+      "name": "low_confidence_suggestion",
+      "description": "Agent suggestion below confidence threshold",
+      "conversation_id": 203,
+      "has_suggestion": true,
+      "suggestion_confidence": 0.65,
+      "expected_actions": ["show_warning", "request_manual", "log_escalation"],
+      "telemetry_events": [
+        "low_confidence_template",
+        "manual_review_required",
+        "escalation_triggered"
+      ]
+    },
+    {
+      "name": "no_suggestion_available",
+      "description": "No template suggestion from AI system",
+      "conversation_id": 204,
+      "has_suggestion": false,
+      "suggestion_confidence": null,
+      "expected_actions": ["show_no_suggestion", "require_manual", "log_manual_handling"],
+      "telemetry_events": [
+        "no_suggestion_available",
+        "manual_composition_required",
+        "human_agent_engaged"
+      ]
+    },
+    {
+      "name": "manager_escalation_required",
+      "description": "High value case requiring manager approval",
+      "conversation_id": 204,
+      "has_suggestion": false,
+      "requires_manager": true,
+      "expected_actions": ["block_send", "escalate_manager", "log_escalation"],
+      "telemetry_events": [
+        "manager_escalation_required",
+        "approval_workflow_triggered",
+        "case_escalated"
+      ]
+    }
+  ]
+}

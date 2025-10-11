@@ -10,12 +10,18 @@
     "ingest:test": "tsx src/dev/test-ingest.ts",
     "refresh": "node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/cli.js refresh",
     "query": "node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/cli.js query",
-    "insight": "node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/cli.js insight"
+    "insight": "node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/cli.js insight",
+    "eval": "node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/eval/run.js"
   },
-  "keywords": ["llamaindex", "ai", "rag", "workflow"],
+  "keywords": [
+    "llamaindex",
+    "ai",
+    "rag",
+    "workflow"
+  ],
   "author": "HotDash AI Agent",
-  "license": "ISC"
-}
+  "license": "ISC",
+  "dependencies": {
     "@supabase/supabase-js": "^2.75.0",
     "commander": "^14.0.1",
     "dotenv": "^17.2.3",
@@ -24,6 +30,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.7.1",
+    "natural": "^8.1.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

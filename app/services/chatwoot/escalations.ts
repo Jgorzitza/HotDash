@@ -6,6 +6,7 @@ import { setCached, getCached } from "../cache.server";
 import { recordDashboardFact } from "../facts.server";
 import { toInputJson } from "../json";
 import { ServiceError } from "../types";
+import { logger } from "../../utils/logger.server";
 import { CHATWOOT_TEMPLATES } from "./templates";
 import type { ReplyTemplate } from "./templates";
 import type {
@@ -132,19 +133,37 @@ async function collectConversations() {
   const client = chatwootClient(config);
   const results: EscalationConversation[] = [];
 
+  logger.info("Starting Chatwoot escalations collection", {
+    maxPages: MAX_PAGES,
+    slaMinutes: config.slaMinutes,
+  });
+
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     let conversations;
     try {
       conversations = await client.listOpenConversations(page);
+      logger.debug(`Retrieved conversations for page ${page}`, {
+        page,
+        conversationCount: Array.isArray(conversations) ? conversations.length : 0,
+      });
     } catch (error) {
-      throw new ServiceError("Unable to fetch Chatwoot conversations", {
+      const serviceError = new ServiceError("Unable to fetch Chatwoot conversations", {
         scope: "chatwoot.escalations",
         retryable: true,
         cause: error,
       });
+      
+      // Log the ServiceError with structured metadata
+      logger.logServiceError(serviceError, undefined, {
+        page,
+        operation: "listOpenConversations",
+      });
+      
+      throw serviceError;
     }
 
     if (!Array.isArray(conversations) || conversations.length === 0) {
+      logger.debug(`No more conversations found at page ${page}, stopping collection`);
       break;
     }
 
@@ -164,12 +183,25 @@ async function collectConversations() {
       let messages;
       try {
         messages = await client.listMessages(convo.id);
+        logger.debug(`Retrieved messages for conversation ${convo.id}`, {
+          conversationId: convo.id,
+          messageCount: messages.length,
+          slaBreached,
+        });
       } catch (error) {
-        throw new ServiceError("Unable to fetch Chatwoot messages", {
+        const serviceError = new ServiceError("Unable to fetch Chatwoot messages", {
           scope: "chatwoot.escalations",
           retryable: true,
           cause: error,
         });
+        
+        // Log the ServiceError with conversation context
+        logger.logServiceError(serviceError, undefined, {
+          conversationId: convo.id,
+          operation: "listMessages",
+        });
+        
+        throw serviceError;
       }
 
       const lastMessage = [...messages].sort((a, b) => b.created_at - a.created_at)[0];
@@ -200,6 +232,17 @@ async function collectConversations() {
         ? renderTemplateBody(suggestion, { name: customerName })
         : undefined;
 
+      // Log template suggestion for observability
+      if (suggestion) {
+        logger.debug(`Template suggestion generated for conversation ${convo.id}`, {
+          conversationId: convo.id,
+          templateId: suggestion.id,
+          customerName,
+          tags,
+          slaBreached,
+        });
+      }
+
       results.push({
         id: convo.id,
         inboxId: convo.inbox_id,
@@ -219,6 +262,12 @@ async function collectConversations() {
     }
   }
 
+  logger.info("Completed Chatwoot escalations collection", {
+    totalEscalations: results.length,
+    breachedCount: results.filter(r => r.slaBreached).length,
+    templatesGenerated: results.filter(r => r.suggestedReplyId).length,
+  });
+
   return { config, results };
 }
 
@@ -226,45 +275,72 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
   const cacheKey = `chatwoot:escalations:${shopDomain}`;
   const cached = getCached<EscalationResult>(cacheKey);
   if (cached) {
+    logger.debug("Returning cached escalations data", {
+      shopDomain,
+      cacheKey,
+      escalationCount: cached.data.length,
+    });
     return { ...cached, source: "cache" };
   }
 
-  const { config, results } = await collectConversations();
-  const aiEnabled = isFeatureEnabled("ai_escalations");
+  try {
+    const { config, results } = await collectConversations();
+    const aiEnabled = isFeatureEnabled("ai_escalations");
 
-  for (const conversation of results) {
-    conversation.aiSuggestionEnabled = aiEnabled;
-    if (!aiEnabled) {
-      conversation.aiSuggestion = null;
+    for (const conversation of results) {
+      conversation.aiSuggestionEnabled = aiEnabled;
+      if (!aiEnabled) {
+        conversation.aiSuggestion = null;
+      }
+    }
+
+    const fact = await recordDashboardFact({
+      shopDomain,
+      factType: "chatwoot.escalations",
+      scope: "ops",
+      value: toInputJson(results),
+      metadata: toInputJson({
+        slaMinutes: config.slaMinutes,
+        count: results.length,
+        breaches: results
+          .filter((conversation) => conversation.slaBreached && conversation.breachedAt)
+          .map((conversation) => ({
+            conversationId: conversation.id,
+            breachedAt: conversation.breachedAt,
+            createdAt: conversation.createdAt,
+          })),
+        generatedAt: new Date().toISOString(),
+      }),
+    });
+
+    const response: EscalationResult = {
+      data: results,
+      fact,
+      source: "fresh",
+      aiEnabled,
+    };
+
+    setCached(cacheKey, response, CACHE_TTL_MS);
+    
+    logger.info("Successfully generated fresh escalations data", {
+      shopDomain,
+      escalationCount: results.length,
+      aiEnabled,
+      factId: fact.id,
+    });
+    
+    return response;
+  } catch (error) {
+    if (error instanceof ServiceError) {
+      // ServiceError already logged in collectConversations
+      throw error;
+    } else {
+      // Log unexpected errors
+      logger.logError(error as Error, "chatwoot.escalations.getEscalations", undefined, {
+        shopDomain,
+        cacheKey,
+      });
+      throw error;
     }
   }
-
-  const fact = await recordDashboardFact({
-    shopDomain,
-    factType: "chatwoot.escalations",
-    scope: "ops",
-    value: toInputJson(results),
-    metadata: toInputJson({
-      slaMinutes: config.slaMinutes,
-      count: results.length,
-      breaches: results
-        .filter((conversation) => conversation.slaBreached && conversation.breachedAt)
-        .map((conversation) => ({
-          conversationId: conversation.id,
-          breachedAt: conversation.breachedAt,
-          createdAt: conversation.createdAt,
-        })),
-      generatedAt: new Date().toISOString(),
-    }),
-  });
-
-  const response: EscalationResult = {
-    data: results,
-    fact,
-    source: "fresh",
-    aiEnabled,
-  };
-
-  setCached(cacheKey, response, CACHE_TTL_MS);
-  return response;
 }

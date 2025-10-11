@@ -17,6 +17,17 @@ expires: 2025-10-17
 
 > Manager authored. Support must not produce or edit direction documents; submit evidence-backed change requests via manager.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands and scripts without approval. Guardrails:
+
+- Scope: local repo and local Supabase; no remote infra changes under auto-run. Status checks are fine.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/support.md; store under artifacts/support/.
+- Secrets: load from vault/env; never print values.
+- Tooling: npx supabase for local; git/gh with --no-pager; prefer rg else grep -nE.
+- Retry: up to 2 attempts; then escalate with logs.
+
 - Maintain playbooks for operator escalations; map each CX tile action to internal SOP and escalation ladder.
 - Ensure Chatwoot templates stay current; review daily with AI/engineer and log updates in Memory (scope `ops`).
 - Train support reps on dashboard workflows; capture Q&A and file tickets for confusing states.
@@ -29,6 +40,14 @@ expires: 2025-10-17
 
 ## Current Sprint Focus — 2025-10-10
 Own each item to completion—do not wait for other teams to close loops. Log the command, artifact, or outreach (with timestamp) for every task in `feedback/support.md`, and follow up until blockers clear.
+
+## Aligned Task List — 2025-10-11
+- Rehearsal flow
+  - Use RR7 + CLI v3 for Admin walkthroughs; no token capture. Keep operator job aids aligned.
+- Gold replies
+  - Coordinate with Data for webhook endpoint + schema; capture evidence of sample submission.
+- Evidence
+  - Log timestamp, commands, and artifacts in `feedback/support.md`.
 
 1. **Chatwoot shared inbox** — Configure customer.support@hotrodan.com in Chatwoot (IMAP/SMTP or API). Update `docs/runbooks/cx_escalations.md` and `docs/runbooks/shopify_dry_run_checklist.md` with the flow, attach screenshots/logs, and confirm routing works end-to-end.
 2. **Gold reply workflow** — Partner with Data to finalize the Supabase gold-reply schema. Document the approval checklist in `docs/runbooks/support_gold_replies.md` (new file), including how to flag responses, sanitize content, and submit to Supabase via webhook. Capture a sample approved reply.

@@ -57,17 +57,17 @@ Here's what happens behind the scenes:
 This means faster modal load times - typically under 200ms - and complete audit trails.
 ```
 
-**[3:30-5:00] Session Token & Authentication Flow**
+**[3:30-5:00] React Router 7 + Shopify CLI v3 Development Workflow**
 ```
-[SLIDE: Authentication flow]
-Authentication happens automatically through Shopify's embed token system:
+[SLIDE: Development workflow]
+Development and navigation happen through React Router 7 patterns with Shopify CLI v3:
 
-1. You access OCC through Shopify Admin → Apps → HotDash
-2. Shopify provides an embed token that authenticates your session
-3. Modals open seamlessly without additional login steps
-4. If you see "Authentication Required", refresh your Shopify Admin tab and try again
+1. You access OCC through standard Shopify Admin → Apps → HotDash navigation
+2. React Router 7 handles modal navigation and state management seamlessly
+3. Development uses `shopify app dev` and `shopify app deploy` workflows
+4. If you see navigation errors, check router configuration and reload the app
 
-Never access OCC directly by URL - always go through Shopify Admin to ensure proper authentication.
+Authentication is handled automatically through Shopify's standard app context - no session tokens required.
 ```
 
 **[5:00-5:30] Support & Escalation**
@@ -93,7 +93,7 @@ Next up: Module 2 - CX Escalations Deep Dive. See you there!
 **Recording Assets Needed:**
 - [ ] Dashboard mockup slide
 - [ ] Architecture diagram slide  
-- [ ] Authentication flow diagram
+- [ ] React Router 7 + Shopify CLI v3 development workflow diagram
 - [ ] Contact information slide
 
 ---
@@ -306,18 +306,18 @@ Final training module: troubleshooting common issues and knowing when to escalat
 Even with great architecture, things can go wrong. This module prepares you to handle problems gracefully and get help fast.
 ```
 
-**[0:30-1:30] Authentication Issues**
+**[0:30-1:30] Navigation and Routing Issues**
 ```
 [SCREEN: Error state mockups]
-Most common issue: "Authentication Required" errors
+Most common issue: Modal navigation or routing errors
 
 Resolution steps:
 1. Verify you accessed OCC through Shopify Admin (not direct URL)
 2. Refresh your Shopify Admin tab and try again
-3. Check that you're logged into the correct Shopify store
+3. Check that React Router 7 navigation patterns are working correctly
 4. If error persists, screenshot and email customer.support@hotrodan.com
 
-Never try to manually enter tokens or credentials.
+Navigation issues often resolve with app reload or development server restart.
 ```
 
 **[1:30-2:30] Data Freshness & Sync Issues**

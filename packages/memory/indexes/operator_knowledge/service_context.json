@@ -3,7 +3,7 @@
   "llmModel": "disabled",
   "embeddingModel": "local-hash-embedding",
   "envVars": [],
-  "createdAt": "2025-10-11T01:04:11.326Z",
+  "createdAt": "2025-10-11T03:26:46.717Z",
   "planned": {
     "provider": "openai",
     "llmModel": "gpt-4o-mini",

@@ -260,17 +260,19 @@ export function supabaseMemory(url: string, key: string): Memory {
 
     async listDecisions(scope) {
       try {
-        let query = sb
-          .from(DECISION_TABLE_PRIMARY)
-          .select("id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt");
+        const result = await executeWithRetry(async () => {
+          let query = sb
+            .from(DECISION_TABLE_PRIMARY)
+            .select("id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt");
 
-        if (scope) {
-          query = query.eq("scope", scope);
-        }
+          if (scope) {
+            query = query.eq("scope", scope);
+          }
 
-        const { data, error } = (await query.order("createdAt", { ascending: false })) as SupabaseResponse<
-          Array<Record<string, unknown>>
-        >;
+          return await query.order("createdAt", { ascending: false });
+        });
+
+        const { data, error } = result as SupabaseResponse<Array<Record<string, unknown>>>;
 
         if (error) {
           throw error;
@@ -283,17 +285,19 @@ export function supabaseMemory(url: string, key: string): Memory {
         }
       }
 
-      let legacyQuery = sb.from(DECISION_TABLE_LEGACY).select("*");
-      if (scope) {
-        legacyQuery = legacyQuery.eq("scope", scope);
-      }
+      // Apply retry logic to legacy fallback as well
+      const legacyResult = await executeWithRetry(async () => {
+        let legacyQuery = sb.from(DECISION_TABLE_LEGACY).select("*");
+        if (scope) {
+          legacyQuery = legacyQuery.eq("scope", scope);
+        }
+        return await legacyQuery.order("created_at", { ascending: false });
+      });
 
       const {
         data: legacyData,
         error: legacyError,
-      } = (await legacyQuery.order("created_at", { ascending: false })) as SupabaseResponse<
-        Array<Record<string, unknown>>
-      >;
+      } = legacyResult as SupabaseResponse<Array<Record<string, unknown>>>;
 
       if (legacyError) {
         throw legacyError;
@@ -315,17 +319,19 @@ export function supabaseMemory(url: string, key: string): Memory {
     },
 
     async getFacts(topic?: string, key?: string) {
-      let query = sb.from(FACTS_TABLE).select("*");
-      if (topic) {
-        query = query.eq("topic", topic);
-      }
-      if (key) {
-        query = query.eq("key", key);
-      }
+      const result = await executeWithRetry(async () => {
+        let query = sb.from(FACTS_TABLE).select("*");
+        if (topic) {
+          query = query.eq("topic", topic);
+        }
+        if (key) {
+          query = query.eq("key", key);
+        }
 
-      const { data, error } = (await query.order("created_at", { ascending: false })) as SupabaseResponse<
-        Array<Record<string, unknown>>
-      >;
+        return await query.order("created_at", { ascending: false });
+      });
+
+      const { data, error } = result as SupabaseResponse<Array<Record<string, unknown>>>;
 
       if (error) {
         throw error;

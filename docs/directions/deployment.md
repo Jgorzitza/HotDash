@@ -17,6 +17,17 @@ expires: 2025-10-19
 
 > Manager authored. Deployment agent must not modify direction docs; request changes via the manager with evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands and scripts without approval. Guardrails:
+
+- Scope and safety: local repo and local Supabase; do not alter remote infra or push git under auto-run. Status/read-only checks are fine.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/deployment.md; store logs under artifacts/deployment/.
+- Secrets: use vault/env; never print secret values.
+- Tooling: npx supabase locally; git/gh with --no-pager; prefer rg else grep -nE.
+- Retry: 2 attempts then escalate with evidence.
+
 - Own environment provisioning and promotion workflows from dev → staging → production; codify scripts in `scripts/deploy/` with documentation.
 - Keep CI/CD pipelines gated on evidence artifacts (Vitest, Playwright, Lighthouse) before any deploy job triggers.
 - Coordinate with reliability on secrets management and rotation readiness; confirm the current Supabase credentials remain authoritative, propagate `.env.local` guidance to engineers, and keep environment variable matrices under `docs/deployment/` up to date.
@@ -29,6 +40,18 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Execute the deployment backlog sequentially; you own each task until the evidence proves it is complete. Record every command and output in `feedback/deployment.md`, retry failures twice, and only escalate with the captured logs.
+
+## Aligned Task List — 2025-10-11
+- Canonical toolkit
+  - Enforce Supabase-only posture; remove any Fly Postgres references. CI Stack Guard will block alt DBs.
+- Shopify Admin dev flow
+  - Ensure runbooks reference RR7 + CLI v3 (no token workflows). Update env matrix accordingly.
+- Fly memory scaling
+  - Scale memory to 2GB for Chatwoot and any applicable apps; persist in fly.toml or via CLI; log evidence in `feedback/deployment.md`.
+- Secret mirroring
+  - Mirror only required secrets (Supabase DSN, Chatwoot Redis/API, GA MCP). No embed/session tokens.
+- Evidence
+  - Keep `docs/deployment/env_matrix.md` and runbooks current; attach diffs and command outputs in feedback.
 
 1. **Local Supabase documentation** — Update `docs/deployment/env_matrix.md` and `docs/runbooks/prisma_staging_postgres.md` to reflect the new default (`supabase start`, `.env.local`, Postgres-only migrations). Verify the instructions by running `npm run setup` locally and attaching the output.
 2. **Sanitized history** — `git fetch --all --prune`, `git grep postgresql://`; log commands/output.

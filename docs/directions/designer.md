@@ -17,6 +17,16 @@ expires: 2025-10-19
 
 > Manager authored. Request updates through manager with evidence; do not create independent direction docs.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands (exports, scripts) without approval. Guardrails:
+
+- Scope: local repo assets only; do not modify remote systems under auto-run.
+- Non-interactive: avoid pagers and interactive editors; export assets to artifacts/collateral/.
+- Evidence: log timestamp, command, outputs in feedback/designer.md.
+- Secrets: never print values; reference names only.
+- Retry: up to 2 attempts; then escalate with evidence.
+
 - Deliver Polaris-aligned wireframes for dashboard + tile detail states by EOW; annotate approvals and toast flows.
 - Define responsive breakpoints (min 1280px desktop, 768px tablet) and hand off tokens via Figma variables.
 - Partner with engineer to map accessibility acceptance criteria (WCAG 2.2 AA) and focus order.
@@ -28,6 +38,10 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Own each deliverable through sign-off; post the artifacts (Figma links, screenshots, checklists) in `feedback/designer.md` as you finish them. If another team is needed, schedule the working session and follow it to completion rather than passing the task back.
+
+## Aligned Task List — 2025-10-11
+- Ensure overlays/screenshots assume RR7 + CLI v3 app launch; remove token flows from capture steps.
+- Provide export presets and accessibility notes; evidence in `feedback/designer.md`.
 
 1. **Modal refresh** — Update CX Escalations and Sales Pulse modal comps to reflect current React Router flows and Supabase-backed states; link annotated Figma frames and attach before/after screenshots in `feedback/designer.md`.
 2. **Shopify Admin overlays** — Build capture templates so screenshots can be taken the moment the embed token is mirrored; confirm copy references `customer.support@hotrodan.com` and stage the export presets yourself.

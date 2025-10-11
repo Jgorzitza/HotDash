@@ -7,6 +7,54 @@ doc_hash: TBD
 expires: 2025-10-18
 ---
 
+## 2025-10-11 03:19 UTC — Auto-Run Preflight and DSN Alignment Attempts
+
+Status: Executing manager direction (local, non-interactive) with evidence capture. Target: align Supabase DSN and complete migrations.
+
+Artifacts root: artifacts/integrations/chatwoot-fly-deployment-2025-10-11T03:19:56Z/
+
+Commands executed (outputs in artifacts):
+- mkdir -p artifacts/.../{logs,cmds,assets}
+  - session log → artifacts/integrations/chatwoot-fly-deployment-2025-10-11T03:19:56Z/logs/session.txt
+- Vault presence check
+  - PRESENT: vault/occ/fly/api_token.env; vault/occ/supabase/database_url_staging.env; vault/occ/chatwoot/redis_staging.env
+  - preflight → logs/preflight.txt
+- Fly auth
+  - fly auth whoami → logs/fly_whoami.txt (jgorzitza@outlook.com)
+- Fly secrets alignment
+  - Parsed DATABASE_URL → POSTGRES_*; set POSTGRES_*, REDIS_URL, FRONTEND_URL, BACKEND_URL (values redacted) → logs/fly_secrets_set_postgres_redis.txt
+- Memory scaling (per direction)
+  - fly scale memory 2048 -g web; -g worker → logs/fly_scale_memory.txt
+- Health probe
+  - curl https://hotdash-chatwoot.fly.dev/api → 200; /hc → 404 → logs/health_probes.txt
+- Migration attempt #1
+  - fly ssh console -C 'bundle exec rails db:chatwoot_prepare' → FATAL: MaxClientsInSessionMode (pgBouncer session pool limit) → logs/rails_db_prepare.txt
+- Remediation step
+  - scale worker to 0 (free DB connections) → logs/fly_scale_count.txt
+  - set SECRET_KEY_BASE via secrets import file (redacted) → logs/fly_secrets_import_secret_key_base.txt
+- Migration attempt #2
+  - fly ssh console -C 'bundle exec rails db:chatwoot_prepare' → FATAL: MaxClientsInSessionMode → logs/rails_db_prepare.txt (appended)
+- Restored worker scale to 1 for service continuity → logs/fly_scale_count.txt
+
+Blocker observed (x2 attempts):
+- Supabase session pooler returning "MaxClientsInSessionMode: max clients reached" during migration. Likely due to active connections held by the web process + pool size constraints.
+
+Proposed next steps (require manager/deployment coordination):
+1) Provide a direct Postgres DSN (non-pooler) for maintenance/migrations only, or increase session pool size temporarily.
+2) Approve a brief maintenance window to stop the web machine, run a one-off migration machine (chatwoot/chatwoot:latest) attached to the app with secrets, then restore both processes.
+3) Alternatively, confirm Supabase transaction pooler DSN for migrations (if supported by Chatwoot migrations) with connection_limit=1.
+
+I will proceed with non-disruptive tasks (e.g., readiness docs, smoke script prep) while awaiting approval/instructions on the migration path.
+
+---
+epoch: 2025.10.E1
+doc: feedback/chatwoot.md
+owner: chatwoot
+last_reviewed: 2025-10-11
+doc_hash: TBD
+expires: 2025-10-18
+---
+
 <!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
 
 ## 2025-10-11 01:12 UTC - Chatwoot Readiness Documentation Created

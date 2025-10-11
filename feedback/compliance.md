@@ -9,3 +9,9 @@ expires: 2025-10-21
 
 <!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
 
+[2025-10-11T03:41:11Z] CMD: Snapshot WARP rules to artifacts/compliance/warp_rules_snapshot.txt
+ARTIFACT: artifacts/compliance/warp_rules_snapshot.txt
+
+[2025-10-11T03:41:11Z] CMD: Scaffolded guard and logger
+ARTIFACT: artifacts/compliance/scripts/*
+

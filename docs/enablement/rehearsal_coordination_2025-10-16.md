@@ -10,27 +10,27 @@ expires: 2025-10-17
 
 ## Coordination Status
 **Last Updated:** 2025-10-11T01:30:00Z  
-**Overall Status:** ⚠️ **DEPENDENCIES PENDING** - QA evidence + Shopify embed token required  
+**Overall Status:** ⚠️ **DEPENDENCIES PENDING** - QA evidence + React Router 7 + Shopify CLI v3 validation required
 **Contact:** customer.support@hotrodan.com for escalations and coordination
 
 ---
 
 ## Critical Dependencies & Ownership
 
-### 1. Shopify Embed Token Delivery
-**Owner:** Reliability  
-**Status:** ⏳ **PENDING** - Token capture workflow ready, awaiting delivery  
+### 1. React Router 7 + Shopify CLI v3 Workflow Validation
+**Owner:** Development Team  
+**Status:** ⏳ **PENDING** - Development workflow validation ready, awaiting completion  
 **Dependency Details:**
-- Session token required for modal authentication flow testing
-- Embed token enables live Chatwoot-on-Supabase integration testing
-- Without token: rehearsal limited to mock mode scenarios only
+- Shopify CLI v3 development environment validation required
+- React Router 7 navigation patterns must be validated for modal flows
+- Without validation: rehearsal limited to mock mode scenarios only
 
 **Delivery Requirements:**
-- [ ] Token captured per `docs/runbooks/shopify_embed_capture.md` workflow
-- [ ] Token validated with staging environment access
+- [ ] Shopify CLI v3 `shopify app dev` workflow validated with staging environment
+- [ ] React Router 7 modal navigation patterns tested and confirmed working
 - [ ] Evidence logged at `artifacts/enablement/distribution_2025-10-16/evidence/`
 
-**Escalation:** If not delivered by 2025-10-15 12:00 ET, escalate to reliability on-call via `#occ-reliability`
+**Escalation:** If not completed by 2025-10-15 12:00 ET, escalate to development lead via `#occ-development`
 
 ### 2. Chatwoot Smoke Results & Evidence
 **Owner:** QA + Reliability  
@@ -66,10 +66,10 @@ expires: 2025-10-17
 
 ### Pre-Rehearsal Requirements (T-24h: 2025-10-15)
 - [ ] **Staging Access Package:** All attendees can access `https://hotdash-staging.fly.dev/app`
-- [ ] **Session Token Workflow:** Operators briefed on embed authentication flow
-- [ ] **Evidence Bundle:** QA + reliability evidence package attached to invitations
+- [ ] **Development Workflow:** Operators briefed on React Router 7 + Shopify CLI v3 patterns
+- [ ] **Evidence Bundle:** QA + development evidence package attached to invitations
 - [ ] **Job Aids Distribution:** Updated CX Escalations + Sales Pulse materials shared
-- [ ] **Facilitator Prep:** All trainers briefed on Chatwoot-on-Supabase architecture
+- [ ] **Facilitator Prep:** All trainers briefed on React Router 7 navigation architecture
 
 ### Day-Of Dependencies (2025-10-16 13:00 ET)
 - [ ] **Live Data Access:** `?mock=0` mode functional with <300ms response times
@@ -86,27 +86,27 @@ expires: 2025-10-17
 
 ---
 
-## Shopify Embed Token Integration Plan
+## React Router 7 + Shopify CLI v3 Workflow Integration Plan
 
 ### Operator Training Focus Areas
-1. **Authentication Flow Understanding**
-   - Explain automatic token management (no manual operator intervention)
-   - Cover troubleshooting steps for authentication failures
-   - Practice escalation path for credential drift scenarios
+1. **Development Workflow Understanding**
+   - Explain Shopify CLI v3 development patterns (`shopify app dev`, `shopify app deploy`)
+   - Cover React Router 7 navigation troubleshooting
+   - Practice escalation path for routing and development issues
 
-2. **Modal Access Patterns**
-   - Demonstrate proper modal launch from Shopify Admin embed context
-   - Show error states and recovery procedures
-   - Validate cross-modal data consistency
+2. **Modal Navigation Patterns**
+   - Demonstrate proper modal navigation using React Router 7 patterns
+   - Show routing error states and recovery procedures
+   - Validate cross-modal navigation consistency
 
 3. **Support Escalation Procedures**
    - Train operators on `customer.support@hotrodan.com` routing
-   - Practice evidence capture for authentication issues
-   - Cover fallback procedures during token refresh cycles
+   - Practice evidence capture for development and navigation issues
+   - Cover fallback procedures during development environment issues
 
 ### Technical Integration Testing
-- [ ] **End-to-End Flow:** Shopify Admin → OCC → Modal → Decision Log → Supabase
-- [ ] **Error Handling:** Authentication failures, token expiry, credential drift
+- [ ] **End-to-End Flow:** Shopify Admin → OCC → Modal (RR7) → Decision Log → Supabase
+- [ ] **Error Handling:** Navigation failures, routing errors, development environment issues
 - [ ] **Cross-Service Sync:** Chatwoot conversation data ↔ Supabase persistence
 - [ ] **Performance Validation:** Modal load times <200ms, API response <300ms
 

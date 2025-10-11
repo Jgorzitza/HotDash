@@ -234,3 +234,60 @@ describe("supabaseMemory listDecisions", () => {
     expect(orderMock).toHaveBeenNthCalledWith(2, "decision_log", "created_at", { ascending: false });
   });
 });
+
+describe("supabaseMemory retry coverage", () => {
+  let memory: Memory;
+
+  beforeEach(() => {
+    insertMock.mockReset();
+    selectMock.mockReset();
+    eqMock.mockReset();
+    orderMock.mockReset();
+    memory = supabaseMemory("https://example.supabase.co", "service-key");
+    __internal.setWaitForTests(async () => {});
+  });
+
+  afterEach(() => {
+    __internal.resetWaitForTests();
+  });
+
+  it("retries listDecisions legacy fallback on timeout errors", async () => {
+    // Primary table fails, fallback to legacy with retry
+    orderMock
+      .mockResolvedValueOnce({ error: { code: "42P01", message: 'relation "DecisionLog" does not exist' } })
+      .mockResolvedValueOnce({ error: { message: "ETIMEDOUT", code: "ETIMEDOUT" } })
+      .mockResolvedValueOnce({ data: [{ id: 1, scope: "ops", who: "agent", what: "test", why: "", created_at: new Date().toISOString() }], error: null });
+
+    const results = await memory.listDecisions();
+
+    expect(results).toHaveLength(1);
+    expect(orderMock).toHaveBeenCalledTimes(3); // 1 primary attempt + 2 legacy attempts (1 retry)
+  });
+
+  it("retries getFacts on network errors", async () => {
+    orderMock
+      .mockRejectedValueOnce(new Error("fetch failed"))
+      .mockResolvedValueOnce({ data: [{ project: "test", topic: "test", key: "test", value: "test", created_at: new Date().toISOString() }], error: null });
+
+    const results = await memory.getFacts();
+
+    expect(results).toHaveLength(1);
+    expect(orderMock).toHaveBeenCalledTimes(2); // 1 failure + 1 retry success
+  });
+
+  it("retries putFact on retryable errors", async () => {
+    insertMock
+      .mockResolvedValueOnce({ error: { status: 503, message: "Service Unavailable" } })
+      .mockResolvedValueOnce({ data: [{ id: 1 }], error: null });
+
+    await expect(memory.putFact({
+      project: "test",
+      topic: "test", 
+      key: "test",
+      value: "test",
+      createdAt: new Date().toISOString()
+    })).resolves.toBeUndefined();
+
+    expect(insertMock).toHaveBeenCalledTimes(2);
+  });
+});

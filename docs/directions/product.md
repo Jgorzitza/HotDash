@@ -17,6 +17,16 @@ expires: 2025-10-19
 
 > Manager authored. Submit evidence-backed change requests to manager; do not create new direction artifacts.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands without approval. Guardrails:
+
+- Scope: local repo and analysis scripts; no remote infra or git mutations under auto-run.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/product.md.
+- Secrets: load from vault/env; never print values.
+- Retry: 2 attempts then escalate with logs.
+
 - Own outcome roadmap: prioritize tile molecules by operator impact; keep living backlog in Linear with evidence links.
 - Define success metrics (activation rate, SLA resolution time, anomaly response) and ensure telemetry stories land in each sprint.
 - Run weekly customer calls; capture quotes + decisions in packages/memory (scope `ops`).
@@ -29,6 +39,12 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Work each item to completion and log progress in `feedback/product.md`, including timestamps, evidence links, and next actions. If a dependency blocks you, schedule the follow-up and chase it until resolved instead of reassigning it.
+
+## Aligned Task List — 2025-10-11
+- Replace prior embed-token dependencies in roadmaps and dashboards with RR7 + CLI v3 dev flow references.
+- Keep decisions anchored to canonical toolkit; reject proposals introducing alt DBs or ad-hoc endpoints.
+- Require teams to cite Shopify Dev MCP for Admin contracts (no guessing endpoints/fields).
+- Evidence: maintain updated metrics/decisions logs and reference artifacts in `feedback/product.md`.
 
 1. Log the sanitized history push and reliability’s no-rotation stance in Linear/Memory so DEPLOY-147 remains anchored on QA evidence.
 2. Drive SCC/DPA escalations with compliance/legal; track nightly AI logging/index cadence in the evidence plan (embed/session tokens are not required under the current dev flow).

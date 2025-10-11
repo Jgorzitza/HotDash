@@ -17,6 +17,17 @@ expires: 2025-10-17
 
 > Manager authored. Data team must not create or edit direction files; route change proposals to manager with evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands and scripts without approval. Guardrails:
+
+- Scope: local repo and local Supabase; do not alter remote infra under auto-run. Status/read-only checks are fine.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/data.md; store analyzer outputs in artifacts/data/.
+- Secrets: load from vault/env; never print values.
+- Tooling: npx supabase locally; git/gh with --no-pager; prefer rg else grep -nE.
+- Retry: 2 attempts then escalate with logs.
+
 - Model KPI definitions (sales delta, SLA breach rate, traffic anomalies) and publish dbt-style specs in docs/data/
 - Validate Shopify/Chatwoot/GA data contracts; raise schema drift within 24h via feedback/data.md.
 - Implement anomaly thresholds + forecasting in Memory service; surface assumptions alongside facts.
@@ -31,6 +42,14 @@ expires: 2025-10-17
 
 ## Current Sprint Focus — 2025-10-10
 Execute these tasks in order and log progress in `feedback/data.md`. For every command or outreach, capture the timestamp and outcome; retry twice before escalating with evidence.
+
+## Aligned Task List — 2025-10-11
+- Supabase only
+  - Ensure read-only roles and RLS in place; provide gold-reply webhook endpoint + secret path to Chatwoot/Support.
+- Shopify contracts
+  - Use Shopify Dev MCP for Admin schema references; do not guess shapes.
+- Evidence
+  - Tail Supabase logs when running parity scripts; attach outputs and timestamps in `feedback/data.md`.
 
 1. **Supabase access hardening** — Run through `docs/runbooks/supabase_local.md` to verify `supabase start`, `npm run setup`, and pgvector availability. Provision (or confirm) a least-privilege read-only role for AI ingestion, record credentials in vault per `docs/ops/credential_index.md`, and log evidence.
 2. **Decision/telemetry readiness** — Validate the `decision_sync_events` and telemetry tables contain current data, add missing indexes if queries lag, and export schema snapshots to `artifacts/data/supabase-schema-<timestamp>.sql`. Update `docs/runbooks/incident_response_supabase.md` with the latest state.

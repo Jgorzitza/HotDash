@@ -17,6 +17,34 @@ expires: 2025-10-17
 
 > Manager authored. AI agent must not self-author direction documents; request adjustments via manager with evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You are authorized to run local, non-interactive commands and scripts without asking for approval each time. Follow these guardrails:
+
+- Scope and safety
+  - Operate inside /home/justin/HotDash/hot-dash and local dev services (Supabase on 127.0.0.1).
+  - Do not change remote infrastructure or git history under this policy. Status/read-only checks are okay.
+  - Never run destructive ops (rm -rf outside project, docker system prune, sudo apt, etc.).
+
+- Non-interactive only
+  - Add flags to avoid prompts; do not use interactive shells or editors.
+  - Disable pagers (git --no-pager; pipe long output to files). Never invoke less/man/vim.
+
+- Evidence logging
+  - For each action, record timestamp, command, and output/artifact path(s) in feedback/ai.md.
+  - Save large outputs under artifacts/ai/... and link the paths.
+
+- Secrets handling
+  - Load secrets from vault or environment; never print secret values. Reference variable names only.
+
+- Tooling specifics
+  - Supabase: use npx supabase; allowed: status/start/stop/reset on local; no remote project ops.
+  - Git/GH: allowed: status, diff, grep with --no-pager; not allowed: commit/push/force-push under auto-run.
+  - Prefer ripgrep (rg) if available; otherwise use grep -nE.
+
+- Retry and escalate
+  - Retry a failing step up to 2 times with small adjustments; then escalate in feedback with logs attached.
+
 - Assist with copy generation, templated replies, and anomaly summaries only after ingesting latest facts from Memory.
 - Log every AI-produced recommendation (template variant, brief, insight) with inputs/outputs to packages/memory (scope `build`).
 - Enforce guardrails: no direct production writes; route actions through engineer-owned approval flows.
@@ -29,6 +57,14 @@ expires: 2025-10-17
 
 ## Current Sprint Focus — 2025-10-10
 Work every task to completion—do not hand off after identifying a gap. Capture the command you ran, the output, and the timestamp in `feedback/ai.md`. Retry each failed command twice before escalating with logs attached.
+
+## Aligned Task List — 2025-10-11
+- Canonical toolkit
+  - Keep ingestion within approved sources (Supabase, sitemap/web pages, Chatwoot curated replies). No alternate providers without approval.
+- Shopify data
+  - Use Shopify Dev MCP for Admin data references; no ad-hoc endpoints.
+- Evidence
+  - Log build/eval outputs and metrics; respect secrets hygiene and sanitize artifacts.
 
 1. **Pipeline blueprint** — Draft `docs/runbooks/llamaindex_workflow.md` capturing the approved ingestion sources (Sitemap/WebPage for hotrodan.com, Supabase decision/telemetry tables, Chatwoot curated replies), nightly cadence, logging outputs, and rollback steps. Attach changelog evidence in `feedback/ai.md`.
 2. **CLI scaffolding** — Run `npx create-llama` to scaffold a TypeScript workflow project under `scripts/ai/llama-workflow/`. Wire it to read secrets from `.env.local` (OpenAI, Supabase) and document setup in the runbook.

@@ -17,6 +17,17 @@ expires: 2025-10-19
 
 > Manager authored. QA must not modify or add direction files; propose changes via evidence-backed request to manager.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive test and audit commands without asking for approval each time. Guardrails:
+
+- Scope and safety: local repo and local Supabase only; no remote infra changes; status/read-only checks are fine.
+- Non-interactive only: add flags to avoid prompts; disable pagers (git --no-pager; pipe outputs). Avoid less/man/vim.
+- Evidence logging: record timestamp, command, and artifact paths in feedback/qa.md; store traces/screens under artifacts/qa/.
+- Secrets: never print values; load from env/vault; reference names only.
+- Tooling: use npx supabase for local usage; git/gh with --no-pager; prefer rg else grep -nE.
+- Retry: up to 2 attempts, then escalate with logs.
+
 - Guard Evidence Gates: block merge without Vitest + Playwright + Lighthouse proof and mock/live screenshots.
 - Maintain mock data suites for Shopify/Chatwoot/GA; ensure tests run offline with deterministic fixtures (default Playwright runs use `mock=1`).
 - When validating Shopify behaviours, pull expected responses and flows from the Shopify developer MCP (`shopify-dev-mcp`) to avoid speculative coverage gaps.
@@ -30,6 +41,17 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 QA operates as the audit arm of the team. Validate the health of the environment and surface risks; individual feature owners are responsible for their own tests. Execute the steps below in parallel and log findings in `feedback/qa.md`.
+
+## Aligned Task List — 2025-10-11
+- Canonical toolkit checks
+  - Verify no alt DBs or direct redis usage in app builds via CI status; flag violations.
+- Shopify Admin testing
+  - Use RR7 + CLI v3 flow; no token injection. Keep `mock=1` green; for `mock=0` live smoke, use Admin login credentials.
+  - Use Shopify Dev MCP for Admin flows and assertions; do not guess responses.
+- Secrets hygiene
+  - Confirm no embed/session tokens exist in GitHub or vault for current flow; ensure artifacts/logs are sanitized.
+- Evidence
+  - Preserve Playwright traces, screenshots, and curl logs; log in `feedback/qa.md` with timestamps.
 
 1. **Local Supabase verification**
    - Run `supabase start` and export `.env.local` before executing test suites (see `docs/runbooks/supabase_local.md`). Log the Prisma `npm run setup` output and confirm migrations succeed locally.

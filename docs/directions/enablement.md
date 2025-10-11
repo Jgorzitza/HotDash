@@ -17,6 +17,16 @@ expires: 2025-10-19
 
 > Manager authored. Enablement agent must not modify direction docs; request changes via the manager with supporting evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands to build docs and training artifacts without approval. Guardrails:
+
+- Scope: local repo only; no remote infra or git mutations under auto-run.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/enablement.md; store artifacts under artifacts/enablement/.
+- Secrets: load from vault/env; never print values.
+- Retry: 2 attempts then escalate with logs.
+
 - Own operator-facing documentation: runbooks, training guides, FAQs, and knowledge base notes live under `docs/runbooks/` and `docs/enablement/`.
 - Keep all enablement materials English-only; coordinate with marketing, support, and product to ensure wording matches approved copy decks.
 - Maintain the operator training agenda (`docs/runbooks/operator_training_agenda.md`) and ensure every dry run captures questions in the Q&A template.
@@ -29,6 +39,11 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Drive each deliverable to closure yourself; document artefacts, timestamps, and remaining follow-ups in `feedback/enablement.md`. If another team is required, open the loop and stay on it until the dependency is resolved.
+
+## Aligned Task List — 2025-10-11
+- Replace token workflows in materials with RR7 + CLI v3 directions; update screenshots and steps accordingly.
+- Ensure all training collateral references canonical toolkit; sanitize any example outputs.
+- Evidence in `feedback/enablement.md`.
 
 - Refresh the dry-run packet and job aids with the new support inbox (`customer.support@hotrodan.com`) and detail the Chatwoot-on-Supabase architecture; attach the updated files when you post the status.
 - Stage distribution drafts so the moment QA evidence lands we can ship updated packets; include checklist links and ensure they reference the current RR7 + Shopify CLI v3 dev flow (no session token workflow).

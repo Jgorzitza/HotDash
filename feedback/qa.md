@@ -235,3 +235,80 @@ QA is ready to:
 
 **No code edited.** Report-only deliverable per manager request.
 
+
+## 2025-10-11T03:26:46Z — Manager Direction Executed
+
+### Summary
+Executed aligned task list from docs/directions/qa.md. Found 2 critical violations requiring cleanup.
+
+### Critical Findings
+
+1. SHOPIFY_EMBED_TOKEN_STAGING exists in GitHub staging secrets (should be removed per RR7+CLI v3 flow)
+2. vault/occ/shopify/embed_token_staging.env exists (should be removed)
+
+### Compliance Results
+- Canonical toolkit: ✅ No alt DBs (no redis/mongodb/mysql in app)
+- RR7+CLI v3: ✅ Verified in app/routes/app.tsx
+- Shopify Dev MCP: ❌ Not integrated in tests yet
+- TypeScript: ⚠️ 10 errors in scripts/ai/llama-workflow (experimental code)
+- Playwright smoke: ✅ 2/2 passing
+- CI workflows: ⚠️ Some failures need investigation
+
+### Actions Required
+- Manager/Reliability: Remove SHOPIFY_EMBED_TOKEN_STAGING from GitHub + vault
+- Engineer: Integrate Shopify Dev MCP in tests
+- Reliability: Investigate failing CI workflows
+- AI: Fix llama-workflow TypeScript errors
+
+### Evidence
+All logs in artifacts/qa/2025-10-11T031818Z/
+
+
+## 2025-10-11T03:41:29Z — Embed Token Cleanup Executed
+
+### Authorization
+Manager authorized embed token cleanup per aligned task list direction.
+
+### Actions Executed
+
+1. **Removed SHOPIFY_EMBED_TOKEN_STAGING from GitHub staging environment**
+   - Command: gh secret remove SHOPIFY_EMBED_TOKEN_STAGING --env staging
+   - Status: ✅ SUCCESS
+
+2. **Removed vault/occ/shopify/embed_token_staging.env**
+   - Command: rm vault/occ/shopify/embed_token_staging.env
+   - Status: ✅ SUCCESS
+
+### Verification
+
+**GitHub Staging Secrets (Post-Cleanup):**
+- CHATWOOT_ACCOUNT_ID_STAGING ✅
+- CHATWOOT_REDIS_URL_STAGING ✅
+- CHATWOOT_TOKEN_STAGING ✅
+- DATABASE_URL ✅
+- SHOPIFY_API_KEY_STAGING ✅
+- SHOPIFY_API_SECRET_STAGING ✅
+- SHOPIFY_CLI_AUTH_TOKEN_STAGING ✅
+- STAGING_APP_URL ✅
+- STAGING_SHOP_DOMAIN ✅
+- STAGING_SMOKE_TEST_URL ✅
+- SUPABASE_SERVICE_KEY ✅
+- SUPABASE_URL ✅
+
+**SHOPIFY_EMBED_TOKEN_STAGING:** ✅ NOT PRESENT (removed successfully)
+
+**Vault Check:**
+- find vault/ -name "*embed*": 0 results ✅
+- All embed token files removed successfully
+
+### Compliance Status
+✅ Secrets hygiene: COMPLIANT (no embed/session tokens present)
+✅ Per manager direction: "Remove any residual SHOPIFY_EMBED_TOKEN_* secrets"
+
+### Evidence
+- artifacts/qa/2025-10-11T034129Z-cleanup/cleanup.log
+- artifacts/qa/2025-10-11T034129Z-cleanup/gh-secrets-after-cleanup.log
+
+### Summary
+Embed token cleanup complete. GitHub staging environment and vault are now compliant with RR7+CLI v3 flow requirements (no manual embed/session tokens).
+

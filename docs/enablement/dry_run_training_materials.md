@@ -15,12 +15,12 @@ expires: 2025-10-16
 - **Language guardrail:** English-only launch scope confirmed per copy deck (`docs/design/copy_deck.md`); FR packets remain paused until manager reopens scope.
 - **Environment:** Fly staging host `https://hotdash-staging.fly.dev/app?mock=1` with `FEATURE_MODAL_APPROVALS=1`; toggle `FEATURE_AI_ESCALATIONS` per scenario notes
 - **Reference Agenda:** `docs/runbooks/operator_training_agenda.md`
-- **Status:** Credentials validated (Supabase rotation cleared 2025-10-10 15:45 UTC); distribution queued pending QA `?mock=0` evidence capture and Chatwoot Fly embed token delivery.
+- **Status:** Credentials validated (Supabase rotation cleared 2025-10-10 15:45 UTC); distribution queued pending QA `?mock=0` evidence capture and React Router 7 + Shopify CLI v3 development workflow validation.
 
 ## Canonical Toolkit Summary (brief operators up front)
 - **Supabase** — single source of truth for decision logs, metrics, and Chatwoot persistence. All operator evidence references Supabase artifacts; remind facilitators to show how decisions sync to the `decision_log` table and where NDJSON exports live (`artifacts/logs/`).
-- **Chatwoot on Fly + Supabase** — application and Sidekiq services run on Fly.io with Upstash Redis, while conversations, templates, and audit trails persist in Supabase. Stress that migrations and retention policies now map to Supabase (see `docs/runbooks/cx_escalations.md`), and call out the new embed token dependency before we resume live rehearsals.
-- **Shopify App Embed** — operators launch the dashboard from Shopify Admin. Staging runs behind the Shopify embed token and React Router 7 shell documented in `docs/NORTH_STAR.md`; facilitators should walk through the auth flow when QA publishes green evidence.
+- **Chatwoot on Fly + Supabase** — application and Sidekiq services run on Fly.io with Upstash Redis, while conversations, templates, and audit trails persist in Supabase. Stress that migrations and retention policies now map to Supabase (see `docs/runbooks/cx_escalations.md`), utilizing standard Shopify CLI v3 development workflows.
+- **Shopify App Integration** — operators launch the dashboard from Shopify Admin. Staging utilizes standard Shopify App authentication with React Router 7 navigation patterns documented in `docs/NORTH_STAR.md`; facilitators should walk through the development workflow when QA publishes green evidence.
 - **AI Tooling** — OpenAI + LlamaIndex pipelines supply the CX Escalations suggested replies. Clarify that AI output remains optional, adheres to English-only copy, and is logged for audit via Supabase.
 - Reinforce the governance guardrails (`docs/directions/README.md`) so operators understand why evidence, decision logging, and credential hygiene are non-negotiable during the dry run.
 
@@ -34,7 +34,7 @@ expires: 2025-10-16
 - Stakeholder confirmations logged in `feedback/enablement.md` (attendees, dependencies, blockers) — waiting on QA evidence to release distribution notice.
 - Support contact update: confirm facilitators have the new desk alias `customer.support@hotrodan.com` for any operator-access escalations.
 - Chatwoot Fly migration: reminder that reliability will signal the cut-over window; facilitators should review the validation checklist in `docs/runbooks/cx_escalations.md` ahead of the rehearsal so we can brief operators on updated host details if the switch happens pre-session.
-- Embed token gate: distribution remains internal-only until reliability confirms the Shopify embed token for Chatwoot Fly; log evidence path once it lands.
+- Development workflow gate: distribution remains internal-only until development team confirms React Router 7 + Shopify CLI v3 workflow validation; log evidence path once complete.
 
 ## Asynchronous Prep (Staging Offline)
 - Watch recorded mock demos in `artifacts/training/async_modules/2025-10-10/` and annotate key takeaways in the shared async worksheet (`artifacts/ops/dry_run_2025-10-16/async_prep_notes.xlsx`).
