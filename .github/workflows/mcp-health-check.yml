@@ -1,0 +1,77 @@
+name: MCP Server Health Check
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    name: Check MCP Server Health
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Set up Python for pipx
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install pipx
+        run: |
+          python -m pip install --user pipx
+          python -m pipx ensurepath
+      
+      - name: Install analytics-mcp
+        run: pipx install analytics-mcp
+      
+      - name: Install Docker (if needed)
+        run: |
+          # Docker is pre-installed on ubuntu-latest
+          docker --version
+      
+      - name: Run MCP Health Check
+        id: health-check
+        run: |
+          # Make script executable
+          chmod +x scripts/ops/mcp-health-check.sh
+          
+          # Run health check (allow degraded state to pass)
+          bash scripts/ops/mcp-health-check.sh || EXIT_CODE=$?
+          
+          # Exit codes: 0=healthy, 2=degraded (acceptable), 1=failed
+          if [ "${EXIT_CODE:-0}" -eq 1 ]; then
+            echo "❌ MCP health check failed"
+            exit 1
+          elif [ "${EXIT_CODE:-0}" -eq 2 ]; then
+            echo "⚠️ MCP health check degraded but acceptable"
+            exit 0
+          else
+            echo "✅ MCP health check passed"
+            exit 0
+          fi
+        continue-on-error: false
+      
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcp-health-report-${{ github.run_id }}
+          path: artifacts/integrations/mcp-health-checks/
+          retention-days: 30
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::warning::MCP Server Health Check Failed - Review artifacts for details"
+          cat artifacts/integrations/mcp-health-checks/*.log || echo "No log file found"
+

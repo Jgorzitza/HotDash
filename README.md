@@ -71,6 +71,227 @@ The helper uses the Supabase CLI to stream local events. Pass a project ref to t
 - React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
 - Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
 
+## AI Agent Support: MCP Tools
+
+HotDash provides **6 MCP servers** to help AI agents work effectively:
+
+| Tool | Purpose | Status |
+|------|---------|--------|
+| **shopify** | Shopify API docs, GraphQL validation | ✅ Auto-loads |
+| **context7** | HotDash codebase + library search | ⚠️ Requires startup |
+| **github-official** | GitHub repo management | ✅ Auto-loads |
+| **supabase** | Database & edge functions | ✅ Auto-loads |
+| **fly** | Deployment & infrastructure | ⚠️ Check if needed |
+| **google-analytics** | GA data queries (dev tools only) | ✅ Auto-loads |
+| **llamaindex-rag** | Knowledge base RAG queries | 🚧 In development |
+
+### Quick Start by Tool
+
+<details>
+<summary><b>🖱️ Cursor IDE</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/.cursor/mcp.json` (already configured)
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Verify Context7 is running**:
+   ```bash
+   docker ps | grep context7-mcp
+   ```
+
+3. **Open HotDash in Cursor**:
+   ```bash
+   cursor ~/HotDash/hot-dash
+   ```
+
+4. **Check MCP Status**:
+   - Settings → MCP
+   - Verify all 5 servers show green indicators
+
+5. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>⌨️ Codex CLI</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/.codex/config.toml` (already configured)
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Verify Context7 is running**:
+   ```bash
+   docker ps | grep context7-mcp
+   ```
+
+3. **Start Codex in HotDash directory**:
+   ```bash
+   cd ~/HotDash/hot-dash
+   codex
+   ```
+
+4. **Verify MCP tools loaded**:
+   ```
+   codex> /tools
+   ```
+   Should show shopify, context7, github-official, supabase, fly
+
+5. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>🤖 Claude CLI</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+- Or: `~/.config/Claude/claude_desktop_config.json` (Linux)
+
+**Setup (one-time):**
+```bash
+# Copy MCP config to Claude
+mkdir -p ~/Library/Application\ Support/Claude  # macOS
+# OR
+mkdir -p ~/.config/Claude  # Linux
+
+# Convert from JSON to Claude format (already done if using Claude Desktop)
+# See docs/directions/mcp-tools-reference.md for config format
+```
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Start Claude CLI**:
+   ```bash
+   claude
+   ```
+
+3. **Verify MCP tools**:
+   ```
+   > What MCP tools do you have access to?
+   ```
+
+4. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>🚀 Warp Terminal</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- Warp AI Drive integration
+- MCP support (check Warp version supports MCP)
+
+**Setup (one-time):**
+- Configure MCP in Warp settings
+- Import from `~/.cursor/mcp.json` or `~/.codex/config.toml`
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Open Warp** in HotDash directory:
+   ```bash
+   cd ~/HotDash/hot-dash
+   # Use Warp AI (Ctrl+`)
+   ```
+
+3. **Verify MCP tools available** in Warp AI panel
+
+4. **Start coding!** All MCP tools are now available.
+
+</details>
+
+### What's Available
+
+**MCP Tools Provide:**
+- 🏪 **Shopify**: API docs, GraphQL validation
+- 🔍 **Context7**: HotDash code search + React Router/Prisma/etc. docs
+- 🐙 **GitHub**: PR/issue management, code search
+- 🗄️ **Supabase**: Migrations, queries, edge functions
+- ✈️ **Fly.io**: Deployments, logs, secrets
+- 📊 **Google Analytics**: GA property queries (Cursor/dev tools)
+- 🧠 **LlamaIndex RAG**: Knowledge base queries, support insights
+
+**Example Agent Queries:**
+```
+"Show me the Sales Pulse tile implementation"  (context7)
+"Validate this Shopify GraphQL query"          (shopify)
+"Create a PR for this feature"                 (github-official)
+"Run migration for new dashboard_facts column" (supabase)
+"Deploy hot-dash to production"                (fly)
+"What are my GA properties?"                   (google-analytics, dev only)
+"Query support knowledge base"                 (llamaindex-rag, coming soon)
+```
+
+### What Context7 Indexes
+
+**Included:**
+- Source code (`app/`, `packages/`, `scripts/`)
+- Documentation (`docs/`)
+- Configuration (root configs, `prisma/`, `supabase/`)
+- Tests (`tests/`)
+
+**Excluded** (via `.context7ignore`):
+- Dependencies, build artifacts, test outputs
+- Environment files and secrets
+- Binary assets
+
+### Documentation
+
+- **Training Data Check**: `docs/directions/training-data-reliability-check.md` 🚨 **READ FIRST**
+- **MCP Tools Overview**: `docs/directions/mcp-tools-reference.md` (comprehensive guide)
+- **Efficiency Guide**: `docs/directions/mcp-usage-efficiency.md` ⭐ (avoid context overload)
+- **Context7 Usage**: `docs/context7-mcp-guide.md` (detailed Context7 guide)
+- **Quick Reference**: `docs/context7-quick-reference.md` (common queries)
+- **Setup Summary**: `docs/directions/context7-mcp-setup.md` (setup details)
+
+### ⚠️ Critical for AI Agents
+
+**Your training data is outdated for:**
+- React Router 7 (you have v6/Remix patterns)
+- Shopify APIs (you have 2023 or older)
+
+**Always verify with MCP tools before implementing RR7 or Shopify code.**  
+See `docs/directions/training-data-reliability-check.md` for decision matrix.
+
+### Troubleshooting
+
+**"Context7 not available":**
+```bash
+# Check if running
+docker ps | grep context7-mcp
+
+# If not, start it
+./scripts/ops/start-context7.sh
+
+# Reload your AI tool
+```
+
+**"Which tool do I have?":**
+- Check config file for your tool (see above)
+- All configs point to same MCP servers
+- Just ensure Context7 is running first!
+
 ### AI Integration Notes
 - Retrieve the staging OpenAI API key from `vault/occ/openai/api_key_staging.env` before running AI tooling.
 - Set `OPENAI_API_KEY` in your shell (`source vault/occ/openai/api_key_staging.env`) so `npm run ai:build-index` and regression scripts can talk to OpenAI.

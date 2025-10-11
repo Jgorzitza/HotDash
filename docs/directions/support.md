@@ -41,17 +41,213 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 ## Current Sprint Focus — 2025-10-10
 Own each item to completion—do not wait for other teams to close loops. Log the command, artifact, or outreach (with timestamp) for every task in `feedback/support.md`, and follow up until blockers clear.
 
-## Aligned Task List — 2025-10-11
-- Rehearsal flow
-  - Use RR7 + CLI v3 for Admin walkthroughs; no token capture. Keep operator job aids aligned.
-- Gold replies
-  - Coordinate with Data for webhook endpoint + schema; capture evidence of sample submission.
-- Evidence
-  - Log timestamp, commands, and artifacts in `feedback/support.md`.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
-1. **Chatwoot shared inbox** — Configure customer.support@hotrodan.com in Chatwoot (IMAP/SMTP or API). Update `docs/runbooks/cx_escalations.md` and `docs/runbooks/shopify_dry_run_checklist.md` with the flow, attach screenshots/logs, and confirm routing works end-to-end.
-2. **Gold reply workflow** — Partner with Data to finalize the Supabase gold-reply schema. Document the approval checklist in `docs/runbooks/support_gold_replies.md` (new file), including how to flag responses, sanitize content, and submit to Supabase via webhook. Capture a sample approved reply.
-3. **Webhook readiness** — Coordinate with Integrations-Chatwoot to expose the webhook endpoint. Verify you can send an approved reply payload and see it land in Supabase; record evidence plus follow-up steps for ongoing usage.
-4. **Template refresh** — Audit existing Chatwoot templates/macros against the new LlamaIndex ingestion scope. Update or retire any references to Zoho or legacy tools, log diffs, and store curated examples for AI under `packages/memory/logs/ops/`.
-5. **Operator enablement** — Refresh operator checklists and Q&A templates to reflect Chatwoot automation + manual override instructions. Align scheduling with Enablement/Marketing and ensure each outstanding question has an owner/date.
-6. **Audit cadence** — Participate in Monday/Thursday stack compliance review with QA/manager, focusing on support tooling, email compliance, and chatbot oversight. Document findings in `feedback/support.md`.
+**Reference Docs**:
+- docs/AgentSDKopenAI.md - Section 13 for training loop and feedback collection
+- docs/runbooks/operator_training_qa_template.md
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/support.md and continue):
+
+1. ✅ **Support Inbox Audit** - COMPLETE (2025-10-11)
+   - Verified 112 references to customer.support@hotrodan.com
+   - All references consistent
+   - Evidence: artifacts/support/logs/inbox-references.log
+
+2. **Knowledge Base Content Preparation** - ✅ REASSIGNED TO AI AGENT
+
+   **Manager Decision (2025-10-11T21:45Z)**: Task reassigned to @ai agent (better suited for content creation)
+   
+   **Your Action**: **SKIP to Task 3** - Your operational expertise more valuable on operator training
+   
+   **Optional**: Review KB content quality after @ai creates it, provide operator perspective
+
+3. **Operator Training for Agent SDK** - Create training materials for approval queue
+   - Update operator_training_qa_template.md with Agent SDK workflows
+   - Document how to review approval requests
+   - Create decision guide for approve vs reject
+   - Document escalation procedures
+   - Add FAQ for agent automation
+   - Evidence: Training materials updated
+
+4. **Agent Response Quality Guidelines** - Define standards for AI responses
+   - Create rubric for evaluating agent responses (factuality, helpfulness, tone, policy alignment)
+   - Document brand voice guidelines for customer communication
+   - Define what requires human approval vs auto-send (if applicable)
+   - Create examples of good vs bad responses
+   - Evidence: Quality guidelines document
+
+5. **Feedback Collection Process** - Set up operator feedback mechanism
+   - Design form/process for operators to rate agent responses
+   - Document how to submit corrections/improvements
+   - Create workflow for flagging good responses for training data
+   - Coordinate: Tag @data for feedback storage schema
+   - Evidence: Feedback process documented
+
+6. **Pilot Customer Communication** - Prepare for pilot rollout
+   - Draft customer communication about AI-assisted support
+   - Create opt-in messaging
+   - Prepare FAQ for customer concerns
+   - Document customer escalation path
+   - Evidence: Communication templates
+
+**Ongoing Requirements**:
+- Coordinate with @chatwoot on conversation workflows
+- Tag @ai for content ingestion coordination
+- Log all training materials in feedback/support.md
+
+---
+
+### 🚀 EXECUTE TASK 2 IMMEDIATELY (Critical for LlamaIndex RAG)
+
+**Task 2: Knowledge Base Content Preparation** - URGENT for AI agent
+
+Create comprehensive support content:
+- data/support/shipping-policy.md (return window, procedures, costs)
+- data/support/refund-policy.md (eligibility, process, timelines)
+- data/support/product-troubleshooting.md (common issues, solutions)
+- data/support/order-tracking.md (how to track, common delays)
+- data/support/exchange-process.md (eligibility, steps)
+- data/support/common-questions-faq.md (top 20 customer questions)
+
+**Format**: Markdown, clear sections, scannable by LlamaIndex
+
+**Timeline**: 2-3 hours for comprehensive content
+
+**Coordinate**: Tag @ai when complete for ingestion
+
+**Evidence**: 6+ content files created in data/support/
+
+---
+
+### 🚀 ADDITIONAL PARALLEL TASKS
+
+**Task A: Operator Training Materials** - Update for Agent SDK
+- Update operator_training_qa_template.md
+- Add Agent SDK approval queue workflows
+- Document decision guide for approvals
+- Evidence: Training materials ready
+
+Execute Task 2 FIRST (AI needs it), then Task A.
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task 7: Customer Support Escalation Matrix**
+- Create detailed escalation procedures for all issue types
+- Document when to escalate vs resolve with agents
+- Define SLA thresholds for escalations
+- Create escalation flowchart
+- Evidence: Escalation matrix document
+
+**Task 8: Support Metrics Tracking Design**
+- Define support metrics to track (CSAT, response time, resolution rate)
+- Design metrics collection process
+- Create reporting dashboard specification
+- Plan for metric-driven improvements
+- Evidence: Metrics tracking framework
+
+**Task 9: Customer Communication Templates**
+- Create email templates for common scenarios
+- Design chat response templates
+- Document tone and style guidelines
+- Create template library for operators
+- Evidence: Complete template library
+
+**Task 10: Support Knowledge Base Organization**
+- Organize existing support content by category
+- Create tagging and categorization system
+- Design search and retrieval workflow
+- Plan for knowledge base maintenance
+- Evidence: KB organization framework
+
+**Task 11: Operator Efficiency Analysis**
+- Analyze current operator time allocation
+- Identify time-consuming tasks for automation
+- Calculate potential efficiency gains
+- Create efficiency improvement roadmap
+- Evidence: Efficiency analysis report
+
+**Task 12: Customer Feedback Loop Design**
+- Design customer satisfaction survey system
+- Create feedback collection workflow
+- Plan for feedback analysis and action
+- Document continuous improvement process
+- Evidence: Feedback loop design
+
+Execute 7-12 in any order - all improve support operations.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 18 Additional Tasks
+
+**Task 13-18: Advanced Support Operations** (6 tasks)
+- 13: Design proactive support system (detect issues before customers report)
+- 14: Create customer health monitoring dashboard
+- 15: Implement support ticket prioritization algorithm
+- 16: Design self-service support portal
+- 17: Create support chatbot for common questions (pre-Agent SDK)
+- 18: Plan omnichannel support strategy (email, chat, phone, social)
+
+**Task 19-24: Quality & Performance** (6 tasks)
+- 19: Design quality assurance program for support interactions
+- 20: Create mystery shopper program for support quality
+- 21: Implement support interaction recording and review system
+- 22: Design peer review process for support responses
+- 23: Create support quality scorecard and benchmarks
+- 24: Plan continuous improvement program based on metrics
+
+**Task 25-30: Customer Experience** (6 tasks)
+- 25: Design VIP customer support program
+- 26: Create customer loyalty program integration with support
+- 27: Implement customer effort score (CES) measurement
+- 28: Design post-resolution follow-up automation
+- 29: Create customer win-back program for churned customers
+- 30: Plan support-driven upsell and cross-sell opportunities
+
+Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of support strategy work.
+
+---
+
+### 📋 MANAGER CLARIFICATION (2025-10-11T22:05Z)
+
+**Your Question**: Which tasks to execute?
+
+**Answer**: ✅ **Option B - Execute numbered Tasks 3-30 in "Aligned Task List" section**
+
+**What to Ignore**: Lines 31-38 (general responsibilities - context only, NOT tasks)
+
+**What to Execute**: Lines 50-209 (numbered Tasks 1-30 - your actual work)
+
+**Current Status**: 
+- Task 1: ✅ Done
+- Task 2: ⏩ Skipped (reassigned to @ai)
+- **Task 3**: ➡️ **START HERE** (Operator training for Agent SDK)
+
+---
+
+### 🚀 SECOND MASSIVE EXPANSION (Another 15 Tasks)
+
+**Task 31-36: Support Automation Design** (6 tasks)
+- 31: Design intelligent ticket routing based on conversation analysis
+- 32: Create automated response suggestion system for operators
+- 33: Design support workload balancing and distribution
+- 34: Create automated follow-up reminders for operators
+- 35: Design conversation summary generation for handoffs
+- 36: Create support team collaboration tools
+
+**Task 37-42: Customer Experience Programs** (6 tasks)
+- 37: Design customer onboarding support program
+- 38: Create proactive outreach program for at-risk customers
+- 39: Design customer education content series
+- 40: Create support-to-sales handoff process
+- 41: Design customer feedback analysis and action system
+- 42: Create customer success milestone celebration program
+
+**Task 43-45: Support Analytics** (3 tasks)
+- 43: Design support forecasting model (volume, staffing needs)
+- 44: Create cost-per-ticket analysis framework
+- 45: Design support ROI measurement system
+
+Execute 31-45 in any order. Total: 45 tasks, ~25-30 hours work.

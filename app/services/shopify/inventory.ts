@@ -34,8 +34,9 @@ const LOW_STOCK_QUERY = `#graphql
                     id
                     name
                   }
-                  quantities {
-                    availableQuantity
+                  quantities(names: ["available"]) {
+                    name
+                    quantity
                   }
                 }
               }
@@ -63,8 +64,10 @@ interface InventoryVariantNode {
         node: {
           id: string;
           location: { id: string; name: string };
-          available?: number | null;
-          availableQuantity?: number | null;
+          quantities: Array<{
+            name: string;
+            quantity: number | null;
+          }>;
         };
       }>;
     };
@@ -87,7 +90,9 @@ function computeAvailableQuantity(variant: InventoryVariantNode) {
   const levels = variant.inventoryItem?.inventoryLevels?.edges ?? [];
   for (const level of levels) {
     const node = level.node;
-    const quantity = node.availableQuantity ?? node.available ?? 0;
+    // Find the "available" quantity from the quantities array
+    const availableQty = node.quantities?.find(q => q.name === 'available');
+    const quantity = availableQty?.quantity ?? 0;
     total += quantity ?? 0;
   }
   return total;

@@ -1,8 +1,13 @@
+import { VectorStoreIndex } from 'llamaindex';
 export interface QueryResult {
     query: string;
-    answer: string;
-    citations: QuerySource[];
-    confidence: number;
+    response: string;
+    sources: QuerySource[];
+    metadata: {
+        topK: number;
+        timestamp: string;
+        processingTime: number;
+    };
 }
 export interface QuerySource {
     id: string;

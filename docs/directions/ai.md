@@ -58,20 +58,287 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## Current Sprint Focus — 2025-10-10
 Work every task to completion—do not hand off after identifying a gap. Capture the command you ran, the output, and the timestamp in `feedback/ai.md`. Retry each failed command twice before escalating with logs attached.
 
-## Aligned Task List — 2025-10-11
-- Canonical toolkit
-  - Keep ingestion within approved sources (Supabase, sitemap/web pages, Chatwoot curated replies). No alternate providers without approval.
-- Shopify data
-  - Use Shopify Dev MCP for Admin data references; no ad-hoc endpoints.
-- Evidence
-  - Log build/eval outputs and metrics; respect secrets hygiene and sanitize artifacts.
+## Aligned Task List — 2025-10-11 (Updated: Manager Decision - LlamaIndex MCP Architecture)
 
-1. **Pipeline blueprint** — Draft `docs/runbooks/llamaindex_workflow.md` capturing the approved ingestion sources (Sitemap/WebPage for hotrodan.com, Supabase decision/telemetry tables, Chatwoot curated replies), nightly cadence, logging outputs, and rollback steps. Attach changelog evidence in `feedback/ai.md`.
-2. **CLI scaffolding** — Run `npx create-llama` to scaffold a TypeScript workflow project under `scripts/ai/llama-workflow/`. Wire it to read secrets from `.env.local` (OpenAI, Supabase) and document setup in the runbook.
-3. **Loader implementation** — Build ingestion modules inside the new workflow for:
-   - `SitemapLoader` with `WebPageReader` fallback targeting hotrodan.com.
-   - `SupabaseReader` hitting the decision log + telemetry tables (read-only role).
-   - Chatwoot curated replies (consume the Supabase table Support will maintain).
-   Validate each module locally and log evidence paths.
-4. **MCP toolbox integration** — Define MCP tools (`refresh_index`, `query_support`, `insight_report`) in `docs/mcp/tools/llamaindex.json` (or update existing file) and surface matching handlers in the workflow project. Provide schema + usage notes for other agents in `feedback/ai.md`.
-5. **Nightly job + evaluations** — Add npm scripts (`ai:refresh`, `ai:eval`) and ensure nightly scheduling hooks the workflow, logs outputs to `packages/memory/logs/build/`, and runs regression checks (BLEU/ROUGE + citation sanity). Deliver evidence and unblock Data/QA before switching tasks.
+### ✅ COMPLETED (2025-10-11)
+- ✅ Pipeline blueprint (`docs/runbooks/llamaindex_workflow.md`)
+- ✅ CLI scaffolding (`scripts/ai/llama-workflow/`)
+- ✅ Loader implementation (Sitemap, Supabase, Curated replies)
+- ✅ MCP tools defined (`docs/mcp/tools/llamaindex.json`)
+- ✅ Nightly job + evaluations
+
+**Status**: LlamaIndex workflow operational. Now deploying as MCP server for universal access.
+
+---
+
+### 🚀 NEW PRIORITY: Support Engineer with LlamaIndex MCP Server (Week 1-2)
+
+**Manager Decision**: Transform LlamaIndex workflow into HTTP MCP server for Agent SDK integration.
+
+**Your Role**: Support Engineer agent with LlamaIndex expertise, optimization, and testing.
+
+#### Task 1: Review Engineer's MCP Server Implementation
+**What Engineer is building**: `apps/llamaindex-mcp-server/` - thin HTTP wrapper around your `scripts/ai/llama-workflow/` CLI
+
+**Your responsibilities**:
+1. **Code review** Engineer's MCP handler implementations
+2. **Validate** that CLI calls are correct and efficient
+3. **Test** MCP server responses match CLI output
+4. **Optimize** query performance if needed
+
+**Evidence**: Review notes in `feedback/ai.md`, any optimization PRs
+
+#### Task 2: Improve Query Performance
+**Goal**: Ensure <500ms P95 response time for MCP queries
+
+**Actions**:
+- Profile current `llama-workflow query` performance
+- Optimize vector search parameters (topK, similarity threshold)
+- Cache frequently accessed documents
+- Implement query result caching (5-minute TTL)
+
+**Evidence**: 
+- Performance benchmarks before/after
+- Caching strategy document
+- Updated `docs/runbooks/llamaindex_workflow.md`
+
+#### Task 3: Enhance Training Data Collection
+**Goal**: Support Agent SDK feedback loop
+
+**Implementation**:
+```typescript
+// Add to llama-workflow
+export async function logQuery(query: string, result: string, metadata: {
+  conversationId: number;
+  agent: string;
+  approved: boolean;
+  humanEdited?: string;
+}) {
+  // Store in Supabase for training
+  await supabase.from('agent_queries').insert({
+    query,
+    result,
+    conversation_id: metadata.conversationId,
+    agent: metadata.agent,
+    approved: metadata.approved,
+    human_edited: metadata.humanEdited,
+    created_at: new Date().toISOString(),
+  });
+}
+```
+
+**Evidence**: Training data schema, ingestion pipeline, sample logs
+
+#### Task 4: Create Evaluation Golden Dataset
+**Goal**: Ensure agent responses meet quality bar
+
+**Actions**:
+1. Create `scripts/ai/llama-workflow/eval/agent-qa-dataset.jsonl`
+2. Add 50+ test cases covering:
+   - Shipping policy questions
+   - Return/refund procedures
+   - Product specifications
+   - Troubleshooting guides
+3. Run evaluation suite weekly
+4. Report BLEU/ROUGE/Citation accuracy
+
+**Evidence**: 
+- Golden dataset file
+- Evaluation results
+- Quality threshold definitions (BLEU >0.3, ROUGE-L >0.4)
+
+#### Task 5: Monitor MCP Server Health
+**Goal**: Ensure 99% uptime once deployed
+
+**Actions**:
+- Add health check endpoint to MCP server
+- Monitor query latency, error rates
+- Alert on index staleness (>24h)
+- Document runbook for common issues
+
+**Evidence**:
+- Monitoring dashboard access
+- Alert configurations
+- Incident runbook
+
+---
+
+### Coordination with Engineer Agent
+
+**Engineer owns**:
+- MCP server HTTP implementation
+- Fly.io deployment
+- Agent SDK integration
+- Approval queue UI
+
+**AI agent (you) owns**:
+- LlamaIndex query optimization
+- Training data pipeline
+- Evaluation framework
+- Knowledge base quality
+
+**Communication**:
+- Daily sync in `feedback/ai.md` and `feedback/engineer.md`
+- Tag each other with @ai or @engineer for questions
+- Escalate blockers to manager immediately
+
+---
+
+### Evidence Logging
+Log all activities in `feedback/ai.md` with:
+- Timestamp
+- Action taken
+- Performance metrics
+- Optimization results
+- Test results
+- Coordination notes
+
+Example:
+```
+## 2025-10-12T09:00:00Z — LlamaIndex MCP Optimization
+
+**Action**: Profiled query_support performance
+- Baseline: 850ms P95
+- After caching: 320ms P95 (-62%)
+- Cache hit rate: 78%
+
+**Evidence**: artifacts/ai/20251012T0900Z/perf-report.json
+
+**Coordination**: Shared results with @engineer, MCP server ready for deployment
+```
+
+---
+
+**PRIORITY**: Support Engineer with LlamaIndex MCP implementation this week. Optimize, test, monitor.
+
+---
+
+### 🚀 ADDITIONAL PARALLEL TASKS (While Waiting for Engineer MCP Deployment)
+
+**Since Task 1 complete, execute these in parallel while Engineer builds MCP server**:
+
+**Task A: Knowledge Base Content Audit** - Review current RAG content quality
+- Audit data/ directory content for completeness
+- Identify gaps in FAQ coverage
+- Review Supabase curated replies for quality
+- Document content improvement recommendations
+- Coordinate: Tag @support for content gaps
+- Evidence: Content audit report in feedback/ai.md
+
+**Task B: Agent Response Template Library** - Create reusable templates
+- Create response templates for common questions (shipping, returns, order status)
+- Document template variables and customization points
+- Ensure templates follow brand voice
+- Store in scripts/ai/llama-workflow/templates/
+- Evidence: Template library with 10+ templates
+
+**Task C: Training Data Quality Analysis** - Analyze existing LlamaIndex queries
+- Review query logs from llama-workflow
+- Identify common query patterns
+- Document frequently asked questions
+- Recommend index optimization based on usage
+- Evidence: Quality analysis report
+
+**Task D: Agent SDK Integration Documentation** - Document how agents will use LlamaIndex MCP
+- Create usage guide for Agent SDK calling LlamaIndex MCP
+- Document expected response formats
+- Create troubleshooting guide
+- Provide example queries and responses
+- Evidence: Integration guide in docs/
+
+Execute A, B, C, D in any order. All are independent and don't block on Engineer.
+
+---
+
+### 🚨 URGENT ADDITION: Task from Support Agent
+
+**Task E: Knowledge Base Content Creation** (REASSIGNED FROM SUPPORT)
+- Create data/support/shipping-policy.md (return window, procedures, costs)
+- Create data/support/refund-policy.md (eligibility, process, timelines)
+- Create data/support/product-troubleshooting.md (common issues, solutions)
+- Create data/support/order-tracking.md (how to track, common delays)
+- Create data/support/exchange-process.md (eligibility, steps)
+- Create data/support/common-questions-faq.md (top 20 customer questions)
+- Format: Markdown, clear sections, scannable by LlamaIndex
+- Coordinate: Tag @support for operational review when done
+- Evidence: 6+ content files created
+
+**Priority**: HIGH (needed for LlamaIndex RAG quality)
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task F: Prompt Engineering for Agent SDK**
+- Create system prompts for triage, order, and product agents
+- Design prompt templates with variable injection
+- Test prompt effectiveness with sample conversations
+- Document prompt optimization process
+- Evidence: Prompt library with test results
+
+**Task G: Agent Response Quality Monitoring**
+- Create automated quality scoring system
+- Implement BLEU/ROUGE metrics for responses
+- Design real-time quality dashboard
+- Document quality thresholds and alerts
+- Evidence: Quality monitoring system
+
+**Task H: LlamaIndex Index Optimization**
+- Optimize vector search parameters (topK, similarity)
+- Implement semantic caching
+- Tune embedding model settings
+- Benchmark query performance improvements
+- Evidence: Optimization report with metrics
+
+**Task I: Agent Conversation Context Management**
+- Design context window management for multi-turn conversations
+- Implement conversation memory optimization
+- Create context summarization strategies
+- Document context limits and handling
+- Evidence: Context management framework
+
+**Task J: AI Safety and Guardrails**
+- Design content safety filters for agent responses
+- Implement PII detection and redaction
+- Create policy compliance checks
+- Document safety violation handling
+- Evidence: Safety framework with test cases
+
+**Task K: Model Fine-tuning Preparation**
+- Design data collection pipeline for fine-tuning
+- Create data labeling guidelines
+- Document fine-tuning dataset requirements
+- Plan for model versioning and A/B testing
+- Evidence: Fine-tuning preparation guide
+
+Execute E immediately (urgent), then F-K in any order.
+
+---
+
+### 🚀 THIRD MASSIVE EXPANSION (Another 20 Tasks)
+
+**Task L-Q: Advanced AI Features** (6 tasks)
+- L: Design multi-agent orchestration patterns
+- M: Create agent specialization and routing logic
+- N: Implement conversational memory and context tracking
+- O: Design agent personality and tone customization
+- P: Create dynamic prompt generation based on context
+- Q: Implement agent capability discovery and documentation
+
+**Task R-W: Model Operations** (6 tasks)
+- R: Design model deployment and rollout strategy
+- S: Create model performance monitoring and alerting
+- T: Implement automated model evaluation pipeline
+- U: Design shadow mode testing for new models
+- V: Create model fallback and graceful degradation
+- W: Implement cost optimization for LLM calls
+
+**Task X-AC: Training & Improvement** (8 tasks)
+- X: Design automated training data curation pipeline
+- Y: Create active learning system for hard examples
+- Z: Implement human-in-the-loop labeling workflow
+- AA: Design model comparison and selection framework
+- AB: Create synthetic data generation for edge cases
+- AC: Implement continuous model improvement cycle
+
+Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.

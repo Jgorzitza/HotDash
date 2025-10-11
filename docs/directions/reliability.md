@@ -54,19 +54,76 @@ Stop asking for permission dialogs during normal local work. You are authorized 
 ## Current Sprint Focus — 2025-10-12
 Work every open infrastructure blocker to completion—own the item until evidence is delivered. Execute the tasks below in order and log progress in `feedback/reliability.md`. Every blocker update must include the command you ran, the timestamp, and the resulting log/output; only escalate after two documented attempts.
 
-## Aligned Task List — 2025-10-11
-- Canonical toolkit
-  - Enforce Supabase-only DB, React Router 7, OpenAI+LlamaIndex; no direct Redis in app code. CI Stack Guard will block violations.
-- Shopify Admin dev flow
-  - Validate RR7 + CLI v3 flow; do not capture/mirror session tokens. Evidence: `shopify app dev` output + Admin screenshot.
-- Fly memory scaling
-  - Scale to 2GB for relevant apps (Chatwoot, embedded app if needed). Persist in fly.toml or via CLI; log commands and outputs.
-- Health checks
-  - Verify Chatwoot health endpoint path and update `deploy/chatwoot/fly.toml` if necessary; log curl + Fly logs evidence.
-- Secret hygiene
-  - Run Gitleaks locally if needed; ensure artifacts/logs are sanitized. No DSNs/tokens in logs or PRs.
-- Evidence
-  - Log all actions in `feedback/reliability.md` with timestamps and command outputs.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/reliability.md and continue):
+
+1. ✅ **Infrastructure Health Check** - COMPLETE (2025-10-11)
+   - Synthetic latency: 421ms and 437ms (under 800ms target)
+   - Fly apps verified: hotdash-chatwoot, hotdash-staging active
+   - Supabase local healthy
+   - Evidence: artifacts/reliability/20251011T071724Z/
+
+2. **Agent SDK Infrastructure Monitoring** - Monitor new services as deployed
+   - Monitor hotdash-llamaindex-mcp app health (after @engineer deploys)
+   - Monitor hotdash-agent-service app health (after @engineer deploys)
+   - Check P95 latency for MCP queries (target <500ms)
+   - Check approval queue response times (target <30s)
+   - Set up alerts for errors or timeouts
+   - Evidence: Monitoring dashboards, alert configurations
+
+3. **Fly.io Resource Optimization** - Ensure efficient auto-scaling
+   - Verify auto-stop/auto-start working for new services
+   - Monitor memory usage under load
+   - Adjust CPU/memory if needed
+   - Document resource usage patterns
+   - Evidence: Resource usage reports
+
+4. **Production Deployment Readiness** - Prepare for pilot launch
+   - Create production deployment runbook for Agent SDK services
+   - Document rollback procedures
+   - Set up production monitoring
+   - Verify health check endpoints
+   - Evidence: Production runbook, health check verification
+
+5. **Incident Response for Agent SDK** - Prepare for issues
+   - Create incident response runbook for agent failures
+   - Document escalation procedures
+   - Set up alerting thresholds
+   - Test rollback procedures
+   - Evidence: Incident runbook, test results
+
+**Ongoing Requirements**:
+- Monitor Fly.io apps continuously
+- Report performance issues immediately in feedback/reliability.md
+- Coordinate with @engineer on deployment needs
+
+---
+
+### 🚀 PARALLEL TASKS (While Waiting for Agent SDK Deployment)
+
+**Task A: Monitoring Dashboard Setup** - Prepare observability infrastructure
+- Set up Fly.io metrics dashboard for all apps
+- Configure alerts for CPU/memory/errors
+- Document alert thresholds
+- Create monitoring runbook
+- Evidence: Dashboard access, alert configs
+
+**Task B: Incident Response Runbook** - Prepare for Agent SDK issues
+- Create incident response procedures for agent failures
+- Document rollback procedures for each service
+- Create escalation matrix
+- Test rollback on staging
+- Evidence: Runbook with tested procedures
+
+**Task C: Performance Baseline Documentation** - Current state metrics
+- Document current P95 latencies for all routes
+- Measure current Fly.io resource usage
+- Baseline Chatwoot response times
+- Create performance comparison framework
+- Evidence: Baseline metrics report
+
+Execute A, B, C in any order - all independent work.
 
 1. **Local Supabase readiness**
    - Ensure every developer and CI runner uses the Supabase Postgres datasource. Document the steps (`supabase start`, `.env.local`) in `feedback/reliability.md` and confirm `DATABASE_URL` points at `postgresql://postgres:postgres@127.0.0.1:54322/postgres` (see `docs/runbooks/supabase_local.md`).

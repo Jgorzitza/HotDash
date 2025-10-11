@@ -42,7 +42,130 @@ You may run local, non-interactive test and audit commands without asking for ap
 ## Current Sprint Focus — 2025-10-12
 QA operates as the audit arm of the team. Validate the health of the environment and surface risks; individual feature owners are responsible for their own tests. Execute the steps below in parallel and log findings in `feedback/qa.md`.
 
-## Aligned Task List — 2025-10-11
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/qa.md and continue):
+
+1. ✅ **Test Suite Audit** - COMPLETE (2025-10-11, 45 min)
+   - 43/50 tests passing (85.7% pass rate)
+   - 8 security vulnerabilities identified
+   - 7 P0 blockers documented with owners
+   - Evidence: artifacts/qa/2025-10-11T142942Z/
+
+2. **Resolve Test Blockers** - Fix P0 issues to get test suite to 100%
+   - Fix logger.server.spec.ts (coordinate with @engineer for mock fetch setup)
+   - Install @vitest/coverage-v8: npm install -D @vitest/coverage-v8
+   - Add SCOPES to .env.example with documentation
+   - Re-run test suite: npm run test:unit
+   - Verify 100% pass rate
+   - Evidence: Clean test output, documented in feedback/qa.md
+
+3. **Agent SDK Test Strategy** - Create comprehensive test plan
+   - Write integration test plan for webhook flow (Chatwoot → Agent SDK → approval)
+   - Create E2E test scenarios: approve action, reject action, timeout handling
+   - Document test data requirements (sample conversations, mock approvals)
+   - Prepare Playwright test stubs for approval queue UI
+   - Coordinate: Tag @engineer when tests are ready to implement
+   - Evidence: Test plan document, test stubs created
+
+4. **Agent SDK Integration Tests** - Write and execute tests
+   - Create tests/integration/agent-sdk-webhook.spec.ts
+   - Test webhook payload processing
+   - Test agent tool execution
+   - Test approval state persistence
+   - Test approve/reject flows
+   - Run tests and document results
+   - Evidence: Test results, coverage report
+
+5. **Approval Queue E2E Tests** - Playwright automation
+   - Create tests/e2e/approval-queue.spec.ts
+   - Test operator views approval queue
+   - Test operator approves action
+   - Test operator rejects action
+   - Test real-time updates
+   - Test error handling
+   - Evidence: Playwright test results, screenshots
+
+6. **Security Testing** - Validate Agent SDK security
+   - Test CSRF protection on approval endpoints
+   - Test authentication/authorization
+   - Test input validation and sanitization
+   - Test rate limiting
+   - Verify no secrets in logs
+   - Evidence: Security test report
+
+7. **Performance Baseline** - Capture performance metrics
+   - Run Lighthouse on dashboard
+   - Measure P95 latencies for all routes
+   - Test approval queue under load
+   - Document performance baselines
+   - Evidence: Lighthouse report, performance metrics
+
+**Ongoing Requirements**:
+- Coordinate with @engineer on test environment setup
+- Run tests continuously as features are built
+- Report failures immediately in feedback/qa.md
+- Keep mock=1 mode working for CI
+
+---
+
+### 🚀 PRIORITY: Execute Task 3 NOW (Doesn't Require Implementation)
+
+**Task 3: Agent SDK Test Strategy** - Can start immediately
+- Write integration test plan for webhook flow
+- Create E2E test scenarios (approve/reject/timeout)
+- Document test data requirements
+- Prepare Playwright test stubs
+- Evidence: Complete test plan, stub files created
+
+**This doesn't require Agent SDK to be built yet** - you're planning the tests.
+
+### 🚀 ADDITIONAL PARALLEL TASKS
+
+**Task A: Performance Testing Framework** - Prepare for load testing
+- Design load test scenarios for approval queue
+- Create performance benchmarking scripts
+- Document performance budgets (<100ms routes, <500ms MCP)
+- Prepare Lighthouse CI configuration
+- Evidence: Performance test framework
+
+**Task B: Security Test Suite** - Prepare security tests
+- Design security test scenarios (CSRF, auth, injection)
+- Create test data for security testing
+- Document security requirements
+- Prepare penetration test checklist
+- Evidence: Security test plan
+
+Execute Task 3 immediately, then A and B in parallel.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+
+**Task C-G: Automated Testing Infrastructure** (5 tasks)
+- C: Create visual regression testing suite (Percy or Chromatic)
+- D: Implement API contract testing (Pact or similar)
+- E: Design mutation testing framework
+- F: Create accessibility automation (axe-core CI integration)
+- G: Implement test data generation framework
+
+**Task H-L: Quality Assurance Processes** (5 tasks)
+- H: Design code review checklist and automation
+- I: Create quality gates for all PRs
+- J: Implement automated security scanning (SAST/DAST)
+- K: Design performance budgeting and enforcement
+- L: Create test coverage monitoring and alerts
+
+**Task M-Q: Testing Documentation** (5 tasks)
+- M: Write comprehensive testing guide for all developers
+- N: Create test best practices documentation
+- O: Document QA processes and workflows
+- P: Create bug reporting and triage procedures
+- Q: Design test maintenance and debt reduction plan
+
+Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
+
+## Previous Task List — 2025-10-11
 - Canonical toolkit checks
   - Verify no alt DBs or direct redis usage in app builds via CI status; flag violations.
 - Shopify Admin testing

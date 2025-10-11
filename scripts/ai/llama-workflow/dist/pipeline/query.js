@@ -1,5 +1,6 @@
 import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
+import { VectorStoreIndex, Settings, OpenAI, OpenAIEmbedding, BaseQueryEngine } from 'llamaindex';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 export async function loadIndex() {

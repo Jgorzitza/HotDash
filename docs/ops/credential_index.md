@@ -23,7 +23,7 @@ This map catalogs every secret agents rely on. All secrets live in vault (`vault
 | LlamaIndex Service Context | `packages/memory/indexes/operator_knowledge/service_context.json` | Consumable artifact (non-secret) — AI owns regeneration cadence. |
 | GitHub Actions (staging env) | `DATABASE_URL`, `SUPABASE_SERVICE_KEY`, `SHOPIFY_*`, `STAGING_APP_URL`, `STAGING_SMOKE_TEST_URL`, `SHOPIFY_EMBED_TOKEN_STAGING` | Deployment mirrors from vault; reliability verifies timestamps daily. |
 | GitHub Actions (production env) | `SHOPIFY_*_PROD`, `PRODUCTION_APP_URL`, `PRODUCTION_SMOKE_TEST_URL`, etc. | Deployment mirrors as go-live gating step. |
-| GA MCP | Pending `OCC-INF-221` bundle | Integrations tracks; once live, store in `vault/occ/ga_mcp/`. |
+| Google Analytics Service Account | `vault/occ/google/analytics-service-account.json` | Service account for GA Data API access; engineer uses for direct API calls; dev tools use for MCP queries. Credentials file permissions must be 600 (owner read/write only). |
 | Hootsuite (if activated) | `vault/occ/hootsuite/api_key.env` | Compliance logs vendor approvals before use. |
 
 ## Usage Rules

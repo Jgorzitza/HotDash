@@ -74,17 +74,214 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Participate in the Monday/Thursday stack compliance audit, focusing on code references to deprecated stacks or secrets; log remediation steps.
 - Clear the outstanding TypeScript build failures (`npm run typecheck`) by repairing the Chatwoot escalation types, Supabase memory client promises, and AI script typings before handing back to QA; log each fix + command output in `feedback/engineer.md` and re-run the full typecheck until it exits 0.
 
-## Aligned Task List — 2025-10-11
-- Canonical toolkit enforcement
-  - Run locally: `node scripts/ci/stack-guard.mjs` and fix any violations (no MySQL/Mongo/SQLite, no direct `redis://` in app/packages). CI will block otherwise.
-- Shopify Admin dev flow
-  - Use RR7 + Shopify CLI v3 only. Start Admin via `shopify app dev`. Do not capture or inject session/embed tokens.
-  - Reference: `docs/dev/appreact.md`, `docs/dev/authshop.md`, `docs/dev/session-storage.md`.
-  - Use Shopify Dev MCP (`shopify-dev-mcp`) for Admin contracts; do not guess endpoints or shapes.
-- Tests and fixtures
-  - Keep `mock=1` green. For `mock=0` smoke, use Admin login creds (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`), not tokens.
-- Supabase only
-  - Ensure all datasources and Prisma configs target Supabase Postgres; remove any alternates.
-- Evidence
-  - For every change, log timestamp, command, and output path in `feedback/engineer.md`.
-- Run the Canonical Toolkit Guard locally (`node scripts/ci/stack-guard.mjs`) and remove any violations (alt DBs, direct redis calls in app code). PRs will fail if violations remain.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+
+**Reference Docs**:
+- docs/AgentSDKopenAI.md - Complete Agent SDK implementation guide
+- docs/design/ga_ingest.md - GA integration design
+- docs/runbooks/llamaindex_workflow.md - Existing LlamaIndex CLI
+- vault/occ/google/analytics-service-account.json - GA credentials (check with CEO if need enabling)
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/engineer.md and continue):
+
+🚨 **URGENT P0 DEPLOY BLOCKER** - Added 2025-10-11T21:10Z - Fix BEFORE continuing other tasks
+
+**FIX SHOPIFY GRAPHQL QUERIES** - All 4 queries invalid, using deprecated 2023 API patterns
+- Evidence: artifacts/integrations/audit-2025-10-11/shopify_graphql_validation_failures.md
+- Impact: Sales Pulse, Fulfillment, Inventory tiles completely broken
+- Priority: Fix BEFORE resuming LlamaIndex MCP work
+- Fixes (in order):
+  1. app/services/shopify/orders.ts line 28: financialStatus → displayFinancialStatus (15 min)
+  2. app/services/shopify/inventory.ts lines 14-48: Add quantities(names:["available"]), fix field + function (30 min)
+  3. packages/integrations/shopify.ts lines 3-12: Remove edges/node from Fulfillment (30 min)
+  4. packages/integrations/shopify.ts lines 14-20: Migrate to productSet mutation (60 min)
+- Validation: Use Shopify Dev MCP to validate EACH fix before moving to next
+- Evidence: MCP validation confirmations, test results in feedback/engineer.md
+- Timeline: Complete all 4 within 3 hours, THEN resume LlamaIndex MCP
+
+1. ✅ **GA Direct API Integration** - COMPLETE (2025-10-11, 2h)
+   - Evidence: artifacts/engineer/20251011T142951Z/ga-tests.log
+   - Files: app/services/ga/directClient.ts, mockClient.ts, client.ts
+   - Tests: 21 tests passing, 100% coverage
+
+2. **LlamaIndex RAG MCP Server** - Create HTTP MCP wrapper around existing llama-workflow CLI
+   - Scaffold apps/llamaindex-mcp-server/ with @modelcontextprotocol/sdk, express, zod
+   - Implement src/server.ts with MCP protocol handler for 3 tools (query_support, refresh_index, insight_report)
+   - Create thin wrappers in src/handlers/*.ts using execSync to call scripts/ai/llama-workflow/dist/cli.js
+   - Create Dockerfile and fly.toml (512MB, auto-stop enabled)
+   - Deploy to Fly.io: `fly launch --no-deploy && fly secrets set OPENAI_API_KEY=... && fly deploy`
+   - Update .mcp.json with HTTP endpoint: "llamaindex-rag": {"type": "http", "url": "https://hotdash-llamaindex-mcp.fly.dev/mcp"}
+   - Test from Cursor: "Using llamaindex-rag MCP, query: test"
+   - Target: <500ms P95 response time
+   - Coordinate: Tag @ai in feedback/engineer.md for code review and optimization
+   - Evidence: MCP server responding, health checks passing, documented in feedback/engineer.md
+
+3. **Agent SDK Service** - Build OpenAI Agent SDK customer support automation
+   - Scaffold apps/agent-service/src/{agents,tools,feedback} with @openai/agents, express, zod
+   - Implement tools/rag.ts (MCP wrapper pointing to llamaindex-rag server)
+   - Implement tools/shopify.ts (direct GraphQL from docs/AgentSDKopenAI.md section 5)
+   - Implement tools/chatwoot.ts (direct API from docs/AgentSDKopenAI.md section 4)
+   - Define agents in agents/index.ts: triageAgent, orderSupportAgent, productQAAgent with handoffs
+   - Implement server.ts with webhook endpoint (POST /webhooks/chatwoot) and approval endpoints (GET /approvals, POST /approvals/:id/:idx/:action)
+   - Implement feedback/store.ts for training data collection (Supabase tables from @data)
+   - Deploy to Fly.io with secrets: OPENAI_API_KEY, CHATWOOT_API_TOKEN, SHOPIFY_ADMIN_TOKEN
+   - Coordinate: Tag @chatwoot for webhook config, @data for schemas, @ai for RAG integration
+   - Evidence: Agent service responding to test webhooks, documented in feedback/engineer.md
+
+4. **Approval Queue UI** - Build operator approval interface in dashboard
+   - Create app/routes/approvals.tsx with loader fetching from Agent SDK /approvals endpoint
+   - Implement app/components/ApprovalCard.tsx using Designer specs from feedback/designer.md
+   - Wire approve/reject actions to POST /approvals/:id/:idx/approve|reject
+   - Add real-time updates (polling every 5s or websockets)
+   - Implement loading, error, and empty states per Designer specs
+   - Test keyboard navigation and accessibility
+   - Coordinate: Tag @designer for component review, @qa for test scenarios
+   - Evidence: Working approval queue with screenshot, documented in feedback/engineer.md
+
+5. **Fix Test Blockers** - Resolve QA-identified P0 issues
+   - Fix logger.server.spec.ts (mock fetch or configure Supabase test instance)
+   - Install @vitest/coverage-v8 dependency
+   - Add SCOPES to .env.example with documentation
+   - Re-run test suite and verify 100% pass rate
+   - Evidence: Clean test run logs
+
+6. **End-to-End Testing** - Full system integration verification
+   - Test: Chatwoot webhook → Agent SDK → LlamaIndex MCP → Approval queue
+   - Test: Operator approves action → Agent executes → Chatwoot reply sent
+   - Test: Operator rejects action → Agent stops → Private note created
+   - Document test results and performance metrics
+   - Evidence: E2E test passing, performance within targets
+
+**Ongoing Requirements**:
+- Use Context7 MCP to find existing patterns before implementing
+- Use Shopify Dev MCP to validate all GraphQL queries
+- Keep mock=1 mode working for development
+- Log every task completion in feedback/engineer.md with timestamp and evidence path
+- Tag other agents for coordination (@ai, @data, @chatwoot, @designer, @qa)
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Since Shopify fixes complete, expand with additional valuable tasks**:
+
+**Task 7: Code Quality & Refactoring**
+- Review codebase for duplicate code patterns
+- Extract reusable utilities and helpers
+- Refactor complex components for maintainability
+- Improve type safety across services
+- Evidence: Refactoring report, PR with improvements
+
+**Task 8: Performance Optimization**
+- Profile dashboard route load times
+- Optimize slow loaders (<300ms target)
+- Implement caching where beneficial
+- Reduce bundle size
+- Evidence: Performance improvements report
+
+**Task 9: Error Handling Enhancement**
+- Audit error handling across all services
+- Implement consistent error boundaries
+- Add user-friendly error messages
+- Create error recovery workflows
+- Evidence: Error handling improvements
+
+**Task 10: API Client Standardization**
+- Create consistent API client pattern for all external services
+- Implement retry logic and circuit breakers
+- Add request/response logging
+- Standardize error handling
+- Evidence: Standardized client implementations
+
+**Task 11: Testing Infrastructure**
+- Enhance test fixtures and mocks
+- Add integration test helpers
+- Create test data generation utilities
+- Improve test performance
+- Evidence: Testing infrastructure improvements
+
+**Task 12: Documentation Generation**
+- Add JSDoc comments to all public functions
+- Generate API documentation
+- Create component documentation
+- Document service interfaces
+- Evidence: Comprehensive code documentation
+
+Execute 7-12 in any order while building Agent SDK components.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 18 Additional Tasks
+
+**Since you're incredibly fast, here's substantial work to keep you productive**:
+
+**Task 13-18: LlamaIndex MCP Server Polish** (after basic deployment)
+- 13: Add request/response logging and tracing
+- 14: Implement health check endpoint with detailed status
+- 15: Add metrics collection (query latency, error rates, cache hits)
+- 16: Create admin API for index management
+- 17: Implement graceful shutdown and restart
+- 18: Add rate limiting per client
+
+**Task 19-24: Agent SDK Advanced Features**
+- 19: Implement conversation context persistence
+- 20: Add agent performance tracking
+- 21: Create agent analytics endpoints
+- 22: Implement approval timeout handling
+- 23: Add bulk approval operations
+- 24: Create agent debugging tools
+
+**Task 25-30: Testing & Quality**
+- 25: Add integration tests for all Agent SDK tools
+- 26: Create load testing suite for approval queue
+- 27: Implement chaos testing for resilience
+- 28: Add security penetration tests
+- 29: Create performance regression test suite
+- 30: Implement automated E2E smoke tests
+
+Execute any order. Total: 30 tasks, ~15-20 hours of work.
+
+---
+
+### 📋 MANAGER NOTE TO ENGINEER (2025-10-11T22:15Z)
+
+**CEO Direction**: "Always execute next available tasks on your list before taking a breather to check with user. Manager is monitoring your progress and will keep direction updated."
+
+**Translation**: Keep working through your task list autonomously. I'm monitoring and will add more tasks as needed. Don't stop to check - just keep executing.
+
+---
+
+### 🚀 THIRD MASSIVE EXPANSION (Another 25 Tasks)
+
+**Task 31-40: Advanced Agent SDK Features** (10 tasks)
+- 31: Implement multi-language agent responses (i18n infrastructure)
+- 32: Create agent A/B testing framework
+- 33: Design agent personality customization system
+- 34: Implement conversation branching and routing logic
+- 35: Create agent escalation triggers and patterns
+- 36: Design agent learning loop (feedback → improvement)
+- 37: Implement agent performance benchmarking
+- 38: Create agent debugging and introspection tools
+- 39: Design agent collaboration (multi-agent handoffs)
+- 40: Implement agent response streaming (real-time typing)
+
+**Task 41-50: Platform & Infrastructure** (10 tasks)
+- 41: Create GraphQL API for all Agent SDK data
+- 42: Design real-time subscriptions for approval queue
+- 43: Implement webhook retry and dead letter queue
+- 44: Create background job processing system
+- 45: Design caching layer for frequently accessed data
+- 46: Implement distributed tracing across all services
+- 47: Create service mesh for microservices communication
+- 48: Design event sourcing for audit trail
+- 49: Implement feature flagging system
+- 50: Create configuration management service
+
+**Task 51-55: Developer Experience** (5 tasks)
+- 51: Create local development environment setup automation
+- 52: Design development workflow documentation
+- 53: Implement code generation tools for common patterns
+- 54: Create debugging tools and utilities
+- 55: Design developer onboarding guide
+
+Execute 31-55 in any order. Total: 55 tasks, ~30-40 hours work.

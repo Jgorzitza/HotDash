@@ -39,12 +39,241 @@ You may run local, non-interactive commands (exports, scripts) without approval.
 ## Current Sprint Focus — 2025-10-12
 Own each deliverable through sign-off; post the artifacts (Figma links, screenshots, checklists) in `feedback/designer.md` as you finish them. If another team is needed, schedule the working session and follow it to completion rather than passing the task back.
 
-## Aligned Task List — 2025-10-11
-- Ensure overlays/screenshots assume RR7 + CLI v3 app launch; remove token flows from capture steps.
-- Provide export presets and accessibility notes; evidence in `feedback/designer.md`.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
-1. **Modal refresh** — Update CX Escalations and Sales Pulse modal comps to reflect current React Router flows and Supabase-backed states; link annotated Figma frames and attach before/after screenshots in `feedback/designer.md`.
-2. **Shopify Admin overlays** — Build capture templates so screenshots can be taken the moment the embed token is mirrored; confirm copy references `customer.support@hotrodan.com` and stage the export presets yourself.
-3. **Accessibility alignment** — Run the WCAG focus walkthrough with engineering present, capture video/screenshots, and note any fixes you file.
-4. **Collateral support** — Deliver updated assets to enablement/marketing (PNG snippets/offline decks) while staging access is blocked; include file paths and delivery timestamps.
-5. **Stack compliance audit** — Participate in Monday/Thursday review for UI terminology and copy drift; log findings plus remediation follow-up dates in `feedback/designer.md`.
+**Reference Docs**:
+- docs/AgentSDKopenAI.md - Section 12 for approval queue UI patterns
+- feedback/designer.md - Your completed approval queue designs
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/designer.md and continue):
+
+1. ✅ **UI Consistency Audit** - COMPLETE (2025-10-11)
+   - Polaris alignment verified
+   - Component duplication identified
+   - Accessibility audit complete
+   - Evidence: feedback/designer.md
+
+2. ✅ **Approval Queue UI Design** - COMPLETE (2025-10-11, 2h)
+   - Approval card component designed
+   - All states documented (pending, approved, rejected, loading, error)
+   - Real-time update patterns specified
+   - Evidence: Complete mockups in feedback/designer.md
+
+3. **Detailed ApprovalCard Component Specs** - Provide implementation-ready specifications
+   - Create detailed component spec with all props and variants
+   - Document Polaris components to use (Card, Button, Badge, Text, etc.)
+   - Specify loading skeleton and optimistic updates
+   - Define error state UI and retry patterns
+   - Provide color/spacing tokens from Polaris
+   - Coordinate: Tag @engineer when specs ready for implementation
+   - Evidence: Component spec document, Polaris mapping, logged in feedback/designer.md
+
+4. **Implementation Review** - Review Engineer's component implementation
+   - Review ApprovalCard component as @engineer builds
+   - Check Polaris alignment and accessibility
+   - Verify all states render correctly
+   - Provide feedback and polish recommendations
+   - Evidence: Review notes in feedback/designer.md
+
+5. **Loading & Error States** - Design all edge case UI
+   - Design loading states for approve/reject actions
+   - Design error recovery UI
+   - Design empty state ("No approvals pending")
+   - Design timeout/expired approval states
+   - Provide specs to @engineer
+   - Evidence: State designs documented
+
+6. **Visual Polish** - Final UI refinement
+   - Review deployed approval queue in staging
+   - Identify visual polish opportunities
+   - Provide spacing/color adjustments
+   - Verify responsive behavior
+   - Evidence: Polish recommendations with screenshots
+
+**Ongoing Requirements**:
+- Coordinate with @engineer via feedback files
+- Ensure all designs use Polaris components only
+- Log all design reviews in feedback/designer.md with timestamps
+
+---
+
+### 🚀 EXECUTE TASK 3 NOW (Engineer Waiting for Specs)
+
+**Task 3: Detailed ApprovalCard Component Specs** - URGENT for Engineer
+
+Create complete implementation spec with:
+- All props and TypeScript interfaces
+- Every state variant (pending, approved, rejected, loading, error, expired)
+- Polaris components to use (Card, Button, Badge, Stack, Text, InlineStack)
+- Color tokens, spacing, typography
+- Loading skeletons
+- Animation patterns
+- Responsive behavior
+- Accessibility requirements (ARIA labels, keyboard nav)
+
+**Format**: Markdown document with code examples, ready for Engineer to implement
+
+**Timeline**: 1-2 hours
+
+**Coordinate**: Tag @engineer immediately when complete
+
+**Evidence**: Component spec document in docs/design/approval-card-spec.md
+
+---
+
+### 🚀 ADDITIONAL PARALLEL TASKS
+
+**Task A: Design System Documentation** - Create component library guide
+- Document all Polaris components used in HotDash
+- Create usage guidelines
+- Document color/spacing/typography tokens
+- Provide do's and don'ts
+- Evidence: Design system guide
+
+**Task B: Accessibility Audit Report** - Comprehensive WCAG review
+- Audit current dashboard for WCAG 2.2 AA
+- Document accessibility issues
+- Create remediation checklist
+- Prioritize fixes
+- Evidence: Accessibility audit report
+
+Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task 7: Agent Performance Metrics UI Design**
+- Design dashboard tiles for agent performance metrics
+- Create visualizations for approval queue depth
+- Design charts for response accuracy trends
+- Specify real-time update UI patterns
+- Evidence: Metrics UI design specifications
+
+**Task 8: Agent Training Data Visualization**
+- Design UI for viewing training data quality
+- Create visualizations for feedback scores
+- Design operator feedback submission UI
+- Specify data filtering and sorting
+- Evidence: Training data UI designs
+
+**Task 9: Notification System Design**
+- Design notification UI for new approvals
+- Create toast/banner patterns for updates
+- Design notification center (optional)
+- Specify notification priorities and styling
+- Evidence: Notification system design
+
+**Task 10: Mobile Responsive Optimization**
+- Audit all designs for mobile responsiveness
+- Create mobile-specific approval queue design
+- Optimize for tablet viewports
+- Document responsive breakpoints
+- Evidence: Mobile design specifications
+
+**Task 11: Dark Mode Design**
+- Create dark mode color palette
+- Design all components for dark mode
+- Document dark mode switching logic
+- Ensure WCAG compliance in dark mode
+- Evidence: Dark mode design system
+
+**Task 12: Empty State Design Library**
+- Design empty states for all features
+- Create error state variations
+- Design loading states for all async operations
+- Document state transition animations
+- Evidence: Complete state design library
+
+Execute 7-12 in any order - all enhance design system maturity.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+
+**Task 13-17: Advanced UI Components** (5 tasks)
+- 13: Design comprehensive data table component (sorting, filtering, pagination)
+- 14: Create advanced form components (multi-step, validation, auto-save)
+- 15: Design chart and visualization library (metrics, trends, comparisons)
+- 16: Create modal and dialog system (confirmation, forms, alerts)
+- 17: Design toast notification system with priority levels
+
+**Task 18-22: Design System Governance** (5 tasks)
+- 18: Create design token management system
+- 19: Design component versioning and deprecation process
+- 20: Create design review and approval workflow
+- 21: Implement design QA checklist
+- 22: Design design system documentation site
+
+**Task 23-27: User Experience** (5 tasks)
+- 23: Conduct heuristic evaluation of entire dashboard
+- 24: Create user flow diagrams for all major workflows
+- 25: Design onboarding experience for new operators
+- 26: Create contextual help and tooltips system
+- 27: Design feedback collection UI for operators
+
+Execute 13-27 in any order. Total: 27 tasks, ~15-18 hours of design work.
+
+---
+
+### 🚀 SECOND MASSIVE EXPANSION (Another 20 Tasks)
+
+**Task 28-35: Advanced Design Systems** (8 tasks)
+- 28: Create animation and micro-interaction library
+- 29: Design iconography system with custom icon set
+- 30: Create illustration style guide and asset library
+- 31: Design data visualization style guide (charts, graphs, metrics)
+- 32: Create spacing and layout system documentation
+- 33: Design typography scale and pairing guide
+- 34: Create color palette generator for themes
+- 35: Design accessibility annotation system for all components
+
+**Task 36-43: Product Design** (8 tasks)
+- 36: Design advanced dashboard customization (drag-drop widgets)
+- 37: Create operator workspace personalization features
+- 38: Design multi-view layouts (list, grid, kanban)
+- 39: Create advanced filtering and search UI
+- 40: Design bulk operations UI patterns
+- 41: Create keyboard shortcut overlay and documentation
+- 42: Design command palette (Cmd+K style)
+- 43: Create quick actions menu system
+
+**Task 44-47: Research & Innovation** (4 tasks)
+- 44: Conduct competitive UX analysis (top 5 dashboards)
+- 45: Design future-state concepts (AI-first interfaces)
+- 46: Create operator journey maps for all workflows
+- 47: Design gamification and engagement features
+
+Execute 28-47 in any order. Total: 47 tasks now, ~25-30 hours work.
+
+---
+
+### 🚀 FOURTH MASSIVE EXPANSION (Another 20 Tasks)
+
+**Task 48-53: Design Operations** (6 tasks)
+- 48: Create design version control and asset management system
+- 49: Design handoff process automation (Figma → Code)
+- 50: Implement design QA and review workflow
+- 51: Create design metrics and KPI dashboard
+- 52: Design collaboration tools for design team
+- 53: Implement design system governance model
+
+**Task 54-59: Advanced UX** (6 tasks)
+- 54: Conduct usability testing program design
+- 55: Create user research framework and repository
+- 56: Design A/B testing infrastructure for UX
+- 57: Implement heatmap and user behavior analytics
+- 58: Create persona development and management system
+- 59: Design customer journey analytics integration
+
+**Task 60-67: Innovation & Future** (8 tasks)
+- 60: Design voice interface for operator commands
+- 61: Create AR/VR visualization concepts for data
+- 62: Design AI-powered design assistance tools
+- 63: Create generative design system exploration
+- 64: Design adaptive interfaces (personalized per operator)
+- 65: Create predictive UX (anticipate operator needs)
+- 66: Design emotional intelligence in UI
+- 67: Create next-generation dashboard concepts
+
+Execute 48-67 in any order. Total: 67 tasks, ~35-40 hours work.

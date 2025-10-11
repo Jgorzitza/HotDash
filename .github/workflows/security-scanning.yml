@@ -1,0 +1,339 @@
+name: Security Scanning (SAST/DAST)
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly security scan
+    - cron: '0 2 * * 1'  # Every Monday at 2am UTC
+
+jobs:
+  #
+  # SAST: Static Application Security Testing
+  #
+  
+  secret-scanning:
+    name: SAST - Secret Detection (Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for comprehensive scan
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Upload Gitleaks report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-report
+          path: gitleaks-report.json
+          retention-days: 30
+
+  dependency-scan:
+    name: SAST - Dependency Vulnerabilities (npm audit + Snyk)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=moderate --json > npm-audit.json
+          npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --json-file-output=snyk-report.json
+
+      - name: Upload security reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-scan-reports
+          path: |
+            npm-audit.json
+            snyk-report.json
+          retention-days: 30
+
+      - name: Check for critical vulnerabilities
+        run: |
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit.json)
+          
+          if [ "$CRITICAL" -gt "0" ] || [ "$HIGH" -gt "0" ]; then
+            echo "❌ FAIL: Critical or High vulnerabilities found"
+            echo "Critical: $CRITICAL, High: $HIGH"
+            exit 1
+          fi
+
+  code-analysis:
+    name: SAST - Static Code Analysis (ESLint Security)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint with security rules
+        run: |
+          npx eslint . \
+            --ext .ts,.tsx,.js,.jsx \
+            --format json \
+            --output-file eslint-report.json \
+            --plugin @typescript-eslint \
+            --plugin security \
+            --rule 'security/detect-object-injection: error' \
+            --rule 'security/detect-non-literal-regexp: warn' \
+            --rule 'security/detect-unsafe-regex: error' \
+            --rule 'security/detect-buffer-noassert: error' \
+            --rule 'security/detect-child-process: error' \
+            --rule 'security/detect-disable-mustache-escape: error' \
+            --rule 'security/detect-eval-with-expression: error' \
+            --rule 'security/detect-no-csrf-before-method-override: error' \
+            --rule 'security/detect-non-literal-fs-filename: warn' \
+            --rule 'security/detect-non-literal-require: warn' \
+            --rule 'security/detect-possible-timing-attacks: warn' \
+            --rule 'security/detect-pseudoRandomBytes: error'
+        continue-on-error: true
+
+      - name: Check for security issues
+        run: |
+          ERRORS=$(jq '[.[] | select(.errorCount > 0)] | length' eslint-report.json)
+          if [ "$ERRORS" -gt "0" ]; then
+            echo "❌ Security linting errors found: $ERRORS files"
+            exit 1
+          fi
+
+  semgrep-scan:
+    name: SAST - Semantic Code Analysis (Semgrep)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/typescript
+            p/react
+            p/owasp-top-ten
+          generateSarif: true
+
+      - name: Upload SARIF file
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+
+  #
+  # DAST: Dynamic Application Security Testing
+  #
+
+  owasp-zap:
+    name: DAST - OWASP ZAP Baseline Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          SCOPES: write_products
+          SHOPIFY_API_KEY: test-key
+          SHOPIFY_API_SECRET: test-secret
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+
+      - name: Start application
+        run: |
+          npm start &
+          sleep 15
+          curl -f http://localhost:3000/app || exit 1
+        env:
+          SCOPES: write_products
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: 'http://localhost:3000'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a -j -m 5 -T 30'
+          allow_issue_writing: false
+          artifact_name: 'zap_report'
+
+      - name: Upload ZAP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-scan-report
+          path: |
+            zap_report.html
+            zap_report.json
+          retention-days: 30
+
+  api-security:
+    name: DAST - API Security Testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start application
+        run: |
+          npm run build
+          npm start &
+          sleep 10
+        env:
+          SCOPES: write_products
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+
+      - name: Test for SQL Injection
+        run: |
+          # Test common SQL injection payloads
+          curl -f "http://localhost:3000/api/approvals/queue?priority=' OR '1'='1" && exit 1 || echo "✅ SQL injection blocked"
+          curl -f "http://localhost:3000/api/approvals/queue?status='; DROP TABLE users; --" && exit 1 || echo "✅ SQL injection blocked"
+
+      - name: Test for XSS
+        run: |
+          # Test XSS payloads
+          curl -X POST http://localhost:3000/api/approvals/edit-approve \
+            -H "Content-Type: application/json" \
+            -d '{"queueItemId": "test", "editedResponse": "<script>alert(\"xss\")</script>"}' \
+            | grep "<script>" && exit 1 || echo "✅ XSS blocked"
+
+      - name: Test for CSRF
+        run: |
+          # Test CSRF protection
+          curl -X POST http://localhost:3000/api/approvals/approve \
+            -H "Content-Type: application/json" \
+            -d '{"queueItemId": "test"}' \
+            | grep -q "CSRF" && echo "✅ CSRF protection active" || exit 1
+
+      - name: Test rate limiting
+        run: |
+          # Send 100 rapid requests
+          for i in {1..100}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/approvals/queue)
+            echo "Request $i: $STATUS"
+            if [ "$STATUS" == "429" ]; then
+              echo "✅ Rate limiting active"
+              exit 0
+            fi
+          done
+          echo "⚠️ WARNING: Rate limiting may not be configured"
+
+  #
+  # Security Summary
+  #
+
+  security-summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    needs: [secret-scanning, dependency-scan, code-analysis, semgrep-scan, owasp-zap, api-security]
+    if: always()
+
+    steps:
+      - name: Generate security summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jobs = [
+              { name: 'Secret Scanning (Gitleaks)', status: '${{ needs.secret-scanning.result }}' },
+              { name: 'Dependency Scan (npm/Snyk)', status: '${{ needs.dependency-scan.result }}' },
+              { name: 'Code Analysis (ESLint)', status: '${{ needs.code-analysis.result }}' },
+              { name: 'Semantic Analysis (Semgrep)', status: '${{ needs.semgrep-scan.result }}' },
+              { name: 'OWASP ZAP Scan', status: '${{ needs.owasp-zap.result }}' },
+              { name: 'API Security Tests', status: '${{ needs.api-security.result }}' }
+            ];
+            
+            const passed = jobs.filter(j => j.status === 'success');
+            const failed = jobs.filter(j => j.status === 'failure');
+            
+            let summary = '# 🔒 Security Scan Summary\n\n';
+            summary += `**Result**: ${failed.length === 0 ? '✅ PASS' : '❌ FAIL'}\n\n`;
+            summary += `**Passed**: ${passed.length}/6 scans\n\n`;
+            
+            summary += '## Scan Results\n\n';
+            jobs.forEach(job => {
+              const icon = job.status === 'success' ? '✅' : job.status === 'failure' ? '❌' : '⚠️';
+              summary += `${icon} ${job.name}\n`;
+            });
+            
+            if (failed.length > 0) {
+              summary += '\n## ❌ Failed Scans\n\n';
+              failed.forEach(job => {
+                summary += `- ${job.name}\n`;
+              });
+              summary += '\n⚠️ Review security findings and address before merging.\n';
+            }
+            
+            core.summary.addRaw(summary);
+            await core.summary.write();
+            
+            if (failed.length > 0) {
+              core.setFailed(`${failed.length} security scan(s) failed`);
+            }
+
