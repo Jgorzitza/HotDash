@@ -11,6 +11,8 @@ expires: 2025-10-17
 ## Purpose
 Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app on 2025-10-16. This checklist captures the prep, live-run, and follow-up steps required to keep operators, enablement, and product aligned while gathering evidence for launch readiness.
 
+**Support Inbox:** customer.support@hotrodan.com — route all operator comms and evidence handoffs through this address.
+
 ## Canonical References
 - `docs/directions/support.md` — sprint focus and governance
 - `docs/enablement/dry_run_training_materials.md` — facilitator packet + dependencies
@@ -22,6 +24,14 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 - `docs/runbooks/shopify_rate_limit_recovery.md` — rate-limit response playbook for support
 
 > Log all progress and blockers in `feedback/support.md` (new dated section at top) and mirror dependencies in partner feedback logs as needed.
+
+## QA Evidence Hold — 2025-10-10
+- ⛔ **Status:** Staging rehearsals remain paused until QA posts the green `?mock=0` curl + synthetic evidence set.
+- 🔄 **Coordination:** Continue prepping materials but do not run live walk-throughs; brief enablement + marketing via customer.support@hotrodan.com that invites/comms stay in draft.
+- 🛠 **Prep Work:** Maintain mock-mode rehearsals only, keep evidence folders staged, and line up notification copy so we can relaunch within 2h of QA’s green signal.
+- 🗂 **Operator Q&A:** Collect questions/answers asynchronously (#, email) and log them in `docs/runbooks/operator_training_qa_template.md` so facilitators have fresh context once the hold lifts.
+- 📝 **Logging:** Capture all updates/blockers in `feedback/support.md`; mirror dependencies in partner feedback logs so stakeholders know the hold rationale.
+- 📡 **Chatwoot Fly cut-over:** Track reliability’s Fly migration updates (`docs/deployment/chatwoot_fly_runbook.md`), stage cut-over comms drafts, and keep `scripts/ops/chatwoot-fly-smoke.sh` refreshed with the announced host/token so the smoke can run the moment reliability signals go-live.
 
 ## Timeline Tasks
 
@@ -36,17 +46,19 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 ### T-48 Hours (2025-10-14)
 | # | Task | Owner | Evidence / Artifact | Status |
 |---|------|-------|---------------------|--------|
-| 1 | Validate staging access package: Shopify Admin demo shops, Chatwoot sandbox token, Supabase decision log key, Shopify CLI auth token | Product / Deployment | Credentials logged in `feedback/support.md` + 1Password receipt | Pending — blocked on staging bundle |
+| 1 | Validate staging access package: Shopify Admin demo shops, Chatwoot sandbox token, Supabase decision log key, Shopify CLI auth token | Product / Deployment | Credentials logged in `feedback/support.md` + vault entry screenshots | Pending — blocked on staging bundle |
 | 2 | Confirm feature flags + mock params for rehearsal (`FEATURE_MODAL_APPROVALS`, `FEATURE_AI_ESCALATIONS`, `?mock=1`) | Engineering ↔ Support | Screenshot or flag checklist stored in `artifacts/ops/dry_run_2025-10-16/` | Pending — to verify once staging access delivered |
 | 3 | Review job aids + AI samples for accuracy (`docs/enablement/job_aids/*`, `docs/enablement/job_aids/ai_samples/*`) | Support ↔ Enablement | Sign-off note in `feedback/enablement.md` | Pending — awaiting design overlays |
 | 4 | Sync with integrations on Shopify deploy readiness (`docs/integrations/shopify_readiness.md`) and capture any credential gaps | Support ↔ Integrations | Updated checklist status + note in `feedback/support.md` | Pending — monitoring `DEPLOY-147` |
 | 5 | Rehearse Shopify validation queue via `https://hotdash-staging.fly.dev/app` using mock + live smoke paths; log curl/screenshot evidence and comms updates | Support | Entry in `feedback/support.md` referencing `docs/integrations/shopify_readiness.md` | In progress — waiting on sustained green synthetic check |
+| 6 | Run English-only spot checks on updated marketing/support collateral (`docs/marketing/support_training_script_2025-10-16.md`, `docs/enablement/dry_run_training_materials.md`, related comms) | Support ↔ Marketing/Enablement | Evidence logged in `feedback/localization.md` | Pending — rerun after collateral updates land |
+| 7 | Prep Chatwoot Fly cut-over checklist (confirm host, token, smoke script, and comms draft) | Support ↔ Reliability | Update logged in `feedback/support.md` referencing `scripts/ops/chatwoot-fly-smoke.sh` | Pending — waiting for reliability go-live window |
 
 ### T-24 Hours (2025-10-15)
 | # | Task | Owner | Evidence / Artifact | Status |
 |---|------|-------|---------------------|--------|
-| 1 | Send calendar invite + facilitator packet links (`docs/enablement/dry_run_training_materials.md`, Q&A template, agenda) | Support | Calendar invite + Slack post archived | Pending — share after access package lands |
-| 2 | Publish finalized pre-read in `#occ-product` and tag attendees (`docs/strategy/operator_dry_run_pre_read_draft.md`) | Product ↔ Support | Slack permalink captured in `feedback/support.md` | Pending — waiting for attendee confirmation |
+| 1 | Send calendar invite + facilitator packet links (`docs/enablement/dry_run_training_materials.md`, Q&A template, agenda) | Support | Calendar invite + # post archived | Pending — share after access package lands |
+| 2 | Publish finalized pre-read in `#occ-product` and tag attendees (`docs/strategy/operator_dry_run_pre_read_draft.md`) | Product ↔ Support | # permalink captured in `feedback/support.md` | Pending — waiting for attendee confirmation |
 | 3 | Stage evidence folder (`artifacts/ops/dry_run_2025-10-16/`) with subfolders for scenarios + metrics | Support | Folder structure created (see repository) | Prep started — scaffolding created 2025-10-10 |
 | 4 | Confirm recording + note-taking assignments (scribe, backup) | Support ↔ Enablement | Owner list appended to agenda + logged in feedback | Pending — assign once facilitators set |
 | 5 | Brief facilitators on rate-limit recovery scripts (`docs/runbooks/shopify_rate_limit_recovery.md`) | Support ↔ Enablement | Acknowledgment in `feedback/enablement.md` + Q&A template | Pending — include in T-24 facilitator sync |
@@ -76,10 +88,10 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 1. Upload recordings, chat logs, screenshots, and decision log excerpts to `artifacts/ops/dry_run_2025-10-16/`.
 2. Publish Memory summary (`scope="ops"`, `topic="dry_run_2025-10-16"`) with success metrics + follow-ups.
 3. Update `feedback/support.md` (new dated section) summarizing outcomes, blockers, next steps.
-4. Notify product, enablement, and manager in Slack with Memory + artifact links.
+4. Notify product, enablement, and manager in # with Memory + artifact links.
 
 ### Day +1 Follow-Through (2025-10-17)
-- Ensure action owners have tickets or tasks logged (Linear, Slack threads, Feedback docs).
+- Ensure action owners have tickets or tasks logged (Linear, internal channel threads, Feedback docs).
 - Update job aids/runbooks with confirmed changes from session feedback; request reviews as needed.
 - Coordinate with integrations on any Shopify credential or deploy adjustments identified.
 - Prep for production go-live checklist (`docs/deployment/production_go_live_checklist.md`) incorporating dry run learnings.
@@ -107,6 +119,8 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 ## Change Log
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-10 | support | Added support inbox contact and QA evidence refresh trigger section |
+| 2025-10-12 | support | Documented Chatwoot Fly cut-over prep and T-48 task alignment with reliability |
 | 2025-10-10 | support | Drafted initial checklist to resume dry run prep work per manager direction |
 | 2025-10-10 | support | Added rate-limit playbook references and facilitator briefing task |
 | 2025-10-10 | support | Added evidence staging table to align artifacts ahead of staging access rollout |

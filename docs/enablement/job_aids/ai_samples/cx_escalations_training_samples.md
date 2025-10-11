@@ -1,5 +1,9 @@
 # CX Escalations — AI Dry Run Samples (2025-10-10 Draft)
 
+> **QA Hold — 2025-10-12:** Credentials validated 2025-10-10 15:45 UTC; continue using mock artifacts until QA posts green `?mock=0` evidence. Report anomalies to `customer.support@hotrodan.com` and log acknowledgement in `feedback/ai.md`.
+
+> **Async module:** Watch `artifacts/training/async_modules/2025-10-10/cx_escalations_walkthrough.mp4` and capture notes/questions in `artifacts/ops/dry_run_2025-10-16/async_prep_notes.xlsx` before the live rehearsal.
+
 ## Telemetry Callouts
 - Capture Supabase decision log IDs (`scope="ops"`, `decision_type="cx.escalation"`) after every approval or escalation; attach screenshots to the evidence bundle.
 - Note SLA timer values and Chatwoot conversation IDs in the Q&A template so product/QA can reconcile timestamps with Supabase rows.
@@ -13,7 +17,7 @@
 ## Staging Checklist
 - Launch OCC staging with `?mock=1` and confirm `FEATURE_MODAL_APPROVALS=1`; keep `FEATURE_AI_ESCALATIONS=0` until telemetry sign-off, then flip to review AI copy.
 - Seed Chatwoot sandbox with conversations from the operator agenda (`docs/runbooks/operator_training_agenda.md:63-104`) so SLA timers match the scripted scenarios.
-- Open the staging Supabase decision log dashboard after each approval once secrets land; capture row screenshots for the dry-run evidence bundle.
+- Open the staging Supabase decision log dashboard after each approval; credentials are stable, but capture row screenshots only after QA confirms green run.
 
 ## Supabase Evidence Reference (2025-10-09 sample)
 Latest sample decisions live in `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` (summary at `artifacts/monitoring/supabase-sync-summary-latest.json`). Use the rows below during rehearsals until staging generates fresh IDs.

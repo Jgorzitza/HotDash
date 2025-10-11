@@ -12,7 +12,9 @@ expires: 2025-10-20
 **Duration:** 90 minutes
 **Format:** Live walkthrough + hands-on practice with mock data
 **Prerequisites:** Shopify admin access, Chatwoot familiarity (basic)
-**Materials:** Dashboard URL with `?mock=1`, copy of this agenda, Q&A capture template
+**Materials:** Dashboard URL with `?mock=1`, copy of this agenda, Q&A capture template, support escalation inbox `customer.support@hotrodan.com`
+**Support Inbox:** customer.support@hotrodan.com — send dry-run comms, evidence screenshots, and operator questions here for tracking.
+**Current Status:** Rehearsals paused pending QA green `?mock=0` evidence and Chatwoot Fly cut-over smoke; continue prep work only and complete asynchronous modules listed in `docs/enablement/dry_run_training_materials.md`.
 
 ---
 
@@ -32,7 +34,8 @@ expires: 2025-10-20
 - Mock mode vs. live mode: Start training in mock mode (`?mock=1`)
 - Evidence-based operations: every tile shows data source + refresh timestamp
 - Staging access verification: load `https://hotdash-staging.fly.dev/app?mock=1` ahead of the session; a 200 OK (or 302 to Shopify auth) is required. If you receive HTTP 410 or a network error, escalate to deployment/reliability immediately and document the outcome in `feedback/enablement.md`.
-- Staging evidence table: Supabase NDJSON entry is live (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`); monitor for the first green `?mock=0` run to swap in fresh curl + synthetic evidence (latest log `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` is still 410).
+- Staging evidence table: Supabase NDJSON entry is live (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`); monitor for the first green `?mock=0` run to swap in fresh curl + synthetic evidence (latest log `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` is still 410). Until QA posts the green run, keep rehearsals paused and only iterate on prep docs. Once evidence lands, refresh this agenda’s links and broadcast updates via customer.support@hotrodan.com.
+- Chatwoot Fly migration: monitor reliability announcements, keep `scripts/ops/chatwoot-fly-smoke.sh --env staging` ready with the latest host/token, and review `docs/runbooks/cx_escalations.md#chatwoot-fly-deployment-validation-pre-launch` so facilitators can brief operators the moment the new host goes live.
 
 ---
 
@@ -158,8 +161,8 @@ expires: 2025-10-20
 - Shopify banner "API rate limit exceeded." → Reference `docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md` and the support playbook `docs/runbooks/shopify_rate_limit_recovery.md`
 
 **Escalation Paths:**
-- Integration errors → Alert reliability team (Slack #incidents)
-- Shopify rate-limit persists after two retries → Capture headers and escalate to reliability via Slack `#occ-reliability` using the playbook
+- Integration errors → Alert reliability team (#incidents) (internal channel)
+- Shopify rate-limit persists after two retries → Capture headers and escalate to reliability via # `#occ-reliability` using the playbook
 - Data discrepancies → File Linear ticket with screenshots + timestamps
 - Persistent failures → Escalate to support lead
 
@@ -218,7 +221,7 @@ See: docs/runbooks/operator_training_qa_template.md
 - [ ] Q&A capture template
 - [ ] Screenshot/screen recording tools
 - [ ] Linear project access for ticket filing
-- [ ] Slack #incidents channel access
+- [ ] #incidents (internal channel) channel access
 
 ---
 
@@ -227,6 +230,7 @@ See: docs/runbooks/operator_training_qa_template.md
 - **Owner:** Riley Chen (Product) — confirmation requested in `feedback/product.md`
 - **Support prep:** Send agenda + Q&A template by 2025-10-14, verify `FEATURE_MODAL_APPROVALS=1` in staging, confirm Chatwoot seed data covers shipping + refund scenarios.
 - **Dependencies:** Latest English copy deck alignment (`docs/design/copy_deck.md`), Sales Pulse/CX Escalations job aids staged in `docs/enablement/job_aids/`, staging shop access package from product (OCC-214).
+- **Comms Sync:** Coordinate enablement/marketing resend once QA posts green evidence; share updated materials via customer.support@hotrodan.com and archive announcements in `feedback/support.md`.
 
 ---
 
@@ -249,6 +253,8 @@ See: docs/runbooks/operator_training_qa_template.md
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-10 | support | Added support inbox contact, QA evidence hold status, refresh workflow, and comms sync instructions |
 | 2025-10-10 | support | Added staging install readiness steps and environment checks |
+| 2025-10-12 | support | Updated hold status to include Chatwoot Fly cut-over and smoke script readiness |
 | 2025-10-08 | support | Added dry run coordination details and ownership |
 | 2025-10-06 | support | Initial training agenda created per manager sprint focus |

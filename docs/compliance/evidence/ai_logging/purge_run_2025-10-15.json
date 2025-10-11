@@ -1,0 +1,135 @@
+{
+  "event": "ai.logging.purge",
+  "timestamp": "2025-10-10T19:35:15.788Z",
+  "retentionDays": 30,
+  "deletedCount": 0,
+  "retainedCount": 21,
+  "files": [
+    {
+      "path": "packages/memory/logs/build/decisions.ndjson",
+      "mtime": "2025-10-10T19:26:05.783Z",
+      "ageDays": 0.01,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-18-27-28.ndjson",
+      "mtime": "2025-10-10T18:27:31.038Z",
+      "ageDays": 0.05,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-18-36-26.ndjson",
+      "mtime": "2025-10-10T18:36:27.520Z",
+      "ageDays": 0.04,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-18-36-50.ndjson",
+      "mtime": "2025-10-10T18:36:50.948Z",
+      "ageDays": 0.04,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-19-26-14.ndjson",
+      "mtime": "2025-10-10T19:26:16.579Z",
+      "ageDays": 0.01,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-19-28-30.ndjson",
+      "mtime": "2025-10-10T19:28:31.774Z",
+      "ageDays": 0,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-19-28-44.ndjson",
+      "mtime": "2025-10-10T19:28:45.749Z",
+      "ageDays": 0,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ack_delay-20251010T143101.json",
+      "mtime": "2025-10-10T14:31:01.355Z",
+      "ageDays": 0.21,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ack_delay-20251010T145902.json",
+      "mtime": "2025-10-10T14:59:02.246Z",
+      "ageDays": 0.19,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ack_delay-20251010T154006.json",
+      "mtime": "2025-10-10T15:40:06.161Z",
+      "ageDays": 0.16,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ack_delay-20251010T182202.json",
+      "mtime": "2025-10-10T18:22:02.197Z",
+      "ageDays": 0.05,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.refund_offer-20251010T143054.json",
+      "mtime": "2025-10-10T14:30:54.345Z",
+      "ageDays": 0.21,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.refund_offer-20251010T145854.json",
+      "mtime": "2025-10-10T14:58:54.322Z",
+      "ageDays": 0.19,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.refund_offer-20251010T153956.json",
+      "mtime": "2025-10-10T15:39:56.256Z",
+      "ageDays": 0.16,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.refund_offer-20251010T182150.json",
+      "mtime": "2025-10-10T18:21:50.647Z",
+      "ageDays": 0.05,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ship_update-20251010T143047.json",
+      "mtime": "2025-10-10T14:30:47.066Z",
+      "ageDays": 0.21,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ship_update-20251010T145845.json",
+      "mtime": "2025-10-10T14:58:45.310Z",
+      "ageDays": 0.19,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ship_update-20251010T153939.json",
+      "mtime": "2025-10-10T15:39:39.885Z",
+      "ageDays": 0.16,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-cx.ship_update-20251010T182139.json",
+      "mtime": "2025-10-10T18:21:39.173Z",
+      "ageDays": 0.05,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-nightly-logging-2025-10-10-20251010T192605.json",
+      "mtime": "2025-10-10T19:26:05.783Z",
+      "ageDays": 0.01,
+      "action": "retained"
+    },
+    {
+      "path": "packages/memory/logs/build/recommendations/build-qa-validation-test-20251010T145329.json",
+      "mtime": "2025-10-10T14:53:29.988Z",
+      "ageDays": 0.2,
+      "action": "retained"
+    }
+  ]
+}

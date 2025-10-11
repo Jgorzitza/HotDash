@@ -40,7 +40,7 @@ expires: 2025-10-16
 - **QA** — Confirm artifact storage location for prompt regression outputs; expand coverage for the CX Escalations modal once `FEATURE_AI_ESCALATIONS=1` in staging.
 - **Deployment** — Wire Supabase secrets into the staging GitHub environment and document rotation cadence; ensure `.github/workflows/deploy-staging.yml` references the new env vars.
 - **Enablement/Support** — Review AI sample drafts and align on operator talking points for the 2025-10-16 dry run; flag additional scenarios if staging data deviates.
-- **Compliance/Product** — Validate guardrails, kill switch, and audit traces before approving production rollout; ensure vendor DPAs (GA MCP, Supabase, Anthropic) remain current (`docs/compliance/evidence/vendor_dpa_status.md`).
+- **Compliance/Product** — Validate guardrails, kill switch, and audit traces before approving production rollout; ensure vendor DPAs (GA MCP, Supabase, OpenAI) remain current (`docs/compliance/evidence/vendor_dpa_status.md`).
 
 ## Go / No-Go Criteria (Staging Dry Run)
 - **Go** when:

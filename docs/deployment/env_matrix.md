@@ -9,38 +9,41 @@ expires: 2025-10-14
 # Environment Variable Matrix — Dev / Staging / Production
 
 ## Summary
-- Reliability committed to populate GitHub environment `production` secrets with vault references by 2025-10-09; staging secrets remain GitHub-only until vault rollout completes.
+- 2025-10-10: Reliability refreshed the Supabase staging DSN (session pooler with `sslmode=require`) in `vault/occ/supabase/database_url_staging.env` and mirrored it to GitHub `staging` secret `DATABASE_URL`; reuse this canonical value for Prisma drills, Chatwoot, and deploy parity checks.
+- Vault bundles now back every staging secret (`vault/occ/shopify/*.env`, `vault/occ/supabase/*.env`, `vault/occ/chatwoot/*.env`). `scripts/deploy/staging-deploy.sh` auto-sources these paths so local runs align with CI without copy/paste.
+- Shopify embed token tracked via `vault/occ/shopify/embed_token_staging.env` and mirrored to GitHub secret `SHOPIFY_EMBED_TOKEN_STAGING` (2025-10-10); Playwright tooling injects it through `PLAYWRIGHT_SHOPIFY_EMBED_TOKEN`.
+- Production GitHub environment remains pending reliability provisioning; keep placeholders documented while staging executes against the vaulted secrets.
 - `.env.example` now aligns with runtime naming (`CHATWOOT_TOKEN`, `CHATWOOT_ACCOUNT_ID`, `CHATWOOT_SLA_MINUTES`); remind developers to refresh local env files.
-- Production smoke target finalized as `https://operators.hotdash.app/app?mock=0` with live budget 800ms (mock budget 300ms) enforced via `scripts/ci/synthetic-check.mjs`.
-- Supabase (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`) powers runtime memory and CI gating. Both staging and production must reuse the 90-day rotation cadence from `docs/runbooks/secret_rotation.md`.
+- Production smoke target finalized as `https://operators.hotdash.app/app?mock=0` with live budget 800 ms (mock budget 300 ms) enforced via `scripts/ci/synthetic-check.mjs`.
 - Feature flag overrides default to `1`/`0` toggles. Leave unset in production unless coordinated with product for controlled releases.
 
 ## Core App (Shopify)
 | Variable | Dev (.env) | Staging | Production | Notes |
 |----------|------------|---------|------------|-------|
-| `SHOPIFY_API_KEY` | Local Shopify partner test key | Secret `SHOPIFY_API_KEY_STAGING` | Secret `SHOPIFY_API_KEY_PROD` (pending reliability provisioning) | Script expects base name; staging/prod map via env injection |
-| `SHOPIFY_API_SECRET` | Local secret | Secret `SHOPIFY_API_SECRET_STAGING` | Secret `SHOPIFY_API_SECRET_PROD` (pending reliability provisioning) | Rotate every 90d; document in secret rotation log |
-| `SHOPIFY_APP_URL` | `http://localhost:3000` | Secret `STAGING_APP_URL` | Environment variable `PRODUCTION_APP_URL` (managed platform env; pending reliability provisioning) | Must match OAuth callback registered in Shopify Partner dashboard |
+| `SHOPIFY_API_KEY` | Local Shopify partner test key | Vault `occ/shopify/api_key_staging.env` (`SHOPIFY_API_KEY_STAGING`) mirrored to GitHub secret `SHOPIFY_API_KEY_STAGING` | Secret `SHOPIFY_API_KEY_PROD` (pending reliability provisioning) | Script expects base name; staging/prod map via env injection |
+| `SHOPIFY_API_SECRET` | Local secret | Vault `occ/shopify/api_secret_staging.env` (`SHOPIFY_API_SECRET_STAGING`) mirrored to GitHub secret `SHOPIFY_API_SECRET_STAGING` | Secret `SHOPIFY_API_SECRET_PROD` (pending reliability provisioning) | Rotate every 90 d; document in secret rotation log |
+| `SHOPIFY_APP_URL` | `http://localhost:3000` | Vault `occ/shopify/app_url_staging.env` + GitHub secret `STAGING_APP_URL` (`https://hotdash-staging.fly.dev/app`) | Environment variable `PRODUCTION_APP_URL` (managed platform env; pending reliability provisioning) | Must match OAuth callback registered in Shopify Partner dashboard |
 | `SCOPES` | Optional override in dev | Unset (defaults in `shopify.app.toml`) | Unset | Set only if deviating from `shopify.app.toml` scopes |
 | `SHOP_CUSTOM_DOMAIN` | Optional | Optional (use when staging custom domain) | Expected (prod vanity domain) | Provide when using custom domain routing |
-| `SHOPIFY_CLI_AUTH_TOKEN` | Local login artifact | Secret `SHOPIFY_CLI_AUTH_TOKEN_STAGING` | Secret `SHOPIFY_CLI_AUTH_TOKEN_PROD` (pending reliability provisioning) | Required for non-interactive CLI deploys |
-| `STAGING_SHOP_DOMAIN` | N/A | Secret `STAGING_SHOP_DOMAIN` | N/A | Used by deploy script/workflow |
-| `STAGING_SMOKE_TEST_URL` | N/A | Secret `STAGING_SMOKE_TEST_URL` | N/A | Should point to `/app?mock=0` once live data ready |
+| `SHOPIFY_CLI_AUTH_TOKEN` | Local login artifact | Vault `occ/shopify/cli_auth_token_staging.env` (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) mirrored to GitHub secret `SHOPIFY_CLI_AUTH_TOKEN_STAGING` | Secret `SHOPIFY_CLI_AUTH_TOKEN_PROD` (pending reliability provisioning) | Required for non-interactive CLI deploys |
+| `STAGING_SHOP_DOMAIN` | N/A | Vault `occ/shopify/shop_domain_staging.env` + GitHub secret `STAGING_SHOP_DOMAIN` | N/A | Used by deploy script/workflow |
+| `STAGING_SMOKE_TEST_URL` | N/A | Vault `occ/shopify/smoke_test_url_staging.env` + GitHub secret `STAGING_SMOKE_TEST_URL` (`…/app?mock=1` current) | N/A | Flip to `/app?mock=0` once live data parity is validated |
+| `SHOPIFY_EMBED_TOKEN` | N/A | Vault `occ/shopify/embed_token_staging.env` + GitHub secret `SHOPIFY_EMBED_TOKEN_STAGING` | Vault/secret placeholder pending prod plan | Powers Playwright Shopify Admin embed flows; rotate every 30 days |
 
 ## Data & Persistence
 | Variable | Dev (.env) | Staging | Production | Notes |
 |----------|------------|---------|------------|-------|
-| `DATABASE_URL` | `file:./prisma/dev.db` | Supabase Postgres connection (vault + GitHub secret) | Managed DB connection (vault + platform env) | Required for Prisma migrations; stage/prod use managed Postgres — see `docs/runbooks/prisma_staging_postgres.md` |
-| `SUPABASE_URL` | Dev Supabase project (optional) | Secret `SUPABASE_URL` | Secret `SUPABASE_URL_PROD` (pending reliability provisioning) | Shared between runtime + CI; ensure Row Level Security enforced |
-| `SUPABASE_SERVICE_KEY` | Dev service key | Secret `SUPABASE_SERVICE_KEY` | Secret `SUPABASE_SERVICE_KEY_PROD` (pending reliability provisioning) | Treat as highly sensitive (service role) |
+| `DATABASE_URL` | `file:./prisma/dev.db` | Vault `occ/supabase/database_url_staging.env` (Supabase pooler DSN + `sslmode=require`) mirrored to GitHub secret `DATABASE_URL` | Managed DB connection (vault + platform env) | Required for Prisma migrations; stage/prod use managed Postgres — see `docs/runbooks/prisma_staging_postgres.md` |
+| `SUPABASE_URL` | Dev Supabase project (optional) | GitHub secret `SUPABASE_URL` (vault capture pending) | Secret `SUPABASE_URL_PROD` (pending reliability provisioning) | Shared between runtime + CI; ensure Row Level Security enforced |
+| `SUPABASE_SERVICE_KEY` | Dev service key | Vault `occ/supabase/service_key_staging.env` mirrored to GitHub secret `SUPABASE_SERVICE_KEY` | Secret `SUPABASE_SERVICE_KEY_PROD` (pending reliability provisioning) | Treat as highly sensitive (service role) |
 | `FEATURE_SUPABASE_MEMORY` | Defaults to `1` | Leave unset (defaults to enabled) | Leave unset | Overrides fallback to in-memory store if set to `0` |
 
 ## CX / Chatwoot
 | Variable | Dev (.env) | Staging | Production | Notes |
 |----------|------------|---------|------------|-------|
-| `CHATWOOT_BASE_URL` | Local docker / staging host | Vault + secret `CHATWOOT_BASE_URL_STAGING` | Vault + secret `CHATWOOT_BASE_URL_PROD` | Required |
-| `CHATWOOT_TOKEN` | Personal token for dev | Secret `CHATWOOT_TOKEN_STAGING` | Secret `CHATWOOT_TOKEN_PROD` | Replace `CHATWOOT_ACCESS_TOKEN` legacy name |
-| `CHATWOOT_ACCOUNT_ID` | Numeric (dev sandbox) | Secret `CHATWOOT_ACCOUNT_ID_STAGING` | Secret `CHATWOOT_ACCOUNT_ID_PROD` | Must be integer |
+| `CHATWOOT_BASE_URL` | Local docker / staging host | GitHub secret `CHATWOOT_BASE_URL_STAGING` (`https://hotdash-chatwoot.fly.dev`) — vault capture pending | Vault + secret `CHATWOOT_BASE_URL_PROD` | Updated to Fly host; no rotation planned until post-cutover review |
+| `CHATWOOT_TOKEN` | Personal token for dev | Vault `occ/chatwoot/api_token_staging.env` (`CHATWOOT_API_TOKEN_STAGING`) mirrored to GitHub secret `CHATWOOT_TOKEN_STAGING` | Secret `CHATWOOT_TOKEN_PROD` | Replace `CHATWOOT_ACCESS_TOKEN` legacy name |
+| `CHATWOOT_ACCOUNT_ID` | Numeric (dev sandbox) | Vault `occ/chatwoot/api_token_staging.env` (`CHATWOOT_ACCOUNT_ID_STAGING`) mirrored to GitHub secret `CHATWOOT_ACCOUNT_ID_STAGING` | Secret `CHATWOOT_ACCOUNT_ID_PROD` | Must be integer |
 | `CHATWOOT_SLA_MINUTES` | Optional override (defaults 30) | Optional | Optional | Align with CX direction |
 | `CHATWOOT_CACHE_TTL_MS` | Optional (defaults 60000) | Optional | Optional | Lower to tighten freshness |
 | `CHATWOOT_MAX_PAGES` | Optional (defaults 2) | Optional | Optional | Controls pagination depth |
@@ -87,7 +90,8 @@ expires: 2025-10-14
 ## Reliability Coordination Log
 - 2025-10-07: Logged request to reliability (see `feedback/deployment.md`) to create GitHub environment `production` with secrets: `SHOPIFY_API_KEY_PROD`, `SHOPIFY_API_SECRET_PROD`, `SHOPIFY_CLI_AUTH_TOKEN_PROD`, `SUPABASE_URL_PROD`, `SUPABASE_SERVICE_KEY_PROD`, `CHATWOOT_BASE_URL_PROD`, `CHATWOOT_TOKEN_PROD`, `CHATWOOT_ACCOUNT_ID_PROD`, `ANTHROPIC_API_KEY_PROD`, `GA_MCP_HOST_PROD`, `GA_PROPERTY_ID_PROD`.
 - 2025-10-07: Reliability confirmed provisioning ETA 2025-10-09 with vault linkage to be documented in `feedback/reliability.md`.
-- 2025-10-07: Awaiting confirmation that vault references map 1:1 to GitHub secrets before enabling production workflow.
+- 2025-10-10: Supabase staging rotation cancelled; maintaining existing DSNs/service keys and documenting evidence artifacts instead.
+- 2025-10-10: Chatwoot Fly rollout in progress — staging base URL secret updated to Fly host, awaiting production host handoff before marking rotation complete.
 
 ## Follow-Ups
 1. Reliability: update `feedback/reliability.md` once production secrets land (ETA 2025-10-09) and link vault paths listed above.

@@ -52,3 +52,7 @@ Provide the manager with a reproducible weekly bundle that explains decision-syn
 3. Populate notebook skeleton with reusable queries (`queries/weekly_insights/`).
 4. Schedule QA/AI sync daily to capture regression log alignment; append highlights to packet.
 
+## Prep Log — 2025-10-10T19:33Z
+- Analyzer/parity artifacts refreshed (`artifacts/monitoring/supabase-sync-summary-2025-10-10T19-26-50-307Z.json`, `artifacts/monitoring/supabase-parity-2025-10-10T19-27-30Z.json`) and linked in notebook placeholder cells for quick swap once exports repopulate.
+- Hotrodan crawl log staged at `artifacts/llama-index/hotrodan_ingest_2025-10-10T19-29-30Z.log`; narrative draft references 404 gaps as pending risk call-out.
+- Notebook `notebooks/weekly_insights_2025-10-16.ipynb` opened and TODO markers verified for KPI delta + GA MCP parity cells so refreshed data can drop in immediately.

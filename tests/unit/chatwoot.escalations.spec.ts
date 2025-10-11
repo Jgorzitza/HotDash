@@ -12,6 +12,8 @@ vi.mock("../../packages/integrations/chatwoot", () => ({
     listOpenConversations: mockListOpenConversations,
     listMessages: mockListMessages,
     sendReply: vi.fn(),
+    addLabel: vi.fn(),
+    resolveConversation: vi.fn(),
   })),
 }));
 

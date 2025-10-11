@@ -16,8 +16,137 @@ const RETRYABLE_ERROR_CODES = new Set(["408", "425", "429", "500", "502", "503",
 const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 const RETRYABLE_MESSAGE_TOKENS = ["ETIMEDOUT", "timeout", "ECONNRESET", "fetch failed"];
 
+const DECISION_TABLE_PRIMARY = "DecisionLog";
+const DECISION_TABLE_LEGACY = "decision_log";
+const FACTS_TABLE = "facts";
+
 const MAX_RETRIES = 2;
 const INITIAL_DELAY_MS = 250;
+
+type DecisionInsertSchema = "actor" | "legacy";
+
+function stripUndefined<T extends Record<string, unknown>>(payload: T): T {
+  for (const key of Object.keys(payload)) {
+    if (payload[key] === undefined) {
+      delete payload[key];
+    }
+  }
+  return payload;
+}
+
+function buildDecisionInsertPayload(decision: DecisionLog, schema: DecisionInsertSchema) {
+  if (schema === "actor") {
+    return stripUndefined({
+      scope: decision.scope,
+      actor: decision.who,
+      action: decision.what,
+      rationale: decision.why,
+      evidenceUrl: decision.evidenceUrl,
+      externalRef: decision.sha,
+      createdAt: decision.createdAt,
+    });
+  }
+
+  return stripUndefined({
+    scope: decision.scope,
+    who: decision.who,
+    what: decision.what,
+    why: decision.why,
+    evidence_url: decision.evidenceUrl,
+    sha: decision.sha,
+    created_at: decision.createdAt,
+  });
+}
+
+function mapDecisionRows(rows: Array<Record<string, unknown>>, schema: DecisionInsertSchema): DecisionLog[] {
+  return rows.map((row) => {
+    const scope = (row?.scope ?? "ops") as DecisionLog["scope"];
+
+    if (schema === "actor") {
+      return {
+        id: String(row?.id ?? ""),
+        scope,
+        who: String(row?.actor ?? ""),
+        what: String(row?.action ?? ""),
+        why: String(row?.rationale ?? ""),
+        sha: row?.externalRef ? String(row.externalRef) : undefined,
+        evidenceUrl: row?.evidenceUrl ? String(row.evidenceUrl) : undefined,
+        createdAt: String(row?.createdAt ?? ""),
+      };
+    }
+
+    return {
+      id: String(row?.id ?? ""),
+      scope,
+      who: String(row?.who ?? ""),
+      what: String(row?.what ?? ""),
+      why: String(row?.why ?? ""),
+      sha: row?.sha ? String(row.sha) : undefined,
+      evidenceUrl: row?.evidence_url ? String(row.evidence_url) : undefined,
+      createdAt: String(row?.created_at ?? ""),
+    };
+  });
+}
+
+function getMessage(error: unknown): string | undefined {
+  if (!error) return undefined;
+  if (typeof error === "string") return error;
+  if (error instanceof Error) return error.message;
+  if (typeof error === "object" && (error as SupabaseError).message) {
+    return (error as SupabaseError).message ?? undefined;
+  }
+  return undefined;
+}
+
+function isUnknownColumnError(error: unknown): boolean {
+  if (!error) {
+    return false;
+  }
+
+  const code = (error as SupabaseError).code;
+  if (code && String(code) === "42703") {
+    return true;
+  }
+
+  const message = getMessage(error);
+  if (!message) {
+    return false;
+  }
+
+  const lower = message.toLowerCase();
+  return lower.includes("column") && lower.includes("does not exist");
+}
+
+function shouldFallbackToLegacy(error: unknown): boolean {
+  if (!error) {
+    return false;
+  }
+
+  if (isUnknownColumnError(error)) {
+    return true;
+  }
+
+  const code = (error as SupabaseError).code;
+  if (code && String(code).toUpperCase() === "42P01") {
+    return true;
+  }
+
+  const message = getMessage(error);
+  if (!message) {
+    return false;
+  }
+
+  const lower = message.toLowerCase();
+  if (lower.includes("relation") && lower.includes("does not exist")) {
+    return true;
+  }
+
+  if (lower.includes("table") && lower.includes("not") && lower.includes("found")) {
+    return true;
+  }
+
+  return false;
+}
 
 function isRetryable(error: unknown): boolean {
   if (!error) {
@@ -114,58 +243,79 @@ export function supabaseMemory(url: string, key: string): Memory {
 
   return {
     async putDecision(decision: DecisionLog) {
-      await executeWithRetry(() =>
-        sb.from("decision_log").insert({
-          scope: decision.scope,
-          who: decision.who,
-          what: decision.what,
-          why: decision.why,
-          sha: decision.sha,
-          evidence_url: decision.evidenceUrl,
-          created_at: decision.createdAt,
-        }),
-      );
+      try {
+        await executeWithRetry(async () => {
+          return await sb.from(DECISION_TABLE_PRIMARY).insert(buildDecisionInsertPayload(decision, "actor"));
+        });
+      } catch (error) {
+        if (!shouldFallbackToLegacy(error)) {
+          throw error;
+        }
+
+        await executeWithRetry(async () => {
+          return await sb.from(DECISION_TABLE_LEGACY).insert(buildDecisionInsertPayload(decision, "legacy"));
+        });
+      }
     },
 
     async listDecisions(scope) {
-      const query = scope
-        ? sb.from("decision_log").select("*").eq("scope", scope)
-        : sb.from("decision_log").select("*");
+      try {
+        let query = sb
+          .from(DECISION_TABLE_PRIMARY)
+          .select("id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt");
 
-      const { data, error } = (await query.order("created_at", { ascending: false })) as SupabaseResponse<
+        if (scope) {
+          query = query.eq("scope", scope);
+        }
+
+        const { data, error } = (await query.order("createdAt", { ascending: false })) as SupabaseResponse<
+          Array<Record<string, unknown>>
+        >;
+
+        if (error) {
+          throw error;
+        }
+
+        return mapDecisionRows(data ?? [], "actor");
+      } catch (error) {
+        if (!shouldFallbackToLegacy(error)) {
+          throw error;
+        }
+      }
+
+      let legacyQuery = sb.from(DECISION_TABLE_LEGACY).select("*");
+      if (scope) {
+        legacyQuery = legacyQuery.eq("scope", scope);
+      }
+
+      const {
+        data: legacyData,
+        error: legacyError,
+      } = (await legacyQuery.order("created_at", { ascending: false })) as SupabaseResponse<
         Array<Record<string, unknown>>
       >;
 
-      if (error) {
-        throw error;
+      if (legacyError) {
+        throw legacyError;
       }
 
-      return (data || []).map((row) => ({
-        id: String(row?.id ?? ""),
-        scope: row?.scope as DecisionLog["scope"],
-        who: String(row?.who ?? ""),
-        what: String(row?.what ?? ""),
-        why: String(row?.why ?? ""),
-        sha: row?.sha ? String(row.sha) : undefined,
-        evidenceUrl: row?.evidence_url ? String(row.evidence_url) : undefined,
-        createdAt: String(row?.created_at ?? ""),
-      }));
+      return mapDecisionRows(legacyData ?? [], "legacy");
     },
 
     async putFact(fact: Fact) {
-      await executeWithRetry(() =>
-        sb.from("facts").insert({
+      await executeWithRetry(async () => {
+        return await sb.from(FACTS_TABLE).insert({
           project: fact.project,
           topic: fact.topic,
           key: fact.key,
           value: fact.value,
           created_at: fact.createdAt,
-        }),
-      );
+        });
+      });
     },
 
     async getFacts(topic?: string, key?: string) {
-      let query = sb.from("facts").select("*");
+      let query = sb.from(FACTS_TABLE).select("*");
       if (topic) {
         query = query.eq("topic", topic);
       }

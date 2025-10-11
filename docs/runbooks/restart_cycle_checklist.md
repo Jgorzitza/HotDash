@@ -15,7 +15,7 @@ Ensure every service restart or environment recycle follows a repeatable sequenc
 - You have an assigned restart window and communication plan approved in `feedback/manager.md`.
 - Local workspace is on the correct branch (`agent/<role>/<task>` or `main`) with latest changes pulled.
 - Required credentials (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, Shopify Admin API demo shop, etc.) are present locally and in CI.
-- Alerting partners (reliability, enablement, support) acknowledged the restart window in Slack `#occ-launch`.
+- Alerting partners (reliability, enablement, support) acknowledged the restart window in # `#occ-launch`.
 
 ## Checklist
 | Step | Action | Evidence / Notes |

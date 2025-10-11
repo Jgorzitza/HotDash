@@ -31,5 +31,5 @@ Thanks,
 
 ## Usage Notes
 - Replace placeholders (`<...>`) with concrete dates, collateral links, and recipient names.
-- Capture the confirmation email/Slack export in `docs/compliance/evidence/operator_privacy_comms/` once received.
+- Capture the confirmation email/# export in `docs/compliance/evidence/operator_privacy_comms/` once received.
 - Reference the logged confirmation in `feedback/compliance.md` under the appropriate date.

@@ -19,6 +19,34 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
 
 ---
 
+## Current Exposure Summary — 2025-10-15
+- 2025-10-15T19:45Z — Re-verified pg_cron evidence bundle (`docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/`) with SHA256 hashes logged in `pg_cron_hash_register_2025-10-13.md`.
+- 2025-10-15T19:00Z — Completed incident tabletop; summary + action items stored under `docs/compliance/evidence/supabase/tabletop_20251015/`.
+- 2025-10-10T19:26Z — Analyzer rerun on restored DecisionLog export (`artifacts/logs/supabase_decision_log_export_2025-10-10T14-50-23Z.ndjson`); summary archived at `artifacts/monitoring/supabase-sync-summary-2025-10-10T19-26-50-307Z.json` (0 records, failure rate 0, awaiting Supabase repopulation).
+- 2025-10-10T19:27Z — `npx -y tsx scripts/ops/check-dashboard-analytics-parity.ts` succeeded (0% deltas) with staging credentials; parity evidence stored at `artifacts/monitoring/supabase-parity-2025-10-10T19-27-30Z.json`.
+- 2025-10-12T09:42Z — Repository scan (`git grep postgresql://`) surfaced only canonical placeholders in direction, runbook, and feedback docs plus `prisma/seeds/README.md`; no live Supabase DSN remains post-sanitization.
+- 2025-10-12T10:03Z — Resumed analyzer pipeline; `scripts/ops/analyze-supabase-logs.ts` processed `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` (4 records, 25 % timeout rate, decisionId 103 still outlier) confirming exports remain reproducible.
+- 2025-10-12T10:05Z — `npm run ops:check-analytics-parity` failed (`Invalid API key`); Supabase parity remains blocked until a valid `SUPABASE_SERVICE_KEY`/`SUPABASE_URL` bundle is loaded locally.
+- 2025-10-12T10:12Z — Loaded existing Supabase credentials from vault (`vault/occ/supabase/service_key_staging.env`) and reran `npm run ops:check-analytics-parity`; parity succeeded (0% diff, 0 deltas).
+- 2025-10-12T14:49Z — REST export against `decision_sync_events` still returns `PGRST205` (table missing); failure output stored at `artifacts/logs/supabase_decision_sync_events_2025-10-10T14-49-42Z.ndjson`.
+- 2025-10-12T14:50Z — `DecisionLog` mirror reachable; export saved to `artifacts/logs/supabase_decision_log_export_2025-10-10T14-50-23Z.ndjson`, analyzer summary `artifacts/monitoring/supabase-sync-summary-2025-10-10T14-50-40Z.json` confirms 0 records (latest probe `artifacts/logs/supabase_decision_log_raw_2025-10-10T15-34-48Z.json` still empty).
+- 2025-10-12T15:59Z — Analyzer rerun (legacy export `supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) captured at `artifacts/monitoring/supabase-sync-summary-2025-10-10T15-59-25Z.json`; parity artifact `artifacts/monitoring/supabase-parity-2025-10-10T16-00-12Z.json` holds 0/0 counts pending restored exports.
+- 2025-10-12T18:20Z — Latest `/rest/v1/decision_sync_events` attempt still returns `PGRST205`; failure recorded at `artifacts/logs/supabase_decision_sync_events_2025-10-10T18-20-11Z.ndjson`.
+- Analyzer/parity refreshed for continuity (`artifacts/monitoring/supabase-sync-summary-2025-10-10T18-20-26Z.json`, `artifacts/monitoring/supabase-parity-2025-10-10T18-20-37Z.json`).
+- Follow-ups: Maintain current Supabase credential bundle; rerun analyzer/parity after each NDJSON export and archive evidence in `artifacts/monitoring/` + incident folder. No rotation required.
+
+---
+
+## Response Team & Contacts
+- **Compliance Lead (Incident Manager)** — Owns regulatory assessment, evidence capture, and stakeholder comms (`docs/directions/compliance.md`).
+- **Reliability On-Call** — Executes key rotation, access lockdown, and restoration tasks (`docs/directions/reliability.md`).
+- **Support Liaison** — Coordinates operator/merchant messaging and tracks inbound reports (`docs/directions/support.md`).
+- **Deployment Owner** — Confirms secret propagation across environments and rollback strategy (`docs/directions/deployment.md`).
+
+Store contact rotation and escalation order in the shared on-call sheet; update links here when assignments change.
+
+---
+
 ## Prerequisites & Reference Docs
 - Architecture overview: `docs/compliance/data_inventory.md` (Supabase section) and `docs/runbooks/prisma_staging_postgres.md` (connection handling).
 - Retention plan + cron design: `docs/compliance/retention_automation_plan.md`.
@@ -35,8 +63,8 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
    - Operator reports of stale or missing decisions in dashboard tiles.
    - Security tooling (Vault audit, GitHub secret scans) indicating credential exposure.
 2. **Immediate Actions**
-   - Log incident start in `feedback/compliance.md` with timestamp and short description.
-   - Open evidence folder `docs/compliance/evidence/INCIDENT_SUPABASE_<date>/` and capture:
+   - Log incident start in `feedback/compliance.md` with timestamp and short description; ping reliability + support on-call channels.
+   - Create evidence folder `docs/compliance/evidence/supabase/incidents/<YYYYMMDD>/` and capture:
      - Supabase status screenshot or JSON export.
      - Log snippets, error IDs, and impacted shop/operator identifiers.
    - Classify severity:
@@ -55,9 +83,9 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
    - Enable read-only mode in decision logging microservice (toggle `FEATURE_DECISION_LOG_WRITE=0`) to halt new writes until integrity confirmed.
    - Apply temporary RLS tightening to permit compliance-only access for forensics.
 3. **Snapshot State**
-   - Export affected tables (`decision_logs`, `analytics_snapshots`, cron audit tables) using `supabase db export` or `pg_dump` for offline review.
+   - Export affected tables (`decision_log`, `facts`, retention audit tables) using `supabase db export` or `pg_dump` for offline review.
 4. **Preserve Logs**
-   - Archive Supabase audit trails and application logs to `docs/compliance/evidence/INCIDENT_supabase_<date>/logs/`.
+   - Archive Supabase audit trails and application logs to `docs/compliance/evidence/supabase/incidents/<YYYYMMDD>/logs/`.
 
 ---
 

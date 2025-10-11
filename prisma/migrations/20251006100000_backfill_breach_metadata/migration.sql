@@ -1,2 +1,0 @@
--- Historic backfill for chatwoot escalations breach metadata
--- No schema changes; executed via script scripts/ops/backfill-chatwoot-breach.ts

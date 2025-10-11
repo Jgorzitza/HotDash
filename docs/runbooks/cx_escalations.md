@@ -11,6 +11,8 @@ expires: 2025-10-20
 ## Purpose
 Map each CX Escalations tile action to internal Standard Operating Procedures (SOPs) and escalation ladders. This runbook enables operators to handle customer conversations efficiently while maintaining quality and SLA compliance.
 
+**Support Inbox:** customer.support@hotrodan.com — archive escalations, smoke test evidence, and Chatwoot deployment updates here.
+
 ---
 
 ## Dashboard Actions & SOPs
@@ -76,7 +78,7 @@ Map each CX Escalations tile action to internal Standard Operating Procedures (S
 **SOP Mapping:**
 - **SOP-CX-003:** Manager Escalation Protocol
   - Valid reasons: Policy exception, refund >$500, legal/fraud concern, abusive language
-  - Notification: CX Lead notified via Slack (future integration)
+  - Notification: CX Lead notified via # (future integration)
   - Handoff: Add internal note summarizing issue + customer expectation
 
 **Escalation SLA:**
@@ -117,6 +119,26 @@ Map each CX Escalations tile action to internal Standard Operating Procedures (S
 Current templates (app/services/chatwoot/templates.ts):
 
 > **Note:** Suggested replies now map to templates via heuristics: shipping/delivery cues → `ship_update`, refund/return cues → `refund_offer`, otherwise `ack_delay`. Operators should still confirm tone before approving.
+
+## Chatwoot Fly Deployment Validation (Pre-Launch)
+
+When reliability signals the Fly deployment window, execute the following to confirm Chatwoot connectivity and dashboard handoffs:
+
+1. **Pre-Deployment Checklist**
+   - Confirm deployment notice in `#occ-reliability` and log the window in `feedback/support.md`.
+   - Download latest deployment playbook from reliability; note new Fly app hostname.
+   - Notify enablement + marketing via customer.support@hotrodan.com so comms and macros pause during the cutover.
+   - Update the smoke script `scripts/ops/chatwoot-fly-smoke.sh` with the announced Fly hostname and any refreshed API tokens (use `--env staging` to pull from vault defaults); record the values in `feedback/support.md` for audit.
+
+2. **During Deployment**
+   - Run `scripts/ops/chatwoot-fly-smoke.sh --env staging --host <fly-host>` (or pass `--token-file` with the deployment bundle) to capture recurring API probes; archive logs under `artifacts/support/chatwoot-fly-deploy/`.
+   - Validate OCC API proxy: launch CX Escalations tile in staging (`?mock=1`) and ensure conversation list responds within SLA (<2s). Log timestamp + request ID.
+   - Attempt modal actions (approve, escalate) in mock conversation; confirm decision logs write to Supabase without errors. If failures occur, escalate immediately via reliability bridge call.
+
+3. **Post-Deployment Smoke**
+   - Re-run tile load and modal actions against live conversation (if available) to ensure Chatwoot webhook responses succeed.
+   - Update escalation SOPs to reference the new Fly host (Chatwoot admin links, troubleshooting flow) and distribute summary through customer.support@hotrodan.com.
+   - Attach evidence (curl logs, screenshots, decision IDs) to `feedback/support.md` and notify manager once validation passes.
 
 ### Template: `ack_delay`
 **Label:** Acknowledge delay
@@ -204,7 +226,7 @@ Support AI Suggestion:
 - Template send failures: Alert reliability if error rate >5%
 
 **Alert Channels:**
-- Critical errors → Reliability team (Slack #incidents)
+- Critical errors → Reliability team (#incidents) (internal channel)
 - SLA threshold breaches → Support lead + Ops manager
 - Integration downtime → Immediate escalation per docs/runbooks/incident_response.md (pending)
 
@@ -244,6 +266,9 @@ Support AI Suggestion:
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-12 | support | Clarified smoke script usage with new --env/--token-file options and deployment handoff |
+| 2025-10-10 | support | Added support inbox contact, Chatwoot Fly deployment validation checklist, and smoke script reference |
+| 2025-10-10 | support | Documented host/token refresh requirement for Chatwoot Fly smoke script |
 | 2025-10-10 | support | Added mock-mode transcript gallery and edge case checklist for operator rehearsal while live data blocked. |
 | 2025-10-10 | support | Added QA staging evidence references for modal verification |
 | 2025-10-08 | support | Added template heuristics, rendered customer names, aligned escalation label |

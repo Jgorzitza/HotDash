@@ -1,5 +1,9 @@
 # Sales Pulse — AI Dry Run Samples (2025-10-10 Draft)
 
+> **QA Hold — 2025-10-12:** Credentials validated 2025-10-10 15:45 UTC; maintain mock rehearsals until QA shares green `?mock=0` evidence. Report access issues to `customer.support@hotrodan.com` and confirm acknowledgement in `feedback/ai.md`.
+
+> **Async module:** Watch `artifacts/training/async_modules/2025-10-10/sales_pulse_walkthrough.mp4` and log insights in `artifacts/ops/dry_run_2025-10-16/async_prep_notes.xlsx` ahead of the live session.
+
 ## Telemetry Callouts
 - Pull revenue/order metrics directly from the Ops Pulse/Sales Pulse Supabase facts (`factType="shopify.sales_pulse"`); log IDs and timestamps after each scenario.
 - Record KPI deltas (revenue %, order count, channel mix) in the Q&A template so data/QA can compare to nightly ETL outputs.
@@ -12,7 +16,7 @@
 
 ## Staging Checklist
 - Run `npm run ops:seed-shopify -- --mock` before the session so tile metrics align with the training agenda.
-- Confirm Supabase facts sync (`scope="ops"`) writes into staging once credentials land; if still blocked, note fallback storage in the Q&A log.
+- Confirm Supabase facts sync (`scope="ops"`) writes into staging (credentials currently stable); if QA evidence is still pending, note fallback storage in the Q&A log.
 - Open the dashboard with `?mock=1&tile=sales` to keep the Sales Pulse tile pinned during the walkthrough.
 
 ## Supabase Evidence Reference (2025-10-09 sample)
@@ -29,7 +33,7 @@ Reference the refreshed bundle (`artifacts/logs/supabase_decision_export_2025-10
 - **Tile snapshot:** Orders +35% vs prior day; 12 unfulfilled orders concentrated on Heritage Hoodie variant `HH-BLK-L`.
 - **AI summary draft:**
   "We're seeing a 35% order spike versus yesterday, with 12 unfulfilled orders concentrated on the Heritage Hoodie. Recommend pulling in an extra packer for the next two hours and prioritizing same-day shipments to stay within SLA."
-- **Operator follow-up:** Ping the fulfillment lead in Slack with the surge summary and log the staffing adjustment in the decision log (`scope="ops"`). During the mock run, verbalize the staffing change and capture it in the enablement worksheet.
+- **Operator follow-up:** Ping the fulfillment lead in # with the surge summary and log the staffing adjustment in the decision log (`scope="ops"`). During the mock run, verbalize the staffing change and capture it in the enablement worksheet.
 
 ### Scenario 2 — Revenue Dip Warning
 - **Tile snapshot:** Revenue −18% vs 7-day baseline; paid marketing spend flat; no anomaly flags.

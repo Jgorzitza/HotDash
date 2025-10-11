@@ -22,7 +22,7 @@ Reliability should use this checklist when delivering first-run logs for the Sup
    - Run timestamp
    - Operator responsible
    - Data retention window validated
-3. Notify compliance via Slack `#occ-ops` and add link to evidence folder.
+3. Notify compliance via # `#occ-ops` and add link to evidence folder.
 4. Compliance to hash evidence files and log values in `feedback/compliance.md`.
 
 ## Outstanding Questions

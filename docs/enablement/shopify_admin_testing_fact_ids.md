@@ -14,7 +14,7 @@ Enable enablement/QA partners to gather reproducible evidence (fact IDs, screens
 ## Fact Catalog (Staging Baseline)
 | Fact Type | Scope | Latest Fact ID (dev seed 2025-10-10) | Where to Capture | Notes |
 | --- | --- | --- | --- | --- |
-| `shopify.sales.summary` | ops | 8 | Dashboard → Sales Pulse tile | Include revenue graph + pending fulfillment badge; IDs sourced from `prisma/dev.sqlite` seed run at 2025-10-10 02:54 UTC. |
+| `shopify.sales.summary` | ops | 8 | Dashboard → Sales Pulse tile | Include revenue graph + pending fulfillment badge; IDs sourced from the Supabase dev seed (`npm run seed`) executed 2025-10-10 02:54 UTC. |
 | `shopify.fulfillment.issues` | ops | 12 | Dashboard → Fulfillment tile detail drawer | Capture list state showing order `#1001` backlog; log fact ID and order `gid://` reference. |
 | `shopify.inventory.coverage` | ops | 11 | Inventory heatmap modal | Screenshot low-stock SKU (`SKU-003`), note `daysOfCover` and recommendation. |
 | `dashboard.session.opened` | ops | — (pending staging telemetry) | Session telemetry logs | Extract via Prisma query (`SELECT id, shop_domain, created_at FROM "DashboardFact" WHERE fact_type='dashboard.session.opened' ORDER BY created_at DESC LIMIT 5`). |

@@ -2,9 +2,9 @@
 epoch: 2025.10.E1
 doc: docs/directions/deployment.md
 owner: manager
-last_reviewed: 2025-10-08
+last_reviewed: 2025-10-12
 doc_hash: TBD
-expires: 2025-10-18
+expires: 2025-10-19
 ---
 # Deployment — Direction (Operator Control Center)
 ## Canon
@@ -12,20 +12,28 @@ expires: 2025-10-18
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
 - MCP Allowlist: docs/policies/mcp-allowlist.json
+- Credential Map: docs/ops/credential_index.md
+- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
 
 > Manager authored. Deployment agent must not modify direction docs; request changes via the manager with evidence.
 
 - Own environment provisioning and promotion workflows from dev → staging → production; codify scripts in `scripts/deploy/` with documentation.
 - Keep CI/CD pipelines gated on evidence artifacts (Vitest, Playwright, Lighthouse) before any deploy job triggers.
-- Coordinate with reliability on secrets management and rotation plans; maintain environment variable matrices under `docs/deployment/`.
+- Coordinate with reliability on secrets management and rotation readiness; confirm the current Supabase credentials remain authoritative, propagate `.env.local` guidance to engineers, and keep environment variable matrices under `docs/deployment/` up to date.
+- Reference: docs/dev/appreact.md (Admin guide), docs/dev/authshop.md (authenticate.admin), docs/dev/session-storage.md (session persistence).
 - Ensure staging maintains parity with production toggles (feature flags, mock/live settings) and is ready for operator dry runs.
 - Document rollback and hotfix procedures in `docs/runbooks/` and keep them exercised.
+- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Remove any Fly Postgres references from scripts/runbooks.
 - Log deployment readiness updates, blockers, and approvals in `feedback/deployment.md`.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/deployment.md` without waiting for additional manager approval.
 
-## Current Sprint Focus — 2025-10-11
-- Re-add the GitHub remote (`git remote add origin https://github.com/Jgorzitza/HotDash.git`) and force-push the sanitized branch once reliability signs off; log the push hash in `feedback/deployment.md`.
-- After pushing, broadcast pull/reset instructions to all teams (`git fetch --all --prune`, `git reset --hard origin/<branch>`) so no one keeps the compromised history.
-- Keep staging deploy scripts frozen until reliability rotates Supabase credentials; stage the redeploy command with placeholders and list required evidence post-rotation.
-- Update `docs/deployment/env_matrix.md` and staging install runbook with a “credentials rotating” banner so downstream consumers know to wait.
-- Audit GitHub Actions secrets for leftover DSNs/outdated tokens; coordinate with reliability tomorrow to refresh `DATABASE_URL`, `SUPABASE_SERVICE_KEY`, and Shopify secrets right after rotation.
+## Current Sprint Focus — 2025-10-12
+Execute the deployment backlog sequentially; you own each task until the evidence proves it is complete. Record every command and output in `feedback/deployment.md`, retry failures twice, and only escalate with the captured logs.
+
+1. **Local Supabase documentation** — Update `docs/deployment/env_matrix.md` and `docs/runbooks/prisma_staging_postgres.md` to reflect the new default (`supabase start`, `.env.local`, Postgres-only migrations). Verify the instructions by running `npm run setup` locally and attaching the output.
+2. **Sanitized history** — `git fetch --all --prune`, `git grep postgresql://`; log commands/output.
+3. **Runbook parity** — Update `scripts/deploy/staging-deploy.sh`, `docs/deployment/env_matrix.md`, and `docs/deployment/chatwoot_fly_runbook.md` to match current secrets + Supabase posture; capture diffs.
+4. **Secret mirroring** — Mirror embed token, Supabase DSN, Chatwoot Redis/API, and GA MCP bundles to GitHub (`gh secret set … --env staging/prod`); attach CLI output and verify the values immediately via `gh secret list`.
+5. **Chatwoot alignment** — Pull the current Fly secrets yourself, update anything missing, and run the smoke validation. Collaborate with the Chatwoot agent for context, but do not hand the task back until secrets and evidence are archived (`artifacts/integrations/chatwoot-fly-deployment-*`).
+6. **Stack compliance audit** — Attend Monday/Thursday review, focusing on CI/CD secret usage and deploy scripts; document remediation steps.
+7. **Fallback readiness** — Keep staging redeploy, rollback, and dry-run checklists current so QA can execute immediately once blockers clear.

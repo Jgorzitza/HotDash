@@ -18,7 +18,7 @@ Give support a rapid response plan when the Operator Control Center hits Shopify
 ## Escalation Contacts
 | Purpose | Contact | Notes |
 |---------|---------|-------|
-| Reliability handoff | Slack `#occ-reliability` | Include request ID, throttle JSON, first banner timestamp |
+| Reliability handoff | # `#occ-reliability` | Include request ID, throttle JSON, first banner timestamp |
 | Operator comms alignment | Support lead on duty | Confirm operator messaging + incident tracking |
 
 ## Immediate Response (First Banner)
@@ -49,7 +49,7 @@ Give support a rapid response plan when the Operator Control Center hits Shopify
 - [ ] Shopify status page screenshot or confirmation (if incident present)
 - [ ] Debug drawer capture with request/throttle headers
 - [ ] Dashboard banner screenshot with timestamp
-- [ ] `feedback/support.md` entry + Slack permalink to `#occ-reliability`
+- [ ] `feedback/support.md` entry + # permalink to `#occ-reliability`
 - [ ] Post-recovery note (time banner cleared, actions taken)
 
 ## Reference Materials

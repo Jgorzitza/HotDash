@@ -42,7 +42,7 @@ Shopify Admin GraphQL enforces a 1,000 cost/minute throttle window. When the Ope
 - Reference support playbook steps if escalation needed (`docs/runbooks/shopify_rate_limit_recovery.md`).
 - Screenshot of the dashboard banner + tile timestamp.
 - Debug drawer snippet with `X-Request-ID` and throttle status JSON.
-- Timestamped note in `feedback/support.md` and link to the Slack thread.
+- Timestamped note in `feedback/support.md` and link to the internal channel thread.
 - Once resolved, add the recovery confirmation (time banner cleared, retry ID or command used).
 
 ## Training Tips

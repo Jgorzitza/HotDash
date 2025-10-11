@@ -2,9 +2,9 @@
 epoch: 2025.10.E1
 doc: docs/design/wireframes/dashboard_wireframes.md
 owner: designer
-last_reviewed: 2025-10-05
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-18
+expires: 2025-10-20
 ---
 # Operator Control Center — Wireframes
 
@@ -89,6 +89,84 @@ expires: 2025-10-18
 │                               [Cancel]  [Confirm Action]│
 └──────────────────────────────────────────────────────────┘
 ```
+
+### Polaris Implementation Notes
+- Modal container uses Polaris `Modal` with `sectioned` layout; actions render via `ButtonGroup` to match Polaris spacing tokens.
+- Conversation preview maps to Polaris `LegacyCard` sections so transcripts remain scrollable and focusable.
+- Approval buttons reuse the primary/secondary button tokens defined in `docs/design/tokens/design_tokens.md` (`--occ-button-primary`, `--occ-button-secondary`).
+
+### Focus Order & Keyboard Flow
+1. Close button (`aria-label="Close escalation modal"`)
+2. Modal heading (programmatically focused for screen reader context)
+3. Conversation preview (`role="log"`; allow arrow navigation)
+4. Suggested reply textarea
+5. Internal note textarea (helper text includes `customer.support@hotrodan.com`)
+6. Primary action `Approve & Send Reply`
+7. Secondary action `Escalate to Manager`
+8. Secondary action `Mark Resolved`
+9. Plain action `Cancel`
+
+### Supabase & Audit Trail Hooks
+- Approvals write to `supabase.from('cx_escalations_decisions')`; include `decision_type`, `agent_id`, and `transcript_id`.
+- `Escalate to Manager` pushes a record to `supabase.functions.invoke('create_escalation_ticket')`.
+- Every submit action also emails `customer.support@hotrodan.com` via the centralized notification worker; copy mirrors `modal.escalation.support_inbox`.
+
+### Toast & Retry States
+- Success toast fires on resolved promise from Supabase insert (see `toast.success.reply_sent` and `toast.success.decision_logged`).
+- Error toast surfaces API failure (`toast.error.network`) with contextual retry link that re-focuses the primary CTA.
+- Gracefully degrade when Supabase is offline by disabling primary buttons and showing banner copy: “Decision logging unavailable. Try again later or email customer.support@hotrodan.com manually.”
+
+## Tile Detail Modal — Sales Pulse
+
+### Revenue Variance Review with Decision Logging
+```
+┌──────────────────────────────────────────────────────────┐
+│ ✕  Sales Pulse — Variance Review                        │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│ Snapshot (Last 24h)                                      │
+│ • Revenue: $8,425.50 (▲ 12% WoW)                        │
+│ • Orders: 58                                             │
+│ • Avg order: $145.27                                     │
+│                                                          │
+│ Top SKUs                                                 │
+│ • Powder Board XL — 14 units                            │
+│ • Thermal Gloves — 12 units                             │
+│                                                          │
+│ Action                                                   │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ What do you want to do?                          ▼ │ │
+│ │  ▸ Log follow-up                                 │ │
+│ │  ▸ Escalate to ops                               │ │
+│ └────────────────────────────────────────────────────┘ │
+│                                                          │
+│ Notes (audit trail)                                      │
+│ ┌────────────────────────────────────────────────────┐ │
+│ │ “Followed up with ops about delayed ski bindings.” │ │
+│ └────────────────────────────────────────────────────┘ │
+│                                                          │
+│ [Log follow-up]         [Cancel]                         │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Polaris Implementation Notes
+- Built with Polaris `Modal` + `FormLayout`; action selector uses Polaris `Select`.
+- Primary CTA text mirrors the current select option (`Log follow-up` or `Escalate to ops`).
+- Notes textarea leverages Polaris `TextField` with `multiline` and helper text referencing `customer.support@hotrodan.com` when escalation exceeds 15%.
+
+### Focus Order & Keyboard Flow
+1. Close button (`aria-label="Close sales pulse modal"`)
+2. Modal heading (programmatically focused for announcements)
+3. Action select (keyboard toggles between `Log follow-up` / `Escalate to ops`)
+4. Notes textarea (`aria-describedby="sales-action-helper"`)
+5. Primary CTA (`Log follow-up` or `Escalate to ops`)
+6. Plain action `Cancel`
+
+### Supabase & Toast Alignment
+- Actions write to `supabase.from('sales_pulse_actions')` with `action_type`, `notes`, and `delta_percent`.
+- When `Escalate to ops` is chosen, enqueue notification email to `customer.support@hotrodan.com` and flag tile status to `attention`.
+- Success toast uses `toast.success.decision_logged`; copy includes SKU list when Escalate path selected.
+- Error toast uses `toast.error.retry_prompt` with CTA to retry mutation; maintain focus on CTA to satisfy WCAG 3.2.4.
 
 ## Tile Detail Modal — Inventory Heatmap
 
@@ -175,6 +253,34 @@ expires: 2025-10-18
 │             [Cancel]  [Confirm & Create]│
 └──────────────────────────────────────────┘
 ```
+
+### Toast Trigger Matrix
+
+| Flow | Trigger | Toast ID | Follow-up |
+|------|---------|----------|-----------|
+| CX Escalation — Approve | Supabase insert succeeds (`cx_escalations_decisions`) | `toast.success.reply_sent` | Auto-dismiss after 6s; ensure transcript log highlights decision |
+| CX Escalation — Escalate | `create_escalation_ticket` function resolves | `toast.success.action_confirmed` | Copy includes `customer.support@hotrodan.com` acknowledgement |
+| Sales Pulse — Log follow-up | Supabase insert succeeds (`sales_pulse_actions`) | `toast.success.decision_logged` | Offer inline link to audit trail |
+| Sales Pulse — Escalate to ops | Notification worker resolves email send | `toast.success.decision_logged` | Set tile status to Attention on next refresh |
+| Any modal — API failure | Promise rejected | `toast.error.network` | Retry button re-focuses modal CTA |
+
+### Approval Sequence (Happy Path)
+```
+Tile CTA → Modal opens (focus close button)
+      ↓
+User reviews Supabase-backed data (transcript/snapshot)
+      ↓
+Primary action → Supabase mutation
+      ↓
+Success toast → focus returns to originating CTA
+      ↓
+Audit trail badge updates + tile summary reflects latest state
+```
+
+### Accessibility Checklist
+- Toasts announce via `role="status"` and sit in the DOM after `.app-shell` so screen readers hear them after actions.
+- Retry surfaces maintain focus order; pressing Escape collapses toasts without moving focus.
+- Support inbox email appears as plain text (not link) to avoid focus trap; copy deck entry `modal.escalation.support_inbox`.
 
 ## Empty States
 
