@@ -24,6 +24,7 @@ expires: 2025-10-18
 
 **Security incident status:** Git history scrub completed (`af1d9f1` pushed 2025-10-10 08:12 UTC). Product + reliability validated existing Supabase credentials at 2025-10-10 16:00 UTC, so no rotation required. Clearance evidence remains archived for audit even as external sends stay on hold pending QA.
 **QA gate:** `https://hotdash-staging.fly.dev/app?mock=0` remains HTTP 410 as of 2025-10-10 07:57 UTC. Hold all external sends until QA posts sustained 200 + sub-300 ms synthetic evidence (DEPLOY-147) **and** reliability delivers the Chatwoot Fly embed token for Shopify Admin.
+**Support inbox & Chatwoot Fly note:** The primary escalation channel is customer.support@hotrodan.com, which routes to Chatwoot hosted on Fly.io. All operator-facing copy should reference this inbox and avoid legacy addresses.
 **English-only scope:** Launch surfaces ship in English. French strings stay in this packet for localization QA only (see `docs/marketing/translation_review_request_2025-10-07.md`).
 **Readiness evidence:** Reference Supabase parity (01:25Z) + retry snapshot (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`), Fly staging smoke (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`), and Shopify staging validation (`feedback/reliability.md`, 2025-10-10 01:14 UTC) when answering telemetry questions.
 

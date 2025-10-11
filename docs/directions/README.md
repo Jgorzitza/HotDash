@@ -18,6 +18,7 @@ Direction files are canonical instructions for each agent. To prevent drift:
    - `docs/git_protocol.md`
    - this governance doc (`docs/directions/README.md`)
    - `docs/policies/mcp-allowlist.json`
+   - Feedback & Direction Controls: `docs/policies/feedback_controls.md`
 5. **Change process** — no direction/runbook edits without:
    - A linked blocker ticket or feedback entry proving the need.
    - Manager approval on the PR.

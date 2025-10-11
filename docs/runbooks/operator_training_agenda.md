@@ -81,11 +81,20 @@ expires: 2025-10-20
 - Explain use cases per docs/runbooks/cx_escalations.md
 - Show variable interpolation: {{name}} → customer name
 
-**Approval Flow:**
-- Select template from dropdown
-- Review pre-filled message body
+**Approval Flow (Automated):**
+- AI automatically suggests appropriate template based on conversation analysis
+- Review AI-suggested reply in modal (pre-filled with customer name)
+- Verify template matches customer issue (shipping → ship_update, refund → refund_offer, general → ack_delay)
+- Add optional operator note for audit trail
 - Click "Approve & Send Reply" → logs decision + sends to Chatwoot
 - Toast confirmation: "Reply sent to [Customer Name]"
+
+**Manual Override Instructions:**
+- If AI suggestion is inappropriate, click "Escalate to Manager" instead of approving
+- If no AI suggestion appears (blank suggestedReply), do NOT approve - escalate instead
+- For complex issues or high-risk language ("legal", "fraud", "chargeback"), always escalate
+- Manual Chatwoot access: Use direct Chatwoot interface for custom replies not covered by templates
+- All manual replies should still be logged via decision logging for audit trail
 
 **Escalation Actions:**
 - "Escalate to Manager" button → tags conversation, logs decision

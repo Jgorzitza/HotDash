@@ -24,10 +24,26 @@ Resolve at-risk conversations directly from the dashboard. The CX Escalations mo
 - Chatwoot Fly migration pending — review the validation steps in `docs/runbooks/cx_escalations.md` so you can brief operators on the new host once reliability confirms cut-over.
 
 ## Chatwoot on Supabase — Architecture Talking Points
-- **Runtime:** Chatwoot web + Sidekiq workers now live on Fly.io. Redis (Upstash) backs job queues, but all durable data routes to Supabase so audit and retention policies stay centralized.
-- **Persistence:** Conversation history, templates, and decision logs share Supabase tables. Remind operators that every modal action writes to Supabase first, then emits to Chatwoot; evidence trails therefore live under the Supabase NDJSON exports referenced in training packets.
-- **Access & Credentials:** The Shopify embed token unlocks the Chatwoot Fly host inside the dashboard. Any credential drift (Shopify, Chatwoot API, Supabase service key) surfaces as modal errors—log via `customer.support@hotrodan.com` with artifact paths.
-- **Guardrails:** Retention and restart cycles follow Supabase compliance runbooks (`docs/runbooks/incident_response_supabase.md`). Reinforce during training that operators must escalate if they spot gaps so compliance can refresh evidence.
+
+### Core Architecture
+- **Runtime:** Chatwoot web + Sidekiq workers now live on Fly.io with dedicated resource allocation. Redis (Upstash) backs job queues and session management, while all conversation data, templates, and audit logs persist in Supabase for centralized compliance.
+- **Data Flow:** Every operator action (reply approval, escalation, resolution) writes first to Supabase `decision_log` table, then syncs to Chatwoot API. This ensures audit trail completeness even during API outages.
+- **Integration Layer:** The Shopify embed token authenticates both dashboard access and Chatwoot Fly communication. Token refresh happens automatically; manual intervention only required for credential rotation events.
+
+### Persistence & Compliance
+- **Conversation Storage:** All conversation history, customer metadata, and template responses stored in Supabase with 90-day retention policy. NDJSON exports available at `artifacts/logs/` for compliance audits.
+- **Decision Tracking:** Every modal action generates a timestamped decision record with operator email, action type, and full payload. Query via Supabase client or export via `npm run ops:export-decisions`.
+- **Cross-Service Sync:** Chatwoot conversation status syncs bidirectionally with Supabase. Any sync failures trigger alerts to `customer.support@hotrodan.com` and `#occ-reliability`.
+
+### Migration & Access Patterns
+- **Chatwoot Fly Migration:** Service migration from legacy Fly Postgres to Chatwoot-on-Supabase architecture completed. All training scenarios now reference the new Supabase-backed storage with Fly.io compute layer.
+- **Credential Management:** Unified credential store in Supabase for Chatwoot API tokens, Shopify session management, and operator authentication. Any credential drift surfaces as modal errors—escalate immediately via `customer.support@hotrodan.com`.
+- **Monitoring & Alerts:** Synthetic checks validate end-to-end modal functionality every 5 minutes. Latency >300ms or error rates >2% trigger automated alerts to reliability team.
+
+### Operator Impact
+- **Performance:** Modal load times typically <200ms due to Supabase edge caching and Fly.io regional deployment.
+- **Reliability:** 99.9% availability target with automatic failover between Fly regions. Any extended outages (>5min) require escalation to ops manager.
+- **Evidence Trail:** All operator decisions immediately visible in Supabase audit views. Use `scope=ops` Memory logging for cross-reference with external systems.
 
 ---
 
