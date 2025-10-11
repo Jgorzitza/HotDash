@@ -25,6 +25,15 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 
 > Log all progress and blockers in `feedback/support.md` (new dated section at top) and mirror dependencies in partner feedback logs as needed.
 
+## Shared Inbox Routing Preflight (Support)
+- Objective: Ensure the customer.support@hotrodan.com inbox routes into Chatwoot with correct team assignment and sender identity before live rehearsals.
+- References: artifacts/support/coordination/chatwoot_inbox_request.md; evidence folder artifacts/support/screenshots/chatwoot_inbox/
+- Tasks:
+  1. Verify staging-only inbound test creates a conversation in the correct Chatwoot inbox; capture a redacted screenshot.
+  2. Verify outbound reply uses the correct From identity; store redacted headers excerpt.
+  3. Confirm routing rules (owners, after-hours) and update notes with SLAs and contacts.
+- Evidence: Store artifacts under artifacts/support/screenshots/chatwoot_inbox/ and link in feedback/support.md.
+
 ## QA Evidence Hold — 2025-10-10
 - ⛔ **Status:** Staging rehearsals remain paused until QA posts the green `?mock=0` curl + synthetic evidence set.
 - 🔄 **Coordination:** Continue prepping materials but do not run live walk-throughs; brief enablement + marketing via customer.support@hotrodan.com that invites/comms stay in draft.

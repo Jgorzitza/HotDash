@@ -138,7 +138,34 @@ When reliability signals the Fly deployment window, execute the following to con
 3. **Post-Deployment Smoke**
    - Re-run tile load and modal actions against live conversation (if available) to ensure Chatwoot webhook responses succeed.
    - Update escalation SOPs to reference the new Fly host (Chatwoot admin links, troubleshooting flow) and distribute summary through customer.support@hotrodan.com.
-   - Attach evidence (curl logs, screenshots, decision IDs) to `feedback/support.md` and notify manager once validation passes.
+- Attach evidence (curl logs, screenshots, decision IDs) to `feedback/support.md` and notify manager once validation passes.
+
+## Shared Inbox Routing Checklist (Chatwoot)
+
+Purpose: Confirm end-to-end routing for customer.support@hotrodan.com without exposing secrets. Coordinate with Integrations-Chatwoot for provider details.
+
+References:
+- Coordination note: artifacts/support/coordination/chatwoot_inbox_request.md
+- Evidence folder: artifacts/support/screenshots/chatwoot_inbox/
+
+Checklist:
+1. Inbound (staging-only)
+   - Send a sanitized test email to customer.support@hotrodan.com with subject "[Sandbox] Routing check".
+   - In Chatwoot, verify a conversation is created in the correct inbox and team routing is applied.
+   - Apply label: escalation (if appropriate) and add an internal note referencing this checklist.
+   - Evidence: Save a redacted screenshot → artifacts/support/screenshots/chatwoot_inbox/inbound_<YYYYMMDDThhmmssZ>.png
+2. Outbound (staging-only)
+   - Reply from Chatwoot; confirm From identity is customer.support@hotrodan.com and headers show correct domain alignment (DKIM/SPF/DMARC confirmed by Integrations).
+   - Evidence: Save headers excerpt (redacted) → artifacts/support/screenshots/chatwoot_inbox/outbound_headers_<timestamp>.txt
+3. Routing rules
+   - Confirm default team assignment and after-hours rule path. Record owners and SLAs.
+   - Evidence: Note owners and SLAs in artifacts/support/screenshots/chatwoot_inbox/routing_notes_<timestamp>.md
+4. Blockers
+   - If SMTP/IMAP not yet configured, log blocker in feedback/support.md and follow coordination note owners/dates.
+
+Notes:
+- Do not include real PII in screenshots.
+- Use placeholders when remote access or credentials are not available; replace once Integrations confirms tests.
 
 ### Template: `ack_delay`
 **Label:** Acknowledge delay

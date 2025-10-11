@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Document } from 'llamaindex';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { loadConfig } from '../config.js';
+import { getConfig, getSupabaseKey } from '../config.js';
 import { sanitizeCuratedReply } from '../util/sanitize.js';
 
 export async function fetchCuratedDocs(): Promise<Document[]> {

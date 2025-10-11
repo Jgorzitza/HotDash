@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import { Document } from 'llamaindex';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { loadConfig } from '../config.js';
+import { getConfig, getSupabaseKey } from '../config.js';
 import { sanitizeTelemetry } from '../util/sanitize.js';
 
 async function fetchTable(client: any, tableName: string, limit = 1000): Promise<any[]> {

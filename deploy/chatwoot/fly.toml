@@ -16,7 +16,7 @@ primary_region = "ord"
   worker = "bundle exec sidekiq -C config/sidekiq.yml"
 
 [vm]
-  memory = "1gb"
+  memory = "2048mb"
   cpus = 1
 
 [[services]]
@@ -33,7 +33,7 @@ primary_region = "ord"
     timeout = "10s"
     grace_period = "30s"
     method = "get"
-    path = "/api"
+    path = "/rails/health"
 
   [[services.ports]]
     handlers = ["http"]

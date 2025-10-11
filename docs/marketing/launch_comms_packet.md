@@ -37,11 +37,19 @@ expires: 2025-10-18
 ## Assets (Staged for GA)
 
 - Email: artifacts/marketing/assets/email/launch_email_v1.md
+- Email variants (A/B): artifacts/marketing/assets/email/launch_email_variants.md
 - Blog: artifacts/marketing/assets/blog/ga_launch_post_v1.md
 - Social (X): artifacts/marketing/assets/social/x_thread_v1.md
 - Social (LinkedIn): artifacts/marketing/assets/social/linkedin_post_v1.md
+- Social (alternates): artifacts/marketing/assets/social/alt_variants_v1.md
 - Press note: artifacts/marketing/assets/press/press_note_v1.md
 - Approvals folder: artifacts/marketing/assets/approvals/
+- Release-day graphics: artifacts/marketing/assets/graphics/
+- Release-day snippets: artifacts/marketing/assets/snippets/
+
+## Testimonials
+
+- Curated testimonials (placeholders): docs/marketing/testimonials_curated.md
 
 ## Release Cadence Alignment
 

@@ -6,7 +6,7 @@
 import { fetchHotrodanContent } from '../loaders/sitemap.js';
 import { fetchDecisionDocs, fetchTelemetryDocs } from '../loaders/supabase.js';
 import { fetchCuratedDocs } from '../loaders/curated.js';
-import { loadConfig } from '../config.js';
+import { getConfig } from '../config.js';
 
 interface LoaderResult {
   name: string;
@@ -86,7 +86,7 @@ async function runAllTests(): Promise<void> {
   
   try {
     // Validate configuration first
-    const config = loadConfig();
+    const config = getConfig();
     console.log(`📋 Configuration loaded: LOG_DIR=${config.LOG_DIR}`);
     console.log(`🔑 Environment keys present: ${Object.keys(process.env).filter(k => k.includes('SUPABASE') || k.includes('OPENAI')).join(', ')}\n`);
   } catch (error) {

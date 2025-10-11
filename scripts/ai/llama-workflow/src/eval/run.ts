@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { answerQuery } from '../pipeline/query.js';
-import { loadConfig } from '../config.js';
+import { answerQuery } from '../pipeline/query_simple.js';
+import { getConfig } from '../config.js';
 import { bleuScore, rougeL, checkCitations } from './metrics.js';
 
 interface TestCase {
@@ -53,7 +53,7 @@ async function loadTestCases(dataPath: string): Promise<TestCase[]> {
 async function runEvaluation(): Promise<void> {
   console.log('🧪 Starting LlamaIndex evaluation harness...');
   
-  const config = loadConfig();
+  const config = getConfig();
   const timestamp = new Date().toISOString().replace(/[:]/g, '').slice(0, 15);
   const evalDir = path.join(config.LOG_DIR, 'eval', timestamp);
   
