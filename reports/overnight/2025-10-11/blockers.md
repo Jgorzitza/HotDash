@@ -1,23 +1,21 @@
-# Overnight Engineer Blockers Report - 2025-10-11T07:47:59Z
+# Overnight Execution Blockers - 2025-10-11
 
-## No New Blockers Identified
+## Integrations
 
-### Tasks Completed Successfully
-1. ✅ Logger TypeScript Import Fix
-   - Import path corrected and verified
-   - Clean typecheck output
-   - No compilation errors
+### GA MCP Credentials - CRITICAL BLOCKER
+- **Task:** OCC-INF-221 credential delivery
+- **Status:** 4 days, 22 hours overdue
+- **Latest Action:** CIO escalation filed (2025-10-11 00:58 UTC)
+- **Evidence:** `artifacts/integrations/ga-mcp-escalation-cadence-20251011/escalation_summary_20251011T071428Z.md`
+- **Impact:** Blocking integration completion and go-live checklist
+- **Next Check:** Hourly monitoring continuing
 
-2. ✅ Shopify Helpers Validation
-   - RR7 + App Bridge v3 compliance confirmed
-   - All components properly configured
-   - No integration issues found
+### MCP Tools - PARTIAL BLOCKER
+- **Task:** MCP toolbox registration and validation
+- **Status:** 1/3 tools operational, 2/3 blocked
+- **Issue:** 57 TypeScript compilation errors preventing query_support/insight_report build
+- **Evidence:** `artifacts/integrations/mcp-toolbox-validation-20251011/test_plan_20251011T071528Z.md`
+- **Mitigation:** Test plan documented, refresh_index tool operational
+- **Dependencies:** Awaiting AI agent TypeScript fixes
 
-### Evidence
-- Clean typecheck: artifacts/engineer/20251011T072456Z/typecheck.log
-- Validation report: artifacts/engineer/20251011T072456Z/shopify-validation.md
-- Task logs: feedback/engineer.md
-
-**Status**: ✅ CLEAR - No blockers to report
-
-## Deployment Blockers (2025-10-11T07:47:12Z update)\n- Task 1 (Local Supabase) paused due to terminal session interruptions; all other tasks complete\n- No critical deployment blockers; staging environment ready pending QA approval\n- Production gated appropriately on reliability-provisioned secrets\n\nEvidence: All task execution logs in feedback/deployment.md
+All blockers logged with proper evidence per direction requirements.
