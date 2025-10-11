@@ -1,0 +1,46 @@
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown project config "enable-pre-post-scripts". This will stop working in the next major version of npm.
+
+> setup
+> prisma generate && prisma migrate deploy
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.16.3) to ./node_modules/@prisma/client in 95ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:54322"
+
+1 migration found in prisma/migrations
+
+Error: P3005
+
+The database schema is not empty. Read more about how to baseline an existing production database: https://pris.ly/d/migrate-baseline
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown project config "enable-pre-post-scripts". This will stop working in the next major version of npm.
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:54322"
+
+Migration 20251014000000_init_postgres marked as applied.
+
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown project config "enable-pre-post-scripts". This will stop working in the next major version of npm.
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:54322"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.

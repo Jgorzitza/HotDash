@@ -1,0 +1,17 @@
+npm warn Unknown project config "auto-install-peers". This will stop working in the next major version of npm.
+npm warn Unknown project config "shamefully-hoist". This will stop working in the next major version of npm.
+npm warn Unknown project config "enable-pre-post-scripts". This will stop working in the next major version of npm.
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+prisma                  : 6.16.3
+@prisma/client          : 6.16.3
+Computed binaryTarget   : debian-openssl-3.0.x
+Operating System        : linux
+Architecture            : x64
+Node.js                 : v24.9.0
+TypeScript              : 5.9.3
+Query Engine (Node-API) : libquery-engine bb420e667c1820a8c05a38023385f6cc7ef8e83a (at node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node)
+PSL                     : @prisma/prisma-schema-wasm 6.16.1-1.bb420e667c1820a8c05a38023385f6cc7ef8e83a
+Schema Engine           : schema-engine-cli bb420e667c1820a8c05a38023385f6cc7ef8e83a (at node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x)
+Default Engines Hash    : bb420e667c1820a8c05a38023385f6cc7ef8e83a
+Studio                  : 0.511.0

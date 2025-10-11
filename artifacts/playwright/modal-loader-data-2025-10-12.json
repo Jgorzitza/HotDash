@@ -1,0 +1,169 @@
+{
+  "mode": "mock",
+  "sales": {
+    "status": "ok",
+    "data": {
+      "shopDomain": "mock-shop",
+      "totalRevenue": 8425.5,
+      "currency": "USD",
+      "orderCount": 58,
+      "topSkus": [
+        {
+          "sku": "BOARD-XL",
+          "title": "Powder Board XL",
+          "quantity": 14,
+          "revenue": 2800
+        },
+        {
+          "sku": "GLOVE-PRO",
+          "title": "Thermal Gloves Pro",
+          "quantity": 32,
+          "revenue": 1920
+        },
+        {
+          "sku": "BOOT-INS",
+          "title": "Insulated Boots",
+          "quantity": 20,
+          "revenue": 1600
+        }
+      ],
+      "pendingFulfillment": [
+        {
+          "orderId": "gid://shopify/Order/7001",
+          "name": "#7001",
+          "displayStatus": "UNFULFILLED",
+          "createdAt": "2025-10-10T07:30:32.342Z"
+        }
+      ],
+      "generatedAt": "2025-10-10T07:30:32.342Z"
+    },
+    "source": "mock",
+    "fact": {
+      "id": 1,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  },
+  "fulfillment": {
+    "status": "ok",
+    "data": [
+      {
+        "orderId": "gid://shopify/Order/7001",
+        "name": "#7001",
+        "displayStatus": "UNFULFILLED",
+        "createdAt": "2025-10-10T07:30:32.342Z"
+      },
+      {
+        "orderId": "gid://shopify/Order/6998",
+        "name": "#6998",
+        "displayStatus": "IN_PROGRESS",
+        "createdAt": "2025-10-10T07:30:32.342Z"
+      }
+    ],
+    "source": "mock",
+    "fact": {
+      "id": 2,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  },
+  "inventory": {
+    "status": "ok",
+    "data": [
+      {
+        "sku": "BOARD-XL",
+        "productId": "gid://shopify/Product/1",
+        "variantId": "gid://shopify/ProductVariant/1",
+        "title": "Powder Board XL — 158cm",
+        "quantityAvailable": 6,
+        "threshold": 10,
+        "daysOfCover": 2.5,
+        "generatedAt": "2025-10-10T07:30:32.342Z"
+      },
+      {
+        "sku": "GLOVE-PRO",
+        "productId": "gid://shopify/Product/2",
+        "variantId": "gid://shopify/ProductVariant/2",
+        "title": "Thermal Gloves Pro — Medium",
+        "quantityAvailable": 12,
+        "threshold": 15,
+        "daysOfCover": 3.1,
+        "generatedAt": "2025-10-10T07:30:32.342Z"
+      }
+    ],
+    "source": "mock",
+    "fact": {
+      "id": 3,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  },
+  "escalations": {
+    "status": "ok",
+    "data": [
+      {
+        "id": 101,
+        "inboxId": 1,
+        "status": "open",
+        "customerName": "Jamie Lee",
+        "createdAt": "2025-10-10T04:30:32.342Z",
+        "breachedAt": "2025-10-10T05:00:32.342Z",
+        "lastMessageAt": "2025-10-10T07:30:32.342Z",
+        "slaBreached": true,
+        "tags": [
+          "priority"
+        ],
+        "suggestedReplyId": "ack_delay",
+        "suggestedReply": "Hi Jamie, thanks for your patience. We're expediting your order update now."
+      }
+    ],
+    "source": "mock",
+    "fact": {
+      "id": 4,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  },
+  "seo": {
+    "status": "ok",
+    "data": [
+      {
+        "landingPage": "/collections/new-arrivals",
+        "sessions": 420,
+        "wowDelta": -0.24,
+        "isAnomaly": true
+      },
+      {
+        "landingPage": "/products/powder-board-xl",
+        "sessions": 310,
+        "wowDelta": -0.05,
+        "isAnomaly": false
+      }
+    ],
+    "source": "mock",
+    "fact": {
+      "id": 5,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  },
+  "opsMetrics": {
+    "status": "ok",
+    "data": {
+      "activation": {
+        "windowStart": "2025-10-03T07:30:32.342Z",
+        "windowEnd": "2025-10-10T07:30:32.342Z",
+        "totalActiveShops": 12,
+        "activatedShops": 9,
+        "activationRate": 0.75
+      },
+      "sla": {
+        "windowStart": "2025-10-03T07:30:32.342Z",
+        "windowEnd": "2025-10-10T07:30:32.342Z",
+        "sampleSize": 6,
+        "medianMinutes": 32.5,
+        "p90Minutes": 58.2
+      }
+    },
+    "source": "mock",
+    "fact": {
+      "id": 6,
+      "createdAt": "2025-10-10T07:30:32.342Z"
+    }
+  }
+}

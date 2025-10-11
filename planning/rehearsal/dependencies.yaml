@@ -1,0 +1,118 @@
+---
+# Rehearsal Dependencies - 2025-10-16 OCC Training
+metadata:
+  created: 2025-10-11T01:50:00Z
+  owner: enablement
+  rehearsal_date: 2025-10-16T13:00:00ET
+  last_updated: 2025-10-11T01:50:00Z
+
+critical_dependencies:
+  shopify_embed_token:
+    service: Shopify Admin API
+    requirement: Valid session token for modal authentication
+    owner: reliability
+    due_date: 2025-10-15T12:00:00ET
+    status: pending
+    escalation_trigger: "T-48h if not delivered"
+    contact: "#occ-reliability"
+    
+  chatwoot_smoke_results:
+    service: Chatwoot-on-Supabase
+    requirement: "HTTP 200 response for ?mock=0 with <300ms latency"
+    owner: qa_and_reliability
+    due_date: 2025-10-14T18:00:00ET
+    status: in_progress
+    evidence_required:
+      - "artifacts/integrations/shopify/<date>/curl_mock0_<timestamp>.log"
+      - "artifacts/monitoring/synthetic-check-<timestamp>.json"
+    escalation_trigger: "Evidence not available by due date"
+    
+  staging_access_package:
+    service: Staging Environment
+    requirement: All attendees can access https://hotdash-staging.fly.dev/app
+    owner: product
+    due_date: 2025-10-15T00:00:00ET
+    status: pending
+    dependencies:
+      - shopify_embed_token
+      - chatwoot_smoke_results
+
+upstream_services:
+  supabase:
+    version: "production-compatible"
+    health_endpoint: "/rest/v1/health"
+    owner: data
+    criticality: high
+    fallback: "mock data scenarios"
+    
+  fly_io_hosting:
+    service_name: hotdash-chatwoot
+    region: "primary + failover"
+    owner: reliability
+    criticality: high
+    monitoring: "synthetic checks every 5min"
+    
+  shopify_admin_api:
+    version: "2024-10" 
+    rate_limits: "40 req/s burst, 2 req/s sustained"
+    owner: integrations
+    criticality: medium
+    fallback: "recorded scenarios for training"
+
+downstream_dependencies:
+  operator_training:
+    attendees: "TBD - awaiting roster confirmation"
+    facilitators:
+      - "Morgan Patel (Support Lead)"
+      - "Riley Chen (Product)"
+      - "Enablement Lead"
+    materials_ready: true
+    
+  evidence_capture:
+    recording_setup: required
+    screenshot_tools: required
+    decision_log_export: required
+    owner: enablement
+    
+  post_rehearsal_analysis:
+    timeline: "T+24h"
+    deliverables:
+      - "Launch readiness assessment"
+      - "Job aid updates based on feedback"
+      - "Dependency resolution status"
+    owner: enablement
+
+risk_mitigation:
+  qa_evidence_delay:
+    probability: medium
+    impact: high
+    mitigation: "Run rehearsal in mock mode only"
+    owner: "qa_lead + product"
+    
+  embed_token_unavailable:
+    probability: low
+    impact: high  
+    mitigation: "Focus on architecture training, defer modal testing"
+    owner: reliability_liaison
+    
+  chatwoot_integration_failure:
+    probability: low
+    impact: medium
+    mitigation: "Use recorded scenarios for CX Escalations training"
+    owner: support_lead
+
+coordination_matrix:
+  daily_updates:
+    frequency: "09:00 ET until rehearsal"
+    channel: "email to all team leads"
+    content:
+      - "Dependency status changes"
+      - "Risk escalations requiring attention" 
+      - "Action item completions and blockers"
+      
+  immediate_escalations:
+    channel: "customer.support@hotrodan.com + relevant team channels"
+    triggers:
+      - "Critical dependency failures"
+      - "Evidence delivery delays"
+      - "Resource availability changes"

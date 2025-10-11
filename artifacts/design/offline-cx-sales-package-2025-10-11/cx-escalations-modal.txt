@@ -1,0 +1,7 @@
+# CX Escalations Modal (Offline Description)
+
+- Initial focus: Close button (`button[aria-label="Close escalation modal"]`).
+- Tab order: close → suggested reply textarea → internal note textarea → Approve & send → Escalate → Mark resolved → Cancel.
+- Support inbox reminder: internal note helper text instructs operators to email customer.support@hotrodan.com within 5 minutes if follow-up is required.
+- Conversation history uses `role="log"` with polite announcements and visible Agent/Customer labels.
+- Toast expectation: `Reply sent to {customer}` on success, error toast instructs retry before escalating to reliability.

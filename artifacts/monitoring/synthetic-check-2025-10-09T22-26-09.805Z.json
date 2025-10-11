@@ -1,0 +1,9 @@
+{
+  "timestamp": "2025-10-09T22:26:09.805Z",
+  "target": "https://staging.hotdash.app/app?mock=0",
+  "budgetMs": 300,
+  "durationMs": 138.84,
+  "status": null,
+  "ok": false,
+  "error": "fetch failed"
+}
