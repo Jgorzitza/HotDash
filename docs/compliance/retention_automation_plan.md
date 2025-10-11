@@ -84,4 +84,9 @@ expires: 2025-10-21
 - [x] First run log archived (`docs/compliance/evidence/retention_runs/2025-10-15_purge_log.json`).
 - [x] Feedback log updated after go-live (`feedback/compliance.md` 2025-10-10 entry).
 
+## Audit update 2025-10-11
+- AI retention audit: artifacts/compliance/ai_retention_audit_2025-10-11.md
+- Findings: see artifacts/compliance/ai_retention_audit_2025-10-11.json
+- Blockers: tooling-only review; deeper validation may require jq/python; no infra touched.
+
 Pending items tracked in `feedback/compliance.md` (R1).
