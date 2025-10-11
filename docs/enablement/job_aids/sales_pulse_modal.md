@@ -21,7 +21,19 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 - Inventory Heatmap tile reviewed for overlapping SKU risks.
 - Decision log access confirmed for follow-up (audit trail retained for 90 days).
 - Credentials check complete: staging Shopify + Supabase keys validated 2025-10-10 15:45 UTC; report any errors to `customer.support@hotrodan.com` and # `#occ-reliability`.
-- Note upcoming Chatwoot Fly migration: partner with support to surface updated CX escalation workflows in this modal if the cut-over happens before the dry run.
+- **Chatwoot-on-Supabase Integration:** CX escalation workflows now route through Supabase-backed Chatwoot instance on Fly.io. All decision logs and cross-modal data (sales performance affecting CX escalations) sync to unified Supabase storage for comprehensive audit trails.
+
+## Data Architecture & Cross-Modal Integration
+
+### Supabase-Centralized Data Flow
+- **Sales Metrics:** Revenue, order volume, and SKU performance data flows from Shopify Admin API to Supabase tables, refreshed every 15 minutes during business hours.
+- **Decision Logging:** All operator actions (follow-up creation, escalations, staffing notifications) write to Supabase `decision_log` with cross-references to affected orders and customers.
+- **CX Integration:** Sales anomalies that trigger CX escalations (delivery delays, inventory issues) automatically create linked decision records in both Sales Pulse and CX Escalations audit trails.
+
+### Performance & Reliability
+- **Data Freshness:** Modal shows last refresh timestamp; flag any data >30 minutes old to `customer.support@hotrodan.com`.
+- **Cross-Service Sync:** Sales decisions affecting fulfillment or CX automatically generate notifications in Chatwoot-on-Supabase for coordinated operator response.
+- **Audit Compliance:** All sales health decisions retained for 90 days in Supabase with NDJSON export capability for compliance reporting.
 
 ---
 

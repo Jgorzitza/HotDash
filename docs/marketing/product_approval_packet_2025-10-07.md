@@ -11,6 +11,8 @@ expires: 2025-10-18
 ## Overview
 Requesting product sign-off on the core launch comms assets ahead of the Operator Control Center production release. Feedback deadline: **2025-10-07 @ 17:00 ET** so we can circulate edits before end of day.
 
+Note: The primary support inbox is customer.support@hotrodan.com (routes to Chatwoot hosted on Fly.io). All updated materials reflect this and align with the canonical stack guardrails (Supabase backend, Chatwoot on Fly, React Router 7 UI, OpenAI + LlamaIndex AI posture).
+
 ## Deliverables Requiring Approval
 
 ### 1. Launch Communications Packet (`docs/marketing/launch_comms_packet.md`)

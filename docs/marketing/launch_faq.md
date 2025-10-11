@@ -134,7 +134,7 @@ A: Key metrics include Operator activation rate (>70%), in-app banner CTR (>15%)
 **Evidence:** Launch comms packet — Metrics & Success Tracking (`docs/marketing/launch_comms_packet.md`).
 
 ### Q: How do we report bugs or feedback?
-A: Use the "Have feedback?" link in the dashboard (routes to customer.support@hotrodan.com) or log an issue in GitHub (`https://github.com/Jgorzitza/HotDash/issues`). For beta partners, #occ-feedback internal channel is monitored.
+A: Use the "Have feedback?" link in the dashboard (routes to customer.support@hotrodan.com, handled via Chatwoot hosted on Fly.io) or log an issue in GitHub (`https://github.com/Jgorzitza/HotDash/issues`). For beta partners, #occ-feedback internal channel is monitored.
 
 **Evidence:** Release notes template (Support section) (`docs/marketing/release_notes_template.md`).
 

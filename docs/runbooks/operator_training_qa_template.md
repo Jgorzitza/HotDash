@@ -33,6 +33,10 @@ expires: 2025-10-17
 | 5 | 2025-10-10T16:10Z | Enablement ↔ Support ↔ Product | Ensure new support alias shared with facilitators before packet distribution | Dry run logistics | Done — alias sent 2025-10-10 16:10 UTC | Enablement | 2025-10-10 |
 | 6 | 2025-10-10T17:15Z | Support | Operator asked how Chatwoot Fly host switch affects OCC access during rehearsal pause | Chatwoot integration | Draft answer: OCC proxy continues using staging URL; share Fly host + smoke status in pre-session briefing once QA clears hold | Support | QA evidence + Fly green light |
 
+|| 7 | 2025-10-11T01:15Z | Support | When should operators use manual override vs AI-suggested replies? | Chatwoot automation | Draft answer: Use manual override when AI suggestion is inappropriate, missing, or for high-risk language. Always escalate complex issues to manager. | Support | 2025-10-14 |
+|| 8 | 2025-10-11T01:15Z | Support | How do operators access Chatwoot directly for custom replies? | Chatwoot automation | Draft answer: Direct Chatwoot access at hotdash-chatwoot.fly.dev, log all manual replies via decision logging, coordinate with support lead for training. | Support | 2025-10-14 |
+|| 9 | 2025-10-11T01:15Z | Support | What happens if AI suggestion doesn't match customer issue category? | Chatwoot automation | Draft answer: Verify template appropriateness before approving. If mismatch, escalate to manager rather than approving inappropriate template. | Support | 2025-10-14 |
+
 > Add rows as needed. Use ISO timestamps (e.g., `2025-10-16T13:27Z`).
 
 ## Action Items

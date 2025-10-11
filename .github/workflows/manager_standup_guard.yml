@@ -1,0 +1,15 @@
+name: Manager Stand-up Guard
+on:
+  schedule:
+    - cron: "5 15 * * *" # 15:05 UTC daily, to allow a small buffer
+jobs:
+  standup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check manager stand-up posted
+        env:
+          TZ: UTC
+        run: node scripts/ci/manager-standup-check.mjs
