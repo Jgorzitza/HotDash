@@ -6,6 +6,7 @@ import { ServiceError, type ServiceResult } from "../types";
 import type { DateRange, GaSession } from "./client";
 import { createMockGaClient } from "./mockClient";
 import { createMcpGaClient } from "./mcpClient";
+import { createDirectGaClient } from "./directClient";
 
 export interface LandingPageAnomaly extends GaSession {
   isAnomaly: boolean;
@@ -30,10 +31,24 @@ function defaultRange(): DateRange {
 
 function selectClient() {
   const config = getGaConfig();
-  if (config.useMock || !config.mcpHost) {
-    return { client: createMockGaClient(), config };
+  
+  switch (config.mode) {
+    case 'direct':
+      console.log('[GA] Using direct API client');
+      return { client: createDirectGaClient(config.propertyId), config };
+    
+    case 'mcp':
+      if (!config.mcpHost) {
+        throw new Error('GA_MCP_HOST required when GA_MODE=mcp');
+      }
+      console.log('[GA] Using MCP client');
+      return { client: createMcpGaClient(config.mcpHost), config };
+    
+    case 'mock':
+    default:
+      console.log('[GA] Using mock client');
+      return { client: createMockGaClient(), config };
   }
-  return { client: createMcpGaClient(config.mcpHost), config };
 }
 
 function flagAnomalies(sessions: GaSession[]): LandingPageAnomaly[] {

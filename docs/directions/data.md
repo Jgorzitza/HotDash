@@ -43,7 +43,196 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 ## Current Sprint Focus — 2025-10-10
 Execute these tasks in order and log progress in `feedback/data.md`. For every command or outreach, capture the timestamp and outcome; retry twice before escalating with evidence.
 
-## Aligned Task List — 2025-10-11
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/data.md and continue):
+
+1. ✅ **Database Health Audit** - COMPLETE (2025-10-11, 30 min)
+   - RLS coverage improved 25% → 100%
+   - 3 migrations applied for security gaps
+   - Evidence: 12 artifacts, 900+ lines documentation
+
+2. **Agent SDK Database Schemas** - Create tables for approval queue and training data
+   - Create migration for agent_approvals table (id, conversation_id, serialized, last_interruptions, created_at, approved_by, status)
+   - Create migration for agent_feedback table (id, conversation_id, input_text, model_draft, safe_to_send, labels, rubric, annotator, notes, meta)
+   - Create migration for agent_queries table (id, query, result, conversation_id, agent, approved, human_edited, latency_ms, created_at)
+   - Add RLS policies: service role can write, app can read own data
+   - Add indexes on conversation_id and created_at for all 3 tables
+   - Test migrations on local Supabase with sample data
+   - Document rollback procedures
+   - Coordinate: Tag @engineer in feedback when schemas ready
+   - Evidence: Migrations in prisma/migrations/, test data inserted, documented in feedback/data.md
+
+3. **Agent Training Data Pipeline** - Support AI feedback loop
+   - Create seed data for agent testing (sample conversations, approvals, queries)
+   - Write helper scripts for data insertion and cleanup
+   - Document data retention policy (30 days for training data)
+   - Test data integrity and RLS protection
+   - Evidence: Seed scripts, test results
+
+4. **Performance Monitoring Queries** - Create views for agent metrics
+   - Create view for approval queue depth over time
+   - Create view for agent response accuracy metrics
+   - Create view for training data quality scores
+   - Add to nightly metrics rollup
+   - Evidence: View definitions, sample queries
+
+**Ongoing Requirements**:
+- Coordinate with @engineer on schema access patterns
+- Log all schema changes in feedback/data.md
+- Test all migrations locally before proposing for staging
+
+---
+
+### 🚀 ADDITIONAL PARALLEL TASKS (Since Task 2 Complete)
+
+**Execute these while Engineer works on Shopify fixes and LlamaIndex MCP**:
+
+**Task A: Agent Metrics Dashboard Design** - Create monitoring views
+- Design database views for agent performance metrics
+- Create view for approval queue depth over time
+- Create view for response accuracy by agent type
+- Create view for training data quality scores
+- Document query patterns for dashboard tiles
+- Evidence: View SQL definitions, sample queries
+
+**Task B: Data Retention Automation** - Implement 30-day purge
+- Create script for agent data retention (30-day window)
+- Implement automated cleanup for old approval records
+- Create backup procedure before purge
+- Test on sample data
+- Document in runbook
+- Evidence: Cleanup script, test results
+
+**Task C: Performance Monitoring Queries** - Optimize database performance
+- Create indexes for agent query patterns
+- Analyze slow query logs
+- Document optimization opportunities
+- Test index effectiveness
+- Evidence: Index definitions, performance comparison
+
+Execute A, B, C in any order. All independent of Engineer work.
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task D: Real-time Analytics Pipeline**
+- Design real-time analytics for agent performance
+- Create streaming data pipeline specification
+- Plan for live dashboard updates
+- Document data freshness requirements
+- Evidence: Real-time pipeline design
+
+**Task E: Data Warehouse Design**
+- Design dimensional model for agent analytics
+- Create fact and dimension table specifications
+- Plan for historical data analysis
+- Document ETL processes
+- Evidence: Data warehouse schema
+
+**Task F: Query Performance Optimization**
+- Analyze query execution plans for agent tables
+- Create additional indexes where beneficial
+- Implement query result caching strategy
+- Document optimization recommendations
+- Evidence: Performance optimization report
+
+**Task G: Data Quality Framework**
+- Create data quality validation rules
+- Design data quality monitoring
+- Implement automated quality checks
+- Document data quality metrics
+- Evidence: Data quality framework
+
+**Task H: Agent Training Data Export**
+- Create export utilities for training data
+- Design export formats (CSV, JSON, parquet)
+- Implement privacy-preserving export (PII redaction)
+- Document export procedures
+- Evidence: Export utility scripts
+
+**Task I: Database Backup Automation**
+- Implement automated backup procedures for agent tables
+- Create backup verification scripts
+- Document recovery procedures
+- Test restore process
+- Evidence: Backup automation, test results
+
+**Task J: Analytics API Design**
+- Design REST API for agent metrics queries
+- Document API endpoints and responses
+- Create API security specifications
+- Plan for API rate limiting
+- Evidence: Analytics API specification
+
+Execute D-J in any order - all enhance data infrastructure.
+
+---
+
+### 🚀 FOURTH MASSIVE EXPANSION (Another 25 Tasks)
+
+**Task K-P: Advanced Data Engineering** (6 tasks)
+- K: Design data streaming platform (Kafka/Kinesis style)
+- L: Create data catalog with lineage tracking
+- M: Implement data versioning and time travel
+- N: Design data quality profiling automation
+- O: Create data discovery and search system
+- P: Implement data governance framework
+
+**Task Q-V: Machine Learning Infrastructure** (6 tasks)
+- Q: Design feature engineering pipeline
+- R: Create model training and experimentation platform
+- S: Implement model serving and inference infrastructure
+- T: Design model monitoring and drift detection
+- U: Create ML experiment tracking system
+- V: Implement automated model retraining pipeline
+
+**Task W-AB: Analytics & BI** (6 tasks)
+- W: Design self-service analytics platform for operators
+- X: Create embedded analytics SDK
+- Y: Implement real-time analytics engine
+- Z: Design predictive analytics framework
+- AA: Create business intelligence dashboards
+- AB: Implement data storytelling and narrative generation
+
+**Task AC-AG: Data Operations** (7 tasks)
+- AC: Design data pipeline orchestration (Airflow-style)
+- AD: Create data observability platform
+- AE: Implement data SLA monitoring
+- AF: Design data incident response procedures
+- AG: Create data ops automation toolkit
+
+Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+
+**Task K-O: Advanced Analytics** (5 tasks)
+- K: Design predictive analytics for agent performance forecasting
+- L: Create customer churn risk scoring based on support interactions
+- M: Implement anomaly detection for conversation patterns
+- N: Design cohort analysis for pilot customer behavior
+- O: Create attribution modeling for agent-assisted conversions
+
+**Task P-T: Data Engineering** (5 tasks)
+- P: Design data lakehouse architecture for long-term storage
+- Q: Create data cataloging and discovery system
+- R: Implement data lineage tracking
+- S: Design data quality monitoring dashboards
+- T: Create automated data documentation generation
+
+**Task U-Y: ML/AI Data Infrastructure** (5 tasks)
+- U: Design feature store for ML models
+- V: Create training dataset versioning system
+- W: Implement A/B testing data infrastructure
+- X: Design model performance monitoring
+- Y: Create automated model retraining pipeline
+
+Execute K-Y in any order. Total: 24 tasks, ~15-18 hours of data work.
+
+## Previous Task List — 2025-10-11
 - Supabase only
   - Ensure read-only roles and RLS in place; provide gold-reply webhook endpoint + secret path to Chatwoot/Support.
 - Shopify contracts

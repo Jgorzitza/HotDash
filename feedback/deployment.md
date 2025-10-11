@@ -137,3 +137,26 @@ expires: 2025-10-21
 - All evidence artifacts preserved and indexed
 - Note: Task 1 (Local Supabase) remains paused due to terminal constraints; no impact on deployment readiness
 - Next: Await reliability's production secrets and QA's staging approval
+
+## 2025-10-11T14:13:42Z — 🚨 URGENT: GA MCP HTTP Server Destruction (Complete)
+- **Context**: Destroyed unused `hotdash-analytics-mcp` Fly.io app per manager priority 1 task
+- **Rationale**: 
+  - Cursor uses local stdio GA MCP (working perfectly)
+  - HotDash app will use Direct Google Analytics API (not MCP)
+  - Server was suspended but still billable (~$4-6/month)
+  - No functionality depends on this server
+  - Cost savings: $50-70/year
+- **Commands executed**:
+  1. Status check: `~/.fly/bin/fly status -a hotdash-analytics-mcp`
+     - Result: App existed, state=stopped, 1 machine in ord region
+  2. Destruction: `~/.fly/bin/fly apps destroy hotdash-analytics-mcp --yes`
+     - Result: ✅ "Destroyed app hotdash-analytics-mcp"
+  3. Verification: `~/.fly/bin/fly apps list | grep analytics`
+     - Result: ✅ No output (exit code 1), app completely removed
+- **Evidence path**: Command outputs logged inline (no artifacts directory created per local policy)
+- **Credential source**: vault/occ/fly/api_token.env
+- **References**: 
+  - Direction: docs/directions/deployment.md (lines 46-74)
+  - Context: GoogleMCP-FINAL-PROJECT-SUMMARY.md (lines 318-338)
+  - Timeline: Completed within 24-hour requirement
+- **Status**: ✅ COMPLETE - Server destroyed, verified gone, cost savings active

@@ -43,18 +43,171 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 ## Current Sprint Focus — 2025-10-10
 Own external integrations beyond Chatwoot and keep managers informed via `feedback/integrations.md`. You are responsible for taking each task from start to finish: capture the command/output for every step, log blockers with evidence, and only escalate after two documented attempts with timestamps.
 
-## Aligned Task List — 2025-10-11
-- Shopify contracts
-  - Use Shopify Dev MCP to validate Admin flows; no guessing endpoints or fields.
-- Secrets
-  - Mirror only required secrets; no embed/session tokens in current flow. Sanitize artifacts.
-- Chatwoot scope
-  - Keep readiness docs in `docs/integrations/` but log operational execution in `feedback/chatwoot.md`.
-- Evidence
-  - Timestamp, commands, outputs in `feedback/integrations.md`.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
-1. **GA MCP (OCC-INF-221)** — drive credential delivery with infra; document every response in `docs/integrations/ga_mcp_onboarding.md` and the readiness dashboard. Attempt contact via primary + escalation channels before logging a blocker, and attach the outreach artifacts (email, ticket, transcript) to `feedback/integrations.md`.
-2. **Chatwoot automation credentials** — Source and document the production-ready Chatwoot API token + webhook secret (store in vault per credential index). Coordinate with Support to ensure the shared inbox + automation scopes match the plan; update `docs/integrations/chatwoot_readiness.md` with evidence.
-3. **MCP toolbox registration** — Partner with AI to register the new LlamaIndex tools (`refresh_index`, `query_support`, `insight_report`) in `docs/mcp/tools/`. Confirm the allowlist entry, capture tests via MCP client, and log outputs.
-4. **Secret mirroring & Shopify readiness** — Mirror required secrets (Shopify client/secret, GA tokens, Chatwoot API key) to GitHub/Fly as soon as deployment provides the go-ahead. Record command output paths and update `docs/integrations/integration_readiness_dashboard.md`.
-5. **Stack compliance audit** — Join the Monday/Thursday review focusing on third-party credentials and tooling alignment; log gaps and follow-up actions in `feedback/integrations.md`.
+**Reference Docs**:
+- docs/mcp/tools/llamaindex.json - LlamaIndex MCP tools already defined
+- docs/directions/mcp-tools-reference.md - All 7 MCP servers
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/integrations.md and continue):
+
+1. ✅ **MCP Server Health Check** - COMPLETE (2025-10-11)
+   - Context7 Docker cleanup (20 stopped containers removed)
+   - MCP server verification complete
+   - Evidence: feedback/integrations.md
+
+2. **MCP Server Health Dashboard** - Monitor all 7 MCP servers
+   - Test connectivity to all MCP servers (shopify, context7, github, supabase, fly, google-analytics, llamaindex-rag)
+   - Check response times for each
+   - Document availability and any issues
+   - Create health monitoring script
+   - Evidence: Health check results, monitoring script
+
+3. **LlamaIndex MCP Registration** - Update MCP configuration after Engineer deploys
+   - Verify LlamaIndex MCP server deployed to Fly.io
+   - Test all 3 tools: query_support, refresh_index, insight_report
+   - Update docs/mcp/tools/llamaindex.json with deployment URL
+   - Add to MCP allowlist: docs/policies/mcp-allowlist.json
+   - Evidence: Test results, configuration updates
+
+4. **Shopify API Validation** - Ensure all GraphQL queries validated
+   - Scan codebase for Shopify GraphQL queries
+   - Validate each with Shopify Dev MCP
+   - Check for deprecated API calls (pre-2024)
+   - Document validation results
+   - Evidence: Validation report with MCP confirmation
+
+5. **Agent SDK API Integration Review** - Validate Agent SDK uses correct APIs
+   - Review Agent SDK Shopify tool implementations (when @engineer builds)
+   - Review Agent SDK Chatwoot tool implementations
+   - Verify all API calls follow documented patterns
+   - Check rate limiting and error handling
+   - Coordinate: Tag @engineer for any fixes needed
+   - Evidence: Integration review checklist
+
+6. **Production Secrets Readiness** - Prepare for pilot launch
+   - Verify all required secrets in vault/occ/
+   - Document secret mirroring checklist for production
+   - Coordinate: Tag @deployment for production mirroring timeline
+   - Evidence: Secret inventory, readiness checklist
+
+**Ongoing Requirements**:
+- Monitor MCP server health continuously
+- Validate all Shopify queries with MCP
+- Log all integration checks in feedback/integrations.md
+
+---
+
+### 🚀 PARALLEL TASKS (While Engineer Fixes Shopify + Builds MCP)
+
+**Task A: MCP Health Monitoring Automation** - Create monitoring scripts
+- Create script to test all 7 MCP servers
+- Check response times and availability
+- Generate health report
+- Schedule for cron/GitHub Actions
+- Evidence: Monitoring script, health report
+
+**Task B: API Documentation Review** - Document all external APIs
+- Document Shopify Admin API usage patterns
+- Document Chatwoot API endpoints used
+- Document Google Analytics API (for reference)
+- Create API reference guide
+- Evidence: API documentation
+
+**Task C: Integration Testing Scripts** - Prepare test automation
+- Create integration test scripts for each external API
+- Mock API responses for CI testing
+- Document test data requirements
+- Create test fixtures
+- Evidence: Integration test suite
+
+Execute A (most valuable), then B and C.
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task D: API Rate Limiting Strategy**
+- Document rate limits for all external APIs (Shopify, Chatwoot, GA, OpenAI)
+- Design rate limiting and throttling approach
+- Create monitoring for API usage
+- Plan for rate limit handling and backoff
+- Evidence: Rate limiting strategy document
+
+**Task E: Webhook Security Framework**
+- Design webhook authentication patterns for all services
+- Document signature verification methods
+- Create webhook testing framework
+- Plan for webhook monitoring and alerting
+- Evidence: Webhook security guide
+
+**Task F: API Client Library Consolidation**
+- Review all API client implementations
+- Identify consolidation opportunities
+- Design standardized API client pattern
+- Create shared utilities for common operations
+- Evidence: API client consolidation plan
+
+**Task G: Integration Health Dashboard**
+- Design comprehensive integration health dashboard
+- Define health check metrics for each integration
+- Create visualization specifications
+- Plan for automated health monitoring
+- Evidence: Integration dashboard design
+
+**Task H: Third-Party Service Evaluation**
+- Research additional integration opportunities
+- Evaluate potential new services (CRM, analytics, social)
+- Document integration complexity and value
+- Create integration priority matrix
+- Evidence: Service evaluation report
+
+**Task I: Integration Testing Automation**
+- Create automated integration test suite
+- Design continuous integration testing workflow
+- Implement mock servers for external APIs
+- Document testing best practices
+- Evidence: Automated test suite
+
+**Task J: Vendor Relationship Documentation**
+- Document all vendor contacts and relationships
+- Create vendor escalation procedures
+- Track vendor SLAs and performance
+- Plan for vendor performance reviews
+- Evidence: Vendor management framework
+
+Execute D-J in any order - all strengthen integration reliability.
+
+---
+
+### 🚀 SECOND MASSIVE EXPANSION (Another 20 Tasks)
+
+**Task K-O: Integration Platform** (5 tasks)
+- K: Design integration marketplace for HotDash (allow third-party integrations)
+- L: Create integration SDK and developer documentation
+- M: Design OAuth flow for third-party app authentication
+- N: Create integration testing and certification program
+- O: Design integration analytics and monitoring dashboard
+
+**Task P-T: Advanced Integrations** (5 tasks)
+- P: Research and plan Klaviyo email marketing integration
+- Q: Design Facebook/Instagram social media integration
+- R: Plan Stripe/payment gateway integration for billing insights
+- S: Create Zendesk integration for support ticket sync
+- T: Design Slack integration for operator notifications
+
+**Task U-Y: API Management** (5 tasks)
+- U: Design API gateway for all integrations
+- V: Create API versioning and deprecation strategy
+- W: Implement API documentation auto-generation
+- X: Design API analytics and usage tracking
+- Y: Create API key management and rotation system
+
+**Task Z-AD: Data Integration** (5 tasks)
+- Z: Design ETL pipelines for all external data sources
+- AA: Create data sync scheduling and orchestration
+- AB: Implement conflict resolution for bidirectional sync
+- AC: Design data mapping and transformation framework
+- AD: Create integration data quality monitoring
+
+Execute K-AD in any order. Total: 36 tasks, ~20-25 hours work.

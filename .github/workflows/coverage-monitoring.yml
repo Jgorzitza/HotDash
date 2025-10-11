@@ -1,0 +1,209 @@
+name: Test Coverage Monitoring
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  schedule:
+    # Daily coverage report
+    - cron: '0 10 * * *'  # 10am UTC daily
+
+jobs:
+  coverage:
+    name: Generate and Monitor Coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:unit -- --coverage --reporter=json --reporter=lcov
+
+      - name: Extract coverage metrics
+        id: coverage
+        run: |
+          COVERAGE_JSON=$(cat coverage/vitest/coverage-summary.json)
+          LINES=$(echo $COVERAGE_JSON | jq '.total.lines.pct')
+          STATEMENTS=$(echo $COVERAGE_JSON | jq '.total.statements.pct')
+          FUNCTIONS=$(echo $COVERAGE_JSON | jq '.total.functions.pct')
+          BRANCHES=$(echo $COVERAGE_JSON | jq '.total.branches.pct')
+          
+          echo "lines=$LINES" >> $GITHUB_OUTPUT
+          echo "statements=$STATEMENTS" >> $GITHUB_OUTPUT
+          echo "functions=$FUNCTIONS" >> $GITHUB_OUTPUT
+          echo "branches=$BRANCHES" >> $GITHUB_OUTPUT
+          
+          echo "📊 Coverage Metrics:"
+          echo "  Lines: $LINES%"
+          echo "  Statements: $STATEMENTS%"
+          echo "  Functions: $FUNCTIONS%"
+          echo "  Branches: $BRANCHES%"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/vitest/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Comment coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverage = {
+              lines: '${{ steps.coverage.outputs.lines }}',
+              statements: '${{ steps.coverage.outputs.statements }}',
+              functions: '${{ steps.coverage.outputs.functions }}',
+              branches: '${{ steps.coverage.outputs.branches }}'
+            };
+            
+            const target = 80;
+            const lines = parseFloat(coverage.lines);
+            
+            let comment = `## 📊 Test Coverage Report\n\n`;
+            comment += `| Metric | Coverage | Target | Status |\n`;
+            comment += `|--------|----------|--------|--------|\n`;
+            comment += `| Lines | ${coverage.lines}% | ${target}% | ${lines >= target ? '✅' : '❌'} |\n`;
+            comment += `| Statements | ${coverage.statements}% | ${target}% | ${parseFloat(coverage.statements) >= target ? '✅' : '❌'} |\n`;
+            comment += `| Functions | ${coverage.functions}% | ${target}% | ${parseFloat(coverage.functions) >= target ? '✅' : '❌'} |\n`;
+            comment += `| Branches | ${coverage.branches}% | ${target}% | ${parseFloat(coverage.branches) >= target ? '✅' : '❌'} |\n\n`;
+            
+            if (lines < target) {
+              comment += `⚠️ **Coverage is below ${target}% target**\n\n`;
+              comment += `Please add tests to improve coverage. Focus on:\n`;
+              comment += `- New functionality added in this PR\n`;
+              comment += `- Critical business logic\n`;
+              comment += `- Error handling paths\n`;
+            } else {
+              comment += `✅ Coverage meets target (≥${target}%)\n`;
+            }
+            
+            // Find existing coverage comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number
+            });
+            
+            const existingComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Test Coverage Report')
+            );
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: comment
+              });
+            }
+
+      - name: Check coverage threshold
+        run: |
+          LINES=${{ steps.coverage.outputs.lines }}
+          TARGET=80
+          
+          if (( $(echo "$LINES < $TARGET" | bc -l) )); then
+            echo "⚠️ WARNING: Coverage ($LINES%) is below target ($TARGET%)"
+            echo "This will not block the PR, but please consider adding tests"
+          else
+            echo "✅ Coverage meets target"
+          fi
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/vitest/
+          retention-days: 30
+
+  coverage-trend:
+    name: Coverage Trend Analysis
+    runs-on: ubuntu-latest
+    needs: coverage
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+
+      - name: Store coverage history
+        run: |
+          mkdir -p artifacts/coverage-history
+          TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
+          cp coverage-summary.json "artifacts/coverage-history/coverage-$TIMESTAMP.json"
+
+      - name: Compare with previous coverage
+        run: |
+          PREV_COVERAGE=$(ls -t artifacts/coverage-history/*.json | sed -n '2p')
+          CURR_COVERAGE="coverage-summary.json"
+          
+          if [ -f "$PREV_COVERAGE" ]; then
+            PREV_LINES=$(jq '.total.lines.pct' $PREV_COVERAGE)
+            CURR_LINES=$(jq '.total.lines.pct' $CURR_COVERAGE)
+            
+            DIFF=$(echo "$CURR_LINES - $PREV_LINES" | bc)
+            
+            echo "📈 Coverage Trend:"
+            echo "  Previous: $PREV_LINES%"
+            echo "  Current: $CURR_LINES%"
+            echo "  Change: ${DIFF:+}$DIFF%"
+            
+            if (( $(echo "$DIFF < -5" | bc -l) )); then
+              echo "❌ ALERT: Coverage dropped by more than 5%"
+              # Send alert to Slack (if configured)
+            fi
+          fi
+
+  coverage-alert:
+    name: Coverage Regression Alert
+    runs-on: ubuntu-latest
+    needs: coverage
+    if: always() && github.event_name == 'pull_request'
+
+    steps:
+      - name: Check for coverage regression
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // This is a placeholder for coverage comparison logic
+            // In production, compare current PR coverage with main branch coverage
+            
+            const coverageDropped = false; // Replace with actual comparison
+            
+            if (coverageDropped) {
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: '❌ **Coverage Regression Detected**\n\nCoverage has decreased by >5%. Please add tests to maintain coverage levels.'
+              });
+              
+              core.setFailed('Coverage regression detected');
+            }
+

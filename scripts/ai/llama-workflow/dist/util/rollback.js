@@ -98,7 +98,7 @@ export async function rollbackIndex() {
 }
 export async function verifyRollback() {
     console.log('🔍 Verifying rollback status...');
-    const config = loadConfig();
+    const config = getConfig();
     const indexesDir = path.join(config.LOG_DIR, 'indexes');
     const latestPath = path.join(indexesDir, 'latest');
     const prevPath = path.join(indexesDir, 'prev');

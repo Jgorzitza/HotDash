@@ -30,6 +30,7 @@ Direction files are canonical instructions for each agent. To prevent drift:
 Violations (unauthorized files or edits) are blockers and must be reported immediately.
 
 ## Canonical Toolkit & Secrets
+- **MCP Tools** — Before starting work, ensure Context7 MCP is running (`./scripts/ops/start-context7.sh`). All agents have access to 5 MCP servers: Shopify (API docs), Context7 (codebase search), GitHub (repo management), Supabase (database), and Fly (deployment). See `docs/directions/mcp-tools-reference.md` for complete usage guide. Always search the codebase with Context7 before asking questions or implementing new features.
 - **Database** — Supabase is the single source of truth. For local work run `supabase start`, export `.env.local`, and point `DATABASE_URL` at `postgresql://postgres:postgres@127.0.0.1:54322/postgres`. Staging/prod credentials live in `vault/occ/supabase/` and GitHub environments. No Fly-hosted Postgres clusters are permitted.
 - **Chatwoot** — Reuses Supabase for persistence. Fly hosts only the app/Sidekiq processes + Upstash Redis. Health endpoints must be verified; update `deploy/chatwoot/fly.toml` when routes change.
 - **Frontend** — React + React Router 7; no Remix usage.
@@ -47,10 +48,11 @@ Violations (unauthorized files or edits) are blockers and must be reported immed
 
 ## Direction Execution Workflow
 1. Manager runs `docs/runbooks/agent_launch_checklist.md` before activating or restarting any agent.
-2. Agents read their direction file, the canon docs listed above, and `docs/ops/credential_index.md`.
-3. All work is logged in the role’s feedback file with evidence.
-4. Manager posts the daily stand-up (template: `docs/directions/manager_standup_template.md`) summarizing assignments, deadlines, and evidence links.
-5. Twice weekly (Monday/Thursday), manager and QA perform a stack compliance audit (direction adherence, tooling drift, secret usage) and log findings in `feedback/manager.md` and `feedback/qa.md`.
+2. **Agents verify MCP tools availability** — Run `./scripts/ops/start-context7.sh` and verify with `docker ps | grep context7-mcp`. Confirm all 5 MCP servers are accessible per `docs/directions/mcp-tools-reference.md`.
+3. Agents read their direction file, the canon docs listed above, and `docs/ops/credential_index.md`.
+4. All work is logged in the role's feedback file with evidence.
+5. Manager posts the daily stand-up (template: `docs/directions/manager_standup_template.md`) summarizing assignments, deadlines, and evidence links.
+6. Twice weekly (Monday/Thursday), manager and QA perform a stack compliance audit (direction adherence, tooling drift, secret usage) and log findings in `feedback/manager.md` and `feedback/qa.md`.
 
 ## Stop List
 - No ad-hoc direction/runbook edits by agents.

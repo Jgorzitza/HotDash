@@ -40,13 +40,187 @@ You may run local, non-interactive commands (build docs, export assets) without 
 ## Current Sprint Focus — 2025-10-12
 Work through these items now and document progress in `feedback/marketing.md`; include timestamps, approvals, and the assets you deliver. If a dependency blocks you, schedule the follow-up and chase it until closed rather than handing it off.
 
-## Aligned Task List — 2025-10-11
-- Update comms to reflect RR7 + CLI v3 flow; remove any mention of embed/session tokens.
-- Keep messaging within canonical toolkit; evidence logs in `feedback/marketing.md`.
+## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
-1. Update launch comms with the new support inbox and Chatwoot Fly note; capture stakeholder acknowledgements.
-2. Pre-stage external messaging (press/email/social) so it can ship instantly once QA evidence lands. Rehearse the launch-day checklist by validating the Admin tour using `shopify app dev` (no token capture required).
-3. Coordinate with enablement/support on the 2025-10-16 dry run collateral and ensure LlamaIndex messaging is aligned.
-4. Draft alternate launch variants and gather operator testimonials/quotes.
-5. Assemble release-day assets (graphics, snippets) so they are ready the moment blockers lift.
-6. Participate in the stack compliance audit to ensure messaging references only canonical tooling; log adjustments.
+**Reference Docs**:
+- docs/AgentSDKopenAI.md - Agent capabilities for messaging
+- feedback/manager-2025-10-11-agentsdk-decision.md - ROI and value propositions
+
+**Tasks in Priority Order** (execute sequentially, log blockers in feedback/marketing.md and continue):
+
+1. ✅ **Launch Communications Update** - COMPLETE (2025-10-11)
+   - Updated with customer.support@hotrodan.com
+   - CLI dev rehearsal documented
+   - Evidence: feedback/marketing.md
+
+2. **AI-Assisted Support Announcement** - Draft messaging for Agent SDK launch
+   - Create announcement for AI-assisted customer support
+   - Document benefits: faster response times, 24/7 availability, consistent quality
+   - Address common concerns: "AI will have human oversight", "Operators approve all actions"
+   - Create FAQ for customer questions
+   - Evidence: Announcement draft and FAQ
+
+3. **Operator Value Proposition** - Internal messaging for approval queue
+   - Draft internal announcement of approval queue feature
+   - Highlight efficiency gains (automation + oversight)
+   - Create "What's New" guide for operators
+   - Document training timeline
+   - Evidence: Internal messaging documents
+
+4. **Pilot Customer Communication** - Messaging for beta customers
+   - Draft opt-in messaging for pilot customers
+   - Create pilot program description
+   - Document what customers should expect
+   - Prepare feedback collection mechanism
+   - Coordinate: Tag @support for customer communication review
+   - Evidence: Pilot customer messaging
+
+5. **Launch Asset Preparation** - Create all launch materials
+   - Design social media announcement posts
+   - Create email announcement template
+   - Prepare blog post draft about AI features
+   - Assemble screenshot/demo assets
+   - Evidence: Launch asset package
+
+6. **Competitive Positioning** - Position Agent SDK as differentiator
+   - Research competitor AI support offerings
+   - Document HotDash unique value (human oversight, Shopify-native, approval queue)
+   - Create comparison messaging
+   - Prepare case study framework
+   - Evidence: Positioning document
+
+**Ongoing Requirements**:
+- Coordinate with @product on roadmap messaging
+- Tag @support for operator communication review
+- Log all messaging drafts in feedback/marketing.md
+
+---
+
+### 🚀 EXECUTE REMAINING TASKS (Tasks 2-6 Ready)
+
+**Continue execution sequence**:
+
+**Task 2: AI-Assisted Support Announcement** - Draft messaging (1 hour)
+- Create announcement for Agent SDK launch
+- Document benefits and address concerns
+- Create customer FAQ
+- Evidence: Announcement and FAQ
+
+**Tasks 3-6**: Execute in order per direction above
+
+**ALSO - Additional Parallel Work**:
+
+**Task A: Case Study Framework** - Prepare success story template
+- Create template for customer success stories
+- Document metrics to capture
+- Prepare interview questions
+- Evidence: Case study template
+
+**Task B: Competitive Intelligence** - Deep dive on AI support
+- Research top 5 competitor AI support tools
+- Document feature comparison
+- Identify differentiation opportunities
+- Evidence: Competitive analysis report
+
+Execute Tasks 2-6, plus A and B. All ready to go.
+
+---
+
+### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+
+**Task C: Video Content Scripts**
+- Create video script for Agent SDK demo (2-3 minutes)
+- Write walkthrough script for approval queue tutorial
+- Create "How it Works" explainer script
+- Document visual requirements for video team
+- Evidence: 3 video scripts ready for production
+
+**Task D: Social Media Campaign Plan**
+- Create 30-day social media content calendar for Agent SDK launch
+- Draft posts for LinkedIn, Twitter, Instagram
+- Design engagement strategy (polls, Q&A, testimonials)
+- Create hashtag strategy
+- Evidence: Content calendar with 30+ posts drafted
+
+**Task E: Press Release Draft**
+- Write press release for Agent SDK launch
+- Highlight innovation (human-in-loop AI, Shopify-native)
+- Include quotes from CEO/operators
+- Create distribution list
+- Evidence: Press release draft
+
+**Task F: Partner/Affiliate Messaging**
+- Create partner announcement for Agent SDK
+- Document co-marketing opportunities
+- Draft affiliate promotion materials
+- Create partner FAQ
+- Evidence: Partner messaging package
+
+**Task G: Customer Success Story Framework**
+- Create interview guide for pilot customers
+- Design metrics tracking for success stories
+- Draft case study template
+- Plan customer testimonial collection
+- Evidence: Success story framework
+
+**Task H: Internal Launch Communication**
+- Draft all-hands announcement
+- Create celebration plan for launch day
+- Design internal recognition for team
+- Document lessons learned capture process
+- Evidence: Internal communication plan
+
+**Task I: SEO/Content Strategy**
+- Create blog post series plan (AI support, automation, efficiency)
+- Draft 3 blog posts about Agent SDK features
+- Optimize for SEO keywords
+- Plan content distribution
+- Evidence: 3 blog post drafts, SEO strategy
+
+**Task J: Email Campaign Series**
+- Design email sequence for Agent SDK announcement (5 emails)
+- Create segmentation strategy (customers, prospects, partners)
+- Draft subject lines and preview text
+- Plan send schedule
+- Evidence: Email campaign series
+
+Execute C-J in priority order or parallel - all ready for execution.
+
+---
+
+### 🚀 MASSIVE EXPANSION (5x Capacity) - 20 Additional Tasks
+
+**Task K-Z: Comprehensive Marketing Campaign Development**
+
+**K-N: Content Creation** (4 tasks)
+- K: Create 10 LinkedIn thought leadership articles about AI + support automation
+- L: Draft 5 customer education webinar scripts
+- M: Write 15 help center articles about Agent SDK features
+- N: Create operator success story interview templates
+
+**O-R: Digital Marketing** (4 tasks)
+- O: Design complete Google Ads campaign (search + display)
+- P: Create retargeting campaign strategy
+- Q: Develop influencer partnership program for Shopify ecosystem
+- R: Build affiliate marketing program with commission structure
+
+**S-V: Community & PR** (4 tasks)
+- S: Create community engagement program (forums, Discord, Slack)
+- T: Draft analyst briefing materials (Gartner, Forrester)
+- U: Design customer advisory board program
+- V: Create press kit with media assets
+
+**W-Z: Brand & Positioning** (4 tasks)
+- W: Develop brand style guide for all Agent SDK communications
+- X: Create competitive battle cards for sales team (vs 10 competitors)
+- Y: Design customer testimonial collection and showcase program
+- Z: Build ROI calculator tool for prospects
+
+**AA-AE: Launch Mechanics** (5 tasks)
+- AA: Create detailed launch day runbook (hour-by-hour)
+- AB: Design post-launch communication cadence (D+1, D+7, D+30)
+- AC: Build customer adoption tracking dashboard
+- AD: Create upsell/cross-sell messaging for existing customers
+- AE: Design referral program for Agent SDK users
+
+Execute K-AE in any order. Total: 34 tasks, ~20 hours of marketing work.
