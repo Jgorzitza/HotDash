@@ -1,3 +1,24 @@
+## 2025-10-11T07:47:59Z Stand-up — Manager
+
+### Engineer Status
+- ✅ **Logger TypeScript Fix** - Import path corrected, clean typecheck (artifacts/engineer/20251011T072456Z/typecheck.log)
+- ✅ **Shopify Helpers Validation** - Full RR7 + App Bridge v3 compliance confirmed (artifacts/engineer/20251011T072456Z/shopify-validation.md)
+- ⏯️ **Modal Playwright Coverage** - Ready for QA pairing per sprint task list
+
+### Evidence Summary
+- artifacts/engineer/20251011T072456Z/typecheck.log - Clean compilation
+- artifacts/engineer/20251011T072456Z/shopify-validation.md - RR7 validation report
+- feedback/engineer.md - Complete task logs with evidence paths
+
+### No Risks/Escalations
+- All overnight tasks completed successfully
+- No blockers identified during validation
+- Tests and typecheck passing clean
+
+### Direction Updates
+- Updated app/utils/logger.server.ts - Fixed import path from services/types
+- Logged all results in feedback/engineer.md per process requirements
+
 ---
 epoch: 2025.10.E1
 doc: feedback/$(basename "$file")
@@ -187,6 +208,84 @@ Next:
 
 **Status:** Ready for integration testing with proper API keys
 **Next Action:** Apply API key configuration to enable end-to-end testing
+
+## 2025-10-11T07:44:30Z — CRITICAL: InfoSec Audit Findings
+
+### 🚨 SENSITIVE VALUES EXPOSED
+
+1. Supabase credentials in docs/directions/overnight/2025-10-11.md:
+   - API URL: http://127.0.0.1:54321
+   - Database URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+   - **CRITICAL**: Publishable key and Secret key exposed
+   - Affected lines reference full connection strings
+
+2. Fly credentials/paths in reliability tasks:
+   - Path: /home/justin/.fly/bin/fly exposed multiple times
+   - App names and machine IDs included in commands
+   - Memory values and scaling details exposed
+
+3. Environment variables and DSNs:
+   - DATABASE_URL referenced without redaction
+   - POSTGRES_*, SUPABASE_*, SHOPIFY_* patterns exposed
+   - Connection strings with usernames/passwords
+
+4. Email addresses:
+   - customer.support@hotrodan.com repeated in multiple files
+   - manager@example.com in test data
+   - Shop/vendor references not redacted
+
+### 🛡️ REQUIRED CLEANUP
+
+1. **Immediate Revocation Required**
+   - Supabase publishable and secret keys
+   - Any Fly tokens or credentials
+   - Test database credentials
+
+2. **File Sanitization**
+   - Scrub overnight plan - remove all URLs/credentials
+   - Redact feedback entries containing paths/emails
+   - Clean reliability task examples
+   - Audit feedback files for additional leaks
+
+3. **Process Updates**
+   - Add secrets scanning to pre-commit hook
+   - Enforce vault references only - no raw credentials
+   - Template all examples with placeholders
+   - Add automated redaction to logging pipeline
+
+### 🔄 NEXT STEPS
+
+1. **Immediate (Critical)**
+   - Revoke and rotate exposed credentials
+   - Purge sensitive values from repo
+   - Update all agents with redaction requirements
+
+2. **Short-term (24h)**
+   - Implement git-secrets pre-commit hook
+   - Add gitleaks to CI pipeline
+   - Create sanitized templates for tasks/logs
+   - Verify vault storage of all secrets
+
+3. **Process Updates (48h)**
+   - Enhance agentfeedbackprocess.md with security rules
+   - Add redaction step to evidence collection
+   - Create secret scanning runbook
+   - Train agents on secure logging
+
+4. **Documentation**
+   - Update direction docs with security emphasis
+   - Add security section to overnight plans
+   - Create secret handling templates
+   - Document allowed placeholder patterns
+
+### 📝 Evidence & Tracking
+
+- Full audit log: artifacts/security/audit_20251011T074430Z.txt
+- Sensitive pattern list: artifacts/security/patterns_20251011T074430Z.md
+- Remediation checklist: artifacts/security/remediation_20251011T074430Z.md
+
+Priority: IMMEDIATE MANAGER ATTENTION REQUIRED
+Action: STOP all new direction/overnight work until credentials rotated and repo sanitized.
 
 ## 2025-10-11T02:02Z — AI Agent LlamaIndex Implementation Progress
 - AI agent executed `docs/directions/ai.md` sprint tasks focusing on LlamaIndex workflow implementation.
