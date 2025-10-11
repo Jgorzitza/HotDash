@@ -45,3 +45,4 @@ expires: 2025-10-21
 
 [2025-10-11T06:54:24Z] CMD: curated migration with RLS + test insert + eval dataset + supabase logs -> OUT: support_curated_replies table created; 1 test row inserted; artifacts/ai/eval/golden-20251011T065337Z.jsonl (5 Q/A pairs); artifacts/logs/tail-supabase-logs-20251011T065337Z.txt
 [2025-10-11T07:15:35Z] OVERNIGHT: Data tasks executed -> OUT: artifacts/data/20251011T071409Z/{schema.sql,decision-sync-analysis.json,analytics-parity.json,chatwoot-gold-replies-plan.md}
+[2025-10-11T07:49:07Z] SHUTDOWN: Data agent shutting down. Evidence in artifacts/data/20251011T071409Z/. Branch agent/compliance/sprint-2025-10-11 clean. Next: Support workflow + webhook implementation pending decisions.
