@@ -59,3 +59,8 @@ expires: 2025-10-14
 ## Risk & Mitigation Tracker
 - Track implementation status in `feedback/compliance.md` (see latest entry).
 - Evidence (purge scripts, policy approvals, DPIA) must be stored under `docs/compliance/evidence/` once generated.
+
+## Audit update 2025-10-11
+- AI retention audit: artifacts/compliance/ai_retention_audit_2025-10-11.md
+- Findings: see artifacts/compliance/ai_retention_audit_2025-10-11.json
+- Blockers: tooling-only review; deeper validation may require jq/python; no infra touched.
