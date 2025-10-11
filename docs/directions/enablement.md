@@ -53,20 +53,29 @@ Drive each deliverable to closure yourself; document artefacts, timestamps, and 
    - Ready for distribution
    - Evidence: feedback/enablement.md
 
-2. **Agent SDK Operator Training Module** - Create training for approval queue
-   - Create Loom video or written guide for approval queue workflow
-   - Document how to review agent proposals
-   - Explain approve vs reject decision making
-   - Demonstrate complete approval flow
-   - Coordinate: Tag @support for content review
-   - Evidence: Training module created, documented in feedback/enablement.md
+## 🚨 P0 LAUNCH TRAINING (Minimal for Pilot)
 
-3. **Quick Start Guide for Operators** - Create concise reference materials
-   - Create 1-page quick start for approval queue
-   - Document common scenarios and decisions
-   - Provide troubleshooting tips
-   - Create decision flowchart
-   - Evidence: Quick start guide in docs/enablement/job_aids/
+2. **Quick Start Guide for Approval Queue** (Launch Gate #6)
+   - Create 1-page guide: How to approve/reject agent actions
+   - Document decision criteria
+   - Basic escalation path
+   - Evidence: Quick start guide PDF
+   - Timeline: 2-4 hours
+
+3. **30-Min Pilot Training Session** (Launch Gate #6)
+   - Create 30-minute session outline
+   - Demo approval queue workflow
+   - Top 5 FAQ answered
+   - Evidence: Session outline ready
+   - Timeline: 2-3 hours
+
+**DO FIRST**: Tasks 2-3 above (minimal training for launch)
+
+**PAUSE UNTIL AFTER LAUNCH**: Tasks 4-42 (all expanded enablement work)
+
+---
+
+**PAUSED TASKS** (Resume after launch):
 
 4. **Approval Queue FAQ** - Document common questions
    - Create FAQ for operators about Agent SDK
