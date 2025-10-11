@@ -41,13 +41,13 @@ export async function emitRunMetrics(
     agent_name: run.agent_name,
     input_kind: run.input_kind,
     started_at: run.started_at || now,
-    ended_at: run.ended_at,
+    ended_at: run.ended_at || undefined,
     resolution: run.resolution || 'failed',
     self_corrected: run.self_corrected || false,
     tokens_input: run.tokens_input || 0,
     tokens_output: run.tokens_output || 0,
     cost_usd: run.cost_usd || 0,
-    sla_target_seconds: run.sla_target_seconds,
+    sla_target_seconds: run.sla_target_seconds || undefined,
     metadata: run.metadata || {}
   };
 
@@ -74,8 +74,8 @@ export async function emitQCMetrics(
 
   const qc: AgentQC = {
     run_id,
-    quality_score,
-    notes
+    quality_score: quality_score || undefined,
+    notes: notes || undefined
   };
 
   const qcPath = path.join(outDir, `qc_${run_id}.json`);
