@@ -168,3 +168,26 @@ PATHS: All marketing docs already updated; approval workflow templates ready
 BLOCKER: Manager confirmation of Support lead, Product lead, Designer contact details
 NOTES: Immediate execution ready upon stakeholder contact information delivery. All preparation work complete.
 
+[2025-10-11T07:46:30Z] CURRENT STATUS: Marketing readiness summary
+MILESTONES:
+- ✅ Marketing docs updated with support inbox and Fly.io references
+- ✅ CLI dev rehearsal complete with 6 screenshot specifications
+- ✅ External messaging assets pre-staged and linked
+- ✅ Compliance pass complete verifying canonical toolkit alignment
+- ✅ PR strategy prepared with conventional commit format
+- ✅ 3 of 4 open questions resolved with documented decisions
+BLOCKERS:
+1. ⚠️ Stakeholder contact information needed for approval routing
+   - Manager request: artifacts/marketing/logs/stakeholder_request_manager_20251011.md
+   - Approval process templated and ready to execute upon receipt
+2. ⚠️ Chatwoot Fly embed token pending from Reliability
+   - Expected path: vault/occ/shopify/embed_token_staging.env
+   - Reliability actively working (latest activity: 2025-10-11T07:28:07Z)
+NEXT STEPS:
+1. Monitor reliability log for embed token delivery
+2. Await manager response with stakeholder contacts
+3. Upon receipt of both blockers:
+   - Execute approval routing workflow
+   - Update product approval packet with approver information
+   - Capture explicit acknowledgements as evidence
+
