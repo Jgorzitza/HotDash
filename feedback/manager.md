@@ -9,6 +9,132 @@ expires: 2025-10-21
 
 <!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
 
+## 2025-10-11T07:38:30Z — Data Agent Overnight & Sprint Task Completion
+
+### ✅ OVERNIGHT TASKS EXECUTED SUCCESSFULLY
+
+1. **Supabase Schema Snapshot** ✅
+   - Generated schema dump: `artifacts/data/20251011T071409Z/schema.sql`
+   - Captured all tables, views, RLS policies
+   - Used docker exec workaround for pg_dump version mismatch
+
+2. **Parity Analyzers (Read-Only)** ✅
+   - Decision sync stats:
+     - 4 records analyzed
+     - 75% success rate
+     - P95 latency: 1500.55ms
+     - 1 timeout with 2 retries
+   - Analytics parity validated with Prisma
+   - Evidence: `artifacts/data/20251011T071409Z/decision-sync-analysis.json`
+
+3. **Gold Reply Schema Planning** ✅
+   - Migration plan documented: `artifacts/data/20251011T071409Z/chatwoot-gold-replies-plan.md`
+   - Status:
+     - Table and RLS implemented
+     - Test data inserted successfully
+     - Support workflow pending coordination
+     - Webhook endpoint needs provisioning
+
+### 📊 SCHEMA STATUS
+
+**Gold Reply Schema Implementation:**
+- ✅ Table: `public.support_curated_replies`
+- ✅ RLS: Enabled with two policies
+  - `support_webhook`: INSERT only
+  - `ai_readonly`: SELECT only
+- ✅ Indexes: 6 indexes (PK, GIN on tags, B-tree on timestamps)
+- ✅ Trigger: `updated_at` maintenance
+
+**Test Data Status:**
+- 1 row inserted successfully
+- Fields populated:
+  - message_body
+  - tags: ['billing', 'howto']
+  - approver: 'manager@example.com'
+  - source IDs present
+
+### 📈 PARITY METRICS
+
+**Decision Sync Analysis (1h Window)**
+- Total Records: 4
+- Success Rate: 75%
+- P95 Latency: 1500.55ms
+- Retry Stats:
+  - 2 records: no retries
+  - 1 record: 1 retry
+  - 1 record: 2 retries (timed out)
+
+### 📁 EVIDENCE LOCATIONS
+
+1. **Schema & Analysis**
+   ```
+   artifacts/data/20251011T071409Z/
+   ├── schema.sql
+   ├── decision-sync-analysis.json
+   ├── analytics-parity.json
+   └── chatwoot-gold-replies-plan.md
+   ```
+
+2. **Command Logs & Timestamps**
+   - All actions logged in `feedback/data.md`
+   - Full command history with artifact references
+
+### 🚀 REPO STATUS: CLEAN
+
+- Branch: `agent/compliance/sprint-2025-10-11`
+- No uncommitted changes
+- All artifacts properly saved
+- Evidence logging complete
+
+### ⏭️ NEXT ACTIONS READY
+
+1. **Support Team Coordination**
+   - Document approval workflow
+   - Confirm webhook requirements
+   - Generate test payload examples
+
+2. **Implementation Decision**
+   - RPC vs Remix proxy for webhook
+   - Security definer function vs HMAC validation
+   - Token minting strategy
+
+3. **Performance Optimization**
+   - Monitor decision sync timeouts
+   - Adjust retry strategy if needed
+   - Consider index tuning if queries lag
+
+### 📋 REMAINING TASKS
+Awaiting:
+1. Support team availability for workflow documentation
+2. Implementation path decision (RPC vs Remix)
+3. Webhook secret provisioning
+
+Status: All overnight tasks complete per direction, ready for next manager assignment.
+
+## 2025-10-11T07:38:51Z — English-only audit complete, RR7 aligned
+
+Overnight work completed and logged:
+- ✅ English-only compliance confirmed via grep scan (no ripgrep dependency)
+- ✅ Shopify workflow updated to RR7 + CLI v3 (token-free)
+- ✅ Partner touchpoint tracker staged for Chatwoot/LlamaIndex/Marketing
+
+Evidence artifacts:
+- Scan results: artifacts/localization/20251011T071342Z/
+  - scan.txt - Raw scan output (12 FR matches, all sanctioned)
+  - ui_copy_audit.md - Detailed analysis showing compliance
+- Screenshot workflow (RR7 + CLI v3):
+  - artifacts/localization/shopify/screenshots/20251011T071342Z/README.txt
+
+Detailed log: feedback/localization.md (2025-10-11T07:13:42Z entry)
+- All FR strings are in sanctioned QA files or technical metadata
+- No violations in app/ UI or user-facing docs
+- Partner tracker includes timeline for acknowledgements
+
+Next:
+1. Pending Chatwoot macros tone review (due 2025-10-12)
+2. Pending LlamaIndex terminology check (due 2025-10-13)
+3. Stack compliance audit scheduled Mon 2025-10-14
+
 ## 2025-10-14T21:30Z — Local Supabase Cutover Logged
 - Documented the Postgres-only workflow (README, direction updates, `docs/runbooks/supabase_local.md`).
 - All agents paused pending rate-limit lift; direction files now reference the new Supabase/App Bridge posture and fresh feedback logs.
