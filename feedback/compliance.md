@@ -18,3 +18,6 @@ ARTIFACT: artifacts/compliance/scripts/*
 [2025-10-11T03:41:11Z] CMD: Audited CI guardrails
 ARTIFACT: artifacts/compliance/stack_audit_2025-10-11.md, artifacts/compliance/stack_audit_2025-10-11.json, artifacts/compliance/scans/workflows_list.txt
 
+[2025-10-11T03:41:11Z] CMD: Secret incidents sweep complete (targeted)
+ARTIFACT: docs/compliance/evidence/secret_incidents_2025-10-11.md
+
