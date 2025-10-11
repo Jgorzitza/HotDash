@@ -299,3 +299,28 @@ node scripts/ci/stack-guard.mjs
 Maintaining readiness to resume per manager's documented relaunch sequence.
 
 
+## 2025-10-11T07:24:56Z - Completed Shopify Helper Validation
+
+### Task: Validate Shopify helpers for React Router 7 + App Bridge v3 compliance
+
+**Files Reviewed**:
+- `shopify.app.toml` - Configuration validated
+- `app/utils/env.server.ts` - Environment handling confirmed
+- `app/services/shopify/client.ts` - GraphQL client reviewed
+- `app/routes/auth.{login,callback}/route.tsx` - Auth routes checked
+
+**Key Validations:**
+- ✅ Proper embedded app configuration with correct auth paths
+- ✅ No manual token handling or dependencies
+- ✅ Strong typing of environment values and GraphQL responses
+- ✅ React Router 7 file-based routing with proper runtime overrides
+
+**Commands Executed**:
+```bash
+TIMESTAMP=20251011T072456Z && cat > artifacts/engineer/$TIMESTAMP/shopify-validation.md
+```
+
+**Artifacts**: 
+- [Validation Report](../artifacts/engineer/20251011T072456Z/shopify-validation.md)
+
+**Status**: ✅ PASS - All Shopify helper functions correctly configured for React Router 7 and App Bridge v3
