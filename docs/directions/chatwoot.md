@@ -19,7 +19,7 @@ expires: 2025-10-17
 
 - Execute all Chatwoot Fly tasks captured in `docs/deployment/chatwoot_fly_runbook.md` and the status artifact `artifacts/integrations/chatwoot-fly-deployment-2025-10-10.md`.
 - Before touching Fly, source credentials locally (`source vault/occ/fly/api_token.env`) and confirm `FLY_API_TOKEN` is set via `/home/justin/.fly/bin/fly auth status` (and not the placeholder). Capture the confirmation in your feedback log.
-- Coordinate directly with reliability/deployment for infrastructure needs but retain task ownership—log every update (including the command/output) in `feedback/integrations.md`.
+- Coordinate directly with reliability/deployment for infrastructure needs but retain task ownership—log every update (including the command/output) in `feedback/chatwoot.md`.
 - Ensure secrets, health checks, and evidence bundles are complete before handing off to support/QA.
 - Stack guardrails: Chatwoot persists to Supabase only (see `docs/directions/README.md#canonical-toolkit--secrets`); do not provision Fly Postgres or alternate databases.
 - Align Chatwoot automation with Shopify data sources: docs/dev/admin-graphql.md for admin facts, docs/dev/storefront-mcp.md for customer context.

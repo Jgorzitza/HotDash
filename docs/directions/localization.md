@@ -32,8 +32,8 @@ expires: 2025-10-19
 ## Current Sprint Focus — 2025-10-12
 Own each action until the evidence is published—log the artifacts, timestamps, and follow-up owners in `feedback/localization.md`. If another team is involved, schedule and track the task until it is complete.
 - Reconfirm English-only compliance (UI, runbooks, Chatwoot templates) with the new support inbox; attach audit proof to `feedback/localization.md`.
-- Align with marketing/enablement on the 2025-10-16 dry-run collateral incorporating the Supabase-backed Chatwoot plan and embed-token copy once reliability delivers it.
+- Align with marketing/enablement on the 2025-10-16 dry-run collateral incorporating the Supabase-backed Chatwoot plan and the current React Router 7 + Shopify CLI v3 dev flow (remove any embed-token references).
 - Update the partner touchpoint tracker to show Chatwoot/LlamaIndex status and capture acknowledgements that translation scope remains paused.
-- Prepare Shopify Admin screenshot workflow so evidence can be captured immediately after embed token mirroring; rehearse using the `/app/tools/session-token` flow in `docs/runbooks/shopify_embed_capture.md` so you can copy the token and capture screens within the 60 s window, then log readiness steps.
+- Prepare Shopify Admin screenshot workflow using `shopify app dev` to open the embedded app in Admin; no token injection is required under the current dev flow. Capture screens and log readiness steps.
 - While blocked on staging screenshots, keep running textual diff checks against recent README/runbook updates (especially AI logging/index docs) to ensure no multilingual content slipped in; log findings.
 - Participate in the Monday/Thursday stack compliance audit for terminology and localization guardrails; document any remediation items.

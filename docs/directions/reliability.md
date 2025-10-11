@@ -24,7 +24,7 @@ expires: 2025-10-19
 - Keep logging/observability stack consistent (pino formatting, structured errors) and verify ingestion to APM. Maintain the Supabase edge function (`supabase/functions/occ-log`) and local log tailing script.
 - Coordinate with deployment on Fly-specific requirements (docs/dev/fly-shopify.md): ensure `fly.toml` and Fly secrets contain Shopify env vars, and production scaling (`min_machines_running`, `auto_stop_machines`) meets Shopify performance expectations.
 - Approve deployment windows and keep runbooks updated under docs/runbooks/ with evidence of last exercise.
-- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Reference Shopify docs: docs/dev/appreact.md, docs/dev/authshop.md, docs/dev/session-storage.md for current guidance.
+- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Reference Shopify docs: docs/dev/appreact.md, docs/dev/authshop.md, docs/dev/session-storage.md for current guidance. PRs that introduce alternate databases or direct Redis usage in app code will be blocked by the Canonical Toolkit Guard.
 - Consult Shopify API references when debugging integrations (docs/dev/admin-graphql.md, docs/dev/storefront-mcp.md) so infra changes track the latest platform requirements.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/reliability.md` without waiting for additional manager approval.
 
@@ -36,10 +36,10 @@ Work every open infrastructure blocker to completion—own the item until eviden
    - Run `npm run setup` after exporting `.env.local` to verify migrations succeed. Attach the Prisma output to your feedback entry.
    - Tail the local instance with `scripts/ops/tail-supabase-logs.sh` and confirm the edge function `occ-log` writes into `public.observability_logs` using `supabase/sql/observability_logs.sql`.
 
-2. **Shopify embed token delivery**
-   - Use the embedded **Session token tool** (`/app/tools/session-token`) documented in `docs/runbooks/shopify_embed_capture.md` to fetch a fresh staging token, write it to `vault/occ/shopify/embed_token_staging.env`, and log the capture evidence (timestamp + screenshot/snippet) in `feedback/reliability.md`.
-   - Authenticate `gh` locally (`gh auth status`) and set the GitHub `staging` secret yourself via `gh secret set SHOPIFY_EMBED_TOKEN_STAGING --env staging --body "$(grep SHOPIFY_EMBED_TOKEN= vault/occ/shopify/embed_token_staging.env | cut -d= -f2)"`. Capture the CLI output or screenshot path in `feedback/reliability.md`.
-   - If `gh secret set` fails, retry once after re-authenticating; only then escalate with the failed command output attached. No other work should start until mirroring evidence is logged and QA/Localization have been notified.
+2. **Shopify dev flow validation (React Router 7 + Shopify CLI v3)**
+   - Do NOT capture or mirror session/embed tokens. Use the current dev flow with Shopify CLI v3 and App Bridge + React Router 7.
+   - Validate helper usage and configuration: `docs/dev/appreact.md`, `docs/dev/authshop.md` (authenticate.admin), and `docs/dev/session-storage.md`.
+   - Run the embedded app via `shopify app dev` and confirm Admin loads without manual token injection; log evidence (timestamps + screenshots or CLI output) in `feedback/reliability.md`.
 
 3. **`?mock=0` latency fix**
    - Continue running `scripts/ci/synthetic-check.mjs` until we capture <300 ms results. Partner with Deployment on Fly warm-up/tuning; track each attempt, change, and outcome in the feedback log.
@@ -47,6 +47,7 @@ Work every open infrastructure blocker to completion—own the item until eviden
 4. **Chatwoot Fly smoke & credentials**
    - Source Fly access locally (`source vault/occ/fly/api_token.env` to export `FLY_API_TOKEN`) and verify with `/home/justin/.fly/bin/fly auth status`. If the token is missing or still set to the placeholder, log the gap and request the real value from the manager while continuing other Chatwoot prep.
    - Gather the required Chatwoot API credentials yourself (request support/integrations once, then follow up every 4 hours until delivered; document every request with timestamps).
+   - Increase Fly machine memory to 2GB to prevent crashes. Preferred: persist by updating `deploy/chatwoot/fly.toml` `[vm].memory = "2048mb"` and redeploy; or execute via CLI: `/home/justin/.fly/bin/fly scale memory 2048 -a hotdash-chatwoot`. For Machines-based apps: `/home/justin/.fly/bin/fly m list -a hotdash-chatwoot` then `/home/justin/.fly/bin/fly m update <id> --memory 2048`. Log command + output.
    - Store the token under `vault/occ/chatwoot/`, set Fly secrets, run `scripts/ops/chatwoot-fly-smoke.sh`, and archive the results. Do not hand back to integrations until the smoke evidence is complete and linked.
 
 5. **Supabase follow-through**
