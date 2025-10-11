@@ -134,3 +134,37 @@ PATHS: feedback/marketing.md (staged and committed); artifacts/marketing/logs/pr
 EVIDENCE: git commit 96b1594 with conventional message format; current branch agent/compliance/sprint-2025-10-11 as source of truth
 NOTES: Branch maintains compliance with WARP rules (current local branch as source of truth). Reviewer assignment pending manager confirmation of stakeholder names. Artifacts directory gitignored (expected - marketing materials don't belong in repo).
 
+[2025-10-11T07:40:30Z] MONITORING: Chatwoot Fly embed token handoff status
+ACTION: Checked reliability handoff progress for Shopify Admin embed token delivery. Confirmed expected vault path and monitored current status.
+PATHS: vault/occ/shopify/ (directory exists with 6 staging credential files)
+STATUS: ⏳ PENDING - embed_token_staging.env not yet delivered by Reliability
+EXPECTED: vault/occ/shopify/embed_token_staging.env (per docs/ops/credential_index.md line 17)
+EXISTING FILES: api_key_staging.env, api_secret_staging.env, app_url_staging.env, cli_auth_token_staging.env, shop_domain_staging.env, smoke_test_url_staging.env
+RELIABILITY STATUS: Active overnight execution plan running (last reliability log: 2025-10-11T07:28:07Z)
+NOTES: Will continue monitoring for delivery. Token required for Admin tour validation trigger per marketing send criteria. No action needed until delivery confirmed.
+
+[2025-10-11T07:42:00Z] EXECUTION: Open questions resolution progress documented
+ACTION: Reviewed and updated open questions resolutions log. 3 of 4 questions resolved with documented decisions and evidence.
+PATHS: artifacts/marketing/logs/open_questions_resolutions_20251011.md
+RESOLVED DECISIONS:
+- Social scheduling: Manual-send playbook documented (no Hootsuite dependency)
+- Shopify Admin host: CLI dev flow approach confirmed (no embed/session tokens)
+- Regional constraints: English-only scope maintained (36 docs validated)
+PENDING: Stakeholder names (Support lead, Product lead, Designer) for approval routing
+EVIDENCE: Decision artifacts linked in resolutions log with timestamps and reasoning
+NOTES: Ready to proceed with stakeholder approval routing once manager provides contact information.
+
+[2025-10-11T07:44:00Z] EXECUTION: Immediate deliverables prepared and stakeholder approval workflow ready
+ACTION: Prepared immediate execution of Steps 4 & 5 (support inbox updates + stakeholder approvals). Created manager request for stakeholder contacts to enable approval circulation.
+STEP 4 STATUS: ✅ COMPLETE - Three marketing docs updated with support inbox and Fly note
+- docs/marketing/launch_comms_packet.md: customer.support@hotrodan.com + Chatwoot on Fly
+- docs/marketing/product_approval_packet_2025-10-07.md: Support contact alignment
+- docs/marketing/launch_faq.md: Support flows + canonical toolkit messaging
+STEP 5 STATUS: ⏳ READY - Stakeholder approval circulation prepared, pending contact information
+- Approval request template: artifacts/marketing/assets/approvals/approval_request_2025-10-11.md
+- Manager request: artifacts/marketing/logs/stakeholder_request_manager_20251011.md
+- Evidence capture process: Documented for PDF/screenshot archival
+PATHS: All marketing docs already updated; approval workflow templates ready
+BLOCKER: Manager confirmation of Support lead, Product lead, Designer contact details
+NOTES: Immediate execution ready upon stakeholder contact information delivery. All preparation work complete.
+
