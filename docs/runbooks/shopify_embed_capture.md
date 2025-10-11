@@ -2,6 +2,8 @@
 
 Note: Under the current React Router 7 + Shopify CLI v3 development flow, manual embed/session token capture is not required. Prefer `shopify app dev` and the helper docs in docs/dev/appreact.md, docs/dev/authshop.md, and docs/dev/session-storage.md. Retain this document only for historical reference or emergency workflows.
 
+Note: Under the current React Router 7 + Shopify CLI v3 development flow, manual embed/session token capture is not required. Prefer `shopify app dev` and the helper docs in docs/dev/appreact.md, docs/dev/authshop.md, and docs/dev/session-storage.md. Retain this document only for historical reference or emergency workflows.
+
 **Last updated:** 2025-10-12T18:30Z  
 **Owner:** Reliability (escrow with Deployment)  
 **Scope:** Enables localization/design to capture staging modal screenshots by providing an approved path for Shopify embed tokens.
