@@ -1,0 +1,39 @@
+{
+  "label": "staging-app-deploy",
+  "startedAt": "2025-10-09T21:51:03.411Z",
+  "finishedAt": "2025-10-09T21:51:07.897Z",
+  "durationMs": 4486,
+  "command": {
+    "executable": "npx",
+    "args": [
+      "--yes",
+      "@shopify/cli@latest",
+      "app",
+      "deploy",
+      "--force",
+      "--json",
+      "--environment",
+      "staging",
+      "--api-key",
+      "4f72376ea61be956c860dd020552124d",
+      "--store",
+      "hotdash-staging.myshopify.com",
+      "--path",
+      "/home/justin/HotDash/hot-dash",
+      "--allow-live"
+    ],
+    "cwd": "/home/justin/HotDash/hot-dash"
+  },
+  "environment": {
+    "shopDomain": "hotdash-staging.myshopify.com",
+    "shopifyEnvironment": "staging"
+  },
+  "status": {
+    "exitCode": 2,
+    "signal": null
+  },
+  "stderrBytes": 1145,
+  "stdout": "",
+  "stderr": "npm warn Unknown project config \"auto-install-peers\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"shamefully-hoist\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"enable-pre-post-scripts\". This will stop working in the next major version of npm.\n╭─ error ──────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│  Nonexistent flags: --json, --environment, --store, --allow-live             │\n│  See more help with --help                                                   │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\n\n",
+  "logFile": "/home/justin/HotDash/hot-dash/artifacts/deploy/staging-deploy-20251009T215103Z.json"
+}

@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2025-10-10T13:47:23.858Z",
+  "summary": {
+    "status": "pass",
+    "metrics": {
+      "bleu1": 0.9444,
+      "rougeL": 0.9565
+    },
+    "thresholds": {
+      "bleu1": 0.4,
+      "rougeL": 0.6
+    },
+    "totalCases": 3,
+    "passed": 3,
+    "reviews": 0
+  },
+  "cases": [
+    {
+      "id": "cx.ship_update",
+      "description": "CX escalation late shipment reply",
+      "metrics": {
+        "bleu1": 1,
+        "rougeL": 1
+      },
+      "thresholds": {
+        "bleu1": 0.4,
+        "rougeL": 0.6
+      },
+      "status": "pass"
+    },
+    {
+      "id": "cx.refund_offer",
+      "description": "CX escalation refund follow-up",
+      "metrics": {
+        "bleu1": 1,
+        "rougeL": 1
+      },
+      "thresholds": {
+        "bleu1": 0.4,
+        "rougeL": 0.6
+      },
+      "status": "pass"
+    },
+    {
+      "id": "cx.ack_delay",
+      "description": "CX escalation SLA acknowledgement fallback",
+      "metrics": {
+        "bleu1": 0.8333,
+        "rougeL": 0.8696
+      },
+      "thresholds": {
+        "bleu1": 0.4,
+        "rougeL": 0.6
+      },
+      "status": "pass"
+    }
+  ],
+  "telemetry": {
+    "source": "/home/justin/HotDash/hot-dash/artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson",
+    "generatedAt": "2025-10-10T13:47:23.860Z",
+    "totals": {
+      "records": 4,
+      "byStatus": {
+        "SUCCESS": 3,
+        "TIMEOUT": 1
+      }
+    },
+    "timeWindow": {
+      "start": "2025-10-09T14:05:22.318Z",
+      "end": "2025-10-09T14:22:57.118Z"
+    },
+    "entries": [
+      {
+        "decisionId": 101,
+        "status": "SUCCESS",
+        "attempt": 1,
+        "durationMs": 241.12,
+        "errorCode": null,
+        "timestamp": "2025-10-09T14:05:22.318Z"
+      },
+      {
+        "decisionId": 102,
+        "status": "SUCCESS",
+        "attempt": 1,
+        "durationMs": 198.77,
+        "errorCode": null,
+        "timestamp": "2025-10-09T14:10:41.904Z"
+      },
+      {
+        "decisionId": 103,
+        "status": "TIMEOUT",
+        "attempt": 3,
+        "durationMs": 1500.55,
+        "errorCode": "ETIMEDOUT",
+        "timestamp": "2025-10-09T14:15:12.483Z"
+      },
+      {
+        "decisionId": 104,
+        "status": "SUCCESS",
+        "attempt": 2,
+        "durationMs": 265.43,
+        "errorCode": null,
+        "timestamp": "2025-10-09T14:22:57.118Z"
+      }
+    ]
+  }
+}

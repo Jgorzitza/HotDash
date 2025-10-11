@@ -1,0 +1,32 @@
+Validating fly.toml
+[32m✓[0m Configuration is valid
+
+Watch your deployment at https://fly.io/apps/hotdash-chatwoot/monitoring
+
+Updating existing machines in 'hotdash-chatwoot' with rolling strategy
+> [1/2] Acquiring lease for 48e2d61cdd1398
+> [1/2] Acquired lease for 48e2d61cdd1398
+> [2/2] Acquiring lease for 8d9515fe056ed8
+> [2/2] Acquired lease for 8d9515fe056ed8
+> [2/2] Updating machine config for 8d9515fe056ed8
+> [1/2] Updating machine config for 48e2d61cdd1398
+> [1/2] Updating 48e2d61cdd1398 [worker]
+> [2/2] Updating 8d9515fe056ed8 [web]
+> [1/2] Updated machine config for 48e2d61cdd1398
+> [1/2] Waiting for machine 48e2d61cdd1398 to reach a good state
+> [2/2] Updated machine config for 8d9515fe056ed8
+> [2/2] Waiting for machine 8d9515fe056ed8 to reach a good state
+> [2/2] Machine 8d9515fe056ed8 reached started state
+> [2/2] Running smoke checks on machine 8d9515fe056ed8
+> [1/2] Machine 48e2d61cdd1398 reached started state
+> [1/2] Running smoke checks on machine 48e2d61cdd1398
+> [2/2] Running machine checks on machine 8d9515fe056ed8
+> [2/2] Checking health of machine 8d9515fe056ed8
+> [1/2] Running machine checks on machine 48e2d61cdd1398
+> [1/2] Checking health of machine 48e2d61cdd1398
+✔ [1/2] Machine 48e2d61cdd1398 is now in a good state
+✖ [2/2] Unrecoverable error: timeout reached waiting for health checks to pass for machine 8d9515fe056ed8: failed to get VM 8d9515fe056ed8: Get "https://api.machines.dev/v1/apps/hotdash-chatwoot/machines/8d9515fe056ed8": net/http: request canceled
+> [1/2] Clearing lease for 48e2d61cdd1398
+> [2/2] Clearing lease for 8d9515fe056ed8
+✔ [2/2] Cleared lease for 8d9515fe056ed8
+✔ [1/2] Cleared lease for 48e2d61cdd1398

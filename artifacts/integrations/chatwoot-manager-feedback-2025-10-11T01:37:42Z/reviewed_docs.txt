@@ -1,0 +1,9 @@
+docs/directions/chatwoot.md
+docs/deployment/chatwoot_fly_runbook.md
+docs/directions/README.md
+docs/ops/credential_index.md
+docs/integrations/integration_readiness_dashboard.md
+docs/integrations/chatwoot_readiness.md
+deploy/chatwoot/fly.toml
+packages/integrations/chatwoot.ts
+scripts/ops/chatwoot-fly-smoke.sh

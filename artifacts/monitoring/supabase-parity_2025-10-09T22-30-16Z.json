@@ -1,0 +1,7 @@
+{
+  "event": "analytics.parity",
+  "status": "blocked",
+  "reason": "supabase.facts_table_missing",
+  "hint": "Run supabase/sql/analytics_facts_table.sql in Supabase to create the facts table.",
+  "timestamp": "2025-10-09T22:30:16.560Z"
+}

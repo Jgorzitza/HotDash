@@ -1,0 +1,58 @@
+{
+  "total": 4,
+  "success": 3,
+  "failure": 1,
+  "unknown": 0,
+  "failures": [
+    {
+      "decisionId": 103,
+      "status": "TIMEOUT",
+      "errorCode": "ETIMEDOUT",
+      "errorMessage": null,
+      "durationMs": 1500.55,
+      "attempt": 3,
+      "timestamp": "2025-10-09T14:15:12.483Z"
+    }
+  ],
+  "statuses": {
+    "success": 3,
+    "timeout": 1
+  },
+  "errorCodes": {
+    "etimedout": 1
+  },
+  "durations": [
+    241.12,
+    198.77,
+    1500.55,
+    265.43
+  ],
+  "timestamps": [
+    "2025-10-09T14:05:22.318Z",
+    "2025-10-09T14:10:41.904Z",
+    "2025-10-09T14:15:12.483Z",
+    "2025-10-09T14:22:57.118Z"
+  ],
+  "parseErrors": [],
+  "durationStats": {
+    "count": 4,
+    "averageMs": 551.47,
+    "p50Ms": 253.28,
+    "p95Ms": 1315.28,
+    "maxMs": 1500.55
+  },
+  "failureRate": 0.25,
+  "window": {
+    "start": "2025-10-09T14:05:22.318Z",
+    "end": "2025-10-09T14:22:57.118Z"
+  },
+  "parseErrorCount": 0,
+  "generatedAt": "2025-10-10T07:26:44.294Z",
+  "thresholds": {
+    "failureRate": 0.3,
+    "p95Ms": 1500,
+    "minSamples": 1
+  },
+  "status": "ok",
+  "alertReasons": []
+}
