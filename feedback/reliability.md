@@ -9,6 +9,53 @@ expires: 2025-10-21
 
 <!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
 
+## E1 Core Checklist (E1 Alignment)
+
+- Logging and evidence (required for every entry)
+  - [ ] Timestamp (ISO 8601 UTC)
+  - [ ] Command executed or script path
+  - [ ] Output/artifact path(s) or screenshot/report link(s)
+  - [ ] PR/commit link if applicable
+
+- Secrets and hygiene
+  - [ ] No plaintext secrets in repo or logs
+  - [ ] Use vault paths and GH/Fly environment secrets only
+  - [ ] .env.* files remain gitignored
+  - [ ] Secret scanning CI passes
+
+- Canonical stack guardrails
+  - [ ] Supabase Postgres only (no MySQL/Mongo/SQLite)
+  - [ ] React Router 7
+  - [ ] OpenAI + LlamaIndex
+  - [ ] No direct Redis clients except allowed Chatwoot deploy folder
+
+- CI evidence gates
+  - [ ] Unit tests (Vitest) pass
+  - [ ] Playwright checks (where applicable)
+  - [ ] Lighthouse report (where applicable)
+  - [ ] SSE soak (only if streaming)
+
+- Branch and governance
+  - [ ] Branch name: agent/<agent>/<molecule> or hotfix/<slug>
+  - [ ] Current local branch is the source of truth
+  - [ ] Do not modify docs/directions/** (manager-only)
+  - [ ] Do not edit feedback/manager.md
+
+- Current dev flow and Shopify
+  - [ ] Rehearse React Router 7 + Shopify CLI v3 dev flow
+  - [ ] Review Shopify helper files explicitly
+  - [ ] Do NOT rely on embed-token capture (deprecated)
+
+- Fly memory scaling
+  - [ ] Scale Fly instances to 2GB where needed; capture command and evidence path
+
+- Repo hygiene
+  - [ ] History rewrite complete; purge old secrets; rotate in external systems
+  - [ ] Consider Git LFS for large binaries flagged on push
+
+- Team comms
+  - [ ] If history was rewritten, notify team to reset local clones
+  - [ ] Add role-specific proof as needed (e.g., Reliability: /hc; Deployment: secrets mirroring; QA: ?mock=0 artifacts; Support/Chatwoot: token generation and webhooks)
 # HotDash Reliability Sprint Evidence Log
 - Started: 2025-10-11T01:01:50Z
 - Branch: agent/ai/staging-push
@@ -286,7 +333,7 @@ No pending migrations to apply.
 npm warn Unknown project config "[REDACTED]". This will stop working in the next major version of npm.
 npm warn Unknown project config "[REDACTED]". This will stop working in the next major version of npm.
 npm warn Unknown project config "[REDACTED]". This will stop working in the next major version of npm.
-[?25l[?2004h
+[?25l[?2004h
                                                                                            
   >  1. [REDACTED] [name: HotRodAN, org: [REDACTED], region: us-east-1]
                                                                                            
@@ -393,3 +440,53 @@ PROCESS	ID            	VERSION	REGION	STATE  	ROLE	CHECKS	LAST UPDATED
 app    	56837ddda06568	17     	ord   	stopped	    	      	2025-10-11T02:19:15Z	
 app    	d8dd9eea046d08	17     	ord   	started	    	      	2025-10-11T02:12:14Z	
 
+[2025-10-11T02:33:04Z] Task 5: Assessing decision_sync_events restoration
+[2025-10-11T02:33:04Z] $ psql "$DATABASE_URL" -c "SELECT to_regclass('public.decision_sync_events');"
+     to_regclass      
+[REDACTED]
+ [REDACTED]
+(1 row)
+
+[2025-10-11T02:33:37Z] $ psql "$DATABASE_URL" -c "SELECT count(*) AS total, max(created_at) AS max_created_at FROM public.decision_sync_events;"
+ERROR:  column "created_at" does not exist
+LINE 1: SELECT count(*) AS total, max(created_at) AS max_created_at ...
+                                      ^
+[2025-10-11T02:46:37Z] $ psql "$DATABASE_URL" -c "\d public.decision_sync_events"
+                   View "public.[REDACTED]"
+   Column   |           Type           | Collation | Nullable | Default 
+------------+[REDACTED]+-----------+----------+---------
+ decisionId | integer                  |           |          | 
+ status     | text                     |           |          | 
+ durationMs | numeric(10,2)            |           |          | 
+ errorCode  | text                     |           |          | 
+ attempt    | integer                  |           |          | 
+ timestamp  | timestamp with time zone |           |          | 
+ scope      | text                     |           |          | 
+
+[2025-10-11T02:49:30Z] $ psql "$DATABASE_URL" -c "SELECT count(*) AS total, max(timestamp) AS max_timestamp FROM public.decision_sync_events;"
+ total | max_timestamp 
+-------+---------------
+     0 | 
+(1 row)
+
+[2025-10-11T02:49:38Z] $ psql "$DATABASE_URL" -c "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name ILIKE 'notification%';"
+ table_name 
+------------
+(0 rows)
+
+[2025-10-11T02:49:48Z] $ curl -sS -D - "$SUPABASE_URL/rest/v1/decision_sync_events?select=*&limit=1" -H "apikey: $SUPABASE_ANON_KEY" -H "Authorization: Bearer $SUPABASE_ANON_KEY" -o /dev/null
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Content-Length: 2
+Connection: keep-alive
+Date: Sat, 11 Oct 2025 02:49:48 GMT
+Server: postgrest/13.0.7
+Content-Range: */*
+[REDACTED]: /[REDACTED]?limit=1&select=%2A
+Content-Profile: public
+[REDACTED]: *
+[REDACTED]: 128
+[REDACTED]: 67
+Via: kong/2.8.1
+
+[2025-10-11T02:49:56Z] Task 5 Results: decision_sync_events view exists with 0 records. No notification tables found in local DB. REST API access working (200 OK).
