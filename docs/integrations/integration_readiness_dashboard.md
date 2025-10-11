@@ -32,3 +32,46 @@
 - Confirm reliability completes git scrub before executing Supabase credential rotation and publish redistribution plan to deployment.
 - Track QA/Product/Support execution of the install broadcast tasks and log outcomes in respective feedback docs.
 - Ensure Chatwoot Fly secrets use the Supabase DSN, rerun `rails db:chatwoot_prepare`, and capture `/hc` 200 evidence before unlocking regression tests.
+
+## Actions Update — 2025-10-11 03:27 UTC
+
+### 🔄 Manager Direction Alignment Completed
+- **Updated direction received**: Aligned task list with local execution policy
+- **Key changes**: Shopify MCP validation required, secrets cleanup (no embed/session tokens), Chatwoot scope clarified
+- **Evidence path**: `feedback/integrations.md` updated with direction acknowledgment
+
+### 🏗️ Shopify MCP Validation Completed  
+- **Action**: Validated Admin flow prerequisites using Shopify Dev MCP
+- **Command**: `scripts/deploy/shopify-dev-mcp-staging-auth.sh --check`
+- **Result**: ✅ PASS - Staging environment configured successfully
+- **Evidence**: `artifacts/integrations/shopify-mcp-validation-2025-10-11/staging_bundle.env`
+- **Shop context**: hotroddash.myshopify.com confirmed active
+
+### 🔐 Secret Mirroring Audit Completed
+- **Action**: Analyzed current GitHub staging secrets against "required only" policy  
+- **Current**: 13 secrets identified, 3 need removal per direction
+- **Excluded**: SHOPIFY_EMBED_TOKEN_STAGING, CHATWOOT_REDIS_URL_STAGING, STAGING_SMOKE_TEST_URL
+- **Evidence**: `artifacts/integrations/secret-mirroring-2025-10-11/secret_audit_20251011T032554Z.md`
+- **Status**: Cleanup plan ready, awaiting manager approval for secret removal
+
+### 🤖 MCP Tools Validation Enhanced
+- **Action**: Additional testing of refresh_index tool with selective sources
+- **Test**: Successfully indexed docs/runbooks (18 documents) in mock mode  
+- **Performance**: Clean rebuild, proper artifact storage, JSON output schema validated
+- **Evidence**: `artifacts/integrations/mcp-tools-2025-10-11/selective_indexing_test_20251011T032743Z.log`
+- **Tools status**: 1/3 operational, 2/3 pending AI agent implementation
+
+### 📊 Current Integration Status Summary
+
+| Integration | Admin Flows | Secrets | MCP Tools | Status |
+|-------------|-------------|---------|-----------|---------|
+| GA MCP | N/A | ⏳ CIO escalation pending | ✅ Ready for credentials | BLOCKED |  
+| Shopify Admin | ✅ MCP validated | ✅ Required secrets confirmed | ✅ Endpoints documented | READY |
+| Chatwoot | 🔧 Health check pending | ✅ API tokens current | ✅ Webhook planned | IN PROGRESS |
+| LlamaIndex MCP | ✅ Tools registered | ✅ OpenAI key present | ✅ 1/3 operational | PARTIAL |
+
+### ⏭️ Next Sprint Actions
+- Complete Chatwoot health check resolution (503 errors)
+- Execute GitHub secrets cleanup (manager approval)  
+- Monitor GA MCP CIO escalation response
+- Coordinate with AI agent for query_support/insight_report implementation

@@ -28,21 +28,21 @@ Resolve at-risk conversations directly from the dashboard. The CX Escalations mo
 ### Core Architecture
 - **Runtime:** Chatwoot web + Sidekiq workers now live on Fly.io with dedicated resource allocation. Redis (Upstash) backs job queues and session management, while all conversation data, templates, and audit logs persist in Supabase for centralized compliance.
 - **Data Flow:** Every operator action (reply approval, escalation, resolution) writes first to Supabase `decision_log` table, then syncs to Chatwoot API. This ensures audit trail completeness even during API outages.
-- **Integration Layer:** The Shopify embed token authenticates both dashboard access and Chatwoot Fly communication. Token refresh happens automatically; manual intervention only required for credential rotation events.
+- **Integration Layer:** Standard Shopify App authentication handles both dashboard access and Chatwoot Fly communication. Authentication managed automatically through Shopify Admin context; manual intervention only required for credential rotation events.
 
 ### Persistence & Compliance
 - **Conversation Storage:** All conversation history, customer metadata, and template responses stored in Supabase with 90-day retention policy. NDJSON exports available at `artifacts/logs/` for compliance audits.
 - **Decision Tracking:** Every modal action generates a timestamped decision record with operator email, action type, and full payload. Query via Supabase client or export via `npm run ops:export-decisions`.
 - **Cross-Service Sync:** Chatwoot conversation status syncs bidirectionally with Supabase. Any sync failures trigger alerts to `customer.support@hotrodan.com` and `#occ-reliability`.
 
-### Migration & Access Patterns
-- **Chatwoot Fly Migration:** Service migration from legacy Fly Postgres to Chatwoot-on-Supabase architecture completed. All training scenarios now reference the new Supabase-backed storage with Fly.io compute layer.
-- **Credential Management:** Unified credential store in Supabase for Chatwoot API tokens, Shopify session management, and operator authentication. Any credential drift surfaces as modal errors—escalate immediately via `customer.support@hotrodan.com`.
-- **Monitoring & Alerts:** Synthetic checks validate end-to-end modal functionality every 5 minutes. Latency >300ms or error rates >2% trigger automated alerts to reliability team.
+### App Access & Development Workflow
+- **Shopify CLI v3 Integration:** Operators access OCC through standard Shopify Admin → Apps → HotDash navigation. Development and staging use `shopify app dev` and `shopify app deploy` workflows per Shopify CLI v3 best practices.
+- **React Router 7 Architecture:** Modal navigation and state management handled by React Router 7 routing patterns. No session token management required—authentication handled automatically through Shopify Admin context.
+- **Credential Management:** All API tokens managed through Shopify's standard app authentication flow. Any credential issues require standard Shopify app troubleshooting—escalate via `customer.support@hotrodan.com`.
 
 ### Operator Impact
-- **Performance:** Modal load times typically <200ms due to Supabase edge caching and Fly.io regional deployment.
-- **Reliability:** 99.9% availability target with automatic failover between Fly regions. Any extended outages (>5min) require escalation to ops manager.
+- **Performance:** Modal load times typically <200ms due to Supabase edge caching and optimized React Router 7 routing.
+- **Reliability:** 99.9% availability target with automatic failover. Standard Shopify app infrastructure ensures consistent access patterns.
 - **Evidence Trail:** All operator decisions immediately visible in Supabase audit views. Use `scope=ops` Memory logging for cross-reference with external systems.
 
 ---

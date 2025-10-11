@@ -1,0 +1,8 @@
+{"q": "How do I integrate with HotDash?", "ref": "HotDash provides several integration methods including API endpoints and webhook support. Check the documentation for specific implementation details.", "must_cite": ["hotrodan.com"]}
+{"q": "What are the pricing options for HotDash?", "ref": "HotDash offers multiple pricing tiers including a free tier for basic usage and paid plans with additional features.", "must_cite": ["hotrodan.com"]}
+{"q": "How do I configure webhooks in my application?", "ref": "Webhooks can be configured through the admin panel or via API calls. Set up your endpoint URL and select the events you want to receive.", "must_cite": ["decision_log", "curated"]}
+{"q": "What telemetry data does HotDash collect?", "ref": "HotDash collects usage metrics, performance data, and error events to improve the service quality.", "must_cite": ["telemetry_events"]}
+{"q": "How do I troubleshoot authentication issues?", "ref": "Authentication problems are typically caused by expired tokens or incorrect API keys. Check your credentials and token expiration.", "must_cite": ["curated"]}
+{"q": "What are the system requirements for HotDash?", "ref": "HotDash requires Node.js 18+ and supports modern web browsers. See the installation guide for detailed requirements.", "must_cite": ["hotrodan.com"]}
+{"q": "How do I set up monitoring and alerts?", "ref": "Monitoring can be configured through the dashboard with custom alert rules based on metrics and thresholds.", "must_cite": ["decision_log", "telemetry_events"]}
+{"q": "What data retention policies does HotDash have?", "ref": "Data retention varies by data type: logs are kept for 30 days, metrics for 90 days, and configuration data indefinitely.", "must_cite": ["curated"]}

@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "deployment": "DEPLOY-147",
+    "environment": "staging",
+    "generated_at": "2025-10-11T03:27:17Z",
+    "latency_target_ms": 300,
+    "feature_flags": {
+      "FEATURE_MODAL_APPROVALS": true,
+      "FEATURE_AI_ESCALATIONS": true,
+      "FEATURE_STAGING_TOGGLES": true
+    }
+  },
+  "endpoints": {
+    "shopify_admin": {
+      "base_url": "https://hotroddash.myshopify.com/admin/api/2024-10",
+      "graphql_url": "https://hotroddash.myshopify.com/admin/api/2024-10/graphql.json",
+      "mock_latency_ms": 150,
+      "live_latency_target_ms": 299
+    },
+    "chatwoot": {
+      "base_url": "https://chatwoot-staging.fly.dev/api/v1",
+      "webhook_url": "https://hotdash-staging.fly.dev/api/webhooks/chatwoot",
+      "mock_latency_ms": 85
+    },
+    "supabase": {
+      "base_url": "https://mmbjiyhsvniqxibzgyvx.supabase.co",
+      "mock_latency_ms": 95
+    }
+  },
+  "test_scenarios": {
+    "smoke_tests": [
+      {
+        "name": "dashboard_load_mock",
+        "path": "/app?mock=1",
+        "expected_status": 200,
+        "max_latency_ms": 2000,
+        "required_elements": ["Operator Control Center", "Sales Pulse", "CX Escalations"]
+      },
+      {
+        "name": "dashboard_load_live", 
+        "path": "/app?mock=0",
+        "expected_status": 200,
+        "max_latency_ms": 300,
+        "required_elements": ["Operator Control Center"],
+        "requires_auth": true
+      },
+      {
+        "name": "modal_approval_flow",
+        "path": "/app?mock=1",
+        "interaction": "cx_escalations_approve",
+        "expected_events": ["decision_log", "chatwoot_api_call"]
+      }
+    ]
+  },
+  "mock_data_overrides": {
+    "orders_with_anomaly": true,
+    "sla_breached_conversations": 2,
+    "low_inventory_alerts": 3,
+    "template_suggestions_available": true
+  }
+}

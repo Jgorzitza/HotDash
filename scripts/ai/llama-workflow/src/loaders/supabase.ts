@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { Document } from 'llamaindex';
-import { getConfig, getSupabaseKey } from '../config.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { loadConfig } from '../config.js';
+import { sanitizeTelemetry } from '../util/sanitize.js';
 
 async function fetchTable(client: any, tableName: string, limit = 1000): Promise<any[]> {
   try {
@@ -148,18 +149,26 @@ export async function fetchTelemetryDocs(): Promise<Document[]> {
         text += ` (user: ${row.user_id})`;
       }
 
-      if (text.length > 5) { // Only include events with some content
+      // Sanitize PII from telemetry data
+      const { sanitized: sanitizedPayload, redacted } = sanitizeTelemetry(text);
+      const cleanText = typeof sanitizedPayload === 'string' ? sanitizedPayload : JSON.stringify(sanitizedPayload);
+
+      if (cleanText.length > 5) { // Only include events with some content
         const doc = new Document({
           id_: `telemetry:${row.id}`,
-          text: text,
+          text: cleanText,
           metadata: {
             source: 'supabase',
             table: 'telemetry_events',
             created_at: row.created_at,
             event_name: row.event_name,
-            user_id: row.user_id,
-            session_id: row.session_id,
+            user_id: row.user_id ? '[REDACTED]' : undefined, // Redact user_id in metadata too
+            session_id: row.session_id ? '[REDACTED]' : undefined, // Redact session_id in metadata too
             id: row.id,
+            sanitization: {
+              redacted_count: redacted.redactedCount,
+              redacted_types: redacted.redactedTypes
+            }
           }
         });
 

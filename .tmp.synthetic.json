@@ -1,0 +1,2 @@
+[2025-10-11T02:08:11Z] $ node scripts/ci/synthetic-check.mjs --url "https://hotdash-staging.fly.dev/app?mock=0" --samples 5 --json
+[synthetic-check] No target URL provided via [REDACTED] / [REDACTED] / [REDACTED].

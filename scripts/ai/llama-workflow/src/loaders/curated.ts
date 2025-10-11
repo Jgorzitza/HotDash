@@ -1,8 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { Document } from 'llamaindex';
-import { getConfig, getSupabaseKey } from '../config.js';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { loadConfig } from '../config.js';
+import { sanitizeCuratedReply } from '../util/sanitize.js';
 
 export async function fetchCuratedDocs(): Promise<Document[]> {
   const config = getConfig();
@@ -65,7 +66,9 @@ export async function fetchCuratedDocs(): Promise<Document[]> {
           const answerText = String(row.answer).trim();
           
           if (questionText.length > 0 && answerText.length > 0) {
-            const text = `Q: ${questionText}\nA: ${answerText}`;
+            // Sanitize PII from support content
+            const { question: cleanQuestion, answer: cleanAnswer, redacted } = sanitizeCuratedReply(questionText, answerText);
+            const text = `Q: ${cleanQuestion}\nA: ${cleanAnswer}`;
             
             const doc = new Document({
               id_: `curated:${row.id}`,
@@ -76,8 +79,12 @@ export async function fetchCuratedDocs(): Promise<Document[]> {
                 id: row.id,
                 tags: row.tags || [],
                 updated_at: row.updated_at,
-                question_length: questionText.length,
-                answer_length: answerText.length,
+                question_length: cleanQuestion.length,
+                answer_length: cleanAnswer.length,
+                sanitization: {
+                  redacted_count: redacted.redactedCount,
+                  redacted_types: redacted.redactedTypes
+                }
               }
             });
 

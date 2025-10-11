@@ -17,6 +17,16 @@ expires: 2025-10-19
 
 > Manager authored. Marketing must not create or alter direction docs; channel updates through manager with evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands (build docs, export assets) without approval. Guardrails:
+
+- Scope: local repo assets and docs; no remote infra or git mutations under auto-run.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/marketing.md; store assets under artifacts/marketing/.
+- Secrets: never print values; reference names only.
+- Retry: 2 attempts then escalate with logs.
+
 - Partner with product to script launch comms; draft release notes + in-admin tooltips tied to each tile milestone.
 - Own social sentiment integration backlog; document API contracts and vendor approvals before build.
 - Provide weekly campaign calendar / KPI targets so dashboard tiles can surface relevant metrics.
@@ -29,6 +39,10 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Work through these items now and document progress in `feedback/marketing.md`; include timestamps, approvals, and the assets you deliver. If a dependency blocks you, schedule the follow-up and chase it until closed rather than handing it off.
+
+## Aligned Task List — 2025-10-11
+- Update comms to reflect RR7 + CLI v3 flow; remove any mention of embed/session tokens.
+- Keep messaging within canonical toolkit; evidence logs in `feedback/marketing.md`.
 
 1. Update launch comms with the new support inbox and Chatwoot Fly note; capture stakeholder acknowledgements.
 2. Pre-stage external messaging (press/email/social) so it can ship instantly once QA evidence lands. Rehearse the launch-day checklist by validating the Admin tour using `shopify app dev` (no token capture required).

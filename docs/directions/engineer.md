@@ -17,6 +17,33 @@ expires: 2025-10-19
 
 > Manager authored. Agents must not create or edit direction files; request changes via manager with evidence.
 
+## Local Execution Policy (Auto-Run)
+
+You are authorized to run local, non-interactive commands and scripts without asking for approval each time. Follow these guardrails:
+
+- Scope and safety
+  - Operate inside /home/justin/HotDash/hot-dash and local dev services (Supabase 127.0.0.1).
+  - Do not change remote infrastructure or git history under this policy. Status/read-only checks are okay.
+  - Avoid destructive ops (rm -rf outside project, docker system prune, sudo apt, etc.).
+
+- Non-interactive only
+  - Add flags to avoid prompts; do not use interactive shells/editors.
+  - Disable pagers (git --no-pager; pipe to files). No less/man/vim.
+
+- Evidence logging
+  - Log timestamp, command, output path(s) in feedback/engineer.md; put large outputs under artifacts/engineer/.
+
+- Secrets handling
+  - Load from vault/env; never print secret values. Reference variable names only.
+
+- Tooling specifics
+  - Supabase via npx supabase for local status/start/stop; no remote ops.
+  - Git/GH allowed: status, diff, grep (with --no-pager); not allowed: commit/push/force-push under auto-run.
+  - Prefer rg; fallback grep -nE.
+
+- Retry and escalate
+  - Retry up to 2 times then escalate with evidence.
+
 - Ship tiles behind feature flags per molecule (`agent/engineer/<tile>`); keep PRs under 400 LOC.
 - Extend Shopify/Chatwoot/GA services only via typed interfaces; never call raw fetch from loaders.
 - When touching Shopify surfaces, pull contracts and workflows from the Shopify developer MCP (`shopify-dev-mcp`)—no guessing or ad-hoc endpoints.
@@ -46,4 +73,18 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Wire the Supabase edge function (`supabase/functions/occ-log`) into the app logging pipeline and document deployment steps.
 - Participate in the Monday/Thursday stack compliance audit, focusing on code references to deprecated stacks or secrets; log remediation steps.
 - Clear the outstanding TypeScript build failures (`npm run typecheck`) by repairing the Chatwoot escalation types, Supabase memory client promises, and AI script typings before handing back to QA; log each fix + command output in `feedback/engineer.md` and re-run the full typecheck until it exits 0.
+
+## Aligned Task List — 2025-10-11
+- Canonical toolkit enforcement
+  - Run locally: `node scripts/ci/stack-guard.mjs` and fix any violations (no MySQL/Mongo/SQLite, no direct `redis://` in app/packages). CI will block otherwise.
+- Shopify Admin dev flow
+  - Use RR7 + Shopify CLI v3 only. Start Admin via `shopify app dev`. Do not capture or inject session/embed tokens.
+  - Reference: `docs/dev/appreact.md`, `docs/dev/authshop.md`, `docs/dev/session-storage.md`.
+  - Use Shopify Dev MCP (`shopify-dev-mcp`) for Admin contracts; do not guess endpoints or shapes.
+- Tests and fixtures
+  - Keep `mock=1` green. For `mock=0` smoke, use Admin login creds (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`), not tokens.
+- Supabase only
+  - Ensure all datasources and Prisma configs target Supabase Postgres; remove any alternates.
+- Evidence
+  - For every change, log timestamp, command, and output path in `feedback/engineer.md`.
 - Run the Canonical Toolkit Guard locally (`node scripts/ci/stack-guard.mjs`) and remove any violations (alt DBs, direct redis calls in app code). PRs will fail if violations remain.

@@ -1,0 +1,3 @@
+regex:postgres(ql)?://[^ \t\n`"']*supabase\.co[^ \t\n`"']*==>postgresql://***REDACTED***
+regex:postgres(ql)?://[^ \t\n`"']*supabase\.com[^ \t\n`"']*==>postgresql://***REDACTED***
+regex:redis://[^ \t\n`"']*upstash\.io[^ \t\n`"']*==>redis://***REDACTED***

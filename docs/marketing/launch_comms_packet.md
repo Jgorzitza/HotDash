@@ -23,7 +23,7 @@ expires: 2025-10-18
 | Security incident response | Deployment + Reliability | ✅ Clearance received 2025-10-10 16:00 UTC — existing secrets validated; external messaging stays *on hold* until QA + embed token greenlights | `feedback/manager.md` (2025-10-10 16:00Z), `feedback/reliability.md` (2025-10-10 15:55Z), `feedback/marketing.md` (security status log) |
 
 **Security incident status:** Git history scrub completed (`af1d9f1` pushed 2025-10-10 08:12 UTC). Product + reliability validated existing Supabase credentials at 2025-10-10 16:00 UTC, so no rotation required. Clearance evidence remains archived for audit even as external sends stay on hold pending QA.
-**QA gate:** `https://hotdash-staging.fly.dev/app?mock=0` remains HTTP 410 as of 2025-10-10 07:57 UTC. Hold all external sends until QA posts sustained 200 + sub-300 ms synthetic evidence (DEPLOY-147) **and** reliability delivers the Chatwoot Fly embed token for Shopify Admin.
+**QA gate:** `https://hotdash-staging.fly.dev/app?mock=0` remains HTTP 410 as of 2025-10-10 07:57 UTC. Hold all external sends until QA posts sustained 200 + sub-300 ms synthetic evidence (DEPLOY-147). Admin tour validation uses the Shopify CLI 3 dev flow (no embed/session token).
 **Support inbox & Chatwoot Fly note:** The primary escalation channel is customer.support@hotrodan.com, which routes to Chatwoot hosted on Fly.io. All operator-facing copy should reference this inbox and avoid legacy addresses.
 **English-only scope:** Launch surfaces ship in English. French strings stay in this packet for localization QA only (see `docs/marketing/translation_review_request_2025-10-07.md`).
 **Readiness evidence:** Reference Supabase parity (01:25Z) + retry snapshot (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`), Fly staging smoke (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`), and Shopify staging validation (`feedback/reliability.md`, 2025-10-10 01:14 UTC) when answering telemetry questions.
@@ -32,7 +32,16 @@ expires: 2025-10-18
 - Replace tooltip overlay placeholder with annotated screenshots from design handoff.
 - Attach the first sustained HTTP 200 artifact for `https://hotdash-staging.fly.dev/app?mock=0` (curl log + synthetic JSON); latest probe at 2025-10-10 07:57 UTC still 410 (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log`).
 - Confirm Supabase NDJSON bundle (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) remains current; replace if reliability drops a newer export.
-- Verify Chatwoot Fly embed token synced (Shopify Admin environment + vault) and document evidence path from reliability before unpausing releases.
+- Verify Shopify Admin tour validated using Shopify CLI 3 dev flow and documented by Reliability (link evidence path) before unpausing releases.
+
+## Assets (Staged for GA)
+
+- Email: artifacts/marketing/assets/email/launch_email_v1.md
+- Blog: artifacts/marketing/assets/blog/ga_launch_post_v1.md
+- Social (X): artifacts/marketing/assets/social/x_thread_v1.md
+- Social (LinkedIn): artifacts/marketing/assets/social/linkedin_post_v1.md
+- Press note: artifacts/marketing/assets/press/press_note_v1.md
+- Approvals folder: artifacts/marketing/assets/approvals/
 
 ## Release Cadence Alignment
 

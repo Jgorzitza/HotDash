@@ -11,7 +11,7 @@
       "version": "1.0.0",
       "description": "Refreshes the LlamaIndex vector store with latest documents from configured sources",
       "category": "ai-workflow",
-      "handler": "scripts/ai/build-llama-index.ts",
+      "handler": "scripts/ai/llama-workflow/dist/cli.js refresh",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -67,25 +67,22 @@
       "version": "1.0.0",
       "description": "Queries the LlamaIndex knowledge base for support-related information",
       "category": "ai-workflow",
-      "handler": "TBD - pending AI agent implementation",
+      "handler": "scripts/ai/llama-workflow/dist/cli.js query",
       "input_schema": {
         "type": "object",
         "properties": {
-          "query": {
+          "q": {
             "type": "string",
             "description": "Natural language query to search the knowledge base",
             "required": true
           },
-          "context": {
-            "type": "string",
-            "description": "Additional context to refine the query",
-            "required": false
-          },
-          "max_results": {
+          "topK": {
             "type": "number",
-            "description": "Maximum number of results to return",
+            "description": "Number of top relevant sources to return (1-20)",
             "required": false,
-            "default": 5
+            "default": 5,
+            "minimum": 1,
+            "maximum": 20
           }
         }
       },
@@ -134,26 +131,23 @@
       "version": "1.0.0",
       "description": "Generates AI-powered insights from indexed knowledge base and telemetry data",
       "category": "ai-workflow", 
-      "handler": "TBD - pending AI agent implementation",
+      "handler": "scripts/ai/llama-workflow/dist/cli.js insight",
       "input_schema": {
         "type": "object",
         "properties": {
-          "report_type": {
+          "window": {
             "type": "string",
-            "enum": ["anomaly_summary", "trend_analysis", "knowledge_gaps"],
-            "description": "Type of insight report to generate",
-            "required": true
-          },
-          "time_range": {
-            "type": "string",
-            "description": "Time range for analysis (e.g., '7d', '30d', '1h')",
+            "pattern": "^[0-9]+[dh]$",
+            "description": "Time window for analysis (e.g., 1d, 7d, 24h)",
             "required": false,
-            "default": "7d"
+            "default": "1d"
           },
-          "filters": {
-            "type": "object",
-            "description": "Additional filters for data analysis",
-            "required": false
+          "format": {
+            "type": "string",
+            "enum": ["md", "txt", "json"],
+            "description": "Output format for the report",
+            "required": false,
+            "default": "md"
           }
         }
       },

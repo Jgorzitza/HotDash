@@ -6,15 +6,15 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
-# Enablement Distribution Packet — Staging Ready (Hold for QA Evidence + Embed Token)
+# Enablement Distribution Packet — Staging Ready (Hold for QA Evidence + RR7 Testing)
 
 ## Distribution Clearance Gates
-**Status:** ⏳ **HOLD** - Distribution blocked pending QA evidence and Shopify embed token delivery
+**Status:** ⏳ **HOLD** - Distribution blocked pending QA evidence and React Router 7 + Shopify CLI v3 validation
 
 ### Required Evidence (Update Before Send)
 - [ ] **QA Evidence:** `?mock=0` sustained HTTP 200 response logged at `artifacts/integrations/shopify/<date>/curl_mock0_<timestamp>.log`
 - [ ] **Synthetic Check:** Sub-300ms latency confirmed with JSON artifact at `artifacts/monitoring/synthetic-check-<timestamp>.json`
-- [ ] **Shopify Embed Token:** Session token captured and validated per `docs/runbooks/shopify_embed_capture.md` workflow
+- [ ] **Development Workflow:** Shopify CLI v3 `shopify app dev` and routing validation per updated development standards
 - [ ] **Supabase Sync:** Latest decision export available at `artifacts/logs/supabase_decision_export_<timestamp>.ndjson`
 
 **Action Required:** Once all four evidence gates clear, replace `<timestamp>` placeholders below with actual artifact paths and execute immediate distribution.
@@ -23,7 +23,7 @@ expires: 2025-10-18
 
 ## Internal Training Team Notification
 
-### Subject: OCC Training Packet Ready - Updated Job Aids & Session Token Integration
+### Subject: OCC Training Packet Ready - Updated Job Aids & React Router 7 + Shopify CLI v3 Integration
 
 ```
 Team,
@@ -31,14 +31,14 @@ Team,
 The updated operator training packet is ready for immediate distribution. Key updates include:
 
 ✅ **Enhanced Architecture Documentation:**
-- CX Escalations job aid updated with comprehensive Chatwoot-on-Supabase details
-- Sales Pulse job aid enhanced with cross-modal data architecture 
+- CX Escalations job aid updated with React Router 7 navigation patterns
+- Sales Pulse job aid enhanced with Shopify CLI v3 development workflow
 - All support references updated to customer.support@hotrodan.com
 
-✅ **Session Token Workflow Integration:**
-- Distribution packet includes Shopify embed token capture procedures
-- Training scenarios updated to reference session token authentication
-- Modal authentication flow documented for operator troubleshooting
+✅ **React Router 7 + Shopify CLI v3 Integration:**
+- Distribution packet includes Shopify CLI v3 development procedures
+- Training scenarios updated to reference React Router 7 navigation patterns
+- Modal routing flow documented for operator development understanding
 
 ✅ **Evidence Package:**
 - QA Evidence: <PLACEHOLDER - artifacts/integrations/shopify/<date>/curl_mock0_<timestamp>.log>
@@ -46,19 +46,19 @@ The updated operator training packet is ready for immediate distribution. Key up
 - Supabase Export: <PLACEHOLDER - artifacts/logs/supabase_decision_export_<timestamp>.ndjson>
 
 **Updated Materials:**
-- docs/enablement/job_aids/cx_escalations_modal.md (enhanced architecture section)
-- docs/enablement/job_aids/sales_pulse_modal.md (added data architecture section)
-- docs/enablement/dry_run_training_materials.md (session token workflow integration)
+- docs/enablement/job_aids/cx_escalations_modal.md (React Router 7 navigation patterns)
+- docs/enablement/job_aids/sales_pulse_modal.md (Shopify CLI v3 development workflow)
+- docs/enablement/dry_run_training_materials.md (RR7 + CLI v3 integration)
 
 **Immediate Actions Required:**
 1. Review updated job aids and confirm accuracy for your team's training scenarios
-2. Validate session token workflow matches your auth troubleshooting procedures
+2. Validate React Router 7 + Shopify CLI v3 workflow matches your development procedures
 3. Reply with ✅ once your team has reviewed and is ready for 2025-10-16 rehearsal
 
 **Access & Support:**
-- Staging: https://hotdash-staging.fly.dev/app (requires embed token per workflow)
-- Issues: customer.support@hotrodan.com (Chatwoot-on-Supabase routing)
-- Emergency: #occ-reliability for credential/access issues
+- Staging: https://hotdash-staging.fly.dev/app (access via Shopify Admin → Apps → HotDash)
+- Issues: customer.support@hotrodan.com (standard support routing)
+- Emergency: #occ-reliability for infrastructure/access issues
 
 Next milestone: 2025-10-16 dry run rehearsal with full training packet deployment.
 
@@ -73,8 +73,8 @@ Enablement Team
 ### Primary Recipients
 - [ ] **Support Lead (Morgan Patel):** Email notification + training packet link
 - [ ] **Product (Riley Chen):** Training agenda confirmation + evidence package
-- [ ] **QA Lead:** Updated scenarios + session token workflow validation
-- [ ] **Reliability:** Session token workflow review + synthetic check coordination
+- [ ] **QA Lead:** Updated scenarios + React Router 7 + Shopify CLI v3 workflow validation
+- [ ] **Reliability:** Development workflow review + synthetic check coordination
 
 ### Secondary Notifications
 - [ ] **Design:** Updated job aids with architecture callouts for screenshot annotation
@@ -89,32 +89,32 @@ Enablement Team
 
 ---
 
-## Session Token Workflow - Training Integration
+## React Router 7 + Shopify CLI v3 Workflow - Training Integration
 
-### Operator Troubleshooting Quick Reference
-**Issue:** Modal fails to load or shows "Authentication Required" error
+### Operator Development Quick Reference
+**Issue:** Modal navigation fails or shows routing errors
 
 **Steps:**
-1. **Verify Embed Context:** Confirm user accessed dashboard through Shopify Admin → Apps → HotDash (not direct URL)
-2. **Check Session Token:** Modal should automatically authenticate via Shopify embed token - no manual token entry required
-3. **Credential Validation:** If authentication persists, escalate to `customer.support@hotrodan.com` with screenshot
-4. **Fallback Path:** Direct operators to refresh Shopify Admin tab and re-launch OCC from Apps menu
+1. **Verify Development Setup:** Confirm local development using `shopify app dev` command
+2. **Check Router Configuration:** Modal navigation handled by React Router 7 routing patterns - verify route definitions
+3. **Development Validation:** If routing persists, escalate to `customer.support@hotrodan.com` with screenshot
+4. **Fallback Path:** Restart development server with `shopify app dev --reset` and verify modal routes
 
 ### Training Scenario Updates
 **CX Escalations Modal:**
-- Pre-flight checklist now includes session token validation steps
-- Error handling section updated with embed authentication troubleshooting
-- Support escalation path clarified for credential drift scenarios
+- Pre-flight checklist now includes React Router 7 route validation steps
+- Error handling section updated with routing troubleshooting procedures
+- Support escalation path clarified for development workflow scenarios
 
 **Sales Pulse Modal:**
-- Cross-modal authentication flow documented for data consistency
-- Session token refresh procedures added to decision logging workflow
-- Evidence capture updated to include authentication state verification
+- Cross-modal navigation flow documented using React Router 7 patterns
+- Shopify CLI v3 deployment procedures added to training workflow
+- Evidence capture updated to include development environment validation
 
 ### Documentation Cross-References
-- **Session Token Capture:** `docs/runbooks/shopify_embed_capture.md` - for reliability troubleshooting
-- **Authentication Flow:** `docs/dev/authshop.md` - for technical deep-dive during training
-- **Embed Integration:** `app/routes/app.tools.session-token.tsx` - for advanced operator scenarios
+- **Shopify CLI v3 Workflow:** `docs/dev/shopify_cli_setup.md` - for development environment setup
+- **React Router 7 Patterns:** `docs/dev/routing.md` - for technical deep-dive during training
+- **Modal Navigation:** App router configuration - for advanced development scenarios
 
 ---
 
@@ -124,7 +124,7 @@ Enablement Team
 1. **Curl Log Verification:** Confirm `?mock=0` returns consistent HTTP 200 with <300ms response time
 2. **Synthetic Check JSON:** Validate monitoring data shows sustained performance under load
 3. **Supabase Export:** Verify decision log export contains expected training scenario data
-4. **Session Token Test:** Confirm embed token workflow produces valid authentication for modal access
+4. **Development Workflow Test:** Confirm Shopify CLI v3 development setup and React Router 7 navigation work correctly
 
 ### Artifact Organization
 ```

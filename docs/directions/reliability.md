@@ -17,6 +17,29 @@ expires: 2025-10-19
 
 > Manager authored. Reliability team must not edit/create direction docs; escalate changes via manager with supporting evidence.
 
+## Local Execution Policy (Auto-Run)
+
+Stop asking for permission dialogs during normal local work. You are authorized to run local, non-interactive commands and scripts without approval, with these guardrails:
+
+- Scope and safety
+  - Keep actions to /home/justin/HotDash/hot-dash and local Supabase (127.0.0.1). No remote infra changes (Fly scaling/secrets) under auto-run; status/list checks are fine.
+  - No destructive ops (rm -rf outside project, docker system prune, sudo apt, etc.).
+
+- Non-interactive discipline
+  - Always disable pagers (git --no-pager; avoid less/man). Prefer piping outputs to files in artifacts/reliability/.
+  - If a tool forces interactivity, switch to a non-interactive alternative or log a blocker after 2 attempts.
+
+- Tooling specifics from recent runs
+  - Supabase: use npx supabase (not global). Allowed: status/start/stop/reset locally. Redact keys in logs.
+  - Git/GH: include --no-pager; cap output and save to artifacts.
+  - Grep: prefer rg if installed; fallback to grep -nE.
+
+- Evidence and secrets
+  - Log timestamp, command, output paths in feedback/reliability.md. Never print secret values; reference env names only.
+
+- Retry and escalate
+  - Retry up to 2 times, then escalate with captured logs.
+
 - Own CI/CD health: ensure tests.yml + evidence.yml stay green; unblock agents on pipeline failures within 1h.
 - Harden infrastructure configs (Shopify app, Supabase, MCP hosts) with secret rotation and least-privilege policies.
 - Monitor performance budgets (tile loader < 300ms mocked, < 800ms live) using synthetic checks logged in feedback/reliability.md.
@@ -30,6 +53,20 @@ expires: 2025-10-19
 
 ## Current Sprint Focus — 2025-10-12
 Work every open infrastructure blocker to completion—own the item until evidence is delivered. Execute the tasks below in order and log progress in `feedback/reliability.md`. Every blocker update must include the command you ran, the timestamp, and the resulting log/output; only escalate after two documented attempts.
+
+## Aligned Task List — 2025-10-11
+- Canonical toolkit
+  - Enforce Supabase-only DB, React Router 7, OpenAI+LlamaIndex; no direct Redis in app code. CI Stack Guard will block violations.
+- Shopify Admin dev flow
+  - Validate RR7 + CLI v3 flow; do not capture/mirror session tokens. Evidence: `shopify app dev` output + Admin screenshot.
+- Fly memory scaling
+  - Scale to 2GB for relevant apps (Chatwoot, embedded app if needed). Persist in fly.toml or via CLI; log commands and outputs.
+- Health checks
+  - Verify Chatwoot health endpoint path and update `deploy/chatwoot/fly.toml` if necessary; log curl + Fly logs evidence.
+- Secret hygiene
+  - Run Gitleaks locally if needed; ensure artifacts/logs are sanitized. No DSNs/tokens in logs or PRs.
+- Evidence
+  - Log all actions in `feedback/reliability.md` with timestamps and command outputs.
 
 1. **Local Supabase readiness**
    - Ensure every developer and CI runner uses the Supabase Postgres datasource. Document the steps (`supabase start`, `.env.local`) in `feedback/reliability.md` and confirm `DATABASE_URL` points at `postgresql://postgres:postgres@127.0.0.1:54322/postgres` (see `docs/runbooks/supabase_local.md`).

@@ -45,7 +45,7 @@ export function getConfig(): Config {
   } catch (error) {
     console.error('Configuration validation failed:');
     if (error instanceof z.ZodError) {
-      console.error(error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join('\n'));
+      console.error(error.issues.map((e: z.ZodIssue) => `${e.path.join('.')}: ${e.message}`).join('\n'));
     }
     process.exit(1);
   }

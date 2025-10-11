@@ -20,21 +20,58 @@ COMMAND/Script: repo doc edits (see git diff in upcoming PR); no scripts execute
 PATHS (changed earlier for context): docs/marketing/launch_comms_packet.md; docs/marketing/product_approval_packet_2025-10-07.md; docs/marketing/launch_faq.md
 GATING/DEPENDENCIES:
 - QA: Sustained HTTP 200 for https://hotdash-staging.fly.dev/app?mock=0 with archived evidence (DEPLOY-147). Ref: docs/marketing/launch_comms_packet.md # Go-live trigger checklist.
-- Reliability: Shopify Admin embed token delivered and escrowed (vault/occ/shopify/embed_token_staging.env) + GH env mirror; confirm evidence in feedback/reliability.md. Ref: docs/runbooks/shopify_embed_capture.md, docs/ops/credential_index.md.
+- Reliability: Admin tour validated via Shopify CLI 3 dev flow (no embed/session token) and logged in feedback/reliability.md.
 - Design: Tooltip placement overlays/screenshots for Admin; placeholders remain until delivered. Ref: docs/design/tooltip_modal_annotations_2025-10-09.md.
 REQUESTS FOR MANAGER:
 1) Stakeholders for approvals — confirm names/handles for Support lead, Product lead, Designer to route comms approvals; I will circulate and capture evidence in artifacts/marketing/assets/approvals/.
 2) Scheduling tooling — approve Hootsuite (vault/occ/hootsuite/api_key.env listed in credential map) or confirm manual-send playbook preference; I’ll document the day-of sequence accordingly.
-3) Shopify Admin host param — confirm the canonical host value in docs/runbooks/shopify_embed_capture.md is current for staging; greenlight its use in enablement screenshots and Playwright.
+3) Shopify Admin host param — confirm the canonical host value is current for staging (we will rely on CLI dev validation; no token capture in comms) for enablement screenshots and Playwright.
 4) Timeline — confirm staging go/no-go window and target production launch window so we can lock the comms calendar.
 5) Scope confirmation — maintain English-only launch; confirm if any localization scope has reopened before I proceed with translations.
-6) Admin overlays — confirm when to capture annotated screenshots post-embed token; I’ll link assets from the comms packet when delivered.
+6) Admin overlays — confirm when to capture annotated screenshots post-CLI validation; I’ll link assets from the comms packet when delivered.
 NEXT READY STEPS (post-manager review):
 - Route updated copy for approvals and archive acknowledgements (PDF/image) under artifacts/marketing/assets/approvals/.
-- Pre-stage email/blog/social/press assets with explicit send triggers (QA 200s + embed token delivered); link from docs/marketing/launch_comms_packet.md.
-- Rehearse Admin tour using /app/tools/session-token, capture sanitized evidence in artifacts/marketing/dry_runs/.
+- Pre-stage email/blog/social/press assets with explicit send triggers (QA 200s + CLI dev validation confirmed); link from docs/marketing/launch_comms_packet.md.
+- Rehearse Admin tour via CLI dev flow; capture sanitized evidence in artifacts/marketing/dry_runs/.
 EVIDENCE LINKS: diffs pending PR; approvals to be archived under artifacts/marketing/assets/approvals/.
 NOTES: Compliant with direction governance (manager-only authorship for docs/directions/**). This entry is status-only per WARP rules.
+
+[2025-10-11T03:22:18Z] EXECUTION: Pre-staged external messaging assets and aligned comms per updated direction
+ACTION: Created initial GA draft assets (email/blog/social/press) with send triggers; added enablement readiness note; updated comms to remove embed/session token references in favor of Shopify CLI 3 dev validation.
+PATHS: artifacts/marketing/assets/email/launch_email_v1.md; artifacts/marketing/assets/blog/ga_launch_post_v1.md; artifacts/marketing/assets/social/x_thread_v1.md; artifacts/marketing/assets/social/linkedin_post_v1.md; artifacts/marketing/assets/press/press_note_v1.md; docs/marketing/enablement_readiness_2025-10-16.md; docs/marketing/launch_comms_packet.md; docs/marketing/support_training_script_2025-10-16.md
+EVIDENCE: directory tree created under artifacts/marketing/; diffs in docs reflecting CLI v3 validation language.
+NOTES: EN-only scope; canonical toolkit references maintained (Supabase, Chatwoot on Fly, React Router 7, OpenAI + LlamaIndex).
+
+[2025-10-11T03:30:47Z] CANON DIGEST: docs/directions/marketing.md
+SUMMARY:
+- Canon-first; manager-only authorship for docs/directions/**; self-testing mandate; secrets via credential index only.
+- Local Execution Policy (Auto-Run): local, non-interactive ops only; disable pagers; log evidence in feedback/marketing.md; never print secrets.
+- Aligned Task List — 2025-10-11: remove embed/session token mentions; reflect RR7 + Shopify CLI v3 validation; update comms; pre-stage external messaging; coordinate enablement; draft variants/testimonials; assemble release-day assets; participate in compliance audit.
+EVIDENCE: docs/directions/marketing.md; docs/directions/README.md
+
+[2025-10-11T03:30:47Z] GATING AND DEPENDENCIES
+- [ ] QA: Sustained HTTP 200 at https://hotdash-staging.fly.dev/app?mock=0 with archived evidence (DEPLOY-147)
+- [ ] Reliability: Admin tour validated via Shopify CLI 3 dev flow (no tokens) and logged in feedback/reliability.md
+- [ ] Design: Tooltip placement overlays/screenshots delivered; placeholders until then
+- [ ] Stakeholders: Approvals captured (Support lead, Product lead, Designer) and archived under artifacts/marketing/assets/approvals/
+
+[2025-10-11T03:30:47Z] OPEN QUESTIONS
+1) Stakeholders for approvals — confirm names/handles (Support lead, Product lead, Designer)
+2) Scheduling tooling — approve Hootsuite or confirm manual-send plan
+3) Shopify Admin host/navigation specifics — confirm canonical details for staging screenshots (using CLI dev validation; no tokens mentioned in comms)
+4) Launch windows — staging go/no-go and production target to lock comms calendar
+
+[2025-10-11T03:35:34Z] EXECUTION: Approval request draft + CLI dev rehearsal prep
+ACTION: Created approval request template and linked assets in launch comms packet; prepared CLI dev rehearsal plan and placeholder session notes (no tokens, EN-only).
+PATHS: artifacts/marketing/assets/approvals/approval_request_2025-10-11.md; docs/marketing/launch_comms_packet.md (Assets section); artifacts/marketing/dry_runs/cli_dev_rehearsal_plan_2025-10-11.md; artifacts/marketing/dry_runs/session_cli_dev_notes_2025-10-11T0335Z.md
+EVIDENCE: file paths above; screenshots to be added under artifacts/marketing/dry_runs/screenshots/ during live rehearsal.
+NOTES: Ready to route approvals to stakeholders once names/handles confirmed by Manager; will capture acknowledgements under artifacts/marketing/assets/approvals/.
+
+[2025-10-11T03:40:30Z] EXECUTION: Staging endpoint probe (non-interactive)
+ACTION: Ran curl against https://hotdash-staging.fly.dev/app?mock=0 to capture current status without tokens.
+OUTPUT (summary): HTTP 410, time_total 0.553528
+PATHS: artifacts/marketing/dry_runs/mock0_probe_2025-10-11T0340Z.log
+NOTES: Continue to hold external sends until sustained 200s per gate; proceed with CLI dev tour rehearsal for screenshots.
 
 ## 2025-10-11T01:15:00Z - Support Team Coordination: Updated Contact Information
 **Contact:** Support agent coordinating on customer.support@hotrodan.com integration

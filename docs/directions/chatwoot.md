@@ -17,6 +17,17 @@ expires: 2025-10-17
 
 > Manager authored. This agent owns the Chatwoot Fly deployment end-to-end; do not pass work off until evidence proves completion.
 
+## Local Execution Policy (Auto-Run)
+
+You may run local, non-interactive commands and scripts without approval. Guardrails:
+
+- Scope: local repo and local Supabase; under auto-run do not change Fly apps or secrets. Status/list checks are fine.
+- Non-interactive: disable pagers; avoid interactive prompts.
+- Evidence: log timestamp, command, outputs in feedback/chatwoot.md; artifacts under artifacts/integrations/ or artifacts/chatwoot/.
+- Secrets: use vault/env; never print values.
+- Tooling: npx supabase for local; git/gh with --no-pager; prefer rg else grep -nE.
+- Retry: 2 attempts then escalate with logs.
+
 - Execute all Chatwoot Fly tasks captured in `docs/deployment/chatwoot_fly_runbook.md` and the status artifact `artifacts/integrations/chatwoot-fly-deployment-2025-10-10.md`.
 - Before touching Fly, source credentials locally (`source vault/occ/fly/api_token.env`) and confirm `FLY_API_TOKEN` is set via `/home/justin/.fly/bin/fly auth status` (and not the placeholder). Capture the confirmation in your feedback log.
 - Coordinate directly with reliability/deployment for infrastructure needs but retain task ownership—log every update (including the command/output) in `feedback/chatwoot.md`.
@@ -26,6 +37,18 @@ expires: 2025-10-17
 
 ## Current Sprint Focus — 2025-10-10
 Work through the runbook sequentially and close each item with evidence:
+
+## Aligned Task List — 2025-10-11
+- Supabase-only DSN
+  - Align `POSTGRES_*` secrets with Supabase; no Fly Postgres. Persist secrets via Fly and vault, not in repo.
+- Memory scaling
+  - Increase Fly machines to 2GB; persist in fly.toml or via CLI; log outputs.
+- Health check
+  - Verify correct health path; update `deploy/chatwoot/fly.toml` and run smokes.
+- API token
+  - Generate scoped token, store in vault, and mirror via Integrations/Deployment; no secrets in git.
+- Evidence
+  - Log all commands and outputs in `feedback/chatwoot.md`.
 
 1. **Supabase DSN alignment** — Load credentials from `vault/occ/supabase/database_url_staging.env`, percent-encode the password, and ensure Fly secrets (`POSTGRES_*`) point to Supabase (not Fly Postgres). Document the `fly secrets set` output and update the runbook revision.
 2. **Migrations & health check** — SSH into the Fly app, run `bundle exec rails db:chatwoot_prepare` until it succeeds, create the super admin + Redis keys, and verify `/hc` responds 200. Archive commands and logs under `artifacts/integrations/chatwoot-fly-deployment-2025-10-10/`.

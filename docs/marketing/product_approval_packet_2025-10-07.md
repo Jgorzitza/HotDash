@@ -64,6 +64,7 @@ _All surfaces moved forward with Variation B after product sign-off (2025-10-07)
 - Copy limits: `docs/design/copy_deck_modals.md`
 - Direction canon: `docs/NORTH_STAR.md`, `docs/directions/marketing.md`
 - Prior approvals: `feedback/marketing.md` (2025-10-06 entry)
+- Approvals artifacts: `artifacts/marketing/assets/approvals/` (approval_request_2025-10-11.md, send_checklist_2025-10-11.md, and stakeholder PDFs as received)
 
 ## Requested Feedback
 1. Provide approvals or redlines on the three core docs via PR comments or reply in #occ-product.
