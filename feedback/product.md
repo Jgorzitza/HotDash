@@ -46,6 +46,12 @@ expires: 2025-10-18
 - **Decision:** Sprint focus item 1 completed; anchor established for QA evidence bundle tracking  
 - **Next Actions:** [Product] Drive SCC/DPA escalations and create Linear issues for compliance tracking
 
+### 2025-10-11T01:15:00Z — Schedule Pause Communication Sent
+- **Summary:** Drafted and published schedule pause communication to marketing, support, and enablement per sprint focus  
+- **Evidence:** docs/marketing/schedule_pause_communication_2025-10-11.md  
+- **Decision:** All downstream teams notified of pause pending four gating dependencies; acknowledgements required by 18:00 UTC  
+- **Next Actions:** [Product] Polish operator dry run pre-read; track acknowledgements for Linear checklist
+
 ## DEPLOY-147 Tracking
 - **Status:** Blocked pending QA evidence bundle  
 - **Required Evidence:** 
