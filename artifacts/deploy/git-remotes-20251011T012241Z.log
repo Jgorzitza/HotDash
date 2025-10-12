@@ -1,0 +1,4 @@
+clean	../HotDash-clean (fetch)
+clean	../HotDash-clean (push)
+origin	https://github.com/Jgorzitza/HotDash.git (fetch)
+origin	https://github.com/Jgorzitza/HotDash.git (push)

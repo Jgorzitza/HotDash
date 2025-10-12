@@ -12,7 +12,8 @@ expires: 2025-10-18
 - **Audience:** Support agents, enablement, marketing, product liaison
 - **Duration:** 90 minutes (aligns with primary slot in `docs/marketing/support_training_session_proposal_2025-10-07.md`)
 - **Objective:** Equip support to demo the Operator Control Center, answer top questions, and escalate blockers before GA.
-- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), staging credentials (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck)
+- **Materials:** Launch FAQ (`docs/marketing/launch_faq.md`), brand tone deck (`docs/marketing/brand_tone_deck.md`), staging credentials (product to supply), dashboard walkthrough slides (Designer <-> Marketing deck), staging evidence table in `docs/enablement/dry_run_training_materials.md`
+- **Staging status note:** If `https://hotdash-staging.fly.dev/app?mock=0` continues returning HTTP 410, rehearse with mock mode (`?mock=1`) and reference the enablement facilitator script until Reliability posts sustained 200 (<300 ms) evidence for staging.
 - **Recordings:** Save Zoom recording + chat log to Support KB per SOP
 
 ## 0:00-0:05 - Welcome & Objectives
@@ -25,18 +26,20 @@ expires: 2025-10-18
 4. Set parking lot expectations: capture unanswered questions in shared doc (`docs/runbooks/operator_training_qa_template.md`).
 
 ## 0:05-0:20 - Dashboard Orientation
-1. Share screen (staging dashboard) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
+1. Share screen (staging dashboard at `https://hotdash-staging.fly.dev/app`) and highlight navbar path: Shopify Admin -> Apps -> HotDash -> Operator Control Center.
+   - If live smoke remains 410, load `?mock=1` for demo purposes and call out the pending QA checklist; cite the latest curl log (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log`) so attendees know rollout is queued.
+- Note the Chatwoot Fly migration: Reliability will confirm Shopify Admin surfaces are validated via the Shopify CLI 3 dev flow (no embed/session token). Until QA evidence lands, external comms stay paused and rehearsals use the mock flow.
 2. Review global elements:
    - Mock/live indicator (top right)
    - Decision audit trail link (footer)
    - Settings gear (tile thresholds + AI toggles)
-3. Call out telemetry opt-out toggle (Settings -> Privacy) using copy from `docs/compliance/privacy_notice_updates.md`.
+3. Call out telemetry opt-out toggle (Settings -> Privacy) using copy from `docs/compliance/privacy_notice_updates.md`. Reinforce the new support inbox `customer.support@hotrodan.com` (now routed through Chatwoot Fly) as the primary escalation channel.
 4. Pause for questions (2 minutes); log items in Q&A template.
 
 ## 0:20-0:40 - Tile Deep Dives
 ### CX Escalations (0:20-0:28)
 - Narrate SLA breach card, AI reply suggestion, approval flow.
-- Emphasize manual approval requirement; reference DPIA (`docs/compliance/dpia_chatwoot_anthropic.md`).
+- Emphasize manual approval requirement; reference DPIA (`docs/compliance/dpia_chatwoot_openai.md`).
 - Demo toggle to disable AI suggestions and show resulting UI change.
 
 ### Sales Pulse (0:28-0:34)
@@ -65,8 +68,9 @@ expires: 2025-10-18
 1. Confirm dry run outputs: updated FAQ links, support macros, trimmed email templates.
 2. Assign owners for outstanding tasks:
    - Product: Share final staging credentials + seeded conversations for CX tile.
-   - Marketing: Update communications evidence once product signs off on English copy (`docs/marketing/product_approval_packet_2025-10-07.md`).
+   - Marketing: Update communications evidence once product signs off on English copy (`docs/marketing/product_approval_packet_2025-10-07.md`) and the QA gate closes.
    - Localization: Provide verdict on "Centre OCC" abbreviation by 2025-10-09 @ 18:00 ET.
+   - Reliability: Deliver sustained mock=0 200 (<300 ms) evidence and log in `feedback/reliability.md`.
 3. Review launch-day comms timeline (teaser, banner go-live, FAQ publish) referencing `docs/marketing/campaign_calendar_2025-10.md`.
 4. Schedule 24-hour post-launch support sync to collect real merchant feedback.
 
@@ -74,9 +78,9 @@ expires: 2025-10-18
 1. Open floor for final questions; document unresolved items in Q&A template.
 2. Share escalation contact list (support lead, marketing POC, reliability on-call).
 3. Recap next steps and deadlines:
-   - Support to confirm macro updates by 2025-10-12
-   - Marketing to circulate meeting notes + recording within 24 hours
-   - Manager to endorse readiness in `feedback/manager.md`
+   - Support to confirm macro updates (including new inbox + Fly messaging) by 2025-10-12
+   - Marketing to circulate meeting notes + recording within 24 hours once QA evidence lands
+   - Manager to endorse readiness in `feedback/manager.md` after both gates are cleared
 4. Thank attendees and stop recording.
 
 ---

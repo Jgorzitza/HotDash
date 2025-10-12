@@ -1,0 +1,8 @@
+{
+  "id": "build-cx.ship_update-20251010T153939",
+  "caseId": "cx.ship_update",
+  "summary": "Nightly log capture (2025-10-12 PM) for cx.ship_update template.",
+  "output": "Hi Alex, thanks for flagging the delay. I've escalated this to our carrier and will email you a fresh tracking update as soon as they reply — I'll follow up within the next few hours.",
+  "artifact": "artifacts/ai/prompt-regression-2025-10-10-134723.json",
+  "createdAt": "2025-10-10T15:39:39.879Z"
+}

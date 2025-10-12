@@ -1,4 +1,5 @@
 # Canon (manager only)
+docs/directions/**          @manager-team
 docs/**                     @manager-team
 feedback/manager.md         @manager-team
 

@@ -6,15 +6,37 @@ query($first:Int!, $after:String) {
     pageInfo { hasNextPage endCursor }
     edges { node {
       id name displayFulfillmentStatus
-      fulfillments(first: 5) { edges { node { id status trackingInfo { number url } events(first:10){ edges{ node { id status createdAt } } } } } }
+      fulfillments(first: 5) {
+        id
+        status
+        trackingInfo { number url }
+        events(first:10) {
+          edges {
+            node {
+              id
+              status
+              happenedAt
+            }
+          }
+        }
+      }
     } }
   }
 }`;
 
 export const UPDATE_VARIANT_COST = `#graphql
-mutation($id: ID!, $cost: MoneyInput!) {
-  productVariantUpdate(input:{id:$id, inventoryItem:{cost:$cost}}) {
-    productVariant { id title inventoryItem { unitCost { amount currencyCode } } }
-    userErrors { field message }
+mutation UpdateVariantCost($inventoryItemId: ID!, $cost: Decimal!) {
+  inventoryItemUpdate(id: $inventoryItemId, input: { cost: $cost }) {
+    inventoryItem {
+      id
+      unitCost {
+        amount
+        currencyCode
+      }
+    }
+    userErrors {
+      field
+      message
+    }
   }
 }`;

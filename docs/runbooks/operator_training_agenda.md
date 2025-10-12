@@ -12,7 +12,9 @@ expires: 2025-10-20
 **Duration:** 90 minutes
 **Format:** Live walkthrough + hands-on practice with mock data
 **Prerequisites:** Shopify admin access, Chatwoot familiarity (basic)
-**Materials:** Dashboard URL with `?mock=1`, copy of this agenda, Q&A capture template
+**Materials:** Dashboard URL with `?mock=1`, copy of this agenda, Q&A capture template, support escalation inbox `customer.support@hotrodan.com`
+**Support Inbox:** customer.support@hotrodan.com — send dry-run comms, evidence screenshots, and operator questions here for tracking.
+**Current Status:** Rehearsals paused pending QA green `?mock=0` evidence and Chatwoot Fly cut-over smoke; continue prep work only and complete asynchronous modules listed in `docs/enablement/dry_run_training_materials.md`.
 
 ---
 
@@ -25,11 +27,15 @@ expires: 2025-10-20
 - Operator Control Center vision: single source of truth across CX, sales, inventory, SEO
 - Approval workflow paradigm: every action requires explicit operator decision
 - Decision logging: all actions tracked for audit trail (decision_log table)
+- Staging install overview: Operator Control Center lives inside Shopify Admin (`Apps -> HotDash`). Support briefs participants on staging credentials (see `docs/integrations/shopify_readiness.md`) and verifies feature flags (`FEATURE_MODAL_APPROVALS`, `FEATURE_AI_ESCALATIONS`) before kickoff.
 
 **Key Points:**
 - Dashboard reduces tab fatigue by consolidating Shopify, Chatwoot, GA data
 - Mock mode vs. live mode: Start training in mock mode (`?mock=1`)
 - Evidence-based operations: every tile shows data source + refresh timestamp
+- Staging access verification: load `https://hotdash-staging.fly.dev/app?mock=1` ahead of the session; a 200 OK (or 302 to Shopify auth) is required. If you receive HTTP 410 or a network error, escalate to deployment/reliability immediately and document the outcome in `feedback/enablement.md`.
+- Staging evidence table: Supabase NDJSON entry is live (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`); monitor for the first green `?mock=0` run to swap in fresh curl + synthetic evidence (latest log `artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log` is still 410). Until QA posts the green run, keep rehearsals paused and only iterate on prep docs. Once evidence lands, refresh this agenda’s links and broadcast updates via customer.support@hotrodan.com.
+- Chatwoot Fly migration: monitor reliability announcements, keep `scripts/ops/chatwoot-fly-smoke.sh --env staging` ready with the latest host/token, and review `docs/runbooks/cx_escalations.md#chatwoot-fly-deployment-validation-pre-launch` so facilitators can brief operators the moment the new host goes live.
 
 ---
 
@@ -52,6 +58,8 @@ expires: 2025-10-20
 **Practice:**
 - Operators click through each tile
 - Identify status indicators (healthy, attention, error, unconfigured)
+- Confirm staging environment readiness: support lead walks through Shopify Admin login flow and staging credentials pre-check (demo shop domain, OCC staging URL with `?mock=1`, Supabase decision log access). Document confirmation in the Q&A template.
+- If Supabase telemetry is still syncing, rehearse using the sample IDs (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`, IDs 101–104) so facilitators can validate success, retry, and timeout scenarios before live data lands.
 
 **Q&A Capture:**
 - Any tile unclear or confusing?
@@ -73,11 +81,20 @@ expires: 2025-10-20
 - Explain use cases per docs/runbooks/cx_escalations.md
 - Show variable interpolation: {{name}} → customer name
 
-**Approval Flow:**
-- Select template from dropdown
-- Review pre-filled message body
+**Approval Flow (Automated):**
+- AI automatically suggests appropriate template based on conversation analysis
+- Review AI-suggested reply in modal (pre-filled with customer name)
+- Verify template matches customer issue (shipping → ship_update, refund → refund_offer, general → ack_delay)
+- Add optional operator note for audit trail
 - Click "Approve & Send Reply" → logs decision + sends to Chatwoot
 - Toast confirmation: "Reply sent to [Customer Name]"
+
+**Manual Override Instructions:**
+- If AI suggestion is inappropriate, click "Escalate to Manager" instead of approving
+- If no AI suggestion appears (blank suggestedReply), do NOT approve - escalate instead
+- For complex issues or high-risk language ("legal", "fraud", "chargeback"), always escalate
+- Manual Chatwoot access: Use direct Chatwoot interface for custom replies not covered by templates
+- All manual replies should still be logged via decision logging for audit trail
 
 **Escalation Actions:**
 - "Escalate to Manager" button → tags conversation, logs decision
@@ -102,6 +119,7 @@ expires: 2025-10-20
 - Shows order count, revenue for current window
 - Top SKUs list with units sold
 - Open fulfillment count (future: drill-in modal)
+- QA readiness evidence: Playwright staging run `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` covers modal open/close and decision logging paths.
 
 **Inventory Heatmap Tile:**
 - Low stock alerts with SKU, units left, days of cover
@@ -149,14 +167,17 @@ expires: 2025-10-20
 - Tile shows "Error" status → Integration failure (Shopify API down, Chatwoot unreachable)
 - "Configuration required" status → Missing credentials or setup incomplete
 - Empty state: "No SLA breaches detected" (normal, not an error)
+- Shopify banner "API rate limit exceeded." → Reference `docs/enablement/job_aids/shopify_sync_rate_limit_coaching.md` and the support playbook `docs/runbooks/shopify_rate_limit_recovery.md`
 
 **Escalation Paths:**
-- Integration errors → Alert reliability team (Slack #incidents)
+- Integration errors → Alert reliability team (#incidents) (internal channel)
+- Shopify rate-limit persists after two retries → Capture headers and escalate to reliability via # `#occ-reliability` using the playbook
 - Data discrepancies → File Linear ticket with screenshots + timestamps
 - Persistent failures → Escalate to support lead
 
 **Practice:**
 - Show mock error state in tile
+- Role-play the Shopify rate-limit coaching script (first-hit reassurance + escalation) and document notes in the Q&A template
 - Operators practice filing ticket with evidence (screenshot + description)
 
 **Q&A Capture:**
@@ -173,6 +194,8 @@ expires: 2025-10-20
 2. **Inventory Alert:** SKU "HOODIE-BLK-M" at 15 units, 5 days of cover → identify as reorder needed
 3. **Manager Escalation:** Customer "Jordan Lee" requests refund >$500 → escalate to manager
 4. **Error Handling:** Chatwoot tile shows error → file ticket with screenshot
+
+**Evidence Reference:** QA staging validation log `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` demonstrates CX Escalations modal approve/escalate/resolve flows on Fly staging.
 
 **Trainer Observation:**
 - Note any confusion, hesitation, or incorrect actions
@@ -207,7 +230,7 @@ See: docs/runbooks/operator_training_qa_template.md
 - [ ] Q&A capture template
 - [ ] Screenshot/screen recording tools
 - [ ] Linear project access for ticket filing
-- [ ] Slack #incidents channel access
+- [ ] #incidents (internal channel) channel access
 
 ---
 
@@ -216,6 +239,7 @@ See: docs/runbooks/operator_training_qa_template.md
 - **Owner:** Riley Chen (Product) — confirmation requested in `feedback/product.md`
 - **Support prep:** Send agenda + Q&A template by 2025-10-14, verify `FEATURE_MODAL_APPROVALS=1` in staging, confirm Chatwoot seed data covers shipping + refund scenarios.
 - **Dependencies:** Latest English copy deck alignment (`docs/design/copy_deck.md`), Sales Pulse/CX Escalations job aids staged in `docs/enablement/job_aids/`, staging shop access package from product (OCC-214).
+- **Comms Sync:** Coordinate enablement/marketing resend once QA posts green evidence; share updated materials via customer.support@hotrodan.com and archive announcements in `feedback/support.md`.
 
 ---
 
@@ -238,5 +262,8 @@ See: docs/runbooks/operator_training_qa_template.md
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-10 | support | Added support inbox contact, QA evidence hold status, refresh workflow, and comms sync instructions |
+| 2025-10-10 | support | Added staging install readiness steps and environment checks |
+| 2025-10-12 | support | Updated hold status to include Chatwoot Fly cut-over and smoke script readiness |
 | 2025-10-08 | support | Added dry run coordination details and ownership |
 | 2025-10-06 | support | Initial training agenda created per manager sprint focus |

@@ -1,0 +1,93 @@
+name: AI Nightly Index & Evaluation
+
+on:
+  schedule:
+    # Run at 02:30 UTC every day
+    - cron: "30 2 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  build-refresh-eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          
+      - name: Enable Corepack
+        run: corepack enable
+        
+      - name: Install dependencies
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+          
+      - name: Create environment file
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env.local
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
+          echo "LOG_DIR=packages/memory/logs/build" >> .env.local
+          
+      - name: Ensure log directories exist
+        run: |
+          mkdir -p packages/memory/logs/build
+          mkdir -p packages/memory/logs/build/indexes
+          mkdir -p packages/memory/logs/build/eval
+          
+      - name: Build AI workflow
+        run: |
+          cd scripts/ai/llama-workflow
+          npm run build
+          
+      - name: Run index refresh
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            pnpm ai:refresh | tee packages/memory/logs/build/last_refresh.log
+          else
+            npm run ai:refresh | tee packages/memory/logs/build/last_refresh.log
+          fi
+        timeout-minutes: 15
+        
+      - name: Run evaluation
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            pnpm ai:eval | tee packages/memory/logs/build/last_eval.log
+          else
+            npm run ai:eval | tee packages/memory/logs/build/last_eval.log
+          fi
+        timeout-minutes: 10
+        
+      - name: Upload logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-logs-${{ github.run_number }}
+          path: |
+            packages/memory/logs/build/
+            !packages/memory/logs/build/**/*.vector
+          retention-days: 30
+          
+      - name: Upload evaluation summary
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-summary-${{ github.run_number }}
+          path: packages/memory/logs/build/eval/**/summary.md
+          retention-days: 90
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::AI nightly job failed. Check logs for details."
+          echo "Refresh log:" && cat packages/memory/logs/build/last_refresh.log || echo "No refresh log found"
+          echo "Eval log:" && cat packages/memory/logs/build/last_eval.log || echo "No eval log found"

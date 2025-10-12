@@ -11,6 +11,8 @@ expires: 2025-10-20
 ## Purpose
 Map each CX Escalations tile action to internal Standard Operating Procedures (SOPs) and escalation ladders. This runbook enables operators to handle customer conversations efficiently while maintaining quality and SLA compliance.
 
+**Support Inbox:** customer.support@hotrodan.com — archive escalations, smoke test evidence, and Chatwoot deployment updates here.
+
 ---
 
 ## Dashboard Actions & SOPs
@@ -76,7 +78,7 @@ Map each CX Escalations tile action to internal Standard Operating Procedures (S
 **SOP Mapping:**
 - **SOP-CX-003:** Manager Escalation Protocol
   - Valid reasons: Policy exception, refund >$500, legal/fraud concern, abusive language
-  - Notification: CX Lead notified via Slack (future integration)
+  - Notification: CX Lead notified via # (future integration)
   - Handoff: Add internal note summarizing issue + customer expectation
 
 **Escalation SLA:**
@@ -118,6 +120,53 @@ Current templates (app/services/chatwoot/templates.ts):
 
 > **Note:** Suggested replies now map to templates via heuristics: shipping/delivery cues → `ship_update`, refund/return cues → `refund_offer`, otherwise `ack_delay`. Operators should still confirm tone before approving.
 
+## Chatwoot Fly Deployment Validation (Pre-Launch)
+
+When reliability signals the Fly deployment window, execute the following to confirm Chatwoot connectivity and dashboard handoffs:
+
+1. **Pre-Deployment Checklist**
+   - Confirm deployment notice in `#occ-reliability` and log the window in `feedback/support.md`.
+   - Download latest deployment playbook from reliability; note new Fly app hostname.
+   - Notify enablement + marketing via customer.support@hotrodan.com so comms and macros pause during the cutover.
+   - Update the smoke script `scripts/ops/chatwoot-fly-smoke.sh` with the announced Fly hostname and any refreshed API tokens (use `--env staging` to pull from vault defaults); record the values in `feedback/support.md` for audit.
+
+2. **During Deployment**
+   - Run `scripts/ops/chatwoot-fly-smoke.sh --env staging --host <fly-host>` (or pass `--token-file` with the deployment bundle) to capture recurring API probes; archive logs under `artifacts/support/chatwoot-fly-deploy/`.
+   - Validate OCC API proxy: launch CX Escalations tile in staging (`?mock=1`) and ensure conversation list responds within SLA (<2s). Log timestamp + request ID.
+   - Attempt modal actions (approve, escalate) in mock conversation; confirm decision logs write to Supabase without errors. If failures occur, escalate immediately via reliability bridge call.
+
+3. **Post-Deployment Smoke**
+   - Re-run tile load and modal actions against live conversation (if available) to ensure Chatwoot webhook responses succeed.
+   - Update escalation SOPs to reference the new Fly host (Chatwoot admin links, troubleshooting flow) and distribute summary through customer.support@hotrodan.com.
+- Attach evidence (curl logs, screenshots, decision IDs) to `feedback/support.md` and notify manager once validation passes.
+
+## Shared Inbox Routing Checklist (Chatwoot)
+
+Purpose: Confirm end-to-end routing for customer.support@hotrodan.com without exposing secrets. Coordinate with Integrations-Chatwoot for provider details.
+
+References:
+- Coordination note: artifacts/support/coordination/chatwoot_inbox_request.md
+- Evidence folder: artifacts/support/screenshots/chatwoot_inbox/
+
+Checklist:
+1. Inbound (staging-only)
+   - Send a sanitized test email to customer.support@hotrodan.com with subject "[Sandbox] Routing check".
+   - In Chatwoot, verify a conversation is created in the correct inbox and team routing is applied.
+   - Apply label: escalation (if appropriate) and add an internal note referencing this checklist.
+   - Evidence: Save a redacted screenshot → artifacts/support/screenshots/chatwoot_inbox/inbound_<YYYYMMDDThhmmssZ>.png
+2. Outbound (staging-only)
+   - Reply from Chatwoot; confirm From identity is customer.support@hotrodan.com and headers show correct domain alignment (DKIM/SPF/DMARC confirmed by Integrations).
+   - Evidence: Save headers excerpt (redacted) → artifacts/support/screenshots/chatwoot_inbox/outbound_headers_<timestamp>.txt
+3. Routing rules
+   - Confirm default team assignment and after-hours rule path. Record owners and SLAs.
+   - Evidence: Note owners and SLAs in artifacts/support/screenshots/chatwoot_inbox/routing_notes_<timestamp>.md
+4. Blockers
+   - If SMTP/IMAP not yet configured, log blocker in feedback/support.md and follow coordination note owners/dates.
+
+Notes:
+- Do not include real PII in screenshots.
+- Use placeholders when remote access or credentials are not available; replace once Integrations confirms tests.
+
 ### Template: `ack_delay`
 **Label:** Acknowledge delay
 **Body:**
@@ -148,6 +197,54 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 
 ---
 
+## Mock Mode Transcript Snippets & Edge Cases
+
+> Pull these reference conversations from Playwright staging artefact `artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log` while `?mock=0` remains blocked. Use them to rehearse tone, notes, and escalation decisions.
+
+### Scenario Gallery
+
+#### Shipping Delay Reassurance (`ship_update`)
+```
+Customer (Evergreen Outfitters — #PWA-4092):
+"Hey team, my order still says processing. Do you have an update?"
+
+Support AI Suggestion:
+"Appreciate you reaching out, Alex. Your order is with our carrier and I'm expediting a status check right away."
+```
+- Approve AI reply, append operator note: "Requested UPS BOL via #occ-reliability @ 09:12 UTC" for audit trail.
+- If tracking ID missing, add manual sentence with link before approving; follow SOP-CX-002 for promise tracking.
+
+#### Refund Offer With Guardrails (`refund_offer`)
+```
+Customer (Peak Performance Gear — #PWA-4103):
+"The zipper broke on first use. Can you just refund me?"
+
+Support AI Suggestion:
+"I'm sorry for the trouble, Jamie. I can refund this immediately or offer store credit—let me know what works best."
+```
+- Approve suggestion, then verify refund amount; escalate if >$500 or customer mentions "chargeback".
+- Log Linear ticket (INC-SUPPORT-###) in operator note so L2/L3 can monitor reimbursement completion.
+
+#### Backlog Queue Check-In (`ack_delay`)
+```
+Customer (Atelier Belle Maison — #PWA-4110):
+"Just checking—did you get my earlier message about the wrong color?"
+
+Support AI Suggestion:
+"Hi Pat, thanks for your patience. I'm checking on your order now and will follow up with an update shortly."
+```
+- Approve reply, set Chatwoot reminder for 45 min follow-up, and document SLA timer in note.
+- If conversation already tagged `escalation`, skip approval and confirm manager action before responding.
+
+### Edge Case Checklist
+- **Missing AI Draft:** If `suggestedReply` is null, do not approve. Escalate via `Escalate to Manager`, capture console log, and file in `feedback/engineering.md`.
+- **Name Placeholder Fallback:** Templates default to "Customer" when Chatwoot lacks profile data; personalize manually or update contact record prior to approval.
+- **High-Risk Language:** Terms like "legal", "fraud", "chargeback", or threats require immediate escalation even if the draft appears suitable.
+- **Rapid Reopen:** If customer responds within 30 min after `chatwoot.mark_resolved`, the tile will re-surface with SLA breach 0. Reassess before marking resolved again.
+- **Rate Limit Toast:** Should the modal emit a Shopify rate-limit error, switch to `docs/runbooks/shopify_rate_limit_recovery.md` and log the incident (timestamp + request ID) in `feedback/support.md`.
+
+---
+
 ## Integration Monitoring & Alerts
 
 **Health Checks:**
@@ -156,9 +253,13 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 - Template send failures: Alert reliability if error rate >5%
 
 **Alert Channels:**
-- Critical errors → Reliability team (Slack #incidents)
+- Critical errors → Reliability team (#incidents) (internal channel)
 - SLA threshold breaches → Support lead + Ops manager
 - Integration downtime → Immediate escalation per docs/runbooks/incident_response.md (pending)
+
+## QA Verification Evidence
+- 2025-10-10 Playwright staging run (`artifacts/playwright/shopify/playwright-staging-2025-10-10T04-20-37Z.log`) validated approve/escalate/resolve flows against Fly host `https://hotdash-staging.fly.dev` using mock data.
+- Synthetic check `artifacts/monitoring/synthetic-check-2025-10-10T06-36-48.923Z.json` confirms dashboard load within 284 ms post-Playwright run; use these artifacts during operator rehearsals to demonstrate live readiness.
 
 ---
 
@@ -192,6 +293,11 @@ I'm sorry for the trouble, {{name}}. I can refund this immediately or offer stor
 ## Revision History
 | Date | Author | Change |
 |------|--------|--------|
+| 2025-10-12 | support | Clarified smoke script usage with new --env/--token-file options and deployment handoff |
+| 2025-10-10 | support | Added support inbox contact, Chatwoot Fly deployment validation checklist, and smoke script reference |
+| 2025-10-10 | support | Documented host/token refresh requirement for Chatwoot Fly smoke script |
+| 2025-10-10 | support | Added mock-mode transcript gallery and edge case checklist for operator rehearsal while live data blocked. |
+| 2025-10-10 | support | Added QA staging evidence references for modal verification |
 | 2025-10-08 | support | Added template heuristics, rendered customer names, aligned escalation label |
 | 2025-10-07 | support | Validated modal implementation, added screenshots, updated decision logging |
 | 2025-10-06 | support | Initial runbook skeleton created per manager sprint focus |

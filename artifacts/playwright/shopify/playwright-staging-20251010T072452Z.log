@@ -1,0 +1,68 @@
+
+> test:e2e
+> playwright test
+
+
+Running 3 tests using 2 workers
+
+  ✓  2 tests/playwright/dashboard.spec.ts:6:3 › operator dashboard › renders control center tiles (746ms)
+  ✘  1 tests/playwright/modals.spec.ts:10:3 › dashboard modals › opens CX escalation modal from tile (5.6s)
+  ✘  3 tests/playwright/modals.spec.ts:24:3 › dashboard modals › opens Sales Pulse modal from tile (5.6s)
+
+
+  1) tests/playwright/modals.spec.ts:10:3 › dashboard modals › opens CX escalation modal from tile ─
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  getByRole('button', { name: /Review/i }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /Review/i }).first()[22m
+
+
+      10 |   test("opens CX escalation modal from tile", async ({ page }) => {
+      11 |     const reviewButton = page.getByRole("button", { name: /Review/i }).first();
+    > 12 |     await expect(reviewButton).toBeVisible();
+         |                                ^
+      13 |
+      14 |     await reviewButton.click();
+      15 |
+        at /home/justin/HotDash/hot-dash/tests/playwright/modals.spec.ts:12:32
+
+    Error Context: test-results/modals-dashboard-modals-opens-CX-escalation-modal-from-tile/error-context.md
+
+  2) tests/playwright/modals.spec.ts:24:3 › dashboard modals › opens Sales Pulse modal from tile ───
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m()[22m failed
+
+    Locator:  getByRole('button', { name: /View details/i }).first()
+    Expected: visible
+    Received: <element(s) not found>
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('button', { name: /View details/i }).first()[22m
+
+
+      24 |   test("opens Sales Pulse modal from tile", async ({ page }) => {
+      25 |     const detailsButton = page.getByRole("button", { name: /View details/i }).first();
+    > 26 |     await expect(detailsButton).toBeVisible();
+         |                                 ^
+      27 |
+      28 |     await detailsButton.click();
+      29 |
+        at /home/justin/HotDash/hot-dash/tests/playwright/modals.spec.ts:26:33
+
+    Error Context: test-results/modals-dashboard-modals-opens-Sales-Pulse-modal-from-tile/error-context.md
+
+  2 failed
+    tests/playwright/modals.spec.ts:10:3 › dashboard modals › opens CX escalation modal from tile ──
+    tests/playwright/modals.spec.ts:24:3 › dashboard modals › opens Sales Pulse modal from tile ────
+  1 passed (30.7s)
+
+[36m  Serving HTML report at http://localhost:37909. Press Ctrl+C to quit.[39m

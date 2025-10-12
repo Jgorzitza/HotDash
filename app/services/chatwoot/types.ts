@@ -20,6 +20,15 @@ export interface ChatwootMessage {
   created_at: number;
 }
 
+export type ConversationAuthor = "agent" | "contact";
+
+export interface ConversationMessage {
+  id: number;
+  author: ConversationAuthor;
+  content: string;
+  createdAt: string;
+}
+
 export interface EscalationConversation {
   id: number;
   inboxId: number;
@@ -33,10 +42,14 @@ export interface EscalationConversation {
   suggestedReplyId?: string;
   suggestedReply?: string;
   evidenceFactId?: number;
+  messages: ConversationMessage[];
+  aiSuggestion: unknown | null;
+  aiSuggestionEnabled: boolean;
 }
 
 export interface EscalationResult {
   data: EscalationConversation[];
   fact: DashboardFact;
   source: "fresh" | "cache";
+  aiEnabled: boolean;
 }

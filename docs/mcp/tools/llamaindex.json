@@ -1,0 +1,232 @@
+{
+  "epoch": "2025.10.E1",
+  "doc": "docs/mcp/tools/llamaindex.json",
+  "owner": "integrations",
+  "last_reviewed": "2025-10-11",
+  "doc_hash": "TBD",
+  "expires": "2025-10-25",
+  "tools": [
+    {
+      "name": "refresh_index",
+      "version": "1.0.0",
+      "description": "Refreshes the LlamaIndex vector store with latest documents from configured sources",
+      "category": "ai-workflow",
+      "handler": "scripts/ai/llama-workflow/dist/cli.js refresh",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "sources": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Array of source paths to index (defaults to docs/runbooks, docs/enablement/job_aids, etc.)",
+            "required": false
+          },
+          "force_mock": {
+            "type": "boolean",
+            "description": "Force use of mock embedding provider instead of OpenAI",
+            "required": false,
+            "default": false
+          },
+          "persist_dir": {
+            "type": "string",
+            "description": "Directory to persist the index (defaults to packages/memory/indexes/operator_knowledge)",
+            "required": false
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "message": {"type": "string"},
+          "document_count": {"type": "number"},
+          "sources": {"type": "array", "items": {"type": "string"}},
+          "persist_dir": {"type": "string"},
+          "using_mock_providers": {"type": "boolean"}
+        }
+      },
+      "requires_credentials": ["OPENAI_API_KEY"],
+      "usage_examples": [
+        {
+          "description": "Refresh index with default sources",
+          "input": {},
+          "expected_output": {"status": "ok", "message": "LlamaIndex build complete"}
+        },
+        {
+          "description": "Refresh index with custom sources in mock mode",
+          "input": {
+            "sources": ["docs/runbooks", "docs/marketing"],
+            "force_mock": true
+          },
+          "expected_output": {"status": "ok", "using_mock_providers": true}
+        }
+      ]
+    },
+    {
+      "name": "query_support",
+      "version": "1.0.0",
+      "description": "Queries the LlamaIndex knowledge base for support-related information",
+      "category": "ai-workflow",
+      "handler": "scripts/ai/llama-workflow/dist/cli.js query",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Natural language query to search the knowledge base",
+            "required": true
+          },
+          "topK": {
+            "type": "number",
+            "description": "Number of top relevant sources to return (1-20)",
+            "required": false,
+            "default": 5,
+            "minimum": 1,
+            "maximum": 20
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "content": {"type": "string"},
+                "source": {"type": "string"},
+                "score": {"type": "number"},
+                "metadata": {"type": "object"}
+              }
+            }
+          },
+          "query": {"type": "string"},
+          "total_results": {"type": "number"}
+        }
+      },
+      "requires_credentials": ["OPENAI_API_KEY"],
+      "data_sources": [
+        "docs/runbooks",
+        "docs/enablement/job_aids", 
+        "Chatwoot curated replies (via Supabase)",
+        "Decision log + telemetry tables (Supabase read-only)"
+      ],
+      "usage_examples": [
+        {
+          "description": "Query for troubleshooting steps",
+          "input": {
+            "query": "How to fix Shopify authentication errors",
+            "max_results": 3
+          },
+          "expected_output": {
+            "results": [{"content": "...", "source": "docs/runbooks/shopify_auth.md"}],
+            "total_results": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "insight_report",
+      "version": "1.0.0",
+      "description": "Generates AI-powered insights from indexed knowledge base and telemetry data",
+      "category": "ai-workflow", 
+      "handler": "scripts/ai/llama-workflow/dist/cli.js insight",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "window": {
+            "type": "string",
+            "pattern": "^[0-9]+[dh]$",
+            "description": "Time window for analysis (e.g., 1d, 7d, 24h)",
+            "required": false,
+            "default": "1d"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["md", "txt", "json"],
+            "description": "Output format for the report",
+            "required": false,
+            "default": "md"
+          }
+        }
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "report_type": {"type": "string"},
+          "generated_at": {"type": "string"},
+          "time_range": {"type": "string"},
+          "insights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {"type": "string"},
+                "description": {"type": "string"},
+                "severity": {"type": "string"},
+                "recommendations": {"type": "array", "items": {"type": "string"}},
+                "supporting_data": {"type": "object"}
+              }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "data_sources_used": {"type": "array", "items": {"type": "string"}},
+              "confidence_score": {"type": "number"},
+              "citations": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      },
+      "requires_credentials": ["OPENAI_API_KEY", "SUPABASE_SERVICE_KEY"],
+      "data_sources": [
+        "Supabase decision log tables",
+        "Supabase telemetry tables", 
+        "LlamaIndex knowledge base",
+        "Chatwoot interaction patterns"
+      ],
+      "usage_examples": [
+        {
+          "description": "Generate anomaly summary for last 7 days",
+          "input": {
+            "report_type": "anomaly_summary",
+            "time_range": "7d"
+          },
+          "expected_output": {
+            "report_type": "anomaly_summary",
+            "insights": [{"title": "Unusual API error spike", "severity": "medium"}]
+          }
+        }
+      ]
+    }
+  ],
+  "allowlist_status": {
+    "current_allowlist": "docs/policies/mcp-allowlist.json",
+    "tools_registered": false,
+    "next_steps": [
+      "Update MCP allowlist with LlamaIndex tool endpoints",
+      "Implement missing handlers for query_support and insight_report", 
+      "Configure credential access for OpenAI and Supabase",
+      "Add tool endpoints to MCP server configuration"
+    ]
+  },
+  "dependencies": {
+    "required_packages": [
+      "llamaindex",
+      "openai", 
+      "@supabase/supabase-js"
+    ],
+    "environment_variables": [
+      "OPENAI_API_KEY",
+      "SUPABASE_SERVICE_KEY",
+      "SUPABASE_URL"
+    ],
+    "file_dependencies": [
+      "scripts/ai/build-llama-index.ts",
+      "packages/memory/indexes/operator_knowledge/",
+      "vault/occ/openai/api_key_staging.env"
+    ]
+  }
+}

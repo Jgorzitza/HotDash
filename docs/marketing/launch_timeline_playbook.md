@@ -48,7 +48,7 @@ expires: 2025-10-18
 - [ ] Confirm support escalation paths for AI, data, and configuration questions.
 
 ### T-1 (Go/No-Go)
-- [ ] Verify product sign-off documented in approval packet and Slack thread.
+- [ ] Verify product sign-off documented in approval packet and internal channel thread.
 - [ ] Confirm deployment workflow approvals captured in `docs/deployment/production_go_live_checklist.md`.
 - [ ] Schedule launch email send in ESP; ensure staging preview link swapped for production URL.
 - [ ] Test in-app banner in staging environment (screenshot for evidence bundle).
@@ -81,7 +81,7 @@ expires: 2025-10-18
 | Support readiness CSAT | >= 4/5 | Post-training survey | Support | Send automatically after dry run |
 
 ## 2025-10-10 Update
-- Re-pinged product via #occ-launch Slack referencing scheduling impact; pending response before 2025-10-10 10:00 ET.
+- Re-pinged product via #occ-launch # referencing scheduling impact; pending response before 2025-10-10 10:00 ET.
 - Designer confirmed tooltip annotations will post 2025-10-10 AM; checklist now assumes 2-hour turnaround to update comms once assets land.
 - Localization workstream remains on hold; FR tasks tracked separately in translation packet backlog.
 
@@ -96,11 +96,11 @@ expires: 2025-10-18
 ## Communication Matrix
 | Audience | Channel | Cadence | Owner | Notes |
 |----------|---------|---------|-------|-------|
-| Internal launch squad | #occ-launch Slack | Daily stand-up updates | Product | Include red/yellow status for dependencies |
+| Internal launch squad | #occ-launch # | Daily stand-up updates | Product | Include red/yellow status for dependencies |
 | Manager & leadership | `feedback/manager.md` | Daily async update | Marketing | Highlight blockers + request decisions |
 | Support agents | Training session + follow-up email | T-4, T-1, T+1 | Enablement | Attach FAQ and macros |
 | Beta partners | Email + calendar invite | T-7, T-1 | Product | Recap feedback and highlight production go-live |
-| Localization | Slack thread + doc comments | As needed | Marketing | Share FR adjustments once approved |
+| Localization | internal channel thread + doc comments | As needed | Marketing | Share FR adjustments once approved |
 
 ## Open Items (Track in Feedback Log)
 1. Product launch window confirmation.

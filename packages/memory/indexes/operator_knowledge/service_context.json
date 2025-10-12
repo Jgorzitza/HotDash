@@ -1,0 +1,15 @@
+{
+  "provider": "local",
+  "llmModel": "disabled",
+  "embeddingModel": "local-hash-embedding",
+  "envVars": [],
+  "createdAt": "2025-10-11T04:51:05.516Z",
+  "planned": {
+    "provider": "openai",
+    "llmModel": "gpt-4o-mini",
+    "embeddingModel": "text-embedding-3-small",
+    "envVars": [
+      "OPENAI_API_KEY"
+    ]
+  }
+}

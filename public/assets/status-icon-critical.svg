@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+  <title>Critical status icon</title>
+  <desc>Red circle with cross mark indicating a critical Shopify tile state.</desc>
+  <circle cx="12" cy="12" r="9" fill="#FFF4F4" stroke="#D72C0D" stroke-width="1.8"/>
+  <path d="M9 9l6 6m0-6l-6 6" stroke="#D82C0D" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

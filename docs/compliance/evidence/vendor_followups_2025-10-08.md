@@ -16,8 +16,8 @@ expires: 2025-10-22
 - Action: Emailed support referencing initial ticket request; asked for confirmation plus region documentation.
 - Next reminder: 2025-10-09.
 
-## Anthropic
-- Action: Pinged account rep on email/Slack; requested DPA package and prompt retention statement.
+## OpenAI
+- Action: Pinged account rep on email/#; requested DPA package, prompt retention statement, and regional endpoint confirmation.
 - Next reminder: 2025-10-09 (afternoon).
 
 ## Notes

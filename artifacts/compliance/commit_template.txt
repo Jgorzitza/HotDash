@@ -1,0 +1,19 @@
+[Compliance Sprint] %s
+
+Scope:
+- Local-only compliance evidence and documentation updates.
+
+Evidence:
+- Stack audit: artifacts/compliance/stack_audit.md, artifacts/compliance/stack_audit.json
+- Secret incidents: docs/compliance/evidence/secret_incidents_*.md / *.json
+- Vendor follow-ups: docs/compliance/evidence/vendor_followups_*.md
+- Supabase retention: docs/compliance/evidence/pg_cron_hash_register*.md / *.json
+- Tabletop drill: docs/compliance/evidence/tabletop_supabase_*.md
+- AI retention audit: artifacts/compliance/ai_retention_audit_*.md / *.json
+
+Logs:
+- feedback/compliance.md
+
+Notes:
+- No edits to docs/directions/**
+- Only allowed paths committed: docs/compliance/**, feedback/**, artifacts/compliance/**

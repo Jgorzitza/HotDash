@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for hotdash-staging on 2025-10-09T20:08:16-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'hotdash-staging'
+primary_region = 'ord'
+
+[env]
+  HOST = '0.0.0.0'
+  PORT = '3000'
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

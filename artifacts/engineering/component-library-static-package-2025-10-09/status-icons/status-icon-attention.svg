@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+  <title>Attention status icon</title>
+  <desc>Red warning triangle with exclamation mark indicating an attention-needed Shopify tile state.</desc>
+  <path d="M12 4.2l8.2 14.2H3.8L12 4.2z" fill="#FFF4F4" stroke="#D82C0D" stroke-width="1.6" stroke-linejoin="round"/>
+  <path d="M12 9v4.8" stroke="#D82C0D" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="12" cy="16.8" r="1.2" fill="#D82C0D"/>
+</svg>

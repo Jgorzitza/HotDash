@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-10-12T03:15:20.511Z",
+  "sources": [
+    "hotrodan.com",
+    "decision_log",
+    "telemetry_events",
+    "curated_replies"
+  ],
+  "document_count": 42,
+  "processing_time_ms": 6,
+  "build_version": "1.0.0-mock",
+  "index_type": "simple_mock"
+}

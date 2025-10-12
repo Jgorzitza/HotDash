@@ -1,0 +1,36 @@
+{
+  "payload": [
+    {
+      "id": 101,
+      "name": "ship_update",
+      "body": "Appreciate you reaching out, {{contact.name}}. Your order is with our carrier and I'm expediting a status check right away.",
+      "category": "shipping",
+      "variables": ["contact.name"],
+      "confidence_threshold": 0.75
+    },
+    {
+      "id": 102,
+      "name": "refund_offer",
+      "body": "I'm sorry for the trouble, {{contact.name}}. I can refund this immediately or offer store credit—let me know what works best.",
+      "category": "refunds",
+      "variables": ["contact.name"],
+      "confidence_threshold": 0.85
+    },
+    {
+      "id": 103,
+      "name": "ack_delay",
+      "body": "Hi {{contact.name}}, thanks for your patience. I'm checking on your order now and will follow up with an update shortly.",
+      "category": "acknowledgment",
+      "variables": ["contact.name"],
+      "confidence_threshold": 0.70
+    },
+    {
+      "id": 104,
+      "name": "escalation_manager",
+      "body": "I understand your concern, {{contact.name}}. I'm escalating this to my manager who will reach out within the next 2 hours.",
+      "category": "escalation",
+      "variables": ["contact.name"],
+      "confidence_threshold": 0.95
+    }
+  ]
+}

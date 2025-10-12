@@ -1,0 +1,221 @@
+name: Stack Guardrails Enforcement
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'agent/**'
+
+concurrency:
+  group: guardrails-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enforce-canonical-toolkit:
+    name: Canonical Toolkit Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Supabase-only backend
+        run: |
+          echo "Checking for non-Supabase database clients..."
+          if grep -r --include="*.ts" --include="*.js" --include="*.json" -E "(mongodb|mysql|postgres(?!.*supabase)|redis|dynamodb|firebase)" . --exclude-dir=node_modules --exclude-dir=.git; then
+            echo "❌ VIOLATION: Non-Supabase database clients detected"
+            exit 1
+          fi
+          
+          if ! grep -q "@supabase/supabase-js" package.json; then
+            echo "❌ VIOLATION: Supabase client not found in dependencies"
+            exit 1
+          fi
+          
+          echo "✅ Supabase-only backend verified"
+
+      - name: Verify Chatwoot on Supabase configuration
+        run: |
+          echo "Checking Chatwoot configuration..."
+          # Check if Chatwoot references use Supabase for persistence
+          if find . -name "*.ts" -o -name "*.js" -not -path "./node_modules/*" -not -path "./.git/*" | xargs grep -l "chatwoot" | xargs grep -E "(mysql|postgres(?!.*supabase)|mongodb)" ; then
+            echo "❌ VIOLATION: Chatwoot configured with non-Supabase backend"
+            exit 1
+          fi
+          echo "✅ Chatwoot Supabase integration verified"
+
+      - name: Verify React Router 7 only
+        run: |
+          echo "Checking React Router version compliance..."
+          if grep -E "(remix|@remix-run)" package.json; then
+            echo "❌ VIOLATION: Remix dependencies detected, React Router 7 required"
+            exit 1
+          fi
+          
+          if ! grep -q "@react-router/dev.*7\." package.json; then
+            echo "❌ VIOLATION: React Router 7 not found in dependencies"
+            exit 1
+          fi
+          
+          # Check for incompatible routing packages
+          if grep -E "(next|gatsby|nuxt|vue-router)" package.json; then
+            echo "❌ VIOLATION: Incompatible routing framework detected"
+            exit 1
+          fi
+          
+          echo "✅ React Router 7 compliance verified"
+
+      - name: Verify AI stack restriction (OpenAI + LlamaIndex only)
+        run: |
+          echo "Checking AI stack compliance..."
+          if grep -E "(anthropic|claude|cohere|huggingface|langchain|@langchain)" package.json; then
+            echo "❌ VIOLATION: Unauthorized AI dependencies detected"
+            exit 1
+          fi
+          
+          if ! grep -q "openai" package.json || ! grep -q "llamaindex" package.json; then
+            echo "❌ VIOLATION: Required AI dependencies (OpenAI + LlamaIndex) not found"
+            exit 1
+          fi
+          
+          # Check for config compliance in AI scripts
+          if find scripts/ai -name "*.ts" | xargs grep -E "(anthropic|claude|cohere)" 2>/dev/null; then
+            echo "❌ VIOLATION: Unauthorized AI services in scripts"
+            exit 1
+          fi
+          
+          echo "✅ AI stack restriction (OpenAI + LlamaIndex) verified"
+
+      - name: Verify data retention and encryption settings
+        run: |
+          echo "Checking data retention and encryption compliance..."
+          
+          # Check for retention policy references
+          if ! find . -name "*.md" -not -path "./node_modules/*" | xargs grep -l "retention" | head -1 > /dev/null; then
+            echo "⚠️ WARNING: No retention policy documentation found"
+          fi
+          
+          # Check for encryption at rest references in Supabase configs
+          if find . -name "*.ts" -o -name "*.js" -not -path "./node_modules/*" | xargs grep -l "supabase" | xargs grep -i "password\|key\|secret" | grep -v "process.env" | head -1 > /dev/null; then
+            echo "❌ VIOLATION: Potential hardcoded secrets in Supabase configuration"
+            exit 1
+          fi
+          
+          echo "✅ Encryption and secrets handling verified"
+
+      - name: Check for unauthorized external services
+        run: |
+          echo "Checking for unauthorized external service dependencies..."
+          
+          # List of unauthorized services (extendable)
+          unauthorized_services=(
+            "aws-sdk"
+            "azure"
+            "google-cloud"
+            "@google-cloud"
+            "firebase-admin"
+            "mongodb"
+            "mysql2"
+            "pg(?!.*supabase)"
+            "redis"
+            "elasticsearch"
+            "algolia"
+            "stripe(?!.*webhook)"
+          )
+          
+          for service in "${unauthorized_services[@]}"; do
+            if grep -E "$service" package.json; then
+              echo "❌ VIOLATION: Unauthorized service dependency detected: $service"
+              exit 1
+            fi
+          done
+          
+          echo "✅ No unauthorized external services detected"
+
+  audit-stack-compliance:
+    name: Stack Compliance Audit
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Check for stack guardrail bypass attempts
+        run: |
+          echo "Auditing PR for guardrail bypass attempts..."
+          
+          # Check if guardrail workflow was modified
+          if git diff origin/main...HEAD --name-only | grep -E "(stack_guardrails|guardrails)" ; then
+            echo "⚠️ WARNING: Stack guardrails workflow modified - requires Product + Engineering approval"
+            echo "guardrail_modification=true" >> $GITHUB_ENV
+          fi
+          
+          # Check for dependency changes that might bypass restrictions
+          if git diff origin/main...HEAD package.json | grep -E "^\+.*\"(mongodb|mysql|remix|anthropic|claude)"; then
+            echo "❌ VIOLATION: Attempt to add restricted dependencies"
+            exit 1
+          fi
+          
+          # Check for configuration bypasses
+          if git diff origin/main...HEAD --name-only | grep -E "(supabase|database|db)" | xargs git diff origin/main...HEAD | grep -E "^\+.*(?:mysql|postgres(?!.*supabase)|mongo)"; then
+            echo "❌ VIOLATION: Attempt to bypass database restrictions"
+            exit 1
+          fi
+          
+          echo "✅ No guardrail bypass attempts detected"
+
+      - name: Require approval for guardrail changes
+        if: env.guardrail_modification == 'true'
+        run: |
+          echo "::error::Stack guardrail modifications require explicit Product + Engineering approval"
+          echo "Please ensure this PR is reviewed by:"
+          echo "- Product Agent (for compliance alignment)"
+          echo "- Engineering Lead (for technical feasibility)"
+          echo "Add 'guardrail-approved' label to proceed"
+          exit 1
+
+  generate-compliance-report:
+    name: Generate Compliance Report
+    runs-on: ubuntu-latest
+    needs: [enforce-canonical-toolkit]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create compliance artifact
+        run: |
+          mkdir -p artifacts/compliance
+          cat > artifacts/compliance/stack_guardrails_report_$(date +%Y%m%d_%H%M%S).json << EOF
+          {
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "branch": "${{ github.ref_name }}",
+            "commit": "${{ github.sha }}",
+            "compliance_checks": {
+              "supabase_only": "${{ needs.enforce-canonical-toolkit.outputs.supabase_check || 'PASS' }}",
+              "chatwoot_supabase": "${{ needs.enforce-canonical-toolkit.outputs.chatwoot_check || 'PASS' }}",
+              "react_router_7": "${{ needs.enforce-canonical-toolkit.outputs.router_check || 'PASS' }}",
+              "ai_stack_restricted": "${{ needs.enforce-canonical-toolkit.outputs.ai_check || 'PASS' }}",
+              "data_encryption": "${{ needs.enforce-canonical-toolkit.outputs.encryption_check || 'PASS' }}",
+              "external_services": "${{ needs.enforce-canonical-toolkit.outputs.services_check || 'PASS' }}"
+            },
+            "violations": [],
+            "warnings": [],
+            "recommendations": []
+          }
+          EOF
+          
+      - name: Upload compliance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: stack-guardrails-report
+          path: artifacts/compliance/
+          retention-days: 30

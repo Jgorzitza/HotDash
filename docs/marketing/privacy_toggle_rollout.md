@@ -25,7 +25,7 @@ expires: 2025-10-22
    - Record opt-out/in changes in `DecisionLog` (scope `ops`, action `privacy.analytics.opt_out`).
 
 ## Copy Blocks
-> We collect limited operator telemetry (email, tile interactions, request IDs) to monitor uptime. You can turn this off anytime in Settings → Privacy. When you request AI suggestions, relevant conversation context is sent to Anthropic after removing payment details. Review our full privacy notice to learn more.
+> We collect limited operator telemetry (email, tile interactions, request IDs) to monitor uptime. You can turn this off anytime in Settings → Privacy. When you request AI suggestions, relevant conversation context is assembled by our LlamaIndex service and sent to OpenAI after removing payment details. Review our full privacy notice to learn more.
 
 ## Timeline
 | Date | Task | Owner |

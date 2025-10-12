@@ -1,0 +1,57 @@
+{
+  "telemetry_schema": {
+    "event_name": "string",
+    "timestamp": "ISO8601",
+    "conversation_id": "number",
+    "user_id": "string", 
+    "session_id": "string",
+    "properties": {
+      "template_id": "string|null",
+      "confidence_score": "number|null",
+      "escalation_reason": "string|null",
+      "decision_path": "string",
+      "manual_override": "boolean"
+    }
+  },
+  "expected_events": [
+    {
+      "event_name": "template_suggested",
+      "properties": {
+        "template_id": "ship_update",
+        "confidence_score": 0.85,
+        "decision_path": "auto_suggest"
+      }
+    },
+    {
+      "event_name": "user_action_approve",
+      "properties": {
+        "template_id": "ship_update",
+        "decision_path": "approved",
+        "manual_override": false
+      }
+    },
+    {
+      "event_name": "low_confidence_template",
+      "properties": {
+        "template_id": "ack_delay",
+        "confidence_score": 0.65,
+        "decision_path": "low_confidence_warning"
+      }
+    },
+    {
+      "event_name": "no_suggestion_available",
+      "properties": {
+        "template_id": null,
+        "confidence_score": null,
+        "decision_path": "manual_required"
+      }
+    },
+    {
+      "event_name": "manager_escalation_required",
+      "properties": {
+        "escalation_reason": "High value refund request exceeds agent authority",
+        "decision_path": "manager_approval_required"
+      }
+    }
+  ]
+}

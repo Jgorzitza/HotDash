@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180" role="img">
+  <title>Sales Pulse sparkline hover state</title>
+  <desc>Annotated sparkline showing hover tooltip values for Sales Pulse modal job aid.</desc>
+  <rect width="320" height="180" rx="12" fill="#FFFFFF" stroke="#D2D5D8"/>
+  <polyline points="24,140 64,120 104,132 144,96 184,112 224,78 264,98 304,66" fill="none" stroke="#2C6ECB" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="224" cy="78" r="6" fill="#FFFFFF" stroke="#2C6ECB" stroke-width="2"/>
+  <rect x="190" y="20" width="120" height="64" rx="8" fill="#1A1C1D" opacity="0.92"/>
+  <text x="200" y="44" fill="#FFFFFF" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600">Oct 9 • 10:00</text>
+  <text x="200" y="66" fill="#BBE4FF" font-family="Segoe UI, sans-serif" font-size="12">Revenue</text>
+  <text x="260" y="66" fill="#FFFFFF" font-family="Segoe UI, sans-serif" font-size="12" font-weight="600">$1,238</text>
+  <text x="200" y="84" fill="#F0F4F8" font-family="Segoe UI, sans-serif" font-size="12">↑ 18% vs 7-day baseline</text>
+  <line x1="224" y1="78" x2="224" y2="120" stroke="#637381" stroke-dasharray="4 4"/>
+  <text x="32" y="164" fill="#637381" font-family="Segoe UI, sans-serif" font-size="12">Hover displays precise timestamp, revenue, and delta copy.</text>
+</svg>
