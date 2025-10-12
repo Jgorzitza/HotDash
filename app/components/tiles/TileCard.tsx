@@ -24,9 +24,9 @@ interface TileCardProps<T> {
 }
 
 const STATUS_LABELS: Record<TileStatus, string> = {
-  ok: "Healthy",
-  error: "Attention needed",
-  unconfigured: "Configuration required",
+  ok: "All clear",
+  error: "Needs attention",
+  unconfigured: "Setup required",
 };
 
 function formatDateTime(value?: string): string | undefined {
@@ -53,7 +53,7 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
       tile.error ||
       (tile.status === "unconfigured"
         ? "Connect integration to enable this tile."
-        : "Data unavailable right now.");
+        : "Data temporarily unavailable.");
 
     content = (
       <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>{message}</p>

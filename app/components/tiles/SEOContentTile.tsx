@@ -28,7 +28,7 @@ export function SEOContentTile({ anomalies }: SEOContentTileProps) {
         </ul>
       ) : (
         <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
-          Traffic trends stable.
+          No traffic anomalies detected.
         </p>
       )}
     </>

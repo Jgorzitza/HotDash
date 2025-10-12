@@ -109,7 +109,7 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
         <div className="occ-modal__header">
           <div>
             <h2 id={`cx-escalation-${conversation.id}-title`}>
-              CX Escalation — {conversation.customerName}
+              CX Pulse — {conversation.customerName}
             </h2>
             <p className="occ-text-meta" style={{ margin: 0 }}>
               Conversation #{conversation.id} · Status: {conversation.status}
@@ -130,7 +130,7 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
             <h3>Conversation history</h3>
             <div className="occ-modal__messages" role="log" aria-live="polite">
               {messageHistory.length === 0 ? (
-                <p className="occ-text-secondary">No recent messages available.</p>
+                <p className="occ-text-secondary">No message history loaded.</p>
               ) : (
                 messageHistory.map((message) => (
                   <article key={message.id} className="occ-modal__message" data-author={message.author}>
@@ -157,7 +157,7 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
                 disabled={isSubmitting}
               />
             ) : (
-              <p className="occ-text-secondary">No template available. Draft response manually or escalate.</p>
+              <p className="occ-text-secondary">No suggested reply available. Draft your response or escalate to team lead.</p>
             )}
           </section>
 

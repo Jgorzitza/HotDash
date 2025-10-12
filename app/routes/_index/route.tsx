@@ -21,9 +21,9 @@ export default function App() {
   return (
     <div className={styles.index}>
       <div className={styles.content}>
-        <h1 className={styles.heading}>A short heading about [your app]</h1>
+        <h1 className={styles.heading}>Operator Control Center</h1>
         <p className={styles.text}>
-          A tagline about [your app] that describes your value proposition.
+          Your command center for automotive e-commerce operations — unified CX, sales, inventory, and fulfillment intelligence.
         </p>
         {showForm && (
           <Form className={styles.form} method="post" action="/auth/login">
@@ -39,16 +39,13 @@ export default function App() {
         )}
         <ul className={styles.list}>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>5 Actionable Tiles</strong>. Real-time insights across CX, sales, SEO, inventory, and fulfillment — all in one view.
           </li>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>AI-Assisted Decisions</strong>. Agent-drafted responses and recommendations ready for your approval.
           </li>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>Operator-First Design</strong>. Built for automotive parts retailers who need to make fast, data-driven decisions.
           </li>
         </ul>
       </div>

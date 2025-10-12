@@ -43,8 +43,8 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div style={{ padding: '20px', textAlign: 'center' }}>
-          <h2>Something went wrong</h2>
-          <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
+          <h2>Dashboard Error</h2>
+          <p>Unable to load this component. Please refresh the page or contact support if the issue persists.</p>
           {process.env.NODE_ENV === 'development' && this.state.error && (
             <details style={{ marginTop: '20px', textAlign: 'left' }}>
               <summary>Error Details (Development Only)</summary>

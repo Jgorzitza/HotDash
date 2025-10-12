@@ -335,21 +335,21 @@ export default function OperatorDashboard() {
         />
 
         <TileCard
-          title="Fulfillment Health"
+          title="Fulfillment Flow"
           tile={data.fulfillment}
           render={(issues) => <FulfillmentHealthTile issues={issues} />}
           testId="tile-fulfillment-health"
         />
 
         <TileCard
-          title="Inventory Heatmap"
+          title="Inventory Watch"
           tile={data.inventory}
           render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
           testId="tile-inventory-heatmap"
         />
 
         <TileCard
-          title="CX Escalations"
+          title="CX Pulse"
           tile={data.escalations}
           render={(conversations) => (
             <CXEscalationsTile conversations={conversations} enableModal />
@@ -358,7 +358,7 @@ export default function OperatorDashboard() {
         />
 
         <TileCard
-          title="SEO & Content Watch"
+          title="SEO Pulse"
           tile={data.seo}
           render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
           testId="tile-seo-content"

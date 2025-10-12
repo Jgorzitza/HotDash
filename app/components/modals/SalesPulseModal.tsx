@@ -127,9 +127,9 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
           </section>
 
           <section className="occ-modal__section">
-            <h3>Open fulfillment issues</h3>
+            <h3>Pending fulfillment</h3>
             {summary.pendingFulfillment.length === 0 ? (
-              <p className="occ-text-secondary">No blockers detected.</p>
+              <p className="occ-text-secondary">All clear — no blockers.</p>
             ) : (
               <ul className="occ-modal__list">
                 {summary.pendingFulfillment.map((order) => (

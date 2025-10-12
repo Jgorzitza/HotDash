@@ -34,7 +34,7 @@ export function FulfillmentHealthTile({ issues }: FulfillmentHealthTileProps) {
         </ul>
       ) : (
         <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
-          All recent orders are on track.
+          All orders on schedule.
         </p>
       )}
     </>

@@ -49,7 +49,7 @@ export function SalesPulseTile({ summary, enableModal = false }: SalesPulseTileP
             onClick={openModal}
             data-testid="sales-pulse-open"
           >
-            View details
+            View breakdown
           </button>
         ) : null}
       </div>
@@ -101,7 +101,7 @@ export function SalesPulseTile({ summary, enableModal = false }: SalesPulseTileP
               margin: "var(--occ-space-2) 0 0 0",
             }}
           >
-            No fulfillment blockers detected.
+            All clear — no blockers.
           </p>
         )}
       </div>

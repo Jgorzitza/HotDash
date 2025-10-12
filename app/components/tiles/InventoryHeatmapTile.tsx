@@ -29,7 +29,7 @@ export function InventoryHeatmapTile({ alerts }: InventoryHeatmapTileProps) {
         </ul>
       ) : (
         <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
-          No low stock alerts right now.
+          Stock levels healthy.
         </p>
       )}
     </>

@@ -24,7 +24,7 @@ export function CXEscalationsTile({ conversations, enableModal = false }: CXEsca
   const closeModal = () => setActiveConversationId(null);
 
   if (!conversations.length) {
-    return <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>No SLA breaches detected.</p>;
+    return <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>All conversations on track.</p>;
   }
 
   return (
@@ -53,7 +53,7 @@ export function CXEscalationsTile({ conversations, enableModal = false }: CXEsca
                   onClick={() => openModal(conversation.id)}
                   data-testid="cx-escalations-open"
                 >
-                  Review
+                  Review & respond
                 </button>
               ) : null}
             </div>

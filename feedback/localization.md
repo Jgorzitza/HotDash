@@ -1,78 +1,106 @@
 ---
 epoch: 2025.10.E1
-doc: feedback/$(basename "$file")
-owner: $(basename "$file" .md)
-last_reviewed: 2025-10-14
-doc_hash: TBD
-expires: 2025-10-21
+agent: localization
+started: 2025-10-12
 ---
 
-<!-- Log new updates below. Include timestamp, command/output, and evidence path. -->
+# Localization — Feedback Log
 
-## 2025-10-11T07:13:42Z — Overnight English-only audit (RR7 + CLI v3)
+## 2025-10-12 — Fresh Start
 
-### 1. Scan Results
-- Command: `grep -RInE "\b(fr|fr-FR|fr_CA)\b|Résumé|Bonjour" app/ docs/`
-- Scan evidence:
-  - Results: artifacts/localization/20251011T071342Z/scan.txt
-  - Analysis: artifacts/localization/20251011T071342Z/ui_copy_audit.md
-- Findings: ✅ ENGLISH-ONLY MAINTAINED
-  - No violations in app/ UI code
-  - No violations in user-facing docs outside sanctioned references
-  - All FR strings are in sanctioned QA files or technical metadata
+**Previous**: Archived
+**Focus**: English copy quality for Hot Rod AN
+**Context**: Manual audit approach approved
 
-### 2. Shopify Admin Screenshot Workflow (RR7 + CLI v3)
-- Command: `shopify app dev` will open embedded app in Admin automatically
-- Evidence: artifacts/localization/shopify/screenshots/20251011T071342Z/README.txt
-- ✅ Workflow uses only Shopify CLI v3; no token injection required
+## Session Log
 
-### 3. Partner/Vendor Touchpoint Tracker
-| Owner | Partner | Ask | Due | Status | Links |
-|-------|---------|-----|-----|--------|-------|
-| Localization | Chatwoot | Confirm macros remain English-only; align tone to copy deck | 2025-10-12 | 🟡 Pending | app/services/chatwoot/templates.ts |
-| Localization | LlamaIndex | Confirm terminology guardrails in any prompt templates | 2025-10-13 | 🟡 Pending | scripts/ai/* |
-| Marketing | Support Enablement | Acknowledge FR scope paused (RR7 + CLI v3 flow; no tokens) | 2025-10-16 | 🟡 Pending | docs/marketing/english_only_audit_checklist.md |
+### 2025-10-12 — UI Copy Audit Complete
 
-### 4. Monday/Thursday Stack Compliance Audit
-- Next audit dates: 2025-10-14 (Mon), 2025-10-17 (Thu)
-- Focus areas:
-  1. Supabase terminology across stack docs
-  2. Chatwoot on Supabase references and macros alignment
-  3. React Router 7 nomenclature and consistency
-- Any remediation items will be logged here after each audit.
+**Scope**: Comprehensive audit of Hot Rod AN dashboard UI copy for automotive voice and clarity
 
-## 2025-10-11T04:47:30Z — Manager-updated tasks executed (RR7 + Shopify CLI v3; English-only audit)
-- Actions:
-  - Ran a repo-wide non-ASCII proxy check to reconfirm English-only compliance, focusing on shipping UI and Chatwoot templates.
-  - Prepared Shopify Admin screenshot workflow per updated direction using `shopify app dev` (no token flows) and staged README for capture.
-  - Will align collateral and partner tracker after manager review of findings.
-- Artifacts:
-  - UI scan summary: artifacts/localization/audits/20251011T044730Z/scan_ui.txt
-  - Chatwoot scan summary: artifacts/localization/audits/20251011T044730Z/scan_chatwoot.txt
-  - Screenshot prep: artifacts/localization/shopify/screenshots/20251011T044730Z/README.txt
-- Notes:
-  - The non-ASCII proxy flags typographic punctuation (e.g., en dash, curly quotes). No French strings identified in the UI or Chatwoot template paths; human review recommended at the listed line numbers to confirm.
-  - Per updated direction, removed token-based screenshot workflow from the plan; using RR7 + Shopify CLI v3 instead.
+**Critical Issues Found & Fixed**:
 
-### Partner/vendor touchpoint tracker (pending updates)
-- Owner | Partner | Ask | Due | Status | Links
-- [owner-fill] | Chatwoot | Confirm macros remain English-only; align tone to copy deck | [date] | [status] | app/services/chatwoot/templates.ts
-- [owner-fill] | LlamaIndex | Confirm terminology guardrails in any prompt templates | [date] | [status] | scripts/ai/*
-- [owner-fill] | Marketing | Acknowledge FR scope paused; use RR7 + CLI v3 flow (no tokens) | [date] | [status] | docs/marketing/english_only_audit_checklist.md
+1. ✅ **Tile Name Mismatches** — Fixed tiles to match North Star document:
+   - "CX Escalations" → "CX Pulse"
+   - "SEO & Content Watch" → "SEO Pulse"
+   - "Inventory Heatmap" → "Inventory Watch"
+   - "Fulfillment Health" → "Fulfillment Flow"
+   - "Sales Pulse" ✓ (already correct)
+   - "Ops Pulse" ✓ (already correct)
 
-## 2025-10-11T02:00:13Z — Localization audit kickoff (status: blocked, awaiting direction)
-- Commands executed:
-  - Attempt 1 (rg-based): bash -lc '<rg audit script creating artifacts dirs, sanctioned FR excludes, scans and drift checks>'
-  - Attempt 2 (grep -P fallback): bash -lc '<grep-based audit script using scan_list helper and per-surface scans>'
-- Output/evidence:
-  - Artifacts summary: artifacts/localization/audits/2025-10-11T020013Z/status.md
-  - Notes: ripgrep is not installed; both attempts encountered path expansion issues that caused writes to root (e.g., /scan_*.txt), leading to permission errors. No source files were modified; no secrets touched.
-- Proposed next steps (awaiting manager approval):
-  1) Install ripgrep and re-run a simplified, step-by-step scan (no eval, no functions) targeting UI/Chatwoot/Runbooks/Marketing, or
-  2) Proceed with grep -P only in smaller, per-surface chunks, or
-  3) Narrow initial scope to UI + Chatwoot scans, then expand.
-- Blockers:
-  - Shopify Admin screenshot workflow pending embed token delivery; prep folders will be created after scans succeed.
-- Request:
-  - Please advise which option to proceed with, and whether to install ripgrep on this workstation.
+2. ✅ **Empty State Messages** — Improved for clarity and professionalism:
+   - "No SLA breaches detected" → "All conversations on track"
+   - "Traffic trends stable" → "No traffic anomalies detected"
+   - "All recent orders are on track" → "All orders on schedule"
+   - "No low stock alerts right now" → "Stock levels healthy"
+   - "No fulfillment blockers detected" → "All clear — no blockers"
+   - "No recent messages available" → "No message history loaded"
+   - "No blockers detected" → "All clear — no blockers"
+
+3. ✅ **Status Labels** — More direct and operator-friendly:
+   - "Healthy" → "All clear"
+   - "Attention needed" → "Needs attention"
+   - "Configuration required" → "Setup required"
+
+4. ✅ **Error Messages** — Clearer and more actionable:
+   - "Something went wrong" → "Dashboard Error" with specific guidance
+   - "Data unavailable right now" → "Data temporarily unavailable"
+   - "No template available" → "No suggested reply available" with clear next steps
+
+5. ✅ **Button Labels** — More specific and action-oriented:
+   - "View details" → "View breakdown"
+   - "Review" → "Review & respond"
+
+6. ✅ **Modal Titles** — Consistent with tile names:
+   - "CX Escalation — {name}" → "CX Pulse — {name}"
+
+7. ✅ **Landing Page** — Updated from generic placeholder to Hot Rod AN specific:
+   - Heading: "Operator Control Center"
+   - Value prop: "Your command center for automotive e-commerce operations"
+   - Features list: Highlighted 5 tiles, AI assistance, operator-first design
+
+8. ✅ **OpsMetrics Tile** — Improved empty states:
+   - "No activation data yet" → "No activation data available"
+   - "No resolved breaches in window" → "No resolution data in window"
+
+**Files Modified**:
+- `app/routes/app._index.tsx` — Main dashboard tile names
+- `app/routes/_index/route.tsx` — Landing page copy
+- `app/components/tiles/TileCard.tsx` — Status labels and error messages
+- `app/components/tiles/CXEscalationsTile.tsx` — Empty state and button label
+- `app/components/tiles/SEOContentTile.tsx` — Empty state message
+- `app/components/tiles/InventoryHeatmapTile.tsx` — Empty state message
+- `app/components/tiles/FulfillmentHealthTile.tsx` — Empty state message
+- `app/components/tiles/SalesPulseTile.tsx` — Empty state and button label
+- `app/components/tiles/OpsMetricsTile.tsx` — Empty state messages
+- `app/components/modals/CXEscalationModal.tsx` — Modal title and messages
+- `app/components/modals/SalesPulseModal.tsx` — Section heading and empty state
+- `app/components/ErrorBoundary.tsx` — Error message clarity
+
+**Voice & Tone Assessment**:
+- ✅ Professional and direct — appropriate for operators making fast decisions
+- ✅ Clear and actionable — no jargon or ambiguity
+- ✅ Consistent terminology — "pulse" theme for live data tiles
+- ✅ Operator-first language — speaks to the user's workflow
+
+**Automotive Context**:
+- ⚠️ **Note**: Dashboard is for Hot Rod AN's e-commerce operations, not automotive-specific UI (e.g., "AN fittings" in product data, not UI copy)
+- ✅ Landing page now mentions "automotive e-commerce" and "automotive parts retailers"
+- ✅ Generic Shopify terms (sales, fulfillment, inventory) remain appropriate for this context
+
+**Recommendations for Future**:
+1. Consider adding Hot Rod AN branding/logo to dashboard header
+2. Add tooltips explaining technical terms (SLA, WoW, P90) for new operators
+3. Create style guide documenting voice/tone for future UI additions
+4. Consider adding "days of cover" explanation in Inventory Watch tile
+5. Validate copy with Hot Rod AN CEO during Oct 13-15 launch testing
+
+**Quality Checks**:
+- ✅ All linter checks pass
+- ✅ No TypeScript errors
+- ✅ Consistent formatting and style
+- ✅ All 5 core tiles aligned with North Star document
+
+**Branch**: `localization/work`
+**Status**: ✅ COMPLETE — Ready for code review and testing
 

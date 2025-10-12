@@ -57,7 +57,7 @@ export function OpsMetricsTile({ metrics }: OpsMetricsTileProps) {
             </p>
           </>
         ) : (
-          <p style={metaStyle}>No activation data yet.</p>
+          <p style={metaStyle}>No activation data available.</p>
         )}
       </section>
 
@@ -71,7 +71,7 @@ export function OpsMetricsTile({ metrics }: OpsMetricsTileProps) {
             <p style={metaStyle}>Sample size: {sla.sampleSize}</p>
           </>
         ) : (
-          <p style={metaStyle}>No resolved breaches in window.</p>
+          <p style={metaStyle}>No resolution data in window.</p>
         )}
       </section>
     </div>
