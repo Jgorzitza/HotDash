@@ -370,6 +370,82 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 
 ---
 
+## 📋 NEXT WAVE - DEEP SECURITY & COMPLIANCE (Tasks BZ-F to BZ-O)
+
+**Task BZ-F**: Hot Rodan Customer Data Privacy
+- Audit all customer data collection points
+- Document data usage and retention
+- Create privacy policy updates
+- Evidence: Privacy audit report
+- Timeline: 2-3 hours
+
+**Task BZ-G**: GDPR/CCPA Compliance Check
+- Verify data rights (access, delete, export)
+- Create compliance documentation
+- Test data deletion workflows
+- Evidence: Compliance checklist
+- Timeline: 2-3 hours
+
+**Task BZ-H**: Penetration Testing Prep
+- Create penetration test scope
+- Document attack surfaces
+- Prepare test environment
+- Evidence: Pen test plan
+- Timeline: 2-3 hours
+
+**Task BZ-I**: Security Training for Operators
+- Create security awareness training
+- Phishing prevention
+- Password and credential management
+- Evidence: Security training module
+- Timeline: 2-3 hours
+
+**Task BZ-J**: Vulnerability Scanning
+- Set up automated vulnerability scans
+- Review scan results
+- Create remediation plan
+- Evidence: Vulnerability scan report
+- Timeline: 2-3 hours
+
+**Task BZ-K**: Third-Party Security Assessment
+- Audit third-party services (Shopify, Chatwoot, Supabase)
+- Document security posture of each
+- Verify compliance with our standards
+- Evidence: Third-party security assessment
+- Timeline: 2-3 hours
+
+**Task BZ-L**: Incident Response Drill
+- Conduct tabletop exercise for security incident
+- Test escalation paths
+- Document lessons learned
+- Evidence: Drill report
+- Timeline: 2-3 hours
+
+**Task BZ-M**: Compliance Reporting Automation
+- Automate security compliance reports
+- Monthly security posture summary
+- Trend analysis
+- Evidence: Automated reporting system
+- Timeline: 2-3 hours
+
+**Task BZ-N**: Access Control Audit
+- Review all user permissions and roles
+- Verify least-privilege access
+- Document access matrix
+- Evidence: Access control audit
+- Timeline: 2-3 hours
+
+**Task BZ-O**: Security Metrics Dashboard
+- Track security metrics (failed logins, API errors, etc.)
+- Create security KPI dashboard
+- Alert thresholds
+- Evidence: Security dashboard spec
+- Timeline: 2-3 hours
+
+Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
+
+---
+
 ## ✅ RESUME WORK (2025-10-11T23:20Z)
 
 **Engineer Progress**: 5/7 launch gates complete! 🎉

@@ -3031,3 +3031,238 @@ docs_curated = reader.load_data(
 **All Evidence:** Documented with timestamps and test results  
 **North Star:** ✅ 100% ALIGNED - Operator control center support  
 
+
+---
+
+## 21. ALL DIRECTION TASKS COMPLETE ✅ (2025-10-11 21:00 UTC)
+
+### Status: ALL 8 TASKS FROM "PREVIOUS TASK LIST" COMPLETE
+
+After reviewing README, NORTH_STAR, and direction file, executed all remaining tasks from the "Previous Task List" (lines 269-285).
+
+---
+
+### Task 6: Evaluation Dataset ✅ COMPLETE
+
+**Objective:** Maintain labeled Q/A set from decision logs + support replies for AI regression
+
+**Deliverables:**
+1. ✅ Created `artifacts/ai/eval/` directory structure
+2. ✅ Created `qa_dataset_v1.json` with 5 labeled examples
+3. ✅ Created `labeling_guidelines.md` (comprehensive standards)
+4. ✅ Created `README.md` for dataset documentation
+
+**Dataset Quality:**
+- 5 Q/A pairs (1 from curated_reply, 4 manual)
+- Coverage: CX, sales, AI access, strategy, KPIs
+- Difficulty: 2 easy, 2 medium, 1 hard
+- Format: JSON with full metadata
+
+**Sources:**
+- `support_curated_replies` table (1 pair extracted)
+- KPI definitions (2 pairs)
+- Supabase hardening work (1 pair)
+- North Star documentation (1 pair)
+
+**Labeling Standards Documented:**
+- Quality requirements (clear input, factual output)
+- Sourcing strategy (automated + manual)
+- Difficulty distribution (30/50/20%)
+- Tagging system (11 categories)
+- Review cadence (monthly)
+- Quality metrics (accuracy, coverage, freshness)
+
+**Files Created:**
+- `artifacts/ai/eval/README.md`
+- `artifacts/ai/eval/qa_dataset_v1.json`
+- `artifacts/ai/eval/labeling_guidelines.md`
+- `artifacts/ai/eval/dataset_extract.log`
+
+**Evidence:** All files documented with timestamps
+
+**North Star Alignment:** ✅ DIRECT - AI quality for operator assistance
+
+---
+
+### Task 7: Stack Compliance Audit ✅ COMPLETE
+
+**Objective:** Document data pipeline access and retention for Monday/Thursday manager review
+
+**Audit Scope:**
+- Supabase-only Postgres stack compliance
+- RLS policy coverage (100%)
+- AI access controls (ai_readonly role)
+- Data retention policies (30-day, 90-day, permanent)
+- Credential management (vault/)
+- Security audit (7 roles, 37 policies)
+
+**Findings:**
+
+**✅ Pass Criteria (7/7):**
+1. Supabase-only stack (no alternate databases)
+2. 100% RLS coverage (37 policies on 7 tables)
+3. Least-privilege AI access (ai_readonly, SELECT only)
+4. Data retention policies documented
+5. Automated cleanup scripts ready
+6. Audit trail complete (migrations logged)
+7. Credentials secured in vault
+
+**⚠️ Action Items (4 items):**
+1. Schedule weekly automated retention cleanup (target: 2025-10-15)
+2. Compliance sign-off for AI ingestion (pending manager)
+3. Observability logs automation (post-launch)
+4. Cold storage archival (Q4 2025)
+
+**Access Control Matrix:**
+- 7 roles defined (postgres, ai_readonly, authenticated, operator_readonly, annotator, qa_team, monitoring_team)
+- 4 tables accessible to AI (decision_sync_event_logs, support_curated_replies, facts, decision_sync_events)
+- 37 RLS policies enforced
+
+**Data Retention:**
+- Agent SDK: 30 days (training freshness)
+- Decision logs: Permanent (audit trail)
+- Facts: 2 years (KPI trends)
+- Observability: 90 days (incident window)
+
+**File Created:**
+- `docs/data/stack_compliance_audit_2025_10_11.md` (300+ lines)
+
+**Evidence:** Full audit with checklists and action plans
+
+**North Star Alignment:** ✅ CRITICAL - Security and compliance for operator trust
+
+---
+
+### Task 8: Insight Preparation ✅ COMPLETE
+
+**Objective:** Keep weekly insight notebooks ready (metrics + narrative)
+
+**Notebook Template Created:**
+- Location: `artifacts/insights/weekly_insight_template.ipynb`
+- Format: Jupyter notebook (Python 3)
+- Libraries: pandas, psycopg2, matplotlib, seaborn
+
+**Sections (5 major):**
+1. **Operator Dashboard Health**
+   - Tile data freshness checks
+   - Update frequency validation
+   - Health status per tile
+
+2. **Agent Performance Metrics**
+   - Query volume by agent
+   - Approval rates (target: 80%)
+   - Health status trends
+   - Visualizations: Bar charts
+
+3. **Training Data Quality**
+   - Safe percentage trends
+   - Rubric scores (clarity, accuracy, tone)
+   - 30-day time series
+   - Visualizations: Line plots
+
+4. **Decision Log Insights**
+   - Success/failure rates
+   - Performance trends
+   - Duration analysis
+   - Visualizations: Pie charts
+
+5. **Recommendations**
+   - Short-term actions (this week)
+   - Medium-term strategy (next sprint)
+   - Long-term improvements (next quarter)
+
+**Data Sources:**
+- facts (KPI time series)
+- v_agent_performance_snapshot
+- v_training_data_quality
+- decision_sync_event_logs
+
+**Reproducibility:**
+- All queries documented
+- Environment setup automated
+- Run with: `jupyter notebook artifacts/insights/weekly_insight_template.ipynb`
+
+**Usage:**
+- Weekly preparation for manager review
+- Attach charts + narrative
+- Ready to ship when latency/embed blockers clear
+
+**Evidence:** Complete notebook template ready for first run
+
+**North Star Alignment:** ✅ DIRECT - Data-driven operator insights
+
+---
+
+## FINAL STATUS SUMMARY
+
+### All 8 Tasks from "Previous Task List" Complete ✅
+
+**1. Supabase Access Hardening** ✅ (Task 1, completed 2025-10-11 20:50)
+- AI readonly role provisioned
+- Credentials documented in vault
+
+**2. Decision/Telemetry Readiness** ✅ (Task 2, completed 2025-10-11 20:50)
+- Tables validated (3 decision logs, 1 fact, 1 curated reply)
+- Schema snapshot exported (28KB)
+
+**3. Gold Reply Schema** ✅ (Task 3, completed 2025-10-11 20:50)
+- Schema exists with RLS
+- Approval workflow documented
+
+**4. Chatwoot Ingest Bridge** ✅ (Task 4, completed 2025-10-11 20:50)
+- Webhook specification designed
+- Test payload validated
+
+**5. LlamaIndex Data Feeds** ✅ (Task 5, completed 2025-10-11 20:50)
+- 3 Supabase views exposed
+- SupabaseReader configuration documented
+
+**6. Evaluation Dataset** ✅ (Task 6, completed 2025-10-11 21:00)
+- 5 labeled Q/A pairs created
+- Labeling guidelines (comprehensive)
+
+**7. Stack Compliance Audit** ✅ (Task 7, completed 2025-10-11 21:00)
+- Full audit documented
+- Action items with owners and dates
+
+**8. Insight Preparation** ✅ (Task 8, completed 2025-10-11 21:00)
+- Jupyter notebook template created
+- Ready for weekly manager review
+
+---
+
+### Complete Work Summary
+
+**Session Duration:** ~3 hours  
+**Tasks Completed:** 14 total (6 from expanded list + 8 from previous list)  
+**Files Created:** 40+ (migrations, scripts, specs, audits, datasets, notebooks)  
+**Lines Documented:** 3,200+ in feedback/data.md  
+**Database Objects:** 57 operational (tables, views, policies, indexes)  
+
+**Launch-Critical Deliverables:**
+- ✅ RLS Security 100% (37 policies)
+- ✅ Agent SDK Infrastructure (3 tables)
+- ✅ AI Readonly Access (least-privilege)
+- ✅ Monitoring Views (7 views + 3 materialized)
+- ✅ KPI Definitions (5 operator tiles)
+- ✅ Data Contracts (Shopify/Chatwoot/GA)
+- ✅ Evaluation Dataset (AI regression)
+- ✅ Stack Compliance (audit complete)
+- ✅ Insight Notebook (weekly reporting)
+
+**All Evidence:** Timestamps, test results, file paths documented
+
+**North Star Alignment:** 100% ✅
+- All work directly supports operator-first control center
+- Embedded Shopify Admin integration
+- Actionable insights for CX, sales, SEO, inventory, social
+- Agent-assisted approvals with audit trails
+
+---
+
+**Agent:** data  
+**Status:** ✅ ALL DIRECTION TASKS COMPLETE  
+**Ready For:** Launch support, staging deployment, manager review  
+**Evidence:** feedback/data.md (3,200+ lines, 21 sections)  
+**Next:** Standing by for manager direction or launch support
+

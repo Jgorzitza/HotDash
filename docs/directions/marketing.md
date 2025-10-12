@@ -263,6 +263,82 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 
 ---
 
+## 📋 NEXT WAVE - DEEP LAUNCH MARKETING (Tasks AE-5 to AE-14)
+
+**Task AE-5**: Hot Rodan Customer Success Stories
+- Interview Hot Rodan operators about current pain points
+- Document time wasted on manual tasks dashboard will solve
+- Create before/after scenarios
+- Evidence: 3-5 customer quotes and scenarios
+- Timeline: 2-3 hours
+
+**Task AE-6**: Hot Rod Community Engagement Plan
+- Identify hot rod forums, Facebook groups, subreddits
+- Create engagement strategy for automotive community
+- Draft community posts about dashboard
+- Evidence: Community engagement plan
+- Timeline: 2-3 hours
+
+**Task AE-7**: SEO Content for Hot Rodan Growth
+- Write blog posts: "10x Your Hot Rod Shop Revenue"
+- Create landing page copy for dashboard
+- Automotive industry SEO keywords
+- Evidence: 3-5 blog post drafts
+- Timeline: 3-4 hours
+
+**Task AE-8**: Video Marketing Content
+- Script for Hot Rodan dashboard demo video
+- Storyboard for feature highlights
+- Automotive enthusiast language
+- Evidence: Video script and storyboard
+- Timeline: 2-3 hours
+
+**Task AE-9**: Email Campaign Series
+- Welcome sequence for new Hot Rodan operators
+- Feature spotlight emails (one per tile)
+- Success metric sharing
+- Evidence: 7-email sequence
+- Timeline: 3-4 hours
+
+**Task AE-10**: Social Media Content Calendar
+- 30 days of Hot Rodan dashboard posts
+- Mix: Tips, features, behind-scenes, customer wins
+- Automotive industry relevant content
+- Evidence: Content calendar with drafts
+- Timeline: 2-3 hours
+
+**Task AE-11**: Partner/Supplier Messaging
+- Messaging for Hot Rodan's suppliers
+- How dashboard improves ordering accuracy
+- Strengthens supplier relationships
+- Evidence: Supplier communication template
+- Timeline: 1-2 hours
+
+**Task AE-12**: Trade Show/Event Materials
+- Hot rod show booth materials
+- SEMA show presence planning
+- Industry event marketing
+- Evidence: Event marketing kit
+- Timeline: 2-3 hours
+
+**Task AE-13**: Press Release and Media Kit
+- Press release for Hot Rodan dashboard launch
+- Media kit with screenshots, quotes, stats
+- Industry publication outreach list
+- Evidence: PR + media kit
+- Timeline: 2-3 hours
+
+**Task AE-14**: Referral and Growth Program
+- Operator referral program design
+- Incentives for Hot Rodan team adoption
+- Word-of-mouth growth tactics
+- Evidence: Referral program plan
+- Timeline: 2-3 hours
+
+Execute AE-5 to AE-14. Total: ~50-55 hours Hot Rodan marketing.
+
+---
+
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task AF-AO: Growth Marketing** (10 tasks)

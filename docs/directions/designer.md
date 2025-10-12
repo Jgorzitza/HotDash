@@ -148,6 +148,88 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 
 Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work.
 
+---
+
+## 📋 NEXT WAVE - DEEP LAUNCH PREP (Tasks 1J-1S)
+
+**Task 1J**: Tile-Specific UI Refinement
+- Design detailed states for each of 5 tiles (CX, Sales, Inventory, SEO, Fulfillment)
+- Create data visualization components (charts, graphs, sparklines)
+- Hot rod-themed iconography for automotive context
+- Evidence: 5 tile design specifications
+- Timeline: 3-4 hours
+
+**Task 1K**: Operator Dashboard Personalization
+- Design customizable dashboard layout
+- Tile reordering and hiding
+- User preference persistence
+- Operator-specific views
+- Evidence: Personalization design spec
+- Timeline: 2-3 hours
+
+**Task 1L**: Notification and Alert Design
+- Design notification center for approval queue
+- Alert badges and counters
+- Sound/vibration preferences
+- Priority visual hierarchy
+- Evidence: Notification system design
+- Timeline: 2-3 hours
+
+**Task 1M**: Data Visualization Library
+- Design chart components for Hot Rodan metrics
+- Sales trends, inventory levels, SEO performance
+- Interactive tooltips and drill-downs
+- Print-friendly reports
+- Evidence: Data viz component library
+- Timeline: 3-4 hours
+
+**Task 1N**: Dark Mode Design
+- Create dark mode color palette
+- Ensure contrast ratios meet WCAG AA
+- Toggle UI and preference storage
+- Evidence: Dark mode design system
+- Timeline: 2-3 hours
+
+**Task 1O**: Empty States and First-Use
+- Design empty states for each tile (no data yet)
+- First-use guidance and setup wizards
+- Motivational copy for new users
+- Evidence: Empty state designs
+- Timeline: 2-3 hours
+
+**Task 1P**: Approval History and Audit Trail UI
+- Design approval history view
+- Filter and search approvals
+- Export capabilities
+- Timeline visualization
+- Evidence: Audit trail UI design
+- Timeline: 2-3 hours
+
+**Task 1Q**: Hot Rodan-Specific Illustrations
+- Create custom illustrations for automotive context
+- Hot rod-themed empty states
+- Industry-specific success celebrations
+- Evidence: Illustration set
+- Timeline: 3-4 hours
+
+**Task 1R**: Responsive Table Design
+- Design data tables for various screen sizes
+- Sortable columns, filters
+- Bulk actions UI
+- Mobile table patterns
+- Evidence: Table component designs
+- Timeline: 2-3 hours
+
+**Task 1S**: Component Documentation
+- Document all components for Engineer
+- Usage examples and code snippets
+- Props and variants
+- Accessibility guidelines
+- Evidence: Component documentation
+- Timeline: 2-3 hours
+
+Execute 1J-1S. Total: ~45-50 hours additional launch-aligned work.
+
 **DO FIRST**: Tasks 1-2 above (approval queue)
 
 **PAUSE UNTIL AFTER LAUNCH**: Tasks 3-87 (all expanded design work)

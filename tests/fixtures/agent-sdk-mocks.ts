@@ -11,6 +11,8 @@
  * Test Strategy: docs/testing/agent-sdk/test-strategy.md
  */
 
+import { vi, expect } from 'vitest';
+
 /**
  * Type Definitions
  * TODO: Import from actual types once implemented
@@ -75,6 +77,10 @@ export interface QueueItem {
   priority: string;
   status: string;
   created_at: string;
+  sentiment?: {
+    customer_sentiment: string;
+    urgency: string;
+  };
 }
 
 /**
@@ -168,29 +174,29 @@ export function mockQueueData(overrides: Partial<QueueItem> = {}): QueueItem {
 
 export function mockLlamaIndexService() {
   return {
-    query: jest.fn().mockResolvedValue({
+    query: vi.fn().mockResolvedValue({
       sources: [mockKnowledgeSource()],
       relevance: 0.9,
       processingTime: 350
     }),
-    health: jest.fn().mockResolvedValue({ status: 'healthy' })
+    health: vi.fn().mockResolvedValue({ status: 'healthy' })
   };
 }
 
 export function mockAgentSDKService() {
   return {
-    generateDraft: jest.fn().mockResolvedValue(mockAgentSDKDraft()),
-    health: jest.fn().mockResolvedValue({ status: 'healthy' })
+    generateDraft: vi.fn().mockResolvedValue(mockAgentSDKDraft()),
+    health: vi.fn().mockResolvedValue({ status: 'healthy' })
   };
 }
 
 export function mockChatwootClient() {
   return {
-    sendReply: jest.fn().mockResolvedValue({ id: 123, sent: true }),
-    createPrivateNote: jest.fn().mockResolvedValue({ id: 456, created: true }),
-    assignAgent: jest.fn().mockResolvedValue({ success: true }),
-    addLabel: jest.fn().mockResolvedValue({ success: true }),
-    getConversationDetails: jest.fn().mockResolvedValue({
+    sendReply: vi.fn().mockResolvedValue({ id: 123, sent: true }),
+    createPrivateNote: vi.fn().mockResolvedValue({ id: 456, created: true }),
+    assignAgent: vi.fn().mockResolvedValue({ success: true }),
+    addLabel: vi.fn().mockResolvedValue({ success: true }),
+    getConversationDetails: vi.fn().mockResolvedValue({
       id: 123,
       status: 'open',
       messages: []
@@ -208,7 +214,7 @@ export function mockLlamaIndexDelay(ms: number) {
 
 export function mockLlamaIndexOffline() {
   return {
-    query: jest.fn().mockRejectedValue(new Error('Service unavailable'))
+    query: vi.fn().mockRejectedValue(new Error('Service unavailable'))
   };
 }
 
@@ -218,7 +224,7 @@ export function mockAgentSDKDelay(ms: number) {
 
 export function mockAgentSDKError(error: { status: number; message: string }) {
   return {
-    generateDraft: jest.fn().mockRejectedValue({
+    generateDraft: vi.fn().mockRejectedValue({
       status: error.status,
       message: error.message
     })
@@ -227,7 +233,7 @@ export function mockAgentSDKError(error: { status: number; message: string }) {
 
 export function mockChatwootAPIError(status: number) {
   return {
-    sendReply: jest.fn().mockRejectedValue({
+    sendReply: vi.fn().mockRejectedValue({
       status,
       message: `Chatwoot API error: ${status}`
     })
@@ -238,7 +244,12 @@ export function mockChatwootAPIError(status: number) {
  * Database Seed Helpers
  */
 
-import { supabase } from '~/config/supabase.server';
+import { createClient } from '@supabase/supabase-js';
+
+// Create test Supabase client
+const supabaseUrl = process.env.SUPABASE_URL || 'http://localhost:54321';
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY || 'test-key';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function seedApprovalQueue(items: Partial<QueueItem>[]): Promise<QueueItem[]> {
   const { data, error } = await supabase
@@ -321,7 +332,7 @@ export function expectQueueEntry(
  * HMAC Signature Utilities
  */
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 export function generateHmacSignature(payload: any, secret: string): string {
   const hmac = crypto.createHmac('sha256', secret);
@@ -382,17 +393,17 @@ export const TEST_SCENARIOS = {
   
   refundRequest: () => mockChatwootMessageCreated({
     content: "I want a refund for my order #12345!",
-    sender: { name: 'Angry Customer', type: 'contact' }
+    sender: { id: 201, name: 'Angry Customer', email: 'angry@example.com', type: 'contact' }
   }),
   
   shippingInquiry: () => mockChatwootMessageCreated({
     content: "Where is my package? It's been 2 weeks!",
-    sender: { name: 'Worried Customer', type: 'contact' }
+    sender: { id: 202, name: 'Worried Customer', email: 'worried@example.com', type: 'contact' }
   }),
   
   policyQuestion: () => mockChatwootMessageCreated({
     content: "What's your return policy?",
-    sender: { name: 'New Customer', type: 'contact' }
+    sender: { id: 203, name: 'New Customer', email: 'newcustomer@example.com', type: 'contact' }
   })
 };
 

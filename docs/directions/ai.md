@@ -409,7 +409,90 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 
 **Then Resume**: Tasks E-BB (LlamaIndex MCP now available to test)
 
-**Read**: docs/ops/SHOPIFY-AUTH-PATTERN.md (Shopify creds clarification)
+**Read**: docs/dev/authshop.md (Shopify auth pattern)
+
+---
+
+## 📋 NEXT WAVE - DEEP HOT RODAN RAG TASKS (Tasks B-L)
+
+**Task B**: Product Catalog Enhancement
+- Ingest all Hot Rodan product descriptions from Shopify
+- Enhance with technical specs (engine compatibility, dimensions, materials)
+- Create product Q&A knowledge base
+- Evidence: Product catalog in RAG, test queries return product info
+- Timeline: 2-3 hours
+
+**Task C**: Hot Rod Technical Knowledge Base
+- Research common hot rod questions (carburetor tuning, headers, exhaust)
+- Create technical reference docs
+- Ingest hot rod building guides
+- Evidence: Technical KB documents, RAG queries return accurate info
+- Timeline: 3-4 hours
+
+**Task D**: Customer Support Script Library
+- Create response templates for common Hot Rodan inquiries
+- Order status, returns, technical support, product recommendations
+- CEO voice and tone analysis
+- Evidence: Script library documents
+- Timeline: 2-3 hours
+
+**Task E**: Competitor Analysis Knowledge
+- Research competitor shops (Speedway, Summit Racing)
+- Document Hot Rodan differentiators
+- Create competitive positioning knowledge
+- Evidence: Competitor analysis in RAG
+- Timeline: 2-3 hours
+
+**Task F**: Seasonal Content Updates
+- Racing season calendar knowledge
+- Popular builds by season (spring: street rods, summer: race cars)
+- Seasonal product recommendations
+- Evidence: Seasonal knowledge base
+- Timeline: 2-3 hours
+
+**Task G**: RAG Query Optimization
+- Optimize chunk sizes for automotive content
+- Improve retrieval accuracy for technical questions
+- Test query performance
+- Evidence: Optimization report, improved query results
+- Timeline: 2-3 hours
+
+**Task H**: Agent Response Quality Analysis
+- Analyze CEO's edits to agent responses
+- Extract CEO voice patterns
+- Update agent prompts with learnings
+- Evidence: Voice analysis report, updated prompts
+- Timeline: 2-3 hours
+
+**Task I**: Hot Rodan Brand Voice Documentation
+- Analyze www.hotrodan.com copy and tone
+- Document brand voice guidelines
+- Create do's and don'ts for agent responses
+- Evidence: Brand voice guide
+- Timeline: 2-3 hours
+
+**Task J**: FAQ Automation
+- Create comprehensive FAQ from common customer questions
+- Ingest into RAG for instant answers
+- Test FAQ retrieval accuracy
+- Evidence: FAQ knowledge base, test results
+- Timeline: 2-3 hours
+
+**Task K**: Training Data Collection System
+- Set up system to capture good/bad agent responses
+- Tag responses by quality (CEO approved/edited/rejected)
+- Create training dataset for future fine-tuning
+- Evidence: Training collection system operational
+- Timeline: 2-3 hours
+
+**Task L**: Monitoring and Analytics
+- Track RAG query performance
+- Monitor response quality trends
+- Alert on accuracy degradation
+- Evidence: Analytics dashboard for AI performance
+- Timeline: 2-3 hours
+
+Execute Task A (hotrodan.com), then B-L. Total: ~50-60 hours Hot Rodan AI work.
 
 ---
 

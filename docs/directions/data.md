@@ -207,6 +207,82 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 
 ---
 
+## 📋 NEXT WAVE - DEEP DATA INFRASTRUCTURE (Tasks AG-1 to AG-10)
+
+**Task AG-1**: Hot Rodan Specific Data Models
+- Create data models for hot rod product analytics
+- Automotive parts categorization schema
+- Hot rod customer segmentation
+- Evidence: Data model documentation
+- Timeline: 2-3 hours
+
+**Task AG-2**: Real-Time Dashboard Queries
+- Optimize queries for live dashboard data
+- Sub-second query performance for tiles
+- Caching strategy for frequently accessed data
+- Evidence: Query performance report
+- Timeline: 2-3 hours
+
+**Task AG-3**: Historical Trend Analysis
+- Design schema for tracking trends over time
+- Sales patterns, inventory velocity, SEO performance
+- Seasonality detection (racing season vs. off-season)
+- Evidence: Trend analysis schema
+- Timeline: 2-3 hours
+
+**Task AG-4**: Data Quality Monitoring
+- Create data quality checks for Shopify/Chatwoot/GA data
+- Alert on data anomalies
+- Automated data validation
+- Evidence: Data quality framework
+- Timeline: 2-3 hours
+
+**Task AG-5**: Operator Performance Analytics
+- Track operator efficiency metrics
+- Approval speed, decision quality
+- Operator productivity dashboard
+- Evidence: Operator analytics schema
+- Timeline: 2-3 hours
+
+**Task AG-6**: Hot Rodan Growth Metrics Dashboard
+- Revenue tracking toward $10MM goal
+- Monthly/quarterly progress visualizations
+- Leading indicators dashboard
+- Evidence: Growth metrics dashboard spec
+- Timeline: 2-3 hours
+
+**Task AG-7**: Agent Training Data Pipeline
+- Design pipeline for CEO feedback → agent training
+- Capture approved vs. edited vs. rejected responses
+- Create training dataset exports
+- Evidence: Training pipeline design
+- Timeline: 2-3 hours
+
+**Task AG-8**: Data Backup and Recovery
+- Automated backup strategy for critical data
+- Point-in-time recovery procedures
+- Data retention policies
+- Evidence: Backup/recovery runbook
+- Timeline: 2-3 hours
+
+**Task AG-9**: API Performance Monitoring
+- Track Shopify/Chatwoot/GA API latency
+- Alert on slow queries or failures
+- Historical performance trends
+- Evidence: API monitoring dashboard
+- Timeline: 2-3 hours
+
+**Task AG-10**: Data Documentation
+- Document all tables, views, schemas
+- Create data dictionary
+- Usage examples for common queries
+- Evidence: Comprehensive data documentation
+- Timeline: 2-3 hours
+
+Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
+
+---
+
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task AH-AL: Data Quality** (5 tasks)

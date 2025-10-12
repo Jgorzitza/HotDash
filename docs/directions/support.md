@@ -162,6 +162,89 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 
 ---
 
+## 📋 NEXT WAVE - DEEP SUPPORT OPERATIONS (Tasks 1J-1T)
+
+**Task 1J**: Hot Rodan Return/Warranty Process
+- Document return policy for automotive parts
+- Create warranty claim workflow
+- Handle fitment issues (wrong part for car)
+- Evidence: Return/warranty playbook
+- Timeline: 2-3 hours
+
+**Task 1K**: Technical Support Escalation Matrix
+- When to escalate to product experts
+- Hot rod technical questions routing
+- Engine/transmission specialist coordination
+- Evidence: Technical escalation guide
+- Timeline: 2-3 hours
+
+**Task 1L**: Order Modification and Rush Orders
+- Handle rush shipping for race weekends
+- Order modification before shipping
+- Custom part orders process
+- Evidence: Order management playbook
+- Timeline: 2-3 hours
+
+**Task 1M**: Customer Lifecycle Management
+- First-time buyer onboarding
+- Repeat customer recognition
+- At-risk customer outreach
+- Evidence: Lifecycle management guide
+- Timeline: 2-3 hours
+
+**Task 1N**: Hot Rod Event Support
+- Support for customers at races/shows
+- Event-specific promotions handling
+- On-site support procedures
+- Evidence: Event support playbook
+- Timeline: 2-3 hours
+
+**Task 1O**: Parts Compatibility Support
+- Help customers find right parts for their build
+- Fitment verification process
+- Alternative recommendations
+- Evidence: Compatibility support guide
+- Timeline: 2-3 hours
+
+**Task 1P**: Bulk Order and Fleet Support
+- Handle shop/fleet orders (multi-vehicle)
+- Volume pricing inquiries
+- Business account setup
+- Evidence: B2B support playbook
+- Timeline: 2-3 hours
+
+**Task 1Q**: Quality Issue Handling
+- Defective part process
+- Quality claims escalation
+- Supplier coordination
+- Evidence: Quality issue workflow
+- Timeline: 2-3 hours
+
+**Task 1R**: Shipping and Logistics Support
+- Tracking and delivery issues
+- International shipping (if applicable)
+- Freight/LTL for large items
+- Evidence: Logistics support guide
+- Timeline: 2-3 hours
+
+**Task 1S**: Customer Retention Program
+- Win-back campaigns for inactive customers
+- Loyalty program support
+- VIP customer recognition
+- Evidence: Retention program design
+- Timeline: 2-3 hours
+
+**Task 1T**: Support Metrics and KPIs
+- Define support success metrics
+- Response time targets
+- Customer satisfaction measurement
+- Evidence: Support metrics framework
+- Timeline: 2-3 hours
+
+Execute 1J-1T. Total: ~45-55 hours Hot Rodan support work.
+
+---
+
 **Tasks in Priority Order** (PAUSED - execute after launch):
 
 1. ✅ **Support Inbox Audit** - COMPLETE (2025-10-11)
