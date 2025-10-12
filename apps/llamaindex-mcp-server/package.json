@@ -10,11 +10,17 @@
     "dev": "ts-node src/server.ts",
     "test": "echo \"No tests yet\" && exit 0"
   },
-  "keywords": ["mcp", "llamaindex", "rag", "knowledge-base"],
+  "keywords": [
+    "mcp",
+    "llamaindex",
+    "rag",
+    "knowledge-base"
+  ],
   "author": "HotDash Engineering",
   "license": "UNLICENSED",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "commander": "^14.0.1",
     "express": "^4.18.2",
     "zod": "^3.22.4"
   },
@@ -25,4 +31,3 @@
     "typescript": "^5.3.3"
   }
 }
-

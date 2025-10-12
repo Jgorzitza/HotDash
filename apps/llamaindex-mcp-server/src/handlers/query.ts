@@ -18,13 +18,15 @@ export async function queryHandler(args: { q: string; topK?: number }) {
   const cliPath = path.resolve(__dirname, '../../../../scripts/ai/llama-workflow/dist/cli.js');
   
   try {
-    // Execute the query command
+    // Execute the query command with NODE_PATH set to find commander
+    const nodeModulesPath = path.resolve(__dirname, '../../node_modules');
     const result = execSync(
       `node ${cliPath} query -q "${q.replace(/"/g, '\\"')}" --topK ${topK}`,
       { 
         encoding: 'utf-8',
         maxBuffer: 10 * 1024 * 1024, // 10MB buffer for large responses
         cwd: path.resolve(__dirname, '../../../../'), // Execute from project root
+        env: { ...process.env, NODE_PATH: nodeModulesPath },
       }
     );
     

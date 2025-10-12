@@ -33,11 +33,13 @@ export async function insightHandler(args: { window?: string; format?: string })
     // Build command with options
     const command = `node ${cliPath} insight --window ${window} --format ${format}`;
     
-    // Execute the insight command
+    // Execute the insight command with NODE_PATH set to find commander
+    const nodeModulesPath = path.resolve(__dirname, '../../node_modules');
     const result = execSync(command, {
       encoding: 'utf-8',
       maxBuffer: 10 * 1024 * 1024,
       cwd: path.resolve(__dirname, '../../../../'),
+      env: { ...process.env, NODE_PATH: nodeModulesPath },
     });
     
     return {

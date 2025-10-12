@@ -26,11 +26,13 @@ export async function refreshHandler(args: { sources?: string; full?: boolean })
       command += ` --sources ${sources}`;
     }
     
-    // Execute the refresh command
+    // Execute the refresh command with NODE_PATH set to find commander
+    const nodeModulesPath = path.resolve(__dirname, '../../node_modules');
     const result = execSync(command, {
       encoding: 'utf-8',
       maxBuffer: 10 * 1024 * 1024,
       cwd: path.resolve(__dirname, '../../../../'),
+      env: { ...process.env, NODE_PATH: nodeModulesPath },
     });
     
     return {
