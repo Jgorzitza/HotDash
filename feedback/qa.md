@@ -3271,3 +3271,145 @@ describe('LlamaIndex MCP Server', () => {
 
 **Test 2.1**: Simple knowledge query
 **Command**: Querying for return policy information
+
+**Issue**: MCP server uses stdio protocol, not REST API
+**Solution**: Testing via local CLI handlers
+
+### Test 2: query_support Tool (via local CLI)
+
+**Test 2.1**: Knowledge query for troubleshooting
+
+**Result**: ❌ ERROR - Cannot read properties of undefined (reading 'map')
+**Running in**: Mock mode (expected - no OpenAI key)
+**Issue**: Mock query processor has a bug
+
+### Test 3: refresh_index Tool
+
+**Test 3.1**: Build knowledge index
+
+**Result**: ❌ CRITICAL ERROR - Import failure
+```
+SyntaxError: The requested module 'llamaindex' does not provide an export named 'OpenAI'
+```
+
+---
+
+## Task 1 Test Results Summary - LlamaIndex MCP Server
+
+**Tested**: 2025-10-12T03:16:00Z
+**Duration**: 16 minutes
+**Status**: 🚨 LAUNCH BLOCKER - Multiple Critical Issues
+
+### Test Results Overview
+
+| Test | Tool | Result | Details |
+|------|------|--------|---------|
+| Health Check | Server | ✅ PASS | Server healthy, 3 tools registered |
+| Tool 1 | query_support | ❌ FAIL | Runtime error: Cannot read 'map' of undefined |
+| Tool 2 | refresh_index | ❌ FAIL | Import error: OpenAI not exported from llamaindex |
+| Tool 3 | insight_report | ⏭️ SKIP | Blocked by Tool 2 failure |
+
+### Critical Issues Found
+
+🚨 **Issue 1: Import Error in refresh_index**
+- **Severity**: P0 - Launch Blocker
+- **Error**: `SyntaxError: The requested module 'llamaindex' does not provide an export named 'OpenAI'`
+- **File**: `scripts/ai/llama-workflow/dist/pipeline/query.js:3`
+- **Impact**: Cannot build knowledge index, blocking all query functionality
+- **Root Cause**: Incorrect LlamaIndex API usage or version mismatch
+- **Owner**: @engineer
+
+🚨 **Issue 2: Runtime Error in query_support**
+- **Severity**: P0 - Launch Blocker
+- **Error**: `Cannot read properties of undefined (reading 'map')`
+- **Context**: Running in mock mode (expected)
+- **Impact**: Queries fail even in mock mode
+- **Root Cause**: Mock processor expects array but receives undefined
+- **Owner**: @engineer
+
+### What Works ✅
+
+1. **Deployment**: Server successfully deployed to Fly.io
+   - URL: https://hotdash-llamaindex-mcp.fly.dev/
+   - Health endpoint responding
+   - 2 machines running
+
+2. **Tool Registration**: All 3 tools registered correctly
+   - query_support ✅ Registered
+   - refresh_index ✅ Registered
+   - insight_report ✅ Registered
+
+3. **Monitoring**: Metrics endpoint operational
+   - Call counts: 0 (expected)
+   - Error rates: 0% (before testing)
+   - Latency tracking configured
+
+### What's Broken ❌
+
+1. **refresh_index Tool**: Cannot execute due to import errors
+   - Blocks index building
+   - Prevents knowledge base creation
+   - All queries will fail without index
+
+2. **query_support Tool**: Runtime errors in mock mode
+   - Mock processor has bugs
+   - Cannot test query functionality
+   - Affects agent draft generation
+
+3. **insight_report Tool**: Not tested (blocked by dependencies)
+
+### Performance Testing
+
+**Not Completed**: Cannot test performance due to P0 blockers
+- Target: <500ms query response ⏭️ BLOCKED
+- Concurrency test: 10 simultaneous queries ⏭️ BLOCKED
+- P95 latency benchmark ⏭️ BLOCKED
+
+### Recommendations
+
+**Immediate Actions Required**:
+
+1. **@engineer - FIX IMPORT ERRORS**
+   - Update LlamaIndex imports to match installed version
+   - Fix: `scripts/ai/llama-workflow/dist/pipeline/query.js`
+   - Verify all llamaindex API calls
+   - Test locally before redeploying
+
+2. **@engineer - FIX MOCK PROCESSOR**
+   - Debug mock query handler
+   - Add null checks for result arrays
+   - Test mock mode thoroughly
+   - Ensure fallback works without OpenAI
+
+3. **@qa - RETEST AFTER FIXES**
+   - Re-run all 3 tool tests
+   - Complete performance benchmarks
+   - Test with sample queries from test plan
+   - Verify <500ms response time
+
+### Task 1 Verdict
+
+**STATUS**: ❌ NOT READY FOR LAUNCH
+
+**Evidence**:
+- Server deployed: ✅
+- Health check passing: ✅
+- Tools functional: ❌ 0/3 working
+- Performance validated: ❌ Blocked by errors
+
+**Next Steps**:
+1. Engineer fixes import errors
+2. Engineer fixes mock processor
+3. QA retests all 3 tools
+4. QA completes performance validation
+
+**Blocking**: Task 2 (Agent SDK testing) until LlamaIndex tools work
+
+---
+
+## Proceeding to 4-Hour Quality Validation
+
+**Manager Directive**: Run 4-hour quality validation on all agent work
+
+While waiting for Engineer to fix LlamaIndex issues, proceeding with agent quality validation...
+
