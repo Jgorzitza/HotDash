@@ -160,6 +160,10 @@ expires: 2025-10-18
    → View Details button
 ```
 
+**Modal Focus Snapshots**
+- CX Escalations: Close → Heading → Conversation log → Suggested reply → Internal note → Approve & Send Reply → Escalate to Manager → Mark Resolved → Cancel
+- Sales Pulse: Close → Heading → Action select → Notes textarea → Primary CTA (label matches select) → Cancel
+
 - **2.4.4 Link Purpose (In Context) (A)**
   - [ ] Button labels are descriptive ("View Details" not "Click here")
   - [ ] Action buttons clearly state intent ("Approve & Send Reply")

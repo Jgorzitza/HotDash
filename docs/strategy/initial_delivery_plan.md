@@ -62,7 +62,7 @@ Deliver an operator-first control center embedded in Shopify Admin that surfaces
 2. **UI Composition**
    - New route `app/routes/app.dashboard.tsx` as home, using Polaris layout with tiles.
    - Each tile: summary card + detail modal (component library under `app/components/tiles/`).
-   - Approvals implemented via Remix actions hitting `app/routes/actions/*.ts`.
+   - Approvals implemented via React Router data actions hitting `app/routes/actions/*.ts`.
 
 3. **Decision Logging**
    - On every approval action, write to `packages/memory` adapter (Supabase or fallback) and local Prisma log for audit.

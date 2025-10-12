@@ -1,0 +1,11 @@
+# pg_cron Hash Register - 2025-10-11
+Source directory: docs/compliance/evidence/retention_runs/2025-10-13_pg_cron
+
+```
+74081b0ce565811fa18205ffdd7c066978016a3c2b0dc3a991aa3bd66f1407cc  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/hash_register_2025-10-10.csv
+db48ae44519c7baf44ab36284f322220666a7f2ddd83d281254154cb14f10e25  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/README.md
+d34d7a73e8c25678947f4f283d75dc8ed934bdc1cbc0b493df9280b392637f26  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/audit_log_excerpt.json
+794153b5b8ef793e975fac30ba73fc4f8221fc258ec62849f600f031dc638db2  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/purge_dry_run_2025-10-10T14-20-11Z.log
+cfe732d55a324888c995908364708b58734d75a21a062e8ee7500a4226360382  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/cron_job_export.sql
+87fa7027ff295704ed96d0526c109dbd3078517734075f2019972b15c5be70ee  docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/cron_job_run_details.csv
+```

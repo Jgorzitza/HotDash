@@ -1,0 +1,100 @@
+[2m2025-10-10T15:41:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:41:15.886858 #641] FATAL -- : [b1ebbe76-82af-4334-809a-116417c1eceb]
+[2m2025-10-10T15:41:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][b1ebbe76-82af-4334-809a-116417c1eceb] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:41:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][b1ebbe76-82af-4334-809a-116417c1eceb]
+[2m2025-10-10T15:41:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:41:30.892396 #641]  INFO -- : [cfff6377-f19e-4f53-aea6-fd9c80046e9d] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:41:30 +0000
+[2m2025-10-10T15:41:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:41:30.895912 #641] FATAL -- : [cfff6377-f19e-4f53-aea6-fd9c80046e9d]
+[2m2025-10-10T15:41:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][cfff6377-f19e-4f53-aea6-fd9c80046e9d] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:41:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][cfff6377-f19e-4f53-aea6-fd9c80046e9d]
+[2m2025-10-10T15:41:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:41:45.901724 #641]  INFO -- : [4accdf97-578b-4cf5-8344-8d4435ed8e0a] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:41:45 +0000
+[2m2025-10-10T15:41:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:41:45.908150 #641] FATAL -- : [4accdf97-578b-4cf5-8344-8d4435ed8e0a]
+[2m2025-10-10T15:41:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][4accdf97-578b-4cf5-8344-8d4435ed8e0a] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:41:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][4accdf97-578b-4cf5-8344-8d4435ed8e0a]
+[2m2025-10-10T15:42:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:42:00.913218 #641]  INFO -- : [f3e874e4-cb02-405a-8d5f-e75a3520cf62] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:42:00 +0000
+[2m2025-10-10T15:42:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:42:00.916964 #641] FATAL -- : [f3e874e4-cb02-405a-8d5f-e75a3520cf62]
+[2m2025-10-10T15:42:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][f3e874e4-cb02-405a-8d5f-e75a3520cf62] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:42:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][f3e874e4-cb02-405a-8d5f-e75a3520cf62]
+[2m2025-10-10T15:42:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:42:15.921803 #641]  INFO -- : [4d41d8f5-6b8d-4afb-a550-ccb86a8e18e5] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:42:15 +0000
+[2m2025-10-10T15:42:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:42:15.926734 #641] FATAL -- : [4d41d8f5-6b8d-4afb-a550-ccb86a8e18e5]
+[2m2025-10-10T15:42:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][4d41d8f5-6b8d-4afb-a550-ccb86a8e18e5] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:42:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][4d41d8f5-6b8d-4afb-a550-ccb86a8e18e5]
+[2m2025-10-10T15:42:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:42:30.932213 #641]  INFO -- : [355539ac-bd7e-4b48-92a7-928af6ab1156] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:42:30 +0000
+[2m2025-10-10T15:42:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:42:30.936208 #641] FATAL -- : [355539ac-bd7e-4b48-92a7-928af6ab1156]
+[2m2025-10-10T15:42:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][355539ac-bd7e-4b48-92a7-928af6ab1156] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:42:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][355539ac-bd7e-4b48-92a7-928af6ab1156]
+[2m2025-10-10T15:42:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:42:45.941419 #641]  INFO -- : [e9f77335-7e09-49d3-aba4-d3a067d59ea7] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:42:45 +0000
+[2m2025-10-10T15:42:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:42:45.949223 #641] FATAL -- : [e9f77335-7e09-49d3-aba4-d3a067d59ea7]
+[2m2025-10-10T15:42:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][e9f77335-7e09-49d3-aba4-d3a067d59ea7] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:42:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][e9f77335-7e09-49d3-aba4-d3a067d59ea7]
+[2m2025-10-10T15:43:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:43:00.954272 #641]  INFO -- : [3d86bef7-7b9f-4937-8679-14cd5d5768c4] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:43:00 +0000
+[2m2025-10-10T15:43:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:43:00.958588 #641] FATAL -- : [3d86bef7-7b9f-4937-8679-14cd5d5768c4]
+[2m2025-10-10T15:43:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][3d86bef7-7b9f-4937-8679-14cd5d5768c4] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:43:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][3d86bef7-7b9f-4937-8679-14cd5d5768c4]
+[2m2025-10-10T15:43:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:43:15.963532 #641]  INFO -- : [36e23a65-d6f1-4102-b090-2e83d7da39ed] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:43:15 +0000
+[2m2025-10-10T15:43:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:43:15.968215 #641] FATAL -- : [36e23a65-d6f1-4102-b090-2e83d7da39ed]
+[2m2025-10-10T15:43:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][36e23a65-d6f1-4102-b090-2e83d7da39ed] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:43:15Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][36e23a65-d6f1-4102-b090-2e83d7da39ed]
+[2m2025-10-10T15:43:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:43:30.973576 #641]  INFO -- : [b5fb96b3-31c7-4732-9cf2-06af66754a74] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:43:30 +0000
+[2m2025-10-10T15:43:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:43:30.977337 #641] FATAL -- : [b5fb96b3-31c7-4732-9cf2-06af66754a74]
+[2m2025-10-10T15:43:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][b5fb96b3-31c7-4732-9cf2-06af66754a74] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:43:30Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][b5fb96b3-31c7-4732-9cf2-06af66754a74]
+[2m2025-10-10T15:43:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:43:45.982921 #641]  INFO -- : [646c1e0a-c231-43f3-8236-17bea18132ee] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:43:45 +0000
+[2m2025-10-10T15:43:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:43:45.986694 #641] FATAL -- : [646c1e0a-c231-43f3-8236-17bea18132ee]
+[2m2025-10-10T15:43:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][646c1e0a-c231-43f3-8236-17bea18132ee] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:43:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][646c1e0a-c231-43f3-8236-17bea18132ee]
+[2m2025-10-10T15:43:59Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:43:59 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T15:43:59Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:43:59 ERROR unexpected error executing command error="exec: \"cd\": executable file not found in $PATH"
+[2m2025-10-10T15:44:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:44:00.991790 #641]  INFO -- : [956665a2-7c59-4738-8d97-021c79637462] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:44:00 +0000
+[2m2025-10-10T15:44:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:44:00.996043 #641] FATAL -- : [956665a2-7c59-4738-8d97-021c79637462]
+[2m2025-10-10T15:44:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][956665a2-7c59-4738-8d97-021c79637462] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:44:00Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][956665a2-7c59-4738-8d97-021c79637462]
+[2m2025-10-10T15:44:08Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:44:08 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T15:44:23Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:44:23.303901 #641]  INFO -- : [a0988215-07f9-44a2-a264-17f62e40c3ad] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:44:23 +0000
+[2m2025-10-10T15:44:25Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:44:25.168583 #641] FATAL -- : [a0988215-07f9-44a2-a264-17f62e40c3ad]
+[2m2025-10-10T15:44:25Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][a0988215-07f9-44a2-a264-17f62e40c3ad] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:44:25Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][a0988215-07f9-44a2-a264-17f62e40c3ad]
+[2m2025-10-10T15:44:58Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:44:58.054154 #641]  INFO -- : [0eb8ad50-2262-491c-b9c0-97a5e1e16d83] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:44:57 +0000
+[2m2025-10-10T15:45:18Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]source=rack-timeout id=0eb8ad50-2262-491c-b9c0-97a5e1e16d83 timeout=15000ms service=24053ms state=timed_out at=error
+[2m2025-10-10T15:46:20Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]source=rack-timeout id=55f84263-59c5-4e97-8693-10e05c0a7231 timeout=15000ms service=21060ms state=timed_out at=error
+[2m2025-10-10T15:46:28Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025-10-10 15:46:24 +0000 Rack app ("GET /hc" - (172.19.14.97)): #<Rack::Timeout::RequestTimeoutError: Request ran for longer than 15000ms >
+[2m2025-10-10T15:46:45Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:46:43.014384 #641]  INFO -- : [52664e5e-1364-4667-becd-a409f8d01c2f] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:46:42 +0000
+[2m2025-10-10T15:46:54Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]source=rack-timeout id=52664e5e-1364-4667-becd-a409f8d01c2f timeout=15000ms service=16505ms state=timed_out at=error
+[2m2025-10-10T15:46:55Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:46:54.957876 #641] FATAL -- : [52664e5e-1364-4667-becd-a409f8d01c2f]
+[2m2025-10-10T15:46:55Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][52664e5e-1364-4667-becd-a409f8d01c2f] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:46:55Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][52664e5e-1364-4667-becd-a409f8d01c2f]
+[2m2025-10-10T15:46:59Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:46:59.257785 #641]  INFO -- : [282f6dd7-7951-425d-b071-5fbe27f7a9ad] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:46:59 +0000
+[2m2025-10-10T15:47:07Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:47:07.254102 #641] FATAL -- : [282f6dd7-7951-425d-b071-5fbe27f7a9ad]
+[2m2025-10-10T15:47:07Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][282f6dd7-7951-425d-b071-5fbe27f7a9ad] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:47:07Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][282f6dd7-7951-425d-b071-5fbe27f7a9ad]
+[2m2025-10-10T15:47:16Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]I, [2025-10-10T15:47:16.534191 #641]  INFO -- : [32df16f5-1f0b-432f-bff3-e471951958bf] Started GET "/hc" for 172.19.14.97 at 2025-10-10 15:47:16 +0000
+[2m2025-10-10T15:47:16Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]F, [2025-10-10T15:47:16.698948 #641] FATAL -- : [32df16f5-1f0b-432f-bff3-e471951958bf]
+[2m2025-10-10T15:47:16Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32df16f5-1f0b-432f-bff3-e471951958bf] ActionController::RoutingError (No route matches [GET] "/hc"):
+[2m2025-10-10T15:47:16Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32df16f5-1f0b-432f-bff3-e471951958bf]
+[2m2025-10-10T15:51:01Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][ 1337.446023] Out of memory: Killed process 641 (ruby) total-vm:786044kB, anon-rss:278648kB, file-rss:72kB, shmem-rss:0kB, UID:0 pgtables:812kB oom_score_adj:0
+[2m2025-10-10T15:51:03Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Main child exited with signal (with signal 'SIGKILL', core dumped? false)
+[2m2025-10-10T15:51:03Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Starting clean up.
+[2m2025-10-10T15:51:03Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][ 1339.659560] reboot: Restarting system
+[2m2025-10-10T15:51:04Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025-10-10T15:51:04.923194950 [01K77AVXQAA16RNSE8K8M15C0B:main] Running Firecracker v1.12.1
+[2m2025-10-10T15:51:04Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025-10-10T15:51:04.923405474 [01K77AVXQAA16RNSE8K8M15C0B:main] Listening on API socket ("/fc.sock").
+[2m2025-10-10T15:51:06Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Starting init (commit: fedadb2e)...
+[2m2025-10-10T15:51:06Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Preparing to run: `bundle exec rails server -p 3000` as root
+[2m2025-10-10T15:51:06Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m [fly api proxy] listening at /.fly/api
+[2m2025-10-10T15:51:07Z[0m runner[8d9515fe056ed8] [32mord[0m [[34minfo[0m]Machine started in 2.41s
+[2m2025-10-10T15:51:11Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:51:11 INFO SSH listening listen_address=[fdaa:2f:2a68:a7b:196:9346:6d65:2]:22
+[2m2025-10-10T15:51:17Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:51:17 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T15:51:17Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:51:17 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T15:54:25Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 15:54:25 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T15:55:24Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]=> Booting Puma
+[2m2025-10-10T15:55:24Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]=> Rails 7.1.5.2 application starting in production
+[2m2025-10-10T15:55:24Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]=> Run `bin/rails server --help` for more startup options
+[2m2025-10-10T16:01:51Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][  646.382372] Out of memory: Killed process 643 (ruby) total-vm:651348kB, anon-rss:175596kB, file-rss:28kB, shmem-rss:0kB, UID:0 pgtables:548kB oom_score_adj:0
+[2m2025-10-10T16:01:53Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025/10/10 16:01:53 INFO New SSH session email=jgorzitza@outlook.com verified=true
+[2m2025-10-10T16:01:53Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Main child exited with signal (with signal 'SIGKILL', core dumped? false)
+[2m2025-10-10T16:01:53Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Starting clean up.
+[2m2025-10-10T16:01:53Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][  648.470456] reboot: Restarting system
+[2m2025-10-10T16:01:54Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025-10-10T16:01:54.304880803 [01K77AVXQAA16RNSE8K8M15C0B:main] Running Firecracker v1.12.1
+[2m2025-10-10T16:01:54Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m]2025-10-10T16:01:54.305068367 [01K77AVXQAA16RNSE8K8M15C0B:main] Listening on API socket ("/fc.sock").
+[2m2025-10-10T16:01:55Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Starting init (commit: fedadb2e)...
+[2m2025-10-10T16:01:56Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m Preparing to run: `bundle exec rails server -p 3000` as root
+[2m2025-10-10T16:01:56Z[0m app[8d9515fe056ed8] [32mord[0m [[34minfo[0m][32m INFO[0m [fly api proxy] listening at /.fly/api
+[2m2025-10-10T16:01:56Z[0m runner[8d9515fe056ed8] [32mord[0m [[34minfo[0m]Machine started in 2.289s
+[2m2025-10-10T16:02:01Z[0m proxy[8d9515fe056ed8] [32mord[0m [[31merror[0m][PR04] could not find a good candidate within 20 attempts at load balancing

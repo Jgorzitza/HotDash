@@ -1,0 +1,8 @@
+{
+  "id": "build-cx.refund_offer-20251010T143054",
+  "caseId": "cx.refund_offer",
+  "summary": "Logged regression template output for CX refund_offer scenario.",
+  "output": "I'm really sorry this item arrived faulty, Jordan. I can process a refund right away or ship a replacement if you prefer — let me know which works best and I’ll queue it immediately.",
+  "artifact": "artifacts/ai/prompt-regression-2025-10-10-134723.json",
+  "createdAt": "2025-10-10T14:30:54.339Z"
+}

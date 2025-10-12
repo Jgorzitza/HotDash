@@ -1,0 +1,33 @@
+## agent/ai/staging-push...origin/agent/ai/staging-push [ahead 7]
+ M .gitignore
+ M docs/enablement/job_aids/cx_escalations_modal.md
+ M docs/enablement/job_aids/sales_pulse_modal.md
+ M docs/integrations/ga_mcp_onboarding.md
+ M docs/marketing/launch_comms_packet.md
+ M docs/marketing/launch_faq.md
+ M docs/marketing/product_approval_packet_2025-10-07.md
+ M docs/runbooks/operator_training_agenda.md
+ M docs/runbooks/operator_training_qa_template.md
+ M feedback/ai.md
+ M feedback/enablement.md
+ M feedback/integrations.md
+ M feedback/marketing.md
+ M feedback/product.md
+ M feedback/qa.md
+ M feedback/reliability.md
+ M feedback/support.md
+ M packages/memory/indexes/operator_knowledge/doc_store.json
+ M packages/memory/indexes/operator_knowledge/index_metadata.json
+ M packages/memory/indexes/operator_knowledge/index_store.json
+ M packages/memory/indexes/operator_knowledge/service_context.json
+ M packages/memory/indexes/operator_knowledge/vector_store.json
+?? docs/enablement/async_training_snippets.md
+?? docs/enablement/distribution_packet_staging.md
+?? docs/enablement/rehearsal_coordination_2025-10-16.md
+?? docs/enablement/stack_compliance_audit_2025-10-11.md
+?? docs/integrations/chatwoot_readiness.md
+?? docs/mcp/
+?? docs/runbooks/llamaindex_workflow.md
+?? docs/runbooks/support_gold_replies.md
+?? packages/memory/logs/ops/chatwoot_templates_curated_2025-10-11.ndjson
+?? scripts/reliability-logger.sh

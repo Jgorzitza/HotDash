@@ -25,7 +25,7 @@ const SALES_PULSE_QUERY = `#graphql
           name
           createdAt
           displayFulfillmentStatus
-          financialStatus
+          displayFinancialStatus
           currentTotalPriceSet {
             shopMoney {
               amount
@@ -62,7 +62,7 @@ interface SalesPulseResponse {
           name: string;
           createdAt: string;
           displayFulfillmentStatus: string;
-          financialStatus: string | null;
+          displayFinancialStatus: string | null;
           currentTotalPriceSet?: {
             shopMoney: {
               amount: string;

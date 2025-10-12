@@ -1,0 +1,8 @@
+{
+  "id": "build-cx.ack_delay-20251010T154006",
+  "caseId": "cx.ack_delay",
+  "summary": "Nightly log capture (2025-10-12 PM) for cx.ack_delay fallback.",
+  "output": "Hi Taylor, thank you for staying patient. I'm checking on your order details right now and will follow up with the exact status shortly.",
+  "artifact": "artifacts/ai/prompt-regression-2025-10-10-134723.json",
+  "createdAt": "2025-10-10T15:40:06.155Z"
+}

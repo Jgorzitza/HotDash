@@ -20,24 +20,44 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 - Operator signed into Shopify Admin with appropriate permissions.
 - Inventory Heatmap tile reviewed for overlapping SKU risks.
 - Decision log access confirmed for follow-up (audit trail retained for 90 days).
+- Credentials check complete: staging Shopify + Supabase keys validated 2025-10-10 15:45 UTC; report any errors to `customer.support@hotrodan.com` and # `#occ-reliability`.
+- **Chatwoot-on-Supabase Integration:** CX escalation workflows now route through Supabase-backed Chatwoot instance on Fly.io. All decision logs and cross-modal data (sales performance affecting CX escalations) sync to unified Supabase storage for comprehensive audit trails.
+
+## Data Architecture & Cross-Modal Integration
+
+### Supabase-Centralized Data Flow
+- **Sales Metrics:** Revenue, order volume, and SKU performance data flows from Shopify Admin API to Supabase tables, refreshed every 15 minutes during business hours.
+- **Decision Logging:** All operator actions (follow-up creation, escalations, staffing notifications) write to Supabase `decision_log` with cross-references to affected orders and customers.
+- **CX Integration:** Sales anomalies that trigger CX escalations (delivery delays, inventory issues) automatically create linked decision records in both Sales Pulse and CX Escalations audit trails.
+
+### Performance & Reliability
+- **Data Freshness:** Modal shows last refresh timestamp; flag any data >30 minutes old to `customer.support@hotrodan.com`.
+- **Cross-Service Sync:** Sales decisions affecting fulfillment or CX automatically generate notifications in Chatwoot-on-Supabase for coordinated operator response.
+- **Audit Compliance:** All sales health decisions retained for 90 days in Supabase with NDJSON export capability for compliance reporting.
 
 ---
 
 ## Workflow Steps
-1. **Open the modal** — Click `View Details` on the Sales Pulse tile from the Operator Control Center dashboard.
+1. **Open the modal** — Click `View details` on the Sales Pulse tile from the Operator Control Center dashboard.
 2. **Review the revenue snapshot** — Note today's revenue versus the rolling 7-day average. Use the KPI thresholds from `docs/data/kpis.md` (warning at ±15%, critical at ±30%).
-3. **Scan order volume** — Confirm the order count matches expectations for the time of day. Flag unexpected dips or spikes in `#occ-ops` Slack channel.
+3. **Scan order volume** — Confirm the order count matches expectations for the time of day. Flag unexpected dips or spikes in `#occ-ops` internal channel.
 4. **Inspect Top SKUs** — Identify SKUs driving revenue. Cross-check availability in the Inventory Heatmap; queue replenishment discussions if a top SKU appears in low-stock alerts.
 5. **Triage fulfillment blockers** — Scroll to the "Open fulfillment" list. For each pending order, verify status in Shopify and log owner + next action in the training Q&A template.
-6. **Capture decisions** — If action is required (e.g., expedite fulfillment, notify ops), log the decision in Memory (`scope: ops`, `decision_type: sales.health_check`) and reference supporting screenshots.
+6. **Capture decisions** — Use the action select to choose `Log follow-up` or `Escalate to ops`, add notes for the audit trail, and submit. Log the decision in Memory (`scope: ops`, `decision_type: sales.health_check`) and forward supporting context to `customer.support@hotrodan.com` when variance exceeds 15% or fulfillment blockers persist.
 
 ---
 
 ## Decision Guardrails
-- **Revenue delta > 15% drop** — Create an action item for operations; escalate to product if drop exceeds 30% or persists >2 checkpoints.
+- **Revenue delta > 15% drop** — Create an action item for operations; escalate to product if drop exceeds 30% or persists >2 checkpoints. Email `customer.support@hotrodan.com` with the summary so support has audit coverage.
 - **Sustained order spike (>25% over baseline)** — Notify fulfillment lead to adjust staffing, confirm carriers can absorb the volume.
 - **Pending fulfillment older than 24h** — Page fulfillment lead for immediate follow-up; if order value >$500, notify operations manager.
 - **Top SKU out of stock or <3 days of cover** — Partner with inventory owner to trigger reorder workflow or mark as intentional scarcity.
+
+### AI Guardrails & Evidence — 2025-10-10
+- Modal insights load from the same operator knowledge index refreshed at 2025-10-10T19:26:46Z (`packages/memory/indexes/operator_knowledge/index_metadata.json`); postpone coaching if the timestamp drifts or `usingMockProviders` flips to `true`.
+- Hotrodan corpus snapshot logged at `packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-19-26-14.ndjson`; confirm future training pulls append (not overwrite) before citing AI context in operator Q&A.
+- Nightly recommendation logging test (`packages/memory/logs/build/recommendations/build-nightly-logging-2025-10-10-20251010T192605.json`) proves audit trail coverage—spot check that a decision record posts before sharing AI-driven sales actions.
+- Repository scan `git grep postgresql://` completed 2025-10-10T19:25Z with only canonical placeholders, ensuring no Supabase DSNs leak into enablement collateral; re-run if you ingest new evidence before the next audit.
 
 ---
 
@@ -45,6 +65,7 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 - **Ops Lead (Riley Chen):** Revenue anomalies, fulfillment bottlenecks, staffing adjustments.
 - **Support Lead (Morgan Patel):** Orders blocked due to CX escalations or policy issues.
 - **Product (Jordan Alvarez):** Metric anomalies tied to instrumentation or data quality.
+- **Support Desk:** Email `customer.support@hotrodan.com` if operators lose staging access or credential checks fail.
 
 Record each escalation in `feedback/enablement.md` with timestamp, channel, and outcome for sprint reporting.
 

@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2025-10-10T14:51:14.066Z",
+  "sources": [
+    "docs/runbooks",
+    "docs/enablement/job_aids",
+    "docs/marketing/launch_faq.md",
+    "docs/marketing/launch_comms_packet.md"
+  ],
+  "documentCount": 23,
+  "llmModel": "disabled",
+  "embeddingModel": "local-hash-embedding",
+  "usingMockProviders": true
+}

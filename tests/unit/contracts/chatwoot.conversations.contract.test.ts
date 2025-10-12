@@ -80,8 +80,12 @@ describe("Chatwoot Conversations API Contract", () => {
     expect(withSenderName.length).toBeGreaterThan(0);
 
     for (const convo of withSenderName) {
-      expect(convo.meta.sender.name).toBeTypeOf("string");
-      expect(convo.meta.sender.name.length).toBeGreaterThan(0);
+      const senderName = convo.meta?.sender?.name;
+      expect(senderName).toBeDefined();
+      if (senderName) {
+        expect(senderName).toBeTypeOf("string");
+        expect(senderName.length).toBeGreaterThan(0);
+      }
     }
 
     // Test contacts[].name (fallback)
@@ -91,8 +95,8 @@ describe("Chatwoot Conversations API Contract", () => {
 
     if (withContactName.length > 0) {
       for (const convo of withContactName) {
-        const firstContact = convo.contacts[0];
-        if (firstContact.name) {
+        const firstContact = convo.contacts?.[0];
+        if (firstContact?.name) {
           expect(firstContact.name).toBeTypeOf("string");
         }
       }

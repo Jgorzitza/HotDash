@@ -1,0 +1,367 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+
+# Cancel in-progress runs when a new push is made
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  #
+  # GATE 1: Code Quality (Linting & Type Safety)
+  #
+  code-quality:
+    name: Gate 1 - Code Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type check
+        run: npm run typecheck
+
+      - name: ESLint
+        run: npm run lint -- --max-warnings 0
+
+      - name: Check for console.log statements
+        run: |
+          if grep -r "console\.log\|console\.debug" app/ --include="*.ts" --include="*.tsx" | grep -v "\.spec\."; then
+            echo "❌ FAIL: console.log() found in production code"
+            echo "Use logger.info() instead for structured logging"
+            exit 1
+          fi
+
+      - name: Check for TODO debt
+        run: |
+          TODO_COUNT=$(grep -r "TODO\|FIXME" app/ packages/ --include="*.ts" --include="*.tsx" | wc -l)
+          echo "TODO count: $TODO_COUNT"
+          if [ "$TODO_COUNT" -gt 100 ]; then
+            echo "⚠️ WARNING: TODO debt is high ($TODO_COUNT > 100)"
+            echo "Consider filing issues for technical debt cleanup"
+          fi
+
+  #
+  # GATE 2: Unit Tests (100% Pass Rate Required)
+  #
+  unit-tests:
+    name: Gate 2 - Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Generate coverage report
+        run: npm run test:unit -- --coverage
+        continue-on-error: true
+
+      - name: Upload coverage to artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/vitest/
+          retention-days: 7
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(npm run test:unit -- --coverage --reporter=json | jq '.coverageMap | .total.lines.pct')
+          echo "Line coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "⚠️ WARNING: Coverage is below 80% target"
+            echo "Current: $COVERAGE%"
+          fi
+
+  #
+  # GATE 3: E2E Tests (Critical Paths)
+  #
+  e2e-tests:
+    name: Gate 3 - E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests (mock mode)
+        run: npm run test:e2e
+        env:
+          MOCK: 1
+          CI: true
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: coverage/playwright/
+          retention-days: 7
+
+  #
+  # GATE 4: Accessibility Tests (WCAG 2.1 AA)
+  #
+  accessibility:
+    name: Gate 4 - Accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run accessibility tests
+        run: npm run test:a11y
+        env:
+          CI: true
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report
+          path: coverage/playwright/accessibility-*.json
+          retention-days: 30
+
+  #
+  # GATE 5: Security Scan (Secrets & Vulnerabilities)
+  #
+  security:
+    name: Gate 5 - Security
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for secret scanning
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+      - name: Check for secrets in code
+        run: |
+          if grep -rE '(api[_-]?key|secret|password|token).*=.*[a-zA-Z0-9]{20,}' app/ packages/ --exclude-dir=node_modules; then
+            echo "❌ FAIL: Potential secrets found in code"
+            echo "Review the matches above and ensure no real credentials are committed"
+            exit 1
+          fi
+
+      - name: Check for .env files
+        run: |
+          if git ls-files | grep -E '\.env$'; then
+            echo "❌ FAIL: .env file found in git history"
+            echo "Remove immediately and rotate all credentials"
+            exit 1
+          fi
+
+  #
+  # GATE 6: Build Verification
+  #
+  build:
+    name: Gate 6 - Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          SCOPES: write_products
+          SHOPIFY_API_KEY: ${{ secrets.SHOPIFY_API_KEY_STAGING }}
+          SHOPIFY_API_SECRET: ${{ secrets.SHOPIFY_API_SECRET_STAGING }}
+          SHOPIFY_APP_URL: https://test.example.com
+          DATABASE_URL: postgresql://test:test@localhost:5432/test
+
+      - name: Verify build artifacts
+        run: |
+          if [ ! -d "build" ]; then
+            echo "❌ FAIL: Build directory not created"
+            exit 1
+          fi
+          if [ ! -f "build/server/index.js" ]; then
+            echo "❌ FAIL: Server entry point not found"
+            exit 1
+          fi
+
+  #
+  # GATE 7: PR Metadata & Documentation
+  #
+  pr-metadata:
+    name: Gate 7 - PR Metadata
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check PR title format (Conventional Commits)
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+
+      - name: Check PR description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr.body || pr.body.length < 50) {
+              core.setFailed('PR description is too short. Please describe:\n' +
+                '- What changes were made\n' +
+                '- Why they were needed\n' +
+                '- How to test\n' +
+                '- Any breaking changes');
+            }
+
+      - name: Check for test updates
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            
+            const hasAppChanges = files.some(f => f.filename.startsWith('app/'));
+            const hasTestChanges = files.some(f => f.filename.startsWith('tests/'));
+            
+            if (hasAppChanges && !hasTestChanges) {
+              console.log('⚠️ WARNING: App code changed without test updates');
+              console.log('Consider adding tests for new functionality');
+            }
+
+  #
+  # SUMMARY: All Gates Must Pass
+  #
+  quality-gate-summary:
+    name: Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, unit-tests, e2e-tests, accessibility, security, build, pr-metadata]
+    if: always()
+
+    steps:
+      - name: Check all gates passed
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const jobs = [
+              { name: 'Gate 1 - Code Quality', status: '${{ needs.code-quality.result }}' },
+              { name: 'Gate 2 - Unit Tests', status: '${{ needs.unit-tests.result }}' },
+              { name: 'Gate 3 - E2E Tests', status: '${{ needs.e2e-tests.result }}' },
+              { name: 'Gate 4 - Accessibility', status: '${{ needs.accessibility.result }}' },
+              { name: 'Gate 5 - Security', status: '${{ needs.security.result }}' },
+              { name: 'Gate 6 - Build', status: '${{ needs.build.result }}' },
+              { name: 'Gate 7 - PR Metadata', status: '${{ needs.pr-metadata.result }}' }
+            ];
+            
+            const passed = jobs.filter(j => j.status === 'success');
+            const failed = jobs.filter(j => j.status === 'failure');
+            
+            let summary = '# Quality Gate Summary\n\n';
+            summary += `**Result**: ${failed.length === 0 ? '✅ PASS' : '❌ FAIL'}\n\n`;
+            summary += `**Passed**: ${passed.length}/7 gates\n\n`;
+            
+            summary += '## Gate Results\n\n';
+            jobs.forEach(job => {
+              const icon = job.status === 'success' ? '✅' : '❌';
+              summary += `${icon} ${job.name}\n`;
+            });
+            
+            if (failed.length > 0) {
+              summary += '\n## Failed Gates\n\n';
+              failed.forEach(job => {
+                summary += `- ${job.name}\n`;
+              });
+              summary += '\nFix the failures above before merging.\n';
+            }
+            
+            core.summary.addRaw(summary);
+            await core.summary.write();
+            
+            if (failed.length > 0) {
+              core.setFailed(`${failed.length} quality gate(s) failed`);
+            }
+

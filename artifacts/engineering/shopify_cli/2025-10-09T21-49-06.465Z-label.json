@@ -1,0 +1,33 @@
+{
+  "label": "--label config-link app config link --client-id 4f72376ea61be956c860dd020552124d",
+  "startedAt": "2025-10-09T21:49:06.465Z",
+  "finishedAt": "2025-10-09T21:49:09.272Z",
+  "durationMs": 2807,
+  "command": {
+    "executable": "npx",
+    "args": [
+      "--yes",
+      "@shopify/cli@latest",
+      "--label",
+      "config-link",
+      "app",
+      "config",
+      "link",
+      "--client-id",
+      "4f72376ea61be956c860dd020552124d"
+    ],
+    "cwd": "/home/justin/HotDash/hot-dash"
+  },
+  "environment": {
+    "shopDomain": null,
+    "shopifyEnvironment": "staging"
+  },
+  "status": {
+    "exitCode": 0,
+    "signal": null
+  },
+  "stderrBytes": 1060,
+  "stdout": "",
+  "stderr": "npm warn Unknown project config \"auto-install-peers\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"shamefully-hoist\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"enable-pre-post-scripts\". This will stop working in the next major version of npm.\n╭─ error ──────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│  Command '--label' not found.                                                │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\n\n",
+  "logFile": null
+}

@@ -11,7 +11,7 @@ expires: 2025-10-23
 | Vendor | Contact | Request | Status | Next Action |
 |--------|---------|---------|--------|-------------|
 | Supabase | compliance@supabase.com | Residency statement + DPA countersignature | No reply to 2025-10-08 thread | Sent reminder 2025-10-09 14:10 ET; escalate to manager if no response by 2025-10-10 12:00 ET |
-| Anthropic | legal@anthropic.com | Updated security addendum w/ logging commitments | Auto-ack from 2025-10-08 | Scheduled follow-up for 2025-10-09 16:00 ET to request status |
+| OpenAI | support@openai.com (enterprise) | Updated security addendum w/ logging commitments + regional endpoint confirmation | Auto-ack from 2025-10-08 | Scheduled follow-up for 2025-10-09 16:00 ET to request status |
 | GA MCP | google-partner@google.com | Production credential ETA + subprocessor list | Awaiting OCC-INF-221 resolution | Added note to infra ticket requesting ETA confirmation; ping reliability to surface outcome in next sync |
 
 ## Notes

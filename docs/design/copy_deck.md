@@ -2,9 +2,9 @@
 epoch: 2025.10.E1
 doc: docs/design/copy_deck.md
 owner: designer
-last_reviewed: 2025-10-05
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-18
+expires: 2025-10-20
 ---
 # Copy Deck — Operator Control Center
 
@@ -95,6 +95,8 @@ expires: 2025-10-18
 | `cta.edit_reply` | Edit Reply | Modifier la réponse |
 | `cta.escalate` | Escalate to Manager | Escalader au gestionnaire |
 | `cta.mark_resolved` | Mark Resolved | Marquer comme résolu |
+| `cta.log_follow_up` | Log follow-up | À définir (marketing) |
+| `cta.escalate_ops` | Escalate to ops | À définir (marketing) |
 | `cta.create_po` | Create Draft PO | Créer un bon de commande brouillon |
 | `cta.adjust_quantity` | Adjust Quantity | Ajuster la quantité |
 | `cta.mark_intentional` | Mark as Intentional | Marquer comme intentionnel |
@@ -125,7 +127,8 @@ expires: 2025-10-18
 | `toast.success.reply_sent` | Reply sent to {customer}. | Réponse envoyée à {customer}. |
 | `toast.success.decision_logged` | Decision logged to audit trail. | Décision enregistrée dans le journal d'audit. |
 | `toast.success.po_created` | Purchase order created successfully. | Bon de commande créé avec succès. |
-| `toast.success.action_confirmed` | Action Confirmed | Action confirmée |
+| `toast.success.action_confirmed` | Escalation sent to customer.support@hotrodan.com. | Escalade envoyée à customer.support@hotrodan.com. |
+| `toast.success.escalation_ticket` | Ticket #{ticketId} added to the audit trail. | Ticket #{ticketId} ajouté au journal d'audit. |
 | `toast.error.action_failed` | Action Failed | Action échouée |
 | `toast.error.network` | Unable to send reply. Network error. | Impossible d'envoyer la réponse. Erreur réseau. |
 | `toast.error.retry_prompt` | Please try again. | Veuillez réessayer. |
@@ -144,6 +147,18 @@ expires: 2025-10-18
 | `modal.escalation.conversation_preview` | Conversation Preview | Aperçu de la conversation |
 | `modal.escalation.suggested_reply` | Suggested Reply (AI-generated): | Réponse suggérée (générée par IA) : |
 | `modal.escalation.actions` | Actions: | Actions : |
+| `modal.escalation.support_inbox` | Log decision to customer.support@hotrodan.com within 5 minutes. | Consignez la décision à customer.support@hotrodan.com dans les 5 minutes. |
+
+#### Sales Pulse Modal
+
+| Key | EN (English) | FR (Français) |
+|-----|--------------|---------------|
+| `modal.sales.helper_support` | Variance alerts notify customer.support@hotrodan.com when they exceed 15%. | Les alertes de variance notifient customer.support@hotrodan.com lorsqu'elles dépassent 15 %. |
+| `modal.sales.action_label` | What do you want to do? | Que souhaitez-vous faire ? |
+| `modal.sales.action_follow_up` | Log follow-up | À définir (marketing) |
+| `modal.sales.action_escalate` | Escalate to ops | À définir (marketing) |
+| `modal.sales.notes_label` | Notes (audit trail) | Notes (journal d'audit) |
+| `modal.sales.notes_helper` | Visible to operators and logged to the audit trail. | Visible pour les opérateurs et consigné dans le journal d'audit. |
 
 #### Inventory Alert Modal
 

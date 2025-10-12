@@ -1,0 +1,52 @@
+name: Supabase Decision Sync Monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  monitor:
+    if: ${{ secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_KEY != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Supabase decision sync monitor
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_SYNC_TABLE: ${{ vars.SUPABASE_SYNC_TABLE || 'decision_sync_events' }}
+          SUPABASE_SYNC_SCOPE: ${{ vars.SUPABASE_SYNC_SCOPE || 'ops' }}
+          SUPABASE_SYNC_MAX_FAILURE_RATE: ${{ vars.SUPABASE_SYNC_MAX_FAILURE_RATE || '0.1' }}
+          SUPABASE_SYNC_MAX_P95_MS: ${{ vars.SUPABASE_SYNC_MAX_P95_MS || '1000' }}
+        run: node scripts/ci/supabase-sync-alerts.js --since-minutes=${{ vars.SUPABASE_SYNC_SINCE_MINUTES || '90' }}
+
+      - name: Upload monitor artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-sync-monitor
+          path: artifacts/monitoring/supabase-sync-alert-*.json
+          if-no-files-found: warn
+
+  secrets-missing:
+    if: ${{ !(secrets.SUPABASE_URL != '' && secrets.SUPABASE_SERVICE_KEY != '') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip monitor
+        run: |
+          echo "Supabase monitor skipped: SUPABASE_URL and SUPABASE_SERVICE_KEY secrets are required."

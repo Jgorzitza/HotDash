@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "description": "Placeholder tokens for Shopify Admin overlay integration",
+    "replaceOnTokenDelivery": true,
+    "lastUpdated": "2025-10-11T01:00:00Z",
+    "documentation": "docs/specs/shopify-admin-overlay.md",
+    "dependencies": [
+      "Shopify Admin team token delivery",
+      "Figma workspace access",
+      "Production Polaris token mapping"
+    ]
+  },
+  "color": {
+    "overlay": {
+      "backdrop": "rgba(0, 0, 0, 0.6)",
+      "surface": "var(--p-color-bg-surface, #ffffff)",
+      "border": "var(--p-color-border-subdued, #d2d5d8)",
+      "surfaceHover": "var(--p-color-bg-surface-hover, #f6f6f7)"
+    },
+    "focus": {
+      "ring": "var(--p-color-border-focus, #2c6ecb)",
+      "outline": "var(--p-color-bg-interactive, #2c6ecb)"
+    },
+    "text": {
+      "primary": "var(--p-color-text, #202223)",
+      "secondary": "var(--p-color-text-subdued, #637381)",
+      "interactive": "var(--p-color-text-interactive, #2c6ecb)",
+      "onInteractive": "var(--p-color-text-on-interactive, #ffffff)"
+    },
+    "status": {
+      "critical": {
+        "text": "var(--p-color-text-critical, #d82c0d)",
+        "background": "var(--p-color-bg-critical-subdued, #fff4f4)",
+        "border": "var(--p-color-border-critical, #e85c4a)"
+      },
+      "success": {
+        "text": "var(--p-color-text-success, #1a7f37)",
+        "background": "var(--p-color-bg-success-subdued, #e3f9e5)",
+        "border": "var(--p-color-border-success, #2e844a)"
+      }
+    }
+  },
+  "spacing": {
+    "container": {
+      "margin": "var(--p-space-4, 16px)",
+      "padding": "var(--p-space-6, 24px)",
+      "gap": "var(--p-space-4, 16px)"
+    },
+    "modal": {
+      "padding": "var(--p-space-6, 24px)",
+      "sectionGap": "var(--p-space-4, 16px)",
+      "fieldGap": "var(--p-space-3, 12px)"
+    },
+    "tooltip": {
+      "padding": "var(--p-space-2, 8px) var(--p-space-3, 12px)",
+      "offset": "var(--p-space-2, 8px)"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "primary": "-apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif"
+    },
+    "fontSize": {
+      "heading": "1.15rem",
+      "body": "1rem", 
+      "meta": "0.85rem",
+      "small": "0.75rem"
+    },
+    "fontWeight": {
+      "regular": "400",
+      "medium": "500",
+      "semibold": "600"
+    },
+    "lineHeight": {
+      "tight": "1.25",
+      "normal": "1.5"
+    }
+  },
+  "borderRadius": {
+    "button": "var(--p-border-radius-1, 8px)",
+    "modal": "var(--p-border-radius-3, 16px)",
+    "tooltip": "var(--p-border-radius-1, 8px)"
+  },
+  "shadow": {
+    "modal": "var(--p-shadow-400, 0 8px 16px rgba(15, 23, 42, 0.12))",
+    "tooltip": "var(--p-shadow-200, 0 2px 4px rgba(15, 23, 42, 0.12))"
+  },
+  "zIndex": {
+    "adminOverlay": "1000",
+    "tooltip": "1010",
+    "appBridgeBackdrop": "1100",
+    "appBridgeModal": "1200"
+  },
+  "motion": {
+    "duration": {
+      "fast": "150ms",
+      "normal": "250ms",
+      "slow": "350ms"
+    },
+    "easing": {
+      "entrance": "cubic-bezier(0.0, 0.0, 0.2, 1)",
+      "exit": "cubic-bezier(0.4, 0.0, 1, 1)",
+      "standard": "cubic-bezier(0.4, 0.0, 0.2, 1)"
+    },
+    "modal": {
+      "enter": "transform 250ms cubic-bezier(0.0, 0.0, 0.2, 1)",
+      "exit": "transform 200ms cubic-bezier(0.4, 0.0, 1, 1)"
+    },
+    "tooltip": {
+      "enter": "opacity 150ms cubic-bezier(0.0, 0.0, 0.2, 1)",
+      "exit": "opacity 100ms cubic-bezier(0.4, 0.0, 1, 1)"
+    }
+  },
+  "breakpoints": {
+    "desktop": "1280px",
+    "tablet": "768px",
+    "mobile": "0px"
+  },
+  "overlay": {
+    "modal": {
+      "width": {
+        "small": "400px",
+        "base": "600px",
+        "large": "800px",
+        "max": "calc(100vw - var(--p-space-8, 32px))"
+      },
+      "maxHeight": "calc(100vh - var(--p-space-8, 32px))"
+    }
+  },
+  "component": {
+    "button": {
+      "primary": {
+        "background": "var(--p-color-bg-interactive, #2c6ecb)",
+        "backgroundHover": "var(--p-color-bg-interactive-hover, #1f5199)",
+        "text": "var(--p-color-text-on-interactive, #ffffff)",
+        "border": "none"
+      },
+      "secondary": {
+        "background": "transparent", 
+        "backgroundHover": "var(--p-color-bg-surface-hover, #f6f6f7)",
+        "text": "var(--p-color-text-interactive, #2c6ecb)",
+        "border": "1px solid var(--p-color-border-interactive, #2c6ecb)"
+      },
+      "plain": {
+        "background": "transparent",
+        "backgroundHover": "var(--p-color-bg-surface-hover, #f6f6f7)", 
+        "text": "var(--p-color-text, #202223)",
+        "border": "none"
+      }
+    },
+    "input": {
+      "background": "var(--p-color-bg-surface, #ffffff)",
+      "border": "1px solid var(--p-color-border, #c4c4c4)",
+      "borderFocus": "1px solid var(--p-color-border-interactive, #2c6ecb)",
+      "text": "var(--p-color-text, #202223)",
+      "placeholder": "var(--p-color-text-subdued, #637381)"
+    }
+  }
+}

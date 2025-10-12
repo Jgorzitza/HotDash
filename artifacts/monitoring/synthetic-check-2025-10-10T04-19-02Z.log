@@ -1,0 +1,1 @@
+[synthetic-check] https://hotdash-staging.fly.dev/app?mock=1 status=200 duration=218.38ms budget=800ms artifact=artifacts/monitoring/synthetic-check-2025-10-10T04-19-02.703Z.json

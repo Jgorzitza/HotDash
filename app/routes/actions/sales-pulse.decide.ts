@@ -1,0 +1,73 @@
+import type { ActionFunctionArgs } from "react-router";
+
+import { authenticate } from "../../shopify.server";
+import { logDecision } from "../../services/decisions.server";
+import { toInputJson } from "../../services/json";
+
+function jsonResponse(body: unknown, init?: ResponseInit) {
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+    ...init,
+  });
+}
+
+const ACTION_MAP: Record<string, { decisionAction: string }> = {
+  acknowledge: { decisionAction: "sales_pulse.log_follow_up" },
+  escalate: { decisionAction: "sales_pulse.escalate" },
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const { session } = await authenticate.admin(request);
+  if (!session?.shop) {
+    throw jsonResponse({ error: "Missing shop context" }, { status: 400 });
+  }
+
+  const actor = (session as { email?: string | null }).email ?? session.shop;
+
+  const formData = await request.formData();
+  const actionType = formData.get("action");
+  const note = formData.get("note");
+  const contextRaw = formData.get("context");
+  const currency = formData.get("currency");
+  const totalRevenue = formData.get("totalRevenue");
+  const orderCount = formData.get("orderCount");
+
+  if (typeof actionType !== "string" || !(actionType in ACTION_MAP)) {
+    throw jsonResponse({ error: "Invalid action" }, { status: 400 });
+  }
+
+  const decisionInfo = ACTION_MAP[actionType];
+
+  let context: unknown = null;
+  if (typeof contextRaw === "string" && contextRaw.trim() !== "") {
+    try {
+      context = JSON.parse(contextRaw);
+    } catch (error) {
+      console.warn("Failed to parse sales pulse context", error);
+    }
+  }
+
+  const payload = {
+    actionType,
+    context,
+    summary: {
+      currency: typeof currency === "string" ? currency : undefined,
+      totalRevenue: typeof totalRevenue === "string" ? Number.parseFloat(totalRevenue) : undefined,
+      orderCount: typeof orderCount === "string" ? Number.parseInt(orderCount, 10) : undefined,
+    },
+  };
+
+  await logDecision({
+    scope: "ops",
+    actor,
+    action: decisionInfo.decisionAction,
+    rationale: typeof note === "string" && note.trim() ? note.trim() : undefined,
+    shopDomain: session.shop,
+    payload: toInputJson(payload),
+  });
+
+  return jsonResponse({ ok: true });
+};
+
+export default action;

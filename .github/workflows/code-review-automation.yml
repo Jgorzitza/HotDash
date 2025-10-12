@@ -1,0 +1,132 @@
+name: Code Review Automation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  automated-review:
+    name: Automated Code Review Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            app/**
+            packages/**
+            tests/**
+
+      - name: Check for test updates
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const changedFiles = '${{ steps.changed-files.outputs.all_changed_files }}'.split(' ');
+            
+            const appFiles = changedFiles.filter(f => f.startsWith('app/') || f.startsWith('packages/'));
+            const testFiles = changedFiles.filter(f => f.startsWith('tests/'));
+            
+            if (appFiles.length > 0 && testFiles.length === 0) {
+              core.warning('⚠️ App code changed without test updates. Consider adding tests.');
+            }
+
+      - name: Check for console.log
+        run: |
+          if git diff origin/main..HEAD -- app/ packages/ | grep "+.*console\.log\|console\.debug"; then
+            echo "⚠️ WARNING: console.log() found in production code"
+            echo "Consider using logger.info() instead"
+          fi
+
+      - name: Check for large files
+        run: |
+          LARGE_FILES=$(git diff --name-only origin/main..HEAD | while read file; do
+            size=$(wc -c < "$file" 2>/dev/null || echo 0)
+            if [ "$size" -gt 100000 ]; then
+              echo "$file ($size bytes)"
+            fi
+          done)
+          
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ WARNING: Large files detected:"
+            echo "$LARGE_FILES"
+          fi
+
+      - name: Check for TypeScript 'any' type
+        run: |
+          if git diff origin/main..HEAD -- "*.ts" "*.tsx" | grep "+.*: any\|<any>"; then
+            echo "⚠️ WARNING: New 'any' types found"
+            echo "Consider using specific types for better type safety"
+          fi
+
+      - name: Check for missing error handling
+        run: |
+          if git diff origin/main..HEAD -- app/ | grep "+.*await fetch\|+.*\.then\(" | grep -v "catch\|try"; then
+            echo "⚠️ WARNING: Async operations without error handling detected"
+            echo "Add .catch() or try/catch blocks"
+          fi
+
+      - name: Check for secrets in diff
+        run: |
+          if git diff origin/main..HEAD | grep -iE "password|secret|token|api[_-]?key" | grep "+" | grep -v ".example"; then
+            echo "🚨 CRITICAL: Potential secrets in diff"
+            echo "Review immediately and remove if real credentials"
+            exit 1
+          fi
+
+      - name: Post review comment
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number
+            });
+            
+            // Only comment once
+            const botComment = comments.find(c => 
+              c.user.type === 'Bot' && c.body.includes('Automated Code Review')
+            );
+            
+            if (botComment) return;
+            
+            const comment = `## 🤖 Automated Code Review
+            
+            Thanks for the PR! Here are some automated checks:
+            
+            ### Checklist for Author
+            - [ ] All tests pass locally
+            - [ ] Added tests for new functionality
+            - [ ] No console.log() in production code
+            - [ ] TypeScript types are specific (no 'any')
+            - [ ] Error handling added for async operations
+            - [ ] Performance considered
+            - [ ] Security reviewed
+            - [ ] Accessibility checked (if UI changes)
+            
+            ### Checklist for Reviewers
+            - [ ] Code is clear and maintainable
+            - [ ] Tests are meaningful
+            - [ ] No obvious security issues
+            - [ ] No performance red flags
+            - [ ] Follows project conventions
+            
+            _This is an automated comment. Review the checks above manually._
+            `;
+            
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: comment
+            });
+

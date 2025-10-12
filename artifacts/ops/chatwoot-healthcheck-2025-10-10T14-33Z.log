@@ -1,0 +1,5 @@
+2025-10-10T14:32:41Z INFO curl https://hotdash-chatwoot.fly.dev/hc --silent --show-error --write-out 'status=%{http_code} time=%{time_total}\n'
+2025-10-10T14:32:42Z INFO status=200 time=0.184
+2025-10-10T14:32:42Z INFO GET https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversation_participants (token redacted) → 200 (0.296s)
+2025-10-10T14:32:42Z INFO POST https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversations/health-check ping payload accepted (HTTP 202)
+2025-10-10T14:32:42Z INFO Chatwoot Fly agent health checks passed.

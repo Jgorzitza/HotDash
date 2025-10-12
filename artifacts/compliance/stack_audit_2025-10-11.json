@@ -1,0 +1,10 @@
+[
+  {"file":"secret_scan.yml","status":"present","has_pull_request":true,"has_push":true,"manual_only":false,"disabled":false},
+  {"file":"stack_guard.yml","status":"present","has_pull_request":true,"has_push":false,"manual_only":false,"disabled":false},
+  {"file":"stack_guardrails.yml","status":"present","has_pull_request":true,"has_push":true,"manual_only":false,"disabled":false},
+  {"file":"evidence.yml","status":"present","has_pull_request":true,"has_push":false,"manual_only":false,"disabled":false},
+  {"file":"feedback_guard.yml","status":"present","has_pull_request":true,"has_push":false,"manual_only":false,"disabled":false},
+  {"file":"direction_guard.yml","status":"present","has_pull_request":true,"has_push":false,"manual_only":false,"disabled":false},
+  {"file":"manager_standup_guard.yml","status":"present","has_pull_request":false,"has_push":false,"manual_only":false,"disabled":false},
+  {"file":"branch_name.yml","status":"present","has_pull_request":true,"has_push":false,"manual_only":false,"disabled":false}
+]

@@ -33,6 +33,47 @@ export function chatwootClient(cfg: ChatwootConfig) {
       });
       if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
       return await r.json();
-    }
+    },
+    async addLabel(conversationId: number, label: string) {
+      const r = await fetch(`${base}/conversations/${conversationId}/labels`, {
+        method: 'POST',
+        headers: h,
+        body: JSON.stringify({ labels: [label] }),
+      });
+      if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
+      return await r.json();
+    },
+    async resolveConversation(conversationId: number) {
+      const r = await fetch(`${base}/conversations/${conversationId}/toggle_status`, {
+        method: 'POST',
+        headers: h,
+        body: JSON.stringify({ status: 'resolved' }),
+      });
+      if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
+      return await r.json();
+    },
+    async createPrivateNote(conversationId: number, content: string) {
+      const r = await fetch(`${base}/conversations/${conversationId}/messages`, {
+        method: 'POST',
+        headers: h,
+        body: JSON.stringify({ content, message_type: 0, private: true })
+      });
+      if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
+      return await r.json();
+    },
+    async assignAgent(conversationId: number, assigneeId: number) {
+      const r = await fetch(`${base}/conversations/${conversationId}/assignments`, {
+        method: 'POST',
+        headers: h,
+        body: JSON.stringify({ assignee_id: assigneeId })
+      });
+      if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
+      return await r.json();
+    },
+    async getConversationDetails(conversationId: number) {
+      const r = await fetch(`${base}/conversations/${conversationId}`, { headers: h });
+      if (!r.ok) throw new Error(`Chatwoot ${r.status}`);
+      return await r.json();
+    },
   };
 }

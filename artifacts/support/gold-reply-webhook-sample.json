@@ -1,0 +1,28 @@
+{
+  "conversationId": 12345,
+  "shopDomain": "staging-demo.myshopify.com",
+  "originalReply": "Hi Sarah, thanks for reaching out about your order PWA-4098. I can see it's been sitting with our carrier for 2 days. I've just escalated this with UPS and they've promised an update within 3 hours. I'll email you directly once I hear back with a concrete delivery timeline. Thanks for your patience!",
+  "category": "shipping_delay",
+  "customerContext": {
+    "issueType": "shipping_delay",
+    "orderValue": 125.50,
+    "customerTier": "regular",
+    "orderNumber": "PWA-4098",
+    "carrierName": "UPS"
+  },
+  "qualityMetrics": {
+    "responseTimeMinutes": 12,
+    "customerSatisfactionScore": 5,
+    "followUpRequired": true,
+    "followUpTimeframe": "3 hours"
+  },
+  "submittedBy": "operator@hotrodan.com",
+  "evidenceUrl": "https://hotdash-chatwoot.fly.dev/conversations/12345",
+  "metadata": {
+    "sourceTemplate": "ack_delay",
+    "aiSuggestionUsed": false,
+    "operatorNote": "Customer particularly frustrated, escalated directly with carrier",
+    "tags": ["shipping_delay", "urgent", "carrier_escalation"],
+    "submissionTimestamp": "2025-10-11T01:15:00Z"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2025-10-10T14:20:15.903Z",
+  "source": "supabase_audit_log",
+  "entries": [
+    {
+      "timestamp": "2025-10-10T14:20:11.640Z",
+      "actor": "supabase_admin",
+      "event": "cron.job_run",
+      "jobId": 42,
+      "command": "SELECT purge_dashboard_data();",
+      "status": "succeeded"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+
+> db:generate:postgres
+> prisma generate --schema prisma/schema.postgres.prisma
+
+Prisma schema loaded from prisma/schema.postgres.prisma

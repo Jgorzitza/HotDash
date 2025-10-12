@@ -1,0 +1,142 @@
+{
+  "payload": [
+    {
+      "id": 201,
+      "inbox_id": 1,
+      "status": "open",
+      "created_at": 1728000000,
+      "tags": ["escalation", "sla_breach"],
+      "meta": {
+        "sender": {
+          "name": "Alex Rivera",
+          "email": "alex@evergreen-outfitters.com"
+        },
+        "sla_breach_time": "2025-10-10T18:00:00Z",
+        "breach_duration_minutes": 125
+      },
+      "contacts": [
+        {
+          "name": "Alex Rivera",
+          "email": "alex@evergreen-outfitters.com"
+        }
+      ],
+      "messages": [
+        {
+          "id": 301,
+          "content": "Hey team, my order still says processing. Do you have an update?",
+          "message_type": "incoming",
+          "created_at": 1728000000
+        }
+      ],
+      "suggested_reply": {
+        "template": "ship_update",
+        "body": "Appreciate you reaching out, Alex. Your order is with our carrier and I'm expediting a status check right away.",
+        "confidence": 0.85,
+        "heuristics": ["shipping", "processing", "order", "update"]
+      }
+    },
+    {
+      "id": 202,
+      "inbox_id": 1,
+      "status": "pending",
+      "created_at": 1728043200,
+      "tags": ["escalation"],
+      "meta": {
+        "sender": {
+          "name": "Jamie Chen",
+          "email": "jamie@peak-performance.com"
+        },
+        "sla_breach_time": "2025-10-10T20:30:00Z",
+        "breach_duration_minutes": 75
+      },
+      "contacts": [
+        {
+          "name": "Jamie Chen",
+          "email": "jamie@peak-performance.com"
+        }
+      ],
+      "messages": [
+        {
+          "id": 302,
+          "content": "The zipper broke on first use. Can you just refund me?",
+          "message_type": "incoming",
+          "created_at": 1728043200
+        }
+      ],
+      "suggested_reply": {
+        "template": "refund_offer",
+        "body": "I'm sorry for the trouble, Jamie. I can refund this immediately or offer store credit—let me know what works best.",
+        "confidence": 0.92,
+        "heuristics": ["refund", "broke", "defect", "trouble"]
+      }
+    },
+    {
+      "id": 203,
+      "inbox_id": 1,
+      "status": "open",
+      "created_at": 1728129600,
+      "tags": ["escalation"],
+      "meta": {
+        "sender": {
+          "name": "Pat Williams",
+          "email": "pat@atelier-belle.fr"
+        },
+        "sla_breach_time": "2025-10-10T16:15:00Z",
+        "breach_duration_minutes": 45
+      },
+      "contacts": [
+        {
+          "name": "Pat Williams",
+          "email": "pat@atelier-belle.fr"
+        }
+      ],
+      "messages": [
+        {
+          "id": 303,
+          "content": "Just checking—did you get my earlier message about the wrong color?",
+          "message_type": "incoming",
+          "created_at": 1728129600
+        }
+      ],
+      "suggested_reply": {
+        "template": "ack_delay",
+        "body": "Hi Pat, thanks for your patience. I'm checking on your order now and will follow up with an update shortly.",
+        "confidence": 0.78,
+        "heuristics": ["checking", "earlier message", "follow up"]
+      }
+    },
+    {
+      "id": 204,
+      "inbox_id": 1,
+      "status": "pending",
+      "created_at": 1728216000,
+      "tags": ["escalation", "high_priority"],
+      "meta": {
+        "sender": {
+          "name": "Jordan Lee",
+          "email": "jordan@example.com"
+        },
+        "sla_breach_time": "2025-10-11T08:00:00Z",
+        "breach_duration_minutes": 180,
+        "requires_manager": true
+      },
+      "contacts": [
+        {
+          "name": "Jordan Lee",
+          "email": "jordan@example.com"
+        }
+      ],
+      "messages": [
+        {
+          "id": 304,
+          "content": "This is unacceptable. I want to speak to your manager and get a full refund of $850.",
+          "message_type": "incoming",
+          "created_at": 1728216000
+        }
+      ],
+      "suggested_reply": null,
+      "escalation_reason": "High value refund request exceeds agent authority",
+      "manager_note": "Customer requesting $850 refund - requires L3 approval"
+    }
+  ]
+}

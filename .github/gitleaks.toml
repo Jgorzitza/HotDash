@@ -1,0 +1,23 @@
+title = "HotDash Secret Scan Rules"
+
+[allowlist]
+# Allow local dev DSN
+regexes = [
+  "postgresql://postgres:postgres@127\.0\.0\.1:54322/postgres",
+]
+
+[[rules]]
+id = "postgres-dsn"
+regex = '''postgres(ql)?://[^\s`]+'''
+keywords = ["postgres", "postgresql"]
+
+[[rules]]
+id = "redis-uri"
+regex = '''redis://[^\s`]+'''
+keywords = ["redis"]
+
+[rules.allowlist]
+regexes = [
+  "redis://\*\*\*REDACTED\*\*\*",
+  "postgresql://\*\*\*REDACTED\*\*\*",
+]

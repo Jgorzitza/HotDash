@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img">
+  <title>Sales Pulse modal overlay template</title>
+  <desc>Template layers for aligning callouts and focus paths on the Sales Pulse modal screenshot.</desc>
+  <g data-layer="screenshot" aria-label="Screenshot drop zone"/>
+  <g data-layer="callouts" fill="none" stroke="#2C6ECB" stroke-width="2" stroke-dasharray="8 6">
+    <rect id="callout-header" x="360" y="140" width="720" height="120" rx="12"/>
+    <rect id="callout-sparkline" x="360" y="280" width="720" height="180" rx="12"/>
+    <rect id="callout-followup" x="360" y="480" width="720" height="220" rx="12"/>
+  </g>
+  <g data-layer="focus-path" stroke="#1A1F36" stroke-width="2" marker-end="url(#arrowhead)">
+    <path d="M 420 520 L 420 560 L 960 560"/>
+  </g>
+  <g data-layer="labels" font-family="Segoe UI, sans-serif" font-size="24" fill="#1C1C1C" font-weight="600">
+    <text x="340" y="120">1</text>
+    <text x="340" y="260">2</text>
+    <text x="340" y="460">3</text>
+  </g>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1A1F36"/>
+    </marker>
+  </defs>
+</svg>

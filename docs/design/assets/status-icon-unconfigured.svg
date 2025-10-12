@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" role="img">
+  <title>Configuration required status icon</title>
+  <desc>Gray gear indicating that the Shopify tile requires configuration.</desc>
+  <g fill="none" stroke="#637381" stroke-width="1.6" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3.4" fill="#F6F6F7" stroke="#637381"/>
+    <path d="M12 4.6l1 2.2 2.4.4-.4 2.3 1.8 1.5-1.8 1.5.4 2.3-2.4.4-1 2.2-1-2.2-2.4-.4.4-2.3-1.8-1.5 1.8-1.5-.4-2.3 2.4-.4 1-2.2z" fill="#F6F6F7"/>
+  </g>
+</svg>

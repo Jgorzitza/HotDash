@@ -1,0 +1,4 @@
+
+> test:lighthouse
+> node scripts/ci/run-lighthouse.mjs
+

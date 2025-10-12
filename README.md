@@ -12,8 +12,9 @@ This repo contains the full web application, service layer integrations, agent d
 - **Node.js** ≥ 20.10
 - **npm** (ships with Node) or pnpm/yarn if you prefer
 - **Shopify CLI** (`npm install -g @shopify/cli@latest`)
+- **Supabase CLI** (`npm install -g supabase`)
 - **Shopify Partner account** + development store
-- **Supabase project** (for decision/fact persistence)
+- **Supabase project** (remote) _and_ the local Supabase containers started via `supabase start`
 
 ### 1. Clone & Install
 ```bash
@@ -23,34 +24,277 @@ npm install
 ```
 
 ### 2. Configure Environment
-Create a `.env` file (or export the values) with the following variables:
+1. Start the Supabase containers (first run can take ~2 minutes):
 
-```dotenv
-# Shopify app configuration
-SHOPIFY_API_KEY=your_app_key
-SHOPIFY_API_SECRET=your_app_secret
-SHOPIFY_APP_URL=https://your-ngrok-or-hosted-url
-SCOPES=write_products,read_orders
+   ```bash
+   supabase start
+   ```
 
-# Supabase memory / decisions
-SUPABASE_URL=https://your-supabase-project.supabase.co
-SUPABASE_SERVICE_KEY=your_service_role_key
+   Local services expose:
 
-# Optional: override default SQLITE dev db
-DATABASE_URL=file:dev.sqlite
-```
+   - Postgres: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`
+   - REST: `http://127.0.0.1:54321`
+   - Studio: `http://127.0.0.1:54323`
 
-> ℹ️  CI uses `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, and `DATABASE_URL`. Mirror these values in GitHub Actions secrets so workflows succeed.
+   You can confirm any time with `supabase status`.
+
+2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Keep this file out of git — `.env*` is already ignored.
+
+3. Load the env file when working locally:
+
+   ```bash
+   export $(grep -v '^#' .env.local | xargs)
+   ```
+
+   > CI pulls secrets from GitHub environments; no manual export required in pipelines.
 
 ### 3. Initialize the Project
 ```bash
 npm run setup   # prisma generate + migrate deploy
-npm run dev     # starts Shopify dev tunnel + Remix/React Router app
+npm run dev     # starts Shopify dev tunnel + React Router 7 app
 ```
 Press `p` in the CLI output to open the embedded admin URL and complete app installation in your development store.
 
 ### 4. Verification
 Once the dashboard loads, ensure tiles render in mock mode. Add real credentials (Shopify, Chatwoot, GA) to move to live data.
+
+### 5. Tail Supabase logs (optional)
+```bash
+scripts/ops/tail-supabase-logs.sh
+```
+The helper uses the Supabase CLI to stream local events. Pass a project ref to target a remote instance: `scripts/ops/tail-supabase-logs.sh <project-ref>`.
+
+---
+
+## Shopify Integration Guardrails
+- Always reference the Shopify developer MCP (`shopify-dev-mcp`) for APIs, schema, and CLI workflows—no guessing or undocumented endpoints.
+- React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
+- Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
+
+## AI Agent Support: MCP Tools
+
+HotDash provides **6 MCP servers** to help AI agents work effectively:
+
+| Tool | Purpose | Status |
+|------|---------|--------|
+| **shopify** | Shopify API docs, GraphQL validation | ✅ Auto-loads |
+| **context7** | HotDash codebase + library search | ⚠️ Requires startup |
+| **github-official** | GitHub repo management | ✅ Auto-loads |
+| **supabase** | Database & edge functions | ✅ Auto-loads |
+| **fly** | Deployment & infrastructure | ⚠️ Check if needed |
+| **google-analytics** | GA data queries (dev tools only) | ✅ Auto-loads |
+| **llamaindex-rag** | Knowledge base RAG queries | 🚧 In development |
+
+### Quick Start by Tool
+
+<details>
+<summary><b>🖱️ Cursor IDE</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/.cursor/mcp.json` (already configured)
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Verify Context7 is running**:
+   ```bash
+   docker ps | grep context7-mcp
+   ```
+
+3. **Open HotDash in Cursor**:
+   ```bash
+   cursor ~/HotDash/hot-dash
+   ```
+
+4. **Check MCP Status**:
+   - Settings → MCP
+   - Verify all 5 servers show green indicators
+
+5. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>⌨️ Codex CLI</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/.codex/config.toml` (already configured)
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Verify Context7 is running**:
+   ```bash
+   docker ps | grep context7-mcp
+   ```
+
+3. **Start Codex in HotDash directory**:
+   ```bash
+   cd ~/HotDash/hot-dash
+   codex
+   ```
+
+4. **Verify MCP tools loaded**:
+   ```
+   codex> /tools
+   ```
+   Should show shopify, context7, github-official, supabase, fly
+
+5. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>🤖 Claude CLI</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- MCP configuration: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+- Or: `~/.config/Claude/claude_desktop_config.json` (Linux)
+
+**Setup (one-time):**
+```bash
+# Copy MCP config to Claude
+mkdir -p ~/Library/Application\ Support/Claude  # macOS
+# OR
+mkdir -p ~/.config/Claude  # Linux
+
+# Convert from JSON to Claude format (already done if using Claude Desktop)
+# See docs/directions/mcp-tools-reference.md for config format
+```
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Start Claude CLI**:
+   ```bash
+   claude
+   ```
+
+3. **Verify MCP tools**:
+   ```
+   > What MCP tools do you have access to?
+   ```
+
+4. **Start coding!** All MCP tools are now available.
+
+</details>
+
+<details>
+<summary><b>🚀 Warp Terminal</b> (Click to expand)</summary>
+
+**Prerequisites:**
+- Warp AI Drive integration
+- MCP support (check Warp version supports MCP)
+
+**Setup (one-time):**
+- Configure MCP in Warp settings
+- Import from `~/.cursor/mcp.json` or `~/.codex/config.toml`
+
+**Startup Steps:**
+1. **Start Context7** (required):
+   ```bash
+   cd ~/HotDash/hot-dash
+   ./scripts/ops/start-context7.sh
+   ```
+
+2. **Open Warp** in HotDash directory:
+   ```bash
+   cd ~/HotDash/hot-dash
+   # Use Warp AI (Ctrl+`)
+   ```
+
+3. **Verify MCP tools available** in Warp AI panel
+
+4. **Start coding!** All MCP tools are now available.
+
+</details>
+
+### What's Available
+
+**MCP Tools Provide:**
+- 🏪 **Shopify**: API docs, GraphQL validation
+- 🔍 **Context7**: HotDash code search + React Router/Prisma/etc. docs
+- 🐙 **GitHub**: PR/issue management, code search
+- 🗄️ **Supabase**: Migrations, queries, edge functions
+- ✈️ **Fly.io**: Deployments, logs, secrets
+- 📊 **Google Analytics**: GA property queries (Cursor/dev tools)
+- 🧠 **LlamaIndex RAG**: Knowledge base queries, support insights
+
+**Example Agent Queries:**
+```
+"Show me the Sales Pulse tile implementation"  (context7)
+"Validate this Shopify GraphQL query"          (shopify)
+"Create a PR for this feature"                 (github-official)
+"Run migration for new dashboard_facts column" (supabase)
+"Deploy hot-dash to production"                (fly)
+"What are my GA properties?"                   (google-analytics, dev only)
+"Query support knowledge base"                 (llamaindex-rag, coming soon)
+```
+
+### What Context7 Indexes
+
+**Included:**
+- Source code (`app/`, `packages/`, `scripts/`)
+- Documentation (`docs/`)
+- Configuration (root configs, `prisma/`, `supabase/`)
+- Tests (`tests/`)
+
+**Excluded** (via `.context7ignore`):
+- Dependencies, build artifacts, test outputs
+- Environment files and secrets
+- Binary assets
+
+### Documentation
+
+- **Training Data Check**: `docs/directions/training-data-reliability-check.md` 🚨 **READ FIRST**
+- **MCP Tools Overview**: `docs/directions/mcp-tools-reference.md` (comprehensive guide)
+- **Efficiency Guide**: `docs/directions/mcp-usage-efficiency.md` ⭐ (avoid context overload)
+- **Context7 Usage**: `docs/context7-mcp-guide.md` (detailed Context7 guide)
+- **Quick Reference**: `docs/context7-quick-reference.md` (common queries)
+- **Setup Summary**: `docs/directions/context7-mcp-setup.md` (setup details)
+
+### ⚠️ Critical for AI Agents
+
+**Your training data is outdated for:**
+- React Router 7 (you have v6/Remix patterns)
+- Shopify APIs (you have 2023 or older)
+
+**Always verify with MCP tools before implementing RR7 or Shopify code.**  
+See `docs/directions/training-data-reliability-check.md` for decision matrix.
+
+### Troubleshooting
+
+**"Context7 not available":**
+```bash
+# Check if running
+docker ps | grep context7-mcp
+
+# If not, start it
+./scripts/ops/start-context7.sh
+
+# Reload your AI tool
+```
+
+**"Which tool do I have?":**
+- Check config file for your tool (see above)
+- All configs point to same MCP servers
+- Just ensure Context7 is running first!
+
+### AI Integration Notes
+- Retrieve the staging OpenAI API key from `vault/occ/openai/api_key_staging.env` before running AI tooling.
+- Set `OPENAI_API_KEY` in your shell (`source vault/occ/openai/api_key_staging.env`) so `npm run ai:build-index` and regression scripts can talk to OpenAI.
 
 ---
 
@@ -60,11 +304,13 @@ Once the dashboard loads, ensure tiles render in mock mode. Add real credentials
 | ---- | ------- | ----- |
 | Start dev server | `npm run dev` | Spins up Shopify CLI + Vite dev server |
 | Run unit tests | `npm run test:unit` | Vitest test suite |
-| Run Playwright smoke | `npm run test:e2e` | Browser tests with mock data |
+| Run Playwright smoke | `npm run test:e2e` | Browser tests with mock data (automatically logs into Admin using `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) |
+| Shopify Admin embed smoke | `npx playwright test tests/playwright/admin-embed.spec.ts` | Uses the Shopify CLI tunnel and staging store credentials; LOGIN must be provided via `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`. |
 | Lint | `npm run lint` | ESLint configured with project rules |
 | Type check | `npm run typecheck` | React Router typegen + `tsc --noEmit` |
 | Nightly metrics rollup | `npm run ops:nightly-metrics` | Writes aggregate facts (`metrics.activation.rolling7d`, `metrics.sla_resolution.rolling7d`) |
 | Backfill Chatwoot facts | `npm run ops:backfill-chatwoot` | One-time script to add breach timestamps |
+| Tail Supabase logs | `scripts/ops/tail-supabase-logs.sh` | Streams local or remote Supabase logs via the CLI |
 
 GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). Ensure repository secrets include the environment variables listed above before enabling schedules.
 
@@ -73,10 +319,10 @@ GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). E
 ## Project Structure Highlights
 
 ```
-app/                    # Remix/React Router app code
+app/                    # React Router 7 app code
   components/tiles/     # Dashboard tiles (Sales, Inventory, Ops Pulse, etc.)
   services/             # Shopify, Chatwoot, GA clients & metrics aggregation
-  routes/               # Remix route loaders/actions
+  routes/               # React Router data routes and actions
 packages/               # Shared integrations + memory adapters
 docs/                   # Direction docs, strategy, design specs
 scripts/ops/            # Operational scripts (backfill, nightly metrics)
@@ -89,14 +335,40 @@ Canonical workflow documentation lives in:
 - `docs/strategy/initial_delivery_plan.md` – roadmap
 - `docs/data/nightly_metrics.md` – telemetry automation playbook
 
+### Supabase Edge Function — Observability
+We ship a lightweight edge function (`supabase/functions/occ-log`) that centralises structured logs in Supabase.
+
+Deploy locally:
+
+```bash
+supabase functions serve occ-log --env-file .env.local
+```
+
+Deploy to a remote project:
+
+```bash
+supabase functions deploy occ-log --project-ref <your-project-ref>
+supabase secrets set --project-ref <your-project-ref> SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+```
+
+After deployment, call it from the app or scripts:
+
+```bash
+curl -X POST "https://<project>.functions.supabase.co/occ-log" \
+  -H "Content-Type: application/json" \
+  -d '{"level":"INFO","message":"playwright smoke started","metadata":{"suite":"admin"}}'
+```
+
+> Run `psql` (or Supabase SQL editor) with `supabase/sql/observability_logs.sql` once per project to create the backing table.
+
 ---
 
 ## Working With Shopify & Supabase
 
-1. Run `npm run dev` to start the Shopify CLI tunnel and obtain the install URL.
-2. Install the app in your development store.
-3. Populate `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` so decision logs and telemetry facts persist beyond SQLite.
-4. To switch to production, set `NODE_ENV=production`, configure a persistent database (e.g., Postgres), and update `shopify.app.toml`/`shopify.web.toml` as outlined in Shopify’s deployment docs.
+1. Start the Supabase containers locally (`supabase start`) and export `.env.local` so `DATABASE_URL` points at the local Postgres instance (`postgresql://postgres:postgres@127.0.0.1:54322/postgres`).
+2. Run `npm run dev` to start the Shopify CLI tunnel and obtain the install URL.
+3. Install the app in your development store (press `p` in the CLI prompt) and use the embedded admin experience.
+4. For staging/production, mirror secrets from vault to GitHub (`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`) and update `shopify.app.toml`/`shopify.web.toml` according to Shopify’s deployment docs.
 
 ---
 

@@ -1,0 +1,5 @@
+2025-10-10T06:23Z flyctl deploy --remote-only
+- Config change: fly.toml min_machines_running=1
+- Build image registry.fly.io/hotdash-staging:deployment-01K76CJ8D2WMDHDYXFDXPXE595
+- Machines rolled: d8dd9eea046d08 → v16, 56837ddda06568 → v16
+- Fly warning (expected during boot): app not yet listening on 0.0.0.0:3000; clears once react-router server starts

@@ -1,75 +1,63 @@
 ---
-runbook: Prisma Staging Postgres Setup
+runbook: Prisma Supabase Postgres
 owner: engineering
 last_exercised: TBD
 next_window: TBD
 ---
 
-# Prisma Postgres Setup — Staging / Test
+# Prisma + Supabase Postgres Runbook
 
 ## Overview
-QA and deployment need a dedicated Postgres instance to validate Prisma migrations before they hit production. This runbook describes how to configure the HotDash app against the managed Postgres database, apply forward migrations, and roll back using the new staging helpers introduced in `package.json`.
+HotDash uses a single Prisma schema (`prisma/schema.prisma`) targeting Postgres. Developers work against the local Supabase containers, while staging/production use managed Supabase projects. This runbook documents the workflows for applying migrations, validating rollbacks, and mirroring secrets across environments.
 
-## Prerequisites
-- Postgres database provisioned (Supabase or managed instance) with credentials stored in the secret vault and GitHub actions (`DATABASE_URL`).
-- Node 20+, npm, and Prisma CLI (`npx prisma`).
-- Access to the repository plus `.env.staging` populated from `.env.staging.example` (never commit real secrets).
-
-## Environment Configuration
-1. Copy `.env.staging.example` to `.env.staging`.
-2. Fill in the placeholders:
+## Local Development
+1. Start the services:
    ```bash
-   DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/hotdash_staging?schema=public
-   SUPABASE_URL=...
-   SUPABASE_SERVICE_KEY=...
-   SHOPIFY_API_KEY=...
-   SHOPIFY_API_SECRET=...
-   SHOPIFY_APP_URL=https://staging.hotdash.app
+   supabase start
    ```
-3. Export the staging env file when running commands locally:
+2. Export your environment:
    ```bash
-   export $(grep -v '^#' .env.staging | xargs)
+   export $(grep -v '^#' .env.local | xargs)
    ```
-   > CI pipelines should inject the same values as GitHub secrets; no manual export necessary there.
+3. Apply migrations and generate the Prisma client:
+   ```bash
+   npm run setup
+   ```
+   Evidence: attach the command output to your feedback entry.
 
-## Forward Migration Workflow
+## Staging / Production
+1. Mirror credentials from vault to GitHub (`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`).
+2. From a privileged terminal (with the staging `.env` sourced), run:
+   ```bash
+   npm run setup
+   ```
+   - `prisma generate` uses `DATABASE_URL` automatically.
+   - `prisma migrate deploy` applies `prisma/migrations/*` to the target database.
+3. Record the output and any schema changes in `feedback/deployment.md` and `docs/deployment/env_matrix.md`.
+
+## Rollback / Forward Validation
+Use Prisma’s CLI directly:
 ```bash
-npm ci
-npm run db:generate:postgres
-npm run db:migrate:postgres
+prisma migrate status
+prisma migrate resolve --rolled-back <migration-id>
+prisma migrate deploy
 ```
-- `db:generate:postgres` regenerates the Prisma client using `prisma/schema.postgres.prisma`.
-- `db:migrate:postgres` runs `prisma migrate deploy` against the Postgres datasource.
-- Artifacts (migration SQL) remain identical to the sqlite workflow; the only difference is the datasource.
+- Always pass `--schema prisma/schema.prisma` if executing from outside the repo root.
+- Never use SQLite helpers; the Postgres datasource is canonical.
 
-## Backward Validation
-To validate rollback or prior state:
+## Resetting a Sandbox Database
 ```bash
-npm run db:migrate:postgres -- --schema-dir prisma/migrations --skip-generate
-# or apply a specific migration bundle:
-prisma migrate resolve --rolled-back "20251008000000_migration_name" --schema prisma/schema.postgres.prisma
+prisma migrate reset --force --skip-seed --schema prisma/schema.prisma
 ```
-Confirm table counts match expectations and log results in `feedback/qa.md`.
+Only run inside disposable environments (local dev or QA sandboxes). Capture before/after table counts and log them in `feedback/qa.md`.
 
-## Resetting the Database (QA Sandbox)
-When QA requests a clean slate:
-```bash
-export $(grep -v '^#' .env.staging | xargs)
-prisma migrate reset --force --skip-seed --schema prisma/schema.postgres.prisma
-```
-> Use with caution — this drops the database. Only run against disposable staging/test environments.
+## Supabase Specific Tasks
+- Run `supabase/sql/observability_logs.sql` to provision the logging table when creating new projects.
+- Tail live activity with `scripts/ops/tail-supabase-logs.sh <project-ref>` during deploys.
+- Deploy edge functions (e.g., `occ-log`) alongside DB changes using the Supabase CLI commands documented in `docs/runbooks/supabase_local.md`.
 
-## Application Runtime
-At runtime the Remix app reads `DATABASE_URL` directly (`app/db.server.ts`). No additional code changes are required. Switching between sqlite (dev) and Postgres (staging/test) is now controlled entirely by which Prisma schema and env file you use.
-
-## Evidence Logging
-- Capture command output (forward + reverse) and attach to `feedback/qa.md` or `feedback/deployment.md` when completing migration drills.
-- Update `docs/deployment/env_matrix.md` if database hostnames or credentials rotate.
-
-## Supabase Analytics Mirror Prep
-- For Supabase-backed instances, bootstrap the analytics mirror by running `supabase/sql/analytics_facts_table.sql` in the Supabase SQL editor (service role) or via the Supabase CLI.
-- This script creates the `facts` table plus supporting indexes used by `packages/memory/supabase`. Without it, parity checks and analytics logging throw `PGRST205` errors.
-- After running the script, rerun `scripts/ops/check-dashboard-analytics-parity.ts` to verify Supabase and Prisma row counts stay within the 1% threshold. Attach JSON output to `feedback/data.md`.
-
-## Support
-Contact the deployment agent or engineering owner if migrations fail or schema drift occurs. For supabase-hosted databases, cross-check logs in the Supabase dashboard and ensure RLS policies continue to allow service key write access.
+## Evidence Checklist
+- `npm run setup` output (local + staging)
+- Supabase log snippet (`scripts/ops/tail-supabase-logs.sh`)
+- Prisma `migrate status` or `migrate resolve` output when rolling back
+- Updated env matrix (`docs/deployment/env_matrix.md`)

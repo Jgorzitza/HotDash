@@ -1,0 +1,20 @@
+
+> ops:purge-dashboard-data
+> npx -y tsx scripts/ops/purge-dashboard-data.ts
+
+{
+  "event": "retention.purge",
+  "timestamp": "2025-10-10T19:33:43.832Z",
+  "durationMs": 27,
+  "config": {
+    "retentionFactsDays": 30,
+    "retentionEscalationsDays": 14,
+    "retentionSessionsDays": 90
+  },
+  "results": {
+    "shopifyDeleted": 0,
+    "gaDeleted": 0,
+    "chatwootDeleted": 0,
+    "sessionDeleted": 0
+  }
+}

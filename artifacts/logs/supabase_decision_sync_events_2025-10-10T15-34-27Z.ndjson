@@ -1,0 +1,3 @@
+"PGRST205"
+"Perhaps you meant the table 'public.reporting_events'"
+"Could not find the table 'public.decision_sync_events' in the schema cache"

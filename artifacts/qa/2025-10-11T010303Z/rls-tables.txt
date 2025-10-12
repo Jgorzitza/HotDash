@@ -1,0 +1,4 @@
+ schemaname | tablename | rowsecurity 
+------------+-----------+-------------
+(0 rows)
+
