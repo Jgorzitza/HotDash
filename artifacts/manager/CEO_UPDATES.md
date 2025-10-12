@@ -295,6 +295,46 @@
 
 ---
 
+## 🎯 CORRECT AGENT STARTUP INSTRUCTIONS FOR CEO
+
+**IMPORTANT**: Don't point agents directly to direction files. Use the startup checklist.
+
+### ✅ First Startup (Full Orientation):
+```
+CEO says: "You are engineer, read this startup document and execute as engineer"
+
+Agent reads: docs/runbooks/agent_startup_checklist.md
+Agent replaces: <your-agent> → engineer in all commands
+Agent executes: All 8 steps (navigate, canon, direction, dependencies, MCP, etc.)
+Result: Fully oriented engineer ready to work
+```
+
+### ✅ Quick Update (Already Oriented):
+```
+CEO says: "Manager has provided updated direction, execute"
+
+Agent reads: docs/directions/engineer.md (START HERE NOW section only)
+Agent executes: The specific task assigned
+Result: Engineer immediately starts work
+```
+
+### ✅ Feedback/Shutdown:
+```
+CEO says: "Provide manager feedback"
+
+Agent follows: docs/runbooks/agent_shutdown_checklist.md (Steps 5-6)
+Agent logs: Session end and performance review
+Result: Clean feedback in feedback/engineer.md
+```
+
+**Key Files**:
+- Agent startup: `docs/runbooks/agent_startup_checklist.md`
+- Agent shutdown: `docs/runbooks/agent_shutdown_checklist.md`
+- Agent direction: `docs/directions/<agent>.md`
+- Agent feedback: `feedback/<agent>.md`
+
+---
+
 **Manager Signature**: Taking ownership, executing completely  
 **Next Update**: Next manager shutdown  
 **Status**: ✅ CLEAN SHUTDOWN COMPLETE
