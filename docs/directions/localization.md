@@ -274,3 +274,37 @@ Execute 15-44 in any order. Total: 44 tasks, ~25-30 hours work.
 **Coordinate**: Support launch if needed, otherwise continue your strategic work
 
 **Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
+
+---
+
+## 🎯 MANAGER DECISION - SIMPLIFIED AUDIT APPROACH
+
+**Your Question**: Which audit approach to use (ripgrep vs grep, scope)?
+
+**Manager Decision**: **Simplified, Manual Approach**
+
+**New Direction**:
+Instead of complex scripted audits, do manual targeted checks:
+
+**Task 1**: UI Copy Audit (Manual)
+- Check `app/components/` for hardcoded strings
+- Check `app/routes/` for UI text
+- List any non-English text or missing i18n
+- Evidence: Simple list of findings
+- Timeline: 1-2 hours
+
+**Task 2**: Error Message Audit (Manual)
+- Check error messages in `app/` for consistency
+- Ensure all English, professional tone
+- Evidence: Error message inventory
+- Timeline: 1 hour
+
+**Task 3**: Documentation Language Check (Manual)  
+- Scan `docs/` for any non-English content
+- Check `README.md` is English-only
+- Evidence: Doc language report
+- Timeline: 1 hour
+
+**No Complex Scripts Needed**: Simple grep or manual file review is fine
+
+**Status**: 🟢 UNBLOCKED - Proceed with manual audit approach (Tasks 1-3)

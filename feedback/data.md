@@ -3266,3 +3266,182 @@ After reviewing README, NORTH_STAR, and direction file, executed all remaining t
 **Evidence:** feedback/data.md (3,200+ lines, 21 sections)  
 **Next:** Standing by for manager direction or launch support
 
+
+---
+
+## 22. TASK AG-1: HOT RODAN DATA MODELS ✅ COMPLETE (2025-10-11 21:10 UTC)
+
+### Objective: Create domain-specific data models for hot rod product analytics
+
+**Business Context:**
+- Hot Rodan (hotrodan.com) - automotive parts for classic car enthusiasts
+- Target: $10MM revenue
+- Need: Operator insights for product performance and customer behavior
+
+---
+
+### Deliverables Created:
+
+**1. Documentation:**
+- `docs/data/hot_rodan_data_models.md` (500+ lines)
+- Complete automotive parts taxonomy
+- Customer segmentation framework (5 archetypes)
+- Seasonal pattern detection
+- Operator dashboard tile queries
+
+**2. Database Migration:**
+- `supabase/migrations/20251011_hot_rodan_data_models.sql`
+- `product_categories` table (11 fields + metadata)
+- `customer_segments` table (19 fields + lifecycle)
+- 11 indexes for query performance
+- 4 RLS policies (service role + operator read)
+- 3 operator views (performance, segments, seasonality)
+
+---
+
+### Product Categorization Schema:
+
+**Major Categories (9 levels):**
+1. Engine & Drivetrain (carburetors, transmissions, headers)
+2. Suspension & Steering (coilovers, control arms, sway bars)
+3. Brakes & Wheels (disc conversions, steel wheels)
+4. Exterior & Body (fenders, grilles, paint supplies)
+5. Interior & Trim (seats, dashboards, carpeting)
+6. Electrical & Lighting (wiring, headlights, gauges)
+7. Exhaust & Intake (manifolds, mufflers, air cleaners)
+8. Fuel & Ignition (fuel pumps, distributors, coils)
+9. Tools & Equipment (jacks, toolboxes, diagnostics)
+
+**Attributes:**
+- Vehicle compatibility (years, makes, models)
+- Part type flags (performance, restoration, custom)
+- Business metrics (AOV, margin %, inventory velocity)
+
+---
+
+### Customer Segmentation (5 Archetypes):
+
+**1. DIY Builder (35%):**
+- Budget-conscious weekend warriors
+- Frequent small orders ($50-$300)
+- LTV: $2,500-$5,000
+
+**2. Professional Shop (25%):**
+- High-volume restoration/custom shops
+- Large orders ($500-$5,000)
+- LTV: $15,000-$50,000
+
+**3. Enthusiast Collector (20%):**
+- Multi-car owners, quality-focused
+- Medium orders ($300-$1,500)
+- LTV: $8,000-$15,000
+
+**4. First-Time Builder (15%):**
+- New to hobby, needs guidance
+- Medium orders ($200-$800)
+- LTV: $1,500-$3,000
+
+**5. Racing Enthusiast (5%):**
+- Performance-focused, seasonal buying
+- High-margin parts
+- LTV: $10,000-$25,000
+
+**Behavioral Tracking:**
+- Purchase frequency, AOV, category preferences
+- Vehicle profile (year, make, model)
+- Lifecycle stage (new, active, at_risk, churned, reactivated)
+
+---
+
+### Seasonal Pattern Detection:
+
+**Racing Season (March-September):**
+- Suspension, brakes, wheels: +30-40% revenue
+- Car shows, racing events, summer projects
+
+**Off-Season (October-February):**
+- Engine rebuilds, interior work: Stable
+- Indoor projects, planning phase
+
+**Year-Round:**
+- Maintenance parts, accessories: Less seasonal
+
+---
+
+### Operator Dashboard Tiles:
+
+**Tile 1: Top Selling Categories**
+```sql
+-- Top 5 categories this week by revenue
+SELECT category_l1, orders, revenue, revenue_share_pct
+FROM v_product_performance
+WHERE period = 'last_7_days'
+ORDER BY revenue DESC LIMIT 5;
+```
+
+**Tile 2: Customer Segment Distribution**
+```sql
+-- Active customers by segment
+SELECT primary_segment, customer_count, segment_revenue, segment_aov
+FROM v_customer_segment_summary
+WHERE lifecycle_stage = 'active';
+```
+
+**Tile 3: Seasonal Performance**
+```sql
+-- Current season vs. expected
+SELECT season, season_revenue, season_orders, top_categories
+FROM v_seasonal_patterns
+WHERE year = EXTRACT(YEAR FROM NOW());
+```
+
+---
+
+### Database Objects Created:
+
+**Tables:** 2
+- product_categories (automotive parts taxonomy)
+- customer_segments (5-archetype segmentation)
+
+**Indexes:** 11 (optimized for operator queries)
+- Shopify ID lookups
+- Category hierarchy searches
+- Vehicle compatibility (GIN indexes)
+- Segment/lifecycle filters
+
+**Views:** 3 (operator dashboard tiles)
+- v_product_performance (category metrics)
+- v_customer_segment_summary (segment distribution)
+- v_seasonal_patterns (seasonality detection)
+
+**RLS Policies:** 4
+- Service role: Full access
+- Operators: Read access (anonymized)
+
+---
+
+### Evidence:
+
+**Files Created:**
+- docs/data/hot_rodan_data_models.md (500+ lines)
+- supabase/migrations/20251011_hot_rodan_data_models.sql (200+ lines)
+
+**Schema Validation:**
+- ✅ product_categories: 11 fields + 6 indexes + 2 RLS policies
+- ✅ customer_segments: 19 fields + 5 indexes + 2 RLS policies
+- ✅ Views: 3 operator dashboard queries
+- ✅ Comments: All tables/views documented
+
+**North Star Alignment:** ✅ DIRECT
+- Domain-specific analytics for Hot Rodan operator
+- Category performance for inventory optimization
+- Customer segmentation for targeted engagement
+- Seasonal insights for $10MM revenue goal
+
+---
+
+**Status:** ✅ AG-1 COMPLETE  
+**Duration:** 30 minutes  
+**Next:** AG-2 - Real-time Dashboard Queries  
+**Evidence:** Migration + documentation with Hot Rodan taxonomy
+

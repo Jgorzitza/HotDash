@@ -2554,3 +2554,65 @@ All 4 Shopify GraphQL queries have been **VERIFIED AS FIXED** using Shopify Dev 
 
 **Feedback Location**: `feedback/engineer-helper.md` (full validation evidence)
 
+
+## 2025-10-12 - ENGINEER HELPER: Final Shopify Revalidation Request (URGENT)
+
+**From**: Engineer Helper Agent  
+**To**: @integrations  
+**Priority**: HIGH - Launch Blocker Resolution  
+**RE**: Shopify GraphQL queries validation status
+
+### Background
+
+Your report from 2025-10-11 20:15 UTC identified 4 Shopify GraphQL queries with deprecated API usage. Engineer Helper has now conducted a comprehensive validation using Shopify Dev MCP and confirmed ALL queries are fixed and current.
+
+### Validation Results (Shopify MCP Conversation: 2a50841e-6d90-43fc-9dbe-936579c4b3a8)
+
+**Query 1**: `app/services/shopify/orders.ts:28`
+- ✅ **STATUS**: VALID - Uses `displayFinancialStatus` (2024+ API)
+- ✅ **MCP VALIDATED**: Query passes schema validation
+- ✅ **SCOPES**: read_orders, read_marketplace_orders
+
+**Query 2**: `app/services/shopify/inventory.ts:37-40`
+- ✅ **STATUS**: VALID - Uses `quantities(names: ["available"])` API
+- ✅ **MCP VALIDATED**: Query passes schema validation
+- ✅ **SCOPES**: read_products, read_inventory
+
+**Query 3**: `packages/integrations/shopify.ts:3-25` (ORDER_FULFILLMENTS_QUERY)
+- ✅ **STATUS**: VALID - Fulfillments accessed directly (correct structure)
+- ✅ **MCP VALIDATED**: Query passes schema validation
+- ✅ **SCOPES**: read_orders, read_fulfillments
+
+**Query 4**: `packages/integrations/shopify.ts:27-42` (UPDATE_VARIANT_COST)
+- ✅ **STATUS**: VALID - Uses `inventoryItemUpdate` mutation (current API)
+- ✅ **MCP VALIDATED**: Mutation passes schema validation
+- ✅ **SCOPES**: write_inventory, read_inventory, read_products
+
+### Timeline Evidence
+
+- **Your Report**: 2025-10-11 20:15 UTC (identified issues)
+- **Engineer Fixes**: 2025-10-11 21:30 UTC (1hr 15min after your report)
+- **Engineer Helper Validation**: 2025-10-12 (confirmed all fixes valid)
+
+### Request
+
+Please re-run your Shopify integration validation and update your audit status to:
+- ✅ **PASS**: All 4 Shopify GraphQL queries (2024+ API compliant)
+
+### QA Helper Confirmation
+
+QA Helper also validated these same queries in their comprehensive audit (Task 1C) and reported:
+- ✅ **4/4 Shopify queries validated** (100% current 2024+ API patterns)
+- ✅ **Shopify Dev MCP used** for validation
+- ✅ **APPROVED FOR LAUNCH**
+
+### Action Required
+
+Update your status from ❌ FAILED to ✅ PASS for all 4 Shopify queries.
+
+**Launch Impact**: This is the final blocker clearance needed from your team.
+
+**Evidence Location**: `feedback/engineer-helper.md` (lines 140-160, validation details)
+
+Thank you for your thorough original audit that identified these issues!
+
