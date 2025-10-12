@@ -315,3 +315,124 @@ $ npx tsc --noEmit tests/fixtures/agent-sdk-mocks.ts
 - Validation logs: Included in this feedback file
 
 **Engineer Helper Agent - Session Complete**
+
+---
+
+## 🎯 MANAGER DECISION IMPLEMENTATION (2025-10-12)
+
+### Manager Decision Received
+
+**Decision**: **Option C - Deprioritize LlamaIndex MCP** (Not Launch-Critical)
+
+**Rationale from Manager**:
+- LlamaIndex MCP is for RAG queries (support knowledge base)
+- NOT blocking dashboard tiles or approvals (core launch features)
+- AI agent can continue building knowledge base content without MCP live
+- Can ship launch without LlamaIndex MCP, enable post-launch
+
+### Updated Task Status
+
+| Task | Status | Outcome |
+|------|--------|---------|
+| Task 1: Shopify GraphQL | ✅ COMPLETE | Already fixed by Engineer (validated with Shopify MCP) |
+| Task 2: LlamaIndex MCP | ⏸️ DEPRIORITIZED | Post-launch fix (requires 3-4h LlamaIndex 0.12.0 migration) |
+| Task 3: TypeScript Errors | ✅ COMPLETE | All 24 errors fixed, clean build achieved |
+
+### Actions Completed
+
+1. ✅ **Task 3 Committed**: Changes to `agent-sdk-mocks.ts` are in repository HEAD
+2. ✅ **Manager Decision Documented**: LlamaIndex deprioritization rationale recorded
+3. ✅ **Feedback Updated**: Complete evidence trail in this file
+4. 🔄 **Integrations Notification**: Adding revalidation request now
+
+### Launch Impact Assessment
+
+**UNBLOCKED** ✅:
+- Shopify dashboard tiles (Task 1 - already fixed)
+- Test infrastructure (Task 3 - fixed)
+- Core approval workflow (not dependent on LlamaIndex)
+
+**Post-Launch** ⏸️:
+- LlamaIndex MCP RAG queries (nice-to-have, not critical)
+
+### Time Saved
+
+**Original Estimate**: 2-3 hours for Task 2 LlamaIndex fixes  
+**Manager Decision**: Deprioritize → **2-3 hours saved**  
+**Benefit**: Engineer Helper can now join main Engineer on Approval UI (Task 6)
+
+### Next Actions
+
+As per Manager direction:
+1. ✅ Document decision (done above)
+2. 🔄 Notify Integrations to re-validate Shopify queries (in progress)
+3. **NEXT**: Join main Engineer on Task 6 (Approval Queue UI) - Designer specs ready!
+
+**Status**: 🟢 All P0 blockers resolved, ready to help Engineer with UI implementation
+
+---
+
+## 🚨 CEO DIRECTIVE - PRIORITY CORRECTION (2025-10-12T02:00:00Z)
+
+### CEO Override Received
+
+**CEO Statement**: "POST-LAUNCH ⏸️: LlamaIndex MCP (requires API migration work) This should be pre launch work."
+
+**Correction**: LlamaIndex MCP is **PRE-LAUNCH CRITICAL**, not post-launch as previously decided by Manager.
+
+### Impact on Task 2 Status
+
+| Previous Status | Updated Status |
+|----------------|----------------|
+| ⏸️ DEPRIORITIZED (post-launch) | 🚨 **PRE-LAUNCH CRITICAL** (CEO directive) |
+
+### Engineer Helper Ready to Execute
+
+**Task 2 Investigation Complete**:
+- ✅ 63 TypeScript errors identified and categorized
+- ✅ Root cause determined: LlamaIndex 0.12.0 API breaking changes
+- ✅ File-by-file error breakdown documented
+- ✅ Estimated fix time: 3-4 hours
+
+**Critical Fixes Required**:
+1. Update imports for `OpenAI` and `OpenAIEmbedding` (moved in v0.12.0)
+2. Replace deprecated `VectorStoreIndex.fromPersistDir()` method
+3. Fix `getContent()` method signature (now requires parameter)
+4. Add null safety checks throughout (59 errors)
+
+**Files Ready for Fixes**:
+- `scripts/ai/llama-workflow/src/pipeline/query.ts`
+- `scripts/ai/llama-workflow/src/pipeline/buildIndex.ts`
+- `scripts/ai/llama-workflow/src/eval/metrics.ts`
+- `scripts/ai/llama-workflow/src/eval/run.ts`
+- `scripts/ai/llama-workflow/src/loaders/*.ts`
+- `scripts/ai/llama-workflow/src/training/*.ts`
+
+### Manager Notified
+
+Sent urgent notification to Manager (feedback/manager.md) requesting:
+1. Confirmation of CEO priority override
+2. Updated direction on execution approach
+3. Timeline coordination (impacts Engineer's Task 6 work)
+
+### Execution Options
+
+**Option A**: Engineer Helper proceeds immediately with LlamaIndex fixes (3-4h)
+- Pro: Unblocks launch-critical MCP
+- Con: Delays joining Engineer on Approval UI
+
+**Option B**: Escalate to main Engineer (has more LlamaIndex expertise)
+- Pro: Potentially faster/better fix
+- Con: Takes Engineer away from Approval UI
+
+**Option C**: Pair programming (Engineer Helper + Engineer together)
+- Pro: Best of both worlds, knowledge transfer
+- Con: Most resource-intensive
+
+### Status
+
+🔴 **AWAITING MANAGER DIRECTION** (CEO priority override in effect)
+
+Engineer Helper is ready to begin Task 2 (LlamaIndex MCP fixes) immediately upon receiving Manager's updated direction and execution approach.
+
+**Next Update**: Will execute per Manager's directive within minutes of receiving updated direction.

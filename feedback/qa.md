@@ -3989,3 +3989,13 @@ npm run test:lighthouse
 **Evidence**: Complete audit log in feedback/qa.md with all findings
 **Status**: NOT READY FOR LAUNCH (5 P0 blockers)
 
+
+---
+
+## 2025-10-12T04:30:00Z — FIXING BLOCKER 5: Date Test Failure
+
+**Blocker**: tests/unit/utils.date.spec.ts failing (timezone issue)
+**Impact**: Blocks CI green status
+**Owner**: QA (fixable)
+
+**Analyzing the issue**:

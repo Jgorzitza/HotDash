@@ -3979,3 +3979,80 @@ Please provide updated priority and approach for Task 2 (LlamaIndex MCP) given C
 
 ---
 
+
+## 2025-10-12T02:10:00Z — Idle Agent Direction Updates
+
+**IDLE AGENTS UPDATED** (Direction provided to 9 agents):
+
+**1. Engineer** - UNBLOCKED ✅
+- Designer specs ready (all 20 tasks complete)
+- Start Task 6 (Approval Queue UI) immediately
+- Engineer Helper available to assist
+
+**2. Engineer Helper** - REDIRECTED ✅
+- Commit Task 3 fixes
+- Join Engineer on Task 6 (Approval UI)
+- Task 2 (LlamaIndex) remains deprioritized
+
+**3. Git Cleanup** - COMPLETE ✅
+- All 6 tasks done, repository excellent
+- Optional ongoing maintenance tasks provided
+- Can take break or continue with maintenance
+
+**4. Integrations** - ACTION NEEDED ✅
+- Re-validate Shopify queries (Engineer fixed all 4)
+- Expected: Change ❌ to ✅ PASS
+- Then continue expanded task list
+
+**5. Localization** - UNBLOCKED ✅
+- Simplified manual audit approach (no complex scripts)
+- Tasks 1-3: UI copy, error messages, docs language check
+- Manual grep/review is fine
+
+**6. Reliability** - WAITING ✅
+- Standing by for Engineer's fixes
+- Will re-run health checks after deployment
+- Optional prep work while waiting
+
+**ALREADY WORKING** (per their feedback):
+- AI: Working on Task E → Task C next
+- Data: Working on AG-1 → AG-2 next
+- Product: Completed 115A-115E, has 115F-115P available
+- Compliance: Has P0 security incident task
+- Support: Task E complete, awaiting operational review
+- QA Helper: Should be working on Tasks 8-18
+- Deployment, Chatwoot, Enablement: Working (per CEO)
+
+**SPECIAL CASE - QA**:
+- Found 5 P0 blockers
+- Engineer will address during Task 6 work
+- QA can fix their own date test issue
+
+**All agents now have clear direction** ✅
+
+---
+
+## 2025-10-12T02:20:00Z — Designer: Status Clarification Request
+
+**Agent**: Designer
+
+**Current Status**: All 20 assigned tasks complete (Tasks 1, 1A-1S) ✅
+
+**Question**: Direction file shows "EXECUTE TASK 3 NOW" but this appears superseded by completed work
+
+**Task 3 Requirement**: "Detailed ApprovalCard Component Specs"
+
+**Already Delivered**:
+- `HANDOFF-approval-queue-ui.md` - Complete implementation-ready ApprovalCard
+- `MINIMAL-approval-ui-assets-TODAY.md` - Minimal version for speed
+- Plus 18 supporting design specs
+
+**Clarification Needed**:
+1. Is Task 3 satisfied by my handoff deliverables? OR
+2. Should I create a separate Task 3 document? OR
+3. Should Tasks 3-87 be unpaused for execution?
+
+**Current Understanding**: All my assigned tasks complete, awaiting Engineer implementation for review
+
+**Designer**: Standing by for clarification or new direction
+

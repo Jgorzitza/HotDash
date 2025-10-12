@@ -461,3 +461,57 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 **Coordinate**: Support launch if needed, otherwise continue your strategic work
 
 **Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
+
+---
+
+## 🚨 URGENT P0 SECURITY INCIDENT (2025-10-12)
+
+**GitGuardian Alert**: 2 secrets exposed in commit 8baf10f (2025-10-11 10:20 PM UTC)
+
+**Exposed Secrets in `.mcp.json`**:
+1. `GITHUB_PERSONAL_ACCESS_TOKEN`: `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`
+2. `SUPABASE_ACCESS_TOKEN`: `sbp_12ea9d9810c770c41afd4f80653755b248b133f6`
+
+**IMMEDIATE ACTIONS REQUIRED** (Execute in order):
+
+**CEO Decision**: No need to revoke tokens as long as removed from git ✅
+
+**Step 1: Remove Secrets from Repository**
+1. Remove hardcoded secrets from `.mcp.json`
+2. Update `.mcp.json` to use environment variables:
+   ```json
+   "env": {
+     "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+   }
+   ```
+3. Commit fix: `git commit -m "security: remove hardcoded tokens from .mcp.json"`
+4. Verify secrets removed: `git diff HEAD~1 .mcp.json`
+
+**Step 3: Verify Environment Variables**
+1. Confirm tokens loaded from environment variables (not hardcoded)
+2. Test `.mcp.json` reads from `${GITHUB_PERSONAL_ACCESS_TOKEN}` env var
+3. Document env var setup in feedback
+
+**Step 4: Git History Cleanup** (Optional)
+1. Use `git filter-repo` or BFG Repo-Cleaner to remove secrets from history
+2. Force push cleaned history (coordinate with CEO first)
+3. All team members must re-clone repository
+
+**Step 5: Post-Incident Documentation**
+- Document in `feedback/compliance.md`:
+  - Timeline of incident
+  - CEO decision: No revocation needed (tokens removed from git)
+  - Fix applied (commit hash)
+  - Environment variable setup verified
+  - Git history cleanup (if done)
+
+**Root Cause**: Hardcoded secrets in `.mcp.json` instead of environment variables
+
+**Prevention** (implement after immediate fix):
+1. Add pre-commit hook to scan for secrets
+2. Update `.gitignore` to never commit `.mcp.json` with real values
+3. Create `.mcp.json.example` with placeholder values
+4. Document in direction files: NEVER commit real tokens
+
+**Status**: 🔴 URGENT P0 - Execute Steps 1-5 immediately
+**Timeline**: Steps 1-5 within 2 hours (no token revocation needed per CEO)
