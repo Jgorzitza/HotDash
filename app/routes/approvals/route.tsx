@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { json, type LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, EmptyState } from '@shopify/polaris';
 import { ApprovalCard } from '~/components/ApprovalCard';
@@ -22,14 +22,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     if (!response.ok) {
       console.error('Failed to fetch approvals:', response.status);
-      return json({ approvals: [], error: 'Failed to load approvals' });
+      return { approvals: [], error: 'Failed to load approvals' };
     }
     
     const approvals: Approval[] = await response.json();
-    return json({ approvals, error: null });
+    return { approvals, error: null };
   } catch (error) {
     console.error('Error fetching approvals:', error);
-    return json({ approvals: [], error: 'Agent service unavailable' });
+    return { approvals: [], error: 'Agent service unavailable' };
   }
 }
 

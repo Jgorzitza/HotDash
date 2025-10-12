@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { json, type LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, EmptyState, Banner, InlineStack, Badge, Text } from '@shopify/polaris';
 import { ChatwootApprovalCard } from '~/components/ChatwootApprovalCard';
-import { useApprovalNotifications } from '~/hooks/useApprovalNotifications';
 import { createClient } from '@supabase/supabase-js';
 
 interface ChatwootApproval {
@@ -29,11 +28,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseKey) {
-      return json({ 
+      return { 
         approvals: [], 
         error: 'Supabase configuration missing',
         stats: { urgent: 0, high: 0, normal: 0, low: 0 }
-      });
+      };
     }
     
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -49,11 +48,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     if (error) {
       console.error('Failed to fetch Chatwoot approvals:', error);
-      return json({ 
+      return { 
         approvals: [], 
         error: 'Failed to load approvals from database',
         stats: { urgent: 0, high: 0, normal: 0, low: 0 }
-      });
+      };
     }
     
     // Calculate statistics
@@ -64,18 +63,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
       low: approvals?.filter(a => a.priority === 'low').length || 0,
     };
     
-    return json({ 
+    return { 
       approvals: (approvals as ChatwootApproval[]) || [], 
       error: null,
       stats
-    });
+    };
   } catch (error) {
     console.error('Error fetching Chatwoot approvals:', error);
-    return json({ 
+    return { 
       approvals: [], 
       error: 'Database connection error',
       stats: { urgent: 0, high: 0, normal: 0, low: 0 }
-    });
+    };
   }
 }
 
@@ -83,13 +82,7 @@ export default function ChatwootApprovalsRoute() {
   const { approvals, error, stats } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
   
-  // Set up real-time notifications
-  const { notifications, unreadCount } = useApprovalNotifications(() => {
-    // Revalidate when a new approval arrives
-    revalidator.revalidate();
-  });
-  
-  // Auto-refresh every 10 seconds as backup
+  // Auto-refresh every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       revalidator.revalidate();
@@ -117,18 +110,18 @@ export default function ChatwootApprovalsRoute() {
                   <Text variant="bodyMd" as="p" fontWeight="bold">Queue Statistics:</Text>
                 </div>
                 {stats.urgent > 0 && (
-                  <Badge tone="critical">🚨 {stats.urgent} Urgent</Badge>
+                  <Badge tone="critical">{`🚨 ${stats.urgent} Urgent`}</Badge>
                 )}
                 {stats.high > 0 && (
-                  <Badge tone="warning">⚡ {stats.high} High Priority</Badge>
+                  <Badge tone="attention">{`⚡ ${stats.high} High Priority`}</Badge>
                 )}
                 {stats.normal > 0 && (
-                  <Badge tone="info">📝 {stats.normal} Normal</Badge>
+                  <Badge tone="info">{`📝 ${stats.normal} Normal`}</Badge>
                 )}
                 {stats.low > 0 && (
-                  <Badge tone="success">✓ {stats.low} Low Priority</Badge>
+                  <Badge tone="success">{`✓ ${stats.low} Low Priority`}</Badge>
                 )}
-                <Badge tone="info">Avg Confidence: {avgConfidence}%</Badge>
+                <Badge tone="info">{`Avg Confidence: ${avgConfidence}%`}</Badge>
               </InlineStack>
             </Card>
           </Layout.Section>

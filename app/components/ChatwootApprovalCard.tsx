@@ -128,7 +128,7 @@ export function ChatwootApprovalCard({ approval }: ChatwootApprovalCardProps) {
               {approval.priority.toUpperCase()}
             </Badge>
             <Badge tone={getConfidenceTone(approval.confidence_score)}>
-              {approval.confidence_score}% Confidence
+              {`${approval.confidence_score}% Confidence`}
             </Badge>
           </InlineStack>
         </InlineStack>
@@ -155,8 +155,8 @@ export function ChatwootApprovalCard({ approval }: ChatwootApprovalCardProps) {
             <Text variant="bodyMd" as="p" fontWeight="bold">
               🤖 Draft Response:
             </Text>
-            <Badge tone={approval.recommended_action === 'approve' ? 'success' : 'warning'}>
-              Recommended: {approval.recommended_action.toUpperCase()}
+            <Badge tone={approval.recommended_action === 'approve' ? 'success' : 'attention'}>
+              {`Recommended: ${approval.recommended_action.toUpperCase()}`}
             </Badge>
           </InlineStack>
           
