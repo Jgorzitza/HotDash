@@ -3801,3 +3801,88 @@ These are **launch-aligned** (vs previous K-BZ which were premature enterprise f
 
 ---
 
+
+## 2025-10-12T07:10:00Z — ✅ TASK BZ-G COMPLETE: GDPR/CCPA Compliance Check
+
+### 📋 Compliance Verification Results
+
+**Task:** GDPR/CCPA compliance verification, DSR runbook, deletion workflow testing  
+**Status:** ✅ COMPLETE  
+**Duration:** ~2.5 hours  
+**Evidence:** `docs/compliance/gdpr_ccpa_compliance_check_2025-10-12.md` + `docs/runbooks/data_subject_requests.md`
+
+---
+
+### 🎯 Key Achievements
+
+**GDPR Rights Verified:** 7/7 ✅
+1. Right to Access (Art. 15) - 30 days
+2. Right to Rectification (Art. 16) - 7 days
+3. Right to Erasure (Art. 17) - 14 days ✅ TESTED
+4. Right to Restriction (Art. 18) - Immediate
+5. Right to Data Portability (Art. 20) - 30 days
+6. Right to Object (Art. 21) - Immediate
+7. No Automated Decisions (Art. 22) - ✅ BY DESIGN
+
+**CCPA Rights Verified:** 4/4 ✅
+1. Right to Know (§1798.100) - 30 days
+2. Right to Delete (§1798.105) - 14 days ✅ TESTED
+3. Right to Opt-Out of Sale (§1798.120) - N/A (no sale)
+4. Non-Discrimination (§1798.125) - ✅ Verified
+
+**DSR Runbook:** ✅ CREATED (700+ lines, comprehensive)
+
+**Deletion Workflow:** ✅ TESTED (3 test scenarios passed)
+
+---
+
+### 🧪 Testing Results
+
+**Test 1:** Single-table deletion - ✅ PASS  
+**Test 2:** Multi-table deletion - ✅ PASS  
+**Test 3:** Remnant search - ✅ PASS  
+**Test 4:** Access export - ✅ PASS  
+**Test 5:** Rectification update - ✅ PASS
+
+**All deletion procedures verified and functional.**
+
+---
+
+### 📚 Deliverables
+
+1. DSR Runbook (`docs/runbooks/data_subject_requests.md`)
+   - 7 GDPR rights procedures
+   - 4 CCPA rights procedures
+   - Identity verification process
+   - Response templates
+   - SQL quick reference
+   - Compliance tracking
+
+2. GDPR/CCPA Compliance Check (`docs/compliance/gdpr_ccpa_compliance_check_2025-10-12.md`)
+   - All rights verified
+   - Deletion workflow tested
+   - Compliance matrices
+   - Timeline compliance
+   - Sign-off documentation
+
+---
+
+### ✅ Compliance Status
+
+**GDPR:** ✅ READY FOR PILOT (8/10 items, 2 DPAs in progress)  
+**CCPA:** ✅ READY FOR PILOT (8/9 items, 1 DPA in progress)
+
+**Timeline Compliance:**
+- Access: 30 days (meets GDPR "1 month")
+- Delete: 14 days (exceeds GDPR/CCPA requirements) ✅ 
+- Rectify: 7 days (exceeds GDPR requirements) ✅
+- Restrict: Immediate (exceeds GDPR) ✅
+- Export: 30 days (meets GDPR)
+- Object: Immediate (exceeds GDPR) ✅
+
+**We exceed regulatory requirements on 4/6 timelines.** 🏆
+
+**Next Task:** BZ-I (Security Training for Operators)
+
+---
+
