@@ -41,3 +41,29 @@ started: 2025-10-12
 
 **Moving to Task 2**: Integration Testing
 
+
+### 09:35 UTC - Task 2 Blocked, Moving to Task 3
+**Task 2 Status**: BLOCKED by commander issue (can't test E2E workflow without LlamaIndex)
+**Action**: Logged blocker, moving immediately to Task 3 per Rule #5
+
+### Starting Task 3 - Fix RLS on Agent SDK Tables (P0)
+**Objective**: Enable Row Level Security on DecisionLog, DashboardFact, Session, facts tables
+**Method**: Use Supabase MCP to check and apply RLS policies
+
+
+### 09:37 UTC - Task 3 Complete ✅
+**Objective**: Enable RLS on 4 tables (P0 from QA)
+**Tables Fixed**:
+- DecisionLog: rls_enabled=true ✅
+- DashboardFact: rls_enabled=true ✅
+- Session: rls_enabled=true ✅
+- facts: rls_enabled=true ✅
+
+**Method**: Used Supabase MCP apply_migration
+**Evidence**: Supabase list_tables shows all 4 with rls_enabled=true
+**Duration**: 2 minutes
+**Status**: COMPLETE
+
+### Starting Task 4 - Fix CI/CD Pipeline (P0 from QA)
+**Objective**: Get GitHub Actions workflows passing (all 4 workflows green)
+

@@ -45,9 +45,9 @@ describe('date utilities', () => {
     it('should parse ISO date string', () => {
       const date = parseISODate('2025-10-11');
       expect(date).toBeInstanceOf(Date);
-      expect(date.getFullYear()).toBe(2025);
-      expect(date.getMonth()).toBe(9); // October (0-indexed)
-      expect(date.getDate()).toBe(11);
+      expect(date.getUTCFullYear()).toBe(2025);
+      expect(date.getUTCMonth()).toBe(9); // October (0-indexed)
+      expect(date.getUTCDate()).toBe(11);
     });
   });
 
