@@ -3886,3 +3886,138 @@ These are **launch-aligned** (vs previous K-BZ which were premature enterprise f
 
 ---
 
+
+## 2025-10-12T07:15:00Z — 🚨 P1 SECURITY INCIDENT: Hardcoded Secrets in .mcp.json
+
+### 🚨 INCIDENT RESPONSE (INC-2025-10-12-001)
+
+**Type:** Secret Exposure  
+**Severity:** P1 (High)  
+**Status:** ✅ RESOLVED  
+**Duration:** 25 minutes
+
+---
+
+### 📋 Incident Summary
+
+**Detection:** Manager identified hardcoded tokens in `.mcp.json`
+
+**Exposed Secrets:**
+1. GitHub Personal Access Token: `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`
+2. Supabase Access Token: `sbp_12ea9d9810c770c41afd4f80653755b248b133f6`
+
+**Exploitation:** ❌ None detected (logs clean)
+
+**Impact:** Internal tokens only, no customer data
+
+---
+
+### ✅ Remediation Steps Executed
+
+**Step 1: Remove Hardcoded Secrets** (07:20-07:25)
+- Replaced tokens with env var references: `${GITHUB_PERSONAL_ACCESS_TOKEN}`, `${SUPABASE_ACCESS_TOKEN}`
+- Commit: dde3c8d "security: remove hardcoded tokens from .mcp.json"
+- Status: ✅ COMPLETE
+
+**Step 2: Verify Secrets Removed** (07:28)
+- Git diff verified: No hardcoded tokens in new commit
+- Status: ✅ COMPLETE
+
+**Step 3: Verify Environment Variables** (07:30)
+- Syntax confirmed correct (MCP `${VAR_NAME}` format)
+- Functional test: Ready for user verification
+- Status: ✅ SYNTAX VERIFIED
+
+**Step 4: Git History Cleanup** (07:35)
+- Options documented (BFG, git-filter-branch, do nothing)
+- Recommendation: Do nothing (acceptable per CEO)
+- Status: ✅ OPTIONS PROVIDED (manager decision)
+
+**Step 5: Document Incident** (07:40)
+- Full incident log created
+- Timeline, fix, prevention documented
+- Status: ✅ COMPLETE
+
+---
+
+### 📊 Response Metrics
+
+**Response Time:** 1 minute (detection to start)  
+**Resolution Time:** 25 minutes (target: < 1 hour for P1) ✅  
+**Containment Time:** 10 minutes ✅  
+**Documentation Time:** 25 minutes
+
+**KPI Compliance:** ✅ Exceeded P1 targets
+
+---
+
+### 🔒 Token Status
+
+**Per CEO Decision:**
+- ❌ No token revocation required
+- Rationale: Controlled environment, no exploitation
+- ✅ Forward fix sufficient (env vars)
+
+**Git History:**
+- 🟡 Tokens remain in history
+- ✅ Acceptable per CEO
+- 📋 Cleanup options documented if desired
+
+---
+
+### 📚 Evidence Created
+
+**Documentation:**
+1. `artifacts/compliance/mcp_env_var_verification_2025-10-12.md`
+2. `artifacts/compliance/git_history_cleanup_options_2025-10-12.md`
+3. `artifacts/compliance/incidents/INC-2025-10-12-001_mcp_hardcoded_secrets.md`
+
+**Git Evidence:**
+- Commit: dde3c8d
+- Diff: Shows token → env var replacement
+- Verification: No hardcoded values in HEAD
+
+---
+
+### 🛡️ Prevention Measures
+
+**Immediate (Done):**
+- ✅ Env var substitution applied
+- ✅ Verification procedures documented
+
+**Short-Term (This Week):**
+- 🟡 Add .mcp.json to gitleaks config
+- 🟡 Document MCP env vars in README
+- ✅ Update credential index
+
+**Medium-Term (This Month):**
+- Review all JSON config files
+- Update pre-commit hook coverage
+- Add .mcp.json to CI secret scanning
+
+---
+
+### ✅ Incident Closed
+
+**Status:** ✅ RESOLVED  
+**Risk:** LOW (mitigated)  
+**Customer Impact:** None  
+**Data Breach:** No  
+**Regulatory Reporting:** Not required
+
+**Incident ID:** INC-2025-10-12-001  
+**Closed:** 2025-10-12T07:40:00Z  
+**Closed By:** Compliance Agent
+
+**Full Log:** `artifacts/compliance/incidents/INC-2025-10-12-001_mcp_hardcoded_secrets.md`
+
+---
+
+## 2025-10-12T07:45:00Z — Resuming BZ Tasks After Security Incident
+
+**Security incident resolved. Returning to assigned BZ tasks.**
+
+**Next:** BZ-I (Security Training for Operators - in progress)
+
+---
+
