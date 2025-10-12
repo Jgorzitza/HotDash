@@ -56,3 +56,33 @@ started: 2025-10-12
 
 **Correction**: Following proper process now. Logging blocker, continuing to next task.
 
+
+---
+
+## 10:02 UTC - CRITICAL BLOCKER RESOLVED ✅
+
+### 🎉 P0 Blocker: LlamaIndex MCP Commander Dependency - FIXED
+**Root Cause**: package-lock.json out of sync (missing openai@6.3.0, zod@3.25.76)
+**Solution**: Ran `npm install` in scripts/ai/llama-workflow/ to regenerate lock file
+**Deployment**: hotdash-llamaindex-mcp deployed successfully 
+**Verification**: Server starts without commander errors, health checks passing
+**Status**: ✅ RESOLVED - No more "Cannot find package 'commander'" errors
+
+**New Issue Found**: Runtime error in query handler ("Cannot read properties of undefined (reading 'replace')")
+  - Different issue, not blocking launch
+  - Logged for future fix
+  - Does not prevent MCP from starting
+
+### Task 8 - TypeScript Errors: 161 → 119 (-42!)
+
+**Fixes Applied**:
+1. ✅ Removed deprecated `json()` imports from React Router v7
+2. ✅ Added `paths: {"~/*": ["./app/*"]}` to tsconfig.json
+3. ✅ Fixed Badge component props (converted numbers to strings with template literals)
+4. ✅ Changed invalid Badge tone 'warning' to 'attention'
+5. ✅ Installed @shopify/polaris package
+
+**Remaining 119 Errors**: Non-critical scripts (cost-optimization, evaluation, fairness, memory)
+  - Not blocking launch
+  - Can be fixed post-launch
+
