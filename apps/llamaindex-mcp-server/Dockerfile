@@ -15,6 +15,11 @@ COPY apps/llamaindex-mcp-server/src ./apps/llamaindex-mcp-server/src
 # Copy llama-workflow CLI (already built)
 COPY scripts/ai/llama-workflow/dist ./scripts/ai/llama-workflow/dist
 COPY scripts/ai/llama-workflow/package.json ./scripts/ai/llama-workflow/
+COPY scripts/ai/llama-workflow/package-lock.json ./scripts/ai/llama-workflow/
+
+# Install llama-workflow dependencies (CRITICAL: includes 'commander' needed by CLI)
+WORKDIR /app/scripts/ai/llama-workflow
+RUN npm ci --production
 
 # Install MCP server dependencies (including devDependencies for build)
 WORKDIR /app/apps/llamaindex-mcp-server

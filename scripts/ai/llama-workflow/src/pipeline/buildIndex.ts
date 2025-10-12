@@ -1,4 +1,5 @@
-import { VectorStoreIndex, SimpleNodeParser, Document as LlamaDocument } from 'llamaindex';
+import { VectorStoreIndex, SimpleNodeParser, Document as LlamaDocument, Settings, storageContextFromDefaults } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import { getConfig } from '../config.js';
 import { fetchHotrodanContent } from '../loaders/sitemap.js';
 import { fetchDecisionDocs, fetchTelemetryDocs } from '../loaders/supabase.js';
@@ -29,8 +30,16 @@ export async function buildAll(logDirOverride?: string, options: BuildOptions = 
   const config = getConfig();
   const logDir = logDirOverride || config.LOG_DIR;
   
-  // LlamaIndex will auto-detect OpenAI from OPENAI_API_KEY environment variable
-  // No explicit configuration needed
+  // Configure LlamaIndex Settings with OpenAI models (required for v0.12)
+  Settings.llm = new OpenAI({
+    apiKey: config.OPENAI_API_KEY,
+    model: 'gpt-3.5-turbo',
+  });
+  
+  Settings.embedModel = new OpenAIEmbedding({
+    apiKey: config.OPENAI_API_KEY,
+    model: 'text-embedding-ada-002',
+  });
   
   const timestamp = new Date().toISOString().replace(/[:]/g, '').slice(0, 15);
   const runDir = path.join(logDir, 'indexes', timestamp);
@@ -96,14 +105,17 @@ export async function buildAll(logDirOverride?: string, options: BuildOptions = 
     const nodes = parser.getNodesFromDocuments(docs);
     console.log(`✓ Created ${nodes.length} nodes from documents`);
     
-    // Build the vector index
+    // Build the vector index with storage context for persistence
     console.log('Building vector index...');
-    const index = await VectorStoreIndex.fromDocuments(docs);
-    console.log('✓ Vector index built successfully');
-    
-    // Persist the index - using index.storage instead of storageContext
     const indexPath = path.join(runDir, 'index');
-    await (index as any).storage?.persist?.(indexPath);
+    const storageContext = await storageContextFromDefaults({
+      persistDir: indexPath,
+    });
+    
+    const index = await VectorStoreIndex.fromDocuments(docs, {
+      storageContext,
+    });
+    console.log('✓ Vector index built successfully');
     console.log(`✓ Index persisted to: ${indexPath}`);
     
     // Update symlinks for rollback capability

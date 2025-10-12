@@ -3,8 +3,10 @@ import { getLatestIndexPath } from './buildIndex.js';
 import { 
   VectorStoreIndex, 
   Settings, 
-  BaseQueryEngine 
+  BaseQueryEngine,
+  storageContextFromDefaults
 } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -33,7 +35,7 @@ interface QueryResponse {
   sourceNodes?: Array<{
     node: {
       id_: string;
-      getContent(): string;
+      getContent(metadataMode?: any): string;
       metadata?: Record<string, any>;
     };
     score?: number;
@@ -43,8 +45,16 @@ interface QueryResponse {
 export async function loadIndex(): Promise<VectorStoreIndex | null> {
   const config = getConfig();
   
-  // Configure LlamaIndex with OpenAI - Settings will use OPENAI_API_KEY from environment
-  // Settings.llm and Settings.embedModel will be auto-configured from environment variables
+  // Configure LlamaIndex with OpenAI (required for v0.12)
+  Settings.llm = new OpenAI({
+    apiKey: config.OPENAI_API_KEY,
+    model: 'gpt-3.5-turbo',
+  });
+  
+  Settings.embedModel = new OpenAIEmbedding({
+    apiKey: config.OPENAI_API_KEY,
+    model: 'text-embedding-ada-002',
+  });
   
   const indexPath = await getLatestIndexPath();
   if (!indexPath) {
@@ -54,19 +64,16 @@ export async function loadIndex(): Promise<VectorStoreIndex | null> {
   
   try {
     console.log(`Loading index from: ${indexPath}`);
-    // For now, we'll use a simplified loading approach
-    // The exact API may vary based on the llamaindex version
-    const index = await VectorStoreIndex.fromPersistDir(
-      path.join(indexPath, 'index')
-    ).catch(() => {
-      // Fallback: try creating a new index if loading fails
-      console.warn('Failed to load persisted index, creating new one');
-      return null;
+    // Load the persisted index using storage context
+    const storageContext = await storageContextFromDefaults({
+      persistDir: path.join(indexPath, 'index'),
     });
     
-    if (index) {
-      console.log('✓ Index loaded successfully');
-    }
+    const index = await VectorStoreIndex.init({
+      storageContext,
+    });
+    
+    console.log('✓ Index loaded successfully');
     return index;
   } catch (error) {
     console.error('Failed to load index:', error);

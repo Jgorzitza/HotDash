@@ -81,12 +81,12 @@ test.describe("Dashboard Performance Tests", () => {
     let pageLoadTime = 0;
 
     // Capture API response time
-    page.on("response", (response) => {
+    page.on("response", async (response) => {
       if (response.url().includes("/app") && response.request().method() === "GET") {
-        const timing = response.timing();
-        if (timing) {
-          apiResponseTime = timing.responseEnd - timing.requestStart;
-        }
+        // Playwright doesn't expose timing() - use request timing instead
+        const request = response.request();
+        const requestTime = (request as any)._startTime || performance.now();
+        apiResponseTime = performance.now() - requestTime;
       }
     });
 
@@ -317,12 +317,21 @@ test.describe("Dashboard Performance Tests", () => {
     const apiTimes: number[] = [];
 
     // Capture all API response times
+    const requestTimes = new Map<string, number>();
+    
+    page.on("request", (request) => {
+      if (request.url().includes("/app") && request.method() === "GET") {
+        requestTimes.set(request.url(), performance.now());
+      }
+    });
+    
     page.on("response", (response) => {
       if (response.url().includes("/app") && response.request().method() === "GET") {
-        const timing = response.timing();
-        if (timing) {
-          const responseTime = timing.responseEnd - timing.requestStart;
+        const startTime = requestTimes.get(response.url());
+        if (startTime) {
+          const responseTime = performance.now() - startTime;
           apiTimes.push(responseTime);
+          requestTimes.delete(response.url());
         }
       }
     });

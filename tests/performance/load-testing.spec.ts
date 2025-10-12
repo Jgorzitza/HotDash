@@ -287,16 +287,25 @@ test.describe("Resource Loading Performance", () => {
   test("06 - JavaScript Bundle Size and Load Time", async ({ page }) => {
     const resourceMetrics: Array<{ name: string; size: number; duration: number }> = [];
 
+    const jsRequestTimes = new Map<string, number>();
+    
+    page.on("request", (request) => {
+      if (request.url().includes(".js")) {
+        jsRequestTimes.set(request.url(), performance.now());
+      }
+    });
+    
     page.on("response", async (response) => {
       if (response.url().includes(".js") && response.ok()) {
         try {
-          const timing = response.timing();
+          const startTime = jsRequestTimes.get(response.url());
           const body = await response.body();
           resourceMetrics.push({
             name: response.url().split("/").pop() || "unknown",
             size: body.length,
-            duration: timing?.responseEnd ?? 0,
+            duration: startTime ? performance.now() - startTime : 0,
           });
+          jsRequestTimes.delete(response.url());
         } catch {
           // Ignore errors for metrics collection
         }
