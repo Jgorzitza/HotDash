@@ -111,3 +111,63 @@ started: 2025-10-12
 **Branch**: engineer/work (all work pushed)
 **Status**: ✅ Ready for Manager review
 
+
+---
+
+### 2025-10-12T10:15:00Z — BLOCKER-004 RESOLVED ✅
+
+**Issue**: @shopify/polaris TypeScript resolution errors
+**Root Cause**: Package @shopify/polaris was not installed (only @shopify/polaris-types)
+**Solution**: Installed @shopify/polaris@^13.9.5
+**Result**: 
+- TypeScript errors: 152 → 119 (33 errors fixed!)
+- All app/ directory errors resolved
+- Approval UI components now type-check correctly
+
+**Evidence**:
+- Package installed: node_modules/@shopify/polaris/
+- Typecheck: 0 errors in app/ directory
+- Commit: 2b395ab
+
+**Time**: 20 minutes
+
+---
+
+### 2025-10-12T10:30:00Z — BLOCKER-005 RESOLVED ✅
+
+**Issue**: pg_dump version mismatch (v16 vs PostgreSQL v17)
+**Root Cause**: System pg_dump v16 incompatible with Supabase PostgreSQL v17
+**Solution**: Updated backup script to use Supabase CLI instead of pg_dump directly
+**Result**: Backup script now works successfully
+
+**Test**:
+```
+./scripts/data/backup-agent-tables.sh
+✅ Backup complete! 4.0K backup file created
+```
+
+**Evidence**:
+- Script updated: scripts/data/backup-agent-tables.sh
+- Backup created: artifacts/data/backups/agent_sdk_backup_20251012_040114.sql
+- 45 rows backed up successfully
+- Commit: 2b395ab
+
+**Time**: 15 minutes
+
+---
+
+## BLOCKERS RESOLVED SUMMARY
+
+**BLOCKER-004**: ✅ RESOLVED (TypeScript polaris imports)
+- Installed missing @shopify/polaris package
+- Fixed 33 TypeScript errors
+- All app/ errors cleared
+
+**BLOCKER-005**: ✅ RESOLVED (pg_dump version mismatch)
+- Rewrote backup script to use Supabase CLI
+- Backup now works successfully
+- Tested with 45 rows
+
+**Remaining Errors**: 119 (all in scripts/ai/ - non-launch-critical)
+**Launch-Critical Paths**: ✅ ALL CLEAR
+
