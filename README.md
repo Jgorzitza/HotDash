@@ -323,11 +323,17 @@ app/                    # React Router 7 app code
   components/tiles/     # Dashboard tiles (Sales, Inventory, Ops Pulse, etc.)
   services/             # Shopify, Chatwoot, GA clients & metrics aggregation
   routes/               # React Router data routes and actions
+apps/                   # Microservices (agent-service, llamaindex-mcp-server)
 packages/               # Shared integrations + memory adapters
-docs/                   # Direction docs, strategy, design specs
-scripts/ops/            # Operational scripts (backfill, nightly metrics)
+docs/                   # Direction docs, strategy, design specs (537+ files)
+scripts/                # Automation scripts (AI, ops, deploy, qa, security)
 tests/                  # Vitest + Playwright suites
+archive/                # Historical status reports and deprecated docs
+artifacts/              # Build artifacts and evidence logs
+supabase/               # Database migrations, edge functions, SQL
 ```
+
+See `REPO_STATUS.md` for detailed repository organization and branch strategy.
 
 Canonical workflow documentation lives in:
 - `docs/directions/README.md` – governance
@@ -378,5 +384,16 @@ curl -X POST "https://<project>.functions.supabase.co/occ-log" \
 2. Keep direction docs read-only unless you are the manager; log questions in the relevant `feedback/*.md` file.
 3. Always attach evidence (tests, metrics) when shipping tile or service changes.
 4. Update `docs/directions/product_changelog.md` for any roadmap-impacting doc or process change.
+5. **Repository Cleanup**: Historical status reports are in `archive/` - don't create new status files in root directory.
 
 Need help? Check the feedback logs in `feedback/` or ping the manager noted in `docs/directions/manager.md`.
+
+---
+
+## Repository Status
+
+For current repository health, branch inventory, and recent changes, see `REPO_STATUS.md`.
+
+**Last Cleanup**: 2025-10-12 (50+ files archived, 20 branches deleted)  
+**Branch Count**: 38 active branches (down from 58)  
+**Documentation**: 635+ markdown files across docs/, feedback/, and archive/
