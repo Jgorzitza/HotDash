@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { json, type LoaderFunctionArgs } from 'react-router';
+import { type LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, EmptyState } from '@shopify/polaris';
 import { ApprovalCard } from '~/components/ApprovalCard';
@@ -15,6 +15,11 @@ interface Approval {
   }[];
 }
 
+interface LoaderData {
+  approvals: Approval[];
+  error: string | null;
+}
+
 // Loader: Fetch approvals from agent service
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -22,19 +27,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     if (!response.ok) {
       console.error('Failed to fetch approvals:', response.status);
-      return json({ approvals: [], error: 'Failed to load approvals' });
+      return Response.json({ approvals: [], error: 'Failed to load approvals' });
     }
     
     const approvals: Approval[] = await response.json();
-    return json({ approvals, error: null });
+    return Response.json({ approvals, error: null });
   } catch (error) {
     console.error('Error fetching approvals:', error);
-    return json({ approvals: [], error: 'Agent service unavailable' });
+    return Response.json({ approvals: [], error: 'Agent service unavailable' });
   }
 }
 
 export default function ApprovalsRoute() {
-  const { approvals, error } = useLoaderData<typeof loader>();
+  const { approvals, error } = useLoaderData<LoaderData>();
   const revalidator = useRevalidator();
   
   // Auto-refresh every 5 seconds

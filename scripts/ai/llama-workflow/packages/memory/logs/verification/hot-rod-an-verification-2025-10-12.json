@@ -1,0 +1,789 @@
+{
+  "timestamp": "2025-10-12T09:35:08.480Z",
+  "summary": {
+    "totalQueries": 50,
+    "successfulQueries": 0,
+    "avgAccuracy": 0,
+    "avgProcessingTime": null,
+    "highAccuracy": 0,
+    "mediumAccuracy": 0,
+    "lowAccuracy": 50
+  },
+  "categoryPerformance": [
+    {
+      "category": "AN Fittings",
+      "queries": 10,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "PTFE Hoses",
+      "queries": 10,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "Fuel Pumps",
+      "queries": 8,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "Fuel Components",
+      "queries": 7,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "Bundles",
+      "queries": 5,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "Tools",
+      "queries": 5,
+      "avgAccuracy": 0
+    },
+    {
+      "category": "Technical",
+      "queries": 5,
+      "avgAccuracy": 0
+    }
+  ],
+  "detailedResults": [
+    {
+      "id": 1,
+      "category": "AN Fittings",
+      "query": "What sizes of AN fittings do you sell?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "AN-6",
+        "AN-8",
+        "AN-10"
+      ]
+    },
+    {
+      "id": 2,
+      "category": "AN Fittings",
+      "query": "Tell me about straight swivel fittings",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "straight",
+        "swivel",
+        "reusable"
+      ]
+    },
+    {
+      "id": 3,
+      "category": "AN Fittings",
+      "query": "What are 45 degree fittings used for?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "45",
+        "degree",
+        "swivel"
+      ]
+    },
+    {
+      "id": 4,
+      "category": "AN Fittings",
+      "query": "Do you have 90 degree AN fittings?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "90",
+        "degree",
+        "AN"
+      ]
+    },
+    {
+      "id": 5,
+      "category": "AN Fittings",
+      "query": "What is a reusable AN fitting?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "reusable",
+        "PTFE"
+      ]
+    },
+    {
+      "id": 6,
+      "category": "AN Fittings",
+      "query": "What thread types do AN fittings use?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "thread",
+        "fitting"
+      ]
+    },
+    {
+      "id": 7,
+      "category": "AN Fittings",
+      "query": "Can I use AN fittings with fuel?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "fuel",
+        "PTFE",
+        "compatible"
+      ]
+    },
+    {
+      "id": 8,
+      "category": "AN Fittings",
+      "query": "What pressure rating do AN fittings have?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "pressure",
+        "rating"
+      ]
+    },
+    {
+      "id": 9,
+      "category": "AN Fittings",
+      "query": "What are Y adapter fittings?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Y",
+        "adapter"
+      ]
+    },
+    {
+      "id": 10,
+      "category": "AN Fittings",
+      "query": "Do you sell ORB to AN adapters?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "ORB",
+        "adapter",
+        "AN"
+      ]
+    },
+    {
+      "id": 11,
+      "category": "PTFE Hoses",
+      "query": "What colors of PTFE hose do you have?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "black",
+        "nylon",
+        "braided"
+      ]
+    },
+    {
+      "id": 12,
+      "category": "PTFE Hoses",
+      "query": "Tell me about stainless braided hose",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "stainless",
+        "braided",
+        "PTFE"
+      ]
+    },
+    {
+      "id": 13,
+      "category": "PTFE Hoses",
+      "query": "What is PTFE lined hose?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "PTFE",
+        "lined",
+        "Teflon"
+      ]
+    },
+    {
+      "id": 14,
+      "category": "PTFE Hoses",
+      "query": "Can PTFE hose handle E85 fuel?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "PTFE",
+        "E85",
+        "fuel"
+      ]
+    },
+    {
+      "id": 15,
+      "category": "PTFE Hoses",
+      "query": "What temperature can PTFE hose handle?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "temperature",
+        "PTFE"
+      ]
+    },
+    {
+      "id": 16,
+      "category": "PTFE Hoses",
+      "query": "Do you have orange and black hose?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "orange",
+        "black",
+        "check"
+      ]
+    },
+    {
+      "id": 17,
+      "category": "PTFE Hoses",
+      "query": "What about purple braided hose?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "purple",
+        "check",
+        "braided"
+      ]
+    },
+    {
+      "id": 18,
+      "category": "PTFE Hoses",
+      "query": "Is nylon braided better than stainless?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "nylon",
+        "stainless",
+        "braided"
+      ]
+    },
+    {
+      "id": 19,
+      "category": "PTFE Hoses",
+      "query": "What sizes of PTFE hose are available?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "AN-6",
+        "AN-8",
+        "AN-10"
+      ]
+    },
+    {
+      "id": 20,
+      "category": "PTFE Hoses",
+      "query": "Can I use PTFE hose for brake lines?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "PTFE",
+        "brake"
+      ]
+    },
+    {
+      "id": 21,
+      "category": "Fuel Pumps",
+      "query": "What fuel pumps do you sell?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Walbro",
+        "Aeromotive",
+        "fuel pump"
+      ]
+    },
+    {
+      "id": 22,
+      "category": "Fuel Pumps",
+      "query": "Tell me about Walbro 255 LPH pump",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Walbro",
+        "255",
+        "LPH"
+      ]
+    },
+    {
+      "id": 23,
+      "category": "Fuel Pumps",
+      "query": "What is an in-tank fuel pump?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "in-tank",
+        "fuel pump"
+      ]
+    },
+    {
+      "id": 24,
+      "category": "Fuel Pumps",
+      "query": "Do you have inline fuel pumps?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "inline",
+        "fuel pump",
+        "Walbro"
+      ]
+    },
+    {
+      "id": 25,
+      "category": "Fuel Pumps",
+      "query": "What LPH rating do I need for LS swap?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "LPH",
+        "LS"
+      ]
+    },
+    {
+      "id": 26,
+      "category": "Fuel Pumps",
+      "query": "Tell me about Aeromotive Stealth pump",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Aeromotive",
+        "Stealth",
+        "340"
+      ]
+    },
+    {
+      "id": 27,
+      "category": "Fuel Pumps",
+      "query": "What about Spectra Premium pump?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Spectra",
+        "Premium"
+      ]
+    },
+    {
+      "id": 28,
+      "category": "Fuel Pumps",
+      "query": "Can these pumps handle E85?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "E85",
+        "fuel",
+        "compatible"
+      ]
+    },
+    {
+      "id": 29,
+      "category": "Fuel Components",
+      "query": "Do you sell fuel filters?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "fuel filter",
+        "inline"
+      ]
+    },
+    {
+      "id": 30,
+      "category": "Fuel Components",
+      "query": "What about fuel pressure regulators?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "regulator",
+        "pressure",
+        "fuel"
+      ]
+    },
+    {
+      "id": 31,
+      "category": "Fuel Components",
+      "query": "Tell me about the Corvette style filter regulator",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "Corvette",
+        "filter",
+        "regulator"
+      ]
+    },
+    {
+      "id": 32,
+      "category": "Fuel Components",
+      "query": "What is a fuel pressure gauge for?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "gauge",
+        "pressure",
+        "fuel"
+      ]
+    },
+    {
+      "id": 33,
+      "category": "Fuel Components",
+      "query": "Do you have EFI quick connect fittings?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "EFI",
+        "quick connect"
+      ]
+    },
+    {
+      "id": 34,
+      "category": "Fuel Components",
+      "query": "What are positive seal O-ring adapters?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "O-ring",
+        "adapter",
+        "seal"
+      ]
+    },
+    {
+      "id": 35,
+      "category": "Fuel Components",
+      "query": "Tell me about hard line tube fittings",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "hard line",
+        "tube",
+        "fitting"
+      ]
+    },
+    {
+      "id": 36,
+      "category": "Bundles",
+      "query": "Do you have hose and fitting kits?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "bundle",
+        "kit",
+        "hose",
+        "fitting"
+      ]
+    },
+    {
+      "id": 37,
+      "category": "Bundles",
+      "query": "What comes in the AN-6 bundle?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "AN-6",
+        "bundle",
+        "8 fittings"
+      ]
+    },
+    {
+      "id": 38,
+      "category": "Bundles",
+      "query": "Tell me about LS fuel line kits",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "LS",
+        "fuel line",
+        "kit"
+      ]
+    },
+    {
+      "id": 39,
+      "category": "Bundles",
+      "query": "What is included in return style kit?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "return",
+        "style",
+        "kit"
+      ]
+    },
+    {
+      "id": 40,
+      "category": "Bundles",
+      "query": "Do you have returnless fuel kits?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "returnless",
+        "fuel",
+        "kit"
+      ]
+    },
+    {
+      "id": 41,
+      "category": "Tools",
+      "query": "What tools do I need for AN fittings?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "tool",
+        "wrench",
+        "vise"
+      ]
+    },
+    {
+      "id": 42,
+      "category": "Tools",
+      "query": "Tell me about the aluminum vice jaws",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "aluminum",
+        "vice",
+        "jaw"
+      ]
+    },
+    {
+      "id": 43,
+      "category": "Tools",
+      "query": "Do you sell hose cutting tools?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "shear",
+        "cutting",
+        "hose"
+      ]
+    },
+    {
+      "id": 44,
+      "category": "Tools",
+      "query": "What is a spanner wrench used for?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "spanner",
+        "wrench",
+        "fitting"
+      ]
+    },
+    {
+      "id": 45,
+      "category": "Tools",
+      "query": "Do you have replacement ferrules?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "ferrule",
+        "replacement"
+      ]
+    },
+    {
+      "id": 46,
+      "category": "Technical",
+      "query": "What size hose for LS swap fuel system?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "LS",
+        "fuel",
+        "AN"
+      ]
+    },
+    {
+      "id": 47,
+      "category": "Technical",
+      "query": "How do I install PTFE fittings?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "install",
+        "PTFE",
+        "fitting"
+      ]
+    },
+    {
+      "id": 48,
+      "category": "Technical",
+      "query": "What is the difference between AN-6 and AN-8?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "AN-6",
+        "AN-8",
+        "size"
+      ]
+    },
+    {
+      "id": 49,
+      "category": "Technical",
+      "query": "Can I mix nylon and stainless hose?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "nylon",
+        "stainless"
+      ]
+    },
+    {
+      "id": 50,
+      "category": "Technical",
+      "query": "What pressure rating do I need for fuel system?",
+      "response": "ERROR: No index available for querying",
+      "sourceCount": 0,
+      "processingTime": 0,
+      "accuracyScore": 0,
+      "keywordsFound": [],
+      "expectedKeywords": [
+        "pressure",
+        "rating",
+        "fuel"
+      ]
+    }
+  ]
+}

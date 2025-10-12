@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs, redirect, json } from 'react-router';
+import { type ActionFunctionArgs, redirect } from 'react-router';
 import { createClient } from '@supabase/supabase-js';
 import { chatwootClient } from '~/../../packages/integrations/chatwoot';
 
@@ -99,7 +99,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     return redirect('/chatwoot-approvals');
   } catch (error) {
     console.error('Error approving:', error);
-    return json(
+    return Response.json(
       { error: 'Failed to process approval' },
       { status: 500 }
     );

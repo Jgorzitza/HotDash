@@ -1,4 +1,4 @@
-import { type ActionFunctionArgs, redirect, json } from 'react-router';
+import { type ActionFunctionArgs, redirect } from 'react-router';
 import { createClient } from '@supabase/supabase-js';
 import { chatwootClient } from '~/../../packages/integrations/chatwoot';
 
@@ -124,7 +124,7 @@ ${approval.recommended_action === 'escalate' ? 'Agent SDK recommended escalation
     return redirect('/chatwoot-approvals');
   } catch (error) {
     console.error('Error escalating:', error);
-    return json(
+    return Response.json(
       { error: 'Failed to escalate approval' },
       { status: 500 }
     );

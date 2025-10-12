@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { json, type LoaderFunctionArgs } from 'react-router';
+import { type LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, EmptyState, Banner, InlineStack, Badge, Text } from '@shopify/polaris';
 import { ChatwootApprovalCard } from '~/components/ChatwootApprovalCard';
@@ -22,6 +22,17 @@ interface ChatwootApproval {
   created_at: string;
 }
 
+interface LoaderData {
+  approvals: ChatwootApproval[];
+  error: string | null;
+  stats: {
+    urgent: number;
+    high: number;
+    normal: number;
+    low: number;
+  };
+}
+
 // Loader: Fetch pending approvals from Supabase
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -29,7 +40,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
     
     if (!supabaseKey) {
-      return json({ 
+      return Response.json({ 
         approvals: [], 
         error: 'Supabase configuration missing',
         stats: { urgent: 0, high: 0, normal: 0, low: 0 }
@@ -49,7 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     if (error) {
       console.error('Failed to fetch Chatwoot approvals:', error);
-      return json({ 
+      return Response.json({ 
         approvals: [], 
         error: 'Failed to load approvals from database',
         stats: { urgent: 0, high: 0, normal: 0, low: 0 }
@@ -58,20 +69,20 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     // Calculate statistics
     const stats = {
-      urgent: approvals?.filter(a => a.priority === 'urgent').length || 0,
-      high: approvals?.filter(a => a.priority === 'high').length || 0,
-      normal: approvals?.filter(a => a.priority === 'normal').length || 0,
-      low: approvals?.filter(a => a.priority === 'low').length || 0,
+      urgent: approvals?.filter((a: any) => a.priority === 'urgent').length || 0,
+      high: approvals?.filter((a: any) => a.priority === 'high').length || 0,
+      normal: approvals?.filter((a: any) => a.priority === 'normal').length || 0,
+      low: approvals?.filter((a: any) => a.priority === 'low').length || 0,
     };
     
-    return json({ 
+    return Response.json({ 
       approvals: (approvals as ChatwootApproval[]) || [], 
       error: null,
       stats
     });
   } catch (error) {
     console.error('Error fetching Chatwoot approvals:', error);
-    return json({ 
+    return Response.json({ 
       approvals: [], 
       error: 'Database connection error',
       stats: { urgent: 0, high: 0, normal: 0, low: 0 }
@@ -80,14 +91,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function ChatwootApprovalsRoute() {
-  const { approvals, error, stats } = useLoaderData<typeof loader>();
+  const data = useLoaderData<LoaderData>();
+  const { approvals = [], error = null, stats = { urgent: 0, high: 0, normal: 0, low: 0 } } = data || {};
   const revalidator = useRevalidator();
-  
-  // Set up real-time notifications
-  const { notifications, unreadCount } = useApprovalNotifications(() => {
-    // Revalidate when a new approval arrives
-    revalidator.revalidate();
-  });
   
   // Auto-refresh every 10 seconds as backup
   useEffect(() => {
