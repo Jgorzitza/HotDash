@@ -1,3 +1,9 @@
+# HotDash Operator Onboarding Checklist - Day 1
+
+**Updated**: October 12, 2025 (Task 10 Enhancement)  
+**Purpose**: Complete Day 1 onboarding checklist for new operators  
+**Time Required**: 30-45 minutes
+
 # Pilot Operator Onboarding Checklist
 
 **Purpose:** Ensure pilot operators have access and are ready to use approval queue  

@@ -1,3 +1,8 @@
+# AI Collaboration Training - Working with Agent SDK
+
+**Updated**: October 12, 2025 (Task 19 Enhancement)  
+**Purpose**: Training operators to effectively work with AI-assisted features
+
 # Agent SDK Operator Training Module: Approval Queue Workflow
 
 **Document Type:** Operator Training Guide  

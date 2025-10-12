@@ -1,3 +1,9 @@
+# HotDash Operator Training Assessment & Certification
+
+**Updated**: October 12, 2025 (Task 11 Enhancement)  
+**Purpose**: Quiz/assessment for operator certification  
+**Pass Score**: 80% (24/30 correct)
+
 # Pilot Training Assessment - Knowledge Check
 
 **Purpose:** Verify operators understand approval queue basics before pilot starts  

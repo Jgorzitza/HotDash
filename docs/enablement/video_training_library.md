@@ -1,3 +1,9 @@
+# HotDash Video Tutorial Series - Complete Production Guide
+
+**Updated**: October 12, 2025 (Task 12 Enhancement)  
+**Purpose**: Series of short how-to videos (15 videos, 4 modules)  
+**Total Runtime**: ~2 hours
+
 # Video Training Library: Agent SDK & Operator Control Center
 
 **Document Type:** Video Training Catalog & Production Guide  

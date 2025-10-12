@@ -405,24 +405,149 @@ Inventory Heatmap: Red Widget critically low
 
 ---
 
+## ⌨️ KEYBOARD SHORTCUTS FOR MAXIMUM EFFICIENCY
+
+### Essential Shortcuts (Master These First)
+
+**Navigation:**
+- `D` - Dashboard Home
+- `1-6` - Jump to Tiles 1-6
+- `R` - Refresh Dashboard
+- `?` - Help Menu
+- `/` - Search
+
+**Approval Queue:**
+- `Q` - Open Queue
+- `J` - Next Approval
+- `K` - Previous Approval
+- `A` - Approve
+- `X` - Reject
+- `E` - Edit
+
+**Quick Actions:**
+- `Esc` - Close Modal/Drawer
+- `Enter` - Select/Confirm
+- `↑↓` - Navigate Lists
+- `Space` - Toggle Checkbox
+
+### Advanced Shortcuts
+
+**Power Navigation:**
+- `G` then `H` - Go Home
+- `G` then `S` - Go Settings
+- `Cmd/Ctrl+K` - Command Palette
+- `,` - Previous Tile
+- `.` - Next Tile
+
+**Editing:**
+- `Cmd/Ctrl+S` - Save
+- `Cmd/Ctrl+Z` - Undo
+- `Tab` / `Shift+Tab` - Next/Previous Field
+
+**Bulk Actions:**
+- `Shift+Click` - Range Select
+- `Cmd/Ctrl+A` - Select All
+- `Cmd/Ctrl+Enter` - Approve and Next
+
+### Shortcut Learning Path
+**Week 1:** D, 1-6, R, Esc, ?  
+**Week 2:** Q, J, K, A, X, /, ↑↓  
+**Week 3:** Cmd+K, G combinations, bulk actions
+
+**Time Saved:** 5-10 minutes/day = 2 hours/month!
+
+---
+
+## 💡 DASHBOARD TIPS & TRICKS
+
+### Hidden Features
+
+**1. Multi-Tile Comparison Mode**
+- Hold `Shift` + click 2-3 tile headers
+- View side-by-side for correlation analysis
+- Perfect for: Sales drop + inventory issues correlation
+
+**2. Time Machine Mode**
+- Click date/time (top-right) → "Time Machine"
+- Rewind to any point in last 90 days
+- Compare then vs. now side-by-side
+
+**3. Smart Alerts**
+- Settings → Alerts → Advanced Rules
+- Create multi-condition triggers
+- Example: "Alert if sales <$1000 AND inventory <10"
+
+**4. Data Export Automation**
+- Tile → ⋮ Menu → Export → Schedule
+- Auto-send daily/weekly reports
+- Formats: CSV, PDF, Excel
+
+**5. Drill-Down Inspector**
+- Right-click any number → "Inspect Data"
+- See calculation, sources, updates
+- Export raw data
+
+**6. Collaborative Annotations**
+- Click metric → 💬 icon → Add note
+- Tag team with @mention
+- Notes persist on dashboard
+
+**7. Natural Language Time Filters**
+- Type: "last Friday", "two weeks ago", "Q4 2024"
+- Works in any date picker
+
+**8. Command Palette Power**
+- Press `Cmd/Ctrl+K`
+- Type any command/action
+- Fuzzy search enabled
+
+### Pro Workflows
+
+**CEO 2-Minute Blitz:**
+`D` → Quick scan → `Q` → Approve urgent → `D` → Done!
+
+**Crisis Triage:**
+`D` → Identify red tiles → Drill into each → Assign actions → Slack team
+
+**Weekly Executive Review:**
+Switch to "Weekly Review" preset → Compare to previous week → Screenshot → Share with team
+
+### Time-Saving Tips
+
+- **Morning Auto-Pilot:** Set up automated morning summary email (Settings → Auto-Pilot)
+- **Quick Actions Panel:** Customize for one-click common tasks (Settings → Quick Actions)
+- **Dashboard Themes:** Try Dark Mode for reduced eye strain (Settings → Appearance)
+- **Mobile Push:** Enable for critical alerts only (Settings → Notifications)
+
+**Combined Time Savings:**
+- Shortcuts: 5-10 min/day
+- Auto-pilot: 2-3 min/day
+- Quick actions: 3-5 min/day
+- **Total:** 10-18 min/day = **1-2 hours/week saved!**
+
+---
+
 ## 🎓 Training Resources
 
 ### Week 1: Foundation
 - [ ] Read CEO Quick Start Guide (10 min)
 - [ ] Watch Video Walkthrough (5 min)
 - [ ] Complete first morning routine (5 min)
+- [ ] Master 5 essential keyboard shortcuts
 - [ ] Join #hotdash-discuss on Slack
 - [ ] Ask 1 question to get comfortable
 
 ### Week 2: Proficiency
 - [ ] Read Tile-by-Tile Reference for your top 3 tiles (20 min)
 - [ ] Practice keyboard shortcuts (5 min/day)
+- [ ] Master approval queue shortcuts (Q, J, K, A, X)
 - [ ] Set up mobile access
 - [ ] Share 1 tip with team
 
 ### Week 3: Mastery
 - [ ] Read full Tile-by-Tile Reference (30 min)
 - [ ] Complete weekly review workflow
+- [ ] Master all navigation shortcuts
 - [ ] Customize alert thresholds
 - [ ] Mentor a new operator
 

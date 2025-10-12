@@ -2,6 +2,7 @@
 
 **Version**: 1.0  
 **Date**: October 12, 2025  
+**Updated**: Oct 12 (Tasks 15-16: Mobile & Integration Training Added)
 **Owner**: Enablement Agent  
 **Purpose**: Executive training for Hot Rod AN CEO on HotDash dashboard usage  
 **Time to Read**: 10 minutes

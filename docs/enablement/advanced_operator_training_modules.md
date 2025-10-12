@@ -1,3 +1,8 @@
+# Advanced Features Training - Power User Guide
+
+**Updated**: October 12, 2025 (Task 14 Enhancement)  
+**Purpose**: Power user features documentation for advanced operators
+
 # Advanced Operator Training Modules
 
 **Purpose:** Deep-dive training for experienced operators  

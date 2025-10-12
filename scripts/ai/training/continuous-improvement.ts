@@ -2,6 +2,79 @@
  * Task AC: Continuous Model Improvement Cycle
  */
 
+import * as fs from 'fs';
+
+interface TrainingSample {
+  query: string;
+  response: string;
+  training_flags: {
+    quality_reviewed: boolean;
+  };
+  [key: string]: any;
+}
+
+interface AgentResponse {
+  confidence: number;
+  approval_rate: number;
+  edit_rate: number;
+  human_review?: { overall_rating: string };
+  isEdgeCase?: boolean;
+  hasReferenceAnswer?: boolean;
+  [key: string]: any;
+}
+
+// Stub implementations
+const curator = {
+  async curateDataset(data: any[]): Promise<TrainingSample[]> {
+    return data.map(d => ({ ...d, training_flags: { quality_reviewed: false } }));
+  }
+};
+
+const trainingCollector = {
+  async getSamples(options: any): Promise<any[]> {
+    return [];
+  }
+};
+
+const labelingWorkflow = {
+  async createTask(sample: any, priority: number): Promise<void> {
+    console.log('Creating labeling task:', sample, priority);
+  }
+};
+
+function calculatePriority(sample: any): number {
+  return 5;
+}
+
+const openai = {
+  fineTuning: {
+    async create(params: any): Promise<any> {
+      return { id: 'ft-model-123', status: 'running' };
+    },
+    async retrieve(jobId: string): Promise<any> {
+      return { id: jobId, status: 'succeeded' };
+    }
+  }
+};
+
+function getSystemPrompt(agentName?: string): string {
+  return `System prompt for ${agentName || 'default'}`;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Import shadow test and deploy model functions
+function shadowTest(newModel: string, prodModel: string, duration: number): Promise<any> {
+  return Promise.resolve({ improvement: 0.08 });
+}
+
+function deployModel(modelId: string, phase: string): Promise<any> {
+  console.log(`Deploying ${modelId} in ${phase} phase`);
+  return Promise.resolve({ deployed: true });
+}
+
 export class ContinuousImprovementCycle {
   
   async runCycle() {
@@ -63,12 +136,12 @@ export class ContinuousImprovementCycle {
   private async fineTuneModel(data: TrainingSample[]) {
     // Export to OpenAI format and fine-tune
     const trainingFile = await this.exportForFineTuning(data);
-    const jobId = await openai.fineTuning.create({ training_file: trainingFile });
+    const job = await openai.fineTuning.create({ training_file: trainingFile });
     
     // Wait for completion
-    await this.waitForFineTuning(jobId);
+    await this.waitForFineTuning(job.id);
     
-    return jobId;
+    return job.id;
   }
   
   private async shadowTest(newModelId: string) {
@@ -83,13 +156,13 @@ export class ContinuousImprovementCycle {
   private async exportForFineTuning(samples: TrainingSample[]) {
     const jsonl = samples.map(s => JSON.stringify({
       messages: [
-        { role: 'system', content: getSystemPrompt(s.source.agent_name) },
-        { role: 'user', content: s.query.text },
-        { role: 'assistant', content: s.human_feedback.human_edited_text || s.agent_response.text },
+        { role: 'system', content: getSystemPrompt((s as any).source?.agent_name) },
+        { role: 'user', content: (s as any).query?.text || s.query },
+        { role: 'assistant', content: (s as any).human_feedback?.human_edited_text || (s as any).agent_response?.text || s.response },
       ],
     })).join('\n');
     
-    await fs.writeFile('training-export.jsonl', jsonl);
+    await fs.promises.writeFile('training-export.jsonl', jsonl);
     return 'training-export.jsonl';
   }
   

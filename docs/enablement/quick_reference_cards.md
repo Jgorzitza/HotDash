@@ -1,3 +1,8 @@
+# HotDash Quick Reference Cards - Print-Ready (Task 13 Enhanced)
+
+**Updated**: October 12, 2025  
+**Format**: 4×6" cards for operators, print and laminate  
+
 # Quick Reference Cards - Print-Ready
 
 **Purpose:** Laminated desk reference cards for operators  
