@@ -16,7 +16,7 @@ WITH quality_checks AS (
     'CRITICAL' as severity,
     COUNT(*) as issue_count,
     'sales_metrics_daily' as affected_table,
-    ARRAY_AGG(date ORDER BY date DESC) FILTER (WHERE total_revenue IS NULL OR total_revenue = 0) as affected_dates
+    ARRAY_AGG(date::TEXT ORDER BY date DESC) FILTER (WHERE total_revenue IS NULL OR total_revenue = 0) as affected_items
   FROM sales_metrics_daily
   WHERE date >= CURRENT_DATE - INTERVAL '30 days'
     AND (total_revenue IS NULL OR total_revenue = 0)
@@ -29,7 +29,7 @@ WITH quality_checks AS (
     'HIGH' as severity,
     COUNT(*) as issue_count,
     'inventory_snapshots' as affected_table,
-    ARRAY_AGG(DISTINCT sku ORDER BY sku) as affected_skus
+    ARRAY_AGG(DISTINCT sku::TEXT ORDER BY sku::TEXT) as affected_items
   FROM inventory_snapshots
   WHERE snapshot_date >= CURRENT_DATE - INTERVAL '7 days'
     AND quantity_available < 0
@@ -42,7 +42,7 @@ WITH quality_checks AS (
     'MEDIUM' as severity,
     COUNT(*) as issue_count,
     'customer_segments' as affected_table,
-    ARRAY_AGG(shopify_customer_id::TEXT) as affected_ids
+    ARRAY_AGG(shopify_customer_id::TEXT) as affected_items
   FROM customer_segments
   WHERE primary_segment IS NULL
   
@@ -54,7 +54,7 @@ WITH quality_checks AS (
     'CRITICAL' as severity,
     COUNT(*) as issue_count,
     'sales_metrics_daily' as affected_table,
-    ARRAY_AGG(date::TEXT ORDER BY date DESC) as affected_dates
+    ARRAY_AGG(date::TEXT ORDER BY date DESC) as affected_items
   FROM sales_metrics_daily
   WHERE date > CURRENT_DATE
   
@@ -66,7 +66,7 @@ WITH quality_checks AS (
     'LOW' as severity,
     COUNT(*) as issue_count,
     'sku_performance' as affected_table,
-    ARRAY_AGG(DISTINCT sku) as affected_skus
+    ARRAY_AGG(DISTINCT sku::TEXT) as affected_items
   FROM sku_performance sp
   WHERE NOT EXISTS (
     SELECT 1 FROM inventory_snapshots invs
@@ -81,7 +81,7 @@ WITH quality_checks AS (
     'HIGH' as severity,
     COUNT(*) as issue_count,
     'cx_conversations' as affected_table,
-    ARRAY_AGG(chatwoot_conversation_id::TEXT) as affected_ids
+    ARRAY_AGG(chatwoot_conversation_id::TEXT) as affected_items
   FROM cx_conversations
   WHERE is_sla_breach = true 
     AND (first_response_at IS NULL OR first_response_time_minutes IS NULL)
@@ -94,7 +94,7 @@ WITH quality_checks AS (
     'MEDIUM' as severity,
     COUNT(*) as issue_count,
     'fulfillment_tracking' as affected_table,
-    ARRAY_AGG(order_number) as affected_orders
+    ARRAY_AGG(order_number::TEXT) as affected_items
   FROM fulfillment_tracking
   WHERE fulfillment_status = 'fulfilled' 
     AND fulfilled_at IS NULL
@@ -107,7 +107,7 @@ WITH quality_checks AS (
     'HIGH' as severity,
     COUNT(*) as issue_count,
     'DecisionLog' as affected_table,
-    ARRAY_AGG(id::TEXT) as affected_ids
+    ARRAY_AGG(id::TEXT) as affected_items
   FROM "DecisionLog"
   WHERE rationale IS NULL OR rationale = ''
     OR actor IS NULL OR actor = ''
@@ -120,7 +120,7 @@ WITH quality_checks AS (
     'CRITICAL' as severity,
     CASE WHEN MAX(snapshot_date) < CURRENT_DATE - INTERVAL '2 days' THEN 1 ELSE 0 END as issue_count,
     'inventory_snapshots' as affected_table,
-    ARRAY[MAX(snapshot_date)::TEXT] as last_snapshot_date
+    ARRAY[MAX(snapshot_date)::TEXT] as affected_items
   FROM inventory_snapshots
   
   UNION ALL
@@ -131,7 +131,7 @@ WITH quality_checks AS (
     'LOW' as severity,
     COUNT(*) as issue_count,
     'ceo_time_savings' as affected_table,
-    ARRAY_AGG(missing_date::TEXT) as affected_dates
+    ARRAY_AGG(missing_date::TEXT) as affected_items
   FROM (
     SELECT generate_series(
       CURRENT_DATE - INTERVAL '30 days',
@@ -149,7 +149,7 @@ SELECT
   severity,
   issue_count,
   affected_table,
-  affected_dates as affected_items,
+  affected_items,
   CURRENT_TIMESTAMP as checked_at
 FROM quality_checks
 WHERE issue_count > 0

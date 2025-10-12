@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { type LoaderFunctionArgs } from 'react-router';
-import { useLoaderData, useRevalidator } from 'react-router';
+import { useLoaderData, useRevalidator, json } from 'react-router';
 import { Page, Layout, Card, EmptyState, Banner, InlineStack, Badge, Text } from '@shopify/polaris';
 import { ChatwootApprovalCard } from '~/components/ChatwootApprovalCard';
 import { useApprovalNotifications } from '~/hooks/useApprovalNotifications';
