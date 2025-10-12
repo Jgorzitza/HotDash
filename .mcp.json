@@ -11,7 +11,7 @@
         "ghcr.io/github/github-mcp-server"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "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"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       }
     },
     "context7": {
@@ -27,7 +27,7 @@
         "mmbjiyhsvniqxibzgyvx"
       ],
       "env": {
-        "SUPABASE_ACCESS_TOKEN": "sbp_12ea9d9810c770c41afd4f80653755b248b133f6"
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
       }
     },
     "fly": {
