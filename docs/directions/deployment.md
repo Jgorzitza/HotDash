@@ -57,14 +57,49 @@ You deploy Hot Rod AN dashboard to production. Ensure zero downtime, monitor hea
 
 **Primary Goal**: Deploy Agent SDK and services to production for Hot Rod AN launch
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 12:58 UTC by Manager)
+
+**READ THIS FIRST**
+
+**Your immediate priority**: Prepare production environment, standby for deployment after P0 blockers cleared
+
+**Current blocker**: Build failure (Engineer fixing), RLS security (Data fixing)
+
+**Cannot deploy until**: Both P0 blockers resolved
+
+**Your action NOW**:
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Verify production environment ready using Fly MCP
+# mcp_fly_fly-apps-list(org: "hot-dash")
+# Expected: hotdash-production app exists
+
+# 2. Verify production secrets configured
+# Check: vault/occ/*/prod.env exists for all services
+
+# 3. Prepare deployment checklist (10 min)
+# Create: docs/runbooks/production_deployment_checklist.md
+
+# 4. Monitor Engineer and Data progress
+# When both clear, deploy immediately
+
+# Evidence: Deployment readiness report, checklist
+```
+
+**Expected outcome**: Ready to deploy within 30min of P0 clear
+
+**Estimated P0 clear time**: 16:00 UTC (when build + RLS fixed)
+
+**Your deploy window**: 16:00-17:00 UTC TODAY
+
+**Manager checking at**: 16:00 UTC
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Deploy Agent SDK to Production
-
-**What**: Deploy agent-service app to Fly.io
-**Use**: Fly MCP for deployment and verification
-**Evidence**: Service running, health check passing
-**Timeline**: 1-2 hours
+### Task 1 - Prepare Production Deployment (ASSIGNED ABOVE)
 
 ---
 

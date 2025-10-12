@@ -58,14 +58,43 @@ You build the Hot Rod AN knowledge base that powers agent-assisted customer supp
 
 **Primary Goal**: Complete Hot Rod AN knowledge for AI-assisted support
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:01 UTC by Manager)
+
+**READ THIS FIRST**
+
+**Your immediate priority**: PAUSED - Waiting for Engineer to fix LlamaIndex dependency
+
+**Current blocker**: Engineer reported LlamaIndex MCP has `commander` package issue
+
+**Your status**: STANDBY until blocker cleared
+
+**When Engineer fixes LlamaIndex** (unknown ETA):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Test LlamaIndex MCP tools work
+# Try: query_support, refresh_index, insight_report
+# Expected: All tools respond <500ms
+
+# 2. Resume hotrodan.com ingestion
+# Ingest 50+ pages
+# Test queries return accurate content
+
+# Evidence: MCP test results, ingestion complete
+# Log to: feedback/ai.md
+```
+
+**Current action**: NONE - Wait for Engineer
+
+**When to check**: After Engineer announces LlamaIndex fix
+
+**Manager will notify**: When blocker cleared
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Complete hotrodan.com Ingestion (P0)
-
-**What**: Finish ingesting www.hotrodan.com into RAG
-**Evidence**: 50+ pages indexed, test queries return Hot Rod AN content
-**Timeline**: 2-3 hours
-**Success**: Agents can answer Hot Rod AN product questions
+### Task 1 - ⏸️ PAUSED - LlamaIndex Blocker (ASSIGNED ABOVE)
 
 ---
 

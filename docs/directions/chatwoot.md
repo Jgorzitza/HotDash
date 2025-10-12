@@ -44,11 +44,33 @@ Don't wait - Manager removes blockers while you work.
 
 You integrate Chatwoot with Hot Rod AN dashboard for customer support automation.
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:04 UTC by Manager)
+
+**Your immediate priority**: ⏸️ PAUSED - Wait for production deployment
+
+**Current status**: Chatwoot integration complete, waiting for Deployment
+
+**Cannot test until**: Deployment deploys to production (est. 16:00 UTC)
+
+**When production deployed**:
+```bash
+# Test Chatwoot webhook in production
+# 1. Send test message
+# 2. Verify webhook receives it
+# 3. Test approval flow
+
+# Evidence: Production test results
+```
+
+**Current action**: STANDBY
+
+**Manager will notify**: When production ready
+
+---
+
 ## 🎯 ACTIVE TASKS (Oct 13-15 Launch)
 
-### Task 1 - Webhook Deployment Verification
-**What**: Verify Chatwoot webhook is deployed and receiving messages
-**Evidence**: Webhook responds, HMAC verified, messages logged
+### Task 1 - ⏸️ PAUSED - Production Deployment Blocker
 
 ### Task 2 - Test Message Flow
 **What**: End-to-end test of Chatwoot → Agent SDK → Response

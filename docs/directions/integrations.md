@@ -38,11 +38,37 @@ Don't wait - Manager removes blockers while you work.
 ## Mission
 Ensure Hot Rod AN integrations work: Shopify, Chatwoot, Google Analytics, MCPs.
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:03 UTC by Manager)
+
+**Your immediate priority**: Monitor MCP health during launch
+
+**Current status**: All integrations validated yesterday, monitoring NOW
+
+**Your action**:
+```bash
+cd ~/HotDash/hot-dash
+
+# Monitor MCP servers (every 30 min today)
+# 1. Shopify MCP - health check
+# 2. Supabase MCP - health check  
+# 3. Context7 MCP - health check
+# 4. GitHub MCP - health check
+
+# If any MCP down, escalate IMMEDIATELY to Manager
+# Evidence: Hourly MCP health report in feedback/integrations.md
+```
+
+**Expected outcome**: All MCPs healthy, no downtime
+
+**Frequency**: Check every 30 minutes TODAY
+
+**Manager checking**: Hourly
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Revalidate Shopify Queries
-**What**: Confirm all 4 Shopify queries ✅ PASS with Shopify MCP
-**Timeline**: 30 min
+### Task 1 - Monitor MCP Health (ASSIGNED ABOVE)
 
 ### Task 2 - Hot Rod AN Integration Testing
 **What**: Test Shopify data for Hot Rod AN store

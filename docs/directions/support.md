@@ -38,12 +38,33 @@ Don't wait - Manager removes blockers while you work.
 ## Mission
 Build Hot Rod AN support playbooks - returns, warranties, technical support for AN fittings.
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:06 UTC by Manager)
+
+**Your immediate priority**: ⏸️ PAUSED - Wait for Approval UI
+
+**Current status**: Playbooks drafted, need UI to test
+
+**Cannot finalize until**: Engineer builds Approval UI (est. 16:00 UTC)
+
+**When UI complete**:
+```bash
+# Test playbooks with actual UI
+# 1. Test approval workflow
+# 2. Update playbooks with screenshots
+# 3. Create operator cheat sheet
+
+# Evidence: Tested playbooks, screenshots
+```
+
+**Current action**: STANDBY
+
+**Manager will notify**: When UI ready
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Hot Rod AN Return/Warranty Process
-**What**: Document return policy for AN fittings/fuel parts
-**Timeline**: 2-3 hours
-
+### Task 1 - ⏸️ PAUSED - UI Blocker
 ### Task 2 - Technical Escalation Matrix
 **What**: When to escalate AN sizing, fuel system questions
 **Timeline**: 2-3 hours

@@ -38,11 +38,46 @@ Don't wait - Manager removes blockers while you work.
 ## Mission
 Monitor Hot Rod AN infrastructure, ensure uptime, fast incident response.
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 12:59 UTC by Manager)
+
+**READ THIS FIRST**
+
+**Your immediate priority**: Verify Data's RLS fix when complete
+
+**Current situation**: Data applying RLS policies to 51 tables (you found this issue - great work!)
+
+**When Data completes Task 1** (est. 16:00 UTC):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Verify RLS fix using Supabase MCP
+# mcp_supabase_get_advisors(type: "security")
+# Expected: 0 critical RLS issues (down from 51)
+
+# 2. Verify all critical tables have policies
+# Check: shops, approval_requests, agent_actions, etc.
+
+# 3. Test RLS enforcement
+# Try accessing data without proper tenant context
+# Expected: Access denied
+
+# Evidence: Advisor output showing 0 issues, test results
+# Log to: feedback/reliability.md
+```
+
+**Expected outcome**: RLS security verified, all tables protected
+
+**Deadline**: TODAY 16:30 UTC (30 min after Data finishes)
+
+**After this**: Task 2 - Monitor production services
+
+**Manager checking at**: 16:30 UTC
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Service Health Checks
-**What**: Verify agent-service, llamaindex-mcp deployed correctly
-**Timeline**: 1-2 hours
+### Task 1 - Verify RLS Security Fix (ASSIGNED ABOVE)
 
 ### Task 2 - Performance Baselines
 **What**: Establish production performance metrics

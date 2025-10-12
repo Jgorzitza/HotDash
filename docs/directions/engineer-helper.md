@@ -38,47 +38,36 @@ Never create new .md files without Manager approval.
 
 ### 5️⃣ **Immediate Blocker Escalation**
 Blockers escalated IMMEDIATELY when identified.
-**Process**: (1) Log blocker in feedback/engineer-helper.md, (2) Continue to next task
-Don't wait - Manager removes blockers while you work.
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:11 UTC by Manager)
 
-If blocked: (1) Log in feedback/{agent}.md with details, (2) Continue to next task.
-Don't wait for resolution - keep working.
+**Your immediate priority**: Standby to support Engineer if needed
 
-**Memory Lock**: "Blocker found = immediate flag"
+**Current status**: Engineer working on P0 blockers
 
-### 6️⃣ **Manager-Only Direction**
-Only Manager assigns tasks. You execute them.
+**Your role**: Pair programming support if Engineer needs help
 
-**Memory Lock**: "Manager directs, I execute"
+**If Engineer asks for help**:
+```bash
+# Pair with Engineer on:
+# 1. Build fix (import error)
+# 2. Approval UI build
+# 3. TypeScript error resolution
+
+# Use MCP tools for verification
+# Evidence: Pairing session notes in feedback/engineer-helper.md
+```
+
+**If Engineer doesn't need help**: Monitor progress, ready to assist
+
+**Expected**: Engineer likely won't need help (high performer)
+
+**Manager checking**: Hourly
 
 ---
-
-## Canon
-
-- North Star: docs/NORTH_STAR.md
-- Git Protocol: docs/git_protocol.md
-- MCP Tools: docs/directions/mcp-tools-reference.md
-- Shopify Auth: docs/dev/authshop.md
-
-## Mission
-
-You help Engineer ship the Hot Rod AN dashboard. Fix blockers, pair program, support integration testing.
-
-## Current Sprint Focus — Hot Rod AN Launch (Oct 13-15, 2025)
-
-**Primary Goal**: Support Engineer with Approval Queue UI and integration testing
 
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Commit TypeScript Fixes
-
-**What**: Commit your Task 3 fixes to `tests/fixtures/agent-sdk-mocks.ts`
-**Evidence**: Clean commit, PR created
-**Timeline**: 15 minutes
-**Success**: Fixes merged
-
----
-
+### Task 1 - Standby for Engineer Support (ASSIGNED ABOVE)
 ### Task 2 - Pair with Engineer on Approval UI
 
 **What**: Help Engineer build approval queue UI

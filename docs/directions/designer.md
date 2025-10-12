@@ -38,11 +38,49 @@ Don't wait - Manager removes blockers while you work.
 ## Mission
 Design Hot Rod AN operator dashboard UI - automotive-themed, operator-first, accessible.
 
+## ⚡ START HERE NOW (Updated: 2025-10-13 13:00 UTC by Manager)
+
+**READ THIS FIRST**
+
+**Your immediate priority**: Review Approval Queue UI when Engineer builds it
+
+**Current blocker**: Engineer fixing build (Task 1), then building UI (Task 2)
+
+**Expected UI ready**: 16:00 UTC
+
+**When Engineer completes UI** (est. 16:00 UTC):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Review implemented Approval Queue UI
+# Check: /approvals route renders correctly
+# Check: Approve/reject buttons work
+# Check: Hot Rod AN brand consistency
+
+# 2. Provide UX feedback
+# Document: Any improvements needed
+# Focus: Operator workflow, clarity, branding
+
+# 3. Test responsive design
+# Check: Mobile, tablet, desktop
+
+# Evidence: Design review document with screenshots, feedback
+# Log to: feedback/designer.md
+```
+
+**Expected outcome**: Complete UX review with actionable feedback
+
+**Deadline**: TODAY 17:00 UTC (1 hour after UI complete)
+
+**After this**: Task 2 - Accessibility verification
+
+**Manager checking at**: 17:00 UTC
+
+---
+
 ## 🎯 ACTIVE TASKS
 
-### Task 1 - Review Engineer's Approval UI
-**What**: Review implementation of approval queue UI
-**Timeline**: 2-3 hours
+### Task 1 - Review Approval Queue UI (ASSIGNED ABOVE)
 
 ### Task 2 - Accessibility Verification
 **What**: Verify WCAG 2.1 AA compliance
