@@ -47,15 +47,47 @@ async function fetchSitemap(url: string): Promise<string[]> {
     
     const xml = await response.text();
     
-    // Extract URLs from sitemap XML
-    const urlMatches = xml.match(/<loc>(.*?)<\/loc>/g);
+    // Check if this is a sitemap index (contains <sitemap> tags) or a regular sitemap (contains <url> tags)
+    const isSitemapIndex = xml.includes('<sitemap>');
+    
+    if (isSitemapIndex) {
+      // This is a sitemap index - fetch child sitemaps
+      console.log('  → Sitemap index detected, fetching child sitemaps...');
+      const sitemapMatches = xml.match(/<loc>(.*?)<\/loc>/g);
+      if (!sitemapMatches) {
+        return [];
+      }
+      
+      const childSitemaps = sitemapMatches
+        .map(match => match.replace(/<\/?loc>/g, ''))
+        .filter(url => url && url.startsWith('http'))
+        .filter(url => !url.endsWith('.xml') || url.includes('sitemap_pages') || url.includes('sitemap_blogs')); // Focus on pages and blogs
+      
+      console.log(`  → Found ${childSitemaps.length} child sitemaps, fetching URLs...`);
+      
+      // Fetch URLs from each child sitemap
+      const allUrls: string[] = [];
+      for (const childUrl of childSitemaps.slice(0, 3)) { // Limit to first 3 child sitemaps
+        const childUrls = await fetchSitemap(childUrl);
+        allUrls.push(...childUrls);
+        await new Promise(resolve => setTimeout(resolve, 200)); // Rate limit
+      }
+      
+      return allUrls.slice(0, 50); // Overall limit of 50 URLs
+    }
+    
+    // Regular sitemap - extract URLs
+    const urlMatches = xml.match(/<url>[\s\S]*?<loc>(.*?)<\/loc>[\s\S]*?<\/url>/g);
     if (!urlMatches) {
       return [];
     }
     
     return urlMatches
-      .map(match => match.replace(/<\/?loc>/g, ''))
-      .filter(url => url && url.startsWith('http'))
+      .map(match => {
+        const locMatch = match.match(/<loc>(.*?)<\/loc>/);
+        return locMatch ? locMatch[1] : null;
+      })
+      .filter((url): url is string => url !== null && url.startsWith('http') && !url.endsWith('.xml'))
       .slice(0, 50); // Limit to first 50 URLs to avoid overwhelming the system
       
   } catch (error) {
