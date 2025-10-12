@@ -1,488 +1,337 @@
-# Order Tracking Guide
+# Order Tracking Guide - Hot Rod AN LLC
 
-**Last Updated:** 2025-10-11  
-**Purpose:** How to track your HotDash order and understand delivery status
+**Last Updated:** October 2025
 
----
+## Quick Track Your Order
 
-## Getting Your Tracking Number
-
-### When You'll Receive It
-
-**Timing:**
-- Email sent within 24 hours of shipment
-- Subject line: "Your HotDash Order Has Shipped!"
-- Includes tracking number and carrier info
-
-**What's Included:**
-- Order number
-- Tracking number (clickable link)
-- Carrier name (USPS, UPS, FedEx)
-- Estimated delivery date
-- Link to track in real-time
-
-### Didn't Receive Tracking Email?
-
-**Check First:**
-1. **Spam/Junk folder** - Sometimes filtered
-2. **Email address** - Confirm correct email in account
-3. **Processing status** - May still be preparing to ship
-4. **24-hour window** - Allow time for carrier pickup
-
-**Still Missing?**
-- Log in to account → View order → Tracking info shown
-- Or contact us with order number - we'll resend
+**Website:** hotrodan.com/track-order  
+**Email:** support@hotrodan.com  
+**Phone:** Monday-Friday, 9AM-5PM EST
 
 ---
 
 ## How to Track Your Order
 
-### Option 1: Email Link (Easiest)
+### Method 1: Tracking Email (Recommended)
+1. Check your email for "Your Hot Rod AN Order Has Shipped"
+2. Click the tracking link in the email
+3. View real-time tracking on carrier website
 
-1. Open shipping confirmation email
-2. Click tracking number link
-3. Opens carrier website with tracking
+### Method 2: Hot Rod AN Website
+1. Go to hotrodan.com/track-order
+2. Enter your order number OR tracking number
+3. Enter your email address
+4. Click "Track Order"
 
-### Option 2: Your Account (Best)
+### Method 3: Direct Carrier Tracking
+**For UPS:**
+- Visit ups.com/tracking
+- Enter tracking number from email
+- View detailed tracking info
 
-1. Log in to hotdash.com/account
-2. Click "Order History"
-3. Find your order
-4. Click "Track Package"
-5. See real-time status
+**For USPS:**
+- Visit usps.com/go/TrackConfirmAction
+- Enter tracking number
+- View delivery status
 
-### Option 3: Carrier Website Directly
-
-**USPS:** tools.usps.com/go/TrackConfirmAction  
-**UPS:** www.ups.com/track  
-**FedEx:** www.fedex.com/tracking
-
-Enter tracking number from our email.
-
-### Option 4: Contact Us
-
-Chat or email with order number - we'll provide current status instantly.
-
----
-
-## Understanding Tracking Status
-
-### Common Status Messages
-
-#### "Label Created" / "Shipping Label Printed"
-
-**Meaning:** Label generated, package not yet picked up by carrier
-
-**What's Happening:**
-- Order packed and ready to ship
-- Waiting for carrier pickup (usually same day)
-- Not yet in carrier's possession
-
-**Timeline:** Should change to "In Transit" within 24-48 hours
-
-**If Stuck >48 Hours:** Contact us - may need to recreate label
+### Method 4: Email Support
+- Send email to support@hotrodan.com
+- Include order number
+- We'll reply with current status within 24 hours
 
 ---
 
-#### "Picked Up" / "Acceptance Scan"
+## Understanding Your Order Status
 
-**Meaning:** Carrier has received package
+### Order Received
+**What it means:** We've received your order and payment  
+**What's next:** Order processing (1-2 business days)  
+**Typical timeframe:** Within minutes of placing order
 
-**What's Happening:**
-- Package with carrier
-- Beginning journey to you
-- First scan in carrier's system
+### Processing
+**What it means:** Your order is being picked, packed, and prepared for shipment  
+**What's next:** Order will ship  
+**Typical timeframe:** 1-2 business days (or same day if ordered before 2PM EST)  
+**Note:** Custom orders may take 3-5 business days
 
-**Timeline:** Next update within 24 hours (usually next facility scan)
+### Shipped
+**What it means:** Your order has left our facility  
+**What's next:** In transit to you  
+**What you'll receive:** Tracking email with carrier tracking number  
+**Typical timeframe:** Within 24 hours of processing
 
----
+### In Transit
+**What it means:** Package is moving through carrier network  
+**What's next:** Out for delivery  
+**Typical timeframe:** 
+- Standard: 3-7 business days
+- Expedited: 2 business days
+- Express: 1 business day
 
-#### "In Transit" / "On the Way"
+### Out for Delivery
+**What it means:** Package is on delivery truck in your area  
+**What's next:** Delivery today  
+**Note:** Usually delivered between 9AM-7PM local time
 
-**Meaning:** Package moving through carrier network
-
-**What's Happening:**
-- Traveling between facilities
-- May show multiple scans at different locations
-- Normal for status to not update daily
-
-**Timeline:** Updates every 1-3 days depending on distance
-
-**Don't Worry If:**
-- No update for 24-48 hours (common for USPS)
-- Package seems to go "backward" (routing through hubs)
-- Estimated delivery changes slightly
-
----
-
-#### "Out for Delivery"
-
-**Meaning:** Package on delivery truck today!
-
-**What's Happening:**
-- Local carrier has your package
-- Will attempt delivery today
-- Usually arrives by 8 PM (varies by carrier)
-
-**Timeline:** Delivery today (unless exception occurs)
-
-**Tips:**
-- Ensure someone home if signature required
-- Check delivery instructions are correct
-- Have phone nearby (carrier may call if issue)
+### Delivered
+**What it means:** Package has been delivered  
+**Note:** Check tracking for delivery location (front door, mailbox, etc.)  
+**Not received?** See "Missing Package" section below
 
 ---
 
-#### "Delivered"
+## Tracking Number Information
 
-**Meaning:** Package successfully delivered
+### When Will I Get My Tracking Number?
+- Sent via email within 24 hours of shipment
+- Check spam/junk folder if not received
+- If you don't receive it within 48 hours, contact us
 
-**What's Included:**
-- Delivery date and time
-- Where left (front door, porch, etc.)
-- Photo of delivery (some carriers)
-- Signature (if required)
+### My Tracking Number Doesn't Work
+**Common Causes:**
+- Tracking number not yet in carrier system (wait 6-12 hours)
+- Typo when entering number (check email again)
+- Carrier website experiencing issues
 
-**Can't Find Package?**
-- Check all entrances
-- Ask household members
-- Check with neighbors
-- Review delivery photo if available
-- Wait 24 hours (sometimes marked early)
-- Contact us if still missing after checking
+**Solution:**
+- Wait 12-24 hours after receiving tracking email
+- Try carrier website directly (UPS.com or USPS.com)
+- Copy/paste tracking number from email (don't type manually)
+- Contact us if still not working after 24 hours
+
+### Multiple Tracking Numbers
+- Large orders may ship in multiple packages
+- Each package gets its own tracking number
+- All tracking numbers included in shipping email
+- Packages may arrive on different days
 
 ---
 
-#### "Delivery Attempt - Notice Left"
+## Shipping Timeframes
 
-**Meaning:** Carrier tried to deliver but couldn't
+### Domestic Shipping (United States)
 
-**Common Reasons:**
-- No one home to sign
-- Couldn't access building
-- Gate/door locked
-- Dog prevented delivery
+**Standard Shipping (Ground)**
+- Processing: 1-2 business days
+- Transit: 3-7 business days
+- Total: 4-9 business days from order date
+
+**Expedited (2-Day)**
+- Processing: 1 business day
+- Transit: 2 business days
+- Total: 3 business days from order date
+
+**Express (Next Day)**
+- Processing: Same day (if ordered before 2PM EST)
+- Transit: 1 business day
+- Total: 1-2 business days from order date
+
+### International Shipping
+
+**Canada**
+- Processing: 1-2 business days
+- Transit: 7-14 business days
+- Customs clearance: Variable (2-5 days typical)
+- Total: 10-21 business days
+
+**International**
+- Processing: 1-2 business days
+- Transit: 10-21 business days
+- Customs clearance: Variable (may add 3-10 days)
+- Total: 13-31 business days
+
+**Note:** International shipments may experience customs delays beyond our control
+
+---
+
+## Common Tracking Scenarios
+
+### Scenario: "No Tracking Updates for 3+ Days"
+**Possible Causes:**
+- Package stuck at carrier hub
+- Weather delays
+- High shipping volume (holidays)
+- Carrier scanning issues
 
 **What to Do:**
-1. Check door for delivery notice
-2. Package at local post office/facility
-3. Pick up within 5 business days
-4. Or schedule re-delivery (free)
-
-**To Prevent:**
-- Add delivery instructions to account
-- Sign for delivery online (if carrier allows)
-- Request "authority to leave" signature waiver
+1. Wait 5 business days from last update
+2. Check "Expected Delivery Date" on tracking
+3. If past expected delivery date, contact carrier
+4. We can file trace after 10 business days (domestic) or 30 days (international)
 
 ---
 
-#### "Exception" / "Delay"
-
-**Meaning:** Issue preventing normal delivery
-
-**Common Reasons:**
-- Weather (storms, snow, hurricanes)
-- Address issue (incorrect/incomplete)
-- Carrier operational delay
-- Customs clearance (international)
-- Holiday volume
+### Scenario: "Out for Delivery" But Not Delivered
+**Possible Causes:**
+- Driver couldn't complete all deliveries today
+- Address issue (will be reattempted)
+- Package requires signature (notice left)
 
 **What to Do:**
-- Check exception details on tracking
-- Most resolve within 1-2 business days
-- If address issue, contact us to correct
-- Monitor tracking for updates
-
-**If Delayed >3 Business Days:** Contact us - we'll follow up with carrier
+1. Check for delivery notice at your door
+2. Verify delivery address in your account
+3. Package typically delivered next business day
+4. Contact carrier if not delivered after 3 business days
 
 ---
 
-### Unusual Tracking Patterns
+### Scenario: "Delivered" But I Don't Have It
+**Immediate Actions:**
+1. Check all possible delivery locations:
+   - Front door, side door, back door
+   - Garage, porch, carport
+   - Mailbox, parcel locker
+   - With neighbors
+   - Building office/concierge
 
-#### Package Going Backward
+2. Check tracking for delivery details:
+   - Delivery location (e.g., "front door")
+   - Delivery photo (some carriers)
+   - Signature name (if signed for)
 
-**Status:** Tracking shows package moving away from you
+3. Wait 24 hours - sometimes marked delivered prematurely
 
-**Explanation:**
-- Carriers route through regional hubs
-- May appear indirect but actually faster
-- Part of optimized logistics network
+4. If still missing after 24 hours:
+   - Contact carrier directly (UPS: 1-800-742-5877, USPS: 1-800-275-8777)
+   - File claim with carrier
+   - Contact us at support@hotrodan.com (we'll help resolve)
 
-**Normal:** Package will redirect toward destination
-
-**Not Normal:** If package returns to origin - contact us
-
-#### No Updates for 5+ Days
-
-**Possible Reasons:**
-- Package in transit with no scans (rare but happens)
-- Lost in carrier system
-- Tracking not updating (package still moving)
-
-**Action:**
-- Wait 7 days total
-- Then contact carrier for investigation
-- Contact us - we'll open carrier case
-- We'll send replacement if not resolved in 10 days
-
-#### Multiple Delivery Attempts
-
-**Status:** Shows 2+ delivery attempts
-
-**Why:**
-- Signature required but no one home
-- Access issues to building/property
-- Carrier scheduling constraints
-
-**Solutions:**
-- Pick up at carrier facility
-- Sign online for "authority to leave"
-- Update delivery instructions
-- Schedule specific delivery time (if carrier offers)
+**Package Theft Prevention:**
+- Request signature confirmation ($5.95)
+- Use delivery instructions (e.g., "Leave at side door")
+- Install security camera
+- Have package delivered to work address
 
 ---
 
-## International Tracking
+### Scenario: "Return to Sender" or "Undeliverable"
+**Common Causes:**
+- Invalid or incomplete address
+- No access to delivery location
+- Multiple failed delivery attempts
+- Refused by recipient
 
-### Different Process
-
-**Tracking Shows:**
-1. **Origin Country** - Processed and shipped from US
-2. **Export** - Left US, entering customs
-3. **Import Customs** - In your country's customs
-4. **Customs Cleared** - Released from customs
-5. **Local Carrier** - Transferred to local postal service
-6. **Out for Delivery** - Final delivery
-
-**Gaps in Tracking:**
-- Common during customs (may be 5-10 days without update)
-- Not cause for concern unless >14 days
-- Local carrier may use different tracking number
-
-**Customs Delays:**
-- Can add 1-7 days (sometimes longer)
-- Required for customs inspection
-- Outside our control
-- We cannot expedite customs clearance
-
-### Customs Charges
-
-**Your Responsibility:**
-- Import duties
-- VAT/taxes
-- Customs clearance fees
-
-**How to Pay:**
-- Carrier will contact you
-- Must pay before delivery
-- Amount varies by country and order value
-
-**Refused Delivery Due to Charges:**
-- Package returns to us
-- Shipping costs not refundable
-- You're responsible for customs fees on reshipping
+**What to Do:**
+1. Contact us immediately at support@hotrodan.com
+2. We'll verify correct address
+3. Package will be returned to us
+4. We can reship to correct address
+5. Additional shipping charges may apply for address errors
 
 ---
 
-## Tracking Delays
+## Delivery Issues
 
-### Expected Update Frequency
+### Nobody Home to Sign
+- Carrier will leave notice
+- Options on notice:
+  1. Pick up at local carrier facility
+  2. Schedule redelivery
+  3. Sign notice to authorize delivery without signature
 
-**USPS:**
-- Updates every 1-3 days
-- Sometimes skip scans at intermediate facilities
-- Always scans at delivery
+### Damaged Package
+1. Take photos of damage immediately
+2. Accept delivery and note damage with driver
+3. Inspect contents before driver leaves if possible
+4. Contact us within 48 hours at support@hotrodan.com
+5. Email photos of damage to support@hotrodan.com
+6. We'll process replacement or refund
 
-**UPS:**
-- Updates daily minimum
-- End-of-day scans
-- Very consistent tracking
-
-**FedEx:**
-- Updates 1-2 times per day
-- Real-time delivery tracking
-- Photo on delivery
-
-### When to Be Concerned
-
-**Contact Us If:**
-- No tracking update for 7+ days (domestic)
-- No tracking update for 14+ days (international)
-- Package stuck in same location for 5+ days
-- Delivery date passed with no delivery
-- Tracking shows "lost" or "damaged"
-
-**We'll:**
-- File carrier investigation
-- Send replacement if not found in 3 days
-- Issue refund if you prefer
+### Wrong Address Delivered
+- Contact carrier immediately with tracking number
+- Contact us at support@hotrodan.com
+- If address error was ours, we'll reship at no charge
+- If address error was yours, additional shipping charges apply
 
 ---
 
-## Lost Package Protocol
+## International Shipping Tracking
 
-### When Package is Considered Lost
+### Customs Delays
+**Normal:** Packages may sit at customs 2-5 days  
+**Extended:** Some countries have 7-14 day customs processing
 
-**Domestic:**
-- 10+ days past estimated delivery
-- No tracking updates for 7+ days
-- Carrier confirms lost/cannot locate
+**Tracking Status May Show:**
+- "Held in Customs"
+- "Awaiting Customs Clearance"
+- "Customs Processing"
 
-**International:**
-- 30+ days past estimated delivery
-- Stuck in customs >21 days
-- Carrier confirms lost
+**What to Do:**
+- This is normal for international shipping
+- Wait 14 days before taking action
+- Contact your local customs office if status doesn't change
+- Duties/taxes must be paid before release
 
-### What We Do
+### Local Carrier Transfer
+- International packages often transfer to local postal service
+- New tracking number may be issued
+- Check destination country's postal service website
 
-**Automatic Actions:**
-1. **File carrier claim** (we handle this)
-2. **Send replacement immediately** (don't wait for claim)
-3. **Or issue full refund** (your choice)
-4. **Expedited shipping** on replacement (free upgrade)
-
-**Timeline:**
-- Replacement ships within 1 business day
-- Refund processed within 24 hours
-- No need to wait for carrier investigation
-
-**What You Need to Do:**
-- Contact us when package appears lost
-- Confirm address was correct
-- Choose replacement or refund
+**Example:**
+- Ships UPS to Canada
+- Transfers to Canada Post for final delivery
+- Need Canada Post tracking number for final updates
 
 ---
 
-## Delivery Confirmation
+## Holiday Shipping Delays
 
-### Proof of Delivery
+### Expected Delays During:
+- Thanksgiving week (late November)
+- Christmas season (December 15-31)
+- New Year's week
+- Other major holidays
 
-**Carriers Provide:**
-- Date and time delivered
-- GPS location
-- Signature (if required)
-- Photo of package at door (some carriers)
-
-**Access Tracking:**
-- Click tracking link in email
-- View "Delivery Details" or "Proof of Delivery"
-- Screenshot for records if needed
-
-### Package Marked Delivered But Not Received
-
-**Immediate Steps (Do Within 24 Hours):**
-
-1. **Check Everywhere:**
-   - All doors and entrances
-   - Mailroom/package room
-   - Building concierge/office
-   - Garage, backyard, side doors
-   - With household members
-
-2. **Check Neighbors:**
-   - Sometimes delivered to adjacent address
-   - Especially if address numbers similar
-
-3. **Review Delivery Photo:**
-   - Check tracking for delivery photo
-   - May show actual location
-   - Helps identify where left
-
-4. **Wait 24 Hours:**
-   - Sometimes marked delivered early
-   - Carrier may deliver later same day
-   - Or early next morning
-
-**After 24 Hours - Still Missing:**
-- Contact carrier directly
-- File report with carrier
-- Contact us - we'll investigate
-- We'll send replacement or refund within 3 business days
-
-**Theft/Stolen Package:**
-- File police report (helps with claim)
-- Notify us with police report number
-- We'll send replacement immediately
-- Consider delivery to work or package locker for future
+**Recommendations:**
+- Order 2 weeks early during holidays
+- Choose expedited shipping if needed by specific date
+- Track package daily during holiday season
+- Contact us early if issues arise
 
 ---
 
-## Package Hold/Redirect
+## Contact for Tracking Help
 
-### Hold for Pickup
+### Email Support
+**Address:** support@hotrodan.com  
+**Response Time:** Within 24 hours  
+**Include:**
+- Order number
+- Tracking number (if available)
+- Issue description
+- Your contact information
 
-**Available with:**
-- UPS: Hold at UPS Store/Access Point
-- FedEx: Hold at FedEx Office
-- USPS: Hold at Post Office
+### Phone Support
+**Hours:** Monday-Friday, 9AM-5PM EST  
+**Note:** Holiday hours may vary
 
-**How to Request:**
-1. Use tracking number on carrier website
-2. Select "Hold for Pickup" or "Delivery Manager"
-3. Choose location
-4. Must pick up within 5 business days
-
-**Requirements:**
-- Must request before "Out for Delivery" status
-- Photo ID required for pickup
-- Tracking number or delivery notice
-
-### Redirect to New Address
-
-**Availability:** Limited, carrier-dependent
-
-**UPS/FedEx:**
-- May allow address change for fee ($5-15)
-- Must be same ZIP code area usually
-- Request via carrier website or app
-
-**USPS:**
-- Cannot redirect individual packages
-- Can set up forwarding for all mail
-
-**Best Option:**
-- Contact us to update address before shipping
-- Or hold for pickup and arrange transport
+### Self-Service Tracking
+- Website: hotrodan.com/track-order
+- Available 24/7
+- Real-time status updates
 
 ---
 
 ## Tracking FAQs
 
-**Q: My tracking number isn't working**
-- A: Wait 24 hours after shipment email - carriers need time to scan
+**Q: Why does my tracking say "Label Created" but hasn't moved?**  
+A: Carrier has received shipping information but hasn't picked up package yet. Usually picks up within 24 hours.
 
-**Q: Estimated delivery keeps changing**
-- A: Normal - carriers update based on real-time logistics. Final date is most accurate.
+**Q: Can I change delivery address after shipping?**  
+A: Possibly. Contact carrier directly ASAP. Some carriers offer "delivery intercept" service (fees may apply).
 
-**Q: Package went to wrong city**
-- A: Carriers route through hubs - may appear indirect but this is normal routing
+**Q: My tracking says "Exception" - what does that mean?**  
+A: Unexpected event (weather, address issue, etc.). Usually resolved within 1-2 days. Contact carrier if concerned.
 
-**Q: Tracking shows exception with no explanation**
-- A: Contact carrier for specifics, or contact us - we'll investigate
+**Q: Can I pick up my package instead of waiting for delivery?**  
+A: Yes. Contact carrier after first delivery attempt to arrange hold for pickup at local facility.
 
-**Q: Can I track by order number instead?**
-- A: Yes - log in to your account, tracking linked to order number
+**Q: How accurate are the estimated delivery dates?**  
+A: Usually very accurate, but not guaranteed. Weather, carrier delays, or high volume can affect dates.
 
-**Q: Multiple tracking numbers for one order**
-- A: Large orders may ship in multiple boxes, each with own tracking
-
----
-
-## Need Help?
-
-**Tracking Issues?**
-- Chat support: 9 AM - 6 PM EST
-- Email: support@hotdash.com
-- Have order number ready
-
-**Carrier Support (Direct):**
-- USPS: 1-800-275-8777
-- UPS: 1-800-742-5877
-- FedEx: 1-800-463-3339
+**Q: My package shows delivered to wrong city - what happened?**  
+A: Usually a carrier scanning error. Package often arrives at correct address. Wait 24-48 hours or contact carrier.
 
 ---
 
-**Document Version:** 1.0.0  
-**Review Schedule:** Quarterly  
-**Owner:** Operations Team
-
+**Need Help?** We're here to assist with any tracking questions or concerns. Don't hesitate to reach out!
