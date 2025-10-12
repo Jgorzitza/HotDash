@@ -67,3 +67,13 @@ started: 2025-10-12
 ### Starting Task 4 - Fix CI/CD Pipeline (P0 from QA)
 **Objective**: Get GitHub Actions workflows passing (all 4 workflows green)
 
+
+### 09:40 UTC - Task 4 Status
+**Objective**: Fix CI/CD Pipeline (get all workflows green)
+**Action**: Pushed engineer/work to trigger workflows
+**Monitoring**: Workflows running on GitHub Actions
+**Status**: MONITORING (continuing to Task 5)
+
+### Starting Task 5 - Production Deployment Prep
+**Objective**: Document env vars, secrets in vault, deploy checklist
+
