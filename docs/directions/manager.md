@@ -120,3 +120,24 @@ Coordinate 18 agents to launch Hot Rod AN dashboard Oct 13-15. Keep everyone wor
 **Branch**: N/A (manager coordinates, doesn't code)
 
 **Status**: 🔴 ACTIVE - Pre-launch coordination
+
+## Pollution Prevention (Added 2025-10-12)
+
+**Issue**: Agents were creating files outside canonical repo, causing confusion and violating feedback process.
+
+**Prevention**:
+1. **Manager runs** `scripts/ops/check-pollution.sh` every hour
+2. Script auto-archives violations
+3. Violations logged in `feedback/manager.md`
+4. Agents held accountable
+
+**Single Source of Truth**: `/home/justin/HotDash/hot-dash/` ONLY
+
+**Prohibited**:
+- ❌ Files in `/home/justin/*.md`
+- ❌ Directories like `/home/justin/docs/`
+- ❌ Extra worktrees in `/home/justin/HotDash/`
+- ❌ Any files outside canonical repo
+
+**Enforcement**: Zero tolerance. Auto-archive + agent violation logged.
+
