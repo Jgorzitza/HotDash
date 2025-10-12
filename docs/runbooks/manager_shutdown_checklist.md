@@ -15,6 +15,21 @@ expires: 2025-10-20
 
 ---
 
+## 🚨 READ FIRST - CORE MANAGER LESSONS (NEVER FORGET)
+
+**Last failure**: 2025-10-13 (partial shutdown - only 1/18 agents updated, 13 violations missed)
+
+1. **Execute Checklists Completely** - Verify after each section with commands
+2. **"ALL" Means ALL** - Count expected (18 agents), count actual, must match  
+3. **Take Ownership Immediately** - No excuses, fix it, prove it
+4. **Be Thorough, Not Reactive** - Block 90 min, do it right once
+
+**Full lessons**: `docs/runbooks/MANAGER_RECOMMENDATIONS.md` (top section)
+
+**Verification**: After EACH phase, run verification commands. Don't say "done" until commands show ZERO issues.
+
+---
+
 ## 🚨 PHASE 1: DIRECTION FILE CLEANUP (10-20 minutes)
 
 **CRITICAL**: Direction files accumulate tasks over time. You must clean them so agents focus on what matters.

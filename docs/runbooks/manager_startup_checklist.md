@@ -15,6 +15,22 @@ expires: 2025-10-20
 
 ---
 
+## 🚨 READ FIRST - MANAGER PERFORMANCE CHECK
+
+**Before starting work, check yourself**:
+
+1. **Am I executing thoroughly or rushing today?** (Block proper time, don't rush)
+2. **Did I repeat any patterns from last shutdown?** (Read last CEO Update self-assessment)
+3. **Core Lessons Fresh?** Read top section of `docs/runbooks/MANAGER_RECOMMENDATIONS.md`
+
+**4 Core Lessons**:
+1. Execute Checklists Completely (verify each step)
+2. "ALL" Means ALL (count and verify)
+3. Take Ownership Immediately (no excuses)
+4. Be Thorough, Not Reactive (slow is fast)
+
+---
+
 ## ✅ PHASE 1: SITUATION ASSESSMENT (5-10 minutes)
 
 ### Step 1: Navigate & Git Status (30 seconds)
