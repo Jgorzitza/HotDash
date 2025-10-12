@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-10-12T03:41:30-06:00",
+  "status": "healthy",
+  "endpoints": {
+    "health": {
+      "latencyMs": 258
+    },
+    "metrics": {
+      "latencyMs": 214
+    }
+  },
+  "uptime": "501s",
+  "tools": {
+    "query_support": {
+      "calls": 0,
+      "errors": 0,
+      "errorRate": "0%",
+      "avgLatencyMs": 0,
+      "p95LatencyMs": 0
+    }
+  },
+  "alerts": [
+    ""
+  ]
+}
