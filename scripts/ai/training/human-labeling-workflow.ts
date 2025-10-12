@@ -2,6 +2,28 @@
  * Task Z: Human-in-the-Loop Labeling Workflow
  */
 
+interface TrainingSample {
+  query: { text: string; intent: string };
+  response?: string;
+  human_feedback?: any;
+  training_flags?: any;
+  [key: string]: any;
+}
+
+interface QualityScores {
+  overall: number;
+  factuality?: number;
+  helpfulness?: number;
+  safety?: number;
+}
+
+// Stub training collector
+const trainingCollector = {
+  async saveSample(sample: TrainingSample): Promise<void> {
+    console.log('Saving training sample:', sample);
+  }
+};
+
 export interface LabelingTask {
   task_id: string;
   sample: TrainingSample;

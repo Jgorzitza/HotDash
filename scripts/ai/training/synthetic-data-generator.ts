@@ -2,10 +2,27 @@
  * Task AB: Synthetic Data Generation for Edge Cases
  */
 
+interface EdgeCaseTemplate {
+  example: string;
+  intent: string;
+  expected_behavior: string;
+}
+
+interface EdgeCaseTemplates {
+  [category: string]: EdgeCaseTemplate[];
+}
+
+// Stub LLM implementation
+const llm = {
+  async generate(prompt: string): Promise<string> {
+    return `Generated variation based on: ${prompt.substring(0, 50)}...`;
+  }
+};
+
 export class SyntheticDataGenerator {
   
   async generateEdgeCases(category: string, count: number = 20) {
-    const templates = EDGE_CASE_TEMPLATES[category];
+    const templates = (EDGE_CASE_TEMPLATES as EdgeCaseTemplates)[category] || [];
     const synthetic = [];
     
     for (const template of templates) {
