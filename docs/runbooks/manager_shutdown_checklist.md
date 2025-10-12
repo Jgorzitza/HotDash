@@ -781,9 +781,153 @@ cat /tmp/manager-tomorrow.md
 
 ---
 
-## 💾 PHASE 3: FINAL COMMIT & HANDOFF (3-5 minutes)
+## 📊 PHASE 3: MANAGER PERFORMANCE & CEO UPDATE (10-15 minutes)
 
-### Step 15: Commit Manager Work (2 minutes)
+### Step 15: Review Your Own Performance (3-5 minutes)
+
+**Manager self-assessment** (be brutally honest):
+
+```bash
+cat >> feedback/manager.md << 'EOF'
+
+---
+
+## $(date -u +%Y-%m-%dT%H:%M:%SZ) — Manager Performance Review
+
+### What I Did Well This Session
+1. [Specific accomplishment - what went well]
+2. [Another strength demonstrated]
+
+### What I Screwed Up
+1. [Specific mistake - be honest]
+   - Why it happened: [Root cause analysis]
+   - How to prevent: [Concrete solution]
+
+### Process Changes Implemented
+1. [Change made this session - be specific]
+2. [Another improvement implemented]
+
+### Metrics This Session
+- Blocker response time: [XX min average]
+- Direction files cleaned: [X files, XX total lines removed]
+- Agents redirected from drift: [X agents]
+- Idle agents assigned work: [X agents]
+- Session duration: [X hours]
+
+### Effectiveness
+- Did I identify blockers proactively? [Yes/No + examples]
+- Did I maintain clean directions? [Yes/No + file sizes]
+- Did I keep agents focused? [Yes/No + drift incidents]
+- Did I remove blockers quickly? [Yes/No + avg time]
+- Did I align work to North Star? [Yes/No + how]
+
+### Improvements for Next Session
+1. [Specific change to implement]
+2. [Another improvement to try]
+
+### Self-Grade: [X.X]/10
+**Reasoning**: [Honest assessment of performance]
+
+EOF
+```
+
+**Checkpoint**: ✅ Self-assessment complete
+
+---
+
+### Step 16: Create CEO Update (10-15 minutes)
+
+**Use template from** `docs/runbooks/manager_ceo_update_format.md`
+
+```bash
+# Append to single CEO update file
+cat >> artifacts/manager/CEO_UPDATES.md << 'EOF'
+═══════════════════════════════════════════════════════════════
+## CEO UPDATE — $(date +%Y-%m-%d\ %H:%M) UTC
+═══════════════════════════════════════════════════════════════
+
+### 📊 OVERALL PROJECT STATUS
+**Launch Target**: Oct 13-15, 2025
+**Current Status**: [On track / Delayed / At risk]
+**Completion**: [XX]% → Launch Ready
+
+**Breakdown**:
+- Infrastructure: [XX]%
+- Core Features (5 tiles): [XX]%
+- Code Quality: [XX]%
+- Documentation: [XX]%
+- Process: [XX]%
+
+---
+
+### 🎯 SESSION ACCOMPLISHMENTS
+[Major wins from this session]
+
+### 🚨 CURRENT BLOCKERS
+[P0 and P1 blockers with owners and deadlines]
+
+---
+
+### 👥 AGENT PERFORMANCE RANKINGS
+
+🏆 TOP 3 PERFORMERS:
+
+🥇 #1: [Agent] - [X.X]/10 - Prize: [Recognition]
+- Wins: [What they did exceptionally]
+- Improvements: [1-2 changes for next run]
+
+🥈 #2: [Agent] - [X.X]/10 - Prize: [Recognition]
+🥉 #3: [Agent] - [X.X]/10 - Prize: [Recognition]
+
+**Performance Table**:
+| Rank | Agent | Score | Status | Key Strength |
+|------|-------|-------|--------|--------------|
+| 1 | [Agent] | [X.X]/10 | 🟢 | [Excel at] |
+[... all 18 agents ...]
+
+---
+
+### 📈 INDIVIDUAL ASSESSMENTS
+[Detailed breakdown for each agent using rubric]
+
+---
+
+### 🎖️ SPECIAL RECOGNITION
+- 🔥 Fastest Blocker Resolution: [Agent] - [XX min]
+- 🎯 Perfect North Star Alignment: [Agent] - 10/10
+- 📊 Best Evidence: [Agent]
+[... other categories ...]
+
+---
+
+### 📊 MANAGER PERFORMANCE
+**My Score**: [X.X]/10
+[Self-assessment from Step 15]
+
+---
+
+### 🎯 NEXT SESSION PRIORITIES
+[Critical path for tomorrow]
+
+---
+
+**Session Complete**: $(date +%Y-%m-%d\ %H:%M) UTC
+**Next Update**: [Next shutdown]
+
+═══════════════════════════════════════════════════════════════
+
+EOF
+
+echo "✅ CEO update appended to: artifacts/manager/CEO_UPDATES.md"
+```
+
+**Checkpoint**: ✅ CEO update documented
+
+---
+
+## 💾 PHASE 4: FINAL COMMIT & HANDOFF (3-5 minutes)
+
+### Step 17: Commit Manager Work (2 minutes)
 
 ```bash
 # Stage all manager work
