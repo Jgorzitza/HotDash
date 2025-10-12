@@ -2,14 +2,42 @@
  * Task X: Automated Training Data Curation Pipeline
  */
 
+interface TrainingSample {
+  query: { text: string; intent: string };
+  response?: string;
+  human_feedback?: {
+    approved?: boolean;
+    quality_scores?: { factuality?: number };
+    human_edited_text?: string;
+  };
+  training_flags?: {
+    quality_reviewed?: boolean;
+  };
+  [key: string]: any;
+}
+
+function hash(input: string): string {
+  return Buffer.from(input).toString('base64').substring(0, 16);
+}
+
+function groupBy<T>(items: T[], keyFn: (item: T) => string): Record<string, T[]> {
+  const result: Record<string, T[]> = {};
+  items.forEach(item => {
+    const key = keyFn(item);
+    if (!result[key]) result[key] = [];
+    result[key].push(item);
+  });
+  return result;
+}
+
 export class TrainingDataCurator {
   
   async curateDataset(rawSamples: TrainingSample[]) {
     // Filter high-quality samples
     const filtered = rawSamples.filter(s =>
-      s.human_feedback.approved &&
-      s.training_flags.quality_reviewed &&
-      (s.human_feedback.quality_scores?.factuality || 0) >= 4
+      s.human_feedback?.approved &&
+      s.training_flags?.quality_reviewed &&
+      (s.human_feedback?.quality_scores?.factuality || 0) >= 4
     );
     
     // De-duplicate similar samples
@@ -36,7 +64,7 @@ export class TrainingDataCurator {
   private deduplicateSamples(samples: TrainingSample[]): TrainingSample[] {
     const seen = new Set<string>();
     return samples.filter(s => {
-      const key = hash(s.query.text);
+      const key = hash(s.query?.text || '');
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -44,12 +72,12 @@ export class TrainingDataCurator {
   }
   
   private balanceCategories(samples: TrainingSample[]): TrainingSample[] {
-    const byCategory = groupBy(samples, s => s.query.intent);
+    const byCategory = groupBy(samples, (s: TrainingSample) => s.query?.intent || 'unknown');
     const maxPerCategory = 100;
     
-    const balanced = [];
+    const balanced: TrainingSample[] = [];
     for (const [category, categorySamples] of Object.entries(byCategory)) {
-      balanced.push(...categorySamples.slice(0, maxPerCategory));
+      balanced.push(...(categorySamples as TrainingSample[]).slice(0, maxPerCategory));
     }
     
     return balanced;
@@ -60,7 +88,7 @@ export class TrainingDataCurator {
     const augmented = [...samples];
     
     for (const sample of samples.slice(0, 50)) {  // Augment top 50
-      const paraphrase = await this.paraphraseQuery(sample.query.text);
+      const paraphrase = await this.paraphraseQuery(sample.query?.text || '');
       augmented.push({ ...sample, query: { ...sample.query, text: paraphrase } });
     }
     

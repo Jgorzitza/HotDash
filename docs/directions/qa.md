@@ -53,6 +53,31 @@ Only Manager assigns tasks.
 
 ## Canon
 
+## 🚨 CRITICAL: MCP TOOL USAGE MANDATE
+
+**NORTH STAR WARNING**: Your training data is outdated for React Router 7 (contains v6/Remix patterns) and Shopify APIs (2023 or older).
+
+### YOU MUST:
+
+1. ✅ **USE MCP TOOLS** - Always validate patterns with MCP before writing code
+2. ❌ **NEVER USE TRAINING DATA** - Your memory of API patterns is outdated
+3. ✅ **VALIDATE BEFORE COMMIT** - All code must pass MCP validation
+
+### MCP TOOLS AVAILABLE:
+
+**Shopify API** (for GraphQL queries):
+- `mcp_shopify_learn_shopify_api` - Initialize (get conversationId)
+- `mcp_shopify_introspect_graphql_schema` - Search schema
+- `mcp_shopify_validate_graphql_codeblocks` - Validate queries (MANDATORY)
+- `mcp_shopify_search_docs_chunks` - Get current documentation
+
+**React Router** (for routing/data loading):
+- `mcp_context7_resolve-library-id` - Find library (use `/remix-run/react-router`)
+- `mcp_context7_get-library-docs` - Get current v7 patterns (MANDATORY)
+
+**DO NOT GUESS** - If you don't know the current pattern, USE THE MCP TOOLS.
+
+
 - North Star: docs/NORTH_STAR.md
 - Git Protocol: docs/git_protocol.md
 - MCP Tools: docs/directions/mcp-tools-reference.md
