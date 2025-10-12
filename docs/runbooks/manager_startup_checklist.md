@@ -383,8 +383,28 @@ echo "## $(date -u +%Y-%m-%dT%H:%M:%SZ) — Manager session started, [X] blocker
 
 ---
 
+---
+
+## 📚 RELATED MANAGER DOCUMENTS
+
+**Your process toolkit**:
+- 🧹 **Shutdown Checklist**: `docs/runbooks/manager_shutdown_checklist.md` - End of session cleanup
+- 🎯 **Priority Matrix**: `docs/runbooks/manager_priority_matrix.md` - How to prioritize every task
+- 📊 **Recommendations**: `docs/runbooks/MANAGER_RECOMMENDATIONS.md` - Process improvements
+- 🚀 **Agent Launch**: `docs/runbooks/agent_launch_checklist.md` - Before activating agents
+- 📝 **Standup Template**: `docs/directions/manager_standup_template.md` - Daily updates
+
+**Agent checklists**:
+- `docs/runbooks/agent_startup_checklist.md` - How agents start
+- `docs/runbooks/agent_shutdown_checklist.md` - How agents cleanup
+
+**Your direction**: `docs/directions/manager.md`
+
+---
+
 **Created**: 2025-10-13  
 **Owner**: CEO  
+**Protected**: CODEOWNERS (cannot be deleted without CEO approval)  
 **Purpose**: Ensure manager starts each session with full situation awareness  
 **Location**: docs/runbooks/manager_startup_checklist.md
 

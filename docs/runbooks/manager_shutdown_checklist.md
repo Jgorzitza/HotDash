@@ -938,8 +938,28 @@ git commit -m "feat(manager): session complete - [summary]"
 
 ---
 
+---
+
+## 📚 RELATED MANAGER DOCUMENTS
+
+**Your process toolkit**:
+- ✅ **Startup Checklist**: `docs/runbooks/manager_startup_checklist.md` - Start of session procedures
+- 🎯 **Priority Matrix**: `docs/runbooks/manager_priority_matrix.md` - How to prioritize every task (USE THIS)
+- 📊 **Recommendations**: `docs/runbooks/MANAGER_RECOMMENDATIONS.md` - Why these processes exist
+- 🚀 **Agent Launch**: `docs/runbooks/agent_launch_checklist.md` - Before activating agents
+- 📝 **Standup Template**: `docs/directions/manager_standup_template.md` - Daily updates
+
+**Agent checklists** (point agents to these):
+- `docs/runbooks/agent_startup_checklist.md` - How agents start
+- `docs/runbooks/agent_shutdown_checklist.md` - How agents cleanup
+
+**Your direction**: `docs/directions/manager.md`
+
+---
+
 **Created**: 2025-10-13  
 **Owner**: CEO  
+**Protected**: CODEOWNERS (cannot be deleted without CEO approval)  
 **Purpose**: Ensure manager maintains focused, blocker-first agent direction  
 **Location**: docs/runbooks/manager_shutdown_checklist.md  
 **Critical**: Direction cleanup is YOUR job - agents need clear, focused tasks

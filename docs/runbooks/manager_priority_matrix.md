@@ -691,8 +691,25 @@ mcp_shopify_validate_graphql_codeblocks(...)
 
 ---
 
+---
+
+## 📚 RELATED MANAGER DOCUMENTS
+
+**Use this matrix with**:
+- ✅ **Startup Checklist**: `docs/runbooks/manager_startup_checklist.md` - Step 10 uses this matrix
+- 🧹 **Shutdown Checklist**: `docs/runbooks/manager_shutdown_checklist.md` - Step 2 uses this matrix
+- 📊 **Recommendations**: `docs/runbooks/MANAGER_RECOMMENDATIONS.md` - Full context on why
+- 📍 **North Star**: `docs/NORTH_STAR.md` - Q4 checks alignment to 5 tiles
+
+**Agent references**:
+- `docs/runbooks/agent_startup_checklist.md`
+- `docs/runbooks/agent_shutdown_checklist.md`
+
+---
+
 **Created**: 2025-10-13  
 **Owner**: Manager  
+**Protected**: CODEOWNERS (cannot be deleted without CEO approval)  
 **Purpose**: Objective framework for all task prioritization decisions  
 **Location**: docs/runbooks/manager_priority_matrix.md
 

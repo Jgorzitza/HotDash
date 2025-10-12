@@ -16,6 +16,18 @@ expires: 2025-10-20
 
 ---
 
+## 🎯 HOW TO USE THIS CHECKLIST
+
+**When it's time to shutdown**:
+1. Replace `<your-agent>` in all commands with your actual agent name
+2. Execute each step in order
+3. Confirm shutdown ready at the end
+
+**When CEO says**: "Provide manager feedback"
+**You do**: Follow Step 5 (Log Session End) and Step 6 (Performance Review) → Write to `feedback/<your-agent>.md` ONLY
+
+---
+
 ## 🚨 PHASE 1: CLEANUP VIOLATIONS (5-15 minutes)
 
 ### Step 1: Scan for Violations (1 minute)
@@ -154,9 +166,61 @@ EOF
 
 ---
 
-## 💾 PHASE 3: COMMIT & VERIFY (2-5 minutes)
+## 📊 PHASE 3: PERFORMANCE REVIEW (3-5 minutes)
 
-### Step 6: Commit Work (2 minutes)
+### Step 6: Review Your Performance (3-5 minutes)
+
+**Before shutdown, reflect on today's work and document for improvement**:
+
+```bash
+cat >> feedback/<your-agent>.md << 'EOF'
+
+---
+
+## $(date -u +%Y-%m-%dT%H:%M:%SZ) — Performance Review
+
+### What I Did Well Today (1-2 items)
+1. [Specific accomplishment - be honest about what went well]
+2. [Another strength from today]
+
+### What I Screwed Up (1 item - be brutally honest)
+1. [Specific mistake, wrong decision, or poor execution]
+   - Why it happened: [Root cause]
+   - How to prevent: [What to do differently]
+
+### Process Improvements for Next Startup (1-2 items)
+1. [Change to implement tomorrow - specific action]
+2. [Another improvement to try]
+
+### North Star Alignment
+**Score**: [1-10, where 10 = perfect alignment]
+**Reasoning**: [How did today's work support operator value and 5 tiles?]
+**Drift detected**: [None / Yes - worked on X which doesn't support tiles]
+**Course correction**: [If drifted, what to focus on tomorrow]
+
+**North Star Check**:
+- Did my work support the 5 tiles? [Yes/No - which tiles?]
+- Did I deliver operator value TODAY? [Yes/No - what value?]
+- Did I use MCP tools (not training data)? [Yes/No - examples]
+- Did I provide evidence for all work? [Yes/No - where?]
+- Did I work on blockers vs nice-to-haves? [Blockers first? Yes/No]
+
+EOF
+```
+
+**Why this matters**:
+- Honest self-assessment improves performance
+- Manager learns what's working/not working
+- Catches drift early
+- Builds culture of continuous improvement
+
+**Checkpoint**: ✅ Performance reviewed and documented
+
+---
+
+## 💾 PHASE 4: COMMIT & VERIFY (2-5 minutes)
+
+### Step 7: Commit Work (2 minutes)
 
 ```bash
 git add feedback/<your-agent>.md artifacts/<your-agent>/
@@ -206,7 +270,23 @@ git add -A && git commit -m "feat(<your-agent>): session complete"
 
 ---
 
+---
+
+## 📚 RELATED PROCESS DOCUMENTS
+
+**For context and procedures**:
+- 🧹 **Startup Checklist**: `docs/runbooks/agent_startup_checklist.md` - Run at session start
+- 📝 **Feedback Process**: `docs/policies/agentfeedbackprocess.md` - How to log work properly
+- 🎯 **Direction Governance**: `docs/directions/README.md` - How to read your direction
+- 📍 **North Star**: `docs/NORTH_STAR.md` - What to align to
+- 📋 **Git Protocol**: `docs/git_protocol.md` - How to commit evidence
+
+**Your specific direction**: `docs/directions/<your-agent>.md`
+
+---
+
 **Created**: 2025-10-13  
 **Owner**: Manager  
+**Protected**: CODEOWNERS (cannot be deleted without CEO approval)  
 **Location**: docs/runbooks/agent_shutdown_checklist.md
 

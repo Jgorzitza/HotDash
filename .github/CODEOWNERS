@@ -1,12 +1,58 @@
-# Canon (manager only)
-docs/directions/**          @manager-team
-docs/**                     @manager-team
-feedback/manager.md         @manager-team
+# CODEOWNERS - Protect Critical Files from Deletion/Modification
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
-# App areas (customize teams as you grow)
-app/**                      @dashboard-team
-packages/**                 @tooling-team
+# ===================================================================
+# CRITICAL PROCESS DOCUMENTS (Manager/CEO only)
+# ===================================================================
 
-# CI/infra
-.github/**                  @tooling-team
-scripts/**                  @tooling-team
+# Core mission and direction
+/docs/NORTH_STAR.md                                     @Jgorzitza
+/README.md                                               @Jgorzitza
+/docs/git_protocol.md                                    @Jgorzitza
+/docs/directions/README.md                              @Jgorzitza
+
+# Agent startup/shutdown procedures
+/docs/runbooks/agent_startup_checklist.md               @Jgorzitza
+/docs/runbooks/agent_shutdown_checklist.md              @Jgorzitza
+/docs/runbooks/agent_launch_checklist.md                @Jgorzitza
+
+# Manager procedures
+/docs/runbooks/manager_startup_checklist.md             @Jgorzitza
+/docs/runbooks/manager_shutdown_checklist.md            @Jgorzitza
+/docs/runbooks/manager_priority_matrix.md               @Jgorzitza
+/docs/directions/manager.md                             @Jgorzitza
+/docs/directions/manager_standup_template.md            @Jgorzitza
+
+# Process controls
+/docs/policies/feedback_controls.md                     @Jgorzitza
+/docs/policies/agentfeedbackprocess.md                  @Jgorzitza
+/docs/ops/credential_index.md                           @Jgorzitza
+
+# Agent direction files (Manager only can edit)
+/docs/directions/*.md                                    @Jgorzitza
+
+# ===================================================================
+# EXCEPTIONS (Can be modified by specific agents)
+# ===================================================================
+
+# Agents can edit their OWN feedback file only
+/feedback/engineer.md                                    @engineer
+/feedback/qa.md                                          @qa
+/feedback/data.md                                        @data
+# (etc - one line per agent if needed, or just enforce via process)
+
+# ===================================================================
+# NOTES
+# ===================================================================
+# 
+# This protects critical documents from:
+# - Accidental deletion
+# - Unauthorized edits
+# - Agent confusion (editing wrong files)
+#
+# To modify protected files:
+# - Create PR
+# - Tag @Jgorzitza for approval
+# - Requires CEO/Manager approval to merge
+#
+# ===================================================================
