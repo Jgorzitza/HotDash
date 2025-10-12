@@ -2,6 +2,24 @@
  * Task N: Conversational Memory and Context Tracking
  */
 
+interface Message {
+  content: string;
+  intent?: string;
+  status?: string;
+  timestamp?: Date;
+}
+
+interface ConversationContext {
+  conversationId: number;
+  messages: Message[];
+  metadata: {
+    order_numbers: string[];
+    products_mentioned: string[];
+    intent_history: string[];
+  };
+  summary: string;
+}
+
 export class ConversationMemory {
   private conversations = new Map<number, ConversationContext>();
   

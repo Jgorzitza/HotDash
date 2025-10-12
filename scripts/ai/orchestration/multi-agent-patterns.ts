@@ -214,43 +214,33 @@ export class AgentOrchestrator {
   }
   
   private async executeSequential(request: any) {
+    // TODO: Implement triage agent
     // Triage → Specialist → Done
-    const intent = await triageAgent.classify(request);
-    const response = await specialistAgent[intent].handle(request);
-    return response;
+    throw new Error('Sequential execution not yet implemented');
   }
   
   private async executeParallel(request: any) {
+    // TODO: Implement parallel agent execution
     // Multiple agents at once
-    const { intents } = await triageAgent.classify(request);
-    const responses = await Promise.all(
-      intents.map(intent => specialistAgent[intent].handle(request))
-    );
-    return synthesizeResponses(responses);
+    throw new Error('Parallel execution not yet implemented');
   }
   
   private async executeHierarchical(request: any) {
+    // TODO: Implement hierarchical agent execution
     // Supervisor coordinates workers
-    const plan = await supervisorAgent.createPlan(request);
-    const results = await Promise.all(
-      plan.tasks.map(task => task.agent.execute(task))
-    );
-    return supervisorAgent.synthesize(results);
+    throw new Error('Hierarchical execution not yet implemented');
   }
   
   private async executeConditional(request: any) {
+    // TODO: Implement conditional routing
     // Route based on conditions
-    const agent = this.routeAgent(request);
-    return agent.handle(request);
+    throw new Error('Conditional execution not yet implemented');
   }
   
   private async executeCollaborative(request: any) {
+    // TODO: Implement collaborative agents
     // Iterative collaboration
-    let context = request;
-    for (const phase of collaborationPhases) {
-      context = await phase.agents.collaborate(context);
-    }
-    return context.solution;
+    throw new Error('Collaborative execution not yet implemented');
   }
 }
 
