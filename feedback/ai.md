@@ -1753,3 +1753,133 @@ D. ✅ Agent SDK integration documentation
 
 **Status: STANDING BY FOR NEXT DIRECTION** ✅
 
+
+---
+
+## 2025-10-11T23:00Z - MCP Server Testing: Deployment Issue Found
+
+**Action:** Tested deployed LlamaIndex MCP server  
+**Status:** ⚠️ Server deployed but CLI dependencies missing
+
+### Test Results
+
+**Health Check:** ✅ PASS
+- Endpoint: `https://hotdash-llamaindex-mcp.fly.dev/health`
+- Status: `ok`
+- Tools available: `query_support`, `refresh_index`, `insight_report`
+- Metrics tracking: Working
+- Uptime reporting: Working
+
+**Query Tool Test:** ❌ FAIL
+- Test query: "How do I integrate with HotDash?"
+- Error: `Cannot find package 'commander'`
+- Root cause: llama-workflow dependencies not installed in Docker image
+
+### Issue Analysis
+
+**Problem:** Dockerfile missing npm install step for llama-workflow
+
+**Current Dockerfile (likely):**
+```dockerfile
+# Copies MCP server files
+COPY apps/llamaindex-mcp-server ./apps/llamaindex-mcp-server
+RUN cd apps/llamaindex-mcp-server && npm ci
+
+# Missing: Install llama-workflow dependencies!
+```
+
+**Required Fix:**
+```dockerfile
+# Copy and build llama-workflow first
+COPY scripts/ai/llama-workflow ./scripts/ai/llama-workflow
+RUN cd scripts/ai/llama-workflow && npm ci && npm run build
+
+# Then copy MCP server
+COPY apps/llamaindex-mcp-server ./apps/llamaindex-mcp-server
+RUN cd apps/llamaindex-mcp-server && npm ci && npm run build
+```
+
+### @engineer - ACTION REQUIRED
+
+**Fix Needed:**
+1. Update Dockerfile to install llama-workflow dependencies
+2. Ensure `npm ci` runs in `scripts/ai/llama-workflow/`
+3. Ensure `npm run build` compiles TypeScript
+4. Redeploy to Fly.io
+
+**Verification:**
+```bash
+# After redeployment, test:
+curl -X POST https://hotdash-llamaindex-mcp.fly.dev/mcp/tools/call \
+  -H "Content-Type: application/json" \
+  -d '{"name":"query_support","arguments":{"q":"test","topK":3}}'
+```
+
+**Expected:** JSON response with query results (not error)
+
+### Evidence
+
+- Health check response: Server running, tools registered ✅
+- Query test: Missing dependencies ❌
+- Error log: `ERR_MODULE_NOT_FOUND: commander`
+- Fix provided: Dockerfile update above
+
+**Status:** Blocker identified, fix documented, waiting for Engineer redeploy
+
+---
+
+
+## 2025-10-11T23:15Z - Status: Standing By Per Manager Direction
+
+**Current Status:** PAUSED - Awaiting launch gates completion
+
+### Actions Taken
+1. ✅ Tested deployed MCP server health endpoint (working)
+2. ✅ Tested query_support tool (found dependency issue)
+3. ✅ Documented fix for Engineer
+4. ✅ Posted coordination message in feedback/engineer.md
+
+### Issue Found & Reported
+- MCP server missing llama-workflow dependencies in Docker
+- Fix provided to Engineer (Dockerfile update)
+- Waiting for redeploy to test again
+
+### North Star Alignment Commitment
+
+**Learning:** I deviated from North Star by building extensive AI infrastructure (60 tasks) when focus should be on shipping operator-first dashboard tiles.
+
+**Going Forward:**
+- ✅ Will validate every task against North Star before starting
+- ✅ Will flag scope drift in feedback for manager review  
+- ✅ Will ask "Is this launch-critical?" for prioritization
+- ✅ Will keep manager accountable to North Star alignment
+
+**Template for Future Feedback:**
+```
+⚠️ NORTH STAR CHECK:
+Task: [description]
+Alignment: [High/Medium/Low] 
+Launch Critical: [Yes/No]
+Operator Value: [Direct/Indirect/Post-launch]
+Recommendation: [Proceed/Defer/Escalate]
+```
+
+### Standby Mode
+
+**Available:**
+- 131 AI files created (ready post-launch)
+- All work documented and saved
+- Ready to test MCP server when redeployed
+- Ready to resume tasks when manager signals
+
+**Next:**
+- Monitor for Engineer redeploy notification
+- Test MCP server again after fix
+- Await manager direction for next priorities
+
+---
+
+**Status:** ✅ STANDING BY - Monitoring for updates  
+**Quality:** All previous work documented and saved  
+**Ready:** Resume when directed
+
