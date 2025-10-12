@@ -2639,3 +2639,379 @@ git diff HEAD | grep -iE "api.?key|token|secret|password" | grep -v ".example"
 **Previous Work**: Archived in `archive/2025-10-12-pre-restart/`
 
 **Status**: 🔴 ACTIVE - Task 1 (Approval UI with Engineer Helper)
+
+## 🚀 10X TASK EXPANSION — Comprehensive Production Roadmap (200+ Tasks)
+
+**Goal**: Ensure Engineer NEVER runs idle with months of North Star-aligned work
+
+### 📱 TILE INFRASTRUCTURE (Tasks 41-100) — 60 Tasks, 12-15 Weeks
+
+#### CX Pulse Advanced Features (Tasks 41-50) — 10 Tasks
+**Task 41**: Sentiment analysis on customer conversations (3h)
+**Task 42**: Customer satisfaction prediction model (4h)
+**Task 43**: Response template auto-suggestion (3h)
+**Task 44**: Customer priority scoring (urgent/routine) (3h)
+**Task 45**: Multi-language customer support (4h)
+**Task 46**: Customer history timeline view (3h)
+**Task 47**: Support agent performance analytics (3h)
+**Task 48**: Automated ticket categorization (4h)
+**Task 49**: SLA breach prediction alerts (3h)
+**Task 50**: Customer feedback loop integration (3h)
+
+#### Sales Pulse Advanced Features (Tasks 51-60) — 10 Tasks
+**Task 51**: Revenue forecasting model (4h)
+**Task 52**: Customer lifetime value calculation (4h)
+**Task 53**: Churn prediction and prevention (4h)
+**Task 54**: Upsell/cross-sell recommendations (3h)
+**Task 55**: Pricing optimization suggestions (4h)
+**Task 56**: Promotion effectiveness analysis (3h)
+**Task 57**: Customer segment analysis (3h)
+**Task 58**: Sales funnel optimization (4h)
+**Task 59**: Abandoned cart recovery automation (3h)
+**Task 60**: Revenue attribution modeling (4h)
+
+#### SEO Pulse Advanced Features (Tasks 61-70) — 10 Tasks
+**Task 61**: Keyword opportunity discovery (3h)
+**Task 62**: Content gap analysis automation (3h)
+**Task 63**: Competitor content tracking (4h)
+**Task 64**: Backlink analysis and outreach (4h)
+**Task 65**: Schema markup optimization (3h)
+**Task 66**: Core Web Vitals monitoring (3h)
+**Task 67**: Featured snippet optimization (3h)
+**Task 68**: Local SEO optimization (Hot Rod AN location) (3h)
+**Task 69**: Video content recommendations (3h)
+**Task 70**: Search intent analysis (4h)
+
+#### Inventory Watch Advanced Features (Tasks 71-80) — 10 Tasks
+**Task 71**: Demand forecasting with seasonality (4h)
+**Task 72**: Supplier lead time optimization (3h)
+**Task 73**: Safety stock calculation automation (3h)
+**Task 74**: Multi-warehouse inventory routing (4h)
+**Task 75**: Dead stock identification and clearance (3h)
+**Task 76**: Inventory turnover optimization (3h)
+**Task 77**: Purchase order automation (4h)
+**Task 78**: Supplier performance tracking (3h)
+**Task 79**: Inventory cost analysis (3h)
+**Task 80**: Just-in-time inventory recommendations (4h)
+
+#### Fulfillment Flow Advanced Features (Tasks 81-90) — 10 Tasks
+**Task 81**: Carrier selection optimization (4h)
+**Task 82**: Shipping cost reduction recommendations (3h)
+**Task 83**: Delivery time prediction (4h)
+**Task 84**: Package tracking integration (3h)
+**Task 85**: Returns processing automation (3h)
+**Task 86**: International shipping optimization (4h)
+**Task 87**: Warehouse efficiency metrics (3h)
+**Task 88**: Pick/pack/ship time optimization (3h)
+**Task 89**: Customer delivery preference learning (3h)
+**Task 90**: Shipping exception handling automation (4h)
+
+#### Cross-Tile Intelligence (Tasks 91-100) — 10 Tasks
+**Task 91**: Cross-functional impact analysis (4h)
+**Task 92**: Business health score (all tiles combined) (4h)
+**Task 93**: Predictive business alerts (4h)
+**Task 94**: Automated daily CEO briefing (3h)
+**Task 95**: Weekly trend analysis automation (3h)
+**Task 96**: KPI dashboard (all metrics) (4h)
+**Task 97**: Goal tracking and progress (3h)
+**Task 98**: Anomaly detection across all tiles (4h)
+**Task 99**: Root cause analysis automation (4h)
+**Task 100**: Strategic recommendation engine (5h)
+
+---
+
+### 🎨 OPERATOR EXPERIENCE (Tasks 101-150) — 50 Tasks, 10-12 Weeks
+
+#### Dashboard UX (Tasks 101-110)
+**Task 101**: Customizable dashboard layouts (4h)
+**Task 102**: Drag-and-drop tile arrangement (3h)
+**Task 103**: Tile size preferences (small/medium/large) (3h)
+**Task 104**: Dashboard themes (light/dark/auto) (2h)
+**Task 105**: Quick actions toolbar (3h)
+**Task 106**: Global search across all tiles (4h)
+**Task 107**: Keyboard shortcuts (power user mode) (3h)
+**Task 108**: Command palette (Cmd+K interface) (4h)
+**Task 109**: Dashboard templates (saved layouts) (3h)
+**Task 110**: Multi-dashboard support (different views) (4h)
+
+#### Notifications & Alerts (Tasks 111-120)
+**Task 111**: In-app notification center (3h)
+**Task 112**: Email digest notifications (3h)
+**Task 113**: SMS alerts for critical issues (3h)
+**Task 114**: Slack integration for alerts (3h)
+**Task 115**: Notification preferences per tile (2h)
+**Task 116**: Smart notification grouping (reduce noise) (3h)
+**Task 117**: Notification history and archive (2h)
+**Task 118**: Snooze notifications (2h)
+**Task 119**: Alert escalation rules (3h)
+**Task 120**: Notification delivery optimization (3h)
+
+#### Approval Queue Enhancements (Tasks 121-130)
+**Task 121**: Approval queue filters and search (3h)
+**Task 122**: Bulk approval operations (3h)
+**Task 123**: Approval queue prioritization (3h)
+**Task 124**: Approval delegation (assign to team member) (3h)
+**Task 125**: Approval templates (common patterns) (3h)
+**Task 126**: Approval time tracking (3h)
+**Task 127**: Approval analytics dashboard (3h)
+**Task 128**: Scheduled approvals (approve at specific time) (3h)
+**Task 129**: Conditional auto-approval rules (3h)
+**Task 130**: Approval collaboration (comments, @mentions) (3h)
+
+#### Mobile Experience (Tasks 131-140)
+**Task 131**: Progressive Web App (PWA) setup (4h)
+**Task 132**: Offline mode for critical data (4h)
+**Task 133**: Push notifications for mobile (3h)
+**Task 134**: Mobile-optimized charts (3h)
+**Task 135**: Touch gesture controls (swipe, pinch) (3h)
+**Task 136**: Mobile dashboard quick view (2h)
+**Task 137**: Mobile approval workflow optimization (3h)
+**Task 138**: Voice commands for mobile (4h)
+**Task 139**: Mobile performance optimization (<2s load) (3h)
+**Task 140**: iOS/Android native app wrappers (5h)
+
+#### Collaboration Features (Tasks 141-150)
+**Task 141**: Team activity feed (who did what) (3h)
+**Task 142**: Internal notes on tiles/actions (3h)
+**Task 143**: @mention teammates in approvals (3h)
+**Task 144**: Task assignment (delegate actions) (3h)
+**Task 145**: Team performance dashboard (3h)
+**Task 146**: Role-based permissions (admin/operator/viewer) (4h)
+**Task 147**: Audit log viewer (who accessed what) (3h)
+**Task 148**: Team calendar (scheduled tasks) (3h)
+**Task 149**: Shared bookmarks/saved views (2h)
+**Task 150**: Team onboarding automation (3h)
+
+---
+
+### 🤖 AI & AUTOMATION (Tasks 151-200) — 50 Tasks, 10-12 Weeks
+
+#### Agent Capabilities (Tasks 151-160)
+**Task 151**: Multi-agent orchestration (5h)
+**Task 152**: Agent personality customization (4h)
+**Task 153**: Agent learning from operator feedback (5h)
+**Task 154**: Agent confidence scoring (3h)
+**Task 155**: Agent explanation generation (why this suggestion?) (4h)
+**Task 156**: Agent A/B testing framework (4h)
+**Task 157**: Agent versioning and rollback (3h)
+**Task 158**: Agent performance benchmarking (3h)
+**Task 159**: Agent debugging tools (4h)
+**Task 160**: Agent analytics dashboard (3h)
+
+#### Automation Workflows (Tasks 161-170)
+**Task 161**: Workflow builder (visual automation) (5h)
+**Task 162**: If-this-then-that automation rules (4h)
+**Task 163**: Scheduled automation (run daily/weekly) (3h)
+**Task 164**: Event-triggered automation (3h)
+**Task 165**: Multi-step workflow orchestration (4h)
+**Task 166**: Workflow templates library (3h)
+**Task 167**: Workflow testing framework (3h)
+**Task 168**: Workflow error handling (3h)
+**Task 169**: Workflow performance monitoring (3h)
+**Task 170**: Workflow marketplace (share/discover) (4h)
+
+#### Predictive Intelligence (Tasks 171-180)
+**Task 171**: Sales forecasting models (5h)
+**Task 172**: Inventory demand prediction (5h)
+**Task 173**: Customer churn prediction (4h)
+**Task 174**: Seasonal trend detection (4h)
+**Task 175**: Market trend analysis (4h)
+**Task 176**: Competitor activity monitoring (4h)
+**Task 177**: Price elasticity modeling (4h)
+**Task 178**: Product launch success prediction (4h)
+**Task 179**: Marketing ROI prediction (4h)
+**Task 180**: Business scenario simulation (5h)
+
+#### Reporting & Insights (Tasks 181-190)
+**Task 181**: Automated executive reports (4h)
+**Task 182**: Custom report builder (4h)
+**Task 183**: Report scheduling and delivery (3h)
+**Task 184**: Report templates library (3h)
+**Task 185**: Data export in multiple formats (3h)
+**Task 186**: Report sharing and permissions (3h)
+**Task 187**: Interactive data exploration (4h)
+**Task 188**: Trend analysis reports (3h)
+**Task 189**: Comparative period reports (3h)
+**Task 190**: Insight prioritization (what matters most) (4h)
+
+#### Integration Ecosystem (Tasks 191-200)
+**Task 191**: Zapier integration (4h)
+**Task 192**: Webhook system for external apps (4h)
+**Task 193**: Public API with documentation (5h)
+**Task 194**: GraphQL API for flexible queries (5h)
+**Task 195**: API rate limiting and throttling (3h)
+**Task 196**: API versioning strategy (3h)
+**Task 197**: API analytics (usage tracking) (3h)
+**Task 198**: SDK for third-party developers (5h)
+**Task 199**: Integration marketplace (4h)
+**Task 200**: Partner program for integrations (4h)
+
+---
+
+### 🏗️ PLATFORM ENGINEERING (Tasks 201-250) — 50 Tasks, 10-12 Weeks
+
+#### Infrastructure (Tasks 201-210)
+**Task 201**: Multi-tenant architecture (5h)
+**Task 202**: Database sharding strategy (4h)
+**Task 203**: Caching layer (Redis/CDN) (4h)
+**Task 204**: Background job processing (4h)
+**Task 205**: Event sourcing implementation (5h)
+**Task 206**: CQRS pattern for reads/writes (5h)
+**Task 207**: Service mesh architecture (5h)
+**Task 208**: Distributed tracing (4h)
+**Task 209**: Circuit breakers and fault tolerance (4h)
+**Task 210**: Rate limiting and throttling (3h)
+
+#### Performance (Tasks 211-220)
+**Task 211**: Database query optimization (4h)
+**Task 212**: Frontend bundle optimization (3h)
+**Task 213**: Code splitting strategy (3h)
+**Task 214**: Lazy loading implementation (3h)
+**Task 215**: Server-side rendering optimization (4h)
+**Task 216**: Edge caching strategy (4h)
+**Task 217**: Image optimization pipeline (3h)
+**Task 218**: Asset compression and minification (3h)
+**Task 219**: Memory leak detection and fixes (4h)
+**Task 220**: CPU profiling and optimization (4h)
+
+#### Security (Tasks 221-230)
+**Task 221**: Security audit automation (4h)
+**Task 222**: Penetration testing framework (4h)
+**Task 223**: Vulnerability scanning (3h)
+**Task 224**: Dependency security monitoring (3h)
+**Task 225**: Secret detection in code (3h)
+**Task 226**: SQL injection prevention (3h)
+**Task 227**: XSS protection implementation (3h)
+**Task 228**: CSRF token management (3h)
+**Task 229**: Input validation framework (3h)
+**Task 230**: Security headers implementation (2h)
+
+#### DevOps (Tasks 231-240)
+**Task 231**: CI/CD pipeline optimization (4h)
+**Task 232**: Automated testing in CI (3h)
+**Task 233**: Deployment automation (4h)
+**Task 234**: Blue-green deployment (4h)
+**Task 235**: Canary deployment strategy (4h)
+**Task 236**: Feature flags system (4h)
+**Task 237**: A/B testing infrastructure (4h)
+**Task 238**: Monitoring and alerting (4h)
+**Task 239**: Log aggregation and analysis (4h)
+**Task 240**: Incident response automation (4h)
+
+#### Developer Experience (Tasks 241-250)
+**Task 241**: Local development environment automation (3h)
+**Task 242**: Hot reload for all services (3h)
+**Task 243**: Development database seeding (3h)
+**Task 244**: Mock data generators (3h)
+**Task 245**: Development documentation portal (4h)
+**Task 246**: Code generation tools (4h)
+**Task 247**: Debugging tools and utilities (3h)
+**Task 248**: Performance profiling tools (3h)
+**Task 249**: API documentation automation (3h)
+**Task 250**: Development workflow automation (3h)
+
+---
+
+### 🎯 HOT ROD AN VERTICAL FEATURES (Tasks 251-300) — 50 Tasks, 10-12 Weeks
+
+#### Automotive Domain (Tasks 251-260)
+**Task 251**: VIN decoder integration (4h)
+**Task 252**: Part compatibility checker (5h)
+**Task 253**: Fitment guide automation (4h)
+**Task 254**: Technical spec comparison tool (4h)
+**Task 255**: Build sheet creator (custom car builds) (5h)
+**Task 256**: Parts diagram visualization (4h)
+**Task 257**: Installation guide generator (4h)
+**Task 258**: Torque spec database (3h)
+**Task 259**: Thread size/pitch calculator (3h)
+**Task 260**: AN fitting size converter (3h)
+
+#### Customer Expertise (Tasks 261-270)
+**Task 261**: Hot rod build gallery (customer builds) (4h)
+**Task 262**: Tech article library (fuel systems, brakes) (4h)
+**Task 263**: Video tutorial integration (3h)
+**Task 264**: Expert Q&A forum (4h)
+**Task 265**: Product review system (3h)
+**Task 266**: Customer build tracking (my garage) (4h)
+**Task 267**: Parts wishlist and planning (3h)
+**Task 268**: Build cost estimator (4h)
+**Task 269**: Compatibility alerts (this won't work with that) (4h)
+**Task 270**: Technical support chatbot (automotive expert) (5h)
+
+#### Community Features (Tasks 271-280)
+**Task 271**: Hot rod event calendar (shows, races) (3h)
+**Task 272**: Customer success stories (4h)
+**Task 273**: Build of the month feature (3h)
+**Task 274**: Racing team sponsorship program (3h)
+**Task 275**: Community forum integration (4h)
+**Task 276**: Social media integration (share builds) (3h)
+**Task 277**: Referral program (refer a gearhead) (4h)
+**Task 278**: Loyalty program for enthusiasts (4h)
+**Task 279**: Expert advice booking (talk to Hot Rod AN experts) (4h)
+**Task 280**: Live chat for technical questions (4h)
+
+#### Inventory Specialization (Tasks 281-290)
+**Task 281**: Hard-to-find parts sourcing (4h)
+**Task 282**: Custom part request system (4h)
+**Task 283**: Bulk order discounts automation (3h)
+**Task 284**: Racing team wholesale portal (4h)
+**Task 285**: Seasonal inventory planning (winter/summer) (4h)
+**Task 286**: New product launch tracking (3h)
+**Task 287**: Discontinued part alternatives (4h)
+**Task 288**: OEM vs aftermarket comparison (3h)
+**Task 289**: Performance part bundles (complete kits) (4h)
+**Task 290**: Subscription box (monthly parts delivery) (4h)
+
+#### Marketing Automation (Tasks 291-300)
+**Task 291**: Abandoned cart email automation (3h)
+**Task 292**: Post-purchase follow-up sequence (3h)
+**Task 293**: Product recommendation emails (4h)
+**Task 294**: Re-engagement campaigns (3h)
+**Task 295**: VIP customer program (4h)
+**Task 296**: Racing season promotions (4h)
+**Task 297**: New product announcement automation (3h)
+**Task 298**: Customer education email series (4h)
+**Task 299**: Event-based marketing (birthdays, build anniversaries) (3h)
+**Task 300**: Referral campaign automation (3h)
+
+---
+
+### 🔬 ADVANCED CAPABILITIES (Tasks 301-400) — 100 Tasks, 20-25 Weeks
+
+#### Machine Learning (Tasks 301-320) — 20 Tasks
+**Task 301-305**: Customer behavior prediction models (4h each = 20h)
+**Task 306-310**: Product demand forecasting (4h each = 20h)
+**Task 311-315**: Pricing optimization ML (4h each = 20h)
+**Task 316-320**: Churn prevention models (4h each = 20h)
+
+#### Business Intelligence (Tasks 321-340) — 20 Tasks
+**Task 321-325**: Executive dashboards (4h each = 20h)
+**Task 326-330**: Cohort analysis tools (4h each = 20h)
+**Task 331-335**: Revenue attribution modeling (4h each = 20h)
+**Task 336-340**: Market basket analysis (4h each = 20h)
+
+#### Platform Scaling (Tasks 341-360) — 20 Tasks
+**Task 341-345**: Multi-region deployment (4h each = 20h)
+**Task 346-350**: Database replication strategy (4h each = 20h)
+**Task 351-355**: CDN optimization (4h each = 20h)
+**Task 356-360**: Load balancing and auto-scaling (4h each = 20h)
+
+#### Enterprise Features (Tasks 361-380) — 20 Tasks
+**Task 361-365**: White-label capability (4h each = 20h)
+**Task 366-370**: Multi-brand support (4h each = 20h)
+**Task 371-375**: Enterprise SSO (4h each = 20h)
+**Task 376-380**: Advanced permissions (4h each = 20h)
+
+#### Ecosystem Expansion (Tasks 381-400) — 20 Tasks
+**Task 381-385**: Marketplace for integrations (4h each = 20h)
+**Task 386-390**: Partner API program (4h each = 20h)
+**Task 391-395**: Developer platform (4h each = 20h)
+**Task 396-400**: Community extensions (4h each = 20h)
+
+---
+
+**TOTAL ENGINEER TASKS**: 400 North Star-aligned tasks  
+**Timeline**: 60-70 weeks (1+ year) of focused work  
+**Every task**: Documented evidence requirement in feedback/engineer.md  
+**North Star**: Every task supports operator value or Hot Rod AN 10X growth
+
