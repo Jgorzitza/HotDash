@@ -2240,3 +2240,43 @@ data/support/common-questions-faq.md     (13KB)
 **Coordination:** Waiting for @support operational review  
 **Next:** Continue with Tasks F-BB as assigned
 
+
+---
+
+## 2025-10-12T04:15Z - TASK B STARTING: Product Catalog Enhancement
+
+**Task:** Ingest all Hot Rodan product descriptions from Shopify  
+**Status:** 🚀 IN PROGRESS  
+**Timeline:** 2-3 hours
+
+### Task Objectives
+
+1. **Fetch products from Shopify** via MCP
+2. **Enhance with technical specs** (engine compatibility, dimensions, materials)
+3. **Create product Q&A knowledge base** for RAG
+4. **Evidence:** Product catalog in RAG, test queries return product info
+
+### Approach
+
+**Step 1:** Use Shopify MCP to fetch all products
+- Query Hot Rodan Shopify store
+- Get product titles, descriptions, variants, metafields
+- Extract technical specifications
+
+**Step 2:** Enhance product data
+- Add engine compatibility information
+- Include dimensions and materials where available
+- Structure for Q&A format
+
+**Step 3:** Create knowledge base
+- Format for LlamaIndex ingestion
+- Add to operator_knowledge index
+- Test retrieval quality
+
+**Step 4:** Document and verify
+- Test queries return accurate product info
+- Measure RAG performance
+- Log evidence
+
+### Starting Execution...
+

@@ -3556,3 +3556,75 @@ Status: All agents have deep, aligned backlogs
 
 **Next Steps:** Standing by for launch support, monitoring operations continue, ready for security/privacy/compliance needs as they arise.
 
+
+## 2025-10-12T01:40:00Z — Final Idle Agent Expansion Summary
+
+**Total Agents Expanded**: 8 agents with deep, Hot Rodan-aligned tasks
+
+**Expansion Details**:
+1. Designer: +10 tasks (1J-1S) = 45-50h work
+2. Marketing: +10 tasks (AE-5 to AE-14) = 50-55h work
+3. AI: +11 tasks (B-L) = 50-60h work
+4. Product: +16 tasks (115A-115P) = 80-95h work
+5. Data: +10 tasks (AG-1 to AG-10) = 70-80h work
+6. Compliance: +10 tasks (BZ-F to BZ-O) = 70-80h work
+7. Support: +11 tasks (1J-1T) = 45-55h work
+8. Enablement: +11 tasks (2J-2T) = 48-58h work
+
+**Total New Tasks**: 79 tasks
+
+**All Tasks Characteristics**:
+✅ Deep and substantial (45-95 hours per agent)
+✅ Hot Rodan Dashboard focused (automotive/hot rod context)
+✅ Support $1MM → $10MM growth goal
+✅ Launch-aligned (not post-launch dreaming)
+✅ Specific to www.hotrodan.com business
+
+**Process Followed**: ✅ Individual direction file updates (not combined docs)
+
+**Result**: All agents have 45-95 hours of meaningful, aligned work
+
+**Current Team Size**: 18 agents
+- 15 original agents (all with expanded tasks)
+- Engineer Helper (P0 blocker fixes)
+- Git Cleanup (repository health)
+- QA Helper (MCP-driven code verification)
+
+**Status**: ✅ No idle agents - everyone has deep backlogs
+
+**Next**: Agents will execute their assigned tasks and report progress in their individual feedback files
+
+## 2025-10-12T01:45:00Z — Engineer Helper & Git Cleanup Reports Reviewed
+
+**Engineer Helper Report** (Tasks 1-3):
+- ✅ Task 1 (Shopify GraphQL): Already fixed by main Engineer, validated with Shopify MCP
+- ⚠️ Task 2 (LlamaIndex MCP): 63 TypeScript errors, LlamaIndex 0.12.0 breaking changes
+- ✅ Task 3 (TypeScript errors): Fixed 24 errors, clean build achieved
+
+**Decision on Task 2**: Deprioritize LlamaIndex MCP (Option C)
+- **Rationale**: Not launch-critical, RAG queries can wait, unblocks 3-4h refactor
+- **Action**: Engineer Helper commits Task 3 fixes, then helps main Engineer with Approval UI (Task 6)
+
+**Git Cleanup Report** (Tasks 1-6):
+- ✅ Task 1, 2, 4: Complete (archived 47 files, cleaned root, organized structure)
+- 🟡 Tasks 3, 5, 6: Prepared and awaiting approval
+
+**Decision on Git Cleanup**: APPROVED to proceed
+- ✅ Create PR, self-merge (manager approval granted)
+- ✅ Delete 19 merged branches
+- ✅ Create REPO_STATUS.md, update README
+
+**Engineer Status**: 
+- 3 of 4 tasks complete (75%)
+- Waiting on Designer specs for Approval UI (Task 6)
+- Designer completed 1A-1I specs, Engineer should have them
+
+**Action Items**:
+1. Engineer Helper: Commit fixes, PR, then join Engineer on Task 6
+2. Git Cleanup: Create PR, merge, delete branches, update docs
+3. Designer: Confirm Engineer has specs for Approval UI
+4. All other agents: Resume expanded task lists
+
+**All Agents Clear to Work**: ✅ YES - No blockers for the 15 agents with expanded tasks
+
+Status: Engineer Helper redirected, Git Cleanup approved, all other agents can resume work

@@ -242,3 +242,42 @@ You are authorized to run local, non-interactive commands and scripts without as
 **Mission**: Unblock Engineer, enable launch TODAY  
 **Start**: Immediately with Task 1 (Shopify GraphQL fixes)
 
+
+---
+
+## 🎯 MANAGER DECISION ON TASK 2 (LlamaIndex MCP)
+
+**Your Report**: 63 TypeScript errors due to LlamaIndex 0.12.0 breaking changes
+
+**Decision**: **Option C - Deprioritize for now (Not Launch-Critical)**
+
+**Rationale**:
+- LlamaIndex MCP is for RAG queries (support knowledge base)
+- NOT blocking dashboard tiles or approvals (core launch features)
+- AI agent can continue building knowledge base content without MCP live
+- Can ship launch without LlamaIndex MCP, enable post-launch
+
+**Your Updated Task Status**:
+1. ✅ Task 1: COMPLETE (Shopify GraphQL already fixed)
+2. ⏸️ Task 2: PAUSED (deprioritize LlamaIndex MCP - not launch-critical)
+3. ✅ Task 3: COMPLETE (TypeScript errors fixed)
+
+**Next Actions for You**:
+1. ✅ Commit your Task 3 fixes (agent-sdk-mocks.ts) 
+2. ✅ Create PR with clean commit message
+3. ✅ Notify Integrations to re-validate Shopify queries
+4. ✅ Document decision to deprioritize LlamaIndex MCP
+5. **Then**: Join main Engineer on Task 6 (Approval Queue UI) - Designer specs ready!
+
+**Updated Timeline**:
+- Task 3 commit + PR: 15-20 min
+- Coordination: 10 min  
+- **Total remaining**: ~30 min, then help Engineer with UI
+
+**Why This Works**:
+- Unblocks you from 3-4 hour refactor
+- Preserves launch timeline
+- LlamaIndex MCP can be fixed post-launch when more time
+- Gets you working on higher-priority UI work with Engineer
+
+**Status**: 🟢 DECISION MADE - Complete Task 3 commit, then help Engineer with Approval UI (Task 6)

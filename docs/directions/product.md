@@ -393,3 +393,131 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 **Coordinate**: Support launch if needed, otherwise continue your strategic work
 
 **Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
+
+---
+
+## 📋 HOT RODAN LAUNCH-SPECIFIC TASKS (Tasks 115A-115P)
+
+### 🚀 IMMEDIATE HOT RODAN LAUNCH TASKS (Do First: 115A-115E)
+
+**Task 115A**: Hot Rodan Quick Start Guide for CEO
+- 1-page "How to Use Your Dashboard" guide
+- Screenshots of each tile with explanations
+- Common workflows (review approvals, check daily metrics)
+- Evidence: Quick start guide (docs/pilot/hot-rodan-quick-start.md)
+- Timeline: 1-2 hours
+
+**Task 115B**: Hot Rodan Pilot Briefing Document
+- Goals for pilot launch
+- Success criteria (what metrics to watch)
+- Feedback collection process
+- Timeline and milestones
+- Evidence: Pilot briefing (docs/pilot/hot-rodan-pilot-brief.md)
+- Timeline: 1-2 hours
+
+**Task 115C**: Hot Rodan Weekly Check-In Template
+- Structured questions for weekly pilot reviews
+- Key metrics to discuss
+- Issue tracking format
+- Evidence: Check-in template (docs/pilot/weekly-checkin-template.md)
+- Timeline: 1 hour
+
+**Task 115D**: Hot Rodan Launch Runbook
+- Pre-launch checklist
+- Launch day procedures
+- Post-launch monitoring
+- Escalation paths
+- Evidence: Launch runbook (docs/pilot/launch-runbook.md)
+- Timeline: 2-3 hours
+
+**Task 115E**: Hot Rodan Success Metrics Dashboard Spec
+- Define 5-10 key metrics to track
+- Dashboard layout and visualizations
+- Data sources for each metric
+- Evidence: Metrics dashboard spec (docs/pilot/success-metrics.md)
+- Timeline: 2-3 hours
+
+Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11 hours initial + 50-60 hours deep work.
+
+---
+
+## 📋 NEXT WAVE - DEEP PILOT EXECUTION (Tasks 115F-115P)
+
+**Task 115F**: Pilot Operator Onboarding Plan
+- Create detailed onboarding workflow for first Hot Rodan operators
+- Day 1, Week 1, Month 1 milestones
+- Success criteria per phase
+- Evidence: Onboarding playbook
+- Timeline: 2-3 hours
+
+**Task 115G**: Dashboard Usage Analytics Framework
+- Define metrics to track (tile usage, approval rate, time saved)
+- Create measurement plan
+- Set up tracking implementation requirements
+- Evidence: Analytics framework document
+- Timeline: 2-3 hours
+
+**Task 115H**: Iteration Planning Framework
+- Create rapid iteration process (weekly releases)
+- Feedback → prioritization → implementation cycle
+- Feature flag strategy
+- Evidence: Iteration playbook
+- Timeline: 2-3 hours
+
+**Task 115I**: Hot Rodan Revenue Impact Model
+- Model how dashboard drives $1MM → $10MM growth
+- Calculate time savings → revenue impact
+- Document assumptions and projections
+- Evidence: Revenue impact spreadsheet
+- Timeline: 3-4 hours
+
+**Task 115J**: Competitive Positioning Strategy
+- Position Hot Rodan Dashboard vs. generic SaaS tools
+- Automotive-specific value props
+- Unique differentiators for hot rod market
+- Evidence: Positioning document
+- Timeline: 2-3 hours
+
+**Task 115K**: Feature Priority Matrix
+- Prioritize future features by impact x effort
+- Create roadmap for post-launch iterations
+- Align with Hot Rodan growth goals
+- Evidence: Feature matrix and roadmap
+- Timeline: 2-3 hours
+
+**Task 115L**: Pricing Strategy for Future
+- Research pricing for similar tools
+- Consider Hot Rodan's economics
+- Design pricing tiers if needed
+- Evidence: Pricing analysis
+- Timeline: 2-3 hours
+
+**Task 115M**: Pilot Success Playbook
+- Define what "successful pilot" means
+- Create decision criteria for full rollout
+- Plan scale-up strategy
+- Evidence: Success playbook
+- Timeline: 2-3 hours
+
+**Task 115N**: Risk Mitigation Plan
+- Identify risks to pilot success
+- Create mitigation strategies
+- Define fallback plans
+- Evidence: Risk register
+- Timeline: 2-3 hours
+
+**Task 115O**: Operator Productivity Metrics
+- Define how to measure operator efficiency gains
+- Create measurement methodology
+- Set baseline and targets
+- Evidence: Productivity measurement plan
+- Timeline: 2-3 hours
+
+**Task 115P**: Voice of Customer Program
+- Create ongoing operator feedback collection
+- Weekly check-ins structure
+- Feedback synthesis process
+- Evidence: VoC program design
+- Timeline: 2-3 hours
+
+Execute 115F-115P after 115A-115E. Total: ~80-95 hours Hot Rodan product work.
