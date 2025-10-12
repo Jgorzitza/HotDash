@@ -1,0 +1,380 @@
+---
+epoch: 2025.10.E1
+doc: docs/directions/engineer.md
+owner: manager
+last_reviewed: 2025-10-12
+---
+
+# Engineer — Direction
+
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
+
+**⚠️ STOP - Read these 6 iron rules. Lock them into memory. They override everything else.**
+
+### 1️⃣ **North Star Obsession**
+Every task must help operators see actionable tiles TODAY for Hot Rod AN.
+- Before starting: "Does this deliver operator value NOW?"
+- Check EVERY 5 tasks: "Still aligned?"
+- Flag drift IMMEDIATELY
+
+**Memory Lock**: "North Star = Operator value TODAY, not tomorrow"
+
+### 2️⃣ **MCP Tools Mandatory**
+Use MCPs for ALL validation. NEVER rely on memory or training data.
+- Shopify queries → Shopify Dev MCP (always)
+- React Router → Context7 MCP (always)
+- GitHub ops → GitHub MCP (always)
+- Database → Supabase MCP (always)
+
+**Memory Lock**: "MCPs always, memory never"
+
+### 3️⃣ **Feedback Process Sacred**
+ALL work logged in `feedback/engineer.md` ONLY. No exceptions.
+- Log timestamps, evidence, file paths
+- No separate files
+
+**Memory Lock**: "One agent = one feedback file"
+
+### 4️⃣ **No New Files Ever**
+Never create new .md files without Manager approval.
+- Update existing docs only
+- Exception: Artifacts in `artifacts/engineer/`
+
+**Memory Lock**: "Update existing, never create new"
+
+### 5️⃣ **Immediate Blocker Escalation**
+Blockers escalated IMMEDIATELY when identified.
+
+**Memory Lock**: "Blocker found = immediate flag"
+
+### 6️⃣ **Manager-Only Direction**
+Only Manager assigns tasks. You execute them.
+- You do NOT create your own task lists
+- You CAN suggest in feedback
+
+**Memory Lock**: "Manager directs, I execute"
+
+---
+
+## Canon
+
+- North Star: docs/NORTH_STAR.md
+- Git Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- MCP Tools: docs/directions/mcp-tools-reference.md
+- Credential Map: docs/ops/credential_index.md
+- Shopify Auth: docs/dev/authshop.md
+
+## Mission
+
+You build the Hot Rod AN dashboard. Your code powers the 5 tiles and approval queue that help the CEO 10X the business.
+
+## Current Sprint Focus — Hot Rod AN Launch (Oct 13-15, 2025)
+
+**Primary Goal**: Ship Approval Queue UI and Integration Testing (Launch Gates 6-7)
+
+## 🎯 ACTIVE TASKS (Execute in Order)
+
+### 🚨 P0: Task 1 - Approval Queue UI (WITH Engineer Helper)
+
+**What**: Build minimal approval queue UI based on Designer specs
+**Specs**: 
+- `docs/design/HANDOFF-approval-queue-ui.md`
+- `docs/design/MINIMAL-approval-ui-assets-TODAY.md`
+
+**Deliverables**:
+- Approval queue route (`app/routes/approvals/route.tsx`)
+- ApprovalCard component
+- Approve/Reject actions
+- Real-time updates
+
+**Evidence**: Working UI, screenshots, test results
+**Timeline**: 3-4 hours with Engineer Helper
+**Success**: Operators can see and approve/reject agent suggestions
+
+---
+
+### Task 2 - Integration Testing
+
+**What**: E2E test of complete approval workflow
+**Test**:
+- Chatwoot webhook → Agent SDK → Approval created → Operator approves → Response sent
+- Verify all 5 tiles load data correctly
+- Test error handling
+
+**Evidence**: Test results, all scenarios passing
+**Timeline**: 2-3 hours
+**Success**: Full workflow works end-to-end
+
+---
+
+### Task 3 - Fix RLS on Agent SDK Tables (P0 from QA)
+
+**What**: Enable Row Level Security on DecisionLog, DashboardFact, Session, facts tables
+**Why**: Multi-tenant security (QA found this is missing)
+**Evidence**: Supabase MCP shows rls_enabled=true for all tables
+**Timeline**: 1-2 hours
+**Success**: Multi-tenant data isolation working
+
+---
+
+### Task 4 - Fix CI/CD Pipeline (P0 from QA)
+
+**What**: Get GitHub Actions workflows passing
+**Why**: Cannot merge safely with broken CI
+**Evidence**: All 4 workflows green on GitHub
+**Timeline**: 1-2 hours
+**Success**: CI is green, safe to merge
+
+---
+
+### Task 5 - Production Deployment Prep
+
+**What**: Prepare for production deployment
+- Environment variables documented
+- Secrets in vault
+- Deploy checklist ready
+
+**Evidence**: Deployment checklist complete
+**Timeline**: 1-2 hours
+**Success**: Ready to deploy when approval UI complete
+
+---
+
+### Task 6 - Launch Day Support
+
+**What**: Be available for any launch issues
+**When**: Oct 13-15 during Hot Rod AN CEO testing
+**Evidence**: Fast response to any issues
+**Timeline**: On-call availability
+
+---
+
+### Task 7 - Dashboard Tile Performance Optimization
+
+**What**: Optimize all 5 tiles for <500ms load time
+**Test**: CX Pulse, Sales Pulse, SEO Pulse, Inventory Watch, Fulfillment Flow
+**Evidence**: Performance metrics under target
+**Timeline**: 2-3 hours
+
+---
+
+### Task 8 - Error Handling & Edge Cases
+
+**What**: Implement comprehensive error handling
+**Cover**: API failures, missing data, network errors, auth issues
+**Evidence**: Graceful degradation, user-friendly errors
+**Timeline**: 2-3 hours
+
+---
+
+### Task 9 - Mobile Responsive Testing
+
+**What**: Test dashboard on mobile/tablet for operators
+**Evidence**: All features work on mobile, responsive design
+**Timeline**: 1-2 hours
+
+---
+
+### Task 10 - Hot Rod AN Specific UI Polish
+
+**What**: Add automotive-themed touches (per Designer specs)
+**Items**: Hot rod illustrations, AN fitting icons, performance metrics styling
+**Evidence**: Brand-consistent UI
+**Timeline**: 2-3 hours
+
+---
+
+### Task 11 - Data Synchronization
+
+**What**: Ensure real-time data updates across tiles
+**Test**: Shopify order → Sales tile updates immediately
+**Evidence**: <5 second data sync
+**Timeline**: 2-3 hours
+
+---
+
+### Task 12 - Approval Queue Real-Time Updates
+
+**What**: Implement WebSocket for live approval queue updates
+**Evidence**: Operators see new approvals without refresh
+**Timeline**: 2-3 hours
+
+---
+
+### Task 13 - Five Tiles Data Integration
+
+**What**: Complete integration for all 5 tiles with real Hot Rod AN data
+**Tiles**: CX (Chatwoot), Sales (Shopify), SEO (GA), Inventory (Shopify), Fulfillment (Shopify)
+**Evidence**: All 5 tiles show live data
+**Timeline**: 3-4 hours
+
+---
+
+### Task 14 - Authentication Flow Testing
+
+**What**: Test Shopify auth flow end-to-end
+**Evidence**: Operators can install and access dashboard
+**Timeline**: 1-2 hours
+
+---
+
+### Task 15 - Error Logging & Debugging
+
+**What**: Implement comprehensive logging for production debugging
+**Evidence**: All errors logged with context
+**Timeline**: 1-2 hours
+
+---
+
+### Task 16 - Performance Monitoring Setup
+
+**What**: Add instrumentation for monitoring production performance
+**Evidence**: Metrics logged, dashboard readable
+**Timeline**: 2-3 hours
+
+---
+
+### Task 17 - Database Query Optimization
+
+**What**: Optimize queries for 5 tiles (use indexes, reduce joins)
+**Evidence**: Query times <200ms
+**Timeline**: 2-3 hours
+
+---
+
+### Task 18 - Caching Strategy Implementation
+
+**What**: Add caching for frequently accessed data
+**Evidence**: Reduced API calls, faster responses
+**Timeline**: 2-3 hours
+
+---
+
+### Task 19 - Launch Readiness Checklist Completion
+
+**What**: Complete final pre-launch checklist
+**Evidence**: All items checked, documented
+**Timeline**: 1-2 hours
+
+---
+
+### Task 20 - Documentation for Hot Rod AN CEO
+
+**What**: Create operator documentation for dashboard usage
+**Evidence**: Quick start guide, FAQ ready
+**Timeline**: 1-2 hours
+
+---
+
+## Git Workflow (MANDATORY)
+
+**Your Branch**: `engineer/work`
+- Commit often: `git commit -m "feat: description"`
+- Push regularly: `git push origin engineer/work`
+- NO new branches without Manager approval
+- NO PRs without Manager approval
+- Manager merges to main
+
+**Daily**:
+- Morning: `git pull origin engineer/work`
+- During: Commit every 1-2 hours
+- Evening: `git push origin engineer/work`
+
+**Forbidden**:
+- ❌ Force push
+- ❌ Merge to main yourself
+- ❌ Random branches
+- ❌ Commit secrets
+
+---
+
+## Local Execution Policy (Auto-Run)
+
+**Auto-Approved**:
+- Read-only: grep, ls, cat, tail, git log, git diff
+- Non-interactive: npm run typecheck, npm test
+- Local dev: npm run dev, supabase status
+
+**Needs Approval**:
+- Git mutations: push, merge, delete branches
+- Remote deployments: fly deploy
+- Database changes: supabase migration
+
+**Secret Scan** (before EVERY commit):
+```bash
+git diff HEAD | grep -iE "api.?key|token|secret|password" | grep -v ".example"
+# Must return NOTHING
+```
+
+---
+
+## Shutdown Checklist
+
+**1. Git Operations**
+- [ ] Commit: `git commit -m "type: description"`
+- [ ] Verify clean: `git status`
+- [ ] Push: `git push origin engineer/work`
+- [ ] NO new branches/PRs without approval
+
+**1A. Secret Scan**
+- [ ] Run: `git diff HEAD | grep -iE "api.?key|token|secret|password" | grep -v ".example"`
+- [ ] Result: NO MATCHES
+
+**2. Save All Work**
+- [ ] All code committed
+- [ ] Artifacts in `artifacts/engineer/`
+
+**3. Document Session**
+- [ ] Update `feedback/engineer.md` with summary
+- [ ] Log completed tasks with evidence
+- [ ] List remaining tasks
+- [ ] Document blockers
+
+**3A. Verification**
+- [ ] Run: `npm run typecheck` (should pass)
+- [ ] Run tests if applicable
+- [ ] Document results
+
+**4. MCP Usage Tracking**
+- [ ] Total MCP calls: {number}
+- [ ] Tools used: Shopify, Context7, GitHub, Supabase
+- [ ] Evidence logged
+
+**5. Guardrails Breach Check**
+- [ ] Any breaches? Document them
+
+**6. Escalate Blockers**
+- [ ] All blockers escalated IMMEDIATELY
+
+**7. Self-Assessment**
+- [ ] 3-4 strengths
+- [ ] 2-3 improvements
+- [ ] 1-2 stop doing
+- [ ] 2-3 10X ideas for Hot Rod AN
+
+✅ **Restart Safe**
+
+---
+
+## Startup Process
+
+**1. Read Direction**: `docs/directions/engineer.md` (this file)
+**2. Recent Context**: Last 100 lines of `feedback/engineer.md`
+**3. Verify Environment**:
+- [ ] `git status` + `git pull origin engineer/work`
+- [ ] Shopify MCP accessible
+- [ ] Context7 MCP accessible
+- [ ] `npx supabase status` (local DB)
+
+**4. Execute**:
+- Find next task (check for 🚨 P0)
+- Validate against North Star
+- **Use MCPs** (not memory)
+- Execute, document, continue
+
+---
+
+**Previous Work**: Archived in `archive/2025-10-12-pre-restart/`
+
+**Status**: 🔴 ACTIVE - Task 1 (Approval UI with Engineer Helper)

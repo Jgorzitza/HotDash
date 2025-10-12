@@ -2,55 +2,609 @@
 epoch: 2025.10.E1
 doc: docs/marketing/distribution_kit.md
 owner: marketing
-last_reviewed: 2025-10-10
+last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-18
 ---
-# OCC Launch Distribution Kit (Hold Until QA + Embed Token Greenlights)
+# Hot Rod AN Dashboard Launch Kit
 
-Use this packet to ship internal/external notifications within minutes once QA posts the sustained mock=0 (<300 ms) evidence and reliability confirms Admin tour validation via Shopify CLI 3 dev flow. Update the placeholders with live timestamps + evidence links before sending.
+Use this kit to announce the Hot Rod AN Dashboard to the team and automotive community. Built for hot rod shops scaling from $1MM to $10MM.
 
-## 1. Internal Clearance Email Draft — occ-launch@hotrodan.com
+## Core Messaging Framework
+
+**North Star**: Your AI co-pilot for scaling Hot Rod AN to $10MM
+
+**Key Messages**:
+1. Built for hot rod shops by gearheads who understand the automotive aftermarket
+2. AI suggests, operators approve — human expertise valued
+3. Never run out of fast-moving AN fittings and adapters
+4. Faster responses to hot rod enthusiasts = more repeat business
+5. All-in-one command center embedded in Shopify Admin
+
+**Value Props (Automotive Specific)**:
+- CX Escalations: Faster support for hot rod customers asking about AN fittings, brake lines, fuel systems
+- Inventory Heatmap: Proactive alerts for fast-moving adapters, fittings, hose ends
+- Sales Pulse: Catch revenue dips before month-end surprises
+- SEO Watch: Protect hot rod search rankings and organic leads
+- Fulfillment Health: Spot shipping blockers before customers call
+
+**Language Guidelines**:
+- Use automotive terminology: AN fittings, adapters, brake lines, fuel systems
+- Speak to mechanics and gearheads, not corporate executives
+- Avoid generic SaaS jargon
+- Practical, not hype
+- Focus on operator value TODAY
+
+## 1. Internal Team Launch Email — Hot Rod AN Team
 ```
-Subject: [Action Required] OCC launch cleared — publish within minutes
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
 
 Team,
 
-Evidence gates ✅
-- QA mock=0 smoke: <link to curl log> (<timestamp>)
-- Synthetic check (<300 ms): <link to JSON>
-- Shopify embed token evidence: <link / screenshot>
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
 
-Action items
-1. Fetch latest + reset to sanitized head (`git fetch --all --prune && git reset --hard origin/agent/ai/staging-push`).
-2. Publish assets using the release checklist in docs/marketing/launch_comms_packet.md.
-3. Reply-all with ✅ once your team has executed.
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
 
-Need help? Email customer.support@hotrodan.com (Chatwoot Fly inbox) or reply directly to this thread.
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
+```
+## 1. Internal Team Launch Email — Hot Rod AN Team
+```
+Subject: [Launch Day] Hot Rod AN Dashboard is live 🏁
+
+Team,
+
+The Hot Rod AN Dashboard is live in Shopify Admin. This is our AI co-pilot for scaling from $1MM to $10MM.
+
+What's inside:
+• CX Escalations — Faster responses to hot rod enthusiasts
+• Inventory Heatmap — Never run out of AN fittings & adapters
+• Sales Pulse — Catch revenue dips early
+• SEO Watch — Protect our hot rod search rankings
+• Fulfillment Health — Spot shipping blockers before customers call
+
+How to access:
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to see your command center
+3. Start approving AI recommendations (you're always in control)
+
+AI suggests, you approve. Your automotive expertise is what makes Hot Rod AN special.
+
+Every decision is logged in the audit trail so we always have context.
+
+Need help? Email customer.support@hotrodan.com
+
+Let's grow Hot Rod AN together.
+
+— The Hot Rod AN Team
 ```
 
-## 2. External Merchant Email (ESP) — Final Template
+## 2. Hot Rod Community Email — Partners & Shops
 ```
-Subject: Operator Control Center is ready in your Shopify Admin
+Subject: Built for hot rod shops — Hot Rod AN Dashboard is here
 
-Hi [Merchant Name],
+Hey there,
 
-Operator Control Center keeps every escalation, approval, and insight in one shared inbox—now tuned for faster responses with our Chatwoot cluster on Fly. We just finished final QA and you can launch the dashboard today.
+We built something for the hot rod community — the Hot Rod AN Dashboard.
 
-What’s new:
-• Operator Inbox powered by Chatwoot on Fly — approve AI drafts in seconds.
-• Live telemetry across sales, inventory, and SEO with one-tap actions.
-• Decision audit trail so your team always knows who approved what.
+This is your AI co-pilot for scaling a hot rod parts business. Embedded in Shopify Admin, built by gearheads who understand AN fittings, brake lines, and what it takes to grow.
+
+What's inside:
+• CX Escalations — AI suggests replies for hot rod customer questions, you approve
+• Inventory Heatmap — Never run out of fast-moving AN parts
+• Sales Pulse — Track daily orders, catch fulfillment risks
+• SEO Watch — Protect your hot rod search rankings
+• Fulfillment Health — Spot shipping blockers early
+
+Built for automotive aftermarket operators. AI suggests, you approve. Human expertise valued.
 
 Getting started:
-1. Open Shopify Admin → Apps → HotDash.
-2. Click “Operator Control Center” (look for the Operator Inbox badge).
-3. Review today’s priority tiles and assign next steps.
+1. Open Shopify Admin → Apps → HotDash
+2. Click "Dashboard" to open your command center
+3. Start using it today
 
-Need support? Email customer.support@hotrodan.com — the inbox routes through Fly so escalations land instantly. Full release notes + FAQ: <link>.
+Need help? Email customer.support@hotrodan.com
 
-Thanks for building with us,
-[Your Team Name]
+Built for the hot rod community. 🏁
+
+— Hot Rod AN
 ```
 
 ## 3. Support / Enablement Announcement Email

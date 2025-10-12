@@ -1,0 +1,116 @@
+---
+epoch: 2025.10.E1
+doc: docs/directions/data.md
+owner: manager
+last_reviewed: 2025-10-12
+---
+
+# Data — Direction
+
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
+
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+### 2️⃣ MCP Tools Mandatory  
+**Memory Lock**: "MCPs always, memory never"
+### 3️⃣ Feedback Process Sacred
+**Memory Lock**: "One agent = one feedback file"
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+### 5️⃣ Immediate Blocker Escalation
+**Memory Lock**: "Blocker found = immediate flag"
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "Manager directs, I execute"
+
+---
+
+## Mission
+Build Hot Rod AN data models, analytics, ensure data powers all 5 tiles.
+
+## 🎯 ACTIVE TASKS
+
+### Task 1 - Hot Rod AN Data Models
+**What**: Product categories, customer segments for automotive
+**Timeline**: 2-3 hours
+
+### Task 2 - Real-Time Dashboard Queries  
+**What**: Optimize queries for 5 tiles (<200ms)
+**Timeline**: 2-3 hours
+
+### Task 3 - Historical Trend Analysis
+**What**: Sales patterns, inventory velocity, seasonality
+**Timeline**: 2-3 hours
+
+### Task 4 - Data Quality Monitoring
+**What**: Validate Shopify/Chatwoot/GA data accuracy
+**Timeline**: 2-3 hours
+
+### Task 5 - Operator Analytics
+**What**: Track operator efficiency metrics
+**Timeline**: 2-3 hours
+
+### Task 6 - Growth Metrics Dashboard
+**What**: Track $1MM → $10MM progress
+**Timeline**: 2-3 hours
+
+### Task 7 - Agent Training Pipeline
+**What**: Capture CEO feedback for agent training
+**Timeline**: 2-3 hours
+
+### Task 8 - Data Backup Strategy
+**What**: Automated backups for critical data
+**Timeline**: 2-3 hours
+
+### Task 9 - API Performance Monitoring
+**What**: Track Shopify/Chatwoot/GA API latency
+**Timeline**: 2-3 hours
+
+### Task 10 - Data Documentation
+**What**: Document all tables, views, queries
+**Timeline**: 2-3 hours
+
+### Task 11 - RLS Policy Verification
+**What**: Use Supabase MCP to verify RLS enabled
+**Timeline**: 1-2 hours
+
+### Task 12 - Migration Testing
+**What**: Test all database migrations
+**Timeline**: 2 hours
+
+### Task 13 - Query Performance Optimization
+**What**: Add indexes, optimize joins
+**Timeline**: 2-3 hours
+
+### Task 14 - Caching Strategy
+**What**: Design caching for frequently accessed data
+**Timeline**: 2 hours
+
+### Task 15 - Data Integrity Checks
+**What**: Verify referential integrity, no orphaned data
+**Timeline**: 2 hours
+
+### Task 16 - Analytics Queries
+**What**: Build queries for Hot Rod AN business analytics
+**Timeline**: 3 hours
+
+### Task 17 - Time-Savings Metrics
+**What**: Track CEO time saved (Rec #1 from 10X plan)
+**Timeline**: 2-3 hours
+
+### Task 18 - Dashboard KPI Definitions
+**What**: Define KPIs for all 5 tiles
+**Timeline**: 2 hours
+
+### Task 19 - Data Export Capabilities
+**What**: Enable data export for operators
+**Timeline**: 2 hours
+
+### Task 20 - Launch Data Validation
+**What**: Verify all data correct for Hot Rod AN launch
+**Timeline**: 2 hours
+
+## Git Workflow
+**Branch**: `data/work`
+
+**Status**: 🔴 ACTIVE
+

@@ -1,5 +1,4 @@
 name: Code Review Automation
-
 on:
   pull_request:
     types: [opened, synchronize, reopened]

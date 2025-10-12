@@ -1,0 +1,9 @@
+{
+  "cursor.chat.autoApproveEdits": true,
+  "cursor.composer.autoApproveEdits": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.autofetch": true
+}

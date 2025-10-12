@@ -3,216 +3,125 @@ epoch: 2025.10.E1
 doc: docs/directions/reliability.md
 owner: manager
 last_reviewed: 2025-10-12
-doc_hash: TBD
-expires: 2025-10-19
 ---
-# Reliability — Direction (Operator Control Center)
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
 
-> Manager authored. Reliability team must not edit/create direction docs; escalate changes via manager with supporting evidence.
+# Reliability — Direction
 
-## Local Execution Policy (Auto-Run)
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
 
-Stop asking for permission dialogs during normal local work. You are authorized to run local, non-interactive commands and scripts without approval, with these guardrails:
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+### 2️⃣ MCP Tools Mandatory
+**Memory Lock**: "MCPs always, memory never"
+### 3️⃣ Feedback Process Sacred
+ALL work logged in `feedback/reliability.md` ONLY. No exceptions.
+- Log timestamps, evidence, file paths
+- No separate files
+- **NEVER write to feedback/manager.md** (that is Manager's file)
+- Manager reads YOUR feedback file to coordinate
 
-- Scope and safety
-  - Keep actions to /home/justin/HotDash/hot-dash and local Supabase (127.0.0.1). No remote infra changes (Fly scaling/secrets) under auto-run; status/list checks are fine.
-  - No destructive ops (rm -rf outside project, docker system prune, sudo apt, etc.).
+**Memory Lock**: "One agent = one feedback file (MY OWN ONLY)"
+**Memory Lock**: "One agent = one feedback file"
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+### 5️⃣ Immediate Blocker Escalation
+Blockers escalated IMMEDIATELY when identified.
+**Process**: (1) Log blocker in feedback/reliability.md, (2) Continue to next task
+Don't wait - Manager removes blockers while you work.
 
-- Non-interactive discipline
-  - Always disable pagers (git --no-pager; avoid less/man). Prefer piping outputs to files in artifacts/reliability/.
-  - If a tool forces interactivity, switch to a non-interactive alternative or log a blocker after 2 attempts.
-
-- Tooling specifics from recent runs
-  - Supabase: use npx supabase (not global). Allowed: status/start/stop/reset locally. Redact keys in logs.
-  - Git/GH: include --no-pager; cap output and save to artifacts.
-  - Grep: prefer rg if installed; fallback to grep -nE.
-
-- Evidence and secrets
-  - Log timestamp, command, output paths in feedback/reliability.md. Never print secret values; reference env names only.
-
-- Retry and escalate
-  - Retry up to 2 times, then escalate with captured logs.
-
-- Own CI/CD health: ensure tests.yml + evidence.yml stay green; unblock agents on pipeline failures within 1h.
-- Harden infrastructure configs (Shopify app, Supabase, MCP hosts) with secret rotation and least-privilege policies.
-- Monitor performance budgets (tile loader < 300ms mocked, < 800ms live) using synthetic checks logged in feedback/reliability.md.
-- Manage disaster readiness: weekly backup drills for Prisma db + Supabase tables; document restore steps.
-- Keep logging/observability stack consistent (pino formatting, structured errors) and verify ingestion to APM. Maintain the Supabase edge function (`supabase/functions/occ-log`) and local log tailing script.
-- Coordinate with deployment on Fly-specific requirements (docs/dev/fly-shopify.md): ensure `fly.toml` and Fly secrets contain Shopify env vars, and production scaling (`min_machines_running`, `auto_stop_machines`) meets Shopify performance expectations.
-- Approve deployment windows and keep runbooks updated under docs/runbooks/ with evidence of last exercise.
-- Stack guardrails: enforce `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex). Reference Shopify docs: docs/dev/appreact.md, docs/dev/authshop.md, docs/dev/session-storage.md for current guidance. PRs that introduce alternate databases or direct Redis usage in app code will be blocked by the Canonical Toolkit Guard.
-- Consult Shopify API references when debugging integrations (docs/dev/admin-graphql.md, docs/dev/storefront-mcp.md) so infra changes track the latest platform requirements.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/reliability.md` without waiting for additional manager approval.
-
-## Current Sprint Focus — 2025-10-12
-Work every open infrastructure blocker to completion—own the item until evidence is delivered. Execute the tasks below in order and log progress in `feedback/reliability.md`. Every blocker update must include the command you ran, the timestamp, and the resulting log/output; only escalate after two documented attempts.
-
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
-
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/reliability.md and continue):
-
-1. ✅ **Infrastructure Health Check** - COMPLETE (2025-10-11)
-   - Synthetic latency: 421ms and 437ms (under 800ms target)
-   - Fly apps verified: hotdash-chatwoot, hotdash-staging active
-   - Supabase local healthy
-   - Evidence: artifacts/reliability/20251011T071724Z/
-
-2. **Agent SDK Infrastructure Monitoring** - Monitor new services as deployed
-   - Monitor hotdash-llamaindex-mcp app health (after @engineer deploys)
-   - Monitor hotdash-agent-service app health (after @engineer deploys)
-   - Check P95 latency for MCP queries (target <500ms)
-   - Check approval queue response times (target <30s)
-   - Set up alerts for errors or timeouts
-   - Evidence: Monitoring dashboards, alert configurations
-
-3. **Fly.io Resource Optimization** - Ensure efficient auto-scaling
-   - Verify auto-stop/auto-start working for new services
-   - Monitor memory usage under load
-   - Adjust CPU/memory if needed
-   - Document resource usage patterns
-   - Evidence: Resource usage reports
-
-4. **Production Deployment Readiness** - Prepare for pilot launch
-   - Create production deployment runbook for Agent SDK services
-   - Document rollback procedures
-   - Set up production monitoring
-   - Verify health check endpoints
-   - Evidence: Production runbook, health check verification
-
-5. **Incident Response for Agent SDK** - Prepare for issues
-   - Create incident response runbook for agent failures
-   - Document escalation procedures
-   - Set up alerting thresholds
-   - Test rollback procedures
-   - Evidence: Incident runbook, test results
-
-**Ongoing Requirements**:
-- Monitor Fly.io apps continuously
-- Report performance issues immediately in feedback/reliability.md
-- Coordinate with @engineer on deployment needs
+**Memory Lock**: "Blocker found = immediate flag"
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "Manager directs, I execute"
 
 ---
 
-### 🚀 PARALLEL TASKS (While Waiting for Agent SDK Deployment)
+## Mission
+Monitor Hot Rod AN infrastructure, ensure uptime, fast incident response.
 
-**Task A: Monitoring Dashboard Setup** - Prepare observability infrastructure
-- Set up Fly.io metrics dashboard for all apps
-- Configure alerts for CPU/memory/errors
-- Document alert thresholds
-- Create monitoring runbook
-- Evidence: Dashboard access, alert configs
+## 🎯 ACTIVE TASKS
 
-**Task B: Incident Response Runbook** - Prepare for Agent SDK issues
-- Create incident response procedures for agent failures
-- Document rollback procedures for each service
-- Create escalation matrix
-- Test rollback on staging
-- Evidence: Runbook with tested procedures
+### Task 1 - Service Health Checks
+**What**: Verify agent-service, llamaindex-mcp deployed correctly
+**Timeline**: 1-2 hours
 
-**Task C: Performance Baseline Documentation** - Current state metrics
-- Document current P95 latencies for all routes
-- Measure current Fly.io resource usage
-- Baseline Chatwoot response times
-- Create performance comparison framework
-- Evidence: Baseline metrics report
+### Task 2 - Performance Baselines
+**What**: Establish production performance metrics
+**Timeline**: 2-3 hours
 
-Execute A, B, C in any order - all independent work.
+### Task 3 - Uptime Monitoring
+**What**: Configure uptime monitoring for all services
+**Timeline**: 2 hours
 
-1. **Local Supabase readiness**
-   - Ensure every developer and CI runner uses the Supabase Postgres datasource. Document the steps (`supabase start`, `.env.local`) in `feedback/reliability.md` and confirm `DATABASE_URL` points at `postgresql://postgres:postgres@127.0.0.1:54322/postgres` (see `docs/runbooks/supabase_local.md`).
-   - Run `npm run setup` after exporting `.env.local` to verify migrations succeed. Attach the Prisma output to your feedback entry.
-   - Tail the local instance with `scripts/ops/tail-supabase-logs.sh` and confirm the edge function `occ-log` writes into `public.observability_logs` using `supabase/sql/observability_logs.sql`.
+### Task 4 - Error Rate Tracking
+**What**: Monitor error rates across services
+**Timeline**: 2 hours
 
-2. **Shopify dev flow validation (React Router 7 + Shopify CLI v3)**
-   - Do NOT capture or mirror session/embed tokens. Use the current dev flow with Shopify CLI v3 and App Bridge + React Router 7.
-   - Validate helper usage and configuration: `docs/dev/appreact.md`, `docs/dev/authshop.md` (authenticate.admin), and `docs/dev/session-storage.md`.
-   - Run the embedded app via `shopify app dev` and confirm Admin loads without manual token injection; log evidence (timestamps + screenshots or CLI output) in `feedback/reliability.md`.
+### Task 5 - Latency Monitoring
+**What**: Track response times for all APIs
+**Timeline**: 2 hours
 
-3. **`?mock=0` latency fix**
-   - Continue running `scripts/ci/synthetic-check.mjs` until we capture <300 ms results. Partner with Deployment on Fly warm-up/tuning; track each attempt, change, and outcome in the feedback log.
+### Task 6 - Incident Response Runbook
+**What**: Document incident procedures
+**Timeline**: 2-3 hours
 
-4. **Chatwoot Fly smoke & credentials**
-   - Source Fly access locally (`source vault/occ/fly/api_token.env` to export `FLY_API_TOKEN`) and verify with `/home/justin/.fly/bin/fly auth status`. If the token is missing or still set to the placeholder, log the gap and request the real value from the manager while continuing other Chatwoot prep.
-   - Gather the required Chatwoot API credentials yourself (request support/integrations once, then follow up every 4 hours until delivered; document every request with timestamps).
-   - Increase Fly machine memory to 2GB to prevent crashes. Preferred: persist by updating `deploy/chatwoot/fly.toml` `[vm].memory = "2048mb"` and redeploy; or execute via CLI: `/home/justin/.fly/bin/fly scale memory 2048 -a hotdash-chatwoot`. For Machines-based apps: `/home/justin/.fly/bin/fly m list -a hotdash-chatwoot` then `/home/justin/.fly/bin/fly m update <id> --memory 2048`. Log command + output.
-   - Store the token under `vault/occ/chatwoot/`, set Fly secrets, run `scripts/ops/chatwoot-fly-smoke.sh`, and archive the results. Do not hand back to integrations until the smoke evidence is complete and linked.
+### Task 7 - Alerting Configuration
+**What**: Set up alerts for downtime, errors, performance
+**Timeline**: 2-3 hours
 
-5. **Supabase follow-through**
-   - Now that `decision_sync_events` is restored, keep the SQL script, pg_cron evidence, and DSN screenshots linked for data/compliance.
-   - Monitor the view daily and log results so any regression is caught early.
-   - Confirm RLS is active on `public.notification_settings`, `public.notification_subscriptions`, and any future PostgREST tables by running the Supabase SQL checks yourself; attach query output when you log the status.
+### Task 8 - Database Performance Monitoring
+**What**: Monitor database query performance
+**Timeline**: 2 hours
 
-6. **GA MCP readiness**
-   - Partner with integrations/compliance on OCC-INF-221. Once credentials land, help mirror secrets and run the MCP helper, then capture evidence for the readiness dashboard.
+### Task 9 - Resource Usage Tracking
+**What**: Monitor CPU, memory, disk usage
+**Timeline**: 2 hours
 
-7. **Backup drill prep**
-   - Keep the Week 3 backup/restore runbook current with any credential changes uncovered above.
+### Task 10 - Log Analysis
+**What**: Analyze logs for patterns, errors
+**Timeline**: 2-3 hours
 
-8. **Stack compliance audit**
-   - Co-lead the Monday/Thursday audit with QA/manager, focusing on infrastructure tooling, secrets, and runbooks; document findings and remediation plans.
+### Task 11 - SLA Definition
+**What**: Define SLAs for Hot Rod AN launch
+**Timeline**: 1-2 hours
 
----
+### Task 12 - Capacity Planning
+**What**: Plan for growth beyond launch
+**Timeline**: 2 hours
 
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
+### Task 13 - Backup Monitoring
+**What**: Verify backups completing successfully
+**Timeline**: 1-2 hours
 
-**CEO Decision**: Emergency refocus on launch gates
+### Task 14 - Failover Testing
+**What**: Test failover procedures
+**Timeline**: 2-3 hours
 
-**Your Status**: PAUSED - Stand by until launch gates complete
+### Task 15 - Network Monitoring
+**What**: Monitor network latency, connectivity
+**Timeline**: 2 hours
 
-**Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
+### Task 16 - Third-Party Service Health
+**What**: Monitor Shopify/Chatwoot/GA availability
+**Timeline**: 1-2 hours
 
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
+### Task 17 - Performance Optimization
+**What**: Optimize slow services
+**Timeline**: 3-4 hours
 
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
+### Task 18 - Monitoring Dashboard
+**What**: Build reliability monitoring dashboard
+**Timeline**: 3-4 hours
 
-**Your tasks remain in direction file - will resume after launch.**
+### Task 19 - Incident Post-Mortems
+**What**: Document any incidents for learning
+**Timeline**: 1-2 hours
 
----
+### Task 20 - Launch Day Monitoring
+**What**: Monitor all services Oct 13-15
+**Timeline**: On-call
 
-## ✅ RESUME WORK (2025-10-11T23:20Z)
+## Git Workflow
+**Branch**: `reliability/work`
 
-**Engineer Progress**: 5/7 launch gates complete! 🎉
+**Status**: 🔴 ACTIVE
 
-**Your Status**: Resume your paused tasks - no idle agents
-
-**Rationale**: Engineer making excellent progress. While they finish last 2 gates, you can continue valuable post-launch work.
-
-**Your Tasks**: Resume where you left off in your expanded task list
-
-**Evidence**: Continue providing file paths, test results, documentation per QA standards
-
-**Coordinate**: Support launch if needed, otherwise continue your strategic work
-
-**Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
-
----
-
-## 🎯 MANAGER UPDATE - WAITING FOR ENGINEER, THEN CONTINUE
-
-**Your Status**: Standing by for engineer fix to agent-service
-
-**Update**: Engineer starting Task 6 (Approval Queue UI) now with Engineer Helper
-
-**Your Next Actions**:
-
-**When Engineer deploys fixes**:
-1. Re-run health checks on agent-service
-2. Verify both services operational
-3. Establish usage baselines
-4. Continue with your expanded task list (you have many more tasks available)
-
-**While Waiting** (Optional):
-- Review your expanded task list
-- Prepare monitoring queries
-- Document baseline expectations
-
-**Timeline**: Engineer working on Task 6 (3-4h), you can continue prep work
-
-**Status**: ⏳ WAITING - Monitor for engineer deployment, then proceed with tasks

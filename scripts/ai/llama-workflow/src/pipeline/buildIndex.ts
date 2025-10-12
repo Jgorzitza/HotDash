@@ -1,4 +1,4 @@
-import { VectorStoreIndex, SimpleNodeParser, Settings, Document as LlamaDocument, OpenAI, OpenAIEmbedding } from 'llamaindex';
+import { VectorStoreIndex, SimpleNodeParser, Document as LlamaDocument } from 'llamaindex';
 import { getConfig } from '../config.js';
 import { fetchHotrodanContent } from '../loaders/sitemap.js';
 import { fetchDecisionDocs, fetchTelemetryDocs } from '../loaders/supabase.js';
@@ -29,16 +29,8 @@ export async function buildAll(logDirOverride?: string, options: BuildOptions = 
   const config = getConfig();
   const logDir = logDirOverride || config.LOG_DIR;
   
-  // Configure LlamaIndex with OpenAI
-  Settings.llm = new OpenAI({
-    apiKey: config.OPENAI_API_KEY,
-    model: 'gpt-3.5-turbo',
-  });
-  
-  Settings.embedModel = new OpenAIEmbedding({
-    apiKey: config.OPENAI_API_KEY,
-    model: 'text-embedding-ada-002',
-  });
+  // LlamaIndex will auto-detect OpenAI from OPENAI_API_KEY environment variable
+  // No explicit configuration needed
   
   const timestamp = new Date().toISOString().replace(/[:]/g, '').slice(0, 15);
   const runDir = path.join(logDir, 'indexes', timestamp);

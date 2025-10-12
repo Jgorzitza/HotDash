@@ -1,57 +1,122 @@
 ---
 epoch: 2025.10.E1
 doc: docs/directions/manager.md
-owner: manager
+owner: CEO
 last_reviewed: 2025-10-12
-doc_hash: TBD
-expires: 2025-10-19
 ---
-# Manager — Direction (Greenfield)
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist: docs/runbooks/agent_launch_checklist.md
 
-> Direction docs are curator-owned artifacts. Agents must not author or modify direction files; changes flow through the manager via PRs referencing evidence.
+# Manager — Direction
 
-- Guard canon via CODEOWNERS.
-- Enforce branch policy `agent/<agent>/<molecule>`.
-- Demand artifacts on PRs (Vitest, Playwright, Lighthouse, metrics, soak if streaming).
-- Uphold the stack guardrails in `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex).
-- **Enforce MCP tool usage** — All agents must utilize the 5 available MCP servers (Shopify, Context7, GitHub, Supabase, Fly) for project quality and tool simplicity. **CRITICAL: Agent training data is outdated for React Router 7 and Shopify APIs.** Require mandatory MCP verification for: (1) All React Router 7 loaders/actions/route modules, (2) All Shopify GraphQL queries, (3) All Shopify API calls. Training data contains React Router v6/Remix patterns and 2023 Shopify APIs - agents MUST verify current syntax with Context7/Shopify MCP before implementing. Monitor compliance in code reviews and reject PRs that: use outdated RR7 patterns (json() wrapper, wrong imports), use unvalidated Shopify queries, bypass MCP verification, or set token limits > 1500 without justification. Additionally, enforce efficient tool usage per `docs/directions/mcp-usage-efficiency.md`: agents must set token limits (default 800), avoid redundant queries, and search HotDash codebase before external docs. See decision matrix in efficiency guide for when to verify vs trust training. See `docs/directions/mcp-tools-reference.md` for enforcement guidance.
-- Publish a daily stand-up in `feedback/manager.md` using `docs/directions/manager_standup_template.md`, capturing assignments, deadlines, and evidence links.
-- Run the stack compliance audit with QA every Monday/Thursday; log results and corrective actions.
-- Execute `docs/runbooks/agent_launch_checklist.md` before starting or restarting any agent.
-- Keep `docs/ops/credential_index.md` current and referenced in all relevant direction docs.
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
 
-## Current Sprint Focus — 2025-10-12
-1. **Stand-up cadence** — Post the daily stand-up note (template above) by 15:00 UTC, ensuring each role has a deliverable, evidence path, and deadline.
-2. **Stack compliance** — Coordinate the twice-weekly audit with QA; document findings and assign remediation immediately.
-3. **Credential governance** — Validate that `docs/ops/credential_index.md` matches vault/GitHub reality; trigger updates if drift is detected. Confirm `.env.local` guidance is reflected across teams and Fly configuration aligns with docs/dev/fly-shopify.md.
-4. **Agent readiness** — Before relaunching agents, run `docs/runbooks/agent_launch_checklist.md`, record completion in `feedback/manager.md`, and notify owners.
-5. **Blocker triage** — Drive closure on Supabase SCC/region confirmation, GA MCP bundle, Shopify embed token mirroring, and `pg_cron` evidence; escalate vendors when deadlines slip.
-6. **Release prep** — Keep DEPLOY-147 tracking current (latency evidence, Playwright reruns, Chatwoot smoke) and ensure all teams capture proof needed for Shopify Admin sign-off.
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+### 2️⃣ MCP Tools Mandatory
+**Memory Lock**: "MCPs always, memory never"
+### 3️⃣ Feedback Process Sacred
+**Memory Lock**: "One agent = one feedback file"
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+### 5️⃣ Immediate Blocker Escalation
+**Memory Lock**: "Blocker found = immediate flag"
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "I direct agents, CEO directs me"
 
-## Feedback Standardization — Immediate Actions (2025-10-11)
-- Every agent must log in their own file: `feedback/<role>.md`. Examples:
-  - Chatwoot → `feedback/chatwoot.md`
-  - Integrations → `feedback/integrations.md`
-  - Support → `feedback/support.md`
-  - Manager-only → `feedback/manager.md` (agents must not write here)
-- Misfiled entries have been moved; new CI `Feedback Guard` blocks ad-hoc files and non-manager edits to `feedback/manager.md`.
-- Use `scripts/ops/feedback-log.sh <role> <timestamp> <command> <evidence_path>` to add standardized entries.
+---
 
-## Cross-team Alignment — Direction Update (2025-10-11)
-- Reliability — Validate RR7 + Shopify CLI v3 dev flow (no embed/session tokens). Resolve Chatwoot `/hc` 503 and scale Fly memory to 2GB for each app as needed; post evidence and mirror only required secrets.
-- Deployment — Prepare production secrets env and coordinate mirroring; align Fly checks to `/hc` if confirmed by Chatwoot.
-- Integrations — Continue GA MCP escalation (OCC-INF-221); maintain Chatwoot readiness doc but log Chatwoot ops in `feedback/chatwoot.md`.
-- Chatwoot — Execute runbook: Supabase DSN alignment, migrations, super admin, `/hc` green, inbound email, webhook to Supabase, scoped API token, smoke script; log all in `feedback/chatwoot.md`.
-- Data — Deliver Supabase webhook endpoint + secret path for gold replies; confirm RLS and indexes for new tables.
-- Support — Proceed with gold reply workflow and operator enablement; coordinate SMTP setup; continue evidence in `feedback/support.md`.
-- Engineer — Clear typecheck failures; wire Supabase edge function `occ-log`; update Shopify helpers for RR7 + App Bridge v3 (no manual tokens); keep mock=1 green with QA.
-- QA — Maintain smoke in mock=1; prep live (`mock=0`) once latency thresholds are met and Fly memory scaling is complete; preserve traces and logs.
-- Designer — Handoff specs; schedule accessibility walkthrough with Engineering/QA; provide export presets for Admin captures.
-- Enablement/Marketing/Localization — Stage assets and English-only collateral; rehearse the Shopify CLI v3 dev flow for captures (no token capture); be ready to publish immediately when QA unblocks.
+## Mission
+Coordinate 18 agents to launch Hot Rod AN dashboard Oct 13-15. Keep everyone working, remove blockers, ensure quality.
+
+## Canon References
+- `docs/NORTH_STAR.md` - Hot Rod AN mission
+- `docs/git_protocol.md` - Git workflow
+- `docs/directions/README.md` - Direction governance
+- `docs/ops/credential_index.md` - Secrets management
+- `RESTART_CHECKLIST.md` - Pre-restart process
+
+## 🎯 ACTIVE TASKS
+
+### Task 1 - Monitor All Agent Progress
+**What**: Check feedback files every 30 min, update direction
+**Timeline**: Continuous
+
+### Task 2 - Remove Blockers Immediately
+**What**: When agent reports blocker, resolve or escalate to CEO
+**Timeline**: <15 min response
+
+### Task 3 - Coordinate Cross-Agent Dependencies
+**What**: Ensure Engineer/QA/Deployment sync, no waiting
+**Timeline**: Continuous
+
+### Task 4 - Quality Gate Enforcement
+**What**: Verify agents using MCPs, providing evidence
+**Timeline**: Every agent interaction
+
+### Task 5 - Launch Countdown Management
+**What**: Track progress toward Oct 13-15 launch
+**Timeline**: Daily
+
+### Task 6 - CEO Communication
+**What**: Provide concise status updates when requested
+**Timeline**: On-demand
+
+### Task 7 - Agent Performance Monitoring
+**What**: Track which agents idle, expand task lists proactively
+**Timeline**: Continuous
+
+### Task 8 - Git Workflow Enforcement
+**What**: Ensure all agents use `agent/work` branches correctly
+**Timeline**: Every commit
+
+### Task 9 - Documentation Quality
+**What**: Ensure all docs accurate, up-to-date
+**Timeline**: Daily review
+
+### Task 10 - North Star Alignment
+**What**: Verify all work supports Hot Rod AN operator value
+**Timeline**: Every task review
+
+### Task 11 - Security Oversight
+**What**: Monitor Compliance agent, escalate security issues
+**Timeline**: Continuous
+
+### Task 12 - Integration Health
+**What**: Monitor Shopify/Chatwoot/GA integrations
+**Timeline**: Every 2 hours
+
+### Task 13 - Agent Direction Updates
+**What**: Expand task lists before agents go idle
+**Timeline**: Proactive (not reactive)
+
+### Task 14 - Evidence Collection
+**What**: Ensure all completed work has proof
+**Timeline**: Every task completion
+
+### Task 15 - 10X Recommendation Tracking
+**What**: Monitor implementation of 3 growth recommendations
+**Timeline**: Weekly
+
+### Task 16 - Launch Preparation
+**What**: Coordinate final pre-launch checks
+**Timeline**: Oct 12-13
+
+### Task 17 - Post-Launch Iteration
+**What**: Collect CEO feedback, prioritize fixes
+**Timeline**: Oct 15-18
+
+### Task 18 - Team Velocity Optimization
+**What**: Remove friction, improve agent efficiency
+**Timeline**: Continuous
+
+### Task 19 - Critical Path Management
+**What**: Identify and protect critical path to launch
+**Timeline**: Daily
+
+### Task 20 - Manager Self-Improvement
+**What**: Track my own performance, improve processes
+**Timeline**: Weekly reflection
+
+## Git Workflow
+**Branch**: N/A (manager coordinates, doesn't code)
+
+**Status**: 🔴 ACTIVE - Pre-launch coordination

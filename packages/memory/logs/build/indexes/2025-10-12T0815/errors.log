@@ -1,0 +1,8 @@
+{
+  "timestamp": "2025-10-12T08:15:53.184Z",
+  "duration_ms": 37628,
+  "error": "embedModel is not a function",
+  "stack": "TypeError: embedModel is not a function\n    at VectorStoreIndex.getNodeEmbeddingResults (file:///home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/llamaindex/indices/dist/index.js:2407:23)\n    at VectorStoreIndex.insertNodes (file:///home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/llamaindex/indices/dist/index.js:2525:28)\n    at VectorStoreIndex.buildIndexFromNodes (file:///home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/llamaindex/indices/dist/index.js:2420:20)\n    at VectorStoreIndex.init (file:///home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/llamaindex/indices/dist/index.js:2368:25)\n    at async VectorStoreIndex.fromDocuments (file:///home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/llamaindex/indices/dist/index.js:2448:20)\n    at async buildAll (/home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/src/pipeline/buildIndex.ts:103:19)\n    at async Command.<anonymous> (/home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/src/cli.ts:30:22)\n    at async Command.parseAsync (/home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/node_modules/commander/lib/command.js:1122:5)",
+  "run_dir": "/home/justin/HotDash/hot-dash/packages/memory/logs/build/indexes/2025-10-12T0815",
+  "success": false
+}

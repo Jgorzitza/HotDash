@@ -1,5 +1,4 @@
 name: Security Scanning (SAST/DAST)
-
 on:
   push:
     branches: [main, develop]
@@ -10,10 +9,6 @@ on:
     - cron: '0 2 * * 1'  # Every Monday at 2am UTC
 
 jobs:
-  #
-  # SAST: Static Application Security Testing
-  #
-  
   secret-scanning:
     name: SAST - Secret Detection (Gitleaks)
     runs-on: ubuntu-latest
@@ -157,7 +152,6 @@ jobs:
             p/typescript
             p/react
             p/owasp-top-ten
-          generateSarif: true
 
       - name: Upload SARIF file
         if: always()

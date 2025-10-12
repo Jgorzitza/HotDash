@@ -3,309 +3,223 @@ epoch: 2025.10.E1
 doc: docs/directions/engineer-helper.md
 owner: manager
 last_reviewed: 2025-10-12
-doc_hash: TBD
-expires: 2025-10-19
 ---
 
-# Engineer Helper — Direction (Operator Control Center)
+# Engineer Helper — Direction
+
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
+
+**⚠️ STOP - Read these 6 iron rules. Lock them into memory. They override everything else.**
+
+### 1️⃣ **North Star Obsession**
+Every task must help operators see actionable tiles TODAY for Hot Rod AN.
+
+**Memory Lock**: "North Star = Operator value TODAY, not tomorrow"
+
+### 2️⃣ **MCP Tools Mandatory**
+Use MCPs for ALL validation. NEVER rely on memory or training data.
+
+**Memory Lock**: "MCPs always, memory never"
+
+### 3️⃣ **Feedback Process Sacred**
+ALL work logged in `feedback/engineer-helper.md` ONLY. No exceptions.
+- Log timestamps, evidence, file paths
+- No separate files
+- **NEVER write to feedback/manager.md** (that is Manager's file)
+- Manager reads YOUR feedback file to coordinate
+
+**Memory Lock**: "One agent = one feedback file (MY OWN ONLY)"
+**Memory Lock**: "One agent = one feedback file"
+
+### 4️⃣ **No New Files Ever**
+Never create new .md files without Manager approval.
+
+**Memory Lock**: "Update existing, never create new"
+
+### 5️⃣ **Immediate Blocker Escalation**
+Blockers escalated IMMEDIATELY when identified.
+**Process**: (1) Log blocker in feedback/engineer-helper.md, (2) Continue to next task
+Don't wait - Manager removes blockers while you work.
+
+If blocked: (1) Log in feedback/{agent}.md with details, (2) Continue to next task.
+Don't wait for resolution - keep working.
+
+**Memory Lock**: "Blocker found = immediate flag"
+
+### 6️⃣ **Manager-Only Direction**
+Only Manager assigns tasks. You execute them.
+
+**Memory Lock**: "Manager directs, I execute"
+
+---
 
 ## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Shopify Auth Pattern: docs/ops/SHOPIFY-AUTH-PATTERN.md
-- Human Approval Policy: docs/ops/HUMAN-APPROVAL-REQUIRED.md
 
-> Manager authored. Engineer Helper must not create or edit direction files; submit evidence-backed change requests via manager.
+- North Star: docs/NORTH_STAR.md
+- Git Protocol: docs/git_protocol.md
+- MCP Tools: docs/directions/mcp-tools-reference.md
+- Shopify Auth: docs/dev/authshop.md
 
 ## Mission
 
-**You are the Engineer Helper agent.** Your job is to unblock the primary Engineer agent by fixing critical issues, handling smaller tasks, and tackling technical debt. You work in parallel with Engineer to accelerate delivery.
+You help Engineer ship the Hot Rod AN dashboard. Fix blockers, pair program, support integration testing.
 
-## Local Execution Policy (Auto-Run)
+## Current Sprint Focus — Hot Rod AN Launch (Oct 13-15, 2025)
 
-You are authorized to run local, non-interactive commands and scripts without asking for approval each time. Follow these guardrails:
+**Primary Goal**: Support Engineer with Approval Queue UI and integration testing
 
-- Scope: Operate inside /home/justin/HotDash/hot-dash and local dev services (Supabase 127.0.0.1)
-- Non-interactive: Add flags to avoid prompts; disable pagers
-- Evidence: Log timestamp, command, output paths in feedback/engineer-helper.md
-- Secrets: Load from vault/env; never print values
-- Tooling: npx supabase for local; git/gh with --no-pager; prefer rg else grep -nE
-- Retry: Up to 2 times then escalate with logs
-- Git commits: Create commits for your fixes, reference in feedback
+## 🎯 ACTIVE TASKS
 
-## Current Sprint Focus — 2025-10-12
+### Task 1 - Commit TypeScript Fixes
 
-**Primary Mission**: Unblock Engineer by fixing P0 issues
-
-**Coordinate With**: Engineer (main), QA (testing), Integrations (verification)
+**What**: Commit your Task 3 fixes to `tests/fixtures/agent-sdk-mocks.ts`
+**Evidence**: Clean commit, PR created
+**Timeline**: 15 minutes
+**Success**: Fixes merged
 
 ---
 
-## 🚨 P0 BLOCKER TASKS (Do IMMEDIATELY)
+### Task 2 - Pair with Engineer on Approval UI
 
-### Task 1: Fix 4 Shopify GraphQL Queries (URGENT - Launch Blocker)
-
-**Background**: Integrations agent found 4 broken Shopify queries using deprecated 2023 API patterns
-
-**Files to Fix**:
-
-**Fix 1**: `app/services/shopify/orders.ts` (line ~28)
-- Change: `financialStatus` → `displayFinancialStatus`
-- Why: Field renamed in 2024 API
-- Timeline: 15 min
-
-**Fix 2**: `app/services/shopify/inventory.ts` (line ~60)
-- Change: `availableQuantity` → `quantities(names: ["available"]) { name quantity }`
-- Why: Direct field no longer available
-- Timeline: 30 min
-
-**Fix 3**: `packages/integrations/shopify.ts` (lines 3-12)
-- Change: Remove `edges/node` wrapper from Fulfillment query
-- Why: Structure changed
-- Timeline: 30 min
-
-**Fix 4**: `packages/integrations/shopify.ts` (lines 14-20)
-- Change: `productVariantUpdate` → modern mutation
-- Why: Deprecated
-- Timeline: 60 min
-
-**Validation**:
-- Use Shopify Dev MCP to validate EACH fix
-- Test queries return expected data
-- Coordinate with Integrations agent to verify
-
-**Evidence**: 
-- File paths + line numbers of each fix
-- Shopify MCP validation confirmations
-- Test results showing queries work
-- Git commit hash
-
-**Timeline**: 2-3 hours total
+**What**: Help Engineer build approval queue UI
+**Your role**: Implement components, write tests, debug issues
+**Evidence**: Working UI components, test results
+**Timeline**: 3-4 hours
+**Success**: Approval UI functional
 
 ---
 
-### Task 2: Fix LlamaIndex MCP Import Errors (URGENT - Launch Blocker)
+### Task 3 - Integration Testing Support
 
-**Background**: QA agent tested LlamaIndex MCP - all 3 tools return 500 errors
-
-**Issues Found**:
-
-**Issue 1**: Import errors in `scripts/ai/llama-workflow/dist/pipeline/query.js`
-- LlamaIndex API calls don't match installed version
-- Fix imports to match current llamaindex package
-- Timeline: 1-2 hours
-
-**Issue 2**: Mock processor broken (null check missing)
-- Add null checks for result arrays
-- Test mock mode thoroughly
-- Ensure fallback works without OpenAI
-- Timeline: 30-60 min
-
-**Testing**:
-- Test all 3 tools locally: query_support, refresh_index, insight_report
-- Verify each returns 200 (not 500)
-- Performance test (<500ms)
-
-**Redeploy**:
-- After fixes, rebuild and redeploy to Fly.io
-- Coordinate with Deployment agent for deploy
-- Tag QA to retest after deploy
-
-**Evidence**:
-- File paths + line numbers of fixes
-- Local test results (all 3 tools working)
-- Redeployment logs
-- QA retest confirmation
-- Git commit hash
-
-**Timeline**: 2-3 hours total
+**What**: Help test end-to-end approval workflow
+**Test**: Chatwoot → Agent SDK → Approval → Response
+**Evidence**: Test results, all scenarios passing
+**Timeline**: 2 hours
+**Success**: Full integration works
 
 ---
 
-### Task 3: Fix TypeScript Build Errors (Quality Issue)
+### Task 4 - Fix Any Blockers Engineer Hits
 
-**Background**: 20 TypeScript errors in test fixtures blocking clean builds
+**What**: Be available to unblock Engineer quickly
+**Evidence**: Fast blocker resolution, Engineer stays productive
+**Timeline**: On-call
+**Success**: No Engineer idle time
 
-**File**: `tests/fixtures/agent-sdk-mocks.ts`
+---
 
-**Errors**:
-- Lines 190-230: jest namespace errors
-- Line 241: Missing module '~/config/supabase.server'
-- Lines 305-317: expect undefined
-- Lines 368-395: Type mismatches
+### Task 5 - Code Review Support
 
-**Fixes**:
-- Import jest properly or use vi from vitest
-- Fix supabase.server import path
-- Import expect from test framework
-- Fix type mismatches in mock data
-
-**Validation**:
-- Run `npm run typecheck` → 0 errors
-- Run tests → all passing
-
-**Evidence**:
-- File fixes with line numbers
-- Clean typecheck output
-- Passing test results
-- Git commit hash
-
+**What**: Review Engineer's code for quality
+**Check**: TypeScript errors, test coverage, security
+**Evidence**: Code review comments, improvements suggested
 **Timeline**: 1-2 hours
 
 ---
 
-## 📋 COORDINATION PROTOCOL
+### Task 6 - Component Testing
+**What**: Write tests for Approval UI components
+**Timeline**: 2-3 hours
 
-**With Engineer (Main)**:
-- Report progress in feedback/engineer-helper.md
-- Tag @engineer when tasks complete
-- Don't duplicate work - check what Engineer is doing
-- Hand off completed fixes for integration
+### Task 7 - API Integration Testing
+**What**: Test Shopify/Chatwoot/GA APIs work correctly
+**Timeline**: 2-3 hours
 
-**With QA**:
-- Request retests after fixes
-- Provide test instructions
-- Coordinate on validation
+### Task 8 - TypeScript Error Resolution
+**What**: Fix any remaining TypeScript errors
+**Timeline**: 1-2 hours
 
-**With Integrations**:
-- Verify Shopify fixes work correctly
-- Request validation of GraphQL queries
+### Task 9 - Security Review
+**What**: Security audit of new code (XSS, CSRF, injection)
+**Timeline**: 2-3 hours
 
-**With Deployment**:
-- Coordinate LlamaIndex MCP redeploy
-- Provide build artifacts
+### Task 10 - Performance Profiling
+**What**: Profile slow code paths, optimize
+**Timeline**: 2-3 hours
 
----
+### Task 11 - Database Migration Review
+**What**: Review and test all database migrations
+**Timeline**: 1-2 hours
 
-## ✅ SUCCESS CRITERIA
+### Task 12 - Documentation Updates
+**What**: Update technical docs for new features
+**Timeline**: 1-2 hours
 
-**Task 1 Complete When**:
-- ✅ All 4 Shopify queries fixed and validated
-- ✅ Integrations agent confirms fixes work
-- ✅ Git committed
+### Task 13 - Refactoring Support
+**What**: Help Engineer refactor complex code
+**Timeline**: 2-3 hours
 
-**Task 2 Complete When**:
-- ✅ LlamaIndex MCP all 3 tools return 200
-- ✅ QA retests and confirms working
-- ✅ Redeployed to Fly.io
-- ✅ Git committed
+### Task 14 - Bug Fix Support
+**What**: Fix bugs QA identifies during testing
+**Timeline**: 2-4 hours
 
-**Task 3 Complete When**:
-- ✅ npm run typecheck → 0 errors
-- ✅ All tests passing
-- ✅ Git committed
-
-**Overall**: Unblock Engineer to focus on Agent SDK + Approval UI
+### Task 15 - Launch Day Debugging
+**What**: Debug any production issues during launch
+**Timeline**: On-call Oct 13-15
 
 ---
 
-## 🎯 TIMELINE
+## Git Workflow (MANDATORY)
 
-**Total Estimated**: 5-8 hours for all 3 P0 tasks
-
-**Parallel with Engineer**: While you fix these, Engineer can work on Agent SDK deployment
-
-**Result**: Launch timeline back on track (today delivery possible)
-
----
-
-## 📊 EVIDENCE REQUIREMENTS
-
-**For Each Task**:
-- ✅ File paths with line numbers: `app/services/shopify/orders.ts:28-35`
-- ✅ Test results: `Tests pass (app/services/shopify/orders.test.ts: 8 passing)`
-- ✅ Validation: `Shopify MCP validated query successfully`
-- ✅ Git commit: `Committed in abc123f`
-- ❌ NOT acceptable: "Fixed Shopify queries" without details
-
-**QA Will Validate**: Your work goes through 4-hour validation cycles
+**Branch**: `engineer-helper/work`
+- Commit: `git commit -m "fix: description"`  
+- Push: `git push origin engineer-helper/work`
+- Manager merges
 
 ---
 
-## 🚀 START IMMEDIATELY
+## Local Execution Policy
 
-**Priority Order**:
-1. Task 1: Shopify fixes (2-3h) - Unblocks dashboard tiles
-2. Task 2: LlamaIndex fixes (2-3h) - Unblocks AI agent
-3. Task 3: TypeScript errors (1-2h) - Code quality
-
-**Total**: 5-8 hours of focused blocker removal
-
-**Report in**: feedback/engineer-helper.md with evidence for each fix
+**Auto-Approved**: Read-only ops, local testing
+**Needs Approval**: Git mutations, deployments
 
 ---
 
-**Status**: 🔴 **ACTIVE - P0 BLOCKER REMOVAL**  
-**Mission**: Unblock Engineer, enable launch TODAY  
-**Start**: Immediately with Task 1 (Shopify GraphQL fixes)
+## Shutdown Checklist
 
+**1. Git Operations**
+- [ ] Commit all changes
+- [ ] `git status` clean
+- [ ] Push to engineer-helper/work
 
----
+**1A. Secret Scan**
+- [ ] No secrets in commits
 
-## 🎯 MANAGER DECISION ON TASK 2 (LlamaIndex MCP)
+**2. Save Work**
+- [ ] Code committed
 
-**Your Report**: 63 TypeScript errors due to LlamaIndex 0.12.0 breaking changes
+**3. Document Session**
+- [ ] Update feedback/engineer-helper.md
+- [ ] Log completed tasks
+- [ ] List remaining tasks
 
-**Decision**: **Option C - Deprioritize for now (Not Launch-Critical)**
+**3A. Verification**
+- [ ] `npm run typecheck` passes
 
-**Rationale**:
-- LlamaIndex MCP is for RAG queries (support knowledge base)
-- NOT blocking dashboard tiles or approvals (core launch features)
-- AI agent can continue building knowledge base content without MCP live
-- Can ship launch without LlamaIndex MCP, enable post-launch
+**4. MCP Usage**
+- [ ] Total calls: {number}
+- [ ] Tools used: {list}
 
-**Your Updated Task Status**:
-1. ✅ Task 1: COMPLETE (Shopify GraphQL already fixed)
-2. ⏸️ Task 2: PAUSED (deprioritize LlamaIndex MCP - not launch-critical)
-3. ✅ Task 3: COMPLETE (TypeScript errors fixed)
+**5. Guardrails Breach**
+- [ ] Any breaches? Document
 
-**Next Actions for You**:
-1. ✅ Commit your Task 3 fixes (agent-sdk-mocks.ts) 
-2. ✅ Create PR with clean commit message
-3. ✅ Notify Integrations to re-validate Shopify queries
-4. ✅ Document decision to deprioritize LlamaIndex MCP
-5. **Then**: Join main Engineer on Task 6 (Approval Queue UI) - Designer specs ready!
+**6. Escalate Blockers**
+- [ ] All escalated immediately
 
-**Updated Timeline**:
-- Task 3 commit + PR: 15-20 min
-- Coordination: 10 min  
-- **Total remaining**: ~30 min, then help Engineer with UI
-
-**Why This Works**:
-- Unblocks you from 3-4 hour refactor
-- Preserves launch timeline
-- LlamaIndex MCP can be fixed post-launch when more time
-- Gets you working on higher-priority UI work with Engineer
-
-**Status**: 🟢 DECISION MADE - Complete Task 3 commit, then help Engineer with Approval UI (Task 6)
+**7. Self-Assessment**
+- [ ] 3-4 strengths, 2-3 improvements, 1-2 stop, 2-3 10X ideas
 
 ---
 
-## 🎯 MANAGER FINAL DIRECTION - JOIN ENGINEER ON TASK 6
+## Startup Process
 
-**Your Status**:
-- ✅ Task 1: COMPLETE (Shopify GraphQL validated)
-- ⏸️ Task 2: PAUSED per CEO (LlamaIndex deprioritized, not launch-critical)
-- ✅ Task 3: COMPLETE (TypeScript errors fixed, ready to commit)
+**1. Read**: docs/directions/engineer-helper.md
+**2. Context**: Last 100 lines of feedback/engineer-helper.md
+**3. Verify**: Git + MCPs + local services
+**4. Execute**: Next task, use MCPs
 
-**Next Actions**:
-1. ✅ Commit Task 3 fixes to `tests/fixtures/agent-sdk-mocks.ts`
-2. ✅ Create PR: "fix: resolve TypeScript errors in agent-sdk-mocks"
-3. **Then**: JOIN Engineer on Task 6 (Approval Queue UI)
+---
 
-**Task 6 is Now Unblocked**:
-- Designer completed ALL specs (20 tasks total)
-- Specs ready in `docs/design/` directory
-- Engineer starting Task 6 now
-- You help with implementation (3-4h together)
+**Previous Work**: Archived in `archive/2025-10-12-pre-restart/`  
+**Status**: 🔴 ACTIVE - Task 1 (Commit fixes, then join Engineer)
 
-**Your Role in Task 6**:
-- Help build Approval Queue UI components
-- Implement ApprovalCard based on Designer specs
-- Test responsive design and accessibility
-- Support Engineer with any blockers
-
-**Status**: 🟢 ACTIVE - Commit Task 3, then pair with Engineer on Task 6

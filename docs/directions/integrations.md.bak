@@ -1,0 +1,116 @@
+---
+epoch: 2025.10.E1
+doc: docs/directions/integrations.md
+owner: manager
+last_reviewed: 2025-10-12
+---
+
+# Integrations — Direction
+
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
+
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+### 2️⃣ MCP Tools Mandatory
+**Memory Lock**: "MCPs always, memory never"
+### 3️⃣ Feedback Process Sacred
+**Memory Lock**: "One agent = one feedback file"
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+### 5️⃣ Immediate Blocker Escalation
+**Memory Lock**: "Blocker found = immediate flag"
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "Manager directs, I execute"
+
+---
+
+## Mission
+Ensure Hot Rod AN integrations work: Shopify, Chatwoot, Google Analytics, MCPs.
+
+## 🎯 ACTIVE TASKS
+
+### Task 1 - Revalidate Shopify Queries
+**What**: Confirm all 4 Shopify queries ✅ PASS with Shopify MCP
+**Timeline**: 30 min
+
+### Task 2 - Hot Rod AN Integration Testing
+**What**: Test Shopify data for Hot Rod AN store
+**Timeline**: 2-3 hours
+
+### Task 3 - Webhook Reliability Testing
+**What**: Test Chatwoot webhook under load
+**Timeline**: 2-3 hours
+
+### Task 4 - Google Analytics Integration
+**What**: Verify GA data flowing correctly
+**Timeline**: 2 hours
+
+### Task 5 - MCP Health Monitoring
+**What**: Monitor all MCP servers
+**Timeline**: 1-2 hours
+
+### Task 6 - API Rate Limiting
+**What**: Test rate limits don't break functionality
+**Timeline**: 2 hours
+
+### Task 7 - Error Recovery Testing
+**What**: Test API failure scenarios
+**Timeline**: 2-3 hours
+
+### Task 8 - Data Sync Verification
+**What**: Verify data stays in sync across systems
+**Timeline**: 2 hours
+
+### Task 9 - Shopify Webhook Testing
+**What**: Test Shopify webhooks for order/inventory updates
+**Timeline**: 2-3 hours
+
+### Task 10 - Integration Performance
+**What**: Measure integration latencies
+**Timeline**: 2 hours
+
+### Task 11 - Retry Logic Testing
+**What**: Test retry mechanisms for failed API calls
+**Timeline**: 2 hours
+
+### Task 12 - Authentication Testing
+**What**: Test OAuth flows, token refresh
+**Timeline**: 2 hours
+
+### Task 13 - Integration Documentation
+**What**: Document all integration points
+**Timeline**: 2-3 hours
+
+### Task 14 - Third-Party Service Monitoring
+**What**: Monitor Shopify/Chatwoot/GA uptime
+**Timeline**: 1-2 hours
+
+### Task 15 - API Contract Validation
+**What**: Verify APIs match expected contracts
+**Timeline**: 2 hours
+
+### Task 16 - Integration Error Logging
+**What**: Ensure all integration errors logged
+**Timeline**: 1-2 hours
+
+### Task 17 - Webhook Security
+**What**: Verify HMAC signatures working
+**Timeline**: 1-2 hours
+
+### Task 18 - Hot Rod AN Data Validation
+**What**: Verify Hot Rod AN data correct in all systems
+**Timeline**: 2-3 hours
+
+### Task 19 - Integration Runbook
+**What**: Create troubleshooting runbook
+**Timeline**: 2 hours
+
+### Task 20 - Launch Integration Monitoring
+**What**: Monitor integrations during launch
+**Timeline**: On-call Oct 13-15
+
+## Git Workflow
+**Branch**: `integrations/work`
+
+**Status**: 🔴 ACTIVE
+

@@ -1,5 +1,4 @@
 name: Test Coverage Monitoring
-
 on:
   pull_request:
     branches: [main, develop]

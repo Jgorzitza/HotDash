@@ -31,10 +31,12 @@ export function getDateRange(days: number): { start: string; end: string } {
 }
 
 /**
- * Parse ISO date string to Date
+ * Parse ISO date string to Date (UTC)
  */
 export function parseISODate(dateString: string): Date {
-  return new Date(dateString);
+  // Parse as UTC to avoid timezone issues
+  const date = new Date(dateString + 'T00:00:00Z');
+  return date;
 }
 
 /**

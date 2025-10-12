@@ -2,36 +2,30 @@
 epoch: 2025.10.E1
 doc: docs/marketing/launch_faq.md
 owner: marketing
-last_reviewed: 2025-10-07
+last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-18
 ---
-# Operator Control Center — Launch FAQ (Support Ready)
+# Hot Rod AN Dashboard — Launch FAQ (Operator Ready)
 
 ## How to Use This FAQ
-- Audience: Store operators, CX leads, support agents preparing for launch.
-- Tone: Professional, approachable, action-oriented (per `docs/marketing/brand_tone_deck.md`).
-- Localization: EN complete; FR translation pending professional review (flagged P1).
-- Evidence links provided so support can cite source material when responding.
+- Audience: Hot Rod AN operators, mechanics, shop staff, and automotive aftermarket partners.
+- Tone: Practical, gearhead-friendly, no corporate jargon.
+- Language: Built for the hot rod community — speak automotive, not generic retail.
+- Evidence links provided for technical details.
 
 ---
 
 ## Access & Activation
 
-### Q: How do I access the Operator Control Center?
-A: Once the app is updated, log into Shopify Admin → Apps → HotDash. The dashboard opens to the Operator Control Center home with all five tiles visible.
+### Q: How do I access the Hot Rod AN Dashboard?
+A: Log into Shopify Admin → Apps → HotDash. The dashboard opens immediately with all five tiles: CX Escalations, Sales Pulse, Inventory Heatmap, SEO Watch, and Fulfillment Health.
 
-**Evidence:** App navigation spec (`app/routes/app._index.tsx`).
+### Q: Do I need to set anything up before using it?
+A: Nope. Shopify data is already connected. Connect Chatwoot for CX escalations and Google Analytics for SEO tracking when you're ready. Everything else works out of the box.
 
-### Q: Do I need to enable anything before first use?
-A: No extra setup is required to see Sales Pulse, Inventory Heatmap, Fulfillment Health, or SEO & Content Watch in mock mode. Connect integrations (Chatwoot, Google Analytics) to unlock live data.
-
-**Evidence:** Product operating plan (`docs/directions/product_operating_plan.md`).
-
-### Q: Can team members without Shopify Admin access use the dashboard?
-A: Operator Control Center inherits Shopify Admin permissions. Anyone who can access the HotDash app can use the dashboard; there is no separate login.
-
-**Evidence:** App authentication runbook (`docs/runbooks/authentication.md`).
+### Q: Can my shop staff use the dashboard?
+A: Yes. Anyone with Shopify Admin access can use the dashboard. Permissions are inherited from Shopify, so your existing team access controls apply.
 
 ---
 
@@ -56,63 +50,49 @@ A: SEO & Content Watch tile will show "Connect Google Analytics" with a CTA to a
 
 ## AI & Automation
 
-### Q: What does "AI-suggested reply" mean?
-A: For CX Escalations, the system reads conversation history from Chatwoot and drafts a suggested reply. Operators always review, edit, and approve before anything sends. No auto-send.
+### Q: What does "AI suggests, you approve" mean?
+A: When a hot rod customer asks about AN fittings or brake line setups, the AI drafts a suggested reply based on conversation history. You review, edit, and approve before anything sends. No auto-replies. Your expertise is irreplaceable — this just helps you move faster.
 
-**Evidence:** Brand tone deck — AI messaging section (`docs/marketing/brand_tone_deck.md`).
+### Q: Will AI replace me?
+A: Absolutely not. AI suggests, but you're the expert on hot rod parts. Every recommendation requires your approval. Your automotive knowledge is what makes Hot Rod AN special.
 
-### Q: What data is shared with the AI provider?
-A: We send only the most recent messages needed for context and automatically strip payment details, emails, and phone numbers before the prompt goes to OpenAI (via our LlamaIndex service). Drafts and approvals are retained for audit purposes for up to 12 months.
+### Q: What if AI is wrong about a part recommendation?
+A: You approve everything. If the AI suggests the wrong AN fitting size or adapter, you edit or reject it. All decisions are logged in the audit trail so you have context.
 
-**Evidence:** DPIA (`docs/compliance/dpia_chatwoot_openai.md`).
+### Q: What data does AI see?
+A: Only recent customer messages needed for context. We automatically strip payment details, emails, and phone numbers before the AI sees anything. Automotive questions and product inquiries are what the AI uses to draft replies.
 
-### Q: Is the suggested reply logged anywhere?
-A: Yes. When you approve or edit an AI reply, the final message and decision are captured in the decision audit trail.
-
-**Evidence:** Decision logging schema (`packages/facts/README.md`).
-
-### Q: Can I disable AI suggestions?
-A: Yes. Toggle "AI Reply Suggestions" off in Settings → CX. The tile will still surface escalations, but without draft replies.
-
-**Evidence:** Settings spec (`docs/design/wireframes/settings_cx.md`).
+### Q: Can I turn off AI suggestions?
+A: Yes. Toggle "AI Reply Suggestions" off in Settings → CX. You'll still see customer escalations, just without draft replies.
 
 ---
 
 ## Configuration & Thresholds
 
-### Q: Can we adjust SLA breach times?
-A: Yes. Choose 2h, 4h, or 8h in Settings → CX → SLA Breach Threshold. The tile recalculates in under a minute.
+### Q: Can I adjust when customer escalations trigger?
+A: Yes. Set your SLA breach time to 2h, 4h, or 8h in Settings → CX. Hot rod enthusiasts expect fast responses, so default is 4 hours.
 
-**Evidence:** Product operating plan (Release Review Checklist, Mock) (`docs/directions/product_operating_plan.md`).
+### Q: How does inventory prediction work for AN fittings?
+A: The Inventory Heatmap tracks 14-day sales velocity for each SKU. When projected days-of-cover falls below your threshold (default 7 days), you get an alert with a recommended reorder quantity. Works great for fast-moving adapters and fittings.
 
-### Q: How are low-stock alerts calculated?
-A: Inventory Heatmap flags SKUs when projected days-of-cover falls below your set threshold (default 7 days). Recommendations consider 14-day sales velocity.
+### Q: Can I set custom alerts for different part categories?
+A: Not yet (v1). Coming in Phase 2: custom thresholds for AN fittings, brake lines, fuel system components, etc.
 
-**Evidence:** Inventory data contract (`packages/facts/inventory_heatmap.md`).
-
-### Q: Can I set custom SEO drop percentages?
-A: Yes. SEO & Content Watch supports 15%, 20%, or 25% week-over-week drop thresholds. Adjust in Settings → SEO.
-
-**Evidence:** Launch comms packet tooltip copy (`docs/marketing/launch_comms_packet.md`).
+### Q: How do I track hot rod search rankings?
+A: Connect Google Analytics in Settings → Integrations. SEO Watch flags landing pages losing >20% traffic week-over-week. Adjust the threshold (15%, 20%, 25%) in Settings → SEO.
 
 ---
 
 ## Data & Security
 
-### Q: Where is my data stored?
-A: Data stays within your Shopify store and connected tools. HotDash caches data in Supabase per Shopify security standards; no customer PII leaves the ecosystem.
+### Q: Where is my hot rod customer data stored?
+A: Data stays in your Shopify store and connected tools. We cache limited data in Supabase per Shopify security standards. No customer payment info or PII leaves the ecosystem.
 
-**Evidence:** Security runbook (`docs/runbooks/security.md`).
+### Q: What telemetry do you collect?
+A: We log operator email, tile interactions, and request IDs to monitor uptime and improve the dashboard. Records live for up to 180 days. No customer data, no payment info.
 
-### Q: What operator analytics do you collect?
-A: We log limited telemetry (operator email, tile interactions, request IDs) so we can monitor uptime and improve the dashboard. Records live in Supabase for up to 180 days and are restricted to the HotDash reliability team.
-
-**Evidence:** Privacy notice update draft (`docs/compliance/privacy_notice_updates.md`).
-
-### Q: Can I opt out of analytics tracking?
-A: Yes. Toggle "Share usage analytics" off in Settings → Privacy. You can also email customer.support@hotrodan.com to request manual removal. Opting out doesn’t affect dashboard access.
-
-**Evidence:** Privacy notice update draft (`docs/compliance/privacy_notice_updates.md`).
+### Q: Can I opt out of tracking?
+A: Yes. Toggle "Share usage analytics" off in Settings → Privacy or email customer.support@hotrodan.com. Opting out doesn't affect dashboard access.
 
 ### Q: Who can view the decision audit trail?
 A: Anyone with HotDash dashboard access can view the audit trail. Permissions mirror Shopify Admin roles.

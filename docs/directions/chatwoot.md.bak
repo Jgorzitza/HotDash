@@ -1,0 +1,84 @@
+---
+epoch: 2025.10.E1
+doc: docs/directions/chatwoot.md  
+owner: manager
+last_reviewed: 2025-10-12
+---
+
+# Chatwoot — Direction
+
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
+
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+
+### 2️⃣ MCP Tools Mandatory
+**Memory Lock**: "MCPs always, memory never"
+
+### 3️⃣ Feedback Process Sacred
+**Memory Lock**: "One agent = one feedback file"
+
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+
+### 5️⃣ Immediate Blocker Escalation
+**Memory Lock**: "Blocker found = immediate flag"
+
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "Manager directs, I execute"
+
+---
+
+## Mission
+
+You integrate Chatwoot with Hot Rod AN dashboard for customer support automation.
+
+## 🎯 ACTIVE TASKS (Oct 13-15 Launch)
+
+### Task 1 - Webhook Deployment Verification
+**What**: Verify Chatwoot webhook is deployed and receiving messages
+**Evidence**: Webhook responds, HMAC verified, messages logged
+
+### Task 2 - Test Message Flow
+**What**: End-to-end test of Chatwoot → Agent SDK → Response
+**Evidence**: Complete flow works
+
+### Task 3 - Response Template Testing
+**What**: Test AI response templates with actual customer messages
+**Evidence**: Templates generate appropriate responses
+
+### Task 4 - Error Handling
+**What**: Test webhook failures, retries, dead letter queue
+**Evidence**: Errors handled gracefully
+
+### Task 5 - Performance Testing
+**What**: Test with 10+ concurrent messages
+**Evidence**: No message loss, <2s processing
+
+### Task 6 - Hot Rod AN Message Patterns
+**What**: Analyze Hot Rod AN customer message patterns
+**Evidence**: Common questions categorized
+
+### Task 7 - Integration Monitoring
+**What**: Monitor Chatwoot integration during launch
+**Evidence**: Uptime tracking, error rates
+
+### Task 8 - Operator Training Content
+**What**: Create guide for operators using Chatwoot with AI
+**Evidence**: Quick start guide ready
+
+---
+
+## Git Workflow (MANDATORY)
+**Branch**: `chatwoot/work`
+
+## Shutdown Checklist
+[Standard 9 sections]
+
+## Startup Process
+[Standard 4 steps]
+
+---
+
+**Status**: 🔴 ACTIVE
+

@@ -24,8 +24,9 @@ Direction files are canonical instructions for each agent. To prevent drift:
    - Manager approval on the PR.
    - Updated hash recorded in `canon.lock` after merge.
 6. **Read-only intent** — agents consume their direction, follow linked canon, and log questions in their feedback file (for example `feedback/qa.md`).
-7. **Secrets** — Supabase credentials and other sensitive values live in CI secrets or local vault; never commit real values to version control. Reference `docs/ops/credential_index.md` for canonical paths.
-8. **Audit trail** — manager logs direction updates in `feedback/manager.md` for transparency and posts a daily stand-up using `docs/directions/manager_standup_template.md`.
+7. **Feedback ownership** — each agent writes ONLY to their own feedback file (`feedback/{agent}.md`). **NEVER write to `feedback/manager.md`** - that is the Manager's file. Manager reads all agent feedback files to coordinate work.
+8. **Secrets** — Supabase credentials and other sensitive values live in CI secrets or local vault; never commit real values to version control. Reference `docs/ops/credential_index.md` for canonical paths.
+9. **Audit trail** — manager logs direction updates in `feedback/manager.md` for transparency and posts a daily stand-up using `docs/directions/manager_standup_template.md`.
 
 Violations (unauthorized files or edits) are blockers and must be reported immediately.
 

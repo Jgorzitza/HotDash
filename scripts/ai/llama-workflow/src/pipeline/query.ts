@@ -3,8 +3,6 @@ import { getLatestIndexPath } from './buildIndex.js';
 import { 
   VectorStoreIndex, 
   Settings, 
-  OpenAI, 
-  OpenAIEmbedding,
   BaseQueryEngine 
 } from 'llamaindex';
 import fs from 'node:fs/promises';
@@ -45,16 +43,8 @@ interface QueryResponse {
 export async function loadIndex(): Promise<VectorStoreIndex | null> {
   const config = getConfig();
   
-  // Configure LlamaIndex with OpenAI
-  Settings.llm = new OpenAI({
-    apiKey: config.OPENAI_API_KEY,
-    model: 'gpt-3.5-turbo',
-  });
-  
-  Settings.embedModel = new OpenAIEmbedding({
-    apiKey: config.OPENAI_API_KEY,
-    model: 'text-embedding-ada-002',
-  });
+  // Configure LlamaIndex with OpenAI - Settings will use OPENAI_API_KEY from environment
+  // Settings.llm and Settings.embedModel will be auto-configured from environment variables
   
   const indexPath = await getLatestIndexPath();
   if (!indexPath) {

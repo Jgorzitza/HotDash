@@ -3,363 +3,125 @@ epoch: 2025.10.E1
 doc: docs/directions/enablement.md
 owner: manager
 last_reviewed: 2025-10-12
-doc_hash: TBD
-expires: 2025-10-19
 ---
-# Enablement — Direction (Operator Control Center)
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
 
-> Manager authored. Enablement agent must not modify direction docs; request changes via the manager with supporting evidence.
+# Enablement — Direction
 
-## Local Execution Policy (Auto-Run)
+## 🔒 NON-NEGOTIABLES (LOCK INTO MEMORY)
 
-You may run local, non-interactive commands to build docs and training artifacts without approval. Guardrails:
+### 1️⃣ North Star Obsession
+**Memory Lock**: "North Star = Operator value TODAY"
+### 2️⃣ MCP Tools Mandatory
+**Memory Lock**: "MCPs always, memory never"
+### 3️⃣ Feedback Process Sacred
+ALL work logged in `feedback/enablement.md` ONLY. No exceptions.
+- Log timestamps, evidence, file paths
+- No separate files
+- **NEVER write to feedback/manager.md** (that is Manager's file)
+- Manager reads YOUR feedback file to coordinate
 
-- Scope: local repo only; no remote infra or git mutations under auto-run.
-- Non-interactive: disable pagers; avoid interactive prompts.
-- Evidence: log timestamp, command, outputs in feedback/enablement.md; store artifacts under artifacts/enablement/.
-- Secrets: load from vault/env; never print values.
-- Retry: 2 attempts then escalate with logs.
+**Memory Lock**: "One agent = one feedback file (MY OWN ONLY)"
+**Memory Lock**: "One agent = one feedback file"
+### 4️⃣ No New Files Ever
+**Memory Lock**: "Update existing, never create new"
+### 5️⃣ Immediate Blocker Escalation
+Blockers escalated IMMEDIATELY when identified.
+**Process**: (1) Log blocker in feedback/enablement.md, (2) Continue to next task
+Don't wait - Manager removes blockers while you work.
 
-- Own operator-facing documentation: runbooks, training guides, FAQs, and knowledge base notes live under `docs/runbooks/` and `docs/enablement/`.
-- Keep all enablement materials English-only; coordinate with marketing, support, and product to ensure wording matches approved copy decks.
-- Maintain the operator training agenda (`docs/runbooks/operator_training_agenda.md`) and ensure every dry run captures questions in the Q&A template.
-- Publish quick-start job aids for each tile/modal, emphasizing decision flows, guardrails, and escalation paths; store artifacts in `docs/enablement/job_aids/`.
-- Capture operator feedback from trainings or pilots and log summaries plus follow-up actions in `feedback/enablement.md`.
-- Partner with support to keep escalation playbooks aligned to the latest code paths and approval heuristics.
-- Stack guardrails: reinforce `docs/directions/README.md#canonical-toolkit--secrets` in every packet (Supabase backend, Chatwoot on Supabase, React Router 7 UI, OpenAI + LlamaIndex tooling); purge old references to Fly Postgres or Slack.
-- Update training assets referencing docs/dev/adminext-shopify.md, docs/dev/storefront-mcp.md, docs/dev/webpixels-shopify.md.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/enablement.md` without waiting for additional manager approval.
-
-## Current Sprint Focus — 2025-10-12
-Drive each deliverable to closure yourself; document artefacts, timestamps, and remaining follow-ups in `feedback/enablement.md`. If another team is required, open the loop and stay on it until the dependency is resolved.
-
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
-
-**Reference Docs**:
-- docs/AgentSDKopenAI.md - Agent capabilities for training content
-- docs/runbooks/operator_training_qa_template.md
-
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/enablement.md and continue):
-
-1. ✅ **Training Video Modules** - COMPLETE (2025-10-11)
-   - 4 Loom modules created (18 min 25 sec total)
-   - Ready for distribution
-   - Evidence: feedback/enablement.md
-
-## 🚨 P0 LAUNCH TRAINING (Minimal for Pilot)
-
-2. **Quick Start Guide for Approval Queue** (Launch Gate #6)
-   - Create 1-page guide: How to approve/reject agent actions
-   - Document decision criteria
-   - Basic escalation path
-   - Evidence: Quick start guide PDF
-   - Timeline: 2-4 hours
-   - Status: ⏳ Ready once Engineer's UI live
-
-**Immediate Prep Work** (Do while Engineer builds):
-
-2A. **Training Session Outline**
-   - Create 30-minute pilot training agenda
-   - Write demo script (pending actual UI)
-   - Prepare talking points
-   - Create Q&A section structure
-   - Evidence: Session outline
-   - Timeline: 2-3 hours
-
-2B. **Video Script for Approval Queue**
-   - Write script for Loom walkthrough
-   - Plan screen recording flow
-   - Prepare voiceover notes
-   - Evidence: Video script ready
-   - Timeline: 1-2 hours
-
-2C. **Operator Onboarding Checklist**
-   - Create pre-pilot operator checklist
-   - Document access requirements
-   - Create account setup steps
-   - Evidence: Onboarding checklist
-   - Timeline: 1-2 hours
-
-2D. **Training Effectiveness Measurement**
-   - Design quiz/assessment for operators
-   - Create knowledge check questions
-   - Plan hands-on practice scenarios
-   - Evidence: Assessment design
-   - Timeline: 2-3 hours
-
-3. **30-Min Pilot Training Session** (After Engineer Task 6 complete)
-   - Deliver training with actual UI
-   - Record session
-   - Collect operator feedback
-   - Evidence: Session delivered
-   - Timeline: Depends on UI availability
-
-**DO FIRST**: Tasks 2A-2D (prep work while waiting for UI)
-
-**THEN**: Tasks 2-3 when UI is ready
-
-**PAUSE UNTIL AFTER LAUNCH**: Tasks 4-42 (all expanded enablement work)
+**Memory Lock**: "Blocker found = immediate flag"
+### 6️⃣ Manager-Only Direction
+**Memory Lock**: "Manager directs, I execute"
 
 ---
 
-## ✅ STATUS (2025-10-12T00:50Z)
+## Mission
+Train Hot Rod AN CEO and operators on dashboard - quick start, best practices, efficiency.
 
-**Your Report**: All launch training ready
+## 🎯 ACTIVE TASKS
 
-**Manager Assignment**: Execute Tasks 2A-2D (session outline, video script, checklist, assessment)
+### Task 1 - CEO Quick Start Guide
+**What**: Simple guide for Hot Rod AN CEO
+**Timeline**: 1-2 hours
 
-**Timeline**: 6-10 hours of launch-aligned prep
+### Task 2 - Dashboard Training Video
+**What**: 5-minute walkthrough video script
+**Timeline**: 2 hours
 
-Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
+### Task 3 - Operator Best Practices
+**What**: Tips for efficient dashboard usage
+**Timeline**: 2 hours
 
----
+### Task 4 - Approval Queue Training
+**What**: How to use agent-assisted approvals
+**Timeline**: 2 hours
 
-## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
+### Task 5 - Tile-by-Tile Guide
+**What**: Detailed guide for each of 5 tiles
+**Timeline**: 3 hours
 
-**Task 2E**: Hands-On Practice Scenarios
-- Create practice approval scenarios for operators
-- Use real Hot Rodan customer examples (anonymized)
-- Design practice sessions
-- Evidence: Practice scenario library
-- Timeline: 2-3 hours
+### Task 6 - Troubleshooting Guide
+**What**: Common issues and solutions
+**Timeline**: 2-3 hours
 
-**Task 2F**: Troubleshooting Guide for Operators
-- "What if dashboard is slow?"
-- "What if AI suggestion seems wrong?"
-- "What if approval doesn't send?"
-- Evidence: Troubleshooting guide
-- Timeline: 2-3 hours
+### Task 7 - FAQ for Operators
+**What**: Common operator questions
+**Timeline**: 2 hours
 
-**Task 2G**: Quick Reference Cards
-- Laminated quick reference for each tile
-- Decision trees for common scenarios
-- Hotkey reference
-- Evidence: Reference cards PDF
-- Timeline: 2-3 hours
+### Task 8 - Keyboard Shortcuts Guide
+**What**: Efficiency shortcuts for operators
+**Timeline**: 1 hour
 
-**Task 2H**: Video Demonstrations
-- Record 5-min demo of each tile
-- Show approval workflow
-- Highlight key features
-- Evidence: Video links
-- Timeline: 3-4 hours
+### Task 9 - Dashboard Tips & Tricks
+**What**: Advanced features and hidden capabilities
+**Timeline**: 2 hours
 
-**Task 2I**: Operator Certification Program
-- Design certification path for operators
-- Create knowledge checks
-- Badge/achievement system
-- Evidence: Certification program design
-- Timeline: 2-3 hours
+### Task 10 - Onboarding Checklist
+**What**: Day 1 checklist for new operators
+**Timeline**: 1-2 hours
 
-Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
+### Task 11 - Training Assessment
+**What**: Quiz/assessment for operator training
+**Timeline**: 2 hours
 
----
+### Task 12 - Video Tutorial Series
+**What**: Series of short how-to videos
+**Timeline**: 3-4 hours
 
-## 📋 NEXT WAVE - DEEP TRAINING PROGRAM (Tasks 2J-2T)
+### Task 13 - Reference Cards
+**What**: Printable reference cards for operators
+**Timeline**: 2 hours
 
-**Task 2J**: Advanced Operator Training Modules
-- Tile mastery training (deep dive each tile)
-- Advanced approval workflows
-- Power user features
-- Evidence: Advanced training modules
-- Timeline: 3-4 hours
+### Task 14 - Advanced Features Training
+**What**: Power user features documentation
+**Timeline**: 2-3 hours
 
-**Task 2K**: Hot Rod Product Knowledge Training
-- Automotive parts education
-- Common builds and applications
-- Technical specifications training
-- Evidence: Product knowledge course
-- Timeline: 3-4 hours
+### Task 15 - Mobile App Training
+**What**: Using dashboard on mobile
+**Timeline**: 1-2 hours
 
-**Task 2L**: Customer Service Excellence for Hot Rod Enthusiasts
-- Understanding hot rod culture
-- Enthusiast communication style
-- Building community relationships
-- Evidence: Customer service training
-- Timeline: 2-3 hours
+### Task 16 - Integration Training
+**What**: How dashboard integrates with Shopify/Chatwoot
+**Timeline**: 2 hours
 
-**Task 2M**: Dashboard Analytics Training
-- How to read tile data
-- Interpreting trends and alerts
-- Making data-driven decisions
-- Evidence: Analytics training module
-- Timeline: 2-3 hours
+### Task 17 - Reporting Training
+**What**: How to generate and read reports
+**Timeline**: 2 hours
 
-**Task 2N**: AI Collaboration Training
-- Working with AI suggestions
-- When to trust vs. verify
-- Providing feedback to improve AI
-- Evidence: AI collaboration guide
-- Timeline: 2-3 hours
+### Task 18 - Data Interpretation Training
+**What**: Understanding metrics and insights
+**Timeline**: 2-3 hours
 
-**Task 2O**: Troubleshooting and Problem-Solving
-- Common dashboard issues and fixes
-- Escalation procedures
-- Self-service resources
-- Evidence: Troubleshooting training
-- Timeline: 2-3 hours
+### Task 19 - AI Collaboration Training
+**What**: Working with AI-assisted features
+**Timeline**: 2 hours
 
-**Task 2P**: Certification Assessment Design
-- Create competency tests for operators
-- Practical scenarios and case studies
-- Certification badge program
-- Evidence: Certification program
-- Timeline: 2-3 hours
+### Task 20 - Launch Support
+**What**: Support CEO during initial usage
+**Timeline**: On-call Oct 13-15
 
-**Task 2Q**: Microlearning Content Library
-- 5-minute training videos for specific features
-- Just-in-time learning resources
-- Mobile-friendly format
-- Evidence: Microlearning library
-- Timeline: 3-4 hours
+## Git Workflow
+**Branch**: `enablement/work`
 
-**Task 2R**: New Operator Onboarding Path
-- Week 1 training schedule
-- Hands-on practice requirements
-- Buddy system design
-- Evidence: Onboarding program
-- Timeline: 2-3 hours
+**Status**: 🔴 ACTIVE
 
-**Task 2S**: Continuous Learning Program
-- Ongoing training schedule
-- Skill development paths
-- Knowledge refresh cycles
-- Evidence: Continuous learning plan
-- Timeline: 2-3 hours
-
-**Task 2T**: Training Effectiveness Measurement
-- Pre/post assessments
-- Performance improvement tracking
-- ROI on training investment
-- Evidence: Training metrics framework
-- Timeline: 2-3 hours
-
-Execute 2J-2T. Total: ~48-58 hours enablement work.
-
----
-
-**PAUSED TASKS** (Resume after launch):
-
-4. **Approval Queue FAQ** - Document common questions
-   - Create FAQ for operators about Agent SDK
-   - Address concerns about AI accuracy
-   - Document escalation procedures
-   - Provide examples of good approvals
-   - Evidence: FAQ document
-
-5. **Internal Dry-Run Session** - Prepare for team training
-   - Schedule internal training session
-   - Create dry-run agenda and checklist
-   - Prepare demo scenarios
-   - Capture questions for FAQ updates
-   - Coordinate: Tag @support and @product for attendance
-   - Evidence: Session agenda, attendance list
-
-6. **Training Material Updates** - Keep all materials current
-   - Update existing training modules with Agent SDK features
-   - Refresh job aids with new workflows
-   - Update operator checklists
-   - Verify all materials reference canonical toolkit
-   - Evidence: Updated materials inventory
-
-**Ongoing Requirements**:
-- Coordinate with @support on training content
-- Tag @marketing for messaging alignment
-- Log all training materials in feedback/enablement.md
-
----
-
-### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
-
-**Task 7: Advanced Training Modules**
-- Create advanced operator training for complex scenarios
-- Design troubleshooting training module
-- Create escalation handling training
-- Develop role-play scenarios for practice
-- Evidence: Advanced training module suite
-
-**Task 8: Training Effectiveness Measurement**
-- Design training assessment quizzes
-- Create competency evaluation framework
-- Document certification process for operators
-- Plan for ongoing training requirements
-- Evidence: Training assessment system
-
-**Task 9: Video Training Library**
-- Create additional Loom modules for specific features
-- Design video training series (Basics → Advanced)
-- Create screen recording templates
-- Document video production standards
-- Evidence: Expanded video library
-
-**Task 10: Operator Onboarding Program**
-- Design complete onboarding program for new operators
-- Create 30-day onboarding checklist
-- Document mentorship program
-- Plan for onboarding effectiveness tracking
-- Evidence: Onboarding program documentation
-
-**Task 11: Job Aid Library**
-- Create quick reference cards for all features
-- Design printable job aids
-- Create digital reference materials
-- Organize by operator role and skill level
-- Evidence: Complete job aid library
-
-**Task 12: Training Content Management**
-- Design system for managing training content versions
-- Create content update workflow
-- Document content review and approval process
-- Plan for content freshness maintenance
-- Evidence: Content management system design
-
-Execute 7-12 in any order - all enhance operator readiness.
-
----
-
-### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
-
-**Task 13-20: Learning & Development** (8 tasks)
-- 13: Create microlearning content library (5-min modules)
-- 14: Design spaced repetition learning system
-- 15: Implement learning analytics and insights
-- 16: Create personalized learning paths
-- 17: Design peer-to-peer learning program
-- 18: Create learning community platform
-- 19: Implement learning gamification
-- 20: Design learning impact measurement
-
-**Task 21-28: Knowledge Management** (8 tasks)
-- 21: Create knowledge base architecture
-- 22: Design knowledge capture automation
-- 23: Implement knowledge graph for connections
-- 24: Create knowledge search and discovery
-- 25: Design knowledge quality assurance
-- 26: Implement knowledge versioning
-- 27: Create knowledge analytics
-- 28: Design knowledge retention strategies
-
-**Task 29-42: Training Delivery** (14 tasks)
-- 29: Design virtual instructor-led training (VILT) program
-- 30: Create blended learning curriculum
-- 31: Implement learning management system (LMS) integration
-- 32: Design certification and badging program
-- 33: Create train-the-trainer program
-- 34: Implement simulation and practice environments
-- 35: Design role-based training tracks
-- 36: Create continuous learning programs
-- 37: Implement performance support tools
-- 38: Design just-in-time training delivery
-- 39: Create mobile learning strategy
-- 40: Implement social learning features
-- 41: Design coaching and mentoring programs
-- 42: Create learning culture development plan
-
-Execute 13-42 in any order. Total: 42 tasks, ~25-30 hours work.

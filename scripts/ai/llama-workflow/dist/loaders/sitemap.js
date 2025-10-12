@@ -90,8 +90,8 @@ export async function fetchHotrodanContent() {
         let urls = [];
         // Try sitemap first
         try {
-            console.log('Attempting to fetch sitemap from hotrodan.com...');
-            urls = await fetchSitemap('https://hotrodan.com/sitemap.xml');
+            console.log('Attempting to fetch sitemap from www.hotrodan.com...');
+            urls = await fetchSitemap('https://www.hotrodan.com/sitemap.xml');
             console.log(`Found ${urls.length} URLs in sitemap`);
         }
         catch (error) {
@@ -100,12 +100,12 @@ export async function fetchHotrodanContent() {
         // Fallback to seed pages if sitemap failed or returned no results
         if (urls.length === 0) {
             urls = [
-                'https://hotrodan.com/',
-                'https://hotrodan.com/blog',
-                'https://hotrodan.com/pricing',
-                'https://hotrodan.com/docs',
-                'https://hotrodan.com/about',
-                'https://hotrodan.com/contact',
+                'https://www.hotrodan.com/',
+                'https://www.hotrodan.com/blog',
+                'https://www.hotrodan.com/pricing',
+                'https://www.hotrodan.com/docs',
+                'https://www.hotrodan.com/about',
+                'https://www.hotrodan.com/contact',
             ];
             console.log('Using seed URLs as fallback');
         }

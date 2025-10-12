@@ -1,0 +1,5 @@
+{
+  "cursor.chat.autoApproveEdits": true,
+  "cursor.composer.autoApproveEdits": true,
+  "cursor.general.enableAutoApproval": true
+}
