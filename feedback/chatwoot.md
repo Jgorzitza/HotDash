@@ -1240,6 +1240,53 @@ Manager added **20 additional tasks (Z-AR)** across 4 categories. Total tasks no
 
 **Next:** Verify webhook endpoint configuration with engineer, then execute Tasks 2 & 5 with evidence
 
+---
+
+### 🔍 WEBHOOK ENDPOINT INVESTIGATION (2025-10-12T02:46:00Z)
+
+**Finding:** Webhook handler code EXISTS but endpoint returns 404
+
+**Evidence:**
+```
+File: app/routes/api.webhooks.chatwoot.tsx
+Created: commit 49dc8e2 (designer)
+Route: POST /api/webhooks/chatwoot
+Features: ✅ HMAC verification, ✅ Agent SDK forwarding, ✅ Error handling
+```
+
+**Deployment Status:**
+- App: hotdash-staging
+- Last Deploy: 2025-10-11T02:12:14Z (version 17)
+- Current State: Running (1 machine started)
+- Test Result: HTTP 404 (route not found)
+
+**Test Commands:**
+```bash
+# Test 1: Basic POST
+curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
+  -H "Content-Type: application/json" \
+  -d '{"event":"test"}'
+# Result: 404 Not Found
+
+# File exists in repo:
+ls -la app/routes/api.webhooks.chatwoot.tsx
+# Exists: 139 lines, HMAC + forwarding implemented
+```
+
+**Root Cause Analysis:**
+1. ✅ Code is written and committed
+2. ✅ HMAC signature verification implemented
+3. ✅ Agent SDK forwarding logic in place
+4. ❌ Route not accessible (404 response)
+5. ❓ Needs redeployment OR routing configuration
+
+**Coordination Needed:**
+- @engineer: Confirm if app needs redeployment with webhook route
+- @engineer: Verify React Router 7 route configuration for `api.webhooks.chatwoot.tsx`
+- Alternative: Deploy directly if I have permission
+
+**North Star Check:** ✅ This is evidence-first investigation (not theoretical design)
+
 ### 📋 COMMITMENT TO NORTH STAR ALIGNMENT
 
 **Going Forward, I Will:**
