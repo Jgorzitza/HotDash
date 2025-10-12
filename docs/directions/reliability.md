@@ -154,3 +154,40 @@ Monitor Hot Rod AN infrastructure, ensure uptime, fast incident response.
 
 **Total**: 100-200 tasks per agent = months/years of aligned productive work
 
+
+---
+
+## 🚨 AUDIT-BASED CORRECTIVE TASKS (Oct 12 11:00 UTC Update)
+
+**Manager's Audit Found**: 270 postgresql:// references in codebase need security audit
+
+**Your Grade**: B+ (85%) - Good monitoring work, needs faster escalation
+
+### IMMEDIATE TASK: Security Audit - Connection String References (2 hours)
+
+**Audit Finding**: 270 matches for "postgresql://" throughout codebase
+
+**What**: Audit all connection string references for security risks
+**Scope**: scripts/, tests/, docs/, archives/, app/
+
+**Action Plan**:
+1. Run comprehensive search: `grep -r "postgresql://" --include="*.{ts,js,md,sh,sql}"`
+2. Categorize findings:
+   - Real credentials (CRITICAL - sanitize immediately)
+   - Placeholder/example strings (document as safe)
+   - Test fixtures (verify they're fake)
+   - Archived content (verify already sanitized)
+3. Sanitize any real credentials found
+4. Document audit results
+
+**Evidence Required**:
+- Audit report with categorization
+- Any real credentials sanitized
+- Security clearance report
+- Logged in feedback/reliability.md
+
+**Deadline**: Oct 12 14:00 UTC (3 hours)
+**Priority**: P1 (Security audit)
+
+**LOG IN FEEDBACK**: Start immediately, update every 30 minutes with findings
+

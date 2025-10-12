@@ -154,3 +154,39 @@ Market Hot Rod AN dashboard - automotive community, hot rod shops, AN fitting ni
 
 **Total**: 100-200 tasks per agent = months/years of aligned productive work
 
+
+---
+
+## 🚨 AUDIT-BASED CORRECTIVE TASKS (Oct 12 11:00 UTC Update)
+
+**Manager's Audit Found**: 270 references to "GA MCP" in documentation - we use Google Analytics Direct API
+
+**Your Grade**: B (82%) - Good content BUT inconsistent logging and messaging drift
+
+### IMMEDIATE TASK: Update GA MCP Messaging (1 hour)
+
+**Audit Finding**: Marketing materials reference "GA MCP" but we use Google Analytics Direct API
+
+**What**: Update ALL marketing materials to correct terminology
+**Files to Fix**:
+- docs/marketing/phase2_ga_mcp_messaging.md (rename or update)
+- docs/marketing/launch_comms_packet.md (update GA references)
+- docs/marketing/privacy_toggle_rollout.md (update GA MCP to Direct API)
+- Any other marketing materials with "GA MCP"
+
+**Action Plan**:
+1. Search all marketing docs for "GA MCP"
+2. Replace with "Google Analytics Direct API"
+3. Update messaging to reflect Direct API approach
+4. Remove references to "MCP" in customer-facing materials
+
+**Evidence Required**:
+- Updated marketing materials
+- No "GA MCP" in marketing docs
+- Logged in feedback/marketing.md with file list
+
+**Deadline**: Oct 12 15:00 UTC (4 hours)
+**Priority**: P1 (Correct messaging)
+
+**LOG IN FEEDBACK**: Document all files changed
+

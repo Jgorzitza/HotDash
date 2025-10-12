@@ -81,37 +81,127 @@ You build the Hot Rod AN dashboard. Your code powers the 5 tiles and approval qu
 
 **Primary Goal**: Ship Approval Queue UI and Integration Testing (Launch Gates 6-7)
 
-## 🎯 ACTIVE TASKS (Execute in Order)
+## 🎯 ACTIVE TASKS (Execute in Order) - UPDATED OCT 12 11:00 UTC
 
-### 🚨 P0: Task 1 - Approval Queue UI (WITH Engineer Helper)
+**CRITICAL**: Based on Manager's comprehensive audit, you have 70+ TypeScript errors and 2 Agent SDK bugs blocking production. These MUST be fixed before any other work.
+
+### 🚨 P0 LAUNCH BLOCKERS (Complete by Oct 12 22:00 UTC):
+
+### Task 1: FIX TYPESCRIPT ERRORS (HIGHEST PRIORITY - 3-4 hours)
+
+**Audit Finding**: 70+ TypeScript compilation errors blocking production deployment
+
+**What**: Resolve ALL TypeScript errors to enable production build
+**Errors Found**:
+- Missing @shopify/polaris dependency (10+ errors)
+- React Router v7 migration incomplete - using removed `json` export (5+ errors)
+- Missing type definitions: Agent, TestCase, ConversationContext (20+ errors)
+- Missing components: ApprovalCard, ChatwootApprovalCard, useApprovalNotifications (10+ errors)
+- Implicit any types in scripts/ai/ (25+ errors)
+
+**Files Affected**:
+- app/routes/approvals/route.tsx
+- app/routes/chatwoot-approvals/*.tsx
+- app/components/ApprovalCard.tsx
+- app/components/ChatwootApprovalCard.tsx
+- scripts/ai/orchestration/*.ts
+- scripts/ai/model-ops/*.ts
+- scripts/ai/memory/*.ts
+
+**Action Plan**:
+1. Install/fix @shopify/polaris: `npm install @shopify/polaris`
+2. Update React Router v7 imports: Replace `json` with proper v7 patterns (verify with Context7 MCP)
+3. Create missing type definitions: Agent, TestCase, ConversationContext in app/types/
+4. Create missing components or fix imports
+5. Fix implicit any types in AI scripts
+6. Run `npm run typecheck` until 0 errors
+
+**Evidence Required**: 
+- `npm run typecheck` exits with 0 errors
+- All files compile successfully
+- Logged in feedback/engineer.md with each fix iteration
+
+**Deadline**: Oct 12 16:00 UTC (5 hours)
+**Priority**: P0 (LAUNCH BLOCKING)
+**Log Progress**: EVERY 30 MINUTES in feedback/engineer.md
+
+---
+
+### Task 2: FIX AGENT SDK BUGS (1 hour)
+
+**Audit Finding**: Chatwoot agent identified 2 bugs preventing E2E workflow
+
+**What**: Fix Agent SDK integration issues
+**Bug 1**: Payload format mismatch in `apps/agent-service/src/server.ts:48`
+**Bug 2**: Database SSL configuration incorrect
+
+**Action Plan**:
+1. Fix payload format to match Chatwoot webhook structure
+2. Fix database SSL config in Agent SDK connection string
+3. Test with actual Chatwoot webhook
+4. Verify E2E flow: Chatwoot → Agent SDK → Approval Queue
+
+**Evidence Required**:
+- Chatwoot webhook successfully processed
+- Agent SDK creates approval queue entries
+- E2E test passing
+- Logged in feedback/engineer.md
+
+**Deadline**: Oct 12 13:00 UTC (2 hours)
+**Priority**: P0 (LAUNCH BLOCKING)
+**Log Progress**: Immediately when started and completed
+
+---
+
+### Task 3: Complete Approval Queue UI (3-4 hours)
+
+**Audit Finding**: Approval UI incomplete, needed for operator interface
 
 **What**: Build minimal approval queue UI based on Designer specs
 **Specs**: 
 - `docs/design/HANDOFF-approval-queue-ui.md`
 - `docs/design/MINIMAL-approval-ui-assets-TODAY.md`
 
-**Deliverables**:
-- Approval queue route (`app/routes/approvals/route.tsx`)
-- ApprovalCard component
-- Approve/Reject actions
-- Real-time updates
+**Prerequisites**: Tasks 1 & 2 complete (TypeScript compiling, bugs fixed)
 
-**Evidence**: Working UI, screenshots, test results
-**Timeline**: 3-4 hours with Engineer Helper
+**Deliverables**:
+- Approval queue route (`app/routes/approvals/route.tsx`) - fix TypeScript errors first
+- ApprovalCard component - create or fix import
+- Approve/Reject actions wired to Agent SDK
+- Real-time updates working
+
+**Evidence Required**: 
+- Working UI in Shopify Admin
+- Screenshots of approval workflow
+- Test results
+- Logged in feedback/engineer.md
+
+**Deadline**: Oct 12 18:00 UTC (7 hours)
+**Priority**: P0 (LAUNCH BLOCKING)
 **Success**: Operators can see and approve/reject agent suggestions
 
 ---
 
-### Task 2 - Integration Testing
+### Task 4: E2E Integration Testing (2 hours)
 
-**What**: E2E test of complete approval workflow
-**Test**:
+**Audit Finding**: E2E workflow needs validation after bug fixes
+
+**What**: Test complete approval workflow end-to-end
+**Prerequisites**: Tasks 1, 2, 3 complete
+
+**Test Scenarios**:
 - Chatwoot webhook → Agent SDK → Approval created → Operator approves → Response sent
-- Verify all 5 tiles load data correctly
-- Test error handling
+- Error handling (invalid webhooks, timeouts, failures)
+- Decision logging to Supabase audit trail
+- Verify all integrations working together
 
-**Evidence**: Test results, all scenarios passing
-**Timeline**: 2-3 hours
+**Evidence Required**: 
+- E2E test passing
+- All scenarios validated
+- Logged in feedback/engineer.md with test results
+
+**Deadline**: Oct 12 20:00 UTC (9 hours)
+**Priority**: P0 (LAUNCH BLOCKING)
 **Success**: Full workflow works end-to-end
 
 ---
