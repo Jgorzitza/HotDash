@@ -27,8 +27,8 @@ export class SafetyGuardrails {
    * Check response safety before sending to customer
    */
   async checkSafety(response: string, context: any): Promise<z.infer<typeof SafetyCheckResultSchema>> {
-    const violations = [];
-    const redactions = [];
+    const violations: any[] = [];
+    const redactions: any[] = [];
     
     // 1. PII Detection
     const piiFindings = this.detectPII(response);
@@ -59,7 +59,7 @@ export class SafetyGuardrails {
    * Detect PII in responses
    */
   private detectPII(text: string): any[] {
-    const findings = [];
+    const findings: any[] = [];
     
     // Email addresses
     const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
@@ -104,7 +104,7 @@ export class SafetyGuardrails {
    * Check policy compliance
    */
   private checkPolicyCompliance(text: string): any[] {
-    const findings = [];
+    const findings: any[] = [];
     const lower = text.toLowerCase();
     
     // Incorrect return window
@@ -134,7 +134,7 @@ export class SafetyGuardrails {
    * Check for prohibited content
    */
   private checkProhibitedContent(text: string): any[] {
-    const findings = [];
+    const findings: any[] = [];
     const lower = text.toLowerCase();
     
     // Personal contact info sharing
@@ -164,7 +164,7 @@ export class SafetyGuardrails {
    * Check for unrealistic promises
    */
   private checkUnrealisticPromises(text: string): any[] {
-    const findings = [];
+    const findings: any[] = [];
     const lower = text.toLowerCase();
     
     const prohibitedPromises = [

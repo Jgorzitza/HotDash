@@ -2,6 +2,34 @@
  * Task AF: AI Fairness Metrics
  */
 
+function calculateTPRByGroup(outcomes: any[]): Record<string, number> {
+  const byGroup = groupBy(outcomes, 'demographic');
+  const tpr: Record<string, number> = {};
+  
+  for (const [group, items] of Object.entries(byGroup)) {
+    const itemsArray = items as any[];
+    const truePositives = itemsArray.filter((i: any) => i.actual === 'positive' && i.predicted === 'positive').length;
+    const actualPositives = itemsArray.filter((i: any) => i.actual === 'positive').length;
+    tpr[group] = truePositives / actualPositives;
+  }
+  
+  return tpr;
+}
+
+function averageQuality(responses: any[]): number {
+  if (responses.length === 0) return 0;
+  return responses.reduce((sum, r) => sum + (r.quality_score || 0), 0) / responses.length;
+}
+
+function groupBy(arr: any[], key: string): Record<string, any[]> {
+  return arr.reduce((groups: Record<string, any[]>, item) => {
+    const group = item[key] || 'unknown';
+    groups[group] = groups[group] || [];
+    groups[group].push(item);
+    return groups;
+  }, {});
+}
+
 export const FAIRNESS_METRICS = {
   demographic_parity: (outcomes: any[]) => {
     const byGroup = groupBy(outcomes, 'demographic');
@@ -13,7 +41,8 @@ export const FAIRNESS_METRICS = {
   equal_opportunity: (outcomes: any[]) => {
     // True positive rate equality across groups
     const tprByGroup = calculateTPRByGroup(outcomes);
-    const maxDiff = Math.max(...Object.values(tprByGroup)) - Math.min(...Object.values(tprByGroup));
+    const tprValues = Object.values(tprByGroup) as number[];
+    const maxDiff = Math.max(...tprValues) - Math.min(...tprValues);
     return { score: 1 - maxDiff, threshold: 0.10, pass: maxDiff < 0.10 };
   },
   
@@ -27,30 +56,3 @@ export const FAIRNESS_METRICS = {
     return { score: 1 - diff, threshold: 0.05, pass: diff < 0.05 };
   },
 };
-
-function calculateTPRByGroup(outcomes: any[]) {
-  const byGroup = groupBy(outcomes, 'demographic');
-  const tpr: any = {};
-  
-  for (const [group, items] of Object.entries(byGroup)) {
-    const truePositives = items.filter((i: any) => i.actual === 'positive' && i.predicted === 'positive').length;
-    const actualPositives = items.filter((i: any) => i.actual === 'positive').length;
-    tpr[group] = truePositives / actualPositives;
-  }
-  
-  return tpr;
-}
-
-function averageQuality(responses: any[]) {
-  return responses.reduce((sum, r) => sum + r.quality_score, 0) / responses.length;
-}
-
-function groupBy(arr: any[], key: string) {
-  return arr.reduce((groups, item) => {
-    const group = item[key] || 'unknown';
-    groups[group] = groups[group] || [];
-    groups[group].push(item);
-    return groups;
-  }, {});
-}
-

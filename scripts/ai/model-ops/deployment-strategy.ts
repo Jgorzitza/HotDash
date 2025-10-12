@@ -26,19 +26,36 @@ export const DEPLOYMENT_STRATEGY = {
   },
 };
 
+// Stub helper functions
+async function updateTrafficRouting(modelId: string, traffic: number): Promise<void> {
+  console.log(`Routing ${traffic}% traffic to ${modelId}`);
+}
+
+async function monitorPhase(modelId: string, duration: string): Promise<void> {
+  console.log(`Monitoring ${modelId} for ${duration}`);
+}
+
+async function validateGates(phase: string): Promise<boolean> {
+  console.log(`Validating gates for ${phase}`);
+  return true;
+}
+
+function getNextPhase(currentPhase: string): string | null {
+  const phases = ['shadow', 'canary', 'gradual', 'majority', 'full'];
+  const currentIndex = phases.indexOf(currentPhase);
+  return currentIndex < phases.length - 1 ? phases[currentIndex + 1] : null;
+}
+
 export async function deployModel(modelId: string, phase: string) {
-  // Implementation for blue-green deployment
   const config = DEPLOYMENT_STRATEGY.phases.find(p => p.name === phase);
   
-  // Route traffic percentage
+  if (!config) {
+    throw new Error(`Unknown phase: ${phase}`);
+  }
+  
   await updateTrafficRouting(modelId, config.traffic);
-  
-  // Monitor for duration
   await monitorPhase(modelId, config.duration);
-  
-  // Validate gates for next phase
   const metricsOk = await validateGates(phase);
   
   return { proceed: metricsOk, nextPhase: getNextPhase(phase) };
 }
-

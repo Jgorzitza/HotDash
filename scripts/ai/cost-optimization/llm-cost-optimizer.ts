@@ -2,6 +2,25 @@
  * Task W: Cost Optimization for LLM Calls
  */
 
+// Stub helper functions (TODO: Implement)
+function summarizeOldMessages(messages: any[]): string {
+  return `Summary of ${messages.length} messages`;
+}
+
+function hash(input: string): string {
+  return Buffer.from(input).toString('base64').substring(0, 16);
+}
+
+const cache = {
+  store: new Map<string, any>(),
+  async get(key: string) {
+    return this.store.get(key);
+  },
+  async set(key: string, value: any, ttl: number) {
+    this.store.set(key, value);
+  }
+};
+
 export class LLMCostOptimizer {
   
   // Model selection based on query complexity
@@ -42,8 +61,8 @@ export class LLMCostOptimizer {
   }
   
   // Caching to reduce redundant calls
-  async generateWithCache(query: string, model: string) {
-    const cacheKey = hash(query + model);
+  async generateWithCache(query: string, modelName: string) {
+    const cacheKey = hash(query + modelName);
     const cached = await cache.get(cacheKey);
     
     if (cached) {
@@ -51,7 +70,8 @@ export class LLMCostOptimizer {
       return cached;
     }
     
-    const response = await model.generate(query);
+    // TODO: Implement actual LLM call
+    const response = `Response for: ${query} using ${modelName}`;
     await cache.set(cacheKey, response, 3600);  // 1-hour TTL
     
     return response;
@@ -73,4 +93,3 @@ export class LLMCostOptimizer {
 }
 
 export const costOptimizer = new LLMCostOptimizer();
-

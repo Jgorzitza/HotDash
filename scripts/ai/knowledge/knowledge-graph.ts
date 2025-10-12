@@ -2,9 +2,26 @@
  * Tasks AX-BB: Knowledge Management Systems
  */
 
+interface GraphNode {
+  id: string;
+  type: string;
+  properties: any;
+}
+
+interface GraphEdge {
+  from: string;
+  to: string;
+  type: string;
+}
+
+interface Graph {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
 // Task AX: Knowledge Graph Integration
 export class KnowledgeGraph {
-  private graph = { nodes: [], edges: [] };
+  private graph: Graph = { nodes: [], edges: [] };
   
   addEntity(entity: { id: string; type: string; properties: any }) {
     this.graph.nodes.push(entity);
@@ -28,113 +45,86 @@ export class EntityExtractor {
     return {
       products: this.extractProducts(text),
       orders: this.extractOrders(text),
-      policies: this.extractPolicies(text),
       dates: this.extractDates(text),
     };
   }
   
-  private extractProducts(text: string) {
-    // Pattern matching or NER
-    const productPattern = /product #?\w+/gi;
-    return text.match(productPattern) || [];
+  private extractProducts(text: string): string[] {
+    // Extract product names/SKUs
+    return text.match(/[A-Z]{2,}-\d{4,}/g) || [];
   }
   
-  private extractOrders(text: string) {
-    const orderPattern = /#?\d{5,}/g;
-    return text.match(orderPattern) || [];
+  private extractOrders(text: string): string[] {
+    // Extract order numbers
+    return text.match(/#?\d{5,}/g) || [];
   }
   
-  private extractPolicies(text: string) {
-    const policyKeywords = ['return policy', 'shipping policy', 'warranty'];
-    return policyKeywords.filter(k => text.toLowerCase().includes(k));
-  }
-  
-  private extractDates(text: string) {
-    const datePattern = /\d{1,2}\/\d{1,2}\/\d{2,4}/g;
-    return text.match(datePattern) || [];
+  private extractDates(text: string): string[] {
+    // Extract date references
+    return text.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g) || [];
   }
 }
 
-// Task AZ: Temporal Knowledge Updates
+// Task AZ: Temporal Knowledge Tracking
 export class TemporalKnowledge {
-  async updateKnowledge(docId: string, newContent: string) {
-    return {
-      doc_id: docId,
-      version: incrementVersion(docId),
-      timestamp: new Date().toISOString(),
-      content: newContent,
-      previous_version: await this.getVersion(docId, -1),
-      change_summary: await this.detectChanges(docId, newContent),
-    };
+  private knowledge = new Map<string, any>();
+  
+  store(key: string, value: any, validUntil: Date) {
+    this.knowledge.set(key, {
+      value,
+      stored_at: new Date(),
+      valid_until: validUntil,
+    });
   }
   
-  async getVersion(docId: string, offset: number = 0) {
-    // Retrieve historical version
-    return null;  // Placeholder
-  }
-  
-  private async detectChanges(docId: string, newContent: string) {
-    const previous = await this.getVersion(docId);
-    if (!previous) return 'New document';
+  retrieve(key: string) {
+    const entry = this.knowledge.get(key);
+    if (!entry) return null;
     
-    // Diff previous vs new
-    return 'Updated policy section 3';
+    if (new Date() > entry.valid_until) {
+      this.knowledge.delete(key);
+      return null;
+    }
+    
+    return entry.value;
   }
 }
 
 // Task BA: Knowledge Provenance Tracking
 export class ProvenanceTracker {
-  trackSource(docId: string, metadata: any) {
+  track(claim: string, source: { doc_id: string; author: string; date: string }) {
     return {
-      doc_id: docId,
-      original_source: metadata.url || metadata.file,
-      ingestion_date: metadata.created_at,
-      last_verified: new Date().toISOString(),
-      verification_method: metadata.verification || 'automated',
-      confidence: metadata.confidence || 0.95,
-      authority_level: this.calculateAuthority(metadata),
+      claim,
+      source,
+      verified_at: new Date().toISOString(),
+      trust_score: this.calculateTrustScore(source),
     };
   }
   
-  private calculateAuthority(metadata: any) {
-    if (metadata.source === 'official_policy') return 'high';
-    if (metadata.source === 'curated_reply') return 'medium';
-    if (metadata.source === 'web_scrape') return 'low';
-    return 'medium';
+  private calculateTrustScore(source: any): number {
+    // Simple trust scoring
+    let score = 0.5;
+    if (source.author === 'official_docs') score += 0.3;
+    if (source.doc_id.includes('verified')) score += 0.2;
+    return Math.min(score, 1.0);
   }
 }
 
 // Task BB: Knowledge Quality Scoring
 export class KnowledgeQualityScorer {
-  score(document: any) {
+  score(doc: any) {
     return {
-      completeness: this.scoreCompleteness(document),
-      accuracy: this.scoreAccuracy(document),
-      freshness: this.scoreFreshness(document),
-      clarity: this.scoreClarity(document),
-      citations: this.scoreCitations(document),
+      freshness: this.scoreFreshness(doc),
+      clarity: this.scoreClarity(doc),
+      completeness: this.scoreCompleteness(doc),
+      citations: this.scoreCitations(doc),
       overall: this.calculateOverall({
-        completeness: this.scoreCompleteness(document),
-        accuracy: this.scoreAccuracy(document),
-        freshness: this.scoreFreshness(document),
-        clarity: this.scoreClarity(document),
-        citations: this.scoreCitations(document),
+        freshness: this.scoreFreshness(doc),
+        clarity: this.scoreClarity(doc),
+        completeness: this.scoreCompleteness(doc),
+        citations: this.scoreCitations(doc),
       }),
     };
-  }
-  
-  private scoreCompleteness(doc: any) {
-    // Has all required sections?
-    const requiredSections = ['overview', 'details', 'examples'];
-    const hasSections = requiredSections.filter(s => 
-      doc.content.toLowerCase().includes(s)
-    ).length;
-    return hasSections / requiredSections.length;
-  }
-  
-  private scoreAccuracy(doc: any) {
-    // Verified against source?
-    return doc.verified ? 1.0 : 0.7;
   }
   
   private scoreFreshness(doc: any) {
@@ -150,9 +140,23 @@ export class KnowledgeQualityScorer {
   private scoreClarity(doc: any) {
     // Readability and structure
     const hasHeadings = (doc.content.match(/^#{1,3}\s/gm) || []).length;
-    const hasBullets = (doc.content.match(/^[-*]\s/gm) || []).length;
+    const hasCodeBlocks = (doc.content.match(/```/g) || []).length / 2;
+    const wordCount = doc.content.split(' ').length;
     
-    return (hasHeadings > 3 && hasBullets > 5) ? 1.0 : 0.7;
+    let score = 0.5;
+    if (hasHeadings > 3) score += 0.2;
+    if (hasCodeBlocks > 0) score += 0.15;
+    if (wordCount > 100 && wordCount < 2000) score += 0.15;
+    
+    return Math.min(score, 1.0);
+  }
+  
+  private scoreCompleteness(doc: any) {
+    // Has examples, explanations, caveats
+    const hasExamples = doc.content.includes('example') || doc.content.includes('e.g.');
+    const hasWarnings = doc.content.includes('warning') || doc.content.includes('note:');
+    
+    return (hasExamples ? 0.5 : 0) + (hasWarnings ? 0.5 : 0);
   }
   
   private scoreCitations(doc: any) {
@@ -161,7 +165,9 @@ export class KnowledgeQualityScorer {
   }
   
   private calculateOverall(scores: any) {
-    return Object.values(scores).reduce((a: any, b: any) => a + b, 0) / Object.keys(scores).length;
+    const values = Object.values(scores) as number[];
+    const total = values.reduce((a, b) => a + b, 0);
+    return total / values.length;
   }
 }
 
@@ -170,6 +176,3 @@ export const entityExtractor = new EntityExtractor();
 export const temporalKnowledge = new TemporalKnowledge();
 export const provenanceTracker = new ProvenanceTracker();
 export const qualityScorer = new KnowledgeQualityScorer();
-
-function incrementVersion(id: string) { return '1.1.0'; }
-

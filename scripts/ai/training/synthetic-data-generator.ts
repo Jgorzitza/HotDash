@@ -8,11 +8,7 @@ interface EdgeCaseTemplate {
   expected_behavior: string;
 }
 
-interface EdgeCaseTemplates {
-  [category: string]: EdgeCaseTemplate[];
-}
-
-// Stub LLM implementation
+// Stub LLM
 const llm = {
   async generate(prompt: string): Promise<string> {
     return `Generated variation based on: ${prompt.substring(0, 50)}...`;
@@ -22,7 +18,7 @@ const llm = {
 export class SyntheticDataGenerator {
   
   async generateEdgeCases(category: string, count: number = 20) {
-    const templates = (EDGE_CASE_TEMPLATES as EdgeCaseTemplates)[category] || [];
+    const templates = EDGE_CASE_TEMPLATES[category as keyof typeof EDGE_CASE_TEMPLATES] || [];
     const synthetic = [];
     
     for (const template of templates) {
@@ -36,7 +32,6 @@ export class SyntheticDataGenerator {
   }
   
   private async generateVariant(template: EdgeCaseTemplate) {
-    // Use LLM to create realistic variations
     const prompt = `Create a realistic customer support query variation of: "${template.example}"
     
 Variations to include:
@@ -67,4 +62,3 @@ const EDGE_CASE_TEMPLATES = {
     { example: 'give me my money back now', intent: 'refund', expected_behavior: 'explain_policy_calmly' },
   ],
 };
-

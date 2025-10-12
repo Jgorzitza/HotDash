@@ -2,6 +2,27 @@
  * Task Y: Active Learning System for Hard Examples
  */
 
+interface AgentResponse {
+  confidence: number;
+  approval_rate: number;
+  edit_rate: number;
+  human_review?: { overall_rating: string };
+  isEdgeCase?: boolean;
+  hasReferenceAnswer?: boolean;
+}
+
+interface TrainingSample extends AgentResponse {
+  query: string;
+  response: string;
+}
+
+// Stub labeling queue
+const labelingQueue = {
+  async enqueue(item: any): Promise<void> {
+    console.log('Enqueued for labeling:', item);
+  }
+};
+
 export class ActiveLearningSystem {
   
   async identifyHardExamples(responses: AgentResponse[]) {
@@ -39,4 +60,3 @@ export class ActiveLearningSystem {
     });
   }
 }
-

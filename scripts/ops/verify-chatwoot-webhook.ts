@@ -118,7 +118,7 @@ Options:
       console.log(`\nUse this signature in X-Chatwoot-Signature header`);
       process.exit(0);
     } catch (error) {
-      console.error(`Error reading payload file: ${error.message}`);
+      console.error(`Error reading payload file: ${(error as Error).message}`);
       process.exit(1);
     }
   }
@@ -200,7 +200,7 @@ Options:
     
     process.exit(result.valid ? 0 : 1);
   } catch (error) {
-    console.error(`\n❌ Error: ${error.message}\n`);
+    console.error(`\n❌ Error: ${(error as Error).message}\n`);
     process.exit(1);
   }
 }

@@ -89,7 +89,7 @@ test.describe('Approval Queue Accessibility', () => {
     await expect(liveRegion).toBeAttached();
     
     // Approve an item
-    await page.click('[data-testid="approve-button"]').first();
+    await page.locator('[data-testid="approve-button"]').first().click();
     
     // Verify announcement
     await expect(liveRegion).toContainText(/approved successfully/i);
@@ -119,7 +119,7 @@ test.describe('Modal Accessibility', () => {
     await page.goto('http://localhost:3000/app/approvals');
     
     // Open approval confirmation modal
-    await page.click('[data-testid="approve-button"]').first();
+    await page.locator('[data-testid="approve-button"]').first().click();
     
     // Verify focus is trapped
     const modal = page.locator('[role="dialog"]');
@@ -135,9 +135,10 @@ test.describe('Modal Accessibility', () => {
     }
     
     const focusedElement = await page.locator(':focus');
-    const isInsideModal = await focusedElement.evaluate((el, modalEl) => {
-      return modalEl.contains(el);
-    }, await modal.elementHandle());
+    const modalEl = await modal.elementHandle();
+    const isInsideModal = modalEl ? await focusedElement.evaluate((el, container) => {
+      return container ? container.contains(el) : false;
+    }, modalEl) : false;
     
     expect(isInsideModal).toBe(true);
   });
@@ -158,7 +159,7 @@ test.describe('Modal Accessibility', () => {
 
   test.skip('should have proper ARIA attributes', async ({ page }) => {
     await page.goto('http://localhost:3000/app/approvals');
-    await page.click('[data-testid="approve-button"]').first();
+    await page.locator('[data-testid="approve-button"]').first().click();
     
     const modal = page.locator('[role="dialog"]');
     await expect(modal).toHaveAttribute('aria-modal', 'true');
@@ -295,7 +296,9 @@ async function checkAccessibility(page: any, options: { includeTags?: string[], 
   }
   
   if (options.excludeTags) {
-    builder.disableTags(options.excludeTags);
+    // Note: disableTags method may not exist in all versions
+    // @ts-expect-error - Method availability varies by axe-core version
+    builder.disableTags?.(options.excludeTags);
   }
   
   return await builder.analyze();

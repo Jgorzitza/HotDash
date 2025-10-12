@@ -304,7 +304,7 @@ async function runIntegrationTests() {
   console.log('='.repeat(60));
   
   const passed = results.filter(r => r.passed).length;
-  const failed = results.filter(r => r.failed).length;
+  const failed = results.filter(r => !r.passed).length;
   const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
   
   console.log(`Total Tests: ${results.length}`);
