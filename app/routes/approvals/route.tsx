@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { json, type LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, EmptyState } from '@shopify/polaris';
-import { ApprovalCard } from '~/components/ApprovalCard';
+import { ApprovalCard } from '../../components/ApprovalCard';
 
 interface Approval {
   id: string;
@@ -55,7 +55,7 @@ export default function ApprovalsRoute() {
           <Layout.Section>
             <Card>
               <div style={{ padding: '16px', color: '#bf0711' }}>
-                <strong>Error:</strong> {error}
+                <strong>Engine Trouble:</strong> {error}
               </div>
             </Card>
           </Layout.Section>
@@ -65,10 +65,10 @@ export default function ApprovalsRoute() {
           <Layout.Section>
             <Card>
               <EmptyState
-                heading="All clear!"
+                heading="All systems ready"
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
               >
-                <p>No pending approvals. Check back later.</p>
+                <p>No pending approvals. New items will appear here automatically.</p>
               </EmptyState>
             </Card>
           </Layout.Section>
