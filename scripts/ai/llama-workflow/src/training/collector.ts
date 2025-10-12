@@ -9,13 +9,15 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
-import { 
+import type { 
   TrainingSample, 
-  TrainingSampleSchema,
   QueryPerformance,
-  QueryPerformanceSchema,
   TrainingBatch,
   AggregatedMetrics 
+} from './schema.js';
+import { 
+  TrainingSampleSchema,
+  QueryPerformanceSchema
 } from './schema.js';
 import { getConfig } from '../config.js';
 

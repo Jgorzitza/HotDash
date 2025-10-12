@@ -1,0 +1,8 @@
+{
+  "timestamp": "2025-10-12T08:42:16.263Z",
+  "duration_ms": 69611,
+  "error": "storageContext.persist is not a function",
+  "stack": "TypeError: storageContext.persist is not a function\n    at buildAll (/home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/src/pipeline/buildIndex.ts:121:26)\n    at async <anonymous> (/home/justin/HotDash/hot-dash/scripts/ai/llama-workflow/build-index-now.ts:8:18)",
+  "run_dir": "packages/memory/logs/build/indexes/2025-10-12T0841",
+  "success": false
+}

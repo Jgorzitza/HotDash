@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-10-12T08:37:07.888Z",
+  "runDir": "packages/memory/logs/build/indexes/2025-10-12T0836",
+  "indexPath": "packages/memory/logs/build/indexes/2025-10-12T0836/operator_knowledge.json",
+  "sources": {
+    "web": 50
+  },
+  "total_documents": 50,
+  "total_content_length": 729432,
+  "build_type": "simple_json"
+}

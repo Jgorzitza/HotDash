@@ -1,4 +1,5 @@
-import { type ActionFunctionArgs, redirect } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
+import { redirect } from 'react-router';
 
 export async function action({ params }: ActionFunctionArgs) {
   const { id, idx } = params;
@@ -8,7 +9,9 @@ export async function action({ params }: ActionFunctionArgs) {
   }
   
   try {
-    const response = await fetch(`http://localhost:8002/approvals/${id}/${idx}/reject`, {
+    // Use production Agent SDK service (deployed to Fly.io)
+    const agentServiceUrl = process.env.AGENT_SERVICE_URL || 'https://hotdash-agent-service.fly.dev';
+    const response = await fetch(`${agentServiceUrl}/approvals/${id}/${idx}/reject`, {
       method: 'POST',
     });
     

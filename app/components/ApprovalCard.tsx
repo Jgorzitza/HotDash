@@ -1,14 +1,4 @@
 import { useState } from 'react';
-import {
-  Card,
-  BlockStack,
-  InlineStack,
-  Text,
-  Button,
-  Badge,
-  Banner,
-} from '@shopify/polaris';
-import { useSubmit } from 'react-router';
 
 interface ApprovalCardProps {
   approval: {
@@ -24,7 +14,6 @@ interface ApprovalCardProps {
 }
 
 export function ApprovalCard({ approval }: ApprovalCardProps) {
-  const submit = useSubmit();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
@@ -63,74 +52,132 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
     }
   };
   
+  const riskColor = riskLevel === 'high' ? '#dc2626' : riskLevel === 'medium' ? '#d97706' : '#059669';
+  const riskBg = riskLevel === 'high' ? '#fee2e2' : riskLevel === 'medium' ? '#fef3c7' : '#d1fae5';
+  
   return (
-    <Card>
-      <BlockStack gap="400">
-        {/* Header */}
-        <InlineStack align="space-between" blockAlign="center">
-          <Text variant="headingMd" as="h2">
-            Conversation #{approval.conversationId}
-          </Text>
-          <Badge tone={riskLevel === 'high' ? 'critical' : riskLevel === 'medium' ? 'warning' : 'success'}>
-            {riskLevel.toUpperCase()} RISK
-          </Badge>
-        </InlineStack>
-        
-        {/* Agent & Tool Info */}
-        <BlockStack gap="200">
-          <Text variant="bodyMd" as="p">
-            <strong>Agent:</strong> {action.agent}
-          </Text>
-          <Text variant="bodyMd" as="p">
-            <strong>Tool:</strong> {action.tool}
-          </Text>
-          <Text variant="bodyMd" as="p" tone="subdued">
-            <strong>Arguments:</strong>
-          </Text>
-          <pre style={{ 
-            background: '#f6f6f7', 
-            padding: '12px', 
-            borderRadius: '4px',
-            fontSize: '12px',
-            overflow: 'auto'
-          }}>
-            {JSON.stringify(action.args, null, 2)}
-          </pre>
-          <Text variant="bodySm" as="p" tone="subdued">
-            Requested {new Date(approval.createdAt).toLocaleString()}
-          </Text>
-        </BlockStack>
-        
-        {/* Error Message */}
-        {error && (
-          <Banner tone="critical" onDismiss={() => setError(null)}>
-            {error}
-          </Banner>
-        )}
-        
-        {/* Actions */}
-        <InlineStack gap="200">
-          <Button
-            variant="primary"
-            tone="success"
-            onClick={handleApprove}
-            loading={loading}
-            disabled={loading}
+    <div style={{
+      backgroundColor: 'white',
+      border: '1px solid #e5e7eb',
+      borderRadius: '8px',
+      padding: '20px',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+    }}>
+      {/* Header */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        marginBottom: '16px'
+      }}>
+        <h2 style={{ fontSize: '18px', fontWeight: '600' }}>
+          Conversation #{approval.conversationId}
+        </h2>
+        <span style={{
+          padding: '4px 12px',
+          borderRadius: '16px',
+          fontSize: '12px',
+          fontWeight: '600',
+          color: riskColor,
+          backgroundColor: riskBg,
+        }}>
+          {riskLevel.toUpperCase()} RISK
+        </span>
+      </div>
+      
+      {/* Agent & Tool Info */}
+      <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div>
+          <strong>Agent:</strong> {action.agent}
+        </div>
+        <div>
+          <strong>Tool:</strong> {action.tool}
+        </div>
+        <div style={{ color: '#6b7280' }}>
+          <strong>Arguments:</strong>
+        </div>
+        <pre style={{ 
+          background: '#f3f4f6', 
+          padding: '12px', 
+          borderRadius: '4px',
+          fontSize: '12px',
+          overflow: 'auto',
+          fontFamily: 'monospace',
+        }}>
+          {JSON.stringify(action.args, null, 2)}
+        </pre>
+        <div style={{ fontSize: '14px', color: '#6b7280' }}>
+          Requested {new Date(approval.createdAt).toLocaleString()}
+        </div>
+      </div>
+      
+      {/* Error Message */}
+      {error && (
+        <div style={{
+          padding: '12px',
+          marginBottom: '16px',
+          backgroundColor: '#fee2e2',
+          border: '1px solid #ef4444',
+          borderRadius: '4px',
+          color: '#991b1b',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <span>{error}</span>
+          <button
+            onClick={() => setError(null)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '18px',
+              color: '#991b1b',
+            }}
           >
-            Approve
-          </Button>
-          <Button
-            variant="primary"
-            tone="critical"
-            onClick={handleReject}
-            loading={loading}
-            disabled={loading}
-          >
-            Reject
-          </Button>
-        </InlineStack>
-      </BlockStack>
-    </Card>
+            ×
+          </button>
+        </div>
+      )}
+      
+      {/* Actions */}
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <button
+          onClick={handleApprove}
+          disabled={loading}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: loading ? '#9ca3af' : '#10b981',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+          }}
+        >
+          {loading ? 'Processing...' : 'Approve'}
+        </button>
+        <button
+          onClick={handleReject}
+          disabled={loading}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: loading ? '#9ca3af' : '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.6 : 1,
+          }}
+        >
+          {loading ? 'Processing...' : 'Reject'}
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -143,4 +190,3 @@ function getRiskLevel(tool: string): 'low' | 'medium' | 'high' {
   if (mediumRisk.includes(tool)) return 'medium';
   return 'low';
 }
-
