@@ -3090,3 +3090,38 @@ B. ✅ Accessibility Audit Report
 **Next**: Awaiting Engineer's implementation for review (Task 4) and polish (Task 6)
 
 ---
+
+## 2025-10-12T00:20:00Z — MINIMAL Assets for TODAY Launch (Manager Directive)
+
+### 🚨 Manager Update: Keep It Simple, Ship TODAY
+
+**New Direction**: Provide MINIMAL approval UI assets to Engineer. Basic icons, loading state. Timeline: 2h.
+
+### ✅ Deliverable: MINIMAL Assets Spec
+
+**Created**: `docs/design/MINIMAL-approval-ui-assets-TODAY.md`
+
+**Contents** (Stripped Down for Speed):
+- ✅ Icons: NO ICONS - Just text buttons ("Approve", "Reject")
+- ✅ Loading: Polaris SkeletonPage + Button loading prop (built-in)
+- ✅ Empty state: Polaris EmptyState with standard image
+- ✅ Error: Polaris Banner component
+- ✅ Complete minimal ApprovalCard component (~30 lines)
+
+**What We're NOT Doing Today**:
+- ❌ Custom icons (text is clearer anyway)
+- ❌ Fancy animations (can add post-launch)
+- ❌ Risk badges (can add post-launch)
+- ❌ Timestamp formatting (can add post-launch)
+- ❌ Keyboard shortcuts (can add post-launch)
+
+**Philosophy**: Use Polaris defaults. No custom work. SHIP TODAY.
+
+**Engineer Implementation Time**: 1-2 hours max
+**Designer Review Time**: 15 minutes
+
+**Status**: Minimal spec ready for Engineer Task 6
+
+**Next**: Quick review when Engineer implements, then SHIP
+
+---

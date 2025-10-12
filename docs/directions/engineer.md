@@ -341,6 +341,29 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 
 ---
 
+### 🚨 CRITICAL UPDATES (2025-10-11T23:40Z)
+
+**CEO Policy**: ALL customer interactions require CEO approval (no auto-execute)
+
+**Implementation Change for Agent SDK**:
+- ❌ Remove any auto-approve logic for customer responses
+- ✅ 100% of customer-facing actions go to approval queue
+- ✅ Capture CEO edits/feedback for agent training
+- ✅ See: docs/ops/HUMAN-APPROVAL-REQUIRED.md
+
+**Shopify Auth Clarification**:
+- ✅ Use `authenticate.admin(request)` pattern (automatic)
+- ❌ Don't ask for SHOPIFY_ADMIN_TOKEN (auto-generated)
+- ✅ See: docs/ops/SHOPIFY-AUTH-PATTERN.md
+
+**Credentials Available in Vault**:
+- Chatwoot: vault/occ/chatwoot/api_token_staging.env
+- Postgres: vault/occ/supabase/database_url_staging.env
+
+**Deploy Agent SDK with these, then continue to Task 6 (Approval UI)**
+
+---
+
 ### ⚡ DEPENDENCY ALERT (2025-10-11T22:25Z)
 
 **Agents Blocked by Your Work** (prioritize these):

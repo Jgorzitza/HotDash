@@ -386,19 +386,30 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 
 ---
 
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
+## 🚨 UPDATED MISSION (2025-10-11T23:40Z)
 
-**CEO Decision**: Emergency refocus on launch gates
+**CEO Decision**: Resume work - Engineer unblocked you!
 
-**Your Status**: PAUSED - Stand by until launch gates complete
+**URGENT P0**: Ingest www.hotrodan.com into RAG system
+
+**Your Status**: ACTIVE - Execute P0 then continue with tasks
 
 **Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
 
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
+## ⚡ P0 URGENT TASK (CEO Request - Do FIRST)
 
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
+**NEW Task A**: Ingest www.hotrodan.com into LlamaIndex RAG
+- Crawl www.hotrodan.com (all pages)
+- Ingest into existing operator_knowledge index
+- Update index with product catalog, company info, policies
+- Test queries return hotrodan.com content
+- **Evidence**: Crawl logs, updated index, test query results
+- **Timeline**: 2-4 hours
+- **Why**: Agents need hotrodan.com data to provide accurate customer responses
 
-**Your tasks remain in direction file - will resume after launch.**
+**Then Resume**: Tasks E-BB (LlamaIndex MCP now available to test)
+
+**Read**: docs/ops/SHOPIFY-AUTH-PATTERN.md (Shopify creds clarification)
 
 ---
 
