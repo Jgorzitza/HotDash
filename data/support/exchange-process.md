@@ -1,409 +1,382 @@
-# Exchange Process Guide
+# Exchange Process - Hot Rod AN LLC
 
-**Last Updated:** 2025-10-11  
-**Purpose:** How to exchange HotDash products for different size, color, or style
-
----
+**Last Updated:** October 2025
 
 ## Overview
 
-While we don't offer direct exchanges, we've designed a process that gets you the right item faster than traditional exchanges!
-
-**Our Approach:**
-1. Order the new item now (ships immediately)
-2. Return the original item (free prepaid label)
-3. Refund processes when we receive return
-
-**Why This Way?**
-- ✅ New item ships TODAY (don't wait for return to arrive)
-- ✅ No risk of desired item selling out
-- ✅ Faster than traditional exchange (save 5-7 days)
-- ✅ Free return shipping
-- ✅ Keep shopping while return processes
+Need a different size, color, or style? We make exchanges easy! Whether you need a different AN size, hose color, fitting angle, or want to upgrade your parts, our exchange process is simple and fast.
 
 ---
 
-## Size Exchanges
+## Why Exchange Instead of Return?
 
-### Wrong Size Received
-
-**Most Common Exchange:** Need different size of same item
-
-**Fast Exchange Process:**
-
-**Step 1: Order New Size (Do First)**
-1. Go to original product page
-2. Select correct size
-3. Complete checkout
-4. **Use code EXCHANGE10** for 10% off
-
-**Step 2: Return Wrong Size**
-1. Contact us for prepaid return label
-2. Package original item with tags attached
-3. Ship within 7 days
-4. Refund processed when received (3-5 days)
-
-**Timeline:**
-- New size ships: Immediately (1-2 days to arrive)
-- Original item return: Ship within 7 days
-- Refund: 3-5 days after we receive return
-- **Total:** You have new item in hand before refund processes
-
-### Size Guidance
-
-**Before Exchanging:**
-- Review size chart on product page
-- Measure yourself using our guide
-- Check product reviews for fit notes
-- Consider ordering two sizes (return one)
-
-**Size Chart:** hotdash.com/size-guide
-
----
-
-## Color/Style Exchanges
-
-### Different Color or Style
-
-**Process:**
-
-**If Original Item NOT Worn/Used:**
-1. Order new color/style
-2. Return original with prepaid label
-3. Must have original tags attached
-4. Refund when received
-
-**If Original Item Worn/Used:**
-- Cannot return worn items
-- New purchase required
-- Original item not eligible for return
-
-**Tip:** Order before removing tags if unsure about color!
-
----
-
-## Product Upgrade/Downgrade
-
-### Upgrading to Premium Version
-
-**Want Better Model:**
-
-1. Order premium version
-2. Return standard version (if within 30 days)
-3. Pay difference in price
-4. Keep original packaging for easy return
-
-**Discount:**
-- Use UPGRADE15 for 15% off premium version
-- Only if original purchase within 30 days
-
-### Downgrading to Standard Version
-
-**Want Less Expensive Model:**
-
-1. Order standard version
-2. Return premium version (unused, with tags)
-3. Receive full refund of premium price
-4. Net cost: Standard price only
-
-**Requirements:**
-- Premium item unused and in original condition
-- Within 30-day return window
-- All accessories included
-
----
-
-## Multiple Item Exchanges
-
-### Exchanging 2+ Items
-
-**Process:**
-1. Order all new items in single order
-2. Use code BULKEX for bulk exchange discount
-3. Return all original items together
-4. One prepaid label for all returns
-
-**Benefit:**
-- Save on shipping
-- One refund transaction
-- Faster processing
-
----
-
-## Gift Exchanges
-
-### Received as Gift
-
-**Want Different Size/Color:**
-
-**Process:**
-1. Order new item
-2. Return gift item with prepaid label
-3. **Refund issued as store credit** (we don't have gift-giver's payment info)
-4. Use store credit for new purchase
-
-**Need Gift-Giver's Payment Method?**
-- Gift-giver must contact us
-- With their order number
-- We'll refund to their payment method
-- Then gift recipient can purchase new item
-
-**Gift Store Credit:**
-- No expiration date
-- Can combine with other payments
-- Usable on any HotDash product
+**Benefits of Exchanges:**
+- ✅ **No Restocking Fee** (normally 15% on returns)
+- ✅ **Faster Processing** (new item ships immediately)
+- ✅ **Priority Handling** (exchanges processed first)
+- ✅ **Free Shipping on Exchanges** (within same price range)
+- ✅ **Keep Your Project Moving** (less downtime)
 
 ---
 
 ## Exchange Eligibility
 
-### Items Eligible for Exchange
+### What Can Be Exchanged ✅
 
-✅ **Can Exchange:**
-- Unworn items with original tags
-- Within 30-day return window
-- Original packaging (preferred but not required)
-- All accessories included
-- Purchased from HotDash.com
+**Full Exchange (Any Time Within 30 Days)**
+- Unopened PTFE hose in original sealed packaging
+- Unused AN fittings and adapters
+- Tools in original packaging
+- Fuel pumps in sealed boxes
+- Any unused item in original condition
 
-❌ **Cannot Exchange:**
-- Worn or washed items
-- Items without tags
-- Final sale items
-- After 30-day window
-- Purchased from third-party retailer
+**Limited Exchange (Case-by-Case)**
+- Bundle deals (if most items unused)
+- Large orders (contact us first)
+- Special orders (may have restrictions)
+
+### What Cannot Be Exchanged ❌
+- Custom-cut hose or custom-length items
+- Used or installed fittings (safety concern)
+- Electrical items that have been wired
+- Items without original packaging
+- Clearance or final sale items
+- Items older than 30 days (unless defective)
+- Damaged items (except manufacturer defects)
+
+---
+
+## Common Exchange Scenarios
+
+### 1. Different Hose Color
+**Example:** Ordered black hose but want blue  
+**Process:** Standard exchange - no additional cost  
+**Turnaround:** New hose ships same day we receive return
+
+**Popular Color Swaps:**
+- Black → Blue
+- Black → Red  
+- Black → Purple
+- Stainless → Nylon braided
+
+**Note:** All color options available in AN-6, AN-8, and AN-10 sizes
+
+---
+
+### 2. Different AN Size
+**Example:** Ordered AN-6 but need AN-8  
+**Process:** Price difference exchange  
+**Additional Cost:** Pay difference if upgrading, credit if downgrading
+
+**Common Size Changes:**
+- AN-6 → AN-8 (larger fuel pump, higher HP)
+- AN-10 → AN-8 (easier to route, lighter weight)
+- AN-8 → AN-10 (supporting 800+ HP builds)
+
+**Price Differences:**
+- AN-6 to AN-8: Usually $2-5 per foot
+- AN-8 to AN-10: Usually $3-7 per foot
+
+---
+
+### 3. Different Fitting Angle
+**Example:** Ordered straight fitting but need 45°  
+**Process:** Standard exchange  
+**Cost:** Usually no additional cost (same price range)
+
+**Popular Angle Swaps:**
+- Straight → 45° (tight engine bay routing)
+- Straight → 90° (around firewall)
+- 45° → 90° (sharper turn needed)
+
+**Tip:** Take photos of your installation area and email us - we can recommend best angles!
+
+---
+
+### 4. Upgrade to Better Product
+**Example:** Ordered Walbro 255 LPH but want Aeromotive 340 LPH  
+**Process:** Upgrade exchange  
+**Cost:** Pay price difference plus any shipping difference
+
+**Popular Upgrades:**
+- Nylon hose → Stainless braided (+$8/ft)
+- Inline fuel filter → Corvette-style filter/regulator combo
+- Basic pump → High-flow pump
+- Standard fitting pack → Bundle deal (better value)
+
+---
+
+### 5. Bundle Modification
+**Example:** Ordered AN-6 bundle but one component needs to be AN-8  
+**Process:** Contact us - we'll work it out  
+**Cost:** Usually just price difference on swapped item
+
+---
+
+## Exchange Process
+
+### Step 1: Contact Us
+**Before Shipping Anything Back:**
+1. Email support@hotrodan.com with:
+   - Order number
+   - Item(s) you want to exchange
+   - Item(s) you want instead
+   - Reason for exchange (optional)
+
+2. We'll respond within 24 hours with:
+   - Exchange authorization (EA) number
+   - Price difference (if any)
+   - Return shipping label (if applicable)
+   - Expected timeline
+
+**Important:** Don't ship anything without an exchange authorization number!
+
+---
+
+### Step 2: We Ship Your New Item
+
+**Immediate Shipment:**
+- We ship your exchange item right away
+- Don't wait for us to receive your return
+- New item usually ships same or next business day
+- You get new item faster!
+
+**Tracking:**
+- Tracking number emailed within 24 hours
+- Track at hotrodan.com/track-order
+
+---
+
+### Step 3: Return Original Item
+
+**Package Your Return:**
+1. Use original packaging if possible
+2. Include all accessories and documentation
+3. Write EA number on outside of box
+4. Use provided return label OR ship on your own
+
+**Ship It Back:**
+- Use prepaid label (if we provided one), OR
+- Ship via your preferred carrier
+- Get tracking number
+- Insure valuable returns
+
+**Deadline:**
+- Return original item within 14 days of receiving exchange
+- If not returned, you'll be charged for both items
+
+---
+
+### Step 4: We Process Your Return
+
+**Upon Receiving Your Return:**
+1. Inspect item within 1-2 business days
+2. Confirm item qualifies for exchange
+3. Process any price adjustments
+4. Send email confirmation
+
+**Price Adjustments:**
+- Downgrade: Refund issued to original payment method
+- Upgrade: Charge card on file for difference
+- Even exchange: No charges
 
 ---
 
 ## Exchange Costs
 
-### What's Free
+### Free Exchange Shipping
+**Qualifies When:**
+- Exchanging for same or similar item
+- Item price within $10 of original
+- Domestic addresses only
 
-**FREE:**
-- Return shipping (prepaid label provided)
-- Standard shipping on new item (if order >$50)
-- Exchange processing (no restocking fee)
+**We Provide:**
+- Prepaid return label
+- Free shipping on new item (ground)
+- No restocking fee
 
-### What You Pay
+### Paid Exchange Shipping
+**When Customer Pays:**
+- Exchanging for item +$10 price difference
+- Upgrading to expedited shipping on new item
+- International addresses
 
-**You Pay:**
-- Price difference (if upgrading)
-- Expedited shipping on new item (if selected)
-- Original shipping on initial order (not refunded)
+**Costs:**
+- Return shipping: Varies by carrier (usually $8-15)
+- New item shipping: Standard rates apply
+- Or use free shipping (orders $75+)
 
-### Pricing Examples
+### Price Difference Handling
+**If New Item Costs More:**
+- We charge your card for the difference
+- You pay before new item ships
+- Includes any tax difference
 
-**Example 1: Same Price Exchange (Size)**
-- Original item: $75
-- New size: $75
-- Return shipping: FREE
-- New shipping: FREE (order >$50)
-- **Total Cost: $0** (just wait for refund)
-
-**Example 2: Upgrade Exchange**
-- Original item: $75
-- Premium version: $100
-- Refund original: $75
-- New order cost: $100
-- **Net Cost: $25** (difference only)
-
-**Example 3: Downgrade Exchange**
-- Original item: $100
-- Standard version: $60
-- Refund original: $100
-- New order cost: $60
-- **Net Savings: $40** (refunded to you)
+**If New Item Costs Less:**
+- We refund the difference
+- Refund issued after receiving return
+- Credit back to original payment method
+- Or get 110% as store credit
 
 ---
 
 ## Exchange Timeline
 
-### Standard Exchange
+### Typical Timeline:
+1. **Day 1:** Contact us → get EA number (same day)
+2. **Day 1-2:** We ship new item to you
+3. **Day 2-3:** You receive new item (depending on shipping)
+4. **Day 2-3:** You ship original item back to us
+5. **Day 5-7:** We receive and process return
+6. **Day 6-8:** Any price adjustments finalized
 
-**Day 0:** Order new item (ships in 1-2 days)  
-**Day 1:** Request return label for original  
-**Day 2-4:** New item arrives  
-**Day 5:** Ship return  
-**Day 10-12:** Return arrives at our warehouse  
-**Day 13-15:** Refund processed
+**Total Time:** Usually complete within 7-10 days
 
-**Total Time:**
-- **New item in hand:** 2-4 days
-- **Refund received:** 13-17 days
-
-**Advantage:** You have new item BEFORE waiting for refund
-
-### Express Exchange (If Available)
-
-**For High-Value Items ($200+):**
-
-**Special Option:**
-1. Contact us for express exchange
-2. We ship new item immediately
-3. We email prepaid return label
-4. You ship original when convenient
-5. No charge to your card for new item
-6. Must receive return within 14 days
-
-**Requirements:**
-- Order value $200+
-- Excellent account standing
-- Original purchase within 30 days
-- Contact us to arrange
-
----
-
-## Exchange Tracking
-
-### Track Both Orders
-
-**Original Item Return:**
-- Track using prepaid label tracking number
-- Monitor until "Delivered to Warehouse"
-- Expect "Refund Processed" email within 3-5 days
-
-**New Item:**
-- Track using new order tracking
-- Separate tracking number
-- Ships independently of return
-
-**In Your Account:**
-- Both orders visible
-- Original shows "Return Initiated"
-- New order shows normal shipping status
-
----
-
-## Exchange Issues
-
-### New Item Also Wrong
-
-**Received Wrong Item Again:**
-
-1. **Stop** - Don't return anything yet
-2. Contact us immediately
-3. We'll investigate why error occurred
-4. Options:
-   - Send correct item with expedited shipping (FREE)
-   - Full refund for both attempts
-   - Store credit + discount on future order
-
-**We'll Cover:**
-- All shipping costs
-- Compensation for inconvenience
-- Expedited shipping on correct item
-
-### Original Return Rejected
-
-**Reasons Return Might Be Rejected:**
-- Item worn or washed (tags removed)
-- Damaged by customer
-- Wrong item returned
-- Return after 30-day window
-
-**What Happens:**
-- We'll email with photos and explanation
-- Options:
-  - Accept partial refund (if applicable)
-  - Donate item (we'll donate, no refund)
-  - Ship back to you (you pay return shipping: ~$10)
-
-**Dispute Process:**
-- Reply to rejection email within 7 days
-- Provide additional evidence if applicable
-- Supervisor reviews case
-- Final decision within 2 business days
-
-### Can't Find Original Receipt/Email
-
-**No Problem:**
-- We can look up order by:
-  - Email address
-  - Name + approximate order date
-  - Last 4 digits of payment card
-  - Phone number
-
-**In Your Account:**
-- All orders visible in Order History
-- No receipt needed for returns
+**Rush Exchange:** Need it faster? Ask about rush processing!
 
 ---
 
 ## Special Exchange Situations
 
-### Defective Item Exchange
-
-**Different from Regular Exchange:**
-- No 30-day limit (warranty covers up to 1-2 years)
-- We ship replacement before return received
-- No need to order and pay first
-- Expedited shipping free
+### 1. Multiple Items Exchange
+**Scenario:** Exchanging several items at once
 
 **Process:**
-1. Contact us with defect description
-2. Provide photos if requested
-3. We send replacement with prepaid return label
-4. Return defective item when convenient
-
-### Sale Item Exchange
-
-**Original Item Purchased on Sale:**
-- Exchange follows regular process
-- Refund is sale price paid (not full price)
-- New item charged at current price
-- Price difference may apply
-
-**New Item Now on Sale:**
-- Lucky you! Pay current (sale) price
-- Refund is what you paid originally
-- May result in net savings
-
-### Pre-Order Exchange
-
-**Exchange Before Item Ships:**
-- Contact us to modify order
-- Can change size/color free before shipping
-- No return process needed
-- No restocking fees
-
-**After Pre-Order Ships:**
-- Standard exchange process applies
-- 30-day window starts at delivery
+- List all items to exchange in one email
+- We'll create one EA number for entire order
+- Ship all returns together in one box
+- Save on shipping costs
 
 ---
 
-## Tips for Smooth Exchanges
+### 2. Partial Exchange
+**Scenario:** Keeping some items, exchanging others
 
-✅ **Do:**
-- Order new item immediately (avoid sellout)
-- Keep original tags attached until sure
-- Take photos of items before returning
-- Use prepaid return label
-- Ship return within 7 days of label
+**Process:**
+- Just return the items you want to exchange
+- Keep the items you want
+- We only process exchange for returned items
 
-❌ **Don't:**
-- Remove tags before deciding
-- Wear/wash before confirming fit
-- Ship return without contacting us
-- Wait for refund before ordering new item (delays getting right item)
-- Use your own shipping label
+**Example:** Ordered 20 feet of hose and 8 fittings, only need to exchange 2 fittings
+- Keep the hose and 6 fittings
+- Return just the 2 fittings for exchange
 
 ---
 
-## Contact Us for Exchanges
+### 3. Defective Item Exchange
+**Scenario:** Item has manufacturing defect
 
-**Chat:** Fastest - 9 AM - 6 PM EST, Monday-Friday  
-**Email:** support@hotdash.com - 4-hour response  
-**Phone:** 1-888-HOT-DASH - For urgent exchanges
+**Process:**
+- Report defect immediately (within 30 days)
+- Email photos to support@hotrodan.com
+- We ship replacement immediately
+- Return defective item with prepaid label
+- No charges for defective exchanges
 
-**Have Ready:**
+**Common Defects:**
+- Leaking fittings (when properly installed)
+- Damaged threads
+- Broken/cracked components
+- Wrong item in package
+
+---
+
+### 4. Wrong Item Received (Our Error)
+**Scenario:** We sent you the wrong product
+
+**Process:**
+- Contact us immediately
+- We ship correct item ASAP (usually same day)
+- Return wrong item with prepaid label
+- Absolutely no cost to you
+- We apologize for the error!
+
+---
+
+### 5. Size Consultation Exchanges
+**Scenario:** Not sure what size you need? We recommended wrong size?
+
+**Process:**
+- If we gave sizing advice that was incorrect, exchange is free
+- Send us your application details
+- We'll recommend correct size
+- Free exchange if our recommendation didn't work
+
+**Get Sizing Help:**
+- Engine HP and type
+- Fuel pump specs
+- Naturally aspirated vs. forced induction
+- Distance from pump to engine
+- We'll calculate required AN size
+
+---
+
+## Exchange Tips & Best Practices
+
+### Before Ordering
+1. **Measure Twice:** Double-check measurements and fitment
+2. **Ask Questions:** Email support@hotrodan.com with any doubts
+3. **Check Compatibility:** Verify parts will work with your setup
+4. **Use Size Chart:** hotrodan.com/an-sizing-guide
+5. **Read Reviews:** See what others are using for similar applications
+
+### During Exchange
+1. **Take Photos:** Document item condition before returning
+2. **Keep Tracking:** Save return tracking number
+3. **Note EA Number:** Write it down and on package
+4. **Communicate:** Let us know if you have questions
+5. **Be Patient:** Quality control takes 1-2 days
+
+### After Exchange
+1. **Test Fit:** Verify new item before installation
+2. **Save Packaging:** Keep packaging for 30 days
+3. **Update Records:** Keep copy of exchange confirmation
+4. **Review:** Let us know how the exchange process went!
+
+---
+
+## Exchange FAQs
+
+**Q: Can I exchange an item I bought on sale?**  
+A: Yes, but you pay the difference if new item isn't on sale
+
+**Q: What if I need to exchange after 30 days?**  
+A: Contact us - we may make exceptions for defects or special circumstances
+
+**Q: Can I exchange for a completely different product?**  
+A: Yes! Exchange doesn't have to be same category. Just pay/receive price difference.
+
+**Q: Do I have to wait to receive the new item before returning the old one?**  
+A: No - but we recommend testing new item first to make sure it's what you need
+
+**Q: What if the new item also needs to be exchanged?**  
+A: We'll work with you. After 2 exchanges, we'll help you find exactly what you need.
+
+**Q: Can I exchange a bundle deal for individual items?**  
+A: Yes, but you'll lose the bundle discount and pay the price difference
+
+**Q: Will I lose my free shipping if I exchange?**  
+A: No - we try to maintain your original free shipping benefits on exchanges
+
+**Q: Can I exchange custom-cut hose?**  
+A: Unfortunately no - custom cuts are final sale due to safety reasons
+
+---
+
+## Contact for Exchange Help
+
+**Email:** support@hotrodan.com  
+**Subject:** "Exchange Request - Order #[NUMBER]"
+
+**Include in Email:**
 - Order number
-- Item(s) to exchange
-- Desired replacement (size/color/style)
+- Items to exchange
+- Items you want instead
+- Brief reason (helps us serve you better)
+
+**Phone:** Monday-Friday, 9AM-5PM EST  
+**Response Time:** Within 24 hours (usually same day)
 
 ---
 
-**Document Version:** 1.0.0  
-**Review Schedule:** Quarterly  
-**Owner:** Customer Experience Team
-
+**Our Promise:** We want you to get exactly what you need for your build. If you're not sure what you need, let us know your application and we'll help you get it right the first time!

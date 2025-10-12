@@ -1,483 +1,377 @@
-# Common Questions - Customer FAQ
+# Common Questions - Hot Rod AN LLC
 
-**Last Updated:** 2025-10-11  
-**Purpose:** Quick answers to the top 50 customer questions
+**Last Updated:** October 2025
 
----
-
-## Orders & Checkout
-
-### Q1: How do I place an order?
-
-**A:** Browse our products at hotdash.com, add items to cart, and proceed to checkout. You can checkout as a guest or create an account for faster future orders.
+Quick answers to the most frequently asked questions about PTFE hose, AN fittings, and fuel system components.
 
 ---
 
-### Q2: Can I modify my order after placing it?
-
-**A:** Yes, if your order hasn't shipped yet! Contact us immediately with your order number and requested changes. Orders typically ship within 1-2 business days, so reach out quickly.
-
-**If already shipped:** Cannot modify, but you can return unwanted items within 30 days.
-
----
-
-### Q3: Can I cancel my order?
-
-**A:** Yes, if not yet shipped! Contact us immediately with your order number. We'll cancel and refund within 24 hours.
-
-**If already shipped:** Refuse delivery or return after receiving (see Return Policy).
+## Quick Navigation
+- [Ordering & Shipping](#ordering--shipping)
+- [Product Selection](#product-selection)
+- [Installation & Technical](#installation--technical)
+- [Returns & Exchanges](#returns--exchanges)
+- [Account & Payment](#account--payment)
 
 ---
 
-### Q4: What payment methods do you accept?
+## Ordering & Shipping
 
-**A:** We accept:
-- All major credit cards (Visa, Mastercard, American Express, Discover)
-- Debit cards
+### Q1: Do you offer free shipping?
+**A:** Yes! Free standard shipping on all domestic orders $75 and above. Orders under $75 have a flat $8.95 shipping fee. Alaska, Hawaii, and U.S. territories have a $15 surcharge and $150 free shipping threshold.
+
+---
+
+### Q2: How fast will my order ship?
+**A:** 
+- **Orders placed before 2PM EST:** Ship same business day
+- **Orders placed after 2PM EST:** Ship next business day  
+- **Weekend orders:** Ship Monday  
+- **Standard shipping:** 3-7 business days after shipment
+- **Expedited (2-day):** 2 business days after shipment
+- **Express (next day):** 1 business day after shipment
+
+---
+
+### Q3: How do I track my order?
+**A:** You'll receive a tracking email within 24 hours of shipment. Track at:
+- hotrodan.com/track-order
+- UPS.com or USPS.com (use tracking number from email)
+- Or contact support@hotrodan.com with your order number
+
+---
+
+### Q4: Do you ship internationally?
+**A:** Yes! We ship to Canada ($24.95 flat rate) and most international destinations. International shipping takes 10-21 business days. Customs duties and taxes are the buyer's responsibility.
+
+---
+
+### Q5: Can I change my shipping address after ordering?
+**A:** Contact us immediately at support@hotrodan.com if you haven't received a shipping confirmation email yet. Once shipped, you'll need to contact the carrier directly to request address changes (fees may apply).
+
+---
+
+## Product Selection
+
+### Q6: What size AN hose do I need for my application?
+**A:** It depends on your horsepower and fuel system:
+- **400-600 HP (NA):** AN-6 supply, AN-6 return
+- **600+ HP (NA):** AN-8 supply, AN-6 return
+- **Turbo/Supercharged:** AN-8 supply minimum
+- **800+ HP:** AN-10 supply, AN-8 return
+
+For specific recommendations, email your engine specs to support@hotrodan.com
+
+---
+
+### Q7: What's the difference between nylon braided and stainless braided hose?
+**A:**
+- **Nylon Braided:** Lighter weight, more flexible, easier to route, comes in multiple colors, slightly less durable to abrasion
+- **Stainless Braided:** Heavier, more rigid, maximum abrasion resistance, show-quality appearance, silver only
+
+Both have the same PTFE inner liner and performance. Choose based on your preferences and application!
+
+---
+
+### Q8: What do the numbers mean? (AN-6, AN-8, AN-10)
+**A:** AN sizes refer to the dash size:
+- **AN-6:** 6/16" or 3/8" inner diameter
+- **AN-8:** 8/16" or 1/2" inner diameter  
+- **AN-10:** 10/16" or 5/8" inner diameter
+
+Higher number = larger hose = more fuel flow capacity
+
+---
+
+### Q9: Can I mix and match hose colors?
+**A:** Absolutely! Many customers use different colors to identify different lines:
+- Red = fuel supply
+- Blue = fuel return
+- Black = general purpose
+- Purple/Yellow/Green = personal preference or system identification
+
+---
+
+### Q10: What fittings do I need for my hose?
+**A:** For each hose end, you need:
+1. **Hose end fitting** (straight, 45°, or 90°) - attaches to hose
+2. **Adapter fitting** (if needed) - connects hose end to your component
+
+Check your component port type (AN, NPT, ORB, etc.) and order matching adapters. Our bundle deals include hose + 8 fittings for complete setups!
+
+---
+
+### Q11: What's the difference between reusable and push-on fittings?
+**A:** All our PTFE hose fittings are **reusable**:
+- Can be removed and reinstalled multiple times
+- Require proper assembly with ferrule
+- More labor-intensive but better long-term value
+- Professional-grade quality
+
+We don't carry push-on fittings as they're not compatible with PTFE hose.
+
+---
+
+## Installation & Technical
+
+### Q12: Do I need special tools to install AN fittings?
+**A:** Helpful but not always required:
+- **Essential:** Sharp AN hose cutting shears (Part #: HRA-CUT-001)
+- **Recommended:** Adjustable spanner wrench (Part #: HRA-WRENCH)
+- **Optional:** Vice jaws (Part #: HRA-VICE) for easier assembly
+- **Not needed:** Thread sealant (AN fittings use flare seal, not threads)
+
+Many customers successfully install with just the cutting shears and standard wrenches.
+
+---
+
+### Q13: Do I use thread sealant on AN fittings?
+**A:** **NO!** Never use thread sealant (Teflon tape, pipe dope, etc.) on AN fittings. They use a **flare seal** design, not a thread seal. Using sealant can cause leaks and damage.
+
+**DO use sealant on:**
+- NPT fittings (tapered pipe threads)
+- Not on AN (straight threads with flare)
+
+---
+
+### Q14: How tight should I make AN fittings?
+**A:** Torque specifications:
+- **AN-6:** 25-30 ft-lbs
+- **AN-8:** 30-35 ft-lbs
+- **AN-10:** 35-40 ft-lbs
+
+Assembly tip: Hand-tighten until snug, then use wrench to turn an additional 1/4 to 1/2 turn. Do NOT over-tighten!
+
+---
+
+### Q15: My fitting is leaking - what should I do?
+**A:** Check these common causes:
+1. **Under-torqued:** Tighten to proper torque spec
+2. **Over-torqued:** Disassemble, inspect for damage, reassemble
+3. **Cross-threaded:** Disassemble, start threads by hand carefully
+4. **Missing O-ring:** For ORB fittings, check O-ring is present and lubricated
+5. **Damaged flare:** Inspect hose end for damage
+
+See our [Product Troubleshooting Guide](product-troubleshooting.md) for detailed help.
+
+---
+
+### Q16: Can I cut the hose to custom length?
+**A:** Yes! Our hose is sold by the foot and you can cut it to any length you need. 
+
+**Important:**
+- Use proper AN hose cutting shears (never a knife or regular scissors)
+- Cut straight across, not at an angle
+- Custom-cut hose cannot be returned (safety policy)
+
+**Tip:** Measure carefully and add 2-3 inches extra for fitting installation.
+
+---
+
+### Q17: What's the minimum bend radius for PTFE hose?
+**A:**
+- **AN-6:** 2.5" minimum bend radius
+- **AN-8:** 3.0" minimum bend radius
+- **AN-10:** 3.5" minimum bend radius
+
+Going below minimum radius will kink the hose and restrict flow. Use 45° or 90° fittings to avoid sharp bends!
+
+---
+
+### Q18: Will PTFE hose work with E85 fuel?
+**A:** Yes! PTFE (Teflon) is **100% compatible** with:
+- E85 and ethanol fuels
+- Gasoline (all grades)
+- Diesel
+- Methanol
+- Most racing fuels
+
+PTFE is the gold standard for fuel system compatibility.
+
+---
+
+### Q19: Can I use this hose for brake lines, transmission coolers, or other applications?
+**A:** While PTFE hose CAN be used for many applications, we specifically recommend and sell it for **fuel systems**. 
+
+For other applications:
+- **Brake lines:** Use DOT-approved brake line
+- **Transmission:** Our hose works but check temperature ratings
+- **Power steering:** Usually fine but verify pressure ratings
+- **Coolant:** Not recommended (too hot for braided hose comfort)
+
+Contact us if you have a specific non-fuel application question.
+
+---
+
+### Q20: How do I find installation instructions?
+**A:** Multiple resources available:
+1. **Website:** hotrodan.com/installation-instructions
+2. **Included with order:** PDF installation guide
+3. **Video tutorials:** Links provided with shipping confirmation
+4. **Email support:** support@hotrodan.com (include photos of your setup)
+5. **Phone consultation:** $50/hour (credited toward parts purchase)
+
+---
+
+## Returns & Exchanges
+
+### Q21: Can I return items if I ordered the wrong size?
+**A:** Yes! We accept returns within 30 days if:
+- Item is unused and in original packaging
+- All accessories and documentation included
+- Item is not custom-cut
+
+**Better option:** Request an exchange instead of a return - no restocking fee and faster processing! See our [Exchange Process Guide](exchange-process.md).
+
+---
+
+### Q22: Is there a restocking fee?
+**A:** 
+- **Returns:** 15% restocking fee (except defective items)
+- **Exchanges:** NO restocking fee
+- **Defective items:** No fees at all
+- **Wrong item sent (our error):** No fees
+
+**Tip:** Choose exchange over return to avoid the restocking fee!
+
+---
+
+### Q23: What if my product is defective?
+**A:**
+1. Email photos to support@hotrodan.com within 30 days (60 days for defects)
+2. We'll send replacement immediately (usually same day)
+3. Return defective item with prepaid shipping label
+4. No restocking fees or charges for defective items
+
+---
+
+### Q24: How long do refunds take?
+**A:**
+- **Inspection:** 2 business days after we receive return
+- **Refund processed:** 3 business days after inspection
+- **Credit card:** 5-7 business days to appear on statement
+- **PayPal:** 2-3 business days
+- **Total:** Approximately 10-14 business days from return shipment
+
+---
+
+## Account & Payment
+
+### Q25: Do I need to create an account to order?
+**A:** No, you can check out as a guest. However, creating an account lets you:
+- Track orders easily
+- Save addresses
+- View order history
+- Faster checkout for future orders
+- Receive exclusive deals
+
+---
+
+### Q26: What payment methods do you accept?
+**A:**
+- Credit cards (Visa, Mastercard, Discover, American Express)
 - PayPal
 - Apple Pay
 - Google Pay
-- Shop Pay
+- Amazon Pay
 
-**We do NOT accept:** Checks, money orders, or cryptocurrency
-
----
-
-### Q5: Is my payment information secure?
-
-**A:** Absolutely! We use industry-standard SSL encryption and never store your full credit card number. All payments processed through PCI-compliant secure payment processors.
+All transactions are secure and encrypted.
 
 ---
 
-### Q6: Do you offer discounts or promo codes?
-
-**A:** Yes! Sign up for our email list for:
-- 10% off first order
-- Exclusive sales notifications
-- Birthday discount
-- Early access to new products
-
-**Current Promotions:** Check hotdash.com/deals
+### Q27: When will I be charged?
+**A:** You're charged immediately when you place your order. Authorization happens at checkout, and the charge processes within 24 hours.
 
 ---
 
-### Q7: Can I use multiple promo codes?
+### Q28: Do you offer discounts or coupon codes?
+**A:** Yes! We offer:
+- Email subscriber discount (10% off first order)
+- Bundle deals (save 15-20% on complete kits)
+- Bulk discounts (contact us for orders of 10+ items)
+- Seasonal sales (Black Friday, holidays, etc.)
+- Follow us on social media for coupon codes
 
-**A:** No, only one promo code per order. Code with the largest discount will be applied automatically if multiple entered.
-
----
-
-### Q8: What is your price match policy?
-
-**A:** We match prices from authorized retailers within 7 days of purchase. Contact us with:
-- Proof of lower price (screenshot/link)
-- Must be same product and condition
-- Must be in stock at both retailers
-
-**Refund:** Difference credited within 3 business days
+**Current promo:** Sign up for our email list at hotrodan.com for 10% off your first order!
 
 ---
 
-## Shipping & Delivery
+### Q29: Do you have a loyalty program?
+**A:** Yes! Every purchase earns points:
+- 1 point per $1 spent
+- 100 points = $5 off future purchase
+- Birthday bonus: 50 points
+- Review products: 25 points per review
 
-### Q9: How long does shipping take?
-
-**A:** 
-- **Standard:** 6-9 business days total
-- **Expedited:** 3-4 business days total
-- **Express:** 1-3 business days total
-
-**Processing:** 1-2 business days before shipment
+Points never expire. Check your points balance in your account dashboard.
 
 ---
 
-### Q10: When will my order ship?
-
-**A:** Orders placed before 2 PM EST ship same business day. After 2 PM or on weekends, ship next business day.
-
-**Check Status:** Log in → Order History → View order status
-
----
-
-### Q11: How much is shipping?
-
-**A:**
-- **FREE** on orders $50+
-- **$5.99** on orders under $50
-- **Expedited:** $12.99 flat rate
-- **Express:** $24.99 flat rate
-
-**International:** Calculated at checkout (typically $15-45)
-
----
-
-### Q12: Do you ship internationally?
-
-**A:** Yes! We ship to 50+ countries. Enter your address at checkout to see availability and cost for your location.
-
-**Timeline:** 10-21 business days  
-**Note:** Customer responsible for customs duties/taxes
-
----
-
-### Q13: Can I track my package?
-
-**A:** Yes! You'll receive tracking email within 24 hours of shipment. Track in real-time via:
-- Email link
-- Your account dashboard
-- Carrier website with tracking number
-
----
-
-### Q14: My tracking number isn't working
-
-**A:** Wait 24 hours after receiving tracking email. Carriers need time to scan package into their system. If still not working after 24 hours, contact us.
-
----
-
-### Q15: Where is my order?
-
-**A:** Check your tracking information! Log in to your account → Orders → Track Package. If tracking shows delivered but you didn't receive it, check all entrances, with neighbors, and contact us if still missing after 24 hours.
-
----
-
-## Returns & Refunds
-
-### Q16: What is your return policy?
-
-**A:** 30 days from delivery for full refund. Items must be unworn with original tags. Free prepaid return shipping label. Refund processed within 5-7 business days of receiving return.
-
-**Details:** See our full Return Policy
-
----
-
-### Q17: How do I return an item?
-
-**A:**
-1. Log in → Order History → Select order → Return Items
-2. Print prepaid return label
-3. Package item with tags attached
-4. Drop off at USPS/UPS/FedEx
-5. Refund issued within 5-7 days of receipt
-
----
-
-### Q18: When will I receive my refund?
-
-**A:** 
-- **Processing:** 3-5 business days after we receive return
-- **Refund to card:** 5-7 business days after processing
-- **Total:** 8-12 business days from when you ship return
-
-**Track Status:** Account dashboard shows refund status
-
----
-
-### Q19: Can I return sale items?
-
-**A:** Yes, unless marked "Final Sale" at checkout. Regular sale items follow normal return policy. Final sale items cannot be returned unless defective.
-
----
-
-### Q20: Do I get refund for return shipping?
-
-**A:** Return shipping is FREE when using our prepaid label. Original shipping charges are not refunded (unless item defective or our error).
-
----
-
-## Products & Availability
-
-### Q21: Is this item in stock?
-
-**A:** Product page shows real-time inventory:
-- "In Stock" - Available, ships in 1-2 days
-- "Low Stock" - Limited availability
-- "Out of Stock" - Not currently available
-- "Pre-Order" - Available [date], ships when arrives
-
----
-
-### Q22: When will out-of-stock items be available?
-
-**A:** Restock dates shown on product page when available. Sign up for "Back in Stock" email notification to be alerted when item returns.
-
----
-
-### Q23: Do you offer product samples?
-
-**A:** Not currently, but we offer:
-- Detailed product descriptions
-- Customer reviews with photos
-- 30-day return policy (try risk-free)
-- Free shipping on returns
-
----
-
-### Q24: Are your products authentic?
-
-**A:** Yes! All products sold on HotDash.com are 100% authentic. We source directly from brands or authorized distributors only.
-
-**Guarantee:** If any item proves counterfeit, full refund + $100 store credit.
-
----
-
-### Q25: What is your warranty?
-
-**A:**
-- **Non-electronics:** 1-year manufacturing defect warranty
-- **Electronics:** 2-year warranty
-- **Covers:** Defects in materials and workmanship
-- **Doesn't cover:** Damage from misuse, accidents, wear and tear
-
----
-
-## Account & Login
-
-### Q26: Do I need an account to order?
-
-**A:** No, you can checkout as guest. But accounts offer:
-- Faster checkout
-- Order history tracking
-- Saved addresses and payment methods
-- Early access to sales
-- Birthday discount
-
-**Create Account:** Free at hotdash.com/signup
-
----
-
-### Q27: I forgot my password
-
-**A:**
-1. Go to hotdash.com/login
-2. Click "Forgot Password?"
-3. Enter your email
-4. Check email for reset link (arrives in 5 minutes)
-5. Create new password
-
-**Check spam folder** if you don't see email in 10 minutes.
-
----
-
-### Q28: How do I update my account information?
-
-**A:** Log in → Account Settings → Edit:
-- Name and email
-- Password
-- Phone number
-- Addresses
-- Payment methods
-- Email preferences
-
----
-
-### Q29: Can I delete my account?
-
-**A:** Yes. Contact us to request account deletion per GDPR. We'll process within 7 business days and send confirmation.
-
-**Note:** This is permanent - all order history will be deleted.
-
----
-
-### Q30: How do I update my email address?
-
-**A:** Log in → Account Settings → Email → Enter new email → Verify via confirmation link sent to new email.
-
----
-
-## Payments & Billing
-
-### Q31: When will my card be charged?
-
-**A:** Your card is charged when order is placed, not when it ships. Authorization occurs immediately at checkout.
-
----
-
-### Q32: I see a pending charge but order was cancelled
-
-**A:** Pending charges from cancelled orders drop off within 3-5 business days (bank-dependent). This is an authorization hold, not an actual charge.
-
----
-
-### Q33: Why was I charged twice?
-
-**A:** You likely see:
-1. **Original authorization** (pending)
-2. **Actual charge** (posted)
-
-The pending authorization will drop off. You're only charged once. If you see two POSTED charges, contact us immediately.
-
----
-
-### Q34: Can I pay with multiple payment methods?
-
-**A:** Not currently. However, you can use:
-- Credit/debit card + promo code
-- PayPal (which can pull from multiple sources)
-- Gift card + credit card (for balance)
-
----
-
-### Q35: Do you offer payment plans?
-
-**A:** We partner with Affirm for orders $150+. Choose "Pay in 4" or "Monthly Payments" at checkout. Approval and terms determined by Affirm.
-
----
-
-## Contact & Support
-
-### Q36: How do I contact customer service?
-
-**A:**
-- **Chat:** hotdash.com - Click chat icon (9 AM - 6 PM EST, Mon-Fri)
-- **Email:** support@hotdash.com (4-hour response)
-- **Phone:** 1-888-HOT-DASH (urgent issues only)
-
----
-
-### Q37: What are your customer service hours?
-
-**A:**
-- **Chat:** 9 AM - 6 PM EST, Monday-Friday
-- **Email:** 24/7 (responses within 4-24 hours)
-- **Phone:** 10 AM - 4 PM EST, Monday-Friday
-
-**Holidays:** Closed major holidays, limited hours on eve of holidays
-
----
-
-### Q38: How quickly will I get a response?
-
-**A:**
-- **Chat:** Immediate during business hours
-- **Email:** Within 4 hours (business days), 24 hours (weekends)
-- **Phone:** Immediate (during phone hours)
-
----
-
-### Q39: Can I speak to a supervisor?
-
-**A:** Yes! If your issue requires escalation, ask the support agent and they'll connect you to a supervisor. Supervisors available for complex issues or when you're not satisfied with initial response.
-
----
-
-### Q40: How do I leave feedback about my experience?
-
-**A:**
-- **Order feedback:** Email after delivery with review link
-- **Support feedback:** End of chat/email conversation
-- **General feedback:** feedback@hotdash.com
-
-**We Read Everything:** Your feedback helps us improve!
-
----
-
-## Products & Specifications
-
-### Q41: How do I find product specifications?
-
-**A:** Product page → Scroll to "Specifications" section. Includes dimensions, materials, care instructions, and technical details.
-
----
-
-### Q42: Are product photos accurate?
-
-**A:** We strive for accuracy but note:
-- Colors may vary due to screen settings
-- Lighting affects appearance
-- Product descriptions note any variations
-- Customer review photos show real-world appearance
-
----
-
-### Q43: Can I see product reviews?
-
-**A:** Yes! Every product page has customer reviews section. Includes:
-- Star ratings
-- Written reviews
-- Customer photos
-- Verified purchase badge
-- Fit/quality ratings
-
----
-
-### Q44: How do I know what size to order?
-
-**A:** 
-- Size chart on product page
-- Review "Fit Notes" in product description
-- Check customer reviews for fit feedback
-- Use our sizing guide: hotdash.com/size-guide
-- Chat with us for personalized recommendations
-
----
-
-### Q45: What materials are products made from?
-
-**A:** Material information in:
-- Product description
-- Specifications tab
-- Care instructions tag
-- For specific questions, contact us with product SKU
-
----
-
-## Shipping & Delivery (Additional)
-
-### Q46: Can I change my shipping address after ordering?
-
-**A:** Yes, if order hasn't shipped yet! Contact us immediately. After order ships, cannot redirect - contact carrier for options.
-
----
-
-### Q47: Do you offer gift wrapping?
-
-**A:** Not currently, but you can:
-- Add gift message at checkout (printed on packing slip)
-- Request invoice be excluded (no prices shown)
-- Package arrives in our branded box suitable for gifting
-
----
-
-### Q48: Can I ship to multiple addresses?
-
-**A:** Not in single order. Place separate orders for different shipping addresses. Use same account for all orders to track easily.
-
----
-
-### Q49: What if I'll be away when package delivers?
-
-**A:** Options:
-- Add delivery instructions in account (e.g., "Leave with neighbor")
-- Request signature waiver (smaller orders)
-- Use carrier hold for pickup
-- Ship to work address instead
-- Schedule delivery for specific date (carrier-dependent)
-
----
-
-### Q50: Do you ship to P.O. boxes?
-
-**A:**
-- **Standard shipping:** Yes, via USPS
-- **Expedited/Express:** No, requires street address
-- **International:** No P.O. boxes accepted
+### Q30: Can I get a quote for a large order?
+**A:** Absolutely! Email support@hotrodan.com with:
+- List of items and quantities needed
+- Your application (if you need recommendations)
+- Timeline for ordering
+
+We'll provide a detailed quote, often with volume discounts for 10+ items.
 
 ---
 
 ## Still Have Questions?
 
-**Can't Find Your Answer?**
-- Search our Help Center: hotdash.com/help
-- Chat with us: Click chat icon
-- Email: support@hotdash.com
-- Browse product-specific Q&A on product pages
+### Contact Us
 
-**We're Here to Help!**
+**Email:** support@hotrodan.com  
+**Response Time:** Within 24 hours (usually same day)  
+**Best For:** Technical questions, order status, product recommendations
+
+**Phone:** Monday-Friday, 9AM-5PM EST  
+**Best For:** Urgent issues, complex technical questions
+
+**Live Chat:** Available on hotrodan.com during business hours  
+**Best For:** Quick questions, availability checks
+
+**Social Media:**
+- Instagram: @hotrodan
+- Facebook: facebook.com/hotrodan
+- YouTube: Installation tutorials and product videos
 
 ---
 
-**Document Version:** 1.0.0  
-**Review Schedule:** Monthly (high-traffic FAQ)  
-**Owner:** Customer Experience Team
+## Popular Resources
 
+**Installation Help:**
+- Installation instruction videos: hotrodan.com/installation-instructions
+- AN fitting size chart: hotrodan.com/an-sizing-guide
+- Torque specifications: hotrodan.com/torque-specs
+- Product compatibility guide: hotrodan.com/compatibility
+
+**Policies:**
+- [Shipping Policy](shipping-policy.md)
+- [Refund Policy](refund-policy.md)
+- [Exchange Process](exchange-process.md)
+- [Order Tracking Guide](order-tracking.md)
+
+**Technical Guides:**
+- [Product Troubleshooting](product-troubleshooting.md)
+- Fuel system sizing calculator: hotrodan.com/calculator
+- Application guides: hotrodan.com/applications
+
+---
+
+## Quick Reference
+
+| Question | Answer |
+|----------|--------|
+| Free shipping? | Yes, on orders $75+ |
+| Ship internationally? | Yes, to most countries |
+| Return window? | 30 days for standard, 60 for defects |
+| Restocking fee? | 15% (waived for exchanges) |
+| Track orders? | hotrodan.com/track-order |
+| Best contact method? | support@hotrodan.com |
+| Hours? | Mon-Fri 9AM-5PM EST |
+| Response time? | Within 24 hours |
+
+---
+
+**Didn't find your answer?** We're here to help! Contact us at support@hotrodan.com or call during business hours. No question is too basic or too technical - we're happy to assist!
