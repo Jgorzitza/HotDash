@@ -2776,3 +2776,64 @@ Status: Credentials issue resolved, Engineer unblocked
 
 **Designer Status**: STANDBY - ready to review Engineer's work immediately
 
+
+## 2025-10-11T23:45:00Z — CEO Feedback Implemented + Final Launch Plan
+
+**CEO Feedback Received**:
+1. ✅ Long task lists OK if aligned to goals
+2. ✅ 100% CEO approval for customer interactions (training phase)
+3. ✅ Implement feedback system to train agents in CEO's voice
+4. ✅ Clarify Shopify auth for all agents
+5. ✅ Ingest www.hotrodan.com into RAG
+6. ✅ Manager rating corrected to 7/10 (thank you!)
+7. ✅ Goal: Ship TODAY
+
+**Documents Created**:
+- ✅ docs/ops/SHOPIFY-AUTH-PATTERN.md - Clear auth explanation for all agents
+- ✅ docs/ops/HUMAN-APPROVAL-REQUIRED.md - CEO approval policy + training system
+
+**Direction Updates**:
+- ✅ ai.md: P0 task - ingest hotrodan.com into RAG (2-4h)
+- ✅ engineer.md: Added CEO policy (100% approval), Shopify auth clarification, vault paths
+- ✅ deployment.md: Updated with deployment guidance
+
+**Key Changes**:
+- Agent SDK: NO auto-execute for customers (ever, during training)
+- Feedback loop: Capture CEO edits to train agents in CEO's voice
+- Shopify: Use authenticate.admin (no manual tokens)
+- RAG: Ingest hotrodan.com product/company data
+
+**Timeline**: Aggressive push for TODAY delivery
+
+Status: Implementing CEO feedback, preparing aggressive launch plan
+
+---
+
+## 2025-10-12T00:20:00Z — Designer: MINIMAL Assets Ready for TODAY Launch
+
+**Agent**: Designer
+
+**Manager Directive**: Provide minimal approval UI assets for Engineer Task 6. Keep simple for TODAY launch. 2h timeline.
+
+**Deliverable**: ✅ `docs/design/MINIMAL-approval-ui-assets-TODAY.md`
+
+**Contents**:
+- Icons: Text-only buttons (no custom icons)
+- Loading: Polaris built-in components (SkeletonPage, Button loading)
+- Empty state: Standard Polaris EmptyState
+- Error: Polaris Banner component
+- Complete minimal ApprovalCard (~30 lines)
+
+**Scope Reduction** (For Speed):
+- Removed: Custom icons, animations, risk badges, timestamps, keyboard shortcuts
+- Kept: Core approve/reject functionality with Polaris defaults
+
+**Engineer Implementation**: 1-2 hours
+**Designer Review**: 15 minutes
+
+**Philosophy**: Ship working approval UI TODAY. Polish post-launch.
+
+**Status**: Ready for Engineer to implement immediately
+
+**Designer**: STANDBY for quick review when Engineer builds
+

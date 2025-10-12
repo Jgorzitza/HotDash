@@ -3235,3 +3235,39 @@ describe('LlamaIndex MCP Server', () => {
 **Evidence**: All test plans documented in feedback/qa.md
 **Commits**: Ready to commit preparation work
 
+
+
+## 2025-10-12T00:00:00Z — EXECUTING TASK 1: Test LlamaIndex MCP Server
+
+**Manager Directive**: Test LlamaIndex MCP immediately (Task 1)
+
+**Status**: LlamaIndex MCP Server ready for testing per Manager
+
+### Testing LlamaIndex MCP Server
+
+**Test 1: Verify MCP Server Connection**
+
+**Deployment Found**: LlamaIndex MCP Server on Fly.io
+- URL: https://hotdash-llamaindex-mcp.fly.dev/
+- Status: ✅ Deployed (2 machines)
+- IPv4: 66.241.124.98
+- IPv6: 2a09:8280:1::a3:9036:0
+
+### Test 1: Health Check
+
+**Command**: Testing MCP server health
+
+**Result**: ✅ HEALTHY
+```json
+{
+  "status": "ok",
+  "service": "llamaindex-rag-mcp",
+  "version": "1.0.0",
+  "tools": ["query_support", "refresh_index", "insight_report"]
+}
+```
+
+### Test 2: query_support Tool
+
+**Test 2.1**: Simple knowledge query
+**Command**: Querying for return policy information

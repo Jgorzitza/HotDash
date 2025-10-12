@@ -2175,3 +2175,213 @@ npm ls       # Verify no missing packages
 
 **Evidence:** Server deployed ✅, endpoints accessible ✅, tool execution blocked ❌
 
+## 2025-10-12 02:45 UTC - Task 5: Agent SDK API Integration Review (BLOCKER CLEARED)
+
+**Action:** Verifying webhook endpoints and Agent SDK integration status
+**Authority:** Blocker cleared notice (line 277-289)
+**Evidence:** Code review of `supabase/functions/chatwoot-webhook/index.ts`
+
+**Webhook Deployment Status:** ✅ Function exists
+- Location: `supabase/functions/chatwoot-webhook/index.ts`
+- Security: HMAC-SHA256 verification implemented (lines 52-64)
+- Basic flow: Webhook receipt, signature verification, event filtering working
+
+**Integration Status:** ⚠️ PARTIAL - Webhook scaffolded but integrations pending
+
+**What's Working:** ✅
+1. Webhook signature verification (HMAC-SHA256)
+2. Event filtering (message_created from customers only)
+3. Observability logging
+4. Error handling
+5. CORS configuration
+
+**What's Still TODO:** ❌
+1. **LlamaIndex Integration** (lines 171-181) - Commented out
+   - Query knowledge base for context
+   - Endpoint: `${LLAMAINDEX_SERVICE_URL}/api/llamaindex/query`
+   - Status: Needs implementation (LlamaIndex MCP deployed but has dependency issue)
+
+2. **Agent SDK Integration** (lines 183-197) - Commented out
+   - Generate draft response
+   - Endpoint: `${AGENTSDK_SERVICE_URL}/api/agentsdk/draft`
+   - Status: Needs implementation (Agent SDK not yet verified)
+
+3. **Chatwoot Private Note** (lines 199-216) - Commented out
+   - Create private note with draft response
+   - Status: Awaits LlamaIndex + Agent SDK integration
+
+4. **Approval Queue** (lines 218-227) - Commented out
+   - Insert into `agent_sdk_approval_queue` table
+   - Status: Awaits full workflow implementation
+
+**Current Behavior:**
+- Webhook receives Chatwoot events ✅
+- Validates signatures ✅
+- Filters for customer messages ✅
+- Logs to observability ✅
+- **BUT:** Does NOT generate drafts or create approval queue entries (all TODOs)
+
+**Required Actions (for Engineer):**
+1. Fix LlamaIndex MCP dependency issue (add 'commander' package)
+2. Deploy/verify Agent SDK service
+3. Uncomment and implement TODO sections in webhook (lines 171-227)
+4. Test end-to-end flow: Customer message → Draft generation → Approval queue
+5. Verify approval queue table exists in Supabase
+
+**Database Verification Needed:**
+```sql
+-- Check if approval queue table exists
+SELECT table_name FROM information_schema.tables 
+WHERE table_schema = 'public' 
+AND table_name = 'agent_sdk_approval_queue';
+```
+
+**Status:** ⚠️ Task 5 INCOMPLETE - Webhook scaffolded but full integration pending
+
+**Next Steps:**
+1. ⏳ Engineer: Fix LlamaIndex dependency, redeploy
+2. ⏳ Engineer: Verify Agent SDK service operational
+3. ⏳ Engineer: Implement TODO sections in webhook
+4. ⏳ Integrations: Re-test full workflow after Engineer completes
+5. ⏳ Verify approval queue UI displays drafts correctly
+
+**Evidence:** Webhook foundation solid ✅, integrations pending implementation ❌
+
+**NORTH STAR ALIGNMENT:** ✅ This is launch-critical - Agent-assisted approvals are core to operator control center
+
+---
+
+## 2025-10-12 02:46 UTC - LAUNCH-CRITICAL: Shopify Deprecation Fixes (From Task 1 Audit)
+
+**Action:** Creating actionable fixes for 4 critical Shopify GraphQL deprecations found in Task 1
+**Authority:** North Star alignment - "Evidence or no merge" - WORKING CODE not plans
+**Evidence:** Fixes based on Task 1 audit findings (`artifacts/integrations/audit-2025-10-11/shopify_graphql_validation_failures.md`)
+
+**NORTH STAR ALIGNMENT:** ✅ These fixes are LAUNCH-BLOCKING - Dashboard won't work with deprecated APIs
+
+**Priority:** P0 - MUST FIX BEFORE LAUNCH
+
+### Issue 1: `financialStatus` → `displayFinancialStatus`
+
+**File:** `app/services/shopify/orders.ts` (line ~30 in ORDERS_QUERY)
+
+**Current (DEPRECATED):**
+```graphql
+financialStatus
+```
+
+**Required Fix:**
+```graphql
+displayFinancialStatus
+```
+
+**Why:** `financialStatus` removed from Shopify Admin API 2024-10+
+
+---
+
+### Issue 2: Fulfillment Connection Access
+
+**File:** `app/services/shopify/orders.ts` (line ~50 in FULFILLMENT_QUERY)
+
+**Current (BROKEN):**
+```graphql
+fulfillments {
+  edges {
+    node { ... }
+  }
+}
+```
+
+**Required Fix:**
+```graphql
+fulfillments(first: 10) {
+  id
+  status
+  trackingCompany
+  trackingNumber
+}
+```
+
+**Why:** Fulfillment is no longer a connection (no edges/node), access fields directly
+
+---
+
+### Issue 3: `productVariantUpdate` → `productSet` or `productVariantsBulkUpdate`
+
+**File:** `app/services/shopify/inventory.ts` (line ~80 in mutation)
+
+**Current (DEPRECATED):**
+```graphql
+mutation productVariantUpdate($input: ProductVariantInput!) {
+  productVariantUpdate(input: $input) { ... }
+}
+```
+
+**Required Fix Option A (for single variant):**
+```graphql
+mutation productSet($input: ProductSetInput!) {
+  productSet(synchronous: true, input: $input) {
+    product { id }
+    userErrors { field message }
+  }
+}
+```
+
+**Required Fix Option B (for bulk updates):**
+```graphql
+mutation productVariantsBulkUpdate($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+  productVariantsBulkUpdate(productId: $productId, variants: $variants) {
+    product { id }
+    productVariants { id }
+    userErrors { field message }
+  }
+}
+```
+
+**Why:** `productVariantUpdate` deprecated in favor of modern mutations
+
+---
+
+### Issue 4: `availableQuantity` → `quantities(names: ["available"])`
+
+**File:** `app/services/shopify/inventory.ts` (line ~60)
+
+**Current (BROKEN):**
+```graphql
+inventoryLevel {
+  availableQuantity
+}
+```
+
+**Required Fix:**
+```graphql
+inventoryLevel {
+  quantities(names: ["available"]) {
+    name
+    quantity
+  }
+}
+```
+
+**Why:** Direct `availableQuantity` field no longer available
+
+---
+
+**Immediate Actions Required:**
+
+**FOR ENGINEER (P0 - Launch Blocking):**
+1. Apply all 4 fixes to Shopify queries/mutations
+2. Test with Shopify MCP validation BEFORE committing
+3. Verify dashboard tiles still display correct data
+4. Deploy to staging and test full flow
+5. No merge until all 4 issues resolved
+
+**FOR INTEGRATIONS (Supporting):**
+- ✅ Clear fixes documented above
+- ⏳ Available to verify fixes with Shopify MCP if needed
+- ⏳ Will re-test after Engineer implements
+
+**Status:** 🚨 LAUNCH-BLOCKING ISSUES DOCUMENTED - Awaiting Engineer fixes
+
+**Evidence:** All 4 issues from Task 1 audit now have specific, implementable fixes
+
