@@ -378,13 +378,36 @@ curl -X POST "https://<project>.functions.supabase.co/occ-log" \
 
 ---
 
+## Key Process Documentation
+
+**Core Documents** (Read these first):
+- 📍 **`docs/NORTH_STAR.md`** - Mission, 5 tiles, operator value, 10X goal
+- 📋 **`docs/git_protocol.md`** - Branch naming, commits, PR requirements
+- 🎯 **`docs/directions/README.md`** - How agents work, direction governance, canonical toolkit
+- 🔐 **`docs/ops/credential_index.md`** - Secrets and credential management
+
+**Agent Workflows** (For AI agents and team members):
+- ✅ **`docs/runbooks/agent_startup_checklist.md`** - Start of every work session (5-10 min)
+- 🧹 **`docs/runbooks/agent_shutdown_checklist.md`** - End of every work session (10-30 min)
+- 🚀 **`docs/runbooks/agent_launch_checklist.md`** - Before activating an agent (manager runs this)
+
+**Process Controls**:
+- 📝 **`docs/policies/feedback_controls.md`** - Feedback logging requirements
+- 🛡️ **`docs/policies/agentfeedbackprocess.md`** - Evidence-first logging process
+
+---
+
 ## Contribution Guidelines
 
-1. Follow `docs/git_protocol.md` (branch naming, evidence requirements, PR checklist).
-2. Keep direction docs read-only unless you are the manager; log questions in the relevant `feedback/*.md` file.
-3. Always attach evidence (tests, metrics) when shipping tile or service changes.
-4. Update `docs/directions/product_changelog.md` for any roadmap-impacting doc or process change.
-5. **Repository Cleanup**: Historical status reports are in `archive/` - don't create new status files in root directory.
+1. **Follow git protocol**: `docs/git_protocol.md` (branch naming, evidence requirements, PR checklist)
+2. **Run startup checklist**: `docs/runbooks/agent_startup_checklist.md` before starting work
+3. **Run shutdown checklist**: `docs/runbooks/agent_shutdown_checklist.md` before ending session
+4. **Keep directions read-only**: Only manager edits `docs/directions/` files
+5. **Log in your feedback file**: Use `feedback/<agent>.md` only (never create files in `/home/justin/`)
+6. **Attach evidence**: Tests, metrics, screenshots for all completed work
+7. **Clean up violations**: No files outside `~/HotDash/hot-dash/`, no extra status files in root
+
+**🚨 Critical Cleanup Rule**: Before shutdown, merge any violation files into feedback and delete them. See shutdown checklist Step 1-4.
 
 Need help? Check the feedback logs in `feedback/` or ping the manager noted in `docs/directions/manager.md`.
 
