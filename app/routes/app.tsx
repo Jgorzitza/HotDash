@@ -28,6 +28,7 @@ export default function App() {
     <AppProvider embedded apiKey={apiKey}>
       <s-app-nav>
         <s-link href="/app">Dashboard</s-link>
+        <s-link href="/approvals">Approvals</s-link>
         <s-link href="/app/additional">Additional page</s-link>
         <s-link href="/app/tools/session-token">Session token tool</s-link>
         {mockMode && (
