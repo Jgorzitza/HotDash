@@ -1,365 +1,209 @@
-# Refund & Return Policy
+# Refund Policy - Hot Rod AN LLC
 
-**Last Updated:** 2025-10-11  
-**Effective Date:** 2025-01-01
+**Last Updated:** October 2025
 
----
+## Overview
 
-## Our Promise
-
-We want you to love your HotDash purchase! If you're not completely satisfied, we offer a hassle-free 30-day return policy.
-
----
+At Hot Rod AN, we stand behind the quality of our PTFE hose, AN fittings, and fuel system components. If you're not satisfied with your purchase, we offer returns and refunds within our policy guidelines.
 
 ## Return Window
 
-### 30-Day Return Period
+### Standard Returns
+- **30 days** from delivery date for unused items
+- Item must be in original condition and packaging
+- All original accessories, manuals, and packaging must be included
+- No questions asked for manufacturer defects
 
-**Start Date:** Day of delivery (per tracking confirmation)  
-**End Date:** 30 calendar days after delivery  
-**Example:** Delivered October 1st → Return by October 31st
+### Extended Return Window
+- **60 days** for defective items (manufacturer defects only)
+- Must provide photos or description of the defect
+- We'll provide a prepaid return label for defective items
 
-**No Receipt Required:** We can look up your order by email or order number
+## Eligible for Return
 
----
+### What You Can Return ✅
+- Unopened PTFE hose (in original sealed packaging)
+- Unused AN fittings and adapters
+- Fuel pumps in original sealed boxes (unopened)
+- Tools in original packaging
+- Bundle deals (if completely unused)
+- Wrong item received (our error)
 
-## Return Eligibility
+### Non-Returnable Items ❌
+- **Custom-cut hose** or custom-length items
+- **Used or installed fittings** (safety concern - cannot resell)
+- Electrical items that have been installed or wired
+- Items without original packaging or tags
+- Clearance or final sale items
+- Items damaged due to improper installation
+- Products purchased more than 30 days ago (unless defective)
 
-### Items We Accept for Return
+## Refund Methods
 
-✅ **Eligible Items:**
-- Unworn items with original tags attached
-- Unwashed and in original condition
-- Original packaging (if applicable)
-- All accessories and documentation included
+### Original Payment Method
+- Most refunds are issued to the original payment method
+- Credit card refunds: 5-7 business days to appear
+- PayPal refunds: 2-3 business days
+- Bank transfers: 7-10 business days
 
-✅ **Acceptable Reasons:**
-- Changed mind
-- Wrong size/fit
-- Doesn't match description
-- Received as gift
-- Quality concerns
-
-### Items We Cannot Accept
-
-❌ **Non-Returnable:**
-- Items worn or washed
-- Items without tags
-- Items damaged by customer
-- Final sale/clearance items (marked at checkout)
-- Gift cards
-- Downloadable/digital products
-- Items returned after 30-day window
-
-### Damaged or Defective Items
-
-**Different Process:**
-- Contact us within 7 days of delivery
-- Photos required (damage/defect)
-- We'll send prepaid return label immediately
-- Faster processing (3-5 days for refund)
-- Extends beyond 30-day window if defective
-
----
+### Store Credit Option
+- Receive 110% of purchase price as store credit
+- Store credit never expires
+- Can be used on any future purchase
+- Recommended for exchanges or upgrades
 
 ## Return Process
 
-### Step 1: Initiate Return
-
-**Option A: Online (Fastest)**
-1. Log in to your account
-2. Go to Order History
-3. Select order → Click "Return Items"
-4. Choose items and reason
-5. Print prepaid return label
-
-**Option B: Email/Chat**
-1. Contact support@hotdash.com
-2. Provide order number and items to return
-3. We'll email you a prepaid return label
-4. Response within 4 hours (business days)
-
-### Step 2: Package Items
-
-**Packaging Requirements:**
-- Use original box if available (or any sturdy box)
-- Include original tags on items
-- Remove old shipping labels
-- Seal securely with tape
-
-**DO NOT:**
-- Write on original product packaging
-- Use insufficient packaging
-- Send via different carrier than prepaid label
-
-### Step 3: Ship Return
-
-**Using Prepaid Label:**
-1. Attach label to outside of package
-2. Drop off at carrier location (USPS/UPS/FedEx)
-3. Keep drop-off receipt (proof of return)
-4. **Ship within 7 days** of label creation
-
-**Carrier Locations:**
-- USPS: Any post office
-- UPS: UPS Store or drop box
-- FedEx: FedEx Office or drop box
-
-**Note:** DO NOT send return using your own shipping - prepaid labels are free!
-
-### Step 4: Confirmation
-
-**We'll Email You:**
-- When we receive your return (scan-in notification)
-- When return is processed (inspection complete)
-- When refund is issued (payment confirmation)
-
-**Processing Time:** 3-5 business days after we receive return
-
----
-
-## Refunds
-
-### Refund Method
-
-**Original Payment Method:**
-- Credit/debit card → Refunded to same card
-- PayPal → Refunded to PayPal account
-- Store credit → Refunded as store credit
-
-**Amount:**
-- Full purchase price refunded
-- Original shipping costs NOT refunded (unless we made error)
-- Return shipping: FREE with our prepaid label
-
-### Refund Timeline
-
-**After We Process Your Return:**
-
-| Payment Method | Timeline |
-|---------------|----------|
-| Credit Card | 5-7 business days |
-| Debit Card | 5-10 business days |
-| PayPal | 2-3 business days |
-| Store Credit | Immediate |
-
-**Note:** Timeline starts when refund is ISSUED, not when we receive return. Bank processing time varies.
-
-### Refund Amount Examples
-
-**Example 1: Standard Return**
-- Order Total: $75.00
-- Shipping Paid: $5.99
-- **Refund Amount: $75.00** (shipping not refunded)
-
-**Example 2: Free Shipping Order**
-- Order Total: $100.00
-- Shipping Paid: $0.00 (free shipping threshold met)
-- **Refund Amount: $100.00**
-
-**Example 3: Error on Our Part**
-- Order Total: $50.00
-- Shipping Paid: $12.99
-- **Refund Amount: $62.99** (shipping refunded when we made mistake)
-
----
-
-## Exchanges
-
-### Exchange Process
-
-**We Don't Offer Direct Exchanges**, but here's the easiest way:
-
-1. **Return original item** (free prepaid label)
-2. **Order new item** (place new order online)
-3. **We'll refund original** (3-5 days after receiving return)
-
-**Why?**
-- Faster than waiting for exchange processing
-- Ensures you get the item you want
-- New item ships immediately
-- No risk of desired item selling out
-
-### Exchange for Different Size
-
-**Same Item, Different Size:**
-
-1. Contact us before returning
-2. We'll check stock on desired size
-3. If available, we can:
-   - Send new size immediately
-   - Process return when received
-   - You only wait for refund, not new item
-
-**Benefit:** Receive new size faster
-
----
-
-## Partial Returns
-
-### Returning Some Items from Order
-
-**Process:**
-- Follow normal return process
-- Select only items you want to return
-- Keep items you want to keep
-- Refund issued for returned items only
-
-**Shipping Refund:**
-- If final order value still >$50: Shipping not refunded
-- If final order value <$50: Shipping refunded
-
----
-
-## Special Situations
-
-### Gift Returns
-
-**Received as Gift:**
-- Can return within 30 days
-- Refund issued as store credit (we don't have your payment method)
-- Provide gift order number or sender email
-- Store credit issued within 3 days
-
-### Multiple Orders
-
-**Ordered Multiple Items:**
-- Can return items from multiple orders together
-- One prepaid label covers all
-- Note: Write order numbers on packing slip
-
-### Unauthorized Return
-
-**Returned Without Prepaid Label:**
-- We may refuse package
-- If accepted, refund minus actual shipping cost
-- Processing may take longer
-- Always request prepaid label first!
-
----
-
-## Return Tracking
-
-### Tracking Your Return
-
-**After You Ship:**
-- Save drop-off receipt
-- Track using prepaid label tracking number
-- Usually scanned within 24 hours
-
-**Return Status Updates:**
-1. **In Transit** - On way to our warehouse
-2. **Received** - Arrived at our facility
-3. **Processing** - Being inspected (2-3 days)
-4. **Completed** - Refund issued
-
-**Check Status:** Log in to account → Returns
-
----
-
-## Refund Issues
-
-### Didn't Receive Refund?
-
-**Check These First:**
-1. **Timeline:** Has it been 5-10 business days since "Refund Issued"?
-2. **Payment Method:** Checking the correct card/account?
-3. **Bank Processing:** Contact bank to confirm no holds
-4. **Spam:** Check email spam for refund confirmation
-
-**Still Missing?**
-Contact us with:
-- Order number
-- Return tracking number
-- Date return was received
-- Payment method used
-
-We'll investigate and resolve within 24 hours.
-
-### Partial Refund Received
-
-**If refund amount is less than expected:**
-
-**Common Reasons:**
-- Return fee applied (if not using prepaid label: $7.99 deducted)
-- Item not in original condition (restocking fee: 20%)
-- Missing accessories or tags (partial value only)
-- Shipping cost not refundable (unless our error)
-
-**We'll Email You:**
-- Detailed breakdown of refund amount
-- Photos of returned items (if condition issue)
-- Explanation of any deductions
-
-**Dispute?** Reply to email within 7 days for review.
-
----
+### Step 1: Request Return Authorization
+1. Email support@hotrodan.com with:
+   - Order number
+   - Item(s) you want to return
+   - Reason for return
+   - Photos (if item is defective)
+
+2. We'll respond within 24 hours with:
+   - Return authorization (RA) number
+   - Return shipping label (if applicable)
+   - Instructions for return
+
+### Step 2: Package Your Return
+- Include RA number on outside of box
+- Pack items securely in original packaging
+- Include copy of invoice or packing slip
+- Do not write on original product boxes
+
+### Step 3: Ship Your Return
+- Use provided prepaid label (for defects/errors), OR
+- Ship via carrier of your choice (customer-paid returns)
+- Get tracking number for your records
+- We recommend insurance for high-value returns
+
+### Step 4: Refund Processing
+- Items inspected within 2 business days of receipt
+- Refund issued within 3 business days of inspection
+- Email confirmation sent when refund is processed
 
 ## Restocking Fees
 
-### When Applied
-
-**20% Restocking Fee Applied When:**
-- Item returned without tags
-- Original packaging opened (for sealed items)
-- Item shows wear or use
-- Accessories missing
-- Not in resellable condition
-
-**NOT Applied When:**
-- Item unworn with tags
-- Original condition maintained
-- Using prepaid return label
-- Defective/damaged items
-- Our error (wrong item sent)
-
-### Calculation
-
-**Example:**
-- Item Price: $100
-- Restocking Fee (20%): $20
-- **Refund Amount: $80**
-
-**Notification:** Emailed before refund is processed, 48 hours to respond
-
----
-
-## Return Exceptions
-
-### Final Sale Items
-
-**Marked at Checkout:**
-- "Final Sale" badge on product page
-- Noted in cart and checkout
-- Cannot be returned (all sales final)
-
-**Exceptions:**
-- Defective items (quality issue)
+### No Restocking Fee
+- Defective items
 - Wrong item sent (our error)
-- Significantly not as described
+- Items damaged in shipping
 
-### Promotional Items
+### 15% Restocking Fee
+- Standard returns (non-defective)
+- Items missing original packaging
+- Returns without all accessories
 
-**Free Gifts with Purchase:**
-- If returning main item, return gift too
-- Refund reduced by gift retail value if gift kept
-- Noted in refund breakdown
+### No Refund (Item Returned to You)
+- Used or installed products (safety reasons)
+- Items without return authorization
+- Items received after 30 days (unless defective)
+
+## Return Shipping Costs
+
+### We Pay Return Shipping
+- Defective items
+- Wrong item sent (our error)
+- Damaged in transit
+
+### Customer Pays Return Shipping
+- Change of mind returns
+- Ordered wrong size/type
+- Standard non-defective returns
+
+**Tip:** Use tracked shipping with insurance for returns over $100
+
+## Refund Amounts
+
+### Full Refund
+- Product price
+- Original shipping cost (if item defective or our error)
+- Any applicable taxes
+
+### Partial Refund
+- Product price minus 15% restocking fee
+- Original shipping cost not refunded (standard returns)
+- Taxes refunded
+
+### Shipping Costs
+- Original shipping fees are refunded for defective items only
+- Free shipping orders: $8.95 deducted from refund for non-defective returns
+- Return shipping is customer's responsibility unless item is defective
+
+## Exchanges
+
+### Easy Exchange Process
+- Request exchange instead of return when contacting support
+- We ship replacement immediately upon receiving return
+- No restocking fee for exchanges
+- Only pay shipping difference if upgrading
+
+### Popular Exchanges
+- Different hose colors (black, blue, red, etc.)
+- Different AN sizes (AN-6 to AN-8, etc.)
+- Fitting types (straight to 45-degree, etc.)
+
+## Defective Items
+
+### What Qualifies as Defective
+- Manufacturing defects
+- Leaking fittings (when properly installed)
+- Broken or damaged on arrival
+- Missing parts from kit
+
+### Defect Process
+1. Email photos of defect to support@hotrodan.com
+2. Include order number and description
+3. We'll send replacement immediately
+4. Return defective item with prepaid label (usually)
+
+**Note:** Installation errors are not manufacturer defects. Consult installation instructions or contact us for help before installation.
+
+## Special Situations
+
+### Bulk Orders (10+ Items)
+- Contact us directly for return authorization
+- May have different terms due to order size
+- We'll work with you on a case-by-case basis
+
+### Custom Orders
+- Custom-cut hose is non-returnable
+- Special orders may have different terms
+- Discuss before ordering
+
+### Installation Service Items
+- If you used our installation consultation service, different terms may apply
+- Contact us for details
+
+## Warranty
+
+### Manufacturer Warranty
+- Many items come with manufacturer warranty (Aeromotive, Walbro, etc.)
+- Warranty period varies by manufacturer (typically 1-2 years)
+- Contact us and we'll facilitate warranty claims
+- Manufacturer warranties cover defects, not wear and tear
+
+### Hot Rod AN Warranty
+- PTFE hose: 1-year warranty against defects
+- Fittings: Lifetime warranty against manufacturing defects
+- Does not cover improper installation or damage
+
+## Contact for Returns
+
+**Email:** support@hotrodan.com  
+**Subject Line:** "Return Request - Order #[YOUR ORDER NUMBER]"  
+**Phone:** Available Monday-Friday, 9AM-5PM EST  
+**Response Time:** Within 24 hours
+
+## Important Notes
+
+- All returns must have a return authorization (RA) number
+- Returns without RA numbers may be refused or delayed
+- Installation guides are available at hotrodan.com/installation-instructions
+- Contact us before installation if unsure about fitment
+- Keep all packaging until you've tested the product
 
 ---
 
-## Contact Us
-
-**Questions About Returns?**
-
-**Chat:** 9 AM - 6 PM EST, Monday-Friday  
-**Email:** support@hotdash.com (4-hour response)  
-**Phone:** 1-888-HOT-DASH (for urgent issues)
-
-**Have Order Number Ready:** Speeds up the process!
-
----
-
-**Document Version:** 1.0.0  
-**Review Schedule:** Quarterly  
-**Owner:** Customer Experience Team
-
+*Our goal is your satisfaction. If you have any questions about returns or refunds, please contact us before returning items. We're here to help!*

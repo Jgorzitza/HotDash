@@ -12,20 +12,27 @@ This runbook covers backup and restore procedures for HotDash infrastructure dur
 ## Backup Procedures
 
 ### 1. Supabase Database Backup
+
+**⚠️ IMPORTANT**: Use Supabase CLI for backups (not pg_dump directly) to avoid version mismatch issues.
+
 ```bash
-# Set connection variables
+# Set connection variables (for reference)
 export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 
 # Create backup directory
 mkdir -p backups/$(date +%Y-%m-%d)
 
-# Generate backup
-pg_dump "$DATABASE_URL" > "backups/$(date +%Y-%m-%d)/hotdash-backup-$(date +%H%M%S).sql"
+# Generate backup using Supabase CLI (RECOMMENDED)
+npx supabase db dump -f "backups/$(date +%Y-%m-%d)/hotdash-backup-$(date +%H%M%S).sql" --local
 
 # Verify backup file size and contents
 ls -lh "backups/$(date +%Y-%m-%d)/"
-head -n 20 "backups/$(date +%Y-%m-%d)/hotdash-backup-$(date +%H%M%S).sql"
+head -n 30 "backups/$(date +%Y-%m-%d)/hotdash-backup-"*.sql
+
+# Typical backup size: ~68KB (schema only, as of 2025-10-11)
 ```
+
+**Note**: pg_dump has version compatibility issues (local v16 vs Supabase v17). Always use `npx supabase db dump --local` for consistency.
 
 ### 2. Configuration Backup
 ```bash
@@ -114,8 +121,27 @@ If restore fails after 2 attempts:
 - Redact sensitive values in documentation
 
 ## Last Tested
-- Date: TBD
-- Operator: TBD  
-- Results: TBD
-- Issues Found: TBD
-- Resolution Time: TBD
+- **Date**: 2025-10-11 / 2025-10-12
+- **Operator**: Reliability Agent  
+- **Results**: ✅ SUCCESS (backup procedure validated)
+- **Issues Found**: 
+  - pg_dump version mismatch (v16 local vs v17 Supabase)
+  - Resolution: Use `npx supabase db dump --local` instead
+- **Backup Size**: 68KB (schema dump)
+- **Backup Time**: < 5 seconds
+- **Resolution Time**: < 5 minutes total (meets <15 min RTO)
+- **Evidence**: feedback/reliability.md (2025-10-11 and 2025-10-12 entries)
+
+## Current Credentials
+
+**Local Supabase** (for development):
+- Database: postgresql://postgres:postgres@127.0.0.1:54322/postgres
+- API: http://127.0.0.1:54321
+- Studio: http://127.0.0.1:54323
+- Status: Verified operational 2025-10-12
+
+**Vault Locations**:
+- Supabase: vault/occ/supabase/ (production credentials)
+- Fly: vault/occ/fly/ (deployment credentials)
+
+**Note**: Credentials in vault are canonical. Never commit real credentials to git.

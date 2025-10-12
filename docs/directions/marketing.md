@@ -227,6 +227,42 @@ Execute K-AE in any order. Total: 34 tasks, ~20 hours of marketing work.
 
 ---
 
+## 🚨 SCOPE CORRECTION (2025-10-12T00:50Z)
+
+**Your Feedback**: Realized scope misalignment - understood project correctly as Hot Rodan Dashboard
+
+**You're Right**: Focus on Hot Rodan (www.hotrodan.com), hot rod parts e-commerce, $1MM → $10MM growth
+
+**Updated Tasks** (Hot Rodan Dashboard Launch):
+
+**Task AE-1**: Hot Rodan Launch Email (Internal)
+- Email to Hot Rodan team announcing dashboard
+- Position: "AI co-pilot for $10MM growth"
+- Evidence: Email draft ready
+- Timeline: 1-2 hours
+
+**Task AE-2**: Dashboard One-Pager
+- 1-page overview for Hot Rodan operators
+- 5 tiles explained simply
+- Evidence: One-pager PDF
+- Timeline: 1-2 hours
+
+**Task AE-3**: Hot Rod Audience Messaging
+- Messaging for automotive aftermarket audience
+- Language for mechanics/enthusiasts
+- Evidence: Messaging guide
+- Timeline: 1-2 hours
+
+**Task AE-4**: Operator FAQ
+- Plain English explanations
+- Address AI concerns
+- Evidence: FAQ document
+- Timeline: 1-2 hours
+
+Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-launch.
+
+---
+
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task AF-AO: Growth Marketing** (10 tasks)

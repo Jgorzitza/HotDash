@@ -92,14 +92,21 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 
 ---
 
-1. ✅ **Shopify GraphQL Queries Fixed** - COMPLETE
-   - All 4 deprecated queries corrected and validated
-
-2. ✅ **GA Direct API Integration** - COMPLETE  
+1. ✅ **GA Direct API Integration** - COMPLETE  
    - Evidence: artifacts/engineer/20251011T142951Z/ga-tests.log
    - 21 tests passing, 100% coverage
 
-3. **LlamaIndex RAG MCP Server** (P0 - LAUNCH GATE #3)
+2. ⚠️ **Shopify GraphQL Fixes** - REASSIGNED TO ENGINEER HELPER
+   - QA/Integrations found issues remain
+   - Engineer Helper now owns this
+
+3. ⚠️ **LlamaIndex MCP** - REASSIGNED TO ENGINEER HELPER  
+   - QA found 0/3 tools working
+   - Engineer Helper fixing errors
+
+**YOUR FOCUS NOW** (Tasks 4-7):
+
+4. **Agent SDK Service** (P0 - LAUNCH GATE #2)
    - Fix TypeScript compilation in scripts/ai/llama-workflow
    - Scaffold apps/llamaindex-mcp-server/ with @modelcontextprotocol/sdk
    - Implement MCP protocol handler for 3 tools (query_support, refresh_index, insight_report)
@@ -110,37 +117,28 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
    - **Blocks**: AI agent (2 tasks), Integrations (1 task)
    - **Timeline**: 8-12 hours
 
-4. **Agent SDK Service** (P0 - LAUNCH GATE #2)
-   - Scaffold apps/agent-sdk/ per docs/AgentSDKopenAI.md
-   - Implement ONE basic customer support agent
-   - Create approval queue (pending_approvals table)
-   - Implement approval API endpoints
-   - Wire to Chatwoot webhooks (from Task 5)
-   - Deploy to Fly.io
-   - **Evidence**: Service running, one approval flow working
-   - **Timeline**: 12-16 hours
+- Deploy apps/agent-service (already built) with vault credentials
+- Credentials: vault/occ/chatwoot/api_token_staging.env + vault/occ/supabase/database_url_staging.env
+- Use docs/dev/authshop.md for Shopify auth pattern (no manual tokens)
+- Implement CEO approval queue per agentfeedbackprocess.md Section 8
+- **Evidence**: Service deployed, health check passing
+- **Timeline**: 1-2 hours (already built, just deploy)
 
-5. **Webhook Endpoints** (P0 - LAUNCH GATE #5)
-   - Create POST /api/webhooks/chatwoot
-   - Implement signature verification
-   - Route events to Agent SDK
-   - **Evidence**: Endpoint live, test webhook processed
-   - **Blocks**: Chatwoot agent
-   - **Timeline**: 4-6 hours
+5. **Approval Queue UI** (P0 - LAUNCH GATE #4)
+- Build app/routes/approvals._index.tsx (minimal version)
+- Create ApprovalCard component (use Designer's specs)
+- Wire approve/reject to Task 4 APIs
+- **Evidence**: UI working, CEO can approve one action
+- **Coordinate**: Designer provides assets
+- **Timeline**: 3-4 hours (minimal viable)
 
-6. **Approval Queue UI** (P0 - LAUNCH GATE #4)
-   - Build app/routes/approvals._index.tsx
-   - Create ApprovalCard component (basic version)
-   - Wire approve/reject to Task 4 APIs
-   - **Evidence**: UI working, one approval complete
-   - **Coordinate**: With Designer
-   - **Timeline**: 6-8 hours
+6. **E2E Integration Test** (P0 - LAUNCH GATE #7)
+- Test: Webhook → Agent → Approval → CEO Approves → Action
+- One complete customer support scenario
+- **Evidence**: E2E test passing
+- **Timeline**: 1-2 hours
 
-7. **Integration Testing** (P0 - LAUNCH GATE #7)
-   - E2E test: Webhook → Agent → Approval → Action
-   - Verify one complete customer support scenario works
-   - **Evidence**: E2E test passing
-   - **Timeline**: 4-6 hours
+**Total Remaining**: 5-8 hours (while Helper fixes blockers in parallel)
 
 **Ongoing Requirements**:
 - Use Context7 MCP to find existing patterns before implementing
@@ -361,6 +359,32 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 - Postgres: vault/occ/supabase/database_url_staging.env
 
 **Deploy Agent SDK with these, then continue to Task 6 (Approval UI)**
+
+---
+
+## 🚨 CRITICAL BLOCKERS FROM QA + INTEGRATIONS (2025-10-12T00:50Z)
+
+**QA Report**: LlamaIndex MCP deployed but NOT WORKING
+- ❌ All 3 tools return 500 errors
+- Issue 1: Import errors in query.js
+- Issue 2: Mock processor broken
+- **Action**: Fix BEFORE continuing to Agent SDK
+
+**Integrations Report**: 4 Shopify GraphQL queries still broken
+- ❌ financialStatus → displayFinancialStatus
+- ❌ availableQuantity → quantities(names: ["available"])
+- ❌ Fulfillment edges/node structure
+- ❌ productVariantUpdate deprecated
+- **Action**: Fix these BEFORE Agent SDK
+
+**REVISED PRIORITY**:
+1. Fix Shopify GraphQL (4 queries) - 2h
+2. Fix LlamaIndex MCP (imports, mock) - 2h
+3. QA retests and confirms both working
+4. THEN proceed with Agent SDK deployment
+5. THEN approval UI
+
+**New Timeline**: 9-10 hours (adding 4h for fixes)
 
 ---
 
