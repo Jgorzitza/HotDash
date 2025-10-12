@@ -1,0 +1,114 @@
+name: Monthly Repository Cleanup
+
+on:
+  schedule:
+    # Run on 1st of each month at 2:00 AM UTC
+    - cron: '0 2 1 * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run in dry-run mode (no changes)'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  monthly-cleanup:
+    name: Clean Repository
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for branch analysis
+          
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Install gitleaks
+        run: |
+          wget https://github.com/gitleaks/gitleaks/releases/download/v8.18.1/gitleaks_8.18.1_linux_x64.tar.gz
+          tar -xzf gitleaks_8.18.1_linux_x64.tar.gz
+          sudo mv gitleaks /usr/local/bin/
+          gitleaks version
+          
+      - name: Run monthly cleanup script
+        run: |
+          if [[ "${{ github.event.inputs.dry_run }}" == "true" ]]; then
+            echo "🔍 Running in DRY RUN mode"
+            bash scripts/maintenance/monthly-cleanup.sh --dry-run
+          else
+            echo "🚀 Running cleanup"
+            bash scripts/maintenance/monthly-cleanup.sh
+          fi
+          
+      - name: Create cleanup PR
+        if: github.event.inputs.dry_run != 'true' && github.event_name != 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Only create PR if there are changes
+          if [[ -n $(git status --porcelain) ]]; then
+            BRANCH="automated/monthly-cleanup-$(date +%Y-%m)"
+            git checkout -b "$BRANCH"
+            git add -A
+            git commit -m "chore: monthly repository cleanup $(date +%Y-%m)
+            
+            Automated cleanup tasks:
+            - Archived old status files
+            - Deleted merged branches
+            - Cleaned old artifacts (>90 days)
+            - Updated REPO_STATUS.md
+            - Ran security scan
+            
+            Evidence: reports/maintenance/cleanup-$(date +%Y-%m).md"
+            
+            git push -u origin "$BRANCH"
+            
+            gh pr create \
+              --title "Monthly Repository Cleanup — $(date +%Y-%m)" \
+              --body "## Automated Monthly Cleanup
+
+This PR contains automated repository maintenance tasks run on $(date +%Y-%m-01).
+
+### Tasks Completed
+
+- ✅ Archived old status files from root directory
+- ✅ Deleted merged branches
+- ✅ Cleaned artifacts older than 90 days
+- ✅ Updated REPO_STATUS.md statistics
+- ✅ Ran security scan (gitleaks)
+
+### Evidence
+
+See report: \`reports/maintenance/cleanup-$(date +%Y-%m).md\`
+
+### Safety
+
+- ✅ No force-push
+- ✅ Secret scan completed
+- ✅ Only merged branches deleted
+- ✅ Files archived (not deleted)
+
+**Auto-merge**: No (requires review)" \
+              --base main \
+              --head "$BRANCH"
+          else
+            echo "✅ No cleanup needed - repository is clean"
+          fi
+          
+      - name: Upload cleanup report
+        if: github.event.inputs.dry_run != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleanup-report-$(date +%Y-%m)
+          path: reports/maintenance/cleanup-*.md
+          retention-days: 90
+

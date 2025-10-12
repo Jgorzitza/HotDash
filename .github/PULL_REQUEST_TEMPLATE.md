@@ -36,15 +36,47 @@
 - [ ] Tested edge cases
 - [ ] Tested error scenarios
 
-## Evidence
-<!-- Attach screenshots, logs, or test results -->
+## Evidence ⭐ REQUIRED
 
-### Screenshots (if UI changes)
-<!-- Drag and drop screenshots here -->
+<!-- All PRs must include evidence. See docs/git_protocol.md -->
 
 ### Test Results
+```bash
+# Unit tests
+npm run test:unit
+# Paste output here - must show PASSING
+
+# E2E tests (if UI changes)
+npm run test:e2e
+# Paste output here - must show PASSING
+
+# Lint check
+npm run lint
+# Expected: No errors
+
+# Type check
+npm run typecheck
+# Expected: No errors
 ```
-<!-- Paste test output here -->
+
+### Screenshots (if UI changes)
+<!-- Drag and drop screenshots showing before/after or new functionality -->
+
+### Evidence Artifacts
+<!-- Link to evidence files in artifacts/ or reports/ directories -->
+- Artifacts: `artifacts/<agent>/<timestamp>/`
+- Reports: `reports/<category>/`
+- Cleanup evidence: `feedback/git-cleanup.md` (if cleanup-related)
+
+### Secret Scan Results ⚠️ MANDATORY
+```bash
+# Run this command and paste results:
+git grep -i "api_key\|secret\|password\|token\|private_key" HEAD | wc -l
+# Expected: 0 (or only documentation mentions in docs/, not in code)
+
+# If gitleaks installed:
+gitleaks detect --no-git -v
+# Expected: No leaks detected
 ```
 
 ## Code Review Checklist
@@ -65,13 +97,23 @@
 - [ ] Mock data is realistic
 - [ ] Tests are deterministic (no flakiness)
 
-### Security
-- [ ] No secrets or credentials in code
+### Security ⚠️ CRITICAL
+
+- [ ] **No secrets or credentials in code**
+  ```bash
+  # Run before committing:
+  git grep -i "api_key\|secret\|password\|token\|private_key" HEAD
+  # Expected: No matches (or only documentation mentions)
+  ```
+- [ ] **Secret scan passed** (gitleaks if installed)
+- [ ] **No hardcoded credentials** in code or config files
+- [ ] **Environment variables** used for sensitive data
 - [ ] User input is validated and sanitized
 - [ ] Authorization checks present
 - [ ] CSRF protection considered (if applicable)
 - [ ] No SQL injection vulnerabilities
 - [ ] No XSS vulnerabilities
+- [ ] **Repository cleanup compliance**: No status files in root directory
 
 ### Performance
 - [ ] No N+1 query problems
