@@ -42,7 +42,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
       // Trigger revalidation
       window.location.reload();
     } catch (err) {
-      setError('Failed to approve. Please try again.');
+      setError('Engine trouble - unable to process approval. Please try again.');
       setLoading(false);
     }
   };
@@ -58,7 +58,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
       // Trigger revalidation
       window.location.reload();
     } catch (err) {
-      setError('Failed to reject. Please try again.');
+      setError('Engine trouble - unable to process rejection. Please try again.');
       setLoading(false);
     }
   };

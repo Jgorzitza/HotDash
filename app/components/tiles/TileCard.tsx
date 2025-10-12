@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { HOT_ROD_STATUS, HOT_ROD_ERROR } from "~/copy/hot-rodan-strings";
 
 export type TileStatus = "ok" | "error" | "unconfigured";
 export type TileSource = "fresh" | "cache" | "mock";
@@ -23,11 +24,7 @@ interface TileCardProps<T> {
   testId?: string;
 }
 
-const STATUS_LABELS: Record<TileStatus, string> = {
-  ok: "All clear",
-  error: "Needs attention",
-  unconfigured: "Setup required",
-};
+const STATUS_LABELS: Record<TileStatus, string> = HOT_ROD_STATUS;
 
 function formatDateTime(value?: string): string | undefined {
   if (!value) return undefined;
@@ -53,7 +50,7 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
       tile.error ||
       (tile.status === "unconfigured"
         ? "Connect integration to enable this tile."
-        : "Data temporarily unavailable.");
+        : HOT_ROD_ERROR.loadFailed);
 
     content = (
       <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>{message}</p>
