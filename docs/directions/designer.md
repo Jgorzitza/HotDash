@@ -49,13 +49,44 @@ Own each deliverable through sign-off; post the artifacts (Figma links, screensh
 
 ## 🚨 P0 UI IMPLEMENTATION
 
-1. **Approval Queue UI Collaboration** (Work with Engineer Task 6)
-   - Provide ApprovalCard component specs to Engineer
-   - Review Engineer's implementation
-   - Provide styling guidance and assets
-   - Iterate on UI until launch-ready
-   - Evidence: Approval UI working, screenshots
-   - Timeline: Coordinate daily with Engineer
+1. ✅ **Approval Queue UI Specs** - COMPLETE
+   - ApprovalCard component specs ready
+   - Handoff to Engineer complete
+   - Evidence: Specs in feedback/designer.md
+
+**Next - While Engineer Builds**:
+
+1A. **Prepare UI Assets for Approval Queue**
+   - Create icons for approve/reject actions
+   - Design loading states
+   - Create empty state illustration
+   - Prepare error state visuals
+   - Evidence: Asset files in artifacts/design/
+   - Timeline: 2-3 hours
+
+1B. **Design Agent Response Formatting**
+   - Create text formatting guidelines for AI responses
+   - Design code block styling for responses
+   - Create link and button styles
+   - Design attachment preview patterns
+   - Evidence: Response formatting spec
+   - Timeline: 2-3 hours
+
+1C. **Design Real-Time Update Indicators**
+   - Create new approval notification badge
+   - Design update animation
+   - Create timestamp refresh indicator
+   - Design connection status indicator
+   - Evidence: Animation specs and assets
+   - Timeline: 2-3 hours
+
+1D. **Accessibility Review for Approval Flow**
+   - Document keyboard navigation flow
+   - Create screen reader announcements
+   - Design focus states for all interactive elements
+   - Create ARIA labels spec
+   - Evidence: Accessibility specification
+   - Timeline: 2-3 hours
 
 2. **Agent SDK UI Polish** (After basic approval queue works)
    - Refine approval card styling

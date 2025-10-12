@@ -65,13 +65,41 @@ Own each item to completion—do not wait for other teams to close loops. Log th
    - Basic escalation path
    - Evidence: Quick start guide PDF
    - Timeline: 2-4 hours
+   - Status: ⏳ Ready to create once Engineer's UI is live
 
-2. **Pilot Operator Briefing** (For first customer)
-   - 30-minute training session outline
-   - Demo script for approval queue
-   - FAQ (top 5 questions)
-   - Evidence: Briefing materials ready
+**Immediate Work - Prepare for Launch**:
+
+1A. **Draft Quick Start Content** (Can do now)
+   - Write draft guide content (pending screenshots)
+   - Document decision criteria and escalation
+   - Create FAQ structure
+   - Prepare operator checklist
+   - Evidence: Draft guide ready for screenshots
    - Timeline: 2-3 hours
+
+1B. **Pilot Customer Selection Criteria**
+   - Define ideal pilot customer profile
+   - Create pilot screening questions
+   - Document pilot success criteria
+   - Create pilot feedback collection plan
+   - Evidence: Pilot criteria document
+   - Timeline: 2-3 hours
+
+1C. **Support Playbook for Agent SDK**
+   - Document how to troubleshoot agent issues
+   - Create escalation matrix (when to involve engineer)
+   - Document known limitations
+   - Create support ticket templates
+   - Evidence: Support playbook
+   - Timeline: 2-3 hours
+
+1D. **Operator Feedback Collection System**
+   - Design feedback form for operators
+   - Create feedback collection schedule
+   - Document feedback analysis process
+   - Plan feedback → improvement loop
+   - Evidence: Feedback system design
+   - Timeline: 1-2 hours
 
 **DO FIRST**: Tasks 1-2 above (basic training for launch)
 

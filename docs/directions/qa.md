@@ -53,6 +53,41 @@ QA operates as the audit arm of the team. Validate the health of the environment
    - Test all 3 tools (query_support, refresh_index, insight_report)
    - Performance test (<500ms response)
    - Evidence: Test results, response times logged
+   - Status: ⏳ READY - waiting for Engineer Task 3 to deploy
+
+**While Waiting for Engineer - Execute These**:
+
+1A. **Prepare LlamaIndex MCP Test Suite**
+   - Write test plan for all 3 MCP tools
+   - Create test queries for each tool
+   - Document expected responses
+   - Prepare performance benchmarks
+   - Evidence: Test plan document
+   - Timeline: 2-3 hours
+
+1B. **Prepare Agent SDK Test Scenarios**
+   - Design E2E test scenarios for approval flow
+   - Create test data (sample customer inquiries)
+   - Document expected agent responses
+   - Prepare approval test cases
+   - Evidence: Test scenario document
+   - Timeline: 2-3 hours
+
+1C. **Prepare Webhook Test Strategy**
+   - Design webhook test payloads
+   - Document signature verification tests
+   - Create error handling test cases
+   - Prepare integration test plan
+   - Evidence: Webhook test strategy
+   - Timeline: 1-2 hours
+
+1D. **Review Existing Test Coverage**
+   - Audit current test suite for gaps
+   - Identify untested critical paths
+   - Document areas needing coverage
+   - Prioritize test additions
+   - Evidence: Coverage gap report
+   - Timeline: 2-3 hours
 
 2. **Test Agent SDK Service** (when Engineer completes Task 4)
    - Test agent receives webhook, processes request
