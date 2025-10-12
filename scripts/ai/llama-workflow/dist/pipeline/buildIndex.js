@@ -1,6 +1,4 @@
-import { VectorStoreIndex, SimpleNodeParser, Settings, Document as LlamaDocument } from 'llamaindex';
-// Note: OpenAI and OpenAIEmbedding imports vary by LlamaIndex version
-// These will be configured at runtime
+import { VectorStoreIndex, SimpleNodeParser, Settings, Document as LlamaDocument, OpenAI, OpenAIEmbedding } from 'llamaindex';
 import { getConfig } from '../config.js';
 import { fetchHotrodanContent } from '../loaders/sitemap.js';
 import { fetchDecisionDocs, fetchTelemetryDocs } from '../loaders/supabase.js';

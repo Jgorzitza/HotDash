@@ -101,9 +101,64 @@ Drive each deliverable to closure yourself; document artefacts, timestamps, and 
    - Evidence: Session delivered
    - Timeline: Depends on UI availability
 
-**DO FIRST**: Tasks 2-3 above (minimal training for launch)
+**DO FIRST**: Tasks 2A-2D (prep work while waiting for UI)
+
+**THEN**: Tasks 2-3 when UI is ready
 
 **PAUSE UNTIL AFTER LAUNCH**: Tasks 4-42 (all expanded enablement work)
+
+---
+
+## ✅ STATUS (2025-10-12T00:50Z)
+
+**Your Report**: All launch training ready
+
+**Manager Assignment**: Execute Tasks 2A-2D (session outline, video script, checklist, assessment)
+
+**Timeline**: 6-10 hours of launch-aligned prep
+
+Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
+
+---
+
+## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
+
+**Task 2E**: Hands-On Practice Scenarios
+- Create practice approval scenarios for operators
+- Use real Hot Rodan customer examples (anonymized)
+- Design practice sessions
+- Evidence: Practice scenario library
+- Timeline: 2-3 hours
+
+**Task 2F**: Troubleshooting Guide for Operators
+- "What if dashboard is slow?"
+- "What if AI suggestion seems wrong?"
+- "What if approval doesn't send?"
+- Evidence: Troubleshooting guide
+- Timeline: 2-3 hours
+
+**Task 2G**: Quick Reference Cards
+- Laminated quick reference for each tile
+- Decision trees for common scenarios
+- Hotkey reference
+- Evidence: Reference cards PDF
+- Timeline: 2-3 hours
+
+**Task 2H**: Video Demonstrations
+- Record 5-min demo of each tile
+- Show approval workflow
+- Highlight key features
+- Evidence: Video links
+- Timeline: 3-4 hours
+
+**Task 2I**: Operator Certification Program
+- Design certification path for operators
+- Create knowledge checks
+- Badge/achievement system
+- Evidence: Certification program design
+- Timeline: 2-3 hours
+
+Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 
 ---
 

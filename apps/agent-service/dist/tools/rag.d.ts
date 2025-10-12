@@ -8,10 +8,10 @@ import { z } from 'zod';
  */
 export declare const answerFromDocs: import("@openai/agents").FunctionTool<unknown, z.ZodObject<{
     question: z.ZodString;
-    topK: z.ZodOptional<z.ZodNumber>;
+    topK: z.ZodDefault<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
     question: string;
-    topK?: number | undefined;
+    topK: number;
 }, {
     question: string;
     topK?: number | undefined;

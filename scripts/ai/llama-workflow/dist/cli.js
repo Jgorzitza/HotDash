@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { buildAll } from './pipeline/buildIndex_simple.js';
-import { answerQuery, insightReport } from './pipeline/query_simple.js';
+import { buildAll } from './pipeline/buildIndex.js';
+import { answerQuery, insightReport } from './pipeline/query.js';
 import { getConfig } from './config.js';
 const program = new Command();
 program

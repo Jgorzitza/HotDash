@@ -2667,3 +2667,32 @@ Call `scopes.revoke` to revoke optional scopes.
 [![](https://shopify.dev/images/icons/32/pickaxe-1.png)![](https://shopify.dev/images/icons/32/pickaxe-1-dark.png)](https://shopify.dev/docs/api/shopify-app-react-router/apis/billing)
 
 [Bill merchants for your app using the Admin API.Billing context](https://shopify.dev/docs/api/shopify-app-react-router/apis/billing)
+
+---
+
+## Common Issue: Don't Ask for SHOPIFY_ADMIN_TOKEN
+
+**Updated**: 2025-10-12
+
+**Problem**: Agents sometimes request `SHOPIFY_ADMIN_TOKEN` environment variable.
+
+**Why This Is Wrong**:
+- React Router 7 + Shopify CLI v3 auto-generates session tokens
+- `authenticate.admin(request)` handles everything automatically  
+- No manual API tokens needed
+
+**Correct Pattern**:
+```typescript
+// In loader or action:
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { admin } = await authenticate.admin(request);
+  // admin.graphql() now works - no manual token needed!
+}
+```
+
+**For External Services** (like Agent SDK):
+- Option A: Call back to main app's API endpoints (recommended)
+- Option B: Extract session from webhook context (request-scoped)
+- Don't: Store long-term tokens or build custom OAuth
+
+**If You're Asking for Shopify Credentials**: You're doing it wrong. Use `authenticate.admin(request)`.

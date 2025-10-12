@@ -218,4 +218,28 @@ order by misses desc;
 
 **Ownership:** Engineering Ops\
 **Review Cadence:** Weekly\
-**Last Updated:** 2025-10-10
+**Last Updated:** 2025-10-12
+
+---
+
+## 8. CEO Approval Requirement (Training Phase)
+
+**Policy** (2025-10-12): ALL customer-facing agent actions require CEO approval during training phase.
+
+**Why**: CEO trains agents to match their voice, validates technical accuracy, builds trust in responses.
+
+**Workflow**:
+1. Agent generates proposed customer response
+2. Response goes to approval queue (pending_approvals table)
+3. CEO reviews and decides: Approve / Edit / Reject
+4. CEO's feedback captured in agent_qc table
+5. Agents learn from approval patterns
+
+**Training Goals**:
+- Week 1: 20% approval rate
+- Week 4: 50% approval rate  
+- Week 12: 80% approval rate (agents match CEO voice)
+
+**NO Auto-Execute**: During training, 100% human-in-the-loop for customer interactions.
+
+**See**: Section 2 (Database Schema) for agent_qc table that stores CEO feedback.

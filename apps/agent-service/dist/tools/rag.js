@@ -14,7 +14,7 @@ export const answerFromDocs = tool({
     description: 'Answer questions using internal docs/FAQs/policies. Good for shipping, returns, warranties, troubleshooting.',
     parameters: z.object({
         question: z.string().describe('Question to search for in the knowledge base'),
-        topK: z.number().optional().describe('Number of top results to return (default: 5)'),
+        topK: z.number().default(5).describe('Number of top results to return (default: 5)'),
     }),
     // Read-only tool - no approval required
     async execute({ question, topK }) {
