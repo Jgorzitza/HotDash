@@ -2102,3 +2102,76 @@ docker ps --filter "ancestor=mcp/context7"  # Result: 1 container (context7-mcp)
 
 **Apology:** I should have flagged the drift from North Star earlier. Will be more vigilant in future.
 
+---
+
+## 2025-10-12 02:43 UTC - Task 3: LlamaIndex MCP Registration (BLOCKER CLEARED)
+
+**Action:** Testing deployed LlamaIndex MCP server per manager directive
+**Authority:** Blocker cleared notice (line 277-289)
+**Evidence:** Live testing of https://hotdash-llamaindex-mcp.fly.dev/mcp
+
+**Deployment Status:** ✅ App deployed to Fly.io
+- App name: hotdash-llamaindex-mcp
+- Deployed: ~15 minutes ago
+- URL: https://hotdash-llamaindex-mcp.fly.dev/mcp
+
+**MCP Server Status:** ⚠️ Deployed but NOT fully functional
+
+**Testing Results:**
+
+### Test 1: MCP Tools List ✅
+```bash
+curl -X POST https://hotdash-llamaindex-mcp.fly.dev/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
+```
+
+**Result:** SUCCESS - Server responds with 3 tools:
+1. `query_support` - Query knowledge base with semantic search
+2. `refresh_index` - Rebuild vector index from sources
+3. `insight_report` - Generate AI insights from telemetry
+
+**Schema Validation:** ✅ All tools have proper input schemas, descriptions, and parameters
+
+### Test 2: query_support Tool Execution ❌
+```bash
+curl -X POST https://hotdash-llamaindex-mcp.fly.dev/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/call","params":{"name":"query_support","arguments":{"q":"How do I integrate with Shopify?","topK":3}},"id":2}'
+```
+
+**Result:** FAILED - Missing dependency error
+
+**Error:**
+```
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'commander' 
+imported from /app/scripts/ai/llama-workflow/dist/cli.js
+```
+
+**Root Cause:** Missing `commander` npm package in deployment
+
+**Impact:** MCP server is deployed but tools cannot execute
+
+**Required Fix (for Engineer):**
+1. Add `commander` to package.json dependencies in `apps/llamaindex-mcp-server/`
+2. OR: Add to llama-workflow dependencies
+3. Redeploy to Fly.io
+4. Verify with `npm ls commander` before deployment
+
+**Recommendation:** Check for other missing dependencies:
+```bash
+# In llamaindex-mcp-server directory
+npm install  # Install all dependencies
+npm ls       # Verify no missing packages
+```
+
+**Status:** ⚠️ Task 3 INCOMPLETE - MCP deployed but not functional, requires Engineer fix
+
+**Next Steps:**
+1. ⏳ Engineer: Add missing dependencies and redeploy
+2. ⏳ Integrations: Re-test after Engineer fixes
+3. ⏳ Update `docs/mcp/tools/llamaindex.json` once functional
+4. ⏳ Add to `docs/policies/mcp-allowlist.json` once verified
+
+**Evidence:** Server deployed ✅, endpoints accessible ✅, tool execution blocked ❌
+

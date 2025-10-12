@@ -61,13 +61,45 @@ Drive each deliverable to closure yourself; document artefacts, timestamps, and 
    - Basic escalation path
    - Evidence: Quick start guide PDF
    - Timeline: 2-4 hours
+   - Status: ⏳ Ready once Engineer's UI live
 
-3. **30-Min Pilot Training Session** (Launch Gate #6)
-   - Create 30-minute session outline
-   - Demo approval queue workflow
-   - Top 5 FAQ answered
-   - Evidence: Session outline ready
+**Immediate Prep Work** (Do while Engineer builds):
+
+2A. **Training Session Outline**
+   - Create 30-minute pilot training agenda
+   - Write demo script (pending actual UI)
+   - Prepare talking points
+   - Create Q&A section structure
+   - Evidence: Session outline
    - Timeline: 2-3 hours
+
+2B. **Video Script for Approval Queue**
+   - Write script for Loom walkthrough
+   - Plan screen recording flow
+   - Prepare voiceover notes
+   - Evidence: Video script ready
+   - Timeline: 1-2 hours
+
+2C. **Operator Onboarding Checklist**
+   - Create pre-pilot operator checklist
+   - Document access requirements
+   - Create account setup steps
+   - Evidence: Onboarding checklist
+   - Timeline: 1-2 hours
+
+2D. **Training Effectiveness Measurement**
+   - Design quiz/assessment for operators
+   - Create knowledge check questions
+   - Plan hands-on practice scenarios
+   - Evidence: Assessment design
+   - Timeline: 2-3 hours
+
+3. **30-Min Pilot Training Session** (After Engineer Task 6 complete)
+   - Deliver training with actual UI
+   - Record session
+   - Collect operator feedback
+   - Evidence: Session delivered
+   - Timeline: Depends on UI availability
 
 **DO FIRST**: Tasks 2-3 above (minimal training for launch)
 
