@@ -125,3 +125,53 @@ Ensure Hot Rod AN integrations work: Shopify, Chatwoot, Google Analytics, MCPs.
 
 **Status**: 🔴 ACTIVE
 
+
+---
+
+## 🚀 DEEP PRODUCTION TASK LIST (Aligned to North Star - Oct 12 Update)
+
+**North Star Goal**: Own all external service integrations that power the 5 actionable tiles with reliable, real-time data.
+
+**Integrations Mission**: Maintain Shopify, Chatwoot, Google Analytics integrations; ensure MCP servers healthy.
+
+### 🎯 P0 - PRODUCTION INTEGRATION HEALTH (Week 1)
+
+**Task 1: MCP Server Monitoring** (3 hours)
+- Monitor all 5 MCP servers (Shopify, Context7, GitHub, Supabase, Fly)
+- Track response times, error rates
+- Alert on downtime or degradation
+- **Evidence**: MCP health dashboard
+- **North Star**: Reliable developer tools
+
+**Task 2: Shopify Integration Validation** (3 hours)
+- Validate all GraphQL queries with Shopify MCP
+- Test rate limiting and error handling
+- Monitor API usage vs limits
+- **Evidence**: Shopify integration validated
+- **North Star**: Reliable Shopify data for all tiles
+
+**Task 3: Google Analytics Integration** (2 hours)
+- Test Direct API connections
+- Verify service account permissions
+- Monitor query performance
+- **Evidence**: GA integration healthy
+- **North Star**: Reliable analytics for Sales/SEO tiles
+
+---
+
+### 🔧 P1 - INTEGRATION RELIABILITY (Week 1-2)
+
+**Task 4-8: Per-Tile Integration Support** (15 hours total, 3h each)
+- CX Pulse: Chatwoot API reliability
+- Sales Pulse: Shopify Orders + GA Conversions
+- SEO Pulse: GA Organic + Shopify Products
+- Inventory Watch: Shopify Inventory API
+- Fulfillment Flow: Shopify Fulfillments API
+- **Evidence**: Each tile's integrations validated
+- **North Star**: Each tile has reliable data source
+
+---
+
+**Total Integrations Tasks**: 10 production-aligned tasks (4-5 weeks work)  
+**Evidence Required**: Logged in `feedback/integrations.md` with health checks, API tests
+

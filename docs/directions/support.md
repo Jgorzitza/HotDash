@@ -125,3 +125,92 @@ Build Hot Rod AN support playbooks - returns, warranties, technical support for 
 
 **Status**: 🔴 ACTIVE
 
+
+---
+
+## 🚀 DEEP PRODUCTION TASK LIST (Aligned to North Star - Oct 12 Update)
+
+**North Star Goal**: Enable operators to leverage agent-assisted approvals for customer support, saving 4-5 hours/week while improving satisfaction.
+
+**Support Mission**: Train operators, build support playbooks, capture feedback for continuous improvement.
+
+### 🎯 P0 - OPERATOR READINESS (Week 1)
+
+**Task 1: Approval Queue Operator Guide** (3 hours)
+- Document how to review agent suggestions
+- When to approve vs edit vs reject
+- How to provide feedback for agent improvement
+- Escalation procedures
+- **Evidence**: Operator guide complete with screenshots
+- **North Star**: Operators confident using approval queue
+
+**Task 2: Customer Response Templates** (3 hours)
+- Build 20 response templates for common inquiries
+- Automotive-specific (part compatibility, tech support, order status)
+- Hot Rod AN brand voice
+- **Evidence**: Template library in Chatwoot
+- **North Star**: Consistent quality customer communication
+
+**Task 3: Operator Training Delivery** (2 hours)
+- Deliver 15-minute CEO training session
+- Answer questions, address concerns
+- Provide hands-on practice
+- **Evidence**: Training delivered, CEO comfortable
+- **North Star**: CEO can use system independently
+
+---
+
+### 🛟 P1 - SUPPORT OPERATIONS (Week 1-2)
+
+**Task 4: Support Playbook Development** (4 hours)
+- Document 15 common support scenarios
+- Step-by-step resolution procedures
+- When to use agent assistance vs manual response
+- **Evidence**: Support playbook complete
+- **North Star**: Consistent support quality
+
+**Task 5: Escalation Matrix** (2 hours)
+- Define L1 (agent handles), L2 (operator handles), L3 (engineer escalation)
+- Document escalation criteria
+- Create escalation templates
+- **Evidence**: Escalation matrix documented
+- **North Star**: Right issues to right people
+
+**Task 6: Quality Assurance Process** (3 hours)
+- Review 10% of agent responses for quality
+- Track accuracy, tone, customer satisfaction
+- Provide feedback for AI improvement
+- **Evidence**: QA process active, metrics tracked
+- **North Star**: Maintains high-quality customer interactions
+
+---
+
+### 📈 P2 - CONTINUOUS IMPROVEMENT (Week 2-4)
+
+**Task 7: Operator Feedback Collection** (3 hours)
+- Daily check-in with CEO (5 minutes)
+- Weekly deep-dive (30 minutes)
+- Monthly strategy review
+- **Evidence**: Feedback collection system active
+- **North Star**: Operator voice drives product evolution
+
+**Task 8: Customer Satisfaction Tracking** (2 hours)
+- Track CSAT for agent-assisted responses
+- Compare vs manual responses
+- Identify improvement opportunities
+- **Evidence**: CSAT tracking active
+- **North Star**: Prove agent value with data
+
+**Task 9: Knowledge Base Maintenance** (2 hours)
+- Update FAQs based on new questions
+- Refine response templates
+- Add new product information
+- **Evidence**: Knowledge base current
+- **North Star**: Always-current support resources
+
+---
+
+**Total Support Tasks**: 12 production-aligned tasks (4-6 weeks work)  
+**Every task supports**: Operator enablement, customer satisfaction, continuous improvement  
+**Evidence Required**: Every task logged in `feedback/support.md` with training records, playbooks, metrics
+

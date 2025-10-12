@@ -158,6 +158,317 @@ You build the Hot Rod AN dashboard. Your code powers the 5 tiles and approval qu
 
 ---
 
+## 🚀 DEEP PRODUCTION TASK LIST (Post-Launch - Aligned to North Star)
+
+**North Star Goal**: 5 actionable tiles that help Hot Rod AN CEO scale from $1MM to $10MM by reducing operational burden from 10-12h/week to <2h/week.
+
+### TILE 1: CX Pulse — Customer Experience Health (Week 1-2)
+
+**Operator Value**: See support queue, resolve issues faster, improve satisfaction
+
+**Task 7: CX Pulse Data Pipeline** (4 hours)
+- Build `app/routes/api.tiles.cx-pulse/route.tsx` loader
+- Fetch Chatwoot metrics (open tickets, avg response time, satisfaction scores)
+- Query Supabase for conversation history and resolution patterns
+- Calculate trends (day-over-day, week-over-week)
+- **Evidence**: API returning accurate CX metrics
+- **North Star**: Enables operator to see customer health at a glance
+
+**Task 8: CX Pulse AI Insights** (3 hours)
+- Integrate with Agent SDK to generate insights
+- Identify common customer issues (using LlamaIndex)
+- Recommend prioritization (urgent vs routine tickets)
+- Suggest bulk response opportunities
+- **Evidence**: AI insights displaying in tile
+- **North Star**: AI-assisted decisions reduce CEO time spent triaging
+
+**Task 9: CX Pulse Frontend** (3 hours)
+- Build `app/components/tiles/CXPulseTile.tsx` component
+- Display open ticket count with trend indicator
+- Show satisfaction score with 7-day trend chart
+- List top 3 recommended actions
+- **Evidence**: Tile renders in Shopify Admin dashboard
+- **North Star**: Operator sees actionable CX insights in seconds
+
+**Task 10: CX Pulse Actions** (2 hours)
+- Implement "Prioritize Urgent Tickets" action
+- Implement "Generate Bulk Responses" action (sends to approval queue)
+- Implement "View Full Support Queue" deep-link to Chatwoot
+- Wire actions to Agent SDK approval workflow
+- **Evidence**: Actions work, approvals log correctly
+- **North Star**: One-click actions save 2-3 hours/week
+
+### TILE 2: Sales Pulse — Revenue & Conversion Trends (Week 2-3)
+
+**Operator Value**: Track revenue, identify winners, catch drops early
+
+**Task 11: Sales Pulse Data Pipeline** (4 hours)
+- Build `app/routes/api.tiles.sales-pulse/route.tsx` loader
+- Fetch Shopify sales data (revenue, orders, avg order value)
+- Fetch top 10 products by revenue (7-day, 30-day)
+- Fetch Google Analytics conversion rates
+- Calculate trends and growth indicators
+- **Evidence**: API returning accurate sales metrics
+- **North Star**: Enables data-driven sales decisions
+
+**Task 12: Sales Pulse AI Insights** (3 hours)
+- Generate revenue trend insights (growing/declining/stable)
+- Identify product opportunities (promote winners, investigate losers)
+- Recommend pricing actions (discounts, bundling)
+- Suggest marketing focus areas
+- **Evidence**: AI insights displaying
+- **North Star**: AI recommendations guide sales strategy
+
+**Task 13: Sales Pulse Frontend** (3 hours)
+- Build `app/components/tiles/SalesPulseTile.tsx` component
+- Display revenue with trend chart
+- Show top 5 products with growth %
+- List recommended actions
+- **Evidence**: Tile functional with real data
+- **North Star**: Operator sees sales health instantly
+
+**Task 14: Sales Pulse Actions** (2 hours)
+- Implement "Create Discount" action (sends to approval)
+- Implement "Promote Product" action (feature on homepage)
+- Implement "Bundle Recommendation" action
+- **Evidence**: Actions functional, approved correctly
+- **North Star**: One-click sales optimization
+
+### TILE 3: SEO Pulse — Content Performance (Week 3-4)
+
+**Operator Value**: Improve search visibility, drive organic traffic
+
+**Task 15: SEO Pulse Data Pipeline** (4 hours)
+- Build `app/routes/api.tiles.seo-pulse/route.tsx` loader
+- Fetch Google Analytics organic traffic metrics
+- Fetch top landing pages and bounce rates
+- Fetch Shopify product page performance
+- Identify content gaps (low-traffic products)
+- **Evidence**: API returning SEO metrics
+- **North Star**: Operator sees content opportunities
+
+**Task 16: SEO Pulse AI Insights** (3 hours)
+- Identify SEO opportunities (optimize pages, add content)
+- Generate meta description recommendations
+- Suggest keyword targeting for products
+- Recommend content creation topics
+- **Evidence**: AI SEO insights displaying
+- **North Star**: AI guides content strategy
+
+**Task 17: SEO Pulse Frontend** (3 hours)
+- Build `app/components/tiles/SEOPulseTile.tsx` component
+- Display organic traffic trend
+- Show top performing pages
+- List content gap opportunities
+- **Evidence**: Tile rendering correctly
+- **North Star**: SEO insights at operator's fingertips
+
+**Task 18: SEO Pulse Actions** (2 hours)
+- Implement "Optimize Meta" action (AI-generated suggestions)
+- Implement "Create Content" action (AI draft → approval)
+- Implement "Update Product Descriptions" action
+- **Evidence**: Actions working through approval queue
+- **North Star**: One-click SEO improvements
+
+### TILE 4: Inventory Watch — Stock Alerts (Week 4-5)
+
+**Operator Value**: Never run out of hot sellers, avoid dead stock
+
+**Task 19: Inventory Watch Data Pipeline** (4 hours)
+- Build `app/routes/api.tiles.inventory-watch/route.tsx` loader
+- Fetch Shopify inventory levels by product/variant
+- Calculate sales velocity (units/day)
+- Calculate days of stock remaining
+- Identify reorder triggers (<7 days) and overstock (>90 days)
+- **Evidence**: API returning inventory insights
+- **North Star**: Prevent stockouts, optimize cash flow
+
+**Task 20: Inventory Watch AI Insights** (3 hours)
+- Generate reorder recommendations (quantity, timing)
+- Identify overstock clearance opportunities
+- Suggest bundling slow movers with fast movers
+- Predict seasonal demand patterns
+- **Evidence**: AI inventory insights displaying
+- **North Star**: AI optimizes inventory decisions
+
+**Task 21: Inventory Watch Frontend** (3 hours)
+- Build `app/components/tiles/InventoryWatchTile.tsx` component
+- Display critical stock alerts (red <7 days, yellow <14 days)
+- Show overstock alerts
+- Trend charts for top 10 products
+- **Evidence**: Tile showing real inventory data
+- **North Star**: Inventory health visible instantly
+
+**Task 22: Inventory Watch Actions** (2 hours)
+- Implement "Create Purchase Order" action (sends to approval)
+- Implement "Clearance Pricing" action (discount overstock)
+- Implement "Bundle Products" action
+- **Evidence**: Actions functional
+- **North Star**: One-click inventory optimization
+
+### TILE 5: Fulfillment Flow — Shipping Performance (Week 5-6)
+
+**Operator Value**: Catch delays, optimize carriers, improve delivery
+
+**Task 23: Fulfillment Flow Data Pipeline** (4 hours)
+- Build `app/routes/api.tiles.fulfillment-flow/route.tsx` loader
+- Fetch Shopify fulfillment data (pending, shipped, delivered)
+- Calculate carrier performance (on-time %, avg days)
+- Identify delayed orders (>expected delivery date)
+- **Evidence**: API returning fulfillment metrics
+- **North Star**: Shipping visibility and control
+
+**Task 24: Fulfillment Flow AI Insights** (3 hours)
+- Identify delay patterns (carrier, region, product type)
+- Recommend carrier optimization
+- Suggest proactive customer notifications
+- Predict delivery issues before they happen
+- **Evidence**: AI fulfillment insights
+- **North Star**: Proactive shipping management
+
+**Task 25: Fulfillment Flow Frontend** (3 hours)
+- Build `app/components/tiles/FulfillmentFlowTile.tsx` component
+- Display orders by status with counts
+- Show carrier performance comparison
+- Highlight delayed orders with actions
+- **Evidence**: Tile functional
+- **North Star**: Fulfillment status at a glance
+
+**Task 26: Fulfillment Flow Actions** (2 hours)
+- Implement "Expedite Order" action
+- Implement "Notify Customer" action (delay notification)
+- Implement "Switch Carrier" recommendation
+- **Evidence**: Actions working
+- **North Star**: One-click fulfillment optimization
+
+---
+
+## 🔧 PRODUCTION INFRASTRUCTURE (Week 1-2)
+
+**Task 27: Performance Monitoring** (3 hours)
+- Implement tile load time tracking
+- Set up Lighthouse CI for each tile
+- Create performance budget alerts (<300ms per tile)
+- **Evidence**: Monitoring active, dashboards created
+- **North Star**: Fast dashboard = operator adoption
+
+**Task 28: Error Handling & Recovery** (3 hours)
+- Implement graceful degradation (if tile fails, show cached data)
+- Create error boundaries for each tile
+- User-friendly error messages
+- Auto-retry failed requests
+- **Evidence**: Error handling tested
+- **North Star**: Reliable dashboard operators can trust
+
+**Task 29: Security Hardening** (2 hours)
+- Implement CSRF protection on all actions
+- Rate limiting on approval endpoints
+- Input validation on all user inputs
+- **Evidence**: Security tests passing
+- **North Star**: Secure platform builds operator trust
+
+**Task 30: Accessibility** (3 hours)
+- WCAG 2.1 AA compliance for all tiles
+- Screen reader optimization
+- Keyboard navigation for approvals
+- **Evidence**: Accessibility audit passing
+- **North Star**: Inclusive platform for all operators
+
+---
+
+## 🎯 OPERATOR EXPERIENCE POLISH (Week 2-3)
+
+**Task 31: Dashboard Personalization** (3 hours)
+- Save tile order preferences per operator
+- Save notification preferences
+- Remember filter selections
+- **Evidence**: Preferences persisting correctly
+- **North Star**: Customized experience per operator
+
+**Task 32: Mobile Optimization** (4 hours)
+- Responsive design for all tiles on mobile
+- Touch-optimized approval actions
+- Mobile-friendly charts
+- Test on iOS/Android
+- **Evidence**: Mobile experience validated
+- **North Star**: Operators can approve from anywhere
+
+**Task 33: Real-Time Updates** (3 hours)
+- WebSocket/polling for live tile updates
+- Real-time approval queue notifications
+- Badge counts for pending approvals
+- **Evidence**: Real-time updates working
+- **North Star**: Operators see latest data instantly
+
+**Task 34: Batch Operations** (2 hours)
+- Bulk approve multiple actions
+- Bulk reject with reason
+- Batch action history
+- **Evidence**: Batch operations functional
+- **North Star**: Handle high volumes efficiently
+
+---
+
+## 📊 ANALYTICS & INTELLIGENCE (Week 3-4)
+
+**Task 35: Cross-Tile Insights** (4 hours)
+- Correlate data across tiles (CX issues → sales drops)
+- Generate holistic business insights
+- Recommend cross-functional actions
+- **Evidence**: Cross-tile insights displaying
+- **North Star**: See the big picture, not just siloed metrics
+
+**Task 36: Predictive Alerts** (4 hours)
+- Predict stock-outs before they happen
+- Predict sales trends (seasonality)
+- Predict customer churn risk
+- Alert operators proactively
+- **Evidence**: Predictive alerts working
+- **North Star**: Proactive (not reactive) operations
+
+**Task 37: Automated Reporting** (3 hours)
+- Generate daily/weekly CEO summary
+- Email digest of key metrics and actions
+- Highlight what needs attention
+- **Evidence**: Automated reports sending
+- **North Star**: CEO knows status without logging in
+
+---
+
+## 🚀 ADVANCED FEATURES (Week 4-6)
+
+**Task 38: Multi-Location Support** (3 hours)
+- Support multiple Shopify locations
+- Location-specific inventory/fulfillment
+- Location comparison analytics
+- **Evidence**: Multi-location working
+- **North Star**: Scale to multiple warehouses
+
+**Task 39: Team Collaboration** (3 hours)
+- Multiple operator accounts
+- Role-based permissions
+- Activity feed (who approved what)
+- **Evidence**: Multi-operator tested
+- **North Star**: Scale team as business grows
+
+**Task 40: API for Third-Party Integrations** (4 hours)
+- Public API for dashboard data
+- Webhook support for external systems
+- API documentation
+- **Evidence**: API functional, documented
+- **North Star**: Ecosystem integration
+
+---
+
+**Total Production-Aligned Tasks**: 40 tasks (6-8 weeks of focused work)  
+**Every task directly supports**: Operator value, Hot Rod AN growth, 10X revenue goal  
+**Prioritization**: P0 launch blockers first, then 5 tiles, then enhancements  
+**Evidence Required**: Every task logged in `feedback/engineer.md` with proof
+
+**Stack Compliance**: Supabase-only, React Router 7, OpenAI, Shopify-validated GraphQL, Context7-verified patterns
+
+---
+
 ### Task 7 - Dashboard Tile Performance Optimization
 
 **What**: Optimize all 5 tiles for <500ms load time

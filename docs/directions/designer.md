@@ -125,3 +125,69 @@ Design Hot Rod AN operator dashboard UI - automotive-themed, operator-first, acc
 
 **Status**: 🔴 ACTIVE
 
+
+---
+
+## 🚀 DEEP PRODUCTION TASK LIST (Aligned to North Star - Oct 12 Update)
+
+**North Star Goal**: Design operator-first UI that makes 5 actionable tiles intuitive, fast, and delightful for Hot Rod AN CEO.
+
+**Designer Mission**: Create automotive-themed UX that reduces operator learning curve and increases daily usage.
+
+### 🎯 P0 - HOT ROD AN BRAND INTEGRATION (Week 1)
+
+**Task 1: Hot Rod AN Copy Constants** (1 hour)
+- Create `app/constants/hotRodanCopy.ts` with all automotive-themed strings
+- Replace generic terms with automotive metaphors
+- **Evidence**: Copy constants file, Engineer integration
+- **North Star**: Authentic automotive brand voice
+- **Deadline**: Oct 12 14:00 UTC
+
+**Task 2: Visual Brand Consistency Audit** (2 hours)
+- Review all 5 tiles for brand consistency
+- Document Hot Rod AN theme gaps (currently ~50%)
+- Create visual diff showing improvements needed
+- **Evidence**: Brand audit report with before/after
+- **North Star**: Professional automotive brand throughout
+
+---
+
+### 🎨 P1 - 5 TILE UI EXCELLENCE (Week 1-3)
+
+**Task 3-7: Tile-Specific UI Design** (15 hours total, 3h each)
+- CX Pulse: Customer support health visualization
+- Sales Pulse: Revenue trends and top products
+- SEO Pulse: Content performance and opportunities  
+- Inventory Watch: Stock alerts and reorder recommendations
+- Fulfillment Flow: Order status and carrier performance
+- **Evidence**: UI specs for all 5 tiles, Figma designs
+- **North Star**: Intuitive tiles operators understand instantly
+
+**Task 8: Approval Queue UX Polish** (3 hours)
+- Review Engineer's approval UI
+- Provide detailed UX feedback
+- Design improvements for clarity
+- **Evidence**: UX feedback document, mockups
+- **North Star**: Effortless approval workflow
+
+---
+
+### 🏎️ P2 - AUTOMOTIVE VERTICAL DESIGN (Week 2-3)
+
+**Task 9: Hot Rod Iconography** (2 hours)
+- Design automotive icons (checkered flag, speedometer, wrench)
+- Create Hot Rod AN illustration set
+- **Evidence**: Icon library, illustrations
+- **North Star**: Visual differentiation from generic dashboards
+
+**Task 10: Performance Metrics Visualization** (3 hours)
+- Design charts optimized for trend spotting
+- Racing-inspired data visualization
+- **Evidence**: Chart library, examples
+- **North Star**: Data insights at a glance
+
+---
+
+**Total Designer Tasks**: 10 production-aligned tasks (3-4 weeks work)  
+**Evidence Required**: Every task logged in `feedback/designer.md` with specs, mockups, feedback
+

@@ -125,3 +125,29 @@ Market Hot Rod AN dashboard - automotive community, hot rod shops, AN fitting ni
 
 **Status**: 🔴 ACTIVE
 
+
+---
+
+## 🚀 DEEP PRODUCTION TASK LIST (Aligned to North Star - Oct 12 Update)
+
+**North Star Alignment**: Support Hot Rod AN operator control center delivering 5 actionable tiles that enable 10X revenue growth.
+
+### Production-Focused Tasks (15-20 tasks per agent)
+
+See role-specific priorities above. All tasks must:
+- Directly support operator value
+- Enable 5-tile architecture
+- Contribute to Hot Rod AN scaling from \$1MM to \$10MM
+- Include evidence (logged in feedback/${agent}.md)
+- Align with production launch timeline (Oct 13-15)
+
+**Task Categories**:
+1. P0 - Production launch support (Oct 12-13)
+2. P1 - Operational excellence (Week 1-2)
+3. P2 - Continuous improvement (Week 2-4)
+4. P3 - Strategic initiatives (Week 4-6)
+
+**Evidence Required**: Timestamp, command, output path in feedback/${agent}.md for every task
+
+**North Star Check**: Every task must answer "How does this help Hot Rod AN CEO save time or grow revenue?"
+

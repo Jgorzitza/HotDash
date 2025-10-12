@@ -193,3 +193,178 @@ You deploy Hot Rod AN dashboard to production. Ensure zero downtime, monitor hea
 **Previous Work**: Archived  
 **Status**: 🔴 ACTIVE - Task 1 (Deploy Agent SDK)
 
+
+---
+
+## 🚀 DEEP PRODUCTION TASK LIST (Aligned to North Star - Oct 12 Update)
+
+**North Star Goal**: Ensure reliable, scalable infrastructure that supports Hot Rod AN scaling from $1MM to $10MM with zero downtime.
+
+**Deployment Mission**: Own production infrastructure, deployments, and operational excellence.
+
+### 🎯 P0 - PRODUCTION LAUNCH (Oct 12-13)
+
+**Task 1: Production Secrets Configuration** (2 hours)
+- Create production secrets in `vault/occ/*/prod.env`:
+  - Supabase (DATABASE_URL, SERVICE_KEY)
+  - OpenAI (API_KEY_PROD)
+  - Shopify (all production credentials)
+  - Chatwoot (API_TOKEN, REDIS_URL)
+- Mirror to GitHub Actions `production` environment
+- Verify all secrets present and valid
+- **Evidence**: Production secrets configured, verified
+- **North Star**: Secure production environment ready
+- **Deadline**: Oct 12 14:00 UTC
+
+**Task 2: Production Fly.io Apps** (2 hours)
+- Verify production apps configured:
+  - hotdash-production (main app)
+  - hotdash-agent-service (production)
+  - hotdash-llamaindex-mcp (production)
+- Configure auto-scaling (min 1, max 3 machines)
+- Set production health checks
+- **Evidence**: Production apps ready, health checks passing
+- **North Star**: Scalable infrastructure for growth
+- **Deadline**: Oct 12 16:00 UTC
+
+**Task 3: Production Deployment Runbook** (2 hours)
+- Document step-by-step deploy procedure
+- Document rollback procedure (test on staging)
+- Create deployment checklist
+- **Evidence**: Runbook tested on staging
+- **North Star**: Reliable, repeatable deployments
+- **Deadline**: Oct 12 18:00 UTC
+
+**Task 4: Production Smoke Tests** (1 hour)
+- Deploy to production
+- Run smoke test suite
+- Verify all critical paths working
+- **Evidence**: Production smoke tests passing
+- **North Star**: Validated production deployment
+- **Deadline**: Oct 13 00:00 UTC
+
+---
+
+### 🔧 P1 - PRODUCTION OPERATIONS (Week 1-2)
+
+**Task 5: Production Monitoring Setup** (4 hours)
+- Configure Fly.io metrics for all production apps
+- Set up alerts (CPU >80%, memory >80%, errors >1%)
+- Create ops dashboard (all services health)
+- Integrate with Slack for alerts
+- **Evidence**: Monitoring active, alerts tested
+- **North Star**: Proactive ops, catch issues before operators see them
+
+**Task 6: Incident Response Procedures** (3 hours)
+- Create incident response runbook
+- Define severity levels (P0-P4)
+- Document escalation paths
+- Test incident procedures
+- **Evidence**: Incident runbook tested
+- **North Star**: Fast recovery from any issues
+
+**Task 7: Backup & Recovery** (3 hours)
+- Implement automated Supabase backups (daily)
+- Test database recovery procedure
+- Document recovery time objectives
+- **Evidence**: Backup/recovery tested, RTO documented
+- **North Star**: Operator data always protected
+
+**Task 8: Performance Optimization** (3 hours)
+- Optimize Fly.io machine sizes for cost/performance
+- Configure caching strategies
+- Tune auto-scaling thresholds
+- **Evidence**: Performance optimized, costs minimized
+- **North Star**: Fast dashboard within budget
+
+---
+
+### 📊 P2 - OPERATIONAL EXCELLENCE (Week 2-3)
+
+**Task 9: Zero-Downtime Deployments** (4 hours)
+- Implement blue-green deployment strategy
+- Test deployment with zero downtime
+- Automate deployment process
+- **Evidence**: Zero-downtime deployment working
+- **North Star**: Operators never experience outages
+
+**Task 10: Auto-Scaling Validation** (3 hours)
+- Test auto-scaling under load
+- Verify scales appropriately (1-3 machines)
+- Optimize scaling thresholds
+- **Evidence**: Auto-scaling tested, tuned
+- **North Star**: Handles traffic spikes as business grows
+
+**Task 11: Cost Optimization** (3 hours)
+- Analyze Fly.io costs per service
+- Optimize machine sizes for usage patterns
+- Implement auto-stop for low-traffic periods
+- **Evidence**: Cost optimization report
+- **North Star**: Sustainable costs as we scale
+
+**Task 12: Security Hardening** (3 hours)
+- Configure Fly.io network policies
+- Implement SSL/TLS for all services
+- Harden production environment
+- **Evidence**: Security audit passing
+- **North Star**: Secure platform operators can trust
+
+---
+
+### 🚀 P3 - SCALING INFRASTRUCTURE (Week 3-4)
+
+**Task 13: Multi-Region Strategy** (4 hours)
+- Plan multi-region deployment (US-East, US-West)
+- Design failover strategy
+- Test region failover
+- **Evidence**: Multi-region plan documented
+- **North Star**: Geographic redundancy for reliability
+
+**Task 14: Database Scaling** (3 hours)
+- Plan Supabase scaling strategy
+- Test read replicas for analytics queries
+- Optimize connection pooling
+- **Evidence**: Database scaling plan tested
+- **North Star**: Database handles 10X growth
+
+**Task 15: CDN & Asset Optimization** (3 hours)
+- Configure CDN for static assets
+- Optimize image delivery
+- Implement asset caching
+- **Evidence**: CDN configured, assets optimized
+- **North Star**: Fast load times globally
+
+---
+
+### 🔐 P4 - COMPLIANCE & GOVERNANCE (Week 4-5)
+
+**Task 16: Secret Rotation Automation** (3 hours)
+- Automate quarterly secret rotation
+- Test rotation procedures
+- Document rotation runbook
+- **Evidence**: Secret rotation automated
+- **North Star**: Proactive security maintenance
+
+**Task 17: Compliance Evidence Collection** (2 hours)
+- Automate SOC 2 evidence collection
+- Track deployment logs, access logs
+- Generate compliance reports
+- **Evidence**: Evidence collection automated
+- **North Star**: Audit-ready at all times
+
+**Task 18: Disaster Recovery Drills** (3 hours)
+- Quarterly DR drill procedures
+- Test full system recovery
+- Document recovery procedures
+- **Evidence**: DR drill successful
+- **North Star**: Can recover from any disaster
+
+---
+
+**Total Deployment Tasks**: 18 production-aligned tasks (6-8 weeks work)  
+**Every task supports**: Production reliability, scalability, security for Hot Rod AN growth  
+**Prioritization**: Production launch → Operations → Scaling → Governance  
+**Evidence Required**: Every task logged in `feedback/deployment.md` with commands, outputs, runbooks
+
+**Infrastructure Stack**: Fly.io (only), Supabase (managed), No self-hosted infrastructure
+
