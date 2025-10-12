@@ -30,14 +30,20 @@ BACKUP_FILE="$BACKUP_DIR/agent_sdk_backup_$TIMESTAMP.sql"
 
 echo "Creating backup..."
 
-pg_dump "$DB_URL" \
-  --table=agent_approvals \
-  --table=agent_feedback \
-  --table=agent_queries \
-  --table=support_curated_replies \
-  --data-only \
-  --inserts \
-  > "$BACKUP_FILE"
+# Use Supabase CLI to avoid pg_dump version mismatch
+# Supabase CLI handles version compatibility automatically
+supabase db dump --local --data-only > "$BACKUP_FILE.tmp"
+
+# Extract only Agent SDK tables from dump
+grep -A 10000 "COPY public.agent_approvals\|COPY public.agent_feedback\|COPY public.agent_queries\|COPY public.support_curated_replies" "$BACKUP_FILE.tmp" > "$BACKUP_FILE" || true
+
+# Fallback to full dump if grep fails
+if [ ! -s "$BACKUP_FILE" ]; then
+  echo "Using full database dump..."
+  mv "$BACKUP_FILE.tmp" "$BACKUP_FILE"
+else
+  rm "$BACKUP_FILE.tmp"
+fi
 
 if [ -f "$BACKUP_FILE" ]; then
   BACKUP_SIZE=$(du -h "$BACKUP_FILE" | cut -f1)
