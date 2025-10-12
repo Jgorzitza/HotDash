@@ -427,6 +427,27 @@ Built enterprise-grade data models for Hot Rod AN that power:
 
 ---
 
+## 🚨 P0 BLOCKER RESOLVED - 2025-10-12 02:52 UTC
+
+**Blocker**: RLS Policies - Notification tables verification (Data + QA)
+
+**Action Taken**:
+- Applied migration: `fix_notification_table_rls_policies`
+- Added 4 RLS policies to notification tables:
+  - `notification_settings`: service_role (full) + user_own_settings (read own)
+  - `notification_subscriptions`: service_role (full) + user_own_subscriptions (read own)
+
+**Verification**: ✅ Security advisor confirms no more "RLS enabled but no policy" warnings
+
+**Evidence**: 
+- Migration applied via Supabase MCP
+- Security advisor re-run shows issue resolved
+- Users can only access their own notification data (privacy preserved)
+
+**Note**: Remaining RLS issues are for existing Chatwoot tables (conversations, messages, inboxes, etc.) - these should be handled by COMPLIANCE or CHATWOOT agent, not DATA agent.
+
+---
+
 **Ready for**: ETL pipeline development and dashboard integration
 **Blocked on**: None
 **Next Agent**: INTEGRATIONS (for Shopify/Chatwoot ETL + dashboard API)
