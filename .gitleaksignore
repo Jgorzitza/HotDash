@@ -1,0 +1,39 @@
+# Gitleaks Ignore File
+# Reduces false positives from UI elements and theme files
+
+# Shopify theme files contain HTML password form elements (not credentials)
+themes/hotrodan-live/**/*.liquid
+themes/hotrodan-live/locales/*.json
+themes/hotrodan-live/locales/*.schema.json
+
+# Theme assets contain UI strings that may trigger false positives
+themes/**/assets/**/*.js
+themes/**/assets/**/*.css
+
+# Test files may contain example/mock credentials
+tests/**/*.spec.ts
+tests/**/*test*.ts
+
+# Documentation may reference credential patterns as examples
+docs/**/example*.md
+docs/**/template*.md
+
+# Package lock files contain package hashes that trigger false positives
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build artifacts and generated files
+dist/**
+build/**
+.next/**
+coverage/**
+
+# Git files themselves
+.git/**
+
+# Note: Actual secrets should NEVER be in git
+# Use vault/ directory with 600 permissions for real credentials
+# Reference credentials as environment variables: $VAR_NAME or ${VAR_NAME}
+# Or use [REDACTED] placeholders in documentation
+
