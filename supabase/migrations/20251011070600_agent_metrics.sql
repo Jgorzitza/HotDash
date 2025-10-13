@@ -26,7 +26,7 @@ create table if not exists agent_qc (
   created_at timestamptz default now()
 );
 
-create view if not exists v_agent_kpis as
+create or replace view v_agent_kpis as
 select
   agent_name,
   date_trunc('day', started_at) as day,
