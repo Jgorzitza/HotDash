@@ -50,7 +50,7 @@ test.describe("shopify admin embed", () => {
     
     // Verify core dashboard tiles are present
     await expect(page.getByRole("heading", { name: /Sales Pulse/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /CX Escalations/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /CX Pulse/i })).toBeVisible();
   });
 
   test("handles authentication correctly per mode", async ({ shopifyAdmin, page }) => {

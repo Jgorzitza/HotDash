@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { json } from "react-router";
-import { getCurrentDashboardMetrics } from "../services/analytics.server";
-import { requireShopifyAuth } from "../services/auth.server";
+import { getCurrentDashboardMetrics } from "~/services/analytics.server";
+import { requireShopifyAuth } from "~/services/auth.server";
 
 /**
  * API Route: /api/analytics/summary
@@ -23,7 +23,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const result = await getCurrentDashboardMetrics(shopDomain);
 
-    return json({
+    return Response.json({
       success: true,
       data: result.data,
       source: result.source,

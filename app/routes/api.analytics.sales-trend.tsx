@@ -1,5 +1,7 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { getSalesTrend7d } from "../services/analytics.server";
+import { json } from "react-router";
+import { getSalesTrend7d } from "~/services/analytics.server";
+import { requireShopifyAuth } from "~/services/auth.server";
 
 /**
  * API Route: /api/analytics/sales-trend
@@ -18,7 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const result = await getSalesTrend7d(shopDomain);
 
-    return json({
+    return Response.json({
       success: true,
       data: result.data,
       source: result.source,
