@@ -7,6 +7,48 @@ doc_hash: TBD
 expires: 2025-10-17
 ---
 # AI Agent — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: EXPAND KNOWLEDGE BASE FOR DEPLOYED APP (P1)
+
+**Your immediate priority**: Expand knowledge base after LlamaIndex MCP is fixed
+
+**Current status**:
+- ✅ LlamaIndex MCP code review complete
+- 🔄 Engineer-Helper fixing LlamaIndex MCP (P0)
+- 🎯 Expand knowledge base when MCP operational
+
+**START HERE NOW** (After LlamaIndex MCP fixed):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Verify LlamaIndex MCP functionality
+# Test: query_support, refresh_index, insight_report
+# Confirm: 100% query accuracy, <5s response times
+
+# 2. Expand knowledge base beyond 50 pages
+# Use LlamaIndex MCP for ingestion
+# Add: Technical specifications, installation guides, troubleshooting
+
+# 3. Test knowledge base queries
+# Test: Hot Rod AN product questions, installation help
+# Verify: Accurate responses with source citations
+
+# 4. Document knowledge base expansion
+# File: docs/ai/knowledge_base_expansion_report.md
+# Include: Pages added, query accuracy, performance metrics
+
+# Evidence: Knowledge base expansion, query test results
+# Log to: feedback/ai.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ LlamaIndex MCP: query_support, refresh_index, insight_report (MANDATORY)
+- ✅ Context7 MCP: If debugging React integration needed
+
+**Timeline**: 60-90 minutes (8 tasks total)
+
+**Success Metric**: Knowledge base expanded with 100+ pages, 100% query accuracy
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

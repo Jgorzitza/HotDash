@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { HOT_ROD_STATUS, HOT_ROD_ERROR } from "~/copy/hot-rodan-strings";
+import { HOT_ROD_STATUS, HOT_ROD_ERROR } from "../../copy/hot-rodan-strings";
 
 export type TileStatus = "ok" | "error" | "unconfigured";
 export type TileSource = "fresh" | "cache" | "mock";
@@ -57,8 +57,15 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
     );
   }
 
+  const headingId = testId ? `tile-${testId}-heading` : undefined;
+
   return (
-    <div className="occ-tile" data-testid={testId}>
+    <article 
+      className="occ-tile" 
+      role="region"
+      aria-labelledby={headingId}
+      data-testid={testId}
+    >
       <div
         style={{
           display: "flex",
@@ -67,6 +74,7 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
         }}
       >
         <h2
+          id={headingId}
           style={{
             margin: 0,
             fontSize: "var(--occ-font-size-heading)",
@@ -76,7 +84,14 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
         >
           {title}
         </h2>
-        <span className={statusClass}>{STATUS_LABELS[tile.status]}</span>
+        <span 
+          className={statusClass}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {STATUS_LABELS[tile.status]}
+        </span>
       </div>
       {tile.fact && (
         <p className="occ-text-meta" style={{ margin: 0 }}>
@@ -85,6 +100,6 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
         </p>
       )}
       {content}
-    </div>
+    </article>
   );
 }

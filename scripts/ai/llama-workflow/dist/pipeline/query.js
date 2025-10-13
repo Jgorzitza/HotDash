@@ -1,18 +1,19 @@
 import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
-import { VectorStoreIndex, Settings, OpenAI, OpenAIEmbedding, BaseQueryEngine } from 'llamaindex';
-import fs from 'node:fs/promises';
+import { queryCache } from '../cache.js';
+import { VectorStoreIndex, Settings, storageContextFromDefaults } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import path from 'node:path';
 export async function loadIndex() {
     const config = getConfig();
-    // Configure LlamaIndex with OpenAI
-    Settings.llm = new OpenAI({
-        apiKey: config.OPENAI_API_KEY,
-        model: 'gpt-3.5-turbo',
-    });
+    // Configure OpenAI models (required for LlamaIndex)
     Settings.embedModel = new OpenAIEmbedding({
+        model: "text-embedding-3-small",
         apiKey: config.OPENAI_API_KEY,
-        model: 'text-embedding-ada-002',
+    });
+    Settings.llm = new OpenAI({
+        model: "gpt-4o-mini",
+        apiKey: config.OPENAI_API_KEY,
     });
     const indexPath = await getLatestIndexPath();
     if (!indexPath) {
@@ -21,16 +22,15 @@ export async function loadIndex() {
     }
     try {
         console.log(`Loading index from: ${indexPath}`);
-        // For now, we'll use a simplified loading approach
-        // The exact API may vary based on the llamaindex version
-        const index = await VectorStoreIndex.fromPersistDir(path.join(indexPath, 'index')).catch(() => {
-            // Fallback: try creating a new index if loading fails
-            console.warn('Failed to load persisted index, creating new one');
-            return null;
+        // Load storage context from persisted directory
+        const storageContext = await storageContextFromDefaults({
+            persistDir: path.join(indexPath, 'index'),
         });
-        if (index) {
-            console.log('✓ Index loaded successfully');
-        }
+        // Create index from storage context
+        const index = await VectorStoreIndex.init({
+            storageContext,
+        });
+        console.log('✓ Index loaded successfully');
         return index;
     }
     catch (error) {
@@ -41,6 +41,21 @@ export async function loadIndex() {
 export async function answerQuery(query, topK = 5) {
     const startTime = Date.now();
     console.log(`Processing query: "${query}" (topK=${topK})`);
+    // Check cache first
+    const cacheKey = { topK };
+    const cached = queryCache.get(query, cacheKey);
+    if (cached) {
+        const cacheTime = Date.now() - startTime;
+        console.log(`✓ Cache hit! Returned in ${cacheTime}ms`);
+        return {
+            ...cached,
+            metadata: {
+                ...cached.metadata,
+                processingTime: cacheTime,
+                cached: true,
+            },
+        };
+    }
     const index = await loadIndex();
     if (!index) {
         throw new Error('No index available for querying');
@@ -70,8 +85,11 @@ export async function answerQuery(query, topK = 5) {
                 topK,
                 timestamp: new Date().toISOString(),
                 processingTime,
+                cached: false,
             },
         };
+        // Store in cache
+        queryCache.set(query, result, cacheKey);
         console.log(`✓ Query completed in ${processingTime}ms`);
         console.log(`Response: ${response.response.slice(0, 100)}...`);
         console.log(`Sources: ${sources.length} documents`);
@@ -158,4 +176,3 @@ export function validateCitations(result, requiredCitations) {
     const sourceIds = result.sources.map(s => s.id);
     return requiredCitations.every(required => sourceIds.some(id => id.includes(required)));
 }
-//# sourceMappingURL=query.js.map

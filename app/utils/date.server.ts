@@ -31,10 +31,13 @@ export function getDateRange(days: number): { start: string; end: string } {
 }
 
 /**
- * Parse ISO date string to Date
+ * Parse ISO date string to Date (local midnight)
+ * Returns date at midnight in local timezone
  */
 export function parseISODate(dateString: string): Date {
-  return new Date(dateString);
+  // Parse as local midnight to match expected behavior
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
 }
 
 /**

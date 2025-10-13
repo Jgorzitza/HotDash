@@ -1,0 +1,15 @@
+{
+  "id": "decision:1",
+  "metadata": {
+    "source": "supabase",
+    "table": "decision_sync_events",
+    "timestamp": "2025-10-11T20:42:09.753713+00:00",
+    "decisionId": 1,
+    "status": "success",
+    "scope": "ops",
+    "durationMs": 150.5
+  },
+  "text_preview": "{\"decisionId\":1,\"status\":\"success\",\"durationMs\":150.5,\"errorCode\":null,\"attempt\":1,\"timestamp\":\"2025-10-11T20:42:09.753713+00:00\",\"scope\":\"ops\"}...",
+  "full_text_length": 144,
+  "timestamp": "2025-10-13T02:20:30.982Z"
+}

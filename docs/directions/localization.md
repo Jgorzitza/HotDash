@@ -7,6 +7,48 @@ doc_hash: TBD
 expires: 2025-10-19
 ---
 # Localization — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: CONTINUE DEPLOYMENT SUPPORT WORK (P2)
+
+**Your immediate priority**: Continue consistency verification tasks
+
+**Current status**:
+- ✅ All assigned tasks COMPLETE
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Continue P2 consistency work until new direction
+
+**START HERE NOW**:
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Continue Task 2: Error message audit (1 hour)
+# Use grep to find remaining generic error messages
+grep -r "Something went wrong\|Error occurred\|Failed" app/ --include="*.tsx" --include="*.ts"
+# Document findings and fix if time permits
+
+# 2. Continue Task 4: Voice consistency verification (1 hour)
+# Use grep to verify automotive terminology consistency
+grep -r "Mission Control\|Engine Trouble\|Full Speed" app/ --include="*.tsx" --include="*.ts"
+# Verify consistent usage across all components
+
+# 3. Check deployment progress
+# Monitor Engineer's deployment status
+# Be ready to test consistency when app is deployed
+
+# Evidence: Consistency audit results, grep verification logs
+# Log to: feedback/localization.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ grep: Find all error messages and terminology (MANDATORY)
+- ✅ Context7 MCP: If reviewing React components
+
+**Timeline**: Continue current tasks until deployment complete or new direction
+
+**IMPORTANT**: Continue working on consistency tasks. Do NOT stop unless explicitly told by Manager.
+
+**Manager will provide new direction when deployment is complete.**
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

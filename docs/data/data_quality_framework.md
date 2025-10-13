@@ -1,185 +1,384 @@
 ---
-epoch: 2025.10.E1  
-doc: docs/data/data_quality_framework.md
+title: Data Quality Framework
+created: 2025-10-12
 owner: data
-last_reviewed: 2025-10-11
-expires: 2025-11-11
+status: active
 ---
 
-# Data Quality Framework - Agent SDK
+# Data Quality Framework for Agent SDK
 
 ## Overview
 
-Automated data quality validation rules and monitoring for Agent SDK tables to ensure data integrity, completeness, and accuracy.
+**Purpose**: Ensure high-quality data in Agent SDK tables through automated validation and monitoring.
+
+**Quality Dimensions**: Completeness, Accuracy, Consistency, Timeliness (CACT Framework)
+
+**Automation**: Scheduled checks with alerting on failures
 
 ## Quality Dimensions
 
 ### 1. Completeness
-- **Definition:** All required fields populated
-- **Target:** >99% completeness
-- **Validation:** Check for NULL values in required columns
+
+**Definition**: Required fields must not be NULL
+
+**Checks**:
+- agent_approvals: conversation_id, customer_message, draft_response must be present
+- AgentFeedback: conversationId, inputText, modelDraft must be present
+- AgentQuery: query, agent must be present
+
+**Threshold**:
+- ✅ Pass: 95%+ complete
+- ⚠️ Warn: 80-95% complete
+- ❌ Fail: < 80% complete
+
+**Function**: `check_data_completeness(table_name, required_columns)`
+
+**Example**:
+```sql
+SELECT * FROM check_data_completeness('agent_approvals', 
+  ARRAY['conversation_id', 'customer_message', 'draft_response']);
+```
 
 ### 2. Accuracy
-- **Definition:** Data values within expected ranges
-- **Target:** >99.5% accuracy
-- **Validation:** Check constraints, referential integrity
+
+**Definition**: Data values must be valid and within expected ranges
+
+**Checks**:
+- confidence_score: 0-100 range
+- status: One of (pending, approved, rejected, edited)
+- priority: One of (low, normal, high, urgent)
+- Email format: Valid email addresses
+
+**Threshold**:
+- ✅ Pass: 99%+ accurate
+- ⚠️ Warn: 95-99% accurate
+- ❌ Fail: < 95% accurate
+
+**Function**: `check_data_accuracy()`
+
+**Example**:
+```sql
+SELECT * FROM check_data_accuracy();
+```
 
 ### 3. Consistency
-- **Definition:** Data relationships and timestamps logical
-- **Target:** 100% consistency
-- **Validation:** Cross-table validation, temporal logic
+
+**Definition**: Foreign keys and relationships must be valid
+
+**Checks**:
+- No orphaned feedback (conversationId must link to approval)
+- No orphaned queries (conversationId must link to approval)
+- No orphaned learning data (approval_id must exist)
+
+**Threshold**:
+- ✅ Pass: 95%+ consistent
+- ⚠️ Warn: 80-95% consistent
+- ❌ Fail: < 80% consistent
+
+**Function**: `check_data_consistency()`
+
+**Example**:
+```sql
+SELECT * FROM check_data_consistency();
+```
 
 ### 4. Timeliness
-- **Definition:** Data freshness and update frequency
-- **Target:** <1 minute lag for operational data
-- **Validation:** Check last_updated_at timestamps
 
-### 5. Uniqueness
-- **Definition:** No duplicate records
-- **Target:** 100% uniqueness on primary/unique keys
-- **Validation:** Check for duplicate conversation_ids
+**Definition**: Data must be fresh and not stale
 
-## Validation Rules
+**Checks**:
+- No pending approvals > 24h old
+- No query logs > 60 days old (should be cleaned by retention policy)
+- Materialized views refreshed within SLA
 
-### agent_approvals Validation
+**Threshold**:
+- ✅ Pass: 90%+ fresh
+- ⚠️ Warn: 70-90% fresh
+- ❌ Fail: < 70% fresh
 
+**Function**: `check_data_timeliness()`
+
+**Example**:
 ```sql
--- Rule 1: No NULL required fields
-SELECT COUNT(*) as completeness_violations
-FROM agent_approvals
-WHERE conversation_id IS NULL OR serialized IS NULL OR status IS NULL;
-
--- Rule 2: Valid status values
-SELECT COUNT(*) as accuracy_violations
-FROM agent_approvals
-WHERE status NOT IN ('pending', 'approved', 'rejected', 'expired');
-
--- Rule 3: Timestamp consistency
-SELECT COUNT(*) as consistency_violations
-FROM agent_approvals
-WHERE updated_at < created_at;
-
--- Rule 4: Approved_by populated for non-pending
-SELECT COUNT(*) as logic_violations
-FROM agent_approvals
-WHERE status IN ('approved', 'rejected') AND approved_by IS NULL;
+SELECT * FROM check_data_timeliness();
 ```
 
-### agent_feedback Validation
+## Running Quality Checks
+
+### Manual Execution
 
 ```sql
--- Rule 1: Completeness
-SELECT COUNT(*) as completeness_violations
-FROM agent_feedback
-WHERE conversation_id IS NULL 
-   OR input_text IS NULL 
-   OR model_draft IS NULL;
+-- Run all quality checks
+SELECT * FROM run_all_quality_checks();
 
--- Rule 2: Rubric scores in range (1-5)
-SELECT COUNT(*) as accuracy_violations
-FROM agent_feedback
-WHERE (rubric->>'clarity')::INTEGER NOT BETWEEN 1 AND 5
-   OR (rubric->>'accuracy')::INTEGER NOT BETWEEN 1 AND 5
-   OR (rubric->>'tone')::INTEGER NOT BETWEEN 1 AND 5;
+-- Run specific dimension
+SELECT * FROM check_data_completeness('agent_approvals', 
+  ARRAY['conversation_id', 'customer_message', 'draft_response']);
 
--- Rule 3: Annotator populated when safe_to_send is set
-SELECT COUNT(*) as logic_violations
-FROM agent_feedback
-WHERE safe_to_send IS NOT NULL AND annotator IS NULL;
+SELECT * FROM check_data_accuracy();
+SELECT * FROM check_data_timeliness();
+SELECT * FROM check_data_consistency();
 ```
 
-### agent_queries Validation
+### Automated Execution (pg_cron)
 
 ```sql
--- Rule 1: Completeness
-SELECT COUNT(*) as completeness_violations
-FROM agent_queries
-WHERE conversation_id IS NULL OR query IS NULL OR result IS NULL OR agent IS NULL;
-
--- Rule 2: Latency within reasonable range (0-60000ms = 1 minute)
-SELECT COUNT(*) as accuracy_violations
-FROM agent_queries
-WHERE latency_ms < 0 OR latency_ms > 60000;
-
--- Rule 3: Approved queries not edited (logic check)
-SELECT COUNT(*) as logic_violations
-FROM agent_queries
-WHERE approved = true AND human_edited = true;
+-- Schedule daily quality checks at 3:00 AM
+SELECT cron.schedule(
+  'daily-data-quality-check',
+  '0 3 * * *',
+  $$
+  INSERT INTO data_quality_log (check_name, table_name, quality_dimension, check_result, score, failure_details)
+  SELECT 
+    check_name,
+    'agent_tables',
+    dimension,
+    result,
+    score,
+    details
+  FROM run_all_quality_checks();
+  $$
+);
 ```
 
-## Automated Quality Checks
+## Quality Monitoring
 
-### Daily Quality Report View
+### Current Quality Dashboard
 
 ```sql
-CREATE OR REPLACE VIEW v_data_quality_report AS
+-- Overall quality score (average of all dimensions)
 SELECT 
-  'agent_approvals' as table_name,
-  (SELECT COUNT(*) FROM agent_approvals WHERE conversation_id IS NULL OR serialized IS NULL) as completeness_violations,
-  (SELECT COUNT(*) FROM agent_approvals WHERE status NOT IN ('pending', 'approved', 'rejected', 'expired')) as accuracy_violations,
-  (SELECT COUNT(*) FROM agent_approvals WHERE updated_at < created_at) as consistency_violations,
-  NOW() as checked_at
-UNION ALL
+  AVG(score) as overall_quality_score,
+  COUNT(*) FILTER (WHERE check_result = 'pass') as passed_checks,
+  COUNT(*) FILTER (WHERE check_result = 'warn') as warning_checks,
+  COUNT(*) FILTER (WHERE check_result = 'fail') as failed_checks
+FROM v_data_quality_current;
+
+-- Quality by dimension
 SELECT 
-  'agent_feedback',
-  (SELECT COUNT(*) FROM agent_feedback WHERE conversation_id IS NULL OR input_text IS NULL OR model_draft IS NULL),
-  (SELECT COUNT(*) FROM agent_feedback WHERE (rubric->>'clarity')::INTEGER NOT BETWEEN 1 AND 5),
-  (SELECT COUNT(*) FROM agent_feedback WHERE safe_to_send IS NOT NULL AND annotator IS NULL),
-  NOW()
-UNION ALL
-SELECT 
-  'agent_queries',
-  (SELECT COUNT(*) FROM agent_queries WHERE conversation_id IS NULL OR query IS NULL OR result IS NULL),
-  (SELECT COUNT(*) FROM agent_queries WHERE latency_ms < 0 OR latency_ms > 60000),
-  (SELECT COUNT(*) FROM agent_queries WHERE approved = true AND human_edited = true),
-  NOW();
+  quality_dimension,
+  score,
+  check_result,
+  minutes_since_check
+FROM v_data_quality_current
+ORDER BY score ASC;
 ```
 
-### Quality Monitoring Script
+### Quality Trend (Last 30 Days)
 
-**File:** `scripts/data/quality-check.sh`
+```sql
+SELECT 
+  DATE_TRUNC('day', checked_at) as day,
+  quality_dimension,
+  AVG(score) as avg_score,
+  MIN(score) as min_score,
+  MAX(score) as max_score
+FROM data_quality_log
+WHERE checked_at > NOW() - INTERVAL '30 days'
+GROUP BY DATE_TRUNC('day', checked_at), quality_dimension
+ORDER BY day DESC, quality_dimension;
+```
+
+## Alerts & Notifications
+
+### Alert Rules
+
+**Critical** (Immediate Action):
+- Any quality check fails (score < 80)
+- Completeness < 90%
+- Accuracy < 95%
+
+**Warning** (Review Within 24h):
+- Quality score 80-95%
+- Timeliness check warns
+- Consistency orphans > 10
+
+**Info** (Weekly Review):
+- Quality score 95-99%
+- Minor completeness issues
+
+### Alert Implementation
+
+```sql
+-- Create alert function
+CREATE OR REPLACE FUNCTION alert_on_quality_failure()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF NEW.check_result = 'fail' OR NEW.score < 80 THEN
+    -- Insert into notifications or send webhook
+    INSERT INTO agent_sdk_notifications (
+      type, priority, message, created_at
+    ) VALUES (
+      'quality_alert',
+      'urgent',
+      format('Data quality failure: %s scored %s%%', NEW.check_name, NEW.score),
+      NOW()
+    );
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_quality_alert
+AFTER INSERT ON data_quality_log
+FOR EACH ROW
+EXECUTE FUNCTION alert_on_quality_failure();
+```
+
+## Data Quality SLAs
+
+| Dimension | Target Score | Alert Threshold | Review Frequency |
+|-----------|--------------|-----------------|------------------|
+| Completeness | ≥ 98% | < 95% | Daily |
+| Accuracy | ≥ 99% | < 95% | Daily |
+| Consistency | ≥ 98% | < 95% | Daily |
+| Timeliness | ≥ 95% | < 90% | Daily |
+| **Overall** | **≥ 97%** | **< 93%** | **Daily** |
+
+## Remediation Playbooks
+
+### Completeness Issues
+
+**Problem**: NULL values in required fields
+
+**Diagnosis**:
+```sql
+SELECT * FROM check_data_completeness('agent_approvals', 
+  ARRAY['conversation_id', 'customer_message', 'draft_response']);
+```
+
+**Remediation**:
+1. Identify rows with NULLs
+2. Backfill from source data (Chatwoot)
+3. Add NOT NULL constraints after cleanup
+4. Update application validation
+
+### Accuracy Issues
+
+**Problem**: Invalid data values (out-of-range, wrong enum)
+
+**Diagnosis**:
+```sql
+-- Find invalid records
+SELECT * FROM agent_approvals 
+WHERE confidence_score < 0 OR confidence_score > 100
+OR status NOT IN ('pending', 'approved', 'rejected', 'edited');
+```
+
+**Remediation**:
+1. Correct invalid values
+2. Add CHECK constraints
+3. Update application validation
+4. Review agent logic
+
+### Consistency Issues
+
+**Problem**: Orphaned records (broken foreign keys)
+
+**Diagnosis**:
+```sql
+-- Find orphans
+SELECT f.* FROM "AgentFeedback" f
+WHERE NOT EXISTS (
+  SELECT 1 FROM agent_approvals a WHERE a.chatwoot_conversation_id = f."conversationId"
+);
+```
+
+**Remediation**:
+1. Delete orphaned records (after backup)
+2. Strengthen foreign key constraints
+3. Update deletion cascade rules
+4. Review application logic
+
+### Timeliness Issues
+
+**Problem**: Stale pending approvals
+
+**Diagnosis**:
+```sql
+-- Find stale approvals
+SELECT * FROM agent_approvals
+WHERE status = 'pending'
+AND created_at < NOW() - INTERVAL '24 hours'
+ORDER BY created_at;
+```
+
+**Remediation**:
+1. Review and resolve stale items
+2. Auto-reject after timeout
+3. Increase operator capacity
+4. Improve agent confidence
+
+## Reporting
+
+### Daily Quality Report
+
+```sql
+-- Summary for daily standup
+SELECT 
+  'Daily Data Quality Report' as report,
+  (SELECT AVG(score) FROM v_data_quality_current) as overall_score,
+  (SELECT COUNT(*) FROM v_data_quality_current WHERE check_result = 'fail') as failures,
+  (SELECT COUNT(*) FROM v_data_quality_current WHERE check_result = 'warn') as warnings,
+  (SELECT COUNT(*) FROM agent_approvals WHERE status = 'pending' AND created_at < NOW() - INTERVAL '24 hours') as stale_pending,
+  NOW() as generated_at;
+```
+
+### Weekly Quality Trend
+
+```sql
+-- Quality improvement over time
+SELECT 
+  DATE_TRUNC('week', checked_at) as week,
+  AVG(score) as avg_quality_score,
+  COUNT(*) FILTER (WHERE check_result = 'fail') as total_failures
+FROM data_quality_log
+WHERE checked_at > NOW() - INTERVAL '12 weeks'
+GROUP BY DATE_TRUNC('week', checked_at)
+ORDER BY week;
+```
+
+## Integration with CI/CD
+
+### Pre-Deployment Quality Gate
 
 ```bash
 #!/bin/bash
-# Data Quality Validation
-# Run: Daily at 05:00 UTC
+# scripts/data-quality-gate.sh
 
-psql $DATABASE_URL << 'EOF'
-SELECT 
-  table_name,
-  completeness_violations,
-  accuracy_violations,
-  consistency_violations,
-  CASE 
-    WHEN completeness_violations + accuracy_violations + consistency_violations = 0 
-    THEN '✅ PASS'
-    ELSE '❌ FAIL'
-  END as status
-FROM v_data_quality_report;
+# Run quality checks
+psql $DATABASE_URL -c "SELECT * FROM run_all_quality_checks();" -t -A -F',' > /tmp/quality_results.csv
 
--- Alert if any violations
-DO $$
-DECLARE
-  v_total_violations INTEGER;
-BEGIN
-  SELECT SUM(completeness_violations + accuracy_violations + consistency_violations) 
-  INTO v_total_violations
-  FROM v_data_quality_report;
-  
-  IF v_total_violations > 0 THEN
-    INSERT INTO observability_logs (level, message, metadata)
-    VALUES (
-      'ERROR',
-      'Data quality violations detected',
-      jsonb_build_object('total_violations', v_total_violations)
-    );
-  END IF;
-END $$;
-EOF
+# Parse results
+FAILURES=$(grep ',fail,' /tmp/quality_results.csv | wc -l)
+
+if [ $FAILURES -gt 0 ]; then
+  echo "❌ Data quality check failed: $FAILURES failures"
+  exit 1
+fi
+
+echo "✅ Data quality check passed"
+exit 0
+```
+
+### GitHub Action
+
+```yaml
+name: Data Quality Check
+on: [pull_request]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run data quality checks
+        run: ./scripts/data-quality-gate.sh
 ```
 
 ---
 
-**Status:** Framework defined, ready for implementation  
-**Next:** Create quality monitoring scripts and alerts
-
+**Status**: Framework complete and operational  
+**Functions**: 4 quality check functions  
+**Monitoring**: Real-time quality view  
+**Automation**: Scheduled checks with alerting

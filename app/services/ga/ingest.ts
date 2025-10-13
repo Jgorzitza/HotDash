@@ -75,6 +75,12 @@ export async function getLandingPageAnomalies(
   try {
     sessions = await client.fetchLandingPageSessions(range);
   } catch (error) {
+    console.error('[ERROR] GA API call failed:', {
+      error: error instanceof Error ? error.message : String(error),
+      propertyId: config.propertyId,
+      range,
+      stack: error instanceof Error ? error.stack : undefined
+    });
     throw new ServiceError("Failed to retrieve GA sessions", {
       scope: "ga.sessions",
       retryable: true,

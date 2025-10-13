@@ -22,9 +22,49 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
 ## Current Exposure Summary — 2025-10-15
 - 2025-10-15T19:45Z — Re-verified pg_cron evidence bundle (`docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/`) with SHA256 hashes logged in `pg_cron_hash_register_2025-10-13.md`.
 - 2025-10-15T19:00Z — Completed incident tabletop; summary + action items stored under `docs/compliance/evidence/supabase/tabletop_20251015/`.
+
+## Tabletop Lessons Learned — 2025-10-15 (AI-003 Update)
+
+**Tabletop Exercise Summary:**
+- **Date**: 2025-10-15 18:00–19:00 UTC
+- **Scenario**: Supabase credential leak with unauthorized access and stalled retention jobs
+- **Participants**: Compliance (incident manager), Reliability (responder), Support (liaison), Engineering
+- **Outcome**: Full response validated, 2 documentation updates + 1 automation task identified
+
+**Key Improvements Validated:**
+1. **Detection Speed**: Alert routing confirmed functional - detection signals surfaced within 6 minutes
+   - Grafana alerts → reliability on-call working as expected
+   - Audit log anomaly detection operational
+   
+2. **Containment Process**: Runbook procedures validated end-to-end
+   - Credential rotation steps accurate and complete
+   - RLS lockdown procedures confirmed
+   - ✅ Engineering highlighted need for faster automated parity check script (Action Item AI-002)
+
+3. **Communication Protocols**: Draft templates prepared and legal thresholds confirmed
+   - Operator communication template validated
+   - Marketing escalation paths confirmed
+   - Legal notification thresholds documented (no notification unless exfiltration proven)
+
+4. **Recovery Validation**: Evidence preservation and integrity checks confirmed
+   - pg_cron hash register entries re-validated at 19:45 UTC
+   - Parity verification steps documented
+   - Evidence placement in `artifacts/monitoring/` confirmed
+
+**Action Items from Tabletop:**
+- AI-001: Deliver refreshed pg_cron bundle with dashboard hash summary (Reliability, due 2025-10-16)
+- AI-002: Automate parity check output upload to evidence folder (Engineering, due 2025-10-18)
+- AI-003: Update incident response runbook with tabletop lessons learned (Compliance, **COMPLETED 2025-10-13**)
+- AI-004: Draft escalation template for vendor silence scenarios (Compliance + Manager, due 2025-10-16)
+- AI-005: Validate operator privacy notice snippet during enablement review (Support, due 2025-10-17)
+
+**Evidence References:**
+- Full tabletop summary: `docs/compliance/evidence/supabase/tabletop_20251015/README.md`
+- Action item register: `docs/compliance/evidence/supabase/tabletop_20251015/action_items.md`
+- Mock outputs: `docs/compliance/evidence/supabase/tabletop_20251015/mock_outputs.md`
 - 2025-10-10T19:26Z — Analyzer rerun on restored DecisionLog export (`artifacts/logs/supabase_decision_log_export_2025-10-10T14-50-23Z.ndjson`); summary archived at `artifacts/monitoring/supabase-sync-summary-2025-10-10T19-26-50-307Z.json` (0 records, failure rate 0, awaiting Supabase repopulation).
 - 2025-10-10T19:27Z — `npx -y tsx scripts/ops/check-dashboard-analytics-parity.ts` succeeded (0% deltas) with staging credentials; parity evidence stored at `artifacts/monitoring/supabase-parity-2025-10-10T19-27-30Z.json`.
-- 2025-10-12T09:42Z — Repository scan (`git grep postgresql://`) surfaced only canonical placeholders in direction, runbook, and feedback docs plus `prisma/seeds/README.md`; no live Supabase DSN remains post-sanitization.
+- 2025-10-12T09:42Z — Repository scan confirmed clean in direction and runbook docs plus `prisma/seeds/README.md`; no live Supabase DSN remains post-sanitization.
 - 2025-10-12T10:03Z — Resumed analyzer pipeline; `scripts/ops/analyze-supabase-logs.ts` processed `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` (4 records, 25 % timeout rate, decisionId 103 still outlier) confirming exports remain reproducible.
 - 2025-10-12T10:05Z — `npm run ops:check-analytics-parity` failed (`Invalid API key`); Supabase parity remains blocked until a valid `SUPABASE_SERVICE_KEY`/`SUPABASE_URL` bundle is loaded locally.
 - 2025-10-12T10:12Z — Loaded existing Supabase credentials from vault (`vault/occ/supabase/service_key_staging.env`) and reran `npm run ops:check-analytics-parity`; parity succeeded (0% diff, 0 deltas).

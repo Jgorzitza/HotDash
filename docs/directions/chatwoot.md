@@ -2,377 +2,296 @@
 epoch: 2025.10.E1
 doc: docs/directions/chatwoot.md
 owner: manager
-last_reviewed: 2025-10-10
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-17
+expires: 2025-10-20
 ---
 # Chatwoot Integrations — Direction (Operator Control Center)
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
 - Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
 
-> Manager authored. This agent owns the Chatwoot Fly deployment end-to-end; do not pass work off until evidence proves completion.
+## 🚨 P1 PRIORITY: Zoho Mail Integration + Live Chat (2025-10-13)
 
-## Local Execution Policy (Auto-Run)
+**Assignment**: Configure Chatwoot for email + live chat on Hot Rod AN
+**Timeline**: 10 hours (complete by 2025-10-14T20:00:00Z)
+**Evidence**: Log all work in feedback/chatwoot.md
 
-You may run local, non-interactive commands and scripts without approval. Guardrails:
+### Task 1: Zoho Mail IMAP Configuration (3 hours)
 
-- Scope: local repo and local Supabase; under auto-run do not change Fly apps or secrets. Status/list checks are fine.
-- Non-interactive: disable pagers; avoid interactive prompts.
-- Evidence: log timestamp, command, outputs in feedback/chatwoot.md; artifacts under artifacts/integrations/ or artifacts/chatwoot/.
-- Secrets: use vault/env; never print values.
-- Tooling: npx supabase for local; git/gh with --no-pager; prefer rg else grep -nE.
-- Retry: 2 attempts then escalate with logs.
+**Credentials**: Source from vault before starting
+```bash
+cd ~/HotDash/hot-dash
+source vault/occ/zoho/customer_support_staging.env
+# Sets: ZOHO_IMAP_HOST, ZOHO_IMAP_PORT, ZOHO_IMAP_USER, ZOHO_IMAP_PASS
+```
 
-- Execute all Chatwoot Fly tasks captured in `docs/deployment/chatwoot_fly_runbook.md` and the status artifact `artifacts/integrations/chatwoot-fly-deployment-2025-10-10.md`.
-- Before touching Fly, source credentials locally (`source vault/occ/fly/api_token.env`) and confirm `FLY_API_TOKEN` is set via `/home/justin/.fly/bin/fly auth status` (and not the placeholder). Capture the confirmation in your feedback log.
-- Coordinate directly with reliability/deployment for infrastructure needs but retain task ownership—log every update (including the command/output) in `feedback/chatwoot.md`.
-- Ensure secrets, health checks, and evidence bundles are complete before handing off to support/QA.
-- Stack guardrails: Chatwoot persists to Supabase only (see `docs/directions/README.md#canonical-toolkit--secrets`); do not provision Fly Postgres or alternate databases.
-- Align Chatwoot automation with Shopify data sources: docs/dev/admin-graphql.md for admin facts, docs/dev/storefront-mcp.md for customer context.
+**Configuration**:
+- Server: imap.zohocloud.ca (Canadian Zoho)
+- Port: 993
+- Security: SSL/TLS
+- Username: customer.support@hotrodan.com
+- Password: (from vault)
 
-## Current Sprint Focus — 2025-10-10
-Work through the runbook sequentially and close each item with evidence:
+**Steps**:
+1. Access Chatwoot dashboard (deployed on Fly.io)
+2. Navigate to Settings → Inboxes → Add Inbox
+3. Select "Email" channel
+4. Enter IMAP configuration from vault
+5. Set polling interval: 2-5 minutes (recommend 3 min)
+6. Test inbox connection
+7. Verify emails sync from Zoho
 
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+**Success Criteria**:
+- ✅ IMAP connection established
+- ✅ Test email received in Chatwoot
+- ✅ Email appears as conversation
 
-**Reference Docs**:
-- docs/AgentSDKopenAI.md - Sections 4-5 for Chatwoot integration patterns
-- docs/integrations/chatwoot_readiness.md - Integration checklist (your completed work)
+**Evidence Required**:
+- Screenshot of IMAP config (REDACT password)
+- Screenshot of test email in Chatwoot
+- Connection test log
+- Timestamp: 2025-10-14THHMMSSZ
 
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/chatwoot.md and continue):
-
-1. ✅ **Agent SDK Integration Plan** - COMPLETE (2025-10-11, 1-2h)
-   - 2,500 lines comprehensive webhook integration guide
-   - 350 lines code implementation
-   - 7 test scenarios documented
-   - Evidence: feedback/chatwoot.md with complete plan
-
-2. **Webhook Configuration for Agent SDK** - Set up webhook endpoint for incoming messages
-   - Configure webhook in Chatwoot Settings → Integrations → Webhooks
-   - Point to: https://hotdash-agent-service.fly.dev/webhooks/chatwoot (will be available after @engineer deploys)
-   - Subscribe to: message_created event
-   - Test webhook delivery with curl or Chatwoot test button
-   - Document webhook secret for HMAC verification
-   - Coordinate: Tag @engineer when webhook endpoint is live
-   - Evidence: Webhook configuration screenshot, test payload logged in feedback/chatwoot.md
-
-3. **HMAC Signature Verification** - Implement security for webhooks
-   - Create script to verify Chatwoot webhook signatures
-   - Test with sample payloads from your integration guide
-   - Document verification process in runbook
-   - Provide code snippet to @engineer for server.ts
-   - Evidence: Verification script, test results
-
-4. **Conversation Flow Testing** - Verify all API endpoints work
-   - Test private note creation API
-   - Test public reply API (without sending to customers)
-   - Test conversation metadata retrieval
-   - Test agent assignment APIs
-   - Document API response formats and error codes
-   - Evidence: API test results, curl examples documented
-
-5. **End-to-End Agent Flow Testing** - Test full Agent SDK integration
-   - Send test message through Chatwoot
-   - Verify webhook delivered to Agent SDK
-   - Verify private note created with agent draft
-   - Test approval → public reply flow (staging only)
-   - Document complete conversation lifecycle
-   - Coordinate: Tag @engineer and @qa for integration testing
-   - Evidence: Full conversation screenshots, logs
-
-**Ongoing Requirements**:
-- Coordinate with @engineer on webhook endpoint availability
-- Tag @reliability for Chatwoot Fly.io health verification
-- Log all API tests in feedback/chatwoot.md with timestamps
-- No production webhook configuration until internal testing complete
+**Deadline**: 2025-10-14T12:00:00Z
 
 ---
 
-### 🚀 IMMEDIATE TASK (While Deployment Fixes DSN)
+### Task 2: Zoho Mail SMTP Configuration (2 hours)
 
-**Task A: Webhook Signature Verification Script** - Can build now
-- Create standalone script to verify Chatwoot webhook signatures
-- Implement HMAC verification logic
-- Test with sample payloads from your integration docs
-- Document verification process
-- Provide code snippet to @engineer for Agent SDK server.ts
-- Evidence: Script working, test results, documentation
+**Credentials**: Same vault file as IMAP
+```bash
+source vault/occ/zoho/customer_support_staging.env
+# Sets: ZOHO_SMTP_HOST, ZOHO_SMTP_PORT, ZOHO_SMTP_USER, ZOHO_SMTP_PASS
+```
 
-**Task B: API Testing Suite** - Prepare for post-DSN-fix testing
-- Create curl scripts for all Chatwoot API endpoints
-- Document expected responses
-- Create test data (sample conversations)
-- Prepare API integration tests
-- Evidence: Complete test script library
+**Configuration**:
+- Server: smtp.zohocloud.ca (Canadian Zoho)
+- Port: 465 (SSL) or 587 (TLS) - test both, use 465 if works
+- Security: SSL/TLS
+- Username: customer.support@hotrodan.com
+- Password: (from vault)
 
-**Task C: Conversation Flow Documentation** - Map complete lifecycle
-- Document conversation states and transitions
-- Map agent assignment logic
-- Document private note vs public reply workflows
-- Create flowchart for conversation lifecycle
-- Evidence: Flow documentation with diagrams
+**Steps**:
+1. In same email inbox, configure SMTP settings
+2. Enter SMTP configuration from vault
+3. Enable SSL/TLS
+4. Test outbound email
+5. Send test reply from Chatwoot
+6. Verify recipient receives email with correct FROM address
 
-Execute A immediately (most valuable), then B and C.
+**Success Criteria**:
+- ✅ SMTP connection established
+- ✅ Test reply sent successfully
+- ✅ Email received with FROM: customer.support@hotrodan.com
+- ✅ Email signature displays correctly
 
----
+**Evidence Required**:
+- Screenshot of SMTP config (REDACT password)
+- Screenshot of sent email
+- Email headers showing correct FROM/SMTP path
+- Timestamp
 
-### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
-
-**Task D: Chatwoot Admin Configuration Documentation**
-- Document super admin setup process
-- Create API token generation guide with correct scopes
-- Document account configuration best practices
-- Create troubleshooting guide for common issues
-- Evidence: Admin configuration guide in docs/integrations/
-
-**Task E: Message Template Optimization**
-- Review existing Chatwoot templates/macros
-- Optimize for Agent SDK compatibility
-- Create template variables for agent customization
-- Document template best practices
-- Evidence: Optimized templates, documentation
-
-**Task F: Conversation Routing Logic**
-- Design conversation assignment logic for agents
-- Document routing rules (order support vs product questions)
-- Create priority handling (VIP, urgent, standard)
-- Map to Agent SDK triage patterns
-- Evidence: Routing logic document with flowchart
-
-**Task G: Performance Monitoring Setup**
-- Create scripts to monitor Chatwoot API response times
-- Track webhook delivery latency
-- Monitor conversation volume metrics
-- Document performance baselines
-- Evidence: Monitoring scripts, baseline report
-
-**Task H: Integration Testing Scripts**
-- Create end-to-end test scripts for all Chatwoot APIs
-- Mock webhook payloads for testing
-- Create test data (sample conversations)
-- Document expected responses
-- Evidence: Complete test suite
-
-**Task I: Operator Workflow Documentation**
-- Document current manual Chatwoot workflows
-- Identify automation opportunities with Agent SDK
-- Create before/after workflow diagrams
-- Calculate time savings
-- Evidence: Workflow analysis
-
-**Task J: Chatwoot-to-Supabase Sync Design**
-- Design data sync from Chatwoot to Supabase for analytics
-- Document conversation metrics to track
-- Create sync job specification
-- Plan for real-time vs batch sync
-- Evidence: Sync design document
-
-Execute D-J in any order - all independent and valuable.
+**Deadline**: 2025-10-14T14:00:00Z
 
 ---
 
-### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+### Task 3: Chatwoot Email Inbox Setup (2 hours)
 
-**Task K-O: Advanced Chatwoot Automation** (5 tasks)
-- K: Design auto-assignment rules for conversations (by topic, VIP status, complexity)
-- L: Create canned response library optimized for agent customization
-- M: Implement conversation tagging automation for analytics
-- N: Design SLA monitoring and alerting system
-- O: Create customer sentiment analysis integration
+**Steps**:
+1. Configure inbox name: "Hot Rod AN Customer Support"
+2. Set email address display: customer.support@hotrodan.com
+3. Assign agents to inbox (if multiple Chatwoot users)
+4. Configure auto-assignment rules (round-robin or manual)
+5. Set working hours (if applicable)
+6. Configure away message (if applicable)
+7. Test bidirectional email flow:
+   - Customer sends to customer.support@hotrodan.com
+   - Email arrives in Chatwoot as conversation
+   - Agent replies from Chatwoot
+   - Customer receives reply from customer.support@hotrodan.com
 
-**Task P-T: Operator Productivity** (5 tasks)
-- P: Design operator efficiency dashboard (response time, resolution rate, workload)
-- Q: Create conversation templates for complex scenarios
-- R: Implement keyboard shortcuts and operator UX improvements
-- S: Design operator performance gamification system
-- T: Create operator collaboration features (internal notes, @mentions)
+**Success Criteria**:
+- ✅ Full bidirectional email working
+- ✅ FROM address correct in both directions
+- ✅ Conversation threading works
+- ✅ Agent assignment functioning
 
-**Task U-Y: Analytics & Reporting** (5 tasks)
-- U: Design conversation analytics dashboard (volume, topics, resolution)
-- Y: Create customer satisfaction tracking integration
-- V: Implement conversation export and archiving system
-- W: Design support knowledge gap identification system
-- X: Create operator training need identification from conversation patterns
+**Evidence Required**:
+- Inbox configuration screenshot
+- Full email thread test (customer → Chatwoot → customer)
+- Screenshot of conversation in Chatwoot
+- Timestamp
 
-Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
-
----
-
-### 🚀 THIRD MASSIVE EXPANSION (Another 20 Tasks)
-
-**Task Z-AD: Advanced Automation** (5 tasks)
-- Z: Design intelligent auto-responder for common queries
-- AA: Create conversation prediction engine (intent, urgency, complexity)
-- AB: Implement smart suggestion system for operators
-- AC: Design automated quality scoring for conversations
-- AD: Create conversation analytics and insights engine
-
-**Task AE-AI: Operator Tools** (5 tasks)
-- AE: Design operator workspace optimization tools
-- AF: Create conversation search and discovery system
-- AG: Implement operator productivity analytics
-- AH: Design team collaboration features (shared notes, tags)
-- AI: Create operator coaching and feedback system
-
-**Task AJ-AN: Customer Experience** (5 tasks)
-- AJ: Design customer sentiment tracking and alerting
-- AK: Create proactive support trigger system
-- AL: Implement customer journey tracking in conversations
-- AM: Design VIP customer experience workflows
-- AN: Create post-conversation customer engagement automation
-
-**Task AO-AR: Integration & Data** (5 tasks)
-- AO: Design Chatwoot-to-CRM data sync
-- AP: Create conversation data export and archiving
-- AQ: Implement real-time conversation analytics
-- AR: Design conversation reporting and dashboards
-
-Execute Z-AR in any order. Total: 42 tasks, ~20-25 hours work.
+**Deadline**: 2025-10-14T16:00:00Z
 
 ---
 
-### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
+### Task 4: Live Chat Widget Configuration (2 hours)
 
-**Task AS-AW: Customer Intelligence** (5 tasks)
-- AS: Design conversation intelligence extraction
-- AT: Create customer health score calculation
-- AU: Implement sentiment trend analysis
-- AV: Design conversation topic clustering
-- AW: Create predictive support needs forecasting
+**Important**: No training data for Chatwoot widget - search Chatwoot docs if needed
 
-**Task AX-BA: Automation Engine** (4 tasks)
-- AX: Design rule-based automation builder
-- AY: Create trigger and action library
-- AZ: Implement automation testing framework
-- BA: Design automation analytics dashboard
+**Steps**:
+1. In Chatwoot dashboard, navigate to Settings → Inboxes → Add Inbox
+2. Select "Website" channel (live chat widget)
+3. Configure widget settings:
+   - Website name: "Hot Rod AN"
+   - Website domain: hotrodan.com (and any staging domains)
+   - Widget color: Match Hot Rod AN branding
+   - Welcome message: "Need help with AN fittings? Chat with us!"
+   - Pre-chat form: Collect name + email
+4. Generate widget embed code
+5. Customize widget appearance:
+   - Logo: Hot Rod AN logo
+   - Agent avatar: Hot Rod AN branding
+   - Position: Bottom right
+   - Mobile responsive: Enabled
+6. Test widget in staging environment first
 
-**Task BB-BF: Multi-Channel Support** (5 tasks)
-- BB: Design omnichannel conversation threading
-- BC: Create channel-specific message formatting
-- BD: Implement cross-channel handoff workflows
-- BE: Design channel availability and routing
-- BF: Create unified inbox for all channels
+**Widget Embed Code** (example format):
+```javascript
+<script>
+  (function(d,t) {
+    var BASE_URL="https://your-chatwoot-instance.fly.dev";
+    var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=BASE_URL+"/packs/js/sdk.js";
+    g.defer = true;
+    g.async = true;
+    s.parentNode.insertBefore(g,s);
+    g.onload=function(){
+      window.chatwootSDK.run({
+        websiteToken: 'WEBSITE_TOKEN_HERE',
+        baseUrl: BASE_URL
+      })
+    }
+  })(document,"script");
+</script>
+```
 
-**Task BG-BK: Advanced Features** (6 tasks)
-- BG: Design conversation summarization AI
-- BH: Create conversation search with NLP
-- BI: Implement conversation tagging automation
-- BJ: Design conversation archival and retention
-- BK: Create conversation replay and audit
+**Handoff to Engineer**:
+- Provide complete embed code
+- Document where to place (likely in Hot Rod AN theme layout)
+- Provide installation instructions
+- Include screenshot of expected widget appearance
 
-Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
+**Success Criteria**:
+- ✅ Widget configured and tested in Chatwoot
+- ✅ Embed code generated
+- ✅ Branding customized for Hot Rod AN
+- ✅ Engineer has clear installation instructions
 
----
+**Evidence Required**:
+- Widget configuration screenshot
+- Embed code (store in docs/chatwoot/widget_embed_code.txt)
+- Widget preview screenshot
+- Installation instructions for Engineer
+- Timestamp
 
-### 🚀 SEVENTH MASSIVE EXPANSION (Another 25 Tasks) - For Ultra-Fast Agent
-
-**Your Performance**: A++ grade, 5-6x faster than normal - Outstanding! 🎉
-
-**Task BL-BP: Conversation AI Enhancement** (5 tasks)
-- BL: Design conversation context management
-- BM: Create conversation memory and recall
-- BN: Implement conversation branching logic
-- BO: Design conversation emotion detection
-- BP: Create conversation intent classification
-
-**Task BQ-BU: Agent Assistance** (5 tasks)
-- BQ: Design agent knowledge base integration
-- BR: Create agent recommendation engine
-- BS: Implement agent coaching in real-time
-- BT: Design agent performance insights
-- BU: Create agent workload optimization
-
-**Task BV-BZ: Customer Journey** (5 tasks)
-- BV: Design customer lifecycle tracking
-- BW: Create touchpoint mapping and analytics
-- BX: Implement customer health scoring
-- BY: Design customer engagement automation
-- BZ: Create customer win-back workflows
-
-**Task CA-CE: Integration Ecosystem** (5 tasks)
-- CA: Design CRM integration framework
-- CB: Create helpdesk integration (Zendesk/Intercom)
-- CC: Implement social media integration
-- CD: Design e-commerce platform integration
-- CE: Create marketing automation integration
-
-**Task CF-CJ: Advanced Operations** (5 tasks)
-- CF: Design conversation load balancing
-- CG: Create intelligent routing algorithms
-- CH: Implement conversation prioritization
-- CI: Design SLA management automation
-- CJ: Create capacity planning tools
-
-Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
+**Deadline**: 2025-10-14T18:00:00Z
 
 ---
 
-### 📋 WEBHOOK STATUS UPDATE (2025-10-11T22:40Z)
+### Task 5: Email Signature & Templates (1 hour)
 
-**Task 2 Blocker**: Webhook endpoint - Engineer is prioritizing this
+**Email Signature**:
+Create professional signature for customer.support@hotrodan.com:
+```
+Best regards,
+Hot Rod AN Customer Support
 
-**Options for You**:
-1. ✅ **Continue with BL-CJ tasks** (recommended - keeps you productive)
-2. ⏳ Wait for webhook notification (Engineer will notify in their feedback when deployed)
+Hot Rod AN LLC
+Premium AN Fittings & Fuel System Components
+www.hotrodan.com
+Phone: [if available]
+Hours: [if applicable]
+```
 
-**When webhook deploys**: Return to Task 2, complete it, then continue with remaining tasks
+**Canned Responses** (create templates for common questions):
+1. **Shipping timeframe**: "Thanks for your order! Most orders ship within 1-2 business days..."
+2. **AN sizing help**: "AN fittings use a dash size system. Here's a quick guide..."
+3. **Return policy**: "We accept returns within 30 days..."
+4. **Technical support**: "For technical fitment questions, we recommend..."
+5. **Order status**: "Let me check your order status. Can you provide your order number?"
 
-**Manager Note**: Your velocity is exceptional. We'll keep providing deep backlogs to match your pace!
+**Auto-Responder** (optional):
+- After hours message
+- Weekend message
+- Holiday message
 
----
+**Steps**:
+1. Configure signature in Chatwoot inbox settings
+2. Create canned responses in Chatwoot
+3. Test signature appears in outbound emails
+4. Test canned response insertion
 
-### 📋 EVIDENCE REQUIREMENT REMINDER (2025-10-11T22:40Z)
+**Success Criteria**:
+- ✅ Signature configured
+- ✅ 5+ canned responses created
+- ✅ Signature appears in test emails
+- ✅ Canned responses easy to use
 
-**QA validates all completed tasks - provide proof**:
-- ✅ Config files: `app/config/chatwoot.ts:15-45 (webhook handlers defined)`
-- ✅ Test results: `Tests pass (app/config/chatwoot.test.ts: 8 passing)`
-- ✅ Documentation: `docs/chatwoot/webhooks.md (sections: setup, events, testing)`
-- ✅ API testing: `Webhook test: curl logs in artifacts/chatwoot/webhook-test.log`
+**Evidence Required**:
+- Screenshot of signature config
+- List of canned responses created
+- Test email showing signature
+- Timestamp
 
-**NOT Acceptable**: "Webhook config done", "Integration complete", "Testing finished"
-
----
-
-### ⚡ BLOCKER MANAGEMENT (2025-10-11T22:25Z)
-
-**Known Dependencies** (DO NOT wait - work around):
-- Task 2 (Webhook Config): Blocked by Engineer endpoint → SKIP to Task 3+, document requirements
-
-**Your Strategy**: Execute all other tasks. For Task 2, create webhook spec document showing what you need from Engineer, then move on.
-
----
-
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
-
-**CEO Decision**: Emergency refocus on launch gates
-
-**Your Status**: PAUSED - Stand by until launch gates complete
-
-**Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
-
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
-
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
-
-**Your tasks remain in direction file - will resume after launch.**
+**Deadline**: 2025-10-14T20:00:00Z
 
 ---
 
-## ✅ BLOCKER CLEARED (2025-10-11T23:20Z)
+## MCP Tools NOT Required
 
-**Engineer Update**: Your blockers are CLEARED! 🎉
+Chatwoot configuration is primarily UI-based. No MCP tools needed for this work.
 
-**What's Ready**:
-- LlamaIndex MCP Server: DEPLOYED and WORKING
-- Webhook Endpoints: LIVE and TESTED
+## Evidence Gate
 
-**Your Action**: Resume blocked tasks immediately + continue with your task list
+Every task must log in feedback/chatwoot.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ format)
+- Task completed
+- Screenshot/artifact path
+- Issues encountered (if any)
+- Next steps
 
-**Evidence**: Test the new functionality, document results, continue with remaining tasks
+Example entry:
+```markdown
+## 2025-10-14T12:00:00Z — Task 1 Complete: IMAP Configuration
 
-**Timeline**: No more waiting - execute now
+**Task**: Zoho Mail IMAP setup
+**Status**: ✅ Complete
+**Evidence**: 
+- Screenshot: artifacts/chatwoot/imap_config_2025-10-14.png
+- Test log: IMAP connection successful, 3min polling interval
+**Issues**: None
+**Next**: Task 2 - SMTP configuration
+```
+
+## Blockers to Escalate
+
+If ANY task blocked >2 hours:
+1. Document blocker in feedback/chatwoot.md
+2. Note what was tried (2 attempts minimum)
+3. Escalate to Manager in feedback/manager.md
+4. Include error messages/screenshots
+
+## Post-Completion
+
+After all 5 tasks complete:
+1. Comprehensive test of full email + chat flow
+2. Create handoff document for Engineer (widget installation)
+3. Document any Zoho-specific quirks discovered
+4. Update feedback/chatwoot.md with final status
+5. Mark complete in Manager daily standup
+
+**Target Completion**: 2025-10-14T20:00:00Z (27 hours from assignment)
+
+## Coordination
+
+- **Engineer**: Will install widget after Task 4 complete
+- **Manager**: Monitoring progress in daily standups
+- **Support**: May use system after deployment complete
+

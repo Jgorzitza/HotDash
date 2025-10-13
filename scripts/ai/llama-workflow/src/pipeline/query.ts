@@ -1,12 +1,13 @@
 import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
+import { queryCache } from '../cache.js';
 import { 
   VectorStoreIndex, 
   Settings, 
-  OpenAI, 
-  OpenAIEmbedding,
-  BaseQueryEngine 
+  BaseQueryEngine,
+  storageContextFromDefaults
 } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -18,6 +19,7 @@ export interface QueryResult {
     topK: number;
     timestamp: string;
     processingTime: number;
+    cached?: boolean;
   };
 }
 
@@ -45,15 +47,14 @@ interface QueryResponse {
 export async function loadIndex(): Promise<VectorStoreIndex | null> {
   const config = getConfig();
   
-  // Configure LlamaIndex with OpenAI
-  Settings.llm = new OpenAI({
-    apiKey: config.OPENAI_API_KEY,
-    model: 'gpt-3.5-turbo',
-  });
-  
+  // Configure OpenAI models (required for LlamaIndex)
   Settings.embedModel = new OpenAIEmbedding({
+    model: "text-embedding-3-small",
     apiKey: config.OPENAI_API_KEY,
-    model: 'text-embedding-ada-002',
+  });
+  Settings.llm = new OpenAI({
+    model: "gpt-4o-mini",
+    apiKey: config.OPENAI_API_KEY,
   });
   
   const indexPath = await getLatestIndexPath();
@@ -64,19 +65,18 @@ export async function loadIndex(): Promise<VectorStoreIndex | null> {
   
   try {
     console.log(`Loading index from: ${indexPath}`);
-    // For now, we'll use a simplified loading approach
-    // The exact API may vary based on the llamaindex version
-    const index = await VectorStoreIndex.fromPersistDir(
-      path.join(indexPath, 'index')
-    ).catch(() => {
-      // Fallback: try creating a new index if loading fails
-      console.warn('Failed to load persisted index, creating new one');
-      return null;
+    
+    // Load storage context from persisted directory
+    const storageContext = await storageContextFromDefaults({
+      persistDir: path.join(indexPath, 'index'),
     });
     
-    if (index) {
-      console.log('✓ Index loaded successfully');
-    }
+    // Create index from storage context
+    const index = await VectorStoreIndex.init({
+      storageContext,
+    });
+    
+    console.log('✓ Index loaded successfully');
     return index;
   } catch (error) {
     console.error('Failed to load index:', error);
@@ -88,6 +88,22 @@ export async function answerQuery(query: string, topK: number = 5): Promise<Quer
   const startTime = Date.now();
   
   console.log(`Processing query: "${query}" (topK=${topK})`);
+  
+  // Check cache first
+  const cacheKey = { topK };
+  const cached = queryCache.get(query, cacheKey);
+  if (cached) {
+    const cacheTime = Date.now() - startTime;
+    console.log(`✓ Cache hit! Returned in ${cacheTime}ms`);
+    return {
+      ...cached,
+      metadata: {
+        ...cached.metadata,
+        processingTime: cacheTime,
+        cached: true,
+      },
+    } as QueryResult;
+  }
   
   const index = await loadIndex();
   if (!index) {
@@ -103,7 +119,7 @@ export async function answerQuery(query: string, topK: number = 5): Promise<Quer
     // Execute query
     const response = await queryEngine.query({
       query: query,
-    }) as QueryResponse;
+    }) as unknown as QueryResponse;
     
     // Extract sources with metadata
     const sources: QuerySource[] = response.sourceNodes?.map((node) => ({
@@ -123,8 +139,12 @@ export async function answerQuery(query: string, topK: number = 5): Promise<Quer
         topK,
         timestamp: new Date().toISOString(),
         processingTime,
+        cached: false,
       },
     };
+    
+    // Store in cache
+    queryCache.set(query, result, cacheKey);
     
     console.log(`✓ Query completed in ${processingTime}ms`);
     console.log(`Response: ${response.response.slice(0, 100)}...`);

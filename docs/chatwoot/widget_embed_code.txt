@@ -1,0 +1,73 @@
+<!--
+Hot Rod AN Live Chat Widget - Chatwoot Integration
+Created: 2025-10-13
+Owner: Chatwoot Agent
+
+INSTALLATION INSTRUCTIONS:
+1. This code should be added to Hot Rod AN Shopify theme
+2. Place in theme.liquid or layout file, before closing </body> tag
+3. Widget will appear on all pages of hotrodan.com
+
+CONFIGURATION:
+- Replace WEBSITE_TOKEN_HERE with actual token from Chatwoot
+- Verify BASE_URL matches production Chatwoot instance
+- Test in staging first before production deployment
+-->
+
+<script>
+  (function(d,t) {
+    var BASE_URL="https://hotdash-chatwoot.fly.dev";
+    var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=BASE_URL+"/packs/js/sdk.js";
+    g.defer = true;
+    g.async = true;
+    s.parentNode.insertBefore(g,s);
+    g.onload=function(){
+      window.chatwootSDK.run({
+        websiteToken: '[REDACTED]',  // Website token from Chatwoot inbox creation
+        baseUrl: BASE_URL
+      })
+    }
+  })(document,"script");
+</script>
+
+<!--
+WIDGET CONFIGURATION (in Chatwoot dashboard):
+- Widget Color: #D32F2F (Hot Rod AN red) or brand color
+- Widget Position: Bottom right
+- Welcome Message: "Need help with AN fittings? Chat with us!"
+- Avatar: Hot Rod AN logo
+- Online/Offline Messages: Customized for Hot Rod AN
+- Pre-chat Form: Name + Email required
+- Business Hours: Match Hot Rod AN support hours
+
+CUSTOMIZATION OPTIONS:
+{
+  hideMessageBubble: false,
+  position: 'right',
+  locale: 'en',
+  type: 'standard',
+  launcherTitle: 'Chat with us',
+  showPopoutButton: true
+}
+
+FOR ENGINEER INSTALLATION:
+1. Get WEBSITE_TOKEN from Chatwoot after widget inbox created
+2. Replace WEBSITE_TOKEN_HERE in code above
+3. Add to Shopify theme: theme.liquid before </body>
+4. Test on staging site first
+5. Deploy to production after verification
+6. Monitor for chat messages in Chatwoot dashboard
+
+TESTING CHECKLIST:
+- [ ] Widget appears on hotrodan.com
+- [ ] Widget opens when clicked
+- [ ] Pre-chat form collects name + email
+- [ ] Test message sends successfully
+- [ ] Message appears in Chatwoot dashboard
+- [ ] Agent can reply from Chatwoot
+- [ ] Customer receives reply in widget
+- [ ] Widget works on mobile
+- [ ] Widget respects business hours (if configured)
+-->
+

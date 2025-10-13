@@ -57,3 +57,56 @@ model DecisionLog {
 
   @@index([scope, createdAt])
 }
+
+// Agent SDK Tables - For approval queue and training data
+model AgentApproval {
+  id                  String   @id @default(uuid())
+  conversationId      BigInt
+  serialized          Json
+  lastInterruptions   Json?
+  createdAt           DateTime @default(now())
+  approvedBy          String?
+  status              String   @default("pending") // pending, approved, rejected
+  shopDomain          String?
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+model AgentFeedback {
+  id             String   @id @default(uuid())
+  conversationId BigInt
+  inputText      String
+  modelDraft     String
+  safeToSend     Boolean  @default(true)
+  labels         Json?
+  rubric         Json?
+  annotator      String?
+  notes          String?
+  meta           Json?
+  createdAt      DateTime @default(now())
+  shopDomain     String?
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@index([safeToSend])
+}
+
+model AgentQuery {
+  id             String   @id @default(uuid())
+  query          String
+  result         Json?
+  conversationId BigInt?
+  agent          String
+  approved       Boolean  @default(false)
+  humanEdited    Boolean  @default(false)
+  latencyMs      Int?
+  createdAt      DateTime @default(now())
+  shopDomain     String?
+
+  @@index([conversationId])
+  @@index([createdAt])
+  @@index([agent])
+  @@index([approved])
+}

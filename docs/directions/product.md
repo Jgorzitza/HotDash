@@ -2,11 +2,302 @@
 epoch: 2025.10.E1
 doc: docs/directions/product.md
 owner: manager
-last_reviewed: 2025-10-12
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-19
+expires: 2025-10-20
 ---
 # Product — Direction (Operator Control Center)
+
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
+
+## 🚨 P1 PRIORITY: SEO Pulse Anomaly Threshold Decisions (2025-10-13)
+
+**Assignment**: Define display criteria for SEO traffic anomaly monitoring
+**Timeline**: 1 hour
+**Evidence**: Log all work in feedback/product.md
+**Deadline**: 2025-10-14T18:00:00Z (24h)
+
+**CRITICAL**: This **blocks** Data + Designer teams. Complete ASAP.
+
+### Context
+
+**Current Situation** (from Engineer handoff):
+- SEO Pulse tile shows ALL 100 landing pages
+- Hardcoded `wowDelta: 0` (Data team will fix with real week-over-week calculation)
+- No filtering = information overload for CEO
+- Need Product decisions before Data/Designer can proceed
+
+**Your Decisions Block**:
+- **Data Team**: Cannot implement filtering until threshold defined
+- **Designer Team**: Cannot design UI until display count decided
+- **Target**: Both teams waiting on YOUR spec
+
+---
+
+### Task P1: SEO Anomaly Display Criteria (1 hour)
+
+**4 Decisions Required**:
+
+#### Decision 1: Anomaly Threshold Percentage
+
+**Question**: What % traffic change is worth showing CEO?
+
+**Current Code**: `-20%` (≥20% drop triggers anomaly flag)
+
+**Options**:
+- **Option A**: Keep -20% (more sensitive, catches smaller issues)
+  - Pro: Early warning for problems
+  - Con: May show noise, false alarms
+- **Option B**: Increase to -30% (higher bar, fewer alerts)
+  - Pro: Only significant issues shown
+  - Con: May miss emerging problems
+- **Option C**: Make configurable per operator
+  - Pro: Flexibility for different use cases
+  - Con: More complexity, delayed launch
+
+**Recommendation Needed**: Choose A, B, or C
+
+**Rationale Required**: Why this threshold for Hot Rod AN specifically?
+
+---
+
+#### Decision 2: Display Count Limit
+
+**Question**: How many anomalies to show on tile?
+
+**Options**:
+- **Option A**: Top 5 biggest drops only
+  - Pro: Very focused, no scrolling needed
+  - Con: May miss some issues
+- **Option B**: All pages meeting threshold (could be 0-100)
+  - Pro: Nothing missed
+  - Con: Could still be overwhelming
+- **Option C**: Top 10 with threshold
+  - Pro: Balance of coverage + focus
+  - Con: May still be too many on mobile
+- **Option D**: Top 5 desktop, Top 3 mobile
+  - Pro: Responsive to screen size
+  - Con: Different experience across devices
+
+**Recommendation Needed**: Choose A, B, C, or D
+
+**Rationale Required**: Based on CEO usage patterns (daily monitoring, mobile vs desktop)
+
+---
+
+#### Decision 3: Traffic Increases Display
+
+**Question**: Should tile show pages with significant INCREASES?
+
+**Current Thinking**: Focus on decreases (problems requiring action)
+
+**Options**:
+- **Option A**: Only show decreases (>20% drops)
+  - Pro: Problem-focused, actionable
+  - Con: Miss positive opportunities
+- **Option B**: Show both decreases AND increases
+  - Pro: Complete picture, celebrate wins
+  - Con: Double the items shown
+- **Option C**: Separate tiles (anomalies vs opportunities)
+  - Pro: Clear separation of concerns
+  - Con: Takes more dashboard space
+
+**Recommendation Needed**: Choose A, B, or C
+
+**Rationale Required**: What's more valuable for CEO's daily workflow?
+
+---
+
+#### Decision 4: Refresh Frequency
+
+**Question**: How often should anomaly data refresh?
+
+**Current**: 5-minute cache TTL on all tiles
+
+**Options**:
+- **Option A**: Keep 5-minute cache (same as other tiles)
+  - Pro: Consistent UX, good performance
+  - Con: SEO data doesn't need real-time updates
+- **Option B**: Increase to 1-hour cache (SEO changes slowly)
+  - Pro: Better performance, less API load
+  - Con: Older data
+- **Option C**: Daily refresh only (SEO is strategic, not tactical)
+  - Pro: Minimal load, still useful
+  - Con: Very stale data
+
+**Recommendation Needed**: Choose A, B, or C
+
+**Rationale Required**: Balance freshness vs performance for SEO use case
+
+---
+
+### Deliverable: Specification Document
+
+**Create**: `docs/product/seo_pulse_anomaly_spec.md`
+
+**Required Sections**:
+
+**1. Executive Summary**:
+- Purpose of SEO Pulse tile
+- CEO use case (daily monitoring, problem detection)
+- Success criteria (actionable insights without overwhelm)
+
+**2. Display Criteria Decisions**:
+- Threshold: [Your decision + rationale]
+- Display Count: [Your decision + rationale]
+- Increases: [Your decision + rationale]
+- Refresh: [Your decision + rationale]
+
+**3. Example Scenarios**:
+- Scenario A: 3 pages drop >20%, 2 pages increase >20%
+  - What displays: [based on your decisions]
+- Scenario B: No pages meet threshold
+  - What displays: Empty state
+- Scenario C: 15 pages drop >20%
+  - What displays: [based on your decisions]
+
+**4. Success Metrics** (how we'll know it works):
+- CEO reviews SEO Pulse daily: Yes/No
+- CEO takes action on anomalies: % rate
+- False positive rate: <X%
+- Time to identify SEO issues: [target]
+
+**5. Handoff Instructions**:
+- For Data Team: Specific threshold values to implement
+- For Designer Team: Specific display counts for desktop/mobile
+- For Engineer: Any technical constraints
+- For QA: Test scenarios
+
+**6. Future Iterations** (nice-to-haves for later):
+- Sparkline charts
+- Drill-down to page details
+- Anomaly notifications
+- Historical trend view
+
+---
+
+### Tools & Research
+
+**Available Data**:
+- Engineer feedback: Current implementation details
+- CEO usage context: Daily monitoring, automotive retailer
+- SEO importance: Critical for Hot Rod AN traffic
+
+**Research Recommendations**:
+1. Consider CEO's typical day (how much time for SEO review?)
+2. Hot Rod AN's SEO strategy (content-heavy vs transactional)
+3. Industry benchmarks (automotive parts SEO volatility)
+4. Mobile vs desktop usage patterns
+
+**No MCP tools required** - this is product strategy work
+
+---
+
+### Success Criteria
+
+- ✅ All 4 decisions made with clear rationale
+- ✅ Specification document complete
+- ✅ Data team can implement immediately
+- ✅ Designer team can design immediately
+- ✅ Decisions defensible if CEO questions them
+
+---
+
+### Evidence Required
+
+- Specification document path
+- Decision rationale for each of 4 choices
+- Example scenarios walked through
+- Handoff instructions for Data + Designer
+- Timestamp
+
+**Deadline**: 2025-10-14T18:00:00Z (CRITICAL - teams waiting)
+
+---
+
+## MCP Tools NOT Required
+
+Product strategy decisions based on user research and business context.
+
+## Evidence Gate
+
+Log in feedback/product.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ)
+- Specification document path
+- Key decisions made
+- Rationale summary
+- Teams notified (Data, Designer)
+
+## Blockers to Escalate
+
+If need CEO input:
+1. Document specific question in feedback/product.md
+2. Escalate to Manager with clear options
+3. Include recommendation + reasoning
+
+## Coordination
+
+- **Data Team**: WAITING on this spec to implement WoW filtering
+- **Designer Team**: WAITING on this spec to design visual hierarchy
+- **Engineer Team**: Will implement after Data + Designer complete
+- **Manager**: Monitoring progress, can expedite CEO input if needed
+
+**CRITICAL**: This is the MOST URGENT task - unblocks 2 other teams
+
+---
+
+## 🚨 P2 PRIORITY: ANALYTICS & ROADMAP FOR SHOPIFY APP
+
+**Your immediate priority**: Set up analytics and plan next features for deployed app
+
+**Current status**:
+- ✅ All 10 assigned tasks COMPLETE
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Support deployment with analytics and roadmap
+
+**START HERE NOW**:
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Set up CEO usage analytics with Supabase MCP
+# mcp_supabase_apply_migration for analytics tables
+# Track: Dashboard views, tile interactions, approval actions
+
+# 2. Create launch day monitoring dashboard
+# File: docs/pilot/launch_day_monitoring.md
+# Key metrics: Login frequency, tile usage, approval rates
+
+# 3. Plan Week 1 iteration roadmap
+# File: docs/pilot/week_1_roadmap.md
+# Based on CEO feedback and usage patterns
+
+# 4. Define feature priority matrix
+# File: docs/pilot/feature_priority_matrix.md
+# CEO requests vs technical debt vs user value
+
+# 5. Create post-deployment feedback collection
+# Survey for CEO after 1 week of usage
+# Usage analytics review meeting
+
+# Evidence: Analytics setup, monitoring dashboard, roadmap documents
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Supabase MCP: mcp_supabase_apply_migration, mcp_supabase_get_advisors
+
+**Timeline**: 60-90 minutes (38 tasks total)
+
+**Deliverable**: Analytics infrastructure and post-deployment roadmap
+
+**IMPORTANT**: Continue working on analytics setup tasks. Do NOT stop unless explicitly told by Manager.
+
+**Monitor deployment progress and be ready to activate analytics when app is deployed.**
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

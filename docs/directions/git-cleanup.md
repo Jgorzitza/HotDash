@@ -9,6 +9,50 @@ expires: 2025-10-19
 
 # Git Cleanup — Direction (Repository Health)
 
+## 🚨 CRITICAL: CONTINUE REPOSITORY MAINTENANCE FOR DEPLOYMENT (P2)
+
+**Your immediate priority**: Continue repository maintenance to support deployment
+
+**Current status**:
+- ✅ Worktrees removed, branches cleaned
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Continue repository maintenance
+
+**START HERE NOW** (Continue repository maintenance):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Monitor deployment branches with GitHub MCP
+# mcp_github-official_list_branches(owner: "...", repo: "hot-dash")
+# Verify: Deployment branch exists and is healthy
+
+# 2. Clean up any deployment-related branches
+# Remove old deployment branches if safe
+# Use GitHub MCP for branch management
+
+# 3. Verify repository health
+# Check for any merge conflicts
+# Verify all branches are clean
+
+# 4. Document deployment repository state
+# File: docs/git/deployment_repository_state.md
+# Include: Branch structure, deployment branches, health status
+
+# 5. Prepare for post-deployment cleanup
+# Document any branches that can be cleaned after successful deployment
+
+# Evidence: Repository health report, deployment branch documentation
+# Log to: feedback/git-cleanup.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ GitHub MCP: mcp_github-official_list_branches (branch monitoring)
+- ✅ GitHub MCP: mcp_github-official_get_commit (deployment verification)
+
+**Timeline**: 60 minutes (continue current maintenance work)
+
+**Success Metric**: Repository healthy and deployment-ready
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -314,3 +358,259 @@ You are authorized to run local, non-interactive git commands without approval. 
 - Timeline: 1 hour
 
 **Status**: 🟢 COMPLETE - Optional ongoing tasks available if desired
+
+---
+
+## 🟡 P1 PRIORITY: REPOSITORY SYNCHRONIZATION — 2025-10-13T22:15:00Z
+
+**Manager Assignment**: Sync uncommitted changes to remote repository
+
+### Current Repository State
+
+**Branch**: `localization/work`
+**Status**: ⚠️ 120 files need synchronization
+- Modified files: 47
+- Untracked files: 73
+- Remote: https://github.com/Jgorzitza/HotDash.git
+
+### Task: Repository Sync (P1 - High Priority)
+
+**Objective**: Review, commit, and push all uncommitted changes to remote
+
+**Timeline**: 2-3 hours
+**Priority**: P1 - Must complete to prevent work loss
+
+### Execution Steps
+
+#### Step 1: Review Modified Files (30 min)
+
+```bash
+cd ~/HotDash/hot-dash
+
+# Review all modified files
+git status
+
+# Check diff for each modified file category
+git diff app/
+git diff docs/
+git diff feedback/
+git diff scripts/
+git diff supabase/migrations/
+
+# Categorize changes by type:
+# - Documentation updates
+# - Code changes
+# - Feedback logs
+# - Configuration changes
+# - Database migrations
+```
+
+#### Step 2: Review Untracked Files (30 min)
+
+```bash
+# List all untracked files by category
+ls -la HotDash_Growth_Spec/
+ls -la app/components/picker-payments/
+ls -la app/copy/
+ls -la app/routes/api.approvals.chatwoot.*
+ls -la app/routes/app.picker-payments.*
+ls -la docs/ai/
+ls -la docs/api/
+ls -la docs/chatwoot/
+ls -la docs/data/
+ls -la docs/enablement/
+ls -la docs/git/
+ls -la docs/integrations/
+ls -la docs/marketing/
+ls -la docs/pilot/
+ls -la docs/policies/
+ls -la docs/product/
+ls -la docs/runbooks/
+ls -la docs/support/
+ls -la docs/testing/
+ls -la feedback/qa-helper*.md
+ls -la packages/memory/logs/build/
+ls -la scripts/
+ls -la supabase/migrations/
+ls -la tests/
+ls -la themes/
+
+# Identify which files should be:
+# - Committed (permanent work)
+# - Ignored (temporary/build artifacts)
+# - Removed (obsolete)
+```
+
+#### Step 3: Coordinate with Localization Agent (15 min)
+
+```bash
+# Check if localization agent is active
+cat feedback/localization.md | tail -50
+
+# Verify localization/work branch ownership
+git log --oneline -20 localization/work
+
+# Document coordination
+# - Is localization agent still active?
+# - Are there uncommitted changes from localization work?
+# - Should this branch be merged or maintained?
+```
+
+#### Step 4: Stage and Commit Changes (60 min)
+
+```bash
+# Option A: Commit all as single batch (if all related)
+git add .
+git commit -m "manager: Sync localization/work branch - 47 modified + 73 untracked files
+
+Includes:
+- Documentation updates (ai, chatwoot, data, enablement, etc.)
+- Picker payment system implementation
+- Chatwoot approval queue routes
+- Agent feedback updates
+- Database migrations
+- Testing infrastructure
+- Growth spec materials
+
+Evidence: Manager startup checklist execution 2025-10-13T22:15:00Z"
+
+# Option B: Commit by category (if changes are diverse)
+
+# B1: Documentation
+git add docs/
+git commit -m "docs: Update agent documentation across multiple domains"
+
+# B2: Features
+git add app/components/picker-payments/
+git add app/routes/app.picker-payments.*
+git add app/routes/api.approvals.chatwoot.*
+git commit -m "feat: Add picker payments and Chatwoot approval routes"
+
+# B3: Feedback
+git add feedback/
+git commit -m "chore: Update agent feedback logs"
+
+# B4: Database
+git add supabase/migrations/
+git add 20251013_picker_payments_schema.sql
+git commit -m "db: Add picker payments schema and migrations"
+
+# B5: Scripts & Testing
+git add scripts/
+git add tests/
+git commit -m "test: Add testing infrastructure and helper scripts"
+
+# B6: Configuration
+git add app/styles/
+git add app/utils/
+git add fly.toml
+git add package.json
+git add shopify.app.toml
+git commit -m "config: Update configuration files"
+
+# B7: Growth Spec
+git add HotDash_Growth_Spec/
+git commit -m "docs: Add Growth Machine specification"
+```
+
+#### Step 5: Push to Remote (15 min)
+
+```bash
+# Push localization/work branch to remote
+git push origin localization/work
+
+# If push fails due to upstream changes:
+git fetch origin
+git pull --rebase origin localization/work
+# Resolve any conflicts
+git push origin localization/work
+
+# Verify remote sync
+git status
+# Should show: "Your branch is up to date with 'origin/localization/work'"
+```
+
+#### Step 6: Verify and Document (15 min)
+
+```bash
+# Verify clean status
+git status
+# Should show: "nothing to commit, working tree clean"
+
+# Verify remote has all commits
+git log --oneline origin/localization/work -10
+
+# Document completion
+cat >> feedback/git-cleanup.md << 'EVIDENCE'
+
+## 2025-10-13T22:15:00Z — P1 REPOSITORY SYNCHRONIZATION COMPLETE
+
+**Manager Assignment**: Sync localization/work branch
+
+**Actions Taken**:
+1. ✅ Reviewed 47 modified files
+2. ✅ Reviewed 73 untracked files
+3. ✅ Coordinated with Localization agent
+4. ✅ Staged and committed changes
+5. ✅ Pushed to remote: origin/localization/work
+6. ✅ Verified clean working tree
+
+**Commits Created**: [List commit SHAs and messages]
+
+**Files Synchronized**: 120 total
+- Modified: 47
+- Untracked: 73
+
+**Result**: ✅ Repository synchronized, no uncommitted changes
+
+**Evidence**:
+- Git status: Clean working tree
+- Remote sync: Verified
+- Branch: localization/work up to date
+
+**Time Spent**: [Actual time]
+
+**Next**: Standby for next manager assignment
+
+EVIDENCE
+```
+
+### Success Criteria
+
+- ✅ All 47 modified files reviewed and committed
+- ✅ All 73 untracked files either committed or .gitignored
+- ✅ Localization agent coordination documented
+- ✅ Commits pushed to origin/localization/work
+- ✅ `git status` shows clean working tree
+- ✅ Evidence logged to feedback/git-cleanup.md
+
+### Coordination
+
+**Localization Agent**: Verify branch ownership and ongoing work
+**Manager**: Report completion for next assignment
+
+### Evidence Required
+
+1. Git status output (before and after)
+2. List of commits created
+3. Push confirmation
+4. Final clean status verification
+5. Coordination notes with Localization agent
+6. Time spent on task
+
+### Priority Context
+
+This is **P1** work because:
+- 120 uncommitted files at risk if system crashes
+- Multiple agents' work represented in uncommitted files
+- Clean repository needed for safe deployments
+- Prevents merge conflicts and work loss
+- Supports overall system health
+
+**Manager**: Execute this task immediately. Report progress every 30 minutes to feedback/git-cleanup.md.
+
+**Start Time**: 2025-10-13T22:15:00Z
+**Expected Completion**: 2025-10-14T00:45:00Z (2.5 hours)
+
+---
+

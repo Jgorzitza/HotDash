@@ -1,4 +1,5 @@
-import { VectorStoreIndex, SimpleNodeParser, Settings, Document as LlamaDocument, OpenAI, OpenAIEmbedding } from 'llamaindex';
+import { VectorStoreIndex, SimpleNodeParser, Settings, storageContextFromDefaults } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import { getConfig } from '../config.js';
 import { fetchHotrodanContent } from '../loaders/sitemap.js';
 import { fetchDecisionDocs, fetchTelemetryDocs } from '../loaders/supabase.js';
@@ -9,14 +10,14 @@ export async function buildAll(logDirOverride, options = {}) {
     const startTime = Date.now();
     const config = getConfig();
     const logDir = logDirOverride || config.LOG_DIR;
-    // Configure LlamaIndex with OpenAI
-    Settings.llm = new OpenAI({
-        apiKey: config.OPENAI_API_KEY,
-        model: 'gpt-3.5-turbo',
-    });
+    // Configure OpenAI models (required for LlamaIndex)
     Settings.embedModel = new OpenAIEmbedding({
+        model: "text-embedding-3-small",
         apiKey: config.OPENAI_API_KEY,
-        model: 'text-embedding-ada-002',
+    });
+    Settings.llm = new OpenAI({
+        model: "gpt-4o-mini",
+        apiKey: config.OPENAI_API_KEY,
     });
     const timestamp = new Date().toISOString().replace(/[:]/g, '').slice(0, 15);
     const runDir = path.join(logDir, 'indexes', timestamp);
@@ -69,13 +70,17 @@ export async function buildAll(logDirOverride, options = {}) {
         });
         const nodes = parser.getNodesFromDocuments(docs);
         console.log(`✓ Created ${nodes.length} nodes from documents`);
-        // Build the vector index
+        // Build the vector index with persistent storage context
         console.log('Building vector index...');
-        const index = await VectorStoreIndex.fromDocuments(docs);
-        console.log('✓ Vector index built successfully');
-        // Persist the index - using index.storage instead of storageContext
         const indexPath = path.join(runDir, 'index');
-        await index.storage?.persist?.(indexPath);
+        await fs.mkdir(indexPath, { recursive: true });
+        const storageContext = await storageContextFromDefaults({
+            persistDir: indexPath,
+        });
+        const index = await VectorStoreIndex.fromDocuments(docs, {
+            storageContext,
+        });
+        console.log('✓ Vector index built successfully');
         console.log(`✓ Index persisted to: ${indexPath}`);
         // Update symlinks for rollback capability
         const latestPath = path.join(logDir, 'indexes', 'latest');
@@ -155,4 +160,3 @@ export async function getLatestIndexPath() {
         return null;
     }
 }
-//# sourceMappingURL=buildIndex.js.map

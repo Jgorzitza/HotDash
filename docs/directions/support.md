@@ -2,11 +2,60 @@
 epoch: 2025.10.E1
 doc: docs/directions/support.md
 owner: manager
-last_reviewed: 2025-10-10
+last_reviewed: 2025-10-13
 doc_hash: TBD
 expires: 2025-10-17
+## 🚨 LAUNCH CRITICAL: AGENT LAUNCH CHECKLIST EXECUTION
+
+**Current Priority**: Execute agent_launch_checklist.md as Support
+**Status**: ✅ IN PROGRESS (Manager executing checklist steps)
+**Next**: Complete launch preparation for agent deployment
+
+
 ---
 # Support — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: CREATE COMPREHENSIVE ONBOARDING FOR DEPLOYED APP (P2)
+
+**Your immediate priority**: Create onboarding guides for the deployed Shopify app
+
+**Current status**:
+- ✅ All assigned tasks COMPLETE
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Create onboarding when deployment completes
+
+**START HERE NOW** (Create onboarding):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Create comprehensive onboarding guide
+# File: docs/support/shopify_app_onboarding_guide.md
+# Include: Installation, first login, 5 tiles overview
+
+# 2. Create operator quick start guide
+# File: docs/support/operator_quick_start.md
+# 5-step process: Login, review tiles, approve actions
+
+# 3. Create troubleshooting guide
+# File: docs/support/shopify_app_troubleshooting.md
+# Common issues: Login, data loading, approvals
+
+# 4. Create Hot Rod AN specific guide
+# File: docs/support/hot_rod_an_operator_guide.md
+# AN fittings, fuel system, automotive terminology
+
+# 5. Create training checklist
+# File: docs/support/operator_training_checklist.md
+# What operators need to know before using
+
+# Evidence: Complete onboarding package
+# Log to: feedback/support.md
+```
+
+**Timeline**: 60-90 minutes (25 tasks total)
+
+**Success Metric**: Complete onboarding package ready for operators
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

@@ -1,18 +1,32 @@
+import { lazy, Suspense, useMemo } from "react";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 import type { LoaderFunction } from "react-router";
+import { Spinner } from "@shopify/polaris";
 
 import "../styles/tokens.css";
-import {
-  TileCard,
-  SalesPulseTile,
-  FulfillmentHealthTile,
-  InventoryHeatmapTile,
-  CXEscalationsTile,
-  SEOContentTile,
-  OpsMetricsTile,
-} from "../components/tiles";
+import { TileCard } from "../components/tiles";
 import type { TileState, TileFact } from "../components/tiles";
+
+// Lazy load tile components for better performance
+const SalesPulseTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.SalesPulseTile })),
+);
+const FulfillmentHealthTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.FulfillmentHealthTile })),
+);
+const InventoryHeatmapTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.InventoryHeatmapTile })),
+);
+const CXEscalationsTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.CXEscalationsTile })),
+);
+const SEOContentTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.SEOContentTile })),
+);
+const OpsMetricsTile = lazy(() =>
+  import("../components/tiles").then((m) => ({ default: m.OpsMetricsTile })),
+);
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -30,6 +44,7 @@ import {
 } from "../services/metrics/aggregate";
 import type { ServiceResult } from "../services/types";
 import { ServiceError } from "../services/types";
+import { withCache } from "../utils/cache.server";
 
 interface LoaderData {
   mode: "live" | "mock";
@@ -52,19 +67,35 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
 
   const context = await getShopifyServiceContext(request);
 
-  const sales = await resolveTile(() => getSalesPulseSummary(context));
-  const fulfillment = await resolveTile(() => getPendingFulfillments(context));
-  const inventory = await resolveTile(() => getInventoryAlerts(context));
-  const seo = await resolveTile(() =>
-    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
-  );
-  const escalations = await resolveEscalations(context.shopDomain);
-  const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  // Parallel data fetching for all tiles with caching - Performance Optimization
+  const [sales, fulfillment, inventory, seo, escalations, opsMetrics] = await Promise.all([
+    withCache(`sales:${context.shopDomain}`, () =>
+      resolveTile(() => getSalesPulseSummary(context)),
+    ),
+    withCache(`fulfillment:${context.shopDomain}`, () =>
+      resolveTile(() => getPendingFulfillments(context)),
+    ),
+    withCache(`inventory:${context.shopDomain}`, () =>
+      resolveTile(() => getInventoryAlerts(context)),
+    ),
+    withCache(`seo:${context.shopDomain}`, () =>
+      resolveTile(() => getLandingPageAnomalies({ shopDomain: context.shopDomain })),
+    ),
+    withCache(`escalations:${context.shopDomain}`, () =>
+      resolveEscalations(context.shopDomain),
+    ),
+    withCache(`opsMetrics:${context.shopDomain}`, () =>
+      resolveTile(() => getOpsAggregateMetrics()),
+    ),
+  ]);
 
-  await recordDashboardSessionOpen({
+  // Record dashboard session (non-blocking)
+  recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
     operatorEmail: context.operatorEmail,
     requestId: request.headers.get("x-request-id"),
+  }).catch((error) => {
+    console.error("Failed to record dashboard session:", error);
   });
 
   return Response.json({
@@ -301,6 +332,80 @@ function buildMockDashboard(): LoaderData {
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
 
+  // Memoize tile renders to prevent unnecessary re-renders
+  const tilesContent = useMemo(
+    () => (
+      <>
+        <TileCard
+          title="Ops Pulse"
+          tile={data.opsMetrics}
+          render={(metrics) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <OpsMetricsTile metrics={metrics} />
+            </Suspense>
+          )}
+          testId="tile-ops-metrics"
+        />
+
+        <TileCard
+          title="Sales Pulse"
+          tile={data.sales}
+          render={(summary) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <SalesPulseTile summary={summary} enableModal />
+            </Suspense>
+          )}
+          testId="tile-sales-pulse"
+        />
+
+        <TileCard
+          title="Fulfillment Flow"
+          tile={data.fulfillment}
+          render={(issues) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <FulfillmentHealthTile issues={issues} />
+            </Suspense>
+          )}
+          testId="tile-fulfillment-health"
+        />
+
+        <TileCard
+          title="Inventory Watch"
+          tile={data.inventory}
+          render={(alerts) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <InventoryHeatmapTile alerts={alerts} />
+            </Suspense>
+          )}
+          testId="tile-inventory-heatmap"
+        />
+
+        <TileCard
+          title="CX Pulse"
+          tile={data.escalations}
+          render={(conversations) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <CXEscalationsTile conversations={conversations} enableModal />
+            </Suspense>
+          )}
+          testId="tile-cx-escalations"
+        />
+
+        <TileCard
+          title="SEO Pulse"
+          tile={data.seo}
+          render={(anomalies) => (
+            <Suspense fallback={<Spinner size="small" />}>
+              <SEOContentTile anomalies={anomalies} />
+            </Suspense>
+          )}
+          testId="tile-seo-content"
+        />
+      </>
+    ),
+    [data],
+  );
+
   return (
     <s-page heading="Operator Control Center">
       {data.mode === "mock" && (
@@ -319,51 +424,7 @@ export default function OperatorDashboard() {
           </p>
         </div>
       )}
-      <div className="occ-tile-grid">
-        <TileCard
-          title="Ops Pulse"
-          tile={data.opsMetrics}
-          render={(metrics) => <OpsMetricsTile metrics={metrics} />}
-          testId="tile-ops-metrics"
-        />
-
-        <TileCard
-          title="Sales Pulse"
-          tile={data.sales}
-          render={(summary) => <SalesPulseTile summary={summary} enableModal />}
-          testId="tile-sales-pulse"
-        />
-
-        <TileCard
-          title="Fulfillment Flow"
-          tile={data.fulfillment}
-          render={(issues) => <FulfillmentHealthTile issues={issues} />}
-          testId="tile-fulfillment-health"
-        />
-
-        <TileCard
-          title="Inventory Watch"
-          tile={data.inventory}
-          render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
-          testId="tile-inventory-heatmap"
-        />
-
-        <TileCard
-          title="CX Pulse"
-          tile={data.escalations}
-          render={(conversations) => (
-            <CXEscalationsTile conversations={conversations} enableModal />
-          )}
-          testId="tile-cx-escalations"
-        />
-
-        <TileCard
-          title="SEO Pulse"
-          tile={data.seo}
-          render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
-          testId="tile-seo-content"
-        />
-      </div>
+      <div className="occ-tile-grid">{tilesContent}</div>
     </s-page>
   );
 }

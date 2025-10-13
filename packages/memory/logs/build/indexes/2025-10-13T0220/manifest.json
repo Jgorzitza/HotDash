@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-10-13T02:20:31.465Z",
+  "duration_ms": 577,
+  "total_documents": 3,
+  "total_nodes": 3,
+  "sources": {
+    "web": 0,
+    "supabase_decisions": 3,
+    "supabase_telemetry": 0,
+    "curated": 0
+  },
+  "options": {
+    "sources": "supabase",
+    "full": true
+  },
+  "index_path": "packages/memory/logs/build/indexes/2025-10-13T0220/index",
+  "run_dir": "packages/memory/logs/build/indexes/2025-10-13T0220",
+  "success": true
+}

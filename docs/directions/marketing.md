@@ -7,6 +7,48 @@ doc_hash: TBD
 expires: 2025-10-19
 ---
 # Marketing — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: FINALIZE LAUNCH CAMPAIGN FOR DEPLOYED APP (P2)
+
+**Your immediate priority**: Prepare launch campaign materials for the deployed Shopify app
+
+**Current status**:
+- ✅ All assigned tasks COMPLETE
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Prepare launch materials when deployment completes
+
+**START HERE NOW** (Prepare launch campaign):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Create launch announcement email
+# File: docs/marketing/shopify_app_launch_email.md
+# Include: App benefits, installation instructions, success metrics
+
+# 2. Create social media launch posts
+# File: docs/marketing/shopify_app_social_posts.md
+# LinkedIn, Twitter, Instagram posts ready to publish
+
+# 3. Create launch press release
+# File: docs/marketing/shopify_app_press_release.md
+# Target: E-commerce and automotive publications
+
+# 4. Create customer communication
+# File: docs/marketing/customer_launch_announcement.md
+# For existing Hot Rod AN customers
+
+# 5. Create internal launch memo
+# File: docs/marketing/internal_launch_memo.md
+# For team and stakeholders
+
+# Evidence: Complete launch campaign package
+# Log to: feedback/marketing.md
+```
+
+**Timeline**: 60-90 minutes (30 tasks total)
+
+**Success Metric**: Complete launch communications package ready for deployment
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

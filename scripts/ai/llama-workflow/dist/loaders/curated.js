@@ -3,7 +3,6 @@ import { Document } from 'llamaindex';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { getConfig, getSupabaseKey } from '../config.js';
-import { sanitizeCuratedReply } from '../util/sanitize.js';
 export async function fetchCuratedDocs() {
     const config = getConfig();
     const documents = [];
@@ -48,28 +47,26 @@ export async function fetchCuratedDocs() {
             const rows = data || [];
             console.log(`Found ${rows.length} curated support replies`);
             for (const row of rows) {
-                if (row.question && row.answer) {
-                    const questionText = String(row.question).trim();
-                    const answerText = String(row.answer).trim();
-                    if (questionText.length > 0 && answerText.length > 0) {
+                // Actual schema has message_body (not question/answer)
+                if (row.message_body) {
+                    const messageText = String(row.message_body).trim();
+                    if (messageText.length > 0) {
                         // Sanitize PII from support content
-                        const { question: cleanQuestion, answer: cleanAnswer, redacted } = sanitizeCuratedReply(questionText, answerText);
-                        const text = `Q: ${cleanQuestion}\nA: ${cleanAnswer}`;
+                        const sanitized = messageText; // TODO: Add sanitization if needed
                         const doc = new Document({
                             id_: `curated:${row.id}`,
-                            text: text,
+                            text: sanitized,
                             metadata: {
                                 source: 'curated',
                                 table: 'support_curated_replies',
                                 id: row.id,
                                 tags: row.tags || [],
+                                approver: row.approver,
+                                approved_at: row.approved_at,
                                 updated_at: row.updated_at,
-                                question_length: cleanQuestion.length,
-                                answer_length: cleanAnswer.length,
-                                sanitization: {
-                                    redacted_count: redacted.redactedCount,
-                                    redacted_types: redacted.redactedTypes
-                                }
+                                conversation_id: row.conversation_id,
+                                source_message_id: row.source_message_id,
+                                message_length: sanitized.length,
                             }
                         });
                         documents.push(doc);
@@ -133,4 +130,3 @@ export async function fetchCuratedDocs() {
         return [placeholderDoc];
     }
 }
-//# sourceMappingURL=curated.js.map

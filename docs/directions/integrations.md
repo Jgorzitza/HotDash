@@ -2,11 +2,415 @@
 epoch: 2025.10.E1
 doc: docs/directions/integrations.md
 owner: manager
-last_reviewed: 2025-10-10
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-17
+expires: 2025-10-20
 ---
 # Integrations — Direction (Operator Control Center)
+
+## Canon
+- North Star: docs/NORTH_STAR.md  
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
+
+## 🚨 P1 PRIORITY: Shopify Tag Processing + Historical Orders (2025-10-13)
+
+**Assignment**: Build product tag processing logic + historical order import functions  
+**Timeline**: 8 hours total (wait for Data schema first)
+**Evidence**: Log all work in feedback/integrations.md
+
+**IMPORTANT CLARIFICATION**: 
+- ✅ Build and TEST functions with dev store (minimal data expected)
+- ✅ Add manual test tags to dev store products for validation
+- ❌ Do NOT expect accurate historical data from dev store
+- ✅ Production import happens AFTER live Shopify installation
+
+### Dependencies
+
+**WAIT FOR**: Data agent to complete picker payment schema (Task 1A-1C)
+- Estimated: 2025-10-14T02:00:00Z
+- Blocker: Need `inventory_items.picker_quantity` field to exist
+- Check: feedback/data.md for completion status
+
+**START WHEN**: Data confirms schema deployed to local + staging
+
+---
+
+### Task 2A: Build Tag Processing Logic (4 hours)
+
+**MCP TOOLS REQUIRED**:
+- ✅ Shopify MCP: mcp_shopify_introspect_graphql_schema (verify product tag fields)
+- ✅ Shopify MCP: mcp_shopify_validate_graphql_codeblocks (validate queries)
+
+**Business Rules** (from CEO):
+
+**Tag Types**:
+1. **BUNDLE:TRUE** - Product is a bundle/kit (exclude from reorder calculations)
+2. **PACK:X** - Product counts as X pieces for picker (e.g., PACK:3 = 3 pieces)
+3. **DROPSHIP:YES** - No picker involvement (picker_quantity = 0)
+4. **No tag** - Default picker_quantity = 1
+
+**Tag Processing Algorithm**:
+```typescript
+function calculatePickerQuantity(tags: string[]): number {
+  // Priority 1: Dropship products = 0 pieces
+  if (tags.some(tag => tag === 'DROPSHIP:YES')) {
+    return 0;
+  }
+  
+  // Priority 2: PACK:X tag = X pieces
+  const packTag = tags.find(tag => tag.startsWith('PACK:'));
+  if (packTag) {
+    const match = packTag.match(/PACK:(\d+)/);
+    if (match && match[1]) {
+      const quantity = parseInt(match[1], 10);
+      return isNaN(quantity) ? 1 : quantity;
+    }
+  }
+  
+  // Priority 3: Default = 1 piece
+  return 1;
+}
+```
+
+**Shopify GraphQL Query** (validate with Shopify MCP):
+```graphql
+query ProductTags($cursor: String) {
+  products(first: 50, after: $cursor) {
+    edges {
+      node {
+        id
+        title
+        tags
+        variants(first: 1) {
+          edges {
+            node {
+              id
+              sku
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+**Implementation Steps**:
+1. Use Shopify MCP to introspect product schema (verify `tags` field)
+2. Build tag processing function with algorithm above
+3. Query dev store products (expect minimal data)
+4. Parse tags for each product
+5. Calculate picker_quantity
+6. Update inventory_items table (via Data agent's schema)
+7. Handle edge cases:
+   - Multiple PACK tags (use first found)
+   - Invalid PACK values (default to 1)
+   - Empty tags array (default to 1)
+   - Mixed tags (PACK + DROPSHIP = DROPSHIP wins)
+
+**Dev Store Test Data** (coordinate with CEO/Manager):
+- Manually add tags to 5 dev store products:
+  - Product 1: `BUNDLE:TRUE`, `PACK:5`
+  - Product 2: `DROPSHIP:YES`
+  - Product 3: `PACK:3`
+  - Product 4: `PACK:1`
+  - Product 5: (no tags) - should default to 1
+
+**Validation**:
+```bash
+# Test tag processing with Shopify MCP
+# mcp_shopify_validate_graphql_codeblocks(codeblocks: [QUERY])
+
+# Verify inventory_items updated correctly:
+# Product 1: picker_quantity = 5
+# Product 2: picker_quantity = 0
+# Product 3: picker_quantity = 3
+# Product 4: picker_quantity = 1
+# Product 5: picker_quantity = 1
+```
+
+**Success Criteria**:
+- ✅ Tag processing function built
+- ✅ Shopify MCP validation passed
+- ✅ Test data processed correctly
+- ✅ inventory_items updated
+- ✅ Edge cases handled
+
+**Evidence Required**:
+- Tag processing code
+- Shopify MCP validation output
+- Test results with 5 products
+- inventory_items query showing picker_quantity
+- Timestamp
+
+**Deadline**: 2025-10-15T12:00:00Z (after Data schema + 10h)
+
+---
+
+### Task 2B: Build Historical Order Import Function (4 hours)
+
+**IMPORTANT**: This builds the FUNCTION only. Real data import happens after live installation.
+
+**MCP TOOLS REQUIRED**:
+- ✅ Shopify MCP: mcp_shopify_introspect_graphql_schema (verify order fields)
+- ✅ Shopify MCP: mcp_shopify_validate_graphql_codeblocks (validate queries)
+
+**Query for Fulfilled Orders**:
+```graphql
+query HistoricalOrders($cursor: String) {
+  orders(first: 50, after: $cursor, query: "fulfillment_status:shipped") {
+    edges {
+      node {
+        id
+        name
+        fulfilledAt
+        lineItems(first: 50) {
+          edges {
+            node {
+              id
+              quantity
+              product {
+                id
+                title
+                tags
+              }
+              variant {
+                id
+                sku
+              }
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+**Import Algorithm**:
+```typescript
+async function importHistoricalOrders() {
+  let cursor: string | null = null;
+  let totalOrders = 0;
+  
+  do {
+    // Fetch page of orders
+    const response = await shopifyQuery(HistoricalOrdersQuery, { cursor });
+    
+    for (const edge of response.orders.edges) {
+      const order = edge.node;
+      
+      // Insert order to database
+      await db.orders.upsert({
+        shopify_order_id: order.id,
+        fulfilled_at: order.fulfilledAt,
+        fulfillment_status: 'fulfilled',
+        assigned_picker: null, // Admin assigns later
+        // ... other fields
+      });
+      
+      // Insert line items
+      for (const lineItemEdge of order.lineItems.edges) {
+        const lineItem = lineItemEdge.node;
+        
+        await db.order_line_items.insert({
+          order_id: /* reference from orders table */,
+          product_id: lineItem.product.id,
+          variant_id: lineItem.variant.id,
+          quantity: lineItem.quantity,
+          // ... other fields
+        });
+      }
+      
+      totalOrders++;
+    }
+    
+    cursor = response.orders.pageInfo.hasNextPage 
+      ? response.orders.pageInfo.endCursor 
+      : null;
+      
+  } while (cursor !== null);
+  
+  return { totalOrders };
+}
+```
+
+**Dev Store Testing**:
+- ✅ Run import against dev store
+- ❌ Expect minimal orders (dev store has little data)
+- ✅ Verify function works without errors
+- ✅ Check database inserts successful
+- ✅ Validate pagination logic
+
+**Production Import** (LATER - after live installation):
+- Will run against live Hot Rod AN store
+- Expected: Hundreds/thousands of historical orders
+- Timeline: TBD after production installation approved
+
+**Success Criteria**:
+- ✅ Import function built
+- ✅ Shopify MCP validation passed
+- ✅ Pagination logic works
+- ✅ Dev store test successful (even with minimal data)
+- ✅ Ready for production import
+
+**Evidence Required**:
+- Import function code
+- Shopify MCP validation output
+- Dev store test results (row counts)
+- Database verification
+- Timestamp
+
+**Deadline**: 2025-10-15T16:00:00Z (4h after Task 2A)
+
+---
+
+### Task 2C: Ongoing Order Sync (OPTIONAL - After Production Import)
+
+**Goal**: Keep new orders syncing automatically
+
+**Options**:
+1. **Shopify Webhook**: Order fulfilled event → Fly Edge Function → Database
+2. **Scheduled Job**: Daily cron job queries recent orders
+3. **Manual**: Admin imports periodically
+
+**Recommendation**: Shopify webhook (most real-time)
+
+**Implementation** (if webhook chosen):
+```typescript
+// Fly Edge Function: webhook-order-fulfilled
+Deno.serve(async (req) => {
+  const order = await req.json();
+  
+  // Verify webhook signature
+  // Process order same as historical import
+  // Return 200 OK
+});
+```
+
+**Timeline**: TBD based on CEO priority
+
+---
+
+## MCP Tools Requirements
+
+**MANDATORY for ALL Shopify work**:
+- ✅ mcp_shopify_introspect_graphql_schema
+- ✅ mcp_shopify_validate_graphql_codeblocks
+
+**Rationale**: Training data outdated for Shopify APIs (2023 or older)
+**Risk**: Using training data = hallucinated fields, wrong syntax, API errors
+
+**Process**:
+1. Introspect schema BEFORE writing queries
+2. Write GraphQL query
+3. Validate with MCP BEFORE executing
+4. Fix any validation errors
+5. Then execute against Shopify
+
+---
+
+## Evidence Gate
+
+Every task must log in feedback/integrations.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ)
+- Task completed
+- Shopify MCP validation results
+- Test data processed
+- Database row counts
+- Issues encountered
+- Next steps
+
+---
+
+## Blockers to Escalate
+
+If blocked >2 hours:
+1. Document in feedback/integrations.md
+2. Note attempts made (minimum 2)
+3. Escalate to Manager in feedback/manager.md
+4. Include Shopify MCP error output
+
+---
+
+## Coordination
+
+- **Data Agent**: Provides picker_quantity schema (blocking Task 2A start)
+- **Engineer**: Will use imported data for picker payment admin UI
+- **CEO/Manager**: Add test tags to dev store for validation
+- **Manager**: Monitoring progress in daily standups
+
+---
+
+## 🚨 PREVIOUS ASSIGNMENT: TEST SHOPIFY APIs AFTER DEPLOYMENT (P0)
+
+**Your immediate priority**: Test Shopify API integrations with real Hot Rod AN data
+
+**Current status**:
+- ✅ MCP server health checks complete
+- 🔄 Engineer deploying to hotdash-staging.fly.dev
+- 🎯 Test APIs when deployment completes
+
+**START HERE NOW** (Test after deployment):
+```bash
+cd ~/HotDash/hot-dash
+
+# Use Shopify MCP for ALL API testing (MANDATORY)
+# DO NOT use manual API calls
+
+# 1. Test Sales Pulse queries with Shopify MCP
+# mcp_shopify_validate_graphql_codeblocks (SALES_PULSE_QUERY)
+# Verify: Returns Hot Rod AN orders, correct data format
+
+# 2. Test Inventory queries with Shopify MCP
+# mcp_shopify_validate_graphql_codeblocks (LOW_STOCK_QUERY)
+# Verify: Returns Hot Rod AN product inventory
+
+# 3. Test Order Fulfillment queries with Shopify MCP
+# mcp_shopify_validate_graphql_codeblocks (ORDER_FULFILLMENTS_QUERY)
+# Verify: Returns fulfillment status data
+
+# 4. Test Product queries with Shopify MCP
+# Query Hot Rod AN product catalog
+# Verify: All AN fittings, fuel system parts appear
+
+# 5. Test Customer queries with Shopify MCP
+# Query Hot Rod AN customer data
+# Verify: Customer segments, orders visible
+
+# 6. Performance testing
+# Measure query response times
+# Test with 10, 50, 100 orders
+# Document: Average response times
+
+# 7. Rate limit testing
+# Test Shopify API rate limits
+# Verify proper backoff/retry logic
+
+# Evidence: Complete API test report with Shopify MCP validation
+# File: docs/integrations/shopify_api_test_report.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Shopify MCP: mcp_shopify_validate_graphql_codeblocks (MANDATORY for all queries)
+- ✅ Shopify MCP: mcp_shopify_learn_shopify_api (if needed for API exploration)
+- ❌ No manual API calls - use MCP validation only
+
+**Timeline**: 45-60 minutes (start immediately after deployment)
+
+**Success Metric**: All Shopify APIs validated with real Hot Rod AN data
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

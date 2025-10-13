@@ -2,8 +2,8 @@
 epoch: 2025.10.E1
 doc: docs/runbooks/agent_launch_checklist.md
 owner: manager
-last_reviewed: 2025-10-12
-expires: 2025-10-19
+last_reviewed: 2025-10-13
+expires: 2025-10-20
 ---
 # Agent Launch Checklist
 
@@ -28,7 +28,24 @@ Run this checklist before starting any automation or human agent. Skip nothingâ€
 - [ ] Reiterate: every feedback update must include command, timestamp, output path.
 - [ ] Confirm the agent has access to `artifacts/` directory to store logs/screenshots.
 
-## 4. Blocker Sweep
+## 4. Direction File Currency & Blocker Sweep
+
+### 4.1 Direction File Recency Check
+- [ ] Check agent's direction file last_reviewed date:
+  ```bash
+  head -10 docs/directions/<role>.md | grep last_reviewed
+  ```
+- [ ] If last_reviewed > 3 days old, review and update:
+  - [ ] Check `feedback/manager.md` for new assignments
+  - [ ] Update direction file with current priorities
+  - [ ] Update last_reviewed date to today
+  - [ ] Update expires date to +7 days
+  - [ ] Add MCP tool requirements if needed
+  - [ ] Add examples for tasks with no training data
+  - [ ] Verify vault credential references current
+- [ ] If last_reviewed â‰¤ 3 days old, verify content matches current assignments
+
+### 4.2 Blocker Sweep
 - [ ] Review recent feedback for unresolved blockers tied to this role.
 - [ ] Ensure direction docs reflect latest decisions; if not, update before launch.
 

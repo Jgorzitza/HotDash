@@ -14,7 +14,7 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 **Support Inbox:** customer.support@hotrodan.com — route all operator comms and evidence handoffs through this address.
 
 ## Canonical References
-- `docs/directions/support.md` — sprint focus and governance
+- `docs/runbooks/` — sprint focus and governance
 - `docs/enablement/dry_run_training_materials.md` — facilitator packet + dependencies
 - `docs/runbooks/operator_training_agenda.md` — session flow + timings
 - `docs/strategy/operator_dry_run_pre_read_draft.md` — success metrics + attendee roster
@@ -47,7 +47,7 @@ Ensure support delivers a disciplined rehearsal of the HotDash Shopify Admin app
 ### T-72 Hours (2025-10-13)
 | # | Task | Owner | Evidence / Artifact | Status |
 |---|------|-------|---------------------|--------|
-| 1 | Re-confirm sprint focus + dry run objectives with product/enablement (`docs/directions/support.md`) | Support | Note in `feedback/support.md` | Pending — schedule sync by 2025-10-13 |
+| 1 | Re-confirm sprint focus + dry run objectives with product/enablement (`docs/runbooks/`) | Support | Note in `feedback/support.md` | Pending — schedule sync by 2025-10-13 |
 | 2 | Verify restart cycle outcomes with integrations (`docs/runbooks/restart_cycle_checklist.md`) to ensure Shopify readiness tracker is current | Support ↔ Integrations | Updated row in `docs/integrations/integration_readiness_dashboard.md` | Pending — awaiting integrations owner |
 | 3 | Collect open questions from support trainers/operators and seed `docs/runbooks/operator_training_qa_template.md` | Support | Q&A template updated with draft prompts | Pending — gather trainer inputs 2025-10-12 |
 | 4 | Confirm attendee list + facilitator assignments with product (`docs/strategy/operator_dry_run_pre_read_draft.md`) | Product ↔ Support | Acknowledgment in `feedback/product.md` + `feedback/support.md` | Pending — product confirmation required |

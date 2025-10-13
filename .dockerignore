@@ -1,3 +1,65 @@
+# Development
 .cache
-build
-node_modules
+*.log
+npm-debug.log*
+.env
+.env.*
+!.env.example
+
+# Testing
+coverage
+tests
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+playwright-report
+test-results
+
+# Documentation
+docs
+*.md
+!package.json
+
+# Artifacts and temp files
+artifacts
+tmp
+.tmp
+*.tmp
+
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Vault (credentials should come from secrets)
+vault
+
+# Supabase local
+supabase/.branches
+supabase/.temp
+.supabase
+
+# Scripts (not needed in production, except docker-start.sh)
+scripts/*
+!scripts/docker-start.sh
+
+# Archives and backups
+archive
+*.backup
+*.bak
+
+# Large dependencies
+.pnpm-store
+.npm
+
+# OS files
+.DS_Store
+Thumbs.db

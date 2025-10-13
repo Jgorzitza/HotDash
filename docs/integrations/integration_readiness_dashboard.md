@@ -38,7 +38,7 @@
 ### 🔄 Manager Direction Alignment Completed
 - **Updated direction received**: Aligned task list with local execution policy
 - **Key changes**: Shopify MCP validation required, secrets cleanup (no embed/session tokens), Chatwoot scope clarified
-- **Evidence path**: `feedback/integrations.md` updated with direction acknowledgment
+- **Evidence path**: `docs/runbooks/ for direction` updated with direction acknowledgment
 
 ### 🏗️ Shopify MCP Validation Completed  
 - **Action**: Validated Admin flow prerequisites using Shopify Dev MCP

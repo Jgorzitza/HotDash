@@ -5,12 +5,12 @@ import path from 'node:path';
 import { getConfig, getSupabaseKey } from '../config.js';
 import { sanitizeTelemetry } from '../util/sanitize.js';
 
-async function fetchTable(client: any, tableName: string, limit = 1000): Promise<any[]> {
+async function fetchTable(client: any, tableName: string, limit = 1000, orderBy = 'created_at'): Promise<any[]> {
   try {
     const { data, error } = await client
       .from(tableName)
       .select('*')
-      .order('created_at', { ascending: false })
+      .order(orderBy, { ascending: false })
       .limit(limit);
 
     if (error) {
@@ -37,7 +37,7 @@ export async function fetchDecisionDocs(): Promise<Document[]> {
     const supabase = createClient(config.SUPABASE_URL, getSupabaseKey());
     
     console.log('Fetching decision log data from Supabase...');
-    const rows = await fetchTable(supabase, 'decision_log', 2000);
+    const rows = await fetchTable(supabase, 'decision_sync_events', 2000, 'timestamp');
     console.log(`Found ${rows.length} decision log entries`);
 
     for (const row of rows) {
@@ -45,15 +45,16 @@ export async function fetchDecisionDocs(): Promise<Document[]> {
       
       if (text && text.length > 10) { // Only include entries with substantial content
         const doc = new Document({
-          id_: `decision:${row.id}`,
+          id_: `decision:${row.decisionId}`,
           text: text,
           metadata: {
             source: 'supabase',
-            table: 'decision_log',
-            created_at: row.created_at,
-            id: row.id,
-            type: row.type || 'unknown',
+            table: 'decision_sync_events',
+            timestamp: row.timestamp,
+            decisionId: row.decisionId,
             status: row.status || 'unknown',
+            scope: row.scope,
+            durationMs: row.durationMs,
           }
         });
 
@@ -102,7 +103,7 @@ export async function fetchDecisionDocs(): Promise<Document[]> {
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       timestamp: new Date().toISOString(),
-      table: 'decision_log',
+      table: 'decision_sync_events',
     };
 
     try {
@@ -132,7 +133,7 @@ export async function fetchTelemetryDocs(): Promise<Document[]> {
     const supabase = createClient(config.SUPABASE_URL, getSupabaseKey());
     
     console.log('Fetching telemetry events data from Supabase...');
-    const rows = await fetchTable(supabase, 'telemetry_events', 5000);
+    const rows = await fetchTable(supabase, 'observability_logs', 5000);
     console.log(`Found ${rows.length} telemetry events`);
 
     for (const row of rows) {
@@ -159,7 +160,7 @@ export async function fetchTelemetryDocs(): Promise<Document[]> {
           text: cleanText,
           metadata: {
             source: 'supabase',
-            table: 'telemetry_events',
+            table: 'observability_logs',
             created_at: row.created_at,
             event_name: row.event_name,
             user_id: row.user_id ? '[REDACTED]' : undefined, // Redact user_id in metadata too

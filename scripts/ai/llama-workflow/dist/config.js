@@ -53,4 +53,3 @@ export function validateConfig() {
     console.log(`  - CHATWOOT_SPACE: ${config.CHATWOOT_SPACE}`);
     console.log(`  - Using ${config.SUPABASE_READONLY_KEY ? 'READONLY' : 'ANON'} Supabase key`);
 }
-//# sourceMappingURL=config.js.map

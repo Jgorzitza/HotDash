@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
+import { Modal, TextField, Button, BlockStack, InlineStack, Text, Banner, Select } from "@shopify/polaris";
 
 import type { OrderSummary } from "../../services/shopify/types";
 
@@ -80,125 +81,84 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
     });
   };
 
-  if (!open) {
-    return null;
-  }
-
   return (
-    <div className="occ-modal-backdrop" role="presentation">
-      <dialog
-        open
-        className="occ-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="sales-pulse-modal-title"
-        data-testid="sales-pulse-dialog"
-      >
-        <div className="occ-modal__header">
-          <div>
-            <h2 id="sales-pulse-modal-title">Sales Pulse — Details</h2>
-            <p className="occ-text-meta" style={{ margin: 0 }}>
-              Revenue today: {summary.currency} {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            aria-label="Close sales pulse modal"
-          >
-            Close
-          </button>
-        </div>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Sales Pulse — Details"
+      primaryAction={{
+        content: ACTION_LABELS[selectedAction],
+        onAction: () => submit(selectedAction),
+        disabled: isSubmitting,
+        loading: isSubmitting,
+      }}
+    >
+      <Modal.Section>
+        <BlockStack gap="400">
+          <Text as="p" variant="bodySm" tone="subdued">
+            Revenue today: {summary.currency} {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
+          </Text>
 
-        <div className="occ-modal__body">
-          <section className="occ-modal__section">
-            <h3>Top SKUs</h3>
-            <ul className="occ-modal__list">
+          {fetcher.data?.error && (
+            <Banner tone="critical">
+              <p>{fetcher.data.error}</p>
+            </Banner>
+          )}
+
+          {/* Top SKUs */}
+          <BlockStack gap="200">
+            <Text as="h3" variant="headingSm">Top SKUs</Text>
+            <BlockStack gap="100">
               {summary.topSkus.map((sku) => (
-                <li key={`${sku.sku}-${sku.title}`}>
-                  <span>{sku.title}</span>
-                  <span>
+                <InlineStack key={`${sku.sku}-${sku.title}`} align="space-between" blockAlign="center">
+                  <Text as="span">{sku.title}</Text>
+                  <Text as="span" tone="subdued" variant="bodySm">
                     {sku.quantity} units · {summary.currency} {sku.revenue.toFixed(2)}
-                  </span>
-                </li>
+                  </Text>
+                </InlineStack>
               ))}
-            </ul>
-          </section>
+            </BlockStack>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>Pending fulfillment</h3>
+          {/* Pending Fulfillment */}
+          <BlockStack gap="200">
+            <Text as="h3" variant="headingSm">Pending fulfillment</Text>
             {summary.pendingFulfillment.length === 0 ? (
-              <p className="occ-text-secondary">All clear — no blockers.</p>
+              <Text as="p" tone="subdued">All clear — no blockers.</Text>
             ) : (
-              <ul className="occ-modal__list">
+              <BlockStack gap="100">
                 {summary.pendingFulfillment.map((order) => (
-                  <li key={order.orderId}>
-                    <span>{order.name}</span>
-                    <span>{order.displayStatus}</span>
-                  </li>
+                  <InlineStack key={order.orderId} align="space-between" blockAlign="center">
+                    <Text as="span">{order.name}</Text>
+                    <Text as="span" tone="subdued" variant="bodySm">{order.displayStatus}</Text>
+                  </InlineStack>
                 ))}
-              </ul>
+              </BlockStack>
             )}
-          </section>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>Capture follow-up</h3>
-            <label className="occ-field">
-              <span className="occ-field__label">Action</span>
-              <select
-                className="occ-select"
-                value={selectedAction}
-                onChange={(event) => setSelectedAction(event.currentTarget.value as SalesAction)}
-                disabled={isSubmitting}
-              >
-                {Object.entries(ACTION_LABELS).map(([action, label]) => (
-                  <option key={action} value={action}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="occ-field">
-              <span className="occ-field__label">Notes</span>
-              <textarea
-                className="occ-textarea"
-                rows={3}
-                placeholder="Add context for the decision log"
-                value={note}
-                onChange={(event) => setNote(event.currentTarget.value)}
-                disabled={isSubmitting}
-              />
-            </label>
-            {fetcher.data?.error ? (
-              <p className="occ-feedback occ-feedback--error" role="alert">
-                {fetcher.data.error}
-              </p>
-            ) : null}
-          </section>
-        </div>
-
-        <div className="occ-modal__footer">
-          <div className="occ-modal__footer-actions">
-            <button
-              type="button"
-              className="occ-button occ-button--primary"
-              onClick={() => submit(selectedAction)}
+          {/* Action Selection */}
+          <BlockStack gap="200">
+            <Text as="h3" variant="headingSm">Capture follow-up</Text>
+            <Select
+              label="Action"
+              options={Object.entries(ACTION_LABELS).map(([value, label]) => ({ label, value }))}
+              value={selectedAction}
+              onChange={(value) => setSelectedAction(value as SalesAction)}
               disabled={isSubmitting}
-            >
-              {ACTION_LABELS[selectedAction]}
-            </button>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </button>
-        </div>
-      </dialog>
-    </div>
+            />
+            <TextField
+              label="Notes"
+              value={note}
+              onChange={setNote}
+              multiline={3}
+              placeholder="Add context for the decision log"
+              disabled={isSubmitting}
+              autoComplete="off"
+            />
+          </BlockStack>
+        </BlockStack>
+      </Modal.Section>
+    </Modal>
   );
 }

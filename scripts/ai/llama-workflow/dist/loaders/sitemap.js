@@ -175,4 +175,3 @@ export async function fetchHotrodanContent() {
         return []; // Return empty array instead of throwing
     }
 }
-//# sourceMappingURL=sitemap.js.map

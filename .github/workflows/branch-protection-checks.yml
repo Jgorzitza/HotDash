@@ -1,0 +1,172 @@
+name: Branch Protection Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  pr-validation:
+    name: Validate PR Requirements
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check PR title format
+        id: pr_title
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          
+          # Check for conventional commit format
+          if ! echo "$PR_TITLE" | grep -E '^(feat|fix|docs|chore|refactor|test|ci|perf|build|style|revert)(\(.+\))?: .+'; then
+            echo "❌ PR title must follow conventional commit format"
+            echo "Examples: feat: add new feature, fix(auth): resolve login bug"
+            echo "::error::PR title must follow conventional commit format"
+            exit 1
+          fi
+          
+          echo "✅ PR title format is valid"
+      
+      - name: Check for large files
+        id: large_files
+        run: |
+          echo "Checking for files larger than 1MB..."
+          LARGE_FILES=$(find . -type f -size +1M -not -path "./.git/*" -not -path "./node_modules/*" -not -path "./packages/memory/*" 2>/dev/null || true)
+          
+          if [ -n "$LARGE_FILES" ]; then
+            echo "::warning::Found large files - review if they should be in git:"
+            echo "$LARGE_FILES"
+          else
+            echo "✅ No large files detected"
+          fi
+      
+      - name: Check for required PR sections
+        id: pr_body
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          MISSING_SECTIONS=""
+          
+          # Check for Evidence section
+          if ! echo "$PR_BODY" | grep -q "## Evidence"; then
+            MISSING_SECTIONS="${MISSING_SECTIONS}\n- Evidence section"
+          fi
+          
+          # Check for Testing section
+          if ! echo "$PR_BODY" | grep -q "## Testing"; then
+            MISSING_SECTIONS="${MISSING_SECTIONS}\n- Testing section"
+          fi
+          
+          if [ -n "$MISSING_SECTIONS" ]; then
+            echo "::warning::PR body is missing recommended sections:${MISSING_SECTIONS}"
+            echo "Please add these sections using the PR template"
+          else
+            echo "✅ PR body contains required sections"
+          fi
+      
+      - name: Check for linked issues
+        id: linked_issues
+        run: |
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Check for issue references (#123, closes #123, fixes #123, etc.)
+          if ! echo "$PR_BODY" | grep -qE '(#[0-9]+|closes #[0-9]+|fixes #[0-9]+|resolves #[0-9]+)'; then
+            echo "::warning::No linked issues found. Consider linking related issues."
+          else
+            echo "✅ PR links to issues"
+          fi
+      
+      - name: Check branch naming convention
+        id: branch_name
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          
+          # Check for agent/<agent>/<task> format or common patterns
+          if ! echo "$BRANCH_NAME" | grep -qE '^(agent|feat|fix|chore|docs|refactor|test|ci|perf|build)\/'; then
+            echo "::warning::Branch name should follow convention: agent/<name>/<task> or <type>/<description>"
+            echo "Current branch: $BRANCH_NAME"
+          else
+            echo "✅ Branch name follows convention"
+          fi
+      
+      - name: Generate PR validation report
+        if: always()
+        run: |
+          echo "## 🔍 PR Validation Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          echo "### Checks Completed:" >> $GITHUB_STEP_SUMMARY
+          echo "- PR Title Format: ${{ steps.pr_title.outcome == 'success' && '✅' || '❌' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Large Files Check: ${{ steps.large_files.outcome == 'success' && '✅' || '⚠️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- PR Body Sections: ${{ steps.pr_body.outcome == 'success' && '✅' || '⚠️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Linked Issues: ${{ steps.linked_issues.outcome == 'success' && '✅' || '⚠️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch Naming: ${{ steps.branch_name.outcome == 'success' && '✅' || '⚠️' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See workflow logs for details." >> $GITHUB_STEP_SUMMARY
+
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }} # Only needed for commercial use
+      
+      - name: Secret scan passed
+        if: success()
+        run: |
+          echo "✅ No secrets detected in PR" >> $GITHUB_STEP_SUMMARY
+  
+  commit-message-check:
+    name: Validate Commit Messages
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check commit messages
+        run: |
+          echo "Checking commit messages for conventional commit format..."
+          
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          
+          INVALID_COMMITS=0
+          
+          # Get all commits in this PR
+          for commit in $(git rev-list ${BASE_SHA}..${HEAD_SHA}); do
+            MESSAGE=$(git log --format=%s -n 1 $commit)
+            
+            if ! echo "$MESSAGE" | grep -qE '^(feat|fix|docs|chore|refactor|test|ci|perf|build|style|revert)(\(.+\))?: .+'; then
+              echo "::warning::Commit $commit has invalid message format: $MESSAGE"
+              INVALID_COMMITS=$((INVALID_COMMITS + 1))
+            fi
+          done
+          
+          if [ $INVALID_COMMITS -gt 0 ]; then
+            echo "::warning::Found $INVALID_COMMITS commit(s) not following conventional commit format"
+            echo "Consider using: feat:, fix:, docs:, chore:, etc."
+          else
+            echo "✅ All commit messages follow conventional format"
+          fi
+

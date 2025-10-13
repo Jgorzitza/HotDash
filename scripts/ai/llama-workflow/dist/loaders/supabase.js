@@ -4,12 +4,12 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { getConfig, getSupabaseKey } from '../config.js';
 import { sanitizeTelemetry } from '../util/sanitize.js';
-async function fetchTable(client, tableName, limit = 1000) {
+async function fetchTable(client, tableName, limit = 1000, orderBy = 'created_at') {
     try {
         const { data, error } = await client
             .from(tableName)
             .select('*')
-            .order('created_at', { ascending: false })
+            .order(orderBy, { ascending: false })
             .limit(limit);
         if (error) {
             console.warn(`Supabase query error for ${tableName}:`, error);
@@ -31,21 +31,22 @@ export async function fetchDecisionDocs() {
         await fs.mkdir(outputDir, { recursive: true });
         const supabase = createClient(config.SUPABASE_URL, getSupabaseKey());
         console.log('Fetching decision log data from Supabase...');
-        const rows = await fetchTable(supabase, 'decision_log', 2000);
+        const rows = await fetchTable(supabase, 'decision_sync_events', 2000, 'timestamp');
         console.log(`Found ${rows.length} decision log entries`);
         for (const row of rows) {
             const text = row.summary || row.detail || row.description || JSON.stringify(row);
             if (text && text.length > 10) { // Only include entries with substantial content
                 const doc = new Document({
-                    id_: `decision:${row.id}`,
+                    id_: `decision:${row.decisionId}`,
                     text: text,
                     metadata: {
                         source: 'supabase',
-                        table: 'decision_log',
-                        created_at: row.created_at,
-                        id: row.id,
-                        type: row.type || 'unknown',
+                        table: 'decision_sync_events',
+                        timestamp: row.timestamp,
+                        decisionId: row.decisionId,
                         status: row.status || 'unknown',
+                        scope: row.scope,
+                        durationMs: row.durationMs,
                     }
                 });
                 documents.push(doc);
@@ -82,7 +83,7 @@ export async function fetchDecisionDocs() {
             error: error instanceof Error ? error.message : String(error),
             stack: error instanceof Error ? error.stack : undefined,
             timestamp: new Date().toISOString(),
-            table: 'decision_log',
+            table: 'decision_sync_events',
         };
         try {
             await fs.mkdir(outputDir, { recursive: true });
@@ -104,7 +105,7 @@ export async function fetchTelemetryDocs() {
         await fs.mkdir(outputDir, { recursive: true });
         const supabase = createClient(config.SUPABASE_URL, getSupabaseKey());
         console.log('Fetching telemetry events data from Supabase...');
-        const rows = await fetchTable(supabase, 'telemetry_events', 5000);
+        const rows = await fetchTable(supabase, 'observability_logs', 5000);
         console.log(`Found ${rows.length} telemetry events`);
         for (const row of rows) {
             // Create text from event name and payload
@@ -127,7 +128,7 @@ export async function fetchTelemetryDocs() {
                     text: cleanText,
                     metadata: {
                         source: 'supabase',
-                        table: 'telemetry_events',
+                        table: 'observability_logs',
                         created_at: row.created_at,
                         event_name: row.event_name,
                         user_id: row.user_id ? '[REDACTED]' : undefined, // Redact user_id in metadata too
@@ -186,4 +187,3 @@ export async function fetchTelemetryDocs() {
         return []; // Return empty array instead of throwing
     }
 }
-//# sourceMappingURL=supabase.js.map

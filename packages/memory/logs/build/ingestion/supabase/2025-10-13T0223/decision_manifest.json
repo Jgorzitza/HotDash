@@ -1,0 +1,8 @@
+{
+  "source": "supabase",
+  "table": "decision_log",
+  "timestamp": "2025-10-13T02:23:35.818Z",
+  "rows_fetched": 3,
+  "documents_created": 3,
+  "total_content_length": 426
+}

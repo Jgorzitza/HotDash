@@ -61,13 +61,32 @@ export function createDirectGaClient(propertyId: string): GaClient {
         const startDate = range.start; // Already in YYYY-MM-DD format
         const endDate = range.end;
 
-        // Run report with landing page dimensions and sessions metric
+        // Calculate previous week date range for WoW comparison
+        const currentStart = new Date(startDate);
+        const currentEnd = new Date(endDate);
+        const daysDiff = Math.ceil((currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24));
+        
+        const previousEnd = new Date(currentStart);
+        previousEnd.setUTCDate(previousEnd.getUTCDate() - 1);
+        const previousStart = new Date(previousEnd);
+        previousStart.setUTCDate(previousStart.getUTCDate() - daysDiff);
+
+        const prevStartDate = previousStart.toISOString().slice(0, 10);
+        const prevEndDate = previousEnd.toISOString().slice(0, 10);
+
+        // Run report with landing page dimensions and sessions metric for BOTH periods
         const [response] = await client.runReport({
           property: `properties/${propertyId}`,
           dateRanges: [
             {
               startDate,
               endDate,
+              name: 'current',
+            },
+            {
+              startDate: prevStartDate,
+              endDate: prevEndDate,
+              name: 'previous',
             },
           ],
           dimensions: [
@@ -91,15 +110,25 @@ export function createDirectGaClient(propertyId: string): GaClient {
           limit: 100, // Top 100 pages
         });
 
-        // Transform GA API response to GaSession format
+        // Transform GA API response to GaSession format with WoW calculation
         const sessions: GaSession[] = (response.rows || []).map((row) => {
           const landingPage = row.dimensionValues?.[0]?.value || '';
-          const sessionsValue = row.metricValues?.[0]?.value || '0';
+          const currentSessions = parseInt(row.metricValues?.[0]?.value || '0', 10);
+          const previousSessions = parseInt(row.metricValues?.[1]?.value || '0', 10);
+          
+          // Calculate week-over-week delta percentage
+          let wowDelta = 0;
+          if (previousSessions > 0) {
+            wowDelta = ((currentSessions - previousSessions) / previousSessions) * 100;
+          } else if (currentSessions > 0) {
+            // New page with no previous data - consider it 100% increase
+            wowDelta = 100;
+          }
           
           return {
             landingPage,
-            sessions: parseInt(sessionsValue, 10),
-            wowDelta: 0, // Will be calculated separately by comparing with previous period
+            sessions: currentSessions,
+            wowDelta: parseFloat(wowDelta.toFixed(1)),
             evidenceUrl: undefined, // Optional - can be added later for drill-down links
           };
         });

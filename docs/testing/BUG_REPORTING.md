@@ -276,7 +276,7 @@ npx playwright show-trace trace.zip
 npx supabase db inspect
 
 # Query specific data
-psql $DATABASE_URL -c "SELECT * FROM agent_sdk_approval_queue WHERE status = 'error'"
+mcp_supabase_get_advisors(type: "security")
 ```
 
 ### Log Analysis

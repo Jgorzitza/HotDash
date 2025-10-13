@@ -79,7 +79,7 @@ export const shopifyCancelOrder = tool({
   parameters: z.object({
     orderId: z.string().describe('GraphQL ID, e.g. "gid://shopify/Order/1234567890"'),
     notify: z.boolean().default(false).describe('Whether to notify the customer'),
-    reason: z.enum(['CUSTOMER', 'DECLINED', 'FRAUD', 'INVENTORY', 'OTHER']).optional(),
+    reason: z.enum(['CUSTOMER', 'DECLINED', 'FRAUD', 'INVENTORY', 'OTHER']).nullable(),
   }),
   needsApproval: true, // 🔒 Human approval required
   async execute({ orderId, notify, reason }) {

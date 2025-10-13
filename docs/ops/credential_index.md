@@ -25,6 +25,8 @@ This map catalogs every secret agents rely on. All secrets live in vault (`vault
 | GitHub Actions (production env) | `SHOPIFY_*_PROD`, `PRODUCTION_APP_URL`, `PRODUCTION_SMOKE_TEST_URL`, etc. | Deployment mirrors as go-live gating step. |
 | Google Analytics Service Account | `vault/occ/google/analytics-service-account.json` | Service account for GA Data API access; engineer uses for direct API calls; dev tools use for MCP queries. Credentials file permissions must be 600 (owner read/write only). |
 | Hootsuite (if activated) | `vault/occ/hootsuite/api_key.env` | Compliance logs vendor approvals before use. |
+| Zoho Mail (Chatwoot) | `vault/occ/zoho/customer_support_staging.env` | IMAP/SMTP credentials for customer.support@hotrodan.com (Canadian servers: zohocloud.ca). Chatwoot agent uses for email integration. Permissions: 600 (owner read/write only). |
+| Picker Information | `vault/occ/zoho/sumesh_picker.env` | Current picker roster (Sumesh: hotrodanllc@gmail.com). Data agent references for picker payment system initialization. Permissions: 600. |
 
 ## Usage Rules
 1. **Source-before-use** — `source <path>` in your shell before invoking tooling (`fly`, `npm`, `scripts/ops/*`). Do not copy values into `.env`.

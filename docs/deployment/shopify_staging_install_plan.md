@@ -34,7 +34,7 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
 | Item | Owner | Delivery Evidence | Pending Actions |
 |------|-------|-------------------|-----------------|
 | Shopify store invites (Evergreen Outfitters, Atelier Belle Maison, Peak Performance Gear) | Deployment ↔ Integrations | `artifacts/integrations/shopify/2025-10-10/store-access.md` + # permalink in `feedback/deployment.md` | 🔴 Pending DEPLOY-147 closeout; escalate if not delivered by 2025-10-11 19:00 UTC. |
-| Shopify CLI auth token (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) | Deployment | Vault `occ/shopify/cli_auth_token_staging.env` + timestamp screenshot stored in `artifacts/integrations/shopify/<date>/cli-token.png` | Await confirmation of latest rotation; log timestamp in `feedback/product.md`. |
+| Shopify CLI auth token (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) | Deployment | Vault `occ/shopify/cli_auth_token_staging.env` + timestamp screenshot stored in `artifacts/integrations/shopify/<date>/cli-token.png` | Await confirmation of latest rotation; log timestamp in `docs/directions/product.md`. |
 | Chatwoot sandbox token rotation | Integrations | Vault entry `occ/chatwoot/token_sandbox_staging.env` + note in `feedback/integrations.md` | Verify token aligns with 2025-10-16 dry run scenarios; request acknowledgement once rotated. |
 | Supabase decision log read-only service key | Data | Vault entry `occ/supabase/service_key_staging.env` + parity artefact `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json` | Confirm read-only scope documented; attach vault timestamp screenshot before sharing with support. |
 | STAGING_SMOKE_TEST_URL evidence bundle | Reliability | `artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json` + screenshot `artifacts/ops/dry_run_2025-10-16/mock0-smoke.png` | Capture new screenshot once `?mock=0` returns 200 and notify support/enablement. |
@@ -43,7 +43,7 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
 
 ## Execution Timeline
 1. **Credential Confirmation (Product ↔ Deployment/Integrations/Reliability)**
-   - Verify vault + GitHub secret timestamps (record in `feedback/product.md`).
+   - Verify vault + GitHub secret timestamps (record in `docs/directions/product.md`).
    - Confirm `DEPLOY-147` delivers store invite + password reset instructions for `hotroddash.myshopify.com`.
    - Attach Supabase parity artifact + secret timestamp screenshots to Linear/Memory update.
 
@@ -72,7 +72,7 @@ Codify the exact sequence for shipping the HotDash Shopify app to the staging st
   - Synthetic `mock=0` success artifact.
   - Shopify install evidence (store invite log, CLI deploy log).
 - Mirror the above in Memory (`scope="ops"`, topic `staging_install_plan`) once artifacts exist.
-- Record progress + blockers daily in [`feedback/product.md`](../../feedback/product.md) per direction; include timestamps for secret validation, CLI deploy, and synthetic smoke outcomes.
+- Record progress + blockers daily in [`docs/directions/product.md`](../../docs/directions/product.md) per direction; include timestamps for secret validation, CLI deploy, and synthetic smoke outcomes.
 - Keep the backlog frozen until QA notes both artifacts in [`feedback/qa.md`](../../feedback/qa.md) and product publishes the combined evidence bundle.
 - Notify QA/support via # with vault paths + GitHub secret timestamps when access bundle is live; capture permalink in feedback log.
 

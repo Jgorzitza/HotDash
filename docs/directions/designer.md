@@ -2,11 +2,278 @@
 epoch: 2025.10.E1
 doc: docs/directions/designer.md
 owner: manager
-last_reviewed: 2025-10-12
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-19
+expires: 2025-10-20
 ---
 # Designer — Direction (Operator Control Center)
+
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
+
+## 🚨 P1 PRIORITY: SEO Pulse Tile UX Refinement (2025-10-13)
+
+**Assignment**: Design visual hierarchy for SEO traffic anomaly monitoring
+**Timeline**: 3 hours
+**Evidence**: Log all work in feedback/designer.md
+**Deadline**: 2025-10-15T18:00:00Z (48h)
+
+### Context
+
+**Current Problem** (from Engineer handoff):
+- SEO Pulse tile shows ALL 100 landing pages from Google Analytics
+- Every page shows "0.0% WoW" (Data team fixing this)
+- No filtering or visual hierarchy
+- CEO experiences information overload
+- Unclear what requires action
+
+**What's Working**:
+- ✅ GA API integration functional
+- ✅ Data retrieval successful
+- ✅ Performance acceptable (<3s)
+
+**What Needs Design**:
+- Visual hierarchy to show only important anomalies
+- Clear indicators for traffic trends (up/down/stable)
+- Actionable information vs data dump
+- Empty state for when no anomalies detected
+
+### Dependencies
+
+**WAIT FOR**: Product team anomaly threshold decisions
+- Expected: 2025-10-14T18:00:00Z
+- Need: Display count (top 5, 10, or all meeting threshold?)
+- Need: Threshold percentage (20%, 30%?)
+- Need: Show increases or only decreases?
+- Check: feedback/product.md for spec
+
+**START WHEN**: Product provides specification document
+
+---
+
+### Task D1: SEO Pulse Visual Hierarchy Design (3 hours)
+
+**Requirements from Engineer**:
+
+**Current Display** (needs fixing):
+```
+/ — 335 sessions (0.0% WoW)
+/blogs/an-hose-101/ultimate-fuel-system-guide... — 177 sessions (0.0% WoW)
+/pages/shop-all-hot-rod-an-llc-products... — 144 sessions (0.0% WoW)
+... (97 more pages all identical format)
+```
+
+**Target Display** (your design):
+```
+Show only top 5-10 anomalies with visual indicators
+Clear distinction between positive/negative trends
+Empty state when no significant changes
+```
+
+**Design Specifications**:
+
+**1. Anomaly Display Count**:
+- Design for Product's recommendation (likely top 5-10)
+- Consider: "View all" expansion pattern if needed
+- Mobile: Show fewer items (3-5)
+- Desktop: Can show more (5-10)
+
+**2. Visual Indicators for Traffic Trends**:
+
+**Significant Decrease (>20% drop)** - Requires attention:
+- Color: Red (#DC2626 or brand equivalent)
+- Icon: ⬇ down arrow
+- Typography: Bold for page path
+- Highlight: Light red background or border
+
+**Significant Increase (>20% gain)** - Positive:
+- Color: Green (#16A34A or brand equivalent)  
+- Icon: ⬆ up arrow
+- Typography: Regular weight
+- Highlight: Light green background or border
+
+**Stable (±20%)** - Neutral (maybe don't show?):
+- Color: Gray (#6B7280)
+- Icon: ➡ horizontal arrow or none
+- Typography: Regular weight
+
+**3. Data Presentation**:
+- Page path (truncate long URLs)
+- Current sessions count
+- WoW percentage (with + or - sign)
+- Visual trend indicator (arrow + color)
+- Sparkline chart (optional enhancement)
+
+**4. Empty State Design**:
+When no anomalies detected:
+```
+Icon: ✓ or 📊
+Heading: "No significant traffic changes detected"
+Subtext: "All landing pages performing within normal ranges"
+Action: "View all pages" link (optional)
+```
+
+**5. Tile Header**:
+- Title: "SEO Pulse" (keep consistent)
+- Subtitle: "Top traffic anomalies" or similar
+- Last updated timestamp
+- Refresh indicator
+
+**6. Mobile Responsiveness**:
+- Stack items vertically on mobile
+- Truncate page paths more aggressively
+- Maintain color/icon indicators
+- Reduce count (3-5 items max on mobile)
+
+**7. Accessibility Requirements**:
+- Color alone not sufficient (use icons + color)
+- ARIA labels for trend indicators
+- Screen reader announces: "Traffic down 25%"
+- Keyboard navigation for "View all"
+- Min contrast ratio 4.5:1
+
+**Deliverables**:
+
+**1. Figma Mockup** (1.5 hours):
+- Desktop view (1280px+)
+- Mobile view (375px)
+- Empty state
+- Various states (decreases, increases, mixed)
+- Dark mode variant (if app supports)
+
+**2. Component Specifications** (1 hour):
+- Typography scale (path, sessions, percentage)
+- Color palette (red, green, gray values)
+- Spacing/padding (tile, items, gaps)
+- Icon library reference
+- Animation specs (if any)
+
+**3. Design Handoff Document** (0.5 hours):
+- Figma link
+- Component breakdown for Engineer
+- Edge cases documented:
+  - Very long page paths
+  - Extreme percentages (>1000%)
+  - Zero traffic pages
+  - Exactly at threshold
+- Implementation notes
+- QA testing scenarios
+
+**Tools**:
+- Figma (design mockups)
+- Hot Rod AN brand guidelines (colors, typography)
+- Reference: Current Shopify app design system
+
+**Success Criteria**:
+- ✅ CEO can identify issues at a glance
+- ✅ Visual distinction clear between good/bad trends
+- ✅ Maximum 10 items by default
+- ✅ Actionable information, not data dump
+- ✅ Accessibility compliant
+- ✅ Mobile responsive
+
+**Evidence Required**:
+- Figma link (make public or share with team)
+- Design specs document
+- Screenshot of key screens
+- Timestamp
+
+**Deadline**: 2025-10-15T18:00:00Z (after Product spec available)
+
+---
+
+## MCP Tools NOT Required
+
+Design work is primarily Figma-based. No MCP tools needed.
+
+## Evidence Gate
+
+Log in feedback/designer.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ)
+- Figma link
+- Design decisions made
+- Rationale for visual hierarchy choices
+- Handoff document path
+- Issues encountered
+
+## Blockers to Escalate
+
+If blocked >2 hours:
+1. Document in feedback/designer.md
+2. Note attempts made (minimum 2)
+3. Escalate to Manager
+4. Include screenshot of blocking issue
+
+## Coordination
+
+- **Product**: Provides threshold spec (blocks start)
+- **Data**: Implementing WoW calculation (parallel work)
+- **Engineer**: Will implement design after both complete
+- **Manager**: Monitoring progress in daily standups
+
+---
+
+## 🚨 P2 PRIORITY: CREATE SHOPIFY APP STORE LISTING
+
+**Your immediate priority**: Create comprehensive Shopify App Store listing for the deployed app
+
+**Current status**:
+- ✅ Accessibility audit complete
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Prepare App Store listing when deployment completes
+
+**START HERE NOW** (After deployment completes):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Create app name and tagline
+# Name: "Hot Dash - Automotive Operations Center"
+# Tagline: "Command center for automotive parts retailers"
+
+# 2. Write compelling app description
+# File: docs/design/shopify_app_store_description.md
+# Focus: Time savings, automation, Hot Rod AN success
+# 500 words highlighting automotive-specific benefits
+
+# 3. Create app screenshots
+# 5 tile screenshots showing real data
+# Approval queue screenshot
+# Mobile view screenshot
+# Save as: docs/design/app_store_screenshots/
+
+# 4. Design app icon
+# File: docs/design/app_icon_design.md
+# Automotive-themed, Hot Rod AN branding
+# Shopify guidelines compliant
+
+# 5. Create feature list
+# List all features for App Store
+# Highlight: Real-time dashboards, AI-assisted approvals
+
+# 6. Write benefits section
+# CEO time savings (10-12h → <2h/week)
+# Data-driven decisions, automated insights
+
+# 7. Create pricing model design
+# Free tier: Basic dashboard
+# Pro tier: AI approvals, advanced analytics
+# Pricing strategy for automotive vertical
+
+# 8. Prepare support documentation
+# Getting started guide, FAQ, contact info
+
+# Evidence: Complete App Store listing package
+# Log to: feedback/designer.md
+```
+
+**Timeline**: 60-90 minutes (20 tasks total)
+
+**Success Metric**: Complete Shopify App Store listing ready for submission
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md

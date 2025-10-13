@@ -1,556 +1,637 @@
 ---
-epoch: 2025.10.E1
-doc: docs/data/data_warehouse_design.md
+title: Agent Analytics Data Warehouse Design
+created: 2025-10-12
 owner: data
-last_reviewed: 2025-10-11
-expires: 2025-11-11
+status: design
+schema_type: star
 ---
 
-# Data Warehouse Design - Agent Analytics
+# Agent Analytics Data Warehouse (Star Schema)
 
 ## Overview
 
-Dimensional model for Agent SDK analytics using star schema for efficient historical analysis, reporting, and business intelligence.
+**Purpose**: Dimensional model for historical agent analytics, optimized for OLAP queries and business intelligence.
 
-## Dimensional Model (Star Schema)
+**Architecture**: Star Schema with fact tables surrounded by dimension tables.
+
+**Benefits**:
+- Fast aggregation queries
+- Simple JOIN patterns
+- Easy for BI tools to understand
+- Optimized for historical analysis
+
+## Star Schema Diagram
 
 ```
-                         ┌──────────────────┐
-                         │   dim_agent      │
-                         ├──────────────────┤
-                         │ agent_key (PK)   │
-                         │ agent_name       │
-                         │ agent_type       │
-                         │ capabilities     │
-                         └──────────────────┘
-                                 │
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                        │                        │
-┌───────▼──────────┐    ┌───────▼──────────┐    ┌───────▼──────────┐
-│ fact_agent_query │    │ fact_approval    │    │ fact_training    │
-├──────────────────┤    ├──────────────────┤    ├──────────────────┤
-│ query_key (PK)   │    │ approval_key(PK) │    │ training_key(PK) │
-│ agent_key (FK)   │    │ agent_key (FK)   │    │ agent_key (FK)   │
-│ time_key (FK)    │    │ time_key (FK)    │    │ time_key (FK)    │
-│ conv_key (FK)    │    │ conv_key (FK)    │    │ conv_key (FK)    │
-│ latency_ms       │    │ status           │    │ safe_to_send     │
-│ approved         │    │ resolution_time  │    │ clarity_score    │
-│ human_edited     │    │ approved_by_key  │    │ accuracy_score   │
-└──────────────────┘    └──────────────────┘    └──────────────────┘
-        │                        │                        │
-        └────────────┬───────────┴────────────┬───────────┘
-                     │                        │
-              ┌──────▼──────────┐      ┌──────▼──────────┐
-              │   dim_time      │      │ dim_conversation│
-              ├─────────────────┤      ├─────────────────┤
-              │ time_key (PK)   │      │ conv_key (PK)   │
-              │ date            │      │ conversation_id │
-              │ hour            │      │ first_seen_at   │
-              │ day_of_week     │      │ event_count     │
-              │ week            │      │ metadata        │
-              │ month           │      └─────────────────┘
-              │ quarter         │
-              │ year            │
-              └─────────────────┘
+                    ┌─────────────────┐
+                    │   dim_date      │
+                    └────────┬────────┘
+                             │
+     ┌───────────────────────┼───────────────────────┐
+     │                       │                       │
+┌────┴──────┐         ┌──────┴──────┐         ┌────┴──────┐
+│ dim_agent │─────────│ fact_agent  │─────────│ dim_shop  │
+│           │         │  _activity  │         │           │
+└───────────┘         └──────┬──────┘         └───────────┘
+                             │
+                      ┌──────┴──────┐
+                      │ dim_customer│
+                      │             │
+                      └─────────────┘
 ```
+
+## Fact Tables
+
+### fact_agent_approval
+
+**Grain**: One row per agent approval decision
+
+**Purpose**: Track all agent drafts, approvals, rejections, and edits for performance analysis.
+
+```sql
+CREATE TABLE fact_agent_approval (
+  -- Surrogate key
+  approval_sk BIGSERIAL PRIMARY KEY,
+  
+  -- Foreign keys to dimensions
+  date_sk INTEGER NOT NULL,
+  agent_type_sk INTEGER NOT NULL,
+  shop_sk INTEGER NOT NULL,
+  customer_sk INTEGER,
+  
+  -- Degenerate dimensions (no separate dimension table)
+  conversation_id TEXT NOT NULL,
+  chatwoot_conversation_id BIGINT,
+  chatwoot_message_id BIGINT,
+  
+  -- Metrics (additive)
+  confidence_score NUMERIC(5,2),
+  review_time_seconds INTEGER,
+  character_count INTEGER,
+  suggested_tags_count INTEGER,
+  knowledge_sources_count INTEGER,
+  
+  -- Status flags (semi-additive)
+  is_approved BOOLEAN,
+  is_rejected BOOLEAN,
+  is_edited BOOLEAN,
+  is_pending BOOLEAN,
+  is_urgent BOOLEAN,
+  is_escalated BOOLEAN,
+  
+  -- Timestamps
+  created_at TIMESTAMP NOT NULL,
+  reviewed_at TIMESTAMP,
+  
+  -- ETL metadata
+  loaded_at TIMESTAMP DEFAULT NOW(),
+  source_id TEXT -- Original agent_approvals.id
+);
+
+-- Indexes for common queries
+CREATE INDEX idx_fact_approval_date ON fact_agent_approval(date_sk);
+CREATE INDEX idx_fact_approval_agent ON fact_agent_approval(agent_type_sk);
+CREATE INDEX idx_fact_approval_shop ON fact_agent_approval(shop_sk);
+CREATE INDEX idx_fact_approval_created ON fact_agent_approval(created_at);
+```
+
+**Key Metrics**:
+- Count of approvals (COUNT)
+- Average confidence (AVG confidence_score)
+- Approval rate (SUM is_approved / COUNT(*))
+- Average review time (AVG review_time_seconds)
+- Total drafts generated (COUNT)
+
+### fact_agent_query
+
+**Grain**: One row per agent API query
+
+**Purpose**: Track agent query performance, latency, and approval rates.
+
+```sql
+CREATE TABLE fact_agent_query (
+  -- Surrogate key
+  query_sk BIGSERIAL PRIMARY KEY,
+  
+  -- Foreign keys
+  date_sk INTEGER NOT NULL,
+  agent_type_sk INTEGER NOT NULL,
+  shop_sk INTEGER NOT NULL,
+  
+  -- Degenerate dimensions
+  conversation_id BIGINT,
+  query_text TEXT, -- Truncated to 500 chars
+  
+  -- Metrics
+  latency_ms INTEGER,
+  result_size_bytes INTEGER,
+  
+  -- Status flags
+  is_approved BOOLEAN,
+  is_human_edited BOOLEAN,
+  is_error BOOLEAN,
+  
+  -- Timestamps
+  created_at TIMESTAMP NOT NULL,
+  
+  -- ETL metadata
+  loaded_at TIMESTAMP DEFAULT NOW(),
+  source_id TEXT -- Original AgentQuery.id
+);
+
+-- Indexes
+CREATE INDEX idx_fact_query_date ON fact_agent_query(date_sk);
+CREATE INDEX idx_fact_query_agent ON fact_agent_query(agent_type_sk);
+CREATE INDEX idx_fact_query_shop ON fact_agent_query(shop_sk);
+```
+
+**Key Metrics**:
+- Query count (COUNT)
+- Average latency (AVG latency_ms)
+- P95 latency (PERCENTILE_CONT(0.95))
+- Approval rate (SUM is_approved / COUNT(*))
+- Error rate (SUM is_error / COUNT(*))
+
+### fact_training_feedback
+
+**Grain**: One row per training feedback annotation
+
+**Purpose**: Track training data quality and annotator activity.
+
+```sql
+CREATE TABLE fact_training_feedback (
+  -- Surrogate key
+  feedback_sk BIGSERIAL PRIMARY KEY,
+  
+  -- Foreign keys
+  date_sk INTEGER NOT NULL,
+  annotator_sk INTEGER NOT NULL,
+  shop_sk INTEGER NOT NULL,
+  
+  -- Degenerate dimensions
+  conversation_id BIGINT,
+  
+  -- Metrics (quality scores 1-5)
+  clarity_score INTEGER,
+  accuracy_score INTEGER,
+  helpfulness_score INTEGER,
+  tone_score INTEGER,
+  overall_score NUMERIC(3,2), -- Average of above
+  
+  -- Status flags
+  is_safe_to_send BOOLEAN,
+  has_labels BOOLEAN,
+  has_rubric BOOLEAN,
+  has_notes BOOLEAN,
+  
+  -- Text lengths
+  input_length INTEGER,
+  draft_length INTEGER,
+  notes_length INTEGER,
+  
+  -- Timestamps
+  created_at TIMESTAMP NOT NULL,
+  
+  -- ETL metadata
+  loaded_at TIMESTAMP DEFAULT NOW(),
+  source_id TEXT -- Original AgentFeedback.id
+);
+
+-- Indexes
+CREATE INDEX idx_fact_feedback_date ON fact_training_feedback(date_sk);
+CREATE INDEX idx_fact_feedback_annotator ON fact_training_feedback(annotator_sk);
+CREATE INDEX idx_fact_feedback_shop ON fact_training_feedback(shop_sk);
+```
+
+**Key Metrics**:
+- Annotation count (COUNT)
+- Average quality scores (AVG clarity_score, etc.)
+- Safety rate (SUM is_safe_to_send / COUNT(*))
+- Annotator productivity (COUNT per annotator per day)
 
 ## Dimension Tables
 
-### dim_agent (Agent Dimension)
+### dim_date
 
-**Purpose:** Agent metadata and attributes
+**Type**: Conformed dimension (shared across all facts)
 
-**Schema:**
+**Purpose**: Time-based analysis with rich calendar attributes.
+
 ```sql
-CREATE TABLE dim_agent (
-  agent_key SERIAL PRIMARY KEY,
-  agent_name TEXT NOT NULL UNIQUE,
-  agent_type TEXT NOT NULL CHECK (agent_type IN ('data', 'engineer', 'support', 'marketing', 'ai', 'qa', 'ops')),
-  capabilities JSONB DEFAULT '[]'::JSONB,
-  sla_target_seconds INTEGER DEFAULT 300,
-  cost_per_query_usd NUMERIC(10, 6) DEFAULT 0,
-  valid_from TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  valid_to TIMESTAMPTZ,
-  is_current BOOLEAN NOT NULL DEFAULT true
-);
-
-CREATE INDEX dim_agent_name_idx ON dim_agent (agent_name);
-CREATE INDEX dim_agent_type_idx ON dim_agent (agent_type);
-CREATE INDEX dim_agent_current_idx ON dim_agent (is_current) WHERE is_current = true;
-```
-
-**Sample Data:**
-```sql
-INSERT INTO dim_agent (agent_name, agent_type, capabilities, sla_target_seconds) VALUES
-  ('data', 'data', '["query", "analytics", "schema"]'::jsonb, 300),
-  ('engineer', 'engineer', '["code", "debug", "deploy"]'::jsonb, 600),
-  ('support', 'support', '["ticket", "escalation", "knowledge"]'::jsonb, 180),
-  ('marketing', 'marketing', '["content", "seo", "social"]'::jsonb, 900);
-```
-
-### dim_time (Time Dimension)
-
-**Purpose:** Comprehensive time attributes for temporal analysis
-
-**Schema:**
-```sql
-CREATE TABLE dim_time (
-  time_key INTEGER PRIMARY KEY,
-  full_date DATE NOT NULL UNIQUE,
-  year INTEGER NOT NULL,
-  quarter INTEGER NOT NULL,
-  month INTEGER NOT NULL,
-  week INTEGER NOT NULL,
-  day_of_month INTEGER NOT NULL,
-  day_of_week INTEGER NOT NULL,
-  day_of_year INTEGER NOT NULL,
-  day_name TEXT NOT NULL,
-  month_name TEXT NOT NULL,
-  is_weekend BOOLEAN NOT NULL,
-  is_holiday BOOLEAN NOT NULL DEFAULT false,
+CREATE TABLE dim_date (
+  date_sk INTEGER PRIMARY KEY, -- YYYYMMDD format
+  
+  -- Date components
+  date_actual DATE NOT NULL UNIQUE,
+  day_of_week INTEGER, -- 1=Monday, 7=Sunday
+  day_of_month INTEGER,
+  day_of_year INTEGER,
+  week_of_year INTEGER,
+  month_number INTEGER,
+  month_name VARCHAR(20),
+  quarter INTEGER,
+  year INTEGER,
+  
+  -- Business calendar
+  is_weekend BOOLEAN,
+  is_holiday BOOLEAN,
+  holiday_name VARCHAR(100),
+  
+  -- Fiscal calendar (if needed)
   fiscal_year INTEGER,
   fiscal_quarter INTEGER,
-  hour INTEGER,
-  minute INTEGER
+  fiscal_period INTEGER,
+  
+  -- Relative dates
+  is_current_day BOOLEAN,
+  is_current_week BOOLEAN,
+  is_current_month BOOLEAN,
+  is_current_quarter BOOLEAN,
+  days_from_today INTEGER
 );
 
-CREATE INDEX dim_time_date_idx ON dim_time (full_date);
-CREATE INDEX dim_time_year_month_idx ON dim_time (year, month);
-CREATE INDEX dim_time_week_idx ON dim_time (year, week);
-```
-
-**Population Function:**
-```sql
-CREATE OR REPLACE FUNCTION populate_dim_time(start_date DATE, end_date DATE)
-RETURNS void AS $$
+-- Populate function
+CREATE OR REPLACE FUNCTION populate_dim_date(
+  start_date DATE,
+  end_date DATE
+) RETURNS VOID AS $$
 DECLARE
   current_date DATE := start_date;
 BEGIN
   WHILE current_date <= end_date LOOP
-    INSERT INTO dim_time (
-      time_key, full_date, year, quarter, month, week,
-      day_of_month, day_of_week, day_of_year, day_name, month_name, is_weekend
+    INSERT INTO dim_date (
+      date_sk,
+      date_actual,
+      day_of_week,
+      day_of_month,
+      day_of_year,
+      week_of_year,
+      month_number,
+      month_name,
+      quarter,
+      year,
+      is_weekend,
+      is_current_day,
+      is_current_week,
+      is_current_month,
+      days_from_today
     ) VALUES (
       TO_CHAR(current_date, 'YYYYMMDD')::INTEGER,
       current_date,
-      EXTRACT(YEAR FROM current_date),
-      EXTRACT(QUARTER FROM current_date),
-      EXTRACT(MONTH FROM current_date),
-      EXTRACT(WEEK FROM current_date),
+      EXTRACT(ISODOW FROM current_date),
       EXTRACT(DAY FROM current_date),
-      EXTRACT(DOW FROM current_date),
       EXTRACT(DOY FROM current_date),
-      TO_CHAR(current_date, 'Day'),
+      EXTRACT(WEEK FROM current_date),
+      EXTRACT(MONTH FROM current_date),
       TO_CHAR(current_date, 'Month'),
-      EXTRACT(DOW FROM current_date) IN (0, 6)
-    ) ON CONFLICT (full_date) DO NOTHING;
+      EXTRACT(QUARTER FROM current_date),
+      EXTRACT(YEAR FROM current_date),
+      EXTRACT(ISODOW FROM current_date) IN (6, 7),
+      current_date = CURRENT_DATE,
+      DATE_TRUNC('week', current_date) = DATE_TRUNC('week', CURRENT_DATE),
+      DATE_TRUNC('month', current_date) = DATE_TRUNC('month', CURRENT_DATE),
+      current_date - CURRENT_DATE
+    )
+    ON CONFLICT (date_actual) DO NOTHING;
     
     current_date := current_date + INTERVAL '1 day';
   END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 
--- Populate 2 years (2025-2027)
-SELECT populate_dim_time('2025-01-01'::DATE, '2027-12-31'::DATE);
+-- Initial population: 3 years (past 2 years + next year)
+SELECT populate_dim_date(
+  CURRENT_DATE - INTERVAL '2 years',
+  CURRENT_DATE + INTERVAL '1 year'
+);
 ```
 
-### dim_conversation (Conversation Dimension)
+### dim_agent_type
 
-**Purpose:** Conversation context and aggregates
+**Type**: Slowly Changing Dimension (Type 1)
 
-**Schema:**
+**Purpose**: Classify different agent types and their characteristics.
+
 ```sql
-CREATE TABLE dim_conversation (
-  conv_key SERIAL PRIMARY KEY,
-  conversation_id TEXT NOT NULL UNIQUE,
-  first_seen_at TIMESTAMPTZ NOT NULL,
-  last_seen_at TIMESTAMPTZ NOT NULL,
-  total_queries INTEGER DEFAULT 0,
-  total_approvals INTEGER DEFAULT 0,
-  total_feedback INTEGER DEFAULT 0,
-  metadata JSONB DEFAULT '{}'::JSONB
+CREATE TABLE dim_agent_type (
+  agent_type_sk SERIAL PRIMARY KEY,
+  
+  -- Natural key
+  agent_type_code VARCHAR(50) NOT NULL UNIQUE,
+  
+  -- Attributes
+  agent_name VARCHAR(100),
+  agent_category VARCHAR(50), -- 'cx-agent', 'inventory-agent', 'product-agent'
+  model_version VARCHAR(50),
+  is_active BOOLEAN DEFAULT TRUE,
+  
+  -- Characteristics
+  expected_avg_latency_ms INTEGER,
+  expected_approval_rate NUMERIC(5,2),
+  supports_streaming BOOLEAN,
+  
+  -- SCD metadata
+  effective_date DATE DEFAULT CURRENT_DATE,
+  last_updated TIMESTAMP DEFAULT NOW()
 );
 
-CREATE INDEX dim_conversation_id_idx ON dim_conversation (conversation_id);
-CREATE INDEX dim_conversation_first_seen_idx ON dim_conversation (first_seen_at);
+-- Initial population
+INSERT INTO dim_agent_type (agent_type_code, agent_name, agent_category) VALUES
+  ('cx-agent', 'Customer Experience Agent', 'customer-support'),
+  ('inventory-agent', 'Inventory Query Agent', 'operations'),
+  ('product-agent', 'Product Information Agent', 'sales'),
+  ('analytics-agent', 'Analytics Agent', 'business-intelligence'),
+  ('unknown', 'Unknown Agent Type', 'other');
 ```
 
-### dim_user (User/Annotator Dimension)
+### dim_shop
 
-**Purpose:** User and annotator attributes
+**Type**: Slowly Changing Dimension (Type 2)
 
-**Schema:**
+**Purpose**: Track shop attributes with full history of changes.
+
 ```sql
-CREATE TABLE dim_user (
-  user_key SERIAL PRIMARY KEY,
-  user_id TEXT NOT NULL UNIQUE,
-  user_type TEXT NOT NULL CHECK (user_type IN ('annotator', 'approver', 'qa_team', 'operator')),
-  team TEXT,
-  valid_from TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  valid_to TIMESTAMPTZ,
-  is_current BOOLEAN NOT NULL DEFAULT true
+CREATE TABLE dim_shop (
+  shop_sk SERIAL PRIMARY KEY,
+  
+  -- Natural key
+  shop_domain VARCHAR(255) NOT NULL,
+  
+  -- Attributes
+  shop_name VARCHAR(255),
+  shop_owner VARCHAR(255),
+  plan_type VARCHAR(50), -- 'free', 'pro', 'enterprise'
+  is_active BOOLEAN,
+  
+  -- Geography
+  country VARCHAR(100),
+  timezone VARCHAR(50),
+  
+  -- Business metrics
+  monthly_orders INTEGER,
+  total_products INTEGER,
+  
+  -- SCD Type 2 fields
+  effective_date DATE NOT NULL,
+  expiration_date DATE, -- NULL = current
+  is_current BOOLEAN DEFAULT TRUE,
+  
+  -- Metadata
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  
+  UNIQUE (shop_domain, effective_date)
 );
 
-CREATE INDEX dim_user_id_idx ON dim_user (user_id);
-CREATE INDEX dim_user_type_idx ON dim_user (user_type);
-CREATE INDEX dim_user_current_idx ON dim_user (is_current) WHERE is_current = true;
+CREATE INDEX idx_dim_shop_domain_current ON dim_shop(shop_domain) WHERE is_current = TRUE;
 ```
 
-## Fact Tables
+### dim_customer
 
-### fact_agent_query (Query Performance Facts)
+**Type**: Slowly Changing Dimension (Type 1)
 
-**Purpose:** Grain: One row per agent query
+**Purpose**: Track customer information for agent interactions.
 
-**Schema:**
 ```sql
-CREATE TABLE fact_agent_query (
-  query_key BIGSERIAL PRIMARY KEY,
-  agent_key INTEGER NOT NULL REFERENCES dim_agent(agent_key),
-  time_key INTEGER NOT NULL REFERENCES dim_time(time_key),
-  conv_key INTEGER NOT NULL REFERENCES dim_conversation(conv_key),
-  -- Degenerate dimensions (high cardinality)
-  query_hash TEXT NOT NULL,
-  result_size_bytes INTEGER,
-  -- Metrics
-  latency_ms INTEGER NOT NULL,
-  approved BOOLEAN,
-  human_edited BOOLEAN NOT NULL DEFAULT false,
-  error_occurred BOOLEAN NOT NULL DEFAULT false,
-  -- Timestamps
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+CREATE TABLE dim_customer (
+  customer_sk SERIAL PRIMARY KEY,
+  
+  -- Natural keys
+  customer_email VARCHAR(255),
+  shop_domain VARCHAR(255),
+  
+  -- Attributes
+  customer_name VARCHAR(255),
+  customer_type VARCHAR(50), -- 'individual', 'business', 'wholesale'
+  
+  -- Behavioral segments
+  order_count INTEGER DEFAULT 0,
+  lifetime_value NUMERIC(12,2) DEFAULT 0,
+  customer_segment VARCHAR(50), -- 'new', 'returning', 'vip', 'at-risk'
+  
+  -- First/last seen
+  first_interaction_date DATE,
+  last_interaction_date DATE,
+  
+  -- Metadata
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  
+  UNIQUE (customer_email, shop_domain)
 );
 
-CREATE INDEX fact_agent_query_agent_idx ON fact_agent_query (agent_key, time_key);
-CREATE INDEX fact_agent_query_time_idx ON fact_agent_query (time_key);
-CREATE INDEX fact_agent_query_conv_idx ON fact_agent_query (conv_key);
-CREATE INDEX fact_agent_query_created_idx ON fact_agent_query (created_at DESC);
-CREATE INDEX fact_agent_query_latency_idx ON fact_agent_query (latency_ms DESC) WHERE latency_ms > 100;
+CREATE INDEX idx_dim_customer_email ON dim_customer(customer_email);
+CREATE INDEX idx_dim_customer_segment ON dim_customer(customer_segment);
 ```
 
-### fact_approval (Approval Process Facts)
+### dim_annotator
 
-**Purpose:** Grain: One row per approval request
+**Type**: Slowly Changing Dimension (Type 1)
 
-**Schema:**
+**Purpose**: Track human annotators providing training feedback.
+
 ```sql
-CREATE TABLE fact_approval (
-  approval_key BIGSERIAL PRIMARY KEY,
-  agent_key INTEGER REFERENCES dim_agent(agent_key),
-  time_key INTEGER NOT NULL REFERENCES dim_time(time_key),
-  conv_key INTEGER NOT NULL REFERENCES dim_conversation(conv_key),
-  approved_by_key INTEGER REFERENCES dim_user(user_key),
-  -- Metrics
-  status TEXT NOT NULL CHECK (status IN ('pending', 'approved', 'rejected', 'expired')),
-  resolution_time_seconds INTEGER,
-  interruption_count INTEGER DEFAULT 0,
-  sla_met BOOLEAN,
-  -- Timestamps
-  created_at TIMESTAMPTZ NOT NULL,
-  resolved_at TIMESTAMPTZ
+CREATE TABLE dim_annotator (
+  annotator_sk SERIAL PRIMARY KEY,
+  
+  -- Natural key
+  annotator_email VARCHAR(255) NOT NULL UNIQUE,
+  
+  -- Attributes
+  annotator_name VARCHAR(255),
+  role VARCHAR(50), -- 'operator', 'qa', 'manager', 'data-scientist'
+  team VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  
+  -- Statistics
+  total_annotations INTEGER DEFAULT 0,
+  avg_quality_score NUMERIC(3,2),
+  
+  -- Metadata
+  first_annotation_date DATE,
+  last_annotation_date DATE,
+  created_at TIMESTAMP DEFAULT NOW()
 );
-
-CREATE INDEX fact_approval_agent_idx ON fact_approval (agent_key, time_key);
-CREATE INDEX fact_approval_time_idx ON fact_approval (time_key);
-CREATE INDEX fact_approval_status_idx ON fact_approval (status);
-CREATE INDEX fact_approval_sla_idx ON fact_approval (sla_met) WHERE sla_met = false;
-CREATE INDEX fact_approval_created_idx ON fact_approval (created_at DESC);
-```
-
-### fact_training (Training Data Facts)
-
-**Purpose:** Grain: One row per training feedback entry
-
-**Schema:**
-```sql
-CREATE TABLE fact_training (
-  training_key BIGSERIAL PRIMARY KEY,
-  agent_key INTEGER REFERENCES dim_agent(agent_key),
-  time_key INTEGER NOT NULL REFERENCES dim_time(time_key),
-  conv_key INTEGER NOT NULL REFERENCES dim_conversation(conv_key),
-  annotator_key INTEGER REFERENCES dim_user(user_key),
-  -- Metrics
-  safe_to_send BOOLEAN,
-  clarity_score INTEGER CHECK (clarity_score BETWEEN 1 AND 5),
-  accuracy_score INTEGER CHECK (accuracy_score BETWEEN 1 AND 5),
-  tone_score INTEGER CHECK (tone_score BETWEEN 1 AND 5),
-  overall_score NUMERIC(3, 2) GENERATED ALWAYS AS (
-    (COALESCE(clarity_score, 0) + COALESCE(accuracy_score, 0) + COALESCE(tone_score, 0)) / 3.0
-  ) STORED,
-  labels TEXT[] DEFAULT '{}',
-  -- Timestamps
-  created_at TIMESTAMPTZ NOT NULL,
-  annotated_at TIMESTAMPTZ
-);
-
-CREATE INDEX fact_training_agent_idx ON fact_training (agent_key, time_key);
-CREATE INDEX fact_training_time_idx ON fact_training (time_key);
-CREATE INDEX fact_training_annotator_idx ON fact_training (annotator_key);
-CREATE INDEX fact_training_safe_idx ON fact_training (safe_to_send) WHERE safe_to_send = false;
-CREATE INDEX fact_training_score_idx ON fact_training (overall_score DESC);
-CREATE INDEX fact_training_labels_gin ON fact_training USING GIN (labels);
 ```
 
 ## ETL Processes
 
-### ETL 1: Operational to Warehouse (Nightly)
+### ETL 1: fact_agent_approval (Daily Incremental)
 
-**Source:** Operational tables (agent_queries, agent_approvals, agent_feedback)  
-**Target:** Warehouse fact tables  
-**Frequency:** Nightly at 03:00 UTC  
-**Type:** Incremental load (last 24 hours)  
-
-**ETL Script:**
 ```sql
--- File: supabase/sql/etl_operational_to_warehouse.sql
-
-CREATE OR REPLACE FUNCTION etl_load_agent_queries(p_date DATE DEFAULT CURRENT_DATE - 1)
-RETURNS TABLE(rows_inserted INTEGER) AS $$
-DECLARE
-  v_time_key INTEGER;
-BEGIN
-  -- Get time_key for the date
-  SELECT time_key INTO v_time_key FROM dim_time WHERE full_date = p_date;
-  
-  -- Insert into fact table
-  WITH new_queries AS (
-    INSERT INTO fact_agent_query (agent_key, time_key, conv_key, query_hash, latency_ms, approved, human_edited, created_at)
-    SELECT 
-      a.agent_key,
-      v_time_key,
-      c.conv_key,
-      MD5(q.query) as query_hash,
-      q.latency_ms,
-      q.approved,
-      q.human_edited,
-      q.created_at
-    FROM agent_queries q
-    JOIN dim_agent a ON a.agent_name = q.agent AND a.is_current = true
-    LEFT JOIN dim_conversation c ON c.conversation_id = q.conversation_id
-    WHERE DATE(q.created_at) = p_date
-      AND NOT EXISTS (
-        SELECT 1 FROM fact_agent_query f 
-        WHERE f.created_at = q.created_at 
-          AND f.agent_key = a.agent_key
-      )
-    RETURNING *
-  )
-  SELECT COUNT(*)::INTEGER FROM new_queries INTO rows_inserted;
-  
-  RETURN NEXT;
-END;
-$$ LANGUAGE plpgsql;
-
--- Similar ETL functions for approvals and training data
-```
-
-### ETL 2: Dimension Maintenance (Daily)
-
-**Purpose:** Update slowly changing dimensions (SCD Type 2)
-
-**Example:**
-```sql
--- Update agent dimension when capabilities change
-CREATE OR REPLACE FUNCTION update_dim_agent(
-  p_agent_name TEXT,
-  p_new_capabilities JSONB
+-- Daily incremental load
+INSERT INTO fact_agent_approval (
+  date_sk,
+  agent_type_sk,
+  shop_sk,
+  customer_sk,
+  conversation_id,
+  chatwoot_conversation_id,
+  chatwoot_message_id,
+  confidence_score,
+  review_time_seconds,
+  character_count,
+  suggested_tags_count,
+  knowledge_sources_count,
+  is_approved,
+  is_rejected,
+  is_edited,
+  is_pending,
+  is_urgent,
+  is_escalated,
+  created_at,
+  reviewed_at,
+  source_id
 )
-RETURNS void AS $$
-BEGIN
-  -- Expire current record
-  UPDATE dim_agent
-  SET valid_to = NOW(), is_current = false
-  WHERE agent_name = p_agent_name AND is_current = true;
-  
-  -- Insert new version
-  INSERT INTO dim_agent (agent_name, agent_type, capabilities, valid_from)
-  VALUES (p_agent_name, 'unknown', p_new_capabilities, NOW());
-END;
-$$ LANGUAGE plpgsql;
-```
-
-## Analytical Queries
-
-### Query 1: Agent Performance Trends (7-day)
-
-```sql
 SELECT 
-  d.full_date,
-  a.agent_name,
-  COUNT(*) as total_queries,
-  ROUND(AVG(f.latency_ms), 2) as avg_latency_ms,
-  ROUND(100.0 * COUNT(*) FILTER (WHERE f.approved = true) / COUNT(*), 2) as approval_rate_pct,
-  ROUND(100.0 * COUNT(*) FILTER (WHERE f.human_edited = true) / COUNT(*), 2) as edit_rate_pct
-FROM fact_agent_query f
-JOIN dim_agent a ON f.agent_key = a.agent_key
-JOIN dim_time d ON f.time_key = d.time_key
-WHERE d.full_date >= CURRENT_DATE - 7
-GROUP BY d.full_date, a.agent_name
-ORDER BY d.full_date DESC, a.agent_name;
-```
-
-### Query 2: Approval Queue Analysis (Monthly)
-
-```sql
-SELECT 
-  d.month_name,
-  COUNT(*) as total_approvals,
-  ROUND(AVG(f.resolution_time_seconds) / 60, 2) as avg_resolution_minutes,
-  ROUND(100.0 * COUNT(*) FILTER (WHERE f.status = 'approved') / COUNT(*), 2) as approval_rate_pct,
-  ROUND(100.0 * COUNT(*) FILTER (WHERE f.sla_met = true) / COUNT(*), 2) as sla_compliance_pct
-FROM fact_approval f
-JOIN dim_time d ON f.time_key = d.time_key
-WHERE d.year = 2025
-GROUP BY d.month, d.month_name
-ORDER BY d.month;
-```
-
-### Query 3: Training Data Quality (By Annotator)
-
-```sql
-SELECT 
-  u.user_id as annotator,
-  COUNT(*) as total_annotations,
-  ROUND(AVG(f.overall_score), 2) as avg_overall_score,
-  ROUND(AVG(f.clarity_score), 2) as avg_clarity,
-  ROUND(AVG(f.accuracy_score), 2) as avg_accuracy,
-  ROUND(AVG(f.tone_score), 2) as avg_tone,
-  ROUND(100.0 * COUNT(*) FILTER (WHERE f.safe_to_send = false) / COUNT(*), 2) as unsafe_rate_pct
-FROM fact_training f
-JOIN dim_user u ON f.annotator_key = u.user_key
-JOIN dim_time d ON f.time_key = d.time_key
-WHERE d.full_date >= CURRENT_DATE - 30
-GROUP BY u.user_id
-ORDER BY total_annotations DESC;
-```
-
-## Aggregation Tables (For Performance)
-
-### agg_agent_daily_performance
-
-**Purpose:** Pre-aggregated daily metrics per agent
-
-**Schema:**
-```sql
-CREATE TABLE agg_agent_daily_performance (
-  agent_key INTEGER NOT NULL REFERENCES dim_agent(agent_key),
-  time_key INTEGER NOT NULL REFERENCES dim_time(time_key),
-  total_queries INTEGER NOT NULL,
-  avg_latency_ms NUMERIC(10, 2),
-  p95_latency_ms NUMERIC(10, 2),
-  approval_rate_pct NUMERIC(5, 2),
-  edit_rate_pct NUMERIC(5, 2),
-  error_rate_pct NUMERIC(5, 2),
-  total_approvals INTEGER,
-  total_feedback INTEGER,
-  unsafe_feedback_count INTEGER,
-  sla_compliance_pct NUMERIC(5, 2),
-  PRIMARY KEY (agent_key, time_key)
+  TO_CHAR(a.created_at, 'YYYYMMDD')::INTEGER as date_sk,
+  COALESCE(at.agent_type_sk, (SELECT agent_type_sk FROM dim_agent_type WHERE agent_type_code = 'unknown')) as agent_type_sk,
+  COALESCE(s.shop_sk, -1) as shop_sk,
+  c.customer_sk,
+  a.conversation_id,
+  a.chatwoot_conversation_id,
+  a.chatwoot_message_id,
+  a.confidence_score,
+  EXTRACT(EPOCH FROM (a.reviewed_at - a.created_at))::INTEGER as review_time_seconds,
+  LENGTH(a.draft_response) as character_count,
+  ARRAY_LENGTH(a.suggested_tags, 1) as suggested_tags_count,
+  JSONB_ARRAY_LENGTH(a.knowledge_sources) as knowledge_sources_count,
+  (a.status = 'approved') as is_approved,
+  (a.status = 'rejected') as is_rejected,
+  (a.status = 'edited') as is_edited,
+  (a.status = 'pending') as is_pending,
+  (a.priority = 'urgent') as is_urgent,
+  (a.recommended_action = 'escalate') as is_escalated,
+  a.created_at,
+  a.reviewed_at,
+  a.id::TEXT as source_id
+FROM agent_approvals a
+LEFT JOIN dim_agent_type at ON at.agent_type_code = 'cx-agent' -- Default for now
+LEFT JOIN dim_shop s ON s.shop_domain = a.shop_domain AND s.is_current = TRUE
+LEFT JOIN dim_customer c ON c.customer_email = a.customer_email AND c.shop_domain = a.shop_domain
+WHERE a.created_at >= CURRENT_DATE - INTERVAL '1 day'
+AND a.created_at < CURRENT_DATE
+AND NOT EXISTS (
+  SELECT 1 FROM fact_agent_approval f 
+  WHERE f.source_id = a.id::TEXT
 );
-
-CREATE INDEX agg_agent_daily_time_idx ON agg_agent_daily_performance (time_key);
 ```
 
-**Refresh Procedure:**
+### ETL 2: Dimension Updates (Daily)
+
 ```sql
-CREATE OR REPLACE FUNCTION refresh_agg_agent_daily_performance(p_date DATE DEFAULT CURRENT_DATE - 1)
-RETURNS void AS $$
-BEGIN
-  DELETE FROM agg_agent_daily_performance WHERE time_key = TO_CHAR(p_date, 'YYYYMMDD')::INTEGER;
-  
-  INSERT INTO agg_agent_daily_performance
-  SELECT 
-    f.agent_key,
-    f.time_key,
-    COUNT(*) as total_queries,
-    ROUND(AVG(f.latency_ms), 2) as avg_latency_ms,
-    PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY f.latency_ms) as p95_latency_ms,
-    ROUND(100.0 * COUNT(*) FILTER (WHERE f.approved = true) / COUNT(*), 2) as approval_rate_pct,
-    ROUND(100.0 * COUNT(*) FILTER (WHERE f.human_edited = true) / COUNT(*), 2) as edit_rate_pct,
-    ROUND(100.0 * COUNT(*) FILTER (WHERE f.error_occurred = true) / COUNT(*), 2) as error_rate_pct,
-    0 as total_approvals, -- TODO: Join with fact_approval
-    0 as total_feedback, -- TODO: Join with fact_training
-    0 as unsafe_feedback_count,
-    NULL as sla_compliance_pct
-  FROM fact_agent_query f
-  WHERE f.time_key = TO_CHAR(p_date, 'YYYYMMDD')::INTEGER
-  GROUP BY f.agent_key, f.time_key;
-END;
-$$ LANGUAGE plpgsql;
+-- Update dim_customer with latest stats
+INSERT INTO dim_customer (customer_email, shop_domain, customer_name, first_interaction_date, last_interaction_date)
+SELECT 
+  customer_email,
+  shop_domain,
+  customer_name,
+  MIN(created_at)::DATE,
+  MAX(created_at)::DATE
+FROM agent_approvals
+WHERE created_at >= CURRENT_DATE - INTERVAL '1 day'
+AND customer_email IS NOT NULL
+GROUP BY customer_email, shop_domain, customer_name
+ON CONFLICT (customer_email, shop_domain) 
+DO UPDATE SET 
+  last_interaction_date = EXCLUDED.last_interaction_date,
+  updated_at = NOW();
 ```
 
-## Benefits of Data Warehouse
+## Sample Analytical Queries
 
-### Performance
-- **Fast Queries:** Pre-aggregated metrics, optimized indexes
-- **Scalability:** Separate from operational database
-- **Historical Analysis:** Efficiently query years of data
+### Query 1: Daily Approval Rate Trend
+```sql
+SELECT 
+  d.date_actual,
+  d.day_of_week,
+  COUNT(*) as total_drafts,
+  SUM(CASE WHEN f.is_approved THEN 1 ELSE 0 END) as approved,
+  ROUND(100.0 * SUM(CASE WHEN f.is_approved THEN 1 ELSE 0 END) / COUNT(*), 2) as approval_rate_pct,
+  AVG(f.confidence_score) as avg_confidence
+FROM fact_agent_approval f
+JOIN dim_date d ON f.date_sk = d.date_sk
+WHERE d.date_actual >= CURRENT_DATE - INTERVAL '30 days'
+GROUP BY d.date_actual, d.day_of_week
+ORDER BY d.date_actual;
+```
 
-### Flexibility
-- **Ad-hoc Analysis:** Business analysts can query directly
-- **Custom Reports:** Easy to create new aggregations
-- **Data Science:** Clean dimensional model for ML
+### Query 2: Shop Performance Comparison
+```sql
+SELECT 
+  s.shop_name,
+  s.plan_type,
+  COUNT(*) as total_queries,
+  AVG(q.latency_ms) as avg_latency,
+  ROUND(100.0 * SUM(CASE WHEN q.is_approved THEN 1 ELSE 0 END) / COUNT(*), 2) as approval_rate
+FROM fact_agent_query q
+JOIN dim_shop s ON q.shop_sk = s.shop_sk
+JOIN dim_date d ON q.date_sk = d.date_sk
+WHERE d.is_current_month = TRUE
+GROUP BY s.shop_name, s.plan_type
+ORDER BY total_queries DESC
+LIMIT 10;
+```
 
-### Compliance
-- **Audit Trail:** Immutable fact tables
-- **Data Lineage:** ETL logs track transformations
-- **Retention:** Separate retention policies from operational data
-
-## Storage Estimates
-
-### Dimensions (Relatively Small)
-- dim_agent: <1MB (10-20 rows)
-- dim_time: <10MB (3 years × 365 days)
-- dim_conversation: ~100MB (estimate 100K conversations/year)
-- dim_user: <5MB (estimate 100 users)
-
-**Total Dimensions:** ~115MB
-
-### Facts (Growing)
-- fact_agent_query: ~10GB/year (estimate 10M queries/year × 1KB/row)
-- fact_approval: ~1GB/year (estimate 1M approvals/year × 1KB/row)
-- fact_training: ~500MB/year (estimate 500K feedback/year × 1KB/row)
-
-**Total Facts (Year 1):** ~11.5GB  
-**Total Facts (Year 3):** ~35GB
-
-### Aggregates
-- agg_agent_daily_performance: ~50MB/year
-
-**Total Warehouse (Year 1):** ~12GB  
-**Total Warehouse (Year 3):** ~36GB
+### Query 3: Training Data Quality by Annotator
+```sql
+SELECT 
+  a.annotator_name,
+  a.role,
+  COUNT(*) as total_annotations,
+  AVG(f.overall_score) as avg_overall_quality,
+  AVG(f.clarity_score) as avg_clarity,
+  AVG(f.accuracy_score) as avg_accuracy
+FROM fact_training_feedback f
+JOIN dim_annotator a ON f.annotator_sk = a.annotator_sk
+JOIN dim_date d ON f.date_sk = d.date_sk
+WHERE d.is_current_month = TRUE
+GROUP BY a.annotator_name, a.role
+ORDER BY avg_overall_quality DESC;
+```
 
 ## Implementation Plan
 
-### Phase 1: Foundation (Week 1-2)
-- [x] Design dimensional model
-- [ ] Create dimension tables
-- [ ] Populate dim_time and dim_agent
-- [ ] Create fact table schemas
-- [ ] Add indexes and constraints
+### Phase 1: Schema Creation (Day 1-2)
+1. Create all dimension tables
+2. Populate dim_date
+3. Create initial dim_agent_type, dim_shop
+4. Create fact table structures
 
-### Phase 2: ETL (Week 3-4)
-- [ ] Build ETL functions for each fact table
-- [ ] Schedule nightly ETL jobs
-- [ ] Implement dimension updates (SCD Type 2)
-- [ ] Create validation and reconciliation queries
+### Phase 2: Initial Load (Day 3-5)
+1. Historical backfill (last 90 days)
+2. Validate data quality
+3. Test analytical queries
 
-### Phase 3: Aggregations (Week 5)
-- [ ] Create aggregate tables
-- [ ] Build refresh procedures
-- [ ] Schedule daily aggregation jobs
-- [ ] Test query performance
+### Phase 3: Incremental ETL (Day 6-7)
+1. Implement daily incremental jobs
+2. Set up pg_cron schedules
+3. Monitor ETL performance
 
-### Phase 4: BI Integration (Week 6)
-- [ ] Connect BI tool (Metabase, Superset, or Tableau)
-- [ ] Create standard report templates
-- [ ] Train team on warehouse queries
-- [ ] Document common patterns
+### Phase 4: BI Integration (Day 8-10)
+1. Connect to BI tool (Metabase/Looker)
+2. Create standard reports
+3. User training
+
+## Maintenance
+
+**Daily**:
+- Run incremental ETL jobs
+- Update dimension tables
+- Validate data freshness
+
+**Weekly**:
+- Review ETL performance
+- Optimize slow queries
+- Archive old partition data
+
+**Monthly**:
+- Full data quality audit
+- Update dim_date for next month
+- Review dimension SCD history
 
 ---
 
-**Status:** Design complete, ready for Phase 1 implementation  
-**Estimated Total Effort:** 6 weeks  
-**Dependencies:** None (can start immediately)
-
+**Status**: Design complete  
+**Next Step**: Create dimensional schema migration  
+**Estimated Implementation**: 1-2 weeks full data warehouse

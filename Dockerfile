@@ -7,15 +7,24 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Copy package files
 COPY package.json package-lock.json* ./
 
-RUN npm ci --omit=dev && npm cache clean --force
-# Remove CLI packages since we don't need them in production by default.
-# Remove this line if you want to run CLI commands in your container.
-RUN npm remove @shopify/cli
+# Install ALL dependencies
+RUN npm ci && npm cache clean --force
 
-COPY . .
+# Copy application files
+COPY app ./app
+COPY public ./public
+COPY prisma ./prisma
+COPY scripts ./scripts
+COPY tsconfig.json ./
+COPY vite.config.ts ./
 
-RUN npm run build
+# Copy pre-built files
+COPY build ./build
+
+# Verify polaris is installed
+RUN ls -la node_modules/@shopify/polaris || echo "Polaris not found!"
 
 CMD ["npm", "run", "docker-start"]
