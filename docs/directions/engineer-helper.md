@@ -9,6 +9,48 @@ expires: 2025-10-19
 
 # Engineer Helper — Direction (Operator Control Center)
 
+## 🚨 CRITICAL: FIX LLAMAINDEX MCP (P0 - LAUNCH CRITICAL)
+
+**Your immediate priority**: Fix LlamaIndex MCP to enable agent-assisted approvals
+
+**Current status**:
+- ✅ agent_metrics.sql syntax error fixed
+- 🔄 LlamaIndex MCP still broken (0/3 tools functional)
+- 🎯 Enable agent-assisted approvals and knowledge base
+
+**START HERE NOW** (Fix LlamaIndex MCP):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Diagnose LlamaIndex MCP issues
+# Use Context7 MCP to check current patterns
+# mcp_context7_get-library-docs(context7CompatibleLibraryID: "/modelcontextprotocol/sdk", topic: "protocol")
+
+# 2. Fix embedding model configuration
+# Update query.ts and buildIndex.ts with proper LLM config
+# Test: query_support, refresh_index, insight_report
+
+# 3. Verify functionality with Hot Rod AN content
+# Test queries return accurate responses
+# Confirm: 100% query accuracy, <5s response times
+
+# 4. Enable knowledge base for approvals
+# Verify: Agent-assisted approval suggestions work
+# Test: Approval queue integration
+
+# Evidence: LlamaIndex MCP operational, agent-assisted approvals enabled
+# Log to: feedback/engineer-helper.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Context7 MCP: mcp_context7_get-library-docs (protocol patterns)
+- ✅ grep: Find existing patterns in codebase
+- ❌ DO NOT guess React Router 7 patterns
+
+**Timeline**: 45 minutes (P0 - launch critical)
+
+**Success Metric**: LlamaIndex MCP operational for agent-assisted approvals
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -309,3 +351,89 @@ You are authorized to run local, non-interactive commands and scripts without as
 - Support Engineer with any blockers
 
 **Status**: 🟢 ACTIVE - Commit Task 3, then pair with Engineer on Task 6
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:52:00Z) — Manager Assignment
+
+**Status**: All tasks complete ✅  
+**New Assignment**: Code Quality & Documentation
+
+### P0: Code Review & Refactoring (3-4 hours)
+
+**Goal**: Improve code quality across the codebase
+
+**Tasks**:
+1. **Code Review Backlog**
+   - Review recent PRs (if any)
+   - Review critical code paths
+   - Identify refactoring opportunities
+   - Document technical debt
+
+2. **Refactoring Priorities**
+   - Complex functions (>50 lines)
+   - Duplicate code
+   - Poor naming
+   - Missing error handling
+
+3. **Code Quality Metrics**
+   - Measure cyclomatic complexity
+   - Identify code smells
+   - Document improvements
+   - Create refactoring plan
+
+**Evidence**: Code review notes, refactoring PRs, quality metrics
+
+### P1: Documentation Improvements (2-3 hours)
+
+**Goal**: Comprehensive technical documentation
+
+**Tasks**:
+1. **API Documentation**
+   - Document all API endpoints
+   - Add request/response examples
+   - Document error codes
+   - Create API reference guide
+
+2. **Code Documentation**
+   - Add JSDoc comments to public APIs
+   - Document complex algorithms
+   - Add inline comments for clarity
+   - Update README files
+
+3. **Architecture Documentation**
+   - Document system architecture
+   - Create component diagrams
+   - Document data flows
+   - Update technical specs
+
+**Evidence**: Documentation files, API reference, architecture docs
+
+### P2: Developer Experience (2 hours)
+
+**Goal**: Improve developer workflow
+
+**Tasks**:
+1. **Development Setup**
+   - Improve setup documentation
+   - Create setup scripts
+   - Document common issues
+   - Create troubleshooting guide
+
+2. **Development Tools**
+   - Configure VS Code settings
+   - Add useful extensions
+   - Create code snippets
+   - Improve linting rules
+
+**Evidence**: Setup guide, tool configuration, snippets
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/engineer-helper.md
+
+**Coordination**:
+- Engineer: Coordinate on refactoring
+- QA: Coordinate on test coverage
+- All agents: Documentation review
+- Manager: Report completion for next assignment
+
+---

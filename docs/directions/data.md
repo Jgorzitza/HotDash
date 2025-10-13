@@ -1,394 +1,625 @@
 ---
 epoch: 2025.10.E1
 doc: docs/directions/data.md
-owner: manager
-last_reviewed: 2025-10-10
+owner: manager  
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-17
+expires: 2025-10-20
 ---
 # Data — Direction (Operator Control Center)
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
 - Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
 
-> Manager authored. Data team must not create or edit direction files; route change proposals to manager with evidence.
+## 🚨 P1 PRIORITY 1: Picker Payment System Database (2025-10-13)
 
-## Local Execution Policy (Auto-Run)
+**Assignment**: Design and implement database schema for picker payment tracking
+**Timeline**: 8 hours (complete by 2025-10-14T02:00:00Z) 
+**Evidence**: Log all work in feedback/data.md
 
-You may run local, non-interactive commands and scripts without approval. Guardrails:
+### Context: Picker Payment System
 
-- Scope: local repo and local Supabase; do not alter remote infra under auto-run. Status/read-only checks are fine.
-- Non-interactive: disable pagers; avoid interactive prompts.
-- Evidence: log timestamp, command, outputs in feedback/data.md; store analyzer outputs in artifacts/data/.
-- Secrets: load from vault/env; never print values.
-- Tooling: npx supabase locally; git/gh with --no-pager; prefer rg else grep -nE.
-- Retry: 2 attempts then escalate with logs.
+**Goal**: Track and manage payments for warehouse pickers based on fulfilled orders
 
-- Model KPI definitions (sales delta, SLA breach rate, traffic anomalies) and publish dbt-style specs in docs/data/
-- Validate Shopify/Chatwoot/GA data contracts; raise schema drift within 24h via feedback/data.md.
-- Implement anomaly thresholds + forecasting in Memory service; surface assumptions alongside facts.
-- Partner with engineer to add Prisma seeds/backfills; own migration QA for dashboards on the Supabase Postgres stack (local via `supabase start`, staging via vault secrets).
-- Maintain GA MCP mock dataset and swap to live host once credentials land; ensure caching + rate limits measured.
-- Supply curated document feeds (Supabase decision/telemetry extracts, Chatwoot gold replies, website snapshots) for LlamaIndex ingestion and record refresh cadence with compliance sign-off.
-- Tail Supabase logs (`scripts/ops/tail-supabase-logs.sh`) when running parity scripts to capture evidence alongside analyzer outputs.
-- Stack guardrails: follow `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex); no Fly Postgres provisioning. PRs that introduce alternate databases will be blocked by the Canonical Toolkit Guard.
-- Reference docs/dev/admin-graphql.md for admin data contracts and docs/dev/storefront-mcp.md for customer-facing datasets.
-- Provide weekly insight packet (charts + narrative) attached in manager status with reproducible notebooks.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/data.md` without waiting for additional manager confirmation.
+**Business Rules**:
+- Pickers earn based on "pieces" picked (not just orders)
+- Products have different piece counts via Shopify tags:
+  - `BUNDLE:TRUE` - Product is a bundle (excluded from reorder calc)
+  - `PACK:X` - Product counts as X pieces (e.g. PACK:3 = 3 pieces)
+  - `DROPSHIP:YES` - No picker involvement (0 pieces)
+  - No tag - Default to 1 piece
 
-## Current Sprint Focus — 2025-10-10
-Execute these tasks in order and log progress in `feedback/data.md`. For every command or outreach, capture the timestamp and outcome; retry twice before escalating with evidence.
+**Payment Tiers**:
+- 1-4 pieces: $2.00 (200 cents)
+- 5-10 pieces: $4.00 (400 cents)
+- 11+ pieces: $7.00 (700 cents)
 
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
-
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/data.md and continue):
-
-1. ✅ **Database Health Audit** - COMPLETE (2025-10-11, 30 min)
-   - RLS coverage improved 25% → 100%
-   - 3 migrations applied for security gaps
-   - Evidence: 12 artifacts, 900+ lines documentation
-
-2. **Agent SDK Database Schemas** - Create tables for approval queue and training data
-   - Create migration for agent_approvals table (id, conversation_id, serialized, last_interruptions, created_at, approved_by, status)
-   - Create migration for agent_feedback table (id, conversation_id, input_text, model_draft, safe_to_send, labels, rubric, annotator, notes, meta)
-   - Create migration for agent_queries table (id, query, result, conversation_id, agent, approved, human_edited, latency_ms, created_at)
-   - Add RLS policies: service role can write, app can read own data
-   - Add indexes on conversation_id and created_at for all 3 tables
-   - Test migrations on local Supabase with sample data
-   - Document rollback procedures
-   - Coordinate: Tag @engineer in feedback when schemas ready
-   - Evidence: Migrations in prisma/migrations/, test data inserted, documented in feedback/data.md
-
-3. **Agent Training Data Pipeline** - Support AI feedback loop
-   - Create seed data for agent testing (sample conversations, approvals, queries)
-   - Write helper scripts for data insertion and cleanup
-   - Document data retention policy (30 days for training data)
-   - Test data integrity and RLS protection
-   - Evidence: Seed scripts, test results
-
-4. **Performance Monitoring Queries** - Create views for agent metrics
-   - Create view for approval queue depth over time
-   - Create view for agent response accuracy metrics
-   - Create view for training data quality scores
-   - Add to nightly metrics rollup
-   - Evidence: View definitions, sample queries
-
-**Ongoing Requirements**:
-- Coordinate with @engineer on schema access patterns
-- Log all schema changes in feedback/data.md
-- Test all migrations locally before proposing for staging
+**Current Picker**: Sumesh (hotrodanllc@gmail.com)
+**Credentials**: `vault/occ/zoho/sumesh_picker.env`
 
 ---
 
-### 🚀 ADDITIONAL PARALLEL TASKS (Since Task 2 Complete)
+### Task 1A: Database Schema Design (4 hours)
 
-**Execute these while Engineer works on Shopify fixes and LlamaIndex MCP**:
+**MCP TOOLS REQUIRED**:
+- ✅ Supabase MCP: mcp_supabase_list_tables (verify existing schema)
+- ✅ Supabase MCP: mcp_supabase_apply_migration (create new schema)
 
-**Task A: Agent Metrics Dashboard Design** - Create monitoring views
-- Design database views for agent performance metrics
-- Create view for approval queue depth over time
-- Create view for response accuracy by agent type
-- Create view for training data quality scores
-- Document query patterns for dashboard tiles
-- Evidence: View SQL definitions, sample queries
+**Required Tables**:
 
-**Task B: Data Retention Automation** - Implement 30-day purge
-- Create script for agent data retention (30-day window)
-- Implement automated cleanup for old approval records
-- Create backup procedure before purge
-- Test on sample data
-- Document in runbook
-- Evidence: Cleanup script, test results
+**1. pickers table**:
+```sql
+CREATE TABLE pickers (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  phone TEXT,
+  active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
 
-**Task C: Performance Monitoring Queries** - Optimize database performance
-- Create indexes for agent query patterns
-- Analyze slow query logs
-- Document optimization opportunities
-- Test index effectiveness
-- Evidence: Index definitions, performance comparison
+-- Initial picker (source from vault/occ/zoho/sumesh_picker.env)
+INSERT INTO pickers (name, email, active)
+VALUES ('Sumesh', 'hotrodanllc@gmail.com', true);
+```
 
-Execute A, B, C in any order. All independent of Engineer work.
+**2. picker_earnings table**:
+```sql
+CREATE TABLE picker_earnings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  order_id TEXT NOT NULL, -- Shopify order ID
+  picker_email TEXT NOT NULL REFERENCES pickers(email),
+  total_pieces INTEGER NOT NULL,
+  payout_cents INTEGER NOT NULL, -- in cents (200, 400, or 700)
+  bracket TEXT NOT NULL, -- '1-4', '5-10', '11+'
+  created_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(order_id, picker_email)
+);
 
----
+CREATE INDEX idx_picker_earnings_email ON picker_earnings(picker_email);
+CREATE INDEX idx_picker_earnings_order ON picker_earnings(order_id);
+CREATE INDEX idx_picker_earnings_date ON picker_earnings(created_at);
+```
 
-### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+**3. picker_payments table**:
+```sql
+CREATE TABLE picker_payments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  picker_email TEXT NOT NULL REFERENCES pickers(email),
+  amount_cents INTEGER NOT NULL,
+  paid_at TIMESTAMPTZ NOT NULL,
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
 
-**Task D: Real-time Analytics Pipeline**
-- Design real-time analytics for agent performance
-- Create streaming data pipeline specification
-- Plan for live dashboard updates
-- Document data freshness requirements
-- Evidence: Real-time pipeline design
+CREATE INDEX idx_picker_payments_email ON picker_payments(picker_email);
+CREATE INDEX idx_picker_payments_date ON picker_payments(paid_at);
+```
 
-**Task E: Data Warehouse Design**
-- Design dimensional model for agent analytics
-- Create fact and dimension table specifications
-- Plan for historical data analysis
-- Document ETL processes
-- Evidence: Data warehouse schema
+**4. Update inventory_items table**:
+```sql
+-- Check if table exists first using Supabase MCP
+-- mcp_supabase_list_tables(schemas: ["public"])
 
-**Task F: Query Performance Optimization**
-- Analyze query execution plans for agent tables
-- Create additional indexes where beneficial
-- Implement query result caching strategy
-- Document optimization recommendations
-- Evidence: Performance optimization report
+ALTER TABLE inventory_items 
+ADD COLUMN IF NOT EXISTS picker_quantity INTEGER DEFAULT 1;
 
-**Task G: Data Quality Framework**
-- Create data quality validation rules
-- Design data quality monitoring
-- Implement automated quality checks
-- Document data quality metrics
-- Evidence: Data quality framework
+COMMENT ON COLUMN inventory_items.picker_quantity IS 
+'Number of pieces this item counts as for picker payment calculation. Set from Shopify PACK:X tag, DROPSHIP:YES = 0, default = 1';
+```
 
-**Task H: Agent Training Data Export**
-- Create export utilities for training data
-- Design export formats (CSV, JSON, parquet)
-- Implement privacy-preserving export (PII redaction)
-- Document export procedures
-- Evidence: Export utility scripts
+**5. Update orders table**:
+```sql
+-- Verify orders table exists
+ALTER TABLE orders
+ADD COLUMN IF NOT EXISTS assigned_picker TEXT REFERENCES pickers(email),
+ADD COLUMN IF NOT EXISTS pieces_count INTEGER,
+ADD COLUMN IF NOT EXISTS picker_payout INTEGER; -- in cents
 
-**Task I: Database Backup Automation**
-- Implement automated backup procedures for agent tables
-- Create backup verification scripts
-- Document recovery procedures
-- Test restore process
-- Evidence: Backup automation, test results
+CREATE INDEX idx_orders_picker ON orders(assigned_picker);
+CREATE INDEX idx_orders_fulfillment_picker ON orders(fulfillment_status, assigned_picker) 
+  WHERE fulfillment_status = 'fulfilled';
+```
 
-**Task J: Analytics API Design**
-- Design REST API for agent metrics queries
-- Document API endpoints and responses
-- Create API security specifications
-- Plan for API rate limiting
-- Evidence: Analytics API specification
+**Success Criteria**:
+- ✅ All 3 new tables created
+- ✅ Sumesh initialized in pickers table  
+- ✅ inventory_items updated with picker_quantity field
+- ✅ orders table updated with picker fields
+- ✅ All indexes created
+- ✅ RLS policies planned (implement in Task 1B)
 
-Execute D-J in any order - all enhance data infrastructure.
+**Evidence Required**:
+- Migration SQL file
+- Supabase MCP output showing successful migration
+- Table list showing new tables
+- Timestamp
 
----
-
-### 🚀 FOURTH MASSIVE EXPANSION (Another 25 Tasks)
-
-**Task K-P: Advanced Data Engineering** (6 tasks)
-- K: Design data streaming platform (Kafka/Kinesis style)
-- L: Create data catalog with lineage tracking
-- M: Implement data versioning and time travel
-- N: Design data quality profiling automation
-- O: Create data discovery and search system
-- P: Implement data governance framework
-
-**Task Q-V: Machine Learning Infrastructure** (6 tasks)
-- Q: Design feature engineering pipeline
-- R: Create model training and experimentation platform
-- S: Implement model serving and inference infrastructure
-- T: Design model monitoring and drift detection
-- U: Create ML experiment tracking system
-- V: Implement automated model retraining pipeline
-
-**Task W-AB: Analytics & BI** (6 tasks)
-- W: Design self-service analytics platform for operators
-- X: Create embedded analytics SDK
-- Y: Implement real-time analytics engine
-- Z: Design predictive analytics framework
-- AA: Create business intelligence dashboards
-- AB: Implement data storytelling and narrative generation
-
-**Task AC-AG: Data Operations** (7 tasks)
-- AC: Design data pipeline orchestration (Airflow-style)
-- AD: Create data observability platform
-- AE: Implement data SLA monitoring
-- AF: Design data incident response procedures
-- AG: Create data ops automation toolkit
-
-Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
+**Deadline**: 2025-10-13T22:00:00Z (4 hours from 18:00)
 
 ---
 
-## 📋 NEXT WAVE - DEEP DATA INFRASTRUCTURE (Tasks AG-1 to AG-10)
+### Task 1B: Create Migrations & RLS Policies (2 hours)
 
-**Task AG-1**: Hot Rodan Specific Data Models
-- Create data models for hot rod product analytics
-- Automotive parts categorization schema
-- Hot rod customer segmentation
-- Evidence: Data model documentation
-- Timeline: 2-3 hours
+**Migration File Name**: `20251013_picker_payments_schema.sql`
 
-**Task AG-2**: Real-Time Dashboard Queries
-- Optimize queries for live dashboard data
-- Sub-second query performance for tiles
-- Caching strategy for frequently accessed data
-- Evidence: Query performance report
-- Timeline: 2-3 hours
+**RLS Policies Required**:
 
-**Task AG-3**: Historical Trend Analysis
-- Design schema for tracking trends over time
-- Sales patterns, inventory velocity, SEO performance
-- Seasonality detection (racing season vs. off-season)
-- Evidence: Trend analysis schema
-- Timeline: 2-3 hours
+**pickers table**:
+```sql
+ALTER TABLE pickers ENABLE ROW LEVEL SECURITY;
 
-**Task AG-4**: Data Quality Monitoring
-- Create data quality checks for Shopify/Chatwoot/GA data
-- Alert on data anomalies
-- Automated data validation
-- Evidence: Data quality framework
-- Timeline: 2-3 hours
+-- Admin can view all pickers
+CREATE POLICY "Admin full access to pickers"
+  ON pickers FOR ALL
+  USING (auth.uid() IN (SELECT id FROM admin_users));
 
-**Task AG-5**: Operator Performance Analytics
-- Track operator efficiency metrics
-- Approval speed, decision quality
-- Operator productivity dashboard
-- Evidence: Operator analytics schema
-- Timeline: 2-3 hours
+-- Pickers can view only their own data
+CREATE POLICY "Pickers view own data"
+  ON pickers FOR SELECT
+  USING (email = auth.jwt()->>'email');
+```
 
-**Task AG-6**: Hot Rodan Growth Metrics Dashboard
-- Revenue tracking toward $10MM goal
-- Monthly/quarterly progress visualizations
-- Leading indicators dashboard
-- Evidence: Growth metrics dashboard spec
-- Timeline: 2-3 hours
+**picker_earnings table**:
+```sql
+ALTER TABLE picker_earnings ENABLE ROW LEVEL SECURITY;
 
-**Task AG-7**: Agent Training Data Pipeline
-- Design pipeline for CEO feedback → agent training
-- Capture approved vs. edited vs. rejected responses
-- Create training dataset exports
-- Evidence: Training pipeline design
-- Timeline: 2-3 hours
+-- Admin full access
+CREATE POLICY "Admin full access to earnings"
+  ON picker_earnings FOR ALL
+  USING (auth.uid() IN (SELECT id FROM admin_users));
 
-**Task AG-8**: Data Backup and Recovery
-- Automated backup strategy for critical data
-- Point-in-time recovery procedures
-- Data retention policies
-- Evidence: Backup/recovery runbook
-- Timeline: 2-3 hours
+-- Pickers view own earnings
+CREATE POLICY "Pickers view own earnings"
+  ON picker_earnings FOR SELECT
+  USING (picker_email = auth.jwt()->>'email');
+```
 
-**Task AG-9**: API Performance Monitoring
-- Track Shopify/Chatwoot/GA API latency
-- Alert on slow queries or failures
-- Historical performance trends
-- Evidence: API monitoring dashboard
-- Timeline: 2-3 hours
+**picker_payments table**:
+```sql
+ALTER TABLE picker_payments ENABLE ROW LEVEL SECURITY;
 
-**Task AG-10**: Data Documentation
-- Document all tables, views, schemas
-- Create data dictionary
-- Usage examples for common queries
-- Evidence: Comprehensive data documentation
-- Timeline: 2-3 hours
+-- Admin full access
+CREATE POLICY "Admin full access to payments"
+  ON picker_payments FOR ALL
+  USING (auth.uid() IN (SELECT id FROM admin_users));
 
-Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
+-- Pickers view own payments
+CREATE POLICY "Pickers view own payments"
+  ON picker_payments FOR SELECT
+  USING (picker_email = auth.jwt()->>'email');
+```
 
----
+**Test Locally**:
+```bash
+cd ~/HotDash/hot-dash
+supabase start
+supabase db reset
+# Apply migration
+# Verify tables created
+# Test RLS with test users
+```
 
-### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
+**Success Criteria**:
+- ✅ Migration file created
+- ✅ RLS enabled on all picker tables
+- ✅ Policies tested locally
+- ✅ No SQL errors
 
-**Task AH-AL: Data Quality** (5 tasks)
-- AH: Design data validation rules engine
-- AI: Create data cleansing automation
-- AJ: Implement data consistency monitoring
-- AK: Design data completeness tracking
-- AL: Create data quality dashboards
+**Evidence Required**:
+- Migration file path
+- Local test output
+- RLS policy verification
+- Timestamp
 
-**Task AM-AQ: Advanced Analytics** (5 tasks)
-- AM: Design cohort analysis framework
-- AN: Create funnel analysis platform
-- AO: Implement retention analysis tools
-- AP: Design attribution modeling system
-- AQ: Create experimentation analysis framework
-
-**Task AR-AV: Data Platform** (5 tasks)
-- AR: Design data mesh architecture
-- AS: Create data products catalog
-- AT: Implement data democratization platform
-- AU: Design self-service data access
-- AV: Create data literacy program
-
-**Task AW-AZ: Data Science Infrastructure** (5 tasks)
-- AW: Design notebook environment (Jupyter-style)
-- AX: Create model registry and versioning
-- AY: Implement feature store
-- AZ: Design AutoML platform
-- BA: Create model explainability tools
-
-Execute AH-BA in any order. Total: 69 tasks, ~35-40 hours work.
+**Deadline**: 2025-10-14T00:00:00Z (2 hours after Task 1A)
 
 ---
 
-### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+### Task 1C: Create Database Views (2 hours)
 
-**Task K-O: Advanced Analytics** (5 tasks)
-- K: Design predictive analytics for agent performance forecasting
-- L: Create customer churn risk scoring based on support interactions
-- M: Implement anomaly detection for conversation patterns
-- N: Design cohort analysis for pilot customer behavior
-- O: Create attribution modeling for agent-assisted conversions
+**Views Required**:
 
-**Task P-T: Data Engineering** (5 tasks)
-- P: Design data lakehouse architecture for long-term storage
-- Q: Create data cataloging and discovery system
-- R: Implement data lineage tracking
-- S: Design data quality monitoring dashboards
-- T: Create automated data documentation generation
+**1. picker_balances view**:
+```sql
+CREATE OR REPLACE VIEW picker_balances AS
+SELECT 
+  p.id,
+  p.name,
+  p.email,
+  p.active,
+  COALESCE(SUM(pe.payout_cents), 0) as total_earnings_cents,
+  COALESCE(SUM(pp.amount_cents), 0) as total_paid_cents,
+  COALESCE(SUM(pe.payout_cents), 0) - COALESCE(SUM(pp.amount_cents), 0) as balance_cents,
+  COUNT(DISTINCT pe.order_id) as orders_fulfilled,
+  MAX(pe.created_at) as last_earning_date,
+  MAX(pp.paid_at) as last_payment_date
+FROM pickers p
+LEFT JOIN picker_earnings pe ON p.email = pe.picker_email
+LEFT JOIN picker_payments pp ON p.email = pp.picker_email
+GROUP BY p.id, p.name, p.email, p.active;
 
-**Task U-Y: ML/AI Data Infrastructure** (5 tasks)
-- U: Design feature store for ML models
-- V: Create training dataset versioning system
-- W: Implement A/B testing data infrastructure
-- X: Design model performance monitoring
-- Y: Create automated model retraining pipeline
+COMMENT ON VIEW picker_balances IS 
+'Summary of each picker''s earnings, payments, and outstanding balance';
+```
 
-Execute K-Y in any order. Total: 24 tasks, ~15-18 hours of data work.
+**2. unassigned_fulfilled_orders view**:
+```sql
+CREATE OR REPLACE VIEW unassigned_fulfilled_orders AS
+SELECT 
+  o.id,
+  o.shopify_order_id,
+  o.fulfilled_at,
+  o.total_price,
+  COUNT(ol.id) as line_item_count,
+  SUM(ol.quantity) as total_items
+FROM orders o
+LEFT JOIN order_line_items ol ON o.id = ol.order_id
+WHERE o.fulfillment_status = 'fulfilled'
+  AND o.assigned_picker IS NULL
+GROUP BY o.id, o.shopify_order_id, o.fulfilled_at, o.total_price
+ORDER BY o.fulfilled_at DESC;
 
-## Previous Task List — 2025-10-11
-- Supabase only
-  - Ensure read-only roles and RLS in place; provide gold-reply webhook endpoint + secret path to Chatwoot/Support.
-- Shopify contracts
-  - Use Shopify Dev MCP for Admin schema references; do not guess shapes.
-- Evidence
-  - Tail Supabase logs when running parity scripts; attach outputs and timestamps in `feedback/data.md`.
+COMMENT ON VIEW unassigned_fulfilled_orders IS
+'Fulfilled orders awaiting picker assignment for payment calculation';
+```
 
-1. **Supabase access hardening** — Run through `docs/runbooks/supabase_local.md` to verify `supabase start`, `npm run setup`, and pgvector availability. Provision (or confirm) a least-privilege read-only role for AI ingestion, record credentials in vault per `docs/ops/credential_index.md`, and log evidence.
-2. **Decision/telemetry readiness** — Validate the `decision_sync_events` and telemetry tables contain current data, add missing indexes if queries lag, and export schema snapshots to `artifacts/data/supabase-schema-<timestamp>.sql`. Update `docs/runbooks/incident_response_supabase.md` with the latest state.
-3. **Gold reply schema** — Design and apply a Supabase migration (e.g., `supabase/migrations/*_chatwoot_gold_replies.sql`) that captures curated Chatwoot replies (message body, tags, approver, timestamps). Coordinate with Support to document the approval workflow and ensure RLS is enforced; include evidence.
-4. **Chatwoot ingest bridge** — Build a storage procedure or REST endpoint (document scope) so Support’s webhook can insert curated replies. Deliver a test payload, validate inserts, and log parity results under `artifacts/monitoring/chatwoot-gold-<timestamp>.json`.
-5. **LlamaIndex data feeds** — Generate a hotrodan.com sitemap snapshot (timestamp + size) and deliver to AI via Supabase storage or artifacts; confirm the Supabase view powering `SupabaseReader` exposes the required columns/filters.
-6. **Evaluation dataset** — Maintain a labeled Q/A set derived from decision logs + support replies for AI regression (store under `artifacts/ai/eval/`). Update instructions in `docs/runbooks/llamaindex_workflow.md` once AI lands it.
-7. **Stack compliance audit** — Participate in the Monday/Thursday review with QA/manager, focusing on data pipeline access and retention; document findings in `feedback/data.md`.
-8. **Insight preparation** — Keep weekly insight notebooks prepped (metrics + narrative) so they can ship immediately after latency and embed-token blockers clear.
+**3. picker_order_history view**:
+```sql
+CREATE OR REPLACE VIEW picker_order_history AS
+SELECT 
+  pe.picker_email,
+  p.name as picker_name,
+  o.shopify_order_id,
+  o.fulfilled_at,
+  pe.total_pieces,
+  pe.bracket,
+  pe.payout_cents,
+  pe.created_at as earning_recorded_at
+FROM picker_earnings pe
+JOIN pickers p ON pe.picker_email = p.email
+JOIN orders o ON pe.order_id = o.shopify_order_id
+ORDER BY pe.created_at DESC;
+
+COMMENT ON VIEW picker_order_history IS
+'Complete history of picker earnings by order';
+```
+
+**4. picker_payment_summary view** (for packer-facing app):
+```sql
+CREATE OR REPLACE VIEW picker_payment_summary AS
+SELECT 
+  pp.picker_email,
+  p.name as picker_name,
+  pp.paid_at,
+  pp.amount_cents,
+  pp.notes,
+  pp.created_at
+FROM picker_payments pp
+JOIN pickers p ON pp.picker_email = p.email
+ORDER BY pp.paid_at DESC;
+
+COMMENT ON VIEW picker_payment_summary IS
+'Payment history for picker-facing app dashboard';
+```
+
+**Performance Testing**:
+```bash
+# Test view query performance
+EXPLAIN ANALYZE SELECT * FROM picker_balances;
+EXPLAIN ANALYZE SELECT * FROM unassigned_fulfilled_orders LIMIT 20;
+EXPLAIN ANALYZE SELECT * FROM picker_order_history WHERE picker_email = 'hotrodanllc@gmail.com';
+
+# Target: All queries < 100ms
+```
+
+**Success Criteria**:
+- ✅ All 4 views created
+- ✅ Views return correct data
+- ✅ Performance < 100ms per view
+- ✅ Comments added for documentation
+
+**Evidence Required**:
+- View definitions
+- Sample query output
+- Performance test results
+- Timestamp
+
+**Deadline**: 2025-10-14T02:00:00Z (2 hours after Task 1B)
 
 ---
 
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
+## 🚨 P1 PRIORITY 2: SEO Pulse WoW Calculation (2025-10-13)
 
-**CEO Decision**: Emergency refocus on launch gates
+**Assignment**: Implement week-over-week delta calculation for SEO traffic monitoring
+**Timeline**: 4 hours (start after Priority 1 complete)
+**Evidence**: Log all work in feedback/data.md
 
-**Your Status**: PAUSED - Stand by until launch gates complete
+**Dependencies**: Product team threshold decisions (wait for their spec)
 
-**Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
+### Context
 
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
+**Current Problem**:
+- SEO Pulse tile shows Google Analytics landing page data
+- `wowDelta` hardcoded to `0` (no actual calculation)
+- Cannot identify traffic anomalies
 
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
+**Goal**: 
+- Calculate actual week-over-week percentage change
+- Identify pages with significant traffic drops (>20% or per Product spec)
+- Filter tile to show only anomalies
 
-**Your tasks remain in direction file - will resume after launch.**
+**File Locations**:
+- Current code: `app/services/ga/directClient.ts:102`
+- Anomaly logic: `app/services/ga/ingest.ts:58`
+- GA credentials: `vault/occ/google/analytics-service-account.json`
 
 ---
 
-## ✅ RESUME WORK (2025-10-11T23:20Z)
+### Task 2A: Fetch Previous Week Data (2 hours)
 
-**Engineer Progress**: 5/7 launch gates complete! 🎉
+**Wait For**: Product team anomaly threshold spec (should be ready by 2025-10-14T18:00:00Z)
 
-**Your Status**: Resume your paused tasks - no idle agents
+**Current Code** (`app/services/ga/directClient.ts`):
+```typescript
+// Line 102 - NEEDS FIXING
+wowDelta: 0, // Hardcoded - needs implementation
+```
 
-**Rationale**: Engineer making excellent progress. While they finish last 2 gates, you can continue valuable post-launch work.
+**Required Implementation**:
+```typescript
+export async function getTopLandingPages(limit: number = 100) {
+  // Current week data (already implemented)
+  const currentWeekData = await fetchAnalyticsData({
+    dateRanges: [{
+      startDate: '7daysAgo',
+      endDate: 'today',
+      name: 'currentWeek'
+    }],
+    dimensions: [{ name: 'pagePath' }],
+    metrics: [{ name: 'sessions' }],
+    limit
+  });
 
-**Your Tasks**: Resume where you left off in your expanded task list
+  // NEW: Previous week data
+  const previousWeekData = await fetchAnalyticsData({
+    dateRanges: [{
+      startDate: '14daysAgo',
+      endDate: '8daysAgo',
+      name: 'previousWeek'
+    }],
+    dimensions: [{ name: 'pagePath' }],
+    metrics: [{ name: 'sessions' }],
+    limit
+  });
 
-**Evidence**: Continue providing file paths, test results, documentation per QA standards
+  // NEW: Calculate WoW delta
+  return calculateWoWDelta(currentWeekData, previousWeekData);
+}
 
-**Coordinate**: Support launch if needed, otherwise continue your strategic work
+function calculateWoWDelta(current: AnalyticsData, previous: AnalyticsData) {
+  const previousMap = new Map(
+    previous.rows.map(row => [row.dimensionValues[0].value, parseInt(row.metricValues[0].value)])
+  );
 
-**Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
+  return current.rows.map(row => {
+    const pagePath = row.dimensionValues[0].value;
+    const currentSessions = parseInt(row.metricValues[0].value);
+    const previousSessions = previousMap.get(pagePath) || 0;
+
+    const wowDelta = previousSessions > 0
+      ? ((currentSessions - previousSessions) / previousSessions) * 100
+      : 0;
+
+    return {
+      pagePath,
+      sessions: currentSessions,
+      wowDelta: parseFloat(wowDelta.toFixed(1))
+    };
+  });
+}
+```
+
+**Testing**:
+```bash
+# Test with real Hot Rod AN data
+# Verify calculations match GA dashboard
+# Check edge cases (new pages, pages with 0 previous traffic)
+```
+
+**Success Criteria**:
+- ✅ Previous week data fetched successfully
+- ✅ WoW delta calculated correctly
+- ✅ Edge cases handled (new pages, zero traffic)
+- ✅ Performance acceptable (<3s total)
+
+**Evidence Required**:
+- Code changes
+- Test output with real data
+- Sample calculations verified against GA dashboard
+- Timestamp
+
+**Deadline**: 2025-10-16T10:00:00Z (wait for Product spec first)
+
+---
+
+### Task 2B: Filter to Anomalies Only (2 hours)
+
+**Wait For**: Product threshold decision
+
+**Update Anomaly Logic** (`app/services/ga/ingest.ts:58`):
+```typescript
+// Current
+isAnomaly: session.wowDelta <= -0.2  // -20% threshold
+
+// May need to update based on Product decision
+// Options: -20%, -30%, or configurable threshold
+```
+
+**Filter Logic**:
+```typescript
+export async function getSEOAnomalies(threshold: number = -20) {
+  const allPages = await getTopLandingPages(100);
+  
+  // Filter to only anomalies
+  const anomalies = allPages.filter(page => 
+    page.wowDelta <= threshold / 100
+  );
+
+  // Sort by biggest drop first
+  return anomalies
+    .sort((a, b) => a.wowDelta - b.wowDelta)
+    .slice(0, 10); // Top 10 worst performers
+}
+```
+
+**Update Tile Query** to use filtered data:
+```typescript
+// In tile loader
+const seoData = await getSEOAnomalies(-20); // or threshold from Product spec
+```
+
+**Testing**:
+```bash
+# Test with various thresholds
+# Verify only anomalies returned
+# Check sorting (worst first)
+# Test empty state (no anomalies)
+```
+
+**Success Criteria**:
+- ✅ Anomaly filtering works
+- ✅ Threshold configurable
+- ✅ Top 10 worst performers shown
+- ✅ Empty state handled
+
+**Evidence Required**:
+- Code changes
+- Test results with different thresholds
+- Screenshot of filtered data
+- Timestamp
+
+**Deadline**: 2025-10-16T12:00:00Z (2h after Task 2A)
+
+---
+
+## MCP Tools Required
+
+**For Picker Payments**:
+- ✅ Supabase MCP: mcp_supabase_list_tables
+- ✅ Supabase MCP: mcp_supabase_apply_migration
+- ✅ Supabase MCP: mcp_supabase_get_advisors (performance check)
+
+**For SEO WoW Calculation**:
+- ❌ No MCP needed (direct GA API already configured)
+- ℹ️ GA credentials in vault, not MCP-based
+
+## Evidence Gate
+
+Every task must log in feedback/data.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ format)
+- Task completed
+- Migration file path or code changes
+- Test results
+- Performance metrics
+- Issues encountered
+- Next steps
+
+## Blockers to Escalate
+
+If ANY task blocked >2 hours:
+1. Document in feedback/data.md
+2. Note attempts made (minimum 2)
+3. Escalate to Manager
+4. Include error messages/logs
+
+## Coordination
+
+- **Integrations**: Waiting on Priority 1 complete to start historical order import
+- **Product**: Need anomaly threshold decision for Priority 2
+- **Engineer**: Will consume views and WoW data after implementation
+- **Manager**: Monitoring progress in daily standups
+
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:46:00Z) — Manager Assignment
+
+**Status**: Priority 1 & 2 complete ✅ (3.5 hours ahead of schedule!)  
+**New Assignment**: Analytics & Monitoring Enhancement
+
+### P0: Real-Time Analytics Dashboard (3-4 hours)
+
+**Goal**: Create operator-focused analytics dashboard
+
+**Tasks**:
+1. **Design Analytics Schema**
+   - Define key metrics (orders, revenue, customer activity)
+   - Create aggregation tables for performance
+   - Implement materialized views
+
+2. **Build Analytics Queries**
+   - Daily/weekly/monthly summaries
+   - Trend analysis queries
+   - Anomaly detection queries
+
+3. **Optimize Query Performance**
+   - Add appropriate indexes
+   - Implement query caching
+   - Test with production-scale data
+
+4. **Create Dashboard API**
+   - Expose analytics via API endpoints
+   - Add real-time updates (if needed)
+   - Document API usage
+
+**Evidence**: Schema files, query performance benchmarks, API documentation
+
+### P1: Data Quality Monitoring (2-3 hours)
+
+**Goal**: Automated data quality checks
+
+**Tasks**:
+1. **Implement Data Validation**
+   - Check for null/missing values
+   - Validate data types
+   - Check referential integrity
+
+2. **Create Quality Metrics**
+   - Completeness score
+   - Accuracy score
+   - Timeliness score
+
+3. **Build Alerting System**
+   - Alert on quality threshold violations
+   - Daily quality reports
+   - Integration with monitoring
+
+**Evidence**: Validation rules, quality dashboard, alert configuration
+
+### P2: ETL Pipeline Optimization (2-3 hours)
+
+**Goal**: Improve data pipeline efficiency
+
+**Tasks**:
+1. Profile current ETL performance
+2. Optimize slow transformations
+3. Implement incremental updates
+4. Add pipeline monitoring
+
+**Evidence**: Performance improvements, monitoring dashboard
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/data.md
+
+**Coordination**:
+- Designer: Dashboard UI design
+- Product: Analytics requirements
+- Reliability: Monitoring integration
+- Manager: Report completion for next assignment
+
+---

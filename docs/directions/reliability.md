@@ -7,6 +7,57 @@ doc_hash: TBD
 expires: 2025-10-19
 ---
 # Reliability — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: ACTIVE DEPLOYMENT MONITORING (P0)
+
+**Your immediate priority**: Monitor Engineer's Fly deployment and ensure successful completion
+
+**Current status**:
+- ✅ Monitoring setup complete (12/12 tasks done)
+- 🔄 Engineer deploying to hotdash-staging.fly.dev
+- 🎯 Monitor deployment, track metrics, alert on issues
+
+**START HERE NOW** (Monitor deployment):
+```bash
+cd ~/HotDash/hot-dash
+
+# Use Fly MCP and Supabase MCP for monitoring (MANDATORY)
+# DO NOT use fly CLI or psql directly
+
+# 1. Monitor Fly app status with Fly MCP
+# mcp_fly_fly-status(app: "hotdash-staging")
+# Check: Deployment progressing, no errors
+
+# 2. Monitor logs with Fly MCP
+# mcp_fly_fly-logs(app: "hotdash-staging")
+# Watch for: Deployment success, health check passes
+
+# 3. Monitor database with Supabase MCP
+# mcp_supabase_get_advisors(type: "performance")
+# Verify: Database healthy during deployment
+
+# 4. Monitor service health
+curl https://hotdash-agent-service.fly.dev/health
+curl https://hotdash-llamaindex-mcp.fly.dev/health
+# Confirm: Supporting services healthy
+
+# 5. Track deployment metrics
+# Response times, error rates, resource usage
+# Alert Manager if issues detected
+
+# Evidence: Monitoring logs, health verification, deployment support
+# Log to: feedback/reliability.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Fly MCP: mcp_fly_fly-status, mcp_fly_fly-logs (deployment monitoring)
+- ✅ Supabase MCP: mcp_supabase_get_advisors (database health)
+- ❌ No fly CLI or psql usage
+
+**Timeline**: 30-45 minutes (until deployment completes)
+
+**Success Metric**: Deployment completes successfully, all systems healthy
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -216,3 +267,86 @@ Execute A, B, C in any order - all independent work.
 **Timeline**: Engineer working on Task 6 (3-4h), you can continue prep work
 
 **Status**: ⏳ WAITING - Monitor for engineer deployment, then proceed with tasks
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:48:00Z) — Manager Assignment
+
+**Status**: All priority tasks complete ✅  
+**New Assignment**: Production Monitoring & Incident Response
+
+### P0: Monitoring Dashboard Setup (3-4 hours)
+
+**Goal**: Comprehensive production monitoring
+
+**Tasks**:
+1. **Service Health Monitoring**
+   - Agent SDK uptime/latency
+   - LlamaIndex MCP uptime/latency
+   - Shopify App uptime/latency
+   - Database connection health
+
+2. **Application Metrics**
+   - API response times
+   - Error rates
+   - Request volumes
+   - User sessions
+
+3. **Business Metrics**
+   - Dashboard tile load times
+   - Approval queue processing
+   - CEO login frequency
+   - Feature usage
+
+4. **Alert Configuration**
+   - Service down alerts
+   - High error rate alerts
+   - Performance degradation alerts
+   - Business metric anomalies
+
+**Evidence**: Monitoring dashboard, alert rules, documentation
+
+### P1: Incident Response Runbooks (2-3 hours)
+
+**Goal**: Documented procedures for common incidents
+
+**Tasks**:
+1. **Service Outage Runbooks**
+   - Agent SDK down
+   - LlamaIndex MCP down
+   - Database connection issues
+   - Shopify API issues
+
+2. **Performance Issues**
+   - Slow dashboard loads
+   - API timeouts
+   - Database query slowness
+
+3. **Data Issues**
+   - Missing data
+   - Incorrect data
+   - Sync failures
+
+**Evidence**: Runbook documents in docs/runbooks/incidents/
+
+### P2: Incident Response Drills (2 hours)
+
+**Goal**: Practice incident response
+
+**Tasks**:
+1. Simulate service outage
+2. Execute runbook procedures
+3. Document response time
+4. Identify improvements
+
+**Evidence**: Drill reports, improvements documented
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/reliability.md
+
+**Coordination**:
+- Deployment: Service monitoring
+- Engineer: Performance issues
+- Data: Data quality issues
+- Manager: Report completion for next assignment
+
+---

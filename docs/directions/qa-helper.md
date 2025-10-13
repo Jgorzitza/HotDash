@@ -9,6 +9,53 @@ expires: 2025-10-19
 
 # QA Helper — Direction (Code Quality Verification)
 
+## 🚨 CRITICAL: CONTINUE TEST COVERAGE EXPANSION (P1)
+
+**Your immediate priority**: Continue building Shopify integration test suite
+
+**Current status**:
+- ✅ 7/12 tests complete
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Continue test coverage expansion
+
+**START HERE NOW** (Continue test coverage):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Continue with Task 7B: Test service error handling
+# Create tests for Shopify service error handling
+# Use Shopify MCP to verify error patterns
+# mcp_shopify_introspect_graphql_schema for error types
+
+# 2. Continue with Task 7C: Test utility edge cases
+# Add tests for date utilities, string formatters
+# Test edge cases and error conditions
+
+# 3. Continue with Task 7D: Test E2E scenarios
+# Add integration test helpers
+# Create test data generation utilities
+
+# 4. Continue with Task 7E: Test performance
+# Add performance tests for tile loading
+# Test with various data sizes
+
+# 5. Continue with Task 7F: Test security
+# Add security tests for API endpoints
+# Test authentication and authorization
+
+# Evidence: Additional test files created, coverage increased
+# Log to: feedback/qa-helper.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Context7 MCP: mcp_context7_get-library-docs (React Router 7 patterns)
+- ✅ Shopify MCP: mcp_shopify_introspect_graphql_schema (error types)
+- ❌ DO NOT guess React Router 7 patterns
+
+**Timeline**: 60-90 minutes (continue 5 remaining tests)
+
+**Success Metric**: 12/12 tests complete, coverage increased by 5-10%
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -402,3 +449,86 @@ Execute Tasks 8-18. Total: ~45-55 hours of deep QA work.
 4. Remaining quality tasks (10, 13-17)
 
 **Status**: 🟢 ACTIVE - Proceed with Tasks 8-18 (your choice of order)
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:51:00Z) — Manager Assignment
+
+**Status**: All direction file tasks complete ✅ (11/11)  
+**New Assignment**: Test Coverage & Quality Improvements
+
+### P0: Integration Test Suite Expansion (3-4 hours)
+
+**Goal**: Comprehensive integration test coverage
+
+**Tasks**:
+1. **API Integration Tests**
+   - Test all Shopify API endpoints
+   - Test Agent SDK endpoints
+   - Test LlamaIndex MCP endpoints
+   - Test database operations
+
+2. **Service Integration Tests**
+   - Test Chatwoot webhook handling
+   - Test Google Analytics integration
+   - Test approval queue workflow
+   - Test notification system
+
+3. **Data Flow Tests**
+   - Test end-to-end data flows
+   - Test error handling
+   - Test retry logic
+   - Test timeout handling
+
+4. **Test Coverage Analysis**
+   - Measure current coverage
+   - Identify gaps
+   - Add missing tests
+   - Target >80% coverage
+
+**Evidence**: Test suite, coverage report, test results
+
+### P1: Performance Testing (2-3 hours)
+
+**Goal**: Establish performance baselines
+
+**Tasks**:
+1. **Load Testing**
+   - Test dashboard under load
+   - Test API endpoints under load
+   - Test database queries under load
+   - Document performance limits
+
+2. **Stress Testing**
+   - Test system breaking points
+   - Test recovery procedures
+   - Document failure modes
+
+3. **Performance Benchmarks**
+   - Establish baseline metrics
+   - Create performance dashboard
+   - Set up performance alerts
+
+**Evidence**: Performance test results, benchmarks, alerts
+
+### P2: Security Testing (2 hours)
+
+**Goal**: Automated security testing
+
+**Tasks**:
+1. Set up OWASP ZAP scanning
+2. Test for common vulnerabilities
+3. Document findings
+4. Coordinate fixes with Engineer
+
+**Evidence**: Security test results, vulnerability report
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/qa-helper.md
+
+**Coordination**:
+- QA: Coordinate on test strategy
+- Engineer: Fix any issues found
+- Reliability: Performance monitoring
+- Manager: Report completion for next assignment
+
+---

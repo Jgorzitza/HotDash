@@ -7,6 +7,48 @@ doc_hash: TBD
 expires: 2025-10-19
 ---
 # Enablement — Direction (Operator Control Center)
+
+## 🚨 CRITICAL: PREPARE VIDEO TUTORIALS FOR DEPLOYED APP (P2)
+
+**Your immediate priority**: Prepare video tutorial content for the deployed Shopify app
+
+**Current status**:
+- ✅ All assigned tasks COMPLETE
+- 🔄 Engineer deploying to Fly.io NOW
+- 🎯 Prepare video content when deployment completes
+
+**START HERE NOW** (Prepare video tutorials):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Prepare quick start video script
+# File: docs/enablement/shopify_app_quick_start_video.md
+# 2-minute overview: Installation to first dashboard view
+
+# 2. Prepare dashboard overview video script
+# File: docs/enablement/shopify_app_dashboard_overview.md
+# 5-minute tour: All 5 tiles, navigation, key features
+
+# 3. Prepare approval queue video script
+# File: docs/enablement/shopify_app_approval_queue.md
+# 3-minute tutorial: Approve/reject actions, agent assistance
+
+# 4. Prepare troubleshooting video script
+# File: docs/enablement/shopify_app_troubleshooting.md
+# Common issues: Login, data loading, approvals
+
+# 5. Prepare advanced features video script
+# File: docs/enablement/shopify_app_advanced_features.md
+# Power user tips, customization, shortcuts
+
+# Evidence: Complete video script package
+# Log to: feedback/enablement.md
+```
+
+**Timeline**: 60-90 minutes (23 tasks total)
+
+**Success Metric**: Complete video tutorial package ready for recording
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -363,3 +405,84 @@ Execute 7-12 in any order - all enhance operator readiness.
 - 42: Create learning culture development plan
 
 Execute 13-42 in any order. Total: 42 tasks, ~25-30 hours work.
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:50:00Z) — Manager Assignment
+
+**Status**: All preparation work complete ✅  
+**New Assignment**: CEO Training & Operator Onboarding
+
+### P0: CEO Training Session Preparation (2-3 hours)
+
+**Goal**: Prepare for CEO onboarding session
+
+**Tasks**:
+1. **Training Session Plan**
+   - Create 30-minute training agenda
+   - Prepare demo scenarios
+   - Create practice exercises
+   - Prepare Q&A materials
+
+2. **Training Environment Setup**
+   - Verify demo data
+   - Test all features
+   - Prepare backup scenarios
+   - Create training checklist
+
+3. **Training Materials**
+   - Print quick start guide
+   - Print quick reference card
+   - Prepare digital resources
+   - Create follow-up email template
+
+4. **Success Metrics**
+   - Define training success criteria
+   - Create feedback form
+   - Plan follow-up sessions
+
+**Evidence**: Training plan, materials, environment verified
+
+### P1: Operator Onboarding Materials (2-3 hours)
+
+**Goal**: Materials for future operator onboarding
+
+**Tasks**:
+1. **Onboarding Checklist**
+   - Day 1 activities
+   - Week 1 milestones
+   - Month 1 goals
+
+2. **Role-Specific Guides**
+   - Support operator guide
+   - Sales operator guide
+   - Manager operator guide
+
+3. **Troubleshooting Guide**
+   - Common issues
+   - Resolution steps
+   - Escalation procedures
+
+**Evidence**: Onboarding materials, guides, checklists
+
+### P2: Video Production Coordination (2 hours)
+
+**Goal**: Coordinate video script production
+
+**Tasks**:
+1. Review existing video scripts (5 complete)
+2. Coordinate with video production team (if applicable)
+3. Create video production timeline
+4. Plan video distribution
+
+**Evidence**: Production plan, timeline, distribution strategy
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/enablement.md
+
+**Coordination**:
+- Product: Training scenarios
+- Support: Troubleshooting content
+- Marketing: Video distribution
+- Manager: Schedule CEO training session
+
+---

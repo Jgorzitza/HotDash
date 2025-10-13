@@ -2,11 +2,252 @@
 epoch: 2025.10.E1
 doc: docs/directions/engineer.md
 owner: manager
-last_reviewed: 2025-10-12
+last_reviewed: 2025-10-13
 doc_hash: TBD
-expires: 2025-10-19
+expires: 2025-10-20
 ---
 # Engineer — Direction (Operator Control Center)
+
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
+- Manager Feedback: feedback/manager.md (check for latest assignments)
+
+## 🎉 P0 COMPLETE: Shopify App Deployed Successfully (2025-10-13)
+
+**Status**: ✅ ALL DEPLOYMENT WORK COMPLETE
+- App deployed to hotdash-staging.fly.dev
+- Installed on dev store (hotroddash.myshopify.com)  
+- CEO verified: 6/6 tiles working
+- All scopes fixed, credentials configured
+
+**Next**: Awaiting new feature work assignments
+
+---
+
+## 🚨 P1 UPCOMING: Integration & Refinement Work (2025-10-13)
+
+**Status**: WAITING ON OTHER TEAMS
+**Your work blocked until dependencies complete**
+
+### Task E1: Live Chat Widget Installation (WAITING)
+
+**Dependency**: Chatwoot agent must complete Task 4 first
+- Expected: 2025-10-14T18:00:00Z
+- Blocker: Need widget embed code from Chatwoot
+
+**When Ready**:
+1. Receive embed code from Chatwoot agent
+2. Identify installation location (likely Hot Rod AN theme layout)
+3. Add widget code to appropriate template
+4. Test on dev store
+5. Verify widget loads and connects to Chatwoot
+6. Mobile responsiveness check
+
+**MCP Tools**:
+- ✅ Context7 MCP: Verify React Router 7 / theme structure if needed
+- ✅ Shopify MCP: If modifying theme files via API
+
+**Timeline**: 1 hour (after Chatwoot provides code)
+**Evidence**: Log in feedback/engineer.md
+
+---
+
+### Task E2: SEO Pulse Tile Refinement Implementation (WAITING)
+
+**Dependencies**: 
+- Data agent WoW calculation (est. 2025-10-16T12:00:00Z)
+- Designer visual hierarchy (est. 2025-10-15T18:00:00Z)
+
+**When Ready**:
+1. Receive Designer Figma mockup + component specs
+2. Receive Data API changes (WoW delta calculations)
+3. Update SEO Pulse tile component:
+   - Implement visual hierarchy (colors, icons, arrows)
+   - Add trend indicators (up/down/stable)
+   - Implement empty state
+   - Filter to top N anomalies
+   - Add mobile responsive layout
+4. Test with real data
+5. Screenshot for Designer approval
+6. Deploy to dev store
+
+**MCP Tools**:
+- ✅ Context7 MCP: Verify React Router 7 patterns (training data outdated)
+- ✅ Shopify MCP: Validate any GraphQL changes
+
+**Code Examples** (will refine based on Designer specs):
+```typescript
+// Trend indicator component
+function TrendIndicator({ wowDelta }: { wowDelta: number }) {
+  const isDecrease = wowDelta <= -20;
+  const isIncrease = wowDelta >= 20;
+  
+  return (
+    <div className={cn(
+      "flex items-center gap-2",
+      isDecrease && "text-red-600",
+      isIncrease && "text-green-600"
+    )}>
+      {isDecrease && <ArrowDown className="h-4 w-4" />}
+      {isIncrease && <ArrowUp className="h-4 w-4" />}
+      <span className="font-medium">
+        {wowDelta > 0 && "+"}{wowDelta.toFixed(1)}%
+      </span>
+    </div>
+  );
+}
+```
+
+**Timeline**: 4 hours (after dependencies complete)
+**Evidence**: Log in feedback/engineer.md
+
+---
+
+### Task E3: Picker Payment Admin UI (WAITING)
+
+**Dependencies**:
+- Data schema complete (est. 2025-10-14T02:00:00Z)
+- Integrations historical orders (est. 2025-10-15T16:00:00Z)
+
+**When Ready**:
+1. Create new route: `/app/picker-payments`
+2. Build admin panel components:
+   - Picker balance summary table
+   - Unassigned orders list
+   - Assign picker interface
+   - Record payment form
+   - Product picker_quantity editor
+3. Integrate with Data agent's views:
+   - `picker_balances` view
+   - `unassigned_fulfilled_orders` view
+   - `picker_order_history` view
+4. Add to navigation
+5. Test all flows
+6. Mobile responsive
+
+**MCP Tools**:
+- ✅ Context7 MCP: React Router 7 patterns (MANDATORY - no training data)
+- ✅ Supabase MCP: If need to verify schema
+
+**Code Example** (loader pattern - verify with Context7 MCP):
+```typescript
+// Route: app/routes/app.picker-payments.tsx
+import { type LoaderFunctionArgs } from "react-router";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  // Fetch picker balances from view
+  const { data: balances } = await supabase
+    .from('picker_balances')
+    .select('*')
+    .order('balance_cents', { ascending: false });
+    
+  return { balances };
+}
+```
+
+**Timeline**: 8 hours (after dependencies complete)
+**Evidence**: Log in feedback/engineer.md
+
+---
+
+## MCP Tool Requirements
+
+**MANDATORY for React Router 7**:
+- ✅ Context7 MCP: Verify loader/action patterns (training data has v6/Remix patterns)
+- ✅ Context7 MCP: Check import paths (changed in RR7)
+- ✅ Context7 MCP: Validate route module structure
+
+**For Shopify Work**:
+- ✅ Shopify MCP: Validate GraphQL queries
+- ✅ Shopify MCP: Introspect schema if adding new queries
+
+**For Database**:
+- ✅ Supabase MCP: Verify schema if needed
+
+## Current Status Summary
+
+**Completed Work** ✅:
+- P0: Shopify app deployment
+- All 6 tiles operational
+- CEO has working app on dev store
+
+**Upcoming Work** ⏳:
+- E1: Live chat widget (1h - after Chatwoot)
+- E2: SEO Pulse refinement (4h - after Data + Designer)
+- E3: Picker payment UI (8h - after Data + Integrations)
+
+**Estimated Timeline**: E1 tomorrow, E2 in 3 days, E3 in 4 days
+
+---
+
+## Evidence Gate
+
+Every task must log in feedback/engineer.md:
+- Timestamp (YYYY-MM-DDTHH:MM:SSZ)
+- Task completed
+- Code changes (file paths)
+- Test results
+- Screenshots (if UI work)
+- Issues encountered
+
+## Coordination
+
+- **Chatwoot**: Provides widget code for E1
+- **Designer**: Provides mockup for E2
+- **Data**: Provides API changes for E2, schema for E3
+- **Integrations**: Provides historical data for E3
+- **QA**: Tests each feature after implementation
+- **Manager**: Monitors progress in daily standups
+
+---
+
+## ⏸️ PREVIOUS ASSIGNMENT: COMPLETE SHOPIFY APP DEPLOYMENT (P0)
+
+**Your immediate priority**: Complete Fly.io deployment and get app visible in Shopify admin
+
+**Current status**:
+- ✅ Build complete (15.71s, 1612+ modules)
+- 🔄 Fly deployment in progress (timeout fixed)
+- 🎯 Install on dev store, verify in Shopify admin
+
+**START HERE NOW** (Complete deployment):
+```bash
+cd ~/HotDash/hot-dash
+
+# 1. Monitor deployment completion with Fly MCP
+# mcp_fly_fly-status(app: "hotdash-staging")
+# Expected: App healthy, no errors
+
+# 2. Install app on Hot Rod AN dev store
+# Navigate to: hotroddash.myshopify.com/admin/apps
+# Install Hot Dash from Partner Dashboard
+# Verify: OAuth flow completes, all scopes granted
+
+# 3. Test app in Shopify admin
+# Navigate: Apps > Hot Dash
+# Verify: 5 tiles render with real data
+# Screenshot: All tiles visible for CEO
+
+# 4. Verify LlamaIndex MCP integration
+# Test: Agent-assisted approval suggestions work
+# Confirm: Knowledge base queries return results
+
+# Evidence: Deployment logs, installation screenshots, app functionality verification
+# Log to: feedback/engineer.md
+```
+
+**MCP TOOLS REQUIRED**:
+- ✅ Fly MCP: mcp_fly_fly-status, mcp_fly_fly-logs (deployment monitoring)
+- ✅ Shopify MCP: mcp_shopify_validate_graphql_codeblocks (data validation)
+- ✅ Context7 MCP: React Router 7 patterns if debugging needed
+
+**Timeline**: 30-45 minutes (deployment completion + installation)
+
+**Success Metric**: CEO can click "Hot Dash" in Shopify admin and see working dashboard
+
 ## Canon
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
@@ -434,3 +675,70 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 **Timeline**: 3-4 hours for Task 6 with helper, then 1-2h for Task 7
 
 **Status**: 🟢 UNBLOCKED - Proceed with Task 6 (Approval UI) immediately
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T22:45:00Z) — Manager Assignment
+
+**Status**: All previous tasks complete ✅  
+**New Assignment**: Performance Optimization & Technical Debt
+
+### P0: Dashboard Performance Optimization (4-6 hours)
+
+**Goal**: Reduce dashboard load time to <1 second
+
+**Tasks**:
+1. **Profile Current Performance**
+   - Measure current load times for all 6 tiles
+   - Identify bottlenecks (API calls, rendering, data processing)
+   - Document baseline metrics
+
+2. **Optimize Data Fetching**
+   - Implement parallel API calls for tiles
+   - Add request caching (5-minute TTL)
+   - Optimize GraphQL queries (reduce overfetching)
+
+3. **Optimize Rendering**
+   - Implement React.lazy() for tile components
+   - Add Suspense boundaries
+   - Optimize re-renders with useMemo/useCallback
+
+4. **Test & Validate**
+   - Measure improvements
+   - Verify <1s load time target
+   - Test on slow connections
+
+**Evidence**: Performance report with before/after metrics, code changes, test results
+
+### P1: TypeScript Strict Mode Migration (2-3 hours)
+
+**Goal**: Enable strict mode for better type safety
+
+**Tasks**:
+1. Enable `strict: true` in tsconfig.json
+2. Fix type errors incrementally (start with critical paths)
+3. Document any `any` types that remain
+4. Update type definitions
+
+**Evidence**: Clean typecheck output, PR with changes
+
+### P2: Code Quality Improvements (2-3 hours)
+
+**Goal**: Reduce technical debt
+
+**Tasks**:
+1. Fix remaining lint errors (if any)
+2. Add JSDoc comments to public APIs
+3. Refactor complex functions (>50 lines)
+4. Update outdated dependencies
+
+**Evidence**: Lint report, documentation updates, refactoring PR
+
+**Timeline**: Start immediately, report progress every 2 hours to feedback/engineer.md
+
+**Coordination**: 
+- Designer: May need UX input on loading states
+- QA: Will need testing after optimization
+- Manager: Report completion for next assignment
+
+---
