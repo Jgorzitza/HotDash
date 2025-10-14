@@ -1,0 +1,6 @@
+{
+  "tunnel": {
+    "provider": "none"
+  },
+  "app_url": "https://hotdash-staging.fly.dev"
+}
