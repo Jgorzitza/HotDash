@@ -5928,3 +5928,108 @@ All work documented in feedback/data.md:
 **Timestamp**: 2025-10-14T02:50:24Z
 **Status**: ✅ 100% COMPLETE - STANDING BY FOR NEXT ASSIGNMENT
 
+
+---
+
+## 🚨 2025-10-14T03:02:00Z — P0: Email Analytics & Dashboard Integration (CEO Directive)
+
+**From**: Manager (CEO request)  
+**Priority**: P0 - IMMEDIATE  
+**Timeline**: 3-4 hours
+
+### Context: Email System Now Active
+
+CEO configured IMAP. Emails flowing into Chatwoot. Need emails to appear in CEO dashboard with analytics.
+
+### Your Mission
+
+Ensure email conversations and agent responses appear in the dashboard with proper analytics.
+
+### P0 Tasks (Execute in Order):
+
+#### Task 1: Email Data Schema (1 hour)
+
+**Goal**: Database schema for email conversations
+
+**Actions**:
+1. **Create Tables**:
+   - `email_conversations` (id, chatwoot_conversation_id, subject, customer_email, status, created_at)
+   - `email_messages` (id, conversation_id, direction, content, sender, timestamp)
+   - `agent_responses` (id, conversation_id, generated_response, confidence, sources, approved, sent_at)
+
+2. **Enable RLS**: All tables need RLS policies
+
+3. **Create Indexes**: For fast queries
+
+**Evidence**: Migration file, RLS policies
+
+#### Task 2: Chatwoot Sync Integration (1-2 hours)
+
+**Goal**: Sync Chatwoot emails to our database
+
+**Actions**:
+1. **Webhook Handler**: Process Chatwoot conversation events
+2. **Data Sync**: conversation.created, message.created events
+3. **Real-time Updates**: Keep dashboard current
+4. **Error Handling**: Retry failed syncs
+
+**Evidence**: Webhook handler code, sync logs
+
+#### Task 3: Dashboard Email Tile (1-2 hours)
+
+**Goal**: Show emails in CEO dashboard
+
+**Actions**:
+1. **Create Email Tile**:
+   - Recent conversations (last 24 hours)
+   - Pending responses (awaiting approval)
+   - Response times (average, P95)
+   - Agent vs human response ratio
+
+2. **Analytics Queries**:
+   - Email volume by hour/day
+   - Response time metrics
+   - Approval rate
+   - Customer satisfaction (if available)
+
+3. **Real-time Updates**:
+   - Live conversation count
+   - New email notifications
+
+**Evidence**: Dashboard tile component, SQL queries
+
+### Coordination
+
+**With Engineer**:
+- Engineer building response generation API
+- You provide: Database schema, analytics queries
+- Integration: Email data → Dashboard display
+
+**With AI Agent**:
+- AI extracting training data from emails
+- You track: Which emails used for training
+- Analytics: Training data quality metrics
+
+**With QA**:
+- QA will test end-to-end workflow
+- You provide: Test data and queries
+
+### Success Criteria
+
+- ✅ Email schema deployed to Supabase
+- ✅ Chatwoot sync working
+- ✅ Emails appear in dashboard
+- ✅ Analytics queries functional
+- ✅ Real-time updates working
+
+### Evidence Required
+
+Log to feedback/data.md every 2 hours:
+- Schema deployment status
+- Sync integration progress
+- Dashboard tile implementation
+- Query performance metrics
+
+**START IMMEDIATELY** - CEO wants to see emails in dashboard
+
+---

@@ -682,3 +682,130 @@ Log this within 15 minutes:
 **Evidence**: All work builds successfully, zero TypeScript errors in app/
 
 ---
+
+---
+
+## 🚨 2025-10-14T03:00:00Z — P0-CRITICAL: Agent Email Response Generation (CEO Directive)
+
+**From**: Manager (CEO request)  
+**Priority**: P0 - IMMEDIATE  
+**Timeline**: 4-6 hours
+
+### Context: Email Training Pipeline Active
+
+CEO configured IMAP. AI agent is extracting email training data. You need to build the agent response generation system.
+
+### Your Mission
+
+Build the system where agents can generate email responses and they appear in the dashboard.
+
+### P0 Tasks (Execute in Order):
+
+#### Task 1: API Security Fixes FIRST (1.5 hours) - From Compliance Audit
+
+**CRITICAL**: Compliance audit found 2 launch blockers:
+
+1. **Implement Rate Limiting** (1 hour)
+   - Add rate limiting middleware to all API routes
+   - Limit: 100 requests/minute per IP
+   - Return 429 Too Many Requests when exceeded
+   - Log rate limit violations
+
+2. **Configure CORS Allowlist** (30 minutes)
+   - Restrict CORS to known domains only
+   - Remove wildcard (*) if present
+   - Add: hotdash.app, hotdash-chatwoot.fly.dev
+   - Test cross-origin requests
+
+**Evidence**: Rate limiting code, CORS config, tests
+
+#### Task 2: Agent Response Generation API (2-3 hours)
+
+**Goal**: API endpoint for generating agent-assisted email responses
+
+**Actions**:
+1. **Create API Endpoint**: `POST /api/agent/generate-response`
+   - Input: { conversationId, emailContent, context }
+   - Calls: LlamaIndex MCP query_support tool
+   - Returns: { suggestedResponse, confidence, sources }
+
+2. **Integrate with Chatwoot**:
+   - Fetch conversation from Chatwoot API
+   - Get customer email content
+   - Generate response using AI agent's knowledge base
+   - Return to approval queue
+
+3. **Response Quality**:
+   - Include source citations
+   - Hot Rod AN voice and tone
+   - Appropriate length
+   - Call-to-action when needed
+
+4. **Error Handling**:
+   - Handle LlamaIndex MCP errors gracefully
+   - Fallback to manual response if AI fails
+   - Log all generation attempts
+
+**Evidence**: API code, integration tests, example responses
+
+#### Task 3: Dashboard Integration (1-2 hours)
+
+**Goal**: Show email conversations and agent responses in dashboard
+
+**Actions**:
+1. **Create Email Tile or Section**:
+   - Show recent email conversations
+   - Show pending responses (approval queue)
+   - Show agent-generated responses awaiting approval
+
+2. **Real-time Updates**:
+   - Subscribe to Chatwoot webhooks
+   - Update dashboard when new email arrives
+   - Show notification badge
+
+3. **Response Approval UI**:
+   - Display agent-generated response
+   - Show confidence score and sources
+   - Approve/Edit/Reject buttons
+   - Send to Chatwoot on approval
+
+**Evidence**: Dashboard UI, webhook integration, approval flow
+
+### Coordination
+
+**With AI Agent**: 
+- AI extracts email training data
+- You call their knowledge base for response generation
+- Integration: Your API → LlamaIndex MCP
+
+**With Data Agent**:
+- Ensure emails appear in analytics
+- Track response times, approval rates
+- Dashboard metrics
+
+**With QA Agent**:
+- Test end-to-end: Email → Agent response → Dashboard → Approval → Send
+- Verify quality and accuracy
+
+### Success Criteria
+
+- ✅ Rate limiting implemented (Compliance blocker)
+- ✅ CORS configured (Compliance blocker)
+- ✅ Agent response API functional
+- ✅ Chatwoot integration working
+- ✅ Emails appear in dashboard
+- ✅ Approval queue operational
+- ✅ End-to-end workflow tested
+
+### Evidence Required
+
+Log to feedback/engineer.md every 2 hours:
+- Security fixes complete
+- API endpoint status
+- Integration progress
+- Dashboard implementation
+- Test results
+
+**START WITH SECURITY FIXES (1.5 hours) then build response generation**
+
+---

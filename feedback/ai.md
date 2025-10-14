@@ -3770,3 +3770,106 @@ curl -X POST https://hotdash-llamaindex-mcp.fly.dev/mcp \
 **Manager**: Standing by for your fix. This is your top priority.
 
 ---
+
+---
+
+## 🚨 2025-10-14T02:58:00Z — URGENT P0: Email Training Pipeline (CEO Directive)
+
+**From**: Manager (CEO request)  
+**Priority**: P0 - IMMEDIATE (supersedes LlamaIndex MCP fix)  
+**Timeline**: 4-6 hours
+
+### Context: IMAP Email Configured ✅
+
+CEO has configured customer.support@hotrodan.com IMAP in Chatwoot. Old customer emails are now available for agent training.
+
+### Your Mission
+
+Build the email-to-agent training pipeline so agents can learn from real customer interactions.
+
+### P0 Tasks (Execute in Order):
+
+#### Task 1: Email Data Extraction (1-2 hours)
+
+**Goal**: Extract old emails from Chatwoot for training
+
+**Actions**:
+1. Connect to Chatwoot API or database
+2. Extract historical email conversations
+3. Parse: customer question → human response pairs
+4. Clean and structure data for training
+5. Store in `data/training/customer_emails/`
+
+**Evidence**: Email dataset with Q&A pairs
+
+#### Task 2: Training Data Preparation (1-2 hours)
+
+**Goal**: Prepare emails for LlamaIndex ingestion
+
+**Actions**:
+1. Categorize emails by topic (shipping, technical, returns, etc.)
+2. Extract high-quality response examples
+3. Format for RAG ingestion
+4. Create metadata (category, quality score, response time)
+
+**Evidence**: Curated training dataset
+
+#### Task 3: Ingest into Knowledge Base (1 hour)
+
+**Goal**: Add customer emails to LlamaIndex RAG
+
+**Actions**:
+1. Use your llama-workflow CLI to ingest emails
+2. Run: `llama-workflow build --source curated_emails`
+3. Verify emails are searchable
+4. Test query: "How do customers ask about shipping?"
+
+**Evidence**: Updated index with email data, test query results
+
+#### Task 4: Agent Response Quality Analysis (1 hour)
+
+**Goal**: Identify patterns in successful responses
+
+**Actions**:
+1. Analyze CEO's best responses
+2. Extract tone, structure, common phrases
+3. Document response patterns
+4. Create response templates
+
+**Evidence**: Response pattern analysis, templates
+
+### Coordination
+
+**With Engineer**: Response generation API
+- Engineer will build the agent response endpoint
+- You provide: Training data and response patterns
+- Integration point: Agent SDK calls LlamaIndex MCP
+
+**With Data**: Dashboard integration
+- Ensure email conversations appear in dashboard
+- Provide metadata for analytics
+
+**With QA**: End-to-end testing
+- Test: Email arrives → Agent generates response → Shows in dashboard
+- Verify accuracy and quality
+
+### Success Criteria
+
+- ✅ Email dataset extracted and cleaned
+- ✅ Emails ingested into knowledge base
+- ✅ Agents can query email patterns
+- ✅ Response quality analysis complete
+- ✅ Ready for agent response generation integration
+
+### Evidence Required
+
+Log to feedback/ai.md every 2 hours:
+- Dataset size (# of emails)
+- Categories identified
+- Ingestion results
+- Query test results
+- Response patterns documented
+
+**START IMMEDIATELY** - This is critical path for agent-assisted email responses
+
+---
