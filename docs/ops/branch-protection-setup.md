@@ -1,284 +1,283 @@
-# Branch Protection Rules — Setup Guide
+# Branch Protection Setup Guide
 
-**Purpose**: Protect main branch from accidental force-pushes and ensure code quality  
-**Owner**: Manager  
-**Created**: 2025-10-12  
-**Status**: Ready for implementation
+## Overview
 
----
+This guide provides instructions for setting up branch protection rules on the `main` branch to ensure code quality and prevent accidental changes.
 
-## Recommended Branch Protection Rules
-
-### For `main` Branch
-
-#### Required Settings
-
-**1. Require Pull Request Before Merging** ✅
-- **Require approvals**: 1 minimum
-- **Dismiss stale reviews**: Yes (when new commits pushed)
-- **Require review from Code Owners**: No (optional for future)
-
-**2. Require Status Checks to Pass** ✅
-- **Require branches to be up to date**: Yes
-- **Required status checks**:
-  - `test` (unit tests via Vitest)
-  - `build` (TypeScript compilation)
-  - `lint` (ESLint checks)
-  - `secret-scan` (gitleaks, when available)
-
-**3. Require Conversation Resolution** ✅
-- All conversations must be resolved before merging
-
-**4. Require Signed Commits** ⚠️ Optional
-- Enable if team uses GPG signing
-- Not critical for private repository
-
-**5. Require Linear History** ✅
-- **Prevent merge commits**: Yes
-- Use squash merge for feature branches
-- Keeps git history clean and linear
-
-**6. Do Not Allow Bypassing** ✅
-- **Include administrators**: Yes
-- Even admins must follow PR process
-- Prevents accidental direct commits
-
-**7. Restrict Push Access** ✅
-- No direct pushes to main
-- All changes via pull requests
-- Maintains code review quality
-
-**8. Restrict Force Pushes** ✅ CRITICAL
-- **Block force pushes**: Yes
-- Prevents history rewriting
-- Protects main branch integrity
-
-**9. Restrict Deletions** ✅
-- **Block branch deletion**: Yes
-- Prevents accidental main branch deletion
+**Owner**: git-cleanup agent  
+**Last Updated**: 2025-10-14  
+**Target Branch**: `main`
 
 ---
 
-## Implementation Steps
+## Recommended Protection Rules
 
-### Via GitHub Web UI
+### 1. Require Pull Request Reviews
 
-1. **Navigate to Settings**:
-   ```
-   https://github.com/Jgorzitza/HotDash/settings/branches
-   ```
+**Setting**: Require pull request reviews before merging  
+**Value**: ✅ Enabled  
+**Reviewers**: At least 1 approval required
 
-2. **Add Branch Protection Rule**:
-   - Click "Add branch protection rule"
-   - Branch name pattern: `main`
+**Why**: Ensures all code is reviewed before merging to main
 
-3. **Configure Settings** (check boxes):
+### 2. Require Status Checks
+
+**Setting**: Require status checks to pass before merging  
+**Value**: ✅ Enabled  
+**Required checks**:
+- `CI Tests` - All unit and integration tests
+- `Stack Guardrails` - Stack compliance validation
+- `Secret Scanning` - Gitleaks secret detection
+- `Accessibility CI` - a11y compliance
+
+**Why**: Ensures code quality and security standards are met
+
+### 3. Require Conversation Resolution
+
+**Setting**: Require conversation resolution before merging  
+**Value**: ✅ Enabled
+
+**Why**: Ensures all review comments are addressed
+
+### 4. Require Signed Commits
+
+**Setting**: Require signed commits  
+**Value**: ⚠️ Optional (recommended for production)
+
+**Why**: Verifies commit authenticity
+
+### 5. Include Administrators
+
+**Setting**: Include administrators in protection rules  
+**Value**: ✅ Enabled
+
+**Why**: No one bypasses quality gates, not even admins
+
+### 6. Restrict Pushes
+
+**Setting**: Restrict who can push to matching branches  
+**Value**: ✅ Enabled  
+**Allowed**: GitHub Actions, specific team members only
+
+**Why**: Prevents accidental direct commits to main
+
+### 7. Allow Force Pushes
+
+**Setting**: Allow force pushes  
+**Value**: ❌ Disabled
+
+**Why**: Protects git history from being rewritten
+
+### 8. Allow Deletions
+
+**Setting**: Allow deletions  
+**Value**: ❌ Disabled
+
+**Why**: Prevents accidental branch deletion
+
+---
+
+## Setup Instructions
+
+### Option 1: GitHub Web UI
+
+1. Navigate to your repository on GitHub
+2. Go to **Settings** → **Branches**
+3. Click **Add rule** under "Branch protection rules"
+4. Enter `main` as the branch name pattern
+5. Enable the following options:
+
+   **Pull Request Requirements**:
    - ✅ Require a pull request before merging
-     - ✅ Require approvals: 1
-     - ✅ Dismiss stale pull request approvals when new commits are pushed
+   - ✅ Require approvals: 1
+   - ✅ Dismiss stale pull request approvals when new commits are pushed
+   - ✅ Require review from Code Owners (if CODEOWNERS file exists)
+
+   **Status Checks**:
    - ✅ Require status checks to pass before merging
-     - ✅ Require branches to be up to date before merging
-     - Add status checks: `test`, `build`, `lint`
+   - ✅ Require branches to be up to date before merging
+   - Select required checks:
+     - `CI Tests`
+     - `Stack Guardrails`
+     - `Secret Scanning`
+     - `Accessibility CI`
+
+   **Other Requirements**:
    - ✅ Require conversation resolution before merging
-   - ✅ Require linear history
+   - ✅ Require signed commits (optional)
    - ✅ Include administrators
-   - ✅ Do not allow bypassing the above settings
-   - ✅ Restrict who can push to matching branches (empty = no one)
-   - ✅ Block force pushes
-   - ✅ Do not allow deletions
 
-4. **Save Protection Rule**:
-   - Click "Create" or "Save changes"
+   **Rules Applied to Everyone**:
+   - ✅ Restrict who can push to matching branches
+   - ❌ Allow force pushes (keep disabled)
+   - ❌ Allow deletions (keep disabled)
 
-### Via GitHub CLI (Alternative)
+6. Click **Create** to save the rule
+
+### Option 2: GitHub CLI
 
 ```bash
-# Requires gh CLI installed and authenticated
-gh api repos/Jgorzitza/HotDash/branches/main/protection \
+# Install GitHub CLI if not already installed
+# https://cli.github.com/
+
+# Authenticate
+gh auth login
+
+# Create branch protection rule
+gh api repos/:owner/:repo/branches/main/protection \
   --method PUT \
-  --field required_status_checks='{"strict":true,"checks":[{"context":"test"},{"context":"build"},{"context":"lint"}]}' \
+  --field required_status_checks='{"strict":true,"contexts":["CI Tests","Stack Guardrails","Secret Scanning","Accessibility CI"]}' \
   --field enforce_admins=true \
-  --field required_pull_request_reviews='{"required_approving_review_count":1,"dismiss_stale_reviews":true}' \
+  --field required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":1}' \
   --field restrictions=null \
-  --field required_linear_history=true \
+  --field required_conversation_resolution=true \
   --field allow_force_pushes=false \
-  --field allow_deletions=false \
-  --field required_conversation_resolution=true
+  --field allow_deletions=false
+```
+
+### Option 3: GitHub API (with token)
+
+```bash
+# Set your GitHub token
+export GITHUB_TOKEN="your_token_here"
+
+# Apply protection rules
+curl -X PUT \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_TOKEN" \
+  https://api.github.com/repos/Jgorzitza/HotDash/branches/main/protection \
+  -d '{
+    "required_status_checks": {
+      "strict": true,
+      "contexts": ["CI Tests", "Stack Guardrails", "Secret Scanning", "Accessibility CI"]
+    },
+    "enforce_admins": true,
+    "required_pull_request_reviews": {
+      "dismiss_stale_reviews": true,
+      "require_code_owner_reviews": false,
+      "required_approving_review_count": 1
+    },
+    "restrictions": null,
+    "required_conversation_resolution": true,
+    "allow_force_pushes": false,
+    "allow_deletions": false
+  }'
 ```
 
 ---
 
 ## Verification
 
-After configuring, verify protection rules:
+After applying the rules, verify they're working:
+
+### 1. Check Protection Status
 
 ```bash
-# Via GitHub CLI
-gh api repos/Jgorzitza/HotDash/branches/main/protection | jq
+# Using GitHub CLI
+gh api repos/:owner/:repo/branches/main/protection | jq
 
-# Via Web UI
-# Visit: https://github.com/Jgorzitza/HotDash/settings/branches
-# Verify "main" branch shows protection rules
+# Or via web UI
+# Go to Settings → Branches → View rule for main
 ```
 
-**Expected Result**:
-- Green checkmark next to main branch
-- "Protected" badge on main branch
-- Attempt to push directly to main should fail
+### 2. Test Protection
 
----
-
-## Testing Branch Protection
-
-### Test 1: Direct Push (Should Fail)
-
+Try to push directly to main (should fail):
 ```bash
-cd ~/HotDash/hot-dash
 git checkout main
-echo "test" >> test-protection.txt
-git add test-protection.txt
-git commit -m "test: verify branch protection"
+echo "test" >> README.md
+git add README.md
+git commit -m "test: direct commit"
 git push origin main
-# Expected: ERROR - protected branch
+# Expected: Error - protected branch
 ```
 
-### Test 2: Force Push (Should Fail)
+### 3. Test PR Workflow
 
-```bash
-git push --force origin main
-# Expected: ERROR - force push blocked
-```
-
-### Test 3: PR Process (Should Succeed)
-
-```bash
-git checkout -b test/branch-protection
-echo "test" >> test-file.txt
-git add test-file.txt
-git commit -m "test: branch protection via PR"
-git push -u origin test/branch-protection
-
-# Create PR via GitHub UI or gh CLI
-gh pr create --title "Test: Branch Protection" --base main
-# Expected: SUCCESS - PR created, requires review
-```
+Create a PR and verify:
+- ✅ Status checks run automatically
+- ✅ At least 1 approval required
+- ✅ Cannot merge with failing checks
+- ✅ Cannot merge with unresolved conversations
 
 ---
 
-## Status Checks Setup
+## Exceptions and Special Cases
 
-Branch protection requires these GitHub Actions to exist:
+### Emergency Hotfixes
 
-### Required Workflows
+For critical production issues:
+1. Create branch: `hotfix/description`
+2. Create PR as usual
+3. Mark as urgent in PR description
+4. Expedited review process (single approval)
+5. Status checks must still pass
 
-**1. `test` check** (`.github/workflows/tests.yml`):
-```yaml
-name: Test
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-      - run: npm ci
-      - run: npm test
-```
+### Repository Administrators
 
-**2. `build` check** (`.github/workflows/build.yml` or part of tests.yml):
-```yaml
-- run: npm run build
-```
-
-**3. `lint` check** (`.github/workflows/lint.yml` or part of tests.yml):
-```yaml
-- run: npm run lint
-```
-
-**Current Status**: ✅ Most checks already exist in `.github/workflows/`
+Even admins must follow the protection rules. To make an exception:
+1. Temporarily disable "Include administrators" (not recommended)
+2. Make necessary changes
+3. Re-enable "Include administrators" immediately
+4. Document exception in `feedback/manager.md`
 
 ---
 
-## Benefits
+## Maintenance
 
-**Code Quality**:
-- ✅ All code reviewed before merge
-- ✅ Tests must pass
-- ✅ Linting enforced
-- ✅ Conversations resolved
+### Update Required Checks
 
-**Repository Safety**:
-- ✅ No accidental force-pushes
-- ✅ No direct commits to main
-- ✅ Can't delete main branch
-- ✅ History protected
+When adding new CI workflows:
+1. Update protection rules via GitHub UI or API
+2. Add new check name to required_status_checks
+3. Document in this guide
 
-**Team Workflow**:
-- ✅ Clear review process
-- ✅ Status checks visible
-- ✅ Consistent merge strategy
-- ✅ Better collaboration
+### Review Protection Rules
+
+Schedule: Quarterly  
+Owner: Manager  
+Action: Review and update protection rules as needed
 
 ---
 
-## Exemptions (When Needed)
+## Troubleshooting
 
-**Emergency Hotfix Process**:
-1. Create hotfix branch: `hotfix/critical-issue`
-2. Make fix and create PR
-3. Request urgent review from manager
-4. Manager can override (if "Include administrators" is unchecked)
-5. Merge after approval
+### Status Check Not Running
 
-**Note**: Keep "Include administrators" checked for best security.
+**Problem**: Required status check doesn't appear  
+**Solution**:
+1. Ensure workflow is defined in `.github/workflows/`
+2. Check workflow triggers include `pull_request`
+3. Verify workflow name matches required check name
 
----
+### Cannot Merge PR
 
-## Rollback Plan
+**Problem**: "Required status checks are failing"  
+**Solution**:
+1. Check CI logs for failure details
+2. Fix issues in feature branch
+3. Push new commit to trigger re-run
+4. Request re-approval if needed
 
-If protection rules cause issues:
+### Accidental Direct Commit
 
-1. **Temporarily disable**:
-   - Go to Settings → Branches
-   - Edit rule → Uncheck specific settings
-   - Or delete rule entirely
-
-2. **Fix underlying issue**
-
-3. **Re-enable protection**:
-   - Follow implementation steps above
-   - Verify with test push
-
----
-
-## Monitoring
-
-**Check Weekly**:
-- Are protection rules still active?
-- Are required checks passing?
-- Any blocked PRs due to protection?
-
-**Audit Monthly**:
-- Review protection rule effectiveness
-- Update required checks as needed
-- Adjust approval requirements
+**Problem**: Committed directly to main before protection  
+**Solution**:
+1. Create branch from current main
+2. Reset main to previous commit
+3. Create PR from branch
+4. Merge via proper workflow
 
 ---
 
-## Documentation Updates
+## Resources
 
-**After enabling branch protection**:
-1. Update `REPO_STATUS.md` security section
-2. Add note to `README.md` contribution guidelines
-3. Document in `feedback/git-cleanup.md`
-4. Update `docs/git_protocol.md` if it exists
+- [GitHub Branch Protection Docs](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub API Documentation](https://docs.github.com/en/rest/branches/branch-protection)
+- [GitHub CLI Reference](https://cli.github.com/manual/gh_api)
 
 ---
 
-**Setup Instructions**: Follow "Implementation Steps" above  
-**Priority**: HIGH (protects main branch)  
-**Estimated Time**: 15-30 minutes  
-**Prerequisites**: Repository admin access
+**Note**: These rules are recommendations. Adjust based on your team's needs while maintaining security and quality standards.
 
-**Status**: 🟡 READY FOR IMPLEMENTATION (requires manager/admin)
-
+**Status**: 📋 DOCUMENTATION READY - Implementation requires admin access
