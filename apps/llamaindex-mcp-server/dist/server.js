@@ -49,9 +49,13 @@ const TOOLS = [
         inputSchema: {
             type: 'object',
             properties: {
-                q: {
+                query: {
                     type: 'string',
                     description: 'Search query text to find relevant information in the knowledge base',
+                },
+                q: {
+                    type: 'string',
+                    description: 'Alias for query parameter (deprecated, use "query" instead)',
                 },
                 topK: {
                     type: 'number',
@@ -59,7 +63,7 @@ const TOOLS = [
                     default: 5,
                 },
             },
-            required: ['q'],
+            required: [],
         },
     },
     {
