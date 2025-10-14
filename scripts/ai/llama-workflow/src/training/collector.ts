@@ -10,12 +10,12 @@ import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { v4 as uuidv4 } from 'uuid';
 import { 
-  TrainingSample, 
+  type TrainingSample, 
   TrainingSampleSchema,
-  QueryPerformance,
+  type QueryPerformance,
   QueryPerformanceSchema,
-  TrainingBatch,
-  AggregatedMetrics 
+  type TrainingBatch,
+  type AggregatedMetrics 
 } from './schema.js';
 import { getConfig } from '../config.js';
 

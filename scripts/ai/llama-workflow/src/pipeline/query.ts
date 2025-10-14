@@ -2,11 +2,12 @@ import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
 import { 
   VectorStoreIndex, 
-  Settings, 
-  OpenAI, 
-  OpenAIEmbedding,
-  BaseQueryEngine 
+  Settings,
+  BaseQueryEngine,
+  MetadataMode,
+  storageContextFromDefaults
 } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -66,9 +67,12 @@ export async function loadIndex(): Promise<VectorStoreIndex | null> {
     console.log(`Loading index from: ${indexPath}`);
     // For now, we'll use a simplified loading approach
     // The exact API may vary based on the llamaindex version
-    const index = await VectorStoreIndex.fromPersistDir(
-      path.join(indexPath, 'index')
-    ).catch(() => {
+    const storageContext = await storageContextFromDefaults({ 
+      persistDir: path.join(indexPath, 'index') 
+    });
+    const index = await VectorStoreIndex.init({
+      storageContext
+    }).catch((): null => {
       // Fallback: try creating a new index if loading fails
       console.warn('Failed to load persisted index, creating new one');
       return null;
@@ -103,12 +107,12 @@ export async function answerQuery(query: string, topK: number = 5): Promise<Quer
     // Execute query
     const response = await queryEngine.query({
       query: query,
-    }) as QueryResponse;
+    });
     
     // Extract sources with metadata
     const sources: QuerySource[] = response.sourceNodes?.map((node) => ({
       id: node.node.id_,
-      text: node.node.getContent(),
+      text: node.node.getContent(MetadataMode.NONE),
       metadata: node.node.metadata || {},
       score: node.score || 0,
     })) || [];
@@ -150,7 +154,7 @@ export async function insightReport(window: string = '1d', format: string = 'md'
   }
   
   const [, amount, unit] = match;
-  const hours = unit === 'd' ? parseInt(amount) * 24 : parseInt(amount);
+  const hours = unit === 'd' ? parseInt(amount!) * 24 : parseInt(amount!);
   const cutoffTime = new Date(Date.now() - hours * 60 * 60 * 1000);
   
   // Query recent activity insights
