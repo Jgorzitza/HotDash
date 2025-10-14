@@ -101,6 +101,12 @@ jobs:
           path: coverage/playwright
           retention-days: 30
 
+      - name: Verify environment parity
+        run: bash scripts/deploy/verify-environment-parity.sh
+        env:
+          STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
+          PRODUCTION_APP_URL: ${{ secrets.PRODUCTION_APP_URL }}
+
   deploy:
     runs-on: ubuntu-latest
     needs: preflight
@@ -144,6 +150,7 @@ jobs:
           MD
 
       - name: Deploy to Shopify production
+        id: deploy
         run: bash scripts/deploy/production-deploy.sh
         env:
           SHOPIFY_CLI_AUTH_TOKEN_PROD: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN_PROD }}
@@ -152,6 +159,31 @@ jobs:
           PRODUCTION_SHOP_DOMAIN: ${{ secrets.PRODUCTION_SHOP_DOMAIN }}
           PRODUCTION_APP_URL: ${{ secrets.PRODUCTION_APP_URL }}
           PRODUCTION_SMOKE_TEST_URL: ${{ secrets.PRODUCTION_SMOKE_TEST_URL }}
+
+      - name: Health check
+        id: health_check
+        run: |
+          echo "Performing health check on production..."
+          MAX_RETRIES=5
+          RETRY_DELAY=10
+          
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -f -s --max-time 10 ${{ secrets.PRODUCTION_APP_URL }}/health > /dev/null 2>&1; then
+              echo "Health check passed on attempt $i"
+              exit 0
+            fi
+            echo "Health check failed on attempt $i, retrying in ${RETRY_DELAY}s..."
+            sleep $RETRY_DELAY
+          done
+          
+          echo "::error::Health check failed after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Run smoke tests
+        id: smoke_test
+        run: bash scripts/deploy/automated-smoke-test.sh
+        env:
+          TARGET_URL: ${{ secrets.PRODUCTION_SMOKE_TEST_URL }}
 
       - name: Run Lighthouse audit (production)
         env:
@@ -180,3 +212,42 @@ jobs:
             echo "- Reliability approver: ${{ inputs.reliability_approver }}";
             echo "- App URL: ${{ secrets.PRODUCTION_APP_URL }}";
           } >> "$GITHUB_STEP_SUMMARY"
+
+  rollback_on_failure:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: failure()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger rollback
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'rollback-deployment.yml',
+              ref: 'main',
+              inputs: {
+                environment: 'production',
+                reason: `Auto-rollback: Production deployment ${context.runId} failed health check or smoke tests`,
+                target_version: '${{ inputs.release_tag }}'
+              }
+            });
+            
+            console.log('Rollback workflow triggered for failed production deployment');
+
+      - name: Create rollback alert
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 CRITICAL: Auto-Rollback Triggered - Production Deployment Failed`,
+              body: `**PRODUCTION DEPLOYMENT FAILED** - Auto-rollback initiated.\n\n**Failed Deployment**: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n**Release Tag**: ${{ inputs.release_tag }}\n**Reason**: Health check or smoke test failure\n**Manager Approver**: ${{ inputs.manager_approver }}\n**Reliability Approver**: ${{ inputs.reliability_approver }}\n\n**IMMEDIATE ACTION REQUIRED**: \n1. Review deployment logs\n2. Verify rollback completed successfully\n3. Investigate root cause\n4. Schedule incident review`,
+              labels: ['deployment', 'rollback', 'production', 'critical', 'automated'],
+              assignees: ['${{ inputs.manager_approver }}', '${{ inputs.reliability_approver }}']
+            })

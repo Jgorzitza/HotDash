@@ -96,6 +96,7 @@ jobs:
           STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
 
       - name: Deploy to Shopify staging
+        id: deploy
         run: bash scripts/deploy/staging-deploy.sh
         env:
           SHOPIFY_CLI_AUTH_TOKEN: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN_STAGING }}
@@ -104,6 +105,31 @@ jobs:
           STAGING_SHOP_DOMAIN: ${{ secrets.STAGING_SHOP_DOMAIN }}
           STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
           STAGING_SMOKE_TEST_URL: ${{ secrets.STAGING_SMOKE_TEST_URL }}
+
+      - name: Health check
+        id: health_check
+        run: |
+          echo "Performing health check on staging..."
+          MAX_RETRIES=5
+          RETRY_DELAY=10
+          
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -f -s --max-time 10 ${{ secrets.STAGING_APP_URL }}/health > /dev/null 2>&1; then
+              echo "Health check passed on attempt $i"
+              exit 0
+            fi
+            echo "Health check failed on attempt $i, retrying in ${RETRY_DELAY}s..."
+            sleep $RETRY_DELAY
+          done
+          
+          echo "::error::Health check failed after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Run smoke tests
+        id: smoke_test
+        run: bash scripts/deploy/automated-smoke-test.sh
+        env:
+          TARGET_URL: ${{ secrets.STAGING_SMOKE_TEST_URL }}
 
       - name: Run Lighthouse audit (staging)
         env:
@@ -119,3 +145,40 @@ jobs:
             artifacts/deploy
             coverage/lighthouse
           retention-days: 14
+
+  rollback_on_failure:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: failure()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger rollback
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'rollback-deployment.yml',
+              ref: 'main',
+              inputs: {
+                environment: 'staging',
+                reason: `Auto-rollback: Staging deployment ${context.runId} failed health check or smoke tests`
+              }
+            });
+            
+            console.log('Rollback workflow triggered for failed staging deployment');
+
+      - name: Create rollback alert
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Auto-Rollback Triggered: Staging Deployment Failed`,
+              body: `Staging deployment failed and auto-rollback was triggered.\n\n**Failed Deployment**: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n**Reason**: Health check or smoke test failure\n\n**Action Required**: Review deployment logs and fix issues before next deploy.`,
+              labels: ['deployment', 'rollback', 'staging', 'automated']
+            })
