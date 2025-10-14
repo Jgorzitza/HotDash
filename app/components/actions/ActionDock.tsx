@@ -27,6 +27,17 @@ export interface Action {
   error?: string | null;
   priority: string;
   tags: string[];
+  // Enhanced P0 fields
+  confidence?: number; // 0-100 confidence score
+  impactMetrics?: {
+    ctrLift?: number; // CTR lift percentage
+    trafficIncrease?: number; // Traffic increase percentage
+    revenueImpact?: number; // Estimated revenue impact
+    timeToImpact?: string; // e.g., "2-3 weeks"
+  };
+  scheduledFor?: Date | string | null; // Scheduled execution time
+  beforeSnapshot?: any; // Before state for diff
+  afterSnapshot?: any; // After state for diff
 }
 
 export interface ActionDockProps {
