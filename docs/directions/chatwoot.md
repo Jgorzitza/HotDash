@@ -1,378 +1,250 @@
----
-epoch: 2025.10.E1
-doc: docs/directions/chatwoot.md
-owner: manager
-last_reviewed: 2025-10-10
-doc_hash: TBD
-expires: 2025-10-17
----
-# Chatwoot Integrations — Direction (Operator Control Center)
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
+# Chatwoot Agent Direction
+**Updated**: 2025-10-14
+**Priority**: GROWTH SPEC EXECUTION - CX AUTOMATION
+**Focus**: Build CX Workflow Automation (NOT Handle Tickets)
 
-> Manager authored. This agent owns the Chatwoot Fly deployment end-to-end; do not pass work off until evidence proves completion.
+## Mission
 
-## Local Execution Policy (Auto-Run)
+Build **CX workflow automation systems** that integrate Chatwoot with AI. NOT answering tickets manually - build the SYSTEMS that automate customer interactions.
 
-You may run local, non-interactive commands and scripts without approval. Guardrails:
+## Human-in-the-Loop for Customer Interactions
 
-- Scope: local repo and local Supabase; under auto-run do not change Fly apps or secrets. Status/list checks are fine.
-- Non-interactive: disable pagers; avoid interactive prompts.
-- Evidence: log timestamp, command, outputs in feedback/chatwoot.md; artifacts under artifacts/integrations/ or artifacts/chatwoot/.
-- Secrets: use vault/env; never print values.
-- Tooling: npx supabase for local; git/gh with --no-pager; prefer rg else grep -nE.
-- Retry: 2 attempts then escalate with logs.
+**CRITICAL REQUIREMENT**: ALL AI-generated customer responses MUST use CEO approval
 
-- Execute all Chatwoot Fly tasks captured in `docs/deployment/chatwoot_fly_runbook.md` and the status artifact `artifacts/integrations/chatwoot-fly-deployment-2025-10-10.md`.
-- Before touching Fly, source credentials locally (`source vault/occ/fly/api_token.env`) and confirm `FLY_API_TOKEN` is set via `/home/justin/.fly/bin/fly auth status` (and not the placeholder). Capture the confirmation in your feedback log.
-- Coordinate directly with reliability/deployment for infrastructure needs but retain task ownership—log every update (including the command/output) in `feedback/chatwoot.md`.
-- Ensure secrets, health checks, and evidence bundles are complete before handing off to support/QA.
-- Stack guardrails: Chatwoot persists to Supabase only (see `docs/directions/README.md#canonical-toolkit--secrets`); do not provision Fly Postgres or alternate databases.
-- Align Chatwoot automation with Shopify data sources: docs/dev/admin-graphql.md for admin facts, docs/dev/storefront-mcp.md for customer context.
+**Why**: Train AI to match CEO voice/tone in customer interactions, ensure quality, build trust
 
-## Current Sprint Focus — 2025-10-10
-Work through the runbook sequentially and close each item with evidence:
+**Reference**: [OpenAI Agents SDK - Human in the Loop](https://openai.github.io/openai-agents-js/guides/human-in-the-loop/)
 
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
+**All Chatwoot response tools MUST have**:
+```typescript
+import { tool } from '@openai/agents';
 
-**Reference Docs**:
-- docs/AgentSDKopenAI.md - Sections 4-5 for Chatwoot integration patterns
-- docs/integrations/chatwoot_readiness.md - Integration checklist (your completed work)
+const chatwootResponseTool = tool({
+  name: 'sendChatwootResponse',
+  description: 'Send response to customer via Chatwoot',
+  parameters: z.object({
+    conversationId: z.string(),
+    proposedMessage: z.string(),
+    intent: z.string(),
+    confidence: z.number(),
+  }),
+  // CEO approves ALL customer-facing responses
+  needsApproval: true,
+  execute: async ({ conversationId, proposedMessage }) => {
+    // This executes ONLY after CEO approval
+    const result = await chatwoot.sendMessage(conversationId, proposedMessage);
+    
+    // Track what was approved for learning
+    await trackCEOApproval({
+      conversationId,
+      proposedMessage,
+      approvedMessage: proposedMessage, // May be edited by CEO
+      approvedAt: new Date(),
+    });
+    
+    return result;
+  },
+});
+```
 
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/chatwoot.md and continue):
+**Approval Flow**:
+1. AI analyzes customer message
+2. AI generates response draft
+3. System pauses, creates approval interruption
+4. CEO reviews response in approval queue
+5. CEO approves/edits/rejects
+6. System learns from CEO feedback (tone, empathy, accuracy)
+7. Approved response sent to customer
 
-1. ✅ **Agent SDK Integration Plan** - COMPLETE (2025-10-11, 1-2h)
-   - 2,500 lines comprehensive webhook integration guide
-   - 350 lines code implementation
-   - 7 test scenarios documented
-   - Evidence: feedback/chatwoot.md with complete plan
+**Learning from CEO Approvals**:
+- Track CEO tone adjustments (more empathetic, less formal, etc)
+- Learn when CEO escalates vs auto-responds
+- Identify CEO's preferred phrasing patterns
+- Build response templates from approved examples
+- Improve confidence scoring from approval history
 
-2. **Webhook Configuration for Agent SDK** - Set up webhook endpoint for incoming messages
-   - Configure webhook in Chatwoot Settings → Integrations → Webhooks
-   - Point to: https://hotdash-agent-service.fly.dev/webhooks/chatwoot (will be available after @engineer deploys)
-   - Subscribe to: message_created event
-   - Test webhook delivery with curl or Chatwoot test button
-   - Document webhook secret for HMAC verification
-   - Coordinate: Tag @engineer when webhook endpoint is live
-   - Evidence: Webhook configuration screenshot, test payload logged in feedback/chatwoot.md
+## Priority 1 - Chatwoot Integration
 
-3. **HMAC Signature Verification** - Implement security for webhooks
-   - Create script to verify Chatwoot webhook signatures
-   - Test with sample payloads from your integration guide
-   - Document verification process in runbook
-   - Provide code snippet to @engineer for server.ts
-   - Evidence: Verification script, test results
+### Task 1: Build AI Response System with Approval (6-8 hours)
+**Goal**: AI-powered responses requiring CEO approval
 
-4. **Conversation Flow Testing** - Verify all API endpoints work
-   - Test private note creation API
-   - Test public reply API (without sending to customers)
-   - Test conversation metadata retrieval
-   - Test agent assignment APIs
-   - Document API response formats and error codes
-   - Evidence: API test results, curl examples documented
+**NOT**: Answering tickets yourself
+**YES**: Building AI system that generates responses for CEO approval
 
-5. **End-to-End Agent Flow Testing** - Test full Agent SDK integration
-   - Send test message through Chatwoot
-   - Verify webhook delivered to Agent SDK
-   - Verify private note created with agent draft
-   - Test approval → public reply flow (staging only)
-   - Document complete conversation lifecycle
-   - Coordinate: Tag @engineer and @qa for integration testing
-   - Evidence: Full conversation screenshots, logs
+**Architecture**:
+```typescript
+// app/services/chatwoot/ai-responder.server.ts
+import { run, Agent } from '@openai/agents';
 
-**Ongoing Requirements**:
-- Coordinate with @engineer on webhook endpoint availability
-- Tag @reliability for Chatwoot Fly.io health verification
-- Log all API tests in feedback/chatwoot.md with timestamps
-- No production webhook configuration until internal testing complete
+const chatwootAgent = new Agent({
+  name: 'Chatwoot CX Agent',
+  instructions: 'You analyze customer messages and generate helpful responses',
+  tools: [chatwootResponseTool], // Has needsApproval: true
+});
 
----
+async function handleChatwootMessage(message: ChatwootMessage) {
+  // 1. Run agent to generate response
+  let result = await run(
+    chatwootAgent,
+    `Customer message: "${message.content}". Generate appropriate response.`
+  );
+  
+  // 2. Check for approval interruptions
+  while (result.interruptions?.length > 0) {
+    // 3. Present to CEO for approval
+    const approvalUI = await showApprovalQueue(result.interruptions);
+    
+    // 4. CEO approves/edits/rejects
+    for (const interruption of result.interruptions) {
+      if (approvalUI.approved(interruption)) {
+        result.state.approve(interruption);
+      } else if (approvalUI.edited(interruption)) {
+        // CEO edited the response
+        const editedResponse = approvalUI.getEditedContent(interruption);
+        result.state.approve(interruption, { overrideWith: editedResponse });
+        
+        // Learn from edit
+        await trackCEOEdit({
+          original: interruption.rawItem.arguments,
+          edited: editedResponse,
+          diff: calculateDiff(interruption.rawItem.arguments, editedResponse),
+        });
+      } else {
+        result.state.reject(interruption);
+      }
+    }
+    
+    // 5. Resume execution with CEO decisions
+    result = await run(chatwootAgent, result.state);
+  }
+  
+  return result.finalOutput;
+}
+```
 
-### 🚀 IMMEDIATE TASK (While Deployment Fixes DSN)
+**Deliverables**:
+- [ ] AI response system with needsApproval
+- [ ] CEO approval queue UI
+- [ ] Response generation with LlamaIndex
+- [ ] Intent classification
+- [ ] Confidence scoring
+- [ ] Edit tracking for learning
+- [ ] GitHub commit
 
-**Task A: Webhook Signature Verification Script** - Can build now
-- Create standalone script to verify Chatwoot webhook signatures
-- Implement HMAC verification logic
-- Test with sample payloads from your integration docs
-- Document verification process
-- Provide code snippet to @engineer for Agent SDK server.ts
-- Evidence: Script working, test results, documentation
+### Task 2: Build Webhook Integration with Queuing (4-6 hours)
+**Goal**: Reliable Chatwoot webhook processing
 
-**Task B: API Testing Suite** - Prepare for post-DSN-fix testing
-- Create curl scripts for all Chatwoot API endpoints
-- Document expected responses
-- Create test data (sample conversations)
-- Prepare API integration tests
-- Evidence: Complete test script library
+**Requirements** (Growth Spec A4):
+- Queue-based processing (not synchronous)
+- Replay protection (idempotency)
+- HMAC validation
+- Persistent storage
 
-**Task C: Conversation Flow Documentation** - Map complete lifecycle
-- Document conversation states and transitions
-- Map agent assignment logic
-- Document private note vs public reply workflows
-- Create flowchart for conversation lifecycle
-- Evidence: Flow documentation with diagrams
+**Coordinate with Engineer on**:
+- Webhook handler implementation
+- Queue infrastructure
+- Replay protection
+- HMAC validation
 
-Execute A immediately (most valuable), then B and C.
+**Your Contribution**:
+- [ ] Chatwoot API integration
+- [ ] Message parsing and normalization
+- [ ] Conversation context management
+- [ ] Coordinate with Engineer on webhook impl
+- [ ] GitHub commit
 
----
+### Task 3: Build Context Management (3-4 hours)
+**Goal**: Maintain conversation context for AI
 
-### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+**Features**:
+- Load previous messages from conversation
+- Build context window for AI
+- Handle multi-turn conversations
+- Track conversation state
 
-**Task D: Chatwoot Admin Configuration Documentation**
-- Document super admin setup process
-- Create API token generation guide with correct scopes
-- Document account configuration best practices
-- Create troubleshooting guide for common issues
-- Evidence: Admin configuration guide in docs/integrations/
+**Deliverables**:
+- [ ] Context loader service
+- [ ] Conversation history management
+- [ ] Context window optimization
+- [ ] State tracking
+- [ ] GitHub commit
 
-**Task E: Message Template Optimization**
-- Review existing Chatwoot templates/macros
-- Optimize for Agent SDK compatibility
-- Create template variables for agent customization
-- Document template best practices
-- Evidence: Optimized templates, documentation
+## Priority 2 - CX Intelligence
 
-**Task F: Conversation Routing Logic**
-- Design conversation assignment logic for agents
-- Document routing rules (order support vs product questions)
-- Create priority handling (VIP, urgent, standard)
-- Map to Agent SDK triage patterns
-- Evidence: Routing logic document with flowchart
+### Task 4: Build Sentiment Analysis (3-4 hours)
+**Goal**: Real-time customer sentiment detection
 
-**Task G: Performance Monitoring Setup**
-- Create scripts to monitor Chatwoot API response times
-- Track webhook delivery latency
-- Monitor conversation volume metrics
-- Document performance baselines
-- Evidence: Monitoring scripts, baseline report
+**Features**:
+- Analyze sentiment of customer messages
+- Alert on negative sentiment
+- Prioritize angry customers
+- Track sentiment trends
 
-**Task H: Integration Testing Scripts**
-- Create end-to-end test scripts for all Chatwoot APIs
-- Mock webhook payloads for testing
-- Create test data (sample conversations)
-- Document expected responses
-- Evidence: Complete test suite
+**Deliverables**:
+- [ ] Sentiment analyzer
+- [ ] Real-time alerting
+- [ ] Priority routing
+- [ ] Trend dashboards
+- [ ] GitHub commit
 
-**Task I: Operator Workflow Documentation**
-- Document current manual Chatwoot workflows
-- Identify automation opportunities with Agent SDK
-- Create before/after workflow diagrams
-- Calculate time savings
-- Evidence: Workflow analysis
+### Task 5: Build Auto-Escalation (3-4 hours)
+**Goal**: Intelligent escalation to human agents
 
-**Task J: Chatwoot-to-Supabase Sync Design**
-- Design data sync from Chatwoot to Supabase for analytics
-- Document conversation metrics to track
-- Create sync job specification
-- Plan for real-time vs batch sync
-- Evidence: Sync design document
+**Escalation Triggers**:
+- Customer explicitly asks for human
+- Sentiment is very negative
+- AI confidence is low (<0.5)
+- Message contains legal/threat language
+- VIP customer
 
-Execute D-J in any order - all independent and valuable.
+**Deliverables**:
+- [ ] Escalation detection
+- [ ] Auto-routing to human queue
+- [ ] Alert notifications
+- [ ] Escalation tracking
+- [ ] GitHub commit
 
----
+## Build CX Automation, Not Do CX Work
 
-### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
+**✅ RIGHT**:
+- Build AI responder (generates responses for CEO approval)
+- Build auto-escalation (routes intelligently)
+- Build sentiment analysis (monitors automatically)
 
-**Task K-O: Advanced Chatwoot Automation** (5 tasks)
-- K: Design auto-assignment rules for conversations (by topic, VIP status, complexity)
-- L: Create canned response library optimized for agent customization
-- M: Implement conversation tagging automation for analytics
-- N: Design SLA monitoring and alerting system
-- O: Create customer sentiment analysis integration
+**❌ WRONG**:
+- Answer Chatwoot tickets yourself (not scalable)
+- Manually route conversations (human hours wasted)
+- Create one-off responses (doesn't learn)
 
-**Task P-T: Operator Productivity** (5 tasks)
-- P: Design operator efficiency dashboard (response time, resolution rate, workload)
-- Q: Create conversation templates for complex scenarios
-- R: Implement keyboard shortcuts and operator UX improvements
-- S: Design operator performance gamification system
-- T: Create operator collaboration features (internal notes, @mentions)
+## Evidence Required
 
-**Task U-Y: Analytics & Reporting** (5 tasks)
-- U: Design conversation analytics dashboard (volume, topics, resolution)
-- Y: Create customer satisfaction tracking integration
-- V: Implement conversation export and archiving system
-- W: Design support knowledge gap identification system
-- X: Create operator training need identification from conversation patterns
+- Git commits for all CX automation
+- Human-in-the-loop approval workflow working
+- CEO approval tracking proof
+- Learning metrics (approval rate, edit frequency)
+- Response time improvements
 
-Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
+## Success Criteria
 
----
+**Week 1 Complete When**:
+- [ ] AI response system operational with CEO approval
+- [ ] Webhook integration reliable (queue + replay protection)
+- [ ] Conversation context management working
+- [ ] Sentiment analysis monitoring all conversations
+- [ ] Auto-escalation routing to humans appropriately
+- [ ] CEO learning loop improving AI responses
 
-### 🚀 THIRD MASSIVE EXPANSION (Another 20 Tasks)
+**This enables**: Scalable CX with CEO oversight, AI learns CEO's voice/tone
 
-**Task Z-AD: Advanced Automation** (5 tasks)
-- Z: Design intelligent auto-responder for common queries
-- AA: Create conversation prediction engine (intent, urgency, complexity)
-- AB: Implement smart suggestion system for operators
-- AC: Design automated quality scoring for conversations
-- AD: Create conversation analytics and insights engine
+## Report Every 2 Hours
 
-**Task AE-AI: Operator Tools** (5 tasks)
-- AE: Design operator workspace optimization tools
-- AF: Create conversation search and discovery system
-- AG: Implement operator productivity analytics
-- AH: Design team collaboration features (shared notes, tags)
-- AI: Create operator coaching and feedback system
-
-**Task AJ-AN: Customer Experience** (5 tasks)
-- AJ: Design customer sentiment tracking and alerting
-- AK: Create proactive support trigger system
-- AL: Implement customer journey tracking in conversations
-- AM: Design VIP customer experience workflows
-- AN: Create post-conversation customer engagement automation
-
-**Task AO-AR: Integration & Data** (5 tasks)
-- AO: Design Chatwoot-to-CRM data sync
-- AP: Create conversation data export and archiving
-- AQ: Implement real-time conversation analytics
-- AR: Design conversation reporting and dashboards
-
-Execute Z-AR in any order. Total: 42 tasks, ~20-25 hours work.
-
----
-
-### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
-
-**Task AS-AW: Customer Intelligence** (5 tasks)
-- AS: Design conversation intelligence extraction
-- AT: Create customer health score calculation
-- AU: Implement sentiment trend analysis
-- AV: Design conversation topic clustering
-- AW: Create predictive support needs forecasting
-
-**Task AX-BA: Automation Engine** (4 tasks)
-- AX: Design rule-based automation builder
-- AY: Create trigger and action library
-- AZ: Implement automation testing framework
-- BA: Design automation analytics dashboard
-
-**Task BB-BF: Multi-Channel Support** (5 tasks)
-- BB: Design omnichannel conversation threading
-- BC: Create channel-specific message formatting
-- BD: Implement cross-channel handoff workflows
-- BE: Design channel availability and routing
-- BF: Create unified inbox for all channels
-
-**Task BG-BK: Advanced Features** (6 tasks)
-- BG: Design conversation summarization AI
-- BH: Create conversation search with NLP
-- BI: Implement conversation tagging automation
-- BJ: Design conversation archival and retention
-- BK: Create conversation replay and audit
-
-Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
+Update `feedback/chatwoot.md`:
+- Automation systems built
+- Approval workflow status
+- CEO feedback integration
+- Performance metrics
+- Evidence (commits, approval stats)
 
 ---
 
-### 🚀 SEVENTH MASSIVE EXPANSION (Another 25 Tasks) - For Ultra-Fast Agent
-
-**Your Performance**: A++ grade, 5-6x faster than normal - Outstanding! 🎉
-
-**Task BL-BP: Conversation AI Enhancement** (5 tasks)
-- BL: Design conversation context management
-- BM: Create conversation memory and recall
-- BN: Implement conversation branching logic
-- BO: Design conversation emotion detection
-- BP: Create conversation intent classification
-
-**Task BQ-BU: Agent Assistance** (5 tasks)
-- BQ: Design agent knowledge base integration
-- BR: Create agent recommendation engine
-- BS: Implement agent coaching in real-time
-- BT: Design agent performance insights
-- BU: Create agent workload optimization
-
-**Task BV-BZ: Customer Journey** (5 tasks)
-- BV: Design customer lifecycle tracking
-- BW: Create touchpoint mapping and analytics
-- BX: Implement customer health scoring
-- BY: Design customer engagement automation
-- BZ: Create customer win-back workflows
-
-**Task CA-CE: Integration Ecosystem** (5 tasks)
-- CA: Design CRM integration framework
-- CB: Create helpdesk integration (Zendesk/Intercom)
-- CC: Implement social media integration
-- CD: Design e-commerce platform integration
-- CE: Create marketing automation integration
-
-**Task CF-CJ: Advanced Operations** (5 tasks)
-- CF: Design conversation load balancing
-- CG: Create intelligent routing algorithms
-- CH: Implement conversation prioritization
-- CI: Design SLA management automation
-- CJ: Create capacity planning tools
-
-Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
-
----
-
-### 📋 WEBHOOK STATUS UPDATE (2025-10-11T22:40Z)
-
-**Task 2 Blocker**: Webhook endpoint - Engineer is prioritizing this
-
-**Options for You**:
-1. ✅ **Continue with BL-CJ tasks** (recommended - keeps you productive)
-2. ⏳ Wait for webhook notification (Engineer will notify in their feedback when deployed)
-
-**When webhook deploys**: Return to Task 2, complete it, then continue with remaining tasks
-
-**Manager Note**: Your velocity is exceptional. We'll keep providing deep backlogs to match your pace!
-
----
-
-### 📋 EVIDENCE REQUIREMENT REMINDER (2025-10-11T22:40Z)
-
-**QA validates all completed tasks - provide proof**:
-- ✅ Config files: `app/config/chatwoot.ts:15-45 (webhook handlers defined)`
-- ✅ Test results: `Tests pass (app/config/chatwoot.test.ts: 8 passing)`
-- ✅ Documentation: `docs/chatwoot/webhooks.md (sections: setup, events, testing)`
-- ✅ API testing: `Webhook test: curl logs in artifacts/chatwoot/webhook-test.log`
-
-**NOT Acceptable**: "Webhook config done", "Integration complete", "Testing finished"
-
----
-
-### ⚡ BLOCKER MANAGEMENT (2025-10-11T22:25Z)
-
-**Known Dependencies** (DO NOT wait - work around):
-- Task 2 (Webhook Config): Blocked by Engineer endpoint → SKIP to Task 3+, document requirements
-
-**Your Strategy**: Execute all other tasks. For Task 2, create webhook spec document showing what you need from Engineer, then move on.
-
----
-
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
-
-**CEO Decision**: Emergency refocus on launch gates
-
-**Your Status**: PAUSED - Stand by until launch gates complete
-
-**Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
-
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
-
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
-
-**Your tasks remain in direction file - will resume after launch.**
-
----
-
-## ✅ BLOCKER CLEARED (2025-10-11T23:20Z)
-
-**Engineer Update**: Your blockers are CLEARED! 🎉
-
-**What's Ready**:
-- LlamaIndex MCP Server: DEPLOYED and WORKING
-- Webhook Endpoints: LIVE and TESTED
-
-**Your Action**: Resume blocked tasks immediately + continue with your task list
-
-**Evidence**: Test the new functionality, document results, continue with remaining tasks
-
-**Timeline**: No more waiting - execute now
+**Remember**: Build CX AUTOMATION SYSTEMS with CEO approval, not do CX work manually. Build systems that learn from CEO feedback.

@@ -58,3 +58,4 @@ artifacts/
 # Binary installers
 *.deb
 feedback/img/
+feedback/archive/*.md

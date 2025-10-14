@@ -1,0 +1,123 @@
+{
+  "version": "1.0.0",
+  "updated": "2025-10-14T12:30:00Z",
+  "templates": {
+    "shipping": {
+      "order_status_inquiry": {
+        "variables": ["customer_name", "order_number", "tracking_number", "estimated_delivery"],
+        "template": "Hey {{customer_name}}! Your order {{order_number}} shipped out and is on its way. Tracking number: {{tracking_number}}. Estimated delivery: {{estimated_delivery}}. You should have an email with full tracking details. Let me know if you need anything else!"
+      },
+      "when_will_it_ship": {
+        "variables": ["order_number", "ship_date"],
+        "template": "Great question! Order {{order_number}} is scheduled to ship {{ship_date}}. We typically ship within 1-2 business days. You'll get a tracking email as soon as it goes out. Building something cool?"
+      },
+      "free_shipping_info": {
+        "variables": ["current_total"],
+        "template": "Free shipping kicks in at $99! Your current cart is at {{current_total}}, so you're {{#if current_total >= 99}}all set{{else}}{{subtract 99 current_total}} away from free shipping{{/if}}. Sometimes adding that extra fitting or filter gets you over the line and saves on shipping!"
+      }
+    },
+    "returns": {
+      "general_return": {
+        "variables": ["order_number", "item_name"],
+        "template": "No problem at all! Returns are easy. For {{item_name}} from order {{order_number}}, as long as it's unused and in the original packaging, we can process a return within 30 days. I'll send you a return label. Any specific reason for the return? Want to make sure we're getting you the right parts!"
+      },
+      "wrong_size": {
+        "variables": ["order_number", "ordered_size", "needed_size"],
+        "template": "Happens all the time - easy fix! You ordered {{ordered_size}} but need {{needed_size}}. I'll get the exchange rolling. Send back the {{ordered_size}} (I'll email you a prepaid label), and we'll ship the {{needed_size}} right away. Should have it in a few days!"
+      },
+      "defective_item": {
+        "variables": ["order_number", "item_name", "issue_description"],
+        "template": "That's not cool - let's get it fixed. For the {{item_name}} with {{issue_description}}, I'm sending a replacement out today. You'll get a prepaid label to return the defective one when convenient. Our stuff is backed by a lifetime warranty, so we'll take care of you!"
+      }
+    },
+    "technical": {
+      "sizing_recommendation": {
+        "variables": ["horsepower", "fuel_type", "recommended_size"],
+        "template": "Perfect! For {{horsepower}} HP running {{fuel_type}}, you'll want {{recommended_size}}. That'll give you the flow you need without being oversized. Running EFI or carb? I can recommend the complete setup if you want."
+      },
+      "installation_help": {
+        "variables": ["product_name", "issue_description"],
+        "template": "Let's get that {{product_name}} installed right. For {{issue_description}}, here's what to check: Cut the hose square, push the fitting in until it bottoms, tighten the ferrule hand-tight plus 1/4 turn. No sealant needed - PTFE seals internally. Want to send me a quick photo? Sometimes seeing it helps!"
+      },
+      "compatibility_check": {
+        "variables": ["product_name", "vehicle_info", "compatible"],
+        "template": "{{#if compatible}}Yes! {{product_name}} works perfect for {{vehicle_info}}. {{else}}Let me steer you right - {{product_name}} won't work for {{vehicle_info}}, but I've got the right solution.{{/if}} What horsepower are you targeting? I can spec out exactly what you need."
+      },
+      "fuel_system_design": {
+        "variables": ["horsepower", "engine_type"],
+        "template": "I'd be stoked to help you build a complete fuel system for your {{engine_type}} targeting {{horsepower}} HP! Here's what we're looking at: fuel lines in the right AN size, hose ends for routing, quality filters (pre and post pump), and a regulator matched to your setup. Return-style or returnless? Let's dial this in!"
+      }
+    },
+    "product": {
+      "product_inquiry": {
+        "variables": ["product_name", "key_features", "price"],
+        "template": "Great choice looking at the {{product_name}}! {{key_features}}. Price is {{price}} and it ships free if your order's over $99. This would be perfect for your build. What are you working on?"
+      },
+      "in_stock_check": {
+        "variables": ["product_name", "in_stock"],
+        "template": "{{#if in_stock}}{{product_name}} is in stock and ready to ship! Orders typically go out within 1-2 business days.{{else}}{{product_name}} is temporarily out of stock, but we've got more coming in next week. Want me to notify you when they're available?{{/if}}"
+      },
+      "bulk_pricing": {
+        "variables": ["shop_name", "quantity", "product_name"],
+        "template": "Thanks for your interest in bulk pricing for {{shop_name}}! For {{quantity}} units of {{product_name}}, we can definitely work something out. Let me get you a custom quote - can you email me the specific part numbers and quantities? We can also set up a shop account for future orders."
+      }
+    },
+    "order_modifications": {
+      "add_to_order": {
+        "variables": ["order_number", "item_to_add"],
+        "template": "Let me check on order {{order_number}} for you. If it hasn't shipped yet, I can add {{item_to_add}} no problem. If it already went out, I can send {{item_to_add}} separately with free shipping (since you're a returning customer). Give me a minute to check status..."
+      },
+      "change_address": {
+        "variables": ["order_number", "shipped_status"],
+        "template": "{{#if shipped_status === 'not_shipped'}}Perfect timing! Order {{order_number}} hasn't shipped yet. Send me the correct address and I'll update it right away.{{else}}Order {{order_number}} already shipped, but let me contact the carrier to see if we can redirect it. What's the correct address?{{/if}}"
+      },
+      "cancel_order": {
+        "variables": ["order_number", "shipped_status"],
+        "template": "{{#if shipped_status === 'not_shipped'}}No problem - I can cancel order {{order_number}}. Your refund will process within 1-2 business days. Change of plans or need something different?{{else}}Order {{order_number}} already shipped. We can do a return once you receive it, or if you just need different parts, we can send those separately. What works better?{{/if}}"
+      }
+    },
+    "warranty": {
+      "warranty_claim": {
+        "variables": ["product_name", "issue_description", "purchase_date"],
+        "template": "Our lifetime warranty has you covered! For the {{product_name}} with {{issue_description}}, I'm sending a replacement right away. This is what we're here for - we want your build to be bulletproof. Can you send me a couple photos of the issue? Helps us improve our QC."
+      },
+      "warranty_question": {
+        "variables": ["product_name"],
+        "template": "{{product_name}} is backed by our Lifetime Warranty on materials and workmanship. If anything fails due to a defect, we replace it - no questions asked. Doesn't cover wear and tear or installation mishaps, but if there's a problem, reach out and we'll take care of you. We stand behind our stuff 100%."
+      }
+    },
+    "appreciation": {
+      "thank_you_order": {
+        "variables": ["customer_name", "order_number"],
+        "template": "Thanks for choosing Hot Rod AN, {{customer_name}}! Order {{order_number}} is going to look awesome on your build. If you need any help during installation, don't hesitate to reach out. Happy wrenching!"
+      },
+      "review_request": {
+        "variables": ["customer_name", "product_name"],
+        "template": "Hey {{customer_name}}! Hope the {{product_name}} install went smoothly. If you've got a minute, we'd love to hear how it worked out for your build. Reviews really help other builders. Either way, thanks for choosing us!"
+      }
+    }
+  },
+  "brand_voice_rules": {
+    "tone": "Friendly builder-to-builder, knowledgeable but approachable",
+    "signature_phrases": [
+      "Let's get this sorted out",
+      "I'd be stoked to help",
+      "That's exactly what you need",
+      "Perfect for your build",
+      "Happy wrenching!"
+    ],
+    "avoid": [
+      "Overly formal language",
+      "Corporate jargon ('per our policy')",
+      "Excessive apologizing",
+      "Generic templates"
+    ]
+  },
+  "usage_guide": {
+    "variable_substitution": "Replace {{variable_name}} with actual values",
+    "conditional_logic": "Use {{#if condition}}...{{else}}...{{/if}} for branching",
+    "customization": "Always personalize - reference customer's specific situation",
+    "testing": "Test templates with real scenarios before deploying"
+  }
+}
+

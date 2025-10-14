@@ -170,7 +170,7 @@ Need help getting started? Reply to this email or check out our quick start guid
   private generateFeatureEmail(user: any): string {
     const ticketsProcessed = user.customData?.tickets_processed || 0;
     
-    return `You've processed ${ticketsProcessed} tickets with HotDash—nice work!
+    return `You've processed ${ticketsProcessed} tickets with HotDash--nice work!
 
 We just launched a new feature that'll save you even more time: [Feature Name]
 
@@ -187,25 +187,25 @@ Give it a try and let us know what you think.`;
 Missing something? We'd love to hear your feedback.
 
 Since you last logged in, we've added:
-→ [Feature 1] - [Benefit]
-→ [Feature 2] - [Benefit]
-→ [Feature 3] - [Benefit]
+-> [Feature 1] - [Benefit]
+-> [Feature 2] - [Benefit]
+-> [Feature 3] - [Benefit]
 
 Worth another look? Your account is still active.
 
-If HotDash wasn't the right fit, that's OK—but we'd appreciate knowing why so we can improve.`;
+If HotDash wasn't the right fit, that's OK--but we'd appreciate knowing why so we can improve.`;
   }
 
   private generateEnterpriseEmail(user: any): string {
-    return `You're processing a lot of support tickets—impressive scale!
+    return `You're processing a lot of support tickets--impressive scale!
 
 We'd love to chat about Enterprise features that might help:
 
-→ Multi-location support (franchise operations)
-→ Advanced analytics and reporting
-→ Custom agent training
-→ Priority SLA and support
-→ Volume discounts
+-> Multi-location support (franchise operations)
+-> Advanced analytics and reporting
+-> Custom agent training
+-> Priority SLA and support
+-> Volume discounts
 
 Interested in a conversation? Reply with a good time to connect.`;
   }
@@ -215,9 +215,9 @@ Interested in a conversation? Reply with a good time to connect.`;
 
 Your feedback has been incredibly valuable. Here's what we've improved based on pilot input:
 
-→ [Improvement 1] - Your suggestion!
-→ [Improvement 2] - From your feedback
-→ [Improvement 3] - Community request
+-> [Improvement 1] - Your suggestion!
+-> [Improvement 2] - From your feedback
+-> [Improvement 3] - Community request
 
 As a pilot participant, you're getting early access to all new features.
 
@@ -276,7 +276,7 @@ Questions or more feedback? We're all ears.`;
       const regex = new RegExp(`\\b${banned}\\b`, 'gi');
       if (regex.test(corrected)) {
         corrected = corrected.replace(regex, preferred);
-        changes.push(`"${banned}" → "${preferred}"`);
+        changes.push(`"${banned}" -> "${preferred}"`);
       }
     }
     
@@ -320,7 +320,7 @@ export class TriggerBasedCampaignEngine {
 
   private async generateUpgradeNudge(userId: string, data: any): Promise<EmailCampaign> {
     return {
-      subject: `You're at ${data.usage_percent}% of your plan—time to upgrade?`,
+      subject: `You're at ${data.usage_percent}% of your plan--time to upgrade?`,
       preheader: `Avoid overage fees. Upgrade now and get more capacity.`,
       content: {
         greeting: `Hi ${data.name},`,
@@ -331,7 +331,7 @@ You're currently at ${data.usage_percent}% of your ${data.plan} plan limit.
 To avoid overage fees and get more capacity, consider upgrading to ${this.suggestNextPlan(data.plan)}.
 
 Benefits:
-→ ${this.getUpgradeBenefits(data.plan).join('\n→ ')}
+-> ${this.getUpgradeBenefits(data.plan).join('\n-> ')}
 
 ROI: Based on your usage, upgrading saves you $${this.calculateSavings(data)} per month.`,
         cta: {
@@ -349,7 +349,7 @@ ROI: Based on your usage, upgrading saves you $${this.calculateSavings(data)} pe
   private async generateMilestoneCelebration(userId: string, data: any): Promise<EmailCampaign> {
     return {
       subject: `🎉 You hit ${data.tickets_processed} tickets!`,
-      preheader: `Celebrate your milestone—and see what's next.`,
+      preheader: `Celebrate your milestone--and see what's next.`,
       content: {
         greeting: `Hi ${data.name},`,
         body: `Amazing! You just processed your ${data.tickets_processed}th ticket with HotDash.
@@ -357,13 +357,13 @@ ROI: Based on your usage, upgrading saves you $${this.calculateSavings(data)} pe
 That's ${this.calculateTimeSaved(data.tickets_processed)} hours saved compared to manual support.
 
 What's next:
-→ Keep the momentum going
-→ Try our advanced features
-→ Refer a colleague (you both get $500)
+-> Keep the momentum going
+-> Try our advanced features
+-> Refer a colleague (you both get $500)
 
 Thanks for being part of the HotDash community!`,
         cta: {
-          text: 'Refer a Friend → $500 Credit',
+          text: 'Refer a Friend -> $500 Credit',
           url: `https://hotdash.com/referrals?user=${userId}`,
         },
         footer: 'Keep up the great work!',
@@ -383,9 +383,9 @@ Thanks for being part of the HotDash community!`,
         body: `You've been crushing it with HotDash (${data.satisfaction_score}% satisfaction!).
 
 Know someone else struggling with support volume? Refer them and:
-→ They get 14-day trial + onboarding help
-→ You get $500 credit when they become a paying customer
-→ They get $500 credit on their first invoice
+-> They get 14-day trial + onboarding help
+-> You get $500 credit when they become a paying customer
+-> They get $500 credit on their first invoice
 
 Your unique referral link: [LINK]
 
@@ -413,18 +413,18 @@ Thanks for spreading the word!`,
         body: `It's been ${data.days_since_last_use} days since you last used HotDash.
 
 We'd love to understand what happened:
-→ Was something missing?
-→ Did you hit a blocker?
-→ Is there a feature you need?
+-> Was something missing?
+-> Did you hit a blocker?
+-> Is there a feature you need?
 
 Since you've been away, we've added:
-${this.getRecentFeatures().map(f => `→ ${f.name}: ${f.benefit}`).join('\n')}
+${this.getRecentFeatures().map(f => `-> ${f.name}: ${f.benefit}`).join('\n')}
 
 Worth another look? Your account is ready whenever you are.
 
-If HotDash wasn't the right fit, no worries—but we'd appreciate any feedback to help us improve.`,
+If HotDash wasn't the right fit, no worries--but we'd appreciate any feedback to help us improve.`,
         cta: {
-          text: 'See What's New',
+          text: "See What's New",
           url: `https://hotdash.com/login?user=${userId}`,
         },
         footer: 'Feedback? Just reply to this email.',
@@ -512,7 +512,7 @@ If HotDash wasn't the right fit, no worries—but we'd appreciate any feedback t
       const regex = new RegExp(`\\b${banned}\\b`, 'gi');
       if (regex.test(corrected)) {
         corrected = corrected.replace(regex, preferred);
-        changes.push(`"${banned}" → "${preferred}"`);
+        changes.push(`"${banned}" -> "${preferred}"`);
       }
     }
     
@@ -564,9 +564,9 @@ export class EmailABTester {
   }
 
   private generateSubjectVariant(original: string): string {
-    // Generate variations: question → statement, short → long, etc.
+    // Generate variations: question -> statement, short -> long, etc.
     if (original.includes('?')) {
-      return original.replace('?', '!'); // Question → Exclamation
+      return original.replace('?', '!'); // Question -> Exclamation
     }
     
     if (original.length < 40) {

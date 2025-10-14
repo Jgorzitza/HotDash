@@ -1,0 +1,76 @@
+{
+  "rows": [
+    {
+      "keys": ["https://hotrodan.com/collections/fuel-pumps-in-tank-and-inline", "fuel pump ls swap", "WEB"],
+      "clicks": 45,
+      "impressions": 892,
+      "ctr": 0.05044843049327354,
+      "position": 3.2
+    },
+    {
+      "keys": ["https://hotrodan.com/products/ptfe-lined-black-nylon-with-orange-checks-braided-hose-an6-an8-an10", "an6 fuel line", "WEB"],
+      "clicks": 38,
+      "impressions": 567,
+      "ctr": 0.06702996447156398,
+      "position": 2.8
+    },
+    {
+      "keys": ["https://hotrodan.com/collections/ls-engine-an-fuel-line-install-kit", "ls swap fuel lines", "WEB"],
+      "clicks": 52,
+      "impressions": 1204,
+      "ctr": 0.04318936877076412,
+      "position": 4.1
+    },
+    {
+      "keys": ["https://hotrodan.com/products/aeromotive-inline-fuel-filters-with-an-male-fittings", "aeromotive fuel filter", "WEB"],
+      "clicks": 29,
+      "impressions": 423,
+      "ctr": 0.06857710266560425,
+      "position": 2.3
+    },
+    {
+      "keys": ["https://hotrodan.com/collections/fuel-pressure-regulators", "fuel pressure regulator ls", "WEB"],
+      "clicks": 41,
+      "impressions": 788,
+      "ctr": 0.05203045685279187,
+      "position": 3.5
+    },
+    {
+      "keys": ["https://hotrodan.com/products/spectra-premium-squarebody-1987-sending-unit-for-ls-and-efi", "squarebody fuel tank", "WEB"],
+      "clicks": 33,
+      "impressions": 612,
+      "ctr": 0.053921568627450976,
+      "position": 3.9
+    },
+    {
+      "keys": ["https://hotrodan.com/collections/ptfe-lined-braided-high-performance-an-hose", "ptfe fuel line", "WEB"],
+      "clicks": 47,
+      "impressions": 1023,
+      "ctr": 0.04594525024437245,
+      "position": 3.7
+    },
+    {
+      "keys": ["https://hotrodan.com/", "hot rod fuel hose", "WEB"],
+      "clicks": 68,
+      "impressions": 1567,
+      "ctr": 0.04339181243651882,
+      "position": 5.2
+    },
+    {
+      "keys": ["https://hotrodan.com/collections/an-fittings-straight-and-90-degree", "an fittings", "WEB"],
+      "clicks": 56,
+      "impressions": 1890,
+      "ctr": 0.029629629629629627,
+      "position": 6.8
+    },
+    {
+      "keys": ["https://hotrodan.com/products/return-style-ls-engine-an-fuel-line-install-kit", "ls return style fuel system", "WEB"],
+      "clicks": 24,
+      "impressions": 345,
+      "ctr": 0.06956521739130435,
+      "position": 2.1
+    }
+  ],
+  "responseAggregationType": "byPage"
+}
+

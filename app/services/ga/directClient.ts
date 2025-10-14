@@ -62,6 +62,7 @@ export function createDirectGaClient(propertyId: string): GaClient {
         const endDate = range.end;
 
         // Run report with landing page dimensions and sessions metric
+        // Filter for organic traffic only
         const [response] = await client.runReport({
           property: `properties/${propertyId}`,
           dateRanges: [
@@ -80,6 +81,16 @@ export function createDirectGaClient(propertyId: string): GaClient {
               name: 'sessions', // Total sessions
             },
           ],
+          // Filter for organic traffic only
+          dimensionFilter: {
+            filter: {
+              fieldName: 'sessionDefaultChannelGroup',
+              stringFilter: {
+                matchType: 'EXACT',
+                value: 'Organic Search',
+              },
+            },
+          },
           orderBys: [
             {
               metric: {

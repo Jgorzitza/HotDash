@@ -1,0 +1,132 @@
+{
+  "actionTypes": [
+    {
+      "type": "product_recommendation",
+      "description": "AI recommends specific products based on customer needs",
+      "examples": [
+        {
+          "conversationId": 1001,
+          "message": "I'm doing an LS swap in my 1985 C10. What fuel pump do you recommend?",
+          "action": {
+            "tool": "shopify_search_products",
+            "args": {
+              "query": "fuel pump LS",
+              "limit": 3
+            },
+            "reasoning": "Customer needs fuel pump recommendation for LS swap application"
+          },
+          "requiresApproval": false
+        }
+      ]
+    },
+    {
+      "type": "order_lookup",
+      "description": "AI looks up customer order status",
+      "examples": [
+        {
+          "conversationId": 1002,
+          "message": "Where is my order #1234?",
+          "action": {
+            "tool": "shopify_get_order",
+            "args": {
+              "orderId": "gid://shopify/Order/1234"
+            },
+            "reasoning": "Customer asking for order status update"
+          },
+          "requiresApproval": true,
+          "approvalReason": "Accessing customer order data"
+        }
+      ]
+    },
+    {
+      "type": "technical_guidance",
+      "description": "AI provides installation or technical help",
+      "examples": [
+        {
+          "conversationId": 1003,
+          "message": "Do I need Teflon tape on AN fittings?",
+          "action": {
+            "tool": "query_support",
+            "args": {
+              "query": "AN fitting installation Teflon tape seal"
+            },
+            "reasoning": "Customer needs installation guidance from knowledge base"
+          },
+          "requiresApproval": false
+        }
+      ]
+    },
+    {
+      "type": "price_quote",
+      "description": "AI provides pricing for custom configurations",
+      "examples": [
+        {
+          "conversationId": 1004,
+          "message": "How much for a complete return-style fuel system for twin turbo LS7?",
+          "action": {
+            "tool": "shopify_calculate_bundle_price",
+            "args": {
+              "items": [
+                "aeromotive-a1000-dual-pump",
+                "an8-ptfe-feed-line-20ft",
+                "an6-ptfe-return-line-15ft",
+                "adjustable-regulator-boost-ref"
+              ]
+            },
+            "reasoning": "Customer requesting pricing for custom fuel system build"
+          },
+          "requiresApproval": true,
+          "approvalReason": "Custom pricing quote requires operator review"
+        }
+      ]
+    },
+    {
+      "type": "inventory_check",
+      "description": "AI checks product availability",
+      "examples": [
+        {
+          "conversationId": 1005,
+          "message": "Is the Walbro 255 pump in stock?",
+          "action": {
+            "tool": "shopify_check_inventory",
+            "args": {
+              "sku": "WALBRO-GCA758-KIT"
+            },
+            "reasoning": "Customer asking about product availability"
+          },
+          "requiresApproval": false
+        }
+      ]
+    },
+    {
+      "type": "escalation",
+      "description": "AI escalates complex issues to human operator",
+      "examples": [
+        {
+          "conversationId": 1006,
+          "message": "I received the wrong part and need a refund immediately!",
+          "action": {
+            "tool": "chatwoot_escalate_conversation",
+            "args": {
+              "conversationId": 1006,
+              "reason": "Wrong part shipped, customer requesting immediate refund",
+              "priority": "high"
+            },
+            "reasoning": "Order issue requiring human intervention and refund processing"
+          },
+          "requiresApproval": true,
+          "approvalReason": "Customer service escalation with refund request"
+        }
+      ]
+    }
+  ],
+  "approvalThresholds": {
+    "orderLookup": "always",
+    "priceQuote": "always",
+    "escalation": "always",
+    "productRecommendation": "never",
+    "technicalGuidance": "never",
+    "inventoryCheck": "never"
+  }
+}
+

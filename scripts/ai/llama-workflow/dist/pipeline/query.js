@@ -1,6 +1,7 @@
 import { getConfig } from '../config.js';
 import { getLatestIndexPath } from './buildIndex.js';
-import { VectorStoreIndex, Settings, OpenAI, OpenAIEmbedding, BaseQueryEngine } from 'llamaindex';
+import { VectorStoreIndex, Settings, BaseQueryEngine, MetadataMode, storageContextFromDefaults } from 'llamaindex';
+import { OpenAI, OpenAIEmbedding } from '@llamaindex/openai';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 export async function loadIndex() {
@@ -23,7 +24,12 @@ export async function loadIndex() {
         console.log(`Loading index from: ${indexPath}`);
         // For now, we'll use a simplified loading approach
         // The exact API may vary based on the llamaindex version
-        const index = await VectorStoreIndex.fromPersistDir(path.join(indexPath, 'index')).catch(() => {
+        const storageContext = await storageContextFromDefaults({
+            persistDir: path.join(indexPath, 'index')
+        });
+        const index = await VectorStoreIndex.init({
+            storageContext
+        }).catch(() => {
             // Fallback: try creating a new index if loading fails
             console.warn('Failed to load persisted index, creating new one');
             return null;
@@ -57,7 +63,7 @@ export async function answerQuery(query, topK = 5) {
         // Extract sources with metadata
         const sources = response.sourceNodes?.map((node) => ({
             id: node.node.id_,
-            text: node.node.getContent(),
+            text: node.node.getContent(MetadataMode.NONE),
             metadata: node.node.metadata || {},
             score: node.score || 0,
         })) || [];

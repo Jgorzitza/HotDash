@@ -6,19 +6,12 @@ import { logDecision } from "../../services/decisions.server";
 import { findTemplate } from "../../services/chatwoot/templates";
 import { authenticate } from "../../shopify.server";
 import { isFeatureEnabled } from "../../config/featureFlags";
+import { jsonResponse } from "../../utils/http";
 
 function renderTemplate(body: string, variables: Record<string, string | undefined>) {
   return body.replace(/{{(.*?)}}/g, (_, key) => {
     const value = variables[key.trim()];
     return value ?? "";
-  });
-}
-
-function jsonResponse(body: unknown, init?: ResponseInit) {
-  return new Response(JSON.stringify(body), {
-    status: 200,
-    headers: { "content-type": "application/json" },
-    ...init,
   });
 }
 

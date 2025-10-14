@@ -121,6 +121,15 @@ describe('DirectGAClient', () => {
         ],
         dimensions: [{ name: 'pagePath' }],
         metrics: [{ name: 'sessions' }],
+        dimensionFilter: {
+          filter: {
+            fieldName: 'sessionDefaultChannelGroup',
+            stringFilter: {
+              matchType: 'EXACT',
+              value: 'Organic Search',
+            },
+          },
+        },
         orderBys: [
           {
             metric: { metricName: 'sessions' },

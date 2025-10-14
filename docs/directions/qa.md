@@ -1,430 +1,427 @@
+# QA Agent Direction
+**Updated**: 2025-10-14T19:00:00Z
+**Priority**: GROWTH SPEC EXECUTION - TDD APPROACH
+**Focus**: Write Tests BEFORE Code Exists (Test-Driven Development)
+
+## Mission
+
+Build **test automation** for growth spec features using **Test-Driven Development**. NOT waiting for code - write FAILING tests that define requirements, then Engineer makes them pass.
+
+## BLOCKER RESOLUTION - TDD APPROACH
+
+**Blocker**: Engineer building Action system (4-6 hours)
+
+**Manager Direction**: **DO NOT WAIT** - Write tests BEFORE code exists
+
+**Why TDD**:
+- ✅ Unblocks you immediately (work starts now)
+- ✅ Defines "done" for Engineer (clear acceptance criteria)  
+- ✅ Faster development (Engineer knows exactly what to build)
+- ✅ Better quality (tests enforce growth spec requirements exactly)
+- ✅ Prevents scope drift (tests = spec)
+
+**TDD Flow**:
+1. You write failing test (defines requirement from growth spec)
+2. Engineer writes minimal code to pass test
+3. Engineer refactors while tests stay green
+4. You add more tests for edge cases
+5. Repeat until growth spec complete (44/44 items)
+
+## Priority 0 - Write Failing Tests (START NOW - 4-6 hours)
+
+### Task 1: Action System Test Specifications (Growth Spec B1-B7)
+**Goal**: Define what "working" means BEFORE code exists
+
+**Write 30+ Failing Tests**:
+```typescript
+// app/services/__tests__/actions.test.ts
+describe('Action System - Growth Spec B1-B7', () => {
+  describe('B1 - Action Schema (Prisma)', () => {
+    it('should create action with required fields', async () => {
+      const action = await createAction({
+        type: 'seo_ctr_fix',
+        payload: { pageId: '123', proposedTitle: 'New Title' },
+        score: 0.85,
+        merchantId: 'merchant_123',
+      });
+      
+      expect(action.id).toBeDefined();
+      expect(action.status).toBe('pending');
+      expect(action.version).toBe(1);
+      expect(action.createdAt).toBeInstanceOf(Date);
+    });
+    
+    it('should validate action type enum', async () => {
+      await expect(
+        createAction({ type: 'invalid_type', payload: {} })
+      ).rejects.toThrow('Invalid action type');
+    });
+    
+    // 5+ more schema tests
+  });
+  
+  describe('B2 - Action API - CREATE', () => {
+    it('POST /api/actions creates action', async () => {
+      const response = await POST('/api/actions', {
+        type: 'seo_ctr_fix',
+        payload: mockSeoCtrPayload,
+        merchantId: 'test_merchant',
+      });
+      
+      expect(response.status).toBe(201);
+      expect(response.body).toMatchObject({
+        id: expect.any(String),
+        status: 'pending',
+      });
+    });
+    
+    it('POST /api/actions validates payload schema', async () => {
+      const response = await POST('/api/actions', { invalid: 'data' });
+      expect(response.status).toBe(400);
+    });
+    
+    // 5+ more API tests
+  });
+  
+  describe('B3 - Action API - LIST with Filters', () => {
+    it('GET /api/actions returns paginated list', async () => {
+      const response = await GET('/api/actions?limit=10&offset=0');
+      
+      expect(response.status).toBe(200);
+      expect(response.body.actions).toHaveLength(10);
+      expect(response.body.total).toBeGreaterThan(0);
+    });
+    
+    it('GET /api/actions filters by status', async () => {
+      const response = await GET('/api/actions?status=pending');
+      
+      response.body.actions.forEach(action => {
+        expect(action.status).toBe('pending');
+      });
+    });
+    
+    // 5+ more filter tests
+  });
+  
+  describe('B4-B7 - Approval, Execute, Metrics', () => {
+    // 15+ more tests for remaining requirements
+  });
+});
+```
+
+**Expected Output**: `30 tests, 30 failing` ✅ (This is GOOD - tests are ready for Engineer)
+
+**Deliverables**:
+- [ ] Test file created with 30+ failing tests
+- [ ] Each growth spec requirement (B1-B7) has tests
+- [ ] Edge cases defined (validation, errors, edge conditions)
+- [ ] Performance assertions specified
+- [ ] GitHub commit: "feat(qa): Add failing Action system tests (TDD)"
+- [ ] Test output logged in feedback showing failures (expected)
+
+### Task 2: Test Fixtures and Mock Data (2-3 hours)
+**Goal**: Prepare realistic test data for all growth features
+
+```typescript
+// app/__tests__/fixtures/growth-spec-fixtures.ts
+export const mockActions = {
+  seoCtrFix: {
+    type: 'seo_ctr_fix',
+    payload: {
+      pageId: 'page_123',
+      currentTitle: 'Old Product Title',
+      proposedTitle: 'Optimized Product Title with Keywords',
+      currentDescription: 'Basic description',
+      proposedDescription: 'Compelling description with value props',
+      reasoning: 'CTR 2.5% is below 4.1% benchmark',
+      expectedLift: 0.64, // 64% improvement expected
+    },
+    score: 0.85,
+    merchantId: 'merchant_123',
+  },
+  
+  metaobjectGeneration: {
+    type: 'metaobject_gen',
+    payload: {
+      pageId: 'page_456',
+      metaobjectType: 'faq',
+      definition: { /* schema */ },
+      entries: [
+        { question: 'Q1?', answer: 'A1' },
+        { question: 'Q2?', answer: 'A2' },
+      ],
+    },
+    score: 0.78,
+  },
+  
+  // All action types from growth spec
+};
+
+export const mockGSCData = {
+  pages: [
+    {
+      url: '/products/widget',
+      queries: ['buy widget', 'widget price', 'best widget'],
+      impressions: 10000,
+      clicks: 250,
+      ctr: 0.025, // 2.5% - below benchmark
+      position: 3.2,
+    },
+    // 20+ realistic pages
+  ],
+};
+
+export const mockApprovals = {
+  approved: { /* CEO approved without edit */ },
+  edited: { /* CEO edited before approving */ },
+  rejected: { /* CEO rejected */ },
+};
+```
+
+**Deliverables**:
+- [ ] Fixtures for all action types (C1-C5)
+- [ ] Mock GSC data (realistic)
+- [ ] Mock approval scenarios
+- [ ] Mock Shopify data
+- [ ] GitHub commit
+
+### Task 3: Executor Test Harness (2-3 hours)
+**Goal**: Framework to test all action executors
+
+```typescript
+// app/services/__tests__/executor-test-harness.ts
+export class ExecutorTestHarness {
+  async testExecutor(
+    executor: ActionExecutor, 
+    testCases: ExecutorTestCase[]
+  ) {
+    for (const testCase of testCases) {
+      describe(`${executor.name} - ${testCase.name}`, () => {
+        it('executes successfully with valid input', async () => {
+          const result = await executor.execute(testCase.action);
+          expect(result).toMatchObject(testCase.expectedOutcome);
+        });
+        
+        it('handles errors gracefully', async () => {
+          await expect(
+            executor.execute(testCase.invalidAction)
+          ).rejects.toThrow(testCase.expectedError);
+        });
+        
+        it('supports rollback', async () => {
+          await executor.execute(testCase.action);
+          await executor.rollback(testCase.action);
+          // Verify rollback succeeded
+          const state = await checkState();
+          expect(state).toEqual(testCase.preExecutionState);
+        });
+        
+        it('is idempotent', async () => {
+          const result1 = await executor.execute(testCase.action);
+          const result2 = await executor.execute(testCase.action);
+          expect(result1).toEqual(result2);
+          // Should not duplicate
+        });
+      });
+    }
+  }
+}
+
+// Usage - tests will fail until Engineer builds executors
+describe('SEO CTR Executor', () => {
+  const harness = new ExecutorTestHarness();
+  const testCases = [ /* define expected behavior */ ];
+  
+  harness.testExecutor(seoCtrExecutor, testCases);
+});
+```
+
+**Deliverables**:
+- [ ] Test harness framework
+- [ ] Test cases for each executor type
+- [ ] Rollback validation
+- [ ] Idempotency checks
+- [ ] GitHub commit
+
+### Task 4: Human-in-the-Loop Test Scenarios (3-4 hours)
+**Goal**: Test CEO approval workflow
+
+```typescript
+// app/__tests__/human-in-the-loop.test.ts
+import { run, RunState, tool } from '@openai/agents';
+
+describe('Human-in-the-Loop Approval Workflow', () => {
+  it('pauses execution when needsApproval: true', async () => {
+    const testTool = tool({
+      name: 'testAction',
+      needsApproval: true,
+      execute: async () => 'executed',
+    });
+    
+    const result = await run(agent, 'Do test action');
+    
+    expect(result.interruptions).toHaveLength(1);
+    expect(result.interruptions[0].type).toBe('tool_approval_item');
+  });
+  
+  it('tracks CEO edits for learning', async () => {
+    const result = await run(agent, state);
+    const interruption = result.interruptions[0];
+    
+    // CEO edits proposed content
+    state.approve(interruption, {
+      overrideWith: { proposedTitle: 'CEO Edited Title' }
+    });
+    
+    // Should track the edit
+    const tracked = await getApprovalFeedback(interruption.id);
+    expect(tracked.wasEdited).toBe(true);
+    expect(tracked.editDiff.proposedTitle).toEqual({
+      original: 'AI Generated Title',
+      edited: 'CEO Edited Title',
+    });
+  });
+  
+  it('resumes execution after approval', async () => {
+    let result = await run(agent, 'Generate SEO fix');
+    state.approve(result.interruptions[0]);
+    
+    result = await run(agent, state);
+    expect(result.interruptions).toHaveLength(0);
+    expect(result.finalOutput).toBeDefined();
+  });
+  
+  // 10+ more approval scenarios
+});
+```
+
+**Deliverables**:
+- [ ] Approval workflow tests (10+ scenarios)
+- [ ] CEO edit tracking tests
+- [ ] State serialization tests
+- [ ] Learning loop validation
+- [ ] GitHub commit
+
+### Task 5: Performance Test Specifications (2-3 hours)
+**Goal**: Define SLAs for growth automation
+
+```typescript
+// app/__tests__/performance/growth-spec-slas.test.ts
+describe('Growth Spec Performance SLAs', () => {
+  it('handles 1000 actions without degradation', async () => {
+    const actions = generateMockActions(1000);
+    
+    const start = Date.now();
+    await Promise.all(actions.map(a => createAction(a)));
+    const duration = Date.now() - start;
+    
+    expect(duration).toBeLessThan(5000); // 5 seconds for 1000 actions
+  });
+  
+  it('approval queue loads in <500ms p95', async () => {
+    const measurements = [];
+    
+    for (let i = 0; i < 100; i++) {
+      const start = Date.now();
+      await GET('/api/actions?status=pending');
+      measurements.push(Date.now() - start);
+    }
+    
+    const p95 = percentile(measurements, 95);
+    expect(p95).toBeLessThan(500); // p95 < 500ms
+  });
+  
+  it('recommender processes 100 pages in <60s', async () => {
+    const start = Date.now();
+    await seoCtrRecommender.run(mockGSCData);
+    const duration = Date.now() - start;
+    
+    expect(duration).toBeLessThan(60000); // 1 minute for 100 pages
+  });
+});
+```
+
+**Deliverables**:
+- [ ] Performance tests with SLA assertions
+- [ ] Load testing scenarios
+- [ ] Benchmark baselines
+- [ ] GitHub commit
+
+## Priority 1 - Run Tests When Engineer Delivers
+
+### Task 6: Execute Test Suites (2-3 hours)
+**Goal**: Verify Engineer's implementation
+
+**After Engineer delivers Action system**:
+- [ ] Run all test suites (most should pass if TDD worked)
+- [ ] Identify failures (bugs or missed requirements)
+- [ ] Report failures to Engineer with reproduction steps
+- [ ] Verify fixes
+- [ ] Generate coverage report (target: 90%+)
+
+## Build Test Automation, Not Manual Testing
+
+**✅ RIGHT**:
+- Write failing tests BEFORE code exists (TDD)
+- Build test harnesses (automated validation)
+- Create mock fixtures (repeatable data)
+- Define SLAs (performance requirements)
+
+**❌ WRONG**:
+- Wait for Engineer to finish
+- Manually test features one by one
+- Write test plans without executable tests
+- Test without automation
+
+## Evidence Required
+
+- Git commits for all test code
+- Test output showing failures (expected during TDD)
+- Coverage reports (even for non-existent code shows structure)
+- Test execution logs
+
+## Success Criteria
+
+**End of Day (While Blocked)**:
+- [ ] 30+ failing tests for Action system (B1-B7)
+- [ ] Test fixtures for all growth features
+- [ ] Executor test harness ready
+- [ ] Human-in-the-loop tests defined
+- [ ] Performance SLAs specified
+- [ ] All test code committed to GitHub
+
+**When Engineer Delivers**:
+- [ ] 90%+ tests passing (TDD success)
+- [ ] Bugs identified and reported
+- [ ] Coverage >90%
+- [ ] Integration tests passing
+- [ ] E2E tests for growth workflows
+
+## Report Every 2 Hours
+
+Update `feedback/qa.md`:
+- Tests written (count)
+- Fixtures created
+- Test harnesses built
+- Expected failures documented
+- Evidence (commits, test output)
+
 ---
-epoch: 2025.10.E1
-doc: docs/directions/qa.md
-owner: manager
-last_reviewed: 2025-10-12
-doc_hash: TBD
-expires: 2025-10-19
----
-# QA — Direction (Operator Control Center)
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
 
-> Manager authored. QA must not modify or add direction files; propose changes via evidence-backed request to manager.
+**Remember**: Write FAILING tests that define requirements. Engineer makes them pass. This is TDD - it unblocks you and accelerates development.
 
-## Local Execution Policy (Auto-Run)
+## 🚨 UPDATE: ENGINEER COMPLETE - START TESTING
 
-You may run local, non-interactive test and audit commands without asking for approval each time. Guardrails:
+**Engineer Status**: ✅ ALL TASKS COMPLETE
 
-- Scope and safety: local repo and local Supabase only; no remote infra changes; status/read-only checks are fine.
-- Non-interactive only: add flags to avoid prompts; disable pagers (git --no-pager; pipe outputs). Avoid less/man/vim.
-- Evidence logging: record timestamp, command, and artifact paths in feedback/qa.md; store traces/screens under artifacts/qa/.
-- Secrets: never print values; load from env/vault; reference names only.
-- Tooling: use npx supabase for local usage; git/gh with --no-pager; prefer rg else grep -nE.
-- Retry: up to 2 attempts, then escalate with logs.
+**Your Action**: Run your TDD test suites NOW
 
-- Guard Evidence Gates: block merge without Vitest + Playwright + Lighthouse proof and mock/live screenshots.
-- Maintain mock data suites for Shopify/Chatwoot/GA; ensure tests run offline with deterministic fixtures (default Playwright runs use `mock=1`).
-- When validating Shopify behaviours, pull expected responses and flows from the Shopify developer MCP (`shopify-dev-mcp`) to avoid speculative coverage gaps.
-- Add Playwright coverage per tile (summary + drill-in + approval action) and run smoke on every PR.
-- Track regression matrix in `feedback/qa.md`; call out API rate-limit or credential blockers daily.
-- Verify Prisma migrations roll forward/back on the Supabase Postgres stack (local via `supabase start`, staging via vault secrets) before sign-off.
-- Coordinate soak tests for streaming/approvals; log results under artifacts/ with timestamps.
-- Stack guardrails: audit against `docs/directions/README.md#canonical-toolkit--secrets` (Supabase-only Postgres, Chatwoot on Supabase, React Router 7, OpenAI + LlamaIndex) and flag any divergence.
-- Reference docs/dev/admin-graphql.md when validating Admin API flows and docs/dev/storefront-mcp.md for storefront agent coverage.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval. For every finding, document the remediation attempts you executed (command + output). Only escalate to another team when the fix is out of QA scope or fails twice with evidence attached.
+**Execute**:
+1. Run all failing tests (they should mostly pass now)
+2. Report failures to Engineer
+3. Generate coverage reports
+4. Continue with integration tests
 
-## Current Sprint Focus — 2025-10-12
-QA operates as the audit arm of the team. Validate the health of the environment and surface risks; individual feature owners are responsible for their own tests. Execute the steps below in parallel and log findings in `feedback/qa.md`.
-
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
-
-**LAUNCH CRITICAL TASKS** (Priority Order - Do These FIRST):
-
-## 🚨 P0 LAUNCH TESTING (Do Immediately as Engineer Completes)
-
-1. **Test LlamaIndex MCP Server** (when Engineer completes Task 3)
-   - Verify MCP server responds to queries
-   - Test all 3 tools (query_support, refresh_index, insight_report)
-   - Performance test (<500ms response)
-   - Evidence: Test results, response times logged
-   - Status: ⏳ READY - waiting for Engineer Task 3 to deploy
-
-**While Waiting for Engineer - Execute These**:
-
-1A. **Prepare LlamaIndex MCP Test Suite**
-   - Write test plan for all 3 MCP tools
-   - Create test queries for each tool
-   - Document expected responses
-   - Prepare performance benchmarks
-   - Evidence: Test plan document
-   - Timeline: 2-3 hours
-
-1B. **Prepare Agent SDK Test Scenarios**
-   - Design E2E test scenarios for approval flow
-   - Create test data (sample customer inquiries)
-   - Document expected agent responses
-   - Prepare approval test cases
-   - Evidence: Test scenario document
-   - Timeline: 2-3 hours
-
-1C. **Prepare Webhook Test Strategy**
-   - Design webhook test payloads
-   - Document signature verification tests
-   - Create error handling test cases
-   - Prepare integration test plan
-   - Evidence: Webhook test strategy
-   - Timeline: 1-2 hours
-
-1D. **Review Existing Test Coverage**
-   - Audit current test suite for gaps
-   - Identify untested critical paths
-   - Document areas needing coverage
-   - Prioritize test additions
-   - Evidence: Coverage gap report
-   - Timeline: 2-3 hours
-
-2. **Test Agent SDK Service** (when Engineer completes Task 4)
-   - Test agent receives webhook, processes request
-   - Verify approval queue populates
-   - Test approval/reject endpoints work
-   - Evidence: E2E test passing
-
-3. **Test Webhook Endpoints** (when Engineer completes Task 5)
-   - Send test webhook to /api/webhooks/chatwoot
-   - Verify signature validation works
-   - Confirm event routing
-   - Evidence: Webhook processed successfully
-
-4. **Test Approval Queue UI** (when Engineer completes Task 6)
-   - Test operator can view pending approvals
-   - Test approve/reject buttons work
-   - Verify decision logs to Supabase
-   - Evidence: UI test passing, screenshots
-
-5. **Integration E2E Test** (when Engineer completes Task 7)
-   - Full workflow: Chatwoot → Agent → Approval → Response
-   - Verify all pieces work together
-   - Document any issues
-   - Evidence: Complete E2E passing
-
-**Timeline**: Shadow Engineer's work, test immediately as each completes
+**ENGLISH ONLY** - All test content, docs, reports in English
 
 ---
-
-## ✅ EXCELLENT WORK (2025-10-12T00:50Z)
-
-**Your Test Results**: Found LlamaIndex MCP is NOT WORKING (0/3 tools functional)
-
-**Manager Action**: Escalated to Engineer as P0 blocker
-
-**Your Next Steps**:
-1. Continue with Tasks 1A-1D (prep work)
-2. Execute 4-hour quality validation cycle NOW
-3. When Engineer fixes LlamaIndex MCP, retest immediately
-4. When Engineer fixes Shopify queries, verify fixes
-
-**Priority**: Quality validation of ALL agent work (find issues early)
-
----
-
-## 🆕 URGENT TASK (CEO Request - Do FIRST)
-
-**Task 0**: Verify Engineer's Claims Using MCPs
-- Use Fly MCP: Check if llamaindex-mcp app actually deployed
-- Use GitHub MCP: Check commits today (verify work is in git)
-- Use Shopify MCP: Validate if Shopify queries actually fixed
-- Test actual functionality (not just check status)
-- **Evidence**: MCP query results, factual status of each claim
-- **Timeline**: 30-60 min
-- **Why**: Engineer claims work "complete" but your tests found issues
-
-Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.md.
-
----
-
-## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
-
-**Task 1E**: Hot Rodan Smoke Test Suite
-- Create smoke tests specific to Hot Rodan product catalog
-- Test with actual hot rod parts SKUs
-- Verify automotive-specific data displays correctly
-- Evidence: Smoke test suite
-- Timeline: 2-3 hours
-
-**Task 1F**: Performance Budget Enforcement
-- Set performance budgets per tile (<300ms load)
-- Create automated performance tests
-- Test with production data volumes
-- Evidence: Performance test suite
-- Timeline: 2-3 hours
-
-**Task 1G**: Accessibility Testing
-- Screen reader testing for approval queue
-- Keyboard navigation validation
-- WCAG 2.1 AA compliance check
-- Evidence: Accessibility audit report
-- Timeline: 2-3 hours
-
-**Task 1H**: Cross-Browser Testing
-- Test in Chrome, Firefox, Safari
-- Test on mobile devices (iOS/Android)
-- Document any browser-specific issues
-- Evidence: Browser compatibility report
-- Timeline: 2-3 hours
-
-**Task 1I**: Security Testing
-- Test webhook signature validation
-- Test SQL injection protection
-- Test XSS prevention
-- Evidence: Security test results
-- Timeline: 2-3 hours
-
-**Task 1J**: Load Testing
-- Simulate multiple concurrent operators
-- Test approval queue under load
-- Verify no race conditions
-- Evidence: Load test results
-- Timeline: 2-3 hours
-
-Execute 1A-1J + validation cycles. Total: ~25-30 hours launch-aligned work.
-
----
-
-## 📋 QUALITY VALIDATION (Every 4 Hours - Ongoing)
-
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/qa.md and continue):
-
-1. ✅ **Test Suite Audit** - COMPLETE (2025-10-11, 45 min)
-   - 43/50 tests passing (85.7% pass rate)
-   - 8 security vulnerabilities identified
-   - 7 P0 blockers documented with owners
-   - Evidence: artifacts/qa/2025-10-11T142942Z/
-
-2. **Resolve Test Blockers** - Fix P0 issues to get test suite to 100%
-   - Fix logger.server.spec.ts (coordinate with @engineer for mock fetch setup)
-   - Install @vitest/coverage-v8: npm install -D @vitest/coverage-v8
-   - Add SCOPES to .env.example with documentation
-   - Re-run test suite: npm run test:unit
-   - Verify 100% pass rate
-   - Evidence: Clean test output, documented in feedback/qa.md
-
-3. **Agent SDK Test Strategy** - Create comprehensive test plan
-   - Write integration test plan for webhook flow (Chatwoot → Agent SDK → approval)
-   - Create E2E test scenarios: approve action, reject action, timeout handling
-   - Document test data requirements (sample conversations, mock approvals)
-   - Prepare Playwright test stubs for approval queue UI
-   - Coordinate: Tag @engineer when tests are ready to implement
-   - Evidence: Test plan document, test stubs created
-
-4. **Agent SDK Integration Tests** - Write and execute tests
-   - Create tests/integration/agent-sdk-webhook.spec.ts
-   - Test webhook payload processing
-   - Test agent tool execution
-   - Test approval state persistence
-   - Test approve/reject flows
-   - Run tests and document results
-   - Evidence: Test results, coverage report
-
-5. **Approval Queue E2E Tests** - Playwright automation
-   - Create tests/e2e/approval-queue.spec.ts
-   - Test operator views approval queue
-   - Test operator approves action
-   - Test operator rejects action
-   - Test real-time updates
-   - Test error handling
-   - Evidence: Playwright test results, screenshots
-
-6. **Security Testing** - Validate Agent SDK security
-   - Test CSRF protection on approval endpoints
-   - Test authentication/authorization
-   - Test input validation and sanitization
-   - Test rate limiting
-   - Verify no secrets in logs
-   - Evidence: Security test report
-
-7. **Performance Baseline** - Capture performance metrics
-   - Run Lighthouse on dashboard
-   - Measure P95 latencies for all routes
-   - Test approval queue under load
-   - Document performance baselines
-   - Evidence: Lighthouse report, performance metrics
-
-**Ongoing Requirements**:
-- Coordinate with @engineer on test environment setup
-- Run tests continuously as features are built
-- Report failures immediately in feedback/qa.md
-- Keep mock=1 mode working for CI
-
----
-
-### 🚀 PRIORITY: Execute Task 3 NOW (Doesn't Require Implementation)
-
-**Task 3: Agent SDK Test Strategy** - Can start immediately
-- Write integration test plan for webhook flow
-- Create E2E test scenarios (approve/reject/timeout)
-- Document test data requirements
-- Prepare Playwright test stubs
-- Evidence: Complete test plan, stub files created
-
-**This doesn't require Agent SDK to be built yet** - you're planning the tests.
-
-### 🚀 ADDITIONAL PARALLEL TASKS
-
-**Task A: Performance Testing Framework** - Prepare for load testing
-- Design load test scenarios for approval queue
-- Create performance benchmarking scripts
-- Document performance budgets (<100ms routes, <500ms MCP)
-- Prepare Lighthouse CI configuration
-- Evidence: Performance test framework
-
-**Task B: Security Test Suite** - Prepare security tests
-- Design security test scenarios (CSRF, auth, injection)
-- Create test data for security testing
-- Document security requirements
-- Prepare penetration test checklist
-- Evidence: Security test plan
-
-Execute Task 3 immediately, then A and B in parallel.
-
----
-
-### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
-
-**Task C-G: Automated Testing Infrastructure** (5 tasks)
-- C: Create visual regression testing suite (Percy or Chromatic)
-- D: Implement API contract testing (Pact or similar)
-- E: Design mutation testing framework
-- F: Create accessibility automation (axe-core CI integration)
-- G: Implement test data generation framework
-
-**Task H-L: Quality Assurance Processes** (5 tasks)
-- H: Design code review checklist and automation
-- I: Create quality gates for all PRs
-- J: Implement automated security scanning (SAST/DAST)
-- K: Design performance budgeting and enforcement
-- L: Create test coverage monitoring and alerts
-
-**Task M-Q: Testing Documentation** (5 tasks)
-- M: Write comprehensive testing guide for all developers
-- N: Create test best practices documentation
-- O: Document QA processes and workflows
-- P: Create bug reporting and triage procedures
-- Q: Design test maintenance and debt reduction plan
-
-Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
-
----
-
-### 🚨 CRITICAL NEW RESPONSIBILITY: VELOCITY QUALITY VALIDATION (2025-10-11T22:30Z)
-
-**CEO Directive**: "Validate task completion quality - we're moving fast, ensure we're not generating garbage code"
-
-**Your New Role**: Quality gatekeeper for all agent work
-
-**Validation Process** (Execute every 4 hours):
-
-1. **Evidence Review** (30 min): Check all agent feedback for completed tasks have proper proof
-2. **Proof Validation** (60 min): Random sample 3-5 tasks per agent, verify quality  
-3. **Quality Report** (15 min): Rate agents 🟢🟡🔴, escalate issues to Manager
-
-**Evidence Standards**:
-- ✅ Code: File path + line numbers + description
-- ✅ Tests: Test file + passing status
-- ✅ Docs: Document path + sections  
-- ✅ Design: Asset paths + screenshots
-- ❌ NOT acceptable: "Done", "Complete", "Finished"
-
-**Full Process**: `docs/runbooks/qa_validation_process.md`
-
----
-
-### 🚀 SIXTH MASSIVE EXPANSION (Another 30 Tasks)
-
-**Task R-W: Quality Engineering** (5 tasks)
-- R: Design shift-left testing methodology
-- S: Create quality metrics framework
-- T: Implement defect prediction models
-- U: Design test data management platform
-- V: Create quality engineering training
-
-**Task W-AB: Advanced Testing** (6 tasks)
-- W: Design mutation testing framework
-- X: Create property-based testing
-- Y: Implement metamorphic testing
-- Z: Design combinatorial testing
-- AA: Create test case prioritization
-- AB: Implement test impact analysis
-
-**Task AC-AH: Test Automation Platform** (6 tasks)
-- AC: Design test automation framework architecture
-- AD: Create test orchestration platform
-- AE: Implement parallel test execution
-- AF: Design test result analytics
-- AG: Create test flakiness detection
-- AH: Implement test healing automation
-
-**Task AI-AN: Quality Assurance Operations** (6 tasks)
-- AI: Design QA metrics dashboard
-- AJ: Create defect lifecycle management
-- AK: Implement quality gates automation
-- AL: Design test coverage analytics
-- AM: Create quality trend analysis
-- AN: Implement quality forecasting
-
-**Task AO-AT: Specialized Testing** (7 tasks)
-- AO: Design API contract testing framework
-- AP: Create microservices testing strategy
-- AQ: Implement data quality testing
-- AR: Design ML model testing framework
-- AS: Create accessibility testing automation
-- AT: Implement localization testing
-- AU: Design performance testing framework
-
-**DO FIRST**: P0 Launch Testing (Tasks 1-5 above) + 4-hour validation cycles
-
-**PAUSE UNTIL AFTER LAUNCH**: Tasks R-AU (advanced testing infrastructure)
-
-Total: 5 P0 tasks + validation duty + 30 post-launch tasks
-
-## Previous Task List — 2025-10-11
-- Canonical toolkit checks
-  - Verify no alt DBs or direct redis usage in app builds via CI status; flag violations.
-- Shopify Admin testing
-  - Use RR7 + CLI v3 flow; no token injection. Keep `mock=1` green; for `mock=0` live smoke, use Admin login credentials.
-  - Use Shopify Dev MCP for Admin flows and assertions; do not guess responses.
-- Secrets hygiene
-  - Confirm no embed/session tokens exist in GitHub or vault for current flow; ensure artifacts/logs are sanitized.
-- Evidence
-  - Preserve Playwright traces, screenshots, and curl logs; log in `feedback/qa.md` with timestamps.
-
-1. **Local Supabase verification**
-   - Run `supabase start` and export `.env.local` before executing test suites (see `docs/runbooks/supabase_local.md`). Log the Prisma `npm run setup` output and confirm migrations succeed locally.
-   - Tail logs via `scripts/ops/tail-supabase-logs.sh` during Playwright/analytics runs; attach relevant snippets to the evidence bundle.
-
-2. **Security & secrets audit**
-   - Verify RLS is enabled on all PostgREST tables (`notification_settings`, `notification_subscriptions`, etc.) by running the Supabase policies query yourself and attaching the results.
-   - Check vault/GitHub secrets for accuracy (Supabase DSN, OpenAI key). Confirm no embed/session tokens are stored or required under the current React Router 7 + Shopify CLI v3 dev flow. Remove any residual `SHOPIFY_EMBED_TOKEN_*` secrets if present; log the cleanup.
-
-3. **GitHub posture**
-   - Audit branch protection, required reviewers, and Actions status. Flag missing reviewers or failing workflows.
-   - Ensure required secrets (Supabase DSN, Chatwoot, GA MCP) appear in the environment; embed/session tokens should not be present.
-
-4. **Code quality & performance**
-   - Review latest PRs/build outputs for lint/test coverage trends and TODO debt.
-   - Monitor Lighthouse/perf dashboards; log latencies and regression risks alongside reliability’s synthetic results.
-
-5. **End-to-end readiness**
-   - Maintain the “ready-to-fire” checklists for Shopify Admin suites, Prisma drills, and DEPLOY-147 evidence. Execute immediately when reliability clears latency thresholds and Fly memory scaling is complete; log the full command/output bundle.
-   - Keep `npm run test:e2e -- --grep "dashboard modals"` smoke green and stage the full `npm run test:e2e` suite for when staging reopens. Use the Admin login credentials (`PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) for live runs—no manual tokens. As soon as engineering confirms the TypeScript build is clean, rerun `npm run typecheck` to verify and record the success before triggering the full Playwright suite. If a suite fails, attempt the fix (or pair with the owning engineer) before logging the issue.
-
-6. **Stack compliance cadence**
-   - Partner with the manager on the Monday/Thursday stack audit; highlight any tooling drift or secret misuse and assign remediation.
-
-7. **Reporting**
-   - Summarize audit findings, risks, and recommended follow-up owners in `feedback/qa.md` and notify impacted teams.

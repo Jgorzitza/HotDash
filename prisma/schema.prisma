@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
 }
 
 model Session {
@@ -26,6 +27,8 @@ model Session {
   locale        String?
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
+  
+  @@schema("public")
 }
 
 model DashboardFact {
@@ -41,6 +44,7 @@ model DashboardFact {
 
   @@index([shopDomain, factType])
   @@index([createdAt])
+  @@schema("public")
 }
 
 model DecisionLog {
@@ -56,4 +60,45 @@ model DecisionLog {
   createdAt   DateTime @default(now())
 
   @@index([scope, createdAt])
+  @@schema("public")
+}
+
+model Action {
+  id              Int      @id @default(autoincrement())
+  // Core identification
+  toolName        String   // e.g. "chatwoot_send_public_reply", "shopify_cancel_order"
+  agent           String   // Which agent requested this action
+  
+  // Action details
+  parameters      Json     // Tool parameters (conversationId, orderId, etc.)
+  rationale       String?  // Why the agent is suggesting this action
+  
+  // Approval workflow
+  status          String   @default("pending") // pending | approved | rejected | executed | failed
+  needsApproval   Boolean  @default(true)
+  
+  // Context
+  conversationId  Int?     // Chatwoot conversation ID if applicable
+  shopDomain      String?  // Shop this action relates to
+  externalRef     String?  // Order ID, product ID, etc.
+  
+  // Audit trail
+  requestedAt     DateTime @default(now())
+  reviewedAt      DateTime?
+  reviewedBy      String?  // CEO email or user ID
+  executedAt      DateTime?
+  
+  // Execution results
+  result          Json?    // Result of executing the action
+  error           String?  // Error message if execution failed
+  
+  // Metadata
+  priority        String   @default("normal") // urgent | high | normal | low
+  tags            String[] // For filtering/categorization
+  
+  @@index([status, requestedAt])
+  @@index([conversationId])
+  @@index([shopDomain, status])
+  @@index([agent, status])
+  @@schema("public")
 }

@@ -1,0 +1,134 @@
+{
+  "data": {
+    "products": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/Product/8001",
+            "title": "PTFE lined Black Nylon with Orange Checks braided hose - AN6",
+            "handle": "ptfe-lined-black-nylon-with-orange-checks-braided-hose-an6",
+            "status": "ACTIVE",
+            "onlineStoreUrl": "https://hotrodan.com/products/ptfe-lined-black-nylon-with-orange-checks-braided-hose-an6",
+            "seo": {
+              "title": "AN6 PTFE Fuel Line - Black/Orange Braided Hose | Hot Rod AN",
+              "description": "Premium PTFE lined AN6 fuel line with black nylon and orange checks. Perfect for LS swaps, carbureted engines, and EFI systems. -40°F to 300°F rating."
+            },
+            "variants": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/ProductVariant/80011",
+                    "sku": "PTFE-AN6-BO-5FT",
+                    "price": "45.99",
+                    "inventoryQuantity": 23
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Product/8002",
+            "title": "Walbro/TI 255 LPH in-tank EFI pump kit (GCA758)",
+            "handle": "walbro-ti-255-lph-in-tank-efi-pump-kit-gca758",
+            "status": "ACTIVE",
+            "onlineStoreUrl": "https://hotrodan.com/products/walbro-ti-255-lph-in-tank-efi-pump-kit-gca758",
+            "seo": {
+              "title": "Walbro 255 LPH Fuel Pump Kit - GCA758 | In-Tank EFI Pump",
+              "description": "Complete Walbro 255 LPH in-tank EFI fuel pump kit. Includes pump, strainer sock, submersible hose, clamps, and wiring pigtail. Supports 450+ HP."
+            },
+            "variants": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/ProductVariant/80021",
+                    "sku": "WALBRO-GCA758-KIT",
+                    "price": "189.99",
+                    "inventoryQuantity": 8
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Product/8003",
+            "title": "Aeromotive A1000 Fuel Pump - 11101",
+            "handle": "aeromotive-a1000-fuel-pump-11101",
+            "status": "ACTIVE",
+            "onlineStoreUrl": "https://hotrodan.com/products/aeromotive-a1000-fuel-pump-11101",
+            "seo": {
+              "title": "Aeromotive A1000 Fuel Pump 11101 | 1200 HP Carb/EFI",
+              "description": "Aeromotive A1000 external fuel pump supporting up to 1200 HP. Carbureted or EFI applications. Flow rate: 125 GPH @ 55 PSI."
+            },
+            "variants": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/ProductVariant/80031",
+                    "sku": "AERO-11101",
+                    "price": "449.99",
+                    "inventoryQuantity": 3
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Product/8004",
+            "title": "LS Swap AN Fuel Line Install Kit — Return-Style (PTFE AN-6)",
+            "handle": "return-style-ls-engine-an-fuel-line-install-kit",
+            "status": "ACTIVE",
+            "onlineStoreUrl": "https://hotrodan.com/products/return-style-ls-engine-an-fuel-line-install-kit",
+            "seo": {
+              "title": "LS Swap Return-Style Fuel Line Kit - Complete AN6 PTFE System",
+              "description": "Complete return-style fuel system for LS swaps. Black PTFE AN6 lines, 90° and straight fittings, regulator adapter. Everything you need for a clean, leak-free install."
+            },
+            "variants": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/ProductVariant/80041",
+                    "sku": "LS-RETURN-KIT-AN6",
+                    "price": "279.99",
+                    "inventoryQuantity": 12
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Product/8005",
+            "title": "Spectra Premium Squarebody 1987+ Sending unit for LS and EFI",
+            "handle": "spectra-premium-squarebody-1987-sending-unit-for-ls-and-efi",
+            "status": "ACTIVE",
+            "onlineStoreUrl": "https://hotrodan.com/products/spectra-premium-squarebody-1987-sending-unit-for-ls-and-efi",
+            "seo": {
+              "title": "Squarebody Fuel Sending Unit - 1987+ LS/EFI Compatible | Spectra Premium",
+              "description": "Drop-in fuel sending unit for 1987+ Chevy/GMC Squarebody trucks. Compatible with LS swaps and EFI conversions. Fits both left and right side tanks."
+            },
+            "variants": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/ProductVariant/80051",
+                    "sku": "SPECTRA-SQ87-LS",
+                    "price": "154.99",
+                    "inventoryQuantity": 5
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+

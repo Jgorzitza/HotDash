@@ -93,7 +93,7 @@ export const BrandVoiceRules = {
       'greatly improved',
       'substantially more',
     ],
-    required_format: '70% faster' not 'much faster',
+    required_format: "'70% faster' not 'much faster'",
     source_citations_required: true,
   },
 };

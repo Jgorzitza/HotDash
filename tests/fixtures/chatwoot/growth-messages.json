@@ -1,0 +1,135 @@
+{
+  "growthScenarios": [
+    {
+      "scenario": "Product Recommendation Request",
+      "messages": [
+        {
+          "id": 101,
+          "content": "I'm doing an LS swap in my 1985 C10. What fuel pump do you recommend for a stock LS3?",
+          "message_type": 0,
+          "created_at": 1728432000,
+          "sender": { "type": "contact", "name": "Mike Johnson" }
+        },
+        {
+          "id": 102,
+          "content": "For a stock LS3, the Walbro 255 LPH pump (GCA758) is perfect. It supports up to 450 HP and includes everything you need for installation.",
+          "message_type": 1,
+          "created_at": 1728432180,
+          "sender": { "type": "agent", "name": "AI Agent" }
+        }
+      ]
+    },
+    {
+      "scenario": "Technical Support Question",
+      "messages": [
+        {
+          "id": 201,
+          "content": "What size AN fitting do I need for the fuel rail on a LS1? I see AN6 and AN8 options.",
+          "message_type": 0,
+          "created_at": 1728518400,
+          "sender": { "type": "contact", "name": "Sarah Williams" }
+        },
+        {
+          "id": 202,
+          "content": "LS1 fuel rails use AN6 (3/8\") fittings. Our PTFE AN6 line kit is specifically designed for LS swaps and includes the correct 90° fittings for tight engine bay clearance.",
+          "message_type": 1,
+          "created_at": 1728518520,
+          "sender": { "type": "agent", "name": "AI Agent" }
+        }
+      ]
+    },
+    {
+      "scenario": "Order Status Inquiry",
+      "messages": [
+        {
+          "id": 301,
+          "content": "I ordered the LS fuel line kit last week (order #1234). When will it ship?",
+          "message_type": 0,
+          "created_at": 1728604800,
+          "sender": { "type": "contact", "name": "Carlos Rodriguez" }
+        },
+        {
+          "id": 302,
+          "content": "I need to escalate this to check your order status. One moment please.",
+          "message_type": 1,
+          "created_at": 1728604920,
+          "sender": { "type": "agent", "name": "AI Agent" },
+          "tags": ["escalation", "order_status"]
+        }
+      ]
+    },
+    {
+      "scenario": "Installation Help Request",
+      "messages": [
+        {
+          "id": 401,
+          "content": "Do I need Teflon tape on the AN fittings or will they seal without it?",
+          "message_type": 0,
+          "created_at": 1728691200,
+          "sender": { "type": "contact", "name": "Robert Chen" }
+        },
+        {
+          "id": 402,
+          "content": "No Teflon tape needed! AN fittings use a metal-to-metal cone seal. The olive (ferrule) creates the seal when you tighten the fitting. Just hand-tighten plus 1/4 turn with a wrench.",
+          "message_type": 1,
+          "created_at": 1728691320,
+          "sender": { "type": "agent", "name": "AI Agent" }
+        }
+      ]
+    },
+    {
+      "scenario": "Compatibility Question",
+      "messages": [
+        {
+          "id": 501,
+          "content": "Will the Aeromotive A1000 pump work with E85 fuel?",
+          "message_type": 0,
+          "created_at": 1728777600,
+          "sender": { "type": "contact", "name": "Jason Martinez" }
+        },
+        {
+          "id": 502,
+          "content": "Yes! The Aeromotive A1000 (11101) is fully compatible with E85, methanol, and all pump gas fuels. It's designed for high-performance applications including flex fuel setups.",
+          "message_type": 1,
+          "created_at": 1728777720,
+          "sender": { "type": "agent", "name": "AI Agent" }
+        }
+      ]
+    },
+    {
+      "scenario": "Multi-Turn Complex Question",
+      "messages": [
+        {
+          "id": 601,
+          "content": "I'm building a twin turbo LS7 making 850 HP. What fuel system do I need?",
+          "message_type": 0,
+          "created_at": 1728864000,
+          "sender": { "type": "contact", "name": "David Thompson" }
+        },
+        {
+          "id": 602,
+          "content": "For 850 HP forced induction, you'll need: 1) Dual Aeromotive A1000 pumps (or single Weldon), 2) AN8 feed lines, 3) AN6 return line, 4) Adjustable regulator (60-70 PSI for boost), 5) High-flow filters. Would you like specific product recommendations?",
+          "message_type": 1,
+          "created_at": 1728864120,
+          "sender": { "type": "agent", "name": "AI Agent" }
+        },
+        {
+          "id": 603,
+          "content": "Yes please! And do I need a return-style or returnless system?",
+          "message_type": 0,
+          "created_at": 1728864240,
+          "sender": { "type": "contact", "name": "David Thompson" }
+        },
+        {
+          "id": 604,
+          "content": "For boost applications, ALWAYS use return-style. This allows you to adjust fuel pressure with boost reference. I'll create a parts list: [needs approval to send detailed recommendation]",
+          "message_type": 1,
+          "created_at": 1728864360,
+          "sender": { "type": "agent", "name": "AI Agent" },
+          "tags": ["approval_needed", "complex_recommendation"]
+        }
+      ]
+    }
+  ]
+}
+

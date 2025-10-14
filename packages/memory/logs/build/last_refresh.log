@@ -1,0 +1,101 @@
+
+> llama-workflow@1.0.0 refresh
+> node --env-file=../../../.env.local --enable-source-maps --no-warnings dist/cli.js refresh
+
+🔄 Starting index refresh...
+Starting index build: 2025-10-14T2015
+Fetching web content...
+Attempting to fetch sitemap from hotrodan.com...
+  → Sitemap index detected, fetching child sitemaps...
+  → Found 4 child sitemaps, fetching URLs...
+Found 50 URLs in sitemap
+Fetching content from 50 URLs...
+[1/50] Fetching: https://hotrodan.com/
+[2/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-braided-hose-an6-an8-an10
+[3/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-orange-checks-braided-hose-an6-an8-an10
+[4/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-green-checks-braided-hose-an6-an8-an10
+[5/50] Fetching: https://hotrodan.com/products/ptfe-lined-stainless-braided-an-hose-an6-an8-an10
+[6/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-red-check-braided-hose-an6-an8-an10
+[7/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-blue-check-braided-hose-an6-an8-an10
+[8/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-purple-checks-braided-hose-an6-an8-an10
+[9/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-nylon-with-yellow-check-braided-hose-an6-an8-an10
+[10/50] Fetching: https://hotrodan.com/products/ptfe-lined-black-silver-nylon-braided-hose-an6-an8-an10
+[11/50] Fetching: https://hotrodan.com/products/an-ptfe-reusable-straight-swivel-hose-end-an6-an8-an10
+[12/50] Fetching: https://hotrodan.com/products/an-ptfe-reusable-45-degree-swivel-hose-end-an6-an8-an10
+[13/50] Fetching: https://hotrodan.com/products/spectra-premium-squarebody-1987-sending-unit-for-ls-and-efi
+[14/50] Fetching: https://hotrodan.com/products/aluminum-vice-jaws-for-ptfe-fitting-install-black-anodized
+[15/50] Fetching: https://hotrodan.com/products/corvette-style-filter-regulator-with-built-in-an6-adapter-fittings
+[16/50] Fetching: https://hotrodan.com/products/an-ptfe-reusable-90-degree-swivel-hose-end-an6-an8-an10
+[17/50] Fetching: https://hotrodan.com/products/factory-style-inline-fuel-filter-w-an6-fittings
+[18/50] Fetching: https://hotrodan.com/products/replacement-fuel-filter-element-for-factory-style-fuel-filter
+[19/50] Fetching: https://hotrodan.com/products/efi-quick-connect-fitting-to-an-w-screw-end-cap
+[20/50] Fetching: https://hotrodan.com/products/hard-line-tube-fittings-to-an-male-fittings
+[21/50] Fetching: https://hotrodan.com/products/positive-seal-oring-to-an-adapter-fuel-power-steering
+[22/50] Fetching: https://hotrodan.com/products/an-6-nylon-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[23/50] Fetching: https://hotrodan.com/products/an-8-nylon-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[24/50] Fetching: https://hotrodan.com/products/an-10-nylon-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[25/50] Fetching: https://hotrodan.com/products/an-6-stainless-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[26/50] Fetching: https://hotrodan.com/products/an-8-stainless-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[27/50] Fetching: https://hotrodan.com/products/an-10-stainless-braided-ptfe-hose-and-8-an-fittings-bundle-deal
+[28/50] Fetching: https://hotrodan.com/products/hose-p-clamp-for-mounting-an-ptfe-hose
+[29/50] Fetching: https://hotrodan.com/products/return-style-ls-engine-an-fuel-line-install-kit
+[30/50] Fetching: https://hotrodan.com/products/return-less-style-an-ls-engine-fuel-line-kit
+[31/50] Fetching: https://hotrodan.com/products/an-hose-cutting-shears-for-stainless-and-nylon-braided-ptfe-hose
+[32/50] Fetching: https://hotrodan.com/products/adjustable-aluminum-spanner-wrench-an3-an12-anodized-for-an-ptfe-fitting-install
+[33/50] Fetching: https://hotrodan.com/products/replacement-ferrules-for-an-ptfe-fittings
+[34/50] Fetching: https://hotrodan.com/products/an-orb-o-ring-to-an-male-adapter-fitting
+[35/50] Fetching: https://hotrodan.com/products/npt-national-pipe-taper-male-to-an-male-adapter-fitting
+[36/50] Fetching: https://hotrodan.com/products/transmission-adapter-fittings-to-an-male
+[37/50] Fetching: https://hotrodan.com/products/an-male-to-male-unions-and-reducers-expander-fittings
+[38/50] Fetching: https://hotrodan.com/products/gauge-port-or-pressure-port-an-adapter-fitting
+[39/50] Fetching: https://hotrodan.com/products/walbro-ti-automotive-255-lph-in-tank-fuel-pump-gca758
+[40/50] Fetching: https://hotrodan.com/products/walbro-ti-automotive-255-lph-inline-fuel-pump-gsl392
+[41/50] Fetching: https://hotrodan.com/products/metric-specialty-fittings-to-an6-for-gm-obs-sending-unit
+[42/50] Fetching: https://hotrodan.com/products/aeromotive-stealth-340lph-in-tank-fuel-pump
+[43/50] Fetching: https://hotrodan.com/products/aeromotive-inline-fuel-filters-with-an-male-fittings
+[44/50] Fetching: https://hotrodan.com/products/aeromotive-inline-fuel-filter-with-female-orb-ports
+[45/50] Fetching: https://hotrodan.com/products/spectra-premium-190-lph-in-tank-fuel-pump-gm-design
+[46/50] Fetching: https://hotrodan.com/products/redhorse-performance-liquid-filled-fuel-pressure-gauge
+[47/50] Fetching: https://hotrodan.com/products/aeromotive-fuel-pressure-gauge
+[48/50] Fetching: https://hotrodan.com/products/tru-cool-max-40k-transmission-oil-cooler-lpd4739
+[49/50] Fetching: https://hotrodan.com/products/derale-13-row-series-9500-plate-fin-34k-transmission-cooler-kit
+[50/50] Fetching: https://hotrodan.com/products/an-y-adapter-fitting-an6-an8-an10
+Successfully fetched 50 documents from web sources
+✓ Loaded 50 web documents
+Fetching Supabase data...
+Fetching decision log data from Supabase...
+Found 0 decision log entries
+Successfully processed 0 decision log documents
+✓ Loaded 0 decision documents
+Fetching telemetry events data from Supabase...
+Found 0 telemetry events
+Successfully processed 0 telemetry documents
+✓ Loaded 0 telemetry documents
+Fetching curated replies...
+Fetching curated support replies from Supabase...
+Found 0 curated support replies
+Successfully processed 0 curated support documents
+✓ Loaded 0 curated documents
+Total documents collected: 50
+Processing documents into nodes...
+✓ Created 256 nodes from documents
+Building vector index...
+✓ Vector index built successfully
+✓ Index persisted to: packages/memory/logs/build/indexes/2025-10-14T2015/index
+✓ Previous index backed up to prev symlink
+✓ Latest symlink updated
+✓ Index build completed in 82716ms
+✅ Index refresh completed successfully
+{
+  "ok": true,
+  "runDir": "packages/memory/logs/build/indexes/2025-10-14T2015",
+  "count": 256,
+  "sources": {
+    "web": 50,
+    "supabase_decisions": 0,
+    "supabase_telemetry": 0,
+    "curated": 0
+  },
+  "duration": 82716,
+  "timestamp": "2025-10-14T20:17:03.640Z"
+}

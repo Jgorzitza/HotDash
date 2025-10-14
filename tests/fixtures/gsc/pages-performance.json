@@ -1,0 +1,76 @@
+{
+  "pages": [
+    {
+      "url": "https://hotrodan.com/collections/fuel-pumps-in-tank-and-inline",
+      "title": "Fuel Pumps - In Tank and Inline | Hot Rod AN",
+      "clicks": 145,
+      "impressions": 2340,
+      "ctr": 0.061965811965811964,
+      "avgPosition": 3.4,
+      "topQueries": [
+        "fuel pump ls swap",
+        "in tank fuel pump",
+        "walbro fuel pump"
+      ]
+    },
+    {
+      "url": "https://hotrodan.com/products/ptfe-lined-black-nylon-with-orange-checks-braided-hose-an6-an8-an10",
+      "title": "PTFE Black Nylon with Orange Checks Braided Hose",
+      "clicks": 89,
+      "impressions": 1456,
+      "ctr": 0.061126373626373626,
+      "avgPosition": 2.9,
+      "topQueries": [
+        "an6 fuel line",
+        "ptfe fuel line orange",
+        "braided fuel hose"
+      ]
+    },
+    {
+      "url": "https://hotrodan.com/",
+      "title": "Hot Rod AN - Performance Fuel System Components",
+      "clicks": 234,
+      "impressions": 5678,
+      "ctr": 0.04121303152712823,
+      "avgPosition": 5.1,
+      "topQueries": [
+        "hot rod fuel hose",
+        "an fuel fittings",
+        "performance fuel system"
+      ]
+    },
+    {
+      "url": "https://hotrodan.com/collections/ls-engine-an-fuel-line-install-kit",
+      "title": "LS Engine AN Fuel Line Install Kits",
+      "clicks": 112,
+      "impressions": 2890,
+      "ctr": 0.038754325259515574,
+      "avgPosition": 4.2,
+      "topQueries": [
+        "ls swap fuel lines",
+        "ls fuel line kit",
+        "ls engine fuel system"
+      ]
+    },
+    {
+      "url": "https://hotrodan.com/collections/fuel-pressure-regulators",
+      "title": "Fuel Pressure Regulators | Hot Rod AN",
+      "clicks": 98,
+      "impressions": 1789,
+      "ctr": 0.05478370814703021,
+      "avgPosition": 3.6,
+      "topQueries": [
+        "fuel pressure regulator ls",
+        "adjustable fuel regulator",
+        "aeromotive fuel regulator"
+      ]
+    }
+  ],
+  "summary": {
+    "totalClicks": 678,
+    "totalImpressions": 14153,
+    "avgCTR": 0.04790514725368459,
+    "avgPosition": 3.84
+  }
+}
+

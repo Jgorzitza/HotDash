@@ -52,14 +52,17 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
 
   const context = await getShopifyServiceContext(request);
 
-  const sales = await resolveTile(() => getSalesPulseSummary(context));
-  const fulfillment = await resolveTile(() => getPendingFulfillments(context));
-  const inventory = await resolveTile(() => getInventoryAlerts(context));
-  const seo = await resolveTile(() =>
-    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
-  );
-  const escalations = await resolveEscalations(context.shopDomain);
-  const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  const [sales, fulfillment, inventory, seo, escalations, opsMetrics] =
+    await Promise.all([
+      resolveTile(() => getSalesPulseSummary(context)),
+      resolveTile(() => getPendingFulfillments(context)),
+      resolveTile(() => getInventoryAlerts(context)),
+      resolveTile(() =>
+        getLandingPageAnomalies({ shopDomain: context.shopDomain }),
+      ),
+      resolveEscalations(context.shopDomain),
+      resolveTile(() => getOpsAggregateMetrics()),
+    ]);
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,

@@ -1,66 +1,83 @@
-import { useEffect } from 'react';
-import { json, type LoaderFunctionArgs } from 'react-router';
-import { useLoaderData, useRevalidator } from 'react-router';
-import { Page, Layout, Card, EmptyState } from '@shopify/polaris';
-import { ApprovalCard } from '~/components/ApprovalCard';
+import { useEffect, useMemo } from "react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData, useRevalidator } from "react-router";
+import { Page, Layout, Card, EmptyState } from "@shopify/polaris";
 
-interface Approval {
-  id: string;
-  conversationId: number;
-  createdAt: string;
-  pending: {
-    agent: string;
-    tool: string;
-    args: Record<string, any>;
-  }[];
+import {
+  ApprovalCard,
+  type ApprovalSummary,
+} from "../../components/ApprovalCard";
+import { jsonResponse } from "../../utils/http";
+
+interface LoaderData {
+  approvals: ApprovalSummary[];
+  error?: string | null;
 }
 
-// Loader: Fetch approvals from agent service
 export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const agentBase =
+    process.env.AGENT_SDK_URL ?? "https://hotdash-agent-service.fly.dev";
+  const approvalsUrl = new URL("/approvals", agentBase);
+  approvalsUrl.search = url.search;
+
   try {
-    const response = await fetch('http://localhost:8002/approvals');
-    
+    const response = await fetch(approvalsUrl, {
+      headers: {
+        "content-type": "application/json",
+        "x-forwarded-from": "hotdash-app",
+      },
+    });
+
     if (!response.ok) {
-      console.error('Failed to fetch approvals:', response.status);
-      return json({ approvals: [], error: 'Failed to load approvals' });
+      const message = `Agent service responded with ${response.status}`;
+      console.error("[Approvals Loader] Failed to fetch approvals", message);
+      return jsonResponse<LoaderData>(
+        { approvals: [], error: message },
+        { status: 502 },
+      );
     }
-    
-    const approvals: Approval[] = await response.json();
-    return json({ approvals, error: null });
+
+    const approvals = (await response.json()) as ApprovalSummary[];
+    return jsonResponse<LoaderData>({ approvals, error: null });
   } catch (error) {
-    console.error('Error fetching approvals:', error);
-    return json({ approvals: [], error: 'Agent service unavailable' });
+    console.error("[Approvals Loader] Agent service unavailable", error);
+    return jsonResponse<LoaderData>(
+      { approvals: [], error: "Agent service unavailable" },
+      { status: 503 },
+    );
   }
 }
 
 export default function ApprovalsRoute() {
   const { approvals, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
-  
-  // Auto-refresh every 5 seconds
+  const subtitle = useMemo(() => {
+    const count = approvals.length;
+    return `${count} pending ${count === 1 ? "approval" : "approvals"}`;
+  }, [approvals.length]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       revalidator.revalidate();
     }, 5000);
+
     return () => clearInterval(interval);
   }, [revalidator]);
-  
+
   return (
-    <Page
-      title="Approval Queue"
-      subtitle={`${approvals.length} pending ${approvals.length === 1 ? 'approval' : 'approvals'}`}
-    >
+    <Page title="Approval Queue" subtitle={subtitle}>
       <Layout>
-        {error && (
+        {error ? (
           <Layout.Section>
             <Card>
-              <div style={{ padding: '16px', color: '#bf0711' }}>
+              <div style={{ padding: "16px", color: "#bf0711" }}>
                 <strong>Error:</strong> {error}
               </div>
             </Card>
           </Layout.Section>
-        )}
-        
+        ) : null}
+
         {approvals.length === 0 ? (
           <Layout.Section>
             <Card>
@@ -83,4 +100,3 @@ export default function ApprovalsRoute() {
     </Page>
   );
 }
-

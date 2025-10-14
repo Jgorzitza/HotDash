@@ -3,14 +3,7 @@ import type { ActionFunctionArgs } from "react-router";
 import { authenticate } from "../../shopify.server";
 import { logDecision } from "../../services/decisions.server";
 import { toInputJson } from "../../services/json";
-
-function jsonResponse(body: unknown, init?: ResponseInit) {
-  return new Response(JSON.stringify(body), {
-    status: 200,
-    headers: { "content-type": "application/json" },
-    ...init,
-  });
-}
+import { jsonResponse } from "../../utils/http";
 
 const ACTION_MAP: Record<string, { decisionAction: string }> = {
   acknowledge: { decisionAction: "sales_pulse.log_follow_up" },
