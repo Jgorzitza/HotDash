@@ -1,40 +1,33 @@
-# QA Helper Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION - QUALITY
-**Focus**: Support QA with Test Automation
+---
+epoch: 2025.10.E1
+doc: docs/directions/qa-helper.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# QA Helper — Direction
 
-## Priority 1 - Test Data Generation
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
 
-### Task 1: Generate Test Data for Growth Features (3-4 hours)
-**Goal**: Create realistic test data for growth automation
+## Current Sprint Focus (2025-10-14)
 
-**Test Data Needed**:
-- Mock GSC data (pages, queries, CTR)
-- Mock Shopify products/pages
-- Mock customer messages (Chatwoot)
-- Mock Actions (various types)
+**Status**: P0 + expanded tasks complete ✅ (22 artifacts)
 
-**Deliverables**:
-- [ ] Test data generators
-- [ ] Realistic mock data
-- [ ] Data fixtures for tests
-- [ ] GitHub commit
+**Priority**: Support QA on growth system validation
 
-### Task 2: Support E2E Test Development (3-4 hours)
-**Goal**: Help QA build comprehensive E2E tests
+**Tasks** (8-10 hours over 2 weeks):
+1. Test coverage analysis (growth features) (2 hours)
+2. Security testing (action system) (2 hours)
+3. Performance benchmarking (2 hours)
+4. Accessibility validation (WCAG 2.1 AA) (1-2 hours)
+5. API contract testing (1-2 hours)
+6. Documentation quality review (1 hour)
 
-**Support Areas**:
-- Test scenario design
-- Approval flow testing
-- Learning loop validation
-- Performance benchmarking
-
-**Deliverables**:
-- [ ] Test scenario specifications
-- [ ] E2E test support
-- [ ] Performance test data
-- [ ] GitHub commit
+Evidence in `feedback/qa-helper.md` every 2 hours
 
 ---
 
-**Remember**: Support QA with test data generation and E2E test design for growth features.
+**Last Updated**: 2025-10-14T21:20:00Z

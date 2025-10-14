@@ -1,62 +1,34 @@
-# Enablement Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION - TRAINING SYSTEMS
-**Focus**: Build Operator Training Systems (NOT Create Training Materials)
+---
+epoch: 2025.10.E1
+doc: docs/directions/enablement.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Enablement — Direction
 
-## Mission
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- English Only: CEO directive
 
-Build **operator training automation systems**. NOT creating training docs manually - build SYSTEMS that train operators automatically.
+## Current Sprint Focus (2025-10-14)
 
-## Priority 1 - CEO Approval Training System
+**Priority**: Operator training for growth automation
 
-### Task 1: Build Approval Queue Training (4-6 hours)
-**Goal**: Train CEO on using approval queue effectively
+**Tasks** (10-12 hours over 2 weeks):
+1. Growth automation training module (2-3 hours)
+2. Action approval workflow guide (2 hours)
+3. Recommender explanation videos (2-3 hours)
+4. Performance dashboard training (1-2 hours)
+5. ROI tracking certification (1-2 hours)
+6. Troubleshooting guide (1-2 hours)
 
-**NOT**: Writing training manuals
-**YES**: Building interactive training system
+**Deliverable**: Interactive training routes (4 routes complete ✅)
 
-**Features**:
-- Interactive walkthrough of approval queue
-- Practice approvals with test data
-- Best practices for editing AI responses
-- Feedback on approval decisions
-
-**Deliverables**:
-- [ ] Interactive training module
-- [ ] Practice scenarios
-- [ ] Decision feedback system
-- [ ] GitHub commit
-
-### Task 2: Build Performance Dashboard for CEO (3-4 hours)
-**Goal**: Show CEO their training impact on AI
-
-**Metrics to Show**:
-- Approval rate (how often CEO approves vs rejects)
-- Edit frequency (how often CEO edits vs approves as-is)
-- AI improvement (approval rate trending up over time)
-- Voice consistency (AI matching CEO tone better)
-
-**Deliverables**:
-- [ ] Training impact dashboard
-- [ ] Metric visualizations
-- [ ] Improvement trends
-- [ ] GitHub commit
-
-### Task 3: Build Operator Onboarding Automation (4-6 hours)
-**Goal**: Automated onboarding for new operators
-
-**Features**:
-- Auto-generated onboarding checklists
-- Role-based training paths
-- Progress tracking
-- Certification automation
-
-**Deliverables**:
-- [ ] Onboarding automation system
-- [ ] Progress tracking
-- [ ] Certification workflow
-- [ ] GitHub commit
+Evidence in `feedback/enablement.md` every 2 hours
 
 ---
 
-**Remember**: Build TRAINING SYSTEMS that educate automatically, not training materials manually. Focus on CEO approval training.
+**Last Updated**: 2025-10-14T21:20:00Z

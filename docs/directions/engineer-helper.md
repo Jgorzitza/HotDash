@@ -1,41 +1,31 @@
-# Engineer Helper Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION - SUPPORT
-**Focus**: Support Engineer with Growth Spec Implementation
+---
+epoch: 2025.10.E1
+doc: docs/directions/engineer-helper.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Engineer Helper — Direction
 
-## Priority 1 - Code Review for Growth Features
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
 
-### Task 1: Review Action System Code (2-3 hours)
-**Goal**: Code review for Action schema, API, executors
+## Current Sprint Focus (2025-10-14)
 
-**Review Checklist**:
-- [ ] Prisma schema correct
-- [ ] API endpoints follow RR7 patterns (verify with Context7 MCP)
-- [ ] TypeScript types sound
-- [ ] Error handling comprehensive
-- [ ] Tests cover edge cases
+**Priority**: Support Engineer on growth system
 
-**Deliverables**:
-- [ ] Code review comments
-- [ ] Suggestions for improvements
-- [ ] Security checks
-- [ ] GitHub commit
+**Tasks** (8-10 hours over 2 weeks):
+1. Code review for action system (2 hours)
+2. LlamaIndex MCP maintenance (1-2 hours)
+3. Build system optimization (1-2 hours)
+4. Dependency updates (1-2 hours)
+5. Test infrastructure improvements (1-2 hours)
+6. Documentation updates (technical) (1-2 hours)
 
-### Task 2: Support Data Pipeline Development (2-3 hours)
-**Goal**: Help Engineer/Data with pipeline implementation
-
-**Support Areas**:
-- GA API integration review
-- GSC BigQuery schema review
-- Webhook implementation review
-- Queue architecture review
-
-**Deliverables**:
-- [ ] Technical review feedback
-- [ ] Architecture suggestions
-- [ ] Code improvements
-- [ ] GitHub commit
+Evidence in `feedback/engineer-helper.md` every 2 hours
 
 ---
 
-**Remember**: Support growth spec implementation with code review and technical guidance.
+**Last Updated**: 2025-10-14T21:20:00Z

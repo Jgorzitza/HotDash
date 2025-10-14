@@ -1,56 +1,32 @@
-# Git Cleanup Agent Direction
-**Updated**: 2025-10-14
-**Priority**: REPOSITORY MAINTENANCE
-**Focus**: Keep Repository Clean and Organized
+---
+epoch: 2025.10.E1
+doc: docs/directions/git-cleanup.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Git Cleanup — Direction
 
-## Priority 1 - Monitor Growth Spec Implementation
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- English Only: CEO directive
 
-### Task 1: Track Growth Spec Commits (2-3 hours)
-**Goal**: Monitor which growth spec items are being implemented
+## Current Sprint Focus (2025-10-14)
 
-**Features**:
-- Track commits related to growth spec (A1-I8)
-- Report daily progress (X/44 items with code changes)
-- Identify stale branches
-- Clean up obsolete branches
+**Priority**: Growth spec tracking + secret verification
 
-**Deliverables**:
-- [ ] Commit tracking for growth spec
-- [ ] Daily progress reports
-- [ ] Branch cleanup automation
-- [ ] GitHub MCP verification
-- [ ] GitHub commit
+**Tasks** (6-8 hours over 2 weeks):
+1. Growth spec progress tracking (daily) (2 hours)
+2. Secret removal verification (1 hour)
+3. Branch cleanup (agent/* branches) (1-2 hours)
+4. Commit message standards enforcement (1 hour)
+5. PR template updates for growth features (1 hour)
+6. Documentation drift detection (1-2 hours)
 
-### Task 2: Secret Removal Coordination (1-2 hours)
-**Goal**: Help Deployment agent remove secrets from history
-
-**Coordinate with Deployment on**:
-- Git filter-branch for secret removal
-- History rewrite (if needed)
-- Verification that secrets are gone
-
-**Deliverables**:
-- [ ] Secret removal scripts (if needed)
-- [ ] History verification
-- [ ] Clean repo confirmation
-- [ ] GitHub commit
+Evidence in `feedback/git-cleanup.md` every 2 hours
 
 ---
 
-**Remember**: Focus on growth spec progress tracking, support secret removal effort.
-
-## 🚨 UPDATE: DEPLOYMENT COMPLETE - YOU ARE UNBLOCKED
-
-**Deployment Status**: ✅ MISSION ACCOMPLISHED (secrets removed)
-
-**Your Action**: Verify secret removal and track growth spec progress
-
-**Execute**:
-1. Run secret verification scripts (should pass now)
-2. Build growth spec progress tracker
-3. Generate daily report (X/44 items)
-4. Clean up stale branches
-
-**ENGLISH ONLY** - All reports, documentation in English
-
----
+**Last Updated**: 2025-10-14T21:20:00Z

@@ -1,207 +1,181 @@
-# Designer Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION - UI
-**Focus**: Build Action System UI Components
+---
+epoch: 2025.10.E1
+doc: docs/directions/designer.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Designer — Direction
 
-## Mission
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- MCP Allowlist: docs/policies/mcp-allowlist.json
+- Credential Map: docs/ops/credential_index.md
+- Agent Launch Checklist: docs/runbooks/agent_launch_checklist.md
+- Operator Workflows: docs/specs/operator-workflows.md
+- Design System: Shopify Polaris + HotDash brand
 
-Build **UI components for Action system**. NOT designing mockups - build WORKING components for growth automation.
+> **English Only**: All UI labels, content, and documentation in English only (CEO directive)
 
-## Priority 0 - Wait for Action API
+## Current Sprint Focus — Growth System UX (2025-10-14)
 
-**BLOCKER**: Engineer building Action API (4-6 hours)
+**Status**: Priority 1 & 2 components complete ✅  
+**Next**: Design remaining growth UI components
 
-**While Waiting** (2-3 hours):
-- [ ] Study growth spec UI requirements (E1-E3)
-- [ ] Design component architecture
-- [ ] Create component specifications
-- [ ] Prepare design tokens/theme
+**Priority 0: Core Growth UX** (This Week - 12-15 hours)
 
-## Priority 1 - Action Dock UI (Growth Spec E1)
+1. **Action Detail Modal Enhanced** (3-4 hours)
+   - Diff visualization (before/after, syntax highlighted)
+   - Confidence indicator (0-100% color coded)
+   - Impact metrics (CTR lift, traffic, revenue)
+   - AI rationale in plain language
+   - Action buttons (Approve/Reject/Edit/Schedule)
+   - Real-time execution status
+   - Deliverable: Figma mockup + component spec
 
-### Task 1: Build Top-10 Action Dock (6-8 hours)
-**Goal**: Display prioritized actions for operator review
+2. **Batch Action Interface** (2-3 hours)
+   - Multi-select with checkboxes
+   - Sticky bulk actions bar at bottom
+   - Actions: Approve All, Reject All, Schedule All
+   - Confirmation modal
+   - Progress indicator (X/Y processed)
+   - Deliverable: Figma mockup + interaction spec
 
-**Requirements** (Growth Spec E1):
-```typescript
-// app/components/ActionDock.tsx
-interface ActionDockProps {
-  actions: Action[];  // Top 10 by score
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
-  onViewDetail: (id: string) => void;
-}
+3. **Recommender Performance Dashboard** (3 hours)
+   - Overview cards (actions, approval rate, ROI, time saved)
+   - Recommender breakdown table
+   - Trend charts (approval over time, ROI by week)
+   - Filters (date range, type, status)
+   - Export button
+   - Deliverable: Figma mockup (desktop/tablet/mobile)
 
-// Features:
-// - Top 10 actions by confidence score
-// - Action type badges (SEO, content, CX, etc)
-// - Quick approve/reject buttons
-// - Expand for detail view
-// - Real-time updates (new actions appear)
+4. **Auto-Approval Configuration UI** (2-3 hours)
+   - Threshold sliders by recommender
+   - Live preview ("X actions would auto-approve")
+   - Safety guardrails (max/day, high-value approval)
+   - Audit log table
+   - Deliverable: Figma mockup + flow diagram
+
+**Priority 1: Advanced Features** (Week 2 - 10-12 hours)
+
+5. **A/B Test Management UI** (3 hours)
+6. **Scheduled Actions Calendar** (2 hours)
+7. **ROI Impact Visualizer** (2-3 hours)
+8. **Mobile Approval Experience** (2 hours)
+9. **Action Templates Library** (1-2 hours)
+10. **Experiment Results Dashboard** (1 hour)
+
+**Priority 2: Polish & Optimization** (Week 3 - 8-10 hours)
+
+11. **Onboarding Flow** (3 hours)
+12. **Accessibility Audit & Fixes** (2 hours - WCAG 2.1 AA)
+13. **Dark Mode Design** (2 hours)
+14. **Loading & Empty States** (1 hour)
+15. **Micro-interactions & Animations** (1-2 hours)
+16. **Design System Documentation** (1 hour)
+17. **User Testing Insights** (1-2 hours)
+
+## Design Principles
+
+1. **Trust Through Transparency** - Show AI confidence, explain why, easy reject/rollback
+2. **Progressive Disclosure** - Summary first, drill-down available
+3. **Speed & Efficiency** - Bulk actions, keyboard shortcuts, minimal clicks
+4. **Data Visualization** - Charts for trends, color coding, large numbers for KPIs
+5. **Mobile-First** - Responsive, 44px touch targets, swipe gestures
+
+## Design Deliverables Format
+
+Every task requires:
+1. Figma mockup (high-fidelity)
+2. Component spec document
+3. Interaction flow diagram
+4. Accessibility annotations
+5. Dev-ready assets & measurements
+
+**Figma Organization**:
+```
+📁 HotDash Growth System
+  📁 01 - Core Components
+  📁 02 - Dashboards  
+  📁 03 - Advanced Features
+  📁 04 - Mobile
 ```
 
-**Deliverables**:
-- [ ] ActionDock component built
-- [ ] Action card component
-- [ ] Quick action buttons
-- [ ] Real-time subscription (if available)
-- [ ] Responsive design
-- [ ] Verify with React Router 7 MCP (patterns)
-- [ ] GitHub commit
+## Evidence & Compliance
 
-## Priority 2 - Action Detail View (Growth Spec E2)
+Every task requires:
+1. Figma file link
+2. Screenshot/preview
+3. Component spec doc (PDF/Notion)
+4. Accessibility checklist
+5. Evidence in `feedback/designer.md`
 
-### Task 2: Build Action Detail Modal (6-8 hours)
-**Goal**: Show action details with diff preview
-
-**Requirements** (Growth Spec E2):
-```typescript
-// app/components/ActionDetailModal.tsx
-interface ActionDetailProps {
-  action: Action;
-  onApprove: () => void;
-  onReject: () => void;
-  onEdit: (changes: Partial<Action>) => void;
-}
-
-// Features:
-// - Before/after diff view
-// - Confidence score visualization
-// - Edit capability (operator can modify)
-// - Impact preview (expected lift)
-// - Execution history (if re-run)
+Report every 2 hours:
 ```
-
-**Components Needed**:
-- DiffViewer (before/after side-by-side)
-- ConfidenceScoreGauge
-- EditableActionForm
-- ImpactProjection
-
-**Deliverables**:
-- [ ] ActionDetailModal component
-- [ ] Diff viewer (syntax highlighted if code)
-- [ ] Edit form with validation
-- [ ] Impact visualization
-- [ ] Verify with RR7 MCP
-- [ ] GitHub commit
-
-## Priority 3 - Auto-Publish Controls (Growth Spec E3)
-
-### Task 3: Build Auto-Publish UI (4-6 hours)
-**Goal**: Configure automation rules
-
-**Requirements** (Growth Spec E3):
-```typescript
-// app/components/AutoPublishSettings.tsx
-interface AutoPublishRule {
-  actionType: string;           // "seo_ctr_fix", etc
-  minConfidence: number;         // 0.0 - 1.0
-  requireApproval: boolean;
-  maxBatchSize: number;
-  schedule?: string;             // cron expression
-}
-
-// Features:
-// - Rule builder UI
-// - Confidence threshold slider
-// - Batch size limiter
-// - Schedule picker
-// - Test mode toggle
+## YYYY-MM-DDTHH:MM:SSZ — Designer: [Task] [Status]
+**Working On**: [P0 task]
+**Progress**: [% or milestone]
+**Evidence**: 
+- Figma: [link]
+- Preview: [screenshot]
+- Spec: [doc link]
+- Accessibility: WCAG 2.1 AA
+**Blockers**: [None or details]
+**Next**: [Next task]
 ```
-
-**Deliverables**:
-- [ ] AutoPublishSettings component
-- [ ] Rule builder UI
-- [ ] Threshold controls
-- [ ] Test mode visualization
-- [ ] Verify with RR7 MCP
-- [ ] GitHub commit
-
-## Priority 4 - Monitoring Dashboards UI
-
-### Task 4: Build KPI Dashboard Components (4-6 hours)
-**Goal**: Visualize growth metrics
-
-**Requirements** (Growth Spec I1-I8):
-
-**Metrics to Visualize**:
-- Action throughput (line chart)
-- Approval rate (gauge)
-- SEO lift (trend chart)
-- Content velocity (bar chart)
-- Guided selling performance (conversion funnel)
-- CWV scores (multi-metric gauge)
-
-**Deliverables**:
-- [ ] Metric visualization components
-- [ ] Chart library integration (Recharts/Victory)
-- [ ] Real-time data updates
-- [ ] Responsive dashboard layout
-- [ ] GitHub commit
-
-## Build UI Components, Not Design Mockups
-
-**✅ RIGHT**:
-- Build ActionDock component (working UI)
-- Build DiffViewer component (functional)
-- Build dashboard charts (live data)
-
-**❌ WRONG**:
-- Create Figma mockups (not executable)
-- Design static prototypes (not integrated)
-- Write design specs without code (not shippable)
-
-## Design System Compliance
-
-- Use existing Polaris components where possible
-- Follow Hot Rod AN brand voice (see 01-hot-rod-an-voice.mdc)
-- Ensure accessibility (WCAG AA)
-- Responsive design (mobile-first)
-- Verify patterns with RR7 MCP (not v6/Remix)
-
-## Evidence Required
-
-- Git commits for all components
-- Component screenshots (working UI)
-- Storybook stories (if available)
-- RR7 MCP validation
-- Accessibility audit results
 
 ## Success Criteria
 
-**Week 1 Complete When**:
-- [ ] Action Dock operational (E1)
-- [ ] Action Detail view working (E2)
-- [ ] Auto-publish controls functional (E3)
-- [ ] KPI dashboards visualizing live data
-- [ ] All components responsive and accessible
-- [ ] RR7 patterns verified with MCP
+**P0 Complete** (This Week):
+- ✅ Action Detail Modal enhanced
+- ✅ Batch action interface
+- ✅ Performance dashboard
+- ✅ Auto-approval config UI
+- ✅ All WCAG 2.1 AA compliant
+- ✅ Responsive specs (mobile/tablet/desktop)
 
-## Report Every 2 Hours
+**P1 Complete** (Week 2):
+- ✅ A/B test manager
+- ✅ Calendar view
+- ✅ ROI visualizer
+- ✅ Mobile experience optimized
 
-Update `feedback/designer.md`:
-- Components built
-- Integration progress
-- UI/UX decisions
-- Evidence (commits, screenshots)
+**P2 Complete** (Week 3):
+- ✅ Onboarding flow
+- ✅ Dark mode
+- ✅ All states (loading/error/empty)
+- ✅ Design system docs
+
+## Coordination
+
+**With Engineer**: Provide specs before implementation, review accuracy  
+**With Product**: Align on flows, validate operator needs  
+**With QA**: Define expected UI behavior  
+**With Enablement**: Create training visuals
+
+## Blockers & Escalation
+
+**Current**: NONE (Engineer completed Action API, Designer unblocked)
+
+If stuck >2 hours:
+```
+🚨 BLOCKER: [Task] blocked on [reason]
+**Attempted**: [what tried]
+**Needed**: [missing requirement]
+**Impact**: [designs blocked]
+```
+
+## Timeline
+
+- Week 1: 12-15 hours (Core UX)
+- Week 2: 10-12 hours (Advanced)
+- Week 3: 8-10 hours (Polish)
+- **Total**: 30-37 hours over 3 weeks
 
 ---
 
-**Remember**: Build WORKING UI COMPONENTS, not design deliverables. Ship code, not mockups.
-
-## 🚨 UPDATE: ENGINEER COMPLETE - YOU ARE UNBLOCKED
-
-**Engineer Status**: ✅ Action API COMPLETE
-
-**Your Action**: Start building approval queue UI NOW
-
-**Build**:
-- Approval queue main view
-- Approval detail modal
-- Approval actions & state management
-- Learning metrics dashboard
-
-**ENGLISH ONLY** - All UI text, labels, messages in English
-
----
+**Last Updated**: 2025-10-14T21:15:00Z  
+**Start**: Action Detail Modal immediately  
+**Evidence**: All work in `feedback/designer.md`

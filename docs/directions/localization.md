@@ -1,40 +1,33 @@
-# Localization Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION - i18n PREP
-**Focus**: Prepare Growth Features for Internationalization
+---
+epoch: 2025.10.E1
+doc: docs/directions/localization.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Localization — Direction
 
-## Priority 1 - i18n for AI-Generated Content
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- **CRITICAL**: English ONLY - NO FRENCH (CEO directive)
 
-### Task 1: Build Content Localization System (4-6 hours)
-**Goal**: Prepare AI-generated content for translation
+## Current Sprint Focus (2025-10-14)
 
-**Requirements**:
-- Extract translatable strings from AI responses
-- Prepare for multi-language support
-- CEO approval in each language
-- Maintain brand voice across languages
+**Priority**: English content quality for growth features
 
-**Deliverables**:
-- [ ] i18n extraction for AI content
-- [ ] Multi-language approval workflow
-- [ ] Brand voice guidelines per language
-- [ ] GitHub commit
+**Tasks** (6-8 hours over 2 weeks):
+1. English UI label review (growth system) (1-2 hours)
+2. Grammar/readability for action descriptions (1-2 hours)
+3. Brand voice validation (AI-generated content) (1-2 hours)
+4. Terminology consistency (growth features) (1-2 hours)
+5. i18n planning ONLY (no implementation) (1 hour)
 
-### Task 2: Growth Feature i18n Audit (3-4 hours)
-**Goal**: Ensure growth features are i18n-ready
+**FORBIDDEN**: NO French translations, NO other languages until CEO approval
 
-**Audit**:
-- Action messages (all languages)
-- Recommender outputs (translatable)
-- UI strings (externalized)
-- Error messages (localized)
-
-**Deliverables**:
-- [ ] i18n audit report
-- [ ] String externalization
-- [ ] Translation preparation
-- [ ] GitHub commit
+Evidence in `feedback/localization.md` every 2 hours
 
 ---
 
-**Remember**: Prepare growth automation for international markets, especially AI-generated content.
+**Last Updated**: 2025-10-14T21:20:00Z

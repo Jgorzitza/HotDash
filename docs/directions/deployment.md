@@ -1,159 +1,109 @@
-# Deployment Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION + SECURITY
-**Focus**: Fix Secrets + Deploy Growth Features
+---
+epoch: 2025.10.E1
+doc: docs/directions/deployment.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Deployment — Direction
 
-## Mission
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
+- Fly Deployment: docs/runbooks/agent-sdk-production-deployment.md
 
-**IMMEDIATE**: Remove secrets from repo (CRITICAL SECURITY ISSUE)
-**ONGOING**: Deploy growth automation infrastructure
+## Current Sprint Focus — Growth System Deployment (2025-10-14)
 
-## Priority 0 - Security Fix (IMMEDIATE - 1-2 hours)
+**Status**: Framework ready ✅, awaiting features for deployment
 
-### Task 1: Remove Secrets from Repository
-**Goal**: No credentials in version control
+**Priority 0: Production Readiness** (This Week - 8-10 hours)
 
-**Issues** (Growth Spec A7, H2):
-- 10+ secret files in vault/ directory
-- API keys, service keys committed to repo
-- No rotation automation
+1. **Environment Configuration** (2 hours)
+   - Production secrets setup (Supabase, OpenAI, Shopify)
+   - Environment variables validation
+   - Secret rotation verification
 
-**Steps**:
-1. [ ] Add vault/ to .gitignore
-2. [ ] Move secrets to Fly.io secrets (fly secrets set)
-3. [ ] Update app to read from env vars
-4. [ ] Test in staging
-5. [ ] Document secret rotation procedure
-6. [ ] Coordinate git history cleanup with Git Cleanup agent (optional)
+2. **Fly.io Configuration** (2 hours)
+   - Scale memory to 2GB for growth workload
+   - Configure health checks for action system
+   - Auto-scaling rules for recommender jobs
 
-**Deliverables**:
-- [ ] No secrets in repo (verified with grep)
-- [ ] Secrets in Fly.io environment
-- [ ] App working with env vars
-- [ ] Rotation procedure documented
-- [ ] GitHub commit
+3. **Database Migration Strategy** (1-2 hours)
+   - Production migration plan for Action tables
+   - Rollback procedures
+   - Zero-downtime deployment
 
-## Priority 1 - Growth Infrastructure Deployment
+4. **Monitoring Setup** (2-3 hours)
+   - Action execution metrics
+   - Recommender performance tracking
+   - Alert thresholds (failure rate, latency)
 
-### Task 2: Deploy Action System
-**Goal**: Action API + executors in production
+5. **Deployment Runbook** (1-2 hours)
+   - Step-by-step production deploy
+   - Rollback procedures
+   - Incident response plan
 
-**Requirements**:
-- Deploy updated Prisma schema
-- Deploy Action API routes
-- Deploy executor services
-- Configure auto-scaling
+**Priority 1: CI/CD Enhancement** (Week 2 - 10-12 hours)
 
-**Deliverables**:
-- [ ] Supabase migrations deployed
-- [ ] Action API endpoints live
-- [ ] Executors operational
-- [ ] Health checks passing
-- [ ] Fly MCP verification
+6. **Automated Testing Pipeline** (3 hours)
+   - Pre-deploy test gates (unit, integration, E2E)
+   - Performance benchmarks
+   - Security scans
 
-### Task 3: Deploy Data Pipelines
-**Goal**: GA, GSC, webhook infrastructure live
+7. **Blue-Green Deployment** (3-4 hours)
+   - Zero-downtime deployments
+   - Traffic switching mechanism
+   - Automatic rollback on errors
 
-**Requirements**:
-- BigQuery credentials configured
-- Webhook endpoints deployed
-- Queue infrastructure (if needed)
-- Monitoring enabled
+8. **Feature Flags** (2 hours)
+   - Toggle recommenders independently
+   - Gradual rollout controls
+   - A/B test deployment
 
-**Deliverables**:
-- [ ] GA pipeline deployed
-- [ ] GSC pipeline deployed
-- [ ] Webhooks operational
-- [ ] Data flowing correctly
-- [ ] Fly MCP verification
+9. **Database Backup Automation** (2 hours)
+   - Hourly backups during growth deployment
+   - Point-in-time recovery
+   - Backup retention (30 days)
 
-### Task 4: Deploy Recommender Services
-**Goal**: AI recommenders running on schedule
+**Priority 2: Advanced Ops** (Week 3 - 8-10 hours)
 
-**Requirements**:
-- LlamaIndex MCP accessible
-- Cron jobs or queue workers
-- Resource limits configured
-- Error alerting enabled
+10. **Multi-Region Deployment** (3 hours)
+11. **Chaos Engineering** (2 hours)
+12. **Cost Optimization** (2 hours)
+13. **Performance Tuning** (2-3 hours)
 
-**Deliverables**:
-- [ ] Recommenders deployed
-- [ ] Scheduling operational
-- [ ] Actions being generated
-- [ ] Monitoring dashboards
-- [ ] Fly MCP verification
+## Evidence & Compliance
 
-## Priority 2 - Monitoring & Ops
-
-### Task 5: Build Monitoring Dashboards (Growth Spec H3)
-**Goal**: Real-time visibility into growth automation
-
-**Dashboards Needed**:
-- Action throughput (actions/hour)
-- Recommender performance (actions generated, confidence)
-- Executor success rate
-- Data pipeline health
-- Error rates and types
-
-**Deliverables**:
-- [ ] Grafana/monitoring dashboards
-- [ ] Alerting rules configured
-- [ ] SLOs defined
-- [ ] On-call runbooks
-
-### Task 6: Backup & Rollback Automation (Growth Spec H4)
-**Goal**: Disaster recovery capabilities
-
-**Requirements**:
-- Database backup automation
-- Config rollback procedures
-- Blue-green deployment capability
-- Rollback drill documentation
-
-**Deliverables**:
-- [ ] Automated backups configured
-- [ ] Rollback procedures tested
-- [ ] Recovery time objectives (RTO) met
-- [ ] Drill results documented
-
-## Build Deployment Automation, Not Manual Deploys
-
-**✅ RIGHT**:
-- Build CI/CD pipelines (automated deployment)
-- Build monitoring dashboards (automated visibility)
-- Build rollback automation (automated recovery)
-
-**❌ WRONG**:
-- Manually deploy each service
-- Manually check logs
-- Manual backup procedures
-
-## Evidence Required
-
-- Fly.io MCP verification
-- Deployment logs
-- Health check results
-- Monitoring screenshots
+Report every 2 hours:
+```
+## YYYY-MM-DDTHH:MM:SSZ — Deployment: [Task] [Status]
+**Working On**: [P0 task]
+**Progress**: [% or milestone]
+**Evidence**: 
+- Config: [file path]
+- Deploy: [Fly app status]
+- Health: [endpoint check]
+**Blockers**: [None or details]
+**Next**: [Next task]
+```
 
 ## Success Criteria
 
-**Week 1 Complete When**:
-- [ ] Secrets removed from repo (CRITICAL)
-- [ ] Action system deployed to production
-- [ ] Data pipelines operational
-- [ ] Recommenders running on schedule
-- [ ] Monitoring dashboards live
-- [ ] Backup/rollback tested
+**P0 Complete**: Production ready, secrets secured, monitoring live  
+**P1 Complete**: CI/CD automated, blue-green working, backups hourly  
+**P2 Complete**: Multi-region, chaos tested, cost optimized
 
-## Report Every 2 Hours
+## Timeline
 
-Update `feedback/deployment.md`:
-- Deployment progress
-- Services deployed
-- Health status
-- Security fixes completed
-- Evidence (Fly MCP, health checks)
+- Week 1: 8-10 hours (Production prep)
+- Week 2: 10-12 hours (CI/CD)
+- Week 3: 8-10 hours (Advanced)
+- **Total**: 26-32 hours
 
 ---
 
-**Remember**: Build DEPLOYMENT AUTOMATION, not manual deployment procedures. Automate everything.
+**Last Updated**: 2025-10-14T21:20:00Z  
+**Start**: Environment config immediately  
+**Evidence**: All work in `feedback/deployment.md`

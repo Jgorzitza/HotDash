@@ -1,240 +1,112 @@
-# Integrations Agent Direction
-**Updated**: 2025-10-14
-**Priority**: GROWTH SPEC EXECUTION
-**Focus**: Build Shopify Automation Layer
+---
+epoch: 2025.10.E1
+doc: docs/directions/integrations.md
+owner: manager
+last_reviewed: 2025-10-14
+expires: 2025-10-21
+---
+# Integrations — Direction
 
-## Mission
+## Canon
+- North Star: docs/NORTH_STAR.md
+- Git & Delivery Protocol: docs/git_protocol.md
+- Direction Governance: docs/directions/README.md
+- Credential Map: docs/ops/credential_index.md
 
-Build **Shopify integration layer** that enables automated storefront actions. NOT manually updating Shopify - build the SYSTEMS that execute actions automatically.
+## Current Sprint Focus — Growth Data Integration (2025-10-14)
 
-## Current State (Growth Audit)
+**Status**: Shopify automation complete ✅, GA/GSC integration needs enhancement
 
-**Finding**: No storefront automation (Growth Spec D1-D5)
-- No programmatic page factory
-- No structured data generation
-- No canonical management
-- No internal link orchestration
-- No search synonym control
+**Priority 0: Data Pipeline Enhancement** (This Week - 8-10 hours)
 
-**Your Role**: Build Shopify automation that executes Actions
+1. **Google Search Console Enhancement** (2-3 hours)
+   - Add filtering for organic traffic only
+   - Anomaly detection math (WoW delta)
+   - BigQuery export setup
+   - Deliverable: Enhanced GSC client
 
-## Priority 0 - Webhook Infrastructure (COORDINATES WITH ENGINEER)
+2. **GA4 Organic Aggregation** (2-3 hours)
+   - Filter: sessionDefaultChannelGroup=Organic Search
+   - Calculate proper WoW delta (not hard-coded 0)
+   - Store aggregated metrics
+   - Deliverable: `app/services/ga/organic-aggregation.server.ts`
 
-### Task 1: Shopify Webhook Handlers (WITH ENGINEER) (3-4 hours)
-**Goal**: Reliable webhook ingestion with HMAC + idempotency
+3. **Shopify Webhook Security** (2 hours)
+   - HMAC validation for all webhooks
+   - Idempotency keys
+   - Replay protection
+   - Deliverable: Secure webhook middleware
 
-**Requirements** (Growth Spec A3):
-- Coordinate with Engineer on implementation
-- Provide Shopify API expertise
-- Verify HMAC validation
-- Test with Shopify MCP
+4. **Webhook Queue System** (2-3 hours)
+   - Durable queue for Chatwoot/Shopify webhooks
+   - Retry logic with exponential backoff
+   - Dead letter queue
+   - Deliverable: Queue service with Supabase
 
-**Your Contribution**:
-- [ ] Provide Shopify webhook documentation
-- [ ] Verify HMAC implementation
-- [ ] Test webhook payloads
-- [ ] Shopify MCP validation
-- [ ] Document webhook types needed
+**Priority 1: Advanced Integration** (Week 2 - 10-12 hours)
 
-## Priority 1 - Storefront Automation Executors
+5. **Lighthouse CI Integration** (2-3 hours)
+   - Automated CWV measurements
+   - Daily performance snapshots
+   - Alert on regressions
 
-### Task 2: Build Page Factory Executor (6-8 hours)
-**Goal**: Programmatic page creation/updates
+6. **Shopify Inventory Webhooks** (2 hours)
+   - Track inventory changes
+   - Feed into recommenders
+   - HMAC + idempotency
 
-**Requirements** (Growth Spec D1):
+7. **Shopify Order Webhooks** (2 hours)
+   - Order data for purchase patterns
+   - Revenue attribution tracking
+   - Secure processing
 
-```typescript
-// app/services/shopify/page-factory.server.ts
-class PageFactoryExecutor implements ActionExecutor {
-  async execute(action: Action) {
-    const { pageType, content, metafields } = action.payload;
-    
-    // 1. Create/update page via Shopify Admin API
-    const page = await shopify.createPage({
-      title: content.title,
-      body_html: content.body,
-      metafields: metafields,
-    });
-    
-    // 2. Add structured data
-    await addStructuredData(page.id, content.schema);
-    
-    // 3. Set canonical URL
-    await setCanonical(page.id, content.canonical);
-    
-    // 4. Return outcome
-    return { pageId: page.id, url: page.url };
-  }
-  
-  async rollback(action: Action) {
-    // Delete or revert page
-  }
-}
+8. **Email Integration** (2-3 hours)
+   - SendGrid/Postmark setup
+   - Email operator summaries
+   - Action approval notifications
+
+9. **Slack Integration** (2 hours)
+   - Alert on critical events
+   - Daily summary posts
+   - Escalation notifications
+
+**Priority 2: Optimization** (Week 3 - 8-10 hours)
+
+10. **API Rate Limiting** (2 hours)
+11. **Caching Strategy** (2 hours)
+12. **Error Recovery** (2-3 hours)
+13. **Integration Monitoring** (2-3 hours)
+
+## Evidence & Compliance
+
+Report every 2 hours:
 ```
-
-**Deliverables**:
-- [ ] Page factory executor implemented
-- [ ] Shopify Admin API integration
-- [ ] Metafields support
-- [ ] Verify with Shopify MCP
-- [ ] Integration tests
-- [ ] GitHub commit
-
-### Task 3: Build Structured Data Generator (4-6 hours)
-**Goal**: SEO schema injection
-
-**Requirements** (Growth Spec D2):
-
-**Supported Schemas**:
-- Product schema (price, availability, reviews)
-- FAQ schema
-- How-to schema
-- BreadcrumbList schema
-- Organization schema
-
-**Implementation**:
-- [ ] Schema generator service
-- [ ] Validation against schema.org
-- [ ] Injection via Shopify metafields or theme
-- [ ] Shopify MCP validation
-- [ ] GitHub commit
-
-### Task 4: Build Canonical Manager (3-4 hours)
-**Goal**: Automated canonical URL management
-
-**Requirements** (Growth Spec D3):
-- Detect duplicate content
-- Set canonical tags
-- Handle variant pages
-- Cross-domain canonicals
-
-**Deliverables**:
-- [ ] Canonical detection logic
-- [ ] Shopify theme integration
-- [ ] Bulk canonical updates
-- [ ] Verify with Shopify MCP
-- [ ] GitHub commit
-
-### Task 5: Build Internal Link Orchestrator (4-6 hours)
-**Goal**: Automated internal linking
-
-**Requirements** (Growth Spec D4):
-- Analyze content relevance
-- Generate contextual links
-- Update page content with links
-- Track link graph
-
-**Deliverables**:
-- [ ] Link relevance algorithm
-- [ ] Content update service
-- [ ] Link graph tracking
-- [ ] Shopify MCP validation
-- [ ] GitHub commit
-
-### Task 6: Build Search Synonym Controller (3-4 hours)
-**Goal**: Automated search synonym management
-
-**Requirements** (Growth Spec D5):
-- Analyze search queries
-- Generate synonym mappings
-- Update Shopify search config
-- Track search performance
-
-**Deliverables**:
-- [ ] Synonym generation logic
-- [ ] Shopify search API integration
-- [ ] Performance tracking
-- [ ] Shopify MCP validation
-- [ ] GitHub commit
-
-## Priority 2 - Metaobject Automation
-
-### Task 7: Build Metaobject Executor (4-6 hours)
-**Goal**: Create/update metaobjects from AI recommendations
-
-**Requirements** (Growth Spec C2):
-```typescript
-// app/services/shopify/metaobject-executor.server.ts
-class MetaobjectExecutor implements ActionExecutor {
-  async execute(action: Action) {
-    const { type, definition, entries } = action.payload;
-    
-    // 1. Create/verify definition
-    const def = await shopify.createMetaobjectDefinition(definition);
-    
-    // 2. Create entries
-    const created = await Promise.all(
-      entries.map(entry => 
-        shopify.createMetaobject({
-          type: def.type,
-          fields: entry.fields
-        })
-      )
-    );
-    
-    // 3. Link to products/pages
-    await linkMetaobjects(created, action.payload.linkTo);
-    
-    return { definitionId: def.id, entryIds: created.map(c => c.id) };
-  }
-}
+## YYYY-MM-DDTHH:MM:SSZ — Integrations: [Task] [Status]
+**Working On**: [P0 task]
+**Progress**: [% or milestone]
+**Evidence**: 
+- Integration: [service name]
+- Tests: [X/Y passing]
+- Security: [HMAC verified]
+**Blockers**: [None or details]
+**Next**: [Next integration]
 ```
-
-**Deliverables**:
-- [ ] Metaobject executor implemented
-- [ ] Definition management
-- [ ] Entry creation
-- [ ] Product/page linking
-- [ ] Shopify MCP validation
-- [ ] GitHub commit
-
-## Principles for All Work
-
-**Build Executors, Not Execute Manually**:
-- ✅ Build page factory executor (creates 100s of pages)
-- ❌ Manually create individual Shopify pages (not scalable)
-
-**Build Automation, Not Manual Updates**:
-- ✅ Build canonical manager (handles all pages automatically)
-- ❌ Manually set canonicals one by one (one-off work)
-
-**Shopify MCP First**:
-- Verify ALL Shopify GraphQL with Shopify MCP
-- Validate queries before implementation
-- Test with conservative token limits
-- Never trust training data for Shopify APIs
-
-**Evidence Required**:
-- Git commits for all executor code
-- Shopify MCP validation screenshots
-- Integration test results
-- Working executor demonstrations
-
-**Report Every 2 Hours**:
-- Update `feedback/integrations.md` with progress
-- Log evidence (commits, Shopify MCP validation, tests)
-- Escalate blockers immediately
-- NO verbatim GraphQL responses (summary only)
 
 ## Success Criteria
 
-**Week 1 Complete When**:
-- [ ] Webhook handlers operational (HMAC + idempotency)
-- [ ] Page factory executor working
-- [ ] Structured data generator operational
-- [ ] Canonical manager implemented
-- [ ] At least 1 additional executor (links/synonyms/metaobjects)
-- [ ] All verified with Shopify MCP
+**P0 Complete**: GSC enhanced, GA4 accurate, Webhooks secure, Queue operational  
+**P1 Complete**: All integrations live, Monitoring active  
+**P2 Complete**: Rate limits enforced, Caching optimized
 
-**This enables**: AI recommendations can execute automatically on Shopify storefronts
+## Timeline
 
-## Blockers to Escalate
-
-- Action API not ready → Engineer agent
-- Shopify API rate limits → Deployment agent
-- GraphQL schema questions → Use Shopify MCP
-- Executor design questions → Product agent
+- Week 1: 8-10 hours (Core enhancements)
+- Week 2: 10-12 hours (Advanced)
+- Week 3: 8-10 hours (Optimization)
+- **Total**: 26-32 hours
 
 ---
 
-**Remember**: You're building the SHOPIFY AUTOMATION LAYER that executes actions, not doing Shopify updates manually. Build systems that scale.
+**Last Updated**: 2025-10-14T21:20:00Z  
+**Start**: GSC enhancement immediately  
+**Evidence**: All work in `feedback/integrations.md`
