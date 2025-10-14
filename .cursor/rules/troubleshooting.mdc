@@ -1,0 +1,212 @@
+---
+description: Common issues and troubleshooting patterns for HotDash development
+---
+# Troubleshooting Guide
+
+## LlamaIndex MCP Issues
+
+### Issue: query_support returns errors
+**Symptoms**: 100% error rate, "Cannot read properties of undefined"
+
+**Recent Fixes** (2025-10-14):
+1. ✅ Parameter name mismatch - Handler expected `q` but calls sent `query`
+   - Fix: Accept both parameters in [apps/llamaindex-mcp-server/src/handlers/query.ts](mdc:apps/llamaindex-mcp-server/src/handlers/query.ts)
+
+2. ✅ Missing dependency - `@llamaindex/openai` not in package.json
+   - Fix: Added to [scripts/ai/llama-workflow/package.json](mdc:scripts/ai/llama-workflow/package.json)
+
+3. ✅ Docker build context - scripts directory excluded
+   - Fix: Updated [.dockerignore](mdc:.dockerignore) to include llama-workflow
+
+4. ⏸️ **Current blocker**: Missing environment variables
+   - Error: "SUPABASE_URL: Invalid input: expected string, received undefined"
+   - Fix needed: `fly secrets set SUPABASE_URL=<url> SUPABASE_ANON_KEY=<key> OPENAI_API_KEY=<key> --app hotdash-llamaindex-mcp`
+
+### Testing MCP Tools
+```bash
+# Test query_support
+curl -X POST https://hotdash-llamaindex-mcp.fly.dev/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "query_support", "arguments": {"query": "test"}}}'
+
+# Check health
+curl https://hotdash-llamaindex-mcp.fly.dev/health
+```
+
+## Shopify GraphQL Issues
+
+### Issue: Deprecated field errors
+**Common outdated patterns** (2023 API):
+- ❌ `financialStatus` → ✅ `displayFinancialStatus`
+- ❌ `availableQuantity` → ✅ `quantities(names: ["available"]) { name quantity }`
+- ❌ Old mutation structures → ✅ Modern mutation patterns
+
+**Solution**: Always validate with Shopify MCP before implementing queries
+
+### Validation Process
+1. Write GraphQL query
+2. Use `mcp_shopify_validate_graphql_codeblocks` to validate
+3. Fix any deprecated fields
+4. Re-validate until passing
+5. Implement validated query
+
+## Docker Build Issues
+
+### Issue: Files not found during build
+**Symptoms**: "not found" errors for scripts, src files
+
+**Common causes**:
+1. **.dockerignore excluding required files** - Check [.dockerignore](mdc:.dockerignore)
+2. **Wrong build context** - Deploy from project root, not subdirectory
+3. **Missing dependencies** - Check package.json includes all imports
+
+**Solution**:
+```bash
+# Always deploy from project root
+cd ~/HotDash/hot-dash
+fly deploy --config apps/<service>/fly.toml --dockerfile apps/<service>/Dockerfile
+```
+
+## TypeScript Build Errors
+
+### Issue: Module not found errors
+**Common causes**:
+1. Missing dependency in package.json
+2. Incorrect import path
+3. ESM vs CommonJS mismatch
+
+**Solution**:
+```bash
+# Check what's imported
+grep -r "from '@package'" <directory>
+
+# Verify in package.json
+grep "@package" package.json
+
+# Add if missing
+npm install @package
+```
+
+### Issue: Type errors in strict mode
+**Solution**: Enable strict TypeScript checking incrementally
+- Fix one file at a time
+- Use proper type imports: `import type { ... }`
+- Avoid `any` - use `unknown` and type guards instead
+
+## Git & Stash Issues
+
+### Issue: Cannot pull with uncommitted changes
+**Solution**:
+```bash
+# Stash changes with descriptive message
+git stash push --include-untracked --message "descriptive-name-YYYY-MM-DD"
+
+# Pull latest
+git pull --rebase
+
+# Restore changes
+git stash pop
+```
+
+### Issue: Merge conflicts in stash pop
+**Solution**:
+```bash
+# Apply without removing from stash
+git stash apply stash@{n}
+
+# Resolve conflicts manually
+# Then drop the stash
+git stash drop stash@{n}
+```
+
+## Deployment Issues
+
+### Issue: Service unhealthy after deploy
+**Diagnosis**:
+```bash
+# Check status
+fly status --app <app-name>
+
+# View logs
+fly logs --app <app-name>
+
+# Check secrets
+fly secrets list --app <app-name>
+```
+
+**Common fixes**:
+1. Missing environment variables
+2. Port mismatch in configuration
+3. Health check endpoint not responding
+4. Startup command incorrect
+
+### Issue: Auto-stop too aggressive
+**Solution**: Check `fly.toml` auto_stop_machines configuration
+
+## Performance Issues
+
+### Issue: Slow dashboard loading
+**Check**:
+1. Caching enabled? See [app/utils/cache.server.ts](mdc:app/utils/cache.server.ts)
+2. Parallel fetching? Use `Promise.all()`
+3. Lazy loading? Components should be lazy loaded
+4. Query optimization? Check [app/utils/query-optimizer.server.ts](mdc:app/utils/query-optimizer.server.ts)
+
+**Performance targets**:
+- Dashboard load: <1 second
+- API responses: <500ms
+- Cache hit rate: >80%
+
+## Common Commands
+
+### Development
+```bash
+# Type checking
+npm run typecheck
+
+# Linting
+npm run lint
+
+# Local development
+npm run dev
+
+# Database operations
+npx supabase start
+npx supabase db push
+```
+
+### Deployment
+```bash
+# Deploy service
+fly deploy --config apps/<service>/fly.toml --dockerfile apps/<service>/Dockerfile --ha=false
+
+# Check health
+curl https://<app-name>.fly.dev/health
+
+# View logs (with timeout to prevent stalls)
+timeout 10 fly logs --app <app-name>
+```
+
+### Git Operations
+```bash
+# Status with branch info
+git status -sb
+
+# Stash with message
+git stash push --include-untracked --message "descriptive-name"
+
+# Commit with evidence
+git commit -m "type(scope): description
+
+- Detail 1
+- Detail 2
+- Evidence/results"
+```
+
+## Escalation Path
+When stuck after 2 retry attempts:
+1. Document the issue in feedback file
+2. Include full error logs and commands tried
+3. Flag as blocker with P0/P1 priority
+4. Tag relevant agents or manager
+5. Move to next task while waiting for resolution

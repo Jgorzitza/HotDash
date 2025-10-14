@@ -1,0 +1,43 @@
+---
+globs: app/services/shopify/*.ts,app/routes/app.*.tsx
+description: Shopify integration patterns and GraphQL queries
+---
+# Shopify Integration Guidelines
+
+## CRITICAL: Validate ALL GraphQL Queries
+**ALWAYS** validate Shopify GraphQL with Shopify MCP before implementing.
+
+Agent training data contains outdated Shopify API patterns (2023 or older).
+
+## Shopify Client
+Base client: [app/services/shopify/client.ts](mdc:app/services/shopify/client.ts)
+
+Example services:
+- Orders: [app/services/shopify/orders.ts](mdc:app/services/shopify/orders.ts)
+- Inventory: [app/services/shopify/inventory.ts](mdc:app/services/shopify/inventory.ts)
+
+## Error Handling Pattern
+```typescript
+const payload = await response.json();
+
+if (payload.errors) {
+  throw new ServiceError(
+    payload.errors.map((err) => err.message).join("; "),
+    { scope: "shopify.orders", statusCode: response.status }
+  );
+}
+```
+
+## App Bridge Authentication
+Use authenticated fetch: [app/hooks/useAuthenticatedFetch.ts](mdc:app/hooks/useAuthenticatedFetch.ts)
+
+## Configuration
+- Shopify config: [shopify.app.toml](mdc:shopify.app.toml)
+- Environment: [app/utils/env.server.ts](mdc:app/utils/env.server.ts)
+  - SHOPIFY_API_KEY
+  - SHOPIFY_API_SECRET
+  - SHOPIFY_APP_URL
+  - SCOPES
+
+## Testing
+Always test Shopify queries in development before deploying.

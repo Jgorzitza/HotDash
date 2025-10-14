@@ -1,0 +1,142 @@
+---
+description: OpenAI and LlamaIndex integration patterns
+---
+
+# AI and LlamaIndex Integration
+
+## Architecture
+
+### Agent SDK (hotdash-agent-service)
+- OpenAI Structured Outputs API for agent actions
+- Deployed on Fly.io (hotdash-agent-service.fly.dev)
+- Handles: Customer support automation, action suggestions
+- Schema: Zod schemas (use `.nullable()` not `.optional()` for OpenAI compatibility)
+
+### LlamaIndex MCP (hotdash-llamaindex-mcp)
+- RAG (Retrieval Augmented Generation) for knowledge base
+- Deployed on Fly.io (hotdash-llamaindex-mcp.fly.dev)
+- Indexes: Support docs, product catalogs, technical guides
+- Query endpoint: Context-aware responses
+
+## Knowledge Base Structure
+
+### Content Organization
+Location: `data/support/kb-*.md`
+
+**Format Requirements**:
+- YAML frontmatter with title, category, tags
+- Structured content (tables, lists, clear headings)
+- Scannable format (AI parses easily)
+- Cross-references to related articles
+
+### Content Types
+1. **Fundamentals**: Core concepts (AN fittings, sizing, threads)
+2. **Comparisons**: Product comparisons (PTFE vs braided)
+3. **Procedures**: Step-by-step guides (installation, troubleshooting)
+4. **References**: Specifications, charts, formulas
+
+### Indexing Process
+```bash
+# Build LlamaIndex from knowledge base
+cd scripts/ai/llama-workflow
+npm run build-index
+
+# Verify index
+npm run query-index "test query"
+```
+
+## OpenAI Integration
+
+### Structured Outputs
+
+**Zod Schema Requirements**:
+- Use `.nullable()` for optional fields (not `.optional()`)
+- Provide clear descriptions for all fields
+- Enum values must be specific and documented
+- Example: See Agent SDK schemas for reference
+
+**Common Pattern**:
+```typescript
+import { z } from 'zod';
+
+const CustomerInquirySchema = z.object({
+  inquiry_type: z.enum(['product_question', 'order_status', 'technical_support']),
+  customer_message: z.string(),
+  suggested_response: z.string(),
+  confidence_score: z.number().min(0).max(1),
+  requires_human_review: z.boolean(),
+  escalation_reason: z.string().nullable(), // Use .nullable() not .optional()
+});
+```
+
+### API Key Management
+- Keys stored in `vault/occ/openai/`
+- Staging: `api_key_staging.env`
+- Production: `api_key_prod.env` (compliance-gated)
+- Rate limiting and error handling required
+
+### Cost Monitoring
+- Log all API calls with token counts
+- Monitor monthly spending
+- Set budget alerts
+- Use cheaper models for testing (gpt-4o-mini)
+
+## RAG Query Patterns
+
+### Effective Queries
+```typescript
+// Good: Specific with context
+"What AN size fuel line for 500 HP EFI engine with E85?"
+
+// Bad: Too vague
+"What size line?"
+
+// Good: Includes application details
+"PTFE hose assembly procedure for AN-6 reusable ends"
+
+// Bad: Missing specifics
+"How to assemble hose?"
+```
+
+### Context Enhancement
+- Include customer's vehicle/application in query
+- Reference previous conversation context
+- Use technical terminology from knowledge base
+
+## MCP Integration
+
+### Supabase MCP Tools
+Available tools for database operations:
+- `list_tables`: Show database schema
+- `apply_migration`: Execute DDL (use for schema changes)
+- `get_advisors`: Security and performance checks
+- `get_logs`: Service logs for debugging
+
+### Best Practices
+- Run `get_advisors` after database changes (checks for missing RLS policies)
+- Use migrations for schema changes (never manual SQL in production)
+- Test migrations on local Supabase first
+- Document migrations with clear names (snake_case)
+
+## Error Handling
+
+### OpenAI Errors
+- Rate limiting: Implement exponential backoff
+- Invalid schema: Log error, fix schema, retry
+- Timeout: Set reasonable timeout (30s typical)
+- Cost limits: Stop if monthly budget exceeded
+
+### LlamaIndex Errors
+- Index not found: Rebuild index
+- Query timeout: Simplify query or increase timeout
+- Empty results: Expand knowledge base coverage
+
+## Monitoring
+
+### AI Performance Metrics
+- Query response time (<2s target)
+- RAG accuracy (operator ratings)
+- OpenAI API success rate (>99%)
+- Cost per query (<$0.01 target)
+
+Log metrics in `feedback/ai.md` for trend analysis.

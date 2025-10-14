@@ -1,0 +1,407 @@
+---
+globs: app/**/*.ts,app/**/*.tsx,*.ts,*.tsx
+---
+# TypeScript and React Router 7 Standards
+
+## React Router 7 Patterns
+
+**IMPORTANT**: Training data contains React Router v6/Remix patterns. Always verify with Context7 MCP.
+
+### Route File Structure
+```typescript
+// app/routes/app.my-route.tsx
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
+import { authenticate } from "../shopify.server";
+
+// Loader for GET requests
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { session, admin } = await authenticate.admin(request);
+  
+  // Fetch data
+  const data = await fetchData();
+  
+  return Response.json(data);
+}
+
+// Action for POST/PUT/DELETE requests
+export async function action({ request }: ActionFunctionArgs) {
+  const { session, admin } = await authenticate.admin(request);
+  
+  // Handle form submission
+  const formData = await request.formData();
+  
+  return Response.json({ success: true });
+}
+
+// Component
+export default function MyRoute() {
+  return <div>Content</div>;
+}
+```
+
+### Authentication Pattern
+**ALWAYS** authenticate first in loaders/actions:
+```typescript
+export async function loader({ request }: LoaderFunctionArgs) {
+  // FIRST: Authenticate
+  const { session, admin } = await authenticate.admin(request);
+  
+  // THEN: Your logic
+  // ...
+}
+```
+
+### Data Fetching
+Use loaders for data fetching (not useEffect):
+```typescript
+// ✅ CORRECT: Use loader
+export async function loader({ request }: LoaderFunctionArgs) {
+  const data = await fetchData();
+  return Response.json(data);
+}
+
+export default function Route() {
+  const data = useLoaderData<typeof loader>();
+  return <div>{data.value}</div>;
+}
+
+// ❌ WRONG: Don't use useEffect for initial data
+export default function Route() {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetchData().then(setData); // Wrong!
+  }, []);
+}
+```
+
+## TypeScript Best Practices
+
+### Type Safety
+```typescript
+// Use proper types, not 'any'
+interface MyData {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+// Use type inference from loaders
+const data = useLoaderData<typeof loader>();
+
+// Use Zod for runtime validation
+import { z } from "zod";
+const MySchema = z.object({ ... });
+type MyType = z.infer<typeof MySchema>;
+```
+
+### Strict Mode
+Follow strict TypeScript:
+- No `any` types (use `unknown` if truly unknown)
+- Enable `strict: true` in tsconfig
+- Handle null/undefined explicitly
+- Use optional chaining: `data?.field`
+- Use nullish coalescing: `value ?? default`
+
+### Error Handling
+```typescript
+try {
+  const result = await riskyOperation();
+  return Response.json(result);
+} catch (error) {
+  console.error("Operation failed:", error);
+  return Response.json(
+    { error: "Operation failed", timestamp: new Date().toISOString() },
+    { status: 500 }
+  );
+}
+```
+
+## Validation with Zod
+
+### Schema Definition
+```typescript
+import { z } from "zod";
+
+export const MySchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(100),
+  age: z.number().int().min(0).optional(),
+  tags: z.array(z.string()).default([]),
+});
+
+export type MyType = z.infer<typeof MySchema>;
+```
+
+### Validation in Actions
+```typescript
+import { validateInput } from "~/schemas/validation";
+
+export async function action({ request }: ActionFunctionArgs) {
+  const data = await request.json();
+  
+  const result = validateInput(MySchema, data);
+  if (!result.success) {
+    return Response.json(
+      validationErrorResponse(result.errors),
+      { status: 400 }
+    );
+  }
+  
+  // Use validated data
+  const validated = result.data;
+}
+```
+
+## Component Best Practices
+
+### Shopify Polaris Components
+```typescript
+// Use Polaris web components (s- prefix)
+export default function MyPage() {
+  return (
+    <s-page heading="My Page Title">
+      <s-section heading="Section Title">
+        <s-card>
+          <s-text>Content here</s-text>
+        </s-card>
+      </s-section>
+    </s-page>
+  );
+}
+```
+
+### Component Organization
+```typescript
+// One component per file
+// Props interface before component
+interface MyComponentProps {
+  title: string;
+  onAction: () => void;
+  data?: MyData;
+}
+
+export function MyComponent({ title, onAction, data }: MyComponentProps) {
+  return <div>{title}</div>;
+}
+```
+
+### Hooks
+```typescript
+// Custom hooks: use prefix
+function useMyFeature() {
+  const [state, setState] = useState();
+  return { state, setState };
+}
+
+// Shopify App Bridge
+import { useAuthenticatedFetch } from "~/hooks/useAuthenticatedFetch";
+
+const fetch = useAuthenticatedFetch();
+const response = await fetch("/api/endpoint");
+```
+
+## API Route Patterns
+
+### Response Formats
+```typescript
+// Success response
+return Response.json({
+  data: result,
+  timestamp: new Date().toISOString(),
+});
+
+// Error response
+return Response.json({
+  error: "Error message",
+  details: ["Specific error 1"],
+  timestamp: new Date().toISOString(),
+}, { status: 400 });
+
+// Validation error
+return Response.json({
+  error: "Validation failed",
+  details: validationErrors,
+  timestamp: new Date().toISOString(),
+}, { status: 400 });
+```
+
+### HTTP Status Codes
+- 200: Success
+- 201: Created
+- 400: Bad Request (validation errors)
+- 401: Unauthorized (not authenticated)
+- 403: Forbidden (authenticated but not authorized)
+- 404: Not Found
+- 429: Too Many Requests (rate limited)
+- 500: Internal Server Error
+
+## Database Patterns
+
+### Prisma Usage
+```typescript
+import prisma from "~/db.server";
+
+// Query
+const users = await prisma.user.findMany({
+  where: { active: true },
+  include: { profile: true },
+});
+
+// Create
+const user = await prisma.user.create({
+  data: { name: "John", email: "john@example.com" },
+});
+
+// Update
+const updated = await prisma.user.update({
+  where: { id: userId },
+  data: { name: "Jane" },
+});
+```
+
+### Supabase Direct SQL
+For complex queries, use Supabase client:
+```typescript
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
+
+const { data, error } = await supabase
+  .from("my_table")
+  .select("*")
+  .eq("status", "active");
+```
+
+## Security Patterns
+
+### Secrets Loading
+```typescript
+// ✅ CORRECT
+const apiKey = process.env.MY_API_KEY;
+if (!apiKey) {
+  throw new Error("MY_API_KEY environment variable required");
+}
+
+// ❌ WRONG - Never hardcode
+const apiKey = "[REDACTED]"; // NEVER DO THIS
+```
+
+### Safe Error Messages
+```typescript
+// ✅ CORRECT - Generic message
+catch (error) {
+  console.error("Database query failed:", error);
+  return Response.json(
+    { error: "Failed to fetch data" },
+    { status: 500 }
+  );
+}
+
+// ❌ WRONG - Exposes internals
+catch (error) {
+  return Response.json(
+    { error: error.message }, // Might expose SQL, paths, etc.
+    { status: 500 }
+  );
+}
+```
+
+## File Organization
+
+### Import Order
+1. External libraries (react, react-router)
+2. Internal utilities (~/utils/*)
+3. Internal components (~/components/*)
+4. Internal services (~/services/*)
+5. Types and schemas
+6. Relative imports
+
+Example:
+```typescript
+import { useState } from "react";
+import type { LoaderFunctionArgs } from "react-router";
+
+import { authenticate } from "../shopify.server";
+import { validateInput } from "~/schemas/validation";
+import { MyComponent } from "~/components/MyComponent";
+import { fetchData } from "~/services/data.server";
+
+import type { MyType } from "./types";
+```
+
+### File Naming
+- Routes: kebab-case (`app.my-route.tsx`)
+- Components: PascalCase (`MyComponent.tsx`)
+- Utils: camelCase (`validation.server.ts`)
+- Server-only: `.server.ts` suffix
+- Types: `.types.ts` or inline
+
+## Common Mistakes to Avoid
+
+### React Router 7 Specific
+- ❌ Don't use Remix patterns (v6 is different)
+- ❌ Don't use `useLoaderData` without proper typing
+- ❌ Don't skip authentication in loaders/actions
+- ✅ Always verify patterns with Context7 MCP
+
+### Security
+- ❌ Don't hardcode secrets
+- ❌ Don't skip input validation
+- ❌ Don't expose error details to clients
+- ❌ Don't forget rate limiting on API routes
+- ✅ Always authenticate, validate, sanitize
+
+### Database
+- ❌ Don't create tables without RLS
+- ❌ Don't use SECURITY DEFINER views (bypass RLS)
+- ❌ Don't forget updated_at triggers
+- ✅ Always enable RLS, use proper foreign keys
+
+## Code Quality
+
+### Comments
+```typescript
+/**
+ * Fetch customer support conversations for dashboard
+ * 
+ * @param shopDomain - Shopify shop domain
+ * @param limit - Max conversations to return (1-100)
+ * @returns Array of conversation summaries
+ */
+export async function getConversations(
+  shopDomain: string,
+  limit: number = 20
+): Promise<Conversation[]> {
+  // Implementation
+}
+```
+
+### Logging
+```typescript
+// ✅ GOOD - Structured, no secrets
+console.log("Fetching conversations", { 
+  shop: shopDomain, 
+  count: limit 
+});
+
+// ❌ BAD - Exposes secrets
+console.log("API key:", apiKey); // NEVER!
+```
+
+## Performance
+
+### Optimization
+- Use React.memo for expensive components
+- Implement pagination (never fetch all records)
+- Cache API responses when appropriate
+- Use Supabase views for complex aggregations
+- Lazy load heavy components
+
+### Limits
+- Max items per page: 100
+- Max GraphQL query depth: 10
+- Max file upload: 10MB
+- Request timeout: 30 seconds

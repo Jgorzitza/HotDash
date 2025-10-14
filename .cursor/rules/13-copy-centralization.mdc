@@ -1,0 +1,70 @@
+---
+description: Copy centralization strategy and content organization
+---
+# Copy Centralization Guidelines
+
+## Current State (Needs Implementation)
+Copy is currently hardcoded in components. Need to centralize.
+
+## Planned Structure
+```
+app/copy/
+  error-messages.ts    # All error messages
+  help-text.ts         # All help text and tooltips
+  ui-copy.ts           # All UI strings (tile names, labels, buttons)
+  email-templates.ts   # All email content
+  theme-hotrod.ts      # Hot Rod AN themed variants (optional)
+```
+
+## Error Messages Pattern (from [docs/design/error_message_localization_audit.md](mdc:docs/design/error_message_localization_audit.md))
+
+```typescript
+// app/copy/error-messages.ts
+export enum ErrorCode {
+  APPROVAL_FAILED = 'APPROVAL_FAILED',
+  NETWORK_ERROR = 'NETWORK_ERROR',
+  NOT_FOUND = 'NOT_FOUND',
+  UNAUTHORIZED = 'UNAUTHORIZED',
+}
+
+export const ERROR_MESSAGES: Record<ErrorCode, string> = {
+  [ErrorCode.APPROVAL_FAILED]: 'Approval couldn't be processed. Please try again.',
+  [ErrorCode.NETWORK_ERROR]: 'Network error. Please check your connection.',
+  [ErrorCode.NOT_FOUND]: 'The requested item could not be found.',
+  [ErrorCode.UNAUTHORIZED]: 'You don't have permission to perform this action.',
+};
+
+// Future: ERROR_MESSAGES_FR, ERROR_MESSAGES_ES for i18n
+```
+
+## Help Text Pattern (from [docs/design/help_text_localization_audit.md](mdc:docs/design/help_text_localization_audit.md))
+
+```typescript
+// app/copy/help-text.ts
+export const HELP_TEXT = {
+  PICKER_PAYMENT: {
+    TOTAL_PIECES: "Number of pieces in this order for picker payment calculation",
+    PAYOUT_AMOUNT: "Calculated based on pieces: 1-4 = $2, 5-10 = $4, 11+ = $7",
+  },
+  ESCALATION: {
+    NOTE_PLACEHOLDER: "Add context for audit trail",
+  },
+};
+```
+
+## Usage in Components
+```tsx
+import { HELP_TEXT } from "~/copy/help-text";
+
+<TextField
+  label="Total Pieces"
+  helpText={HELP_TEXT.PICKER_PAYMENT.TOTAL_PIECES}
+/>
+```
+
+## Benefits
+- Single source of truth
+- Easy to update copy
+- Ready for i18n/translation
+- Consistent messaging
+- Better maintainability

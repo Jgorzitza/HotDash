@@ -1,0 +1,125 @@
+---
+description: Git workflow, branching strategy, and commit conventions
+---
+# Git Workflow & Conventions
+
+## Branching Strategy
+
+### Branch Naming
+- **Agent work**: `agent/<role>/<task>` (e.g., `agent/engineer/dashboard-refresh`)
+- **Feature work**: `feature/<name>`
+- **Bug fixes**: `fix/<issue>`
+- **Main branch**: `main` (protected)
+
+### Current Active Branches
+- `localization/work` - Localization agent work
+- `engineer/work` - Engineer agent work
+- `deployment/work` - Deployment agent work
+- `compliance/work` - Compliance agent work
+- Multiple other agent-specific branches
+
+## Commit Message Format
+
+### Standard Format
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation only
+- `refactor`: Code restructuring
+- `perf`: Performance improvement
+- `test`: Adding tests
+- `chore`: Maintenance tasks
+
+### Examples
+```
+fix(llamaindex-mcp): Accept both 'query' and 'q' parameters in query_support tool
+
+- Handler now accepts both 'query' (preferred) and 'q' (legacy) parameters
+- Added validation to ensure at least one query parameter is provided
+- Fixes 100% error rate on query_support tool
+```
+
+```
+feat(docker): Allow llama-workflow scripts in Docker build context
+
+- Updated .dockerignore to include scripts/ai/llama-workflow
+- Required for LlamaIndex MCP server deployment
+```
+
+## Git Hooks
+
+### Pre-commit (Gitleaks)
+- **Automatic secret scanning** on every commit
+- Blocks commits containing secrets
+- Uses gitleaks configuration
+- Output: `✅ No secrets detected` or error with details
+
+### Best Practices
+- Run `npm run typecheck` before committing
+- Run `npm run lint` to check code style
+- Include evidence in commit messages
+- Reference issue numbers when applicable
+
+## Stashing Strategy
+
+### For Restarts/Shutdowns
+```bash
+# Stash with descriptive message
+git stash push --include-untracked --message "agent-restart-cycle-YYYY-MM-DD"
+
+# List stashes
+git stash list
+
+# Recover specific stash
+git stash pop stash@{n}
+```
+
+### Current Stashes
+Multiple restart cycle stashes exist - see `git stash list` for full inventory.
+
+## Evidence Requirements
+
+### Feedback Files
+All work must be documented in `feedback/<agent>.md`:
+- Timestamp (ISO 8601 format)
+- Action taken
+- Commands executed
+- Results/output
+- Next steps
+- Git commit references
+
+### Example
+```markdown
+## 2025-10-14T03:06:00Z — Task Complete
+
+**Action**: Fixed LlamaIndex MCP parameter handling
+**Files Modified**: 
+- apps/llamaindex-mcp-server/src/handlers/query.ts
+- apps/llamaindex-mcp-server/src/server.ts
+
+**Result**: Parameter validation now accepts both 'query' and 'q'
+**Commit**: f1a87d5
+**Next**: Deploy to production
+```
+
+## Protected Patterns
+
+### Never Commit
+- Secrets/API keys
+- `.env` files (except `.env.example`)
+- Personal credentials
+- Temporary artifacts (in `.gitignore`)
+
+### Always Review
+- Package updates (`package.json`, `package-lock.json`)
+- Schema changes (`prisma/schema.prisma`)
+- Configuration files (`*.toml`, `*.config.*`)
+- Migration files

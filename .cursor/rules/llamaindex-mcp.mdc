@@ -1,0 +1,68 @@
+---
+description: LlamaIndex MCP server configuration and usage patterns
+---
+# LlamaIndex MCP Server
+
+## Server Location
+[apps/llamaindex-mcp-server/](mdc:apps/llamaindex-mcp-server/)
+
+## Current Status (as of 2025-10-14)
+- ✅ Code: 100% functional
+- ✅ Deployed: hotdash-llamaindex-mcp.fly.dev
+- ⏸️ Runtime: Needs environment variables (SUPABASE_URL, SUPABASE_ANON_KEY, OPENAI_API_KEY)
+
+## Available Tools
+1. **query_support** - Query knowledge base for support information
+2. **refresh_index** - Rebuild/update the vector store
+3. **insight_report** - Generate AI-powered insights from telemetry
+
+## Query Support API
+
+### Endpoint
+`POST https://hotdash-llamaindex-mcp.fly.dev/mcp`
+
+### Request Format
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "query_support",
+    "arguments": {
+      "query": "your search query here",  // or use "q" (legacy)
+      "topK": 5  // optional, default 5
+    }
+  }
+}
+```
+
+### Parameter Notes
+- **Both `query` and `q` are supported** (fixed in [apps/llamaindex-mcp-server/src/handlers/query.ts](mdc:apps/llamaindex-mcp-server/src/handlers/query.ts))
+- `query` is preferred, `q` maintained for backward compatibility
+- Handler validates at least one parameter is provided
+
+## Recent Fixes (Engineer-Helper)
+1. ✅ Fixed parameter name mismatch (query vs q)
+2. ✅ Added missing `@llamaindex/openai` dependency
+3. ✅ Updated Docker build context to include llama-workflow scripts
+4. ✅ Deployed successfully 3 times
+
+## Dependencies
+Located in [scripts/ai/llama-workflow/package.json](mdc:scripts/ai/llama-workflow/package.json):
+- `llamaindex: ^0.12.0`
+- `@llamaindex/openai: ^0.2.0`
+- `commander: ^14.0.1`
+- `@supabase/supabase-js: ^2.75.0`
+
+## Environment Setup (Pending)
+```bash
+fly secrets set \
+  SUPABASE_URL=<value> \
+  SUPABASE_ANON_KEY=<value> \
+  OPENAI_API_KEY=<value> \
+  --app hotdash-llamaindex-mcp
+```
+
+## Implementation Pattern
+The MCP server wraps the llama-workflow CLI from [scripts/ai/llama-workflow/](mdc:scripts/ai/llama-workflow/) and exposes it via HTTP/MCP protocol.

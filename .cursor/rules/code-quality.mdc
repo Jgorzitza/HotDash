@@ -1,0 +1,103 @@
+---
+alwaysApply: true
+---
+# Code Quality Standards
+
+## TypeScript Configuration
+- **Strict Mode**: Enforced across all code
+- **No implicit any**: All types must be explicit
+- **Type checking**: Run `npm run typecheck` before committing
+- **Import types**: Use `import type` for type-only imports
+
+## Performance Best Practices
+
+### Caching Strategy
+Use [app/utils/cache.server.ts](mdc:app/utils/cache.server.ts) with `withCache()`:
+```typescript
+const data = await withCache(
+  `cache-key:${identifier}`,
+  () => expensiveOperation(),
+  { ttl: 300 } // 5 minutes
+);
+```
+
+### Lazy Loading
+```typescript
+// Lazy load components for better performance
+const TileComponent = lazy(() => 
+  import("../components/tiles").then(m => ({ default: m.TileComponent }))
+);
+```
+
+### Parallel Data Fetching
+```typescript
+// Always use Promise.all for independent async operations
+const [sales, fulfillment, inventory] = await Promise.all([
+  getSales(context),
+  getFulfillment(context),
+  getInventory(context),
+]);
+```
+
+## Error Handling
+
+### Service Result Pattern
+Always use `ServiceResult<T>` from [app/services/types.ts](mdc:app/services/types.ts):
+```typescript
+export async function myService(): Promise<ServiceResult<Data>> {
+  try {
+    const data = await fetchData();
+    return { ok: true, data };
+  } catch (error) {
+    return { 
+      ok: false, 
+      error: new ServiceError("Operation failed", "SERVICE_ERROR", error) 
+    };
+  }
+}
+```
+
+### Error Boundaries
+- Implement error boundaries for all major UI sections
+- Use structured logging via [app/utils/structured-logger.server.ts](mdc:app/utils/structured-logger.server.ts)
+- Never expose internal errors to users
+
+## Security Standards
+
+### Input Validation
+- Validate all user inputs
+- Sanitize data before database queries
+- Use Zod schemas for runtime validation
+
+### Secret Management
+- **Never commit secrets** - Git hooks will block with gitleaks
+- Load from environment variables
+- Use `.env.example` for documentation only
+- Store credentials in [vault/](mdc:vault/) (gitignored)
+
+### Rate Limiting
+Apply rate limiting to all public endpoints using [app/middleware/rate-limit.server.ts](mdc:app/middleware/rate-limit.server.ts)
+
+## Documentation Requirements
+
+### Code Comments
+- JSDoc for all public APIs
+- Inline comments for complex logic
+- Document "why" not "what"
+
+### Evidence-Based Changes
+- All PRs require evidence in feedback files
+- Document performance impact
+- Include test results
+- Reference related tickets/issues
+
+## Testing Standards
+- Unit tests for business logic
+- Integration tests for API endpoints
+- E2E tests for critical user flows
+- Performance regression tests
+
+## Monitoring & Observability
+- Use [app/utils/apm.server.ts](mdc:app/utils/apm.server.ts) for performance tracking
+- Implement health checks via [app/utils/health-check.server.ts](mdc:app/utils/health-check.server.ts)
+- Log structured data for better debugging

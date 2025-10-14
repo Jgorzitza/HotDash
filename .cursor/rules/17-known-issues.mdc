@@ -1,0 +1,63 @@
+---
+description: Known issues and their documented solutions
+---
+# Known Issues & Solutions
+
+## High Priority (P0) - Critical UX Issues
+
+### 1. Generic Error Messages
+**Files**: 
+- [app/components/ErrorBoundary.tsx](mdc:app/components/ErrorBoundary.tsx)
+- [app/components/ApprovalCard.tsx](mdc:app/components/ApprovalCard.tsx)
+
+**Issues**:
+- "Something went wrong" - too generic
+- "Failed to approve/reject" - no context
+
+**Solutions**: See [docs/design/error_message_localization_audit.md](mdc:docs/design/error_message_localization_audit.md)
+
+### 2. HTTP Errors Exposed
+**Files**:
+- [app/routes/approvals.$id.$idx.approve/route.tsx](mdc:app/routes/approvals.$id.$idx.approve/route.tsx)
+- [app/routes/approvals.$id.$idx.reject/route.tsx](mdc:app/routes/approvals.$id.$idx.reject/route.tsx)
+- [app/utils/api-client.server.ts](mdc:app/utils/api-client.server.ts)
+
+**Issue**: Raw HTTP status codes shown to users
+
+**Solution**: Transform to user-friendly via error handler utility
+
+### 3. Missing Help Text
+**Files**:
+- [app/components/ApprovalCard.tsx](mdc:app/components/ApprovalCard.tsx)
+- Dashboard tile components
+
+**Issue**: No tooltips or help for key actions
+
+**Solution**: Add helpText props and tooltips. See [docs/design/help_text_localization_audit.md](mdc:docs/design/help_text_localization_audit.md)
+
+## Medium Priority (P1) - Infrastructure
+
+### 4. No Centralized Copy Repository
+**Issue**: Copy hardcoded in components
+
+**Solution**: Create `app/copy/` directory with centralized files (see rule 13-copy-centralization.mdc)
+
+### 5. No Translation Key System
+**Issue**: No i18n infrastructure
+
+**Solution**: Implement translation keys with centralized copy
+
+### 6. Missing Transactional Emails
+**Issue**: Password reset, order confirmation templates not located
+
+**Solution**: Audit and create transactional email templates
+
+## Low Priority (P2) - Features
+
+### 7. No Hot Rod AN Theme Toggle
+**Issue**: Only professional voice available
+
+**Solution**: Implement theme toggle per [docs/design/hot_rod_an_voice_tone_guide.md](mdc:docs/design/hot_rod_an_voice_tone_guide.md)
+
+## Complete Issue List
+All 15 issues documented with solutions in localization audit documents.

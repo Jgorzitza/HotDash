@@ -1,0 +1,128 @@
+---
+description: Shopify app development patterns and API usage
+---
+
+# Shopify Integration Patterns
+
+**CRITICAL**: Shopify API training data is outdated (2023 or older). ALWAYS verify with Shopify MCP before implementation.
+
+## Shopify App Bridge
+
+### App Provider Setup
+
+```typescript
+import { AppProvider } from '@shopify/polaris';
+import { useNavigate } from 'react-router';
+
+export default function App() {
+  const navigate = useNavigate();
+  
+  return (
+    <AppProvider
+      i18n={{}}
+      linkComponent={Link}
+    >
+      {/* App content */}
+    </AppProvider>
+  );
+}
+```
+
+## GraphQL API Usage
+
+### ALWAYS Validate Queries with Shopify MCP
+
+Before implementing any Shopify GraphQL query:
+1. Use `mcp_shopify_learn_shopify_api` to get conversationId
+2. Use `mcp_shopify_introspect_graphql_schema` to verify fields exist
+3. Use `mcp_shopify_validate_graphql_codeblocks` to validate query
+
+### Query Pattern
+
+```typescript
+// ALWAYS verify this schema with Shopify MCP first
+const query = `
+  query GetProducts {
+    products(first: 10) {
+      edges {
+        node {
+          id
+          title
+          status
+        }
+      }
+    }
+  }
+`;
+
+const response = await fetch('/api/shopify/graphql', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ query })
+});
+```
+
+## Embedded App Configuration
+
+**Reference**: [shopify.app.toml](mdc:shopify.app.toml)
+
+### App URLs
+- Staging: Environment variable `SHOPIFY_APP_URL_STAGING`
+- Production: Environment variable `SHOPIFY_APP_URL_PROD`
+
+### OAuth Scopes
+Defined in shopify.app.toml - verify before requesting new scopes
+
+## Polaris Components
+
+**Common Components**:
+- `Card` - Container for content
+- `Button` - Actions
+- `Banner` - Alerts and messages
+- `Modal` - Dialogs
+- `TextField` - Input fields
+- `Select` - Dropdowns
+- `DataTable` - Tabular data
+
+**Always import from @shopify/polaris**:
+```typescript
+import { Card, Button, Banner } from '@shopify/polaris';
+```
+
+## Rate Limiting
+
+Shopify has rate limits - implement retry logic:
+
+```typescript
+async function shopifyApiCall(query: string, retries = 3) {
+  try {
+    const response = await fetch(/* ... */);
+    if (response.status === 429) {
+      // Rate limited
+      if (retries > 0) {
+        await new Promise(r => setTimeout(r, 1000));
+        return shopifyApiCall(query, retries - 1);
+      }
+    }
+    return response;
+  } catch (error) {
+    // Handle error
+  }
+}
+```
+
+## Webhook Handling
+
+Webhooks reference: `app/routes/api.webhooks.shopify.tsx`
+
+**ALWAYS**:
+- Verify webhook signature
+- Return 200 quickly (process async)
+- Log to Supabase for audit trail
+
+## Testing
+
+**Mock Shopify Responses**:
+- Use `MOCK=1` environment variable
+- Store mock data in `tests/fixtures/shopify/`
+- Never use production credentials in tests

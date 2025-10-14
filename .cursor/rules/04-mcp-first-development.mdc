@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+# MCP-First Development (from [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md))
+
+## Critical: Agent Training Data is Outdated
+
+**Agent training data contains outdated patterns for**:
+- React Router 7 (contains v6/Remix patterns)
+- Shopify APIs (2023 or older)
+
+**NEVER trust training data for**:
+- React Router 7 loaders/actions
+- Shopify GraphQL queries
+- Shopify App Bridge patterns
+
+## Required MCP Verification
+
+**Before implementing features**:
+1. Search HotDash codebase first (grep)
+2. Verify with appropriate MCP tools (conservative token limits: 800-1500)
+
+**MCP Tools Available**:
+- **Shopify MCP**: Validate ALL Shopify GraphQL queries
+- **Context7 MCP**: Verify React Router 7 patterns
+- **GitHub MCP**: Repository operations
+- **Supabase MCP**: Database operations
+- **Fly MCP**: Deployment operations
+- **Google Analytics**: Direct API (not MCP)
+- **LlamaIndex RAG MCP**: Universal agent knowledge access
+
+## Workflow
+1. Search codebase for existing patterns: `grep -r "pattern" app/`
+2. Verify with MCP tools (Shopify for queries, Context7 for RR7)
+3. Implement using verified current syntax
+4. Never assume training data is current
+
+## Goal
+- Use current APIs
+- Avoid deprecated patterns
+- Maintain type safety
+- Stay aligned with 2024 best practices

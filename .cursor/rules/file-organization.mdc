@@ -1,0 +1,131 @@
+---
+alwaysApply: true
+---
+
+# File Organization & Project Structure
+
+## Directory Structure
+
+### Application Code
+- `app/` - React Router 7 application
+  - `app/routes/` - Route handlers and pages
+  - `app/components/` - React components
+  - `app/utils/` - Utility functions
+  - `app/services/` - Service layer (API clients, etc.)
+  - `app/styles/` - CSS and styling
+  - `app/types/` - TypeScript type definitions
+
+### Agent Workspace
+- `docs/directions/` - Agent direction files (READ ONLY for agents)
+- `feedback/` - Agent evidence logs (agent writes here)
+- `artifacts/` - Evidence files (NOW IN .gitignore)
+
+### Documentation
+- `docs/` - All documentation
+  - `docs/api/` - API documentation
+  - `docs/design/` - Design specifications
+  - `docs/git/` - Git workflows and guides
+  - `docs/ops/` - Operations guides
+  - `docs/runbooks/` - Operational runbooks
+  - `docs/product/` - Product specifications
+
+### Configuration & Secrets
+- `vault/occ/` - All secrets (NEVER commit actual values)
+  - `vault/occ/supabase/` - Database credentials
+  - `vault/occ/shopify/` - Shopify API credentials
+  - `vault/occ/openai/` - OpenAI API keys
+  - `vault/occ/fly/` - Fly.io tokens
+
+### Database
+- `supabase/migrations/` - Database migrations (SQL)
+- `supabase/functions/` - Edge functions (Deno)
+- `prisma/schema.prisma` - Database schema definition
+
+### Scripts
+- `scripts/` - Automation scripts
+  - `scripts/ai/` - AI/LlamaIndex scripts
+  - `scripts/deploy/` - Deployment scripts
+  - `scripts/git/` - Git maintenance scripts
+  - `scripts/chatwoot/` - Chatwoot automation
+
+### Testing
+- `tests/` - All test files
+  - `tests/unit/` - Unit tests
+  - `tests/e2e/` - End-to-end tests
+  - `tests/fixtures/` - Test data and mocks
+
+## File Naming Conventions
+
+### Routes
+- Page routes: `app/routes/app.{page}.tsx`
+- API routes: `app/routes/api.{endpoint}.tsx`
+- Nested routes: `app/routes/app.{parent}.{child}.tsx`
+
+### Components
+- PascalCase: `TileCard.tsx`, `ApprovalModal.tsx`
+- Co-located styles: `TileCard.module.css` (if needed)
+
+### Utils & Services
+- camelCase: `auth.server.ts`, `analytics.ts`
+- Server-only: `*.server.ts` suffix
+
+### Scripts
+- kebab-case: `monthly-cleanup.sh`, `deploy-staging.sh`
+- Executable: `chmod +x` required
+
+## .gitignore Essentials
+
+**ALWAYS ignore**:
+```
+node_modules/
+.env.local
+.env
+dist/
+build/
+coverage/
+artifacts/
+*.log
+.DS_Store
+```
+
+**NEVER ignore**:
+- `.env.example` (template file)
+- `vault/` (directory structure, not files)
+
+## File Permissions
+
+**Vault files**: 600 (owner read/write only)
+```bash
+chmod 600 vault/occ/**/*.env
+```
+
+**Scripts**: 755 (executable)
+```bash
+chmod +x scripts/**/*.sh
+```
+
+## Import Paths
+
+Use path aliases defined in tsconfig.json:
+```typescript
+// ✅ CORRECT
+import { helper } from '~/utils/helper';
+
+// ❌ WRONG
+import { helper } from '../../../utils/helper';
+```
+
+## When Creating New Files
+
+**ALWAYS**:
+1. Follow naming convention for directory
+2. Add appropriate file header (if documentation)
+3. Update related documentation (README, etc.)
+4. Add to appropriate .gitignore if needed
+5. Set correct permissions
+
+**NEVER**:
+- Create files in root directory (use appropriate subdirectory)
+- Create duplicate documentation
+- Commit secrets or credentials
+- Create files without documenting purpose

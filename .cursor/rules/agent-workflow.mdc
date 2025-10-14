@@ -1,0 +1,119 @@
+---
+description: Agent workflow, feedback logging, and evidence requirements
+---
+
+# Agent Workflow & Evidence Requirements
+
+**Primary References**: 
+- [docs/directions/README.md](mdc:docs/directions/README.md)
+- [docs/runbooks/agent_launch_checklist.md](mdc:docs/runbooks/agent_launch_checklist.md)
+
+## Agent Structure
+
+Each agent has:
+- **Direction file**: `docs/directions/{agent-name}.md` - Canonical instructions
+- **Feedback file**: `feedback/{agent-name}.md` - Evidence log
+- **Work branch**: `{agent-name}/work` - Development branch
+
+## Evidence Gate Requirements
+
+**Every feedback update MUST include**:
+1. ✅ **Timestamp** - ISO format preferred
+2. ✅ **Command executed** - Exact command or script path
+3. ✅ **Output/log path** - Link to results or screenshot
+
+**Format**:
+```markdown
+## [Timestamp] - Task Name
+
+**Command**:
+\`\`\`bash
+npm run test:unit
+\`\`\`
+
+**Output**: artifacts/testing/unit-test-results-2025-10-13.log
+
+**Result**: ✅ All tests passing (25/25)
+```
+
+## Escalation Process
+
+Escalate ONLY after:
+1. Two documented failed attempts with evidence
+2. Evidence logged in feedback file
+3. Manager approval requested
+
+## Direction File Governance
+
+**Agents MUST NOT**:
+- ❌ Edit their own direction files
+- ❌ Create new direction files
+- ❌ Modify direction governance docs
+
+**Agents CAN**:
+- ✅ Submit change requests with evidence
+- ✅ Log questions in feedback file
+- ✅ Request clarification from manager
+
+## Self-Testing Mandate
+
+Every agent validates own work BEFORE requesting review:
+- ✅ Unit tests (if code changes)
+- ✅ Smoke tests (if applicable)
+- ✅ Screenshots (if UI changes)
+- ✅ Evidence in artifacts/
+
+## Artifacts Directory
+
+**Structure**: `artifacts/{agent}/{timestamp}/`
+
+**Contents**:
+- Command outputs
+- Test results
+- Screenshots
+- Log files
+- Evidence bundles
+
+**Note**: Now in .gitignore (store locally, reference in feedback)
+
+## Feedback File Best Practices
+
+### Section Format
+```markdown
+## [Task ID/Priority] Task Name — Timestamp
+
+**Status**: In Progress / Complete / Blocked
+**Timeline**: X hours (estimated)
+
+### Evidence
+- Command: [exact command]
+- Output: [path or inline]
+- Result: [success/failure with details]
+
+### Blockers (if any)
+- Description of issue
+- Attempts made (1 of 2)
+- Next steps
+```
+
+### Status Updates
+- ✅ Every 2 hours for active work
+- ✅ Immediately for blockers
+- ✅ Upon task completion
+
+## Coordination
+
+**Single-owner workflow**:
+- Each task assigned to ONE agent
+- Agent owns end-to-end until complete
+- Log all coordination in feedback
+- Escalate only after 2 failed attempts
+
+## Canon Review
+
+Before starting work, agents must read:
+- [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md)
+- [docs/git_protocol.md](mdc:docs/git_protocol.md)
+- [docs/directions/README.md](mdc:docs/directions/README.md)
+- Their role file: `docs/directions/{agent}.md`
+- [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md)

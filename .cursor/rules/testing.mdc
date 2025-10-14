@@ -1,0 +1,118 @@
+---
+globs: *.spec.ts,*.test.ts,*.spec.tsx,*.test.tsx,tests/**/*
+---
+
+# Testing Patterns & Requirements
+
+## Test Structure
+
+### Unit Tests
+**Location**: `tests/unit/`
+
+**Pattern**:
+```typescript
+import { describe, it, expect } from 'vitest';
+import { functionToTest } from '~/utils/helper';
+
+describe('functionToTest', () => {
+  it('should handle valid input correctly', () => {
+    const result = functionToTest('valid');
+    expect(result).toBe('expected');
+  });
+  
+  it('should throw error for invalid input', () => {
+    expect(() => functionToTest('invalid')).toThrow();
+  });
+});
+```
+
+### E2E Tests
+**Location**: `tests/e2e/`
+
+**Use Playwright** for E2E tests:
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('dashboard loads successfully', async ({ page }) => {
+  await page.goto('/app');
+  await expect(page.locator('h1')).toContainText('Dashboard');
+});
+```
+
+## Mock Mode
+
+**ALWAYS support mock mode** for testing:
+
+```typescript
+const MOCK = process.env.MOCK === '1';
+
+async function fetchData() {
+  if (MOCK) {
+    return mockData; // From tests/fixtures/
+  }
+  return await actualApiCall();
+}
+```
+
+## Test Commands
+
+```bash
+# Unit tests
+npm run test:unit
+
+# E2E tests  
+npm run test:e2e
+
+# With mock mode
+MOCK=1 npm run dev
+```
+
+## Self-Testing Mandate
+
+**Before requesting QA review**:
+- ✅ Unit tests pass locally
+- ✅ E2E tests pass (if UI changes)
+- ✅ Manual smoke test completed
+- ✅ Screenshots captured (if UI)
+- ✅ Evidence logged in artifacts/
+
+## Test Coverage
+
+**Requirements**:
+- New functions: Add tests
+- Bug fixes: Add regression tests
+- Maintain or increase coverage
+- Tests must be meaningful (not just for coverage)
+
+## Fixtures
+
+**Location**: `tests/fixtures/{domain}/`
+
+**Pattern**:
+```typescript
+// tests/fixtures/shopify/products.ts
+export const mockProduct = {
+  id: 'gid://shopify/Product/1',
+  title: 'Test Product',
+  status: 'ACTIVE'
+};
+```
+
+## Evidence Requirements
+
+**For each test run**:
+1. Command executed
+2. Pass/fail status
+3. Output log or screenshot
+4. Timestamp
+5. Path to artifacts
+
+**Example**:
+```markdown
+## Test Evidence
+
+**Command**: `npm run test:unit`
+**Timestamp**: 2025-10-13T14:30:00Z
+**Result**: ✅ PASS (25/25 tests)
+**Output**: artifacts/testing/unit-test-2025-10-13.log
+```

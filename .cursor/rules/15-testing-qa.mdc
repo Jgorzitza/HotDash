@@ -1,0 +1,56 @@
+---
+globs: tests/**/*.ts,tests/**/*.spec.ts,*.test.ts
+description: Testing standards and QA procedures
+---
+# Testing & QA Guidelines
+
+## Testing Structure
+- Unit tests: [tests/unit/](mdc:tests/unit/)
+- Integration tests: [tests/unit/integration-shopify/](mdc:tests/unit/integration-shopify/)
+- Performance tests: [tests/unit/performance/](mdc:tests/unit/performance/)
+- Security tests: [tests/unit/security/](mdc:tests/unit/security/)
+
+## Test Framework
+Playwright for E2E testing.
+Reference: [docs/runbooks/qa_playwright_plan.md](mdc:docs/runbooks/qa_playwright_plan.md)
+
+## QA Validation Process
+Reference: [docs/runbooks/qa_validation_process.md](mdc:docs/runbooks/qa_validation_process.md)
+
+## Bug Reporting
+Format: [docs/testing/BUG_REPORTING.md](mdc:docs/testing/BUG_REPORTING.md)
+
+## Evidence Requirements
+All test results must be logged with:
+- Timestamp
+- Test commands executed
+- Results (pass/fail counts)
+- Any failures with details
+- File locations
+
+## Testing Standards
+
+### Unit Tests
+```typescript
+describe('Component', () => {
+  it('should handle error states', () => {
+    // Test error handling
+  });
+  
+  it('should display help text', () => {
+    // Test help text presence
+  });
+});
+```
+
+### Integration Tests
+Test actual service integrations:
+- Shopify GraphQL queries
+- Google Analytics API
+- Supabase database operations
+- Agent SDK tools
+
+## Agent SDK Testing
+Reference: [docs/testing/agent-sdk/](mdc:docs/testing/agent-sdk/)
+- Chatwoot response templates
+- Agent interaction metrics

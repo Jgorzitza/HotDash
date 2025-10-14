@@ -1,0 +1,129 @@
+---
+description: Deployment workflows and Fly.io patterns
+---
+
+# Deployment Patterns & Workflows
+
+## Deployment Environments
+
+### Staging
+- **URL**: Environment variable `STAGING_APP_URL`
+- **Fly App**: hotdash-staging (or configured name)
+- **Region**: Configurable per [fly.toml](mdc:fly.toml)
+- **Auto-deploy**: Via GitHub Actions on PR merge
+
+### Production
+- **URL**: Environment variable `PRODUCTION_APP_URL`
+- **Fly App**: hotdash-production
+- **Deployment**: Manual approval required
+- **Monitoring**: Required post-deploy
+
+## Fly.io Deployment
+
+### Prerequisites
+
+**Source credentials**:
+```bash
+source vault/occ/fly/api_token.env
+/home/justin/.fly/bin/fly auth login --access-token $FLY_API_TOKEN
+```
+
+### Deploy Command
+
+```bash
+# Deploy to staging
+fly deploy --config fly.toml --app hotdash-staging
+
+# Deploy to production
+fly deploy --config fly.toml --app hotdash-production
+```
+
+### Health Check
+
+```bash
+# Check app status
+fly status --app hotdash-staging
+
+# View logs
+fly logs --app hotdash-staging
+
+# SSH into machine
+fly ssh console --app hotdash-staging
+```
+
+## Smoke Testing
+
+**ALWAYS run after deployment**:
+
+```bash
+# Automated smoke test
+./scripts/deploy/automated-smoke-test.sh
+
+# Manual verification
+curl https://hotdash-staging.fly.dev/health
+# Expected: {"status": "healthy"}
+```
+
+## Rollback Procedure
+
+If deployment fails:
+
+```bash
+# Rollback staging
+./scripts/deploy/rollback-staging.sh
+
+# Rollback production (requires manager approval)
+./scripts/deploy/rollback-production.sh
+```
+
+## GitHub Actions Deployment
+
+**Workflow**: `.github/workflows/deploy-staging.yml` (if exists)
+
+**Secrets Required**:
+- `FLY_API_TOKEN`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_KEY`
+- `SHOPIFY_*` credentials
+
+## Pre-Deployment Checklist
+
+- [ ] All tests passing locally
+- [ ] No secrets in code (scan passed)
+- [ ] Database migrations tested
+- [ ] Environment variables documented
+- [ ] Rollback plan ready
+- [ ] Monitoring configured
+
+## Post-Deployment Verification
+
+1. Health check endpoint responds
+2. Database connectivity confirmed
+3. Shopify integration working
+4. No errors in logs (first 5 minutes)
+5. Smoke tests pass
+6. Evidence logged in feedback file
+
+## Deployment Evidence
+
+**Required in feedback**:
+```markdown
+## Deployment - [Timestamp]
+
+**Command**: fly deploy --app hotdash-staging
+**Result**: ✅ SUCCESS
+**URL**: https://hotdash-staging.fly.dev
+**Health Check**: ✅ PASS
+**Smoke Test**: ✅ PASS
+**Logs**: artifacts/deploy/staging-deploy-[timestamp].log
+```
+
+## Emergency Procedures
+
+**Production Outage**:
+1. Notify manager immediately
+2. Check health endpoint
+3. Review logs: `fly logs --app hotdash-production`
+4. Execute rollback if needed
+5. Document incident
+6. Post-mortem in feedback file

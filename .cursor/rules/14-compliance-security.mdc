@@ -1,0 +1,55 @@
+---
+description: Compliance, security, and incident response procedures
+---
+# Compliance & Security Guidelines
+
+## Key Compliance Documents
+
+### Incident Response
+- **Supabase**: [docs/runbooks/incident_response_supabase.md](mdc:docs/runbooks/incident_response_supabase.md)
+- **Security**: [docs/runbooks/incident_response_security.md](mdc:docs/runbooks/incident_response_security.md)
+- **Vendor Escalation**: [docs/runbooks/vendor_silence_escalation_template.md](mdc:docs/runbooks/vendor_silence_escalation_template.md)
+
+### Data Retention
+- Retention automation: [docs/runbooks/agent_data_retention_automation.md](mdc:docs/runbooks/agent_data_retention_automation.md)
+- Database backups: [docs/runbooks/agent_database_backup_automation.md](mdc:docs/runbooks/agent_database_backup_automation.md)
+
+### Evidence Requirements
+All incidents must be documented in:
+`docs/compliance/evidence/{vendor}/incidents/{YYYYMMDD}/`
+
+Required files:
+- `escalation_log.md` - Timestamped actions
+- `vendor_communications.md` - All correspondence
+- `impact_assessment.md` - Business impact
+- `resolution_summary.md` - Post-incident analysis
+
+## Security Checklist
+Reference: [docs/runbooks/launch_security_checklist.md](mdc:docs/runbooks/launch_security_checklist.md)
+
+## Critical Rules
+
+### Never Commit
+- API keys, secrets, tokens
+- Supabase DSN/connection strings
+- OpenAI API keys
+- Google Analytics credentials
+- Chatwoot access tokens
+
+### Credential Management
+- Reference: [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md)
+- Store in Fly.io secrets or environment variables
+- Never log credential values
+
+### RLS Policies
+All Supabase tables MUST have Row Level Security policies.
+Verify before deployment.
+
+## Incident Response Levels
+- **P0**: Unauthorized access, data breach - page immediately
+- **P1**: Service degradation, credential leak - escalate within 30min
+- **P2**: Transient issues - monitor and document
+
+## Tabletop Exercises
+Recent: October 15, 2025 - Supabase credential leak scenario
+Evidence: [docs/compliance/evidence/supabase/tabletop_20251015/](mdc:docs/compliance/evidence/supabase/tabletop_20251015/)

@@ -1,0 +1,135 @@
+---
+globs: docs/support/**/*.md,data/support/**/*.md
+---
+
+# Support Documentation Guidelines
+
+## Documentation Categories
+
+### Customer-Facing
+- Onboarding guides (installation, first use)
+- Troubleshooting guides (common issues, fixes)
+- FAQ (product selection, installation, compatibility)
+- Video guide scripts (for production team)
+
+### Operator-Facing
+- Training materials (product knowledge, procedures)
+- Playbooks (escalation, scenarios, scripts)
+- Quick start guides (get productive fast)
+- Reference materials (specs, part numbers, flowcharts)
+
+### AI Knowledge Base
+- Structured articles in `data/support/kb-*.md`
+- Optimized for RAG (Retrieval Augmented Generation)
+- Format: Tables, lists, clear headings
+- Tags: Product categories, issue types
+
+## Content Standards
+
+### Technical Accuracy
+- Verify all specifications (torque, pressure, temperatures)
+- Include part numbers (Hot Rod AN format: HRA-[type]-[specs])
+- Cross-reference with product catalogs
+- Test procedures before documenting
+
+### Tone and Style
+**For Customers**:
+- Friendly and helpful (not overly casual)
+- Use "you" and "your" (direct address)
+- Break complex procedures into numbered steps
+- Include safety warnings where appropriate
+
+**For Operators**:
+- Professional and instructional
+- Clear action items and decision criteria
+- Include escalation paths
+- Provide examples and scenarios
+
+### Safety Warnings Format
+```markdown
+⚠️ CRITICAL: [Safety message]
+```
+
+Use for:
+- Fuel system work (fire hazard)
+- High-pressure systems
+- Brake system work
+- Any safety-critical procedures
+
+## Document Templates
+
+### Troubleshooting Guide
+```markdown
+## Issue #X: [Issue Name]
+
+### Symptoms
+- Bullet list of symptoms
+
+### Root Causes
+1. [Most common cause] (percentage)
+2. [Second cause] (percentage)
+
+### Diagnostic Steps
+Step-by-step diagnosis procedure
+
+### Solutions
+Solution for each cause
+
+### Prevention
+How to avoid in future
+```
+
+### Training Material
+```markdown
+## Module X: [Topic]
+
+### Learning Objectives
+- What operators will learn
+
+### Content
+Core training material
+
+### Exercises
+Practice scenarios
+
+### Assessment
+Quiz or practical test
+
+### Certification
+Requirements to pass
+```
+
+## Hot Rod AN Specific
+
+### Product Knowledge
+- AN sizing: Dash number ÷ 16 = ID in inches (AN-6 = 3/8")
+- Thread types: AN (UNF straight), NPT (tapered), Metric
+- Hose types: PTFE (premium, EFI), Braided (economy, carb), Push-lock (carb only)
+- Torque specs: AN-6 = 20-25 ft-lbs or hand-tight + 1/4 turn
+
+### Common Customer Questions
+- "What size do I need?" → Based on HP and fuel type
+- "PTFE vs braided?" → PTFE for EFI/reliability, braided for budget/carb
+- "Can I use Teflon tape?" → Only on NPT (tapered), never on AN (straight)
+- "Why is PTFE hard to assemble?" → It's designed tight, requires lube and force
+
+### Part Number Format
+`HRA-[category]-[specifications]`
+- HRA-HL-PTFE-SS-AN6: PTFE hose, stainless braided, AN-6 size
+- HRA-AD-NPT12-AN6: Adapter, 1/2" NPT to AN-6
+- HRA-HE-AN6-90: Hose end, AN-6, 90° angle
+
+## Review and Maintenance
+
+### Review Schedule
+- Customer guides: Monthly (update for new products/common issues)
+- Training materials: Quarterly (update for process changes)
+- Technical specs: Annually (verify accuracy)
+
+### Update Process
+1. Identify needed update (support tickets, feedback)
+2. Research/verify new information
+3. Update document with `last_reviewed` date
+4. Test procedures if applicable
+5. Log update in feedback file
+6. Notify team of changes

@@ -1,0 +1,63 @@
+---
+globs: app/routes/*.tsx
+description: React Router 7 patterns (NOT Remix v6)
+---
+# React Router 7 Patterns
+
+## CRITICAL: Use React Router 7, NOT Remix v6
+
+Agent training data contains Remix v6 patterns. Always verify with Context7 MCP for current React Router 7 syntax.
+
+## Route File Structure
+
+```tsx
+// app/routes/app.dashboard.tsx
+import type { Route } from "./+types/app.dashboard";
+
+export async function loader({ request, context }: Route.LoaderArgs) {
+  // Loader logic
+  return { data };
+}
+
+export default function Dashboard({ loaderData }: Route.ComponentProps) {
+  // Component
+}
+```
+
+## Key Differences from Remix v6
+
+**Loader/Action Types**:
+```tsx
+// ❌ OLD (Remix v6)
+import type { LoaderFunctionArgs } from "@remix-run/node";
+
+// ✅ NEW (React Router 7)  
+import type { Route } from "./+types/route-name";
+export async function loader({ request }: Route.LoaderArgs) {}
+```
+
+**Component Props**:
+```tsx
+// ❌ OLD (Remix v6)
+import { useLoaderData } from "@remix-run/react";
+const data = useLoaderData<typeof loader>();
+
+// ✅ NEW (React Router 7)
+export default function Component({ loaderData }: Route.ComponentProps) {
+  // loaderData is typed automatically
+}
+```
+
+## Forms
+Use React Router Form:
+```tsx
+import { Form } from "react-router";
+
+<Form method="post" action="/app/route">
+  <input type="hidden" name="field" value={value} />
+  <button type="submit">Submit</button>
+</Form>
+```
+
+## Reference
+Verify all patterns with Context7 MCP for React Router 7 before implementing.

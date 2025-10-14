@@ -1,0 +1,46 @@
+---
+description: Agent SDK development and OpenAI integration
+---
+# Agent SDK Guidelines
+
+## Agent SDK Overview
+- **Location**: [apps/agent-service/](mdc:apps/agent-service/)
+- **Deployment**: https://hotdash-agent-service.fly.dev
+- **Documentation**: [docs/AgentSDKopenAI.md](mdc:docs/AgentSDKopenAI.md)
+
+## Critical Fix History
+**Zod Schema Issue** (October 12, 2025):
+- Issue: `shopify_cancel_order` reason field used `.optional()`
+- Fix: Changed to `.nullable()` for OpenAI Structured Outputs API
+- File: [apps/agent-service/src/tools/shopify.ts](mdc:apps/agent-service/src/tools/shopify.ts)
+- Result: Startup crashes resolved, service healthy
+
+## OpenAI Structured Outputs
+**IMPORTANT**: When using Zod schemas with OpenAI:
+- Use `.nullable()` NOT `.optional()` for optional fields
+- OpenAI Structured Outputs API requires nullable syntax
+
+```typescript
+// ❌ WRONG
+reason: z.string().optional()
+
+// ✅ CORRECT
+reason: z.string().nullable()
+```
+
+## Available Tools
+Reference Shopify tools in [apps/agent-service/src/tools/shopify.ts](mdc:apps/agent-service/src/tools/shopify.ts)
+
+## Agent Response Guidelines
+From [docs/design/hot_rod_an_voice_tone_guide.md](mdc:docs/design/hot_rod_an_voice_tone_guide.md):
+- Position operator as expert
+- Explain AI reasoning
+- Provide automotive context
+- Await human approval
+- Maintain audit trail
+
+## Testing
+Agent SDK testing: [docs/testing/agent-sdk/](mdc:docs/testing/agent-sdk/)
+
+## Monitoring
+Reference: [docs/runbooks/agent-sdk-monitoring.md](mdc:docs/runbooks/agent-sdk-monitoring.md)

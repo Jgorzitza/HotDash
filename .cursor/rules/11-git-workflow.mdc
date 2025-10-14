@@ -1,0 +1,50 @@
+---
+description: Git workflow and commit standards
+---
+# Git Workflow Protocol
+
+## Git Protocol
+Reference: [docs/git_protocol.md](mdc:docs/git_protocol.md)
+
+## Branch Naming
+Pattern: `{agent-name}/work`
+
+Examples:
+- localization/work
+- engineer/work
+- deployment/work
+- compliance/work
+
+## Commit Message Format
+```
+{agent-name}: {brief description}
+
+Examples:
+- "localization: Add Hot Rod AN Voice & Tone Guide"
+- "engineer: Fix ErrorBoundary generic messages"
+- "manager: Coordinate agent assignments after reboot"
+```
+
+## Never Commit
+- Secrets or credentials
+- `node_modules/`
+- `.env` files
+- Build artifacts (except documented evidence)
+- Large binary files
+
+## Evidence Commits
+When committing evidence/artifacts:
+- Use descriptive commit messages
+- Reference task/action item IDs if applicable
+- Include timestamp in filename
+- Document in feedback file
+
+## Before Pushing
+1. Review `git status`
+2. Check no secrets exposed
+3. Verify evidence is documented
+4. Ensure commit message follows format
+5. Push to origin: `git push origin {branch-name}`
+
+## Branch Cleanup
+Reference Git Cleanup agent for repository maintenance.

@@ -1,0 +1,38 @@
+---
+globs: prisma/*.prisma,app/services/db/*.ts
+description: Database schema and Supabase integration patterns
+---
+# Database & Supabase Guidelines
+
+## Database Stack
+- **Primary DB**: Supabase PostgreSQL
+- **ORM**: Prisma
+- **Schema**: [prisma/schema.prisma](mdc:prisma/schema.prisma)
+
+## Key Tables
+- `DecisionLog` - Audit trail for all AI-approved actions
+- `Shop` - Shopify shop information
+- `AnalyticsMirror` - Google Analytics data cache
+- Agent training tables (see [docs/runbooks/agent_database_backup_automation.md](mdc:docs/runbooks/agent_database_backup_automation.md))
+
+## Row Level Security (RLS)
+- All tables must have RLS policies
+- Use Supabase MCP for migrations
+- Verify policies before deployment
+
+## Connection Handling
+Reference: [docs/runbooks/prisma_staging_postgres.md](mdc:docs/runbooks/prisma_staging_postgres.md)
+
+## Retention & Compliance
+- Retention automation: [docs/runbooks/agent_data_retention_automation.md](mdc:docs/runbooks/agent_data_retention_automation.md)
+- Backup procedures: [docs/runbooks/agent_database_backup_automation.md](mdc:docs/runbooks/agent_database_backup_automation.md)
+- Incident response: [docs/runbooks/incident_response_supabase.md](mdc:docs/runbooks/incident_response_supabase.md)
+
+## Migrations
+Apply via Supabase MCP:
+- Name migrations in snake_case
+- No hardcoded IDs in data migrations
+- Test in development branch first
+
+## Credentials
+Never hardcode credentials. Reference: [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md)

@@ -1,0 +1,49 @@
+---
+description: Deployment procedures and production configuration
+---
+# Deployment Guidelines
+
+## Deployed Services
+
+### Agent SDK
+- **URL**: https://hotdash-agent-service.fly.dev
+- **Health**: /health endpoint
+- **Region**: ord
+- **Config**: [fly.toml](mdc:fly.toml)
+- **Source**: [apps/agent-service/](mdc:apps/agent-service/)
+
+### LlamaIndex MCP
+- **URL**: https://hotdash-llamaindex-mcp.fly.dev
+- **Health**: /health endpoint
+- **Region**: iad
+- **Tools**: query_support, refresh_index, insight_report
+- **Source**: [scripts/ai/llama-workflow/](mdc:scripts/ai/llama-workflow/)
+
+## Deployment Checklist
+Reference: [docs/runbooks/agent-sdk-production-deployment.md](mdc:docs/runbooks/agent-sdk-production-deployment.md)
+
+## Health Check Pattern
+```typescript
+// app/utils/health-check.server.ts
+export async function healthCheck() {
+  return {
+    status: "ok",
+    service: "service-name",
+    version: "1.0.0",
+    timestamp: new Date().toISOString()
+  };
+}
+```
+
+## Monitoring
+- Fly.io status: `fly status --app {app-name}`
+- Logs: `fly logs --app {app-name}`
+- Monitoring docs: [docs/runbooks/agent-sdk-monitoring.md](mdc:docs/runbooks/agent-sdk-monitoring.md)
+
+## Rollback Procedure
+Reference: [docs/runbooks/agent_sdk_rollback.md](mdc:docs/runbooks/agent_sdk_rollback.md)
+
+## Environment Variables
+- Never commit secrets
+- Use Fly.io secrets: `fly secrets set KEY=value --app {app-name}`
+- Reference: [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md)

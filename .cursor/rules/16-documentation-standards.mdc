@@ -1,0 +1,80 @@
+---
+globs: docs/**/*.md
+description: Documentation standards and formatting
+---
+# Documentation Standards
+
+## Document Frontmatter (Required)
+```yaml
+---
+epoch: 2025.10.E1
+doc: relative/path/to/file.md
+owner: {agent-name}
+created: YYYY-MM-DD
+last_reviewed: YYYY-MM-DD
+doc_hash: TBD
+expires: YYYY-MM-DD
+---
+```
+
+## Documentation Types
+
+### Direction Files
+Location: [docs/directions/](mdc:docs/directions/)
+- Agent-specific priorities
+- START HERE NOW section
+- Canon references
+- Task lists with estimates
+- Timeline expectations
+
+### Runbooks
+Location: [docs/runbooks/](mdc:docs/runbooks/)
+- Step-by-step procedures
+- Incident response plans
+- Deployment checklists
+- Recovery procedures
+
+### Design Docs
+Location: [docs/design/](mdc:docs/design/)
+- UI/UX specifications
+- Voice & tone guides
+- Copy audits
+- Localization analysis
+
+### Evidence
+Location: [docs/compliance/evidence/](mdc:docs/compliance/evidence/)
+- Timestamped artifacts
+- Incident documentation
+- Audit trails
+- Action item tracking
+
+## Formatting Standards
+
+### Headings
+```markdown
+# H1 - Document Title
+## H2 - Major Sections
+### H3 - Subsections
+```
+
+### Code Blocks
+Always specify language:
+```markdown
+```typescript
+// TypeScript code
+```
+```
+
+### Tables
+Use proper markdown tables with alignment
+
+### Evidence Logging
+Include:
+- ISO 8601 timestamps
+- Commands executed
+- File locations
+- Next steps
+
+## Reference
+- North Star: [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md)
+- Glossary: [docs/GLOSSARY.md](mdc:docs/GLOSSARY.md)

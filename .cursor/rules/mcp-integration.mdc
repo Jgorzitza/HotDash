@@ -1,0 +1,110 @@
+---
+description: MCP server integration patterns and best practices
+---
+# MCP Integration Patterns
+
+## MCP-First Development Principle
+From [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md):
+- All code work must reference latest tools from MCP servers
+- Agent training data is OUTDATED for React Router 7 and Shopify APIs
+- Always verify current syntax before implementation
+- Never trust training data - use MCP tools to validate
+
+## Available MCP Servers
+
+### 1. Shopify MCP
+- **Purpose**: Shopify GraphQL schema validation
+- **Critical**: Agent training has 2023 or older Shopify patterns
+- **Always validate**: All Shopify queries before implementation
+- **Tools**: `introspect_graphql_schema`, `validate_graphql_codeblocks`
+
+### 2. Context7 MCP
+- **Purpose**: Library documentation (React Router, LlamaIndex, etc.)
+- **Critical**: Verify React Router 7 patterns (not v6/Remix)
+- **Tools**: `resolve-library-id`, `get-library-docs`
+
+### 3. GitHub MCP
+- **Purpose**: Repository management, PR operations
+- **Tools**: Create/update files, branches, PRs, issues
+
+### 4. Supabase MCP
+- **Purpose**: Database operations, migrations, edge functions
+- **Tools**: `list_tables`, `apply_migration`, `get_advisors`
+
+### 5. Fly MCP
+- **Purpose**: Deployment, machine management
+- **Tools**: App creation, deployment, logs, status checks
+
+### 6. Google Analytics MCP
+- **Purpose**: Analytics data (NOT for application data)
+- **Note**: Direct API used for application analytics
+
+### 7. LlamaIndex RAG MCP
+- **Purpose**: Knowledge base queries, support information
+- **Location**: [apps/llamaindex-mcp-server/](mdc:apps/llamaindex-mcp-server/)
+- **Tools**: `query_support`, `refresh_index`, `insight_report`
+- **Status**: Code complete, needs environment variables
+
+## Integration Best Practices
+
+### Token Limits
+Use conservative token limits when calling MCP tools:
+- **Standard**: 800-1500 tokens
+- **Comprehensive**: 2000-3000 tokens for detailed docs
+- **Always specify topic** to narrow results
+
+### Validation Workflow
+1. **Search codebase first** with grep/glob
+2. **Verify with MCP** for current patterns
+3. **Implement** with confidence
+4. **Validate** with MCP tools if available
+
+### Example: Shopify Query Implementation
+```typescript
+// 1. Search existing patterns
+// grep -r "productVariant" app/services/shopify/
+
+// 2. Verify with Shopify MCP
+// mcp_shopify_introspect_graphql_schema(query: "productVariant")
+
+// 3. Implement with validated schema
+query {
+  productVariant(id: $id) {
+    # Use validated fields only
+  }
+}
+
+// 4. Validate the query
+// mcp_shopify_validate_graphql_codeblocks(codeblocks: [query])
+```
+
+## MCP Error Handling
+
+### Common Issues
+1. **Parameter mismatch**: Check schema definitions (like query vs q)
+2. **Missing dependencies**: Verify package.json has all required packages
+3. **Environment variables**: Ensure all required env vars are set
+4. **Module resolution**: Check imports and ESM compatibility
+
+### Debugging Pattern
+1. Check service health endpoint
+2. Review server logs
+3. Test with minimal request
+4. Validate request format against schema
+5. Check dependencies and environment
+
+## Current MCP Status
+
+### Operational
+- ✅ Shopify MCP: Fully functional
+- ✅ Context7 MCP: Available
+- ✅ GitHub MCP: Active
+- ✅ Supabase MCP: Connected
+- ✅ Fly MCP: Operational
+
+### Needs Configuration
+- ⏸️ LlamaIndex MCP: Needs env vars (SUPABASE_URL, SUPABASE_ANON_KEY, OPENAI_API_KEY)
+
+## Reference Documentation
+- MCP Allowlist: [docs/policies/mcp-allowlist.json](mdc:docs/policies/mcp-allowlist.json)
+- Credential Map: [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md)

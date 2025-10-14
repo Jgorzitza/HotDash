@@ -1,0 +1,152 @@
+---
+globs: *.ts,*.tsx,*.js,*.jsx
+---
+
+# TypeScript & React Patterns for HotDash
+
+## React Router 7 (NOT Remix)
+
+**CRITICAL**: Use React Router 7 patterns ONLY. Agent training data contains outdated Remix/RR6 patterns.
+
+**ALWAYS verify with Context7 MCP before implementing**:
+- Loaders and actions
+- Route configuration
+- Navigation patterns
+- Data fetching
+
+### Route Structure
+
+Routes located in: `app/routes/`
+
+**Pattern**: `route.tsx` or `{segment}.tsx`
+
+Example:
+```typescript
+// app/routes/app.dashboard.tsx
+import { json, type LoaderFunctionArgs } from "react-router";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  // Fetch data
+  return json({ data });
+}
+
+export default function Dashboard() {
+  const { data } = useLoaderData<typeof loader>();
+  return <div>{/* UI */}</div>;
+}
+```
+
+## TypeScript Best Practices
+
+### Type Safety
+- ✅ Always define explicit types for function parameters
+- ✅ Use `type` over `interface` for consistency
+- ✅ Avoid `any` - use `unknown` if type truly unknown
+- ✅ Use strict null checks
+
+### Type Imports
+```typescript
+import type { LoaderFunctionArgs } from "react-router";
+import type { Database } from "~/types/supabase";
+```
+
+## Supabase Integration
+
+### Type-Safe Database Access
+
+```typescript
+import { createClient } from '@supabase/supabase-js';
+import type { Database } from '~/types/supabase';
+
+const supabase = createClient<Database>(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
+
+// Type-safe query
+const { data, error } = await supabase
+  .from('conversations')
+  .select('*')
+  .eq('status', 'open');
+```
+
+### Environment Variables
+
+**ALWAYS validate**:
+```typescript
+if (!process.env.SUPABASE_URL) {
+  throw new Error('SUPABASE_URL environment variable required');
+}
+```
+
+## Component Patterns
+
+### Shopify Polaris Components
+
+```typescript
+import { Card, Button, Banner } from '@shopify/polaris';
+
+export function TileCard({ title, status }: TileCardProps) {
+  return (
+    <Card>
+      <Banner status={status}>{title}</Banner>
+    </Card>
+  );
+}
+```
+
+### Error Handling
+
+```typescript
+try {
+  const result = await apiCall();
+  return json({ success: true, data: result });
+} catch (error) {
+  console.error('API call failed:', error);
+  return json(
+    { success: false, error: 'Operation failed' },
+    { status: 500 }
+  );
+}
+```
+
+## Naming Conventions
+
+- **Files**: kebab-case for routes, camelCase for utilities
+- **Components**: PascalCase
+- **Functions**: camelCase
+- **Constants**: UPPER_SNAKE_CASE
+- **Types**: PascalCase with `Type` suffix if needed
+
+## Import Organization
+
+```typescript
+// 1. External dependencies
+import { json } from "react-router";
+import { Card } from "@shopify/polaris";
+
+// 2. Type imports
+import type { LoaderFunctionArgs } from "react-router";
+import type { Database } from "~/types/supabase";
+
+// 3. Internal utilities
+import { createSupabaseClient } from "~/utils/supabase.server";
+import { requireAuth } from "~/utils/auth.server";
+
+// 4. Relative imports
+import { TileCard } from "../components/TileCard";
+```
+
+## Server-Side vs Client-Side
+
+**Server files**: `*.server.ts` or `*.server.tsx`
+- Database access
+- API calls with secrets
+- Authentication
+
+**Client files**: Regular `.ts` or `.tsx`
+- UI components
+- Client-side interactions
+- Public utilities
+
+**NEVER import server files into client code**

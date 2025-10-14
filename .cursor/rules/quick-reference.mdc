@@ -1,0 +1,107 @@
+---
+alwaysApply: true
+---
+
+# Quick Reference
+
+## Essential Commands
+
+### Development
+```bash
+# Start local development
+npm run dev
+
+# Start local Supabase
+npx supabase start
+
+# Run tests
+npm run test
+
+# Lint
+npm run lint
+```
+
+### Deployment
+```bash
+# Deploy to Fly.io (source token first)
+source vault/occ/fly/api_token.env
+fly deploy --app [app-name]
+
+# Check deployment status
+fly status --app [app-name]
+fly logs --app [app-name]
+```
+
+### Git Workflow
+```bash
+# Check status before working
+git status -sb
+
+# Create feature branch
+git checkout -b [role]/[type]/[description]
+
+# Stash for shutdown
+git stash push --include-untracked -m "shutdown-YYYY-MM-DD"
+```
+
+## Key Files to Check
+
+**Before Starting Work**:
+1. [docs/directions/[your-role].md](mdc:docs/directions/) - Your task assignments
+2. [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md) - Project vision
+3. [docs/git_protocol.md](mdc:docs/git_protocol.md) - Git workflow
+4. [feedback/manager.md](mdc:feedback/manager.md) - Latest manager updates
+
+**For Credentials**:
+- [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md) - Complete credential catalog
+- `vault/occ/[service]/` - Actual secret files (never commit!)
+
+**For Deployment**:
+- [fly.toml](mdc:fly.toml) - Fly.io configuration
+- [Dockerfile](mdc:Dockerfile) - Container build
+- [docs/runbooks/agent-sdk-production-deployment.md](mdc:docs/runbooks/agent-sdk-production-deployment.md) - Deployment procedures
+
+## Common Paths
+
+### Services
+- **Agent SDK**: https://hotdash-agent-service.fly.dev
+- **LlamaIndex MCP**: https://hotdash-llamaindex-mcp.fly.dev
+- **Staging App**: https://hotdash-staging.fly.dev
+
+### Support Resources
+- **Customer Email**: customer.support@hotrodan.com
+- **Zoho Mail** (Canadian): zohocloud.ca
+- **Phone**: 1-800-HOT-RODAN
+
+## Agent Quick Tips
+
+### As Support Agent
+- Update [feedback/support.md](mdc:feedback/support.md) with all work
+- Reference [docs/support/](mdc:docs/support/) for templates
+- Check [docs/directions/support.md](mdc:docs/directions/support.md) for current tasks
+
+### As Engineer
+- Follow [docs/git_protocol.md](mdc:docs/git_protocol.md) strictly
+- Run tests before commits
+- Document deployments in [feedback/engineer.md](mdc:feedback/engineer.md)
+
+### As Any Agent
+- **Always check direction file first**
+- **Log all work with timestamps in feedback file**
+- **Source credentials from vault/ before using**
+- **Document blockers immediately**
+- **Reference canonical toolkit** (Supabase, React Router 7, OpenAI, Fly.io)
+
+## Emergency Contacts
+
+- **Manager**: Check [feedback/manager.md](mdc:feedback/manager.md) for latest assignments
+- **Reliability**: For service outages, monitoring issues
+- **Compliance**: For security, privacy, regulatory questions
+
+## Project Goals (October 2025)
+
+**Current Focus**: Hot Rod AN (automotive aftermarket) Shopify app launch
+- Target: October 13-15, 2025
+- Product: HotDash - AI-powered operations dashboard
+- Customer: Hot Rod AN (AN fittings, fuel system parts)
+- Features: 5 tiles (CX, Sales, SEO, Inventory, Fulfillment)

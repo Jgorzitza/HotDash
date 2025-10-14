@@ -1,0 +1,59 @@
+---
+globs: docs/**/*.md,*.md
+---
+
+# Documentation Standards
+
+## Frontmatter Requirements
+
+ALL markdown files in `docs/` must include YAML frontmatter:
+
+```yaml
+---
+epoch: 2025.10.E1
+doc: [relative/path/to/file.md]
+owner: [agent-role]
+last_reviewed: YYYY-MM-DD
+expires: YYYY-MM-DD
+tags: [tag1, tag2, tag3]
+---
+```
+
+## Document Structure
+
+1. **Title (H1)**: Clear, descriptive title
+2. **Purpose Statement**: What this document does
+3. **Target Audience**: Who should read this
+4. **Content**: Organized with H2/H3 sections
+5. **Footer**: Last updated date, owner, review frequency
+
+## Naming Conventions
+
+- Use kebab-case: `agent-startup-checklist.md`
+- Be descriptive: `shopify_app_onboarding_guide.md`
+- Include date for reports: `COMPLIANCE_REPORT_2025-10-14.md`
+
+## Evidence Logging
+
+When documenting operational work:
+- Include exact commands executed
+- Include timestamps (ISO 8601 UTC format: `2025-10-14T05:30:00Z`)
+- Include command outputs (in code blocks)
+- Reference artifact paths for logs/screenshots
+- Log to appropriate feedback file: `feedback/[role].md`
+
+Example:
+```markdown
+## 2025-10-14T05:30:00Z — Task Completed
+
+**Action**: Deployed service to Fly.io
+**Command**: `fly deploy --app hotdash-service`
+**Output**: [See artifacts/deployment/deploy-log-2025-10-14.txt]
+**Status**: ✅ SUCCESS
+```
+
+## Cross-References
+
+Link related docs using relative paths:
+- `See [git protocol](../git_protocol.md) for delivery process`
+- `Reference [credential index](../ops/credential_index.md) for secrets`

@@ -1,0 +1,65 @@
+---
+description: Agent coordination, feedback logging, and evidence requirements
+---
+# Agent Coordination Protocol
+
+## Agent Roles & Priorities (from [docs/runbooks/AGENT_STATUS_MATRIX_2025-10-13T22-50.md](mdc:docs/runbooks/AGENT_STATUS_MATRIX_2025-10-13T22-50.md))
+
+### P0 - Critical Path
+- **Engineer**: Implementation, deployment, technical features
+- **Deployment**: Production monitoring, health checks
+- **QA**: Testing, validation, quality assurance
+
+### P1 - High Priority
+- **AI**: Knowledge base, LlamaIndex MCP, agent responses
+- **Chatwoot**: CX integration, message handling
+- **Data**: Database, analytics, RLS policies
+- **Integrations**: Shopify, GA, external APIs
+
+### P2 - Supporting
+- **Designer**: UI/UX, specifications
+- **Support**: Documentation, operator guides
+- **Product**: Roadmap, launch materials
+- **Marketing**: Campaigns, communications
+- **Enablement**: Training, onboarding
+- **Compliance**: Security, audits, policies
+- **Reliability**: Monitoring, incident response
+- **Git Cleanup**: Repository maintenance
+- **Localization**: Content audit, voice/tone
+- **Engineer Helper**: Code review, pairing
+- **QA Helper**: Test coverage, quality
+
+## Feedback Logging
+
+**Required**: Log all progress to `feedback/{agent-name}.md`
+
+**Format**:
+```markdown
+## YYYY-MM-DDTHH:MM:SSZ — Task Description
+
+**Task**: Brief description
+**Status**: Complete/In Progress/Blocked
+**Duration**: Time taken
+
+### Details
+- Deliverable created
+- Findings/results
+- Evidence commands
+- Next steps
+
+**Next**: Next task
+```
+
+## Evidence Requirements
+- Timestamp all actions (ISO 8601)
+- Log commands executed
+- Save artifacts to appropriate folders
+- Reference file locations
+- Document blockers explicitly
+
+## Direction Files
+Each agent has: `docs/directions/{agent-name}.md`
+- Contains current priorities
+- START HERE NOW section
+- Canon/reference docs
+- Task lists with estimates

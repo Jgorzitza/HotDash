@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+---
+
+# HotDash Project Structure
+
+## Overview
+HotDash is a Shopify embedded app built with React Router 7, Supabase backend, and OpenAI/LlamaIndex AI integration. The project follows the Operator Control Center (OCC) architecture.
+
+## Key Directories
+
+- **[app/](mdc:app/)**: React Router 7 application code
+  - Routes, components, and UI logic
+  - Shopify app embed interface
+  
+- **[docs/](mdc:docs/)**: Complete project documentation
+  - **[docs/directions/](mdc:docs/directions/)**: Agent direction files (role-specific instructions)
+  - **[docs/runbooks/](mdc:docs/runbooks/)**: Operational runbooks and checklists
+  - **[docs/support/](mdc:docs/support/)**: Customer and operator support documentation
+  - **[docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md)**: Project vision and goals
+  - **[docs/git_protocol.md](mdc:docs/git_protocol.md)**: Git workflow and delivery protocol
+
+- **[feedback/](mdc:feedback/)**: Agent feedback and progress logs
+  - Each agent role has a dedicated feedback file (e.g., `feedback/support.md`, `feedback/manager.md`)
+  
+- **[vault/occ/](mdc:vault/occ/)**: Secrets and credentials (DO NOT commit to git)
+  - Organized by service (fly/, supabase/, shopify/, openai/)
+  - Reference [docs/ops/credential_index.md](mdc:docs/ops/credential_index.md) for catalog
+
+- **[scripts/](mdc:scripts/)**: Automation and operational scripts
+  - **[scripts/ai/](mdc:scripts/ai/)**: LlamaIndex workflows and AI integration
+  - **[scripts/ops/](mdc:scripts/ops/)**: Operational automation
+
+- **[supabase/](mdc:supabase/)**: Supabase configuration and migrations
+  - **[supabase/migrations/](mdc:supabase/migrations/)**: Database schema migrations
+
+- **[data/](mdc:data/)**: Knowledge base and content for AI RAG
+  - **[data/support/](mdc:data/support/)**: Support knowledge base articles
+
+## Configuration Files
+
+- **[package.json](mdc:package.json)**: Dependencies and scripts
+- **[.env](mdc:.env)**: Local environment variables (gitignored)
+- **[shopify.app.toml](mdc:shopify.app.toml)**: Shopify app configuration
+- **[fly.toml](mdc:fly.toml)**: Fly.io deployment configuration
+
+## Important Conventions
+
+1. **Epoch System**: Documents use `epoch: 2025.10.E1` frontmatter for versioning
+2. **Evidence Logging**: All operational work must be logged with timestamps and command outputs
+3. **Direction Governance**: Agent roles defined in `docs/directions/[role].md`, managed by manager
+4. **Credential Security**: All secrets in `vault/occ/`, never in git history

@@ -1,0 +1,284 @@
+---
+description: HotDash architecture patterns and project structure
+---
+# HotDash Operator Control Center - Architecture
+
+## Project Overview
+
+**Mission**: Operator-first control center embedded in Shopify Admin that unifies CX, sales, SEO, social, and inventory into actionable tiles with agent-assisted approvals.
+
+**Stack**: React Router 7 + Shopify Polaris + Supabase + Fly.io
+
+## Core Principles
+
+### MCP-First Development
+**CRITICAL**: Training data is outdated. Always verify with MCP tools:
+- Shopify GraphQL: Validate with Shopify MCP
+- React Router 7: Verify with Context7 MCP (not v6/Remix patterns)
+- Supabase: Use Supabase MCP for schema operations
+- Always use conservative token limits (800-1500)
+
+### Evidence or No Merge
+- Every PR requires evidence (screenshots, logs, test results)
+- All decisions documented with rationale
+- Artifact links required in commits
+- No merge without proof of functionality
+
+## Project Structure
+
+### Key Directories
+
+**Application Code**:
+- `app/` - React Router 7 application
+  - `app/routes/` - Route handlers (loaders, actions)
+  - `app/components/` - React components
+  - `app/services/` - Business logic and API clients
+  - `app/utils/` - Utility functions
+  - `app/schemas/` - Zod validation schemas
+  - `app/middleware/` - Express-style middleware
+
+**Data & Schema**:
+- `supabase/migrations/` - Database migrations
+- `prisma/schema.prisma` - Prisma schema (Shopify sessions)
+
+**Services**:
+- `apps/agent-service/` - Agent SDK for AI-powered support
+
+**Documentation**:
+- `docs/directions/` - Agent role directions (canonical)
+- `docs/runbooks/` - Operational procedures
+- `docs/compliance/` - Security and privacy documentation
+- `docs/product/` - Product specifications
+
+**Evidence & Artifacts**:
+- `artifacts/<role>/` - Agent work evidence
+- `feedback/<role>.md` - Agent execution logs
+
+**Secrets**:
+- `vault/occ/` - ALL secrets (600 permissions, NEVER commit)
+
+## Architecture Patterns
+
+### Authentication Flow
+```typescript
+// All routes must authenticate
+import { authenticate } from "../shopify.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const { session, admin } = await authenticate.admin(request);
+  // Your logic here
+}
+```
+
+### Environment Configuration
+```typescript
+import { getEnvironmentConfig } from "~/utils/env.server";
+
+const config = getEnvironmentConfig();
+// Use config.shopifyApiKey, config.shopifyAppUrl, etc.
+```
+
+### Input Validation
+```typescript
+import { z } from "zod";
+import { validateInput } from "~/schemas/validation";
+
+const MySchema = z.object({
+  email: z.string().email(),
+  // ...
+});
+
+const result = validateInput(MySchema, request.body);
+if (!result.success) {
+  return Response.json(validationErrorResponse(result.errors), { status: 400 });
+}
+```
+
+### Rate Limiting
+```typescript
+import { withRateLimit, apiRateLimiter } from "~/middleware/rate-limit.server";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  return withRateLimit(request, apiRateLimiter, async () => {
+    // Your logic here
+  });
+}
+```
+
+### Supabase MCP Usage
+```typescript
+// Get security advisors
+const advisors = await mcp_supabase_get_advisors({ type: "security" });
+
+// List tables with RLS status
+const tables = await mcp_supabase_list_tables({ schemas: ["public"] });
+
+// Apply migration
+await mcp_supabase_apply_migration({
+  name: "add_feature_table",
+  query: "CREATE TABLE ..."
+});
+```
+
+## Database Conventions
+
+### RLS Requirements
+ALL tables MUST have RLS enabled:
+```sql
+-- Enable RLS
+ALTER TABLE my_table ENABLE ROW LEVEL SECURITY;
+
+-- Create policies
+CREATE POLICY "Users can view own data"
+  ON my_table FOR SELECT
+  USING (auth.uid() = user_id);
+```
+
+### Naming Conventions
+- Tables: snake_case (`agent_approvals`, `customer_segments`)
+- Columns: snake_case (`created_at`, `shop_domain`)
+- Primary keys: `id` (UUID or BIGINT)
+- Timestamps: `created_at`, `updated_at` (with triggers)
+- Foreign keys: `<table>_id` or descriptive name
+
+### Standard Columns
+Include on all tables:
+```sql
+id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+created_at TIMESTAMPTZ DEFAULT now(),
+updated_at TIMESTAMPTZ DEFAULT now()
+```
+
+## Component Patterns
+
+### Polaris Components
+Use Shopify Polaris components (not custom UI):
+- `<s-page>`, `<s-section>`, `<s-card>`, `<s-button>`
+- See existing components in `app/components/`
+- Maintain Shopify Admin design consistency
+
+### Tile Pattern
+Dashboard tiles follow standard pattern:
+```typescript
+// See app/components/tiles/TileCard.tsx
+<TileCard
+  title="Tile Name"
+  metric={value}
+  trend={percentChange}
+  status="success" | "warning" | "critical"
+/>
+```
+
+## API Integration
+
+### Shopify GraphQL
+```typescript
+const response = await admin.graphql(`
+  query {
+    products(first: 10) {
+      edges {
+        node {
+          id
+          title
+        }
+      }
+    }
+  }
+`);
+```
+
+### Chatwoot API
+See `app/services/chatwoot/` for:
+- Conversation API
+- Message API
+- Contact API
+- Webhook handling
+
+### Google Analytics
+See `app/services/ga/directClient.ts` for:
+- Direct API usage (not MCP for application)
+- Property queries
+- Metric fetching
+
+## Error Handling
+
+### Standard Error Response
+```typescript
+return Response.json(
+  {
+    error: "Error message",
+    details: ["Specific issue 1", "Specific issue 2"],
+    timestamp: new Date().toISOString(),
+  },
+  { status: 400 }
+);
+```
+
+### Error Logging
+- Use `console.error()` for server errors
+- Never log secrets or PII
+- Include context (user ID, request ID)
+- Log to Supabase for critical errors
+
+## Testing
+
+### Test Files
+- Unit tests: `tests/unit/**/*.spec.ts`
+- Integration tests: `tests/integration/**/*.spec.ts`
+- E2E tests: `tests/playwright/**/*.spec.ts`
+- Security tests: `tests/security/**/*.spec.ts`
+
+### Test Patterns
+```typescript
+import { describe, it, expect } from 'vitest';
+
+describe('MyFeature', () => {
+  it('should do something', async () => {
+    const result = await myFunction();
+    expect(result).toBe(expected);
+  });
+});
+```
+
+## Deployment
+
+### Environments
+- **Local**: `npm run dev` (port 3000)
+- **Staging**: Fly.io (hotdash-staging.fly.dev)
+- **Production**: Fly.io (pending - not yet deployed)
+
+### Deployment Checklist
+Before deployment:
+1. Run security scan (gitleaks)
+2. Run Supabase advisors
+3. Verify all tests pass
+4. Check for TypeScript errors
+5. Review security audit findings
+6. Manager approval required
+
+## Performance
+
+### Optimization
+- Use Supabase materialized views for complex queries
+- Cache expensive computations
+- Implement pagination (max 100 items/page)
+- Use React.memo for expensive components
+- Lazy load routes and components
+
+### Monitoring
+- Fly.io metrics for infrastructure
+- Supabase performance insights
+- Custom analytics in `dashboard_usage_analytics` table
+- Log slow queries (>1s) for optimization
+
+## Security Checklist
+
+When adding new features:
+- [ ] Authentication required on all endpoints
+- [ ] Input validation with Zod schemas
+- [ ] Rate limiting applied
+- [ ] RLS enabled on new tables
+- [ ] No secrets in code
+- [ ] Error messages safe (no data leakage)
+- [ ] Security testing completed
+- [ ] Documentation updated

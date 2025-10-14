@@ -1,0 +1,112 @@
+---
+alwaysApply: true
+---
+# Security and Compliance Standards
+
+## Security Requirements
+
+### Secrets Management
+- **NEVER** hardcode secrets, API keys, tokens, or passwords in code
+- ALL secrets MUST be stored in `vault/occ/` directory with 600 permissions
+- Reference secrets via `process.env.VARIABLE_NAME` only
+- Use `[REDACTED]` placeholders in documentation and feedback logs
+- Credential index: [credential_index.md](mdc:docs/ops/credential_index.md)
+
+### Authentication & Authorization
+- ALL API endpoints MUST require authentication (use `authenticate.admin(request)`)
+- Implement CSRF protection on state-changing endpoints
+- Verify webhook signatures (HMAC) for all webhook handlers
+- Session management via [shopify.server.ts](mdc:app/shopify.server.ts)
+
+### Input Validation
+- Use Zod schemas for ALL user inputs (see [validation.ts](mdc:app/schemas/validation.ts))
+- Sanitize user input to prevent XSS (use `sanitizeInput()`)
+- Validate Shopify GIDs, emails, dates, pagination
+- Never trust client input without validation
+
+### Rate Limiting
+- Apply rate limiting to ALL API routes using [rate-limit.server.ts](mdc:app/middleware/rate-limit.server.ts)
+- API routes: 100 requests/min
+- Auth routes: 5 requests/min
+- Return proper 429 status with Retry-After headers
+
+### Database Security
+- ALL tables MUST have Row Level Security (RLS) enabled
+- Use Prisma ORM to prevent SQL injection
+- Avoid SECURITY DEFINER views (bypass RLS)
+- Set explicit search_path on all database functions
+
+## Compliance Requirements
+
+### GDPR/CCPA
+- Support all 7 data subject rights (access, rectification, erasure, restriction, portability, object, automated decisions)
+- Document data retention policies (14d messages, 1yr logs, 180d analytics)
+- Maintain audit trail for all data processing
+- Data Subject Request runbook: [data_subject_requests.md](mdc:docs/runbooks/data_subject_requests.md)
+
+### Privacy by Design
+- Data minimization: collect only necessary data
+- Purpose limitation: use data only for stated purposes
+- Storage limitation: delete after retention period
+- Transparency: document all data processing
+
+### Incident Response
+- Follow security incident playbook: [incident_response_security.md](mdc:docs/runbooks/incident_response_security.md)
+- P0 Critical: Immediate response (24/7)
+- P1 High: 1 hour response
+- P2 Medium: 4 hours response
+- Document ALL incidents in `docs/compliance/incidents/`
+
+## Code Review Checklist
+
+Before committing code, verify:
+- [ ] No hardcoded secrets (run gitleaks)
+- [ ] Authentication required on all endpoints
+- [ ] Input validation implemented (Zod schemas)
+- [ ] Rate limiting applied
+- [ ] CSRF protection on state-changing endpoints
+- [ ] RLS enabled on new database tables
+- [ ] Error messages don't expose sensitive data
+- [ ] Audit logging for sensitive operations
+
+## Security Testing
+
+### Pre-deployment
+- Run gitleaks: `gitleaks detect --source . --redact`
+- Check Supabase advisors: `mcp_supabase_get_advisors(type: "security")`
+- Verify RLS: `mcp_supabase_list_tables()` - all must have `rls_enabled: true`
+- Test authentication: Verify 401 on unauthenticated requests
+- Test rate limiting: Verify 429 when limit exceeded
+
+### Security Tools
+- Gitleaks: Pre-commit hook at [.git/hooks/pre-commit](mdc:.git/hooks/pre-commit)
+- CI scanning: [.github/workflows/secret_scan.yml](mdc:.github/workflows/secret_scan.yml)
+- Supabase MCP: Database security scanning
+- Manual code review: Required for all security-sensitive changes
+
+## Documentation Requirements
+
+### Evidence Trail
+ALL security work must include:
+- Command executed (exact command)
+- Timestamp (ISO 8601 format)
+- Output path (where logs/artifacts stored)
+- Document in `feedback/compliance.md`
+
+### Artifacts
+Store compliance artifacts in:
+- `artifacts/compliance/` - Scan results, reports, evidence
+- `docs/compliance/` - Policies, procedures, assessments
+- `docs/runbooks/` - Incident response, operational procedures
+
+## References
+
+**Core Security Docs**:
+- Security audit: [security_audit_report_20251014.md](mdc:artifacts/compliance/security_audit_report_20251014.md)
+- Production sign-off: [production_security_sign_off_20251014.md](mdc:artifacts/compliance/production_security_sign_off_20251014.md)
+- Compliance dashboard: [COMPLIANCE_DASHBOARD.md](mdc:docs/compliance/COMPLIANCE_DASHBOARD.md)
+
+**Playbooks**:
+- Security incidents: [incident_response_security.md](mdc:docs/runbooks/incident_response_security.md)
+- Data breaches: [incident_response_breach.md](mdc:docs/runbooks/incident_response_breach.md)
+- Secret scanning: [secret-scanning.md](mdc:docs/runbooks/secret-scanning.md)

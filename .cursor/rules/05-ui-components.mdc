@@ -1,0 +1,52 @@
+---
+globs: app/components/*.tsx,app/routes/*.tsx
+---
+# UI Component Guidelines
+
+## Shopify Polaris Components
+Use Polaris for all UI: [Shopify Polaris Documentation](https://polaris.shopify.com/)
+
+Common components:
+- Page, Card, Layout
+- Button, TextField, Select
+- Modal, FormLayout
+- Text, InlineStack, BlockStack
+
+## Dashboard Tiles
+Pattern: [app/components/tiles/TileCard.tsx](mdc:app/components/tiles/TileCard.tsx)
+
+Tile names (professional operator voice):
+- CX Escalations
+- Sales Pulse
+- Inventory Heatmap
+- SEO & Content Watch
+- Fulfillment Health
+
+## Help Text Standards (from [docs/design/help_text_localization_audit.md](mdc:docs/design/help_text_localization_audit.md))
+
+✅ **Good Help Text**:
+```tsx
+<TextField
+  label="Total Pieces"
+  helpText="Number of pieces in this order for picker payment calculation"
+/>
+```
+
+❌ **Avoid Generic**:
+```tsx
+<TextField label="Amount" /> // Missing help text
+```
+
+## Accessibility
+Always include proper ARIA labels:
+```tsx
+<div aria-labelledby={headingId}>
+  <h2 id={headingId}>Title</h2>
+</div>
+```
+
+## Error States
+Use clear, actionable messages from [app/utils/error-handler.server.ts](mdc:app/utils/error-handler.server.ts):
+```tsx
+{error.message || "Unable to load data for this tile. Please try refreshing."}
+```

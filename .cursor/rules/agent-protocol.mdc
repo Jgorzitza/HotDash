@@ -1,0 +1,153 @@
+---
+description: Agent coordination protocol, direction files, and feedback logging
+---
+# Agent Coordination Protocol
+
+## Agent System Overview
+
+### 18 Active Agents
+**P0 Critical**: Engineer, Deployment, QA
+**P1 High**: AI, Chatwoot, Data, Integrations
+**P2 Supporting**: Designer, Support, Product, Marketing, Enablement, Compliance, Reliability, Git Cleanup, Localization, Engineer-Helper, QA-Helper
+
+## Direction Files
+Location: [docs/directions/](mdc:docs/directions/)
+
+### Structure
+```markdown
+---
+epoch: 2025.10.E1
+doc: docs/directions/<agent>.md
+owner: manager
+last_reviewed: YYYY-MM-DD
+expires: YYYY-MM-DD
+---
+
+# Agent Name — Direction
+
+## Current Sprint Focus
+[Tasks and priorities]
+
+## Canon
+[Required reading and reference docs]
+
+## Mission
+[Agent-specific mission statement]
+```
+
+### Key Principles
+- **Manager-authored only**: Agents cannot edit their own directions
+- **Evidence-based changes**: Submit change requests via manager
+- **6 Non-negotiables**: Present in all direction files
+- **Git workflow**: Each agent uses `agent/<role>/work` branches
+
+## Feedback Files
+Location: `feedback/<agent>.md`
+
+### Logging Format
+```markdown
+## YYYY-MM-DDTHH:MM:SSZ — Task Title
+
+**Action**: What was done
+**Commands**: Shell commands executed
+**Files Modified**: List with line numbers
+**Result**: Outcome/output
+**Evidence**: Links to artifacts, commits
+**Next**: Next steps or blockers
+```
+
+### Requirements
+- **ISO 8601 timestamps**: All entries must have timestamps
+- **Command evidence**: Include exact commands run
+- **File paths with line numbers**: Specific locations
+- **Git commit references**: Link all changes to commits
+- **Blocker documentation**: Flag P0/P1 blockers immediately
+
+## Coordination Protocol
+
+### With Manager
+- Report progress every 2 hours for long tasks
+- Document completion in feedback file
+- Flag blockers immediately with P0/P1 severity
+- Request new assignments when idle
+
+### With Other Agents
+- Cross-reference in feedback logs
+- Tag other agents when coordination needed
+- Share evidence and artifacts
+- Respect agent boundaries and specializations
+
+## Task Priority System
+
+### P0 - Critical Path
+- Launch blockers
+- Production issues
+- Security vulnerabilities
+- Start immediately, work until complete
+
+### P1 - High Priority
+- Feature work for launch
+- Important integrations
+- Performance improvements
+- Complete after P0s
+
+### P2 - Supporting
+- Documentation
+- Nice-to-have features
+- Developer experience
+- Complete after P1s
+
+## Evidence Standards
+
+### Required for All Tasks
+- ✅ File paths with line numbers
+- ✅ Test results (with pass/fail counts)
+- ✅ Validation confirmations (e.g., MCP validation)
+- ✅ Git commit hashes
+- ❌ NOT acceptable: Vague descriptions without specifics
+
+### Quality Bar
+- **Evidence-based**: "Evidence or no merge"
+- **Specific**: Line numbers, command outputs
+- **Verifiable**: Other agents can reproduce
+- **Timestamped**: ISO 8601 format always
+
+## Recovery Instructions
+
+### After Restart
+1. Read direction file: `docs/directions/<agent>.md`
+2. Review feedback file: `feedback/<agent>.md`
+3. Check git branch: Should be on `agent/<role>/work` or specific branch
+4. Restore stashes if needed: `git stash pop`
+5. Continue from last documented state
+
+### Stash Recovery
+```bash
+# List all stashes
+git stash list
+
+# View stash contents
+git stash show stash@{n}
+
+# Apply specific stash
+git stash pop stash@{n}
+```
+
+## Agent-Specific Notes
+
+### Engineer-Helper
+- **Role**: Unblock primary Engineer
+- **Scope**: Bug fixes, technical debt, smaller tasks
+- **Coordination**: Report to Engineer and Manager
+- **Git**: Use engineer-helper specific branches or localization/work
+
+### Current State (2025-10-14)
+- All tasks: 100% COMPLETE
+- LlamaIndex MCP: 95% complete (code done)
+- Feedback: Comprehensive documentation
+- Status: Available for new assignments
+
+## Reference Documents
+- North Star: [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md)
+- Git Protocol: [docs/git_protocol.md](mdc:docs/git_protocol.md)
+- Direction Governance: [docs/directions/README.md](mdc:docs/directions/README.md)
