@@ -620,6 +620,7 @@ If ANY task blocked >2 hours:
 - Designer: Dashboard UI design
 - Product: Analytics requirements
 - Reliability: Monitoring integration
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/data.md (manager monitors all feedback files)
 
 ---

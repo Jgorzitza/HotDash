@@ -434,6 +434,7 @@ You are authorized to run local, non-interactive commands and scripts without as
 - Engineer: Coordinate on refactoring
 - QA: Coordinate on test coverage
 - All agents: Documentation review
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/engineer-helper.md (manager monitors all feedback files)
 
 ---

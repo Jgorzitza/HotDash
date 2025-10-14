@@ -736,9 +736,10 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 
 **Timeline**: Start immediately, report progress every 2 hours to feedback/engineer.md
 
-**Coordination**: 
+**Coordination**:
 - Designer: May need UX input on loading states
 - QA: Will need testing after optimization
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/engineer.md (manager monitors all feedback files)
 
 ---

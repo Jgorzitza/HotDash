@@ -529,6 +529,7 @@ Execute Tasks 8-18. Total: ~45-55 hours of deep QA work.
 - QA: Coordinate on test strategy
 - Engineer: Fix any issues found
 - Reliability: Performance monitoring
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/qa-helper.md (manager monitors all feedback files)
 
 ---

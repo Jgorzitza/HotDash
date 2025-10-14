@@ -243,6 +243,7 @@ Every test must log in feedback/qa.md:
 - Engineer: May need bug fixes
 - QA Helper: Coordinate on test coverage
 - Product: UAT scenarios
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/qa.md (manager monitors all feedback files)
 
 ---

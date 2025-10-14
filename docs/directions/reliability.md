@@ -347,6 +347,7 @@ Execute A, B, C in any order - all independent work.
 - Deployment: Service monitoring
 - Engineer: Performance issues
 - Data: Data quality issues
-- Manager: Report completion for next assignment
+
+**When Complete**: Log completion in feedback/reliability.md (manager monitors all feedback files)
 
 ---
