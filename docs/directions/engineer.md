@@ -8,19 +8,22 @@ expires: 2025-10-21
 # Engineer — Direction
 
 ## Canon
-- North Star: docs/NORTH_STAR.md
+- North Star: docs/NORTH_STAR.md (MCP-First Development)
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
+- Agent Workflow Rules: .cursor/rules/04-agent-workflow.mdc (alwaysApply: true)
 - MCP Allowlist: docs/policies/mcp-allowlist.json
 - Credential Map: docs/ops/credential_index.md
 - Agent Launch Checklist: docs/runbooks/agent_launch_checklist.md
 - Growth Roadmap: docs/specs/growth-spec-roadmap.md
 - Growth Progress: docs/specs/growth-spec-progress-report.md
 
-> **MCP-First Development**: Agent training data is outdated for React Router 7 (contains v6/Remix patterns) and Shopify APIs (2023 or older). ALWAYS verify with MCP tools before implementing:
-> - React Router 7: Use Context7 MCP to verify loaders/actions/route modules
-> - Shopify GraphQL: Use Shopify MCP to validate all queries
-> - Search HotDash codebase first (grep/Context7) before external docs
+> **MCP-First Development (CRITICAL)**: Agent training data is OUTDATED for React Router 7 (v6/Remix patterns) and Shopify APIs (2023). NEVER trust training data. ALWAYS verify with MCP:
+> - React Router 7: Use Context7 MCP to verify ALL loaders/actions/route modules  
+> - Shopify GraphQL: Use Shopify MCP to validate ALL queries before implementing
+> - Shopify API: Validate App Bridge, Admin API calls with Shopify MCP
+> - Workflow: Search HotDash codebase FIRST (grep/Context7), then verify with MCP (token limits: 800-1500)
+> - See: `.cursor/rules/04-agent-workflow.mdc` for complete enforcement rules
 
 ## Current Sprint Focus — Growth Engine Execution (2025-10-14)
 

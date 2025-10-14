@@ -1,0 +1,90 @@
+# Agent Workflow Rules (alwaysApply: true)
+
+## MCP-First Development (CRITICAL)
+
+**Training Data is OUTDATED** for:
+- React Router 7 (contains v6/Remix patterns from 2023)
+- Shopify APIs (2023 or older patterns)
+
+**MANDATORY MCP Verification**:
+1. **React Router 7**: Use Context7 MCP to verify ALL loaders/actions/route modules
+2. **Shopify GraphQL**: Use Shopify MCP to validate ALL queries before implementing
+3. **Shopify API calls**: Validate with Shopify MCP (App Bridge, Admin API)
+
+**Workflow**:
+1. Search HotDash codebase FIRST (grep/Context7)
+2. Verify with appropriate MCP tools (token limits: 800-1500)
+3. NEVER trust training data for RR7 or Shopify
+4. All Shopify queries MUST be MCP-validated
+5. All RR7 patterns MUST be Context7-verified
+
+**Available MCP Servers** (5 total):
+- Shopify MCP: API docs, GraphQL validation
+- Context7 MCP: Codebase search, pattern verification
+- GitHub MCP: Repo management
+- Supabase MCP: Database operations
+- Fly MCP: Deployment management
+
+## Direction & Feedback Separation (CRITICAL)
+
+**Direction Files** (`docs/directions/{agent}.md`):
+- Manager writes tasks/priorities
+- Agents READ ONLY (never modify)
+
+**Feedback Files** (`feedback/{agent}.md`):
+- Agents write progress updates
+- ONLY to their own file
+- Never write to other agents' feedback files
+- Never write to feedback/manager.md
+
+## Evidence Requirements
+
+**Every 2 Hours Report**:
+```
+## YYYY-MM-DDTHH:MM:SSZ — {Agent}: [Task] [Status]
+**Working On**: [Task from direction]
+**Progress**: [% or milestone]
+**Evidence**: 
+- Files: [paths]
+- Tests: [X/Y passing]
+- Build: [status]
+**Blockers**: [None or details]
+**Next**: [Next task]
+```
+
+**Evidence Format**:
+- File paths (specific, not verbose)
+- Command summaries (max 10 lines, NOT full output)
+- Test results (counts, not all output)
+- Git commits (hash + message)
+- Performance metrics (with units)
+
+**FORBIDDEN**:
+- ❌ 100+ line npm install outputs
+- ❌ Verbatim command logs
+- ❌ Full stack traces (use summaries)
+- ❌ Self-assigned tasks in feedback
+- ❌ Ad-hoc documents in feedback/ root
+
+## Compliance Checks
+
+- Feedback file <5000 lines (archive if larger)
+- No ad-hoc docs in feedback/ (only {agent}.md files)
+- No self-assigned tasks (come from direction)
+- Regular updates (every 2 hours minimum)
+- Escalate blockers immediately (>2 hours stuck)
+
+## File Structure
+
+- **Direction** (Manager writes): `docs/directions/{agent}.md`
+- **Feedback** (Agent writes): `feedback/{agent}.md`
+- **Evidence** (Agent stores): `artifacts/{agent}/` or `/tmp/`
+- **Rules** (Process): `.cursor/rules/*.mdc` (this file)
+
+---
+
+**Primary References**:
+- This file: .cursor/rules/04-agent-workflow.mdc (alwaysApply: true)
+- MCP-First: docs/NORTH_STAR.md
+- Governance: docs/directions/README.md
+- Quick Ref: docs/AGENT_RULES_REFERENCE.md (if exists)

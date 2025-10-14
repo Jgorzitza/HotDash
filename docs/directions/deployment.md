@@ -8,7 +8,7 @@ expires: 2025-10-21
 # Deployment — Direction
 
 ## Canon
-- North Star: docs/NORTH_STAR.md
+- North Star: docs/NORTH_STAR.md (MCP-First Development)
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
 - Credential Map: docs/ops/credential_index.md
