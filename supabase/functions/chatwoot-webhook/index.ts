@@ -168,63 +168,67 @@ serve(async (req: Request) => {
       message,
     } = payload;
 
-    // TODO: Query LlamaIndex for knowledge context
-    // const llamaIndexUrl = Deno.env.get("LLAMAINDEX_SERVICE_URL");
-    // const knowledgeResults = await fetch(`${llamaIndexUrl}/api/llamaindex/query`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     query: message.content,
-    //     top_k: 5,
-    //     min_relevance: 0.7,
-    //   }),
-    // }).then(r => r.json());
+    // Auto-response processing - integrates with Agent SDK approval system
+    // Call auto-responder service to classify intent and generate response
+    const autoResponderUrl = Deno.env.get("AUTO_RESPONDER_URL"); // Points to React Router app
+    
+    if (autoResponderUrl) {
+      try {
+        const autoResponseResult = await fetch(
+          `${autoResponderUrl}/api/cx/auto-response`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              conversationId: conversation.id,
+              customerMessage: message.content,
+              conversationHistory: conversation.messages || [],
+              customerMetadata: {
+                name: conversation.contact?.name,
+                email: conversation.contact?.email,
+              },
+            }),
+          }
+        ).then(r => r.json());
 
-    // TODO: Generate draft response via Agent SDK
-    // const agentSdkUrl = Deno.env.get("AGENTSDK_SERVICE_URL");
-    // const draft = await fetch(`${agentSdkUrl}/api/agentsdk/draft`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     customer_message: message.content,
-    //     customer_context: {
-    //       name: conversation.contact?.name,
-    //       email: conversation.contact?.email,
-    //       conversation_id: conversation.id,
-    //     },
-    //     knowledge_context: knowledgeResults.results,
-    //   }),
-    // }).then(r => r.json());
-
-    // TODO: Create private note in Chatwoot with draft
-    // const chatwootToken = Deno.env.get("CHATWOOT_API_TOKEN");
-    // const chatwootBaseUrl = Deno.env.get("CHATWOOT_BASE_URL");
-    // const privateNote = await fetch(
-    //   `${chatwootBaseUrl}/api/v1/accounts/${payload.account.id}/conversations/${conversation.id}/messages`,
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       "api_access_token": chatwootToken,
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       content: `🤖 DRAFT RESPONSE...\n\n${draft.draft_response}`,
-    //       message_type: 0,
-    //       private: true,
-    //     }),
-    //   }
-    // ).then(r => r.json());
-
-    // TODO: Insert into approval queue
-    // await supabase.from("agent_sdk_approval_queue").insert({
-    //   conversation_id: conversation.id,
-    //   chatwoot_message_id: privateNote.id,
-    //   customer_message: message.content,
-    //   draft_response: draft.draft_response,
-    //   confidence_score: draft.confidence_score,
-    //   knowledge_sources: draft.sources,
-    //   status: "pending",
-    // });
+        // If high confidence and should auto-respond, queue for approval
+        if (autoResponseResult.shouldAutoRespond) {
+          await logToObservability(
+            supabase,
+            "INFO",
+            "Auto-response generated, queued for CEO approval",
+            {
+              conversationId: conversation.id,
+              intent: autoResponseResult.intent.category,
+              confidence: autoResponseResult.confidence,
+              needsApproval: true,
+            }
+          );
+        } else {
+          await logToObservability(
+            supabase,
+            "INFO",
+            "Message routed to human queue",
+            {
+              conversationId: conversation.id,
+              intent: autoResponseResult.intent.category,
+              confidence: autoResponseResult.confidence,
+              reason: "below_confidence_threshold_or_complex",
+            }
+          );
+        }
+      } catch (error) {
+        await logToObservability(
+          supabase,
+          "WARN",
+          "Auto-responder service unavailable, falling back to manual queue",
+          {
+            error: error.message,
+            conversationId: conversation.id,
+          }
+        );
+      }
+    }
 
     // For now, just log that we received a valid customer message
     await logToObservability(
