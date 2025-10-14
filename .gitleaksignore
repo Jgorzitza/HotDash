@@ -37,7 +37,11 @@ coverage/**
 # Reference credentials as environment variables: $VAR_NAME or ${VAR_NAME}
 # Or use [REDACTED] placeholders in documentation
 
+# Archive directories (old/historical data)
+archive/**
+artifacts/qa/**/supabase-start.log
+
 # CRITICAL: Do NOT ignore docs/ or feedback/ directories
 # These MUST be scanned for secrets
-# Only theme files and build artifacts should be ignored
+# Only theme files, build artifacts, and archives should be ignored
 
