@@ -25,7 +25,7 @@ export interface ConversationContext {
     customer: CustomerContext;
     intent?: string;
     sentiment?: 'positive' | 'neutral' | 'negative';
-    urgency?: 'low' | 'medium' | 'high';
+    urgency?: 'low' | 'medium' | 'high' | 'urgent';
     metadata: Record<string, any>;
     createdAt: Date;
     updatedAt: Date;
@@ -58,7 +58,7 @@ export declare class ConversationManager {
     /**
      * Set conversation urgency
      */
-    setUrgency(conversationId: number, urgency: 'low' | 'medium' | 'high'): void;
+    setUrgency(conversationId: number, urgency: 'low' | 'medium' | 'high' | 'urgent'): void;
     /**
      * Add metadata to conversation
      */
