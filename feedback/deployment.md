@@ -4598,3 +4598,46 @@ All agent workflow rules followed:
 
 **End of Session Report**
 
+
+---
+
+## 💾 Agent Workflow Rules - Added to Permanent Memory
+**Timestamp**: 2025-10-14T12:20:00Z
+**Status**: ✅ COMPLETE
+
+### Memories Created (5)
+
+**Memory 1: Direction vs Feedback Separation**
+- Direction files (docs/directions/{agent}.md) = Manager writes tasks
+- Feedback files (feedback/{agent}.md) = Agents write progress ONLY
+- Never mix assignments with progress updates
+
+**Memory 2: Evidence Logging - Summary Only**
+- File length: <5,000 lines
+- Format: File paths, commit SHAs, test summaries
+- NOT verbose: No 100+ line outputs
+- Max 10 lines per command summary
+
+**Memory 3: Status Updates Every 2 Hours**
+- Required format: ## YYYY-MM-DDTHH:MM:SSZ — {Agent}: [Status]
+- Sections: Working On, Progress, Evidence, Blockers, Next
+- >4 hours without update = flagged as idle/blocked
+
+**Memory 4: No Ad-Hoc Documents**
+- Only write in feedback/{agent}.md
+- Never create: feedback/STATUS_REPORT_*.md or coordination docs
+- Archive violations to feedback/archive/
+
+**Memory 5: Primary Rules Reference**
+- Source of truth: .cursor/rules/04-agent-workflow.mdc
+- Quick reference: docs/AGENT_RULES_REFERENCE.md
+- Core workflow: Read direction → Write feedback → Report every 2hrs
+
+**Purpose**: Permanent reference for all future agent sessions
+
+**Evidence**: 5 memories created successfully
+
+---
+
+**All deployment agent work complete with rules permanently stored** ✅
+
