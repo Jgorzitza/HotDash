@@ -38,6 +38,14 @@
 4. Use structured outputs for reliability
 5. Verify ALL patterns against OpenAI Agents documentation
 
+**Multimodal Support (MANDATORY)**:
+- Customers send screenshots and photos with requests
+- Use Vision API (GPT-5 with image understanding)
+- Image + text analysis for complete context
+- Reference: https://cookbook.openai.com/examples/multimodal/image_understanding_with_rag
+- Encode images to base64, analyze with vision model
+- Combine image sentiment with text for full understanding
+
 **Human-in-the-Loop (MANDATORY)**:
 - ALL created agents REQUIRE human approval before execution
 - Approval queue for all AI-generated actions
@@ -50,6 +58,7 @@
 2. CEO voice: Match tone/style from hotrodan.com
 3. Approval feedback: Learn from CEO approvals/rejections
 4. Iterative improvement: Adjust confidence based on outcomes
+5. Historical data: Train on past customer interactions from Chatwoot
 
 ## Direction & Feedback Separation (CRITICAL)
 

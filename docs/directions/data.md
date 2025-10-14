@@ -26,23 +26,40 @@ expires: 2025-10-21
 
 **Status**: B1-B3 complete (GSC, Shopify, Analytics ✅), B4-B7 pending
 
-**Priority 0: Enable All Recommenders** (This Week - 8-10 hours)
+**Priority 0: Enable All Recommenders** (This Week - 10-13 hours)
 
-1. **B4: Purchase Pattern Analysis** (2-3 hours)
+1. **Chatwoot Historical Data ETL** ⚠️ CRITICAL FOR AI (2-3 hours)
+   - **Goal**: Support AI agent RAG training with historical customer data
+   - ETL pipeline for Chatwoot conversation export
+   - Transform conversations → LlamaIndex-compatible format
+   - Handle image attachments (customer screenshots, photos)
+   - Data validation (complete conversations, no corruption)
+   - **Coordinate with**: Chatwoot agent (export), AI agent (RAG ingestion)
+   - Deliverable: `scripts/ai/ingest-chatwoot-history.ts`
+   
+   **Acceptance**:
+   - ✅ Process Chatwoot JSON export
+   - ✅ Extract customer questions + agent answers
+   - ✅ Download and index image attachments
+   - ✅ Output LlamaIndex format
+   - ✅ Privacy compliant (no PII leaks)
+   - ✅ Minimum 100+ conversations processed
+
+2. **B4: Purchase Pattern Analysis** (2-3 hours)
    - Calculate product affinity (what's bought together)
    - Store in `product_affinity` table
    - Query: Products frequently purchased with Product X
    - Enables: C4 Guided Selling Recommender (~15% AOV increase)
    - Deliverable: Migration + service + API endpoint
 
-2. **B6: Data Quality Validation** (1-2 hours)
+3. **B6: Data Quality Validation** (1-2 hours)
    - Automated checks for data freshness
    - Alert if data >48 hours old
-   - Monitor: GSC, Shopify sync, Analytics
+   - Monitor: GSC, Shopify sync, Analytics, **Chatwoot RAG**
    - Dashboard: Data status by source (green/yellow/red)
    - Deliverable: `app/services/data/data-quality.server.ts`
 
-3. **B7: Historical Baseline Collection** (3-4 hours)
+4. **B7: Historical Baseline Collection** (3-4 hours)
    - Collect 90 days historical data
    - Calculate baselines for impact measurement
    - Metrics: CTR, traffic, conversion, revenue per page
@@ -51,44 +68,45 @@ expires: 2025-10-21
 
 **Priority 1: Analytics & Measurement** (Week 2 - 10-12 hours)
 
-4. **F2: Recommender Feedback Database** (2-3 hours)
+5. **F2: Recommender Feedback Database** (2-3 hours)
    - Track approval/rejection by recommender type
    - Schema: `recommender_learnings` table
    - API: GET `/api/data/recommender-performance`
 
-5. **I2: ROI Calculator** (2 hours)
+6. **I2: ROI Calculator** (2 hours)
    - Calculate business value by actions
    - Formula: (new_ctr - baseline) × impressions × conv_rate × AOV
    - Store in `action_roi` table
 
-6. **I1: Action Performance Dashboard** (2-3 hours)
+7. **I1: Action Performance Dashboard** (2-3 hours)
    - Approval rates by recommender
    - Outcome success rates
+   - **Include**: Multimodal action success rates (image vs text-only)
    - Page: `app/routes/app.analytics.performance.tsx`
 
-7. **I5: Revenue Attribution** (2 hours)
+8. **I5: Revenue Attribution** (2 hours)
    - Track revenue from executed actions
    - Example: "SEO CTR drove +$12K this month"
    - Attribution window: 30 days post-execution
 
-8. **I7: Experiment Tracking** (1 hour)
+9. **I7: Experiment Tracking** (1 hour)
    - Log experiments with outcomes
    - Schema: `experiments` table
    - Identify winning variations
 
-9. **I3: Recommender Leaderboard** (1 hour)
-   - Rank by approval rate & outcome success
-   - Component: `app/components/RecommenderLeaderboard.tsx`
+10. **I3: Recommender Leaderboard** (1 hour)
+    - Rank by approval rate & outcome success
+    - Component: `app/components/RecommenderLeaderboard.tsx`
 
 **Priority 2: Advanced Analytics** (Week 3 - 8-10 hours)
 
-10. **I8: KPI Dashboard** (2 hours)
-11. **I4: Time Savings Tracker** (2 hours)
-12. **Advanced Analytics Engine** (2-3 hours) - Cohort, funnel, retention analysis
-13. **Data Export System** (1-2 hours) - CSV/JSON exports
-14. **Real-Time Metrics** (2 hours) - Websocket updates
-15. **Anomaly Detection** (2 hours) - Statistical alerts
-16. **Data Backup Automation** (1 hour)
+11. **I8: KPI Dashboard** (2 hours)
+12. **I4: Time Savings Tracker** (2 hours)
+13. **Advanced Analytics Engine** (2-3 hours) - Cohort, funnel, retention analysis
+14. **Data Export System** (1-2 hours) - CSV/JSON exports
+15. **Real-Time Metrics** (2 hours) - Websocket updates
+16. **Anomaly Detection** (2 hours) - Statistical alerts
+17. **Data Backup Automation** (1 hour)
 
 ## Database Schema Ownership
 
@@ -203,13 +221,15 @@ If stuck >2 hours escalate with:
 
 ## Timeline
 
-- Week 1: 8-10 hours (B4, B6, B7)
+- Week 1: 10-13 hours (Chatwoot ETL + B4, B6, B7)
 - Week 2: 10-12 hours (Analytics)
 - Week 3: 8-10 hours (Advanced)
-- **Total**: 26-32 hours over 3 weeks
+- **Total**: 28-35 hours over 3 weeks
 
 ---
 
-**Last Updated**: 2025-10-14T21:15:00Z  
-**Start**: B4 Purchase Patterns immediately  
+**Last Updated**: 2025-10-14T21:30:00Z  
+**Start**: Chatwoot Historical ETL (P0 Task 1) - AI agent needs this for RAG  
 **Evidence**: All work in `feedback/data.md`
+
+**CRITICAL**: Task 1 (Chatwoot ETL) unblocks AI agent training. Complete this FIRST to enable CEO voice learning from past interactions.

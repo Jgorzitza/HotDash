@@ -28,9 +28,56 @@ expires: 2025-10-21
 **Status**: Specs complete ✅, awaiting Engineer A4 (Execution Engine)  
 **Next**: Implement recommenders when A4 unblocks
 
-**Priority 0: Core Recommenders** (Week 2 - 12-15 hours)
+**Priority 0: Pre-Launch RAG Training** (Complete BEFORE recommenders - 8-10 hours)
 
-1. **C1: SEO CTR Optimizer** (3-4 hours)
+1. **Historical Chatwoot Data Ingestion** ⚠️ CRITICAL (3-4 hours)
+   - **Goal**: Train agents on past customer interactions BEFORE launch
+   - Read ALL previous customer emails from Chatwoot
+   - Read ALL past agent responses from Chatwoot
+   - Extract: Customer questions, agent answers, resolution patterns
+   - **Multimodal**: Include customer screenshots/photos (common in support)
+   - Store in LlamaIndex RAG for agent training
+   - Deliverable: RAG populated with historical customer data
+   - **Coordinate with**: Chatwoot agent (data access), Data agent (ETL)
+   
+   **Acceptance Criteria**:
+   - ✅ All historical Chatwoot conversations ingested
+   - ✅ Customer photos/screenshots extracted and indexed
+   - ✅ Agent responses available for CEO voice learning
+   - ✅ RAG queryable (test: "How do past agents handle X?")
+   - ✅ Minimum 100+ conversations indexed before launch
+
+2. **Multimodal Support Implementation** (3-4 hours)
+   - **Reference**: https://cookbook.openai.com/examples/multimodal/image_understanding_with_rag
+   - **Vision API**: GPT-5 with image understanding
+   - Image encoding (base64)
+   - Image + text analysis combined
+   - Handle: Screenshots (error messages), photos (product issues), diagrams
+   - Deliverable: `app/services/ai/multimodal.server.ts`
+   
+   **Acceptance Criteria**:
+   - ✅ Accept image uploads in customer requests
+   - ✅ Analyze images with Vision API
+   - ✅ Combine image sentiment with text
+   - ✅ Store image analysis in RAG context
+   - ✅ Test: Customer sends screenshot of error → Agent understands issue
+
+3. **Chatwoot Integration Verification** (2 hours)
+   - Verify Chatwoot API access (conversations, messages, attachments)
+   - Test image download from Chatwoot
+   - Verify webhook delivers image URLs
+   - Ensure agent can access conversation history
+   - Deliverable: Complete Chatwoot data pipeline
+   
+   **Acceptance**:
+   - ✅ Can query past conversations
+   - ✅ Can download customer images
+   - ✅ Webhook includes attachment metadata
+   - ✅ Real-time access to ongoing conversations
+
+**Priority 1: Core Recommenders** (Week 2 - 12-15 hours)
+
+4. **C1: SEO CTR Optimizer** (3-4 hours)
    - **OpenAI Agent SDK**: Use Assistants v2 API (NOT Completions API)
    - **Function Calling**: Define tools for GSC data access
    - **Structured Outputs**: Enforce output schema validation
@@ -50,22 +97,23 @@ expires: 2025-10-21
    - ✅ CEO can approve/reject with feedback
    - ✅ Agent learns from approval patterns
 
-2. **C2: Metaobject Generator** (3-4 hours)
+5. **C2: Metaobject Generator** (3-4 hours)
    - **OpenAI Agent SDK**: Assistants v2 with function calling
+   - **Multimodal**: Analyze product photos for description generation
    - Generate FAQs, specs, reviews for products
-   - Input: Product data + competitor analysis
+   - Input: Product data + competitor analysis + images
    - Output: 2-5 metaobject actions/week
    - **Human-in-the-Loop**: CEO approval required
    - Deliverable: `app/services/recommenders/metaobject.server.ts`
 
-3. **F3: Confidence Score Adjustment** (1-2 hours)
+6. **F3: Confidence Score Adjustment** (1-2 hours)
    - Auto-adjust weights based on CEO approval patterns
    - Increase confidence for successful recommenders
    - Decrease for inaccurate ones
    - Learn from rejection feedback
    - Deliverable: Learning algorithm
 
-4. **Knowledge Base Preparation** (2-3 hours)
+7. **Knowledge Base Preparation** (2-3 hours)
    - Ingest automotive fitment data (for correct product recommendations)
    - Build product catalog index
    - Competitor content analysis
@@ -73,46 +121,51 @@ expires: 2025-10-21
    - LlamaIndex integration
    - Deliverable: Knowledge base with CEO voice examples
 
-5. **Agent SDK Implementation** (2-3 hours) ⚠️ NEW REQUIREMENT
+8. **Agent SDK Implementation** (2-3 hours) ⚠️ NEW REQUIREMENT
    - Implement using OpenAI Agents API (NOT Completions)
    - Create Assistant with function calling tools
    - Thread management for conversation context
    - Structured outputs (Zod schema validation)
    - Human-in-the-loop approval integration
+   - **Multimodal**: Enable vision for image understanding
    - Reference: https://platform.openai.com/docs/guides/agents
-   - Deliverable: Base agent service using Agent SDK
+   - Deliverable: Base agent service using Agent SDK with vision
 
-6. **Prompt Engineering & Validation** (2-3 hours)
+9. **Prompt Engineering & Validation** (2-3 hours)
    - Tune prompts for each recommender
    - Anti-hallucination guards (verify facts with MCP)
    - Output format validation (structured outputs)
    - CEO voice consistency checks
-   - Test against known good/bad examples
+   - **Multimodal prompts**: Instructions for image analysis
+   - Test against known good/bad examples (text + images)
 
 **Priority 1: Advanced Recommenders** (Week 2-3 - 10-12 hours)
 
-7. **C3: Merch Playbook** (2-3 hours)
-   - **OpenAI Agent SDK**: Assistants v2 implementation
-   - Optimize collection sort order
-   - Featured product recommendations
-   - Input: Collection performance + analytics
-   - **Human Approval**: ALL merchandising changes require CEO review
+10. **C3: Merch Playbook** (2-3 hours)
+    - **OpenAI Agent SDK**: Assistants v2 implementation
+    - **Multimodal**: Analyze product images for placement optimization
+    - Optimize collection sort order
+    - Featured product recommendations
+    - Input: Collection performance + analytics + product images
+    - **Human Approval**: ALL merchandising changes require CEO review
    
-8. **C4: Guided Selling** (2-3 hours)
-   - **OpenAI Agent SDK**: Function calling for purchase data
-   - Cross-sell/upsell recommendations
-   - Purchase pattern analysis
-   - Input: Product affinity data
-   - **CEO Voice**: Match hotrodan.com selling style
+11. **C4: Guided Selling** (2-3 hours)
+    - **OpenAI Agent SDK**: Function calling for purchase data
+    - **Multimodal**: Analyze product photos for cross-sell suggestions
+    - Cross-sell/upsell recommendations
+    - Purchase pattern analysis
+    - Input: Product affinity data + images
+    - **CEO Voice**: Match hotrodan.com selling style
 
-9. **C5: Core Web Vitals** (2-3 hours)
-   - **OpenAI Agent SDK**: Technical recommendations
-   - Identify performance issues
-   - Recommend fixes (image optimization, lazy loading)
-   - Input: Lighthouse data
-   - **Human Approval**: Performance changes reviewed by CEO
+12. **C5: Core Web Vitals** (2-3 hours)
+    - **OpenAI Agent SDK**: Technical recommendations
+    - **Multimodal**: Analyze page screenshots for performance issues
+    - Identify performance issues
+    - Recommend fixes (image optimization, lazy loading)
+    - Input: Lighthouse data + page screenshots
+    - **Human Approval**: Performance changes reviewed by CEO
 
-10. **Human-in-the-Loop Integration** (2-3 hours) ⚠️ NEW REQUIREMENT
+13. **Human-in-the-Loop Integration** (2-3 hours) ⚠️ NEW REQUIREMENT
     - Build approval queue integration for all AI agents
     - CEO feedback collection system
     - Rejection reason tracking
@@ -127,39 +180,45 @@ expires: 2025-10-21
     - ✅ Confidence scores adjust based on approval rate
     - ✅ Agent voice improves toward CEO style
 
-11. **AI Quality Monitoring** (1-2 hours)
+14. **AI Quality Monitoring** (1-2 hours)
     - Track hallucination rate (fact-check against MCP tools)
     - Monitor output quality
     - Auto-alert on degradation
     - CEO approval rate by recommender
+    - **Multimodal quality**: Image understanding accuracy
 
-12. **Recommender A/B Testing** (2 hours)
-    - Test prompt variations
+15. **Recommender A/B Testing** (2 hours)
+    - Test prompt variations (text + image prompts)
     - Measure CEO approval rate differences
     - Implement winners based on CEO feedback
 
-**Priority 2: Optimization** (Week 3 - 8-10 hours)
+**Priority 2: Optimization** (Week 3 - 10-12 hours)
 
-13. **J1: Recommender Tuning** (2-3 hours)
+16. **J1: Recommender Tuning** (2-3 hours)
     - Adjust prompts based on CEO feedback
     - Improve confidence scoring accuracy based on approval patterns
+    - Tune multimodal prompts for better image understanding
     
-14. **Advanced Confidence Modeling** (2 hours)
+17. **Advanced Confidence Modeling** (2 hours)
     - Machine learning for approval prediction
     - Factor in CEO preferences over time
+    - Consider image vs text-only context in scoring
     
-15. **Multi-language Support Prep** (2 hours - framework only)
+18. **Multi-language Support Prep** (2 hours - framework only)
     - English-first architecture
     - i18n preparation (NO implementation until CEO approval)
     
-16. **AI Explainability** (2 hours - rationale quality)
+19. **AI Explainability** (2 hours - rationale quality)
     - Improve "why this action" explanations
     - CEO-friendly language (match hotrodan.com)
+    - Explain image analysis in plain language
     
-17. **Cost Optimization** (2 hours - token usage reduction)
+20. **Cost Optimization** (2-3 hours - token usage reduction)
     - Cache common queries
     - Reduce token usage per action
     - Optimize Agent SDK calls
+    - Efficient image encoding (compress before sending)
+    - Smart image analysis (only when needed)
 
 ## Evidence & Compliance
 
@@ -191,13 +250,21 @@ Report every 2 hours:
 
 ## Timeline
 
-- Week 1: Prepare (knowledge base, prompts) - 4-6 hours
-- Week 2: Core recommenders (C1, C2, F3) - 12-15 hours
-- Week 3: Advanced + tuning - 8-10 hours
-- **Total**: 24-31 hours
+- **Week 1 (P0)**: RAG Training + Multimodal + Chatwoot integration - 8-10 hours
+- **Week 2 (P1)**: Core recommenders (C1, C2) + Agent SDK + Prompts - 14-18 hours
+- **Week 3 (P1-P2)**: Advanced recommenders (C3, C4, C5) + Human-loop - 12-15 hours
+- **Week 4 (P2)**: Monitoring + A/B testing + Tuning - 10-12 hours
+- **Total**: 44-55 hours over 4 weeks
+
+**Critical Path**: 
+1. Historical data ingestion FIRST (enables CEO voice learning)
+2. Multimodal support (customers send images)
+3. Then recommenders (after A4 Execution Engine complete)
 
 ---
 
-**Last Updated**: 2025-10-14T21:20:00Z  
-**Start**: Prepare knowledge base now, implement C1 when A4 ready  
+**Last Updated**: 2025-10-14T21:30:00Z  
+**Start**: Historical Chatwoot data ingestion (P0 Task 1) - BEFORE launch  
 **Evidence**: All work in `feedback/ai.md`
+
+**CRITICAL**: Complete P0 tasks 1-3 (RAG + Multimodal + Chatwoot) BEFORE implementing recommenders. Agents must learn from past customer interactions first.

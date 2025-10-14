@@ -17,13 +17,39 @@ expires: 2025-10-21
 
 **Status**: Complete ✅ (2 commits, health checks passing)
 
-**Maintenance Tasks** (6-8 hours over 2 weeks):
-1. Monitor health endpoints (1 hour)
-2. Webhook performance tuning (2 hours)
-3. Queue optimization (2 hours)
-4. Security audit (1-2 hours)
-5. Documentation updates (1 hour)
-6. Integration testing with growth system (1-2 hours)
+**Priority 0: RAG Training Data** (This Week - 4-5 hours)
+
+1. **Historical Data Export for AI Training** ⚠️ CRITICAL (3-4 hours)
+   - **Goal**: Provide ALL past customer interactions to AI agent for RAG training
+   - Export all historical conversations from Chatwoot
+   - Extract: Customer emails, agent responses, resolution patterns
+   - **Include attachments**: Customer screenshots, photos, error images
+   - Format: JSON with conversation threads + image URLs
+   - Deliverable: Export to `artifacts/ai/chatwoot-historical/`
+   - **Coordinate with**: AI agent (RAG ingestion), Data agent (ETL if needed)
+   
+   **Acceptance Criteria**:
+   - ✅ All conversations exported (minimum 100+ conversations)
+   - ✅ Customer images/screenshots included (URLs + metadata)
+   - ✅ Agent responses preserved (for CEO voice learning)
+   - ✅ Format ready for LlamaIndex ingestion
+   - ✅ No PII violations (follow data privacy)
+
+2. **Chatwoot API Documentation** (1 hour)
+   - Document API endpoints for conversation access
+   - Image attachment retrieval process
+   - Webhook payload structure (for real-time ingestion)
+   - Authentication requirements
+   - Deliverable: `docs/integrations/chatwoot-api-guide.md`
+
+**Priority 1: Maintenance Tasks** (6-8 hours over 2 weeks):
+
+3. Monitor health endpoints (1 hour)
+4. Webhook performance tuning (2 hours)
+5. Queue optimization (2 hours)
+6. Security audit (1-2 hours)
+7. Documentation updates (1 hour)
+8. Integration testing with growth system (1-2 hours)
 
 Evidence in `feedback/chatwoot.md` every 2 hours
 
