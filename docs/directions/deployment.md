@@ -252,3 +252,47 @@ Log in feedback/deployment.md:
 **Timeline**: Start with P0, report progress every 2 hours to feedback/deployment.md
 
 ---
+
+---
+
+## 🚨 CRITICAL ADDITION (2025-10-13T23:49:00Z) — Chatwoot Admin User Setup
+
+**BEFORE starting deployment automation P0**, execute this critical task:
+
+### P0-URGENT: Recreate Chatwoot Super Admin User (15 minutes)
+
+**CEO Blocker**: CEO cannot login to Chatwoot (email doesn't exist)
+
+**Task**: Update Chatwoot admin user email from superadmin+staging@hotrodan.com → justin@hotrodan.com
+
+**Execute This Script**:
+```bash
+fly ssh console --app hotdash-chatwoot
+
+bundle exec rails runner "
+  user = User.find_or_create_by!(email: 'justin@hotrodan.com') do |u|
+    u.password = 'SuperAdmin123!'
+    u.password_confirmation = 'SuperAdmin123!'
+    u.name = 'Justin Gorzitza'
+    u.confirmed_at = Time.now
+  end
+  
+  account = Account.first
+  AccountUser.find_or_create_by!(account: account, user: user) do |au|
+    au.role = :administrator
+  end
+  
+  puts 'Super admin created: justin@hotrodan.com'
+"
+exit
+```
+
+**Verify**: Test login at https://hotdash-chatwoot.fly.dev
+
+**Log Evidence**: Confirm completion in feedback/deployment.md
+
+**Then**: Continue with deployment automation P0 task
+
+**KEEP PASSWORD**: SuperAdmin123! (same as before, per CEO request)
+
+---
