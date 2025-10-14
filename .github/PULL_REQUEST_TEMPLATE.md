@@ -62,21 +62,50 @@ npm run typecheck
 ### Screenshots (if UI changes)
 <!-- Drag and drop screenshots showing before/after or new functionality -->
 
-### Evidence Artifacts
-<!-- Link to evidence files in artifacts/ or reports/ directories -->
-- Artifacts: `artifacts/<agent>/<timestamp>/`
-- Reports: `reports/<category>/`
+### Evidence Artifacts ⭐ REQUIRED
+<!-- All code changes MUST include evidence - see docs/git_protocol.md -->
+
+**Link to evidence files** (choose relevant):
+- Test results: `artifacts/<agent>/<timestamp>/test-results/`
+- Screenshots: `artifacts/<agent>/<timestamp>/screenshots/`
+- Performance reports: `reports/performance/<date>/`
+- Migration logs: `artifacts/data/<timestamp>/migration-logs/`
 - Cleanup evidence: `feedback/git-cleanup.md` (if cleanup-related)
+- Deployment logs: `artifacts/deployment/<timestamp>/`
+
+**Evidence must include**:
+- [ ] Command executed (exact command with timestamp)
+- [ ] Output/results (full output or link to file)
+- [ ] Validation steps (how you verified it works)
+
+**Example**:
+```
+Command: npm run test:unit
+Timestamp: 2025-10-14T10:30:00Z
+Output: artifacts/qa/2025-10-14/test-results.txt
+Result: ✅ 127/127 tests passed
+```
 
 ### Secret Scan Results ⚠️ MANDATORY
 ```bash
-# Run this command and paste results:
+# REQUIRED: Run secret scan before every PR
+# This is automated by git hooks, but verify manually:
+
+# Method 1: Quick grep scan
 git grep -i "api_key\|secret\|password\|token\|private_key" HEAD | wc -l
 # Expected: 0 (or only documentation mentions in docs/, not in code)
 
-# If gitleaks installed:
+# Method 2: Gitleaks (recommended - install if not present)
 gitleaks detect --no-git -v
-# Expected: No leaks detected
+# Expected: "no leaks found"
+
+# Method 3: Check specific patterns
+git diff --cached | grep -E "(sk_|pk_|ghp_|gho_|sbp_|supabase_|SUPABASE_|SHOPIFY_)" || echo "No secrets found"
+# Expected: "No secrets found"
+
+# Paste results here:
+
+
 ```
 
 ## Code Review Checklist
@@ -99,21 +128,25 @@ gitleaks detect --no-git -v
 
 ### Security ⚠️ CRITICAL
 
-- [ ] **No secrets or credentials in code**
+- [ ] **Secret scan completed and passed** ✅ REQUIRED
   ```bash
-  # Run before committing:
-  git grep -i "api_key\|secret\|password\|token\|private_key" HEAD
-  # Expected: No matches (or only documentation mentions)
+  # Run ALL three methods in "Secret Scan Results" section above
+  # 1. grep scan for common patterns
+  # 2. gitleaks detect (recommended)
+  # 3. Check Shopify/Supabase/GitHub patterns
   ```
-- [ ] **Secret scan passed** (gitleaks if installed)
+- [ ] **No secrets or credentials in code**
 - [ ] **No hardcoded credentials** in code or config files
-- [ ] **Environment variables** used for sensitive data
+- [ ] **Environment variables** used for sensitive data (.env.example updated)
 - [ ] User input is validated and sanitized
-- [ ] Authorization checks present
+- [ ] Authorization checks present (RLS policies if Supabase)
 - [ ] CSRF protection considered (if applicable)
 - [ ] No SQL injection vulnerabilities
-- [ ] No XSS vulnerabilities
-- [ ] **Repository cleanup compliance**: No status files in root directory
+- [ ] No XSS vulnerabilities (user input escaped)
+- [ ] **Repository cleanup compliance**: 
+  - [ ] No status files in root directory
+  - [ ] Old files archived (not deleted)
+  - [ ] Evidence files in artifacts/ directory
 
 ### Performance
 - [ ] No N+1 query problems
@@ -159,12 +192,15 @@ Related to #
 ## For Reviewers
 
 ### Quick Review Checklist
-- [ ] PR title follows conventional commits
+- [ ] PR title follows conventional commits (feat:, fix:, docs:, etc.)
 - [ ] Description is clear and complete
-- [ ] Tests pass in CI
+- [ ] **Secret scan results provided** ✅ CRITICAL
+- [ ] **Evidence artifacts linked** (commands, outputs, validation)
+- [ ] Tests pass in CI (all status checks green)
 - [ ] Code changes make sense
-- [ ] No security concerns
-- [ ] No performance concerns
+- [ ] No security concerns (secret scan passed)
+- [ ] No performance concerns (queries optimized)
+- [ ] Repository cleanup compliance (no root status files)
 - [ ] Approve or request changes
 
 ### Review Focus Areas
@@ -172,8 +208,15 @@ Related to #
 - 
 - 
 
+### Post-Merge Checklist
+- [ ] Verify branch deleted after merge (automated)
+- [ ] Verify CI passes on main
+- [ ] Monitor for any post-merge issues
+- [ ] Update related documentation if needed
+
 ---
 
 **Reviewer**: <!-- Will be assigned -->  
-**QA Sign-off**: <!-- QA team will verify before merge -->
+**QA Sign-off**: <!-- QA team will verify before merge -->  
+**Security Review**: <!-- Required if touching auth, RLS, or secrets -->
 
