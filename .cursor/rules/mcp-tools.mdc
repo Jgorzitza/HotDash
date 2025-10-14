@@ -1,0 +1,194 @@
+---
+description: MCP server usage patterns and best practices
+---
+
+# MCP Tools Usage Guide
+
+**Reference**: [docs/directions/README.md](mdc:docs/directions/README.md) - Canonical Toolkit section
+
+## Available MCP Servers (5 total)
+
+1. **Shopify MCP** - Shopify API documentation and validation
+2. **Context7 MCP** - Codebase search and React Router 7 docs
+3. **GitHub MCP** - Repository management
+4. **Supabase MCP** - Database operations
+5. **Fly MCP** - Deployment management
+
+## Shopify MCP
+
+### When to Use
+- Before implementing any Shopify GraphQL query
+- When working with Shopify Admin API
+- For Polaris component validation
+- To verify API schema fields
+
+### Key Tools
+```typescript
+// 1. Learn API (REQUIRED FIRST)
+mcp_shopify_learn_shopify_api({ 
+  api: "admin" 
+})
+// Returns: conversationId (save this!)
+
+// 2. Search documentation
+mcp_shopify_search_docs_chunks({
+  conversationId: "...",
+  prompt: "how to query products"
+})
+
+// 3. Introspect schema
+mcp_shopify_introspect_graphql_schema({
+  conversationId: "...",
+  query: "product"
+})
+
+// 4. Validate queries (MANDATORY)
+mcp_shopify_validate_graphql_codeblocks({
+  conversationId: "...",
+  codeblocks: ["query { products { ... } }"],
+  api: "admin"
+})
+```
+
+## Context7 MCP
+
+### When to Use
+- Searching codebase for existing patterns
+- Verifying React Router 7 syntax
+- Finding similar implementations
+
+### Key Tools
+```typescript
+// Get React Router 7 documentation
+mcp_context7_resolve_library_id({
+  libraryName: "react-router"
+})
+
+mcp_context7_get_library_docs({
+  context7CompatibleLibraryID: "/remix-run/react-router",
+  topic: "loaders"
+})
+```
+
+## GitHub MCP
+
+### When to Use
+- Branch management
+- PR operations
+- Repository audits
+- Commit verification
+
+### Key Tools
+```typescript
+// List branches
+mcp_github_official_list_branches({
+  owner: "Jgorzitza",
+  repo: "HotDash"
+})
+
+// Create PR
+mcp_github_official_create_pull_request({
+  owner: "Jgorzitza",
+  repo: "HotDash",
+  title: "feat: add feature",
+  head: "feature-branch",
+  base: "main"
+})
+
+// Get commit details
+mcp_github_official_get_commit({
+  owner: "Jgorzitza",
+  repo: "HotDash",
+  sha: "abc123"
+})
+```
+
+## Supabase MCP
+
+### When to Use
+- Database schema changes
+- Migration management
+- Table structure queries
+- Database operations
+
+### Key Tools
+```typescript
+// List tables
+mcp_supabase_list_tables({
+  schemas: ["public"]
+})
+
+// Apply migration
+mcp_supabase_apply_migration({
+  name: "add_new_table",
+  query: "CREATE TABLE..."
+})
+
+// Get logs
+mcp_supabase_get_logs({
+  service: "postgres"
+})
+```
+
+## Fly MCP
+
+### When to Use
+- Deployment management
+- Application status checks
+- Machine operations
+- Log retrieval
+
+### Key Tools
+```typescript
+// Check app status
+mcp_fly_fly_status({
+  app: "hotdash-staging"
+})
+
+// Get logs
+mcp_fly_fly_logs({
+  app: "hotdash-staging"
+})
+
+// List machines
+mcp_fly_fly_machine_list({
+  app: "hotdash-staging"
+})
+```
+
+## MCP Best Practices
+
+### Token Limits
+Use **conservative token limits** (800-1500) for MCP queries to avoid excessive costs.
+
+### Workflow
+1. **Search codebase first** (grep or Context7)
+2. **Verify with MCP** (if needed for current API syntax)
+3. **Validate** (Shopify queries MUST be validated)
+4. **Implement** with confidence
+
+### Error Handling
+
+If MCP query fails:
+- Try simpler query
+- Reduce token limit
+- Search codebase for existing patterns
+- Log issue in feedback file
+
+## Context7 MCP Startup
+
+**ALWAYS verify Context7 is running**:
+```bash
+./scripts/ops/start-context7.sh
+docker ps | grep context7-mcp
+```
+
+If not running, agents must start it before MCP-dependent work.
+
+## Documentation Search Priority
+
+1. **Local codebase** (grep, Context7) - FIRST
+2. **MCP servers** (current docs) - SECOND
+3. **Web search** (only if both above fail) - LAST RESORT
+
+**Why**: Local patterns are proven to work in this codebase
