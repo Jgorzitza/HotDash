@@ -269,10 +269,13 @@ Log in feedback/deployment.md:
 ```bash
 fly ssh console --app hotdash-chatwoot
 
+# Load password from vault first
+source ~/HotDash/hot-dash/vault/occ/chatwoot/super_admin_staging.env
+
 bundle exec rails runner "
   user = User.find_or_create_by!(email: 'justin@hotrodan.com') do |u|
-    u.password = 'SuperAdmin123!'
-    u.password_confirmation = 'SuperAdmin123!'
+    u.password = ENV['CHATWOOT_SUPERADMIN_PASSWORD']
+    u.password_confirmation = ENV['CHATWOOT_SUPERADMIN_PASSWORD']
     u.name = 'Justin Gorzitza'
     u.confirmed_at = Time.now
   end
@@ -283,16 +286,17 @@ bundle exec rails runner "
   end
   
   puts 'Super admin created: justin@hotrodan.com'
+  puts 'Password: [REDACTED]'
 "
 exit
 ```
 
 **Verify**: Test login at https://hotdash-chatwoot.fly.dev
 
-**Log Evidence**: Confirm completion in feedback/deployment.md
+**Log Evidence**: Confirm completion in feedback/deployment.md (DO NOT LOG PASSWORD)
 
 **Then**: Continue with deployment automation P0 task
 
-**KEEP PASSWORD**: SuperAdmin123! (same as before, per CEO request)
+**Password Source**: vault/occ/chatwoot/super_admin_staging.env (never log plaintext)
 
 ---

@@ -1,65 +1,118 @@
+import { useRouteError, isRouteErrorResponse } from "react-router";
+import { Banner, Page, Layout, Text, Button, BlockStack } from "@shopify/polaris";
+
 /**
- * Error Boundary Component
+ * Enhanced Error Boundary Component
  * 
- * Catches errors in React component tree and displays fallback UI
- * Logs errors for debugging and monitoring
+ * Provides user-friendly error messages and recovery options
+ * for different types of errors in the application.
  */
+export function ErrorBoundary() {
+  const error = useRouteError();
 
-import { Component, type ReactNode } from 'react';
+  // Handle route error responses (4xx, 5xx)
+  if (isRouteErrorResponse(error)) {
+    return (
+      <Page title="Error">
+        <Layout>
+          <Layout.Section>
+            <Banner
+              title={`Error ${error.status}: ${error.statusText}`}
+              tone="critical"
+            >
+              <BlockStack gap="400">
+                <Text as="p">
+                  {error.status === 404
+                    ? "The page you're looking for doesn't exist."
+                    : error.status === 401
+                      ? "You need to be logged in to access this page."
+                      : error.status === 403
+                        ? "You don't have permission to access this resource."
+                        : "An error occurred while processing your request."}
+                </Text>
 
-interface Props {
-  children: ReactNode;
-  fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: React.ErrorInfo) => void;
+                {error.data?.message && (
+                  <Text as="p" tone="subdued">
+                    {error.data.message}
+                  </Text>
+                )}
+
+                <Button url="/app">Return to Dashboard</Button>
+              </BlockStack>
+            </Banner>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    );
+  }
+
+  // Handle generic errors
+  const errorMessage =
+    error instanceof Error
+      ? error.message
+      : typeof error === "string"
+        ? error
+        : "An unexpected error occurred";
+
+  const errorStack = error instanceof Error ? error.stack : undefined;
+
+  return (
+    <Page title="Unexpected Error">
+      <Layout>
+        <Layout.Section>
+          <Banner
+            title="Something went wrong"
+            tone="critical"
+          >
+            <BlockStack gap="400">
+              <Text as="p">
+                We encountered an unexpected error. Our team has been notified and is working on a fix.
+              </Text>
+
+              <Text as="p" fontWeight="semibold">
+                {errorMessage}
+              </Text>
+
+              {process.env.NODE_ENV === "development" && errorStack && (
+                <details>
+                  <summary>Error Details (Development Only)</summary>
+                  <pre
+                    style={{
+                      background: "#f6f6f7",
+                      padding: "1rem",
+                      borderRadius: "4px",
+                      overflow: "auto",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {errorStack}
+                  </pre>
+                </details>
+              )}
+
+              <Button url="/app">Return to Dashboard</Button>
+            </BlockStack>
+          </Banner>
+        </Layout.Section>
+      </Layout>
+    </Page>
+  );
 }
 
-interface State {
-  hasError: boolean;
-  error: Error | null;
+/**
+ * Tile-specific error boundary for graceful degradation
+ */
+export function TileErrorFallback({ error, tileName }: { error: Error; tileName: string }) {
+  return (
+    <Banner tone="warning">
+      <BlockStack gap="200">
+        <Text as="p" fontWeight="semibold">
+          {tileName} Unavailable
+        </Text>
+        <Text as="p" tone="subdued">
+          {error.message || "Unable to load data for this tile. Please try refreshing."}
+        </Text>
+      </BlockStack>
+    </Banner>
+  );
 }
-
-export class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('[ErrorBoundary] Caught error:', error, errorInfo);
-    
-    // Call optional error handler
-    this.props.onError?.(error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback;
-      }
-
-      return (
-        <div style={{ padding: '20px', textAlign: 'center' }}>
-          <h2>Engine Trouble</h2>
-          <p>Unable to load this component. Please refresh the page to restart, or contact support if the issue persists.</p>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
-            <details style={{ marginTop: '20px', textAlign: 'left' }}>
-              <summary>Error Details (Development Only)</summary>
-              <pre style={{ whiteSpace: 'pre-wrap', fontSize: '12px' }}>
-                {this.state.error.toString()}
-                {'\n\n'}
-                {this.state.error.stack}
-              </pre>
-            </details>
-          )}
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-

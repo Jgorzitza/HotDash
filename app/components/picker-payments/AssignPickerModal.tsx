@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Modal, FormLayout, TextField, Select, Button } from "@shopify/polaris";
+import { Modal, FormLayout, TextField, Select } from "@shopify/polaris";
 import { Form } from "react-router";
 
 interface AssignPickerModalProps {

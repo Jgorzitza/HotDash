@@ -1,106 +1,145 @@
 /**
- * Performance monitoring and optimization utilities
+ * Performance monitoring utilities for tracking API and render performance
  */
 
-/**
- * Measure execution time of an async function
- */
-export async function measure<T>(
-  name: string,
-  fn: () => Promise<T>
-): Promise<{ result: T; durationMs: number }> {
-  const start = performance.now();
-  const result = await fn();
-  const durationMs = Math.round(performance.now() - start);
-  
-  console.log(`[Performance] ${name}: ${durationMs}ms`);
-  
-  return { result, durationMs };
+interface PerformanceMetric {
+  name: string;
+  duration: number;
+  timestamp: Date;
+  metadata?: Record<string, unknown>;
 }
 
-/**
- * Simple memoization decorator for expensive operations
- */
-export function memoize<T extends (...args: any[]) => any>(
-  fn: T,
-  options: { ttlMs?: number; keyFn?: (...args: Parameters<T>) => string } = {}
-): T {
-  const cache = new Map<string, { value: ReturnType<T>; expiresAt: number }>();
-  const ttlMs = options.ttlMs || 60000; // Default 1 minute
-  const keyFn = options.keyFn || ((...args) => JSON.stringify(args));
+class PerformanceMonitor {
+  private metrics: PerformanceMetric[] = [];
+  private maxMetrics = 1000; // Keep last 1000 metrics
 
-  return ((...args: Parameters<T>) => {
-    const key = keyFn(...args);
-    const cached = cache.get(key);
+  /**
+   * Start a performance timer
+   */
+  startTimer(name: string): () => void {
+    const start = Date.now();
     
-    if (cached && Date.now() < cached.expiresAt) {
-      return cached.value;
-    }
-
-    const result = fn(...args);
-    cache.set(key, {
-      value: result,
-      expiresAt: Date.now() + ttlMs,
-    });
-
-    return result;
-  }) as T;
-}
-
-/**
- * Debounce function execution
- */
-export function debounce<T extends (...args: any[]) => any>(
-  fn: T,
-  delayMs: number
-): (...args: Parameters<T>) => void {
-  let timeoutId: NodeJS.Timeout | null = null;
-
-  return (...args: Parameters<T>) => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    
-    timeoutId = setTimeout(() => {
-      fn(...args);
-    }, delayMs);
-  };
-}
-
-/**
- * Batch multiple operations to reduce overhead
- */
-export async function batch<T, R>(
-  items: T[],
-  batchSize: number,
-  processFn: (batch: T[]) => Promise<R[]>
-): Promise<R[]> {
-  const results: R[] = [];
-  
-  for (let i = 0; i < items.length; i += batchSize) {
-    const batch = items.slice(i, i + batchSize);
-    const batchResults = await processFn(batch);
-    results.push(...batchResults);
+    return () => {
+      const duration = Date.now() - start;
+      this.recordMetric({
+        name,
+        duration,
+        timestamp: new Date(),
+      });
+      return duration;
+    };
   }
-  
-  return results;
+
+  /**
+   * Record a performance metric
+   */
+  recordMetric(metric: PerformanceMetric): void {
+    this.metrics.push(metric);
+    
+    // Keep only last N metrics
+    if (this.metrics.length > this.maxMetrics) {
+      this.metrics.shift();
+    }
+
+    // Log slow operations (>1s)
+    if (metric.duration > 1000) {
+      console.warn(`[PERF] Slow operation: ${metric.name} took ${metric.duration}ms`, metric.metadata);
+    }
+  }
+
+  /**
+   * Get metrics for a specific operation
+   */
+  getMetrics(name?: string): PerformanceMetric[] {
+    if (!name) return this.metrics;
+    return this.metrics.filter((m) => m.name === name);
+  }
+
+  /**
+   * Get average duration for an operation
+   */
+  getAverageDuration(name: string): number {
+    const metrics = this.getMetrics(name);
+    if (metrics.length === 0) return 0;
+    
+    const total = metrics.reduce((sum, m) => sum + m.duration, 0);
+    return total / metrics.length;
+  }
+
+  /**
+   * Get performance summary
+   */
+  getSummary(): Record<string, { count: number; avg: number; min: number; max: number }> {
+    const summary: Record<string, { count: number; total: number; min: number; max: number }> = {};
+
+    for (const metric of this.metrics) {
+      if (!summary[metric.name]) {
+        summary[metric.name] = {
+          count: 0,
+          total: 0,
+          min: Infinity,
+          max: 0,
+        };
+      }
+
+      const entry = summary[metric.name];
+      entry.count++;
+      entry.total += metric.duration;
+      entry.min = Math.min(entry.min, metric.duration);
+      entry.max = Math.max(entry.max, metric.duration);
+    }
+
+    // Calculate averages
+    const result: Record<string, { count: number; avg: number; min: number; max: number }> = {};
+    for (const [name, data] of Object.entries(summary)) {
+      result[name] = {
+        count: data.count,
+        avg: Math.round(data.total / data.count),
+        min: data.min,
+        max: data.max,
+      };
+    }
+
+    return result;
+  }
+
+  /**
+   * Clear all metrics
+   */
+  clear(): void {
+    this.metrics = [];
+  }
 }
 
+// Singleton instance
+export const perfMonitor = new PerformanceMonitor();
+
 /**
- * Profile a loader function for performance monitoring
+ * Helper to wrap async functions with performance tracking
  */
-export function profileLoader<T>(
-  loaderName: string
-) {
-  return async function(loaderFn: () => Promise<T>): Promise<T> {
-    const { result, durationMs } = await measure(loaderName, loaderFn);
+export async function withPerformanceTracking<T>(
+  name: string,
+  fn: () => Promise<T>,
+  metadata?: Record<string, unknown>,
+): Promise<T> {
+  const endTimer = perfMonitor.startTimer(name);
+  
+  try {
+    const result = await fn();
+    const duration = endTimer();
     
-    // Warn if loader is slow (>300ms target per direction)
-    if (durationMs > 300) {
-      console.warn(`[Performance] Slow loader: ${loaderName} took ${durationMs}ms (target: <300ms)`);
+    if (metadata) {
+      perfMonitor.recordMetric({
+        name,
+        duration,
+        timestamp: new Date(),
+        metadata,
+      });
     }
     
     return result;
-  };
+  } catch (error) {
+    endTimer();
+    throw error;
+  }
 }
-

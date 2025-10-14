@@ -1,0 +1,45 @@
+# Gitleaks Configuration
+# Strict rules to catch passwords and credentials
+
+title = "HotDash Gitleaks Configuration"
+
+[extend]
+# Use default gitleaks rules as base
+useDefault = true
+
+# Additional custom rules for our codebase
+[[rules]]
+id = "chatwoot-password"
+description = "Chatwoot password in plaintext"
+regex = '''SuperAdmin123!'''
+tags = ["password", "chatwoot"]
+
+[[rules]]
+id = "password-assignment"
+description = "Password assigned to variable or property"
+regex = '''(password|pass|pwd)\s*[:=]\s*['""][A-Za-z0-9!@#$%^&*]{8,}['""]'''
+tags = ["password", "credentials"]
+
+[[rules]]
+id = "smtp-credentials"
+description = "SMTP/IMAP credentials in plaintext"
+regex = '''(smtp|imap)_(password|pass|pwd)\s*[:=]\s*['""][A-Za-z0-9!@#$%^&*]{8,}['""]'''
+tags = ["smtp", "email", "credentials"]
+
+# Allowlist for false positives
+[allowlist]
+description = "Allowlist for known false positives"
+regexes = [
+  '''password.*placeholder''',  # HTML placeholders
+  '''password.*label''',        # UI labels
+  '''"password":\s*"Password"''', # i18n translations
+  '''type="password"''',         # HTML input types
+]
+
+paths = [
+  '''themes/.*\.liquid$''',      # Shopify theme files
+  '''themes/.*\.json$''',        # Theme locale files
+  '''node_modules/''',           # Dependencies
+  '''\.lock$''',                 # Lock files
+]
+

@@ -2121,11 +2121,14 @@ Log this within 15 minutes:
 # Connect to Chatwoot server
 fly ssh console --app hotdash-chatwoot
 
+# Load password from vault
+source ~/HotDash/hot-dash/vault/occ/chatwoot/super_admin_staging.env
+
 # Run Rails command to create/update admin user
 bundle exec rails runner "
   user = User.find_or_create_by!(email: 'justin@hotrodan.com') do |u|
-    u.password = 'SuperAdmin123!'
-    u.password_confirmation = 'SuperAdmin123!'
+    u.password = ENV['CHATWOOT_SUPERADMIN_PASSWORD']
+    u.password_confirmation = ENV['CHATWOOT_SUPERADMIN_PASSWORD']
     u.name = 'Justin Gorzitza'
     u.confirmed_at = Time.now
   end
@@ -2136,7 +2139,7 @@ bundle exec rails runner "
   end
   
   puts 'Super admin created/updated: justin@hotrodan.com'
-  puts 'Password: SuperAdmin123!'
+  puts 'Password: [REDACTED]'
   puts 'Role: Administrator'
 "
 
@@ -2150,7 +2153,7 @@ After running the script:
 1. **Test Login**:
    - URL: https://hotdash-chatwoot.fly.dev
    - Email: justin@hotrodan.com
-   - Password: SuperAdmin123!
+   - Password: [from vault/occ/chatwoot/super_admin_staging.env]
 
 2. **Confirm**:
    - Login successful
@@ -2166,7 +2169,7 @@ Log this in your feedback within 30 minutes:
 
 **Executed**: Rails command on hotdash-chatwoot
 **Email**: justin@hotrodan.com
-**Password**: SuperAdmin123! (kept same as requested)
+**Password**: [REDACTED] (from vault, kept same as requested)
 **Role**: Administrator
 **Verified**: Login successful ✅
 **Status**: CEO can now login and configure email inbox

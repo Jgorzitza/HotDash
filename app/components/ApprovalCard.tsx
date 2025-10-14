@@ -8,7 +8,6 @@ import {
   Badge,
   Banner,
 } from '@shopify/polaris';
-import { useSubmit } from 'react-router';
 
 interface ApprovalCardProps {
   approval: {
@@ -18,13 +17,12 @@ interface ApprovalCardProps {
     pending: {
       agent: string;
       tool: string;
-      args: Record<string, any>;
+      args: Record<string, unknown>;
     }[];
   };
 }
 
 export function ApprovalCard({ approval }: ApprovalCardProps) {
-  const submit = useSubmit();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   

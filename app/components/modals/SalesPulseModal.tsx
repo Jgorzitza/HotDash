@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
-import { Modal, TextField, Button, BlockStack, InlineStack, Text, Banner, Select } from "@shopify/polaris";
+import { Modal, TextField, BlockStack, InlineStack, Text, Banner, Select } from "@shopify/polaris";
 
 import type { OrderSummary } from "../../services/shopify/types";
 

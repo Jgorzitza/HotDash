@@ -1,12 +1,20 @@
 import prisma from "../db.server";
 import { setCached, getCached } from "./cache.server";
 import type { ServiceResult } from "./types";
+import type { DashboardFact } from "@prisma/client";
 
 // Helper to create a fact for analytics results
-function createAnalyticsFact(): { id: string; createdAt: Date } {
+function createAnalyticsFact(): DashboardFact {
   return {
-    id: `analytics-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+    id: Math.floor(Math.random() * 1000000),
+    scope: null,
+    shopDomain: "analytics",
+    factType: "analytics",
+    value: {},
+    metadata: {},
+    evidenceUrl: null,
     createdAt: new Date(),
+    updatedAt: new Date(),
   };
 }
 
@@ -201,6 +209,7 @@ export async function getFactsHourly(
   const response: ServiceResult<FactSummary[]> = {
     data,
     source: "fresh",
+    fact: createAnalyticsFact(),
   };
 
   setCached(cacheKey, response, CACHE_TTL_MS);
@@ -321,6 +330,7 @@ export async function getCurrentDashboardMetrics(
   const response: ServiceResult<typeof data> = {
     data,
     source: "fresh",
+    fact: createAnalyticsFact(),
   };
 
   setCached(cacheKey, response, CACHE_TTL_MS);

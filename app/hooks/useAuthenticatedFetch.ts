@@ -35,7 +35,7 @@ export function useAuthenticatedFetch(
   const appBridge = useAppBridge();
 
   return useMemo(() => {
-    return authenticatedFetch(appBridge as any, async (uri: FetchInput, init?: FetchInit) => {
+    return authenticatedFetch(appBridge as unknown as Parameters<typeof authenticatedFetch>[0], async (uri: FetchInput, init?: FetchInit) => {
       const mergedInit: RequestInit = {
         ...options.defaultRequestInit,
         ...init,
