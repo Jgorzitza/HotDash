@@ -1,0 +1,31 @@
+{
+  "templates": {
+    "ack_delay": {
+      "label": "Reconnaître le retard",
+      "body": "Bonjour {{name}}, merci pour votre patience. Je vérifie votre commande maintenant et vous donnerai une mise à jour sous peu.",
+      "context": "Utilisé lorsque le client attend une mise à jour",
+      "variables": ["name"],
+      "tone": "empathique-serviable",
+      "ceo_approved": false,
+      "translation_date": "2025-10-14"
+    },
+    "ship_update": {
+      "label": "Mise à jour de l'expédition",
+      "body": "Merci de nous avoir contactés, {{name}}. Votre commande est avec notre transporteur et j'accélère la vérification du statut immédiatement.",
+      "context": "Utilisé pour le statut d'expédition",
+      "variables": ["name"],
+      "tone": "professionnel-proactif",
+      "ceo_approved": false,
+      "translation_date": "2025-10-14"
+    },
+    "refund_offer": {
+      "label": "Offre de remboursement",
+      "body": "Je suis désolé pour le désagrément, {{name}}. Je peux effectuer le remboursement immédiatement ou offrir un crédit en magasin—dites-moi ce qui vous convient le mieux.",
+      "context": "Utilisé pour les options de remboursement",
+      "variables": ["name"],
+      "tone": "désolé-orienté-solution",
+      "ceo_approved": false,
+      "translation_date": "2025-10-14"
+    }
+  }
+}

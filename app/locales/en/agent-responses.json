@@ -1,0 +1,25 @@
+{
+  "templates": {
+    "ack_delay": {
+      "label": "Acknowledge delay",
+      "body": "Hi {{name}}, thanks for your patience. I'm checking on your order now and will follow up with an update shortly.",
+      "context": "Used when customer is waiting for an update",
+      "variables": ["name"],
+      "tone": "empathetic-helpful"
+    },
+    "ship_update": {
+      "label": "Shipping updated",
+      "body": "Appreciate you reaching out, {{name}}. Your order is with our carrier and I'm expediting a status check right away.",
+      "context": "Used when customer asks about shipping",
+      "variables": ["name"],
+      "tone": "professional-proactive"
+    },
+    "refund_offer": {
+      "label": "Refund offer",
+      "body": "I'm sorry for the trouble, {{name}}. I can refund this immediately or offer store credit—let me know what works best.",
+      "context": "Used when offering refund options",
+      "variables": ["name"],
+      "tone": "apologetic-solution-focused"
+    }
+  }
+}
