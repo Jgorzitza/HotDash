@@ -1,0 +1,37 @@
+{
+  "approve": {
+    "success": "Action approved and queued for execution",
+    "error": "Failed to approve action",
+    "already_processed": "This action has already been processed",
+    "button": "Approve",
+    "button_send": "Approve & Send"
+  },
+  "reject": {
+    "success": "Action rejected",
+    "error": "Failed to reject action",
+    "button": "Reject",
+    "reason_required": "Please provide a reason for rejection"
+  },
+  "list": {
+    "error": "Failed to list actions",
+    "empty": "No actions available",
+    "loading": "Loading actions..."
+  },
+  "get": {
+    "error": "Failed to get action",
+    "not_found": "Action not found",
+    "invalid_id": "Invalid action ID"
+  },
+  "create": {
+    "success": "Action created successfully",
+    "error": "Failed to create action"
+  },
+  "update": {
+    "success": "Action updated successfully",
+    "error": "Failed to update action"
+  },
+  "delete": {
+    "success": "Action deleted",
+    "error": "Failed to delete action"
+  }
+}

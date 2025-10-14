@@ -1,0 +1,37 @@
+{
+  "approve": {
+    "success": "Action approuvée et mise en file d'exécution",
+    "error": "Échec de l'approbation de l'action",
+    "already_processed": "Cette action a déjà été traitée",
+    "button": "Approuver",
+    "button_send": "Approuver et envoyer"
+  },
+  "reject": {
+    "success": "Action rejetée",
+    "error": "Échec du rejet de l'action",
+    "button": "Rejeter",
+    "reason_required": "Veuillez fournir une raison pour le rejet"
+  },
+  "list": {
+    "error": "Échec de la récupération des actions",
+    "empty": "Aucune action disponible",
+    "loading": "Chargement des actions..."
+  },
+  "get": {
+    "error": "Échec de la récupération de l'action",
+    "not_found": "Action introuvable",
+    "invalid_id": "ID d'action invalide"
+  },
+  "create": {
+    "success": "Action créée avec succès",
+    "error": "Échec de la création de l'action"
+  },
+  "update": {
+    "success": "Action mise à jour avec succès",
+    "error": "Échec de la mise à jour de l'action"
+  },
+  "delete": {
+    "success": "Action supprimée",
+    "error": "Échec de la suppression de l'action"
+  }
+}

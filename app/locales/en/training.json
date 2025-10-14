@@ -1,0 +1,58 @@
+{
+  "onboarding": {
+    "title": "Operator Onboarding",
+    "steps": {
+      "video_basics": {
+        "title": "Watch: OCC Overview",
+        "description": "Learn the basics of the Operator Control Center"
+      },
+      "read_guide": {
+        "title": "Read: Support Operator Guide",
+        "description": "Review decision framework and escalation rules"
+      },
+      "practice_queue": {
+        "title": "Practice: Approval Queue Training",
+        "description": "Complete 4 training scenarios"
+      },
+      "quiz_knowledge": {
+        "title": "Quiz: Knowledge Check",
+        "description": "Pass 10-question assessment (80% required)"
+      },
+      "observe_live": {
+        "title": "Live Practice: Shadowing",
+        "description": "Review 5 real approvals with manager"
+      }
+    },
+    "types": {
+      "video": "Video",
+      "reading": "Reading",
+      "practice": "Practice",
+      "quiz": "Quiz",
+      "observation": "Observation"
+    },
+    "status": {
+      "not_started": "Not Started",
+      "in_progress": "In Progress",
+      "completed": "Completed"
+    },
+    "buttons": {
+      "start": "Start",
+      "continue": "Continue",
+      "complete": "Mark Complete",
+      "skip": "Skip (Optional)"
+    }
+  },
+  "dashboard": {
+    "title": "Training Dashboard",
+    "progress": "Overall Progress",
+    "required_complete": "Required steps completed",
+    "optional_complete": "Optional steps completed"
+  },
+  "certification": {
+    "title": "Operator Certification",
+    "pass_required": "80% required to pass",
+    "attempts_remaining": "attempts remaining",
+    "certified": "Certified Operator",
+    "not_certified": "Not Yet Certified"
+  }
+}
