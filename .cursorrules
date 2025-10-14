@@ -1,0 +1,166 @@
+# HotDash Project Rules — Operator Control Center
+
+**Epoch**: 2025.10.E1  
+**Owner**: Manager/CEO  
+**Applies To**: All Agents and Contributors  
+**Last Updated**: 2025-10-14
+
+---
+
+## 🎯 North Star — Core Mission
+
+Deliver a trustworthy, operator-first control center embedded inside Shopify Admin that unifies CX, sales, SEO/content, social, and inventory into actionable tiles with agent-assisted approvals. **Evidence or no merge.**
+
+---
+
+## 🔧 MCP-First Development (MANDATORY)
+
+### Critical Rule: Training Data is Outdated
+
+**DO NOT TRUST your training data for:**
+- ❌ React Router 7 (you have v6/Remix patterns)
+- ❌ Shopify GraphQL API (2023 or older schemas)
+- ❌ Shopify App Bridge (you have v2/early v3, we use v3.7+)
+- ❌ Any API versioned after 2023
+
+**MUST VERIFY with MCP tools BEFORE implementing:**
+- ✅ All Shopify queries → Shopify MCP validation
+- ✅ All React Router 7 patterns → Context7 MCP verification
+- ✅ All database changes → Supabase MCP verification
+- ✅ All deployments → Fly MCP verification
+- ✅ All Git operations → GitHub MCP verification
+
+### Development Workflow (MANDATORY ORDER):
+
+1. **Search HotDash codebase FIRST** → Use `grep` tool
+2. **Verify with MCP tools SECOND** → Use appropriate MCP (token limit: 800-1500)
+3. **Implement THIRD** → Only after verification
+
+### MCP Token Limits:
+
+- **Syntax check**: 500-800 tokens (1-3 examples)
+- **Pattern exploration**: 1000-1500 tokens (3-7 examples)
+- **Implementation guide**: 2000-3000 tokens (rare, needs approval)
+- **Never exceed**: 3000 tokens without manager approval
+
+### Required MCP Usage by Task:
+
+- **Shopify work** → `mcp_shopify_*` tools
+- **React Router 7** → `mcp_context7_*` tools
+- **Database work** → `mcp_supabase_*` tools
+- **Fly deployments** → `mcp_fly_*` tools
+- **Git operations** → `mcp_github-official_*` tools
+
+---
+
+## 📋 Manager Guardrails (Prevent Process Drift)
+
+### Guardrail 1: NO NEW DOCUMENTATION FILES
+
+**Before creating ANY new .md file, Manager MUST:**
+1. Check if existing doc can be updated: `grep -r "topic" docs/`
+2. If content fits existing doc → UPDATE that doc, don't create new
+3. If truly new → Ask CEO approval first
+
+### Guardrail 2: INDIVIDUAL AGENT FILES ONLY
+
+**Direction updates go in `docs/directions/<agent>.md` ONLY**
+
+**Never Create:**
+- ❌ Combined direction documents
+- ❌ `EMERGENCY-*.md` direction files
+- ❌ `URGENT-*.md` direction files
+
+### Guardrail 3: MCP-FIRST VALIDATION
+
+**Manager MUST use MCPs for technical decisions:**
+- Minimum: **5+ MCP calls per day** for technical direction
+- Log all MCP usage in `feedback/manager.md`
+
+### Guardrail 4: VERIFY BEFORE ACCEPT
+
+**Never Accept:**
+- ❌ "Task complete" without evidence
+- ❌ "Deployed" without URL + health check
+- ❌ "Fixed" without before/after comparison
+
+### Guardrail 5: ASK BEFORE CREATE
+
+**Before creating any new process/structure/role:**
+- Ask CEO first, explain why existing won't work
+- Default: Use existing process unless CEO approves
+
+---
+
+## 📝 Feedback Process (Evidence-First)
+
+### File Ownership (STRICTLY ENFORCED):
+
+- ✅ Each agent writes ONLY in `feedback/<agent>.md`
+- ❌ Agents NEVER write in `feedback/manager.md`
+- ✅ Manager writes ONLY in `feedback/manager.md`
+
+### Required Fields:
+
+```markdown
+## [YYYY-MM-DDTHH:MM:SSZ] — Title
+- Command/Script: <exact command>
+- Output/Artifacts: <paths>
+- PR/Commit: <link>
+- Notes: <summary>
+```
+
+---
+
+## 🔒 Security & Secrets (ZERO TOLERANCE)
+
+- ❌ NEVER commit raw secrets
+- ✅ Redact with `***REDACTED***`
+- ❌ NEVER echo secrets in logs
+- ✅ Reference vault paths only
+
+---
+
+## 📚 Documentation Governance
+
+### Single Source of Truth:
+
+1. `docs/runbooks/` — Assignments (HIGHEST PRIORITY)
+2. `docs/directions/` — Execution details
+3. `feedback/` — Logging ONLY (NEVER direction)
+
+### Forbidden:
+
+- ❌ GDPR work
+- ❌ CCPA work
+- ❌ Privacy compliance
+
+---
+
+## 🚫 Forbidden Alternatives
+
+- ❌ `fly` CLI → Use `mcp_fly_*`
+- ❌ `psql` → Use `mcp_supabase_*`
+- ❌ Manual search → Use `grep` tool
+
+---
+
+## 🔄 Git Policy
+
+### Branch Naming:
+
+- ✅ `agent/<agent>/<molecule>`
+- ✅ `hotfix/<slug>`
+
+### Commits:
+
+- Must include evidence links
+- Never commit secrets
+- Use `--no-pager` for git commands
+
+---
+
+**Enforcement**: STRICT  
+**Review**: Weekly by Manager, Monthly by CEO  
+
+**Remember**: Evidence or no merge. MCP-first. Verify before accept.

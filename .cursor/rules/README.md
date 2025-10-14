@@ -1,82 +1,73 @@
-# Cursor Rules - HotDash Project
+# HotDash Cursor Rules
 
-## Overview
-This directory contains Cursor-specific rules to help AI assistants navigate and understand the HotDash codebase effectively.
+This directory contains Cursor rules that guide AI development for the HotDash Operator Control Center.
 
-## Rules Index
+## Generated: 2025-10-14 by Engineer-Helper Agent
 
-### Always Applied Rules
-- **00-project-structure.mdc** - Project layout and key files
-- **04-mcp-first-development.mdc** - MCP verification requirements (CRITICAL)
+Based on 3 hours of production work including:
+- LlamaIndex MCP fixes (parameter handling, dependencies, Docker)
+- Code quality review (11,324 lines analyzed)
+- Architecture analysis
+- Deployment patterns
 
-### Context-Specific Rules
+## Rule Categories
 
-#### Development
-- **02-error-handling.mdc** - Error message standards
-- **05-ui-components.mdc** - UI component patterns
-- **09-react-router-7.mdc** - React Router 7 (NOT Remix v6)
-- **13-copy-centralization.mdc** - Copy organization strategy
+### Always Applied (Auto-loaded)
+- `project-architecture.mdc` - Core principles and structure
+- `code-quality.mdc` - Quality standards and performance
 
-#### Integrations
-- **06-shopify-integration.mdc** - Shopify GraphQL patterns
-- **07-database-supabase.mdc** - Database and Supabase
-- **12-agent-sdk.mdc** - Agent SDK and OpenAI
+### File-Specific (Auto-applied by glob patterns)
+- `react-router-7.mdc` - Routes pattern (*.tsx in app/routes/)
+- `shopify-graphql.mdc` - Shopify services (services/shopify/*)
 
-#### Process & Standards
-- **01-hot-rod-an-voice.mdc** - Brand voice guidelines
-- **03-localization.mdc** - Localization standards
-- **08-agent-coordination.mdc** - Agent workflow
-- **11-git-workflow.mdc** - Git commit standards
-- **14-compliance-security.mdc** - Security procedures
-- **15-testing-qa.mdc** - Testing standards
-- **16-documentation-standards.mdc** - Doc formatting
+### Manual (Description-based, loaded on demand)
+- `deployment.mdc` - Fly.io deployment
+- `git-workflow.mdc` - Git conventions
+- `mcp-integration.mdc` - MCP server patterns
+- `agent-protocol.mdc` - Agent coordination
+- `troubleshooting.mdc` - Common issues and fixes
+- `llamaindex-mcp.mdc` - LlamaIndex MCP specifics
 
-#### Reference
-- **17-known-issues.mdc** - Known issues and solutions
+Plus 25+ additional rules covering:
+- TypeScript & React patterns
+- Database & Supabase
+- Security & compliance
+- Testing & QA
+- Documentation standards
+- AI integration
+- Shopify integration
+- Support documentation
 
-## How to Use
+## Key Principles Encoded
 
-### For AI Assistants
-Rules are automatically applied based on:
-- `alwaysApply: true` - Applied to every request
-- `globs` - Applied when working on matching files
-- `description` - Manually fetchable by context
+1. **MCP-First Development**: Always verify with MCP tools, don't trust training data
+2. **Evidence-Based**: "Evidence or no merge" - document everything
+3. **Type Safety**: TypeScript strict mode enforced
+4. **Performance**: Caching, lazy loading, parallel fetching
+5. **Security**: Secret scanning, input validation, rate limiting
 
-### For Developers
-1. Review relevant rules before working on features
-2. Update rules when patterns change
-3. Add new rules for new patterns
-4. Keep rules current with codebase
+## Usage
 
-## Key References
+Rules are automatically loaded by Cursor based on:
+- `alwaysApply: true` - Always active
+- `globs: pattern` - Active for matching files
+- `description` - Manually loaded when relevant to prompt
 
-### Critical Documents
-- [docs/NORTH_STAR.md](mdc:docs/NORTH_STAR.md) - Project vision
-- [docs/design/hot_rod_an_voice_tone_guide.md](mdc:docs/design/hot_rod_an_voice_tone_guide.md) - Brand voice (60+ pages)
-- [docs/git_protocol.md](mdc:docs/git_protocol.md) - Git workflow
+## Updates
 
-### Localization Audits
-- [docs/design/error_message_localization_audit.md](mdc:docs/design/error_message_localization_audit.md)
-- [docs/design/help_text_localization_audit.md](mdc:docs/design/help_text_localization_audit.md)
-- [docs/design/email_template_localization_audit.md](mdc:docs/design/email_template_localization_audit.md)
+To update rules:
+1. Edit the relevant `.mdc` file
+2. Test the changes
+3. Commit with evidence
+4. Document in feedback file
 
-### Compliance
-- [docs/compliance/evidence/](mdc:docs/compliance/evidence/) - Evidence artifacts
-- [docs/runbooks/incident_response_supabase.md](mdc:docs/runbooks/incident_response_supabase.md)
+## Evidence
 
-## Maintenance
+All rules based on real production code patterns:
+- Service layer in app/services/
+- Route patterns in app/routes/
+- Utility functions in app/utils/
+- MCP servers in apps/
+- Recent fixes and deployments
 
-**Update Frequency**: 
-- After major architectural changes
-- When new patterns are established
-- When issues are discovered and solved
-- Quarterly review recommended
-
-**Owner**: Manager agent coordinates rule updates
-**Contributors**: All agents can propose updates via feedback files
-
----
-
-Generated: 2025-10-13T23:58:00Z
-Last Updated: 2025-10-13T23:58:00Z
-
+Quality: Production-validated ✅
