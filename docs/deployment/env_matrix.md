@@ -2,14 +2,15 @@
 epoch: 2025.10.E1
 doc: docs/deployment/env_matrix.md
 owner: deployment
-last_reviewed: 2025-10-07
+last_reviewed: 2025-10-14
 doc_hash: TBD
-expires: 2025-10-14
+expires: 2025-10-21
 ---
 # Environment Variable Matrix — Dev / Staging / Production
 
 ## Summary
-- 2025-10-10: Reliability refreshed the Supabase staging DSN (session pooler with `sslmode=require`) in `vault/occ/supabase/database_url_staging.env` and mirrored it to GitHub `staging` secret `DATABASE_URL`; reuse this canonical value for Prisma drills, Chatwoot, and deploy parity checks.
+- 2025-10-14: Canon enforced: Supabase-only posture (no Fly Postgres). All Fly Postgres instances destroyed. Direct Supabase connection (port 5432, NOT pooler 6543) used for all services.
+- 2025-10-10: Reliability refreshed the Supabase staging DSN in `vault/occ/supabase/database_url_staging.env` and mirrored it to GitHub `staging` secret `DATABASE_URL`; reuse this canonical value for Prisma drills, Chatwoot, and deploy parity checks.
 - Vault bundles now back every staging secret (`vault/occ/shopify/*.env`, `vault/occ/supabase/*.env`, `vault/occ/chatwoot/*.env`). `scripts/deploy/staging-deploy.sh` auto-sources these paths so local runs align with CI without copy/paste.
 - Shopify embed token tracked via `vault/occ/shopify/embed_token_staging.env` and mirrored to GitHub secret `SHOPIFY_EMBED_TOKEN_STAGING` (2025-10-10); Playwright tooling injects it through `PLAYWRIGHT_SHOPIFY_EMBED_TOKEN`.
 - Production GitHub environment remains pending reliability provisioning; keep placeholders documented while staging executes against the vaulted secrets.
