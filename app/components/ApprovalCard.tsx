@@ -72,7 +72,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
             Conversation #{approval.conversationId}
           </Text>
           <Badge tone={riskLevel === 'high' ? 'critical' : riskLevel === 'medium' ? 'warning' : 'success'}>
-            {riskLevel.toUpperCase()} RISK
+            {`${riskLevel.toUpperCase()} RISK`}
           </Badge>
         </InlineStack>
         
