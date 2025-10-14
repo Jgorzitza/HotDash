@@ -1,0 +1,180 @@
+name: Rollback Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to rollback'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      reason:
+        description: 'Reason for rollback'
+        required: true
+        type: string
+      target_version:
+        description: 'Target version/commit to rollback to (optional - uses previous deploy if empty)'
+        required: false
+        type: string
+
+concurrency:
+  group: rollback-${{ inputs.environment }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      target_ref: ${{ steps.determine_target.outputs.ref }}
+      previous_version: ${{ steps.determine_target.outputs.previous_version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Validate rollback request
+        run: |
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Reason: ${{ inputs.reason }}"
+          echo "Target version: ${{ inputs.target_version || 'auto-detect' }}"
+
+      - name: Determine rollback target
+        id: determine_target
+        run: |
+          if [ -n "${{ inputs.target_version }}" ]; then
+            TARGET_REF="${{ inputs.target_version }}"
+            echo "Using specified target: $TARGET_REF"
+          else
+            # Get the previous successful deployment
+            PREV_DEPLOY=$(git log --oneline -n 10 | grep -E "(deploy|release)" | head -2 | tail -1 | cut -d' ' -f1)
+            TARGET_REF="$PREV_DEPLOY"
+            echo "Auto-detected previous deployment: $TARGET_REF"
+          fi
+          
+          echo "ref=$TARGET_REF" >> $GITHUB_OUTPUT
+          echo "previous_version=$(git log --oneline -1 $TARGET_REF)" >> $GITHUB_OUTPUT
+
+      - name: Verify target exists
+        run: |
+          git rev-parse --verify ${{ steps.determine_target.outputs.ref }}
+          if [ $? -ne 0 ]; then
+            echo "::error::Target ref ${{ steps.determine_target.outputs.ref }} not found"
+            exit 1
+          fi
+
+  rollback:
+    runs-on: ubuntu-latest
+    needs: validate
+    environment:
+      name: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate.outputs.target_ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Execute rollback (staging)
+        if: inputs.environment == 'staging'
+        run: bash scripts/deploy/rollback-staging.sh
+        env:
+          SHOPIFY_CLI_AUTH_TOKEN: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN_STAGING }}
+          SHOPIFY_API_KEY: ${{ secrets.SHOPIFY_API_KEY_STAGING }}
+          SHOPIFY_API_SECRET: ${{ secrets.SHOPIFY_API_SECRET_STAGING }}
+          STAGING_SHOP_DOMAIN: ${{ secrets.STAGING_SHOP_DOMAIN }}
+          STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
+          TARGET_VERSION: ${{ needs.validate.outputs.target_ref }}
+          ROLLBACK_REASON: ${{ inputs.reason }}
+
+      - name: Execute rollback (production)
+        if: inputs.environment == 'production'
+        run: bash scripts/deploy/rollback-production.sh
+        env:
+          SHOPIFY_CLI_AUTH_TOKEN_PROD: ${{ secrets.SHOPIFY_CLI_AUTH_TOKEN_PROD }}
+          SHOPIFY_API_KEY_PROD: ${{ secrets.SHOPIFY_API_KEY_PROD }}
+          SHOPIFY_API_SECRET_PROD: ${{ secrets.SHOPIFY_API_SECRET_PROD }}
+          PRODUCTION_SHOP_DOMAIN: ${{ secrets.PRODUCTION_SHOP_DOMAIN }}
+          PRODUCTION_APP_URL: ${{ secrets.PRODUCTION_APP_URL }}
+          TARGET_VERSION: ${{ needs.validate.outputs.target_ref }}
+          ROLLBACK_REASON: ${{ inputs.reason }}
+
+      - name: Record rollback metadata
+        run: |
+          mkdir -p artifacts/rollback
+          cat <<MD > artifacts/rollback/${{ inputs.environment }}-rollback-${{ github.run_number }}.md
+          # Rollback Metadata
+          - Environment: ${{ inputs.environment }}
+          - Target version: ${{ needs.validate.outputs.target_ref }}
+          - Previous version: ${{ needs.validate.outputs.previous_version }}
+          - Reason: ${{ inputs.reason }}
+          - Executed by: ${{ github.actor }}
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          MD
+
+      - name: Upload rollback artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-${{ inputs.environment }}-${{ github.run_number }}
+          path: artifacts/rollback
+          retention-days: 90
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: rollback
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Health check (staging)
+        if: inputs.environment == 'staging'
+        run: |
+          curl -f ${{ secrets.STAGING_APP_URL }}/health || exit 1
+          echo "Staging health check passed"
+
+      - name: Health check (production)
+        if: inputs.environment == 'production'
+        run: |
+          curl -f ${{ secrets.PRODUCTION_APP_URL }}/health || exit 1
+          echo "Production health check passed"
+
+      - name: Publish rollback summary
+        if: always()
+        run: |
+          {
+            echo "## Rollback Summary";
+            echo "- Environment: ${{ inputs.environment }}";
+            echo "- Target version: ${{ needs.validate.outputs.target_ref }}";
+            echo "- Reason: ${{ inputs.reason }}";
+            echo "- Status: ${{ job.status }}";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [validate, rollback, verify]
+    if: always()
+    steps:
+      - name: Rollback notification
+        run: |
+          echo "Rollback to ${{ needs.validate.outputs.target_ref }} on ${{ inputs.environment }}"
+          echo "Reason: ${{ inputs.reason }}"
+          echo "Status: ${{ needs.verify.result }}"
+          # Add notification integration here (Slack, email, etc.)
+
