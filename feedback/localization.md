@@ -1741,3 +1741,117 @@ find . -type f -name "*email*" -o -name "*template*" | grep -v node_modules
 **Manager**: Ready for review and next tasking  
 **CEO**: Localization framework established for Hot Rod AN brand
 
+
+---
+
+## 2025-10-13T23:58:00Z — CURSOR RULES GENERATED ✅
+
+**Task**: Generate Cursor Rules for HotDash project  
+**Status**: COMPLETE  
+**Duration**: 8 minutes  
+
+### Cursor Rules Created (18 files)
+
+**Directory**: `.cursor/rules/`
+
+**Always Applied Rules** (2):
+1. ✅ `00-project-structure.mdc` - Project layout and key files
+2. ✅ `04-mcp-first-development.mdc` - MCP verification (CRITICAL)
+
+**Development Rules** (6):
+3. ✅ `02-error-handling.mdc` - Error message standards
+4. ✅ `05-ui-components.mdc` - UI component patterns
+5. ✅ `09-react-router-7.mdc` - React Router 7 patterns
+6. ✅ `13-copy-centralization.mdc` - Copy organization
+7. ✅ `06-shopify-integration.mdc` - Shopify GraphQL
+8. ✅ `07-database-supabase.mdc` - Database patterns
+
+**Process & Standards Rules** (8):
+9. ✅ `01-hot-rod-an-voice.mdc` - Brand voice guidelines
+10. ✅ `03-localization.mdc` - Localization standards
+11. ✅ `08-agent-coordination.mdc` - Agent workflow
+12. ✅ `11-git-workflow.mdc` - Git commit standards
+13. ✅ `12-agent-sdk.mdc` - Agent SDK and OpenAI
+14. ✅ `14-compliance-security.mdc` - Security procedures
+15. ✅ `15-testing-qa.mdc` - Testing standards
+16. ✅ `16-documentation-standards.mdc` - Doc formatting
+
+**Reference Rules** (2):
+17. ✅ `17-known-issues.mdc` - Known issues and solutions
+18. ✅ `README.md` - Rules index and usage guide
+
+### Rule Coverage
+
+**Technical**:
+- React Router 7 patterns (NOT Remix v6)
+- Shopify GraphQL validation requirement
+- Supabase database patterns
+- Agent SDK OpenAI integration
+- Error handling standards
+- Testing framework
+
+**Content & Voice**:
+- Hot Rod AN brand voice
+- Error message guidelines
+- Help text standards
+- Localization requirements
+- Copy centralization strategy
+
+**Process**:
+- Agent coordination protocol
+- Git workflow standards
+- Compliance procedures
+- Documentation formatting
+- Evidence requirements
+
+### Key Features
+
+**MCP-First Development** (Critical):
+- Training data is outdated for React Router 7 and Shopify APIs
+- ALWAYS verify with MCP tools before implementing
+- Never trust training data for RR7 loaders or Shopify GraphQL
+
+**Brand Voice Enforcement**:
+- Professional operator voice for UI
+- Hot Rod AN gearhead voice for marketing
+- "AI suggests, you approve" principle
+- Automotive terminology guidelines
+
+**Known Issues Documentation**:
+- 15 issues with documented solutions
+- File locations and fix recommendations
+- Priority levels (P0/P1/P2)
+
+### Evidence
+
+**Commands**:
+```bash
+mkdir -p ~/HotDash/hot-dash/.cursor/rules
+# Created 18 .mdc files
+```
+
+**Files Created**:
+- 17 rule files (.mdc)
+- 1 README.md index
+- Total: 18 files in .cursor/rules/
+
+### Next Steps
+
+**For AI Assistants**:
+- Rules automatically applied based on context
+- Always-apply rules guide all work
+- Glob patterns apply to specific file types
+
+**For Developers**:
+- Review rules before major features
+- Update rules when patterns change
+- Reference for best practices
+
+---
+
+**Cursor Rules Generation**: ✅ COMPLETE  
+**Total Rules**: 18 files  
+**Coverage**: Comprehensive (technical, content, process)  
+
+**Localization Agent**: All work complete, ready for shutdown
+
