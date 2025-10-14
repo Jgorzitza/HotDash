@@ -73,12 +73,14 @@ If MCP services are stopped:
 ### 8. Backlog Assignment
 - [ ] Review pending tasks across all agents
 - [ ] Identify idle agents or agents in wait state
-- [ ] Assign backlog work based on:
-  - [ ] Agent specialization
-  - [ ] Current priorities (P0 > P1 > P2)
-  - [ ] Dependencies and blockers
-  - [ ] Available capacity
-- [ ] Document assignments in agent feedback files
+- [ ] Update agent direction files if strategic changes needed
+- [ ] Post daily standup in feedback/manager.md with:
+  - [ ] Current priorities summary
+  - [ ] Agent assignments (reference their direction files)
+  - [ ] Blockers and coordination needs
+  - [ ] Deadlines and dependencies
+- [ ] **DO NOT write in other agents' feedback files** (they write their own)
+- [ ] Use template: docs/directions/manager_standup_template.md
 
 ## Coordination Protocol
 
@@ -110,11 +112,13 @@ Create current status for each agent:
 - [ ] QA Helper: Lint issues? Test coverage?
 
 ### 10. Communication Updates
-- [ ] Update manager feedback with current status
+- [ ] Update manager feedback (feedback/manager.md) with current status
+- [ ] Post daily standup using template (docs/directions/manager_standup_template.md)
 - [ ] Document recovery actions taken
 - [ ] Flag any new blockers discovered
-- [ ] Update agent coordination notes
+- [ ] Update agent coordination notes in manager feedback
 - [ ] Log timestamp and evidence for all actions
+- [ ] **REMEMBER**: Only manager writes in feedback/manager.md, agents write in their own feedback files
 
 ## Post-Recovery Validation
 
@@ -169,16 +173,33 @@ Startup recovery is complete when:
 - ✅ All deployed services are healthy
 - ✅ MCP services are operational and tested
 - ✅ Git repository status is documented
-- ✅ All agent feedback reviewed
-- ✅ Agent directions updated as needed
-- ✅ Backlog work assigned to idle agents
+- ✅ All agent feedback reviewed (read-only)
+- ✅ Agent direction files updated (if strategic changes needed)
+- ✅ Daily standup posted in feedback/manager.md (using template)
 - ✅ Manager feedback log updated with recovery actions
 - ✅ No P0 blockers remaining
 - ✅ System ready for coordinated agent work
 
 ---
 
+## CRITICAL: Correct Process
+
+**Manager MUST**:
+- ✅ Read all agent feedback files (monitor progress)
+- ✅ Update direction files when strategic mission changes
+- ✅ Post daily standup in feedback/manager.md
+- ✅ Use MCP tools for technical verification (5+ calls/day minimum)
+
+**Manager MUST NOT**:
+- ❌ Write in other agents' feedback files (they write their own)
+- ❌ Create ad-hoc assignment documents
+- ❌ Micromanage tasks already in direction files
+
+**Reference**: docs/policies/feedback_controls.md, docs/directions/MANAGER-GUARDRAILS.md
+
+---
+
 **Manager Ownership**: This checklist is executed by the Manager agent on every startup/recovery.
 **Review Frequency**: Update after each major system change or deployment.
-**Last Validated**: 2025-10-13T22:22:00Z
+**Last Validated**: 2025-10-14T03:10:00Z (Corrected per CEO feedback)
 

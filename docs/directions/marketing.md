@@ -2,530 +2,157 @@
 epoch: 2025.10.E1
 doc: docs/directions/marketing.md
 owner: manager
-last_reviewed: 2025-10-12
+last_reviewed: 2025-10-14
 doc_hash: TBD
-expires: 2025-10-19
+expires: 2025-10-21
 ---
-# Marketing — Direction (Operator Control Center)
+# Marketing Agent — Direction (CORRECTED)
 
-## 🚨 CRITICAL: FINALIZE LAUNCH CAMPAIGN FOR DEPLOYED APP (P2)
+## 🚨 MISSION CORRECTION (2025-10-14T03:06:00Z)
 
-**Your immediate priority**: Prepare launch campaign materials for the deployed Shopify app
+**STOP**: Creating marketing content manually ❌  
+**START**: Building marketing automation systems ✅
 
-**Current status**:
-- ✅ All assigned tasks COMPLETE
-- 🔄 Engineer deploying to Fly.io NOW
-- 🎯 Prepare launch materials when deployment completes
+### What We're Building
 
-**START HERE NOW** (Prepare launch campaign):
-```bash
-cd ~/HotDash/hot-dash
+**NOT**: Blog posts, social media content, email campaigns  
+**YES**: The SYSTEM that generates those automatically
 
-# 1. Create launch announcement email
-# File: docs/marketing/shopify_app_launch_email.md
-# Include: App benefits, installation instructions, success metrics
+### Core Mission
 
-# 2. Create social media launch posts
-# File: docs/marketing/shopify_app_social_posts.md
-# LinkedIn, Twitter, Instagram posts ready to publish
-
-# 3. Create launch press release
-# File: docs/marketing/shopify_app_press_release.md
-# Target: E-commerce and automotive publications
-
-# 4. Create customer communication
-# File: docs/marketing/customer_launch_announcement.md
-# For existing Hot Rod AN customers
-
-# 5. Create internal launch memo
-# File: docs/marketing/internal_launch_memo.md
-# For team and stakeholders
-
-# Evidence: Complete launch campaign package
-# Log to: feedback/marketing.md
-```
-
-**Timeline**: 60-90 minutes (30 tasks total)
-
-**Success Metric**: Complete launch communications package ready for deployment
-
-## Canon
-- North Star: docs/NORTH_STAR.md
-- Git & Delivery Protocol: docs/git_protocol.md
-- Direction Governance: docs/directions/README.md
-- MCP Allowlist: docs/policies/mcp-allowlist.json
-- Credential Map: docs/ops/credential_index.md
-- Agent Launch Checklist (manager executed): docs/runbooks/agent_launch_checklist.md
-
-> Manager authored. Marketing must not create or alter direction docs; channel updates through manager with evidence.
-
-## Local Execution Policy (Auto-Run)
-
-You may run local, non-interactive commands (build docs, export assets) without approval. Guardrails:
-
-- Scope: local repo assets and docs; no remote infra or git mutations under auto-run.
-- Non-interactive: disable pagers; avoid interactive prompts.
-- Evidence: log timestamp, command, outputs in feedback/marketing.md; store assets under artifacts/marketing/.
-- Secrets: never print values; reference names only.
-- Retry: 2 attempts then escalate with logs.
-
-- Partner with product to script launch comms; draft release notes + in-admin tooltips tied to each tile milestone.
-- Own social sentiment integration backlog; document API contracts and vendor approvals before build.
-- Provide weekly campaign calendar / KPI targets so dashboard tiles can surface relevant metrics.
-- Supply copy variations and brand tone guidance; attach evidence (style guide, approvals) to feedback/marketing.md.
-- Coordinate with designer to keep operator-facing copy aligned with approved decks; maintain English-only messaging until new locales are approved.
-- Stack guardrails: ensure all messaging reflects the canonical toolkit (`docs/directions/README.md#canonical-toolkit--secrets`)—Supabase backend, Chatwoot on Supabase, React Router 7 UI, OpenAI + LlamaIndex AI posture.
-- When planning storefront campaigns, coordinate with docs/dev/webpixels-shopify.md for tracking and docs/dev/adminext-shopify.md for Admin surfaces.
-- Track adoption metrics post-launch and synthesize operator testimonials for roadmap decisions.
-- Start executing assigned tasks immediately; log progress and blockers in `feedback/marketing.md` without waiting for additional manager confirmation.
-
-## Current Sprint Focus — 2025-10-12
-Work through these items now and document progress in `feedback/marketing.md`; include timestamps, approvals, and the assets you deliver. If a dependency blocks you, schedule the follow-up and chase it until closed rather than handing it off.
-
-## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
-
-**Reference Docs**:
-- docs/AgentSDKopenAI.md - Agent capabilities for messaging
-- feedback/manager-2025-10-11-agentsdk-decision.md - ROI and value propositions
-
-**Tasks in Priority Order** (execute sequentially, log blockers in feedback/marketing.md and continue):
-
-1. ✅ **Launch Communications Update** - COMPLETE (2025-10-11)
-   - Updated with customer.support@hotrodan.com
-   - CLI dev rehearsal documented
-   - Evidence: feedback/marketing.md
-
-2. **AI-Assisted Support Announcement** - Draft messaging for Agent SDK launch
-   - Create announcement for AI-assisted customer support
-   - Document benefits: faster response times, 24/7 availability, consistent quality
-   - Address common concerns: "AI will have human oversight", "Operators approve all actions"
-   - Create FAQ for customer questions
-   - Evidence: Announcement draft and FAQ
-
-3. **Operator Value Proposition** - Internal messaging for approval queue
-   - Draft internal announcement of approval queue feature
-   - Highlight efficiency gains (automation + oversight)
-   - Create "What's New" guide for operators
-   - Document training timeline
-   - Evidence: Internal messaging documents
-
-4. **Pilot Customer Communication** - Messaging for beta customers
-   - Draft opt-in messaging for pilot customers
-   - Create pilot program description
-   - Document what customers should expect
-   - Prepare feedback collection mechanism
-   - Coordinate: Tag @support for customer communication review
-   - Evidence: Pilot customer messaging
-
-5. **Launch Asset Preparation** - Create all launch materials
-   - Design social media announcement posts
-   - Create email announcement template
-   - Prepare blog post draft about AI features
-   - Assemble screenshot/demo assets
-   - Evidence: Launch asset package
-
-6. **Competitive Positioning** - Position Agent SDK as differentiator
-   - Research competitor AI support offerings
-   - Document HotDash unique value (human oversight, Shopify-native, approval queue)
-   - Create comparison messaging
-   - Prepare case study framework
-   - Evidence: Positioning document
-
-**Ongoing Requirements**:
-- Coordinate with @product on roadmap messaging
-- Tag @support for operator communication review
-- Log all messaging drafts in feedback/marketing.md
+Build automated marketing systems that:
+1. Generate content using AI based on actual customer data
+2. Optimize campaigns automatically based on performance
+3. Track and analyze what works
+4. Scale without human content creation
 
 ---
 
-### 🚀 EXECUTE REMAINING TASKS (Tasks 2-6 Ready)
+## P0: Marketing Automation System (6-8 hours)
 
-**Continue execution sequence**:
+### Task 1: Content Generation Pipeline (3-4 hours)
 
-**Task 2: AI-Assisted Support Announcement** - Draft messaging (1 hour)
-- Create announcement for Agent SDK launch
-- Document benefits and address concerns
-- Create customer FAQ
-- Evidence: Announcement and FAQ
+**Goal**: Automated content generation from customer data
 
-**Tasks 3-6**: Execute in order per direction above
+**Build**:
+1. **Email Campaign Generator**
+   - Input: Customer segments, product data, sales metrics
+   - AI generates: Subject lines, email body, CTAs
+   - A/B testing: Multiple variants automatically
+   - Tracking: Open rates, click rates, conversions
 
-**ALSO - Additional Parallel Work**:
+2. **Social Media Auto-Poster**
+   - Input: New products, customer reviews, promotions
+   - AI generates: Social posts (Twitter, FB, Instagram)
+   - Schedule: Optimal posting times based on analytics
+   - Tracking: Engagement metrics
 
-**Task A: Case Study Framework** - Prepare success story template
-- Create template for customer success stories
-- Document metrics to capture
-- Prepare interview questions
-- Evidence: Case study template
+3. **Product Description Generator**
+   - Input: Product specs from Shopify
+   - AI generates: SEO-optimized descriptions
+   - Auto-update: When specs change
+   - A/B test: Different description variants
 
-**Task B: Competitive Intelligence** - Deep dive on AI support
-- Research top 5 competitor AI support tools
-- Document feature comparison
-- Identify differentiation opportunities
-- Evidence: Competitive analysis report
+**Evidence**: Code, API endpoints, generated content examples
 
-Execute Tasks 2-6, plus A and B. All ready to go.
+### Task 2: Campaign Analytics & Optimization (2-3 hours)
 
----
+**Goal**: Automated campaign performance tracking
 
-### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
+**Build**:
+1. **Campaign Dashboard**
+   - Real-time metrics
+   - ROI tracking
+   - Conversion attribution
+   - Automated reporting
 
-**Task C: Video Content Scripts**
-- Create video script for Agent SDK demo (2-3 minutes)
-- Write walkthrough script for approval queue tutorial
-- Create "How it Works" explainer script
-- Document visual requirements for video team
-- Evidence: 3 video scripts ready for production
+2. **Auto-Optimization**
+   - Pause underperforming campaigns
+   - Scale winning campaigns
+   - Adjust budgets automatically
+   - Alert on anomalies
 
-**Task D: Social Media Campaign Plan**
-- Create 30-day social media content calendar for Agent SDK launch
-- Draft posts for LinkedIn, Twitter, Instagram
-- Design engagement strategy (polls, Q&A, testimonials)
-- Create hashtag strategy
-- Evidence: Content calendar with 30+ posts drafted
+**Evidence**: Dashboard, optimization rules, test results
 
-**Task E: Press Release Draft**
-- Write press release for Agent SDK launch
-- Highlight innovation (human-in-loop AI, Shopify-native)
-- Include quotes from CEO/operators
-- Create distribution list
-- Evidence: Press release draft
+### Task 3: Customer Segment Automation (1-2 hours)
 
-**Task F: Partner/Affiliate Messaging**
-- Create partner announcement for Agent SDK
-- Document co-marketing opportunities
-- Draft affiliate promotion materials
-- Create partner FAQ
-- Evidence: Partner messaging package
+**Goal**: Automated customer segmentation
 
-**Task G: Customer Success Story Framework**
-- Create interview guide for pilot customers
-- Design metrics tracking for success stories
-- Draft case study template
-- Plan customer testimonial collection
-- Evidence: Success story framework
+**Build**:
+1. Auto-segment customers by behavior
+2. Personalized campaign targeting
+3. Lifecycle stage automation
+4. Churn prediction
 
-**Task H: Internal Launch Communication**
-- Draft all-hands announcement
-- Create celebration plan for launch day
-- Design internal recognition for team
-- Document lessons learned capture process
-- Evidence: Internal communication plan
-
-**Task I: SEO/Content Strategy**
-- Create blog post series plan (AI support, automation, efficiency)
-- Draft 3 blog posts about Agent SDK features
-- Optimize for SEO keywords
-- Plan content distribution
-- Evidence: 3 blog post drafts, SEO strategy
-
-**Task J: Email Campaign Series**
-- Design email sequence for Agent SDK announcement (5 emails)
-- Create segmentation strategy (customers, prospects, partners)
-- Draft subject lines and preview text
-- Plan send schedule
-- Evidence: Email campaign series
-
-Execute C-J in priority order or parallel - all ready for execution.
+**Evidence**: Segmentation logic, targeting rules
 
 ---
 
-### 🚀 MASSIVE EXPANSION (5x Capacity) - 20 Additional Tasks
+## Stack & Tools
 
-**Task K-Z: Comprehensive Marketing Campaign Development**
+**AI/Content Generation**:
+- OpenAI API for content generation
+- LlamaIndex MCP for product knowledge
+- Template system for brand consistency
 
-**K-N: Content Creation** (4 tasks)
-- K: Create 10 LinkedIn thought leadership articles about AI + support automation
-- L: Draft 5 customer education webinar scripts
-- M: Write 15 help center articles about Agent SDK features
-- N: Create operator success story interview templates
+**Analytics**:
+- Google Analytics API
+- Shopify Analytics API
+- Custom tracking in Supabase
 
-**O-R: Digital Marketing** (4 tasks)
-- O: Design complete Google Ads campaign (search + display)
-- P: Create retargeting campaign strategy
-- Q: Develop influencer partnership program for Shopify ecosystem
-- R: Build affiliate marketing program with commission structure
-
-**S-V: Community & PR** (4 tasks)
-- S: Create community engagement program (forums, Discord, Slack)
-- T: Draft analyst briefing materials (Gartner, Forrester)
-- U: Design customer advisory board program
-- V: Create press kit with media assets
-
-**W-Z: Brand & Positioning** (4 tasks)
-- W: Develop brand style guide for all Agent SDK communications
-- X: Create competitive battle cards for sales team (vs 10 competitors)
-- Y: Design customer testimonial collection and showcase program
-- Z: Build ROI calculator tool for prospects
-
-**AA-AE: Launch Mechanics** (5 tasks)
-- AA: Create detailed launch day runbook (hour-by-hour)
-- AB: Design post-launch communication cadence (D+1, D+7, D+30)
-- AC: Build customer adoption tracking dashboard
-- AD: Create upsell/cross-sell messaging for existing customers
-- AE: Design referral program for Agent SDK users
-
-Execute K-AE in any order. Total: 34 tasks, ~20 hours of marketing work.
+**Automation**:
+- Scheduled jobs (cron)
+- Event-triggered campaigns
+- Webhook integrations
 
 ---
 
-## 🚨 SCOPE CORRECTION (2025-10-12T00:50Z)
+## Success Metrics
 
-**Your Feedback**: Realized scope misalignment - understood project correctly as Hot Rodan Dashboard
+**System Performance**:
+- Generate 100+ email variants/day (vs 1-2 manual)
+- Social posts: 10/day automated (vs 0 manual)
+- Campaign optimization: Real-time (vs weekly manual)
 
-**You're Right**: Focus on Hot Rodan (www.hotrodan.com), hot rod parts e-commerce, $1MM → $10MM growth
-
-**Updated Tasks** (Hot Rodan Dashboard Launch):
-
-**Task AE-1**: Hot Rodan Launch Email (Internal)
-- Email to Hot Rodan team announcing dashboard
-- Position: "AI co-pilot for $10MM growth"
-- Evidence: Email draft ready
-- Timeline: 1-2 hours
-
-**Task AE-2**: Dashboard One-Pager
-- 1-page overview for Hot Rodan operators
-- 5 tiles explained simply
-- Evidence: One-pager PDF
-- Timeline: 1-2 hours
-
-**Task AE-3**: Hot Rod Audience Messaging
-- Messaging for automotive aftermarket audience
-- Language for mechanics/enthusiasts
-- Evidence: Messaging guide
-- Timeline: 1-2 hours
-
-**Task AE-4**: Operator FAQ
-- Plain English explanations
-- Address AI concerns
-- Evidence: FAQ document
-- Timeline: 1-2 hours
-
-Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-launch.
+**Business Impact**:
+- Increase email open rates 20%+
+- Reduce cost-per-acquisition 30%+
+- Scale content 100x without human bottleneck
 
 ---
 
-## 📋 NEXT WAVE - DEEP LAUNCH MARKETING (Tasks AE-5 to AE-14)
+## What NOT To Do
 
-**Task AE-5**: Hot Rodan Customer Success Stories
-- Interview Hot Rodan operators about current pain points
-- Document time wasted on manual tasks dashboard will solve
-- Create before/after scenarios
-- Evidence: 3-5 customer quotes and scenarios
-- Timeline: 2-3 hours
+❌ Write blog posts manually  
+❌ Create social media content by hand  
+❌ Design email campaigns from scratch  
+❌ Generate launch announcements manually  
+❌ Build content libraries that become stale
 
-**Task AE-6**: Hot Rod Community Engagement Plan
-- Identify hot rod forums, Facebook groups, subreddits
-- Create engagement strategy for automotive community
-- Draft community posts about dashboard
-- Evidence: Community engagement plan
-- Timeline: 2-3 hours
-
-**Task AE-7**: SEO Content for Hot Rodan Growth
-- Write blog posts: "10x Your Hot Rod Shop Revenue"
-- Create landing page copy for dashboard
-- Automotive industry SEO keywords
-- Evidence: 3-5 blog post drafts
-- Timeline: 3-4 hours
-
-**Task AE-8**: Video Marketing Content
-- Script for Hot Rodan dashboard demo video
-- Storyboard for feature highlights
-- Automotive enthusiast language
-- Evidence: Video script and storyboard
-- Timeline: 2-3 hours
-
-**Task AE-9**: Email Campaign Series
-- Welcome sequence for new Hot Rodan operators
-- Feature spotlight emails (one per tile)
-- Success metric sharing
-- Evidence: 7-email sequence
-- Timeline: 3-4 hours
-
-**Task AE-10**: Social Media Content Calendar
-- 30 days of Hot Rodan dashboard posts
-- Mix: Tips, features, behind-scenes, customer wins
-- Automotive industry relevant content
-- Evidence: Content calendar with drafts
-- Timeline: 2-3 hours
-
-**Task AE-11**: Partner/Supplier Messaging
-- Messaging for Hot Rodan's suppliers
-- How dashboard improves ordering accuracy
-- Strengthens supplier relationships
-- Evidence: Supplier communication template
-- Timeline: 1-2 hours
-
-**Task AE-12**: Trade Show/Event Materials
-- Hot rod show booth materials
-- SEMA show presence planning
-- Industry event marketing
-- Evidence: Event marketing kit
-- Timeline: 2-3 hours
-
-**Task AE-13**: Press Release and Media Kit
-- Press release for Hot Rodan dashboard launch
-- Media kit with screenshots, quotes, stats
-- Industry publication outreach list
-- Evidence: PR + media kit
-- Timeline: 2-3 hours
-
-**Task AE-14**: Referral and Growth Program
-- Operator referral program design
-- Incentives for Hot Rodan team adoption
-- Word-of-mouth growth tactics
-- Evidence: Referral program plan
-- Timeline: 2-3 hours
-
-Execute AE-5 to AE-14. Total: ~50-55 hours Hot Rodan marketing.
+**Instead**: Build the systems that do this automatically using AI and customer data
 
 ---
 
-### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
+## Coordination
 
-**Task AF-AO: Growth Marketing** (10 tasks)
-- AF: Design viral growth loops and mechanics
-- AG: Create referral marketing program with incentives
-- AH: Plan influencer marketing strategy
-- AI: Design user-generated content program
-- AJ: Create community-led growth strategy
-- AK: Plan product-led growth experiments
-- AL: Design network effects and marketplace dynamics
-- AM: Create growth hacking playbook
-- AN: Implement conversion rate optimization program
-- AO: Design retention marketing automation
-
-**Task AP-AY: Channel Strategy** (10 tasks)
-- AP: Create direct sales enablement program
-- AQ: Design inside sales playbook
-- AR: Plan field marketing strategy
-- AS: Create account-based marketing (ABM) program
-- AT: Design partner marketing programs
-- AU: Create channel partner enablement
-- AV: Plan co-selling strategies
-- AW: Design demand generation campaigns
-- AX: Create pipeline acceleration programs
-- AY: Implement marketing attribution modeling
-
-**Task AZ-BI: Brand & Creative** (10 tasks)
-- AZ: Design brand evolution and refresh program
-- BA: Create creative asset production system
-- BB: Plan brand awareness campaigns
-- BC: Design thought leadership platform
-- BD: Create industry awards and recognition strategy
-- BE: Plan brand partnerships and sponsorships
-- BF: Design brand experience consistency framework
-- BG: Create brand measurement and tracking
-- BH: Implement brand advocacy program
-- BI: Design crisis communication and PR strategy
-
-Execute AF-BI in any order. Total: 64 tasks, ~35-40 hours work.
+**With AI Agent**: Use LlamaIndex for product knowledge in generated content  
+**With Data Agent**: Customer segments, analytics, performance data  
+**With Engineer**: API integrations, webhook handling  
+**With Product**: Campaign goals, success metrics
 
 ---
 
-## 🚨 LAUNCH CRITICAL REFOCUS (2025-10-11T22:50Z)
+## Evidence Logging
 
-**CEO Decision**: Emergency refocus on launch gates
-
-**Your Status**: PAUSED - Stand by until launch gates complete
-
-**Why PAUSED**: Launch gates require Engineer, QA, Designer, Deployment work. Your tasks are valuable but not launch-blocking.
-
-**When to Resume**: After all 7 launch gates complete (~48-72 hours)
-
-**What to Do Now**: Stand by, review your completed work quality, ensure evidence is documented
-
-**Your tasks remain in direction file - will resume after launch.**
+Log to feedback/marketing.md every 2 hours:
+- System built (not content created)
+- Code committed
+- Generated content examples (as proof of system)
+- Performance metrics
+- Automation working
 
 ---
 
-## ✅ RESUME WORK (2025-10-11T23:20Z)
+**START IMMEDIATELY**: Build the content generation pipeline, not content itself.
 
-**Engineer Progress**: 5/7 launch gates complete! 🎉
-
-**Your Status**: Resume your paused tasks - no idle agents
-
-**Rationale**: Engineer making excellent progress. While they finish last 2 gates, you can continue valuable post-launch work.
-
-**Your Tasks**: Resume where you left off in your expanded task list
-
-**Evidence**: Continue providing file paths, test results, documentation per QA standards
-
-**Coordinate**: Support launch if needed, otherwise continue your strategic work
-
-**Timeline**: Work until launch gates 100% complete, then shift to launch support/iteration
-
----
-
-## 🚨 UPDATED PRIORITY (2025-10-13T23:32:00Z) — Manager Assignment
-
-**Status**: Comprehensive work delivered, awaiting guidance ✅  
-**New Assignment**: Launch Execution & Customer Acquisition
-
-### P0: Hot Rod AN Launch Execution (3-4 hours)
-
-**Goal**: Execute launch plan for Hot Rod AN CEO
-
-**Tasks**:
-1. **Finalize Launch Materials**
-   - Review all 6 launch documents created
-   - Update with final dates
-   - Prepare for distribution
-
-2. **Launch Communication Plan**
-   - Internal announcement (when to send)
-   - Customer announcement (timing)
-   - Social media schedule
-   - Email campaign schedule
-
-3. **Launch Day Coordination**
-   - Monitor launch metrics
-   - Prepare quick-response content
-   - Support team with messaging
-
-4. **Post-Launch Follow-up**
-   - Week 1 check-in plan
-   - Feedback collection
-   - Success story documentation
-
-**Evidence**: Launch execution plan, communication schedule
-
-### P1: Customer Acquisition Strategy (2-3 hours)
-
-**Goal**: Drive Hot Rod AN customer growth
-
-**Tasks**:
-1. **Acquisition Channels**
-   - SEO strategy
-   - Social media campaigns
-   - Email marketing
-   - Partnership opportunities
-
-2. **Content Calendar**
-   - Weekly content themes
-   - Campaign schedule
-   - A/B test plans
-
-3. **Measurement Plan**
-   - Track acquisition metrics
-   - Monitor conversion rates
-   - ROI analysis
-
-**Evidence**: Acquisition strategy document
-
-### P2: Archive Old Feedback (1 hour)
-
-**Goal**: Reduce feedback file from 661KB to <100KB
-
-**Tasks**:
-1. Archive content older than 30 days
-2. Keep summary of achievements
-3. Maintain recent work log
-
-**Evidence**: Archived feedback, clean current file
-
-**Timeline**: Start with P0, report progress every 2 hours to feedback/marketing.md
-
-**Decision**: Continue with launch execution (no need to wait for guidance)
-
----
+**Manager**: This corrects the marketing agent mission. Focus on automation systems, not manual content creation.
