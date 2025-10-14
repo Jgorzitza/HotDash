@@ -60,9 +60,13 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        q: {
+        query: {
           type: 'string',
           description: 'Search query text to find relevant information in the knowledge base',
+        },
+        q: {
+          type: 'string',
+          description: 'Alias for query parameter (deprecated, use "query" instead)',
         },
         topK: {
           type: 'number',
@@ -70,7 +74,7 @@ const TOOLS = [
           default: 5,
         },
       },
-      required: ['q'],
+      required: [],
     },
   },
   {
@@ -125,7 +129,7 @@ async function executeTool(name: string, args: any) {
     
     switch (name) {
       case 'query_support':
-        result = await queryHandler(args as { q: string; topK?: number });
+        result = await queryHandler(args as { q?: string; query?: string; topK?: number });
         break;
 
       case 'refresh_index':
