@@ -46,6 +46,10 @@ export interface ActionDockProps {
   onReject: (id: number) => Promise<void>;
   onViewDetail: (id: number) => void;
   isLoading?: boolean;
+  // Batch selection support (P0)
+  selectedIds?: number[];
+  onToggleSelect?: (id: number) => void;
+  showCheckboxes?: boolean;
 }
 
 export function ActionDock({
@@ -54,6 +58,9 @@ export function ActionDock({
   onReject,
   onViewDetail,
   isLoading = false,
+  selectedIds = [],
+  onToggleSelect,
+  showCheckboxes = false,
 }: ActionDockProps) {
   // Empty state when no pending actions
   if (!isLoading && actions.length === 0) {
@@ -97,6 +104,9 @@ export function ActionDock({
                 onApprove={() => onApprove(action.id)}
                 onReject={() => onReject(action.id)}
                 onViewDetail={() => onViewDetail(action.id)}
+                showCheckbox={showCheckboxes}
+                isSelected={selectedIds.includes(action.id)}
+                onToggleSelect={onToggleSelect}
               />
             ))}
           </BlockStack>

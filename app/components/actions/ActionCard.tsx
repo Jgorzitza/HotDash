@@ -15,6 +15,7 @@ import {
   Badge,
   Banner,
   Box,
+  Checkbox,
 } from '@shopify/polaris';
 import { type Action } from './ActionDock';
 import { ActionTypeBadge } from './ActionTypeBadge';
@@ -26,6 +27,10 @@ export interface ActionCardProps {
   onReject: () => Promise<void>;
   onViewDetail: () => void;
   variant?: 'compact' | 'expanded';
+  // Batch selection support (P0)
+  isSelected?: boolean;
+  onToggleSelect?: (id: number) => void;
+  showCheckbox?: boolean;
 }
 
 export function ActionCard({
@@ -34,6 +39,9 @@ export function ActionCard({
   onReject,
   onViewDetail,
   variant = 'compact',
+  isSelected = false,
+  onToggleSelect,
+  showCheckbox = false,
 }: ActionCardProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +97,10 @@ export function ActionCard({
       background={getPriorityBackground() as any}
       borderRadius="200"
       padding="400"
-      style={{ borderLeft: getPriorityBorder() }}
+      style={{ 
+        borderLeft: getPriorityBorder(),
+        outline: isSelected ? '2px solid var(--p-color-border-interactive)' : 'none',
+      }}
     >
       <BlockStack gap="300">
         {/* Error Banner */}
@@ -99,10 +110,23 @@ export function ActionCard({
           </Banner>
         )}
 
-        {/* Header: Badges */}
-        <InlineStack gap="200" wrap={false}>
-          <ActionTypeBadge toolName={action.toolName} />
-          <PriorityBadge priority={action.priority} />
+        <InlineStack gap="300" align="space-between" blockAlign="center">
+          {/* Checkbox for batch selection (P0) */}
+          <InlineStack gap="200">
+            {showCheckbox && onToggleSelect && (
+              <Checkbox
+                label=""
+                checked={isSelected}
+                onChange={() => onToggleSelect(action.id)}
+              />
+            )}
+            
+            {/* Header: Badges */}
+            <InlineStack gap="200" wrap={false}>
+              <ActionTypeBadge toolName={action.toolName} />
+              <PriorityBadge priority={action.priority} />
+            </InlineStack>
+          </InlineStack>
         </InlineStack>
 
         {/* Tool Name */}

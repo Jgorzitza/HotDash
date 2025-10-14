@@ -7,10 +7,12 @@
 
 import { type LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
-import { useEffect, useState } from 'react';
-import { Page, Layout, Banner, Text } from '@shopify/polaris';
+import { useEffect, useState, useCallback } from 'react';
+import { Page, Layout, Banner, Text, Button, InlineStack } from '@shopify/polaris';
 import { ActionDock, type Action } from '~/components/actions/ActionDock';
 import { ActionDetailModal } from '~/components/actions/ActionDetailModal';
+import { BatchActionsBar } from '~/components/actions/BatchActionsBar';
+import { BatchConfirmationModal } from '~/components/actions/BatchConfirmationModal';
 
 // Helper function for JSON responses
 function json<T>(data: T, init?: ResponseInit): Response {
@@ -74,6 +76,13 @@ export default function ActionsPage() {
   const revalidator = useRevalidator();
   const [selectedAction, setSelectedAction] = useState<Action | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  // Batch operations state (P0)
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [showBatchMode, setShowBatchMode] = useState(false);
+  const [batchAction, setBatchAction] = useState<'approve' | 'reject' | 'schedule' | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processedCount, setProcessedCount] = useState(0);
 
   // Auto-refresh every 30 seconds for new actions
   useEffect(() => {
@@ -108,10 +117,99 @@ export default function ActionsPage() {
     revalidator.revalidate();
   };
 
+  // Batch operations handlers (P0)
+  const handleToggleSelect = useCallback((id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(selectedId => selectedId !== id)
+        : [...prev, id]
+    );
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    setSelectedIds(actions.map((a: Action) => a.id));
+  }, [actions]);
+
+  const handleClearSelection = useCallback(() => {
+    setSelectedIds([]);
+  }, []);
+
+  const handleBatchApprove = async () => {
+    setIsProcessing(true);
+    setProcessedCount(0);
+
+    const selectedActions = actions.filter((a: Action) => selectedIds.includes(a.id));
+    
+    for (let i = 0; i < selectedActions.length; i++) {
+      await fetch(`/api/actions/${selectedActions[i].id}/approve`, { method: 'POST' });
+      setProcessedCount(i + 1);
+    }
+
+    setIsProcessing(false);
+    setSelectedIds([]);
+    setBatchAction(null);
+    revalidator.revalidate();
+  };
+
+  const handleBatchReject = async () => {
+    setIsProcessing(true);
+    setProcessedCount(0);
+
+    const selectedActions = actions.filter((a: Action) => selectedIds.includes(a.id));
+    
+    for (let i = 0; i < selectedActions.length; i++) {
+      await fetch(`/api/actions/${selectedActions[i].id}/reject`, { method: 'POST' });
+      setProcessedCount(i + 1);
+    }
+
+    setIsProcessing(false);
+    setSelectedIds([]);
+    setBatchAction(null);
+    revalidator.revalidate();
+  };
+
+  const handleBatchSchedule = async () => {
+    setIsProcessing(true);
+    setProcessedCount(0);
+
+    const selectedActions = actions.filter((a: Action) => selectedIds.includes(a.id));
+    const scheduledDate = new Date();
+    scheduledDate.setHours(scheduledDate.getHours() + 24);
+    
+    for (let i = 0; i < selectedActions.length; i++) {
+      // TODO: Add schedule endpoint
+      await fetch(`/api/actions/${selectedActions[i].id}/approve`, { method: 'POST' });
+      setProcessedCount(i + 1);
+    }
+
+    setIsProcessing(false);
+    setSelectedIds([]);
+    setBatchAction(null);
+    revalidator.revalidate();
+  };
+
+  const selectedActions = actions.filter((a: Action) => selectedIds.includes(a.id));
+
   return (
     <Page
       title="Pending Actions"
       subtitle={`${count} action${count !== 1 ? 's' : ''} awaiting review`}
+      primaryAction={
+        <Button
+          onClick={() => setShowBatchMode(!showBatchMode)}
+          pressed={showBatchMode}
+        >
+          {showBatchMode ? 'Exit Batch Mode' : 'Batch Actions'}
+        </Button>
+      }
+      secondaryActions={
+        showBatchMode && actions.length > 0 ? [
+          {
+            content: 'Select All',
+            onAction: handleSelectAll,
+          },
+        ] : undefined
+      }
     >
       <Layout>
         <Layout.Section>
@@ -132,9 +230,26 @@ export default function ActionsPage() {
               revalidator.revalidate();
             }}
             onViewDetail={handleViewDetail}
+            showCheckboxes={showBatchMode}
+            selectedIds={selectedIds}
+            onToggleSelect={handleToggleSelect}
           />
         </Layout.Section>
       </Layout>
+
+      {/* Batch Actions Bar (P0) */}
+      {showBatchMode && (
+        <BatchActionsBar
+          selectedCount={selectedIds.length}
+          totalCount={count}
+          onApproveAll={() => setBatchAction('approve')}
+          onRejectAll={() => setBatchAction('reject')}
+          onScheduleAll={() => setBatchAction('schedule')}
+          onClearSelection={handleClearSelection}
+          isProcessing={isProcessing}
+          processedCount={processedCount}
+        />
+      )}
 
       {/* Action Detail Modal */}
       <ActionDetailModal
@@ -147,6 +262,21 @@ export default function ActionsPage() {
         onApprove={handleApproveFromModal}
         onReject={handleRejectFromModal}
       />
+
+      {/* Batch Confirmation Modal (P0) */}
+      {batchAction && (
+        <BatchConfirmationModal
+          isOpen={true}
+          onClose={() => setBatchAction(null)}
+          onConfirm={async () => {
+            if (batchAction === 'approve') await handleBatchApprove();
+            else if (batchAction === 'reject') await handleBatchReject();
+            else if (batchAction === 'schedule') await handleBatchSchedule();
+          }}
+          action={batchAction}
+          actions={selectedActions}
+        />
+      )}
     </Page>
   );
 }
