@@ -7,9 +7,10 @@
 
 import { type LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Page, Layout, Banner, Text } from '@shopify/polaris';
-import { ActionDock } from '~/components/actions/ActionDock';
+import { ActionDock, type Action } from '~/components/actions/ActionDock';
+import { ActionDetailModal } from '~/components/actions/ActionDetailModal';
 
 // Helper function for JSON responses
 function json<T>(data: T, init?: ResponseInit): Response {
@@ -71,6 +72,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function ActionsPage() {
   const { actions, count, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
+  const [selectedAction, setSelectedAction] = useState<Action | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Auto-refresh every 30 seconds for new actions
   useEffect(() => {
@@ -80,6 +83,30 @@ export default function ActionsPage() {
 
     return () => clearInterval(interval);
   }, [revalidator]);
+
+  const handleViewDetail = (id: number) => {
+    const action = actions.find((a: Action) => a.id === id);
+    if (action) {
+      setSelectedAction(action);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleApproveFromModal = async () => {
+    if (!selectedAction) return;
+    await fetch(`/api/actions/${selectedAction.id}/approve`, { method: 'POST' });
+    setIsModalOpen(false);
+    setSelectedAction(null);
+    revalidator.revalidate();
+  };
+
+  const handleRejectFromModal = async () => {
+    if (!selectedAction) return;
+    await fetch(`/api/actions/${selectedAction.id}/reject`, { method: 'POST' });
+    setIsModalOpen(false);
+    setSelectedAction(null);
+    revalidator.revalidate();
+  };
 
   return (
     <Page
@@ -104,13 +131,22 @@ export default function ActionsPage() {
               await fetch(`/api/actions/${id}/reject`, { method: 'POST' });
               revalidator.revalidate();
             }}
-            onViewDetail={(id) => {
-              // Navigate to detail view (to be implemented in Priority 2)
-              console.log('View detail:', id);
-            }}
+            onViewDetail={handleViewDetail}
           />
         </Layout.Section>
       </Layout>
+
+      {/* Action Detail Modal */}
+      <ActionDetailModal
+        action={selectedAction}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedAction(null);
+        }}
+        onApprove={handleApproveFromModal}
+        onReject={handleRejectFromModal}
+      />
     </Page>
   );
 }
