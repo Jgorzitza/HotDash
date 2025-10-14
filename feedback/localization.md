@@ -1389,3 +1389,64 @@ Log this within 15 minutes:
 🚀 **GO!**
 
 ---
+
+---
+
+## 2025-10-13T23:05:00Z — Task 9: Error Message Localization COMPLETE ✅
+
+**Task**: Error Message Localization Audit  
+**Status**: COMPLETE  
+**Duration**: ~25 minutes  
+
+### Deliverable
+**Created**: `docs/design/error_message_localization_audit.md`
+
+### Audit Results
+- **Total error messages audited**: 50+
+- **User-facing errors needing improvement**: 5 critical
+- **HTTP status exposures**: 6 instances
+- **English-only compliance**: ✅ PASS (all messages in English)
+- **Brand voice alignment**: ❌ NEEDS WORK (generic tech speak, no Hot Rod AN theme)
+
+### Key Findings
+
+**Critical Issues** (P0):
+1. ErrorBoundary: "Something went wrong" - too generic, not actionable
+2. ApprovalCard: "Failed to approve/reject" - no context or recovery steps
+3. HTTP errors exposed: Technical status codes shown to users
+4. Generic fallbacks: "Unknown error" provides no guidance
+
+**Recommendations**:
+- Replace generic messages with specific, actionable feedback
+- Transform HTTP status codes into user-friendly messages
+- Add Hot Rod AN voice variants (optional theme)
+- Create error code system for i18n preparation
+
+### Implementation Plan
+- **Phase 1** (2h): Fix critical user-facing errors
+- **Phase 2** (2h): Centralize error messages with error codes
+- **Phase 3** (2h): Add Hot Rod AN voice theme
+- **Phase 4** (2h): Prepare i18n structure
+
+**Total Estimated**: 8 hours of follow-up work identified
+
+### Files Analyzed
+- `app/components/ErrorBoundary.tsx`
+- `app/components/ApprovalCard.tsx`
+- `app/services/ga/*` (3 files)
+- `app/services/shopify/*` (3 files)
+- `app/utils/error-handler.server.ts`
+- `app/utils/api-client.server.ts`
+- 10+ additional utility and route files
+
+### Evidence
+**Document**: docs/design/error_message_localization_audit.md  
+**Commands Used**:
+```bash
+grep -r "error\|Error\|ERROR" app/ --include="*.tsx" --include="*.ts" | grep -i "message\|text\|title"
+grep -r "throw new Error\|throw Error" app/ --include="*.tsx" --include="*.ts"
+grep -r "Something went wrong\|Failed to\|Error:\|Unable to" app/components/ --include="*.tsx"
+```
+
+**Next**: Task 10 - Help Text Localization
+

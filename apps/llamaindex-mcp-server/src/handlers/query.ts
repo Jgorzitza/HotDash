@@ -11,8 +11,9 @@ const __dirname = path.dirname(__filename);
  * Executes the query command from the existing llama-workflow CLI
  * and returns the results in MCP-compatible format.
  */
-export async function queryHandler(args: { q: string; topK?: number }) {
-  const { q, topK = 5 } = args;
+export async function queryHandler(args: { q?: string; query?: string; topK?: number }) {
+  const { q, query, topK = 5 } = args;
+  const searchQuery = q || query;
   
   // Path to existing llama-workflow CLI (relative to this handler)
   const cliPath = path.resolve(__dirname, '../../../../scripts/ai/llama-workflow/dist/cli.js');
