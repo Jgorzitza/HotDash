@@ -530,3 +530,68 @@ Execute 31-45 in any order. Total: 45 tasks, ~25-30 hours work.
 - 65: Create customer lifecycle management
 
 Execute 46-65 in any order. Total: 65 tasks, ~35-40 hours work.
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T23:34:00Z) — Manager Assignment
+
+**Status**: All 5 required tasks complete ✅  
+**New Assignment**: Advanced Support Content & Training
+
+### P0: Advanced Troubleshooting Guides (3-4 hours)
+
+**Goal**: Comprehensive troubleshooting content for Hot Rod AN
+
+**Tasks**:
+1. **Technical Troubleshooting**
+   - AN fitting installation issues
+   - Leak detection and resolution
+   - Pressure testing procedures
+   - Common installation mistakes
+
+2. **Product-Specific Guides**
+   - PTFE hose installation
+   - Fuel system conversions
+   - Adapter selection guide
+   - Sizing and compatibility
+
+3. **Customer Self-Service**
+   - FAQ expansion
+   - Video troubleshooting guides
+   - Diagnostic flowcharts
+
+**Evidence**: Troubleshooting guide documents
+
+### P1: Support Operator Training (2-3 hours)
+
+**Goal**: Train support team on Hot Rod AN products
+
+**Tasks**:
+1. **Product Knowledge**
+   - AN fitting types and uses
+   - PTFE vs braided hose
+   - Application guide
+   - Compatibility charts
+
+2. **Support Scenarios**
+   - Common customer questions
+   - Technical support escalation
+   - Return/warranty handling
+
+**Evidence**: Training materials, support playbooks
+
+### P2: Knowledge Base Expansion (2 hours)
+
+**Goal**: Expand content for AI agent RAG
+
+**Tasks**:
+1. Create detailed product guides
+2. Add installation tutorials
+3. Document troubleshooting steps
+4. Coordinate with AI agent for ingestion
+
+**Evidence**: New knowledge base content files
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/support.md
+
+---

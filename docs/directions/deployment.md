@@ -194,3 +194,61 @@ Log in feedback/deployment.md:
 - **Chatwoot**: Alerts when config changes made
 - **Manager**: Monitors deployment schedule in standups
 
+
+---
+
+## 🚨 UPDATED PRIORITY (2025-10-13T23:33:00Z) — Manager Assignment
+
+**Status**: Monitoring ongoing ✅  
+**New Assignment**: Deployment Automation & Infrastructure Optimization
+
+### P0: Deployment Automation (3-4 hours)
+
+**Goal**: Automated deployment pipeline
+
+**Tasks**:
+1. **CI/CD Pipeline**
+   - GitHub Actions for automated deploys
+   - Automated testing before deploy
+   - Automated rollback on failure
+   - Deploy notifications
+
+2. **Environment Management**
+   - Staging environment setup
+   - Production environment hardening
+   - Environment parity verification
+
+3. **Deployment Scripts**
+   - One-command deploys
+   - Health check automation
+   - Smoke test automation
+
+**Evidence**: CI/CD configuration, deployment scripts, test results
+
+### P1: Infrastructure Monitoring (2-3 hours)
+
+**Goal**: Comprehensive infrastructure visibility
+
+**Tasks**:
+1. Set up Fly.io metrics dashboard
+2. Configure resource alerts
+3. Monitor cost optimization opportunities
+4. Document infrastructure runbooks
+
+**Evidence**: Monitoring dashboard, alert rules
+
+### P2: Disaster Recovery Planning (2 hours)
+
+**Goal**: Prepare for worst-case scenarios
+
+**Tasks**:
+1. Backup procedures
+2. Restore procedures
+3. Failover testing
+4. Incident response plan
+
+**Evidence**: DR plan documentation
+
+**Timeline**: Start with P0, report progress every 2 hours to feedback/deployment.md
+
+---
