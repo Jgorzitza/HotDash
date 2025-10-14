@@ -19,7 +19,7 @@ fly ssh console --app hotdash-chatwoot
 # Create super admin
 bundle exec rails runner "
   user = User.create!(
-    email: 'superadmin+staging@hotrodan.com',
+    email: 'justin@hotrodan.com',
     password: 'SECURE_PASSWORD_HERE',
     name: 'HotDash Admin',
     confirmed_at: Time.now,
@@ -40,7 +40,7 @@ bundle exec rails runner "
 - **Location:** `vault/occ/chatwoot/super_admin_staging.env`
 - **Format:**
   ```bash
-  CHATWOOT_SUPER_ADMIN_EMAIL=superadmin+staging@hotrodan.com
+  CHATWOOT_SUPER_ADMIN_EMAIL=justin@hotrodan.com
   CHATWOOT_SUPER_ADMIN_PASSWORD=SECURE_PASSWORD
   ```
 
