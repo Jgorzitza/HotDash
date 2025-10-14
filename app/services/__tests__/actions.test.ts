@@ -196,15 +196,3 @@ describe('Action System - Growth Spec B1-B7', () => {
     });
   });
 });
-
-// Helper functions for tests
-async function executeAction(actionId: string) {
-  // @ts-expect-error - TDD: Will be implemented
-  return {};
-}
-
-async function rollbackAction(actionId: string) {
-  // @ts-expect-error - TDD: Will be implemented
-  return {};
-}
-

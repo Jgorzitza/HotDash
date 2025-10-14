@@ -228,6 +228,19 @@ If stuck >2 hours escalate with:
 
 ---
 
+## ⚠️ EXECUTION INSTRUCTION
+
+**DO NOT STOP TO ASK "WHAT'S NEXT"**:
+- Your direction file contains ALL your tasks (P0, P1, P2)
+- Execute them sequentially until ALL complete
+- Report progress every 2 hours (don't ask permission)
+- Log blockers and move to next task if stuck
+- Only stop when ALL assigned work is done
+
+**See**: .cursor/rules/04-agent-workflow.mdc for complete execution rules
+
+---
+
 **Last Updated**: 2025-10-14T21:30:00Z  
 **Start**: Chatwoot Historical ETL (P0 Task 1) - AI agent needs this for RAG  
 **Evidence**: All work in `feedback/data.md`

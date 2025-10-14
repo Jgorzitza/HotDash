@@ -1,0 +1,74 @@
+{
+  "conversations": [
+    {
+      "id": 1001,
+      "status": "resolved",
+      "tags": ["product-question", "shipping"],
+      "messages": [
+        {
+          "id": 1,
+          "content": "Hello! I want to know if you ship to Canada?",
+          "message_type": 0,
+          "created_at": 1697500000
+        },
+        {
+          "id": 2,
+          "content": "Yes, we ship to Canada! Shipping typically takes 5-7 business days. Would you like to place an order?",
+          "message_type": 1,
+          "created_at": 1697500300
+        },
+        {
+          "id": 3,
+          "content": "Great! How much is shipping to Toronto?",
+          "message_type": 0,
+          "created_at": 1697500600
+        },
+        {
+          "id": 4,
+          "content": "Shipping to Toronto is $15 USD for standard delivery. Free shipping on orders over $100!",
+          "message_type": 1,
+          "created_at": 1697500900
+        }
+      ]
+    },
+    {
+      "id": 1002,
+      "status": "resolved",
+      "tags": ["product-info", "materials"],
+      "messages": [
+        {
+          "id": 5,
+          "content": "What materials are your products made from?",
+          "message_type": 0,
+          "created_at": 1697510000
+        },
+        {
+          "id": 6,
+          "content": "Our products are made from high-quality, food-grade stainless steel and BPA-free plastics. All materials are certified safe for cooking and food storage.",
+          "message_type": 1,
+          "created_at": 1697510300
+        }
+      ]
+    },
+    {
+      "id": 1003,
+      "status": "resolved",
+      "tags": ["returns", "policy"],
+      "messages": [
+        {
+          "id": 7,
+          "content": "What is your return policy?",
+          "message_type": 0,
+          "created_at": 1697520000
+        },
+        {
+          "id": 8,
+          "content": "We offer a 30-day money-back guarantee! If you're not satisfied with your purchase, return it within 30 days for a full refund. Items must be unused and in original packaging.",
+          "message_type": 1,
+          "created_at": 1697520300
+        }
+      ]
+    }
+  ]
+}
+

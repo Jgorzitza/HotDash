@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2025-10-14T21:35:28.254Z",
+  "source": "file",
+  "totalRecords": 4,
+  "validDocuments": 4,
+  "invalidDocuments": 0,
+  "outputFiles": {
+    "ndjson": "packages/memory/logs/build/chatwoot_history/chatwoot-history-2025-10-14-21-35-28.ndjson",
+    "json": "packages/memory/logs/build/chatwoot_history/chatwoot-history-2025-10-14-21-35-28.json"
+  },
+  "tags": [
+    "product-question",
+    "shipping",
+    "product-info",
+    "materials",
+    "returns",
+    "policy"
+  ],
+  "dateRange": {
+    "earliest": "2023-10-16T23:46:40.000Z",
+    "latest": "2023-10-17T05:20:00.000Z"
+  }
+}

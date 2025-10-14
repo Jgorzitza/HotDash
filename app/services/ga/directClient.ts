@@ -102,15 +102,83 @@ export function createDirectGaClient(propertyId: string): GaClient {
           limit: 100, // Top 100 pages
         });
 
-        // Transform GA API response to GaSession format
+        // Fetch previous period data for WoW calculation
+        const currentStart = new Date(startDate);
+        const currentEnd = new Date(endDate);
+        const periodLength = Math.ceil(
+          (currentEnd.getTime() - currentStart.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        const previousStart = new Date(currentStart);
+        previousStart.setDate(previousStart.getDate() - periodLength);
+        const previousEnd = new Date(currentEnd);
+        previousEnd.setDate(previousEnd.getDate() - periodLength);
+
+        const [previousResponse] = await client.runReport({
+          property: `properties/${propertyId}`,
+          dateRanges: [
+            {
+              startDate: previousStart.toISOString().slice(0, 10),
+              endDate: previousEnd.toISOString().slice(0, 10),
+            },
+          ],
+          dimensions: [
+            {
+              name: 'pagePath',
+            },
+          ],
+          metrics: [
+            {
+              name: 'sessions',
+            },
+          ],
+          dimensionFilter: {
+            filter: {
+              fieldName: 'sessionDefaultChannelGroup',
+              stringFilter: {
+                matchType: 'EXACT',
+                value: 'Organic Search',
+              },
+            },
+          },
+          orderBys: [
+            {
+              metric: {
+                metricName: 'sessions',
+              },
+              desc: true,
+            },
+          ],
+          limit: 100,
+        });
+
+        // Build map of previous sessions by page
+        const previousSessions = new Map<string, number>();
+        (previousResponse.rows || []).forEach((row) => {
+          const pagePath = row.dimensionValues?.[0]?.value || '';
+          const sessions = parseInt(row.metricValues?.[0]?.value || '0', 10);
+          previousSessions.set(pagePath, sessions);
+        });
+
+        // Transform GA API response to GaSession format with actual WoW delta
         const sessions: GaSession[] = (response.rows || []).map((row) => {
           const landingPage = row.dimensionValues?.[0]?.value || '';
           const sessionsValue = row.metricValues?.[0]?.value || '0';
+          const currentSessions = parseInt(sessionsValue, 10);
+          const prevSessions = previousSessions.get(landingPage) || 0;
           
+          // Calculate actual WoW delta
+          let wowDelta = 0;
+          if (prevSessions > 0) {
+            wowDelta = (currentSessions - prevSessions) / prevSessions;
+          } else if (currentSessions > 0) {
+            wowDelta = 1; // 100% increase (new page with no previous data)
+          }
+
           return {
             landingPage,
-            sessions: parseInt(sessionsValue, 10),
-            wowDelta: 0, // Will be calculated separately by comparing with previous period
+            sessions: currentSessions,
+            wowDelta,
             evidenceUrl: undefined, // Optional - can be added later for drill-down links
           };
         });

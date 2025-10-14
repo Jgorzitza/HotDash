@@ -35,4 +35,17 @@ Evidence in `feedback/product.md` every 2 hours
 
 ---
 
+## ⚠️ EXECUTION INSTRUCTION
+
+**DO NOT STOP TO ASK "WHAT'S NEXT"**:
+- Your direction file contains ALL your tasks (P0, P1, P2)
+- Execute them sequentially until ALL complete
+- Report progress every 2 hours (don't ask permission)
+- Log blockers and move to next task if stuck
+- Only stop when ALL assigned work is done
+
+**See**: .cursor/rules/04-agent-workflow.mdc for complete execution rules
+
+---
+
 **Last Updated**: 2025-10-14T21:20:00Z

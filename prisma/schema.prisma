@@ -102,3 +102,20 @@ model Action {
   @@index([agent, status])
   @@schema("public")
 }
+
+model ProcessedWebhook {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  source          String   // shopify, chatwoot, stripe, etc.
+  idempotencyKey  String   @map("idempotency_key")
+  processedAt     DateTime @default(now()) @map("processed_at")
+  expiresAt       DateTime @map("expires_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([source, idempotencyKey], name: "source_idempotencyKey")
+  @@index([source])
+  @@index([expiresAt])
+  @@index([idempotencyKey])
+  @@map("processed_webhook")
+  @@schema("public")
+}

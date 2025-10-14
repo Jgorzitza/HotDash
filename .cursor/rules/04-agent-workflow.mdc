@@ -65,12 +65,37 @@
 **Direction Files** (`docs/directions/{agent}.md`):
 - Manager writes tasks/priorities
 - Agents READ ONLY (never modify)
+- **ALL TASKS ARE ASSIGNED** - Execute them sequentially
 
 **Feedback Files** (`feedback/{agent}.md`):
 - Agents write progress updates
 - ONLY to their own file
 - Never write to other agents' feedback files
 - Never write to feedback/manager.md
+
+## Agent Execution Rules (CRITICAL)
+
+**NEVER STOP TO ASK "WHAT'S NEXT"** - Your direction file HAS your tasks:
+
+1. **Read your entire direction file** - All tasks are listed with priorities (P0, P1, P2)
+2. **Execute tasks sequentially** - Start with P0, then P1, then P2
+3. **Work until ALL assigned tasks complete** - Don't stop after one task
+4. **Log blockers and continue** - If blocked on task 3, move to task 4
+5. **Report every 2 hours** - Show progress, don't ask permission
+6. **Only escalate if stuck >2 hours** - Try to unblock yourself first
+
+**FORBIDDEN**:
+- ❌ Stopping to ask "what should I do next?"
+- ❌ Waiting for permission to continue
+- ❌ Completing one task then going idle
+- ❌ Asking if you should proceed with assigned tasks
+
+**REQUIRED**:
+- ✅ Read full direction file (all P0, P1, P2 tasks)
+- ✅ Execute ALL tasks until direction complete
+- ✅ Report progress every 2 hours (don't ask, just report)
+- ✅ Log blockers and work around them
+- ✅ Only stop when ALL assigned work done
 
 ## Evidence Requirements
 

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "chatwoot-qa-418845b10403b0c4",
+    "text": "Customer Question: Hello! I want to know if you ship to Canada?\n\nAgent Answer: Yes, we ship to Canada! Shipping typically takes 5-7 business days. Would you like to place an order?",
+    "metadata": {
+      "source": "chatwoot-conversation-1001",
+      "type": "customer-support-qa",
+      "conversationId": 1001,
+      "timestamp": "2023-10-16T23:46:40.000Z",
+      "tags": [
+        "product-question",
+        "shipping"
+      ],
+      "hasAttachments": false,
+      "language": "en"
+    }
+  },
+  {
+    "id": "chatwoot-qa-255da29d76194b32",
+    "text": "Customer Question: Great! How much is shipping to Toronto?\n\nAgent Answer: Shipping to Toronto is $15 USD for standard delivery. Free shipping on orders over $100!",
+    "metadata": {
+      "source": "chatwoot-conversation-1001",
+      "type": "customer-support-qa",
+      "conversationId": 1001,
+      "timestamp": "2023-10-16T23:56:40.000Z",
+      "tags": [
+        "product-question",
+        "shipping"
+      ],
+      "hasAttachments": false,
+      "language": "en"
+    }
+  },
+  {
+    "id": "chatwoot-qa-4ab8f23f356487c5",
+    "text": "Customer Question: What materials are your products made from?\n\nAgent Answer: Our products are made from high-quality, food-grade stainless steel and BPA-free plastics. All materials are certified safe for cooking and food storage.",
+    "metadata": {
+      "source": "chatwoot-conversation-1002",
+      "type": "customer-support-qa",
+      "conversationId": 1002,
+      "timestamp": "2023-10-17T02:33:20.000Z",
+      "tags": [
+        "product-info",
+        "materials"
+      ],
+      "hasAttachments": false,
+      "language": "en"
+    }
+  },
+  {
+    "id": "chatwoot-qa-32adc2fd11020934",
+    "text": "Customer Question: What is your return policy?\n\nAgent Answer: We offer a 30-day money-back guarantee! If you're not satisfied with your purchase, return it within 30 days for a full refund. Items must be unused and in original packaging.",
+    "metadata": {
+      "source": "chatwoot-conversation-1003",
+      "type": "customer-support-qa",
+      "conversationId": 1003,
+      "timestamp": "2023-10-17T05:20:00.000Z",
+      "tags": [
+        "returns",
+        "policy"
+      ],
+      "hasAttachments": false,
+      "language": "en"
+    }
+  }
+]

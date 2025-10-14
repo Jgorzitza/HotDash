@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@google-analytics/data": "^4.12.1",
+    "@google-cloud/bigquery": "^8.1.1",
     "@prisma/client": "^6.17.1",
     "@react-router/dev": "^7.9.4",
     "@react-router/fs-routes": "^7.9.4",
@@ -53,6 +54,7 @@
     "@shopify/shopify-app-react-router": "^1.0.0",
     "@shopify/shopify-app-session-storage-prisma": "^7.0.0",
     "@supabase/supabase-js": "^2.48.0",
+    "googleapis": "^162.0.0",
     "isbot": "^5.1.0",
     "llamaindex": "^0.12.0",
     "openai": "^6.3.0",

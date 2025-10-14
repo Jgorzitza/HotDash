@@ -184,6 +184,19 @@ If blocked >2 hours:
 
 ---
 
+## ⚠️ EXECUTION INSTRUCTION
+
+**DO NOT STOP TO ASK "WHAT'S NEXT"**:
+- Your direction file contains ALL your tasks (P0, P1, P2)
+- Execute them sequentially until ALL complete
+- Report progress every 2 hours (don't ask permission)
+- Log blockers and move to next task if stuck
+- Only stop when ALL assigned work is done
+
+**See**: .cursor/rules/04-agent-workflow.mdc for complete execution rules
+
+---
+
 **Last Updated**: 2025-10-14T21:15:00Z  
 **Start**: Immediately with A4 (Execution Engine)  
 **Evidence**: All work logged in `feedback/engineer.md`
