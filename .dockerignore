@@ -47,9 +47,10 @@ supabase/.branches
 supabase/.temp
 .supabase
 
-# Scripts (not needed in production, except docker-start.sh)
+# Scripts (not needed in production, except docker-start.sh and llama-workflow)
 scripts/*
 !scripts/docker-start.sh
+!scripts/ai/llama-workflow
 
 # Archives and backups
 archive
