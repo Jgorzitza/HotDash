@@ -13,6 +13,8 @@ expires: 2025-10-21
 - Direction Governance: docs/directions/README.md
 - Credential Map: docs/ops/credential_index.md
 
+> **Training Data WARNING**: We are in 2025. Shopify APIs in training from 2023 (2 YEARS OLD). React Router 7 training has v6/Remix (2+ years old). ALWAYS verify with appropriate MCP tools.
+
 ## Current Sprint Focus — Growth Data Integration (2025-10-14)
 
 **Status**: Shopify automation complete ✅, GA/GSC integration needs enhancement

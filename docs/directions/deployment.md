@@ -12,6 +12,8 @@ expires: 2025-10-21
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
 - Credential Map: docs/ops/credential_index.md
+
+> **Training Data WARNING**: We are in 2025. Shopify APIs in training from 2023 (2 YEARS OLD). React Router 7 training has v6/Remix (2+ years old). ALWAYS verify with appropriate MCP tools.
 - Fly Deployment: docs/runbooks/agent-sdk-production-deployment.md
 
 ## Current Sprint Focus — Growth System Deployment (2025-10-14)

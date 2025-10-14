@@ -2,9 +2,9 @@
 
 ## MCP-First Development (CRITICAL)
 
-**Training Data is OUTDATED** for:
-- React Router 7 (contains v6/Remix patterns from 2023)
-- Shopify APIs (2023 or older patterns)
+**Training Data is SEVERELY OUTDATED** - We are in 2025:
+- React Router 7 (training contains v6/Remix patterns from 2023)
+- Shopify APIs (training from 2023 - **2 YEARS OLD**, multiple API versions behind)
 
 **MANDATORY MCP Verification**:
 1. **React Router 7**: Use Context7 MCP to verify ALL loaders/actions/route modules
@@ -14,8 +14,8 @@
 **Workflow**:
 1. Search HotDash codebase FIRST (grep/Context7)
 2. Verify with appropriate MCP tools (token limits: 800-1500)
-3. NEVER trust training data for RR7 or Shopify
-4. All Shopify queries MUST be MCP-validated
+3. NEVER trust training data for RR7 or Shopify (2+ years outdated)
+4. All Shopify queries MUST be MCP-validated (2023 → 2025 = major changes)
 5. All RR7 patterns MUST be Context7-verified
 
 **Available MCP Servers** (5 total):
@@ -24,6 +24,32 @@
 - GitHub MCP: Repo management
 - Supabase MCP: Database operations
 - Fly MCP: Deployment management
+
+## OpenAI Agent SDK Enforcement (CRITICAL)
+
+**For ALL AI Agent Development** (AI agent, recommenders, automation):
+
+**Mandatory Resource**: https://platform.openai.com/docs/guides/agents
+
+**Requirements**:
+1. Use OpenAI Agent SDK (NOT just OpenAI API)
+2. Follow Agents API patterns (Assistants v2, Threads, Runs)
+3. Implement function calling per Agent SDK standards
+4. Use structured outputs for reliability
+5. Verify ALL patterns against OpenAI Agents documentation
+
+**Human-in-the-Loop (MANDATORY)**:
+- ALL created agents REQUIRE human approval before execution
+- Approval queue for all AI-generated actions
+- CEO approval for high-impact decisions
+- Train agents with correct tech information through feedback loops
+- CEO voice/style training from hotrodan.com content
+
+**Agent Training Requirements**:
+1. Technical accuracy: Verify facts against MCP/docs (not training data)
+2. CEO voice: Match tone/style from hotrodan.com
+3. Approval feedback: Learn from CEO approvals/rejections
+4. Iterative improvement: Adjust confidence based on outcomes
 
 ## Direction & Feedback Separation (CRITICAL)
 

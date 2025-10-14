@@ -13,6 +13,8 @@ expires: 2025-10-21
 - Direction Governance: docs/directions/README.md
 - MCP Allowlist: docs/policies/mcp-allowlist.json
 - Credential Map: docs/ops/credential_index.md
+
+> **Training Data WARNING**: We are in 2025. Shopify APIs in training from 2023 (2 YEARS OLD). React Router 7 training has v6/Remix (2+ years old). ALWAYS verify with appropriate MCP tools.
 - Agent Launch Checklist: docs/runbooks/agent_launch_checklist.md
 - Agent Workflow Rules: .cursor/rules/04-agent-workflow.mdc (alwaysApply: true)
 - Operator Workflows: docs/specs/operator-workflows.md

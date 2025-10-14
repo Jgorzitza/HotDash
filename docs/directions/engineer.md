@@ -18,9 +18,13 @@ expires: 2025-10-21
 - Growth Roadmap: docs/specs/growth-spec-roadmap.md
 - Growth Progress: docs/specs/growth-spec-progress-report.md
 
-> **MCP-First Development (CRITICAL)**: Agent training data is OUTDATED for React Router 7 (v6/Remix patterns) and Shopify APIs (2023). NEVER trust training data. ALWAYS verify with MCP:
+> **MCP-First Development (CRITICAL)**: We are in 2025. Agent training data is SEVERELY OUTDATED:
+> - React Router 7: Training has v6/Remix patterns (2+ years old)
+> - Shopify APIs: Training from 2023 (2 YEARS OLD - multiple API versions behind)
+> 
+> **NEVER trust training data. ALWAYS verify with MCP**:
 > - React Router 7: Use Context7 MCP to verify ALL loaders/actions/route modules  
-> - Shopify GraphQL: Use Shopify MCP to validate ALL queries before implementing
+> - Shopify GraphQL: Use Shopify MCP to validate ALL queries (2023→2025 = major changes)
 > - Shopify API: Validate App Bridge, Admin API calls with Shopify MCP
 > - Workflow: Search HotDash codebase FIRST (grep/Context7), then verify with MCP (token limits: 800-1500)
 > - See: `.cursor/rules/04-agent-workflow.mdc` for complete enforcement rules
