@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-10-14T07:29:27.148Z",
+  "duration_ms": 69291,
+  "total_documents": 51,
+  "total_nodes": 257,
+  "sources": {
+    "web": 50,
+    "supabase_decisions": 0,
+    "supabase_telemetry": 0,
+    "curated": 1
+  },
+  "options": {
+    "sources": "all",
+    "full": false
+  },
+  "index_path": "packages/memory/logs/build/indexes/2025-10-14T0728/index",
+  "run_dir": "packages/memory/logs/build/indexes/2025-10-14T0728",
+  "success": true
+}

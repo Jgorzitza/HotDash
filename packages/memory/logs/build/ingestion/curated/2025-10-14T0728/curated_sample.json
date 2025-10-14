@@ -1,0 +1,13 @@
+{
+  "id": "curated:placeholder",
+  "metadata": {
+    "source": "curated",
+    "table": "support_curated_replies",
+    "status": "placeholder",
+    "note": "Table does not exist yet",
+    "timestamp": "2025-10-14T07:28:54.070Z"
+  },
+  "text_preview": "Curated support replies table not yet available. This placeholder will be replaced when Support team creates the support_curated_replies table with schema: id, question, answer, tags, updated_at....",
+  "full_text_length": 195,
+  "timestamp": "2025-10-14T07:28:54.070Z"
+}
