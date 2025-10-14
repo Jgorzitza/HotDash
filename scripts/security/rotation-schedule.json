@@ -1,0 +1,46 @@
+{
+  "rotation_schedule_days": 90,
+  "alert_days_before": 7,
+  "secrets": [
+    {
+      "name": "OPENAI_API_KEY",
+      "type": "api_key",
+      "location": "vault/occ/openai/api_key.env",
+      "last_rotated": "2025-10-14",
+      "rotation_method": "manual",
+      "owner": "compliance"
+    },
+    {
+      "name": "SUPABASE_SERVICE_KEY",
+      "type": "service_key",
+      "location": "vault/occ/supabase/service_key_staging.env",
+      "last_rotated": "2025-10-14",
+      "rotation_method": "manual",
+      "owner": "deployment"
+    },
+    {
+      "name": "SHOPIFY_API_SECRET",
+      "type": "api_secret",
+      "location": "vault/occ/shopify/api_secret_staging.env",
+      "last_rotated": "2025-10-14",
+      "rotation_method": "manual",
+      "owner": "engineer"
+    },
+    {
+      "name": "CHATWOOT_API_TOKEN",
+      "type": "api_token",
+      "location": "vault/occ/chatwoot/api_token_staging.env",
+      "last_rotated": "2025-10-14",
+      "rotation_method": "manual",
+      "owner": "integration"
+    },
+    {
+      "name": "GITHUB_PAT",
+      "type": "pat",
+      "location": "vault/occ/github/pat.env",
+      "last_rotated": "2025-10-14",
+      "rotation_method": "manual",
+      "owner": "deployment"
+    }
+  ]
+}
