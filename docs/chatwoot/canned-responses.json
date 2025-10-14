@@ -1,0 +1,87 @@
+{
+  "canned_responses": [
+    {
+      "id": 1,
+      "short_code": "shipping",
+      "content": "Thanks for your order! Most orders ship within 1-2 business days.\n\nYou'll receive a tracking number via email once your order ships.\n\nIf you have any questions about your order, please provide your order number and I'll be happy to help!",
+      "category": "Order Support"
+    },
+    {
+      "id": 2,
+      "short_code": "sizing",
+      "content": "AN fittings use a dash size system. Here's a quick guide:\n\n-4 AN = 1/4\" hose\n-6 AN = 3/8\" hose\n-8 AN = 1/2\" hose\n-10 AN = 5/8\" hose\n-12 AN = 3/4\" hose\n\nNeed help determining the right size for your application? Let us know what you're working on and we can provide specific recommendations!",
+      "category": "Product Information"
+    },
+    {
+      "id": 3,
+      "short_code": "returns",
+      "content": "We accept returns within 30 days of purchase for unused items in original packaging.\n\nTo initiate a return:\n1. Reply with your order number\n2. Let us know which items you'd like to return\n3. We'll provide a return authorization and instructions\n\nRefunds are processed within 5-7 business days of receiving the return.",
+      "category": "Returns & Refunds"
+    },
+    {
+      "id": 4,
+      "short_code": "technical",
+      "content": "For technical fitment questions, we recommend:\n\n1. Check our installation guides at www.hotrodan.com/guides\n2. Verify your vehicle/application specifications\n3. Contact us with your specific setup details\n\nWhat vehicle or application are you working on? The more details you provide (year, make, model, engine), the better we can assist!",
+      "category": "Technical Support"
+    },
+    {
+      "id": 5,
+      "short_code": "orderstatus",
+      "content": "I'd be happy to check your order status!\n\nCan you please provide your order number? It should be in your order confirmation email.\n\nOnce I have that, I can give you the current status and tracking information if available.",
+      "category": "Order Support"
+    },
+    {
+      "id": 6,
+      "short_code": "welcome",
+      "content": "Thank you for contacting Hot Rod AN! We specialize in premium AN fittings and fuel system components.\n\nHow can we assist you today?",
+      "category": "General"
+    },
+    {
+      "id": 7,
+      "short_code": "product_info",
+      "content": "I'd be happy to help you find the right product!\n\nTo provide the best recommendation, could you please share:\n- What application/project you're working on\n- The specific component you need (hose end, adapter, etc.)\n- Size requirements if known\n\nThis will help me point you to the perfect product for your needs.",
+      "category": "Product Information"
+    },
+    {
+      "id": 8,
+      "short_code": "bulk_order",
+      "content": "Thank you for your interest in a bulk order!\n\nFor bulk purchases and wholesale pricing:\n- Email us at wholesale@hotrodan.com\n- Include the part numbers and quantities you need\n- We'll provide a custom quote within 24 hours\n\nFor orders over $500, we offer volume discounts and special shipping rates.",
+      "category": "Sales"
+    },
+    {
+      "id": 9,
+      "short_code": "compatibility",
+      "content": "To confirm compatibility, I'll need a few details:\n\n1. What are you trying to connect? (e.g., fuel line to carburetor)\n2. Thread sizes if known\n3. Vehicle year, make, and model\n4. Any existing fittings you're working with\n\nWith this information, I can confirm the exact parts you need.",
+      "category": "Technical Support"
+    },
+    {
+      "id": 10,
+      "short_code": "escalate",
+      "content": "I'm going to escalate your question to our technical specialist who can provide more detailed assistance.\n\nThey'll review your case and respond within 4 business hours.\n\nIs there anything else I can help you with in the meantime?",
+      "category": "Escalation"
+    }
+  ],
+  "usage_instructions": {
+    "how_to_use": "In Chatwoot, type / (forward slash) followed by the short_code to insert a canned response",
+    "examples": [
+      "/shipping - Insert shipping timeframe response",
+      "/sizing - Insert AN sizing guide",
+      "/returns - Insert return policy",
+      "/technical - Insert technical support guidance",
+      "/orderstatus - Insert order status request",
+      "/welcome - Insert welcome message",
+      "/product_info - Insert product information request",
+      "/bulk_order - Insert bulk order information",
+      "/compatibility - Insert compatibility check request",
+      "/escalate - Insert escalation message"
+    ]
+  },
+  "metadata": {
+    "total_responses": 10,
+    "created_at": "2025-10-13T15:50:00Z",
+    "created_by": "chatwoot_agent",
+    "import_script": "scripts/chatwoot/import-canned-responses.ts",
+    "chatwoot_account_id": "1"
+  }
+}
+
