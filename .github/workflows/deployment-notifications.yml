@@ -1,0 +1,106 @@
+name: Deployment Notifications
+
+on:
+  workflow_run:
+    workflows: ["Deploy Staging", "Deploy Production", "Rollback Deployment"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine deployment type
+        id: deploy_info
+        run: |
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          STATUS="${{ github.event.workflow_run.conclusion }}"
+          
+          if [[ "$WORKFLOW_NAME" == *"Staging"* ]]; then
+            ENV="staging"
+          elif [[ "$WORKFLOW_NAME" == *"Production"* ]]; then
+            ENV="production"
+          elif [[ "$WORKFLOW_NAME" == *"Rollback"* ]]; then
+            ENV="rollback"
+          else
+            ENV="unknown"
+          fi
+          
+          echo "environment=$ENV" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "workflow=$WORKFLOW_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create notification message
+        id: message
+        run: |
+          STATUS="${{ steps.deploy_info.outputs.status }}"
+          ENV="${{ steps.deploy_info.outputs.environment }}"
+          WORKFLOW="${{ steps.deploy_info.outputs.workflow }}"
+          
+          if [ "$STATUS" = "success" ]; then
+            EMOJI="✅"
+            COLOR="good"
+          elif [ "$STATUS" = "failure" ]; then
+            EMOJI="❌"
+            COLOR="danger"
+          else
+            EMOJI="⚠️"
+            COLOR="warning"
+          fi
+          
+          MESSAGE="$EMOJI Deployment: $WORKFLOW\nEnvironment: $ENV\nStatus: $STATUS\nRun: ${{ github.event.workflow_run.html_url }}"
+          
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+          echo "color=$COLOR" >> $GITHUB_OUTPUT
+
+      - name: Log deployment event
+        run: |
+          mkdir -p artifacts/deployments
+          cat <<EOF > artifacts/deployments/deployment-${{ github.run_number }}.json
+          {
+            "workflow": "${{ steps.deploy_info.outputs.workflow }}",
+            "environment": "${{ steps.deploy_info.outputs.environment }}",
+            "status": "${{ steps.deploy_info.outputs.status }}",
+            "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "run_url": "${{ github.event.workflow_run.html_url }}",
+            "triggered_by": "${{ github.event.workflow_run.actor.login }}"
+          }
+          EOF
+
+      - name: Upload deployment log
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-notification-${{ github.run_number }}
+          path: artifacts/deployments
+          retention-days: 90
+
+      - name: Deployment summary
+        run: |
+          {
+            echo "## Deployment Notification";
+            echo "- Workflow: ${{ steps.deploy_info.outputs.workflow }}";
+            echo "- Environment: ${{ steps.deploy_info.outputs.environment }}";
+            echo "- Status: ${{ steps.deploy_info.outputs.status }}";
+            echo "- Triggered by: ${{ github.event.workflow_run.actor.login }}";
+            echo "- Run: ${{ github.event.workflow_run.html_url }}";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Future: Add Slack, email, or other notification integrations here
+      # Example:
+      # - name: Send Slack notification
+      #   uses: slackapi/slack-github-action@v1
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "${{ steps.message.outputs.message }}",
+      #         "color": "${{ steps.message.outputs.color }}"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
