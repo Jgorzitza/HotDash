@@ -468,9 +468,9 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 
 **GitGuardian Alert**: 2 secrets exposed in commit 8baf10f (2025-10-11 10:20 PM UTC)
 
-**Exposed Secrets in `.mcp.json`**:
-1. `GITHUB_PERSONAL_ACCESS_TOKEN`: `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`
-2. `SUPABASE_ACCESS_TOKEN`: `sbp_12ea9d9810c770c41afd4f80653755b248b133f6`
+**Exposed Secrets in `.mcp.json`** (REDACTED - tokens were rotated):
+1. `GITHUB_PERSONAL_ACCESS_TOKEN`: `gho_REDACTED_TOKEN_WAS_ROTATED`
+2. `SUPABASE_ACCESS_TOKEN`: `sbp_REDACTED_TOKEN_WAS_ROTATED`
 
 **IMMEDIATE ACTIONS REQUIRED** (Execute in order):
 

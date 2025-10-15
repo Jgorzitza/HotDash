@@ -1,0 +1,4 @@
+# Augment Code cache and temporary files
+.cache/
+*.tmp
+*.log
