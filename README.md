@@ -77,13 +77,32 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 
 | Tool | Purpose | Status |
 |------|---------|--------|
-| **shopify** | Shopify API docs, GraphQL validation | ✅ Auto-loads |
-| **context7** | HotDash codebase + library search | ⚠️ Requires startup |
-| **github-official** | GitHub repo management | ✅ Auto-loads |
-| **supabase** | Database & edge functions | ✅ Auto-loads |
-| **fly** | Deployment & infrastructure | ⚠️ Check if needed |
-| **google-analytics** | GA data queries (dev tools only) | ✅ Auto-loads |
+| **github-official** | GitHub repo management | ✅ Active |
+| **context7** | HotDash codebase + library search | ✅ Active (port 3001) |
+| **supabase** | Database & edge functions | ✅ Active |
+| **fly** | Deployment & infrastructure | ✅ Active (port 8080) |
+| **shopify** | Shopify API docs, GraphQL validation | ✅ Active |
+| **google-analytics** | GA data queries (dev tools only) | ✅ Active |
 | **llamaindex-rag** | Knowledge base RAG queries | 🚧 In development |
+
+### 📚 MCP Documentation (Protected)
+
+**Complete documentation in `mcp/` directory:**
+- **[mcp/README.md](mcp/README.md)** - Overview and quick start
+- **[mcp/ALL_SYSTEMS_GO.md](mcp/ALL_SYSTEMS_GO.md)** - Ready-to-use examples
+- **[mcp/QUICK_REFERENCE.md](mcp/QUICK_REFERENCE.md)** - When to use each tool
+- **[mcp/USAGE_EXAMPLES.md](mcp/USAGE_EXAMPLES.md)** - Real-world patterns
+- **[mcp/SERVER_STATUS.md](mcp/SERVER_STATUS.md)** - Current server status
+
+**⚠️ CRITICAL: The `mcp/` directory is protected infrastructure.**
+- All `mcp/**/*.md` files are in the CI allow-list
+- DO NOT remove or modify without explicit approval
+- See `docs/RULES.md` for governance details
+
+**Quick Test:**
+```bash
+./mcp/test-mcp-tools.sh  # Verify all 6 servers are operational
+```
 
 ### Quick Start by Tool
 

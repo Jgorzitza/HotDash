@@ -1,0 +1,16 @@
+{
+  "servers": [
+    {
+      "name": "supabase-cli",
+      "command": "supabase",
+      "args": [
+        "--version"
+      ],
+      "type": "stdio",
+      "allow": [
+        "supabase/**",
+        "scripts/**"
+      ]
+    }
+  ]
+}

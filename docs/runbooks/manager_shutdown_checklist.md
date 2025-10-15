@@ -1,73 +1,122 @@
+
+# Manager Shutdown (Restart‑safe, Complete)
+
+> Use this any time you step away or reboot. Goal: a **clean restart** where agents can resume with zero hidden context.
+
 ---
-epoch: 2025.10.E1
-doc: docs/runbooks/manager_shutdown_checklist.md
-owner: manager
-created: 2025-10-14
-expires: 2025-10-21
+
+## 1) Normalize PRs & Issues
+
+- [ ] Every active **PR** links an **Issue** (`Fixes #<issue>`) **and** includes a line:
+      `Allowed paths: <pattern(s)>` in the PR body.
+- [ ] If work is mid‑slice, convert to **Draft PR** (preserve state; avoid local-only context).
+- [ ] Add a short **Issue comment** (per task) with:
+  - Current status (1 line)
+  - **Next concrete step**
+  - **Blockers** with **owner + ETA**
+  - Links to any relevant logs/evidence (screenshots, test output)
+
 ---
-# Manager Shutdown Checklist
 
-Execute this checklist at the end of every manager session to ensure clean handoff and complete evidence.
+## 2) CI & Guardrails (must be green)
 
-## 1. Session Summary
-- [ ] Log final status update to `feedback/manager.md` with timestamp
-- [ ] Include session summary (start time, end time, duration, what accomplished)
-- [ ] List all completed work with evidence (commits, files updated)
-- [ ] Document any in-progress work and handoff notes
+- [ ] `main` status checks **green**: _Docs Policy, Danger, Gitleaks, Validate AI Agent Config_.
+- [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis).
+- [ ] Local pre‑shutdown checks (paste and run):
+  ```bash
+  node scripts/policy/check-docs.mjs
+  node scripts/policy/check-ai-config.mjs
+  gitleaks detect --source . --redact
+  ```
+  _If any fail: stop, fix, commit, and re‑run until green._
 
-## 2. Agent Status Review
-- [ ] Review all agent feedback files for current status
-- [ ] Document which agents are active vs idle
-- [ ] Identify any critical blockers needing immediate attention
-- [ ] Note which agents need new direction vs can continue
+---
 
-## 3. Git & Code Status
-- [ ] All valuable work committed (no uncommitted changes left)
-- [ ] All commits pushed to GitHub (no unpushed commits)
-- [ ] No secrets in commits (gitleaks scan passed)
-- [ ] Document git status (branch, last commit)
+## 3) Gates Sanity (per active task)
 
-## 4. System Health Check
-- [ ] Production services status verified (Fly.io apps)
-- [ ] Build status documented (TypeScript, tests)
-- [ ] No critical errors left unresolved
-- [ ] Document system health in feedback
+For each **Issue (label: task)** and linked PR:
+- [ ] **Scope Gate** — Problem + Acceptance Criteria present in the **Issue**.
+- [ ] **Sandbox** — **Allowed paths** present in **Issue** & **PR**; diffs stay within them.
+- [ ] **Design Gate** — PR describes interfaces, data flow, and failure modes (for new paths).
+- [ ] **Evidence Gate (dev)** — tests/logs/screens satisfy the **DoD**.
+- [ ] **Ship Gate (if merging)** — rollback noted; changelog if user‑visible.
 
-## 5. Evidence Verification
-- [ ] All work logged in feedback/manager.md
-- [ ] Evidence includes: file paths, commit hashes, test results
-- [ ] No verbose logs (summaries only, <10 lines per command)
-- [ ] MCP tool usage documented (minimum 5 calls/day)
+_Missing any artifact? Comment on the PR with the gap and reassign._
 
-## 6. Handoff Documentation
-- [ ] Next priorities clearly documented
-- [ ] Critical blockers escalated
-- [ ] Coordination points noted for next session
-- [ ] Status: "ready for next session" or "blocked on X"
+---
 
-## 7. Compliance Check
-- [ ] Feedback file size acceptable (<5000 lines, archive if needed)
-- [ ] No ad-hoc documents created
-- [ ] All agent directions current (last_reviewed date accurate)
-- [ ] Workflow rules intact (.cursor/rules/04-agent-workflow.mdc)
+## 4) Direction & Feedback Closure
 
-## 8. Security Verification
-- [ ] No secrets exposed in commits
-- [ ] No sensitive data in feedback files
-- [ ] .gitignore updated if needed
-- [ ] Security incidents documented if any occurred
+For each **active agent**:
+- [ ] Read today’s `feedback/<agent>/<YYYY‑MM‑DD>.md` → extract answers, blockers, decisions.
+- [ ] Update `docs/directions/<agent>.md` with **tomorrow’s objective**, **constraints**, and links
+      to the **Issue** (and PR if open).
+- [ ] **Archive/remove** completed items and feedback that has been actioned from directions and feedback files
+- [ ] Ensure the last entry in the agent’s feedback states: **status → next intent**.
 
-## 9. Session Metrics
-- [ ] Document session duration
-- [ ] Count commits made and pushed
-- [ ] Count MCP tool calls made
-- [ ] Count agents directed/activated
+_Notes:_ Dev agents write only to their feedback log and code under Allowed paths.
+Do **not** create or edit other docs.
 
-## 10. Final Sign-off
-- [ ] Session timestamp logged
-- [ ] Session status: "Session closed successfully" or "Blocked - awaiting X"
-- [ ] Ready for next manager session
-- [ ] All checklist items complete
+---
 
-Only after this checklist is complete should the manager session end.
+## 5) Planning TTL & Drift Sweep
 
+- [ ] If any `docs/planning/*` is older than **2 days**, sweep and commit:
+  ```bash
+  node scripts/ops/archive-docs.mjs
+  git commit -am "chore: planning TTL sweep" && git push
+  ```
+- [ ] Glance for any stray `.md` or cross‑agent edits in today’s PRs (reject/clean if found).
+
+---
+
+## 6) Security & Hygiene
+
+- [ ] No secrets in local logs/console paste. Close terminals with creds; stop tunnels.
+- [ ] Ensure `.env*` are **not staged**; `.gitignore` covers them.
+- [ ] Inventory any newly rotated secrets in the private Security note (if applicable).
+
+---
+
+## 7) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
+
+**Today’s Outcomes**
+- Shipped/merged: PRs #…, #…
+- In progress: PRs #… (DoD % complete), Issues #…
+- Incidents: secrets (Y/N), CI failures (count), rogue docs (count)
+
+**Next Goal (tomorrow)**
+- Primary objective: …
+- Success criteria (from North Star): …
+
+**Agent Performance (quick grading)**
+- <agent> — **Score (1–5)**
+  - 2–3 things done well:
+    1) …
+    2) …
+  - 1–2 things to change:
+    1) …
+  - **One thing to stop entirely:** …
+
+(Repeat per active agent; tie feedback to DoD / Allowed paths / feedback discipline.)
+
+### 8) Run Drift Checklist (Manager-only, required)
+
+Before finalizing shutdown:
+
+- [ ] Execute `docs/runbooks/drift_checklist.md` **in full** (after all agents have shut down).
+- [ ] Confirm: HEAD secrets scan is clean; docs policy shows 0 violations; planning TTL sweep committed;
+      required checks on `main` still enforced; directions ↔ feedback are consistent for tomorrow.
+
+
+
+## 9) Finalize
+
+- [ ] Merge or request changes with **explicit next steps** (per PR).
+- [ ] Confirm branch protection required checks are **still on** for `main`.
+- [ ] Optional: Add a **restart plan** comment to each active Issue with
+      the **first 1–2 steps** the agent should take on startup.
+
+> Build/Dev mode safety: no customer messaging, payments, or production Shopify mutations.
+> If the UI needs sample approvals to render, they must be **fixtures**
+> (`provenance.mode="dev:test"`, with `feedback_ref`, and **Apply disabled**).

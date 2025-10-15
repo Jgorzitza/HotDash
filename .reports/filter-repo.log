@@ -1,0 +1,559 @@
+warning: refname 'eb66334e99a250a622950933553a7c1fff4c5614' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '1d9bfacf87c91b75f41beae0d00bc7848d226832' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '0a7b0a4c38d892be9bcf3c8c1c37d475651f284b' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'c4b34e99c57d70c67e5a29f65b7866fed07bff4e' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'e6ca6d36b3a858c5a6f7216fc629a51ccbc907c3' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '9160ddbfcbe035af64f074997c3e5fa1b48b2f06' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'ca4bc3baeab9cdb564aacae292f9beeae1a2fffe' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'a0fc6272ac6c6c9723cba7f43f8f93a3fa68c832' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '8e58514a3f1702e5a27c86810dd82189a2d0f27d' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '95997f19a6c2654bda9ff1979ac1872a522d8e3c' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '5bfa86a1132788b4647a8bf74af75b11d1e966df' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '892ae2c3a719a6c3812392ab8a2b659222b81fb5' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '8af51b1df6dfdc781794b7f0094a4cfba82ca3c0' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'b191780fc703e4b89f28f79ff2b91213e53eec41' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '8ff345b057750191fa0e0aaf0cb846810d303b91' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'ee7c1277ab577140420b63fdacfb6d2e5ba1abb6' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '28c162484ae0092b9bb3ae535bb0fe86055fdba9' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '880334ec18a2cf61fdff7acf4d85c1ed54ecc90d' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'a010844a8c46f47b41ae11d3c80245eca7f38009' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '621c96e04bc234d7879d2fc1f1b98443fc8b0860' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '9f90841a8af66846893af3126da9398b1fe55166' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '4c3149ed71acdae2726b4bc2423196d47622ceb3' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'c1c440a4ed685d588a1bddd124246b455631d15e' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '09e33d902effc50478395ce48ecdd9c627e5c08f' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '284bf03c3ae067e36f5a6a013fb72256dc819b7e' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '8f2211f59d86c435d2d85945e7908c68efa19298' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'f948fff094a7b1c52faa2fe12abe6455504ce75c' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'f200b9cdc5f09ac5a16d0eb45f67c27237064cdb' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'ecbb3462bbe50851c69f2604877244157709c680' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '98fd047c358f976f9512df721da400132d5608d4' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '3002235140728dbcefbb51bc1f2820db5d6608e9' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '99d2ed7491727e06a70c05f7eb72a70cab68a754' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '9d79c863afb8a5938b497bc88c5440274b78959c' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'ebe6425fdffad16c00f1eba9e0d403d13ef56e25' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '2cf0f353481db1d697fb51efd2475195eb7c810f' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'd73724b8dc99330cc8f15d89386a804dacb962c9' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '0a62f6d81781abd61a818369f99fe33cc7395ff1' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '38dd1aac8e226a13b3883f2061fdb7572e5d33df' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '58987664733462ebfcfe9d7f38d528e86d6ec97c' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '3d372dcd53d80b8f63ff5621ec1fe5c2001a63ba' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '32ab9b67e757ad8d9799437be0fe6512366c24e0' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'eee7f1a8d15eb00550b8d4bad8508704109dd880' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '7f937bd344688719d46d2a9edccceb77afc9d3f4' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'ee0a5c5e71c559bb1330f021119aae74288321d6' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'bab246b5163520b115d7b9e31ba4a899672964b6' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'e8619c141775cab3e57ae5f3b7c6b49c893a0f6a' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '40cf08382092067e4cb09e068721ac88281080b7' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '4bef4518dea0f040365cf53cba047b7ab3ba94fd' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '5d673b5933030efd0655389378ba817426e8d7dd' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'db80cc2d76720f348ff84ab35f3de68b99f62192' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'c658da1558ab33d6e3f86b89128be7fc5e74c8f3' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '0616ff2c6b2fd9fa8323903fbe989dcadc157352' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'e123a5996ee1eccb2efab5b3a07e088d1c7ff586' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname '1dd1c78a981fd4700b577fca423b84b86eacacd5' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+warning: refname 'dc2e84db806d4d47f699cf0692cb88aecb3cafdc' is ambiguous.
+Git normally never creates a ref that ends with 40 hex characters
+because it will be ignored when you just specify 40-hex. These refs
+may be created by mistake. For example,
+
+  git switch -c $br $(git rev-parse ...)
+
+where "$br" is somehow empty and a 40-hex ref is created. Please
+examine these refs and maybe delete them. Turn this message off by
+running "git config advice.objectNameWarning false"
+NOTICE: Removing 'origin' remote; see 'Why is my origin removed?'
+        in the manual if you want to push back there.
+        (was https://github.com/Jgorzitza/HotDash.git)
+Parsed 15 commitsParsed 347 commitsParsed 529 commitsParsed 641 commitsParsed 697 commitsParsed 700 commitsHEAD is now at 56ec7c2 fix: Use gitleaks-action defaults and correct SARIF filename
+
+New history written in 0.57 seconds; now repacking/cleaning...
+Repacking your repo and cleaning out old unneeded objects
+Rewrote the stash.
+Completely finished after 2.97 seconds.

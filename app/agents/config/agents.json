@@ -1,0 +1,86 @@
+{
+  "agents": [
+    {
+      "id": "manager",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "engineer",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "qa",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "devops",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "integrations",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "ai-customer",
+      "human_review": true,
+      "reviewers": [
+        "github:justin"
+      ]
+    },
+    {
+      "id": "ai-knowledge",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "inventory",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "analytics",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "seo",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "ads",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "content",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "support",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "designer",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "product",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "data",
+      "human_review": false,
+      "reviewers": []
+    }
+  ]
+}
