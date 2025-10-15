@@ -170,14 +170,14 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 - Integration tests required for all adapters
 
 ### Blockers:
-- Need staging Shopify store credentials (request from manager)
-- Need Supabase staging project URL (request from manager)
+- ✅ RESOLVED: Shopify credentials in `vault/occ/shopify/` (CLI-managed, load with `source vault/occ/shopify/*.env`)
+- ✅ RESOLVED: Supabase local running at http://127.0.0.1:54321 (credentials in `vault/occ/supabase/`)
 
 ### Next Steps:
-1. Request staging credentials from manager
+1. Load credentials: `source vault/occ/shopify/*.env && source vault/occ/supabase/*.env`
 2. Review Shopify Admin GraphQL schema using Shopify MCP
-3. Build read-only queries for dashboard metrics
-4. Create Supabase RPC functions
+3. Build read-only queries for dashboard metrics (revenue, AOV, returns)
+4. Create Supabase RPC functions for metrics and approvals
 5. Write integration tests and create PR
 
 ## 16) Examples

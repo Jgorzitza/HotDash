@@ -165,14 +165,15 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 - Document schema in `docs/specs/`
 
 ### Blockers:
-- Need Supabase staging project access (request from manager)
+- ✅ RESOLVED: Supabase local running at http://127.0.0.1:54321 (credentials in `vault/occ/supabase/`)
 
 ### Next Steps:
-1. Request Supabase staging access from manager
-2. Review `docs/specs/approvals_drawer_spec.md` for data requirements
-3. Design approvals and audit schemas
-4. Write migrations with up/down
-5. Test in staging and create PR
+1. Load credentials: `source vault/occ/supabase/*.env`
+2. Verify Supabase connection: `supabase status` (already running)
+3. Review `docs/specs/approvals_drawer_spec.md` for data requirements
+4. Design approvals and audit schemas
+5. Write migrations with up/down and test locally
+6. Create PR with migration files and schema docs
 
 ## 16) Examples
 
