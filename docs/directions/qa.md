@@ -232,3 +232,31 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) PR review checklist automation template
+2) E2E: auth → dashboard → approvals flow
+3) E2E: drawer approve/reject path
+4) E2E: drawer validation errors path
+5) API integration tests: /api/shopify/*
+6) API integration tests: /api/analytics/*
+7) Accessibility: axe checks per route
+8) Keyboard-only navigation tests
+9) Screen reader announcement tests
+10) Performance: load tests 100 vusers
+11) Performance: stress tests scaling
+12) Security: OWASP Top 10 probes
+13) CSRF/XSS regression tests
+14) Fixtures factory for tiles
+15) Visual regression screenshots
+16) Test data matrix (locales/currency)
+17) Tile accuracy assertions (mocks)
+18) Retry flake triage job
+19) CI gating for failing tests
+20) Coverage dashboard report
+21) Test docs in docs/specs/testing.md
+22) Broken-link checker CI
+23) Lighthouse CI budget checks
+24) Error boundary behavior tests
+25) Smoke suite for staging after deploy

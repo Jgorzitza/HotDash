@@ -83,3 +83,31 @@ Create **UI/UX specs and design documentation** for dashboard tiles and approval
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Design tokens (spacing/color/typography)
+2) Tile card variants (success/warn/error)
+3) Approvals Drawer layout spec
+4) Drawer microcopy + grade rubric hints
+5) Tile iconography set
+6) Mobile-first tile layouts
+7) Tablet grid templates
+8) Desktop grid templates
+9) Empty state designs per tile
+10) Error state designs per tile
+11) Loading skeletons per tile
+12) Interactive states (hover/focus/active)
+13) Components: Badge/Tag/Chip spec
+14) Components: Pagination spec
+15) Components: Filter bar spec
+16) A11y annotations per component
+17) High-fidelity prototypes (Figma)
+18) Export assets pipeline
+19) Screenshot baselines for UI diffs
+20) Dark mode token adjustments
+21) Typography scale & rhythm
+22) Chart styles (sparkline/line/bar)
+23) Drawer forms validation styles
+24) UX copy style guide
+25) Design QA checklist

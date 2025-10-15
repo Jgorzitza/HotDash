@@ -79,3 +79,31 @@ Document **product requirements and success metrics** for foundation milestone, 
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Dashboard launch checklist (DoD + gates)
+2) Approvals Drawer acceptance criteria
+3) Inventory ROP acceptance criteria
+4) SEO anomalies acceptance criteria
+5) CX HITL acceptance criteria
+6) Ads metrics acceptance criteria
+7) Content planner acceptance criteria
+8) User roles/permissions spec
+9) NFRs (perf, reliability, security)
+10) Telemetry definitions (events + KPIs)
+11) Project plan updates (weekly)
+12) Roadmap (next 4 weeks molecules)
+13) Changelog policy and template
+14) UX writing guidelines
+15) Review design tokens sign-off
+16) Stakeholder demo script
+17) UAT plan (scenarios + owners)
+18) Launch comms draft
+19) Support playbook outline
+20) Risk matrix + mitigations
+21) Rollback plan templates
+22) Post-launch success metrics
+23) Feedback loop plan (grads/edits)
+24) Issue templates review
+25) Allowed paths validation samples

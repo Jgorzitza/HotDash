@@ -77,3 +77,31 @@ Design **inventory data model** and prepare for ROP (reorder point) calculations
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) ROP service (lead-time demand + safety stock)
+2) Vendor lead time ingestion
+3) Safety stock policy config
+4) PO CSV generator
+5) PO email draft (HITL) with evidence
+6) WOS calculator per SKU
+7) Stockout risk detector
+8) Overstock detector
+9) Replenishment recommendations
+10) Inventory tile UI hooks
+11) Low-stock alerts wiring
+12) Audit log writes for changes
+13) Backorder import support
+14) Kit/bundle handling
+15) Seasonality factor toggle
+16) Velocity calc (30/60/90-day)
+17) Unit tests for ROP edge cases
+18) Integration tests with data RPC
+19) Vendor profile (lead time, MOQ)
+20) Slack digest (read-only)
+21) CSV import/export handlers
+22) Forecast vs actuals report
+23) Metrics: stockout reduction KPI
+24) Rollback strategy for PO errors
+25) Docs/specs for inventory models
