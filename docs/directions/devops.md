@@ -229,3 +229,31 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) deploy-production.yml (manual, health checks, rollback)
+2) rollback-production.yml (fast rollback)
+3) health-check workflow (synthetic probes)
+4) Prometheus metrics endpoint
+5) Grafana dashboard (tiles perf, error rates)
+6) Structured logging (request_id, user_id, latency)
+7) Central log collector config
+8) Alerting to Slack/PagerDuty
+9) SLO definitions (tile P95, rollup error rate)
+10) Secrets management policy
+11) CI caching for faster builds
+12) Branch protection updates
+13) Danger rules for Allowed paths enforcement
+14) Docs policy CI improvements
+15) Gitleaks pre-commit hook docs
+16) Backup scripts (DB + files)
+17) Restore drills (quarterly)
+18) Disaster recovery runbook
+19) Staging/prod parity check script
+20) Blue/green deployment exploration
+21) Canary deploy experiment
+22) Rollback verification job
+23) Chaos monkey (controlled)
+24) Cost monitoring (build minutes)
+25) Runbooks for common incidents

@@ -102,3 +102,31 @@ Build **OpenAI Agents SDK (TypeScript)** implementation for customer-facing and 
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Agents SDK init + config validation
+2) Chatwoot read tool (conversations, messages)
+3) Draft reply generator (Private Notes)
+4) Evidence collector (history + KB refs)
+5) HITL gate enforcement (no auto-send)
+6) Grading capture (tone/accuracy/policy)
+7) RAG integration (KB search API)
+8) Summarization of threads
+9) Sentiment detection + escalation
+10) Priority routing (SLA-aware)
+11) PII scrubbing (logs/outputs)
+12) Policy filters (no-offer, refunds caps)
+13) Language detection + i18n scaffolding
+14) Learning pipeline (diffs of drafts vs finals)
+15) Reviewer assignment rules
+16) Conversation state store
+17) Retry + backoff on Chatwoot API
+18) Cost/latency telemetry
+19) Unit + integration tests
+20) Fixtures for Chatwoot + OpenAI
+21) Error taxonomy + UX messages
+22) Adapters for staging vs prod
+23) Observability: logs with trace ids
+24) Admin toggles to disable features
+25) Security review + red-team tests

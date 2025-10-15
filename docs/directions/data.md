@@ -233,3 +233,31 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Approvals tables (approvals, grades, edits) + RLS
+2) Audit log table (append-only) + constraints
+3) Inventory tables (snapshots, lead_times, payouts)
+4) CX metrics tables (sla, response_times)
+5) Growth metrics tables (seo, ads, content)
+6) RPC: approvals list w/ filters
+7) RPC: dashboard aggregates per tile
+8) RPC: SEO anomalies feed
+9) RPC: ads performance aggregates
+10) RPC: content engagement aggregates
+11) Views for tiles (materialized where needed)
+12) Indexes for P95 < 3s tile loads
+13) Row-level security policies per role
+14) Triggers for audit logging on writes
+15) Seeds/fixtures for dev
+16) Nightly rollups + cron
+17) Backup/restore scripts (local)
+18) Data retention policies
+19) Schema docs in docs/specs
+20) Query performance dashboard
+21) Test harness for RPCs
+22) Migrations rollback verification
+23) Data quality checks (not null, ranges)
+24) Error budgets & alerts for DB
+25) ETL for historical imports (if needed)

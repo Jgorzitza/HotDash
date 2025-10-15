@@ -237,3 +237,31 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Dashboard shell + Approvals Drawer foundation
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Approvals Drawer: grading UI (tone/accuracy/policy)
+2) Approvals Drawer: evidence sections (queries, diffs, rollback)
+3) Approvals Drawer: validation errors surface
+4) Tile Grid: responsive breakpoints + keyboard nav
+5) Tile Skeletons: loading + error states for all 7 tiles
+6) Revenue Tile: sparkline + tooltip anomalies
+7) AOV Tile: currency/locale handling
+8) Returns Tile: rate calc + drill-down route
+9) Stock Tile: WOS calc + low-stock badge
+10) SEO Tile: top anomalies list modal
+11) CX Tile: Chatwoot queue count + SLA badge
+12) Approvals Tile: pending count + filter chips
+13) Global: date range picker wiring
+14) Global: theming via Polaris tokens
+15) Accessibility: focus traps + ARIA for Drawer
+16) i18n scaffolding (keys only, no strings)
+17) Route guards + error boundaries
+18) Storybook stories for key components
+19) Unit tests coverage ≥85% for dashboard
+20) E2E: dashboard -> approvals happy path
+21) E2E: error states (API down)
+22) Perf pass: P95 < 3s (code-split tiles)
+23) Telemetry: page/time-on-task events
+24) Feature flags for tiles
+25) Screenshot tests (mobile/tablet/desktop)

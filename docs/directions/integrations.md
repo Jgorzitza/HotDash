@@ -238,5 +238,33 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Shopify client: retries/backoff + 429 handling
+2) Shopify client: connection pooling
+3) GA4 client: common query helpers
+4) Chatwoot client: pagination + filters
+5) Audit logging middleware (all external calls)
+6) Rate limiting middleware (token bucket)
+7) Error normalization (external → internal codes)
+8) Caching layer for frequent reads (LRU)
+9) Webhooks: Shopify order/create handler
+10) Webhooks: Chatwoot conversation/update
+11) Batching for analytics queries
+12) Cursor-based pagination utilities
+13) Idempotency keys for write endpoints
+14) Health endpoints for each adapter
+15) Secrets via env handles (no logs)
+16) Structured logs (request_id, latency, outcome)
+17) Circuit breaker for flaky deps
+18) SLA monitors per adapter
+19) Retry budget metrics & alerts
+20) API contracts docs for frontend
+21) Mock servers for tests
+22) Integration tests per adapter (happy + fail)
+23) Snapshot tests for schema responses
+24) Sandbox/staging config switchers
+25) Rollback strategy doc for each adapter
+
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
