@@ -19,3 +19,5 @@ Archived to docs/_archive/2025-10-15-root-misc/ and artifacts/* to reduce root c
 - Moved notebooks/ and planning/ into docs/_archive/2025-10-15-root-misc/
 - Moved tmp/ notes/scripts into artifacts/builds/2025-10-15/tmp/
 - Moved hotdash-manager-bundle-*.zip into artifacts/releases/2025-10-15/
+
+- Moved training/ into docs/_archive/2025-10-15-root-misc/training/
