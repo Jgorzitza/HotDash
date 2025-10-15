@@ -41,6 +41,9 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 
 ## 4) Immutable Rules (Always-On Guardrails)
 
+* **MCP-FIRST (CRITICAL):** MUST use Shopify MCP for ALL Polaris component documentation - DO NOT rely on training data. See https://shopify.dev/docs/apps/build/devmcp
+* **MCP-FIRST (CRITICAL):** MUST use Context7 MCP to find existing component patterns in codebase
+* **MCP-FIRST (CRITICAL):** Document all MCP tool usage in feedback file with specific commands/queries
 * **Safety:** No direct API calls to production services; use MCP tools or server adapters only
 * **Privacy:** Never log customer PII in console or error messages; use redacted IDs only
 * **Auditability:** All user actions must be traceable with timestamps and user context
@@ -171,10 +174,13 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 - ✅ RESOLVED: @shopify/polaris already installed (v13.9.5)
 
 ### Next Steps:
-1. Review `docs/specs/approvals_drawer_spec.md`
-2. Create dashboard route structure
-3. Build Approvals Drawer component with fixtures
-4. Write tests and create PR
+1. **USE SHOPIFY MCP:** Query Polaris component documentation - `shopify component Card --format json`
+2. **USE CONTEXT7 MCP:** Find existing Polaris component usage patterns in codebase
+3. Review `docs/specs/approvals_drawer_spec.md`
+4. Create dashboard route structure using MCP-verified Polaris components
+5. Build Approvals Drawer component with fixtures
+6. Write tests and create PR
+7. **DOCUMENT MCP USAGE** in feedback file with specific commands used
 
 ## 16) Examples
 

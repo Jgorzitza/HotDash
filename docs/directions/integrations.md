@@ -43,6 +43,9 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 
 ## 4) Immutable Rules (Always-On Guardrails)
 
+* **MCP-FIRST (CRITICAL):** MUST use Shopify MCP to validate ALL GraphQL queries - DO NOT rely on training data
+* **MCP-FIRST (CRITICAL):** MUST use Supabase MCP to test RPC functions and queries
+* **MCP-FIRST (CRITICAL):** Document all MCP tool usage in feedback file with specific commands/queries
 * **Safety:** All mutations require explicit approval; no auto-apply in production
 * **Privacy:** Never log customer PII in plaintext; use hashed IDs and redaction
 * **Auditability:** Every tool call must be logged with timestamp, user, input, output, and result
@@ -170,15 +173,17 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 - Integration tests required for all adapters
 
 ### Blockers:
-- Need staging Shopify store credentials (request from manager)
-- Need Supabase staging project URL (request from manager)
+- ✅ RESOLVED: Shopify credentials in `vault/occ/shopify/` (CLI-managed, load with `source vault/occ/shopify/*.env`)
+- ✅ RESOLVED: Supabase local running at http://127.0.0.1:54321 (get credentials with `supabase status`)
 
 ### Next Steps:
-1. Request staging credentials from manager
-2. Review Shopify Admin GraphQL schema using Shopify MCP
-3. Build read-only queries for dashboard metrics
-4. Create Supabase RPC functions
-5. Write integration tests and create PR
+1. Load credentials: `source vault/occ/shopify/*.env` and run `supabase status`
+2. **USE SHOPIFY MCP:** Validate GraphQL schema - `shopify graphql schema` and validate queries
+3. **USE SUPABASE MCP:** Test RPC functions - `supabase functions list` and test locally
+4. Build read-only queries for dashboard metrics (revenue, AOV, returns)
+5. Create Supabase RPC functions for metrics and approvals
+6. Write integration tests and create PR
+7. **DOCUMENT MCP USAGE** in feedback file with specific commands and outputs
 
 ## 16) Examples
 
