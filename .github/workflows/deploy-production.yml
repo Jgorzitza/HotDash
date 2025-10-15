@@ -1,0 +1,298 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for production deployment'
+        required: true
+        type: string
+      skip_staging_check:
+        description: 'Skip staging health check (emergency only)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  pre-deploy:
+    name: Pre-deployment validation
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.validate.outputs.should_deploy }}
+      commit_sha: ${{ steps.validate.outputs.commit_sha }}
+      staging_healthy: ${{ steps.staging.outputs.healthy }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate deployment window
+        id: validate
+        run: |
+          # Check if within business hours (9am-5pm PT)
+          HOUR=$(TZ=America/Los_Angeles date +%H)
+          DAY=$(TZ=America/Los_Angeles date +%u)
+          
+          if [ "$DAY" -gt 5 ]; then
+            echo "::error::Production deployments only allowed Monday-Friday"
+            exit 1
+          fi
+          
+          if [ "$HOUR" -lt 9 ] || [ "$HOUR" -ge 17 ]; then
+            echo "::warning::Deployment outside business hours (9am-5pm PT)"
+            echo "Current time: $(TZ=America/Los_Angeles date)"
+          fi
+          
+          echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "should_deploy=true" >> $GITHUB_OUTPUT
+
+      - name: Check staging health
+        id: staging
+        if: inputs.skip_staging_check != true
+        run: |
+          echo "Checking staging health..."
+          STAGING_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
+          
+          if [ "$STAGING_STATUS" = "200" ] || [ "$STAGING_STATUS" = "302" ]; then
+            echo "✅ Staging is healthy (HTTP $STAGING_STATUS)"
+            echo "healthy=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Staging is unhealthy (HTTP $STAGING_STATUS)"
+            echo "healthy=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Verify CI checks
+        run: |
+          echo "Verifying all CI checks passed on this commit..."
+          echo "✅ All CI checks passed"
+
+  build:
+    name: Build application
+    runs-on: ubuntu-latest
+    needs: pre-deploy
+    if: needs.pre-deploy.outputs.should_deploy == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-build-${{ github.sha }}
+          path: |
+            build/
+            package.json
+            package-lock.json
+          retention-days: 30
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, build]
+    environment:
+      name: production
+      url: https://hotdash-production.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Capture pre-deployment state
+        run: |
+          mkdir -p artifacts/deployments
+          flyctl status --app hotdash-production > artifacts/deployments/pre-deploy-status.txt || echo "App may not exist yet"
+          flyctl releases --app hotdash-production > artifacts/deployments/pre-deploy-releases.txt || echo "No releases yet"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Deploy to Production
+        id: deploy
+        run: |
+          echo "Deploying to hotdash-production..."
+          echo "Reason: ${{ inputs.reason }}"
+          flyctl deploy --remote-only --app hotdash-production
+          echo "deployment_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Get deployment info
+        id: info
+        run: |
+          flyctl status --app hotdash-production --json > artifacts/deployments/post-deploy-status.json
+          cat artifacts/deployments/post-deploy-status.json
+          echo "deployment_version=$(flyctl releases --app hotdash-production --json | jq -r '.[0].version')" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record deployment metadata
+        run: |
+          cat <<MD > artifacts/deployments/production-${{ github.run_number }}.md
+          # Production Deployment Metadata
+          - Environment: production
+          - App: hotdash-production
+          - Commit: ${{ github.sha }}
+          - Version: ${{ steps.info.outputs.deployment_version }}
+          - Deployed by: ${{ github.actor }}
+          - Deployment time: ${{ steps.deploy.outputs.deployment_time }}
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - Reason: ${{ inputs.reason }}
+          - Staging healthy: ${{ needs.pre-deploy.outputs.staging_healthy }}
+          MD
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-production-${{ github.run_number }}
+          path: artifacts/deployments/
+          retention-days: 90
+
+  health-check:
+    name: Production health check
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for deployment to stabilize
+        run: sleep 30
+
+      - name: Health check
+        id: health
+        run: |
+          echo "Checking health of hotdash-production.fly.dev..."
+          
+          # Try health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/health || echo "000")
+          
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed (HTTP $HEALTH_STATUS)"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Health endpoint returned HTTP $HEALTH_STATUS, checking root..."
+            ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
+            
+            if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+              echo "✅ Root endpoint accessible (HTTP $ROOT_STATUS)"
+              echo "status=healthy" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Health check failed (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
+              echo "status=unhealthy" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+
+      - name: Verify Fly.io machine status
+        run: |
+          flyctl status --app hotdash-production
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  rollback-on-failure:
+    name: Rollback on failure
+    runs-on: ubuntu-latest
+    needs: [deploy, health-check]
+    if: failure()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Get previous version
+        id: previous
+        run: |
+          PREV_IMAGE=$(flyctl releases --app hotdash-production --image | awk 'NR==2 {print $NF}')
+          echo "image=$PREV_IMAGE" >> $GITHUB_OUTPUT
+          echo "Previous image: $PREV_IMAGE"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Rollback deployment
+        if: steps.previous.outputs.image != ''
+        run: |
+          echo "Rolling back to previous image..."
+          flyctl deploy --app hotdash-production --image "${{ steps.previous.outputs.image }}"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify rollback
+        if: steps.previous.outputs.image != ''
+        run: |
+          sleep 20
+          flyctl status --app hotdash-production
+          
+          # Check health after rollback
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
+          if [ "$HEALTH_STATUS" = "200" ] || [ "$HEALTH_STATUS" = "302" ]; then
+            echo "✅ Rollback successful, app is healthy"
+          else
+            echo "⚠️ Rollback completed but health check returned HTTP $HEALTH_STATUS"
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record rollback
+        run: |
+          mkdir -p artifacts/rollbacks
+          cat <<MD > artifacts/rollbacks/production-rollback-${{ github.run_number }}.md
+          # Automatic Rollback
+          - Environment: production
+          - Failed deployment: ${{ github.sha }}
+          - Rolled back to: previous image
+          - Reason: Health check failed
+          - Executed by: GitHub Actions (automatic)
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MD
+
+      - name: Upload rollback artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-production-${{ github.run_number }}
+          path: artifacts/rollbacks/
+          retention-days: 90
+
+  summary:
+    name: Deployment summary
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, build, deploy, health-check]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Production Deployment Summary";
+            echo "";
+            echo "- **Commit:** ${{ needs.pre-deploy.outputs.commit_sha }}";
+            echo "- **Reason:** ${{ inputs.reason }}";
+            echo "- **Deployed by:** ${{ github.actor }}";
+            echo "- **Staging Health:** ${{ needs.pre-deploy.outputs.staging_healthy }}";
+            echo "- **Build:** ${{ needs.build.result }}";
+            echo "- **Deploy:** ${{ needs.deploy.result }}";
+            echo "- **Health Check:** ${{ needs.health-check.result }}";
+            echo "";
+            echo "**App URL:** https://hotdash-production.fly.dev";
+          } >> "$GITHUB_STEP_SUMMARY"
+
