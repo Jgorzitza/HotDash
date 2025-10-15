@@ -142,51 +142,67 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 * **Encryption:** PII encrypted at rest (Supabase default)
 * **Audit tables:** Immutable; append-only; no deletes
 
-## 15) Today's Objective (2025-10-15)
+## 15) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** AG-2 Real-time Dashboard Queries
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P0 - Launch Critical
-**Branch:** `agent/data/dashboard-queries`
 
-### Current Task: Build Dashboard Tile Queries
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ Hot Rodan data models complete
-- ✅ Migrations created
-- ✅ Views for dashboard tiles
+### Task List (9 tasks):
 
-**What to Build Now:**
-Real-time queries that power the 7 dashboard tiles using your views
+**1. ✅ Dashboard RPC Functions (COMPLETE - PR #34 MERGED)**
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/data && echo "# Data 2025-10-15" > feedback/data/2025-10-15.md`
-2. Verify Supabase: `supabase status` (http://127.0.0.1:54321)
-3. Use Supabase MCP: `supabase db diff` - document in feedback
-4. Build queries for each tile:
-   - Revenue (last 30 days, trend)
-   - AOV (average order value, trend)
-   - Returns (return rate, trend)
-   - Stock Risk (products with WOS < 14 days)
-   - SEO Anomalies (traffic drops > 20%)
-   - CX Queue (pending conversations)
-   - Approvals Queue (pending approvals)
-5. Create RPC functions in `supabase/functions/` for each query
-6. Test queries locally
-7. Document in `docs/specs/dashboard_queries.md`
-8. Create PR
+**2. Approvals Schema (NEXT - 3h)**
+- Tables: approvals, grades, edits
+- RLS policies for user access
+- Allowed paths: `supabase/migrations/*`
 
-**Allowed paths:** `supabase/functions/*, supabase/migrations/*, docs/specs/dashboard_queries.md`
+**3. Audit Log Schema (2h)**
+- Immutable audit trail table
+- Append-only constraints
+- Allowed paths: `supabase/migrations/*`
 
-**After This:** Approvals schema + Audit log schema
+**4. Inventory Schema (3h)**
+- Tables: products, inventory_snapshots, sales_velocity, picker_payouts
+- ROP calculation fields
+- Allowed paths: `supabase/migrations/*`
 
-### Blockers:
-None - Supabase running, views ready
+**5. CX Metrics Schema (2h)**
+- Conversation stats, response times, quality grades
+- Allowed paths: `supabase/migrations/*`
+
+**6. Growth Metrics Schema (2h)**
+- SEO, ads, content performance
+- Allowed paths: `supabase/migrations/*`
+
+**7. RLS Policies for All Tables (3h)**
+- Least-privilege access per user role
+- Test policies thoroughly
+- Allowed paths: `supabase/migrations/*`
+
+**8. Database Indexes for Performance (2h)**
+- Identify slow queries
+- Add indexes strategically
+- Allowed paths: `supabase/migrations/*`
+
+**9. Migration Rollback Scripts (2h)**
+- Down migrations for all changes
+- Test rollback procedures
+- Allowed paths: `supabase/migrations/*.rollback.sql`
+
+### Current Focus: Task 2 (Approvals Schema)
+
+### Blockers: None
 
 ### Critical:
 - ✅ Use Supabase MCP for all database work
-- ✅ Document MCP commands in feedback
-- ✅ All queries must have RLS policies
-- ✅ NO new .md files except specs and feedback
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ All tables must have RLS policies
 
 ## 16) Examples
 

@@ -147,47 +147,68 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 * **Forbidden data:** Email, phone, address, payment info in logs
 * **Masking/redaction rules:** Redact all PII before logging; use environment variables for secrets
 
-## 15) Today's Objective (2025-10-15)
+## 15) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Build API Integration Layer for Dashboard Tiles
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P0 - Launch Critical
-**Branch:** `agent/integrations/dashboard-apis`
 
-### Current Task: Connect Dashboard Tiles to Real Data
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ Shopify GraphQL validation (all 4 queries fixed)
-- ✅ 9 operational scripts created
-- ✅ Comprehensive audit complete
+### Task List (9 tasks):
 
-**What to Build Now:**
-API integration layer that connects Engineer's dashboard tiles to real Shopify data
+**1. ✅ Dashboard API Routes (COMPLETE - PR #33 MERGED)**
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/integrations && echo "# Integrations 2025-10-15" > feedback/integrations/2025-10-15.md`
-2. Load credentials: `source vault/occ/shopify/*.env`
-3. Use Shopify MCP: `shopify graphql schema` - document in feedback
-4. Build API routes:
-   - `app/routes/api/shopify.revenue.ts` - total revenue last 30 days
-   - `app/routes/api/shopify.aov.ts` - average order value
-   - `app/routes/api/shopify.returns.ts` - return rate
-   - `app/routes/api/shopify.stock.ts` - stock risk (WOS < 14 days)
-5. Use your validated GraphQL queries from previous work
-6. Add audit logging to each route
-7. Write integration tests
-8. Create PR
+**2. Shopify Admin GraphQL Client (NEXT - 3h)**
+- Reusable client for all Shopify queries
+- Connection pooling, retry logic
+- Allowed paths: `app/lib/shopify/client.ts`
 
-**Allowed paths:** `app/routes/api/shopify.*, app/lib/shopify/*, tests/integration/*`
+**3. Supabase RPC Client (3h)**
+- Reusable client for all Supabase RPC calls
+- Error handling, logging
+- Allowed paths: `app/lib/supabase/client.ts`
 
-**After This:** Supabase RPC for approvals data
+**4. Chatwoot API Client (3h)**
+- Reusable client for Chatwoot operations
+- Conversation fetching, reply posting
+- Allowed paths: `app/lib/chatwoot/client.ts`
 
-### Blockers:
-None - Shopify credentials ready, queries validated
+**5. GA4 API Client Integration (2h)**
+- Integrate analytics GA4 client
+- Revenue, traffic queries
+- Allowed paths: `app/lib/analytics/client.ts`
+
+**6. Audit Logging Middleware (2h)**
+- Log all external API calls
+- Track request/response, timing, errors
+- Allowed paths: `app/middleware/audit.ts`
+
+**7. Rate Limiting for External APIs (2h)**
+- Prevent API quota exhaustion
+- Exponential backoff
+- Allowed paths: `app/middleware/rate-limit.ts`
+
+**8. Error Handling and Retries (2h)**
+- Centralized error handling
+- Automatic retries with backoff
+- Allowed paths: `app/lib/errors.ts`
+
+**9. API Integration Tests (3h)**
+- Test all API clients
+- Mock external services
+- Allowed paths: `tests/integration/api/*`
+
+### Current Focus: Task 2 (Shopify Client)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Use Shopify MCP to validate all queries
-- ✅ Document MCP commands in feedback
-- ✅ Add audit logging to every API call
+- ✅ Use Shopify MCP to validate queries
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
 - ✅ NO new .md files except feedback
 
 ## 16) Examples

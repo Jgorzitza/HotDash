@@ -144,51 +144,61 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 * **Forbidden:** Secrets in code, logs, or CI output
 * **Masking/redaction rules:** GitHub Actions auto-masks secrets; verify in logs
 
-## 15) Today's Objective (2025-10-15)
+## 15) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Monitor Staging & Prepare Production Deployment
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P0 - Launch Critical
-**Branch:** `agent/devops/production-prep`
 
-### Current Task: Production Deployment Workflow
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ PR #27 merged (CI health + staging deployment)
-- ✅ Staging app deployed and operational
-- ✅ Rollback workflow created
+### Task List (9 tasks):
 
-**What to Build Now:**
-Production deployment workflow with health checks and rollback
+**1. ✅ CI Health + Staging Deployment (COMPLETE - PR #27 MERGED)**
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/devops && echo "# DevOps 2025-10-15" > feedback/devops/2025-10-15.md`
-2. Monitor staging deployment: `fly status -a hot-dash-staging`
-3. Use Fly.io MCP to check staging health
-4. Create `.github/workflows/deploy-production.yml`:
-   - Trigger: Manual workflow_dispatch only
-   - Pre-deployment checks (all tests pass, staging healthy)
-   - Deploy to Fly.io production app
-   - Health checks with automatic rollback on failure
-   - Deployment notification
-5. Create `.github/workflows/rollback-production.yml`:
-   - Manual rollback to previous version
-   - Estimated time: < 2 minutes
-6. Test workflows in staging first
-7. Document deployment process in `docs/runbooks/production_deployment.md`
-8. Create PR
+**2. Production Deployment Workflow (NEXT - 3h)**
+- Manual workflow_dispatch, health checks, auto-rollback
+- Allowed paths: `.github/workflows/deploy-production.yml`
 
-**Allowed paths:** `.github/workflows/*, docs/runbooks/production_deployment.md, feedback/devops/*`
+**3. Rollback Workflow (2h)**
+- Manual rollback < 2 minutes
+- Allowed paths: `.github/workflows/rollback-production.yml`
 
-**After This:** Set up monitoring and alerting
+**4. Health Check Monitoring (2h)**
+- Endpoint monitoring, alerting
+- Allowed paths: `.github/workflows/health-check.yml`
 
-### Blockers:
-None - Staging deployed, ready for production prep
+**5. Prometheus Metrics Setup (3h)**
+- Metrics endpoints, dashboards
+- Allowed paths: `app/metrics/*, prometheus.yml`
+
+**6. Log Aggregation (2h)**
+- Structured logs, centralized collection
+- Allowed paths: `app/lib/logger.ts`
+
+**7. Alerting (PagerDuty/Slack) (2h)**
+- Critical alerts, escalation
+- Allowed paths: `.github/workflows/alert.yml`
+
+**8. Backup and Restore Procedures (3h)**
+- Database backups, restore testing
+- Allowed paths: `scripts/backup/*`
+
+**9. Disaster Recovery Plan (2h)**
+- Runbook for major incidents
+- Allowed paths: `docs/runbooks/disaster_recovery.md`
+
+### Current Focus: Task 2 (Production Deployment)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Use Fly.io MCP for all deployment operations
-- ✅ Manual approval required for production deploys
-- ✅ Health checks with automatic rollback
-- ✅ NO new .md files except runbooks and feedback
+- ✅ Use Fly.io MCP for deployments
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Manual approval for production
 
 ## 16) Examples
 

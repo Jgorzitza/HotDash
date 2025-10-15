@@ -34,45 +34,62 @@ Build **OpenAI Agents SDK (TypeScript)** implementation for customer-facing and 
 * **SDK-first:** Use OpenAI Agents SDK (TypeScript) - no custom agent loops
 * **Tool-backed:** All actions via server-side tools (Shopify Admin GraphQL, Supabase RPC, Chatwoot API)
 
-## 4) Today's Objective (2025-10-15)
+## 4) Today's Objective (2025-10-15) - UPDATED
 
-**Priority:** P0 - Foundation
-**Deadline:** 2025-10-17 (2 days)
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P0 - Launch Critical
 
-### Tasks:
-1. **OpenAI Agents SDK Setup** - Initialize SDK with TypeScript
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/agents/sdk/*, app/agents/config/*`
-   - DoD: SDK initialized; config file structure; HITL interruptions working
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-2. **Customer Support Agent** - Build agent that drafts Chatwoot replies
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/agents/customer/*, app/agents/tools/*`
-   - DoD: Agent drafts replies; calls Chatwoot tool; HITL approval required; grading captured
+### Task List (9 tasks):
 
-3. **CEO Assistant Agent** - Build agent for inventory/growth insights
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/agents/ceo/*, app/agents/tools/*`
-   - DoD: Agent provides insights; calls Shopify/Supabase tools; HITL approval for actions
+**1. OpenAI SDK Initialization (NEXT - 2h)**
+- Initialize OpenAI Agents SDK, config file structure
+- Allowed paths: `app/agents/sdk/*, app/agents/config/*`
 
-### Constraints:
-- Work in branch: `agent/ai-customer/openai-sdk-foundation`
-- Use OpenAI Agents SDK (TypeScript) - follow official docs
-- HITL must be enforced via SDK interruptions
-- All tools must be server-side (no direct API calls from agent)
-- Test with staging data only
+**2. Customer Support Agent (4h)**
+- Draft Chatwoot replies as Private Notes
+- Allowed paths: `app/agents/customer/*`
 
-### Blockers:
-- ✅ RESOLVED: OpenAI API key in `vault/occ/openai/api_key_staging.env`
+**3. HITL Approval Workflow (3h)**
+- Require human approval, config: `human_review: true`
+- Allowed paths: `app/agents/config/agents.json`
 
-### Next Steps:
-1. Load OpenAI API key: `source vault/occ/openai/api_key_staging.env`
-2. Review OpenAI Agents SDK documentation (TypeScript)
-3. Initialize SDK with HITL interruption handling
-4. Build customer support agent with Chatwoot tool integration
-5. Build CEO assistant agent with Shopify/Supabase tools
-6. Test HITL approval flow with fixtures
-7. Create PR with agent implementations and tests
+**4. Grading Interface (2h)**
+- Tone, accuracy, policy (1-5 scale)
+- Allowed paths: `app/components/grading/*`
+
+**5. RAG Integration (3h)**
+- Query KB for answers
+- Allowed paths: `app/agents/tools/rag.ts`
+
+**6. Conversation Context Management (2h)**
+- Track conversation history
+- Allowed paths: `app/agents/context/*`
+
+**7. Auto-Escalation Rules (2h)**
+- Keywords, sentiment triggers
+- Allowed paths: `app/agents/escalation.ts`
+
+**8. Learning from Human Edits (3h)**
+- Capture diff, store for fine-tuning
+- Allowed paths: `app/agents/learning/*`
+
+**9. Integration Tests (2h)**
+- Test all workflows with fixtures
+- Allowed paths: `tests/agents/*`
+
+### Current Focus: Task 1 (OpenAI SDK Init)
+
+### Blockers: None
+
+### Critical:
+- ✅ HITL MUST be enforced
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
 
 ---
 

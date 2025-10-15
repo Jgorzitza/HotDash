@@ -145,45 +145,72 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 * **Forbidden data:** Email, phone, address, payment info in frontend logs
 * **Masking/redaction rules:** Mask all PII in error messages and logs
 
-## 15) Today's Objective (2025-10-15)
+## 15) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Task 6 - Build Approval Queue UI
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P0 - Launch Critical
-**Branch:** `agent/engineer/approval-queue-ui`
 
-### Current Task: Approval Queue UI (3-4h estimate)
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code in allowed paths
+- Signal "WORK COMPLETE - READY FOR PR" in feedback
+- Manager creates branch, commits, pushes, creates PR
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**What to Build:**
-Dashboard route with Approval Queue UI component using Designer's specs
+### Task List (9 tasks):
 
-**Designer Specs Ready:**
-- `docs/design/HANDOFF-approval-queue-ui.md` (primary spec)
-- `docs/design/MINIMAL-approval-ui-assets-TODAY.md` (minimal version)
-- `docs/design/approvalcard-component-spec.md` (component details)
+**1. ✅ Approval Queue UI (COMPLETE - PR #29 MERGED)**
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/engineer && echo "# Engineer 2025-10-15" > feedback/engineer/2025-10-15.md`
-2. Review Designer specs (15-20 min)
-3. Use Shopify MCP: `shopify component Card` and `shopify component Drawer`
-4. Build `app/routes/approvals.tsx` with approval queue list
-5. Build `app/components/approvals/ApprovalCard.tsx` per Designer spec
-6. Build `app/components/approvals/ApprovalsDrawer.tsx` for detail view
-7. Create fixtures in `app/fixtures/approvals.ts`
-8. Write tests
-9. Take screenshots (mobile, tablet, desktop)
-10. Create PR
+**2. Approvals Drawer Detail View (NEXT - 3-4h)**
+- Expand ApprovalCard into full Drawer component
+- Show complete evidence, projected impact, risks
+- Approve/Reject with grading interface (tone, accuracy, policy 1-5)
+- Allowed paths: `app/components/approvals/*, tests/**`
 
-**Allowed paths:** `app/routes/approvals.*, app/components/approvals/*, app/fixtures/*, tests/**`
+**3. Dashboard Shell with 7 Tile Grid (4-5h)**
+- Create `app/routes/dashboard.tsx` with responsive grid
+- 7 tiles: Revenue, AOV, Returns, Stock Risk, SEO, CX, Approvals
+- Polaris Card components with loading/error states
+- Allowed paths: `app/routes/dashboard.*, app/components/dashboard/*`
 
-**After This:** Task 7 - E2E Integration Testing (1-2h)
+**4. Revenue Tile (2h)**
+- Connect to integrations API (`/api/shopify/revenue`)
+- Show last 30 days revenue + trend
+- Allowed paths: `app/components/dashboard/RevenueTile.tsx`
 
-### Blockers:
-None - Designer specs complete and ready
+**5. AOV Tile (2h)**
+- Connect to integrations API (`/api/shopify/aov`)
+- Show average order value + trend
+- Allowed paths: `app/components/dashboard/AOVTile.tsx`
+
+**6. Returns Tile (2h)**
+- Connect to integrations API (`/api/shopify/returns`)
+- Show return rate + trend
+- Allowed paths: `app/components/dashboard/ReturnsTile.tsx`
+
+**7. Stock Risk Tile (2h)**
+- Connect to integrations API (`/api/shopify/stock`)
+- Show products with WOS < 14 days
+- Allowed paths: `app/components/dashboard/StockRiskTile.tsx`
+
+**8. SEO Anomalies Tile (2h)**
+- Connect to SEO API (`/api/seo/anomalies`)
+- Show traffic drops, ranking losses
+- Allowed paths: `app/components/dashboard/SEOTile.tsx`
+
+**9. CX Queue Tile (2h)**
+- Connect to Chatwoot API
+- Show pending conversations
+- Allowed paths: `app/components/dashboard/CXTile.tsx`
+
+### Current Focus: Task 2 (Approvals Drawer)
+
+### Blockers: None
 
 ### Critical:
 - ✅ Use Shopify MCP for ALL Polaris components
-- ✅ Document MCP commands in feedback
-- ✅ Fixtures only (no API calls)
+- ✅ Signal "WORK COMPLETE - READY FOR PR" in feedback when done
+- ✅ NO git commands (manager handles)
 - ✅ NO new .md files except feedback
 
 ## 16) Examples
