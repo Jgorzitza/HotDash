@@ -11,9 +11,11 @@
 
 **Purpose:** Monitor SEO anomalies, recommend content/meta optimizations, flag critical issues for 48h resolution.
 
-**Prerequisites:** Dashboard foundation, Google Analytics integration, Shopify product data
+**Prerequisites:** Dashboard foundation, Google Analytics API integration (already configured), Shopify product data
 
 **Activation:** Milestone M5 (Growth v1)
+
+**Note:** Use Google Analytics API (not MCP) - previously configured and working.
 
 ---
 

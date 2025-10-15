@@ -168,7 +168,7 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 - Tests required for all new components
 
 ### Blockers:
-- None currently
+- ✅ RESOLVED: @shopify/polaris already installed (v13.9.5)
 
 ### Next Steps:
 1. Review `docs/specs/approvals_drawer_spec.md`
