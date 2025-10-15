@@ -22,11 +22,15 @@
 ---
 
 ## 2) Task Ledger (single source of truth)
-- Use **GitHub Issues (Task form)** with required fields: **Agent**, **Definition of Done**, **Acceptance checks**, **Allowed paths**.  
-- Every PR must:  
-  - Include `Fixes #<issue>` in the body.  
-  - Include a line `Allowed paths: <patterns>` that matches the Issue.  
-  - Stay inside those paths (Danger enforces).  
+- Use **GitHub Issues (Task form)** with required fields: **Agent**, **Definition of Done**, **Acceptance checks**, **Allowed paths**.
+- **Manager-Controlled Git** (see `docs/runbooks/manager_git_workflow.md`):
+  - **Agents write code** in allowed paths and signal "WORK COMPLETE - READY FOR PR" in feedback
+  - **Manager handles ALL git operations** (branch, commit, push, PR creation, merge)
+  - **Prevents git conflicts** between agents
+- Every PR must:
+  - Include `Fixes #<issue>` in the body.
+  - Include a line `Allowed paths: <patterns>` that matches the Issue.
+  - Stay inside those paths (Danger enforces).
 - Direction lives in `docs/directions/<agent>.md` and follows template `docs/directions/agenttemplate.md`. Feedback logs go to `feedback/<agent>/<YYYY-MM-DD>.md`.
 
 ---
