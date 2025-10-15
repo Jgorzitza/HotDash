@@ -18,9 +18,9 @@
 - [ ] MCP tools resolve and respond (role-specific): Shopify Admin, Supabase, Chatwoot, etc.
 - [ ] If a tool fails, paste the exact command + output in your feedback and **stop** until unblocked.
 
-## 3) Sandbox & Branch (30 sec)
-- [ ] Use a short-lived branch: `agent/<agent>/<molecule>`.
-- [ ] Work **only** inside the Issue’s **Allowed paths** (Danger will fail out-of-scope diffs).
+## 3) Sandbox (30 sec)
+- [ ] Work only inside the Issue’s **Allowed paths** (Danger will fail out-of-scope diffs).
+- [ ] Do NOT create branches; Manager controls all git operations.
 
 ## 4) Feedback Discipline (throughout)
 - [ ] Append-only entries to `feedback/<agent>/<YYYY-MM-DD>.md`:
@@ -32,13 +32,17 @@
 - [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference:
       `Refs #<issue>` → final slice uses `Fixes #<issue>`.
 
-## 6) PR Protocol (when you have a slice)
-- [ ] Open a PR with:
-  - `Fixes #<issue>` in the body
-  - A line: `Allowed paths: <pattern(s)>`
-  - Brief **Design sketch** (interfaces/data flow/failure modes) if introducing new code paths
-  - Evidence for DoD (tests, logs, screenshots)
-- [ ] Ensure diffs stay **within Allowed paths**; add/adjust tests; push and fix CI (Docs Policy, Danger, Gitleaks, AI Config) before asking for review.
+## 6) Completion Protocol (when you finish a slice)
+- [ ] Do NOT open a PR yourself; Manager will.
+- [ ] Append the completion block to `feedback/<agent>/<YYYY-MM-DD>.md`:
+  ```md
+  ## WORK COMPLETE - READY FOR PR
+  Summary: <what you built>
+  Files: <list>
+  Tests: <summary>
+  Evidence: <links/notes>
+  ```
+- [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in your feedback.
 
 ## 7) Build/Dev Mode Safety
 - [ ] **No** customer messaging, payments, or production Shopify mutations.

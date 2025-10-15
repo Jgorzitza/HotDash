@@ -24,6 +24,14 @@
 - [ ] **Agents SDK/HITL** config intact: `app/agents/config/agents.json` has `ai-customer.human_review: true` and reviewers.
 - [ ] (If social enabled) Ayrshare environment secret present (never hard-coded).
 
+## 3) Manager-Controlled Git — Daily Flow (new)
+- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
+- [ ] For each agent with a WORK COMPLETE block today:
+  - Create/checkout branch: `agent/<agent>/<YYYYMMDD>-<task>`
+  - Add only files in Allowed paths; commit with evidence reference
+  - Push and create PR (`gh pr create ...`)
+- [ ] Merge when CI green; update direction to next task
+
 ## 3) Project status review and Agent direction (3–5 min)
 
 ### 3.1 At-a-glance (30–45 sec)

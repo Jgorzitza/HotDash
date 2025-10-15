@@ -16,6 +16,12 @@
   - **Blockers** with **owner + ETA**
   - Links to any relevant logs/evidence (screenshots, test output)
 
+## 2a) Manager-Controlled Git  Close Out
+- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
+- [ ] For any agent with WORK COMPLETE but no PR yet, create branch/PR now
+- [ ] For open PRs, ensure evidence links to the feedback file
+- [ ] After merge, update directions to next task
+
 ---
 
 ## 2) CI & Guardrails (must be green)

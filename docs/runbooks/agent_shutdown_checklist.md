@@ -7,8 +7,8 @@
 ---
 
 ## 0) Save State (≤ 1 min)
-- [ ] Commit local work (even partial) on branch `agent/<agent>/<molecule>`.
-- [ ] Push branch to origin; open/mark **Draft PR** if not already.
+- [ ] Do NOT commit/push. Manager will handle git operations.
+- [ ] Ensure your feedback file contains the latest evidence and the completion block if applicable.
 - [ ] Ensure PR body includes:
   - `Refs #<issue>` or `Fixes #<issue>` (when DoD is fully met)
   - A line: `Allowed paths: <pattern(s)>`
@@ -66,12 +66,11 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 
 ---
 
-## 3) PR Hygiene (≤ 1 min)
-- [ ] If a PR exists, update its description with:
-  - Current **Design sketch** (interfaces, data flow, failure modes) if new code paths were added today
-  - Links to **evidence** (tests, logs, screenshots)
-  - Confirm `Allowed paths:` line matches the Issue
-- [ ] Request review **only if** CI passes and DoD slice is demonstrably met; otherwise keep as Draft.
+## 3) Handoff to Manager (≤ 1 min)
+- [ ] Verify your feedback file is up to date.
+- [ ] Post a one-liner in the Issue comment:
+  "Shutdown complete — see latest feedback entry (includes WORK COMPLETE block if applicable)."
+- [ ] Manager will create/refresh PR and handle CI/review/merge.
 
 ---
 
