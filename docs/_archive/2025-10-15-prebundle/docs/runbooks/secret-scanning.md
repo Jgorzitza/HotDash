@@ -130,8 +130,8 @@ gh run list --workflow=security.yml --limit 5
 ### Test Pre-Commit Hook
 
 ```bash
-# Create test file with fake secret
-echo "aws_access_key_id=AKIAIOSFODNN7EXAMPLE" > test_secret.txt
+# Create test file with fake secret (AWS example format)
+echo "aws_access_key_id=YOUR_AWS_ACCESS_KEY_HERE" > test_secret.txt
 git add test_secret.txt
 
 # Attempt commit (should fail)

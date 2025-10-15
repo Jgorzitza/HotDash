@@ -89,13 +89,13 @@ supabase status
 
 # Verify edge functions
 curl -sS "http://127.0.0.1:54321/functions/v1/occ-log" \
-  -H "apikey: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH" \
+  -H "apikey: YOUR_SUPABASE_ANON_KEY_HERE" \
   -H "Content-Type: application/json" \
   -d '{"ping":"restore-test"}'
 
 # Check REST API access
 curl -sS "http://127.0.0.1:54321/rest/v1/decision_sync_events?limit=1" \
-  -H "apikey: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH"
+  -H "apikey: YOUR_SUPABASE_ANON_KEY_HERE"
 ```
 
 ## Recovery Time Objectives (RTO)

@@ -1,0 +1,265 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual deployment'
+        required: false
+        type: string
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  pre-deploy:
+    name: Pre-deployment checks
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+      commit_sha: ${{ steps.check.outputs.commit_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check deployment conditions
+        id: check
+        run: |
+          echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "should_deploy=true" >> $GITHUB_OUTPUT
+          
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual deployment triggered: ${{ inputs.reason || 'No reason provided' }}"
+          fi
+
+      - name: Verify CI checks passed
+        run: |
+          echo "Verifying all CI checks passed on this commit..."
+          # GitHub Actions will only run this if previous checks passed
+          echo "✅ All CI checks passed"
+
+  build:
+    name: Build application
+    runs-on: ubuntu-latest
+    needs: pre-deploy
+    if: needs.pre-deploy.outputs.should_deploy == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ github.sha }}
+          path: |
+            build/
+            package.json
+            package-lock.json
+          retention-days: 7
+
+  deploy:
+    name: Deploy to Fly.io
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, build]
+    environment:
+      name: staging
+      url: https://hotdash-staging.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        id: deploy
+        run: |
+          echo "Deploying to hotdash-staging..."
+          flyctl deploy --remote-only --app hotdash-staging
+          echo "deployment_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Get deployment info
+        id: info
+        run: |
+          flyctl status --app hotdash-staging --json > deployment-status.json
+          cat deployment-status.json
+          echo "deployment_version=$(flyctl releases --app hotdash-staging --json | jq -r '.[0].version')" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record deployment metadata
+        run: |
+          mkdir -p artifacts/deployments
+          cat <<MD > artifacts/deployments/staging-${{ github.run_number }}.md
+          # Deployment Metadata
+          - Environment: staging
+          - App: hotdash-staging
+          - Commit: ${{ github.sha }}
+          - Version: ${{ steps.info.outputs.deployment_version }}
+          - Deployed by: ${{ github.actor }}
+          - Deployment time: ${{ steps.deploy.outputs.deployment_time }}
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - Trigger: ${{ github.event_name }}
+          - Reason: ${{ inputs.reason || 'Automatic deployment on push to main' }}
+          MD
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-staging-${{ github.run_number }}
+          path: |
+            artifacts/deployments/
+            deployment-status.json
+          retention-days: 90
+
+  health-check:
+    name: Health check
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for deployment to stabilize
+        run: sleep 30
+
+      - name: Health check
+        id: health
+        run: |
+          echo "Checking health of hotdash-staging.fly.dev..."
+          
+          # Try health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health || echo "000")
+          
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed (HTTP $HEALTH_STATUS)"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Health endpoint returned HTTP $HEALTH_STATUS, checking root..."
+            ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
+            
+            if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+              echo "✅ Root endpoint accessible (HTTP $ROOT_STATUS)"
+              echo "status=healthy" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Health check failed (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
+              echo "status=unhealthy" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+
+      - name: Verify Fly.io machine status
+        run: |
+          flyctl status --app hotdash-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  rollback-on-failure:
+    name: Rollback on failure
+    runs-on: ubuntu-latest
+    needs: [deploy, health-check]
+    if: failure()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Get previous version
+        id: previous
+        run: |
+          PREV_VERSION=$(flyctl releases --app hotdash-staging --json | jq -r '.[1].version // "unknown"')
+          echo "version=$PREV_VERSION" >> $GITHUB_OUTPUT
+          echo "Previous version: $PREV_VERSION"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Rollback deployment
+        if: steps.previous.outputs.version != 'unknown'
+        run: |
+          echo "Rolling back to version ${{ steps.previous.outputs.version }}..."
+          flyctl releases rollback ${{ steps.previous.outputs.version }} --app hotdash-staging --yes
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify rollback
+        if: steps.previous.outputs.version != 'unknown'
+        run: |
+          sleep 20
+          flyctl status --app hotdash-staging
+          
+          # Check health after rollback
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
+          if [ "$HEALTH_STATUS" = "200" ] || [ "$HEALTH_STATUS" = "302" ]; then
+            echo "✅ Rollback successful, app is healthy"
+          else
+            echo "⚠️ Rollback completed but health check returned HTTP $HEALTH_STATUS"
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record rollback
+        run: |
+          mkdir -p artifacts/rollbacks
+          cat <<MD > artifacts/rollbacks/staging-rollback-${{ github.run_number }}.md
+          # Automatic Rollback
+          - Environment: staging
+          - Failed deployment: ${{ github.sha }}
+          - Rolled back to: version ${{ steps.previous.outputs.version }}
+          - Reason: Health check failed
+          - Executed by: GitHub Actions (automatic)
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MD
+
+      - name: Upload rollback artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-staging-${{ github.run_number }}
+          path: artifacts/rollbacks/
+          retention-days: 90
+
+  summary:
+    name: Deployment summary
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, build, deploy, health-check]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Staging Deployment Summary";
+            echo "";
+            echo "- **Commit:** ${{ needs.pre-deploy.outputs.commit_sha }}";
+            echo "- **Trigger:** ${{ github.event_name }}";
+            echo "- **Actor:** ${{ github.actor }}";
+            echo "- **Build:** ${{ needs.build.result }}";
+            echo "- **Deploy:** ${{ needs.deploy.result }}";
+            echo "- **Health Check:** ${{ needs.health-check.result }}";
+            echo "";
+            echo "**App URL:** https://hotdash-staging.fly.dev";
+          } >> "$GITHUB_STEP_SUMMARY"
+

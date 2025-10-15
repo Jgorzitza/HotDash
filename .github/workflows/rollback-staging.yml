@@ -1,0 +1,223 @@
+name: Rollback Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_version:
+        description: 'Target version to rollback to (leave empty for previous version)'
+        required: false
+        type: string
+      reason:
+        description: 'Reason for rollback'
+        required: true
+        type: string
+
+concurrency:
+  group: rollback-staging
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  validate:
+    name: Validate rollback request
+    runs-on: ubuntu-latest
+    outputs:
+      target_version: ${{ steps.determine.outputs.target_version }}
+      current_version: ${{ steps.determine.outputs.current_version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Determine rollback target
+        id: determine
+        run: |
+          # Get current version
+          CURRENT=$(flyctl releases --app hotdash-staging --json | jq -r '.[0].version')
+          echo "current_version=$CURRENT" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT"
+          
+          # Determine target version
+          if [ -n "${{ inputs.target_version }}" ]; then
+            TARGET="${{ inputs.target_version }}"
+            echo "Using specified target version: $TARGET"
+          else
+            TARGET=$(flyctl releases --app hotdash-staging --json | jq -r '.[1].version')
+            echo "Using previous version: $TARGET"
+          fi
+          
+          echo "target_version=$TARGET" >> $GITHUB_OUTPUT
+          
+          # Validate target exists
+          if [ "$TARGET" = "null" ] || [ -z "$TARGET" ]; then
+            echo "::error::No valid rollback target found"
+            exit 1
+          fi
+          
+          # Prevent rolling back to current version
+          if [ "$TARGET" = "$CURRENT" ]; then
+            echo "::error::Target version ($TARGET) is the same as current version"
+            exit 1
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Display rollback plan
+        run: |
+          echo "## Rollback Plan"
+          echo "- Current version: ${{ steps.determine.outputs.current_version }}"
+          echo "- Target version: ${{ steps.determine.outputs.target_version }}"
+          echo "- Reason: ${{ inputs.reason }}"
+          echo "- Requested by: ${{ github.actor }}"
+
+  rollback:
+    name: Execute rollback
+    runs-on: ubuntu-latest
+    needs: validate
+    environment:
+      name: staging
+      url: https://hotdash-staging.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Capture pre-rollback state
+        run: |
+          mkdir -p artifacts/rollback
+          flyctl status --app hotdash-staging > artifacts/rollback/pre-rollback-status.txt
+          flyctl releases --app hotdash-staging --json > artifacts/rollback/pre-rollback-releases.json
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Execute rollback
+        id: rollback
+        run: |
+          echo "Rolling back from v${{ needs.validate.outputs.current_version }} to v${{ needs.validate.outputs.target_version }}..."
+          flyctl releases rollback ${{ needs.validate.outputs.target_version }} --app hotdash-staging --yes
+          echo "rollback_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Wait for rollback to complete
+        run: sleep 30
+
+      - name: Capture post-rollback state
+        run: |
+          flyctl status --app hotdash-staging > artifacts/rollback/post-rollback-status.txt
+          flyctl releases --app hotdash-staging --json > artifacts/rollback/post-rollback-releases.json
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record rollback metadata
+        run: |
+          cat <<MD > artifacts/rollback/rollback-metadata.md
+          # Rollback Metadata
+          - Environment: staging
+          - App: hotdash-staging
+          - Previous version: ${{ needs.validate.outputs.current_version }}
+          - Target version: ${{ needs.validate.outputs.target_version }}
+          - Reason: ${{ inputs.reason }}
+          - Executed by: ${{ github.actor }}
+          - Rollback time: ${{ steps.rollback.outputs.rollback_time }}
+          - Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MD
+
+      - name: Upload rollback artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-staging-${{ github.run_number }}
+          path: artifacts/rollback/
+          retention-days: 90
+
+  verify:
+    name: Verify rollback
+    runs-on: ubuntu-latest
+    needs: [validate, rollback]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Wait for app to stabilize
+        run: sleep 20
+
+      - name: Verify machine status
+        run: |
+          echo "Checking Fly.io machine status..."
+          flyctl status --app hotdash-staging
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Health check
+        id: health
+        run: |
+          echo "Performing health check..."
+          
+          # Try health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health || echo "000")
+          
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "✅ Health check passed (HTTP $HEALTH_STATUS)"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Health endpoint returned HTTP $HEALTH_STATUS, checking root..."
+            ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
+            
+            if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+              echo "✅ Root endpoint accessible (HTTP $ROOT_STATUS)"
+              echo "status=healthy" >> $GITHUB_OUTPUT
+            else
+              echo "❌ Health check failed (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
+              echo "status=unhealthy" >> $GITHUB_OUTPUT
+              exit 1
+            fi
+          fi
+
+      - name: Verify version
+        run: |
+          CURRENT_VERSION=$(flyctl releases --app hotdash-staging --json | jq -r '.[0].version')
+          echo "Current version after rollback: $CURRENT_VERSION"
+          
+          if [ "$CURRENT_VERSION" = "${{ needs.validate.outputs.target_version }}" ]; then
+            echo "✅ Rollback successful - version matches target"
+          else
+            echo "⚠️ Version mismatch - expected ${{ needs.validate.outputs.target_version }}, got $CURRENT_VERSION"
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  summary:
+    name: Rollback summary
+    runs-on: ubuntu-latest
+    needs: [validate, rollback, verify]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Staging Rollback Summary";
+            echo "";
+            echo "- **Previous version:** ${{ needs.validate.outputs.current_version }}";
+            echo "- **Target version:** ${{ needs.validate.outputs.target_version }}";
+            echo "- **Reason:** ${{ inputs.reason }}";
+            echo "- **Requested by:** ${{ github.actor }}";
+            echo "- **Rollback:** ${{ needs.rollback.result }}";
+            echo "- **Verification:** ${{ needs.verify.result }}";
+            echo "";
+            echo "**App URL:** https://hotdash-staging.fly.dev";
+            echo "";
+            if [ "${{ needs.verify.result }}" = "success" ]; then
+              echo "✅ **Rollback completed successfully**";
+            else
+              echo "❌ **Rollback verification failed - manual intervention required**";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+

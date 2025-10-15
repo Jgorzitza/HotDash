@@ -18,7 +18,7 @@ Document conversation flow patterns, API capabilities, and testing scenarios for
 ```typescript
 const client = chatwootClient({
   baseUrl: 'https://hotdash-chatwoot.fly.dev',
-  token: 'hCzzpYtFgiiy2aX4ybcV2ts2',
+  token: 'YOUR_CHATWOOT_API_TOKEN_HERE',
   accountId: 1
 });
 
