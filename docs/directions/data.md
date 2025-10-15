@@ -144,36 +144,49 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 
 ## 15) Today's Objective (2025-10-15)
 
-**Priority:** P0 - Foundation
-**Deadline:** 2025-10-17 (2 days)
+**Status:** AG-2 Real-time Dashboard Queries
+**Priority:** P0 - Launch Critical
+**Branch:** `agent/data/dashboard-queries`
 
-### Tasks:
-1. **Approvals Schema** - Design tables for approvals workflow
-   - Issue: TBD (manager will create)
-   - Allowed paths: `supabase/migrations/*, docs/specs/approvals_schema.md`
-   - DoD: Tables for approvals, grades, edits; RLS policies; migration tested
+### Current Task: Build Dashboard Tile Queries
 
-2. **Audit Log Schema** - Design audit trail tables
-   - Issue: TBD (manager will create)
-   - Allowed paths: `supabase/migrations/*, docs/specs/audit_schema.md`
-   - DoD: Audit log table; immutable constraints; RLS policies; migration tested
+**Completed Work (from feedback):**
+- ✅ Hot Rodan data models complete
+- ✅ Migrations created
+- ✅ Views for dashboard tiles
 
-### Constraints:
-- Work in branch: `agent/data/schema-foundation`
-- Test all migrations in staging first
-- All tables must have RLS policies
-- Document schema in `docs/specs/`
+**What to Build Now:**
+Real-time queries that power the 7 dashboard tiles using your views
+
+**Steps:**
+1. Create feedback file: `mkdir -p feedback/data && echo "# Data 2025-10-15" > feedback/data/2025-10-15.md`
+2. Verify Supabase: `supabase status` (http://127.0.0.1:54321)
+3. Use Supabase MCP: `supabase db diff` - document in feedback
+4. Build queries for each tile:
+   - Revenue (last 30 days, trend)
+   - AOV (average order value, trend)
+   - Returns (return rate, trend)
+   - Stock Risk (products with WOS < 14 days)
+   - SEO Anomalies (traffic drops > 20%)
+   - CX Queue (pending conversations)
+   - Approvals Queue (pending approvals)
+5. Create RPC functions in `supabase/functions/` for each query
+6. Test queries locally
+7. Document in `docs/specs/dashboard_queries.md`
+8. Create PR
+
+**Allowed paths:** `supabase/functions/*, supabase/migrations/*, docs/specs/dashboard_queries.md`
+
+**After This:** Approvals schema + Audit log schema
 
 ### Blockers:
-- ✅ RESOLVED: Supabase local running at http://127.0.0.1:54321 (credentials in `vault/occ/supabase/`)
+None - Supabase running, views ready
 
-### Next Steps:
-1. Load credentials: `source vault/occ/supabase/*.env`
-2. Verify Supabase connection: `supabase status` (already running)
-3. Review `docs/specs/approvals_drawer_spec.md` for data requirements
-4. Design approvals and audit schemas
-5. Write migrations with up/down and test locally
-6. Create PR with migration files and schema docs
+### Critical:
+- ✅ Use Supabase MCP for all database work
+- ✅ Document MCP commands in feedback
+- ✅ All queries must have RLS policies
+- ✅ NO new .md files except specs and feedback
 
 ## 16) Examples
 

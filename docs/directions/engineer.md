@@ -147,34 +147,44 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 
 ## 15) Today's Objective (2025-10-15)
 
-**Priority:** P0 - Foundation
-**Deadline:** 2025-10-17 (2 days)
+**Status:** Task 6 - Build Approval Queue UI
+**Priority:** P0 - Launch Critical
+**Branch:** `agent/engineer/approval-queue-ui`
 
-### Tasks:
-1. **Dashboard Shell** - Create main dashboard route with tile grid layout
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/routes/dashboard.*, app/components/dashboard/*`
-   - DoD: Responsive grid, Polaris Card components, loading states
+### Current Task: Approval Queue UI (3-4h estimate)
 
-2. **Approvals Drawer Component** - Build drawer UI per spec
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/components/approvals/*, app/routes/approvals.*`
-   - DoD: Drawer opens/closes, shows evidence sections, approve/reject buttons (disabled in dev mode)
+**What to Build:**
+Dashboard route with Approval Queue UI component using Designer's specs
 
-### Constraints:
-- Work in branch: `agent/engineer/dashboard-foundation`
-- No backend API calls yet (use fixtures)
-- All components must use Polaris
-- Tests required for all new components
+**Designer Specs Ready:**
+- `docs/design/HANDOFF-approval-queue-ui.md` (primary spec)
+- `docs/design/MINIMAL-approval-ui-assets-TODAY.md` (minimal version)
+- `docs/design/approvalcard-component-spec.md` (component details)
+
+**Steps:**
+1. Create feedback file: `mkdir -p feedback/engineer && echo "# Engineer 2025-10-15" > feedback/engineer/2025-10-15.md`
+2. Review Designer specs (15-20 min)
+3. Use Shopify MCP: `shopify component Card` and `shopify component Drawer`
+4. Build `app/routes/approvals.tsx` with approval queue list
+5. Build `app/components/approvals/ApprovalCard.tsx` per Designer spec
+6. Build `app/components/approvals/ApprovalsDrawer.tsx` for detail view
+7. Create fixtures in `app/fixtures/approvals.ts`
+8. Write tests
+9. Take screenshots (mobile, tablet, desktop)
+10. Create PR
+
+**Allowed paths:** `app/routes/approvals.*, app/components/approvals/*, app/fixtures/*, tests/**`
+
+**After This:** Task 7 - E2E Integration Testing (1-2h)
 
 ### Blockers:
-- None currently
+None - Designer specs complete and ready
 
-### Next Steps:
-1. Review `docs/specs/approvals_drawer_spec.md`
-2. Create dashboard route structure
-3. Build Approvals Drawer component with fixtures
-4. Write tests and create PR
+### Critical:
+- ✅ Use Shopify MCP for ALL Polaris components
+- ✅ Document MCP commands in feedback
+- ✅ Fixtures only (no API calls)
+- ✅ NO new .md files except feedback
 
 ## 16) Examples
 

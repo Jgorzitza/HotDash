@@ -149,36 +149,46 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 
 ## 15) Today's Objective (2025-10-15)
 
-**Priority:** P0 - Foundation
-**Deadline:** 2025-10-17 (2 days)
+**Status:** Build API Integration Layer for Dashboard Tiles
+**Priority:** P0 - Launch Critical
+**Branch:** `agent/integrations/dashboard-apis`
 
-### Tasks:
-1. **Shopify Admin Read Adapter** - Build read-only GraphQL queries for dashboard tiles
-   - Issue: TBD (manager will create)
-   - Allowed paths: `app/routes/api/shopify.*, app/lib/shopify/*`
-   - DoD: Queries for revenue, AOV, returns; integration tests; audit logging
+### Current Task: Connect Dashboard Tiles to Real Data
 
-2. **Supabase RPC Setup** - Create RPC functions for metrics and approvals
-   - Issue: TBD (manager will create)
-   - Allowed paths: `supabase/functions/*, app/routes/api/supabase.*`
-   - DoD: RPC functions deployed; API routes working; tests pass
+**Completed Work (from feedback):**
+- ✅ Shopify GraphQL validation (all 4 queries fixed)
+- ✅ 9 operational scripts created
+- ✅ Comprehensive audit complete
 
-### Constraints:
-- Work in branch: `agent/integrations/api-foundation`
-- Use staging APIs only (no production)
-- All secrets in environment variables
-- Integration tests required for all adapters
+**What to Build Now:**
+API integration layer that connects Engineer's dashboard tiles to real Shopify data
+
+**Steps:**
+1. Create feedback file: `mkdir -p feedback/integrations && echo "# Integrations 2025-10-15" > feedback/integrations/2025-10-15.md`
+2. Load credentials: `source vault/occ/shopify/*.env`
+3. Use Shopify MCP: `shopify graphql schema` - document in feedback
+4. Build API routes:
+   - `app/routes/api/shopify.revenue.ts` - total revenue last 30 days
+   - `app/routes/api/shopify.aov.ts` - average order value
+   - `app/routes/api/shopify.returns.ts` - return rate
+   - `app/routes/api/shopify.stock.ts` - stock risk (WOS < 14 days)
+5. Use your validated GraphQL queries from previous work
+6. Add audit logging to each route
+7. Write integration tests
+8. Create PR
+
+**Allowed paths:** `app/routes/api/shopify.*, app/lib/shopify/*, tests/integration/*`
+
+**After This:** Supabase RPC for approvals data
 
 ### Blockers:
-- ✅ RESOLVED: Shopify credentials in `vault/occ/shopify/` (CLI-managed, load with `source vault/occ/shopify/*.env`)
-- ✅ RESOLVED: Supabase local running at http://127.0.0.1:54321 (credentials in `vault/occ/supabase/`)
+None - Shopify credentials ready, queries validated
 
-### Next Steps:
-1. Load credentials: `source vault/occ/shopify/*.env && source vault/occ/supabase/*.env`
-2. Review Shopify Admin GraphQL schema using Shopify MCP
-3. Build read-only queries for dashboard metrics (revenue, AOV, returns)
-4. Create Supabase RPC functions for metrics and approvals
-5. Write integration tests and create PR
+### Critical:
+- ✅ Use Shopify MCP to validate all queries
+- ✅ Document MCP commands in feedback
+- ✅ Add audit logging to every API call
+- ✅ NO new .md files except feedback
 
 ## 16) Examples
 
