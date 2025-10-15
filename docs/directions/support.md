@@ -76,3 +76,31 @@ Ingest support KB content into RAG and prepare Chatwoot integration.
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) KB ingestion pipeline (docs/specs)
+2) KB schema migration + RLS
+3) KB search API (by topic/tags)
+4) RAG index builder
+5) Chatwoot intents classifier (read-only)
+6) Triage rules (priority/SLA)
+7) Draft reply templates (policy-safe)
+8) Evidence fetch (order/status/policies)
+9) Escalation matrix (rules)
+10) SLA metrics dashboard
+11) Unit tests for KB API
+12) Integration tests Chatwoot adapter
+13) Fixtures for common scenarios
+14) Error taxonomy + UX
+15) PII redaction pipeline
+16) Language detection + fallbacks
+17) Reviewer rubric for CX
+18) Learning pipeline (draft→final diffs)
+19) Security controls (no auto-send)
+20) Admin toggles
+21) Telemetry events (grade, latency)
+22) Weekly CX report export
+23) Docs/specs for support flows
+24) CI checks for policy keywords
+25) SLO dashboard for support APIs

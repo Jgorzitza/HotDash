@@ -78,3 +78,31 @@ Build ads performance tracking for future HITL campaign management.
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Ads tracking library (ROAS, CPC, CPM, CPA)
+2) Aggregation job (daily)
+3) Budget pacing monitor
+4) Creative performance analyzer
+5) Channel breakdown (FB/Google/TikTok)
+6) Campaign → adset → ad drill-down
+7) Attribution model selector
+8) Anomaly alerts (read-only)
+9) Lift tests pipeline (A/B placeholders)
+10) Export CSV of performance
+11) Unit tests for metrics math
+12) Integration tests with adapters
+13) Caching for heavy reports
+14) Perf budget for ads routes
+15) Telemetry for cost/latency
+16) Docs for metrics definitions
+17) Dashboard tiles for ads
+18) Recommendations (HITL only)
+19) Forecast spend vs target
+20) Cost cap & bid strategy report
+21) Audience overlap insights
+22) UTM enforcement helper
+23) Error handling taxonomy
+24) Staging vs prod adapters
+25) SLO dashboard for ads APIs

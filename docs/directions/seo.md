@@ -76,3 +76,31 @@ Build SEO anomalies detection for dashboard tile (traffic drops > 20%, ranking l
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Keyword ranking tracker service
+2) Sitemap generator + validator
+3) Robots.txt editor (guarded)
+4) Meta tag fixer (title/desc)
+5) Canonical URL checker
+6) Broken links crawler
+7) Core Web Vitals surfacing
+8) Structured data (JSON-LD) validator
+9) Competitor keyword diff
+10) Backlink monitor (read-only)
+11) Crawl budget insights
+12) Duplicate content detector
+13) International tags (hreflang) audit
+14) Redirects map exporter
+15) 404/5xx surfacing in dashboard
+16) SEO anomalies drill-down route
+17) Unit tests for parsers/validators
+18) Integration tests for sitemap APIs
+19) CI: broken link checks
+20) Docs/specs for SEO modules
+21) Alerts (read-only) for anomalies
+22) Perf tuning for crawls
+23) Privacy guardrails (no prod crawl)
+24) Export CSV of anomalies
+25) Success metrics (indexing rate)

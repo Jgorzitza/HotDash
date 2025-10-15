@@ -76,3 +76,31 @@ Build content performance tracking for future HITL social posting.
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Post drafter service (HITL)
+2) Content calendar CRUD
+3) Engagement analyzer (CTR, saves, shares)
+4) Topic recommender (read-only)
+5) Cross-channel scheduler (staging)
+6) Draft templates library
+7) Hashtag helper
+8) Media handling pipeline (thumbs/meta)
+9) Performance tiles
+10) Export CSV of posts
+11) Unit tests for analyzers
+12) Integration tests adapters
+13) Caching for feeds
+14) Docs/specs for content flows
+15) Draft diffs vs approved (learning)
+16) Reviewer rubric for content
+17) A/B test scaffolding (placeholders)
+18) Privacy guardrails (no prod post)
+19) Staging vs prod adapters
+20) Error taxonomy + UX
+21) Telemetry events for drafts
+22) Alerts (read-only) for anomalies
+23) i18n scaffolding for drafts
+24) Admin toggles
+25) SLO dashboard for content APIs

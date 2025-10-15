@@ -76,3 +76,31 @@ Design knowledge base structure and learning extraction process for AI customer 
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) KB schema (articles, topics, tags, links)
+2) Quality scoring heuristic
+3) Learning pipeline (edits/grades)
+4) Article ingestion scripts
+5) Embeddings index builder
+6) Search API (semantic + keyword)
+7) Relevancy evaluation set
+8) Hallucination guardrails (evidence required)
+9) Summarization tune params
+10) Answer templates (policy-safe)
+11) Feedback capture on answers
+12) Link resolver & dedup
+13) Staleness detector
+14) Update recommender (what to refresh)
+15) Audit logging of reads/writes
+16) Unit tests for parsers
+17) Integration tests for search
+18) Fixtures for KB docs
+19) Docs/specs for KB
+20) Access control (RLS)
+21) Telemetry events (search, answers)
+22) SLOs for search latency
+23) Privacy rules (PII scrubbing)
+24) Backup/restore docs
+25) Rollback for schema changes

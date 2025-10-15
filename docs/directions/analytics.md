@@ -76,3 +76,31 @@ Build GA4 integration to provide real data for dashboard tiles (Revenue, AOV, SE
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
+
+
+## Backlog (Sprint-Ready — 25 tasks)
+1) Traffic dashboard route + API
+2) Funnels (session → view → add → checkout)
+3) Cohort analysis (weekly)
+4) Anomaly detection (Z-score on sessions)
+5) UTM source/medium breakdown
+6) Device/geo breakdown
+7) Landing pages top 20
+8) Exit pages top 20
+9) Time-on-page analysis
+10) Conversion rate tiles
+11) GA4 quota/backoff handling
+12) Sampling detection + warnings
+13) Cache for heavy reports
+14) Export CSV endpoints
+15) Unit tests for metrics math
+16) Integration tests GA4 client
+17) Snapshot tests of responses
+18) Docs/specs for reports
+19) Permission checks on analytics routes
+20) Perf tuning (batching queries)
+21) Index visualizations
+22) Alert hooks to Slack (read-only)
+23) Scheduled weekly rollup
+24) Dashboard drill-down links
+25) SLO dashboard for analytics APIs
