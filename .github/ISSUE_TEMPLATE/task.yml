@@ -1,0 +1,32 @@
+name: Task
+description: Manager-assigned task for an agent
+title: "[Task]: <concise title>"
+labels: ["task"]
+body:
+  - type: input
+    id: agent
+    attributes:
+      label: Agent
+      description: One of: manager|engineer|qa|devops|integrations|ai-customer|ai-knowledge|inventory|analytics|seo|ads|content|support|designer|product|data
+      placeholder: engineer
+    validations: { required: true }
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of Done
+      description: Objective acceptance criteria
+      placeholder: "- [ ] Tests/metrics pass\n- [ ] No disallowed MD"
+    validations: { required: true }
+  - type: textarea
+    id: checks
+    attributes:
+      label: Acceptance checks
+      description: Tests, metrics, or logs the PR must include
+      placeholder: "- Unit tests added\n- P95 < 3s\n- Error rate < 0.5%"
+    validations: { required: true }
+  - type: input
+    id: allowed_paths
+    attributes:
+      label: Allowed paths (fnmatch)
+      placeholder: "app/** packages/shared/** docs/directions/engineer.md"
+    validations: { required: true }

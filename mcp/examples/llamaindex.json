@@ -1,0 +1,15 @@
+{
+  "servers": [
+    {
+      "name": "llamacloud-mcp",
+      "command": "uvx",
+      "args": [
+        "llamacloud-mcp@latest",
+        "--transport",
+        "stdio"
+      ],
+      "type": "stdio",
+      "allow": []
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "servers": [
+    {
+      "name": "chatwoot-api",
+      "type": "http",
+      "baseUrl": "https://your-chatwoot.example/api/v1",
+      "auth": "env:CHATWOOT_API_TOKEN",
+      "allow": []
+    }
+  ]
+}
