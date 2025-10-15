@@ -73,3 +73,8 @@ Build ads performance tracking for future HITL campaign management.
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Ads performance tracking
 * 1.0 (2025-10-15) — Placeholder
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

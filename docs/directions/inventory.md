@@ -72,3 +72,8 @@ Design **inventory data model** and prepare for ROP (reorder point) calculations
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Inventory data model and metafields research
 * 1.0 (2025-10-15) — Placeholder: Awaiting foundation milestone
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

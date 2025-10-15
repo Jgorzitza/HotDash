@@ -235,3 +235,8 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Shopify + Supabase adapters foundation
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

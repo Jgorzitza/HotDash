@@ -224,3 +224,8 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: CI health + staging deployment setup
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

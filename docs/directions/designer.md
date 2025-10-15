@@ -78,3 +78,8 @@ Create **UI/UX specs and design documentation** for dashboard tiles and approval
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Dashboard and approvals design specs
 * 1.0 (2025-10-15) — Placeholder: Awaiting feature requests
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

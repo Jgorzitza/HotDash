@@ -74,3 +74,8 @@ Document **product requirements and success metrics** for foundation milestone, 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Foundation PRD and feature prioritization
 * 1.0 (2025-10-15) — Placeholder: Awaiting foundation completion
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

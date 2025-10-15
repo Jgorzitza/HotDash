@@ -71,3 +71,8 @@ Build SEO anomalies detection for dashboard tile (traffic drops > 20%, ranking l
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: SEO anomalies detection
 * 1.0 (2025-10-15) — Placeholder
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

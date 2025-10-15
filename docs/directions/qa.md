@@ -227,3 +227,8 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Acceptance criteria + test plan foundation
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

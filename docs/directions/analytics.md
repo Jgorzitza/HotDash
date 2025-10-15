@@ -71,3 +71,8 @@ Build GA4 integration to provide real data for dashboard tiles (Revenue, AOV, SE
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: GA4 dashboard integration
 * 1.0 (2025-10-15) — Placeholder
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified

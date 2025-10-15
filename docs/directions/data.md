@@ -228,3 +228,8 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Approvals + audit schema foundation
+
+### Feedback Process (Canonical)
+- Use exactly: \ for today
+- Append evidence and tool outputs through the day
+- On completion, add the WORK COMPLETE block as specified
