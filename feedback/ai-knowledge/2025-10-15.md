@@ -1,0 +1,65 @@
+# AI-Knowledge 2025-10-15
+
+## Startup & Activation
+
+**13:51 UTC** — Agent startup initiated  
+**13:55 UTC** — Status changed to ACTIVE with concrete tasks
+
+### Direction Summary
+- **Status:** ACTIVE
+- **Objective:** Design Knowledge Base Structure and Learning Pipeline
+- **Branch:** `agent/ai-knowledge/kb-design`
+- **Allowed paths:** `docs/specs/knowledge_base_design.md, feedback/ai-knowledge/*`
+
+### Tasks Assigned
+1. ✅ Create feedback file
+2. ✅ Design KB structure in `docs/specs/knowledge_base_design.md`
+3. ✅ Design learning extraction pipeline
+4. ✅ Define quality metrics for KB articles
+5. ⏳ Create PR
+
+## Work Log
+
+### 13:55 UTC — Starting KB Design Spec
+
+Creating comprehensive knowledge base design.
+
+### 14:00 UTC — KB Design Spec Completed
+
+✅ Created `docs/specs/knowledge_base_design.md` (300 lines)
+
+**What was designed:**
+
+1. **KB Article Schema** - Core content, quality metrics, grading, search embeddings
+2. **Learning Edits Table** - Tracks AI draft vs human final, edit analysis
+3. **Recurring Issues Table** - Pattern detection, resolution tracking
+4. **Learning Extraction Pipeline** - Draft → Review → Learn workflow
+5. **Knowledge Retrieval System** - Semantic search, context injection
+6. **Quality Metrics** - Per-article and system-wide with targets
+7. **Update Triggers & Maintenance** - Automatic updates, archival
+8. **Integration Points** - ai-customer, approvals, Chatwoot
+9. **Implementation Phases** - 4-week phased approach
+10. **Success Criteria & Rollback** - Clear DoD and rollback plan
+
+**Key Decisions:**
+- Confidence-based filtering (≥ 0.60)
+- Weighted formula: success (40%) + accuracy (30%) + tone (20%) + policy (10%)
+- Semantic search via OpenAI embeddings
+- Hybrid search (semantic + keyword)
+
+**Alignment with North Star:**
+✅ "Agents propose; humans approve/correct; system learns"
+✅ HITL grading drives learning
+✅ Evidence-based with audit trail
+
+**Open Questions:**
+1. Confirm OpenAI text-embedding-3-small?
+2. Adjust confidence formula weights?
+3. Manual review SLA?
+4. Archival threshold (90 days)?
+5. When to activate KB in ai-customer?
+
+### 14:10 UTC — Committing Work
+
+All tasks completed ✅
+
