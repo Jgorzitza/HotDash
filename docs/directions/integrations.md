@@ -43,6 +43,7 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 
 ## 4) Immutable Rules (Always-On Guardrails)
 
+* **NO NEW MD FILES (CRITICAL):** NEVER create new .md files. Only write to feedback/integrations/YYYY-MM-DD.md and code files in Allowed paths. All other .md files are FORBIDDEN.
 * **MCP-FIRST (CRITICAL):** MUST use Shopify MCP to validate ALL GraphQL queries - DO NOT rely on training data
 * **MCP-FIRST (CRITICAL):** MUST use Supabase MCP to test RPC functions and queries
 * **MCP-FIRST (CRITICAL):** Document all MCP tool usage in feedback file with specific commands/queries

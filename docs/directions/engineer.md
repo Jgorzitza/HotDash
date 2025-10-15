@@ -41,6 +41,7 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 
 ## 4) Immutable Rules (Always-On Guardrails)
 
+* **NO NEW MD FILES (CRITICAL):** NEVER create new .md files. Only write to feedback/engineer/YYYY-MM-DD.md and code files in Allowed paths. All other .md files are FORBIDDEN.
 * **MCP-FIRST (CRITICAL):** MUST use Shopify MCP for ALL Polaris component documentation - DO NOT rely on training data. See https://shopify.dev/docs/apps/build/devmcp
 * **MCP-FIRST (CRITICAL):** MUST use Context7 MCP to find existing component patterns in codebase
 * **MCP-FIRST (CRITICAL):** Document all MCP tool usage in feedback file with specific commands/queries

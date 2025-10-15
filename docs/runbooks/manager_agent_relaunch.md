@@ -57,56 +57,64 @@ Relaunch agents after blockers resolved, enforcing MCP-first development and cor
 9. **AI Customer** - OpenAI SDK implementation
 10. **Analytics** - GA4 API integration (not MCP)
 
-## Relaunch Instructions
+## Relaunch Instructions (SIMPLIFIED)
 
-### Engineer
-```
-@docs/runbooks/agent_startup_checklist.md CRITICAL: 1) Create feedback/engineer/2025-10-15.md (not feedback/engineer.md), 2) Use Shopify MCP for ALL Polaris component documentation - do NOT rely on training data. Check https://shopify.dev/docs/apps/build/devmcp. Use Context7 MCP to find existing component patterns. Proceed with Issues #8 and #9.
-```
+**All agents use same simple prompt:**
 
-### Integrations
 ```
-@docs/runbooks/agent_startup_checklist.md Supabase is running at http://127.0.0.1:54321. Use Shopify MCP to validate GraphQL queries. Use Supabase MCP for RPC testing. Load credentials: supabase status. Proceed with Issues #10 and #11.
+@docs/directions/<agent>.md Read your direction file and execute today's objective. Remember: NO new .md files, MCP-first, feedback in dated format.
 ```
 
-### Data
+### Specific Agent Prompts
+
+**Engineer:**
 ```
-@docs/runbooks/agent_startup_checklist.md Supabase is running at http://127.0.0.1:54321. Use Supabase MCP to test migrations and RLS policies. Run: supabase status to get credentials. Proceed with Issues #17 and #18.
+@docs/directions/engineer.md Read your direction file and execute today's objective
 ```
 
-### DevOps
+**Integrations:**
 ```
-@docs/runbooks/agent_startup_checklist.md Use Fly.io MCP for deployments. Use GitHub MCP for workflow management. Proceed with Issues #15 and #16.
-```
-
-### AI Customer
-```
-@docs/runbooks/agent_startup_checklist.md Load OpenAI key: source vault/occ/openai/api_key_staging.env. Use Context7 MCP to find existing agent patterns. Build OpenAI Agents SDK implementation per Issues #12, #13, #14.
+@docs/directions/integrations.md Read your direction file and execute today's objective
 ```
 
-### Analytics
+**Data:**
 ```
-@docs/runbooks/agent_startup_checklist.md Use GA4 API (NOT Google Analytics MCP - it's missing features). Credentials in vault/occ/google/analytics-service-account.json. Build GA4 integration service for dashboard metrics.
-```
-
-### Product
-```
-@docs/runbooks/agent_startup_checklist.md Issues #25 and #26 exist. Check: gh issue view 25 && gh issue view 26. Proceed with foundation PRD and feature prioritization matrix.
+@docs/directions/data.md Read your direction file and execute today's objective
 ```
 
-### QA
+**DevOps:**
 ```
-@docs/runbooks/agent_startup_checklist.md Use GitHub MCP to add acceptance criteria to Issues #8-#26. Review PRs from other agents and validate evidence.
-```
-
-### Designer
-```
-@docs/runbooks/agent_startup_checklist.md Use Shopify MCP to verify Polaris component capabilities. Coordinate with engineer to review design specs for implementation feasibility.
+@docs/directions/devops.md Read your direction file and execute today's objective
 ```
 
-### Inventory
+**AI Customer:**
 ```
-@docs/runbooks/agent_startup_checklist.md Coordinate with data agent on inventory schema design based on your specs. Answer manager questions on payout brackets.
+@docs/directions/ai-customer.md Read your direction file and execute today's objective
+```
+
+**Analytics:**
+```
+@docs/directions/analytics.md Read your direction file and execute today's objective
+```
+
+**Product:**
+```
+@docs/directions/product.md Read your direction file and execute today's objective
+```
+
+**QA:**
+```
+@docs/directions/qa.md Read your direction file and execute today's objective
+```
+
+**Designer:**
+```
+@docs/directions/designer.md Read your direction file and execute today's objective
+```
+
+**Inventory:**
+```
+@docs/directions/inventory.md Read your direction file and execute today's objective
 ```
 
 ## Verification Checklist
