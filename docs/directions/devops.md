@@ -146,35 +146,49 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 
 ## 15) Today's Objective (2025-10-15)
 
-**Priority:** P1 - Infrastructure
-**Deadline:** 2025-10-17 (2 days)
+**Status:** Monitor Staging & Prepare Production Deployment
+**Priority:** P0 - Launch Critical
+**Branch:** `agent/devops/production-prep`
 
-### Tasks:
-1. **Verify CI Health** - Ensure all CI checks passing on main
-   - Issue: TBD (manager will create)
-   - Allowed paths: `.github/workflows/*, scripts/policy/*`
-   - DoD: All checks green; Feedback Cadence failure investigated and fixed
+### Current Task: Production Deployment Workflow
 
-2. **Staging Deployment Setup** - Configure Fly.io staging environment
-   - Issue: TBD (manager will create)
-   - Allowed paths: `fly.toml, .github/workflows/deploy-staging.yml`
-   - DoD: Staging app deployed; secrets configured; rollback tested
+**Completed Work (from feedback):**
+- ✅ PR #27 merged (CI health + staging deployment)
+- ✅ Staging app deployed and operational
+- ✅ Rollback workflow created
 
-### Constraints:
-- Work in branch: `agent/devops/ci-staging-setup`
-- No production deployments yet
-- All secrets via GitHub Secrets or Fly secrets
-- Test rollback procedure before marking done
+**What to Build Now:**
+Production deployment workflow with health checks and rollback
+
+**Steps:**
+1. Create feedback file: `mkdir -p feedback/devops && echo "# DevOps 2025-10-15" > feedback/devops/2025-10-15.md`
+2. Monitor staging deployment: `fly status -a hot-dash-staging`
+3. Use Fly.io MCP to check staging health
+4. Create `.github/workflows/deploy-production.yml`:
+   - Trigger: Manual workflow_dispatch only
+   - Pre-deployment checks (all tests pass, staging healthy)
+   - Deploy to Fly.io production app
+   - Health checks with automatic rollback on failure
+   - Deployment notification
+5. Create `.github/workflows/rollback-production.yml`:
+   - Manual rollback to previous version
+   - Estimated time: < 2 minutes
+6. Test workflows in staging first
+7. Document deployment process in `docs/runbooks/production_deployment.md`
+8. Create PR
+
+**Allowed paths:** `.github/workflows/*, docs/runbooks/production_deployment.md, feedback/devops/*`
+
+**After This:** Set up monitoring and alerting
 
 ### Blockers:
-- Feedback Cadence workflow failing (needs investigation)
+None - Staging deployed, ready for production prep
 
-### Next Steps:
-1. Investigate Feedback Cadence CI failures
-2. Review current CI workflows
-3. Set up Fly.io staging app
-4. Configure deployment workflow
-5. Test deployment and rollback
+### Critical:
+- ✅ Use Fly.io MCP for all deployment operations
+- ✅ Manual approval required for production deploys
+- ✅ Health checks with automatic rollback
+- ✅ NO new .md files except runbooks and feedback
 
 ## 16) Examples
 

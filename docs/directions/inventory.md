@@ -13,31 +13,45 @@ Design **inventory data model** and prepare for ROP (reorder point) calculations
 
 ## 2) Today's Objective (2025-10-15)
 
-**Priority:** P1 - Preparation
-**Deadline:** 2025-10-17 (2 days)
+**Status:** Coordinate with Data Agent on Schema Implementation
+**Priority:** P1 - Schema Design
+**Branch:** `agent/inventory/schema-design`
 
-### Tasks:
-1. **Inventory Data Model Spec** - Document inventory requirements
-   - Issue: TBD (manager will create)
-   - Allowed paths: `docs/specs/inventory_model.md`
-   - DoD: Spec includes ROP formula, kit/bundle structure, picker payout logic
+### Current Task: Work with Data Agent on Implementation
 
-2. **Shopify Inventory Metafields Research** - Document metafield requirements
-   - Issue: TBD (manager will create)
-   - Allowed paths: `docs/specs/shopify_inventory_metafields.md`
-   - DoD: Document `BUNDLE:TRUE`, `PACK:X`, lead time, safety stock metafields
+**Completed Work (from feedback):**
+- ✅ Inventory data model spec created (429 lines)
+- ✅ Shopify metafields integration guide created (568 lines)
+- ✅ Answered manager's payout brackets question
 
-### Constraints:
-- Work in branch: `agent/inventory/data-model-prep`
-- No implementation yet - spec and research only
-- Coordinate with data agent for schema design
+**What to Do Now:**
+Coordinate with Data agent to implement your inventory schema design
 
-### Next Steps:
-1. Review NORTH_STAR inventory requirements
-2. Research Shopify inventory metafields
-3. Design ROP calculation formula
-4. Document kit/bundle data structure
-5. Create specs and submit PR
+**Steps:**
+1. Update feedback file: `echo "# Inventory 2025-10-15 Continued" >> feedback/inventory/2025-10-15.md`
+2. Review Data agent's work on dashboard queries
+3. Coordinate on inventory schema implementation:
+   - ROP calculation fields (lead_time_days, safety_stock_units, sales_velocity)
+   - Kit/bundle structure (parent SKU, component SKUs, quantities)
+   - Picker payout brackets (units_picked, rate_per_unit, bonus_thresholds)
+4. Provide Data agent with specific field requirements
+5. Review Data agent's migration files when ready
+6. Validate schema matches your data model spec
+7. Document any schema changes needed
+8. Prepare for next phase: ROP calculation implementation
+
+**Allowed paths:** `docs/specs/*, feedback/inventory/*`
+
+**After This:** ROP calculation implementation (after schema deployed)
+
+### Blockers:
+None - Specs complete, ready to coordinate with Data
+
+### Critical:
+- ✅ Coordinate closely with Data agent
+- ✅ Ensure schema matches your spec
+- ✅ Validate payout brackets are correct
+- ✅ NO new .md files except specs and feedback
 
 ---
 
