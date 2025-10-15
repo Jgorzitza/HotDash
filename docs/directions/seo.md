@@ -12,42 +12,61 @@
 ## 1) Purpose
 Build SEO anomalies detection for dashboard tile (traffic drops > 20%, ranking losses).
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Build SEO Anomalies Detection
-**Priority:** P2 - Growth Preparation
-**Branch:** `agent/seo/anomalies-detection`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P2 - SEO Optimization
 
-### Current Task: SEO Anomalies Tile Data
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**What to Build:**
-SEO anomalies detection that powers the SEO Anomalies dashboard tile
+### Task List (9 tasks):
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/seo && echo "# SEO 2025-10-15" > feedback/seo/2025-10-15.md`
-2. Build anomaly detection in `app/lib/seo/anomalies.ts`:
-   - Traffic drops > 20% week-over-week
-   - Keyword ranking losses (top 10 → below 20)
-   - Core Web Vitals failures
-   - Crawl errors from Search Console
-3. Create API route: `app/routes/api/seo.anomalies.ts`
-4. Define anomaly severity (critical, warning, info)
-5. Test with GA4 and Search Console data
-6. Document in `docs/specs/seo_anomalies_detection.md`
-7. Create PR
+**1. ✅ Anomalies Detection (COMPLETE - MERGED)**
 
-**Allowed paths:** `app/lib/seo/*, app/routes/api/seo.*, docs/specs/seo_anomalies_detection.md, feedback/seo/*`
+**2. Keyword Ranking Tracker (NEXT - 4h)**
+- Track keyword positions daily
+- Allowed paths: `app/lib/seo/rankings.ts`
 
-**After This:** SEO recommendations engine
+**3. Core Web Vitals Monitoring (3h)**
+- LCP, FID, CLS tracking
+- Allowed paths: `app/lib/seo/web-vitals.ts`
 
-### Blockers:
-None - GA4 API ready, Search Console API available
+**4. Crawl Error Detection (2h)**
+- Monitor Search Console for errors
+- Allowed paths: `app/lib/seo/crawl-errors.ts`
+
+**5. Meta Tag Optimization Recommendations (3h)**
+- Suggest title/description improvements
+- Allowed paths: `app/services/seo/meta-optimizer.ts`
+
+**6. Content Gap Analysis (4h)**
+- Find missing content opportunities
+- Allowed paths: `app/services/seo/content-gaps.ts`
+
+**7. Backlink Monitoring (3h)**
+- Track backlinks, detect losses
+- Allowed paths: `app/lib/seo/backlinks.ts`
+
+**8. Competitor Analysis (4h)**
+- Compare rankings, traffic, keywords
+- Allowed paths: `app/services/seo/competitors.ts`
+
+**9. SEO Recommendations Engine (4h)**
+- AI-powered SEO suggestions
+- Allowed paths: `app/services/seo/recommendations.ts`
+
+### Current Focus: Task 2 (Keyword Tracker)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Define clear anomaly thresholds
-- ✅ Severity levels for prioritization
+- ✅ Clear anomaly thresholds
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
 - ✅ Test with real data
-- ✅ NO new .md files except specs and feedback
 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: SEO anomalies detection

@@ -11,47 +11,61 @@
 
 Design **inventory data model** and prepare for ROP (reorder point) calculations, kits/bundles, and picker payouts.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Coordinate with Data Agent on Schema Implementation
-**Priority:** P1 - Schema Design
-**Branch:** `agent/inventory/schema-design`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P1 - Inventory System
 
-### Current Task: Work with Data Agent on Implementation
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ Inventory data model spec created (429 lines)
-- ✅ Shopify metafields integration guide created (568 lines)
-- ✅ Answered manager's payout brackets question
+### Task List (9 tasks):
 
-**What to Do Now:**
-Coordinate with Data agent to implement your inventory schema design
+**1. ✅ Data Model Spec (COMPLETE - PR #32)**
 
-**Steps:**
-1. Update feedback file: `echo "# Inventory 2025-10-15 Continued" >> feedback/inventory/2025-10-15.md`
-2. Review Data agent's work on dashboard queries
-3. Coordinate on inventory schema implementation:
-   - ROP calculation fields (lead_time_days, safety_stock_units, sales_velocity)
-   - Kit/bundle structure (parent SKU, component SKUs, quantities)
-   - Picker payout brackets (units_picked, rate_per_unit, bonus_thresholds)
-4. Provide Data agent with specific field requirements
-5. Review Data agent's migration files when ready
-6. Validate schema matches your data model spec
-7. Document any schema changes needed
-8. Prepare for next phase: ROP calculation implementation
+**2. ROP Calculation Service (NEXT - 4h)**
+- Implement ROP formula: lead-time demand + safety stock
+- Allowed paths: `app/services/inventory/rop.ts`
 
-**Allowed paths:** `docs/specs/*, feedback/inventory/*`
+**3. PO Generation Service (3h)**
+- Generate PO CSV/email from ROP calculations
+- Allowed paths: `app/services/inventory/po-generator.ts`
 
-**After This:** ROP calculation implementation (after schema deployed)
+**4. Kit/Bundle Tracking (3h)**
+- Track component inventory for bundles
+- Allowed paths: `app/services/inventory/kits.ts`
 
-### Blockers:
-None - Specs complete, ready to coordinate with Data
+**5. Picker Payout Calculation (3h)**
+- Calculate payouts based on brackets
+- Allowed paths: `app/services/inventory/payouts.ts`
+
+**6. Inventory Heatmap UI (4h)**
+- Visual heatmap of stock status
+- Allowed paths: `app/components/inventory/Heatmap.tsx`
+
+**7. Low Stock Alerts (2h)**
+- Alert when WOS < threshold
+- Allowed paths: `app/services/inventory/alerts.ts`
+
+**8. Reorder Suggestions (3h)**
+- AI-powered reorder recommendations
+- Allowed paths: `app/services/inventory/suggestions.ts`
+
+**9. Shopify Metafields Integration (3h)**
+- Sync metafields to Supabase
+- Allowed paths: `app/services/inventory/metafields-sync.ts`
+
+### Current Focus: Task 2 (ROP Calculation)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Coordinate closely with Data agent
-- ✅ Ensure schema matches your spec
-- ✅ Validate payout brackets are correct
-- ✅ NO new .md files except specs and feedback
+- ✅ ROP formula must be accurate
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Coordinate with Data on schema
 
 ---
 

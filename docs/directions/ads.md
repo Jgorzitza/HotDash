@@ -12,34 +12,63 @@
 ## 1) Purpose
 Build ads performance tracking for future HITL campaign management.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Build Ads Performance Tracking
-**Priority:** P2 - Growth Preparation
-**Branch:** `agent/ads/performance-tracking`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P2 - Ads Management
 
-### Current Task: Ads Performance Data Structure
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/ads && echo "# Ads 2025-10-15" > feedback/ads/2025-10-15.md`
-2. Build ads tracking in `app/lib/ads/tracking.ts`:
-   - ROAS calculation (revenue / ad_spend)
-   - CPC, CPM, CPA tracking
-   - Campaign performance aggregation
-3. Create data structure for ads campaigns
-4. Create API route: `app/routes/api/ads.performance.ts`
-5. Document in `docs/specs/ads_tracking.md`
-6. Create PR
+### Task List (9 tasks):
 
-**Allowed paths:** `app/lib/ads/*, app/routes/api/ads.*, docs/specs/*, feedback/ads/*`
+**1. Ads Performance Tracking (NEXT - 3h)**
+- ROAS, CPC, CPM, CPA tracking
+- Allowed paths: `app/lib/ads/tracking.ts`
 
-### Blockers:
-None
+**2. ROAS Calculation Engine (2h)**
+- Accurate revenue / ad_spend
+- Allowed paths: `app/lib/ads/roas.ts`
+
+**3. Budget Allocation Optimizer (4h)**
+- Optimize budget across channels
+- Allowed paths: `app/services/ads/budget-optimizer.ts`
+
+**4. Campaign Performance Dashboard (4h)**
+- Visual dashboard for all campaigns
+- Allowed paths: `app/routes/ads.dashboard.tsx`
+
+**5. Creative Performance Analysis (3h)**
+- Track ad creative effectiveness
+- Allowed paths: `app/lib/ads/creative-analysis.ts`
+
+**6. Audience Insights (3h)**
+- Analyze audience performance
+- Allowed paths: `app/lib/ads/audience-insights.ts`
+
+**7. A/B Test Tracking (3h)**
+- Track ad A/B tests
+- Allowed paths: `app/lib/ads/ab-tests.ts`
+
+**8. Attribution Modeling (4h)**
+- Multi-touch attribution for ads
+- Allowed paths: `app/lib/ads/attribution.ts`
+
+**9. HITL Campaign Recommendations (4h)**
+- AI-powered campaign suggestions
+- Allowed paths: `app/services/ads/recommendations.ts`
+
+### Current Focus: Task 1 (Performance Tracking)
+
+### Blockers: None
 
 ### Critical:
-- ✅ ROAS calculation must be accurate
-- ✅ Support multiple platforms (Meta, Google, TikTok)
-- ✅ NO new .md files except specs and feedback
+- ✅ ROAS must be accurate
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Support Meta, Google, TikTok
 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Ads performance tracking

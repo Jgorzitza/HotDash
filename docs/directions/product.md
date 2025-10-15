@@ -11,53 +11,63 @@
 
 Document **product requirements and success metrics** for foundation milestone, ensuring alignment with NORTH_STAR.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Monitor Launch Readiness & Prepare User Acceptance
-**Priority:** P1 - Launch Support
-**Branch:** `agent/product/launch-readiness`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P1 - Product Management
 
-### Current Task: Prepare for Dashboard Launch
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ 22 strategic documents created
-- ✅ Hot Rodan pilot package complete (7 docs)
+### Task List (9 tasks):
 
-**What to Do Now:**
-Monitor Engineer's dashboard implementation and prepare user acceptance criteria
+**1. Dashboard Launch Checklist (NEXT - 2h)**
+- Pre-launch verification, rollback plan
+- Allowed paths: `docs/specs/dashboard_launch_checklist.md`
 
-**Steps:**
-1. Update feedback file: `echo "# Product 2025-10-15 Continued" >> feedback/product/2025-10-15.md`
-2. Monitor Engineer's progress on Approval Queue UI (Task 6)
-3. Create user acceptance criteria for dashboard features:
-   - Dashboard tiles (Revenue, AOV, Returns, Stock Risk, SEO, CX, Approvals)
-   - Approvals Drawer (evidence, grading, approve/reject)
-   - Responsive design (mobile, tablet, desktop)
-4. Define success metrics for launch:
-   - Dashboard load time (< 3s)
-   - Tile data accuracy (100%)
-   - Approvals workflow completion rate
-   - User satisfaction (qualitative feedback)
-5. Create launch checklist in `docs/specs/dashboard_launch_checklist.md`:
-   - Pre-launch verification
-   - User training requirements
-   - Rollback plan
-   - Post-launch monitoring
-6. Coordinate with QA on acceptance testing
-7. Create PR
+**2. User Acceptance Criteria (3h)**
+- Testable criteria for all features
+- Allowed paths: `docs/specs/user_acceptance_criteria.md`
 
-**Allowed paths:** `docs/specs/*, feedback/product/*`
+**3. Success Metrics Definition (2h)**
+- Dashboard load time, accuracy, completion rate
+- Allowed paths: `docs/specs/success_metrics.md`
 
-**After This:** Post-launch monitoring and iteration planning
+**4. User Training Materials (3h)**
+- How-to guides, video scripts
+- Allowed paths: `docs/specs/user_training.md`
 
-### Blockers:
-None - Strategic docs complete, ready to support launch
+**5. Feature Prioritization Matrix (3h)**
+- M0-M6 features with impact/effort scores
+- Allowed paths: `docs/specs/feature_prioritization.md`
+
+**6. Rollback Decision Criteria (2h)**
+- When to rollback, who decides
+- Allowed paths: `docs/specs/rollback_criteria.md`
+
+**7. Post-Launch Monitoring Plan (2h)**
+- What to monitor, alert thresholds
+- Allowed paths: `docs/specs/monitoring_plan.md`
+
+**8. Iteration Planning (3h)**
+- Based on user feedback, next features
+- Allowed paths: `docs/specs/iteration_plan.md`
+
+**9. Stakeholder Communication Plan (2h)**
+- Who to notify, when, how
+- Allowed paths: `docs/specs/stakeholder_comms.md`
+
+### Current Focus: Task 1 (Launch Checklist)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Focus on launch readiness (not new strategic docs)
-- ✅ Coordinate with QA and Engineer
-- ✅ Define measurable success metrics
-- ✅ NO new .md files except specs and feedback
+- ✅ Focus on launch readiness
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Measurable success metrics
 
 ---
 

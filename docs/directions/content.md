@@ -12,35 +12,61 @@
 ## 1) Purpose
 Build content performance tracking for future HITL social posting.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Build Content Performance Tracking
-**Priority:** P2 - Growth Preparation
-**Branch:** `agent/content/performance-tracking`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P2 - Content Management
 
-### Current Task: Content Performance Data Structure
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/content && echo "# Content 2025-10-15" > feedback/content/2025-10-15.md`
-2. Build content tracking in `app/lib/content/tracking.ts`:
-   - Engagement rate (likes + comments + shares / impressions)
-   - Reach and impressions
-   - Click-through rate
-   - Conversion tracking
-3. Create data structure for content posts
-4. Create API route: `app/routes/api/content.performance.ts`
-5. Document in `docs/specs/content_tracking.md`
-6. Create PR
+### Task List (9 tasks):
 
-**Allowed paths:** `app/lib/content/*, app/routes/api/content.*, docs/specs/*, feedback/content/*`
+**1. ✅ Content Performance Tracking (COMPLETE - MERGED)**
 
-### Blockers:
-None
+**2. Social Post Drafting (NEXT - 4h)**
+- AI-powered post drafts with HITL
+- Allowed paths: `app/services/content/post-drafter.ts`
+
+**3. Engagement Analysis (3h)**
+- Analyze likes, comments, shares
+- Allowed paths: `app/lib/content/engagement.ts`
+
+**4. Content Calendar (3h)**
+- Schedule posts, track publishing
+- Allowed paths: `app/routes/content.calendar.tsx`
+
+**5. Hashtag Optimization (2h)**
+- Suggest optimal hashtags
+- Allowed paths: `app/services/content/hashtags.ts`
+
+**6. Best Time to Post Analysis (3h)**
+- Analyze when audience is active
+- Allowed paths: `app/lib/content/timing.ts`
+
+**7. Competitor Content Analysis (4h)**
+- Track competitor posts, engagement
+- Allowed paths: `app/services/content/competitors.ts`
+
+**8. Content Recommendations (4h)**
+- AI-powered content suggestions
+- Allowed paths: `app/services/content/recommendations.ts`
+
+**9. HITL Posting Workflow (4h)**
+- Draft → review → approve → post
+- Allowed paths: `app/services/content/hitl-posting.ts`
+
+### Current Focus: Task 2 (Post Drafting)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Support multiple platforms (Instagram, Facebook, TikTok)
-- ✅ Engagement metrics must be accurate
-- ✅ NO new .md files except specs and feedback
+- ✅ HITL for all posts
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Support Instagram, Facebook, TikTok
 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Content performance tracking

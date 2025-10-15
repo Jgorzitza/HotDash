@@ -143,54 +143,65 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 * **Evidence:** Redact any PII in screenshots or logs
 * **Audit:** All QA approvals logged in PR timeline
 
-## 15) Today's Objective (2025-10-15)
+## 15) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Continue PR Reviews & Add Acceptance Criteria
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P1 - Quality Assurance
-**Branch:** `agent/qa/dashboard-testing`
 
-### Current Task: Test Dashboard as Built & Review PRs
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ Test plan template created (420 lines)
-- ✅ Acceptance criteria guide created (414 lines)
-- ✅ Integrations branch reviewed (APPROVED)
+### Task List (9 tasks):
 
-**What to Do Now:**
-Continue reviewing PRs and add acceptance criteria to all open Issues
+**1. ✅ Test Plan Template (COMPLETE)**
+**2. ✅ Acceptance Criteria Guide (COMPLETE)**
 
-**Steps:**
-1. Update feedback file: `echo "# QA 2025-10-15 Continued" >> feedback/qa/2025-10-15.md`
-2. Review open PRs: `gh pr list --label task`
-3. For each PR, verify:
-   - Tests present and passing
-   - Evidence provided (screenshots, curl examples)
-   - DoD checklist complete
-   - Rollback documented
-4. Add acceptance criteria to all open Issues (#8-#26):
-   - Use your acceptance criteria guide
-   - Make criteria testable and specific
-   - Include evidence requirements
-5. Test Engineer's dashboard as it's built:
-   - Verify Polaris components used correctly
-   - Check responsive design (mobile, tablet, desktop)
-   - Validate accessibility (WCAG 2.1 AA)
-   - Test Approvals Drawer functionality
-6. Document test results in feedback
-7. Create PR if new test specs needed
+**3. PR Reviews (NEXT - ongoing)**
+- Review all open PRs (#28-34)
+- Verify tests, evidence, DoD, rollback
+- Allowed paths: feedback/qa/*
 
-**Allowed paths:** `docs/specs/*, tests/**, feedback/qa/*`
+**4. E2E Test Suite (4h)**
+- Playwright tests for dashboard
+- User flows: login → dashboard → approvals
+- Allowed paths: `tests/e2e/*`
 
-**After This:** E2E testing of complete dashboard
+**5. Integration Test Suite (3h)**
+- API route testing
+- Database integration tests
+- Allowed paths: `tests/integration/*`
 
-### Blockers:
-None - Templates complete, ready to review
+**6. Performance Testing (3h)**
+- Load testing (100 concurrent users)
+- Stress testing (find breaking point)
+- Allowed paths: `tests/performance/*`
+
+**7. Security Testing (4h)**
+- OWASP Top 10 checks
+- SQL injection, XSS, CSRF tests
+- Allowed paths: `tests/security/*`
+
+**8. Accessibility Testing (3h)**
+- WCAG 2.1 AA compliance
+- Screen reader testing
+- Allowed paths: `tests/accessibility/*`
+
+**9. Test Automation CI Integration (2h)**
+- Add tests to GitHub Actions
+- Automated test runs on PR
+- Allowed paths: `.github/workflows/test.yml`
+
+### Current Focus: Task 3 (PR Reviews)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Validate ALL evidence before approving PRs
-- ✅ Ensure acceptance criteria are testable
-- ✅ Test with fixtures (no real data)
-- ✅ NO new .md files except specs and feedback
+- ✅ Validate ALL evidence before approving
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ Test with fixtures only
 
 ## 16) Examples
 

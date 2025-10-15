@@ -12,39 +12,61 @@
 ## 1) Purpose
 Ingest support KB content into RAG and prepare Chatwoot integration.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Ingest KB into RAG & Test Queries
-**Priority:** P2 - Customer Ops Preparation
-**Branch:** `agent/support/chatwoot-integration`
+**Status:** 9 Tasks Aligned to NORTH_STAR
+**Priority:** P2 - Customer Support
 
-### Current Task: KB Ingestion and RAG Testing
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Steps:**
-1. Create feedback file: `mkdir -p feedback/support && echo "# Support 2025-10-15" > feedback/support/2025-10-15.md`
-2. Ingest KB content into operator_knowledge index:
-   - Load KB articles from previous work
-   - Create embeddings
-   - Store in vector database
-3. Test RAG queries:
-   - "How do I process a return?"
-   - "What's the shipping policy?"
-   - "How do I cancel an order?"
-4. Build Chatwoot integration design in `docs/specs/chatwoot_integration.md`:
-   - Triage rules (AI vs human escalation)
-   - SLA targets by priority
-   - Workflow diagram
-5. Create PR
+### Task List (9 tasks):
 
-**Allowed paths:** `app/lib/support/*, docs/specs/chatwoot_integration.md, feedback/support/*`
+**1. ✅ Chatwoot Integration Spec (COMPLETE - PR #28)**
 
-### Blockers:
-None - KB content ready
+**2. RAG Index Build and Testing (NEXT - 3h)**
+- Build operator_knowledge index
+- Allowed paths: `scripts/rag/build-index.ts`
+
+**3. KB Article Ingestion (2h)**
+- Ingest all KB articles
+- Allowed paths: `app/services/support/kb-ingest.ts`
+
+**4. Triage Automation (3h)**
+- Auto-triage conversations by priority
+- Allowed paths: `app/services/support/triage.ts`
+
+**5. SLA Monitoring (2h)**
+- Track response times, alert on SLA breach
+- Allowed paths: `app/services/support/sla-monitor.ts`
+
+**6. Response Quality Tracking (3h)**
+- Track grading, quality metrics
+- Allowed paths: `app/lib/support/quality.ts`
+
+**7. Escalation Workflow (3h)**
+- Auto-escalate based on rules
+- Allowed paths: `app/services/support/escalation.ts`
+
+**8. Customer Satisfaction Tracking (2h)**
+- CSAT surveys, NPS tracking
+- Allowed paths: `app/lib/support/satisfaction.ts`
+
+**9. Support Analytics Dashboard (4h)**
+- Visual dashboard for support metrics
+- Allowed paths: `app/routes/support.analytics.tsx`
+
+### Current Focus: Task 2 (RAG Index Build)
+
+### Blockers: None
 
 ### Critical:
-- ✅ RAG queries must return accurate KB articles
+- ✅ RAG queries must be accurate
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
 - ✅ Triage rules must be clear
-- ✅ NO new .md files except specs and feedback
 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: KB ingestion and Chatwoot design

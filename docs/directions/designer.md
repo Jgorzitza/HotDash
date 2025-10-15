@@ -11,50 +11,67 @@
 
 Create **UI/UX specs and design documentation** for dashboard tiles and approvals workflow, ensuring Polaris compliance.
 
-## 2) Today's Objective (2025-10-15)
+## 2) Today's Objective (2025-10-15) - UPDATED
 
-**Status:** Stand By for Engineer Implementation Questions
+**Status:** 9 Tasks Aligned to NORTH_STAR
 **Priority:** P1 - Design Support
-**Branch:** `agent/designer/polaris-review`
 
-### Current Task: Support Engineer During Implementation
+### Git Process (Manager-Controlled)
+**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
+- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
+- See: `docs/runbooks/manager_git_workflow.md`
 
-**Completed Work (from feedback):**
-- ✅ All 6 approval queue specs complete
-- ✅ 19 additional design documents created
-- ✅ HANDOFF-approval-queue-ui.md ready for Engineer
+### Task List (9 tasks):
 
-**What to Do Now:**
-Stand by for Engineer questions during Approval Queue UI implementation
+**1. ✅ Approval Queue UI Specs (COMPLETE)**
 
-**Steps:**
-1. Update feedback file: `echo "# Designer 2025-10-15 Continued" >> feedback/designer/2025-10-15.md`
-2. Monitor Engineer's progress on Task 6 (Approval Queue UI)
-3. Be ready to answer questions about:
-   - Polaris component usage
-   - Responsive breakpoints
-   - Accessibility requirements
-   - UX flow clarifications
-4. Review Engineer's implementation when ready:
-   - Verify Polaris compliance
-   - Check WCAG 2.1 AA accessibility
-   - Validate responsive design
-   - Suggest improvements if needed
-5. Document any design decisions made during implementation
-6. Update specs if implementation reveals needed changes
+**2. Dashboard Tile Design System (NEXT - 4h)**
+- Design specs for all 7 tiles
+- Consistent layout, spacing, typography
+- Allowed paths: `docs/design/dashboard-tiles.md`
 
-**Allowed paths:** `docs/specs/*, docs/design/*, feedback/designer/*`
+**3. Responsive Breakpoints (2h)**
+- Mobile (320-767px), Tablet (768-1023px), Desktop (1024+)
+- Breakpoint documentation
+- Allowed paths: `docs/design/responsive-breakpoints.md`
 
-**After This:** Review complete dashboard implementation
+**4. Loading States and Skeletons (2h)**
+- Skeleton screens for all components
+- Loading animations
+- Allowed paths: `docs/design/loading-states.md`
 
-### Blockers:
-None - All specs complete, Engineer proceeding
+**5. Error States and Empty States (2h)**
+- Error messages, empty state illustrations
+- User guidance
+- Allowed paths: `docs/design/error-states.md`
+
+**6. Accessibility Annotations (3h)**
+- WCAG 2.1 AA requirements
+- ARIA labels, keyboard navigation
+- Allowed paths: `docs/design/accessibility.md`
+
+**7. Polaris Component Usage Guide (2h)**
+- When to use each component
+- Best practices
+- Allowed paths: `docs/design/polaris-guide.md`
+
+**8. Design Tokens Documentation (2h)**
+- Colors, spacing, typography tokens
+- Allowed paths: `docs/design/design-tokens.md`
+
+**9. Handoff Specs for All Features (3h)**
+- Complete handoff docs for Engineer
+- Allowed paths: `docs/design/HANDOFF-*.md`
+
+### Current Focus: Task 2 (Dashboard Tile Design)
+
+### Blockers: None
 
 ### Critical:
-- ✅ Use Shopify MCP to verify Polaris component capabilities
-- ✅ Respond quickly to Engineer questions (unblock within 1 hour)
-- ✅ Ensure WCAG 2.1 AA compliance
-- ✅ NO new .md files except specs and feedback
+- ✅ Use Shopify MCP to verify Polaris components
+- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
+- ✅ NO git commands
+- ✅ WCAG 2.1 AA compliance
 
 ---
 
