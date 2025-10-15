@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📋 Governance Rules
+    url: https://github.com/Jgorzitza/HotDash/blob/main/docs/RULES.md
+    about: Read the repository rules and documentation governance policies
+  - name: 🎯 North Star
+    url: https://github.com/Jgorzitza/HotDash/blob/main/docs/NORTH_STAR.md
+    about: Understand the project vision and architecture
