@@ -13,7 +13,8 @@ const allowedMd = [
   /^docs\/runbooks\/(manager_|agent_|ai_agent_review_checklist|drift_checklist).*\.md$/,
   /^docs\/directions\/.+\.md$/, /^docs\/manager\/(PROJECT_PLAN|IMPLEMENTATION_PLAYBOOK)\.md$/,
   /^docs\/planning\/.+\.md$/, /^docs\/specs\/.+\.md$/, /^docs\/integrations\/.+\.md$/,
-  /^feedback\/.+\.md$/, /^docs\/_archive\/.+/
+  /^feedback\/.+\.md$/, /^docs\/_archive\/.+/,
+  /^mcp\/.+\.md$/  // MCP tools documentation (critical infrastructure)
 ];
 const md = changed.filter(f=>f.endsWith('.md'));
 const badMd = md.filter(f=>!allowedMd.some(rx=>rx.test(f)));

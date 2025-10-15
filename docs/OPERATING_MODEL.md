@@ -32,10 +32,10 @@
 ---
 
 ## 3) Guardrails (non-negotiable)
-- **Docs allow‑list** in CI (no stray `.md`), plus weekly (and now **daily startup/shutdown**) drift sweep.  
-- **Danger**: Issue linkage, DoD present, Allowed paths enforced, HITL config enforced.  
-- **Secret protection**: GitHub Push Protection + **Gitleaks** CI with SARIF upload.  
-- **MCP‑first in dev** (Cursor/Codex/Claude) and **Agents SDK in‑app** (TS) with HITL.  
+- **Docs allow‑list** in CI (no stray `.md`), plus weekly (and now **daily startup/shutdown**) drift sweep. **Protected paths include `mcp/**` for MCP tools documentation.**
+- **Danger**: Issue linkage, DoD present, Allowed paths enforced, HITL config enforced.
+- **Secret protection**: GitHub Push Protection + **Gitleaks** CI with SARIF upload.
+- **MCP‑first in dev** (Cursor/Codex/Claude) with 6 active servers (GitHub, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full documentation in `mcp/` directory. **Agents SDK in‑app** (TS) with HITL.
 - **No secrets in code**; use GitHub Environments/Secrets + server‑side adapters only.
 
 ---

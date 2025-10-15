@@ -17,6 +17,7 @@ docs/specs/**
 docs/integrations/**
 feedback/<agent>/<YYYY-MM-DD>.md
 docs/_archive/**
+mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ```
 
 ## Process

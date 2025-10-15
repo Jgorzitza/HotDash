@@ -31,6 +31,7 @@ ALLOWED_PATTERNS=(
   "docs/integrations/**/*.md"
   "feedback/**/*.md"
   "docs/_archive/**/*"
+  "mcp/**/*.md"
 )
 
 echo "🔒 Creating Markdown allowlist push ruleset for ${REPO}..."

@@ -11,7 +11,8 @@ const allow = [
   /^docs\/planning\/.+\.md$/,
   /^docs\/specs\/.+\.md$/, /^docs\/integrations\/.+\.md$/,
   /^feedback\/.+\.md$/,
-  /^docs\/_archive\/.+/
+  /^docs\/_archive\/.+/,
+  /^mcp\/.+\.md$/  // MCP tools documentation (critical infrastructure)
 ];
 
 function staged(pattern) {
