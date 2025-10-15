@@ -10,3 +10,12 @@ Rationale:
 - All archived docs remain available for reference under `_archive/`.
 - Any content needed later will be reintroduced into allowed locations (e.g., specs/ or integrations/) via a PR.
 
+
+## Repo Root Sweep (2025-10-15)
+Archived to docs/_archive/2025-10-15-root-misc/ and artifacts/* to reduce root clutter without affecting builds/runtime.
+- Moved stray root docs: AUGMENT_RULES_SETUP.md, LAUNCH_ALL_AGENTS_CLEAN.md, MANAGER_SUMMARY.txt
+- Moved retired markers to .reports/archive/2025-10-15 (e.g., .reliability-*, .agent-sdk-readiness-*, .restart-ready-summary)
+- Moved archive/ status-reports into docs/_archive/2025-10-15-root-misc/archive/
+- Moved notebooks/ and planning/ into docs/_archive/2025-10-15-root-misc/
+- Moved tmp/ notes/scripts into artifacts/builds/2025-10-15/tmp/
+- Moved hotdash-manager-bundle-*.zip into artifacts/releases/2025-10-15/
