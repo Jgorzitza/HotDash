@@ -98,6 +98,11 @@
         "user_behavior_analysis",
         "conversion_tracking"
       ]
+    },
+    "chrome-devtools": {
+      "description": "Chrome DevTools MCP server",
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
     }
   },
   "usage_guidelines": {
