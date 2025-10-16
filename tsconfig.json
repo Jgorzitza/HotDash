@@ -2,7 +2,11 @@
   "include": ["env.d.ts", "**/*.ts", "**/*.tsx", ".react-router/types/**/*"],
   "exclude": [
     "supabase/functions/**/*",
-    "scripts/ai/llama-workflow/**/*"
+    "scripts/**/*",
+    "docs/_archive/**/*",
+    "packages/**/*",
+    "tests/**/*",
+    "**/*.stories.tsx"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
@@ -21,6 +25,7 @@
     "target": "ES2022",
     "baseUrl": ".",
     "types": ["@react-router/node", "vite/client", "@shopify/polaris-types", "vitest", "@testing-library/jest-dom"],
-    "rootDirs": [".", "./.react-router/types"]
+    "rootDirs": [".", "./.react-router/types"],
+    "allowImportingTsExtensions": true
   }
 }

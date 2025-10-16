@@ -7,14 +7,14 @@
  * Used by dashboard tiles to display sessions, organic traffic, and SEO data.
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
-import { getTrafficMetrics } from '../../lib/analytics/ga4';
 
-export async function loader({ request }: LoaderFunctionArgs) {
+import { getTrafficMetrics } from '../../lib/analytics/ga4.ts';
+
+export async function loader({ request }: any) {
   try {
     const metrics = await getTrafficMetrics();
     
-    return json({
+    return Response.json({
       success: true,
       data: metrics,
       timestamp: new Date().toISOString(),
@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error('[API] Traffic metrics error:', error);
     
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || 'Failed to fetch traffic metrics',

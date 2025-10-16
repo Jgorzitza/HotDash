@@ -9,9 +9,10 @@
  * Uses the existing GA4 Direct API client for data fetching.
  */
 
-import { createDirectGaClient } from '../../services/ga/directClient.ts';
-import { getGaConfig } from '../../config/ga.server.ts';
-import { appMetrics } from '../../utils/metrics.server.ts';
+import { createDirectGaClient } from '../../services/ga/directClient';
+import { getGaConfig } from '../../config/ga.server';
+import { appMetrics } from '../../utils/metrics.server';
+import { getCached, setCached } from '../../services/cache.server';
 
 // ============================================================================
 // Types
@@ -68,7 +69,16 @@ export interface ConversionMetrics {
  */
 export async function getRevenueMetrics(): Promise<RevenueMetrics> {
   const startTime = Date.now();
-  
+
+  // Check cache first
+  const cacheKey = 'analytics:revenue:30d';
+  const cached = getCached<RevenueMetrics>(cacheKey);
+  if (cached) {
+    appMetrics.cacheHit(cacheKey);
+    return cached;
+  }
+  appMetrics.cacheMiss(cacheKey);
+
   try {
     const config = getGaConfig();
     const client = createDirectGaClient(config.propertyId);
@@ -109,7 +119,7 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall('getRevenueMetrics', true, duration);
 
-    return {
+    const result: RevenueMetrics = {
       totalRevenue: currentData.revenue,
       averageOrderValue: currentData.aov,
       transactions: currentData.transactions,
@@ -123,6 +133,11 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
         end: currentEnd,
       },
     };
+
+    // Cache for 5 minutes
+    setCached(cacheKey, result, 300000);
+
+    return result;
   } catch (error) {
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall('getRevenueMetrics', false, duration);
@@ -167,7 +182,16 @@ async function fetchRevenueData(
  */
 export async function getTrafficMetrics(): Promise<TrafficMetrics> {
   const startTime = Date.now();
-  
+
+  // Check cache first
+  const cacheKey = 'analytics:traffic:30d';
+  const cached = getCached<TrafficMetrics>(cacheKey);
+  if (cached) {
+    appMetrics.cacheHit(cacheKey);
+    return cached;
+  }
+  appMetrics.cacheMiss(cacheKey);
+
   try {
     const config = getGaConfig();
     const client = createDirectGaClient(config.propertyId);
@@ -208,7 +232,7 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall('getTrafficMetrics', true, duration);
 
-    return {
+    const result: TrafficMetrics = {
       totalSessions: currentData.totalSessions,
       organicSessions: currentData.organicSessions,
       organicPercentage,
@@ -221,6 +245,11 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
         end: currentEnd,
       },
     };
+
+    // Cache for 5 minutes
+    setCached(cacheKey, result, 300000);
+
+    return result;
   } catch (error) {
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall('getTrafficMetrics', false, duration);
