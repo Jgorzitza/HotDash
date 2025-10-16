@@ -194,6 +194,21 @@
         "Track campaign performance"
       ]
     }
+,
+    "chrome-devtools": {
+      "when_to_use": [
+        "Inspecting live browser console/network logs during development",
+        "Profiling performance (timeline, CPU, memory) for SPA/SSR issues",
+        "Auditing accessibility and Lighthouse from an automated agent",
+        "Automating DOM inspection and element state collection"
+      ],
+      "examples": [
+        "Capture console errors from a failing route load",
+        "Record a performance trace around dashboard render",
+        "Collect network HAR for an API call sequence",
+        "Evaluate selectors and extract DOM state for a bug report"
+      ]
+    }
   }
 }
 
