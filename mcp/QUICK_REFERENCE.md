@@ -98,6 +98,22 @@ Quick reference for using MCP tools in your AI assistant workflows.
 
 ---
 
+---
+
+### 🧩 Chrome DevTools
+**Use when you need to:**
+- ✅ Inspect live console and network logs during dev sessions
+- ✅ Record performance traces (CPU, timeline, memory) to diagnose slowness
+- ✅ Run accessibility/Lighthouse-style audits via agent workflows
+- ✅ Automate DOM inspection and state collection for bug reports
+
+**Example prompts:**
+- "Capture console errors while loading /app and return stack traces"
+- "Record a 10s performance trace during dashboard render and summarize long tasks"
+- "Collect a HAR for the login flow and highlight 4xx/5xx responses"
+- "Query DOM for #inventory-table and list rows with aria-invalid=true"
+
+
 ## Common Workflows
 
 ### 🔄 Development Workflow
