@@ -93,6 +93,28 @@ Build **OpenAI Agents SDK (TypeScript)** implementation for customer-facing and 
 
 ---
 
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/ai-customer-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — SDK + HITL Validation
+
+Status: ACTIVE
+Priority: P0 — Validate agents SDK scaffolding, enforce HITL, wire basic tools
+
+Tasks (initial 8)
+1) Ensure agents.json has human_review: true + reviewers; run AI config check
+2) Implement sdk/index.ts + customer agent scaffold; return draft-only outputs
+3) Add config validation script and unit tests for required fields
+4) Add integration tests: HITL block on send; draft output schema; grading capture
+5) Expose RAG tool adapters from AI-Knowledge (search/context/related)
+6) Add PII scrubbing utilities and error taxonomy for SDK actions
+7) Evidence bundle: test logs, screenshots of Approvals Drawer consuming drafts
+8) WORK COMPLETE block with links
+
+Allowed paths: app/agents/**, app/components/grading/**, tests/agents/**, docs/specs/**
+
+
+
 ## Changelog
 
 * 2.0 (2025-10-15) — ACTIVE: OpenAI Agents SDK implementation (customer + CEO agents)

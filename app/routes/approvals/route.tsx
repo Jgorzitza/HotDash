@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useLoaderData, useRevalidator, useSearchParams } from 'react-router';
 import { Page, Layout, Card, EmptyState, InlineStack, Badge, Button } from '@shopify/polaris';
@@ -42,6 +42,8 @@ export default function ApprovalsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selected, setSelected] = useState<any | null>(null);
   const [suppressedIds, setSuppressedIds] = useState<Set<string>>(new Set());
+  const [actionError, setActionError] = useState<string | null>(null);
+  const retryRef = useRef<null | (() => Promise<void>)>(null);
 
   const stateFilter = searchParams.get('state') || undefined;
   const kindFilter = searchParams.get('kind') || undefined;
@@ -84,11 +86,28 @@ export default function ApprovalsRoute() {
 
   async function handleApprove() {
     if (!selected) return;
+    const id = selected.id;
     // optimistic hide
-    setSuppressedIds((prev) => new Set(prev).add(selected.id));
+    setSuppressedIds((prev) => new Set(prev).add(id));
     setSelected(null);
     try {
-      await fetch(`/approvals/${selected.id}/0/approve`, { method: 'POST' });
+      const res = await fetch(`/approvals/${id}/0/approve`, { method: 'POST' });
+      if (!res.ok) throw new Error(String(res.status));
+      setActionError(null);
+    } catch (e) {
+      // undo optimistic hide
+      setSuppressedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
+      setActionError('Failed to approve. Please retry.');
+      retryRef.current = async () => {
+        try {
+          const res = await fetch(`/approvals/${id}/0/approve`, { method: 'POST' });
+          if (!res.ok) throw new Error(String(res.status));
+          setSuppressedIds((prev) => new Set(prev).add(id));
+          setActionError(null);
+        } finally {
+          revalidator.revalidate();
+        }
+      };
     } finally {
       revalidator.revalidate();
     }
@@ -96,11 +115,28 @@ export default function ApprovalsRoute() {
 
   async function handleReject(reason: string) {
     if (!selected) return;
+    const id = selected.id;
     // optimistic hide
-    setSuppressedIds((prev) => new Set(prev).add(selected.id));
+    setSuppressedIds((prev) => new Set(prev).add(id));
     setSelected(null);
     try {
-      await fetch(`/approvals/${selected.id}/0/reject`, { method: 'POST' });
+      const res = await fetch(`/approvals/${id}/0/reject`, { method: 'POST' });
+      if (!res.ok) throw new Error(String(res.status));
+      setActionError(null);
+    } catch (e) {
+      // undo optimistic hide
+      setSuppressedIds((prev) => { const next = new Set(prev); next.delete(id); return next; });
+      setActionError('Failed to reject. Please retry.');
+      retryRef.current = async () => {
+        try {
+          const res = await fetch(`/approvals/${id}/0/reject`, { method: 'POST' });
+          if (!res.ok) throw new Error(String(res.status));
+          setSuppressedIds((prev) => new Set(prev).add(id));
+          setActionError(null);
+        } finally {
+          revalidator.revalidate();
+        }
+      };
     } finally {
       revalidator.revalidate();
     }
@@ -131,11 +167,19 @@ export default function ApprovalsRoute() {
         )}
 
       <Layout>
-        {error && (
+        {(error || actionError) && (
           <Layout.Section>
             <Card>
-              <div style={{ padding: '16px', color: '#bf0711' }}>
-                <strong>Error:</strong> {error}
+              <div style={{ padding: '16px', color: '#bf0711', display: 'flex', alignItems: 'center', gap: 12, justifyContent: 'space-between' }}>
+                <div>
+                  <strong>Error:</strong> {actionError ?? error}
+                </div>
+                {actionError && (
+                  <InlineStack gap="200">
+                    <Button onClick={() => retryRef.current?.()}>Retry</Button>
+                    <Button onClick={() => setActionError(null)}>Dismiss</Button>
+                  </InlineStack>
+                )}
               </div>
             </Card>
           </Layout.Section>

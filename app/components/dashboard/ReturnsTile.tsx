@@ -18,7 +18,6 @@ export function ReturnsTile({ count, pendingReview, trend, loading }: ReturnsTil
       </Card>
     );
   }
-
   return (
     <Card>
       <BlockStack gap="400">
@@ -27,10 +26,8 @@ export function ReturnsTile({ count, pendingReview, trend, loading }: ReturnsTil
           <Text as="h2" variant="heading2xl">{count}</Text>
           <InlineStack gap="200" align="start" blockAlign="center">
             <Text as="p" tone="subdued">{pendingReview} pending review</Text>
-            {trend \!== "neutral" && (
-              <Badge tone={trend === "up" ? "critical" : "success"}>
-                {trend === "up" ? "↑" : "↓"}
-              </Badge>
+            {trend !== "neutral" && (
+              <Badge tone={trend === "up" ? "critical" : "success"}>{trend === "up" ? "↑" : "↓"}</Badge>
             )}
           </InlineStack>
         </BlockStack>

@@ -18,18 +18,15 @@ export function SEOTile({ alertCount, topAlert, trend, loading }: SEOTileProps) 
       </Card>
     );
   }
-
   return (
     <Card>
       <BlockStack gap="400">
         <Text as="h3" variant="headingMd">SEO Alerts</Text>
         <BlockStack gap="200">
-          <Text as="h2" variant="heading2xl">{alertCount} alert{alertCount \!== 1 ? 's' : ''}</Text>
+          <Text as="h2" variant="heading2xl">{alertCount} alert{alertCount !== 1 ? 's' : ''}</Text>
           <InlineStack gap="200" align="start" blockAlign="center">
             <Text as="p" tone="subdued">{topAlert}</Text>
-            {trend === "down" && (
-              <Badge tone="critical">↓</Badge>
-            )}
+            {trend === "down" && <Badge tone="critical">↓</Badge>}
           </InlineStack>
         </BlockStack>
       </BlockStack>

@@ -68,6 +68,28 @@ Ingest support KB content into RAG and prepare Chatwoot integration.
 - ✅ NO git commands
 - ✅ Triage rules must be clear
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/support-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Safe RAG + CX Integration
+
+Status: ACTIVE
+Priority: P0 — Land safety guards and expose KB search to AI‑Customer
+
+Tasks (initial 8)
+1) Enforce build-index guards (no delete without valid config; dry-run and no‑write modes)
+2) Provide test queries fixtures and CLI flags; docs with examples
+3) kb-ingest parser tests and sample outputs; add audit logs
+4) Wire CX metrics integration points; export support metrics for dashboard
+5) Document Chatwoot webhook setup; add handler tests
+6) Evidence bundle: logs, sample outputs, screenshots
+7) Open Issues for gaps (manager to create)
+8) WORK COMPLETE block with links
+
+Allowed paths: scripts/rag/**, app/services/support/**, tests/**, docs/specs/**
+
+
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: KB ingestion and Chatwoot design
 * 1.0 (2025-10-15) — Placeholder

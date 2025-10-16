@@ -1,0 +1,13 @@
+title = "HotDash gitleaks config"
+
+[allowlist]
+  description = "Allowlist archived placeholders from 2025-10-15 prebundle"
+  # Specific leaked fingerprints (false positives from archived docs with literal 'REDACTED')
+  fingerprints = [
+    "c62197e74702044436679e044c3b831e6a6f7eb2:docs/_archive/2025-10-15-prebundle/docs/directions/compliance.md:github-oauth:472",
+    "c62197e74702044436679e044c3b831e6a6f7eb2:docs/_archive/2025-10-15-prebundle/docs/integrations/conversation_flow_testing.md:generic-api-key:21",
+    "c62197e74702044436679e044c3b831e6a6f7eb2:docs/_archive/2025-10-15-prebundle/docs/runbooks/backup-restore-week3.md:generic-api-key:92",
+    "c62197e74702044436679e044c3b831e6a6f7eb2:docs/_archive/2025-10-15-prebundle/docs/runbooks/backup-restore-week3.md:generic-api-key:98",
+    "c62197e74702044436679e044c3b831e6a6f7eb2:docs/_archive/2025-10-15-prebundle/docs/runbooks/secret-scanning.md:aws-access-token:134"
+  ]
+

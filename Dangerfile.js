@@ -42,6 +42,28 @@ const appTouched = changed.some(f=>/^(app|apps|packages|supabase|prisma|scripts)
 const testsTouched = changed.some(f=>/^tests\//.test(f)||/(\.|\/)test\./.test(f));
 if (appTouched && !testsTouched) warn('App code changed but no tests updated.');
 
+// Definition of Done (DoD) checklist
+const dodRequired = [
+  'Objective satisfied',
+  'Immutable rules honored',
+  'Workflow tested',
+  'Rollback',
+  'Secrets',
+  'Allowed paths',
+  'CI checks'
+];
+
+const prBody = pr.body || '';
+const hasDoD = dodRequired.every(item => {
+  const pattern = new RegExp(`\\[[ x]\\].*${item}`, 'i');
+  return pattern.test(prBody);
+});
+
+if (!hasDoD) {
+  warn('PR should include Definition of Done checklist. Missing items: ' +
+    dodRequired.filter(item => !new RegExp(`\\[[ x]\\].*${item}`, 'i').test(prBody)).join(', '));
+}
+
 // HITL config
 try{
   const cfg = JSON.parse(fs.readFileSync('app/agents/config/agents.json','utf8'));

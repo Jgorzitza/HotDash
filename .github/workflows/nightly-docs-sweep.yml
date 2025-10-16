@@ -1,0 +1,148 @@
+name: Nightly Docs Policy Sweep
+
+on:
+  schedule:
+    # Run nightly at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  docs-sweep:
+    name: Docs Policy Sweep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check for disallowed markdown files
+        id: check
+        run: |
+          # Find all markdown files
+          ALL_MD=$(find . -name "*.md" -not -path "./.git/*" -not -path "./node_modules/*")
+          
+          # Allowed patterns (from docs/RULES.md)
+          ALLOWED=(
+            "^./README.md$"
+            "^./APPLY.md$"
+            "^./docs/NORTH_STAR.md$"
+            "^./docs/RULES.md$"
+            "^./docs/ARCHIVE_INDEX.md$"
+            "^./docs/OPERATING_MODEL.md$"
+            "^./docs/runbooks/.*.md$"
+            "^./docs/directions/.*.md$"
+            "^./docs/manager/(PROJECT_PLAN|IMPLEMENTATION_PLAYBOOK).md$"
+            "^./docs/planning/.*.md$"
+            "^./docs/specs/.*.md$"
+            "^./docs/integrations/.*.md$"
+            "^./feedback/.*.md$"
+            "^./docs/_archive/.*"
+            "^./mcp/.*.md$"
+          )
+          
+          VIOLATIONS=""
+          for file in $ALL_MD; do
+            ALLOWED_FILE=false
+            for pattern in "${ALLOWED[@]}"; do
+              if echo "$file" | grep -qE "$pattern"; then
+                ALLOWED_FILE=true
+                break
+              fi
+            done
+            
+            if [ "$ALLOWED_FILE" = false ]; then
+              VIOLATIONS="$VIOLATIONS\n- $file"
+            fi
+          done
+          
+          if [ -n "$VIOLATIONS" ]; then
+            echo "violations=true" >> $GITHUB_OUTPUT
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$VIOLATIONS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "violations=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check planning TTL (> 2 days)
+        id: ttl
+        run: |
+          # Find planning docs older than 2 days
+          OLD_PLANNING=$(find docs/planning -name "*.md" -mtime +2 2>/dev/null || echo "")
+          
+          if [ -n "$OLD_PLANNING" ]; then
+            echo "old_planning=true" >> $GITHUB_OUTPUT
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$OLD_PLANNING" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "old_planning=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create issue for violations
+        if: steps.check.outputs.violations == 'true' || steps.ttl.outputs.old_planning == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let body = '## Nightly Docs Policy Sweep - Violations Found\n\n';
+            
+            if ('${{ steps.check.outputs.violations }}' === 'true') {
+              body += '### Disallowed Markdown Files\n\n';
+              body += 'The following markdown files are not in the allowed paths:\n\n';
+              body += '${{ steps.check.outputs.files }}\n\n';
+              body += '**Action Required:**\n';
+              body += '- Move to allowed location (see docs/RULES.md)\n';
+              body += '- Or archive to docs/_archive/\n\n';
+            }
+            
+            if ('${{ steps.ttl.outputs.old_planning }}' === 'true') {
+              body += '### Planning Docs TTL Exceeded\n\n';
+              body += 'The following planning docs are older than 2 days:\n\n';
+              body += '${{ steps.ttl.outputs.files }}\n\n';
+              body += '**Action Required:**\n';
+              body += '- Archive to docs/_archive/ using git mv\n';
+              body += '- Or delete if no longer needed\n\n';
+            }
+            
+            body += '---\n';
+            body += '*Automated by Nightly Docs Policy Sweep*';
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'docs-policy-violation'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '📋 Docs Policy Violations Detected',
+                body: body,
+                labels: ['docs-policy-violation', 'P2', 'manager']
+              });
+            }
+
+      - name: Summary
+        run: |
+          {
+            echo "## Nightly Docs Policy Sweep";
+            echo "";
+            if [ "${{ steps.check.outputs.violations }}" = "true" ] || [ "${{ steps.ttl.outputs.old_planning }}" = "true" ]; then
+              echo "⚠️ **Violations found** - Issue created";
+            else
+              echo "✅ **No violations** - All docs in compliance";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+

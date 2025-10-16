@@ -75,6 +75,24 @@ Orchestrate all agents, maintain governance docs, enforce gates, and ensure deli
 4. Review PRs and enforce gates
 5. Update PROJECT_PLAN with milestone progress
 
+
+## Tomorrow’s Objective (2025-10-17) — Clean Startup Orchestration
+
+Status: ACTIVE
+Priority: P0 — Ensure a super-clean startup per runbook
+
+Tasks (initial 8)
+1) Execute manager_startup_checklist.md end-to-end; capture receipts
+2) Verify guardrails: Docs Policy, Gitleaks, AI Config (attach outputs)
+3) Review all agent feedback; update directions if deltas
+4) Create/assign GitHub Issues for each agent’s tomorrow tasks (Allowed paths + DoD)
+5) Confirm MCP servers up (per mcp/verify script) and record status
+6) Validate Approvals HITL config (agents.json) and /validate endpoint behavior
+7) Update PROJECT_PLAN with today’s outcomes and tomorrow’s milestones
+8) WORK COMPLETE block with links
+
+Allowed paths: docs/directions/**, docs/manager/**, scripts/**, .github/**
+
 ---
 
 ## Changelog

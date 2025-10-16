@@ -26,7 +26,7 @@ print_result() {
     local name=$1
     local status=$2
     local message=$3
-    
+
     if [ "$status" = "PASS" ]; then
         echo -e "${GREEN}✓${NC} $name: ${GREEN}PASSED${NC} - $message"
         ((PASSED++))
@@ -44,7 +44,7 @@ echo -e "\n${BLUE}[1/6] Testing Docker (GitHub MCP)${NC}"
 if command -v docker &> /dev/null; then
     if docker ps &> /dev/null; then
         print_result "Docker" "PASS" "Docker is installed and running"
-        
+
         # Test GitHub MCP server image
         if docker pull ghcr.io/github/github-mcp-server &> /dev/null; then
             print_result "GitHub MCP Image" "PASS" "Image pulled successfully"
@@ -63,7 +63,7 @@ echo -e "\n${BLUE}[2/6] Testing Node.js and NPX${NC}"
 if command -v node &> /dev/null; then
     NODE_VERSION=$(node --version)
     print_result "Node.js" "PASS" "Version $NODE_VERSION"
-    
+
     if command -v npx &> /dev/null; then
         NPX_VERSION=$(npx --version)
         print_result "NPX" "PASS" "Version $NPX_VERSION"
@@ -80,7 +80,7 @@ echo -e "\n${BLUE}[3/6] Testing Python and Pipx${NC}"
 if command -v python3 &> /dev/null; then
     PYTHON_VERSION=$(python3 --version)
     print_result "Python" "PASS" "$PYTHON_VERSION"
-    
+
     if command -v pipx &> /dev/null; then
         PIPX_VERSION=$(pipx --version)
         print_result "Pipx" "PASS" "Version $PIPX_VERSION"
@@ -112,8 +112,20 @@ else
     print_result "Fly MCP" "FAIL" "Server is not running on port 8080"
 fi
 
-# Test 6: Credentials and Configuration Files
-echo -e "\n${BLUE}[6/6] Testing Credentials and Configuration${NC}"
+# Test 6: LlamaIndex HTTP Server
+echo -e "\n${BLUE}[6/7] Testing LlamaIndex HTTP Server${NC}"
+if curl -s -f -m 5 http://localhost:4000/health &> /dev/null; then
+    print_result "LlamaIndex MCP" "PASS" "Health endpoint OK on port 4000"
+elif curl -s -f -m 5 http://localhost:4000/mcp &> /dev/null; then
+    print_result "LlamaIndex MCP" "PASS" "MCP endpoint OK on port 4000"
+elif curl -s -f -m 5 http://localhost:4000 &> /dev/null; then
+    print_result "LlamaIndex MCP" "WARN" "Server running but MCP/health endpoints not found"
+else
+    print_result "LlamaIndex MCP" "FAIL" "Server is not running on port 4000"
+fi
+
+# Test 7: Credentials and Configuration Files
+echo -e "\n${BLUE}[7/7] Testing Credentials and Configuration${NC}"
 
 # Check Google Analytics service account
 GA_CREDS="/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json"

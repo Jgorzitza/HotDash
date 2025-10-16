@@ -203,6 +203,30 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 - ✅ NO git commands
 - ✅ Test with fixtures only
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/qa-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Turn reds green
+
+Status: ACTIVE
+Priority: P0 — Convert failing unblocker tests to passing as streams land
+
+Tasks (initial 8)
+1) Approvals UI: flip failing tests to passing once Engineer PR merges; update screenshots
+2) /validate: finalize negative/edge tests; assert Approve disabled until OK
+3) Dashboard tiles: wire to loaders; assert fallback states; P95 < 500ms checks
+4) Integrations: contract tests aligned with current clients/middleware
+5) Data: apply/rollback migration test harness; verify RLS
+6) Evidence bundle: Playwright traces, coverage reports, CI outputs
+7) Gate PRs: verify DoD + evidence; block if missing
+8) WORK COMPLETE block with links
+
+Allowed paths: tests/**, docs/specs/testing/**
+
+Current Focus: Tasks 1–5 to drive unblockers
+Blockers: Proceed using mocks if integrations not ready yet.
+
 ## 16) Examples
 
 **Good:**

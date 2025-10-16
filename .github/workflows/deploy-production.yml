@@ -13,6 +13,12 @@ on:
         type: boolean
         default: false
 
+      dry_run:
+        description: 'Dry run (skip fly deploy and checks)'
+        required: false
+        type: boolean
+        default: false
+
 concurrency:
   group: deploy-production
   cancel-in-progress: false
@@ -39,17 +45,17 @@ jobs:
           # Check if within business hours (9am-5pm PT)
           HOUR=$(TZ=America/Los_Angeles date +%H)
           DAY=$(TZ=America/Los_Angeles date +%u)
-          
+
           if [ "$DAY" -gt 5 ]; then
             echo "::error::Production deployments only allowed Monday-Friday"
             exit 1
           fi
-          
+
           if [ "$HOUR" -lt 9 ] || [ "$HOUR" -ge 17 ]; then
             echo "::warning::Deployment outside business hours (9am-5pm PT)"
             echo "Current time: $(TZ=America/Los_Angeles date)"
           fi
-          
+
           echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
           echo "should_deploy=true" >> $GITHUB_OUTPUT
 
@@ -59,7 +65,7 @@ jobs:
         run: |
           echo "Checking staging health..."
           STAGING_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
-          
+
           if [ "$STAGING_STATUS" = "200" ] || [ "$STAGING_STATUS" = "302" ]; then
             echo "✅ Staging is healthy (HTTP $STAGING_STATUS)"
             echo "healthy=true" >> $GITHUB_OUTPUT
@@ -113,6 +119,8 @@ jobs:
     environment:
       name: production
       url: https://hotdash-production.fly.dev
+    outputs:
+      failing_checks: ${{ steps.checks.outputs.failing }}
     steps:
       - uses: actions/checkout@v4
 
@@ -129,6 +137,7 @@ jobs:
 
       - name: Deploy to Production
         id: deploy
+        if: inputs.dry_run != true
         run: |
           echo "Deploying to hotdash-production..."
           echo "Reason: ${{ inputs.reason }}"
@@ -137,12 +146,42 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
+      - name: Dry-run deploy placeholder
+        if: inputs.dry_run == true
+        run: |
+          echo "[DRY RUN] Skipping flyctl deploy"
+          echo "deployment_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+
+      - name: Set checks output (dry-run)
+        id: checks
+        if: inputs.dry_run == true
+        run: |
+          echo "failing=0" >> $GITHUB_OUTPUT
+
       - name: Get deployment info
         id: info
         run: |
           flyctl status --app hotdash-production --json > artifacts/deployments/post-deploy-status.json
           cat artifacts/deployments/post-deploy-status.json
           echo "deployment_version=$(flyctl releases --app hotdash-production --json | jq -r '.[0].version')" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify Fly checks
+        id: checks
+        run: |
+          echo "Verifying Fly.io checks..."
+          mkdir -p artifacts/deployments
+          flyctl checks list --app hotdash-production --json > artifacts/deployments/checks.json
+          FAILING=$(jq -r '.[] | select(.status != "passing") | .name' artifacts/deployments/checks.json | wc -l | tr -d ' ')
+          echo "failing=$FAILING" >> $GITHUB_OUTPUT
+          if [ "$FAILING" -gt 0 ]; then
+            echo "::error:: $FAILING Fly checks failing"
+            jq -r '.[] | select(.status != "passing") | "- \(.name): \(.status)"' artifacts/deployments/checks.json || true
+            exit 1
+          else
+            echo "✅ All Fly checks passing"
+          fi
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
@@ -172,36 +211,63 @@ jobs:
     name: Production health check
     runs-on: ubuntu-latest
     needs: deploy
+    if: inputs.dry_run != true
+    outputs:
+      status: ${{ steps.health.outputs.status }}
+      success_count: ${{ steps.health.outputs.success_count }}
+      failure_count: ${{ steps.health.outputs.failure_count }}
+      attempts: ${{ steps.health.outputs.attempts }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Wait for deployment to stabilize
         run: sleep 30
 
-      - name: Health check
+      - name: Health check (with retries)
         id: health
         run: |
-          echo "Checking health of hotdash-production.fly.dev..."
-          
-          # Try health endpoint
-          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/health || echo "000")
-          
-          if [ "$HEALTH_STATUS" = "200" ]; then
-            echo "✅ Health check passed (HTTP $HEALTH_STATUS)"
-            echo "status=healthy" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️ Health endpoint returned HTTP $HEALTH_STATUS, checking root..."
-            ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
-            
-            if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
-              echo "✅ Root endpoint accessible (HTTP $ROOT_STATUS)"
-              echo "status=healthy" >> $GITHUB_OUTPUT
+          echo "Checking health of hotdash-production.fly.dev with retries..."
+          ATTEMPTS=10
+          INTERVAL=10
+          SUCCESS_THRESHOLD=3
+          SUCCESSES=0
+          FAILURES=0
+
+          for i in $(seq 1 $ATTEMPTS); do
+            HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 https://hotdash-production.fly.dev/health || echo "000")
+
+            if [ "$HEALTH_STATUS" = "200" ]; then
+              echo "Attempt $i/$ATTEMPTS: ✅ Health endpoint OK (HTTP $HEALTH_STATUS)"
+              ((SUCCESSES++))
             else
-              echo "❌ Health check failed (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
-              echo "status=unhealthy" >> $GITHUB_OUTPUT
-              exit 1
+              ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 https://hotdash-production.fly.dev/ || echo "000")
+              if [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+                echo "Attempt $i/$ATTEMPTS: ✅ Root endpoint accessible (HTTP $ROOT_STATUS)"
+                ((SUCCESSES++))
+              else
+                echo "Attempt $i/$ATTEMPTS: ❌ Unhealthy (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
+                ((FAILURES++))
+              fi
             fi
-          fi
+
+            if [ $SUCCESSES -ge $SUCCESS_THRESHOLD ]; then
+              echo "✅ Health check passed with $SUCCESSES successes (threshold $SUCCESS_THRESHOLD)"
+              echo "success_count=$SUCCESSES" >> $GITHUB_OUTPUT
+              echo "failure_count=$FAILURES" >> $GITHUB_OUTPUT
+              echo "attempts=$ATTEMPTS" >> $GITHUB_OUTPUT
+              echo "status=healthy" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+
+            sleep $INTERVAL
+          done
+
+          echo "❌ Health check failed after $ATTEMPTS attempts (successes=$SUCCESSES, failures=$FAILURES)"
+          echo "success_count=$SUCCESSES" >> $GITHUB_OUTPUT
+          echo "failure_count=$FAILURES" >> $GITHUB_OUTPUT
+          echo "attempts=$ATTEMPTS" >> $GITHUB_OUTPUT
+          echo "status=unhealthy" >> $GITHUB_OUTPUT
+          exit 1
 
       - name: Verify Fly.io machine status
         run: |
@@ -242,7 +308,7 @@ jobs:
         run: |
           sleep 20
           flyctl status --app hotdash-production
-          
+
           # Check health after rollback
           HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
           if [ "$HEALTH_STATUS" = "200" ] || [ "$HEALTH_STATUS" = "302" ]; then
@@ -292,6 +358,8 @@ jobs:
             echo "- **Build:** ${{ needs.build.result }}";
             echo "- **Deploy:** ${{ needs.deploy.result }}";
             echo "- **Health Check:** ${{ needs.health-check.result }}";
+            echo "- **Fly checks failing:** ${{ needs.deploy.outputs.failing_checks }}";
+            echo "- **Health retries:** successes=${{ needs.health-check.outputs.success_count }}/attempts=${{ needs.health-check.outputs.attempts }} (failures=${{ needs.health-check.outputs.failure_count }})";
             echo "";
             echo "**App URL:** https://hotdash-production.fly.dev";
           } >> "$GITHUB_STEP_SUMMARY"

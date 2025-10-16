@@ -19,8 +19,8 @@
  * - Read-only operations only
  */
 
-import type { LoaderFunctionArgs} from "react-router";
-import { json } from "react-router";
+
+
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -94,7 +94,7 @@ interface StockRiskData {
  *   "generatedAt": "2025-10-15T14:00:00.000Z"
  * }
  */
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: any) {
   const startTime = Date.now();
 
   try {
@@ -110,7 +110,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         shopDomain,
         durationMs: Date.now() - startTime,
       });
-      return json(cached.data, {
+      return Response.json(cached.data, {
         headers: {
           "Cache-Control": "private, max-age=300",
           "X-Cache": "HIT",
@@ -210,7 +210,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       durationMs: duration,
     });
 
-    return json(stockRiskData, {
+    return Response.json(stockRiskData, {
       headers: {
         "Cache-Control": "private, max-age=300",
         "X-Response-Time": `${duration}ms`,
@@ -228,7 +228,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         durationMs: duration,
       });
 
-      return json(
+      return Response.json(
         {
           error: {
             message: error.message,
@@ -252,7 +252,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       durationMs: duration,
     });
 
-    return json(
+    return Response.json(
       {
         error: {
           message: "An unexpected error occurred while fetching stock risk data",

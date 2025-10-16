@@ -15,8 +15,8 @@
  * @module routes/api/seo/anomalies
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
-import { getLandingPageAnomalies } from '../../services/ga/ingest';
+
+import { getLandingPageAnomalies } from '../services/ga/ingest';
 import {
   detectTrafficAnomalies,
   detectRankingAnomalies,
@@ -28,7 +28,7 @@ import {
   type RankingAnomalyInput,
   type VitalsAnomalyInput,
   type CrawlErrorInput,
-} from '../../lib/seo/anomalies';
+} from '../lib/seo/anomalies';
 
 /**
  * Mock data generators for Search Console and Core Web Vitals
@@ -52,7 +52,7 @@ function getMockCrawlErrors(): CrawlErrorInput[] {
   return [];
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: any) {
   try {
     const url = new URL(request.url);
     const shopDomain = url.searchParams.get('shop') || 'default-shop.myshopify.com';
@@ -86,7 +86,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const aggregated = aggregateSEOAnomalies(allAnomalies);
 
-    return json({
+    return Response.json({
       success: true,
       data: {
         anomalies: aggregated.all,
@@ -109,7 +109,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error('[API] SEO anomalies error:', error);
     
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || 'Failed to fetch SEO anomalies',

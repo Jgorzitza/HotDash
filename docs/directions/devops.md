@@ -200,6 +200,28 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 - ✅ NO git commands
 - ✅ Manual approval for production
 
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/devops-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Guardrails & Validation
+
+Status: ACTIVE
+Priority: P0 — Validate guardrails and policy checks; prep staging confidence
+
+Tasks (initial 8)
+1) Verify Gitleaks runs locally and on PRs; attach outputs
+2) Run docs policy + AI config checks; attach outputs and fix deltas
+3) Draft Danger rules audit notes (Allowed paths, Issue linkage, DoD)
+4) Prepare staging smoke plan (post-deploy warmup + smoke job outline)
+5) Evidence bundle: command outputs, screenshots, checklist
+6) Identify drift items and open Issues (manager to create)
+7) Link to runbooks in PR templates
+8) WORK COMPLETE block with links
+
+Allowed paths: .github/workflows/**, scripts/policy/**, docs/runbooks/**, tests/**
+
+
+
 ## 16) Examples
 
 **Good:**

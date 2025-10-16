@@ -75,6 +75,27 @@ Create **UI/UX specs and design documentation** for dashboard tiles and approval
 
 ---
 
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/designer-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Approvals + Tiles Handoff (Blockers First)
+
+Status: ACTIVE
+Priority: P1 — Finalize specs that unblock Engineer and QA immediately
+
+Tasks (initial 8)
+1) Approvals Drawer spec: evidence/rollback sections + validation error layout (final PNGs)
+2) Tiles compact props: finalized contract for 7 tiles; include types + examples
+3) Accessibility: Drawer focus order, ARIA labels, keyboard flows
+4) Skeletons and error/empty patterns: ship visual baselines for screenshot tests
+5) Mobile interactions: Drawer open/close, back behavior, focus traps
+6) Handoff checklists: per-component spec links for Engineer + QA IDs
+7) Evidence bundle: spec PDFs/PNGs, Storybook refs, screenshots at 3 breakpoints
+8) WORK COMPLETE block with links
+
+Allowed paths: docs/design/**, docs/specs/**
+
+
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Dashboard and approvals design specs
 * 1.0 (2025-10-15) — Placeholder: Awaiting feature requests

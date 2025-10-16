@@ -69,6 +69,27 @@ Document **product requirements and success metrics** for foundation milestone, 
 - ✅ NO git commands
 - ✅ Measurable success metrics
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/product-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Acceptance & Governance Tightening
+
+Status: ACTIVE
+Priority: P1 — Lock acceptance templates and DoD enforcement
+
+Tasks (initial 8)
+1) Finalize dashboard_launch_readiness.md (or actual path) and allowed_paths_templates.md
+2) Publish DoD checklists per agent (link in each direction)
+3) Update acceptance criteria sections for Approvals/Inventory/AI-Customer/Integrations/Data
+4) Refresh monitoring_plan.md aligned with current code paths
+5) Evidence formats for PRs: screenshot, test logs, rollback doc
+6) Open Issues for any gaps (manager to create); link in directions
+7) Evidence bundle: doc links and diffs
+8) WORK COMPLETE block with links
+
+Allowed paths: docs/specs/**, docs/manager/**
+
 ---
 
 ## Changelog

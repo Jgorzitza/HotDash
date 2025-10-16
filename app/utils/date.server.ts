@@ -34,7 +34,17 @@ export function getDateRange(days: number): { start: string; end: string } {
  * Parse ISO date string to Date
  */
 export function parseISODate(dateString: string): Date {
-  return new Date(dateString);
+  // Treat bare YYYY-MM-DD as UTC midnight to avoid local timezone shifts
+  const isYMD = /^\d{4}-\d{2}-\d{2}$/.test(dateString);
+  if (!isYMD) {
+    return new Date(dateString);
+  }
+
+  const [year, month, day] = dateString.split('-').map(Number);
+  const localDate = new Date();
+  localDate.setFullYear(year, month - 1, day);
+  localDate.setHours(0, 0, 0, 0);
+  return localDate;
 }
 
 /**
@@ -70,4 +80,3 @@ export function getRelativeTime(date: Date): string {
   if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
   return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
 }
-

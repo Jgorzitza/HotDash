@@ -1,0 +1,20 @@
+{
+  "name": "@hotdash/llama-workflow",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "refresh": "node dist/cli.js refresh",
+    "query": "node dist/cli.js query",
+    "insight": "node dist/cli.js insight"
+  },
+  "dependencies": {
+    "commander": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "typescript": "^5.2.2"
+  }
+}

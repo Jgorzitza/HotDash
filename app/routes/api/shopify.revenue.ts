@@ -6,8 +6,8 @@
  * Date: 2025-10-15
  */
 
-import type { LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
+
+
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -18,9 +18,9 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 const REVENUE_WINDOW_DAYS = 30;
 const cache = new Map<string, { data: any; expiresAt: number }>();
 
-const REVENUE_QUERY = \`#graphql
-  query RevenueMetrics(\$first: Int\!, \$query: String) {
-    orders(first: \$first, sortKey: CREATED_AT, reverse: true, query: \$query) {
+const REVENUE_QUERY = `
+  query RevenueMetrics($first: Int!, $query: String) {
+    orders(first: $first, sortKey: CREATED_AT, reverse: true, query: $query) {
       edges {
         node {
           id
@@ -36,7 +36,7 @@ const REVENUE_QUERY = \`#graphql
       }
     }
   }
-\`;
+`;
 
 interface RevenueData {
   totalRevenue: number;
@@ -46,33 +46,33 @@ interface RevenueData {
   generatedAt: string;
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: any) {
   const startTime = Date.now();
 
   try {
     const context = await getShopifyServiceContext(request);
     const { admin, shopDomain } = context;
 
-    const cacheKey = \`revenue:\${shopDomain}\`;
+    const cacheKey = "revenue:" + shopDomain;
     const cached = cache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
-      return json(cached.data, {
+      return Response.json(cached.data, {
         headers: { "Cache-Control": "private, max-age=300", "X-Cache": "HIT" },
       });
     }
 
     const since = new Date();
     since.setUTCDate(since.getUTCDate() - REVENUE_WINDOW_DAYS);
-    const dateQuery = \`created_at:>=\${since.toISOString()}\`;
+    const dateQuery = "created_at:>=" + since.toISOString();
 
     const response = await admin.graphql(REVENUE_QUERY, {
       variables: { first: 250, query: dateQuery },
     });
 
-    if (\!response.ok) {
-      throw new ServiceError(\`Shopify revenue query failed with \${response.status}\`, {
+    if (!response.ok) {
+      throw new ServiceError("Shopify revenue query failed with " + String(response.status), {
         scope: "shopify.revenue",
-        code: \`\${response.status}\`,
+        code: String(response.status),
         retryable: response.status >= 500,
       });
     }
@@ -117,10 +117,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     logger.info("Revenue data fetched", { shopDomain, totalRevenue: revenueData.totalRevenue });
 
-    return json(revenueData, {
+    return Response.json(revenueData, {
       headers: {
         "Cache-Control": "private, max-age=300",
-        "X-Response-Time": \`\${Date.now() - startTime}ms\`,
+        "X-Response-Time": String(Date.now() - startTime) + "ms",
         "X-Cache": "MISS",
       },
     });
@@ -128,11 +128,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const duration = Date.now() - startTime;
     if (error instanceof ServiceError) {
       logger.error("Revenue service error", { message: error.message, scope: error.scope });
-      return json({ error: { message: error.message, scope: error.scope, code: error.code } }, {
+      return Response.json({ error: { message: error.message, scope: error.scope, code: error.code } }, {
         status: error.code ? parseInt(error.code, 10) : 500,
       });
     }
     logger.error("Revenue unexpected error", { error: error instanceof Error ? error.message : String(error) });
-    return json({ error: { message: "Unexpected error", scope: "shopify.revenue", code: "INTERNAL_ERROR" } }, { status: 500 });
+    return Response.json({ error: { message: "Unexpected error", scope: "shopify.revenue", code: "INTERNAL_ERROR" } }, { status: 500 });
   }
 }

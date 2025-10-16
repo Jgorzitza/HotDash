@@ -9,9 +9,9 @@
 ## 0) Save State (≤ 1 min)
 - [ ] Do NOT commit/push. Manager will handle git operations.
 - [ ] Ensure your feedback file contains the latest evidence and the completion block if applicable.
-- [ ] Ensure PR body includes:
+- [ ] If a PR already exists, double-check its body includes:
   - `Refs #<issue>` or `Fixes #<issue>` (when DoD is fully met)
-  - A line: `Allowed paths: <pattern(s)>`
+  - `Allowed paths: <pattern(s)>`
 
 ---
 
@@ -63,14 +63,13 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 ```
 
 > Keep it concise but specific. The Manager will rely on this to set tomorrow’s direction and unblock you immediately.
+> Copy/paste the template to avoid missing sections.
 
 ---
 
 ## 3) Handoff to Manager (≤ 1 min)
 - [ ] Verify your feedback file is up to date.
-- [ ] Post a one-liner in the Issue comment:
-  "Shutdown complete — see latest feedback entry (includes WORK COMPLETE block if applicable)."
-- [ ] Manager will create/refresh PR and handle CI/review/merge.
+- [ ] Manager will create/refresh PR and handle CI/review/merge. Do not open or update PRs yourself.
 
 ---
 
@@ -81,7 +80,7 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 ---
 
 ## 5) Signal Manager
-- [ ] Post a one‑liner in the **Issue comment**: “Shutdown complete — see latest feedback entry for status/next‑start plan.”
+- [ ] Post a one‑liner in the **Issue comment**: “Shutdown complete — see latest feedback entry for status/next-start plan.”
 - [ ] @mention the Manager if a blocker needs immediate attention.
 
 ---
@@ -91,9 +90,8 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 # Show changed files quickly
 git status -s
 
-# Push current branch
-git push -u origin HEAD
+# Create or mark draft PR via GitHub CLI (manager-controlled)
+gh pr create --draft --fill || gh pr ready --undo  # toggle draft state (manager only)
 
-# Create or mark draft PR via GitHub CLI (if you use it)
-gh pr create --draft --fill || gh pr ready --undo  # toggle draft state
+# Manager will execute pushes/merges; agents should refrain from running git push.
 ```

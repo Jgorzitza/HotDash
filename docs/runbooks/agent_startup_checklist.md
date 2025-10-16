@@ -12,10 +12,10 @@
 ## 1) Direction & Issue (60 sec)
 - [ ] Read `docs/directions/<agent>.md` — note **today’s objective** and **constraints**.
 - [ ] Open your **Issue(s)**; copy the **DoD** and confirm **Allowed paths** (fnmatch).
-- [ ] Start today’s header in `feedback/<agent>/<YYYY-MM-DD>.md` with your plan.
+- [ ] Start today’s header in `feedback/<agent>/<YYYY-MM-DD>.md` with your plan (only once here).
 
 ## 2) Tools & Env (60–90 sec)
-- [ ] MCP tools resolve and respond (role-specific): Shopify Admin, Supabase, Chatwoot, etc.
+- [ ] Verify only the MCP tools you need for today’s tasks respond correctly (Shopify Admin, Supabase, Chatwoot, etc.).
 - [ ] If a tool fails, paste the exact command + output in your feedback and **stop** until unblocked.
 
 ## 3) Sandbox (30 sec)
@@ -26,6 +26,7 @@
 - [ ] Append-only entries to `feedback/<agent>/<YYYY-MM-DD>.md`:
       commands + results, blockers (minimal repro), next intent.
 - [ ] Do **not** create new `.md` beyond allow-list; don’t edit other agents’ files.
+- [ ] If you’re blocked for more than 10 minutes after tool attempts, log it immediately with exact output so the manager can respond.
 
 ## 5) Work Protocol
 - [ ] **MCP-first / server adapters only.** No freehand HTTP or secrets in logs.

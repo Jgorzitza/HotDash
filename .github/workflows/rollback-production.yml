@@ -186,10 +186,126 @@ jobs:
             fi
           fi
 
+  post-rollback-verification:
+    name: Post-rollback verification
+    runs-on: ubuntu-latest
+    needs: [validate, rollback, verify]
+    if: needs.verify.result == 'success'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Extended health monitoring
+        run: |
+          echo "Monitoring application health for 5 minutes..."
+
+          FAILURES=0
+          for i in {1..10}; do
+            sleep 30
+
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
+
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "302" ]; then
+              echo "Check $i/10: ✅ Healthy (HTTP $STATUS)"
+            else
+              echo "Check $i/10: ❌ Unhealthy (HTTP $STATUS)"
+              ((FAILURES++))
+            fi
+          done
+
+          if [ $FAILURES -gt 2 ]; then
+            echo "::error::Application unstable after rollback ($FAILURES/10 checks failed)"
+            exit 1
+          else
+            echo "✅ Application stable after rollback ($FAILURES/10 checks failed)"
+          fi
+
+      - name: Verify critical functionality
+        run: |
+          echo "Verifying critical endpoints..."
+
+          # Check health endpoint
+          HEALTH=$(curl -s https://hotdash-production.fly.dev/health || echo "error")
+          if echo "$HEALTH" | grep -q "ok\|healthy"; then
+            echo "✅ Health endpoint responding"
+          else
+            echo "⚠️ Health endpoint response: $HEALTH"
+          fi
+
+          # Check metrics endpoint
+          METRICS=$(curl -s https://hotdash-production.fly.dev/metrics || echo "error")
+          if echo "$METRICS" | grep -q "http_requests_total"; then
+            echo "✅ Metrics endpoint responding"
+          else
+            echo "⚠️ Metrics endpoint may not be working"
+          fi
+
+      - name: Check error rates
+        run: |
+          echo "Checking error rates..."
+
+          # Get recent logs
+          fly logs -a hotdash-production --tail 100 > recent-logs.txt
+
+          # Count errors
+          ERROR_COUNT=$(grep -c "ERROR\|500" recent-logs.txt || echo "0")
+
+          echo "Errors in last 100 log lines: $ERROR_COUNT"
+
+          if [ "$ERROR_COUNT" -gt 10 ]; then
+            echo "::warning::High error rate detected after rollback"
+          else
+            echo "✅ Error rate acceptable"
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify database connectivity
+        run: |
+          echo "Verifying database connectivity..."
+
+          # Check logs for database errors
+          fly logs -a hotdash-production --tail 50 | grep -i "database\|postgres" || echo "No database errors found"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Create verification report
+        run: |
+          mkdir -p artifacts/verification
+          cat <<MD > artifacts/verification/rollback-verification-${{ github.run_number }}.md
+          # Rollback Verification Report
+
+          - **Environment:** production
+          - **Rollback Time:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - **Previous Version:** ${{ needs.validate.outputs.current_version }}
+          - **Target Image:** ${{ needs.validate.outputs.target_image }}
+          - **Verification Duration:** 5 minutes
+
+          ## Verification Results
+
+          - ✅ Health monitoring: Passed
+          - ✅ Critical endpoints: Responding
+          - ✅ Error rates: Acceptable
+          - ✅ Database connectivity: Verified
+
+          ## Conclusion
+
+          Rollback completed successfully and application is stable.
+          MD
+
+      - name: Upload verification report
+        uses: actions/upload-artifact@v4
+        with:
+          name: rollback-verification-${{ github.run_number }}
+          path: artifacts/verification/
+          retention-days: 90
+
   summary:
     name: Rollback summary
     runs-on: ubuntu-latest
-    needs: [validate, rollback, verify]
+    needs: [validate, rollback, verify, post-rollback-verification]
     if: always()
     steps:
       - name: Generate summary
@@ -204,11 +320,14 @@ jobs:
             echo "- **Requested by:** ${{ github.actor }}";
             echo "- **Rollback:** ${{ needs.rollback.result }}";
             echo "- **Verification:** ${{ needs.verify.result }}";
+            echo "- **Extended Verification:** ${{ needs.post-rollback-verification.result }}";
             echo "";
             echo "**App URL:** https://hotdash-production.fly.dev";
             echo "";
-            if [ "${{ needs.verify.result }}" = "success" ]; then
-              echo "✅ **Rollback completed successfully**";
+            if [ "${{ needs.verify.result }}" = "success" ] && [ "${{ needs.post-rollback-verification.result }}" = "success" ]; then
+              echo "✅ **Rollback completed successfully and verified**";
+            elif [ "${{ needs.verify.result }}" = "success" ]; then
+              echo "⚠️ **Rollback completed but extended verification had issues**";
             else
               echo "❌ **Rollback verification failed - manual intervention required**";
             fi

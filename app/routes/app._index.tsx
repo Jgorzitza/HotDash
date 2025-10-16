@@ -55,9 +55,10 @@ export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) =>
   const sales = await resolveTile(() => getSalesPulseSummary(context));
   const fulfillment = await resolveTile(() => getPendingFulfillments(context));
   const inventory = await resolveTile(() => getInventoryAlerts(context));
-  const seo = await resolveTile(() =>
-    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
-  );
+  const seo = await resolveTile(async () => {
+    const { loadSEOTile } = await import('../services/seo/tile-loader');
+    return loadSEOTile({ shopDomain: context.shopDomain });
+  });
   const escalations = await resolveEscalations(context.shopDomain);
   const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
 

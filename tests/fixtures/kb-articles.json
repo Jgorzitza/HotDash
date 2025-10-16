@@ -1,0 +1,43 @@
+[
+  {
+    "question": "Where is my order?",
+    "answer": "I understand you're eager to receive your order! Let me help you track it. Your order should have a tracking number in your confirmation email. You can also check your order status in your account dashboard.",
+    "category": "orders",
+    "tags": ["order_tracking", "order_status"],
+    "confidence_score": 0.85,
+    "source": "template"
+  },
+  {
+    "question": "How do I return an item?",
+    "answer": "Returning an item is easy! Log into your account, go to Order History, select the order, click 'Return Items', choose items and reason, print the prepaid label, and drop off at any carrier location.",
+    "category": "returns",
+    "tags": ["return_process", "return_instructions"],
+    "confidence_score": 0.82,
+    "source": "template"
+  },
+  {
+    "question": "When will my order arrive?",
+    "answer": "Delivery times depend on your shipping method. Standard shipping takes 5-7 business days, expedited is 2-3 business days. Check your confirmation email for your specific delivery estimate.",
+    "category": "shipping",
+    "tags": ["shipping_eta", "delivery_time"],
+    "confidence_score": 0.88,
+    "source": "template"
+  },
+  {
+    "question": "What is your return policy?",
+    "answer": "We accept returns within 30 days of delivery for a full refund. Items must be unused and in original packaging. Return shipping is free for defective items.",
+    "category": "returns",
+    "tags": ["return_policy", "refund_policy"],
+    "confidence_score": 0.90,
+    "source": "template"
+  },
+  {
+    "question": "Is this product in stock?",
+    "answer": "Let me check current stock availability for you. Which product are you interested in? If it's out of stock, I can notify you when it's back or suggest similar alternatives.",
+    "category": "products",
+    "tags": ["product_availability", "stock_status"],
+    "confidence_score": 0.75,
+    "source": "template"
+  }
+]
+

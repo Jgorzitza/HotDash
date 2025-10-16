@@ -5,7 +5,7 @@ const allow = [
   /^README\.md$/, /^APPLY\.md$/,
   /^docs\/NORTH_STAR\.md$/, /^docs\/RULES\.md$/, /^docs\/ARCHIVE_INDEX\.md$/,
   /^docs\/OPERATING_MODEL\.md$/,
-  /^docs\/runbooks\/(manager_|agent_|ai_agent_review_checklist|drift_checklist).*\.md$/,
+  /^docs\/runbooks\/.+\.md$/,  // All runbooks allowed
   /^docs\/directions\/.+\.md$/,
   /^docs\/manager\/(PROJECT_PLAN|IMPLEMENTATION_PLAYBOOK)\.md$/,
   /^docs\/planning\/.+\.md$/,

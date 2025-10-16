@@ -1,0 +1,185 @@
+name: Health Check Monitoring
+
+on:
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-staging:
+    name: Check Staging Health
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Health check - staging
+        id: staging
+        run: |
+          echo "Checking staging health..."
+          
+          # Try health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health || echo "000")
+          HEALTH_TIME=$(curl -s -o /dev/null -w "%{time_total}" https://hotdash-staging.fly.dev/health || echo "0")
+          
+          # Try root endpoint
+          ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/ || echo "000")
+          ROOT_TIME=$(curl -s -o /dev/null -w "%{time_total}" https://hotdash-staging.fly.dev/ || echo "0")
+          
+          echo "health_status=$HEALTH_STATUS" >> $GITHUB_OUTPUT
+          echo "health_time=$HEALTH_TIME" >> $GITHUB_OUTPUT
+          echo "root_status=$ROOT_STATUS" >> $GITHUB_OUTPUT
+          echo "root_time=$ROOT_TIME" >> $GITHUB_OUTPUT
+          
+          # Check if healthy
+          if [ "$HEALTH_STATUS" = "200" ] || [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+            echo "✅ Staging is healthy"
+            echo "healthy=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Staging is unhealthy (Health: $HEALTH_STATUS, Root: $ROOT_STATUS)"
+            echo "healthy=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Check response time
+        run: |
+          HEALTH_TIME="${{ steps.staging.outputs.health_time }}"
+          ROOT_TIME="${{ steps.staging.outputs.root_time }}"
+          
+          # Convert to milliseconds
+          HEALTH_MS=$(echo "$HEALTH_TIME * 1000" | bc)
+          ROOT_MS=$(echo "$ROOT_TIME * 1000" | bc)
+          
+          echo "Health endpoint: ${HEALTH_MS}ms"
+          echo "Root endpoint: ${ROOT_MS}ms"
+          
+          # Warn if > 3s (3000ms)
+          if (( $(echo "$HEALTH_MS > 3000" | bc -l) )); then
+            echo "::warning::Health endpoint response time > 3s: ${HEALTH_MS}ms"
+          fi
+
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Staging Health Check Failed';
+            const body = `
+            ## Staging Health Check Failure
+            
+            - **Time:** ${new Date().toISOString()}
+            - **Health Status:** ${{ steps.staging.outputs.health_status }}
+            - **Root Status:** ${{ steps.staging.outputs.root_status }}
+            - **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ### Action Required
+            - [ ] Check Fly.io status: \`fly status -a hotdash-staging\`
+            - [ ] Check logs: \`fly logs -a hotdash-staging\`
+            - [ ] Verify deployment status
+            - [ ] Consider rollback if needed
+            `;
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'health-check-failure'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['health-check-failure', 'P0', 'devops']
+              });
+            }
+
+  check-production:
+    name: Check Production Health
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '*/5 * * * *'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Health check - production
+        id: production
+        continue-on-error: true
+        run: |
+          echo "Checking production health..."
+          
+          # Try health endpoint
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/health || echo "000")
+          HEALTH_TIME=$(curl -s -o /dev/null -w "%{time_total}" https://hotdash-production.fly.dev/health || echo "0")
+          
+          # Try root endpoint
+          ROOT_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/ || echo "000")
+          ROOT_TIME=$(curl -s -o /dev/null -w "%{time_total}" https://hotdash-production.fly.dev/ || echo "0")
+          
+          echo "health_status=$HEALTH_STATUS" >> $GITHUB_OUTPUT
+          echo "health_time=$HEALTH_TIME" >> $GITHUB_OUTPUT
+          echo "root_status=$ROOT_STATUS" >> $GITHUB_OUTPUT
+          echo "root_time=$ROOT_TIME" >> $GITHUB_OUTPUT
+          
+          # Check if healthy
+          if [ "$HEALTH_STATUS" = "200" ] || [ "$ROOT_STATUS" = "200" ] || [ "$ROOT_STATUS" = "302" ]; then
+            echo "✅ Production is healthy"
+            echo "healthy=true" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ Production check failed (may not be deployed yet)"
+            echo "healthy=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create critical issue on production failure
+        if: steps.production.outputs.healthy == 'false' && steps.production.outputs.health_status != '000'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨🚨 PRODUCTION DOWN - Health Check Failed';
+            const body = `
+            ## CRITICAL: Production Health Check Failure
+            
+            - **Time:** ${new Date().toISOString()}
+            - **Health Status:** ${{ steps.production.outputs.health_status }}
+            - **Root Status:** ${{ steps.production.outputs.root_status }}
+            - **Workflow:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ### IMMEDIATE ACTION REQUIRED
+            - [ ] Check Fly.io status: \`fly status -a hotdash-production\`
+            - [ ] Check logs: \`fly logs -a hotdash-production\`
+            - [ ] Consider immediate rollback
+            - [ ] Notify team
+            
+            @manager - Production is down!
+            `;
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['production-down', 'P0', 'devops', 'critical']
+            });
+
+  summary:
+    name: Health Check Summary
+    runs-on: ubuntu-latest
+    needs: [check-staging, check-production]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Health Check Summary";
+            echo "";
+            echo "- **Staging:** ${{ needs.check-staging.result }}";
+            echo "- **Production:** ${{ needs.check-production.result }}";
+            echo "- **Time:** $(date -u +"%Y-%m-%dT%H:%M:%SZ")";
+          } >> "$GITHUB_STEP_SUMMARY"
+

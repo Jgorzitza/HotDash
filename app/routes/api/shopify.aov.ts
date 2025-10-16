@@ -3,8 +3,8 @@
  * GET /api/shopify/aov
  */
 
-import type { LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
+
+
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -15,9 +15,9 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 const AOV_WINDOW_DAYS = 30;
 const cache = new Map<string, { data: any; expiresAt: number }>();
 
-const AOV_QUERY = \`#graphql
-  query AOVMetrics(\$first: Int\!, \$query: String) {
-    orders(first: \$first, sortKey: CREATED_AT, reverse: true, query: \$query) {
+const AOV_QUERY = `
+  query AOVMetrics($first: Int!, $query: String) {
+    orders(first: $first, sortKey: CREATED_AT, reverse: true, query: $query) {
       edges {
         node {
           id
@@ -26,26 +26,26 @@ const AOV_QUERY = \`#graphql
       }
     }
   }
-\`;
+`;
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: any) {
   const startTime = Date.now();
   try {
     const context = await getShopifyServiceContext(request);
     const { admin, shopDomain } = context;
-    const cacheKey = \`aov:\${shopDomain}\`;
+    const cacheKey = "aov:" + shopDomain;
     const cached = cache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
-      return json(cached.data, { headers: { "X-Cache": "HIT" } });
+      return Response.json(cached.data, { headers: { "X-Cache": "HIT" } });
     }
 
     const since = new Date();
     since.setUTCDate(since.getUTCDate() - AOV_WINDOW_DAYS);
     const response = await admin.graphql(AOV_QUERY, {
-      variables: { first: 250, query: \`created_at:>=\${since.toISOString()}\` },
+      variables: { first: 250, query: "created_at:>=" + since.toISOString() },
     });
 
-    if (\!response.ok) throw new ServiceError(\`AOV query failed\`, { scope: "shopify.aov", code: \`\${response.status}\` });
+    if (!response.ok) throw new ServiceError("AOV query failed", { scope: "shopify.aov", code: String(response.status) });
     const payload = await response.json();
     if (payload.errors?.length) throw new ServiceError(payload.errors[0].message, { scope: "shopify.aov" });
 
@@ -69,9 +69,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     await recordDashboardFact({ shopDomain, factType: "shopify.aov", scope: "dashboard", value: toInputJson(aovData) });
     cache.set(cacheKey, { data: aovData, expiresAt: Date.now() + CACHE_TTL_MS });
-    return json(aovData, { headers: { "X-Cache": "MISS", "X-Response-Time": \`\${Date.now() - startTime}ms\` } });
+    return Response.json(aovData, { headers: { "X-Cache": "MISS", "X-Response-Time": String(Date.now() - startTime) + "ms" } });
   } catch (error) {
     logger.error("AOV error", { error: error instanceof Error ? error.message : String(error) });
-    return json({ error: { message: "AOV fetch failed", scope: "shopify.aov" } }, { status: 500 });
+    return Response.json({ error: { message: "AOV fetch failed", scope: "shopify.aov" } }, { status: 500 });
   }
 }

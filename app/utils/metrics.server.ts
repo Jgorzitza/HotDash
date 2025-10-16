@@ -315,6 +315,16 @@ export class AppMetrics {
     this.collector.increment('cache.misses', 1, { key });
   }
 
+  // GA-specific metrics
+  gaQuotaExceeded(): void {
+    this.collector.increment('ga.quota_exceeded', 1);
+  }
+
+  gaSamplingDetected(rate: number): void {
+    this.collector.increment('ga.sampling_detected', 1);
+    this.collector.gauge('ga.sampling_rate', rate);
+  }
+
   // Error metrics
   error(scope: string, code: string): void {
     this.collector.increment('errors', 1, { scope, code });

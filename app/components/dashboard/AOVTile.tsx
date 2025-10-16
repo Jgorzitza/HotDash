@@ -18,7 +18,6 @@ export function AOVTile({ value, trend, percentChange, loading }: AOVTileProps) 
       </Card>
     );
   }
-
   return (
     <Card>
       <BlockStack gap="400">
@@ -27,10 +26,8 @@ export function AOVTile({ value, trend, percentChange, loading }: AOVTileProps) 
           <Text as="h2" variant="heading2xl">{value}</Text>
           <InlineStack gap="200" align="start" blockAlign="center">
             <Text as="p" tone="subdued">{percentChange} vs yesterday</Text>
-            {trend \!== "neutral" && (
-              <Badge tone={trend === "up" ? "success" : "critical"}>
-                {trend === "up" ? "↑" : "↓"}
-              </Badge>
+            {trend !== "neutral" && (
+              <Badge tone={trend === "up" ? "success" : "critical"}>{trend === "up" ? "↑" : "↓"}</Badge>
             )}
           </InlineStack>
         </BlockStack>

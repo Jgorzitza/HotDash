@@ -68,6 +68,42 @@ Design knowledge base structure and learning extraction process for AI customer 
 - ✅ NO git commands
 - ✅ KB must evolve with needs
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/ai-knowledge-2025-10-16.md
+
+
+## 3) Tomorrow's Objective (2025-10-17) — Integration & Testing
+
+Status: ACTIVE
+Priority: P1 — Integrate KB tools with ai-customer and support; validate APIs and monitoring
+
+Work rule: Execute strictly in order. If blocked >10 minutes, log blocker in feedback/ai-knowledge/2025-10-17.md and move on.
+
+Git Process (Manager-Controlled)
+- Manager opens PRs and adds Allowed paths/DoD. You provide code and evidence.
+
+Ordered Task List (initial 10)
+1) Manager review follow-ups: address any comments on new KB APIs/scripts
+2) API testing: POST /api/kb/search, GET/PATCH /api/kb/articles/:id, GET /api/kb/graph/:id, GET /api/kb/metrics (attach curl samples)
+3) Tools exposure: define ai-customer tool adapters for search/context/related/track-usage
+4) Support ingestion: propose UI contract to Engineer; document ingestion workflow
+5) Monitoring: create dashboard/alerts for latency, error rate, quality distribution
+6) Confidence + thresholds: document tuning procedure and defaults; wire to config
+7) Integration tests: end-to-end across pipeline (search → select → edit → learn)
+8) Evidence bundle: latency targets, error taxonomy examples, sample outputs
+9) Docs: update kb_agent_coordination.md with concrete tool schemas
+10) Write WORK COMPLETE block with links
+
+Allowed paths
+- app/routes/api/kb/**, app/agents/tools/**, scripts/kb/**, docs/specs/**, tests/**
+
+Links
+- Issue: TBA by Manager
+- PR: TBA by Manager
+
+Changelog
+- 2.1 (2025-10-17) — Added tomorrow's objective based on 2025-10-16 completion (30 tasks)
+
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: KB design and learning extraction
 * 1.0 (2025-10-15) — Placeholder

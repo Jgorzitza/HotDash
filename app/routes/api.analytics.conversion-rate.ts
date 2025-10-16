@@ -1,18 +1,19 @@
 /**
  * API Route: Conversion Rate
- * 
+ *
  * GET /api/analytics/conversion-rate
- * 
+ *
  * Returns conversion rate metrics for dashboard tiles.
  */
 
 
-import { getConversionMetrics } from '../../lib/analytics/ga4.ts';
 
 export async function loader({ request }: any) {
   try {
+    const { getConversionMetrics } = await import('../lib/analytics/ga4.ts');
     const metrics = await getConversionMetrics();
-    
+
+
     return Response.json({
       success: true,
       data: metrics,
@@ -20,7 +21,7 @@ export async function loader({ request }: any) {
     });
   } catch (error: any) {
     console.error('[API] Conversion rate error:', error);
-    
+
     return Response.json(
       {
         success: false,

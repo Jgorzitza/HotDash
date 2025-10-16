@@ -16,15 +16,15 @@
   - **Blockers** with **owner + ETA**
   - Links to any relevant logs/evidence (screenshots, test output)
 
-## 2a) Manager-Controlled Git  Close Out
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For any agent with WORK COMPLETE but no PR yet, create branch/PR now
-- [ ] For open PRs, ensure evidence links to the feedback file
-- [ ] After merge, update directions to next task
+## 2) Close Out Manager-Controlled Git
+- [ ] Run `node scripts/policy/check-feedback.mjs --date <today>` to catch any WORK COMPLETE blocks that still need a PR.
+- [ ] For each ready slice, commit/push within Allowed paths, open/refresh the PR, and add evidence links pulled from the agent’s feedback.
+- [ ] Merge when CI is green; update the corresponding direction file to the next task.
+- [ ] If a slice isn’t ready, leave it as draft with a clear Issue comment instead of rushing a PR.
 
 ---
 
-## 2) CI & Guardrails (must be green)
+## 3) CI & Guardrails (must be green)
 
 - [ ] `main` status checks **green**: _Docs Policy, Danger, Gitleaks, Validate AI Agent Config_.
 - [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis).
@@ -35,10 +35,11 @@
   gitleaks detect --source . --redact
   ```
   _If any fail: stop, fix, commit, and re‑run until green._
+- [ ] Sanitize any archived secrets discovered during the day (e.g., replace tokens with placeholders), re-run Gitleaks, and note the remediation in `feedback/manager/<YYYY-MM-DD>.md`.
 
 ---
 
-## 3) Gates Sanity (per active task)
+## 4) Gates Sanity (per active task)
 
 For each **Issue (label: task)** and linked PR:
 - [ ] **Scope Gate** — Problem + Acceptance Criteria present in the **Issue**.
@@ -51,7 +52,7 @@ _Missing any artifact? Comment on the PR with the gap and reassign._
 
 ---
 
-## 4) Direction & Feedback Closure
+## 5) Direction & Feedback Closure
 
 For each **active agent**:
 - [ ] Read today’s `feedback/<agent>/<YYYY‑MM‑DD>.md` → extract answers, blockers, decisions.
@@ -65,7 +66,7 @@ Do **not** create or edit other docs.
 
 ---
 
-## 5) Planning TTL & Drift Sweep
+## 6) Planning TTL & Drift Sweep
 
 - [ ] If any `docs/planning/*` is older than **2 days**, sweep and commit:
   ```bash
@@ -76,7 +77,7 @@ Do **not** create or edit other docs.
 
 ---
 
-## 6) Security & Hygiene
+## 7) Security & Hygiene
 
 - [ ] No secrets in local logs/console paste. Close terminals with creds; stop tunnels.
 - [ ] Ensure `.env*` are **not staged**; `.gitignore` covers them.
@@ -84,29 +85,21 @@ Do **not** create or edit other docs.
 
 ---
 
-## 7) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
+## 8) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
 
 **Today’s Outcomes**
-- Shipped/merged: PRs #…, #…
-- In progress: PRs #… (DoD % complete), Issues #…
+- Shipped: PRs #…, #…
+- In progress: PRs #… (DoD %), Issues #…
 - Incidents: secrets (Y/N), CI failures (count), rogue docs (count)
 
-**Next Goal (tomorrow)**
-- Primary objective: …
-- Success criteria (from North Star): …
+**Tomorrow’s Goal**
+- Objective: …
+- Success metric (from North Star): …
 
-**Agent Performance (quick grading)**
-- <agent> — **Score (1–5)**
-  - 2–3 things done well:
-    1) …
-    2) …
-  - 1–2 things to change:
-    1) …
-  - **One thing to stop entirely:** …
+**Agent Snapshot**
+- <agent> — score 1–5; 1–2 wins; 1 improvement; 1 thing to stop.
 
-(Repeat per active agent; tie feedback to DoD / Allowed paths / feedback discipline.)
-
-### 8) Run Drift Checklist (Manager-only, required)
+### 9) Run Drift Checklist (Manager-only, required)
 
 Before finalizing shutdown:
 

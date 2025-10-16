@@ -7,8 +7,9 @@ import {
   Button,
   Badge,
   Banner,
+  Spinner,
+  Tooltip,
 } from '@shopify/polaris';
-import { useSubmit } from 'react-router';
 
 interface ApprovalCardProps {
   approval: {
@@ -21,50 +22,50 @@ interface ApprovalCardProps {
       args: Record<string, any>;
     }[];
   };
+  onDetails?: () => void;
 }
 
-export function ApprovalCard({ approval }: ApprovalCardProps) {
-  const submit = useSubmit();
-  const [loading, setLoading] = useState(false);
+export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
+  const [actionLoading, setActionLoading] = useState<'none' | 'approve' | 'reject'>('none');
   const [error, setError] = useState<string | null>(null);
-  
+
   const action = approval.pending[0]; // First pending action
   const riskLevel = getRiskLevel(action.tool);
-  
+
+  async function postAndReload(path: string) {
+    try {
+      const res = await fetch(path, { method: 'POST' });
+      if (!res.ok) {
+        let msg = `Request failed (${res.status})`;
+        try {
+          const text = await res.text();
+          if (text) msg += `: ${text.slice(0, 200)}`;
+        } catch {}
+        throw new Error(msg);
+      }
+      window.location.reload();
+    } catch (e: any) {
+      setError(e?.message || 'Request failed. Please try again.');
+      setActionLoading('none');
+    }
+  }
+
   const handleApprove = async () => {
-    setLoading(true);
     setError(null);
-    try {
-      const response = await fetch(`/approvals/${approval.id}/0/approve`, {
-        method: 'POST',
-      });
-      if (!response.ok) throw new Error('Failed to approve');
-      // Trigger revalidation
-      window.location.reload();
-    } catch (err) {
-      setError('Failed to approve. Please try again.');
-      setLoading(false);
-    }
+    setActionLoading('approve');
+    await postAndReload(`/approvals/${approval.id}/0/approve`);
   };
-  
+
   const handleReject = async () => {
-    setLoading(true);
     setError(null);
-    try {
-      const response = await fetch(`/approvals/${approval.id}/0/reject`, {
-        method: 'POST',
-      });
-      if (!response.ok) throw new Error('Failed to reject');
-      // Trigger revalidation
-      window.location.reload();
-    } catch (err) {
-      setError('Failed to reject. Please try again.');
-      setLoading(false);
-    }
+    setActionLoading('reject');
+    await postAndReload(`/approvals/${approval.id}/0/reject`);
   };
-  
+
+  const isBusy = actionLoading !== 'none';
+
   return (
-    <Card>
+    <Card aria-busy={isBusy}>
       <BlockStack gap="400">
         {/* Header */}
         <InlineStack align="space-between" blockAlign="center">
@@ -72,10 +73,10 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
             Conversation #{approval.conversationId}
           </Text>
           <Badge tone={riskLevel === 'high' ? 'critical' : riskLevel === 'medium' ? 'warning' : 'success'}>
-            {riskLevel.toUpperCase()} RISK
+            {`${riskLevel.toUpperCase()} RISK`}
           </Badge>
         </InlineStack>
-        
+
         {/* Agent & Tool Info */}
         <BlockStack gap="200">
           <Text variant="bodyMd" as="p">
@@ -87,12 +88,12 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
           <Text variant="bodyMd" as="p" tone="subdued">
             <strong>Arguments:</strong>
           </Text>
-          <pre style={{ 
-            background: '#f6f6f7', 
-            padding: '12px', 
+          <pre style={{
+            background: '#f6f6f7',
+            padding: '12px',
             borderRadius: '4px',
             fontSize: '12px',
-            overflow: 'auto'
+            overflow: 'auto',
           }}>
             {JSON.stringify(action.args, null, 2)}
           </pre>
@@ -100,34 +101,48 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
             Requested {new Date(approval.createdAt).toLocaleString()}
           </Text>
         </BlockStack>
-        
+
         {/* Error Message */}
         {error && (
-          <Banner tone="critical" onDismiss={() => setError(null)}>
+          <Banner tone="critical" onDismiss={() => setError(null)} data-testid="approval-error-banner">
             {error}
           </Banner>
         )}
-        
+
         {/* Actions */}
         <InlineStack gap="200">
+          <Tooltip content="Approve this action">
+            <Button
+              variant="primary"
+              tone="success"
+              onClick={handleApprove}
+              loading={actionLoading === 'approve'}
+              disabled={isBusy}
+              data-testid="approval-approve-btn"
+            >
+              {actionLoading === 'approve' ? 'Approving…' : 'Approve'}
+            </Button>
+          </Tooltip>
           <Button
-            variant="primary"
-            tone="success"
-            onClick={handleApprove}
-            loading={loading}
-            disabled={loading}
+            onClick={onDetails}
+            variant="secondary"
+            disabled={isBusy}
           >
-            Approve
+            Details
           </Button>
-          <Button
-            variant="primary"
-            tone="critical"
-            onClick={handleReject}
-            loading={loading}
-            disabled={loading}
-          >
-            Reject
-          </Button>
+
+          <Tooltip content="Reject and do not apply">
+            <Button
+              variant="primary"
+              tone="critical"
+              onClick={handleReject}
+              loading={actionLoading === 'reject'}
+              disabled={isBusy}
+              data-testid="approval-reject-btn"
+            >
+              {actionLoading === 'reject' ? 'Rejecting…' : 'Reject'}
+            </Button>
+          </Tooltip>
         </InlineStack>
       </BlockStack>
     </Card>
@@ -138,7 +153,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
 function getRiskLevel(tool: string): 'low' | 'medium' | 'high' {
   const highRisk = ['send_email', 'create_refund', 'cancel_order'];
   const mediumRisk = ['create_private_note', 'update_conversation'];
-  
+
   if (highRisk.includes(tool)) return 'high';
   if (mediumRisk.includes(tool)) return 'medium';
   return 'low';

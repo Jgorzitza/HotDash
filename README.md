@@ -73,7 +73,7 @@ The helper uses the Supabase CLI to stream local events. Pass a project ref to t
 
 ## AI Agent Support: MCP Tools
 
-HotDash provides **6 MCP servers** to help AI agents work effectively:
+HotDash provides **7 MCP servers** to help AI agents work effectively:
 
 | Tool | Purpose | Status |
 |------|---------|--------|
@@ -83,7 +83,7 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 | **fly** | Deployment & infrastructure | ✅ Active (port 8080) |
 | **shopify** | Shopify API docs, GraphQL validation | ✅ Active |
 | **google-analytics** | GA data queries (dev tools only) | ✅ Active |
-| **llamaindex-rag** | Knowledge base RAG queries | 🚧 In development |
+| **llamaindex-rag** | Knowledge base RAG queries & insights | ✅ Active (`hotdash-llamaindex-mcp.fly.dev`) |
 
 ### 📚 MCP Documentation (Protected)
 

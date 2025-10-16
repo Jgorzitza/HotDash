@@ -67,6 +67,29 @@ Design **inventory data model** and prepare for ROP (reorder point) calculations
 - ✅ NO git commands
 - ✅ Coordinate with Data on schema
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/inventory-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Inventory Specs & Tests
+
+Status: ACTIVE
+Priority: P1 — Finalize docs/specs and validate formulas
+
+Tasks (initial 8)
+1) Finish inventory_data_model.md and shopify_inventory_metafields.md
+2) Provide Heatmap UI spec to Engineer with prop types
+3) Add unit tests: rop.ts and po-generator.ts (units/currency)
+4) Draft alert severity thresholds and scoring rubric
+5) Provide sample fixtures for demo stock states
+6) Evidence bundle: doc links, test outputs, sample payloads
+7) Align with Data on RPC/table names; with Engineer on tile facts
+8) WORK COMPLETE block with links
+
+Allowed paths: docs/specs/**, app/lib/inventory/**, tests/**, docs/integrations/**
+
+Blockers: None — proceed.
+
 ---
 
 ## Changelog

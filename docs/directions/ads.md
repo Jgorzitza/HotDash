@@ -70,6 +70,27 @@ Build ads performance tracking for future HITL campaign management.
 - ✅ NO git commands
 - ✅ Support Meta, Google, TikTok
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/ads-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Metrics + Contracts
+
+Status: ACTIVE
+Priority: P2 — Stabilize ads metrics and contracts for dashboard integration
+
+Tasks (initial 8)
+1) Implement roas.ts core + unit tests (edge cases: blended vs channel)
+2) Draft budget-optimizer.ts with inputs/outputs schema; add tests
+3) Define dashboard tile contract for ads; sync with Engineer
+4) Add adapters skeleton (Meta/Google/TikTok) behind feature flags
+5) Export CSV helper and sample; validate with QA
+6) Telemetry fields for costs/latency; record in structured logs
+7) Evidence bundle: sample calculations, tests, curl examples (if any)
+8) WORK COMPLETE block with links
+
+Allowed paths: app/lib/ads/**, app/services/ads/**, tests/**, docs/specs/**
+
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: Ads performance tracking
 * 1.0 (2025-10-15) — Placeholder

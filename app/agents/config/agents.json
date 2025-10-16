@@ -33,6 +33,13 @@
       ]
     },
     {
+      "id": "ai-ceo",
+      "human_review": true,
+      "reviewers": [
+        "github:justin"
+      ]
+    },
+    {
       "id": "ai-knowledge",
       "human_review": false,
       "reviewers": []

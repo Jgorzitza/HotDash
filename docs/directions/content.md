@@ -72,6 +72,27 @@ Build content performance tracking for future HITL social posting.
 * 2.0 (2025-10-15) — ACTIVE: Content performance tracking
 * 1.0 (2025-10-15) — Placeholder
 
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/content-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Approvals Integration
+
+Status: ACTIVE
+Priority: P1 — Surface content drafts and recommendations into approvals
+
+Tasks (initial 8)
+1) Expose drafter API to approvals queue with evidence fields
+2) Provide recommendations feed endpoint and sample payloads
+3) Wire hashtag analyzer outputs to dashboard tile contract
+4) Add feature flag guard for OpenAI integrations; keep fixtures in dev
+5) Store drafts in Supabase with audit fields; add unit tests
+6) Evidence bundle: sample drafts, approvals screenshots, telemetry
+7) Update docs/specs for contracts; link to engineer tasks
+8) WORK COMPLETE block with links
+
+Allowed paths: app/services/content/**, app/routes/api/content/**, tests/**, docs/specs/**
+
+
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day

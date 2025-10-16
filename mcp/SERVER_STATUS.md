@@ -2,7 +2,7 @@
 
 ## ✅ All Servers Running!
 
-All 6 MCP servers are now active and ready to use.
+All 7 MCP servers are now active and ready to use.
 
 ### Current Server Status
 
@@ -14,6 +14,7 @@ All 6 MCP servers are now active and ready to use.
 | 🚀 **Fly.io MCP** | ✅ **ACTIVE** | Port 8080 | Streaming mode via flyctl |
 | 🛍️ **Shopify** | ✅ **ACTIVE** | NPX | Liquid validation: partial |
 | 📊 **Google Analytics** | ✅ **ACTIVE** | Pipx | Project: `hotrodan-seo-reports` |
+| 📚 **LlamaIndex RAG** | ✅ **ACTIVE** | HTTPS | Endpoint: `https://hotdash-llamaindex-mcp.fly.dev/mcp` |
 
 ### Server Details
 
@@ -38,6 +39,9 @@ curl http://localhost:3001/mcp
 
 # Check Fly MCP
 curl http://127.0.0.1:8080/mcp
+
+# Check LlamaIndex MCP
+curl https://hotdash-llamaindex-mcp.fly.dev/health
 
 # Check running processes
 ss -tlnp | grep -E ':(3001|8080)'
@@ -80,6 +84,11 @@ All servers are now accessible through Cursor and other MCP-compatible AI assist
 **Google Analytics:**
 ```
 "Get page view statistics for the last 7 days from Google Analytics"
+```
+
+**LlamaIndex RAG:**
+```
+"Using llamaindex-rag, query: return policy for custom fittings"
 ```
 
 ### Server Management
@@ -194,4 +203,3 @@ flyctl mcp server --port 8080
 
 **Last Updated**: 2025-10-15
 **Status**: All systems operational ✅
-

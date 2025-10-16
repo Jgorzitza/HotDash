@@ -211,6 +211,43 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 - ✅ NO git commands
 - ✅ NO new .md files except feedback
 
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/integrations-2025-10-16.md
+
+
+
+## 18) Tomorrow’s Objective (2025-10-17) — PRs, Integration Tests, Staging Prep
+
+Status: ACTIVE
+Priority: P1 — Open PRs with evidence, run integration tests, prepare staging rollout
+
+Work rule: Execute strictly in order. If blocked >10 minutes, log blocker in feedback/integrations/2025-10-17.md and move on.
+
+Git Process (Manager‑Controlled)
+- Manager creates PRs and adds Allowed paths/DoD. You supply code and evidence only.
+
+Ordered Task List (initial 10)
+1) Open PR: supabase/client.ts, errors.ts, audit.ts, rate-limit.ts (+ structured-logger) with curl examples
+2) Run tests: tests/integration/api/* with MSW; ensure green; attach logs
+3) Health: verify api/health shows dependency fan‑out (Shopify, Supabase, Chatwoot, GA4)
+4) QA handoff: finalize docs/api-contracts/CURL_EXAMPLES.md with ready-to-run commands
+5) Stage prep: confirm environment switchers; checklist for staging secrets (no values)
+6) Coordinate with Engineer to swap mocks → clients behind feature flag; verify latency P95 < 500ms
+7) Add missing error enums or retry policies discovered during testing
+8) Observability: ensure retry-budget + latency histograms exported; link to metrics
+9) Evidence bundle: screenshots/logs for PR (tests passing, sample curl output)
+10) Write WORK COMPLETE block with links
+
+Allowed paths
+- app/lib/**, app/middleware/**, tests/integration/**, docs/api-contracts/**
+
+Links
+- Issue: TBA by Manager (PR will reference)
+- PR: TBA by Manager
+
+Changelog
+- 2.0 (2025-10-17) — Added tomorrow’s objective based on 2025-10-16 feedback (30/30 tasks complete)
+
 ## 16) Examples
 
 **Good:**

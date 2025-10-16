@@ -145,73 +145,41 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 * **Forbidden data:** Email, phone, address, payment info in frontend logs
 * **Masking/redaction rules:** Mask all PII in error messages and logs
 
-## 15) Today's Objective (2025-10-15) - UPDATED
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/engineer-2025-10-16.md
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code in allowed paths
-- Signal "WORK COMPLETE - READY FOR PR" in feedback
-- Manager creates branch, commits, pushes, creates PR
-- See: `docs/runbooks/manager_git_workflow.md`
+## 18) Tomorrow’s Objective (2025-10-17) — PR Polish & Live Wiring
 
-### Task List (9 tasks):
+Status: ACTIVE
+Priority: P1 — Address PR feedback, wire tiles to loaders, and tighten types
 
-**1. ✅ Approval Queue UI (COMPLETE - PR #29 MERGED)**
+Work rule: Execute strictly in order. If blocked >10 minutes, log blocker in feedback/engineer/2025-10-17.md and move on.
 
-**2. Approvals Drawer Detail View (NEXT - 3-4h)**
-- Expand ApprovalCard into full Drawer component
-- Show complete evidence, projected impact, risks
-- Approve/Reject with grading interface (tone, accuracy, policy 1-5)
-- Allowed paths: `app/components/approvals/*, tests/**`
+Git Process (Manager‑Controlled)
+- Do not run git; Manager will open PRs and add Allowed paths/DoD. You only code and attach evidence.
 
-**3. Dashboard Shell with 7 Tile Grid (4-5h)**
-- Create `app/routes/dashboard.tsx` with responsive grid
-- 7 tiles: Revenue, AOV, Returns, Stock Risk, SEO, CX, Approvals
-- Polaris Card components with loading/error states
-- Allowed paths: `app/routes/dashboard.*, app/components/dashboard/*`
+Ordered Task List (initial 10)
+1) Address PR comments for Dashboard + Approvals Drawer (screenshots + tests updated)
+2) Wire tiles to API loaders (revenue, AOV, returns, stock risk, SEO, CX)
+   - Use integrations clients; if not ready, keep fixtures with provenance.mode="dev:test"
+3) Route typing pass: add explicit loader return types + useLoaderData generics; remove `any`
+4) Accessibility polish: focus order, ARIA, keyboard shortcuts in Drawer; verify skip links
+5) Approvals constraints: disable Approve until /validate OK and ai-customer human_review=true
+6) Error states: per-tile fallbacks with retry + telemetry events
+7) Storybook regression: update stories; refresh screenshot baselines after visual diffs
+8) E2E: error paths for API down; validate resilient UI behavior
+9) Evidence bundle: attach P95 load timings, Lighthouse a11y, screenshots (3 breakpoints)
+10) Write WORK COMPLETE block with links to artifacts
 
-**4. Revenue Tile (2h)**
-- Connect to integrations API (`/api/shopify/revenue`)
-- Show last 30 days revenue + trend
-- Allowed paths: `app/components/dashboard/RevenueTile.tsx`
+Allowed paths
+- app/components/**, app/routes/**, tests/**, .storybook/**, docs/specs/**
 
-**5. AOV Tile (2h)**
-- Connect to integrations API (`/api/shopify/aov`)
-- Show average order value + trend
-- Allowed paths: `app/components/dashboard/AOVTile.tsx`
+Links
+- Issue: TBA by Manager (added on PR creation)
+- PR: TBA by Manager
 
-**6. Returns Tile (2h)**
-- Connect to integrations API (`/api/shopify/returns`)
-- Show return rate + trend
-- Allowed paths: `app/components/dashboard/ReturnsTile.tsx`
-
-**7. Stock Risk Tile (2h)**
-- Connect to integrations API (`/api/shopify/stock`)
-- Show products with WOS < 14 days
-- Allowed paths: `app/components/dashboard/StockRiskTile.tsx`
-
-**8. SEO Anomalies Tile (2h)**
-- Connect to SEO API (`/api/seo/anomalies`)
-- Show traffic drops, ranking losses
-- Allowed paths: `app/components/dashboard/SEOTile.tsx`
-
-**9. CX Queue Tile (2h)**
-- Connect to Chatwoot API
-- Show pending conversations
-- Allowed paths: `app/components/dashboard/CXTile.tsx`
-
-### Current Focus: Task 2 (Approvals Drawer)
-
-### Blockers: None
-
-### Critical:
-- ✅ Use Shopify MCP for ALL Polaris components
-- ✅ Signal "WORK COMPLETE - READY FOR PR" in feedback when done
-- ✅ NO git commands (manager handles)
-- ✅ NO new .md files except feedback
+Changelog
+- 2.0 (2025-10-17) — Added tomorrow’s objective based on 2025-10-16 feedback (52 tasks complete)
 
 ## 16) Examples
 

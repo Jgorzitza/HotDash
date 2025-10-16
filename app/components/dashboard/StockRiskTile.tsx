@@ -18,7 +18,6 @@ export function StockRiskTile({ skuCount, subtitle, trend, loading }: StockRiskT
       </Card>
     );
   }
-
   return (
     <Card>
       <BlockStack gap="400">
@@ -27,9 +26,7 @@ export function StockRiskTile({ skuCount, subtitle, trend, loading }: StockRiskT
           <Text as="h2" variant="heading2xl">{skuCount} SKUs</Text>
           <InlineStack gap="200" align="start" blockAlign="center">
             <Text as="p" tone="subdued">{subtitle}</Text>
-            {trend === "down" && (
-              <Badge tone="critical">⚠️</Badge>
-            )}
+            {trend === "down" && <Badge tone="critical">⚠️</Badge>}
           </InlineStack>
         </BlockStack>
       </BlockStack>

@@ -9,7 +9,7 @@
 
 ## 1) Repo & CI Guardrails (2–4 min)
 - [ ] **Status checks green on `main`**: _Docs Policy, Danger, Gitleaks, Validate AI Agent Config_.
-- [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis).
+- [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis). Capture a quick note or screenshot link in your feedback confirming the status.
 - [ ] Run local policy checks:
   ```bash
   node scripts/policy/check-docs.mjs
@@ -24,15 +24,7 @@
 - [ ] **Agents SDK/HITL** config intact: `app/agents/config/agents.json` has `ai-customer.human_review: true` and reviewers.
 - [ ] (If social enabled) Ayrshare environment secret present (never hard-coded).
 
-## 3) Manager-Controlled Git — Daily Flow (new)
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For each agent with a WORK COMPLETE block today:
-  - Create/checkout branch: `agent/<agent>/<YYYYMMDD>-<task>`
-  - Add only files in Allowed paths; commit with evidence reference
-  - Push and create PR (`gh pr create ...`)
-- [ ] Merge when CI green; update direction to next task
-
-## 3) Project status review and Agent direction (3–5 min)
+## 3) Project Status Review and Agent Direction (3–5 min)
 
 ### 3.1 At-a-glance (30–45 sec)
 - [ ] **Milestone** on track? (tasks ≤ 2-day molecules)
@@ -80,7 +72,13 @@ For each active agent:
 
 > **Note:** Approvals/HITL is **out of scope in build/dev mode**. If the UI needs sample approvals to render, use **fixture entries** with `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.
 
-## 4 Drift Guard (2–4 min)
+## 4) Manager-Controlled Git — When Publishing Results
+- [ ] Run `node scripts/policy/check-feedback.mjs --date <today>` to spot WORK COMPLETE blocks.
+- [ ] For each ready slice, create/checkout `agent/<agent>/<YYYYMMDD>-<task>` branch, commit Allowed-path diffs with Issue reference, push, and open PR.
+- [ ] Merge only after CI green; update the agent’s direction to the next molecule.
+- [ ] If nothing is ready, leave this section for shutdown.
+
+## 5) Drift Guard (2–4 min)
 - [ ] Run docs policy again on your working branch:
   ```bash
   node scripts/policy/check-docs.mjs
@@ -92,18 +90,18 @@ For each active agent:
   ```
 - [ ] Glance for any stray `.md` or cross‑agent edits in repo and Bounce them.
 
-## 5 Quick Health Lights (Tiles should be green)
+## 6) Quick Health Lights (Tiles should be green)
 - [ ] Tile P95 < **3s** (prod).
 - [ ] Nightly rollup error rate < **0.5%** (last 24h).
 - [ ] Approvals SLA for CX met; growth & inventory reviews on track.
 - [ ] **0** secret incidents open.
 
-## 6 “Stop the Line” Triggers (do not proceed until resolved)
+## 7) “Stop the Line” Triggers (do not proceed until resolved)
 - Secrets detected (local or CI) → rotate, purge history, re-scan.
 - PR missing Issue linkage or Allowed paths → send back.
 - Approvals without evidence/rollback or failing `/validate` → send back.
 
-## 7 Start the Day (2 min)
+## 8) Start the Day (2 min)
 
 - [ ] Create/resize **Tasks** (≤ 2-day molecules) and set in the Issue:
       **owner**, **DoD**, and **Allowed paths** (fnmatch).
@@ -114,5 +112,4 @@ For each active agent:
 - [ ] (Optional) Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`.
 - [ ] Dev mode only: if UI needs sample approvals, use **fixtures** with
       `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.
-
 

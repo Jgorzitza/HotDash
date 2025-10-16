@@ -1,4 +1,5 @@
 interface FeatureFlags {
+  approvalsDrawer: boolean;
   revenueTile: boolean;
   aovTile: boolean;
   returnsTile: boolean;
@@ -9,6 +10,7 @@ interface FeatureFlags {
 }
 
 const defaultFlags: FeatureFlags = {
+  approvalsDrawer: true,
   revenueTile: true,
   aovTile: true,
   returnsTile: true,
@@ -20,10 +22,8 @@ const defaultFlags: FeatureFlags = {
 
 export function getFeatureFlags(): FeatureFlags {
   if (typeof window === "undefined") return defaultFlags;
-  
   const stored = localStorage.getItem("feature-flags");
-  if (\!stored) return defaultFlags;
-  
+  if (!stored) return defaultFlags;
   try {
     return { ...defaultFlags, ...JSON.parse(stored) };
   } catch {

@@ -70,6 +70,27 @@ Build GA4 integration to provide real data for dashboard tiles (Revenue, AOV, SE
 
 ## Changelog
 * 2.0 (2025-10-15) — ACTIVE: GA4 dashboard integration
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/analytics-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Tighten contracts and wire tiles
+
+Status: ACTIVE
+Priority: P1 — Solidify tile loader contracts, GA health, and route typing
+
+Tasks (initial 8)
+1) Finalize TileData contract; export types for useLoaderData
+2) Route typing pass: explicit loader return types; remove `any`
+3) Wire /api/dashboard/tiles to dashboard tiles; add fallback mocks guard
+4) GA health: ensure /api/health/ga emits clear status + sampling/quota flags
+5) Caching TTL tests: add/adjust unit tests for cache boundaries
+6) Phase 2: trend smoothing hooks + tests (SMA/EMA)
+7) Evidence bundle: timings, sample responses, screenshots
+8) WORK COMPLETE block with links
+
+Allowed paths: app/lib/analytics/**, app/routes/**, tests/**, docs/specs/**
+
 * 1.0 (2025-10-15) — Placeholder
 
 ### Feedback Process (Canonical)

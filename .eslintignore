@@ -4,3 +4,7 @@ public/build
 */*.yml
 .shopify
 supabase/functions
+
+docs/_archive
+artifacts
+apps/agent-service/dist

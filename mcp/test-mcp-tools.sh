@@ -97,6 +97,20 @@ else
 fi
 echo ""
 
+# Test 7: LlamaIndex MCP (HTTP)
+echo -e "${BLUE}7. Testing LlamaIndex MCP (HTTP)${NC}"
+if ss -tln 2>/dev/null | grep -q ':4000' || netstat -tln 2>/dev/null | grep -q ':4000'; then
+    echo "   ✓ Server is running on port 4000"
+    if curl -s -m 5 -f http://localhost:4000/health >/dev/null 2>&1; then
+        echo "   ✓ Health endpoint OK"
+    fi
+    echo -e "   ${GREEN}Ready to use LlamaIndex MCP${NC}"
+else
+    echo -e "   ${RED}✗ Server not running on port 4000${NC}"
+    echo "   ℹ Start LlamaIndex server: (cd apps/llamaindex-mcp-server && PORT=4000 npm start)"
+fi
+echo ""
+
 # Summary
 echo "======================="
 echo "📋 Summary"

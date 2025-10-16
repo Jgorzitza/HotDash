@@ -98,6 +98,16 @@
         "user_behavior_analysis",
         "conversion_tracking"
       ]
+    },
+    "llamaindex-rag": {
+      "description": "LlamaIndex RAG MCP server for knowledge base queries and insights",
+      "type": "http",
+      "url": "https://hotdash-llamaindex-mcp.fly.dev/mcp",
+      "capabilities": [
+        "semantic_search",
+        "index_refresh",
+        "insight_reporting"
+      ]
     }
   },
   "usage_guidelines": {
@@ -188,7 +198,18 @@
         "Analyze user demographics",
         "Track campaign performance"
       ]
+    },
+    "llamaindex-rag": {
+      "when_to_use": [
+        "Answering support questions using internal docs/FAQs/runbooks",
+        "Refreshing the knowledge base vector index after content updates",
+        "Generating insight reports from telemetry and curated replies"
+      ],
+      "examples": [
+        "Query shipping policy for wholesale customers via llamaindex-rag",
+        "Call llamaindex.refresh_index with full=true",
+        "Generate a 30-day insight report highlighting top support themes"
+      ]
     }
   }
 }
-

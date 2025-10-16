@@ -7,13 +7,6 @@
  */
 
 
-import { 
-  exportRevenueToCSV, 
-  exportTrafficToCSV, 
-  exportProductsToCSV, 
-  exportUTMToCSV,
-  generateCSVFilename 
-} from '../../services/analytics/export.ts';
 
 export async function loader({ request }: any) {
   try {
@@ -22,6 +15,14 @@ export async function loader({ request }: any) {
 
     let csv: string;
     let filename: string;
+
+    const {
+      exportRevenueToCSV,
+      exportTrafficToCSV,
+      exportProductsToCSV,
+      exportUTMToCSV,
+      generateCSVFilename
+    } = await import('../services/analytics/export.ts');
 
     switch (type) {
       case 'revenue':

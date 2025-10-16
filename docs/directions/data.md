@@ -142,67 +142,25 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 * **Encryption:** PII encrypted at rest (Supabase default)
 * **Audit tables:** Immutable; append-only; no deletes
 
-## 15) Today's Objective (2025-10-15) - UPDATED
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/data-2025-10-16.md
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+## Tomorrow’s Objective (2025-10-17) — Approvals/Audit Foundation
 
-### Task List (9 tasks):
+Status: ACTIVE
+Priority: P0 — Ship reversible migrations + RPCs for approvals/audit
 
-**1. ✅ Dashboard RPC Functions (COMPLETE - PR #34 MERGED)**
+Tasks (initial 8)
+1) Apply approvals/audit migrations locally; include rollback scripts
+2) Seed 5 approvals rows (mixed states) for demo; document provenance
+3) Implement RPCs: get_approvals_list, get_approvals_queue_tile
+4) Add EXPLAIN ANALYZE notes and ensure P95 <100ms for key queries
+5) Write RLS policies and tests; verify least-privilege
+6) Provide sample SQL/ts queries to Engineer for tiles
+7) Evidence bundle: timings, EXPLAIN output, rollback plan
+8) WORK COMPLETE block with links
 
-**2. Approvals Schema (NEXT - 3h)**
-- Tables: approvals, grades, edits
-- RLS policies for user access
-- Allowed paths: `supabase/migrations/*`
-
-**3. Audit Log Schema (2h)**
-- Immutable audit trail table
-- Append-only constraints
-- Allowed paths: `supabase/migrations/*`
-
-**4. Inventory Schema (3h)**
-- Tables: products, inventory_snapshots, sales_velocity, picker_payouts
-- ROP calculation fields
-- Allowed paths: `supabase/migrations/*`
-
-**5. CX Metrics Schema (2h)**
-- Conversation stats, response times, quality grades
-- Allowed paths: `supabase/migrations/*`
-
-**6. Growth Metrics Schema (2h)**
-- SEO, ads, content performance
-- Allowed paths: `supabase/migrations/*`
-
-**7. RLS Policies for All Tables (3h)**
-- Least-privilege access per user role
-- Test policies thoroughly
-- Allowed paths: `supabase/migrations/*`
-
-**8. Database Indexes for Performance (2h)**
-- Identify slow queries
-- Add indexes strategically
-- Allowed paths: `supabase/migrations/*`
-
-**9. Migration Rollback Scripts (2h)**
-- Down migrations for all changes
-- Test rollback procedures
-- Allowed paths: `supabase/migrations/*.rollback.sql`
-
-### Current Focus: Task 2 (Approvals Schema)
-
-### Blockers: None
-
-### Critical:
-- ✅ Use Supabase MCP for all database work
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ All tables must have RLS policies
+Allowed paths: supabase/migrations/**, supabase/functions/**, docs/specs/**, tests/**
 
 ## 16) Examples
 

@@ -1,0 +1,275 @@
+name: Cost Monitoring
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-github-actions-usage:
+    name: Check GitHub Actions Usage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get Actions usage
+        id: usage
+        run: |
+          # Get current billing cycle usage
+          USAGE=$(gh api /repos/${{ github.repository }}/actions/billing/usage --jq '.total_minutes_used')
+          INCLUDED=$(gh api /repos/${{ github.repository }}/actions/billing/usage --jq '.included_minutes')
+          
+          echo "minutes_used=$USAGE" >> $GITHUB_OUTPUT
+          echo "included_minutes=$INCLUDED" >> $GITHUB_OUTPUT
+          
+          # Calculate percentage
+          if [ "$INCLUDED" -gt 0 ]; then
+            PERCENT=$(echo "scale=2; ($USAGE / $INCLUDED) * 100" | bc)
+          else
+            PERCENT=0
+          fi
+          echo "percent_used=$PERCENT" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get workflow statistics
+        id: workflows
+        run: |
+          # Get workflow run statistics for the last 30 days
+          THIRTY_DAYS_AGO=$(date -u -d '30 days ago' +%Y-%m-%d 2>/dev/null || date -u -v-30d +%Y-%m-%d)
+          
+          # Get all workflow runs
+          gh api "/repos/${{ github.repository }}/actions/runs?created=>=$THIRTY_DAYS_AGO&per_page=100" \
+            --jq '.workflow_runs[] | "\(.name),\(.conclusion),\(.run_started_at)"' > workflow_runs.csv
+          
+          # Count by workflow
+          echo "## Workflow Run Counts (Last 30 Days)" > workflow_stats.md
+          echo "" >> workflow_stats.md
+          
+          for workflow in $(cat workflow_runs.csv | cut -d',' -f1 | sort -u); do
+            TOTAL=$(grep "^$workflow," workflow_runs.csv | wc -l)
+            SUCCESS=$(grep "^$workflow,success," workflow_runs.csv | wc -l || echo "0")
+            FAILURE=$(grep "^$workflow,failure," workflow_runs.csv | wc -l || echo "0")
+            
+            echo "- **$workflow**: $TOTAL runs ($SUCCESS success, $FAILURE failures)" >> workflow_stats.md
+          done
+          
+          cat workflow_stats.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Calculate estimated cost
+        id: cost
+        run: |
+          MINUTES_USED=${{ steps.usage.outputs.minutes_used }}
+          INCLUDED=${{ steps.usage.outputs.included_minutes }}
+          
+          # Free tier: 2000 minutes/month
+          # Overage cost: $0.008 per minute for private repos
+          
+          if [ "$MINUTES_USED" -gt "$INCLUDED" ]; then
+            OVERAGE=$((MINUTES_USED - INCLUDED))
+            COST=$(echo "scale=2; $OVERAGE * 0.008" | bc)
+            echo "overage_minutes=$OVERAGE" >> $GITHUB_OUTPUT
+            echo "estimated_cost=$COST" >> $GITHUB_OUTPUT
+            echo "has_overage=true" >> $GITHUB_OUTPUT
+          else
+            echo "overage_minutes=0" >> $GITHUB_OUTPUT
+            echo "estimated_cost=0.00" >> $GITHUB_OUTPUT
+            echo "has_overage=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate cost report
+        run: |
+          cat <<MD > cost-report.md
+          # GitHub Actions Cost Report
+          
+          **Reporting Period:** $(date -u +"%Y-%m-%d")
+          
+          ## Usage Summary
+          
+          - **Minutes Used:** ${{ steps.usage.outputs.minutes_used }}
+          - **Included Minutes:** ${{ steps.usage.outputs.included_minutes }}
+          - **Percentage Used:** ${{ steps.usage.outputs.percent_used }}%
+          - **Overage Minutes:** ${{ steps.cost.outputs.overage_minutes }}
+          - **Estimated Cost:** \$${{ steps.cost.outputs.estimated_cost }}
+          
+          ## Status
+          
+          $(if [ "${{ steps.cost.outputs.has_overage }}" = "true" ]; then
+            echo "⚠️ **WARNING:** Exceeding free tier limits"
+          else
+            echo "✅ **OK:** Within free tier limits"
+          fi)
+          
+          ## Recommendations
+          
+          $(if [ "${{ steps.usage.outputs.percent_used }}" -gt 80 ]; then
+            echo "- Consider optimizing workflow efficiency"
+            echo "- Review caching strategies"
+            echo "- Reduce workflow frequency if possible"
+          else
+            echo "- Usage is within acceptable limits"
+            echo "- Continue monitoring monthly"
+          fi)
+          
+          ## Workflow Statistics
+          
+          $(cat workflow_stats.md)
+          
+          ## Cost Optimization Tips
+          
+          1. **Use caching:** Cache dependencies to reduce build times
+          2. **Optimize workflows:** Remove unnecessary steps
+          3. **Reduce frequency:** Adjust cron schedules if possible
+          4. **Use conditions:** Skip workflows when not needed
+          5. **Monitor usage:** Review this report monthly
+          
+          ---
+          
+          *Generated by GitHub Actions Cost Monitoring*
+          MD
+          
+          cat cost-report.md
+
+      - name: Upload cost report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cost-report-$(date +%Y-%m-%d)
+          path: cost-report.md
+          retention-days: 90
+
+      - name: Create issue if over budget
+        if: steps.cost.outputs.has_overage == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '⚠️ GitHub Actions Usage Exceeds Free Tier';
+            const body = `
+            ## GitHub Actions Cost Alert
+            
+            The repository has exceeded the free tier limits for GitHub Actions.
+            
+            ### Usage Details
+            - **Minutes Used:** ${{ steps.usage.outputs.minutes_used }}
+            - **Included Minutes:** ${{ steps.usage.outputs.included_minutes }}
+            - **Overage:** ${{ steps.cost.outputs.overage_minutes }} minutes
+            - **Estimated Cost:** \$${{ steps.cost.outputs.estimated_cost }}
+            
+            ### Action Required
+            - [ ] Review workflow efficiency
+            - [ ] Optimize caching strategies
+            - [ ] Consider reducing workflow frequency
+            - [ ] Review cost report artifact
+            
+            ### Cost Report
+            See workflow artifacts for detailed cost report.
+            
+            **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            `;
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'cost-alert'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['cost-alert', 'P2', 'devops']
+              });
+            }
+
+      - name: Summary
+        run: |
+          {
+            echo "## GitHub Actions Cost Summary";
+            echo "";
+            echo "- **Minutes Used:** ${{ steps.usage.outputs.minutes_used }}";
+            echo "- **Included Minutes:** ${{ steps.usage.outputs.included_minutes }}";
+            echo "- **Percentage:** ${{ steps.usage.outputs.percent_used }}%";
+            echo "- **Overage:** ${{ steps.cost.outputs.overage_minutes }} minutes";
+            echo "- **Estimated Cost:** \$${{ steps.cost.outputs.estimated_cost }}";
+            echo "";
+            if [ "${{ steps.cost.outputs.has_overage }}" = "true" ]; then
+              echo "⚠️ **Exceeding free tier limits**";
+            else
+              echo "✅ **Within free tier limits**";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  check-fly-io-usage:
+    name: Check Fly.io Usage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Get Fly.io app info
+        run: |
+          echo "## Fly.io Resource Usage" > fly-usage.md
+          echo "" >> fly-usage.md
+          
+          for app in hotdash-staging hotdash-production; do
+            echo "### $app" >> fly-usage.md
+            echo "" >> fly-usage.md
+            
+            # Get app status
+            STATUS=$(fly status -a $app --json 2>/dev/null || echo "{}")
+            
+            if [ "$STATUS" != "{}" ]; then
+              MACHINES=$(echo "$STATUS" | jq -r '.Machines | length')
+              MEMORY=$(echo "$STATUS" | jq -r '.Machines[0].config.guest.memory_mb')
+              CPU=$(echo "$STATUS" | jq -r '.Machines[0].config.guest.cpus')
+              
+              echo "- **Machines:** $MACHINES" >> fly-usage.md
+              echo "- **Memory:** ${MEMORY}MB per machine" >> fly-usage.md
+              echo "- **CPU:** $CPU per machine" >> fly-usage.md
+              echo "" >> fly-usage.md
+            else
+              echo "- App not found or not accessible" >> fly-usage.md
+              echo "" >> fly-usage.md
+            fi
+          done
+          
+          cat fly-usage.md
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Upload Fly.io usage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: fly-usage-report-$(date +%Y-%m-%d)
+          path: fly-usage.md
+          retention-days: 90
+
+  summary:
+    name: Cost monitoring summary
+    runs-on: ubuntu-latest
+    needs: [check-github-actions-usage, check-fly-io-usage]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Cost Monitoring Summary";
+            echo "";
+            echo "- **GitHub Actions Check:** ${{ needs.check-github-actions-usage.result }}";
+            echo "- **Fly.io Check:** ${{ needs.check-fly-io-usage.result }}";
+            echo "";
+            echo "See workflow artifacts for detailed reports.";
+          } >> "$GITHUB_STEP_SUMMARY"
+

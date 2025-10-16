@@ -66,6 +66,27 @@ Build SEO anomalies detection for dashboard tile (traffic drops > 20%, ranking l
 - ✅ Clear anomaly thresholds
 - ✅ Signal "WORK COMPLETE - READY FOR PR" when done
 - ✅ NO git commands
+
+[Archived] 2025-10-16 objectives moved to docs/_archive/directions/seo-2025-10-16.md
+
+
+## Tomorrow’s Objective (2025-10-17) — Tile wiring & thresholds
+
+Status: ACTIVE
+Priority: P1 — Deliver tile-ready loaders and thresholds with tests
+
+Tasks (initial 8)
+1) Finalize rankings/anomalies → tile props mapping; export types
+2) Implement loaders with sampling/fallback when GA down; add unit tests
+3) Add Search Console facade (mocked) with contract tests
+4) Document trend thresholds and KPIs; align with Product
+5) Wire CSV export for keywords; provide sample
+6) Evidence bundle: sample responses, screenshots, tests
+7) Open Issues for gaps (manager to create)
+8) WORK COMPLETE block with links
+
+Allowed paths: app/lib/seo/**, app/routes/api/seo/**, tests/**, docs/specs/**
+
 - ✅ Test with real data
 
 ## Changelog

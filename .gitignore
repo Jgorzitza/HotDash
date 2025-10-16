@@ -58,3 +58,8 @@ artifacts/
 # Binary installers
 *.deb
 feedback/img/
+
+
+# Lint-only ignores (eslint --ignore-path .gitignore)
+docs/_archive/
+apps/agent-service/dist/
