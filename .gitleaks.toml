@@ -1,0 +1,15 @@
+title = "HotDash Gitleaks Configuration"
+
+author = "Augment Agent"
+
+[allowlist]
+  description = "Ignore redacted placeholders and archived docs"
+  # Ignore the literal word REDACTED (common in docs/tests/examples)
+  regexes = [
+    "(?i)REDACTED"
+  ]
+  # Archived docs are historical references and may contain redacted examples
+  paths = [
+    "^docs/_archive/.*"
+  ]
+

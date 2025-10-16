@@ -7,18 +7,19 @@
  */
 
 
-import { 
-  exportRevenueToCSV, 
-  exportTrafficToCSV, 
-  exportProductsToCSV, 
-  exportUTMToCSV,
-  generateCSVFilename 
-} from '../../services/analytics/export.ts';
 
 export async function loader({ request }: any) {
   try {
     const url = new URL(request.url);
     const type = url.searchParams.get('type') || 'revenue';
+
+    const {
+      exportRevenueToCSV,
+      exportTrafficToCSV,
+      exportProductsToCSV,
+      exportUTMToCSV,
+      generateCSVFilename
+    } = await import('../services/analytics/export.ts');
 
     let csv: string;
     let filename: string;

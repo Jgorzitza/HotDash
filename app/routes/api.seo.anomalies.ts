@@ -16,7 +16,7 @@
  */
 
 import { json, type LoaderFunctionArgs } from 'react-router';
-import { getLandingPageAnomalies } from '../../services/ga/ingest';
+import { getLandingPageAnomalies } from '../services/ga/ingest';
 import {
   detectTrafficAnomalies,
   detectRankingAnomalies,
@@ -28,7 +28,7 @@ import {
   type RankingAnomalyInput,
   type VitalsAnomalyInput,
   type CrawlErrorInput,
-} from '../../lib/seo/anomalies';
+} from '../lib/seo/anomalies';
 
 /**
  * Mock data generators for Search Console and Core Web Vitals

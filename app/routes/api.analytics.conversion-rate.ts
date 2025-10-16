@@ -7,12 +7,12 @@
  */
 
 
-import { getConversionMetrics } from '../../lib/analytics/ga4.ts';
 
 export async function loader({ request }: any) {
   try {
+    const { getConversionMetrics } = await import('../lib/analytics/ga4.ts');
     const metrics = await getConversionMetrics();
-    
+
     return Response.json({
       success: true,
       data: metrics,
