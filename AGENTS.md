@@ -13,9 +13,9 @@ This document lists the guardrails for any headless sub-agent launched by the ma
 
 ## Budget Defaults
 
-- **Tokens**: ≤ 12k per task unless direction overrides.
-- **Runtime**: ≤ 30 minutes wall-clock per task before manager review.
-- **Changed files**: ≤ 30 files; above that requires `wide-change` label in direction.
+- **Tokens**: ≤ 140k per task unless direction overrides.
+- **Runtime**: ≤ 60 minutes wall-clock per task before manager review.
+- **Changed files**: ≤ 50 files; above that requires a `wide-change` label in the task direction with justification.
 
 ## Required Checks
 
@@ -36,7 +36,7 @@ Attach logs or screenshots of the checks in the PR description.
 
 - Never commit secrets or vault contents.
 - If a credential or product decision is missing, pause that lane and file `reports/manager/ESCALATION.md`.
-- If the diff touches more than 30 files or cross-cuts modules, notify manager for re-slicing.
+- If the diff touches more than 50 files or cross-cuts modules, notify manager for re-slicing and add `wide-change` with justification.
 
 ## References
 

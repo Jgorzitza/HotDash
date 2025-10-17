@@ -8,7 +8,7 @@
 
 Describe the outcome this agent must deliver for the current sprint. Keep it actionable and measurable.
 
-## Current Tasks
+## Tasks
 
 1. <Task 1 – include short imperative, deliverable, proof required>
 2. <Task 2>
@@ -20,7 +20,7 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 
 - **Allowed Tools:** <bash, npm, codex exec, etc.>
 - **Touched Directories:** <list of allowed directories>
-- **Budget:** <time/token/test limits>
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 (unless `wide-change` with justification)
 - **Guardrails:** reference immutable rules and any feature flags
 
 ## Definition of Done
@@ -31,6 +31,12 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 - [ ] `npm run scan` (secrets) with clean report
 - [ ] Docs/runbooks updated when behavior changes
 - [ ] Feedback entry written to the correct file
+- [ ] Contract test in this packet passes (describe how to run it)
+
+## Contract Test
+
+- **Command:** <e.g. `npm run test -- path/to/spec.ts`>
+- **Expectations:** <establish the observable behavior required>
 
 ## Risk & Rollback
 

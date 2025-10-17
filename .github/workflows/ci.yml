@@ -30,3 +30,12 @@ jobs:
           name: junit
           path: artifacts/**/*.xml
           if-no-files-found: ignore
+
+  manager-outcome:
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Assert manager produced PR or escalation
+        run: ./scripts/manager/assert-outcome.sh

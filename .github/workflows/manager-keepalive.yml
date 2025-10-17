@@ -1,0 +1,22 @@
+name: Manager Keepalive
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  keepalive:
+    name: Verify manager heartbeat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate heartbeat freshness
+        run: |
+          ./scripts/manager/heartbeat-check.sh
