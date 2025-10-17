@@ -27,11 +27,12 @@ vi.mock("../../app/services/facts.server", () => ({
 }));
 
 const mockAdmin = (payload: MockResponsePayload) => ({
-  graphql: vi.fn(async () =>
-    new Response(JSON.stringify(payload), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    }),
+  graphql: vi.fn(
+    async () =>
+      new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
   ),
 });
 
@@ -96,10 +97,14 @@ describe("getSalesPulseSummary", () => {
     expect(result.data.totalRevenue).toBe(120.5);
     expect(result.data.orderCount).toBe(1);
     expect(result.data.topSkus).toHaveLength(2);
-    expect(result.data.pendingFulfillment[0]?.orderId).toBe("gid://shopify/Order/1");
+    expect(result.data.pendingFulfillment[0]?.orderId).toBe(
+      "gid://shopify/Order/1",
+    );
     expect(result.source).toBe("fresh");
 
-    const { recordDashboardFact } = await import("../../app/services/facts.server");
+    const { recordDashboardFact } = await import(
+      "../../app/services/facts.server"
+    );
     expect(recordDashboardFact).toHaveBeenCalledWith(
       expect.objectContaining({
         factType: "shopify.sales.summary",

@@ -1,107 +1,63 @@
-# Direction: inventory
+# Inventory Direction
 
-> Location: `docs/directions/inventory.md`
-> Owner: manager
-> Version: 2.0
-> Effective: 2025-10-15
+- **Owner:** Manager Sub-Agent
+- **Effective:** 2025-10-17
+- **Version:** 1.0
 
----
+## Objective
 
-## 1) Purpose
+Deliver launch-ready inventory automation covering ROP calculations, Supabase views, Shopify sync, picker payout updates, and feedback hygiene for the release.
 
-Design **inventory data model** and prepare for ROP (reorder point) calculations, kits/bundles, and picker payouts.
+## Current Tasks
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+1. Diff feature pack inventory schema against current migrations; draft migration plan in feedback.
+2. Author combined migration bundle for inventory tables/views/RPCs with rollback script (`supabase/migrations/20251017_inventory_bundle.sql`).
+3. Implement ROP + safety stock calculations in Supabase views/functions; attach SQL diff.
+4. Update picker payout tables and Supabase policies per feature pack notes; document rationale.
+5. Generate inventory dashboard materialized views feeding `app/components/dashboard/ReturnsTile.tsx` and new heatmap tile.
+6. Refresh bundle + kit metadata sync to Shopify (server + worker) ensuring `PACK:` codes handled; add unit tests.
+7. Extend inventory service to expose payout brackets and publish to dashboard tile; capture API contract.
+8. Wire inventory alert thresholds into Prometheus metrics; log sample output.
+9. Build CSV PO export script and validate with sample data; attach artifact.
+10. Add inventory fixtures to `tests/fixtures/` for Vitest/Playwright coverage.
+11. Coordinate with Integrations on Supabase RPC deployment; log handshake notes.
+12. Validate returns tile metrics vs Supabase aggregates; attach comparison log.
+13. Update `docs/specs/inventory_pipeline.md` with new data flow diagrams.
+14. Produce rollback plan for inventory migrations in `docs/runbooks/migration_rollback.md`.
+15. Run `npm run test:ci` focused on inventory services and record logs.
+16. Ensure monitoring alerts (Prometheus, Fly) capture low stock + urgent reorder thresholds; document configuration.
+17. Sync with QA to confirm Playwright coverage for inventory workflows; note completion.
+18. Write feedback to feedback/inventory/2025-10-17.md and clean stray md files.
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P1 - Inventory System
+## Constraints
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+- **Allowed Tools:** bash, node, npm, npx prettier, supabase, rg
+- **Touched Directories:** docs/directions/inventory.md
+- **Budget:** ≤ 30 minutes, ≤ 4,000 tokens, ≤ 3 files modified/staged
+- **Guardrails:** Keep execution scoped to inventory direction scope across Supabase, Shopify, and Prometheus deliverables.
 
-### Task List (9 tasks):
+## Definition of Done
 
-**1. ✅ Data Model Spec (COMPLETE - PR #32)**
+- [ ] Objective satisfied within inventory automation scope (Supabase, Shopify, Prometheus).
+- [ ] `npm run fmt` and `npm run lint` completed with attached evidence.
+- [ ] `npm run test:ci` (inventory focus) executed with captured logs.
+- [ ] `npm run scan` secrets check recorded clean.
+- [ ] Docs and runbooks updated for inventory migrations and dashboards.
+- [ ] Feedback entry filed in `feedback/inventory/2025-10-17.md`.
 
-**2. ROP Calculation Service (NEXT - 4h)**
-- Implement ROP formula: lead-time demand + safety stock
-- Allowed paths: `app/services/inventory/rop.ts`
+## Risk & Rollback
 
-**3. PO Generation Service (3h)**
-- Generate PO CSV/email from ROP calculations
-- Allowed paths: `app/services/inventory/po-generator.ts`
+- **Risk Level:** Medium — inventory mismatches impact operational readiness.
+- **Rollback Plan:** Use migration rollback bundle and disable Shopify sync feature flags if regressions surface.
+- **Monitoring:** Track Supabase job outputs, Prometheus alert thresholds, and dashboard tile metrics post-deploy.
 
-**4. Kit/Bundle Tracking (3h)**
-- Track component inventory for bundles
-- Allowed paths: `app/services/inventory/kits.ts`
+## Links & References
 
-**5. Picker Payout Calculation (3h)**
-- Calculate payouts based on brackets
-- Allowed paths: `app/services/inventory/payouts.ts`
+- Template: `docs/directions/agenttemplate.md`
+- Feature Pack Notes: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/`, `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/05-integrations/`
+- Specs: `docs/specs/inventory_pipeline.md`, `docs/specs/inventory_sync.md`
+- Feedback: `feedback/inventory/2025-10-17.md`
 
-**6. Inventory Heatmap UI (4h)**
-- Visual heatmap of stock status
-- Allowed paths: `app/components/inventory/Heatmap.tsx`
+## Change Log
 
-**7. Low Stock Alerts (2h)**
-- Alert when WOS < threshold
-- Allowed paths: `app/services/inventory/alerts.ts`
-
-**8. Reorder Suggestions (3h)**
-- AI-powered reorder recommendations
-- Allowed paths: `app/services/inventory/suggestions.ts`
-
-**9. Shopify Metafields Integration (3h)**
-- Sync metafields to Supabase
-- Allowed paths: `app/services/inventory/metafields-sync.ts`
-
-### Current Focus: Task 2 (ROP Calculation)
-
-### Blockers: None
-
-### Critical:
-- ✅ ROP formula must be accurate
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ Coordinate with Data on schema
-
----
-
-## Changelog
-* 2.0 (2025-10-15) — ACTIVE: Inventory data model and metafields research
-* 1.0 (2025-10-15) — Placeholder: Awaiting foundation milestone
-
-### Feedback Process (Canonical)
-- Use exactly: \ for today
-- Append evidence and tool outputs through the day
-- On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) ROP service (lead-time demand + safety stock)
-2) Vendor lead time ingestion
-3) Safety stock policy config
-4) PO CSV generator
-5) PO email draft (HITL) with evidence
-6) WOS calculator per SKU
-7) Stockout risk detector
-8) Overstock detector
-9) Replenishment recommendations
-10) Inventory tile UI hooks
-11) Low-stock alerts wiring
-12) Audit log writes for changes
-13) Backorder import support
-14) Kit/bundle handling
-15) Seasonality factor toggle
-16) Velocity calc (30/60/90-day)
-17) Unit tests for ROP edge cases
-18) Integration tests with data RPC
-19) Vendor profile (lead time, MOQ)
-20) Slack digest (read-only)
-21) CSV import/export handlers
-22) Forecast vs actuals report
-23) Metrics: stockout reduction KPI
-24) Rollback strategy for PO errors
-25) Docs/specs for inventory models
+- 2025-10-17: Version 1.0 – Template rewrite with launch inventory tasks.

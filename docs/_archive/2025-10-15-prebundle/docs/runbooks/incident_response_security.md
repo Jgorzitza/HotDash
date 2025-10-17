@@ -12,6 +12,7 @@
 This playbook defines procedures for responding to security incidents affecting HotDash (Operator Control Center).
 
 **Scope:** Security incidents including:
+
 - Data breaches / unauthorized access
 - Secret exposure (tokens, keys, credentials)
 - API security incidents
@@ -28,9 +29,11 @@ This playbook defines procedures for responding to security incidents affecting 
 ### 2.1 Severity Levels
 
 #### P0 - CRITICAL (Response: Immediate)
+
 **Impact:** Active data breach, widespread service disruption, regulatory breach
 
 **Examples:**
+
 - Customer data exposed publicly
 - Production credentials compromised
 - RLS bypass allowing unauthorized access
@@ -42,9 +45,11 @@ This playbook defines procedures for responding to security incidents affecting 
 **Notifications:** All stakeholders, customers (if data exposed)
 
 #### P1 - HIGH (Response: 1 hour)
+
 **Impact:** Potential data exposure, significant security control failure
 
 **Examples:**
+
 - Secret exposed in code/logs (not yet exploited)
 - Authentication bypass discovered
 - Suspicious access patterns detected
@@ -56,9 +61,11 @@ This playbook defines procedures for responding to security incidents affecting 
 **Notifications:** Core team, compliance
 
 #### P2 - MEDIUM (Response: 4 hours)
+
 **Impact:** Security control degradation, limited exposure risk
 
 **Examples:**
+
 - Expired vendor DPA
 - Failed compliance checks
 - Rate limiting not working
@@ -70,9 +77,11 @@ This playbook defines procedures for responding to security incidents affecting 
 **Notifications:** Relevant team members
 
 #### P3 - LOW (Response: 24 hours)
+
 **Impact:** Minor security gap, no immediate risk
 
 **Examples:**
+
 - Missing documentation
 - Informational security scan findings
 - Security enhancement recommendations
@@ -85,16 +94,16 @@ This playbook defines procedures for responding to security incidents affecting 
 
 ### 2.2 Incident Types
 
-| Type | Description | Initial Classification | Escalation Triggers |
-|------|-------------|----------------------|---------------------|
-| **Data Breach** | Unauthorized access to customer/business data | P0 | Always escalate |
-| **Secret Exposure** | API keys, tokens, passwords exposed | P1 (P0 if exploited) | If exploited or public |
-| **Auth Failure** | Authentication or authorization bypass | P1 | If actively exploited |
-| **DoS/DDoS** | Service disruption via flooding | P0 (if successful) | Sustained attack |
-| **Malware** | Malicious code on systems | P0 | Always escalate |
-| **Insider Threat** | Unauthorized actions by team member | P0 | Always escalate |
-| **Compliance** | Regulatory violation or audit failure | P2 (P1 if legal) | Legal involvement |
-| **Vendor Incident** | Third-party security incident affecting us | P1 | Customer data involved |
+| Type                | Description                                   | Initial Classification | Escalation Triggers    |
+| ------------------- | --------------------------------------------- | ---------------------- | ---------------------- |
+| **Data Breach**     | Unauthorized access to customer/business data | P0                     | Always escalate        |
+| **Secret Exposure** | API keys, tokens, passwords exposed           | P1 (P0 if exploited)   | If exploited or public |
+| **Auth Failure**    | Authentication or authorization bypass        | P1                     | If actively exploited  |
+| **DoS/DDoS**        | Service disruption via flooding               | P0 (if successful)     | Sustained attack       |
+| **Malware**         | Malicious code on systems                     | P0                     | Always escalate        |
+| **Insider Threat**  | Unauthorized actions by team member           | P0                     | Always escalate        |
+| **Compliance**      | Regulatory violation or audit failure         | P2 (P1 if legal)       | Legal involvement      |
+| **Vendor Incident** | Third-party security incident affecting us    | P1                     | Customer data involved |
 
 ---
 
@@ -103,24 +112,28 @@ This playbook defines procedures for responding to security incidents affecting 
 ### 3.1 Core Response Team
 
 **Incident Commander (Manager)**
+
 - Overall incident coordination
 - Decision authority
 - Customer communication approval
 - Post-incident review lead
 
 **Security Lead (Compliance Agent)**
+
 - Technical investigation
 - Evidence collection
 - Remediation execution
 - Compliance reporting
 
 **Engineering Lead (Engineer Agent)**
+
 - System access and control
 - Code fixes and deployments
 - Database operations
 - System recovery
 
 **Communications Lead (Manager)**
+
 - Internal stakeholder updates
 - Customer notifications (if needed)
 - Vendor coordination
@@ -129,12 +142,14 @@ This playbook defines procedures for responding to security incidents affecting 
 ### 3.2 Extended Team (On-Call)
 
 **Legal Counsel**
+
 - Regulatory reporting requirements
 - Customer notification review
 - Vendor contract issues
 - Litigation risk assessment
 
 **QA Agent**
+
 - Testing fixes
 - Verifying remediation
 - Security regression testing
@@ -143,11 +158,13 @@ This playbook defines procedures for responding to security incidents affecting 
 ### 3.3 Contact Information
 
 **Core Team:**
+
 - Manager: [See RESTART_CHECKLIST.md for contact]
 - Compliance: This agent (always available)
 - Engineer: Agent (always available)
 
 **Escalation Paths:**
+
 1. Level 1: Core Response Team
 2. Level 2: + QA, Legal (if needed)
 3. Level 3: + External security consultant
@@ -162,6 +179,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Objective:** Identify and classify the incident
 
 **Actions:**
+
 1. **Detect Incident**
    - Monitoring alerts
    - User reports
@@ -181,6 +199,7 @@ This playbook defines procedures for responding to security incidents affecting 
    - Start incident log
 
 **Checklist:**
+
 - [ ] Incident detected and logged
 - [ ] Severity classified (P0/P1/P2/P3)
 - [ ] Incident Commander assigned
@@ -188,6 +207,7 @@ This playbook defines procedures for responding to security incidents affecting 
 - [ ] Incident timeline started
 
 **Evidence Collection:**
+
 - Logs from affected systems
 - Screenshots of alerts
 - User reports
@@ -198,6 +218,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Objective:** Stop the incident from spreading
 
 **Actions:**
+
 1. **Isolate Affected Systems**
    - Revoke compromised credentials
    - Block malicious IPs
@@ -219,12 +240,14 @@ This playbook defines procedures for responding to security incidents affecting 
 **Containment Procedures by Type:**
 
 **Data Breach:**
+
 1. Identify scope (which data, how much, when)
 2. Revoke access (disable accounts, rotate keys)
 3. Block access vectors (close endpoints, update RLS)
 4. Preserve evidence (logs, database snapshots)
 
 **Secret Exposure:**
+
 1. Identify exposed secret (type, location, age)
 2. Rotate secret immediately
 3. Check for exploitation (logs, metrics)
@@ -232,18 +255,21 @@ This playbook defines procedures for responding to security incidents affecting 
 5. Update all references
 
 **Auth Failure:**
+
 1. Identify bypass mechanism
 2. Disable affected endpoint if possible
 3. Add temporary extra validation
 4. Monitor auth logs for exploitation
 
 **DoS Attack:**
+
 1. Identify attack source (IPs, patterns)
 2. Implement rate limiting
 3. Block attacker IPs (Fly.io, Cloudflare)
 4. Scale up resources if needed
 
 **Checklist:**
+
 - [ ] Incident contained (not spreading)
 - [ ] Evidence preserved
 - [ ] Temporary fixes applied
@@ -255,6 +281,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Objective:** Remove the root cause
 
 **Actions:**
+
 1. **Root Cause Analysis**
    - How did it happen?
    - What vulnerability was exploited?
@@ -276,30 +303,35 @@ This playbook defines procedures for responding to security incidents affecting 
 **Eradication Procedures by Type:**
 
 **Data Breach:**
+
 1. Close access vector (RLS fix, endpoint disable)
 2. Verify no backdoors remain
 3. Change all affected credentials
 4. Review audit logs for other breaches
 
 **Secret Exposure:**
+
 1. Remove secret from all locations (code, logs, docs)
 2. Verify secret rotation complete
 3. Check all systems using secret
 4. Update secret management process
 
 **Auth Failure:**
+
 1. Fix authentication logic
 2. Add/fix authorization checks
 3. Review similar endpoints
 4. Add security tests
 
 **DoS Attack:**
+
 1. Implement permanent rate limiting
 2. Add monitoring for similar attacks
 3. Review capacity planning
 4. Consider DDoS protection service
 
 **Checklist:**
+
 - [ ] Root cause identified
 - [ ] Permanent fix developed
 - [ ] Fix tested in staging
@@ -312,6 +344,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Objective:** Return to normal operations
 
 **Actions:**
+
 1. **System Restoration**
    - Re-enable disabled services
    - Restore from backups if needed
@@ -339,6 +372,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Recovery Procedures by Type:**
 
 **Data Breach:**
+
 1. Verify no unauthorized access remains
 2. Enhanced monitoring (7 days)
 3. Customer notification (if required by GDPR/CCPA)
@@ -346,24 +380,28 @@ This playbook defines procedures for responding to security incidents affecting 
 5. Update DPIA with incident details
 
 **Secret Exposure:**
+
 1. Verify all services using new secret
 2. Monitor for use of old secret (should be none)
 3. Update credential index
 4. Post-mortem on how it was exposed
 
 **Auth Failure:**
+
 1. Monitor auth success/failure rates
 2. Check for bypasses of new controls
 3. Review similar endpoints again
 4. Update security test suite
 
 **DoS Attack:**
+
 1. Monitor request rates
 2. Verify rate limiting effective
 3. Review capacity and scaling
 4. Consider DDoS protection if recurring
 
 **Checklist:**
+
 - [ ] All systems operational
 - [ ] Enhanced monitoring active
 - [ ] Customer notifications sent (if needed)
@@ -375,6 +413,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **Objective:** Learn and improve
 
 **Actions:**
+
 1. **Post-Incident Review Meeting**
    - Timeline review
    - What went well?
@@ -402,6 +441,7 @@ This playbook defines procedures for responding to security incidents affecting 
    - Action items with owners
 
 **Post-Incident Checklist:**
+
 - [ ] Post-incident review held
 - [ ] Action items assigned
 - [ ] Documentation updated
@@ -420,6 +460,7 @@ This playbook defines procedures for responding to security incidents affecting 
 **To:** Core response team + stakeholders
 
 **Body:**
+
 ```
 Security Incident Notification
 
@@ -453,6 +494,7 @@ Updates will be provided every [30 minutes for P0, 2 hours for P1].
 **To:** Affected customers
 
 **Body:**
+
 ```
 Dear [Customer Name],
 
@@ -497,6 +539,7 @@ Additional Resources:
 **Subject:** Data Breach Notification - [Organization Name]
 
 **Body:**
+
 ```
 Data Breach Notification
 
@@ -540,6 +583,7 @@ Attachments:
 **Subject:** [P0/P1] Incident Update - [HH:MM] [Date]
 
 **Body:**
+
 ```
 Incident Update - [Time]
 
@@ -569,6 +613,7 @@ Incident Commander: [Name]
 **Subject:** [P0/P1] Incident Resolved - [Brief Description]
 
 **Body:**
+
 ```
 Incident Resolution
 
@@ -609,6 +654,7 @@ Questions: Contact [Incident Commander]
 ### 6.1 Escalation Triggers
 
 **Automatic Escalation (P0 → All hands):**
+
 - Active data breach with customer data exposed
 - Production systems compromised
 - Ransomware or malware detected
@@ -616,6 +662,7 @@ Questions: Contact [Incident Commander]
 - Incident duration > 4 hours unresolved
 
 **Manager Escalation (P1 → P0):**
+
 - Secret exploitation detected
 - Authentication bypass actively used
 - DoS attack sustained > 1 hour
@@ -623,6 +670,7 @@ Questions: Contact [Incident Commander]
 - Customer complaints increasing
 
 **Legal Escalation:**
+
 - Customer PII exposed (>10 customers)
 - Regulatory reporting required
 - Potential lawsuit or liability
@@ -631,22 +679,26 @@ Questions: Contact [Incident Commander]
 ### 6.2 Escalation Paths
 
 **Level 1: Core Response Team**
+
 - Manager (Incident Commander)
 - Compliance (Security Lead)
 - Engineer (Technical Lead)
 
 **Level 2: Extended Team**
+
 - QA (Testing/Validation)
 - Legal (Regulatory)
 - Product (Customer Impact)
 
 **Level 3: External Support**
+
 - Security consultant
 - Forensics expert
 - Legal counsel (external)
 - PR/Communications firm
 
 **Level 4: Authorities**
+
 - Law enforcement
 - Regulatory bodies
 - Industry partners (if coordinated attack)
@@ -654,6 +706,7 @@ Questions: Contact [Incident Commander]
 ### 6.3 Decision Authority
 
 **Incident Commander (Manager):**
+
 - Classification changes
 - Communication approval
 - Customer notifications
@@ -661,18 +714,21 @@ Questions: Contact [Incident Commander]
 - Post-incident review authority
 
 **Security Lead (Compliance):**
+
 - Technical containment decisions
 - Evidence collection
 - Remediation plans
 - Compliance reporting
 
 **Engineering Lead:**
+
 - System changes
 - Deployments during incident
 - Database operations
 - Access revocations
 
 **Legal Counsel:**
+
 - Regulatory notifications
 - Customer notification wording
 - Law enforcement engagement
@@ -687,6 +743,7 @@ Questions: Contact [Incident Commander]
 **Create in:** `artifacts/compliance/incidents/incident_[YYYY-MM-DD]_[ID].md`
 
 **Template:**
+
 ```markdown
 # Security Incident Log
 
@@ -704,31 +761,34 @@ Questions: Contact [Incident Commander]
 
 ## Timeline
 
-| Time (UTC) | Event | Actor | Actions Taken |
-|------------|-------|-------|---------------|
-| [HH:MM] | Incident detected | [Who] | [What they did] |
-| [HH:MM] | Containment started | [Who] | [Actions] |
-| [HH:MM] | Evidence preserved | [Who] | [What was saved] |
-| [HH:MM] | Root cause identified | [Who] | [Finding] |
-| [HH:MM] | Fix deployed | [Who] | [What was fixed] |
-| [HH:MM] | Incident resolved | [Who] | [Verification] |
+| Time (UTC) | Event                 | Actor | Actions Taken    |
+| ---------- | --------------------- | ----- | ---------------- |
+| [HH:MM]    | Incident detected     | [Who] | [What they did]  |
+| [HH:MM]    | Containment started   | [Who] | [Actions]        |
+| [HH:MM]    | Evidence preserved    | [Who] | [What was saved] |
+| [HH:MM]    | Root cause identified | [Who] | [Finding]        |
+| [HH:MM]    | Fix deployed          | [Who] | [What was fixed] |
+| [HH:MM]    | Incident resolved     | [Who] | [Verification]   |
 
 ---
 
 ## Incident Details
 
 ### Detection
+
 **How Detected:** [Alert / User report / Security scan / etc.]  
 **Detection Time:** [YYYY-MM-DDTHH:MM:SSZ]  
 **Detection Source:** [System / Tool / Person]
 
 ### Impact
+
 **Systems Affected:** [List]  
 **Data Exposed:** [Type and volume]  
 **Users Affected:** [Count and details]  
 **Service Disruption:** [Duration and extent]
 
 ### Root Cause
+
 **Vulnerability:** [What was exploited]  
 **Attack Vector:** [How they got in]  
 **Why Controls Failed:** [Gap analysis]
@@ -736,14 +796,17 @@ Questions: Contact [Incident Commander]
 ### Response Actions
 
 **Containment:**
+
 - [Action 1]
 - [Action 2]
 
 **Eradication:**
+
 - [Permanent fix 1]
 - [Permanent fix 2]
 
 **Recovery:**
+
 - [Recovery step 1]
 - [Recovery step 2]
 
@@ -775,14 +838,17 @@ Questions: Contact [Incident Commander]
 **Report:** [Link to final report]
 
 **Action Items:**
+
 - [ ] [Action 1] - Owner: [Name], Due: [Date]
 - [ ] [Action 2] - Owner: [Name], Due: [Date]
 
 **Lessons Learned:**
+
 1. [Lesson 1]
 2. [Lesson 2]
 
 **Improvements Implemented:**
+
 1. [Improvement 1] - Status: [Done/In Progress]
 2. [Improvement 2] - Status: [Done/In Progress]
 
@@ -801,6 +867,7 @@ Questions: Contact [Incident Commander]
 **Detection:** Code review or automated scan
 
 **Response:**
+
 1. **Immediate (P1 - 15 min):**
    - Rotate exposed secret
    - Check logs for usage of old secret
@@ -822,6 +889,7 @@ Questions: Contact [Incident Commander]
    - Update secret management process
 
 **Prevention:**
+
 - Gitleaks pre-commit hook (already implemented)
 - Secret scanning in CI/CD
 - Credential management training
@@ -831,6 +899,7 @@ Questions: Contact [Incident Commander]
 **Detection:** Security audit or bug report
 
 **Response:**
+
 1. **Immediate (P0/P1 - 10 min):**
    - Assess if actively exploited (check logs)
    - If exploited: Disable affected endpoint
@@ -853,6 +922,7 @@ Questions: Contact [Incident Commander]
    - Security scan to verify fix
 
 **Prevention:**
+
 - RLS policy testing in CI/CD
 - Regular security audits
 - Peer review of all RLS changes
@@ -862,6 +932,7 @@ Questions: Contact [Incident Commander]
 **Detection:** Monitoring alerts, service degradation
 
 **Response:**
+
 1. **Immediate (P0 - 5 min):**
    - Identify attack source (IPs, patterns)
    - Check service health
@@ -883,6 +954,7 @@ Questions: Contact [Incident Commander]
    - Review and adjust rate limits
 
 **Prevention:**
+
 - Implement rate limiting (Task BZ-C recommendation)
 - Add request monitoring and alerting
 - Consider DDoS protection service
@@ -892,6 +964,7 @@ Questions: Contact [Incident Commander]
 **Detection:** Vendor notification
 
 **Response:**
+
 1. **Immediate (P1 - 1 hour):**
    - Read vendor notification carefully
    - Assess our exposure (what data, which systems)
@@ -913,6 +986,7 @@ Questions: Contact [Incident Commander]
    - Update vendor security requirements
 
 **Prevention:**
+
 - Vendor security assessments
 - Incident notification clauses in contracts
 - Data minimization with vendors
@@ -924,21 +998,25 @@ Questions: Contact [Incident Commander]
 ### 9.1 Incident Response Tools
 
 **Logging & Monitoring:**
+
 - Supabase logs: `supabase logs --project-ref <ref>`
 - Fly.io logs: `fly logs --app hot-dash`
 - Decision logs: Query `decision_sync_event_logs` table
 
 **Secret Management:**
+
 - Vault: `vault/occ/` directory
 - Credential index: `docs/ops/credential_index.md`
 - Rotation scripts: `scripts/ops/`
 
 **Evidence Collection:**
+
 - Screenshot tool: Built-in OS tools
 - Log export: Supabase dashboard or CLI
 - Database snapshots: `pg_dump` via Supabase
 
 **Communication:**
+
 - Email templates: This document (Section 5)
 - Status page: (If implemented)
 - Internal chat: Use standard channels
@@ -946,16 +1024,19 @@ Questions: Contact [Incident Commander]
 ### 9.2 External Resources
 
 **Regulatory Guidance:**
+
 - GDPR Breach Notification: https://gdpr.eu/data-breach-notification/
 - CCPA Requirements: https://oag.ca.gov/privacy/ccpa
 - ICO Guidance: https://ico.org.uk/for-organisations/
 
 **Security Resources:**
+
 - NIST Incident Response: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf
 - SANS Incident Handler: https://www.sans.org/tools/
 - OWASP Incident Response: https://cheatsheetseries.owasp.org/cheatsheets/Incident_Response_Cheat_Sheet.html
 
 **Tools:**
+
 - gitleaks: https://github.com/gitleaks/gitleaks
 - BFG Repo-Cleaner: https://rtyley.github.io/bfg-repo-cleaner/
 - Have I Been Pwned: https://haveibeenpwned.com/
@@ -967,18 +1048,21 @@ Questions: Contact [Incident Commander]
 ### 10.1 Incident Response Training
 
 **All Team Members (Annually):**
+
 - Incident classification
 - Escalation paths
 - Communication protocols
 - Reporting procedures
 
 **Response Team (Quarterly):**
+
 - Playbook review
 - Tool usage
 - Evidence collection
 - Communication templates
 
 **Technical Team (Monthly):**
+
 - Containment procedures
 - System access during incidents
 - Log analysis
@@ -989,12 +1073,14 @@ Questions: Contact [Incident Commander]
 **Schedule:** Quarterly
 
 **Scenarios to Practice:**
+
 1. Data breach (customer data exposed)
 2. Secret exposure (API key in public repo)
 3. DoS attack (sustained traffic)
 4. Vendor breach (third-party incident)
 
 **Exercise Format:**
+
 - 90-minute session
 - Scenario presented by facilitator
 - Team works through response
@@ -1008,6 +1094,7 @@ Questions: Contact [Incident Commander]
 **Schedule:** Annually (after production launch)
 
 **Scope:**
+
 - Penetration testing
 - Social engineering attempts
 - Physical security (if applicable)
@@ -1022,20 +1109,24 @@ Questions: Contact [Incident Commander]
 ### 11.1 Incident Response Metrics
 
 **Response Time:**
+
 - P0: Target < 15 min detection to response
 - P1: Target < 1 hour
 - P2: Target < 4 hours
 - P3: Target < 24 hours
 
 **Containment Time:**
+
 - P0: Target < 1 hour
 - P1: Target < 4 hours
 
 **Resolution Time:**
+
 - P0: Target < 24 hours
 - P1: Target < 72 hours
 
 **Detection Effectiveness:**
+
 - % of incidents detected by monitoring vs. reported
 - Time to detection
 - False positive rate
@@ -1043,12 +1134,14 @@ Questions: Contact [Incident Commander]
 ### 11.2 Tracking
 
 **Monthly Report:**
+
 - Incident count by severity
 - Average response/resolution time
 - Recurring incident types
 - Action items completed vs. pending
 
 **Quarterly Review:**
+
 - Incident trends
 - Response effectiveness
 - Process improvements
@@ -1071,11 +1164,13 @@ Questions: Contact [Incident Commander]
 7. **Review** Learn and improve
 
 **Emergency Contacts:**
+
 - Manager: [See RESTART_CHECKLIST.md]
 - Compliance: This agent
 - Engineer: Agent
 
 **Key Resources:**
+
 - This playbook: `docs/runbooks/incident_response_security.md`
 - Communication templates: Section 5
 - Incident log template: Section 7
@@ -1083,16 +1178,19 @@ Questions: Contact [Incident Commander]
 ### Appendix B: Regulatory Reporting Timelines
 
 **GDPR (EU):**
+
 - Report to supervisory authority: 72 hours
 - Notify affected individuals: "without undue delay"
 - High risk: Immediate notification
 
 **CCPA (California):**
+
 - No specific breach notification law in CCPA
 - California Civil Code §1798.82 applies
 - Notify affected residents: "without unreasonable delay"
 
 **Other Jurisdictions:**
+
 - Check local data breach notification laws
 - Consult legal counsel for compliance
 
@@ -1121,16 +1219,17 @@ Is customer data exposed or likely to be exposed?
 **Owner:** Compliance Agent
 
 **Approval:**
+
 - [ ] Manager
 - [ ] Compliance
 - [ ] Engineer
 - [ ] Legal (if required)
 
 **Change Log:**
+
 - 2025-10-12: Initial version created (Task BZ-D)
 
 ---
 
 **Task BZ-D: ✅ COMPLETE**  
 **Incident Response:** 📋 PLAYBOOK READY
-

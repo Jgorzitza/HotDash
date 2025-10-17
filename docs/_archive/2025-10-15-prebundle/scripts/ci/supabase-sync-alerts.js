@@ -11,12 +11,7 @@ import path from "node:path";
 import process from "node:process";
 import readline from "node:readline";
 
-const SUCCESS_STATUSES = new Set([
-  "success",
-  "ok",
-  "completed",
-  "synced",
-]);
+const SUCCESS_STATUSES = new Set(["success", "ok", "completed", "synced"]);
 
 const FAILURE_STATUSES = new Set([
   "failure",
@@ -65,11 +60,7 @@ function toIsoString(value) {
 
 function determineClassification(record) {
   const rawStatus =
-    record.status ??
-    record.state ??
-    record.outcome ??
-    record.result ??
-    null;
+    record.status ?? record.state ?? record.outcome ?? record.result ?? null;
 
   const status = typeof rawStatus === "string" ? rawStatus.toLowerCase() : null;
 
@@ -141,21 +132,20 @@ async function fetchSupabaseRecords(options) {
   const scope = process.env.SUPABASE_SYNC_SCOPE ?? "ops";
 
   if (!url || !serviceKey) {
-    throw new Error("SUPABASE_URL and SUPABASE_SERVICE_KEY are required to fetch Supabase records.");
+    throw new Error(
+      "SUPABASE_URL and SUPABASE_SERVICE_KEY are required to fetch Supabase records.",
+    );
   }
 
   const minutes = toNumber(
-    options.get("since-minutes") ??
-      process.env.SUPABASE_SYNC_SINCE_MINUTES,
+    options.get("since-minutes") ?? process.env.SUPABASE_SYNC_SINCE_MINUTES,
     90,
   );
 
   const since = new Date(Date.now() - minutes * 60_000);
   const sinceIso = since.toISOString();
 
-  const query = new URL(
-    `${url.replace(/\/$/, "")}/rest/v1/${table}`,
-  );
+  const query = new URL(`${url.replace(/\/$/, "")}/rest/v1/${table}`);
 
   const params = [
     "select=decisionId,status,durationMs,errorCode,attempt,timestamp,scope",
@@ -194,9 +184,7 @@ async function fetchSupabaseRecords(options) {
 
 async function loadRecords(options) {
   const inputPath =
-    options.get("input") ??
-    process.env.SUPABASE_DECISION_SYNC_LOG_PATH ??
-    null;
+    options.get("input") ?? process.env.SUPABASE_DECISION_SYNC_LOG_PATH ?? null;
 
   if (inputPath) {
     return readNdjsonLines(inputPath);
@@ -243,8 +231,7 @@ function summarise(records) {
 
     if (record.status) {
       const normalized = String(record.status).toLowerCase();
-      summary.statuses[normalized] =
-        (summary.statuses[normalized] ?? 0) + 1;
+      summary.statuses[normalized] = (summary.statuses[normalized] ?? 0) + 1;
     }
 
     if (record.errorCode) {
@@ -269,10 +256,7 @@ function summarise(records) {
         decisionId: record.decisionId ?? record.id ?? null,
         status: record.status ?? null,
         errorCode: record.errorCode ?? null,
-        errorMessage:
-          record.errorMessage ??
-          record.error_message ??
-          null,
+        errorMessage: record.errorMessage ?? record.error_message ?? null,
         durationMs: Number.isFinite(duration) ? duration : null,
         attempt: record.attempt ?? record.retryCount ?? null,
         timestamp,
@@ -343,16 +327,14 @@ async function main() {
     DEFAULT_FAILURE_RATE,
   );
   const p95Threshold = toNumber(
-    options.get("max-p95-ms") ??
-      process.env.SUPABASE_SYNC_MAX_P95_MS,
+    options.get("max-p95-ms") ?? process.env.SUPABASE_SYNC_MAX_P95_MS,
     DEFAULT_P95_THRESHOLD_MS,
   );
   const minSamples = Math.max(
     0,
     Math.floor(
       toNumber(
-        options.get("min-samples") ??
-          process.env.SUPABASE_SYNC_MIN_SAMPLES,
+        options.get("min-samples") ?? process.env.SUPABASE_SYNC_MIN_SAMPLES,
         DEFAULT_MIN_SAMPLES,
       ),
     ),

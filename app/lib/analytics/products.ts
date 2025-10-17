@@ -14,4 +14,3 @@ export interface ProductPerformance {
 export async function getProductPerformance(): Promise<ProductPerformance[]> {
   return [];
 }
-

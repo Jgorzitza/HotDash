@@ -1,19 +1,19 @@
-
 # Approvals Drawer — Product & Technical Spec (v1)
 
 **File:** `docs/specs/approvals_drawer_spec.md`  
 **Owner:** Manager  
 **Applies to:** Shopify‑embedded Admin app (Polaris), in‑app agents (OpenAI Agents SDK, TS), dev agents (MCP‑first)  
-**Goal:** One consistent workflow to review → approve → apply → audit → learn for *any* agent suggestion or customer reply.
+**Goal:** One consistent workflow to review → approve → apply → audit → learn for _any_ agent suggestion or customer reply.
 
 ---
 
 ## 1) Purpose
 
 Centralize approvals for:
-- **Customer Ops** — AI‑drafted replies (Chatwoot Email/Live Chat/SMS) with **HITL**.  
-- **Inventory** — Reorder point (ROP) suggestions, PO drafts, kit/pack adjustments.  
-- **Growth** — Social posts (Ayrshare) and SEO/ads changes (recommendations → approve‑to‑apply).  
+
+- **Customer Ops** — AI‑drafted replies (Chatwoot Email/Live Chat/SMS) with **HITL**.
+- **Inventory** — Reorder point (ROP) suggestions, PO drafts, kit/pack adjustments.
+- **Growth** — Social posts (Publer) and SEO/ads changes (recommendations → approve‑to‑apply).
 - **Misc** — Safe Shopify Admin mutations (guarded), Supabase updates (RPC).
 
 The drawer is the single path for changes. Everything else is read‑only. **No “side‑door” edits.**
@@ -24,16 +24,17 @@ The drawer is the single path for changes. Everything else is read‑only. **No 
 
 **States:** `draft → pending_review → approved → applied → audited → learned`
 
-- **Draft:** Agent proposes change; must attach evidence (queries/samples/diffs), projected impact, and rollback.  
-- **Pending Review:** Enters queue. SLA: **15 min** CX; **same day** inventory/growth.  
-- **Approved:** Human approves; all actions queued.  
-- **Applied:** Server executed tool calls; results persisted.  
-- **Audited:** Metrics/logs/IDs captured; optional rollback link.  
+- **Draft:** Agent proposes change; must attach evidence (queries/samples/diffs), projected impact, and rollback.
+- **Pending Review:** Enters queue. SLA: **15 min** CX; **same day** inventory/growth.
+- **Approved:** Human approves; all actions queued.
+- **Applied:** Server executed tool calls; results persisted.
+- **Audited:** Metrics/logs/IDs captured; optional rollback link.
 - **Learned:** If human edited, store edit + 1–5 grading for tone/accuracy/policy (customer‑facing); feed into evals.
 
 **Hard rules**
-- No apply without evidence + rollback.  
-- Only **server tools** (Shopify Admin GraphQL, Supabase RPC, Chatwoot API, Ayrshare). No direct client writes.  
+
+- No apply without evidence + rollback.
+- Only **server tools** (Shopify Admin GraphQL, Supabase RPC, Chatwoot API, Publer). No direct client writes.
 - Approvals recorded with actor, timestamp, diffs, and tool receipts.
 
 ---
@@ -41,20 +42,23 @@ The drawer is the single path for changes. Everything else is read‑only. **No 
 ## 3) UX Spec (Polaris Drawer)
 
 ### 3.1 Invocation
-- From tiles/lists: “Review” opens **Approvals Drawer** (modal drawer, large).  
+
+- From tiles/lists: “Review” opens **Approvals Drawer** (modal drawer, large).
 - URL supports deep‑link: `?approvalId=<id>`.
 
 ### 3.2 Sections (top → bottom)
-1) **Header** — Title `<type> · <short summary>`; subheader `Created <time> by <agent> • State: <chip>`.  
-2) **Evidence (open)** — Summary cards (“What changes?”, “Why now?”, “Impact forecast”); tabs: **Diffs**, **Samples**, **Queries/Links**, **Screenshots**.  
-3) **Risks & Rollback** — Pre‑filled by agent; reviewer can edit before approval.  
-4) **Tool Calls Preview** — Declarative list of server actions (endpoint, payload preview, dry‑run status).  
-5) **Audit** — After apply: receipts (IDs/timestamps), metrics affected, rollback link.  
-6) **Sticky Footer** — **Approve** (primary), **Request changes** (requires note), **Reject**.
+
+1. **Header** — Title `<type> · <short summary>`; subheader `Created <time> by <agent> • State: <chip>`.
+2. **Evidence (open)** — Summary cards (“What changes?”, “Why now?”, “Impact forecast”); tabs: **Diffs**, **Samples**, **Queries/Links**, **Screenshots**.
+3. **Risks & Rollback** — Pre‑filled by agent; reviewer can edit before approval.
+4. **Tool Calls Preview** — Declarative list of server actions (endpoint, payload preview, dry‑run status).
+5. **Audit** — After apply: receipts (IDs/timestamps), metrics affected, rollback link.
+6. **Sticky Footer** — **Approve** (primary), **Request changes** (requires note), **Reject**.
 
 ### 3.3 UX Rules
-- “Approve” disabled until: evidence present, rollback present, **/validate** returns OK.  
-- “Request changes” posts a **private note** (or internal comment) back to origin, state→`draft`.  
+
+- “Approve” disabled until: evidence present, rollback present, **/validate** returns OK.
+- “Request changes” posts a **private note** (or internal comment) back to origin, state→`draft`.
 - Shortcut: `Cmd/Ctrl+Enter` approves when valid.
 
 ---
@@ -128,29 +132,36 @@ alter table ai_reviews enable row level security;
 All routes auth’d; errors return `{ code, message, details? }`.
 
 ### 5.1 List queue
+
 `GET /api/approvals?state=<state>&kind=<kind>&limit=50&cursor=<id>`
 
 ### 5.2 Get one (drawer)
+
 `GET /api/approvals/:id` → returns full record (+ items).
 
 ### 5.3 Validate actions (dry‑run)
+
 `POST /api/approvals/:id/validate`  
 **Body** `{ "actions": [{ "tool": "shopify.inventory.adjust", "args": { ... } }] }`  
 **Response** `{ "ok": true, "results": [{ "tool": "...", "ok": true, "warnings": [] }] }`
 
 ### 5.4 Approve
+
 `POST /api/approvals/:id/approve`  
 **Body** `{ "reviewer": "github:justin", "notes": "Ship it" }`
 
 ### 5.5 Apply (execute actions)
+
 `POST /api/approvals/:id/apply`  
 **Response** `{ "ok": true, "state": "applied", "receipts": [{ "tool": "...", "ok": true, "id": "..." }] }`
 
 ### 5.6 Request changes / Reject
+
 `POST /api/approvals/:id/request_changes` or `/reject`  
 **Body** `{ "reviewer": "...", "reason": "Add shipping ETA" }`
 
 ### 5.7 Grade (HITL)
+
 `POST /api/approvals/:id/grade`  
 **Body** `{ "reviewer": "github:justin", "tone": 5, "accuracy": 5, "policy": 5, "notes": "" }`
 
@@ -159,20 +170,24 @@ All routes auth’d; errors return `{ code, message, details? }`.
 ## 6) Tool Adapters (server‑only)
 
 **Chatwoot**
-- `chatwoot.reply.fromNote(conversationId, noteId)` → post approved Private Note as public reply.  
+
+- `chatwoot.reply.fromNote(conversationId, noteId)` → post approved Private Note as public reply.
 - `chatwoot.tag.add(conversationId, tags[])`
 
 **Shopify Admin GraphQL**
-- `shopify.inventory.adjust(variantId, delta, locationId)`  
-- `shopify.product.tag.set(productId, tags[])`  
+
+- `shopify.inventory.adjust(variantId, delta, locationId)`
+- `shopify.product.tag.set(productId, tags[])`
 - Guard mutations; idempotency keys; retries.
 
 **Supabase**
-- `supabase.rpc.updateReorderPoint(variantId, rop)`  
+
+- `supabase.rpc.updateReorderPoint(variantId, rop)`
 - `supabase.rpc.createPO(poDraft)`
 
-**Social (Ayrshare)**
-- `social.post.ayrshare({ text, mediaUrls[], platforms[] })` — default to HITL in Agents SDK.
+**Social (Publer)**
+
+- `social.post.publer({ caption, firstComment?, media[], platforms[] })` — default to HITL in Agents SDK.
 
 Adapters return receipts: `{ tool, ok, id?, warnings?, raw? }`.
 
@@ -180,20 +195,21 @@ Adapters return receipts: `{ tool, ok, id?, warnings?, raw? }`.
 
 ## 7) Events & Realtime
 
-SSE `/api/approvals/events` (or WS):  
-- `approval.updated`  
-- `approval.validated`  
-- `approval.applied`  
-- `approval.audit.logged`  
+SSE `/api/approvals/events` (or WS):
+
+- `approval.updated`
+- `approval.validated`
+- `approval.applied`
+- `approval.audit.logged`
 - `approval.graded`
 
 ---
 
 ## 8) Security & Permissions
 
-- RLS scoping; org aware.  
-- Only reviewers/manager can approve/apply.  
-- Secrets only in server env (GitHub Environments).  
+- RLS scoping; org aware.
+- Only reviewers/manager can approve/apply.
+- Secrets only in server env (GitHub Environments).
 - Apply requires state=`approved` and re‑validation if payload changed.
 
 ---
@@ -201,23 +217,26 @@ SSE `/api/approvals/events` (or WS):
 ## 9) Observability
 
 **Metrics**
-- `approvals.queue.size{kind}`  
-- `approvals.sla.seconds{kind}`  
-- `approvals.apply.success|failure{tool}`  
+
+- `approvals.queue.size{kind}`
+- `approvals.sla.seconds{kind}`
+- `approvals.apply.success|failure{tool}`
 - `approvals.review.grade.avg{tone,accuracy,policy}`
 
 **Logs**
+
 - Structured JSON: approvalId, tool, payload hash (no secrets), result.
 
 **Traces**
+
 - Span per approval; child spans per tool call.
 
 ---
 
 ## 10) Performance Budgets
 
-- Drawer first paint ≤ **500ms** after fetch.  
-- Validation round‑trip ≤ **1.5s** p95.  
+- Drawer first paint ≤ **500ms** after fetch.
+- Validation round‑trip ≤ **1.5s** p95.
 - Apply end‑to‑end ≤ **5s** p95 (progress UI for longer jobs).
 
 ---
@@ -226,58 +245,62 @@ SSE `/api/approvals/events` (or WS):
 
 **Unit** — validators, adapters (stubs), state transitions.  
 **Integration** — each tool apply path + error/rollback.  
-**E2E (Playwright)**  
-1) Drawer renders evidence.  
-2) Approve disabled until evidence + rollback + /validate OK.  
-3) Approve → Apply → receipts visible → audit log written.  
-4) CX: Private Note → public reply on approval.  
-**Security** — non‑reviewer cannot approve/apply; RLS checks.  
-**Secrets** — CI Gitleaks green; push protection enabled.
+**E2E (Playwright)**
+
+1. Drawer renders evidence.
+2. Approve disabled until evidence + rollback + /validate OK.
+3. Approve → Apply → receipts visible → audit log written.
+4. CX: Private Note → public reply on approval.  
+   **Security** — non‑reviewer cannot approve/apply; RLS checks.  
+   **Secrets** — CI Gitleaks green; push protection enabled.
 
 ---
 
 ## 12) Definition of Done (DoD)
 
-- Drawer UI implemented with sections above; queue visible.  
-- Endpoints live: list/get/validate/approve/apply/request_changes/reject/grade.  
-- Adapters for Chatwoot, Shopify, Supabase, Ayrshare with retries + receipts.  
-- Supabase schema migrated; RLS enabled; seeds for demo.  
-- Metrics/logs wired; failures actionable.  
-- Tests passing (unit+integration+E2E).  
+- Drawer UI implemented with sections above; queue visible.
+- Endpoints live: list/get/validate/approve/apply/request_changes/reject/grade.
+- Adapters for Chatwoot, Shopify, Supabase, Publer with retries + receipts.
+- Supabase schema migrated; RLS enabled; seeds for demo.
+- Metrics/logs wired; failures actionable.
+- Tests passing (unit+integration+E2E).
 - Governance: PR references Issue, **Allowed paths** respected, CI green, no disallowed `.md`.
 
 ---
 
 ## 13) Acceptance Examples
 
-**13.1 Customer Reply (Email)**  
-- Evidence: 3 message samples; shipping feed shows ETA; apology template.  
-- Actions: `chatwoot.reply.fromNote(conversationId, noteId)`  
+**13.1 Customer Reply (Email)**
+
+- Evidence: 3 message samples; shipping feed shows ETA; apology template.
+- Actions: `chatwoot.reply.fromNote(conversationId, noteId)`
 - Rollback: follow‑up “discount apology” template.
 
-**13.2 Inventory ROP**  
-- Evidence: 30‑day sales rate, lead‑time, ROP formula, stock trend.  
-- Actions: `supabase.rpc.updateReorderPoint`, optional `createPO`.  
+**13.2 Inventory ROP**
+
+- Evidence: 30‑day sales rate, lead‑time, ROP formula, stock trend.
+- Actions: `supabase.rpc.updateReorderPoint`, optional `createPO`.
 - Rollback: revert ROP; cancel draft PO.
 
-**13.3 Social Post (HITL)**  
-- Evidence: copy, media preview, platforms, reference performance.  
-- Actions: `social.post.ayrshare`  
+**13.3 Social Post (HITL)**
+
+- Evidence: copy, media preview, platforms, reference performance.
+- Actions: `social.post.publer`
 - Rollback: delete/unpublish or corrective post.
 
 ---
 
 ## 14) Developer Notes
 
-- Dev agents use **MCP** tools to gather evidence and construct actions—no API guessing.  
-- In‑app agents (Agents SDK) should create approvals with `requireApproval: true`.  
+- Dev agents use **MCP** tools to gather evidence and construct actions—no API guessing.
+- In‑app agents (Agents SDK) should create approvals with `requireApproval: true`.
 - Drawer fetches `/api/approvals/:id` and calls `/validate` before enabling “Approve”.
 
 ---
 
 ## 15) Open Questions (manager to resolve before M2)
 
-- Which Shopify mutations are allowed in v1? (inventory only vs pricing too)  
-- Max posts/day per platform (Ayrshare plan) & rate limits?  
-- Reviewer rota/SLA enforcement (late‑review badge)?  
+- Which Shopify mutations are allowed in v1? (inventory only vs pricing too)
+- Max posts/day per platform (Publer workspace plan) & rate limits?
+- Reviewer rota/SLA enforcement (late‑review badge)?
 - One‑click rollback coverage in v1?

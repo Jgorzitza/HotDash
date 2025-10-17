@@ -5,43 +5,47 @@ requirements for tracking AI agent performance across all operational
 pipelines. The coding agent should implement the following in the
 existing platform using the established data and logging framework.
 
-------------------------------------------------------------------------
+---
 
 ## 1. Core Metrics to Track
 
 Each agent run must emit a structured log entry containing the following
 metrics:
 
-  -----------------------------------------------------------------------
-  Field                   Description
-  ----------------------- -----------------------------------------------
-  `run_id`                Unique UUID per agent execution
+---
 
-  `agent_name`            Identifier for the specific agent
+Field Description
 
-  `input_kind`            Type of work item (`ticket`, `order`, `faq`,
-                          etc.)
+---
 
-  `started_at`            UTC timestamp for run start
+`run_id` Unique UUID per agent execution
 
-  `ended_at`              UTC timestamp for run completion
+`agent_name` Identifier for the specific agent
 
-  `resolution`            Enum: `resolved`, `escalated`, or `failed`
+`input_kind` Type of work item (`ticket`, `order`, `faq`,
+etc.)
 
-  `self_corrected`        Boolean --- true if the agent fixed its own
-                          error
+`started_at` UTC timestamp for run start
 
-  `tokens_input`          Number of input tokens processed
+`ended_at` UTC timestamp for run completion
 
-  `tokens_output`         Number of output tokens produced
+`resolution` Enum: `resolved`, `escalated`, or `failed`
 
-  `cost_usd`              Approximate cost of the run
+`self_corrected` Boolean --- true if the agent fixed its own
+error
 
-  `sla_target_seconds`    SLA goal in seconds for this run
+`tokens_input` Number of input tokens processed
 
-  `metadata`              JSON payload with contextual IDs (e.g. shop_id,
-                          order_id)
-  -----------------------------------------------------------------------
+`tokens_output` Number of output tokens produced
+
+`cost_usd` Approximate cost of the run
+
+`sla_target_seconds` SLA goal in seconds for this run
+
+`metadata` JSON payload with contextual IDs (e.g. shop_id,
+order_id)
+
+---
 
 Optional metrics for derived dashboards: - **Average Resolution Time
 (ART)** = avg(ended_at - started_at) - **Self-Correction Rate (SCR)** =
@@ -51,13 +55,13 @@ where `resolution = escalated` - **Resolution Quality (RQ)** = mean of
 **Deflection Rate (DEF)** = % of issues resolved without human touch -
 **SLA Hit Rate (SLA)** = % resolved within SLA target
 
-------------------------------------------------------------------------
+---
 
 ## 2. Database Schema
 
 Create the following tables and view:
 
-``` sql
+```sql
 create table agent_run (
   run_id uuid primary key,
   agent_name text not null,
@@ -99,7 +103,7 @@ left join agent_qc q using(run_id)
 group by 1,2;
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 3. Ingestion Requirements
 
@@ -108,7 +112,7 @@ to the schema above.
 
 **Example JSON payload:**
 
-``` json
+```json
 {
   "run_id": "6a90b3d1-2c6b-4a3a-8bb9-23a93ebffb8e",
   "agent_name": "support-triage",
@@ -133,55 +137,61 @@ atomically. - Validate mandatory fields and resolution enum. -
 Automatically populate `started_at` and `ended_at` timestamps when
 available.
 
-------------------------------------------------------------------------
+---
 
 ## 4. Dashboard KPIs
 
 Implement dashboards powered by the `v_agent_kpis` view, exposing at
 least these widgets:
 
-  Widget                    Data Source                Type
-  ------------------------- -------------------------- -------------
-  Average Resolution Time   `avg_resolution_seconds`   Line
-  Self-Correction Rate      `self_correction_rate`     Bar
-  Escalation Percentage     `escalation_pct`           Stacked bar
-  SLA Hit Rate              `sla_hit_rate`             Stat
-  Cost per Resolution       `avg_cost_usd`             Scatter
-  Quality Score             `avg_quality`              Heatmap
+Widget Data Source Type
+
+---
+
+Average Resolution Time `avg_resolution_seconds` Line
+Self-Correction Rate `self_correction_rate` Bar
+Escalation Percentage `escalation_pct` Stacked bar
+SLA Hit Rate `sla_hit_rate` Stat
+Cost per Resolution `avg_cost_usd` Scatter
+Quality Score `avg_quality` Heatmap
 
 Each dashboard should support: - Filter by agent_name and date range. -
 Aggregation by day, week, and month. - Drill-down to individual runs
 (`run_id`).
 
-------------------------------------------------------------------------
+---
 
 ## 5. Alert Rules
 
 Configure threshold-based alerts using the metrics view:
 
-  -----------------------------------------------------------------------
-  Condition                  Threshold                  Action
-  -------------------------- -------------------------- -----------------
-  ART \> baseline × 1.5 (30  Dynamic                    Notify
-  min window)                                           `#ops-alerts`
+---
 
-  Escalation % \> 20 % over  Static                     Notify
-  last 100 runs                                         `#ops-alerts`
+Condition Threshold Action
 
-  SLA Hit Rate \< 90 %       Static                     Notify
-  (daily)                                               `#ops-alerts`
+---
 
-  Avg Cost per Resolution    Relative                   Notify
-  +20 % week-over-week                                  `#finance-ops`
-  -----------------------------------------------------------------------
+ART \> baseline × 1.5 (30 Dynamic Notify
+min window) `#ops-alerts`
 
-------------------------------------------------------------------------
+Escalation % \> 20 % over Static Notify
+last 100 runs `#ops-alerts`
+
+SLA Hit Rate \< 90 % Static Notify
+(daily) `#ops-alerts`
+
+Avg Cost per Resolution Relative Notify
++20 % week-over-week `#finance-ops`
+
+---
+
+---
 
 ## 6. Weekly Review Queries
 
 Provide scheduled summary outputs using these reference queries:
 
-``` sql
+```sql
 -- High-cost, low-quality agents
 select agent_name, avg_cost_usd, avg_quality
 from v_agent_kpis
@@ -204,17 +214,17 @@ group by 1
 order by misses desc;
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 7. Implementation Deliverables
 
--   Schema migration executed successfully.
--   Logging hook integrated in each agent runtime.
--   Ingest endpoint tested with sample payloads.
--   KPIs verified through initial dashboard queries.
--   Alert conditions configured and active.
+- Schema migration executed successfully.
+- Logging hook integrated in each agent runtime.
+- Ingest endpoint tested with sample payloads.
+- KPIs verified through initial dashboard queries.
+- Alert conditions configured and active.
 
-------------------------------------------------------------------------
+---
 
 **Ownership:** Engineering Ops\
 **Review Cadence:** Weekly\
@@ -229,6 +239,7 @@ order by misses desc;
 **Why**: CEO trains agents to match their voice, validates technical accuracy, builds trust in responses.
 
 **Workflow**:
+
 1. Agent generates proposed customer response
 2. Response goes to approval queue (pending_approvals table)
 3. CEO reviews and decides: Approve / Edit / Reject
@@ -236,8 +247,9 @@ order by misses desc;
 5. Agents learn from approval patterns
 
 **Training Goals**:
+
 - Week 1: 20% approval rate
-- Week 4: 50% approval rate  
+- Week 4: 50% approval rate
 - Week 12: 80% approval rate (agents match CEO voice)
 
 **NO Auto-Execute**: During training, 100% human-in-the-loop for customer interactions.

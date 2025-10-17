@@ -17,6 +17,7 @@
 ### The S.O.L.V.E. Method
 
 **S - Symptoms: What's happening?**
+
 ```
 Describe precisely what's wrong:
 - "Approval button grayed out" (specific)
@@ -29,6 +30,7 @@ Note:
 ```
 
 **O - Observe: What do you see?**
+
 ```
 Gather diagnostic information:
 - Screenshot error messages
@@ -38,6 +40,7 @@ Gather diagnostic information:
 ```
 
 **L - Lookup: Has this happened before?**
+
 ```
 Check resources:
 - Troubleshooting guide (common issues)
@@ -47,6 +50,7 @@ Check resources:
 ```
 
 **V - Verify: Is it just you?**
+
 ```
 Isolate the problem:
 - Try different browser
@@ -58,6 +62,7 @@ This tells you: My problem vs system problem
 ```
 
 **E - Escalate or Execute: Fix it or report it**
+
 ```
 If you can fix it:
 - Apply the solution
@@ -75,6 +80,7 @@ If you can't fix it:
 ### Common Dashboard Issues - Solutions
 
 **Issue 1: Tile Not Loading**
+
 ```
 Symptoms: One or more tiles showing "Loading..." forever
 
@@ -93,6 +99,7 @@ Quick Fix:
 ```
 
 **Issue 2: Data Seems Wrong**
+
 ```
 Symptoms: Tile shows data that doesn't match reality
 
@@ -109,6 +116,7 @@ Data freshness: Most tiles update every 5-15 minutes, not real-time
 ```
 
 **Issue 3: Can't Access Certain Features**
+
 ```
 Symptoms: Buttons grayed out, menus missing
 
@@ -129,11 +137,13 @@ Not a bug - might be role-based access
 **Before Escalating, Try:**
 
 **Resource 1: Troubleshooting Guide**
+
 - Location: `docs/enablement/operator_troubleshooting_guide.md`
 - Covers: 10 most common issues
 - Quick fixes for 80% of problems
 
 **Resource 2: Browser DevTools**
+
 ```
 Press F12 to open developer console
 
@@ -146,6 +156,7 @@ This helps engineering diagnose faster!
 ```
 
 **Resource 3: Slack Search**
+
 ```
 Search #occ-enablement for your issue:
 - "approval button not working"
@@ -156,6 +167,7 @@ Often someone had the same issue and solution is already posted
 ```
 
 **Resource 4: Known Issues Doc**
+
 ```
 Check: docs/runbooks/known_issues.md (if exists)
 
@@ -232,6 +244,7 @@ d) Escalate - refunds over $50 need approval
 ---
 
 **[Questions 6-15 continue covering:]**
+
 - Subscription handling
 - Multi-issue scenarios
 - Confidence score interpretation
@@ -250,6 +263,7 @@ d) Escalate - refunds over $50 need approval
 ### Practical Skills Assessment
 
 **Component 1: Live Approval Review** (30 minutes)
+
 ```
 Operator completes 10 real approvals under supervision:
 
@@ -267,6 +281,7 @@ Scoring: 8/10 criteria met = Pass
 ```
 
 **Component 2: Scenario Assessment** (30 minutes)
+
 ```
 Written assessment using scenarios from practice library:
 
@@ -282,10 +297,11 @@ Scoring: 8/10 correct decisions = Pass
 ```
 
 **Component 3: Troubleshooting Simulation** (15 minutes)
+
 ```
 Present 3 technical issues:
 1. "Approval button not responding"
-2. "AI citing wrong policy version repeatedly"  
+2. "AI citing wrong policy version repeatedly"
 3. "Dashboard showing incorrect data"
 
 Operator must:
@@ -303,6 +319,7 @@ Scoring: 2/3 correct approaches = Pass
 **Knowledge Check (20 questions, 35 minutes)**
 
 **Focus Areas:**
+
 - Complex multi-issue scenarios
 - Policy edge cases
 - Advanced escalation judgment
@@ -314,9 +331,11 @@ Scoring: 2/3 correct approaches = Pass
 **Question Examples:**
 
 "Customer at 30 days exactly (delivery was 30 days ago today). Within policy?"
+
 - **Answer:** Yes - policy is "30 days from delivery" so Day 0-30 = within
 
 "You notice AI using outdated policy 5 times this week. What should you do beyond rejecting?"
+
 - **Answer:** Report pattern to #occ-enablement, suggest KB indexing update
 
 **Passing Score:** 17/20 correct (85%)
@@ -324,6 +343,7 @@ Scoring: 2/3 correct approaches = Pass
 ---
 
 **Practical Assessment:**
+
 - Handle 20 approvals (mix of difficulty)
 - Achieve 95%+ accuracy
 - Demonstrate efficiency (<2 min average)
@@ -336,6 +356,7 @@ Scoring: 2/3 correct approaches = Pass
 **Knowledge Check (25 questions, 45 minutes)**
 
 **Advanced Topics:**
+
 - Training other operators (what would you teach?)
 - System architecture understanding
 - Strategic escalation decisions
@@ -345,9 +366,11 @@ Scoring: 2/3 correct approaches = Pass
 **Question Examples:**
 
 "You're training a new operator. They ask 'How do I know when to escalate?' How do you explain it?"
+
 - **Answer:** Looking for clear teaching ability, comprehensive answer, use of examples
 
 "You notice approval rate dropping from 80% to 65% over 2 weeks. What might be causing this and how do you investigate?"
+
 - **Answer:** Multiple possible causes - KB issues, AI calibration, policy changes, operator drift. Systematic investigation approach.
 
 **Passing Score:** 23/25 correct (92%)
@@ -355,6 +378,7 @@ Scoring: 2/3 correct approaches = Pass
 ---
 
 **Practical Assessment:**
+
 - Mentor new operator to Level 1 certification
 - Contribute to system improvement (accepted suggestions)
 - Maintain expert metrics for 4 weeks
@@ -367,6 +391,7 @@ Scoring: 2/3 correct approaches = Pass
 **Digital Badges (Open Badges Standard):**
 
 **Level 1: Certified Operator** 🥉
+
 ```json
 {
   "name": "Hot Rodan Approval Queue - Certified Operator",
@@ -384,6 +409,7 @@ Scoring: 2/3 correct approaches = Pass
 ```
 
 **Level 2: Senior Operator** 🥈
+
 ```json
 {
   "name": "Hot Rodan Approval Queue - Senior Operator",
@@ -397,6 +423,7 @@ Scoring: 2/3 correct approaches = Pass
 ```
 
 **Level 3: Expert Operator** 🥇
+
 ```json
 {
   "name": "Hot Rodan Approval Queue - Expert Operator",
@@ -416,21 +443,25 @@ Scoring: 2/3 correct approaches = Pass
 **For Managers:**
 
 **Scheduling:**
+
 - Level 1: End of Week 1 (after pilot training)
 - Level 2: Week 3-4 (after practice period)
 - Level 3: Week 6-8 (after sustained performance)
 
 **Proctoring:**
+
 - Knowledge checks: Self-administered, honor system
 - Practical assessments: Manager or Senior Operator observes
 - Scenario assessments: Written, reviewed by manager
 
 **Scoring:**
+
 - Knowledge check: Auto-scored (if digital) or manual
 - Practical: Rubric-based scoring
 - Scenario: Answer key provided
 
 **Results:**
+
 - Pass: Award certification, celebrate!
 - Near-miss (75-79%): Review missed items, retake in 48 hours
 - Fail (<75%): Additional training, retake in 1 week
@@ -445,4 +476,3 @@ Scoring: 2/3 correct approaches = Pass
 **Purpose:** Advanced problem-solving + complete certification test designs
 
 ✅ **TASKS 2O & 2P COMPLETE**
-

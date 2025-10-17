@@ -6,21 +6,23 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Launch Communications Packet — Operator Control Center
 
 ## Approval & Evidence Tracker
-| Surface | Owner | Status (2025-10-10) | Evidence / Placeholder |
-|---------|-------|----------------------|------------------------|
-| In-app banner | Marketing | Copy updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence** | `docs/marketing/product_approval_packet_2025-10-07.md#banner` |
-| Launch email | Marketing | Copy updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence** | `docs/marketing/product_approval_packet_2025-10-07.md#email` |
-| Blog post | Marketing | Draft updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence** | `docs/marketing/product_approval_packet_2025-10-07.md#blog-post` |
-| Tooltip overlays & modal visuals | Design | ⚠️ Admin embed overlays pending Shopify token; React Router spec refreshed 2025-10-10 | Spec: `docs/design/tooltip_modal_annotations_2025-10-09.md`, handoff: `artifacts/engineering/modal-react-router-handoff_2025-10-10.md`, offline mocks: `artifacts/design/offline-cx-sales-package-2025-10-11/`, placeholder → upload Admin overlays to `artifacts/design/tooltip-overlays/2025-10-10/` once token lands |
-| Telemetry & readiness evidence | Marketing + Reliability | ✅ Supabase parity + staging smoke (`?mock=1`) captured; Shopify staging secrets validated | `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`, `artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`, `feedback/reliability.md` (2025-10-10 01:14 UTC) |
-| Staging smoke (`?mock=0`) | Reliability | ⏳ Pending QA sign-off; capture immediately once HTTP 200 sustained | Placeholder → `artifacts/monitoring/synthetic-check-<timestamp>-mock0.json` + `artifacts/integrations/shopify/2025-10-10/curl_mock0_<timestamp>.log` |
-| Staging access rollout comms | Marketing + Support | Ready pending live smoke; announcement + acknowledgement tracker staged | `docs/enablement/dry_run_training_materials.md#draft-announcement-copy-hold-until-mock0-200`, `docs/enablement/dry_run_training_materials.md#acknowledgement-log-template` |
-| Supabase NDJSON export | Reliability + Data | ✅ Delivered 2025-10-10 07:29 UTC; bundle ready for comms packet | `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson` |
-| Staging readiness broadcast (internal ops) | Support ↔ Marketing | Templates staged — awaiting `DEPLOY-147` evidence drop | §2B, `artifacts/ops/dry_run_2025-10-16/` (placeholder files noted) |
-| Security incident response | Deployment + Reliability | ✅ Clearance received 2025-10-10 16:00 UTC — existing secrets validated; external messaging stays *on hold* until QA + embed token greenlights | `feedback/manager.md` (2025-10-10 16:00Z), `feedback/reliability.md` (2025-10-10 15:55Z), `feedback/marketing.md` (security status log) |
+
+| Surface                                    | Owner                    | Status (2025-10-10)                                                                                                                            | Evidence / Placeholder                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------------ | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| In-app banner                              | Marketing                | Copy updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence**                                                           | `docs/marketing/product_approval_packet_2025-10-07.md#banner`                                                                                                                                                                                                                                                           |
+| Launch email                               | Marketing                | Copy updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence**                                                           | `docs/marketing/product_approval_packet_2025-10-07.md#email`                                                                                                                                                                                                                                                            |
+| Blog post                                  | Marketing                | Draft updated with OpenAI/LlamaIndex + Inbox messaging — **hold pending QA evidence**                                                          | `docs/marketing/product_approval_packet_2025-10-07.md#blog-post`                                                                                                                                                                                                                                                        |
+| Tooltip overlays & modal visuals           | Design                   | ⚠️ Admin embed overlays pending Shopify token; React Router spec refreshed 2025-10-10                                                          | Spec: `docs/design/tooltip_modal_annotations_2025-10-09.md`, handoff: `artifacts/engineering/modal-react-router-handoff_2025-10-10.md`, offline mocks: `artifacts/design/offline-cx-sales-package-2025-10-11/`, placeholder → upload Admin overlays to `artifacts/design/tooltip-overlays/2025-10-10/` once token lands |
+| Telemetry & readiness evidence             | Marketing + Reliability  | ✅ Supabase parity + staging smoke (`?mock=1`) captured; Shopify staging secrets validated                                                     | `artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`, `artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`, `feedback/reliability.md` (2025-10-10 01:14 UTC)                                                                      |
+| Staging smoke (`?mock=0`)                  | Reliability              | ⏳ Pending QA sign-off; capture immediately once HTTP 200 sustained                                                                            | Placeholder → `artifacts/monitoring/synthetic-check-<timestamp>-mock0.json` + `artifacts/integrations/shopify/2025-10-10/curl_mock0_<timestamp>.log`                                                                                                                                                                    |
+| Staging access rollout comms               | Marketing + Support      | Ready pending live smoke; announcement + acknowledgement tracker staged                                                                        | `docs/enablement/dry_run_training_materials.md#draft-announcement-copy-hold-until-mock0-200`, `docs/enablement/dry_run_training_materials.md#acknowledgement-log-template`                                                                                                                                              |
+| Supabase NDJSON export                     | Reliability + Data       | ✅ Delivered 2025-10-10 07:29 UTC; bundle ready for comms packet                                                                               | `artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`                                                                                                                                                                                                                                                   |
+| Staging readiness broadcast (internal ops) | Support ↔ Marketing     | Templates staged — awaiting `DEPLOY-147` evidence drop                                                                                         | §2B, `artifacts/ops/dry_run_2025-10-16/` (placeholder files noted)                                                                                                                                                                                                                                                      |
+| Security incident response                 | Deployment + Reliability | ✅ Clearance received 2025-10-10 16:00 UTC — existing secrets validated; external messaging stays _on hold_ until QA + embed token greenlights | `feedback/manager.md` (2025-10-10 16:00Z), `feedback/reliability.md` (2025-10-10 15:55Z), `feedback/marketing.md` (security status log)                                                                                                                                                                                 |
 
 **Security incident status:** Git history scrub completed (`af1d9f1` pushed 2025-10-10 08:12 UTC). Product + reliability validated existing Supabase credentials at 2025-10-10 16:00 UTC, so no rotation required. Clearance evidence remains archived for audit even as external sends stay on hold pending QA.
 **QA gate:** `https://hotdash-staging.fly.dev/app?mock=0` remains HTTP 410 as of 2025-10-10 07:57 UTC. Hold all external sends until QA posts sustained 200 + sub-300 ms synthetic evidence (DEPLOY-147). Admin tour validation uses the Shopify CLI 3 dev flow (no embed/session token).
@@ -29,6 +31,7 @@ expires: 2025-10-18
 **Readiness evidence:** Reference Supabase parity (01:25Z) + retry snapshot (`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`, `artifacts/monitoring/supabase-sync-summary-latest.json`), Fly staging smoke (`artifacts/monitoring/synthetic-check-2025-10-10T02-31-11.417Z.json`), and Shopify staging validation (`feedback/reliability.md`, 2025-10-10 01:14 UTC) when answering telemetry questions.
 
 **Go-live trigger checklist (fill as QA signs off):**
+
 - Replace tooltip overlay placeholder with annotated screenshots from design handoff.
 - Attach the first sustained HTTP 200 artifact for `https://hotdash-staging.fly.dev/app?mock=0` (curl log + synthetic JSON); latest probe at 2025-10-10 07:57 UTC still 410 (`artifacts/integrations/shopify/2025-10-10/curl_mock0_2025-10-10T07-57-48Z.log`).
 - Confirm Supabase NDJSON bundle (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`) remains current; replace if reliability drops a newer export.
@@ -65,12 +68,15 @@ Per `docs/directions/product_operating_plan.md`, releases follow **Mock → Stag
 ## 1. Mock Review Communications (Internal)
 
 ### Audience
+
 Design, engineering, QA, product teams
 
 ### Channel
+
 # (#occ-launch) + email to stakeholders
 
 ### Timing
+
 48h before staging deployment
 
 ### Message Template
@@ -78,6 +84,7 @@ Design, engineering, QA, product teams
 **Subject:** [Mock Review Ready] Operator Control Center — Dashboard + Tiles
 
 **Body:**
+
 ```
 Team,
 
@@ -113,12 +120,15 @@ Review docs in docs/design/ and flag any concerns in #occ-launch by EOD.
 ## 2. Staging Review Communications (Beta Partners)
 
 ### Audience
+
 Select operator partners (Riley Chen, Morgan Patel from Evergreen Outfitters per `docs/directions/product_operating_plan.md`)
 
 ### Channel
+
 Email with calendar invite + dashboard walkthrough link
 
 ### Timing
+
 1 week before production launch
 
 ### Email Template
@@ -126,6 +136,7 @@ Email with calendar invite + dashboard walkthrough link
 **Subject:** [Early Access] Operator Control Center — Your feedback shapes our roadmap
 
 **Body:**
+
 ```
 Hi Riley and Morgan,
 
@@ -159,13 +170,16 @@ Your input directly shapes our roadmap. Looking forward to hearing what works—
 **Trigger:** DEPLOY-147 credential bundle delivered and `https://hotdash-staging.fly.dev/app?mock=0` returning HTTP 200 with fresh evidence archived under `artifacts/ops/dry_run_2025-10-16/`.
 
 ### Audience
+
 Support reps, CX leads, enablement facilitators preparing for the 16 Oct dry run
 
 ### Channels
+
 - #: `#occ-ops`
 - Email: `occ-operators@hotdash.internal`
 
 ### # Template (Support Lead)
+
 ```
 :rocket: OCC staging is live — time to rehearse.
 
@@ -184,6 +198,7 @@ Questions → thread here or DM @support-lead.
 ```
 
 ### Email Template (Support & Enablement)
+
 ```
 Subject: OCC staging ready — rehearse ahead of 16 Oct dry run
 
@@ -204,6 +219,7 @@ Reply-all to confirm once you’ve validated access. Ping @support-lead or @enab
 ```
 
 ### Attachments / Links
+
 - `artifacts/ops/dry_run_2025-10-16/mock0-smoke.png`
 - `artifacts/ops/dry_run_2025-10-16/screenshots/`
 - `docs/runbooks/shopify_rate_limit_recovery.md`
@@ -214,18 +230,20 @@ Reply-all to confirm once you’ve validated access. Ping @support-lead or @enab
 
 ### A. In-App Banner
 
-**Placement:** Top of Shopify Admin app home (app._index.tsx)
+**Placement:** Top of Shopify Admin app home (app.\_index.tsx)
 
 **Timing:** Day of production launch
 
 **Design:** Polaris Banner component (tone: success, dismissible)
 
 **Copy (EN):**
+
 ```
 🎉 Operator Inbox now runs on Chatwoot Fly + OpenAI insights. [View Dashboard →]
 ```
 
 **Copy (FR):**
+
 ```
 🎉 Boîte opérateur sur Chatwoot Fly + IA OpenAI. [Voir le tableau de bord →]
 ```
@@ -247,6 +265,7 @@ Reply-all to confirm once you’ve validated access. Ping @support-lead or @enab
 **Subject Lengths:** EN 75 (flagged for localization review - exceeds 60 target), FR 85 (flagged for localization review - exceeds 60 target)
 
 **Body (EN):**
+
 ```
 Hi [Merchant Name],
 
@@ -256,19 +275,19 @@ The **Operator Control Center** is now live in your Shopify Admin. It's a single
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ CX Escalations  
+✓ CX Escalations
 Spot SLA breaches and approve AI-suggested replies in one tap (OpenAI via our LlamaIndex middleware). Everything routes through the Operator Inbox so nothing slips.
 
-✓ Operator Inbox  
+✓ Operator Inbox
 Centralize approvals, escalations, and AI drafts in one queue. Assign teammates, add notes, and clear conversations without leaving Shopify Admin.
 
-✓ Sales Pulse  
+✓ Sales Pulse
 Track today's orders vs. 7-day avg + flag fulfillment blockers before they snowball.
 
-✓ Inventory Heatmap  
+✓ Inventory Heatmap
 See low-stock alerts with AI-powered reorder recommendations built on our LlamaIndex dataset.
 
-✓ SEO & Content Watch  
+✓ SEO & Content Watch
 Catch pages losing >20% traffic WoW and assign fixes in seconds.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -290,6 +309,7 @@ Questions? Check our [launch FAQ] or reply to this email. Cite telemetry readine
 ```
 
 **Body (FR):**
+
 ```
 Bonjour [Nom du commerçant],
 
@@ -299,19 +319,19 @@ Le **Centre de contrôle opérateur** est désormais actif dans votre administra
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ Escalades CX  
+✓ Escalades CX
 Repérez les dépassements de SLA et approuvez les réponses suggérées par l'IA (OpenAI via notre service LlamaIndex) en un clic. Tout transite par la boîte opérateur pour rester suivi.
 
-✓ Boîte de réception opérateur  
+✓ Boîte de réception opérateur
 Visualisez toutes les approbations, escalades et suivis dans un seul espace. Assignez des coéquipiers, ajoutez des notes et validez les brouillons IA sans quitter l'administration Shopify.
 
-✓ Pouls des ventes  
+✓ Pouls des ventes
 Suivez les commandes d'aujourd'hui par rapport à la moyenne sur 7 jours + signalez les bloqueurs d'exécution avant qu'ils n'escaladent.
 
-✓ Carte thermique d'inventaire  
+✓ Carte thermique d'inventaire
 Voyez les alertes de stock faible avec des recommandations de réapprovisionnement alimentées par notre pipeline LlamaIndex.
 
-✓ Veille SEO et contenu  
+✓ Veille SEO et contenu
 Détectez les pages perdant >20 % de trafic SàS et assignez des corrections en un clic.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -378,26 +398,31 @@ The Operator Control Center solves these by consolidating your daily truth into 
 ## What's Inside
 
 ### CX Escalations
+
 Surface open conversations breaching SLA thresholds. View full context, approve AI-suggested replies (OpenAI powered via our LlamaIndex middleware), or escalate to a manager—all in one tap.
 
 **Operator benefit:** Stop tab-switching. Resolve escalations in seconds, not minutes. Every approval syncs to the Operator Inbox for follow-up.
 
 ### Operator Inbox
+
 Keep approvals, escalations, and AI drafts in one shared queue. Assign owners, add notes, and move work forward without leaving Shopify Admin.
 
 **Operator benefit:** Nothing slips through email cracks. Everyone sees the same queue, linked back to tile telemetry. Chatwoot now runs on Fly, so inbox updates reach operators with lower latency and better failover.
 
 ### Sales Pulse
+
 Track today's order count vs. 7-day average, top SKUs, and fulfillment blockers—all at a glance.
 
 **Operator benefit:** Know your sales health in 3 seconds. Spot anomalies without running reports.
 
 ### Inventory Heatmap
+
 Identify low-stock SKUs, days of cover, and AI-recommended reorder quantities based on 14-day velocity with insights assembled through LlamaIndex.
 
 **Operator benefit:** Prevent stockouts with proactive alerts. Create draft purchase orders with one approval tap.
 
 ### SEO & Content Watch
+
 Detect landing pages with >20% session drop week-over-week. Assign content refresh tasks to your team.
 
 **Operator benefit:** Catch traffic declines before they hurt conversions. Track follow-up tasks straight from the Operator Inbox.
@@ -470,18 +495,22 @@ Built for operators, by operators. Welcome to your new command center.
 **Placement:** Tooltip overlay on each tile using Polaris Tooltip component
 
 #### Sales Pulse Tile
+
 **EN:** Track today's orders vs. 7-day avg. Click to see fulfillment blockers.
 **FR:** Suivez les commandes d'aujourd'hui par rapport à la moyenne sur 7 jours. Cliquez pour voir les bloqueurs d'exécution.
 
 #### CX Escalations Tile
+
 **EN:** Open conversations breaching SLA. One tap to approve AI replies.
 **FR:** Conversations ouvertes dépassant le SLA. Un clic pour approuver les réponses IA.
 
 #### Inventory Heatmap Tile
+
 **EN:** See low-stock SKUs and reorder before stockouts cost you.
 **FR:** Voyez les SKU en stock faible et réapprovisionnez avant les ruptures coûteuses.
 
 #### SEO & Content Watch Tile
+
 **EN:** Pages losing >20% traffic WoW. Assign content fixes to your team.
 **FR:** Pages perdant >20 % de trafic SàS. Assignez des corrections de contenu à votre équipe.
 
@@ -497,11 +526,13 @@ Built for operators, by operators. Welcome to your new command center.
 ## Supporting Materials
 
 ### Clearance Communications (prep — send only after QA `mock=0` + embed token greenlights)
+
 - **Internal # (#occ-launch) — Clearance Broadcast**
   ```
   Heads-up: Security review is complete. Git scrub (`af1d9f1`) remains live and reliability validated the existing Supabase credentials at 16:00 UTC—no rotation needed. External messaging stays on hold until QA posts the sustained mock=0 200 (<300 ms) and reliability ships the Chatwoot Fly embed token. Keep campaign assets staged, track updates in the calendar, and reply with ✅ once your team has pulled latest to the sanitized head.
   ```
 - **Merchant Email (GA) — Launch Announcement opener**
+
   ```
   Subject: Operator Control Center is ready for you
 
@@ -511,6 +542,7 @@ Built for operators, by operators. Welcome to your new command center.
 
   Need help? Reach us at customer.support@hotrodan.com—responses now route through our Chatwoot cluster on Fly, so escalations land in the Operator Inbox with lower latency. We’ll send the full email once QA + embed token gates clear.
   ```
+
 - **Social Post (LinkedIn/Twitter) — Go-Live Teaser**
   ```
   Operator Control Center is cleared for takeoff once QA posts the sustained mock=0 200 and the Chatwoot Fly embed token lands. Prep copy: “Operator Control Center now unifies support, sales, and ops—from the new Operator Inbox to faster Chatwoot Fly escalations. Dive in: <launch URL>” (hold until gates clear).
@@ -521,9 +553,11 @@ Built for operators, by operators. Welcome to your new command center.
   ```
 
 ### FAQ Document
+
 Location: `docs/marketing/launch_faq.md` (to be created)
 
 Key questions to address:
+
 - What integrations are required?
 - How is my data secured?
 - What does "AI-suggested reply" mean?
@@ -531,7 +565,9 @@ Key questions to address:
 - How do I access the decision audit trail?
 
 ### Hold-Ready Variants & Testimonial Inserts (prep only)
+
 - **Launch Email — Variant B (post-hold option)**
+
   ```
   Subject: Your shared Operator Inbox goes live with OCC
 
@@ -547,6 +583,7 @@ Key questions to address:
 
   P.S. Need help? Reach us at customer.support@hotrodan.com (also routed through Chatwoot on Fly for quicker replies).
   ```
+
 - **Social Caption — Variant B**
   ```
   Operator Control Center unifies your support inbox (now on Chatwoot Fly) with real-time sales + ops telemetry. Hold caption until QA + embed token gates clear: “One shared inbox. AI you approve. Operations on autopilot. OCC keeps every escalation flowing—fast.” Link: <launch URL>
@@ -565,9 +602,11 @@ Key questions to address:
   - Keep localized variant stub in `docs/marketing/product_approval_packet_2025-10-07.md` for quick swap once testimonials approved.
 
 ### Screenshot Assets
+
 Location: TBD (coordinate with designer)
 
 Required screenshots:
+
 - Dashboard overview (all 5 tiles visible)
 - CX Escalations tile expanded view
 - Inventory Heatmap with reorder modal
@@ -579,12 +618,14 @@ Required screenshots:
 ## Compliance & Legal Review
 
 ### Required Approvals
+
 - [ ] Legal: AI-generated reply disclaimers reviewed
 - [ ] Legal: GDPR/CCPA compliance for decision logging confirmed
 - [ ] Partner Portal: Blog post submitted 5 business days before launch
 - [ ] Support: FAQ + training materials delivered 48h before launch
 
 ### Brand Consistency
+
 - All copy follows "professional but approachable" tone from `docs/design/copy_deck.md`
 - French translations use formal "vous" form
 - No jargon unless operator-familiar (SLA, SKU, WoW acceptable)
@@ -593,14 +634,14 @@ Required screenshots:
 
 ## Distribution Channels
 
-| Channel | Audience | Timing | Owner |
-|---------|----------|--------|-------|
-| # (#occ-launch) | Internal team | Mock review ready | Product |
-| Email (beta partners) | Riley Chen, Morgan Patel | 1 week before prod | Product |
-| In-app banner | All merchants | Production launch day | Engineering |
-| Launch email | All merchants | Production launch day | Marketing |
-| Blog post | Public + Partner Portal | Production launch day | Marketing |
-| Social (Twitter/LinkedIn) | Public | Production launch day | Marketing |
+| Channel                   | Audience                 | Timing                | Owner       |
+| ------------------------- | ------------------------ | --------------------- | ----------- |
+| # (#occ-launch)           | Internal team            | Mock review ready     | Product     |
+| Email (beta partners)     | Riley Chen, Morgan Patel | 1 week before prod    | Product     |
+| In-app banner             | All merchants            | Production launch day | Engineering |
+| Launch email              | All merchants            | Production launch day | Marketing   |
+| Blog post                 | Public + Partner Portal  | Production launch day | Marketing   |
+| Social (Twitter/LinkedIn) | Public                   | Production launch day | Marketing   |
 
 ---
 
@@ -608,13 +649,13 @@ Required screenshots:
 
 Per `docs/directions/marketing.md`, track:
 
-| Metric | Target (30 days) | Source |
-|--------|------------------|--------|
-| Email open rate | >35% | Email platform |
-| In-app banner CTR | >15% | Dashboard telemetry |
-| Blog post traffic | >1000 visits | Google Analytics |
-| Beta partner feedback quality | 5+ actionable insights | Memory (scope `ops`) |
-| Operator activation rate | >70% | `dashboard.session.opened` fact |
+| Metric                        | Target (30 days)       | Source                          |
+| ----------------------------- | ---------------------- | ------------------------------- |
+| Email open rate               | >35%                   | Email platform                  |
+| In-app banner CTR             | >15%                   | Dashboard telemetry             |
+| Blog post traffic             | >1000 visits           | Google Analytics                |
+| Beta partner feedback quality | 5+ actionable insights | Memory (scope `ops`)            |
+| Operator activation rate      | >70%                   | `dashboard.session.opened` fact |
 
 ---
 

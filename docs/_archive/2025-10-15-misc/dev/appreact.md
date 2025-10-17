@@ -21,7 +21,7 @@ The [`authenticate.admin`](https://shopify.dev/docs/api/shopify-app-react-router
 
 This guide covers authentication patterns, API usage, and request handling for your app.
 
-***
+---
 
 ## Authenticating requests
 
@@ -35,16 +35,16 @@ If you are authenticating more than one route, then we recommend using [React ro
 
 ### Examples
 
-* #### Authenticating requests
+- #### Authenticating requests
 
   ##### /app/routes/\*\*/\*.tsx
 
   ```tsx
-  import {LoaderFunction, ActionFunction} from 'react-router';
+  import { LoaderFunction, ActionFunction } from "react-router";
 
-  import {authenticate} from '~/shopify.server';
+  import { authenticate } from "~/shopify.server";
 
-  export const loader: LoaderFunction = async ({request}) => {
+  export const loader: LoaderFunction = async ({ request }) => {
     await authenticate.admin(request);
 
     // App logic
@@ -52,7 +52,7 @@ If you are authenticating more than one route, then we recommend using [React ro
     return null;
   };
 
-  export const action: ActionFunction = async ({request}) => {
+  export const action: ActionFunction = async ({ request }) => {
     await authenticate.admin(request);
 
     // App logic
@@ -69,13 +69,13 @@ To ensure the headers are set correctly use the provided `ErrorBoundary` and `he
 
 ### Examples
 
-* #### Configure headers and error boundaries
+- #### Configure headers and error boundaries
 
   ##### /app/routes/\*\*/\*.tsx
 
   ```tsx
-  import {useRouteError} from 'react-router';
-  import {boundary} from '@shopify/shopify-app-react-router';
+  import { useRouteError } from "react-router";
+  import { boundary } from "@shopify/shopify-app-react-router";
 
   export function ErrorBoundary() {
     return boundary.error(useRouteError());
@@ -96,17 +96,17 @@ Once a request is authenticated, `authenticate.admin` will return an `admin` obj
 
 ### Examples
 
-* #### Make GraphQL requests
+- #### Make GraphQL requests
 
   ##### /app/routes/\*\*/\*.tsx
 
   ```tsx
-  import {ActionFunction} from 'react-router';
+  import { ActionFunction } from "react-router";
 
-  import {authenticate} from '../shopify.server';
+  import { authenticate } from "../shopify.server";
 
-  export const action: ActionFunction = async ({request}) => {
-    const {admin} = await authenticate.admin(request);
+  export const action: ActionFunction = async ({ request }) => {
+    const { admin } = await authenticate.admin(request);
 
     const response = await admin.graphql(
       `#graphql
@@ -120,15 +120,15 @@ Once a request is authenticated, `authenticate.admin` will return an `admin` obj
       {
         variables: {
           input: {
-            title: 'New product',
-            variants: [{price: 100}],
+            title: "New product",
+            variants: [{ price: 100 }],
           },
         },
       },
     );
     const parsedResponse = await response.json();
 
-    return {data: parsedResponse.data};
+    return { data: parsedResponse.data };
   };
   ```
 
@@ -140,21 +140,21 @@ Here `authenticate.admin` provides a `cors` function to add the required cross-o
 
 ### Examples
 
-* #### Add cross-origin headers
+- #### Add cross-origin headers
 
   ##### /app/routes/\*\*/\*.tsx
 
   ```tsx
-  import {LoaderFunction} from 'react-router';
+  import { LoaderFunction } from "react-router";
 
-  import {authenticate} from '~/shopify.server';
+  import { authenticate } from "~/shopify.server";
 
-  export const loader: LoaderFunction = async ({request}) => {
-    const {cors} = await authenticate.admin(request);
+  export const loader: LoaderFunction = async ({ request }) => {
+    const { cors } = await authenticate.admin(request);
 
     // App logic
 
-    return cors({my: 'data'});
+    return cors({ my: "data" });
   };
   ```
 
@@ -184,7 +184,7 @@ Apps must obtain the shop domain from the 3rd party service in a secure way.
 
 ### Examples
 
-* #### Make GraphQL requests in background jobs
+- #### Make GraphQL requests in background jobs
 
   ##### /app/jobs/\*\*/\*.tsx
 
@@ -194,7 +194,7 @@ Apps must obtain the shop domain from the 3rd party service in a secure way.
 
   // Background job set up
 
-  const shop = 'mystore.myshopify.com'
+  const shop = "mystore.myshopify.com";
   const { admin } = await unauthenticated.admin(shop);
 
   const response = await admin.graphql(
@@ -207,7 +207,7 @@ Apps must obtain the shop domain from the 3rd party service in a secure way.
         }
       }
     `,
-    { variables: { input: { title: "Product Name" } } }
+    { variables: { input: { title: "Product Name" } } },
   );
 
   const productData = await response.json();

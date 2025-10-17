@@ -1,4 +1,3 @@
-
 # Manager Shutdown (Restart‑safe, Complete)
 
 > Use this any time you step away or reboot. Goal: a **clean restart** where agents can resume with zero hidden context.
@@ -17,6 +16,7 @@
   - Links to any relevant logs/evidence (screenshots, test output)
 
 ## 2a) Manager-Controlled Git  Close Out
+
 - [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
 - [ ] For any agent with WORK COMPLETE but no PR yet, create branch/PR now
 - [ ] For open PRs, ensure evidence links to the feedback file
@@ -41,6 +41,7 @@
 ## 3) Gates Sanity (per active task)
 
 For each **Issue (label: task)** and linked PR:
+
 - [ ] **Scope Gate** — Problem + Acceptance Criteria present in the **Issue**.
 - [ ] **Sandbox** — **Allowed paths** present in **Issue** & **PR**; diffs stay within them.
 - [ ] **Design Gate** — PR describes interfaces, data flow, and failure modes (for new paths).
@@ -54,6 +55,7 @@ _Missing any artifact? Comment on the PR with the gap and reassign._
 ## 4) Direction & Feedback Closure
 
 For each **active agent**:
+
 - [ ] Read today’s `feedback/<agent>/<YYYY‑MM‑DD>.md` → extract answers, blockers, decisions.
 - [ ] Update `docs/directions/<agent>.md` with **tomorrow’s objective**, **constraints**, and links
       to the **Issue** (and PR if open).
@@ -87,21 +89,24 @@ Do **not** create or edit other docs.
 ## 7) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
 
 **Today’s Outcomes**
+
 - Shipped/merged: PRs #…, #…
 - In progress: PRs #… (DoD % complete), Issues #…
 - Incidents: secrets (Y/N), CI failures (count), rogue docs (count)
 
 **Next Goal (tomorrow)**
+
 - Primary objective: …
 - Success criteria (from North Star): …
 
 **Agent Performance (quick grading)**
+
 - <agent> — **Score (1–5)**
   - 2–3 things done well:
-    1) …
-    2) …
+    1. …
+    2. …
   - 1–2 things to change:
-    1) …
+    1. …
   - **One thing to stop entirely:** …
 
 (Repeat per active agent; tie feedback to DoD / Allowed paths / feedback discipline.)
@@ -113,8 +118,6 @@ Before finalizing shutdown:
 - [ ] Execute `docs/runbooks/drift_checklist.md` **in full** (after all agents have shut down).
 - [ ] Confirm: HEAD secrets scan is clean; docs policy shows 0 violations; planning TTL sweep committed;
       required checks on `main` still enforced; directions ↔ feedback are consistent for tomorrow.
-
-
 
 ## 9) Finalize
 

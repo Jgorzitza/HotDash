@@ -1,25 +1,27 @@
-import { type ActionFunctionArgs, redirect } from 'react-router';
+import { type ActionFunctionArgs, redirect } from "react-router";
 
 export async function action({ params }: ActionFunctionArgs) {
   const { id, idx } = params;
-  
+
   if (!id || !idx) {
-    throw new Response('Missing approval ID or index', { status: 400 });
+    throw new Response("Missing approval ID or index", { status: 400 });
   }
-  
+
   try {
-    const response = await fetch(`http://localhost:8002/approvals/${id}/${idx}/approve`, {
-      method: 'POST',
-    });
-    
+    const response = await fetch(
+      `http://localhost:8002/approvals/${id}/${idx}/approve`,
+      {
+        method: "POST",
+      },
+    );
+
     if (!response.ok) {
       throw new Error(`Approval failed with status ${response.status}`);
     }
   } catch (error) {
-    console.error('Error approving action:', error);
+    console.error("Error approving action:", error);
     // Still redirect even on error - user will see updated state
   }
-  
-  return redirect('/approvals');
-}
 
+  return redirect("/approvals");
+}

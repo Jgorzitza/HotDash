@@ -16,6 +16,7 @@
 **Friday**: Insights summary and roadmap updates
 
 **Research Questions**:
+
 - What problems are customers trying to solve?
 - What workarounds are they using?
 - What delights them?
@@ -26,4 +27,3 @@
 
 **Document Path**: `docs/continuous_discovery_program.md`
 **Status**: Weekly discovery cadence defined
-

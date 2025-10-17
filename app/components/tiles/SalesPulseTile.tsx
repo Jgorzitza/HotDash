@@ -20,7 +20,10 @@ function formatCurrency(amount: number, currency: string): string {
   }
 }
 
-export function SalesPulseTile({ summary, enableModal = false }: SalesPulseTileProps) {
+export function SalesPulseTile({
+  summary,
+  enableModal = false,
+}: SalesPulseTileProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -39,7 +42,10 @@ export function SalesPulseTile({ summary, enableModal = false }: SalesPulseTileP
         >
           {formatCurrency(summary.totalRevenue, summary.currency)}
         </p>
-        <p className="occ-text-meta" style={{ margin: "var(--occ-space-1) 0 0 0" }}>
+        <p
+          className="occ-text-meta"
+          style={{ margin: "var(--occ-space-1) 0 0 0" }}
+        >
           {summary.orderCount} orders in the current window.
         </p>
         {enableModal ? (

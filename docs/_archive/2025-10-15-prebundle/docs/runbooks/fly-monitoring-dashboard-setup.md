@@ -13,23 +13,25 @@ This runbook covers the setup and configuration of monitoring dashboards and ale
 
 Based on current infrastructure (2025-10-11):
 
-| App Name | Type | Priority | Alert Level |
-|----------|------|----------|-------------|
-| **hotdash-chatwoot** (web) | Rails/Chatwoot | HIGH | Critical |
-| **hotdash-chatwoot** (worker) | Sidekiq | HIGH | Critical |
-| **hotdash-staging** | React Router 7 | MEDIUM | Warning |
-| **hotdash-staging-db** | PostgreSQL | MEDIUM | Critical |
-| **hotdash-llamaindex-mcp** | MCP Server | HIGH | Critical |
-| **hotdash-agent-service** | Agent Service | HIGH | Critical |
+| App Name                      | Type           | Priority | Alert Level |
+| ----------------------------- | -------------- | -------- | ----------- |
+| **hotdash-chatwoot** (web)    | Rails/Chatwoot | HIGH     | Critical    |
+| **hotdash-chatwoot** (worker) | Sidekiq        | HIGH     | Critical    |
+| **hotdash-staging**           | React Router 7 | MEDIUM   | Warning     |
+| **hotdash-staging-db**        | PostgreSQL     | MEDIUM   | Critical    |
+| **hotdash-llamaindex-mcp**    | MCP Server     | HIGH     | Critical    |
+| **hotdash-agent-service**     | Agent Service  | HIGH     | Critical    |
 
 ## Fly.io Metrics Dashboard Access
 
 ### Web Dashboard
+
 - **URL**: https://fly.io/dashboard
 - **Direct App Metrics**: `https://fly.io/apps/<app-name>/metrics`
 - **Machine Metrics**: `https://fly.io/apps/<app-name>/machines/<machine-id>`
 
 ### CLI Access
+
 ```bash
 # View app metrics via CLI
 ~/.fly/bin/fly dashboard -a <app-name>
@@ -44,13 +46,14 @@ Based on current infrastructure (2025-10-11):
 
 #### 1. CPU Utilization
 
-| Severity | Threshold | Duration | Action |
-|----------|-----------|----------|--------|
-| **Critical** | > 90% | 5 minutes | Scale up CPU immediately |
-| **Warning** | > 70% | 10 minutes | Plan CPU scaling |
-| **Info** | > 50% | 15 minutes | Monitor trend |
+| Severity     | Threshold | Duration   | Action                   |
+| ------------ | --------- | ---------- | ------------------------ |
+| **Critical** | > 90%     | 5 minutes  | Scale up CPU immediately |
+| **Warning**  | > 70%     | 10 minutes | Plan CPU scaling         |
+| **Info**     | > 50%     | 15 minutes | Monitor trend            |
 
 **Configuration:**
+
 ```toml
 # fly.toml
 [[services.checks]]
@@ -68,13 +71,14 @@ Based on current infrastructure (2025-10-11):
 
 #### 2. Memory Usage
 
-| Severity | Threshold | Duration | Action |
-|----------|-----------|----------|--------|
-| **Critical** | > 85% | 5 minutes | Scale memory immediately |
-| **Warning** | > 70% | 10 minutes | Investigate memory leaks |
-| **Info** | > 50% | 15 minutes | Monitor trend |
+| Severity     | Threshold | Duration   | Action                   |
+| ------------ | --------- | ---------- | ------------------------ |
+| **Critical** | > 85%     | 5 minutes  | Scale memory immediately |
+| **Warning**  | > 70%     | 10 minutes | Investigate memory leaks |
+| **Info**     | > 50%     | 15 minutes | Monitor trend            |
 
 **OOM Kill Detection:**
+
 ```bash
 # Check for OOM kills in logs
 ~/.fly/bin/fly logs -a <app-name> | grep -i "oom"
@@ -86,13 +90,14 @@ Based on current infrastructure (2025-10-11):
 
 #### 3. Error Rate
 
-| Severity | Threshold | Duration | Action |
-|----------|-----------|----------|--------|
-| **Critical** | > 5% | 5 minutes | Execute rollback |
-| **Warning** | > 1% | 10 minutes | Investigate errors |
-| **Info** | > 0.5% | 15 minutes | Monitor trend |
+| Severity     | Threshold | Duration   | Action             |
+| ------------ | --------- | ---------- | ------------------ |
+| **Critical** | > 5%      | 5 minutes  | Execute rollback   |
+| **Warning**  | > 1%      | 10 minutes | Investigate errors |
+| **Info**     | > 0.5%    | 15 minutes | Monitor trend      |
 
 **Error Monitoring:**
+
 ```bash
 # Monitor error logs in real-time
 ~/.fly/bin/fly logs -a <app-name> | grep -iE "(error|exception|failed)"
@@ -103,13 +108,14 @@ Based on current infrastructure (2025-10-11):
 
 #### 4. Response Time / Latency
 
-| Severity | Threshold | Duration | Action |
-|----------|-----------|----------|--------|
-| **Critical** | P95 > 2000ms | 10 minutes | Scale resources |
-| **Warning** | P95 > 1000ms | 15 minutes | Investigate slow queries |
-| **Info** | P95 > 500ms | 20 minutes | Monitor trend |
+| Severity     | Threshold    | Duration   | Action                   |
+| ------------ | ------------ | ---------- | ------------------------ |
+| **Critical** | P95 > 2000ms | 10 minutes | Scale resources          |
+| **Warning**  | P95 > 1000ms | 15 minutes | Investigate slow queries |
+| **Info**     | P95 > 500ms  | 20 minutes | Monitor trend            |
 
 **Latency Monitoring:**
+
 ```bash
 # Run synthetic check
 SYNTHETIC_CHECK_URL="https://<app-name>.fly.dev/health" \
@@ -122,13 +128,14 @@ time curl -sS "https://<app-name>.fly.dev/health"
 
 #### 5. Health Check Status
 
-| Severity | Condition | Action |
-|----------|-----------|--------|
+| Severity     | Condition                        | Action                             |
+| ------------ | -------------------------------- | ---------------------------------- |
 | **Critical** | Health check failing > 5 minutes | Restart machines, execute rollback |
-| **Warning** | Health check failing > 2 minutes | Investigate logs |
-| **Info** | Intermittent failures | Monitor closely |
+| **Warning**  | Health check failing > 2 minutes | Investigate logs                   |
+| **Info**     | Intermittent failures            | Monitor closely                    |
 
 **Health Check Monitoring:**
+
 ```bash
 # Check health endpoint
 curl -sS -w "\nStatus: %{http_code}, Time: %{time_total}s\n" \
@@ -140,28 +147,31 @@ watch -n 30 'curl -sS -w "\nStatus: %{http_code}, Time: %{time_total}s\n" "https
 
 #### 6. Auto-scaling Issues
 
-| Severity | Condition | Action |
-|----------|-----------|--------|
-| **Warning** | Machines not stopping after 10 min idle | Check auto_stop_machines config |
-| **Warning** | Machines not starting on request | Check auto_start_machines config |
-| **Info** | Slow auto-start (> 10s) | Investigate cold start performance |
+| Severity    | Condition                               | Action                             |
+| ----------- | --------------------------------------- | ---------------------------------- |
+| **Warning** | Machines not stopping after 10 min idle | Check auto_stop_machines config    |
+| **Warning** | Machines not starting on request        | Check auto_start_machines config   |
+| **Info**    | Slow auto-start (> 10s)                 | Investigate cold start performance |
 
 ## Application-Specific Alert Configurations
 
 ### Chatwoot (Rails + Sidekiq)
 
 **Critical Alerts:**
+
 - OOM kills on worker machine (currently 512MB - needs 2GB)
 - Health check failures on `/api` endpoint
 - Redis connection failures
 - Sidekiq queue backing up (> 1000 jobs)
 
 **Warning Alerts:**
+
 - Memory > 70% on web machine
 - Response time > 500ms on `/api`
 - Worker processing time > 30s per job
 
 **Monitoring Commands:**
+
 ```bash
 # Check both machines
 ~/.fly/bin/fly machine list -a hotdash-chatwoot
@@ -182,16 +192,19 @@ curl -sS "https://hotdash-chatwoot.fly.dev/api"
 ### Staging App (React Router 7)
 
 **Critical Alerts:**
+
 - Health check failures (all machines down)
 - Error rate > 5%
 - P95 latency > 2000ms
 
 **Warning Alerts:**
+
 - Memory > 70%
 - CPU > 70%
 - P95 latency > 800ms
 
 **Monitoring Commands:**
+
 ```bash
 # Check app status
 ~/.fly/bin/fly status -a hotdash-staging
@@ -211,18 +224,21 @@ node scripts/ci/synthetic-check.mjs
 ### Agent SDK Services (When Deployed)
 
 **Critical Alerts:**
+
 - MCP query P95 latency > 1000ms
 - Approval queue response > 60s
 - OOM kills
 - Service unavailable
 
 **Warning Alerts:**
+
 - MCP query P95 latency > 500ms
 - Approval queue response > 30s
 - Memory > 70%
 - Error rate > 1%
 
 **Monitoring Commands:**
+
 ```bash
 # Use dedicated health check script
 ./scripts/ops/agent-sdk-health-check.sh
@@ -281,11 +297,13 @@ Ensure each app has health checks defined in `fly.toml`:
 ### Step 4: External Monitoring Setup
 
 **Recommended Tools:**
+
 - **UptimeRobot** or **BetterUptime**: HTTP(S) monitoring
 - **Sentry**: Error tracking and performance monitoring
 - **Datadog** or **New Relic**: Full observability (if budget allows)
 
 **Synthetic Checks (Local):**
+
 ```bash
 # Create cron job for regular synthetic checks
 # Run every 15 minutes
@@ -314,11 +332,11 @@ Ensure each app has health checks defined in `fly.toml`:
 
 ### Escalation Matrix
 
-| Time | Action | Escalate To |
-|------|--------|-------------|
-| T+0 | Alert detected | Reliability Team |
-| T+5min | Still critical | + Engineer |
-| T+15min | Still critical | + Manager |
+| Time    | Action         | Escalate To          |
+| ------- | -------------- | -------------------- |
+| T+0     | Alert detected | Reliability Team     |
+| T+5min  | Still critical | + Engineer           |
+| T+15min | Still critical | + Manager            |
 | T+30min | Still critical | Emergency procedures |
 
 ## Monitoring Scripts
@@ -338,24 +356,24 @@ mkdir -p "$LOG_DIR"
 
 while true; do
   TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-  
+
   echo "[$TIMESTAMP] Monitoring check..." | tee -a "$LOG_DIR/continuous-monitor.log"
-  
+
   # Check each app
   for app in hotdash-chatwoot hotdash-staging; do
     echo "  Checking $app..." | tee -a "$LOG_DIR/continuous-monitor.log"
-    
+
     # App status
     ~/.fly/bin/fly status -a "$app" > "$LOG_DIR/${app}-status-${TIMESTAMP}.txt" 2>&1
-    
+
     # Machine list
     ~/.fly/bin/fly machine list -a "$app" > "$LOG_DIR/${app}-machines-${TIMESTAMP}.txt" 2>&1
-    
+
     # Health check
     curl -sS -w "\n%{http_code}|%{time_total}" "https://${app}.fly.dev/health" \
       > "$LOG_DIR/${app}-health-${TIMESTAMP}.txt" 2>&1
   done
-  
+
   sleep $INTERVAL
 done
 ```
@@ -375,20 +393,20 @@ TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 check_app() {
   local app=$1
   local status=$(~/.fly/bin/fly status -a "$app" 2>&1)
-  
+
   # Check if all machines are down
   if echo "$status" | grep -q "no machines"; then
     echo "[$TIMESTAMP] 🚨 CRITICAL: $app has no running machines" >> "$LOG_FILE"
     return 1
   fi
-  
+
   # Check health endpoint
   local health=$(curl -sS -w "%{http_code}" -o /dev/null "https://${app}.fly.dev/health" 2>&1)
   if [ "$health" != "200" ]; then
     echo "[$TIMESTAMP] ⚠️ WARNING: $app health check failed (status: $health)" >> "$LOG_FILE"
     return 1
   fi
-  
+
   return 0
 }
 
@@ -425,6 +443,7 @@ https://fly.io/apps/hotdash-agent-service/metrics
 ## Monitoring Checklist
 
 ### Daily (Automated via Scripts)
+
 - [ ] Health checks for all apps
 - [ ] Resource usage (CPU/memory) < thresholds
 - [ ] Error rate < 1%
@@ -432,6 +451,7 @@ https://fly.io/apps/hotdash-agent-service/metrics
 - [ ] Auto-scaling working correctly
 
 ### Weekly (Manual Review)
+
 - [ ] Review metric trends
 - [ ] Update alert thresholds if needed
 - [ ] Check for anomalies
@@ -439,6 +459,7 @@ https://fly.io/apps/hotdash-agent-service/metrics
 - [ ] Update runbooks
 
 ### Monthly (Strategic Review)
+
 - [ ] Capacity planning review
 - [ ] Cost optimization analysis
 - [ ] Alert fatigue assessment
@@ -462,11 +483,13 @@ Alerts: None
 ## Integration with CI/CD
 
 ### Pre-Deployment Monitoring
+
 - Run health checks before deployment
 - Baseline current metrics
 - Set up deployment monitoring
 
 ### Post-Deployment Monitoring
+
 - Monitor for 15 minutes minimum
 - Compare to baseline metrics
 - Alert on degradation
@@ -475,17 +498,20 @@ Alerts: None
 ## Troubleshooting Monitoring Issues
 
 ### Dashboard Not Loading
+
 1. Check Fly.io status: https://status.fly.io
 2. Verify authentication: `~/.fly/bin/fly auth whoami`
 3. Try CLI metrics: `~/.fly/bin/fly status -a <app>`
 
 ### Metrics Not Updating
+
 1. Check machine status
 2. Verify health checks passing
 3. Review app logs for issues
 4. Restart machines if needed
 
 ### False Alarms
+
 1. Review alert thresholds
 2. Check for known issues (deployments, maintenance)
 3. Adjust sensitivity if needed
@@ -500,8 +526,8 @@ Alerts: None
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
+| Date       | Change           | Author            |
+| ---------- | ---------------- | ----------------- |
 | 2025-10-11 | Initial creation | Reliability Agent |
 
 ## Next Steps
@@ -513,4 +539,3 @@ Alerts: None
 5. ⏳ Document baseline metrics
 6. ⏳ Test alert procedures
 7. ⏳ Set up external monitoring (UptimeRobot/Sentry)
-

@@ -10,16 +10,19 @@
 ## Automated Surveys
 
 ### Post-Interaction CSAT
+
 **Trigger**: After customer gets response
 **Question**: "How satisfied were you? ⭐⭐⭐⭐⭐"
 **Automation**: Sent automatically, results aggregated daily
 
 ### Quarterly NPS
+
 **Trigger**: Every 90 days
 **Question**: "How likely are you to recommend HotDash? (0-10)"
 **Automation**: Scheduled email, auto-segment into promoters/passives/detractors
 
 ### Feature Feedback
+
 **Trigger**: 7 days after using new feature
 **Question**: "How's the new [feature]? 👍👎"
 **Automation**: In-app modal, tied to feature flag
@@ -28,4 +31,3 @@
 
 **Document Path**: `docs/survey_feedback_automation.md`
 **Status**: Survey automation system
-

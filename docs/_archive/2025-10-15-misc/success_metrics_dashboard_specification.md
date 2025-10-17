@@ -47,6 +47,7 @@ This document specifies the comprehensive metrics dashboard for tracking Agent S
 ## View 1: Operator Dashboard
 
 ### Purpose
+
 Give individual operators visibility into their own performance and improvement areas.
 
 ### Top Section: My Performance Today
@@ -120,6 +121,7 @@ Give individual operators visibility into their own performance and improvement 
 ## View 2: Team Lead Dashboard
 
 ### Purpose
+
 Give team leads visibility into team performance, identify coaching opportunities, and track progress.
 
 ### Team Overview
@@ -188,6 +190,7 @@ Give team leads visibility into team performance, identify coaching opportunitie
 ## View 3: Manager Dashboard
 
 ### Purpose
+
 Strategic overview for decision-making, ROI tracking, and go/no-go decisions.
 
 ### North Star Metrics
@@ -269,6 +272,7 @@ Strategic overview for decision-making, ROI tracking, and go/no-go decisions.
 ## View 4: Engineering Dashboard
 
 ### Purpose
+
 Monitor technical performance, identify bottlenecks, track costs, and maintain system health.
 
 ### System Health
@@ -340,6 +344,7 @@ Monitor technical performance, identify bottlenecks, track costs, and maintain s
 **Definition**: Percentage of AI-generated drafts that operators approve without edits
 
 **Calculation**:
+
 ```
 Approval Rate = (Drafts Approved Without Edits) / (Total Drafts Reviewed) × 100%
 
@@ -354,12 +359,14 @@ Approval Rate = 16 / 24 = 66.7%
 ```
 
 **Targets**:
+
 - Week 1 (Pilot): >35%
 - Week 2 (Pilot): >45%
 - Month 3: >60%
 - Month 6: >75%
 
 **Color Coding**:
+
 - 🟢 Green: ≥60%
 - 🟡 Yellow: 40-59%
 - 🔴 Red: <40%
@@ -373,6 +380,7 @@ Approval Rate = 16 / 24 = 66.7%
 **Definition**: Average time an operator spends reviewing each draft before taking action
 
 **Calculation**:
+
 ```
 Avg Review Time = SUM(Action timestamp - Draft created timestamp) / Total drafts
 
@@ -388,6 +396,7 @@ Example:
 ```
 
 **Targets**:
+
 - Week 1 (Pilot): <3.0 minutes
 - Week 2 (Pilot): <2.0 minutes
 - Month 3: <1.5 minutes
@@ -402,6 +411,7 @@ Example:
 **Definition**: Percentage of tickets resolved without customer having to follow up
 
 **Calculation**:
+
 ```
 FCR = (Tickets not reopened within 7 days) / (Total tickets closed) × 100%
 
@@ -418,6 +428,7 @@ Example:
 ```
 
 **Targets**:
+
 - Baseline: 64%
 - Month 1: 70%
 - Month 3: 78%
@@ -430,6 +441,7 @@ Example:
 **Definition**: Composite metric combining efficiency, quality, and satisfaction
 
 **Formula**:
+
 ```
 OPI = (Tickets/Hour × FCR% × OpSat/10 × CSAT/5) / Baseline
 
@@ -454,6 +466,7 @@ Baseline calculation:
 **Target**: OPI = 1.5 (50% improvement) by Month 6
 
 **Interpretation**:
+
 - OPI = 1.0: Same as baseline (no improvement)
 - OPI = 1.3: 30% overall improvement
 - OPI = 1.5: 50% overall improvement (target)
@@ -468,16 +481,19 @@ Baseline calculation:
 #### Critical Alerts (Red, Immediate Action)
 
 **Alert 1: System Downtime**
+
 - **Trigger**: Any service down >5 minutes
 - **Action**: Page on-call engineer, switch to manual mode
 - **Dashboard**: Red banner across top
 
 **Alert 2: CSAT Drop**
+
 - **Trigger**: CSAT drops below 4.0 (or -0.2 points in one day)
 - **Action**: Notify Manager, review recent drafts for quality issues
 - **Dashboard**: Red badge on CSAT metric
 
 **Alert 3: High Error Rate**
+
 - **Trigger**: Error rate >5% for 1 hour
 - **Action**: Engineering investigation, consider rollback
 - **Dashboard**: Red indicator on system health
@@ -485,16 +501,19 @@ Baseline calculation:
 #### Warning Alerts (Yellow, Monitor Closely)
 
 **Alert 4: Low Approval Rate**
+
 - **Trigger**: Approval rate <50% for 2 consecutive days
 - **Action**: Review rejected drafts, adjust prompts
 - **Dashboard**: Yellow highlight on approval rate
 
 **Alert 5: Slow Review Times**
+
 - **Trigger**: Average review time >2.5 minutes for team
 - **Action**: Check for UX issues, operator training needs
 - **Dashboard**: Yellow indicator
 
 **Alert 6: Budget Overrun**
+
 - **Trigger**: OpenAI API spend >90% of monthly budget
 - **Action**: Optimize prompts, consider budget increase
 - **Dashboard**: Yellow badge on cost tracking
@@ -502,11 +521,13 @@ Baseline calculation:
 #### Success Alerts (Green, Celebrate!)
 
 **Alert 7: Target Hit**
+
 - **Trigger**: Approval rate exceeds 75%
 - **Action**: Celebrate with team, share success story
 - **Dashboard**: Green confetti animation 🎉
 
 **Alert 8: Personal Best**
+
 - **Trigger**: Operator beats their personal record
 - **Action**: Show congratulations message
 - **Dashboard**: Trophy icon next to metric
@@ -516,23 +537,27 @@ Baseline calculation:
 ## Data Refresh Schedule
 
 ### Real-Time Metrics (WebSocket, 5-second updates)
+
 - Current queue depth
 - Drafts pending review
 - Active operators count
 - System health status
 
 ### Near Real-Time (API polling, 30-second updates)
+
 - Approval rate (current hour)
 - Average review time (current hour)
 - Error count (last 10 minutes)
 
 ### Periodic Updates (Database query, 5-minute updates)
+
 - Daily metrics (tickets, FCR, CSAT)
 - Team aggregates
 - Cost tracking
 - Trend calculations
 
 ### Daily Batch (Scheduled, 12:00 AM)
+
 - Historical trends (7-day, 30-day)
 - Month-to-date summaries
 - Leaderboards recalculated
@@ -545,40 +570,48 @@ Baseline calculation:
 ### Chart Types
 
 #### Line Chart: Trends Over Time
+
 **Used For**: Approval rate trend, CSAT trend, review time trend
 **X-Axis**: Date (last 7/30 days)
 **Y-Axis**: Metric value
 **Elements**:
+
 - Trend line (smoothed)
 - Target line (dotted, shows goal)
 - Data points (hover for exact value)
 - Shaded area showing good/warning/critical zones
 
 #### Bar Chart: Action Breakdown
+
 **Used For**: Approve vs Edit vs Escalate vs Reject
 **X-Axis**: Action type
 **Y-Axis**: Count
 **Colors**:
+
 - Green: Approved
 - Blue: Edited
 - Yellow: Escalated
 - Red: Rejected
 
 #### Donut Chart: Percentage Breakdown
+
 **Used For**: Same as bar chart, but shows percentages
 **Center**: Total count
 **Segments**: Color-coded by action type
 
 #### Histogram: Distribution
+
 **Used For**: Review time distribution, confidence score distribution
 **X-Axis**: Time bins (0-30s, 30-60s, 60-120s, >120s)
 **Y-Axis**: Frequency
 **Purpose**: Identify outliers
 
 #### Gauge: Single Metric
+
 **Used For**: OPI (North Star metric)
 **Range**: 0.0 to 2.0
 **Zones**:
+
 - Red: 0.0-1.0 (below baseline)
 - Yellow: 1.0-1.3 (improving)
 - Green: 1.3-1.5 (on track)
@@ -616,6 +649,7 @@ Baseline calculation:
 ```
 
 **Mobile Features**:
+
 - Top 4 metrics only
 - Single chart (today's hourly breakdown)
 - One insight/tip
@@ -629,18 +663,21 @@ Baseline calculation:
 ### Export Options
 
 **CSV Export**:
+
 - Date range selector
 - Metric selector (choose specific metrics)
 - Operator filter (all team or individual)
 - Download button → CSV file
 
 **PDF Report**:
+
 - Pre-formatted weekly/monthly report
 - Includes: Summary, charts, insights
 - Suitable for stakeholder sharing
 - Email delivery option
 
 **API Access**:
+
 - REST endpoints for programmatic access
 - Integration with existing BI tools (Looker, Tableau)
 - Real-time WebSocket for live dashboards
@@ -652,6 +689,7 @@ Baseline calculation:
 ### Tech Stack
 
 **Frontend**:
+
 - React 18+ (for UI components)
 - Recharts or Chart.js (for visualizations)
 - TailwindCSS (for styling)
@@ -659,12 +697,14 @@ Baseline calculation:
 - WebSocket (for real-time updates)
 
 **Backend**:
+
 - Node.js API (REST + WebSocket)
 - PostgreSQL (metrics storage)
 - Redis (real-time aggregation, caching)
 - TimescaleDB extension (time-series data)
 
 **Infrastructure**:
+
 - Hosted on existing HotDash infrastructure
 - CDN for static assets
 - WebSocket server for real-time
@@ -727,11 +767,13 @@ CREATE TABLE ticket_metrics (
 #### GET /api/metrics/operator/{operator_id}
 
 **Query Params**:
+
 - `start_date`: ISO date (default: today)
 - `end_date`: ISO date (default: today)
 - `granularity`: 'hour', 'day', 'week' (default: day)
 
 **Response**:
+
 ```json
 {
   "operator_id": 5,
@@ -776,16 +818,19 @@ CREATE TABLE ticket_metrics (
 ## Success Criteria for Dashboard
 
 ### Adoption Metrics
+
 - **Target**: 90% of operators view dashboard daily
 - **Measurement**: Track unique visitors per day
 - **Incentive**: Gamification (leaderboard) drives engagement
 
 ### Utility Metrics
+
 - **Target**: 85% of operators rate dashboard as "very useful" (4-5/5)
 - **Measurement**: In-dashboard feedback survey (monthly)
 - **Iteration**: Update based on feedback
 
 ### Performance Metrics
+
 - **Target**: Dashboard loads in <2 seconds
 - **Measurement**: Frontend performance monitoring
 - **Alert**: If load time >3 seconds, optimize
@@ -797,16 +842,19 @@ CREATE TABLE ticket_metrics (
 ### WCAG 2.1 AA Compliance
 
 **Color Contrast**:
+
 - Text: 4.5:1 minimum
 - UI elements: 3:1 minimum
 - Don't rely on color alone (use icons + text)
 
 **Screen Reader Support**:
+
 - All metrics have aria-labels
 - Charts have text alternatives
 - Keyboard navigation for all features
 
 **Responsive Design**:
+
 - Desktop: 1920×1080 (primary)
 - Laptop: 1366×768
 - Tablet: 768×1024
@@ -816,15 +864,15 @@ CREATE TABLE ticket_metrics (
 
 ## Dashboard Alerts & Thresholds (Summary)
 
-| Alert | Threshold | Action | Notification |
-|-------|-----------|--------|--------------|
-| **System Down** | Any service offline >5 min | Page engineering | Email + Slack + Dashboard banner |
-| **CSAT Drop** | <4.0 or -0.2 in 1 day | Review quality | Email Manager + Dashboard badge |
-| **High Errors** | >5% for 1 hour | Investigate | Slack #engineering + Dashboard |
-| **Low Approval** | <50% for 2 days | Adjust prompts | Email Product + Dashboard |
-| **Slow Reviews** | >2.5 min team avg | Check UX | Dashboard notification |
-| **Budget Alert** | >90% of monthly budget | Optimize or increase | Email Manager + Dashboard |
-| **Target Hit** | Approval rate >75% | Celebrate! | Dashboard confetti 🎉 |
+| Alert            | Threshold                  | Action               | Notification                     |
+| ---------------- | -------------------------- | -------------------- | -------------------------------- |
+| **System Down**  | Any service offline >5 min | Page engineering     | Email + Slack + Dashboard banner |
+| **CSAT Drop**    | <4.0 or -0.2 in 1 day      | Review quality       | Email Manager + Dashboard badge  |
+| **High Errors**  | >5% for 1 hour             | Investigate          | Slack #engineering + Dashboard   |
+| **Low Approval** | <50% for 2 days            | Adjust prompts       | Email Product + Dashboard        |
+| **Slow Reviews** | >2.5 min team avg          | Check UX             | Dashboard notification           |
+| **Budget Alert** | >90% of monthly budget     | Optimize or increase | Email Manager + Dashboard        |
+| **Target Hit**   | Approval rate >75%         | Celebrate!           | Dashboard confetti 🎉            |
 
 ---
 
@@ -835,6 +883,7 @@ CREATE TABLE ticket_metrics (
 **Recipients**: Manager, Product Agent, Team Leads
 
 **Contents**:
+
 - Yesterday's metrics summary
 - Top 3 performers
 - Any alerts or issues
@@ -848,6 +897,7 @@ CREATE TABLE ticket_metrics (
 **Recipients**: All operators, leadership
 
 **Contents**:
+
 - Week's metrics compared to previous week
 - Team highlights and wins
 - Individual shout-outs
@@ -861,6 +911,7 @@ CREATE TABLE ticket_metrics (
 **Recipients**: Executive team, board (if applicable)
 
 **Contents**:
+
 - Full month metrics vs targets
 - ROI analysis (savings vs costs)
 - Success stories and testimonials
@@ -874,15 +925,18 @@ CREATE TABLE ticket_metrics (
 ### Phase 2 (Month 3-6)
 
 **Predictive Insights**:
+
 - "Based on current trends, you'll hit 75% approval by Nov 15"
 - "Your review time is trending up—consider using quick templates"
 
 **Personalization**:
+
 - Operators choose which metrics to display
 - Custom threshold alerts per operator
 - Favorite charts pinned to top
 
 **Collaboration**:
+
 - Compare your metrics to a peer (opt-in)
 - Team challenges ("First team to 70% approval wins!")
 
@@ -891,10 +945,12 @@ CREATE TABLE ticket_metrics (
 ### Phase 3 (Month 7+)
 
 **AI-Powered Coaching**:
+
 - "Operators who use bulk actions review 20% faster—try it!"
 - "Your approval rate drops in the afternoon—fatigue or complexity?"
 
 **Integration with Other Tools**:
+
 - Export to Google Sheets (auto-sync)
 - Slack daily summary bot
 - Mobile app with push notifications
@@ -907,7 +963,7 @@ CREATE TABLE ticket_metrics (
 **Next Action**: Coordinate with Designer for UI mockups, Engineering for implementation
 
 **Related Documents**:
+
 - [Dashboard Design](agent_performance_dashboard_design.md)
 - [Success Metrics Framework](docs/data/success_metrics_slo_framework_2025-10-11.md)
 - [Product Roadmap](product_roadmap_agentsdk.md)
-

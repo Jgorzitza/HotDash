@@ -21,10 +21,15 @@ const ACTION_LABELS: Record<SalesAction, string> = {
   escalate: "Escalate to ops",
 };
 
-export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps) {
+export function SalesPulseModal({
+  summary,
+  open,
+  onClose,
+}: SalesPulseModalProps) {
   const fetcher = useFetcher<SalesPulseActionResponse>();
   const [note, setNote] = useState("");
-  const [selectedAction, setSelectedAction] = useState<SalesAction>("acknowledge");
+  const [selectedAction, setSelectedAction] =
+    useState<SalesAction>("acknowledge");
 
   useEffect(() => {
     if (open) {
@@ -54,11 +59,13 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
         quantity: sku.quantity,
         revenue: sku.revenue,
       })),
-      pendingFulfillment: summary.pendingFulfillment.slice(0, 5).map((order) => ({
-        orderId: order.orderId,
-        name: order.name,
-        displayStatus: order.displayStatus,
-      })),
+      pendingFulfillment: summary.pendingFulfillment
+        .slice(0, 5)
+        .map((order) => ({
+          orderId: order.orderId,
+          name: order.name,
+          displayStatus: order.displayStatus,
+        })),
     };
   }, [summary]);
 
@@ -98,7 +105,8 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
           <div>
             <h2 id="sales-pulse-modal-title">Sales Pulse — Details</h2>
             <p className="occ-text-meta" style={{ margin: 0 }}>
-              Revenue today: {summary.currency} {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
+              Revenue today: {summary.currency}{" "}
+              {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
             </p>
           </div>
           <button
@@ -119,7 +127,8 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
                 <li key={`${sku.sku}-${sku.title}`}>
                   <span>{sku.title}</span>
                   <span>
-                    {sku.quantity} units · {summary.currency} {sku.revenue.toFixed(2)}
+                    {sku.quantity} units · {summary.currency}{" "}
+                    {sku.revenue.toFixed(2)}
                   </span>
                 </li>
               ))}
@@ -149,7 +158,9 @@ export function SalesPulseModal({ summary, open, onClose }: SalesPulseModalProps
               <select
                 className="occ-select"
                 value={selectedAction}
-                onChange={(event) => setSelectedAction(event.currentTarget.value as SalesAction)}
+                onChange={(event) =>
+                  setSelectedAction(event.currentTarget.value as SalesAction)
+                }
                 disabled={isSubmitting}
               >
                 {Object.entries(ACTION_LABELS).map(([action, label]) => (

@@ -17,7 +17,7 @@ The [@shopify/shopify-app-react-router](https://www.npmjs.com/package/@shopify/s
 
 On this page learn the key concepts when building an app with this package.
 
-***
+---
 
 ## Quick start
 
@@ -27,7 +27,7 @@ Check out the [getting started guide](https://shopify.dev/docs/apps/build/scaffo
 
 ### Examples
 
-* #### Create an app
+- #### Create an app
 
   ##### Terminal
 
@@ -45,7 +45,7 @@ Using the `shopifyApp` function, you can configure the package's functionality f
 
 ### Examples
 
-* #### Configure ShopifyApp
+- #### Configure ShopifyApp
 
   ##### /app/shopify.server.ts
 
@@ -54,7 +54,7 @@ Using the `shopifyApp` function, you can configure the package's functionality f
     ApiVersion,
     LogSeverity,
     shopifyApp,
-  } from '@shopify/shopify-app-react-router/server';
+  } from "@shopify/shopify-app-react-router/server";
 
   const shopify = shopifyApp({
     apiKey: process.env.SHOPIFY_API_KEY!,
@@ -81,16 +81,16 @@ Authenticated requests with the Admin API GraphQL client are made by calling the
 
 ### Examples
 
-* #### Make a GraphQL request
+- #### Make a GraphQL request
 
   ##### /app/routes/admin/$.tsx
 
   ```tsx
   export const action = async ({ request }: ActionFunctionArgs) => {
-      const { admin } = await authenticate.admin(request);
-   
-      const response = await admin.graphql(
-        `#graphql
+    const { admin } = await authenticate.admin(request);
+
+    const response = await admin.graphql(
+      `#graphql
           mutation populateProduct($product: ProductCreateInput!) {
             productCreate(product: $product) {
               product {
@@ -105,16 +105,16 @@ Authenticated requests with the Admin API GraphQL client are made by calling the
               }
             }
           }`,
-        {
-          variables: {
-            product: {
-              title: 'Test Product',
-            },
+      {
+        variables: {
+          product: {
+            title: "Test Product",
           },
         },
-      );
-      const responseJson = await response.json();
-    };
+      },
+    );
+    const responseJson = await response.json();
+  };
   ```
 
 ## Add a new route to your app
@@ -127,7 +127,7 @@ When creating new routes, place them in the `/app/routes/` directory with the `a
 
 ### Examples
 
-* #### Add a route
+- #### Add a route
 
   ##### /app/routes/app.new\.tsx
 
@@ -140,8 +140,8 @@ When creating new routes, place them in the `/app/routes/` directory with the `a
         <TitleBar title="Additional page"></TitleBar>
         <s-section heading="Multiple pages">
           <s-paragraph>
-            The app template comes with an additional page which demonstrates how
-            to create multiple pages within app navigation using{" "}
+            The app template comes with an additional page which demonstrates
+            how to create multiple pages within app navigation using{" "}
             <s-link
               href="https:shopify.dev/docs/apps/tools/app-bridge"
               target="_blank"
@@ -158,22 +158,22 @@ When creating new routes, place them in the `/app/routes/` directory with the `a
   ##### /app/routes/app.tsx
 
   ```tsx
-  import type {HeadersFunction, LoaderFunctionArgs} from 'react-router';
-  import {Link, Outlet, useLoaderData, useRouteError} from 'react-router';
-  import {boundary} from '@shopify/shopify-app-react-router/server';
-  import {NavMenu} from '@shopify/app-bridge-react';
-  import {AppProvider} from '@shopify/shopify-app-react-router/react';
+  import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
+  import { Link, Outlet, useLoaderData, useRouteError } from "react-router";
+  import { boundary } from "@shopify/shopify-app-react-router/server";
+  import { NavMenu } from "@shopify/app-bridge-react";
+  import { AppProvider } from "@shopify/shopify-app-react-router/react";
 
-  import {authenticate} from '../shopify.server';
+  import { authenticate } from "../shopify.server";
 
-  export const loader = async ({request}: LoaderFunctionArgs) => {
+  export const loader = async ({ request }: LoaderFunctionArgs) => {
     await authenticate.admin(request);
 
-    return {apiKey: process.env.SHOPIFY_API_KEY || ''};
+    return { apiKey: process.env.SHOPIFY_API_KEY || "" };
   };
 
   export default function App() {
-    const {apiKey} = useLoaderData<typeof loader>();
+    const { apiKey } = useLoaderData<typeof loader>();
 
     return (
       <AppProvider embedded apiKey={apiKey}>
@@ -212,16 +212,16 @@ Ensure your webhook route is not nested under you app layout route.
 
 ### Examples
 
-* #### Authenticate Webhook Requests
+- #### Authenticate Webhook Requests
 
-  ##### /app/routes/webhooks.app.product\_updated.tsx
+  ##### /app/routes/webhooks.app.product_updated.tsx
 
   ```tsx
   export const action = async ({ request }: ActionFunctionArgs) => {
-      const { topic, shop } = await authenticate.webhook(request);
-      console.log(`Received ${topic} webhook for ${shop}`);
+    const { topic, shop } = await authenticate.webhook(request);
+    console.log(`Received ${topic} webhook for ${shop}`);
 
-      return new Response();
+    return new Response();
   };
   ```
 
@@ -239,7 +239,7 @@ The type of session storage you use may impact how your app will be deployed.
 
 ### Examples
 
-* #### Session Storage
+- #### Session Storage
 
   ##### /app/shopify.server.ts
 

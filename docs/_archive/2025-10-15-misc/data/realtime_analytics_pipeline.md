@@ -15,11 +15,13 @@ Real-time analytics pipeline for Agent SDK performance monitoring with sub-secon
 ## Requirements
 
 ### Data Freshness
+
 - **Target Latency:** <1 second from event to dashboard
 - **Update Frequency:** Continuous (streaming) or 1-second polling
 - **Historical Retention:** 7 days hot, 30 days warm, 90 days cold
 
 ### Use Cases
+
 1. **Live Agent Monitoring** - Operations dashboard showing current agent activity
 2. **Real-time Queue Management** - Approval queue depth and age monitoring
 3. **Performance Alerts** - Immediate notification of degraded performance
@@ -44,7 +46,7 @@ Real-time analytics pipeline for Agent SDK performance monitoring with sub-secon
    INSERT into         Trigger fires           Broadcast            Subscribe
    agent_queries       on INSERT/UPDATE        via PG_NOTIFY        to channel
    agent_approvals     └─> pg_notify()         WebSocket/SSE        React hooks
-   agent_feedback                               Realtime API         
+   agent_feedback                               Realtime API
 ```
 
 ### Technology Stack
@@ -53,13 +55,14 @@ Real-time analytics pipeline for Agent SDK performance monitoring with sub-secon
 **Real-time:** Supabase Realtime (via pg_notify + WebSocket)  
 **Views:** Materialized views with incremental refresh  
 **Caching:** Redis (optional, for sub-second aggregates)  
-**Frontend:** React hooks with Supabase Realtime subscriptions  
+**Frontend:** React hooks with Supabase Realtime subscriptions
 
 ## Implementation Design
 
 ### Option 1: Supabase Realtime (Recommended)
 
 **Pros:**
+
 - Native Supabase integration
 - WebSocket-based (low latency)
 - Automatic reconnection handling
@@ -67,6 +70,7 @@ Real-time analytics pipeline for Agent SDK performance monitoring with sub-secon
 - No additional infrastructure
 
 **Cons:**
+
 - Limited to row-level changes (not aggregates)
 - Requires client-side aggregation for metrics
 - Connection pooling limits (1000 concurrent clients)
@@ -76,18 +80,20 @@ Real-time analytics pipeline for Agent SDK performance monitoring with sub-secon
 ```typescript
 // Dashboard component subscribes to real-time changes
 const subscription = supabase
-  .channel('agent_performance')
-  .on('postgres_changes', 
-    { event: '*', schema: 'public', table: 'agent_queries' },
+  .channel("agent_performance")
+  .on(
+    "postgres_changes",
+    { event: "*", schema: "public", table: "agent_queries" },
     (payload) => {
       // Update dashboard state
       handleNewQuery(payload.new);
-    }
+    },
   )
   .subscribe();
 ```
 
 **Use Cases:**
+
 - Live agent query feed
 - Real-time approval queue updates
 - Instant notification of new feedback
@@ -95,12 +101,14 @@ const subscription = supabase
 ### Option 2: Polling with Incremental Views
 
 **Pros:**
+
 - Simple implementation
 - Aggregate data directly from database
 - No WebSocket complexity
 - Works with existing infrastructure
 
 **Cons:**
+
 - Higher latency (1-5 seconds)
 - More database load (frequent queries)
 - Not true "real-time" (near-real-time)
@@ -112,8 +120,8 @@ const subscription = supabase
 useEffect(() => {
   const interval = setInterval(async () => {
     const { data } = await supabase
-      .from('v_agent_performance_snapshot')
-      .select('*');
+      .from("v_agent_performance_snapshot")
+      .select("*");
     setMetrics(data);
   }, 1000);
   return () => clearInterval(interval);
@@ -121,6 +129,7 @@ useEffect(() => {
 ```
 
 **Use Cases:**
+
 - Aggregate metrics (approval rates, latency averages)
 - Dashboard tiles with summary stats
 - Performance scorecards
@@ -128,6 +137,7 @@ useEffect(() => {
 ### Option 3: Hybrid (Best of Both)
 
 **Approach:**
+
 - Use Realtime for instant notifications (new approvals, queue alerts)
 - Use polling (5-second interval) for aggregate metrics
 - Cache computed aggregates in materialized views
@@ -137,18 +147,24 @@ useEffect(() => {
 
 ```typescript
 // Real-time notifications
-supabase.channel('alerts')
-  .on('postgres_changes', 
-    { event: 'INSERT', schema: 'public', table: 'agent_approvals', 
-      filter: 'status=eq.pending' },
-    (payload) => showNotification('New approval pending')
+supabase
+  .channel("alerts")
+  .on(
+    "postgres_changes",
+    {
+      event: "INSERT",
+      schema: "public",
+      table: "agent_approvals",
+      filter: "status=eq.pending",
+    },
+    (payload) => showNotification("New approval pending"),
   )
   .subscribe();
 
 // Polling for aggregates (5-second interval)
 const { data } = await supabase
-  .from('v_agent_performance_snapshot')
-  .select('*');
+  .from("v_agent_performance_snapshot")
+  .select("*");
 ```
 
 **Recommended:** This hybrid approach balances latency, database load, and implementation complexity.
@@ -158,6 +174,7 @@ const { data } = await supabase
 ### Streaming Data Sources
 
 **1. Agent Query Events**
+
 - **Source:** `agent_queries` table
 - **Event Types:** INSERT (new query)
 - **Payload:** query, agent, latency_ms, conversation_id
@@ -165,6 +182,7 @@ const { data } = await supabase
 - **Channel:** `agent_queries_stream`
 
 **2. Approval Queue Events**
+
 - **Source:** `agent_approvals` table
 - **Event Types:** INSERT (new approval), UPDATE (status change)
 - **Payload:** conversation_id, status, created_at, approved_by
@@ -172,6 +190,7 @@ const { data } = await supabase
 - **Channel:** `approval_queue_stream`
 
 **3. Training Data Events**
+
 - **Source:** `agent_feedback` table
 - **Event Types:** INSERT (new feedback), UPDATE (annotation)
 - **Payload:** conversation_id, safe_to_send, labels, annotator
@@ -185,14 +204,14 @@ const { data } = await supabase
 ```sql
 -- Real-time agent performance snapshot
 CREATE MATERIALIZED VIEW mv_realtime_agent_performance AS
-SELECT 
+SELECT
   agent,
   COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') as queries_last_minute,
   COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '5 minutes') as queries_last_5min,
   COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '1 hour') as queries_last_hour,
   AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '5 minutes') as avg_latency_5min,
   MAX(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '5 minutes') as max_latency_5min,
-  CASE 
+  CASE
     WHEN AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') > 200 THEN 'degraded'
     WHEN AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') > 100 THEN 'warning'
     ELSE 'healthy'
@@ -278,31 +297,37 @@ export function useRealtimeAgentMetrics() {
     // Subscribe to performance snapshot (polling)
     const pollInterval = setInterval(async () => {
       const { data } = await supabase
-        .from('mv_realtime_agent_performance')
-        .select('*');
+        .from("mv_realtime_agent_performance")
+        .select("*");
       setMetrics(data || []);
     }, 5000); // Poll every 5 seconds
 
     // Subscribe to real-time alerts
     const alertChannel = supabase
-      .channel('performance_alerts')
-      .on('postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'agent_queries',
-          filter: 'latency_ms=gt.200' },
+      .channel("performance_alerts")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "agent_queries",
+          filter: "latency_ms=gt.200",
+        },
         (payload) => {
-          setAlerts(prev => [payload.new, ...prev].slice(0, 10));
-        }
+          setAlerts((prev) => [payload.new, ...prev].slice(0, 10));
+        },
       )
       .subscribe();
 
     // Subscribe to approval queue
     const queueChannel = supabase
-      .channel('approval_queue')
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'agent_approvals' },
+      .channel("approval_queue")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "agent_approvals" },
         (payload) => {
           handleQueueUpdate(payload);
-        }
+        },
       )
       .subscribe();
 
@@ -337,6 +362,7 @@ export function AgentPerformanceDashboard() {
 ## Data Freshness Requirements
 
 ### Tier 1: Real-time (<1 second)
+
 - **New approval requests** - Immediate notification
 - **Performance degradation** - Instant alert if latency >200ms
 - **Queue SLA breaches** - Immediate alert if pending >5 minutes
@@ -345,6 +371,7 @@ export function AgentPerformanceDashboard() {
 **Implementation:** pg_notify + Supabase Realtime
 
 ### Tier 2: Near Real-time (1-5 seconds)
+
 - **Agent performance snapshot** - Current queries/hour, latency, approval rate
 - **Queue depth metrics** - Current pending count and age distribution
 - **Annotator activity** - Active annotators and productivity
@@ -352,6 +379,7 @@ export function AgentPerformanceDashboard() {
 **Implementation:** Polling materialized views (5-second interval)
 
 ### Tier 3: Delayed (30 seconds - 1 minute)
+
 - **Aggregate metrics** - Rolling averages, percentiles
 - **Quality scores** - Composite scores across multiple dimensions
 - **Trend analysis** - Moving averages and forecasts
@@ -359,6 +387,7 @@ export function AgentPerformanceDashboard() {
 **Implementation:** Materialized view refresh (30-second interval)
 
 ### Tier 4: Batch (5-30 minutes)
+
 - **Historical analysis** - Daily/weekly/monthly rollups
 - **Compliance reports** - Audit trail and retention compliance
 - **Data quality checks** - Completeness, accuracy, consistency
@@ -368,13 +397,16 @@ export function AgentPerformanceDashboard() {
 ## Notification Channels
 
 ### Channel 1: approval_queue_stream
+
 **Purpose:** New and updated approval requests
 
 **Events:**
+
 - INSERT with status = 'pending'
 - UPDATE changing status
 
 **Payload:**
+
 ```json
 {
   "id": 123,
@@ -386,13 +418,16 @@ export function AgentPerformanceDashboard() {
 ```
 
 ### Channel 2: performance_alert_stream
+
 **Purpose:** Performance degradation alerts
 
 **Events:**
+
 - INSERT with latency_ms > 200
 - Agent health status change to 'degraded'
 
 **Payload:**
+
 ```json
 {
   "agent": "data",
@@ -404,13 +439,16 @@ export function AgentPerformanceDashboard() {
 ```
 
 ### Channel 3: training_feedback_stream
+
 **Purpose:** New training data and annotations
 
 **Events:**
+
 - INSERT (new feedback)
 - UPDATE with safe_to_send change
 
 **Payload:**
+
 ```json
 {
   "id": 456,
@@ -426,11 +464,13 @@ export function AgentPerformanceDashboard() {
 ### Level 1: Materialized View Cache (30-second refresh)
 
 **Views:**
+
 - mv_realtime_agent_performance (agent-level aggregates)
 - mv_approval_queue_summary (queue metrics by status)
 - mv_training_quality_snapshot (quality scores and distribution)
 
 **Refresh Strategy:**
+
 ```sql
 -- Incremental refresh every 30 seconds
 SELECT cron.schedule(
@@ -449,6 +489,7 @@ SELECT cron.schedule(
 **Use Case:** High-frequency dashboard polling
 
 **Implementation:**
+
 ```typescript
 // In-memory cache with 5-second TTL
 const metricsCache = new Map<string, { data: any; expires: number }>();
@@ -458,8 +499,8 @@ async function getCachedMetrics(viewName: string) {
   if (cached && cached.expires > Date.now()) {
     return cached.data;
   }
-  
-  const { data } = await supabase.from(viewName).select('*');
+
+  const { data } = await supabase.from(viewName).select("*");
   metricsCache.set(viewName, { data, expires: Date.now() + 5000 });
   return data;
 }
@@ -470,6 +511,7 @@ async function getCachedMetrics(viewName: string) {
 **Use Case:** Public-facing analytics API
 
 **Implementation:**
+
 - API responses with `Cache-Control: max-age=60`
 - CloudFlare caching at edge
 - Invalidation via `PURGE` on critical updates
@@ -478,42 +520,44 @@ async function getCachedMetrics(viewName: string) {
 
 ### Latency Targets
 
-| Metric Type | Target | Measurement |
-|-------------|--------|-------------|
-| Event to Database | <100ms | INSERT execution time |
-| Database to View | <1s | Materialized view refresh |
-| View to Dashboard | <500ms | API response time |
-| End-to-End | <2s | Event to user screen |
+| Metric Type       | Target | Measurement               |
+| ----------------- | ------ | ------------------------- |
+| Event to Database | <100ms | INSERT execution time     |
+| Database to View  | <1s    | Materialized view refresh |
+| View to Dashboard | <500ms | API response time         |
+| End-to-End        | <2s    | Event to user screen      |
 
 ### Throughput Targets
 
-| Operation | Target | Peak Capacity |
-|-----------|--------|---------------|
-| Agent queries/second | 100 | 500 |
-| Approval requests/minute | 50 | 200 |
-| Feedback annotations/hour | 100 | 500 |
-| Dashboard viewers (concurrent) | 50 | 200 |
+| Operation                      | Target | Peak Capacity |
+| ------------------------------ | ------ | ------------- |
+| Agent queries/second           | 100    | 500           |
+| Approval requests/minute       | 50     | 200           |
+| Feedback annotations/hour      | 100    | 500           |
+| Dashboard viewers (concurrent) | 50     | 200           |
 
 ### Resource Limits
 
-| Resource | Limit | Monitoring |
-|----------|-------|------------|
-| Database connections | 100 | Alert at >80 |
-| WebSocket connections | 1000 | Alert at >800 |
-| View refresh time | <500ms | Alert at >2s |
-| API response time | <200ms | Alert at >1s |
+| Resource              | Limit  | Monitoring    |
+| --------------------- | ------ | ------------- |
+| Database connections  | 100    | Alert at >80  |
+| WebSocket connections | 1000   | Alert at >800 |
+| View refresh time     | <500ms | Alert at >2s  |
+| API response time     | <200ms | Alert at >1s  |
 
 ## Monitoring & Alerting
 
 ### Key Metrics
 
 **Performance Metrics:**
+
 - Real-time view refresh latency
 - Dashboard update frequency
 - WebSocket connection count
 - Database connection pool utilization
 
 **Quality Metrics:**
+
 - Data freshness (event timestamp vs. display time)
 - Missing events (gaps in sequence)
 - Duplicate events (deduplication effectiveness)
@@ -522,12 +566,14 @@ async function getCachedMetrics(viewName: string) {
 ### Alert Triggers
 
 **Critical (Immediate):**
+
 - View refresh failure (>3 consecutive failures)
 - WebSocket connection pool exhausted (>90%)
 - Database connection pool exhausted (>90%)
 - End-to-end latency >10 seconds
 
 **Warning (5-minute threshold):**
+
 - View refresh latency >2 seconds
 - Dashboard update lag >5 seconds
 - WebSocket connections >80%
@@ -536,17 +582,18 @@ async function getCachedMetrics(viewName: string) {
 ### Health Dashboard
 
 **Metrics to Display:**
+
 ```sql
-SELECT 
+SELECT
   'Real-time Pipeline Health' as component,
-  CASE 
+  CASE
     WHEN last_refresh > NOW() - INTERVAL '1 minute' THEN 'healthy'
     WHEN last_refresh > NOW() - INTERVAL '5 minutes' THEN 'degraded'
     ELSE 'down'
   END as status,
   EXTRACT(EPOCH FROM (NOW() - last_refresh)) as seconds_since_refresh
 FROM (
-  SELECT MAX(last_updated_at) as last_refresh 
+  SELECT MAX(last_updated_at) as last_refresh
   FROM mv_realtime_agent_performance
 ) t;
 ```
@@ -554,6 +601,7 @@ FROM (
 ## Implementation Phases
 
 ### Phase 1: Foundation (Week 1) - CURRENT
+
 - ✅ Create base tables (agent_approvals, agent_feedback, agent_queries)
 - ✅ Add RLS policies and indexes
 - ✅ Create monitoring views
@@ -561,6 +609,7 @@ FROM (
 - ⏳ Create materialized views for real-time
 
 ### Phase 2: Real-time Layer (Week 2)
+
 - [ ] Set up Supabase Realtime channels
 - [ ] Implement frontend WebSocket subscriptions
 - [ ] Create polling mechanism for aggregate views
@@ -568,6 +617,7 @@ FROM (
 - [ ] Test end-to-end latency (<2s target)
 
 ### Phase 3: Optimization (Week 3)
+
 - [ ] Tune materialized view refresh frequency
 - [ ] Optimize database connection pooling
 - [ ] Implement incremental refresh strategies
@@ -575,6 +625,7 @@ FROM (
 - [ ] Load test with realistic volumes
 
 ### Phase 4: Production (Week 4)
+
 - [ ] Deploy to staging environment
 - [ ] Monitor performance under load
 - [ ] Fine-tune refresh intervals
@@ -676,12 +727,12 @@ EXECUTE FUNCTION notify_slow_query();
 ```sql
 -- Materialized View 1: Real-time agent performance (refresh every 30s)
 CREATE MATERIALIZED VIEW IF NOT EXISTS mv_realtime_agent_performance AS
-SELECT 
+SELECT
   agent,
   COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') as queries_last_minute,
   COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '5 minutes') as queries_last_5min,
   AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '5 minutes') as avg_latency_5min,
-  CASE 
+  CASE
     WHEN AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') > 200 THEN 'degraded'
     WHEN AVG(latency_ms) FILTER (WHERE created_at > NOW() - INTERVAL '1 minute') > 100 THEN 'warning'
     ELSE 'healthy'
@@ -695,7 +746,7 @@ CREATE UNIQUE INDEX mv_realtime_agent_performance_agent_idx ON mv_realtime_agent
 
 -- Materialized View 2: Approval queue summary (refresh every 30s)
 CREATE MATERIALIZED VIEW IF NOT EXISTS mv_approval_queue_summary AS
-SELECT 
+SELECT
   COUNT(*) FILTER (WHERE status = 'pending') as pending_count,
   COUNT(*) FILTER (WHERE status = 'pending' AND created_at < NOW() - INTERVAL '5 minutes') as sla_breaches,
   AVG(EXTRACT(EPOCH FROM (NOW() - created_at)) / 60) FILTER (WHERE status = 'pending') as avg_pending_age_minutes,
@@ -720,18 +771,21 @@ $$ LANGUAGE plpgsql;
 ### Load Testing Scenarios
 
 **Scenario 1: Normal Load**
+
 - 50 queries/minute across 4 agents
 - 5 approval requests/minute
 - 2 feedback annotations/minute
 - **Expected:** <1s end-to-end latency
 
 **Scenario 2: Peak Load**
+
 - 200 queries/minute across 4 agents
 - 20 approval requests/minute
 - 10 feedback annotations/minute
 - **Expected:** <3s end-to-end latency
 
 **Scenario 3: Stress Test**
+
 - 500 queries/minute (burst)
 - 50 approval requests/minute (burst)
 - **Expected:** Graceful degradation, no data loss
@@ -739,17 +793,19 @@ $$ LANGUAGE plpgsql;
 ### Validation Checks
 
 **Data Consistency:**
+
 ```sql
 -- Verify event counts match across views
-SELECT 
+SELECT
   (SELECT COUNT(*) FROM agent_queries WHERE created_at > NOW() - INTERVAL '5 minutes') as raw_count,
   (SELECT SUM(queries_last_5min) FROM mv_realtime_agent_performance) as materialized_count;
 ```
 
 **Latency Measurement:**
+
 ```sql
 -- Measure view refresh lag
-SELECT 
+SELECT
   NOW() - refreshed_at as refresh_lag
 FROM mv_realtime_agent_performance
 LIMIT 1;
@@ -818,18 +874,21 @@ psql $DATABASE_URL -c "
 ### Database Resources
 
 **Connection Pool:**
+
 - Base: 20 connections
 - Real-time listeners: +10 connections
 - Dashboard polling: +5 connections per 100 users
 - **Recommendation:** 50 connections for <500 concurrent users
 
 **Storage:**
+
 - Raw tables: ~1GB per month (estimated)
 - Materialized views: ~100MB
 - Indexes: ~200MB
 - **Total:** ~1.3GB per month
 
 **Compute:**
+
 - View refresh: <100ms per refresh (negligible)
 - pg_notify: <1ms per event
 - **Total:** <5% additional CPU load
@@ -837,11 +896,13 @@ psql $DATABASE_URL -c "
 ### API Resources
 
 **Supabase Realtime:**
+
 - Free tier: 200 concurrent connections
 - Recommended tier: Pro (1000 connections)
 - **Cost:** $25/month (Pro plan)
 
 **Database:**
+
 - Free tier: 500MB database, 2GB bandwidth
 - Recommended tier: Pro (8GB database, 50GB bandwidth)
 - **Cost:** Included in Supabase Pro
@@ -851,23 +912,27 @@ psql $DATABASE_URL -c "
 ### Implementation Roadmap
 
 **Week 1 (Complete):**
+
 - ✅ Base tables and views created
 - ⏳ Trigger functions (next step)
 - ⏳ Materialized views for real-time
 
 **Week 2:**
+
 - [ ] Frontend integration (React hooks)
 - [ ] WebSocket subscriptions
 - [ ] Caching layer
 - [ ] End-to-end testing
 
 **Week 3:**
+
 - [ ] Load testing
 - [ ] Performance tuning
 - [ ] Monitoring setup
 - [ ] Documentation
 
 **Week 4:**
+
 - [ ] Staging deployment
 - [ ] Production deployment
 - [ ] Operational handoff
@@ -877,4 +942,3 @@ psql $DATABASE_URL -c "
 **Status:** Design complete, ready for Phase 1 implementation  
 **Next:** Create trigger functions and materialized views  
 **Estimated Time:** 2-3 hours for Phase 1 completion
-

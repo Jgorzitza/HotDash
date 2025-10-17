@@ -1,2 +1,1 @@
-export * from './ga4';
-
+export * from "./ga4";

@@ -1,4 +1,11 @@
-import { Card, BlockStack, Text, InlineStack, Badge, Spinner } from "@shopify/polaris";
+import {
+  Card,
+  BlockStack,
+  Text,
+  InlineStack,
+  Badge,
+  Spinner,
+} from "@shopify/polaris";
 
 interface StockRiskTileProps {
   skuCount: number;
@@ -7,13 +14,20 @@ interface StockRiskTileProps {
   loading?: boolean;
 }
 
-export function StockRiskTile({ skuCount, subtitle, trend, loading }: StockRiskTileProps) {
+export function StockRiskTile({
+  skuCount,
+  subtitle,
+  trend,
+  loading,
+}: StockRiskTileProps) {
   if (loading) {
     return (
       <Card>
         <BlockStack gap="400" align="center">
           <Spinner size="small" />
-          <Text as="p" tone="subdued">Loading...</Text>
+          <Text as="p" tone="subdued">
+            Loading...
+          </Text>
         </BlockStack>
       </Card>
     );
@@ -22,14 +36,18 @@ export function StockRiskTile({ skuCount, subtitle, trend, loading }: StockRiskT
   return (
     <Card>
       <BlockStack gap="400">
-        <Text as="h3" variant="headingMd">Stock Risk</Text>
+        <Text as="h3" variant="headingMd">
+          Stock Risk
+        </Text>
         <BlockStack gap="200">
-          <Text as="h2" variant="heading2xl">{skuCount} SKUs</Text>
+          <Text as="h2" variant="heading2xl">
+            {skuCount} SKUs
+          </Text>
           <InlineStack gap="200" align="start" blockAlign="center">
-            <Text as="p" tone="subdued">{subtitle}</Text>
-            {trend === "down" && (
-              <Badge tone="critical">⚠️</Badge>
-            )}
+            <Text as="p" tone="subdued">
+              {subtitle}
+            </Text>
+            {trend === "down" && <Badge tone="critical">⚠️</Badge>}
           </InlineStack>
         </BlockStack>
       </BlockStack>

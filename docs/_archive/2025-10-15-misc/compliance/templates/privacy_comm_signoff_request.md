@@ -6,6 +6,7 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-12-31
 ---
+
 # Marketing & Support Privacy Comms Sign-off — Outreach Template
 
 Use this template when requesting written confirmation that updated operator privacy language will ship in launch communications and support playbooks.
@@ -30,6 +31,7 @@ Thanks,
 ```
 
 ## Usage Notes
+
 - Replace placeholders (`<...>`) with concrete dates, collateral links, and recipient names.
 - Capture the confirmation email/# export in `docs/compliance/evidence/operator_privacy_comms/` once received.
 - Reference the logged confirmation in `feedback/compliance.md` under the appropriate date.

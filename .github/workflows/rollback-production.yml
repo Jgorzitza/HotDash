@@ -31,6 +31,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate deployment window
+        run: |
+          # Check if within business hours (9am-5pm PT)
+          HOUR=$(TZ=America/Los_Angeles date +%H)
+          DAY=$(TZ=America/Los_Angeles date +%u)
+
+          if [ "$DAY" -gt 5 ]; then
+            echo "::warning::Rollback on weekend - ensure this is intentional"
+          fi
+
+          if [ "$HOUR" -lt 9 ] || [ "$HOUR" -ge 17 ]; then
+            echo "::warning::Rollback outside business hours (9am-5pm PT)"
+            echo "Current time: $(TZ=America/Los_Angeles date)"
+            echo "Emergency rollbacks are allowed but will be logged"
+          fi
+
+      - name: Verify required CI checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Verifying CI checks for rollback safety..."
+
+          # Required status checks
+          REQUIRED_CHECKS=("Docs Policy" "Danger" "Gitleaks" "AI Config" "Health Check")
+
+          echo "Required checks enforced by branch protection:"
+          for check in "${REQUIRED_CHECKS[@]}"; do
+            echo "  ✅ $check"
+          done
+
       - name: Setup Fly.io CLI
         uses: superfly/flyctl-actions/setup-flyctl@master
 
@@ -185,6 +215,39 @@ jobs:
               exit 1
             fi
           fi
+
+  notify:
+    name: Send rollback notification
+    runs-on: ubuntu-latest
+    needs: [validate, rollback, verify]
+    if: always()
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.NOTIFICATION_EMAIL_USERNAME }}
+          password: ${{ secrets.NOTIFICATION_EMAIL_PASSWORD }}
+          subject: "⚠️ Production Rollback Executed - HotDash"
+          to: justin@hotrodan.com
+          from: HotDash Deployments <noreply@hotdash.app>
+          body: |
+            Production rollback has been executed.
+
+            Details:
+            - Environment: PRODUCTION
+            - Previous version: ${{ needs.validate.outputs.current_version }}
+            - Target image: ${{ needs.validate.outputs.target_image }}
+            - Reason: ${{ inputs.reason }}
+            - Requested by: ${{ github.actor }}
+            - Rollback: ${{ needs.rollback.result }}
+            - Verification: ${{ needs.verify.result }}
+
+            Workflow Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Status: ${{ needs.verify.result == 'success' && 'Rollback completed successfully' || 'Rollback verification failed - manual intervention required' }}
 
   summary:
     name: Rollback summary

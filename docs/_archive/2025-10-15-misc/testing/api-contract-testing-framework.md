@@ -9,6 +9,7 @@
 ## Overview
 
 API contract testing ensures APIs don't break consumers by validating:
+
 - Request/response schemas
 - Status codes
 - Headers
@@ -33,7 +34,7 @@ paths:
     get:
       summary: Get pending approval queue items
       responses:
-        '200':
+        "200":
           description: Success
           content:
             application/json:
@@ -43,7 +44,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QueueItem'
+                      $ref: "#/components/schemas/QueueItem"
 
   /api/approvals/approve:
     post:
@@ -60,11 +61,11 @@ paths:
                   type: string
                   format: uuid
       responses:
-        '200':
+        "200":
           description: Approved successfully
-        '403':
+        "403":
           description: Not authorized
-        '404':
+        "404":
           description: Queue item not found
 
 components:
@@ -98,62 +99,70 @@ components:
 
 ```typescript
 // tests/integration/api-contracts.spec.ts
-import { describe, it, expect } from 'vitest';
-import { validateAgainstSchema } from 'openapi-validator';
-import schema from '../../api-contracts/approval-queue-api.yaml';
+import { describe, it, expect } from "vitest";
+import { validateAgainstSchema } from "openapi-validator";
+import schema from "../../api-contracts/approval-queue-api.yaml";
 
-describe('API Contract Tests', () => {
-  it('GET /api/approvals/queue matches schema', async () => {
-    const response = await fetch('http://localhost:3000/api/approvals/queue');
+describe("API Contract Tests", () => {
+  it("GET /api/approvals/queue matches schema", async () => {
+    const response = await fetch("http://localhost:3000/api/approvals/queue");
     const data = await response.json();
-    
-    const validation = validateAgainstSchema(schema, '/api/approvals/queue', 'get', {
-      response: data,
-      statusCode: response.status
-    });
-    
+
+    const validation = validateAgainstSchema(
+      schema,
+      "/api/approvals/queue",
+      "get",
+      {
+        response: data,
+        statusCode: response.status,
+      },
+    );
+
     expect(validation.valid).toBe(true);
     expect(validation.errors).toEqual([]);
   });
 
-  it('POST /api/approvals/approve validates request schema', async () => {
+  it("POST /api/approvals/approve validates request schema", async () => {
     const invalidRequest = {
-      queueItemId: 'not-a-uuid'  // Should be UUID format
+      queueItemId: "not-a-uuid", // Should be UUID format
     };
-    
-    const response = await fetch('http://localhost:3000/api/approvals/approve', {
-      method: 'POST',
-      body: JSON.stringify(invalidRequest),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
+
+    const response = await fetch(
+      "http://localhost:3000/api/approvals/approve",
+      {
+        method: "POST",
+        body: JSON.stringify(invalidRequest),
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+
     expect(response.status).toBe(400);
     const error = await response.json();
-    expect(error.message).toContain('Invalid queueItemId format');
+    expect(error.message).toContain("Invalid queueItemId format");
   });
 
-  it('response includes required fields', async () => {
-    const response = await fetch('http://localhost:3000/api/approvals/queue');
+  it("response includes required fields", async () => {
+    const response = await fetch("http://localhost:3000/api/approvals/queue");
     const data = await response.json();
-    
+
     // Validate structure
-    expect(data).toHaveProperty('data');
+    expect(data).toHaveProperty("data");
     expect(Array.isArray(data.data)).toBe(true);
-    
+
     if (data.data.length > 0) {
       const item = data.data[0];
-      
+
       // Required fields
-      expect(item).toHaveProperty('id');
-      expect(item).toHaveProperty('conversation_id');
-      expect(item).toHaveProperty('draft_response');
-      expect(item).toHaveProperty('confidence_score');
-      expect(item).toHaveProperty('status');
-      
+      expect(item).toHaveProperty("id");
+      expect(item).toHaveProperty("conversation_id");
+      expect(item).toHaveProperty("draft_response");
+      expect(item).toHaveProperty("confidence_score");
+      expect(item).toHaveProperty("status");
+
       // Type validation
-      expect(typeof item.id).toBe('string');
-      expect(typeof item.conversation_id).toBe('number');
-      expect(typeof item.confidence_score).toBe('number');
+      expect(typeof item.id).toBe("string");
+      expect(typeof item.conversation_id).toBe("number");
+      expect(typeof item.confidence_score).toBe("number");
       expect(item.confidence_score).toBeGreaterThanOrEqual(0);
       expect(item.confidence_score).toBeLessThanOrEqual(100);
     }
@@ -177,4 +186,3 @@ describe('API Contract Tests', () => {
 **Status**: Framework designed  
 **Effort**: 6 hours implementation  
 **Benefits**: Prevents breaking API changes
-

@@ -13,6 +13,7 @@
 **Purpose**: Peer-to-peer support, feature discussions, best practice sharing
 
 **Channels**:
+
 - `#general` - Announcements and general discussion
 - `#best-practices` - Tips and tricks from power users
 - `#feature-requests` - Suggest and vote on features
@@ -21,7 +22,8 @@
 
 **Moderation**: Community manager + power users
 
-**KPIs**: 
+**KPIs**:
+
 - 40% of customers active monthly
 - Avg 3 posts per active user per month
 - 80% of questions answered by community (not HotDash staff)
@@ -33,6 +35,7 @@
 **Format**: 1-day virtual or in-person event
 
 **Agenda**:
+
 - Product roadmap preview
 - Operator success stories (presentations)
 - Breakout sessions (advanced training)
@@ -52,6 +55,7 @@
 **Topics**: Roadmap review, feature prioritization, pricing feedback
 
 **Benefits for Members**:
+
 - Early access to features
 - Direct influence on roadmap
 - Exclusive swag and recognition
@@ -60,4 +64,3 @@
 
 **Document Owner**: Product Agent  
 **Status**: Community Strategy Defined
-

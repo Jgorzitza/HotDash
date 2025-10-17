@@ -22,6 +22,7 @@ status: RESTART READY ✅
 ## 📦 Key Deliverables
 
 ### Approval Queue UI (Complete)
+
 1. HANDOFF-approval-queue-ui.md (implementation spec)
 2. MINIMAL-approval-ui-assets-TODAY.md (TODAY launch)
 3. approvalcard-component-spec.md (detailed spec)
@@ -30,6 +31,7 @@ status: RESTART READY ✅
 6. approval-queue-edge-states.md (all edge cases)
 
 ### Launch-Aligned Features (Complete)
+
 7. agent-response-formatting.md
 8. realtime-update-indicators.md
 9. hot-rodan-brand-integration.md
@@ -42,6 +44,7 @@ status: RESTART READY ✅
 16. final-launch-features-1Q-1S.md (4 tasks batched)
 
 ### Performance Review
+
 17. designer-performance-review.md (self-assessment + 10X recommendations)
 
 ## 🎯 Current State
@@ -54,6 +57,7 @@ status: RESTART READY ✅
 ## 🚀 Context for Restart
 
 ### What Happened This Session
+
 1. Completed minimal approval UI handoff for Engineer
 2. Executed 19 parallel/launch-aligned tasks
 3. Received North Star correction (DELIVER not PLAN)
@@ -61,6 +65,7 @@ status: RESTART READY ✅
 5. All specs delivered, Engineer unblocked
 
 ### What to Do After Restart
+
 1. Re-read docs/directions/designer.md
 2. Check feedback/engineer.md for implementation status
 3. If Engineer completed UI → Execute Task 4 (Implementation Review)
@@ -68,6 +73,7 @@ status: RESTART READY ✅
 5. Continue checking North Star alignment
 
 ### Key Learnings
+
 - ✅ Focus on DELIVERY (working UI) not PLANNING (docs)
 - ✅ Check North Star after every 5-10 tasks
 - ✅ Flag drift proactively to Manager
@@ -82,6 +88,7 @@ status: RESTART READY ✅
 **Engineer Status**: feedback/engineer.md
 
 **Key Specs for Engineer**:
+
 - docs/design/HANDOFF-approval-queue-ui.md (MAIN SPEC)
 - docs/design/MINIMAL-approval-ui-assets-TODAY.md (TODAY LAUNCH)
 

@@ -9,17 +9,20 @@ task: 1I
 # Task 1I: Dashboard Onboarding Flow
 
 ## Purpose
+
 Design first-time user walkthrough with tooltips, dismiss logic, and "don't show again" for new operators.
 
 ## Onboarding Strategy
 
 **Goals**:
+
 - Help new operators understand dashboard quickly
 - Show key features without overwhelming
 - Allow skip/dismiss at any time
 - Remember dismissal preference
 
 **Principles**:
+
 - ✅ Progressive (show one thing at a time)
 - ✅ Contextual (tooltip appears on relevant element)
 - ✅ Skippable (never trap user)
@@ -28,6 +31,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 ## Onboarding Flow
 
 ### Step 1: Welcome Modal
+
 ```typescript
 <Modal
   open={isFirstVisit && !onboardingDismissed}
@@ -64,6 +68,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 **Persistent**: "Don't show again" checkbox
 
 ### Step 2: Dashboard Tiles
+
 ```typescript
 <div ref={dashboardRef}>
   <Tooltip
@@ -92,6 +97,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 **Actions**: Next, Skip
 
 ### Step 3: Approval Queue
+
 ```typescript
 <div ref={approvalsRef}>
   <Tooltip
@@ -123,6 +129,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 **Actions**: Next, Back, Skip
 
 ### Step 4: Tile Details
+
 ```typescript
 <Tooltip
   active={onboardingStep === 'tile-details'}
@@ -148,6 +155,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 **Actions**: Next, Back, Skip
 
 ### Step 5: Completion
+
 ```typescript
 <Modal
   open={onboardingStep === 'complete'}
@@ -178,6 +186,7 @@ Design first-time user walkthrough with tooltips, dismiss logic, and "don't show
 ## Tooltip Component
 
 ### TooltipContent Component
+
 ```typescript
 interface TooltipContentProps {
   title: string;
@@ -206,15 +215,15 @@ function TooltipContent({
           <Text variant="headingSm" as="h3">{title}</Text>
           <Button plain onClick={onSkip} icon={CancelSmallIcon} />
         </InlineStack>
-        
+
         {/* Description */}
         <Text variant="bodyMd" as="p">{description}</Text>
-        
+
         {/* Progress */}
         <Text variant="bodySm" tone="subdued">
           Step {stepNumber} of {totalSteps}
         </Text>
-        
+
         {/* Actions */}
         <InlineStack align="space-between">
           <div>
@@ -238,6 +247,7 @@ function TooltipContent({
 ## Spotlight Effect (Optional)
 
 ### Highlight Active Element
+
 ```css
 .onboarding-spotlight {
   position: relative;
@@ -251,6 +261,7 @@ function TooltipContent({
 **Use**: Draw focus to specific UI element
 
 ### Backdrop Overlay
+
 ```typescript
 {onboardingActive && (
   <div
@@ -269,15 +280,16 @@ function TooltipContent({
 ## Persistence (Local Storage)
 
 ### Save Onboarding State
+
 ```typescript
-const ONBOARDING_KEY = 'hotdash_onboarding_completed';
+const ONBOARDING_KEY = "hotdash_onboarding_completed";
 
 function hasCompletedOnboarding(): boolean {
-  return localStorage.getItem(ONBOARDING_KEY) === 'true';
+  return localStorage.getItem(ONBOARDING_KEY) === "true";
 }
 
 function markOnboardingComplete() {
-  localStorage.setItem(ONBOARDING_KEY, 'true');
+  localStorage.setItem(ONBOARDING_KEY, "true");
 }
 
 function resetOnboarding() {
@@ -286,20 +298,20 @@ function resetOnboarding() {
 ```
 
 ### Per-User Preference (Backend)
+
 ```typescript
 // Store in Supabase user_preferences table
-await supabase
-  .from('user_preferences')
-  .upsert({
-    user_id: userId,
-    onboarding_completed: true,
-    updated_at: new Date().toISOString(),
-  });
+await supabase.from("user_preferences").upsert({
+  user_id: userId,
+  onboarding_completed: true,
+  updated_at: new Date().toISOString(),
+});
 ```
 
 ## Contextual Help
 
 ### Help Icon (Always Available)
+
 ```typescript
 <Button
   plain
@@ -313,16 +325,17 @@ await supabase
 **Action**: Opens help modal or restarts onboarding
 
 ### Keyboard Shortcut (?)
+
 ```typescript
 useEffect(() => {
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === '?') {
+    if (e.key === "?") {
       showKeyboardShortcuts();
     }
   };
-  
-  window.addEventListener('keydown', handleKeyDown);
-  return () => window.removeEventListener('keydown', handleKeyDown);
+
+  window.addEventListener("keydown", handleKeyDown);
+  return () => window.removeEventListener("keydown", handleKeyDown);
 }, []);
 ```
 
@@ -330,6 +343,7 @@ useEffect(() => {
 **Action**: Show keyboard shortcuts modal
 
 ### Tooltips (Persistent)
+
 ```typescript
 <Tooltip content="Review pending agent actions" preferredPosition="below">
   <Navigation.Item url="/approvals" label="Approvals" />
@@ -342,12 +356,13 @@ useEffect(() => {
 ## Settings Panel
 
 ### Onboarding Settings
+
 ```typescript
 <Page title="Settings">
   <Card sectioned>
     <BlockStack gap="300">
       <Text variant="headingMd" as="h2">Onboarding</Text>
-      
+
       <Checkbox
         label="Show onboarding tour on next visit"
         checked={!hasCompletedOnboarding()}
@@ -359,7 +374,7 @@ useEffect(() => {
           }
         }}
       />
-      
+
       <Button onClick={restartOnboarding}>
         Restart tour
       </Button>
@@ -373,6 +388,7 @@ useEffect(() => {
 ## Copy Guidelines
 
 ### Welcome Message
+
 ```
 "Welcome to HotDash! Let's show you around."
 ```
@@ -380,6 +396,7 @@ useEffect(() => {
 **Tone**: Friendly, brief
 
 ### Step Descriptions
+
 ```
 ✅ "Each tile shows real-time data for different parts of your operation."
 ❌ "Tiles aggregate operational metrics from integrated systems."
@@ -391,6 +408,7 @@ useEffect(() => {
 **Principle**: Simple language, operator-focused
 
 ### Completion Message
+
 ```
 "✅ You're all set! Start exploring."
 ```
@@ -400,12 +418,14 @@ useEffect(() => {
 ## Accessibility
 
 ### Keyboard Navigation
+
 - Tab through onboarding steps
 - Enter to advance
 - Escape to skip
 - Arrow keys for back/next
 
 ### Screen Reader Announcements
+
 ```html
 <div role="dialog" aria-labelledby="onboarding-title" aria-modal="true">
   <h2 id="onboarding-title">Onboarding: Step 1 of 4</h2>
@@ -414,6 +434,7 @@ useEffect(() => {
 ```
 
 ### Focus Management
+
 ```typescript
 useEffect(() => {
   if (onboardingStep) {
@@ -440,4 +461,3 @@ useEffect(() => {
 ---
 
 **Status**: Complete dashboard onboarding flow - 4-step progressive tour, skippable, persistent, accessible
-

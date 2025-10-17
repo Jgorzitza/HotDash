@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   BlockStack,
@@ -7,126 +7,99 @@ import {
   Button,
   Badge,
   Banner,
-} from '@shopify/polaris';
-import { useSubmit } from 'react-router';
+} from "@shopify/polaris";
+import { useSubmit } from "react-router";
+import type { Approval } from "./approvals/ApprovalsDrawer";
 
 interface ApprovalCardProps {
-  approval: {
-    id: string;
-    conversationId: number;
-    createdAt: string;
-    pending: {
-      agent: string;
-      tool: string;
-      args: Record<string, any>;
-    }[];
-  };
+  approval: Approval;
+  onDetails: () => void;
 }
 
-export function ApprovalCard({ approval }: ApprovalCardProps) {
+export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
   const submit = useSubmit();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  const action = approval.pending[0]; // First pending action
-  const riskLevel = getRiskLevel(action.tool);
-  
-  const handleApprove = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`/approvals/${approval.id}/0/approve`, {
-        method: 'POST',
-      });
-      if (!response.ok) throw new Error('Failed to approve');
-      // Trigger revalidation
-      window.location.reload();
-    } catch (err) {
-      setError('Failed to approve. Please try again.');
-      setLoading(false);
-    }
+
+  // Get first action for display
+  const action = approval.actions[0];
+  const riskLevel = action ? getRiskLevel(action.endpoint) : "low";
+
+  // Format timestamp
+  const formatTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
   };
-  
-  const handleReject = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`/approvals/${approval.id}/0/reject`, {
-        method: 'POST',
-      });
-      if (!response.ok) throw new Error('Failed to reject');
-      // Trigger revalidation
-      window.location.reload();
-    } catch (err) {
-      setError('Failed to reject. Please try again.');
-      setLoading(false);
-    }
+
+  // Get state badge
+  const getStateBadge = () => {
+    const badges: Record<Approval["state"], { tone: any; label: string }> = {
+      draft: { tone: "info", label: "Draft" },
+      pending_review: { tone: "attention", label: "Pending Review" },
+      approved: { tone: "success", label: "Approved" },
+      applied: { tone: "success", label: "Applied" },
+      audited: { tone: "success", label: "Audited" },
+      learned: { tone: "success", label: "Learned" },
+    };
+    return badges[approval.state];
   };
-  
+
+  const stateBadge = getStateBadge();
+
   return (
     <Card>
       <BlockStack gap="400">
         {/* Header */}
         <InlineStack align="space-between" blockAlign="center">
           <Text variant="headingMd" as="h2">
-            Conversation #{approval.conversationId}
+            {approval.summary}
           </Text>
-          <Badge tone={riskLevel === 'high' ? 'critical' : riskLevel === 'medium' ? 'warning' : 'success'}>
-            {riskLevel.toUpperCase()} RISK
-          </Badge>
+          <Badge tone={stateBadge.tone}>{stateBadge.label}</Badge>
         </InlineStack>
-        
-        {/* Agent & Tool Info */}
+
+        {/* Info */}
         <BlockStack gap="200">
-          <Text variant="bodyMd" as="p">
-            <strong>Agent:</strong> {action.agent}
-          </Text>
-          <Text variant="bodyMd" as="p">
-            <strong>Tool:</strong> {action.tool}
-          </Text>
-          <Text variant="bodyMd" as="p" tone="subdued">
-            <strong>Arguments:</strong>
-          </Text>
-          <pre style={{ 
-            background: '#f6f6f7', 
-            padding: '12px', 
-            borderRadius: '4px',
-            fontSize: '12px',
-            overflow: 'auto'
-          }}>
-            {JSON.stringify(action.args, null, 2)}
-          </pre>
+          <InlineStack gap="400">
+            <Badge>{approval.kind.replace("_", " ").toUpperCase()}</Badge>
+            <Text variant="bodySm" as="p" tone="subdued">
+              Created by {approval.created_by}
+            </Text>
+          </InlineStack>
+
           <Text variant="bodySm" as="p" tone="subdued">
-            Requested {new Date(approval.createdAt).toLocaleString()}
+            {formatTime(approval.created_at)}
           </Text>
+
+          {action && (
+            <Text variant="bodySm" as="p">
+              <strong>Action:</strong> {action.endpoint}
+            </Text>
+          )}
         </BlockStack>
-        
-        {/* Error Message */}
-        {error && (
-          <Banner tone="critical" onDismiss={() => setError(null)}>
-            {error}
-          </Banner>
-        )}
-        
+
+        {/* Validation Errors */}
+        {approval.validation_errors &&
+          approval.validation_errors.length > 0 && (
+            <Banner tone="critical">
+              <BlockStack gap="200">
+                {approval.validation_errors!.map((error, idx) => (
+                  <Text as="p" key={idx}>
+                    • {error}
+                  </Text>
+                ))}
+              </BlockStack>
+            </Banner>
+          )}
+
         {/* Actions */}
         <InlineStack gap="200">
-          <Button
-            variant="primary"
-            tone="success"
-            onClick={handleApprove}
-            loading={loading}
-            disabled={loading}
-          >
-            Approve
-          </Button>
-          <Button
-            variant="primary"
-            tone="critical"
-            onClick={handleReject}
-            loading={loading}
-            disabled={loading}
-          >
-            Reject
+          <Button variant="primary" onClick={onDetails}>
+            View Details
           </Button>
         </InlineStack>
       </BlockStack>
@@ -134,13 +107,16 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
   );
 }
 
-// Helper: Determine risk level based on tool
-function getRiskLevel(tool: string): 'low' | 'medium' | 'high' {
-  const highRisk = ['send_email', 'create_refund', 'cancel_order'];
-  const mediumRisk = ['create_private_note', 'update_conversation'];
-  
-  if (highRisk.includes(tool)) return 'high';
-  if (mediumRisk.includes(tool)) return 'medium';
-  return 'low';
-}
+// Helper: Determine risk level based on endpoint
+function getRiskLevel(endpoint: string): "low" | "medium" | "high" {
+  const highRisk = [
+    "/api/chatwoot/send-reply",
+    "/api/shopify/create-refund",
+    "/api/shopify/cancel-order",
+  ];
+  const mediumRisk = ["/api/chatwoot/create-note", "/api/shopify/update-order"];
 
+  if (highRisk.some((risk) => endpoint.includes(risk))) return "high";
+  if (mediumRisk.some((risk) => endpoint.includes(risk))) return "medium";
+  return "low";
+}

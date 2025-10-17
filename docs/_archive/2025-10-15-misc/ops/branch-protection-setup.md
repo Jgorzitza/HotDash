@@ -14,11 +14,13 @@
 #### Required Settings
 
 **1. Require Pull Request Before Merging** ✅
+
 - **Require approvals**: 1 minimum
 - **Dismiss stale reviews**: Yes (when new commits pushed)
 - **Require review from Code Owners**: No (optional for future)
 
 **2. Require Status Checks to Pass** ✅
+
 - **Require branches to be up to date**: Yes
 - **Required status checks**:
   - `test` (unit tests via Vitest)
@@ -27,33 +29,40 @@
   - `secret-scan` (gitleaks, when available)
 
 **3. Require Conversation Resolution** ✅
+
 - All conversations must be resolved before merging
 
 **4. Require Signed Commits** ⚠️ Optional
+
 - Enable if team uses GPG signing
 - Not critical for private repository
 
 **5. Require Linear History** ✅
+
 - **Prevent merge commits**: Yes
 - Use squash merge for feature branches
 - Keeps git history clean and linear
 
 **6. Do Not Allow Bypassing** ✅
+
 - **Include administrators**: Yes
 - Even admins must follow PR process
 - Prevents accidental direct commits
 
 **7. Restrict Push Access** ✅
+
 - No direct pushes to main
 - All changes via pull requests
 - Maintains code review quality
 
 **8. Restrict Force Pushes** ✅ CRITICAL
+
 - **Block force pushes**: Yes
 - Prevents history rewriting
 - Protects main branch integrity
 
 **9. Restrict Deletions** ✅
+
 - **Block branch deletion**: Yes
 - Prevents accidental main branch deletion
 
@@ -64,6 +73,7 @@
 ### Via GitHub Web UI
 
 1. **Navigate to Settings**:
+
    ```
    https://github.com/Jgorzitza/HotDash/settings/branches
    ```
@@ -122,6 +132,7 @@ gh api repos/Jgorzitza/HotDash/branches/main/protection | jq
 ```
 
 **Expected Result**:
+
 - Green checkmark next to main branch
 - "Protected" badge on main branch
 - Attempt to push directly to main should fail
@@ -172,6 +183,7 @@ Branch protection requires these GitHub Actions to exist:
 ### Required Workflows
 
 **1. `test` check** (`.github/workflows/tests.yml`):
+
 ```yaml
 name: Test
 on: [push, pull_request]
@@ -186,11 +198,13 @@ jobs:
 ```
 
 **2. `build` check** (`.github/workflows/build.yml` or part of tests.yml):
+
 ```yaml
 - run: npm run build
 ```
 
 **3. `lint` check** (`.github/workflows/lint.yml` or part of tests.yml):
+
 ```yaml
 - run: npm run lint
 ```
@@ -202,18 +216,21 @@ jobs:
 ## Benefits
 
 **Code Quality**:
+
 - ✅ All code reviewed before merge
 - ✅ Tests must pass
 - ✅ Linting enforced
 - ✅ Conversations resolved
 
 **Repository Safety**:
+
 - ✅ No accidental force-pushes
 - ✅ No direct commits to main
 - ✅ Can't delete main branch
 - ✅ History protected
 
 **Team Workflow**:
+
 - ✅ Clear review process
 - ✅ Status checks visible
 - ✅ Consistent merge strategy
@@ -224,6 +241,7 @@ jobs:
 ## Exemptions (When Needed)
 
 **Emergency Hotfix Process**:
+
 1. Create hotfix branch: `hotfix/critical-issue`
 2. Make fix and create PR
 3. Request urgent review from manager
@@ -254,11 +272,13 @@ If protection rules cause issues:
 ## Monitoring
 
 **Check Weekly**:
+
 - Are protection rules still active?
 - Are required checks passing?
 - Any blocked PRs due to protection?
 
 **Audit Monthly**:
+
 - Review protection rule effectiveness
 - Update required checks as needed
 - Adjust approval requirements
@@ -268,6 +288,7 @@ If protection rules cause issues:
 ## Documentation Updates
 
 **After enabling branch protection**:
+
 1. Update `REPO_STATUS.md` security section
 2. Add note to `README.md` contribution guidelines
 3. Document in `feedback/git-cleanup.md`
@@ -281,4 +302,3 @@ If protection rules cause issues:
 **Prerequisites**: Repository admin access
 
 **Status**: 🟡 READY FOR IMPLEMENTATION (requires manager/admin)
-

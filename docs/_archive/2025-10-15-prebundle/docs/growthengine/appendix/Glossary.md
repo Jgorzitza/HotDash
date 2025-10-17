@@ -1,4 +1,5 @@
 # Glossary
+
 - **AN** — Army-Navy sizing for hose/fittings (e.g., -6AN).
 - **CTR** — Click-through rate.
 - **CVR** — Conversion rate.

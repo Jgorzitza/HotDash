@@ -6,11 +6,13 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # OCC Modal Alt Text & Focus Order — Interim Handoff
 
 > Use this reference until live staging captures are available. Copy verbatim into enablement/QA materials and update once annotated screenshots from staging replace the static SVG overlays.
 
 ## CX Escalations Modal
+
 - **Alt Text:** “CX Escalations modal for customer Jamie Lee. Header shows breached SLA timer in red badge. Conversation preview lists recent messages, tooltip icons mark template guidance, and action buttons include Approve & Send Reply, Edit Reply, Escalate to Manager, Mark Resolved. Audit trail banner displayed at bottom.”
 - **Focus Order:**
   1. Close icon
@@ -22,6 +24,7 @@ expires: 2025-10-17
 - **Tooltip Notes:** Breach badge uses `top-start` tooltip clarifying breach timestamp; template helper sits `right` of selector; escalation ladder reminder anchored `bottom`.
 
 ## Sales Pulse Modal
+
 - **Alt Text:** “Sales Pulse modal with revenue delta chip showing +12%. Chart panel highlights today versus rolling 7 day revenue, table lists top SKUs with stock status, fulfillment blockers section outlines two orders, footer banner reminds logging decision to Memory.”
 - **Focus Order:**
   1. Close icon
@@ -34,6 +37,7 @@ expires: 2025-10-17
 - **Tooltip Notes:** Revenue delta chip tooltip positioned `top-end`; ensure copy matches marketing approval variant. Skip link returns focus to metrics table for keyboard users.
 
 ## Inventory Heatmap Modal
+
 - **Alt Text:** “Inventory Heatmap modal for Powder Board XL. SKU summary block shows current stock 6 units, threshold 10, Days of Cover 2.5. Velocity analysis card details 14-day averages and peak day. Recommended reorder panel suggests 30 units from Acme Distribution. Action row offers Confirm, Mark Intentional, Snooze buttons.”
 - **Focus Order:**
   1. Close icon
@@ -45,6 +49,7 @@ expires: 2025-10-17
 - **Tooltip Notes:** Days of Cover chip uses `top-end` tooltip explaining projection. Confirm button retains focus until toast announces result; toast should read “Action Confirmed — Decision logged to audit trail.”
 
 ## Accessibility Reminders
+
 - Ensure `aria-live="polite"` on toast notifications across modals.
 - Maintain 2px focus ring offset (`--occ-focus-ring`) on all interactive elements.
 - Provide `aria-describedby` linkage between modal title and status badges where applicable.

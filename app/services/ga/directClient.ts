@@ -1,34 +1,34 @@
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
-import type { DateRange, GaClient, GaSession } from './client';
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import type { DateRange, GaClient, GaSession } from "./client";
 
 /**
  * Google Analytics Direct API Client
- * 
+ *
  * Uses the official Google Analytics Data API v1 (BetaAnalyticsDataClient) to fetch
  * analytics data directly from Google Analytics. This is the recommended approach for
  * production use as it provides the best performance and reliability.
- * 
+ *
  * @module services/ga/directClient
- * 
+ *
  * ## Authentication
- * 
+ *
  * Uses GOOGLE_APPLICATION_CREDENTIALS environment variable pointing to a service
  * account JSON file with Google Analytics access permissions.
- * 
+ *
  * ## Environment Variables
- * 
+ *
  * - `GOOGLE_APPLICATION_CREDENTIALS`: Path to service account credentials file
  * - `GA_PROPERTY_ID`: Google Analytics property ID (e.g., "123456789")
- * 
+ *
  * ## Performance
- * 
+ *
  * - Target latency: <100ms P95
  * - Recommended caching: 5 minutes TTL
  * - Rate limits: 25,000 queries/day per GA property
- * 
+ *
  * @see {@link https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries Google Analytics Data API Quickstart}
  * @see {@link https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema API Schema Documentation}
- * 
+ *
  * @example
  * ```typescript
  * const client = createDirectGaClient('123456789');
@@ -40,14 +40,14 @@ import type { DateRange, GaClient, GaSession } from './client';
  */
 export function createDirectGaClient(propertyId: string): GaClient {
   if (!propertyId) {
-    throw new Error('GA_PROPERTY_ID environment variable required');
+    throw new Error("GA_PROPERTY_ID environment variable required");
   }
 
   // Validate GOOGLE_APPLICATION_CREDENTIALS is set
   if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     throw new Error(
-      'GOOGLE_APPLICATION_CREDENTIALS environment variable required. ' +
-      'Set to path of service account JSON file.'
+      "GOOGLE_APPLICATION_CREDENTIALS environment variable required. " +
+        "Set to path of service account JSON file.",
     );
   }
 
@@ -72,18 +72,18 @@ export function createDirectGaClient(propertyId: string): GaClient {
           ],
           dimensions: [
             {
-              name: 'pagePath', // Landing page path
+              name: "pagePath", // Landing page path
             },
           ],
           metrics: [
             {
-              name: 'sessions', // Total sessions
+              name: "sessions", // Total sessions
             },
           ],
           orderBys: [
             {
               metric: {
-                metricName: 'sessions',
+                metricName: "sessions",
               },
               desc: true,
             },
@@ -93,9 +93,9 @@ export function createDirectGaClient(propertyId: string): GaClient {
 
         // Transform GA API response to GaSession format
         const sessions: GaSession[] = (response.rows || []).map((row) => {
-          const landingPage = row.dimensionValues?.[0]?.value || '';
-          const sessionsValue = row.metricValues?.[0]?.value || '0';
-          
+          const landingPage = row.dimensionValues?.[0]?.value || "";
+          const sessionsValue = row.metricValues?.[0]?.value || "0";
+
           return {
             landingPage,
             sessions: parseInt(sessionsValue, 10),
@@ -107,13 +107,12 @@ export function createDirectGaClient(propertyId: string): GaClient {
         return sessions;
       } catch (error: any) {
         // Wrap API errors with context
-        const message = error.message || 'Unknown error';
+        const message = error.message || "Unknown error";
         throw new Error(
           `Google Analytics API request failed: ${message}. ` +
-          `Property ID: ${propertyId}, Date range: ${range.start} to ${range.end}`
+            `Property ID: ${propertyId}, Date range: ${range.start} to ${range.end}`,
         );
       }
     },
   };
 }
-

@@ -13,4 +13,3 @@ export interface UTMBreakdownRow {
 export async function getUTMBreakdown(): Promise<UTMBreakdownRow[]> {
   return [];
 }
-

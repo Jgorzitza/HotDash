@@ -87,13 +87,24 @@ interface AnalyzerSummary {
 }
 
 const SUCCESS_STATUSES = new Set(["success", "ok", "completed", "synced"]);
-const FAILURE_STATUSES = new Set(["failure", "failed", "error", "timeout", "timed_out", "fatal", "rejected"]);
+const FAILURE_STATUSES = new Set([
+  "failure",
+  "failed",
+  "error",
+  "timeout",
+  "timed_out",
+  "fatal",
+  "rejected",
+]);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function getNestedValue(source: Record<string, unknown>, pathKey: string): unknown {
+function getNestedValue(
+  source: Record<string, unknown>,
+  pathKey: string,
+): unknown {
   const parts = pathKey.split(".");
   let current: unknown = source;
   for (const part of parts) {
@@ -123,7 +134,8 @@ function toBooleanValue(value: unknown): boolean | undefined {
   if (typeof value === "string") {
     const lowered = value.toLowerCase();
     if (["true", "yes", "1", "success", "ok"].includes(lowered)) return true;
-    if (["false", "no", "0", "fail", "failed", "error"].includes(lowered)) return false;
+    if (["false", "no", "0", "fail", "failed", "error"].includes(lowered))
+      return false;
   }
   return undefined;
 }
@@ -160,7 +172,10 @@ function normalizeTimestamp(value: unknown): string | undefined {
   return undefined;
 }
 
-function normalizeRecord(record: Record<string, unknown>, lineNumber: number): NormalizedEntry {
+function normalizeRecord(
+  record: Record<string, unknown>,
+  lineNumber: number,
+): NormalizedEntry {
   const timestamp =
     normalizeTimestamp(getNestedValue(record, "timestamp")) ??
     normalizeTimestamp(getNestedValue(record, "time")) ??
@@ -248,8 +263,14 @@ function normalizeRecord(record: Record<string, unknown>, lineNumber: number): N
     successFlag,
     errorCode,
     errorMessage,
-    durationMs: typeof durationMs === "number" && Number.isFinite(durationMs) ? durationMs : undefined,
-    retryCount: typeof retryCount === "number" && Number.isFinite(retryCount) ? retryCount : undefined,
+    durationMs:
+      typeof durationMs === "number" && Number.isFinite(durationMs)
+        ? durationMs
+        : undefined,
+    retryCount:
+      typeof retryCount === "number" && Number.isFinite(retryCount)
+        ? retryCount
+        : undefined,
     scope,
     decisionId,
   };
@@ -287,7 +308,10 @@ function percentile(values: number[], p: number): number {
     return 0;
   }
   const sorted = [...values].sort((a, b) => a - b);
-  const index = Math.min(sorted.length - 1, Math.max(0, Math.ceil((p / 100) * sorted.length) - 1));
+  const index = Math.min(
+    sorted.length - 1,
+    Math.max(0, Math.ceil((p / 100) * sorted.length) - 1),
+  );
   return sorted[index];
 }
 
@@ -304,7 +328,14 @@ function round(value: number, digits = 2): number {
 function hourBucket(timestamp: string): string | undefined {
   const date = new Date(timestamp);
   if (Number.isNaN(date.getTime())) return undefined;
-  const hour = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours()));
+  const hour = new Date(
+    Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours(),
+    ),
+  );
   return hour.toISOString();
 }
 
@@ -329,13 +360,19 @@ function parseArgs(): { inputPath: string; outputPath?: string } {
   }
 
   if (!inputPath) {
-    throw new Error("Missing input path. Use --input <path> or provide as a positional argument.");
+    throw new Error(
+      "Missing input path. Use --input <path> or provide as a positional argument.",
+    );
   }
 
   return { inputPath, outputPath };
 }
 
-function buildSummary(entries: ClassifiedEntry[], parseErrors: ParseError[], sourcePath: string): AnalyzerSummary {
+function buildSummary(
+  entries: ClassifiedEntry[],
+  parseErrors: ParseError[],
+  sourcePath: string,
+): AnalyzerSummary {
   const statusBreakdown = new Map<string, number>();
   const scopeBreakdown = new Map<string, number>();
   const durations: number[] = [];
@@ -362,7 +399,11 @@ function buildSummary(entries: ClassifiedEntry[], parseErrors: ParseError[], sou
       if (!latest || entry.timestamp > latest) latest = entry.timestamp;
       const bucket = hourBucket(entry.timestamp);
       if (bucket) {
-        const current = hourly.get(bucket) ?? { total: 0, success: 0, failure: 0 };
+        const current = hourly.get(bucket) ?? {
+          total: 0,
+          success: 0,
+          failure: 0,
+        };
         current.total += 1;
         if (entry.classification === "success") current.success += 1;
         if (entry.classification === "failure") current.failure += 1;
@@ -395,8 +436,12 @@ function buildSummary(entries: ClassifiedEntry[], parseErrors: ParseError[], sou
       successCount += 1;
     } else if (entry.classification === "failure") {
       failureCount += 1;
-      const bucketKey = entry.errorCode ?? entry.errorMessage ?? entry.status ?? "unknown";
-      const bucket = errorBuckets.get(bucketKey) ?? { count: 0, messages: new Set<string>() };
+      const bucketKey =
+        entry.errorCode ?? entry.errorMessage ?? entry.status ?? "unknown";
+      const bucket = errorBuckets.get(bucketKey) ?? {
+        count: 0,
+        messages: new Set<string>(),
+      };
       bucket.count += 1;
       if (entry.errorMessage) {
         bucket.messages.add(entry.errorMessage);
@@ -441,7 +486,8 @@ function buildSummary(entries: ClassifiedEntry[], parseErrors: ParseError[], sou
     .map(([code, bucket]) => ({
       code,
       count: bucket.count,
-      percentage: failureCount === 0 ? 0 : round((bucket.count / failureCount) * 100),
+      percentage:
+        failureCount === 0 ? 0 : round((bucket.count / failureCount) * 100),
       sampleMessages: [...bucket.messages].slice(0, 5),
     }));
 
@@ -540,7 +586,10 @@ async function main() {
 
   const summaryJson = `${JSON.stringify(summary, null, 2)}\n`;
 
-  const latestPath = path.join(artifactsDir, "supabase-sync-summary-latest.json");
+  const latestPath = path.join(
+    artifactsDir,
+    "supabase-sync-summary-latest.json",
+  );
   await writeFile(latestPath, summaryJson, "utf8");
 
   if (outputPath) {

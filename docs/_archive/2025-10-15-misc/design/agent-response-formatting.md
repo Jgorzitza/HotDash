@@ -8,11 +8,13 @@ created: 2025-10-12
 # Task 1B: Agent Response Formatting
 
 ## Purpose
+
 Define how AI agent responses are displayed in the operator interface, including text formatting, code blocks, links, and attachments.
 
 ## Text Formatting Guidelines
 
 ### Basic Text Display
+
 ```typescript
 <Text variant="bodyMd" as="p">
   {agentResponse}
@@ -28,6 +30,7 @@ Define how AI agent responses are displayed in the operator interface, including
 ### Formatting in Agent Responses
 
 **Preserve line breaks**:
+
 ```typescript
 <Text variant="bodyMd" as="p" style={{ whiteSpace: 'pre-wrap' }}>
   {agentResponse}
@@ -35,6 +38,7 @@ Define how AI agent responses are displayed in the operator interface, including
 ```
 
 **Bold text** (if agent includes **text**):
+
 ```typescript
 // Parse markdown-style bold: **text** → <strong>text</strong>
 const formatted = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -42,10 +46,11 @@ const formatted = response.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 <Text variant="bodyMd" as="div" dangerouslySetInnerHTML={{ __html: formatted }} />
 ```
 
-**Italic text** (if agent includes *text*):
+**Italic text** (if agent includes _text_):
+
 ```typescript
 // Parse markdown-style italic: *text* → <em>text</em>
-const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
+const formatted = response.replace(/\*(.*?)\*/g, "<em>$1</em>");
 ```
 
 ---
@@ -53,6 +58,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 ## Code Block Styling
 
 ### Inline Code
+
 ```typescript
 // For inline code: `code here`
 <code style={{
@@ -72,7 +78,8 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Border radius**: 3px (subtle)
 
 ### Block Code
-```typescript
+
+````typescript
 // For code blocks: ```code here```
 <pre style={{
   backgroundColor: 'var(--p-color-bg-surface-tertiary)',
@@ -86,7 +93,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 }}>
   <code>{codeContent}</code>
 </pre>
-```
+````
 
 **Visual**: Light gray box, monospace font
 **Padding**: 16px all sides
@@ -95,6 +102,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Max height**: None (let it grow)
 
 ### Code Block with Language Label
+
 ```typescript
 <div style={{ position: 'relative' }}>
   <div style={{
@@ -112,13 +120,14 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 ```
 
 **Visual**: Language label (e.g., "JSON", "PYTHON") in top-right corner
-**Example**: Useful if agent specifies language in ```json```
+**Example**: Useful if agent specifies language in `json`
 
 ---
 
 ## Link and Button Styles
 
 ### Inline Links
+
 ```typescript
 // For URLs in agent responses
 <Link url={url} external>
@@ -131,6 +140,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Accessibility**: Announces "opens in new tab" to screen readers
 
 ### Call-to-Action Buttons (if agent suggests action)
+
 ```typescript
 <Button onClick={handleAction}>
   {actionLabel}
@@ -142,6 +152,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Placement**: Inline with text or below response
 
 ### Link List (multiple links)
+
 ```typescript
 <List type="bullet">
   {links.map(link => (
@@ -160,6 +171,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 ## Attachment Preview Patterns
 
 ### File Attachment Display
+
 ```typescript
 <Card>
   <InlineStack gap="300" align="space-between" blockAlign="center">
@@ -179,13 +191,14 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Action**: Download button (opens file in new tab or downloads)
 
 ### Image Attachment
+
 ```typescript
 <div style={{ maxWidth: '400px', marginTop: 'var(--p-space-400)' }}>
-  <img 
-    src={imageUrl} 
+  <img
+    src={imageUrl}
     alt={imageAlt}
-    style={{ 
-      width: '100%', 
+    style={{
+      width: '100%',
       height: 'auto',
       borderRadius: 'var(--p-border-radius-200)',
     }}
@@ -200,6 +213,7 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 **Caption**: Optional description below image
 
 ### Multiple Attachments
+
 ```typescript
 <BlockStack gap="300">
   <Text variant="headingSm">Attachments</Text>
@@ -217,11 +231,13 @@ const formatted = response.replace(/\*(.*?)\*/g, '<em>$1</em>');
 ## Markdown Support
 
 ### Recommended Markdown Parser
+
 ```bash
 npm install react-markdown
 ```
 
 ### Implementation
+
 ```typescript
 import ReactMarkdown from 'react-markdown';
 
@@ -232,8 +248,8 @@ import ReactMarkdown from 'react-markdown';
     h2: ({ children }) => <Text variant="headingMd" as="h2">{children}</Text>,
     p: ({ children }) => <Text variant="bodyMd" as="p">{children}</Text>,
     a: ({ href, children }) => <Link url={href} external>{children}</Link>,
-    code: ({ inline, children }) => 
-      inline 
+    code: ({ inline, children }) =>
+      inline
         ? <code className="inline-code">{children}</code>
         : <pre className="code-block"><code>{children}</code></pre>,
   }}
@@ -251,6 +267,7 @@ import ReactMarkdown from 'react-markdown';
 ## Agent Response Container
 
 ### Full Response Layout
+
 ```typescript
 <Card>
   <BlockStack gap="400">
@@ -259,10 +276,10 @@ import ReactMarkdown from 'react-markdown';
       <Icon source={PersonIcon} />
       <Text variant="headingSm">{agentName}</Text>
     </InlineStack>
-    
+
     {/* Response content */}
     <ReactMarkdown>{agentResponse}</ReactMarkdown>
-    
+
     {/* Attachments (if any) */}
     {attachments.length > 0 && (
       <BlockStack gap="300">
@@ -270,7 +287,7 @@ import ReactMarkdown from 'react-markdown';
         {attachments.map(att => <AttachmentCard key={att.id} {...att} />)}
       </BlockStack>
     )}
-    
+
     {/* Timestamp */}
     <Text variant="bodySm" tone="subdued">
       {formatTimestamp(createdAt)}
@@ -288,16 +305,19 @@ import ReactMarkdown from 'react-markdown';
 ## Copy Guidelines
 
 ### Tone
+
 - **Conversational but professional**: "I found 3 orders for this customer."
 - **Action-oriented**: "I recommend approving this refund."
 - **Transparent**: "I don't have enough information to answer that question."
 
 ### Clarity
+
 - **Short sentences**: Easier to scan
 - **Bullet points**: For lists of items
 - **Bold key info**: Customer names, order numbers, amounts
 
 ### Error Messages
+
 - **Agent error**: "I encountered an error processing your request. Please try again."
 - **No results**: "I didn't find any orders matching that criteria."
 - **Needs approval**: "This action requires operator approval before I can proceed."
@@ -307,6 +327,7 @@ import ReactMarkdown from 'react-markdown';
 ## Examples
 
 ### Example 1: Order Lookup Response
+
 ```markdown
 I found **2 orders** for customer Jane Doe:
 
@@ -319,13 +340,15 @@ Would you like me to create a note on their Chatwoot conversation?
 **Rendered**: Bold "2 orders", bulleted list, question at end
 
 ### Example 2: Code in Response
+
 ```markdown
 The customer's shipping address is:
-
 ```
+
 Jane Doe
 123 Main St
 San Francisco, CA 94102
+
 ```
 
 Should I update their profile?
@@ -334,6 +357,7 @@ Should I update their profile?
 **Rendered**: Code block for address (preserves formatting), question at end
 
 ### Example 3: Links in Response
+
 ```markdown
 I found the [order details](https://admin.shopify.com/orders/1234) and the [customer profile](https://admin.shopify.com/customers/5678).
 
@@ -356,4 +380,3 @@ The order is ready to ship.
 ✅ **Container**: Card with BlockStack for clean layout
 
 **Evidence**: Complete formatting specification for all agent response types
-

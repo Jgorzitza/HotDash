@@ -6,6 +6,7 @@ created: 2025-10-11T21:10:00Z
 priority: P0-CRITICAL
 expires: 2025-10-12T00:00:00Z
 ---
+
 # 🚨 URGENT: Shopify GraphQL Query Fixes - P0 DEPLOY BLOCKER
 
 **Issued**: 2025-10-11T21:10:00Z  
@@ -18,6 +19,7 @@ expires: 2025-10-12T00:00:00Z
 ## Critical Finding
 
 Integrations agent validated all Shopify GraphQL queries with Shopify Dev MCP and found:
+
 - ❌ **ALL 4 QUERIES FAILED VALIDATION**
 - ❌ Using deprecated 2023 API patterns
 - ❌ **BLOCKS PRODUCTION DEPLOYMENT**
@@ -36,11 +38,13 @@ Integrations agent validated all Shopify GraphQL queries with Shopify Dev MCP an
 **Change**: `financialStatus` → `displayFinancialStatus`
 
 **Current (Broken)**:
+
 ```graphql
 financialStatus  # ❌ DEPRECATED
 ```
 
 **Corrected**:
+
 ```graphql
 displayFinancialStatus  # ✅ CURRENT API
 ```
@@ -54,11 +58,13 @@ displayFinancialStatus  # ✅ CURRENT API
 **File**: `app/services/shopify/inventory.ts` lines 14-48
 
 **Changes**:
+
 1. Add required argument: `quantities(names: ["available"])`
 2. Update field: `availableQuantity` → `quantity`
 3. Update function: `computeAvailableQuantity` (lines 85-94) to extract from quantities array
 
 **Current (Broken)**:
+
 ```graphql
 quantities {
   availableQuantity  # ❌ Wrong field + missing argument
@@ -66,6 +72,7 @@ quantities {
 ```
 
 **Corrected**:
+
 ```graphql
 quantities(names: ["available"]) {  # ✅ Required argument
   name
@@ -74,13 +81,14 @@ quantities(names: ["available"]) {  # ✅ Required argument
 ```
 
 **Function Update**:
+
 ```typescript
 function computeAvailableQuantity(variant: InventoryVariantNode) {
   let total = 0;
   const levels = variant.inventoryItem?.inventoryLevels?.edges ?? [];
   for (const level of levels) {
     const node = level.node;
-    const availableQty = node.quantities?.find(q => q.name === "available");
+    const availableQty = node.quantities?.find((q) => q.name === "available");
     total += availableQty?.quantity ?? 0;
   }
   return total;
@@ -138,6 +146,7 @@ Using shopify MCP, validate this GraphQL query for Admin API:
 ## Evidence Required
 
 Log in `feedback/engineer.md`:
+
 - Timestamp for each fix
 - Shopify MCP validation confirmation
 - Updated fixtures
@@ -161,4 +170,3 @@ Log in `feedback/engineer.md`:
 **Directive**: Fix all 4 queries, validate each with Shopify MCP, document in feedback/engineer.md, THEN resume LlamaIndex MCP work.
 
 **Deadline**: Complete within 3 hours.
-

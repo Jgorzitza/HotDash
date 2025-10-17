@@ -41,19 +41,23 @@ Webhook → Agent SDK
 ### Rule 1: VIP Customer Priority 🌟
 
 **Condition:**
+
 ```typescript
-if (customer.custom_attributes?.vip_status === true ||
-    customer.custom_attributes?.lifetime_value > 5000) {
+if (
+  customer.custom_attributes?.vip_status === true ||
+  customer.custom_attributes?.lifetime_value > 5000
+) {
   return {
     assignee: seniorAgentId,
-    priority: 'high',
-    tags: ['vip', 'high_value'],
-    responseTime: '1 hour'
+    priority: "high",
+    tags: ["vip", "high_value"],
+    responseTime: "1 hour",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Senior Support Agent (pre-configured ID)
 - Priority: HIGH
 - SLA: Response within 1 hour
@@ -65,21 +69,25 @@ if (customer.custom_attributes?.vip_status === true ||
 ### Rule 2: Angry/Urgent Sentiment 🚨
 
 **Condition:**
+
 ```typescript
-if (sentiment.emotion === 'angry' ||
-    sentiment.urgency === 'urgent' ||
-    message.includes_legal_threats ||
-    message.complaint_count > 2) {
+if (
+  sentiment.emotion === "angry" ||
+  sentiment.urgency === "urgent" ||
+  message.includes_legal_threats ||
+  message.complaint_count > 2
+) {
   return {
     assignee: managerId,
-    priority: 'urgent',
-    tags: ['escalated', 'urgent'],
-    responseTime: '30 minutes'
+    priority: "urgent",
+    tags: ["escalated", "urgent"],
+    responseTime: "30 minutes",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Support Manager
 - Priority: URGENT
 - SLA: Response within 30 minutes
@@ -88,6 +96,7 @@ if (sentiment.emotion === 'angry' ||
 - Auto-create: Manager handoff note
 
 **Sentiment Detection Keywords:**
+
 - Legal: "lawyer", "lawsuit", "legal action", "attorney"
 - Anger: "FURIOUS", "UNACCEPTABLE", "WORST", "NEVER AGAIN"
 - Urgency: "IMMEDIATELY", "ASAP", "NOW", "URGENT"
@@ -97,23 +106,30 @@ if (sentiment.emotion === 'angry' ||
 ### Rule 3: Product-Specific Inquiries 🛍️
 
 **Condition:**
+
 ```typescript
-const productKeywords = ['sizing', 'fabric', 'care instructions', 'product details'];
-const hasProductQuestion = productKeywords.some(kw => 
-  message.toLowerCase().includes(kw)
+const productKeywords = [
+  "sizing",
+  "fabric",
+  "care instructions",
+  "product details",
+];
+const hasProductQuestion = productKeywords.some((kw) =>
+  message.toLowerCase().includes(kw),
 );
 
 if (hasProductQuestion && !hasOrderNumber) {
   return {
     assignee: productSpecialistId,
-    priority: 'normal',
-    tags: ['product_question'],
-    responseTime: '4 hours'
+    priority: "normal",
+    tags: ["product_question"],
+    responseTime: "4 hours",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Product Specialist
 - Priority: NORMAL
 - SLA: Response within 4 hours
@@ -125,21 +141,26 @@ if (hasProductQuestion && !hasOrderNumber) {
 ### Rule 4: Order Support (Returns, Tracking, Issues) 📦
 
 **Condition:**
+
 ```typescript
 const hasOrderNumber = /order\s*#?\s*\d{4,}/i.test(message);
-const orderKeywords = ['tracking', 'shipped', 'delivery', 'return', 'refund'];
+const orderKeywords = ["tracking", "shipped", "delivery", "return", "refund"];
 
-if (hasOrderNumber || orderKeywords.some(kw => message.toLowerCase().includes(kw))) {
+if (
+  hasOrderNumber ||
+  orderKeywords.some((kw) => message.toLowerCase().includes(kw))
+) {
   return {
     assignee: orderSupportTeamId,
-    priority: 'normal',
-    tags: ['order_support'],
-    responseTime: '2 hours'
+    priority: "normal",
+    tags: ["order_support"],
+    responseTime: "2 hours",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Order Support Team (round-robin)
 - Priority: NORMAL (upgrade to HIGH if >48h old)
 - SLA: Response within 2 hours
@@ -151,18 +172,20 @@ if (hasOrderNumber || orderKeywords.some(kw => message.toLowerCase().includes(kw
 ### Rule 5: Low Confidence Draft ⚠️
 
 **Condition:**
+
 ```typescript
 if (draft.confidence_score < 70) {
   return {
     assignee: seniorAgentId,
-    priority: 'high',
-    tags: ['low_confidence', 'needs_review'],
-    responseTime: '2 hours'
+    priority: "high",
+    tags: ["low_confidence", "needs_review"],
+    responseTime: "2 hours",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Senior Agent (expertise required)
 - Priority: HIGH
 - SLA: Response within 2 hours
@@ -174,25 +197,27 @@ if (draft.confidence_score < 70) {
 ### Rule 6: General Queue (Load Balancing) ⚖️
 
 **Condition:**
+
 ```typescript
 // Default routing if no special rules matched
 if (draft.confidence_score >= 70 && !specialConditions) {
   const leastBusyAgent = await findLeastBusyAgent({
-    team: 'general_support',
-    status: 'online',
-    maxLoad: 10  // conversations per agent
+    team: "general_support",
+    status: "online",
+    maxLoad: 10, // conversations per agent
   });
-  
+
   return {
     assignee: leastBusyAgent.id,
-    priority: 'normal',
-    tags: ['general_support'],
-    responseTime: '4 hours'
+    priority: "normal",
+    tags: ["general_support"],
+    responseTime: "4 hours",
   };
 }
 ```
 
 **Assignment Logic:**
+
 - Assign to: Least busy online agent
 - Priority: NORMAL
 - SLA: Response within 4 hours
@@ -204,6 +229,7 @@ if (draft.confidence_score >= 70 && !specialConditions) {
 ## Priority Levels
 
 ### Urgent (SLA: 30 minutes)
+
 - Angry customers
 - Legal threats
 - VIP escalations
@@ -211,6 +237,7 @@ if (draft.confidence_score >= 70 && !specialConditions) {
 - Payment failures >$500
 
 ### High (SLA: 1-2 hours)
+
 - VIP customers (non-urgent)
 - Low confidence drafts
 - Multiple contact attempts
@@ -218,12 +245,14 @@ if (draft.confidence_score >= 70 && !specialConditions) {
 - Refund requests >$200
 
 ### Normal (SLA: 2-4 hours)
+
 - General order support
 - Product questions
 - Standard inquiries
 - Medium confidence drafts
 
 ### Low (SLA: 8-24 hours)
+
 - Pre-purchase questions
 - General information
 - Feedback/suggestions
@@ -256,31 +285,31 @@ Support Organization
 ```typescript
 function assignToTeam(inquiry: InquiryContext) {
   // Order-related
-  if (inquiry.category === 'order') {
-    if (inquiry.subcategory === 'return') {
-      return 'order_support.returns_specialist';
+  if (inquiry.category === "order") {
+    if (inquiry.subcategory === "return") {
+      return "order_support.returns_specialist";
     }
-    if (inquiry.subcategory === 'tracking') {
-      return 'order_support.tracking_specialist';
+    if (inquiry.subcategory === "tracking") {
+      return "order_support.tracking_specialist";
     }
-    return 'order_support.general';
+    return "order_support.general";
   }
-  
+
   // Product-related
-  if (inquiry.category === 'product') {
-    if (inquiry.keywords.includes('sizing')) {
-      return 'product_team.sizing_expert';
+  if (inquiry.category === "product") {
+    if (inquiry.keywords.includes("sizing")) {
+      return "product_team.sizing_expert";
     }
-    return 'product_team.general';
+    return "product_team.general";
   }
-  
+
   // Complex/escalated
-  if (inquiry.confidence < 70 || inquiry.sentiment === 'angry') {
-    return 'senior_support';
+  if (inquiry.confidence < 70 || inquiry.sentiment === "angry") {
+    return "senior_support";
   }
-  
+
   // Default
-  return 'general_support';
+  return "general_support";
 }
 ```
 
@@ -294,30 +323,30 @@ function assignToTeam(inquiry: InquiryContext) {
 async function findLeastBusyAgent(team: string): Promise<Agent> {
   // Get all online agents in team
   const agents = await getOnlineAgents(team);
-  
+
   // Calculate current load for each agent
   const agentLoads = await Promise.all(
     agents.map(async (agent) => ({
       agent,
       load: await getOpenConversationCount(agent.id),
-      avgResponseTime: await getAvgResponseTime(agent.id, '24h')
-    }))
+      avgResponseTime: await getAvgResponseTime(agent.id, "24h"),
+    })),
   );
-  
+
   // Filter agents below max load
-  const available = agentLoads.filter(a => a.load < 10);
-  
+  const available = agentLoads.filter((a) => a.load < 10);
+
   if (available.length === 0) {
     // All agents busy, assign to least loaded
     return agentLoads.sort((a, b) => a.load - b.load)[0].agent;
   }
-  
+
   // Weighted selection (consider both load and response time)
-  const weighted = available.map(a => ({
+  const weighted = available.map((a) => ({
     agent: a.agent,
-    score: (10 - a.load) * 0.7 + (300 - a.avgResponseTime) * 0.3
+    score: (10 - a.load) * 0.7 + (300 - a.avgResponseTime) * 0.3,
   }));
-  
+
   // Return best score
   return weighted.sort((a, b) => b.score - a.score)[0].agent;
 }
@@ -332,19 +361,21 @@ async function findLeastBusyAgent(team: string): Promise<Agent> {
 ```typescript
 function routeByBusinessHours(inquiry: InquiryContext): Assignment {
   const now = new Date();
-  const pstTime = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+  const pstTime = now.toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles",
+  });
   const hour = new Date(pstTime).getHours();
   const day = new Date(pstTime).getDay();
-  
+
   // Business hours: Mon-Fri 9 AM - 5 PM PST
-  const isBusinessHours = (day >= 1 && day <= 5) && (hour >= 9 && hour < 17);
-  
+  const isBusinessHours = day >= 1 && day <= 5 && hour >= 9 && hour < 17;
+
   if (!isBusinessHours) {
     // After hours
     return {
       assignee: null, // No immediate assignment
-      priority: inquiry.urgency === 'urgent' ? 'high' : 'normal',
-      tags: ['after_hours'],
+      priority: inquiry.urgency === "urgent" ? "high" : "normal",
+      tags: ["after_hours"],
       auto_response: `
         Thank you for contacting HotDash Support!
         
@@ -354,10 +385,10 @@ function routeByBusinessHours(inquiry: InquiryContext): Assignment {
         Expected response: Next business day
         
         For urgent issues, please call: 1-800-HOT-DASH
-      `
+      `,
     };
   }
-  
+
   // During business hours - normal routing
   return routeByCategory(inquiry);
 }
@@ -370,61 +401,63 @@ function routeByBusinessHours(inquiry: InquiryContext): Assignment {
 ### Machine Learning Approach
 
 ```typescript
-function detectCategory(message: string, context: ConversationContext): Category {
+function detectCategory(
+  message: string,
+  context: ConversationContext,
+): Category {
   const categories = {
     order_status: {
-      keywords: ['order', 'tracking', 'shipped', 'delivery', 'where is'],
+      keywords: ["order", "tracking", "shipped", "delivery", "where is"],
       patterns: [/order\s*#?\s*\d+/i, /tracking\s*#?\s*\d+/i],
-      confidence_boost: hasOrderNumber(message) ? 0.3 : 0
+      confidence_boost: hasOrderNumber(message) ? 0.3 : 0,
     },
     returns_refunds: {
-      keywords: ['return', 'refund', 'exchange', 'unwanted', 'doesn\'t fit'],
+      keywords: ["return", "refund", "exchange", "unwanted", "doesn't fit"],
       patterns: [/return/i, /refund/i],
-      confidence_boost: 0
+      confidence_boost: 0,
     },
     product_question: {
-      keywords: ['sizing', 'material', 'fabric', 'color', 'dimensions'],
+      keywords: ["sizing", "material", "fabric", "color", "dimensions"],
       patterns: [/what (size|material|fabric|color)/i],
-      confidence_boost: !hasOrderNumber(message) ? 0.2 : 0
+      confidence_boost: !hasOrderNumber(message) ? 0.2 : 0,
     },
     complaint: {
-      keywords: ['disappointed', 'angry', 'upset', 'unacceptable', 'terrible'],
+      keywords: ["disappointed", "angry", "upset", "unacceptable", "terrible"],
       patterns: [/this is (unacceptable|terrible|awful)/i],
-      sentiment_indicator: context.sentiment === 'angry' ? 0.5 : 0
+      sentiment_indicator: context.sentiment === "angry" ? 0.5 : 0,
     },
     general_inquiry: {
-      keywords: ['how', 'what', 'when', 'where', 'why', 'can i'],
+      keywords: ["how", "what", "when", "where", "why", "can i"],
       patterns: [/^(how|what|when|where|why)/i],
-      confidence_boost: 0
-    }
+      confidence_boost: 0,
+    },
   };
-  
+
   // Calculate scores for each category
   const scores = Object.entries(categories).map(([name, category]) => {
     let score = 0;
-    
+
     // Keyword matching
-    score += category.keywords.filter(kw => 
-      message.toLowerCase().includes(kw)
-    ).length * 0.2;
-    
+    score +=
+      category.keywords.filter((kw) => message.toLowerCase().includes(kw))
+        .length * 0.2;
+
     // Pattern matching
-    score += category.patterns.filter(pattern => 
-      pattern.test(message)
-    ).length * 0.3;
-    
+    score +=
+      category.patterns.filter((pattern) => pattern.test(message)).length * 0.3;
+
     // Confidence boost
     score += category.confidence_boost || 0;
     score += category.sentiment_indicator || 0;
-    
+
     return { category: name, score };
   });
-  
+
   // Return highest scoring category
   const best = scores.sort((a, b) => b.score - a.score)[0];
   return {
     category: best.category,
-    confidence: Math.min(best.score, 1.0)
+    confidence: Math.min(best.score, 1.0),
   };
 }
 ```
@@ -497,54 +530,54 @@ interface Agent {
   id: number;
   name: string;
   email: string;
-  role: 'agent' | 'senior' | 'manager';
+  role: "agent" | "senior" | "manager";
   teams: string[];
   specialties: string[];
   maxLoad: number;
-  availability: 'online' | 'busy' | 'offline';
+  availability: "online" | "busy" | "offline";
 }
 
 const agents: Agent[] = [
   {
     id: 10,
-    name: 'Support Agent 1',
-    email: 'support1@hotrodan.com',
-    role: 'agent',
-    teams: ['order_support'],
-    specialties: ['order_tracking', 'shipping'],
+    name: "Support Agent 1",
+    email: "support1@hotrodan.com",
+    role: "agent",
+    teams: ["order_support"],
+    specialties: ["order_tracking", "shipping"],
     maxLoad: 10,
-    availability: 'online'
+    availability: "online",
   },
   {
     id: 11,
-    name: 'Support Agent 2',
-    email: 'support2@hotrodan.com',
-    role: 'agent',
-    teams: ['product_support'],
-    specialties: ['product_questions', 'sizing'],
+    name: "Support Agent 2",
+    email: "support2@hotrodan.com",
+    role: "agent",
+    teams: ["product_support"],
+    specialties: ["product_questions", "sizing"],
     maxLoad: 8,
-    availability: 'online'
+    availability: "online",
   },
   {
     id: 20,
-    name: 'Senior Agent',
-    email: 'senior@hotrodan.com',
-    role: 'senior',
-    teams: ['order_support', 'product_support', 'escalations'],
-    specialties: ['complex_issues', 'vip_customers'],
+    name: "Senior Agent",
+    email: "senior@hotrodan.com",
+    role: "senior",
+    teams: ["order_support", "product_support", "escalations"],
+    specialties: ["complex_issues", "vip_customers"],
     maxLoad: 5,
-    availability: 'online'
+    availability: "online",
   },
   {
     id: 30,
-    name: 'Support Manager',
-    email: 'manager@hotrodan.com',
-    role: 'manager',
-    teams: ['management'],
-    specialties: ['escalations', 'complaints', 'high_value'],
+    name: "Support Manager",
+    email: "manager@hotrodan.com",
+    role: "manager",
+    teams: ["management"],
+    specialties: ["escalations", "complaints", "high_value"],
     maxLoad: 3,
-    availability: 'online'
-  }
+    availability: "online",
+  },
 ];
 ```
 
@@ -555,80 +588,80 @@ const agents: Agent[] = [
 ```typescript
 async function routeConversation(context: RoutingContext): Promise<Assignment> {
   const { conversation, message, customer, draft, sentiment } = context;
-  
+
   // Rule 1: VIP customers
   if (customer.vip_status || customer.lifetime_value > 5000) {
     return {
-      assignee_id: findAgentByRole('senior'),
-      priority: 'high',
-      tags: ['vip', 'high_value'],
+      assignee_id: findAgentByRole("senior"),
+      priority: "high",
+      tags: ["vip", "high_value"],
       sla_hours: 1,
-      reason: 'VIP customer'
+      reason: "VIP customer",
     };
   }
-  
+
   // Rule 2: Urgent/Angry sentiment
-  if (sentiment.emotion === 'angry' || sentiment.urgency === 'urgent') {
-    await sendUrgentAlert(findAgentByRole('manager'));
+  if (sentiment.emotion === "angry" || sentiment.urgency === "urgent") {
+    await sendUrgentAlert(findAgentByRole("manager"));
     return {
-      assignee_id: findAgentByRole('manager'),
-      priority: 'urgent',
-      tags: ['escalated', 'urgent', sentiment.emotion],
+      assignee_id: findAgentByRole("manager"),
+      priority: "urgent",
+      tags: ["escalated", "urgent", sentiment.emotion],
       sla_hours: 0.5, // 30 minutes
-      reason: `${sentiment.emotion} customer, requires immediate attention`
+      reason: `${sentiment.emotion} customer, requires immediate attention`,
     };
   }
-  
+
   // Rule 3: Low confidence drafts
   if (draft.confidence_score < 70) {
     return {
-      assignee_id: findAgentByRole('senior'),
-      priority: 'high',
-      tags: ['low_confidence', 'needs_expert'],
+      assignee_id: findAgentByRole("senior"),
+      priority: "high",
+      tags: ["low_confidence", "needs_expert"],
       sla_hours: 2,
-      reason: `Low confidence (${draft.confidence_score}%), expert review needed`
+      reason: `Low confidence (${draft.confidence_score}%), expert review needed`,
     };
   }
-  
+
   // Rule 4: Category-based routing
   const category = detectCategory(message.content, context);
-  
+
   switch (category.category) {
-    case 'order_status':
+    case "order_status":
       return {
-        assignee_id: await findLeastBusyAgent('order_support'),
-        priority: 'normal',
-        tags: ['order_support', category.category],
+        assignee_id: await findLeastBusyAgent("order_support"),
+        priority: "normal",
+        tags: ["order_support", category.category],
         sla_hours: 2,
-        reason: 'Order support inquiry'
+        reason: "Order support inquiry",
       };
-      
-    case 'product_question':
+
+    case "product_question":
       return {
-        assignee_id: await findSpecialist('product'),
-        priority: 'normal',
-        tags: ['product_question'],
+        assignee_id: await findSpecialist("product"),
+        priority: "normal",
+        tags: ["product_question"],
         sla_hours: 4,
-        reason: 'Product specialist expertise'
+        reason: "Product specialist expertise",
       };
-      
-    case 'returns_refunds':
+
+    case "returns_refunds":
       return {
-        assignee_id: await findSpecialist('returns'),
-        priority: 'normal',
-        tags: ['returns', 'refunds'],
+        assignee_id: await findSpecialist("returns"),
+        priority: "normal",
+        tags: ["returns", "refunds"],
         sla_hours: 2,
-        reason: 'Return/refund request'
+        reason: "Return/refund request",
       };
-      
+
     default:
       // General queue with load balancing
       return {
-        assignee_id: await findLeastBusyAgent('general_support'),
-        priority: 'normal',
-        tags: ['general_support'],
+        assignee_id: await findLeastBusyAgent("general_support"),
+        priority: "normal",
+        tags: ["general_support"],
         sla_hours: 4,
-        reason: 'General support queue'
+        reason: "General support queue",
       };
   }
 }
@@ -690,7 +723,7 @@ Estimated time: < 30 minutes to customer
 
 ```sql
 -- Routing efficiency by category
-SELECT 
+SELECT
   category,
   AVG(time_to_assignment_seconds) as avg_assignment_time,
   AVG(time_to_first_response_seconds) as avg_response_time,
@@ -700,7 +733,7 @@ GROUP BY category
 ORDER BY total_conversations DESC;
 
 -- Agent load distribution
-SELECT 
+SELECT
   agent_id,
   agent_name,
   COUNT(*) as conversations_assigned,
@@ -712,7 +745,7 @@ GROUP BY agent_id, agent_name
 ORDER BY conversations_assigned DESC;
 
 -- Routing accuracy (correct category assignment)
-SELECT 
+SELECT
   detected_category,
   final_category,
   COUNT(*) as misroutes,
@@ -759,4 +792,3 @@ ORDER BY misroutes DESC;
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent  
 **Review Cadence:** Monthly or after routing changes
-

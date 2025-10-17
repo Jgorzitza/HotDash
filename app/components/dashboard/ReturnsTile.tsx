@@ -1,4 +1,11 @@
-import { Card, BlockStack, Text, InlineStack, Badge, Spinner } from "@shopify/polaris";
+import {
+  Card,
+  BlockStack,
+  Text,
+  InlineStack,
+  Badge,
+  Spinner,
+} from "@shopify/polaris";
 
 interface ReturnsTileProps {
   count: number;
@@ -7,13 +14,20 @@ interface ReturnsTileProps {
   loading?: boolean;
 }
 
-export function ReturnsTile({ count, pendingReview, trend, loading }: ReturnsTileProps) {
+export function ReturnsTile({
+  count,
+  pendingReview,
+  trend,
+  loading,
+}: ReturnsTileProps) {
   if (loading) {
     return (
       <Card>
         <BlockStack gap="400" align="center">
           <Spinner size="small" />
-          <Text as="p" tone="subdued">Loading...</Text>
+          <Text as="p" tone="subdued">
+            Loading...
+          </Text>
         </BlockStack>
       </Card>
     );
@@ -22,12 +36,18 @@ export function ReturnsTile({ count, pendingReview, trend, loading }: ReturnsTil
   return (
     <Card>
       <BlockStack gap="400">
-        <Text as="h3" variant="headingMd">Returns</Text>
+        <Text as="h3" variant="headingMd">
+          Returns
+        </Text>
         <BlockStack gap="200">
-          <Text as="h2" variant="heading2xl">{count}</Text>
+          <Text as="h2" variant="heading2xl">
+            {count}
+          </Text>
           <InlineStack gap="200" align="start" blockAlign="center">
-            <Text as="p" tone="subdued">{pendingReview} pending review</Text>
-            {trend \!== "neutral" && (
+            <Text as="p" tone="subdued">
+              {pendingReview} pending review
+            </Text>
+            {trend !== "neutral" && (
               <Badge tone={trend === "up" ? "critical" : "success"}>
                 {trend === "up" ? "↑" : "↓"}
               </Badge>

@@ -10,6 +10,7 @@ expires: 2025-10-19
 # Engineer Helper — Direction (Operator Control Center)
 
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -53,31 +54,37 @@ You are authorized to run local, non-interactive commands and scripts without as
 **Files to Fix**:
 
 **Fix 1**: `app/services/shopify/orders.ts` (line ~28)
+
 - Change: `financialStatus` → `displayFinancialStatus`
 - Why: Field renamed in 2024 API
 - Timeline: 15 min
 
 **Fix 2**: `app/services/shopify/inventory.ts` (line ~60)
+
 - Change: `availableQuantity` → `quantities(names: ["available"]) { name quantity }`
 - Why: Direct field no longer available
 - Timeline: 30 min
 
 **Fix 3**: `packages/integrations/shopify.ts` (lines 3-12)
+
 - Change: Remove `edges/node` wrapper from Fulfillment query
 - Why: Structure changed
 - Timeline: 30 min
 
 **Fix 4**: `packages/integrations/shopify.ts` (lines 14-20)
+
 - Change: `productVariantUpdate` → modern mutation
 - Why: Deprecated
 - Timeline: 60 min
 
 **Validation**:
+
 - Use Shopify Dev MCP to validate EACH fix
 - Test queries return expected data
 - Coordinate with Integrations agent to verify
 
-**Evidence**: 
+**Evidence**:
+
 - File paths + line numbers of each fix
 - Shopify MCP validation confirmations
 - Test results showing queries work
@@ -94,27 +101,32 @@ You are authorized to run local, non-interactive commands and scripts without as
 **Issues Found**:
 
 **Issue 1**: Import errors in `scripts/ai/llama-workflow/dist/pipeline/query.js`
+
 - LlamaIndex API calls don't match installed version
 - Fix imports to match current llamaindex package
 - Timeline: 1-2 hours
 
 **Issue 2**: Mock processor broken (null check missing)
+
 - Add null checks for result arrays
 - Test mock mode thoroughly
 - Ensure fallback works without OpenAI
 - Timeline: 30-60 min
 
 **Testing**:
+
 - Test all 3 tools locally: query_support, refresh_index, insight_report
 - Verify each returns 200 (not 500)
 - Performance test (<500ms)
 
 **Redeploy**:
+
 - After fixes, rebuild and redeploy to Fly.io
 - Coordinate with Deployment agent for deploy
 - Tag QA to retest after deploy
 
 **Evidence**:
+
 - File paths + line numbers of fixes
 - Local test results (all 3 tools working)
 - Redeployment logs
@@ -132,22 +144,26 @@ You are authorized to run local, non-interactive commands and scripts without as
 **File**: `tests/fixtures/agent-sdk-mocks.ts`
 
 **Errors**:
+
 - Lines 190-230: jest namespace errors
 - Line 241: Missing module '~/config/supabase.server'
 - Lines 305-317: expect undefined
 - Lines 368-395: Type mismatches
 
 **Fixes**:
+
 - Import jest properly or use vi from vitest
 - Fix supabase.server import path
 - Import expect from test framework
 - Fix type mismatches in mock data
 
 **Validation**:
+
 - Run `npm run typecheck` → 0 errors
 - Run tests → all passing
 
 **Evidence**:
+
 - File fixes with line numbers
 - Clean typecheck output
 - Passing test results
@@ -160,21 +176,25 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## 📋 COORDINATION PROTOCOL
 
 **With Engineer (Main)**:
+
 - Report progress in feedback/engineer-helper.md
 - Tag @engineer when tasks complete
 - Don't duplicate work - check what Engineer is doing
 - Hand off completed fixes for integration
 
 **With QA**:
+
 - Request retests after fixes
 - Provide test instructions
 - Coordinate on validation
 
 **With Integrations**:
+
 - Verify Shopify fixes work correctly
 - Request validation of GraphQL queries
 
 **With Deployment**:
+
 - Coordinate LlamaIndex MCP redeploy
 - Provide build artifacts
 
@@ -183,17 +203,20 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## ✅ SUCCESS CRITERIA
 
 **Task 1 Complete When**:
+
 - ✅ All 4 Shopify queries fixed and validated
 - ✅ Integrations agent confirms fixes work
 - ✅ Git committed
 
 **Task 2 Complete When**:
+
 - ✅ LlamaIndex MCP all 3 tools return 200
 - ✅ QA retests and confirms working
 - ✅ Redeployed to Fly.io
 - ✅ Git committed
 
 **Task 3 Complete When**:
+
 - ✅ npm run typecheck → 0 errors
 - ✅ All tests passing
 - ✅ Git committed
@@ -215,6 +238,7 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## 📊 EVIDENCE REQUIREMENTS
 
 **For Each Task**:
+
 - ✅ File paths with line numbers: `app/services/shopify/orders.ts:28-35`
 - ✅ Test results: `Tests pass (app/services/shopify/orders.test.ts: 8 passing)`
 - ✅ Validation: `Shopify MCP validated query successfully`
@@ -228,6 +252,7 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## 🚀 START IMMEDIATELY
 
 **Priority Order**:
+
 1. Task 1: Shopify fixes (2-3h) - Unblocks dashboard tiles
 2. Task 2: LlamaIndex fixes (2-3h) - Unblocks AI agent
 3. Task 3: TypeScript errors (1-2h) - Code quality
@@ -242,7 +267,6 @@ You are authorized to run local, non-interactive commands and scripts without as
 **Mission**: Unblock Engineer, enable launch TODAY  
 **Start**: Immediately with Task 1 (Shopify GraphQL fixes)
 
-
 ---
 
 ## 🎯 MANAGER DECISION ON TASK 2 (LlamaIndex MCP)
@@ -252,29 +276,34 @@ You are authorized to run local, non-interactive commands and scripts without as
 **Decision**: **Option C - Deprioritize for now (Not Launch-Critical)**
 
 **Rationale**:
+
 - LlamaIndex MCP is for RAG queries (support knowledge base)
 - NOT blocking dashboard tiles or approvals (core launch features)
 - AI agent can continue building knowledge base content without MCP live
 - Can ship launch without LlamaIndex MCP, enable post-launch
 
 **Your Updated Task Status**:
+
 1. ✅ Task 1: COMPLETE (Shopify GraphQL already fixed)
 2. ⏸️ Task 2: PAUSED (deprioritize LlamaIndex MCP - not launch-critical)
 3. ✅ Task 3: COMPLETE (TypeScript errors fixed)
 
 **Next Actions for You**:
-1. ✅ Commit your Task 3 fixes (agent-sdk-mocks.ts) 
+
+1. ✅ Commit your Task 3 fixes (agent-sdk-mocks.ts)
 2. ✅ Create PR with clean commit message
 3. ✅ Notify Integrations to re-validate Shopify queries
 4. ✅ Document decision to deprioritize LlamaIndex MCP
 5. **Then**: Join main Engineer on Task 6 (Approval Queue UI) - Designer specs ready!
 
 **Updated Timeline**:
+
 - Task 3 commit + PR: 15-20 min
-- Coordination: 10 min  
+- Coordination: 10 min
 - **Total remaining**: ~30 min, then help Engineer with UI
 
 **Why This Works**:
+
 - Unblocks you from 3-4 hour refactor
 - Preserves launch timeline
 - LlamaIndex MCP can be fixed post-launch when more time
@@ -287,22 +316,26 @@ You are authorized to run local, non-interactive commands and scripts without as
 ## 🎯 MANAGER FINAL DIRECTION - JOIN ENGINEER ON TASK 6
 
 **Your Status**:
+
 - ✅ Task 1: COMPLETE (Shopify GraphQL validated)
 - ⏸️ Task 2: PAUSED per CEO (LlamaIndex deprioritized, not launch-critical)
 - ✅ Task 3: COMPLETE (TypeScript errors fixed, ready to commit)
 
 **Next Actions**:
+
 1. ✅ Commit Task 3 fixes to `tests/fixtures/agent-sdk-mocks.ts`
 2. ✅ Create PR: "fix: resolve TypeScript errors in agent-sdk-mocks"
 3. **Then**: JOIN Engineer on Task 6 (Approval Queue UI)
 
 **Task 6 is Now Unblocked**:
+
 - Designer completed ALL specs (20 tasks total)
 - Specs ready in `docs/design/` directory
 - Engineer starting Task 6 now
 - You help with implementation (3-4h together)
 
 **Your Role in Task 6**:
+
 - Help build Approval Queue UI components
 - Implement ApprovalCard based on Designer specs
 - Test responsive design and accessibility

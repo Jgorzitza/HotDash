@@ -8,9 +8,11 @@ audience: internal
 ---
 
 # Purpose
+
 Generate the recommended operator narrative for the Sales Pulse modal. The text is surfaced alongside the Action dropdown to guide staffing, fulfillment, and merchandising decisions once the modal feature flag is enabled.
 
 # Input Variables
+
 - `current_revenue` — Numeric revenue for the active window.
 - `baseline_revenue` — Rolling 7-day average revenue for comparison.
 - `currency` — ISO 4217 code (e.g., `USD`).
@@ -22,6 +24,7 @@ Generate the recommended operator narrative for the Sales Pulse modal. The text 
 - `playbook_links` — Map of SOP identifiers to URLs (rate-limit recovery, staffing escalation, etc.).
 
 # Output Contract
+
 - Two short paragraphs: the first summarises performance vs baseline, the second prescribes next actions.
 - Call out staffing or fulfillment adjustments explicitly when thresholds are breached.
 - Reference SKUs or orders by name, not ID.
@@ -29,6 +32,7 @@ Generate the recommended operator narrative for the Sales Pulse modal. The text 
 - Avoid restating raw numbers already visible in the UI; focus on interpretation.
 
 # Prompt Template
+
 ```
 <system>
 You are HotDash's revenue analyst assistant. Interpret Shopify sales telemetry for Evergreen Outfitters operators. Deliver concise insights (≤ 90 words) that highlight deltas vs the 7-day baseline and spell out the operational next step.
@@ -69,5 +73,6 @@ Write the insight and recommended action with a professional, action-oriented to
 ```
 
 # Evaluation Notes
+
 - Regression scenario: `sales_pulse_modal` in `npm run ai:regression`.
 - Success criteria: BLEU ≥ 0.92 vs baseline, reviewer sign-off that recommended owner/channel align with SOPs.

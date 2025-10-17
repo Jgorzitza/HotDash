@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Engineer — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -63,7 +66,9 @@ You are authorized to run local, non-interactive commands and scripts without as
 - Start executing assigned tasks immediately; capture progress/blockers in `feedback/engineer.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
+
 Own each engineering deliverable end-to-end. Capture the command/output for every change in `feedback/engineer.md`, retry failures twice, and only escalate with the captured logs and mitigation attempts.
+
 - Reconfirm sanitized history (`git fetch --all --prune`, `git grep postgresql://`) and log the clean check in `feedback/engineer.md`.
 - Land the Supabase memory retry fixes (`packages/memory/supabase.ts`) with unit + e2e evidence; record command outputs.
 - Update Shopify helpers (`shopify.app.toml`, env utilities) to align with React Router 7 + App Bridge v3 flows (no manual token capture required); attach diffs. Follow the current App Bridge configuration documented in [`@shopify/app-bridge-react`](https://www.npmjs.com/package/@shopify/app-bridge-react#configuration) when updating the client bootstrap.
@@ -77,6 +82,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Complete Agent SDK implementation guide
 - docs/design/ga_ingest.md - GA integration design
 - docs/runbooks/llamaindex_workflow.md - Existing LlamaIndex CLI
@@ -92,7 +98,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 
 ---
 
-1. ✅ **GA Direct API Integration** - COMPLETE  
+1. ✅ **GA Direct API Integration** - COMPLETE
    - Evidence: artifacts/engineer/20251011T142951Z/ga-tests.log
    - 21 tests passing, 100% coverage
 
@@ -100,7 +106,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
    - QA/Integrations found issues remain
    - Engineer Helper now owns this
 
-3. ⚠️ **LlamaIndex MCP** - REASSIGNED TO ENGINEER HELPER  
+3. ⚠️ **LlamaIndex MCP** - REASSIGNED TO ENGINEER HELPER
    - QA found 0/3 tools working
    - Engineer Helper fixing errors
 
@@ -125,7 +131,8 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - **Timeline**: 1-2 hours (already built, just deploy)
 
 5. **Approval Queue UI** (P0 - LAUNCH GATE #4)
-- Build app/routes/approvals._index.tsx (minimal version)
+
+- Build app/routes/approvals.\_index.tsx (minimal version)
 - Create ApprovalCard component (use Designer's specs)
 - Wire approve/reject to Task 4 APIs
 - **Evidence**: UI working, CEO can approve one action
@@ -133,6 +140,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - **Timeline**: 3-4 hours (minimal viable)
 
 6. **E2E Integration Test** (P0 - LAUNCH GATE #7)
+
 - Test: Webhook → Agent → Approval → CEO Approves → Action
 - One complete customer support scenario
 - **Evidence**: E2E test passing
@@ -141,6 +149,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 **Total Remaining**: 5-8 hours (while Helper fixes blockers in parallel)
 
 **Ongoing Requirements**:
+
 - Use Context7 MCP to find existing patterns before implementing
 - Use Shopify Dev MCP to validate all GraphQL queries
 - Keep mock=1 mode working for development
@@ -154,6 +163,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 **Since Shopify fixes complete, expand with additional valuable tasks**:
 
 **Task 7: Code Quality & Refactoring**
+
 - Review codebase for duplicate code patterns
 - Extract reusable utilities and helpers
 - Refactor complex components for maintainability
@@ -161,6 +171,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Evidence: Refactoring report, PR with improvements
 
 **Task 8: Performance Optimization**
+
 - Profile dashboard route load times
 - Optimize slow loaders (<300ms target)
 - Implement caching where beneficial
@@ -168,6 +179,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Evidence: Performance improvements report
 
 **Task 9: Error Handling Enhancement**
+
 - Audit error handling across all services
 - Implement consistent error boundaries
 - Add user-friendly error messages
@@ -175,6 +187,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Evidence: Error handling improvements
 
 **Task 10: API Client Standardization**
+
 - Create consistent API client pattern for all external services
 - Implement retry logic and circuit breakers
 - Add request/response logging
@@ -182,6 +195,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Evidence: Standardized client implementations
 
 **Task 11: Testing Infrastructure**
+
 - Enhance test fixtures and mocks
 - Add integration test helpers
 - Create test data generation utilities
@@ -189,6 +203,7 @@ Own each engineering deliverable end-to-end. Capture the command/output for ever
 - Evidence: Testing infrastructure improvements
 
 **Task 12: Documentation Generation**
+
 - Add JSDoc comments to all public functions
 - Generate API documentation
 - Create component documentation
@@ -204,6 +219,7 @@ Execute 7-12 in any order while building Agent SDK components.
 **Since you're incredibly fast, here's substantial work to keep you productive**:
 
 **Task 13-18: LlamaIndex MCP Server Polish** (after basic deployment)
+
 - 13: Add request/response logging and tracing
 - 14: Implement health check endpoint with detailed status
 - 15: Add metrics collection (query latency, error rates, cache hits)
@@ -212,6 +228,7 @@ Execute 7-12 in any order while building Agent SDK components.
 - 18: Add rate limiting per client
 
 **Task 19-24: Agent SDK Advanced Features**
+
 - 19: Implement conversation context persistence
 - 20: Add agent performance tracking
 - 21: Create agent analytics endpoints
@@ -220,6 +237,7 @@ Execute 7-12 in any order while building Agent SDK components.
 - 24: Create agent debugging tools
 
 **Task 25-30: Testing & Quality**
+
 - 25: Add integration tests for all Agent SDK tools
 - 26: Create load testing suite for approval queue
 - 27: Implement chaos testing for resilience
@@ -242,6 +260,7 @@ Execute any order. Total: 30 tasks, ~15-20 hours of work.
 ### 🚀 THIRD MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task 31-40: Advanced Agent SDK Features** (10 tasks)
+
 - 31: Implement multi-language agent responses (i18n infrastructure)
 - 32: Create agent A/B testing framework
 - 33: Design agent personality customization system
@@ -254,6 +273,7 @@ Execute any order. Total: 30 tasks, ~15-20 hours of work.
 - 40: Implement agent response streaming (real-time typing)
 
 **Task 41-50: Platform & Infrastructure** (10 tasks)
+
 - 41: Create GraphQL API for all Agent SDK data
 - 42: Design real-time subscriptions for approval queue
 - 43: Implement webhook retry and dead letter queue
@@ -266,6 +286,7 @@ Execute any order. Total: 30 tasks, ~15-20 hours of work.
 - 50: Create configuration management service
 
 **Task 51-55: Developer Experience** (5 tasks)
+
 - 51: Create local development environment setup automation
 - 52: Design development workflow documentation
 - 53: Implement code generation tools for common patterns
@@ -279,6 +300,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-40 hours work.
 ### 🚀 SEVENTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task 56-62: Microservices Architecture** (7 tasks)
+
 - 56: Design service mesh implementation
 - 57: Create inter-service communication patterns
 - 58: Implement service discovery and registry
@@ -288,6 +310,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-40 hours work.
 - 62: Design service deployment orchestration
 
 **Task 63-70: Developer Experience** (8 tasks)
+
 - 63: Create local development environment automation
 - 64: Design development workflow documentation
 - 65: Implement hot reload for all services
@@ -298,6 +321,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-40 hours work.
 - 70: Design code review automation and checklists
 
 **Task 71-78: Performance Engineering** (8 tasks)
+
 - 71: Implement application performance monitoring (APM)
 - 72: Create performance profiling tools
 - 73: Design query optimization framework
@@ -308,6 +332,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-40 hours work.
 - 78: Create performance regression detection
 
 **Task 79-85: Infrastructure as Code** (7 tasks)
+
 - 79: Design Terraform/Pulumi infrastructure modules
 - 80: Create environment provisioning automation
 - 81: Implement infrastructure testing
@@ -325,12 +350,14 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 **QA is now validating all completed tasks every 4 hours**
 
 **Your Evidence Must Include**:
+
 - ✅ File paths with line numbers: `app/services/foo.ts:12-45`
 - ✅ Test results: `Tests pass (app/services/foo.test.ts: 15 passing)`
 - ✅ Deployment status: `Deployed to staging: https://... (returns 200)`
 - ✅ Commit hashes when applicable: `Committed in abc123f`
 
 **NOT Acceptable**:
+
 - ❌ "Task complete"
 - ❌ "Implementation done"
 - ❌ "Deployed successfully"
@@ -344,17 +371,20 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 **CEO Policy**: ALL customer interactions require CEO approval (no auto-execute)
 
 **Implementation Change for Agent SDK**:
+
 - ❌ Remove any auto-approve logic for customer responses
 - ✅ 100% of customer-facing actions go to approval queue
 - ✅ Capture CEO edits/feedback for agent training
 - ✅ See: docs/ops/HUMAN-APPROVAL-REQUIRED.md
 
 **Shopify Auth Clarification**:
+
 - ✅ Use `authenticate.admin(request)` pattern (automatic)
 - ❌ Don't ask for SHOPIFY_ADMIN_TOKEN (auto-generated)
 - ✅ See: docs/ops/SHOPIFY-AUTH-PATTERN.md
 
 **Credentials Available in Vault**:
+
 - Chatwoot: vault/occ/chatwoot/api_token_staging.env
 - Postgres: vault/occ/supabase/database_url_staging.env
 
@@ -365,12 +395,14 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 ## 🚨 CRITICAL BLOCKERS FROM QA + INTEGRATIONS (2025-10-12T00:50Z)
 
 **QA Report**: LlamaIndex MCP deployed but NOT WORKING
+
 - ❌ All 3 tools return 500 errors
 - Issue 1: Import errors in query.js
 - Issue 2: Mock processor broken
 - **Action**: Fix BEFORE continuing to Agent SDK
 
 **Integrations Report**: 4 Shopify GraphQL queries still broken
+
 - ❌ financialStatus → displayFinancialStatus
 - ❌ availableQuantity → quantities(names: ["available"])
 - ❌ Fulfillment edges/node structure
@@ -378,6 +410,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 - **Action**: Fix these BEFORE Agent SDK
 
 **REVISED PRIORITY**:
+
 1. Fix Shopify GraphQL (4 queries) - 2h
 2. Fix LlamaIndex MCP (imports, mock) - 2h
 3. QA retests and confirms both working
@@ -415,9 +448,10 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 **Designer Report**: ALL 20 TASKS COMPLETE including full Approval Queue UI specs ✅
 
 **Available Specs for You**:
+
 1. `docs/design/HANDOFF-approval-queue-ui.md` - Primary handoff
 2. `docs/design/MINIMAL-approval-ui-assets-TODAY.md` - Today's delivery scope
-3. `docs/design/approvalcard-component-spec.md` - Component details  
+3. `docs/design/approvalcard-component-spec.md` - Component details
 4. `docs/design/approval-queue-edge-states.md` - Edge cases
 5. `docs/design/accessibility-approval-flow.md` - A11y requirements
 
@@ -426,6 +460,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~50-60 hours work.
 **Engineer Helper Available**: Completed Task 3, deprioritized Task 2, ready to help you with UI
 
 **Updated Tasks**:
+
 - ✅ Task 4: Agent SDK Service (COMPLETE)
 - ✅ Task 5: Webhook Endpoints (COMPLETE)
 - 🟢 Task 6: Approval Queue UI - **START NOW** (3-4h with Engineer Helper)

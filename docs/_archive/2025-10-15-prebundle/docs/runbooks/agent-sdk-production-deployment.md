@@ -69,7 +69,7 @@ cat fly.staging.toml
 # Confirm:
 # - app name ends with -staging
 # - auto_stop_machines = true
-# - auto_start_machines = true  
+# - auto_start_machines = true
 # - memory/CPU appropriate (start with 512MB, 1 vCPU)
 
 # 3. Deploy to staging
@@ -170,6 +170,7 @@ echo "Latency: <P95-latency>ms" >> feedback/reliability.md
 ### When to Rollback
 
 Execute rollback immediately if:
+
 - Health checks failing for > 5 minutes
 - Error rate > 5% for > 5 minutes
 - P95 latency > 1000ms for > 10 minutes
@@ -288,11 +289,13 @@ primary_region = "ord"
 ### Secret Management
 
 **Required Secrets:**
+
 - `DATABASE_URL` - Supabase connection string
 - `OPENAI_API_KEY` - OpenAI API key
 - Additional service-specific secrets as needed
 
 **Setting Secrets:**
+
 ```bash
 # Set via CLI (preferred for automation)
 ~/.fly/bin/fly secrets set DATABASE_URL="<value>" -a hotdash-llamaindex-mcp
@@ -305,6 +308,7 @@ primary_region = "ord"
 ```
 
 **Secret Rotation:**
+
 - Schedule: Quarterly or on-demand for security events
 - Process: Set new secret, deploy, verify, remove old secret
 - Document rotation in `feedback/reliability.md`
@@ -321,16 +325,19 @@ primary_region = "ord"
 ### Scaling Triggers
 
 Scale up CPU if:
+
 - CPU usage consistently > 70%
 - Request queue building up
 - Response times degrading
 
 Scale up Memory if:
+
 - Memory usage > 70%
 - OOM kills occurring
 - Garbage collection frequent
 
 Scale machine count if:
+
 - Consistent traffic requiring > 1 machine
 - Geographic distribution needed
 - High availability required
@@ -497,8 +504,8 @@ A deployment is considered successful when:
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
+| Date       | Change                            | Author            |
+| ---------- | --------------------------------- | ----------------- |
 | 2025-10-11 | Initial creation (pre-production) | Reliability Agent |
 
 ## Next Steps Before Production
@@ -508,4 +515,3 @@ A deployment is considered successful when:
 3. ⏳ Obtain manager approval for production
 4. ⏳ Schedule production deployment window
 5. ⏳ Brief team on deployment plan
-

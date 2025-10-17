@@ -10,6 +10,7 @@ created: 2025-10-11
 ## Task 13: Comprehensive Data Table Component
 
 **Polaris DataTable with Extensions**:
+
 - Sorting (multi-column)
 - Filtering (per column)
 - Pagination (client-side & server-side)
@@ -18,6 +19,7 @@ created: 2025-10-11
 - Export to CSV
 
 **Implementation**:
+
 ```typescript
 <DataTable
   columnContentTypes={['text', 'numeric', 'text', 'numeric']}
@@ -33,6 +35,7 @@ created: 2025-10-11
 ## Task 14: Advanced Form Components
 
 **Multi-Step Forms**:
+
 ```typescript
 <FormLayout>
   <Stepper activeStep={currentStep} steps={['Info', 'Review', 'Confirm']} />
@@ -47,12 +50,14 @@ created: 2025-10-11
 ```
 
 **Validation Patterns**:
+
 - Inline validation (onChange)
 - Submit validation (onSubmit)
 - Async validation (API check)
 - Error messages with suggestions
 
 **Auto-Save**:
+
 - Debounced onChange (save after 2s idle)
 - Draft indicator
 - Conflict resolution
@@ -62,6 +67,7 @@ created: 2025-10-11
 ## Task 15: Chart and Visualization Library
 
 **Chart Types Needed**:
+
 1. Line charts (trends over time)
 2. Bar charts (comparisons)
 3. Progress bars (percentages)
@@ -76,6 +82,7 @@ created: 2025-10-11
 ## Task 16: Modal and Dialog System
 
 **Modal Variants**:
+
 ```typescript
 // Confirmation dialog (small)
 <Modal size="small" title="Confirm Action">
@@ -107,18 +114,19 @@ created: 2025-10-11
 ## Task 17: Toast Notification System
 
 **Priority Levels**:
+
 ```typescript
 // Success (green, 3s)
-toast.show('Saved successfully');
+toast.show("Saved successfully");
 
 // Error (red, persistent)
-toast.show('Save failed', { isError: true, duration: 0 });
+toast.show("Save failed", { isError: true, duration: 0 });
 
 // Info (blue, 5s)
-toast.show('3 new items', { duration: 5000 });
+toast.show("3 new items", { duration: 5000 });
 
 // Warning (yellow, persistent)
-toast.show('Unsaved changes', { duration: 0 });
+toast.show("Unsaved changes", { duration: 0 });
 ```
 
 **Status**: All 5 component specs complete

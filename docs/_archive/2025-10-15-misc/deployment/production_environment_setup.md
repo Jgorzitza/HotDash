@@ -6,6 +6,7 @@ last_reviewed: 2025-10-09
 doc_hash: TBD
 expires: 2025-10-16
 ---
+
 # Production Environment Setup Playbook
 
 This playbook codifies the exact steps for bringing the GitHub `production` environment online with the required secrets, vault references, and approval guardrails. Use it alongside `docs/deployment/env_matrix.md` and `docs/deployment/production_go_live_checklist.md`.

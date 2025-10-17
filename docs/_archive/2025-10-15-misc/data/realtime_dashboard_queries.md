@@ -10,7 +10,7 @@ expires: 2025-11-11
 
 **Purpose:** Optimize operator dashboard queries for <1 second tile rendering  
 **Target:** Sub-second query performance for all 5 Hot Rodan operator tiles  
-**Strategy:** Materialized views, caching, incremental aggregation  
+**Strategy:** Materialized views, caching, incremental aggregation
 
 ---
 
@@ -19,12 +19,14 @@ expires: 2025-11-11
 ### Operator Experience Standards
 
 **Target Latency:**
+
 - **Tile Load:** <500ms (initial render)
 - **Tile Refresh:** <200ms (subsequent updates)
 - **Realtime Update:** <2s (live data push)
 - **Concurrent Users:** Support 10+ operators simultaneously
 
 **Performance Budget:**
+
 - Database query: <100ms
 - API processing: <50ms
 - Network transfer: <50ms
@@ -42,7 +44,7 @@ expires: 2025-11-11
 ```sql
 -- Materialized view for tile performance
 CREATE MATERIALIZED VIEW mv_operator_tile_cache AS
-SELECT 
+SELECT
   'cx_watch' as tile_id,
   jsonb_build_object(
     'sla_breach_rate_pct', ROUND(100.0 * COUNT(*) FILTER (WHERE first_response_minutes > 5) / NULLIF(COUNT(*), 0), 2),
@@ -51,7 +53,7 @@ SELECT
     'last_updated', NOW()
   ) as tile_data
 FROM (
-  SELECT 
+  SELECT
     conversation_id,
     EXTRACT(EPOCH FROM (first_response_at - created_at)) / 60 as first_response_minutes
   FROM chatwoot_conversations
@@ -60,7 +62,7 @@ FROM (
 
 UNION ALL
 
-SELECT 
+SELECT
   'sales_watch' as tile_id,
   jsonb_build_object(
     'current_week_revenue', c.revenue,
@@ -81,7 +83,7 @@ FROM (
 
 UNION ALL
 
-SELECT 
+SELECT
   'seo_watch' as tile_id,
   jsonb_build_object(
     'anomaly_count', COUNT(*),
@@ -90,7 +92,7 @@ SELECT
     'last_updated', NOW()
   ) as tile_data
 FROM (
-  SELECT 
+  SELECT
     value->>'landing_page' as landing_page,
     (value->>'wow_delta_pct')::NUMERIC as wow_delta_pct
   FROM facts
@@ -101,7 +103,7 @@ FROM (
 
 UNION ALL
 
-SELECT 
+SELECT
   'inventory_watch' as tile_id,
   jsonb_build_object(
     'critical_count', COUNT(*) FILTER (WHERE days_coverage < 3),
@@ -110,7 +112,7 @@ SELECT
     'last_updated', NOW()
   ) as tile_data
 FROM (
-  SELECT 
+  SELECT
     (value->>'available_quantity')::INTEGER / NULLIF((value->>'daily_sales_avg')::NUMERIC, 0) as days_coverage
   FROM facts
   WHERE topic = 'shopify.inventory'
@@ -119,7 +121,7 @@ FROM (
 
 UNION ALL
 
-SELECT 
+SELECT
   'social_watch' as tile_id,
   jsonb_build_object(
     'avg_sentiment_24h', ROUND(AVG((value->>'sentiment_score')::NUMERIC), 2),
@@ -143,6 +145,7 @@ SELECT cron.schedule(
 ```
 
 **Benefits:**
+
 - ✅ Pre-computed: Query time <10ms (index lookup)
 - ✅ Concurrent refresh: No downtime for operators
 - ✅ Scheduled: Always fresh data (<5 min old)
@@ -164,7 +167,7 @@ CREATE TABLE sales_incremental_cache (
 
 -- Update only today's data
 INSERT INTO sales_incremental_cache (period_date, total_revenue, order_count)
-SELECT 
+SELECT
   CURRENT_DATE as period_date,
   SUM((value->>'total_revenue')::NUMERIC) as total_revenue,
   COUNT(DISTINCT value->>'order_id') as order_count
@@ -172,16 +175,16 @@ FROM facts
 WHERE topic = 'shopify.sales'
   AND created_at::DATE = CURRENT_DATE
 ON CONFLICT (period_date) DO UPDATE
-SET 
+SET
   total_revenue = EXCLUDED.total_revenue,
   order_count = EXCLUDED.order_count,
   last_updated = NOW();
 
 -- Week-over-week delta (uses cached data)
-SELECT 
+SELECT
   current_week.total_revenue,
   previous_week.total_revenue,
-  ROUND(100.0 * (current_week.total_revenue - previous_week.total_revenue) / 
+  ROUND(100.0 * (current_week.total_revenue - previous_week.total_revenue) /
     NULLIF(previous_week.total_revenue, 0), 2) as sales_delta_pct
 FROM (
   SELECT SUM(total_revenue) as total_revenue
@@ -197,6 +200,7 @@ FROM (
 ```
 
 **Benefits:**
+
 - ✅ Only processes new data (not full history)
 - ✅ Linear time complexity O(1) per day
 - ✅ Extremely fast queries (<5ms)
@@ -227,6 +231,7 @@ CREATE INDEX idx_facts_ga_anomalies
 ```
 
 **Benefits:**
+
 - ✅ Smaller indexes = faster scans
 - ✅ Matches query patterns exactly
 - ✅ 10-50x faster than full table scans
@@ -239,7 +244,7 @@ CREATE INDEX idx_facts_ga_anomalies
 
 ```typescript
 // app/services/cache/tileCache.ts
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 interface TileCache {
   [tileId: string]: {
@@ -261,12 +266,15 @@ export async function getTileData(tileId: string, ttl: number = 30000) {
 
   // Cache MISS - fetch from materialized view
   console.log(`Cache MISS: ${tileId}`);
-  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
-  
+  const supabase = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_KEY!,
+  );
+
   const { data, error } = await supabase
-    .from('mv_operator_tile_cache')
-    .select('tile_data')
-    .eq('tile_id', tileId)
+    .from("mv_operator_tile_cache")
+    .select("tile_data")
+    .eq("tile_id", tileId)
     .single();
 
   if (error) throw error;
@@ -275,7 +283,7 @@ export async function getTileData(tileId: string, ttl: number = 30000) {
   cache[tileId] = {
     data: data.tile_data,
     timestamp: Date.now(),
-    ttl
+    ttl,
   };
 
   return data.tile_data;
@@ -288,6 +296,7 @@ export function invalidateTileCache(tileId: string) {
 ```
 
 **Cache TTL Strategy:**
+
 - CX Watch: 30s (near real-time for support)
 - Sales Watch: 60s (less frequent updates)
 - SEO Watch: 120s (hourly refresh sufficient)
@@ -295,6 +304,7 @@ export function invalidateTileCache(tileId: string) {
 - Social Watch: 120s (not time-critical)
 
 **Benefits:**
+
 - ✅ Zero database load for cached tiles
 - ✅ Sub-10ms response time (in-memory lookup)
 - ✅ Configurable TTL per tile urgency
@@ -307,18 +317,24 @@ export function invalidateTileCache(tileId: string) {
 
 ```typescript
 // app/services/realtime/tileUpdates.ts
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!);
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!,
+);
 
 // Subscribe to fact changes
-export function subscribeToTileUpdates(tileId: string, callback: (data: any) => void) {
+export function subscribeToTileUpdates(
+  tileId: string,
+  callback: (data: any) => void,
+) {
   const topicMap = {
-    'cx_watch': 'cx.sla',
-    'sales_watch': 'shopify.sales',
-    'seo_watch': 'ga.sessions',
-    'inventory_watch': 'shopify.inventory',
-    'social_watch': 'social.sentiment'
+    cx_watch: "cx.sla",
+    sales_watch: "shopify.sales",
+    seo_watch: "ga.sessions",
+    inventory_watch: "shopify.inventory",
+    social_watch: "social.sentiment",
   };
 
   const topic = topicMap[tileId];
@@ -328,18 +344,18 @@ export function subscribeToTileUpdates(tileId: string, callback: (data: any) => 
   const subscription = supabase
     .channel(`tile_${tileId}`)
     .on(
-      'postgres_changes',
+      "postgres_changes",
       {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'facts',
-        filter: `topic=eq.${topic}`
+        event: "INSERT",
+        schema: "public",
+        table: "facts",
+        filter: `topic=eq.${topic}`,
       },
       (payload) => {
         console.log(`Real-time update for ${tileId}:`, payload);
         invalidateTileCache(tileId);
         getTileData(tileId).then(callback);
-      }
+      },
     )
     .subscribe();
 
@@ -348,6 +364,7 @@ export function subscribeToTileUpdates(tileId: string, callback: (data: any) => 
 ```
 
 **Benefits:**
+
 - ✅ Instant updates when data changes
 - ✅ No polling overhead
 - ✅ Reduced server load
@@ -359,19 +376,21 @@ export function subscribeToTileUpdates(tileId: string, callback: (data: any) => 
 ### Tile 1: CX Watch (SLA Breach Rate)
 
 **Optimized Query:**
+
 ```sql
 -- Uses materialized view (refresh every 5 min)
-SELECT tile_data 
-FROM mv_operator_tile_cache 
+SELECT tile_data
+FROM mv_operator_tile_cache
 WHERE tile_id = 'cx_watch';
 -- Expected time: <5ms
 ```
 
 **Fallback Query (if MV not ready):**
+
 ```sql
 -- Uses partial index on recent conversations
-SELECT 
-  ROUND(100.0 * COUNT(*) FILTER (WHERE 
+SELECT
+  ROUND(100.0 * COUNT(*) FILTER (WHERE
     EXTRACT(EPOCH FROM (first_response_at - created_at)) / 60 > 5
   ) / NULLIF(COUNT(*), 0), 2) as sla_breach_rate_pct,
   COUNT(*) as total_conversations
@@ -385,12 +404,13 @@ WHERE created_at > NOW() - INTERVAL '24 hours';
 ### Tile 2: Sales Watch (Week-over-Week Delta)
 
 **Optimized Query:**
+
 ```sql
 -- Uses incremental cache
-SELECT 
+SELECT
   current_week.revenue,
   previous_week.revenue,
-  ROUND(100.0 * (current_week.revenue - previous_week.revenue) / 
+  ROUND(100.0 * (current_week.revenue - previous_week.revenue) /
     NULLIF(previous_week.revenue, 0), 2) as sales_delta_pct
 FROM (
   SELECT SUM(total_revenue) as revenue
@@ -410,9 +430,10 @@ FROM (
 ### Tile 3: SEO Watch (Traffic Anomalies)
 
 **Optimized Query:**
+
 ```sql
 -- Uses partial index on anomalies
-SELECT 
+SELECT
   value->>'landing_page' as landing_page,
   (value->>'sessions')::INTEGER as current_sessions,
   (value->>'wow_delta_pct')::NUMERIC as wow_delta_pct
@@ -430,14 +451,15 @@ LIMIT 5;
 ### Tile 4: Inventory Watch (Stockout Risk)
 
 **Optimized Query:**
+
 ```sql
 -- Uses partial index on at-risk inventory
-SELECT 
+SELECT
   value->>'sku' as sku,
   value->>'product_title' as product_title,
   (value->>'available_quantity')::INTEGER as available,
   (value->>'days_coverage')::NUMERIC as days_coverage,
-  CASE 
+  CASE
     WHEN (value->>'days_coverage')::NUMERIC < 3 THEN 'critical'
     ELSE 'warning'
   END as risk_level
@@ -455,10 +477,11 @@ LIMIT 10;
 ### Tile 5: Social Watch (Sentiment)
 
 **Optimized Query:**
+
 ```sql
 -- Uses materialized view
-SELECT tile_data 
-FROM mv_operator_tile_cache 
+SELECT tile_data
+FROM mv_operator_tile_cache
 WHERE tile_id = 'social_watch';
 -- Expected time: <5ms
 ```
@@ -469,55 +492,60 @@ WHERE tile_id = 'social_watch';
 
 ### Before Optimization (Baseline)
 
-| Tile | Query Time | Data Scanned | Method |
-|------|-----------|--------------|--------|
-| CX Watch | 450ms | 50K rows | Full table scan |
-| Sales Watch | 380ms | 100K rows | GROUP BY on facts |
-| SEO Watch | 520ms | 75K rows | Filtered aggregation |
-| Inventory Watch | 290ms | 30K rows | JSONB filtering |
-| Social Watch | 410ms | 60K rows | AVG aggregation |
-| **Average** | **410ms** | **63K rows** | **Baseline** |
+| Tile            | Query Time | Data Scanned | Method               |
+| --------------- | ---------- | ------------ | -------------------- |
+| CX Watch        | 450ms      | 50K rows     | Full table scan      |
+| Sales Watch     | 380ms      | 100K rows    | GROUP BY on facts    |
+| SEO Watch       | 520ms      | 75K rows     | Filtered aggregation |
+| Inventory Watch | 290ms      | 30K rows     | JSONB filtering      |
+| Social Watch    | 410ms      | 60K rows     | AVG aggregation      |
+| **Average**     | **410ms**  | **63K rows** | **Baseline**         |
 
 ### After Optimization (Target)
 
-| Tile | Query Time | Data Scanned | Method |
-|------|-----------|--------------|--------|
-| CX Watch | <5ms | 1 row | Materialized view |
-| Sales Watch | <5ms | 14 rows | Incremental cache |
-| SEO Watch | <10ms | ~10 rows | Partial index |
-| Inventory Watch | <10ms | ~20 rows | Partial index |
-| Social Watch | <5ms | 1 row | Materialized view |
-| **Average** | **<7ms** | **<10 rows** | **82x faster** |
+| Tile            | Query Time | Data Scanned | Method            |
+| --------------- | ---------- | ------------ | ----------------- |
+| CX Watch        | <5ms       | 1 row        | Materialized view |
+| Sales Watch     | <5ms       | 14 rows      | Incremental cache |
+| SEO Watch       | <10ms      | ~10 rows     | Partial index     |
+| Inventory Watch | <10ms      | ~20 rows     | Partial index     |
+| Social Watch    | <5ms       | 1 row        | Materialized view |
+| **Average**     | **<7ms**   | **<10 rows** | **82x faster**    |
 
 ---
 
 ## Implementation Plan
 
 ### Phase 1: Materialized Views (Week 1)
+
 1. ✅ Create mv_operator_tile_cache
 2. ✅ Add cron job for 5-minute refresh
 3. ✅ Test concurrent refresh
 4. ✅ Update React Router loaders
 
 ### Phase 2: Incremental Caching (Week 2)
+
 1. Create sales_incremental_cache table
 2. Implement daily aggregation job
 3. Migrate Sales Watch tile
 4. Validate accuracy vs. baseline
 
 ### Phase 3: Partial Indexes (Week 2)
+
 1. Add partial indexes for recent data
 2. Add partial indexes for anomalies/at-risk items
 3. Run EXPLAIN ANALYZE before/after
 4. Document performance gains
 
 ### Phase 4: Application Caching (Week 3)
+
 1. Implement in-memory tile cache
 2. Configure TTL per tile
 3. Add cache invalidation triggers
 4. Monitor hit rates
 
 ### Phase 5: Real-Time Updates (Week 3)
+
 1. Set up Supabase realtime subscriptions
 2. Implement WebSocket push to clients
 3. Test under load (10+ concurrent operators)
@@ -530,16 +558,19 @@ WHERE tile_id = 'social_watch';
 ### Performance SLAs
 
 **Tile Load Time:**
+
 - Target: <500ms (P95)
 - Warning: >700ms
 - Critical: >1000ms
 
 **Cache Hit Rate:**
+
 - Target: >80%
 - Warning: <70%
 - Critical: <50%
 
 **Materialized View Freshness:**
+
 - Target: <5 minutes
 - Warning: >10 minutes
 - Critical: >15 minutes
@@ -548,7 +579,7 @@ WHERE tile_id = 'social_watch';
 
 ```sql
 -- Slow query detection
-SELECT 
+SELECT
   query,
   mean_exec_time,
   calls,
@@ -559,7 +590,7 @@ ORDER BY mean_exec_time DESC
 LIMIT 10;
 
 -- Cache hit rate tracking
-SELECT 
+SELECT
   'cache_hit_rate' as metric,
   ROUND(100.0 * SUM(CASE WHEN source = 'cache' THEN 1 ELSE 0 END) / COUNT(*), 2) as hit_rate_pct
 FROM tile_request_logs
@@ -573,4 +604,3 @@ WHERE created_at > NOW() - INTERVAL '1 hour';
 **Strategy:** Materialized views + incremental caching + partial indexes  
 **Evidence:** Query optimization specs, caching strategy, performance benchmarks  
 **North Star Alignment:** ✅ DIRECT - Sub-second operator experience
-

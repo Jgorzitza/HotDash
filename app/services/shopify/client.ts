@@ -2,7 +2,8 @@ import type { ShopifyServiceContext } from "./types";
 import { authenticate } from "../../shopify.server";
 
 // Test utilities for dependency injection
-let waitFn = async (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+let waitFn = async (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 let randomFn = Math.random;
 
 export const __internal = {
@@ -10,7 +11,8 @@ export const __internal = {
     waitFn = fn;
   },
   resetWaitImplementation: () => {
-    waitFn = async (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    waitFn = async (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
   },
   setRandomImplementation: (fn: () => number) => {
     randomFn = fn;
@@ -73,7 +75,8 @@ export async function getShopifyServiceContext(
   const originalGraphql = admin.graphql.bind(admin);
   const wrappedAdmin = {
     ...admin,
-    graphql: (query: string, options: any) => graphqlWithRetry(originalGraphql, query, options),
+    graphql: (query: string, options: any) =>
+      graphqlWithRetry(originalGraphql, query, options),
   };
 
   return {

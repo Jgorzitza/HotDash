@@ -1,7 +1,7 @@
 /**
  * Server-side logging utility that integrates with Supabase edge function
  * for centralized observability logging.
- * 
+ *
  * This handles ServiceError logging and general application logging
  * with structured metadata for better observability.
  */
@@ -31,7 +31,7 @@ class Logger {
     if (!this.supabaseUrl || !this.serviceKey) {
       console.warn(
         "Logger: SUPABASE_URL or SUPABASE_SERVICE_KEY not configured. " +
-        "Falling back to console logging only."
+          "Falling back to console logging only.",
       );
     }
   }
@@ -47,7 +47,7 @@ class Logger {
       const response = await fetch(this.edgeFunctionUrl, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${this.serviceKey}`,
+          Authorization: `Bearer ${this.serviceKey}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(entry),
@@ -55,7 +55,9 @@ class Logger {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`Logger edge function error: ${response.status} ${errorText}`);
+        console.error(
+          `Logger edge function error: ${response.status} ${errorText}`,
+        );
         // Fallback to console
         console.log(`[${entry.level}] ${entry.message}`, entry.metadata);
       }
@@ -70,7 +72,7 @@ class Logger {
     level: LogLevel,
     message: string,
     metadata?: Record<string, any>,
-    request?: Request
+    request?: Request,
   ): LogEntry {
     return {
       level,
@@ -84,27 +86,47 @@ class Logger {
     };
   }
 
-  debug(message: string, metadata?: Record<string, any>, request?: Request): void {
+  debug(
+    message: string,
+    metadata?: Record<string, any>,
+    request?: Request,
+  ): void {
     const entry = this.createEntry("DEBUG", message, metadata, request);
     this.sendToEdgeFunction(entry).catch(() => {}); // Fire and forget
   }
 
-  info(message: string, metadata?: Record<string, any>, request?: Request): void {
+  info(
+    message: string,
+    metadata?: Record<string, any>,
+    request?: Request,
+  ): void {
     const entry = this.createEntry("INFO", message, metadata, request);
     this.sendToEdgeFunction(entry).catch(() => {}); // Fire and forget
   }
 
-  warn(message: string, metadata?: Record<string, any>, request?: Request): void {
+  warn(
+    message: string,
+    metadata?: Record<string, any>,
+    request?: Request,
+  ): void {
     const entry = this.createEntry("WARN", message, metadata, request);
     this.sendToEdgeFunction(entry).catch(() => {}); // Fire and forget
   }
 
-  error(message: string, metadata?: Record<string, any>, request?: Request): void {
+  error(
+    message: string,
+    metadata?: Record<string, any>,
+    request?: Request,
+  ): void {
     const entry = this.createEntry("ERROR", message, metadata, request);
     this.sendToEdgeFunction(entry).catch(() => {}); // Fire and forget
   }
 
-  fatal(message: string, metadata?: Record<string, any>, request?: Request): void {
+  fatal(
+    message: string,
+    metadata?: Record<string, any>,
+    request?: Request,
+  ): void {
     const entry = this.createEntry("FATAL", message, metadata, request);
     this.sendToEdgeFunction(entry).catch(() => {}); // Fire and forget
   }
@@ -112,7 +134,11 @@ class Logger {
   /**
    * Logs ServiceError with structured metadata including scope, code, and cause
    */
-  logServiceError(error: ServiceError, request?: Request, additionalMetadata?: Record<string, any>): void {
+  logServiceError(
+    error: ServiceError,
+    request?: Request,
+    additionalMetadata?: Record<string, any>,
+  ): void {
     const metadata = {
       scope: error.scope,
       code: error.code,
@@ -122,13 +148,22 @@ class Logger {
       ...additionalMetadata,
     };
 
-    this.error(`ServiceError in ${error.scope}: ${error.message}`, metadata, request);
+    this.error(
+      `ServiceError in ${error.scope}: ${error.message}`,
+      metadata,
+      request,
+    );
   }
 
   /**
    * Logs general errors with structured metadata
    */
-  logError(error: Error, context: string, request?: Request, additionalMetadata?: Record<string, any>): void {
+  logError(
+    error: Error,
+    context: string,
+    request?: Request,
+    additionalMetadata?: Record<string, any>,
+  ): void {
     const metadata = {
       context,
       errorName: error.name,
@@ -158,9 +193,14 @@ export function withRequestLogger(request: Request) {
       logger.error(message, metadata, request),
     fatal: (message: string, metadata?: Record<string, any>) =>
       logger.fatal(message, metadata, request),
-    logServiceError: (error: ServiceError, additionalMetadata?: Record<string, any>) =>
-      logger.logServiceError(error, request, additionalMetadata),
-    logError: (error: Error, context: string, additionalMetadata?: Record<string, any>) =>
-      logger.logError(error, context, request, additionalMetadata),
+    logServiceError: (
+      error: ServiceError,
+      additionalMetadata?: Record<string, any>,
+    ) => logger.logServiceError(error, request, additionalMetadata),
+    logError: (
+      error: Error,
+      context: string,
+      additionalMetadata?: Record<string, any>,
+    ) => logger.logError(error, context, request, additionalMetadata),
   };
 }

@@ -56,7 +56,7 @@ Make sure you’re using Shopify CLI `v3.85.3` or higher. You can check your ver
 
 ### Examples
 
-* #### Generate an extension
+- #### Generate an extension
 
   ##### CLI
 
@@ -79,14 +79,14 @@ If your app is using ESLint, update your configuration to include the new global
 
 ### Examples
 
-* #### .eslintrc.cjs
+- #### .eslintrc.cjs
 
   ##### Default
 
   ```js
   module.exports = {
     globals: {
-      shopify: 'readonly',
+      shopify: "readonly",
     },
   };
   ```
@@ -101,18 +101,18 @@ You can also use [Preact Signals](https://preactjs.com/guide/v10/signals) for re
 
 ### Examples
 
-* #### Scaffolded with Preact
+- #### Scaffolded with Preact
 
   ##### JSX
 
   ```jsx
-  import '@shopify/ui-extensions/preact';
-  import {render} from 'preact';
-  import {useState} from 'preact/hooks';
+  import "@shopify/ui-extensions/preact";
+  import { render } from "preact";
+  import { useState } from "preact/hooks";
 
   export default async () => {
     render(<Extension />, document.body);
-  }
+  };
 
   function Extension() {
     const [count, setCount] = useState(0);
@@ -120,9 +120,7 @@ You can also use [Preact Signals](https://preactjs.com/guide/v10/signals) for re
     return (
       <>
         <s-text>Count: {count}</s-text>
-        <s-button onClick={() => setCount(count + 1)}>
-          Increment
-        </s-button>
+        <s-button onClick={() => setCount(count + 1)}>Increment</s-button>
       </>
     );
   }
@@ -136,7 +134,7 @@ When using Preact, event handlers can be registered by passing props beginning w
 
 ### Examples
 
-* #### Handling events
+- #### Handling events
 
   ##### JSX
 
@@ -172,43 +170,43 @@ Using this, you can control what defines a component to be dirty by utilizing th
 
 Rules:
 
-* When the defaultValue is set, the component will be considered dirty if the value of the input is different from the defaultValue.You may update the defaultValue when the form is submitted to reset the dirty state of the form.
+- When the defaultValue is set, the component will be considered dirty if the value of the input is different from the defaultValue.You may update the defaultValue when the form is submitted to reset the dirty state of the form.
 
-* When the defaultValue is not set, the component will be considered dirty if the value of the input is different from the initial value or from the last dynamic update to the input's value that wasn't triggered by user input.
+- When the defaultValue is not set, the component will be considered dirty if the value of the input is different from the initial value or from the last dynamic update to the input's value that wasn't triggered by user input.
 
   Note: In order to trigger the dirty state, each input must have a name attribute.
 
 ### Examples
 
-* #### Trigger the Form's dirty state
+- #### Trigger the Form's dirty state
 
   ##### Using \`defaultValue\`
 
   ```tsx
-  import { render } from 'preact';
-  import { useState } from 'preact/hooks';
+  import { render } from "preact";
+  import { useState } from "preact/hooks";
 
   export default async () => {
     render(<Extension />, document.body);
-  }
+  };
 
   const defaultValues = {
-    text: 'default value',
+    text: "default value",
     number: 50,
   };
 
   function Extension() {
-    const [textValue, setTextValue] = useState('');
-    const [numberValue, setNumberValue] = useState('');
+    const [textValue, setTextValue] = useState("");
+    const [numberValue, setNumberValue] = useState("");
 
     return (
       <s-admin-block title="My Block Extension">
         <s-form
           onSubmit={(event) => {
-            event.waitUntil(fetch('app:save/data'));
-            console.log('submit', {textValue, numberValue});
+            event.waitUntil(fetch("app:save/data"));
+            console.log("submit", { textValue, numberValue });
           }}
-          onReset={() => console.log('automatically reset values')}
+          onReset={() => console.log("automatically reset values")}
         >
           <s-stack direction="block" gap="base">
             <s-text-field
@@ -296,21 +294,20 @@ Use the `picker` API to display a search-based interface to help users find and 
 
 ### Examples
 
-* #### resourcePicker
+- #### resourcePicker
 
   ##### Selecting a product
 
   ```tsx
-  import { render } from 'preact';
+  import { render } from "preact";
 
   export default async () => {
     render(<Extension />, document.body);
-  }
-
+  };
 
   function Extension() {
     const handleSelectProduct = async () => {
-      const selected = await shopify.resourcePicker({ type: 'product' });
+      const selected = await shopify.resourcePicker({ type: "product" });
       console.log(selected);
     };
 
@@ -328,7 +325,7 @@ Use the Shopify CLI to [deploy your app and its extensions](https://shopify.dev/
 
 ### Examples
 
-* #### Deploy an extension
+- #### Deploy an extension
 
   ##### CLI
 

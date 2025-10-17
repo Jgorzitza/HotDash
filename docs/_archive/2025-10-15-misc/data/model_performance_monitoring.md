@@ -8,31 +8,37 @@ last_reviewed: 2025-10-11
 # Model Performance Monitoring
 
 ## Overview
+
 Monitor ML model performance in production with drift detection, accuracy tracking, and degradation alerts.
 
 ## Monitoring Dimensions
 
 ### 1. Prediction Accuracy
+
 - MAE, RMSE, MAPE for regression
 - Precision, recall, F1 for classification
 - Confusion matrix tracking
 
 ### 2. Data Drift
+
 - Input feature distribution changes
 - Concept drift detection
 - Covariate shift monitoring
 
 ### 3. Model Latency
+
 - Prediction latency percentiles
 - Throughput (predictions/second)
 - Resource utilization
 
 ### 4. Business Impact
+
 - Revenue impact from predictions
 - Cost savings from automation
 - Customer satisfaction correlation
 
 ## Schema
+
 ```sql
 CREATE TABLE ml_model_predictions (
   prediction_id BIGSERIAL PRIMARY KEY,
@@ -67,10 +73,11 @@ CREATE TABLE ml_drift_alerts (
 ```
 
 ## Monitoring Queries
+
 ```sql
 -- Daily model accuracy
 CREATE OR REPLACE VIEW v_model_accuracy_daily AS
-SELECT 
+SELECT
   model_id,
   DATE(predicted_at) as date,
   COUNT(*) as predictions,
@@ -83,4 +90,3 @@ GROUP BY model_id, DATE(predicted_at);
 ```
 
 **Status:** Model monitoring framework designed with drift detection
-

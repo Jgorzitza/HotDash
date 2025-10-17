@@ -10,11 +10,13 @@
 ## Module Overview
 
 ### Target Audience
+
 - Operators with Level 1 certification (Certified Operator)
 - 2+ weeks experience with approval queue
 - Ready for advanced techniques and power features
 
 ### Learning Objectives
+
 - Master all approval queue tiles and features
 - Learn advanced workflows and shortcuts
 - Develop power user efficiency techniques
@@ -32,6 +34,7 @@
 **Beyond Basic Filters:**
 
 **Confidence-Based Workflows:**
+
 ```
 STRATEGY: Batch processing by confidence level
 
@@ -55,6 +58,7 @@ Afternoon (Mixed):
 ```
 
 **Custom Filter Combinations:**
+
 - Confidence <75% + Contains "refund" → High attention needed
 - Confidence >90% + Order status queries → Super quick
 - Customer name contains VIP list → Priority handling
@@ -68,6 +72,7 @@ Afternoon (Mixed):
 **The Power User's Queue Philosophy:**
 
 **1. Time Blocking Strategy**
+
 ```
 Block 1 (9:00-9:30 AM): Clear overnight queue
 - Start fresh with morning focus
@@ -91,6 +96,7 @@ Block 4 (4:30-5:00 PM): Final sweep
 ```
 
 **2. The "Two-Pass" Technique**
+
 ```
 Pass 1: Quick Triage (5 minutes)
 - Scan entire queue
@@ -105,6 +111,7 @@ Pass 2: Systematic Processing (25 minutes)
 ```
 
 **3. The "Zero Inbox" Goal**
+
 ```
 Target: Clear queue 3-4 times per day
 - Morning: Start at zero
@@ -126,30 +133,35 @@ Benefits:
 **Essential Shortcuts (Memorize These):**
 
 **Navigation:**
+
 - `Tab` - Next approval
 - `Shift+Tab` - Previous approval
 - `Cmd/Ctrl+K` - Quick search
 - `Esc` - Close current approval
 
 **Actions:**
+
 - `Cmd/Ctrl+Enter` - Approve & Execute
 - `Cmd/Ctrl+R` - Reject
 - `Cmd/Ctrl+E` - Escalate
 - `Cmd/Ctrl+?` - Help/shortcuts list
 
 **Viewing:**
+
 - `Cmd/Ctrl+1` - Focus customer message
 - `Cmd/Ctrl+2` - Focus AI draft
 - `Cmd/Ctrl+3` - View KB sources
 - `Cmd/Ctrl+O` - Open in Chatwoot
 
 **Pro Shortcuts (Power Users Only):**
+
 - `Cmd/Ctrl+Shift+A` - Approve all high-confidence (batch)
 - `Cmd/Ctrl+J` - Jump to oldest approval
 - `Cmd/Ctrl+M` - Mark for follow-up
 - `Cmd/Ctrl+/` - Add quick note
 
 **Speed Drill Exercise:**
+
 ```
 Try this: Review 10 approvals using ONLY keyboard shortcuts
 
@@ -166,6 +178,7 @@ Track your improvement weekly!
 ### Section 1.4: Advanced Approval Techniques (10 min)
 
 **Technique 1: The "Red Flag Scan"**
+
 ```
 Before reading anything, scan for red flags:
 
@@ -181,6 +194,7 @@ If NO red flags: Proceed with standard review
 ```
 
 **Technique 2: The "3-Second Decision"**
+
 ```
 For high-confidence, simple approvals:
 
@@ -197,6 +211,7 @@ Saves 60-90 seconds per approval!
 ```
 
 **Technique 3: The "Pattern Recognition"**
+
 ```
 After 100+ approvals, you'll notice patterns:
 
@@ -226,35 +241,42 @@ Build your own pattern library mentally!
 **Scenario:** Customer message contains multiple questions
 
 **Example:**
+
 > "I want to return my Night Cream (bought 25 days ago) AND I never received my serum from order #4521. Also, when is the new product line launching?"
 
 **The TRIAGE Method:**
 
 **T - Tag Each Issue**
+
 1. Return request (25 days - within policy)
 2. Missing item (order #4521 - needs investigation)
 3. Product launch question (future product info)
 
 **R - Rate Complexity**
+
 1. Return: Simple (standard process)
 2. Missing item: Medium (need to verify shipment)
 3. Product launch: Simple (standard response)
 
 **I - Identify Red Flags**
+
 - Missing item = potential escalation if customer is angry
 - Multiple issues = might need manager for coordination
 
 **A - Assess AI Response**
+
 - Did AI address ALL three issues?
 - Is each answer accurate?
 - Are they in logical order?
 
 **G - Go with Best Approach**
+
 - If AI handled all three well: Approve
 - If AI missed one issue: Reject, handle manually
 - If any complex/escalation needed: Escalate with notes
 
 **E - Execute Decision**
+
 - Click appropriate button
 - Add detailed notes if rejecting/escalating
 
@@ -269,12 +291,14 @@ Build your own pattern library mentally!
 Customer: "I bought this 32 days ago while traveling internationally. Can I return?"
 
 **Analysis:**
+
 - Outside 30-day policy (should escalate per rules)
 - BUT: Only 2 days over
 - Travel is legitimate exception reason
 - Customer isn't angry or threatening
 
 **Options:**
+
 1. **Strict Approach:** Escalate (outside policy = manager decides)
 2. **Judgment Approach:** Approve exception if you're confident
 3. **Hybrid Approach:** Escalate with recommendation
@@ -282,9 +306,10 @@ Customer: "I bought this 32 days ago while traveling internationally. Can I retu
 **Advanced Operators Choose:** Option 3 (Escalate with recommendation)
 
 **Example Escalation Note:**
+
 ```
-"Customer 2 days outside 30-day return window (32 days). Reason: International 
-travel (legitimate). Customer polite, no anger/threats. Recommendation: Approve 
+"Customer 2 days outside 30-day return window (32 days). Reason: International
+travel (legitimate). Customer polite, no anger/threats. Recommendation: Approve
 as exception - close to policy edge, valid reason, good customer relationship.
 
 Order value: $149 (within operator authority if manager approves exception).
@@ -293,6 +318,7 @@ Manager: Approve exception or strict policy enforcement?"
 ```
 
 **Why This is Advanced:**
+
 - Shows judgment and analysis
 - Provides recommendation (not just punting decision)
 - Includes relevant context
@@ -305,6 +331,7 @@ Manager: Approve exception or strict policy enforcement?"
 **Your Personal Efficiency Dashboard:**
 
 **Track These Metrics:**
+
 ```
 Daily Dashboard (keep in notebook):
 
@@ -327,6 +354,7 @@ Notes: ___________
 ```
 
 **Weekly Optimization Review:**
+
 ```
 Friday EOD - Review Your Week:
 
@@ -349,6 +377,7 @@ Friday EOD - Review Your Week:
 **Efficiency Techniques:**
 
 **Technique 1: Template Mental Models**
+
 ```
 Build mental templates for common scenarios:
 
@@ -367,6 +396,7 @@ Return Request Template:
 ```
 
 **Technique 2: The "5-Approval Sprint"**
+
 ```
 Challenge yourself:
 
@@ -393,6 +423,7 @@ This builds speed for simple approvals, freeing time for complex ones
 **Levels of Anger - Recognition and Response:**
 
 **Level 1: Frustrated**
+
 ```
 Indicators:
 - "This is frustrating"
@@ -408,6 +439,7 @@ Decision: Usually approve (if AI handled well)
 ```
 
 **Level 2: Angry**
+
 ```
 Indicators:
 - SIGNIFICANT CAPS USAGE
@@ -425,6 +457,7 @@ Decision: Approve if AI response is strong, OR escalate if customer might need p
 ```
 
 **Level 3: Furious (Always Escalate)**
+
 ```
 Indicators:
 - ENTIRE MESSAGE IN CAPS
@@ -442,9 +475,11 @@ Decision: Always escalate
 ```
 
 **Practice Scenario:**
+
 > "I AM SICK OF THIS! Third time my order was WRONG! You people don't care about customers! Fix this NOW or I'm posting on every social media site about how terrible you are!"
 
 **Analysis:**
+
 - Level 3 fury: All caps, threats (social media)
 - Multiple issues: Wrong order (3 times)
 - This is escalation territory
@@ -458,6 +493,7 @@ Decision: Always escalate
 **The "Almost but Not Quite" Scenarios:**
 
 **Edge Case 1: Time-Based Policies**
+
 ```
 Policy: 30-day returns
 
@@ -474,6 +510,7 @@ Decision Framework:
 ```
 
 **Edge Case 2: Value Thresholds**
+
 ```
 Policy: Operators approve up to $100, >$100 needs manager
 
@@ -491,6 +528,7 @@ Decision Framework:
 ```
 
 **Edge Case 3: Multiple Small Issues vs One Big Issue**
+
 ```
 Customer has 3 issues:
 - Issue 1: $40
@@ -514,6 +552,7 @@ Decision Framework:
 **When Tech Goes Wrong:**
 
 **Scenario: Order System Discrepancy**
+
 ```
 Customer: "Where is my order #4521?"
 AI says: "Order #4521 shipped yesterday"
@@ -532,6 +571,7 @@ Never guess. Escalate technical uncertainties.
 ```
 
 **Scenario: KB Source Broken**
+
 ```
 AI cites "Return Policy v2.1" but link returns 404
 
@@ -540,7 +580,7 @@ What to do:
 2. If you know policy by heart AND are confident: Can approve
 3. If you're not 100% sure: Escalate
 
-Note: "KB source link broken for Return Policy v2.1. Could not verify AI cited 
+Note: "KB source link broken for Return Policy v2.1. Could not verify AI cited
 correct version. Customer question: [question]. Escalating for verification."
 
 Report broken KB links in #occ-enablement
@@ -555,6 +595,7 @@ Report broken KB links in #occ-enablement
 ### Section 4.1: Learning from Rejections
 
 **Your Rejection Log:**
+
 ```
 Keep a simple log:
 
@@ -566,6 +607,7 @@ Date | Conversation ID | Why Rejected | How AI Could Improve
 ```
 
 **Monthly Review:**
+
 - What patterns do you see?
 - Are you rejecting for same reasons repeatedly?
 - How can you provide better feedback to help AI learn?
@@ -580,26 +622,31 @@ Date | Conversation ID | Why Rejected | How AI Could Improve
 **How Operators Improve the Approval Queue:**
 
 **1. Detailed Rejection Notes**
+
 - Bad: "Wrong"
 - Good: "AI cited Return Policy v2.0 (14 days) but current is v2.1 (30 days)"
 - Your specific notes help engineering fix root causes
 
 **2. Pattern Reporting**
+
 - See the same error 3+ times? Report it
 - Example: "AI consistently misspells customer names from Chatwoot"
 - Slack #occ-enablement with pattern description
 
 **3. Feature Suggestions**
+
 - "Would be helpful if..."
 - "I wish I could..."
 - Your workflow insights improve the product
 
 **4. Training Improvements**
+
 - Found something confusing in training?
 - Discovered a better way to explain something?
 - Share with enablement team
 
 **Your Feedback Loop:**
+
 ```
 You reject with notes → AI learns
 You report patterns → Engineering fixes
@@ -623,6 +670,7 @@ Everyone wins!
 ### Exercise 2: Complex Scenario Workshop
 
 **Work through 10 complex scenarios:**
+
 1. Multi-issue customer messages
 2. Policy edge cases
 3. Angry customers (various levels)
@@ -634,6 +682,7 @@ Everyone wins!
 ### Exercise 3: Personal Optimization
 
 **This week:**
+
 1. Track your baseline metrics (time per approval, accuracy)
 2. Choose ONE technique to practice (shortcuts, red flag scan, etc.)
 3. Practice for 1 week
@@ -645,6 +694,7 @@ Everyone wins!
 ## Certification Path
 
 **Advanced Operator Certification Requirements:**
+
 - Complete all 4 modules
 - Pass advanced assessment (20 questions, 85%+)
 - Demonstrate efficiency improvement (tracked metrics)
@@ -652,6 +702,7 @@ Everyone wins!
 - Peer or manager recommendation
 
 **Benefits:**
+
 - Senior Operator badge
 - Eligibility for mentorship roles
 - Advanced training priority
@@ -662,16 +713,19 @@ Everyone wins!
 ## Additional Resources
 
 **Recommended Practice:**
+
 - Daily: 5-minute shortcut practice
 - Weekly: Review your efficiency dashboard
 - Monthly: Analyze rejection patterns
 
 **Community Learning:**
+
 - Join power user Slack group
 - Share techniques with peers
 - Attend monthly advanced training sessions
 
 **Continuous Learning:**
+
 - New features training (as released)
 - Quarterly refreshers
 - Advanced technique workshops

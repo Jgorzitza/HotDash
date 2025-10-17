@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
+import { json } from "~/utils/http.server";
 import shopify from "~/shopify.server";
 import { getJobStatus } from "../../../packages/integrations/publer.ts";
 
@@ -20,7 +20,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
         ok: false,
         error: "Failed to fetch job status",
       },
-      { status: 502 }
+      { status: 502 },
     );
   }
 }

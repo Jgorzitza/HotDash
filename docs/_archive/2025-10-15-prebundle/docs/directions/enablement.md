@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Enablement — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -38,11 +41,13 @@ You may run local, non-interactive commands to build docs and training artifacts
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/enablement.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
+
 Drive each deliverable to closure yourself; document artefacts, timestamps, and remaining follow-ups in `feedback/enablement.md`. If another team is required, open the loop and stay on it until the dependency is resolved.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Agent capabilities for training content
 - docs/runbooks/operator_training_qa_template.md
 
@@ -66,33 +71,37 @@ Drive each deliverable to closure yourself; document artefacts, timestamps, and 
 **Immediate Prep Work** (Do while Engineer builds):
 
 2A. **Training Session Outline**
-   - Create 30-minute pilot training agenda
-   - Write demo script (pending actual UI)
-   - Prepare talking points
-   - Create Q&A section structure
-   - Evidence: Session outline
-   - Timeline: 2-3 hours
+
+- Create 30-minute pilot training agenda
+- Write demo script (pending actual UI)
+- Prepare talking points
+- Create Q&A section structure
+- Evidence: Session outline
+- Timeline: 2-3 hours
 
 2B. **Video Script for Approval Queue**
-   - Write script for Loom walkthrough
-   - Plan screen recording flow
-   - Prepare voiceover notes
-   - Evidence: Video script ready
-   - Timeline: 1-2 hours
+
+- Write script for Loom walkthrough
+- Plan screen recording flow
+- Prepare voiceover notes
+- Evidence: Video script ready
+- Timeline: 1-2 hours
 
 2C. **Operator Onboarding Checklist**
-   - Create pre-pilot operator checklist
-   - Document access requirements
-   - Create account setup steps
-   - Evidence: Onboarding checklist
-   - Timeline: 1-2 hours
+
+- Create pre-pilot operator checklist
+- Document access requirements
+- Create account setup steps
+- Evidence: Onboarding checklist
+- Timeline: 1-2 hours
 
 2D. **Training Effectiveness Measurement**
-   - Design quiz/assessment for operators
-   - Create knowledge check questions
-   - Plan hands-on practice scenarios
-   - Evidence: Assessment design
-   - Timeline: 2-3 hours
+
+- Design quiz/assessment for operators
+- Create knowledge check questions
+- Plan hands-on practice scenarios
+- Evidence: Assessment design
+- Timeline: 2-3 hours
 
 3. **30-Min Pilot Training Session** (After Engineer Task 6 complete)
    - Deliver training with actual UI
@@ -124,6 +133,7 @@ Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
 
 **Task 2E**: Hands-On Practice Scenarios
+
 - Create practice approval scenarios for operators
 - Use real Hot Rodan customer examples (anonymized)
 - Design practice sessions
@@ -131,6 +141,7 @@ Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
 - Timeline: 2-3 hours
 
 **Task 2F**: Troubleshooting Guide for Operators
+
 - "What if dashboard is slow?"
 - "What if AI suggestion seems wrong?"
 - "What if approval doesn't send?"
@@ -138,6 +149,7 @@ Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
 - Timeline: 2-3 hours
 
 **Task 2G**: Quick Reference Cards
+
 - Laminated quick reference for each tile
 - Decision trees for common scenarios
 - Hotkey reference
@@ -145,6 +157,7 @@ Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
 - Timeline: 2-3 hours
 
 **Task 2H**: Video Demonstrations
+
 - Record 5-min demo of each tile
 - Show approval workflow
 - Highlight key features
@@ -152,6 +165,7 @@ Execute Tasks 2A-2D. Report evidence in feedback/enablement.md.
 - Timeline: 3-4 hours
 
 **Task 2I**: Operator Certification Program
+
 - Design certification path for operators
 - Create knowledge checks
 - Badge/achievement system
@@ -165,6 +179,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 ## 📋 NEXT WAVE - DEEP TRAINING PROGRAM (Tasks 2J-2T)
 
 **Task 2J**: Advanced Operator Training Modules
+
 - Tile mastery training (deep dive each tile)
 - Advanced approval workflows
 - Power user features
@@ -172,6 +187,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 3-4 hours
 
 **Task 2K**: Hot Rod Product Knowledge Training
+
 - Automotive parts education
 - Common builds and applications
 - Technical specifications training
@@ -179,6 +195,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 3-4 hours
 
 **Task 2L**: Customer Service Excellence for Hot Rod Enthusiasts
+
 - Understanding hot rod culture
 - Enthusiast communication style
 - Building community relationships
@@ -186,6 +203,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2M**: Dashboard Analytics Training
+
 - How to read tile data
 - Interpreting trends and alerts
 - Making data-driven decisions
@@ -193,6 +211,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2N**: AI Collaboration Training
+
 - Working with AI suggestions
 - When to trust vs. verify
 - Providing feedback to improve AI
@@ -200,6 +219,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2O**: Troubleshooting and Problem-Solving
+
 - Common dashboard issues and fixes
 - Escalation procedures
 - Self-service resources
@@ -207,6 +227,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2P**: Certification Assessment Design
+
 - Create competency tests for operators
 - Practical scenarios and case studies
 - Certification badge program
@@ -214,6 +235,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2Q**: Microlearning Content Library
+
 - 5-minute training videos for specific features
 - Just-in-time learning resources
 - Mobile-friendly format
@@ -221,6 +243,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 3-4 hours
 
 **Task 2R**: New Operator Onboarding Path
+
 - Week 1 training schedule
 - Hands-on practice requirements
 - Buddy system design
@@ -228,6 +251,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2S**: Continuous Learning Program
+
 - Ongoing training schedule
 - Skill development paths
 - Knowledge refresh cycles
@@ -235,6 +259,7 @@ Execute 2A-2I (all launch-training aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 2T**: Training Effectiveness Measurement
+
 - Pre/post assessments
 - Performance improvement tracking
 - ROI on training investment
@@ -270,6 +295,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
    - Evidence: Updated materials inventory
 
 **Ongoing Requirements**:
+
 - Coordinate with @support on training content
 - Tag @marketing for messaging alignment
 - Log all training materials in feedback/enablement.md
@@ -279,6 +305,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task 7: Advanced Training Modules**
+
 - Create advanced operator training for complex scenarios
 - Design troubleshooting training module
 - Create escalation handling training
@@ -286,6 +313,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 - Evidence: Advanced training module suite
 
 **Task 8: Training Effectiveness Measurement**
+
 - Design training assessment quizzes
 - Create competency evaluation framework
 - Document certification process for operators
@@ -293,6 +321,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 - Evidence: Training assessment system
 
 **Task 9: Video Training Library**
+
 - Create additional Loom modules for specific features
 - Design video training series (Basics → Advanced)
 - Create screen recording templates
@@ -300,6 +329,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 - Evidence: Expanded video library
 
 **Task 10: Operator Onboarding Program**
+
 - Design complete onboarding program for new operators
 - Create 30-day onboarding checklist
 - Document mentorship program
@@ -307,6 +337,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 - Evidence: Onboarding program documentation
 
 **Task 11: Job Aid Library**
+
 - Create quick reference cards for all features
 - Design printable job aids
 - Create digital reference materials
@@ -314,6 +345,7 @@ Execute 2J-2T. Total: ~48-58 hours enablement work.
 - Evidence: Complete job aid library
 
 **Task 12: Training Content Management**
+
 - Design system for managing training content versions
 - Create content update workflow
 - Document content review and approval process
@@ -327,6 +359,7 @@ Execute 7-12 in any order - all enhance operator readiness.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task 13-20: Learning & Development** (8 tasks)
+
 - 13: Create microlearning content library (5-min modules)
 - 14: Design spaced repetition learning system
 - 15: Implement learning analytics and insights
@@ -337,6 +370,7 @@ Execute 7-12 in any order - all enhance operator readiness.
 - 20: Design learning impact measurement
 
 **Task 21-28: Knowledge Management** (8 tasks)
+
 - 21: Create knowledge base architecture
 - 22: Design knowledge capture automation
 - 23: Implement knowledge graph for connections
@@ -347,6 +381,7 @@ Execute 7-12 in any order - all enhance operator readiness.
 - 28: Design knowledge retention strategies
 
 **Task 29-42: Training Delivery** (14 tasks)
+
 - 29: Design virtual instructor-led training (VILT) program
 - 30: Create blended learning curriculum
 - 31: Implement learning management system (LMS) integration

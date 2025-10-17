@@ -11,15 +11,15 @@
 **Established:** 2025-10-11  
 **Environment:** Fly.io (ord region, 2GB web + 512MB worker)
 
-| Metric | Baseline | Target | Alert Threshold |
-|--------|----------|--------|-----------------|
-| Health Check Response | ~400ms | < 500ms | > 1000ms |
-| API List Conversations | ~600ms | < 1000ms | > 2000ms |
-| API Create Message | ~800ms | < 1500ms | > 3000ms |
-| Webhook Processing | ~5-7s | < 3s | > 10s |
-| Queue Depth (Sidekiq) | < 10 | < 50 | > 100 |
-| Memory Usage (Web) | ~1.2GB | < 1.8GB | > 1.9GB |
-| Memory Usage (Worker) | ~400MB | < 450MB | > 500MB (OOM risk) |
+| Metric                 | Baseline | Target   | Alert Threshold    |
+| ---------------------- | -------- | -------- | ------------------ |
+| Health Check Response  | ~400ms   | < 500ms  | > 1000ms           |
+| API List Conversations | ~600ms   | < 1000ms | > 2000ms           |
+| API Create Message     | ~800ms   | < 1500ms | > 3000ms           |
+| Webhook Processing     | ~5-7s    | < 3s     | > 10s              |
+| Queue Depth (Sidekiq)  | < 10     | < 50     | > 100              |
+| Memory Usage (Web)     | ~1.2GB   | < 1.8GB  | > 1.9GB            |
+| Memory Usage (Worker)  | ~400MB   | < 450MB  | > 500MB (OOM risk) |
 
 ---
 
@@ -28,6 +28,7 @@
 **Location:** `scripts/ops/monitor-chatwoot-performance.sh`
 
 **Usage:**
+
 ```bash
 # Run 5-minute baseline check
 ./scripts/ops/monitor-chatwoot-performance.sh
@@ -40,6 +41,7 @@
 ```
 
 **Features:**
+
 - Automated API response time tracking
 - Health check monitoring
 - Conversation volume metrics
@@ -54,17 +56,20 @@
 ### 1. API Response Time
 
 **Measurement:**
+
 ```bash
 time curl -H "api_access_token: $TOKEN" \
   https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversations
 ```
 
 **Targets:**
+
 - P50: < 500ms
 - P95: < 1500ms
 - P99: < 3000ms
 
 **Alert If:**
+
 - P95 > 2000ms for 5+ consecutive checks
 - Any single request > 10s
 - Error rate > 1%
@@ -72,27 +77,31 @@ time curl -H "api_access_token: $TOKEN" \
 ### 2. Webhook Delivery Latency
 
 **Measurement:**
+
 ```typescript
 // In webhook handler
 const webhookReceived = Date.now();
 const messageCreated = payload.message.created_at * 1000;
 const latency = webhookReceived - messageCreated;
 
-await logMetric('webhook_delivery_latency_ms', latency);
+await logMetric("webhook_delivery_latency_ms", latency);
 ```
 
 **Targets:**
+
 - P50: < 1s
 - P95: < 3s
 - P99: < 5s
 
 **Alert If:**
+
 - Latency > 10s
 - Webhook delivery failures > 5%
 
 ### 3. Draft Generation Time
 
 **Measurement:**
+
 ```typescript
 const start = Date.now();
 
@@ -110,11 +119,12 @@ const totalTime = Date.now() - start;
 await logMetrics({
   llama_index_query_ms: llamaTime,
   openai_draft_generation_ms: openaiTime,
-  total_draft_time_ms: totalTime
+  total_draft_time_ms: totalTime,
 });
 ```
 
 **Targets:**
+
 - LlamaIndex query: < 500ms
 - OpenAI draft: < 1500ms
 - Total: < 3s
@@ -122,6 +132,7 @@ await logMetrics({
 ### 4. Conversation Volume
 
 **Measurement:**
+
 ```bash
 curl -H "api_access_token: $TOKEN" \
   https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversations | \
@@ -129,6 +140,7 @@ curl -H "api_access_token: $TOKEN" \
 ```
 
 **Metrics:**
+
 - Total conversations
 - Open conversations
 - Pending conversations
@@ -136,6 +148,7 @@ curl -H "api_access_token: $TOKEN" \
 - New conversations/hour
 
 **Capacity Planning:**
+
 - < 50 conversations: 1 agent sufficient
 - 50-100 conversations: 2-3 agents recommended
 - 100-200 conversations: 4-5 agents + senior support
@@ -149,7 +162,7 @@ curl -H "api_access_token: $TOKEN" \
 
 ```sql
 -- Last hour performance
-SELECT 
+SELECT
   DATE_TRUNC('minute', timestamp) as minute,
   AVG(api_time_ms) as avg_response_ms,
   MAX(api_time_ms) as max_response_ms,
@@ -166,7 +179,7 @@ ORDER BY minute DESC;
 
 ```sql
 -- Webhook performance last 24h
-SELECT 
+SELECT
   DATE_TRUNC('hour', created_at) as hour,
   COUNT(*) as webhooks_received,
   AVG(processing_time_ms) as avg_processing_ms,
@@ -182,7 +195,7 @@ ORDER BY hour DESC;
 
 ```sql
 -- Draft generation performance
-SELECT 
+SELECT
   DATE_TRUNC('hour', created_at) as hour,
   COUNT(*) as drafts_generated,
   AVG(llama_index_query_ms) as avg_llama_ms,
@@ -207,12 +220,12 @@ alert_rules:
     condition: api_response_code != 200 for 3 consecutive checks
     severity: CRITICAL
     action: Page on-call engineer
-    
+
   - name: chatwoot_response_time_critical
     condition: api_response_time_ms > 5000 for 5 consecutive checks
     severity: CRITICAL
     action: Page on-call engineer
-    
+
   - name: webhook_delivery_failed
     condition: webhook_error_rate > 0.1 (10%)
     severity: CRITICAL
@@ -222,34 +235,34 @@ alert_rules:
 ### Warning Alerts (Slack Notification)
 
 ```yaml
-  - name: chatwoot_response_time_degraded
-    condition: api_response_time_p95 > 2000ms
-    severity: WARNING
-    action: Notify #ops-alerts channel
-    
-  - name: worker_high_memory
-    condition: worker_memory_usage > 450MB
-    severity: WARNING
-    action: Notify #ops-alerts, consider scaling
-    
-  - name: queue_depth_high
-    condition: sidekiq_queue_depth > 50
-    severity: WARNING
-    action: Notify #ops-alerts, scale workers if > 100
+- name: chatwoot_response_time_degraded
+  condition: api_response_time_p95 > 2000ms
+  severity: WARNING
+  action: Notify #ops-alerts channel
+
+- name: worker_high_memory
+  condition: worker_memory_usage > 450MB
+  severity: WARNING
+  action: Notify #ops-alerts, consider scaling
+
+- name: queue_depth_high
+  condition: sidekiq_queue_depth > 50
+  severity: WARNING
+  action: Notify #ops-alerts, scale workers if > 100
 ```
 
 ### Info Alerts (Log Only)
 
 ```yaml
-  - name: conversation_volume_spike
-    condition: new_conversations_per_hour > 2x baseline
-    severity: INFO
-    action: Log for capacity planning
-    
-  - name: response_time_improved
-    condition: api_response_time_p95 < baseline - 20%
-    severity: INFO
-    action: Log improvement, document optimization
+- name: conversation_volume_spike
+  condition: new_conversations_per_hour > 2x baseline
+  severity: INFO
+  action: Log for capacity planning
+
+- name: response_time_improved
+  condition: api_response_time_p95 < baseline - 20%
+  severity: INFO
+  action: Log improvement, document optimization
 ```
 
 ---
@@ -295,26 +308,32 @@ echo "50 webhooks sent concurrently"
 ### Current Performance Issues
 
 #### 1. Worker OOM (512MB)
+
 **Problem:** Sidekiq worker experiencing OOM kills  
 **Impact:** Background job failures, delayed webhook processing  
 **Solution:**
+
 ```bash
 fly scale memory 1024 --process worker --app hotdash-chatwoot
 ```
 
 **Expected Improvement:**
+
 - Eliminate OOM kills
 - Faster job processing
 - Better queue throughput
 
 #### 2. API Response Time Variability
+
 **Problem:** Response times spike occasionally  
 **Possible Causes:**
+
 - Database query performance
 - Connection pool exhaustion
 - Memory pressure
 
 **Solutions:**
+
 - Add database query logging
 - Increase connection pool size
 - Monitor slow queries
@@ -327,6 +346,7 @@ fly scale memory 1024 --process worker --app hotdash-chatwoot
 ### Baseline Measurement Process
 
 **Automated Baseline Collection:**
+
 ```bash
 # Run 1-hour baseline
 ./scripts/ops/monitor-chatwoot-performance.sh --interval 60 --duration 60
@@ -341,10 +361,12 @@ jq -s '{
 ```
 
 **Baseline Report Format:**
+
 ```markdown
 # Chatwoot Performance Baseline - 2025-10-11
 
 ## Environment
+
 - Region: ord (Chicago)
 - Web: 2GB memory, 1 CPU
 - Worker: 512MB memory, 1 CPU
@@ -352,20 +374,24 @@ jq -s '{
 - Cache: Redis (Upstash)
 
 ## Measurements
+
 - Duration: 1 hour
 - Interval: 60 seconds
 - Samples: 60 checks
 
 ## Results
+
 - API Response Time (avg): 637ms
 - API Response Time (p95): 1,245ms
 - Health Check (avg): 423ms
 - Conversation Volume (avg): 15 conversations
 
 ## Status
+
 ✅ Performance GOOD (all metrics within targets)
 
 ## Next Review
+
 2025-10-18 (weekly cadence)
 ```
 
@@ -403,6 +429,7 @@ jobs:
 ### Weekly Performance Review
 
 **Process:**
+
 1. Collect week's metrics
 2. Calculate trends
 3. Identify anomalies
@@ -410,24 +437,29 @@ jobs:
 5. Document findings
 
 **Report Template:**
+
 ```markdown
 # Weekly Performance Review - Week of [DATE]
 
 ## Summary
+
 - Average API Response: Xms (trend: ↑/↓/→)
 - P95 API Response: Xms (trend: ↑/↓/→)
 - Webhook Latency: Xms (trend: ↑/↓/→)
 - Conversation Volume: X/day (trend: ↑/↓/→)
 
 ## Anomalies
+
 - [Date/Time]: Response spike to Xms (cause: Y)
 - [Date/Time]: Queue depth reached Z (cause: worker restart)
 
 ## Optimizations Implemented
+
 - [Action taken]
 - [Expected improvement]
 
 ## Next Week Focus
+
 - [Area to optimize]
 - [Monitoring enhancement]
 ```
@@ -440,17 +472,17 @@ jobs:
 
 ```typescript
 // In webhook handler
-await supabase.from('observability_logs').insert({
-  level: 'INFO',
-  message: 'Webhook processed',
+await supabase.from("observability_logs").insert({
+  level: "INFO",
+  message: "Webhook processed",
   metadata: {
-    service: 'chatwoot-webhook',
+    service: "chatwoot-webhook",
     conversation_id: conversationId,
     processing_time_ms: processingTime,
     llama_index_time_ms: llamaTime,
     openai_time_ms: openaiTime,
-    total_time_ms: totalTime
-  }
+    total_time_ms: totalTime,
+  },
 });
 ```
 
@@ -458,7 +490,7 @@ await supabase.from('observability_logs').insert({
 
 ```sql
 -- Webhook performance over time
-SELECT 
+SELECT
   DATE_TRUNC('hour', created_at) as hour,
   AVG((metadata->>'processing_time_ms')::int) as avg_processing_ms,
   PERCENTILE_CONT(0.95) WITHIN GROUP (
@@ -509,44 +541,44 @@ ORDER BY hour DESC;
 ```typescript
 async function sendSlackAlert(alert: Alert) {
   await fetch(process.env.SLACK_WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       text: `🚨 Chatwoot Alert: ${alert.name}`,
       blocks: [
         {
-          type: 'section',
+          type: "section",
           text: {
-            type: 'mrkdwn',
-            text: `*${alert.severity}*: ${alert.message}`
-          }
+            type: "mrkdwn",
+            text: `*${alert.severity}*: ${alert.message}`,
+          },
         },
         {
-          type: 'section',
+          type: "section",
           fields: [
-            { type: 'mrkdwn', text: `*Metric:*\n${alert.metric}` },
-            { type: 'mrkdwn', text: `*Value:*\n${alert.value}` },
-            { type: 'mrkdwn', text: `*Threshold:*\n${alert.threshold}` },
-            { type: 'mrkdwn', text: `*Time:*\n${alert.timestamp}` }
-          ]
+            { type: "mrkdwn", text: `*Metric:*\n${alert.metric}` },
+            { type: "mrkdwn", text: `*Value:*\n${alert.value}` },
+            { type: "mrkdwn", text: `*Threshold:*\n${alert.threshold}` },
+            { type: "mrkdwn", text: `*Time:*\n${alert.timestamp}` },
+          ],
         },
         {
-          type: 'actions',
+          type: "actions",
           elements: [
             {
-              type: 'button',
-              text: { type: 'plain_text', text: 'View Logs' },
-              url: `https://fly.io/apps/hotdash-chatwoot/monitoring`
+              type: "button",
+              text: { type: "plain_text", text: "View Logs" },
+              url: `https://fly.io/apps/hotdash-chatwoot/monitoring`,
             },
             {
-              type: 'button',
-              text: { type: 'plain_text', text: 'Runbook' },
-              url: 'https://github.com/hotdash/docs/runbooks/chatwoot-incidents.md'
-            }
-          ]
-        }
-      ]
-    })
+              type: "button",
+              text: { type: "plain_text", text: "Runbook" },
+              url: "https://github.com/hotdash/docs/runbooks/chatwoot-incidents.md",
+            },
+          ],
+        },
+      ],
+    }),
   });
 }
 ```
@@ -560,6 +592,7 @@ async function sendSlackAlert(alert: Alert) {
 **Diagnosis Steps:**
 
 1. **Check Fly.io Status:**
+
    ```bash
    fly status --app hotdash-chatwoot
    fly logs --app hotdash-chatwoot --since 30m
@@ -594,15 +627,15 @@ async function sendSlackAlert(alert: Alert) {
 
 ### API Endpoint Performance (2025-10-11 Baseline)
 
-| Endpoint | Method | Avg (ms) | P95 (ms) | P99 (ms) |
-|----------|--------|----------|----------|----------|
-| `/api` (health) | GET | 400 | 650 | 800 |
-| `/conversations` | GET | 600 | 1200 | 1800 |
-| `/conversations/{id}` | GET | 500 | 950 | 1400 |
-| `/conversations/{id}/messages` | GET | 550 | 1100 | 1600 |
-| `/conversations/{id}/messages` | POST | 800 | 1500 | 2200 |
-| `/conversations/{id}/assignments` | POST | 450 | 850 | 1200 |
-| `/conversations/{id}/labels` | POST | 400 | 750 | 1100 |
+| Endpoint                          | Method | Avg (ms) | P95 (ms) | P99 (ms) |
+| --------------------------------- | ------ | -------- | -------- | -------- |
+| `/api` (health)                   | GET    | 400      | 650      | 800      |
+| `/conversations`                  | GET    | 600      | 1200     | 1800     |
+| `/conversations/{id}`             | GET    | 500      | 950      | 1400     |
+| `/conversations/{id}/messages`    | GET    | 550      | 1100     | 1600     |
+| `/conversations/{id}/messages`    | POST   | 800      | 1500     | 2200     |
+| `/conversations/{id}/assignments` | POST   | 450      | 850      | 1200     |
+| `/conversations/{id}/labels`      | POST   | 400      | 750      | 1100     |
 
 ### Load Test Results (100 requests, 10 concurrent)
 
@@ -659,4 +692,3 @@ Percentage of requests served within a certain time (ms)
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent + Reliability Agent  
 **Review Cadence:** Weekly performance reviews
-

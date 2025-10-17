@@ -21,6 +21,7 @@ expires: 2025-10-25
 ### Purpose
 
 Enable operators to:
+
 1. View agent-generated responses and provide feedback
 2. Rate response quality on a 5-point rubric
 3. Monitor training data collection progress
@@ -40,6 +41,7 @@ Enable operators to:
 ### Route: `/app/training-feedback`
 
 **Visual Layout**:
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Training Feedback Queue                      12 Need Review  │
@@ -108,7 +110,7 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
   });
   const [tags, setTags] = useState<string[]>(sample.tags || []);
   const [notes, setNotes] = useState('');
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -123,9 +125,9 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             </Text>
           </BlockStack>
         </InlineStack>
-        
+
         <Divider />
-        
+
         {/* Customer input */}
         <BlockStack gap="200">
           <Text variant="bodyMd" fontWeight="semibold">Customer Input:</Text>
@@ -133,7 +135,7 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             <Text variant="bodyMd">{sample.customerInput}</Text>
           </Box>
         </BlockStack>
-        
+
         {/* Agent response */}
         <BlockStack gap="200">
           <Text variant="bodyMd" fontWeight="semibold">Agent Response (Draft):</Text>
@@ -141,7 +143,7 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             <Text variant="bodyMd">{sample.agentDraft}</Text>
           </Box>
         </BlockStack>
-        
+
         {/* Actual response (if different) */}
         {sample.actualResponse && sample.actualResponse !== sample.agentDraft && (
           <BlockStack gap="200">
@@ -151,13 +153,13 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             </Box>
           </BlockStack>
         )}
-        
+
         <Divider />
-        
+
         {/* Rating rubric */}
         <BlockStack gap="300">
           <Text variant="bodyMd" fontWeight="semibold">Rate this response:</Text>
-          
+
           {Object.entries(RUBRIC_LABELS).map(([key, label]) => (
             <RatingRow
               key={key}
@@ -167,9 +169,9 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             />
           ))}
         </BlockStack>
-        
+
         <Divider />
-        
+
         {/* Tags */}
         <BlockStack gap="200">
           <Text variant="bodyMd" fontWeight="semibold">Tags:</Text>
@@ -184,7 +186,7 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
             </Button>
           </InlineStack>
         </BlockStack>
-        
+
         {/* Notes */}
         <TextField
           label="Notes (optional)"
@@ -193,7 +195,7 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
           multiline={3}
           placeholder="Any additional feedback or context..."
         />
-        
+
         {/* Actions */}
         <ButtonGroup>
           <Button
@@ -213,11 +215,11 @@ function TrainingFeedbackCard({ sample }: { sample: TrainingSample }) {
 }
 
 // Rating row component
-function RatingRow({ 
-  label, 
-  value, 
-  onChange 
-}: { 
+function RatingRow({
+  label,
+  value,
+  onChange
+}: {
   label: string;
   value: number;
   onChange: (value: number) => void;
@@ -273,6 +275,7 @@ interface TrainingSample {
 ### Route: `/app/training-data`
 
 **Visual Layout**:
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Training Data Quality                                         │
@@ -307,12 +310,13 @@ interface TrainingSample {
 ```
 
 **Implementation**:
+
 ```typescript
 import { Page, Layout, Card, InlineGrid, DataTable } from '@shopify/polaris';
 
 export default function TrainingDataRoute() {
   const { stats, qualityDist, rubricScores, lowQuality } = useLoaderData<typeof loader>();
-  
+
   return (
     <Page
       title="Training Data Quality"
@@ -326,24 +330,24 @@ export default function TrainingDataRoute() {
               <StatCard label="Total Samples" value={stats.total} />
               <StatCard label="Rated" value={stats.rated} />
               <StatCard label="Pending Review" value={stats.pending} />
-              <StatCard 
-                label="Avg Score" 
+              <StatCard
+                label="Avg Score"
                 value={`${stats.avgScore.toFixed(1)}/5.0`}
                 tone={stats.avgScore >= 4 ? 'success' : 'warning'}
               />
             </InlineGrid>
           </Card>
         </Layout.Section>
-        
+
         {/* Charts */}
         <Layout.Section variant="oneThird">
           <QualityDistributionChart data={qualityDist} />
         </Layout.Section>
-        
+
         <Layout.Section variant="twoThirds">
           <RubricBreakdownChart scores={rubricScores} />
         </Layout.Section>
-        
+
         {/* Low quality samples */}
         {lowQuality.length > 0 && (
           <Layout.Section>
@@ -374,12 +378,12 @@ export default function TrainingDataRoute() {
 // Quality distribution chart
 function QualityDistributionChart({ data }: { data: QualityDist[] }) {
   const maxCount = Math.max(...data.map(d => d.count));
-  
+
   return (
     <Card>
       <BlockStack gap="400">
         <Text variant="headingMd" as="h2">Quality Score Distribution</Text>
-        
+
         <BlockStack gap="200">
           {data.map(item => (
             <InlineStack key={item.stars} gap="200" blockAlign="center">
@@ -387,7 +391,7 @@ function QualityDistributionChart({ data }: { data: QualityDist[] }) {
                 <Text variant="bodySm">{item.stars}★</Text>
               </Box>
               <Box width="100%">
-                <ProgressBar 
+                <ProgressBar
                   progress={(item.count / maxCount) * 100}
                   size="small"
                 />
@@ -409,7 +413,7 @@ function RubricBreakdownChart({ scores }: { scores: RubricScores }) {
     <Card>
       <BlockStack gap="400">
         <Text variant="headingMd" as="h2">Rubric Breakdown</Text>
-        
+
         <BlockStack gap="300">
           {Object.entries(scores).map(([key, score]) => (
             <BlockStack key={key} gap="100">
@@ -419,7 +423,7 @@ function RubricBreakdownChart({ scores }: { scores: RubricScores }) {
                   {score.toFixed(1)}/5.0
                 </Text>
               </InlineStack>
-              <ProgressBar 
+              <ProgressBar
                 progress={(score / 5) * 100}
                 tone={score >= 4 ? 'success' : score >= 3 ? 'warning' : 'critical'}
                 size="small"
@@ -446,7 +450,7 @@ function TrainingDataFilters() {
   const [selected Agents, setSelectedAgents] = useState<string[]>([]);
   const [selectedQuality, setSelectedQuality] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  
+
   const filters = [
     {
       key: 'agent',
@@ -501,7 +505,7 @@ function TrainingDataFilters() {
       ),
     },
   ];
-  
+
   return (
     <Filters
       filters={filters}
@@ -538,14 +542,15 @@ function TrainingDataFilters() {
 ```
 
 **Implementation**:
+
 ```typescript
 function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const current = samples[currentIndex];
-  
+
   const handleQuickRate = async (stars: number) => {
     await submitQuickRating(current.id, stars);
-    
+
     if (currentIndex < samples.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
@@ -554,7 +559,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
       onExit();
     }
   };
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -565,11 +570,11 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
           </Text>
           <Button onClick={onExit} variant="plain">Exit Mode</Button>
         </InlineStack>
-        
+
         <Text variant="bodySm" tone="subdued">
           Sample {currentIndex + 1} of {samples.length}
         </Text>
-        
+
         {/* Current sample */}
         <BlockStack gap="300">
           <Box background="bg-surface-secondary" padding="300" borderRadius="200">
@@ -578,7 +583,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
               <Text variant="bodyMd">{current.customerInput}</Text>
             </BlockStack>
           </Box>
-          
+
           <Box background="bg-info-subdued" padding="300" borderRadius="200">
             <BlockStack gap="200">
               <Text variant="bodySm" fontWeight="semibold">Response:</Text>
@@ -586,7 +591,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
             </BlockStack>
           </Box>
         </BlockStack>
-        
+
         {/* Quick rating buttons */}
         <InlineStack gap="200">
           <Button onClick={() => handleQuickRate(1)} size="slim">
@@ -608,9 +613,9 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
             Skip
           </Button>
         </InlineStack>
-        
+
         {/* Progress bar */}
-        <ProgressBar 
+        <ProgressBar
           progress={(currentIndex / samples.length) * 100}
           tone="info"
         />
@@ -655,7 +660,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
         value={exportFormat}
         onChange={setExportFormat}
       />
-      
+
       {/* Date range */}
       <InlineStack gap="200">
         <TextField
@@ -671,7 +676,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
           onChange={setEndDate}
         />
       </InlineStack>
-      
+
       {/* Quality filter */}
       <Select
         label="Quality Filter"
@@ -683,7 +688,7 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
         value={qualityFilter}
         onChange={setQualityFilter}
       />
-      
+
       {/* Preview */}
       <Banner tone="info">
         <Text variant="bodyMd">
@@ -702,28 +707,28 @@ function QuickRatingMode({ samples }: { samples: TrainingSample[] }) {
 ### New Sample Available Toast
 
 ```typescript
-import { useToast } from '@shopify/app-bridge-react';
+import { useToast } from "@shopify/app-bridge-react";
 
 function TrainingDataNotifications() {
   const toast = useToast();
-  
+
   useEffect(() => {
     // Poll for new samples needing review
     const interval = setInterval(async () => {
       const count = await fetchPendingCount();
-      
+
       if (count > previousCount) {
         toast.show(`${count - previousCount} new samples need review`, {
           duration: 5000,
         });
       }
-      
+
       setPreviousCount(count);
     }, 60000); // Check every minute
-    
+
     return () => clearInterval(interval);
   }, []);
-  
+
   return null;
 }
 ```
@@ -735,6 +740,7 @@ function TrainingDataNotifications() {
 ### Mobile Training Feedback
 
 **Simplified for mobile**:
+
 ```typescript
 // On mobile: Show one rubric item at a time with swipe
 // On desktop: Show all rubric items at once
@@ -746,7 +752,7 @@ function TrainingDataNotifications() {
       <Text variant="headingMd" as="h2">
         {RUBRIC_LABELS[currentRubric]}
       </Text>
-      <StarRating 
+      <StarRating
         value={ratings[currentRubric]}
         onChange={(v) => updateRating(currentRubric, v)}
       />
@@ -830,6 +836,7 @@ interface LowQualitySample {
 ## 9. Implementation Checklist
 
 ### Phase 1: Review Queue (Day 1)
+
 - [ ] Create `/app/training-feedback` route
 - [ ] Implement `TrainingFeedbackCard` component
 - [ ] Add star rating component
@@ -837,6 +844,7 @@ interface LowQualitySample {
 - [ ] Test feedback submission
 
 ### Phase 2: Quality Dashboard (Day 2)
+
 - [ ] Create `/app/training-data` route
 - [ ] Implement stats cards
 - [ ] Add quality distribution chart
@@ -844,12 +852,14 @@ interface LowQualitySample {
 - [ ] Add low quality samples list
 
 ### Phase 3: Filtering & Export (Day 3)
+
 - [ ] Implement filters (agent, quality, tags)
 - [ ] Add export modal with options
 - [ ] Implement CSV/JSONL export
 - [ ] Test export with large datasets
 
 ### Phase 4: Polish (Day 4)
+
 - [ ] Add quick rating mode
 - [ ] Implement notifications
 - [ ] Mobile optimization
@@ -872,5 +882,3 @@ interface LowQualitySample {
 **Created**: 2025-10-11  
 **Owner**: Designer Agent  
 **Ready For**: Engineer Implementation (parallelize with agent metrics)
-
-

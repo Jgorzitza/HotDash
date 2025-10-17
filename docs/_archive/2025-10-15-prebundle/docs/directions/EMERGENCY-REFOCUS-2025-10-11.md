@@ -34,12 +34,14 @@ last_reviewed: 2025-10-11
 ### TIER 1: LAUNCH CRITICAL (Work 100%)
 
 **Engineer**:
+
 - LlamaIndex MCP deployment (P0)
 - Agent SDK implementation (P0)
 - Webhook endpoints (P0)
 - Nothing else until these 3 complete
 
 **QA**:
+
 - Test Engineer's implementations
 - Validate LlamaIndex MCP works
 - Validate Agent SDK works
@@ -47,11 +49,13 @@ last_reviewed: 2025-10-11
 - Basic smoke tests for pilot
 
 **Designer**:
+
 - Approval queue UI implementation (coordinate with Engineer)
 - Work directly with Engineer to build UI
 - Nothing else until approval queue ships
 
 **Deployment**:
+
 - Support Engineer's deployments
 - LlamaIndex MCP hosting
 - Agent SDK hosting
@@ -60,16 +64,19 @@ last_reviewed: 2025-10-11
 ### TIER 2: LAUNCH SUPPORT (Work 50%)
 
 **Support**:
+
 - Basic operator training (for pilot)
 - Approval queue workflow doc
 - Nothing advanced until launch
 
 **Enablement**:
+
 - Quick start guide for operators
 - Approval workflow training (30 min session)
 - Nothing advanced until launch
 
 **Marketing**:
+
 - Pilot customer communication
 - Basic launch email
 - Nothing advanced until launch
@@ -77,6 +84,7 @@ last_reviewed: 2025-10-11
 ### TIER 3: PAUSED (Hold Until Launch)
 
 **Product, Data, Compliance, AI, Integrations, Chatwoot, Localization, Reliability**:
+
 - PAUSE all work
 - Stand by for launch support if needed
 - Resume post-launch planning after launch gates complete
@@ -84,6 +92,7 @@ last_reviewed: 2025-10-11
 ## Success Criteria
 
 **48-72 Hours from Now**:
+
 - ✅ LlamaIndex MCP deployed and queryable
 - ✅ Agent SDK service running
 - ✅ Webhooks receiving events

@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Product — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -38,11 +41,13 @@ You may run local, non-interactive commands without approval. Guardrails:
 - Start executing assigned tasks immediately; record progress and blockers in `feedback/product.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
+
 Work each item to completion and log progress in `feedback/product.md`, including timestamps, evidence links, and next actions. If a dependency blocks you, schedule the follow-up and chase it until resolved instead of reassigning it.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Agent capabilities and features
 - feedback/manager-2025-10-11-agentsdk-decision.md - Strategic decisions and ROI
 
@@ -92,6 +97,7 @@ Work each item to completion and log progress in `feedback/product.md`, includin
    - Evidence: Communication plan approved
 
 **Ongoing Requirements**:
+
 - Track metrics as Agent SDK rolls out
 - Coordinate with @marketing on messaging
 - Log all product decisions in feedback/product.md
@@ -103,29 +109,34 @@ Work each item to completion and log progress in `feedback/product.md`, includin
 **Since all research complete, now execute implementation tasks**:
 
 **Task 2: Roadmap Update** - Update with Agent SDK timeline (30 min)
+
 - Add Agent SDK to product roadmap with 3-4 day timeline
 - Document feature capabilities
 - Update stakeholder communication
 - Evidence: Updated roadmap
 
 **Task 3: Operator Workflow Analysis** - Calculate ROI (1 hour)
+
 - Document current manual workflow timing
 - Calculate time savings with automation
 - Project ROI metrics
 - Evidence: Workflow analysis with ROI
 
 **Task 4: Pilot Rollout Plan** - Define pilot parameters (1 hour)
+
 - Select 5-10 beta customers
 - Create pilot criteria
 - Plan gradual rollout
 - Evidence: Pilot plan
 
 **Task 5: Feature Iteration Roadmap** - Plan Phase 2 (30 min)
+
 - Document post-pilot improvements
 - Plan agent capability expansions
 - Evidence: Feature backlog
 
 **Task 6: Release Communication Plan** - Coordinate with Marketing (30 min)
+
 - Review messaging with @marketing
 - Approve copy
 - Evidence: Communication plan
@@ -137,6 +148,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task 7: Agent Performance Dashboard Design**
+
 - Design operator dashboard for agent metrics
 - Define KPIs to visualize (approval rate, response time, accuracy)
 - Create wireframes for metrics tiles
@@ -144,6 +156,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 - Evidence: Dashboard design document
 
 **Task 8: Customer Journey Mapping**
+
 - Map customer journey with AI-assisted support
 - Identify touchpoints for automation
 - Document pain points and solutions
@@ -151,6 +164,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 - Evidence: Customer journey map
 
 **Task 9: Competitive Feature Analysis**
+
 - Deep dive on competitor AI support features
 - Document feature parity matrix
 - Identify must-have vs nice-to-have features
@@ -158,6 +172,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 - Evidence: Competitive analysis with priorities
 
 **Task 10: Agent Capability Expansion Planning**
+
 - Plan additional agent types (billing, technical support, pre-sales)
 - Document capabilities for each agent type
 - Estimate development effort
@@ -165,6 +180,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 - Evidence: Agent expansion roadmap
 
 **Task 11: Pricing Strategy for AI Features**
+
 - Research market pricing for AI support automation
 - Design pricing tiers (if applicable)
 - Calculate value-based pricing
@@ -172,6 +188,7 @@ Execute Tasks 2-6 in order. Total time: ~3-4 hours.
 - Evidence: Pricing strategy document
 
 **Task 12: Success Metrics Dashboard Specification**
+
 - Define all metrics to track for Agent SDK
 - Create dashboard specification for operators
 - Design alerts and thresholds
@@ -185,6 +202,7 @@ Execute 7-12 in any order - all valuable strategic work.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 18 Additional Tasks
 
 **Task 13-18: Strategic Planning** (6 tasks)
+
 - 13: Create 12-month product vision document
 - 14: Design multi-tenant architecture strategy
 - 15: Plan white-label offering for agencies
@@ -193,6 +211,7 @@ Execute 7-12 in any order - all valuable strategic work.
 - 18: Plan international expansion strategy
 
 **Task 19-24: Customer Success** (6 tasks)
+
 - 19: Design customer health scoring system
 - 20: Create customer lifecycle management framework
 - 21: Plan proactive customer success interventions
@@ -201,6 +220,7 @@ Execute 7-12 in any order - all valuable strategic work.
 - 24: Plan customer advocacy program
 
 **Task 25-30: Revenue & Growth** (6 tasks)
+
 - 25: Design upsell and cross-sell strategies
 - 26: Create packaging and bundling strategy
 - 27: Plan partnership and channel strategy
@@ -215,6 +235,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of strategic work.
 ### 🚀 THIRD MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task 31-38: Market Expansion** (8 tasks)
+
 - 31: Design vertical-specific offerings (retail, B2B, services)
 - 32: Create industry solution packages
 - 33: Plan geographic expansion strategy (EMEA, APAC)
@@ -225,6 +246,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of strategic work.
 - 38: Create market research and customer insights program
 
 **Task 39-46: Product Innovation** (8 tasks)
+
 - 39: Design AI-powered predictive analytics features
 - 40: Create automated workflow builder for operators
 - 41: Plan integration with emerging Shopify features
@@ -235,6 +257,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of strategic work.
 - 46: Create revenue optimization recommendations engine
 
 **Task 47-55: Business Development** (9 tasks)
+
 - 47: Design enterprise sales process and materials
 - 48: Create channel partner program
 - 49: Plan strategic alliance partnerships
@@ -252,6 +275,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-35 hours work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task 56-65: Platform Strategy** (10 tasks)
+
 - 56: Design API-first product architecture
 - 57: Create developer platform and ecosystem strategy
 - 58: Plan embedded analytics offering for customers
@@ -264,6 +288,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-35 hours work.
 - 65: Design platform governance model
 
 **Task 66-75: Customer Intelligence** (10 tasks)
+
 - 66: Create customer data platform (CDP) strategy
 - 67: Design customer 360 view implementation
 - 68: Plan customer segmentation and targeting
@@ -276,6 +301,7 @@ Execute 31-55 in any order. Total: 55 tasks, ~30-35 hours work.
 - 75: Create customer insights distribution system
 
 **Task 76-85: Operational Excellence** (10 tasks)
+
 - 76: Design product ops framework
 - 77: Create product analytics instrumentation strategy
 - 78: Plan experimentation platform (A/B testing at scale)
@@ -294,6 +320,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~45-50 hours work.
 ### 🚀 SEVENTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task 86-93: Product Analytics & Insights** (8 tasks)
+
 - 86: Design product analytics instrumentation strategy
 - 87: Create user behavior analysis framework
 - 88: Implement cohort analysis and segmentation
@@ -304,6 +331,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~45-50 hours work.
 - 93: Create product insights distribution system
 
 **Task 94-101: Product Operations** (8 tasks)
+
 - 94: Design product operations framework
 - 95: Create product launch checklist automation
 - 96: Implement product health monitoring
@@ -314,6 +342,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~45-50 hours work.
 - 101: Create product technical debt management
 
 **Task 102-109: Customer Research** (8 tasks)
+
 - 102: Design continuous discovery program
 - 103: Create user research repository
 - 104: Implement customer interview framework
@@ -324,6 +353,7 @@ Execute 56-85 in any order. Total: 85 tasks, ~45-50 hours work.
 - 109: Create research synthesis and distribution
 
 **Task 110-115: Strategic Planning** (6 tasks)
+
 - 110: Design quarterly planning process
 - 111: Create OKR framework and tracking
 - 112: Implement strategic initiative management
@@ -338,6 +368,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 ### 📋 EVIDENCE REQUIREMENT REMINDER (2025-10-11T22:35Z)
 
 **QA validates all completed tasks - provide proof**:
+
 - ✅ Document paths: `docs/strategy/market-expansion.md (sections: A, B, C)`
 - ✅ Artifacts: `artifacts/product/roadmap-2025-q4.pdf`
 - ✅ Spreadsheet/analysis: `artifacts/product/pricing-model.xlsx (3 scenarios)`
@@ -346,6 +377,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 **NOT Acceptable**: "Strategy complete", "Analysis done", "Document ready"
 
 ### 2025-10-11 Execution Snapshot
+
 - 2025-10-11T08:12Z — Logged sanitized history push hash `af1d9f1` plus “no rotation” posture in Linear (`DEPLOY-147`) and Memory (scope `ops`); DEPLOY-147 impact now highlights QA smoke evidence, Playwright rerun, embed-token confirmation, and nightly AI logging sync as gating items.
 - 2025-10-11T11:05Z — Reliability reconfirmed existing Supabase credentials in service; call recorded in Linear comments, Memory recap, SCC/DPA escalation threads, and the nightly AI logging/index plan.
 - SCC/DPA escalations: compliance/legal tracking paused schedule, requested embed-token readiness timestamps, and expect nightly AI logging/index cadence summaries embedded in the shared evidence plan alongside QA updates.
@@ -401,6 +433,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 ### 🚀 IMMEDIATE HOT RODAN LAUNCH TASKS (Do First: 115A-115E)
 
 **Task 115A**: Hot Rodan Quick Start Guide for CEO
+
 - 1-page "How to Use Your Dashboard" guide
 - Screenshots of each tile with explanations
 - Common workflows (review approvals, check daily metrics)
@@ -408,6 +441,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 - Timeline: 1-2 hours
 
 **Task 115B**: Hot Rodan Pilot Briefing Document
+
 - Goals for pilot launch
 - Success criteria (what metrics to watch)
 - Feedback collection process
@@ -416,6 +450,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 - Timeline: 1-2 hours
 
 **Task 115C**: Hot Rodan Weekly Check-In Template
+
 - Structured questions for weekly pilot reviews
 - Key metrics to discuss
 - Issue tracking format
@@ -423,6 +458,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 - Timeline: 1 hour
 
 **Task 115D**: Hot Rodan Launch Runbook
+
 - Pre-launch checklist
 - Launch day procedures
 - Post-launch monitoring
@@ -431,6 +467,7 @@ Execute 86-115 in any order. Total: 115 tasks, ~60-65 hours work.
 - Timeline: 2-3 hours
 
 **Task 115E**: Hot Rodan Success Metrics Dashboard Spec
+
 - Define 5-10 key metrics to track
 - Dashboard layout and visualizations
 - Data sources for each metric
@@ -444,6 +481,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 ## 📋 NEXT WAVE - DEEP PILOT EXECUTION (Tasks 115F-115P)
 
 **Task 115F**: Pilot Operator Onboarding Plan
+
 - Create detailed onboarding workflow for first Hot Rodan operators
 - Day 1, Week 1, Month 1 milestones
 - Success criteria per phase
@@ -451,6 +489,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115G**: Dashboard Usage Analytics Framework
+
 - Define metrics to track (tile usage, approval rate, time saved)
 - Create measurement plan
 - Set up tracking implementation requirements
@@ -458,6 +497,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115H**: Iteration Planning Framework
+
 - Create rapid iteration process (weekly releases)
 - Feedback → prioritization → implementation cycle
 - Feature flag strategy
@@ -465,6 +505,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115I**: Hot Rodan Revenue Impact Model
+
 - Model how dashboard drives $1MM → $10MM growth
 - Calculate time savings → revenue impact
 - Document assumptions and projections
@@ -472,6 +513,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 3-4 hours
 
 **Task 115J**: Competitive Positioning Strategy
+
 - Position Hot Rodan Dashboard vs. generic SaaS tools
 - Automotive-specific value props
 - Unique differentiators for hot rod market
@@ -479,6 +521,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115K**: Feature Priority Matrix
+
 - Prioritize future features by impact x effort
 - Create roadmap for post-launch iterations
 - Align with Hot Rodan growth goals
@@ -486,6 +529,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115L**: Pricing Strategy for Future
+
 - Research pricing for similar tools
 - Consider Hot Rodan's economics
 - Design pricing tiers if needed
@@ -493,6 +537,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115M**: Pilot Success Playbook
+
 - Define what "successful pilot" means
 - Create decision criteria for full rollout
 - Plan scale-up strategy
@@ -500,6 +545,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115N**: Risk Mitigation Plan
+
 - Identify risks to pilot success
 - Create mitigation strategies
 - Define fallback plans
@@ -507,6 +553,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115O**: Operator Productivity Metrics
+
 - Define how to measure operator efficiency gains
 - Create measurement methodology
 - Set baseline and targets
@@ -514,6 +561,7 @@ Execute 115A-115E first (Hot Rodan-specific), then 115F-115P below. Total: ~8-11
 - Timeline: 2-3 hours
 
 **Task 115P**: Voice of Customer Program
+
 - Create ongoing operator feedback collection
 - Weekly check-ins structure
 - Feedback synthesis process

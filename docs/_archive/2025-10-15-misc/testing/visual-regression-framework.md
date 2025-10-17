@@ -23,10 +23,10 @@ Visual regression testing catches unintended UI changes by comparing screenshots
 export default defineConfig({
   expect: {
     toHaveScreenshot: {
-      maxDiffPixels: 100,  // Allow small differences
-      threshold: 0.2       // 20% threshold
-    }
-  }
+      maxDiffPixels: 100, // Allow small differences
+      threshold: 0.2, // 20% threshold
+    },
+  },
 });
 ```
 
@@ -34,37 +34,37 @@ export default defineConfig({
 
 ```typescript
 // tests/e2e/visual-regression.spec.ts
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Visual Regression', () => {
-  test('dashboard should match snapshot', async ({ page }) => {
-    await page.goto('http://localhost:3000/app');
-    await page.waitForLoadState('networkidle');
-    
-    await expect(page).toHaveScreenshot('dashboard.png');
+test.describe("Visual Regression", () => {
+  test("dashboard should match snapshot", async ({ page }) => {
+    await page.goto("http://localhost:3000/app");
+    await page.waitForLoadState("networkidle");
+
+    await expect(page).toHaveScreenshot("dashboard.png");
   });
 
-  test('approval queue should match snapshot', async ({ page }) => {
+  test("approval queue should match snapshot", async ({ page }) => {
     // Seed deterministic test data
     await seedApprovalQueue([
-      { id: '1', customer_name: 'Test User 1', confidence_score: 85 },
-      { id: '2', customer_name: 'Test User 2', confidence_score: 45 }
+      { id: "1", customer_name: "Test User 1", confidence_score: 85 },
+      { id: "2", customer_name: "Test User 2", confidence_score: 45 },
     ]);
-    
-    await page.goto('http://localhost:3000/app/approvals');
+
+    await page.goto("http://localhost:3000/app/approvals");
     await page.waitForSelector('[data-testid="queue-item"]');
-    
-    await expect(page).toHaveScreenshot('approval-queue.png');
+
+    await expect(page).toHaveScreenshot("approval-queue.png");
   });
 
-  test('approval modal should match snapshot', async ({ page }) => {
-    await page.goto('http://localhost:3000/app/approvals');
+  test("approval modal should match snapshot", async ({ page }) => {
+    await page.goto("http://localhost:3000/app/approvals");
     await page.click('[data-testid="approve-button"]').first();
-    
+
     const modal = page.locator('[role="dialog"]');
     await expect(modal).toBeVisible();
-    
-    await expect(modal).toHaveScreenshot('approval-modal.png');
+
+    await expect(modal).toHaveScreenshot("approval-modal.png");
   });
 });
 ```
@@ -93,18 +93,18 @@ npm install -D @percy/cli @percy/playwright
 
 ```typescript
 // tests/e2e/percy-visual.spec.ts
-import { test } from '@playwright/test';
-import percySnapshot from '@percy/playwright';
+import { test } from "@playwright/test";
+import percySnapshot from "@percy/playwright";
 
-test('approval queue visual test', async ({ page }) => {
-  await page.goto('http://localhost:3000/app/approvals');
-  
-  await percySnapshot(page, 'Approval Queue - Empty State');
-  
+test("approval queue visual test", async ({ page }) => {
+  await page.goto("http://localhost:3000/app/approvals");
+
+  await percySnapshot(page, "Approval Queue - Empty State");
+
   await seedApprovalQueue([...testData]);
   await page.reload();
-  
-  await percySnapshot(page, 'Approval Queue - With Items');
+
+  await percySnapshot(page, "Approval Queue - With Items");
 });
 ```
 
@@ -134,4 +134,3 @@ test('approval queue visual test', async ({ page }) => {
 **Status**: Framework designed, ready for implementation  
 **Estimated Effort**: 4 hours (Playwright), 8 hours (Percy)  
 **Dependencies**: None
-

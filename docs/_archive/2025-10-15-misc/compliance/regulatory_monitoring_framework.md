@@ -4,9 +4,11 @@ doc: docs/compliance/regulatory_monitoring_framework.md
 owner: compliance
 last_reviewed: 2025-10-11
 ---
+
 # Regulatory Change Monitoring Framework
 
 ## Overview
+
 Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure ongoing compliance.
 
 ---
@@ -14,12 +16,14 @@ Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure o
 ## Monitored Regulations
 
 ### Primary Regulations
+
 1. **GDPR** (EU) - General Data Protection Regulation
 2. **CCPA** (California) - California Consumer Privacy Act
 3. **PIPEDA** (Canada) - Personal Information Protection
 4. **UK GDPR** - UK Data Protection
 
 ### Emerging Regulations
+
 5. **State Privacy Laws** - Virginia, Colorado, Connecticut, Utah
 6. **CPRA** - California Privacy Rights Act (CCPA amendments)
 7. **EU Digital Markets Act**
@@ -30,12 +34,14 @@ Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure o
 ## Monitoring Sources
 
 **Official Sources:**
+
 - GDPR: EUR-Lex official journal
 - CCPA: California Legislative Information
 - ICO: UK Information Commissioner guidance
 - CNIL: French data protection authority
 
 **Industry Sources:**
+
 - IAPP (International Association of Privacy Professionals)
 - Privacy tech newsletters
 - Legal firm updates
@@ -46,6 +52,7 @@ Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure o
 ## Change Impact Assessment Process
 
 **When Change Detected:**
+
 1. Assess applicability to HotDash
 2. Determine compliance gap
 3. Estimate implementation effort
@@ -70,7 +77,7 @@ Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure o
 **GDPR:** ✅ COMPLIANT (with pending DPAs)  
 **CCPA:** ✅ COMPLIANT  
 **PIPEDA:** ✅ COMPLIANT  
-**State Laws:** ✅ COMPLIANT  
+**State Laws:** ✅ COMPLIANT
 
 **Last Review:** 2025-10-11  
 **Next Review:** 2025-11-11
@@ -79,4 +86,3 @@ Proactive monitoring of privacy regulations (GDPR, CCPA, state laws) to ensure o
 
 **Framework Status:** ✅ ESTABLISHED  
 **Monitoring:** ACTIVE
-

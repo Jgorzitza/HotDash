@@ -10,12 +10,14 @@ expires: 2025-10-20
 # Modal Refresh Spec — CX Escalations & Sales Pulse (2025-10-13)
 
 ## Overview
+
 - Reflect the latest React Router 7 modal flows backed by Supabase mutations.
 - Ensure Polaris alignment for structure, spacing, and focus handling.
 - Document toast/approval paths so engineering can wire Playwright coverage.
 - Copy set to English-only; cross-check with `docs/design/copy_deck.md`.
 
 ## CX Escalations Modal (Supabase audit + approval)
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ ✕  CX Escalation — Jamie Lee                            │
@@ -43,18 +45,21 @@ expires: 2025-10-20
 ```
 
 ### Interaction & Focus
+
 - Initial focus: close button → programmatically move to modal heading for SR context.
 - Focus order: close → heading → conversation log (scrollable) → suggested reply → internal note → primary/secondary CTAs → cancel.
 - `Escalate to Manager` requires confirmation toast referencing `customer.support@hotrodan.com`.
 
 ### Supabase Mapping
-| Trigger | Table/Function | Notes |
-|---------|----------------|-------|
-| Approve & Send Reply | `cx_escalations_decisions` | Insert `decision_type='approve'`, include AI draft, operator note. |
-| Escalate to Manager | `create_escalation_ticket` function | Returns ticket ID; send email via worker. |
-| Mark Resolved | `cx_escalations` update | Set `status='resolved'`, log resolver + timestamp. |
+
+| Trigger              | Table/Function                      | Notes                                                              |
+| -------------------- | ----------------------------------- | ------------------------------------------------------------------ |
+| Approve & Send Reply | `cx_escalations_decisions`          | Insert `decision_type='approve'`, include AI draft, operator note. |
+| Escalate to Manager  | `create_escalation_ticket` function | Returns ticket ID; send email via worker.                          |
+| Mark Resolved        | `cx_escalations` update             | Set `status='resolved'`, log resolver + timestamp.                 |
 
 ## Sales Pulse Modal (variance follow-up)
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ ✕  Sales Pulse — Variance Review                        │
@@ -78,29 +83,34 @@ expires: 2025-10-20
 ```
 
 ### Interaction & Focus
+
 - Entry focus: close button → heading → action select → notes → primary CTA → cancel.
 - CTA label mirrors selected action; maintain `aria-live="polite"` on helper text when action changes.
 - Use Polaris `Select` + `TextField` components for parity with Admin overlays.
 
 ### Supabase Mapping
-| Trigger | Table | Notes |
-|---------|-------|-------|
-| Log follow-up | `sales_pulse_actions` | Insert `action_type='follow_up'`, `notes`, `sku_highlights`. |
-| Escalate to ops | `sales_pulse_actions` + notify worker | Insert `action_type='escalate'`, send email via worker. |
+
+| Trigger         | Table                                 | Notes                                                        |
+| --------------- | ------------------------------------- | ------------------------------------------------------------ |
+| Log follow-up   | `sales_pulse_actions`                 | Insert `action_type='follow_up'`, `notes`, `sku_highlights`. |
+| Escalate to ops | `sales_pulse_actions` + notify worker | Insert `action_type='escalate'`, send email via worker.      |
 
 ## Toast & Audit Trail Alignment
+
 - Success path → `toast.success.decision_logged` (both modals).
 - Escalation path → `toast.success.action_confirmed` with ticket ID inline.
 - Failure path → `toast.error.network` with Retry (returns focus to CTA).
 - All toasts announce via `role="status"`; auto-dismiss after 6s; manual dismiss retains focus on originating element.
 
 ## Accessibility Checklist
+
 - Modal headings use `aria-labelledby`.
 - Conversation log uses semantic grouping with timestamps announced.
 - Ensure Escape closes modal and returns focus to originating tile CTA (`navigate(-1)` fallback).
 - Toasts respect `prefers-reduced-motion`: fade only, no slide.
 
 ## Evidence & Follow-up
+
 - **Figma placeholder**: pending workspace access; ASCII spec linked for engineering unblock.
 - **Playwright guidance**: add tests verifying toast copy, focus restoration, and Supabase mutation responses.
 - Update `feedback/designer.md` with actual Figma link once tokens land. For now, reference this doc plus `docs/design/wireframes/dashboard_wireframes.md`.

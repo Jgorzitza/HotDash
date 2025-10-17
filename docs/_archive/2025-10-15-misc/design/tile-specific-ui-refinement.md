@@ -9,6 +9,7 @@ task: 1J
 # Task 1J: Tile-Specific UI Refinement
 
 ## Purpose
+
 Design detailed states and data visualizations for each of the 5 dashboard tiles with Hot Rod-themed iconography.
 
 ## Overview of 5 Tiles
@@ -24,6 +25,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ### States
 
 **Healthy State** (0 escalations):
+
 ```typescript
 <TileCard
   title="CX Escalations"
@@ -40,6 +42,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Alert State** (3+ escalations):
+
 ```typescript
 <TileCard
   title="CX Escalations"
@@ -50,7 +53,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
   <BlockStack gap="200">
     <Text variant="heading2xl" as="p" tone="critical">3</Text>
     <Text variant="bodyMd">Issues need your attention</Text>
-    
+
     {/* Mini list */}
     <Box paddingBlockStart="200">
       <List type="bullet">
@@ -58,7 +61,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         <List.Item>1 shipping complaint</List.Item>
       </List>
     </Box>
-    
+
     <Button onClick={viewDetails}>View all</Button>
   </BlockStack>
 </TileCard>
@@ -75,6 +78,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ### States
 
 **Healthy State** (on track):
+
 ```typescript
 <TileCard
   title="Sales Pulse"
@@ -87,9 +91,9 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
       <Text variant="heading2xl" as="p">$12,450</Text>
       <Badge tone="success">+12%</Badge>
     </InlineStack>
-    
+
     <Text variant="bodyMd" tone="subdued">Today's revenue</Text>
-    
+
     {/* Sparkline chart */}
     <div style={{ height: '40px' }}>
       <Sparkline
@@ -97,7 +101,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         color="success"
       />
     </div>
-    
+
     <Text variant="bodySm" tone="success">
       ↗ Trending up vs yesterday
     </Text>
@@ -106,6 +110,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Alert State** (below target):
+
 ```typescript
 <TileCard
   title="Sales Pulse"
@@ -118,11 +123,11 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
       <Text variant="heading2xl" as="p" tone="warning">$8,200</Text>
       <Badge tone="critical">-15%</Badge>
     </InlineStack>
-    
+
     <Text variant="bodyMd">30% behind daily target</Text>
-    
+
     <ProgressBar progress={70} tone="warning" />
-    
+
     <Text variant="bodySm" tone="subdued">
       Target: $11,700 • 3h 15m remaining
     </Text>
@@ -130,7 +135,8 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 </TileCard>
 ```
 
-**Data Visualization**: 
+**Data Visualization**:
+
 - Revenue number + percentage change
 - Sparkline (7-day trend)
 - Progress bar (toward daily goal)
@@ -144,6 +150,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ### States
 
 **Healthy State** (all stocked):
+
 ```typescript
 <TileCard
   title="Inventory"
@@ -154,7 +161,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
   <BlockStack gap="200">
     <Text variant="heading2xl" as="p">0</Text>
     <Text variant="bodyMd" tone="subdued">Items need reordering</Text>
-    
+
     <InlineStack gap="400">
       <div>
         <Text variant="headingMd" as="p">127</Text>
@@ -170,6 +177,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Alert State** (low stock):
+
 ```typescript
 <TileCard
   title="Inventory"
@@ -180,7 +188,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
   <BlockStack gap="200">
     <Text variant="heading2xl" as="p" tone="warning">5</Text>
     <Text variant="bodyMd">Items need reordering</Text>
-    
+
     {/* Top low-stock items */}
     <Box paddingBlockStart="200">
       <List type="bullet">
@@ -189,13 +197,14 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         <List.Item>Part C - 1 left</List.Item>
       </List>
     </Box>
-    
+
     <Button onClick={viewInventory}>View inventory</Button>
   </BlockStack>
 </TileCard>
 ```
 
 **Data Visualization**:
+
 - Count of low-stock items
 - Mini breakdown (in stock vs low stock)
 - List of top 3 items needing reorder
@@ -209,6 +218,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ### States
 
 **Healthy State** (rankings improving):
+
 ```typescript
 <TileCard
   title="SEO Performance"
@@ -221,9 +231,9 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
       <Text variant="heading2xl" as="p">2,450</Text>
       <Badge tone="success">+8%</Badge>
     </InlineStack>
-    
+
     <Text variant="bodyMd" tone="subdued">Organic visits today</Text>
-    
+
     {/* Sparkline */}
     <div style={{ height: '40px' }}>
       <Sparkline
@@ -231,7 +241,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         color="success"
       />
     </div>
-    
+
     <InlineStack gap="400">
       <div>
         <Text variant="headingMd" as="p" tone="success">12</Text>
@@ -247,6 +257,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Alert State** (rankings dropping):
+
 ```typescript
 <TileCard
   title="SEO Performance"
@@ -259,9 +270,9 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
       <Text variant="heading2xl" as="p" tone="warning">1,850</Text>
       <Badge tone="critical">-12%</Badge>
     </InlineStack>
-    
+
     <Text variant="bodyMd">Traffic dropped this week</Text>
-    
+
     {/* Sparkline (downward) */}
     <div style={{ height: '40px' }}>
       <Sparkline
@@ -269,7 +280,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         color="critical"
       />
     </div>
-    
+
     <Text variant="bodySm" tone="subdued">
       5 keywords dropped out of top 10
     </Text>
@@ -278,6 +289,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Data Visualization**:
+
 - Organic visit count + percentage change
 - Sparkline (7-day traffic trend)
 - Top 10 keywords count + average position
@@ -291,6 +303,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ### States
 
 **Healthy State** (on schedule):
+
 ```typescript
 <TileCard
   title="Fulfillment"
@@ -301,7 +314,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
   <BlockStack gap="200">
     <Text variant="heading2xl" as="p">24</Text>
     <Text variant="bodyMd" tone="subdued">Orders shipping today</Text>
-    
+
     {/* Status breakdown */}
     <BlockStack gap="100">
       <InlineStack align="space-between">
@@ -322,6 +335,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ```
 
 **Alert State** (delays):
+
 ```typescript
 <TileCard
   title="Fulfillment"
@@ -332,7 +346,7 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
   <BlockStack gap="200">
     <Text variant="heading2xl" as="p" tone="warning">3</Text>
     <Text variant="bodyMd">Orders delayed</Text>
-    
+
     {/* Delayed orders */}
     <Box paddingBlockStart="200">
       <List type="bullet">
@@ -341,13 +355,14 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
         <List.Item>#1267 - Carrier issue</List.Item>
       </List>
     </Box>
-    
+
     <Button onClick={viewOrders}>View all orders</Button>
   </BlockStack>
 </TileCard>
 ```
 
 **Data Visualization**:
+
 - Count of orders shipping today
 - Status breakdown (packed, in transit, delayed)
 - List of delayed orders with reasons
@@ -359,14 +374,15 @@ Design detailed states and data visualizations for each of the 5 dashboard tiles
 ## Shared Data Visualization Components
 
 ### Sparkline Chart
+
 ```typescript
 interface SparklineProps {
   data: number[];
-  color?: 'success' | 'warning' | 'critical';
+  color?: "success" | "warning" | "critical";
   height?: number;
 }
 
-function Sparkline({ data, color = 'success', height = 40 }: SparklineProps) {
+function Sparkline({ data, color = "success", height = 40 }: SparklineProps) {
   // Simple line chart showing trend
   // Use canvas or SVG
   // No axes, just line
@@ -376,6 +392,7 @@ function Sparkline({ data, color = 'success', height = 40 }: SparklineProps) {
 **Use**: 7-day trends for Sales, SEO
 
 ### Progress Bar (Enhanced)
+
 ```typescript
 <ProgressBar
   progress={70}
@@ -390,6 +407,7 @@ function Sparkline({ data, color = 'success', height = 40 }: SparklineProps) {
 **Use**: Goal progress (Sales)
 
 ### Mini List (Top 3)
+
 ```typescript
 <List type="bullet">
   <List.Item>Item 1 - Detail</List.Item>
@@ -405,6 +423,7 @@ function Sparkline({ data, color = 'success', height = 40 }: SparklineProps) {
 ## Hot Rod-Themed Iconography
 
 **Tile Icons** (Conceptual):
+
 - CX Escalations: 🔥 Fire (hot issues)
 - Sales Pulse: ⚡ Lightning (speed/energy)
 - Inventory: ⚙️ Gear (parts/mechanical)
@@ -412,6 +431,7 @@ function Sparkline({ data, color = 'success', height = 40 }: SparklineProps) {
 - Fulfillment: 📦 Package (delivery)
 
 **Implementation**: Use Polaris icons (no custom assets needed)
+
 ```typescript
 import {
   AlertTriangleIcon,
@@ -419,7 +439,7 @@ import {
   TrendingDownIcon,
   CheckCircleIcon,
   PackageIcon,
-} from '@shopify/polaris-icons';
+} from "@shopify/polaris-icons";
 ```
 
 ---
@@ -427,6 +447,7 @@ import {
 ## Tile Interaction Patterns
 
 ### Click to Expand
+
 ```typescript
 <TileCard onClick={() => openModal('cx-escalations')}>
   {/* Tile content */}
@@ -436,6 +457,7 @@ import {
 **Behavior**: Click tile → Opens modal with full details
 
 ### Hover State
+
 ```css
 .tile-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -445,6 +467,7 @@ import {
 ```
 
 ### Loading State
+
 ```typescript
 <TileCard
   title="Sales Pulse"
@@ -459,6 +482,7 @@ import {
 ## Responsive Behavior
 
 **Desktop** (3-4 columns):
+
 ```css
 .dashboard-grid {
   grid-template-columns: repeat(3, 1fr);
@@ -467,6 +491,7 @@ import {
 ```
 
 **Tablet** (2 columns):
+
 ```css
 @media (max-width: 1039px) {
   .dashboard-grid {
@@ -476,6 +501,7 @@ import {
 ```
 
 **Mobile** (1 column):
+
 ```css
 @media (max-width: 767px) {
   .dashboard-grid {
@@ -504,4 +530,3 @@ import {
 ---
 
 **Status**: All 5 tiles designed with detailed states, data visualizations, and Hot Rod iconography using Polaris
-

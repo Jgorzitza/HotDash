@@ -10,7 +10,8 @@
 
 Enable value-added resellers (VARs) and system integrators to sell HotDash Agent SDK to their customer base.
 
-**Target Partners**: 
+**Target Partners**:
+
 - IT service providers
 - E-commerce consultancies
 - System integrators
@@ -23,16 +24,19 @@ Enable value-added resellers (VARs) and system integrators to sell HotDash Agent
 ## Partner Tiers
 
 ### Bronze Reseller
+
 - **Requirements**: 3+ customers
 - **Benefits**: 20% commission, partner portal
 - **Support**: Email only
 
 ### Silver Reseller
+
 - **Requirements**: 10+ customers or $10K/month
 - **Benefits**: 25% commission, co-marketing, training
 - **Support**: Priority email + quarterly reviews
 
 ### Gold Reseller
+
 - **Requirements**: 25+ customers or $25K/month
 - **Benefits**: 30% commission, white-label option, dedicated CSM
 - **Support**: 1-hour SLA, monthly strategy calls
@@ -42,18 +46,21 @@ Enable value-added resellers (VARs) and system integrators to sell HotDash Agent
 ## Partner Enablement
 
 **Training**:
+
 - 4-hour certification course
 - Sales playbook
 - Technical implementation guide
 - Customer success templates
 
 **Sales Materials**:
+
 - Pitch deck
 - ROI calculator
 - Demo environment
 - Case studies
 
 **Marketing Support**:
+
 - Co-branded collateral
 - Lead sharing (inbound leads in partner territory)
 - Conference booth sharing
@@ -63,4 +70,3 @@ Enable value-added resellers (VARs) and system integrators to sell HotDash Agent
 
 **Document Owner**: Product Agent
 **Status**: Program framework complete
-

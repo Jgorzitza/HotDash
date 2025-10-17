@@ -39,6 +39,7 @@
 ### Team Discussion (3 minutes)
 
 **Quick hits**:
+
 - Any patterns? (e.g., "4 of us had wrong order number issue")
 - Quick wins to celebrate (approval rates improving!)
 - Urgent fixes needed? (tag Engineering if critical bug)
@@ -48,6 +49,7 @@
 ### Actions & Wrap (2 minutes)
 
 **Product Agent**: Capture action items
+
 - [ ] Bug: Wrong order numbers (Engineering to investigate)
 - [ ] Feature request: Inline editing improvement
 - [ ] KB gap: Angry customer template needed
@@ -71,6 +73,7 @@
 **Lisa**: "Highlight: Edited a draft to add an emoji and customer loved it. Lowlight: Nothing major. Today: Try bulk approve."
 
 **Action Items**:
+
 - [ ] Engineering: Investigate wrong return policy (Knowledge Base version issue?)
 - [ ] Product: Add tip to dashboard: "Trust the AI, you can always reject later"
 - [ ] All: Friendly competition for most drafts reviewed (gamification working!)
@@ -95,6 +98,7 @@
 **Product Agent's Job**: Document all action items in Linear
 
 **Format**:
+
 ```
 PILOT-123: Wrong order numbers in 3 drafts (Oct 28)
 - Reported by: Sarah, Marcus
@@ -112,7 +116,6 @@ PILOT-123: Wrong order numbers in 3 drafts (Oct 28)
 **Document Owner**: Product Agent  
 **Path**: `docs/pilot_daily_standup_template.md`  
 **Purpose**: Structure for daily pilot standups  
-**Status**: Ready for Oct 28 pilot start  
+**Status**: Ready for Oct 28 pilot start
 
 **North Star Alignment**: ✅ **Operator feedback-driven, practical, continuous improvement**
-

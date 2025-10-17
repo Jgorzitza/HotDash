@@ -72,7 +72,7 @@ Created `docs/specs/content_tracking.md` with:
 - API endpoint documentation with examples
 - Metric calculation formulas
 - Implementation status
-- Future integration points (Ayrshare, Supabase, GA4)
+- Future integration points (Publer, Supabase, GA4)
 - Accuracy requirements checklist
 - HITL workflow integration plan
 - Rollback plan
@@ -88,8 +88,7 @@ Successfully built content performance tracking infrastructure:
 - ✅ Accurate metric calculations with zero-division handling
 - ✅ Clean API with comprehensive validation
 - ✅ Complete documentation
-- ✅ Ready for future Ayrshare integration
+- ✅ Ready for future Publer integration
 - ✅ Follows HITL workflow pattern
 
 **No blockers. Ready for PR review.**
-

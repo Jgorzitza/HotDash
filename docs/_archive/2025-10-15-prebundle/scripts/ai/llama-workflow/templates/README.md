@@ -36,17 +36,17 @@ Each template follows this format:
 ### In Agent SDK Tools
 
 ```typescript
-import { templates } from './templates/index.js';
+import { templates } from "./templates/index.js";
 
 // Find template
-const template = templates.find(t => t.id === 'order_status_shipping');
+const template = templates.find((t) => t.id === "order_status_shipping");
 
 // Render with variables
 const response = renderTemplate(template.template, {
-  customer_name: 'John',
-  order_number: '#12345',
-  tracking_number: '1Z999AA1...',
-  estimated_delivery: 'October 15, 2025',
+  customer_name: "John",
+  order_number: "#12345",
+  tracking_number: "1Z999AA1...",
+  estimated_delivery: "October 15, 2025",
 });
 
 // Check if needs approval
@@ -59,8 +59,8 @@ if (template.needsApproval) {
 
 ```typescript
 // Query for relevant template
-const mcpResult = await mcpClient.call('query_support', {
-  q: 'shipping delay response template',
+const mcpResult = await mcpClient.call("query_support", {
+  q: "shipping delay response template",
   topK: 3,
 });
 
@@ -87,6 +87,7 @@ const selectedTemplate = selectBestTemplate(mcpResult, conversationContext);
 ## Quality Standards
 
 All templates must:
+
 - ✅ Use professional, empathetic tone
 - ✅ Include {{variable_placeholders}} for personalization
 - ✅ Be concise (150-250 words)
@@ -100,6 +101,7 @@ All templates must:
 ## Maintenance
 
 **Monthly Review:**
+
 - Analyze template usage metrics
 - Update based on customer feedback
 - A/B test variations
@@ -107,6 +109,7 @@ All templates must:
 - Add new templates for emerging patterns
 
 **Approval Process:**
+
 - New templates require Support team review
 - Changes to existing templates require manager approval
 - Track changes in `CHANGELOG.md`
@@ -114,4 +117,3 @@ All templates must:
 ---
 
 For template definitions, see `index.ts`
-

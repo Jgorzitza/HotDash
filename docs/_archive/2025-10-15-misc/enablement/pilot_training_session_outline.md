@@ -11,6 +11,7 @@
 ## Pre-Session Prep
 
 **Facilitator:**
+
 - [ ] Approval queue UI live and tested
 - [ ] Demo environment with 3-5 sample approvals loaded
 - [ ] Quick Start Guide printed (1 per operator)
@@ -18,6 +19,7 @@
 - [ ] Recording setup (for operators who miss session)
 
 **Operators:**
+
 - [ ] Completed 4 Loom modules (optional but recommended)
 - [ ] Access to approval queue verified
 - [ ] Laptop ready, logged into Shopify Admin
@@ -35,12 +37,14 @@
 **Today's Goal:** Get you comfortable enough to start reviewing AI-prepared customer responses.
 
 **What We'll Cover in 30 Minutes:**
+
 1. Quick overview of what this is (5 min)
 2. Live demo - see it in action (10 min)
 3. Your top questions answered (10 min)
 4. Quick hands-on look (5 min)
 
 **Ground Rules:**
+
 - This is a pilot - we're learning together
 - Ask questions anytime
 - No such thing as a dumb question
@@ -57,6 +61,7 @@
 **Say:** "Let me show you the most common scenario - a simple approval."
 
 **Show:**
+
 1. Navigate to approval queue: `/app/approvals`
 2. Point out: Pending count, queue stats
 3. Open first approval card
@@ -76,6 +81,7 @@
 **Say:** "Now let me show you when to reject."
 
 **Show:**
+
 1. Open another approval
 2. **Walk through:**
    - "Customer asks: 'Can I return after 20 days?'"
@@ -94,6 +100,7 @@
 **Say:** "This is the most important one - when to escalate."
 
 **Show:**
+
 1. Open approval with red flags
 2. **Walk through:**
    - "Customer message: 'You charged me twice! $600! I'm calling my bank!'"
@@ -135,6 +142,7 @@
 **Say:** "Let's look at the actual interface together."
 
 **Show:**
+
 - Queue overview screen
 - How to filter/search
 - Where to find help
@@ -144,6 +152,7 @@
 
 **Wrap-Up:**
 "That's it! You're ready to start. Remember:
+
 1. You're in control
 2. Escalate when unsure
 3. Ask questions anytime
@@ -158,12 +167,14 @@ Questions before we finish?"
 ## Post-Session Actions
 
 **Facilitator:**
+
 - [ ] Send recording link to all operators
 - [ ] Share Quick Start Guide PDF via email
 - [ ] Add all operators to #occ-enablement Slack
 - [ ] Schedule check-in for Day 2 of pilot
 
 **Operators:**
+
 - [ ] Review Quick Start Guide
 - [ ] Bookmark approval queue: `/app/approvals`
 - [ ] Test access to make sure it works
@@ -174,17 +185,20 @@ Questions before we finish?"
 ## Follow-Up Plan
 
 **Day 1 of Pilot:** Check-in at end of day (15 min)
+
 - How did it go?
 - Any confusing moments?
 - Technical issues?
 - What questions came up?
 
 **Day 3:** Mid-week check (15 min)
+
 - Still feeling okay?
 - Anything we should clarify?
 - Update Quick Start if needed
 
 **End of Week 1:** Feedback session (30 min)
+
 - What's working well?
 - What's confusing?
 - What training would help?
@@ -195,6 +209,7 @@ Questions before we finish?"
 ## Materials Checklist
 
 **Required:**
+
 - [ ] Quick Start Guide (printed, 1 per operator)
 - [ ] Screen sharing capability
 - [ ] Demo environment with sample approvals
@@ -202,6 +217,7 @@ Questions before we finish?"
 - [ ] Operator access verified before session
 
 **Optional:**
+
 - [ ] Slides (if helpful, but live demo is better)
 - [ ] Recording setup
 - [ ] Backup facilitator (if primary unavailable)
@@ -213,4 +229,3 @@ Questions before we finish?"
 **Estimated Prep Time:** 2-3 hours  
 **Session Delivery:** 30 minutes  
 **Follow-Up:** 15 min check-ins (Days 1, 3, 7)
-

@@ -20,6 +20,7 @@ Expand HotDash Agent SDK to international markets, starting with English-speakin
 ## Market Priorities
 
 ### Tier 1: English-Speaking (Q1 2027)
+
 - **UK**: Large e-commerce market, cultural similarity
 - **Canada**: Close proximity, easy support
 - **Australia**: Growing e-commerce, English language
@@ -29,6 +30,7 @@ Expand HotDash Agent SDK to international markets, starting with English-speakin
 ---
 
 ### Tier 2: European (Q3 2027)
+
 - **Germany**: Largest EU e-commerce market
 - **France**: High e-commerce adoption
 - **Spain**: Growing market
@@ -38,6 +40,7 @@ Expand HotDash Agent SDK to international markets, starting with English-speakin
 ---
 
 ### Tier 3: Asia-Pacific (2028+)
+
 - **Japan**: Advanced e-commerce market
 - **Singapore**: English + regional hub
 - **South Korea**: Tech-savvy market
@@ -53,6 +56,7 @@ Expand HotDash Agent SDK to international markets, starting with English-speakin
 **Quality**: Human operators review all translations before sending
 
 **Implementation** (Q2 2027):
+
 - OpenAI translation API
 - Operators see English KB + translated draft
 - Operator approves translation or edits
@@ -64,4 +68,3 @@ Expand HotDash Agent SDK to international markets, starting with English-speakin
 **Document Owner**: Product Agent  
 **Last Updated**: October 11, 2025  
 **Status**: Future Strategy - Execution in 2027
-

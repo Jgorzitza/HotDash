@@ -10,6 +10,7 @@ expires: 2025-10-18
 # Enhanced Polaris-Aligned Dashboard Wireframes
 
 ## Overview
+
 **Created**: 2025-10-11T04:53:28Z  
 **Purpose**: Updated dashboard wireframes with enhanced Polaris alignment and responsive behavior  
 **Responsive Breakpoints**: Desktop (1280px+), Tablet (768px+), Mobile (<768px)  
@@ -18,6 +19,7 @@ expires: 2025-10-18
 ## Responsive Grid System
 
 ### Desktop Layout (1280px+) - Primary Experience
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │ [Polaris AppProvider]                                                       │
@@ -87,6 +89,7 @@ expires: 2025-10-18
 ```
 
 ### Tablet Layout (768px - 1279px) - Two Column Grid
+
 ```
 ┌───────────────────────────────────────────────────────────┐
 │ [Polaris AppProvider - Mobile optimized]                 │
@@ -122,6 +125,7 @@ expires: 2025-10-18
 ```
 
 ### Mobile Layout (<768px) - Single Column Stack
+
 ```
 ┌─────────────────────────────────────┐
 │ [TopBar: navigation=overlay]        │
@@ -169,6 +173,7 @@ expires: 2025-10-18
 ## Enhanced Modal Specifications with Polaris Components
 
 ### CX Escalation Modal - Polaris Implementation
+
 ```
 ┌────────────────────────────────────────────────────────────┐
 │ [Modal: large, title="CX Escalation"]                     │
@@ -227,7 +232,8 @@ expires: 2025-10-18
 └────────────────────────────────────────────────────────────┘
 ```
 
-### Sales Pulse Modal - Polaris Implementation  
+### Sales Pulse Modal - Polaris Implementation
+
 ```
 ┌────────────────────────────────────────────────────────────┐
 │ [Modal: medium, title="Sales Pulse Review"]               │
@@ -282,6 +288,7 @@ expires: 2025-10-18
 ## Toast Notification Specifications
 
 ### Success Toast (Polaris Implementation)
+
 ```
 [Toast: content="Reply sent to Jamie Lee. Decision logged to audit trail."
  action={
@@ -293,7 +300,8 @@ expires: 2025-10-18
 ```
 
 ### Error Toast (Polaris Implementation)
-```  
+
+```
 [Toast: content="Unable to send reply. Network error occurred."
  action={
    content: "Retry",
@@ -304,6 +312,7 @@ expires: 2025-10-18
 ```
 
 ### Loading Toast (Polaris Implementation)
+
 ```
 [Toast: content="Sending reply..."
  loading=true
@@ -313,6 +322,7 @@ expires: 2025-10-18
 ## Enhanced Status Badge System
 
 ### Polaris Badge Implementation
+
 ```typescript
 // Status mapping for Polaris Badge component
 const STATUS_MAPPING = {
@@ -321,7 +331,7 @@ const STATUS_MAPPING = {
     children: "Healthy"
   },
   attention: {
-    status: "critical" as const, 
+    status: "critical" as const,
     children: "Attention needed"
   },
   unconfigured: {
@@ -337,6 +347,7 @@ const STATUS_MAPPING = {
 ## Responsive Container Queries
 
 ### CSS Implementation for Polaris Alignment
+
 ```css
 /* Container query-based responsive behavior */
 .occ-dashboard-grid {
@@ -350,7 +361,7 @@ const STATUS_MAPPING = {
   .occ-dashboard-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .occ-tile-card {
     min-height: 320px;
   }
@@ -361,7 +372,7 @@ const STATUS_MAPPING = {
   .occ-dashboard-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .occ-tile-card {
     min-height: 280px;
   }
@@ -372,15 +383,15 @@ const STATUS_MAPPING = {
   .occ-dashboard-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .occ-tile-card {
     min-height: 240px;
   }
-  
+
   .occ-button-group {
     flex-direction: column;
   }
-  
+
   .occ-button {
     width: 100%;
   }
@@ -390,19 +401,20 @@ const STATUS_MAPPING = {
 ## Accessibility Annotations
 
 ### Focus Management Flow
+
 ```
 Tab Order for Dashboard:
 1. TopBar navigation
 2. User menu
 3. First tile CTA button
-4. Second tile CTA button  
+4. Second tile CTA button
 5. Third tile CTA button
 6. Fourth tile CTA button
 7. Fifth tile CTA button
 
 Tab Order for Modal (CX Escalation):
 1. Close button (×)
-2. Suggested reply textarea  
+2. Suggested reply textarea
 3. Internal notes textarea
 4. Action selection dropdown
 5. Cancel button
@@ -415,6 +427,7 @@ Escape Key Behavior:
 ```
 
 ### Screen Reader Announcements
+
 ```html
 <!-- Dashboard tile status announcements -->
 <div role="region" aria-labelledby="sales-pulse-title">
@@ -428,27 +441,24 @@ Escape Key Behavior:
 <!-- Modal announcements -->
 <Modal
   title="CX Escalation"
-  open={isOpen}
-  onClose={onClose}
+  open="{isOpen}"
+  onClose="{onClose}"
   aria-describedby="escalation-description"
 >
   <div id="escalation-description" className="sr-only">
-    Customer service escalation modal for Jamie Lee. 
-    Priority issue with SLA breach requiring immediate attention.
+    Customer service escalation modal for Jamie Lee. Priority issue with SLA
+    breach requiring immediate attention.
   </div>
 </Modal>
 
 <!-- Toast announcements -->
-<Toast
-  content="Reply sent successfully"
-  aria-live="assertive"
-  role="status"
-/>
+<Toast content="Reply sent successfully" aria-live="assertive" role="status" />
 ```
 
 ## Empty and Error State Enhancements
 
 ### Empty State - Polaris Implementation
+
 ```
 ┌─────────────────────────────────────┐
 │ [Card: sectioned]                   │
@@ -472,7 +482,8 @@ Escape Key Behavior:
 └─────────────────────────────────────┘
 ```
 
-### Error State - Polaris Implementation  
+### Error State - Polaris Implementation
+
 ```
 ┌─────────────────────────────────────┐
 │ [Card: sectioned]                   │
@@ -501,6 +512,7 @@ Escape Key Behavior:
 ```
 
 ### Loading State - Polaris Implementation
+
 ```
 ┌─────────────────────────────────────┐
 │ [Card: sectioned]                   │
@@ -522,55 +534,58 @@ Escape Key Behavior:
 ## Copy Deck Integration
 
 ### Tile Action Labels (English-only)
+
 ```typescript
 const TILE_COPY = {
   salesPulse: {
     title: "Sales Pulse",
     cta: "View Details",
-    ctaAriaLabel: "View sales pulse details and take action"
+    ctaAriaLabel: "View sales pulse details and take action",
   },
   fulfillmentHealth: {
-    title: "Fulfillment Health", 
+    title: "Fulfillment Health",
     cta: "View Details",
-    ctaAriaLabel: "View fulfillment health details"
+    ctaAriaLabel: "View fulfillment health details",
   },
   inventoryHeatmap: {
     title: "Inventory Heatmap",
-    cta: "Take Action", 
-    ctaAriaLabel: "Take action on inventory alerts"
+    cta: "Take Action",
+    ctaAriaLabel: "Take action on inventory alerts",
   },
   cxEscalations: {
     title: "CX Escalations",
     cta: "View & Reply",
-    ctaAriaLabel: "View customer escalation and send reply"
+    ctaAriaLabel: "View customer escalation and send reply",
   },
   seoContent: {
     title: "SEO & Content Watch",
     cta: "View Details",
-    ctaAriaLabel: "View SEO and content performance details"
-  }
+    ctaAriaLabel: "View SEO and content performance details",
+  },
 } as const;
 ```
 
 ### Status Messages (English-only)
+
 ```typescript
 const STATUS_COPY = {
   healthy: {
     label: "Healthy",
-    description: "All systems operating normally"
+    description: "All systems operating normally",
   },
   attention: {
-    label: "Attention needed", 
-    description: "Action required to resolve issues"
+    label: "Attention needed",
+    description: "Action required to resolve issues",
   },
   unconfigured: {
     label: "Configuration required",
-    description: "Integration setup needed"
-  }
+    description: "Integration setup needed",
+  },
 } as const;
 ```
 
 ### Modal Action Labels (English-only)
+
 ```typescript
 const MODAL_COPY = {
   cxEscalation: {
@@ -579,9 +594,9 @@ const MODAL_COPY = {
     secondaryAction: "Cancel",
     actionLabels: {
       reply: "Send Reply",
-      escalate: "Escalate to Manager", 
-      resolve: "Mark Resolved"
-    }
+      escalate: "Escalate to Manager",
+      resolve: "Mark Resolved",
+    },
   },
   salesPulse: {
     title: "Sales Pulse Review",
@@ -589,15 +604,16 @@ const MODAL_COPY = {
     secondaryAction: "Cancel",
     actionLabels: {
       log: "Log Follow-up",
-      escalate: "Escalate to Ops"
-    }
-  }
+      escalate: "Escalate to Ops",
+    },
+  },
 } as const;
 ```
 
 ## Figma Variables Export Preparation
 
 ### Token Categories for Figma
+
 ```json
 {
   "collections": {
@@ -605,7 +621,7 @@ const MODAL_COPY = {
       "modes": ["light"],
       "variables": {
         "status/healthy/text": "#1a7f37",
-        "status/healthy/background": "#e3f9e5", 
+        "status/healthy/background": "#e3f9e5",
         "status/healthy/border": "#2e844a",
         "status/attention/text": "#d82c0d",
         "status/attention/background": "#fff4f4",
@@ -616,7 +632,7 @@ const MODAL_COPY = {
       "modes": ["base"],
       "variables": {
         "tile/padding": "20px",
-        "tile/gap": "20px", 
+        "tile/gap": "20px",
         "tile/internal": "16px",
         "modal/padding": "24px",
         "modal/gap": "16px"
@@ -627,7 +643,7 @@ const MODAL_COPY = {
       "variables": {
         "size/heading": "1.15rem",
         "size/metric": "1.5rem",
-        "size/body": "1rem", 
+        "size/body": "1rem",
         "size/meta": "0.85rem",
         "weight/regular": 400,
         "weight/semibold": 600
@@ -638,6 +654,7 @@ const MODAL_COPY = {
 ```
 
 ### Component Property Mapping
+
 ```json
 {
   "components": {
@@ -651,7 +668,7 @@ const MODAL_COPY = {
     },
     "OCC Modal": {
       "properties": {
-        "background": "occ-colors/surface/primary", 
+        "background": "occ-colors/surface/primary",
         "padding": "occ-spacing/modal/padding",
         "border-radius": "occ-effects/radius/lg",
         "box-shadow": "occ-effects/shadow/xl"
@@ -664,6 +681,7 @@ const MODAL_COPY = {
 ## Visual Hierarchy Validation
 
 ### Information Architecture
+
 ```
 Priority 1 (Immediate attention):
 - Status badges (especially "Attention needed")
@@ -672,7 +690,7 @@ Priority 1 (Immediate attention):
 
 Priority 2 (Important context):
 - Tile titles
-- Key performance indicators 
+- Key performance indicators
 - Secondary data points
 
 Priority 3 (Supporting information):
@@ -682,13 +700,14 @@ Priority 3 (Supporting information):
 ```
 
 ### Contrast Validation
+
 ```css
 /* WCAG 2.2 AA compliance verification */
 .occ-text-primary {
   color: #202223; /* 4.5:1 on white */
 }
 
-.occ-text-secondary {  
+.occ-text-secondary {
   color: #637381; /* 4.5:1 on white */
 }
 
@@ -697,7 +716,7 @@ Priority 3 (Supporting information):
 }
 
 .occ-status-attention-text {
-  color: #d82c0d; /* 4.5:1 on white */ 
+  color: #d82c0d; /* 4.5:1 on white */
 }
 
 .occ-button-primary {
@@ -709,13 +728,15 @@ Priority 3 (Supporting information):
 ## Implementation Handoff Notes
 
 ### Development Priority
+
 1. **Responsive grid implementation** - Container queries for breakpoint behavior
-2. **Polaris component integration** - Replace custom components with Polaris equivalents  
+2. **Polaris component integration** - Replace custom components with Polaris equivalents
 3. **Toast notification system** - Implement Polaris Toast with proper announcements
 4. **Focus management** - Ensure keyboard navigation follows Polaris patterns
 5. **Copy integration** - Replace hardcoded strings with copy deck references
 
 ### QA Testing Requirements
+
 - **Responsive behavior** - Test all breakpoints with real content
 - **Screen reader compatibility** - Verify announcements and focus management
 - **Keyboard navigation** - Tab order and escape key behavior
@@ -723,6 +744,7 @@ Priority 3 (Supporting information):
 - **Loading states** - Verify skeleton and spinner implementations
 
 ### Figma Handoff (Pending Access)
+
 - **Variable collections** - Import token JSON as Figma variables
 - **Component library** - Create master components with variable mapping
 - **Prototype flows** - Interactive demos of approval and error flows

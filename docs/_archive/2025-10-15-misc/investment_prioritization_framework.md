@@ -17,6 +17,7 @@
 **RICE Score = (Reach × Impact × Confidence) / Effort**
 
 **Example: Bulk Approve Feature**:
+
 - Reach: 200 power users
 - Impact: 2 (high time savings)
 - Confidence: 80%
@@ -28,4 +29,3 @@
 
 **Document Path**: `docs/investment_prioritization_framework.md`
 **Status**: RICE framework with examples
-

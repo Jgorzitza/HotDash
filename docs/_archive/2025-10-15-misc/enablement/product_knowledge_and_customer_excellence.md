@@ -10,7 +10,9 @@
 ## PART 1: Hot Rodan Product Knowledge Training (Task 2K)
 
 ### Module Overview
+
 **Why Product Knowledge Matters:**
+
 - Accurate responses to customer questions
 - Confidence when reviewing AI suggestions
 - Catch AI errors about products
@@ -24,6 +26,7 @@
 **The Hot Rodan Essentials Collection:**
 
 **1. Daily Cleanser**
+
 - **Purpose:** Gentle daily face wash
 - **Key Ingredients:** Hyaluronic acid, chamomile extract
 - **Skin Types:** All types, especially sensitive
@@ -32,6 +35,7 @@
 - **Common Questions:** "Is it safe for sensitive skin?" (Yes), "Does it remove makeup?" (Light makeup yes, heavy no - recommend Double Cleanse)
 
 **2. Super Serum**
+
 - **Purpose:** Anti-aging, hydration, brightening
 - **Key Ingredients:** Niacinamide, peptides, hyaluronic acid
 - **Does NOT contain:** Retinol, vitamin C (for sensitive skin)
@@ -41,6 +45,7 @@
 - **Common Questions:** "Can I use with retinol?" (Yes, apply serum first)
 
 **3. Night Cream**
+
 - **Purpose:** Deep overnight hydration and repair
 - **Key Ingredients:** Ceramides, peptides, botanical oils
 - **Texture:** Rich, creamy
@@ -50,6 +55,7 @@
 - **Common Questions:** "Too heavy for oily skin?" (Yes, recommend Day Moisturizer instead)
 
 **4. Day Moisturizer SPF 30**
+
 - **Purpose:** Daily hydration + sun protection
 - **Key Ingredients:** SPF 30, antioxidants, hyaluronic acid
 - **Skin Types:** All types, especially combination/oily
@@ -58,6 +64,7 @@
 - **Common Questions:** "Do I need separate sunscreen?" (No, SPF 30 is sufficient for daily use)
 
 **5. Eye Treatment**
+
 - **Purpose:** Reduce puffiness, dark circles, fine lines
 - **Key Ingredients:** Caffeine, peptides, vitamin E
 - **Skin Types:** All types
@@ -70,6 +77,7 @@
 ### Section 2: Product Specifications Quick Reference
 
 **Ingredient Allergen Check:**
+
 ```
 Common Customer Allergies/Sensitivities:
 
@@ -84,11 +92,13 @@ Cruelty-free: Yes ✓
 ```
 
 **Product Shelf Life:**
+
 - Unopened: 2 years from manufacture date
 - Opened: Use within 12 months
 - Storage: Cool, dry place (not bathroom if very humid)
 
 **Product Sizes:**
+
 - Full Size: Standard sizes listed above
 - Travel Size: 15ml options available for Cleanser and Moisturizer ($12-18)
 - Sample Size: Not available for individual purchase (promotional only)
@@ -98,6 +108,7 @@ Cruelty-free: Yes ✓
 ### Section 3: Product Combinations & Routines
 
 **The Complete Morning Routine:**
+
 ```
 1. Daily Cleanser
 2. Super Serum
@@ -110,6 +121,7 @@ Lasts: 2-3 months
 ```
 
 **The Complete Evening Routine:**
+
 ```
 1. Daily Cleanser (or Double Cleanse if wearing makeup)
 2. Super Serum
@@ -122,6 +134,7 @@ Lasts: 2-3 months
 ```
 
 **Minimal Routine (Budget-Conscious):**
+
 ```
 Morning: Cleanser + Day Moisturizer SPF
 Evening: Cleanser + Night Cream
@@ -141,6 +154,7 @@ A: "If choosing one product, start with Super Serum - it's our most versatile an
 A: "Yes! All products are designed to work together. Start with cleansing, then serum, then eye treatment, then moisturizer."
 
 **Q: "I have [skin condition], what do you recommend?"**
+
 - Acne-prone: Day Moisturizer (lighter), Super Serum
 - Dry skin: Night Cream, Super Serum
 - Sensitive: Daily Cleanser, Super Serum (formulated for sensitive)
@@ -169,6 +183,7 @@ A: "Our products don't contain retinol or harsh ingredients, but we always recom
 ✓ **Skin type compatibility** - Appropriate for customer's mentioned skin type
 
 **Red Flags (Reject if you see these):**
+
 - AI mentions ingredients not in our products
 - AI gives wrong price
 - AI recommends product incompatible with stated concern
@@ -180,9 +195,11 @@ A: "Our products don't contain retinol or harsh ingredients, but we always recom
 ## PART 2: Customer Service Excellence (Task 2L)
 
 ### Module Overview
+
 **Understanding Hot Rodan Customers:**
 
 Our customers are skincare enthusiasts who:
+
 - Value quality ingredients and transparency
 - Research products before purchasing
 - Expect knowledgeable, honest communication
@@ -197,18 +214,21 @@ Our customers are skincare enthusiasts who:
 **Our Core Values:**
 
 **1. Honesty Over Upsell**
+
 - Don't push products customers don't need
 - If minimal routine works for them, say so
 - Admit when we don't know something
 - Set realistic expectations (results take time)
 
 **2. Education Over Sales**
+
 - Help customers understand their skin
 - Explain why products work
 - Teach proper usage
 - Empower informed decisions
 
 **3. Relationship Over Transaction**
+
 - Think long-term customer value
 - Remember repeat customers
 - Celebrate their skincare journey
@@ -221,6 +241,7 @@ Our customers are skincare enthusiasts who:
 **The Hot Rodan Tone:**
 
 **What We Do:**
+
 - ✓ Warm, friendly, knowledgeable
 - ✓ Use "we" and "our community"
 - ✓ Celebrate their skincare journey
@@ -228,6 +249,7 @@ Our customers are skincare enthusiasts who:
 - ✓ Personal but professional
 
 **What We Avoid:**
+
 - ✗ Overly technical jargon
 - ✗ Pushy sales language
 - ✗ False promises ("miracle cure")
@@ -237,12 +259,15 @@ Our customers are skincare enthusiasts who:
 **Example Comparisons:**
 
 **Generic Response:**
+
 > "Your return has been processed. Thank you for your order."
 
 **Hot Rodan Response:**
+
 > "We've processed your return - you should see the refund in 3-5 business days. We're sorry the Night Cream didn't work for your skin. If you're still looking for evening hydration, our Day Moisturizer actually works well at night for oilier skin types. Just a thought! Let us know if we can help you find your perfect routine."
 
 **See the difference:**
+
 - Personal, helpful, educational
 - Offers alternative (not pushy, just helpful)
 - "Your perfect routine" = community building
@@ -256,6 +281,7 @@ Our customers are skincare enthusiasts who:
 **Customer:** "I've used Super Serum for 2 weeks and don't see any difference."
 
 **Response Framework:**
+
 1. **Validate:** "Thanks for giving it a try and for your patience!"
 2. **Educate:** "Most customers start seeing visible results around 4-6 weeks with consistent use. Skincare takes time as your skin cells turnover."
 3. **Check usage:** "Just to make sure - are you using it twice daily after cleansing and before moisturizer?"
@@ -269,6 +295,7 @@ Our customers are skincare enthusiasts who:
 **Customer:** "I started using the Super Serum and now I'm breaking out!"
 
 **Response Framework:**
+
 1. **Take seriously:** "I'm sorry you're experiencing breakouts - that's frustrating!"
 2. **Explain:** "Sometimes new products cause 'purging' in the first 2-3 weeks as your skin adjusts, especially if it's speeding up cell turnover. However, true allergic reactions are also possible."
 3. **Advise:** "If it's mild (few small bumps), you might try pushing through another week. If it's severe or uncomfortable, stop use immediately."
@@ -282,6 +309,7 @@ Our customers are skincare enthusiasts who:
 **Customer:** "Why is this so expensive?"
 
 **Response Framework:**
+
 1. **Acknowledge:** "I understand skincare is an investment!"
 2. **Explain value:** "Our pricing reflects high-quality ingredients, extensive testing, and a formula that lasts 2-3 months with daily use. That's about $1.30/day for Super Serum."
 3. **Break down:** "Compared to similar serums with these ingredients, we're actually mid-range pricing."
@@ -295,6 +323,7 @@ Our customers are skincare enthusiasts who:
 **Personalization Techniques:**
 
 **1. Remember Repeat Customers**
+
 ```
 Check order history before responding:
 - "Welcome back! I see you loved the Super Serum!"
@@ -303,6 +332,7 @@ Check order history before responding:
 ```
 
 **2. Celebrate Milestones**
+
 ```
 - First purchase: "Welcome to Hot Rodan! Excited for you to try [product]!"
 - 6-month anniversary: "You've been with us 6 months - thank you!"
@@ -310,6 +340,7 @@ Check order history before responding:
 ```
 
 **3. Show Genuine Interest**
+
 ```
 Customer mentions: "I'm preparing for my wedding"
 Response: "Congratulations on your wedding! When's the big day? If you're starting a new routine, I'd recommend beginning at least 6-8 weeks before for best results."
@@ -325,6 +356,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 **When to Escalate Skincare-Specific Issues:**
 
 **Always Escalate:**
+
 - Severe allergic reactions (rash, swelling, difficulty breathing)
 - Product safety concerns (contamination, tampering)
 - Medical advice requests ("I have eczema, what should I use?")
@@ -332,6 +364,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 - Viral social media complaints
 
 **Handle Yourself:**
+
 - Mild product reactions (small breakout, slight redness)
 - Standard returns/exchanges
 - Product recommendations
@@ -339,6 +372,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 - Ingredient questions (if you know answer)
 
 **Gray Area (Escalate if Unsure):**
+
 - Pregnancy/breastfeeding safety (always better to escalate)
 - Prescription medication interactions
 - Severe skin conditions
@@ -351,6 +385,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 **We're Not Just Selling Products - We're Building a Skincare Community:**
 
 **Language That Builds Community:**
+
 - ✓ "Welcome to our community!"
 - ✓ "Our customers love..."
 - ✓ "You're going to love your skincare journey!"
@@ -358,6 +393,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 - ✓ "Let us know how it goes!"
 
 **Actions That Build Community:**
+
 - Follow up on big purchases ("How's your new routine going?")
 - Celebrate customer wins (great review? Acknowledge it!)
 - Share user tips ("Other customers with oily skin love using...")
@@ -376,6 +412,7 @@ Response: "Sensitive skin here too! I totally understand being cautious with new
 5. Customer asks how long a 30ml Super Serum lasts. Answer?
 
 **Answers:**
+
 1. "No, Super Serum doesn't contain retinol - it's formulated with niacinamide and peptides, which are gentler for sensitive skin."
 2. "Super Serum, Eye Treatment, and Night Cream all target anti-aging concerns."
 3. "Day Moisturizer SPF 30 is lighter and better for oily skin than Night Cream."
@@ -396,6 +433,7 @@ Rewrite this generic response in Hot Rodan tone:
 ## Quick Reference Cheat Sheet
 
 **Product Prices (Memorize):**
+
 - Daily Cleanser: $32
 - Super Serum: $78 (most popular)
 - Night Cream: $65
@@ -403,12 +441,14 @@ Rewrite this generic response in Hot Rodan tone:
 - Eye Treatment: $48
 
 **Key Differentiators:**
+
 - No retinol or vitamin C (sensitive skin friendly)
 - All vegan except Night Cream
 - Cruelty-free
 - Results in 4-6 weeks
 
 **Tone Essentials:**
+
 - Warm, educated, community-focused
 - Honest over pushy
 - Educational over sales
@@ -422,4 +462,3 @@ Rewrite this generic response in Hot Rodan tone:
 **Purpose:** Hot Rodan product expertise and customer relationship mastery
 
 ✅ **TASKS 2K & 2L COMPLETE**
-

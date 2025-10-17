@@ -23,13 +23,13 @@ function assertEnv(name: string) {
 
 async function publerFetch(
   path: string,
-  init: RequestInit & { workspaceId?: string } = {}
+  init: RequestInit & { workspaceId?: string } = {},
 ) {
   const apiKey = assertEnv("PUBLER_API_KEY");
   const workspace = init.workspaceId || process.env.PUBLER_WORKSPACE_ID;
   if (!workspace)
     throw new Error(
-      "Missing Publer workspace id (PUBLER_WORKSPACE_ID or pass workspaceId)"
+      "Missing Publer workspace id (PUBLER_WORKSPACE_ID or pass workspaceId)",
     );
   const headers = {
     Authorization: `Bearer-API ${apiKey}`,
@@ -62,7 +62,7 @@ export async function listAccounts(workspaceId?: string) {
 }
 
 export async function schedulePost(
-  input: ScheduleInput
+  input: ScheduleInput,
 ): Promise<PublerJobResponse> {
   const body = {
     bulk: {

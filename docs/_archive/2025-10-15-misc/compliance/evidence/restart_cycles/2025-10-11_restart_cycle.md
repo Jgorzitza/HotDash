@@ -6,6 +6,7 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-12-11
 ---
+
 # Restart Cycle Evidence — 2025-10-11
 
 - **Command**: `git stash push --include-untracked --message "restart-cycle-2025-10-11"`

@@ -1,6 +1,7 @@
 # RULES — Docs, Tasks, Secrets, and Agents
 
 ## Allowed Markdown (CI-enforced)
+
 ```
 README.md
 APPLY.md
@@ -19,16 +20,19 @@ docs/_archive/**
 ```
 
 ## Process
+
 - **Single ledger**: GitHub Issues (Task form) with `Agent`, `Definition of Done`, `Acceptance checks`, and **Allowed paths**.
 - PR must state `Fixes #<issue>`, satisfy DoD, and pass checks. Danger enforces.
 - Agents write **only** to their daily feedback file and code paths.
 - Manager owns NORTH_STAR, RULES, directions, and PROJECT_PLAN.
 
 ## Security
+
 - Enable GitHub **push protection** & secret scanning.
 - **Gitleaks** runs on every PR & push; SARIF to Security tab.
 - No secrets in code or docs; store in GitHub Environments/Secrets only.
 
 ## Agents & HITL
+
 - **Dev agents** (Cursor/Codex/Claude): follow runbooks & directions; no Agent SDK.
 - **In‑app agents** (OpenAI Agents SDK): HITL enforced for `ai-customer` using built‑in interruptions.

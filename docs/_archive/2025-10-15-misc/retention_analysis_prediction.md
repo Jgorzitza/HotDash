@@ -28,4 +28,3 @@
 
 **Document Path**: `docs/retention_analysis_prediction.md`
 **Status**: Retention model with prediction algorithm
-

@@ -25,7 +25,9 @@ describe("Chatwoot Conversations API Contract", () => {
       expect(convo.tags).toBeInstanceOf(Array);
 
       // Validate status enum
-      expect(["open", "pending", "resolved", "snoozed"]).toContain(convo.status);
+      expect(["open", "pending", "resolved", "snoozed"]).toContain(
+        convo.status,
+      );
     }
   });
 
@@ -45,7 +47,7 @@ describe("Chatwoot Conversations API Contract", () => {
 
   test("status enum coverage", () => {
     const conversations = conversationsFixture.payload;
-    const statuses = new Set(conversations.map(c => c.status));
+    const statuses = new Set(conversations.map((c) => c.status));
 
     // Fixture should cover multiple status types
     expect(statuses.size).toBeGreaterThan(1);
@@ -57,8 +59,8 @@ describe("Chatwoot Conversations API Contract", () => {
   test("tags array can be empty", () => {
     const conversations = conversationsFixture.payload;
 
-    const withTags = conversations.filter(c => c.tags.length > 0);
-    const withoutTags = conversations.filter(c => c.tags.length === 0);
+    const withTags = conversations.filter((c) => c.tags.length > 0);
+    const withoutTags = conversations.filter((c) => c.tags.length === 0);
 
     // Fixture should include both cases
     expect(withTags.length).toBeGreaterThan(0);
@@ -76,7 +78,7 @@ describe("Chatwoot Conversations API Contract", () => {
     const conversations = conversationsFixture.payload;
 
     // Test meta.sender.name (highest priority)
-    const withSenderName = conversations.filter(c => c.meta?.sender?.name);
+    const withSenderName = conversations.filter((c) => c.meta?.sender?.name);
     expect(withSenderName.length).toBeGreaterThan(0);
 
     for (const convo of withSenderName) {
@@ -90,7 +92,7 @@ describe("Chatwoot Conversations API Contract", () => {
 
     // Test contacts[].name (fallback)
     const withContactName = conversations.filter(
-      c => !c.meta?.sender?.name && c.contacts?.length > 0
+      (c) => !c.meta?.sender?.name && c.contacts?.length > 0,
     );
 
     if (withContactName.length > 0) {
@@ -106,7 +108,9 @@ describe("Chatwoot Conversations API Contract", () => {
   test("escalation tag detection", () => {
     const conversations = conversationsFixture.payload;
 
-    const escalated = conversations.filter(c => c.tags.includes("escalation"));
+    const escalated = conversations.filter((c) =>
+      c.tags.includes("escalation"),
+    );
     expect(escalated.length).toBeGreaterThan(0);
 
     for (const convo of escalated) {
@@ -125,7 +129,7 @@ describe("Chatwoot Conversations API Contract", () => {
 
   test("conversation IDs are unique", () => {
     const conversations = conversationsFixture.payload;
-    const ids = conversations.map(c => c.id);
+    const ids = conversations.map((c) => c.id);
     const uniqueIds = new Set(ids);
 
     expect(uniqueIds.size).toBe(ids.length);

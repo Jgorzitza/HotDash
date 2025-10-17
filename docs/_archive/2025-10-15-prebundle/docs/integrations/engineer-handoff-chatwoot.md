@@ -15,33 +15,33 @@
 **Integration Code for Engineer:**
 
 ```typescript
-import { createHmac } from 'crypto';
+import { createHmac } from "crypto";
 
 function verifyWebhookSignature(
   payload: string,
   signature: string | null,
-  secret: string
+  secret: string,
 ): boolean {
   if (!signature) return false;
-  
-  const hmac = createHmac('sha256', secret);
+
+  const hmac = createHmac("sha256", secret);
   hmac.update(payload);
-  const expectedSignature = hmac.digest('hex');
-  
+  const expectedSignature = hmac.digest("hex");
+
   return signature === expectedSignature;
 }
 
 // Use in webhook handler:
 const rawBody = await request.text();
-const signature = request.headers.get('X-Chatwoot-Signature');
+const signature = request.headers.get("X-Chatwoot-Signature");
 const isValid = verifyWebhookSignature(
   rawBody,
   signature,
-  process.env.CHATWOOT_WEBHOOK_SECRET
+  process.env.CHATWOOT_WEBHOOK_SECRET,
 );
 
 if (!isValid) {
-  return new Response('Invalid signature', { status: 401 });
+  return new Response("Invalid signature", { status: 401 });
 }
 ```
 
@@ -52,11 +52,13 @@ if (!isValid) {
 **Testing Script:** `scripts/ops/test-chatwoot-apis.sh`
 
 **Verified Endpoints:**
+
 - ✅ `GET /api/v1/accounts/1/conversations?status=open` - List open conversations
-- ✅ `GET /api/v1/accounts/1/conversations` - List all conversations  
+- ✅ `GET /api/v1/accounts/1/conversations` - List all conversations
 - ✅ `GET /api/v1/accounts/1/labels` - List labels/tags
 
 **Endpoints Requiring Conversation ID (documented for integration):**
+
 - `GET /conversations/{id}/messages` - List conversation messages
 - `POST /conversations/{id}/messages` - Create message (private note or public reply)
 - `POST /conversations/{id}/assignments` - Assign agent to conversation
@@ -69,8 +71,9 @@ if (!isValid) {
 **Location:** `supabase/functions/chatwoot-webhook/index.ts`
 
 **Current State:**
+
 - Signature verification: Implemented ✅
-- Event filtering: Implemented ✅  
+- Event filtering: Implemented ✅
 - Observability logging: Implemented ✅
 - LlamaIndex integration: TODO (needs port 8005)
 - Agent SDK integration: TODO (needs port 8006)
@@ -86,6 +89,7 @@ if (!isValid) {
 **Expected Endpoint:** `https://hotdash-agent-service.fly.dev/webhooks/chatwoot`
 
 **Once Deployed:**
+
 1. Chatwoot agent will configure webhook in Chatwoot UI
 2. Subscribe to `message_created` event
 3. Test webhook delivery
@@ -133,6 +137,7 @@ if (!isValid) {
 **Depends On:** Task 2 completion
 
 **Test Plan Ready:**
+
 1. Send test message through Chatwoot
 2. Verify webhook delivered to Agent SDK
 3. Verify private note created with agent draft
@@ -176,7 +181,6 @@ Customer Message (Email/Chat)
      - `CHATWOOT_WEBHOOK_SECRET` (generate and share with Chatwoot agent)
      - `CHATWOOT_API_TOKEN` (from vault)
      - `CHATWOOT_BASE_URL=https://hotdash-chatwoot.fly.dev`
-   
 2. **Confirm Deployment**
    - Test endpoint responds to POST requests
    - Share deployment status with @chatwoot agent
@@ -188,7 +192,7 @@ Customer Message (Email/Chat)
    - Integrate with webhook handler
    - Test semantic search
 
-2. **Agent SDK Service (port 8006)**  
+2. **Agent SDK Service (port 8006)**
    - Deploy draft generation service
    - Integrate OpenAI for response drafting
    - Test confidence scoring
@@ -202,18 +206,18 @@ Customer Message (Email/Chat)
 
 ## 📊 Current Sprint Status
 
-| Task | Owner | Status | Progress |
-|------|-------|--------|----------|
-| 1. Agent SDK Plan | Chatwoot | ✅ Complete | 100% |
-| 2. Webhook Config | Chatwoot | ⏳ Blocked | 0% (needs @engineer) |
-| 3. HMAC Verification | Chatwoot | ✅ Complete | 100% |
-| 4. API Testing | Chatwoot | ✅ Complete | 100% |
-| 5. E2E Testing | Chatwoot | ⏳ Blocked | 0% (depends on #2) |
-| | | | |
-| **Deploy Webhook** | **Engineer** | **⏳ Pending** | **Blocks tasks 2 & 5** |
-| Deploy LlamaIndex | Engineer | 📋 Planned | Week 2 |
-| Deploy Agent SDK | Engineer | 📋 Planned | Week 2 |
-| Deploy Migrations | Engineer | 📋 Planned | Week 2 |
+| Task                 | Owner        | Status         | Progress               |
+| -------------------- | ------------ | -------------- | ---------------------- |
+| 1. Agent SDK Plan    | Chatwoot     | ✅ Complete    | 100%                   |
+| 2. Webhook Config    | Chatwoot     | ⏳ Blocked     | 0% (needs @engineer)   |
+| 3. HMAC Verification | Chatwoot     | ✅ Complete    | 100%                   |
+| 4. API Testing       | Chatwoot     | ✅ Complete    | 100%                   |
+| 5. E2E Testing       | Chatwoot     | ⏳ Blocked     | 0% (depends on #2)     |
+|                      |              |                |                        |
+| **Deploy Webhook**   | **Engineer** | **⏳ Pending** | **Blocks tasks 2 & 5** |
+| Deploy LlamaIndex    | Engineer     | 📋 Planned     | Week 2                 |
+| Deploy Agent SDK     | Engineer     | 📋 Planned     | Week 2                 |
+| Deploy Migrations    | Engineer     | 📋 Planned     | Week 2                 |
 
 **Overall Progress:** 60% (3/5 Chatwoot tasks complete)  
 **Critical Path:** Webhook deployment unblocks 40% remaining work
@@ -234,6 +238,7 @@ Customer Message (Email/Chat)
 ## 💬 Communication
 
 **Slack/Coordination:**
+
 - Tag @engineer when webhook endpoint is live
 - Tag @chatwoot to proceed with configuration
 - Tag @reliability for worker scaling (512MB → 1024MB)
@@ -245,6 +250,7 @@ Customer Message (Email/Chat)
 ## ✅ Success Criteria
 
 **For Webhook Deployment:**
+
 - [ ] Endpoint responds to POST requests
 - [ ] HMAC signature verification working
 - [ ] Environment variables configured
@@ -252,6 +258,7 @@ Customer Message (Email/Chat)
 - [ ] Test payload accepted and logged
 
 **For Integration Testing (after deployment):**
+
 - [ ] Chatwoot webhook configured
 - [ ] Test message triggers webhook
 - [ ] Private note created in Chatwoot
@@ -264,4 +271,3 @@ Customer Message (Email/Chat)
 
 **Last Updated:** 2025-10-11T21:05:44Z  
 **Contact:** Chatwoot Agent (via feedback/chatwoot.md)
-

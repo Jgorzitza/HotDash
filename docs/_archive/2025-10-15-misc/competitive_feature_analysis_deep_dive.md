@@ -21,20 +21,22 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 ### Category 1: AI Response Generation
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **GPT-4 Integration** | ✅ | ❌ (proprietary) | ❌ | ✅ | ❌ | ❌ | MUST-HAVE |
-| **Confidence Scoring** | ✅ | ✅ | ❌ | ⚠️ Limited | ✅ | ❌ | MUST-HAVE |
-| **Source Citations** | ✅ | ⚠️ Limited | ❌ | ❌ | ❌ | ❌ | **UNIQUE** ✨ |
-| **Multi-Language** | 🔄 Phase 4 | ✅ | ✅ | ✅ | ✅ | ⚠️ Limited | NICE-TO-HAVE |
-| **Tone Adjustment** | 🔄 Phase 2 | ✅ | ❌ | ⚠️ Limited | ✅ | ❌ | SHOULD-HAVE |
-| **Sentiment Analysis** | 🔄 Phase 2 | ✅ | ❌ | ✅ | ✅ | ⚠️ Limited | MUST-HAVE |
+| Feature                | HotDash    | Forethought      | Zendesk | Intercom   | DigitalGenius | Kustomer   | Priority      |
+| ---------------------- | ---------- | ---------------- | ------- | ---------- | ------------- | ---------- | ------------- |
+| **GPT-4 Integration**  | ✅         | ❌ (proprietary) | ❌      | ✅         | ❌            | ❌         | MUST-HAVE     |
+| **Confidence Scoring** | ✅         | ✅               | ❌      | ⚠️ Limited | ✅            | ❌         | MUST-HAVE     |
+| **Source Citations**   | ✅         | ⚠️ Limited       | ❌      | ❌         | ❌            | ❌         | **UNIQUE** ✨ |
+| **Multi-Language**     | 🔄 Phase 4 | ✅               | ✅      | ✅         | ✅            | ⚠️ Limited | NICE-TO-HAVE  |
+| **Tone Adjustment**    | 🔄 Phase 2 | ✅               | ❌      | ⚠️ Limited | ✅            | ❌         | SHOULD-HAVE   |
+| **Sentiment Analysis** | 🔄 Phase 2 | ✅               | ❌      | ✅         | ✅            | ⚠️ Limited | MUST-HAVE     |
 
 **Gaps to Fill**:
+
 - ✅ Sentiment Analysis (Phase 2) - competitive necessity
 - ⚠️ Multi-Language (Phase 4) - not critical for US market
 
 **Unique Strengths to Maintain**:
+
 - ✨ Source Citations (operators trust and verify)
 - ✨ GPT-4 (best-in-class language model)
 
@@ -42,16 +44,17 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 ### Category 2: Human Oversight
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **Approval Queue** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | **UNIQUE** ✨ |
-| **Edit Before Send** | ✅ | ⚠️ Side panel | ❌ | ❌ | ❌ | ⚠️ Limited | **UNIQUE** ✨ |
-| **Inline Editing** | 🔄 Phase 2 | ❌ | ❌ | ❌ | ❌ | ❌ | SHOULD-HAVE |
-| **Bulk Approve** | 🔄 Phase 2 | ❌ | ❌ | ❌ | ❌ | ❌ | SHOULD-HAVE |
-| **One-Click Escalate** | ✅ | ⚠️ Manual | ✅ | ⚠️ Manual | ✅ | ✅ | MUST-HAVE |
-| **Operator Override** | ✅ Always | ⚠️ Sometimes | ❌ | ❌ | ❌ | ⚠️ Sometimes | **UNIQUE** ✨ |
+| Feature                | HotDash    | Forethought   | Zendesk | Intercom  | DigitalGenius | Kustomer     | Priority      |
+| ---------------------- | ---------- | ------------- | ------- | --------- | ------------- | ------------ | ------------- |
+| **Approval Queue**     | ✅         | ❌            | ❌      | ❌        | ❌            | ❌           | **UNIQUE** ✨ |
+| **Edit Before Send**   | ✅         | ⚠️ Side panel | ❌      | ❌        | ❌            | ⚠️ Limited   | **UNIQUE** ✨ |
+| **Inline Editing**     | 🔄 Phase 2 | ❌            | ❌      | ❌        | ❌            | ❌           | SHOULD-HAVE   |
+| **Bulk Approve**       | 🔄 Phase 2 | ❌            | ❌      | ❌        | ❌            | ❌           | SHOULD-HAVE   |
+| **One-Click Escalate** | ✅         | ⚠️ Manual     | ✅      | ⚠️ Manual | ✅            | ✅           | MUST-HAVE     |
+| **Operator Override**  | ✅ Always  | ⚠️ Sometimes  | ❌      | ❌        | ❌            | ⚠️ Sometimes | **UNIQUE** ✨ |
 
 **Competitive Advantage**:
+
 - ✨ **Mandatory Approval** - This is our moat. No competitor requires human approval for every response.
 - ✨ **Full Operator Control** - Operators can always override AI
 
@@ -61,19 +64,21 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 ### Category 3: Learning & Improvement
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **Learning from Edits** | ✅ | ❌ | ❌ | ❌ | ⚠️ Manual | ❌ | **UNIQUE** ✨ |
-| **Fine-Tuning** | 🔄 Phase 3 | ❌ | ❌ | ❌ | ⚠️ Enterprise | ❌ | NICE-TO-HAVE |
-| **A/B Testing** | 🔄 Phase 3 | ✅ | ❌ | ⚠️ Limited | ✅ | ❌ | SHOULD-HAVE |
-| **Pattern Recognition** | 🔄 Phase 3 | ✅ | ❌ | ⚠️ Limited | ✅ | ❌ | SHOULD-HAVE |
-| **Feedback Loop** | ✅ | ⚠️ Manual | ❌ | ⚠️ Limited | ⚠️ Limited | ❌ | **UNIQUE** ✨ |
+| Feature                 | HotDash    | Forethought | Zendesk | Intercom   | DigitalGenius | Kustomer | Priority      |
+| ----------------------- | ---------- | ----------- | ------- | ---------- | ------------- | -------- | ------------- |
+| **Learning from Edits** | ✅         | ❌          | ❌      | ❌         | ⚠️ Manual     | ❌       | **UNIQUE** ✨ |
+| **Fine-Tuning**         | 🔄 Phase 3 | ❌          | ❌      | ❌         | ⚠️ Enterprise | ❌       | NICE-TO-HAVE  |
+| **A/B Testing**         | 🔄 Phase 3 | ✅          | ❌      | ⚠️ Limited | ✅            | ❌       | SHOULD-HAVE   |
+| **Pattern Recognition** | 🔄 Phase 3 | ✅          | ❌      | ⚠️ Limited | ✅            | ❌       | SHOULD-HAVE   |
+| **Feedback Loop**       | ✅         | ⚠️ Manual   | ❌      | ⚠️ Limited | ⚠️ Limited    | ❌       | **UNIQUE** ✨ |
 
 **Competitive Advantage**:
+
 - ✨ **Automatic Learning from Operator Edits** - System improves continuously without manual retraining
 - ✨ **Feedback Loop** - Every operator action teaches the AI
 
 **Gap to Fill**:
+
 - A/B Testing (Phase 3) - competitive parity, not urgent
 - Pattern Recognition (Phase 3) - nice-to-have for optimization
 
@@ -81,39 +86,43 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 ### Category 4: E-commerce Integration
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **Order Lookup** | ✅ | ⚠️ Generic | ⚠️ Generic | ⚠️ Generic | ✅ | ⚠️ Generic | MUST-HAVE |
-| **Inventory Check** | ✅ | ❌ | ❌ | ❌ | ⚠️ Limited | ❌ | **UNIQUE** ✨ |
-| **Shipping Tracking** | ✅ | ⚠️ Generic | ⚠️ Generic | ⚠️ Generic | ✅ | ⚠️ Generic | MUST-HAVE |
-| **Return Automation** | 🔄 Phase 3 | ❌ | ❌ | ❌ | ✅ | ❌ | SHOULD-HAVE |
-| **Refund Processing** | 🔄 Phase 3 | ❌ | ❌ | ❌ | ✅ | ❌ | SHOULD-HAVE |
-| **Product Recommendations** | 🔄 Phase 3 | ❌ | ❌ | ⚠️ Limited | ⚠️ Limited | ❌ | NICE-TO-HAVE |
+| Feature                     | HotDash    | Forethought | Zendesk    | Intercom   | DigitalGenius | Kustomer   | Priority      |
+| --------------------------- | ---------- | ----------- | ---------- | ---------- | ------------- | ---------- | ------------- |
+| **Order Lookup**            | ✅         | ⚠️ Generic  | ⚠️ Generic | ⚠️ Generic | ✅            | ⚠️ Generic | MUST-HAVE     |
+| **Inventory Check**         | ✅         | ❌          | ❌         | ❌         | ⚠️ Limited    | ❌         | **UNIQUE** ✨ |
+| **Shipping Tracking**       | ✅         | ⚠️ Generic  | ⚠️ Generic | ⚠️ Generic | ✅            | ⚠️ Generic | MUST-HAVE     |
+| **Return Automation**       | 🔄 Phase 3 | ❌          | ❌         | ❌         | ✅            | ❌         | SHOULD-HAVE   |
+| **Refund Processing**       | 🔄 Phase 3 | ❌          | ❌         | ❌         | ✅            | ❌         | SHOULD-HAVE   |
+| **Product Recommendations** | 🔄 Phase 3 | ❌          | ❌         | ⚠️ Limited | ⚠️ Limited    | ❌         | NICE-TO-HAVE  |
 
 **Competitive Advantage**:
+
 - ✨ **Inventory Integration** - Real-time stock checks in responses
 - ✅ **Native E-commerce** - Built for e-commerce, not generic support
 
 **Gaps to Fill**:
+
 - Return/Refund Automation (Phase 3) - DigitalGenius has this, but low priority for pilot
 
 ---
 
 ### Category 5: Automation & Efficiency
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **Auto-Tagging** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | TABLE-STAKES |
-| **Auto-Routing** | 🔄 Phase 2 | ✅ | ✅ | ✅ | ✅ | ✅ | MUST-HAVE |
-| **Predictive Escalation** | 🔄 Phase 4 | ✅ | ❌ | ⚠️ Limited | ✅ | ❌ | SHOULD-HAVE |
-| **Proactive Outreach** | 🔄 Phase 3 | ❌ | ❌ | ⚠️ Limited | ✅ | ⚠️ Limited | SHOULD-HAVE |
-| **Auto-Approval (Selective)** | 🔄 Phase 4 | ❌ | ✅ (full auto) | ✅ (full auto) | ✅ (full auto) | ⚠️ Limited | SHOULD-HAVE |
+| Feature                       | HotDash    | Forethought | Zendesk        | Intercom       | DigitalGenius  | Kustomer   | Priority     |
+| ----------------------------- | ---------- | ----------- | -------------- | -------------- | -------------- | ---------- | ------------ |
+| **Auto-Tagging**              | ✅         | ✅          | ✅             | ✅             | ✅             | ✅         | TABLE-STAKES |
+| **Auto-Routing**              | 🔄 Phase 2 | ✅          | ✅             | ✅             | ✅             | ✅         | MUST-HAVE    |
+| **Predictive Escalation**     | 🔄 Phase 4 | ✅          | ❌             | ⚠️ Limited     | ✅             | ❌         | SHOULD-HAVE  |
+| **Proactive Outreach**        | 🔄 Phase 3 | ❌          | ❌             | ⚠️ Limited     | ✅             | ⚠️ Limited | SHOULD-HAVE  |
+| **Auto-Approval (Selective)** | 🔄 Phase 4 | ❌          | ✅ (full auto) | ✅ (full auto) | ✅ (full auto) | ⚠️ Limited | SHOULD-HAVE  |
 
 **Competitive Position**:
+
 - **We're Behind**: Auto-routing, predictive escalation not in MVP
 - **Different Philosophy**: We do selective auto-approval (low-risk only), they do full automation
 
 **Gaps to Fill**:
+
 - ✅ Auto-Routing (Phase 2) - table stakes, add soon
 - ⚠️ Predictive Escalation (Phase 4) - nice-to-have, not urgent
 - ⚠️ Auto-Approval (Phase 4) - carefully, only for low-risk cases
@@ -122,19 +131,21 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 ### Category 6: Advanced Features
 
-| Feature | HotDash | Forethought | Zendesk | Intercom | DigitalGenius | Kustomer | Priority |
-|---------|---------|-------------|---------|----------|---------------|----------|----------|
-| **Voice Support** | 🔄 Phase 4 | ❌ | ❌ | ❌ | ✅ | ❌ | NICE-TO-HAVE |
-| **Visual AI (Images)** | 🔄 Future | ❌ | ❌ | ❌ | ✅ | ❌ | NICE-TO-HAVE |
-| **Chat Bot (Customer)** | 🔄 Phase 4 | ✅ | ✅ | ✅ | ✅ | ✅ | SHOULD-HAVE |
-| **Self-Service Portal** | ❌ | ⚠️ Limited | ✅ | ⚠️ Limited | ✅ | ✅ | NICE-TO-HAVE |
-| **Mobile App** | ❌ | ⚠️ Limited | ✅ | ✅ | ⚠️ Limited | ✅ | NICE-TO-HAVE |
+| Feature                 | HotDash    | Forethought | Zendesk | Intercom   | DigitalGenius | Kustomer | Priority     |
+| ----------------------- | ---------- | ----------- | ------- | ---------- | ------------- | -------- | ------------ |
+| **Voice Support**       | 🔄 Phase 4 | ❌          | ❌      | ❌         | ✅            | ❌       | NICE-TO-HAVE |
+| **Visual AI (Images)**  | 🔄 Future  | ❌          | ❌      | ❌         | ✅            | ❌       | NICE-TO-HAVE |
+| **Chat Bot (Customer)** | 🔄 Phase 4 | ✅          | ✅      | ✅         | ✅            | ✅       | SHOULD-HAVE  |
+| **Self-Service Portal** | ❌         | ⚠️ Limited  | ✅      | ⚠️ Limited | ✅            | ✅       | NICE-TO-HAVE |
+| **Mobile App**          | ❌         | ⚠️ Limited  | ✅      | ✅         | ⚠️ Limited    | ✅       | NICE-TO-HAVE |
 
 **Competitive Position**:
+
 - **We're Behind**: No customer-facing chatbot yet (Phase 4)
 - **Different Focus**: We prioritize operator tools over customer automation
 
 **Strategic Decision**:
+
 - ⚠️ Chatbot (Phase 4) - Build after operator tools proven successful
 - ❌ Self-Service Portal - Out of scope for now
 - ❌ Mobile App - Not a priority
@@ -146,29 +157,34 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Competitor 1: Forethought (Agent Assist Focus)
 
 **Strengths**:
+
 1. Strong NLP for intent recognition
 2. Good Zendesk/Salesforce integration
 3. Predictive escalation
 4. Established brand (Series C, $92M raised)
 
 **Weaknesses**:
+
 1. No approval queue—just side-panel suggestions
 2. Limited learning loop (operators must manually train)
 3. Expensive ($500-$1,500/agent/year = $5,000-$15,000 for 10 operators)
 4. Generic (not e-commerce focused)
 
 **Where We Win**:
+
 - ✨ **Approval queue** forces quality control (better than side panel)
 - ✨ **Automatic learning** from operator edits (no manual training)
 - ✅ **E-commerce integration** (order, inventory, shipping)
 - ✅ **Cost** (50-80% cheaper)
 
 **Where They Win**:
+
 - Predictive escalation (we have in Phase 4)
 - A/B testing (we have in Phase 3)
 - Established customer base
 
-**Recommended Response**: 
+**Recommended Response**:
+
 - Emphasize our approval queue as superior UX
 - Highlight cost savings ($10K-$13K cheaper annually)
 - Target their dissatisfied customers (survey: "Do you wish your AI required approval?")
@@ -178,6 +194,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Competitor 2: DigitalGenius (E-commerce AI)
 
 **Strengths**:
+
 1. **E-commerce focused** (direct competitor)
 2. Strong Shopify/Magento integration
 3. Visual AI for product defects
@@ -185,6 +202,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 5. Return/refund automation
 
 **Weaknesses**:
+
 1. Fully autonomous (no approval queue)
 2. Black box AI (operators don't understand how it works)
 3. Very expensive ($2,000-$5,000/month = $24K-$60K/year)
@@ -192,6 +210,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 5. Long implementation (4-6 months)
 
 **Where We Win**:
+
 - ✨ **Transparent AI** with source citations (vs black box)
 - ✨ **Human oversight** (operators stay in control)
 - ✅ **Faster implementation** (2 weeks to pilot vs 4-6 months)
@@ -199,11 +218,13 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 - ✅ **Cost** (80-90% cheaper)
 
 **Where They Win**:
+
 - Visual AI for defect detection
 - Return/refund automation (full workflow)
 - Proactive outreach (mature feature)
 
 **Recommended Response**:
+
 - Position as "DigitalGenius for mid-market" (same e-commerce focus, better price)
 - Emphasize operator trust and control
 - Target their rejected prospects (too expensive or too complex)
@@ -213,12 +234,14 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Competitor 3: Zendesk Answer Bot (Chatbot-First)
 
 **Strengths**:
+
 1. Seamless Zendesk integration (already in the platform)
 2. Large knowledge base from Zendesk ecosystem
 3. Simple setup
 4. Included in Zendesk Suite Professional+ (no extra cost)
 
 **Weaknesses**:
+
 1. Customer-facing only (doesn't help operators)
 2. High customer frustration (~30% negative feedback)
 3. "Chatbot hell" problem (hard to reach human)
@@ -226,17 +249,20 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 5. Generic (not e-commerce focused)
 
 **Where We Win**:
+
 - ✨ **Operator-facing** (augments humans vs replaces with bot)
 - ✅ **Better CX** (human oversight = no chatbot frustration)
 - ✅ **E-commerce focus**
 - ✅ **Improves operator productivity** (not just deflection)
 
 **Where They Win**:
+
 - Seamless integration (already in Zendesk)
 - No additional cost for Zendesk customers
 - Large customer base
 
 **Recommended Response**:
+
 - Position as "operator augmentation" vs "customer deflection"
 - Target Zendesk customers dissatisfied with Answer Bot
 - Emphasize better customer experience (human-approved responses)
@@ -302,6 +328,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Phase 1: MVP (Oct 2025) - Differentiate
 
 **Focus**: Build our unique strengths
+
 - ✅ Approval queue (unique)
 - ✅ Source citations (unique)
 - ✅ Operator override always (unique)
@@ -314,6 +341,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Phase 2: Parity (Nov-Dec 2025) - Fill Gaps
 
 **Focus**: Add table-stakes features competitors have
+
 - ✅ Sentiment analysis
 - ✅ Tone adjustment
 - ✅ Auto-routing
@@ -326,6 +354,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Phase 3: Advance (Jan-Mar 2026) - Pull Ahead
 
 **Focus**: Build differentiating features competitors lack
+
 - ✅ Proactive outreach (with approval)
 - ✅ Return/refund automation (with approval)
 - ✅ Pattern recognition and auto-learning
@@ -338,6 +367,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Phase 4: Expand (Apr-Jun 2026) - Market Leadership
 
 **Focus**: Optional automation for mature customers
+
 - ✅ Selective auto-approval (low-risk only)
 - ✅ Chat bot pre-qualification
 - ✅ Predictive escalation
@@ -354,6 +384,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 **Scenario**: Customer considering agent assist tools
 
 **Our Pitch**:
+
 > "Forethought shows suggestions in a side panel that's easy for operators to ignore. HotDash's approval queue ensures every AI-generated response is reviewed before sending. We've seen 60-75% approval rates vs <30% adoption of side-panel suggestions. Plus, we're 50-80% cheaper and learn automatically from operator edits."
 
 **Key Differentiator**: Approval queue > side panel
@@ -366,6 +397,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 **Scenario**: E-commerce brand considering AI support
 
 **Our Pitch**:
+
 > "DigitalGenius is built for enterprise (100+ agents) with a 4-6 month implementation and $24K-$60K/year price tag. HotDash delivers the same e-commerce focus for mid-market teams (5-50 agents) with 2-week implementation and 80-90% cost savings. Plus, our operators stay in control—no black box AI."
 
 **Key Differentiator**: Same focus, better fit for mid-market
@@ -378,6 +410,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 **Scenario**: Zendesk customer frustrated with chatbot
 
 **Our Pitch**:
+
 > "Answer Bot tries to replace your support team with a customer-facing chatbot, often frustrating customers. HotDash augments your operators—AI prepares responses, humans approve them. The result? 46% faster support without 'chatbot hell.' Your customers always talk to a real person."
 
 **Key Differentiator**: Augmentation > replacement
@@ -391,13 +424,13 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 
 **How to prioritize features**:
 
-| Criterion | Weight | Scoring |
-|-----------|--------|---------|
-| **Competitive Necessity** | 35% | Do competitors have it? Missing = high score |
-| **Operator Impact** | 30% | Does it save operator time or improve experience? |
-| **Customer Impact** | 20% | Does it improve CSAT or resolution time? |
-| **Technical Feasibility** | 10% | How hard to build? Easy = high score |
-| **Differentiation** | 5% | Does it make us unique? Yes = high score |
+| Criterion                 | Weight | Scoring                                           |
+| ------------------------- | ------ | ------------------------------------------------- |
+| **Competitive Necessity** | 35%    | Do competitors have it? Missing = high score      |
+| **Operator Impact**       | 30%    | Does it save operator time or improve experience? |
+| **Customer Impact**       | 20%    | Does it improve CSAT or resolution time?          |
+| **Technical Feasibility** | 10%    | How hard to build? Easy = high score              |
+| **Differentiation**       | 5%     | Does it make us unique? Yes = high score          |
 
 **Formula**: Priority Score = (Necessity×0.35) + (Operator×0.30) + (Customer×0.20) + (Feasibility×0.10) + (Differentiation×0.05)
 
@@ -428,7 +461,8 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Recommendation 1: Double Down on "Operator-First"
 
 **Why**: It's our unique moat—no competitor has mandatory approval
-**How**: 
+**How**:
+
 - Marketing messaging: "AI-assisted, human-approved"
 - Product features: Always give operators final say
 - Thought leadership: Publish "Why AI Support Needs Human Oversight"
@@ -440,7 +474,8 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Recommendation 2: Fill Table-Stakes Gaps Quickly (Phase 2)
 
 **Why**: Sentiment analysis and auto-routing are expected features
-**How**: 
+**How**:
+
 - Sentiment analysis: Use GPT-4 (easy to implement)
 - Auto-routing: Based on inquiry type and operator skills
 - Timeline: Dec 2025 (Phase 2)
@@ -452,7 +487,8 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Recommendation 3: Don't Chase Full Automation
 
 **Why**: It's a crowded market and goes against our philosophy
-**How**: 
+**How**:
+
 - Only selective auto-approval (low-risk, high-confidence)
 - Always provide operator override
 - Never position as "replacing operators"
@@ -464,7 +500,8 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Recommendation 4: Build for Mid-Market, Not Enterprise
 
 **Why**: Enterprise tools (like DigitalGenius) leave mid-market underserved
-**How**: 
+**How**:
+
 - Pricing: Accessible for 5-50 agent teams
 - Implementation: 2 weeks, not 4-6 months
 - Complexity: Simple, not overwhelming
@@ -478,6 +515,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 ### Ongoing Tracking (Weekly)
 
 **Sources**:
+
 1. Competitor blogs and release notes
 2. G2/Capterra reviews (read new reviews weekly)
 3. LinkedIn (follow competitor employees)
@@ -485,6 +523,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 5. Twitter (search for competitor mentions)
 
 **Red Flags to Watch**:
+
 - ⚠️ Competitor launches approval queue feature (direct threat)
 - ⚠️ Competitor adds e-commerce-specific features
 - ⚠️ Competitor drops prices dramatically
@@ -498,7 +537,7 @@ This deep-dive analysis examines AI support features across 6 major competitors,
 **Next Action**: Implement Phase 2 table-stakes features (sentiment, routing)
 
 **Related Documents**:
+
 - [Product Roadmap](product_roadmap_agentsdk.md)
 - [Feature Iteration Roadmap](agent_sdk_feature_iteration_roadmap.md)
 - [Customer Journey Map](customer_journey_map_ai_support.md)
-

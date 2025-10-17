@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Designer — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -37,11 +40,13 @@ You may run local, non-interactive commands (exports, scripts) without approval.
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/designer.md` without waiting for additional manager confirmation.
 
 ## Current Sprint Focus — 2025-10-12
+
 Own each deliverable through sign-off; post the artifacts (Figma links, screenshots, checklists) in `feedback/designer.md` as you finish them. If another team is needed, schedule the working session and follow it to completion rather than passing the task back.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Section 12 for approval queue UI patterns
 - feedback/designer.md - Your completed approval queue designs
 
@@ -57,36 +62,40 @@ Own each deliverable through sign-off; post the artifacts (Figma links, screensh
 **Next - While Engineer Builds**:
 
 1A. **Prepare UI Assets for Approval Queue**
-   - Create icons for approve/reject actions
-   - Design loading states
-   - Create empty state illustration
-   - Prepare error state visuals
-   - Evidence: Asset files in artifacts/design/
-   - Timeline: 2-3 hours
+
+- Create icons for approve/reject actions
+- Design loading states
+- Create empty state illustration
+- Prepare error state visuals
+- Evidence: Asset files in artifacts/design/
+- Timeline: 2-3 hours
 
 1B. **Design Agent Response Formatting**
-   - Create text formatting guidelines for AI responses
-   - Design code block styling for responses
-   - Create link and button styles
-   - Design attachment preview patterns
-   - Evidence: Response formatting spec
-   - Timeline: 2-3 hours
+
+- Create text formatting guidelines for AI responses
+- Design code block styling for responses
+- Create link and button styles
+- Design attachment preview patterns
+- Evidence: Response formatting spec
+- Timeline: 2-3 hours
 
 1C. **Design Real-Time Update Indicators**
-   - Create new approval notification badge
-   - Design update animation
-   - Create timestamp refresh indicator
-   - Design connection status indicator
-   - Evidence: Animation specs and assets
-   - Timeline: 2-3 hours
+
+- Create new approval notification badge
+- Design update animation
+- Create timestamp refresh indicator
+- Design connection status indicator
+- Evidence: Animation specs and assets
+- Timeline: 2-3 hours
 
 1D. **Accessibility Review for Approval Flow**
-   - Document keyboard navigation flow
-   - Create screen reader announcements
-   - Design focus states for all interactive elements
-   - Create ARIA labels spec
-   - Evidence: Accessibility specification
-   - Timeline: 2-3 hours
+
+- Document keyboard navigation flow
+- Create screen reader announcements
+- Design focus states for all interactive elements
+- Create ARIA labels spec
+- Evidence: Accessibility specification
+- Timeline: 2-3 hours
 
 2. **Agent SDK UI Polish** (After basic approval queue works)
    - Refine approval card styling
@@ -112,6 +121,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
 
 **Task 1E**: Hot Rodan Brand Integration
+
 - Ensure dashboard matches Hot Rodan visual identity
 - Use hot rod/automotive imagery where appropriate
 - Color scheme aligned with www.hotrodan.com
@@ -119,6 +129,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 - Timeline: 2-3 hours
 
 **Task 1F**: Mobile Operator Experience
+
 - Design mobile-responsive approval queue
 - Touch-optimized approve/reject buttons
 - Mobile tile views
@@ -126,6 +137,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 - Timeline: 2-3 hours
 
 **Task 1G**: Error State Design Deep Dive
+
 - Design all possible error states (API down, timeout, invalid data)
 - Create helpful error messages for operators
 - Design recovery actions
@@ -133,6 +145,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 - Timeline: 2-3 hours
 
 **Task 1H**: Loading State Micro-interactions
+
 - Design skeleton loaders for each tile
 - Loading animations
 - Progressive disclosure patterns
@@ -140,6 +153,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/designer.md.
 - Timeline: 2-3 hours
 
 **Task 1I**: Dashboard Onboarding Flow
+
 - First-time user walkthrough design
 - Tooltip placement and copy
 - Dismiss and "don't show again" logic
@@ -153,6 +167,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 ## 📋 NEXT WAVE - DEEP LAUNCH PREP (Tasks 1J-1S)
 
 **Task 1J**: Tile-Specific UI Refinement
+
 - Design detailed states for each of 5 tiles (CX, Sales, Inventory, SEO, Fulfillment)
 - Create data visualization components (charts, graphs, sparklines)
 - Hot rod-themed iconography for automotive context
@@ -160,6 +175,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 3-4 hours
 
 **Task 1K**: Operator Dashboard Personalization
+
 - Design customizable dashboard layout
 - Tile reordering and hiding
 - User preference persistence
@@ -168,6 +184,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1L**: Notification and Alert Design
+
 - Design notification center for approval queue
 - Alert badges and counters
 - Sound/vibration preferences
@@ -176,6 +193,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1M**: Data Visualization Library
+
 - Design chart components for Hot Rodan metrics
 - Sales trends, inventory levels, SEO performance
 - Interactive tooltips and drill-downs
@@ -184,6 +202,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 3-4 hours
 
 **Task 1N**: Dark Mode Design
+
 - Create dark mode color palette
 - Ensure contrast ratios meet WCAG AA
 - Toggle UI and preference storage
@@ -191,6 +210,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1O**: Empty States and First-Use
+
 - Design empty states for each tile (no data yet)
 - First-use guidance and setup wizards
 - Motivational copy for new users
@@ -198,6 +218,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1P**: Approval History and Audit Trail UI
+
 - Design approval history view
 - Filter and search approvals
 - Export capabilities
@@ -206,6 +227,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1Q**: Hot Rodan-Specific Illustrations
+
 - Create custom illustrations for automotive context
 - Hot rod-themed empty states
 - Industry-specific success celebrations
@@ -213,6 +235,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 3-4 hours
 
 **Task 1R**: Responsive Table Design
+
 - Design data tables for various screen sizes
 - Sortable columns, filters
 - Bulk actions UI
@@ -221,6 +244,7 @@ Execute 1A-1I (all Hot Rodan Dashboard launch-aligned). Total: ~20-25 hours work
 - Timeline: 2-3 hours
 
 **Task 1S**: Component Documentation
+
 - Document all components for Engineer
 - Usage examples and code snippets
 - Props and variants
@@ -282,6 +306,7 @@ Execute 1J-1S. Total: ~45-50 hours additional launch-aligned work.
    - Evidence: Polish recommendations with screenshots
 
 **Ongoing Requirements**:
+
 - Coordinate with @engineer via feedback files
 - Ensure all designs use Polaris components only
 - Log all design reviews in feedback/designer.md with timestamps
@@ -293,6 +318,7 @@ Execute 1J-1S. Total: ~45-50 hours additional launch-aligned work.
 **Task 3: Detailed ApprovalCard Component Specs** - URGENT for Engineer
 
 Create complete implementation spec with:
+
 - All props and TypeScript interfaces
 - Every state variant (pending, approved, rejected, loading, error, expired)
 - Polaris components to use (Card, Button, Badge, Stack, Text, InlineStack)
@@ -315,6 +341,7 @@ Create complete implementation spec with:
 ### 🚀 ADDITIONAL PARALLEL TASKS
 
 **Task A: Design System Documentation** - Create component library guide
+
 - Document all Polaris components used in HotDash
 - Create usage guidelines
 - Document color/spacing/typography tokens
@@ -322,6 +349,7 @@ Create complete implementation spec with:
 - Evidence: Design system guide
 
 **Task B: Accessibility Audit Report** - Comprehensive WCAG review
+
 - Audit current dashboard for WCAG 2.2 AA
 - Document accessibility issues
 - Create remediation checklist
@@ -335,6 +363,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task 7: Agent Performance Metrics UI Design**
+
 - Design dashboard tiles for agent performance metrics
 - Create visualizations for approval queue depth
 - Design charts for response accuracy trends
@@ -342,6 +371,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 - Evidence: Metrics UI design specifications
 
 **Task 8: Agent Training Data Visualization**
+
 - Design UI for viewing training data quality
 - Create visualizations for feedback scores
 - Design operator feedback submission UI
@@ -349,6 +379,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 - Evidence: Training data UI designs
 
 **Task 9: Notification System Design**
+
 - Design notification UI for new approvals
 - Create toast/banner patterns for updates
 - Design notification center (optional)
@@ -356,6 +387,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 - Evidence: Notification system design
 
 **Task 10: Mobile Responsive Optimization**
+
 - Audit all designs for mobile responsiveness
 - Create mobile-specific approval queue design
 - Optimize for tablet viewports
@@ -363,6 +395,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 - Evidence: Mobile design specifications
 
 **Task 11: Dark Mode Design**
+
 - Create dark mode color palette
 - Design all components for dark mode
 - Document dark mode switching logic
@@ -370,6 +403,7 @@ Execute Task 3 IMMEDIATELY (Engineer needs it), then A and B.
 - Evidence: Dark mode design system
 
 **Task 12: Empty State Design Library**
+
 - Design empty states for all features
 - Create error state variations
 - Design loading states for all async operations
@@ -383,6 +417,7 @@ Execute 7-12 in any order - all enhance design system maturity.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
 
 **Task 13-17: Advanced UI Components** (5 tasks)
+
 - 13: Design comprehensive data table component (sorting, filtering, pagination)
 - 14: Create advanced form components (multi-step, validation, auto-save)
 - 15: Design chart and visualization library (metrics, trends, comparisons)
@@ -390,6 +425,7 @@ Execute 7-12 in any order - all enhance design system maturity.
 - 17: Design toast notification system with priority levels
 
 **Task 18-22: Design System Governance** (5 tasks)
+
 - 18: Create design token management system
 - 19: Design component versioning and deprecation process
 - 20: Create design review and approval workflow
@@ -397,6 +433,7 @@ Execute 7-12 in any order - all enhance design system maturity.
 - 22: Design design system documentation site
 
 **Task 23-27: User Experience** (5 tasks)
+
 - 23: Conduct heuristic evaluation of entire dashboard
 - 24: Create user flow diagrams for all major workflows
 - 25: Design onboarding experience for new operators
@@ -410,6 +447,7 @@ Execute 13-27 in any order. Total: 27 tasks, ~15-18 hours of design work.
 ### 🚀 SECOND MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task 28-35: Advanced Design Systems** (8 tasks)
+
 - 28: Create animation and micro-interaction library
 - 29: Design iconography system with custom icon set
 - 30: Create illustration style guide and asset library
@@ -420,6 +458,7 @@ Execute 13-27 in any order. Total: 27 tasks, ~15-18 hours of design work.
 - 35: Design accessibility annotation system for all components
 
 **Task 36-43: Product Design** (8 tasks)
+
 - 36: Design advanced dashboard customization (drag-drop widgets)
 - 37: Create operator workspace personalization features
 - 38: Design multi-view layouts (list, grid, kanban)
@@ -430,6 +469,7 @@ Execute 13-27 in any order. Total: 27 tasks, ~15-18 hours of design work.
 - 43: Create quick actions menu system
 
 **Task 44-47: Research & Innovation** (4 tasks)
+
 - 44: Conduct competitive UX analysis (top 5 dashboards)
 - 45: Design future-state concepts (AI-first interfaces)
 - 46: Create operator journey maps for all workflows
@@ -442,6 +482,7 @@ Execute 28-47 in any order. Total: 47 tasks now, ~25-30 hours work.
 ### 🚀 FOURTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task 48-53: Design Operations** (6 tasks)
+
 - 48: Create design version control and asset management system
 - 49: Design handoff process automation (Figma → Code)
 - 50: Implement design QA and review workflow
@@ -450,6 +491,7 @@ Execute 28-47 in any order. Total: 47 tasks now, ~25-30 hours work.
 - 53: Implement design system governance model
 
 **Task 54-59: Advanced UX** (6 tasks)
+
 - 54: Conduct usability testing program design
 - 55: Create user research framework and repository
 - 56: Design A/B testing infrastructure for UX
@@ -458,6 +500,7 @@ Execute 28-47 in any order. Total: 47 tasks now, ~25-30 hours work.
 - 59: Design customer journey analytics integration
 
 **Task 60-67: Innovation & Future** (8 tasks)
+
 - 60: Design voice interface for operator commands
 - 61: Create AR/VR visualization concepts for data
 - 62: Design AI-powered design assistance tools
@@ -474,6 +517,7 @@ Execute 48-67 in any order. Total: 67 tasks, ~35-40 hours work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task 68-73: Mobile & Responsive** (6 tasks)
+
 - 68: Design responsive breakpoints and layout system
 - 69: Create mobile-first component adaptations
 - 70: Design touch interaction patterns
@@ -482,6 +526,7 @@ Execute 48-67 in any order. Total: 67 tasks, ~35-40 hours work.
 - 73: Implement mobile performance optimization guidelines
 
 **Task 74-79: Accessibility Excellence** (6 tasks)
+
 - 74: Create comprehensive WCAG 2.1 AA compliance audit
 - 75: Design screen reader optimization patterns
 - 76: Create keyboard navigation flow documentation
@@ -490,6 +535,7 @@ Execute 48-67 in any order. Total: 67 tasks, ~35-40 hours work.
 - 79: Implement accessibility testing framework
 
 **Task 80-87: Design System Governance** (8 tasks)
+
 - 80: Create design token governance model
 - 81: Design component deprecation strategy
 - 82: Create design system roadmap and versioning

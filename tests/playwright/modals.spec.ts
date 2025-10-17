@@ -1,9 +1,13 @@
 import { expect, test } from "../fixtures/shopify-admin";
 
 test.describe("dashboard modals - QA coverage", () => {
-  test.beforeEach(async ({ shopifyAdmin, page }) => {    await shopifyAdmin.goto("/app", { mock: "1" });  });
+  test.beforeEach(async ({ shopifyAdmin, page }) => {
+    await shopifyAdmin.goto("/app", { mock: "1" });
+  });
   test.describe("CX Escalations Modal", () => {
-    test("opens modal from tile and displays conversation history", async ({ page }) => {
+    test("opens modal from tile and displays conversation history", async ({
+      page,
+    }) => {
       // Step 1: Open modal from CX Escalations tile
       const reviewButton = page.getByTestId("cx-escalations-open").first();
       await expect(reviewButton).toBeVisible({ timeout: 10000 });
@@ -13,10 +17,14 @@ test.describe("dashboard modals - QA coverage", () => {
       // Step 2: Verify modal opens correctly
       const dialog = page.getByTestId("cx-escalation-dialog");
       await expect(dialog).toBeVisible({ timeout: 5000 });
-      await expect(dialog.getByRole("heading", { name: /Conversation history/i })).toBeVisible();
+      await expect(
+        dialog.getByRole("heading", { name: /Conversation history/i }),
+      ).toBeVisible();
 
       // Step 3: Close modal
-      await dialog.getByRole("button", { name: /Close escalation modal/i }).click();
+      await dialog
+        .getByRole("button", { name: /Close escalation modal/i })
+        .click();
       await expect(dialog).not.toBeVisible();
     });
 
@@ -30,16 +38,21 @@ test.describe("dashboard modals - QA coverage", () => {
       await expect(dialog).toBeVisible({ timeout: 5000 });
 
       // Look for approve button and verify it's enabled for mock conversation
-      const approveButton = dialog.getByRole("button", { name: /Approve & Send Reply/i }).first();
-      
+      const approveButton = dialog
+        .getByRole("button", { name: /Approve & Send Reply/i })
+        .first();
+
       if (await approveButton.isVisible()) {
         // Should be enabled for mock conversation with template suggestion
         await expect(approveButton).toBeEnabled();
-        
+
         // Set up network monitoring for decision log request
         let decisionLogRequested = false;
-        page.on('request', request => {
-          if (request.url().includes('/api/decisions') || request.url().includes('chatwoot')) {
+        page.on("request", (request) => {
+          if (
+            request.url().includes("/api/decisions") ||
+            request.url().includes("chatwoot")
+          ) {
             decisionLogRequested = true;
           }
         });
@@ -47,7 +60,9 @@ test.describe("dashboard modals - QA coverage", () => {
         await approveButton.click();
 
         // Look for success toast confirmation
-        const successToast = page.locator('[data-testid="toast"], .toast, [role="status"]').first();
+        const successToast = page
+          .locator('[data-testid="toast"], .toast, [role="status"]')
+          .first();
         if (await successToast.isVisible()) {
           await expect(successToast).toBeVisible({ timeout: 3000 });
           console.log("✅ Success toast confirmed");
@@ -62,7 +77,9 @@ test.describe("dashboard modals - QA coverage", () => {
           console.log("⚠️  Decision log request not detected");
         }
       } else {
-        console.log("⚠️  Approve button not found - may indicate missing template suggestion");
+        console.log(
+          "⚠️  Approve button not found - may indicate missing template suggestion",
+        );
       }
     });
 
@@ -76,16 +93,21 @@ test.describe("dashboard modals - QA coverage", () => {
       await expect(dialog).toBeVisible({ timeout: 5000 });
 
       // Look for escalate button
-      const escalateButton = dialog.getByRole("button", { name: /Escalate to Manager/i }).first();
-      
+      const escalateButton = dialog
+        .getByRole("button", { name: /Escalate to Manager/i })
+        .first();
+
       if (await escalateButton.isVisible()) {
         // Monitor for audit log action
         let escalationLogged = false;
-        page.on('request', request => {
+        page.on("request", (request) => {
           const url = request.url();
           const postData = request.postData();
-          if ((url.includes('/api/decisions') || url.includes('chatwoot')) && 
-              postData && postData.includes('escalate')) {
+          if (
+            (url.includes("/api/decisions") || url.includes("chatwoot")) &&
+            postData &&
+            postData.includes("escalate")
+          ) {
             escalationLogged = true;
           }
         });
@@ -102,8 +124,8 @@ test.describe("dashboard modals - QA coverage", () => {
         // Look for confirmation or UI update
         const confirmationElements = [
           page.locator('[data-testid="escalation-success"]'),
-          page.locator('.escalation-badge'),
-          page.getByText('Escalated')
+          page.locator(".escalation-badge"),
+          page.getByText("Escalated"),
         ];
 
         for (const element of confirmationElements) {
@@ -127,18 +149,22 @@ test.describe("dashboard modals - QA coverage", () => {
       await expect(dialog).toBeVisible({ timeout: 5000 });
 
       // Check if approve button is disabled when no suggestion is available
-      const approveButton = dialog.getByRole("button", { name: /Approve & Send Reply/i }).first();
-      
+      const approveButton = dialog
+        .getByRole("button", { name: /Approve & Send Reply/i })
+        .first();
+
       if (await approveButton.isVisible()) {
         const isDisabled = await approveButton.isDisabled();
         if (isDisabled) {
-          console.log("✅ Approve button correctly disabled for missing suggestion");
-          
+          console.log(
+            "✅ Approve button correctly disabled for missing suggestion",
+          );
+
           // Look for guidance text
           const guidanceTexts = [
             page.getByText(/no suggestion available/i),
             page.getByText(/escalate or handle manually/i),
-            page.locator('[data-testid="no-suggestion-guidance"]')
+            page.locator('[data-testid="no-suggestion-guidance"]'),
           ];
 
           for (const text of guidanceTexts) {
@@ -161,7 +187,9 @@ test.describe("dashboard modals - QA coverage", () => {
 
       const dialog = page.getByTestId("sales-pulse-dialog");
       await expect(dialog).toBeVisible({ timeout: 5000 });
-      await expect(dialog.getByRole("heading", { name: /Top SKUs/i })).toBeVisible();
+      await expect(
+        dialog.getByRole("heading", { name: /Top SKUs/i }),
+      ).toBeVisible();
 
       await dialog.getByRole("button", { name: /Cancel/i }).click();
       await expect(dialog).not.toBeVisible();
@@ -179,17 +207,19 @@ test.describe("dashboard modals - QA coverage", () => {
       // Look for anomaly indicators or alerts
       const anomalyIndicators = [
         page.locator('[data-testid="anomaly-alert"]'),
-        page.locator('.anomaly-flag'),
+        page.locator(".anomaly-flag"),
         page.getByText(/anomaly/i),
-        page.getByText(/unusual activity/i)
+        page.getByText(/unusual activity/i),
       ];
 
       // Monitor for telemetry events
       let telemetryFired = false;
-      page.on('request', request => {
-        if (request.url().includes('/api/analytics') || 
-            request.url().includes('/api/telemetry') ||
-            request.url().includes('track')) {
+      page.on("request", (request) => {
+        if (
+          request.url().includes("/api/analytics") ||
+          request.url().includes("/api/telemetry") ||
+          request.url().includes("track")
+        ) {
           telemetryFired = true;
         }
       });
@@ -205,7 +235,9 @@ test.describe("dashboard modals - QA coverage", () => {
       }
 
       if (!foundAnomalyIndicator) {
-        console.log("⚠️  No anomaly indicators found (may not be implemented or no anomalies in mock data)");
+        console.log(
+          "⚠️  No anomaly indicators found (may not be implemented or no anomalies in mock data)",
+        );
       }
 
       // Verify telemetry event fired (per QA plan assertion)
@@ -237,21 +269,21 @@ test.describe("dashboard modals - QA coverage", () => {
       await expect(dialog).toBeVisible();
 
       // Check for proper ARIA attributes
-      const ariaModal = await dialog.getAttribute('role');
-      const ariaLabelledby = await dialog.getAttribute('aria-labelledby');
-      
-      console.log(`Modal ARIA role: ${ariaModal || 'not set'}`);
-      console.log(`Modal ARIA labelledby: ${ariaLabelledby || 'not set'}`);
+      const ariaModal = await dialog.getAttribute("role");
+      const ariaLabelledby = await dialog.getAttribute("aria-labelledby");
+
+      console.log(`Modal ARIA role: ${ariaModal || "not set"}`);
+      console.log(`Modal ARIA labelledby: ${ariaLabelledby || "not set"}`);
 
       // Test Escape key closes modal
-      await page.keyboard.press('Escape');
+      await page.keyboard.press("Escape");
       await expect(dialog).not.toBeVisible({ timeout: 2000 });
     });
 
     test("modal responsive behavior", async ({ page }) => {
       // Test modal at different viewport sizes
       await page.setViewportSize({ width: 768, height: 1024 }); // Tablet
-      
+
       const reviewButton = page.getByTestId("cx-escalations-open").first();
       await reviewButton.click();
 
@@ -265,7 +297,9 @@ test.describe("dashboard modals - QA coverage", () => {
         console.log(`✅ Modal width (${dialogBox.width}px) fits in viewport`);
       }
 
-      await dialog.getByRole("button", { name: /Close escalation modal/i }).click();
+      await dialog
+        .getByRole("button", { name: /Close escalation modal/i })
+        .click();
     });
   });
 });

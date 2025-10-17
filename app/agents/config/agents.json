@@ -28,9 +28,22 @@
     {
       "id": "ai-customer",
       "human_review": true,
-      "reviewers": [
-        "github:justin"
-      ]
+      "reviewers": ["github:justin"],
+      "review": {
+        "queue": "chatwoot:cx",
+        "requiresGrades": ["tone", "accuracy", "policy"],
+        "instructions": "Draft replies must be graded on tone, accuracy, and policy before posting; see docs/runbooks/ai_agent_review_checklist.md."
+      }
+    },
+    {
+      "id": "ceo-insights",
+      "human_review": true,
+      "reviewers": ["github:justin"],
+      "review": {
+        "queue": "ceo:briefings",
+        "requiresGrades": ["accuracy", "policy"],
+        "instructions": "Executive briefings require accuracy/policy sign-off before delivery; attach evidence from business.summary and knowledge.search."
+      }
     },
     {
       "id": "ai-knowledge",

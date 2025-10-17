@@ -3,7 +3,7 @@
     "event_name": "string",
     "timestamp": "ISO8601",
     "conversation_id": "number",
-    "user_id": "string", 
+    "user_id": "string",
     "session_id": "string",
     "properties": {
       "template_id": "string|null",

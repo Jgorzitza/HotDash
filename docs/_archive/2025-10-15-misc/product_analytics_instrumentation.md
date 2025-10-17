@@ -11,6 +11,7 @@
 **Tool**: Mixpanel or Amplitude
 
 **Events to Track**:
+
 - `draft_reviewed` (operator action)
 - `draft_approved` (approval without edit)
 - `draft_edited` (edit before approval)
@@ -18,6 +19,7 @@
 - `feature_used` (feature adoption)
 
 **Properties**:
+
 - User ID, Tenant ID, Timestamp
 - Feature name, action type
 - Performance metrics (load time)
@@ -26,4 +28,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Analytics instrumentation spec
-

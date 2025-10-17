@@ -14,12 +14,14 @@
 **Quarterly**: Strategic research presentation to board
 
 **Template**:
+
 1. Top 3 Insights (with evidence)
 2. Top 5 Feature Requests (with frequency)
 3. Top 3 Pain Points (with customer quotes)
 4. Recommended Actions (with priority)
 
 **Distribution**:
+
 - Engineering: Feature requests + technical insights
 - Sales: Win/loss reasons + pricing feedback
 - Customer Success: Churn risks + health signals
@@ -27,4 +29,3 @@
 
 **Document Path**: `docs/research_synthesis_distribution.md`
 **Status**: Synthesis and distribution framework
-

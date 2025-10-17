@@ -15,21 +15,25 @@ Statistical and ML-based anomaly detection for identifying unusual conversation 
 ## Anomaly Types
 
 ### 1. Volume Anomalies
+
 - Sudden spike in query volume (>3 standard deviations)
 - Unusual conversation length
 - Abnormal approval request rate
 
 ### 2. Performance Anomalies
+
 - Latency spikes (>2x normal)
 - High error rates
 - Degraded approval rates
 
 ### 3. Pattern Anomalies
+
 - Unusual query patterns (rare queries)
 - Suspicious conversation sequences
 - Repeated failed attempts
 
 ### 4. Security Anomalies
+
 - Multiple unsafe responses in short period
 - Unusual access patterns
 - PII exposure attempts
@@ -42,7 +46,7 @@ Statistical and ML-based anomaly detection for identifying unusual conversation 
 -- Z-score based anomaly detection
 CREATE OR REPLACE VIEW v_query_volume_anomalies AS
 WITH stats AS (
-  SELECT 
+  SELECT
     agent,
     DATE_TRUNC('hour', created_at) as hour,
     COUNT(*) as query_count
@@ -51,21 +55,21 @@ WITH stats AS (
   GROUP BY agent, DATE_TRUNC('hour', created_at)
 ),
 baselines AS (
-  SELECT 
+  SELECT
     agent,
     AVG(query_count) as mean_queries,
     STDDEV(query_count) as stddev_queries
   FROM stats
   GROUP BY agent
 )
-SELECT 
+SELECT
   s.agent,
   s.hour,
   s.query_count,
   b.mean_queries,
   b.stddev_queries,
   (s.query_count - b.mean_queries) / NULLIF(b.stddev_queries, 0) as z_score,
-  CASE 
+  CASE
     WHEN ABS((s.query_count - b.mean_queries) / NULLIF(b.stddev_queries, 0)) > 3 THEN 'critical'
     WHEN ABS((s.query_count - b.mean_queries) / NULLIF(b.stddev_queries, 0)) > 2 THEN 'warning'
     ELSE 'normal'
@@ -78,4 +82,3 @@ ORDER BY z_score DESC;
 ```
 
 **Status:** Anomaly detection framework designed with statistical methods
-

@@ -9,15 +9,17 @@
 ## ✅ Completed Tasks (3/5)
 
 ### Task 1: Agent SDK Integration Plan ✅
+
 - **Status:** COMPLETE (100%)
 - **Deliverables:**
   - 2,500 lines comprehensive documentation
-  - 350 lines code implementation  
+  - 350 lines code implementation
   - 7 test scenarios documented
   - Complete architecture design
 - **Evidence:** `feedback/chatwoot.md`, `docs/integrations/agent_sdk_integration_plan.md`
 
 ### Task 3: HMAC Signature Verification ✅
+
 - **Status:** COMPLETE (100%)
 - **Deliverables:**
   - HMAC-SHA256 verification script (220 lines)
@@ -28,6 +30,7 @@
 - **Evidence:** `scripts/ops/verify-chatwoot-webhook.ts`
 
 ### Task 4: Conversation Flow Testing ✅
+
 - **Status:** COMPLETE (100%)
 - **Deliverables:**
   - Comprehensive API testing script
@@ -45,6 +48,7 @@
 ## 🚧 Blocked Tasks (2/5)
 
 ### Task 2: Webhook Configuration ⏳
+
 - **Status:** BLOCKED - Waiting for @engineer
 - **Blocker:** Webhook endpoint needs deployment first
 - **Required:** `https://hotdash-agent-service.fly.dev/webhooks/chatwoot`
@@ -52,6 +56,7 @@
 - **Impact:** Blocks Task 5 (E2E testing)
 
 ### Task 5: End-to-End Agent Flow Testing ⏳
+
 - **Status:** PENDING - Depends on Task 2
 - **Ready When:** Webhook endpoint is live
 - **Test Plan:** Complete and documented
@@ -64,6 +69,7 @@
 **Created:** `docs/integrations/engineer-handoff-chatwoot.md`
 
 **Contents:**
+
 1. HMAC verification integration code
 2. Webhook endpoint requirements
 3. API response format documentation
@@ -72,6 +78,7 @@
 6. Success criteria checklist
 
 **Key Requirements:**
+
 - Deploy webhook endpoint to Fly.io
 - Configure environment variables
 - Share webhook secret with Chatwoot agent
@@ -83,17 +90,18 @@
 
 **Overall Progress:** 60% (3/5 tasks complete)
 
-| Metric | Value |
-|--------|-------|
-| Tasks Complete | 3 |
-| Tasks Blocked | 2 |
-| Total Tasks | 5 |
-| Completion % | 60% |
-| Code Created | 614 lines |
-| Tests Passing | 3/4 (75%) |
-| Blocker | Webhook deployment |
+| Metric         | Value              |
+| -------------- | ------------------ |
+| Tasks Complete | 3                  |
+| Tasks Blocked  | 2                  |
+| Total Tasks    | 5                  |
+| Completion %   | 60%                |
+| Code Created   | 614 lines          |
+| Tests Passing  | 3/4 (75%)          |
+| Blocker        | Webhook deployment |
 
 **Time to Complete (estimated):**
+
 - Task 2: 30 minutes (after webhook deployed)
 - Task 5: 1 hour (testing + documentation)
 - **Total Remaining:** ~1.5 hours once unblocked
@@ -121,6 +129,7 @@ CURRENT → Deploy Webhook (@engineer, 2-4 hours)
 ## 📁 All Files Created/Modified
 
 **New Files (7):**
+
 1. `scripts/ops/verify-chatwoot-webhook.ts` - HMAC verification
 2. `scripts/ops/test-chatwoot-apis.sh` - API testing
 3. `docs/integrations/engineer-handoff-chatwoot.md` - Engineer coordination
@@ -130,10 +139,12 @@ CURRENT → Deploy Webhook (@engineer, 2-4 hours)
 7. `supabase/functions/chatwoot-webhook/` - Webhook handler
 
 **Modified Files (2):**
+
 1. `packages/integrations/chatwoot.ts` - API client enhancements
 2. `feedback/chatwoot.md` - Complete sprint log
 
 **Git Commits:**
+
 - `d63232e` - Initial audit feedback
 - `2fcb85c` - Agent SDK integration plan
 - `18f7854` - HMAC verification & API testing
@@ -144,10 +155,12 @@ CURRENT → Deploy Webhook (@engineer, 2-4 hours)
 ## 🤝 Coordination Status
 
 **Waiting On:**
+
 - @engineer: Webhook endpoint deployment
 - @reliability: Worker memory scaling (512MB → 1024MB)
 
 **Ready to Support:**
+
 - @qa: Integration testing once webhook live
 - @support: Operator training materials prepared
 
@@ -158,6 +171,7 @@ CURRENT → Deploy Webhook (@engineer, 2-4 hours)
 ## ⏭️ Immediate Next Steps
 
 **When Webhook Deployed:**
+
 1. Configure webhook in Chatwoot UI
 2. Subscribe to `message_created` event
 3. Test webhook delivery

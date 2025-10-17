@@ -23,7 +23,7 @@
              - Full conversation history
              - Agent performance metrics
              - Customer data enrichment
-         
+
          ↓
 ┌──────────────────┐
 │  Sync Service    │
@@ -33,7 +33,7 @@
          ├─→ Transform Data
          ├─→ Validate Schema
          └─→ Enrich Context
-         
+
          ↓
 ┌──────────────────┐
 │    Supabase      │
@@ -55,59 +55,59 @@
 ```sql
 CREATE TABLE conversation_analytics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  
+
   -- Chatwoot references
   chatwoot_conversation_id BIGINT NOT NULL UNIQUE,
   chatwoot_inbox_id INTEGER NOT NULL,
   chatwoot_account_id INTEGER NOT NULL,
-  
+
   -- Conversation metadata
   status TEXT NOT NULL CHECK (status IN ('open', 'pending', 'resolved')),
   created_at TIMESTAMPTZ NOT NULL,
   updated_at TIMESTAMPTZ NOT NULL,
   resolved_at TIMESTAMPTZ,
   first_response_at TIMESTAMPTZ,
-  
+
   -- Customer info
   customer_name TEXT,
   customer_email TEXT,
   customer_phone TEXT,
   customer_segment TEXT, -- 'vip', 'standard', 'new'
-  
+
   -- Agent SDK metrics
   agent_sdk_used BOOLEAN DEFAULT false,
   draft_confidence_score INTEGER,
   draft_created_at TIMESTAMPTZ,
   draft_approved_at TIMESTAMPTZ,
   operator_action TEXT CHECK (operator_action IN ('approve', 'edit', 'escalate', 'reject')),
-  
+
   -- Performance metrics
   time_to_first_response_seconds INTEGER,
   time_to_resolution_seconds INTEGER,
   message_count INTEGER DEFAULT 0,
   agent_message_count INTEGER DEFAULT 0,
   customer_message_count INTEGER DEFAULT 0,
-  
+
   -- Categorization
   category TEXT, -- 'order', 'product', 'return', 'general'
   subcategory TEXT,
   tags TEXT[] DEFAULT ARRAY[]::TEXT[],
   sentiment TEXT, -- 'happy', 'neutral', 'frustrated', 'angry'
   urgency TEXT, -- 'low', 'normal', 'high', 'urgent'
-  
+
   -- Agent assignment
   assigned_agent_id INTEGER,
   assigned_agent_name TEXT,
   escalated BOOLEAN DEFAULT false,
   escalation_reason TEXT,
-  
+
   -- Satisfaction
   csat_rating INTEGER CHECK (csat_rating BETWEEN 1 AND 5),
   csat_feedback TEXT,
-  
+
   -- Timestamps
   synced_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
+
   -- Indexes
   INDEX idx_status (status),
   INDEX idx_created_at (created_at DESC),
@@ -122,44 +122,44 @@ CREATE TABLE conversation_analytics (
 ```sql
 CREATE TABLE agent_performance_metrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  
+
   -- Agent identification
   chatwoot_agent_id INTEGER NOT NULL,
   agent_name TEXT NOT NULL,
   agent_email TEXT,
-  
+
   -- Time period
   date DATE NOT NULL,
   hour INTEGER CHECK (hour BETWEEN 0 AND 23), -- NULL for daily rollup
-  
+
   -- Volume metrics
   conversations_handled INTEGER DEFAULT 0,
   messages_sent INTEGER DEFAULT 0,
   private_notes_created INTEGER DEFAULT 0,
-  
+
   -- Agent SDK metrics
   drafts_approved INTEGER DEFAULT 0,
   drafts_edited INTEGER DEFAULT 0,
   drafts_rejected INTEGER DEFAULT 0,
   escalations_made INTEGER DEFAULT 0,
-  
+
   -- Performance metrics
   avg_first_response_time_seconds INTEGER,
   avg_resolution_time_seconds INTEGER,
   avg_draft_review_time_seconds INTEGER,
-  
+
   -- Quality metrics
   csat_avg DECIMAL(3,2),
   csat_count INTEGER DEFAULT 0,
   first_contact_resolution_rate DECIMAL(5,2),
-  
+
   -- Activity tracking
   online_time_minutes INTEGER,
   idle_time_minutes INTEGER,
-  
+
   -- Timestamps
   synced_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
+
   -- Constraints
   UNIQUE(chatwoot_agent_id, date, hour),
   INDEX idx_agent_date (chatwoot_agent_id, date DESC),
@@ -172,30 +172,30 @@ CREATE TABLE agent_performance_metrics (
 ```sql
 CREATE TABLE customer_interaction_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  
+
   -- Customer identification
   customer_email TEXT NOT NULL,
   customer_name TEXT,
   chatwoot_contact_id BIGINT,
-  
+
   -- Conversation reference
   conversation_id UUID REFERENCES conversation_analytics(id),
   chatwoot_conversation_id BIGINT NOT NULL,
-  
+
   -- Interaction details
   interaction_type TEXT NOT NULL CHECK (interaction_type IN ('inquiry', 'complaint', 'follow_up', 'feedback')),
   category TEXT,
   sentiment TEXT,
-  
+
   -- Resolution
   resolved BOOLEAN DEFAULT false,
   resolution_time_seconds INTEGER,
   satisfaction_score INTEGER,
-  
+
   -- Timestamps
   interaction_date TIMESTAMPTZ NOT NULL,
   synced_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
+
   -- Indexes
   INDEX idx_customer_email (customer_email),
   INDEX idx_interaction_date (interaction_date DESC),
@@ -208,32 +208,32 @@ CREATE TABLE customer_interaction_history (
 ```sql
 CREATE TABLE support_knowledge_gaps (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  
+
   -- Gap identification
   customer_question TEXT NOT NULL,
   detected_category TEXT,
   detected_keywords TEXT[],
-  
+
   -- Agent SDK analysis
   llama_index_results JSONB, -- What KB articles were found
   llama_index_relevance_scores DECIMAL[], -- How relevant were they
   draft_confidence_score INTEGER,
-  
+
   -- Operator feedback
   was_rejected BOOLEAN DEFAULT false,
   rejection_reason TEXT,
   correct_information TEXT, -- What operator provided instead
-  
+
   -- Frequency tracking
   occurrence_count INTEGER DEFAULT 1,
   first_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   last_seen_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
+
   -- Resolution status
   gap_filled BOOLEAN DEFAULT false,
   knowledge_article_created_at TIMESTAMPTZ,
   knowledge_article_url TEXT,
-  
+
   -- Indexes
   INDEX idx_gap_filled (gap_filled) WHERE gap_filled = false,
   INDEX idx_occurrence_count (occurrence_count DESC)
@@ -247,6 +247,7 @@ CREATE TABLE support_knowledge_gaps (
 ### Real-Time Sync (Webhook-Based)
 
 **Use Cases:**
+
 - Immediate analytics updates
 - Live operator dashboards
 - Real-time alerting
@@ -258,36 +259,39 @@ CREATE TABLE support_knowledge_gaps (
 // In supabase/functions/chatwoot-webhook/index.ts
 
 // After processing webhook, sync to analytics
-await supabase.from('conversation_analytics').upsert({
-  chatwoot_conversation_id: conversation.id,
-  chatwoot_inbox_id: conversation.inbox_id,
-  chatwoot_account_id: account.id,
-  status: conversation.status,
-  created_at: new Date(conversation.created_at * 1000),
-  updated_at: new Date(),
-  customer_name: conversation.contact?.name,
-  customer_email: conversation.contact?.email,
-  agent_sdk_used: true,
-  draft_created_at: new Date(),
-  category: detectedCategory,
-  sentiment: sentiment.emotion,
-  urgency: sentiment.urgency,
-  message_count: conversation.messages?.length || 1
-}, {
-  onConflict: 'chatwoot_conversation_id'
-});
+await supabase.from("conversation_analytics").upsert(
+  {
+    chatwoot_conversation_id: conversation.id,
+    chatwoot_inbox_id: conversation.inbox_id,
+    chatwoot_account_id: account.id,
+    status: conversation.status,
+    created_at: new Date(conversation.created_at * 1000),
+    updated_at: new Date(),
+    customer_name: conversation.contact?.name,
+    customer_email: conversation.contact?.email,
+    agent_sdk_used: true,
+    draft_created_at: new Date(),
+    category: detectedCategory,
+    sentiment: sentiment.emotion,
+    urgency: sentiment.urgency,
+    message_count: conversation.messages?.length || 1,
+  },
+  {
+    onConflict: "chatwoot_conversation_id",
+  },
+);
 
 // Track customer interaction
-await supabase.from('customer_interaction_history').insert({
+await supabase.from("customer_interaction_history").insert({
   customer_email: conversation.contact?.email,
   customer_name: conversation.contact?.name,
   chatwoot_contact_id: conversation.contact?.id,
   chatwoot_conversation_id: conversation.id,
-  interaction_type: 'inquiry',
+  interaction_type: "inquiry",
   category: detectedCategory,
   sentiment: sentiment.emotion,
   interaction_date: new Date(),
-  resolved: false
+  resolved: false,
 });
 ```
 
@@ -298,6 +302,7 @@ await supabase.from('customer_interaction_history').insert({
 ### Batch Sync (Nightly Job)
 
 **Use Cases:**
+
 - Historical data backfill
 - Performance metrics aggregation
 - Data quality verification
@@ -313,63 +318,69 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.48.0";
 
 serve(async (req: Request) => {
   const startTime = Date.now();
-  
+
   // Fetch conversations from Chatwoot (last 24 hours)
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const conversations = await fetchChatwootConversations(since);
-  
+
   const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  
+
   for (const conv of conversations) {
     // Sync conversation
     await syncConversation(supabase, conv);
-    
+
     // Sync messages
     const messages = await fetchConversationMessages(conv.id);
     await syncMessages(supabase, conv.id, messages);
-    
+
     // Calculate metrics
     await calculateConversationMetrics(supabase, conv.id);
   }
-  
+
   // Aggregate agent performance
   await aggregateAgentMetrics(supabase, since);
-  
+
   // Identify knowledge gaps
   await identifyKnowledgeGaps(supabase);
-  
+
   const duration = Date.now() - startTime;
-  
-  return new Response(JSON.stringify({
-    ok: true,
-    conversations_synced: conversations.length,
-    duration_ms: duration
-  }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      conversations_synced: conversations.length,
+      duration_ms: duration,
+    }),
+    {
+      headers: { "Content-Type": "application/json" },
+    },
+  );
 });
 
 async function syncConversation(supabase: any, conv: any) {
-  await supabase.from('conversation_analytics').upsert({
-    chatwoot_conversation_id: conv.id,
-    chatwoot_inbox_id: conv.inbox_id,
-    chatwoot_account_id: conv.account_id,
-    status: conv.status,
-    created_at: new Date(conv.created_at * 1000),
-    updated_at: new Date(conv.timestamp * 1000),
-    resolved_at: conv.status === 'resolved' ? new Date() : null,
-    customer_name: conv.meta?.sender?.name,
-    customer_email: conv.meta?.sender?.email,
-    tags: conv.labels || [],
-    assigned_agent_id: conv.meta?.assignee?.id,
-    assigned_agent_name: conv.meta?.assignee?.name,
-    message_count: conv.messages_count || 0
-  }, {
-    onConflict: 'chatwoot_conversation_id'
-  });
+  await supabase.from("conversation_analytics").upsert(
+    {
+      chatwoot_conversation_id: conv.id,
+      chatwoot_inbox_id: conv.inbox_id,
+      chatwoot_account_id: conv.account_id,
+      status: conv.status,
+      created_at: new Date(conv.created_at * 1000),
+      updated_at: new Date(conv.timestamp * 1000),
+      resolved_at: conv.status === "resolved" ? new Date() : null,
+      customer_name: conv.meta?.sender?.name,
+      customer_email: conv.meta?.sender?.email,
+      tags: conv.labels || [],
+      assigned_agent_id: conv.meta?.assignee?.id,
+      assigned_agent_name: conv.meta?.assignee?.name,
+      message_count: conv.messages_count || 0,
+    },
+    {
+      onConflict: "chatwoot_conversation_id",
+    },
+  );
 }
 ```
 
@@ -398,14 +409,14 @@ SELECT cron.schedule(
 
 ## Sync Modes Comparison
 
-| Aspect | Real-Time (Webhook) | Batch (Nightly) |
-|--------|-------------------|-----------------|
-| **Latency** | < 1s | Up to 24 hours |
-| **Use Case** | Live dashboards, alerts | Historical analytics |
-| **Data Volume** | Per-event (KB) | Bulk (MB-GB) |
-| **Reliability** | Depends on webhook | More resilient |
-| **Cost** | Low (per-event) | Moderate (bulk processing) |
-| **Complexity** | Simple | Complex (pagination, deduplication) |
+| Aspect          | Real-Time (Webhook)     | Batch (Nightly)                     |
+| --------------- | ----------------------- | ----------------------------------- |
+| **Latency**     | < 1s                    | Up to 24 hours                      |
+| **Use Case**    | Live dashboards, alerts | Historical analytics                |
+| **Data Volume** | Per-event (KB)          | Bulk (MB-GB)                        |
+| **Reliability** | Depends on webhook      | More resilient                      |
+| **Cost**        | Low (per-event)         | Moderate (bulk processing)          |
+| **Complexity**  | Simple                  | Complex (pagination, deduplication) |
 
 **Recommendation:** Use both - real-time for operational data, batch for analytics/enrichment
 
@@ -417,7 +428,7 @@ SELECT cron.schedule(
 
 ```sql
 -- Daily conversation volume
-SELECT 
+SELECT
   DATE(created_at) as date,
   COUNT(*) as total_conversations,
   SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved,
@@ -434,7 +445,7 @@ ORDER BY date DESC;
 
 ```sql
 -- Agent SDK effectiveness
-SELECT 
+SELECT
   operator_action,
   COUNT(*) as count,
   AVG(draft_confidence_score) as avg_confidence,
@@ -451,7 +462,7 @@ ORDER BY count DESC;
 
 ```sql
 -- CSAT by category over time
-SELECT 
+SELECT
   DATE_TRUNC('week', created_at) as week,
   category,
   AVG(csat_rating) as avg_csat,
@@ -468,7 +479,7 @@ ORDER BY week DESC, category;
 
 ```sql
 -- Most common knowledge gaps
-SELECT 
+SELECT
   detected_category,
   customer_question,
   occurrence_count,
@@ -492,12 +503,12 @@ LIMIT 20;
 async function enrichWithOrderData(conversation: Conversation) {
   // Extract order number from message
   const orderNumber = extractOrderNumber(conversation.messages);
-  
+
   if (!orderNumber) return conversation;
-  
+
   // Fetch order from Shopify
   const order = await shopifyClient.getOrder(orderNumber);
-  
+
   // Enrich conversation analytics
   return {
     ...conversation,
@@ -508,8 +519,8 @@ async function enrichWithOrderData(conversation: Conversation) {
       order_total: order.total_price,
       order_date: order.created_at,
       tracking_number: order.fulfillments?.[0]?.tracking_number,
-      tracking_url: order.fulfillments?.[0]?.tracking_url
-    }
+      tracking_url: order.fulfillments?.[0]?.tracking_url,
+    },
   };
 }
 ```
@@ -521,28 +532,29 @@ async function enrichWithOrderData(conversation: Conversation) {
 async function enrichWithCustomerLTV(supabase: any, email: string) {
   // Get all orders for customer from Shopify
   const orders = await shopifyClient.getCustomerOrders(email);
-  
-  const lifetime_value = orders.reduce((sum, order) => 
-    sum + parseFloat(order.total_price), 0
+
+  const lifetime_value = orders.reduce(
+    (sum, order) => sum + parseFloat(order.total_price),
+    0,
   );
-  
+
   const order_count = orders.length;
   const first_order_date = orders[orders.length - 1]?.created_at;
   const last_order_date = orders[0]?.created_at;
-  
+
   // Update conversation analytics
   await supabase
-    .from('conversation_analytics')
+    .from("conversation_analytics")
     .update({
-      customer_segment: lifetime_value > 1000 ? 'vip' : 'standard',
+      customer_segment: lifetime_value > 1000 ? "vip" : "standard",
       custom_attributes: {
         lifetime_value,
         order_count,
         first_order_date,
-        last_order_date
-      }
+        last_order_date,
+      },
     })
-    .eq('customer_email', email);
+    .eq("customer_email", email);
 }
 ```
 
@@ -554,7 +566,7 @@ async function enrichWithCustomerLTV(supabase: any, email: string) {
 
 ```sql
 CREATE OR REPLACE VIEW agent_sdk_performance_dashboard AS
-SELECT 
+SELECT
   DATE(created_at) as date,
   COUNT(*) as total_drafts,
   SUM(CASE WHEN operator_action = 'approve' THEN 1 ELSE 0 END) as approved,
@@ -576,7 +588,7 @@ ORDER BY date DESC;
 
 ```sql
 CREATE OR REPLACE VIEW customer_support_health AS
-SELECT 
+SELECT
   DATE(created_at) as date,
   COUNT(*) as total_conversations,
   SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved_count,
@@ -601,6 +613,7 @@ ORDER BY date DESC;
 **Location:** `supabase/functions/chatwoot-batch-sync/index.ts`
 
 **Features:**
+
 - Pagination handling for large datasets
 - Incremental sync (only changed records)
 - Error recovery and retry logic
@@ -608,6 +621,7 @@ ORDER BY date DESC;
 - Data validation
 
 **Schedule:**
+
 ```sql
 -- Run nightly at 2 AM UTC
 SELECT cron.schedule(
@@ -621,39 +635,39 @@ SELECT cron.schedule(
 
 ```typescript
 async function incrementalSync(supabase: any, since: Date) {
-  const CHATWOOT_BASE_URL = Deno.env.get('CHATWOOT_BASE_URL')!;
-  const API_TOKEN = Deno.env.get('CHATWOOT_API_TOKEN')!;
-  
+  const CHATWOOT_BASE_URL = Deno.env.get("CHATWOOT_BASE_URL")!;
+  const API_TOKEN = Deno.env.get("CHATWOOT_API_TOKEN")!;
+
   let page = 1;
   let hasMore = true;
   let totalSynced = 0;
-  
+
   while (hasMore) {
     // Fetch page of conversations
     const response = await fetch(
       `${CHATWOOT_BASE_URL}/api/v1/accounts/1/conversations?page=${page}&since=${since.toISOString()}`,
       {
-        headers: { 'api_access_token': API_TOKEN }
-      }
+        headers: { api_access_token: API_TOKEN },
+      },
     );
-    
+
     const data = await response.json();
     const conversations = data.data?.payload || [];
-    
+
     // Sync each conversation
     for (const conv of conversations) {
       await syncConversation(supabase, conv);
       totalSynced++;
     }
-    
+
     // Check if more pages
     hasMore = conversations.length > 0;
     page++;
-    
+
     // Rate limiting
     await new Deno.sleep(100); // 100ms between pages
   }
-  
+
   return totalSynced;
 }
 ```
@@ -673,39 +687,39 @@ interface ValidationRule {
 
 const validationRules: ValidationRule[] = [
   {
-    field: 'chatwoot_conversation_id',
-    rule: (v) => typeof v === 'number' && v > 0,
-    error: 'Invalid conversation ID'
+    field: "chatwoot_conversation_id",
+    rule: (v) => typeof v === "number" && v > 0,
+    error: "Invalid conversation ID",
   },
   {
-    field: 'customer_email',
+    field: "customer_email",
     rule: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-    error: 'Invalid email format'
+    error: "Invalid email format",
   },
   {
-    field: 'status',
-    rule: (v) => ['open', 'pending', 'resolved'].includes(v),
-    error: 'Invalid status value'
+    field: "status",
+    rule: (v) => ["open", "pending", "resolved"].includes(v),
+    error: "Invalid status value",
   },
   {
-    field: 'draft_confidence_score',
+    field: "draft_confidence_score",
     rule: (v) => v === null || (v >= 0 && v <= 100),
-    error: 'Confidence score must be 0-100'
-  }
+    error: "Confidence score must be 0-100",
+  },
 ];
 
 function validateRecord(record: any): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  
+
   for (const rule of validationRules) {
     if (!rule.rule(record[rule.field])) {
       errors.push(`${rule.field}: ${rule.error}`);
     }
   }
-  
+
   return {
     valid: errors.length === 0,
-    errors
+    errors,
   };
 }
 ```
@@ -717,6 +731,7 @@ function validateRecord(record: any): { valid: boolean; errors: string[] } {
 ### Dashboard 1: Agent SDK Performance
 
 **Metrics:**
+
 - Draft approval rate (target: >60%)
 - Draft edit rate (target: <30%)
 - Average confidence score
@@ -724,8 +739,9 @@ function validateRecord(record: any): { valid: boolean; errors: string[] } {
 - Escalation rate (target: <10%)
 
 **SQL:**
+
 ```sql
-SELECT 
+SELECT
   'Agent SDK Performance' as dashboard,
   json_build_object(
     'approval_rate', (
@@ -759,6 +775,7 @@ SELECT
 ### Dashboard 2: Support Health
 
 **Metrics:**
+
 - Total conversations
 - Resolution rate
 - Average response time
@@ -769,16 +786,16 @@ SELECT
 
 ## Real-Time vs Batch: Decision Matrix
 
-| Data Type | Sync Method | Why |
-|-----------|-------------|-----|
-| **New conversation** | Real-time | Immediate operator notification |
-| **New message** | Real-time | Draft generation trigger |
-| **Conversation resolved** | Real-time | Update dashboards instantly |
-| **Historical data** | Batch | Efficient bulk processing |
-| **Agent performance** | Batch | Aggregation across time periods |
-| **Customer LTV** | Batch | Requires Shopify API calls |
-| **Knowledge gaps** | Batch | Analysis across conversations |
-| **CSAT scores** | Real-time | Immediate feedback loop |
+| Data Type                 | Sync Method | Why                             |
+| ------------------------- | ----------- | ------------------------------- |
+| **New conversation**      | Real-time   | Immediate operator notification |
+| **New message**           | Real-time   | Draft generation trigger        |
+| **Conversation resolved** | Real-time   | Update dashboards instantly     |
+| **Historical data**       | Batch       | Efficient bulk processing       |
+| **Agent performance**     | Batch       | Aggregation across time periods |
+| **Customer LTV**          | Batch       | Requires Shopify API calls      |
+| **Knowledge gaps**        | Batch       | Analysis across conversations   |
+| **CSAT scores**           | Real-time   | Immediate feedback loop         |
 
 ---
 
@@ -788,7 +805,7 @@ SELECT
 
 ```sql
 -- Check sync lag
-SELECT 
+SELECT
   MAX(created_at) as last_conversation_time,
   MAX(synced_at) as last_sync_time,
   EXTRACT(EPOCH FROM (NOW() - MAX(synced_at))) / 60 as sync_lag_minutes
@@ -803,7 +820,7 @@ BEGIN
   SELECT EXTRACT(EPOCH FROM (NOW() - MAX(synced_at))) / 60
   INTO lag_minutes
   FROM conversation_analytics;
-  
+
   IF lag_minutes > 10 THEN
     -- Send alert
     PERFORM net.http_post(
@@ -814,7 +831,7 @@ BEGIN
     );
     RETURN false;
   END IF;
-  
+
   RETURN true;
 END;
 $$ LANGUAGE plpgsql;
@@ -826,14 +843,14 @@ $$ LANGUAGE plpgsql;
 
 ### Retention Periods
 
-| Data Type | Retention | Reason |
-|-----------|-----------|--------|
-| **Active conversations** | Indefinite | Ongoing support |
-| **Resolved conversations** | 2 years | Compliance, analytics |
-| **Customer interaction history** | 3 years | Lifetime value tracking |
-| **Agent performance metrics** | 1 year | Performance reviews |
-| **Knowledge gap data** | Until filled | Continuous improvement |
-| **Raw webhook logs** | 30 days | Debugging, audit |
+| Data Type                        | Retention    | Reason                  |
+| -------------------------------- | ------------ | ----------------------- |
+| **Active conversations**         | Indefinite   | Ongoing support         |
+| **Resolved conversations**       | 2 years      | Compliance, analytics   |
+| **Customer interaction history** | 3 years      | Lifetime value tracking |
+| **Agent performance metrics**    | 1 year       | Performance reviews     |
+| **Knowledge gap data**           | Until filled | Continuous improvement  |
+| **Raw webhook logs**             | 30 days      | Debugging, audit        |
 
 ### Cleanup Jobs
 
@@ -848,7 +865,7 @@ BEGIN
   FROM conversation_analytics
   WHERE status = 'resolved'
     AND resolved_at < NOW() - INTERVAL '2 years';
-  
+
   -- Delete from main table
   DELETE FROM conversation_analytics
   WHERE status = 'resolved'
@@ -872,19 +889,19 @@ SELECT cron.schedule(
 
 ```sql
 -- Optimize for common queries
-CREATE INDEX CONCURRENTLY idx_conv_created_status 
+CREATE INDEX CONCURRENTLY idx_conv_created_status
   ON conversation_analytics(created_at DESC, status);
 
-CREATE INDEX CONCURRENTLY idx_conv_agent_sdk_created 
-  ON conversation_analytics(created_at DESC) 
+CREATE INDEX CONCURRENTLY idx_conv_agent_sdk_created
+  ON conversation_analytics(created_at DESC)
   WHERE agent_sdk_used = true;
 
-CREATE INDEX CONCURRENTLY idx_conv_customer_email_date 
+CREATE INDEX CONCURRENTLY idx_conv_customer_email_date
   ON conversation_analytics(customer_email, created_at DESC);
 
 -- Partial index for unresolved
-CREATE INDEX CONCURRENTLY idx_conv_unresolved 
-  ON conversation_analytics(created_at DESC) 
+CREATE INDEX CONCURRENTLY idx_conv_unresolved
+  ON conversation_analytics(created_at DESC)
   WHERE status IN ('open', 'pending');
 ```
 
@@ -893,7 +910,7 @@ CREATE INDEX CONCURRENTLY idx_conv_unresolved
 ```sql
 -- Materialized view for expensive aggregations
 CREATE MATERIALIZED VIEW daily_support_summary AS
-SELECT 
+SELECT
   DATE(created_at) as date,
   COUNT(*) as total_conversations,
   SUM(CASE WHEN agent_sdk_used THEN 1 ELSE 0 END) as agent_sdk_count,
@@ -916,24 +933,28 @@ SELECT cron.schedule(
 ## Implementation Timeline
 
 ### Week 1: Foundation
+
 - [ ] Create database tables and indexes
 - [ ] Implement real-time webhook sync
 - [ ] Test real-time sync with sample data
 - [ ] Set up basic monitoring
 
 ### Week 2: Batch Sync
+
 - [ ] Implement batch sync Edge Function
 - [ ] Set up cron job scheduling
 - [ ] Add pagination and error handling
 - [ ] Test with historical data
 
 ### Week 3: Enrichment
+
 - [ ] Integrate Shopify order data
 - [ ] Calculate customer LTV
 - [ ] Implement knowledge gap detection
 - [ ] Create analytics views
 
 ### Week 4: Polish
+
 - [ ] Create dashboards
 - [ ] Set up alerts
 - [ ] Optimize query performance
@@ -975,7 +996,7 @@ WHERE created_at > updated_at
 -- Orphaned records (no matching customer)
 SELECT COUNT(*) as orphaned
 FROM conversation_analytics ca
-LEFT JOIN customer_interaction_history cih 
+LEFT JOIN customer_interaction_history cih
   ON ca.customer_email = cih.customer_email
 WHERE cih.id IS NULL;
 ```
@@ -987,7 +1008,7 @@ WHERE cih.id IS NULL;
 ### Weekly Support Report
 
 ```sql
-SELECT 
+SELECT
   'Weekly Support Report' as report_name,
   json_build_object(
     'week_ending', DATE_TRUNC('week', NOW()),
@@ -1005,11 +1026,13 @@ SELECT
 ## Next Steps
 
 1. **Deploy Database Schemas:**
+
    ```bash
    supabase db push
    ```
 
 2. **Deploy Sync Functions:**
+
    ```bash
    supabase functions deploy chatwoot-batch-sync
    ```
@@ -1036,4 +1059,3 @@ SELECT
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent + Data Agent  
 **Review Cadence:** Monthly or after schema changes
-

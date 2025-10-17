@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Manager — Direction (Greenfield)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -28,6 +31,7 @@ expires: 2025-10-19
 - Keep `docs/ops/credential_index.md` current and referenced in all relevant direction docs.
 
 ## Current Sprint Focus — 2025-10-12
+
 1. **Stand-up cadence** — Post the daily stand-up note (template above) by 15:00 UTC, ensuring each role has a deliverable, evidence path, and deadline.
 2. **Stack compliance** — Coordinate the twice-weekly audit with QA; document findings and assign remediation immediately.
 3. **Credential governance** — Validate that `docs/ops/credential_index.md` matches vault/GitHub reality; trigger updates if drift is detected. Confirm `.env.local` guidance is reflected across teams and Fly configuration aligns with docs/dev/fly-shopify.md.
@@ -36,6 +40,7 @@ expires: 2025-10-19
 6. **Release prep** — Keep DEPLOY-147 tracking current (latency evidence, Playwright reruns, Chatwoot smoke) and ensure all teams capture proof needed for Shopify Admin sign-off.
 
 ## Feedback Standardization — Immediate Actions (2025-10-11)
+
 - Every agent must log in their own file: `feedback/<role>.md`. Examples:
   - Chatwoot → `feedback/chatwoot.md`
   - Integrations → `feedback/integrations.md`
@@ -45,6 +50,7 @@ expires: 2025-10-19
 - Use `scripts/ops/feedback-log.sh <role> <timestamp> <command> <evidence_path>` to add standardized entries.
 
 ## Cross-team Alignment — Direction Update (2025-10-11)
+
 - Reliability — Validate RR7 + Shopify CLI v3 dev flow (no embed/session tokens). Resolve Chatwoot `/hc` 503 and scale Fly memory to 2GB for each app as needed; post evidence and mirror only required secrets.
 - Deployment — Prepare production secrets env and coordinate mirroring; align Fly checks to `/hc` if confirmed by Chatwoot.
 - Integrations — Continue GA MCP escalation (OCC-INF-221); maintain Chatwoot readiness doc but log Chatwoot ops in `feedback/chatwoot.md`.

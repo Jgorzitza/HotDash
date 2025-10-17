@@ -3,16 +3,15 @@
  */
 
 export class AutomatedEvaluationPipeline {
-  
   async runEvaluation(modelId: string, testSet: TestCase[]) {
     const results = [];
-    
+
     for (const testCase of testSet) {
       const response = await model.generate(testCase.input);
       const score = await this.score(response, testCase.expected);
       results.push({ testCase, response, score });
     }
-    
+
     return {
       modelId,
       timestamp: new Date().toISOString(),
@@ -21,7 +20,7 @@ export class AutomatedEvaluationPipeline {
       passedGates: this.checkQualityGates(results),
     };
   }
-  
+
   private score(response: string, expected: string) {
     return {
       bleu: calculateBLEU(response, expected),
@@ -29,15 +28,16 @@ export class AutomatedEvaluationPipeline {
       exact_match: response.trim() === expected.trim(),
     };
   }
-  
+
   private aggregateMetrics(results: any[]) {
     return {
-      avg_bleu: average(results.map(r => r.score.bleu)),
-      avg_rouge: average(results.map(r => r.score.rouge)),
-      pass_rate: results.filter(r => r.score.bleu > 0.3).length / results.length,
+      avg_bleu: average(results.map((r) => r.score.bleu)),
+      avg_rouge: average(results.map((r) => r.score.rouge)),
+      pass_rate:
+        results.filter((r) => r.score.bleu > 0.3).length / results.length,
     };
   }
-  
+
   private checkQualityGates(results: any[]) {
     const metrics = this.aggregateMetrics(results);
     return {
@@ -47,4 +47,3 @@ export class AutomatedEvaluationPipeline {
     };
   }
 }
-

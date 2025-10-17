@@ -12,12 +12,12 @@ MCP tools are powerful but can consume significant context window space if used 
 
 ## 🎯 Quick Reference: Token Limits
 
-| Use Case | Token Limit | Expected Results |
-|----------|-------------|------------------|
-| **Syntax check** | 500-800 | 1-3 code examples |
-| **Pattern exploration** | 1000-1500 | 3-7 code examples |
-| **Implementation guide** | 2000-3000 | 10-20 examples (rare) |
-| **Never exceed** | 3000 | Requires manager approval |
+| Use Case                 | Token Limit | Expected Results          |
+| ------------------------ | ----------- | ------------------------- |
+| **Syntax check**         | 500-800     | 1-3 code examples         |
+| **Pattern exploration**  | 1000-1500   | 3-7 code examples         |
+| **Implementation guide** | 2000-3000   | 10-20 examples (rare)     |
+| **Never exceed**         | 3000        | Requires manager approval |
 
 ## ⚡ Quick Rules
 
@@ -31,15 +31,16 @@ MCP tools are powerful but can consume significant context window space if used 
 
 **Your training data is OUTDATED for:**
 
-| Technology | Training Cutoff | Current Version | Risk Level |
-|------------|----------------|-----------------|------------|
-| **React Router 7** | Mostly v6 | v7.x (2024) | 🔴 **VERY HIGH** |
-| **Shopify Admin API** | 2023-10 or older | 2024-10+ | 🔴 **VERY HIGH** |
-| **Shopify App Bridge** | v2/early v3 | v3.7+ | 🟡 **HIGH** |
-| **React Router loaders** | Remix patterns | RR7 native | 🔴 **VERY HIGH** |
-| **Prisma** | v4 | v5/v6 | 🟡 **MEDIUM** |
+| Technology               | Training Cutoff  | Current Version | Risk Level       |
+| ------------------------ | ---------------- | --------------- | ---------------- |
+| **React Router 7**       | Mostly v6        | v7.x (2024)     | 🔴 **VERY HIGH** |
+| **Shopify Admin API**    | 2023-10 or older | 2024-10+        | 🔴 **VERY HIGH** |
+| **Shopify App Bridge**   | v2/early v3      | v3.7+           | 🟡 **HIGH**      |
+| **React Router loaders** | Remix patterns   | RR7 native      | 🔴 **VERY HIGH** |
+| **Prisma**               | v4               | v5/v6           | 🟡 **MEDIUM**    |
 
 **DO NOT trust your training data for:**
+
 - ❌ React Router 7 data loading (loaders, actions, clientLoader)
 - ❌ Shopify GraphQL schema (fields change frequently)
 - ❌ Shopify App Bridge v3 hooks
@@ -47,6 +48,7 @@ MCP tools are powerful but can consume significant context window space if used 
 - ❌ Any API versioned after 2023
 
 **You CAN trust your training data for:**
+
 - ✅ Basic React patterns (hooks, components, state)
 - ✅ TypeScript syntax
 - ✅ JavaScript fundamentals
@@ -58,6 +60,7 @@ MCP tools are powerful but can consume significant context window space if used 
 ### Step 1: Ask Yourself
 
 **Am I confident this is:**
+
 1. A stable, fundamental concept? (e.g., React useState)
 2. Not version-specific? (e.g., general TypeScript)
 3. Not from a rapidly changing API? (e.g., Shopify)
@@ -131,6 +134,7 @@ MCP tools are powerful but can consume significant context window space if used 
 ### Example 1: React Router 7 Loaders
 
 **❌ What training data might suggest (React Router v6/Remix):**
+
 ```typescript
 // OLD Remix pattern - WRONG for RR7
 import { json } from "@remix-run/node";
@@ -142,13 +146,14 @@ export const loader = async ({ params }) => {
 ```
 
 **✅ What Context7 shows (React Router 7 current):**
+
 ```typescript
 // CORRECT RR7 pattern from Context7
 import type { Route } from "./+types/product";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const data = await fetchData(params.id);
-  return { data };  // Direct return, no json() wrapper
+  return { data }; // Direct return, no json() wrapper
 }
 ```
 
@@ -159,6 +164,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 ### Example 2: Shopify Admin API
 
 **❌ What training data might suggest (2023 API):**
+
 ```graphql
 # OLD - customer.email was public
 query {
@@ -170,6 +176,7 @@ query {
 ```
 
 **✅ What Shopify MCP shows (2024 API):**
+
 ```graphql
 # CURRENT - email requires additional scope
 query {
@@ -189,6 +196,7 @@ query {
 ### Example 3: React Router 7 Type Safety
 
 **❌ What training data might suggest:**
+
 ```typescript
 // Assume you need manual types
 import { useLoaderData } from "react-router";
@@ -198,18 +206,17 @@ type LoaderData = {
 };
 
 export default function Component() {
-  const data = useLoaderData<LoaderData>();  // Manual typing
+  const data = useLoaderData<LoaderData>(); // Manual typing
 }
 ```
 
 **✅ What Context7 shows (RR7 auto-types):**
+
 ```typescript
 // CORRECT - RR7 auto-infers from loader
 import type { Route } from "./+types/product";
 
-export default function Component({ 
-  loaderData 
-}: Route.ComponentProps) {
+export default function Component({ loaderData }: Route.ComponentProps) {
   // loaderData is automatically typed!
 }
 ```
@@ -221,6 +228,7 @@ export default function Component({
 ## When to ALWAYS Verify (Even if Confident)
 
 **Mandatory MCP verification for:**
+
 1. ✅ Any React Router 7 data loading code
 2. ✅ Any Shopify GraphQL query
 3. ✅ Any Shopify API endpoint call
@@ -229,16 +237,19 @@ export default function Component({
 6. ✅ API versioning parameters (Shopify)
 
 **Quick verification pattern:**
+
 ```typescript
 // Before writing RR7 loader code:
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader function signature",
-  tokens: 800
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader function signature",
+    tokens: 800,
+  });
 
 // Before writing Shopify query:
-mcp_shopify_validate_query({ query: myGraphQLQuery })
+mcp_shopify_validate_query({ query: myGraphQLQuery });
 ```
 
 **Cost: 800-1000 tokens**  
@@ -249,44 +260,53 @@ mcp_shopify_validate_query({ query: myGraphQLQuery })
 ## Context Window Budget
 
 ### Typical Agent Context Windows
+
 - **Claude Sonnet 3.5/4**: 200K tokens
 - **GPT-4 Turbo**: 128K tokens
 - **Working budget**: Reserve 50-75% for code/conversation
 
 ### MCP Tool Consumption Estimates
-| Tool | Typical Response | Max Response | Notes |
-|------|-----------------|--------------|-------|
-| **context7** | 2-10K tokens | 50K+ tokens | Configurable via `tokens` param |
-| **shopify** | 1-5K tokens | 20K tokens | Schema queries can be large |
-| **github** | 500-3K tokens | 10K tokens | Depends on file count |
-| **supabase** | 500-2K tokens | 5K tokens | Schema/table listings |
-| **fly** | 200-1K tokens | 3K tokens | Logs can accumulate |
+
+| Tool         | Typical Response | Max Response | Notes                           |
+| ------------ | ---------------- | ------------ | ------------------------------- |
+| **context7** | 2-10K tokens     | 50K+ tokens  | Configurable via `tokens` param |
+| **shopify**  | 1-5K tokens      | 20K tokens   | Schema queries can be large     |
+| **github**   | 500-3K tokens    | 10K tokens   | Depends on file count           |
+| **supabase** | 500-2K tokens    | 5K tokens    | Schema/table listings           |
+| **fly**      | 200-1K tokens    | 3K tokens    | Logs can accumulate             |
 
 ---
 
 ## Efficiency Principles
 
 ### 1. **Query Once, Use Multiple Times**
+
 ❌ **Bad:**
+
 ```
 "Show me the Sales Pulse tile"
 "Show me the Inventory tile"
 "Show me the Ops Pulse tile"
 ```
-*Cost: 3 separate Context7 calls, ~15K tokens*
+
+_Cost: 3 separate Context7 calls, ~15K tokens_
 
 ✅ **Good:**
+
 ```
 "Show me all dashboard tile implementations"
 ```
-*Cost: 1 Context7 call, ~8K tokens*
+
+_Cost: 1 Context7 call, ~8K tokens_
 
 Then reference the results multiple times in conversation.
 
 ---
 
 ### 2. **Progressive Refinement**
+
 ❌ **Bad:**
+
 ```
 # First call - too broad
 "Show me everything about React Router 7"
@@ -294,6 +314,7 @@ Then reference the results multiple times in conversation.
 ```
 
 ✅ **Good:**
+
 ```
 # Start specific
 "Show me React Router 7 loader pattern for data fetching"
@@ -310,43 +331,56 @@ Then reference the results multiple times in conversation.
 Context7 accepts a `tokens` parameter to limit response size:
 
 ❌ **Bad:**
+
 ```typescript
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loaders"
-  // No limit - could return 20K+ tokens
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loaders",
+    // No limit - could return 20K+ tokens
+  });
 ```
 
 ❌ **Still Too Much:**
+
 ```typescript
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loaders",
-  tokens: 3000  // Returns 10-60 examples, fills context fast
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loaders",
+    tokens: 3000, // Returns 10-60 examples, fills context fast
+  });
 ```
 
 ✅ **Good:**
+
 ```typescript
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader error handling",  // Hyper-specific
-  tokens: 1000  // Returns 3-7 focused examples
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader error handling", // Hyper-specific
+    tokens: 1000, // Returns 3-7 focused examples
+  });
 ```
 
 ✅ **Best:**
+
 ```typescript
 // Start small, expand if needed
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader error boundary pattern",  // Ultra-specific
-  tokens: 800  // Returns 1-3 perfect examples
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader error boundary pattern", // Ultra-specific
+    tokens: 800, // Returns 1-3 perfect examples
+  });
 ```
 
 **Recommended token limits:**
+
 - Syntax check: 500-800 tokens (1-3 code examples)
 - Pattern exploration: 1000-1500 tokens (3-7 code examples)
 - Implementation guidance: 2000-3000 tokens (10-20 code examples)
@@ -358,26 +392,32 @@ mcp_context7_get-library-docs({
 ### 4. **Direct File Access vs MCP Tools**
 
 ❌ **Bad:**
+
 ```
 # Using Context7 when you know the exact file
 "Show me app/components/tiles/SalesPulse.tsx"
 ```
-*Cost: Context7 call + 5K tokens*
+
+_Cost: Context7 call + 5K tokens_
 
 ✅ **Good:**
+
 ```typescript
 // Read the file directly
-read_file("app/components/tiles/SalesPulse.tsx")
+read_file("app/components/tiles/SalesPulse.tsx");
 ```
-*Cost: File read + 2K tokens*
+
+_Cost: File read + 2K tokens_
 
 **Use MCP when:**
+
 - You DON'T know the file location
 - You need to FIND similar patterns
 - You want MULTIPLE related files
 - You need EXTERNAL library docs
 
 **Use file tools when:**
+
 - You KNOW the exact file path
 - You're making SPECIFIC edits
 - You've ALREADY found the file via MCP
@@ -387,19 +427,23 @@ read_file("app/components/tiles/SalesPulse.tsx")
 ### 5. **Combine Related Queries**
 
 ❌ **Bad:**
+
 ```
 "Show me the Shopify service client"
 "Show me how we handle Shopify authentication"
 "Show me Shopify error handling"
 "Show me Shopify GraphQL queries"
 ```
-*Cost: 4 Context7 calls, ~20K tokens*
+
+_Cost: 4 Context7 calls, ~20K tokens_
 
 ✅ **Good:**
+
 ```
 "Show me the Shopify service client implementation including authentication, error handling, and GraphQL query patterns"
 ```
-*Cost: 1 Context7 call, ~6K tokens*
+
+_Cost: 1 Context7 call, ~6K tokens_
 
 ---
 
@@ -408,6 +452,7 @@ read_file("app/components/tiles/SalesPulse.tsx")
 When Context7 returns code, **remember it** for the rest of the conversation:
 
 ✅ **Good:**
+
 ```
 Agent: [Calls Context7 once]
 Agent: "I found 3 dashboard tiles following this pattern:
@@ -419,6 +464,7 @@ Agent: [References this knowledge for next 10 messages without recalling]
 ```
 
 ❌ **Bad:**
+
 ```
 Agent: [Calls Context7]
 Agent: "I found Sales Pulse..."
@@ -433,6 +479,7 @@ Agent: [Calls Context7 AGAIN for same file]
 GitHub and Supabase support pagination:
 
 ❌ **Bad:**
+
 ```
 # Get all commits from repo history
 mcp_github_list_commits({ owner, repo })
@@ -440,11 +487,12 @@ mcp_github_list_commits({ owner, repo })
 ```
 
 ✅ **Good:**
+
 ```
 # Get recent commits only
-mcp_github_list_commits({ 
-  owner, 
-  repo, 
+mcp_github_list_commits({
+  owner,
+  repo,
   perPage: 10  // Just what we need
 })
 # Returns 10 commits, 2K tokens
@@ -455,6 +503,7 @@ mcp_github_list_commits({
 ### 8. **Targeted Library Documentation**
 
 ❌ **Bad:**
+
 ```
 # Get ALL React Router 7 docs
 mcp_context7_get-library-docs({
@@ -464,6 +513,7 @@ mcp_context7_get-library-docs({
 ```
 
 ✅ **Good:**
+
 ```
 # Get specific topic with token limit
 mcp_context7_get-library-docs({
@@ -479,7 +529,9 @@ mcp_context7_get-library-docs({
 ## Tool-Specific Efficiency Tips
 
 ### Context7
+
 **Efficient:**
+
 - Hyper-specific topics: `"loader error boundary pattern"`
 - Conservative token limits: `tokens: 800-1500`
 - Search once, reference multiple times
@@ -487,6 +539,7 @@ mcp_context7_get-library-docs({
 - Try training data first, Context7 second
 
 **Inefficient:**
+
 - Broad topics: `"loaders and actions"`
 - High token limits: `tokens: 3000+`
 - Repeated searches for same code
@@ -494,6 +547,7 @@ mcp_context7_get-library-docs({
 - Using to "demonstrate" or "test" the tool
 
 **❌ NEVER Use Context7 For:**
+
 - Patterns you confidently know from training
 - Simple CRUD operations
 - Demonstrating/testing the tool
@@ -503,12 +557,15 @@ mcp_context7_get-library-docs({
 ---
 
 ### Shopify MCP
+
 **Efficient:**
+
 - Specific queries: `"Product GraphQL schema fields"`
 - Validate individual queries, not entire files
 - Cache schema knowledge in conversation
 
 **Inefficient:**
+
 - `"Show me everything about Shopify API"`
 - Validating same query multiple times
 - Not remembering schema from previous responses
@@ -516,12 +573,15 @@ mcp_context7_get-library-docs({
 ---
 
 ### GitHub MCP
+
 **Efficient:**
+
 - Use `perPage` parameter: `perPage: 10`
 - Specific searches: `"commits touching metrics.ts"`
 - Read file contents directly when you have the path
 
 **Inefficient:**
+
 - Listing all commits/PRs/issues without pagination
 - Using GitHub MCP to read files (use file tools)
 - Repeated calls for same information
@@ -529,12 +589,15 @@ mcp_context7_get-library-docs({
 ---
 
 ### Supabase MCP
+
 **Efficient:**
+
 - Query specific schemas: `schemas: ["public"]`
 - Cache table structures in conversation
 - Use for schema inspection, not data queries
 
 **Inefficient:**
+
 - Listing all tables repeatedly
 - Getting logs without time limits
 - Using for routine database queries (use Prisma)
@@ -542,12 +605,15 @@ mcp_context7_get-library-docs({
 ---
 
 ### Fly MCP
+
 **Efficient:**
+
 - Tail logs with limits: last hour only
 - Check specific app status
 - Cache deployment state
 
 **Inefficient:**
+
 - Getting full log history
 - Listing all machines repeatedly
 - Status checks every message
@@ -563,24 +629,29 @@ mcp_context7_get-library-docs({
 // If uncertain...
 
 // Step 2: Search HotDash codebase first
-grep("loader error handling pattern")
+grep("loader error handling pattern");
 
 // Step 3: If pattern not in codebase, fetch minimal Context7
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader error boundary",  // Ultra-specific
-  tokens: 800  // Just 1-3 examples
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader error boundary", // Ultra-specific
+    tokens: 800, // Just 1-3 examples
+  });
 
 // Step 4: If insufficient, refine and request more
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader error boundary with redirect",  // Even more specific
-  tokens: 1200  // A few more examples
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader error boundary with redirect", // Even more specific
+    tokens: 1200, // A few more examples
+  });
 ```
 
 **Decision making:**
+
 ```
 Do I need external library docs?
 ├─ Can I answer from training? ────────────► Skip Context7
@@ -627,46 +698,56 @@ Need deployment info?
 ## Anti-Patterns to Avoid
 
 ### ❌ The Repeat Caller
+
 ```
 Message 1: "Show me Sales Pulse"
 Message 5: "Show me Sales Pulse again"
 Message 10: "What was in Sales Pulse?"
 ```
+
 **Fix**: Reference the result from Message 1
 
 ---
 
 ### ❌ The Kitchen Sink
+
 ```
-"Show me everything about dashboard tiles, React Router, 
+"Show me everything about dashboard tiles, React Router,
 Shopify integration, Prisma schema, and deployment"
 ```
+
 **Fix**: Break into focused queries
 
 ---
 
 ### ❌ The File Browser
+
 ```
 Using Context7 to browse through files one by one
 when you know the directory structure
 ```
+
 **Fix**: Use `list_dir` and `read_file`
 
 ---
 
 ### ❌ The Documentation Downloader
+
 ```
 Getting entire library docs instead of specific topics
 ```
+
 **Fix**: Use `topic` parameter and `tokens` limit
 
 ---
 
 ### ❌ The Validator Spammer
+
 ```
 Validating every GraphQL query individually
 when they follow the same pattern
 ```
+
 **Fix**: Validate the pattern once, apply knowledge
 
 ---
@@ -689,7 +770,9 @@ Before calling an MCP tool, ask:
 ## Manager Enforcement
 
 ### In Code Reviews
+
 **Red flags:**
+
 - Multiple Context7 calls for same code
 - No token limits on library doc calls
 - Using Context7 for known file paths
@@ -697,6 +780,7 @@ Before calling an MCP tool, ask:
 - Same schema/status checks repeated
 
 **Green flags:**
+
 - One MCP call, multiple references
 - Specific, targeted queries
 - Token limits set appropriately
@@ -704,7 +788,9 @@ Before calling an MCP tool, ask:
 - Progressive refinement pattern
 
 ### In Stand-ups
+
 Monitor context efficiency:
+
 - Are agents making redundant MCP calls?
 - Are context windows filling up too quickly?
 - Are agents using file tools appropriately?
@@ -727,6 +813,7 @@ Monitor context efficiency:
 ## Metrics for Efficiency
 
 **Excellent context efficiency:**
+
 - Average MCP calls per feature: 1-2
 - Context7 token limit: 800-1500 per call
 - Average tokens per Context7 call: < 1500
@@ -735,6 +822,7 @@ Monitor context efficiency:
 - Uses training data first: 80%+ of the time
 
 **Good context efficiency:**
+
 - Average MCP calls per feature: 2-4
 - Context7 token limit: 1000-2000 per call
 - Average tokens per Context7 call: < 2500
@@ -743,6 +831,7 @@ Monitor context efficiency:
 - Uses training data first: 60%+ of the time
 
 **Poor context efficiency (needs improvement):**
+
 - Average MCP calls per feature: 5-8
 - Context7 token limit: 2000-3000 per call
 - Average tokens per Context7 call: > 3000
@@ -751,6 +840,7 @@ Monitor context efficiency:
 - Uses training data first: < 40% of the time
 
 **Unacceptable (requires manager intervention):**
+
 - Average MCP calls per feature: 10+
 - Context7 token limit: 3000+ or no limit set
 - Average tokens per Context7 call: > 5000
@@ -765,6 +855,7 @@ Monitor context efficiency:
 ### Example 1: Building a New Dashboard Tile
 
 **Excellent approach:**
+
 ```
 1. Grep: Search for "dashboard tile" pattern in HotDash
    (Find existing SalesPulse.tsx)
@@ -781,9 +872,11 @@ Monitor context efficiency:
 
 6. [Complete implementation]
 ```
+
 **Total**: 2 MCP calls, ~1.5K tokens ⭐
 
 **Good approach:**
+
 ```
 1. Context7: "Dashboard tile React Router 7 loader pattern"
    (tokens: 1200, returns 5-7 focused examples)
@@ -796,9 +889,11 @@ Monitor context efficiency:
 
 5. [Implement feature]
 ```
+
 **Total**: 2 MCP calls, ~2K tokens
 
 **Poor approach:**
+
 ```
 1. Context7: "Show me dashboard tiles" (tokens: 3000)
 2. Context7: "Show me Sales Pulse specifically" (tokens: 3000)
@@ -810,6 +905,7 @@ Monitor context efficiency:
 8. Supabase MCP: "List tables"
 9. Supabase MCP: "List tables" (repeated!)
 ```
+
 **Total**: 9 MCP calls, ~40K+ tokens ❌
 
 ---
@@ -817,6 +913,7 @@ Monitor context efficiency:
 ### Example 2: Debugging an Integration
 
 **Excellent approach:**
+
 ```
 1. Grep: Search for "ShopifyClient" in HotDash codebase
 
@@ -832,9 +929,11 @@ Monitor context efficiency:
 
 6. [Fix and test]
 ```
+
 **Total**: 1-2 MCP calls, ~1.5K tokens ⭐
 
 **Good approach:**
+
 ```
 1. Context7: "Shopify service client error handling"
    (tokens: 1200, returns 5-7 targeted examples)
@@ -847,9 +946,11 @@ Monitor context efficiency:
 
 5. [Fix and test]
 ```
+
 **Total**: 2 MCP calls, ~2.5K tokens
 
 **Poor approach:**
+
 ```
 1. Context7: "Shopify integrations" (tokens: 3000)
 2. Context7: "Error handling patterns" (tokens: 3000)
@@ -857,6 +958,7 @@ Monitor context efficiency:
 4. GitHub MCP: "All commits" (no perPage limit)
 5. Context7: "What was the client pattern?" (repeated!)
 ```
+
 **Total**: 5 MCP calls, ~15K+ tokens ❌
 
 ---
@@ -868,6 +970,7 @@ MCP tools are invaluable but must be used strategically. Context7 can easily con
 ### The Conservative Approach
 
 **Prioritize in this order:**
+
 1. ✅ Use your training data (0 tokens)
 2. ✅ Search HotDash codebase with grep (~100 tokens)
 3. ✅ Read files directly (~2K tokens)
@@ -878,11 +981,13 @@ MCP tools are invaluable but must be used strategically. Context7 can easily con
 ### Real-World Impact
 
 **Claude's experience:**
+
 - 11.4K token Context7 call = "fills up context quickly"
 - Recommended: 800-1500 tokens = 3-10 focused examples
 - Result: **90% reduction in context consumption**
 
 **Your agents should:**
+
 - Start with smallest token budget that solves the problem
 - Expand iteratively only if truly needed
 - Default to 800 tokens, not 3000
@@ -897,7 +1002,7 @@ MCP tools are invaluable but must be used strategically. Context7 can easily con
 ---
 
 **Related Docs:**
+
 - `docs/directions/mcp-tools-reference.md` - Complete tool guide
 - `docs/context7-quick-reference.md` - Context7 query patterns
 - `docs/directions/README.md` - Direction governance
-

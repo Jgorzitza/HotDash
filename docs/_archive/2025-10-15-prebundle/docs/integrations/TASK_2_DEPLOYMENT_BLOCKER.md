@@ -15,6 +15,7 @@ Webhook handler code is **COMPLETE and READY** but requires **Fly deployment** t
 ## ✅ Completed Work
 
 ### Webhook Handler Implementation
+
 - **File:** `app/routes/api.webhooks.chatwoot.tsx`
 - **Size:** 139 lines (3,805 bytes)
 - **Commit:** 49dc8e2
@@ -22,6 +23,7 @@ Webhook handler code is **COMPLETE and READY** but requires **Fly deployment** t
 - **Date:** Oct 11 20:34
 
 ### Features Implemented
+
 1. ✅ **HMAC-SHA256 Signature Verification**
    - Validates `X-Chatwoot-Signature` header
    - Uses `CHATWOOT_WEBHOOK_SECRET` env var
@@ -49,6 +51,7 @@ Webhook handler code is **COMPLETE and READY** but requires **Fly deployment** t
 ### Test Evidence
 
 **Test Command:**
+
 ```bash
 curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
   -H "Content-Type: application/json" \
@@ -62,10 +65,13 @@ curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
 ```
 
 **Result:** HTTP 404 Not Found
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head><title>Unhandled Thrown Response!</title></head>
+  <head>
+    <title>Unhandled Thrown Response!</title>
+  </head>
   <body>
     <main>
       <h1>404 Not Found</h1>
@@ -75,6 +81,7 @@ curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
 ```
 
 ### Root Cause
+
 - **App Name:** hotdash-staging
 - **Last Deployment:** 2025-10-11T02:12:14Z (version 17)
 - **Route Added:** After last deployment (commit 49dc8e2)
@@ -86,9 +93,11 @@ curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
 ## 🚧 Policy Constraint
 
 **Local Execution Policy:**
+
 > "Scope: local repo and local Supabase; under auto-run do not change Fly apps or secrets. Status/list checks are fine."
 
 **Interpretation:**
+
 - ✅ CAN: Test endpoints, check status, document findings
 - ❌ CANNOT: Deploy to Fly apps under auto-run
 - ✅ CAN: Deploy if given explicit permission
@@ -98,17 +107,21 @@ curl -X POST https://hotdash-staging.fly.dev/api/webhooks/chatwoot \
 ## 🔄 Resolution Options
 
 ### Option 1: Engineer Deployment (Recommended)
+
 **Who:** @engineer  
 **Action:** Deploy hotdash-staging with new webhook route  
 **Command:**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 fly deploy --app hotdash-staging
 ```
+
 **Timeline:** ~5-10 minutes  
 **Benefit:** Follows standard deployment process
 
 ### Option 2: Chatwoot Agent Deployment (If Permitted)
+
 **Who:** Chatwoot agent (me)  
 **Requirement:** Explicit manager approval to override auto-run policy  
 **Command:** Same as Option 1  
@@ -116,6 +129,7 @@ fly deploy --app hotdash-staging
 **Benefit:** Immediate unblocking
 
 ### Option 3: Wait for Automatic Deployment
+
 **Who:** Automated CI/CD (if configured)  
 **Trigger:** Git push to main branch  
 **Timeline:** Unknown  
@@ -126,18 +140,21 @@ fly deploy --app hotdash-staging
 ## 📋 Next Steps
 
 ### For Manager
+
 1. **Decision:** Choose resolution option (1, 2, or 3)
 2. **If Option 1:** Tag @engineer for deployment
 3. **If Option 2:** Grant Chatwoot agent explicit permission to deploy
 4. **If Option 3:** Confirm CI/CD is configured and will deploy
 
 ### For Engineer (If Option 1 Chosen)
+
 1. Pull latest code: `git pull origin main`
 2. Deploy to Fly: `fly deploy --app hotdash-staging`
 3. Verify deployment: Check for version 18+ and webhook route accessible
 4. Notify Chatwoot agent: Update in feedback/engineer.md
 
 ### For Chatwoot Agent (After Deployment)
+
 1. ✅ Test webhook endpoint (POST request)
 2. ✅ Verify HMAC signature verification
 3. ✅ Test Agent SDK forwarding
@@ -159,18 +176,22 @@ fly deploy --app hotdash-staging
 ## 📊 Impact Assessment
 
 ### Blocked Tasks
+
 - **Task 2:** Webhook Configuration (cannot configure until endpoint works)
 - **Task 5:** E2E Agent Flow Testing (depends on Task 2)
 
 ### Unblocked Work
+
 - All other Chatwoot tasks (1, 3, 4, A-CJ) remain complete ✅
 
 ### Business Impact
+
 - **Agent SDK Integration:** Delayed until webhook deployed
 - **Approval Queue:** Cannot test until webhook functional
 - **Operator Workflows:** Cannot validate end-to-end flow
 
 ### Timeline Impact
+
 - **Current:** Blocked on deployment (~5-10 min task)
 - **After Deployment:** ~2-4 hours to complete Tasks 2 & 5
 - **Total Delay:** Minimal if deployed within next 1-2 hours
@@ -180,6 +201,7 @@ fly deploy --app hotdash-staging
 ## 🔍 Supporting Evidence
 
 ### File Verification
+
 ```bash
 $ ls -la app/routes/api.webhooks.chatwoot.tsx
 -rw-r--r-- 1 justin justin 3805 Oct 11 20:34 app/routes/api.webhooks.chatwoot.tsx
@@ -192,6 +214,7 @@ $ git log --oneline app/routes/api.webhooks.chatwoot.tsx | head -1
 ```
 
 ### Deployment Verification
+
 ```bash
 $ fly status --app hotdash-staging
 App: hotdash-staging
@@ -201,6 +224,7 @@ Machines: 1 running (version 17)
 ```
 
 ### Route Configuration
+
 ```bash
 $ cat app/routes.ts
 import { flatRoutes } from "@react-router/fs-routes";
@@ -214,4 +238,3 @@ Route should auto-register as `/api/webhooks/chatwoot` from filename `api.webhoo
 **Status:** 🟡 AWAITING DEPLOYMENT DECISION  
 **Next Action:** Manager to choose resolution option  
 **Ready For:** Immediate task completion post-deployment
-

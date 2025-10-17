@@ -6,9 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Shopify Integration Readiness — QA & Integrations
 
 ## Current State
+
 - **Connection Secrets:** Staging `DATABASE_URL` delivered (vault/occ/supabase/database_url_staging.env) and mirrored to GitHub `staging` environment; coordinate with QA to refresh `.env.staging` and begin migrations.
 - **Admin Store Access:** QA, Product, and Support service accounts confirmed invited + accepted (audit log `artifacts/integrations/shopify/2025-10-10/store-invite-audit-20251010T0730Z.md`); access instructions broadcast 07:35 UTC.
 - **Fixtures:** Offline fixtures for orders, inventory, and approvals stored under `tests/fixtures/shopify/`; require refresh once Admin data connects to staging Postgres.
@@ -17,6 +19,7 @@ expires: 2025-10-17
 - **CLI Secret Evidence:** Captured 07:18 UTC sha256 for `vault/occ/shopify/cli_auth_token_staging.env` (`artifacts/integrations/shopify/2025-10-10/cli-secret-20251010T071858Z.log`); pending Fly `secrets list` attachment after DEPLOY-147 closure.
 
 ## Validation Scope
+
 1. **Prisma Forward/Back Validation**
    - Run `npm run db:migrate:postgres` and rollback scripts against staging Postgres using the supplied `DATABASE_URL`.
    - Capture command transcripts and row count deltas; attach to `feedback/qa.md`.
@@ -29,6 +32,7 @@ expires: 2025-10-17
    - Ensure tests run offline using fixtures; regenerate snapshots when APIs or schema change.
 
 ## Evidence Requirements
+
 - Migration logs (forward/back) stored in `artifacts/migrations/YYYY-MM-DD/`.
 - GraphQL query transcripts and responses saved under `artifacts/shopify/graphql/YYYY-MM-DD/`.
 - Playwright screenshots for Shopify surfaces recorded in `artifacts/playwright/shopify/`.
@@ -36,11 +40,13 @@ expires: 2025-10-17
 - Staging store invite/access log will be captured in `artifacts/integrations/shopify/2025-10-10/store-access.md` immediately after credentials handoff.
 
 ## Blockers / Next Actions
+
 - Deployment & Integrations: Monitor Fly smoke latency and capture sub-300 ms proof for `https://hotdash-staging.fly.dev/app?mock=0`; DEPLOY-147 can close immediately after evidence lands.
 - Reliability: Re-run smoke probe + share latency logs; assist with caching tweaks if readings stay above target.
 - QA/Product/Support: Execute broadcasted action items and log outcomes in respective feedback docs.
 
 ## Action Log
+
 - **2025-10-10 07:23 UTC:** Posted follow-up in `#deploy-ops` requesting timestamped QA/product/support invites and auditing details for DEPLOY-147 closure; awaiting acknowledgement before manager escalation.
 - **2025-10-10 07:18 UTC:** Logged CLI secret hash evidence (`cli-secret-20251010T071858Z.log`) and noted pending Fly secrets verification after deployment completes bundle.
 - **2025-10-10 07:32 UTC:** Captured Shopify admin audit export confirming QA/Product/Support invites accepted (`store-invite-audit-20251010T0730Z.md`).

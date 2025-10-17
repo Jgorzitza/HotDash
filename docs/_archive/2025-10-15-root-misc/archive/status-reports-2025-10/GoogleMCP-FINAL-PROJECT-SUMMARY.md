@@ -19,6 +19,7 @@ We successfully integrated Google Analytics with Cursor IDE using the official M
 **Status**: **Working perfectly**
 
 **Configuration**:
+
 - Running `analytics-mcp` locally via `pipx` (official Google approach)
 - Direct stdio communication (no HTTP overhead)
 - Using service account credentials from: `vault/occ/google/analytics-service-account.json`
@@ -39,6 +40,7 @@ We successfully integrated Google Analytics with Cursor IDE using the official M
 ```
 
 **Available Tools in Cursor**:
+
 1. `get_account_summaries` - List all GA accounts and properties
 2. `get_property_details` - Get property configuration details
 3. `list_google_ads_links` - View Google Ads connections
@@ -47,6 +49,7 @@ We successfully integrated Google Analytics with Cursor IDE using the official M
 6. `run_realtime_report` - Get real-time analytics data
 
 **Example Usage**:
+
 ```
 Ask Cursor: "Using google-analytics MCP, show me the most popular pages in the last 7 days"
 ```
@@ -67,25 +70,29 @@ Ask Cursor: "Using google-analytics MCP, show me the most popular pages in the l
 We attempted to create an HTTP-based MCP server for remote access from the HotDash app.
 
 **What We Built**:
+
 - Custom HTTP/SSE wrapper for `analytics-mcp`
 - Deployed to Fly.io: `hotdash-analytics-mcp.fly.dev`
 - Session management for stateful MCP protocol
 - Bearer token authentication
 
 **Issues Encountered**:
+
 1. **Out of Memory (OOM)** - 256MB → 512MB required for concurrent sessions
 2. **Connection timeouts** - 30-second timeouts on long-running queries
 3. **Protocol complexity** - MCP over HTTP/SSE not standard, required custom session management
 4. **Cursor incompatibility** - Cursor's MCP client expects stdio, not HTTP
 5. **Cost** - ~$4-6/month for 512MB machine (even with auto-stop)
 
-**Current Status**: 
+**Current Status**:
+
 - Deployed and running (Version 8)
 - Health checks passing
 - **NOT being used** (Cursor uses local stdio instead)
 - **Costs money but provides no value currently**
 
 **Files Created**:
+
 - `fly-apps/analytics-mcp/mcp-http-wrapper.py` - Custom HTTP wrapper
 - `fly-apps/analytics-mcp/fly.toml` - Fly.io configuration
 - `fly-apps/analytics-mcp/Dockerfile` - Container configuration
@@ -95,6 +102,7 @@ We attempted to create an HTTP-based MCP server for remote access from the HotDa
 Following the [official Google Analytics MCP documentation](https://github.com/googleanalytics/google-analytics-mcp), we configured the local stdio server.
 
 **Why It Works**:
+
 - ✅ Simple configuration (just 3 lines)
 - ✅ No HTTP overhead or complexity
 - ✅ Official Google-supported approach
@@ -115,6 +123,7 @@ Now that Cursor is working, here are your options for integrating Google Analyti
 **Description**: Use the official Google Analytics Python client library directly in your app.
 
 **Pros**:
+
 - ✅ **Simplest** - Standard Google client library
 - ✅ **Most reliable** - Battle-tested, well-documented
 - ✅ **Best performance** - No MCP overhead
@@ -123,6 +132,7 @@ Now that Cursor is working, here are your options for integrating Google Analyti
 - ✅ **Lower memory usage** - No subprocess overhead
 
 **Cons**:
+
 - ⚠️ Need to write code for each query type (not dynamic like MCP)
 - ⚠️ No tool discovery (but your app knows what it needs)
 
@@ -153,6 +163,7 @@ response = client.run_report(request)
 ```
 
 **Installation**:
+
 ```bash
 pip install google-analytics-data
 ```
@@ -170,12 +181,14 @@ pip install google-analytics-data
 **Description**: Run `analytics-mcp` as a subprocess within your Fly.io app container, similar to how Cursor does it.
 
 **Pros**:
+
 - ✅ **Dynamic tool discovery** - Can adapt to new GA features automatically
 - ✅ **Consistent with Cursor** - Same tools available in both environments
 - ✅ **Google-maintained** - Benefits from Google's updates
 - ✅ **No external dependencies** - Self-contained in your app
 
 **Cons**:
+
 - ⚠️ **More complex** - Need to manage subprocess lifecycle
 - ⚠️ **Higher memory usage** - ~60-80MB per subprocess
 - ⚠️ **Slower** - Subprocess startup overhead (1-2 seconds per query)
@@ -190,7 +203,7 @@ import json
 class AnalyticsMCPClient:
     def __init__(self):
         self.process = None
-    
+
     async def start(self):
         self.process = await asyncio.create_subprocess_exec(
             "analytics-mcp",
@@ -202,17 +215,18 @@ class AnalyticsMCPClient:
             }
         )
         # Initialize MCP connection...
-    
+
     async def query(self, method, params):
         request = {"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
         self.process.stdin.write(json.dumps(request).encode() + b'\n')
         await self.process.stdin.drain()
-        
+
         response = await self.process.stdout.readline()
         return json.loads(response)
 ```
 
 **Installation** (in Dockerfile):
+
 ```dockerfile
 RUN pip install pipx && pipx install analytics-mcp
 ```
@@ -230,10 +244,12 @@ RUN pip install pipx && pipx install analytics-mcp
 **Description**: Continue using the Fly.io HTTP wrapper we built.
 
 **Pros**:
+
 - ✅ Already deployed and working (technically)
 - ✅ Centralized - one server for all apps
 
 **Cons**:
+
 - ❌ **Ongoing costs** - $4-6/month
 - ❌ **Complex maintenance** - Custom code to maintain
 - ❌ **Performance issues** - Timeouts, OOM errors
@@ -241,7 +257,8 @@ RUN pip install pipx && pipx install analytics-mcp
 - ❌ **Reliability concerns** - Multiple issues encountered
 - ❌ **Overkill** - Most apps don't need MCP's dynamic discovery
 
-**Current Status**: 
+**Current Status**:
+
 - Deployed but not being used
 - Would need significant hardening for production use
 - Costs money with no current benefit
@@ -254,17 +271,18 @@ RUN pip install pipx && pipx install analytics-mcp
 
 ## Cost Analysis
 
-| Option | Setup Cost | Monthly Cost | Maintenance | Reliability |
-|--------|-----------|--------------|-------------|-------------|
-| **Direct API** (Recommended) | 2-4 hours dev time | $0 | Minimal | Excellent |
-| **Subprocess MCP** | 4-8 hours dev time | $0 | Low | Good |
-| **HTTP MCP Server** | Already built | **$4-6/month** | High | Fair |
+| Option                       | Setup Cost         | Monthly Cost   | Maintenance | Reliability |
+| ---------------------------- | ------------------ | -------------- | ----------- | ----------- |
+| **Direct API** (Recommended) | 2-4 hours dev time | $0             | Minimal     | Excellent   |
+| **Subprocess MCP**           | 4-8 hours dev time | $0             | Low         | Good        |
+| **HTTP MCP Server**          | Already built      | **$4-6/month** | High        | Fair        |
 
 ---
 
 ## Technical Specifications
 
 ### Service Account Details
+
 - **Email**: `analytics-mcp-fly@hotrodan-seo-reports.iam.gserviceaccount.com`
 - **Project**: `hotrodan-seo-reports`
 - **Credentials Path**: `/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json`
@@ -272,10 +290,12 @@ RUN pip install pipx && pipx install analytics-mcp
 - **Google Analytics Role**: Marketer (can read and modify GA properties)
 
 ### APIs Enabled
+
 - ✅ Google Analytics Admin API
 - ✅ Google Analytics Data API
 
 ### Fly.io Server (If Keeping It)
+
 - **App Name**: `hotdash-analytics-mcp`
 - **URL**: `https://hotdash-analytics-mcp.fly.dev/mcp`
 - **Region**: ord (Chicago)
@@ -288,6 +308,7 @@ RUN pip install pipx && pipx install analytics-mcp
 ## Recommendations
 
 ### For Cursor/AI Development: ✅ DONE
+
 - **Keep current setup** - Local stdio server works perfectly
 - **No changes needed** - Configuration is optimal
 
@@ -296,6 +317,7 @@ RUN pip install pipx && pipx install analytics-mcp
 **Our Strong Recommendation: Option 1 - Direct API Calls**
 
 **Why?**
+
 1. **Simplicity** - Less code, fewer dependencies, easier to debug
 2. **Performance** - Direct API calls are fastest
 3. **Reliability** - Google's official client library is battle-tested
@@ -303,11 +325,13 @@ RUN pip install pipx && pipx install analytics-mcp
 5. **Maintenance** - Minimal ongoing work
 
 **When would you choose Option 2 (Subprocess MCP)?**
+
 - If you need dynamic tool discovery
 - If you want exact parity with Cursor's capabilities
 - If you're building an AI agent that needs to discover tools at runtime
 
 **When would you choose Option 3 (HTTP Server)?**
+
 - If you need to access GA from multiple applications
 - If you need remote access from services that can't run subprocesses
 - If you need centralized rate limiting/quota management
@@ -319,6 +343,7 @@ RUN pip install pipx && pipx install analytics-mcp
 **Recommendation: Destroy it**
 
 **Why?**
+
 - Currently costing $4-6/month
 - Not being used (Cursor uses local version)
 - HotDash app should use direct API or subprocess
@@ -326,11 +351,13 @@ RUN pip install pipx && pipx install analytics-mcp
 - Has had reliability issues
 
 **Command to destroy**:
+
 ```bash
 ~/.fly/bin/flyctl apps destroy hotdash-analytics-mcp
 ```
 
 **When to keep it**:
+
 - If you decide on Option 3 for your app
 - If you have other services that need remote MCP access
 - If you want to experiment with remote MCP architecture
@@ -342,6 +369,7 @@ RUN pip install pipx && pipx install analytics-mcp
 ## Next Steps
 
 ### Immediate (No Action Needed)
+
 - ✅ Cursor integration working
 - ✅ Service account configured
 - ✅ Credentials secured
@@ -349,17 +377,20 @@ RUN pip install pipx && pipx install analytics-mcp
 ### Decision Required (Project Manager)
 
 **1. Choose integration approach for HotDash app:**
+
 - [ ] **Option 1**: Direct Google Analytics API (Recommended)
 - [ ] **Option 2**: Subprocess MCP
 - [ ] **Option 3**: HTTP MCP Server
 
 **2. Decide on HTTP MCP Server:**
+
 - [ ] **Destroy** (Recommended - saves $4-6/month)
 - [ ] **Keep** (if choosing Option 3 or have other use cases)
 
 ### Implementation (After Decision)
 
 If **Option 1** chosen (Direct API):
+
 1. Add `google-analytics-data` to requirements.txt
 2. Implement analytics queries in your app code
 3. Test with service account credentials
@@ -369,6 +400,7 @@ If **Option 1** chosen (Direct API):
 **Estimated time**: 1 day
 
 If **Option 2** chosen (Subprocess):
+
 1. Update Dockerfile to install `pipx` and `analytics-mcp`
 2. Create MCP client wrapper class
 3. Implement query methods
@@ -379,6 +411,7 @@ If **Option 2** chosen (Subprocess):
 **Estimated time**: 2-3 days
 
 If **Option 3** chosen (HTTP Server):
+
 1. Harden error handling in HTTP wrapper
 2. Add rate limiting and retry logic
 3. Implement health monitoring
@@ -393,11 +426,13 @@ If **Option 3** chosen (HTTP Server):
 ## Files Reference
 
 ### Active/In-Use
+
 - `/home/justin/.cursor/mcp.json` - Cursor MCP configuration (ACTIVE)
 - `/home/justin/HotDash/hot-dash/.mcp.json` - Project MCP config (ACTIVE)
 - `/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json` - Credentials (ACTIVE)
 
 ### Documentation
+
 - `/home/justin/HotDash/hot-dash/GoogleMCP-FINAL-PROJECT-SUMMARY.md` - This document
 - `/home/justin/HotDash/hot-dash/GoogleMCP.md` - Original deployment docs
 - `/home/justin/HotDash/hot-dash/GoogleMCP-TEST-GUIDE.md` - Testing guide
@@ -406,6 +441,7 @@ If **Option 3** chosen (HTTP Server):
 - `/home/justin/HotDash/hot-dash/GoogleMCP-SESSION-FIX.md` - Session management details
 
 ### Fly.io Deployment (Optional - May Destroy)
+
 - `/home/justin/HotDash/hot-dash/fly-apps/analytics-mcp/` - HTTP server code
   - `mcp-http-wrapper.py` - Custom HTTP/SSE wrapper
   - `fly.toml` - Fly.io configuration
@@ -418,15 +454,18 @@ If **Option 3** chosen (HTTP Server):
 ## Support Resources
 
 ### Google Analytics MCP
+
 - **Repository**: https://github.com/googleanalytics/google-analytics-mcp
 - **Discord**: #🤖-analytics-mcp channel
 
 ### Google Analytics Data API
+
 - **Documentation**: https://developers.google.com/analytics/devguides/reporting/data/v1
 - **Python Client**: https://developers.google.com/analytics/devguides/reporting/data/v1/quickstart-client-libraries
 - **API Schema**: https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema
 
 ### MCP Protocol
+
 - **Official Site**: https://modelcontextprotocol.io
 - **Documentation**: https://modelcontextprotocol.io/docs
 
@@ -473,4 +512,3 @@ The HTTP MCP server on Fly.io was a valuable learning experience but is not nece
 **Prepared by**: AI Assistant (Claude)  
 **Date**: October 11, 2025  
 **Next Review**: After integration approach is decided
-

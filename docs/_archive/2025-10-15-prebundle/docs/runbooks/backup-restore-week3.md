@@ -1,9 +1,11 @@
 # Week 3 Backup/Restore Runbook
 
 ## Overview
+
 This runbook covers backup and restore procedures for HotDash infrastructure during Week 3 operations.
 
 ## Prerequisites
+
 - Access to vault credentials: `vault/occ/supabase/`, `vault/occ/fly/`
 - Local Supabase CLI installed and configured
 - psql client available
@@ -35,6 +37,7 @@ head -n 30 "backups/$(date +%Y-%m-%d)/hotdash-backup-"*.sql
 **Note**: pg_dump has version compatibility issues (local v16 vs Supabase v17). Always use `npx supabase db dump --local` for consistency.
 
 ### 2. Configuration Backup
+
 ```bash
 # Backup critical config files
 tar -czf "backups/$(date +%Y-%m-%d)/config-backup-$(date +%H%M%S).tar.gz" \
@@ -49,11 +52,12 @@ tar -czf "backups/$(date +%Y-%m-%d)/config-backup-$(date +%H%M%S).tar.gz" \
 ## Restore Procedures
 
 ### 1. Database Restore to Local Supabase
+
 ```bash
 # Ensure Supabase is running
 supabase start
 
-# Set connection variables  
+# Set connection variables
 export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:54322/postgres"
 
 # Verify connection
@@ -68,6 +72,7 @@ psql "$DATABASE_URL" < backups/YYYY-MM-DD/hotdash-backup-HHMMSS.sql
 ```
 
 ### 2. Post-Restore Verification
+
 ```bash
 # Check database connectivity and basic tables
 psql "$DATABASE_URL" -c "SELECT now(), version();"
@@ -83,6 +88,7 @@ npm run setup
 ```
 
 ### 3. Service Health Verification
+
 ```bash
 # Check Supabase services
 supabase status
@@ -99,32 +105,38 @@ curl -sS "http://127.0.0.1:54321/rest/v1/decision_sync_events?limit=1" \
 ```
 
 ## Recovery Time Objectives (RTO)
+
 - Database restore: < 15 minutes for local environment
 - Configuration restore: < 5 minutes
 - Full service verification: < 10 minutes
 - Total RTO: < 30 minutes
 
 ## Recovery Point Objectives (RPO)
+
 - Database: 1 hour (hourly backups)
 - Configuration: 24 hours (daily backups)
 
 ## Escalation
+
 If restore fails after 2 attempts:
+
 1. Document exact error messages and commands used
 2. Escalate to manager with evidence
 3. Consider alternative restore methods or rollback procedures
 
 ## Evidence Requirements
+
 - Capture all command outputs with timestamps
 - Document any deviations from procedure
 - Log restore times and verification results
 - Redact sensitive values in documentation
 
 ## Last Tested
+
 - **Date**: 2025-10-11 / 2025-10-12
-- **Operator**: Reliability Agent  
+- **Operator**: Reliability Agent
 - **Results**: ✅ SUCCESS (backup procedure validated)
-- **Issues Found**: 
+- **Issues Found**:
   - pg_dump version mismatch (v16 local vs v17 Supabase)
   - Resolution: Use `npx supabase db dump --local` instead
 - **Backup Size**: 68KB (schema dump)
@@ -135,12 +147,14 @@ If restore fails after 2 attempts:
 ## Current Credentials
 
 **Local Supabase** (for development):
+
 - Database: postgresql://postgres:postgres@127.0.0.1:54322/postgres
 - API: http://127.0.0.1:54321
 - Studio: http://127.0.0.1:54323
 - Status: Verified operational 2025-10-12
 
 **Vault Locations**:
+
 - Supabase: vault/occ/supabase/ (production credentials)
 - Fly: vault/occ/fly/ (deployment credentials)
 

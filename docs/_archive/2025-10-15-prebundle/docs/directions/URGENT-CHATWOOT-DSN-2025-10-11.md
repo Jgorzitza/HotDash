@@ -6,6 +6,7 @@ created: 2025-10-11T21:10:00Z
 priority: P0-CRITICAL
 expires: 2025-10-12T00:00:00Z
 ---
+
 # 🚨 URGENT: Chatwoot Supabase DSN Fix - P0 BLOCKER
 
 **Issued**: 2025-10-11T21:10:00Z  
@@ -18,6 +19,7 @@ expires: 2025-10-12T00:00:00Z
 ## Critical Finding
 
 Integrations agent identified Chatwoot Fly.io app has misconfigured database connection:
+
 - ❌ **Pointing at Supabase POOLER (wrong)**
 - ✅ **Must point at DIRECT Postgres connection**
 - ❌ **BLOCKS: migrations, health check, API token, all automation**
@@ -46,6 +48,7 @@ cat vault/occ/supabase/database_url_staging.env
 ### 2. Extract Connection Parameters
 
 From the connection string, extract:
+
 - POSTGRES_HOST (e.g., db.xyz.supabase.co)
 - POSTGRES_PASSWORD (percent-encode if special chars)
 - POSTGRES_USER (typically "postgres")
@@ -114,9 +117,10 @@ After successful fix, tag in feedback/deployment.md:
 ## Validation Checklist
 
 After fix:
+
 - [ ] Health check returns 200 (not 503)
 - [ ] Connection string points to direct Postgres (port 5432, not 6543)
-- [ ] All 5 POSTGRES_* secrets set in Fly
+- [ ] All 5 POSTGRES\_\* secrets set in Fly
 - [ ] App restarted successfully
 - [ ] Evidence logged in feedback/deployment.md
 
@@ -125,6 +129,7 @@ After fix:
 ## Downstream Impact
 
 **Once Fixed, Integrations Agent Can Proceed With**:
+
 1. Database migrations (`bundle exec rails db:chatwoot_prepare`)
 2. Super admin account creation
 3. API token generation
@@ -151,4 +156,3 @@ After fix:
 **Manager Directive**: Fix Chatwoot DSN immediately. This is blocking critical path. Complete within 2 hours and notify @integrations when done.
 
 **Evidence Required**: Health check returning 200, logged in feedback/deployment.md with command outputs and timestamps.
-

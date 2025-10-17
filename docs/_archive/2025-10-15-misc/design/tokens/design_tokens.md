@@ -6,6 +6,7 @@ last_reviewed: 2025-10-05
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Design Tokens — Operator Control Center
 
 ## Overview
@@ -359,6 +360,7 @@ This document specifies design tokens for the Operator Control Center, aligned w
 ```
 
 Examples:
+
 - `color/status/healthy-text`
 - `spacing/tile/padding`
 - `typography/size/base`
@@ -394,7 +396,10 @@ Examples:
 
   /* Shadows */
   --occ-shadow-tile: var(--p-shadow-100, 0 1px 2px rgba(15, 23, 42, 0.12));
-  --occ-shadow-tile-hover: var(--p-shadow-200, 0 2px 4px rgba(15, 23, 42, 0.12));
+  --occ-shadow-tile-hover: var(
+    --p-shadow-200,
+    0 2px 4px rgba(15, 23, 42, 0.12)
+  );
   --occ-shadow-modal: var(--p-shadow-400, 0 8px 16px rgba(15, 23, 42, 0.12));
 
   /* Border Radius */
@@ -407,6 +412,7 @@ Examples:
 ## Handoff Instructions
 
 ### For Figma
+
 1. Import tokens as Figma Variables
 2. Apply variables to component properties
 3. Create component variants for different states
@@ -414,6 +420,7 @@ Examples:
 5. Share library link in feedback/manager.md
 
 ### For Engineer
+
 1. Import tokens as CSS custom properties
 2. Reference tokens in component styles (not hardcoded values)
 3. Use Polaris fallback values for compatibility

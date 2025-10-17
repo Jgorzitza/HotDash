@@ -27,7 +27,7 @@ The shape of the returned object changes depending on the `distribution` config.
 
 ### Parameters
 
-* request
+- request
 
   Request
 
@@ -35,12 +35,12 @@ The shape of the returned object changes depending on the `distribution` config.
 
 ### Returns
 
-* Promise\<AdminContext\<Config>>
+- Promise\<AdminContext\<Config>>
 
 ### AdminContext
 
 ```ts
-EmbeddedTypedAdminContext<Config> & ScopesContext
+EmbeddedTypedAdminContext<Config> & ScopesContext;
 ```
 
 ### EmbeddedTypedAdminContext
@@ -53,64 +53,64 @@ Config['distribution'] extends AppDistribution.ShopifyAdmin
 
 ### AppDistribution
 
-* AppStore
+- AppStore
 
   ```ts
-  app_store
+  app_store;
   ```
 
-* SingleMerchant
+- SingleMerchant
 
   ```ts
-  single_merchant
+  single_merchant;
   ```
 
-* ShopifyAdmin
+- ShopifyAdmin
 
   ```ts
-  shopify_admin
+  shopify_admin;
   ```
 
 ```ts
 export enum AppDistribution {
-  AppStore = 'app_store',
-  SingleMerchant = 'single_merchant',
-  ShopifyAdmin = 'shopify_admin',
+  AppStore = "app_store",
+  SingleMerchant = "single_merchant",
+  ShopifyAdmin = "shopify_admin",
 }
 ```
 
 ### NonEmbeddedAdminContext
 
-* admin
+- admin
 
   Methods for interacting with the GraphQL / REST Admin APIs for the store that made the request.
 
   ```ts
-  AdminApiContext
+  AdminApiContext;
   ```
 
-* billing
+- billing
 
   Billing methods for this store, based on the plans defined in the \`billing\` config option.
 
   ```ts
-  BillingContext<Config>
+  BillingContext<Config>;
   ```
 
-* cors
+- cors
 
   A function that ensures the CORS headers are set correctly for the response.
 
   ```ts
-  EnsureCORSFunction
+  EnsureCORSFunction;
   ```
 
-* session
+- session
 
   The session for the user who made the request. This comes from the session storage which \`shopifyApp\` uses to store sessions in your database of choice. Use this to get shop or user-specific data.
 
   ```ts
-  Session
+  Session;
   ```
 
 ```ts
@@ -120,12 +120,12 @@ export interface NonEmbeddedAdminContext<Config extends AppConfigArg>
 
 ### AdminApiContext
 
-* graphql
+- graphql
 
   Methods for interacting with the Shopify Admin GraphQL API
 
   ```ts
-  GraphQLClient<AdminOperations>
+  GraphQLClient<AdminOperations>;
   ```
 
 ````ts
@@ -235,16 +235,16 @@ export interface AdminApiContext {
 
 ### GraphQLClient
 
-* query
+- query
 
   ```ts
   Operation extends keyof Operations
   ```
 
-* options
+- options
 
   ```ts
-  GraphQLQueryOptions<Operation, Operations>
+  GraphQLQueryOptions<Operation, Operations>;
   ```
 
 interface Promise\<T> { /\*\* \* Attaches callbacks for the resolution and/or rejection of the Promise. \* @param onfulfilled The callback to execute when the Promise is resolved. \* @param onrejected The callback to execute when the Promise is rejected. \* @returns A Promise for the completion of which ever callback is executed. \*/ then\<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike\<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike\<TResult2>) | undefined | null): Promise\<TResult1 | TResult2>; /\*\* \* Attaches a callback for only the rejection of the Promise. \* @param onrejected The callback to execute when the Promise is rejected. \* @returns A Promise for the completion of the callback. \*/ catch\<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike\<TResult>) | undefined | null): Promise\<T | TResult>; }, interface Promise\<T> {}, Promise: PromiseConstructor, interface Promise\<T> { readonly \[Symbol.toStringTag]: string; }, interface Promise\<T> { /\*\* \* Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The \* resolved value cannot be modified from the callback. \* @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected). \* @returns A Promise for the completion of the callback. \*/ finally(onfinally?: (() => void) | undefined | null): Promise\<T>; }
@@ -279,54 +279,52 @@ interface Promise<T> {
 ```
 
 ```ts
-<
-  Operation extends keyof Operations,
->(
+<Operation extends keyof Operations>(
   query: Operation,
   options?: GraphQLQueryOptions<Operation, Operations>,
-) => Promise<GraphQLResponse<Operation, Operations>>
+) => Promise<GraphQLResponse<Operation, Operations>>;
 ```
 
 ### GraphQLQueryOptions
 
-* apiVersion
+- apiVersion
 
   The version of the API to use for the request.
 
   ```ts
-  ApiVersion
+  ApiVersion;
   ```
 
-* headers
+- headers
 
   Additional headers to include in the request.
 
   ```ts
-  Record<string, any>
+  Record<string, any>;
   ```
 
-* signal
+- signal
 
   An optional AbortSignal to cancel the request.
 
   ```ts
-  AbortSignal
+  AbortSignal;
   ```
 
-* tries
+- tries
 
   The total number of times to try the request if it fails.
 
   ```ts
-  number
+  number;
   ```
 
-* variables
+- variables
 
   The variables to pass to the operation.
 
   ```ts
-  ApiClientRequestOptions<Operation, Operations>["variables"]
+  (ApiClientRequestOptions < Operation, Operations > ["variables"]);
   ```
 
 ```ts
@@ -337,7 +335,7 @@ export interface GraphQLQueryOptions<
   /**
    * The variables to pass to the operation.
    */
-  variables?: ApiClientRequestOptions<Operation, Operations>['variables'];
+  variables?: ApiClientRequestOptions<Operation, Operations>["variables"];
   /**
    * The version of the API to use for the request.
    */
@@ -360,52 +358,54 @@ export interface GraphQLQueryOptions<
 
 ### BillingContext
 
-* cancel
+- cancel
 
   Cancels an ongoing subscription, given its ID.
 
   ```ts
-  (options: CancelBillingOptions) => Promise<AppSubscription>
+  (options: CancelBillingOptions) => Promise<AppSubscription>;
   ```
 
-* check
+- check
 
   Checks if the shop has an active payment for any plan defined in the \`billing\` config option.
 
   ```ts
-  <Options extends CheckBillingOptions<Config>>(options?: Options) => Promise<BillingCheckResponseObject>
+  <Options extends CheckBillingOptions<Config>>(options?: Options) =>
+    Promise<BillingCheckResponseObject>;
   ```
 
-* createUsageRecord
+- createUsageRecord
 
   Creates a usage record for an app subscription.
 
   ```ts
-  (options: CreateUsageRecordOptions) => Promise<UsageRecord>
+  (options: CreateUsageRecordOptions) => Promise<UsageRecord>;
   ```
 
-* request
+- request
 
   Requests payment for the plan.
 
   ```ts
-  (options: RequestBillingOptions<Config>) => Promise<never>
+  (options: RequestBillingOptions<Config>) => Promise<never>;
   ```
 
-* require
+- require
 
   Checks if the shop has an active payment for any plan defined in the \`billing\` config option.
 
   ```ts
-  (options: RequireBillingOptions<Config>) => Promise<BillingCheckResponseObject>
+  (options: RequireBillingOptions<Config>) =>
+    Promise<BillingCheckResponseObject>;
   ```
 
-* updateUsageCappedAmount
+- updateUsageCappedAmount
 
   Updates the capped amount for a usage billing plan.
 
   ```ts
-  (options: UpdateUsageCappedAmountOptions) => Promise<never>
+  (options: UpdateUsageCappedAmountOptions) => Promise<never>;
   ```
 
 ````ts
@@ -906,28 +906,28 @@ export interface BillingContext<Config extends AppConfigArg> {
 
 ### CancelBillingOptions
 
-* isTest
+- isTest
 
   Whether to use the test mode. This prevents the credit card from being charged.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* prorate
+- prorate
 
   Whether to issue prorated credits for the unused portion of the app subscription. There will be a corresponding deduction (based on revenue share) to your Partner account. For example, if a $10.00 app subscription (with 0% revenue share) is cancelled and prorated half way through the billing cycle, then the merchant will be credited $5.00 and that amount will be deducted from your Partner account.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* subscriptionId
+- subscriptionId
 
   The ID of the subscription to cancel.
 
   ```ts
-  string
+  string;
   ```
 
 ```ts
@@ -952,15 +952,15 @@ export interface CancelBillingOptions {
 
 ### CheckBillingOptions
 
-* isTest
+- isTest
 
   Whether to include charges that were created on test mode. Test shops and demo shops cannot be charged.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* plans
+- plans
 
   The plans to check for. Must be one of the values defined in the \`billing\` config option.
 
@@ -970,50 +970,53 @@ export interface CancelBillingOptions {
 
 ```ts
 export interface CheckBillingOptions<Config extends AppConfigArg>
-  extends Omit<BillingCheckParams, 'session' | 'plans' | 'returnObject'> {
+  extends Omit<BillingCheckParams, "session" | "plans" | "returnObject"> {
   /**
    * The plans to check for. Must be one of the values defined in the `billing` config option.
    */
-  plans?: (keyof Config['billing'])[];
+  plans?: (keyof Config["billing"])[];
 }
 ```
 
 ### CreateUsageRecordOptions
 
-* description
+- description
 
   The description of the app usage record.
 
   ```ts
-  string
+  string;
   ```
 
-* idempotencyKey
+- idempotencyKey
 
   ```ts
-  string
+  string;
   ```
 
-* isTest
+- isTest
 
   Whether to use the test mode. This prevents the credit card from being charged.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* price
+- price
 
   The price of the app usage record.
 
   ```ts
-  { amount: number; currencyCode: string; }
+  {
+    amount: number;
+    currencyCode: string;
+  }
   ```
 
-* subscriptionLineItemId
+- subscriptionLineItemId
 
   ```ts
-  string
+  string;
   ```
 
 ```ts
@@ -1052,15 +1055,15 @@ export interface CreateUsageRecordOptions {
 
 ### RequestBillingOptions
 
-* isTest
+- isTest
 
   Whether to use the test mode. This prevents the credit card from being charged. Test shops and demo shops cannot be charged.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* plan
+- plan
 
   The plan to request. Must be one of the values defined in the \`billing\` config option.
 
@@ -1068,21 +1071,21 @@ export interface CreateUsageRecordOptions {
   keyof Config["billing"]
   ```
 
-* returnUrl
+- returnUrl
 
   The URL to return to after the merchant approves the payment.
 
   ```ts
-  string
+  string;
   ```
 
 ```ts
 export interface RequestBillingOptions<Config extends AppConfigArg>
-  extends Omit<BillingRequestParams, 'session' | 'plan' | 'returnObject'> {
+  extends Omit<BillingRequestParams, "session" | "plan" | "returnObject"> {
   /**
    * The plan to request. Must be one of the values defined in the `billing` config option.
    */
-  plan: keyof Config['billing'];
+  plan: keyof Config["billing"];
   /**
    * Whether to use the test mode. This prevents the credit card from being charged. Test shops and demo shops cannot be charged.
    */
@@ -1096,23 +1099,23 @@ export interface RequestBillingOptions<Config extends AppConfigArg>
 
 ### RequireBillingOptions
 
-* isTest
+- isTest
 
   Whether to include charges that were created on test mode. Test shops and demo shops cannot be charged.
 
   ```ts
-  boolean
+  boolean;
   ```
 
-* onFailure
+- onFailure
 
   How to handle the request if the shop doesn't have an active payment for any plan.
 
   ```ts
-  (error: any) => Promise<Response>
+  (error: any) => Promise<Response>;
   ```
 
-* plans
+- plans
 
   The plans to check for. Must be one of the values defined in the \`billing\` config option.
 
@@ -1122,11 +1125,11 @@ export interface RequestBillingOptions<Config extends AppConfigArg>
 
 ```ts
 export interface RequireBillingOptions<Config extends AppConfigArg>
-  extends Omit<BillingCheckParams, 'session' | 'plans' | 'returnObject'> {
+  extends Omit<BillingCheckParams, "session" | "plans" | "returnObject"> {
   /**
    * The plans to check for. Must be one of the values defined in the `billing` config option.
    */
-  plans: (keyof Config['billing'])[];
+  plans: (keyof Config["billing"])[];
   /**
    * How to handle the request if the shop doesn't have an active payment for any plan.
    */
@@ -1136,20 +1139,23 @@ export interface RequireBillingOptions<Config extends AppConfigArg>
 
 ### UpdateUsageCappedAmountOptions
 
-* cappedAmount
+- cappedAmount
 
   The maximum charge for the usage billing plan.
 
   ```ts
-  { amount: number; currencyCode: string; }
+  {
+    amount: number;
+    currencyCode: string;
+  }
   ```
 
-* subscriptionLineItemId
+- subscriptionLineItemId
 
   The subscription line item ID to update.
 
   ```ts
-  string
+  string;
   ```
 
 ```ts
@@ -1176,8 +1182,6 @@ export interface UpdateUsageCappedAmountOptions {
 
 ### EnsureCORSFunction
 
-
-
 ```ts
 export interface EnsureCORSFunction {
   (response: Response): Response;
@@ -1186,52 +1190,52 @@ export interface EnsureCORSFunction {
 
 ### EmbeddedAdminContext
 
-* admin
+- admin
 
   Methods for interacting with the GraphQL / REST Admin APIs for the store that made the request.
 
   ```ts
-  AdminApiContext
+  AdminApiContext;
   ```
 
-* billing
+- billing
 
   Billing methods for this store, based on the plans defined in the \`billing\` config option.
 
   ```ts
-  BillingContext<Config>
+  BillingContext<Config>;
   ```
 
-* cors
+- cors
 
   A function that ensures the CORS headers are set correctly for the response.
 
   ```ts
-  EnsureCORSFunction
+  EnsureCORSFunction;
   ```
 
-* redirect
+- redirect
 
   A function that redirects the user to a new page, ensuring that the appropriate parameters are set for embedded apps. Returned only for embedded apps (all apps except merchant custom apps).
 
   ```ts
-  RedirectFunction
+  RedirectFunction;
   ```
 
-* session
+- session
 
   The session for the user who made the request. This comes from the session storage which \`shopifyApp\` uses to store sessions in your database of choice. Use this to get shop or user-specific data.
 
   ```ts
-  Session
+  Session;
   ```
 
-* sessionToken
+- sessionToken
 
   The decoded and validated session token for the request. Returned only for embedded apps (all distribution types except merchant custom apps)
 
   ```ts
-  JwtPayload
+  JwtPayload;
   ```
 
 ````ts
@@ -1328,26 +1332,26 @@ export interface EmbeddedAdminContext<Config extends AppConfigArg>
 
 ### RedirectFunction
 
-* url
+- url
 
   ```ts
-  string
+  string;
   ```
 
-* init
+- init
 
   ```ts
-  RedirectInit
+  RedirectInit;
   ```
 
 Response
 
 ```ts
-Response
+Response;
 ```
 
 ```ts
-(url: string, init?: RedirectInit) => Response
+(url: string, init?: RedirectInit) => Response;
 ```
 
 ### RedirectInit
@@ -1359,17 +1363,17 @@ number | (ResponseInit & {target?: RedirectTarget})
 ### RedirectTarget
 
 ```ts
-'_self' | '_parent' | '_top' | '_blank'
+"_self" | "_parent" | "_top" | "_blank";
 ```
 
 ### ScopesContext
 
-* scopes
+- scopes
 
   Methods to manage scopes for the store that made the request.
 
   ```ts
-  ScopesApiContext
+  ScopesApiContext;
   ```
 
 ```ts
@@ -1385,28 +1389,28 @@ export interface ScopesContext {
 
 The Scopes API enables embedded apps and extensions to request merchant consent for access scopes.
 
-* query
+- query
 
   Queries Shopify for the scopes for this app on this shop
 
   ```ts
-  () => Promise<ScopesDetail>
+  () => Promise<ScopesDetail>;
   ```
 
-* request
+- request
 
   Requests the merchant to grant the provided scopes for this app on this shop Warning: This method performs a server-side redirect.
 
   ```ts
-  (scopes: string[]) => Promise<void>
+  (scopes: string[]) => Promise<void>;
   ```
 
-* revoke
+- revoke
 
   Revokes the provided scopes from this app on this shop Warning: This method throws an \[error]\(https\://shopify.dev/docs/api/admin-graphql/unstable/objects/AppRevokeAccessScopesAppRevokeScopeError) if the provided optional scopes contains a required scope.
 
   ```ts
-  (scopes: string[]) => Promise<ScopesRevokeResponse>
+  (scopes: string[]) => Promise<ScopesRevokeResponse>;
   ```
 
 ````ts
@@ -1534,7 +1538,7 @@ export interface ScopesApiContext {
 
 ### ScopesDetail
 
-* granted
+- granted
 
   The scopes that have been granted on the shop for this app
 
@@ -1542,7 +1546,7 @@ export interface ScopesApiContext {
   string[]
   ```
 
-* optional
+- optional
 
   The optional scopes that the app has declared in its configuration
 
@@ -1550,7 +1554,7 @@ export interface ScopesApiContext {
   string[]
   ```
 
-* required
+- required
 
   The required scopes that the app has declared in its configuration
 
@@ -1577,7 +1581,7 @@ export interface ScopesDetail {
 
 ### ScopesRevokeResponse
 
-* revoked
+- revoked
 
   The scopes that have been revoked on the shop for this app
 
@@ -1596,7 +1600,7 @@ export interface ScopesRevokeResponse {
 
 ### Examples
 
-* #### Authenticate, run API mutation, and redirect
+- #### Authenticate, run API mutation, and redirect
 
   ##### Description
 
@@ -1605,13 +1609,13 @@ export interface ScopesRevokeResponse {
   ##### /app/routes/\*\*.ts
 
   ```typescript
-  import {type ActionFunctionArgs, data} from 'react-router';
-  import {GraphqlQueryError} from '@shopify/shopify-api';
+  import { type ActionFunctionArgs, data } from "react-router";
+  import { GraphqlQueryError } from "@shopify/shopify-api";
 
-  import {authenticate} from '../shopify.server';
+  import { authenticate } from "../shopify.server";
 
-  export const action = async ({request}: ActionFunctionArgs) => {
-    const {admin, redirect} = await authenticate.admin(request);
+  export const action = async ({ request }: ActionFunctionArgs) => {
+    const { admin, redirect } = await authenticate.admin(request);
 
     try {
       await admin.graphql(
@@ -1625,18 +1629,18 @@ export interface ScopesRevokeResponse {
         }`,
         {
           variables: {
-            input: {id: '123', title: 'New title'},
+            input: { id: "123", title: "New title" },
           },
         },
       );
 
-      return redirect('/app/product-updated');
+      return redirect("/app/product-updated");
     } catch (error) {
       if (error instanceof GraphqlQueryError) {
-        return data({errors: error.body?.errors}, {status: 500});
+        return data({ errors: error.body?.errors }, { status: 500 });
       }
 
-      return new Response('Failed to update product title', {status: 500});
+      return new Response("Failed to update product title", { status: 500 });
     }
   };
   ```
@@ -1651,7 +1655,7 @@ Use the `cors` helper to ensure your app can respond to requests from admin exte
 
 ### Examples
 
-* #### Setting CORS headers for a admin request
+- #### Setting CORS headers for a admin request
 
   ##### Description
 
@@ -1686,7 +1690,7 @@ Pass in a `target` option of `_top` or `_parent` to navigate in the current wind
 
 ### Examples
 
-* #### Redirecting to an app route
+- #### Redirecting to an app route
 
   ##### Description
 
@@ -1704,7 +1708,7 @@ Pass in a `target` option of `_top` or `_parent` to navigate in the current wind
   };
   ```
 
-* #### Redirecting to a page in the Shopify Admin
+- #### Redirecting to a page in the Shopify Admin
 
   ##### Description
 
@@ -1718,11 +1722,11 @@ Pass in a `target` option of `_top` or `_parent` to navigate in the current wind
 
   export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { session, redirect } = await authenticate.admin(request);
-    return redirect("shopify://admin/products/123456", { target: '_parent' });
+    return redirect("shopify://admin/products/123456", { target: "_parent" });
   };
   ```
 
-* #### Redirecting outside of the Admin embedded app page
+- #### Redirecting outside of the Admin embedded app page
 
   ##### Description
 
@@ -1736,7 +1740,7 @@ Pass in a `target` option of `_top` or `_parent` to navigate in the current wind
 
   export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { session, redirect } = await authenticate.admin(request);
-    return redirect("/", { target: '_parent' });
+    return redirect("/", { target: "_parent" });
   };
   ```
 
@@ -1752,7 +1756,7 @@ Get your app's user-specific data using an online session.
 
 ### Examples
 
-* #### Using offline sessions
+- #### Using offline sessions
 
   ##### Description
 
@@ -1767,7 +1771,7 @@ Get your app's user-specific data using an online session.
 
   export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { session } = await authenticate.admin(request);
-    return (await getMyAppData({shop: session.shop}));
+    return await getMyAppData({ shop: session.shop });
   };
   ```
 
@@ -1783,7 +1787,7 @@ Get your app's user-specific data using an online session.
   export const authenticate = shopify.authenticate;
   ```
 
-* #### Using online sessions
+- #### Using online sessions
 
   ##### Description
 
@@ -1798,7 +1802,7 @@ Get your app's user-specific data using an online session.
 
   export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { session } = await authenticate.admin(request);
-    return (await getMyAppData({user: session.onlineAccessInfo!.id}));
+    return await getMyAppData({ user: session.onlineAccessInfo!.id });
   };
   ```
 
@@ -1823,7 +1827,7 @@ Get user-specific data using the `sessionToken` object.
 
 ### Examples
 
-* #### Using the decoded session token
+- #### Using the decoded session token
 
   ##### Description
 
@@ -1837,10 +1841,8 @@ Get user-specific data using the `sessionToken` object.
   import { getMyAppData } from "~/db/model.server";
 
   export const loader = async ({ request }: LoaderFunctionArgs) => {
-    const { sessionToken } = await authenticate.admin(
-      request
-    );
-    return (await getMyAppData({user: sessionToken.sub}));
+    const { sessionToken } = await authenticate.admin(request);
+    return await getMyAppData({ user: sessionToken.sub });
   };
   ```
 
@@ -1869,7 +1871,7 @@ Catch `GraphqlQueryError` errors to see error messages from the API.
 
 ### Examples
 
-* #### Querying the GraphQL API
+- #### Querying the GraphQL API
 
   ##### Description
 
@@ -1901,10 +1903,10 @@ Catch `GraphqlQueryError` errors to see error messages from the API.
     );
 
     const productData = await response.json();
-    return ({
+    return {
       productId: productData.data?.productCreate?.product?.id,
-    });
-  }
+    };
+  };
   ```
 
   ##### /app/shopify.server.ts
@@ -1919,7 +1921,7 @@ Catch `GraphqlQueryError` errors to see error messages from the API.
   export const authenticate = shopify.authenticate;
   ```
 
-* #### Handling GraphQL errors
+- #### Handling GraphQL errors
 
   ##### Description
 
@@ -1946,7 +1948,7 @@ Catch `GraphqlQueryError` errors to see error messages from the API.
         }`,
       );
 
-      return ({ data: await response.json() });
+      return { data: await response.json() };
     } catch (error) {
       if (error instanceof GraphqlQueryError) {
         // error.body.errors:
@@ -1957,7 +1959,7 @@ Catch `GraphqlQueryError` errors to see error messages from the API.
       }
       return ({ message: "An error occurred" }, { status: 500 });
     }
-  }
+  };
   ```
 
   ##### /app/shopify.server.ts
@@ -1980,7 +1982,7 @@ Use the `billing.cancel` function to cancel an active subscription with the id r
 
 ### Examples
 
-* #### Cancelling a subscription
+- #### Cancelling a subscription
 
   ##### Description
 
@@ -2004,7 +2006,7 @@ Use the `billing.cancel` function to cancel an active subscription with the id r
       subscriptionId: subscription.id,
       isTest: true,
       prorate: true,
-     });
+    });
 
     // App logic
   };
@@ -2013,10 +2015,13 @@ Use the `billing.cancel` function to cancel an active subscription with the id r
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
-  export const ANNUAL_PLAN = 'Annual subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
+  export const ANNUAL_PLAN = "Annual subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2025,21 +2030,21 @@ Use the `billing.cancel` function to cancel an active subscription with the id r
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
       [ANNUAL_PLAN]: {
         lineItems: [
           {
             amount: 50,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Annual,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
@@ -2057,7 +2062,7 @@ Use billing.check to see if any payments exist for the store, regardless of whet
 
 ### Examples
 
-* #### Check what billing plans a merchant is subscribed to
+- #### Check what billing plans a merchant is subscribed to
 
   ##### Description
 
@@ -2083,10 +2088,13 @@ Use billing.check to see if any payments exist for the store, regardless of whet
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
-  export const ANNUAL_PLAN = 'Annual subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
+  export const ANNUAL_PLAN = "Annual subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2095,27 +2103,27 @@ Use billing.check to see if any payments exist for the store, regardless of whet
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
       [ANNUAL_PLAN]: {
         lineItems: [
           {
             amount: 50,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Annual,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
   ```
 
-* #### Check for payments without filtering
+- #### Check for payments without filtering
 
   ##### Description
 
@@ -2144,7 +2152,7 @@ Create a usage record for the active usage billing plan
 
 ### Examples
 
-* #### Creating a usage record
+- #### Creating a usage record
 
   ##### Description
 
@@ -2157,17 +2165,17 @@ Create a usage record for the active usage billing plan
   import { authenticate, MONTHLY_PLAN } from "../shopify.server";
 
   export const action = async ({ request }: ActionFunctionArgs) => {
-     const { billing } = await authenticate.admin(request);
+    const { billing } = await authenticate.admin(request);
 
     const chargeBilling = await billing.createUsageRecord({
-       description: "Usage record for product creation",
-       price: {
-         amount: 1,
-         currencyCode: "USD",
-        },
-       isTest: true,
-     });
-   console.log(chargeBilling);
+      description: "Usage record for product creation",
+      price: {
+        amount: 1,
+        currencyCode: "USD",
+      },
+      isTest: true,
+    });
+    console.log(chargeBilling);
 
     // App logic
   };
@@ -2176,9 +2184,12 @@ Create a usage record for the active usage billing plan
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const USAGE_PLAN = 'Usage subscription';
+  export const USAGE_PLAN = "Usage subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2187,12 +2198,12 @@ Create a usage record for the active usage billing plan
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Usage,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
@@ -2210,7 +2221,7 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
 
 ### Examples
 
-* #### Using a custom return URL
+- #### Using a custom return URL
 
   ##### Description
 
@@ -2226,11 +2237,13 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
     const { billing } = await authenticate.admin(request);
     await billing.require({
       plans: [MONTHLY_PLAN],
-      onFailure: async () => billing.request({
-        plan: MONTHLY_PLAN,
-        isTest: true,
-        returnUrl: 'https://admin.shopify.com/store/my-store/apps/my-app/billing-page',
-      }),
+      onFailure: async () =>
+        billing.request({
+          plan: MONTHLY_PLAN,
+          isTest: true,
+          returnUrl:
+            "https://admin.shopify.com/store/my-store/apps/my-app/billing-page",
+        }),
     });
 
     // App logic
@@ -2240,10 +2253,13 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
-  export const ANNUAL_PLAN = 'Annual subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
+  export const ANNUAL_PLAN = "Annual subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2252,27 +2268,27 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
       [ANNUAL_PLAN]: {
         lineItems: [
           {
             amount: 50,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Annual,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
   ```
 
-* #### Overriding plan settings
+- #### Overriding plan settings
 
   ##### Description
 
@@ -2288,17 +2304,18 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
     const { billing } = await authenticate.admin(request);
     await billing.require({
       plans: [MONTHLY_PLAN],
-      onFailure: async () => billing.request({
-        plan: MONTHLY_PLAN,
-        isTest: true,
-        trialDays: 14,
-        lineItems: [
-          {
-            interval: BillingInterval.Every30Days,
-            discount: { value: { percentage: 0.1 } },
-          },
-        ],
-      }),
+      onFailure: async () =>
+        billing.request({
+          plan: MONTHLY_PLAN,
+          isTest: true,
+          trialDays: 14,
+          lineItems: [
+            {
+              interval: BillingInterval.Every30Days,
+              discount: { value: { percentage: 0.1 } },
+            },
+          ],
+        }),
     });
 
     // App logic
@@ -2308,10 +2325,13 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
-  export const ANNUAL_PLAN = 'Annual subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
+  export const ANNUAL_PLAN = "Annual subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2320,21 +2340,21 @@ Customize the plan for a merchant when requesting billing. Any fields from the p
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
       [ANNUAL_PLAN]: {
         lineItems: [
           {
             amount: 50,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Annual,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
@@ -2352,7 +2372,7 @@ When the app has multiple plans, create a page in your App that allows the merch
 
 ### Examples
 
-* #### Requesting billing right away
+- #### Requesting billing right away
 
   ##### Description
 
@@ -2379,9 +2399,12 @@ When the app has multiple plans, create a page in your App that allows the merch
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2390,18 +2413,18 @@ When the app has multiple plans, create a page in your App that allows the merch
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
   ```
 
-* #### Redirect to a plan selection page
+- #### Redirect to a plan selection page
 
   ##### Description
 
@@ -2418,7 +2441,7 @@ When the app has multiple plans, create a page in your App that allows the merch
     const billingCheck = await billing.require({
       plans: [MONTHLY_PLAN, ANNUAL_PLAN],
       isTest: true,
-      onFailure: () => redirect('/select-plan'),
+      onFailure: () => redirect("/select-plan"),
     });
 
     const subscription = billingCheck.appSubscriptions[0];
@@ -2431,10 +2454,13 @@ When the app has multiple plans, create a page in your App that allows the merch
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const MONTHLY_PLAN = 'Monthly subscription';
-  export const ANNUAL_PLAN = 'Annual subscription';
+  export const MONTHLY_PLAN = "Monthly subscription";
+  export const ANNUAL_PLAN = "Annual subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2443,21 +2469,21 @@ When the app has multiple plans, create a page in your App that allows the merch
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Every30Days,
-          }
+          },
         ],
       },
       [ANNUAL_PLAN]: {
         lineItems: [
           {
             amount: 50,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Annual,
-          }
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
@@ -2471,7 +2497,7 @@ Update the capped amount for the usage billing plan specified by `subscriptionLi
 
 ### Examples
 
-* #### Updating the capped amount for a usage billing plan
+- #### Updating the capped amount for a usage billing plan
 
   ##### Description
 
@@ -2487,10 +2513,11 @@ Update the capped amount for the usage billing plan specified by `subscriptionLi
     const { billing } = await authenticate.admin(request);
 
     await billing.updateUsageCappedAmount({
-      subscriptionLineItemId: "gid://shopify/AppSubscriptionLineItem/12345?v=1&index=1",
+      subscriptionLineItemId:
+        "gid://shopify/AppSubscriptionLineItem/12345?v=1&index=1",
       cappedAmount: {
         amount: 10,
-        currencyCode: "USD"
+        currencyCode: "USD",
       },
     });
 
@@ -2501,9 +2528,12 @@ Update the capped amount for the usage billing plan specified by `subscriptionLi
   ##### shopify.server.ts
 
   ```typescript
-  import { shopifyApp, BillingInterval } from "@shopify/shopify-app-react-router/server";
+  import {
+    shopifyApp,
+    BillingInterval,
+  } from "@shopify/shopify-app-react-router/server";
 
-  export const USAGE_PLAN = 'Usage subscription';
+  export const USAGE_PLAN = "Usage subscription";
 
   const shopify = shopifyApp({
     // ...etc
@@ -2512,13 +2542,13 @@ Update the capped amount for the usage billing plan specified by `subscriptionLi
         lineItems: [
           {
             amount: 5,
-            currencyCode: 'USD',
+            currencyCode: "USD",
             interval: BillingInterval.Usage,
-            terms: "Usage based"
-          }
+            terms: "Usage based",
+          },
         ],
       },
-    }
+    },
   });
   export default shopify;
   export const authenticate = shopify.authenticate;
@@ -2532,7 +2562,7 @@ Call `scopes.query` to get scope details.
 
 ### Examples
 
-* #### Query for granted scopes
+- #### Query for granted scopes
 
   ##### Description
 
@@ -2571,7 +2601,7 @@ Call `scopes.request` to request optional scopes.
 
 ### Examples
 
-* #### Request consent from the merchant to grant the provided scopes for this app
+- #### Request consent from the merchant to grant the provided scopes for this app
 
   ##### Description
 
@@ -2619,7 +2649,7 @@ Call `scopes.revoke` to revoke optional scopes.
 
 ### Examples
 
-* #### Revoke optional scopes
+- #### Revoke optional scopes
 
   ##### Description
 
@@ -2677,11 +2707,13 @@ Call `scopes.revoke` to revoke optional scopes.
 **Problem**: Agents sometimes request `SHOPIFY_ADMIN_TOKEN` environment variable.
 
 **Why This Is Wrong**:
+
 - React Router 7 + Shopify CLI v3 auto-generates session tokens
-- `authenticate.admin(request)` handles everything automatically  
+- `authenticate.admin(request)` handles everything automatically
 - No manual API tokens needed
 
 **Correct Pattern**:
+
 ```typescript
 // In loader or action:
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -2691,6 +2723,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 ```
 
 **For External Services** (like Agent SDK):
+
 - Option A: Call back to main app's API endpoints (recommended)
 - Option B: Extract session from webhook context (request-scoped)
 - Don't: Store long-term tokens or build custom OAuth

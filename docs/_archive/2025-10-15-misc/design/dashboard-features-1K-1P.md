@@ -13,13 +13,14 @@ tasks: 1K-1P (6 tasks)
 ### Customizable Dashboard Layout
 
 **Tile Reordering** (Drag & Drop):
+
 ```typescript
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 function Dashboard() {
   const [tiles, setTiles] = useState(DEFAULT_TILE_ORDER);
-  
+
   const handleDragEnd = (event) => {
     const {active, over} = event;
     if (active.id !== over.id) {
@@ -31,7 +32,7 @@ function Dashboard() {
       savePreferences({ tileOrder: tiles });
     }
   };
-  
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <SortableContext items={tiles}>
@@ -43,6 +44,7 @@ function Dashboard() {
 ```
 
 **Tile Visibility Toggle**:
+
 ```typescript
 <SettingsPage>
   <Card sectioned>
@@ -62,28 +64,28 @@ function Dashboard() {
 ```
 
 **User Preference Storage**:
+
 ```typescript
 // Store in Supabase user_preferences
 interface UserPreferences {
   user_id: string;
   tile_order: string[];
   visible_tiles: string[];
-  default_view: 'grid' | 'list';
-  theme: 'light' | 'dark';
+  default_view: "grid" | "list";
+  theme: "light" | "dark";
   updated_at: string;
 }
 
-await supabase
-  .from('user_preferences')
-  .upsert({
-    user_id: userId,
-    tile_order: ['cx', 'sales', 'inventory', 'seo', 'fulfillment'],
-    visible_tiles: ['cx', 'sales'],
-    default_view: 'grid',
-  });
+await supabase.from("user_preferences").upsert({
+  user_id: userId,
+  tile_order: ["cx", "sales", "inventory", "seo", "fulfillment"],
+  visible_tiles: ["cx", "sales"],
+  default_view: "grid",
+});
 ```
 
 **Reset to Default**:
+
 ```typescript
 <Button onClick={resetToDefaultLayout}>Reset to default layout</Button>
 ```
@@ -95,6 +97,7 @@ await supabase
 ### Notification Center
 
 **Badge Count** (Nav):
+
 ```typescript
 <Navigation.Item
   url="/notifications"
@@ -105,6 +108,7 @@ await supabase
 ```
 
 **Notification Center Modal**:
+
 ```typescript
 <Modal
   open={notificationCenterOpen}
@@ -122,12 +126,14 @@ await supabase
 ```
 
 **Notification Types**:
+
 1. **Approval** (new approval needs review)
 2. **Alert** (tile status changed)
 3. **System** (maintenance, updates)
 4. **Escalation** (urgent issue)
 
 **Priority Visual Hierarchy**:
+
 ```typescript
 <Card>
   <InlineStack align="space-between" blockAlign="center">
@@ -143,6 +149,7 @@ await supabase
 ```
 
 **Sound/Vibration Preferences**:
+
 ```typescript
 <SettingsPage>
   <Card sectioned>
@@ -180,6 +187,7 @@ await supabase
 ### Chart Components
 
 **Sparkline** (Trend):
+
 ```typescript
 interface SparklineProps {
   data: number[];
@@ -195,7 +203,7 @@ function Sparkline({ data, color = 'success', height = 40, width = 100 }: Sparkl
     const y = height - (value / Math.max(...data)) * height;
     return `${x},${y}`;
   }).join(' ');
-  
+
   return (
     <svg width={width} height={height}>
       <polyline
@@ -210,6 +218,7 @@ function Sparkline({ data, color = 'success', height = 40, width = 100 }: Sparkl
 ```
 
 **Bar Chart** (Comparison):
+
 ```typescript
 import { BarChart } from '@shopify/polaris-viz';
 
@@ -227,6 +236,7 @@ import { BarChart } from '@shopify/polaris-viz';
 ```
 
 **Line Chart** (Time Series):
+
 ```typescript
 import { LineChart } from '@shopify/polaris-viz';
 
@@ -245,6 +255,7 @@ import { LineChart } from '@shopify/polaris-viz';
 ```
 
 **Donut Chart** (Breakdown):
+
 ```typescript
 import { DonutChart } from '@shopify/polaris-viz';
 
@@ -262,16 +273,17 @@ import { DonutChart } from '@shopify/polaris-viz';
 All Polaris Viz charts include hover tooltips by default
 
 **Print-Friendly Reports**:
+
 ```css
 @media print {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .no-print {
     display: none;
   }
-  
+
   svg {
     max-width: 100%;
   }
@@ -287,29 +299,31 @@ All Polaris Viz charts include hover tooltips by default
 ```css
 :root[data-theme="dark"] {
   /* Surfaces */
-  --p-color-bg-surface: #1A1A1A;
-  --p-color-bg-surface-secondary: #2C2C2C;
-  
+  --p-color-bg-surface: #1a1a1a;
+  --p-color-bg-surface-secondary: #2c2c2c;
+
   /* Text */
-  --p-color-text: #E3E5E7;
-  --p-color-text-subdued: #8C9196;
-  
+  --p-color-text: #e3e5e7;
+  --p-color-text-subdued: #8c9196;
+
   /* Status */
-  --p-color-bg-success: #005E46;
-  --p-color-bg-critical: #8C1919;
-  --p-color-bg-caution: #7F5F01;
-  
+  --p-color-bg-success: #005e46;
+  --p-color-bg-critical: #8c1919;
+  --p-color-bg-caution: #7f5f01;
+
   /* Hot Rodan red (adjusted for dark mode) */
-  --hotrodan-red-primary: #E74C3C;
+  --hotrodan-red-primary: #e74c3c;
 }
 ```
 
 **WCAG AA Contrast** (Dark Mode):
+
 - White text on #1A1A1A = 15.6:1 ✅
 - Subdued text (#8C9196) on #1A1A1A = 4.8:1 ✅
 - Success bg (#005E46) contrast = 3.2:1 ✅
 
 **Toggle UI**:
+
 ```typescript
 <SettingsPage>
   <Card sectioned>
@@ -329,10 +343,11 @@ All Polaris Viz charts include hover tooltips by default
 ```
 
 **Implementation**:
+
 ```typescript
 useEffect(() => {
   const root = document.documentElement;
-  root.setAttribute('data-theme', theme === 'auto' ? systemTheme : theme);
+  root.setAttribute("data-theme", theme === "auto" ? systemTheme : theme);
 }, [theme, systemTheme]);
 ```
 
@@ -343,6 +358,7 @@ useEffect(() => {
 ### Empty States (by Feature)
 
 **No Approvals**:
+
 ```typescript
 <EmptyState
   heading="All caught up!"
@@ -353,6 +369,7 @@ useEffect(() => {
 ```
 
 **No Data (Tile)**:
+
 ```typescript
 <EmptyState
   heading="No data yet"
@@ -364,6 +381,7 @@ useEffect(() => {
 ```
 
 **First-Use Guidance**:
+
 ```typescript
 <Card sectioned>
   <BlockStack gap="300">
@@ -380,6 +398,7 @@ useEffect(() => {
 ```
 
 **Motivational Copy**:
+
 - "You're doing great!" (after completing setup)
 - "Ready to roll!" (all systems configured)
 - "Rev up your operations" (empty dashboard, Hot Rodan theme)
@@ -393,6 +412,7 @@ useEffect(() => {
 **Route**: `/approvals/history`
 
 **Layout**:
+
 ```typescript
 <Page title="Approval History">
   <Layout>
@@ -428,7 +448,7 @@ useEffect(() => {
           />
         </InlineStack>
       </Card>
-      
+
       {/* History table */}
       <Card>
         <DataTable
@@ -451,14 +471,15 @@ useEffect(() => {
 ```
 
 **Export Capabilities**:
+
 ```typescript
 <Button onClick={exportToCSV}>Export to CSV</Button>
 
 function exportToCSV() {
-  const csv = approvalHistory.map(a => 
+  const csv = approvalHistory.map(a =>
     `${a.createdAt},${a.conversationId},${a.toolName},${a.action},${a.operatorName}`
   ).join('\n');
-  
+
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -469,6 +490,7 @@ function exportToCSV() {
 ```
 
 **Timeline Visualization**:
+
 ```typescript
 <VerticalStack gap="200">
   {approvalHistory.map(approval => (
@@ -486,4 +508,3 @@ function exportToCSV() {
 ---
 
 **Status**: Tasks 1K-1P complete - Dashboard personalization, notifications, data viz, dark mode, empty states, audit trail
-

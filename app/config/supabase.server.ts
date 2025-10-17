@@ -48,7 +48,9 @@ function createFallbackMemory(): Memory {
       decisions.unshift(decision);
     },
     async listDecisions(scope) {
-      return scope ? decisions.filter((d) => d.scope === scope) : [...decisions];
+      return scope
+        ? decisions.filter((d) => d.scope === scope)
+        : [...decisions];
     },
     async putFact(fact) {
       facts.unshift(fact);

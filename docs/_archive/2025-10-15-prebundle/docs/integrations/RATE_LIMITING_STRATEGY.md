@@ -10,15 +10,17 @@
 ## Executive Summary
 
 HotDash integrates with 4 rate-limited external APIs. This document defines:
+
 - Rate limits for each API
 - Current implementation status
 - Recommended improvements
 - Monitoring and alerting strategy
 
 **Current State:**
+
 - ✅ Shopify: Retry logic implemented
 - ❌ Chatwoot: No retry logic
-- ❌ Google Analytics: No retry logic  
+- ❌ Google Analytics: No retry logic
 - ✅ OpenAI: SDK handles retries
 
 **Target State:** All APIs with robust retry, backoff, and monitoring
@@ -36,6 +38,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Documentation:** https://shopify.dev/docs/api/usage/rate-limits
 
 **GraphQL Specific:**
+
 - Calculated cost per query (based on complexity)
 - Cost = fields queried + nested levels
 - Max cost per query: 1000 points
@@ -43,6 +46,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 - Cost header: `X-Shopify-Shop-Api-Call-Limit: 39/40` (requests used/available)
 
 **429 Response:**
+
 ```json
 {
   "errors": "Exceeded 2 calls per second for api client. Slow down!"
@@ -61,11 +65,13 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Burst Capacity:** Unknown
 
 **Best Practices:**
+
 - Implement preemptive throttling (1 request/second)
 - Add retry logic for 429 and 5xx responses
 - Monitor for rate limit headers (if added)
 
 **Recommended Headers to Check:**
+
 - `X-RateLimit-Limit`
 - `X-RateLimit-Remaining`
 - `Retry-After`
@@ -81,11 +87,13 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Documentation:** https://developers.google.com/analytics/devguides/reporting/data/v1/quotas
 
 **Quota Consumption:**
+
 - Simple query: 1-5 tokens
 - Complex query (many dimensions/metrics): 10-50 tokens
 - Each API call: Minimum 1 request credit
 
 **429 Response:**
+
 ```json
 {
   "error": {
@@ -99,6 +107,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Retry-After:** May include header (respect if present)
 
 **Quota Errors:**
+
 - `RATE_LIMIT_EXCEEDED` - Too many concurrent requests
 - `RESOURCE_EXHAUSTED` - Daily quota exceeded
 
@@ -108,6 +117,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 
 **Rate Limit Type:** Tier-based (varies by account)  
 **Tier 1 (New accounts):**
+
 - Requests: 3 requests/minute
 - Tokens: 40,000 tokens/minute
 - Daily: 200 requests/day
@@ -115,6 +125,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Tier 2-5:** Higher limits (see OpenAI dashboard for exact values)
 
 **Model-Specific:**
+
 - GPT-4: Lower limits (expensive model)
 - GPT-3.5-turbo: Higher limits
 - Embeddings: Separate quota
@@ -122,6 +133,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Documentation:** https://platform.openai.com/docs/guides/rate-limits
 
 **429 Response:**
+
 ```json
 {
   "error": {
@@ -145,6 +157,7 @@ HotDash integrates with 4 rate-limited external APIs. This document defines:
 **Implementation:** `app/services/shopify/client.ts` lines 23-59
 
 **Current Strategy:**
+
 ```typescript
 const MAX_RETRIES = 2;
 const BASE_DELAY_MS = 500;
@@ -160,37 +173,40 @@ async function graphqlWithRetry(
 ): Promise<Response> {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     lastResponse = await originalGraphql(query, options);
-    
+
     if (!isRetryableStatus(lastResponse.status)) {
       return lastResponse;
     }
-    
+
     if (attempt === MAX_RETRIES) {
       return lastResponse;
     }
-    
+
     // Exponential backoff with jitter
     const baseDelay = BASE_DELAY_MS * Math.pow(2, attempt);
     const jitter = randomFn() * baseDelay * 0.1;
     const delay = baseDelay + jitter;
-    
+
     await waitFn(delay);
   }
 }
 ```
 
 **Delays:**
+
 - Attempt 1: 500ms + jitter (450-550ms)
 - Attempt 2: 1000ms + jitter (900-1100ms)
 - Attempt 3: Returns failure
 
 **Strengths:**
+
 - ✅ Handles 429 (rate limit) and 5xx (server errors)
 - ✅ Exponential backoff prevents hammering
 - ✅ Jitter prevents thundering herd
 - ✅ Testable (dependency injection for wait/random)
 
 **Potential Improvements:**
+
 - ⏳ Log rate limit events for monitoring
 - ⏳ Extract delay values to backoff header if present
 - ⏳ Add circuit breaker for repeated failures
@@ -204,37 +220,39 @@ async function graphqlWithRetry(
 **Current Strategy:** NONE - No retry logic implemented
 
 **Impact:**
+
 - ❌ 429 errors will fail immediately
 - ❌ Transient 5xx errors not retried
 - ❌ Network blips cause false failures
 
 **Recommended Implementation:**
+
 ```typescript
 async function chatwootWithRetry<T>(
   apiCall: () => Promise<T>,
-  maxRetries = 3
+  maxRetries = 3,
 ): Promise<T> {
   let lastError: Error | null = null;
-  
+
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await apiCall();
     } catch (error: any) {
       lastError = error;
-      
+
       const status = error.response?.status;
       const isRetryable = status === 429 || status >= 500;
-      
+
       if (!isRetryable || attempt === maxRetries) {
         throw error;
       }
-      
+
       // Exponential backoff
       const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
-  
+
   throw lastError!;
 }
 ```
@@ -248,46 +266,48 @@ async function chatwootWithRetry<T>(
 **Current Strategy:** NONE - No retry logic implemented
 
 **Impact:**
+
 - ❌ Quota errors will fail immediately
 - ❌ Concurrent limit errors not handled
 - ❌ No automatic backoff for RESOURCE_EXHAUSTED
 
 **Recommended Implementation:**
+
 ```typescript
 async function gaWithRetry<T>(
   apiCall: () => Promise<T>,
-  maxRetries = 3
+  maxRetries = 3,
 ): Promise<T> {
   let lastError: Error | null = null;
-  
+
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await apiCall();
     } catch (error: any) {
       lastError = error;
-      
+
       // GA errors have specific codes
       const errorCode = error.code;
-      const isRetryable = 
+      const isRetryable =
         errorCode === 429 ||
-        errorCode === 'RATE_LIMIT_EXCEEDED' ||
-        errorCode === 'RESOURCE_EXHAUSTED' ||
+        errorCode === "RATE_LIMIT_EXCEEDED" ||
+        errorCode === "RESOURCE_EXHAUSTED" ||
         (errorCode >= 500 && errorCode < 600);
-      
+
       if (!isRetryable || attempt === maxRetries) {
         throw error;
       }
-      
+
       // Check for Retry-After header
-      const retryAfter = error.response?.headers?.['retry-after'];
-      const delay = retryAfter 
-        ? parseInt(retryAfter) * 1000 
+      const retryAfter = error.response?.headers?.["retry-after"];
+      const delay = retryAfter
+        ? parseInt(retryAfter) * 1000
         : Math.min(2000 * Math.pow(2, attempt), 30000);
-      
-      await new Promise(resolve => setTimeout(resolve, delay));
+
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
-  
+
   throw lastError!;
 }
 ```
@@ -299,19 +319,21 @@ async function gaWithRetry<T>(
 **Implementation:** Via `openai` SDK (built-in retry)
 
 **SDK Strategy:**
+
 - Automatic retry on 429, 500, 503
 - Exponential backoff (up to 2 retries)
 - Respects `Retry-After` header
 - Configurable via SDK options
 
 **Current Usage:**
+
 ```typescript
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-  maxRetries: 2,  // Default, can configure
-  timeout: 60000  // 60 seconds
+  maxRetries: 2, // Default, can configure
+  timeout: 60000, // 60 seconds
 });
 ```
 
@@ -340,58 +362,62 @@ export const DEFAULT_RETRY_CONFIG: RetryConfig = {
   baseDelayMs: 1000,
   maxDelayMs: 30000,
   retryableStatuses: [429, 500, 502, 503, 504],
-  respectRetryAfter: true
+  respectRetryAfter: true,
 };
 
 export async function withRetry<T>(
   operation: () => Promise<T>,
-  config: Partial<RetryConfig> = {}
+  config: Partial<RetryConfig> = {},
 ): Promise<T> {
   const finalConfig = { ...DEFAULT_RETRY_CONFIG, ...config };
   let lastError: Error | null = null;
-  
+
   for (let attempt = 0; attempt <= finalConfig.maxRetries; attempt++) {
     try {
       return await operation();
     } catch (error: any) {
       lastError = error;
-      
+
       // Check if retryable
       const status = error.response?.status || error.code;
-      const isRetryable = 
+      const isRetryable =
         finalConfig.retryableStatuses.includes(status) ||
         finalConfig.retryableCodes?.includes(status);
-      
+
       if (!isRetryable || attempt === finalConfig.maxRetries) {
         throw error;
       }
-      
+
       // Calculate delay
       let delay: number;
-      if (finalConfig.respectRetryAfter && error.response?.headers?.['retry-after']) {
-        delay = parseInt(error.response.headers['retry-after']) * 1000;
+      if (
+        finalConfig.respectRetryAfter &&
+        error.response?.headers?.["retry-after"]
+      ) {
+        delay = parseInt(error.response.headers["retry-after"]) * 1000;
       } else {
         // Exponential backoff with jitter
         const exponentialDelay = finalConfig.baseDelayMs * Math.pow(2, attempt);
         const jitter = Math.random() * exponentialDelay * 0.1;
         delay = Math.min(exponentialDelay + jitter, finalConfig.maxDelayMs);
       }
-      
-      await new Promise(resolve => setTimeout(resolve, delay));
+
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
-  
+
   throw lastError!;
 }
 ```
 
 **Usage:**
+
 ```typescript
 // In any API client
-const data = await withRetry(
-  () => fetch(url, options),
-  { maxRetries: 3, baseDelayMs: 500 }
-);
+const data = await withRetry(() => fetch(url, options), {
+  maxRetries: 3,
+  baseDelayMs: 500,
+});
 ```
 
 ---
@@ -399,36 +425,39 @@ const data = await withRetry(
 ### Service-Specific Configurations
 
 **Shopify:**
+
 ```typescript
 const SHOPIFY_RETRY_CONFIG: RetryConfig = {
   maxRetries: 2,
   baseDelayMs: 500,
   maxDelayMs: 5000,
   retryableStatuses: [429, 500, 502, 503, 504],
-  respectRetryAfter: false  // Shopify doesn't provide header
+  respectRetryAfter: false, // Shopify doesn't provide header
 };
 ```
 
 **Chatwoot:**
+
 ```typescript
 const CHATWOOT_RETRY_CONFIG: RetryConfig = {
   maxRetries: 3,
   baseDelayMs: 1000,
   maxDelayMs: 10000,
   retryableStatuses: [429, 500, 502, 503, 504],
-  respectRetryAfter: true  // Check for header
+  respectRetryAfter: true, // Check for header
 };
 ```
 
 **Google Analytics:**
+
 ```typescript
 const GA_RETRY_CONFIG: RetryConfig = {
   maxRetries: 3,
   baseDelayMs: 2000,
   maxDelayMs: 30000,
   retryableStatuses: [429],
-  retryableCodes: ['RATE_LIMIT_EXCEEDED', 'RESOURCE_EXHAUSTED'],
-  respectRetryAfter: true  // GA provides Retry-After
+  retryableCodes: ["RATE_LIMIT_EXCEEDED", "RESOURCE_EXHAUSTED"],
+  respectRetryAfter: true, // GA provides Retry-After
 };
 ```
 
@@ -445,35 +474,36 @@ export class RequestThrottler {
   private queue: Array<() => void> = [];
   private lastRequest = 0;
   private minIntervalMs: number;
-  
+
   constructor(requestsPerSecond: number) {
     this.minIntervalMs = 1000 / requestsPerSecond;
   }
-  
+
   async throttle<T>(operation: () => Promise<T>): Promise<T> {
     // Wait for minimum interval since last request
     const now = Date.now();
     const timeSinceLastRequest = now - this.lastRequest;
     const delay = Math.max(0, this.minIntervalMs - timeSinceLastRequest);
-    
+
     if (delay > 0) {
-      await new Promise(resolve => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay));
     }
-    
+
     this.lastRequest = Date.now();
     return await operation();
   }
 }
 
 // Usage
-const shopifyThrottler = new RequestThrottler(1.5);  // 1.5 req/sec (safe margin)
+const shopifyThrottler = new RequestThrottler(1.5); // 1.5 req/sec (safe margin)
 
 const result = await shopifyThrottler.throttle(() =>
-  admin.graphql(QUERY, variables)
+  admin.graphql(QUERY, variables),
 );
 ```
 
 **Benefits:**
+
 - Prevents hitting rate limits proactively
 - Smoother request distribution
 - Reduces 429 errors significantly
@@ -490,50 +520,50 @@ const result = await shopifyThrottler.throttle(() =>
 export class CircuitBreaker {
   private failureCount = 0;
   private lastFailureTime = 0;
-  private state: 'CLOSED' | 'OPEN' | 'HALF_OPEN' = 'CLOSED';
-  
+  private state: "CLOSED" | "OPEN" | "HALF_OPEN" = "CLOSED";
+
   constructor(
     private threshold: number = 5,
-    private timeoutMs: number = 60000  // 1 minute
+    private timeoutMs: number = 60000, // 1 minute
   ) {}
-  
+
   async execute<T>(operation: () => Promise<T>): Promise<T> {
     // If circuit is open, fail fast
-    if (this.state === 'OPEN') {
+    if (this.state === "OPEN") {
       const timeSinceFailure = Date.now() - this.lastFailureTime;
       if (timeSinceFailure < this.timeoutMs) {
-        throw new Error('Circuit breaker is OPEN - too many recent failures');
+        throw new Error("Circuit breaker is OPEN - too many recent failures");
       }
-      this.state = 'HALF_OPEN';  // Try one request
+      this.state = "HALF_OPEN"; // Try one request
     }
-    
+
     try {
       const result = await operation();
-      
+
       // Success - reset or close circuit
-      if (this.state === 'HALF_OPEN') {
-        this.state = 'CLOSED';
+      if (this.state === "HALF_OPEN") {
+        this.state = "CLOSED";
       }
       this.failureCount = 0;
-      
+
       return result;
     } catch (error) {
       this.failureCount++;
       this.lastFailureTime = Date.now();
-      
+
       if (this.failureCount >= this.threshold) {
-        this.state = 'OPEN';
+        this.state = "OPEN";
       }
-      
+
       throw error;
     }
   }
-  
+
   getState() {
     return {
       state: this.state,
       failureCount: this.failureCount,
-      lastFailureTime: this.lastFailureTime
+      lastFailureTime: this.lastFailureTime,
     };
   }
 }
@@ -542,11 +572,12 @@ export class CircuitBreaker {
 const shopifyCircuit = new CircuitBreaker(5, 60000);
 
 const result = await shopifyCircuit.execute(() =>
-  shopifyThrottler.throttle(() => admin.graphql(QUERY))
+  shopifyThrottler.throttle(() => admin.graphql(QUERY)),
 );
 ```
 
 **Benefits:**
+
 - Prevents cascade failures
 - Gives APIs time to recover
 - Reduces wasted requests during outages
@@ -562,8 +593,8 @@ const result = await shopifyCircuit.execute(() =>
 ```typescript
 interface RateLimitEvent {
   timestamp: string;
-  service: 'shopify' | 'chatwoot' | 'ga' | 'openai';
-  event_type: 'rate_limit' | 'retry' | 'circuit_open';
+  service: "shopify" | "chatwoot" | "ga" | "openai";
+  event_type: "rate_limit" | "retry" | "circuit_open";
   status_code: number;
   retry_attempt: number;
   delay_ms: number;
@@ -571,19 +602,18 @@ interface RateLimitEvent {
 }
 
 async function logRateLimitEvent(event: RateLimitEvent) {
-  await supabase
-    .from('observability_logs')
-    .insert({
-      log_level: 'WARN',
-      log_type: 'RATE_LIMIT',
-      scope: event.service,
-      message: `Rate limit event: ${event.event_type}`,
-      metadata: event
-    });
+  await supabase.from("observability_logs").insert({
+    log_level: "WARN",
+    log_type: "RATE_LIMIT",
+    scope: event.service,
+    message: `Rate limit event: ${event.event_type}`,
+    metadata: event,
+  });
 }
 ```
 
 **Metrics to Track:**
+
 - 429 response count per API
 - Retry attempts per API
 - Average delay time
@@ -597,6 +627,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 **Create Tile:** "API Health & Rate Limits"
 
 **Metrics:**
+
 1. **Request Volume (Last 24h)**
    - Shopify: X requests
    - Chatwoot: X requests
@@ -618,6 +649,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
    - GA: Xms
 
 **Alert Thresholds:**
+
 - 🚨 > 10 rate limit events in 1 hour
 - ⚠️ GA quota > 80%
 - ⚠️ Circuit breaker open
@@ -629,6 +661,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 ### Phase 1: Critical Improvements (This Sprint)
 
 **Priority 1.1: Add Retry to Chatwoot Client**
+
 - File: `packages/integrations/chatwoot.ts`
 - Pattern: Match Shopify retry logic
 - Config: 3 retries, 1s base delay, 10s max
@@ -636,6 +669,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 2 hours
 
 **Priority 1.2: Add Retry to GA Client**
+
 - File: `app/services/ga/directClient.ts`
 - Pattern: Match Shopify retry logic + respect Retry-After
 - Config: 3 retries, 2s base delay, 30s max
@@ -643,6 +677,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 2 hours
 
 **Priority 1.3: Add Rate Limit Logging**
+
 - File: `app/services/shopify/client.ts`
 - Action: Log 429 responses to observability_logs
 - Config: Include attempt number and delay
@@ -654,6 +689,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 ### Phase 2: Enhanced Reliability (Next Sprint)
 
 **Priority 2.1: Create Shared Retry Utility**
+
 - File: `app/services/retry.ts` (new)
 - Pattern: Universal retry function with config
 - Migrate: Shopify, Chatwoot, GA to use shared utility
@@ -661,6 +697,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 4 hours
 
 **Priority 2.2: Add Request Throttling**
+
 - File: `app/services/throttle.ts` (new)
 - Pattern: RequestThrottler class
 - Apply: Shopify (1.5 req/sec), Chatwoot (1 req/sec)
@@ -668,6 +705,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 3 hours
 
 **Priority 2.3: Implement Circuit Breakers**
+
 - File: `app/services/circuit-breaker.ts` (new)
 - Pattern: CircuitBreaker class
 - Apply: All external APIs
@@ -679,6 +717,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 ### Phase 3: Monitoring & Alerting (Week 2)
 
 **Priority 3.1: Rate Limit Metrics Dashboard**
+
 - Component: New dashboard tile
 - Data: Query observability_logs
 - Metrics: Request volume, 429 count, quota usage
@@ -686,6 +725,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 8 hours
 
 **Priority 3.2: Automated Alerts**
+
 - Trigger: > 10 rate limit events in 1 hour
 - Channel: Slack/Email/Dashboard notification
 - Action: Auto-throttle or circuit open
@@ -693,6 +733,7 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 - ETA: 4 hours
 
 **Priority 3.3: Quota Monitoring**
+
 - Service: Google Analytics daily quota
 - Check: Every hour
 - Alert: At 70%, 85%, 95%
@@ -707,43 +748,46 @@ async function logRateLimitEvent(event: RateLimitEvent) {
 ### Unit Tests
 
 **Test Retry Logic:**
+
 ```typescript
-describe('withRetry', () => {
-  it('should retry on 429', async () => {
-    const mockFn = jest.fn()
+describe("withRetry", () => {
+  it("should retry on 429", async () => {
+    const mockFn = jest
+      .fn()
       .mockRejectedValueOnce({ response: { status: 429 } })
-      .mockResolvedValue({ data: 'success' });
-    
+      .mockResolvedValue({ data: "success" });
+
     const result = await withRetry(mockFn);
-    
+
     expect(mockFn).toHaveBeenCalledTimes(2);
-    expect(result).toEqual({ data: 'success' });
+    expect(result).toEqual({ data: "success" });
   });
-  
-  it('should respect Retry-After header', async () => {
+
+  it("should respect Retry-After header", async () => {
     // Test implementation
   });
-  
-  it('should fail after max retries', async () => {
+
+  it("should fail after max retries", async () => {
     // Test implementation
   });
 });
 ```
 
 **Test Circuit Breaker:**
+
 ```typescript
-describe('CircuitBreaker', () => {
-  it('should open after threshold failures', async () => {
+describe("CircuitBreaker", () => {
+  it("should open after threshold failures", async () => {
     const breaker = new CircuitBreaker(3, 60000);
-    const failingOp = () => Promise.reject(new Error('fail'));
-    
+    const failingOp = () => Promise.reject(new Error("fail"));
+
     // Trigger 3 failures
     for (let i = 0; i < 3; i++) {
       await expect(breaker.execute(failingOp)).rejects.toThrow();
     }
-    
+
     // Circuit should now be open
-    expect(breaker.getState().state).toBe('OPEN');
+    expect(breaker.getState().state).toBe("OPEN");
   });
 });
 ```
@@ -753,6 +797,7 @@ describe('CircuitBreaker', () => {
 ### Integration Tests
 
 **Test Rate Limit Handling:**
+
 ```bash
 # Simulate Shopify rate limit
 # Mock API to return 429 on first request, 200 on second
@@ -760,6 +805,7 @@ describe('CircuitBreaker', () => {
 ```
 
 **Test Quota Exhaustion:**
+
 ```bash
 # Simulate GA quota exhausted (RESOURCE_EXHAUSTED)
 # Verify: Appropriate error handling, no infinite retries
@@ -772,15 +818,18 @@ describe('CircuitBreaker', () => {
 ### Retry Logic Overhead
 
 **Best Case (No Errors):**
+
 - Additional latency: 0ms
 - Memory overhead: Minimal (closure per retry)
 
 **Worst Case (Max Retries):**
+
 - Shopify: 500ms + 1000ms = 1.5s additional latency
 - Chatwoot: 1s + 2s + 4s = 7s additional latency
 - GA: 2s + 4s + 8s = 14s additional latency
 
 **Mitigation:**
+
 - Set reasonable max delays
 - Circuit breaker prevents repeated long waits
 - Cache results to reduce API calls
@@ -790,10 +839,12 @@ describe('CircuitBreaker', () => {
 ### Throttling Overhead
 
 **Shopify (1.5 req/sec):**
+
 - Delay per request: ~666ms average
 - Impact: Acceptable for dashboard (not user-blocking)
 
 **Chatwoot (1 req/sec):**
+
 - Delay per request: ~1000ms average
 - Impact: Minimal (escalations batched)
 
@@ -806,6 +857,7 @@ describe('CircuitBreaker', () => {
 ### Environment Variables
 
 **New Variables:**
+
 ```bash
 # Shopify
 SHOPIFY_MAX_RETRIES=2
@@ -834,6 +886,7 @@ OPENAI_TIMEOUT_MS=60000
 ## Production Deployment Checklist
 
 ### Pre-Deployment
+
 - [ ] Retry logic implemented for Chatwoot
 - [ ] Retry logic implemented for Google Analytics
 - [ ] Rate limit logging added to all clients
@@ -842,6 +895,7 @@ OPENAI_TIMEOUT_MS=60000
 - [ ] Unit tests for retry logic pass
 
 ### Post-Deployment Monitoring
+
 - [ ] Monitor 429 response frequency (first 24 hours)
 - [ ] Verify retry logic activates correctly
 - [ ] Check GA quota consumption rate
@@ -849,6 +903,7 @@ OPENAI_TIMEOUT_MS=60000
 - [ ] Review observability_logs for rate limit events
 
 ### Performance Validation
+
 - [ ] Dashboard load time acceptable (< 3s)
 - [ ] No user-visible delays from throttling
 - [ ] API response times within SLA
@@ -859,24 +914,28 @@ OPENAI_TIMEOUT_MS=60000
 ## Vendor Communication Plan
 
 ### Shopify
+
 **Contact:** Shopify Partner Support  
 **Purpose:** Monitor for rate limit policy changes  
 **Frequency:** Check API changelog monthly  
 **Escalation:** If seeing persistent 429s, request limit increase
 
 ### Chatwoot
+
 **Contact:** Self-hosted (Fly deployment)  
 **Purpose:** Configure rate limits in Chatwoot settings  
 **Action:** Review Chatwoot admin settings for API rate limits  
 **Note:** We control this - can adjust if needed
 
 ### Google Analytics
+
 **Contact:** Google Cloud Support (if paid tier)  
 **Purpose:** Request quota increase if needed  
 **Current:** Free tier (400 req/day sufficient for now)  
 **Upgrade:** If approaching 80% daily quota consistently
 
 ### OpenAI
+
 **Contact:** OpenAI Support  
 **Purpose:** Monitor usage tier and request upgrades  
 **Current:** Check usage tier in OpenAI dashboard  
@@ -887,13 +946,14 @@ OPENAI_TIMEOUT_MS=60000
 ## Future Enhancements
 
 ### Adaptive Rate Limiting
+
 ```typescript
 // Learn optimal rate from API responses
 class AdaptiveThrottler {
   private currentRate: number;
   private minRate: number;
   private maxRate: number;
-  
+
   adjustRate(response: Response) {
     if (response.status === 429) {
       // Decrease rate (more conservative)
@@ -902,19 +962,27 @@ class AdaptiveThrottler {
       // Slowly increase rate (test limits)
       this.currentRate = this.currentRate * 1.05;
     }
-    
+
     // Clamp to min/max
-    this.currentRate = Math.max(this.minRate, Math.min(this.maxRate, this.currentRate));
+    this.currentRate = Math.max(
+      this.minRate,
+      Math.min(this.maxRate, this.currentRate),
+    );
   }
 }
 ```
 
 ### Distributed Rate Limiting
+
 ```typescript
 // For multi-instance deployments
 // Use Redis to track request counts across all instances
 class DistributedRateLimiter {
-  async checkLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
+  async checkLimit(
+    key: string,
+    limit: number,
+    windowMs: number,
+  ): Promise<boolean> {
     const count = await redis.incr(key);
     if (count === 1) {
       await redis.pexpire(key, windowMs);
@@ -929,22 +997,26 @@ class DistributedRateLimiter {
 ## Summary & Recommendations
 
 ### Current State
+
 - ✅ Shopify: Good (retry logic implemented)
 - ❌ Chatwoot: Needs improvement (no retry)
 - ❌ Google Analytics: Needs improvement (no retry)
 - ✅ OpenAI: Good (SDK handles it)
 
 ### Immediate Actions (This Sprint)
+
 1. **Add retry logic to Chatwoot client** (2 hours)
 2. **Add retry logic to GA client** (2 hours)
 3. **Add rate limit event logging** (1 hour)
 
 ### Medium-term (Next Sprint)
+
 1. **Create shared retry utility** (4 hours)
 2. **Implement request throttling** (3 hours)
 3. **Add circuit breakers** (4 hours)
 
 ### Long-term (Next Month)
+
 1. **Rate limit metrics dashboard** (8 hours)
 2. **Automated alerting** (4 hours)
 3. **Quota monitoring** (3 hours)
@@ -956,18 +1028,21 @@ class DistributedRateLimiter {
 ## Acceptance Criteria
 
 ### Phase 1 Complete When:
+
 - ✅ All 4 APIs have retry logic
 - ✅ All retry attempts logged
 - ✅ Unit tests for retry logic pass
 - ✅ No unhandled 429 errors in production
 
 ### Phase 2 Complete When:
+
 - ✅ Shared retry utility in use across all APIs
 - ✅ Request throttling prevents 99% of 429s
 - ✅ Circuit breakers protect from cascade failures
 - ✅ Performance impact < 500ms p95
 
 ### Phase 3 Complete When:
+
 - ✅ Dashboard shows real-time quota usage
 - ✅ Alerts fire before quota exhaustion
 - ✅ Team has runbook for rate limit incidents
@@ -979,4 +1054,3 @@ class DistributedRateLimiter {
 **Implementation Owner:** Engineer (with Integrations support)  
 **Priority:** P1 - Critical for production reliability  
 **Next:** Coordinate with Engineer to schedule implementation
-

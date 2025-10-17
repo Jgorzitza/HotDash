@@ -6,6 +6,7 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-25
 ---
+
 # Google Analytics Direct API Integration
 
 **Status**: ✅ Production Ready  
@@ -75,13 +76,13 @@ GA_MCP_HOST=https://analytics-mcp.fly.dev
 
 The system automatically determines the mode based on environment variables:
 
-| Priority | Condition | Result |
-|----------|-----------|--------|
-| 1 | `GA_MODE=direct` | Direct API |
-| 2 | `GA_MODE=mcp` | MCP server |
-| 3 | `GA_MODE=mock` or `GA_USE_MOCK=1` | Mock data |
-| 4 | `GOOGLE_APPLICATION_CREDENTIALS` set | Direct API |
-| 5 | Default | Mock data |
+| Priority | Condition                            | Result     |
+| -------- | ------------------------------------ | ---------- |
+| 1        | `GA_MODE=direct`                     | Direct API |
+| 2        | `GA_MODE=mcp`                        | MCP server |
+| 3        | `GA_MODE=mock` or `GA_USE_MOCK=1`    | Mock data  |
+| 4        | `GOOGLE_APPLICATION_CREDENTIALS` set | Direct API |
+| 5        | Default                              | Mock data  |
 
 ---
 
@@ -97,6 +98,7 @@ The system automatically determines the mode based on environment variables:
 ### Required Permissions
 
 The service account must have:
+
 - **Google Analytics role**: Viewer or Marketer
 - **API access**: Google Analytics Data API v1 enabled
 
@@ -185,10 +187,10 @@ GA API response rows are transformed to:
 
 ```typescript
 interface GaSession {
-  landingPage: string;    // From dimensionValues[0].value
-  sessions: number;       // From metricValues[0].value (parsed as int)
-  wowDelta: number;       // Week-over-week delta (calculated separately)
-  evidenceUrl?: string;   // Optional drill-down link
+  landingPage: string; // From dimensionValues[0].value
+  sessions: number; // From metricValues[0].value (parsed as int)
+  wowDelta: number; // Week-over-week delta (calculated separately)
+  evidenceUrl?: string; // Optional drill-down link
 }
 ```
 
@@ -205,6 +207,7 @@ interface GaSession {
 ### Rate Limits
 
 Google Analytics Data API quotas:
+
 - **Queries per day**: 25,000
 - **Queries per 100 seconds**: 1,250
 
@@ -239,6 +242,7 @@ Error: Could not load the default credentials
 ```
 
 **Solutions**:
+
 - Verify credentials file exists and is readable
 - Check service account has GA access
 - Validate JSON file is not corrupted
@@ -250,6 +254,7 @@ Error: Quota exceeded for quota metric 'Queries' and limit 'Queries per day'
 ```
 
 **Solutions**:
+
 - Increase cache TTL to reduce query frequency
 - Switch to mock mode temporarily
 - Request quota increase from Google
@@ -294,6 +299,7 @@ docker logs hotdash-app | grep "\[GA\]"
 **Symptom**: App uses mock data despite setting `GA_MODE=direct`
 
 **Diagnosis**:
+
 ```bash
 # Check environment variables are set
 echo $GA_MODE
@@ -302,6 +308,7 @@ echo $GA_PROPERTY_ID
 ```
 
 **Solutions**:
+
 - Restart application after setting environment variables
 - Check for `GA_USE_MOCK=1` override
 - Verify credentials file path is correct
@@ -311,6 +318,7 @@ echo $GA_PROPERTY_ID
 **Symptom**: API returns no sessions data
 
 **Diagnosis**:
+
 ```bash
 # Check property ID is correct
 echo $GA_PROPERTY_ID
@@ -320,6 +328,7 @@ echo $GA_PROPERTY_ID
 ```
 
 **Solutions**:
+
 - Confirm property ID matches your GA4 property
 - Check date range doesn't exceed data availability
 - Verify service account has access to property
@@ -329,11 +338,13 @@ echo $GA_PROPERTY_ID
 **Symptom**: Latency exceeds 100ms P95
 
 **Diagnosis**:
+
 - Check cache hit rate
 - Verify network latency to Google APIs
 - Check for API throttling
 
 **Solutions**:
+
 - Increase cache TTL
 - Pre-warm cache during off-peak hours
 - Consider regional API endpoints
@@ -379,6 +390,7 @@ npm run dev
 ### From Mock Mode to Direct API
 
 1. **Obtain credentials**:
+
    ```bash
    # Verify service account credentials exist
    ls -la vault/occ/google/analytics-service-account.json
@@ -390,6 +402,7 @@ npm run dev
    - Copy Property ID (numeric value)
 
 3. **Set environment variables**:
+
    ```bash
    export GOOGLE_APPLICATION_CREDENTIALS=/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json
    export GA_PROPERTY_ID=your-property-id
@@ -397,18 +410,20 @@ npm run dev
    ```
 
 4. **Test locally**:
+
    ```bash
    npm run dev
    # Check console for: [GA] Using direct API client
    ```
 
 5. **Deploy to production**:
+
    ```bash
    fly secrets set \
      GOOGLE_APPLICATION_CREDENTIALS=/app/vault/occ/google/analytics-service-account.json \
      GA_PROPERTY_ID=your-property-id \
      GA_MODE=direct
-   
+
    fly deploy
    ```
 
@@ -444,4 +459,3 @@ npm run dev
 **Feedback**: feedback/engineer.md
 
 For issues or questions, see feedback/engineer.md for latest updates and troubleshooting.
-

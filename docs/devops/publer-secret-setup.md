@@ -12,10 +12,10 @@ Configure the official Publer API credentials required for secure social posting
 
 ## Required Secrets
 
-| Name | Description | Notes |
-| --- | --- | --- |
-| `PUBLER_API_KEY` | Publer API key from https://app.publer.com | Use staging workspace key outside production |
-| `PUBLER_WORKSPACE_ID` | Workspace identifier (UUID) | Use staging workspace for dev/staging |
+| Name                  | Description                                | Notes                                        |
+| --------------------- | ------------------------------------------ | -------------------------------------------- |
+| `PUBLER_API_KEY`      | Publer API key from https://app.publer.com | Use staging workspace key outside production |
+| `PUBLER_WORKSPACE_ID` | Workspace identifier (UUID)                | Use staging workspace for dev/staging        |
 
 ---
 
@@ -93,4 +93,3 @@ Rotate every 90 days or on incident:
 
 - DevOps lead (Slack: #infra)
 - Publer support: https://publer.com/docs
-

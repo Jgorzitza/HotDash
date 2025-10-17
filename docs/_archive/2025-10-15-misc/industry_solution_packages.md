@@ -15,6 +15,7 @@ Industry-specific bundles combining Agent SDK + integrations + knowledge base te
 ## Package 1: "Shopify Support Suite"
 
 **Includes**:
+
 - Agent SDK Enterprise
 - Deep Shopify integration (orders, products, customers via Admin API)
 - Shopify-specific KB templates (shipping, returns, Shopify Pay)
@@ -30,6 +31,7 @@ Industry-specific bundles combining Agent SDK + integrations + knowledge base te
 ## Package 2: "WooCommerce AI Assistant"
 
 **Includes**:
+
 - Agent SDK Managed Basic
 - WooCommerce plugin (one-click install)
 - WordPress hosting compatibility
@@ -43,6 +45,7 @@ Industry-specific bundles combining Agent SDK + integrations + knowledge base te
 ## Package 3: "Amazon Seller Support"
 
 **Includes**:
+
 - Agent SDK + Amazon Seller Central integration
 - FBA-specific knowledge base
 - Return processing automation
@@ -55,4 +58,3 @@ Industry-specific bundles combining Agent SDK + integrations + knowledge base te
 
 **Document Owner**: Product Agent  
 **Status**: Packages Defined - Launch with platform partnerships
-

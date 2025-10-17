@@ -9,6 +9,7 @@ Context7 MCP provides semantic search capabilities over the HotDash codebase. It
 Context7 indexes the following parts of the HotDash project:
 
 ### Source Code
+
 - **`app/`** - React Router 7 application code
   - `components/` - Dashboard tiles and UI components
   - `routes/` - React Router data routes and actions
@@ -18,12 +19,14 @@ Context7 indexes the following parts of the HotDash project:
   - `prompts/` - AI prompt templates
 
 ### Configuration
+
 - **Root config files** - `package.json`, `tsconfig.json`, `vite.config.ts`, etc.
 - **`prisma/`** - Database schema and migrations
 - **`supabase/`** - Supabase configuration, functions, and SQL
 - **`shopify.app.toml`** - Shopify app configuration
 
 ### Documentation
+
 - **`docs/`** - All project documentation including:
   - `directions/` - Role-specific guidelines and governance
   - `strategy/` - Roadmap and planning documents
@@ -33,12 +36,14 @@ Context7 indexes the following parts of the HotDash project:
   - `data/` - Data architecture and metrics documentation
 
 ### Scripts
+
 - **`scripts/`** - Operational scripts
   - `ops/` - Backfill, metrics, and maintenance scripts
   - `ai/` - AI tooling and index building
   - `ci/` - CI/CD helper scripts
 
 ### Tests
+
 - **`tests/`** - Test suites (Vitest and Playwright)
 
 ## What Gets Excluded
@@ -58,6 +63,7 @@ See `.context7ignore` for the full list. Key exclusions:
 ### Common Search Queries
 
 **Finding Components:**
+
 ```
 "dashboard tile component that shows sales metrics"
 "Shopify order fulfillment integration"
@@ -65,6 +71,7 @@ See `.context7ignore` for the full list. Key exclusions:
 ```
 
 **Understanding Architecture:**
+
 ```
 "how does the metrics aggregation work?"
 "database schema for dashboard facts"
@@ -72,6 +79,7 @@ See `.context7ignore` for the full list. Key exclusions:
 ```
 
 **Finding Documentation:**
+
 ```
 "deployment checklist for production"
 "incident response procedures"
@@ -79,6 +87,7 @@ See `.context7ignore` for the full list. Key exclusions:
 ```
 
 **Configuration & Setup:**
+
 ```
 "environment variables needed for staging"
 "Supabase edge function deployment"
@@ -135,6 +144,7 @@ docker run -d \
 ```
 
 **Configuration Details:**
+
 - **Transport**: HTTP (not stdio) - Uses Server-Sent Events (SSE)
 - **Port**: 3001 (host) → 8080 (container)
 - **Volume Mount**: Your HotDash project → `/workspace` in container
@@ -160,6 +170,7 @@ HotDash uses multiple MCP servers:
 - **`context7`** - Project codebase semantic search
 
 Agents can use both simultaneously:
+
 - Use `shopify-dev-mcp` for Shopify API questions
 - Use `context7` for HotDash implementation questions
 
@@ -215,6 +226,7 @@ The `.context7ignore` file should be updated when:
 - Creating temporary file locations
 
 Always exclude:
+
 - Dependencies (`node_modules/`)
 - Build outputs
 - Credentials and secrets
@@ -225,8 +237,8 @@ Always exclude:
 
 **Last Updated**: 2025-10-11  
 **Maintainer**: justin  
-**Related Docs**: 
+**Related Docs**:
+
 - `README.md` - Project overview
 - `docs/directions/README.md` - Development governance
 - `.mcp.json` - MCP server configuration
-

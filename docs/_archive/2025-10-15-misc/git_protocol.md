@@ -6,7 +6,9 @@ last_reviewed: 2025-10-04
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Git & Delivery Protocol
+
 - Branches: `agent/<agent>/<molecule>`.
 - Conventional commits.
 - PRs must include code + tests + docs + decisions + artifact links.

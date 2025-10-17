@@ -9,6 +9,7 @@
 ## Engagement Score (0-100)
 
 **Components**:
+
 - Login frequency (daily = 10 pts, weekly = 7, monthly = 3)
 - Feature usage breadth (use 1 feature = 3 pts, use all = 10 pts)
 - Dashboard views (regular viewers = 8 pts)
@@ -22,4 +23,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Engagement model defined
-

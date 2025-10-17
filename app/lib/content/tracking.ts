@@ -1,17 +1,17 @@
 /**
  * Content Performance Tracking Library
- * 
+ *
  * Provides content performance metrics for social media posts across multiple platforms:
  * - Instagram, Facebook, TikTok
  * - Engagement metrics (likes, comments, shares, saves)
  * - Reach and impressions
  * - Click-through rate
  * - Conversion tracking
- * 
+ *
  * Designed for future HITL social posting workflow.
  */
 
-import { appMetrics } from '../../utils/metrics.server.ts';
+import { appMetrics } from "../../utils/metrics.server.ts";
 
 // ============================================================================
 // Types
@@ -20,7 +20,7 @@ import { appMetrics } from '../../utils/metrics.server.ts';
 /**
  * Supported social media platforms
  */
-export type SocialPlatform = 'instagram' | 'facebook' | 'tiktok';
+export type SocialPlatform = "instagram" | "facebook" | "tiktok";
 
 /**
  * Content post data structure
@@ -31,7 +31,7 @@ export interface ContentPost {
   content: string;
   mediaUrls?: string[];
   publishedAt: string;
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  status: "draft" | "scheduled" | "published" | "failed";
   metadata?: {
     hashtags?: string[];
     mentions?: string[];
@@ -130,17 +130,22 @@ export interface AggregatedPerformance {
  * Formula: (likes + comments + shares + saves) / impressions * 100
  */
 export function calculateEngagementRate(
-  engagement: { likes: number; comments: number; shares: number; saves?: number },
-  impressions: number
+  engagement: {
+    likes: number;
+    comments: number;
+    shares: number;
+    saves?: number;
+  },
+  impressions: number,
 ): number {
   if (impressions === 0) return 0;
-  
-  const totalEngagement = 
-    engagement.likes + 
-    engagement.comments + 
-    engagement.shares + 
+
+  const totalEngagement =
+    engagement.likes +
+    engagement.comments +
+    engagement.shares +
     (engagement.saves || 0);
-  
+
   return (totalEngagement / impressions) * 100;
 }
 
@@ -148,7 +153,10 @@ export function calculateEngagementRate(
  * Calculate click-through rate
  * Formula: clicks / impressions * 100
  */
-export function calculateClickThroughRate(clicks: number, impressions: number): number {
+export function calculateClickThroughRate(
+  clicks: number,
+  impressions: number,
+): number {
   if (impressions === 0) return 0;
   return (clicks / impressions) * 100;
 }
@@ -157,7 +165,10 @@ export function calculateClickThroughRate(clicks: number, impressions: number): 
  * Calculate conversion rate
  * Formula: conversions / clicks * 100
  */
-export function calculateConversionRate(conversions: number, clicks: number): number {
+export function calculateConversionRate(
+  conversions: number,
+  clicks: number,
+): number {
   if (clicks === 0) return 0;
   return (conversions / clicks) * 100;
 }
@@ -168,22 +179,22 @@ export function calculateConversionRate(conversions: number, clicks: number): nu
 
 /**
  * Get performance metrics for a specific content post
- * 
+ *
  * NOTE: This is a placeholder implementation. In production, this would:
- * 1. Fetch data from Ayrshare API or platform-specific APIs
+ * 1. Fetch data from Publer API or platform-specific APIs
  * 2. Query Supabase for stored metrics
  * 3. Correlate with GA4 conversion data
  */
 export async function getContentPerformance(
   postId: string,
-  platform: SocialPlatform
+  platform: SocialPlatform,
 ): Promise<ContentPerformance> {
   const startTime = Date.now();
-  
+
   try {
     // TODO: Implement actual API calls to fetch metrics
     // For now, return mock structure
-    
+
     const mockData: ContentPerformance = {
       postId,
       platform,
@@ -213,25 +224,25 @@ export async function getContentPerformance(
         averageOrderValue: 0,
       },
       period: {
-        start: new Date().toISOString().split('T')[0],
-        end: new Date().toISOString().split('T')[0],
+        start: new Date().toISOString().split("T")[0],
+        end: new Date().toISOString().split("T")[0],
       },
     };
-    
+
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getContentPerformance', true, duration);
-    
+    appMetrics.gaApiCall("getContentPerformance", true, duration);
+
     return mockData;
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getContentPerformance', false, duration);
+    appMetrics.gaApiCall("getContentPerformance", false, duration);
     throw error;
   }
 }
 
 /**
  * Get aggregated performance metrics for a date range
- * 
+ *
  * @param startDate - Start date in YYYY-MM-DD format
  * @param endDate - End date in YYYY-MM-DD format
  * @param platform - Optional platform filter
@@ -239,14 +250,14 @@ export async function getContentPerformance(
 export async function getAggregatedPerformance(
   startDate: string,
   endDate: string,
-  platform?: SocialPlatform
+  platform?: SocialPlatform,
 ): Promise<AggregatedPerformance> {
   const startTime = Date.now();
-  
+
   try {
     // TODO: Implement actual aggregation from Supabase or API
     // For now, return mock structure
-    
+
     const mockData: AggregatedPerformance = {
       totalPosts: 0,
       platforms: {
@@ -272,21 +283,21 @@ export async function getAggregatedPerformance(
         end: endDate,
       },
     };
-    
+
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getAggregatedPerformance', true, duration);
-    
+    appMetrics.gaApiCall("getAggregatedPerformance", true, duration);
+
     return mockData;
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getAggregatedPerformance', false, duration);
+    appMetrics.gaApiCall("getAggregatedPerformance", false, duration);
     throw error;
   }
 }
 
 /**
  * Get top performing posts for a date range
- * 
+ *
  * @param startDate - Start date in YYYY-MM-DD format
  * @param endDate - End date in YYYY-MM-DD format
  * @param limit - Number of top posts to return
@@ -296,22 +307,21 @@ export async function getTopPerformingPosts(
   startDate: string,
   endDate: string,
   limit: number = 10,
-  sortBy: 'engagement' | 'reach' | 'clicks' | 'conversions' = 'engagement'
+  sortBy: "engagement" | "reach" | "clicks" | "conversions" = "engagement",
 ): Promise<ContentPerformance[]> {
   const startTime = Date.now();
-  
+
   try {
     // TODO: Implement actual query from Supabase
     // For now, return empty array
-    
+
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getTopPerformingPosts', true, duration);
-    
+    appMetrics.gaApiCall("getTopPerformingPosts", true, duration);
+
     return [];
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getTopPerformingPosts', false, duration);
+    appMetrics.gaApiCall("getTopPerformingPosts", false, duration);
     throw error;
   }
 }
-

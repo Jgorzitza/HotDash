@@ -33,7 +33,10 @@ export async function logDecision(input: LogDecisionInput) {
 
   if (supabaseConfig) {
     try {
-      const memory = supabaseMemory(supabaseConfig.url, supabaseConfig.serviceKey);
+      const memory = supabaseMemory(
+        supabaseConfig.url,
+        supabaseConfig.serviceKey,
+      );
       const memoryDecision: MemoryDecision = {
         id: String(decision.id),
         scope: input.scope,

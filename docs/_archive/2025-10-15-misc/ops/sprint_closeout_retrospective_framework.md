@@ -6,11 +6,13 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Sprint Closeout, Publication, and Retrospective Framework — HotDash OCC Sprint 2025-10-11T04:18Z
 
 ## Sprint Closeout Process
 
 ### Closeout Trigger Criteria
+
 Sprint closeout is initiated when **ALL** of the following evidence thresholds are satisfied:
 
 1. **✅ DEPLOY-147 Evidence Complete** (100% satisfied)
@@ -32,6 +34,7 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 ### Immediate Publication Readiness
 
 #### Staged Memory Updates
+
 **Location**: `packages/memory/logs/ops/`
 **Preparation Status**: Ready for immediate publication upon threshold satisfaction
 
@@ -75,25 +78,30 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 ```
 
 #### Staged Linear Summaries
+
 **Pre-composed External-Facing Summaries** (ready for immediate publication):
 
 ##### DEPLOY-147 Completion Summary
+
 ```markdown
 # DEPLOY-147 Evidence Anchoring - COMPLETE ✅
 
 ## Status: 100% Evidence Collection Satisfied
 
 ### Performance Validation
+
 - **Response Time**: 173.6ms (Target: <300ms) ✅
 - **Test Coverage**: 42/43 unit tests passed, E2E suite 100% pass rate ✅
 - **Infrastructure**: Nightly automation operational at 02:00 UTC ✅
 
 ### QA Evidence Bundle
+
 - Playwright E2E: All tests passing, 5.9s duration, 0 flaky tests
 - Vitest Unit: Comprehensive coverage across 31 test suites
 - Performance: Sub-300ms validated consistently
 
 ### Infrastructure Readiness
+
 - Evidence bundling automation: Operational
 - Nightly metrics collection: Active and validated
 - Stack guardrails: Enforced via CI/CD pipeline
@@ -102,14 +110,16 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 ```
 
 ##### Sprint Infrastructure Completion Summary
+
 ```markdown
 # HotDash OCC Sprint Infrastructure - COMPLETE ✅
 
 ## Major Deliverables Achieved
 
 ### Coordination Infrastructure
+
 - ✅ Evidence bundling specification with standardized nightly structure
-- ✅ Linear workspace implementation with comprehensive issue templates  
+- ✅ Linear workspace implementation with comprehensive issue templates
 - ✅ Automation and reminders framework for daily/weekly cadence
 - ✅ Release review gates coordination (mock → staging → production)
 - ✅ Risk management and incident readiness with Linear integration
@@ -117,6 +127,7 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 - ✅ Customer calls framework for weekly insights capture
 
 ### Operational Readiness
+
 - Sprint coordination infrastructure: 100% complete
 - Evidence collection and validation: Automated and operational
 - Compliance and risk management: Framework established
@@ -128,7 +139,9 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 ### Publication Execution Plan
 
 #### Immediate Actions Upon Threshold Satisfaction (0-15 minutes)
+
 1. **Memory Publication**:
+
    ```bash
    # Update Memory with completion status
    echo '{"status": "PUBLISHED", "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"}' > packages/memory/logs/ops/sprint-closeout-published.json
@@ -145,6 +158,7 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
    - Manager notification with evidence bundle links
 
 #### External Communication (15-60 minutes)
+
 1. **Training Material Distribution** to enablement teams
 2. **Release Notes Publication** with feature summaries
 3. **Customer Communication** updates via scheduled calls
@@ -153,6 +167,7 @@ Sprint closeout is initiated when **ALL** of the following evidence thresholds a
 ### Sprint Log Archival Process
 
 #### Archive Structure
+
 ```
 docs/sprints/archive/2025-10-11-to-2025-10-18/
 ├── sprint_summary.md                    # Executive summary and key achievements
@@ -186,6 +201,7 @@ docs/sprints/archive/2025-10-11-to-2025-10-18/
 ```
 
 #### Archival Automation Script
+
 ```typescript
 // scripts/ops/archive-sprint.ts
 interface SprintArchive {
@@ -204,34 +220,46 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
   // Create archive directory structure
   const archiveDir = `docs/sprints/archive/${sprintId}`;
   await createDirectory(archiveDir);
-  
+
   // Archive feedback logs
-  await copyFile('feedback/product.md', `${archiveDir}/feedback_logs/product_feedback_archive.md`);
-  
+  await copyFile(
+    "feedback/product.md",
+    `${archiveDir}/feedback_logs/product_feedback_archive.md`,
+  );
+
   // Archive evidence bundle
   const evidenceBundle = await collectEvidenceBundle();
-  await writeJSON(`${archiveDir}/evidence_bundle/complete_bundle.json`, evidenceBundle);
-  
+  await writeJSON(
+    `${archiveDir}/evidence_bundle/complete_bundle.json`,
+    evidenceBundle,
+  );
+
   // Archive framework documentation
   const frameworks = await collectFrameworkDocumentation();
   for (const framework of frameworks) {
-    await copyFile(framework.source, `${archiveDir}/frameworks_delivered/${framework.name}`);
+    await copyFile(
+      framework.source,
+      `${archiveDir}/frameworks_delivered/${framework.name}`,
+    );
   }
-  
+
   // Generate sprint metrics
   const metrics = await generateSprintMetrics(sprintId);
-  await writeJSON(`${archiveDir}/metrics_and_kpis/sprint_metrics.json`, metrics);
-  
+  await writeJSON(
+    `${archiveDir}/metrics_and_kpis/sprint_metrics.json`,
+    metrics,
+  );
+
   return {
     sprintId,
-    startDate: '2025-10-11',
-    endDate: '2025-10-18',
+    startDate: "2025-10-11",
+    endDate: "2025-10-18",
     completionRate: metrics.completionRate,
     totalIssues: metrics.totalIssues,
     completedIssues: metrics.completedIssues,
     evidenceLinks: evidenceBundle.links,
-    frameworksDelivered: frameworks.map(f => f.name),
-    lessonsLearned: await collectLessonsLearned()
+    frameworksDelivered: frameworks.map((f) => f.name),
+    lessonsLearned: await collectLessonsLearned(),
   };
 }
 ```
@@ -239,11 +267,12 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
 ## Release Retrospective Framework
 
 ### Retrospective Schedule and Participants
+
 - **Timing**: Within 1 week of sprint completion (after all evidence thresholds satisfied)
 - **Duration**: 90 minutes
 - **Format**: In-person or video conference with recording
 - **Facilitator**: Product Agent
-- **Participants**: 
+- **Participants**:
   - Product Agent (primary)
   - QA Agent (quality and testing insights)
   - Compliance Team (approval and governance insights)
@@ -254,63 +283,76 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
 ### Retrospective Agenda (90 minutes)
 
 #### 1. Sprint Success Review (15 minutes)
+
 **Facilitator**: Product Agent
 **Focus**: Quantitative sprint performance and achievement validation
 
 **Key Metrics Review**:
+
 - **Completion Rate**: X% of planned work completed (target: >85%)
 - **Evidence Quality**: All evidence thresholds satisfied/pending
 - **Timeline Performance**: Sprint delivered on schedule/delayed
 - **Stakeholder Satisfaction**: Feedback scores and sentiment
 
 **Success Validation Questions**:
+
 - Did we achieve our primary sprint goals (DEPLOY-147 completion)?
 - Are all stakeholders aligned on deliverables and outcomes?
 - What evidence best demonstrates our sprint success?
 
 #### 2. What Went Well (20 minutes)
+
 **Facilitator**: Rotating between participants
 **Focus**: Identify and celebrate success factors for replication
 
 **Discussion Framework**:
+
 - **Process Successes**: Which processes worked exceptionally well?
 - **Collaboration Wins**: What team coordination worked smoothly?
 - **Technical Achievements**: Which technical decisions paid off?
 - **Communication Highlights**: Where did communication excel?
 
-**Capture Method**: 
+**Capture Method**:
+
 - Each participant shares 2-3 specific examples
 - Record verbatim quotes and specific examples
 - Identify patterns and themes across responses
 
 #### 3. Improvement Opportunities (20 minutes)
+
 **Facilitator**: Product Agent with round-robin input
 **Focus**: Identify areas for enhancement without blame assignment
 
 **Discussion Areas**:
+
 - **Process Inefficiencies**: Where did processes create friction?
 - **Communication Gaps**: What information was missing or delayed?
 - **Technical Debt**: Which technical shortcuts need addressing?
 - **Resource Constraints**: Where did resource limitations impact delivery?
 
 **Improvement Scoring**:
+
 - **Impact**: How significantly would fixing this improve outcomes? (1-10)
 - **Effort**: How much effort would be required to address? (1-10)
 - **Priority**: Impact/Effort ratio for prioritization
 
 #### 4. Process Refinements (20 minutes)
+
 **Facilitator**: All participants collaborative discussion
 **Focus**: Specific, actionable improvements for immediate implementation
 
 **Refinement Categories**:
+
 - **Sprint Planning**: How can we improve future sprint setup?
 - **Daily Coordination**: What daily processes need adjustment?
 - **Evidence Collection**: How can we streamline evidence gathering?
 - **Stakeholder Management**: How can we improve stakeholder communication?
 
 **Refinement Template**:
+
 ```markdown
 ## Process Refinement: [Name]
+
 **Current Process**: [How it works now]
 **Proposed Change**: [Specific improvement suggestion]
 **Expected Benefit**: [What improvement this would provide]
@@ -320,33 +362,39 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
 ```
 
 #### 5. Next Sprint Planning Insights (10 minutes)
+
 **Facilitator**: Product Agent
 **Focus**: Forward-looking recommendations for immediate application
 
 **Planning Questions**:
+
 - What should we start doing in the next sprint?
 - What should we stop doing based on this sprint's learnings?
 - What should we continue doing exactly as we did this sprint?
 - What capacity or resource adjustments are needed?
 
 #### 6. Action Items and Commitments (5 minutes)
+
 **Facilitator**: Product Agent
 **Focus**: Specific, time-bound commitments for improvement implementation
 
 **Action Item Template**:
+
 ```markdown
-| Action Item | Owner | Due Date | Success Criteria |
-|-------------|-------|----------|------------------|
+| Action Item       | Owner  | Due Date   | Success Criteria     |
+| ----------------- | ------ | ---------- | -------------------- |
 | [Specific action] | [Name] | YYYY-MM-DD | [Measurable outcome] |
 ```
 
 ### Retrospective Documentation
 
 #### Retrospective Report Template
+
 ```markdown
 # Sprint Retrospective Report - HotDash OCC [Sprint Dates]
 
 ## Meeting Details
+
 - **Date**: [YYYY-MM-DD HH:MM UTC]
 - **Duration**: [90 minutes]
 - **Facilitator**: Product Agent
@@ -354,102 +402,127 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
 - **Recording**: [Link to meeting recording]
 
 ## Sprint Success Summary
+
 ### Quantitative Results
+
 - **Completion Rate**: XX% (Target: >85%)
 - **Evidence Thresholds**: X/X satisfied
 - **Timeline Performance**: [On schedule/Delayed by X days]
 - **Quality Metrics**: [Test pass rates, performance results]
 
 ### Qualitative Assessment
+
 - **Stakeholder Satisfaction**: [Positive/Mixed/Negative feedback summary]
 - **Team Morale**: [High/Medium/Low based on retrospective sentiment]
 - **Process Effectiveness**: [Overall assessment of process performance]
 
 ## What Went Well 🎉
+
 ### Process Successes
+
 1. **[Success Area 1]**: [Specific example and impact]
 2. **[Success Area 2]**: [Specific example and impact]
 3. **[Success Area 3]**: [Specific example and impact]
 
 ### Collaboration Highlights
+
 - **Cross-Team Coordination**: [Specific examples of excellent collaboration]
 - **Communication Wins**: [Examples of effective communication]
 - **Problem-Solving**: [Examples of effective issue resolution]
 
 ### Technical Achievements
+
 - **Performance**: [Technical performance wins]
 - **Quality**: [Quality achievements and improvements]
 - **Innovation**: [New approaches or solutions that worked well]
 
 ## Improvement Opportunities 🚀
+
 ### High-Impact Improvements (Score 8-10)
+
 1. **[Improvement Area]**: [Description, Impact Score: X, Effort Score: X]
 2. **[Improvement Area]**: [Description, Impact Score: X, Effort Score: X]
 
 ### Medium-Impact Improvements (Score 5-7)
+
 1. **[Improvement Area]**: [Description, Impact Score: X, Effort Score: X]
 2. **[Improvement Area]**: [Description, Impact Score: X, Effort Score: X]
 
 ### Quick Wins (Low Effort, Any Impact)
+
 - **[Quick Win 1]**: [Description and implementation plan]
 - **[Quick Win 2]**: [Description and implementation plan]
 
 ## Process Refinements 🔧
+
 ### Sprint Planning Refinements
+
 - **Current Process**: [Description]
 - **Proposed Changes**: [Specific improvements]
 - **Implementation**: [How and when changes will be made]
 
 ### Daily Operations Refinements
+
 - **Evidence Collection**: [Process improvements]
 - **Communication Cadence**: [Frequency and format improvements]
 - **Stakeholder Management**: [Relationship and update improvements]
 
 ### Quality and Compliance Refinements
+
 - **Testing Processes**: [QA process improvements]
 - **Compliance Integration**: [Legal/compliance process improvements]
 - **Risk Management**: [Risk identification and mitigation improvements]
 
 ## Action Items for Next Sprint 📋
-| Action Item | Owner | Due Date | Success Criteria | Priority |
-|-------------|-------|----------|------------------|----------|
-| [Action 1] | [Name] | [Date] | [Measurable outcome] | High |
-| [Action 2] | [Name] | [Date] | [Measurable outcome] | Medium |
-| [Action 3] | [Name] | [Date] | [Measurable outcome] | Low |
+
+| Action Item | Owner  | Due Date | Success Criteria     | Priority |
+| ----------- | ------ | -------- | -------------------- | -------- |
+| [Action 1]  | [Name] | [Date]   | [Measurable outcome] | High     |
+| [Action 2]  | [Name] | [Date]   | [Measurable outcome] | Medium   |
+| [Action 3]  | [Name] | [Date]   | [Measurable outcome] | Low      |
 
 ## Next Sprint Recommendations 🎯
+
 ### Start Doing
+
 - [New practice or process to begin]
 - [New tool or technique to adopt]
 - [New communication or coordination approach]
 
 ### Stop Doing
+
 - [Practice or process to discontinue]
 - [Tool or technique that didn't work well]
 - [Communication pattern that created friction]
 
 ### Continue Doing
+
 - [Successful practice to maintain exactly as-is]
 - [Effective tool or process to keep unchanged]
 - [Communication approach that worked well]
 
 ## Lessons Learned Archive 📚
+
 ### Strategic Lessons
+
 - **Product-Market Fit**: [Insights about customer needs and solution alignment]
 - **Technical Architecture**: [Insights about technical decisions and trade-offs]
 - **Compliance Integration**: [Insights about regulatory and legal coordination]
 
 ### Operational Lessons
+
 - **Sprint Planning**: [Insights about planning accuracy and scope management]
 - **Team Coordination**: [Insights about cross-team collaboration effectiveness]
 - **Stakeholder Management**: [Insights about communication and expectation management]
 
 ### Forward-Looking Lessons
+
 - **Scaling Considerations**: [What will need to change as we grow]
 - **Process Evolution**: [How processes should evolve over time]
 - **Technology Roadmap**: [Technical investments needed for future success]
 
 ---
+
 **Retrospective Rating**: [Excellent/Good/Fair/Poor] - Overall team satisfaction with retrospective
 **Follow-up Meeting**: [Date/Time if needed for action item review]
 **Archive Location**: [Link to sprint archive location]
@@ -458,22 +531,27 @@ async function archiveSprint(sprintId: string): Promise<SprintArchive> {
 ## Continuous Improvement Integration
 
 ### Monthly Retrospective Synthesis
+
 - **Cross-Sprint Patterns**: Identify recurring themes across multiple sprints
 - **Trend Analysis**: Track improvement metrics over time
 - **Best Practice Development**: Codify successful patterns into standard processes
 
 ### Quarterly Process Review
+
 - **Framework Evolution**: Update frameworks based on retrospective insights
 - **Tool Evaluation**: Assess whether tools and systems are serving needs effectively
 - **Team Development**: Identify training and development needs based on lessons learned
 
 ### Success Metrics Tracking
+
 - **Retrospective Quality**: Measure the actionability and implementation rate of retrospective outcomes
 - **Process Improvement**: Track the impact of implemented process changes
 - **Team Satisfaction**: Monitor team satisfaction with processes and collaboration over time
 
 ---
+
 **Implementation Priority**:
+
 1. Complete DEPLOY-147 evidence validation and prepare publication materials
 2. Set up sprint archive automation and documentation templates
 3. Schedule and conduct retrospective meeting within 1 week of sprint completion

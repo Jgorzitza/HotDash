@@ -9,13 +9,13 @@
 
 ## Quick Reference
 
-| Error Type | Immediate Action | Recovery Time | Escalation |
-|------------|------------------|---------------|------------|
-| Shopify 429 | Automatic retry (implemented) | < 2 seconds | None needed |
-| Shopify 500 | Automatic retry (implemented) | < 5 seconds | If persists > 5min |
-| Chatwoot Timeout | Manual retry | < 1 minute | If persists > 15min |
-| GA Quota Exceeded | Wait for reset | Next day 00:00 UTC | Alert team |
-| OpenAI 429 | SDK auto-retry | < 10 seconds | None needed |
+| Error Type        | Immediate Action              | Recovery Time      | Escalation          |
+| ----------------- | ----------------------------- | ------------------ | ------------------- |
+| Shopify 429       | Automatic retry (implemented) | < 2 seconds        | None needed         |
+| Shopify 500       | Automatic retry (implemented) | < 5 seconds        | If persists > 5min  |
+| Chatwoot Timeout  | Manual retry                  | < 1 minute         | If persists > 15min |
+| GA Quota Exceeded | Wait for reset                | Next day 00:00 UTC | Alert team          |
+| OpenAI 429        | SDK auto-retry                | < 10 seconds       | None needed         |
 
 ---
 
@@ -26,6 +26,7 @@
 **Detection:** Error message "Exceeded 2 calls per second"
 
 **Current Handling:** ✅ Automatic
+
 - Retry logic in `app/services/shopify/client.ts`
 - Exponential backoff: 500ms, 1000ms
 - Max 2 retries
@@ -33,6 +34,7 @@
 **Recovery:** Automatic (no action needed)
 
 **If Persists:**
+
 1. Check Shopify status: https://status.shopify.com
 2. Review API call patterns (reduce frequency)
 3. Contact Shopify Partner Support if needed
@@ -46,6 +48,7 @@
 **Current Handling:** ❌ No retry (needs implementation)
 
 **Manual Recovery:**
+
 1. Check Chatwoot status: `curl https://hotdash-chatwoot.fly.dev/hc`
 2. Check Fly.io status: https://status.flyio.net
 3. Restart Chatwoot app: `flyctl restart hotdash-chatwoot`
@@ -62,6 +65,7 @@
 **Current Handling:** ❌ No retry (quota won't help)
 
 **Recovery:**
+
 1. Wait until quota resets (00:00 UTC daily)
 2. OR: Reduce polling frequency temporarily
 3. OR: Request quota increase from Google
@@ -75,11 +79,13 @@
 **Detection:** "Invalid webhook signature" in logs
 
 **Possible Causes:**
+
 1. Webhook secret mismatch
 2. Payload modification in transit
 3. Attack attempt
 
 **Recovery:**
+
 1. Verify webhook secret matches between Chatwoot and Supabase
 2. Check observability logs for patterns
 3. If attack: Block IP address
@@ -92,6 +98,7 @@
 **Detection:** Supabase connection errors
 
 **Recovery:**
+
 1. Check Supabase status: https://status.supabase.com
 2. Verify connection string in environment
 3. Check connection pool (max connections)
@@ -129,7 +136,7 @@ flyctl restart hotdash-chatwoot
 # Test Shopify credentials
 ./scripts/ops/test-shopify-integration.sh
 
-# Test Chatwoot credentials  
+# Test Chatwoot credentials
 ./scripts/ops/test-chatwoot-integration.sh
 
 # Test Google Analytics
@@ -141,20 +148,24 @@ flyctl restart hotdash-chatwoot
 ## Escalation Matrix
 
 **Level 1: Automatic** (< 1 minute)
+
 - Retry logic handles transient errors
 - No human intervention needed
 
 **Level 2: Operations** (1-15 minutes)
+
 - Operations team investigates
 - Uses runbooks for recovery
 - Logs incident
 
 **Level 3: Engineering** (15-60 minutes)
+
 - Complex issues requiring code changes
 - Engineer On-Call engaged
 - Incident manager assigned
 
 **Level 4: Vendor** (> 1 hour)
+
 - Vendor-side issues
 - Contact vendor support
 - Escalate through proper channels
@@ -172,4 +183,3 @@ flyctl restart hotdash-chatwoot
 
 **Runbook Complete:** 2025-10-12 03:47 UTC  
 **Evidence:** Practical recovery procedures for all integration failure scenarios
-

@@ -17,7 +17,9 @@ describe("embeddedUrl", () => {
   });
 
   it("includes host, embedded, and mock parameters", () => {
-    const url = new URL(embeddedUrl("/app", { mock: "0", searchParams: { foo: "bar" } }));
+    const url = new URL(
+      embeddedUrl("/app", { mock: "0", searchParams: { foo: "bar" } }),
+    );
 
     expect(url.origin).toBe("https://example.com");
     expect(url.searchParams.get("host")).toBe("test-host");

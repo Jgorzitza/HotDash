@@ -4,6 +4,8 @@ import { execSync } from 'node:child_process';
 const allow = [
   /^README\.md$/, /^APPLY\.md$/,
   /^docs\/NORTH_STAR\.md$/, /^docs\/RULES\.md$/, /^docs\/ARCHIVE_INDEX\.md$/,
+  /^docs\/README\.md$/, /^docs\/roadmap\.md$/,
+  /^plans\/.+\.md$/,
   /^docs\/OPERATING_MODEL\.md$/,
   /^docs\/runbooks\/(manager_|agent_|ai_agent_review_checklist|drift_checklist).*\.md$/,
   /^docs\/directions\/.+\.md$/,

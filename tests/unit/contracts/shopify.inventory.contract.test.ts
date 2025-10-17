@@ -36,8 +36,8 @@ describe("Shopify Inventory API Contract", () => {
   test("SKU is nullable with fallback to title", () => {
     const edges = inventoryFixture.data.productVariants.edges;
 
-    const withSku = edges.filter(e => e.node.sku !== null);
-    const withoutSku = edges.filter(e => e.node.sku === null);
+    const withSku = edges.filter((e) => e.node.sku !== null);
+    const withoutSku = edges.filter((e) => e.node.sku === null);
 
     // Fixture should include both cases
     expect(withSku.length).toBeGreaterThan(0);
@@ -54,7 +54,7 @@ describe("Shopify Inventory API Contract", () => {
     const edges = inventoryFixture.data.productVariants.edges;
 
     // Check for zero inventory case
-    const zeroInventory = edges.filter(e => e.node.inventoryQuantity === 0);
+    const zeroInventory = edges.filter((e) => e.node.inventoryQuantity === 0);
     expect(zeroInventory.length).toBeGreaterThan(0);
 
     // All inventory quantities should be integers
@@ -92,7 +92,7 @@ describe("Shopify Inventory API Contract", () => {
 
   test("fixture includes realistic inventory range", () => {
     const edges = inventoryFixture.data.productVariants.edges;
-    const quantities = edges.map(e => e.node.inventoryQuantity);
+    const quantities = edges.map((e) => e.node.inventoryQuantity);
 
     // Should include low, medium, and high stock examples
     expect(Math.min(...quantities)).toBeLessThanOrEqual(10); // low stock

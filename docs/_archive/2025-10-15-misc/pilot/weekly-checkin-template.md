@@ -11,6 +11,7 @@
 ## Pre-Call Preparation (Product Agent)
 
 **10 minutes before call, gather**:
+
 - [ ] Week's usage metrics (login frequency, tile clicks)
 - [ ] Approval queue stats (decisions made, avg turnaround time)
 - [ ] Any bugs reported and their status
@@ -24,14 +25,17 @@
 ### Part 1: Check-In (5 minutes)
 
 **Question 1**: How was your week with the dashboard?
+
 - Listen for: Overall sentiment, energy level about it
 - Note: Any frustration or excitement in their voice
 
 **Question 2**: Did you check the dashboard this week? How many days?
+
 - Target: ≥5 days
 - If <3 days: Dig into why (too busy, forgot, not useful?)
 
 **Question 3**: Quick rating (1-10): How useful was HotDash this week?
+
 - Record rating
 - Compare to last week's rating (trending up/down?)
 
@@ -42,12 +46,14 @@
 **Question**: What did you love or find most useful this week?
 
 **Listen for**:
+
 - Specific tiles mentioned ("Sales Pulse saved me time")
 - Workflows that clicked ("Morning routine is now 2 minutes")
 - Quick wins ("Caught inventory alert before stock-out!")
 - Aha moments ("I spotted a trend I wouldn't have seen before")
 
 **Record**:
+
 - [ ] Positive feedback quote: "[exact quote]"
 - [ ] Tile(s) most used: [name]
 - [ ] Workflow(s) working: [description]
@@ -61,6 +67,7 @@
 **Question**: What frustrated you or didn't work well this week?
 
 **Listen for**:
+
 - Bugs ("This number was wrong")
 - UX friction ("I couldn't find how to do X")
 - Missing features ("I wish it showed Y")
@@ -68,6 +75,7 @@
 - Confusion ("I don't understand what this tile means")
 
 **Record**:
+
 - [ ] Bug reported: [description]
 - [ ] UX issue: [description]
 - [ ] Feature request: [description]
@@ -82,18 +90,21 @@
 **Activity**: Share screen, CEO shows you their dashboard
 
 **Ask CEO to**:
+
 1. Show me your morning routine workflow
 2. Walk me through a recent decision you approved
 3. Show me which tiles you check most
 4. Show me anything confusing or unclear
 
 **What you're looking for**:
+
 - Are they using it efficiently? (or struggling?)
 - Do they understand each tile? (or confused?)
 - Are they finding value? (or just checking boxes?)
 - Are there quick UX improvements we can make?
 
 **Take notes**:
+
 - [ ] Workflow observations: [what's working/not working]
 - [ ] UX improvements spotted: [button placement, labels, etc.]
 - [ ] CEO "gets it" or "still learning"?
@@ -105,6 +116,7 @@
 **Share with CEO**: Here's what we saw this week
 
 **Metrics to share**:
+
 ```
 This Week's Stats:
 - You logged in [X] days (target: 5+)
@@ -114,10 +126,12 @@ This Week's Stats:
 ```
 
 **Ask**: Do these numbers feel right to you?
+
 - Validate data accuracy
 - Discuss any surprises
 
 **Calculate time saved** (rough estimate):
+
 - "Based on your usage, estimate you saved ~[X] hours this week"
 - Ask: "Does that feel accurate?"
 
@@ -128,12 +142,14 @@ This Week's Stats:
 **Discuss**: What should we focus on for next week?
 
 **Options**:
+
 1. **Fix a specific bug** (if blocking value)
 2. **Add a small feature** (if high-impact)
 3. **Simplify a workflow** (if confused)
 4. **Try mobile access** (if not yet using)
 
 **Commit to 1-2 quick wins**:
+
 - [ ] Quick win 1: [What we'll do]
 - [ ] Quick win 2: [What we'll do]
 - [ ] Timeline: Will be ready by [date]
@@ -147,12 +163,14 @@ This Week's Stats:
 ### Immediately After Call (5 minutes)
 
 **Document feedback**:
+
 - [ ] Log notes in `feedback/product.md`
 - [ ] Update pilot tracker spreadsheet
 - [ ] Record this week's rating (1-10)
 - [ ] Create tickets for bugs/feature requests
 
 **Share with team**:
+
 - [ ] Post summary in #hot-rodan-pilot Slack channel
 - [ ] Tag Engineer for urgent fixes
 - [ ] Tag Designer for UX improvements
@@ -200,6 +218,7 @@ Best,
 ## Weekly Check-In Questions (Full List)
 
 ### Week 1 Questions
+
 1. How was your first week with the dashboard?
 2. Did you complete the morning routine workflow? How did it go?
 3. Which tiles did you find most useful?
@@ -211,6 +230,7 @@ Best,
 ---
 
 ### Week 2 Questions
+
 1. How are you feeling about the dashboard this week?
 2. Has it become part of your routine?
 3. What workflows are clicking for you?
@@ -223,6 +243,7 @@ Best,
 ---
 
 ### Week 3 Questions
+
 1. What's working well at this point?
 2. Is the dashboard replacing Shopify for your daily check-ins?
 3. Have you used the approval queue? How's that going?
@@ -235,6 +256,7 @@ Best,
 ---
 
 ### Week 4 Questions (Final)
+
 1. Looking back at 4 weeks, what did you love most?
 2. What would you change or add?
 3. If we turned this off tomorrow, what would you miss?
@@ -250,6 +272,7 @@ Best,
 ## Red Flags to Watch For
 
 ### 🔴 Stop Signal (Immediate Action)
+
 - Rating ≤4/10 for 2 consecutive weeks
 - CEO hasn't logged in for 5+ days
 - CEO says "I don't think this is working"
@@ -260,6 +283,7 @@ Best,
 ---
 
 ### ⚠️ Yellow Flag (Address This Week)
+
 - Rating 5-6/10 (not great, not terrible)
 - CEO logs in <3 days/week
 - CEO reports same bug/frustration twice
@@ -270,6 +294,7 @@ Best,
 ---
 
 ### ✅ Green Flag (On Track)
+
 - Rating ≥7/10
 - CEO logs in ≥5 days/week
 - CEO shares positive feedback or wins
@@ -282,6 +307,7 @@ Best,
 ## Success Milestones
 
 ### Week 1 Milestone
+
 - [ ] CEO logs in ≥5 days
 - [ ] CEO completes morning routine
 - [ ] Rating ≥6/10
@@ -292,6 +318,7 @@ Best,
 ---
 
 ### Week 2 Milestone
+
 - [ ] CEO rating ≥7/10
 - [ ] CEO using dashboard as primary ops tool
 - [ ] Time savings visible (3-5 hours/week estimate)
@@ -302,6 +329,7 @@ Best,
 ---
 
 ### Week 3 Milestone
+
 - [ ] Consistent ≥7/10 rating
 - [ ] Team members also using dashboard
 - [ ] CEO proactively shares feedback or ideas
@@ -312,6 +340,7 @@ Best,
 ---
 
 ### Week 4 Milestone
+
 - [ ] CEO wants to keep using HotDash
 - [ ] Total time savings ≥5 hours/week
 - [ ] Rating ≥7/10 (average)
@@ -334,6 +363,7 @@ Best,
 | 4 | Nov 8 | [TBD] | [X]/7 | [X] hours | [Issue] | [Win] | [Notes] |
 
 **Trends to watch**:
+
 - Rating trending up = Good signal
 - Login days decreasing = Bad signal
 - Time saved increasing = Value being realized
@@ -349,36 +379,43 @@ Best,
 **Duration**: 30 minutes
 
 ## Rating
+
 - This week: [X]/10
 - Last week: [X]/10
 - Trend: ↑ ↓ →
 
 ## What Worked Well
+
 - [CEO Quote 1]
 - [CEO Quote 2]
 - Most useful tile: [Tile name]
 
 ## What Was Frustrating
+
 - [Issue 1]: [Description]
 - [Issue 2]: [Description]
 
 ## Dashboard Walkthrough Observations
+
 - [Observation 1]
 - [Observation 2]
 
 ## Metrics This Week
+
 - Login days: [X]/7
 - Avg session: [X] min
 - Approvals processed: [X]
 - Time saved (est): [X] hours
 
 ## Action Items
+
 - [ ] Fix [Bug 1] by [Date] (Engineer)
 - [ ] Add [Feature 1] by [Date] (Engineer)
 - [ ] Simplify [Workflow] (Product)
 - [ ] CEO to try: [New workflow]
 
 ## Next Check-In
+
 - Date: Friday [Date] at 3:00 PM
 - Focus: [What to discuss next week]
 ```
@@ -389,4 +426,3 @@ Best,
 **Owner**: Product Agent  
 **Status**: ✅ Ready for Hot Rodan pilot weekly check-ins  
 **Next**: Use this template for Friday check-in calls starting Week 1 (Oct 18)
-

@@ -14,7 +14,7 @@ Comprehensive design specification for all 7 dashboard tiles in the Hot Rod AN C
 
 ---
 
-## 2. Tile Inventory (7 Tiles)
+## 2. Tile Inventory (8 Tiles)
 
 1. **Ops Pulse** - Activation rate and SLA metrics
 2. **Sales Pulse** - Revenue, orders, top SKUs
@@ -22,7 +22,8 @@ Comprehensive design specification for all 7 dashboard tiles in the Hot Rod AN C
 4. **Inventory Heatmap** - Stock alerts and reorder points
 5. **CX Escalations** - Customer support issues
 6. **SEO Content** - Search rankings and traffic
-7. **Approvals Queue** - Pending agent actions (future)
+7. **Idea Pool** - Product idea backlog health (NEW)
+8. **Approvals Queue** - Pending agent actions (future)
 
 ---
 
@@ -33,18 +34,26 @@ Comprehensive design specification for all 7 dashboard tiles in the Hot Rod AN C
 **Component:** `TileCard<T>`
 
 **Structure:**
+
 ```tsx
 <div className="occ-tile" data-testid={testId}>
-  <div> {/* Header */}
+  <div>
+    {" "}
+    {/* Header */}
     <h2>{title}</h2>
     <span className={statusClass}>{statusLabel}</span>
   </div>
-  {fact && <p className="occ-text-meta">Last refreshed {time} • Source: {source}</p>}
+  {fact && (
+    <p className="occ-text-meta">
+      Last refreshed {time} • Source: {source}
+    </p>
+  )}
   {content} {/* Tile-specific content */}
 </div>
 ```
 
 **Props:**
+
 ```typescript
 interface TileCardProps<T> {
   title: string;
@@ -54,10 +63,10 @@ interface TileCardProps<T> {
 }
 
 interface TileState<T> {
-  status: 'ok' | 'error' | 'unconfigured';
+  status: "ok" | "error" | "unconfigured";
   data?: T;
   fact?: TileFact;
-  source?: 'fresh' | 'cache' | 'mock';
+  source?: "fresh" | "cache" | "mock";
   error?: string;
 }
 ```
@@ -65,11 +74,13 @@ interface TileState<T> {
 ### 3.2 Status System
 
 **Three States:**
+
 - **ok** (Healthy) - Green badge, normal operation
 - **error** (Attention needed) - Red badge, requires action
 - **unconfigured** (Configuration required) - Gray badge, setup needed
 
 **Status Labels:**
+
 ```typescript
 const STATUS_LABELS = {
   ok: "Healthy",
@@ -81,12 +92,14 @@ const STATUS_LABELS = {
 ### 3.3 Layout & Spacing
 
 **Tile Dimensions:**
+
 - Min width: 320px
 - Min height: 280px
 - Padding: 20px (`var(--occ-tile-padding)`)
 - Internal gap: 16px (`var(--occ-tile-internal-gap)`)
 
 **Grid System:**
+
 ```css
 .occ-tile-grid {
   display: grid;
@@ -111,6 +124,7 @@ const STATUS_LABELS = {
 **Purpose:** Display activation rate and SLA resolution metrics
 
 **Data Structure:**
+
 ```typescript
 interface OpsAggregateMetrics {
   activation: {
@@ -131,6 +145,7 @@ interface OpsAggregateMetrics {
 **Layout:** Two-column grid (auto-fit, min 180px)
 
 **Sections:**
+
 1. **Activation (7d)** - Percentage, shop count, date range
 2. **SLA Resolution (7d)** - Median time, P90, sample size
 
@@ -143,6 +158,7 @@ interface OpsAggregateMetrics {
 **Purpose:** Revenue, order count, top SKUs, pending fulfillment
 
 **Data Structure:**
+
 ```typescript
 interface OrderSummary {
   totalRevenue: number;
@@ -166,6 +182,7 @@ interface OrderSummary {
 **Layout:** Vertical stack with three sections
 
 **Sections:**
+
 1. **Revenue** - Large metric value, order count, "View details" link
 2. **Top SKUs** - List of top 3 SKUs with quantity and revenue
 3. **Open fulfillment** - List of pending orders or "No fulfillment blockers"
@@ -179,6 +196,7 @@ interface OrderSummary {
 **Purpose:** Order fulfillment status and issues
 
 **Data Structure:**
+
 ```typescript
 interface FulfillmentIssue {
   orderId: string;
@@ -191,6 +209,7 @@ interface FulfillmentIssue {
 **Layout:** Simple list
 
 **Content:**
+
 - List of issues with order name, status, and timestamp
 - Empty state: "All recent orders are on track."
 
@@ -201,6 +220,7 @@ interface FulfillmentIssue {
 **Purpose:** Stock alerts and days of cover
 
 **Data Structure:**
+
 ```typescript
 interface InventoryAlert {
   variantId: string;
@@ -213,6 +233,7 @@ interface InventoryAlert {
 **Layout:** Simple list
 
 **Content:**
+
 - List of alerts with product title, quantity, and days of cover
 - Empty state: "No low stock alerts right now."
 
@@ -223,6 +244,7 @@ interface InventoryAlert {
 **Purpose:** Customer support issues requiring attention
 
 **Data Structure:**
+
 ```typescript
 interface CXConversation {
   id: number;
@@ -235,6 +257,7 @@ interface CXConversation {
 **Layout:** List with action buttons
 
 **Content:**
+
 - List of conversations with customer name, status, SLA breach indicator
 - "Review" button for each conversation (opens CXEscalationModal)
 - Empty state: "No SLA breaches detected."
@@ -260,6 +283,7 @@ interface CXConversation {
 **Purpose:** Pending agent actions requiring approval
 
 **Data Structure:**
+
 ```typescript
 interface ApprovalSummary {
   pendingCount: number;
@@ -270,6 +294,7 @@ interface ApprovalSummary {
 **Layout:** Count badge with action button
 
 **Content:**
+
 - Large count of pending approvals
 - "Review queue" button linking to /approvals route
 - Empty state: "All clear! No pending approvals."
@@ -287,17 +312,20 @@ interface ApprovalSummary {
 ### 5.2 Content Adaptation
 
 **Mobile:**
+
 - Reduce font sizes slightly (scale 0.9)
 - Stack horizontal layouts vertically
 - Hide non-critical metadata
 - Larger touch targets (min 44x44px)
 
 **Tablet:**
+
 - Standard font sizes
 - Maintain horizontal layouts where possible
 - Show all metadata
 
 **Desktop:**
+
 - Standard font sizes
 - Hover states enabled
 - Keyboard shortcuts visible
@@ -311,6 +339,7 @@ interface ApprovalSummary {
 **Pattern:** Skeleton UI matching tile structure
 
 **Implementation:**
+
 - Preserve tile dimensions
 - Animated shimmer effect (subtle pulse)
 - No status badge during skeleton
@@ -321,6 +350,7 @@ interface ApprovalSummary {
 **Pattern:** Small spinner in top-right corner
 
 **Implementation:**
+
 - Existing data remains visible
 - Subtle opacity reduction (0.7)
 - No layout shift
@@ -359,6 +389,7 @@ interface ApprovalSummary {
 **Visual:** Neutral, no action button
 
 **Examples:**
+
 - "No SLA breaches detected."
 - "All recent orders are on track."
 - "No low stock alerts right now."
@@ -371,12 +402,14 @@ interface ApprovalSummary {
 ### 9.1 Keyboard Navigation
 
 **Tab Order:**
+
 1. Tile container (if interactive)
 2. Primary action button
 3. Secondary actions
 4. Links within content
 
 **Keyboard Shortcuts:**
+
 - `Tab`: Navigate between tiles
 - `Enter/Space`: Activate focused tile or button
 - `Escape`: Close modal opened from tile
@@ -384,12 +417,9 @@ interface ApprovalSummary {
 ### 9.2 Screen Reader Support
 
 **Tile Announcement:**
+
 ```html
-<div 
-  role="region" 
-  aria-label="[Tile Name]"
-  aria-describedby="tile-status-[id]"
->
+<div role="region" aria-label="[Tile Name]" aria-describedby="tile-status-[id]">
   <h2 id="tile-heading-[id]">[Tile Name]</h2>
   <span id="tile-status-[id]" class="sr-only">
     Status: [status]. Last refreshed [time].
@@ -398,6 +428,7 @@ interface ApprovalSummary {
 ```
 
 **Live Regions:**
+
 - Tile updates: `aria-live="polite"`
 - Error messages: `aria-live="assertive"` or `role="alert"`
 - Loading states: `aria-busy="true"`
@@ -405,6 +436,7 @@ interface ApprovalSummary {
 ### 9.3 Color Contrast
 
 **Verified Ratios (WCAG AA):**
+
 - Healthy: Green text on light green (4.8:1) ✅
 - Attention: Red text on light red (4.6:1) ✅
 - Unconfigured: Gray text on light gray (4.5:1) ✅
@@ -415,6 +447,7 @@ interface ApprovalSummary {
 ## 10. Design Tokens Reference
 
 **Colors:**
+
 - `--occ-status-healthy-text`: #1a7f37
 - `--occ-status-attention-text`: #d82c0d
 - `--occ-status-unconfigured-text`: #637381
@@ -422,6 +455,7 @@ interface ApprovalSummary {
 - `--occ-text-secondary`: #637381
 
 **Spacing:**
+
 - `--occ-tile-padding`: 20px
 - `--occ-tile-gap`: 20px
 - `--occ-tile-internal-gap`: 16px
@@ -430,6 +464,7 @@ interface ApprovalSummary {
 - `--occ-space-4`: 16px
 
 **Typography:**
+
 - `--occ-font-size-heading`: 1.15rem
 - `--occ-font-size-metric`: 1.5rem
 - `--occ-font-size-body`: 1rem
@@ -437,6 +472,7 @@ interface ApprovalSummary {
 - `--occ-font-weight-semibold`: 600
 
 **Effects:**
+
 - `--occ-radius-tile`: 12px
 - `--occ-shadow-tile`: Polaris card shadow
 - `--occ-shadow-tile-hover`: Elevated shadow
@@ -466,23 +502,159 @@ interface ApprovalSummary {
 ## 12. Testing Requirements
 
 **Visual Regression:**
+
 - All tile states (ok, error, unconfigured, loading, empty)
 - All breakpoints (mobile, tablet, desktop)
 - High contrast mode
 - Focus states
 
 **Accessibility:**
+
 - Keyboard navigation (all interactive elements reachable)
 - Screen reader announcements (NVDA, JAWS, VoiceOver)
 - Color contrast (automated + manual verification)
 - Focus indicators visible
 
 **Functional:**
+
 - Data loading and error handling
 - Retry mechanisms
 - State transitions
 - Responsive behavior
 - Modal interactions
+
+---
+
+## 12. Idea Pool Tile (NEW)
+
+### 12.1 Purpose
+
+Display product idea backlog health, showing pool capacity (5/5), wildcard status, and pending/accepted/rejected counts.
+
+### 12.2 Data Structure
+
+```typescript
+interface IdeaPoolData {
+  totalIdeas: number; // Current ideas in pool
+  maxIdeas: number; // Max capacity (always 5)
+  wildcardId?: string; // ID of wildcard idea
+  wildcardTitle?: string; // Title of wildcard idea
+  pendingCount: number; // Ideas awaiting decision
+  acceptedCount: number; // Ideas accepted this period
+  rejectedCount: number; // Ideas rejected this period
+}
+```
+
+### 12.3 Layout
+
+```
+┌─────────────────────────────────────┐
+│ Idea Pool              [Full]       │
+├─────────────────────────────────────┤
+│                                     │
+│  5/5                                │ ← Large metric
+│  Ideas in pool                      │ ← Meta text
+│                                     │
+│  [Wildcard] Product Title           │ ← Wildcard badge + title
+│                                     │
+│  Pending        3                   │ ← Breakdown
+│  Accepted       12                  │
+│  Rejected       8                   │
+│                                     │
+│  [View Idea Pool]                   │ ← CTA button
+└─────────────────────────────────────┘
+```
+
+### 12.4 Status Badge
+
+- **Full (5/5):** Success tone (green) - Pool at capacity
+- **Filling (< 5):** Warning tone (yellow) - Pool needs ideas
+
+### 12.5 Wildcard Display
+
+- Show wildcard badge (warning tone)
+- Display wildcard idea title (truncated if needed)
+- Only shown if wildcard exists in pool
+
+### 12.6 Metrics Breakdown
+
+- **Pending:** Ideas awaiting accept/reject decision
+- **Accepted:** Ideas accepted (all-time or period)
+- **Rejected:** Ideas rejected (all-time or period)
+
+### 12.7 States
+
+**OK State:**
+
+```typescript
+<BlockStack gap="400">
+  <InlineStack align="space-between" blockAlign="center">
+    <BlockStack gap="200">
+      <Text as="p" variant="heading2xl" fontWeight="bold">
+        {data.totalIdeas}/{data.maxIdeas}
+      </Text>
+      <Text as="p" variant="bodySm" tone="subdued">
+        Ideas in pool
+      </Text>
+    </BlockStack>
+    <Badge tone={isFull ? "success" : "warning"}>
+      {isFull ? "Full" : "Filling"}
+    </Badge>
+  </InlineStack>
+
+  {hasWildcard && (
+    <InlineStack gap="200" blockAlign="center">
+      <Badge tone="warning">Wildcard</Badge>
+      <Text as="p" variant="bodySm" tone="subdued">
+        {data.wildcardTitle || data.wildcardId}
+      </Text>
+    </InlineStack>
+  )}
+
+  <BlockStack gap="200">
+    <InlineStack align="space-between">
+      <Text as="p" variant="bodySm" tone="subdued">Pending</Text>
+      <Text as="p" variant="bodySm" fontWeight="semibold">{data.pendingCount}</Text>
+    </InlineStack>
+    <InlineStack align="space-between">
+      <Text as="p" variant="bodySm" tone="subdued">Accepted</Text>
+      <Text as="p" variant="bodySm" fontWeight="semibold">{data.acceptedCount}</Text>
+    </InlineStack>
+    <InlineStack align="space-between">
+      <Text as="p" variant="bodySm" tone="subdued">Rejected</Text>
+      <Text as="p" variant="bodySm" fontWeight="semibold">{data.rejectedCount}</Text>
+    </InlineStack>
+  </BlockStack>
+
+  <Button url="/ideas" variant="primary">View Idea Pool</Button>
+</BlockStack>
+```
+
+**Empty State:**
+
+```
+No ideas in the pool yet.
+New ideas will appear here when the AI generates suggestions.
+```
+
+**Error State:**
+
+```
+Unable to load idea pool data.
+[Try Again]
+```
+
+### 12.8 Accessibility
+
+- **ARIA Label:** "Idea Pool status"
+- **Screen Reader:** "Idea Pool. 5 of 5 ideas in pool. Status: Full. Wildcard: {title}. Pending: 3. Accepted: 12. Rejected: 8. View Idea Pool button."
+- **Keyboard:** Tab to "View Idea Pool" button, Enter to navigate
+
+### 12.9 Implementation
+
+- **Component:** `app/components/dashboard/IdeaPoolTile.tsx` (exists)
+- **Route:** `/ideas` (list view)
+- **API:** `/api/analytics/idea-pool` (metrics)
 
 ---
 
@@ -492,6 +664,6 @@ interface ApprovalSummary {
 - Design tokens: `app/styles/tokens.css`
 - Tile-specific refinements: `docs/design/tile-specific-ui-refinement.md`
 - Design system guide: `docs/design/design-system-guide.md`
+- Idea Pool UX: `docs/design/idea-pool.md`
 - Polaris: https://polaris.shopify.com/
 - WCAG 2.1: https://www.w3.org/WAI/WCAG21/quickref/
-

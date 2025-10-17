@@ -17,14 +17,16 @@ Real-time RPC functions that power the 7 dashboard tiles in the operator control
 ## 2) Dashboard Tiles
 
 ### Tile 1: Revenue (Last 30 Days)
+
 **Function:** `get_revenue_tile()`  
 **Returns:** Current 30-day revenue with trend vs previous 30 days
 
 **Response Format:**
+
 ```json
 {
-  "current_30d": 125000.50,
-  "previous_30d": 110000.00,
+  "current_30d": 125000.5,
+  "previous_30d": 110000.0,
   "trend_pct": 13.64,
   "trend_direction": "up",
   "last_updated": "2025-10-15T21:00:00Z"
@@ -32,21 +34,24 @@ Real-time RPC functions that power the 7 dashboard tiles in the operator control
 ```
 
 **Usage:**
+
 ```typescript
-const { data } = await supabase.rpc('get_revenue_tile');
+const { data } = await supabase.rpc("get_revenue_tile");
 ```
 
 ---
 
 ### Tile 2: AOV (Average Order Value)
+
 **Function:** `get_aov_tile()`  
 **Returns:** Current AOV with trend
 
 **Response Format:**
+
 ```json
 {
-  "current_aov": 85.50,
-  "previous_aov": 82.00,
+  "current_aov": 85.5,
+  "previous_aov": 82.0,
   "trend_pct": 4.27,
   "trend_direction": "up",
   "last_updated": "2025-10-15T21:00:00Z"
@@ -56,10 +61,12 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ---
 
 ### Tile 3: Returns (Return Rate)
+
 **Function:** `get_returns_tile()`  
 **Returns:** Return rate percentage with trend
 
 **Response Format:**
+
 ```json
 {
   "current_rate_pct": 3.5,
@@ -75,10 +82,12 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ---
 
 ### Tile 4: Stock Risk
+
 **Function:** `get_stock_risk_tile()`  
 **Returns:** Products with low WOS (Weeks of Stock)
 
 **Response Format:**
+
 ```json
 {
   "critical_count": 12,
@@ -90,6 +99,7 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ```
 
 **Risk Levels:**
+
 - `critical`: WOS < 2 weeks
 - `warning`: WOS 2-4 weeks
 - `risk_level`: "high" (>10 critical), "medium" (5-10 critical), "low" (<5 critical)
@@ -97,10 +107,12 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ---
 
 ### Tile 5: SEO Anomalies
+
 **Function:** `get_seo_anomalies_tile()`  
 **Returns:** Pages with traffic drops > 20%
 
 **Response Format:**
+
 ```json
 {
   "anomaly_count": 8,
@@ -111,6 +123,7 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ```
 
 **Severity Levels:**
+
 - `critical`: >10 anomalies
 - `warning`: 5-10 anomalies
 - `normal`: <5 anomalies
@@ -118,10 +131,12 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ---
 
 ### Tile 6: CX Queue
+
 **Function:** `get_cx_queue_tile()`  
 **Returns:** Pending conversations with SLA tracking
 
 **Response Format:**
+
 ```json
 {
   "pending_count": 15,
@@ -133,6 +148,7 @@ const { data } = await supabase.rpc('get_revenue_tile');
 
 **SLA:** 15 minutes for first response  
 **Urgency Levels:**
+
 - `critical`: >5 SLA breaches
 - `warning`: 1-5 SLA breaches
 - `normal`: 0 SLA breaches
@@ -140,10 +156,12 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ---
 
 ### Tile 7: Approvals Queue
+
 **Function:** `get_approvals_queue_tile()`  
 **Returns:** Pending approvals by kind
 
 **Response Format:**
+
 ```json
 {
   "pending_count": 12,
@@ -158,6 +176,7 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ```
 
 **Urgency Levels:**
+
 - `high`: >10 pending
 - `medium`: 5-10 pending
 - `low`: <5 pending
@@ -167,6 +186,7 @@ const { data } = await supabase.rpc('get_revenue_tile');
 ## 3) Data Sources
 
 ### Facts Table
+
 All tiles query the `facts` table with different `topic` values:
 
 - **Revenue/AOV:** `topic = 'shopify.sales'`
@@ -175,9 +195,11 @@ All tiles query the `facts` table with different `topic` values:
 - **SEO Anomalies:** `topic = 'analytics.traffic'`
 
 ### CX Conversations Table
+
 - **CX Queue:** `cx_conversations` table with `status = 'pending'`
 
 ### Approvals Table
+
 - **Approvals Queue:** `approvals` table with `state = 'pending_review'`
 
 ---
@@ -185,16 +207,19 @@ All tiles query the `facts` table with different `topic` values:
 ## 4) Performance Considerations
 
 ### Query Optimization
+
 - All functions use indexed columns (`topic`, `created_at`, `status`, `state`)
 - Time-based queries use `>= NOW() - INTERVAL` for index usage
 - COALESCE used to handle NULL values gracefully
 
 ### Caching Strategy
+
 - Functions return `last_updated` timestamp
 - Frontend can cache results for 30-60 seconds
 - Use SSE or polling for real-time updates
 
 ### Performance Targets
+
 - P95 latency: < 100ms per tile
 - Concurrent queries: Support 10+ simultaneous users
 - Data freshness: Real-time (no materialized views)
@@ -204,11 +229,14 @@ All tiles query the `facts` table with different `topic` values:
 ## 5) Security
 
 ### RLS Policies
+
 All functions use `SECURITY DEFINER` and are granted to:
+
 - `authenticated` - Logged-in users
 - `service_role` - Backend services
 
 ### Data Access
+
 - Functions only return aggregated metrics (no PII)
 - No customer names, emails, or sensitive data
 - Shop-scoped queries (future: add shop_domain filter)
@@ -218,6 +246,7 @@ All functions use `SECURITY DEFINER` and are granted to:
 ## 6) Testing
 
 ### Unit Tests
+
 ```sql
 -- Test all tiles return valid JSONB
 SELECT public.get_revenue_tile();
@@ -230,19 +259,23 @@ SELECT public.get_approvals_queue_tile();
 ```
 
 ### Integration Tests
+
 ```typescript
 // Test from frontend
 const tiles = await Promise.all([
-  supabase.rpc('get_revenue_tile'),
-  supabase.rpc('get_aov_tile'),
-  supabase.rpc('get_returns_tile'),
-  supabase.rpc('get_stock_risk_tile'),
-  supabase.rpc('get_seo_anomalies_tile'),
-  supabase.rpc('get_cx_queue_tile'),
-  supabase.rpc('get_approvals_queue_tile'),
+  supabase.rpc("get_revenue_tile"),
+  supabase.rpc("get_aov_tile"),
+  supabase.rpc("get_returns_tile"),
+  supabase.rpc("get_stock_risk_tile"),
+  supabase.rpc("get_seo_anomalies_tile"),
+  supabase.rpc("get_cx_queue_tile"),
+  supabase.rpc("get_approvals_queue_tile"),
 ]);
 
-console.log('All tiles loaded:', tiles.every(t => t.data));
+console.log(
+  "All tiles loaded:",
+  tiles.every((t) => t.data),
+);
 ```
 
 ---
@@ -250,6 +283,7 @@ console.log('All tiles loaded:', tiles.every(t => t.data));
 ## 7) Frontend Integration
 
 ### React Component Example
+
 ```typescript
 import { useEffect, useState } from 'react';
 import { supabase } from '~/lib/supabase';
@@ -286,12 +320,14 @@ export function DashboardTile({ tileId }: { tileId: string }) {
 ## 8) Monitoring
 
 ### Metrics to Track
+
 - Function execution time (P50, P95, P99)
 - Error rate per function
 - Cache hit rate (if caching implemented)
 - Data freshness (time since last update)
 
 ### Alerts
+
 - P95 latency > 200ms
 - Error rate > 1%
 - Any function returning NULL
@@ -301,12 +337,14 @@ export function DashboardTile({ tileId }: { tileId: string }) {
 ## 9) Future Enhancements
 
 ### Phase 2
+
 - Add shop_domain parameter for multi-tenant support
 - Implement materialized views for historical trends
 - Add drill-down functions (e.g., get_revenue_by_category)
 - Add real-time subscriptions via Supabase Realtime
 
 ### Phase 3
+
 - Add user-specific filters (e.g., date range, product category)
 - Implement caching layer (Redis or Supabase Edge Functions)
 - Add export functionality (CSV, PDF)
@@ -328,4 +366,3 @@ export function DashboardTile({ tileId }: { tileId: string }) {
 ## 11) Changelog
 
 - 1.0 (2025-10-15) - Initial implementation of 7 dashboard tile queries
-

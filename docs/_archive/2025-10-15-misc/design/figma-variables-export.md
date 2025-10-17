@@ -10,6 +10,7 @@ expires: 2025-10-25
 # Figma Variables Export Specification
 
 ## Overview
+
 **Created**: 2025-10-11T05:18:47Z  
 **Purpose**: Figma Variables export specification for Polaris-aligned design tokens  
 **Target**: Figma workspace handoff (pending Figma access)  
@@ -18,6 +19,7 @@ expires: 2025-10-25
 ## Responsive Breakpoints Definition
 
 ### Breakpoint System
+
 ```json
 {
   "breakpoints": {
@@ -27,7 +29,7 @@ expires: 2025-10-25
       "description": "Single column stack, overlay navigation"
     },
     "tablet": {
-      "min": "768px", 
+      "min": "768px",
       "max": "1279px",
       "description": "Two column grid, collapsed navigation"
     },
@@ -41,6 +43,7 @@ expires: 2025-10-25
 ```
 
 ### Container Query Implementation
+
 ```css
 /* Responsive Grid System */
 .occ-dashboard-container {
@@ -67,32 +70,43 @@ expires: 2025-10-25
   }
 }
 
-/* Desktop: 1280px+ - Three columns */  
+/* Desktop: 1280px+ - Three columns */
 @container (min-width: 1280px) {
   .occ-dashboard-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: var(--p-space-6);
     padding: var(--p-space-8);
   }
-  
+
   /* Five tiles - special layout */
   .occ-dashboard-grid:has(.occ-tile:nth-child(5)) {
-    grid-template-areas: 
+    grid-template-areas:
       "sales fulfillment inventory"
       "cx    seo        seo";
   }
-  
-  .occ-tile:nth-child(1) { grid-area: sales; }
-  .occ-tile:nth-child(2) { grid-area: fulfillment; } 
-  .occ-tile:nth-child(3) { grid-area: inventory; }
-  .occ-tile:nth-child(4) { grid-area: cx; }
-  .occ-tile:nth-child(5) { grid-area: seo; }
+
+  .occ-tile:nth-child(1) {
+    grid-area: sales;
+  }
+  .occ-tile:nth-child(2) {
+    grid-area: fulfillment;
+  }
+  .occ-tile:nth-child(3) {
+    grid-area: inventory;
+  }
+  .occ-tile:nth-child(4) {
+    grid-area: cx;
+  }
+  .occ-tile:nth-child(5) {
+    grid-area: seo;
+  }
 }
 ```
 
 ## Figma Variables Structure
 
 ### 1. Color Collection - "OCC Colors"
+
 ```json
 {
   "name": "OCC Colors",
@@ -107,7 +121,7 @@ expires: 2025-10-25
       "description": "Background color for healthy status badges"
     },
     "status/healthy/border": {
-      "light": "#2e844a", 
+      "light": "#2e844a",
       "description": "Border color for healthy status elements"
     },
     "status/attention/text": {
@@ -139,7 +153,7 @@ expires: 2025-10-25
       "description": "Primary background for tiles and modals"
     },
     "surface/secondary": {
-      "light": "#f6f6f7", 
+      "light": "#f6f6f7",
       "description": "Secondary background for subdued elements"
     },
     "surface/hover": {
@@ -155,7 +169,7 @@ expires: 2025-10-25
       "description": "Interactive border color for focused elements"
     },
     "border/focus": {
-      "light": "#2c6ecb", 
+      "light": "#2c6ecb",
       "description": "Focus ring border color"
     },
     "text/primary": {
@@ -187,9 +201,10 @@ expires: 2025-10-25
 ```
 
 ### 2. Spacing Collection - "OCC Spacing"
+
 ```json
 {
-  "name": "OCC Spacing", 
+  "name": "OCC Spacing",
   "modes": ["Base"],
   "variables": {
     "1": {
@@ -197,7 +212,7 @@ expires: 2025-10-25
       "description": "Smallest spacing unit"
     },
     "2": {
-      "base": "8px", 
+      "base": "8px",
       "description": "Small spacing unit"
     },
     "3": {
@@ -229,7 +244,7 @@ expires: 2025-10-25
       "description": "Internal padding for tile components"
     },
     "tile/gap": {
-      "base": "20px", 
+      "base": "20px",
       "description": "Gap between tiles in grid"
     },
     "tile/internal": {
@@ -249,6 +264,7 @@ expires: 2025-10-25
 ```
 
 ### 3. Typography Collection - "OCC Typography"
+
 ```json
 {
   "name": "OCC Typography",
@@ -287,7 +303,7 @@ expires: 2025-10-25
       "description": "Primary metric font size"
     },
     "size/body": {
-      "base": 16, 
+      "base": 16,
       "description": "Body text font size"
     },
     "size/meta": {
@@ -327,6 +343,7 @@ expires: 2025-10-25
 ```
 
 ### 4. Effects Collection - "OCC Effects"
+
 ```json
 {
   "name": "OCC Effects",
@@ -353,7 +370,7 @@ expires: 2025-10-25
       "description": "Border radius for tile components"
     },
     "radius/modal": {
-      "base": "16px", 
+      "base": "16px",
       "description": "Border radius for modal components"
     },
     "radius/button": {
@@ -374,7 +391,7 @@ expires: 2025-10-25
     "shadow/md": {
       "base": {
         "type": "dropShadow",
-        "color": "#0f172a1f", 
+        "color": "#0f172a1f",
         "x": 0,
         "y": 2,
         "blur": 4,
@@ -409,7 +426,7 @@ expires: 2025-10-25
         "type": "dropShadow",
         "color": "#0f172a1f",
         "x": 0,
-        "y": 1, 
+        "y": 1,
         "blur": 2,
         "spread": 0
       },
@@ -442,6 +459,7 @@ expires: 2025-10-25
 ```
 
 ### 5. Motion Collection - "OCC Motion"
+
 ```json
 {
   "name": "OCC Motion",
@@ -452,7 +470,7 @@ expires: 2025-10-25
       "description": "Fast animation duration"
     },
     "duration/normal": {
-      "base": "250ms", 
+      "base": "250ms",
       "description": "Normal animation duration"
     },
     "duration/slow": {
@@ -469,7 +487,7 @@ expires: 2025-10-25
     },
     "easing/out": {
       "base": "cubic-bezier(0.0, 0.0, 0.2, 1)",
-      "description": "Ease-out function" 
+      "description": "Ease-out function"
     },
     "easing/inOut": {
       "base": "cubic-bezier(0.4, 0.0, 0.2, 1)",
@@ -482,13 +500,14 @@ expires: 2025-10-25
 ## Component Variable Mapping
 
 ### OCC Tile Component
+
 ```json
 {
   "name": "OCC Tile",
   "type": "component",
   "properties": {
     "width": "320px (min)",
-    "height": "280px (min)", 
+    "height": "280px (min)",
     "padding": "{occ-spacing/tile/padding}",
     "gap": "{occ-spacing/tile/internal}",
     "background": "{occ-colors/surface/primary}",
@@ -508,6 +527,7 @@ expires: 2025-10-25
 ```
 
 ### OCC Modal Component
+
 ```json
 {
   "name": "OCC Modal",
@@ -527,7 +547,8 @@ expires: 2025-10-25
 }
 ```
 
-### OCC Badge Component  
+### OCC Badge Component
+
 ```json
 {
   "name": "OCC Badge",
@@ -563,6 +584,7 @@ expires: 2025-10-25
 ## Breakpoint-Specific Component Variations
 
 ### Mobile Components (< 768px)
+
 ```json
 {
   "components": {
@@ -584,6 +606,7 @@ expires: 2025-10-25
 ```
 
 ### Tablet Components (768px - 1279px)
+
 ```json
 {
   "components": {
@@ -601,12 +624,13 @@ expires: 2025-10-25
 ```
 
 ### Desktop Components (1280px+)
+
 ```json
 {
   "components": {
     "OCC Tile Desktop": {
       "width": "100%",
-      "minHeight": "320px", 
+      "minHeight": "320px",
       "padding": "{occ-spacing/6}"
     },
     "OCC Grid Desktop": {
@@ -620,6 +644,7 @@ expires: 2025-10-25
 ## Auto-Layout Integration
 
 ### Stack Component (Vertical)
+
 ```json
 {
   "name": "OCC Stack",
@@ -637,11 +662,12 @@ expires: 2025-10-25
 }
 ```
 
-### Inline Stack Component (Horizontal)  
+### Inline Stack Component (Horizontal)
+
 ```json
 {
   "name": "OCC Inline Stack",
-  "type": "frame", 
+  "type": "frame",
   "autoLayout": {
     "layoutMode": "horizontal",
     "primaryAxisSizingMode": "hug",
@@ -654,6 +680,7 @@ expires: 2025-10-25
 ```
 
 ### Grid Container Component
+
 ```json
 {
   "name": "OCC Grid Container",
@@ -687,18 +714,21 @@ expires: 2025-10-25
 ## Export Process Instructions
 
 ### Figma Plugin Requirements
+
 1. **Variables Importer Plugin** - For bulk variable creation
 2. **Tokens Studio Plugin** - For token management and sync
 3. **Component Inspector Plugin** - For component property mapping
 
 ### Variable Import Steps
+
 1. **Create Collections** - Set up 5 collections (Colors, Spacing, Typography, Effects, Motion)
 2. **Import Variables** - Use JSON import for bulk creation
-3. **Set Descriptions** - Ensure all variables have clear descriptions  
+3. **Set Descriptions** - Ensure all variables have clear descriptions
 4. **Configure Modes** - Set up light mode (dark mode reserved for future)
 5. **Validate References** - Ensure all variables resolve correctly
 
 ### Component Creation Steps
+
 1. **Create Master Components** - Build tile, modal, badge, button components
 2. **Apply Variables** - Map all properties to design variables
 3. **Create Variants** - Set up status, size, and state variants
@@ -706,6 +736,7 @@ expires: 2025-10-25
 5. **Build Component Library** - Organize components in library
 
 ### Component Property Assignments
+
 ```figma
 // Example property assignments for OCC Tile
 OCC Tile Component:
@@ -731,13 +762,15 @@ OCC Tile Badge:
 ## Documentation and Handoff
 
 ### Developer Handoff Assets
+
 1. **Token JSON Export** - Machine-readable token definitions
 2. **Component Specifications** - Detailed component property mapping
 3. **Responsive Behavior Documentation** - Breakpoint behavior descriptions
 4. **Code Examples** - CSS implementation snippets
 5. **Accessibility Notes** - Focus management and screen reader requirements
 
-### Design System Documentation  
+### Design System Documentation
+
 1. **Component Usage Guidelines** - When and how to use each component
 2. **Token Application Examples** - Real-world usage scenarios
 3. **Responsive Design Patterns** - Layout behavior across breakpoints
@@ -745,9 +778,10 @@ OCC Tile Badge:
 5. **Brand Guidelines Integration** - Alignment with overall brand system
 
 ### Quality Assurance Checklist
+
 - [ ] All variables import correctly without errors
 - [ ] Component variants display all status states properly
-- [ ] Responsive behavior matches specification across breakpoints  
+- [ ] Responsive behavior matches specification across breakpoints
 - [ ] Color contrast meets WCAG 2.2 AA requirements (4.5:1 minimum)
 - [ ] Auto-layout behaves correctly with dynamic content
 - [ ] Component library organization is logical and searchable

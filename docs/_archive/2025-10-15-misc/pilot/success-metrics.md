@@ -27,16 +27,19 @@
 ---
 
 #### Metric 1.1: Login Frequency
+
 **Definition**: Number of days per week CEO logs into dashboard
 
 **Target**:
+
 - Week 1: ≥3 days (building habit)
 - Week 2-4: ≥5 days (habit formed)
 
 **How to measure**:
+
 ```sql
 -- Query user login events
-SELECT 
+SELECT
   DATE(logged_in_at) as login_date,
   COUNT(DISTINCT session_id) as sessions
 FROM user_sessions
@@ -47,6 +50,7 @@ ORDER BY login_date;
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 📊 Login Frequency                 │
@@ -66,16 +70,19 @@ ORDER BY login_date;
 ---
 
 #### Metric 1.2: Session Duration
+
 **Definition**: Average time CEO spends per session
 
 **Target**:
+
 - 2-10 minutes per session (quick check-ins)
 - If <1 minute: Not using it properly
 - If >15 minutes: Dashboard too complex or has issues
 
 **How to measure**:
+
 ```sql
-SELECT 
+SELECT
   AVG(TIMESTAMPDIFF(MINUTE, logged_in_at, logged_out_at)) as avg_minutes
 FROM user_sessions
 WHERE user_id = 'hot-rodan-ceo'
@@ -83,6 +90,7 @@ WHERE user_id = 'hot-rodan-ceo'
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ ⏱️ Avg Session Duration            │
@@ -102,13 +110,15 @@ WHERE user_id = 'hot-rodan-ceo'
 ---
 
 #### Metric 1.3: Tile Usage
+
 **Definition**: Which tiles CEO uses most
 
 **Target**: CEO uses ≥3 core tiles regularly
 
 **How to measure**:
+
 ```sql
-SELECT 
+SELECT
   tile_name,
   COUNT(*) as clicks,
   COUNT(DISTINCT DATE(clicked_at)) as days_used
@@ -120,6 +130,7 @@ ORDER BY clicks DESC;
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 📦 Most-Used Tiles                 │
@@ -139,13 +150,15 @@ ORDER BY clicks DESC;
 ---
 
 #### Metric 1.4: Mobile Usage
+
 **Definition**: Percentage of sessions from mobile
 
 **Target**: ≥20% mobile usage (on-the-go value)
 
 **How to measure**:
+
 ```sql
-SELECT 
+SELECT
   device_type,
   COUNT(*) as sessions,
   ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) as percentage
@@ -156,6 +169,7 @@ GROUP BY device_type;
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 📱 Device Usage                    │
@@ -179,15 +193,18 @@ GROUP BY device_type;
 ---
 
 #### Metric 2.1: Weekly Rating
+
 **Definition**: CEO's weekly satisfaction rating (1-10)
 
 **Target**: ≥7/10 average across 4 weeks
 
 **How to measure**:
+
 - Ask during weekly check-in call
 - Record in tracking spreadsheet
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ ⭐ Weekly Satisfaction Rating      │
@@ -207,17 +224,20 @@ GROUP BY device_type;
 ---
 
 #### Metric 2.2: Net Promoter Score (NPS)
+
 **Definition**: "How likely are you to recommend HotDash to another business owner?" (0-10)
 
 **Target**: ≥7 (Promoter)
 
 **How to measure**:
+
 - Ask in Week 4 final survey
 - 9-10 = Promoter
 - 7-8 = Passive
 - 0-6 = Detractor
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 🎯 Net Promoter Score              │
@@ -239,15 +259,18 @@ GROUP BY device_type;
 ---
 
 #### Metric 2.3: Feature Satisfaction
+
 **Definition**: Which features CEO loves vs dislikes
 
 **Target**: ≥3 features rated "love it"
 
 **How to measure**:
+
 - Ask in weekly check-ins: "Which tile/feature was most useful?"
 - Track themes over 4 weeks
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 💚 Feature Satisfaction            │
@@ -275,15 +298,18 @@ GROUP BY device_type;
 ---
 
 #### Metric 3.1: Time Savings
+
 **Definition**: Hours saved per week vs manual workflow
 
 **Target**: ≥5 hours/week
 
 **How to measure**:
+
 - CEO self-reported (weekly check-ins)
 - Calculate: (Manual time - HotDash time) × frequency
 
 **Calculation Example**:
+
 ```
 Before HotDash:
 - Daily Shopify check: 30 min × 7 days = 210 min/week (3.5 hours)
@@ -301,6 +327,7 @@ Time Saved: 6.5 - 0.75 = 5.75 hours/week ✅
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ ⏰ Time Savings                    │
@@ -324,15 +351,17 @@ Time Saved: 6.5 - 0.75 = 5.75 hours/week ✅
 ---
 
 #### Metric 3.2: Decision Turnaround Time
+
 **Definition**: Time from approval request → CEO decision
 
 **Target**: <1 hour during business hours
 
 **How to measure**:
+
 ```sql
-SELECT 
-  AVG(TIMESTAMPDIFF(MINUTE, 
-    created_at, 
+SELECT
+  AVG(TIMESTAMPDIFF(MINUTE,
+    created_at,
     approved_at
   )) as avg_minutes
 FROM approval_queue
@@ -342,6 +371,7 @@ WHERE user_id = 'hot-rodan-ceo'
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ ⚡ Decision Speed                  │
@@ -364,16 +394,19 @@ WHERE user_id = 'hot-rodan-ceo'
 ---
 
 #### Metric 3.3: Inventory Stock-Out Prevention
+
 **Definition**: Number of stock-outs prevented by inventory alerts
 
 **Target**: ≥1 stock-out prevented in 4 weeks
 
 **How to measure**:
+
 - Track when CEO acts on inventory alerts
 - Ask CEO: "Did you reorder because of dashboard alert?"
 - Calculate lost sales prevented
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 📦 Inventory Impact                │
@@ -395,13 +428,15 @@ WHERE user_id = 'hot-rodan-ceo'
 ---
 
 #### Metric 3.4: Customer Satisfaction Trend
+
 **Definition**: Customer sentiment trend during pilot
 
 **Target**: Maintain or improve (≥80% positive)
 
 **How to measure**:
+
 ```sql
-SELECT 
+SELECT
   WEEK(created_at) as week_num,
   SUM(CASE WHEN sentiment = 'positive' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as pct_positive
 FROM support_tickets
@@ -411,6 +446,7 @@ GROUP BY WEEK(created_at);
 ```
 
 **Dashboard Visualization**:
+
 ```
 ┌────────────────────────────────────┐
 │ 😊 Customer Satisfaction Trend     │
@@ -502,6 +538,7 @@ GROUP BY WEEK(created_at);
 ## Metrics Collection Schedule
 
 ### Daily (Automated)
+
 - [ ] Login frequency
 - [ ] Session duration
 - [ ] Tile clicks
@@ -513,6 +550,7 @@ GROUP BY WEEK(created_at);
 ---
 
 ### Weekly (Manual + Automated)
+
 - [ ] Weekly rating (from check-in call)
 - [ ] Time saved (CEO self-reported)
 - [ ] Feature feedback (from check-in call)
@@ -525,6 +563,7 @@ GROUP BY WEEK(created_at);
 ---
 
 ### Monthly (End of Pilot)
+
 - [ ] Net Promoter Score
 - [ ] Total time saved (4-week sum)
 - [ ] ROI calculation
@@ -538,6 +577,7 @@ GROUP BY WEEK(created_at);
 ## Data Sources
 
 ### Application Logs
+
 ```sql
 -- User sessions
 user_sessions (user_id, logged_in_at, logged_out_at, device_type)
@@ -550,11 +590,13 @@ approval_queue (id, user_id, created_at, approved_at, decision)
 ```
 
 ### Survey Data
+
 - Weekly check-in ratings (manual entry)
 - Feature satisfaction (manual entry)
 - Time savings (manual entry)
 
 ### External Data
+
 - Shopify inventory levels (API)
 - Chatwoot customer sentiment (API)
 - Support response times (API)
@@ -565,11 +607,11 @@ approval_queue (id, user_id, created_at, approved_at, decision)
 
 ### Must-Have (Required for Pilot Success)
 
-| Metric | Target | Week 1 | Week 2 | Week 3 | Week 4 | Status |
-|--------|--------|--------|--------|--------|--------|--------|
-| **Login Frequency** | ≥5 days/week | [TBD] | [TBD] | [TBD] | [TBD] | [TBD] |
-| **Weekly Rating** | ≥7/10 | [TBD] | [TBD] | [TBD] | [TBD] | [TBD] |
-| **Time Savings** | ≥5 hrs/week | [TBD] | [TBD] | [TBD] | [TBD] | [TBD] |
+| Metric              | Target       | Week 1 | Week 2 | Week 3 | Week 4 | Status |
+| ------------------- | ------------ | ------ | ------ | ------ | ------ | ------ |
+| **Login Frequency** | ≥5 days/week | [TBD]  | [TBD]  | [TBD]  | [TBD]  | [TBD]  |
+| **Weekly Rating**   | ≥7/10        | [TBD]  | [TBD]  | [TBD]  | [TBD]  | [TBD]  |
+| **Time Savings**    | ≥5 hrs/week  | [TBD]  | [TBD]  | [TBD]  | [TBD]  | [TBD]  |
 
 **Pass**: 3/3 metrics hit targets → **PILOT SUCCESS**
 
@@ -577,11 +619,11 @@ approval_queue (id, user_id, created_at, approved_at, decision)
 
 ### Nice-to-Have (Bonus Value)
 
-| Metric | Target | Result | Status |
-|--------|--------|--------|--------|
-| **Decision Speed** | <1 hour | [TBD] | [TBD] |
-| **Stock-Outs Prevented** | ≥1 | [TBD] | [TBD] |
-| **Customer Satisfaction** | Maintain/improve | [TBD] | [TBD] |
+| Metric                    | Target           | Result | Status |
+| ------------------------- | ---------------- | ------ | ------ |
+| **Decision Speed**        | <1 hour          | [TBD]  | [TBD]  |
+| **Stock-Outs Prevented**  | ≥1               | [TBD]  | [TBD]  |
+| **Customer Satisfaction** | Maintain/improve | [TBD]  | [TBD]  |
 
 **Bonus**: 2+/3 metrics hit → **STRONG PILOT SUCCESS**
 
@@ -602,6 +644,7 @@ approval_queue (id, user_id, created_at, approved_at, decision)
 **Payback Period**: 3-6 months
 
 **Additional Value**:
+
 - Stock-out prevention: $5,200 (one-time)
 - Customer satisfaction improvement: Hard to quantify but valuable
 
@@ -613,4 +656,3 @@ approval_queue (id, user_id, created_at, approved_at, decision)
 **Owner**: Product Agent  
 **Status**: ✅ Ready for Hot Rodan pilot tracking  
 **Next**: Set up metrics collection scripts and weekly tracking spreadsheet
-

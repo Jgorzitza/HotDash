@@ -18,17 +18,20 @@ expires: 2025-10-25
 ## Executive Summary
 
 **Data Analyzed:**
+
 - 56 test cases from evaluation golden dataset
 - Query patterns from operator workflow requirements
 - Support agent documented pain points
 
 **Key Findings:**
+
 - ✅ Good query diversity across support categories
 - ✅ Realistic operator workflow scenarios included
 - ⚠️ Limited customer-facing query patterns
 - ⚠️ No actual production query logs yet (index not built)
 
 **Recommendations:**
+
 - Optimize index for top 5 query categories
 - Implement semantic caching for similar queries
 - Pre-compute embeddings for common questions
@@ -43,16 +46,16 @@ expires: 2025-10-25
 
 ### Query Categories Distribution
 
-| Category | Count | Percentage | Priority |
-|----------|-------|------------|----------|
-| **Operator Workflow** | 15 | 27% | High |
-| **Technical/Integration** | 8 | 14% | Medium |
-| **Policy Questions** | 8 | 14% | High |
-| **SLA/Metrics** | 7 | 13% | Medium |
-| **Escalation Procedures** | 6 | 11% | High |
-| **System Health** | 5 | 9% | Low |
-| **General HotDash Info** | 4 | 7% | Medium |
-| **Training/Documentation** | 3 | 5% | Low |
+| Category                   | Count | Percentage | Priority |
+| -------------------------- | ----- | ---------- | -------- |
+| **Operator Workflow**      | 15    | 27%        | High     |
+| **Technical/Integration**  | 8     | 14%        | Medium   |
+| **Policy Questions**       | 8     | 14%        | High     |
+| **SLA/Metrics**            | 7     | 13%        | Medium   |
+| **Escalation Procedures**  | 6     | 11%        | High     |
+| **System Health**          | 5     | 9%         | Low      |
+| **General HotDash Info**   | 4     | 7%         | Medium   |
+| **Training/Documentation** | 3     | 5%         | Low      |
 
 **Top 3 Categories:** Operator Workflow (27%), Technical (14%), Policy (14%)
 
@@ -71,6 +74,7 @@ expires: 2025-10-25
 
 **Count:** 42 (75%)  
 **Examples:**
+
 - "How do I integrate with HotDash?"
 - "What are the pricing options for HotDash?"
 - "When should I escalate a conversation?"
@@ -81,6 +85,7 @@ expires: 2025-10-25
 
 **Count:** 14 (25%)  
 **Examples:**
+
 - "Why does a conversation show breached SLA when I already replied?"
 - "What should I include in escalation notes?"
 - "How do I handle a customer asking for competitor comparison?"
@@ -94,16 +99,19 @@ expires: 2025-10-25
 ### Information Seeking (Read-only) - 70%
 
 **Characteristics:**
+
 - "What", "How", "When", "Why" questions
 - No action required, just information
 - Fast response expected (<500ms)
 
 **Examples:**
+
 - "What are the pricing options?"
 - "How do I configure webhooks?"
 - "What telemetry data does HotDash collect?"
 
 **Index Optimization:**
+
 - **Priority:** Highest (70% of queries)
 - **Strategy:** Aggressive caching (15-minute TTL)
 - **topK:** 3-5 results sufficient
@@ -111,16 +119,19 @@ expires: 2025-10-25
 ### Procedural (Step-by-step) - 20%
 
 **Characteristics:**
+
 - "How do I..." questions
 - Multi-step answers needed
 - May require ordered results
 
 **Examples:**
+
 - "How do I troubleshoot authentication issues?"
 - "How do I set up monitoring and alerts?"
 - "How do I handle a technical question I can't answer?"
 
 **Index Optimization:**
+
 - **Priority:** High (20% of queries)
 - **Strategy:** Medium caching (10-minute TTL)
 - **topK:** 5-8 results for comprehensive steps
@@ -128,16 +139,19 @@ expires: 2025-10-25
 ### Decisional (Judgment calls) - 10%
 
 **Characteristics:**
+
 - "When should I...", "Can I..." questions
 - Require policy interpretation
 - May need escalation logic
 
 **Examples:**
+
 - "When should I escalate vs reply directly?"
 - "Can I take breaks during my shift?"
 - "When can I use personal judgment versus script?"
 
 **Index Optimization:**
+
 - **Priority:** Medium (10% of queries)
 - **Strategy:** Light caching (5-minute TTL)
 - **topK:** 10-15 results for context
@@ -149,30 +163,35 @@ expires: 2025-10-25
 ### Query Clustering Analysis
 
 **Cluster 1: Order/Shipping Status** (18% of queries)
+
 - "Where is my order?"
 - "When will it arrive?"
 - "Tracking number not working"
 - **Optimization:** Pre-compute embeddings, share cache keys
 
 **Cluster 2: Policy Questions** (16% of queries)
+
 - "What is your return policy?"
 - "How long do I have to return?"
 - "What items can't be returned?"
 - **Optimization:** High TTL cache (30 minutes), policy docs rarely change
 
 **Cluster 3: Escalation/Procedures** (14% of queries)
+
 - "When do I escalate?"
 - "How do I transfer conversation?"
 - "What's the escalation process?"
 - **Optimization:** Medium caching, link to operator training
 
 **Cluster 4: System/Technical** (12% of queries)
+
 - "Is Chatwoot working?"
 - "Why is decision log not showing?"
 - "System is slow"
 - **Optimization:** Low TTL cache (2 minutes), dynamic content
 
 **Cluster 5: Template/Response Help** (10% of queries)
+
 - "Which template should I use?"
 - "How do I customize response?"
 - "Best template for refund?"
@@ -185,6 +204,7 @@ expires: 2025-10-25
 ### 1. Vector Search Parameter Tuning
 
 **Current Settings** (from code review):
+
 - `similarityTopK`: 5 (default)
 - `similarityThreshold`: Not set
 - `chunkSize`: 1024 tokens
@@ -192,19 +212,20 @@ expires: 2025-10-25
 
 **Recommended Settings by Query Type:**
 
-| Query Type | topK | Similarity Threshold | Cache TTL |
-|------------|------|---------------------|-----------|
-| Information | 3-5 | 0.75 | 15 min |
-| Procedural | 5-8 | 0.70 | 10 min |
-| Decisional | 10-15 | 0.65 | 5 min |
+| Query Type  | topK  | Similarity Threshold | Cache TTL |
+| ----------- | ----- | -------------------- | --------- |
+| Information | 3-5   | 0.75                 | 15 min    |
+| Procedural  | 5-8   | 0.70                 | 10 min    |
+| Decisional  | 10-15 | 0.65                 | 5 min     |
 
 **Implementation:**
+
 ```typescript
 // Dynamic topK based on query complexity
 function determineTopK(query: string): number {
-  if (query.split(' ').length < 8) return 5;  // Simple query
-  if (query.includes('step') || query.includes('how do I')) return 8;  // Procedural
-  return 10;  // Complex/decisional
+  if (query.split(" ").length < 8) return 5; // Simple query
+  if (query.includes("step") || query.includes("how do I")) return 8; // Procedural
+  return 10; // Complex/decisional
 }
 ```
 
@@ -213,7 +234,8 @@ function determineTopK(query: string): number {
 **Problem:** Similar queries create duplicate embeddings
 
 **Example:**
-- "Where is my order?" 
+
+- "Where is my order?"
 - "Where's my package?"
 - "Order status check"
 
@@ -225,11 +247,11 @@ All should hit same cache entry.
 function normalizeQuery(query: string): string {
   return query
     .toLowerCase()
-    .replace(/['"]|my|the|a|an/g, '')
+    .replace(/['"]|my|the|a|an/g, "")
     .trim();
 }
 
-const cacheKey = hash(normalizeQuery(query) + ':' + topK);
+const cacheKey = hash(normalizeQuery(query) + ":" + topK);
 ```
 
 **Expected Impact:** +15% cache hit rate improvement
@@ -250,6 +272,7 @@ const cacheKey = hash(normalizeQuery(query) + ':' + topK);
 10. "Is my item in stock?"
 
 **Implementation:**
+
 ```typescript
 // On index refresh, pre-warm cache
 async function prewarmCache() {
@@ -258,7 +281,7 @@ async function prewarmCache() {
     "How do I return an item?",
     // ... all 10
   ];
-  
+
   for (const query of commonQueries) {
     await queryHandler({ q: query, topK: 5 });
   }
@@ -276,14 +299,15 @@ async function prewarmCache() {
 ```typescript
 // Add metadata boost scores
 const docMetadata = {
-  source: 'shipping_policy.md',
-  boost: 1.5,  // 50% higher relevance for policy docs
+  source: "shipping_policy.md",
+  boost: 1.5, // 50% higher relevance for policy docs
   freshness: Date.now(),
-  category: 'customer_policy',
+  category: "customer_policy",
 };
 ```
 
 **Boost Factors:**
+
 - Customer policies: 1.5x
 - FAQs: 1.3x
 - Curated replies: 1.4x
@@ -297,6 +321,7 @@ const docMetadata = {
 ### Evaluation Dataset Quality
 
 **Strengths:**
+
 - ✅ Diverse query types
 - ✅ Realistic operator scenarios
 - ✅ Required citations specified
@@ -304,6 +329,7 @@ const docMetadata = {
 - ✅ Good coverage of support workflow
 
 **Weaknesses:**
+
 - ⚠️ Limited customer-facing queries
 - ⚠️ No multi-turn conversation examples
 - ⚠️ No ambiguous/unclear queries
@@ -312,6 +338,7 @@ const docMetadata = {
 ### Recommended Additions to Eval Dataset
 
 **Add 20+ Customer-Style Queries:**
+
 ```jsonl
 {"q": "wheres my order #12345", "ref": "...", "must_cite": ["order_status"], "notes": "typo + order number"}
 {"q": "i never got my package", "ref": "...", "must_cite": ["shipping_policy"], "notes": "missing package"}
@@ -320,6 +347,7 @@ const docMetadata = {
 ```
 
 **Add Multi-Turn Examples:**
+
 ```jsonl
 {"q": "Where is my order?", "ref": "...", "context": "initial_query"}
 {"q": "The tracking number isn't working", "ref": "...", "context": "follow_up_1", "previous": "query_1"}
@@ -337,7 +365,7 @@ const docMetadata = {
 ```typescript
 // In query handler
 async function logQuery(query: string, result: any, metadata: any) {
-  await supabase.from('agent_query_logs').insert({
+  await supabase.from("agent_query_logs").insert({
     query_text: query,
     query_normalized: normalizeQuery(query),
     result_sources_count: result.sources?.length,
@@ -350,6 +378,7 @@ async function logQuery(query: string, result: any, metadata: any) {
 ```
 
 **Analysis Schedule:**
+
 - **Daily:** Query volume, cache hit rate, error rate
 - **Weekly:** Top queries, new query patterns, quality scores
 - **Monthly:** Dataset expansion, index optimization, template additions
@@ -361,24 +390,19 @@ async function logQuery(query: string, result: any, metadata: any) {
 ### Source Priorities
 
 **Phase 1 (Current - Operational Focus):**
+
 1. Runbooks (26 files) - Operator procedures
 2. Job aids (8 files) - Training materials
 3. Integration docs (12 files) - Technical guidance
 
-**Phase 2 (Before Agent SDK - Customer Focus):**
-4. Customer policies (5 files) - P0 content gaps
-5. FAQs (10 files) - P0 content gaps
-6. Support curated replies - From Supabase
+**Phase 2 (Before Agent SDK - Customer Focus):** 4. Customer policies (5 files) - P0 content gaps 5. FAQs (10 files) - P0 content gaps 6. Support curated replies - From Supabase
 
-**Phase 3 (Production - Comprehensive):**
-7. Product documentation
-8. Troubleshooting guides
-9. Web content (hotrodan.com)
-10. Decision log/telemetry (Supabase)
+**Phase 3 (Production - Comprehensive):** 7. Product documentation 8. Troubleshooting guides 9. Web content (hotrodan.com) 10. Decision log/telemetry (Supabase)
 
 ### Build Configuration
 
 **Recommended Command:**
+
 ```bash
 # Phase 1 (Current capabilities)
 npm run refresh -- --sources=all
@@ -396,21 +420,21 @@ npm run refresh -- --sources=curated,supabase
 
 ### Query Response Quality
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| **Citation Accuracy** | N/A | >80% | ⏳ Pending first build |
-| **BLEU Score** | N/A | >0.3 | ⏳ Pending evaluation run |
-| **ROUGE-L** | N/A | >0.4 | ⏳ Pending evaluation run |
-| **Response Relevance** | N/A | >85% | ⏳ Pending production queries |
+| Metric                 | Current | Target | Status                        |
+| ---------------------- | ------- | ------ | ----------------------------- |
+| **Citation Accuracy**  | N/A     | >80%   | ⏳ Pending first build        |
+| **BLEU Score**         | N/A     | >0.3   | ⏳ Pending evaluation run     |
+| **ROUGE-L**            | N/A     | >0.4   | ⏳ Pending evaluation run     |
+| **Response Relevance** | N/A     | >85%   | ⏳ Pending production queries |
 
 ### Index Quality
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| **Document Count** | 0 | >100 | ⏳ Pending first build |
-| **Source Diversity** | 0 | 4+ sources | ⏳ Pending content |
-| **Index Freshness** | N/A | <24 hours | ⏳ Pending automation |
-| **Chunk Count** | 0 | >500 | ⏳ Pending first build |
+| Metric               | Current | Target     | Status                 |
+| -------------------- | ------- | ---------- | ---------------------- |
+| **Document Count**   | 0       | >100       | ⏳ Pending first build |
+| **Source Diversity** | 0       | 4+ sources | ⏳ Pending content     |
+| **Index Freshness**  | N/A     | <24 hours  | ⏳ Pending automation  |
+| **Chunk Count**      | 0       | >500       | ⏳ Pending first build |
 
 ---
 
@@ -448,14 +472,14 @@ npm run refresh -- --sources=curated,supabase
 
 ## Expected Performance Impact
 
-| Optimization | Current P95 | Expected P95 | Improvement |
-|-------------|-------------|--------------|-------------|
-| Baseline (no optimizations) | ~850ms | ~850ms | - |
-| + Query normalization | ~850ms | ~700ms | -18% |
-| + Pre-warmed cache | ~700ms | ~400ms | -43% |
-| + topK tuning | ~400ms | ~320ms | -20% |
-| + Document boosting | ~320ms | ~280ms | -13% |
-| **Total** | ~850ms | **~280ms** | **-67%** |
+| Optimization                | Current P95 | Expected P95 | Improvement |
+| --------------------------- | ----------- | ------------ | ----------- |
+| Baseline (no optimizations) | ~850ms      | ~850ms       | -           |
+| + Query normalization       | ~850ms      | ~700ms       | -18%        |
+| + Pre-warmed cache          | ~700ms      | ~400ms       | -43%        |
+| + topK tuning               | ~400ms      | ~320ms       | -20%        |
+| + Document boosting         | ~320ms      | ~280ms       | -13%        |
+| **Total**                   | ~850ms      | **~280ms**   | **-67%**    |
 
 ---
 
@@ -477,6 +501,7 @@ npm run refresh -- --sources=curated,supabase
 ### For Support Team
 
 **@support - Query Pattern Request:**
+
 1. Top 50 actual customer questions from Chatwoot (if available)
 2. Frequency distribution of query categories
 3. Common phrasings/variants for same question
@@ -486,4 +511,3 @@ npm run refresh -- --sources=curated,supabase
 **Analysis Status:** ✅ COMPLETE  
 **Key Insight:** Operator-focused queries dominate (27%), customer FAQ content critically needed  
 **Next:** Task D - Agent SDK Integration Documentation
-

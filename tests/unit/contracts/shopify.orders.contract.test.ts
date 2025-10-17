@@ -28,13 +28,25 @@ describe("Shopify Orders API Contract", () => {
 
       // financialStatus is nullable
       if (node.financialStatus) {
-        expect(["PENDING", "AUTHORIZED", "PARTIALLY_PAID", "PAID", "PARTIALLY_REFUNDED", "REFUNDED", "VOIDED"])
-          .toContain(node.financialStatus);
+        expect([
+          "PENDING",
+          "AUTHORIZED",
+          "PARTIALLY_PAID",
+          "PAID",
+          "PARTIALLY_REFUNDED",
+          "REFUNDED",
+          "VOIDED",
+        ]).toContain(node.financialStatus);
       }
 
       // displayFulfillmentStatus enum validation
-      expect(["FULFILLED", "UNFULFILLED", "PARTIAL", "RESTOCKED", "SCHEDULED"])
-        .toContain(node.displayFulfillmentStatus);
+      expect([
+        "FULFILLED",
+        "UNFULFILLED",
+        "PARTIAL",
+        "RESTOCKED",
+        "SCHEDULED",
+      ]).toContain(node.displayFulfillmentStatus);
     }
   });
 
@@ -48,7 +60,9 @@ describe("Shopify Orders API Contract", () => {
       if (node.currentTotalPriceSet) {
         expect(node.currentTotalPriceSet.shopMoney).toBeDefined();
         expect(node.currentTotalPriceSet.shopMoney.amount).toBeTypeOf("string");
-        expect(node.currentTotalPriceSet.shopMoney.currencyCode).toMatch(/^[A-Z]{3}$/);
+        expect(node.currentTotalPriceSet.shopMoney.currencyCode).toMatch(
+          /^[A-Z]{3}$/,
+        );
 
         // Amount should be parseable as decimal
         const amount = parseFloat(node.currentTotalPriceSet.shopMoney.amount);
@@ -86,8 +100,12 @@ describe("Shopify Orders API Contract", () => {
         // discountedTotalSet may be present
         if (lineItem.discountedTotalSet) {
           expect(lineItem.discountedTotalSet.shopMoney).toBeDefined();
-          expect(lineItem.discountedTotalSet.shopMoney.amount).toBeTypeOf("string");
-          expect(lineItem.discountedTotalSet.shopMoney.currencyCode).toMatch(/^[A-Z]{3}$/);
+          expect(lineItem.discountedTotalSet.shopMoney.amount).toBeTypeOf(
+            "string",
+          );
+          expect(lineItem.discountedTotalSet.shopMoney.currencyCode).toMatch(
+            /^[A-Z]{3}$/,
+          );
         }
       }
     }
@@ -97,11 +115,11 @@ describe("Shopify Orders API Contract", () => {
     const edges = ordersFixture.data.orders.edges;
 
     // Fixture includes order #1003 with line item that has null SKU
-    const order1003 = edges.find(e => e.node.name === "#1003");
+    const order1003 = edges.find((e) => e.node.name === "#1003");
     expect(order1003).toBeDefined();
 
     const lineItemsWithNullSku = order1003!.node.lineItems.edges.filter(
-      e => e.node.sku === null
+      (e) => e.node.sku === null,
     );
     expect(lineItemsWithNullSku.length).toBeGreaterThan(0);
 
@@ -114,13 +132,21 @@ describe("Shopify Orders API Contract", () => {
 
   test("validates displayFulfillmentStatus enum coverage", () => {
     const edges = ordersFixture.data.orders.edges;
-    const statusCoverage = new Set(edges.map(e => e.node.displayFulfillmentStatus));
+    const statusCoverage = new Set(
+      edges.map((e) => e.node.displayFulfillmentStatus),
+    );
 
     // Fixture should cover multiple fulfillment states
     expect(statusCoverage.size).toBeGreaterThan(1);
 
     // All statuses should be valid enum values
-    const validStatuses = ["FULFILLED", "UNFULFILLED", "PARTIAL", "RESTOCKED", "SCHEDULED"];
+    const validStatuses = [
+      "FULFILLED",
+      "UNFULFILLED",
+      "PARTIAL",
+      "RESTOCKED",
+      "SCHEDULED",
+    ];
     for (const status of statusCoverage) {
       expect(validStatuses).toContain(status);
     }

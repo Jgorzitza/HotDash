@@ -6,8 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # AI Agent — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -56,11 +59,13 @@ You are authorized to run local, non-interactive commands and scripts without as
 - Start executing assigned tasks immediately; report progress or blockers in `feedback/ai.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-10
+
 Work every task to completion—do not hand off after identifying a gap. Capture the command you ran, the output, and the timestamp in `feedback/ai.md`. Retry each failed command twice before escalating with logs attached.
 
 ## Aligned Task List — 2025-10-11 (Updated: Manager Decision - LlamaIndex MCP Architecture)
 
 ### ✅ COMPLETED (2025-10-11)
+
 - ✅ Pipeline blueprint (`docs/runbooks/llamaindex_workflow.md`)
 - ✅ CLI scaffolding (`scripts/ai/llama-workflow/`)
 - ✅ Loader implementation (Sitemap, Supabase, Curated replies)
@@ -78,9 +83,11 @@ Work every task to completion—do not hand off after identifying a gap. Capture
 **Your Role**: Support Engineer agent with LlamaIndex expertise, optimization, and testing.
 
 #### Task 1: Review Engineer's MCP Server Implementation
+
 **What Engineer is building**: `apps/llamaindex-mcp-server/` - thin HTTP wrapper around your `scripts/ai/llama-workflow/` CLI
 
 **Your responsibilities**:
+
 1. **Code review** Engineer's MCP handler implementations
 2. **Validate** that CLI calls are correct and efficient
 3. **Test** MCP server responses match CLI output
@@ -89,33 +96,42 @@ Work every task to completion—do not hand off after identifying a gap. Capture
 **Evidence**: Review notes in `feedback/ai.md`, any optimization PRs
 
 #### Task 2: Improve Query Performance
+
 **Goal**: Ensure <500ms P95 response time for MCP queries
 
 **Actions**:
+
 - Profile current `llama-workflow query` performance
 - Optimize vector search parameters (topK, similarity threshold)
 - Cache frequently accessed documents
 - Implement query result caching (5-minute TTL)
 
-**Evidence**: 
+**Evidence**:
+
 - Performance benchmarks before/after
 - Caching strategy document
 - Updated `docs/runbooks/llamaindex_workflow.md`
 
 #### Task 3: Enhance Training Data Collection
+
 **Goal**: Support Agent SDK feedback loop
 
 **Implementation**:
+
 ```typescript
 // Add to llama-workflow
-export async function logQuery(query: string, result: string, metadata: {
-  conversationId: number;
-  agent: string;
-  approved: boolean;
-  humanEdited?: string;
-}) {
+export async function logQuery(
+  query: string,
+  result: string,
+  metadata: {
+    conversationId: number;
+    agent: string;
+    approved: boolean;
+    humanEdited?: string;
+  },
+) {
   // Store in Supabase for training
-  await supabase.from('agent_queries').insert({
+  await supabase.from("agent_queries").insert({
     query,
     result,
     conversation_id: metadata.conversationId,
@@ -130,9 +146,11 @@ export async function logQuery(query: string, result: string, metadata: {
 **Evidence**: Training data schema, ingestion pipeline, sample logs
 
 #### Task 4: Create Evaluation Golden Dataset
+
 **Goal**: Ensure agent responses meet quality bar
 
 **Actions**:
+
 1. Create `scripts/ai/llama-workflow/eval/agent-qa-dataset.jsonl`
 2. Add 50+ test cases covering:
    - Shipping policy questions
@@ -142,21 +160,25 @@ export async function logQuery(query: string, result: string, metadata: {
 3. Run evaluation suite weekly
 4. Report BLEU/ROUGE/Citation accuracy
 
-**Evidence**: 
+**Evidence**:
+
 - Golden dataset file
 - Evaluation results
 - Quality threshold definitions (BLEU >0.3, ROUGE-L >0.4)
 
 #### Task 5: Monitor MCP Server Health
+
 **Goal**: Ensure 99% uptime once deployed
 
 **Actions**:
+
 - Add health check endpoint to MCP server
 - Monitor query latency, error rates
 - Alert on index staleness (>24h)
 - Document runbook for common issues
 
 **Evidence**:
+
 - Monitoring dashboard access
 - Alert configurations
 - Incident runbook
@@ -166,18 +188,21 @@ export async function logQuery(query: string, result: string, metadata: {
 ### Coordination with Engineer Agent
 
 **Engineer owns**:
+
 - MCP server HTTP implementation
 - Fly.io deployment
 - Agent SDK integration
 - Approval queue UI
 
 **AI agent (you) owns**:
+
 - LlamaIndex query optimization
 - Training data pipeline
 - Evaluation framework
 - Knowledge base quality
 
 **Communication**:
+
 - Daily sync in `feedback/ai.md` and `feedback/engineer.md`
 - Tag each other with @ai or @engineer for questions
 - Escalate blockers to manager immediately
@@ -185,7 +210,9 @@ export async function logQuery(query: string, result: string, metadata: {
 ---
 
 ### Evidence Logging
+
 Log all activities in `feedback/ai.md` with:
+
 - Timestamp
 - Action taken
 - Performance metrics
@@ -194,6 +221,7 @@ Log all activities in `feedback/ai.md` with:
 - Coordination notes
 
 Example:
+
 ```
 ## 2025-10-12T09:00:00Z — LlamaIndex MCP Optimization
 
@@ -218,6 +246,7 @@ Example:
 **Since Task 1 complete, execute these in parallel while Engineer builds MCP server**:
 
 **Task A: Knowledge Base Content Audit** - Review current RAG content quality
+
 - Audit data/ directory content for completeness
 - Identify gaps in FAQ coverage
 - Review Supabase curated replies for quality
@@ -226,6 +255,7 @@ Example:
 - Evidence: Content audit report in feedback/ai.md
 
 **Task B: Agent Response Template Library** - Create reusable templates
+
 - Create response templates for common questions (shipping, returns, order status)
 - Document template variables and customization points
 - Ensure templates follow brand voice
@@ -233,6 +263,7 @@ Example:
 - Evidence: Template library with 10+ templates
 
 **Task C: Training Data Quality Analysis** - Analyze existing LlamaIndex queries
+
 - Review query logs from llama-workflow
 - Identify common query patterns
 - Document frequently asked questions
@@ -240,6 +271,7 @@ Example:
 - Evidence: Quality analysis report
 
 **Task D: Agent SDK Integration Documentation** - Document how agents will use LlamaIndex MCP
+
 - Create usage guide for Agent SDK calling LlamaIndex MCP
 - Document expected response formats
 - Create troubleshooting guide
@@ -253,6 +285,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 ### 🚨 URGENT ADDITION: Task from Support Agent
 
 **Task E: Knowledge Base Content Creation** (REASSIGNED FROM SUPPORT)
+
 - Create data/support/shipping-policy.md (return window, procedures, costs)
 - Create data/support/refund-policy.md (eligibility, process, timelines)
 - Create data/support/product-troubleshooting.md (common issues, solutions)
@@ -270,6 +303,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task F: Prompt Engineering for Agent SDK**
+
 - Create system prompts for triage, order, and product agents
 - Design prompt templates with variable injection
 - Test prompt effectiveness with sample conversations
@@ -277,6 +311,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 - Evidence: Prompt library with test results
 
 **Task G: Agent Response Quality Monitoring**
+
 - Create automated quality scoring system
 - Implement BLEU/ROUGE metrics for responses
 - Design real-time quality dashboard
@@ -284,6 +319,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 - Evidence: Quality monitoring system
 
 **Task H: LlamaIndex Index Optimization**
+
 - Optimize vector search parameters (topK, similarity)
 - Implement semantic caching
 - Tune embedding model settings
@@ -291,6 +327,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 - Evidence: Optimization report with metrics
 
 **Task I: Agent Conversation Context Management**
+
 - Design context window management for multi-turn conversations
 - Implement conversation memory optimization
 - Create context summarization strategies
@@ -298,6 +335,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 - Evidence: Context management framework
 
 **Task J: AI Safety and Guardrails**
+
 - Design content safety filters for agent responses
 - Implement PII detection and redaction
 - Create policy compliance checks
@@ -305,6 +343,7 @@ Execute A, B, C, D in any order. All are independent and don't block on Engineer
 - Evidence: Safety framework with test cases
 
 **Task K: Model Fine-tuning Preparation**
+
 - Design data collection pipeline for fine-tuning
 - Create data labeling guidelines
 - Document fine-tuning dataset requirements
@@ -318,6 +357,7 @@ Execute E immediately (urgent), then F-K in any order.
 ### 🚀 THIRD MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task L-Q: Advanced AI Features** (6 tasks)
+
 - L: Design multi-agent orchestration patterns
 - M: Create agent specialization and routing logic
 - N: Implement conversational memory and context tracking
@@ -326,6 +366,7 @@ Execute E immediately (urgent), then F-K in any order.
 - Q: Implement agent capability discovery and documentation
 
 **Task R-W: Model Operations** (6 tasks)
+
 - R: Design model deployment and rollout strategy
 - S: Create model performance monitoring and alerting
 - T: Implement automated model evaluation pipeline
@@ -334,6 +375,7 @@ Execute E immediately (urgent), then F-K in any order.
 - W: Implement cost optimization for LLM calls
 
 **Task X-AC: Training & Improvement** (8 tasks)
+
 - X: Design automated training data curation pipeline
 - Y: Create active learning system for hard examples
 - Z: Implement human-in-the-loop labeling workflow
@@ -348,6 +390,7 @@ Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.
 ### 🚀 SIXTH MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task AD-AH: AI Safety & Ethics** (5 tasks)
+
 - AD: Design AI bias detection and mitigation
 - AE: Create AI explainability framework
 - AF: Implement AI fairness metrics
@@ -355,6 +398,7 @@ Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.
 - AH: Create AI ethics guidelines
 
 **Task AI-AM: Production AI Systems** (5 tasks)
+
 - AI: Design multi-model ensemble strategies
 - AJ: Create model hot-swapping infrastructure
 - AK: Implement model blue-green deployments
@@ -362,6 +406,7 @@ Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.
 - AM: Create model rollback procedures
 
 **Task AN-AR: AI Operations** (5 tasks)
+
 - AN: Design prompt engineering workflow
 - AO: Create prompt versioning and A/B testing
 - AP: Implement prompt performance tracking
@@ -369,6 +414,7 @@ Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.
 - AR: Create token usage optimization
 
 **Task AS-AW: Advanced RAG** (5 tasks)
+
 - AS: Design hybrid search (vector + keyword)
 - AT: Create query expansion and rewriting
 - AU: Implement retrieval result reranking
@@ -376,6 +422,7 @@ Execute L-AC in any order. Total: 35 tasks, ~20-25 hours work.
 - AW: Create RAG evaluation metrics
 
 **Task AX-BA: Knowledge Management** (5 tasks)
+
 - AX: Design knowledge graph integration
 - AY: Create entity extraction and linking
 - AZ: Implement temporal knowledge updates
@@ -399,6 +446,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 ## ⚡ P0 URGENT TASK (CEO Request - Do FIRST)
 
 **NEW Task A**: Ingest www.hotrodan.com into LlamaIndex RAG
+
 - Crawl www.hotrodan.com (all pages)
 - Ingest into existing operator_knowledge index
 - Update index with product catalog, company info, policies
@@ -416,6 +464,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 ## 📋 NEXT WAVE - DEEP HOT RODAN RAG TASKS (Tasks B-L)
 
 **Task B**: Product Catalog Enhancement
+
 - Ingest all Hot Rodan product descriptions from Shopify
 - Enhance with technical specs (engine compatibility, dimensions, materials)
 - Create product Q&A knowledge base
@@ -423,6 +472,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task C**: Hot Rod Technical Knowledge Base
+
 - Research common hot rod questions (carburetor tuning, headers, exhaust)
 - Create technical reference docs
 - Ingest hot rod building guides
@@ -430,6 +480,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 3-4 hours
 
 **Task D**: Customer Support Script Library
+
 - Create response templates for common Hot Rodan inquiries
 - Order status, returns, technical support, product recommendations
 - CEO voice and tone analysis
@@ -437,6 +488,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task E**: Competitor Analysis Knowledge
+
 - Research competitor shops (Speedway, Summit Racing)
 - Document Hot Rodan differentiators
 - Create competitive positioning knowledge
@@ -444,6 +496,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task F**: Seasonal Content Updates
+
 - Racing season calendar knowledge
 - Popular builds by season (spring: street rods, summer: race cars)
 - Seasonal product recommendations
@@ -451,6 +504,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task G**: RAG Query Optimization
+
 - Optimize chunk sizes for automotive content
 - Improve retrieval accuracy for technical questions
 - Test query performance
@@ -458,6 +512,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task H**: Agent Response Quality Analysis
+
 - Analyze CEO's edits to agent responses
 - Extract CEO voice patterns
 - Update agent prompts with learnings
@@ -465,6 +520,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task I**: Hot Rodan Brand Voice Documentation
+
 - Analyze www.hotrodan.com copy and tone
 - Document brand voice guidelines
 - Create do's and don'ts for agent responses
@@ -472,6 +528,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task J**: FAQ Automation
+
 - Create comprehensive FAQ from common customer questions
 - Ingest into RAG for instant answers
 - Test FAQ retrieval accuracy
@@ -479,6 +536,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task K**: Training Data Collection System
+
 - Set up system to capture good/bad agent responses
 - Tag responses by quality (CEO approved/edited/rejected)
 - Create training dataset for future fine-tuning
@@ -486,6 +544,7 @@ Execute AD-BB in any order. Total: 60 tasks, ~35-40 hours work.
 - Timeline: 2-3 hours
 
 **Task L**: Monitoring and Analytics
+
 - Track RAG query performance
 - Monitor response quality trends
 - Alert on accuracy degradation
@@ -501,6 +560,7 @@ Execute Task A (hotrodan.com), then B-L. Total: ~50-60 hours Hot Rodan AI work.
 **Engineer Update**: Your blockers are CLEARED! 🎉
 
 **What's Ready**:
+
 - LlamaIndex MCP Server: DEPLOYED and WORKING
 - Webhook Endpoints: LIVE and TESTED
 

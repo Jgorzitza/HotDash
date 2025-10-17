@@ -19,6 +19,7 @@ timeline: 2h
 ## Icons (Use Polaris - Already Imported)
 
 ### Approve Button
+
 ```typescript
 // NO ICON - Just text button
 <Button variant="primary" tone="success">
@@ -29,6 +30,7 @@ timeline: 2h
 **That's it.** Text is clearer than icons.
 
 ### Reject Button
+
 ```typescript
 // NO ICON - Just text button
 <Button variant="primary" tone="critical">
@@ -43,6 +45,7 @@ timeline: 2h
 ## Loading State (Polaris Built-In)
 
 ### Initial Page Load
+
 ```typescript
 import { SkeletonPage } from '@shopify/polaris';
 
@@ -56,9 +59,10 @@ import { SkeletonPage } from '@shopify/polaris';
 **That's it.** Polaris handles the shimmer animation.
 
 ### Button Loading
+
 ```typescript
-<Button 
-  variant="primary" 
+<Button
+  variant="primary"
   tone="success"
   loading={isApproving}
 >
@@ -113,7 +117,7 @@ import { Banner } from '@shopify/polaris';
 export function ApprovalCard({ approval }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const handleApprove = async () => {
     setLoading(true);
     try {
@@ -125,7 +129,7 @@ export function ApprovalCard({ approval }) {
       setLoading(false);
     }
   };
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -134,13 +138,13 @@ export function ApprovalCard({ approval }) {
             {error}
           </Banner>
         )}
-        
+
         <Text variant="headingMd" as="h2">
           Conversation #{approval.conversationId}
         </Text>
-        
+
         <Text>Tool: {approval.tool}</Text>
-        
+
         <InlineStack gap="200">
           <Button
             variant="primary"
@@ -197,6 +201,7 @@ export function ApprovalCard({ approval }) {
 ## Designer Review (Quick)
 
 Once Engineer implements:
+
 1. Does it work? (Can I approve/reject?)
 2. Does it look broken? (Polaris styling should look fine)
 3. Any obvious visual bugs?

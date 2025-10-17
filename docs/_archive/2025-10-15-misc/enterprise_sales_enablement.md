@@ -11,6 +11,7 @@
 ### 1. Enterprise Pitch Deck (15 slides)
 
 **Slide Topics**:
+
 1. Cover: HotDash Agent SDK for Enterprise
 2. Problem: Manual support doesn't scale
 3. Solution: AI-augmented operator platform
@@ -32,11 +33,13 @@
 ### 2. ROI Calculator (Interactive Tool)
 
 **Inputs**:
+
 - Number of operators
 - Tickets per month
 - Average operator salary
 
 **Outputs**:
+
 - Current cost per ticket
 - Projected cost with HotDash
 - Monthly savings
@@ -48,6 +51,7 @@
 ### 3. Security & Compliance Brief
 
 **Topics**:
+
 - Data encryption (at rest and in transit)
 - Tenant isolation (multi-tenant security)
 - Compliance certifications (SOC 2, GDPR, CCPA)
@@ -58,4 +62,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Sales Enablement Framework
-

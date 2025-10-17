@@ -8,12 +8,21 @@ interface CXEscalationsTileProps {
   enableModal?: boolean;
 }
 
-export function CXEscalationsTile({ conversations, enableModal = false }: CXEscalationsTileProps) {
-  const [activeConversationId, setActiveConversationId] = useState<number | null>(null);
+export function CXEscalationsTile({
+  conversations,
+  enableModal = false,
+}: CXEscalationsTileProps) {
+  const [activeConversationId, setActiveConversationId] = useState<
+    number | null
+  >(null);
 
   const activeConversation = useMemo(() => {
     if (!enableModal || activeConversationId == null) return null;
-    return conversations.find((conversation) => conversation.id === activeConversationId) ?? null;
+    return (
+      conversations.find(
+        (conversation) => conversation.id === activeConversationId,
+      ) ?? null
+    );
   }, [activeConversationId, conversations, enableModal]);
 
   const openModal = (conversationId: number) => {
@@ -24,7 +33,11 @@ export function CXEscalationsTile({ conversations, enableModal = false }: CXEsca
   const closeModal = () => setActiveConversationId(null);
 
   if (!conversations.length) {
-    return <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>No SLA breaches detected.</p>;
+    return (
+      <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
+        No SLA breaches detected.
+      </p>
+    );
   }
 
   return (

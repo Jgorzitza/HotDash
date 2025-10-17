@@ -38,15 +38,16 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 
 **Metrics Table**:
 
-| Metric | Target | Week 1 Actual | Week 2 Actual | 2-Week Avg | Status |
-|--------|--------|---------------|---------------|------------|--------|
-| **Operator Satisfaction** | >6.5/10 | [TBD] | [TBD] | [TBD] | ✅ or ❌ |
-| **Approval Rate** | >35% | [TBD] | [TBD] | [TBD] | ✅ or ❌ |
-| **Avg Review Time** | <2 min | [TBD] | [TBD] | [TBD] | ✅ or ❌ |
-| **System Uptime** | >95% | [TBD] | [TBD] | [TBD] | ✅ or ❌ |
-| **KB Coverage** | >85% | [TBD] | [TBD] | [TBD] | ✅ or ❌ |
+| Metric                    | Target  | Week 1 Actual | Week 2 Actual | 2-Week Avg | Status   |
+| ------------------------- | ------- | ------------- | ------------- | ---------- | -------- |
+| **Operator Satisfaction** | >6.5/10 | [TBD]         | [TBD]         | [TBD]      | ✅ or ❌ |
+| **Approval Rate**         | >35%    | [TBD]         | [TBD]         | [TBD]      | ✅ or ❌ |
+| **Avg Review Time**       | <2 min  | [TBD]         | [TBD]         | [TBD]      | ✅ or ❌ |
+| **System Uptime**         | >95%    | [TBD]         | [TBD]         | [TBD]      | ✅ or ❌ |
+| **KB Coverage**           | >85%    | [TBD]         | [TBD]         | [TBD]      | ✅ or ❌ |
 
 **Threshold for Success**:
+
 - **Pass**: 4/5 metrics meet or exceed targets
 - **Conditional Pass**: 3/5 metrics meet targets, clear plan to fix others
 - **Fail**: <3/5 metrics meet targets
@@ -58,22 +59,26 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 **Calculate Actual Time Saved**:
 
 **Before Agent SDK (Manual)**:
+
 - Avg time per inquiry: 4.5 min
 - Daily volume per operator: 50 inquiries
 - Daily time: 225 min (3.75 hours)
 
 **With Agent SDK (Pilot)**:
+
 - Avg time per inquiry: [TBD from data]
 - Daily volume per operator: [TBD from data]
 - Daily time: [TBD]
 
 **Time Saved**:
+
 - Per inquiry: [TBD] min saved
 - Per operator per day: [TBD] min saved
 - Per operator per week: [TBD] hours saved
 - **Total for 5 operators (2 weeks)**: [TBD] hours saved
 
 **ROI Calculation**:
+
 - Operator hourly rate: $25/hr (avg)
 - Hours saved (2 weeks): [TBD]
 - **Labor cost savings (2 weeks)**: $[TBD]
@@ -86,19 +91,21 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 
 **Bug Count by Priority**:
 
-| Priority | Reported | Fixed During Pilot | Still Open | Fix Rate |
-|----------|----------|-------------------|------------|----------|
-| P0 (Critical) | [TBD] | [TBD] | [TBD] | [TBD]% |
-| P1 (High) | [TBD] | [TBD] | [TBD] | [TBD]% |
-| P2 (Medium) | [TBD] | [TBD] | [TBD] | [TBD]% |
-| P3 (Low) | [TBD] | [TBD] | [TBD] | [TBD]% |
+| Priority      | Reported | Fixed During Pilot | Still Open | Fix Rate |
+| ------------- | -------- | ------------------ | ---------- | -------- |
+| P0 (Critical) | [TBD]    | [TBD]              | [TBD]      | [TBD]%   |
+| P1 (High)     | [TBD]    | [TBD]              | [TBD]      | [TBD]%   |
+| P2 (Medium)   | [TBD]    | [TBD]              | [TBD]      | [TBD]%   |
+| P3 (Low)      | [TBD]    | [TBD]              | [TBD]      | [TBD]%   |
 
 **Red Flags**:
+
 - Any P0 bugs still open → Must fix before rollout
 - P1 bug fix rate <80% → Need more QA testing
 - Total bug count >50 → System not stable enough
 
 **Green Flags**:
+
 - Zero P0 bugs by end of pilot
 - P1 bug fix rate >90%
 - Most bugs are P3 (polish issues)
@@ -112,6 +119,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 **Themes Analysis**:
 
 **Step 1**: Compile all feedback from:
+
 - Daily quick surveys (10 days x 5 operators = 50 responses)
 - Weekly deep-dive surveys (2 weeks x 5 operators = 10 responses)
 - Office hours notes
@@ -124,6 +132,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 ## Feedback Themes - Pilot
 
 ### 🎉 What Operators Loved (Strengths)
+
 1. **Time Savings**: [X] operators mentioned saving 1-2 hours/day
    - Quote: "I can finally take real lunch breaks!"
 2. **Draft Quality**: [X] operators said drafts were "surprisingly good"
@@ -132,6 +141,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
    - Quote: "I approve what I trust, reject what I don't"
 
 ### 😕 What Frustrated Operators (Weaknesses)
+
 1. **KB Gaps**: [X] operators complained about missing information
    - Quote: "It keeps suggesting outdated policies"
 2. **UX Friction**: [X] operators found bulk approve hard to discover
@@ -140,17 +150,20 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
    - Quote: "I didn't know if I was allowed to escalate this"
 
 ### 💡 Feature Requests (Opportunities)
+
 1. **Custom Templates**: [X] operators want to save their edits
 2. **Keyboard Shortcuts**: [X] operators want faster navigation
 3. **Better Confidence Scores**: [X] operators want clearer indicators
 
 ### 🐛 Bugs Reported (Threats)
+
 1. **Order Number Mismatch**: Reported [X] times
 2. **Slow Dashboard Load**: Reported [X] times
 3. **Missing Notifications**: Reported [X] times
 ```
 
 **Frequency Count**: How many operators mentioned each theme?
+
 - If 4+/5 operators mention it → Critical (must address)
 - If 2-3/5 operators mention it → Important (should address)
 - If 1/5 operators mention it → Edge case (nice to have)
@@ -172,6 +185,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 | **Avg** | [TBD] | [TBD] | [TBD] |
 
 **Interpretation**:
+
 - ↑ (increasing confidence) → Operators learning to trust system
 - → (flat confidence) → System stable, no surprises
 - ↓ (decreasing confidence) → Quality degrading or trust eroding
@@ -205,6 +219,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
    - Feature priorities
 
 **Capture Exact Quotes**:
+
 - Record meeting (with permission)
 - Transcribe key quotes
 - Use quotes in final report
@@ -218,6 +233,7 @@ npm run pilot:metrics:final-report --start=2025-10-28 --end=2025-11-08
 **GO (Full Rollout)**:
 
 Must meet ALL of these:
+
 - ✅ 4/5 quantitative metrics hit targets
 - ✅ Operator satisfaction >6.5/10 (avg)
 - ✅ Zero P0 bugs remaining
@@ -228,6 +244,7 @@ Must meet ALL of these:
 **CONDITIONAL GO (Fix Then Rollout)**:
 
 Must meet MOST of these:
+
 - ⚠️ 3/5 quantitative metrics hit targets (with plan to fix)
 - ⚠️ Operator satisfaction 6.0-6.5/10 (trending up)
 - ⚠️ Zero P0 bugs, few P1 bugs (clear fix timeline)
@@ -239,6 +256,7 @@ Must meet MOST of these:
 **NO-GO (Pause, Reassess)**:
 
 If ANY of these are true:
+
 - ❌ <3/5 quantitative metrics hit targets
 - ❌ Operator satisfaction <6.0/10
 - ❌ Any P0 bugs still open
@@ -255,13 +273,10 @@ If ANY of these are true:
 
 1. **Quality Risk**: What if AI quality degrades at scale?
    - Mitigation: Monitor approval rates closely Week 1, scale slowly
-   
 2. **Operator Adoption Risk**: What if full team rejects it?
    - Mitigation: Intensive training, optional first 2 weeks
-   
 3. **System Performance Risk**: What if system can't handle 50 operators?
    - Mitigation: Load testing pre-rollout, phased scaling (10 → 25 → 50)
-   
 4. **Customer Experience Risk**: What if wrong info goes to customers?
    - Mitigation: Keep approval gates, audit random 5% of interactions
 
@@ -272,22 +287,26 @@ If ANY of these are true:
 ### Phased Rollout Strategy
 
 **Phase 1: Expand to 15 Operators** (Nov 18-22, Week 1)
+
 - Add 10 more operators (total: 15)
 - Select high performers + volunteers
 - Same training as pilot
 - Monitor closely (same metrics)
 
 **Phase 2: Expand to 35 Operators** (Nov 25-29, Week 2)
+
 - Add 20 more operators (total: 35)
 - Group training sessions
 - Monitor for scalability issues
 
 **Phase 3: Full Rollout** (Dec 2+)
+
 - All 50 operators
 - Mandatory training for remaining operators
 - Optional first week (operators can opt out temporarily)
 
 **Criteria to Advance Between Phases**:
+
 - Metrics stable at targets
 - No new P0/P1 bugs
 - Operator satisfaction maintained
@@ -297,17 +316,20 @@ If ANY of these are true:
 ### Fixes Before Rollout
 
 **Must-Fix (Blockers)**:
+
 - [ ] All P0 bugs closed
 - [ ] Top 3 operator frustrations addressed
 - [ ] KB coverage >85%
 - [ ] Training materials updated based on pilot feedback
 
 **Should-Fix (Important)**:
+
 - [ ] All P1 bugs closed
 - [ ] UX improvements (bulk approve visibility, etc.)
 - [ ] Escalation workflow clarified
 
 **Nice-to-Fix (Phase 2)**:
+
 - [ ] Custom templates
 - [ ] Keyboard shortcuts
 - [ ] Dashboard polish
@@ -367,32 +389,40 @@ Product Team
 # Agent SDK Pilot Learnings Report - November 2025
 
 ## Executive Summary
+
 - Pilot duration: Oct 28 - Nov 8, 2025 (2 weeks)
 - Participants: 5 operators
 - **Result**: GO / CONDITIONAL GO / NO-GO
 - **Next Steps**: [Summary]
 
 ## Quantitative Results
+
 [Metrics table with targets vs actuals]
 
 ## Qualitative Insights
+
 [Themes analysis with quotes]
 
 ## Key Learnings
+
 1. **What Worked Well**
 2. **What Didn't Work**
 3. **Surprises** (unexpected insights)
 
 ## Operator Recommendations
+
 [From debrief meeting]
 
 ## Changes for Full Rollout
+
 [List of fixes and improvements]
 
 ## Rollout Plan
+
 [Phased approach]
 
 ## Appendices
+
 - Appendix A: Full metrics report
 - Appendix B: All operator quotes
 - Appendix C: Bug log
@@ -405,4 +435,3 @@ Product Team
 **Purpose**: Comprehensive framework for pilot analysis and go/no-go decision  
 **Status**: Ready for use post-pilot (Nov 9-12)  
 **North Star**: ✅ **Data-driven decision making ensures operators' voices shape rollout**
-

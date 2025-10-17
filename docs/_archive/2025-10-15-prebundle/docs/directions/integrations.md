@@ -6,8 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Integrations — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -41,11 +44,13 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/integrations.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-10
+
 Own external integrations beyond Chatwoot and keep managers informed via `feedback/integrations.md`. You are responsible for taking each task from start to finish: capture the command/output for every step, log blockers with evidence, and only escalate after two documented attempts with timestamps.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/mcp/tools/llamaindex.json - LlamaIndex MCP tools already defined
 - docs/directions/mcp-tools-reference.md - All 7 MCP servers
 
@@ -92,6 +97,7 @@ Own external integrations beyond Chatwoot and keep managers informed via `feedba
    - Evidence: Secret inventory, readiness checklist
 
 **Ongoing Requirements**:
+
 - Monitor MCP server health continuously
 - Validate all Shopify queries with MCP
 - Log all integration checks in feedback/integrations.md
@@ -101,6 +107,7 @@ Own external integrations beyond Chatwoot and keep managers informed via `feedba
 ### 🚀 PARALLEL TASKS (While Engineer Fixes Shopify + Builds MCP)
 
 **Task A: MCP Health Monitoring Automation** - Create monitoring scripts
+
 - Create script to test all 7 MCP servers
 - Check response times and availability
 - Generate health report
@@ -108,6 +115,7 @@ Own external integrations beyond Chatwoot and keep managers informed via `feedba
 - Evidence: Monitoring script, health report
 
 **Task B: API Documentation Review** - Document all external APIs
+
 - Document Shopify Admin API usage patterns
 - Document Chatwoot API endpoints used
 - Document Google Analytics API (for reference)
@@ -115,6 +123,7 @@ Own external integrations beyond Chatwoot and keep managers informed via `feedba
 - Evidence: API documentation
 
 **Task C: Integration Testing Scripts** - Prepare test automation
+
 - Create integration test scripts for each external API
 - Mock API responses for CI testing
 - Document test data requirements
@@ -128,6 +137,7 @@ Execute A (most valuable), then B and C.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task D: API Rate Limiting Strategy**
+
 - Document rate limits for all external APIs (Shopify, Chatwoot, GA, OpenAI)
 - Design rate limiting and throttling approach
 - Create monitoring for API usage
@@ -135,6 +145,7 @@ Execute A (most valuable), then B and C.
 - Evidence: Rate limiting strategy document
 
 **Task E: Webhook Security Framework**
+
 - Design webhook authentication patterns for all services
 - Document signature verification methods
 - Create webhook testing framework
@@ -142,6 +153,7 @@ Execute A (most valuable), then B and C.
 - Evidence: Webhook security guide
 
 **Task F: API Client Library Consolidation**
+
 - Review all API client implementations
 - Identify consolidation opportunities
 - Design standardized API client pattern
@@ -149,6 +161,7 @@ Execute A (most valuable), then B and C.
 - Evidence: API client consolidation plan
 
 **Task G: Integration Health Dashboard**
+
 - Design comprehensive integration health dashboard
 - Define health check metrics for each integration
 - Create visualization specifications
@@ -156,6 +169,7 @@ Execute A (most valuable), then B and C.
 - Evidence: Integration dashboard design
 
 **Task H: Third-Party Service Evaluation**
+
 - Research additional integration opportunities
 - Evaluate potential new services (CRM, analytics, social)
 - Document integration complexity and value
@@ -163,6 +177,7 @@ Execute A (most valuable), then B and C.
 - Evidence: Service evaluation report
 
 **Task I: Integration Testing Automation**
+
 - Create automated integration test suite
 - Design continuous integration testing workflow
 - Implement mock servers for external APIs
@@ -170,6 +185,7 @@ Execute A (most valuable), then B and C.
 - Evidence: Automated test suite
 
 **Task J: Vendor Relationship Documentation**
+
 - Document all vendor contacts and relationships
 - Create vendor escalation procedures
 - Track vendor SLAs and performance
@@ -183,6 +199,7 @@ Execute D-J in any order - all strengthen integration reliability.
 ### 🚀 SECOND MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task K-O: Integration Platform** (5 tasks)
+
 - K: Design integration marketplace for HotDash (allow third-party integrations)
 - L: Create integration SDK and developer documentation
 - M: Design OAuth flow for third-party app authentication
@@ -190,6 +207,7 @@ Execute D-J in any order - all strengthen integration reliability.
 - O: Design integration analytics and monitoring dashboard
 
 **Task P-T: Advanced Integrations** (5 tasks)
+
 - P: Research and plan Klaviyo email marketing integration
 - Q: Design Facebook/Instagram social media integration
 - R: Plan Stripe/payment gateway integration for billing insights
@@ -197,6 +215,7 @@ Execute D-J in any order - all strengthen integration reliability.
 - T: Design Slack integration for operator notifications
 
 **Task U-Y: API Management** (5 tasks)
+
 - U: Design API gateway for all integrations
 - V: Create API versioning and deprecation strategy
 - W: Implement API documentation auto-generation
@@ -204,6 +223,7 @@ Execute D-J in any order - all strengthen integration reliability.
 - Y: Create API key management and rotation system
 
 **Task Z-AD: Data Integration** (5 tasks)
+
 - Z: Design ETL pipelines for all external data sources
 - AA: Create data sync scheduling and orchestration
 - AB: Implement conflict resolution for bidirectional sync
@@ -217,6 +237,7 @@ Execute K-AD in any order. Total: 36 tasks, ~20-25 hours work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task AE-AI: Monitoring & Alerting** (5 tasks)
+
 - AE: Design integration health scoring system
 - AF: Create SLA tracking and violation alerting
 - AG: Implement integration performance dashboards
@@ -224,6 +245,7 @@ Execute K-AD in any order. Total: 36 tasks, ~20-25 hours work.
 - AI: Create integration cost tracking and optimization
 
 **Task AJ-AN: Testing & Quality** (5 tasks)
+
 - AJ: Create integration regression test suite
 - AK: Design contract testing framework
 - AL: Implement integration load testing
@@ -231,6 +253,7 @@ Execute K-AD in any order. Total: 36 tasks, ~20-25 hours work.
 - AN: Design integration performance benchmarking
 
 **Task AO-AS: Documentation & DevEx** (5 tasks)
+
 - AO: Create integration developer guides
 - AP: Design integration troubleshooting playbooks
 - AQ: Implement integration examples and recipes
@@ -238,6 +261,7 @@ Execute K-AD in any order. Total: 36 tasks, ~20-25 hours work.
 - AS: Design integration best practices documentation
 
 **Task AT-AX: Advanced Features** (5 tasks)
+
 - AT: Design integration workflow automation
 - AU: Create integration event streaming
 - AV: Implement integration caching strategies
@@ -251,6 +275,7 @@ Execute AE-AX in any order. Total: 56 tasks, ~30 hours work.
 ### ⚡ BLOCKER MANAGEMENT (2025-10-11T22:25Z)
 
 **Known Dependencies** (DO NOT wait - work around):
+
 - Task 3 (LlamaIndex MCP): Blocked by Engineer deployment → SKIP, continue with other tasks
 - Task 5 (Agent SDK integration): Blocked by Engineer implementation → SKIP, continue with other tasks
 
@@ -265,8 +290,9 @@ Execute AE-AX in any order. Total: 56 tasks, ~30 hours work.
 **Manager Action**: Escalated to Engineer as P0 priority (must fix before Agent SDK)
 
 **Your Status**: Continue with non-blocked tasks while Engineer fixes:
+
 - Task 2: API rate limiting strategy
-- Task 4: Webhook security framework  
+- Task 4: Webhook security framework
 - Tasks 6-13: Continue execution
 - Tasks AE-AX: Monitor integration health
 
@@ -279,6 +305,7 @@ Execute Tasks 2, 4, 6-AX. Report evidence in feedback/integrations.md.
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
 
 **Task 6A**: Hot Rodan-Specific Integration Testing
+
 - Test Shopify integration with Hot Rodan store data
 - Verify automotive product catalog displays correctly
 - Test with real hot rod part SKUs
@@ -286,6 +313,7 @@ Execute Tasks 2, 4, 6-AX. Report evidence in feedback/integrations.md.
 - Timeline: 2-3 hours
 
 **Task 6B**: Webhook Reliability Testing
+
 - Test webhook delivery under various network conditions
 - Verify retry logic works
 - Test failure scenarios
@@ -293,6 +321,7 @@ Execute Tasks 2, 4, 6-AX. Report evidence in feedback/integrations.md.
 - Timeline: 2-3 hours
 
 **Task 6C**: API Performance Monitoring
+
 - Monitor Shopify API response times
 - Track Chatwoot API latency
 - Document performance baselines
@@ -300,6 +329,7 @@ Execute Tasks 2, 4, 6-AX. Report evidence in feedback/integrations.md.
 - Timeline: 2-3 hours
 
 **Task 6D**: Integration Health Dashboard
+
 - Create dashboard showing all integration statuses
 - Real-time health checks
 - Alert on integration failures
@@ -307,6 +337,7 @@ Execute Tasks 2, 4, 6-AX. Report evidence in feedback/integrations.md.
 - Timeline: 2-3 hours
 
 **Task 6E**: Error Handling and Recovery
+
 - Document all integration error scenarios
 - Create recovery procedures for each
 - Test error handling paths
@@ -338,6 +369,7 @@ Execute 2, 4, 6-6E, AE-AX (all launch-aligned). Total: ~25-30 hours work.
 **Engineer Update**: Your blockers are CLEARED! 🎉
 
 **What's Ready**:
+
 - LlamaIndex MCP Server: DEPLOYED and WORKING
 - Webhook Endpoints: LIVE and TESTED
 
@@ -356,13 +388,15 @@ Execute 2, 4, 6-6E, AE-AX (all launch-aligned). Total: ~25-30 hours work.
 **Update**: Engineer fixed all 4 issues (2025-10-11 21:30 UTC, 1hr 15min after your report)
 
 **Validation Confirmation**:
+
 - Engineer Helper validated fixes with Shopify Dev MCP ✅
 - QA Helper independently validated in comprehensive audit ✅
 - Both agents report: 4/4 queries using current 2024+ API patterns
 
 **Your Action**: Re-run Shopify integration validation and update status
 
-**Expected Result**: 
+**Expected Result**:
+
 - Change from ❌ FAILED to ✅ PASS for all 4 queries
 - Confirm: orders.ts, inventory.ts, fulfillments, variant cost all valid
 

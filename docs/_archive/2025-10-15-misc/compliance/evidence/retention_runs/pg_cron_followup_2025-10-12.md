@@ -6,6 +6,7 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-12-31
 ---
+
 # Supabase pg_cron Evidence Follow-up — Sent 2025-10-12
 
 # message delivered to reliability via `#occ-ops` at 2025-10-12 19:45 UTC, referencing the evidence checklist at `docs/compliance/evidence/retention_runs/pg_cron_evidence_checklist.md`.
@@ -29,5 +30,6 @@ Casey
 ```
 
 Status:
+
 - Reminder scheduled for 2025-10-13 18:30 UTC to confirm evidence folder creation.
 - Awaiting reliability acknowledgement; log response in `feedback/compliance.md` once received.

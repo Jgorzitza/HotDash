@@ -1,14 +1,16 @@
-
 # Manager Emergency Startup (Crash Recovery)
 
 > **When to use:** The machine crashed, agents didn’t finish shutdown, context may be missing.  
 > **Goal:** Reconstruct current state safely and relaunch work with zero guesswork.
 
 ---
+
 ## PATH
+
 - [ ] Navigate to repo root ~/HotDash/hot-dash/ or /home/justin/HotDash/hot-dash/
 
 ## 0) Safety First (no writes yet)
+
 - [ ] Disconnect tunnels/VPNs that may auto-run commands on resume.
 - [ ] Do **not** force-push or delete anything. We will read & snapshot first.
 
@@ -17,6 +19,7 @@
 ## 1) Snapshot & Health (read-only where possible)
 
 ### 1.1 Git status snapshot
+
 ```bash
 git rev-parse --abbrev-ref HEAD
 git status -s
@@ -25,19 +28,23 @@ git branch --list "agent/*"
 ```
 
 ### 1.2 Find WIP/dangling work (reflog + stash)
+
 ```bash
 git reflog -n 20
 git stash list
 ```
+
 - If you see `WIP` or local commits not on origin: note the SHAs. **Do not reset yet.**
 
 ### 1.3 Confirm origin/remote
+
 ```bash
 git remote -v
 git fetch --all --prune
 ```
 
 ### 1.4 CI/Guardrails (read-only checks)
+
 - GitHub: `main` required checks still enforced (Docs Policy, Danger, Gitleaks, AI Config).
 - Settings → Code security & analysis: Push Protection & Secret Scanning are **ON**.
 
@@ -62,9 +69,11 @@ node scripts/policy/check-docs.mjs || true
 ## 3) Recover Agent Work-In-Progress
 
 ### 3.1 Ensure every agent has a branch
+
 ```bash
 git branch --list "agent/*" | sed 's/* //'
 ```
+
 - If an agent was active and has **no** branch:
   - Check reflog for their local WIP commit; create a temp branch:
     ```bash
@@ -72,11 +81,14 @@ git branch --list "agent/*" | sed 's/* //'
     ```
 
 ### 3.2 Draft PRs for mid-slice work
+
 For each branch without a PR, create a **Draft PR** (optional via GitHub CLI):
+
 ```bash
 # from branch agent/<agent>/<molecule>
 gh pr create --draft --fill || true
 ```
+
 - In the PR body, add (or verify):
   - `Refs #<issue>` (or `Fixes #<issue>` if complete)
   - `Allowed paths: <pattern(s)>`
@@ -90,18 +102,22 @@ gh pr create --draft --fill || true
 ## 4) Rebuild Context from Logs & Files
 
 ### 4.1 Feedback logs
+
 ```bash
 ls -1 feedback/*/$(date +%F).md 2>/dev/null || true
 ```
+
 - If today’s logs are missing for an agent, check **yesterday’s** file and the last PR comments.
 - If the terminal/history holds context:
   - Copy relevant, **non-secret** command lines & outcomes into today’s feedback log with a new “Recovery Note” section.
 
 ### 4.2 Directions
+
 - Open `docs/directions/<agent>.md` and ensure it points at the current **Issue** and **PR**.
 - If direction is out of date, add a short “Recovery Objective” for the next 2–4 hours.
 
 ### 4.3 Issues
+
 - For each active Issue, add a manager comment:
   - “Crash recovery: branch = …, PR = …, next step = …, blocker owner/ETA = …”
 
@@ -127,11 +143,13 @@ supabase --version
 ## 6) Triage & Fix (only now make small, safe changes)
 
 ### 6.1 Secrets
+
 - If `gitleaks` flagged a leak:
   - Rotate the secret(s) and **do not** commit secrets in any form.
   - If necessary, schedule history cleanup with `git filter-repo` on a separate branch per the incident playbook.
 
 ### 6.2 Docs policy violations
+
 - Run the planning TTL sweep (moves stray/old planning docs and reindexes):
   ```bash
   node scripts/ops/archive-docs.mjs
@@ -139,6 +157,7 @@ supabase --version
   ```
 
 ### 6.3 Stabilize PRs
+
 - Ensure PRs include Issue linkage and **Allowed paths**; keep as **Draft** until agents verify tests.
 
 ---
@@ -174,6 +193,7 @@ git branch -r | grep agent/
 - Manager posts **Crash Recovery Summary** in today’s feedback.
 
 ## 10) Proceed with work
-> You can now proceed with the normal **Manager Startup**.
-- Execute `docs/runbooks/manager_startup_checklist.md` 
 
+> You can now proceed with the normal **Manager Startup**.
+
+- Execute `docs/runbooks/manager_startup_checklist.md`

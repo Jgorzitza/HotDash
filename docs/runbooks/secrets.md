@@ -15,6 +15,7 @@ HotDash uses a secure secret management system with secrets stored in `vault/occ
 **Location:** `scripts/ops/sync-secrets.sh`
 
 **Usage:**
+
 ```bash
 # Dry run (recommended first)
 ./scripts/ops/sync-secrets.sh --dry-run
@@ -61,6 +62,7 @@ HotDash uses a secure secret management system with secrets stored in `vault/occ
 This document describes the secrets required for all integration adapters and how to manage them across environments.
 
 **Environments:**
+
 - **Local:** Development on developer machines
 - **Staging:** Testing environment (Fly.io staging app)
 - **Production:** Live environment (Fly.io production app)
@@ -72,11 +74,13 @@ This document describes the secrets required for all integration adapters and ho
 ### Shopify Admin GraphQL
 
 **Required Secrets:**
+
 - `SHOPIFY_API_KEY` - App API key from Partner Dashboard
 - `SHOPIFY_API_SECRET` - App API secret from Partner Dashboard
 - `SHOPIFY_STORE_URL` - Store domain (e.g., hotrodan.myshopify.com)
 
 **Storage:**
+
 - **Local:** `vault/occ/shopify/` (gitignored)
   - `api_key_staging.env`
   - `api_secret_staging.env`
@@ -87,6 +91,7 @@ This document describes the secrets required for all integration adapters and ho
 **Rotation:** Every 90 days or on exposure
 
 **Scopes Required:**
+
 - `read_orders`
 - `read_products`
 - `read_inventory`
@@ -97,11 +102,13 @@ This document describes the secrets required for all integration adapters and ho
 ### Supabase
 
 **Required Secrets:**
+
 - `SUPABASE_URL` - Project URL
 - `SUPABASE_ANON_KEY` - Anonymous key (frontend)
 - `SUPABASE_SERVICE_KEY` - Service role key (backend)
 
 **Storage:**
+
 - **Local:** `vault/occ/supabase/` (gitignored)
   - `database_url_staging.env`
   - `service_key_staging.env`
@@ -117,11 +124,13 @@ This document describes the secrets required for all integration adapters and ho
 ### Chatwoot
 
 **Required Secrets:**
+
 - `CHATWOOT_API_TOKEN` - API access token
 - `CHATWOOT_ACCOUNT_ID` - Account ID
 - `CHATWOOT_BASE_URL` - API base URL (e.g., https://app.chatwoot.com)
 
 **Storage:**
+
 - **Local:** `vault/occ/chatwoot/` (gitignored)
   - `api_token_staging.env`
   - `account_id_staging.env`
@@ -137,10 +146,12 @@ This document describes the secrets required for all integration adapters and ho
 ### Publer (Social Media)
 
 **Required Secrets:**
+
 - `PUBLER_API_KEY` - Publer API key
 - `PUBLER_WORKSPACE_ID` - Workspace identifier (default: "HotRodAN")
 
 **Storage:**
+
 - **Local:** `vault/occ/publer/` (gitignored)
   - `api_key_staging.env`
   - `workspace_id_staging.env`
@@ -150,6 +161,7 @@ This document describes the secrets required for all integration adapters and ho
 **Rotation:** Every 90 days or on exposure
 
 **Platforms Supported:**
+
 - Facebook
 - Instagram
 - Twitter
@@ -166,10 +178,12 @@ This document describes the secrets required for all integration adapters and ho
 ### Google Analytics (GA4)
 
 **Required Secrets:**
+
 - `GA4_PROPERTY_ID` - GA4 property ID
 - `GA4_SERVICE_ACCOUNT_KEY` - Service account JSON key
 
 **Storage:**
+
 - **Local:** `vault/occ/google/` (gitignored)
   - `analytics-service-account.json`
   - `property_id_staging.env`
@@ -317,13 +331,13 @@ fly secrets set GA4_SERVICE_ACCOUNT_KEY="$(cat vault/occ/google/analytics-servic
 
 ### Rotation Log
 
-| Service | Last Rotated | Next Rotation | Rotated By |
-|---------|--------------|---------------|------------|
-| Shopify | 2025-10-16 | 2026-01-14 | manager |
-| Supabase | 2025-10-16 | 2026-01-14 | manager |
-| Chatwoot | 2025-10-16 | 2026-01-14 | manager |
-| Publer | 2025-10-16 | 2026-01-14 | manager |
-| GA4 | 2025-10-16 | 2026-01-14 | manager |
+| Service  | Last Rotated | Next Rotation | Rotated By |
+| -------- | ------------ | ------------- | ---------- |
+| Shopify  | 2025-10-16   | 2026-01-14    | manager    |
+| Supabase | 2025-10-16   | 2026-01-14    | manager    |
+| Chatwoot | 2025-10-16   | 2026-01-14    | manager    |
+| Publer   | 2025-10-16   | 2026-01-14    | manager    |
+| GA4      | 2025-10-16   | 2026-01-14    | manager    |
 
 ---
 
@@ -356,6 +370,7 @@ fly secrets set GA4_SERVICE_ACCOUNT_KEY="$(cat vault/occ/google/analytics-servic
 **Cause:** Invalid or expired API credentials
 
 **Fix:**
+
 1. Verify `SHOPIFY_API_KEY` and `SHOPIFY_API_SECRET` are set
 2. Check credentials in Shopify Partner Dashboard
 3. Rotate credentials if expired
@@ -366,6 +381,7 @@ fly secrets set GA4_SERVICE_ACCOUNT_KEY="$(cat vault/occ/google/analytics-servic
 **Cause:** Invalid service key or project URL
 
 **Fix:**
+
 1. Verify `SUPABASE_URL` and `SUPABASE_SERVICE_KEY` are set
 2. Check project settings in Supabase dashboard
 3. Ensure service key has correct permissions
@@ -376,6 +392,7 @@ fly secrets set GA4_SERVICE_ACCOUNT_KEY="$(cat vault/occ/google/analytics-servic
 **Cause:** Too many requests (> 10/sec)
 
 **Fix:**
+
 1. Implement rate limiting in code
 2. Add caching to reduce API calls
 3. Use webhooks instead of polling
@@ -385,6 +402,7 @@ fly secrets set GA4_SERVICE_ACCOUNT_KEY="$(cat vault/occ/google/analytics-servic
 **Cause:** Invalid API token or workspace
 
 **Fix:**
+
 1. Verify `PUBLER_API_KEY` is valid
 2. Check `PUBLER_WORKSPACE_ID` matches workspace
 3. Ensure workspace has connected social accounts

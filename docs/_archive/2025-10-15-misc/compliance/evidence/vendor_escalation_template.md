@@ -1,4 +1,5 @@
 # Vendor Escalation Template
+
 - Vendor:
 - Thread/Ref:
 - Attempts made: 2

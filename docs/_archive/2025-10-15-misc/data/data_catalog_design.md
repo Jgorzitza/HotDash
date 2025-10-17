@@ -8,9 +8,11 @@ last_reviewed: 2025-10-11
 # Data Cataloging and Discovery System
 
 ## Overview
+
 Automated data catalog for discovering tables, views, columns, relationships, and usage patterns across the Agent SDK data platform.
 
 ## Catalog Schema
+
 ```sql
 CREATE TABLE data_catalog_tables (
   table_id SERIAL PRIMARY KEY,
@@ -50,13 +52,14 @@ CREATE TABLE data_catalog_lineage (
 ```
 
 ## Auto-Discovery Function
+
 ```sql
 CREATE OR REPLACE FUNCTION refresh_data_catalog()
 RETURNS void AS $$
 BEGIN
   -- Populate catalog from information_schema
   INSERT INTO data_catalog_tables (schema_name, table_name, table_type, row_count, size_bytes)
-  SELECT 
+  SELECT
     schemaname, tablename, 'table',
     n_live_tup, pg_total_relation_size(schemaname||'.'||tablename)
   FROM pg_stat_user_tables
@@ -69,4 +72,3 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Status:** Data catalog designed with auto-discovery
-

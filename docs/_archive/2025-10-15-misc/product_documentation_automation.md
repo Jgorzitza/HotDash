@@ -9,16 +9,19 @@
 ## Documentation Strategy
 
 **Auto-Generated Docs**:
+
 - API docs from code comments (Swagger/OpenAPI)
 - Release notes from git commits and Linear tickets
 - Changelog from feature flags and deployments
 
 **Manual Docs**:
+
 - User guides (how-to articles)
 - Best practices
 - Video tutorials
 
 **Tools**:
+
 - Docs site: ReadMe.io or GitBook
 - Screenshots: Auto-capture on feature changes
 - Videos: Loom for quick walkthroughs
@@ -27,4 +30,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Documentation automation plan
-

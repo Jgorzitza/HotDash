@@ -6,30 +6,36 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-11-11
 ---
+
 # Secret Scanning Runbook
 
 ## Overview
+
 Automated secret scanning prevents credentials from being committed to the repository. This runbook covers local pre-commit hooks and CI/CD integration.
 
 ## Local Secret Scanning
 
 ### Pre-Commit Hook
+
 **Location:** `.git/hooks/pre-commit`
 **Tool:** Gitleaks
 **Installed:** 2025-10-11 by Compliance Agent
 
 **Behavior:**
+
 - Scans all staged files for secrets before commit
 - Redacts secret values in output
 - Blocks commit if secrets detected
 - Provides remediation instructions
 
 **Bypass (NOT RECOMMENDED):**
+
 ```bash
 git commit --no-verify
 ```
 
 **Installation:**
+
 ```bash
 # Hook is already installed in .git/hooks/pre-commit
 chmod +x .git/hooks/pre-commit
@@ -38,11 +44,13 @@ chmod +x .git/hooks/pre-commit
 ### Installing Gitleaks
 
 **macOS:**
+
 ```bash
 brew install gitleaks
 ```
 
 **Linux:**
+
 ```bash
 # Download latest release
 wget https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_<VERSION>_linux_x64.tar.gz
@@ -51,6 +59,7 @@ sudo mv gitleaks /usr/local/bin/
 ```
 
 **Windows:**
+
 ```bash
 # Use Scoop
 scoop install gitleaks
@@ -61,6 +70,7 @@ scoop install gitleaks
 ### GitHub Actions Workflows
 
 **Active Scanners:**
+
 1. **Gitleaks** - `.github/workflows/secret_scan.yml`
    - Runs on: All PRs, pushes to main
    - Configuration: `.github/gitleaks.toml`
@@ -77,6 +87,7 @@ scoop install gitleaks
    - Detects security vulnerabilities
 
 **Verification:**
+
 ```bash
 # Check workflow status
 gh run list --workflow=secret_scan.yml --limit 5
@@ -86,6 +97,7 @@ gh run list --workflow=security.yml --limit 5
 ## Secret Detection Patterns
 
 **Detected Patterns:**
+
 - API keys (sk-, pk-, etc.)
 - AWS credentials
 - Database connection strings
@@ -157,11 +169,13 @@ gh run list --workflow=secret_scan.yml --limit 1
 ## Monitoring & Alerts
 
 **GitHub Security Alerts:**
+
 - Navigate to: Repository → Security → Code scanning alerts
 - Review Semgrep and CodeQL findings
 - Address P0/P1 findings immediately
 
 **Email Notifications:**
+
 - Configured for: Repository collaborators
 - Triggers: Secret detected, security vulnerability
 - Action: Review and remediate within 24 hours
@@ -171,6 +185,7 @@ gh run list --workflow=secret_scan.yml --limit 1
 **Allowlist:** `.github/gitleaks.toml`
 
 **Adding Exclusions:**
+
 ```toml
 [[rules]]
 description = "Exclude specific file patterns"
@@ -179,6 +194,7 @@ path = '''specific/path/to/exclude'''
 ```
 
 **Common False Positives:**
+
 - Example credentials in docs (should be marked `[EXAMPLE]`)
 - Test fixtures (should use fake data)
 - Public API keys (verify they're actually public)
@@ -186,16 +202,19 @@ path = '''specific/path/to/exclude'''
 ## Compliance Requirements
 
 **Frequency:**
+
 - Pre-commit: Every commit (local)
 - CI/CD: Every PR + push to main
 - Full audit: Weekly (manual review of alerts)
 
 **Evidence:**
+
 - Pre-commit hook: `.git/hooks/pre-commit`
 - CI workflow logs: GitHub Actions artifacts
 - Compliance reports: `feedback/compliance.md`
 
 **Audit Trail:**
+
 - All secret detections logged
 - Remediation actions documented
 - Rotation confirmations archived
@@ -203,15 +222,18 @@ path = '''specific/path/to/exclude'''
 ## Escalation
 
 **Local Detection:**
+
 - Developer remediates immediately
 - No escalation needed if secret not committed
 
 **CI Detection:**
+
 - Block PR merge
 - Developer remediates in next commit
 - Compliance review if pattern indicates systematic issue
 
 **History Detection:**
+
 - Immediate escalation to compliance + security
 - Follow incident response procedures
 - Manager approval for any git rewrites
@@ -226,12 +248,14 @@ path = '''specific/path/to/exclude'''
 ## Maintenance
 
 **Monthly Review:**
+
 - Verify CI workflows active
 - Check for workflow failures
 - Review exclusion list
 - Update detection patterns
 
 **Quarterly Audit:**
+
 - Test pre-commit hook
 - Verify all developers have gitleaks installed
 - Review false positive rate
@@ -241,4 +265,3 @@ path = '''specific/path/to/exclude'''
 
 **Last Updated:** 2025-10-11 by Compliance Agent
 **Next Review:** 2025-11-11
-

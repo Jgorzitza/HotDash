@@ -53,10 +53,7 @@ async function purgeSessions(cutoffDays: number): Promise<number> {
 
   const result = await prisma.session.deleteMany({
     where: {
-      OR: [
-        { expires: { lt: now } },
-        { expires: { lt: cutoffDate } },
-      ],
+      OR: [{ expires: { lt: now } }, { expires: { lt: cutoffDate } }],
     },
   });
 

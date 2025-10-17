@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import { getAllFeatureFlags, getFeatureFlag, isFeatureEnabled } from "../../app/config/featureFlags";
+import {
+  getAllFeatureFlags,
+  getFeatureFlag,
+  isFeatureEnabled,
+} from "../../app/config/featureFlags";
 
 const ORIGINAL_ENV = { ...process.env };
 

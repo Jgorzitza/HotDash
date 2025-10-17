@@ -7,7 +7,9 @@ doc_hash: TBD
 expires: 2026-01-11
 classification: INTERNAL
 ---
+
 # Security Incident Response Tabletop Exercise
+
 ## Data Breach Scenario - Agent SDK
 
 **Exercise Date:** 2025-10-11T22:15:00Z  
@@ -36,6 +38,7 @@ classification: INTERNAL
 **Severity:** CRITICAL (potential customer PII exposure)
 
 **Initial Alert:**
+
 ```
 SECURITY ALERT - Unusual Database Activity Detected
 Time: 2025-10-15T03:00:00Z
@@ -48,6 +51,7 @@ IP Address: 198.51.100.42 (Unknown origin)
 ```
 
 **Scenario Injects:**
+
 - T+5min: Second alert shows data export attempt
 - T+15min: Service key identified as potentially compromised
 - T+30min: Customer PII confirmed in accessed records
@@ -62,17 +66,20 @@ IP Address: 198.51.100.42 (Unknown origin)
 **T+0 (03:00 UTC) - Alert Received**
 
 **Actions Taken:**
+
 1. ✅ Alert forwarded to #incidents Slack channel
 2. ✅ On-call reliability engineer paged
 3. ✅ Compliance officer notified (this agent)
 4. ✅ Initial incident log created
 
 **Decisions:**
+
 - Severity assessed as CRITICAL (customer PII)
 - Incident response team activated
 - Manager notification sent immediately
 
 **Communications:**
+
 ```
 INCIDENT #2025-10-15-001 - CRITICAL
 Time: 03:00 UTC
@@ -86,12 +93,14 @@ Next Update: 03:30 UTC
 **T+10 (03:10 UTC) - Initial Investigation**
 
 **Actions Taken:**
+
 1. ✅ Reviewed Supabase audit logs
 2. ✅ Identified service key used: SUPABASE_SERVICE_KEY_STAGING
 3. ✅ Confirmed 247 conversations accessed
 4. ✅ IP address geolocation: Unknown origin (not team)
 
 **Decisions:**
+
 - Service key potentially compromised
 - Immediate key rotation required
 - Access to be revoked
@@ -99,6 +108,7 @@ Next Update: 03:30 UTC
 **T+20 (03:20 UTC) - Containment Actions**
 
 **Actions Taken:**
+
 1. ✅ Revoked compromised service key in Supabase dashboard
 2. ✅ Generated new service key
 3. ✅ Updated vault/occ/supabase/service_key_staging.env
@@ -106,6 +116,7 @@ Next Update: 03:30 UTC
 5. ✅ Verified unauthorized access stopped
 
 **Decisions:**
+
 - Access successfully contained
 - No further unauthorized queries detected
 - Data exfiltration extent unknown (logs analysis needed)
@@ -113,6 +124,7 @@ Next Update: 03:30 UTC
 **T+30 (03:30 UTC) - Scope Assessment**
 
 **Actions Taken:**
+
 1. ✅ Analyzed audit logs for data export attempts
 2. ✅ Identified 247 conversations accessed (full records)
 3. ✅ Customer PII confirmed in records:
@@ -122,6 +134,7 @@ Next Update: 03:30 UTC
 4. ✅ No evidence of successful data export (logs show SELECT only, no export)
 
 **Decisions:**
+
 - Data breach confirmed (access to customer PII)
 - Regulatory notification required (GDPR 72h, CCPA 45 days)
 - Customer notification required (GDPR Article 34)
@@ -134,6 +147,7 @@ Next Update: 03:30 UTC
 **T+45 (03:45 UTC) - Forensic Analysis**
 
 **Actions Taken:**
+
 1. ✅ Preserved audit logs for forensic review
 2. ✅ Identified access pattern: Single IP, 15-minute window
 3. ✅ Confirmed service key compromise source: Unknown (investigation ongoing)
@@ -141,6 +155,7 @@ Next Update: 03:30 UTC
 5. ✅ Checked git history for key leakage (none found)
 
 **Findings:**
+
 - Service key likely compromised via unknown vector
 - No evidence of key in git history
 - Access pattern suggests automated script
@@ -149,6 +164,7 @@ Next Update: 03:30 UTC
 **T+60 (04:00 UTC) - Impact Assessment**
 
 **Actions Taken:**
+
 1. ✅ Categorized data accessed:
    - 247 customer names (PII)
    - 247 customer emails (PII)
@@ -165,6 +181,7 @@ Next Update: 03:30 UTC
    - Individual notification: Required if high risk
 
 **Decisions:**
+
 - Supervisor authority (Data Protection Authority) notification required
 - Individual customer notification required
 - Public disclosure: TBD (depends on risk assessment)
@@ -172,12 +189,14 @@ Next Update: 03:30 UTC
 **T+90 (04:30 UTC) - Root Cause Analysis**
 
 **Investigation Findings:**
+
 1. Service key source: vault/occ/supabase/service_key_staging.env
 2. Compromise vector: TBD (possibilities: phishing, malware, insider)
 3. Access method: Direct API access with valid credentials
 4. Exfiltration: No evidence found (monitoring continues)
 
 **Security Control Failures:**
+
 - IP address allowlisting not implemented (recommendation)
 - Service key rotation overdue (FALSE - was current)
 - Alerting delayed by 5 minutes (acceptable)
@@ -189,6 +208,7 @@ Next Update: 03:30 UTC
 **T+2h (05:00 UTC) - Regulatory Notification Preparation**
 
 **Actions Taken:**
+
 1. ✅ Drafted DPA notification (GDPR Article 33)
 2. ✅ Prepared CCPA notification (if applicable)
 3. ✅ Compiled breach details:
@@ -199,6 +219,7 @@ Next Update: 03:30 UTC
 4. ✅ Identified supervisory authority: TBD (depends on EU establishment)
 
 **Draft Notification:**
+
 ```
 To: [Data Protection Authority]
 Subject: Personal Data Breach Notification - GDPR Article 33
@@ -239,12 +260,14 @@ Reference: INCIDENT-2025-10-15-001
 **T+4h (07:00 UTC) - Customer Notification Preparation**
 
 **Actions Taken:**
+
 1. ✅ Assessed risk to individuals (per GDPR Article 34)
 2. ✅ Drafted customer notification email
 3. ✅ Prepared FAQ for customer questions
 4. ✅ Set up dedicated support channel
 
 **Risk Assessment:**
+
 - Identity theft: LOW (no financial/SSN data)
 - Fraud: LOW (no account credentials)
 - Discrimination: LOW (no sensitive categories)
@@ -253,6 +276,7 @@ Reference: INCIDENT-2025-10-15-001
 **Decision:** Individual notification REQUIRED (high privacy risk)
 
 **Draft Customer Email:**
+
 ```
 Subject: Important Security Notice About Your Support Conversations
 
@@ -301,6 +325,7 @@ Hot Rodan Security Team
 **T+24h (Next Day 03:00 UTC) - Public Communication**
 
 **Actions Prepared:**
+
 1. Website security notice
 2. Social media statement (if required)
 3. Press response template
@@ -315,6 +340,7 @@ Hot Rodan Security Team
 **T+48h - Post-Incident Review**
 
 **Actions Taken:**
+
 1. ✅ Complete forensic analysis
 2. ✅ Root cause identified and documented
 3. ✅ Security improvements implemented
@@ -322,12 +348,14 @@ Hot Rodan Security Team
 5. ✅ Team debrief scheduled
 
 **Lessons Learned:**
+
 1. **Detection:** Alerting worked well (5-minute delay acceptable)
 2. **Containment:** Key revocation effective (20 minutes good)
 3. **Communication:** Templates needed improvement
 4. **Prevention:** Need IP allowlisting for service keys
 
 **Improvements Implemented:**
+
 - Added IP allowlisting recommendation to security controls
 - Enhanced service key monitoring
 - Created notification templates
@@ -339,13 +367,13 @@ Hot Rodan Security Team
 
 ### Response Effectiveness
 
-| Phase | Target Time | Simulated Time | Status |
-|-------|-------------|----------------|--------|
-| Detection | <15 min | 5 min | ✅ EXCELLENT |
-| Containment | <30 min | 20 min | ✅ EXCELLENT |
-| Investigation | <2 hours | 90 min | ✅ GOOD |
-| Notification Prep | <4 hours | 4 hours | ✅ ACCEPTABLE |
-| Customer Notification | <72 hours | 24 hours | ✅ EXCELLENT |
+| Phase                 | Target Time | Simulated Time | Status        |
+| --------------------- | ----------- | -------------- | ------------- |
+| Detection             | <15 min     | 5 min          | ✅ EXCELLENT  |
+| Containment           | <30 min     | 20 min         | ✅ EXCELLENT  |
+| Investigation         | <2 hours    | 90 min         | ✅ GOOD       |
+| Notification Prep     | <4 hours    | 4 hours        | ✅ ACCEPTABLE |
+| Customer Notification | <72 hours   | 24 hours       | ✅ EXCELLENT  |
 
 **Overall Response:** ✅ EFFECTIVE (all targets met)
 
@@ -369,18 +397,21 @@ Hot Rodan Security Team
 ## Action Items from Exercise
 
 ### Immediate (Before Pilot)
+
 - [ ] Create customer notification email template
-- [ ] Create DPA notification template  
+- [ ] Create DPA notification template
 - [ ] Add IP allowlisting to security controls (if feasible)
 - [ ] Publish security incident contact: security@hotrodan.com
 
 ### Short-Term (Post-Pilot)
+
 - [ ] Conduct live tabletop with full team
 - [ ] Test notification delivery mechanisms
 - [ ] Create forensic analysis checklist
 - [ ] Develop public communication guidelines
 
 ### Ongoing
+
 - [ ] Quarterly tabletop exercises
 - [ ] Annual incident response drill (live test)
 - [ ] Continuous runbook updates
@@ -398,6 +429,7 @@ Hot Rodan Security Team
 4. **Added communication protocols**
 
 **Recommendations for Manager:**
+
 1. Designate security incident contact: security@hotrodan.com
 2. Establish relationship with Data Protection Authority
 3. Schedule quarterly tabletop exercises with full team
@@ -415,6 +447,7 @@ Hot Rodan Security Team
 **Content:** Nature, categories, number, consequences, measures
 
 **HotDash Application:**
+
 - ✅ Template created
 - ✅ Timeline documented (72h)
 - ⏳ Supervisory authority TBD (depends on EU establishment)
@@ -427,6 +460,7 @@ Hot Rodan Security Team
 **Content:** Nature, contact point, likely consequences, measures
 
 **HotDash Application:**
+
 - ✅ Template created
 - ✅ Risk assessment criteria defined
 - ✅ Communication channel identified (email)
@@ -439,6 +473,7 @@ Hot Rodan Security Team
 **Content:** Similar to GDPR requirements
 
 **HotDash Application:**
+
 - ✅ Template adapted from GDPR
 - ✅ Timeline documented
 - ✅ CA resident identification method defined
@@ -449,14 +484,14 @@ Hot Rodan Security Team
 
 ### Preparedness Assessment
 
-| Area | Score | Notes |
-|------|-------|-------|
-| Detection Capability | 9/10 | Excellent alerting |
-| Containment Speed | 9/10 | Fast key revocation |
-| Investigation Tools | 7/10 | Good logs, need forensics |
-| Communication | 6/10 | Templates needed |
-| Documentation | 8/10 | Strong runbooks |
-| Team Coordination | 8/10 | Clear procedures |
+| Area                 | Score | Notes                     |
+| -------------------- | ----- | ------------------------- |
+| Detection Capability | 9/10  | Excellent alerting        |
+| Containment Speed    | 9/10  | Fast key revocation       |
+| Investigation Tools  | 7/10  | Good logs, need forensics |
+| Communication        | 6/10  | Templates needed          |
+| Documentation        | 8/10  | Strong runbooks           |
+| Team Coordination    | 8/10  | Clear procedures          |
 
 **Overall Preparedness:** 7.8/10 (GOOD - Ready for pilot)
 
@@ -474,6 +509,7 @@ Hot Rodan Security Team
 ## Lessons Learned
 
 ### What Worked Well
+
 1. Alert system detected unusual activity quickly
 2. Credential revocation procedure effective
 3. Audit logs provided good investigation data
@@ -481,6 +517,7 @@ Hot Rodan Security Team
 5. Strong technical controls prevented exfiltration
 
 ### What Needs Improvement
+
 1. Need pre-written notification templates (✅ NOW CREATED)
 2. Need IP allowlisting for service keys (recommended to @engineer)
 3. Need faster forensic analysis tools
@@ -510,23 +547,27 @@ Hot Rodan Security Team
 ### Regulatory Requirements Met
 
 **GDPR Article 33 (Authority Notification):**
+
 - ✅ Procedure documented
 - ✅ 72-hour timeline defined
 - ✅ Template created
 - ✅ Content requirements mapped
 
 **GDPR Article 34 (Individual Notification):**
+
 - ✅ Procedure documented
 - ✅ High-risk criteria defined
 - ✅ Template created
 - ✅ Communication method identified
 
 **CCPA §1798.82:**
+
 - ✅ Notification procedure documented
 - ✅ Timeline defined (without unreasonable delay)
 - ✅ Template created
 
 **Documentation:**
+
 - ✅ Incident response runbook updated
 - ✅ Communication templates created
 - ✅ Escalation procedures documented
@@ -552,6 +593,7 @@ Hot Rodan Security Team
 ### Appendix A: Incident Response Checklist
 
 **Detection Phase:**
+
 - [ ] Review alert details
 - [ ] Verify alert authenticity
 - [ ] Assess initial severity
@@ -559,6 +601,7 @@ Hot Rodan Security Team
 - [ ] Create incident log
 
 **Containment Phase:**
+
 - [ ] Identify breach source
 - [ ] Revoke compromised credentials
 - [ ] Stop unauthorized access
@@ -566,6 +609,7 @@ Hot Rodan Security Team
 - [ ] Verify containment effective
 
 **Investigation Phase:**
+
 - [ ] Analyze audit logs
 - [ ] Determine scope (records accessed)
 - [ ] Identify PII categories affected
@@ -574,6 +618,7 @@ Hot Rodan Security Team
 - [ ] Document root cause
 
 **Notification Phase:**
+
 - [ ] Assess notification requirements (GDPR/CCPA)
 - [ ] Prepare authority notification (<72h GDPR)
 - [ ] Prepare customer notification
@@ -582,6 +627,7 @@ Hot Rodan Security Team
 - [ ] Send customer communications
 
 **Recovery Phase:**
+
 - [ ] Implement security improvements
 - [ ] Rotate all potentially compromised credentials
 - [ ] Update incident response procedures
@@ -592,6 +638,7 @@ Hot Rodan Security Team
 ### Appendix B: Communication Templates
 
 **Created and stored in:**
+
 - Authority notification: Included in this document (see Phase 3)
 - Customer notification: Included in this document (see Phase 3)
 - Internal communication: Slack template in document
@@ -600,6 +647,7 @@ Hot Rodan Security Team
 ### Appendix C: Contact Information
 
 **Incident Response Team:**
+
 - Incident Commander: Reliability Lead
 - Security: Security Officer / Compliance
 - Communications: Manager / Marketing
@@ -607,12 +655,14 @@ Hot Rodan Security Team
 - Technical: Engineering Lead
 
 **External Contacts:**
+
 - Data Protection Authority: TBD (establish before production)
 - Cyber Insurance: TBD (consider before production)
 - Legal Counsel: TBD
 - PR/Communications: TBD
 
 **Customer Communication:**
+
 - Primary: security@hotrodan.com
 - Support: customer.support@hotrodan.com
 - Escalation: Manager email
@@ -626,5 +676,4 @@ Hot Rodan Security Team
 
 ---
 
-*This tabletop exercise successfully validated incident response procedures and identified improvements. All critical gaps addressed with templates and procedures now in place.*
-
+_This tabletop exercise successfully validated incident response procedures and identified improvements. All critical gaps addressed with templates and procedures now in place._

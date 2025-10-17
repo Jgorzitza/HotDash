@@ -19,7 +19,10 @@ interface UseAuthenticatedFetchOptions {
   defaultRequestInit?: RequestInit;
 }
 
-type AuthenticatedFetch = (input: FetchInput, init?: FetchInit) => ReturnType<typeof fetch>;
+type AuthenticatedFetch = (
+  input: FetchInput,
+  init?: FetchInit,
+) => ReturnType<typeof fetch>;
 
 /**
  * Returns a wrapper around window.fetch that injects Shopify session tokens by
@@ -35,32 +38,39 @@ export function useAuthenticatedFetch(
   const appBridge = useAppBridge();
 
   return useMemo(() => {
-    return authenticatedFetch(appBridge as any, async (uri: FetchInput, init?: FetchInit) => {
-      const mergedInit: RequestInit = {
-        ...options.defaultRequestInit,
-        ...init,
-      };
+    return authenticatedFetch(
+      appBridge as any,
+      async (uri: FetchInput, init?: FetchInit) => {
+        const mergedInit: RequestInit = {
+          ...options.defaultRequestInit,
+          ...init,
+        };
 
-      const headers = new Headers(options.defaultRequestInit?.headers ?? undefined);
+        const headers = new Headers(
+          options.defaultRequestInit?.headers ?? undefined,
+        );
 
-      if (init?.headers) {
-        new Headers(init.headers).forEach((value, key) => {
-          headers.set(key, value);
-        });
-      }
+        if (init?.headers) {
+          new Headers(init.headers).forEach((value, key) => {
+            headers.set(key, value);
+          });
+        }
 
-      if (options.defaultHeaders) {
-        for (const [header, value] of Object.entries(options.defaultHeaders)) {
-          if (!headers.has(header)) {
-            headers.set(header, value);
+        if (options.defaultHeaders) {
+          for (const [header, value] of Object.entries(
+            options.defaultHeaders,
+          )) {
+            if (!headers.has(header)) {
+              headers.set(header, value);
+            }
           }
         }
-      }
 
-      mergedInit.headers = headers;
+        mergedInit.headers = headers;
 
-      return fetch(uri, mergedInit);
-    }) as AuthenticatedFetch;
+        return fetch(uri, mergedInit);
+      },
+    ) as AuthenticatedFetch;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     appBridge,

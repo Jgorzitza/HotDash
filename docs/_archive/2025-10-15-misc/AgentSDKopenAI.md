@@ -1,4 +1,3 @@
-
 # Customer Service Agents — End‑to‑End (OpenAI Agents JS + LlamaIndex.TS + Chatwoot + Shopify)
 
 **Status:** production‑oriented scaffold you can drop into a Node/TS monorepo.  
@@ -55,9 +54,9 @@ Create `tsconfig.json` if you don’t have one:
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "outDir": "dist"
+    "outDir": "dist",
   },
-  "include": ["src"]
+  "include": ["src"],
 }
 ```
 
@@ -114,9 +113,9 @@ src/
 `src/tools/rag.ts`
 
 ```ts
-import { tool } from '@openai/agents';
-import { z } from 'zod';
-import { VectorStoreIndex, SimpleDirectoryReader } from 'llamaindex';
+import { tool } from "@openai/agents";
+import { z } from "zod";
+import { VectorStoreIndex, SimpleDirectoryReader } from "llamaindex";
 
 let queryFn: ((q: string) => Promise<string>) | null = null;
 
@@ -124,7 +123,7 @@ let queryFn: ((q: string) => Promise<string>) | null = null;
 export async function ensureRag() {
   if (queryFn) return queryFn;
   const reader = new SimpleDirectoryReader();
-  const docs = await reader.loadData('./data'); // put FAQs, refund policy, shipping SLAs, troubleshooting guides here
+  const docs = await reader.loadData("./data"); // put FAQs, refund policy, shipping SLAs, troubleshooting guides here
   const index = await VectorStoreIndex.fromDocuments(docs);
   const engine = index.asQueryEngine({ similarityTopK: 5 });
   queryFn = async (q: string) => (await engine.query({ query: q })).response;
@@ -132,8 +131,9 @@ export async function ensureRag() {
 }
 
 export const answerFromDocs = tool({
-  name: 'answer_from_docs',
-  description: 'Answer questions using internal docs/FAQs/policies. Good for shipping, returns, warranties, troubleshooting.',
+  name: "answer_from_docs",
+  description:
+    "Answer questions using internal docs/FAQs/policies. Good for shipping, returns, warranties, troubleshooting.",
   parameters: z.object({ question: z.string() }),
   // read-only; no approval required
   execute: async ({ question }) => {
@@ -153,9 +153,9 @@ export const answerFromDocs = tool({
 `src/tools/chatwoot.ts`
 
 ```ts
-import { tool } from '@openai/agents';
-import { z } from 'zod';
-import fetch from 'node-fetch';
+import { tool } from "@openai/agents";
+import { z } from "zod";
+import fetch from "node-fetch";
 
 const base = process.env.CHATWOOT_BASE_URL!;
 const token = process.env.CHATWOOT_API_TOKEN!;
@@ -163,15 +163,15 @@ const accountId = process.env.CHATWOOT_ACCOUNT_ID!;
 
 async function postJSON(path: string, body: any) {
   const res = await fetch(`${base}${path}`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'api_access_token': token,
+      "Content-Type": "application/json",
+      api_access_token: token,
     },
     body: JSON.stringify(body),
   });
   if (!res.ok) {
-    const t = await res.text().catch(() => '');
+    const t = await res.text().catch(() => "");
     throw new Error(`Chatwoot ${path} failed: ${res.status} ${t}`);
   }
   return res.json();
@@ -182,15 +182,16 @@ async function postJSON(path: string, body: any) {
  * Use this to propose drafts, summaries, and next actions.
  */
 export const cwCreatePrivateNote = tool({
-  name: 'chatwoot_create_private_note',
-  description: 'Create a private note (internal only) in a Chatwoot conversation so an agent can review/approve.',
+  name: "chatwoot_create_private_note",
+  description:
+    "Create a private note (internal only) in a Chatwoot conversation so an agent can review/approve.",
   parameters: z.object({
     conversationId: z.number(),
     content: z.string().min(1),
   }),
   async execute({ conversationId, content }) {
     const path = `/api/v1/accounts/${accountId}/conversations/${conversationId}/messages`;
-    const payload = { content, private: true, content_type: 'text' };
+    const payload = { content, private: true, content_type: "text" };
     const json = await postJSON(path, payload);
     return { ok: true, id: json.id };
   },
@@ -201,8 +202,9 @@ export const cwCreatePrivateNote = tool({
  * Keep this behind needsApproval for now.
  */
 export const cwSendPublicReply = tool({
-  name: 'chatwoot_send_public_reply',
-  description: 'Send a public reply in a Chatwoot conversation to the customer. Use only after a human approves the draft.',
+  name: "chatwoot_send_public_reply",
+  description:
+    "Send a public reply in a Chatwoot conversation to the customer. Use only after a human approves the draft.",
   parameters: z.object({
     conversationId: z.number(),
     content: z.string().min(1),
@@ -211,7 +213,7 @@ export const cwSendPublicReply = tool({
   needsApproval: true,
   async execute({ conversationId, content }) {
     const path = `/api/v1/accounts/${accountId}/conversations/${conversationId}/messages`;
-    const payload = { content, private: false, content_type: 'text' };
+    const payload = { content, private: false, content_type: "text" };
     const json = await postJSON(path, payload);
     return { ok: true, id: json.id };
   },
@@ -219,6 +221,7 @@ export const cwSendPublicReply = tool({
 ```
 
 Notes:
+
 - Endpoints use Chatwoot **Application API** style: `/api/v1/accounts/:account_id/...` and `api_access_token` header.
 - We separate **private notes** (drafts) from **public replies** (approval‑gated).
 
@@ -229,19 +232,19 @@ Notes:
 `src/tools/shopify.ts`
 
 ```ts
-import { tool } from '@openai/agents';
-import { z } from 'zod';
-import fetch from 'node-fetch';
+import { tool } from "@openai/agents";
+import { z } from "zod";
+import fetch from "node-fetch";
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN!; // e.g. yourstore.myshopify.com
 const adminToken = process.env.SHOPIFY_ADMIN_TOKEN!;
 
 async function gql<T>(query: string, variables?: Record<string, any>) {
   const res = await fetch(`https://${domain}/admin/api/2025-10/graphql.json`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Access-Token': adminToken,
+      "Content-Type": "application/json",
+      "X-Shopify-Access-Token": adminToken,
     },
     body: JSON.stringify({ query, variables }),
   });
@@ -252,10 +255,14 @@ async function gql<T>(query: string, variables?: Record<string, any>) {
 
 /** Read‑only: find recent orders for a customer (by email or name). */
 export const shopifyFindOrders = tool({
-  name: 'shopify_find_orders',
-  description: 'Find recent orders for a customer by email or name. Read-only.',
+  name: "shopify_find_orders",
+  description: "Find recent orders for a customer by email or name. Read-only.",
   parameters: z.object({
-    query: z.string().describe('Shopify order search query, e.g. "email:john@example.com" or free text'),
+    query: z
+      .string()
+      .describe(
+        'Shopify order search query, e.g. "email:john@example.com" or free text',
+      ),
     first: z.number().int().min(1).max(50).default(10),
   }),
   async execute({ query, first }) {
@@ -271,9 +278,9 @@ export const shopifyFindOrders = tool({
           } }
         }
       }`,
-      { query, first }
+      { query, first },
     );
-    return data.orders.edges.map(e => e.node);
+    return data.orders.edges.map((e) => e.node);
   },
 });
 
@@ -282,12 +289,17 @@ export const shopifyFindOrders = tool({
  * You probably won’t allow this until you’ve road‑tested the drafts.
  */
 export const shopifyCancelOrder = tool({
-  name: 'shopify_cancel_order',
-  description: 'Cancel a Shopify order with an optional reason. Requires human approval.',
+  name: "shopify_cancel_order",
+  description:
+    "Cancel a Shopify order with an optional reason. Requires human approval.",
   parameters: z.object({
-    orderId: z.string().describe('GraphQL ID, e.g. "gid://shopify/Order/1234567890"'),
+    orderId: z
+      .string()
+      .describe('GraphQL ID, e.g. "gid://shopify/Order/1234567890"'),
     notify: z.boolean().default(false),
-    reason: z.enum(['CUSTOMER','DECLINED','FRAUD','INVENTORY','OTHER']).optional(),
+    reason: z
+      .enum(["CUSTOMER", "DECLINED", "FRAUD", "INVENTORY", "OTHER"])
+      .optional(),
   }),
   needsApproval: true,
   async execute({ orderId, notify, reason }) {
@@ -297,15 +309,17 @@ export const shopifyCancelOrder = tool({
           userErrors { field message }
         }
       }`,
-      { orderId, notify, reason }
+      { orderId, notify, reason },
     );
-    if (data.orderCancel.userErrors?.length) throw new Error(JSON.stringify(data.orderCancel.userErrors));
+    if (data.orderCancel.userErrors?.length)
+      throw new Error(JSON.stringify(data.orderCancel.userErrors));
     return { ok: true };
   },
 });
 ```
 
 Defaults:
+
 - We pin GraphQL to `2025-10`. Change as Shopify deprecates older versions.
 - Read‑only queries do not need approval; mutations do.
 
@@ -316,50 +330,65 @@ Defaults:
 `src/agents/index.ts`
 
 ```ts
-import { Agent, tool } from '@openai/agents';
-import { z } from 'zod';
-import { answerFromDocs } from '../tools/rag';
-import { shopifyFindOrders, shopifyCancelOrder } from '../tools/shopify';
-import { cwCreatePrivateNote, cwSendPublicReply } from '../tools/chatwoot';
+import { Agent, tool } from "@openai/agents";
+import { z } from "zod";
+import { answerFromDocs } from "../tools/rag";
+import { shopifyFindOrders, shopifyCancelOrder } from "../tools/shopify";
+import { cwCreatePrivateNote, cwSendPublicReply } from "../tools/chatwoot";
 
 // A tiny tool the triage agent can use to annotate intent in-line.
 const setIntent = tool({
-  name: 'set_intent',
-  description: 'Classify the user message into a high-level intent bucket.',
-  parameters: z.object({ intent: z.enum(['order_status','refund','cancel','exchange','product_question','other']) }),
+  name: "set_intent",
+  description: "Classify the user message into a high-level intent bucket.",
+  parameters: z.object({
+    intent: z.enum([
+      "order_status",
+      "refund",
+      "cancel",
+      "exchange",
+      "product_question",
+      "other",
+    ]),
+  }),
   async execute({ intent }) {
     return { intent };
-  }
+  },
 });
 
 export const orderSupportAgent = new Agent({
-  name: 'Order Support',
+  name: "Order Support",
   instructions: [
-    'You help with order status, returns, exchanges, and cancellations.',
-    'Prefer read-only checks first (Shopify find_orders).',
-    'If a mutation is required (cancel/refund), propose a clear private note explaining steps and risks.',
-    'Do NOT send anything to the customer directly; use private notes and wait for approval.',
-  ].join('\n'),
-  tools: [answerFromDocs, shopifyFindOrders, shopifyCancelOrder, cwCreatePrivateNote, cwSendPublicReply],
+    "You help with order status, returns, exchanges, and cancellations.",
+    "Prefer read-only checks first (Shopify find_orders).",
+    "If a mutation is required (cancel/refund), propose a clear private note explaining steps and risks.",
+    "Do NOT send anything to the customer directly; use private notes and wait for approval.",
+  ].join("\n"),
+  tools: [
+    answerFromDocs,
+    shopifyFindOrders,
+    shopifyCancelOrder,
+    cwCreatePrivateNote,
+    cwSendPublicReply,
+  ],
 });
 
 export const productQAAgent = new Agent({
-  name: 'Product Q&A',
+  name: "Product Q&A",
   instructions: [
-    'You answer product questions based on internal docs/FAQs/spec sheets via answer_from_docs.',
-    'If missing info, propose a private note requesting human input.',
-    'No public replies without approval.',
-  ].join('\n'),
+    "You answer product questions based on internal docs/FAQs/spec sheets via answer_from_docs.",
+    "If missing info, propose a private note requesting human input.",
+    "No public replies without approval.",
+  ].join("\n"),
   tools: [answerFromDocs, cwCreatePrivateNote, cwSendPublicReply],
 });
 
 export const triageAgent = new Agent({
-  name: 'Triage',
+  name: "Triage",
   instructions: [
-    'Decide whether the conversation is about orders or product questions.',
-    'If order-related, hand off to Order Support. If product knowledge, hand off to Product Q&A.',
-    'Use set_intent to record your guess; include it in private notes.',
-  ].join('\n'),
+    "Decide whether the conversation is about orders or product questions.",
+    "If order-related, hand off to Order Support. If product knowledge, hand off to Product Q&A.",
+    "Use set_intent to record your guess; include it in private notes.",
+  ].join("\n"),
   tools: [setIntent],
   handoffs: [orderSupportAgent, productQAAgent],
 });
@@ -374,15 +403,27 @@ export const triageAgent = new Agent({
 `src/server.ts`
 
 ```ts
-import 'dotenv/config';
-import express from 'express';
-import bodyParser from 'body-parser';
-import { run, RunState, RunResult, setDefaultOpenAIKey, setTracingExportApiKey } from '@openai/agents';
-import { triageAgent } from './agents';
-import { saveFeedbackSample, saveApprovalState, loadApprovalState, listPendingApprovals } from './feedback/store';
+import "dotenv/config";
+import express from "express";
+import bodyParser from "body-parser";
+import {
+  run,
+  RunState,
+  RunResult,
+  setDefaultOpenAIKey,
+  setTracingExportApiKey,
+} from "@openai/agents";
+import { triageAgent } from "./agents";
+import {
+  saveFeedbackSample,
+  saveApprovalState,
+  loadApprovalState,
+  listPendingApprovals,
+} from "./feedback/store";
 
 setDefaultOpenAIKey(process.env.OPENAI_API_KEY!);
-if (process.env.OPENAI_TRACING_API_KEY) setTracingExportApiKey(process.env.OPENAI_TRACING_API_KEY);
+if (process.env.OPENAI_TRACING_API_KEY)
+  setTracingExportApiKey(process.env.OPENAI_TRACING_API_KEY);
 
 const app = express();
 app.use(bodyParser.json());
@@ -391,16 +432,18 @@ app.use(bodyParser.json());
  * Chatwoot webhook (subscribe at least to message_created).
  * We only respond to new incoming customer messages (not agent messages).
  */
-app.post('/webhooks/chatwoot', async (req, res) => {
+app.post("/webhooks/chatwoot", async (req, res) => {
   try {
     const event = req.body;
-    if (event?.event !== 'message_created') return res.json({ ignored: true });
+    if (event?.event !== "message_created") return res.json({ ignored: true });
     const msg = event; // payload shape documented by Chatwoot
 
     const conversationId: number = event?.conversation?.id;
     const text: string | undefined = event?.content;
-    const isIncoming: boolean = event?.message_type === 0 || event?.sender?.type === 'contact';
-    if (!conversationId || !text || !isIncoming) return res.json({ ignored: true });
+    const isIncoming: boolean =
+      event?.message_type === 0 || event?.sender?.type === "contact";
+    if (!conversationId || !text || !isIncoming)
+      return res.json({ ignored: true });
 
     // Kick off agent run with the raw user text. You can layer extra context (shop/customer) if you have it.
     let result: RunResult<any, any> = await run(triageAgent, text);
@@ -410,7 +453,7 @@ app.post('/webhooks/chatwoot', async (req, res) => {
       // Persist state for later
       await saveApprovalState(conversationId, result.state);
       // Summarize what’s proposed and add a private note in Chatwoot (via our own tool)
-      const planned = result.interruptions.map(i => ({
+      const planned = result.interruptions.map((i) => ({
         agent: i.agent.name,
         tool: i.rawItem.name,
         args: i.rawItem.arguments,
@@ -419,13 +462,19 @@ app.post('/webhooks/chatwoot', async (req, res) => {
       // Compose a private note instructing the human what to approve
       const summary = [
         `🤖 Proposed plan by agents:`,
-        ...planned.map(p => `• ${p.agent} → ${p.tool} ${JSON.stringify(p.args)}`),
+        ...planned.map(
+          (p) => `• ${p.agent} → ${p.tool} ${JSON.stringify(p.args)}`,
+        ),
         ``,
         `Approve in dashboard → Approvals queue → conversation ${conversationId}`,
-      ].join('\n');
+      ].join("\n");
 
       // We don’t call tools from here; this webhook handler should be fast. Your dashboard will display approvals.
-      return res.json({ status: 'pending_approval', conversationId, interruptions: planned });
+      return res.json({
+        status: "pending_approval",
+        conversationId,
+        interruptions: planned,
+      });
     }
 
     // If there were no approval-gated tools, we likely just have a draft text as finalOutput.
@@ -433,45 +482,52 @@ app.post('/webhooks/chatwoot', async (req, res) => {
     await saveFeedbackSample({
       conversationId,
       inputText: text,
-      modelDraft: String(result.finalOutput ?? ''),
+      modelDraft: String(result.finalOutput ?? ""),
       safeToSend: false,
       labels: [],
     });
 
-    return res.json({ status: 'draft_ready', conversationId, draft: result.finalOutput });
+    return res.json({
+      status: "draft_ready",
+      conversationId,
+      draft: result.finalOutput,
+    });
   } catch (err: any) {
     console.error(err);
-    return res.status(500).json({ error: err.message || 'webhook error' });
+    return res.status(500).json({ error: err.message || "webhook error" });
   }
 });
 
 /**
  * Your dashboard calls this to fetch all pending approvals (cross-conversation).
  */
-app.get('/approvals', async (_req, res) => {
+app.get("/approvals", async (_req, res) => {
   const rows = await listPendingApprovals();
-  res.json(rows.map(r => ({
-    id: r.id,
-    conversationId: r.conversationId,
-    createdAt: r.createdAt,
-    pending: r.pending, // array of { agent, tool, args }
-  })));
+  res.json(
+    rows.map((r) => ({
+      id: r.id,
+      conversationId: r.conversationId,
+      createdAt: r.createdAt,
+      pending: r.pending, // array of { agent, tool, args }
+    })),
+  );
 });
 
 /**
  * Approve or reject a specific interruption item by index (0..N-1).
  * The UI should show details and collect a reason for audit.
  */
-app.post('/approvals/:id/:idx/:action', async (req, res) => {
+app.post("/approvals/:id/:idx/:action", async (req, res) => {
   const { id, idx, action } = req.params;
-  const approve = action === 'approve';
+  const approve = action === "approve";
   const state = await loadApprovalState(id);
-  if (!state) return res.status(404).json({ error: 'not found' });
+  if (!state) return res.status(404).json({ error: "not found" });
 
   // Rehydrate RunState and apply decision
   const hydrated = await RunState.fromString(triageAgent, state.serialized);
   const interruption = state.lastInterruptions[Number(idx)];
-  if (!interruption) return res.status(400).json({ error: 'bad interruption index' });
+  if (!interruption)
+    return res.status(400).json({ error: "bad interruption index" });
 
   if (approve) hydrated.approve(interruption);
   else hydrated.reject(interruption);
@@ -483,23 +539,28 @@ app.post('/approvals/:id/:idx/:action', async (req, res) => {
   while (result.interruptions?.length) {
     // Persist the new pending set and exit; UI can approve the next set
     await saveApprovalState(state.conversationId, result.state);
-    return res.json({ status: 'more_pending', pending: result.interruptions.map(i => ({
-      agent: i.agent.name, tool: i.rawItem.name, args: i.rawItem.arguments,
-    })) });
+    return res.json({
+      status: "more_pending",
+      pending: result.interruptions.map((i) => ({
+        agent: i.agent.name,
+        tool: i.rawItem.name,
+        args: i.rawItem.arguments,
+      })),
+    });
   }
 
   // Finished. Either we produced a final draft or executed tools.
   // Up to policy: either auto-create a private note with the draft, or require a second approval to send publicly.
-  const finalText = String(result.finalOutput ?? '');
+  const finalText = String(result.finalOutput ?? "");
   await saveFeedbackSample({
     conversationId: state.conversationId,
-    inputText: state.lastInput ?? '',
+    inputText: state.lastInput ?? "",
     modelDraft: finalText,
     safeToSend: true, // This approval path indicates it’s okay to send, but the public send tool is still gated
-    labels: ['approved'],
+    labels: ["approved"],
   });
 
-  return res.json({ status: 'complete', finalOutput: finalText });
+  return res.json({ status: "complete", finalOutput: finalText });
 });
 
 const port = Number(process.env.PORT || 8787);
@@ -518,23 +579,26 @@ app.listen(port, () => console.log(`agents server on :${port}`));
 `src/feedback/types.ts`
 
 ```ts
-import { z } from 'zod';
+import { z } from "zod";
 
 export const FeedbackSchema = z.object({
   conversationId: z.number(),
   inputText: z.string(),
-  modelDraft: z.string().default(''),
+  modelDraft: z.string().default(""),
   safeToSend: z.boolean().default(false),
   // operator labels/tags — keep it compact but consistent
   labels: z.array(z.string()).default([]),
   // optional structured rubric
-  rubric: z.object({
-    factuality: z.number().min(1).max(5).optional(),
-    helpfulness: z.number().min(1).max(5).optional(),
-    tone: z.number().min(1).max(5).optional(),
-    policyAlignment: z.number().min(1).max(5).optional(),
-    firstTimeResolution: z.number().min(1).max(5).optional(),
-  }).partial().default({}),
+  rubric: z
+    .object({
+      factuality: z.number().min(1).max(5).optional(),
+      helpfulness: z.number().min(1).max(5).optional(),
+      tone: z.number().min(1).max(5).optional(),
+      policyAlignment: z.number().min(1).max(5).optional(),
+      firstTimeResolution: z.number().min(1).max(5).optional(),
+    })
+    .partial()
+    .default({}),
   annotator: z.string().optional(),
   notes: z.string().optional(),
   // keep raw telemetry for training
@@ -547,10 +611,10 @@ export type Feedback = z.infer<typeof FeedbackSchema>;
 `src/feedback/store.ts`
 
 ```ts
-import fs from 'node:fs';
-import path from 'node:path';
-import { Pool } from 'pg';
-import type { Feedback } from './types';
+import fs from "node:fs";
+import path from "node:path";
+import { Pool } from "pg";
+import type { Feedback } from "./types";
 
 type ApprovalRow = {
   id: string;
@@ -569,9 +633,9 @@ if (usePg) {
   pool = new Pool({ connectionString: pgUrl });
 }
 
-const dataDir = path.join(process.cwd(), 'data');
-const feedbackPath = path.join(dataDir, 'feedback.jsonl');
-const approvalsDir = path.join(dataDir, 'approvals');
+const dataDir = path.join(process.cwd(), "data");
+const feedbackPath = path.join(dataDir, "feedback.jsonl");
+const approvalsDir = path.join(dataDir, "approvals");
 fs.mkdirSync(approvalsDir, { recursive: true });
 fs.mkdirSync(dataDir, { recursive: true });
 
@@ -591,10 +655,10 @@ export async function saveFeedbackSample(sample: Feedback) {
         sample.annotator ?? null,
         sample.notes ?? null,
         JSON.stringify(sample.meta ?? {}),
-      ]
+      ],
     );
   } else {
-    fs.appendFileSync(feedbackPath, JSON.stringify(sample) + '\n');
+    fs.appendFileSync(feedbackPath, JSON.stringify(sample) + "\n");
   }
 }
 
@@ -611,17 +675,28 @@ export async function saveApprovalState(conversationId: number, state: any) {
     await pool.query(
       `INSERT INTO approvals (id, conversation_id, serialized, last_interruptions, created_at)
        VALUES ($1,$2,$3,$4,$5)`,
-      [record.id, record.conversationId, record.serialized, JSON.stringify(record.lastInterruptions), record.createdAt]
+      [
+        record.id,
+        record.conversationId,
+        record.serialized,
+        JSON.stringify(record.lastInterruptions),
+        record.createdAt,
+      ],
     );
   } else {
-    fs.writeFileSync(path.join(approvalsDir, `${id}.json`), JSON.stringify(record, null, 2));
+    fs.writeFileSync(
+      path.join(approvalsDir, `${id}.json`),
+      JSON.stringify(record, null, 2),
+    );
   }
   return record;
 }
 
 export async function listPendingApprovals(): Promise<ApprovalRow[]> {
   if (usePg && pool) {
-    const { rows } = await pool.query(`SELECT id, conversation_id, serialized, last_interruptions, created_at FROM approvals ORDER BY created_at DESC`);
+    const { rows } = await pool.query(
+      `SELECT id, conversation_id, serialized, last_interruptions, created_at FROM approvals ORDER BY created_at DESC`,
+    );
     return rows.map((r: any) => ({
       id: r.id,
       conversationId: Number(r.conversation_id),
@@ -630,13 +705,20 @@ export async function listPendingApprovals(): Promise<ApprovalRow[]> {
       createdAt: r.created_at,
     }));
   }
-  const files = fs.readdirSync(approvalsDir).filter(f => f.endsWith('.json'));
-  return files.map(f => JSON.parse(fs.readFileSync(path.join(approvalsDir, f), 'utf-8')));
+  const files = fs.readdirSync(approvalsDir).filter((f) => f.endsWith(".json"));
+  return files.map((f) =>
+    JSON.parse(fs.readFileSync(path.join(approvalsDir, f), "utf-8")),
+  );
 }
 
-export async function loadApprovalState(id: string): Promise<ApprovalRow | null> {
+export async function loadApprovalState(
+  id: string,
+): Promise<ApprovalRow | null> {
   if (usePg && pool) {
-    const { rows } = await pool.query(`SELECT id, conversation_id, serialized, last_interruptions, created_at FROM approvals WHERE id=$1`, [id]);
+    const { rows } = await pool.query(
+      `SELECT id, conversation_id, serialized, last_interruptions, created_at FROM approvals WHERE id=$1`,
+      [id],
+    );
     if (!rows[0]) return null;
     const r = rows[0];
     return {
@@ -649,7 +731,7 @@ export async function loadApprovalState(id: string): Promise<ApprovalRow | null>
   }
   const p = path.join(approvalsDir, `${id}.json`);
   if (!fs.existsSync(p)) return null;
-  return JSON.parse(fs.readFileSync(p, 'utf-8'));
+  return JSON.parse(fs.readFileSync(p, "utf-8"));
 }
 ```
 
@@ -685,7 +767,7 @@ CREATE TABLE IF NOT EXISTS agent_feedback (
 
 ## 9) Wiring Chatwoot
 
-- In Chatwoot **Settings → Integrations → Webhooks**, add a webhook pointing to your server `/webhooks/chatwoot`. Subscribe to at least `message_created`.  
+- In Chatwoot **Settings → Integrations → Webhooks**, add a webhook pointing to your server `/webhooks/chatwoot`. Subscribe to at least `message_created`.
 - Create an **API channel** if you want to receive messages from your own front‑end and unify the flow.
 - Operators will live in your **dashboard** (not Chatwoot) for the approval queue, or you can paste the approval links as **private notes** so agents can click through.
 
@@ -696,18 +778,21 @@ CREATE TABLE IF NOT EXISTS agent_feedback (
 You can add output guardrails around tone/policy. Example (mild): ensure the draft includes empathy and references policy when denying requests.
 
 ```ts
-import { defineOutputGuardrail } from '@openai/agents';
+import { defineOutputGuardrail } from "@openai/agents";
 
 export const toneGuardrail = defineOutputGuardrail({
-  name: 'tone_policy_guardrail',
-  description: 'Block drafts that are hostile or that promise actions that violate policy.',
+  name: "tone_policy_guardrail",
+  description:
+    "Block drafts that are hostile or that promise actions that violate policy.",
   execute: async ({ input, output }) => {
-    const bad = /(refund guaranteed|100% promise|swear words here)/i.test(String(output ?? ''));
+    const bad = /(refund guaranteed|100% promise|swear words here)/i.test(
+      String(output ?? ""),
+    );
     if (bad) {
-      return { blocked: true, reason: 'Policy-violating promise/tone' };
+      return { blocked: true, reason: "Policy-violating promise/tone" };
     }
     return { blocked: false };
-  }
+  },
 });
 // Attach on an Agent by adding outputGuardrails: [toneGuardrail]
 ```
@@ -790,16 +875,15 @@ Enhance as you like: add actor identity, reason, bulk approvals, or auto‑appro
 
 ## 16) Deploy check‑list
 
-- Environment variables present (keys, domains, account IDs).  
-- Webhook URL reachable from Chatwoot (consider a proxy or queue).  
-- Postgres tables migrated or `data/` writeable.  
-- Dashboard approval UI hooked to `/approvals` and approve/reject endpoints.  
-- RAG seeded with live policies and top 50 customer questions.  
-- Guards on: approval‑gates for any external write or public reply.  
+- Environment variables present (keys, domains, account IDs).
+- Webhook URL reachable from Chatwoot (consider a proxy or queue).
+- Postgres tables migrated or `data/` writeable.
+- Dashboard approval UI hooked to `/approvals` and approve/reject endpoints.
+- RAG seeded with live policies and top 50 customer questions.
+- Guards on: approval‑gates for any external write or public reply.
 
 ---
 
 ## License
 
 This scaffold is yours to modify in your project. Keep your keys secret; keep your approvals tight. Iterate fast, measure faster.
-

@@ -142,15 +142,15 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 
 ## Time Savings Breakdown
 
-| Activity | Before | After | Savings |
-|----------|--------|-------|---------|
-| Context switching | 45s | 0s | 45s (100%) |
-| Finding order info | 75s | 0s | 75s (100%) |
-| Searching knowledge base | 60s | 0s | 60s (100%) |
-| Composing response | 90s | 0-30s | 60-90s (67-100%) |
-| Formatting/reviewing | 30s | 15s | 15s (50%) |
-| Tagging/labeling | 15s | 0s | 15s (100%) |
-| **TOTAL** | **5m 40s** | **50s-1m 20s** | **4-5min (71-82%)** |
+| Activity                 | Before     | After          | Savings             |
+| ------------------------ | ---------- | -------------- | ------------------- |
+| Context switching        | 45s        | 0s             | 45s (100%)          |
+| Finding order info       | 75s        | 0s             | 75s (100%)          |
+| Searching knowledge base | 60s        | 0s             | 60s (100%)          |
+| Composing response       | 90s        | 0-30s          | 60-90s (67-100%)    |
+| Formatting/reviewing     | 30s        | 15s            | 15s (50%)           |
+| Tagging/labeling         | 15s        | 0s             | 15s (100%)          |
+| **TOTAL**                | **5m 40s** | **50s-1m 20s** | **4-5min (71-82%)** |
 
 ---
 
@@ -181,6 +181,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 18. Update internal notes
 
 **Cognitive Load:** HIGH
+
 - Multiple policy checks
 - Manual calculations
 - Risk of error in policy interpretation
@@ -202,6 +203,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 3. Approve or minor edit
 
 **Cognitive Load:** LOW
+
 - Policy pre-checked
 - Calculations automated
 - Consistent formatting
@@ -255,18 +257,21 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### High-Automation Potential (80-90% automated)
 
 **1. Order Status Inquiries**
+
 - Agent SDK can auto-fetch order details
 - Generate complete tracking response
 - Operator just verifies and approves
 - **Time Savings:** 4-5 minutes → 1 minute
 
 **2. FAQ Responses**
+
 - Knowledge base retrieval automated
 - Policy excerpts included
 - Links added automatically
 - **Time Savings:** 5-6 minutes → 30 seconds
 
 **3. Return/Exchange Policies**
+
 - Policy details pre-populated
 - Eligibility auto-checked
 - Instructions auto-generated
@@ -275,12 +280,14 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Medium-Automation Potential (50-70% automated)
 
 **4. Product Questions**
+
 - Product details can be fetched
 - Specifications pre-loaded
 - Operator adds personalized recommendations
 - **Time Savings:** 4-5 minutes → 2 minutes
 
 **5. Shipping Updates**
+
 - Tracking info auto-fetched
 - Delivery estimates calculated
 - Operator verifies accuracy
@@ -289,12 +296,14 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Low-Automation Potential (20-40% automated)
 
 **6. Complex Issues**
+
 - Agent SDK provides research/context
 - Operator applies judgment
 - Significant operator input needed
 - **Time Savings:** 15-20 minutes → 10-12 minutes
 
 **7. Complaints/Escalations**
+
 - Sentiment detected, flagged
 - Context summarized
 - Manager assigned automatically
@@ -307,6 +316,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Current Manual Workflow
 
 **Conversations per Hour:** 5-7
+
 - 5-10 minutes per conversation
 - High cognitive load
 - Frequent context switching
@@ -317,6 +327,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### With Agent SDK
 
 **Conversations per Hour:** 15-20
+
 - 1-3 minutes per conversation
 - Low cognitive load (review vs create)
 - Single dashboard
@@ -333,12 +344,14 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Consistency
 
 **Before:**
+
 - ❌ Response quality varies by operator
 - ❌ Policy interpretation inconsistent
 - ❌ Knowledge base under-utilized
 - ❌ Tone varies widely
 
 **After:**
+
 - ✅ Consistent response templates
 - ✅ Standardized policy application
 - ✅ Automatic knowledge base citations
@@ -347,11 +360,13 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Accuracy
 
 **Before:**
+
 - ❌ Manual data entry errors (order numbers, tracking)
 - ❌ Outdated policy information
 - ❌ Missing critical details
 
 **After:**
+
 - ✅ Auto-fetched data (no transcription errors)
 - ✅ Current policy version always cited
 - ✅ Comprehensive context included
@@ -359,10 +374,12 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Speed
 
 **Before:**
+
 - ⏱️ Average first response: 15-20 minutes
 - ⏱️ Complex issues: 30-60 minutes
 
 **After:**
+
 - ⏱️ Average first response: 3-5 minutes
 - ⏱️ Complex issues: 10-15 minutes (with draft)
 
@@ -373,6 +390,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Skills Before Agent SDK
 
 **Required Skills:**
+
 1. Product knowledge (extensive)
 2. Policy memorization
 3. Shopify Admin navigation
@@ -388,6 +406,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Skills After Agent SDK
 
 **Required Skills:**
+
 1. Review and editing (critical thinking)
 2. Quality assessment (is draft accurate?)
 3. Escalation judgment (when to elevate)
@@ -403,22 +422,22 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 
 ## Before/After Workflow Comparison Table
 
-| Aspect | Manual (Before) | Agent SDK (After) |
-|--------|----------------|-------------------|
-| **Avg Time per Conversation** | 5-10 min | 1-3 min |
-| **Conversations per Hour** | 5-7 | 15-20 |
-| **Context Switches** | 3-4 tools | 1 dashboard |
-| **Knowledge Base Lookups** | Manual (2-3 min) | Automated (0s) |
-| **Order Data Retrieval** | Manual (1-2 min) | Automated (0s) |
-| **Response Composition** | From scratch (2-3 min) | Review draft (30s) |
-| **Policy Verification** | Manual lookup (1-2 min) | Pre-verified (0s) |
-| **Tagging/Labeling** | Manual (15s) | Automated (0s) |
-| **First Response Time** | 15-20 min | 3-5 min |
-| **Operator Training Time** | 2-3 weeks | 2-3 days |
-| **Consistency** | Variable | High |
-| **Accuracy** | 85-90% | 95-98% |
-| **Operator Satisfaction** | Medium | High (less tedious work) |
-| **Customer Satisfaction** | 75-80% | 85-90% (expected) |
+| Aspect                        | Manual (Before)         | Agent SDK (After)        |
+| ----------------------------- | ----------------------- | ------------------------ |
+| **Avg Time per Conversation** | 5-10 min                | 1-3 min                  |
+| **Conversations per Hour**    | 5-7                     | 15-20                    |
+| **Context Switches**          | 3-4 tools               | 1 dashboard              |
+| **Knowledge Base Lookups**    | Manual (2-3 min)        | Automated (0s)           |
+| **Order Data Retrieval**      | Manual (1-2 min)        | Automated (0s)           |
+| **Response Composition**      | From scratch (2-3 min)  | Review draft (30s)       |
+| **Policy Verification**       | Manual lookup (1-2 min) | Pre-verified (0s)        |
+| **Tagging/Labeling**          | Manual (15s)            | Automated (0s)           |
+| **First Response Time**       | 15-20 min               | 3-5 min                  |
+| **Operator Training Time**    | 2-3 weeks               | 2-3 days                 |
+| **Consistency**               | Variable                | High                     |
+| **Accuracy**                  | 85-90%                  | 95-98%                   |
+| **Operator Satisfaction**     | Medium                  | High (less tedious work) |
+| **Customer Satisfaction**     | 75-80%                  | 85-90% (expected)        |
 
 ---
 
@@ -426,19 +445,22 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 
 ### High-Value Automations (Implement First)
 
-**1. Order Status Lookups** 
+**1. Order Status Lookups**
+
 - Current: 100% manual (75s per lookup)
 - Automation: 95% automated (0s operator time)
 - Volume: ~40% of all inquiries
 - **ROI:** Highest - saves 50 minutes/day per operator
 
 **2. Knowledge Base Retrieval**
+
 - Current: 100% manual (2-3 min per search)
 - Automation: 90% automated (0s operator time)
 - Volume: ~60% of inquiries need KB lookup
 - **ROI:** High - saves 1-2 hours/day per operator
 
 **3. Response Composition**
+
 - Current: 100% manual (2-3 min per response)
 - Automation: 70% automated (draft provided, minor edits)
 - Volume: 100% of inquiries
@@ -447,12 +469,14 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Medium-Value Automations
 
 **4. Tag/Label Assignment**
+
 - Current: 100% manual (15s per conversation)
 - Automation: 90% automated
 - Volume: 100% of conversations
 - **ROI:** Medium - saves 10-15 minutes/day
 
 **5. Escalation Routing**
+
 - Current: Manual judgment + handoff (3-5 min)
 - Automation: Auto-detect + assign (30s review)
 - Volume: ~10-15% of conversations
@@ -465,6 +489,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Pain Points Eliminated
 
 **❌ Before: Common Frustrations**
+
 1. "I spend more time searching than helping"
 2. "Switching between 4 tools is exhausting"
 3. "I'm afraid of giving wrong policy information"
@@ -473,6 +498,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 6. "I worry about forgetting to tag conversations"
 
 **✅ After: Improved Experience**
+
 1. "Draft is ready when I open the conversation"
 2. "Everything I need is in one place"
 3. "Policy citations are automatic and correct"
@@ -483,6 +509,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 ### Cognitive Load Reduction
 
 **Manual Workflow Cognitive Demands:**
+
 - **Working Memory:** Hold customer issue + order details + policy rules
 - **Attention Switching:** Between 3-4 different tools
 - **Decision Making:** 15-20 decisions per conversation
@@ -490,6 +517,7 @@ TIME SAVED: 4-5 minutes per conversation (71-82% reduction)
 - **Verification:** Check own work for accuracy
 
 **Agent SDK Workflow Cognitive Demands:**
+
 - **Working Memory:** Review draft + customer context
 - **Attention:** Single dashboard focus
 - **Decision Making:** 2-3 decisions (approve/edit/escalate)
@@ -537,12 +565,14 @@ IMPROVEMENT: 70-83% faster response to customer
 **Focus:** Learn approval queue workflow
 
 **Training:**
+
 - 30-minute orientation
 - Practice with 5-10 test drafts
 - Shadowing senior operator
 - Daily feedback sessions
 
 **Expected Outcomes:**
+
 - Operators comfortable with queue
 - Identify initial improvement areas
 - Collect UX feedback
@@ -554,11 +584,13 @@ IMPROVEMENT: 70-83% faster response to customer
 **Focus:** Refine workflows, optimize
 
 **Training:**
+
 - 15-minute refresher
 - Best practices sharing
 - Weekly feedback sessions
 
 **Expected Outcomes:**
+
 - Refined approval workflows
 - Template optimizations
 - Reduced edit rates
@@ -570,6 +602,7 @@ IMPROVEMENT: 70-83% faster response to customer
 **Focus:** Continuous improvement
 
 **Training:**
+
 - Ongoing best practices
 - Monthly workflow reviews
 - Quarterly refreshers
@@ -580,33 +613,33 @@ IMPROVEMENT: 70-83% faster response to customer
 
 ### Operator Productivity
 
-| Metric | Before | After (Target) | Improvement |
-|--------|--------|----------------|-------------|
-| Conversations/hour | 5-7 | 15-20 | +200% |
-| Avg handling time | 5-10 min | 1-3 min | -70% |
-| Tool switches/conversation | 3-4 | 0-1 | -85% |
-| Knowledge lookups/day | 40-50 | 0-5 | -90% |
-| Context switches/hour | 15-20 | 0-3 | -85% |
+| Metric                     | Before   | After (Target) | Improvement |
+| -------------------------- | -------- | -------------- | ----------- |
+| Conversations/hour         | 5-7      | 15-20          | +200%       |
+| Avg handling time          | 5-10 min | 1-3 min        | -70%        |
+| Tool switches/conversation | 3-4      | 0-1            | -85%        |
+| Knowledge lookups/day      | 40-50    | 0-5            | -90%        |
+| Context switches/hour      | 15-20    | 0-3            | -85%        |
 
 ### Response Quality
 
-| Metric | Before | After (Target) | Improvement |
-|--------|--------|----------------|-------------|
-| Policy accuracy | 85-90% | 95-98% | +8-13% |
-| Response consistency | 70% | 95% | +25% |
-| Knowledge base citations | 20% | 95% | +75% |
-| First contact resolution | 60% | 80% | +20% |
-| Customer satisfaction | 75-80% | 85-90% | +10% |
+| Metric                   | Before | After (Target) | Improvement |
+| ------------------------ | ------ | -------------- | ----------- |
+| Policy accuracy          | 85-90% | 95-98%         | +8-13%      |
+| Response consistency     | 70%    | 95%            | +25%        |
+| Knowledge base citations | 20%    | 95%            | +75%        |
+| First contact resolution | 60%    | 80%            | +20%        |
+| Customer satisfaction    | 75-80% | 85-90%         | +10%        |
 
 ### Operator Satisfaction
 
-| Aspect | Before | After (Expected) |
-|--------|--------|------------------|
-| Job satisfaction | 6/10 | 8/10 |
-| Stress level | High | Medium |
-| Confidence in responses | Medium | High |
-| Tool frustration | High | Low |
-| Time for complex cases | Limited | Ample |
+| Aspect                  | Before  | After (Expected) |
+| ----------------------- | ------- | ---------------- |
+| Job satisfaction        | 6/10    | 8/10             |
+| Stress level            | High    | Medium           |
+| Confidence in responses | Medium  | High             |
+| Tool frustration        | High    | Low              |
+| Time for complex cases  | Limited | Ample            |
 
 ---
 
@@ -615,12 +648,14 @@ IMPROVEMENT: 70-83% faster response to customer
 ### Costs
 
 **Technology:**
+
 - OpenAI API: ~$50/month (estimated 1,000 drafts)
 - LlamaIndex infrastructure: $14/month (Fly.io)
 - Agent SDK infrastructure: $14/month (Fly.io)
 - **Total:** ~$78/month
 
 **One-Time:**
+
 - Development: Already completed
 - Training: 4-6 hours operator time
 - Testing: 2-3 days
@@ -628,17 +663,20 @@ IMPROVEMENT: 70-83% faster response to customer
 ### Benefits
 
 **Time Savings:**
+
 - 4-5 minutes per conversation
 - 40-50 conversations/day per operator
 - 160-250 minutes saved/day per operator
 - **2.5-4 hours/day per operator**
 
 **Capacity Increase:**
+
 - Before: 40-56 conversations/day
 - After: 120-160 conversations/day
 - **+80-104 conversations/day (+200%)**
 
 **Financial Impact:**
+
 - Avoid hiring 2 additional operators: -$120k/year
 - Handle 3x volume with same team
 - **ROI:** ~1,846x (savings vs cost)
@@ -648,24 +686,28 @@ IMPROVEMENT: 70-83% faster response to customer
 ## Workflow Evolution
 
 ### Month 1: Learning Phase
+
 - Operators learning approval queue
 - High edit rate (40-50%)
 - Frequent questions
 - Close monitoring
 
 ### Month 3: Optimization Phase
+
 - Operators comfortable with workflow
 - Edit rate stabilized (25-30%)
 - Workflow refinements implemented
 - Performance metrics stable
 
 ### Month 6: Mature Phase
+
 - Approval rate > 70%
 - Edit rate < 20%
 - Operators highly efficient
 - Continuous improvements ongoing
 
 ### Month 12: Excellence Phase
+
 - Approval rate > 80%
 - Edit rate < 15%
 - Operators as curators/experts
@@ -699,4 +741,3 @@ IMPROVEMENT: 70-83% faster response to customer
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent + Support Agent  
 **Review Cadence:** Monthly or after workflow changes
-

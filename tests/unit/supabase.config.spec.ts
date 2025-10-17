@@ -24,14 +24,22 @@ describe("supabase config", () => {
     process.env.SUPABASE_URL = "https://example.supabase.co";
     process.env.SUPABASE_SERVICE_KEY = "service-key";
 
-    const { getMemory, getSupabaseConfig } = await import("../../app/config/supabase.server");
+    const { getMemory, getSupabaseConfig } = await import(
+      "../../app/config/supabase.server"
+    );
 
     const config = getSupabaseConfig();
-    expect(config).toEqual({ url: "https://example.supabase.co", serviceKey: "service-key" });
+    expect(config).toEqual({
+      url: "https://example.supabase.co",
+      serviceKey: "service-key",
+    });
 
     const memory = getMemory();
     expect(memory).toBe(fakeMemory);
-    expect(supabaseMemoryMock).toHaveBeenCalledWith("https://example.supabase.co", "service-key");
+    expect(supabaseMemoryMock).toHaveBeenCalledWith(
+      "https://example.supabase.co",
+      "service-key",
+    );
 
     const memorySecond = getMemory();
     expect(memorySecond).toBe(fakeMemory);

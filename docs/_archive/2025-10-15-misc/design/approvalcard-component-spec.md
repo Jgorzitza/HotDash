@@ -34,15 +34,18 @@ expires: 2025-10-25
 ## 1. Component Overview
 
 ### Purpose
+
 Display a pending agent action that requires human approval, with clear context, risk indicators, and approve/reject actions.
 
 ### Key Principles
+
 - **Operator-first**: Surface critical information immediately
 - **Safety-first**: Clear risk indicators and confirmation dialogs
 - **Accessible**: Full keyboard navigation and screen reader support
 - **Responsive**: Works on desktop (1280px+), tablet (768px+), mobile (<768px)
 
 ### Data Flow
+
 ```
 Agent SDK → Approval Queue Route → ApprovalCard → User Action → API → State Update
 ```
@@ -54,40 +57,43 @@ Agent SDK → Approval Queue Route → ApprovalCard → User Action → API → 
 ### Core Components to Use
 
 **DO USE** (Native Polaris Components):
+
 ```typescript
 import {
-  Card,           // Container for approval card
-  Text,           // All text content
-  Badge,          // Status and risk indicators
-  Button,         // Primary/secondary actions
-  ButtonGroup,    // Action button layout
-  Stack,          // Vertical spacing
-  InlineStack,    // Horizontal layout
-  Divider,        // Visual separation
-  Icon,           // Icons for states
-  Spinner,        // Loading indicator
-  Banner,         // Error messages
-  Modal,          // Confirmation dialogs
-  Box,            // Layout container
-  BlockStack,     // Vertical stacking with spacing
-} from '@shopify/polaris';
+  Card, // Container for approval card
+  Text, // All text content
+  Badge, // Status and risk indicators
+  Button, // Primary/secondary actions
+  ButtonGroup, // Action button layout
+  Stack, // Vertical spacing
+  InlineStack, // Horizontal layout
+  Divider, // Visual separation
+  Icon, // Icons for states
+  Spinner, // Loading indicator
+  Banner, // Error messages
+  Modal, // Confirmation dialogs
+  Box, // Layout container
+  BlockStack, // Vertical stacking with spacing
+} from "@shopify/polaris";
 
 import {
-  CheckIcon,      // Approve action
-  XIcon,          // Reject action
+  CheckIcon, // Approve action
+  XIcon, // Reject action
   AlertTriangleIcon, // Risk/warning indicator
-  ClockIcon,      // Timestamp
-  InfoIcon,       // Information
-} from '@shopify/polaris-icons';
+  ClockIcon, // Timestamp
+  InfoIcon, // Information
+} from "@shopify/polaris-icons";
 ```
 
 **DO NOT USE**:
+
 - Custom CSS classes (use Polaris tokens instead)
 - Inline styles (except for Polaris-generated values)
 - Non-Polaris components (maintain consistency)
 - HTML button/div (use Polaris Button/Box)
 
 ### Why Polaris?
+
 - **Consistency**: Matches Shopify Admin UX
 - **Accessibility**: Built-in WCAG 2.2 AA compliance
 - **Maintenance**: Automatic updates with App Bridge
@@ -104,19 +110,19 @@ import {
 /**
  * Risk level classification for agent actions
  */
-export type ApprovalRiskLevel = 'low' | 'medium' | 'high';
+export type ApprovalRiskLevel = "low" | "medium" | "high";
 
 /**
  * Current state of the approval card
  */
-export type ApprovalCardState = 
-  | 'pending'      // Awaiting operator decision
-  | 'approving'    // Approve action in progress
-  | 'rejecting'    // Reject action in progress
-  | 'approved'     // Successfully approved (fade out)
-  | 'rejected'     // Successfully rejected (fade out)
-  | 'error'        // Action failed
-  | 'expired';     // Approval timeout expired
+export type ApprovalCardState =
+  | "pending" // Awaiting operator decision
+  | "approving" // Approve action in progress
+  | "rejecting" // Reject action in progress
+  | "approved" // Successfully approved (fade out)
+  | "rejected" // Successfully rejected (fade out)
+  | "error" // Action failed
+  | "expired"; // Approval timeout expired
 
 /**
  * Agent action requiring approval
@@ -124,31 +130,31 @@ export type ApprovalCardState =
 export interface ApprovalAction {
   /** Unique identifier for this approval */
   id: string;
-  
+
   /** Chatwoot conversation ID */
   conversationId: number;
-  
+
   /** Name of the agent proposing the action */
   agentName: string;
-  
+
   /** Tool/function name being called */
   toolName: string;
-  
+
   /** Arguments passed to the tool */
   toolArgs: Record<string, unknown>;
-  
+
   /** Human-readable preview of the action (e.g., message content) */
   preview?: string;
-  
+
   /** Risk classification for this action */
   riskLevel: ApprovalRiskLevel;
-  
+
   /** ISO timestamp when approval was requested */
   timestamp: string;
-  
+
   /** Optional timeout in seconds (null = no timeout) */
   timeoutSeconds?: number | null;
-  
+
   /** Additional context data */
   metadata?: {
     customerName?: string;
@@ -165,10 +171,10 @@ export interface ApprovalAction {
 export interface ApprovalActionResult {
   /** Whether the action succeeded */
   success: boolean;
-  
+
   /** Error message if action failed */
   error?: string;
-  
+
   /** Optional data returned from the action */
   data?: unknown;
 }
@@ -179,22 +185,22 @@ export interface ApprovalActionResult {
 export interface ApprovalCardProps {
   /** The approval action to display */
   action: ApprovalAction;
-  
+
   /** Callback when user approves the action */
   onApprove: (id: string) => Promise<ApprovalActionResult>;
-  
+
   /** Callback when user rejects the action */
   onReject: (id: string, reason?: string) => Promise<ApprovalActionResult>;
-  
+
   /** Whether actions are currently processing (disables buttons) */
   isProcessing?: boolean;
-  
+
   /** Optional callback when card is removed after approval/rejection */
   onRemove?: (id: string) => void;
-  
+
   /** Optional custom timeout handler */
   onTimeout?: (id: string) => void;
-  
+
   /** Test ID for automated testing */
   testId?: string;
 }
@@ -206,15 +212,15 @@ export interface ApprovalCardProps {
 
 ### State Matrix
 
-| State | Visual Indicator | Actions Available | Auto-transition |
-|-------|-----------------|-------------------|----------------|
-| **pending** | Default appearance | Approve, Reject | No |
-| **approving** | Spinner on Approve button | None (disabled) | → approved or error |
-| **rejecting** | Spinner on Reject button | None (disabled) | → rejected or error |
-| **approved** | Success checkmark, green border | None | → removed (3s fade) |
-| **rejected** | X icon, neutral border | None | → removed (3s fade) |
-| **error** | Banner with error message | Retry Approve, Retry Reject | No |
-| **expired** | Warning banner | View Only | → removed (manual) |
+| State         | Visual Indicator                | Actions Available           | Auto-transition     |
+| ------------- | ------------------------------- | --------------------------- | ------------------- |
+| **pending**   | Default appearance              | Approve, Reject             | No                  |
+| **approving** | Spinner on Approve button       | None (disabled)             | → approved or error |
+| **rejecting** | Spinner on Reject button        | None (disabled)             | → rejected or error |
+| **approved**  | Success checkmark, green border | None                        | → removed (3s fade) |
+| **rejected**  | X icon, neutral border          | None                        | → removed (3s fade) |
+| **error**     | Banner with error message       | Retry Approve, Retry Reject | No                  |
+| **expired**   | Warning banner                  | View Only                   | → removed (manual)  |
 
 ### State Transitions
 
@@ -269,26 +275,26 @@ export interface ApprovalCardProps {
           {relativeTime} · Conversation #{conversationId}
         </Text>
       </BlockStack>
-      
+
       <Badge tone={riskBadgeTone}>
         {riskLevel.toUpperCase()} RISK
       </Badge>
     </InlineStack>
-    
+
     <Divider />
-    
+
     {/* Context Section */}
     <BlockStack gap="200">
       <InlineStack gap="100">
         <Text variant="bodyMd" fontWeight="semibold">Agent:</Text>
         <Text variant="bodyMd">{agentName}</Text>
       </InlineStack>
-      
+
       <InlineStack gap="100">
         <Text variant="bodyMd" fontWeight="semibold">Action:</Text>
         <Text variant="bodyMd">{toolName}</Text>
       </InlineStack>
-      
+
       {customerName && (
         <InlineStack gap="100">
           <Text variant="bodyMd" fontWeight="semibold">Customer:</Text>
@@ -296,7 +302,7 @@ export interface ApprovalCardProps {
         </InlineStack>
       )}
     </BlockStack>
-    
+
     {/* Preview Section */}
     {preview && (
       <>
@@ -310,14 +316,14 @@ export interface ApprovalCardProps {
         </Box>
       </>
     )}
-    
+
     {/* Error Banner */}
     {state === 'error' && (
       <Banner tone="critical" onDismiss={clearError}>
         <Text variant="bodyMd">{errorMessage}</Text>
       </Banner>
     )}
-    
+
     {/* Actions Section */}
     <ButtonGroup>
       <Button
@@ -347,15 +353,15 @@ export interface ApprovalCardProps {
 
 ```typescript
 const RISK_BADGE_TONE: Record<ApprovalRiskLevel, BadgeTone> = {
-  low: 'success',        // Green badge
-  medium: 'warning',     // Yellow/amber badge
-  high: 'critical',      // Red badge
+  low: "success", // Green badge
+  medium: "warning", // Yellow/amber badge
+  high: "critical", // Red badge
 };
 
 const RISK_DESCRIPTIONS: Record<ApprovalRiskLevel, string> = {
-  low: 'Low impact - Read-only or safe operation',
-  medium: 'Medium impact - Modifies data but reversible',
-  high: 'High impact - External communication or irreversible action',
+  low: "Low impact - Read-only or safe operation",
+  medium: "Medium impact - Modifies data but reversible",
+  high: "High impact - External communication or irreversible action",
 };
 ```
 
@@ -365,22 +371,22 @@ All spacing uses Polaris tokens:
 
 ```typescript
 // BlockStack gap values
-gap="100"  // 4px  - Tight spacing
-gap="200"  // 8px  - Default spacing
-gap="300"  // 12px - Medium spacing
-gap="400"  // 16px - Large spacing
-gap="500"  // 20px - Extra large spacing
+gap = "100"; // 4px  - Tight spacing
+gap = "200"; // 8px  - Default spacing
+gap = "300"; // 12px - Medium spacing
+gap = "400"; // 16px - Large spacing
+gap = "500"; // 20px - Extra large spacing
 
 // Box padding values
-padding="200"  // 8px  - Tight padding
-padding="300"  // 12px - Default padding
-padding="400"  // 16px - Comfortable padding
-padding="500"  // 20px - Spacious padding
+padding = "200"; // 8px  - Tight padding
+padding = "300"; // 12px - Default padding
+padding = "400"; // 16px - Comfortable padding
+padding = "500"; // 20px - Spacious padding
 
 // BorderRadius values
-borderRadius="100"  // 4px  - Subtle rounding
-borderRadius="200"  // 8px  - Default rounding
-borderRadius="300"  // 12px - Prominent rounding
+borderRadius = "100"; // 4px  - Subtle rounding
+borderRadius = "200"; // 8px  - Default rounding
+borderRadius = "300"; // 12px - Prominent rounding
 ```
 
 ---
@@ -487,19 +493,21 @@ function ApprovalCardSkeleton() {
 
 ```typescript
 const ERROR_MESSAGES: Record<string, string> = {
-  NETWORK_ERROR: 'Unable to connect. Check your internet connection and try again.',
-  TIMEOUT_ERROR: 'Request timed out. The server took too long to respond.',
-  UNAUTHORIZED: 'You do not have permission to perform this action.',
-  ALREADY_PROCESSED: 'This approval has already been processed by another operator.',
-  INVALID_ACTION: 'This action is no longer valid or has expired.',
-  UNKNOWN_ERROR: 'An unexpected error occurred. Please try again.',
+  NETWORK_ERROR:
+    "Unable to connect. Check your internet connection and try again.",
+  TIMEOUT_ERROR: "Request timed out. The server took too long to respond.",
+  UNAUTHORIZED: "You do not have permission to perform this action.",
+  ALREADY_PROCESSED:
+    "This approval has already been processed by another operator.",
+  INVALID_ACTION: "This action is no longer valid or has expired.",
+  UNKNOWN_ERROR: "An unexpected error occurred. Please try again.",
 };
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     return ERROR_MESSAGES[error] || error;
   }
   return ERROR_MESSAGES.UNKNOWN_ERROR;
@@ -512,7 +520,7 @@ function getErrorMessage(error: unknown): string {
 const handleRetry = async () => {
   setState('pending');
   setErrorMessage(null);
-  
+
   // Retry the last action
   if (lastAction === 'approve') {
     await handleApprove();
@@ -546,32 +554,33 @@ const handleRetry = async () => {
 ### Optimistic UI Pattern
 
 ```typescript
-const [optimisticState, setOptimisticState] = useState<ApprovalCardState>('pending');
+const [optimisticState, setOptimisticState] =
+  useState<ApprovalCardState>("pending");
 
 const handleApproveOptimistic = async () => {
   // 1. Immediate UI feedback
-  setOptimisticState('approving');
-  
+  setOptimisticState("approving");
+
   try {
     // 2. API call
     const result = await onApprove(action.id);
-    
+
     if (result.success) {
       // 3. Success state
-      setOptimisticState('approved');
-      
+      setOptimisticState("approved");
+
       // 4. Remove after animation
       setTimeout(() => {
         onRemove?.(action.id);
       }, 3000);
     } else {
       // 3. Revert on error
-      setOptimisticState('error');
-      setErrorMessage(result.error || 'Approval failed');
+      setOptimisticState("error");
+      setErrorMessage(result.error || "Approval failed");
     }
   } catch (error) {
     // Revert on exception
-    setOptimisticState('error');
+    setOptimisticState("error");
     setErrorMessage(getErrorMessage(error));
   }
 };
@@ -631,7 +640,7 @@ const styles = {
     >
       Agent Proposal
     </Text>
-    
+
     <Text
       id={`approval-${action.id}-description`}
       variant="bodyMd"
@@ -639,7 +648,7 @@ const styles = {
     >
       {agentName} proposes to {toolName} for conversation #{conversationId}
     </Text>
-    
+
     {/* Action buttons with clear labels */}
     <Button
       variant="primary"
@@ -649,7 +658,7 @@ const styles = {
     >
       Approve & Execute
     </Button>
-    
+
     <Text
       id={`approval-${action.id}-risk`}
       variant="bodySm"
@@ -668,13 +677,15 @@ const styles = {
 // Ensure focus management:
 
 useEffect(() => {
-  if (state === 'approved' || state === 'rejected') {
+  if (state === "approved" || state === "rejected") {
     // Move focus to next approval or back to page heading
-    const nextCard = document.querySelector('[data-approval-card]:not([data-removed])');
+    const nextCard = document.querySelector(
+      "[data-approval-card]:not([data-removed])",
+    );
     if (nextCard instanceof HTMLElement) {
       nextCard.focus();
     } else {
-      document.querySelector('h1')?.focus();
+      document.querySelector("h1")?.focus();
     }
   }
 }, [state]);
@@ -682,20 +693,20 @@ useEffect(() => {
 // Add keyboard shortcuts (optional)
 useEffect(() => {
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (state !== 'pending') return;
-    
+    if (state !== "pending") return;
+
     // A = Approve, R = Reject
-    if (event.key === 'a' && event.ctrlKey) {
+    if (event.key === "a" && event.ctrlKey) {
       event.preventDefault();
       handleApprove();
-    } else if (event.key === 'r' && event.ctrlKey) {
+    } else if (event.key === "r" && event.ctrlKey) {
       event.preventDefault();
       handleReject();
     }
   };
-  
-  window.addEventListener('keydown', handleKeyPress);
-  return () => window.removeEventListener('keydown', handleKeyPress);
+
+  window.addEventListener("keydown", handleKeyPress);
+  return () => window.removeEventListener("keydown", handleKeyPress);
 }, [state]);
 ```
 
@@ -780,20 +791,20 @@ export function ApprovalCard({
   const [state, setState] = useState<ApprovalCardState>('pending');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<'approve' | 'reject' | null>(null);
-  
-  const isActionDisabled = 
-    state !== 'pending' && 
-    state !== 'error' || 
+
+  const isActionDisabled =
+    state !== 'pending' &&
+    state !== 'error' ||
     isProcessing;
-  
+
   const handleApprove = useCallback(async () => {
     setState('approving');
     setLastAction('approve');
     setErrorMessage(null);
-    
+
     try {
       const result = await onApprove(action.id);
-      
+
       if (result.success) {
         setState('approved');
         // Remove card after animation
@@ -807,21 +818,21 @@ export function ApprovalCard({
     } catch (error) {
       setState('error');
       setErrorMessage(
-        error instanceof Error 
-          ? error.message 
+        error instanceof Error
+          ? error.message
           : 'An unexpected error occurred'
       );
     }
   }, [action.id, onApprove, onRemove]);
-  
+
   const handleReject = useCallback(async () => {
     setState('rejecting');
     setLastAction('reject');
     setErrorMessage(null);
-    
+
     try {
       const result = await onReject(action.id);
-      
+
       if (result.success) {
         setState('rejected');
         // Remove card after animation
@@ -835,26 +846,26 @@ export function ApprovalCard({
     } catch (error) {
       setState('error');
       setErrorMessage(
-        error instanceof Error 
-          ? error.message 
+        error instanceof Error
+          ? error.message
           : 'An unexpected error occurred'
       );
     }
   }, [action.id, onReject, onRemove]);
-  
+
   const handleRetry = useCallback(() => {
     setState('pending');
     setErrorMessage(null);
-    
+
     if (lastAction === 'approve') {
       handleApprove();
     } else if (lastAction === 'reject') {
       handleReject();
     }
   }, [lastAction, handleApprove, handleReject]);
-  
+
   const relativeTime = formatRelativeTime(new Date(action.timestamp));
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -877,26 +888,26 @@ export function ApprovalCard({
               </Text>
             </InlineStack>
           </BlockStack>
-          
+
           <Badge tone={RISK_BADGE_TONE[action.riskLevel]}>
             {action.riskLevel.toUpperCase()} RISK
           </Badge>
         </InlineStack>
-        
+
         <Divider />
-        
+
         {/* Context */}
         <BlockStack gap="200">
           <InlineStack gap="100" blockAlign="start">
             <Text variant="bodyMd" fontWeight="semibold">Agent:</Text>
             <Text variant="bodyMd">{action.agentName}</Text>
           </InlineStack>
-          
+
           <InlineStack gap="100" blockAlign="start">
             <Text variant="bodyMd" fontWeight="semibold">Action:</Text>
             <Text variant="bodyMd" fontWeight="medium">{action.toolName}</Text>
           </InlineStack>
-          
+
           {action.metadata?.customerName && (
             <InlineStack gap="100" blockAlign="start">
               <Text variant="bodyMd" fontWeight="semibold">Customer:</Text>
@@ -904,7 +915,7 @@ export function ApprovalCard({
             </InlineStack>
           )}
         </BlockStack>
-        
+
         {/* Preview */}
         {action.preview && (
           <>
@@ -918,7 +929,7 @@ export function ApprovalCard({
             </Box>
           </>
         )}
-        
+
         {/* Error Banner */}
         {state === 'error' && errorMessage && (
           <Banner
@@ -932,9 +943,9 @@ export function ApprovalCard({
                 <Button onClick={handleRetry} size="slim">
                   Retry
                 </Button>
-                <Button 
-                  onClick={() => setState('pending')} 
-                  size="slim" 
+                <Button
+                  onClick={() => setState('pending')}
+                  size="slim"
                   variant="plain"
                 >
                   Cancel
@@ -943,7 +954,7 @@ export function ApprovalCard({
             </BlockStack>
           </Banner>
         )}
-        
+
         {/* Success State */}
         {state === 'approved' && (
           <Banner tone="success">
@@ -955,7 +966,7 @@ export function ApprovalCard({
             </InlineStack>
           </Banner>
         )}
-        
+
         {/* Actions */}
         <ButtonGroup>
           <Button
@@ -979,7 +990,7 @@ export function ApprovalCard({
             {state === 'rejecting' ? 'Rejecting...' : 'Reject'}
           </Button>
         </ButtonGroup>
-        
+
         {/* Screen reader only - Risk description */}
         <Text variant="bodySm" visuallyHidden>
           Risk level: {action.riskLevel}. {RISK_DESCRIPTIONS[action.riskLevel]}
@@ -994,13 +1005,13 @@ function formatRelativeTime(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMin = Math.floor(diffMs / 60000);
-  
+
   if (diffMin < 1) return 'just now';
   if (diffMin < 60) return `${diffMin} min ago`;
-  
+
   const diffHours = Math.floor(diffMin / 60);
   if (diffHours < 24) return `${diffHours}h ago`;
-  
+
   const diffDays = Math.floor(diffHours / 24);
   return `${diffDays}d ago`;
 }
@@ -1018,42 +1029,42 @@ import type { ApprovalAction } from '~/components/approvals/types';
 export default function ApprovalsRoute() {
   const { approvals } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
-  
+
   const handleApprove = async (id: string) => {
     const response = await fetch(`/api/approvals/${id}/approve`, {
       method: 'POST',
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       revalidator.revalidate();
     }
-    
+
     return result;
   };
-  
+
   const handleReject = async (id: string, reason?: string) => {
     const response = await fetch(`/api/approvals/${id}/reject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ reason }),
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       revalidator.revalidate();
     }
-    
+
     return result;
   };
-  
+
   const handleRemove = (id: string) => {
     // Card animates out, revalidate to remove from list
     revalidator.revalidate();
   };
-  
+
   return (
     <Page
       title="Approval Queue"
@@ -1089,6 +1100,7 @@ export default function ApprovalsRoute() {
 ## Implementation Checklist
 
 ### Phase 1: Core Component (Day 1)
+
 - [ ] Create `ApprovalCard.tsx` with TypeScript interfaces
 - [ ] Implement basic layout with Polaris components
 - [ ] Add approve/reject handlers with loading states
@@ -1096,6 +1108,7 @@ export default function ApprovalsRoute() {
 - [ ] Test screen reader announcements
 
 ### Phase 2: States & Feedback (Day 2)
+
 - [ ] Implement error banner and retry mechanism
 - [ ] Add success/approved states with animation
 - [ ] Implement optimistic updates
@@ -1103,6 +1116,7 @@ export default function ApprovalsRoute() {
 - [ ] Test all state transitions
 
 ### Phase 3: Polish & Accessibility (Day 3)
+
 - [ ] Add risk level descriptions
 - [ ] Implement relative time formatting
 - [ ] Add keyboard shortcuts (optional)
@@ -1110,6 +1124,7 @@ export default function ApprovalsRoute() {
 - [ ] Test with screen readers (NVDA, VoiceOver)
 
 ### Phase 4: Integration (Day 4)
+
 - [ ] Integrate with approval queue route
 - [ ] Test with real API endpoints
 - [ ] Add error handling for network issues
@@ -1121,16 +1136,19 @@ export default function ApprovalsRoute() {
 ## Support & Resources
 
 **Polaris Documentation:**
+
 - Components: https://polaris.shopify.com/components
 - Tokens: https://polaris.shopify.com/tokens
 - Patterns: https://polaris.shopify.com/patterns
 
 **Design Reviews:**
+
 - Log all changes in `feedback/designer.md`
 - Tag @engineer for implementation questions
 - Request design review for new variants
 
 **Questions:**
+
 - Technical implementation: Ask @engineer
 - Design decisions: Ask @designer
 - API integration: Reference `docs/AgentSDKopenAI.md`
@@ -1141,4 +1159,3 @@ export default function ApprovalsRoute() {
 **Created**: 2025-10-11  
 **Owner**: Designer Agent  
 **Next Review**: After Phase 1 implementation
-

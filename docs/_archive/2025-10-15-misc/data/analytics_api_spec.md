@@ -22,6 +22,7 @@ REST API design for Agent SDK metrics queries with authentication, rate limiting
 **Method:** JWT Bearer Token (Supabase Auth)
 
 **Headers:**
+
 ```
 Authorization: Bearer <jwt_token>
 apikey: <supabase_anon_key>
@@ -34,6 +35,7 @@ apikey: <supabase_anon_key>
 **Purpose:** Real-time agent performance metrics
 
 **Response:**
+
 ```json
 [
   {
@@ -55,6 +57,7 @@ apikey: <supabase_anon_key>
 **Purpose:** Current approval queue status
 
 **Response:**
+
 ```json
 [
   {
@@ -74,9 +77,11 @@ apikey: <supabase_anon_key>
 **Purpose:** Training data quality metrics
 
 **Query Parameters:**
+
 - `day` (optional): ISO date (default: today)
 
 **Response:**
+
 ```json
 [
   {
@@ -98,11 +103,13 @@ apikey: <supabase_anon_key>
 **Implementation:** Supabase built-in rate limiting + custom middleware
 
 **Tiers:**
+
 - Anonymous: 10 requests/minute
 - Authenticated: 100 requests/minute
 - Service Role: 1000 requests/minute
 
 **Headers:**
+
 ```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 87
@@ -114,10 +121,12 @@ X-RateLimit-Reset: 1234567890
 **RLS Enforcement:** All queries respect Row Level Security policies
 
 **Allowed Operations:**
+
 - GET (SELECT only)
 - No POST/PUT/DELETE via public API
 
 **Data Access:**
+
 - Users see own conversation data only
 - Operators see aggregate metrics only
 - No raw query text exposed (hashed/summarized)
@@ -126,4 +135,3 @@ X-RateLimit-Reset: 1234567890
 
 **Status:** API specification complete  
 **Implementation:** Via Supabase PostgREST (automatic from views)
-

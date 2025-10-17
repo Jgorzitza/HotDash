@@ -12,8 +12,9 @@ This runbook provides step-by-step procedures for responding to incidents affect
 ## Incident Severity Levels
 
 ### SEV-1: Critical (Immediate Response)
+
 - **Definition**: Complete service outage or data loss risk
-- **Examples**: 
+- **Examples**:
   - All machines down
   - Error rate > 50%
   - Data corruption detected
@@ -22,6 +23,7 @@ This runbook provides step-by-step procedures for responding to incidents affect
 - **Escalation**: Manager + Engineer immediately
 
 ### SEV-2: Major (Urgent Response)
+
 - **Definition**: Significant service degradation
 - **Examples**:
   - Partial outage (some machines down)
@@ -32,6 +34,7 @@ This runbook provides step-by-step procedures for responding to incidents affect
 - **Escalation**: Engineer within 15 minutes
 
 ### SEV-3: Minor (Standard Response)
+
 - **Definition**: Service impaired but functional
 - **Examples**:
   - Error rate 5-10%
@@ -263,17 +266,20 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ### Scenario 1: All Machines Down
 
 **Symptoms:**
+
 - Health checks failing
 - 502/503 errors
 - No machines in "started" state
 
 **Diagnosis:**
+
 ```bash
 ~/.fly/bin/fly machine list -a hotdash-llamaindex-mcp
 # Check STATE column
 ```
 
 **Resolution:**
+
 ```bash
 # Option A: Restart machines
 ~/.fly/bin/fly machine start <machine-id> -a hotdash-llamaindex-mcp
@@ -286,6 +292,7 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ```
 
 **Root Causes:**
+
 - Bad deployment
 - Configuration error
 - Resource exhaustion
@@ -294,11 +301,13 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ### Scenario 2: High Error Rate
 
 **Symptoms:**
+
 - Error rate > 5%
 - Logs showing exceptions
 - User complaints
 
 **Diagnosis:**
+
 ```bash
 # Check recent logs for error patterns
 ~/.fly/bin/fly logs -a hotdash-llamaindex-mcp | grep -i error | tail -50
@@ -308,6 +317,7 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ```
 
 **Resolution:**
+
 ```bash
 # 1. Identify error pattern
 # 2. Check dependencies (Supabase, OpenAI)
@@ -326,6 +336,7 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ```
 
 **Root Causes:**
+
 - Dependency failure
 - Code bug
 - Invalid configuration
@@ -334,11 +345,13 @@ echo "Root Cause: <preliminary findings>" >> feedback/reliability.md
 ### Scenario 3: High Latency
 
 **Symptoms:**
+
 - P95 latency > 1000ms
 - Slow responses
 - Timeouts
 
 **Diagnosis:**
+
 ```bash
 # Check response times
 time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
@@ -352,6 +365,7 @@ time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ```
 
 **Resolution:**
+
 ```bash
 # Option A: Scale up resources
 ~/.fly/bin/fly machine update <machine-id> --memory 1024 -a hotdash-llamaindex-mcp
@@ -364,6 +378,7 @@ time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ```
 
 **Root Causes:**
+
 - Insufficient resources
 - Slow database queries
 - Inefficient code
@@ -372,11 +387,13 @@ time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ### Scenario 4: OOM (Out of Memory) Kills
 
 **Symptoms:**
+
 - Machine exit_code=137, oom_killed=true
 - Machines frequently restarting
 - Memory usage at 100%
 
 **Diagnosis:**
+
 ```bash
 # Check for OOM in logs
 ~/.fly/bin/fly logs -a hotdash-llamaindex-mcp | grep -i "oom"
@@ -387,6 +404,7 @@ time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ```
 
 **Resolution:**
+
 ```bash
 # IMMEDIATE: Scale up memory
 ~/.fly/bin/fly machine update <machine-id> --memory 1024 -a hotdash-llamaindex-mcp
@@ -403,6 +421,7 @@ sleep 60
 ```
 
 **Root Causes:**
+
 - Insufficient memory allocation
 - Memory leak
 - Large data processing
@@ -411,11 +430,13 @@ sleep 60
 ### Scenario 5: Auto-scaling Not Working
 
 **Symptoms:**
+
 - Machines not stopping when idle
 - Machines not starting on request
 - Unexpected resource costs
 
 **Diagnosis:**
+
 ```bash
 # Check fly.toml configuration
 cat fly.production.toml | grep -A 5 "auto_stop_machines"
@@ -428,6 +449,7 @@ cat fly.production.toml | grep -A 5 "auto_stop_machines"
 ```
 
 **Resolution:**
+
 ```bash
 # 1. Verify fly.toml settings
 # auto_stop_machines = true
@@ -446,6 +468,7 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ```
 
 **Root Causes:**
+
 - Incorrect fly.toml configuration
 - Health check keeping machines alive
 - Active connections preventing stop
@@ -455,16 +478,19 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ### Level 1: Reliability Team (Self-Service)
 
 **Responsibilities:**
+
 - Initial detection and assessment
 - Execute standard mitigation (restart, rollback)
 - Monitor and document
 
 **Authority:**
+
 - Can restart machines
 - Can execute rollback
 - Cannot modify code or architecture
 
 **Escalate When:**
+
 - Issue persists after standard mitigation
 - Root cause requires code changes
 - SEV-1 incident
@@ -473,17 +499,20 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ### Level 2: Engineer + Reliability
 
 **Responsibilities:**
+
 - Code-level debugging
 - Configuration changes
 - Architecture review
 - Hot fixes (if safe)
 
 **Authority:**
+
 - Can modify code
 - Can change configuration
 - Can deploy fixes
 
 **Escalate When:**
+
 - Issue requires architectural changes
 - Multiple services affected
 - Decision needed on major impact
@@ -491,12 +520,14 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ### Level 3: Manager + Engineer + Reliability
 
 **Responsibilities:**
+
 - Strategic decisions
 - Cross-team coordination
 - Customer communication
 - Resource allocation
 
 **Authority:**
+
 - Final decision making
 - Can authorize emergency changes
 - Can adjust priorities
@@ -504,27 +535,32 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ## Contact Information
 
 ### On-Call Rotation
+
 - **Reliability**: See `docs/ops/oncall-schedule.md`
 - **Engineer**: See `docs/ops/oncall-schedule.md`
 - **Manager**: Always escalate for SEV-1
 
 ### Emergency Contacts
+
 - Slack: #incidents (for SEV-1/SEV-2)
 - Email: Use for SEV-3 or updates
 
 ## Tools and Resources
 
 ### Monitoring
+
 - Fly.io Dashboard: https://fly.io/dashboard
 - Supabase Dashboard: https://app.supabase.com
 - Logs: `~/.fly/bin/fly logs -a <app>`
 
 ### Documentation
+
 - Production Deployment: `docs/runbooks/agent-sdk-production-deployment.md`
 - Monitoring: `docs/runbooks/agent-sdk-monitoring.md`
 - Fly.io Guide: `docs/dev/fly-shopify.md`
 
 ### Scripts
+
 - Health Check: `scripts/ops/agent-sdk-health-check.sh`
 - Log Monitoring: `scripts/ops/agent-sdk-logs.sh`
 - Synthetic Check: `scripts/ci/synthetic-check.mjs`
@@ -541,36 +577,44 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 **Reporter**: <name>
 
 ## Summary
+
 Brief description of the incident.
 
 ## Timeline
-| Time | Event |
-|------|-------|
-| HH:MM | Incident detected |
+
+| Time  | Event              |
+| ----- | ------------------ |
+| HH:MM | Incident detected  |
 | HH:MM | Mitigation started |
-| HH:MM | Issue resolved |
+| HH:MM | Issue resolved     |
 
 ## Impact
+
 - **Users Affected**: <number/percentage>
 - **Services Down**: <list>
 - **Duration**: <X minutes>
 
 ## Root Cause
+
 Detailed explanation of what went wrong.
 
 ## Resolution
+
 What actions were taken to resolve the issue.
 
 ## Preventive Actions
+
 1. Action item 1 (Owner: X, Due: date)
 2. Action item 2 (Owner: Y, Due: date)
 
 ## Lessons Learned
+
 - What went well
 - What could be improved
 - What we learned
 
 ## Appendix
+
 - Links to logs
 - Diagnostic artifacts
 - Related incidents
@@ -601,8 +645,8 @@ Execute a simulated incident to test procedures:
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
+| Date       | Change           | Author            |
+| ---------- | ---------------- | ----------------- |
 | 2025-10-11 | Initial creation | Reliability Agent |
 
 ## Next Steps
@@ -611,4 +655,3 @@ Execute a simulated incident to test procedures:
 2. ⏳ Set up monitoring alerts
 3. ⏳ Schedule monthly drill
 4. ⏳ Brief team on procedures
-

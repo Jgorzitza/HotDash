@@ -11,6 +11,7 @@
 ### Bundle 1: "Complete Support Stack"
 
 **Includes**:
+
 - Agent SDK (all 4 agent types)
 - Chatwoot managed hosting
 - Knowledge base curation service
@@ -25,6 +26,7 @@
 ### Bundle 2: "E-commerce Power Pack"
 
 **Includes**:
+
 - Agent SDK Enterprise
 - Shopify integration (deep)
 - Inventory sync (real-time)
@@ -38,4 +40,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Bundling Strategy Outlined
-

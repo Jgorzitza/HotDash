@@ -7,6 +7,6 @@
   - Shopify Admin GraphQL (inventory/orders)
   - Supabase (analytics, storage)
   - Chatwoot API (notes/messages)
-  - Social aggregator (Ayrshare) for posting/analytics
+  - Social aggregator (Publer) for posting/analytics
 - HITL: Use `requireApproval: true` and `onApproval` to pause/resume.
-See: https://openai.github.io/openai-agents-js/guides/quickstart and https://openai.github.io/openai-agents-js/guides/human-in-the-loop/
+  See: https://openai.github.io/openai-agents-js/guides/quickstart and https://openai.github.io/openai-agents-js/guides/human-in-the-loop/

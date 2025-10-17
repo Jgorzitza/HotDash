@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Date**: October 11, 2025  
-**Owner**: Product Agent  
+**Owner**: Product Agent
 
 ---
 
@@ -17,6 +17,7 @@
 ## Stage Definitions
 
 ### Prospect (Pre-Customer)
+
 - **Definition**: Visited website, downloaded content, requested demo
 - **Goal**: Convert to trial
 - **Timeline**: 0-30 days
@@ -25,6 +26,7 @@
 ---
 
 ### Trial (Free or Discounted)
+
 - **Definition**: Using HotDash Agent SDK with pilot discount/free period
 - **Goal**: Prove value, convert to paying customer
 - **Timeline**: 14-90 days
@@ -33,6 +35,7 @@
 ---
 
 ### Onboarding (First 30 Days as Paying Customer)
+
 - **Definition**: Post-purchase setup and training
 - **Goal**: Reach "activation" milestone
 - **Timeline**: 0-30 days
@@ -41,6 +44,7 @@
 ---
 
 ### Activation (Value Realized)
+
 - **Definition**: Customer achieves measurable ROI
 - **Goal**: Reach productivity targets
 - **Timeline**: 30-90 days
@@ -49,6 +53,7 @@
 ---
 
 ### Growth (Expansion)
+
 - **Definition**: Customer expands usage (more agents, higher tier)
 - **Goal**: Upsell to Enterprise or add agent types
 - **Timeline**: 3-12 months
@@ -57,6 +62,7 @@
 ---
 
 ### Retention (Renewals)
+
 - **Definition**: Customer renews contract or continues subscription
 - **Goal**: >95% retention rate
 - **Timeline**: 12+ months
@@ -65,6 +71,7 @@
 ---
 
 ### Advocacy (Promoters)
+
 - **Definition**: Customer actively recommends HotDash
 - **Goal**: Generate referrals and testimonials
 - **Success**: NPS >50, 3+ referrals per advocate
@@ -73,4 +80,3 @@
 
 **Document Owner**: Product Agent  
 **Status**: Framework Defined
-

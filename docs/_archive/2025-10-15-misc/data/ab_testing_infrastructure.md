@@ -8,9 +8,11 @@ last_reviewed: 2025-10-11
 # A/B Testing Data Infrastructure
 
 ## Overview
+
 Data infrastructure for running A/B tests on agent responses, approval workflows, and training interventions.
 
 ## Schema
+
 ```sql
 CREATE TABLE ab_experiments (
   experiment_id SERIAL PRIMARY KEY,
@@ -44,6 +46,7 @@ CREATE TABLE ab_observations (
 ```
 
 ## Statistical Functions
+
 ```sql
 CREATE OR REPLACE FUNCTION ab_test_significance(
   p_experiment_id INTEGER
@@ -66,4 +69,3 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Status:** A/B testing infrastructure designed with statistical analysis
-

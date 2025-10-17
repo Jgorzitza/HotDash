@@ -14,7 +14,11 @@ interface ActionResponse {
   error?: string;
 }
 
-export function CXEscalationModal({ conversation, open, onClose }: CXEscalationModalProps) {
+export function CXEscalationModal({
+  conversation,
+  open,
+  onClose,
+}: CXEscalationModalProps) {
   const fetcher = useFetcher<ActionResponse>();
   const [reply, setReply] = useState(conversation.suggestedReply ?? "");
   const [note, setNote] = useState("");
@@ -49,7 +53,9 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
     conversationId: String(conversation.id),
     customerName: conversation.customerName,
     suggestedReply: conversation.suggestedReply ?? "",
-    aiSuggestionUsed: String(conversation.aiSuggestionEnabled && Boolean(conversation.aiSuggestion)),
+    aiSuggestionUsed: String(
+      conversation.aiSuggestionEnabled && Boolean(conversation.aiSuggestion),
+    ),
     aiSuggestionMetadata: conversation.aiSuggestion
       ? JSON.stringify(conversation.aiSuggestion)
       : "",
@@ -130,13 +136,21 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
             <h3>Conversation history</h3>
             <div className="occ-modal__messages" role="log" aria-live="polite">
               {messageHistory.length === 0 ? (
-                <p className="occ-text-secondary">No recent messages available.</p>
+                <p className="occ-text-secondary">
+                  No recent messages available.
+                </p>
               ) : (
                 messageHistory.map((message) => (
-                  <article key={message.id} className="occ-modal__message" data-author={message.author}>
+                  <article
+                    key={message.id}
+                    className="occ-modal__message"
+                    data-author={message.author}
+                  >
                     <header>
                       <strong>{message.displayAuthor}</strong>
-                      <span>{new Date(message.createdAt).toLocaleString()}</span>
+                      <span>
+                        {new Date(message.createdAt).toLocaleString()}
+                      </span>
                     </header>
                     <p>{message.content}</p>
                   </article>
@@ -157,7 +171,9 @@ export function CXEscalationModal({ conversation, open, onClose }: CXEscalationM
                 disabled={isSubmitting}
               />
             ) : (
-              <p className="occ-text-secondary">No template available. Draft response manually or escalate.</p>
+              <p className="occ-text-secondary">
+                No template available. Draft response manually or escalate.
+              </p>
             )}
           </section>
 

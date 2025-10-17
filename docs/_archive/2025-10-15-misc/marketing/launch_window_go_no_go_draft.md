@@ -6,18 +6,22 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Launch Window Go/No-Go Comms Draft — Operator Control Center
 
 ## Purpose
+
 Provide ready-to-send messaging for unlocking the Shopify backlog once QA posts the new smoke + Supabase artifacts and DEPLOY-147 delivers store access. Update timestamps and evidence links before posting.
 
 ## Evidence Checklist (update before send)
+
 - ✅ QA log references both artifacts in [`feedback/qa.md`](../../feedback/qa.md).
 - ✅ Store invite bundle captured in [`artifacts/integrations/shopify/2025-10-10/`](../../artifacts/integrations/shopify/2025-10-10/).
 - ✅ Supabase parity artifact: [`artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json`](../../artifacts/monitoring/supabase-parity_2025-10-10T01-25-10Z.json).
 - ✅ Synthetic smoke artifact: [`artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json`](../../artifacts/monitoring/synthetic-check-2025-10-10T04-40-48.296Z.json).
 
 ## # Draft — #occ-launch
+
 ```
 ✅ **Go for Shopify staging backlog thaw**
 
@@ -35,6 +39,7 @@ If anything regresses, reply in-thread with the artifact link + timestamp so we 
 ```
 
 ## Email Draft — Marketing & Support Distribution Leads
+
 ```
 Subject: [Go] Shopify staging backlog clear — evidence attached
 
@@ -59,6 +64,7 @@ Ping me if anything blocks your path; otherwise expect the Linear + Memory updat
 ```
 
 ## Notes
+
 - Replace `<link-to-feedback-qa-entry>` with the precise line permalink to the QA log once evidence lands.
 - Replace `<link-to-store-access-artifact>` with the final artifact path (e.g., `../../artifacts/integrations/shopify/2025-10-10/store-access.md#L?`).
 - If QA artifacts differ (new timestamps), update the evidence checklist and drafts accordingly.

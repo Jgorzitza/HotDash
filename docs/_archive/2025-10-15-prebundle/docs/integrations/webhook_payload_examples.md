@@ -290,6 +290,7 @@ This document provides real-world examples of Chatwoot webhook payloads for test
 ```
 
 **Expected Agent SDK Behavior:**
+
 - Sentiment analysis: "angry", urgency: "high"
 - Confidence score: Likely LOW (< 70%)
 - Recommended action: "escalate" to senior support
@@ -339,6 +340,7 @@ This document provides real-world examples of Chatwoot webhook payloads for test
 ```
 
 **Expected Agent SDK Behavior:**
+
 - LlamaIndex retrieves: "Return Policy" knowledge base article
 - Confidence score: HIGH (> 90%)
 - Recommended action: "approve"
@@ -349,16 +351,16 @@ This document provides real-world examples of Chatwoot webhook payloads for test
 For testing signature verification:
 
 ```typescript
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 const payload = JSON.stringify(testPayload);
-const secret = 'your_webhook_secret';
+const secret = "your_webhook_secret";
 
-const hmac = crypto.createHmac('sha256', secret);
+const hmac = crypto.createHmac("sha256", secret);
 hmac.update(payload);
-const signature = hmac.digest('hex');
+const signature = hmac.digest("hex");
 
-console.log('X-Chatwoot-Signature:', signature);
+console.log("X-Chatwoot-Signature:", signature);
 ```
 
 ## Testing Checklist
@@ -422,4 +424,3 @@ curl -X POST "$WEBHOOK_URL" \
 - [Chatwoot Webhook Documentation](https://www.chatwoot.com/docs/product/channels/api/webhooks)
 - [Agent SDK Integration Spec](../AgentSDKopenAI.md)
 - [Webhook Handler Implementation](../../supabase/functions/chatwoot-webhook/index.ts)
-

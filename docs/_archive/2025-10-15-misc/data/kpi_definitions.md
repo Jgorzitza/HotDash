@@ -23,18 +23,19 @@ dbt-style specifications for Key Performance Indicators displayed in operator da
 **Definition:** Percentage of support conversations exceeding response time SLA (5 minutes)
 
 **Business Logic:**
+
 ```sql
 -- SLA Breach Rate (%)
-SELECT 
+SELECT
   ROUND(
-    100.0 * COUNT(*) FILTER (WHERE first_response_minutes > 5) / 
+    100.0 * COUNT(*) FILTER (WHERE first_response_minutes > 5) /
     NULLIF(COUNT(*), 0),
     2
   ) as sla_breach_rate_pct,
   COUNT(*) as total_conversations,
   COUNT(*) FILTER (WHERE first_response_minutes > 5) as sla_breaches
 FROM (
-  SELECT 
+  SELECT
     conversation_id,
     EXTRACT(EPOCH FROM (first_response_at - created_at)) / 60 as first_response_minutes
   FROM chatwoot_conversations
@@ -43,6 +44,7 @@ FROM (
 ```
 
 **Thresholds:**
+
 - 🟢 Excellent: <5%
 - 🟡 Warning: 5-10%
 - 🔴 Critical: >10%
@@ -60,23 +62,24 @@ FROM (
 **Definition:** Percentage change in total revenue compared to previous 7 days
 
 **Business Logic:**
+
 ```sql
 -- Sales Delta (WoW %)
 WITH current_week AS (
   SELECT SUM((value->>'total_revenue')::NUMERIC) as revenue
   FROM facts
-  WHERE topic = 'shopify.sales' 
+  WHERE topic = 'shopify.sales'
     AND key = 'daily_summary'
     AND created_at > CURRENT_DATE - 7
 ),
 previous_week AS (
   SELECT SUM((value->>'total_revenue')::NUMERIC) as revenue
   FROM facts
-  WHERE topic = 'shopify.sales' 
+  WHERE topic = 'shopify.sales'
     AND key = 'daily_summary'
     AND created_at BETWEEN CURRENT_DATE - 14 AND CURRENT_DATE - 7
 )
-SELECT 
+SELECT
   c.revenue as current_week_revenue,
   p.revenue as previous_week_revenue,
   ROUND(
@@ -87,6 +90,7 @@ FROM current_week c, previous_week p;
 ```
 
 **Thresholds:**
+
 - 🟢 Growth: >+5%
 - 🟡 Stable: -5% to +5%
 - 🔴 Declining: <-5%
@@ -104,10 +108,11 @@ FROM current_week c, previous_week p;
 **Definition:** Landing pages with >20% week-over-week session drop
 
 **Business Logic:**
+
 ```sql
 -- Traffic Anomalies (WoW drops >20%)
 WITH current_week AS (
-  SELECT 
+  SELECT
     value->>'landing_page' as landing_page,
     SUM((value->>'sessions')::INTEGER) as sessions
   FROM facts
@@ -116,7 +121,7 @@ WITH current_week AS (
   GROUP BY value->>'landing_page'
 ),
 previous_week AS (
-  SELECT 
+  SELECT
     value->>'landing_page' as landing_page,
     SUM((value->>'sessions')::INTEGER) as sessions
   FROM facts
@@ -124,12 +129,12 @@ previous_week AS (
     AND created_at BETWEEN CURRENT_DATE - 14 AND CURRENT_DATE - 7
   GROUP BY value->>'landing_page'
 )
-SELECT 
+SELECT
   c.landing_page,
   c.sessions as current_sessions,
   p.sessions as previous_sessions,
   ROUND(100.0 * (c.sessions - p.sessions) / NULLIF(p.sessions, 0), 2) as wow_delta_pct,
-  CASE 
+  CASE
     WHEN (c.sessions - p.sessions)::NUMERIC / NULLIF(p.sessions, 0) < -0.20 THEN 'anomaly'
     ELSE 'normal'
   END as status
@@ -140,6 +145,7 @@ ORDER BY wow_delta_pct ASC;
 ```
 
 **Thresholds:**
+
 - 🟢 Normal: >-20% change
 - 🟡 Warning: -20% to -30% drop
 - 🔴 Anomaly: <-30% drop
@@ -157,19 +163,20 @@ ORDER BY wow_delta_pct ASC;
 **Definition:** Products with <7 days of inventory coverage
 
 **Business Logic:**
+
 ```sql
 -- Inventory Coverage (Days)
-SELECT 
+SELECT
   value->>'sku' as sku,
   value->>'product_title' as product_title,
   (value->>'available_quantity')::INTEGER as available,
   (value->>'daily_sales_avg')::NUMERIC as daily_sales,
   ROUND(
-    (value->>'available_quantity')::INTEGER / 
+    (value->>'available_quantity')::INTEGER /
     NULLIF((value->>'daily_sales_avg')::NUMERIC, 0),
     1
   ) as days_of_coverage,
-  CASE 
+  CASE
     WHEN (value->>'available_quantity')::INTEGER / NULLIF((value->>'daily_sales_avg')::NUMERIC, 0) < 3 THEN 'critical'
     WHEN (value->>'available_quantity')::INTEGER / NULLIF((value->>'daily_sales_avg')::NUMERIC, 0) < 7 THEN 'warning'
     ELSE 'healthy'
@@ -183,6 +190,7 @@ ORDER BY days_of_coverage ASC;
 ```
 
 **Thresholds:**
+
 - 🟢 Healthy: >7 days coverage
 - 🟡 Warning: 3-7 days
 - 🔴 Critical: <3 days
@@ -200,14 +208,15 @@ ORDER BY days_of_coverage ASC;
 **Definition:** Social mentions with negative sentiment spike
 
 **Business Logic:**
+
 ```sql
 -- Sentiment Score (24h average)
-SELECT 
+SELECT
   ROUND(AVG((value->>'sentiment_score')::NUMERIC), 2) as avg_sentiment_24h,
   COUNT(*) FILTER (WHERE (value->>'sentiment_score')::NUMERIC < -0.5) as negative_mentions,
   COUNT(*) as total_mentions,
   ROUND(
-    100.0 * COUNT(*) FILTER (WHERE (value->>'sentiment_score')::NUMERIC < -0.5) / 
+    100.0 * COUNT(*) FILTER (WHERE (value->>'sentiment_score')::NUMERIC < -0.5) /
     NULLIF(COUNT(*), 0),
     2
   ) as negative_pct
@@ -217,6 +226,7 @@ WHERE topic = 'social.sentiment'
 ```
 
 **Thresholds:**
+
 - 🟢 Positive: avg >0.3
 - 🟡 Neutral: -0.3 to 0.3
 - 🔴 Negative: <-0.3
@@ -234,6 +244,7 @@ WHERE topic = 'social.sentiment'
 **Purpose:** Universal fact storage for all operator KPIs
 
 **Schema:**
+
 ```sql
 CREATE TABLE facts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -305,4 +316,3 @@ INSERT INTO facts (project, topic, key, value) VALUES (
 **Status:** KPI specs defined for 5 operator tiles  
 **Next:** Implement fact ingestion services for each KPI  
 **North Star Alignment:** ✅ DIRECT - All KPIs serve operator decision-making
-

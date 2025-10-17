@@ -11,6 +11,7 @@
 No-code workflow builder allowing operators to create custom automation rules without engineering help.
 
 **Example Workflow**:
+
 ```
 IF customer_message contains "refund"
 AND order_value < $50
@@ -28,16 +29,19 @@ AND send_draft_response("refund_approved_template")
 ## Workflow Templates
 
 ### Template 1: Auto-Refund (<$50)
+
 - Check eligibility automatically
 - Generate refund draft
 - Require operator approval for >$50
 
 ### Template 2: Escalate Angry Customers
+
 - Detect sentiment = angry
 - Auto-route to senior support
 - Flag as priority
 
 ### Template 3: After-Hours Auto-Reply
+
 - Detect time = outside business hours
 - Send "We'll respond within 2 hours" auto-reply
 - Queue for next operator shift
@@ -46,4 +50,3 @@ AND send_draft_response("refund_approved_template")
 
 **Document Owner**: Product Agent
 **Status**: Feature spec - Launch Month 9
-

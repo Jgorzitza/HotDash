@@ -11,6 +11,7 @@
 Mutation testing introduces small changes (mutations) to your code and verifies that tests fail. If tests still pass with buggy code, the tests aren't effective.
 
 **Example**:
+
 ```typescript
 // Original code
 function calculateDiscount(price, percent) {
@@ -19,7 +20,7 @@ function calculateDiscount(price, percent) {
 
 // Mutation: Change operator
 function calculateDiscount(price, percent) {
-  return price * (1 + percent / 100);  // Changed - to +
+  return price * (1 + percent / 100); // Changed - to +
 }
 ```
 
@@ -82,30 +83,38 @@ open reports/mutation/html/index.html
 
 ```typescript
 // app/services/discount.ts
-export function calculateDiscount(price: number, discountPercent: number): number {
+export function calculateDiscount(
+  price: number,
+  discountPercent: number,
+): number {
   if (discountPercent < 0 || discountPercent > 100) {
-    throw new Error('Invalid discount percent');
+    throw new Error("Invalid discount percent");
   }
   return price * (1 - discountPercent / 100);
 }
 
 // tests/unit/discount.spec.ts
-describe('calculateDiscount', () => {
-  it('should calculate 20% discount correctly', () => {
+describe("calculateDiscount", () => {
+  it("should calculate 20% discount correctly", () => {
     expect(calculateDiscount(100, 20)).toBe(80);
   });
 
-  it('should throw error for negative discount', () => {
-    expect(() => calculateDiscount(100, -10)).toThrow('Invalid discount percent');
+  it("should throw error for negative discount", () => {
+    expect(() => calculateDiscount(100, -10)).toThrow(
+      "Invalid discount percent",
+    );
   });
 
-  it('should throw error for discount > 100', () => {
-    expect(() => calculateDiscount(100, 150)).toThrow('Invalid discount percent');
+  it("should throw error for discount > 100", () => {
+    expect(() => calculateDiscount(100, 150)).toThrow(
+      "Invalid discount percent",
+    );
   });
 });
 ```
 
 **Mutations Stryker Will Try**:
+
 1. Change `<` to `<=` → Test should catch
 2. Change `>` to `>=` → Test should catch
 3. Change `-` to `+` → Test should catch
@@ -119,12 +128,12 @@ describe('calculateDiscount', () => {
 
 ### Mutation States
 
-| State | Meaning | Good/Bad |
-|-------|---------|----------|
-| Killed | Test failed when code mutated | ✅ Good - Test is effective |
-| Survived | Test passed with buggy code | ❌ Bad - Test missing coverage |
-| Timeout | Mutation caused infinite loop | ⚠️ Warning - Review logic |
-| No Coverage | Code not covered by tests | ❌ Bad - Add tests |
+| State       | Meaning                       | Good/Bad                       |
+| ----------- | ----------------------------- | ------------------------------ |
+| Killed      | Test failed when code mutated | ✅ Good - Test is effective    |
+| Survived    | Test passed with buggy code   | ❌ Bad - Test missing coverage |
+| Timeout     | Mutation caused infinite loop | ⚠️ Warning - Review logic      |
+| No Coverage | Code not covered by tests     | ❌ Bad - Add tests             |
 
 ### Mutation Score
 
@@ -147,7 +156,7 @@ name: Mutation Testing
 
 on:
   schedule:
-    - cron: '0 3 * * 0'  # Weekly on Sunday
+    - cron: "0 3 * * 0" # Weekly on Sunday
 
 jobs:
   mutation:
@@ -168,11 +177,13 @@ jobs:
 ## Recommendations
 
 ### Start Small
+
 - Week 1: Run on utilities (pure functions)
 - Week 2: Run on services
 - Week 3: Run on full codebase
 
 ### Focus on Critical Code
+
 ```javascript
 // stryker.conf.json
 {
@@ -186,6 +197,7 @@ jobs:
 ```
 
 ### Weekly Mutation Testing
+
 - Run on changed files only (fast)
 - Full suite monthly (comprehensive)
 
@@ -194,4 +206,3 @@ jobs:
 **Status**: Framework designed with Stryker  
 **Estimated Effort**: 8 hours (setup + first run)  
 **Value**: Ensures test quality, not just coverage
-

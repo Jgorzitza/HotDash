@@ -25,18 +25,19 @@ bundle exec rails runner "
     confirmed_at: Time.now,
     password_confirmation: 'SECURE_PASSWORD_HERE'
   )
-  
+
   AccountUser.create!(
     account_id: 1,
     user_id: user.id,
     role: :administrator
   )
-  
+
   puts \"Super Admin Created: #{user.email}\"
 "
 ```
 
 **Credentials Storage:**
+
 - **Location:** `vault/occ/chatwoot/super_admin_staging.env`
 - **Format:**
   ```bash
@@ -45,6 +46,7 @@ bundle exec rails runner "
   ```
 
 **Security Notes:**
+
 - Use strong password (16+ characters, mixed case, numbers, symbols)
 - Rotate password every 90 days
 - Enable 2FA once Chatwoot supports it
@@ -64,19 +66,20 @@ bundle exec rails runner "
 
 **For Agent SDK Integration:**
 
-| Scope | Required | Purpose |
-|-------|----------|---------|
-| **Conversations** | ✅ Yes | Read conversations, create messages |
-| **Messages** | ✅ Yes | Create private notes and public replies |
-| **Contacts** | ✅ Yes | Access customer information |
-| **Inbox** | ✅ Yes | List and manage inboxes |
-| **Teams** | ⚠️ Optional | If using team-based routing |
-| **Agent** | ✅ Yes | Assign agents to conversations |
-| **Labels** | ✅ Yes | Add tags for categorization |
-| **Webhooks** | ❌ No | Not needed (configured separately) |
-| **Reports** | ⚠️ Optional | If generating analytics |
+| Scope             | Required    | Purpose                                 |
+| ----------------- | ----------- | --------------------------------------- |
+| **Conversations** | ✅ Yes      | Read conversations, create messages     |
+| **Messages**      | ✅ Yes      | Create private notes and public replies |
+| **Contacts**      | ✅ Yes      | Access customer information             |
+| **Inbox**         | ✅ Yes      | List and manage inboxes                 |
+| **Teams**         | ⚠️ Optional | If using team-based routing             |
+| **Agent**         | ✅ Yes      | Assign agents to conversations          |
+| **Labels**        | ✅ Yes      | Add tags for categorization             |
+| **Webhooks**      | ❌ No       | Not needed (configured separately)      |
+| **Reports**       | ⚠️ Optional | If generating analytics                 |
 
 **Recommended Configuration:**
+
 ```
 Token Name: Agent SDK Integration - Staging
 Scopes: conversations, messages, contacts, inbox, agent, labels
@@ -170,9 +173,8 @@ SMTP Settings:
   - Enable STARTTLS: Yes
 
 Auto Assignment: Enabled
-Greeting Message: 
-  "Thank you for contacting HotDash support! 
-   We've received your message and will respond within 24 hours."
+Greeting Message: "Thank you for contacting HotDash support!
+  We've received your message and will respond within 24 hours."
 
 CSAT: Enabled after resolution
 ```
@@ -208,6 +210,7 @@ Auto-assign: Yes
 ```
 
 **Agent Onboarding Checklist:**
+
 - [ ] Account created with correct role
 - [ ] Added to appropriate team
 - [ ] Auto-assignment enabled
@@ -224,16 +227,19 @@ Auto-assign: Yes
 #### Issue 1: API Token Not Working
 
 **Symptoms:**
+
 - API calls return 401 Unauthorized
 - `Chatwoot::API::UnauthorizedError`
 
 **Solutions:**
+
 1. Verify token hasn't expired
 2. Check token has correct scopes
 3. Ensure `api_access_token` header (not `Authorization`)
 4. Confirm account ID matches token's account
 
 **Debug Command:**
+
 ```bash
 curl -v -H "api_access_token: $TOKEN" \
   https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/profile
@@ -242,11 +248,13 @@ curl -v -H "api_access_token: $TOKEN" \
 #### Issue 2: Cannot Create Private Notes
 
 **Symptoms:**
+
 - Private notes appear as public messages
 - Customers receive internal comments
 
 **Solution:**
 Verify payload includes both flags:
+
 ```json
 {
   "content": "Internal note",
@@ -258,10 +266,12 @@ Verify payload includes both flags:
 #### Issue 3: Webhook Not Triggering
 
 **Symptoms:**
+
 - Messages arrive but no webhook fired
 - Agent SDK not receiving events
 
 **Solutions:**
+
 1. Check webhook configuration:
    - Settings → Integrations → Webhooks
    - Verify URL is correct
@@ -272,6 +282,7 @@ Verify payload includes both flags:
 3. Verify webhook secret matches environment variable
 
 **Debug:**
+
 ```bash
 # Check Chatwoot logs
 fly logs --app hotdash-chatwoot | grep -i webhook
@@ -286,10 +297,12 @@ curl -X POST https://your-endpoint/webhooks/chatwoot \
 #### Issue 4: Agent Assignment Fails
 
 **Symptoms:**
+
 - `POST /assignments` returns 404 or 422
 - Agent not assigned to conversation
 
 **Solutions:**
+
 1. Verify agent ID exists:
    ```bash
    curl -H "api_access_token: $TOKEN" \
@@ -301,6 +314,7 @@ curl -X POST https://your-endpoint/webhooks/chatwoot \
 #### Issue 5: Health Check Failing
 
 **Symptoms:**
+
 - `/hc` returns 404
 - Fly health checks failing
 
@@ -356,6 +370,7 @@ Chatwoot doesn't have `/hc` endpoint by default. Use `/api` or `/rails/health`:
 ## API Token Rotation Procedure
 
 ### When to Rotate
+
 - Every 12 months (scheduled)
 - Immediately if token exposed
 - After employee departure
@@ -400,6 +415,7 @@ rm vault/occ/chatwoot/api_token_staging.env.old
 ## Webhook Configuration Checklist
 
 ### Prerequisites
+
 - [ ] Webhook endpoint deployed and healthy
 - [ ] Webhook secret generated and stored
 - [ ] Super admin access to Chatwoot
@@ -508,6 +524,7 @@ Performance:
 ### Health Check Configuration
 
 **Fly.io Health Check:**
+
 ```toml
 [[services.http_checks]]
   interval = "15s"
@@ -549,14 +566,14 @@ exit 0
 
 ### Alert Conditions
 
-| Condition | Severity | Action |
-|-----------|----------|--------|
-| API returns 5xx errors | CRITICAL | Page on-call engineer |
-| Worker OOM kills | HIGH | Scale memory, investigate |
-| Webhook delivery failures > 5% | HIGH | Check endpoint health |
-| Queue depth > 100 jobs | MEDIUM | Scale workers |
-| Database connection errors | CRITICAL | Check Supabase health |
-| Response time > 5s | MEDIUM | Investigate performance |
+| Condition                      | Severity | Action                    |
+| ------------------------------ | -------- | ------------------------- |
+| API returns 5xx errors         | CRITICAL | Page on-call engineer     |
+| Worker OOM kills               | HIGH     | Scale memory, investigate |
+| Webhook delivery failures > 5% | HIGH     | Check endpoint health     |
+| Queue depth > 100 jobs         | MEDIUM   | Scale workers             |
+| Database connection errors     | CRITICAL | Check Supabase health     |
+| Response time > 5s             | MEDIUM   | Investigate performance   |
 
 ---
 
@@ -604,45 +621,48 @@ curl -X POST https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/labels \
 **For Common Scenarios:**
 
 1. **Order Tracking**
+
    ```
    Hi {{contact.name}},
-   
+
    I've looked up your order {{custom_attribute.order_number}}.
    It shipped on {{custom_attribute.ship_date}} via {{custom_attribute.carrier}}.
-   
+
    Tracking: {{custom_attribute.tracking_number}}
    Expected delivery: {{custom_attribute.delivery_date}}
-   
+
    Track here: {{custom_attribute.tracking_url}}
-   
+
    Let me know if you need anything else!
    ```
 
 2. **Return Policy**
+
    ```
    Our return policy allows 30-day returns for unworn items with tags attached.
-   
+
    To initiate a return:
    1. Log in to your account at hotrodan.com
    2. Go to Orders → Select order → Request Return
    3. Print the prepaid return label
    4. Ship via USPS
-   
+
    Refunds process within 5-7 business days after we receive the item.
-   
+
    Questions? Just ask!
    ```
 
 3. **Escalation Handoff**
+
    ```
    Hi {{contact.name}},
-   
+
    I'm escalating your case to our specialist team for personalized assistance.
-   
+
    {{assignee.name}} will reach out within {{custom_attribute.response_time}} hours.
-   
+
    Case reference: {{conversation.id}}
-   
+
    Thank you for your patience!
    ```
 
@@ -682,6 +702,7 @@ curl -X POST https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/labels \
 ## Reference Commands
 
 ### Quick Status Check
+
 ```bash
 # Source credentials
 source vault/occ/chatwoot/api_token_staging.env
@@ -702,6 +723,7 @@ curl -H "api_access_token: $CHATWOOT_API_TOKEN_STAGING" \
 ### Emergency Procedures
 
 **If Chatwoot is Down:**
+
 ```bash
 # Check Fly.io status
 fly status --app hotdash-chatwoot
@@ -717,6 +739,7 @@ fly scale count 2 --process web --app hotdash-chatwoot
 ```
 
 **If Database Connection Fails:**
+
 ```bash
 # Check Supabase health
 # (Supabase dashboard → Database → Health)
@@ -734,6 +757,7 @@ source vault/occ/supabase/database_url_staging.env
 ## Next Steps for Production
 
 1. **Custom Domain:**
+
    ```bash
    fly certs create support.hotrodan.com --app hotdash-chatwoot
    ```
@@ -759,4 +783,3 @@ source vault/occ/supabase/database_url_staging.env
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent  
 **Next Review:** After production deployment
-

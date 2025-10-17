@@ -6,9 +6,11 @@ last_reviewed: 2025-10-05
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Data Contracts — Operator Control Center
 
 ## Purpose
+
 This document defines the expected schema and semantics for data sources feeding the Operator Control Center. It serves as a contract between upstream providers (Shopify, Chatwoot, Google Analytics) and the dashboard services, enabling early detection of breaking changes and schema drift.
 
 ---
@@ -22,6 +24,7 @@ This document defines the expected schema and semantics for data sources feeding
 **Query**: `SalesPulse`
 
 **Required Fields**:
+
 ```graphql
 orders(first: Int!, sortKey: CREATED_AT, reverse: Boolean, query: String) {
   edges {
@@ -58,6 +61,7 @@ orders(first: Int!, sortKey: CREATED_AT, reverse: Boolean, query: String) {
 ```
 
 **Assumptions**:
+
 - `createdAt` is ISO 8601 UTC timestamp
 - `currentTotalPriceSet` may be null for draft/test orders (handle gracefully)
 - `displayFulfillmentStatus` enum: `FULFILLED | UNFULFILLED | PARTIAL | RESTOCKED | SCHEDULED` (as of API version 2024-10)
@@ -65,11 +69,13 @@ orders(first: Int!, sortKey: CREATED_AT, reverse: Boolean, query: String) {
 - SKU is nullable; fallback to `title` for aggregation
 
 **Version Policy**:
+
 - Currently using stable API version `2024-10`
 - Monitor Shopify changelog for deprecations; migrate within one quarter
 - If field removed, log to `feedback/data.md` and implement fallback logic
 
 **Test Coverage**:
+
 - Mock fixtures: `tests/fixtures/shopify/orders.json`
 - Validation: assert required fields present and types match TypeScript interfaces
 
@@ -80,6 +86,7 @@ orders(first: Int!, sortKey: CREATED_AT, reverse: Boolean, query: String) {
 **Query**: `InventoryLevels`
 
 **Required Fields**:
+
 ```graphql
 productVariants(first: Int!) {
   edges {
@@ -97,6 +104,7 @@ productVariants(first: Int!) {
 ```
 
 **Assumptions**:
+
 - `inventoryQuantity`: aggregate across all locations (Shopify sums automatically)
 - Negative values possible (overselling enabled); clamp to 0 for display
 - `sku` may be null; fallback to `product.title + variant.title`
@@ -112,10 +120,12 @@ productVariants(first: Int!) {
 **Endpoint**: `GET /api/v1/accounts/{account_id}/conversations`
 
 **Query Parameters**:
+
 - `status`: `open` or `pending`
 - `page`: pagination (1-indexed)
 
 **Response Schema**:
+
 ```typescript
 {
   payload: Conversation[]
@@ -139,16 +149,19 @@ interface Conversation {
 ```
 
 **Assumptions**:
+
 - `created_at` is Unix epoch seconds (multiply by 1000 for JS Date)
 - `status` is stable enum; `open` and `pending` indicate active conversations
 - `tags` array may be empty; check for `escalation` tag explicitly
 - Customer name resolution: `meta.sender.name` > `contacts[0].name` > fallback "Customer"
 
 **Breaking Change Alerts**:
+
 - If `created_at` changes to ISO string, log schema drift immediately
 - If `status` adds new values, ensure backward compatibility (default to unknown state)
 
 **Test Coverage**:
+
 - Mock fixtures: `tests/fixtures/chatwoot/conversations.json`
 - Validate timestamp parsing and SLA breach calculation logic
 
@@ -159,6 +172,7 @@ interface Conversation {
 **Endpoint**: `GET /api/v1/accounts/{account_id}/conversations/{conversation_id}/messages`
 
 **Response Schema**:
+
 ```typescript
 {
   payload: Message[]
@@ -176,11 +190,13 @@ interface Message {
 ```
 
 **Assumptions**:
+
 - `message_type` mapping: `0` = customer message, `1` = agent reply, `2` = system activity
 - SLA clock starts from most recent `message_type=0` (incoming customer message)
 - `created_at` is Unix seconds (consistent with Conversation schema)
 
 **Test Coverage**:
+
 - Mock fixtures: `tests/fixtures/chatwoot/messages.json`
 - Validate message sorting and last-customer-message extraction
 
@@ -190,45 +206,50 @@ interface Message {
 
 ### Service: Sessions (SEO & Content Watch)
 
-**Endpoint**: `{MCP_HOST}/sessions/landing-pages` *(future implementation)*
+**Endpoint**: `{MCP_HOST}/sessions/landing-pages` _(future implementation)_
 
 **Current Status**: Mock mode (`GA_USE_MOCK=1`)
 
 **Expected Request**:
+
 ```json
 {
   "propertyId": "GA4_PROPERTY_ID",
   "dateRange": {
-    "start": "2025-09-28",  // ISO date string (YYYY-MM-DD)
+    "start": "2025-09-28", // ISO date string (YYYY-MM-DD)
     "end": "2025-10-05"
   }
 }
 ```
 
 **Expected Response**:
+
 ```typescript
 {
   landingPages: Array<{
-    landingPage: string          // e.g., "/products/shoes"
-    sessions: number              // total sessions in range
-    wowDelta: number              // decimal, e.g., -0.25 = 25% drop
-    evidenceUrl?: string          // optional GA4 UI link
-  }>
+    landingPage: string; // e.g., "/products/shoes"
+    sessions: number; // total sessions in range
+    wowDelta: number; // decimal, e.g., -0.25 = 25% drop
+    evidenceUrl?: string; // optional GA4 UI link
+  }>;
 }
 ```
 
 **Assumptions**:
+
 - `sessions` is GA4 session count (user-scoped, 30-min inactivity)
 - `wowDelta` pre-calculated by MCP (current week vs. prior week)
 - If MCP unavailable, mock client returns deterministic fixture
 - Date range: inclusive of start and end dates
 
 **Breaking Change Protocol**:
+
 - Once MCP live, version the endpoint (e.g., `/v1/sessions/landing-pages`)
 - If schema changes, log to `feedback/data.md` within 24h and coordinate with MCP maintainer
 - Mock client updated to match production contract
 
 **Test Coverage**:
+
 - Mock fixtures: `app/services/ga/mockClient.ts` (inline deterministic data)
 - Integration test: placeholder pending MCP availability
 
@@ -239,6 +260,7 @@ interface Message {
 ### Table: DashboardFact
 
 **Schema** (from `prisma/schema.prisma`):
+
 ```prisma
 model DashboardFact {
   id          Int      @id @default(autoincrement())
@@ -257,6 +279,7 @@ model DashboardFact {
 ```
 
 **Fact Types** (standardized):
+
 - `shopify.sales.summary`
 - `shopify.inventory.coverage`
 - `shopify.fulfillment.issues`
@@ -267,6 +290,7 @@ model DashboardFact {
 **Value JSON Structure** (examples):
 
 **shopify.sales.summary**:
+
 ```json
 {
   "shopDomain": "example.myshopify.com",
@@ -282,6 +306,7 @@ model DashboardFact {
 ```
 
 **chatwoot.escalations**:
+
 ```json
 [
   {
@@ -299,6 +324,7 @@ model DashboardFact {
 ```
 
 **ga.sessions.anomalies**:
+
 ```json
 [
   {
@@ -311,6 +337,7 @@ model DashboardFact {
 ```
 
 **Metadata JSON Structure**:
+
 ```json
 {
   "propertyId": "GA4_PROPERTY_ID",
@@ -321,6 +348,7 @@ model DashboardFact {
 ```
 
 **Migration Policy**:
+
 - Schema changes require Prisma migration + seed/backfill script
 - Coordinate with engineer before adding columns or indexes
 - Test on SQLite (dev) and Postgres (staging) before production deploy
@@ -330,11 +358,13 @@ model DashboardFact {
 ## 5. Schema Drift Monitoring
 
 ### Process
+
 1. **Weekly validation**: Data agent runs contract validation tests every Monday
 2. **Automated checks**: CI pipeline runs mock response validation on every PR
 3. **Manual review**: Any upstream API change flagged in Shopify/Chatwoot/GA changelogs triggers review
 
 ### Reporting
+
 - **File**: `feedback/data.md`
 - **SLA**: Report breaking changes within 24 hours of detection
 - **Severity levels**:
@@ -343,6 +373,7 @@ model DashboardFact {
   - **P2 (Low)**: Optional field added → document for future use
 
 ### Example Drift Report (in `feedback/data.md`):
+
 ```markdown
 ## Schema Drift Alert — 2025-10-05
 
@@ -360,6 +391,7 @@ model DashboardFact {
 ## 6. Validation & Testing
 
 ### Contract Tests (Vitest)
+
 - **Location**: `tests/unit/contracts/`
 - **Coverage**:
   - Shopify: `shopify.orders.contract.test.ts`, `shopify.inventory.contract.test.ts`
@@ -367,11 +399,13 @@ model DashboardFact {
   - GA: `ga.sessions.contract.test.ts` (mocked until MCP live)
 
 ### Mock Fixtures
+
 - **Shopify**: `tests/fixtures/shopify/` (orders, inventory, products)
 - **Chatwoot**: `tests/fixtures/chatwoot/` (conversations, messages)
 - **GA**: Inline in `app/services/ga/mockClient.ts` (deterministic landing page data)
 
 ### Integration Tests (Playwright)
+
 - **Scope**: E2E dashboard rendering with mocked API responses
 - **Assertions**: Verify tile displays correct KPIs and anomaly flags
 - **Run cadence**: Every PR, pre-deploy
@@ -379,6 +413,7 @@ model DashboardFact {
 ---
 
 ## References
+
 - KPI Definitions: `docs/data/kpis.md`
 - Prisma Schema: `prisma/schema.prisma`
 - Service Implementations: `app/services/shopify/`, `app/services/chatwoot/`, `app/services/ga/`

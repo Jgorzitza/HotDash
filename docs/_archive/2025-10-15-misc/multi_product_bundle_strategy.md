@@ -9,18 +9,21 @@
 ## Future Products (Beyond Agent SDK)
 
 ### Product 1: HotDash Analytics (Standalone)
+
 - Customer support analytics platform
 - Works with any help desk
 - Price: $199/month
 - **Bundle**: Free with Enterprise tier
 
 ### Product 2: HotDash Knowledge Base (Standalone)
+
 - AI-powered knowledge management
 - Works independently of Agent SDK
 - Price: $299/month
 - **Bundle**: Included in Enterprise
 
 ### Product 3: HotDash Chatbot (Customer-Facing)
+
 - Website chatbot for self-service
 - Integrates with Agent SDK
 - Price: $399/month
@@ -31,6 +34,7 @@
 ## Super Bundle: "HotDash Complete"
 
 **Includes**:
+
 - Agent SDK Enterprise ($2,499)
 - Analytics ($199)
 - Knowledge Base ($299)
@@ -45,4 +49,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Multi-product strategy
-

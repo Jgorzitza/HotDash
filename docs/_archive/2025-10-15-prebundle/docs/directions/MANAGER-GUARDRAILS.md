@@ -12,6 +12,7 @@ last_reviewed: 2025-10-12
 **CEO Feedback**: "Looks like we generated a few more new MD files, were these needed or could it have been folded into an existing process?"
 
 **Manager's Violations**:
+
 1. ❌ Created docs/ops/SHOPIFY-AUTH-PATTERN.md (should've updated docs/dev/authshop.md)
 2. ❌ Created docs/ops/HUMAN-APPROVAL-REQUIRED.md (should've updated agentfeedbackprocess.md)
 3. ❌ Created multiple combined direction documents earlier (violated individual agent file process)
@@ -26,19 +27,21 @@ last_reviewed: 2025-10-12
 ### Guardrail 1: NO NEW DOCUMENTATION FILES
 
 **Rule**: Before creating ANY new .md file, Manager MUST:
+
 1. Check if existing doc can be updated instead
 2. Search for related existing docs: `grep -r "topic" docs/`
 3. If content fits existing doc: UPDATE that doc, don't create new
 4. If truly new: Ask CEO approval first
 
 **Examples**:
+
 - ❌ Create SHOPIFY-AUTH-PATTERN.md
 - ✅ Update docs/dev/authshop.md with auth clarification
 
-- ❌ Create HUMAN-APPROVAL-REQUIRED.md  
+- ❌ Create HUMAN-APPROVAL-REQUIRED.md
 - ✅ Update agentfeedbackprocess.md or docs/AgentSDKopenAI.md with approval policy
 
-**Exception**: artifacts/manager/*.md for analysis reports (OK to create)
+**Exception**: artifacts/manager/\*.md for analysis reports (OK to create)
 
 ---
 
@@ -47,12 +50,14 @@ last_reviewed: 2025-10-12
 **Rule**: Direction updates go in `docs/directions/<agent>.md` ONLY
 
 **Never Create**:
+
 - ❌ Combined direction documents
-- ❌ EMERGENCY-*.md direction files
-- ❌ URGENT-*.md direction files
-- ❌ *-CRITICAL.md direction files
+- ❌ EMERGENCY-\*.md direction files
+- ❌ URGENT-\*.md direction files
+- ❌ \*-CRITICAL.md direction files
 
 **Always Update**:
+
 - ✅ docs/directions/engineer.md (individual file)
 - ✅ docs/directions/qa.md (individual file)
 - etc.
@@ -66,13 +71,15 @@ last_reviewed: 2025-10-12
 **Rule**: Manager MUST use MCPs for technical decisions
 
 **Required MCP Usage**:
+
 - Shopify MCP: Validate any Shopify GraphQL patterns before assigning tasks
 - Context7 MCP: Verify React Router 7 patterns before directing Engineer
 - GitHub MCP: Check commits when verifying "task complete" claims
 - Fly MCP: Verify deployments when agents claim "deployed"
 - Supabase MCP: Check database changes when agents claim schema updates
 
-**Enforcement**: 
+**Enforcement**:
+
 - Manager logs MCP usage in feedback/manager.md
 - CEO can audit: "grep 'MCP:' feedback/manager.md"
 - Minimum: 5+ MCP calls per day for technical direction
@@ -84,12 +91,14 @@ last_reviewed: 2025-10-12
 **Rule**: Don't accept "task complete" without verification
 
 **Verification Methods**:
+
 1. Use MCPs to check technical claims
 2. Assign QA to validate
 3. Check git commits exist
 4. Review actual artifacts (not just claims)
 
 **Never Accept**:
+
 - ❌ "Task complete" without evidence
 - ❌ "Deployed" without URL + health check
 - ❌ "Fixed" without before/after comparison
@@ -99,9 +108,10 @@ last_reviewed: 2025-10-12
 ### Guardrail 5: ASK BEFORE CREATE
 
 **Rule**: Before creating any new:
+
 - Process
 - Document structure
-- Agent role  
+- Agent role
 - Direction approach
 
 **Manager Must**: Ask CEO first, explain why existing process won't work
@@ -113,11 +123,13 @@ last_reviewed: 2025-10-12
 ## 📋 ENFORCEMENT
 
 **CEO Reviews Weekly**:
+
 - New .md files created (should be ~0)
 - MCP usage count (should be >5/day)
 - Process adherence
 
 **Violations Result In**:
+
 - Manager rating penalty
 - Increased CEO oversight
 - Process correction required

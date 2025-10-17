@@ -15,18 +15,15 @@ create table if not exists agent_run (
   sla_target_seconds int,
   metadata jsonb
 );
-
 create index if not exists idx_agent_run_agent_time
   on agent_run (agent_name, started_at);
-
 create table if not exists agent_qc (
   run_id uuid references agent_run(run_id) on delete cascade,
   quality_score int check (quality_score between 1 and 5),
   notes text,
   created_at timestamptz default now()
 );
-
-create view if not exists v_agent_kpis as
+create or replace view v_agent_kpis as
 select
   agent_name,
   date_trunc('day', started_at) as day,

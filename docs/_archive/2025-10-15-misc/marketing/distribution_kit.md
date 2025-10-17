@@ -6,11 +6,13 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # OCC Launch Distribution Kit (Hold Until QA + Embed Token Greenlights)
 
 Use this packet to ship internal/external notifications within minutes once QA posts the sustained mock=0 (<300 ms) evidence and reliability confirms Admin tour validation via Shopify CLI 3 dev flow. Update the placeholders with live timestamps + evidence links before sending.
 
 ## 1. Internal Clearance Email Draft — occ-launch@hotrodan.com
+
 ```
 Subject: [Action Required] OCC launch cleared — publish within minutes
 
@@ -30,6 +32,7 @@ Need help? Email customer.support@hotrodan.com (Chatwoot Fly inbox) or reply dir
 ```
 
 ## 2. External Merchant Email (ESP) — Final Template
+
 ```
 Subject: Operator Control Center is ready in your Shopify Admin
 
@@ -54,6 +57,7 @@ Thanks for building with us,
 ```
 
 ## 3. Support / Enablement Announcement Email
+
 ```
 Subject: OCC launch go — training + support actions today
 
@@ -70,6 +74,7 @@ Thanks!
 ```
 
 ## 4. Press / PR Blurb (Embargoed)
+
 ```
 Subject: HotDash debuts Operator Control Center with shared inbox on Chatwoot Fly
 
@@ -91,21 +96,24 @@ Next steps: reply with ✅ once your outlet confirms embargo details, or route q
 ```
 
 ## 5. Social Posts (LinkedIn/Twitter) — Clipboard Ready
+
 - **LinkedIn:** `Operator Control Center unifies your support inbox (now on Chatwoot Fly) with realtime sales, inventory, and SEO telemetry. Hold until QA mock=0 200 + embed token land: “One shared inbox. AI you approve. OCC keeps every escalation flowing—fast.”`
 - **Twitter/X:** `Operator Control Center is almost live. Shared Operator Inbox on Chatwoot Fly + OpenAI-powered insights = faster escalations, zero tab fatigue. Shipping once QA mock=0 200 + embed token clear.`
 - **Hashtags:** `#Shopify`, `#ecommerce`, `#customersupport`
 
 ## 6. Acknowledgement Tracker
-| Stakeholder Group | Channel | Owner | Status | Timestamp | Notes |
-|-------------------|---------|-------|--------|-----------|-------|
-| Product | occ-launch@hotrodan.com (reply-all) | Marketing | ▢ Pending |  |  |
-| Reliability | occ-reliability@hotrodan.com | Marketing | ▢ Pending |  |  |
-| Support | support-all@hotrodan.com | Support Lead | ▢ Pending |  |  |
-| Enablement | enablement@hotrodan.com + Docs comment | Enablement Lead | ▢ Pending |  |  |
-| Localization | localization@hotrodan.com | Marketing | ▢ Pending |  |  |
-| Compliance | compliance@hotrodan.com | Marketing | ▢ Pending |  |  |
+
+| Stakeholder Group | Channel                                | Owner           | Status    | Timestamp | Notes |
+| ----------------- | -------------------------------------- | --------------- | --------- | --------- | ----- |
+| Product           | occ-launch@hotrodan.com (reply-all)    | Marketing       | ▢ Pending |           |       |
+| Reliability       | occ-reliability@hotrodan.com           | Marketing       | ▢ Pending |           |       |
+| Support           | support-all@hotrodan.com               | Support Lead    | ▢ Pending |           |       |
+| Enablement        | enablement@hotrodan.com + Docs comment | Enablement Lead | ▢ Pending |           |       |
+| Localization      | localization@hotrodan.com              | Marketing       | ▢ Pending |           |       |
+| Compliance        | compliance@hotrodan.com                | Marketing       | ▢ Pending |           |       |
 
 ## 7. Send Checklist (Execute After Evidence Uploads)
+
 1. Verify evidence links + timestamps added to templates above.
 2. Update `docs/marketing/launch_comms_packet.md` go-live checklist with actual file paths.
 3. Send internal clearance email, monitor acknowledgements in tracker.

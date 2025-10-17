@@ -1,0 +1,45 @@
+# Feature Pack Intake (2025-10-17T04:27:10Z)
+
+## Download & Extraction
+- Source: https://drive.google.com/uc?export=download&id=1wxfcnjUh6yed0mmuAunAO_qEaYGcKK2h
+- Timestamp: 2025-10-17T04:27:10Z UTC
+- Command: `~/.local/bin/gdown https://drive.google.com/uc?id=1wxfcnjUh6yed0mmuAunAO_qEaYGcKK2h -O tmp/feature_pack_20251017T033137Z.zip`
+- Result: ✅ Downloaded (12.8 KB) and extracted to `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/`
+
+## File Tree
+```
+$ find integrations/new_feature_20251017T033137Z -mindepth 1 -maxdepth 3 -print
+integrations/new_feature_20251017T033137Z/README.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/00-overview/README.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/01-task-plans/manager_tasks.yaml
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/02-schemas/pattern.schema.json
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/02-schemas/productdraft.schema.json
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/02-schemas/sku_rules.schema.json
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/security_rls.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/supabase_schema.sql
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/04-api/api_contracts.json
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/05-integrations/shopify_notes.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/06-ui/react_router7_routes.tsx
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/07-ops/guardrails.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/07-ops/monitoring_experiments.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/08-edge-functions/functions_list.md
+integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/09-configuration/.env.example
+```
+
+## SHA256 Checksums
+```
+c728011132195eda8510eb4747a3a7e3b2e4a2bb5f0be0c3f91d54940f18d2a4  manager_agent_pack_v1/00-overview/README.md
+2b0af353ebb1e3eb3d661ad1e1aff9c2d385c7ff62f353c76733444fc2d9646b  manager_agent_pack_v1/01-task-plans/manager_tasks.yaml
+322f22f5d407c197fedb7071983c258002aa053234a73403bc5c82a28cc49417  manager_agent_pack_v1/02-schemas/pattern.schema.json
+26f22b60f72c5db8cd37a8beca4406e260427b8fd636011fa2cce6c4a5986d14  manager_agent_pack_v1/02-schemas/productdraft.schema.json
+eac13d873d1b95380a37c170780462348652652fae40443f6ae4a3a9c8674966  manager_agent_pack_v1/02-schemas/sku_rules.schema.json
+c977b8baae8a7a11d6a6f0aace09c82a345ee652155b035ac5193b1f89faaf19  manager_agent_pack_v1/03-database/security_rls.md
+8e7221ee9a0889903f60303a99c90d9d5ca9b935e04e2faa9d0ce3030eae7add  manager_agent_pack_v1/03-database/supabase_schema.sql
+01ae1646b94fe1957ad482c66832b24cb48d7586f4cfc3c52710aa0eb95caf3b  manager_agent_pack_v1/04-api/api_contracts.json
+85342aaaabb1bbff239abc822a5b7b10d3eeec7a27be419cf9d07ff5ab98e3cb  manager_agent_pack_v1/05-integrations/shopify_notes.md
+7eadb5503259160b6c8a18e0ea41cb6418471876ae4afc1a71bdff306018f4da  manager_agent_pack_v1/06-ui/react_router7_routes.tsx
+0b61542110a623021f7ac8e861bc5898a65ecf2d45b809a988f98b302737bad8  manager_agent_pack_v1/07-ops/guardrails.md
+71071159f741c7cb85872a1c5c11ce9f916cffab2991806513a674bda7678013  manager_agent_pack_v1/07-ops/monitoring_experiments.md
+98ce2836c1e6d37690227e6fd98d93d0e45b0bd641cd9611d02b6238a7d91563  manager_agent_pack_v1/08-edge-functions/functions_list.md
+161f4d32e38999ad92a652d2193850861dea50ecce4ca2e44ebd25737e392954  manager_agent_pack_v1/09-configuration/.env.example
+```

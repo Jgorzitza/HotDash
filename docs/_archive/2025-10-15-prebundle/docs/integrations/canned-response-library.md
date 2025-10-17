@@ -72,6 +72,7 @@ Best,
 ```
 
 **Agent SDK Variables:**
+
 - Auto-populated from Shopify API
 - No manual data entry required
 - Link validation automatic
@@ -334,19 +335,19 @@ HotDash Support Team
 ```typescript
 function selectCannedResponse(context: DraftContext): string {
   const { category, confidence, topic, sentiment } = context;
-  
+
   // High confidence + standard topic = use canned response
   if (confidence > 85 && CANNED_RESPONSES[topic]) {
     const template = CANNED_RESPONSES[topic];
     return personalizeTemplate(template, context);
   }
-  
+
   // Medium confidence = hybrid (canned + custom)
   if (confidence > 70) {
     const base = CANNED_RESPONSES[category] || CANNED_RESPONSES.general;
     return customizeTemplate(base, context.draft_response);
   }
-  
+
   // Low confidence = fully custom draft
   return context.draft_response;
 }
@@ -357,26 +358,32 @@ function selectCannedResponse(context: DraftContext): string {
 ```typescript
 async function populateTemplateVariables(
   template: string,
-  context: ConversationContext
+  context: ConversationContext,
 ): Promise<string> {
   let populated = template;
-  
+
   // Customer variables (from Chatwoot)
   populated = populated.replace(/{{contact\.name}}/g, context.customer.name);
   populated = populated.replace(/{{contact\.email}}/g, context.customer.email);
-  
+
   // Order variables (from Shopify API)
   if (context.order_number) {
     const order = await shopify.getOrder(context.order_number);
     populated = populated.replace(/{{custom\.order_number}}/g, order.number);
     populated = populated.replace(/{{custom\.order_status}}/g, order.status);
-    populated = populated.replace(/{{custom\.tracking_number}}/g, order.tracking);
-    populated = populated.replace(/{{custom\.delivery_date}}/g, order.delivery_estimate);
+    populated = populated.replace(
+      /{{custom\.tracking_number}}/g,
+      order.tracking,
+    );
+    populated = populated.replace(
+      /{{custom\.delivery_date}}/g,
+      order.delivery_estimate,
+    );
   }
-  
+
   // Agent variables
   populated = populated.replace(/{{agent\.name}}/g, context.agent.name);
-  
+
   return populated;
 }
 ```
@@ -388,6 +395,7 @@ async function populateTemplateVariables(
 ### Adding New Responses
 
 **Process:**
+
 1. Identify need (operator request or gap analysis)
 2. Draft response with variables
 3. Test with sample data
@@ -415,7 +423,7 @@ async function populateTemplateVariables(
 
 ```sql
 -- Most used canned responses
-SELECT 
+SELECT
   canned_response_id,
   canned_response_name,
   COUNT(*) as usage_count,
@@ -428,7 +436,7 @@ ORDER BY usage_count DESC
 LIMIT 20;
 
 -- Responses needing improvement (high edit rate)
-SELECT 
+SELECT
   canned_response_name,
   COUNT(*) as total_uses,
   AVG(edit_required::int) * 100 as edit_percentage,
@@ -446,4 +454,3 @@ ORDER BY edit_percentage DESC;
 **Document Status:** Production Ready  
 **Last Updated:** 2025-10-11  
 **Total Responses:** 36 canned responses across 5 categories
-

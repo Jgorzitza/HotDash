@@ -9,11 +9,13 @@ task: 1H
 # Task 1H: Loading State Micro-interactions
 
 ## Purpose
+
 Design skeleton loaders, animations, and progressive disclosure patterns for all loading states.
 
 ## Skeleton Loaders
 
 ### Page Skeleton (Approval Queue)
+
 ```typescript
 import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 
@@ -38,6 +40,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 **Duration**: Until data loads (< 2s ideal)
 
 ### Approval Card Skeleton
+
 ```typescript
 <Card>
   <BlockStack gap="300">
@@ -46,10 +49,10 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
       <SkeletonDisplayText size="small" />
       <SkeletonDisplayText size="small" />
     </InlineStack>
-    
+
     {/* Body skeleton */}
     <SkeletonBodyText lines={2} />
-    
+
     {/* Button skeleton */}
     <InlineStack gap="200">
       <div style={{ width: '100px', height: '36px', background: '#E3E5E7', borderRadius: '6px' }} />
@@ -60,6 +63,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 ```
 
 ### Tile Skeleton (Dashboard)
+
 ```typescript
 <Card>
   <BlockStack gap="300">
@@ -73,6 +77,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 ## Loading Animations
 
 ### Button Loading
+
 ```typescript
 <Button
   variant="primary"
@@ -87,6 +92,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 **Built-in Polaris spinner**: No custom animation needed
 
 ### Inline Loading (Small Spinner)
+
 ```typescript
 <InlineStack gap="200" blockAlign="center">
   <Spinner size="small" />
@@ -95,6 +101,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 ```
 
 ### Progress Bar (Determinate)
+
 ```typescript
 <ProgressBar progress={uploadProgress} />
 <Text variant="bodySm" tone="subdued">
@@ -105,6 +112,7 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 **Use when**: Progress is measurable (file upload, batch operation)
 
 ### Indeterminate Loader (Unknown Duration)
+
 ```typescript
 <ProgressBar progress={75} tone="highlight" />
 ```
@@ -114,13 +122,14 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 ## Progressive Disclosure
 
 ### Load More Pattern
+
 ```typescript
 <BlockStack gap="400">
   {/* Show first 10 approvals */}
   {approvals.slice(0, visibleCount).map(approval => (
     <ApprovalCard key={approval.id} approval={approval} />
   ))}
-  
+
   {/* Load more button */}
   {visibleCount < approvals.length && (
     <Button
@@ -136,13 +145,14 @@ import { SkeletonPage, Layout, Card, SkeletonBodyText } from '@shopify/polaris';
 **Pattern**: Show 10, load 10 more on demand
 
 ### Infinite Scroll
+
 ```typescript
 import { useIntersectionObserver } from '@shopify/react-hooks';
 
 function ApprovalQueue() {
   const [page, setPage] = useState(1);
   const sentinelRef = useRef(null);
-  
+
   useIntersectionObserver({
     target: sentinelRef,
     onIntersect: () => {
@@ -151,11 +161,11 @@ function ApprovalQueue() {
       }
     },
   });
-  
+
   return (
     <>
       {approvals.map(a => <ApprovalCard key={a.id} approval={a} />)}
-      
+
       {/* Sentinel element for infinite scroll */}
       <div ref={sentinelRef}>
         {isLoading && <Spinner />}
@@ -168,46 +178,40 @@ function ApprovalQueue() {
 **Pattern**: Auto-load when scroll near bottom
 
 ### Lazy Load Images
-```html
-<img 
-  src={imageUrl} 
-  loading="lazy" 
-  alt={alt}
-  onLoad={() => setImageLoaded(true)}
-/>
 
-{!imageLoaded && (
-  <div className="image-placeholder">
-    <Spinner size="small" />
-  </div>
+```html
+<img src="{imageUrl}" loading="lazy" alt="{alt}" onLoad="{()" ="" />
+setImageLoaded(true)} /> {!imageLoaded && (
+<div className="image-placeholder">
+  <Spinner size="small" />
+</div>
 )}
 ```
 
 ## Optimistic Updates
 
 ### Instant Feedback (Before API)
+
 ```typescript
 const handleApprove = async (id: string) => {
   // 1. Update UI immediately (optimistic)
-  const optimisticApproval = { ...approval, status: 'approved' };
-  setApprovals(prevApprovals =>
-    prevApprovals.map(a => a.id === id ? optimisticApproval : a)
+  const optimisticApproval = { ...approval, status: "approved" };
+  setApprovals((prevApprovals) =>
+    prevApprovals.map((a) => (a.id === id ? optimisticApproval : a)),
   );
-  
+
   try {
     // 2. Send to API
-    await fetch(`/approvals/${id}/approve`, { method: 'POST' });
-    
+    await fetch(`/approvals/${id}/approve`, { method: "POST" });
+
     // 3. Success - remove from queue after animation
     setTimeout(() => {
-      setApprovals(prevApprovals =>
-        prevApprovals.filter(a => a.id !== id)
-      );
+      setApprovals((prevApprovals) => prevApprovals.filter((a) => a.id !== id));
     }, 300);
   } catch (error) {
     // 4. Revert on error
     setApprovals(prevApprovals); // Restore previous state
-    showError('Failed to approve');
+    showError("Failed to approve");
   }
 };
 ```
@@ -217,9 +221,12 @@ const handleApprove = async (id: string) => {
 ## Micro-interactions
 
 ### Hover State
+
 ```css
 .approval-card {
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .approval-card:hover {
@@ -229,6 +236,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Focus State
+
 ```css
 .approval-card:focus-visible {
   outline: 2px solid var(--p-color-border-focus);
@@ -237,6 +245,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Click/Tap Feedback
+
 ```css
 .approval-button:active {
   transform: scale(0.98);
@@ -244,6 +253,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Slide In Animation (New Approval)
+
 ```css
 @keyframes slideIn {
   from {
@@ -262,6 +272,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Fade Out Animation (Removed Approval)
+
 ```css
 @keyframes fadeOut {
   from {
@@ -280,9 +291,11 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Pulse Animation (New Badge)
+
 ```css
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -300,6 +313,7 @@ const handleApprove = async (id: string) => {
 ## Loading State Copy
 
 ### Page Load
+
 ```typescript
 <SkeletonPage title="Starting engines..." />  // Hot Rodan flavor
 // OR
@@ -307,6 +321,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Action Load
+
 ```typescript
 <Button loading>Approving...</Button>
 <Button loading>Rejecting...</Button>
@@ -314,6 +329,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Background Refresh
+
 ```typescript
 <InlineStack gap="200" blockAlign="center">
   <Spinner size="small" />
@@ -326,20 +342,25 @@ const handleApprove = async (id: string) => {
 ### Skeleton vs Spinner
 
 **Use Skeleton When**:
+
 - Initial page load
 - Known layout structure
 - Loading content that takes > 1s
 
 **Use Spinner When**:
+
 - Action feedback (button clicks)
 - Unknown content structure
 - Quick loads (< 1s)
 
 ### Animation Performance
+
 ```css
 /* Use transform/opacity (GPU accelerated) */
 .card {
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 /* Avoid animating layout properties */
@@ -348,6 +369,7 @@ const handleApprove = async (id: string) => {
 ```
 
 ### Reduce Motion
+
 ```css
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -359,14 +381,14 @@ const handleApprove = async (id: string) => {
 
 ## Timing Guidelines
 
-| Action | Duration | Easing |
-|--------|----------|--------|
-| Hover | 0.2s | ease |
-| Click/Tap | 0.1s | ease-in |
-| Slide in | 0.3s | ease-out |
-| Fade out | 0.2s | ease-in |
-| Button loading | Infinite | - |
-| Page skeleton | Until load | - |
+| Action         | Duration   | Easing   |
+| -------------- | ---------- | -------- |
+| Hover          | 0.2s       | ease     |
+| Click/Tap      | 0.1s       | ease-in  |
+| Slide in       | 0.3s       | ease-out |
+| Fade out       | 0.2s       | ease-in  |
+| Button loading | Infinite   | -        |
+| Page skeleton  | Until load | -        |
 
 **Rule**: Keep all animations < 0.5s
 
@@ -385,4 +407,3 @@ const handleApprove = async (id: string) => {
 ---
 
 **Status**: Complete loading state micro-interaction system - skeleton loaders, animations, progressive disclosure
-

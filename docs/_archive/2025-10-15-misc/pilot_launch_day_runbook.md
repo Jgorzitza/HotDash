@@ -29,6 +29,7 @@ curl https://hotdash.app/api/llamaindex/health
 ```
 
 **Evidence Required**:
+
 - [ ] All health checks return 200 OK
 - [ ] Screenshot of system status dashboard (all green)
 - [ ] Logged in `feedback/product.md` with timestamp
@@ -42,13 +43,14 @@ curl https://hotdash.app/api/llamaindex/health
 ```
 Pilot Operators:
 1. Sarah Johnson - sarah@hotdash.com
-2. Marcus Chen - marcus@hotdash.com  
+2. Marcus Chen - marcus@hotdash.com
 3. David Williams - david@hotdash.com
 4. Emily Rodriguez - emily@hotdash.com
 5. Aisha Patel - aisha@hotdash.com
 ```
 
 **For Each Operator**:
+
 - [ ] Can log in to https://hotdash.app/approval-queue
 - [ ] Dashboard loads in <2 seconds
 - [ ] Mock draft appears in queue
@@ -56,6 +58,7 @@ Pilot Operators:
 - [ ] Dashboard updates with stats
 
 **Evidence Required**:
+
 - [ ] 5 screenshots (one per operator showing successful login)
 - [ ] Logged in `feedback/product.md`
 
@@ -75,12 +78,14 @@ npm run ai:verify-kb-coverage
 ```
 
 **Test Sample Queries**:
+
 - [ ] "Where is my order?" → Returns shipping policy + tracking guide
 - [ ] "How do I return this?" → Returns return policy + process
 - [ ] "What's your refund policy?" → Returns refund timeline
 - [ ] "Is this in stock?" → Returns inventory info or "check with team"
 
 **Evidence Required**:
+
 - [ ] KB coverage report showing >85%
 - [ ] 4 test query results (screenshot or log)
 - [ ] Logged in `feedback/product.md`
@@ -117,6 +122,7 @@ See you tomorrow! 🎉
 ```
 
 **Evidence Required**:
+
 - [ ] Email sent confirmation
 - [ ] Slack message posted (screenshot)
 - [ ] Logged in `feedback/product.md`
@@ -128,16 +134,19 @@ See you tomorrow! 🎉
 ### 8:00 AM - 8:30 AM: Final Pre-Flight Checks
 
 **System Status**:
+
 - [ ] All services healthy (API, approval queue, KB)
 - [ ] Monitoring dashboard shows green across all metrics
 - [ ] Log aggregation working (check recent logs flowing)
 
 **Queue Status**:
+
 - [ ] 10% traffic routing to approval queue (not 100%)
 - [ ] Estimated 50-75 inquiries today for pilot team
 - [ ] Auto-escalation rules active (refunds >$100, angry customers)
 
 **Team Readiness**:
+
 - [ ] Product agent available all day (me!)
 - [ ] Engineer on call for critical bugs
 - [ ] Manager available for escalations
@@ -165,6 +174,7 @@ Standup in 30 minutes at 9:00 AM sharp!
 ```
 
 **Monitor Responses**:
+
 - [ ] All 5 operators confirm login successful
 - [ ] Address any login issues immediately
 - [ ] If system issue: Escalate to Engineer, consider 30-min delay
@@ -197,6 +207,7 @@ Standup in 30 minutes at 9:00 AM sharp!
    - Open floor
 
 **After Standup**:
+
 - [ ] Post summary in Slack for those who missed it
 - [ ] Send quick-start guide link to all operators
 
@@ -207,23 +218,27 @@ Standup in 30 minutes at 9:00 AM sharp!
 **Active Monitoring** (Product Agent's Job):
 
 **Every 30 minutes, check**:
+
 - [ ] Queue depth (should be <10 pending)
 - [ ] System uptime (should be 100%)
 - [ ] Error logs (should be zero critical errors)
 - [ ] Operator activity (all 5 active?)
 
 **Slack Monitoring**:
+
 - [ ] Respond to questions in <5 minutes
 - [ ] Celebrate first approvals publicly: "🎉 Sarah just approved her first draft! Nice!"
 - [ ] Share tips: "Pro tip: Use Ctrl+A to approve quickly!"
 
 **Red Flags to Watch**:
+
 - ⚠️ Operator reports "all drafts are wrong" → Investigate KB immediately
 - ⚠️ System slow (>5s load time) → Escalate to Engineer
 - ⚠️ Error rate >5% → Pause pilot, investigate
 - ⚠️ Operator frustration ("this is terrible") → Call immediately, understand why
 
 **Green Flags to Celebrate**:
+
 - ✅ First approval ("🎉 Sarah approved a draft!")
 - ✅ Positive feedback ("This is actually helpful!")
 - ✅ Operator sharing tips with each other
@@ -260,13 +275,14 @@ Great morning, team! Here's where we're at:
 
 Keep up the great work! 💪
 
-Remember: 
+Remember:
 - Office hours at 2 PM if you have questions
 - No rush, take your time with each draft
 - Share feedback as you go!
 ```
 
 **Evidence Required**:
+
 - [ ] Metrics screenshot
 - [ ] Slack update posted
 - [ ] Logged in `feedback/product.md`
@@ -276,11 +292,13 @@ Remember:
 ### 1:00 PM - 2:00 PM: Afternoon Session Begins
 
 **Continue Monitoring** (same as morning):
+
 - [ ] Queue depth check every 30 min
 - [ ] Respond to Slack questions <5 min
 - [ ] Log any bugs or issues reported
 
 **Address Any Morning Issues**:
+
 - If bugs reported: Create tickets, assign to Engineer
 - If KB gaps found: Alert Support Agent to create articles
 - If UX confusion: Note for post-pilot improvements
@@ -290,18 +308,21 @@ Remember:
 ### 2:00 PM - 3:00 PM: Office Hours
 
 **Product Agent Available**:
+
 - Zoom link open: [link]
 - Operators can drop in with questions
 - Screen share to troubleshoot issues
 - Collect detailed feedback
 
 **Typical Questions**:
+
 - "How do I know if a draft is good?"
 - "When should I escalate vs reject?"
 - "Can I customize the drafts?"
 - "What if I disagree with the AI?"
 
 **Document All Feedback**:
+
 - [ ] Log questions in `feedback/product.md`
 - [ ] Note patterns (if 3+ operators ask same question, it's a training gap)
 - [ ] Share tips in Slack after office hours
@@ -311,6 +332,7 @@ Remember:
 ### 3:00 PM - 5:00 PM: Final Push & Wrap-Up
 
 **Continue Monitoring**:
+
 - [ ] Same 30-min checks
 - [ ] Encourage operators to hit daily goals (10-15 drafts)
 - [ ] Celebrate milestones: "Team just hit 100 drafts reviewed! 🎉"
@@ -353,16 +375,19 @@ Great work, team! See you tomorrow! 💪
 **Internal Debrief** (Product, Engineer, Manager):
 
 **Review Metrics**:
+
 - [ ] Final day 1 numbers
 - [ ] Any system issues?
 - [ ] Operator feedback themes
 
 **Action Items for Day 2**:
+
 - [ ] Bugs to fix overnight
 - [ ] KB articles to add
 - [ ] Process improvements
 
 **Evidence Required**:
+
 - [ ] Day 1 metrics report
 - [ ] Action items list
 - [ ] Logged in `feedback/product.md`
@@ -374,6 +399,7 @@ Great work, team! See you tomorrow! 💪
 ### Scenario 1: System Down
 
 **If API/Queue is Down**:
+
 1. Immediately post in Slack: "System issue detected, investigating"
 2. Escalate to Engineer (ping @engineering-oncall)
 3. Switch operators to manual workflow temporarily
@@ -387,6 +413,7 @@ Great work, team! See you tomorrow! 💪
 ### Scenario 2: All Drafts Are Wrong
 
 **If Operators Report Major Quality Issues**:
+
 1. Check KB sync status (run `npm run ai:verify-kb-coverage`)
 2. Check API health (are we getting correct data?)
 3. If KB issue: Run emergency sync
@@ -400,6 +427,7 @@ Great work, team! See you tomorrow! 💪
 ### Scenario 3: Operator Wants to Quit
 
 **If Operator Says "I hate this, I want out"**:
+
 1. Jump on a call immediately (don't handle via Slack)
 2. Listen: What's frustrating them?
 3. Validate: "I hear you, this is hard"
@@ -414,6 +442,7 @@ Great work, team! See you tomorrow! 💪
 ### Scenario 4: Security/Data Issue
 
 **If Operator Reports Data Leakage or Security Concern**:
+
 1. **IMMEDIATELY PAUSE PILOT** (stop all traffic)
 2. Escalate to Manager + Engineer
 3. Post in Slack: "Pilot paused for security review"
@@ -428,6 +457,7 @@ Great work, team! See you tomorrow! 💪
 ## Success Criteria (Day 1)
 
 **Green Light (Continue Pilot)**:
+
 - ✅ System uptime >95%
 - ✅ Approval rate >35%
 - ✅ Operator satisfaction >6.5/10
@@ -435,6 +465,7 @@ Great work, team! See you tomorrow! 💪
 - ✅ Operators willing to continue
 
 **Yellow Light (Fix & Continue)**:
+
 - ⚠️ System uptime 90-95%
 - ⚠️ Approval rate 25-35%
 - ⚠️ Operator satisfaction 5.0-6.5/10
@@ -442,6 +473,7 @@ Great work, team! See you tomorrow! 💪
 - ⚠️ Some operator concerns but willing to continue
 
 **Red Light (Pause Pilot)**:
+
 - ❌ System uptime <90%
 - ❌ Approval rate <25%
 - ❌ Operator satisfaction <5/10
@@ -454,4 +486,3 @@ Great work, team! See you tomorrow! 💪
 **Purpose**: Hour-by-hour guide for successful pilot launch  
 **Status**: Ready for Oct 28 execution  
 **North Star**: ✅ **Detailed runbook ensures smooth launch, operator success**
-

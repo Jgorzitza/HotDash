@@ -13,6 +13,7 @@
 **Goal**: Become recommended AI support solution for Shopify Plus merchants
 
 **Integration**:
+
 - Deep Shopify Admin API integration
 - Listed in Shopify App Store
 - Shopify Plus partner badge
@@ -30,6 +31,7 @@
 **Goal**: Preferred AI support for BigCommerce enterprise clients
 
 **Integration**:
+
 - BigCommerce API for orders/products
 - Listed in BigCommerce App Marketplace
 - Enterprise partner tier
@@ -44,6 +46,7 @@
 **Goal**: HotDash becomes "the AI layer" for Chatwoot
 
 **Integration**:
+
 - Native Chatwoot integration (already have)
 - Listed in Chatwoot marketplace
 - Co-development on features
@@ -56,4 +59,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Partnership roadmap defined
-

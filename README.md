@@ -5,6 +5,7 @@ HotDash delivers an operator-first control center for Shopify stores. Tiles surf
 This repo contains the full web application, service layer integrations, agent direction docs, and tooling required to run telemetry jobs and nightly metrics rollups.
 
 ## Core Capabilities (October 2025)
+
 - **Always-On Idea Pool** — Supabase-backed `product_suggestions` pipeline keeps five live ideas (one Wildcard) ready for acceptance, rejection, or expiry. Approvals spawn Shopify draft creation jobs automatically.
 - **Approvals Everywhere** — Drawer UI, Supabase schema, and API routes enforce HITL for CX replies, inventory actions, growth moves, and product ideas.
 - **Operations Spine** — Inventory ROP calculators, analytics anomaly detection, GA4 dashboards, Publer scheduling, Chatwoot CX integrations, and Prometheus metrics.
@@ -15,6 +16,7 @@ This repo contains the full web application, service layer integrations, agent d
 ## Quick Start
 
 ### Prerequisites
+
 - **Node.js** ≥ 20.10
 - **npm** (ships with Node) or pnpm/yarn if you prefer
 - **Shopify CLI** (`npm install -g @shopify/cli@latest`)
@@ -23,6 +25,7 @@ This repo contains the full web application, service layer integrations, agent d
 - **Supabase project** (remote) _and_ the local Supabase containers started via `supabase start`
 
 ### 1. Clone & Install
+
 ```bash
 git clone https://github.com/Jgorzitza/HotDash.git
 cd HotDash
@@ -30,6 +33,7 @@ npm install
 ```
 
 ### 2. Configure Environment
+
 1. Start the Supabase containers (first run can take ~2 minutes):
 
    ```bash
@@ -37,14 +41,18 @@ npm install
    ```
 
    Local services expose:
-
    - Postgres: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`
    - REST: `http://127.0.0.1:54321`
    - Studio: `http://127.0.0.1:54323`
 
    You can confirm any time with `supabase status`.
 
-2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Add Publer API credentials when you are ready to enable social posting (`PUBLER_API_KEY` and `PUBLER_WORKSPACE_ID`). For the idea pool pipeline, set `IDEMPOTENCY_SALT` and related orchestrator keys as outlined in `integrations/new_feature_*/manager_agent_pack_v1/09-configuration/.env.example`. Keep this file out of git — `.env*` is already ignored.
+2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Add integration credentials so external services stay healthy:
+   - **Chatwoot:** `CHATWOOT_BASE_URL` (Fly-hosted URL) and either `CHATWOOT_TOKEN` or `CHATWOOT_TOKEN_FILE` for authenticated API checks. Optional overrides: `CHATWOOT_HEALTH_PATH`, `CHATWOOT_HEALTH_TIMEOUT_MS`.
+   - **Publer:** `PUBLER_API_KEY` + `PUBLER_WORKSPACE_ID` for live posting, plus environment-specific keys (`PUBLER_STAGING_API_KEY`, `PUBLER_PRODUCTION_API_KEY`) if you rely on the shell health scripts.
+   - **Idea Pool:** `IDEMPOTENCY_SALT` and related orchestrator keys as outlined in `integrations/new_feature_*/manager_agent_pack_v1/09-configuration/.env.example`.
+
+   Keep this file out of git — `.env*` is already ignored.
 
 3. Load the env file when working locally:
 
@@ -55,51 +63,85 @@ npm install
    > CI pulls secrets from GitHub environments; no manual export required in pipelines.
 
 ### 3. Initialize the Project
+
 ```bash
 npm run setup   # prisma generate + migrate deploy
 npm run dev     # starts Shopify dev tunnel + React Router 7 app
 ```
+
 Press `p` in the CLI output to open the embedded admin URL and complete app installation in your development store.
 
-### 4. Verification
-Once the dashboard loads, ensure tiles render in mock mode. Add real credentials (Shopify, Chatwoot, GA) to move to live data.
+### 4. Verify Integrations
+
+- **Dashboard sanity:** Load the admin app and confirm tiles render in mock mode before switching to live data.
+- **Chatwoot health check (CI mirrors this):**
+
+  ```bash
+  CHATWOOT_BASE_URL=https://hotdash-chatwoot.fly.dev npm run ops:check-chatwoot-health
+  ./scripts/ops/check-chatwoot-health.sh staging   # writes artifacts/ops/chatwoot-health-*.json
+  ```
+
+  Capture the JSON artifacts in `artifacts/ops/` for launch verification.
+
+- **Publer API check (verifies `/account_info` + `/social_accounts`):**
+
+  ```bash
+  PUBLER_STAGING_API_KEY=... ./scripts/ops/check-publer-health.sh staging
+  PUBLER_PRODUCTION_API_KEY=... ./scripts/ops/check-publer-health.sh production
+  ```
+
+  A successful run logs `✅ Publer health check passed` and persists results to `artifacts/ops/publer-health-*.json`.
+
+- Add real Shopify, Chatwoot, GA, and Publer credentials only after the above checks pass.
 
 ### 5. Tail Supabase logs (optional)
+
 ```bash
 scripts/ops/tail-supabase-logs.sh
 ```
+
 The helper uses the Supabase CLI to stream local events. Pass a project ref to target a remote instance: `scripts/ops/tail-supabase-logs.sh <project-ref>`.
 
 ---
 
 ## Shopify Integration Guardrails
+
 - Always reference the Shopify developer MCP (`shopify-dev-mcp`) for APIs, schema, and CLI workflows—no guessing or undocumented endpoints.
 - React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
 - Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
 
 ## Social Posting Guardrails (Publer)
+
 - All social publishing routes proxy through the Publer REST API; no direct client calls with secrets.
 - Queue drafts behind the approvals drawer (`requireApproval: true`) before hitting Publer’s `/posts` or `/posts/schedule` endpoints.
 - Coordinate tokens and workspace IDs via GitHub environment secrets—never hard-code or store them in the repo.
+- HotDash currently exercises Publer’s `/account_info`, `/social_accounts`, `/posts`, and `/posts/schedule` endpoints from `packages/integrations/publer.ts`; verify both read and write flows with `scripts/ops/check-publer-health.sh` before enabling live posting.
 - See `docs/integrations/social_adapter.md` for the current workflow and Publer API references.
+
+## Chatwoot Health Monitoring
+
+- Run `npm run ops:check-chatwoot-health` (`scripts/ops/check-chatwoot-health.mjs`) locally or in CI to assert the base URL, `/rails/health`, and authenticated profile endpoints stay responsive.
+- The shell helper `scripts/ops/check-chatwoot-health.sh` records end-to-end health metrics (HTTP status, response times) to `artifacts/ops/chatwoot-health-*.json`; archive the latest artifact in launch evidence.
+- If either check fails, treat it as a release blocker—Chatwoot must be reachable before approving customer replies or social posts tied to CX events.
 
 ## AI Agent Support: MCP Tools
 
 HotDash provides **6 MCP servers** to help AI agents work effectively:
 
-| Tool | Purpose | Status |
-|------|---------|--------|
-| **github-official** | GitHub repo management | ✅ Active |
-| **context7** | HotDash codebase + library search | ✅ Active (port 3001) |
-| **supabase** | Database & edge functions | ✅ Active |
-| **fly** | Deployment & infrastructure | ✅ Active (port 8080) |
-| **shopify** | Shopify API docs, GraphQL validation | ✅ Active |
-| **google-analytics** | GA data queries (dev tools only) | ✅ Active |
-| **llamaindex-rag** | Knowledge base RAG queries | 🚧 In development |
+| Tool                 | Purpose                              | Status                |
+| -------------------- | ------------------------------------ | --------------------- |
+| **github-official**  | GitHub repo management               | ✅ Active             |
+| **context7**         | HotDash codebase + library search    | ✅ Active (port 3001) |
+| **supabase**         | Database & edge functions            | ✅ Active             |
+| **fly**              | Deployment & infrastructure          | ✅ Active (port 8080) |
+| **shopify**          | Shopify API docs, GraphQL validation | ✅ Active             |
+| **google-analytics** | GA data queries (dev tools only)     | ✅ Active             |
+| **llamaindex-rag**   | Knowledge base RAG queries           | 🚧 In development     |
 
 ### 📚 MCP Documentation (Protected)
 
 **Complete documentation in `mcp/` directory:**
+
 - **[mcp/README.md](mcp/README.md)** - Overview and quick start
 - **[mcp/ALL_SYSTEMS_GO.md](mcp/ALL_SYSTEMS_GO.md)** - Ready-to-use examples
 - **[mcp/QUICK_REFERENCE.md](mcp/QUICK_REFERENCE.md)** - When to use each tool
@@ -107,11 +149,13 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 - **[mcp/SERVER_STATUS.md](mcp/SERVER_STATUS.md)** - Current server status
 
 **⚠️ CRITICAL: The `mcp/` directory is protected infrastructure.**
+
 - All `mcp/**/*.md` files are in the CI allow-list
 - DO NOT remove or modify without explicit approval
 - See `docs/RULES.md` for governance details
 
 **Quick Test:**
+
 ```bash
 ./mcp/test-mcp-tools.sh  # Verify all 6 servers are operational
 ```
@@ -122,21 +166,26 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 <summary><b>🖱️ Cursor IDE</b> (Click to expand)</summary>
 
 **Prerequisites:**
+
 - MCP configuration: `~/.cursor/mcp.json` (already configured)
 
 **Startup Steps:**
+
 1. **Start Context7** (required):
+
    ```bash
    cd ~/HotDash/hot-dash
    ./scripts/ops/start-context7.sh
    ```
 
 2. **Verify Context7 is running**:
+
    ```bash
    docker ps | grep context7-mcp
    ```
 
 3. **Open HotDash in Cursor**:
+
    ```bash
    cursor ~/HotDash/hot-dash
    ```
@@ -153,30 +202,37 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 <summary><b>⌨️ Codex CLI</b> (Click to expand)</summary>
 
 **Prerequisites:**
+
 - MCP configuration: `~/.codex/config.toml` (already configured)
 
 **Startup Steps:**
+
 1. **Start Context7** (required):
+
    ```bash
    cd ~/HotDash/hot-dash
    ./scripts/ops/start-context7.sh
    ```
 
 2. **Verify Context7 is running**:
+
    ```bash
    docker ps | grep context7-mcp
    ```
 
 3. **Start Codex in HotDash directory**:
+
    ```bash
    cd ~/HotDash/hot-dash
    codex
    ```
 
 4. **Verify MCP tools loaded**:
+
    ```
    codex> /tools
    ```
+
    Should show shopify, context7, github-official, supabase, fly
 
 5. **Start coding!** All MCP tools are now available.
@@ -187,10 +243,12 @@ HotDash provides **6 MCP servers** to help AI agents work effectively:
 <summary><b>🤖 Claude CLI</b> (Click to expand)</summary>
 
 **Prerequisites:**
+
 - MCP configuration: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
 - Or: `~/.config/Claude/claude_desktop_config.json` (Linux)
 
 **Setup (one-time):**
+
 ```bash
 # Copy MCP config to Claude
 mkdir -p ~/Library/Application\ Support/Claude  # macOS
@@ -202,18 +260,22 @@ mkdir -p ~/.config/Claude  # Linux
 ```
 
 **Startup Steps:**
+
 1. **Start Context7** (required):
+
    ```bash
    cd ~/HotDash/hot-dash
    ./scripts/ops/start-context7.sh
    ```
 
 2. **Start Claude CLI**:
+
    ```bash
    claude
    ```
 
 3. **Verify MCP tools**:
+
    ```
    > What MCP tools do you have access to?
    ```
@@ -226,21 +288,26 @@ mkdir -p ~/.config/Claude  # Linux
 <summary><b>🚀 Warp Terminal</b> (Click to expand)</summary>
 
 **Prerequisites:**
+
 - Warp AI Drive integration
 - MCP support (check Warp version supports MCP)
 
 **Setup (one-time):**
+
 - Configure MCP in Warp settings
 - Import from `~/.cursor/mcp.json` or `~/.codex/config.toml`
 
 **Startup Steps:**
+
 1. **Start Context7** (required):
+
    ```bash
    cd ~/HotDash/hot-dash
    ./scripts/ops/start-context7.sh
    ```
 
 2. **Open Warp** in HotDash directory:
+
    ```bash
    cd ~/HotDash/hot-dash
    # Use Warp AI (Ctrl+`)
@@ -255,6 +322,7 @@ mkdir -p ~/.config/Claude  # Linux
 ### What's Available
 
 **MCP Tools Provide:**
+
 - 🏪 **Shopify**: API docs, GraphQL validation
 - 🔍 **Context7**: HotDash code search + React Router/Prisma/etc. docs
 - 🐙 **GitHub**: PR/issue management, code search
@@ -264,6 +332,7 @@ mkdir -p ~/.config/Claude  # Linux
 - 🧠 **LlamaIndex RAG**: Knowledge base queries, support insights
 
 **Example Agent Queries:**
+
 ```
 "Show me the Sales Pulse tile implementation"  (context7)
 "Validate this Shopify GraphQL query"          (shopify)
@@ -277,12 +346,14 @@ mkdir -p ~/.config/Claude  # Linux
 ### What Context7 Indexes
 
 **Included:**
+
 - Source code (`app/`, `packages/`, `scripts/`)
 - Documentation (`docs/`)
 - Configuration (root configs, `prisma/`, `supabase/`)
 - Tests (`tests/`)
 
 **Excluded** (via `.context7ignore`):
+
 - Dependencies, build artifacts, test outputs
 - Environment files and secrets
 - Binary assets
@@ -299,6 +370,7 @@ mkdir -p ~/.config/Claude  # Linux
 ### ⚠️ Critical for AI Agents
 
 **Your training data is outdated for:**
+
 - React Router 7 (you have v6/Remix patterns)
 - Shopify APIs (you have 2023 or older)
 
@@ -308,6 +380,7 @@ See `docs/directions/training-data-reliability-check.md` for decision matrix.
 ### Troubleshooting
 
 **"Context7 not available":**
+
 ```bash
 # Check if running
 docker ps | grep context7-mcp
@@ -319,11 +392,13 @@ docker ps | grep context7-mcp
 ```
 
 **"Which tool do I have?":**
+
 - Check config file for your tool (see above)
 - All configs point to same MCP servers
 - Just ensure Context7 is running first!
 
 ### AI Integration Notes
+
 - Retrieve the staging OpenAI API key from `vault/occ/openai/api_key_staging.env` before running AI tooling.
 - Set `OPENAI_API_KEY` in your shell (`source vault/occ/openai/api_key_staging.env`) so `npm run ai:build-index` and regression scripts can talk to OpenAI.
 
@@ -331,17 +406,17 @@ docker ps | grep context7-mcp
 
 ## Daily Workflows
 
-| Task | Command | Notes |
-| ---- | ------- | ----- |
-| Start dev server | `npm run dev` | Spins up Shopify CLI + Vite dev server |
-| Run unit tests | `npm run test:unit` | Vitest test suite |
-| Run Playwright smoke | `npm run test:e2e` | Browser tests with mock data (automatically logs into Admin using `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`) |
+| Task                      | Command                                                    | Notes                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Start dev server          | `npm run dev`                                              | Spins up Shopify CLI + Vite dev server                                                                                     |
+| Run unit tests            | `npm run test:unit`                                        | Vitest test suite                                                                                                          |
+| Run Playwright smoke      | `npm run test:e2e`                                         | Browser tests with mock data (automatically logs into Admin using `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`)                     |
 | Shopify Admin embed smoke | `npx playwright test tests/playwright/admin-embed.spec.ts` | Uses the Shopify CLI tunnel and staging store credentials; LOGIN must be provided via `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`. |
-| Lint | `npm run lint` | ESLint configured with project rules |
-| Type check | `npm run typecheck` | React Router typegen + `tsc --noEmit` |
-| Nightly metrics rollup | `npm run ops:nightly-metrics` | Writes aggregate facts (`metrics.activation.rolling7d`, `metrics.sla_resolution.rolling7d`) |
-| Backfill Chatwoot facts | `npm run ops:backfill-chatwoot` | One-time script to add breach timestamps |
-| Tail Supabase logs | `scripts/ops/tail-supabase-logs.sh` | Streams local or remote Supabase logs via the CLI |
+| Lint                      | `npm run lint`                                             | ESLint configured with project rules                                                                                       |
+| Type check                | `npm run typecheck`                                        | React Router typegen + `tsc --noEmit`                                                                                      |
+| Nightly metrics rollup    | `npm run ops:nightly-metrics`                              | Writes aggregate facts (`metrics.activation.rolling7d`, `metrics.sla_resolution.rolling7d`)                                |
+| Backfill Chatwoot facts   | `npm run ops:backfill-chatwoot`                            | One-time script to add breach timestamps                                                                                   |
+| Tail Supabase logs        | `scripts/ops/tail-supabase-logs.sh`                        | Streams local or remote Supabase logs via the CLI                                                                          |
 
 GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). Ensure repository secrets include the environment variables listed above before enabling schedules.
 
@@ -368,6 +443,7 @@ integrations/new_feature_*/manager_agent_pack_v1/  # Manager agent pack (idea po
 See `REPO_STATUS.md` for detailed repository organization and branch strategy.
 
 Canonical workflow documentation lives in:
+
 - `docs/README.md` – documentation map + manager updates
 - `docs/NORTH_STAR.md` – vision, outcomes, success metrics
 - `docs/roadmap.md` – milestone plan & cross-agent dependencies
@@ -375,6 +451,7 @@ Canonical workflow documentation lives in:
 - `docs/directions/*.md` – role-specific expectations (engineer, product, QA, etc.)
 
 ### Supabase Edge Function — Observability
+
 We ship a lightweight edge function (`supabase/functions/occ-log`) that centralises structured logs in Supabase.
 
 Deploy locally:

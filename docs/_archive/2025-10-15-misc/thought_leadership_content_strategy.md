@@ -9,8 +9,10 @@
 ## Content Pillars
 
 ### Pillar 1: "Operator-First AI"
+
 **Theme**: Why augmenting humans beats replacing them
 **Content**:
+
 - Blog series: "The Case for Human-in-the-Loop AI"
 - Whitepaper: "Operator-First AI: A New Paradigm"
 - Conference talks: "Why AI Support Needs Human Oversight"
@@ -21,8 +23,10 @@
 ---
 
 ### Pillar 2: "E-commerce Support Excellence"
+
 **Theme**: Best practices for scaling e-commerce support
 **Content**:
+
 - E-book: "The E-commerce Support Playbook"
 - Webinar series: "Support That Scales"
 - Case studies: Customer success stories
@@ -33,8 +37,10 @@
 ---
 
 ### Pillar 3: "AI + Knowledge Management"
+
 **Theme**: How great knowledge bases power great AI
 **Content**:
+
 - Guide: "Building Knowledge Bases for AI"
 - Video series: KB best practices
 - Tools: KB assessment checklist
@@ -56,4 +62,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Content strategy outlined
-

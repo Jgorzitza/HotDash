@@ -38,4 +38,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Strategy Framework
-

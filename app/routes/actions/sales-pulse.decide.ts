@@ -53,8 +53,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     context,
     summary: {
       currency: typeof currency === "string" ? currency : undefined,
-      totalRevenue: typeof totalRevenue === "string" ? Number.parseFloat(totalRevenue) : undefined,
-      orderCount: typeof orderCount === "string" ? Number.parseInt(orderCount, 10) : undefined,
+      totalRevenue:
+        typeof totalRevenue === "string"
+          ? Number.parseFloat(totalRevenue)
+          : undefined,
+      orderCount:
+        typeof orderCount === "string"
+          ? Number.parseInt(orderCount, 10)
+          : undefined,
     },
   };
 
@@ -62,7 +68,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     scope: "ops",
     actor,
     action: decisionInfo.decisionAction,
-    rationale: typeof note === "string" && note.trim() ? note.trim() : undefined,
+    rationale:
+      typeof note === "string" && note.trim() ? note.trim() : undefined,
     shopDomain: session.shop,
     payload: toInputJson(payload),
   });

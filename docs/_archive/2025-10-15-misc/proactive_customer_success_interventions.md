@@ -10,7 +10,8 @@
 
 ### Trigger 1: Usage Drops 20% in 30 Days
 
-**Action**: 
+**Action**:
+
 - Automated email from CSM: "Noticed usage declined. Need help?"
 - Offer free training refresher
 - Schedule check-in call
@@ -22,6 +23,7 @@
 ### Trigger 2: Approval Rate Below 50% for 2 Weeks
 
 **Action**:
+
 - Alert CSM immediately
 - Review knowledge base gaps
 - Offer custom prompt tuning
@@ -34,6 +36,7 @@
 ### Trigger 3: Operator Churn (Lost 3+ Operators in 30 Days)
 
 **Action**:
+
 - Executive outreach (CEO email)
 - Understand reason for turnover
 - Offer extended support
@@ -46,6 +49,7 @@
 ### Trigger 4: CSAT Drops Below 4.0
 
 **Action**:
+
 - Immediate CSM call
 - Review recent drafts for quality
 - Pause auto-approval (if enabled)
@@ -57,4 +61,3 @@
 
 **Document Owner**: Product Agent  
 **Status**: Intervention Playbook Defined
-

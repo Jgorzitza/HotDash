@@ -13,10 +13,13 @@ class Telemetry {
       properties,
       timestamp: Date.now(),
     };
-    
+
     this.events.push(telemetryEvent);
-    
-    if (typeof window \!== "undefined" && process.env.NODE_ENV === "production") {
+
+    if (
+      typeof window !== "undefined" &&
+      process.env.NODE_ENV === "production"
+    ) {
       console.log("[Telemetry]", telemetryEvent);
     }
   }

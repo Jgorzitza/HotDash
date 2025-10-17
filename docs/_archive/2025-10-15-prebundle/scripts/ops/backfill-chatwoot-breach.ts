@@ -48,7 +48,10 @@ function toIsoFromSeconds(epochSeconds: unknown): string | undefined {
   return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
 }
 
-function addMinutesIso(startIso: string | undefined, minutes: number | undefined) {
+function addMinutesIso(
+  startIso: string | undefined,
+  minutes: number | undefined,
+) {
   if (!startIso || typeof minutes !== "number") return undefined;
   const start = new Date(startIso);
   if (Number.isNaN(start.getTime())) return undefined;
@@ -97,8 +100,11 @@ async function backfill() {
       }
 
       if (!alreadyHasBreached && (conversation.slaBreached ?? false)) {
-        const startIso = enriched.createdAt ?? ensureIso(conversation.createdAt);
-        const breachIso = ensureIso(conversation.breachedAt) ?? addMinutesIso(startIso, slaMinutes);
+        const startIso =
+          enriched.createdAt ?? ensureIso(conversation.createdAt);
+        const breachIso =
+          ensureIso(conversation.breachedAt) ??
+          addMinutesIso(startIso, slaMinutes);
         if (breachIso) {
           enriched.breachedAt = breachIso;
           metadataBreaches = metadataBreaches.filter(
@@ -132,8 +138,9 @@ async function backfill() {
           value: updatedValue as unknown as Prisma.InputJsonValue,
           metadata: {
             ...record.metadata,
-            breaches: metadataBreaches
-              .sort((a, b) => (a.breachedAt ?? "").localeCompare(b.breachedAt ?? "")),
+            breaches: metadataBreaches.sort((a, b) =>
+              (a.breachedAt ?? "").localeCompare(b.breachedAt ?? ""),
+            ),
           } as Prisma.InputJsonValue,
         },
       });

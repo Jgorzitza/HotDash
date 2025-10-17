@@ -8,14 +8,17 @@ last_reviewed: 2025-10-11
 # Feature Store for ML Models
 
 ## Overview
+
 Centralized feature store for ML model training and serving with real-time and batch feature computation.
 
 ## Architecture
+
 - **Online Store (Postgres):** Real-time features for model serving (<10ms)
 - **Offline Store (Parquet):** Historical features for training
 - **Feature Registry:** Metadata, versioning, lineage
 
 ## Schema
+
 ```sql
 CREATE TABLE ml_features_online (
   entity_id TEXT NOT NULL, -- customer_id, agent_name, conversation_id
@@ -39,9 +42,9 @@ CREATE TABLE ml_feature_registry (
 ```
 
 ## Feature Examples
+
 - `agent_approval_rate_7d`: Rolling 7-day approval rate
 - `customer_ticket_count_30d`: Tickets in last 30 days
 - `conversation_sentiment_score`: NLP-based sentiment
 
 **Status:** Feature store designed for ML workflow
-

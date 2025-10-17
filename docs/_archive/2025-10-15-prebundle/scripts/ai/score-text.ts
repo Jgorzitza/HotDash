@@ -34,11 +34,15 @@ async function main() {
     candidatePath: values["candidate-file"],
   };
 
-  const referenceText = options.reference ?? (await readInput(options.referencePath));
-  const candidateText = options.candidate ?? (await readInput(options.candidatePath));
+  const referenceText =
+    options.reference ?? (await readInput(options.referencePath));
+  const candidateText =
+    options.candidate ?? (await readInput(options.candidatePath));
 
   if (!referenceText || !candidateText) {
-    throw new Error("Provide reference and candidate text via flags (`--reference` / `--candidate`) or file paths.");
+    throw new Error(
+      "Provide reference and candidate text via flags (`--reference` / `--candidate`) or file paths.",
+    );
   }
 
   const referenceTokens = tokenize(referenceText);

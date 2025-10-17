@@ -23,6 +23,7 @@
 **Quarterly**: Deep dive research report for leadership
 
 **Output**: "Voice of Customer" monthly report
+
 - Top 5 feature requests
 - Top 3 pain points
 - Top 3 delighters
@@ -31,4 +32,3 @@
 
 **Document Owner**: Product Agent
 **Status**: VoC program framework
-

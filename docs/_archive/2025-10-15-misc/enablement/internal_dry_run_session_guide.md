@@ -48,11 +48,13 @@ By the end of this session, operators should:
 ### Session Format
 
 **Blended Approach:**
+
 - **30% Presentation** - Overview and demonstration
 - **50% Hands-On Practice** - Guided exercises with sample approvals
 - **20% Discussion** - Q&A, concerns, feedback
 
 **Interactive Elements:**
+
 - Live demonstrations
 - Pair programming exercises
 - Group discussion
@@ -66,6 +68,7 @@ By the end of this session, operators should:
 ### 1 Week Before Session
 
 **Enablement Team:**
+
 - [ ] Schedule 90-minute session (all operators + leadership)
 - [ ] Book conference room or set up virtual meeting
 - [ ] Send calendar invites with pre-work
@@ -76,6 +79,7 @@ By the end of this session, operators should:
 - [ ] Set up feedback collection method (survey, forms)
 
 **Pre-Work for Attendees:**
+
 - [ ] Watch 4 Loom training modules (18m 25s total)
 - [ ] Read Quick Start Guide
 - [ ] Review FAQ (at least top 10 questions)
@@ -83,6 +87,7 @@ By the end of this session, operators should:
 - [ ] Complete pre-session survey (confidence baseline)
 
 **Required Materials:**
+
 - [ ] Laptops for all attendees (access to demo environment)
 - [ ] Printed Quick Start Guides (1 per person)
 - [ ] Presentation slides
@@ -92,6 +97,7 @@ By the end of this session, operators should:
 - [ ] Whiteboard or flip chart
 
 **Technical Setup:**
+
 - [ ] Demo approval queue environment ready
 - [ ] Sample conversations loaded in Chatwoot
 - [ ] Test accounts created for each attendee
@@ -141,6 +147,7 @@ Enablement Team
 ### Day Before Session
 
 **Final Checklist:**
+
 - [ ] All attendees confirmed attendance
 - [ ] Demo environment tested and working
 - [ ] All sample scenarios load correctly
@@ -163,6 +170,7 @@ Enablement Team
 **Facilitator:** Enablement Lead or Support Manager
 
 **Content:**
+
 1. **Welcome** (2 min)
    - Thank everyone for attending
    - Emphasize: This is a safe learning space
@@ -185,7 +193,8 @@ Enablement Team
    - Respect everyone's learning pace
    - Feedback welcome and encouraged
 
-**Key Message:**  
+**Key Message:**
+
 > "This approval queue is designed to make YOUR job easier and more rewarding. We're here to learn together and make sure this works for YOU."
 
 ---
@@ -197,6 +206,7 @@ Enablement Team
 **Content:**
 
 **2.1 The "Why" Behind Approval Queue (5 min)**
+
 - Operator-first design philosophy
 - Benefits: More time for complex issues, less time on repetitive tasks
 - How your decisions teach the AI
@@ -207,15 +217,17 @@ Enablement Team
 **2.2 Live Demo: Complete Approval Flow (10 min)**
 
 **Demo Scenario 1: Standard Approval (High Confidence)**
+
 ```
 Customer: "Where is my order #12345?"
 
 AI Draft (95% confidence):
-"Hi Susan! Your order #12345 shipped yesterday via FedEx. 
+"Hi Susan! Your order #12345 shipped yesterday via FedEx.
 Tracking: 123456789. Should arrive by Oct 15. Track here: [link]"
 ```
 
 **Walk Through:**
+
 1. Show approval card in queue
 2. Point out confidence score
 3. Review KB sources
@@ -224,15 +236,17 @@ Tracking: 123456789. Should arrive by Oct 15. Track here: [link]"
 6. Show result in Chatwoot
 
 **Demo Scenario 2: Edit & Approve (Medium Confidence)**
+
 ```
 Customer: "I got the wrong item! Ordered blue, got red."
 
 AI Draft (75% confidence):
-"You can return the item using our return policy. 
+"You can return the item using our return policy.
 Return label: [link]"
 ```
 
 **Walk Through:**
+
 1. Identify missing empathy
 2. Show edit interface
 3. Make improvements live
@@ -241,8 +255,9 @@ Return label: [link]"
 6. Show how AI learns from edits
 
 **Demo Scenario 3: Escalation (High Risk)**
+
 ```
-Customer: "Charged me 3 times! $1,350 instead of $450! 
+Customer: "Charged me 3 times! $1,350 instead of $450!
 Disputing with my bank!"
 
 AI Draft (68% confidence):
@@ -250,6 +265,7 @@ AI Draft (68% confidence):
 ```
 
 **Walk Through:**
+
 1. Identify red flags (high-value, threats)
 2. Show escalation interface
 3. Fill out escalation notes
@@ -258,6 +274,7 @@ AI Draft (68% confidence):
 6. Explain follow-up process
 
 **2.3 Interface Tour (5 min)**
+
 - Queue filters and search
 - Confidence scores
 - KB source links
@@ -272,6 +289,7 @@ AI Draft (68% confidence):
 **Facilitator:** Enablement Team + Senior Support (floating to help)
 
 **Setup:**
+
 - Attendees pair up (experienced + newer operator if possible)
 - Each pair gets access to demo environment
 - 8 practice scenarios provided
@@ -281,6 +299,7 @@ AI Draft (68% confidence):
 **Practice Scenarios Packet:**
 
 **Scenario 1: Easy Approval** (5 min)
+
 ```
 Customer: "What's your return policy?"
 AI Draft (98% confidence): [Accurate policy explanation]
@@ -289,6 +308,7 @@ Goal: Build confidence with straightforward case
 ```
 
 **Scenario 2: Minor Edit Needed** (5 min)
+
 ```
 Customer: "My package arrived damaged!"
 AI Draft (82% confidence): [Correct info but lacks empathy]
@@ -297,6 +317,7 @@ Goal: Practice improving tone
 ```
 
 **Scenario 3: Factual Error** (7 min)
+
 ```
 Customer: "Can I return this after 20 days?"
 AI Draft (85% confidence): [Cites 14-day policy, but policy is 30 days]
@@ -305,6 +326,7 @@ Goal: Practice catching inaccuracies
 ```
 
 **Scenario 4: Unclear Customer Message** (7 min)
+
 ```
 Customer: "What about my thing?"
 AI Draft (45% confidence): [Vague attempt at answer]
@@ -313,6 +335,7 @@ Goal: Practice dealing with ambiguity
 ```
 
 **Scenario 5: Policy Exception** (7 min)
+
 ```
 Customer: "Can I return after 45 days? I was traveling."
 AI Draft (80% confidence): [Correctly denies per policy]
@@ -321,6 +344,7 @@ Goal: Practice escalation procedure
 ```
 
 **Scenario 6: High-Value + Angry** (7 min)
+
 ```
 Customer: "THIRD TIME asking! $500 refund NOW or I'm posting everywhere!"
 AI Draft (65% confidence): [Generic apology]
@@ -329,6 +353,7 @@ Goal: Practice urgent escalation
 ```
 
 **Scenario 7: Technical Issue** (7 min)
+
 ```
 Customer: "Error 500 during checkout for 2 hours. Can't complete purchase."
 AI Draft (55% confidence): [Suggests cache clearing]
@@ -337,6 +362,7 @@ Goal: Practice technical escalations
 ```
 
 **Scenario 8: Complex Multi-Part** (Bonus if time allows)
+
 ```
 Customer: "Order late, wrong color, want refund and expedited replacement, also have a question about your warranty policy."
 AI Draft (72% confidence): [Attempts to address everything]
@@ -345,6 +371,7 @@ Goal: Practice complex decision-making
 ```
 
 **Facilitation Tips:**
+
 - Circulate among pairs
 - Encourage discussion between partners
 - Don't give answers immediately - ask guiding questions
@@ -353,6 +380,7 @@ Goal: Practice complex decision-making
 - Normalize different approaches (there's often more than one right answer)
 
 **Mid-Practice Check-In (after Scenario 4, ~20 min mark):**
+
 - Pause for group questions
 - Address any common confusions
 - Adjust pacing if needed
@@ -368,6 +396,7 @@ Goal: Practice complex decision-making
 **4.1 Facilitated Q&A (10 min)**
 
 **Collect Questions:**
+
 - Use sticky notes or digital tool
 - Group similar questions
 - Prioritize most common/important
@@ -382,6 +411,7 @@ Goal: Practice complex decision-making
 5. "When should I escalate vs. figure it out myself?"
 
 **Facilitation Approach:**
+
 - Validate the question ("Great question!")
 - Provide clear, honest answer
 - Connect back to training materials
@@ -391,12 +421,14 @@ Goal: Practice complex decision-making
 **4.2 Open Discussion (5 min)**
 
 **Prompting Questions:**
+
 - "What concerns do you still have?"
 - "What would make you more confident?"
 - "What's missing from the training?"
 - "What would you change about the system?"
 
 **Capture All Feedback:**
+
 - Note-taker records everything
 - No feedback is dismissed
 - Thank people for sharing
@@ -417,23 +449,28 @@ Goal: Practice complex decision-making
 **Purpose:** Show the happy path - straightforward approval
 
 **Customer Context:**
+
 - Name: Susan Martinez
 - Conversation ID: #101
 - Order: #12345 placed 3 days ago
 
 **Customer Message:**
+
 > "Hi, I ordered 3 days ago and haven't received tracking info yet. Can you check on order #12345?"
 
 **AI Draft Response:**
+
 > "Hi Susan! I've looked up your order #12345. Great news - it shipped yesterday via FedEx. Your tracking number is 9876543210 and you can track it here: [link]. Expected delivery is Tuesday, October 15. Let me know if you need anything else!"
 
 **AI Metadata:**
+
 - Confidence: 95% (High)
 - Agent: Order Support Agent
 - Timestamp: 2 minutes ago
 - Risk Level: Low
 
 **Knowledge Base Sources:**
+
 - Shipping Policy (v2.1) - 98% relevance
 - Order Tracking Guide (v1.5) - 94% relevance
 
@@ -449,7 +486,7 @@ Goal: Practice complex decision-making
 
 Now let's apply our 5-Question Framework:
 
-1. **Accuracy:** Is the information correct? 
+1. **Accuracy:** Is the information correct?
    - I can verify order #12345 did ship yesterday ✅
    - FedEx tracking number is valid ✅
    - Delivery date matches carrier estimate ✅
@@ -489,23 +526,28 @@ See how fast that was? Now let's look at what happens next..."
 **Purpose:** Show when and how to edit AI drafts
 
 **Customer Context:**
+
 - Name: Alex Thompson
 - Conversation ID: #102
 - Order: #67890 (wrong item sent)
 
 **Customer Message:**
+
 > "Seriously?! I ordered a BLUE sweater and you sent me RED. This is for an event on Saturday and now I'm scrambling. This is so frustrating!"
 
 **AI Draft Response:**
+
 > "Your order #67890 can be returned per our return policy. Here's your return label: [link]. Refunds are processed in 5-7 business days after we receive the returned item."
 
 **AI Metadata:**
+
 - Confidence: 78% (Medium)
 - Agent: Order Support Agent
 - Timestamp: 3 minutes ago
 - Risk Level: Medium (frustrated customer)
 
 **Knowledge Base Sources:**
+
 - Return Policy (v2.1) - 85% relevance
 - Exchange Process (v1.3) - 72% relevance
 
@@ -552,26 +594,28 @@ Let me show you how I'd improve this:
 [Edit live on screen]
 
 **New Version:**
+
 > Hi Alex,
-> 
+>
 > I'm so sorry we sent the wrong color! That's incredibly frustrating, especially with your event on Saturday. Let's get this fixed right away.
-> 
+>
 > Here's what I can do:
-> 
+>
 > **OPTION 1 - EXPEDITED EXCHANGE (FASTEST):**
 > I'll ship the blue sweater TODAY with overnight shipping - arrives Friday. Return the red one with this prepaid label: [link]. No charge for overnight shipping.
-> 
+>
 > **OPTION 2 - REFUND:**
 > Full refund of $45.99 processed within 24 hours. Return label: [link]
-> 
+>
 > Which works best for you? I'll make it happen immediately!
-> 
+>
 > Again, my apologies for this mixup.
-> 
+>
 > Best,
 > [Your Name]
 
 **What Changed:**
+
 - Added empathy and acknowledgment ✅
 - Addressed urgency with expedited solution ✅
 - Offered exchange (AI missed this) ✅
@@ -590,23 +634,28 @@ This is what we mean by 'Edit & Approve' - taking a good foundation and making i
 **Purpose:** Show when and how to escalate
 
 **Customer Context:**
+
 - Name: Michael Richards
 - Conversation ID: #103
 - Transaction issue: Triple charged
 
 **Customer Message:**
+
 > "ARE YOU KIDDING ME?! I just checked my bank and you charged me THREE TIMES for the same $450 order! That's $1,350 on my credit card! I need this fixed NOW or I'm disputing with my bank AND reporting you to the Better Business Bureau. This is completely unacceptable!"
 
 **AI Draft Response:**
+
 > "I apologize for the inconvenience. Please contact our billing department at billing@hotrodan.com and they can review the charges and process any necessary refunds."
 
 **AI Metadata:**
+
 - Confidence: 68% (Medium-Low)
 - Agent: Order Support Agent
 - Timestamp: 1 minute ago
 - Risk Level: **HIGH** (multiple red flags)
 
 **Knowledge Base Sources:**
+
 - Billing Issues (v1.8) - 70% relevance
 - Refund Policy (v2.1) - 65% relevance
 
@@ -623,6 +672,7 @@ This is what we mean by 'Edit & Approve' - taking a good foundation and making i
 Let's be real - we can't send this response. Here's why:
 
 **5-Question Framework:**
+
 1. **Accuracy:** Response is technically correct but...❌
 2. **Completeness:** Doesn't actually solve the problem ❌
 3. **Tone:** Way too casual for this emergency ❌
@@ -684,6 +734,7 @@ technical cause to prevent future occurrences.
 [Click "Submit Escalation"]
 
 **What Happens Next:**
+
 - Manager gets immediate notification
 - They see all my notes and context
 - They'll call customer within 15 minutes
@@ -701,6 +752,7 @@ technical cause to prevent future occurrences.
 ### Exercise Packet for Attendees
 
 **Instructions:**
+
 - Work with your partner
 - Take turns being "lead operator"
 - Discuss your reasoning before deciding
@@ -712,14 +764,15 @@ technical cause to prevent future occurrences.
 **Exercise 1: Build Confidence (EASY)**
 
 **Scenario:**
+
 ```
 Customer: Jen Walsh
 Message: "Do you ship internationally? I want to send a gift to my friend in Canada."
 
 AI Draft (97% confidence):
-"Yes! We ship to Canada and 45+ other countries. Standard international shipping 
-is $15 flat rate and takes 7-14 business days. Express shipping available for $35 
-(3-5 business days). Add items to cart and select your country at checkout to see 
+"Yes! We ship to Canada and 45+ other countries. Standard international shipping
+is $15 flat rate and takes 7-14 business days. Express shipping available for $35
+(3-5 business days). Add items to cart and select your country at checkout to see
 exact shipping costs. Let me know if you have other questions!"
 
 KB Sources:
@@ -730,11 +783,13 @@ Risk Level: Low
 ```
 
 **Your Task:**
+
 1. Apply the 5-Question Framework
 2. Decide: Approve, Edit, Reject, or Escalate?
 3. If editing, what would you change?
 
 **Discussion Points:**
+
 - Is the information accurate and complete?
 - Is the tone appropriate?
 - Would you send this as-is?
@@ -744,6 +799,7 @@ Risk Level: Low
 **Exercise 2: Add Warmth (MEDIUM)**
 
 **Scenario:**
+
 ```
 Customer: David Kim
 Message: "Hi! I'm so excited about my order! When will it arrive? Order #55555"
@@ -759,11 +815,13 @@ Risk Level: Low
 ```
 
 **Your Task:**
+
 1. What's accurate but missing from this response?
 2. How would you edit it to match the customer's enthusiastic tone?
 3. Rewrite the response to be warmer and more engaging
 
 **Discussion Points:**
+
 - Does the AI's tone match the customer's excitement?
 - What small changes make a big difference?
 - How do you balance efficiency with personality?
@@ -773,13 +831,14 @@ Risk Level: Low
 **Exercise 3: Catch the Error (MEDIUM-HARD)**
 
 **Scenario:**
+
 ```
-Customer: Lisa Anderson  
+Customer: Lisa Anderson
 Message: "I bought this 3 weeks ago. Can I still return it if I changed my mind?"
 
 AI Draft (82% confidence):
-"Our return policy allows returns within 14 days of purchase for a full refund. 
-Since you purchased 3 weeks ago (21 days), this is outside our return window. 
+"Our return policy allows returns within 14 days of purchase for a full refund.
+Since you purchased 3 weeks ago (21 days), this is outside our return window.
 We're unable to accept returns after 14 days. See our full policy here: [link]"
 
 KB Sources:
@@ -789,6 +848,7 @@ Risk Level: Low
 ```
 
 **Your Task:**
+
 1. Verify the information against the Return Policy
 2. Is something wrong here?
 3. What should you do if you find an error?
@@ -796,6 +856,7 @@ Risk Level: Low
 **HINT:** Check the actual Return Policy (v2.1) - it states 30 days, not 14 days!
 
 **Discussion Points:**
+
 - How do you verify information when confidence is high?
 - What if you don't catch the error?
 - How does your rejection help the system?
@@ -805,13 +866,14 @@ Risk Level: Low
 **Exercise 4: Ambiguous Question (HARD)**
 
 **Scenario:**
+
 ```
 Customer: Pat Johnson (no order history, new customer)
 Message: "What about my thing?"
 
 AI Draft (42% confidence):
-"Thank you for contacting us. To better assist you, could you please provide 
-more details about your inquiry? For example, your order number, the product 
+"Thank you for contacting us. To better assist you, could you please provide
+more details about your inquiry? For example, your order number, the product
 you're asking about, or the specific issue you're experiencing? I'm here to help!"
 
 KB Sources:
@@ -821,11 +883,13 @@ Risk Level: Low
 ```
 
 **Your Task:**
+
 1. Is the AI's response appropriate?
 2. Should you approve, edit, reject, or handle manually?
 3. What's the best way to handle unclear customer messages?
 
 **Discussion Points:**
+
 - When is it okay to ask customers for clarification?
 - Should every unclear message go through the approval queue?
 - What's the right balance between AI handling and manual handling?
@@ -835,15 +899,16 @@ Risk Level: Low
 **Exercise 5: Policy Exception Request (MEDIUM-HARD)**
 
 **Scenario:**
+
 ```
 Customer: Emily Rodriguez
-Message: "I bought this dress 6 weeks ago but was traveling internationally and 
-just got back. It still has all the tags on it and I haven't worn it. Can I please 
+Message: "I bought this dress 6 weeks ago but was traveling internationally and
+just got back. It still has all the tags on it and I haven't worn it. Can I please
 return it even though it's been more than 30 days? I'm a long-time customer!"
 
 AI Draft (79% confidence):
-"Our return policy allows returns within 30 days of purchase. Your order was 
-placed 42 days ago, which is outside our standard return window. Unfortunately, 
+"Our return policy allows returns within 30 days of purchase. Your order was
+placed 42 days ago, which is outside our standard return window. Unfortunately,
 we're unable to accept returns after 30 days. We appreciate your understanding."
 
 KB Sources:
@@ -858,12 +923,14 @@ Customer Context:
 ```
 
 **Your Task:**
+
 1. Is the AI's response accurate according to policy?
 2. Should you approve this response?
 3. What factors might influence your decision?
 4. If escalating, what notes would you include?
 
 **Discussion Points:**
+
 - When do exceptions make business sense?
 - Who has authority to approve exceptions?
 - How do you balance policy consistency with customer loyalty?
@@ -874,15 +941,16 @@ Customer Context:
 **Exercise 6: Angry Customer + High Value (HARD - URGENT)**
 
 **Scenario:**
+
 ```
 Customer: Robert Chen
-Message: "THIS IS THE THIRD TIME I'VE CONTACTED YOU! My $500 order was supposed to 
-arrive last week for my presentation and it NEVER SHOWED UP. I've gotten zero help 
-from your team. This is completely unprofessional and I'm posting about this 
+Message: "THIS IS THE THIRD TIME I'VE CONTACTED YOU! My $500 order was supposed to
+arrive last week for my presentation and it NEVER SHOWED UP. I've gotten zero help
+from your team. This is completely unprofessional and I'm posting about this
 experience on social media if I don't get an immediate refund and compensation!"
 
 AI Draft (64% confidence):
-"I apologize for the delay with your order. Let me look into the tracking 
+"I apologize for the delay with your order. Let me look into the tracking
 information and get back to you with an update."
 
 KB Sources:
@@ -898,12 +966,14 @@ Order Info:
 ```
 
 **Your Task:**
+
 1. Why is the AI's response inadequate?
 2. Should you approve, edit, or escalate?
 3. If escalating, what urgency level and why?
 4. Write comprehensive escalation notes
 
 **Discussion Points:**
+
 - What makes this urgent vs. standard?
 - What should happen in the next 15 minutes?
 - How could this situation have been prevented?
@@ -914,16 +984,17 @@ Order Info:
 **Exercise 7: Technical Issue (HARD)**
 
 **Scenario:**
+
 ```
 Customer: Sarah Martinez
-Message: "I've been trying to checkout for 2 hours and keep getting 'Error 500' 
-every time I click 'Place Order.' I've tried 3 different credit cards and 2 different 
+Message: "I've been trying to checkout for 2 hours and keep getting 'Error 500'
+every time I click 'Place Order.' I've tried 3 different credit cards and 2 different
 browsers (Chrome and Safari). My cart has 6 items worth about $350. What's going on?"
 
 AI Draft (56% confidence):
-"Please try clearing your browser cache and cookies, then attempt checkout again. 
-If the issue persists, try using an incognito/private browsing window. You can 
-also try a different device or contact your bank to ensure they're not blocking 
+"Please try clearing your browser cache and cookies, then attempt checkout again.
+If the issue persists, try using an incognito/private browsing window. You can
+also try a different device or contact your bank to ensure they're not blocking
 the transaction."
 
 KB Sources:
@@ -934,12 +1005,14 @@ Risk Level: High (technical issue, high cart value, customer frustration)
 ```
 
 **Your Task:**
+
 1. Is the AI's suggested troubleshooting appropriate?
 2. What does "Error 500" typically indicate?
 3. Who should handle this and why?
 4. If escalating, what team needs this and what info do they need?
 
 **Discussion Points:**
+
 - When are technical issues operator-level vs. engineering-level?
 - What's the urgency here?
 - How do you balance helping the customer now vs. fixing the root cause?
@@ -950,22 +1023,23 @@ Risk Level: High (technical issue, high cart value, customer frustration)
 **Exercise 8: Complex Multi-Part Question (VERY HARD - BONUS)**
 
 **Scenario:**
+
 ```
 Customer: James Wilson
-Message: "Hi, I have several questions: 1) My order #44444 is showing as delivered 
-but I never received it - my apartment building has package theft issues. 2) I also 
-ordered the wrong size (Large instead of XL) on a different order #55555 that I did 
-receive. 3) Do you offer any protection against package theft? 4) Also, what's your 
-warranty policy on electronics? I'm thinking about buying your new wireless headphones 
+Message: "Hi, I have several questions: 1) My order #44444 is showing as delivered
+but I never received it - my apartment building has package theft issues. 2) I also
+ordered the wrong size (Large instead of XL) on a different order #55555 that I did
+receive. 3) Do you offer any protection against package theft? 4) Also, what's your
+warranty policy on electronics? I'm thinking about buying your new wireless headphones
 but want to make sure they're covered if they break."
 
 AI Draft (71% confidence):
-"I can help with your delivery and sizing concerns! For order #44444 that shows 
-delivered but you didn't receive, we'll need to file a claim with the carrier and 
-issue a replacement or refund. For order #55555 where you received the wrong size, 
-you can exchange it using our free exchange process here: [link]. We do offer 
-insurance for high-value items at checkout. Our electronics come with a 1-year 
-manufacturer warranty. Let me know if you'd like me to start processing the claim 
+"I can help with your delivery and sizing concerns! For order #44444 that shows
+delivered but you didn't receive, we'll need to file a claim with the carrier and
+issue a replacement or refund. For order #55555 where you received the wrong size,
+you can exchange it using our free exchange process here: [link]. We do offer
+insurance for high-value items at checkout. Our electronics come with a 1-year
+manufacturer warranty. Let me know if you'd like me to start processing the claim
 for #44444!"
 
 KB Sources:
@@ -983,6 +1057,7 @@ Customer Context:
 ```
 
 **Your Task:**
+
 1. Did the AI address all 4 questions?
 2. Is the order of addressing issues logical?
 3. Are there any policy considerations or approvals needed?
@@ -990,6 +1065,7 @@ Customer Context:
 5. What's your reasoning for your decision?
 
 **Discussion Points:**
+
 - How do you prioritize multiple customer issues?
 - When do multiple small issues require escalation?
 - How do you ensure nothing gets missed?
@@ -1038,10 +1114,12 @@ Customer Context:
 **A:** Absolutely not. This is about making your job better, not eliminating it. Here's how:
 
 **Before Approval Queue:**
+
 - 80% of time: Searching KB, copying policies, writing routine responses
 - 20% of time: Complex problems, customer relationships, problem-solving
 
 **With Approval Queue:**
+
 - 20% of time: Reviewing AI drafts for routine issues
 - 80% of time: Complex problems, relationship building, high-value work
 
@@ -1085,12 +1163,14 @@ Customer Context:
 **A:** Your metrics evolve to reflect your new role:
 
 **New Focus:**
+
 - Decision quality (accuracy of approve/reject/escalate choices)
 - Customer satisfaction (still #1!)
 - First contact resolution
 - Appropriate use of escalations
 
 **Less Emphasis:**
+
 - Raw response volume (less relevant with AI assistance)
 - Time to first response (AI makes this instant)
 
@@ -1105,6 +1185,7 @@ Customer Context:
 **A:** Great question! Here's the clear guidance:
 
 **ALWAYS Escalate (No Exceptions):**
+
 - High-value issues (>$100 refunds/credits)
 - Policy exception requests
 - Angry customers with threats (legal, social media, BBB)
@@ -1113,6 +1194,7 @@ Customer Context:
 - When you're unsure or uncomfortable
 
 **Why Escalate:**
+
 - Some things require special authority
 - Better to ask than guess
 - Protects you AND the customer
@@ -1129,16 +1211,19 @@ Customer Context:
 **A:** Based on early projections:
 
 **Initial Rollout:**
+
 - 15-20 approvals per day
 - 1-3 minutes each
 - 30 minutes to 1 hour total
 
 **Steady State:**
+
 - 30-50 approvals per day
 - <2 minutes each as you get faster
 - 1-2 hours total
 
 **Rest of Shift:**
+
 - Complex cases that require deep work
 - Escalations and follow-ups
 - Building customer relationships
@@ -1153,16 +1238,14 @@ Customer Context:
 **A:** Important question with a clear process:
 
 **In the Moment:**
+
 1. Approve the response (apply current policy)
 2. Send it (don't make customer wait)
 
-**After:**
-3. Document your concern
-4. Bring feedback to weekly team meeting
-5. Discuss with your manager in 1:1
-6. Provide specific examples
+**After:** 3. Document your concern 4. Bring feedback to weekly team meeting 5. Discuss with your manager in 1:1 6. Provide specific examples
 
 **Why This Order:**
+
 - Customers need consistent policy application
 - Your feedback DOES matter and will be reviewed
 - Policies are regularly revised based on operator insights
@@ -1175,22 +1258,26 @@ Customer Context:
 ### How to Handle Difficult Questions
 
 **If you don't know the answer:**
+
 - "That's a great question and I want to give you an accurate answer. Let me check and get back to you."
 - Take note, research after session, follow up via email/Slack
 
 **If the question is about something broken or problematic:**
+
 - "Thank you for raising that. We want this to work well for you."
 - Acknowledge the concern
 - Commit to addressing it
 - Don't get defensive
 
 **If someone is expressing fear or anxiety:**
+
 - Validate their feelings ("That's totally understandable")
 - Provide reassurance
 - Connect them with additional support
 - Follow up personally after the session
 
 **If multiple people have the same question:**
+
 - "I'm hearing this concern from several people - that's valuable feedback."
 - Address it thoroughly
 - Add it to the FAQ
@@ -1205,18 +1292,21 @@ Customer Context:
 **Immediate Metrics (During Session):**
 
 ✅ **Engagement:**
+
 - All attendees actively participating
 - Questions being asked freely
 - Pairs working well together
 - Body language shows interest (not confusion or frustration)
 
 ✅ **Comprehension:**
+
 - Attendees successfully completing practice exercises
 - Making appropriate approve/edit/escalate decisions
 - Applying 5-Question Framework correctly
 - Asking smart, specific questions
 
 ✅ **Confidence:**
+
 - Attendees expressing readiness to try independently
 - Less hesitation as session progresses
 - Willingness to make mistakes and learn
@@ -1224,18 +1314,21 @@ Customer Context:
 **Post-Session Metrics:**
 
 ✅ **Survey Results (Target Scores):**
+
 - Confidence using approval queue: **4+/5**
 - Understanding of when to escalate: **4.5+/5**
 - Clarity of training materials: **4+/5**
 - Feeling of preparedness: **3.5+/5** (realistic to still have some nervousness)
 
 ✅ **Knowledge Assessment:**
+
 - **80%+** correctly identify approve vs. escalate scenarios
 - **75%+** can articulate the 5-Question Framework
 - **85%+** understand confidence score meanings
 - **90%+** know how to access help resources
 
 ✅ **Feedback Quality:**
+
 - Constructive suggestions for improvement
 - Specific examples of what helped learning
 - Identification of remaining concerns
@@ -1244,11 +1337,13 @@ Customer Context:
 **4-Week Follow-Up Metrics:**
 
 ✅ **Adoption:**
+
 - **70%+** operators using approval queue regularly
 - **<20%** operators requesting to opt-out
 - **15%+** escalation rate (appropriate judgment)
 
 ✅ **Performance:**
+
 - **80%+** approval decisions deemed correct by QA
 - **CSAT scores maintained or improved** (4.5+/5.0)
 - **Avg approval time <3 minutes**
@@ -1260,28 +1355,30 @@ Customer Context:
 ### Immediate Actions (Within 24 Hours)
 
 **Facilitators:**
+
 1. **Send Thank You & Survey**
+
    ```
    Subject: Thank You + Quick Feedback on Dry-Run Session
-   
+
    Hi Team,
-   
-   Thank you for participating in today's Agent SDK dry-run session! Your 
+
+   Thank you for participating in today's Agent SDK dry-run session! Your
    engagement and questions were fantastic.
-   
+
    Please take 5 minutes to complete this feedback survey: [link]
    Your input is crucial for improving the training.
-   
+
    Key Takeaways from Today:
    - [Highlight 2-3 main points]
-   
+
    Next Steps:
    - [What happens next]
    - [When they'll use this for real]
    - [Where to get help]
-   
+
    Questions? Reply to this email or message me on Slack.
-   
+
    Thanks again!
    ```
 
@@ -1350,24 +1447,28 @@ Customer Context:
 ### Ongoing (Next 4 Weeks)
 
 **Week 2: Supervised Practice**
+
 - Operators handle approvals with supervision
 - Daily check-ins
 - Quick feedback loops
 - Build confidence
 
 **Week 3: Independent with Support**
+
 - Operators work independently
 - Support available on-demand
 - Weekly team review sessions
 - Celebrate wins
 
 **Week 4: Fully Independent**
+
 - Normal operations
 - Standard escalation procedures
 - Monthly training updates
 - Continuous improvement
 
 **Monthly:**
+
 - Review metrics and feedback
 - Update training materials
 - Celebrate successes
@@ -1380,49 +1481,58 @@ Customer Context:
 ### Dry-Run Session Presentation (20-30 slides)
 
 **Slide 1: Welcome**
+
 - Title: "Agent SDK Approval Queue Dry-Run"
 - Date, facilitators, session goals
 
 **Slide 2: Agenda**
+
 - Timeline overview
 - What we'll cover
 - How to participate
 
 **Slide 3: Ground Rules**
+
 - Safe learning space
 - Ask questions anytime
 - Practice without fear
 - Feedback welcomed
 
 **Slide 4: The "Why"**
+
 - Operator-first design
 - North Star principles
 - Benefits for operators
 - Benefits for customers
 
 **Slide 5: System Overview**
+
 - What is the approval queue?
 - How does it work?
 - Where does it fit in your workflow?
 
 **Slide 6: The Human-in-the-Loop Model**
+
 - AI suggests, you decide
 - Your role is critical
 - Quality gate
 - Teaching the AI
 
 **Slides 7-10: Live Demo Setup**
+
 - Interface tour
 - Confidence scores
 - KB sources
 - Risk indicators
 
 **Slides 11-13: Demo Scenarios**
+
 - One slide per demo scenario
 - Screenshots of actual interface
 - Walk-through notes
 
 **Slide 14: The 5-Question Framework**
+
 - Accuracy
 - Completeness
 - Tone
@@ -1430,40 +1540,47 @@ Customer Context:
 - Risk
 
 **Slide 15: Decision Matrix**
+
 - When to approve
 - When to edit
 - When to reject
 - When to escalate
 
 **Slides 16-18: Escalation Guide**
+
 - Always escalate list
 - SLA times
 - How to write good escalation notes
 
 **Slide 19: Practice Time!**
+
 - Instructions for exercises
 - Facilitators available to help
 - No rush, focus on learning
 
 **Slides 20-27: Practice Scenarios**
+
 - One slide per scenario
 - Include customer message
 - AI draft
 - Metadata
 
 **Slide 28: Key Takeaways**
+
 - You're always in control
 - Trust but verify
 - Escalate when unsure
 - System learns from you
 
 **Slide 29: Support Resources**
+
 - Training materials links
 - Who to contact
 - Slack channels
 - FAQ document
 
 **Slide 30: Next Steps**
+
 - What happens next
 - Timeline to go live
 - How to get help
@@ -1476,6 +1593,7 @@ Customer Context:
 ### Day-Of Session Checklist
 
 **2 Hours Before:**
+
 - [ ] Room setup complete (or Zoom tested)
 - [ ] All materials printed and organized
 - [ ] Demo environment tested and working
@@ -1485,6 +1603,7 @@ Customer Context:
 - [ ] Facilitator roles clear (primary, support, note-taker)
 
 **30 Minutes Before:**
+
 - [ ] Arrive early / join Zoom early
 - [ ] Welcome early arrivals
 - [ ] Final tech check
@@ -1492,6 +1611,7 @@ Customer Context:
 - [ ] Small talk to build comfort
 
 **During Session:**
+
 - [ ] Follow agenda timing
 - [ ] Engage all attendees
 - [ ] Encourage questions
@@ -1501,6 +1621,7 @@ Customer Context:
 - [ ] Stay positive and encouraging
 
 **After Session:**
+
 - [ ] Thank attendees
 - [ ] Share survey link
 - [ ] Capture hot-off-the-press feedback
@@ -1518,10 +1639,10 @@ Customer Context:
 ---
 
 **Related Documents:**
+
 - [Agent SDK Operator Training Module](./agent_sdk_operator_training_module.md)
 - [Approval Queue Quick Start Guide](./approval_queue_quick_start.md)
 - [Approval Queue FAQ](./approval_queue_faq.md)
 - [Operator Training QA Template](../runbooks/operator_training_qa_template.md)
 
 **Success Depends On:** Preparation, enthusiasm, flexibility, and genuine care for operator success!
-

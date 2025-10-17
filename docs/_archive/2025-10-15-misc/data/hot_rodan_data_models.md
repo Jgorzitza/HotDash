@@ -10,13 +10,14 @@ expires: 2025-11-11
 
 **Purpose:** Domain-specific data models for hot rod e-commerce analytics  
 **Business:** Hot Rodan (hotrodan.com) - automotive parts for classic car enthusiasts  
-**Goal:** Support $10MM revenue target with operator-first insights  
+**Goal:** Support $10MM revenue target with operator-first insights
 
 ---
 
 ## Overview
 
 Hot Rodan sells automotive parts for hot rod enthusiasts, classic car builders, and professional restoration shops. These data models enable:
+
 - Product performance tracking by category
 - Customer segmentation for targeted engagement
 - Inventory optimization for high-value parts
@@ -29,6 +30,7 @@ Hot Rodan sells automotive parts for hot rod enthusiasts, classic car builders, 
 ### Product Taxonomy
 
 **Level 1: Major Categories**
+
 ```
 ├── Engine & Drivetrain
 ├── Suspension & Steering
@@ -52,22 +54,22 @@ CREATE TABLE product_categories (
   category_l1 TEXT NOT NULL, -- Major category
   category_l2 TEXT, -- Subcategory
   category_l3 TEXT, -- Specific type
-  
+
   -- Hot rod specific attributes
   fits_vehicle_years INT[], -- e.g., [1932, 1933, 1934] for Ford Deuce Coupe
   fits_makes TEXT[], -- e.g., ['Ford', 'Chevy', 'Mopar']
   fits_models TEXT[], -- e.g., ['Model A', 'Tri-Five', 'Charger']
-  
+
   -- Product characteristics
   is_performance_part BOOLEAN DEFAULT false,
   is_restoration_part BOOLEAN DEFAULT false,
   is_custom_fabrication BOOLEAN DEFAULT false,
-  
+
   -- Business metrics
   avg_order_value NUMERIC(10,2),
   margin_pct NUMERIC(5,2),
   inventory_velocity TEXT CHECK (inventory_velocity IN ('fast', 'medium', 'slow')),
-  
+
   -- Metadata
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -82,6 +84,7 @@ CREATE INDEX idx_product_categories_makes ON product_categories USING GIN(fits_m
 ### Example Categories
 
 **Engine & Drivetrain:**
+
 - Carburetors (Holley, Edelbrock, Rochester)
 - Intake Manifolds
 - Headers & Exhaust Manifolds
@@ -89,6 +92,7 @@ CREATE INDEX idx_product_categories_makes ON product_categories USING GIN(fits_m
 - Clutches & Flywheels
 
 **Suspension & Steering:**
+
 - Coilovers & Shocks
 - Lowering Kits
 - Steering Wheels & Columns
@@ -96,6 +100,7 @@ CREATE INDEX idx_product_categories_makes ON product_categories USING GIN(fits_m
 - Sway Bars
 
 **Brakes & Wheels:**
+
 - Disc Brake Conversions
 - Master Cylinders & Boosters
 - Steel Wheels (15", 17", 20")
@@ -152,45 +157,45 @@ CREATE INDEX idx_product_categories_makes ON product_categories USING GIN(fits_m
 CREATE TABLE customer_segments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shopify_customer_id BIGINT NOT NULL,
-  
+
   -- Segment classification
   primary_segment TEXT NOT NULL CHECK (primary_segment IN (
-    'diy_builder', 
-    'professional_shop', 
-    'enthusiast_collector', 
-    'first_time_builder', 
+    'diy_builder',
+    'professional_shop',
+    'enthusiast_collector',
+    'first_time_builder',
     'racing_enthusiast'
   )),
   segment_confidence NUMERIC(3,2) DEFAULT 0.50, -- 0.00 to 1.00
-  
+
   -- Behavioral attributes
   total_orders INT DEFAULT 0,
   total_revenue NUMERIC(10,2) DEFAULT 0,
   avg_order_value NUMERIC(10,2) DEFAULT 0,
   days_since_first_order INT,
   days_since_last_order INT,
-  
+
   -- Product preferences
   top_category_l1 TEXT,
   top_category_l2 TEXT,
   prefers_performance BOOLEAN DEFAULT false,
   prefers_restoration BOOLEAN DEFAULT false,
-  
+
   -- Vehicle profile
   primary_vehicle_year INT,
   primary_vehicle_make TEXT,
   primary_vehicle_model TEXT,
-  
+
   -- Engagement metrics
   support_tickets_count INT DEFAULT 0,
   review_count INT DEFAULT 0,
   avg_review_rating NUMERIC(2,1),
-  
+
   -- Lifecycle stage
   lifecycle_stage TEXT CHECK (lifecycle_stage IN (
     'new', 'active', 'at_risk', 'churned', 'reactivated'
   )),
-  
+
   -- Metadata
   segmented_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -205,6 +210,7 @@ CREATE INDEX idx_customer_segments_vehicle_make ON customer_segments(primary_veh
 ### Segmentation Rules
 
 **DIY Builder Identification:**
+
 ```sql
 -- Classify as DIY Builder if:
 -- - AOV between $50-$300
@@ -214,6 +220,7 @@ CREATE INDEX idx_customer_segments_vehicle_make ON customer_segments(primary_veh
 ```
 
 **Professional Shop Identification:**
+
 ```sql
 -- Classify as Professional Shop if:
 -- - AOV > $500
@@ -223,6 +230,7 @@ CREATE INDEX idx_customer_segments_vehicle_make ON customer_segments(primary_veh
 ```
 
 **First-Time Builder Identification:**
+
 ```sql
 -- Classify as First-Time Builder if:
 -- - < 30 days since first order
@@ -238,9 +246,10 @@ CREATE INDEX idx_customer_segments_vehicle_make ON customer_segments(primary_veh
 ### KPIs by Category
 
 **Sales Velocity Metrics:**
+
 ```sql
 CREATE VIEW v_product_performance AS
-SELECT 
+SELECT
   pc.category_l1,
   pc.category_l2,
   COUNT(DISTINCT pc.shopify_product_id) as products_in_category,
@@ -250,7 +259,7 @@ SELECT
   SUM(CASE WHEN pc.inventory_velocity = 'fast' THEN 1 ELSE 0 END) as fast_movers,
   SUM(CASE WHEN pc.inventory_velocity = 'slow' THEN 1 ELSE 0 END) as slow_movers
 FROM product_categories pc
-LEFT JOIN facts f ON f.topic = 'shopify.sales' 
+LEFT JOIN facts f ON f.topic = 'shopify.sales'
   AND f.value->>'sku' = pc.shopify_product_id::text
 WHERE f.created_at > NOW() - INTERVAL '30 days'
 GROUP BY pc.category_l1, pc.category_l2
@@ -258,9 +267,10 @@ ORDER BY total_revenue DESC;
 ```
 
 **Inventory Optimization:**
+
 ```sql
 -- Flag slow-moving inventory by category
-SELECT 
+SELECT
   category_l1,
   COUNT(*) as slow_moving_skus,
   SUM((value->>'available_quantity')::INT) as units_at_risk,
@@ -280,16 +290,17 @@ ORDER BY capital_tied_up DESC;
 ### Racing Season vs. Off-Season
 
 **Hot Rod Industry Seasonality:**
+
 - **High Season (March-September):** Car shows, racing events, summer projects
 - **Off-Season (October-February):** Indoor projects, engine rebuilds, planning
 
 ```sql
 -- Seasonal trend analysis
 CREATE VIEW v_seasonal_patterns AS
-SELECT 
+SELECT
   EXTRACT(MONTH FROM created_at) as month_num,
   TO_CHAR(created_at, 'Month') as month_name,
-  CASE 
+  CASE
     WHEN EXTRACT(MONTH FROM created_at) BETWEEN 3 AND 9 THEN 'racing_season'
     ELSE 'off_season'
   END as season,
@@ -306,6 +317,7 @@ ORDER BY month_num, revenue DESC;
 ```
 
 **Expected Patterns:**
+
 - **Racing Season:** Suspension, brakes, wheels (30-40% revenue increase)
 - **Off-Season:** Engine rebuilds, interior work (stable)
 - **Year-Round:** Maintenance parts, accessories (less seasonal)
@@ -319,30 +331,30 @@ ORDER BY month_num, revenue DESC;
 ```sql
 -- Infer customer build stage from purchase history
 CREATE VIEW v_customer_build_stage AS
-SELECT 
+SELECT
   cs.shopify_customer_id,
   cs.primary_segment,
-  CASE 
+  CASE
     -- Early stage: Planning & engine work
     WHEN SUM(CASE WHEN pc.category_l1 = 'Engine & Drivetrain' THEN 1 ELSE 0 END) > 5
       AND cs.days_since_first_order < 90
     THEN 'early_build'
-    
+
     -- Mid stage: Suspension, brakes, chassis
     WHEN SUM(CASE WHEN pc.category_l1 IN ('Suspension & Steering', 'Brakes & Wheels') THEN 1 ELSE 0 END) > 3
       AND cs.days_since_first_order BETWEEN 90 AND 180
     THEN 'mid_build'
-    
+
     -- Late stage: Finishing touches, accessories
     WHEN SUM(CASE WHEN pc.category_l1 IN ('Exterior & Body', 'Interior & Trim', 'Accessories & Apparel') THEN 1 ELSE 0 END) > 5
       AND cs.days_since_first_order > 180
     THEN 'finishing'
-    
+
     -- Maintenance: Ongoing purchases after completion
     WHEN cs.days_since_first_order > 365
       AND cs.total_orders > 10
     THEN 'maintenance'
-    
+
     ELSE 'unknown'
   END as build_stage,
   cs.total_orders,
@@ -361,11 +373,11 @@ GROUP BY cs.shopify_customer_id, cs.primary_segment, cs.total_orders, cs.days_si
 ### Tile 1: Top Selling Categories (This Week)
 
 ```sql
-SELECT 
+SELECT
   category_l1,
   COUNT(DISTINCT value->>'order_id') as orders,
   SUM((value->>'revenue')::NUMERIC) as revenue,
-  ROUND(100.0 * SUM((value->>'revenue')::NUMERIC) / 
+  ROUND(100.0 * SUM((value->>'revenue')::NUMERIC) /
     (SELECT SUM((value->>'revenue')::NUMERIC) FROM facts WHERE topic='shopify.sales' AND created_at > NOW() - INTERVAL '7 days'), 2) as revenue_share_pct
 FROM facts f
 JOIN product_categories pc ON f.value->>'sku' = pc.shopify_product_id::text
@@ -379,7 +391,7 @@ LIMIT 5;
 ### Tile 2: Customer Segment Distribution
 
 ```sql
-SELECT 
+SELECT
   primary_segment,
   COUNT(*) as customer_count,
   SUM(total_revenue) as segment_revenue,
@@ -393,7 +405,7 @@ ORDER BY segment_revenue DESC;
 ### Tile 3: Seasonal Performance
 
 ```sql
-SELECT 
+SELECT
   season,
   SUM((value->>'revenue')::NUMERIC) as season_revenue,
   COUNT(*) as season_orders,
@@ -408,18 +420,21 @@ GROUP BY season;
 ## 7. Implementation Priority
 
 ### Phase 1: Foundation (Week 1)
+
 1. ✅ Create product_categories table
 2. ✅ Create customer_segments table
 3. ✅ Populate with Shopify product data
 4. ✅ Create performance views
 
 ### Phase 2: Enrichment (Week 2)
+
 1. Implement segmentation logic
 2. Backfill customer segments
 3. Test seasonal pattern queries
 4. Validate operator tiles
 
 ### Phase 3: Automation (Week 3)
+
 1. Nightly refresh of segments
 2. Weekly category performance rollup
 3. Automated slow-mover alerts
@@ -459,7 +474,7 @@ CREATE TABLE IF NOT EXISTS customer_segments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   shopify_customer_id BIGINT NOT NULL,
   primary_segment TEXT NOT NULL CHECK (primary_segment IN (
-    'diy_builder', 'professional_shop', 'enthusiast_collector', 
+    'diy_builder', 'professional_shop', 'enthusiast_collector',
     'first_time_builder', 'racing_enthusiast'
   )),
   segment_confidence NUMERIC(3,2) DEFAULT 0.50,
@@ -509,4 +524,3 @@ CREATE POLICY customer_segments_service_role ON customer_segments FOR ALL USING 
 **Next:** AG-2 - Real-time dashboard queries  
 **Evidence:** Migration scripts, schema documentation, operator tile queries  
 **North Star Alignment:** ✅ DIRECT - Domain-specific analytics for operator insights
-

@@ -18,12 +18,14 @@
 ### Tile 1: Sales Pulse
 
 **What It Shows:**
+
 - Revenue trends (daily, weekly, monthly)
 - Top-selling products
 - Revenue alerts (unusual spikes/drops)
 - Order volume
 
 **How It Helps Approvals:**
+
 ```
 Scenario: Customer asks about product availability
 
@@ -33,11 +35,12 @@ Context for AI: Product is popular, may be low stock
 
 What to check: Is stock available before AI promises quick shipping?
 
-Action: If AI says "ships today" but Sales Pulse shows high demand, verify 
+Action: If AI says "ships today" but Sales Pulse shows high demand, verify
 inventory before approving
 ```
 
 **Reading the Tile:**
+
 - Green trend = revenue up (good)
 - Red trend = revenue down (investigate if sustained)
 - Alerts = unusual activity (check context)
@@ -47,12 +50,14 @@ inventory before approving
 ### Tile 2: Ops Pulse
 
 **What It Shows:**
+
 - Unresolved customer inquiries
 - Response time performance
 - SLA compliance
 - Escalation queue status
 
 **How It Helps Approvals:**
+
 ```
 Scenario: Customer complaining about slow response
 
@@ -62,10 +67,10 @@ Context: We're behind today
 
 AI might say: "Sorry for the delay..."
 
-Check: Is the apology in AI's response adequate for a 6-hour wait? Might 
+Check: Is the apology in AI's response adequate for a 6-hour wait? Might
 need stronger apology or compensation offer
 
-Action: If customer waited 6+ hours and AI just says "sorry", consider 
+Action: If customer waited 6+ hours and AI just says "sorry", consider
 rejecting and adding compensation (discount code, priority handling)
 ```
 
@@ -74,12 +79,14 @@ rejecting and adding compensation (discount code, priority handling)
 ### Tile 3: Inventory Pulse
 
 **What It Shows:**
+
 - Stock levels for all products
 - Low stock alerts
 - Out of stock items
 - Restocking timelines
 
 **How It Helps Approvals:**
+
 ```
 Scenario: Customer orders Night Cream
 
@@ -87,10 +94,10 @@ Inventory Pulse shows: Night Cream - 5 units left (low stock)
 
 AI says: "Order ships today!"
 
-Check: With only 5 units left, will this actually ship today or is there a 
+Check: With only 5 units left, will this actually ship today or is there a
 delay?
 
-Action: Verify with fulfillment if unsure. Better to set accurate expectations 
+Action: Verify with fulfillment if unsure. Better to set accurate expectations
 than promise and disappoint
 ```
 
@@ -99,6 +106,7 @@ than promise and disappoint
 ### Using Tiles for Better Approvals
 
 **Best Practice: The "Context Check"**
+
 ```
 Before approving any AI draft:
 
@@ -132,6 +140,7 @@ Result: More accurate, contextual responses to customers
 ### Section 1: When to Trust AI
 
 **High Trust Situations (Usually Approve):**
+
 ```
 ✓ Confidence >90%
 ✓ Simple factual questions (order status, policy basics)
@@ -153,6 +162,7 @@ Decision: Trust and approve (30 seconds)
 ### Section 2: When to Verify Carefully
 
 **Medium Trust Situations (Verify Before Approving):**
+
 ```
 ⚠️ Confidence 70-89%
 ⚠️ Complex multi-part questions
@@ -165,7 +175,7 @@ Customer: "Can I exchange Night Cream for Day Moisturizer after 25 days?"
 AI (78% confidence): "Yes, our exchange policy allows this within 30 days..."
 KB Source: Exchange Policy v1.0
 
-Decision: Verify exchange policy details, check if price difference matters, 
+Decision: Verify exchange policy details, check if price difference matters,
 then approve if accurate (2-3 minutes)
 ```
 
@@ -174,6 +184,7 @@ then approve if accurate (2-3 minutes)
 ### Section 3: When to Override AI
 
 **Low Trust Situations (Reject or Escalate):**
+
 ```
 🔴 Confidence <70%
 🔴 AI cites outdated KB sources (v2.0 instead of v2.1)
@@ -187,8 +198,8 @@ Customer: "I'm so frustrated! Order wrong again!"
 AI (65% confidence): "We apologize. Here's your tracking number..."
 Issue: AI didn't address "wrong again" (repeat issue)
 
-Decision: Reject - AI missed that this is a pattern. Manual response needed 
-to acknowledge repeated issue and provide better solution (maybe free shipping 
+Decision: Reject - AI missed that this is a pattern. Manual response needed
+to acknowledge repeated issue and provide better solution (maybe free shipping
 on next order)
 ```
 
@@ -199,6 +210,7 @@ on next order)
 **Every Decision is a Teaching Moment:**
 
 **Approvals Teach:** "This approach works"
+
 ```
 You approve AI draft using specific empathy language
     ↓
@@ -210,6 +222,7 @@ Your approval rate increases
 ```
 
 **Edits Teach:** "Use this style" (if editing feature exists)
+
 ```
 You edit AI draft to add: "I'm personally making sure this ships today"
     ↓
@@ -221,6 +234,7 @@ Customer responses improve
 ```
 
 **Rejections Teach:** "Don't do this"
+
 ```
 You reject with note: "AI cited Return Policy v2.0 but current is v2.1 (30 days not 14)"
     ↓
@@ -232,6 +246,7 @@ Future drafts cite correct version
 ```
 
 **Escalations Teach:** "I can't handle this"
+
 ```
 You escalate: "Customer injury mentioned - above my authority"
     ↓
@@ -249,16 +264,19 @@ Safer handling of sensitive situations
 **Quality Rejection Notes:**
 
 **Bad Rejection Note:**
+
 > "Wrong"
 
 **AI learns:** Nothing (no context)
 
 **Good Rejection Note:**
+
 > "AI cited Return Policy v2.0 (14 days) but current policy is v2.1 (30 days). Customer at 20 days should be eligible for return."
 
 **AI learns:** Specific error (version), correct version (v2.1), impact (customer eligibility)
 
 **Great Rejection Note:**
+
 > "AI cited outdated Return Policy v2.0 (14-day window). Current policy is v2.1 (30-day window) effective Oct 1, 2025. Customer purchased Oct 1, returning Oct 20 = 20 days = WITHIN policy. AI incorrectly denied. Also, AI tone was abrupt - could have been more apologetic for confusion. Recommend: Update KB indexing to prioritize v2.1, add empathy training for policy corrections."
 
 **AI learns:** Everything + suggestions for improvement
@@ -270,6 +288,7 @@ Safer handling of sensitive situations
 **Understanding What Confidence Really Means:**
 
 **High Confidence Doesn't Always Mean Correct:**
+
 ```
 Scenario: AI is 98% confident but wrong
 
@@ -282,6 +301,7 @@ Your job: Trust but verify, always
 ```
 
 **Low Confidence Doesn't Always Mean Wrong:**
+
 ```
 Scenario: AI is 68% confident but actually correct
 
@@ -294,6 +314,7 @@ Your job: Review carefully, might be fine to approve
 ```
 
 **The Calibration Loop:**
+
 ```
 Week 1: AI confidence is rough estimate
     ↓
@@ -315,37 +336,40 @@ Your decisions calibrate the AI over time!
 **The Expert Operator's AI Partnership:**
 
 **1. Pattern Recognition Collaboration**
+
 ```
 You notice: AI consistently struggles with [specific scenario]
 
 Action: Document the pattern, share with team
 
-Example: "AI always suggests immediate cancellation for subscription 
-cancellation requests. Should try retention first per guidelines. 
+Example: "AI always suggests immediate cancellation for subscription
+cancellation requests. Should try retention first per guidelines.
 Suggesting AI training update."
 
 Result: AI gets better at retention for everyone
 ```
 
 **2. KB Gap Identification**
+
 ```
 You reject 3 times for similar issue: "No KB source for wholesale inquiries"
 
 Action: Flag KB gap to knowledge team
 
-Example: "Seeing increase in wholesale questions but no KB article. 
+Example: "Seeing increase in wholesale questions but no KB article.
 Recommendation: Create 'Wholesale Inquiry Response Template' article."
 
 Result: AI gets better resources, fewer rejections
 ```
 
 **3. Quality Improvement Suggestions**
+
 ```
 You notice: AI often forgets to include order confirmation link
 
 Action: Suggest feature improvement
 
-Example: "For all order confirmations, AI should auto-include link to order 
+Example: "For all order confirmations, AI should auto-include link to order
 status page. Currently only includes sometimes. Suggest making this automatic."
 
 Result: Consistent quality improvement
@@ -395,4 +419,3 @@ Result: Consistent quality improvement
 **Purpose:** Tile mastery and AI partnership optimization
 
 ✅ **TASKS 2M & 2N COMPLETE**
-

@@ -20,12 +20,14 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 ## WCAG 2.1 Level AA Requirements
 
 ### 1. Perceivable
+
 - **1.1 Text Alternatives**: All non-text content has text alternatives
 - **1.2 Time-based Media**: Captions and alternatives for audio/video
 - **1.3 Adaptable**: Content can be presented in different ways
 - **1.4 Distinguishable**: Easy to see and hear (color contrast, text sizing)
 
-### 2. Operable  
+### 2. Operable
+
 - **2.1 Keyboard Accessible**: All functionality available via keyboard
 - **2.2 Enough Time**: Users have enough time to read and use content
 - **2.3 Seizures**: No content that causes seizures
@@ -33,11 +35,13 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - **2.5 Input Modalities**: Easier to operate functionality through various inputs
 
 ### 3. Understandable
+
 - **3.1 Readable**: Text content is readable and understandable
 - **3.2 Predictable**: Web pages appear and operate in predictable ways
 - **3.3 Input Assistance**: Help users avoid and correct mistakes
 
 ### 4. Robust
+
 - **4.1 Compatible**: Maximize compatibility with current and future tools
 
 ---
@@ -45,6 +49,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 ## Implementation Checklist
 
 ### Color & Contrast
+
 - [ ] Text has 4.5:1 contrast ratio (normal text)
 - [ ] Large text has 3:1 contrast ratio (18pt+ or 14pt+ bold)
 - [ ] UI components have 3:1 contrast ratio
@@ -52,6 +57,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - [ ] Focus indicators have sufficient contrast
 
 ### Keyboard Navigation
+
 - [ ] All interactive elements are keyboard accessible
 - [ ] Tab order is logical and predictable
 - [ ] Focus indicators are visible on all focusable elements
@@ -60,6 +66,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - [ ] Keyboard shortcuts documented
 
 ### Screen Reader Support
+
 - [ ] All images have alt text
 - [ ] Form inputs have associated labels
 - [ ] Buttons have descriptive labels
@@ -70,6 +77,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - [ ] Dynamic content changes announced (aria-live)
 
 ### Forms
+
 - [ ] All inputs have labels (visible or aria-label)
 - [ ] Required fields indicated
 - [ ] Error messages associated with fields (aria-describedby)
@@ -77,6 +85,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - [ ] Success confirmations announced
 
 ### Modals & Overlays
+
 - [ ] Focus trapped within modal
 - [ ] Focus returns to trigger element on close
 - [ ] Modal has role="dialog"
@@ -86,6 +95,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 - [ ] Background content inert (aria-hidden or disabled)
 
 ### Notifications
+
 - [ ] Status messages use aria-live="polite"
 - [ ] Urgent alerts use aria-live="assertive"
 - [ ] Notifications dismissible
@@ -96,6 +106,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 ## axe-core Configuration
 
 ### File: `.axerc.json`
+
 ```json
 {
   "rules": {
@@ -144,6 +155,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 ## Testing Workflow
 
 ### Automated Testing (CI)
+
 1. Run on every PR
 2. Test all application routes
 3. Generate accessibility report
@@ -151,6 +163,7 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 5. Comment on PR with violation details
 
 ### Manual Testing (Quarterly)
+
 1. Screen reader testing (NVDA, JAWS, VoiceOver)
 2. Keyboard-only navigation testing
 3. High contrast mode testing
@@ -159,30 +172,33 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 
 ### Issue Prioritization
 
-| Impact | Example | Fix Timeline |
-|--------|---------|--------------|
+| Impact   | Example                                | Fix Timeline    |
+| -------- | -------------------------------------- | --------------- |
 | Critical | Cannot use with keyboard/screen reader | Immediate (24h) |
-| Serious | Difficult to use with assistive tech | 1 week |
-| Moderate | Some accessibility issues | 2 weeks |
-| Minor | Enhancement opportunities | Next sprint |
+| Serious  | Difficult to use with assistive tech   | 1 week          |
+| Moderate | Some accessibility issues              | 2 weeks         |
+| Minor    | Enhancement opportunities              | Next sprint     |
 
 ---
 
 ## Accessibility Resources
 
 ### Tools
+
 - **axe DevTools**: Browser extension for manual testing
 - **WAVE**: Web accessibility evaluation tool
 - **Lighthouse**: Automated accessibility audits
 - **Pa11y**: Command-line accessibility testing
 
 ### Screen Readers
+
 - **NVDA** (Windows): Free, open-source
 - **JAWS** (Windows): Industry standard
 - **VoiceOver** (macOS/iOS): Built-in
 - **TalkBack** (Android): Built-in
 
 ### Testing Guides
+
 - [WebAIM WCAG 2 Checklist](https://webaim.org/standards/wcag/checklist)
 - [A11y Project Checklist](https://www.a11yproject.com/checklist/)
 - [axe-core Rule Descriptions](https://dequeuniversity.com/rules/axe/)
@@ -192,26 +208,32 @@ HotDash is committed to meeting WCAG 2.1 Level AA accessibility standards to ens
 ## Common Violations & Fixes
 
 ### Missing Alternative Text
+
 **Violation**: `<img src="logo.png">`  
 **Fix**: `<img src="logo.png" alt="HotDash Logo">`
 
 ### Poor Color Contrast
+
 **Violation**: Gray text (#888) on white background (2.9:1)  
 **Fix**: Darker gray (#595959) for 4.5:1 contrast
 
 ### Missing Form Labels
+
 **Violation**: `<input type="text" />`  
 **Fix**: `<label for="name">Name</label><input id="name" type="text" />`
 
 ### Non-Descriptive Link Text
+
 **Violation**: `<a href="/help">Click here</a>`  
 **Fix**: `<a href="/help">View help documentation</a>`
 
 ### Missing ARIA Labels on Icon Buttons
+
 **Violation**: `<button><IconTrash /></button>`  
 **Fix**: `<button aria-label="Delete item"><IconTrash /></button>`
 
 ### Improper Heading Hierarchy
+
 **Violation**: h1 → h3 (skipping h2)  
 **Fix**: h1 → h2 → h3 (logical order)
 
@@ -239,4 +261,3 @@ If you encounter any accessibility barriers, please contact: qa@hotdash.com
 **Implementation**: Task F Complete
 **CI Integration**: GitHub Actions workflow configured
 **Target**: Zero WCAG 2.1 AA violations on all routes
-

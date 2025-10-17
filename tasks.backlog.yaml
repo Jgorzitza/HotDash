@@ -1,0 +1,40 @@
+- id: T1
+  title: Integrate Drive feature pack into repo
+  owner: engineer
+  status: done
+  notes: Archive unpacked to integrations/new_feature_20251017T033137Z; checksums + summary logged.
+- id: T2
+  title: Implement Chatwoot health check CLI + dashboard tile
+  owner: devops
+  status: todo
+  notes: Requires new scripts/ops/check-chatwoot-health.* evidence.
+- id: T3
+  title: Apply Supabase migrations for idea pool and analytics
+  owner: data
+  status: todo
+  notes: Staging evidence required before production promote.
+- id: T4
+  title: Reinstate AppProvider harness & re-enable skipped tests
+  owner: engineer
+  status: todo
+  notes: Blocks QA smoke + approvals unit suite.
+- id: T5
+  title: Run QA smoke (Playwright, axe) with new social flow
+  owner: qa
+  status: todo
+  notes: Dependent on AppProvider harness.
+- id: T6
+  title: Fly.io deploy rehearsal with Publer + Supabase secrets
+  owner: devops
+  status: todo
+  notes: Needs verify_secrets script updates and log capture.
+- id: T7
+  title: Update launch documentation & CEO packet
+  owner: product
+  status: in_progress
+  notes: Core docs updated; need CEO packet + final launch checklist once directions refresh.
+- id: T8
+  title: Publish launch report and tag release
+  owner: manager
+  status: blocked
+  notes: Wait for completion of T2–T7.

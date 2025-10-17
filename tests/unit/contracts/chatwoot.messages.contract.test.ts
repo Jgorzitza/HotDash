@@ -31,9 +31,9 @@ describe("Chatwoot Messages API Contract", () => {
   test("message_type enum mapping", () => {
     const messages = messagesFixture.payload;
 
-    const incoming = messages.filter(m => m.message_type === 0);
-    const outgoing = messages.filter(m => m.message_type === 1);
-    const activity = messages.filter(m => m.message_type === 2);
+    const incoming = messages.filter((m) => m.message_type === 0);
+    const outgoing = messages.filter((m) => m.message_type === 1);
+    const activity = messages.filter((m) => m.message_type === 2);
 
     // Fixture should cover multiple message types
     expect(incoming.length).toBeGreaterThan(0);
@@ -96,20 +96,22 @@ describe("Chatwoot Messages API Contract", () => {
     expect(sorted.length).toBe(messages.length);
 
     // Latest message should be at index 0 after descending sort
-    expect(sorted[0].created_at).toBeGreaterThanOrEqual(sorted[sorted.length - 1].created_at);
+    expect(sorted[0].created_at).toBeGreaterThanOrEqual(
+      sorted[sorted.length - 1].created_at,
+    );
   });
 
   test("SLA clock calculation uses last customer message", () => {
     const messages = messagesFixture.payload;
 
     // Filter for incoming messages (message_type = 0)
-    const customerMessages = messages.filter(m => m.message_type === 0);
+    const customerMessages = messages.filter((m) => m.message_type === 0);
 
     expect(customerMessages.length).toBeGreaterThan(0);
 
     // Sort by timestamp descending to get latest customer message
     const sortedCustomerMessages = [...customerMessages].sort(
-      (a, b) => b.created_at - a.created_at
+      (a, b) => b.created_at - a.created_at,
     );
 
     const lastCustomerMessage = sortedCustomerMessages[0];
@@ -121,7 +123,7 @@ describe("Chatwoot Messages API Contract", () => {
 
   test("message IDs are unique within conversation", () => {
     const messages = messagesFixture.payload;
-    const ids = messages.map(m => m.id);
+    const ids = messages.map((m) => m.id);
     const uniqueIds = new Set(ids);
 
     expect(uniqueIds.size).toBe(ids.length);
@@ -130,12 +132,16 @@ describe("Chatwoot Messages API Contract", () => {
   test("activity messages may have null sender", () => {
     const messages = messagesFixture.payload;
 
-    const activityMessages = messages.filter(m => m.message_type === 2);
+    const activityMessages = messages.filter((m) => m.message_type === 2);
 
     if (activityMessages.length > 0) {
       for (const msg of activityMessages) {
         // Activity messages typically have no sender or null sender
-        expect(msg.sender === null || msg.sender === undefined || msg.sender.type === undefined).toBe(true);
+        expect(
+          msg.sender === null ||
+            msg.sender === undefined ||
+            msg.sender.type === undefined,
+        ).toBe(true);
       }
     }
   });

@@ -7,6 +7,7 @@ Semantic search MCP for the HotDash codebase. Ask natural language questions, ge
 ## Quick Query Templates
 
 ### Finding Code
+
 ```
 "component that handles [feature]"
 "service client for [integration]"
@@ -15,6 +16,7 @@ Semantic search MCP for the HotDash codebase. Ask natural language questions, ge
 ```
 
 ### Understanding Architecture
+
 ```
 "how does [feature] work?"
 "pattern for [implementation]"
@@ -23,6 +25,7 @@ Semantic search MCP for the HotDash codebase. Ask natural language questions, ge
 ```
 
 ### Finding Documentation
+
 ```
 "[topic] runbook"
 "deployment guide for [environment]"
@@ -31,6 +34,7 @@ Semantic search MCP for the HotDash codebase. Ask natural language questions, ge
 ```
 
 ### Configuration & Scripts
+
 ```
 "environment setup for [environment]"
 "script to [action]"
@@ -52,6 +56,7 @@ Use these terms for better results:
 ## Indexed Locations
 
 ✅ **Indexed:**
+
 - `app/` - All application code
 - `docs/` - All documentation
 - `scripts/` - Operational scripts
@@ -61,6 +66,7 @@ Use these terms for better results:
 - Root config files
 
 ❌ **Excluded:**
+
 - `node_modules/`
 - `build/`, `.react-router/`
 - `test-results/`, `coverage/`
@@ -71,6 +77,7 @@ Use these terms for better results:
 ## Common Search Patterns
 
 ### Before Creating New Code
+
 ```
 "existing implementation of [feature]"
 "similar components to [reference]"
@@ -78,6 +85,7 @@ Use these terms for better results:
 ```
 
 ### When Debugging
+
 ```
 "error handling in [module]"
 "logging setup for [service]"
@@ -85,6 +93,7 @@ Use these terms for better results:
 ```
 
 ### For Deployment
+
 ```
 "deployment checklist"
 "environment configuration for staging"
@@ -92,6 +101,7 @@ Use these terms for better results:
 ```
 
 ### Understanding Data Flow
+
 ```
 "metrics calculation for [metric]"
 "data aggregation in [service]"
@@ -115,4 +125,3 @@ Use these terms for better results:
 ## Need More Details?
 
 See `docs/context7-mcp-guide.md` for complete documentation.
-

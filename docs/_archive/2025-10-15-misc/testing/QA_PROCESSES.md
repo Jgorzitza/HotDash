@@ -26,12 +26,14 @@
 **Mission**: Guard evidence gates and ensure every release meets quality standards before reaching production.
 
 **Principles**:
+
 - **Evidence-Based**: All claims backed by test results, screenshots, or logs
 - **Proactive**: Find issues before they reach production
 - **Automated**: Automate repetitive testing tasks
 - **Collaborative**: Partner with engineering to improve testability
 
 **Scope**:
+
 - Local development environment validation
 - CI/CD pipeline health monitoring
 - Test suite maintenance and expansion
@@ -43,9 +45,11 @@
 ## Quality Gates
 
 ### Gate 1: Code Quality
+
 **Trigger**: Every PR  
 **Owner**: CI Automation  
 **Checks**:
+
 - ✅ TypeScript compilation (`npm run typecheck`)
 - ✅ ESLint passes with zero warnings
 - ✅ No `console.log()` in production code
@@ -57,9 +61,11 @@
 ---
 
 ### Gate 2: Unit Tests
+
 **Trigger**: Every PR  
 **Owner**: CI Automation + QA Review  
 **Checks**:
+
 - ✅ All unit tests pass (100% pass rate required)
 - ✅ Coverage reported (target: >80%)
 - ✅ No `.only()` or `.skip()` without justification
@@ -71,9 +77,11 @@
 ---
 
 ### Gate 3: Integration Tests
+
 **Trigger**: Every PR touching services or webhooks  
 **Owner**: QA Team  
 **Checks**:
+
 - ✅ Webhook signature verification tests pass
 - ✅ Service integration tests pass
 - ✅ Database migration tests pass (rollback capability verified)
@@ -85,9 +93,11 @@
 ---
 
 ### Gate 4: E2E Tests
+
 **Trigger**: Every PR, staging deployment  
 **Owner**: QA Team  
 **Checks**:
+
 - ✅ Critical path Playwright tests pass (mock mode)
 - ✅ Dashboard renders without errors
 - ✅ Approval queue workflows complete successfully
@@ -99,9 +109,11 @@
 ---
 
 ### Gate 5: Accessibility
+
 **Trigger**: Every PR touching UI  
 **Owner**: QA Team  
 **Checks**:
+
 - ✅ Zero WCAG 2.1 AA violations
 - ✅ Keyboard navigation works
 - ✅ Screen reader compatibility verified
@@ -113,9 +125,11 @@
 ---
 
 ### Gate 6: Security
+
 **Trigger**: Every PR, weekly scheduled scan  
 **Owner**: QA Team + Security  
 **Checks**:
+
 - ✅ No secrets in code (`gitleaks` scan)
 - ✅ npm audit clean (no high/critical vulnerabilities)
 - ✅ No SQL injection vulnerabilities
@@ -127,9 +141,11 @@
 ---
 
 ### Gate 7: Performance
+
 **Trigger**: Staging deployment, production deployment  
 **Owner**: QA Team  
 **Checks**:
+
 - ✅ Lighthouse Performance score ≥ 90
 - ✅ Lighthouse Accessibility score ≥ 95
 - ✅ Route latencies within budget (<100ms P95 for critical)
@@ -158,6 +174,7 @@ Any fail → ❌ Block PR, notify developer
 ```
 
 **Process**:
+
 1. Developer pushes to PR branch
 2. CI runs quality gates automatically
 3. QA monitors for failures
@@ -165,6 +182,7 @@ Any fail → ❌ Block PR, notify developer
 5. QA comments on PR with guidance if needed
 
 **QA Actions**:
+
 - Monitor #github-notifications for test failures
 - Investigate failures within 30 minutes
 - Tag @engineer if test needs fixing
@@ -179,6 +197,7 @@ Any fail → ❌ Block PR, notify developer
 **Owner**: QA Team
 
 **Process**:
+
 1. Run full E2E suite (`npm run test:e2e`)
 2. Run accessibility suite (`npm run test:a11y`)
 3. Run performance benchmarks (`npm run perf:all`)
@@ -197,6 +216,7 @@ Any fail → ❌ Block PR, notify developer
 **Owner**: QA Team
 
 **Scope**:
+
 - Security penetration testing
 - Performance baseline updates
 - Test coverage gaps analysis
@@ -215,6 +235,7 @@ Any fail → ❌ Block PR, notify developer
 **Owner**: QA Team + External Auditor
 
 **Scope**:
+
 - Third-party penetration testing
 - Accessibility audit (WCAG 2.1 AA)
 - Load testing
@@ -237,47 +258,55 @@ P0-P3  Owner     Engineer    QA Test  Deploy   Release
 
 ### Bug Severity Classification
 
-| Priority | Description | SLA | Example |
-|----------|-------------|-----|---------|
-| P0 | Critical - Production down | 1 hour | Database offline, authentication broken |
-| P1 | High - Major functionality broken | 24 hours | Approval queue not loading, webhook failing |
-| P2 | Medium - Workaround exists | 1 week | UI glitch, minor data inconsistency |
-| P3 | Low - Enhancement or minor issue | Next sprint | Cosmetic issues, documentation typos |
+| Priority | Description                       | SLA         | Example                                     |
+| -------- | --------------------------------- | ----------- | ------------------------------------------- |
+| P0       | Critical - Production down        | 1 hour      | Database offline, authentication broken     |
+| P1       | High - Major functionality broken | 24 hours    | Approval queue not loading, webhook failing |
+| P2       | Medium - Workaround exists        | 1 week      | UI glitch, minor data inconsistency         |
+| P3       | Low - Enhancement or minor issue  | Next sprint | Cosmetic issues, documentation typos        |
 
 ### Bug Report Template
 
 ```markdown
 ## Bug Description
+
 [Clear, concise description of the issue]
 
 ## Steps to Reproduce
+
 1. Go to '/app/approvals'
 2. Click 'Approve' on first item
 3. Observe error
 
 ## Expected Behavior
+
 Approval should succeed and item should be removed from queue
 
 ## Actual Behavior
+
 Error: "Failed to send reply to Chatwoot"
 
 ## Environment
+
 - Environment: Staging
 - Browser: Chrome 118
 - User Role: Operator
 - Timestamp: 2025-10-11T15:00:00Z
 
 ## Evidence
+
 - Screenshot: artifacts/bugs/bug-123-screenshot.png
 - Console log: artifacts/bugs/bug-123-console.log
 - Network trace: artifacts/bugs/bug-123-network.har
 
 ## Impact
+
 - Severity: P1 (High)
 - Users Affected: All operators
 - Workaround: Use Chatwoot UI directly
 
 ## Additional Context
+
 [Any other relevant information]
 ```
 
@@ -288,6 +317,7 @@ Error: "Failed to send reply to Chatwoot"
 ### Pre-Release Checklist
 
 **Staging Deployment**:
+
 - [ ] All quality gates pass
 - [ ] E2E tests pass in staging environment
 - [ ] Smoke tests pass (`mock=0` with real credentials)
@@ -299,6 +329,7 @@ Error: "Failed to send reply to Chatwoot"
 - [ ] Evidence artifacts captured and linked
 
 **Production Deployment**:
+
 - [ ] Staging tests all pass
 - [ ] Manager approval obtained
 - [ ] Rollback plan documented
@@ -310,6 +341,7 @@ Error: "Failed to send reply to Chatwoot"
 ### Post-Release Verification
 
 **Within 30 minutes of deployment**:
+
 1. Run production smoke tests
 2. Check error rates in logs
 3. Verify performance metrics
@@ -318,6 +350,7 @@ Error: "Failed to send reply to Chatwoot"
 6. Confirm all features working
 
 **Within 24 hours**:
+
 1. Review error logs for anomalies
 2. Check performance dashboard for regressions
 3. Validate analytics data flowing correctly
@@ -332,6 +365,7 @@ Error: "Failed to send reply to Chatwoot"
 **Scope**: Critical user journeys that must never break
 
 **Tests**:
+
 1. Operator can view dashboard
 2. Operator can view approval queue
 3. Operator can approve drafts
@@ -342,6 +376,7 @@ Error: "Failed to send reply to Chatwoot"
 8. Shopify Admin embed works
 
 **Execution**:
+
 - Automated: Every PR (CI)
 - Manual: Before every release (QA)
 - Schedule: Weekly Monday regression suite
@@ -369,12 +404,14 @@ Never Break Again ✅
 ### Continuous Monitoring
 
 **Automated**:
+
 - Lighthouse CI on every PR
 - Route latency tracking
 - MCP service health checks
 - Database query performance
 
 **Manual**:
+
 - Weekly performance benchmark runs
 - Monthly performance audit
 - Load testing before major releases
@@ -384,6 +421,7 @@ Never Break Again ✅
 **Detected**: Lighthouse score drops >5 points OR P95 latency increases >20%
 
 **Response**:
+
 1. File performance regression issue (P1)
 2. Run detailed profiling
 3. Identify slow queries/components
@@ -397,16 +435,19 @@ Never Break Again ✅
 ### Security Audit Schedule
 
 **Weekly**:
+
 - Automated dependency scan (`npm audit`)
 - Secret scanning (`gitleaks`)
 - OWASP ZAP baseline scan
 
 **Monthly**:
+
 - Manual penetration testing (QA team)
 - Security test suite execution
 - Vulnerability assessment
 
 **Quarterly**:
+
 - External penetration testing (3rd party)
 - Compliance audit (GDPR, SOC 2)
 - Security architecture review
@@ -414,6 +455,7 @@ Never Break Again ✅
 ### Security Issue Response
 
 **P0 (Critical - Active Exploit)**:
+
 1. Immediately notify security team and manager
 2. Isolate affected systems
 3. Apply emergency patch
@@ -421,6 +463,7 @@ Never Break Again ✅
 5. Post-mortem within 24 hours
 
 **P1 (High - Vulnerability with Known Exploit)**:
+
 1. Notify security team within 1 hour
 2. Schedule patch within 48 hours
 3. Test thoroughly
@@ -434,6 +477,7 @@ Never Break Again ✅
 ### Daily Metrics
 
 **Automated** (Slack #qa-metrics):
+
 - Test pass rate (target: 100%)
 - Test execution time (target: <30s unit, <5min E2E)
 - Coverage percentage (target: >80%)
@@ -445,6 +489,7 @@ Never Break Again ✅
 **To**: Engineering team via `feedback/qa.md`
 
 **Contents**:
+
 - Test suite health summary
 - New tests added this week
 - Tests fixed/removed this week
@@ -457,6 +502,7 @@ Never Break Again ✅
 **To**: Manager
 
 **Contents**:
+
 - Quality metrics summary
 - Test coverage progress
 - Bug trends (filed vs. fixed)
@@ -495,6 +541,7 @@ Never Break Again ✅
 ## QA Tools & Access
 
 ### Required Tools
+
 - GitHub account (for PR reviews)
 - Slack access (#qa, #engineering, #github-notifications)
 - Supabase access (staging, local)
@@ -502,6 +549,7 @@ Never Break Again ✅
 - Chatwoot admin access (for integration testing)
 
 ### Required Credentials
+
 - `PLAYWRIGHT_SHOPIFY_EMAIL` - Shopify test account
 - `PLAYWRIGHT_SHOPIFY_PASSWORD` - Shopify test account
 - Supabase service keys (staging, local)
@@ -516,6 +564,7 @@ Never Break Again ✅
 ### QA Retrospectives (Monthly)
 
 **Questions**:
+
 - What testing improvements did we make?
 - What bugs escaped to production?
 - What slowed us down?
@@ -523,6 +572,7 @@ Never Break Again ✅
 - What documentation needs updating?
 
 **Actions**:
+
 - Update test strategy
 - Improve automation
 - Enhance documentation
@@ -533,6 +583,7 @@ Never Break Again ✅
 **End of QA Processes Documentation**
 
 **Related Docs**:
+
 - [Testing Guide](./TESTING_GUIDE.md)
 - [Best Practices](./BEST_PRACTICES.md)
 - [Bug Reporting](./BUG_REPORTING.md) (Task P)
@@ -540,4 +591,3 @@ Never Break Again ✅
 
 **Maintained by**: QA Team  
 **Last Updated**: 2025-10-11
-

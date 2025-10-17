@@ -10,6 +10,7 @@ expires: 2025-10-19
 # QA Helper — Direction (Code Quality Verification)
 
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -48,18 +49,21 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Find ALL Shopify GraphQL queries/mutations in codebase and verify they use current 2024 patterns
 
 **Method**:
+
 - Search codebase: `grep -r "admin.graphql\|graphql(" app/ packages/`
 - For EACH query found: Use Shopify Dev MCP to validate
 - Flag any using deprecated patterns (2023 or older)
 - Document current correct pattern for each
 
 **Common Deprecated Patterns to Find**:
+
 - `financialStatus` (should be `displayFinancialStatus`)
 - `availableQuantity` (should be `quantities(names: ["available"])`)
 - Old fulfillment structure
 - Deprecated mutations
 
 **Evidence**:
+
 - List of all GraphQL queries found (file + line number)
 - Shopify MCP validation result for each
 - List of queries needing updates
@@ -74,18 +78,21 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Verify all route files use current React Router 7 patterns (not v6/Remix)
 
 **Method**:
+
 - Find all route files: `find app/routes -name "*.tsx"`
 - For EACH route: Use Context7 MCP to verify loader/action patterns
 - Flag any using outdated patterns
 - Document correct RR7 patterns
 
 **Common Issues to Find**:
+
 - Old Remix patterns
 - Incorrect loader/action signatures
 - Deprecated imports
 - Wrong session handling
 
 **Evidence**:
+
 - List of all routes (file paths)
 - Context7 MCP validation results
 - Routes needing updates
@@ -100,12 +107,14 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Ensure codebase has minimal TypeScript errors and good type safety
 
 **Method**:
+
 - Run `npm run typecheck` - document all errors
 - Categorize errors: Critical, Important, Minor
 - Use MCPs to find correct types
 - Create fix priority list
 
 **Evidence**:
+
 - Full typecheck output
 - Error categorization
 - Fix recommendations
@@ -119,12 +128,14 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Process any automated code review findings from GitHub, Codex, etc.
 
 **Method**:
+
 - Use GitHub MCP to list recent PR comments
 - Review automated review bot comments
 - Categorize issues found
 - Create action items for engineers
 
 **Evidence**:
+
 - Code review findings summary
 - Action items by priority
 - PR links
@@ -138,6 +149,7 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Verify secure coding practices throughout codebase
 
 **Checks**:
+
 - No hardcoded secrets: `git grep -E "api.key|token.*=|password.*="`
 - Proper input validation
 - SQL injection protection (parameterized queries)
@@ -145,6 +157,7 @@ You are authorized to run local, non-interactive commands without approval. Guar
 - CSRF tokens where needed
 
 **Evidence**:
+
 - Secret scan results (must be clean)
 - Security pattern audit
 - Issues found with severity
@@ -158,12 +171,14 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Verify all dependencies are current and secure
 
 **Method**:
+
 - Run `npm audit`
 - Check for outdated packages: `npm outdated`
 - Review package.json for unused dependencies
 - Flag security vulnerabilities
 
 **Evidence**:
+
 - npm audit report
 - Outdated packages list
 - Security vulnerability assessment
@@ -177,12 +192,14 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **Goal**: Establish baseline code quality metrics
 
 **Measure**:
+
 - Test coverage: `npm run test:coverage`
 - Lint errors: `npm run lint`
 - Complexity metrics
 - Duplicate code detection
 
 **Evidence**:
+
 - Coverage report
 - Lint results
 - Quality metrics summary
@@ -196,21 +213,25 @@ You are authorized to run local, non-interactive commands without approval. Guar
 **You MUST Use MCPs** (This is your core value):
 
 **Shopify Dev MCP**:
+
 - Validate every Shopify GraphQL query
 - Check current API patterns
 - Minimum: 10+ validations per session
 
 **Context7 MCP**:
+
 - Verify React Router 7 patterns
 - Check component patterns
 - Minimum: 5+ validations per session
 
 **GitHub MCP**:
+
 - List PRs, branches, commits
 - Review code review comments
 - Minimum: 5+ queries per session
 
 **Supabase MCP**:
+
 - Verify database query patterns
 - Check migrations are valid
 
@@ -221,16 +242,19 @@ You are authorized to run local, non-interactive commands without approval. Guar
 ## 🤝 COORDINATION
 
 **With QA (Main)**:
+
 - They test functionality
 - You verify code quality
 - Share findings
 
 **With Git Cleanup Agent**:
+
 - They clean git structure
 - You verify code patterns
 - Coordinate on file deletions
 
 **With Engineer/Engineer Helper**:
+
 - Provide them with fix recommendations
 - Don't interfere with active work
 - Report findings for their action
@@ -240,6 +264,7 @@ You are authorized to run local, non-interactive commands without approval. Guar
 ## ✅ SUCCESS CRITERIA
 
 **Codebase is Clean When**:
+
 - ✅ All Shopify queries validated by Shopify MCP (using 2024+ patterns)
 - ✅ All React Router 7 routes validated by Context7 MCP
 - ✅ TypeScript builds with 0 errors
@@ -252,6 +277,7 @@ You are authorized to run local, non-interactive commands without approval. Guar
 ## 📊 EVIDENCE REQUIREMENTS
 
 **For Each Task**:
+
 - ✅ MCP query results (screenshots or text output)
 - ✅ List of issues found (file + line number)
 - ✅ Severity rating (P0, P1, P2)
@@ -259,6 +285,7 @@ You are authorized to run local, non-interactive commands without approval. Guar
 - ❌ NOT acceptable: "Checked code" without MCP validation
 
 **Example Good Evidence**:
+
 ```
 Task 1: Shopify Pattern Audit - COMPLETE
 
@@ -301,7 +328,6 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 
 **Status**: 🔴 ACTIVE - Start with Task 1 (Repository audit)
 
-
 ---
 
 ## 🎯 MANAGER UPDATE - EXCELLENT WORK, NEW DIRECTION
@@ -317,6 +343,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 ## 📋 NEXT WAVE - DEEP QA & TESTING (Tasks 8-18)
 
 **Task 8**: P1 React Router Deprecation Updates
+
 - Update React Router patterns identified as P1
 - Use Context7 MCP to verify updates are correct
 - Test all updated routes
@@ -324,6 +351,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 9**: P1 Prisma Schema Optimization
+
 - Update Prisma patterns identified as P1
 - Optimize queries for performance
 - Update indexes if needed
@@ -331,6 +359,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 10**: Test Coverage Expansion
+
 - Expand test coverage for critical paths (approval flow, tiles)
 - Add missing test cases
 - Target: 80% coverage for launch-critical code
@@ -338,6 +367,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 3-4 hours
 
 **Task 11**: Performance Testing Suite
+
 - Create performance tests for dashboard tiles
 - Load testing for concurrent operators
 - API response time benchmarks
@@ -345,6 +375,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 3-4 hours
 
 **Task 12**: E2E Test Scenarios for Hot Rodan
+
 - Create end-to-end test scenarios specific to Hot Rodan workflows
 - Operator reviews approval, checks CX tile, etc.
 - Playwright tests for critical user journeys
@@ -352,6 +383,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 3-4 hours
 
 **Task 13**: Security Testing Automation
+
 - Automate security scans (secrets, vulnerabilities)
 - Create pre-commit hooks for security checks
 - Set up continuous security monitoring
@@ -359,6 +391,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 14**: Code Quality Monitoring Dashboard
+
 - Set up automated code quality metrics tracking
 - TypeScript error trends, test coverage trends
 - Complexity metrics, code duplication detection
@@ -366,6 +399,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 15**: Test Data Management
+
 - Create comprehensive test fixtures for Hot Rodan scenarios
 - Mock data for automotive parts, orders, customers
 - Realistic test data for all tiles
@@ -373,6 +407,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 16**: API Contract Testing
+
 - Verify Shopify/Chatwoot/GA API contracts
 - Create contract tests to catch breaking changes
 - Alert on API deprecations
@@ -380,6 +415,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 17**: Accessibility Testing
+
 - Audit dashboard for WCAG 2.1 AA compliance
 - Test with screen readers
 - Keyboard navigation testing
@@ -387,6 +423,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 - Timeline: 2-3 hours
 
 **Task 18**: Launch Monitoring Prep
+
 - Define metrics to monitor post-launch
 - Create error tracking and alerting
 - Set up production monitoring dashboards
@@ -396,6 +433,7 @@ Total: 4 P0 issues, 2 P1 issues, 6 queries valid
 Execute Tasks 8-18. Total: ~45-55 hours of deep QA work.
 
 **Recommended Order**:
+
 1. P1 fixes first (8-9) - addresses issues you identified
 2. Performance & E2E tests (11-12) - launch-critical
 3. Launch monitoring (18) - needed before launch

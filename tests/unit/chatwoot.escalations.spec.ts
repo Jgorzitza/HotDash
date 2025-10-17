@@ -167,7 +167,8 @@ describe("getEscalations", () => {
       {
         id: 4,
         message_type: 0,
-        content: "My package is a lost package and the delivery is delayed again",
+        content:
+          "My package is a lost package and the delivery is delayed again",
         created_at: createdAt,
       },
     ]);

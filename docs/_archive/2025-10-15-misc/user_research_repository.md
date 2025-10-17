@@ -12,6 +12,7 @@
 **Storage**: Notion or Confluence
 
 **Categories**:
+
 - Customer interviews (transcripts + synthesis)
 - Survey results (NPS, CSAT, feature feedback)
 - Usability tests (videos + findings)
@@ -19,6 +20,7 @@
 - Market research (industry reports)
 
 **Tagging Taxonomy**:
+
 - By persona (power user, new operator, manager)
 - By topic (pricing, features, UX, performance)
 - By date (Q4 2025, Q1 2026)
@@ -28,4 +30,3 @@
 
 **Document Path**: `docs/user_research_repository.md`
 **Status**: Repository system designed
-

@@ -8,6 +8,7 @@
 ## The Problem
 
 The MCP protocol is **stateful** and requires:
+
 1. Multiple requests must go to the **same subprocess**
 2. Proper initialization sequence:
    - `initialize` request → get session ID
@@ -21,6 +22,7 @@ Our previous wrapper was **stateless** - each request created a new subprocess w
 ### Implemented Session Management
 
 **New Architecture (`mcp-http-wrapper.py`)**:
+
 - `MCPSession` class maintains persistent subprocess per session
 - Sessions identified by `X-MCP-Session-ID` header
 - Multiple requests can reuse the same session
@@ -31,11 +33,11 @@ Our previous wrapper was **stateless** - each request created a new subprocess w
 ```
 1. Client → initialize (no session ID)
    Server → Creates new session, returns session ID in header
-   
+
 2. Client → notifications/initialized (with session ID)
    Server → Routes to same subprocess, no response needed
-   
-3. Client → tools/list (with session ID) 
+
+3. Client → tools/list (with session ID)
    Server → Routes to same subprocess, returns tools
 ```
 
@@ -62,8 +64,9 @@ curl -X POST .../mcp \
 ```
 
 ### ✅ All 6 Google Analytics Tools Available:
+
 1. **get_account_summaries** - List GA accounts and properties
-2. **get_property_details** - Get details about a property  
+2. **get_property_details** - Get details about a property
 3. **list_google_ads_links** - List Google Ads connections
 4. **get_custom_dimensions_and_metrics** - List custom dims/metrics
 5. **run_report** - Run custom analytics reports
@@ -74,11 +77,11 @@ curl -X POST .../mcp \
 ✅ **Version 8 deployed** (deployment-01K7ADJ29FTQP4Z5CNE14ADCWY)  
 ✅ **Session management working**  
 ✅ **512MB memory** (handles concurrent sessions)  
-✅ **Health checks passing**  
+✅ **Health checks passing**
 
 ## For Cursor
 
-Cursor should automatically handle the MCP protocol flow (initialize → initialized notification → tools/list). 
+Cursor should automatically handle the MCP protocol flow (initialize → initialized notification → tools/list).
 
 ### Testing in Cursor
 
@@ -103,18 +106,21 @@ Cursor should automatically handle the MCP protocol flow (initialize → initial
 ## Technical Details
 
 ### Memory Usage
+
 - **Base wrapper**: ~50MB
 - **Per session (subprocess)**: ~60-80MB
 - **Total with 3-4 concurrent sessions**: ~300-400MB
 - **512MB machine**: Comfortable headroom
 
 ### Session Lifecycle
+
 - Sessions created on first request (initialize)
 - Reused for subsequent requests with same session ID
 - Cleaned up on app shutdown
 - No automatic timeout (persistent for reliability)
 
 ### Performance
+
 - **First request (cold start)**: ~10-15 seconds
 - **Subsequent requests (same session)**: ~1-2 seconds
 - **New session creation**: ~2-3 seconds
@@ -139,4 +145,3 @@ Cursor should automatically handle the MCP protocol flow (initialize → initial
 ---
 
 **Ready for Cursor!** The server now properly implements the MCP protocol with stateful sessions. Restart Cursor and the tools should appear. 🚀
-

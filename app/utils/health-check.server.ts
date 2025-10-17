@@ -1,12 +1,12 @@
 /**
  * Health Check Utilities
- * 
+ *
  * Provides health check endpoints and dependency monitoring for services.
  * Used by load balancers and monitoring systems to determine service health.
  */
 
 export interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy';
+  status: "healthy" | "degraded" | "unhealthy";
   timestamp: string;
   uptime: number;
   version?: string;
@@ -15,7 +15,7 @@ export interface HealthStatus {
 
 export interface HealthCheck {
   name: string;
-  status: 'pass' | 'warn' | 'fail';
+  status: "pass" | "warn" | "fail";
   message?: string;
   responseTime?: number;
   metadata?: Record<string, any>;
@@ -44,7 +44,7 @@ export class HealthCheckManager {
   async runAll(): Promise<HealthStatus> {
     const timestamp = new Date().toISOString();
     const uptime = Math.floor((Date.now() - startTime) / 1000);
-    const version = process.env.APP_VERSION || 'unknown';
+    const version = process.env.APP_VERSION || "unknown";
 
     const checks: HealthCheck[] = [];
 
@@ -62,26 +62,26 @@ export class HealthCheckManager {
         } catch (error: any) {
           return {
             name,
-            status: 'fail' as const,
-            message: error.message || 'Check failed',
+            status: "fail" as const,
+            message: error.message || "Check failed",
           };
         }
-      }
+      },
     );
 
     checks.push(...(await Promise.all(checkPromises)));
 
     // Determine overall status
-    const hasFailures = checks.some(c => c.status === 'fail');
-    const hasWarnings = checks.some(c => c.status === 'warn');
+    const hasFailures = checks.some((c) => c.status === "fail");
+    const hasWarnings = checks.some((c) => c.status === "warn");
 
-    let status: 'healthy' | 'degraded' | 'unhealthy';
+    let status: "healthy" | "degraded" | "unhealthy";
     if (hasFailures) {
-      status = 'unhealthy';
+      status = "unhealthy";
     } else if (hasWarnings) {
-      status = 'degraded';
+      status = "degraded";
     } else {
-      status = 'healthy';
+      status = "healthy";
     }
 
     return {
@@ -110,14 +110,14 @@ export function createHealthCheckManager(): HealthCheckManager {
   const manager = new HealthCheckManager();
 
   // Basic process health
-  manager.register('process', async () => {
+  manager.register("process", async () => {
     const memUsage = process.memoryUsage();
     const memUsedMB = Math.round(memUsage.heapUsed / 1024 / 1024);
     const memTotalMB = Math.round(memUsage.heapTotal / 1024 / 1024);
 
     return {
-      name: 'process',
-      status: 'pass',
+      name: "process",
+      status: "pass",
       message: `Memory: ${memUsedMB}MB / ${memTotalMB}MB`,
       metadata: {
         memoryUsedMB: memUsedMB,
@@ -140,41 +140,44 @@ export async function checkShopifyHealth(): Promise<HealthCheck> {
 
     if (!domain || !token) {
       return {
-        name: 'shopify',
-        status: 'warn',
-        message: 'Shopify credentials not configured',
+        name: "shopify",
+        status: "warn",
+        message: "Shopify credentials not configured",
       };
     }
 
     const start = performance.now();
-    const response = await fetch(`https://${domain}/admin/api/2025-10/shop.json`, {
-      method: 'GET',
-      headers: { 'X-Shopify-Access-Token': token },
-      signal: AbortSignal.timeout(5000),
-    });
+    const response = await fetch(
+      `https://${domain}/admin/api/2025-10/shop.json`,
+      {
+        method: "GET",
+        headers: { "X-Shopify-Access-Token": token },
+        signal: AbortSignal.timeout(5000),
+      },
+    );
 
     const responseTime = Math.round(performance.now() - start);
 
     if (response.ok) {
       return {
-        name: 'shopify',
-        status: 'pass',
-        message: 'Shopify API accessible',
+        name: "shopify",
+        status: "pass",
+        message: "Shopify API accessible",
         responseTime,
       };
     }
 
     return {
-      name: 'shopify',
-      status: 'fail',
+      name: "shopify",
+      status: "fail",
       message: `Shopify API returned ${response.status}`,
       responseTime,
     };
   } catch (error: any) {
     return {
-      name: 'shopify',
-      status: 'fail',
-      message: error.message || 'Shopify API check failed',
+      name: "shopify",
+      status: "fail",
+      message: error.message || "Shopify API check failed",
     };
   }
 }
@@ -189,24 +192,24 @@ export async function checkGAHealth(): Promise<HealthCheck> {
 
     if (!credPath || !propertyId) {
       return {
-        name: 'google-analytics',
-        status: 'warn',
-        message: 'GA credentials not configured',
+        name: "google-analytics",
+        status: "warn",
+        message: "GA credentials not configured",
       };
     }
 
     // Just check if credentials file exists
     // Actual API check would require importing the GA client
     return {
-      name: 'google-analytics',
-      status: 'pass',
-      message: 'GA configured',
+      name: "google-analytics",
+      status: "pass",
+      message: "GA configured",
     };
   } catch (error: any) {
     return {
-      name: 'google-analytics',
-      status: 'warn',
-      message: error.message || 'GA check failed',
+      name: "google-analytics",
+      status: "warn",
+      message: error.message || "GA check failed",
     };
   }
 }
@@ -221,16 +224,16 @@ export async function checkChatwootHealth(): Promise<HealthCheck> {
 
     if (!baseUrl || !token) {
       return {
-        name: 'chatwoot',
-        status: 'warn',
-        message: 'Chatwoot credentials not configured',
+        name: "chatwoot",
+        status: "warn",
+        message: "Chatwoot credentials not configured",
       };
     }
 
     const start = performance.now();
     const response = await fetch(`${baseUrl}/api/v1/profile`, {
-      method: 'GET',
-      headers: { 'api_access_token': token },
+      method: "GET",
+      headers: { api_access_token: token },
       signal: AbortSignal.timeout(5000),
     });
 
@@ -238,24 +241,24 @@ export async function checkChatwootHealth(): Promise<HealthCheck> {
 
     if (response.ok) {
       return {
-        name: 'chatwoot',
-        status: 'pass',
-        message: 'Chatwoot API accessible',
+        name: "chatwoot",
+        status: "pass",
+        message: "Chatwoot API accessible",
         responseTime,
       };
     }
 
     return {
-      name: 'chatwoot',
-      status: 'fail',
+      name: "chatwoot",
+      status: "fail",
       message: `Chatwoot API returned ${response.status}`,
       responseTime,
     };
   } catch (error: any) {
     return {
-      name: 'chatwoot',
-      status: 'fail',
-      message: error.message || 'Chatwoot API check failed',
+      name: "chatwoot",
+      status: "fail",
+      message: error.message || "Chatwoot API check failed",
     };
   }
 }
@@ -266,7 +269,6 @@ export async function checkChatwootHealth(): Promise<HealthCheck> {
 export const healthCheckManager = createHealthCheckManager();
 
 // Register service-specific checks
-healthCheckManager.register('shopify', checkShopifyHealth);
-healthCheckManager.register('google-analytics', checkGAHealth);
-healthCheckManager.register('chatwoot', checkChatwootHealth);
-
+healthCheckManager.register("shopify", checkShopifyHealth);
+healthCheckManager.register("google-analytics", checkGAHealth);
+healthCheckManager.register("chatwoot", checkChatwootHealth);

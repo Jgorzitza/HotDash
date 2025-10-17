@@ -36,18 +36,21 @@ Provide operators with real-time visibility into AI agent performance, approval 
 ### Key Metrics to Track
 
 **Agent Performance**:
+
 - Response accuracy (% of approved vs rejected actions)
 - Average response time (from webhook to proposal)
 - Tool usage frequency (which tools are called most)
 - Handoff efficiency (triage → specialist success rate)
 
 **Approval Queue Health**:
+
 - Current queue depth (pending approvals)
 - Average approval time (operator response latency)
 - Approval rate (approve vs reject ratio)
 - Queue age (oldest pending approval)
 
 **Conversation Outcomes**:
+
 - First-time resolution rate
 - Escalation rate
 - Customer satisfaction (if available)
@@ -60,6 +63,7 @@ Provide operators with real-time visibility into AI agent performance, approval 
 ### Tile: "AI Agent Pulse"
 
 **Visual Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ AI Agent Pulse                            [Healthy ✓] │
@@ -86,6 +90,7 @@ Provide operators with real-time visibility into AI agent performance, approval 
 ```
 
 **Polaris Implementation**:
+
 ```typescript
 import {
   Card,
@@ -102,7 +107,7 @@ import {
 function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
   const approvalRate = (metrics.approved / metrics.total) * 100;
   const statusTone = approvalRate >= 80 ? 'success' : approvalRate >= 60 ? 'warning' : 'critical';
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -113,7 +118,7 @@ function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
             {approvalRate >= 80 ? 'Healthy' : approvalRate >= 60 ? 'Attention' : 'Critical'}
           </Badge>
         </InlineStack>
-        
+
         {/* Primary metric */}
         <BlockStack gap="200">
           <Text variant="headingLg" as="p">
@@ -123,13 +128,13 @@ function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
             {metrics.approved} approved ({approvalRate.toFixed(0)}%) · {metrics.rejected} rejected ({(100 - approvalRate).toFixed(0)}%)
           </Text>
         </BlockStack>
-        
+
         {/* Approval rate visualization */}
         <Box>
           <BlockStack gap="200">
             <Text variant="bodyMd" fontWeight="semibold">Approval Rate</Text>
-            <ProgressBar 
-              progress={approvalRate} 
+            <ProgressBar
+              progress={approvalRate}
               tone={statusTone}
               size="small"
             />
@@ -138,7 +143,7 @@ function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
             </Text>
           </BlockStack>
         </Box>
-        
+
         {/* Top performer */}
         <Box>
           <Text variant="bodyMd" fontWeight="semibold">Top Performing Agent:</Text>
@@ -148,7 +153,7 @@ function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
             </List.Item>
           </List>
         </Box>
-        
+
         {/* Queue health */}
         <Box background="bg-surface-secondary" padding="300" borderRadius="200">
           <BlockStack gap="200">
@@ -160,7 +165,7 @@ function AIAgentPulseTile({ metrics }: { metrics: AgentMetrics }) {
             </List>
           </BlockStack>
         </Box>
-        
+
         {/* Action button */}
         <Button url="/app/agent-metrics" variant="plain">
           View Detailed Metrics
@@ -193,6 +198,7 @@ interface AgentMetrics {
 ### Metrics Bar Design
 
 **Visual Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ Queue Metrics (Last 24h)                                    │
@@ -204,6 +210,7 @@ interface AgentMetrics {
 ```
 
 **Polaris Implementation**:
+
 ```typescript
 import { Card, InlineGrid, BlockStack, Text } from '@shopify/polaris';
 
@@ -212,7 +219,7 @@ function ApprovalQueueMetrics({ stats }: { stats: QueueStats }) {
     <Card>
       <BlockStack gap="300">
         <Text variant="headingMd" as="h2">Queue Metrics (Last 24h)</Text>
-        
+
         <InlineGrid columns={{ xs: 2, md: 4 }} gap="400">
           {/* Pending */}
           <BlockStack gap="100">
@@ -221,7 +228,7 @@ function ApprovalQueueMetrics({ stats }: { stats: QueueStats }) {
             </Text>
             <Text variant="bodySm" tone="subdued">Pending</Text>
           </BlockStack>
-          
+
           {/* Approved */}
           <BlockStack gap="100">
             <Text variant="headingLg" as="p" tone="success">
@@ -229,7 +236,7 @@ function ApprovalQueueMetrics({ stats }: { stats: QueueStats }) {
             </Text>
             <Text variant="bodySm" tone="subdued">Approved</Text>
           </BlockStack>
-          
+
           {/* Rejected */}
           <BlockStack gap="100">
             <Text variant="headingLg" as="p">
@@ -237,7 +244,7 @@ function ApprovalQueueMetrics({ stats }: { stats: QueueStats }) {
             </Text>
             <Text variant="bodySm" tone="subdued">Rejected</Text>
           </BlockStack>
-          
+
           {/* Avg Time */}
           <BlockStack gap="100">
             <Text variant="headingLg" as="p">
@@ -268,6 +275,7 @@ interface QueueStats {
 **Visualization**: Line chart with approval percentage over time
 
 **Implementation** (using lightweight chart library):
+
 ```typescript
 import { Card, BlockStack, Text } from '@shopify/polaris';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -278,7 +286,7 @@ function ApprovalRateTrendChart({ data }: { data: TrendData[] }) {
       <BlockStack gap="400">
         <Text variant="headingMd" as="h2">Approval Rate Trend</Text>
         <Text variant="bodySm" tone="subdued">Last 7 days</Text>
-        
+
         <Box minHeight="200px">
           <ResponsiveContainer width="100%" height={200}>
             <LineChart data={data}>
@@ -286,17 +294,17 @@ function ApprovalRateTrendChart({ data }: { data: TrendData[] }) {
               <XAxis dataKey="date" />
               <YAxis unit="%" domain={[0, 100]} />
               <Tooltip />
-              <Line 
-                type="monotone" 
-                dataKey="approvalRate" 
-                stroke="#1a7f37" 
+              <Line
+                type="monotone"
+                dataKey="approvalRate"
+                stroke="#1a7f37"
                 strokeWidth={2}
                 dot={{ fill: '#1a7f37', r: 4 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </Box>
-        
+
         {/* Summary stats */}
         <InlineStack gap="400">
           <BlockStack gap="100">
@@ -305,7 +313,7 @@ function ApprovalRateTrendChart({ data }: { data: TrendData[] }) {
             </Text>
             <Text variant="bodySm" tone="subdued">7-day avg</Text>
           </BlockStack>
-          
+
           <BlockStack gap="100">
             <Text variant="bodyMd" fontWeight="semibold">
               {calculateTrend(data) > 0 ? '↑' : '↓'} {Math.abs(calculateTrend(data))}%
@@ -326,6 +334,7 @@ interface TrendData {
 ```
 
 **Alternative (No chart library - Polaris only)**:
+
 ```typescript
 // Use Polaris ProgressBar for sparkline effect
 function SimpleApprovalTrend({ data }: { data: TrendData[] }) {
@@ -333,7 +342,7 @@ function SimpleApprovalTrend({ data }: { data: TrendData[] }) {
     <Card>
       <BlockStack gap="400">
         <Text variant="headingMd" as="h2">Approval Rate Trend</Text>
-        
+
         <BlockStack gap="200">
           {data.map((day, idx) => (
             <InlineStack key={idx} gap="200" blockAlign="center">
@@ -376,16 +385,17 @@ function SimpleApprovalTrend({ data }: { data: TrendData[] }) {
 ```
 
 **Implementation**:
+
 ```typescript
 function ToolUsageChart({ tools }: { tools: ToolUsage[] }) {
   const maxCount = Math.max(...tools.map(t => t.count));
-  
+
   return (
     <Card>
       <BlockStack gap="400">
         <Text variant="headingMd" as="h2">Tool Usage</Text>
         <Text variant="bodySm" tone="subdued">Last 7 days</Text>
-        
+
         <BlockStack gap="300">
           {tools.map(tool => (
             <BlockStack key={tool.name} gap="100">
@@ -393,7 +403,7 @@ function ToolUsageChart({ tools }: { tools: ToolUsage[] }) {
                 <Text variant="bodySm">{tool.name}</Text>
                 <Text variant="bodySm" tone="subdued">{tool.count}</Text>
               </InlineStack>
-              <ProgressBar 
+              <ProgressBar
                 progress={(tool.count / maxCount) * 100}
                 size="small"
               />
@@ -426,7 +436,7 @@ import { useEffect, useState } from 'react';
 
 function LiveQueueBadge() {
   const [queueDepth, setQueueDepth] = useState(0);
-  
+
   useEffect(() => {
     // Poll or SSE for updates
     const interval = setInterval(async () => {
@@ -434,12 +444,12 @@ function LiveQueueBadge() {
       const { count } = await response.json();
       setQueueDepth(count);
     }, 5000);
-    
+
     return () => clearInterval(interval);
   }, []);
-  
+
   const tone = queueDepth === 0 ? 'success' : queueDepth < 5 ? 'info' : 'warning';
-  
+
   return (
     <Badge tone={tone}>
       {queueDepth} Pending
@@ -461,27 +471,27 @@ function LiveQueueBadge() {
 ```typescript
 function RealtimeMetrics() {
   const [metrics, setMetrics] = useState<AgentMetrics | null>(null);
-  
+
   useEffect(() => {
     const eventSource = new EventSource('/api/agent-metrics/stream');
-    
+
     eventSource.onmessage = (event) => {
       const update = JSON.parse(event.data);
       setMetrics(update);
     };
-    
+
     eventSource.onerror = () => {
       eventSource.close();
       // Fall back to polling
     };
-    
+
     return () => eventSource.close();
   }, []);
-  
+
   if (!metrics) {
     return <SkeletonBodyText lines={4} />;
   }
-  
+
   return <AIAgentPulseTile metrics={metrics} />;
 }
 ```
@@ -493,6 +503,7 @@ function RealtimeMetrics() {
 ### Route: `/app/agent-metrics`
 
 **Full Page Layout**:
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Agent Performance Metrics                           [Refresh] │
@@ -521,20 +532,21 @@ function RealtimeMetrics() {
 ```
 
 **Implementation**:
+
 ```typescript
 import { Page, Layout, Card, Tabs, InlineGrid } from '@shopify/polaris';
 
 export default function AgentMetricsRoute() {
   const { metrics } = useLoaderData<typeof loader>();
   const [selectedTab, setSelectedTab] = useState(0);
-  
+
   const tabs = [
     { id: 'overview', content: 'Overview' },
     { id: 'agents', content: 'Agent Performance' },
     { id: 'tools', content: 'Tool Usage' },
     { id: 'history', content: 'Action History' },
   ];
-  
+
   return (
     <Page
       title="Agent Performance Metrics"
@@ -547,7 +559,7 @@ export default function AgentMetricsRoute() {
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab} />
           </Card>
         </Layout.Section>
-        
+
         {/* Overview tab */}
         {selectedTab === 0 && (
           <>
@@ -579,21 +591,21 @@ export default function AgentMetricsRoute() {
                 />
               </InlineGrid>
             </Layout.Section>
-            
+
             <Layout.Section>
               <ApprovalRateTrendChart data={metrics.trendData} />
             </Layout.Section>
-            
+
             <Layout.Section variant="oneThird">
               <ToolUsageChart tools={metrics.toolUsage} />
             </Layout.Section>
-            
+
             <Layout.Section variant="twoThirds">
               <AgentPerformanceTable agents={metrics.agentPerformance} />
             </Layout.Section>
           </>
         )}
-        
+
         {/* Other tabs */}
       </Layout>
     </Page>
@@ -601,14 +613,14 @@ export default function AgentMetricsRoute() {
 }
 
 // Metric card component
-function MetricCard({ 
-  label, 
-  value, 
-  trend, 
-  trendUp 
-}: { 
+function MetricCard({
+  label,
+  value,
+  trend,
+  trendUp
+}: {
   label: string;
-  value: string | number; 
+  value: string | number;
   trend: string;
   trendUp: boolean;
 }) {
@@ -634,6 +646,7 @@ function MetricCard({
 ### Agent Performance Table
 
 **Visual Layout**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Agent Performance Breakdown                             │
@@ -649,6 +662,7 @@ function MetricCard({
 ```
 
 **Implementation**:
+
 ```typescript
 import { Card, DataTable } from '@shopify/polaris';
 
@@ -660,7 +674,7 @@ function AgentPerformanceTable({ agents }: { agents: AgentPerformance[] }) {
     agent.rejected,
     `${agent.approvalRate}%`,
   ]);
-  
+
   return (
     <Card>
       <DataTable
@@ -696,7 +710,7 @@ interface AgentPerformance {
 function QueueHealthBadge({ depth, avgTime }: { depth: number; avgTime: number }) {
   let tone: BadgeTone;
   let label: string;
-  
+
   if (depth === 0) {
     tone = 'success';
     label = 'All Clear';
@@ -710,7 +724,7 @@ function QueueHealthBadge({ depth, avgTime }: { depth: number; avgTime: number }
     tone = 'critical';
     label = 'High Load';
   }
-  
+
   return (
     <Badge tone={tone}>
       {label}
@@ -728,13 +742,13 @@ function QueueHealthBadge({ depth, avgTime }: { depth: number; avgTime: number }
   <Banner
     tone="warning"
     title="Agent Performance Below Target"
-    action={{ 
-      content: 'View Details', 
-      url: '/app/agent-metrics' 
+    action={{
+      content: 'View Details',
+      url: '/app/agent-metrics'
     }}
   >
     <Text variant="bodyMd">
-      Agent approval rate has dropped to {metrics.approvalRate}% (target: 80%+). 
+      Agent approval rate has dropped to {metrics.approvalRate}% (target: 80%+).
       Review recent rejections to identify patterns.
     </Text>
   </Banner>
@@ -746,7 +760,7 @@ function QueueHealthBadge({ depth, avgTime }: { depth: number; avgTime: number }
     title="Approval Queue Backlog"
   >
     <Text variant="bodyMd">
-      {metrics.queueDepth} approvals pending. Consider increasing operator capacity 
+      {metrics.queueDepth} approvals pending. Consider increasing operator capacity
       or reviewing agent permissions.
     </Text>
   </Banner>
@@ -763,11 +777,11 @@ function QueueHealthBadge({ depth, avgTime }: { depth: number; avgTime: number }
 
 ```typescript
 // Desktop: 4-column grid
-// Tablet: 2-column grid  
+// Tablet: 2-column grid
 // Mobile: 1-column stack
 
-<InlineGrid 
-  columns={{ xs: 1, sm: 2, md: 4 }} 
+<InlineGrid
+  columns={{ xs: 1, sm: 2, md: 4 }}
   gap="400"
 >
   <MetricCard {...} />
@@ -821,6 +835,7 @@ async function handleExportMetrics() {
 ## 10. Implementation Checklist
 
 ### Phase 1: Dashboard Tile (Day 1)
+
 - [ ] Create `AIAgentPulseTile` component
 - [ ] Implement basic metrics display
 - [ ] Add approval rate progress bar
@@ -828,6 +843,7 @@ async function handleExportMetrics() {
 - [ ] Test responsive behavior
 
 ### Phase 2: Detailed Metrics Page (Day 2)
+
 - [ ] Create `/app/agent-metrics` route
 - [ ] Implement metric cards grid
 - [ ] Add approval rate trend visualization
@@ -835,12 +851,14 @@ async function handleExportMetrics() {
 - [ ] Add agent performance table
 
 ### Phase 3: Real-Time Updates (Day 3)
+
 - [ ] Implement polling or SSE
 - [ ] Add live queue badge
 - [ ] Add real-time metric updates
 - [ ] Test performance with many agents
 
 ### Phase 4: Polish & Testing (Day 4)
+
 - [ ] Mobile responsive optimization
 - [ ] Accessibility testing
 - [ ] Performance testing
@@ -889,6 +907,7 @@ Response: CSV file download
 ### User Goals
 
 **Operators want to**:
+
 1. Know if agents are performing well (approval rate)
 2. See queue backlog (pending approvals)
 3. Identify which agents/tools are used most
@@ -910,5 +929,3 @@ Response: CSV file download
 **Created**: 2025-10-11  
 **Owner**: Designer Agent  
 **Ready For**: Engineer Implementation
-
-

@@ -35,10 +35,14 @@
         "path": "/app?mock=1",
         "expected_status": 200,
         "max_latency_ms": 2000,
-        "required_elements": ["Operator Control Center", "Sales Pulse", "CX Escalations"]
+        "required_elements": [
+          "Operator Control Center",
+          "Sales Pulse",
+          "CX Escalations"
+        ]
       },
       {
-        "name": "dashboard_load_live", 
+        "name": "dashboard_load_live",
         "path": "/app?mock=0",
         "expected_status": 200,
         "max_latency_ms": 300,

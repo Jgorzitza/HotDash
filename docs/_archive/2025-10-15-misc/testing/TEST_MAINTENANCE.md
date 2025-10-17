@@ -12,6 +12,7 @@
 A healthy test suite requires ongoing maintenance. Without it, tests become slow, flaky, outdated, and eventually ignored.
 
 **Target Metrics**:
+
 - Test execution time: <30s (unit), <5min (E2E)
 - Flakiness rate: <1%
 - Skipped tests: <5% of total
@@ -25,6 +26,7 @@ A healthy test suite requires ongoing maintenance. Without it, tests become slow
 ### Monday: Test Health Check
 
 **Run**:
+
 ```bash
 npm run test:ci          # Full test suite
 npm run test:unit -- --reporter=verbose   # Detailed unit test output
@@ -32,6 +34,7 @@ npm run test:e2e -- --reporter=list       # E2E test list
 ```
 
 **Check**:
+
 - [ ] All tests passing?
 - [ ] Any new flaky tests?
 - [ ] Execution time acceptable?
@@ -44,6 +47,7 @@ npm run test:e2e -- --reporter=list       # E2E test list
 ### Wednesday: Flaky Test Review
 
 **Identify** flaky tests:
+
 ```bash
 # Run tests 10 times
 for i in {1..10}; do npm run test:e2e >> flaky-check.log 2>&1; done
@@ -53,6 +57,7 @@ grep "FAIL" flaky-check.log
 ```
 
 **Actions**:
+
 - Fix flaky tests (add waits, improve selectors)
 - Skip with issue reference if unfixable
 - Document in `feedback/qa.md`
@@ -62,12 +67,14 @@ grep "FAIL" flaky-check.log
 ### Friday: Coverage Report
 
 **Generate**:
+
 ```bash
 npm run test:unit -- --coverage
 open coverage/vitest/index.html
 ```
 
 **Review**:
+
 - Identify files with <50% coverage
 - Prioritize critical business logic
 - File issues for coverage gaps
@@ -80,6 +87,7 @@ open coverage/vitest/index.html
 ### Week 1: Test Debt Cleanup
 
 **Audit**:
+
 ```bash
 # Count skipped tests
 grep -r "\.skip\|\.todo" tests/ | wc -l
@@ -89,6 +97,7 @@ grep -r "TODO\|FIXME" tests/ | wc -l
 ```
 
 **Actions**:
+
 1. Review all `.skip()` tests
    - Fix and enable, OR
    - Convert to `.todo()` with issue, OR
@@ -109,12 +118,14 @@ grep -r "TODO\|FIXME" tests/ | wc -l
 ### Week 2: Performance Optimization
 
 **Profile slow tests**:
+
 ```bash
 npm run test:unit -- --reporter=verbose | grep "Duration"
 npm run test:e2e -- --reporter=list
 ```
 
 **Optimize**:
+
 1. Mock expensive operations
 2. Reduce unnecessary waits
 3. Parallelize independent tests
@@ -127,16 +138,19 @@ npm run test:e2e -- --reporter=list
 ### Week 3: Coverage Gap Analysis
 
 **Find untested code**:
+
 ```bash
 npm run test:unit -- --coverage
 ```
 
 **Prioritize**:
+
 1. **High Priority**: Services, business logic (target: >90%)
 2. **Medium Priority**: Components, utilities (target: >80%)
 3. **Low Priority**: Routes (covered by E2E), config files
 
 **Actions**:
+
 - Write tests for high-priority gaps
 - File issues for medium-priority gaps
 - Document decision to skip low-priority
@@ -146,6 +160,7 @@ npm run test:unit -- --coverage
 ### Week 4: Test Refactoring
 
 **Identify**:
+
 - Duplicate tests
 - Overly complex tests
 - Tests with poor names
@@ -153,6 +168,7 @@ npm run test:unit -- --coverage
 - Tests that don't test anything meaningful
 
 **Refactor**:
+
 - Extract common setup to `beforeEach`
 - Use test fixtures for shared data
 - Improve test names
@@ -166,6 +182,7 @@ npm run test:unit -- --coverage
 ### Quarter Start: Test Strategy Review
 
 **Review**:
+
 - [ ] Test coverage vs. target (>80%)
 - [ ] Test execution time trends
 - [ ] Flakiness rate trends
@@ -173,6 +190,7 @@ npm run test:unit -- --coverage
 - [ ] New testing tools/frameworks
 
 **Update**:
+
 - Test strategy documents
 - Testing standards
 - Tool versions
@@ -183,12 +201,14 @@ npm run test:unit -- --coverage
 ### Quarter End: Deep Clean
 
 **Audit**:
+
 1. **Test relevance**: Are tests still valuable?
 2. **Test correctness**: Are tests testing the right thing?
 3. **Test efficiency**: Can tests be faster?
 4. **Test organization**: Is structure logical?
 
 **Actions**:
+
 - Remove obsolete tests (dead code)
 - Consolidate duplicate tests
 - Reorganize test files if needed
@@ -202,6 +222,7 @@ npm run test:unit -- --coverage
 ### Definition of Test Debt
 
 **Test debt includes**:
+
 - Skipped tests (`.skip()`)
 - Incomplete tests (`.todo()`)
 - Flaky tests (intermittent failures)
@@ -213,12 +234,14 @@ npm run test:unit -- --coverage
 ### Debt Reduction Plan
 
 #### Phase 1: Stop Adding Debt (Immediate)
+
 - [ ] Enforce test requirements in PR reviews
 - [ ] Add quality gates to prevent skipped tests
 - [ ] Require explanation for `.todo()` or `.skip()`
 - [ ] Set up flakiness monitoring
 
 #### Phase 2: Pay Down Existing Debt (1 month)
+
 - [ ] Fix top 10 flaky tests
 - [ ] Implement top 20 `.todo()` tests
 - [ ] Remove obsolete `.skip()` tests
@@ -226,6 +249,7 @@ npm run test:unit -- --coverage
 - [ ] Fill critical coverage gaps
 
 #### Phase 3: Prevent Future Debt (Ongoing)
+
 - [ ] Test-first development for new features
 - [ ] Regular test maintenance (weekly/monthly)
 - [ ] Continuous refactoring
@@ -237,6 +261,7 @@ npm run test:unit -- --coverage
 ## Test Maintenance Checklist
 
 ### Before Every PR
+
 - [ ] Run full test suite locally
 - [ ] Fix any broken tests
 - [ ] Add tests for new functionality
@@ -245,6 +270,7 @@ npm run test:unit -- --coverage
 - [ ] Check test execution time (no significant increase)
 
 ### During Code Review
+
 - [ ] Verify tests exist and are meaningful
 - [ ] Check test names are descriptive
 - [ ] Verify assertions are correct
@@ -253,6 +279,7 @@ npm run test:unit -- --coverage
 - [ ] Check for test duplication
 
 ### After PR Merged
+
 - [ ] Monitor CI for flakiness
 - [ ] Watch coverage reports
 - [ ] Address any issues immediately
@@ -269,14 +296,14 @@ name: Test Health Monitoring
 
 on:
   schedule:
-    - cron: '0 9 * * 1'  # Every Monday 9am
+    - cron: "0 9 * * 1" # Every Monday 9am
 
 jobs:
   test-health:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Count skipped tests
         run: |
           SKIPPED=$(grep -r "\.skip\|\.todo" tests/ | wc -l)
@@ -284,12 +311,12 @@ jobs:
           if [ "$SKIPPED" -gt 20 ]; then
             echo "⚠️ WARNING: Too many skipped tests"
           fi
-      
+
       - name: Check test execution time
         run: |
           DURATION=$(npm run test:unit --silent | grep "Duration" | awk '{print $2}')
           echo "Unit test duration: $DURATION"
-      
+
       - name: Generate test health report
         run: |
           echo "# Test Health Report" > test-health.md
@@ -304,11 +331,13 @@ jobs:
 ## Measuring Test Quality
 
 ### Mutation Testing (Planned - Task E)
+
 Ensures tests actually catch bugs by introducing mutations and verifying tests fail.
 
 ### Test Effectiveness Metrics
 
 **Track**:
+
 - Bugs caught by tests (before production)
 - Bugs missed by tests (found in production)
 - False positives (tests fail but code is correct)
@@ -316,6 +345,7 @@ Ensures tests actually catch bugs by introducing mutations and verifying tests f
 - Flakiness rate per test file
 
 **Formula**:
+
 ```
 Test Effectiveness = Bugs Caught / (Bugs Caught + Bugs Missed)
 Target: > 90%
@@ -330,6 +360,7 @@ Target: > 90%
 **Example**: Migrating from Jest to Vitest
 
 **Process**:
+
 1. **Phase 1**: Set up new framework alongside old (1 week)
 2. **Phase 2**: Migrate tests file by file (2 weeks)
    - Start with utilities (easy)
@@ -341,6 +372,7 @@ Target: > 90%
    - Update documentation
 
 **During migration**:
+
 - Keep both passing
 - Update CI to run both
 - Document migration progress
@@ -353,6 +385,7 @@ Target: > 90%
 ### Production Bug Found (P0)
 
 **Immediate Actions** (First Hour):
+
 1. Create P0 bug report
 2. Notify on-call engineer
 3. Reproduce in staging
@@ -360,6 +393,7 @@ Target: > 90%
 5. Assist engineer with fix
 
 **Fix Verification** (Next Hour):
+
 1. Verify test now passes
 2. Run full regression suite
 3. Deploy to staging
@@ -367,6 +401,7 @@ Target: > 90%
 5. Sign off for production
 
 **Post-Fix** (Within 24 Hours):
+
 1. Post-mortem: Why did bug reach production?
 2. Identify gaps in test coverage
 3. Add regression tests
@@ -380,6 +415,7 @@ Target: > 90%
 ### When to Delete a Test
 
 **Delete if**:
+
 - Feature was removed
 - Test duplicates existing coverage
 - Test never fails (not testing anything useful)
@@ -387,6 +423,7 @@ Target: > 90%
 - Test is obsolete (outdated assumptions)
 
 **Keep if**:
+
 - Tests critical business logic
 - Has caught bugs in the past
 - Tests security/compliance requirements
@@ -422,6 +459,7 @@ Documentation             10%       95%      9.5
 ```
 
 **Scoring**:
+
 - **90-100%**: Excellent - Keep it up
 - **80-89%**: Good - Some improvement needed
 - **70-79%**: Fair - Focused effort required
@@ -436,4 +474,3 @@ Documentation             10%       95%      9.5
 **Maintained by**: QA Team  
 **Last Updated**: 2025-10-11  
 **Next Review**: 2025-11-11
-

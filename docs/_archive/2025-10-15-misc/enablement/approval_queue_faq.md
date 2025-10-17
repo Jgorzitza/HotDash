@@ -50,10 +50,12 @@
 **A:** **Absolutely not.** The approval queue is designed to **enhance** your role, not replace it. Here's how:
 
 **Before Agent SDK:**
+
 - Spend 80% of time searching KB, copying policies, writing routine responses
 - Spend 20% of time on complex issues, building relationships
 
 **With Agent SDK:**
+
 - Spend 20% of time reviewing routine AI drafts
 - Spend 80% of time on complex issues, customer relationships, problem-solving
 
@@ -80,6 +82,7 @@
 **A:** Your metrics evolve to reflect your new decision-making role:
 
 **New Primary Metrics:**
+
 - **Approval Quality:** Accuracy of your approve/reject decisions
 - **Customer Satisfaction (CSAT):** Still #1 most important metric
 - **First Contact Resolution:** Issues resolved completely
@@ -87,6 +90,7 @@
 - **AI Teaching Effectiveness:** How well your edits improve the AI
 
 **Deprecated Metrics:**
+
 - Raw response volume (less relevant with AI assistance)
 - Time to first response (AI makes this faster automatically)
 
@@ -101,6 +105,7 @@
 **A:** The AI is generally very good, but not perfect. Here's what to expect:
 
 **Current Accuracy Rates (Based on Pilot Data):**
+
 - **High confidence (90-100%):** ~95% approval rate (usually accurate)
 - **Medium confidence (70-89%):** ~75% approval rate (often needs minor edits)
 - **Low confidence (<70%):** ~40% approval rate (frequently needs major work)
@@ -125,9 +130,10 @@
 5. **System learns** and improves for next time
 
 **Example:**
+
 ```
 Rejection Note:
-"AI stated refund policy is 14 days. Current policy is 30 days 
+"AI stated refund policy is 14 days. Current policy is 30 days
 (KB: Return Policy v2.1). AI may be referencing outdated version."
 ```
 
@@ -140,12 +146,14 @@ Rejection Note:
 **A:** Great question! The AI uses your decisions to improve through a learning loop:
 
 **What Gets Captured:**
+
 - **Approvals** → "This type of response works well"
 - **Edits** → "Operators prefer this phrasing/tone/structure"
 - **Rejections** → "This approach doesn't work"
 - **Escalations** → "These situations need human judgment"
 
 **How It Improves:**
+
 1. **Patterns Identified:** AI spots patterns in your decisions
 2. **Model Adjustment:** AI adjusts its response strategy
 3. **Next Iteration:** Future drafts incorporate your preferences
@@ -160,6 +168,7 @@ Rejection Note:
 **A:** Low confidence scores happen for several reasons:
 
 **Common Causes:**
+
 1. **Ambiguous Customer Question**
    - Example: "What about my order?" (Which order? What specifically?)
    - AI isn't sure what customer is asking
@@ -189,12 +198,14 @@ Rejection Note:
 **A:** **Partially, but not perfectly.** The AI can detect:
 
 **✅ AI Does Well:**
+
 - Basic sentiment (happy, frustrated, angry)
 - Urgency indicators (URGENT, ASAP, time pressure)
 - Politeness vs. rudeness
 - Formal vs. casual tone
 
 **⚠️ AI Struggles With:**
+
 - Sarcasm and irony
 - Cultural references or idioms
 - Subtle emotional nuances
@@ -203,6 +214,7 @@ Rejection Note:
 **Your Advantage:** You understand human communication better than AI ever will. This is why you're essential to the approval process.
 
 **Example Where You're Critical:**
+
 ```
 Customer: "Oh great, another delayed order. Just perfect."
 
@@ -219,6 +231,7 @@ You Recognize: Customer is upset, needs empathetic response
 **A:** Use the **5-Question Framework** from your training:
 
 **APPROVE** when:
+
 - ✅ All information is accurate
 - ✅ All questions are answered
 - ✅ Tone is appropriate
@@ -226,16 +239,19 @@ You Recognize: Customer is upset, needs empathetic response
 - ✅ No risk flags
 
 **EDIT & APPROVE** when:
+
 - ⚠️ Mostly good but needs minor improvements
 - Examples: Add greeting, adjust tone, add specificity
 
 **REJECT** when:
+
 - ❌ Factually incorrect
 - ❌ Misunderstands the question
 - ❌ Would confuse or upset customer
 - ❌ Contradicts policy
 
 **ESCALATE** when:
+
 - ⚠️ Requires special approval (policy exception, high value)
 - ⚠️ Technical issue beyond your scope
 - ⚠️ Angry customer with threats
@@ -250,6 +266,7 @@ You Recognize: Customer is upset, needs empathetic response
 **A:** This is an important question with a clear answer:
 
 **What To Do:**
+
 1. **Approve the response** according to current policy
 2. **Send the response** (don't let customer wait)
 3. **Document your concern:**
@@ -258,6 +275,7 @@ You Recognize: Customer is upset, needs empathetic response
    - Provide specific examples and reasoning
 
 **Why This Order:**
+
 - Customer shouldn't wait while policy is debated
 - Current policy must be applied consistently
 - Your feedback DOES matter and will be heard
@@ -273,15 +291,16 @@ Your job is to apply policy, but also to flag when policy causes problems. Both 
 
 **A:** Target times by confidence level:
 
-| Confidence | Target Time | What To Do |
-|-----------|-------------|------------|
-| **High (90-100%)** | 1-2 min | Quick review, usually approve |
-| **Medium (70-89%)** | 2-4 min | Careful review, often edit |
-| **Low (<70%)** | 5-10 min | Extra scrutiny, may reject/escalate |
+| Confidence          | Target Time | What To Do                          |
+| ------------------- | ----------- | ----------------------------------- |
+| **High (90-100%)**  | 1-2 min     | Quick review, usually approve       |
+| **Medium (70-89%)** | 2-4 min     | Careful review, often edit          |
+| **Low (<70%)**      | 5-10 min    | Extra scrutiny, may reject/escalate |
 
 **BUT:** These are targets, not hard rules.
 
 **Most Important Rule:** **Quality > Speed**
+
 - Take the time you need
 - Better to spend an extra 2 minutes than send a bad response
 - Customer satisfaction is more important than response time
@@ -295,17 +314,20 @@ Your job is to apply policy, but also to flag when policy causes problems. Both 
 **A:** Don't panic! Here's what to do:
 
 **If You Catch It Within ~10 Seconds:**
+
 1. Look for "Undo" option (if available in your version)
 2. If not available, proceed to next steps
 
 **If Response Already Sent:**
+
 1. **Assess the impact:**
    - Minor issue (typo, small error): Send follow-up correction in Chatwoot
    - Major issue (wrong info, wrong customer): Immediately send correction + notify manager
 
 2. **Send immediate correction** to customer:
+
    ```
-   "Hi [Name], I want to correct my previous message. 
+   "Hi [Name], I want to correct my previous message.
    [Accurate information]. I apologize for the confusion!"
    ```
 
@@ -328,6 +350,7 @@ Your job is to apply policy, but also to flag when policy causes problems. Both 
 **A:** Yes! You can filter and prioritize:
 
 **Available Filters:**
+
 - **By Agent** - See only Order Support Agent items, for example
 - **By Tool** - Filter by action type (send reply, update order, etc.)
 - **By Risk Level** - Show high-risk items first
@@ -335,6 +358,7 @@ Your job is to apply policy, but also to flag when policy causes problems. Both 
 - **By Conversation ID** - Search for specific customer
 
 **Recommended Setup:**
+
 - **Default:** Oldest first (fairest to customers)
 - **When catching up:** High-risk first (address critical issues)
 - **Learning mode:** Medium confidence (most learning opportunity)
@@ -350,21 +374,24 @@ Your job is to apply policy, but also to flag when policy causes problems. Both 
 **A:** Edit it! Tone adjustments are one of the most valuable edits you can make.
 
 **Too Formal → Add Warmth:**
+
 ```
 Before (AI): "We have received your inquiry regarding order status."
 After (You): "Thanks for reaching out! I've checked on your order."
 ```
 
 **Too Casual → Add Professionalism:**
+
 ```
 Before (AI): "Hey! So like, your thing shipped yesterday lol"
 After (You): "Hi! Good news - your order shipped yesterday."
 ```
 
 **Missing Empathy → Add It:**
+
 ```
 Before (AI): "Your refund will process in 5-7 business days."
-After (You): "I'm sorry this didn't work out. Your refund of $45.99 
+After (You): "I'm sorry this didn't work out. Your refund of $45.99
 will process in 5-7 business days."
 ```
 
@@ -377,17 +404,20 @@ will process in 5-7 business days."
 **A:** Knowledge Base (KB) sources are the articles the AI used to create the draft.
 
 **Why They Matter:**
+
 1. **Verification:** You can check if AI interpreted sources correctly
 2. **Version Control:** Ensure AI used current version, not outdated
 3. **Relevance:** See if sources actually match customer question
 4. **Confidence:** High relevance scores = more likely to be accurate
 
 **What To Check:**
+
 - **Version number:** Is it current?
 - **Relevance score:** >80% is good, <60% is concerning
 - **Content match:** Does source actually say what AI claims?
 
 **Example:**
+
 ```
 KB Sources:
 • Return Policy (v2.1) - 95% relevance ✅ Current, highly relevant
@@ -395,6 +425,7 @@ KB Sources:
 ```
 
 **When To Click Through:**
+
 - Low confidence scores (<70%)
 - Unfamiliar topic
 - Something feels off
@@ -407,9 +438,10 @@ KB Sources:
 **A:** This is a critical catch! Here's what to do:
 
 1. **Immediately Reject the Draft**
+
    ```
    Rejection Note:
-   "KB article cited is outdated. Return Policy v2.1 states 30 days, 
+   "KB article cited is outdated. Return Policy v2.1 states 30 days,
    but draft references 14 days from older version."
    ```
 
@@ -439,6 +471,7 @@ KB Sources:
 **A:** **Absolutely!** That's exactly what "Edit & Approve" is for.
 
 **Common Additions:**
+
 - **Empathy:** "I'm sorry this happened"
 - **Specificity:** Add dollar amounts, dates, names
 - **Proactive help:** "Would you also like me to..."
@@ -446,13 +479,14 @@ KB Sources:
 - **Clear next steps:** "Here's exactly what will happen next"
 
 **Example:**
+
 ```
 AI Draft:
 "Your order will arrive by Oct 15."
 
 Your Addition:
-"Hi Maria! Your order of the blue sweater (order #12345) will arrive 
-by Oct 15. I've also included a 10% off code for your next purchase 
+"Hi Maria! Your order of the blue sweater (order #12345) will arrive
+by Oct 15. I've also included a 10% off code for your next purchase
 as a thank you for your patience: THANKS10"
 ```
 
@@ -465,23 +499,26 @@ as a thank you for your patience: THANKS10"
 **A:** AI sometimes lacks full conversation context. Common causes:
 
 **Reasons:**
+
 1. **First message in conversation** - No history available
 2. **Customer context limited** - AI can't see customer's account details
 3. **Conversation handoff** - Different agent/operator handled previous message
 4. **System limitation** - AI analyzes individual message, not full thread
 
 **What To Do:**
+
 - **Edit to remove redundancy**
 - **Add acknowledgment:** "As you mentioned..."
 - **Focus on new information:** "Here's the update you asked for:"
 
 **Example Edit:**
+
 ```
 AI: "Hi John, thank you for your order #12345. Your order will arrive Tuesday."
 Customer Already Said: "My order #12345 still hasn't arrived."
 
-Better: "Hi John, I apologize your order #12345 hasn't arrived yet. 
-I've checked with shipping - it's arriving Tuesday. I'm adding 
+Better: "Hi John, I apologize your order #12345 hasn't arrived yet.
+I've checked with shipping - it's arriving Tuesday. I'm adding
 a 15% discount for the delay."
 ```
 
@@ -494,6 +531,7 @@ a 15% discount for the delay."
 **A:** Escalate in these situations (no exceptions):
 
 **ALWAYS ESCALATE:**
+
 - 💰 **High-value issues:** Refunds/credits >$100
 - 📜 **Policy exceptions:** Customer requests outside normal policy
 - 😠 **Threats:** Legal action, BBB, social media threats
@@ -502,6 +540,7 @@ a 15% discount for the delay."
 - ❓ **You're unsure:** When in doubt, escalate!
 
 **SLA Response Times:**
+
 - **Urgent** (threats, major technical issues): 15 minutes
 - **High** (high-value, angry customer): 2 hours
 - **Standard** (policy exception, guidance needed): 4 hours
@@ -517,16 +556,19 @@ a 15% discount for the delay."
 **Target Escalation Rate:** 10-15% of approvals
 
 **What This Means:**
+
 - If you escalate 5% → May be handling things you shouldn't (risk!)
 - If you escalate 10-15% → Perfect! You're using good judgment
 - If you escalate 25% → May need more training (that's okay!)
 
 **You Won't Get In Trouble For:**
+
 - Escalating when policy says to escalate
 - Escalating when you're unsure
 - Escalating high-risk situations
 
 **You WILL Get Coached If:**
+
 - You don't escalate required situations (high-value without approval)
 - You approve things outside your authority
 - You guess instead of escalating
@@ -540,28 +582,33 @@ a 15% discount for the delay."
 **A:** Here's the complete escalation flow:
 
 **1. You Click "Escalate"**
+
 - System immediately notifies appropriate person
 - Escalation removed from your queue
 - Timer starts for SLA tracking
 
 **2. Senior Support/Manager Receives:**
+
 - Full conversation history
 - Your escalation notes
 - KB articles AI reviewed
 - Suggested resolution (if you provided one)
 
 **3. They Take Action:**
+
 - Review within SLA timeframe (15 min to 4 hours)
 - Make decision or gather more information
 - Respond directly to customer OR
 - Send guidance back to you to execute
 
 **4. You're Notified:**
+
 - Escalation resolved notification
 - Outcome documented for learning
 - May receive coaching/feedback
 
 **5. System Learns:**
+
 - Escalation pattern tracked
 - Similar future cases may be flagged automatically
 - KB may be updated based on escalation insights
@@ -585,6 +632,7 @@ a 15% discount for the delay."
 | Need guidance | Senior Support |
 
 **If You Need Specific Person:**
+
 - Use Slack to directly message them
 - Tag them in escalation notes
 - For urgent issues, call (phone numbers in Slack profile)
@@ -598,6 +646,7 @@ a 15% discount for the delay."
 **A:** That's okay and actually part of the learning process!
 
 **What Happens:**
+
 1. Senior Support reviews your escalation
 2. They may:
    - **Handle it** (good escalation)
@@ -605,13 +654,14 @@ a 15% discount for the delay."
    - **Provide coaching** (how to handle similar cases next time)
 
 **Example Scenario:**
+
 ```
 You Escalate: "Customer wants to return item, says it's defective"
 
 Senior Support Response:
-"Good instinct to escalate! For future reference: defective items 
-can be processed as standard returns (no manager approval needed). 
-Just note 'defective' in return reason. I've handled this one, 
+"Good instinct to escalate! For future reference: defective items
+can be processed as standard returns (no manager approval needed).
+Just note 'defective' in return reason. I've handled this one,
 but you can handle similar cases directly next time."
 ```
 
@@ -628,21 +678,25 @@ but you can handle similar cases directly next time."
 **A:** This sometimes happens. Here's the troubleshooting flow:
 
 **1. Check If Agents Are Running:**
+
 - Are conversations active in Chatwoot?
 - Has it been >5 minutes since last activity?
 
 **2. Possible Causes:**
+
 - **Normal:** All current inquiries don't require approval (automated responses sent)
 - **System issue:** Agent service may be down
 - **Filter issue:** You might have filters active
 
 **3. What To Do:**
+
 - **Clear all filters** on approval queue
 - **Refresh the page** (hard refresh: Ctrl+Shift+R)
 - **Check Chatwoot directly** - handle conversations manually
 - **Report in #incidents Slack channel** if issue persists >10 minutes
 
 **4. Manual Mode:**
+
 - Switch to Chatwoot
 - Handle conversations normally
 - Use KB resources and templates
@@ -657,6 +711,7 @@ but you can handle similar cases directly next time."
 **A:** Several reasons this might happen:
 
 **Common Causes:**
+
 1. **Timeout/Expiration:**
    - Approval sat in queue too long
    - Default timeout: 30 minutes
@@ -677,6 +732,7 @@ but you can handle similar cases directly next time."
    - Proposals regenerated with latest data
 
 **What To Do:**
+
 - Check Chatwoot to see if response was sent
 - Look for newer proposal in queue
 - If nothing in queue and customer still waiting: handle manually
@@ -688,17 +744,20 @@ but you can handle similar cases directly next time."
 **A:** Currently, the approval queue is **desktop/laptop optimized only.**
 
 **Why:**
+
 - Complex decision-making requires full screen
 - KB article references easier on larger display
 - Editing responses is difficult on mobile
 - Quality control better on full interface
 
 **Mobile Use:**
+
 - You CAN view queue status
 - You CAN see pending count
 - You CANNOT approve/reject/edit from mobile
 
 **For Mobile Support:**
+
 - Use Chatwoot mobile app
 - Handle conversations directly
 - Approvals wait until you're on desktop
@@ -712,22 +771,26 @@ but you can handle similar cases directly next time."
 **A:** The system has some protections, but here's what to do:
 
 **If Connection Lost BEFORE Clicking Approve:**
+
 - Draft remains in queue
 - Another operator may claim it after timeout
 - Reconnect and review again (may be gone)
 
 **If Connection Lost DURING Approve Click:**
+
 - System attempts to complete action
 - Usually succeeds (action sent before connection lost)
 - Check Chatwoot to verify response was sent
 - If not sent: Item returns to queue or handle manually
 
 **Best Practices:**
+
 - Save complex edits frequently (if feature available)
 - Don't start approval if connection is unstable
 - Use wired connection when possible for stability
 
 **If You Experience Frequent Connection Issues:**
+
 - Report to IT via #tech-support
 - May need network troubleshooting
 
@@ -738,6 +801,7 @@ but you can handle similar cases directly next time."
 **A:** Clear reporting process:
 
 **For Urgent Issues (System Down, Can't Work):**
+
 1. **Slack: #incidents** channel
 2. Include:
    - What happened
@@ -747,6 +811,7 @@ but you can handle similar cases directly next time."
 3. Tag @engineering
 
 **For Non-Urgent Issues (Annoying But Workable):**
+
 1. **Slack: #occ-enablement** channel
 2. Describe issue with:
    - What you expected to happen
@@ -755,6 +820,7 @@ but you can handle similar cases directly next time."
    - Screenshot if helpful
 
 **For Feature Requests / Improvements:**
+
 1. **Slack: #product-feedback** channel
 2. Describe:
    - What you'd like to improve
@@ -772,14 +838,17 @@ but you can handle similar cases directly next time."
 **A:** Actually, you'll likely get MORE meaningful customer interaction time!
 
 **Time Shift:**
+
 - **Less time on:** Searching KB, writing routine responses, copy-pasting policies
 - **More time on:** Complex issues, building relationships, problem-solving
 
 **Quality of Interactions:**
+
 - **Before:** Many quick, transactional responses
 - **After:** Fewer but deeper, more valuable interactions
 
 **Example Day:**
+
 - **Before:** Handle 30 conversations, all straightforward
 - **After:** Approve 40 AI responses (1 hour), deeply handle 10 complex issues (6 hours)
 
@@ -794,6 +863,7 @@ but you can handle similar cases directly next time."
 **Short Answer:** You can still write manually, but try the approval queue too.
 
 **Hybrid Approach:**
+
 1. **Use approval queue for straightforward items**
    - Order status, tracking, simple policy questions
    - Builds your confidence with AI assistance
@@ -804,6 +874,7 @@ but you can handle similar cases directly next time."
    - Cases where you have specific customer relationship history
 
 **Over Time:**
+
 - Most operators find approval queue becomes preferred for routine items
 - Frees up energy for cases where you add the most value
 - But manual option always available
@@ -817,16 +888,19 @@ but you can handle similar cases directly next time."
 **A:** Response time metrics evolve with AI assistance:
 
 **New Reality:**
+
 - **AI First Response:** Often instant (seconds)
 - **Your Approval Time:** 1-3 minutes
 - **Total Time to Customer:** Still very fast
 
 **Metric Changes:**
+
 - **"Time to First Response"** less important (AI makes this instant)
 - **"Time to Resolution"** more important (did we solve the problem?)
 - **"Approval Decision Time"** new metric (how quickly you review)
 
 **Your Performance:**
+
 - Quality of decisions > Speed of decisions
 - Customer satisfaction remains #1 metric
 - First contact resolution emphasized
@@ -840,17 +914,20 @@ but you can handle similar cases directly next time."
 **A:** Yes! And they work great together with the approval queue:
 
 **Using Templates With AI:**
+
 1. **AI generates first draft** using KB
 2. **You review and recognize** "This needs personal touch"
 3. **You edit or replace** with your template
 4. **AI learns** your template is preferred for this situation
 
 **Best Of Both Worlds:**
+
 - AI handles research and basic structure
 - Your templates add personality and proven phrasing
 - Over time, AI may incorporate template elements
 
 **Template Sharing:**
+
 - Share effective templates in weekly meetings
 - High-performing templates may be added to KB
 - System learns from collective team wisdom
@@ -864,17 +941,20 @@ but you can handle similar cases directly next time."
 **A:** **No changes to schedule or shift structure planned.**
 
 **What Stays The Same:**
+
 - Your shift times
 - Break schedules
 - Team composition
 - Reporting structure
 
 **What May Change:**
+
 - Type of work you do during shift (more reviewing, less writing)
 - Mix of conversations (more complex, fewer routine)
 - Workflow patterns (queue + Chatwoot instead of just Chatwoot)
 
 **Flexibility:**
+
 - If approval queue volume is low, handle Chatwoot directly
 - If queue volume is high, focus on approvals
 - Always adapt to business needs
@@ -890,24 +970,28 @@ but you can handle similar cases directly next time."
 **A:** Comprehensive training program:
 
 **Phase 1: Onboarding (Week 1)**
+
 - Complete 4 Loom training modules (18m 25s total)
 - Read training documentation
 - Review this FAQ
 - Complete practice exercises
 
 **Phase 2: Supervised Practice (Week 2)**
+
 - Shadow experienced operator (2-4 hours)
 - Review real approvals with supervisor
 - Handle 10-20 supervised approvals
 - Get feedback and coaching
 
 **Phase 3: Independent with Support (Week 3)**
+
 - Handle approvals independently
 - Senior support available for questions
 - Daily check-ins with mentor
 - Gradual increase in complexity
 
 **Phase 4: Fully Independent (Week 4+)**
+
 - Operate independently
 - Escalate as needed
 - Weekly team knowledge sharing
@@ -922,17 +1006,20 @@ but you can handle similar cases directly next time."
 **A:** Multiple support resources:
 
 **During Training:**
+
 - **Your Assigned Mentor:** Primary contact
 - **Training Facilitator:** For training content questions
 - **Slack #occ-enablement:** General questions
 
 **During Your Shift:**
+
 - **Slack #support-questions:** Quick operational questions
 - **Senior Support:** Escalations and complex decisions
 - **Your Manager:** Policy interpretations, performance feedback
 - **Engineering (via Slack):** Technical issues
 
 **Resources:**
+
 - This FAQ document
 - Full training module
 - Quick start guide
@@ -947,18 +1034,21 @@ but you can handle similar cases directly next time."
 **A:** That's completely normal! Here's the support plan:
 
 **If You Need More Time:**
+
 1. **Talk to your manager** - More supervised practice available
 2. **Extended mentorship** - Work alongside experienced operator
 3. **Gradual ramp-up** - Start with high-confidence items only
 4. **Additional training** - One-on-one coaching sessions
 
 **Common Concerns:**
+
 - "What if I approve something wrong?" → Quality team reviews, mistakes are learning opportunities
 - "It feels faster to write myself" → Speed comes with practice, try hybrid approach
 - "I don't trust the AI" → Trust but verify, you're the quality gate
 - "It's overwhelming" → Start small, build confidence gradually
 
 **Timeline Flexibility:**
+
 - No fixed deadline to be "fully proficient"
 - Progress at your own pace
 - Support available as long as you need
@@ -972,6 +1062,7 @@ but you can handle similar cases directly next time."
 **A:** Yes! Continuous learning is built into the program:
 
 **Regular Training:**
+
 - **Weekly Team Knowledge Sharing:** 30 minutes every Friday
   - Review interesting/complex approvals
   - Share best practices
@@ -983,18 +1074,20 @@ but you can handle similar cases directly next time."
   - Policy updates
   - Customer psychology
 
-- **Quarterly Refreshers:** 
+- **Quarterly Refreshers:**
   - Review fundamentals
   - Update on system improvements
   - Celebrate successes
 
 **Ad-Hoc Training:**
+
 - When new features launch
 - When policies change
 - When new agent capabilities added
 - When system behavior changes significantly
 
 **Self-Directed Learning:**
+
 - Updated documentation always available
 - Recorded training sessions in library
 - Practice scenarios you can review anytime
@@ -1008,11 +1101,13 @@ but you can handle similar cases directly next time."
 **A:** We WANT your feedback! Multiple channels:
 
 **Immediate Feedback:**
+
 - **Slack #occ-enablement:** Suggestions and questions
 - **Slack #product-feedback:** Feature requests
 - **Your Manager:** In 1:1 meetings
 
 **Structured Feedback:**
+
 - **Weekly Team Meetings:** Dedicated feedback time
 - **Monthly Surveys:** Operator experience surveys
 - **Quarterly Reviews:** System effectiveness assessments
@@ -1020,16 +1115,19 @@ but you can handle similar cases directly next time."
 **Specific Feedback Types:**
 
 **Training Improvements:**
+
 - What was confusing in training?
 - What examples would be helpful?
 - What's missing from documentation?
 
 **System Improvements:**
+
 - What slows you down?
 - What features would help?
 - What's frustrating or confusing?
 
 **Process Improvements:**
+
 - What workflows feel clunky?
 - What policies need clarification?
 - What escalation procedures need adjustment?
@@ -1077,6 +1175,7 @@ Mentor, senior support, managers, #support-questions Slack, and this FAQ!
 **This FAQ Is Living Document:** We'll add questions as they come up.
 
 **Ask Your Question:**
+
 - **Slack:** #occ-enablement
 - **Email:** customer.support@hotrodan.com
 - **Your Manager:** In 1:1 meetings
@@ -1084,6 +1183,7 @@ Mentor, senior support, managers, #support-questions Slack, and this FAQ!
 
 **Suggest FAQ Additions:**
 If you think a question should be added to this FAQ, message the Enablement team with:
+
 - The question
 - Why it's important
 - Suggested answer (optional)
@@ -1096,9 +1196,9 @@ If you think a question should be added to this FAQ, message the Enablement team
 **Next Review:** 2025-12-11 (quarterly)
 
 **Related Documents:**
+
 - [Agent SDK Operator Training Module](./agent_sdk_operator_training_module.md) - Complete training guide
 - [Approval Queue Quick Start Guide](./approval_queue_quick_start.md) - One-page reference
 - [Operator Training QA Template](../runbooks/operator_training_qa_template.md) - Comprehensive operational guide
 
 **Feedback Welcome:** Help us improve this FAQ for all operators!
-

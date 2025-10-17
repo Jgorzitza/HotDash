@@ -25,7 +25,9 @@ const conversations: EscalationConversation[] = [
 
 describe("CXEscalationsTile", () => {
   it("renders list without modal trigger when disabled", () => {
-    render(<CXEscalationsTile conversations={conversations} enableModal={false} />);
+    render(
+      <CXEscalationsTile conversations={conversations} enableModal={false} />,
+    );
 
     expect(screen.getByText(/Jamie Lee/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /review/i })).toBeNull();

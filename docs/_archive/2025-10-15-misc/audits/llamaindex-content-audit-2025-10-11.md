@@ -22,6 +22,7 @@ expires: 2025-10-25
 The HotDash documentation provides strong coverage of operational procedures, integrations, and security policies. However, there are gaps in customer-facing content (shipping policies, return procedures, product specifications) that are critical for Agent SDK support automation.
 
 **Key Findings:**
+
 - ✅ 26 runbooks (excellent operational coverage)
 - ✅ 8 job aids (good training material)
 - ✅ 12 integration guides
@@ -42,6 +43,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Location:** `docs/runbooks/`
 
 **Strengths:**
+
 - Comprehensive operational procedures
 - Agent SDK deployment and monitoring guides
 - Incident response procedures
@@ -50,6 +52,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - Operator training materials
 
 **Notable Files:**
+
 - `cx_escalations.md` - Customer escalation procedures ✅
 - `support_gold_replies.md` - Curated reply templates ✅
 - `operator_training_qa_template.md` - Training Q&A ✅
@@ -68,11 +71,13 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Location:** `docs/enablement/job_aids/`
 
 **Strengths:**
+
 - AI-generated training samples for modals
 - Operator coaching materials
 - Rate limit guidance
 
 **Notable Files:**
+
 - `cx_escalations_modal.md` - CX escalation UI guidance ✅
 - `sales_pulse_modal.md` - Sales dashboard guidance ✅
 - `shopify_sync_rate_limit_coaching.md` - Rate limit troubleshooting ✅
@@ -81,12 +86,14 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Coverage Rating:** ⭐⭐⭐⭐☆ (4/5) - Good
 
 **Gaps:**
+
 - Missing: Return/refund procedure job aids
 - Missing: Order status lookup procedures
 - Missing: Product question handling
 - Missing: Shipping delay communication templates
 
 **Recommendations:**
+
 1. Add `order_status_lookup.md` job aid
 2. Add `returns_and_refunds.md` procedure guide
 3. Add `product_qa_handling.md` training material
@@ -98,11 +105,13 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Location:** `docs/integrations/`
 
 **Strengths:**
+
 - Agent SDK integration plans
 - Webhook configuration examples
 - Conversation flow testing
 
 **Notable Files:**
+
 - `agent_sdk_integration_plan.md` ✅
 - `conversation_flow_testing.md` ✅
 - `webhook_payload_examples.md` ✅
@@ -110,6 +119,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Coverage Rating:** ⭐⭐⭐⭐☆ (4/5) - Good for technical integration
 
 **Gaps:**
+
 - Missing: Customer-facing API documentation
 - Missing: Public API usage examples
 - Missing: Integration troubleshooting for customers
@@ -121,6 +131,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Location:** `docs/compliance/`, `docs/policies/`, `docs/security/`
 
 **Strengths:**
+
 - Comprehensive compliance documentation
 - Security policies and procedures
 - Incident response templates
@@ -139,6 +150,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Missing Categories:**
 
 #### Shipping & Fulfillment
+
 - ❌ Shipping policy document
 - ❌ Delivery timeline expectations
 - ❌ International shipping information
@@ -146,6 +158,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - ❌ Shipping delay procedures
 
 #### Returns & Refunds
+
 - ❌ Return policy (30-day window mentioned in eval dataset but no source doc)
 - ❌ Return process step-by-step
 - ❌ Refund timeline expectations
@@ -153,6 +166,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - ❌ Damaged/defective item handling
 
 #### Product Information
+
 - ❌ Product specification sheets
 - ❌ Product comparison guides
 - ❌ Warranty information
@@ -160,6 +174,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - ❌ Compatibility information
 
 #### Order Management
+
 - ❌ Order modification procedures
 - ❌ Order cancellation policy
 - ❌ Payment methods accepted
@@ -167,6 +182,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - ❌ Backorder information
 
 #### Account & Technical
+
 - ❌ Account creation FAQ
 - ❌ Password reset procedures
 - ❌ Email notification settings
@@ -186,6 +202,7 @@ The HotDash documentation provides strong coverage of operational procedures, in
 **Status:** ⏳ Pending - Sitemap loader implemented but not yet executed
 
 **Expected Content:**
+
 - Blog posts
 - Pricing pages
 - Feature documentation
@@ -193,12 +210,14 @@ The HotDash documentation provides strong coverage of operational procedures, in
 - Company information
 
 **Action Required:**
+
 1. Run initial sitemap crawl
 2. Verify content quality
 3. Check for duplicate/low-value pages
 4. Validate robots.txt compliance
 
 **Command:**
+
 ```bash
 npm --prefix scripts/ai/llama-workflow run refresh -- --sources web
 ```
@@ -210,17 +229,20 @@ npm --prefix scripts/ai/llama-workflow run refresh -- --sources web
 **Status:** ⏳ Pending - Loader implemented but table may not exist
 
 **Expected Content:**
+
 - Operator decision history
 - Escalation records
 - Policy application examples
 
 **Action Required:**
+
 1. Verify `decision_log` table exists
 2. Check data volume and quality
 3. Validate PII sanitization
 4. Review date range coverage
 
 **Command:**
+
 ```bash
 npx supabase db inspect --table decision_log
 ```
@@ -232,11 +254,13 @@ npx supabase db inspect --table decision_log
 **Status:** ⏳ Pending - Loader implemented but table may not exist
 
 **Expected Content:**
+
 - Support team approved responses
 - Template variations
 - Best practice examples
 
 **Action Required:**
+
 1. Verify `support_curated_replies` table exists
 2. Check if Support team has populated content
 3. Review reply quality and coverage
@@ -251,21 +275,25 @@ npx supabase db inspect --table decision_log
 ### Strengths
 
 ✅ **Operational Excellence**
+
 - 26 comprehensive runbooks
 - Clear incident response procedures
 - Agent deployment guides complete
 
 ✅ **Compliance & Security**
+
 - 52 compliance documents
 - Security policies well-documented
 - Risk management procedures defined
 
 ✅ **Training Materials**
+
 - 8 job aids for operator training
 - AI-generated training samples
 - Modal-specific guidance
 
 ✅ **Integration Documentation**
+
 - Agent SDK integration plans
 - Webhook payload examples
 - Conversation flow testing
@@ -273,17 +301,20 @@ npx supabase db inspect --table decision_log
 ### Weaknesses
 
 ❌ **Customer-Facing Content**
+
 - No shipping policy documents
 - No return/refund procedures
 - No product FAQ content
 - No troubleshooting guides for common issues
 
 ❌ **Support Response Templates**
+
 - Limited template library
 - No branded voice guidelines
 - No A/B tested response variations
 
 ❌ **Knowledge Base Organization**
+
 - No centralized FAQ index
 - No topic categorization
 - No search optimization metadata
@@ -340,6 +371,7 @@ npx supabase db inspect --table decision_log
 ### Immediate Actions (This Week)
 
 **1. Create Customer Support Documentation Structure**
+
 ```bash
 mkdir -p docs/customer-support/{policies,faq,troubleshooting}
 ```
@@ -347,11 +379,13 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting}
 **2. Populate Critical Policy Documents (P0)**
 
 Create these files:
+
 - `docs/customer-support/policies/shipping.md`
 - `docs/customer-support/policies/returns-refunds.md`
 - `docs/customer-support/policies/warranty.md`
 
 **Minimum Content per File:**
+
 - Clear policy statement
 - Step-by-step procedures
 - Timeline expectations
@@ -361,13 +395,16 @@ Create these files:
 **3. Create FAQ Documents (P1)**
 
 Create these files:
+
 - `docs/customer-support/faq/order-management.md`
 - `docs/customer-support/faq/product-questions.md`
 - `docs/customer-support/faq/account-login.md`
 
 **Format:**
+
 ```markdown
 ## [Question]
+
 **Answer:** [Clear, concise answer]
 **Related:** [Links to policies/procedures]
 **Updated:** [Date]
@@ -376,6 +413,7 @@ Create these files:
 **4. Coordinate with Support Team**
 
 **@support - Content Requests:**
+
 1. Populate `support_curated_replies` table in Supabase
 2. Review and approve shipping/return policy drafts
 3. Provide top 20 most common customer questions
@@ -390,15 +428,18 @@ Create these files:
 **Status:** ⏳ Unknown - Need to verify table exists
 
 **Check Command:**
+
 ```bash
 npx supabase db inspect --table decision_log
 ```
 
 **Expected Columns:**
+
 - id, created_at, operator_id, conversation_id
 - decision_type, context, resolution, metadata
 
 **Quality Checks:**
+
 - [ ] Table exists and accessible
 - [ ] Has data from last 30 days
 - [ ] PII properly sanitized
@@ -411,15 +452,18 @@ npx supabase db inspect --table decision_log
 **Status:** ⏳ Unknown - Need to verify table exists
 
 **Check Command:**
+
 ```bash
 npx supabase db inspect --table telemetry_events
 ```
 
 **Expected Columns:**
+
 - id, created_at, event_type, user_id
 - metadata, severity, resolution_time
 
 **Quality Checks:**
+
 - [ ] Table exists and accessible
 - [ ] Event types properly categorized
 - [ ] Timestamps accurate
@@ -432,6 +476,7 @@ npx supabase db inspect --table telemetry_events
 **Status:** ⏳ Unknown - Need Support team confirmation
 
 **Expected Schema:**
+
 ```sql
 CREATE TABLE support_curated_replies (
   id BIGSERIAL PRIMARY KEY,
@@ -446,6 +491,7 @@ CREATE TABLE support_curated_replies (
 ```
 
 **Quality Checks:**
+
 - [ ] Table exists (coordinate with @support)
 - [ ] Has 20+ approved replies
 - [ ] Tags properly applied
@@ -459,25 +505,25 @@ CREATE TABLE support_curated_replies (
 
 ### Current State
 
-| Category | Files | Quality | Gaps | Priority |
-|----------|-------|---------|------|----------|
-| Runbooks | 26 | ⭐⭐⭐⭐⭐ | None | - |
-| Job Aids | 8 | ⭐⭐⭐⭐☆ | Minor | P1 |
-| Integrations | 12 | ⭐⭐⭐⭐☆ | Minor | P2 |
-| Compliance | 52 | ⭐⭐⭐⭐⭐ | None | - |
-| Customer FAQ | 0 | ❌ | **Critical** | **P0** |
-| Product Docs | 0 | ❌ | **Critical** | **P0** |
-| Policies (customer) | 0 | ❌ | **Critical** | **P0** |
+| Category            | Files | Quality    | Gaps         | Priority |
+| ------------------- | ----- | ---------- | ------------ | -------- |
+| Runbooks            | 26    | ⭐⭐⭐⭐⭐ | None         | -        |
+| Job Aids            | 8     | ⭐⭐⭐⭐☆  | Minor        | P1       |
+| Integrations        | 12    | ⭐⭐⭐⭐☆  | Minor        | P2       |
+| Compliance          | 52    | ⭐⭐⭐⭐⭐ | None         | -        |
+| Customer FAQ        | 0     | ❌         | **Critical** | **P0**   |
+| Product Docs        | 0     | ❌         | **Critical** | **P0**   |
+| Policies (customer) | 0     | ❌         | **Critical** | **P0**   |
 
 ### Target State (For Agent SDK Production)
 
-| Category | Target Files | Current | Gap | Action |
-|----------|--------------|---------|-----|--------|
-| Customer Policies | 5 | 0 | -5 | Create P0 |
-| Customer FAQ | 10 | 0 | -10 | Create P0 |
-| Product Guides | 5 | 0 | -5 | Create P1 |
-| Troubleshooting | 8 | 1 | -7 | Create P1 |
-| Templates | 15 | 0 | -15 | Create (Task B) |
+| Category          | Target Files | Current | Gap | Action          |
+| ----------------- | ------------ | ------- | --- | --------------- |
+| Customer Policies | 5            | 0       | -5  | Create P0       |
+| Customer FAQ      | 10           | 0       | -10 | Create P0       |
+| Product Guides    | 5            | 0       | -5  | Create P1       |
+| Troubleshooting   | 8            | 1       | -7  | Create P1       |
+| Templates         | 15           | 0       | -15 | Create (Task B) |
 
 ---
 
@@ -486,11 +532,13 @@ CREATE TABLE support_curated_replies (
 ### Priority 0 (Before Agent SDK Production)
 
 **1. Create Customer Support Documentation Directory**
+
 ```bash
 mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 ```
 
 **2. Essential Policy Documents (5 files minimum)**
+
 - `policies/shipping.md` - Delivery timelines, tracking, international
 - `policies/returns-refunds.md` - 30-day policy, process, exclusions
 - `policies/warranty.md` - Coverage, claims, duration
@@ -498,6 +546,7 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 - `policies/payment-security.md` - Payment methods, security
 
 **3. Core FAQ Documents (10 files minimum)**
+
 - `faq/order-status.md` - Where is my order, tracking, updates
 - `faq/order-changes.md` - Modify/cancel before shipping
 - `faq/returns.md` - How to return, timeline, refund process
@@ -510,6 +559,7 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 - `faq/contact-us.md` - Support channels, hours, response times
 
 **4. Coordinate with Support Team**
+
 - Request top 50 customer questions from Chatwoot analytics
 - Get approved response content for common scenarios
 - Populate `support_curated_replies` Supabase table
@@ -517,18 +567,21 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 ### Priority 1 (Week 2-3)
 
 **5. Product Documentation**
+
 - Product specification sheets
 - Care instructions
 - Compatibility guides
 - Size/fit guides
 
 **6. Expanded Troubleshooting**
+
 - Common error messages
 - Browser compatibility issues
 - Payment failures
 - Account access problems
 
 **7. Template Enhancement**
+
 - Response templates (covered in Task B)
 - Email templates
 - Escalation templates
@@ -536,12 +589,14 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 ### Priority 2 (Month 2)
 
 **8. Brand Voice Guidelines**
+
 - Tone and style guide
 - Prohibited phrases
 - Empathy statements
 - Professional standards
 
 **9. Agent Training Corpus**
+
 - Successful interaction examples
 - Edge case handling
 - Quality scoring rubrics
@@ -553,6 +608,7 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 ### Optimize for Agent SDK Use Cases
 
 **Top 10 Agent SDK Query Categories** (from eval dataset analysis):
+
 1. Order status inquiries (20% of queries)
 2. Return/refund requests (18%)
 3. Shipping timeline questions (15%)
@@ -565,6 +621,7 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 10. Other (2%)
 
 **Content Priority Mapping:**
+
 - Categories 1-4: P0 (60% of queries)
 - Categories 5-7: P1 (25% of queries)
 - Categories 8-10: P2 (10% of queries)
@@ -576,6 +633,7 @@ mkdir -p docs/customer-support/{policies,faq,troubleshooting,product-guides}
 ### Current State (Not Yet Built)
 
 **Index Status:** No production index exists yet
+
 - Location checked: `packages/memory/logs/build/indexes/` (empty)
 - First build pending
 
@@ -588,21 +646,21 @@ npm --prefix scripts/ai/llama-workflow run refresh -- --sources all --full
 ```
 
 **Source Weighting:**
+
 1. **High Priority** (frequent queries):
    - Customer policies (when created)
    - FAQs (when created)
    - Support curated replies
-   
 2. **Medium Priority** (operational queries):
    - Runbooks (existing)
    - Job aids (existing)
    - Integration docs (existing)
-   
 3. **Low Priority** (rare queries):
    - Compliance docs (existing)
    - Security policies (existing)
 
 **Chunking Strategy:**
+
 - Policy docs: 512 tokens (preserve context)
 - FAQs: 256 tokens (quick retrieval)
 - Runbooks: 1024 tokens (detailed procedures)
@@ -623,6 +681,7 @@ npm --prefix scripts/ai/llama-workflow run refresh -- --sources all --full
 ### For Support Agent
 
 **@support - Content Request:**
+
 1. Top 50 customer questions from Chatwoot analytics
 2. Approved response content for common scenarios
 3. Populate `support_curated_replies` table
@@ -640,18 +699,21 @@ npm --prefix scripts/ai/llama-workflow run refresh -- --sources all --full
 ## Next Steps
 
 **Immediate** (This Session):
+
 1. ✅ Content audit complete
 2. Move to Task B: Create response template library
 3. Move to Task C: Training data quality analysis
 4. Move to Task D: Agent SDK integration documentation
 
 **This Week:**
+
 1. Create customer support docs structure
 2. Draft P0 policy documents
 3. Coordinate with Support for curated replies
 4. Build first production index
 
 **Week 2:**
+
 1. Support team populates curated replies
 2. Add P1 FAQ content
 3. Validate index quality with eval suite
@@ -663,4 +725,3 @@ npm --prefix scripts/ai/llama-workflow run refresh -- --sources all --full
 **Critical Findings:** 5 P0 content gaps identified  
 **Action Required:** Create customer support documentation before Agent SDK production  
 **Coordination:** Support team content request posted
-

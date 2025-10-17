@@ -6,12 +6,15 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Enablement Distribution Packet — Staging Ready (Hold for QA Evidence + RR7 Testing)
 
 ## Distribution Clearance Gates
+
 **Status:** ⏳ **HOLD** - Distribution blocked pending QA evidence and React Router 7 + Shopify CLI v3 validation
 
 ### Required Evidence (Update Before Send)
+
 - [ ] **QA Evidence:** `?mock=0` sustained HTTP 200 response logged at `artifacts/integrations/shopify/<date>/curl_mock0_<timestamp>.log`
 - [ ] **Synthetic Check:** Sub-300ms latency confirmed with JSON artifact at `artifacts/monitoring/synthetic-check-<timestamp>.json`
 - [ ] **Development Workflow:** Shopify CLI v3 `shopify app dev` and routing validation per updated development standards
@@ -71,17 +74,20 @@ Enablement Team
 ## Stakeholder Distribution Checklist
 
 ### Primary Recipients
+
 - [ ] **Support Lead (Morgan Patel):** Email notification + training packet link
 - [ ] **Product (Riley Chen):** Training agenda confirmation + evidence package
 - [ ] **QA Lead:** Updated scenarios + React Router 7 + Shopify CLI v3 workflow validation
 - [ ] **Reliability:** Development workflow review + synthetic check coordination
 
 ### Secondary Notifications
+
 - [ ] **Design:** Updated job aids with architecture callouts for screenshot annotation
 - [ ] **Marketing:** Training packet readiness for launch coordination
 - [ ] **Manager:** Sprint deliverable status + rehearsal readiness confirmation
 
 ### Distribution Channels
+
 - [ ] **Email:** occ-training-updates@hotrodan.com (primary announcement)
 - [ ] **Slack:** #occ-enablement (link + key highlights)
 - [ ] **Documentation:** Link in `feedback/enablement.md` with timestamp and recipient confirmations
@@ -92,26 +98,32 @@ Enablement Team
 ## React Router 7 + Shopify CLI v3 Workflow - Training Integration
 
 ### Operator Development Quick Reference
+
 **Issue:** Modal navigation fails or shows routing errors
 
 **Steps:**
+
 1. **Verify Development Setup:** Confirm local development using `shopify app dev` command
 2. **Check Router Configuration:** Modal navigation handled by React Router 7 routing patterns - verify route definitions
 3. **Development Validation:** If routing persists, escalate to `customer.support@hotrodan.com` with screenshot
 4. **Fallback Path:** Restart development server with `shopify app dev --reset` and verify modal routes
 
 ### Training Scenario Updates
+
 **CX Escalations Modal:**
+
 - Pre-flight checklist now includes React Router 7 route validation steps
 - Error handling section updated with routing troubleshooting procedures
 - Support escalation path clarified for development workflow scenarios
 
 **Sales Pulse Modal:**
+
 - Cross-modal navigation flow documented using React Router 7 patterns
 - Shopify CLI v3 deployment procedures added to training workflow
 - Evidence capture updated to include development environment validation
 
 ### Documentation Cross-References
+
 - **Shopify CLI v3 Workflow:** `docs/dev/shopify_cli_setup.md` - for development environment setup
 - **React Router 7 Patterns:** `docs/dev/routing.md` - for technical deep-dive during training
 - **Modal Navigation:** App router configuration - for advanced development scenarios
@@ -121,12 +133,14 @@ Enablement Team
 ## Evidence Attachment Protocol
 
 ### Pre-Distribution Validation
+
 1. **Curl Log Verification:** Confirm `?mock=0` returns consistent HTTP 200 with <300ms response time
 2. **Synthetic Check JSON:** Validate monitoring data shows sustained performance under load
 3. **Supabase Export:** Verify decision log export contains expected training scenario data
 4. **Development Workflow Test:** Confirm Shopify CLI v3 development setup and React Router 7 navigation work correctly
 
 ### Artifact Organization
+
 ```
 artifacts/enablement/distribution_2025-10-16/
 ├── evidence/
@@ -142,6 +156,7 @@ artifacts/enablement/distribution_2025-10-16/
 ```
 
 ### Post-Distribution Actions
+
 - [ ] Log all recipient acknowledgements in `feedback/enablement.md`
 - [ ] Archive evidence bundle with timestamps for compliance audit trail
 - [ ] Update training agenda with final participant list and confirmed dependencies
@@ -151,13 +166,13 @@ artifacts/enablement/distribution_2025-10-16/
 
 ## Acknowledgement Tracker
 
-| Stakeholder | Role | Packet Sent (UTC) | Evidence Reviewed | Acknowledged (UTC) | Blocker/Questions |
-|-------------|------|-------------------|-------------------|--------------------|-------------------|
-| Morgan Patel | Support Lead | <PENDING> | <PENDING> | <PENDING> | |
-| Riley Chen | Product | <PENDING> | <PENDING> | <PENDING> | |
-| QA Lead | Quality Assurance | <PENDING> | <PENDING> | <PENDING> | |
-| Reliability Liaison | Infrastructure | <PENDING> | <PENDING> | <PENDING> | |
-| Design Partner | Visual Assets | <PENDING> | <PENDING> | <PENDING> | |
+| Stakeholder         | Role              | Packet Sent (UTC) | Evidence Reviewed | Acknowledged (UTC) | Blocker/Questions |
+| ------------------- | ----------------- | ----------------- | ----------------- | ------------------ | ----------------- |
+| Morgan Patel        | Support Lead      | <PENDING>         | <PENDING>         | <PENDING>          |                   |
+| Riley Chen          | Product           | <PENDING>         | <PENDING>         | <PENDING>          |                   |
+| QA Lead             | Quality Assurance | <PENDING>         | <PENDING>         | <PENDING>          |                   |
+| Reliability Liaison | Infrastructure    | <PENDING>         | <PENDING>         | <PENDING>          |                   |
+| Design Partner      | Visual Assets     | <PENDING>         | <PENDING>         | <PENDING>          |                   |
 
 **Completion Criteria:** All stakeholders confirm ✅ and no blockers remain for 2025-10-16 rehearsal execution.
 
@@ -166,6 +181,7 @@ artifacts/enablement/distribution_2025-10-16/
 ## Distribution Execution Script
 
 ### When Evidence Gates Clear:
+
 ```bash
 # 1. Replace placeholders with actual evidence paths
 sed -i 's/<PLACEHOLDER - //' docs/enablement/distribution_packet_staging.md

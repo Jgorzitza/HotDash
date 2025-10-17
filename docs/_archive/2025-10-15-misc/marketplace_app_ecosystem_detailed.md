@@ -11,6 +11,7 @@
 "HotDash App Store" - Extensions and integrations built by third-party developers
 
 **Example Apps**:
+
 - "Advanced Sentiment Pro" ($49/month) - Enhanced sentiment analysis
 - "Multi-Language Pack" ($99/month) - 20+ languages
 - "Shopify Deep Sync" ($29/month) - Advanced Shopify features
@@ -21,4 +22,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Detailed marketplace plan
-

@@ -10,15 +10,20 @@ const eqMock = vi.fn();
 vi.mock("@supabase/supabase-js", () => ({
   createClient: vi.fn(() => ({
     from: (table: string) => {
-      const makeOrder = () => (...args: unknown[]) => orderMock(table, ...args);
+      const makeOrder =
+        () =>
+        (...args: unknown[]) =>
+          orderMock(table, ...args);
       const makeEq = () => (column: string, value: unknown) => {
         eqMock(table, column, value);
         return { order: makeOrder() };
       };
-      const makeSelect = () => (...args: unknown[]) => {
-        selectMock(table, ...args);
-        return { order: makeOrder(), eq: makeEq() };
-      };
+      const makeSelect =
+        () =>
+        (...args: unknown[]) => {
+          selectMock(table, ...args);
+          return { order: makeOrder(), eq: makeEq() };
+        };
 
       return {
         insert: (...args: unknown[]) => insertMock(table, ...args),
@@ -62,7 +67,9 @@ describe("supabaseMemory putDecision", () => {
 
   it("retries when Supabase insert returns retryable error and eventually succeeds", async () => {
     insertMock
-      .mockResolvedValueOnce({ error: { message: "ETIMEDOUT", code: "ETIMEDOUT" } })
+      .mockResolvedValueOnce({
+        error: { message: "ETIMEDOUT", code: "ETIMEDOUT" },
+      })
       .mockResolvedValueOnce({ data: [{ id: 1 }], error: null });
 
     await expect(memory.putDecision(baseDecision)).resolves.toBeUndefined();
@@ -89,7 +96,9 @@ describe("supabaseMemory putDecision", () => {
 
   it("falls back to legacy schema when actor columns are missing", async () => {
     insertMock
-      .mockResolvedValueOnce({ error: { code: "42703", message: 'column "actor" does not exist' } })
+      .mockResolvedValueOnce({
+        error: { code: "42703", message: 'column "actor" does not exist' },
+      })
       .mockResolvedValueOnce({ data: [{ id: 1 }], error: null });
 
     await expect(memory.putDecision(baseDecision)).resolves.toBeUndefined();
@@ -108,7 +117,9 @@ describe("supabaseMemory putDecision", () => {
   });
 
   it("throws when Supabase insert keeps failing with retryable error beyond max attempts", async () => {
-    insertMock.mockResolvedValue({ error: { message: "ETIMEDOUT", code: "ETIMEDOUT" } });
+    insertMock.mockResolvedValue({
+      error: { message: "ETIMEDOUT", code: "ETIMEDOUT" },
+    });
 
     await expect(memory.putDecision(baseDecision)).rejects.toMatchObject({
       message: expect.stringContaining("ETIMEDOUT"),
@@ -117,7 +128,9 @@ describe("supabaseMemory putDecision", () => {
   });
 
   it("throws immediately on non-retryable error", async () => {
-    insertMock.mockResolvedValue({ error: { message: "invalid input", code: "400" } });
+    insertMock.mockResolvedValue({
+      error: { message: "invalid input", code: "400" },
+    });
 
     await expect(memory.putDecision(baseDecision)).rejects.toMatchObject({
       message: expect.stringContaining("invalid input"),
@@ -184,7 +197,9 @@ describe("supabaseMemory listDecisions", () => {
       "DecisionLog",
       "id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt",
     );
-    expect(orderMock).toHaveBeenCalledWith("DecisionLog", "createdAt", { ascending: false });
+    expect(orderMock).toHaveBeenCalledWith("DecisionLog", "createdAt", {
+      ascending: false,
+    });
   });
 
   it("filters by scope when provided", async () => {
@@ -196,7 +211,12 @@ describe("supabaseMemory listDecisions", () => {
   it("falls back to legacy table when DecisionLog is unavailable", async () => {
     const createdAt = new Date().toISOString();
     orderMock
-      .mockResolvedValueOnce({ error: { code: "42P01", message: 'relation "DecisionLog" does not exist' } })
+      .mockResolvedValueOnce({
+        error: {
+          code: "42P01",
+          message: 'relation "DecisionLog" does not exist',
+        },
+      })
       .mockResolvedValueOnce({
         data: [
           {
@@ -228,10 +248,18 @@ describe("supabaseMemory listDecisions", () => {
       },
     ]);
 
-    expect(selectMock).toHaveBeenNthCalledWith(1, "DecisionLog", "id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt");
+    expect(selectMock).toHaveBeenNthCalledWith(
+      1,
+      "DecisionLog",
+      "id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt",
+    );
     expect(selectMock).toHaveBeenNthCalledWith(2, "decision_log", "*");
-    expect(orderMock).toHaveBeenNthCalledWith(1, "DecisionLog", "createdAt", { ascending: false });
-    expect(orderMock).toHaveBeenNthCalledWith(2, "decision_log", "created_at", { ascending: false });
+    expect(orderMock).toHaveBeenNthCalledWith(1, "DecisionLog", "createdAt", {
+      ascending: false,
+    });
+    expect(orderMock).toHaveBeenNthCalledWith(2, "decision_log", "created_at", {
+      ascending: false,
+    });
   });
 });
 
@@ -254,9 +282,28 @@ describe("supabaseMemory retry coverage", () => {
   it("retries listDecisions legacy fallback on timeout errors", async () => {
     // Primary table fails, fallback to legacy with retry
     orderMock
-      .mockResolvedValueOnce({ error: { code: "42P01", message: 'relation "DecisionLog" does not exist' } })
-      .mockResolvedValueOnce({ error: { message: "ETIMEDOUT", code: "ETIMEDOUT" } })
-      .mockResolvedValueOnce({ data: [{ id: 1, scope: "ops", who: "agent", what: "test", why: "", created_at: new Date().toISOString() }], error: null });
+      .mockResolvedValueOnce({
+        error: {
+          code: "42P01",
+          message: 'relation "DecisionLog" does not exist',
+        },
+      })
+      .mockResolvedValueOnce({
+        error: { message: "ETIMEDOUT", code: "ETIMEDOUT" },
+      })
+      .mockResolvedValueOnce({
+        data: [
+          {
+            id: 1,
+            scope: "ops",
+            who: "agent",
+            what: "test",
+            why: "",
+            created_at: new Date().toISOString(),
+          },
+        ],
+        error: null,
+      });
 
     const results = await memory.listDecisions();
 
@@ -267,7 +314,18 @@ describe("supabaseMemory retry coverage", () => {
   it("retries getFacts on network errors", async () => {
     orderMock
       .mockRejectedValueOnce(new Error("fetch failed"))
-      .mockResolvedValueOnce({ data: [{ project: "test", topic: "test", key: "test", value: "test", created_at: new Date().toISOString() }], error: null });
+      .mockResolvedValueOnce({
+        data: [
+          {
+            project: "test",
+            topic: "test",
+            key: "test",
+            value: "test",
+            created_at: new Date().toISOString(),
+          },
+        ],
+        error: null,
+      });
 
     const results = await memory.getFacts();
 
@@ -277,16 +335,20 @@ describe("supabaseMemory retry coverage", () => {
 
   it("retries putFact on retryable errors", async () => {
     insertMock
-      .mockResolvedValueOnce({ error: { status: 503, message: "Service Unavailable" } })
+      .mockResolvedValueOnce({
+        error: { status: 503, message: "Service Unavailable" },
+      })
       .mockResolvedValueOnce({ data: [{ id: 1 }], error: null });
 
-    await expect(memory.putFact({
-      project: "test",
-      topic: "test", 
-      key: "test",
-      value: "test",
-      createdAt: new Date().toISOString()
-    })).resolves.toBeUndefined();
+    await expect(
+      memory.putFact({
+        project: "test",
+        topic: "test",
+        key: "test",
+        value: "test",
+        createdAt: new Date().toISOString(),
+      }),
+    ).resolves.toBeUndefined();
 
     expect(insertMock).toHaveBeenCalledTimes(2);
   });

@@ -59,7 +59,9 @@ export default function SessionTokenTool() {
       const token = await getSessionToken(appBridge as any);
       setRawToken(token);
 
-      const response = await authenticatedJsonFetch("/api/session-token/claims");
+      const response = await authenticatedJsonFetch(
+        "/api/session-token/claims",
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
@@ -72,7 +74,9 @@ export default function SessionTokenTool() {
     } catch (error) {
       console.error("Failed to refresh Shopify session token", error);
       setErrorMessage(
-        error instanceof Error ? error.message : "Unexpected error retrieving session token",
+        error instanceof Error
+          ? error.message
+          : "Unexpected error retrieving session token",
       );
       setStatus("error");
     }
@@ -121,12 +125,17 @@ export default function SessionTokenTool() {
         <s-section heading="Current session token">
           <s-stack gap="base">
             <s-paragraph>
-              Tokens expire in under a minute. This tool fetches a fresh token via App Bridge and verifies it with
-              our backend before showing any details. Use the copy button immediately after refreshing and store the
-              token securely — never commit it to Git.
+              Tokens expire in under a minute. This tool fetches a fresh token
+              via App Bridge and verifies it with our backend before showing any
+              details. Use the copy button immediately after refreshing and
+              store the token securely — never commit it to Git.
             </s-paragraph>
             <s-stack direction="inline" gap="base">
-              <s-button onClick={refreshToken} loading={status === "loading"} variant="secondary">
+              <s-button
+                onClick={refreshToken}
+                loading={status === "loading"}
+                variant="secondary"
+              >
                 Refresh now
               </s-button>
               <s-button onClick={handleCopy} disabled={!rawToken}>
@@ -138,13 +147,29 @@ export default function SessionTokenTool() {
                 </s-badge>
               )}
             </s-stack>
-            <s-box padding="base" borderWidth="base" borderRadius="base" background="subdued">
-              <pre style={{ margin: 0, whiteSpace: "normal", wordBreak: "break-all" }}>
+            <s-box
+              padding="base"
+              borderWidth="base"
+              borderRadius="base"
+              background="subdued"
+            >
+              <pre
+                style={{
+                  margin: 0,
+                  whiteSpace: "normal",
+                  wordBreak: "break-all",
+                }}
+              >
                 <code>{rawToken ?? "Fetch a token to display it here."}</code>
               </pre>
             </s-box>
             {errorMessage && (
-              <s-box padding="base" borderWidth="base" borderRadius="base" background="subdued">
+              <s-box
+                padding="base"
+                borderWidth="base"
+                borderRadius="base"
+                background="subdued"
+              >
                 <strong>Unable to fetch session token:</strong> {errorMessage}
               </s-box>
             )}
@@ -197,8 +222,10 @@ export default function SessionTokenTool() {
                 <s-text>{claims.userId ?? "—"}</s-text>
               </s-stack>
               <s-paragraph>
-                The backend decodes the Authorization bearer token using Shopify&apos;s session utilities. If this
-                section fails to load, the header was missing or the token is invalid — refresh to obtain a new token.
+                The backend decodes the Authorization bearer token using
+                Shopify&apos;s session utilities. If this section fails to load,
+                the header was missing or the token is invalid — refresh to
+                obtain a new token.
               </s-paragraph>
             </s-stack>
           </s-section>

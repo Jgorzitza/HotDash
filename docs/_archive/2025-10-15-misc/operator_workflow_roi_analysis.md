@@ -22,18 +22,21 @@ This analysis documents the current manual support workflow, calculates time sav
 ### 5-Step Process
 
 **Step 1: Read & Understand** (30-60 seconds)
+
 - Read customer message
 - Review conversation history in Chatwoot
 - Check customer profile
 - Identify inquiry type
 
 **Step 2: Gather Context** (60-120 seconds)
+
 - Look up order details (copy order # → paste into admin panel)
 - Check payment status (navigate to payment processor)
 - Review shipping status (external tracking site)
 - Calculate return/refund eligibility (mental math or policy check)
 
 **Step 3: Search Knowledge Base** (60-180 seconds)
+
 - Open internal wiki in new tab
 - Search for relevant policy (keyword search)
 - Scan 3-5 articles to find right answer
@@ -41,6 +44,7 @@ This analysis documents the current manual support workflow, calculates time sav
 - Check if policy is current (manual verification)
 
 **Step 4: Draft Response** (120-300 seconds)
+
 - Switch back to Chatwoot
 - Compose response from scratch or generic template
 - Personalize with customer name and order details
@@ -49,6 +53,7 @@ This analysis documents the current manual support workflow, calculates time sav
 - Proofread for tone and accuracy
 
 **Step 5: Verify & Send** (30-60 seconds)
+
 - Double-check information accuracy
 - Ensure appropriate tone
 - Click send
@@ -58,6 +63,7 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Total Time: 8.5 Minutes Average
 
 **Time Breakdown**:
+
 - 9% reading and understanding
 - 18% gathering context
 - 24% searching knowledge base
@@ -79,6 +85,7 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Simplified 2-Step Process
 
 **Step 1: AI Processing** (5-10 seconds, automatic)
+
 - Understands customer intent via GPT-4
 - Fetches order/payment/shipping data via APIs (automatic)
 - Queries LlamaIndex for relevant knowledge base articles
@@ -87,6 +94,7 @@ This analysis documents the current manual support workflow, calculates time sav
 - Adds source citations
 
 **Step 2: Operator Review** (30-90 seconds)
+
 - Read AI-generated draft in approval queue
 - Verify order details are correct
 - Check tone and empathy level
@@ -99,6 +107,7 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Total Time: 1.5 Minutes Average
 
 **Weighted Average** (based on projected distribution):
+
 - 60% approve (no edits): 35 seconds
 - 35% edit & approve: 60 seconds
 - 5% reject (manual fallback): 300 seconds
@@ -114,21 +123,25 @@ This analysis documents the current manual support workflow, calculates time sav
 ## Time Savings Calculation
 
 ### Per Inquiry
+
 - Manual: 8.5 minutes
 - Agent SDK: 1.5 minutes
 - **Savings: 7.0 minutes (82% reduction)**
 
 ### Per Hour
+
 - Manual: 8.2 tickets/hour (avg)
 - Agent SDK: 12.0 tickets/hour (projected)
 - **Increase: +3.8 tickets/hour (+46%)**
 
 ### Per Day (8-hour shift)
+
 - Manual: 65.6 tickets/day
 - Agent SDK: 96.0 tickets/day
 - **Increase: +30.4 tickets/day**
 
 ### Per Month (per operator)
+
 - Manual: 1,312 tickets/month (20 working days)
 - Agent SDK: 1,920 tickets/month
 - **Increase: +608 tickets/month (+46%)**
@@ -140,12 +153,14 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Current State (10 Operators)
 
 **Monthly Capacity**:
+
 - 10 operators × 1,312 tickets = **13,120 tickets/month**
 - Average time per ticket: 8.5 minutes
 - Total operator hours: 1,861 hours/month
 - Average cost per ticket: $8.20
 
 **Constraints**:
+
 - Operators at 78% utilization (approaching burnout)
 - Queue depth growing 5% month-over-month
 - Hiring needed in 3-4 months to handle growth
@@ -153,12 +168,14 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Future State (10 Operators + Agent SDK)
 
 **Monthly Capacity**:
+
 - 10 operators × 1,920 tickets = **19,200 tickets/month**
 - Average time per ticket: 1.5 minutes
 - Total operator hours: 480 hours/month (on Agent SDK tickets)
 - Average cost per ticket: $5.10
 
 **Benefits**:
+
 - **+46% capacity** without hiring
 - Operators at 68% utilization (sustainable)
 - Can absorb 6-12 months of growth without hiring
@@ -171,11 +188,13 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Costs
 
 **One-Time Development** (Month 0):
+
 - Engineering time: 2 FTE × 1 week = $12,000
 - Training materials: $1,000
 - **Total one-time**: $13,000
 
 **Monthly Operating Costs**:
+
 - OpenAI API: $500 (M1) → $1,500 (M6)
 - Infrastructure: $200-500
 - KB maintenance: $500 (Support Agent time)
@@ -184,16 +203,19 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Savings
 
 **Operator Efficiency Gains**:
+
 - Cost per ticket: $8.20 → $5.10
 - Savings per ticket: $3.10
 - At 19,200 tickets/month: $59,520/month in equivalent labor
 
 **Deferred Hiring**:
+
 - 3 FTE operators deferred over 12 months
 - Cost per FTE: $60,000/year (salary + benefits)
 - **Savings**: $180,000/year = $15,000/month
 
 **Reduced Context Switching**:
+
 - Operators spend 65% of time on high-value work vs 32%
 - Higher job satisfaction → lower turnover → reduced rehiring costs
 - Estimated savings: $2,000/month
@@ -201,23 +223,27 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Net Savings
 
 **Month 1**:
+
 - Development cost: -$13,000 (one-time)
 - Operating cost: -$1,200
 - Efficiency savings: +$6,000 (10% of inquiries in pilot)
 - **Net**: -$8,200
 
 **Month 2**:
+
 - Operating cost: -$1,500
 - Efficiency savings: +$12,000 (20% of inquiries)
 - **Net**: +$10,500 (ROI positive!)
 
 **Month 3-6** (Full Rollout):
+
 - Operating cost: -$2,000 (avg)
 - Efficiency savings: +$8,000 (50% adoption)
 - Deferred hiring: +$3,750 (1 FTE deferred)
 - **Net**: +$9,750/month
 
 **Year 1 Total**:
+
 - Total costs: $13,000 + ($2,000 × 11) = $35,000
 - Total savings: $113,000
 - **Net savings: $78,000**
@@ -232,21 +258,25 @@ This analysis documents the current manual support workflow, calculates time sav
 ### High-Impact Opportunities (Implemented in MVP)
 
 **1. Automatic Information Gathering** (Save 90 seconds/inquiry)
+
 - APIs fetch order, payment, shipping data automatically
 - No manual copy/paste
 - No tab switching to external systems
 
 **2. Semantic Knowledge Base Search** (Save 120 seconds/inquiry)
+
 - LlamaIndex returns most relevant articles instantly
 - 95% accuracy vs 72% with keyword search
 - Automatic version checking
 
 **3. AI Draft Generation** (Save 180 seconds/inquiry)
+
 - GPT-4 writes personalized response
 - Includes order details, policy information, next steps
 - Operator only reviews and approves
 
 **4. One-Click Actions** (Save 30 seconds/inquiry)
+
 - Approve, edit, escalate with single click
 - Auto-tagging based on inquiry type
 - Automatic status updates
@@ -254,24 +284,29 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Medium-Impact Opportunities (Phase 2)
 
 **5. Bulk Actions** (Save 15 minutes/day per operator)
+
 - Approve multiple high-confidence drafts at once
 - Expected usage: 3-5 times per day
 
 **6. Inline Editing** (Save 30 seconds/edit)
+
 - Edit draft text directly in approval card
 - No separate edit page
 
 **7. Quick Templates** (Save 20 seconds per use)
+
 - One-click tone adjustments ("Add empathy", "Add apology")
 - Expected usage: 5-10 times per day
 
 ### Low-Impact Opportunities (Phase 3+)
 
 **8. Predictive Escalation** (Save 2-3 escalations/day)
+
 - AI flags issues that will need escalation
 - Route to appropriate specialist immediately
 
 **9. Proactive Outreach** (Reduce 10% of inbound inquiries)
+
 - Identify delayed orders, send proactive updates
 - Customers don't need to contact support
 
@@ -282,28 +317,33 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Quantitative Benefits
 
 **Time Allocation Shift**:
+
 - **Before**: 68% low-value work (searching, typing, switching tabs)
 - **After**: 35% low-value work (reviewing AI drafts)
 - **Result**: 33% more time for high-value work (building relationships, handling complex cases)
 
 **Reduced Cognitive Load**:
+
 - Systems to remember: 6 → 1 (-83%)
 - Tab switches per inquiry: 8-12 → 0-1 (-95%)
 - Mental fatigue reduction: Estimated 40% less end-of-day fatigue
 
 **Faster Onboarding**:
+
 - New operator time to proficiency: 6-12 months → 3 months
 - Reason: See "expert" drafts from day 1, learn by example
 
 ### Qualitative Benefits
 
 **From Operator Surveys** (expected):
+
 - "I spend more time actually helping customers, not hunting for information"
 - "The AI drafts are usually 80-90% right, I just add a personal touch"
 - "I can handle more tickets without feeling overwhelmed"
 - "This makes my job more enjoyable"
 
 **Job Satisfaction Impact**:
+
 - Current satisfaction: 6.8/10
 - Target satisfaction: 8.5/10
 - Drivers: Less repetitive work, more meaningful interactions, faster resolutions
@@ -315,11 +355,13 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Response Time
 
 **Current**:
+
 - Average time to first response: 4.5 minutes
 - Average time to resolution: 15.3 minutes
 - 95th percentile: 34.7 minutes
 
 **With Agent SDK**:
+
 - Average time to first response: 2.5 minutes (-44%)
 - Average time to resolution: 10.0 minutes (-35%)
 - 95th percentile: 20 minutes (-42%)
@@ -327,14 +369,17 @@ This analysis documents the current manual support workflow, calculates time sav
 ### Response Quality
 
 **Consistency**:
+
 - All responses backed by accurate knowledge base
 - Reduces "wrong information" errors from 8% to <2%
 
 **Completeness**:
+
 - AI drafts address all customer questions (multi-issue handling)
 - Reduces need for follow-up inquiries by 20%
 
 **Personalization**:
+
 - References customer's order history and past interactions
 - More empathetic and contextual responses
 
@@ -403,16 +448,16 @@ This analysis documents the current manual support workflow, calculates time sav
 
 ## Implementation Timeline vs Savings
 
-| Month | Implementation | Adoption % | Monthly Savings | Cumulative |
-|-------|---------------|------------|-----------------|------------|
-| M0 | Development | 0% | -$13,000 | -$13,000 |
-| M1 | Pilot (Week 1-2) | 10% | -$2,200 | -$15,200 |
-| M2 | Full team training | 30% | +$4,500 | -$10,700 |
-| M3 | Gradual rollout | 50% | +$8,000 | -$2,700 |
-| M4 | Optimization | 60% | +$9,000 | +$6,300 |
-| M5 | Phase 2 features | 65% | +$9,500 | +$15,800 |
-| M6 | Mature state | 70% | +$10,000 | +$25,800 |
-| M7-12 | Optimization | 75% | +$10,500/mo × 6 | +$88,800 |
+| Month | Implementation     | Adoption % | Monthly Savings | Cumulative |
+| ----- | ------------------ | ---------- | --------------- | ---------- |
+| M0    | Development        | 0%         | -$13,000        | -$13,000   |
+| M1    | Pilot (Week 1-2)   | 10%        | -$2,200         | -$15,200   |
+| M2    | Full team training | 30%        | +$4,500         | -$10,700   |
+| M3    | Gradual rollout    | 50%        | +$8,000         | -$2,700    |
+| M4    | Optimization       | 60%        | +$9,000         | +$6,300    |
+| M5    | Phase 2 features   | 65%        | +$9,500         | +$15,800   |
+| M6    | Mature state       | 70%        | +$10,000        | +$25,800   |
+| M7-12 | Optimization       | 75%        | +$10,500/mo × 6 | +$88,800   |
 
 **Breakeven**: Month 3
 **Year 1 Net**: +$88,800
@@ -431,6 +476,7 @@ This analysis documents the current manual support workflow, calculates time sav
 - **Cost per ticket**: $4,875 ÷ 1,312 = $3.71 direct labor
 
 **Plus indirect costs**:
+
 - Management overhead (20%): $0.74
 - Systems/tools (15%): $0.56
 - Training/development (10%): $0.37
@@ -461,7 +507,7 @@ This analysis documents the current manual support workflow, calculates time sav
 **Next Action**: Present to Manager and stakeholders
 
 **Related Documents**:
+
 - [Product Roadmap](product_roadmap_agentsdk.md)
 - [Pilot Rollout Plan](agent_sdk_pilot_rollout_plan.md)
 - [Success Metrics](docs/data/success_metrics_slo_framework_2025-10-11.md)
-

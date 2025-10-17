@@ -1,106 +1,59 @@
-# Direction: content
+# Content Agent Direction
 
-> Location: `docs/directions/content.md`
-> Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+- **Owner:** Manager Sub-Agent
+- **Effective:** 2025-10-17
+- **Version:** 1.0
 
----
+## Objective
 
-## Status: ACTIVE
+Drive content operations so Publer launch messaging, idea briefs, approvals alignment, and feedback hygiene are ready for execution and measurable against campaign goals.
 
-## 1) Purpose
-Build content performance tracking for future HITL social posting.
+## Current Tasks
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+1. Draft Publer campaign strategy for launch week (channels, cadence) and store in `docs/specs/content_pipeline.md`.
+2. Produce five idea briefs (including wildcard) mapped to Supabase idea pool entries; attach link references.
+3. Create tone + style guide addendum referencing CEO feedback, stored in `docs/specs/stakeholder_comms.md`.
+4. Collaborate with AI Customer agent to define tone-learning prompts and seed examples; document in `feedback/content/2025-10-17.md`.
+5. Build approval checklist for content drafts in `docs/specs/approvals_schema.md` (content section) aligned with Publer fields.
+6. Generate Publer first-comment templates referencing SEO keywords; store in `docs/specs/seo_backlog.md` cross-links.
+7. Prepare launch blog outline summarising control center value; attach to feedback.
+8. Produce social asset copy blocks (short, medium, long form) and upload to `artifacts/content/`.
+9. Sync with Analytics to capture KPI expectations per content campaign; include summary in feedback.
+10. Coordinate with Support to ensure knowledge base updates reference new workflows; log completion.
+11. Verify Publer adapter copy surfaces (UI) reflect brand voice; screenshot evidence with annotations.
+12. Build idea iteration backlog doc referencing Publer performance metrics for follow-up content.
+13. Ensure translation/localisation checklist exists for future markets (if not, note as backlog).
+14. Update `docs/specs/content_iteration_backlog.md` with priority, owner, status for each content asset.
+15. Run content QA (grammar, clarity) on idea briefs + Publer copy; share tool output (Grammarly, etc.).
+16. Write feedback to `feedback/content/2025-10-17.md` and clean stray md files.
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P2 - Content Management
+## Constraints
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `rg`.
+- **Touched Directories:** `docs/directions/content.md`.
+- **Budget:** ≤ 30 minutes, ≤ 4,000 tokens, ≤ 3 files modified/staged.
+- **Guardrails:** Edits limited to content direction file.
 
-### Task List (9 tasks):
+## Definition of Done
 
-**1. ✅ Content Performance Tracking (COMPLETE - MERGED)**
+- [ ] Template applied with tasks and sections.
+- [ ] Prettier executed on `docs/directions/content.md`.
+- [ ] Only `docs/directions/content.md` staged.
+- [ ] Blockers logged in `feedback/manager/2025-10-17.md` if encountered.
 
-**2. Social Post Drafting (NEXT - 4h)**
-- AI-powered post drafts with HITL
-- Allowed paths: `app/services/content/post-drafter.ts`
+## Risk & Rollback
 
-**3. Engagement Analysis (3h)**
-- Analyze likes, comments, shares
-- Allowed paths: `app/lib/content/engagement.ts`
+- **Risk Level:** Low — misaligned content reduces launch impact but not system stability.
+- **Rollback Plan:** `git checkout -- docs/directions/content.md` before staging.
+- **Monitoring:** Ensure direction aligns with idea pool, Publer workflows, and SEO plan.
 
-**4. Content Calendar (3h)**
-- Schedule posts, track publishing
-- Allowed paths: `app/routes/content.calendar.tsx`
+## Links & References
 
-**5. Hashtag Optimization (2h)**
-- Suggest optimal hashtags
-- Allowed paths: `app/services/content/hashtags.ts`
+- Template: `docs/directions/agenttemplate.md`
+- Content specs: `docs/specs/content_pipeline.md`, `docs/specs/content_iteration_backlog.md`
+- Publer docs: `docs/integrations/social_adapter.md`
+- Feedback: `feedback/content/`
 
-**6. Best Time to Post Analysis (3h)**
-- Analyze when audience is active
-- Allowed paths: `app/lib/content/timing.ts`
+## Change Log
 
-**7. Competitor Content Analysis (4h)**
-- Track competitor posts, engagement
-- Allowed paths: `app/services/content/competitors.ts`
-
-**8. Content Recommendations (4h)**
-- AI-powered content suggestions
-- Allowed paths: `app/services/content/recommendations.ts`
-
-**9. HITL Posting Workflow (4h)**
-- Draft → review → approve → post
-- Allowed paths: `app/services/content/hitl-posting.ts`
-
-### Current Focus: Task 2 (Post Drafting)
-
-### Blockers: None
-
-### Critical:
-- ✅ HITL for all posts
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ Support Instagram, Facebook, TikTok
-
-## Changelog
-* 2.0 (2025-10-15) — ACTIVE: Content performance tracking
-* 1.0 (2025-10-15) — Placeholder
-
-### Feedback Process (Canonical)
-- Use exactly: \ for today
-- Append evidence and tool outputs through the day
-- On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Post drafter service (HITL)
-2) Content calendar CRUD
-3) Engagement analyzer (CTR, saves, shares)
-4) Topic recommender (read-only)
-5) Cross-channel scheduler (staging)
-6) Draft templates library
-7) Hashtag helper
-8) Media handling pipeline (thumbs/meta)
-9) Performance tiles
-10) Export CSV of posts
-11) Unit tests for analyzers
-12) Integration tests adapters
-13) Caching for feeds
-14) Docs/specs for content flows
-15) Draft diffs vs approved (learning)
-16) Reviewer rubric for content
-17) A/B test scaffolding (placeholders)
-18) Privacy guardrails (no prod post)
-19) Staging vs prod adapters
-20) Error taxonomy + UX
-21) Telemetry events for drafts
-22) Alerts (read-only) for anomalies
-23) i18n scaffolding for drafts
-24) Admin toggles
-25) SLO dashboard for content APIs
+- 2025-10-17: Version 1.0 — Template rewrite for launch content ops.

@@ -28,6 +28,7 @@
 **Key Metrics Tracked:**
 
 **Individual Operator Analytics:**
+
 ```
 LEARNING PROGRESS:
 ├─ Modules Completed: 45/60 (75%)
@@ -58,6 +59,7 @@ RECOMMENDATIONS:
 ---
 
 **Team-Wide Analytics:**
+
 ```
 TRAINING PROGRAM HEALTH:
 ├─ Active Learners: 45 operators
@@ -94,6 +96,7 @@ BOTTLENECKS IDENTIFIED:
 ### Analytics Collection Methods
 
 **Automated Data Collection:**
+
 1. **LMS/Platform Tracking:**
    - Logins, time spent, modules completed
    - Quiz scores, attempts, time taken
@@ -110,6 +113,7 @@ BOTTLENECKS IDENTIFIED:
    - Difficulty adjustments made
 
 **Manual Data Collection:**
+
 - Monthly operator surveys (satisfaction, helpfulness)
 - Quarterly competency assessments
 - Annual program effectiveness reviews
@@ -121,23 +125,27 @@ BOTTLENECKS IDENTIFIED:
 **Key Insights to Extract:**
 
 **1. Learning Effectiveness:**
+
 - Which modules/formats have highest completion?
 - Which content has best retention?
 - Where do operators struggle most?
 - What correlates with performance improvement?
 
 **2. Operator Segmentation:**
+
 - Fast learners vs slow learners (customize support)
 - Visual vs text learners (customize format)
 - Self-directed vs structured learners (customize path)
 
 **3. Content Optimization:**
+
 - Which modules need improvement?
 - Which topics need more coverage?
 - Which examples resonate most?
 - Which quizzes are too easy/hard?
 
 **4. ROI Analysis:**
+
 - Time invested vs performance gained
 - Training cost vs retention improvement
 - Program effectiveness vs industry benchmarks
@@ -151,6 +159,7 @@ BOTTLENECKS IDENTIFIED:
 **Problem:** One-size-fits-all training wastes time and disengages learners
 
 **Solution:** Personalized paths based on:
+
 - Prior experience
 - Learning speed
 - Skill gaps
@@ -190,6 +199,7 @@ RESULT: Custom learning path generated
 **Step 2: Path Generation**
 
 **Path A: Experienced Support → Fast Track**
+
 ```
 Profile: 3+ years support experience, high baseline scores
 
@@ -204,6 +214,7 @@ Completion: Day 21 vs Day 30
 ```
 
 **Path B: New to Support → Comprehensive**
+
 ```
 Profile: No support experience, lower baseline scores
 
@@ -219,6 +230,7 @@ Completion: Day 56 vs Day 30 (extended for thoroughness)
 ```
 
 **Path C: Career Growth Focus → Leadership Track**
+
 ```
 Profile: Competent operator interested in advancement
 
@@ -267,6 +279,7 @@ IF operator struggles with specific skill area THEN
 ### Learning Path Templates
 
 **Template 1: Speed Optimization Path**
+
 ```
 Goal: Reduce review time while maintaining quality
 
@@ -287,6 +300,7 @@ Time Investment: 2 hours modules + practice
 ```
 
 **Template 2: Quality Excellence Path**
+
 ```
 Goal: Achieve 4.8+ CSAT and 99% decision accuracy
 
@@ -347,6 +361,7 @@ Facilitation:
 **Concept:** Want to master a topic? Teach it to someone else
 
 **Process:**
+
 1. **Operator volunteers** to lead session on a topic
 2. **Prepares 15-minute presentation** (structured template)
 3. **Teaches team** in weekly knowledge sharing
@@ -354,12 +369,14 @@ Facilitation:
 5. **Deepens own mastery** through teaching
 
 **Benefits:**
+
 - Teacher: Deepest learning possible
 - Learners: Peer perspective (relatable)
 - Team: Knowledge distributed across team
 - Culture: Learning becomes collaborative
 
 **Recognition:**
+
 - Teaching tracked for performance reviews
 - Contributes to Expert Operator certification
 - Public appreciation in team meetings
@@ -371,12 +388,14 @@ Facilitation:
 **Concept:** Every new operator has a peer buddy (in addition to formal mentor)
 
 **Buddy Responsibilities:**
+
 - Answer quick questions informally
 - Have coffee/lunch together
 - Share unwritten knowledge ("here's how we really do it")
 - Social integration into team
 
 **Buddy Selection:**
+
 - 3-6 months experience (recent enough to remember being new)
 - Different from formal mentor (mentor = teaching, buddy = peer support)
 - Volunteer basis
@@ -450,7 +469,7 @@ Works every time! Try it!"
 ---
 
 @MikeJ asked a question:
-"Anyone else notice AI struggles with sarcasm? Customer said 'Oh great, 
+"Anyone else notice AI struggles with sarcasm? Customer said 'Oh great,
 another delay' and AI responded enthusiastically..."
 
 💬 8 comments | Solutions shared
@@ -516,6 +535,7 @@ LEADERBOARD (Gamified):
 ### Platform Implementation Options
 
 **Option 1: Slack Channels (Quick Start)**
+
 ```
 #learning-general
 #learning-approval-queue
@@ -528,6 +548,7 @@ Cons: Not structured, hard to search, limited features
 ```
 
 **Option 2: Discourse Community (Recommended)**
+
 ```
 Dedicated forum platform
 Categories, tags, search, gamification built-in
@@ -540,6 +561,7 @@ Cost: $100-300/month
 ```
 
 **Option 3: Custom Platform (Future)**
+
 ```
 Built specifically for HotDash operators
 Integration with LMS, performance data
@@ -565,6 +587,7 @@ Timeline: 6-12 months
 ### Gamification Elements
 
 **1. Points System**
+
 ```
 EARN POINTS FOR:
 ├─ Complete microlearning module: 10 points
@@ -587,6 +610,7 @@ SPEND POINTS ON:
 ---
 
 **2. Achievement Badges**
+
 ```
 BEGINNER BADGES:
 🎯 First Approval Master - Complete first approval
@@ -612,6 +636,7 @@ SPECIAL BADGES:
 ---
 
 **3. Levels & Progression**
+
 ```
 LEVEL SYSTEM:
 
@@ -641,13 +666,14 @@ Level 5: Master (5,000+ points)
 └─ Unlocks: All content, special recognition, career advancement
 
 LEVEL UP NOTIFICATIONS:
-"🎉 Congratulations! You've reached Level 3: Professional! 
+"🎉 Congratulations! You've reached Level 3: Professional!
 New unlocked: Advanced Training Modules, Mentorship Opportunities"
 ```
 
 ---
 
 **4. Challenges & Competitions**
+
 ```
 MONTHLY CHALLENGES:
 
@@ -674,6 +700,7 @@ Team Challenge: "100% Completion Rate"
 ---
 
 **5. Progress Visualization**
+
 ```
 VISUAL PROGRESS TRACKING:
 
@@ -707,6 +734,7 @@ Keep it going! Next milestone: 30 days
 ---
 
 **6. Leaderboards (Optional - Use Carefully)**
+
 ```
 THIS WEEK'S TOP LEARNERS:
 
@@ -726,6 +754,7 @@ Focus on personal growth, not comparison
 ### Gamification Best Practices
 
 **DO:**
+
 - ✅ Make it optional (not everyone likes games)
 - ✅ Focus on collaboration > competition
 - ✅ Reward effort and improvement (not just results)
@@ -733,6 +762,7 @@ Focus on personal growth, not comparison
 - ✅ Align rewards with meaningful recognition
 
 **DON'T:**
+
 - ❌ Create unhealthy competition
 - ❌ Punish low scores/points
 - ❌ Make it feel mandatory
@@ -754,12 +784,14 @@ Focus on personal growth, not comparison
 ### Level 1: Reaction (Did they like it?)
 
 **Measure:**
+
 - Training satisfaction surveys (4.5+/5.0 target)
 - Module helpfulness ratings
 - Completion rates (80%+ target)
 - Engagement metrics (active participation)
 
 **Questions:**
+
 - "Was the training relevant to your job?"
 - "Would you recommend this training?"
 - "What would you change?"
@@ -771,12 +803,14 @@ Focus on personal growth, not comparison
 ### Level 2: Learning (Did they learn it?)
 
 **Measure:**
+
 - Pre/post knowledge assessments
 - Quiz scores (85%+ target)
 - Retention rates at Day 1, 7, 30, 90
 - Competency evaluations
 
 **Methods:**
+
 - Module quizzes
 - Scenario assessments
 - Practical evaluations
@@ -789,18 +823,21 @@ Focus on personal growth, not comparison
 ### Level 3: Behavior (Do they use it?)
 
 **Measure:**
+
 - Application in real work (observation)
 - Manager assessments
 - Peer feedback
 - Performance metrics changes
 
 **Questions:**
+
 - Are operators applying 5-Question Framework?
 - Are escalations improving in quality?
 - Are edits using taught techniques?
 - Is decision-making faster?
 
 **Methods:**
+
 - Manager observation and scoring
 - QA review of work quality
 - Self-reported application
@@ -813,6 +850,7 @@ Focus on personal growth, not comparison
 ### Level 4: Results (Does it improve outcomes?)
 
 **Measure:**
+
 - Business metrics (CSAT, resolution time, accuracy)
 - Operational efficiency (capacity, speed)
 - Cost metrics (training ROI, error reduction)
@@ -928,24 +966,28 @@ CONCLUSION: Training investment pays for itself 17× over in Year 1
 ## Summary: Tasks 15-20
 
 ✅ **Task 15: Learning Analytics & Insights**
+
 - Individual operator dashboards (progress, skills, recommendations)
 - Team-wide analytics (program health, content effectiveness)
 - Insight generation (effectiveness, segmentation, optimization, ROI)
 - Automated + manual data collection methods
 
 ✅ **Task 16: Personalized Learning Paths**
+
 - Learning profile assessment (experience, skills, goals)
 - 3 path templates (Fast Track, Comprehensive, Leadership)
 - Dynamic path adjustment (adapts to performance)
 - Continuous personalization based on data
 
 ✅ **Task 17: Peer-to-Peer Learning Program**
+
 - Peer learning pods (3-4 operators, weekly 30-min meetings)
 - Teach-to-learn sessions (operators teach topics)
 - Buddy system for new operators (informal peer support)
 - Recognition for teaching and helping
 
 ✅ **Task 18: Learning Community Platform**
+
 - Discussion forums (5 categories, topic-organized)
 - Knowledge sharing feed (social learning, activity stream)
 - Resource library (community-curated content)
@@ -953,6 +995,7 @@ CONCLUSION: Training investment pays for itself 17× over in Year 1
 - Implementation: Slack → Discourse → Custom
 
 ✅ **Task 19: Learning Gamification**
+
 - Points system (earn and spend)
 - Achievement badges (beginner → advanced)
 - Levels & progression (Apprentice → Master, 5 levels)
@@ -961,6 +1004,7 @@ CONCLUSION: Training investment pays for itself 17× over in Year 1
 - Leaderboards (optional, opt-in only)
 
 ✅ **Task 20: Learning Impact Measurement**
+
 - Level 1: Reaction (satisfaction, engagement)
 - Level 2: Learning (knowledge acquisition, retention)
 - Level 3: Behavior (application in work)
@@ -971,6 +1015,7 @@ CONCLUSION: Training investment pays for itself 17× over in Year 1
 ---
 
 **Integration:** All 6 systems work together:
+
 - Analytics → Personalized paths
 - Spaced repetition → Better retention → Better analytics
 - Peer learning → Community platform
@@ -987,4 +1032,3 @@ CONCLUSION: Training investment pays for itself 17× over in Year 1
 **Evidence:** `/home/justin/HotDash/hot-dash/docs/enablement/learning_development_systems.md`
 
 ✅ **TASKS 15-20 COMPLETE (6 COMPREHENSIVE SYSTEMS DESIGNED)**
-

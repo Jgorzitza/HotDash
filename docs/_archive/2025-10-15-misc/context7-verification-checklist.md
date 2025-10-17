@@ -13,6 +13,7 @@ Use this checklist to verify that Context7 MCP is properly configured and workin
 - [ ] `.context7ignore` excludes `node_modules/`, `build/`, `.env*`, `vault/`
 
 **Verify:**
+
 ```bash
 # From project root
 cat .mcp.json | jq '.mcpServers.context7'
@@ -27,6 +28,7 @@ cat .context7ignore | grep -E 'node_modules|build|\.env|vault'
 - [ ] README.md includes "AI Agent Support: Context7 MCP" section
 
 **Verify:**
+
 ```bash
 ls -la docs/context7-*.md docs/directions/context7-mcp-setup.md
 grep -A 5 "AI Agent Support: Context7 MCP" README.md
@@ -39,6 +41,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "dashboard tile component implementation"
 
 **Expected Results:**
+
 - Should return references to `app/components/tiles/`
 - Should include specific tile implementations (Sales Pulse, Inventory, etc.)
 - Should show component patterns and structure
@@ -52,6 +55,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "Shopify service client for order fulfillment"
 
 **Expected Results:**
+
 - Should return `app/services/shopify/` references
 - Should show order-related service methods
 - Should include relevant integration code
@@ -65,6 +69,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "production deployment checklist"
 
 **Expected Results:**
+
 - Should return `docs/deployment/production_go_live_checklist.md`
 - May include related deployment documentation
 - Should not return code files
@@ -78,6 +83,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "environment variables for staging"
 
 **Expected Results:**
+
 - Should return `.env.example` or `.env.staging.example`
 - May include `docs/deployment/env_matrix.md`
 - Should NOT return actual `.env` files (they're ignored)
@@ -91,6 +97,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "service client implementation pattern"
 
 **Expected Results:**
+
 - Should return multiple service client files
 - Should show common patterns across clients
 - May include base classes or utilities
@@ -104,6 +111,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "dashboard facts table structure"
 
 **Expected Results:**
+
 - Should return `prisma/schema.prisma` references
 - Should show DashboardFact model
 - May include related migrations
@@ -117,6 +125,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "nightly metrics rollup script"
 
 **Expected Results:**
+
 - Should return `scripts/ops/run-nightly-metrics.ts`
 - May include related documentation in `docs/data/nightly_metrics.md`
 - Should show the actual implementation
@@ -130,6 +139,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "node_modules lodash"
 
 **Expected Results:**
+
 - Should NOT return files from `node_modules/`
 - May return project code that uses lodash
 - Should respect `.context7ignore` rules
@@ -145,11 +155,12 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Action:** First time using Context7 after setup
 
 **Expected:**
+
 - Indexing completes in 1-3 minutes
 - No errors during indexing
 - Subsequent queries are fast
 
-**Actual Time:** __________ minutes
+**Actual Time:** ****\_\_**** minutes
 
 **Status:** [ ] Pass / [ ] Fail
 
@@ -160,11 +171,12 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Action:** Run any of the queries above after indexing
 
 **Expected:**
+
 - Queries return in < 1 second
 - Results are relevant
 - No timeout errors
 
-**Actual Time:** __________ ms
+**Actual Time:** ****\_\_**** ms
 
 **Status:** [ ] Pass / [ ] Fail
 
@@ -180,6 +192,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query 2 (Shopify):** "Admin API product query"
 
 **Expected:**
+
 - Both MCPs respond correctly
 - No conflicts between servers
 - Each returns appropriate results
@@ -193,6 +206,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "metrics aggregation implementation and documentation"
 
 **Expected:**
+
 - Returns both code (`scripts/ai/`, `app/services/`)
 - Returns docs (`docs/data/nightly_metrics.md`)
 - Shows complete picture of the feature
@@ -208,6 +222,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "dashboard"
 
 **Expected:**
+
 - Returns relevant results (not everything)
 - Prioritizes most relevant files
 - Results are still useful despite broad query
@@ -221,6 +236,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "shopfy order fulfilment" (typos intentional)
 
 **Expected:**
+
 - Still returns relevant Shopify order results
 - Semantic understanding compensates for typos
 - Or returns "no results" gracefully
@@ -234,6 +250,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Query:** "bitcoin mining integration"
 
 **Expected:**
+
 - Returns no results or very low relevance results
 - Doesn't hallucinate non-existent code
 - Responds gracefully
@@ -249,11 +266,13 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Scenario:** Agent needs to add a new dashboard tile
 
 **Queries:**
+
 1. "existing dashboard tile implementation"
 2. "dashboard tile component pattern"
 3. "how to register a new tile"
 
 **Expected:**
+
 - Agent finds existing tile examples
 - Agent understands the pattern
 - Agent can implement without asking humans
@@ -267,11 +286,13 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 **Scenario:** Integration isn't working
 
 **Queries:**
+
 1. "Chatwoot service client implementation"
 2. "error handling in service clients"
 3. "incident response for integration failures"
 
 **Expected:**
+
 - Agent finds the service code
 - Agent finds error handling patterns
 - Agent finds runbook procedures
@@ -287,23 +308,27 @@ If any tests fail, check:
 ### Common Issues
 
 **No Results / Slow Queries:**
+
 - [ ] Verify workspace path is correct
 - [ ] Check `.context7ignore` isn't over-excluding
 - [ ] Restart MCP server (reload Cursor)
 - [ ] Check for Context7 errors in MCP logs
 
 **Wrong Results:**
+
 - [ ] Query may be too broad - try more specific terms
 - [ ] Check if files exist that should match
 - [ ] Verify files aren't in `.context7ignore`
 
 **Indexing Fails:**
+
 - [ ] Check `.mcp.json` syntax (use `jq` validation)
 - [ ] Verify npx can install `@upguard/context7-mcp`
 - [ ] Check disk space for index cache
 - [ ] Review Context7 MCP server logs
 
 **MCP Not Loading:**
+
 - [ ] Verify `.mcp.json` is valid JSON
 - [ ] Check Cursor has loaded MCP servers
 - [ ] Restart Cursor completely
@@ -313,10 +338,10 @@ If any tests fail, check:
 
 ## Sign-Off
 
-**Tested By:** ________________  
-**Date:** ________________  
+**Tested By:** ******\_\_\_\_******  
+**Date:** ******\_\_\_\_******  
 **All Tests Pass:** [ ] Yes / [ ] No  
-**Issues Found:** ________________  
+**Issues Found:** ******\_\_\_\_******  
 **Ready for Agent Use:** [ ] Yes / [ ] No
 
 ---
@@ -350,7 +375,7 @@ cat .context7ignore
 ---
 
 **Related Documentation:**
+
 - `docs/context7-quick-reference.md` - Query templates
 - `docs/context7-mcp-guide.md` - Complete guide
 - `docs/directions/context7-mcp-setup.md` - Setup summary
-

@@ -1,4 +1,3 @@
-
 # Drift Checklist (Daily at Shutdown) — Manager Only
 
 > **Who runs this:** Manager.  
@@ -9,28 +8,31 @@
 
 ## 1) Secrets & Hygiene
 
-- [ ] **HEAD scan** (fast):  
+- [ ] **HEAD scan** (fast):
   ```bash
   gitleaks detect --source . --redact
   ```
-- [ ] **History scan (Fri only)** or when you suspect a leak:  
+- [ ] **History scan (Fri only)** or when you suspect a leak:
   ```bash
   gitleaks git -v --redact --report-format sarif --report-path .reports/gitleaks-history.sarif --log-opts="--all" .
   ```
-- [ ] Confirm **Push Protection** & **Secret Scanning** are enabled (Settings → Code security & analysis).  
+- [ ] Confirm **Push Protection** & **Secret Scanning** are enabled (Settings → Code security & analysis).
 - [ ] Ensure `.env*` files are ignored and **not staged**.
 
 ---
 
 ## 2) Docs Governance (no sprawl)
 
-- [ ] Policy check (allow-list):  
+- [ ] Policy check (allow-list):
+
   ```bash
   node scripts/policy/check-docs.mjs
   ```
+
   Expect **0 violations**. Fix or quarantine via archive sweep (below).
 
-- [ ] **Planning TTL** (sweep anything > 2 days):  
+- [ ] **Planning TTL** (sweep anything > 2 days):
+
   ```bash
   node scripts/ops/archive-docs.mjs
   git commit -am "chore: planning TTL sweep" && git push
@@ -60,8 +62,8 @@
 
 ## 4) Sandboxes & Protections
 
-- [ ] **Branch protection** on `main` still enforces required checks.  
-- [ ] **CODEOWNERS** still guards `docs/**` and `feedback/**` (manager review).  
+- [ ] **Branch protection** on `main` still enforces required checks.
+- [ ] **CODEOWNERS** still guards `docs/**` and `feedback/**` (manager review).
 - [ ] (Optional) Close **stale branches** (> 14 days no commits) unless actively used.
 
 ---

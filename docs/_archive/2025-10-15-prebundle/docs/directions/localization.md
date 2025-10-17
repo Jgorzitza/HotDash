@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Localization — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -40,6 +43,7 @@ You may run local, non-interactive audit and export commands without approval. G
 - Start executing assigned tasks immediately; log progress, blockers, and approvals in `feedback/localization.md`.
 
 ## Current Sprint Focus — 2025-10-12
+
 Own each action until the evidence is published—log the artifacts, timestamps, and follow-up owners in `feedback/localization.md`. If another team is involved, schedule and track the task until it is complete.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
@@ -89,6 +93,7 @@ Own each action until the evidence is published—log the artifacts, timestamps,
    - Evidence: Documentation audit results
 
 **Ongoing Requirements**:
+
 - English-only enforcement for all new content
 - Coordinate with @designer and @support on copy
 - Log all audits in feedback/localization.md
@@ -107,12 +112,14 @@ Own each action until the evidence is published—log the artifacts, timestamps,
 **All tasks are ready and independent**:
 
 **Task 2: Agent SDK Copy Audit** (30 min)
+
 - Review docs/AgentSDKopenAI.md
 - Check approval queue UI copy
 - Audit agent response templates
 - Evidence: Audit results
 
 **Task 3: Agent Response Copy Guidelines** (1 hour)
+
 - Create copy guidelines for agents
 - Define brand voice for AI
 - Provide examples
@@ -120,17 +127,20 @@ Own each action until the evidence is published—log the artifacts, timestamps,
 - Evidence: Guidelines document
 
 **Task 4: Approval Queue UI Copy** (30 min)
+
 - Review button text, messages
 - Ensure clarity
 - Coordinate with @designer
 - Evidence: Copy review
 
 **Task 5: Error Message Consistency** (1 hour)
+
 - Audit all error messages
 - Create style guide
 - Evidence: Error style guide
 
 **Task 6: Documentation Language Check** (1 hour)
+
 - Scan docs for clarity
 - Create glossary
 - Evidence: Documentation audit
@@ -142,6 +152,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task 7: Agent SDK Localization Framework**
+
 - Create localization framework for future multi-language support
 - Document string extraction process
 - Design translation workflow
@@ -149,6 +160,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Localization framework document
 
 **Task 8: Terminology Standardization**
+
 - Create standard terminology glossary for HotDash
 - Document approved vs prohibited terms
 - Create style guide for technical writing
@@ -156,6 +168,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Terminology glossary, style guide
 
 **Task 9: UI Copy Inventory**
+
 - Complete inventory of ALL UI text strings
 - Categorize by component/feature
 - Document context for each string
@@ -163,6 +176,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Complete UI copy inventory spreadsheet
 
 **Task 10: Agent Response Localization Planning**
+
 - Design how agent responses would be localized
 - Document template structure for multi-language
 - Create pilot plan for FR support (future)
@@ -170,6 +184,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Localization strategy for agents
 
 **Task 11: Error Message Internationalization**
+
 - Design i18n structure for error messages
 - Create error code system (language-agnostic)
 - Document translation requirements
@@ -177,6 +192,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Error i18n framework
 
 **Task 12: Documentation Translation Process**
+
 - Create process for translating operator docs
 - Design translation quality assurance workflow
 - Document tools and resources needed
@@ -184,6 +200,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Translation process document
 
 **Task 13: Brand Voice Guidelines**
+
 - Document brand voice for all communication types
 - Create tone variations (support, marketing, technical)
 - Provide examples for each voice
@@ -191,6 +208,7 @@ Execute 2-6 in order. Total: ~4 hours of productive work.
 - Evidence: Comprehensive brand voice guide
 
 **Task 14: Copy Testing Framework**
+
 - Design A/B testing framework for UI copy
 - Create copy effectiveness metrics
 - Document testing process
@@ -204,6 +222,7 @@ Execute 7-14 in any order - all valuable for future scalability.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task 15-24: Translation Operations** (10 tasks)
+
 - 15: Design continuous localization workflow
 - 16: Create translation memory management system
 - 17: Implement machine translation post-editing workflow
@@ -216,6 +235,7 @@ Execute 7-14 in any order - all valuable for future scalability.
 - 24: Design multilingual SEO strategy
 
 **Task 25-34: Global Experience** (10 tasks)
+
 - 25: Design cultural adaptation framework
 - 26: Create locale-specific UX patterns
 - 27: Implement date/time/number formatting system
@@ -228,6 +248,7 @@ Execute 7-14 in any order - all valuable for future scalability.
 - 34: Design multilingual customer support workflow
 
 **Task 35-44: Localization Engineering** (10 tasks)
+
 - 35: Create pseudo-localization for testing
 - 36: Design string interpolation and pluralization
 - 37: Implement locale fallback strategies
@@ -287,6 +308,7 @@ Execute 15-44 in any order. Total: 44 tasks, ~25-30 hours work.
 Instead of complex scripted audits, do manual targeted checks:
 
 **Task 1**: UI Copy Audit (Manual)
+
 - Check `app/components/` for hardcoded strings
 - Check `app/routes/` for UI text
 - List any non-English text or missing i18n
@@ -294,12 +316,14 @@ Instead of complex scripted audits, do manual targeted checks:
 - Timeline: 1-2 hours
 
 **Task 2**: Error Message Audit (Manual)
+
 - Check error messages in `app/` for consistency
 - Ensure all English, professional tone
 - Evidence: Error message inventory
 - Timeline: 1 hour
 
-**Task 3**: Documentation Language Check (Manual)  
+**Task 3**: Documentation Language Check (Manual)
+
 - Scan `docs/` for any non-English content
 - Check `README.md` is English-only
 - Evidence: Doc language report

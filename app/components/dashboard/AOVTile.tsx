@@ -1,4 +1,11 @@
-import { Card, BlockStack, Text, InlineStack, Badge, Spinner } from "@shopify/polaris";
+import {
+  Card,
+  BlockStack,
+  Text,
+  InlineStack,
+  Badge,
+  Spinner,
+} from "@shopify/polaris";
 
 interface AOVTileProps {
   value: string;
@@ -7,13 +14,20 @@ interface AOVTileProps {
   loading?: boolean;
 }
 
-export function AOVTile({ value, trend, percentChange, loading }: AOVTileProps) {
+export function AOVTile({
+  value,
+  trend,
+  percentChange,
+  loading,
+}: AOVTileProps) {
   if (loading) {
     return (
       <Card>
         <BlockStack gap="400" align="center">
           <Spinner size="small" />
-          <Text as="p" tone="subdued">Loading...</Text>
+          <Text as="p" tone="subdued">
+            Loading...
+          </Text>
         </BlockStack>
       </Card>
     );
@@ -22,12 +36,18 @@ export function AOVTile({ value, trend, percentChange, loading }: AOVTileProps) 
   return (
     <Card>
       <BlockStack gap="400">
-        <Text as="h3" variant="headingMd">Average Order Value</Text>
+        <Text as="h3" variant="headingMd">
+          Average Order Value
+        </Text>
         <BlockStack gap="200">
-          <Text as="h2" variant="heading2xl">{value}</Text>
+          <Text as="h2" variant="heading2xl">
+            {value}
+          </Text>
           <InlineStack gap="200" align="start" blockAlign="center">
-            <Text as="p" tone="subdued">{percentChange} vs yesterday</Text>
-            {trend \!== "neutral" && (
+            <Text as="p" tone="subdued">
+              {percentChange} vs yesterday
+            </Text>
+            {trend !== "neutral" && (
               <Badge tone={trend === "up" ? "success" : "critical"}>
                 {trend === "up" ? "↑" : "↓"}
               </Badge>

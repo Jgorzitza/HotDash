@@ -34,6 +34,11 @@ export function getDateRange(days: number): { start: string; end: string } {
  * Parse ISO date string to Date
  */
 export function parseISODate(dateString: string): Date {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, (month ?? 1) - 1, day ?? 1);
+  }
+
   return new Date(dateString);
 }
 
@@ -48,10 +53,10 @@ export function isValidDate(date: any): date is Date {
  * Format date for display (e.g., "Oct 11, 2025")
  */
 export function formatDisplayDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   }).format(date);
 }
 
@@ -65,9 +70,10 @@ export function getRelativeTime(date: Date): string {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-  if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-  return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+  if (diffMins < 1) return "just now";
+  if (diffMins < 60)
+    return `${diffMins} minute${diffMins !== 1 ? "s" : ""} ago`;
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+  return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
 }
-

@@ -31,22 +31,22 @@ function defaultRange(): DateRange {
 
 function selectClient() {
   const config = getGaConfig();
-  
+
   switch (config.mode) {
-    case 'direct':
-      console.log('[GA] Using direct API client');
+    case "direct":
+      console.log("[GA] Using direct API client");
       return { client: createDirectGaClient(config.propertyId), config };
-    
-    case 'mcp':
+
+    case "mcp":
       if (!config.mcpHost) {
-        throw new Error('GA_MCP_HOST required when GA_MODE=mcp');
+        throw new Error("GA_MCP_HOST required when GA_MODE=mcp");
       }
-      console.log('[GA] Using MCP client');
+      console.log("[GA] Using MCP client");
       return { client: createMcpGaClient(config.mcpHost), config };
-    
-    case 'mock':
+
+    case "mock":
     default:
-      console.log('[GA] Using mock client');
+      console.log("[GA] Using mock client");
       return { client: createMockGaClient(), config };
   }
 }

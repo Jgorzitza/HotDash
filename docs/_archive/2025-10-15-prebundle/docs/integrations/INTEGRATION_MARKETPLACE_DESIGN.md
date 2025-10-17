@@ -12,12 +12,14 @@
 **Goal:** Create a thriving marketplace where third-party developers can build and publish integrations for HotDash, expanding functionality beyond our core offerings.
 
 **Inspiration:**
+
 - Shopify App Store (900+ apps, $2B+ ecosystem)
 - Salesforce AppExchange (5,000+ apps)
 - Slack App Directory (2,500+ apps)
 - Zapier Integrations (5,000+ apps)
 
 **Target State (12 months):**
+
 - 20-50 third-party integrations available
 - 5-10 high-quality partners (verified)
 - Seamless OAuth installation flow
@@ -67,6 +69,7 @@
 **Route:** `/integrations/marketplace`
 
 **Layout:**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ 🔌 Integration Marketplace                     [Search...] 🔍 │
@@ -97,6 +100,7 @@
 ```
 
 **Features:**
+
 - Search by name, category, functionality
 - Filter by category, price (free/paid), rating
 - Sort by popularity, rating, recent, name
@@ -110,6 +114,7 @@
 **Route:** `/integrations/marketplace/:integrationId`
 
 **Layout:**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ ← Back to Marketplace                                          │
@@ -169,6 +174,7 @@
 ### OAuth Installation Steps
 
 **Step 1: User Clicks "Install"**
+
 ```
 User clicks "Install" on integration detail page
     ↓
@@ -178,6 +184,7 @@ Redirect to integration's authorization URL
 ```
 
 **Step 2: Authorization Screen**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │                 Klaviyo Authorization                          │
@@ -198,6 +205,7 @@ Redirect to integration's authorization URL
 ```
 
 **Step 3: Callback and Token Exchange**
+
 ```
 Integration redirects back to HotDash with authorization code
     ↓
@@ -209,6 +217,7 @@ Mark integration as "Installed" for shop
 ```
 
 **Step 4: Configuration (Optional)**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │                 Configure Klaviyo Integration                  │
@@ -233,6 +242,7 @@ Mark integration as "Installed" for shop
 ```
 
 **Step 5: Confirmation**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │                                                                │
@@ -255,6 +265,7 @@ Mark integration as "Installed" for shop
 **Route:** `/integrations/installed`
 
 **Layout:**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Installed Integrations                   [Browse Marketplace] │
@@ -290,6 +301,7 @@ Mark integration as "Installed" for shop
 ```
 
 **Actions:**
+
 - ⚙️ Configure: Adjust integration settings
 - 🗑️ Uninstall: Remove integration (with confirmation)
 - Reconnect: Re-authenticate if token expired
@@ -304,6 +316,7 @@ Mark integration as "Installed" for shop
 **URL:** `https://developers.hotdash.app`
 
 **Sections:**
+
 1. **Documentation** - Getting started, API reference, SDK docs
 2. **SDK Download** - TypeScript/JavaScript SDK, code examples
 3. **Sandbox** - Test integration in staging environment
@@ -317,6 +330,7 @@ Mark integration as "Installed" for shop
 ### Integration Submission Process
 
 **Step 1: Create Developer Account**
+
 ```
 developers.hotdash.app/signup
 - Business/Individual selection
@@ -325,6 +339,7 @@ developers.hotdash.app/signup
 ```
 
 **Step 2: Register Integration**
+
 ```
 My Integrations → [+ New Integration]
 
@@ -341,6 +356,7 @@ Form fields:
 ```
 
 **Step 3: Technical Configuration**
+
 ```
 OAuth Configuration:
 - Client ID (auto-generated)
@@ -361,6 +377,7 @@ API Access:
 ```
 
 **Step 4: Submit for Review**
+
 ```
 Submission Checklist:
 ☑ Icon and description complete
@@ -375,6 +392,7 @@ Submission Checklist:
 ```
 
 **Step 5: Review Process**
+
 ```
 Automated Checks (5 minutes):
 - Security scan (API key exposure, XSS, SQL injection)
@@ -402,6 +420,7 @@ Approval Stages:
 ### Category Taxonomy
 
 **Primary Categories:**
+
 1. **📧 Email Marketing** - Klaviyo, Mailchimp, SendGrid, Constant Contact
 2. **🎟️ Customer Support** - Zendesk, Intercom, Freshdesk, Help Scout
 3. **💳 Payments & Billing** - Stripe, PayPal, Square, Authorize.net
@@ -425,12 +444,14 @@ Approval Stages:
 ### Certification Levels
 
 **Basic (Auto-approved):**
+
 - Passes automated security scan
 - OAuth flow works correctly
 - Basic functionality demonstrated
 - Badge: None (default)
 
 **Verified Partner (Manual review):**
+
 - High-quality user experience
 - Comprehensive documentation
 - Responsive support (< 24h response time)
@@ -438,6 +459,7 @@ Approval Stages:
 - Badge: ✓ Verified Partner
 
 **Premium Partner (Partnership agreement):**
+
 - Co-marketing opportunities
 - Featured placement in marketplace
 - Priority support from HotDash
@@ -449,6 +471,7 @@ Approval Stages:
 ### Quality Checklist (for Verified status)
 
 **User Experience:**
+
 - [ ] Clear, concise description
 - [ ] High-quality icon (256x256 SVG)
 - [ ] 3-5 screenshots showing value
@@ -456,6 +479,7 @@ Approval Stages:
 - [ ] Configuration UI (if needed)
 
 **Technical Quality:**
+
 - [ ] OAuth flow tested and validated
 - [ ] API calls use retry logic
 - [ ] Error handling with user-friendly messages
@@ -464,18 +488,21 @@ Approval Stages:
 - [ ] Rate limiting respected (no API abuse)
 
 **Documentation:**
+
 - [ ] Getting started guide
 - [ ] Troubleshooting section
 - [ ] FAQ (10+ questions)
 - [ ] Support contact clearly listed
 
 **Support:**
+
 - [ ] Email support active
 - [ ] < 24 hour response time commitment
 - [ ] Public changelog maintained
 - [ ] Roadmap shared (optional)
 
 **Compliance:**
+
 - [ ] Privacy policy posted
 - [ ] Terms of service posted
 - [ ] GDPR compliant (data processing addendum)
@@ -488,21 +515,25 @@ Approval Stages:
 ### Integration Pricing Options
 
 **Free:**
+
 - No cost to users
 - Developer monetizes elsewhere (e.g., their SaaS subscription)
 - Example: Klaviyo (requires Klaviyo account)
 
 **Freemium:**
+
 - Basic features free
 - Advanced features require paid plan
 - Example: Email automation (100 contacts free, unlimited for $29/mo)
 
 **Paid:**
+
 - One-time purchase or subscription
 - Revenue share with HotDash (20% standard)
 - Example: Advanced analytics dashboard ($49/mo)
 
 **Enterprise:**
+
 - Custom pricing for large merchants
 - Negotiated directly with developer
 - HotDash facilitates but doesn't process payment
@@ -512,18 +543,21 @@ Approval Stages:
 ### Revenue Share Model
 
 **Standard Revenue Share:**
+
 - HotDash takes 20% of integration revenue
 - Developer receives 80%
 - Billed monthly via Stripe Connect
 - Minimum payout: $50 (accrues until met)
 
 **Premium Partner Revenue Share:**
+
 - HotDash takes 15% (negotiated)
 - Developer receives 85%
 - Co-marketing benefits
 - Dedicated account manager
 
 **Transaction Flow:**
+
 ```
 Customer subscribes to integration ($50/mo)
     ↓
@@ -543,6 +577,7 @@ Monthly payout to developer via Stripe Connect
 ### Developer Analytics Dashboard
 
 **Metrics Provided:**
+
 1. **Installs**
    - Total installs (all-time)
    - Active installs (currently installed)
@@ -569,6 +604,7 @@ Monthly payout to developer via Stripe Connect
    - Support ticket volume
 
 **Visualization:**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Klaviyo Email Marketing - Analytics            [Last 30 days] │
@@ -598,24 +634,28 @@ Monthly payout to developer via Stripe Connect
 ### Security Requirements
 
 **OAuth Best Practices:**
+
 - Use PKCE (Proof Key for Code Exchange) for mobile apps
 - Implement state parameter (CSRF protection)
 - Rotate client secrets quarterly
 - Never expose client secret in client-side code
 
 **Data Protection:**
+
 - Encrypt access tokens at rest (AES-256)
 - Use HTTPS for all API communication
 - Implement token expiration (90 days max)
 - Support token revocation API
 
 **API Security:**
+
 - Rate limiting per integration (1000 req/hour default)
 - API key rotation every 90 days
 - Webhook signature verification (HMAC-SHA256)
 - IP allowlisting (optional, for enterprise)
 
 **Vulnerability Scanning:**
+
 - Automated security scan on submission
 - Quarterly scans for published integrations
 - Developer notification if vulnerabilities found
@@ -630,6 +670,7 @@ Monthly payout to developer via Stripe Connect
 **Rating Scale:** 1-5 stars
 
 **Review Submission:**
+
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │ Rate Klaviyo Email Marketing                                  │
@@ -652,6 +693,7 @@ Monthly payout to developer via Stripe Connect
 ```
 
 **Review Moderation:**
+
 - Automated spam detection
 - Manual review for flagged content
 - Developer can respond to reviews
@@ -659,6 +701,7 @@ Monthly payout to developer via Stripe Connect
 - Verified purchase badge (installed > 7 days)
 
 **Review Display:**
+
 - Most helpful reviews shown first
 - Filter by rating (5★, 4★, 3★, etc.)
 - Sort by recent, helpful, rating
@@ -673,16 +716,19 @@ Monthly payout to developer via Stripe Connect
 **Semantic Versioning:** MAJOR.MINOR.PATCH (e.g., 1.2.3)
 
 **Version Types:**
+
 - **MAJOR:** Breaking changes (user must reconfigure)
 - **MINOR:** New features (backward compatible)
 - **PATCH:** Bug fixes (backward compatible)
 
 **Update Strategy:**
+
 - **Auto-update (default):** MINOR and PATCH updates
 - **Manual update:** MAJOR updates (requires user consent)
 - **Rollback:** Allow users to revert to previous version (7 days)
 
 **Version Submission:**
+
 ```
 My Integrations → Klaviyo → [New Version]
 
@@ -705,6 +751,7 @@ Changelog:
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Sprint 1-2, 40 hours)
+
 - [ ] Design database schema (integrations, installs, reviews)
 - [ ] Create marketplace homepage and browse UI
 - [ ] Implement integration detail page
@@ -713,6 +760,7 @@ Changelog:
 - **Estimated:** 40 hours
 
 ### Phase 2: Core Features (Sprint 3-4, 50 hours)
+
 - [ ] Build integration submission form
 - [ ] Implement automated security scan
 - [ ] Create manual review workflow for team
@@ -721,6 +769,7 @@ Changelog:
 - **Estimated:** 50 hours
 
 ### Phase 3: Developer Tools (Sprint 5-6, 40 hours)
+
 - [ ] Create integration SDK (TypeScript)
 - [ ] Write developer documentation
 - [ ] Build sandbox environment for testing
@@ -729,6 +778,7 @@ Changelog:
 - **Estimated:** 40 hours
 
 ### Phase 4: Advanced Features (Sprint 7-8, 30 hours)
+
 - [ ] Implement billing and revenue share (Stripe Connect)
 - [ ] Add integration versioning system
 - [ ] Build API gateway for routing
@@ -737,6 +787,7 @@ Changelog:
 - **Estimated:** 30 hours
 
 ### Phase 5: Polish & Launch (Sprint 9, 20 hours)
+
 - [ ] Security audit and penetration testing
 - [ ] Performance optimization
 - [ ] User acceptance testing
@@ -753,21 +804,25 @@ Changelog:
 ### Launch Targets (6 months)
 
 **Developer Adoption:**
+
 - 20 integrations submitted
 - 10 integrations approved and published
 - 5 verified partners
 
 **User Adoption:**
+
 - 30% of HotDash users install ≥1 integration
 - Average 2.5 integrations per user
 - 80% satisfaction rating (4+ stars average)
 
 **Marketplace Health:**
+
 - 90%+ approval rate for quality integrations
 - < 5% integration churn (uninstalls)
 - 70%+ auto-update adoption
 
 **Revenue (if monetized):**
+
 - $5,000 MRR from paid integrations (Year 1)
 - 20% HotDash platform fee collected
 - 3+ paid integrations with >100 installs
@@ -779,12 +834,14 @@ Changelog:
 ### Shopify App Store
 
 **Strengths:**
+
 - Massive ecosystem (5,000+ apps)
 - Robust review system
 - Integrated billing (revenue share)
 - High-quality developer docs
 
 **Lessons for HotDash:**
+
 - Curate featured apps (quality > quantity)
 - Offer free tier for developers (no listing fee)
 - Make OAuth flow frictionless (1-click install)
@@ -795,12 +852,14 @@ Changelog:
 ### Zapier
 
 **Strengths:**
+
 - Universal connector (no coding required)
 - 5,000+ integrations
 - Workflow automation focus
 - Great UX (drag-and-drop)
 
 **Lessons for HotDash:**
+
 - Make integration setup simple (< 5 steps)
 - Provide templates/presets for common use cases
 - Visual workflow builder (future enhancement)
@@ -810,12 +869,14 @@ Changelog:
 ### Salesforce AppExchange
 
 **Strengths:**
+
 - Enterprise-grade security
 - Rigorous certification program
 - Co-marketing with partners
 - Multi-tier partnership levels
 
 **Lessons for HotDash:**
+
 - Security as a competitive advantage
 - Verified/Premium badges for quality signal
 - Partner program for co-marketing
@@ -831,6 +892,7 @@ Changelog:
 **Impact:** High (marketplace feels empty)
 
 **Mitigation:**
+
 - Partner with 5-10 key vendors upfront (Klaviyo, Zendesk, Stripe)
 - Offer launch incentives (waive platform fee for 6 months)
 - Build 3-5 first-party integrations ourselves
@@ -845,6 +907,7 @@ Changelog:
 **Impact:** High (user trust eroded)
 
 **Mitigation:**
+
 - Rigorous manual review process
 - Verified Partner program (quality signal)
 - User reviews and ratings
@@ -860,6 +923,7 @@ Changelog:
 **Impact:** Critical (legal and reputation)
 
 **Mitigation:**
+
 - Automated security scanning on submission
 - Quarterly vulnerability scans for all integrations
 - Bug bounty program
@@ -875,6 +939,7 @@ Changelog:
 **Impact:** Medium (performance degradation)
 
 **Mitigation:**
+
 - Rate limiting per integration (1000 req/hour)
 - API usage monitoring and alerts
 - Automatic suspension for abuse
@@ -885,6 +950,7 @@ Changelog:
 ## Appendix: Database Schema
 
 ### Integration Table
+
 ```sql
 CREATE TABLE integrations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -915,6 +981,7 @@ CREATE TABLE integrations (
 ```
 
 ### Integration Install Table
+
 ```sql
 CREATE TABLE integration_installs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -933,6 +1000,7 @@ CREATE TABLE integration_installs (
 ```
 
 ### Integration Review Table
+
 ```sql
 CREATE TABLE integration_reviews (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -955,4 +1023,3 @@ CREATE TABLE integration_reviews (
 **Status:** Production-ready architecture for integration ecosystem  
 **Implementation Effort:** 180 hours (~4.5 months)  
 **Next:** Task L (Integration SDK) and Task M (OAuth Flow)
-

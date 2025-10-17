@@ -35,7 +35,9 @@ async function loadDecisions(scope: "ops", since: Date) {
 }
 
 function startOfDay(date: Date) {
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  return new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
+  );
 }
 
 function sevenDaysAgo(): Date {
@@ -83,7 +85,10 @@ async function computeSlaResolution() {
 
   for (const fact of escalations) {
     const breachList = Array.isArray(fact.metadata?.breaches)
-      ? (fact.metadata?.breaches as Array<{ conversationId: number; breachedAt?: string | null }>)
+      ? (fact.metadata?.breaches as Array<{
+          conversationId: number;
+          breachedAt?: string | null;
+        }>)
       : [];
 
     for (const breach of breachList) {
@@ -94,7 +99,10 @@ async function computeSlaResolution() {
       const matchingDecision = decisions.find((decision) => {
         if (!decision.externalRef) return false;
         if (!decision.externalRef.startsWith("chatwoot:")) return false;
-        const id = Number.parseInt(decision.externalRef.split(":")[1] ?? "", 10);
+        const id = Number.parseInt(
+          decision.externalRef.split(":")[1] ?? "",
+          10,
+        );
         return Number.isFinite(id) && id === breach.conversationId;
       });
 
@@ -130,7 +138,12 @@ async function computeSlaResolution() {
   };
 }
 
-async function upsertMetricFact(factType: string, scope: string, value: any, metadata: any) {
+async function upsertMetricFact(
+  factType: string,
+  scope: string,
+  value: any,
+  metadata: any,
+) {
   await prisma.dashboardFact.create({
     data: {
       shopDomain: "__aggregate__",
@@ -146,26 +159,17 @@ async function run() {
   const activation = await computeActivation();
   const sla = await computeSlaResolution();
 
-  await upsertMetricFact(
-    "metrics.activation.rolling7d",
-    "ops",
-    activation,
-    {
-      generatedAt: new Date().toISOString(),
-      notes: "Rolling 7-day activation computed from dashboard sessions and ops decisions",
-    },
-  );
+  await upsertMetricFact("metrics.activation.rolling7d", "ops", activation, {
+    generatedAt: new Date().toISOString(),
+    notes:
+      "Rolling 7-day activation computed from dashboard sessions and ops decisions",
+  });
 
-  await upsertMetricFact(
-    "metrics.sla_resolution.rolling7d",
-    "ops",
-    sla,
-    {
-      generatedAt: new Date().toISOString(),
-      sampleSize: sla.sampleSize,
-      notes: "Rolling 7-day Chatwoot SLA resolution durations",
-    },
-  );
+  await upsertMetricFact("metrics.sla_resolution.rolling7d", "ops", sla, {
+    generatedAt: new Date().toISOString(),
+    sampleSize: sla.sampleSize,
+    notes: "Rolling 7-day Chatwoot SLA resolution durations",
+  });
 
   console.log("Nightly metrics job completed.");
 }

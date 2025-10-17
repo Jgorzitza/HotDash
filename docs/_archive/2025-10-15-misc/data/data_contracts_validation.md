@@ -23,6 +23,7 @@ Validation of external data contracts to ensure schema compatibility and detect 
 **Endpoint:** `POST /admin/api/2024-10/graphql`
 
 **Query:**
+
 ```graphql
 query GetRecentOrders {
   orders(first: 100, sortKey: CREATED_AT, reverse: true) {
@@ -53,6 +54,7 @@ query GetRecentOrders {
 ```
 
 **Expected Response Shape:**
+
 ```typescript
 interface ShopifyOrder {
   id: string;
@@ -77,11 +79,12 @@ interface ShopifyOrder {
 ```
 
 **Validation Query:**
+
 ```sql
 -- Test Shopify order data contract
-SELECT 
+SELECT
   'Shopify Orders Contract' as contract_name,
-  CASE 
+  CASE
     WHEN value ? 'id' AND value ? 'totalPriceSet' THEN 'valid'
     ELSE 'schema_drift'
   END as status,
@@ -96,16 +99,18 @@ LIMIT 1;
 **Endpoint:** `inventoryLevels` query
 
 **Expected Fields:**
+
 - `id`: Inventory level ID
 - `available`: Stock quantity
 - `location.name`: Warehouse location
 - `item.sku`: Product SKU
 
 **Validation:**
+
 ```sql
 -- Verify inventory schema
-SELECT 
-  CASE 
+SELECT
+  CASE
     WHEN value ? 'available' AND value ? 'sku' THEN 'valid'
     ELSE 'missing_required_fields'
   END as validation_status,
@@ -124,11 +129,12 @@ LIMIT 1;
 **Endpoint:** `GET /api/v1/accounts/{account_id}/conversations`
 
 **Expected Response:**
+
 ```typescript
 interface ChatwootConversation {
   id: number;
   inbox_id: number;
-  status: 'open' | 'resolved' | 'pending';
+  status: "open" | "resolved" | "pending";
   created_at: number; // Unix timestamp
   messages: Array<{
     id: number;
@@ -138,18 +144,19 @@ interface ChatwootConversation {
     sender: {
       id: number;
       name: string;
-      type: 'agent_bot' | 'user' | 'contact';
+      type: "agent_bot" | "user" | "contact";
     };
   }>;
 }
 ```
 
 **Validation Query:**
+
 ```sql
 -- Test Chatwoot conversation contract
-SELECT 
+SELECT
   'Chatwoot Conversations' as contract_name,
-  CASE 
+  CASE
     WHEN value ? 'id' AND value ? 'status' AND value ? 'messages' THEN 'valid'
     WHEN NOT (value ? 'messages') THEN 'missing_messages_array'
     ELSE 'schema_drift'
@@ -164,21 +171,23 @@ LIMIT 1;
 **Table:** `support_curated_replies`
 
 **Required Fields:**
+
 - `message_body` (TEXT NOT NULL)
 - `tags` (TEXT[] NOT NULL)
 - `approver` (TEXT NOT NULL)
 - `approved_at` (TIMESTAMPTZ NOT NULL)
 
 **Validation:**
+
 ```sql
 -- Verify curated replies schema
-SELECT 
+SELECT
   'Required Fields' as check_type,
   COUNT(*) FILTER (WHERE message_body IS NULL) as message_body_nulls,
   COUNT(*) FILTER (WHERE tags IS NULL) as tags_nulls,
   COUNT(*) FILTER (WHERE approver IS NULL) as approver_nulls,
-  CASE 
-    WHEN COUNT(*) FILTER (WHERE message_body IS NULL OR tags IS NULL OR approver IS NULL) = 0 
+  CASE
+    WHEN COUNT(*) FILTER (WHERE message_body IS NULL OR tags IS NULL OR approver IS NULL) = 0
     THEN 'contract_valid'
     ELSE 'contract_violation'
   END as status
@@ -194,18 +203,20 @@ FROM support_curated_replies;
 **Endpoint:** GA Data API `runReport` (when MCP available)
 
 **Expected Response:**
+
 ```typescript
 interface GALandingPageSession {
   dimensionValues: [
-    { value: string } // landing page path
+    { value: string }, // landing page path
   ];
   metricValues: [
-    { value: string } // session count
+    { value: string }, // session count
   ];
 }
 ```
 
 **Mock Data Contract:**
+
 ```typescript
 // app/services/ga/mockClient.ts
 export interface GaSession {
@@ -217,11 +228,12 @@ export interface GaSession {
 ```
 
 **Validation:**
+
 ```sql
 -- Test GA session data contract
-SELECT 
+SELECT
   'GA Sessions Contract' as contract_name,
-  CASE 
+  CASE
     WHEN value ? 'landing_page' AND value ? 'sessions' AND value ? 'wow_delta' THEN 'valid'
     ELSE 'schema_drift'
   END as status,
@@ -249,21 +261,21 @@ RETURNS TABLE(
 BEGIN
   -- Validate Shopify orders contract
   RETURN QUERY
-  SELECT 
+  SELECT
     'shopify.orders'::TEXT,
-    CASE 
+    CASE
       WHEN COUNT(*) FILTER (WHERE NOT (value ? 'id' AND value ? 'totalPriceSet')) > 0
       THEN 'drift_detected'
       ELSE 'valid'
     END,
-    ARRAY(SELECT jsonb_object_keys('{"id":1,"totalPriceSet":1}'::jsonb) 
-          EXCEPT 
+    ARRAY(SELECT jsonb_object_keys('{"id":1,"totalPriceSet":1}'::jsonb)
+          EXCEPT
           SELECT jsonb_object_keys(value) FROM facts WHERE topic='shopify.sales' LIMIT 1),
     ARRAY[]::TEXT[],
     NOW()
   FROM facts
   WHERE topic = 'shopify.sales' AND key = 'order';
-  
+
   -- Add more contract validations...
 END;
 $$ LANGUAGE plpgsql;
@@ -281,7 +293,7 @@ SELECT cron.schedule(
   '0 6 * * *', -- Daily at 06:00 UTC
   $$
     INSERT INTO observability_logs (level, message, metadata)
-    SELECT 
+    SELECT
       CASE WHEN status = 'valid' THEN 'INFO' ELSE 'ERROR' END,
       'Data contract validation: ' || contract_name,
       jsonb_build_object(
@@ -337,10 +349,10 @@ SELECT cron.schedule(
 
 psql $DATABASE_URL << 'EOF'
 -- Run contract validation
-SELECT 
+SELECT
   contract_name,
   status,
-  CASE 
+  CASE
     WHEN status = 'valid' THEN '✅'
     ELSE '❌'
   END as check,
@@ -365,4 +377,3 @@ ga.sessions        | valid  | ✅    | {}             | {}
 **Status:** Data contracts specified and validation framework designed  
 **Next:** Implement validation functions and schedule daily checks  
 **North Star Alignment:** ✅ CRITICAL - Ensures operator tiles have reliable data
-

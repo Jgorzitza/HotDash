@@ -9,18 +9,21 @@
 ## Product Ops Pillars
 
 ### 1. Data & Analytics
+
 - Instrument all features (track usage)
 - Weekly metrics review
 - Dashboard maintenance
 - Data quality audits
 
 ### 2. Process & Tools
+
 - Product development process (discovery → delivery)
 - Tool stack management (Linear, Figma, Analytics)
 - Release management
 - Documentation standards
 
 ### 3. Cross-Functional Alignment
+
 - Weekly syncs: Product × Engineering × Design
 - Monthly business reviews with stakeholders
 - Quarterly planning (OKRs)
@@ -29,4 +32,3 @@
 
 **Document Owner**: Product Agent
 **Status**: ProductOps framework
-

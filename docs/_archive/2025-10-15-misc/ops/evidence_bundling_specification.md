@@ -6,11 +6,13 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Evidence Bundling Specification — HotDash OCC Sprint 2025-10-11T03:50Z
 
 ## Standard Folder Structure
 
 ### Daily Evidence Bundle Pattern
+
 ```
 artifacts/nightly/YYYY-MM-DD/
 ├── bundle_manifest.json          # Checksum registry, data freshness timestamps
@@ -37,6 +39,7 @@ artifacts/nightly/YYYY-MM-DD/
 ```
 
 ### Weekly Evidence Archive Pattern
+
 ```
 artifacts/weekly/YYYY-WW/
 ├── sprint_summary.json           # Aggregated metrics for sprint period
@@ -46,6 +49,7 @@ artifacts/weekly/YYYY-WW/
 ```
 
 ### Release Evidence Pattern
+
 ```
 artifacts/releases/vYYYY.MM.DD/
 ├── release_manifest.json         # Complete evidence checklist and signoffs
@@ -66,6 +70,7 @@ artifacts/releases/vYYYY.MM.DD/
 ## Standard File Formats
 
 ### bundle_manifest.json
+
 ```json
 {
   "timestamp": "2025-10-11T03:50:00.000Z",
@@ -98,6 +103,7 @@ artifacts/releases/vYYYY.MM.DD/
 ```
 
 ### Test Results Format
+
 ```json
 {
   "timestamp": "2025-10-11T03:24:00.000Z",
@@ -123,6 +129,7 @@ artifacts/releases/vYYYY.MM.DD/
 ```
 
 ### Compliance Validation Format
+
 ```json
 {
   "timestamp": "2025-10-11T02:00:00.000Z",
@@ -150,12 +157,14 @@ artifacts/releases/vYYYY.MM.DD/
 ## Morning Linking Routine (09:00 UTC)
 
 ### Automated Tasks
+
 1. **Verify Bundle Completeness**
+
    ```bash
    # Check latest nightly bundle exists and is complete
    BUNDLE_DATE=$(date -d "yesterday" +%Y-%m-%d)
    BUNDLE_PATH="artifacts/nightly/${BUNDLE_DATE}"
-   
+
    # Validate manifest and all required files
    if [[ -f "${BUNDLE_PATH}/bundle_manifest.json" ]]; then
      # Extract validation status and evidence completeness
@@ -171,6 +180,7 @@ artifacts/releases/vYYYY.MM.DD/
 3. **Update feedback/product.md**
    ```markdown
    ### YYYY-MM-DDTHH:MM:SSZ — Morning Evidence Bundle Link
+
    - **Summary:** Latest nightly evidence bundle processed and linked
    - **Evidence:** artifacts/nightly/YYYY-MM-DD/ - [validation status]
    - **Decision:** Bundle ready for consumption by QA and compliance teams
@@ -178,6 +188,7 @@ artifacts/releases/vYYYY.MM.DD/
    ```
 
 ### Manual Verification Checklist
+
 - [ ] Bundle manifest shows all evidence types present
 - [ ] No validation failures in compliance checks
 - [ ] Test results show acceptable pass rates (>95% for critical paths)
@@ -188,18 +199,21 @@ artifacts/releases/vYYYY.MM.DD/
 ## Integration Points
 
 ### QA Agent Consumption
+
 - Daily consumption by 09:00 UTC
 - Validate test result completeness
 - Attach summary to DEPLOY-147 Linear issue
 - Flag any regression or performance degradation
 
 ### Data Agent Validation
+
 - PII redaction effectiveness audit
 - Retention policy compliance verification
 - Data quality metrics sign-off
 - Compliance reporting updates
 
 ### Reliability Agent Review
+
 - Infrastructure performance metrics validation
 - Incident threshold monitoring
 - Backup/recovery readiness verification
@@ -208,16 +222,19 @@ artifacts/releases/vYYYY.MM.DD/
 ## Automation Scripts
 
 ### Bundle Generation Script
+
 Location: `scripts/ops/generate-evidence-bundle.ts`
 Trigger: Nightly at 02:30 UTC (after metrics collection)
 Output: Complete evidence bundle with manifest
 
-### Bundle Validation Script  
+### Bundle Validation Script
+
 Location: `scripts/ops/validate-evidence-bundle.ts`
 Trigger: Daily at 08:30 UTC
 Output: Validation report and Linear/feedback updates
 
 ### Archive Management Script
+
 Location: `scripts/ops/archive-evidence-bundles.ts`  
 Trigger: Weekly on Sunday 03:00 UTC
 Output: Weekly summary and 30-day retention enforcement
@@ -225,21 +242,25 @@ Output: Weekly summary and 30-day retention enforcement
 ## Success Metrics
 
 ### Daily Success Criteria
+
 - 100% bundle generation success rate
-- <2 hour latency from data generation to bundle availability  
+- <2 hour latency from data generation to bundle availability
 - 100% validation pass rate for compliance checks
 - <15 minutes for morning linking routine completion
 
 ### Quality Indicators
+
 - Test result reliability (no flaky test tolerance)
 - Performance consistency (±5% variance from baseline)
 - Compliance audit pass rate (100% PII redaction success)
 - Stakeholder consumption rate (QA/Data/Reliability reviews within SLA)
 
 ### Escalation Thresholds
+
 - **Critical**: Bundle generation failure, compliance violation detected
 - **Warning**: Performance degradation >10%, test failure rate >5%
 - **Info**: Bundle processing delay, minor data quality issues
 
 ---
+
 **Next Actions**: Implement bundle generation script, set up automation triggers, validate morning routine workflow

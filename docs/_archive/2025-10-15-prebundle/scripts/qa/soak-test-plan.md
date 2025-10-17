@@ -5,14 +5,18 @@ last_reviewed: 2025-10-09
 status: draft
 target_execution: Week 3 (2025-10-15 — 2025-10-21)
 ---
+
 # Soak Test Plan — HotDash Operator Control Center
 
 ## Purpose
+
 Validate system stability and reliability under sustained load for:
+
 1. **SSE (Server-Sent Events)** streaming connections
 2. **Approval workflow** endurance (when modal components ship)
 
 ## Test Environment
+
 - **Target**: Staging environment (with Postgres + live integrations)
 - **Fallback**: Local dev with `?mock=1` mode (SQLite + deterministic fixtures)
 - **Duration**: 10 minutes (600s) minimum per test; 1 hour (3600s) for full soak
@@ -21,21 +25,26 @@ Validate system stability and reliability under sustained load for:
 ## Test 1: SSE Streaming Endurance
 
 ### Objective
+
 Verify that Server-Sent Events connections remain stable over extended periods without memory leaks, connection drops, or data corruption.
 
 ### Existing Implementation
+
 - Script: `scripts/approvals_sse_soak.sh`
 - Endpoint: `/app/events`
 - Duration: 600s (configurable via `DURATION_SECONDS`)
 - Sampling: Polls every 5s, reads first 3 events
 
 ### Test Procedure
+
 1. Start application in staging or local mode:
+
    ```bash
    npm run dev  # or staging deployment
    ```
 
 2. Run SSE soak test:
+
    ```bash
    DURATION_SECONDS=600 ./scripts/approvals_sse_soak.sh http://localhost:3000/app/events
    ```
@@ -47,6 +56,7 @@ Verify that Server-Sent Events connections remain stable over extended periods w
    - CPU usage (should remain < 30% for idle streaming)
 
 ### Success Criteria
+
 - ✅ All sampled events contain valid JSON
 - ✅ No HTTP errors (200 OK throughout)
 - ✅ No connection timeouts or resets
@@ -54,6 +64,7 @@ Verify that Server-Sent Events connections remain stable over extended periods w
 - ✅ English-only event payloads (no localization tokens)
 
 ### Assertions (Automated)
+
 ```bash
 # Validate event structure
 curl -sS --no-buffer http://localhost:3000/app/events | head -n 10 | jq -e '.data'
@@ -63,6 +74,7 @@ curl -sS --no-buffer http://localhost:3000/app/events | head -n 10 | grep -v "{{
 ```
 
 ### Evidence Collection
+
 - Screenshot of process monitor (memory/CPU stable)
 - Sample event payload (redact sensitive data)
 - Test duration and timestamp
@@ -73,18 +85,22 @@ curl -sS --no-buffer http://localhost:3000/app/events | head -n 10 | grep -v "{{
 ## Test 2: Approval Workflow Endurance
 
 ### Objective
+
 Validate that approval actions (approve/escalate) remain responsive and reliable under repeated usage without degradation.
 
 ### Current Status
+
 ⚠️ **BLOCKED**: Modal components for approval flows not yet implemented
 
 ### Required Components (Pre-Test)
+
 - CX Escalations modal (open, approve, escalate actions)
 - Sales Pulse modal (open, drill-in to order details)
 - AI suggestion state rendering
 - Approval action endpoints (`/actions/chatwoot.escalate`, `/actions/sales.prioritize`)
 
 ### Test Procedure (When Unblocked)
+
 1. Open dashboard in browser
 2. Trigger approval action sequence:
    - Open CX Escalations modal
@@ -100,6 +116,7 @@ Validate that approval actions (approve/escalate) remain responsive and reliable
    - Memory leaks (check dev tools heap snapshots)
 
 ### Success Criteria (When Unblocked)
+
 - ✅ 100 approval cycles complete without errors
 - ✅ All AI suggestions render English-only copy
 - ✅ Action responses return 200 OK
@@ -108,28 +125,32 @@ Validate that approval actions (approve/escalate) remain responsive and reliable
 - ✅ Memory usage stable (< 10% growth over 100 cycles)
 
 ### Playwright Automation (Future)
+
 ```typescript
 // scripts/qa/soak-approval-workflow.spec.ts (DRAFT)
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('approval workflow endurance (100 cycles)', async ({ page }) => {
-  await page.goto('/app?mock=1');
+test("approval workflow endurance (100 cycles)", async ({ page }) => {
+  await page.goto("/app?mock=1");
 
   for (let i = 0; i < 100; i++) {
     // Open CX Escalations modal
-    await page.getByRole('button', { name: /View Escalations/i }).click();
+    await page.getByRole("button", { name: /View Escalations/i }).click();
 
     // Wait for AI suggestion to render
     await expect(page.getByText(/AI Recommendation/i)).toBeVisible();
 
     // Approve first escalation
-    await page.getByRole('button', { name: /Approve/i }).first().click();
+    await page
+      .getByRole("button", { name: /Approve/i })
+      .first()
+      .click();
 
     // Verify confirmation
     await expect(page.getByText(/Escalation approved/i)).toBeVisible();
 
     // Close modal
-    await page.getByRole('button', { name: /Close/i }).click();
+    await page.getByRole("button", { name: /Close/i }).click();
 
     // Assert no console errors
     const errors = await page.evaluate(() => window.consoleErrors);
@@ -139,6 +160,7 @@ test('approval workflow endurance (100 cycles)', async ({ page }) => {
 ```
 
 ### Evidence Collection (When Unblocked)
+
 - Playwright test report with timings
 - Screenshot of 100th approval confirmation
 - Browser memory heap snapshot (before/after)
@@ -149,18 +171,23 @@ test('approval workflow endurance (100 cycles)', async ({ page }) => {
 ## Test 3: Combined SSE + Approval Soak
 
 ### Objective
+
 Validate system stability when SSE streaming and approval workflows run concurrently.
 
 ### Current Status
+
 ⚠️ **BLOCKED**: Approval modals not implemented
 
 ### Test Procedure (When Unblocked)
+
 1. Start SSE soak test in background:
+
    ```bash
    DURATION_SECONDS=3600 ./scripts/approvals_sse_soak.sh http://localhost:3000/app/events &
    ```
 
 2. Run Playwright approval endurance test:
+
    ```bash
    npx playwright test scripts/qa/soak-approval-workflow.spec.ts
    ```
@@ -168,6 +195,7 @@ Validate system stability when SSE streaming and approval workflows run concurre
 3. Monitor both workloads for interference
 
 ### Success Criteria (When Unblocked)
+
 - ✅ SSE test completes without connection drops
 - ✅ Approval test completes without latency spikes
 - ✅ Combined memory usage < staging resource limits
@@ -179,12 +207,14 @@ Validate system stability when SSE streaming and approval workflows run concurre
 Per direction qa.md:28, soak tests validate **English-only copy** in Epoch 1.
 
 **Assertions**:
+
 - ✅ No localization tokens (`{{key}}`, `t('key')`) in UI
 - ✅ All AI suggestions render in English
 - ✅ All approval confirmations in English
 - ✅ All error messages in English
 
 **Future Work** (Post-Epoch 1):
+
 - Localization token validation
 - Multi-language soak tests
 - RTL layout testing (Arabic, Hebrew)
@@ -194,6 +224,7 @@ Per direction qa.md:28, soak tests validate **English-only copy** in Epoch 1.
 ## Execution Checklist
 
 ### Pre-Execution (Week 3 Prep)
+
 - [ ] Verify staging environment provisioned
 - [ ] Confirm Postgres migration applied
 - [ ] Test `scripts/approvals_sse_soak.sh` on local dev
@@ -202,6 +233,7 @@ Per direction qa.md:28, soak tests validate **English-only copy** in Epoch 1.
 - [ ] Set up artifact collection directory (`artifacts/qa/`)
 
 ### Execution (Week 3)
+
 - [ ] Run SSE soak test (10 min + 1 hour)
 - [ ] Capture SSE evidence artifacts
 - [ ] Run approval workflow test (if modals available)
@@ -210,6 +242,7 @@ Per direction qa.md:28, soak tests validate **English-only copy** in Epoch 1.
 - [ ] Document failures and performance metrics
 
 ### Post-Execution
+
 - [ ] Archive all artifacts under `artifacts/qa/soak-YYYY-MM-DD/`
 - [ ] Update `feedback/qa.md` with test results
 - [ ] Share evidence with deployment and compliance agents

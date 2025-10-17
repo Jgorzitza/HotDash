@@ -28,18 +28,27 @@ async function ensureDir(path: string) {
 async function fetchContent(url: string) {
   const response = await fetch(url, {
     headers: {
-      "User-Agent": "HotDash-AI-Ingest/1.0"
-    }
+      "User-Agent": "HotDash-AI-Ingest/1.0",
+    },
   });
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to fetch ${url}: ${response.status} ${response.statusText}`,
+    );
   }
   const text = await response.text();
   return text;
 }
 
 async function main() {
-  const outDir = join(process.cwd(), "packages", "memory", "logs", "build", "hotrodan_content");
+  const outDir = join(
+    process.cwd(),
+    "packages",
+    "memory",
+    "logs",
+    "build",
+    "hotrodan_content",
+  );
   await ensureDir(outDir);
   const runTimestamp = timestamp().replace(/[:T]/g, "-").replace(/\..+$/, "");
   const outPath = join(outDir, `hotrodan-${runTimestamp}.ndjson`);
@@ -68,7 +77,9 @@ async function main() {
   }
 
   await fs.writeFile(outPath, records.join("\n") + "\n", "utf8");
-  console.log(`[ingest-hotrodan] wrote ${records.length} records to ${outPath}`);
+  console.log(
+    `[ingest-hotrodan] wrote ${records.length} records to ${outPath}`,
+  );
 }
 
 main().catch((error) => {

@@ -14,11 +14,13 @@
 **Pricing**: $0.20-0.50 per ticket
 
 **Pros**:
+
 - Fair (pay for what you use)
 - Works for variable volume
 - Low barrier to entry ($0 upfront)
 
 **Cons**:
+
 - Unpredictable costs (customers hate surprises)
 - Incentivizes limiting usage (bad for adoption)
 - Complex billing
@@ -35,4 +37,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Evaluated and Deferred
-

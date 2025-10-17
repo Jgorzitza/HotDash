@@ -9,18 +9,21 @@
 ## Proactive Detection Scenarios
 
 ### Scenario 1: Delayed Shipment
+
 **Detection**: Order expected delivery date passed + not delivered
 **Action**: Generate proactive "Sorry for delay" draft
 **Operator**: Reviews and approves before sending
 **Goal**: Contact customer before they contact us (reduce inbound by 10%)
 
 ### Scenario 2: Payment Failure
+
 **Detection**: Payment declined, customer may not know
 **Action**: Generate "Payment issue" notification draft
 **Operator**: Approves and adds recovery instructions
 **Goal**: Faster resolution, reduce cart abandonment
 
 ### Scenario 3: Account Security Alert
+
 **Detection**: Multiple failed login attempts
 **Action**: Generate security notification draft
 **Operator**: Reviews and sends with password reset link
@@ -38,4 +41,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Proactive system spec
-

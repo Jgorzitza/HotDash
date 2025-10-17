@@ -6,6 +6,7 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2026-01-11
 ---
+
 # Supabase SCC Evidence Placeholder — 2025-10-11
 
 - **Status:** Awaiting countersigned Standard Contractual Clauses bundle from Supabase support (requested 2025-10-11 14:05 UTC, ticket ref pending).

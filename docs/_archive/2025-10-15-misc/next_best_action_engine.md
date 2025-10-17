@@ -25,4 +25,3 @@ AI recommends optimal next action for each customer based on behavior, health, l
 
 **Document Owner**: Product Agent
 **Status**: NBA engine spec
-

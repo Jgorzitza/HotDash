@@ -8,9 +8,11 @@ last_reviewed: 2025-10-11
 # Training Dataset Versioning System
 
 ## Overview
+
 Version control for ML training datasets with snapshots, reproducibility, and drift detection.
 
 ## Versioning Schema
+
 ```sql
 CREATE TABLE training_dataset_versions (
   version_id SERIAL PRIMARY KEY,
@@ -38,6 +40,7 @@ CREATE TABLE training_dataset_metrics (
 ```
 
 ## Snapshot Function
+
 ```sql
 CREATE OR REPLACE FUNCTION snapshot_training_dataset(
   p_dataset_name TEXT,
@@ -51,21 +54,20 @@ DECLARE
 BEGIN
   -- Count rows
   EXECUTE format('SELECT COUNT(*) FROM %I', p_dataset_name) INTO v_row_count;
-  
+
   -- Generate storage path
   v_storage_path := format('training_datasets/%s/%s.parquet', p_dataset_name, p_version_tag);
-  
+
   -- Insert version record
   INSERT INTO training_dataset_versions (dataset_name, version_tag, snapshot_timestamp, row_count, storage_path)
   VALUES (p_dataset_name, p_version_tag, NOW(), v_row_count, v_storage_path)
   RETURNING version_id INTO v_version_id;
-  
+
   -- Export to storage (implementation depends on tooling)
-  
+
   RETURN v_version_id;
 END;
 $$ LANGUAGE plpgsql;
 ```
 
 **Status:** Dataset versioning system designed with snapshots and immutability
-

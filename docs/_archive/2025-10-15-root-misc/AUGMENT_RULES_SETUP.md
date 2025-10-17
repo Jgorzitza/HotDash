@@ -10,6 +10,7 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 ## What Was Created
 
 ### Directory Structure
+
 ```
 .augment/
 ├── README.md                           # Augment Code configuration overview
@@ -25,9 +26,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 ```
 
 ### Scripts
+
 - `scripts/ops/sync-augment-rules.sh` - Syncs rules from source documents (executable)
 
 ### Total Files Created
+
 - 9 files in `.augment/` directory
 - 1 sync script
 - 1 summary document (this file)
@@ -35,9 +38,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 ## Rule Files Overview
 
 ### 00-core-principles.md
+
 **Source:** `docs/NORTH_STAR.md`
 
 **Contains:**
+
 - Vision and guiding principles
 - Speed with brakes, show receipts, one ledger
 - No secrets in code, MCP-first development
@@ -46,9 +51,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 - Stop the line triggers
 
 ### 01-documentation-policy.md
+
 **Source:** `docs/RULES.md`
 
 **Contains:**
+
 - Allowed Markdown paths (CI-enforced)
 - Special protected paths (MCP directory)
 - Planning directory TTL (2 days)
@@ -57,9 +64,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 - Daily drift sweep process
 
 ### 02-task-workflow.md
+
 **Source:** `docs/OPERATING_MODEL.md`, `docs/RULES.md`
 
 **Contains:**
+
 - GitHub Issues as single ledger
 - Required fields (Agent, DoD, Acceptance checks, Allowed paths)
 - PR requirements (Issue linkage, Allowed paths declaration)
@@ -68,9 +77,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 - Danger enforcement and verification
 
 ### 03-security-secrets.md
+
 **Source:** `docs/RULES.md`, `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 **Contains:**
+
 - NO SECRETS IN CODE principle
 - Allowed storage locations (GitHub Secrets, Vault, Fly.io)
 - GitHub security features (Push protection, Secret scanning)
@@ -80,9 +91,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 - Incident response
 
 ### 04-mcp-tools.md
+
 **Source:** `mcp/` directory, `docs/NORTH_STAR.md`, `README.md`
 
 **Contains:**
+
 - 6 active MCP servers (GitHub, Context7, Supabase, Fly.io, Shopify, Google Analytics)
 - MCP-first development rule
 - When to use each tool
@@ -91,9 +104,11 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 - MCP documentation protection
 
 ### 05-hitl-approvals.md
+
 **Source:** `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 **Contains:**
+
 - Human-in-the-Loop principle
 - Approvals loop states (Draft → Pending → Approved → Applied → Audited → Learned)
 - Required elements (Evidence, Projected impact, Risk & rollback, Affected paths)
@@ -122,6 +137,7 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 ```
 
 **Sync when:**
+
 - ✅ After updating governance documents
 - ✅ During manager startup (if documents changed)
 - ✅ Before major development work
@@ -143,17 +159,21 @@ Created a comprehensive rules system for Augment Code by extracting governance r
 
 **Add to `docs/runbooks/manager_startup_checklist.md`:**
 
-```markdown
+````markdown
 ## 2.5) Sync Augment Rules (1 min)
+
 - [ ] Check if governance docs changed:
   ```bash
   git diff HEAD~1 docs/NORTH_STAR.md docs/RULES.md docs/OPERATING_MODEL.md
   ```
+````
+
 - [ ] If changed, sync Augment rules:
   ```bash
   ./scripts/ops/sync-augment-rules.sh
   ```
 - [ ] Verify sync successful (all ✓ checks pass)
+
 ```
 
 ### Daily Workflow
@@ -295,7 +315,7 @@ All governance documents remain unchanged. Rules are extracted, not moved.
 
 ## Summary for Other Agents
 
-**TO:** All AI agents  
+**TO:** All AI agents
 **RE:** Augment Code Rules System
 
 A new `.augment/rules/` directory has been created with extracted rules from governance documents.
@@ -314,7 +334,8 @@ A new `.augment/rules/` directory has been created with extracted rules from gov
 
 ---
 
-**Created:** 2025-10-15  
-**Status:** Complete and operational ✅  
+**Created:** 2025-10-15
+**Status:** Complete and operational ✅
 **Verification:** `./scripts/ops/sync-augment-rules.sh` passes all checks
 
+```

@@ -27,11 +27,13 @@
 ### Philosophy
 
 **HotDash Operator Onboarding Philosophy:**
+
 > "We invest in operators because they are the face of our brand. Every new operator receives comprehensive training, dedicated mentorship, and the support needed to succeed. We measure success by operator confidence and customer satisfaction, not speed of completion."
 
 ### Program Goals
 
 By Day 30, new operators will:
+
 - ✅ Independently handle 80%+ of customer inquiries
 - ✅ Confidently use the Agent SDK approval queue
 - ✅ Make appropriate escalation decisions
@@ -72,6 +74,7 @@ Week 4: FULL INDEPENDENCE
 ### Week Before Start Date
 
 **HR & Admin:**
+
 - [ ] Employment paperwork completed
 - [ ] System access requested (Shopify, Chatwoot, approvals, email)
 - [ ] Laptop/equipment prepared and tested
@@ -79,12 +82,14 @@ Week 4: FULL INDEPENDENCE
 - [ ] Team introductions scheduled
 
 **Enablement Team:**
+
 - [ ] Mentor assigned (experienced operator matched to new hire)
 - [ ] Training materials prepared and sent
 - [ ] Week 1 schedule created and shared
 - [ ] Welcome email sent
 
 **Manager:**
+
 - [ ] Review new hire background and experience
 - [ ] Set expectations and goals
 - [ ] Schedule 1:1 cadence (daily Week 1, then weekly)
@@ -111,7 +116,7 @@ To help you hit the ground running, here's what to expect:
 • Day 5: Shadowing + hands-on practice (the fun part!)
 
 🤝 YOUR MENTOR:
-You'll be paired with [Mentor Name], one of our experienced operators. They'll 
+You'll be paired with [Mentor Name], one of our experienced operators. They'll
 be your go-to person for questions, guidance, and support. You'll meet them on Day 1.
 
 📚 PRE-READING (OPTIONAL):
@@ -153,6 +158,7 @@ Support Manager / Enablement Lead
 ---
 
 **9:00-9:30 AM: Welcome & Introductions**
+
 - [ ] Meet your manager
 - [ ] Meet your mentor
 - [ ] Meet the support team
@@ -160,6 +166,7 @@ Support Manager / Enablement Lead
 - [ ] Get your equipment setup
 
 **9:30-10:30 AM: HotDash Overview**
+
 - [ ] Company mission and values
 - [ ] History and growth
 - [ ] Customer segments
@@ -171,6 +178,7 @@ Support Manager / Enablement Lead
 ---
 
 **10:30-11:00 AM: Break + System Access Setup**
+
 - [ ] Log into Shopify admin
 - [ ] Access Chatwoot
 - [ ] Join Slack channels (#support-team, #support-questions, #occ-enablement)
@@ -180,6 +188,7 @@ Support Manager / Enablement Lead
 ---
 
 **11:00 AM-12:00 PM: Product Deep Dive**
+
 - [ ] Complete product catalog walkthrough
 - [ ] Key features and benefits
 - [ ] Common customer use cases
@@ -191,6 +200,7 @@ Support Manager / Enablement Lead
 ---
 
 **12:00-1:00 PM: Lunch with Team**
+
 - Informal team building
 - Ask questions in relaxed setting
 - Get to know team members
@@ -199,6 +209,7 @@ Support Manager / Enablement Lead
 ---
 
 **1:00-2:30 PM: Support Philosophy & North Star**
+
 - [ ] Read North Star document together
 - [ ] Discuss operator-first principles
 - [ ] Review support metrics and goals
@@ -214,6 +225,7 @@ Support Manager / Enablement Lead
 ---
 
 **3:00-4:30 PM: Knowledge Base Introduction**
+
 - [ ] KB structure and organization
 - [ ] How to search effectively
 - [ ] Document versions and updates
@@ -225,12 +237,14 @@ Support Manager / Enablement Lead
 ---
 
 **4:30-5:00 PM: Day 1 Wrap-Up**
+
 - [ ] Questions and answers
 - [ ] Review tomorrow's schedule
 - [ ] Assign evening "homework" (optional reading)
 - [ ] Manager/mentor check-in
 
 **Evening Assignment (Optional):**
+
 - Watch Module 1: OCC Overview & Architecture (5m 47s)
 - Read Quick Start Guide
 - Jot down 3 questions for tomorrow
@@ -245,11 +259,13 @@ Support Manager / Enablement Lead
 ---
 
 **9:00-9:15 AM: Day 1 Debrief**
+
 - [ ] Questions from yesterday
 - [ ] Review optional homework
 - [ ] Preview today's objectives
 
 **9:15-10:30 AM: Knowledge Base Deep Dive**
+
 - [ ] KB search techniques (keyword strategies)
 - [ ] Navigating policy documents
 - [ ] Understanding document hierarchy
@@ -265,6 +281,7 @@ Support Manager / Enablement Lead
 ---
 
 **11:00 AM-12:30 PM: Policy Immersion**
+
 - [ ] Shipping Policy (v2.1) - complete read-through
 - [ ] Return Policy (v2.1) - complete read-through
 - [ ] Refund Policy - complete read-through
@@ -280,6 +297,7 @@ Support Manager / Enablement Lead
 ---
 
 **1:30-3:00 PM: Troubleshooting Guides**
+
 - [ ] Login/account access issues
 - [ ] Payment failures and errors
 - [ ] Shipping and tracking problems
@@ -295,6 +313,7 @@ Support Manager / Enablement Lead
 ---
 
 **3:30-4:45 PM: Common Scenarios Practice**
+
 - [ ] "Where is my order?" (practice response)
 - [ ] "How do I return this?" (practice response)
 - [ ] "My payment was declined" (practice response)
@@ -304,6 +323,7 @@ Support Manager / Enablement Lead
 **Activity:** Write practice responses, mentor reviews
 
 **Mentor Feedback:**
+
 - Accuracy of information
 - Tone and empathy
 - Clarity and completeness
@@ -312,12 +332,14 @@ Support Manager / Enablement Lead
 ---
 
 **4:45-5:00 PM: Day 2 Wrap-Up**
+
 - [ ] Quiz review and corrections
 - [ ] Questions answered
 - [ ] Tomorrow preview
 - [ ] Evening assignment
 
 **Evening Assignment (Optional):**
+
 - Watch Module 2: Customer Lifecycle Management (3m 52s)
 - Review FAQ - Top 10 questions
 - Practice writing 2 customer responses
@@ -332,11 +354,13 @@ Support Manager / Enablement Lead
 ---
 
 **9:00-9:15 AM: Day 2 Recap**
+
 - [ ] Review practice responses from yesterday
 - [ ] Mentor feedback discussion
 - [ ] Questions answered
 
 **9:15-10:45 AM: Agent SDK Overview**
+
 - [ ] Watch Module 1 together (if not done)
 - [ ] What is Agent SDK and why we use it
 - [ ] Human-in-the-loop philosophy
@@ -352,6 +376,7 @@ Support Manager / Enablement Lead
 ---
 
 **11:15 AM-12:30 PM: The 5-Question Framework**
+
 - [ ] Deep dive into each question:
   1. Accuracy - verifying information
   2. Completeness - all questions answered
@@ -368,6 +393,7 @@ Support Manager / Enablement Lead
 ---
 
 **1:30-3:00 PM: Live Approval Queue Demo**
+
 - [ ] Mentor demonstrates 3 complete approval flows:
   1. Standard approval (high confidence)
   2. Edit & approve (medium confidence)
@@ -384,6 +410,7 @@ Support Manager / Enablement Lead
 ---
 
 **3:30-4:45 PM: Hands-On Practice (Supervised)**
+
 - [ ] Work through 8 practice scenarios
 - [ ] Mentor observes and guides
 - [ ] Apply 5-Question Framework
@@ -391,6 +418,7 @@ Support Manager / Enablement Lead
 - [ ] Receive immediate feedback
 
 **Practice Scenarios:**
+
 1. Easy approval
 2. Minor edit needed
 3. Factual error (reject)
@@ -401,7 +429,8 @@ Support Manager / Enablement Lead
 8. Technical issue
 
 **Mentor Scoring:**
-- Decision quality: ___/8 correct
+
+- Decision quality: \_\_\_/8 correct
 - Speed: Appropriate for day 3
 - Reasoning: Can explain decisions
 - Confidence: Growing comfort
@@ -409,12 +438,14 @@ Support Manager / Enablement Lead
 ---
 
 **4:45-5:00 PM: Day 3 Wrap-Up**
+
 - [ ] Review practice performance
 - [ ] Address confusion or concerns
 - [ ] Preview tomorrow
 - [ ] Evening assignment
 
 **Evening Assignment:**
+
 - Watch Module 3: Sales Pulse Integration (4m 58s)
 - Review Approval Queue FAQ (full read)
 - Think about questions for tomorrow
@@ -429,11 +460,13 @@ Support Manager / Enablement Lead
 ---
 
 **9:00-9:30 AM: Day 3 Review**
+
 - [ ] Discuss FAQ questions
 - [ ] Review practice scenarios from yesterday
 - [ ] Build on learnings
 
 **9:30-11:00 AM: HotDash Brand Voice**
+
 - [ ] Brand voice guidelines
 - [ ] Tone: Friendly, professional, helpful
 - [ ] What we say vs what we don't say
@@ -451,6 +484,7 @@ Support Manager / Enablement Lead
 ---
 
 **11:30 AM-12:30 PM: Empathy in Written Communication**
+
 - [ ] Why empathy matters
 - [ ] Reading customer emotion in text
 - [ ] Responding to frustration appropriately
@@ -466,6 +500,7 @@ Support Manager / Enablement Lead
 ---
 
 **1:30-3:00 PM: Editing AI Drafts for Tone**
+
 - [ ] Common AI tone issues
 - [ ] Adding warmth and personality
 - [ ] Using customer names effectively
@@ -475,6 +510,7 @@ Support Manager / Enablement Lead
 **Activity:** Edit 10 AI drafts to improve tone
 
 **Mentor Review:**
+
 - Rate each edit 1-5 for improvement
 - Provide feedback on approach
 - Identify editing patterns
@@ -486,6 +522,7 @@ Support Manager / Enablement Lead
 ---
 
 **3:30-4:45 PM: Real Response Practice**
+
 - [ ] Write responses to 5 real customer messages (historical)
 - [ ] Mentor reviews in real-time
 - [ ] Get immediate feedback
@@ -493,6 +530,7 @@ Support Manager / Enablement Lead
 - [ ] Compare to what was actually sent
 
 **Focus Areas:**
+
 - Accuracy and completeness
 - Appropriate tone
 - Clear next steps
@@ -502,12 +540,14 @@ Support Manager / Enablement Lead
 ---
 
 **4:45-5:00 PM: Day 4 Wrap-Up**
+
 - [ ] Review writing progress
 - [ ] Address confidence concerns
 - [ ] Preview tomorrow (exciting!)
 - [ ] Evening assignment
 
 **Evening Assignment:**
+
 - Watch Module 4: Troubleshooting & Support (3m 48s)
 - Review your best response from today
 - Prepare questions for mentor
@@ -522,18 +562,21 @@ Support Manager / Enablement Lead
 ---
 
 **9:00-9:30 AM: Week 1 Review**
+
 - [ ] Reflect on Week 1 learnings
 - [ ] Address any outstanding questions
 - [ ] Review confidence level (1-5 rating)
 - [ ] Set Week 2 goals
 
 **9:30 AM-12:00 PM: Mentor Shadowing (Part 1)**
+
 - [ ] Observe mentor handling real approvals (2.5 hours)
 - [ ] Watch entire decision process
 - [ ] Ask questions between approvals
 - [ ] Take notes on techniques
 
 **What to Watch For:**
+
 - How mentor applies 5-Question Framework
 - Speed of decision-making
 - Editing patterns and choices
@@ -544,6 +587,7 @@ Support Manager / Enablement Lead
 ---
 
 **12:00-1:00 PM: Lunch & Debrief**
+
 - Discuss morning observations
 - Ask mentor about specific decisions
 - Understand reasoning behind choices
@@ -551,6 +595,7 @@ Support Manager / Enablement Lead
 ---
 
 **1:00-3:00 PM: Supervised Live Practice**
+
 - [ ] Handle REAL approvals with mentor watching
 - [ ] Start with high-confidence (90%+) items
 - [ ] Mentor provides real-time guidance
@@ -559,6 +604,7 @@ Support Manager / Enablement Lead
 **Target:** Handle 8-12 live approvals
 
 **Mentor Coaching:**
+
 - Before: "What do you think?" (encourage independent thought)
 - During: Light guidance if needed
 - After: "Good decision because..." or "Next time consider..."
@@ -570,6 +616,7 @@ Support Manager / Enablement Lead
 ---
 
 **3:30-4:30 PM: Mentor Shadowing (Part 2)**
+
 - [ ] Observe mentor handle more complex cases
 - [ ] See escalation in action
 - [ ] Watch interaction with senior support/manager
@@ -580,12 +627,14 @@ Support Manager / Enablement Lead
 ---
 
 **4:30-5:00 PM: Week 1 Wrap-Up & Assessment**
+
 - [ ] Complete Week 1 self-assessment survey
 - [ ] Manager check-in (15 min)
 - [ ] Celebrate Week 1 completion!
 - [ ] Preview Week 2 (supervised practice begins)
 
 **Week 1 Self-Assessment:**
+
 ```
 Rate your confidence 1-5:
 • Understanding of HotDash products: ____
@@ -611,6 +660,7 @@ Questions or concerns: ________________
 **Goal:** Handle real customer approvals with mentor supervision, building independence gradually
 
 **Daily Structure:**
+
 ```
 9:00-9:15 AM: Daily stand-up with mentor
 9:15-12:00 PM: Supervised approval handling
@@ -620,6 +670,7 @@ Questions or concerns: ________________
 ```
 
 **Progression:**
+
 - **Monday:** Mentor guides every decision
 - **Tuesday:** Mentor observes, intervenes only if needed
 - **Wednesday:** Mentor spot-checks periodically
@@ -631,6 +682,7 @@ Questions or concerns: ________________
 ### Day 6-9: Progressive Independence
 
 **Monday (Day 6): Heavy Guidance**
+
 - Mentor sits with you continuously
 - You make decisions, mentor approves before executing
 - Focus: Build confidence, catch errors
@@ -638,6 +690,7 @@ Questions or concerns: ________________
 - Acceptable speed: Slow (5-10 min each)
 
 **Daily Feedback (30 min):**
+
 ```
 What went well today:
 1. ________________
@@ -657,6 +710,7 @@ Confidence level (1-5): ____
 ---
 
 **Tuesday (Day 7): Moderate Guidance**
+
 - Mentor observes, lets you work
 - Intervenes only if you're about to make significant error
 - Focus: Decision quality, applying framework
@@ -664,6 +718,7 @@ Confidence level (1-5): ____
 - Acceptable speed: Moderate (3-5 min each)
 
 **Mentor Intervention Examples:**
+
 - "Wait, let's double-check that policy version"
 - "This might be an escalation - what do you think?"
 - "Great catch on the tone issue!"
@@ -671,6 +726,7 @@ Confidence level (1-5): ____
 ---
 
 **Wednesday (Day 8): Light Guidance**
+
 - Mentor checks in periodically (every 3-4 approvals)
 - You work independently between check-ins
 - Focus: Building speed, maintaining quality
@@ -678,6 +734,7 @@ Confidence level (1-5): ____
 - Acceptable speed: Improving (2-4 min each)
 
 **Check-In Pattern:**
+
 - Every 60-90 minutes
 - Review last few decisions
 - Answer questions
@@ -686,6 +743,7 @@ Confidence level (1-5): ____
 ---
 
 **Thursday (Day 9): Minimal Guidance**
+
 - Mentor available but not hovering
 - You ping mentor when you need help
 - Focus: Independent decision-making
@@ -693,6 +751,7 @@ Confidence level (1-5): ____
 - Acceptable speed: Near-normal (2-3 min each)
 
 **When to Ping Mentor:**
+
 - Complex scenarios you're unsure about
 - Policy questions
 - Technical issues
@@ -703,12 +762,14 @@ Confidence level (1-5): ____
 **Friday (Day 10): Week 2 Assessment**
 
 **9:00-11:00 AM: Supervised Assessment**
+
 - [ ] Handle 10 approvals with mentor silently observing
 - [ ] Mentor scores each decision (correct/incorrect)
 - [ ] No coaching during assessment
 - [ ] Discussion after completion
 
 **Assessment Rubric:**
+
 - Approval decisions: 8/10 correct (80%+)
 - Escalation decisions: 100% correct
 - Applied 5-Question Framework: Consistently
@@ -722,6 +783,7 @@ Confidence level (1-5): ____
 ---
 
 **11:30 AM-12:30 PM: Feedback & Coaching**
+
 - [ ] Review assessment results
 - [ ] Discuss each decision
 - [ ] Identify strengths
@@ -729,6 +791,7 @@ Confidence level (1-5): ____
 - [ ] Set Week 3 goals
 
 **Manager Join:** Last 15 minutes
+
 - Congratulate progress
 - Address concerns
 - Commit to Week 3 support
@@ -740,6 +803,7 @@ Confidence level (1-5): ____
 ---
 
 **1:30-3:00 PM: Policy Edge Cases Workshop**
+
 - [ ] Discuss gray-area policy situations
 - [ ] Learn when to interpret vs escalate
 - [ ] Review real edge cases from team history
@@ -754,6 +818,7 @@ Confidence level (1-5): ____
 ---
 
 **3:30-4:30 PM: Advanced Scenario Practice**
+
 - [ ] Work through 5 complex scenarios
 - [ ] Multi-issue customers
 - [ ] Angry customers
@@ -765,12 +830,14 @@ Confidence level (1-5): ____
 ---
 
 **4:30-5:00 PM: Week 2 Wrap-Up**
+
 - [ ] Complete Week 2 self-assessment
 - [ ] Manager check-in
 - [ ] Celebrate progress!
 - [ ] Preview Week 3 (more independence!)
 
 **Week 2 Self-Assessment:**
+
 ```
 Compared to Week 1, I feel (much better / better / same / worse):
 • Confidence using approval queue: ____
@@ -796,6 +863,7 @@ Readiness for independent work: ____/5
 **Goal:** Work independently with mentor support available on-demand
 
 **Shift Model:**
+
 ```
 You work independently on approval queue
 Mentor available via Slack/desk
@@ -804,6 +872,7 @@ You ask for help when needed
 ```
 
 **Progression:**
+
 - **Monday:** Frequent check-ins (every 2 hours)
 - **Tuesday:** Moderate check-ins (2-3 times per day)
 - **Wednesday:** Light check-ins (morning & end of day)
@@ -817,22 +886,26 @@ You ask for help when needed
 **Daily Pattern:**
 
 **9:00-9:15 AM: Morning Check-In**
+
 - [ ] Review yesterday's performance
 - [ ] Set today's goals
 - [ ] Address any questions
 - [ ] Mentor: "Call me if you need anything"
 
 **9:15 AM-12:00 PM: Independent Work**
+
 - [ ] Handle approval queue independently
 - [ ] Ask for help when needed (encouraged!)
 - [ ] Maintain quality standards
 
 **Target Approvals:**
+
 - Day 11: 30-35 approvals
 - Day 12: 35-40 approvals
 - Day 13: 40-45 approvals
 
 **Quality Expectations:**
+
 - Decision accuracy: 85%+
 - CSAT: 4.3+
 - Escalation rate: 12-15%
@@ -844,19 +917,23 @@ You ask for help when needed
 ---
 
 **1:00-3:00 PM: Independent Work (Continued)**
+
 - Continue handling approvals
 - More complex scenarios as confidence grows
 
 **3:00-3:15 PM: Mid-Day Check-In**
+
 - [ ] Quick status update with mentor
 - [ ] Any questions or concerns?
 - [ ] Review any challenging cases
 
 **3:15-4:45 PM: Independent Work (Final Session)**
+
 - Continue approval queue work
 - Finish daily target
 
 **4:45-5:00 PM: End-of-Day Debrief**
+
 - [ ] Review day's performance metrics
 - [ ] Discuss interesting or challenging cases
 - [ ] Mentor feedback on decision patterns
@@ -867,12 +944,14 @@ You ask for help when needed
 ### Day 14: Mid-Program Assessment
 
 **9:00-10:30 AM: Formal Assessment**
+
 - [ ] Handle 15 approvals independently
 - [ ] Mentor + manager observe silently
 - [ ] No coaching during assessment
 - [ ] Mix of easy, medium, and complex scenarios
 
 **Assessment Criteria:**
+
 ```
 Decision Quality:
 □ 12/15 correct decisions (80%+) = PASS
@@ -907,6 +986,7 @@ Overall Competency Level:
 ---
 
 **11:00 AM-12:00 PM: Assessment Debrief**
+
 - [ ] Review each decision together
 - [ ] Discuss correct and incorrect choices
 - [ ] Understand reasoning for scores
@@ -914,6 +994,7 @@ Overall Competency Level:
 - [ ] Create development plan for Week 4
 
 **Manager Join:**
+
 - Provide feedback
 - Address concerns
 - Adjust Week 4 plan if needed
@@ -926,6 +1007,7 @@ Overall Competency Level:
 ---
 
 **1:00-2:30 PM: Skill Development Workshop**
+
 - [ ] Focus area based on assessment
   - Option A: Complex scenarios (if struggled)
   - Option B: Speed optimization (if slow but accurate)
@@ -941,12 +1023,14 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **3:00-4:30 PM: Real-World Practice**
+
 - [ ] Return to live approval queue
 - [ ] Apply learnings from morning
 - [ ] Focus on development areas
 - [ ] Build on strengths
 
 **Mentor Observation:**
+
 - Spot-check for improvement
 - Reinforce positive patterns
 - Provide targeted coaching
@@ -954,6 +1038,7 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **4:30-5:00 PM: Week 3 Midpoint Reflection**
+
 - [ ] How are you feeling about the role?
 - [ ] What's clicking? What's still hard?
 - [ ] Confidence check: Ready for Week 4?
@@ -964,17 +1049,20 @@ Mentor tailors afternoon to your specific needs
 ### Day 15: Advanced Topics & Independence
 
 **Full Day Independent Practice**
+
 - Mentor available but hands-off
 - You drive your own queue management
 - Ask for help only when truly needed
 
 **Daily Targets:**
+
 - 45-50 approvals
 - 85%+ decision accuracy
 - <3 min average review time
 - 4.5+ CSAT
 
 **End of Day:**
+
 - Self-review of day's decisions
 - Mentor provides summary feedback
 - Prepare for Week 4 full independence
@@ -988,6 +1076,7 @@ Mentor tailors afternoon to your specific needs
 **Goal:** Operate as fully independent, certified operator
 
 **Daily Structure:**
+
 ```
 9:00-9:15 AM: Quick team stand-up (whole support team)
 9:15 AM-12:00 PM: Independent approval queue work
@@ -997,6 +1086,7 @@ Mentor tailors afternoon to your specific needs
 ```
 
 **Mentor Relationship Shifts:**
+
 - No longer sits with you
 - Available via Slack
 - Weekly check-ins (not daily)
@@ -1009,6 +1099,7 @@ Mentor tailors afternoon to your specific needs
 **Monday-Thursday: Standard Operating Days**
 
 **Daily Goals:**
+
 - 50-60 approvals per day
 - 85%+ decision accuracy
 - 4.5+ CSAT scores
@@ -1016,12 +1107,14 @@ Mentor tailors afternoon to your specific needs
 - <3 min average review time
 
 **Support Structure:**
+
 - Team available via #support-questions Slack
 - Senior support for escalations
 - Manager for policy questions
 - Mentor for check-ins
 
 **Challenges This Week:**
+
 - First time handling high-pressure situation alone
 - First time dealing with very angry customer
 - First time finding a system bug
@@ -1036,6 +1129,7 @@ Mentor tailors afternoon to your specific needs
 **9:00-11:00 AM: Certification Assessment**
 
 **Part 1: Written Exam (30 questions, 45 min)**
+
 - [ ] Knowledge base and policy questions
 - [ ] Decision framework application
 - [ ] Escalation procedures
@@ -1043,6 +1137,7 @@ Mentor tailors afternoon to your specific needs
 - **Passing Score:** 85% (25/30 correct)
 
 **Part 2: Practical Assessment (15 live approvals, 60 min)**
+
 - [ ] Handle 15 real approvals
 - [ ] Assessor observes silently
 - [ ] Mix of routine, moderate, and complex
@@ -1050,6 +1145,7 @@ Mentor tailors afternoon to your specific needs
 - **Passing Score:** 12/15 correct decisions (80%+)
 
 **Part 3: Escalation Analysis (15 min)**
+
 - [ ] Presented with complex escalation scenario
 - [ ] Write comprehensive escalation notes
 - [ ] Scored on analysis quality
@@ -1062,6 +1158,7 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **11:30 AM-12:00 PM: Assessment Scoring**
+
 - Enablement team scores assessment
 - Manager reviews results
 - Prepare feedback
@@ -1069,6 +1166,7 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **12:00-1:00 PM: Team Lunch (Celebration!)**
+
 - Regardless of assessment results, celebrate 4 weeks of hard work
 - Team welcomes you as colleague
 - Share experiences and learnings
@@ -1078,6 +1176,7 @@ Mentor tailors afternoon to your specific needs
 **1:00-2:00 PM: Results & Feedback Session**
 
 **If PASSED:**
+
 - [ ] Congratulations and certificate presentation
 - [ ] Review strengths and standout moments
 - [ ] Discuss development areas for continuous growth
@@ -1085,6 +1184,7 @@ Mentor tailors afternoon to your specific needs
 - [ ] Assign first mentee (optional - you'll mentor next cohort)
 
 **If MORE TIME NEEDED:**
+
 - [ ] Review specific areas needing work
 - [ ] Create extended development plan
 - [ ] Extend supervised period (1-2 weeks)
@@ -1096,6 +1196,7 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **2:00-3:00 PM: Career Path Discussion**
+
 - [ ] Operator → Senior Operator → Expert Operator path
 - [ ] Performance metrics to aim for
 - [ ] Mentorship opportunities
@@ -1105,14 +1206,15 @@ Mentor tailors afternoon to your specific needs
 ---
 
 **3:00-5:00 PM: First Day as Certified Operator!**
+
 - [ ] Handle queue independently
 - [ ] Celebrate small wins
 - [ ] Know support is still available
 - [ ] End Week 4 strong
 
 **Manager Message:**
-"You're now a certified HotDash operator! You've earned this. Remember: help is always 
-available, questions are encouraged, and we're here to support your continued growth. 
+"You're now a certified HotDash operator! You've earned this. Remember: help is always
+available, questions are encouraged, and we're here to support your continued growth.
 Congratulations!"
 
 ---
@@ -1122,6 +1224,7 @@ Congratulations!"
 ### Mentor Selection Criteria
 
 **Ideal Mentors:**
+
 - ✅ 6+ months experience as operator
 - ✅ Proficient or Expert competency level
 - ✅ Top 25% performance metrics
@@ -1130,6 +1233,7 @@ Congratulations!"
 - ✅ Exemplifies HotDash values
 
 **Mentor Training:**
+
 - 2-hour mentor training session
 - Mentorship best practices
 - How to give effective feedback
@@ -1141,6 +1245,7 @@ Congratulations!"
 ### Mentor Responsibilities
 
 **Week 1: Full-Time Commitment**
+
 - Sit with mentee all day Days 1-5
 - Demonstrate workflows
 - Answer questions immediately
@@ -1148,24 +1253,28 @@ Congratulations!"
 - Build rapport and trust
 
 **Week 2: Heavy Support**
+
 - Supervise all approvals
 - Provide real-time guidance
 - Give feedback multiple times per day
 - Be readily available
 
 **Week 3: Available Support**
+
 - Check in 2-3 times per day
 - Available via Slack
 - Spot-check decisions
 - Provide encouragement
 
 **Week 4: Backup Support**
+
 - Weekly check-ins
 - Available for questions
 - Celebrate graduation
 - Transition to peer relationship
 
 **Time Commitment:**
+
 - Week 1: 40 hours
 - Week 2: 30 hours
 - Week 3: 10 hours
@@ -1173,6 +1282,7 @@ Congratulations!"
 - **Total: ~85 hours over 4 weeks**
 
 **Mentor Recognition:**
+
 - Mentorship tracked for performance reviews
 - Bonus/incentive for successful graduations
 - Priority for advancement to senior/lead roles
@@ -1183,12 +1293,14 @@ Congratulations!"
 ### Mentor-Mentee Matching
 
 **Factors to Consider:**
+
 - Schedule alignment (same shifts preferred)
 - Personality compatibility
 - Learning style match
 - Career interests alignment
 
 **Matching Process:**
+
 1. New hire completes profile survey
 2. Review mentor availability and fit
 3. Discuss match with potential mentor
@@ -1197,6 +1309,7 @@ Congratulations!"
 
 **Re-Matching:**
 If mentor-mentee relationship isn't working:
+
 - Address early (don't wait)
 - Manager mediates if needed
 - Re-match without penalty
@@ -1207,6 +1320,7 @@ If mentor-mentee relationship isn't working:
 ### Mentorship Best Practices
 
 **DO:**
+
 - ✅ Build trust first (rapport before rigor)
 - ✅ Explain the "why" behind decisions
 - ✅ Share your own learning experiences
@@ -1216,6 +1330,7 @@ If mentor-mentee relationship isn't working:
 - ✅ Encourage questions (no "stupid questions")
 
 **DON'T:**
+
 - ❌ Just tell them the answer without explaining
 - ❌ Criticize mistakes harshly
 - ❌ Expect perfection immediately
@@ -1225,15 +1340,16 @@ If mentor-mentee relationship isn't working:
 - ❌ Take over instead of coaching
 
 **Feedback Formula:**
+
 ```
-"I noticed you [specific observation]. 
+"I noticed you [specific observation].
 That works because [explain positive] OR
 Next time, try [specific suggestion] because [explain why].
 Overall, [encouragement]."
 
 Example:
-"I noticed you added the customer's name and a warm greeting to that draft. 
-That works great because it personalizes the response and builds rapport. 
+"I noticed you added the customer's name and a warm greeting to that draft.
+That works great because it personalizes the response and builds rapport.
 Overall, you're getting really good at improving AI tone!"
 ```
 
@@ -1249,6 +1365,7 @@ Overall, you're getting really good at improving AI tone!"
 ✅ **Practical Assessment:** 80%+ (12/15 correct decisions)  
 ✅ **Escalation Analysis:** Meets expert template standards  
 ✅ **Performance Metrics (Week 4 average):**
+
 - Decision accuracy: 85%+
 - CSAT: 4.3+
 - Escalation rate: 10-18% (appropriate range)
@@ -1263,6 +1380,7 @@ Overall, you're getting really good at improving AI tone!"
 ### What Graduation Means
 
 **You Are Certified To:**
+
 - ✅ Handle approval queue independently
 - ✅ Make approve/edit/reject decisions without supervision
 - ✅ Escalate appropriately
@@ -1270,6 +1388,7 @@ Overall, you're getting really good at improving AI tone!"
 - ✅ Contribute to team knowledge sharing
 
 **Ongoing Support Available:**
+
 - Weekly team meetings
 - Monthly 1:1 with manager
 - Peer support via Slack
@@ -1277,6 +1396,7 @@ Overall, you're getting really good at improving AI tone!"
 - Mentor check-ins (as needed)
 
 **Career Progression:**
+
 - Month 3-6: Work toward Senior Operator
 - Month 6-8: Work toward Expert Operator
 - Month 8+: Mentorship, leadership opportunities
@@ -1290,23 +1410,26 @@ Overall, you're getting really good at improving AI tone!"
 **Extended Onboarding Options:**
 
 **Option 1: Extended Supervised Practice (1-2 weeks)**
+
 - Additional supervised approval handling
 - Focused coaching on specific gaps
 - Re-assessment at end of extension
 
 **Option 2: Targeted Skill Development**
+
 - Identify specific competency gaps
 - Intensive coaching on those areas
 - Partial certification (routine cases only)
 - Build to full certification over time
 
 **Option 3: Role Adjustment**
+
 - Assess if support operator is right fit
 - Explore alternative roles (if preferred)
 - Support transition with dignity
 
 **Support Manager Commitment:**
-"We invest in your success. If you need more time, we'll provide it. Our goal is 
+"We invest in your success. If you need more time, we'll provide it. Our goal is
 your confidence and competence, not speed."
 
 ---
@@ -1318,6 +1441,7 @@ your confidence and competence, not speed."
 **Symptom:** Feeling overwhelmed by amount to learn
 
 **Solution:**
+
 - **Chunking:** Focus on one day at a time
 - **Repetition:** Same concepts reinforced daily
 - **Practice:** Hands-on reduces overwhelm
@@ -1325,7 +1449,7 @@ your confidence and competence, not speed."
 - **References:** You don't need to memorize, just know where to look
 
 **Manager/Mentor:**
-"It's impossible to know everything in 30 days. That's why we have knowledge bases, 
+"It's impossible to know everything in 30 days. That's why we have knowledge bases,
 FAQs, and support. Your job is to know where to find answers, not memorize them all."
 
 ---
@@ -1335,13 +1459,14 @@ FAQs, and support. Your job is to know where to find answers, not memorize them 
 **Symptom:** Paralysis, over-checking, very slow decisions
 
 **Solution:**
+
 - **Normalize Mistakes:** "Everyone makes them, here's how we learn"
 - **Safe Environment:** Supervised practice is for making mistakes safely
 - **Growth Mindset:** Mistakes = data for learning
 - **Support System:** Escalate when unsure (that's good judgment!)
 
 **Mentor Coaching:**
-"I want you to make mistakes this week. That's literally what practice is for. 
+"I want you to make mistakes this week. That's literally what practice is for.
 I'm here to catch them before they reach customers. Let's learn together."
 
 ---
@@ -1351,13 +1476,14 @@ I'm here to catch them before they reach customers. Let's learn together."
 **Symptom:** "Everyone else is better/faster/smarter than me"
 
 **Solution:**
+
 - **Reality Check:** Everyone felt this way in their first month
 - **Comparison is Unfair:** You're comparing your start to their month 6
 - **Progress Tracking:** Look at YOUR Week 1 vs Week 3
 - **Strengths Focus:** Identify what you're good at
 
 **Manager Support:**
-"We hired you because we believe in you. Your progress in 2 weeks is exactly where 
+"We hired you because we believe in you. Your progress in 2 weeks is exactly where
 you should be. Give yourself credit for how far you've come."
 
 ---
@@ -1367,6 +1493,7 @@ you should be. Give yourself credit for how far you've come."
 **Symptom:** Approval queue, Chatwoot, or other tools feel confusing
 
 **Solution:**
+
 - **Extra Screen Time:** Practice outside shift hours
 - **Video Tutorials:** Rewatch specific modules
 - **One-on-One Tech Training:** Additional support sessions
@@ -1385,12 +1512,14 @@ Additional training session scheduled, focused on technical navigation
 **Solution:**
 
 **If Over-Escalating:**
+
 - Review escalation matrix together
 - Build confidence in your judgment
 - Start with "would I escalate this?" then verify with mentor
 - Gradually increase independent decision-making
 
 **If Under-Escalating:**
+
 - Review red flags list
 - Discuss risk assessment
 - Practice with "when in doubt, escalate" mentality
@@ -1401,6 +1530,7 @@ Additional training session scheduled, focused on technical navigation
 ## 30-Day Checklist (Complete)
 
 ### Week 1: Foundation ☐
+
 - [ ] Day 1: Company orientation + product overview
 - [ ] Day 2: Knowledge base mastery + policy training
 - [ ] Day 3: Agent SDK + approval queue training
@@ -1412,6 +1542,7 @@ Additional training session scheduled, focused on technical navigation
 - [ ] FAQ Top 10 reviewed
 
 ### Week 2: Supervised Practice ☐
+
 - [ ] Day 6-9: Handle 80-120 real approvals with mentor supervision
 - [ ] Daily feedback sessions completed
 - [ ] Day 10: Week 2 formal assessment (8/10 pass rate)
@@ -1420,6 +1551,7 @@ Additional training session scheduled, focused on technical navigation
 - [ ] Development areas identified
 
 ### Week 3: Independent with Support ☐
+
 - [ ] Day 11-13: Handle 105-120 approvals independently
 - [ ] Day 14: Mid-program formal assessment (12/15 pass rate)
 - [ ] Assessment debrief and development plan
@@ -1427,6 +1559,7 @@ Additional training session scheduled, focused on technical navigation
 - [ ] Confidence level 4+/5 for independent work
 
 ### Week 4: Full Independence ☐
+
 - [ ] Day 16-19: Handle 180-240 approvals independently
 - [ ] Day 20: Graduation assessment
   - [ ] Written exam: 85%+ (pass)
@@ -1442,6 +1575,7 @@ Additional training session scheduled, focused on technical navigation
 ### Total Onboarding Metrics
 
 **Approvals Handled During Onboarding:**
+
 - Week 1: 8-12 (supervised practice)
 - Week 2: 80-120 (heavy supervision)
 - Week 3: 105-120 (light supervision)
@@ -1449,6 +1583,7 @@ Additional training session scheduled, focused on technical navigation
 - **Total: 373-492 approvals with progressive independence**
 
 **Training Hours:**
+
 - Formal training: 40 hours (Week 1)
 - Supervised practice: 60 hours (Weeks 2-3)
 - Independent practice: 32 hours (Week 4)
@@ -1461,18 +1596,21 @@ Additional training session scheduled, focused on technical navigation
 ### Days 31-60: Building Mastery
 
 **Week 5-6: Confident Independent**
+
 - Continue independent operation
 - Weekly mentor check-ins (15 min)
 - Monthly manager 1:1
 - Participate in team knowledge sharing
 
 **Week 7-8: Contribute to Team**
+
 - Share learnings at team meeting
 - Help answer newer operator questions
 - Start advanced training modules
 - Goal: Senior Operator readiness
 
 **Target Metrics (Days 31-60):**
+
 - Approval rate: 75-80%
 - CSAT: 4.5+
 - First contact resolution: 85%+
@@ -1484,6 +1622,7 @@ Additional training session scheduled, focused on technical navigation
 ### Days 61-90: Advanced Development
 
 **Month 3:**
+
 - Complete Advanced Training Module 1 (Complex Scenarios)
 - Work toward Senior Operator certification
 - Consider mentoring next new hire
@@ -1519,6 +1658,7 @@ This 30-day onboarding program:
 **Next Review:** After first cohort completes (refine based on experience)
 
 **Related Documents:**
+
 - [Agent SDK Operator Training Module](./agent_sdk_operator_training_module.md)
 - [Approval Queue Quick Start Guide](./approval_queue_quick_start.md)
 - [Mentorship Program Guide](./mentorship_program_guide.md) (to be created)
@@ -1527,4 +1667,3 @@ This 30-day onboarding program:
 **Total Onboarding Investment:** 132 hours training | 370-490 real approvals handled | Dedicated mentor support
 
 ✅ **30-DAY OPERATOR ONBOARDING PROGRAM COMPLETE - READY FOR IMPLEMENTATION**
-

@@ -37,6 +37,7 @@ This document provides **complete specifications** for the webhook endpoint so T
    - Settings (gear icon) → Integrations → Webhooks
 
 3. **Add Webhook:**
+
    ```
    Endpoint URL: https://hotdash-agent-service.fly.dev/webhooks/chatwoot
    Description: Agent SDK Message Processing
@@ -44,7 +45,7 @@ This document provides **complete specifications** for the webhook endpoint so T
      ✅ message_created (PRIMARY)
      ⚠️  conversation_created (OPTIONAL)
      ⚠️  conversation_status_changed (OPTIONAL for cleanup)
-   
+
    Webhook Secret: [OBTAIN FROM ENGINEER]
    ```
 
@@ -55,6 +56,7 @@ This document provides **complete specifications** for the webhook endpoint so T
    - Confirm 200 OK response
 
 5. **Verify Signature:**
+
    ```bash
    # Use our verification script
    npx ts-node --esm scripts/ops/verify-chatwoot-webhook.ts \
@@ -130,6 +132,7 @@ This document provides **complete specifications** for the webhook endpoint so T
 ## TASK 2 READY STATE
 
 **Chatwoot Side:** ✅ 100% Ready
+
 - Super admin access confirmed
 - Webhook UI navigation documented
 - Configuration steps written
@@ -137,6 +140,7 @@ This document provides **complete specifications** for the webhook endpoint so T
 - Verification scripts ready
 
 **Engineer Side:** ⏳ Pending
+
 - Webhook endpoint deployment
 - Environment variable configuration
 - Webhook secret generation and sharing
@@ -149,4 +153,3 @@ This document provides **complete specifications** for the webhook endpoint so T
 **Status:** Task 2 specification COMPLETE - Ready for execution once endpoint deployed  
 **Next:** Proceed to Fifth Expansion tasks (AS-BK) per manager direction  
 **Manager Guidance Followed:** Created spec document, moving on to other tasks ✅
-

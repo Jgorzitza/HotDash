@@ -36,11 +36,13 @@ npm run pilot:health-check
 ```
 
 **Review Overnight Activity**:
+
 - [ ] Check error logs from previous day
 - [ ] Verify zero critical errors
 - [ ] Check for any system alerts
 
 **Prepare for Daily Standup** (9:00 AM):
+
 - [ ] Review yesterday's metrics
 - [ ] Prepare key insights to share
 - [ ] List any issues to discuss
@@ -71,6 +73,7 @@ npm run pilot:health-check
    - Operator concerns or suggestions
 
 **Post Standup**:
+
 - [ ] Share summary in Slack #agent-sdk-pilot
 - [ ] Log standup notes in `feedback/product.md`
 
@@ -94,11 +97,13 @@ npm run pilot:metrics:realtime
 ```
 
 **Slack Health Check**:
+
 - [ ] Any operator questions unanswered >5 min?
 - [ ] Any concerning feedback or complaints?
 - [ ] Any celebration opportunities?
 
 **Quick Actions**:
+
 - Respond to questions immediately
 - Log any new bugs reported
 - Share encouraging updates
@@ -108,11 +113,13 @@ npm run pilot:metrics:realtime
 ### Office Hours (2:00 PM - 3:00 PM Daily)
 
 **Open Zoom Room**:
+
 - Product Agent available for drop-in questions
 - Screen share for troubleshooting
 - Collect detailed feedback
 
 **Document Feedback**:
+
 - [ ] Log all questions asked
 - [ ] Note patterns (recurring issues)
 - [ ] Capture exact quotes for learnings
@@ -125,14 +132,17 @@ npm run pilot:metrics:realtime
 **Attendees**: Sarah, Marcus (2/5 operators)
 
 **Questions Asked**:
+
 - Sarah: "How do I know if a draft is good?" → Showed confidence score interpretation
 - Marcus: "Can I save custom templates?" → Feature request noted for Phase 2
 
 **Feedback**:
+
 - Sarah: "I love the bulk approve for simple questions" (positive!)
 - Marcus: "KB missing info on price matching" → Escalated to Support Agent
 
 **Action Items**:
+
 - [ ] Add price matching article to KB (Support Agent)
 - [ ] Consider custom templates for Phase 2 (Product backlog)
 ```
@@ -186,6 +196,7 @@ Questions? Drop them here! See you tomorrow at 9 AM standup.
 ```
 
 **Send Daily Quick Survey**:
+
 - [ ] Post Google Form link in Slack
 - [ ] 2 questions max (satisfaction rating + quick thought)
 - [ ] Track response rate (aim for 100%)
@@ -215,6 +226,7 @@ npm run pilot:metrics:weekly-report --week=1
 **Week 1 Debrief Meeting** (Product, Engineer, Manager):
 
 **Agenda**:
+
 1. Review metrics vs targets
 2. Operator feedback themes
 3. Bugs and fixes deployed
@@ -222,6 +234,7 @@ npm run pilot:metrics:weekly-report --week=1
 5. Week 2 adjustments
 
 **Deliverable**:
+
 - [ ] Week 1 Learnings Document
 - [ ] Week 2 Action Plan
 - [ ] Share with operators: "Here's what we learned and what we're changing"
@@ -230,14 +243,14 @@ npm run pilot:metrics:weekly-report --week=1
 
 ## Metrics Targets (Week 1)
 
-| Metric | Target | Red Flag (<) | Green Flag (>) |
-|--------|--------|--------------|----------------|
-| **Operator Satisfaction** | >6.5/10 | <6.0 | >7.5 |
-| **Approval Rate** | >35% | <25% | >50% |
-| **Avg Review Time** | <2 min | >3 min | <1 min |
-| **System Uptime** | >95% | <90% | >99% |
-| **Active Operators** | 5/5 daily | <4/5 | 5/5 |
-| **Survey Response Rate** | >80% | <50% | 100% |
+| Metric                    | Target    | Red Flag (<) | Green Flag (>) |
+| ------------------------- | --------- | ------------ | -------------- |
+| **Operator Satisfaction** | >6.5/10   | <6.0         | >7.5           |
+| **Approval Rate**         | >35%      | <25%         | >50%           |
+| **Avg Review Time**       | <2 min    | >3 min       | <1 min         |
+| **System Uptime**         | >95%      | <90%         | >99%           |
+| **Active Operators**      | 5/5 daily | <4/5         | 5/5            |
+| **Survey Response Rate**  | >80%      | <50%         | 100%           |
 
 ---
 
@@ -261,7 +274,8 @@ npm run pilot:metrics:weekly-report --week=1
 - Non-critical bugs accumulating
 - 1 operator considering quitting
 
-**Action**: 
+**Action**:
+
 - Daily team huddle to address issues
 - Prioritize top 3 pain points
 - Extra office hours
@@ -278,12 +292,14 @@ npm run pilot:metrics:weekly-report --week=1
 - Security or data issue
 
 **Action**:
+
 - Immediate team meeting (Product, Engineer, Manager)
 - Pause pilot temporarily
 - Fix critical issues
 - Go/no-go decision before resuming
 
 **Criteria to Resume**:
+
 - All critical bugs fixed
 - Operators willing to try again
 - Clear plan to address top concerns
@@ -312,6 +328,7 @@ npm run pilot:metrics:weekly-report --week=1
 ## Operator Feedback Tracking
 
 **Feedback Categories**:
+
 - 🎉 **Wins**: What operators love
 - 😕 **Friction**: What frustrates operators
 - 🐛 **Bugs**: Technical issues reported
@@ -324,6 +341,7 @@ npm run pilot:metrics:weekly-report --week=1
 ## Feedback Log - Week 1
 
 ### 2025-10-28 (Day 1)
+
 - 🎉 Sarah: "This saved me 2 hours today" (positive!)
 - 😕 Marcus: "Bulk approve button is hard to find" (UX issue)
 - 🐛 David: "Draft had wrong order number for ticket #12345" (bug)
@@ -331,6 +349,7 @@ npm run pilot:metrics:weekly-report --week=1
 - ❓ Aisha: "When should I escalate?" (3rd time asked - training gap)
 
 **Action Items**:
+
 - [ ] Move bulk approve button to top (Designer + Engineer)
 - [ ] Investigate order number mismatch (Engineer)
 - [ ] Add "add apology" to Phase 2 backlog
@@ -344,6 +363,7 @@ npm run pilot:metrics:weekly-report --week=1
 **Monitor Daily**: Top queries with no KB results
 
 **Process**:
+
 1. Run `npm run pilot:kb-gaps` daily
 2. Review top 10 queries that failed to retrieve relevant articles
 3. Create missing articles within 24 hours (Support Agent)
@@ -355,14 +375,17 @@ npm run pilot:metrics:weekly-report --week=1
 ## KB Gaps - Week 1
 
 ### Day 1 (Oct 28)
+
 - "Do you price match?" → No article found → CREATED (Oct 28)
 - "Can I use Apple Pay?" → No article found → CREATED (Oct 29)
 - "What's your BBB rating?" → Edge case, not creating article
 
 ### Day 2 (Oct 29)
+
 - "Do you ship to APO addresses?" → No article found → CREATED (Oct 29)
 
-**KB Coverage**: 
+**KB Coverage**:
+
 - Oct 27: 75%
 - Oct 28: 78%
 - Oct 29: 82%
@@ -376,6 +399,7 @@ npm run pilot:metrics:weekly-report --week=1
 **Bug Priority Levels**:
 
 **P0 (Critical - Fix Immediately)**:
+
 - System down
 - Data loss or corruption
 - Security vulnerability
@@ -386,6 +410,7 @@ npm run pilot:metrics:weekly-report --week=1
 ---
 
 **P1 (High - Fix Today)**:
+
 - Major feature broken (e.g., can't approve drafts)
 - Affects all operators
 - Significantly impacts usability
@@ -395,6 +420,7 @@ npm run pilot:metrics:weekly-report --week=1
 ---
 
 **P2 (Medium - Fix This Week)**:
+
 - Minor feature broken (e.g., dashboard doesn't update)
 - Affects some operators
 - Workaround available
@@ -404,6 +430,7 @@ npm run pilot:metrics:weekly-report --week=1
 ---
 
 **P3 (Low - Post-Pilot)**:
+
 - UI polish (e.g., button alignment)
 - Feature request (e.g., custom templates)
 - Edge case
@@ -415,6 +442,7 @@ npm run pilot:metrics:weekly-report --week=1
 ## Communication Cadence
 
 **Daily**:
+
 - [ ] Standup (9:00 AM)
 - [ ] Slack monitoring (all day)
 - [ ] Office hours (2-3 PM)
@@ -422,11 +450,13 @@ npm run pilot:metrics:weekly-report --week=1
 - [ ] Quick survey (5:00 PM)
 
 **Weekly**:
+
 - [ ] Deep-dive survey (Friday)
 - [ ] Week review meeting (Friday 4 PM)
 - [ ] Week ahead plan (Friday 5 PM)
 
 **As Needed**:
+
 - [ ] Emergency huddles (if red flag triggered)
 - [ ] 1:1 calls with operators (if concerns arise)
 
@@ -436,4 +466,3 @@ npm run pilot:metrics:weekly-report --week=1
 **Purpose**: Daily monitoring checklist for pilot success  
 **Status**: Ready for Week 1 execution  
 **North Star**: ✅ **Daily monitoring ensures operator success, catches issues fast**
-

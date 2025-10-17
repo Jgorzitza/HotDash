@@ -22,6 +22,7 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 **Addressable**: ~50,000 brands
 
 **Vertical-Specific Features**:
+
 - ✅ Order tracking integration (Shopify, WooCommerce, BigCommerce)
 - ✅ Inventory sync (real-time stock checks)
 - ✅ Shipping carrier integrations (USPS, FedEx, UPS)
@@ -29,12 +30,14 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 - ✅ Product catalog integration
 
 **Pre-Built Knowledge Base**:
+
 - Standard e-commerce policies (shipping, returns, refunds)
 - Common product FAQs
 - Seasonal templates (holiday shipping, Black Friday)
 - Payment processor troubleshooting
 
 **Success Stories**:
+
 - Fashion brand: 60% faster returns processing
 - Electronics retailer: 85% FCR on product questions
 - Home goods: $120K annual savings with 15 operators
@@ -50,6 +53,7 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 **Addressable**: ~10,000 companies
 
 **Vertical-Specific Features**:
+
 - Account management integration (Salesforce, HubSpot)
 - Subscription/billing support (Stripe, Chargebee)
 - Technical troubleshooting (API docs, SDKs)
@@ -57,12 +61,14 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 - Onboarding assistance
 
 **Pre-Built Knowledge Base**:
+
 - SaaS-specific policies (SLAs, uptime, security)
 - Integration guides (API documentation)
 - Troubleshooting flowcharts
 - Billing FAQs (subscriptions, upgrades, cancellations)
 
 **Differentiation from E-commerce**:
+
 - Longer, more complex support interactions
 - Technical depth required
 - Focus on retention (not transactional)
@@ -78,6 +84,7 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 **Addressable**: ~20,000 firms
 
 **Vertical-Specific Features**:
+
 - Project status tracking
 - Appointment/meeting scheduling
 - Contract and proposal Q&A
@@ -85,6 +92,7 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 - Time tracking integration
 
 **Pre-Built Knowledge Base**:
+
 - Service policies (hours, scope, revisions)
 - Common project FAQs
 - Meeting scheduling templates
@@ -97,17 +105,20 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 ## Vertical Go-to-Market
 
 ### E-commerce (Primary, Year 1)
+
 - Shopify App Store listing
 - WooCommerce plugin
 - E-commerce conferences (IRCE, Shop Talk)
 - Shopify Plus partnerships
 
 ### B2B SaaS (Secondary, Year 2)
+
 - Product Hunt launch
 - SaaStr conference
 - SaaS community (Slack groups, podcasts)
 
 ### Professional Services (Tertiary, Year 3)
+
 - Agency partnerships
 - PSA tool integrations (ClickUp, Monday.com)
 
@@ -115,4 +126,3 @@ Tailor HotDash Agent SDK for specific industry verticals with pre-built knowledg
 
 **Document Owner**: Product Agent  
 **Status**: Vertical Strategy Defined
-

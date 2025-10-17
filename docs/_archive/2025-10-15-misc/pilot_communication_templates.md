@@ -29,12 +29,14 @@ Agent SDK is an AI-powered tool that helps you respond faster by preparing draft
 We selected you because you're a strong performer, you've shared great feedback about improving our workflows, and we trust your judgment.
 
 **What's involved?**
+
 - **Training**: Oct 23 (90 min) + Oct 25 (60 min)
 - **Pilot**: Oct 28-Nov 8 (2 weeks)
 - **Time**: Daily 15-min standups, quick feedback surveys
 - **Benefit**: Save time on repetitive work, focus on meaningful interactions
 
 **What's in it for you?**
+
 - Be first to use new tech
 - Shape the final product with your feedback
 - Make your job easier (most beta testers loved it!)
@@ -71,12 +73,14 @@ Quick reminder: Agent SDK training is tomorrow!
 **Bring**: Your laptop, login credentials, questions!
 
 **What we'll cover**:
+
 - Live demo of approval queue
 - Hands-on practice with mock tickets
 - Tips from beta testing
 - Q&A
 
 **Prep** (optional):
+
 - Read the Quick Start Guide: [link to docs/operator_quick_start_guide.md]
 - Think about questions you have
 
@@ -102,23 +106,27 @@ Good morning pilots! 🎉
 The Agent SDK approval queue is now LIVE for you!
 
 **What to do**:
+
 1. Log in: https://hotdash.app/approval-queue
 2. You'll see customer inquiries waiting for review
 3. Review, approve/edit, and send!
 4. Check your dashboard: See your stats in real-time
 
 **Expectations for Week 1**:
+
 - Take your time (no rush to be perfect)
 - Review 10-15 drafts today (comfortable pace)
 - Share feedback in Slack #agent-sdk-pilot
 - We're here to help—ask anything!
 
 **Daily Standup**:
+
 - Every morning at 9:00 AM
 - 15 minutes, casual
 - Share wins, challenges, questions
 
 **Help**:
+
 - Slack: #agent-sdk-pilot
 - Office hours: 2-3 PM daily (I'll be there)
 - Troubleshooting: [link to playbook]
@@ -143,21 +151,25 @@ Product Team
 Great first day, team! Here's what happened:
 
 **Metrics**:
+
 - ✅ 87 drafts reviewed by team
 - ✅ 45% approval rate (above our 35% target!)
 - ✅ System uptime: 100% (rock solid)
 - ✅ Team satisfaction: 7.2/10 (above target!)
 
 **Wins**:
+
 - 🎉 Sarah approved 20 drafts—team high score!
 - 🎉 Marcus said "This saved me 2 hours today"
 - 🎉 Zero critical bugs
 
 **Fixes Deployed**:
+
 - 🔧 Fixed order number mismatch issue (Sarah + Marcus reported)
 - 🔧 Improved bulk approve button visibility (David suggested)
 
 **Tomorrow's Focus**:
+
 - Continue at 10% traffic
 - Try keyboard shortcuts if you haven't yet
 - Share more feedback—it's making the product better!
@@ -183,18 +195,21 @@ Hi pilots,
 We made it through 2 weeks! 🎉 Thank you for your hard work and honest feedback.
 
 **Debrief Meeting**:
+
 - **When**: Monday, Nov 11 at 10:00 AM
 - **Where**: Conference Room A (or Zoom)
 - **Duration**: 1 hour
 - **Purpose**: Reflect on pilot, decide if we roll out to full team
 
 **What we'll discuss**:
+
 - What worked well
 - What frustrated you
 - Should we launch to full team?
 - What must be fixed first?
 
 **Prep** (5 minutes):
+
 - Think about your honest opinion (we want real talk!)
 - Best draft you saw? Worst draft?
 - One thing to change before full rollout?
@@ -214,4 +229,3 @@ Product Team
 **Evidence**: 5 ready-to-use templates (invitation, reminder, launch, daily updates, debrief)  
 **Status**: Ready for Manager/Product to customize and send  
 **North Star**: ✅ **Clear communication keeps operators informed and valued**
-

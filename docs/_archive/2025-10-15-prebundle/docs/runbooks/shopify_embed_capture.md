@@ -11,12 +11,14 @@ Note: Under the current React Router 7 + Shopify CLI v3 development flow, manual
 ---
 
 ## Preconditions
+
 - Shopify CLI 3.x installed and authenticated (`shopify login --store hotroddash.myshopify.com`).
 - Dev store configured in `shopify.app.toml` (`[build].dev_store_url = "hotroddash.myshopify.com"`).
 - App deployed or running locally via `shopify app dev`; confirm the embedded app loads inside the staging store Admin.
 - Fly staging host is warm: `https://hotdash-staging.fly.dev/app`.
 
 ## Host Parameter
+
 Shopify embedded apps require the `host` query parameter (base64-encoded admin path):
 
 - Plaintext: `admin.shopify.com/store/hotrodddash/apps/4f72376ea61be956c860dd020552124d`
@@ -34,6 +36,7 @@ https://hotdash-staging.fly.dev/app?embedded=1&mock=1&host=${HOST_PARAM}
 ```
 
 ## Capturing a Session (Embed) Token
+
 1. Authenticate with Shopify CLI if needed:
    ```bash
    shopify login --store hotroddash.myshopify.com
@@ -49,6 +52,7 @@ https://hotdash-staging.fly.dev/app?embedded=1&mock=1&host=${HOST_PARAM}
 6. Store the token temporarily in a secure editor (never commit to Git). Tokens expire quickly—capture screenshots or run tests within 60 seconds.
 
 ## Using the Token Outside Admin
+
 You can render the embedded app (for screenshots or automated runs) by including both the `host` parameter and the bearer token:
 
 ```
@@ -61,6 +65,7 @@ curl --silent \
 - For browser sessions (e.g., Playwright), inject the token as a `Authorization: Bearer` header or use Playwright’s `extraHTTPHeaders`.
 
 ## Playwright Pipeline Injection Plan
+
 - **Storage:** Reliability will escrow the latest token in `vault/occ/shopify/embed_token_staging.env` and mirror to GitHub secret `SHOPIFY_EMBED_TOKEN_STAGING` (staging environment). Deployment owns refresh + distribution once reliability posts the updated token.
 - **Environment wiring:** CI and local Playwright runs should export `PLAYWRIGHT_SHOPIFY_EMBED_TOKEN=${SHOPIFY_EMBED_TOKEN_STAGING}` alongside `PLAYWRIGHT_BASE_URL=https://hotdash-staging.fly.dev/app`. When running locally, source the vault file instead of the GitHub secret.
 - **Header injection:** Update Playwright configuration or fixtures to append `Authorization: Bearer ${PLAYWRIGHT_SHOPIFY_EMBED_TOKEN}` and the `host=${HOST_PARAM}` query parameter for every request under `https://hotdash-staging.fly.dev/app`.
@@ -69,10 +74,12 @@ curl --silent \
 - **Fallback shim:** If Shopify denies automated token issuance, coordinate with reliability to swap to an approved host proxy; update this runbook and Playwright fixtures accordingly.
 
 ## Evidence Logging
+
 - Record the capture event (timestamp, who, purpose) in `feedback/localization.md` or `feedback/design.md`.
 - Tokens must not be shared in plain text—use password-protected storage or discard after run.
 
 ## Incident Handling
+
 - If the session token tool fails to load, re-run `scripts/deploy/shopify-dev-mcp-staging-auth.sh` to refresh credentials, then reload Admin.
 - If `host` mismatches, ensure the encoded value exactly matches the string above (no whitespace).
 - Report persistent failures in `feedback/reliability.md` and ping deployment for scope changes.
@@ -80,4 +87,5 @@ curl --silent \
 ---
 
 **Revision Log**
-- 2025-10-10: Initial guidance published by Reliability to unblock localization screenshot workflow.*** End Patch
+
+- 2025-10-10: Initial guidance published by Reliability to unblock localization screenshot workflow.\*\*\* End Patch

@@ -1,7 +1,7 @@
 ---
 epoch: 2025.10.E1
 doc: docs/design/notification-system-design.md
-owner: designer  
+owner: designer
 created: 2025-10-11
 last_reviewed: 2025-10-11
 doc_hash: TBD
@@ -21,6 +21,7 @@ expires: 2025-10-25
 ### Purpose
 
 Notify operators of:
+
 - New approvals requiring action
 - Agent performance changes
 - Queue backlog alerts
@@ -45,17 +46,17 @@ import { useToast } from '@shopify/app-bridge-react';
 
 function ApprovalActions() {
   const toast = useToast();
-  
+
   const handleApprove = async () => {
     const result = await approveAction();
-    
+
     if (result.success) {
       toast.show('Action approved and executed');
     } else {
       toast.show('Approval failed', { isError: true });
     }
   };
-  
+
   return <Button onClick={handleApprove}>Approve</Button>;
 }
 ```
@@ -63,17 +64,20 @@ function ApprovalActions() {
 ###Toast Patterns
 
 **Success Messages**:
+
 - ✅ "Action approved and executed"
 - ✅ "Feedback submitted"
 - ✅ "Settings saved"
 - ✅ "Data exported successfully"
 
 **Error Messages**:
+
 - ❌ "Approval failed. Please try again."
 - ❌ "Connection lost. Check your internet."
 - ❌ "Export failed. Contact support."
 
 **Info Messages**:
+
 - ℹ️ "3 new approvals need review"
 - ℹ️ "Queue refreshed"
 - ℹ️ "Connection restored"
@@ -115,7 +119,7 @@ function ApprovalActions() {
     }}
   >
     <Text variant="bodyMd">
-      Approval rate dropped to {approvalRate}% (target: 80%+). 
+      Approval rate dropped to {approvalRate}% (target: 80%+).
       Review recent rejections to identify issues.
     </Text>
   </Banner>
@@ -163,7 +167,7 @@ import { Badge } from '@shopify/polaris';
 
 function QueueDepthBadge({ depth }: { depth: number }) {
   const tone = depth === 0 ? 'success' : depth < 5 ? 'info' : depth < 10 ? 'warning' : 'critical';
-  
+
   return (
     <Badge tone={tone}>
       {depth} Pending
@@ -196,18 +200,18 @@ function QueueDepthBadge({ depth }: { depth: number }) {
 ```typescript
 function useBrowserNotifications() {
   const [permission, setPermission] = useState<NotificationPermission>('default');
-  
+
   useEffect(() => {
     if ('Notification' in window) {
       setPermission(Notification.permission);
     }
   }, []);
-  
+
   const requestPermission = async () => {
     const result = await Notification.requestPermission();
     setPermission(result);
   };
-  
+
   const showNotification = (title: string, body: string) => {
     if (permission === 'granted') {
       new Notification(title, {
@@ -219,14 +223,14 @@ function useBrowserNotifications() {
       });
     }
   };
-  
+
   return { permission, requestPermission, showNotification };
 }
 
 // Usage
 function ApprovalQueue() {
   const { showNotification } = useBrowserNotifications();
-  
+
   useEffect(() => {
     // When new approvals arrive
     const newCount = approvals.length - previousCount;
@@ -237,7 +241,7 @@ function ApprovalQueue() {
       );
     }
   }, [approvals.length]);
-  
+
   return (/* ... */);
 }
 ```
@@ -248,28 +252,28 @@ function ApprovalQueue() {
 <Card>
   <BlockStack gap="400">
     <Text variant="headingMd" as="h2">Notification Preferences</Text>
-    
+
     <Checkbox
       label="Desktop notifications for new approvals"
       checked={preferences.browserNotifs}
       onChange={setBrowserNotifs}
       helpText="Receive browser notifications when new approvals arrive"
     />
-    
+
     <Checkbox
       label="Show queue backlog warnings"
       checked={preferences.queueWarnings}
       onChange={setQueueWarnings}
       helpText="Alert when approval queue exceeds 10 items"
     />
-    
+
     <Checkbox
       label="Performance degradation alerts"
       checked={preferences.perfAlerts}
       onChange={setPerfAlerts}
       helpText="Notify when agent approval rate drops below 70%"
     />
-    
+
     <ButtonGroup>
       <Button variant="primary" onClick={savePreferences}>
         Save Preferences
@@ -288,12 +292,12 @@ function ApprovalQueue() {
 
 ### Priority Matrix
 
-| Priority | Channel | Duration | Example |
-|----------|---------|----------|---------|
-| Critical | Banner + Browser | Persistent | Service down, security issue |
-| High | Banner + Toast | Until dismissed | Queue backlog, performance drop |
-| Medium | Toast | 5 seconds | New approval, action completed |
-| Low | Badge only | Persistent | Unread count, queue depth |
+| Priority | Channel          | Duration        | Example                         |
+| -------- | ---------------- | --------------- | ------------------------------- |
+| Critical | Banner + Browser | Persistent      | Service down, security issue    |
+| High     | Banner + Toast   | Until dismissed | Queue backlog, performance drop |
+| Medium   | Toast            | 5 seconds       | New approval, action completed  |
+| Low      | Badge only       | Persistent      | Unread count, queue depth       |
 
 ### Implementation
 
@@ -315,14 +319,14 @@ interface Notification {
 function NotificationManager({ notifications }: { notifications: Notification[] }) {
   const toast = useToast();
   const [banners, setBanners] = useState<Notification[]>([]);
-  
+
   useEffect(() => {
     notifications.forEach(notif => {
       if (notif.priority === 'critical' || notif.priority === 'high') {
         // Show as banner
         setBanners(prev => [...prev, notif]);
       }
-      
+
       if (notif.priority === 'medium') {
         // Show as toast
         toast.show(notif.message, {
@@ -330,14 +334,14 @@ function NotificationManager({ notifications }: { notifications: Notification[] 
           duration: 5000,
         });
       }
-      
+
       if (notif.priority === 'critical' && 'Notification' in window) {
         // Browser notification
         new Notification(notif.title, { body: notif.message });
       }
     });
   }, [notifications]);
-  
+
   return (
     <BlockStack gap="200">
       {banners.map(banner => (
@@ -388,12 +392,13 @@ function NotificationManager({ notifications }: { notifications: Notification[] 
 ```
 
 **Implementation** (Phase 2):
+
 ```typescript
 import { Sheet, List } from '@shopify/polaris';
 
 function NotificationCenter({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { notifications } = useLoaderData<typeof loader>();
-  
+
   return (
     <Sheet
       open={open}
@@ -423,7 +428,7 @@ function NotificationCenter({ open, onClose }: { open: boolean; onClose: () => v
             </BlockStack>
           </Card>
         ))}
-        
+
         <Button fullWidth onClick={markAllAsRead}>
           Mark All as Read
         </Button>
@@ -451,4 +456,3 @@ function NotificationCenter({ open, onClose }: { open: boolean; onClose: () => v
 **Owner**: Designer Agent
 
 EOF
-

@@ -9,14 +9,17 @@ task: 1E
 # Task 1E: Hot Rodan Brand Integration
 
 ## Purpose
+
 Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual identity while maintaining Shopify Polaris design system compliance.
 
 ## Brand Identity
 
 ### Hot Rodan Concept
+
 **Hot Rod / Automotive Theme**: Fast, powerful, reliable - like a well-tuned hot rod
 
 **Core Brand Values**:
+
 - **Speed**: Operators get instant insights (like a hot rod's acceleration)
 - **Power**: Full control at operator's fingertips
 - **Reliability**: Always on, always ready
@@ -25,35 +28,37 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Color Scheme
 
 **Primary Palette** (Hot Rod Inspired):
+
 ```css
 /* Engine Red (Primary Action Color) */
---hotrodan-red-primary: #D72C0D;
---hotrodan-red-hover: #B91000;
---hotrodan-red-light: #FEF3F2;
+--hotrodan-red-primary: #d72c0d;
+--hotrodan-red-hover: #b91000;
+--hotrodan-red-light: #fef3f2;
 
 /* Chrome Silver (Accent Color) */
---hotrodan-silver: #8C9196;
---hotrodan-silver-light: #E3E5E7;
+--hotrodan-silver: #8c9196;
+--hotrodan-silver-light: #e3e5e7;
 
 /* Matte Black (Dashboard Background) */
---hotrodan-black: #1A1A1A;
---hotrodan-black-light: #2C2C2C;
+--hotrodan-black: #1a1a1a;
+--hotrodan-black-light: #2c2c2c;
 
 /* Warning Amber (Alerts) */
---hotrodan-amber: #FFC453;
+--hotrodan-amber: #ffc453;
 --hotrodan-amber-dark: #947100;
 ```
 
 **Integration with Polaris**:
+
 ```css
 /* Map Hot Rodan colors to Polaris tokens */
 :root {
   /* Use Polaris critical tone for Hot Rodan red */
   --hotrodan-accent: var(--p-color-bg-critical-strong); /* #D72C0D */
-  
+
   /* Polaris neutral for chrome silver */
   --hotrodan-neutral: var(--p-color-text-subdued); /* #6D7175 */
-  
+
   /* Polaris surface for dashboard */
   --hotrodan-surface: var(--p-color-bg-surface); /* #FFFFFF light mode */
 }
@@ -62,6 +67,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Typography
 
 **Dashboard Headers**: Use Polaris Inter font (default)
+
 - Strong, clean, readable
 - No custom fonts needed (keeps load fast)
 
@@ -73,13 +79,15 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 
 **Hot Rod Theme Elements** (Subtle Integration):
 
-1. **Dashboard Empty State**: 
+1. **Dashboard Empty State**:
+
    ```
    "Rev up your operations"
    Illustration: Minimal hot rod silhouette (optional)
    ```
 
 2. **Loading State**:
+
    ```
    "Warming up the engine..."
    Subtle speedometer needle animation (optional)
@@ -96,6 +104,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Visual Identity Guidelines
 
 **DO**:
+
 - ✅ Use Polaris components exclusively
 - ✅ Apply Hot Rodan red for critical approval actions
 - ✅ Use "speed" and "power" language in copy
@@ -103,6 +112,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 - ✅ Use automotive metaphors in empty/success states sparingly
 
 **DON'T**:
+
 - ❌ Add literal car images to every screen
 - ❌ Use custom fonts (slow load time = not "hot rod")
 - ❌ Override Polaris color system (breaks accessibility)
@@ -112,6 +122,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Brand Integration Examples
 
 #### 1. Approval Button (Hot Rodan Red)
+
 ```typescript
 <Button
   variant="primary"
@@ -125,6 +136,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 **Note**: Polaris `critical` tone = Hot Rodan red (#D72C0D)
 
 #### 2. Empty State Copy (Automotive Language)
+
 ```typescript
 <EmptyState
   heading="All systems ready"
@@ -138,6 +150,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 **After**: "All systems ready" (automotive: engine idling, ready to go)
 
 #### 3. Loading State Copy
+
 ```typescript
 <SkeletonPage title="Starting engines..." />
 ```
@@ -146,6 +159,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 **After**: "Starting engines..." (hot rod: warming up before race)
 
 #### 4. Success Toast
+
 ```typescript
 <Toast content="Full speed ahead! Approval processed." />
 ```
@@ -156,6 +170,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Approval Queue Brand Alignment
 
 **Page Title**:
+
 ```typescript
 <Page title="Mission Control">
   {/* Approval cards */}
@@ -166,6 +181,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 **After**: "Mission Control" or "Command Center" (hot rod: driver's seat, full control)
 
 **Badge Labels** (Optional Enhancement):
+
 ```typescript
 // Current
 <Badge tone="critical">HIGH RISK</Badge>
@@ -178,27 +194,29 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 
 ### Copy Deck (Automotive-Inspired)
 
-| Generic Copy | Hot Rodan Copy |
-|--------------|----------------|
-| Loading... | Starting engines... |
-| Success | Full speed ahead! |
-| All clear | All systems ready |
-| No data | Idling... |
-| Error | Engine trouble |
-| Refresh | Tune-up |
-| Dashboard | Mission Control |
-| Approval Queue | Command Center |
+| Generic Copy   | Hot Rodan Copy      |
+| -------------- | ------------------- |
+| Loading...     | Starting engines... |
+| Success        | Full speed ahead!   |
+| All clear      | All systems ready   |
+| No data        | Idling...           |
+| Error          | Engine trouble      |
+| Refresh        | Tune-up             |
+| Dashboard      | Mission Control     |
+| Approval Queue | Command Center      |
 
 **Use Sparingly**: 1-2 automotive terms per screen max. Don't overdo it.
 
 ### www.hotrodan.com Alignment
 
 **If hotrodan.com exists**, match:
+
 - Primary color (likely red or black)
 - Logo placement
 - Font choice (if custom)
 
 **If hotrodan.com doesn't exist**, use guidelines above:
+
 - Red primary (#D72C0D via Polaris critical)
 - Black/silver accents
 - Clean, fast UI (no decoration)
@@ -216,6 +234,7 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ### Evidence
 
 **Brand Alignment Achieved**:
+
 - ✅ Color scheme: Polaris critical tone = Hot Rodan red
 - ✅ Copy: Automotive metaphors in key moments
 - ✅ Speed: Fast UI = "hot rod" concept
@@ -227,4 +246,3 @@ Ensure HotDash (Operator Control Center) aligns with Hot Rodan brand visual iden
 ---
 
 **Status**: Hot Rodan brand integration specified - maintains Polaris, adds automotive flavor via copy
-

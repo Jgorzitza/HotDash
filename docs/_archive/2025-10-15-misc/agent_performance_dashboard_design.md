@@ -18,12 +18,14 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ## Dashboard Overview
 
 ### Primary Users
+
 1. **Operators**: Real-time view of their own performance with Agent SDK
 2. **Team Leads**: Aggregate team metrics and performance trends
 3. **Manager**: Strategic overview and decision-making metrics
 4. **Engineering**: System health and technical performance
 
 ### Access Levels
+
 - **Operator View**: Personal metrics only, tips for improvement
 - **Lead View**: Team aggregates, individual comparisons, coaching insights
 - **Manager View**: Full system metrics, ROI tracking, strategic KPIs
@@ -81,6 +83,7 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ### Primary KPIs (Always Visible)
 
 #### 1. Drafts Reviewed
+
 **What**: Total number of AI drafts reviewed today
 **Why Important**: Measures productivity and engagement
 **Target**: 15-20 per day (per operator)
@@ -88,17 +91,20 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 **Visualization**: Large number with trend arrow
 
 #### 2. Approval Rate
+
 **What**: Percentage of drafts approved without edits
 **Why Important**: Measures AI accuracy and operator trust
 **Target**: 60-75%
 **Alert Threshold**: <40% (poor AI quality) or >90% (operators not reviewing carefully)
 **Visualization**: Percentage with trend indicator
 **Color Coding**:
+
 - Green: >60%
 - Yellow: 40-60%
 - Red: <40%
 
 #### 3. Average Time to Review
+
 **What**: Average seconds spent reviewing each draft
 **Why Important**: Measures efficiency without sacrificing quality
 **Target**: 60-90 seconds
@@ -107,6 +113,7 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 **Benchmark**: Show team average for comparison
 
 #### 4. Operator Rating
+
 **What**: How operators rate their experience with Agent SDK today
 **Why Important**: Job satisfaction and tool effectiveness
 **Target**: 4.0-5.0 out of 5
@@ -117,30 +124,35 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ### Secondary KPIs (Expandable Section)
 
 #### 5. Edit Rate
+
 **What**: Percentage of drafts that required editing before approval
 **Why Important**: Shows where AI needs improvement
 **Target**: 20-30%
 **Calculation**: (Edited & Approved) / Total Reviewed
 
 #### 6. Escalation Rate
+
 **What**: Percentage of drafts escalated to senior support
 **Why Important**: Identifies complex cases AI can't handle
 **Target**: 5-10%
 **Alert Threshold**: >15% (too many escalations)
 
 #### 7. Rejection Rate
+
 **What**: Percentage of drafts completely discarded
 **Why Important**: Indicates AI is off-target
 **Target**: <5%
 **Alert Threshold**: >10% (serious quality issues)
 
 #### 8. First Contact Resolution (FCR)
+
 **What**: Percentage of inquiries resolved in first interaction
 **Why Important**: Customer experience metric
 **Target**: 75-85%
 **Comparison**: Show improvement vs manual baseline (64%)
 
 #### 9. Customer Satisfaction (CSAT)
+
 **What**: Average CSAT for inquiries handled with Agent SDK
 **Why Important**: Ultimate success metric
 **Target**: ≥4.3/5 (maintain or improve baseline)
@@ -229,12 +241,14 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ### Team Lead View
 
 **Additional Metrics**:
+
 - Team aggregate approval rate
 - Individual operator comparison table
 - Outlier detection (operators struggling or excelling)
 - Coaching recommendations
 
 **Layout Addition**:
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 👥 Team Performance Summary                         │
@@ -257,12 +271,14 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ### Manager View
 
 **Additional Metrics**:
+
 - ROI tracking (cost savings vs baseline)
 - System health status
 - Pilot progress against targets
 - Strategic KPIs (FCR, CSAT trends)
 
 **Layout Addition**:
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 📊 Strategic Overview                               │
@@ -287,6 +303,7 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 ### Engineering View
 
 **Technical Metrics**:
+
 - API response time (p50, p95, p99)
 - Error rate and error types
 - LlamaIndex query accuracy
@@ -294,6 +311,7 @@ This document specifies the operator-facing dashboard for monitoring Agent SDK p
 - System uptime
 
 **Layout Addition**:
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 🔧 Technical Performance                            │
@@ -435,6 +453,7 @@ Example:
 ## Real-Time Updates
 
 ### Update Frequency
+
 - **Live Metrics**: Update every 5 seconds (current hour stats)
 - **Historical Charts**: Update every 1 minute
 - **Leaderboard**: Update every 5 minutes
@@ -443,17 +462,20 @@ Example:
 ### Alert System
 
 **Low Priority** (Yellow badge):
+
 - Approval rate drops below 50%
 - Review time exceeds 2 minutes average
 - Error rate 1-2%
 
 **High Priority** (Red badge + notification):
+
 - Approval rate drops below 40%
 - CSAT drops below 4.0
 - Error rate exceeds 2%
 - System downtime
 
 **Success Alerts** (Green celebration):
+
 - Approval rate exceeds 75%
 - Personal best review time
 - 10 drafts approved in a row
@@ -474,12 +496,14 @@ Example:
 ### Leaderboard
 
 **Categories**:
+
 1. Most drafts reviewed (daily/weekly)
 2. Highest approval rate (min 10 drafts)
 3. Fastest average review time (with >60% approval rate)
 4. Most improved (week-over-week)
 
 **Privacy Considerations**:
+
 - Operators can opt-out of leaderboard
 - Only show top 5 (not full rankings)
 - Focus on improvement, not competition
@@ -491,6 +515,7 @@ Example:
 ### Mobile Dashboard (Simplified)
 
 **Single Column Layout**:
+
 ```
 ┌────────────────────────┐
 │ 📱 Agent SDK Dashboard │
@@ -510,6 +535,7 @@ Example:
 ```
 
 **Simplified for Quick Glance**:
+
 - Top 4 metrics only
 - Single chart (trend only)
 - Tips/alerts prominently displayed
@@ -520,6 +546,7 @@ Example:
 ## Accessibility
 
 ### Design Principles
+
 - **Color blind safe**: Don't rely on color alone (use icons + text)
 - **High contrast**: Ensure readable text on all backgrounds
 - **Screen reader friendly**: Proper ARIA labels on all metrics
@@ -528,6 +555,7 @@ Example:
 ### Color Palette
 
 **Primary Colors**:
+
 - Success: #10B981 (Green) + ✓ icon
 - Warning: #F59E0B (Yellow) + ⚠ icon
 - Danger: #EF4444 (Red) + ✗ icon
@@ -542,6 +570,7 @@ Example:
 ### Designer Handoff Package
 
 **Assets Needed**:
+
 1. High-fidelity mockups (Figma/Sketch)
 2. Component library (buttons, tiles, charts)
 3. Responsive breakpoints (desktop, tablet, mobile)
@@ -549,6 +578,7 @@ Example:
 5. Icon set (custom icons for metrics)
 
 **Design System Alignment**:
+
 - Follow existing HotDash design patterns
 - Use established color palette
 - Match typography and spacing
@@ -557,12 +587,14 @@ Example:
 ### Designer Review Points
 
 **Operator View**:
+
 - Is the layout overwhelming or just right?
 - Are KPIs prioritized correctly?
 - Do tips feel helpful or annoying?
 - Is gamification motivating or stressful?
 
 **Data Density**:
+
 - How much information can fit without clutter?
 - When should we use expandable sections?
 - What's the right balance of text vs visuals?
@@ -572,24 +604,28 @@ Example:
 ## Implementation Plan
 
 ### Phase 1: MVP (Week 1)
+
 - Operator view with top 4 KPIs
 - Simple bar charts for trends
 - Manual refresh (no real-time)
 - Desktop only
 
 ### Phase 2: Enhanced (Week 2-3)
+
 - Team lead and manager views
 - Real-time WebSocket updates
 - Alert system
 - Mobile responsive
 
 ### Phase 3: Advanced (Month 2)
+
 - Engineering view with technical metrics
 - Gamification features
 - Advanced analytics (drill-down)
 - Export functionality
 
 ### Phase 4: Optimization (Month 3+)
+
 - A/B test different layouts
 - Personalization (operators choose metrics)
 - Predictive insights (AI suggests actions)
@@ -600,16 +636,19 @@ Example:
 ## Success Criteria for Dashboard
 
 ### Usage Metrics
+
 - 90% of operators check dashboard daily
 - Average 5+ visits per operator per day
 - <10% opt-out of leaderboard
 
 ### Impact Metrics
+
 - Operators who check dashboard have 10% higher approval rates
 - 20% reduction in time spent checking separate analytics tools
 - 85% of operators rate dashboard as "very useful" (4-5/5)
 
 ### Technical Metrics
+
 - Page load time <2 seconds
 - Real-time updates with <500ms latency
 - 99.9% dashboard uptime
@@ -621,18 +660,22 @@ Example:
 ### Dashboard API Specification
 
 **GET /api/dashboard/operator/{operator_id}**
+
 - Returns operator-specific metrics for date range
 - Query params: start_date, end_date, granularity (hour/day/week)
 
 **GET /api/dashboard/team/{team_id}**
+
 - Returns team aggregate metrics
 - Requires team lead or manager role
 
 **GET /api/dashboard/alerts/{operator_id}**
+
 - Returns active alerts for operator
 - Supports WebSocket for real-time push
 
 **POST /api/dashboard/rating**
+
 - Operator submits daily rating
 - Body: {operator_id, rating, comment (optional)}
 
@@ -644,6 +687,6 @@ Example:
 **Next Action**: Coordinate with @designer for UI mockups
 
 **Related Documents**:
+
 - [Success Metrics Framework](docs/data/success_metrics_slo_framework_2025-10-11.md)
 - [Product Roadmap](product_roadmap_agentsdk.md)
-

@@ -1,19 +1,23 @@
 /**
  * Shared testing utilities and helpers
- * 
+ *
  * Provides reusable functions for test setup, mocking, and assertions
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 /**
  * Create mock fetch response
  */
-export function createMockResponse(data: any, status: number = 200, headers: Record<string, string> = {}) {
+export function createMockResponse(
+  data: any,
+  status: number = 200,
+  headers: Record<string, string> = {},
+) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...headers,
     },
   });
@@ -32,7 +36,11 @@ export function mockShopifyResponse(data: any, errors: any[] = []) {
 /**
  * Create mock ServiceError
  */
-export function createMockServiceError(message: string, scope: string, code: string = 'TEST_ERROR') {
+export function createMockServiceError(
+  message: string,
+  scope: string,
+  code: string = "TEST_ERROR",
+) {
   return {
     message,
     scope,
@@ -46,7 +54,7 @@ export function createMockServiceError(message: string, scope: string, code: str
  * Wait for async operations to complete
  */
 export function waitForAsync(ms: number = 10): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -54,12 +62,12 @@ export function waitForAsync(ms: number = 10): Promise<void> {
  */
 export function withEnv<T>(
   envVars: Record<string, string | undefined>,
-  fn: () => T
+  fn: () => T,
 ): T {
   const originalEnv = { ...process.env };
-  
+
   Object.assign(process.env, envVars);
-  
+
   try {
     return fn();
   } finally {
@@ -72,10 +80,10 @@ export function withEnv<T>(
  */
 export function mockConsole() {
   const consoleSpy = {
-    log: vi.spyOn(console, 'log').mockImplementation(() => {}),
-    error: vi.spyOn(console, 'error').mockImplementation(() => {}),
-    warn: vi.spyOn(console, 'warn').mockImplementation(() => {}),
-    info: vi.spyOn(console, 'info').mockImplementation(() => {}),
+    log: vi.spyOn(console, "log").mockImplementation(() => {}),
+    error: vi.spyOn(console, "error").mockImplementation(() => {}),
+    warn: vi.spyOn(console, "warn").mockImplementation(() => {}),
+    info: vi.spyOn(console, "info").mockImplementation(() => {}),
   };
 
   return {
@@ -93,8 +101,8 @@ export function mockConsole() {
  * Create mock Request object for testing
  */
 export function createMockRequest(
-  url: string = 'https://example.com/test',
-  options: RequestInit = {}
+  url: string = "https://example.com/test",
+  options: RequestInit = {},
 ): Request {
   return new Request(url, options);
 }
@@ -104,14 +112,16 @@ export function createMockRequest(
  */
 export async function assertThrows(
   fn: () => Promise<any>,
-  expectedMessage?: string
+  expectedMessage?: string,
 ): Promise<Error> {
   try {
     await fn();
-    throw new Error('Expected function to throw but it did not');
+    throw new Error("Expected function to throw but it did not");
   } catch (error: any) {
     if (expectedMessage && !error.message.includes(expectedMessage)) {
-      throw new Error(`Expected error message to include "${expectedMessage}" but got "${error.message}"`);
+      throw new Error(
+        `Expected error message to include "${expectedMessage}" but got "${error.message}"`,
+      );
     }
     return error;
   }
@@ -124,10 +134,9 @@ export function createMockDateRange(daysAgo: number = 7) {
   const end = new Date();
   const start = new Date(end);
   start.setUTCDate(end.getUTCDate() - daysAgo);
-  
+
   return {
     start: start.toISOString().slice(0, 10),
     end: end.toISOString().slice(0, 10),
   };
 }
-

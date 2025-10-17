@@ -12,6 +12,7 @@
 ### Why Certification?
 
 **For Operators:**
+
 - Clear skill progression path
 - Recognition of expertise
 - Career advancement opportunities
@@ -19,6 +20,7 @@
 - Portable credential
 
 **For Organization:**
+
 - Quality assurance (all certified operators meet standards)
 - Consistent service delivery
 - Operator retention (development opportunities)
@@ -32,6 +34,7 @@
 ### Level 1: Certified Approval Queue Operator ✓
 
 **Requirements:**
+
 - Complete 30-min pilot training
 - Pass knowledge check (10 questions, 80%+ required)
 - Complete 10 supervised practice approvals
@@ -41,6 +44,7 @@
 **Timeline:** Typically achieved in pilot Week 1 (Days 1-5)
 
 **Benefits:**
+
 - Authorized to work independently in approval queue
 - Baseline operator credential
 - Foundation for advancement
@@ -52,6 +56,7 @@
 ### Level 2: Senior Approval Queue Operator ⭐
 
 **Requirements:**
+
 - Hold Level 1 certification
 - 2 weeks active experience
 - Handle 100+ approvals successfully
@@ -67,6 +72,7 @@
 **Timeline:** Typically achieved in pilot Weeks 2-4
 
 **Benefits:**
+
 - Recognized expertise level
 - Eligible for mentorship roles
 - Priority for pilot programs/new features
@@ -79,6 +85,7 @@
 ### Level 3: Expert Approval Queue Operator 🌟
 
 **Requirements:**
+
 - Hold Level 2 certification
 - 4+ weeks active experience
 - Handle 300+ approvals successfully
@@ -95,6 +102,7 @@
 **Timeline:** Typically achieved after 4-8 weeks
 
 **Benefits:**
+
 - Expert recognition (top tier)
 - Eligible for trainer certification
 - Leadership opportunities
@@ -118,6 +126,7 @@
 **Sample Questions:**
 
 **Question 1:** When should you ALWAYS escalate?
+
 - A) When AI confidence is <70%
 - B) When customer mentions injury or legal threats
 - C) When you disagree with AI's tone
@@ -126,6 +135,7 @@
 **Answer:** B (always escalate injury, legal threats, high value, etc.)
 
 **Question 2:** What's the first thing you should do when reviewing an approval?
+
 - A) Check the confidence score
 - B) Read the AI's draft response
 - C) Read the customer's original message
@@ -134,6 +144,7 @@
 **Answer:** C (always start by understanding what customer asked)
 
 **Question 3:** Customer threatens to "call their credit card company." What's the appropriate SLA for escalation?
+
 - A) 15 minutes (Urgent)
 - B) 2 hours (High)
 - C) 4 hours (Standard)
@@ -142,6 +153,7 @@
 **Answer:** A (chargeback threat = Urgent, 15 min SLA)
 
 **Question 4:** You notice AI cited "Return Policy v2.0" but you know current is v2.1. What do you do?
+
 - A) Approve anyway (close enough)
 - B) Edit the draft to fix it
 - C) Reject with note explaining the error
@@ -150,6 +162,7 @@
 **Answer:** C (reject with specific note helps AI learn)
 
 **Question 5:** What does an 85% confidence score mean?
+
 - A) 85% of customers will be satisfied with this response
 - B) AI is 85% confident this is a good response
 - C) This response is 85% complete
@@ -169,6 +182,7 @@
 **Focus:** Edge cases, complex decisions, policy interpretation
 
 **Topics Covered:**
+
 - Complex multi-issue scenarios
 - Policy exception evaluation
 - Strategic escalation decisions
@@ -185,6 +199,7 @@
 **Focus:** Expert judgment, training others, system optimization
 
 **Topics Covered:**
+
 - Extremely complex scenarios
 - Training new operators (what would you teach?)
 - System improvement recommendations
@@ -200,6 +215,7 @@
 **Format:** 10 real approvals with mentor observing
 
 **Evaluation Criteria:**
+
 - [ ] Reads customer message first every time
 - [ ] Verifies accuracy of AI draft
 - [ ] Checks tone appropriateness
@@ -220,20 +236,22 @@
 **Format:** 10 written scenarios (similar to Practice Scenarios Library)
 
 **Evaluation:**
+
 - 8/10 correct decisions = Pass
 - Must correctly identify all escalation scenarios
 - Must explain reasoning for each decision
 
 **Example Scoring Rubric:**
+
 ```
 Scenario: Return request at 35 days, customer traveled internationally
 
 Correct Decision: Escalate (outside 30-day policy, exception request)
 
-Operator Answer: "Escalate because customer is outside 30-day window but 
+Operator Answer: "Escalate because customer is outside 30-day window but
 has travel reason which may qualify for exception. Manager should decide."
 
-Score: ✅ Correct - identified policy edge, recognized exception potential, 
+Score: ✅ Correct - identified policy edge, recognized exception potential,
 appropriate escalation
 ```
 
@@ -244,6 +262,7 @@ appropriate escalation
 **Evaluation Period:** 4 weeks of live performance data
 
 **Metrics Tracked:**
+
 - Accuracy rate (% of approvals that were correct)
 - Escalation appropriateness (not over/under escalating)
 - Average review time (efficiency)
@@ -252,6 +271,7 @@ appropriate escalation
 - Pattern recognition (catching systemic issues)
 
 **Expert Threshold:**
+
 - 98%+ accuracy
 - 12-15% escalation (optimal range)
 - <90 second average review time
@@ -265,6 +285,7 @@ appropriate escalation
 ### Annual Recertification (All Levels)
 
 **Requirements:**
+
 - Review refresher training (2 hours)
 - Pass recertification quiz (80%+ required)
 - Demonstrate continued performance standards
@@ -279,12 +300,14 @@ appropriate escalation
 ### Probation for Performance Issues
 
 **Triggers:**
+
 - Accuracy drops below 90%
 - Customer escalations due to operator error
 - Inappropriate escalation patterns (over/under)
 - Multiple violations of procedures
 
 **Process:**
+
 1. Performance improvement plan (30 days)
 2. Additional training/coaching
 3. Re-assessment required
@@ -299,6 +322,7 @@ appropriate escalation
 ### 🎯 Escalation Specialist
 
 **Requirements:**
+
 - Level 2 certification
 - Handle 50+ escalations
 - 95%+ escalation appropriateness rate
@@ -311,6 +335,7 @@ appropriate escalation
 ### ⚡ Efficiency Master
 
 **Requirements:**
+
 - Level 2 certification
 - <90 second average review time
 - Maintain 95%+ accuracy at that speed
@@ -323,6 +348,7 @@ appropriate escalation
 ### 💎 Quality Champion
 
 **Requirements:**
+
 - Level 2 certification
 - 99%+ accuracy rate over 100+ approvals
 - 4.9+ CSAT
@@ -335,6 +361,7 @@ appropriate escalation
 ### 🤖 AI Performance Optimizer
 
 **Requirements:**
+
 - Level 2 certification
 - Submit 5+ accepted suggestions for AI improvement
 - Rejection notes consistently help AI learn
@@ -347,6 +374,7 @@ appropriate escalation
 ### 👥 Master Trainer
 
 **Requirements:**
+
 - Level 3 certification
 - Complete train-the-trainer program
 - Successfully train 3+ operators to Level 1
@@ -363,6 +391,7 @@ appropriate escalation
 **Format:** Open Badges standard (portable, verifiable)
 
 **Metadata Includes:**
+
 - Certification level
 - Issue date
 - Expiration date (for annual recerts)
@@ -370,6 +399,7 @@ appropriate escalation
 - Evidence link (assessment results, performance data)
 
 **Display:**
+
 - LinkedIn profile
 - Email signature
 - Internal HotDash profile
@@ -380,6 +410,7 @@ appropriate escalation
 ### Internal Certification Dashboard
 
 **Operators Can View:**
+
 - Current certification level
 - Progress toward next level
 - Performance metrics
@@ -388,6 +419,7 @@ appropriate escalation
 - Comparison to team averages (opt-in)
 
 **Managers Can View:**
+
 - Team certification levels
 - Who needs recertification soon
 - Performance trends
@@ -400,12 +432,14 @@ appropriate escalation
 ### Monthly Recognition
 
 **Virtual Ceremony (30 min, last Friday of month):**
+
 - Announce new certifications achieved
 - Operators share tips and experiences
 - Management congratulations
 - Team celebrates together
 
 **Format:**
+
 - Zoom/Teams call
 - Screen share showing new badges
 - Brief remarks from each newly certified operator
@@ -417,6 +451,7 @@ appropriate escalation
 ### Physical Certificates
 
 **Mailed to Operators:**
+
 - Professional certificate suitable for framing
 - Includes certification level, date, and signature
 - QR code linking to digital badge
@@ -429,6 +464,7 @@ appropriate escalation
 ## Success Metrics for Certification Program
 
 **Track:**
+
 - % of operators certified at each level
 - Time to certification (average)
 - Correlation: Certification level vs performance
@@ -436,6 +472,7 @@ appropriate escalation
 - Operator satisfaction with certification program
 
 **Expected Results:**
+
 - 100% Level 1 within 2 weeks
 - 60-70% Level 2 within 4 weeks
 - 20-30% Level 3 within 8 weeks
@@ -451,6 +488,7 @@ appropriate escalation
 **Responsibilities:**
 
 **Enablement Team:**
+
 - Maintain assessment questions
 - Issue certifications
 - Track progress
@@ -458,12 +496,14 @@ appropriate escalation
 - Manage digital badges
 
 **Support Manager:**
+
 - Approve Level 2 and 3 certifications
 - Conduct performance evaluations
 - Mentor operators toward advancement
 - Provide recommendations
 
 **Manager:**
+
 - Final approval for all certifications
 - Investigate certification issues
 - Ensure program integrity
@@ -514,22 +554,27 @@ A: Certification level is one factor in pay/promotion decisions, but not the onl
 ## Implementation Timeline
 
 **Week 1 (Pilot Launch):**
+
 - Level 1 certification program active
 - All pilot operators work toward certification
 
 **Week 2:**
+
 - First Level 1 certifications awarded
 - Level 2 requirements announced
 
 **Week 4:**
+
 - First Level 2 certifications awarded
 - Level 3 requirements announced
 
 **Week 8:**
+
 - First Level 3 certifications awarded
 - Specialty certifications introduced
 
 **Ongoing:**
+
 - Monthly recognition ceremonies
 - Annual recertifications
 - Program improvements based on feedback
@@ -546,4 +591,3 @@ A: Certification level is one factor in pay/promotion decisions, but not the onl
 ✅ **TASK 2I COMPLETE: Operator certification program designed**
 
 🎉 **ALL TASKS 2E-2I COMPLETE!**
-

@@ -22,7 +22,9 @@ export interface OpsAggregateMetrics {
   sla?: SlaAggregate;
 }
 
-export async function getOpsAggregateMetrics(): Promise<ServiceResult<OpsAggregateMetrics>> {
+export async function getOpsAggregateMetrics(): Promise<
+  ServiceResult<OpsAggregateMetrics>
+> {
   const activationFact = await prisma.dashboardFact.findFirst({
     where: { factType: "metrics.activation.rolling7d" },
     orderBy: { createdAt: "desc" },

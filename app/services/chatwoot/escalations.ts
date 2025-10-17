@@ -41,8 +41,8 @@ function computeBreachTimestamp(
 function resolveCustomerName(conversation: Conversation): string {
   return (
     conversation.meta?.sender?.name ||
-    conversation.contacts?.find((contact: { name?: string | null } | undefined) =>
-      Boolean(contact?.name),
+    conversation.contacts?.find(
+      (contact: { name?: string | null } | undefined) => Boolean(contact?.name),
     )?.name ||
     "Customer"
   );
@@ -89,7 +89,10 @@ function hasKeyword(haystack: string, keywords: string[]) {
 function findLatestCustomerMessage(messages: ConversationMessage[]) {
   return [...messages]
     .filter((message) => message.author === "contact")
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )[0];
 }
 
 function pickTemplate(
@@ -101,17 +104,23 @@ function pickTemplate(
   const customerText = latestCustomerMessage?.content ?? "";
 
   if (
-    flattenedTags.some((tag) => tag.includes("shipping") || tag.includes("delivery")) ||
+    flattenedTags.some(
+      (tag) => tag.includes("shipping") || tag.includes("delivery"),
+    ) ||
     hasKeyword(customerText, SHIPPING_KEYWORDS)
   ) {
     return CHATWOOT_TEMPLATES.find((template) => template.id === "ship_update");
   }
 
   if (
-    flattenedTags.some((tag) => tag.includes("refund") || tag.includes("return")) ||
+    flattenedTags.some(
+      (tag) => tag.includes("refund") || tag.includes("return"),
+    ) ||
     hasKeyword(customerText, REFUND_KEYWORDS)
   ) {
-    return CHATWOOT_TEMPLATES.find((template) => template.id === "refund_offer");
+    return CHATWOOT_TEMPLATES.find(
+      (template) => template.id === "refund_offer",
+    );
   }
 
   if (customerText.trim().length > 0) {
@@ -121,7 +130,10 @@ function pickTemplate(
   return CHATWOOT_TEMPLATES.find((template) => template.id === "ack_delay");
 }
 
-function renderTemplateBody(template: ReplyTemplate, variables: Record<string, string>) {
+function renderTemplateBody(
+  template: ReplyTemplate,
+  variables: Record<string, string>,
+) {
   return template.body.replace(/{{(.*?)}}/g, (_, key) => {
     const value = variables[key.trim()];
     return value ?? "";
@@ -144,26 +156,33 @@ async function collectConversations() {
       conversations = await client.listOpenConversations(page);
       logger.debug(`Retrieved conversations for page ${page}`, {
         page,
-        conversationCount: Array.isArray(conversations) ? conversations.length : 0,
+        conversationCount: Array.isArray(conversations)
+          ? conversations.length
+          : 0,
       });
     } catch (error) {
-      const serviceError = new ServiceError("Unable to fetch Chatwoot conversations", {
-        scope: "chatwoot.escalations",
-        retryable: true,
-        cause: error,
-      });
-      
+      const serviceError = new ServiceError(
+        "Unable to fetch Chatwoot conversations",
+        {
+          scope: "chatwoot.escalations",
+          retryable: true,
+          cause: error,
+        },
+      );
+
       // Log the ServiceError with structured metadata
       logger.logServiceError(serviceError, undefined, {
         page,
         operation: "listOpenConversations",
       });
-      
+
       throw serviceError;
     }
 
     if (!Array.isArray(conversations) || conversations.length === 0) {
-      logger.debug(`No more conversations found at page ${page}, stopping collection`);
+      logger.debug(
+        `No more conversations found at page ${page}, stopping collection`,
+      );
       break;
     }
 
@@ -176,7 +195,10 @@ async function collectConversations() {
       const tags: string[] = Array.isArray(convo.tags) ? convo.tags : [];
       const flattenedTags = tags.map((tag) => normalise(tag));
       const needsEscalation =
-        slaBreached || flattenedTags.some((tag) => tag === "escalation" || tag === "escalated");
+        slaBreached ||
+        flattenedTags.some(
+          (tag) => tag === "escalation" || tag === "escalated",
+        );
 
       if (!needsEscalation) continue;
 
@@ -189,28 +211,34 @@ async function collectConversations() {
           slaBreached,
         });
       } catch (error) {
-        const serviceError = new ServiceError("Unable to fetch Chatwoot messages", {
-          scope: "chatwoot.escalations",
-          retryable: true,
-          cause: error,
-        });
-        
+        const serviceError = new ServiceError(
+          "Unable to fetch Chatwoot messages",
+          {
+            scope: "chatwoot.escalations",
+            retryable: true,
+            cause: error,
+          },
+        );
+
         // Log the ServiceError with conversation context
         logger.logServiceError(serviceError, undefined, {
           conversationId: convo.id,
           operation: "listMessages",
         });
-        
+
         throw serviceError;
       }
 
-      const lastMessage = [...messages].sort((a, b) => b.created_at - a.created_at)[0];
+      const lastMessage = [...messages].sort(
+        (a, b) => b.created_at - a.created_at,
+      )[0];
 
       const conversationMessages: ConversationMessage[] = [...messages]
         .sort((a, b) => a.created_at - b.created_at)
         .slice(-6)
         .map((message) => {
-          const author: ConversationAuthor = message.message_type === 1 ? "agent" : "contact";
+          const author: ConversationAuthor =
+            message.message_type === 1 ? "agent" : "contact";
           return {
             id: message.id,
             author,
@@ -234,13 +262,16 @@ async function collectConversations() {
 
       // Log template suggestion for observability
       if (suggestion) {
-        logger.debug(`Template suggestion generated for conversation ${convo.id}`, {
-          conversationId: convo.id,
-          templateId: suggestion.id,
-          customerName,
-          tags,
-          slaBreached,
-        });
+        logger.debug(
+          `Template suggestion generated for conversation ${convo.id}`,
+          {
+            conversationId: convo.id,
+            templateId: suggestion.id,
+            customerName,
+            tags,
+            slaBreached,
+          },
+        );
       }
 
       results.push({
@@ -250,7 +281,9 @@ async function collectConversations() {
         customerName,
         createdAt,
         breachedAt,
-        lastMessageAt: lastMessage ? toIso(lastMessage.created_at) : toIso(convo.created_at),
+        lastMessageAt: lastMessage
+          ? toIso(lastMessage.created_at)
+          : toIso(convo.created_at),
         slaBreached,
         tags,
         suggestedReplyId: suggestion?.id,
@@ -264,14 +297,16 @@ async function collectConversations() {
 
   logger.info("Completed Chatwoot escalations collection", {
     totalEscalations: results.length,
-    breachedCount: results.filter(r => r.slaBreached).length,
-    templatesGenerated: results.filter(r => r.suggestedReplyId).length,
+    breachedCount: results.filter((r) => r.slaBreached).length,
+    templatesGenerated: results.filter((r) => r.suggestedReplyId).length,
   });
 
   return { config, results };
 }
 
-export async function getEscalations(shopDomain: string): Promise<EscalationResult> {
+export async function getEscalations(
+  shopDomain: string,
+): Promise<EscalationResult> {
   const cacheKey = `chatwoot:escalations:${shopDomain}`;
   const cached = getCached<EscalationResult>(cacheKey);
   if (cached) {
@@ -303,7 +338,10 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
         slaMinutes: config.slaMinutes,
         count: results.length,
         breaches: results
-          .filter((conversation) => conversation.slaBreached && conversation.breachedAt)
+          .filter(
+            (conversation) =>
+              conversation.slaBreached && conversation.breachedAt,
+          )
           .map((conversation) => ({
             conversationId: conversation.id,
             breachedAt: conversation.breachedAt,
@@ -321,14 +359,14 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
     };
 
     setCached(cacheKey, response, CACHE_TTL_MS);
-    
+
     logger.info("Successfully generated fresh escalations data", {
       shopDomain,
       escalationCount: results.length,
       aiEnabled,
       factId: fact.id,
     });
-    
+
     return response;
   } catch (error) {
     if (error instanceof ServiceError) {
@@ -336,10 +374,15 @@ export async function getEscalations(shopDomain: string): Promise<EscalationResu
       throw error;
     } else {
       // Log unexpected errors
-      logger.logError(error as Error, "chatwoot.escalations.getEscalations", undefined, {
-        shopDomain,
-        cacheKey,
-      });
+      logger.logError(
+        error as Error,
+        "chatwoot.escalations.getEscalations",
+        undefined,
+        {
+          shopDomain,
+          cacheKey,
+        },
+      );
       throw error;
     }
   }

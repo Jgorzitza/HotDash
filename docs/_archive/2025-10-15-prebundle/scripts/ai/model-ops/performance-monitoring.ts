@@ -11,30 +11,29 @@ export const MODEL_METRICS = {
 
 export const ALERT_THRESHOLDS = {
   critical: {
-    error_rate: 0.10,
-    approval_rate: 0.70,
+    error_rate: 0.1,
+    approval_rate: 0.7,
     p95_latency: 2000,
-    cost_per_conv: 1.00,
+    cost_per_conv: 1.0,
   },
   warning: {
     error_rate: 0.05,
-    approval_rate: 0.80,
+    approval_rate: 0.8,
     p95_latency: 1000,
-    cost_per_conv: 0.50,
+    cost_per_conv: 0.5,
   },
 };
 
 export async function checkAlerts(metrics: typeof MODEL_METRICS) {
   const alerts = [];
-  
+
   if (metrics.errors.rate > ALERT_THRESHOLDS.critical.error_rate) {
-    alerts.push({ severity: 'critical', message: 'High error rate detected' });
+    alerts.push({ severity: "critical", message: "High error rate detected" });
   }
-  
+
   if (metrics.quality.approval_rate < ALERT_THRESHOLDS.critical.approval_rate) {
-    alerts.push({ severity: 'critical', message: 'Low approval rate' });
+    alerts.push({ severity: "critical", message: "Low approval rate" });
   }
-  
+
   return alerts;
 }
-

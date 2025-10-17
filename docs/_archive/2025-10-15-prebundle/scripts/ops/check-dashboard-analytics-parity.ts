@@ -25,7 +25,10 @@ type ParitySummary = {
   timestamp: string;
 };
 
-function percentageDifference(prismaCount: number, supabaseCount: number): number {
+function percentageDifference(
+  prismaCount: number,
+  supabaseCount: number,
+): number {
   if (prismaCount === 0) {
     return supabaseCount === 0 ? 0 : 100;
   }
@@ -42,8 +45,12 @@ async function main() {
   }
 
   const [prismaViewCount, prismaRefreshCount] = await Promise.all([
-    prisma.dashboardFact.count({ where: { factType: "dashboard.session.opened" } }),
-    prisma.dashboardFact.count({ where: { factType: "dashboard.refresh.triggered" } }),
+    prisma.dashboardFact.count({
+      where: { factType: "dashboard.session.opened" },
+    }),
+    prisma.dashboardFact.count({
+      where: { factType: "dashboard.refresh.triggered" },
+    }),
   ]);
 
   const memory = supabaseMemory(supabaseConfig.url, supabaseConfig.serviceKey);
@@ -52,7 +59,12 @@ async function main() {
   try {
     supabaseFacts = await memory.getFacts("dashboard.analytics");
   } catch (error) {
-    if (error && typeof error === "object" && "code" in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === "PGRST205") {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in (error as Record<string, unknown>) &&
+      (error as Record<string, unknown>).code === "PGRST205"
+    ) {
       const blocked = {
         event: "analytics.parity",
         status: "blocked",
@@ -67,8 +79,12 @@ async function main() {
     throw error;
   }
 
-  const supabaseViewCount = supabaseFacts.filter((fact) => fact.key === "view").length;
-  const supabaseRefreshCount = supabaseFacts.filter((fact) => fact.key === "refresh").length;
+  const supabaseViewCount = supabaseFacts.filter(
+    (fact) => fact.key === "view",
+  ).length;
+  const supabaseRefreshCount = supabaseFacts.filter(
+    (fact) => fact.key === "refresh",
+  ).length;
 
   const summary: ParitySummary = {
     prisma: {

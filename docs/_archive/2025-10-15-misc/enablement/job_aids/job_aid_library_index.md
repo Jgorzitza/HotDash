@@ -25,6 +25,7 @@
 ### What Are Job Aids?
 
 Job aids are **quick reference materials** that operators keep at their desk for instant access during work. They provide:
+
 - ✅ At-a-glance decision support
 - ✅ Step-by-step procedures
 - ✅ Quick lookup for policies and rules
@@ -34,6 +35,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ### Design Principles
 
 **All job aids follow these principles:**
+
 1. **Brevity:** One page when possible, maximum 2 pages
 2. **Clarity:** Visual hierarchy, scannable format
 3. **Actionable:** Steps, not theory
@@ -51,6 +53,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/cards/5_question_framework_card.md`
 
 **Front Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   5-QUESTION FRAMEWORK                     │
@@ -85,6 +88,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   DECISION QUICK GUIDE                     │
@@ -127,6 +131,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/cards/escalation_matrix_card.md`
 
 **Front Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   ESCALATION MATRIX                        │
@@ -172,6 +177,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   ALWAYS ESCALATE                          │
@@ -219,6 +225,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Purpose:** Quick interpretation of AI confidence scores
 
 **Front Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   CONFIDENCE SCORE GUIDE                   │
@@ -256,6 +263,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   HOW CONFIDENCE IS CALCULATED             │
@@ -295,6 +303,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Purpose:** Instant recognition of escalation situations
 
 **Front Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   🚨 RED FLAGS → ESCALATE IMMEDIATELY 🚨   │
@@ -333,6 +342,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   OTHER ESCALATION INDICATORS              │
@@ -379,6 +389,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Purpose:** Quick before/after editing examples
 
 **Front Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   COMMON EDITS THAT IMPROVE AI DRAFTS      │
@@ -412,6 +423,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌────────────────────────────────────────────┐
 │   MORE QUICK EDITING TIPS                  │
@@ -484,6 +496,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/printable/approval_queue_workflow.md`
 
 **Content:**
+
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                     APPROVAL QUEUE WORKFLOW - ONE-PAGE GUIDE                  │
@@ -551,6 +564,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/printable/escalation_template.md`
 
 **Content:**
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │            ESCALATION NOTE TEMPLATE - FILL OUT & SUBMIT           │
@@ -614,6 +628,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/printable/policy_quick_reference.md`
 
 **Front Side:**
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                    POLICY QUICK REFERENCE                         │
@@ -663,6 +678,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 ```
 
 **Back Side:**
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                OPERATOR DECISION AUTHORITY                        │
@@ -720,6 +736,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Location:** `docs/enablement/job_aids/printable/troubleshooting_flowchart.md`
 
 **Content:**
+
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
 │              APPROVAL QUEUE TROUBLESHOOTING FLOWCHART                       │
@@ -756,6 +773,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Purpose:** Quick responses for most frequent inquiries
 
 **Front: Top 5 Scenarios**
+
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │           COMMON SCENARIOS - QUICK REFERENCE                      │
@@ -808,6 +826,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 **Status:** Concept phase
 
 **Concept:**
+
 - Operator inputs scenario details
 - Tool asks framework questions
 - Provides recommendation
@@ -815,6 +834,7 @@ Job aids are **quick reference materials** that operators keep at their desk for
 - Learning tool, not decision replacement
 
 **Example Flow:**
+
 ```
 Step 1: What's the customer asking for?
    [Dropdown: Return, Refund, Exchange, Other]
@@ -842,6 +862,7 @@ Step 4: Any threats or red flags?
 **Status:** Concept phase
 
 **Features:**
+
 - Keyword search across entire KB
 - Recent articles cache
 - Most-used articles shortcuts
@@ -856,6 +877,7 @@ Step 4: Any threats or red flags?
 **Status:** Ready to implement
 
 **Features:**
+
 - Form with required fields
 - Auto-fill customer info from conversation ID
 - Template selection based on escalation type
@@ -872,13 +894,15 @@ Step 4: Any threats or red flags?
 **Format:** 8.5×11 inches, double-sided, laminated  
 **Purpose:** Most critical information on one indestructible sheet
 
-**Front:** 
+**Front:**
+
 - 5-Question Framework
 - Decision matrix
 - Escalation quick reference
 - Top 5 common scenarios
 
 **Back:**
+
 - Policy summary
 - Operator authority levels
 - Red flags list
@@ -895,6 +919,7 @@ Step 4: Any threats or red flags?
 **Purpose:** Speed optimization shortcuts
 
 **Content:**
+
 ```
 KEYBOARD SHORTCUTS
 
@@ -932,6 +957,7 @@ Ctrl+/ - Shortcuts list
 **Purpose:** Access on phone/tablet when away from desk
 
 **Content:**
+
 - Escalation matrix
 - Policy summary
 - Decision framework
@@ -939,6 +965,7 @@ Ctrl+/ - Shortcuts list
 - Emergency procedures
 
 **Optimization:**
+
 - Large fonts (16pt+)
 - High contrast
 - Touch-friendly navigation
@@ -954,6 +981,7 @@ Ctrl+/ - Shortcuts list
 **URL:** `hotdash.com/operators/quick-start`
 
 **Features:**
+
 - Searchable FAQ
 - Video modules (mobile-optimized)
 - Escalation template
@@ -1002,6 +1030,7 @@ Ctrl+/ - Shortcuts list
 ### Distribution Checklist
 
 **New Operator Kit:**
+
 - [ ] 5-Question Framework card (laminated)
 - [ ] Escalation Matrix card (laminated)
 - [ ] Red Flags card (laminated, red border)
@@ -1014,6 +1043,7 @@ Ctrl+/ - Shortcuts list
 **Package:** Professional folder or binder, given on Day 1
 
 **Digital Bundle Email:**
+
 ```
 Subject: Your Operator Job Aid Library
 
@@ -1051,16 +1081,19 @@ Enablement Team
 ### Maintenance & Updates
 
 **Monthly Review:**
+
 - Check for policy changes requiring updates
 - Review operator feedback on job aids
 - Identify gaps or improvement opportunities
 
 **Quarterly Refresh:**
+
 - Reprint worn laminated materials
 - Update with new policies or procedures
 - Add new job aids based on demand
 
 **Annual Overhaul:**
+
 - Comprehensive redesign if needed
 - Incorporate year of learnings
 - Test new formats or layouts
@@ -1072,6 +1105,7 @@ Enablement Team
 ### Current Library (As of 2025-10-11)
 
 **Quick Reference Cards (4×6" laminated):**
+
 1. ✅ 5-Question Framework Card
 2. ✅ Escalation Matrix Card
 3. ✅ Confidence Score Guide Card
@@ -1080,6 +1114,7 @@ Enablement Team
 6. ✅ Metrics Target Card
 
 **Printable Job Aids (8.5×11"):**
+
 1. ✅ One-Page Approval Queue Workflow
 2. ✅ Escalation Note Template (fill-in)
 3. ✅ Policy Quick Reference Sheet (double-sided)
@@ -1087,15 +1122,18 @@ Enablement Team
 5. ✅ Common Scenarios Cheat Sheet (double-sided)
 
 **Digital Resources:**
+
 1. ✅ Interactive Decision Tool (concept)
 2. ✅ KB Search Assistant (concept)
 3. ✅ Escalation Note Generator (ready to implement)
 
 **Laminated Desk References:**
+
 1. ✅ The "Everything" Sheet (double-sided)
 2. ✅ Keyboard Shortcuts Sheet (when features available)
 
 **Mobile Guides:**
+
 1. ✅ Field Reference PDF
 2. ✅ Mobile Quick Start (web page concept)
 
@@ -1106,12 +1144,14 @@ Enablement Team
 ## Success Metrics
 
 **Job Aid Effectiveness:**
+
 - **80%+** operators report job aids helpful (survey)
 - **<5** support questions on topics covered by job aids
 - **Faster** time to competency (baseline vs with job aids)
 - **Higher** confidence ratings with physical references available
 
 **Usage Tracking:**
+
 - Digital downloads/views
 - Feedback ratings
 - Requests for additional copies (wear indicator = high use)
@@ -1122,6 +1162,7 @@ Enablement Team
 ## Next Steps
 
 **Immediate Actions (Week of 2025-10-11):**
+
 - [ ] Finalize design for 6 quick reference cards
 - [ ] Create print-ready PDFs for 5 printable aids
 - [ ] Produce initial batch (50 copies each)
@@ -1129,12 +1170,14 @@ Enablement Team
 - [ ] Collect feedback and iterate
 
 **Phase 2 (Weeks 2-4):**
+
 - [ ] Develop digital interactive tools
 - [ ] Create mobile-optimized web guides
 - [ ] Design additional cards based on operator requests
 - [ ] Establish regular production/distribution schedule
 
 **Ongoing:**
+
 - Monthly review and updates
 - Quarterly batch reprints
 - Annual comprehensive refresh
@@ -1150,4 +1193,3 @@ Enablement Team
 **Total Job Aids Created:** 15 comprehensive reference materials | 6 laminated cards | 5 printable aids | 4 digital resources
 
 ✅ **JOB AID LIBRARY COMPLETE - READY FOR PRODUCTION & DISTRIBUTION**
-

@@ -340,6 +340,7 @@
 ## Print Instructions
 
 ### Materials Needed
+
 - Heavy cardstock paper (110 lb minimum)
 - Color printer or print shop
 - Laminating pouches (4×6" or 5×7")
@@ -349,6 +350,7 @@
 ### Printing Steps
 
 **Option 1: Home/Office Printer**
+
 1. Print cards on cardstock (heavy paper)
 2. Print front side first
 3. Flip paper and print back side
@@ -357,16 +359,19 @@
 6. Trim excess lamination
 
 **Option 2: Professional Print Shop** (Recommended)
+
 1. Send this document to print shop
 2. Request: "4×6 inch reference cards, double-sided, on 110 lb cardstock, laminated"
 3. Quantity: 10-20 sets (for pilot operators + spares)
 
 ### Estimated Cost
+
 - Home printing: ~$2 per set (cardstock + lamination)
 - Print shop: ~$5-8 per set for 10+ sets
 - Budget for pilot: $50-100 for 15 sets
 
 ### Distribution
+
 - Give full set (4 cards) to each pilot operator
 - Include in onboarding packet
 - Keep 5 spare sets for replacements
@@ -376,18 +381,22 @@
 ## Card Set Summary
 
 **Card 1: Decision Framework**
+
 - Front: 3-question decision check
 - Back: Confidence score interpretation
 
 **Card 2: Escalation Matrix**
+
 - Front: When/why to escalate + SLAs
 - Back: Escalation process + reassurance
 
 **Card 3: Common Scenarios**
+
 - Front: Quick decisions for typical situations
 - Back: How to write effective rejection notes
 
 **Card 4: Keyboard Shortcuts**
+
 - Front: Optional hotkeys for speed
 - Back: Quick tips and daily reminders
 
@@ -396,6 +405,7 @@
 ## Digital Version
 
 **For operators who prefer digital:**
+
 - PDF available in Slack #occ-enablement (pinned message)
 - Can view on second monitor
 - Can pull up on phone
@@ -408,12 +418,14 @@
 ## Maintenance
 
 **Update cards when:**
+
 - Policy changes (print new set)
 - Escalation criteria change
 - Keyboard shortcuts change
 - Major process updates
 
 **Version tracking:**
+
 - Print date on back of each card
 - Note version (v1.0, v1.1, etc.)
 - Collect old cards when distributing updates
@@ -423,6 +435,7 @@
 ## Feedback on Reference Cards
 
 **After 1 week of use, ask operators:**
+
 - Which card is most useful?
 - What's missing?
 - What's confusing?
@@ -440,4 +453,3 @@
 **Cost:** ~$5-8 per set (professional printing)
 
 ✅ **TASK 2G COMPLETE: Reference cards ready for printing**
-

@@ -46,9 +46,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     await authenticate.admin(request);
 
-    const decoded = await (shopify as unknown as {
-      session: { decodeSessionToken(token: string): Promise<any> };
-    }).session.decodeSessionToken(encodedToken);
+    const decoded = await (
+      shopify as unknown as {
+        session: { decodeSessionToken(token: string): Promise<any> };
+      }
+    ).session.decodeSessionToken(encodedToken);
 
     const response: SessionTokenResponse = {
       shopDomain: decoded.dest,

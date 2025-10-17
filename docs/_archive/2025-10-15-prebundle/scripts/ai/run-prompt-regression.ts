@@ -157,20 +157,29 @@ async function loadDecisionTelemetry(): Promise<DecisionTelemetry | undefined> {
         const parsed = JSON.parse(line) as Record<string, unknown>;
         const entry: DecisionTelemetryEntry = {
           decisionId:
-            typeof parsed.decisionId === "number" ? parsed.decisionId : undefined,
+            typeof parsed.decisionId === "number"
+              ? parsed.decisionId
+              : undefined,
           status: typeof parsed.status === "string" ? parsed.status : undefined,
-          attempt: typeof parsed.attempt === "number" ? parsed.attempt : undefined,
+          attempt:
+            typeof parsed.attempt === "number" ? parsed.attempt : undefined,
           durationMs:
-            typeof parsed.durationMs === "number" ? parsed.durationMs : undefined,
+            typeof parsed.durationMs === "number"
+              ? parsed.durationMs
+              : undefined,
           errorCode:
             typeof parsed.errorCode === "string" || parsed.errorCode === null
               ? (parsed.errorCode as string | null)
               : undefined,
-          timestamp: typeof parsed.timestamp === "string" ? parsed.timestamp : undefined,
+          timestamp:
+            typeof parsed.timestamp === "string" ? parsed.timestamp : undefined,
         };
 
         if (entry.status) {
-          statusCounts.set(entry.status, (statusCounts.get(entry.status) ?? 0) + 1);
+          statusCounts.set(
+            entry.status,
+            (statusCounts.get(entry.status) ?? 0) + 1,
+          );
         }
 
         if (entry.timestamp) {
@@ -188,7 +197,10 @@ async function loadDecisionTelemetry(): Promise<DecisionTelemetry | undefined> {
 
         entries.push(entry);
       } catch (error) {
-        console.warn("[ai:regression] failed to parse decision log line", { line, error });
+        console.warn("[ai:regression] failed to parse decision log line", {
+          line,
+          error,
+        });
       }
     }
 
@@ -230,7 +242,10 @@ async function run(): Promise<void> {
     const status: CaseResult["status"] =
       bleu >= BLEU_THRESHOLD && rouge >= ROUGE_THRESHOLD ? "pass" : "review";
 
-    const notes = status === "review" ? "Metrics below threshold; review prompt outputs." : undefined;
+    const notes =
+      status === "review"
+        ? "Metrics below threshold; review prompt outputs."
+        : undefined;
 
     return {
       id: testCase.id,
@@ -249,12 +264,16 @@ async function run(): Promise<void> {
   });
 
   const bleuAverage =
-    results.reduce((sum, result) => sum + result.metrics.bleu1, 0) / results.length;
+    results.reduce((sum, result) => sum + result.metrics.bleu1, 0) /
+    results.length;
   const rougeAverage =
-    results.reduce((sum, result) => sum + result.metrics.rougeL, 0) / results.length;
+    results.reduce((sum, result) => sum + result.metrics.rougeL, 0) /
+    results.length;
 
   const summaryStatus =
-    bleuAverage >= BLEU_THRESHOLD && rougeAverage >= ROUGE_THRESHOLD ? "pass" : "review";
+    bleuAverage >= BLEU_THRESHOLD && rougeAverage >= ROUGE_THRESHOLD
+      ? "pass"
+      : "review";
 
   const timestamp = new Date();
   const artifactDir = join(process.cwd(), "artifacts", "ai");

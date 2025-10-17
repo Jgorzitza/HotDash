@@ -23,7 +23,10 @@ import { getInventoryAlerts } from "../services/shopify/inventory";
 import type { InventoryAlert } from "../services/shopify/types";
 import type { FulfillmentIssue, OrderSummary } from "../services/shopify/types";
 import { recordDashboardSessionOpen } from "../services/dashboardSession.server";
-import { getPendingFulfillments, getSalesPulseSummary } from "../services/shopify/orders";
+import {
+  getPendingFulfillments,
+  getSalesPulseSummary,
+} from "../services/shopify/orders";
 import {
   getOpsAggregateMetrics,
   type OpsAggregateMetrics,
@@ -41,10 +44,13 @@ interface LoaderData {
   opsMetrics: TileState<OpsAggregateMetrics>;
 }
 
-export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const useMock =
-    url.searchParams.get("mock") === "1" || process.env.DASHBOARD_USE_MOCK === "1";
+    url.searchParams.get("mock") === "1" ||
+    process.env.DASHBOARD_USE_MOCK === "1";
 
   if (useMock) {
     return Response.json(buildMockDashboard());
@@ -149,9 +155,24 @@ function buildMockDashboard(): LoaderData {
     currency: "USD",
     orderCount: 58,
     topSkus: [
-      { sku: "BOARD-XL", title: "Powder Board XL", quantity: 14, revenue: 2800 },
-      { sku: "GLOVE-PRO", title: "Thermal Gloves Pro", quantity: 32, revenue: 1920 },
-      { sku: "BOOT-INS", title: "Insulated Boots", quantity: 20, revenue: 1600 },
+      {
+        sku: "BOARD-XL",
+        title: "Powder Board XL",
+        quantity: 14,
+        revenue: 2800,
+      },
+      {
+        sku: "GLOVE-PRO",
+        title: "Thermal Gloves Pro",
+        quantity: 32,
+        revenue: 1920,
+      },
+      {
+        sku: "BOOT-INS",
+        title: "Insulated Boots",
+        quantity: 20,
+        revenue: 1600,
+      },
     ],
     pendingFulfillment: [
       {
@@ -214,7 +235,8 @@ function buildMockDashboard(): LoaderData {
       slaBreached: true,
       tags: ["priority"],
       suggestedReplyId: "ack_delay",
-      suggestedReply: "Hi Jamie, thanks for your patience. We're expediting your order update now.",
+      suggestedReply:
+        "Hi Jamie, thanks for your patience. We're expediting your order update now.",
       messages: [],
       aiSuggestion: null,
       aiSuggestionEnabled: false,
@@ -314,8 +336,8 @@ export default function OperatorDashboard() {
           }}
         >
           <p style={{ margin: 0, color: "var(--occ-text-secondary)" }}>
-            Displaying sample data. Set <code>DASHBOARD_USE_MOCK=0</code> or append{" "}
-            <code>?mock=0</code> to load live integrations.
+            Displaying sample data. Set <code>DASHBOARD_USE_MOCK=0</code> or
+            append <code>?mock=0</code> to load live integrations.
           </p>
         </div>
       )}

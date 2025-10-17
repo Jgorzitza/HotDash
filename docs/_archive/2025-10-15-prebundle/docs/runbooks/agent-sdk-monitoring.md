@@ -12,12 +12,14 @@ This runbook covers monitoring and observability for HotDash Agent SDK infrastru
 ## Services to Monitor
 
 ### 1. hotdash-llamaindex-mcp
+
 - **Purpose**: LlamaIndex MCP server for RAG capabilities
 - **Expected Deployment**: TBD (engineer deploying)
 - **Target Latency**: P95 < 500ms for MCP queries
 - **Auto-scaling**: Expected to use auto-stop/auto-start
 
-### 2. hotdash-agent-service  
+### 2. hotdash-agent-service
+
 - **Purpose**: Agent service for approval queue management
 - **Expected Deployment**: TBD (engineer deploying)
 - **Target Response Time**: < 30s for approval queue
@@ -43,6 +45,7 @@ This runbook covers monitoring and observability for HotDash Agent SDK infrastru
 ### Performance Monitoring
 
 **MCP Query Latency** (Target: P95 < 500ms)
+
 ```bash
 # Test MCP endpoint response time
 time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
@@ -52,6 +55,7 @@ time curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ```
 
 **Approval Queue Response Time** (Target: < 30s)
+
 ```bash
 # Test agent service endpoint
 time curl -sS "https://hotdash-agent-service.fly.dev/health"
@@ -63,6 +67,7 @@ time curl -sS "https://hotdash-agent-service.fly.dev/health"
 ### Resource Utilization
 
 **Memory Usage Monitoring:**
+
 ```bash
 # Get detailed machine status (includes memory usage)
 ~/.fly/bin/fly machine status <machine-id> -a hotdash-llamaindex-mcp
@@ -74,6 +79,7 @@ time curl -sS "https://hotdash-agent-service.fly.dev/health"
 ```
 
 **Auto-scaling Verification:**
+
 ```bash
 # Verify machines stop when idle
 ~/.fly/bin/fly machine list -a hotdash-llamaindex-mcp
@@ -88,13 +94,13 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 
 ## Performance Targets
 
-| Metric | Target | Warning Threshold | Critical Threshold |
-|--------|--------|-------------------|-------------------|
-| MCP Query Latency (P95) | < 500ms | > 500ms | > 1000ms |
-| Approval Queue Response | < 30s | > 30s | > 60s |
-| Memory Usage | < 70% | > 70% | > 85% |
-| Error Rate | < 1% | > 1% | > 5% |
-| Auto-start Time | < 10s | > 10s | > 20s |
+| Metric                  | Target  | Warning Threshold | Critical Threshold |
+| ----------------------- | ------- | ----------------- | ------------------ |
+| MCP Query Latency (P95) | < 500ms | > 500ms           | > 1000ms           |
+| Approval Queue Response | < 30s   | > 30s             | > 60s              |
+| Memory Usage            | < 70%   | > 70%             | > 85%              |
+| Error Rate              | < 1%    | > 1%              | > 5%               |
+| Auto-start Time         | < 10s   | > 10s             | > 20s              |
 
 ## Alert Configuration
 
@@ -132,6 +138,7 @@ curl -sS "https://hotdash-llamaindex-mcp.fly.dev/health"
 ## Monitoring Commands Reference
 
 ### Health Check Script
+
 ```bash
 #!/bin/bash
 # Save as: scripts/ops/agent-sdk-health-check.sh
@@ -146,7 +153,7 @@ echo -e "\n1. Service Status:"
 if ~/.fly/bin/fly apps list | grep -q "hotdash-llamaindex-mcp"; then
   echo -e "\n2. LlamaIndex MCP Status:"
   ~/.fly/bin/fly status -a hotdash-llamaindex-mcp
-  
+
   echo -e "\n3. LlamaIndex MCP Health:"
   curl -sS -w "\nStatus: %{http_code}, Time: %{time_total}s\n" "https://hotdash-llamaindex-mcp.fly.dev/health" || echo "Health check failed"
 fi
@@ -154,7 +161,7 @@ fi
 if ~/.fly/bin/fly apps list | grep -q "hotdash-agent-service"; then
   echo -e "\n4. Agent Service Status:"
   ~/.fly/bin/fly status -a hotdash-agent-service
-  
+
   echo -e "\n5. Agent Service Health:"
   curl -sS -w "\nStatus: %{http_code}, Time: %{time_total}s\n" "https://hotdash-agent-service.fly.dev/health" || echo "Health check failed"
 fi
@@ -163,6 +170,7 @@ echo -e "\n=== Health Check Complete ==="
 ```
 
 ### Log Monitoring Script
+
 ```bash
 #!/bin/bash
 # Save as: scripts/ops/agent-sdk-logs.sh
@@ -175,6 +183,7 @@ echo "Monitoring logs for: $SERVICE"
 ## Troubleshooting
 
 ### Service Not Starting
+
 1. Check machine status: `~/.fly/bin/fly machine list -a <app>`
 2. Review recent logs: `~/.fly/bin/fly logs -a <app>`
 3. Verify secrets are set: `~/.fly/bin/fly secrets list -a <app>`
@@ -182,18 +191,21 @@ echo "Monitoring logs for: $SERVICE"
 5. Restart machine: `~/.fly/bin/fly machine restart <machine-id> -a <app>`
 
 ### High Latency
+
 1. Check machine resources: `~/.fly/bin/fly machine status <machine-id> -a <app>`
 2. Review logs for slow operations
 3. Consider scaling CPU/memory
 4. Check network connectivity to dependencies (Supabase, etc.)
 
 ### Memory Issues
+
 1. Check current memory allocation
 2. Review logs for memory-related errors
 3. Scale up: `~/.fly/bin/fly machine update <machine-id> --memory <MB> -a <app>`
 4. Document new baseline in this runbook
 
 ### Auto-scaling Not Working
+
 1. Verify fly.toml has auto_stop_machines and auto_start_machines configured
 2. Check machine state: `~/.fly/bin/fly machine list -a <app>`
 3. Test with manual request and observe state change
@@ -202,6 +214,7 @@ echo "Monitoring logs for: $SERVICE"
 ## Evidence and Logging
 
 All monitoring activities should be logged to `feedback/reliability.md` with:
+
 - Timestamp (ISO 8601)
 - Command executed
 - Result summary
@@ -209,6 +222,7 @@ All monitoring activities should be logged to `feedback/reliability.md` with:
 - Actions taken
 
 Example:
+
 ```
 [2025-10-11T20:37:00Z] Agent SDK Monitoring Check
 $ ~/.fly/bin/fly status -a hotdash-llamaindex-mcp
@@ -220,12 +234,14 @@ Action: None required
 ## Integration with CI/CD
 
 ### Pre-deployment Checks
+
 - [ ] Verify health check endpoints exist
 - [ ] Confirm auto-scaling configuration
 - [ ] Set up monitoring baseline
 - [ ] Test rollback procedure
 
 ### Post-deployment Validation
+
 - [ ] Health checks passing within 2 minutes
 - [ ] Auto-scaling working as expected
 - [ ] Latency within targets
@@ -235,18 +251,21 @@ Action: None required
 ## Escalation Procedures
 
 ### Level 1: Reliability Team (Immediate)
+
 - Monitor alerts and logs
 - Attempt standard troubleshooting
 - Execute rollback if needed
 - Document incident
 
 ### Level 2: Engineer + Reliability (< 15 minutes for critical)
+
 - Code-level debugging
 - Configuration changes
 - Architecture review
 - Hot fixes if safe
 
 ### Level 3: Manager + Engineer + Reliability (< 30 minutes for critical)
+
 - Major architectural issues
 - Multi-service failures
 - Production incident coordination
@@ -255,18 +274,21 @@ Action: None required
 ## Regular Maintenance
 
 ### Daily
+
 - Health check both services
 - Review logs for errors
 - Check latency metrics
 - Verify auto-scaling
 
-### Weekly  
+### Weekly
+
 - Resource utilization trend analysis
 - Performance baseline review
 - Update thresholds if needed
 - Test incident response procedures
 
 ### Monthly
+
 - Full incident response drill
 - Review and update runbooks
 - Capacity planning review
@@ -281,8 +303,8 @@ Action: None required
 
 ## Changelog
 
-| Date | Change | Author |
-|------|--------|--------|
+| Date       | Change                            | Author            |
+| ---------- | --------------------------------- | ----------------- |
 | 2025-10-11 | Initial creation (pre-deployment) | Reliability Agent |
 
 ## Next Steps
@@ -292,4 +314,3 @@ Action: None required
 3. ⏳ Establish performance baselines
 4. ⏳ Set up automated monitoring
 5. ⏳ Test alert procedures
-

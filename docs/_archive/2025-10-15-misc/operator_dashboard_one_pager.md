@@ -40,6 +40,7 @@
 ```
 
 **What this means**:
+
 - **Drafts Reviewed**: How many you've looked at today (24 is great!)
 - **Approval Rate**: How often you approve without editing (68% is solid)
 - **Avg Time**: How fast you review (1.2 min is efficient)
@@ -67,6 +68,7 @@
 ```
 
 **What this means**:
+
 - Most of the time (68%), you approve drafts as-is
 - Sometimes (29%), you edit before approving
 - Rarely need to escalate or reject
@@ -93,6 +95,7 @@
 ```
 
 **What this means**:
+
 - You're getting better/faster over time (normal learning curve!)
 - If trending up: You're building trust in the system
 - If flat: You're consistent (also good!)
@@ -116,16 +119,19 @@
 ## How to Use Your Dashboard
 
 ### Daily (30 seconds)
+
 - Quick glance at today's metrics
 - Check if you're getting faster
 - See any insights or tips
 
 ### Weekly (2 minutes)
+
 - Review 7-day trend
 - See improvement over time
 - Adjust if needed (e.g., "I should trust drafts more")
 
 ### Monthly (never, unless you want to)
+
 - Dashboard is for YOU, not required viewing
 - Use it if helpful, ignore it if not
 
@@ -134,17 +140,20 @@
 ## Privacy & Data
 
 **What we track**:
+
 - How many drafts you review
 - Your actions (approve/edit/escalate/reject)
 - Time spent per draft
 - Your daily rating (if you submit it)
 
 **What we DON'T track**:
+
 - Specific customer conversations (private)
 - What you do outside approval queue
 - Your keystrokes or mouse movements
 
 **Who sees your data**:
+
 - You (always)
 - Your team lead (aggregate view)
 - Manager (aggregate view)
@@ -155,18 +164,22 @@
 ## Tips for Using Dashboard Effectively
 
 **Tip 1**: Check it once a day, not every 5 minutes
+
 - Don't obsess over numbers
 - Focus on the work, check progress at end of day
 
 **Tip 2**: Use trends, not single-day numbers
+
 - One bad day doesn't matter
 - Look at week-over-week improvement
 
 **Tip 3**: Share insights with team
+
 - "I noticed my approval rate goes up when I use quick templates"
 - "My review time drops in the morning vs afternoon"
 
 **Tip 4**: Opt out of leaderboard if it stresses you
+
 - Gamification should be fun, not pressure
 - Focus on your own improvement
 
@@ -176,4 +189,3 @@
 **Purpose**: Simple guide showing operators what their dashboard means  
 **Status**: Ready for inclusion in training materials  
 **North Star**: ✅ **Transparent metrics help operators improve, not judge them**
-

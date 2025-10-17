@@ -82,6 +82,7 @@
 ## KB Quality Checklist
 
 **For Each Article**:
+
 - [ ] **Current**: Information is up-to-date (check version, last updated date)
 - [ ] **Accurate**: Reviewed by someone who knows the policy
 - [ ] **Clear**: Written in simple language, no jargon
@@ -90,6 +91,7 @@
 - [ ] **Examples**: Includes real examples when helpful
 
 **Format for AI**:
+
 ```markdown
 # Return Policy
 
@@ -98,25 +100,30 @@
 **Applies To**: All orders
 
 ## Return Window
+
 You can return items within **30 days** of delivery.
 
 ## Conditions
+
 - Item must be unused and in original packaging
 - Include original tags and receipt
 - Some items are final sale (marked on product page)
 
 ## How to Return
+
 1. Log in to your account
 2. Go to Orders → Select order → Request Return
 3. Print return label
 4. Ship back within 7 days
 
 ## Refund Timeline
+
 - We process refunds within **5-7 business days** after receiving item
 - Refund goes to original payment method
 - Email confirmation sent when processed
 
 ## Questions?
+
 Contact support@hotdash.com or chat with us!
 ```
 
@@ -141,6 +148,7 @@ Contact support@hotdash.com or chat with us!
 ## KB Gaps to Fill (From Workflow Analysis)
 
 **Top 10 inquiries with NO KB article** (create these first):
+
 1. "When will my order arrive?" → Create "Expected Delivery Times" article
 2. "Can I change my order?" → Create "Order Modification Policy"
 3. "Do you ship to [country]?" → Create "International Shipping Countries" list
@@ -161,10 +169,12 @@ Contact support@hotdash.com or chat with us!
 **Why it matters**: Policies change, KB must stay current
 
 **Version Format**:
+
 - Shipping Policy v2.1 (Oct 1, 2025)
 - Return Policy v3.0 (Sep 15, 2025)
 
 **When to update version**:
+
 - Policy changes (content change = minor version bump)
 - Major policy overhaul (major version bump)
 
@@ -186,4 +196,3 @@ Contact support@hotdash.com or chat with us!
 **Owner**: Product Agent (Supporting Support Agent)  
 **Status**: Ready for Support Agent to execute KB audit  
 **North Star**: ✅ **Practical checklist that ensures operators have right information**
-

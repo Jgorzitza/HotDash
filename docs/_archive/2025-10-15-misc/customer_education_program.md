@@ -11,18 +11,21 @@
 ### 1. Operator Certification Program
 
 **Level 1: Agent SDK Fundamentals** (2 hours)
+
 - How to review drafts
 - When to approve vs edit
 - Using quick templates
 - Best practices
 
 **Level 2: Advanced Features** (2 hours)
+
 - Sentiment analysis
 - Multi-issue handling
 - Bulk actions
 - Performance optimization
 
 **Level 3: Expert Operator** (4 hours)
+
 - Fine-tuning prompts
 - Knowledge base curation
 - Training new operators
@@ -35,6 +38,7 @@
 ### 2. Knowledge Base Academy
 
 **Self-Paced Course**: How to build great knowledge bases
+
 - Document structure best practices
 - Writing for AI (clear, scannable)
 - Versioning and updates
@@ -57,4 +61,3 @@
 
 **Document Owner**: Product Agent  
 **Status**: Program Outlined - Launch with full rollout
-

@@ -25,12 +25,14 @@
 ### 1. API Endpoints
 
 #### `/api/session-token/claims` ✅ SECURE
+
 **Authentication:** Shopify Admin authentication required  
 **Input Validation:** Bearer token validation  
 **Error Handling:** Proper 401/405 responses  
 **Findings:** No issues
 
 **Security Controls:**
+
 - ✅ `authenticate.admin(request)` enforced
 - ✅ Bearer token format validation
 - ✅ Proper error responses (no stack traces)
@@ -39,16 +41,19 @@
 ---
 
 #### `/api/webhooks/chatwoot` 🟡 GOOD (3 recommendations)
+
 **Authentication:** HMAC signature verification  
 **Input Validation:** POST-only, payload validation  
-**Error Handling:** Comprehensive error handling  
+**Error Handling:** Comprehensive error handling
 
 **Security Controls:**
+
 - ✅ Signature verification implemented
 - ✅ POST-only enforcement
 - ✅ Error handling with logging
 
 **Findings:**
+
 1. **[MEDIUM]** Signature verification skipped in development
    - **Risk:** Development mode accepts unsigned webhooks
    - **Impact:** Could allow unauthorized webhooks in dev environment
@@ -73,12 +78,14 @@
 ### 2. Action Endpoints
 
 #### `/actions/sales-pulse.decide` ✅ SECURE
+
 **Authentication:** Shopify Admin authentication required  
 **Input Validation:** Action type validation, safe JSON parsing  
 **Decision Logging:** ✅ All decisions logged  
 **Findings:** No issues
 
 **Security Controls:**
+
 - ✅ `authenticate.admin(request)` enforced
 - ✅ Shop context validation
 - ✅ ACTION_MAP whitelist for valid actions
@@ -89,6 +96,7 @@
 ---
 
 #### `/actions/chatwoot.escalate` ✅ SECURE
+
 **Authentication:** Shopify Admin authentication required  
 **Input Validation:** Content-type validation, action validation  
 **Decision Logging:** ✅ All decisions logged  
@@ -96,6 +104,7 @@
 **Findings:** No issues
 
 **Security Controls:**
+
 - ✅ `authenticate.admin(request)` enforced
 - ✅ Shop context validation
 - ✅ Action switch with validation
@@ -109,10 +118,12 @@
 ## Secret Exposure Audit
 
 ### Console Logging Review ✅ CLEAN
+
 **Scan:** Checked all route files for console.log/error/warn with sensitive patterns  
 **Result:** ✅ No secrets, tokens, keys, or passwords found in console statements
 
 **Evidence:**
+
 ```bash
 grep -r "console\.(log|error|warn)" app/routes | grep -i -E "(token|secret|key|password|credential)"
 # Exit code: 1 (no matches)
@@ -123,6 +134,7 @@ grep -r "console\.(log|error|warn)" app/routes | grep -i -E "(token|secret|key|p
 ### Environment Variable Usage 🟡 ACCEPTABLE
 
 **Found:**
+
 1. `process.env.DASHBOARD_USE_MOCK` - ✅ Safe (feature flag)
 2. `process.env.SHOPIFY_API_KEY` - ✅ Safe (public key)
 3. `process.env.CHATWOOT_WEBHOOK_SECRET` - 🟡 Acceptable (webhook secret)
@@ -136,11 +148,13 @@ grep -r "console\.(log|error|warn)" app/routes | grep -i -E "(token|secret|key|p
 ## Authentication & Authorization
 
 ### Shopify Admin Authentication ✅ EXCELLENT
+
 **Coverage:** All action endpoints use `authenticate.admin(request)`  
 **Session Management:** Shop context validated on all requests  
 **Actor Tracking:** Email or shop domain logged for all decisions
 
 **Routes Protected:**
+
 - ✅ `/actions/sales-pulse.decide`
 - ✅ `/actions/chatwoot.escalate`
 - ✅ `/api/session-token/claims`
@@ -148,16 +162,18 @@ grep -r "console\.(log|error|warn)" app/routes | grep -i -E "(token|secret|key|p
 ---
 
 ### Webhook Authentication ✅ GOOD
+
 **Method:** HMAC-SHA256 signature verification  
 **Secret:** `CHATWOOT_WEBHOOK_SECRET` environment variable  
 **Skip Condition:** Development mode only
 
 **Code Review:**
+
 ```typescript
 function verifySignature(payload: string, signature: string | null): boolean {
-  const expectedSignature = createHmac('sha256', webhookSecret)
+  const expectedSignature = createHmac("sha256", webhookSecret)
     .update(payload)
-    .digest('hex');
+    .digest("hex");
   return signature === expectedSignature;
 }
 ```
@@ -169,13 +185,16 @@ function verifySignature(payload: string, signature: string | null): boolean {
 ## Input Validation
 
 ### Form Data Validation ✅ STRONG
+
 **All endpoints validate:**
+
 - ✅ Required fields present
 - ✅ Type checking (`typeof` checks)
 - ✅ Action type whitelisting
 - ✅ Safe JSON parsing with try/catch
 
 **Example (sales-pulse.decide):**
+
 ```typescript
 if (typeof actionType !== "string" || !(actionType in ACTION_MAP)) {
   throw jsonResponse({ error: "Invalid action" }, { status: 400 });
@@ -185,9 +204,11 @@ if (typeof actionType !== "string" || !(actionType in ACTION_MAP)) {
 ---
 
 ### JSON Parsing ✅ SAFE
+
 **All JSON parsing is wrapped in try/catch blocks**
 
 **Example (chatwoot.escalate):**
+
 ```typescript
 try {
   aiSuggestionMetadata = JSON.parse(metadataRaw);
@@ -201,8 +222,10 @@ try {
 ## Audit Trail & Monitoring
 
 ### Decision Logging ✅ EXCELLENT
+
 **Coverage:** All user actions are logged via `logDecision()`  
 **Data Captured:**
+
 - Scope (ops)
 - Actor (email or shop domain)
 - Action type
@@ -212,6 +235,7 @@ try {
 - Full payload
 
 **Examples:**
+
 1. Sales Pulse decisions logged
 2. Chatwoot escalations logged
 3. AI suggestion usage tracked
@@ -223,12 +247,15 @@ try {
 ## Rate Limiting
 
 ### Current Status: 🟡 NOT IMPLEMENTED
+
 **Endpoints without explicit rate limiting:**
+
 - `/api/webhooks/chatwoot`
 - `/actions/sales-pulse.decide`
 - `/actions/chatwoot.escalate`
 
 **Risk Assessment:** LOW
+
 - Shopify Admin auth provides natural rate limiting
 - Chatwoot controls webhook frequency
 - No public-facing endpoints
@@ -240,12 +267,15 @@ try {
 ## Authentication Failure Tracking
 
 ### Current Monitoring: ✅ LOGGED
+
 **Failed authentication attempts are logged via:**
+
 1. Shopify SDK error handling
 2. Custom unauthorized() responses
 3. Console.error() statements
 
 **Evidence:**
+
 - Session token endpoint: "Failed to decode Shopify session token"
 - Webhook endpoint: "Invalid signature"
 
@@ -256,6 +286,7 @@ try {
 ## Findings Summary
 
 ### Priority Breakdown
+
 - **P0 (Critical):** 0 🟢
 - **P1 (High):** 0 🟢
 - **P2 (Medium):** 3 🟡
@@ -264,18 +295,21 @@ try {
 ### P2 Findings
 
 **[P2-1] Development Signature Verification Bypass**
+
 - **Location:** `app/routes/api.webhooks.chatwoot.tsx:57-65`
 - **Risk:** Development mode accepts unsigned webhooks
 - **Mitigation:** Acceptable for launch; add warning log
 - **Action Required:** Post-launch documentation
 
 **[P2-2] Webhook Secret Documentation**
+
 - **Location:** `process.env.CHATWOOT_WEBHOOK_SECRET`
 - **Risk:** Not documented in credential_index.md
 - **Mitigation:** Add to docs/ops/credential_index.md
 - **Action Required:** Documentation update
 
 **[P2-3] No Explicit Rate Limiting**
+
 - **Location:** All action endpoints
 - **Risk:** Low (Shopify auth provides natural limiting)
 - **Mitigation:** Monitor during launch
@@ -286,9 +320,11 @@ try {
 ## Recommendations
 
 ### Immediate (Pre-Launch) ✅ NONE REQUIRED
+
 **All critical items are secure.** No blocking issues for launch.
 
 ### Post-Launch (P3)
+
 1. Document CHATWOOT_WEBHOOK_SECRET in credential_index.md
 2. Add warning log when signature verification is skipped in dev
 3. Monitor authentication failure rates
@@ -300,12 +336,14 @@ try {
 ## Compliance Status
 
 ### GDPR/CCPA ✅ COMPLIANT
+
 - ✅ All user actions logged with decision trail
 - ✅ Data minimization (only necessary data collected)
 - ✅ Actor tracking for accountability
 - ✅ No PII in console logs
 
 ### Security Best Practices ✅ COMPLIANT
+
 - ✅ Authentication on all protected endpoints
 - ✅ Input validation on all user input
 - ✅ Safe JSON parsing
@@ -317,11 +355,13 @@ try {
 ## Evidence
 
 **Commands Executed:**
+
 1. `find app/routes -type f -name "*.tsx" -o -name "*.ts"` - Listed all route files
 2. `grep -r "process.env" app/routes` - Identified env var usage
 3. `grep -r "console\.(log|error|warn)" app/routes | grep -i -E "(token|secret|key|password|credential)"` - Checked for secret exposure
 
 **Files Reviewed:**
+
 - `app/routes/api.session-token.claims.ts`
 - `app/routes/actions/sales-pulse.decide.ts`
 - `app/routes/actions/chatwoot.escalate.ts`

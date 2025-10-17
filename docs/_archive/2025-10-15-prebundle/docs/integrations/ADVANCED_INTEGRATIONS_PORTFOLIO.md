@@ -14,24 +14,28 @@
 **Priority:** HIGH (marketing analytics expansion)
 
 ### Integration Scope
+
 - Sync customer data from Shopify to Klaviyo
 - Display email campaign performance metrics
 - Track revenue attributed to email
 - Show customer lifecycle stages
 
 ### Technical Approach
+
 - OAuth 2.0 authentication
 - REST API (https://developers.klaviyo.com)
 - Rate limit: 10 req/sec
 - Retry logic with exponential backoff
 
 ### Dashboard Tiles
+
 1. Email Campaign Performance (opens, clicks, revenue)
 2. Customer Segments Health
 3. Lifecycle Stage Distribution
 4. Email Revenue Attribution
 
 ### Implementation
+
 - OAuth integration: 8h
 - API client: 12h
 - Dashboard tiles: 16h
@@ -47,12 +51,14 @@
 **Priority:** MEDIUM (social media insights)
 
 ### Integration Scope
+
 - Instagram Business Account metrics
 - Facebook Page insights
 - Ad campaign performance
 - Audience demographics
 
 ### Technical Approach
+
 - Facebook Graph API
 - Instagram Graph API
 - OAuth 2.0 with Facebook Login
@@ -60,12 +66,14 @@
 - Webhooks for real-time updates
 
 ### Dashboard Tiles
+
 1. Social Media Overview (followers, engagement)
 2. Post Performance (reach, impressions, engagement rate)
 3. Ad Campaign ROI
 4. Audience Demographics
 
 ### Implementation
+
 - OAuth + verification: 12h
 - API clients (FB + IG): 16h
 - Dashboard tiles: 20h
@@ -81,24 +89,28 @@
 **Priority:** HIGH (if direct payments needed)
 
 ### Integration Scope
+
 - Revenue metrics (daily/weekly/monthly)
 - Payout tracking and schedule
 - Dispute/chargeback monitoring
 - Subscription metrics (if applicable)
 
 ### Technical Approach
+
 - Stripe REST API
 - Webhooks for real-time events
 - Official TypeScript SDK
 - Rate limit: 100 req/sec (generous)
 
 ### Dashboard Tiles
+
 1. Financial Summary (revenue, fees, net)
 2. Payout Tracker (schedule, history)
 3. Dispute Alerts (open, resolved)
 4. Subscription Metrics (MRR, churn)
 
 ### Implementation
+
 - OAuth/API key setup: 4h
 - API client: 8h
 - Webhook handler: 6h
@@ -115,24 +127,28 @@
 **Priority:** MEDIUM (alternative to Chatwoot)
 
 ### Integration Scope
+
 - Ticket volume and trends
 - SLA breach monitoring
 - Agent performance metrics
 - Customer satisfaction (CSAT)
 
 ### Technical Approach
+
 - Zendesk REST API
 - OAuth 2.0 authentication
 - Webhooks for real-time updates
 - Rate limit: 700 req/min
 
 ### Dashboard Tiles
+
 1. Support Overview (open tickets, response time)
 2. SLA Performance (met/missed, trending)
 3. Agent Metrics (tickets handled, avg response)
 4. Customer Satisfaction (CSAT scores)
 
 ### Implementation
+
 - OAuth integration: 8h
 - API client: 12h
 - Webhook handler: 8h
@@ -149,24 +165,28 @@
 **Priority:** HIGH (quick win, operations improvement)
 
 ### Integration Scope
+
 - API health alerts
 - SLA breach notifications
 - Daily/weekly summary reports
 - Approval queue reminders
 
 ### Technical Approach
+
 - Slack Incoming Webhooks (simplest)
 - OR Slack OAuth (full integration)
 - Webhook URL per channel
 - Rate limit: 1 message/second
 
 ### Use Cases
+
 1. API failure alerts → #alerts channel
 2. SLA breaches → #support channel
 3. Daily summaries → #ops channel
 4. Approval reminders → #ops channel
 
 ### Implementation
+
 - Incoming webhooks setup: 2h
 - Alert formatting: 4h
 - Integration with existing alerts: 4h
@@ -177,17 +197,18 @@
 
 ## Portfolio Summary
 
-| Integration | Priority | Complexity | Hours | ROI |
-|------------|----------|------------|-------|-----|
-| Slack      | HIGH     | LOW        | 12    | QUICK WIN |
-| Klaviyo    | HIGH     | MEDIUM     | 40    | HIGH |
-| Stripe     | HIGH     | MEDIUM     | 40    | HIGH (if needed) |
-| Zendesk    | MEDIUM   | MEDIUM     | 50    | MEDIUM |
-| FB/IG      | MEDIUM   | HIGH       | 56    | MEDIUM |
+| Integration | Priority | Complexity | Hours | ROI              |
+| ----------- | -------- | ---------- | ----- | ---------------- |
+| Slack       | HIGH     | LOW        | 12    | QUICK WIN        |
+| Klaviyo     | HIGH     | MEDIUM     | 40    | HIGH             |
+| Stripe      | HIGH     | MEDIUM     | 40    | HIGH (if needed) |
+| Zendesk     | MEDIUM   | MEDIUM     | 50    | MEDIUM           |
+| FB/IG       | MEDIUM   | HIGH       | 56    | MEDIUM           |
 
 **Total Effort:** 198 hours (~5 months)
 
 **Recommended Order:**
+
 1. Slack (quick win, 2 weeks)
 2. Klaviyo (marketing value, 1 month)
 3. Stripe (if payment features planned, 1 month)
@@ -199,4 +220,3 @@
 **Portfolio Complete:** 2025-10-11 22:14 UTC  
 **Status:** Strategic roadmap for 5 priority integrations  
 **Next:** API Management Platform (U-Y)
-

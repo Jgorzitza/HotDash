@@ -9,7 +9,10 @@
  *   PUBLER_WORKSPACE_ID
  */
 
-import { getJobStatus, schedulePost } from "../../packages/integrations/publer.ts";
+import {
+  getJobStatus,
+  schedulePost,
+} from "../../packages/integrations/publer.ts";
 
 async function main() {
   const apiKey = process.env.PUBLER_API_KEY;

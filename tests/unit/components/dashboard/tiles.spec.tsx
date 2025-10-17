@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../utils/render";
 import { AOVTile } from "../../../../app/components/dashboard/AOVTile";
 import { ReturnsTile } from "../../../../app/components/dashboard/ReturnsTile";
 import { StockRiskTile } from "../../../../app/components/dashboard/StockRiskTile";
@@ -15,7 +15,9 @@ describe("Dashboard Tiles", () => {
     });
 
     it("should show loading state", () => {
-      render(<AOVTile value="$145.27" trend="up" percentChange="+12%" loading />);
+      render(
+        <AOVTile value="$145.27" trend="up" percentChange="+12%" loading />,
+      );
       expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
   });
@@ -30,22 +32,59 @@ describe("Dashboard Tiles", () => {
 
   describe("StockRiskTile", () => {
     it("should render SKU count", () => {
-      render(<StockRiskTile skuCount={2} subtitle="Below reorder point" trend="down" />);
+      render(
+        <StockRiskTile
+          skuCount={2}
+          subtitle="Below reorder point"
+          trend="down"
+        />,
+      );
       expect(screen.getByText("2 SKUs")).toBeInTheDocument();
     });
   });
 
   describe("SEOTile", () => {
     it("should render alert count", () => {
-      render(<SEOTile alertCount={1} topAlert="/collections/new -24% WoW" trend="down" />);
-      expect(screen.getByText("1 alert")).toBeInTheDocument();
+      render(
+        <SEOTile
+          data={{
+            anomalies: [
+              {
+                page: "/collections/new",
+                metric: "traffic",
+                change: -24,
+                severity: "critical",
+              },
+              {
+                page: "/collections/sale",
+                metric: "traffic",
+                change: -10,
+                severity: "warning",
+              },
+            ],
+          }}
+        />,
+      );
+
+      expect(screen.getByText("SEO anomalies")).toBeInTheDocument();
+      expect(screen.getByText("/collections/new")).toBeInTheDocument();
     });
   });
 
   describe("CXTile", () => {
     it("should render escalation count", () => {
-      render(<CXTile escalationCount={1} slaStatus="SLA breached 3h ago" trend="down" />);
-      expect(screen.getByText("1 escalation")).toBeInTheDocument();
+      render(
+        <CXTile
+          data={{
+            pendingCount: 3,
+            breachedSLA: 1,
+            avgResponseTime: 42,
+          }}
+        />,
+      );
+
+      expect(screen.getByText("Pending conversations")).toBeInTheDocument();
+      expect(screen.getByText("Avg response time: 42m")).toBeInTheDocument();
     });
   });
 });

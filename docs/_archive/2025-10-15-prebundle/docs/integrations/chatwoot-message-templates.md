@@ -13,15 +13,24 @@
 Templates should support dynamic variables that Agent SDK can populate:
 
 ```handlebars
-{{agent.draft_confidence}}     - Confidence score (0-100)
-{{agent.knowledge_sources}}    - Knowledge base articles used
-{{agent.suggested_action}}     - Recommended operator action
-{{customer.sentiment}}         - Detected customer sentiment
-{{customer.urgency}}           - Urgency level (low/medium/high/urgent)
-{{conversation.priority}}      - Assigned priority
-{{order.number}}               - Order number (if detected)
-{{order.status}}               - Order status (if available)
-{{tracking.number}}            - Tracking number (if available)
+{{agent.draft_confidence}}
+- Confidence score (0-100)
+{{agent.knowledge_sources}}
+- Knowledge base articles used
+{{agent.suggested_action}}
+- Recommended operator action
+{{customer.sentiment}}
+- Detected customer sentiment
+{{customer.urgency}}
+- Urgency level (low/medium/high/urgent)
+{{conversation.priority}}
+- Assigned priority
+{{order.number}}
+- Order number (if detected)
+{{order.status}}
+- Order status (if available)
+{{tracking.number}}
+- Tracking number (if available)
 ```
 
 ---
@@ -33,6 +42,7 @@ Templates should support dynamic variables that Agent SDK can populate:
 **Template Name:** `order_status_with_tracking`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}}!
 
@@ -53,6 +63,7 @@ HotDash Support
 ```
 
 **Agent SDK Variables to Populate:**
+
 ```json
 {
   "custom_attribute": {
@@ -74,6 +85,7 @@ HotDash Support
 **Template Name:** `return_policy_standard`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}},
 
@@ -99,6 +111,7 @@ Best,
 ```
 
 **Agent SDK Enhancement:**
+
 - Detects order number from message
 - Calculates return deadline automatically
 - Conditionally includes order-specific details
@@ -110,6 +123,7 @@ Best,
 **Template Name:** `general_inquiry_knowledgebase`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}},
 
@@ -134,6 +148,7 @@ HotDash Support
 ```
 
 **Agent SDK Features:**
+
 - Uses AI-generated draft as main content
 - Cites knowledge base sources
 - Auto-escalates if low confidence
@@ -146,6 +161,7 @@ HotDash Support
 **Template Name:** `urgent_customer_response`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}},
 
@@ -172,6 +188,7 @@ HotDash Support Team
 ```
 
 **Agent SDK Triggers:**
+
 - Angry sentiment detection
 - Multiple contact attempts
 - Legal threat keywords
@@ -184,6 +201,7 @@ HotDash Support Team
 **Template Name:** `escalation_to_specialist`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}},
 
@@ -205,6 +223,7 @@ Best,
 ```
 
 **Agent SDK Escalation Logic:**
+
 - Detects when confidence < 70%
 - Identifies specialist based on category
 - Creates handoff note with context
@@ -217,6 +236,7 @@ Best,
 **Template Name:** `post_resolution_followup`
 
 **Agent SDK Compatible Version:**
+
 ```
 Hi {{contact.name}},
 
@@ -244,29 +264,29 @@ Best regards,
 
 ### Standard Chatwoot Variables
 
-| Variable | Example | Use Case |
-|----------|---------|----------|
-| `{{contact.name}}` | "John Doe" | Customer name |
-| `{{contact.email}}` | "john@example.com" | Customer email |
-| `{{contact.phone}}` | "+1234567890" | Customer phone |
-| `{{agent.name}}` | "Support Agent" | Current agent name |
-| `{{agent.email}}` | "support@hotrodan.com" | Agent email |
-| `{{conversation.id}}` | "123" | Case reference number |
-| `{{conversation.status}}` | "open" | Conversation state |
+| Variable                  | Example                | Use Case              |
+| ------------------------- | ---------------------- | --------------------- |
+| `{{contact.name}}`        | "John Doe"             | Customer name         |
+| `{{contact.email}}`       | "john@example.com"     | Customer email        |
+| `{{contact.phone}}`       | "+1234567890"          | Customer phone        |
+| `{{agent.name}}`          | "Support Agent"        | Current agent name    |
+| `{{agent.email}}`         | "support@hotrodan.com" | Agent email           |
+| `{{conversation.id}}`     | "123"                  | Case reference number |
+| `{{conversation.status}}` | "open"                 | Conversation state    |
 
 ### Agent SDK Custom Variables
 
-| Variable | Example | Population Method |
-|----------|---------|-------------------|
-| `{{agent.draft_response}}` | "Hi! I've looked..." | OpenAI generation |
-| `{{agent.draft_confidence}}` | "85" | Confidence scoring |
-| `{{agent.knowledge_sources}}` | "[{title: ...}]" | LlamaIndex results |
-| `{{agent.suggested_action}}` | "approve" | Agent SDK recommendation |
-| `{{customer.sentiment}}` | "neutral" | Sentiment analysis |
-| `{{customer.urgency}}` | "medium" | Urgency detection |
-| `{{custom_attribute.order_number}}` | "12345" | Extracted from message |
-| `{{custom_attribute.order_status}}` | "Shipped" | API lookup |
-| `{{custom_attribute.tracking_number}}` | "940011..." | API lookup |
+| Variable                               | Example              | Population Method        |
+| -------------------------------------- | -------------------- | ------------------------ |
+| `{{agent.draft_response}}`             | "Hi! I've looked..." | OpenAI generation        |
+| `{{agent.draft_confidence}}`           | "85"                 | Confidence scoring       |
+| `{{agent.knowledge_sources}}`          | "[{title: ...}]"     | LlamaIndex results       |
+| `{{agent.suggested_action}}`           | "approve"            | Agent SDK recommendation |
+| `{{customer.sentiment}}`               | "neutral"            | Sentiment analysis       |
+| `{{customer.urgency}}`                 | "medium"             | Urgency detection        |
+| `{{custom_attribute.order_number}}`    | "12345"              | Extracted from message   |
+| `{{custom_attribute.order_status}}`    | "Shipped"            | API lookup               |
+| `{{custom_attribute.tracking_number}}` | "940011..."          | API lookup               |
 
 ---
 
@@ -276,9 +296,11 @@ Best regards,
 
 ```handlebars
 {{#if custom_attribute.order_number}}
-Your order #{{custom_attribute.order_number}} status: {{custom_attribute.order_status}}
+  Your order #{{custom_attribute.order_number}}
+  status:
+  {{custom_attribute.order_status}}
 {{else}}
-To look up your order, I'll need your order number or email used at checkout.
+  To look up your order, I'll need your order number or email used at checkout.
 {{/if}}
 ```
 
@@ -324,31 +346,31 @@ I'm here to help!
 function selectTemplate(context: DraftContext): string {
   // Detect inquiry type
   const inquiryType = detectInquiryType(context.message);
-  
+
   switch (inquiryType) {
-    case 'order_status':
+    case "order_status":
       if (context.orderData) {
-        return 'order_status_with_tracking';
+        return "order_status_with_tracking";
       }
-      return 'order_status_need_info';
-      
-    case 'return_request':
-      return 'return_policy_standard';
-      
-    case 'complaint':
-      if (context.sentiment === 'angry') {
-        return 'urgent_customer_response';
+      return "order_status_need_info";
+
+    case "return_request":
+      return "return_policy_standard";
+
+    case "complaint":
+      if (context.sentiment === "angry") {
+        return "urgent_customer_response";
       }
-      return 'general_inquiry_knowledgebase';
-      
-    case 'general_question':
-      return 'general_inquiry_knowledgebase';
-      
-    case 'escalation_needed':
-      return 'escalation_to_specialist';
-      
+      return "general_inquiry_knowledgebase";
+
+    case "general_question":
+      return "general_inquiry_knowledgebase";
+
+    case "escalation_needed":
+      return "escalation_to_specialist";
+
     default:
-      return 'general_inquiry_knowledgebase';
+      return "general_inquiry_knowledgebase";
   }
 }
 ```
@@ -373,6 +395,7 @@ function personalize Template(template: string, context: DraftContext): string {
 ### Test Cases
 
 **Test 1: Order Status with Complete Data**
+
 ```json
 {
   "contact": { "name": "John Doe" },
@@ -383,7 +406,7 @@ function personalize Template(template: string, context: DraftContext): string {
   },
   "agent": {
     "draft_confidence": 92,
-    "knowledge_sources": [{"title": "Shipping Policy", "version": "2.1"}]
+    "knowledge_sources": [{ "title": "Shipping Policy", "version": "2.1" }]
   }
 }
 ```
@@ -391,6 +414,7 @@ function personalize Template(template: string, context: DraftContext): string {
 **Expected:** Complete order status with tracking link
 
 **Test 2: Order Status Missing Data**
+
 ```json
 {
   "contact": { "name": "Jane Smith" },
@@ -402,6 +426,7 @@ function personalize Template(template: string, context: DraftContext): string {
 **Expected:** Request for order number, fallback to general help
 
 **Test 3: Angry Customer**
+
 ```json
 {
   "contact": { "name": "Angry Customer" },
@@ -420,7 +445,7 @@ function personalize Template(template: string, context: DraftContext): string {
 
 ```sql
 -- Template usage stats
-SELECT 
+SELECT
   template_name,
   COUNT(*) as usage_count,
   AVG(confidence_score) as avg_confidence,
@@ -431,7 +456,7 @@ GROUP BY template_name
 ORDER BY usage_count DESC;
 
 -- Customer satisfaction by template
-SELECT 
+SELECT
   a.template_name,
   AVG(l.customer_satisfaction_score) as avg_csat,
   COUNT(*) as total_uses
@@ -448,6 +473,7 @@ ORDER BY avg_csat DESC;
 ## Template Best Practices
 
 ### DO:
+
 - ✅ Use clear, simple language
 - ✅ Include specific order/product details when available
 - ✅ Cite knowledge base sources
@@ -458,6 +484,7 @@ ORDER BY avg_csat DESC;
 - ✅ Offer additional help
 
 ### DON'T:
+
 - ❌ Use jargon or technical terms
 - ❌ Make promises you can't keep ("immediately", "definitely")
 - ❌ Include placeholder text like "INSERT_HERE"
@@ -471,6 +498,7 @@ ORDER BY avg_csat DESC;
 ## Template Maintenance
 
 ### Review Cadence
+
 - **Weekly:** Check approval/edit rates by template
 - **Monthly:** Update based on operator feedback
 - **Quarterly:** Audit for brand voice consistency
@@ -540,6 +568,7 @@ await chatwootClient.createPrivateNote(
 ### High-Confidence Responses (>85%)
 
 **1. FAQ Responses**
+
 ```
 Hi {{contact.name}},
 
@@ -556,6 +585,7 @@ Best,
 ```
 
 **2. Simple Confirmations**
+
 ```
 Hi {{contact.name}},
 
@@ -570,6 +600,7 @@ Best,
 ### Medium-Confidence Responses (70-84%)
 
 **3. Requires Verification**
+
 ```
 Hi {{contact.name}},
 
@@ -585,6 +616,7 @@ Best,
 ```
 
 **4. Partial Information**
+
 ```
 Hi {{contact.name}},
 
@@ -602,6 +634,7 @@ Best,
 ### Low-Confidence Responses (<70%)
 
 **5. Escalation Needed**
+
 ```
 Hi {{contact.name}},
 
@@ -624,6 +657,7 @@ Best,
 ### When to Edit Templates
 
 **Edit Before Sending If:**
+
 - Customer name is incorrect or missing
 - Order details don't match customer's inquiry
 - Tone doesn't match customer sentiment
@@ -634,12 +668,14 @@ Best,
 ### How to Edit Efficiently
 
 **Minor Edits (approve with edits):**
+
 - Fix typos or grammar
 - Update specific dates/numbers
 - Add personalized greeting
 - Include additional context
 
 **Major Edits (reject and rewrite):**
+
 - Template is completely wrong for situation
 - Customer issue not addressed
 - Tone is inappropriate
@@ -650,44 +686,71 @@ Best,
 ## Template Variables Reference
 
 ### Contact Variables
+
 ```handlebars
-{{contact.name}}              - Customer full name
-{{contact.email}}             - Customer email
-{{contact.phone}}             - Customer phone
-{{contact.avatar}}            - Customer avatar URL
-{{contact.id}}                - Contact ID
-{{contact.identifier}}        - External identifier
+{{contact.name}}
+- Customer full name
+{{contact.email}}
+- Customer email
+{{contact.phone}}
+- Customer phone
+{{contact.avatar}}
+- Customer avatar URL
+{{contact.id}}
+- Contact ID
+{{contact.identifier}}
+- External identifier
 ```
 
 ### Conversation Variables
+
 ```handlebars
-{{conversation.id}}           - Conversation ID
-{{conversation.status}}       - open/pending/resolved
-{{conversation.created_at}}   - Creation timestamp
-{{conversation.priority}}     - low/normal/high/urgent
-{{conversation.inbox}}        - Inbox name
-{{conversation.assignee}}     - Assigned agent
+{{conversation.id}}
+- Conversation ID
+{{conversation.status}}
+- open/pending/resolved
+{{conversation.created_at}}
+- Creation timestamp
+{{conversation.priority}}
+- low/normal/high/urgent
+{{conversation.inbox}}
+- Inbox name
+{{conversation.assignee}}
+- Assigned agent
 ```
 
 ### Agent Variables
+
 ```handlebars
-{{agent.name}}                - Agent display name
-{{agent.email}}               - Agent email
-{{agent.signature}}           - Agent signature block
-{{agent.avatar}}              - Agent avatar URL
+{{agent.name}}
+- Agent display name
+{{agent.email}}
+- Agent email
+{{agent.signature}}
+- Agent signature block
+{{agent.avatar}}
+- Agent avatar URL
 ```
 
 ### Agent SDK Variables (Custom)
+
 ```handlebars
-{{agent.draft_response}}      - AI-generated response text
-{{agent.draft_confidence}}    - Confidence score (0-100)
-{{agent.knowledge_sources}}   - Array of knowledge articles
-{{agent.suggested_action}}    - approve/edit/escalate
-{{customer.sentiment}}        - happy/neutral/frustrated/angry
-{{customer.urgency}}          - low/medium/high/urgent
+{{agent.draft_response}}
+- AI-generated response text
+{{agent.draft_confidence}}
+- Confidence score (0-100)
+{{agent.knowledge_sources}}
+- Array of knowledge articles
+{{agent.suggested_action}}
+- approve/edit/escalate
+{{customer.sentiment}}
+- happy/neutral/frustrated/angry
+{{customer.urgency}}
+- low/medium/high/urgent
 ```
 
 ### Custom Attributes (Order Data)
+
 ```handlebars
 {{custom_attribute.order_number}}
 {{custom_attribute.order_status}}
@@ -794,7 +857,7 @@ curl -H "api_access_token: $TOKEN" \
 
 ```sql
 -- Top performing templates
-SELECT 
+SELECT
   template_name,
   COUNT(*) as uses,
   AVG(confidence_score) as avg_confidence,
@@ -811,7 +874,7 @@ ORDER BY approval_rate DESC;
 
 ```sql
 -- Templates with low approval rate (need improvement)
-SELECT 
+SELECT
   template_name,
   COUNT(*) as total_uses,
   AVG(CASE WHEN operator_action = 'approve' THEN 100 ELSE 0 END) as approval_rate,
@@ -854,4 +917,3 @@ ORDER BY total_uses DESC;
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent  
 **Review Cadence:** Monthly or after significant workflow changes
-

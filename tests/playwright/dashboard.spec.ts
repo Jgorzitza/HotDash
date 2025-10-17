@@ -10,9 +10,17 @@ test.describe("operator dashboard", () => {
       page.getByRole("heading", { name: /Operator Control Center/i }),
     ).toBeVisible();
 
-    await expect(page.getByRole("heading", { name: /Sales Pulse/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Fulfillment Health/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Inventory Heatmap/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /CX Escalations/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Sales Pulse/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Fulfillment Health/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Inventory Heatmap/i }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /CX Escalations/i }),
+    ).toBeVisible();
   });
 });

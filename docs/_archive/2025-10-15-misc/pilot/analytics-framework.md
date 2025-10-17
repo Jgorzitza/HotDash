@@ -13,6 +13,7 @@
 **Goal**: Understand how Hot Rodan uses HotDash to prove value and identify improvements
 
 **Why Analytics Matter**:
+
 - Prove ROI (time saved, faster decisions)
 - Identify which features are valuable (double down)
 - Spot friction points (fix quickly)
@@ -25,13 +26,15 @@
 ### Category 1: Engagement Metrics
 
 #### 1.1 Login Frequency
+
 **Definition**: Days per week CEO/team logs into dashboard
 
 **Why**: Indicates habit formation and product stickiness
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   user_id,
   user_name,
   COUNT(DISTINCT DATE(login_at)) as login_days,
@@ -45,24 +48,27 @@ GROUP BY user_id, user_name;
 **Target**: CEO ≥5 days/week by Week 2
 
 **Dashboard Viz**:
+
 ```
 CEO Login Pattern (Week 3)
 Mon Tue Wed Thu Fri Sat Sun
  ✅  ✅  ✅  ❌  ✅  ✅  ✅  (6/7 days)
- 
+
 Target: ≥5 days/week ✅
 ```
 
 ---
 
 #### 1.2 Session Duration
+
 **Definition**: Time spent per session
 
 **Why**: Indicates efficiency (too short = not using, too long = struggling)
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   user_id,
   AVG(TIMESTAMPDIFF(MINUTE, login_at, logout_at)) as avg_minutes,
   MIN(TIMESTAMPDIFF(MINUTE, login_at, logout_at)) as min_minutes,
@@ -76,19 +82,22 @@ GROUP BY user_id;
 **Target**: 2-10 minutes (efficient quick checks)
 
 **Red Flags**:
+
 - <1 min: Not actually using it
-- >15 min: Dashboard too complex or has issues
+- > 15 min: Dashboard too complex or has issues
 
 ---
 
 #### 1.3 Session Frequency
+
 **Definition**: Number of sessions per day
 
 **Why**: Multiple sessions = checking throughout day (mobile usage)
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   DATE(login_at) as date,
   user_id,
   COUNT(*) as sessions_per_day
@@ -104,13 +113,15 @@ GROUP BY DATE(login_at), user_id;
 ### Category 2: Feature Usage Metrics
 
 #### 2.1 Tile Click Patterns
+
 **Definition**: Which tiles are used most
 
 **Why**: Tells us what's valuable, what's ignored
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   tile_name,
   COUNT(*) as total_clicks,
   COUNT(DISTINCT user_id) as unique_users,
@@ -123,6 +134,7 @@ ORDER BY total_clicks DESC;
 ```
 
 **Dashboard Viz**:
+
 ```
 Most-Used Tiles (Month 1)
 1. Sales Pulse       ████████████ 245 clicks
@@ -137,13 +149,15 @@ Most-Used Tiles (Month 1)
 ---
 
 #### 2.2 Approval Queue Usage
+
 **Definition**: Approvals processed, turnaround time
 
 **Why**: Core workflow, measures CEO efficiency gains
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   COUNT(*) as total_approvals,
   COUNT(DISTINCT DATE(created_at)) as days_used,
   AVG(TIMESTAMPDIFF(MINUTE, created_at, approved_at)) as avg_minutes,
@@ -158,6 +172,7 @@ WHERE customer_id = 'hot-rodan'
 **Target**: <60 min turnaround (vs 2-4 hours before)
 
 **Dashboard Viz**:
+
 ```
 Approval Queue Performance
 Total Approvals: 23
@@ -173,13 +188,15 @@ Decisions:
 ---
 
 #### 2.3 Mobile vs Desktop Usage
+
 **Definition**: Device type breakdown
 
 **Why**: Mobile usage = on-the-go value
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   device_type,
   COUNT(*) as sessions,
   ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 1) as percentage
@@ -192,6 +209,7 @@ GROUP BY device_type;
 **Target**: ≥20% mobile usage
 
 **Dashboard Viz**:
+
 ```
 Device Usage
 Desktop: 68% (41 sessions)
@@ -209,9 +227,11 @@ Week 4: 42% 📈
 ### Category 3: Impact Metrics
 
 #### 3.1 Time Savings
+
 **Definition**: Minutes saved per workflow vs manual process
 
 **How to Calculate**:
+
 ```
 Manual Workflow:
 - Daily Shopify check: 30 min
@@ -228,6 +248,7 @@ Weekly savings: (28 × 7) + 120 + 60 = 376 min = 6.3 hours
 ```
 
 **Data Sources**:
+
 - Session duration (actual dashboard time)
 - CEO self-reported (weekly check-ins)
 
@@ -236,13 +257,15 @@ Weekly savings: (28 × 7) + 120 + 60 = 376 min = 6.3 hours
 ---
 
 #### 3.2 Inventory Alerts Acted Upon
+
 **Definition**: Alerts that led to action (reorders)
 
 **Why**: Proves inventory alert value, prevents stock-outs
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   alert_id,
   product_name,
   alert_triggered_at,
@@ -256,6 +279,7 @@ WHERE customer_id = 'hot-rodan'
 ```
 
 **Dashboard Viz**:
+
 ```
 Inventory Alerts Impact
 Alerts Triggered: 12
@@ -274,13 +298,15 @@ Avg Response Time: 4.2 hours
 ---
 
 #### 3.3 Customer Satisfaction Correlation
+
 **Definition**: Customer sentiment trend during pilot
 
 **Why**: Faster decisions → happier customers
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   WEEK(created_at) as week_num,
   SUM(CASE WHEN sentiment = 'positive' THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as pct_positive,
   AVG(response_time_minutes) as avg_response_time
@@ -297,13 +323,15 @@ GROUP BY WEEK(created_at);
 ### Category 4: Product Quality Metrics
 
 #### 4.1 Error Rate
+
 **Definition**: Errors per session
 
 **Why**: Too many errors = CEO loses trust
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   DATE(error_at) as date,
   error_type,
   COUNT(*) as error_count
@@ -321,13 +349,15 @@ ORDER BY date DESC, error_count DESC;
 ---
 
 #### 4.2 Load Time
+
 **Definition**: Time for dashboard to fully load
 
 **Why**: Slow dashboard = CEO won't use it
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   AVG(load_time_ms) as avg_load_time,
   MAX(load_time_ms) as max_load_time,
   PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY load_time_ms) as p95_load_time
@@ -344,13 +374,15 @@ WHERE customer_id = 'hot-rodan'
 ---
 
 #### 4.3 Data Freshness
+
 **Definition**: How often data syncs
 
 **Why**: Stale data = CEO loses trust
 
 **How to Track**:
+
 ```sql
-SELECT 
+SELECT
   data_source,
   MAX(last_synced_at) as most_recent_sync,
   TIMESTAMPDIFF(MINUTE, MAX(last_synced_at), NOW()) as minutes_since_sync
@@ -370,6 +402,7 @@ GROUP BY data_source;
 ### Phase 1: Data Collection Setup (Pre-Pilot)
 
 **Week of Oct 7-11**:
+
 - [ ] Instrument dashboard with tracking events
 - [ ] Set up database tables for analytics
 - [ ] Create data pipeline (events → database)
@@ -377,24 +410,25 @@ GROUP BY data_source;
 - [ ] Test tracking with dev account
 
 **Events to Track**:
+
 ```javascript
 // User events
-trackEvent('user_login', { user_id, device_type })
-trackEvent('user_logout', { user_id, session_duration })
+trackEvent("user_login", { user_id, device_type });
+trackEvent("user_logout", { user_id, session_duration });
 
 // Tile events
-trackEvent('tile_click', { user_id, tile_name })
-trackEvent('tile_view', { user_id, tile_name, duration })
+trackEvent("tile_click", { user_id, tile_name });
+trackEvent("tile_view", { user_id, tile_name, duration });
 
 // Approval events
-trackEvent('approval_opened', { approval_id, user_id })
-trackEvent('approval_decided', { approval_id, decision, turnaround_time })
+trackEvent("approval_opened", { approval_id, user_id });
+trackEvent("approval_decided", { approval_id, decision, turnaround_time });
 
 // Navigation events
-trackEvent('page_view', { page, load_time })
+trackEvent("page_view", { page, load_time });
 
 // Error events
-trackEvent('error', { error_type, error_message, context })
+trackEvent("error", { error_type, error_message, context });
 ```
 
 ---
@@ -402,6 +436,7 @@ trackEvent('error', { error_type, error_message, context })
 ### Phase 2: Daily Monitoring (During Pilot)
 
 **Every Day (9 AM)**:
+
 ```bash
 # Run daily analytics report
 npm run pilot:analytics:daily --customer=hot-rodan
@@ -415,6 +450,7 @@ npm run pilot:analytics:daily --customer=hot-rodan
 ```
 
 **Dashboard to Monitor**:
+
 ```
 Hot Rodan - Daily Usage (Oct 15)
 ================================
@@ -426,6 +462,7 @@ Load Time: 1.8s ✅
 ```
 
 **Alert Conditions**:
+
 - Zero logins for 2 consecutive days → Slack alert
 - Error rate >5% → Investigate immediately
 - Load time >5s → Performance issue
@@ -435,6 +472,7 @@ Load Time: 1.8s ✅
 ### Phase 3: Weekly Analysis (Fridays)
 
 **Friday Before Check-In Call**:
+
 ```bash
 # Run weekly analytics report
 npm run pilot:analytics:weekly --customer=hot-rodan --week=1
@@ -448,6 +486,7 @@ npm run pilot:analytics:weekly --customer=hot-rodan --week=1
 ```
 
 **Use in Weekly Check-In**:
+
 - Share metrics with CEO
 - Validate with CEO's perception
 - Discuss patterns (which tiles most useful?)
@@ -458,6 +497,7 @@ npm run pilot:analytics:weekly --customer=hot-rodan --week=1
 ### Phase 4: Monthly Review (End of Pilot)
 
 **After Week 4**:
+
 ```bash
 # Run final pilot report
 npm run pilot:analytics:final --customer=hot-rodan
@@ -480,6 +520,7 @@ npm run pilot:analytics:final --customer=hot-rodan
 ### Frontend Instrumentation
 
 **React Component Example**:
+
 ```typescript
 import { trackEvent } from '@/lib/analytics';
 
@@ -507,6 +548,7 @@ export function SalesPulseTile() {
 ### Backend API
 
 **Analytics Endpoint**:
+
 ```typescript
 // POST /api/analytics/track
 interface TrackEventRequest {
@@ -523,7 +565,7 @@ await db.events.create({
   user_id: req.user_id,
   customer_id: req.customer_id,
   properties: JSON.stringify(req.properties),
-  tracked_at: req.timestamp
+  tracked_at: req.timestamp,
 });
 ```
 
@@ -652,16 +694,19 @@ CREATE TABLE approval_queue_analytics (
 ## Reporting Cadence
 
 ### Daily (Automated)
+
 - Email digest to Product team
 - Key metrics: logins, errors, load time
 - Alerts if thresholds breached
 
 ### Weekly (Manual + Auto)
+
 - Comprehensive report before Friday check-in
 - Share with CEO during call
 - Log qualitative feedback alongside quantitative
 
 ### Monthly (End of Pilot)
+
 - Final comprehensive report
 - ROI calculation
 - Go/no-go recommendation
@@ -673,4 +718,3 @@ CREATE TABLE approval_queue_analytics (
 **Owner**: Product Agent  
 **Status**: ✅ Ready for Hot Rodan pilot tracking implementation  
 **Next**: Set up tracking instrumentation before Oct 15 launch
-

@@ -6,6 +6,7 @@ last_reviewed: 2025-10-13
 doc_hash: TBD
 expires: 2025-12-31
 ---
+
 # Supabase pg_cron Evidence Intake — Delivered
 
 - **Status (2025-10-14 16:00 UTC):** Reliability provided pg_cron evidence bundle (job export, first-run logs, audit snippet, purge dry-run output). Compliance hashed artifacts and logged results in `docs/compliance/evidence/retention_runs/pg_cron_hash_register_2025-10-13.md`.

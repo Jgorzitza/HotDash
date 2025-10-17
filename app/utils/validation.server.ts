@@ -16,11 +16,11 @@ export function isValidEmail(email: string): boolean {
 export function isValidShopifyGid(gid: string, resourceType?: string): boolean {
   const gidRegex = /^gid:\/\/shopify\/\w+\/\d+$/;
   if (!gidRegex.test(gid)) return false;
-  
+
   if (resourceType) {
     return gid.includes(`gid://shopify/${resourceType}/`);
   }
-  
+
   return true;
 }
 
@@ -49,7 +49,7 @@ export function isValidUrl(url: string): boolean {
  */
 export function sanitizeInput(input: string): string {
   return input
-    .replace(/[<>]/g, '') // Remove angle brackets
+    .replace(/[<>]/g, "") // Remove angle brackets
     .trim();
 }
 
@@ -57,14 +57,14 @@ export function sanitizeInput(input: string): string {
  * Validate positive number
  */
 export function isPositiveNumber(value: any): value is number {
-  return typeof value === 'number' && value > 0 && isFinite(value);
+  return typeof value === "number" && value > 0 && isFinite(value);
 }
 
 /**
  * Validate integer
  */
 export function isInteger(value: any): value is number {
-  return typeof value === 'number' && Number.isInteger(value);
+  return typeof value === "number" && Number.isInteger(value);
 }
 
 /**
@@ -73,4 +73,3 @@ export function isInteger(value: any): value is number {
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
-

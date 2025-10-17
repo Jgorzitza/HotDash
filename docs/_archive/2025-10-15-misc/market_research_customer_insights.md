@@ -9,16 +9,19 @@
 ## Research Initiatives
 
 ### Monthly: Customer Interviews
+
 - **Sample**: 5-10 customers per month
 - **Topics**: Feature requests, pain points, competitive insights
 - **Output**: Monthly insights report
 
 ### Quarterly: Operator Surveys
+
 - **Sample**: All operators across all customers
 - **Topics**: Tool satisfaction, feature usage, improvement ideas
 - **Output**: Quarterly operator sentiment report
 
 ### Annually: Market Sizing Study
+
 - **Method**: Third-party research firm
 - **Scope**: TAM/SAM/SOM analysis
 - **Output**: Market opportunity report for investors/board
@@ -47,4 +50,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Research program framework
-

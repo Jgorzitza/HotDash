@@ -6,11 +6,13 @@ last_reviewed: 2025-10-13
 doc_hash: TBD
 expires: 2025-10-20
 ---
+
 # Operator Control Center — Wireframes
 
 ## Dashboard View (Default State)
 
 ### Layout Structure
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ [App Nav: Home | Additional page]                              │
@@ -57,6 +59,7 @@ expires: 2025-10-20
 ## Tile Detail Modal — CX Escalations
 
 ### CX Escalation Detail View with Approval Flow
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ ✕  CX Escalation — Jamie Lee                            │
@@ -91,11 +94,13 @@ expires: 2025-10-20
 ```
 
 ### Polaris Implementation Notes
+
 - Modal container uses Polaris `Modal` with `sectioned` layout; actions render via `ButtonGroup` to match Polaris spacing tokens.
 - Conversation preview maps to Polaris `LegacyCard` sections so transcripts remain scrollable and focusable.
 - Approval buttons reuse the primary/secondary button tokens defined in `docs/design/tokens/design_tokens.md` (`--occ-button-primary`, `--occ-button-secondary`).
 
 ### Focus Order & Keyboard Flow
+
 1. Close button (`aria-label="Close escalation modal"`)
 2. Modal heading (programmatically focused for screen reader context)
 3. Conversation preview (`role="log"`; allow arrow navigation)
@@ -107,11 +112,13 @@ expires: 2025-10-20
 9. Plain action `Cancel`
 
 ### Supabase & Audit Trail Hooks
+
 - Approvals write to `supabase.from('cx_escalations_decisions')`; include `decision_type`, `agent_id`, and `transcript_id`.
 - `Escalate to Manager` pushes a record to `supabase.functions.invoke('create_escalation_ticket')`.
 - Every submit action also emails `customer.support@hotrodan.com` via the centralized notification worker; copy mirrors `modal.escalation.support_inbox`.
 
 ### Toast & Retry States
+
 - Success toast fires on resolved promise from Supabase insert (see `toast.success.reply_sent` and `toast.success.decision_logged`).
 - Error toast surfaces API failure (`toast.error.network`) with contextual retry link that re-focuses the primary CTA.
 - Gracefully degrade when Supabase is offline by disabling primary buttons and showing banner copy: “Decision logging unavailable. Try again later or email customer.support@hotrodan.com manually.”
@@ -119,6 +126,7 @@ expires: 2025-10-20
 ## Tile Detail Modal — Sales Pulse
 
 ### Revenue Variance Review with Decision Logging
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ ✕  Sales Pulse — Variance Review                        │
@@ -150,11 +158,13 @@ expires: 2025-10-20
 ```
 
 ### Polaris Implementation Notes
+
 - Built with Polaris `Modal` + `FormLayout`; action selector uses Polaris `Select`.
 - Primary CTA text mirrors the current select option (`Log follow-up` or `Escalate to ops`).
 - Notes textarea leverages Polaris `TextField` with `multiline` and helper text referencing `customer.support@hotrodan.com` when escalation exceeds 15%.
 
 ### Focus Order & Keyboard Flow
+
 1. Close button (`aria-label="Close sales pulse modal"`)
 2. Modal heading (programmatically focused for announcements)
 3. Action select (keyboard toggles between `Log follow-up` / `Escalate to ops`)
@@ -163,6 +173,7 @@ expires: 2025-10-20
 6. Plain action `Cancel`
 
 ### Supabase & Toast Alignment
+
 - Actions write to `supabase.from('sales_pulse_actions')` with `action_type`, `notes`, and `delta_percent`.
 - When `Escalate to ops` is chosen, enqueue notification email to `customer.support@hotrodan.com` and flag tile status to `attention`.
 - Success toast uses `toast.success.decision_logged`; copy includes SKU list when Escalate path selected.
@@ -171,6 +182,7 @@ expires: 2025-10-20
 ## Tile Detail Modal — Inventory Heatmap
 
 ### Inventory Alert with Reorder Approval
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ ✕  Inventory Alert — Powder Board XL                    │
@@ -212,6 +224,7 @@ expires: 2025-10-20
 ### Toast Notifications
 
 #### Success Toast (After Approval)
+
 ```
 ┌───────────────────────────────────────┐
 │ ✓ Action Confirmed                    │
@@ -224,6 +237,7 @@ expires: 2025-10-20
 ```
 
 #### Error Toast (Failed Action)
+
 ```
 ┌───────────────────────────────────────┐
 │ ⚠ Action Failed                       │
@@ -236,6 +250,7 @@ expires: 2025-10-20
 ```
 
 #### Confirmation Dialog (Destructive Action)
+
 ```
 ┌──────────────────────────────────────────┐
 │ Confirm Purchase Order                   │
@@ -256,15 +271,16 @@ expires: 2025-10-20
 
 ### Toast Trigger Matrix
 
-| Flow | Trigger | Toast ID | Follow-up |
-|------|---------|----------|-----------|
-| CX Escalation — Approve | Supabase insert succeeds (`cx_escalations_decisions`) | `toast.success.reply_sent` | Auto-dismiss after 6s; ensure transcript log highlights decision |
-| CX Escalation — Escalate | `create_escalation_ticket` function resolves | `toast.success.action_confirmed` | Copy includes `customer.support@hotrodan.com` acknowledgement |
-| Sales Pulse — Log follow-up | Supabase insert succeeds (`sales_pulse_actions`) | `toast.success.decision_logged` | Offer inline link to audit trail |
-| Sales Pulse — Escalate to ops | Notification worker resolves email send | `toast.success.decision_logged` | Set tile status to Attention on next refresh |
-| Any modal — API failure | Promise rejected | `toast.error.network` | Retry button re-focuses modal CTA |
+| Flow                          | Trigger                                               | Toast ID                         | Follow-up                                                        |
+| ----------------------------- | ----------------------------------------------------- | -------------------------------- | ---------------------------------------------------------------- |
+| CX Escalation — Approve       | Supabase insert succeeds (`cx_escalations_decisions`) | `toast.success.reply_sent`       | Auto-dismiss after 6s; ensure transcript log highlights decision |
+| CX Escalation — Escalate      | `create_escalation_ticket` function resolves          | `toast.success.action_confirmed` | Copy includes `customer.support@hotrodan.com` acknowledgement    |
+| Sales Pulse — Log follow-up   | Supabase insert succeeds (`sales_pulse_actions`)      | `toast.success.decision_logged`  | Offer inline link to audit trail                                 |
+| Sales Pulse — Escalate to ops | Notification worker resolves email send               | `toast.success.decision_logged`  | Set tile status to Attention on next refresh                     |
+| Any modal — API failure       | Promise rejected                                      | `toast.error.network`            | Retry button re-focuses modal CTA                                |
 
 ### Approval Sequence (Happy Path)
+
 ```
 Tile CTA → Modal opens (focus close button)
       ↓
@@ -278,6 +294,7 @@ Audit trail badge updates + tile summary reflects latest state
 ```
 
 ### Accessibility Checklist
+
 - Toasts announce via `role="status"` and sit in the DOM after `.app-shell` so screen readers hear them after actions.
 - Retry surfaces maintain focus order; pressing Escape collapses toasts without moving focus.
 - Support inbox email appears as plain text (not link) to avoid focus trap; copy deck entry `modal.escalation.support_inbox`.
@@ -285,6 +302,7 @@ Audit trail badge updates + tile summary reflects latest state
 ## Empty States
 
 ### Tile with No Data
+
 ```
 ┌──────────────────────────────┐
 │ CX Escalations               │
@@ -304,6 +322,7 @@ Audit trail badge updates + tile summary reflects latest state
 ```
 
 ### Tile Unconfigured State
+
 ```
 ┌──────────────────────────────┐
 │ CX Escalations               │
@@ -322,6 +341,7 @@ Audit trail badge updates + tile summary reflects latest state
 ```
 
 ### Tile Error State
+
 ```
 ┌──────────────────────────────┐
 │ SEO & Content Watch          │
@@ -344,6 +364,7 @@ Audit trail badge updates + tile summary reflects latest state
 ## Mobile/Tablet Responsive Behavior
 
 ### Tablet (768px) - 2 Column Grid
+
 ```
 ┌─────────────────────────────┐
 │ Operator Control Center     │
@@ -365,16 +386,19 @@ Audit trail badge updates + tile summary reflects latest state
 ```
 
 ### Desktop (1280px+) - 3 Column Grid (Primary)
+
 Tiles arrange in 3-column grid as shown in main dashboard view above.
 
 ## Interaction States
 
 ### Tile Hover State
+
 - Subtle elevation increase (shadow-200)
 - Border color shift to interactive-border
 - Cursor: pointer
 
 ### Button States
+
 - Default: Solid fill with primary color
 - Hover: Darken 10%
 - Active: Darken 20% + subtle scale(0.98)
@@ -382,6 +406,7 @@ Tiles arrange in 3-column grid as shown in main dashboard view above.
 - Focus: 2px outline with focus-ring color
 
 ### Loading State (Tile Refresh)
+
 ```
 ┌──────────────────────────────┐
 │ Sales Pulse                  │

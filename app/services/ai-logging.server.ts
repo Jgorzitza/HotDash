@@ -7,7 +7,12 @@ import type { DecisionLog } from "../../packages/memory/index";
 import { nanoid } from "nanoid";
 
 export interface AIRecommendation {
-  type: 'template_variant' | 'brief' | 'insight' | 'anomaly_summary' | 'reply_generation';
+  type:
+    | "template_variant"
+    | "brief"
+    | "insight"
+    | "anomaly_summary"
+    | "reply_generation";
   promptVersion: string;
   inputs: Record<string, unknown>;
   output: string;
@@ -21,15 +26,15 @@ export interface AIRecommendation {
  */
 export async function logAIRecommendation(
   recommendation: AIRecommendation,
-  who: string = 'ai-agent'
+  who: string = "ai-agent",
 ): Promise<void> {
   const memory = getMemory();
 
   const decision: DecisionLog = {
     id: nanoid(),
-    scope: 'build',
+    scope: "build",
     who,
-    what: `AI ${recommendation.type}: ${recommendation.output.slice(0, 100)}${recommendation.output.length > 100 ? '...' : ''}`,
+    what: `AI ${recommendation.type}: ${recommendation.output.slice(0, 100)}${recommendation.output.length > 100 ? "..." : ""}`,
     why: `Prompt v${recommendation.promptVersion} with inputs: ${JSON.stringify(recommendation.inputs).slice(0, 200)}`,
     evidenceUrl: recommendation.metadata?.sourceFactId
       ? `fact://${recommendation.metadata.sourceFactId}`
@@ -48,10 +53,10 @@ export async function logReplyGeneration(
   promptVersion: string,
   inputs: { customerName: string; conversationId: number; context: string },
   generatedReply: string,
-  sourceFactId?: string
+  sourceFactId?: string,
 ): Promise<void> {
   await logAIRecommendation({
-    type: 'reply_generation',
+    type: "reply_generation",
     promptVersion,
     inputs: {
       templateId,
@@ -73,10 +78,10 @@ export async function logAnomalySummary(
   promptVersion: string,
   inputs: { anomalyData: unknown; threshold: unknown },
   summary: string,
-  sourceFactId?: string
+  sourceFactId?: string,
 ): Promise<void> {
   await logAIRecommendation({
-    type: 'anomaly_summary',
+    type: "anomaly_summary",
     promptVersion,
     inputs: {
       factType,
@@ -98,10 +103,10 @@ export async function logInsight(
   promptVersion: string,
   inputs: Record<string, unknown>,
   insight: string,
-  sourceFactId?: string
+  sourceFactId?: string,
 ): Promise<void> {
   await logAIRecommendation({
-    type: 'insight',
+    type: "insight",
     promptVersion,
     inputs: {
       topic,

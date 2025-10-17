@@ -11,6 +11,7 @@
 **Purpose:** Catch integration breaking changes before production
 
 **Test Coverage:**
+
 - API response schema validation
 - Authentication flows
 - Data transformation accuracy
@@ -28,12 +29,14 @@
 **Tool:** Pact or custom Zod validators
 
 **Contracts Defined:**
+
 - API request/response formats
 - Webhook payload structures
 - Error message formats
 - Rate limit headers
 
 **Benefits:**
+
 - Early detection of API changes
 - Provider/consumer agreements
 - Version compatibility testing
@@ -47,6 +50,7 @@
 **Tool:** k6 or Artillery
 
 **Test Scenarios:**
+
 - Normal load (baseline)
 - Peak load (2x normal)
 - Stress test (until failure)
@@ -61,6 +65,7 @@
 ## AM: Chaos Engineering Tests
 
 **Scenarios:**
+
 - API unavailable (503)
 - Slow responses (5s+ latency)
 - Intermittent failures (random 50% success)
@@ -79,11 +84,13 @@
 ## AN: Performance Benchmarking
 
 **Benchmarks:**
+
 - Baseline metrics per integration
 - Performance targets (SLAs)
 - Regression detection (20% slower = alert)
 
 **Tracked:**
+
 - API response times
 - Data transformation time
 - Sync duration
@@ -96,4 +103,3 @@
 ---
 
 **Portfolio Total:** 110 hours (~3 months)
-

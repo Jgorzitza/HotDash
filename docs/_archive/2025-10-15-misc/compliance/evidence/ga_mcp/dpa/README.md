@@ -6,6 +6,7 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-12-31
 ---
+
 # GA MCP DPA Evidence Placeholder — 2025-10-12
 
 - **Status:** Awaiting Google Analytics MCP Data Processing Addendum and regional commitment letter (requested 2025-10-07 via ticket TBD).

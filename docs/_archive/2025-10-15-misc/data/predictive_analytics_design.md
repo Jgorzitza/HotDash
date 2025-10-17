@@ -15,38 +15,47 @@ Time-series forecasting system for agent performance metrics using historical da
 ## Forecasting Targets
 
 ### 1. Agent Query Volume Prediction
+
 **Model:** ARIMA or Prophet (seasonal)
 **Input Features:**
+
 - Historical query counts (hourly/daily)
 - Day of week, time of day
 - Recent trends (7-day, 30-day moving averages)
 
 **Predictions:**
+
 - Next hour query volume (±10% confidence interval)
 - Next 24 hours total queries
 - Weekly capacity forecast
 
 ### 2. Latency Trend Forecasting
+
 **Model:** Exponential smoothing + linear regression
 **Input Features:**
+
 - Historical latency percentiles (P50, P95, P99)
 - Query volume correlation
 - Agent type
 
 **Predictions:**
+
 - Expected latency next hour
 - Performance degradation probability
 - Capacity threshold alerts
 
 ### 3. Approval Queue Depth Forecast
+
 **Model:** Queue theory + time-series
 **Input Features:**
+
 - Historical queue depth
 - Arrival rate (new approvals/hour)
 - Service rate (approvals processed/hour)
 - Time of day patterns
 
 **Predictions:**
+
 - Queue depth in 1 hour, 4 hours, 24 hours
 - Wait time estimates
 - Staffing requirements
@@ -58,7 +67,7 @@ Time-series forecasting system for agent performance metrics using historical da
 ```sql
 -- Historical baseline for forecasting
 CREATE OR REPLACE VIEW v_agent_performance_baseline AS
-SELECT 
+SELECT
   agent,
   DATE_TRUNC('hour', created_at) as hour,
   COUNT(*) as query_count,
@@ -73,7 +82,7 @@ ORDER BY hour DESC;
 -- Simple moving average forecast (7-day window)
 CREATE OR REPLACE VIEW v_agent_forecast_simple AS
 WITH hourly_stats AS (
-  SELECT 
+  SELECT
     agent,
     DATE_TRUNC('hour', created_at) as hour,
     COUNT(*) as query_count,
@@ -82,7 +91,7 @@ WITH hourly_stats AS (
   WHERE created_at > NOW() - INTERVAL '7 days'
   GROUP BY agent, DATE_TRUNC('hour', created_at)
 )
-SELECT 
+SELECT
   agent,
   ROUND(AVG(query_count) OVER (PARTITION BY agent ORDER BY hour ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) as forecast_queries_next_hour,
   ROUND(AVG(avg_latency) OVER (PARTITION BY agent ORDER BY hour ROWS BETWEEN 23 PRECEDING AND CURRENT ROW), 2) as forecast_latency_next_hour,
@@ -108,19 +117,19 @@ BEGIN
   -- Simplified exponential smoothing
   -- Production version would use dedicated forecasting library
   RETURN QUERY
-  SELECT 
+  SELECT
     NOW() + (h * INTERVAL '1 hour') as forecast_hour,
     ROUND(AVG(query_count))::INTEGER as predicted_queries,
     ROUND(AVG(avg_latency), 2) as predicted_latency_ms,
     ROUND(AVG(avg_latency) - (1.96 * STDDEV(avg_latency)), 2) as confidence_lower,
     ROUND(AVG(avg_latency) + (1.96 * STDDEV(avg_latency)), 2) as confidence_upper
   FROM (
-    SELECT 
+    SELECT
       DATE_TRUNC('hour', created_at) as hour,
       COUNT(*) as query_count,
       AVG(latency_ms) as avg_latency
     FROM agent_queries
-    WHERE agent = p_agent 
+    WHERE agent = p_agent
       AND created_at > NOW() - INTERVAL '7 days'
     GROUP BY DATE_TRUNC('hour', created_at)
   ) historical
@@ -208,10 +217,10 @@ from sqlalchemy import create_engine
 
 def forecast_agent_performance(agent: str, days: int = 7):
     """Generate Prophet forecast for agent query volume"""
-    
+
     # Load historical data
     query = f"""
-    SELECT 
+    SELECT
         DATE_TRUNC('hour', created_at) as ds,
         COUNT(*) as y
     FROM agent_queries
@@ -220,9 +229,9 @@ def forecast_agent_performance(agent: str, days: int = 7):
     GROUP BY DATE_TRUNC('hour', created_at)
     ORDER BY ds
     """
-    
+
     df = pd.read_sql(query, engine)
-    
+
     # Train Prophet model
     model = Prophet(
         seasonality_mode='multiplicative',
@@ -230,15 +239,15 @@ def forecast_agent_performance(agent: str, days: int = 7):
         weekly_seasonality=True
     )
     model.fit(df)
-    
+
     # Generate forecast
     future = model.make_future_dataframe(periods=days*24, freq='H')
     forecast = model.predict(future)
-    
+
     # Save predictions to database
     predictions = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(days*24)
     predictions.to_sql('ml_forecast_predictions', engine, if_exists='append')
-    
+
     return forecast
 ```
 
@@ -256,7 +265,7 @@ RETURNS TABLE(
 BEGIN
   RETURN QUERY
   -- Alert 1: Predicted capacity breach
-  SELECT 
+  SELECT
     f.agent,
     'capacity_breach'::TEXT,
     'critical'::TEXT,
@@ -264,11 +273,11 @@ BEGIN
   FROM ml_forecast_predictions f
   WHERE f.forecast_timestamp BETWEEN NOW() AND NOW() + INTERVAL '4 hours'
     AND f.predicted_value > 100
-  
+
   UNION ALL
-  
+
   -- Alert 2: Predicted performance degradation
-  SELECT 
+  SELECT
     f.agent,
     'latency_spike'::TEXT,
     'warning'::TEXT,
@@ -281,4 +290,3 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Status:** Forecasting framework designed, ready for ML model integration
-

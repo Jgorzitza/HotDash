@@ -1,11 +1,11 @@
 /**
  * Structured Logging Utility
- * 
+ *
  * Provides structured logging with consistent format, levels, and metadata.
  * Logs are output as JSON in production for easier parsing by log aggregators.
  */
 
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LogLevel = "debug" | "info" | "warn" | "error";
 
 export interface LogEntry {
   timestamp: string;
@@ -47,38 +47,42 @@ export class StructuredLogger {
   constructor(options: LoggerOptions) {
     this.service = options.service;
     this.module = options.module;
-    this.minLevel = options.minLevel || 'info';
-    this.pretty = options.pretty ?? (process.env.NODE_ENV !== 'production');
+    this.minLevel = options.minLevel || "info";
+    this.pretty = options.pretty ?? process.env.NODE_ENV !== "production";
   }
 
   /**
    * Log debug message
    */
   debug(message: string, metadata?: Record<string, any>): void {
-    this.log('debug', message, metadata);
+    this.log("debug", message, metadata);
   }
 
   /**
    * Log info message
    */
   info(message: string, metadata?: Record<string, any>): void {
-    this.log('info', message, metadata);
+    this.log("info", message, metadata);
   }
 
   /**
    * Log warning message
    */
   warn(message: string, metadata?: Record<string, any>): void {
-    this.log('warn', message, metadata);
+    this.log("warn", message, metadata);
   }
 
   /**
    * Log error message
    */
-  error(message: string, error?: Error | unknown, metadata?: Record<string, any>): void {
+  error(
+    message: string,
+    error?: Error | unknown,
+    metadata?: Record<string, any>,
+  ): void {
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
-      level: 'error',
+      level: "error",
       message,
       service: this.service,
       module: this.module,
@@ -99,7 +103,11 @@ export class StructuredLogger {
   /**
    * Generic log method
    */
-  private log(level: LogLevel, message: string, metadata?: Record<string, any>): void {
+  private log(
+    level: LogLevel,
+    message: string,
+    metadata?: Record<string, any>,
+  ): void {
     // Check if log level is enabled
     if (LOG_LEVELS[level] < LOG_LEVELS[this.minLevel]) {
       return;
@@ -124,15 +132,15 @@ export class StructuredLogger {
     if (this.pretty) {
       // Pretty print for development
       const color = this.getColor(entry.level);
-      const prefix = `[${entry.timestamp}] [${entry.level.toUpperCase()}] [${entry.service}${entry.module ? `:${entry.module}` : ''}]`;
+      const prefix = `[${entry.timestamp}] [${entry.level.toUpperCase()}] [${entry.service}${entry.module ? `:${entry.module}` : ""}]`;
       console.log(`${color}${prefix}\x1b[0m ${entry.message}`);
-      
+
       if (entry.metadata && Object.keys(entry.metadata).length > 0) {
-        console.log('  Metadata:', entry.metadata);
+        console.log("  Metadata:", entry.metadata);
       }
-      
+
       if (entry.error) {
-        console.log('  Error:', entry.error.message);
+        console.log("  Error:", entry.error.message);
         if (entry.error.stack) {
           console.log(entry.error.stack);
         }
@@ -148,12 +156,12 @@ export class StructuredLogger {
    */
   private getColor(level: LogLevel): string {
     const colors: Record<LogLevel, string> = {
-      debug: '\x1b[36m', // Cyan
-      info: '\x1b[32m',  // Green
-      warn: '\x1b[33m',  // Yellow
-      error: '\x1b[31m', // Red
+      debug: "\x1b[36m", // Cyan
+      info: "\x1b[32m", // Green
+      warn: "\x1b[33m", // Yellow
+      error: "\x1b[31m", // Red
     };
-    return colors[level] || '';
+    return colors[level] || "";
   }
 
   /**
@@ -171,10 +179,7 @@ export class StructuredLogger {
   /**
    * Time an operation
    */
-  async time<T>(
-    operationName: string,
-    fn: () => Promise<T>
-  ): Promise<T> {
+  async time<T>(operationName: string, fn: () => Promise<T>): Promise<T> {
     const start = performance.now();
     this.debug(`Starting: ${operationName}`);
 
@@ -194,7 +199,10 @@ export class StructuredLogger {
 /**
  * Create logger instance for a service
  */
-export function createLogger(service: string, options?: Partial<LoggerOptions>): StructuredLogger {
+export function createLogger(
+  service: string,
+  options?: Partial<LoggerOptions>,
+): StructuredLogger {
   return new StructuredLogger({
     service,
     ...options,
@@ -204,15 +212,14 @@ export function createLogger(service: string, options?: Partial<LoggerOptions>):
 /**
  * Default application logger
  */
-export const appLogger = createLogger('hotdash-app', {
-  minLevel: (process.env.LOG_LEVEL as LogLevel) || 'info',
+export const appLogger = createLogger("hotdash-app", {
+  minLevel: (process.env.LOG_LEVEL as LogLevel) || "info",
 });
 
 /**
  * Service-specific loggers
  */
-export const shopifyLogger = appLogger.child('shopify');
-export const gaLogger = appLogger.child('ga');
-export const chatwootLogger = appLogger.child('chatwoot');
-export const agentLogger = appLogger.child('agent');
-
+export const shopifyLogger = appLogger.child("shopify");
+export const gaLogger = appLogger.child("ga");
+export const chatwootLogger = appLogger.child("chatwoot");
+export const agentLogger = appLogger.child("agent");

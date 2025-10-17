@@ -16,12 +16,14 @@ Your dashboard gives you real-time visibility into **everything that matters** f
 ## Quick Start (5 Minutes)
 
 ### Step 1: Log In
+
 1. Go to: **https://hotdash.app**
 2. Click "Log in with Shopify"
 3. Authorize with your Hot Rodan Shopify account
 4. You'll see your dashboard immediately
 
 ### Step 2: Review Your Tiles
+
 Your dashboard shows **real-time tiles** with the most important metrics:
 
 ```
@@ -35,13 +37,17 @@ Your dashboard shows **real-time tiles** with the most important metrics:
 ```
 
 ### Step 3: Take Action
+
 Each tile shows:
+
 - 📊 **Current Status**: What's happening right now
 - 📈 **Trend**: Up, down, or flat vs yesterday
 - ⚡ **Quick Action**: What you can do about it
 
 ### Step 4: Review Daily (2 Minutes)
+
 Best practice: **Check your dashboard every morning** (2 minutes)
+
 - Scan for red flags (inventory alerts, support backlog)
 - Celebrate green flags (sales up, customers happy)
 - Take quick actions (approve decisions, escalate issues)
@@ -51,9 +57,11 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ## Your Dashboard Tiles Explained
 
 ### 🟢 Sales Pulse
+
 **What it shows**: Today's revenue, orders, average order value
 
 **Example**:
+
 ```
 ┌──────────────────────────────────────┐
 │ 💰 Sales Pulse                       │
@@ -68,6 +76,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ```
 
 **What to look for**:
+
 - ✅ Green ↑ arrows = Revenue growing (celebrate!)
 - ⚠️ Red ↓ arrows = Revenue down (investigate why)
 - 💡 Insight: Compare to yesterday and last Saturday
@@ -77,9 +86,11 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### 📦 Inventory Alerts
+
 **What it shows**: Products running low, out of stock, or overstocked
 
 **Example**:
+
 ```
 ┌──────────────────────────────────────┐
 │ 📦 Inventory Alerts                  │
@@ -97,6 +108,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ```
 
 **What to look for**:
+
 - 🔴 Out of stock = Lost sales potential (reorder NOW)
 - ⚠️ Low stock = Will run out in 3-5 days (reorder this week)
 - ✅ Healthy stock = No action needed
@@ -106,9 +118,11 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### 🎧 Ops Pulse (Support Queue)
+
 **What it shows**: Customer support tickets, response times, approval queue
 
 **Example**:
+
 ```
 ┌──────────────────────────────────────┐
 │ 🎧 Ops Pulse                         │
@@ -126,6 +140,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ```
 
 **What to look for**:
+
 - 🔴 "Needs Approval" = Decisions waiting for you
 - ⚠️ Avg Response >4 hours = Support team overloaded
 - ✅ Avg Response <3 hours = Team performing well
@@ -135,9 +150,11 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### 🔥 Top Products
+
 **What it shows**: Your best-selling products this week
 
 **Example**:
+
 ```
 ┌──────────────────────────────────────┐
 │ 🔥 Top Products This Week            │
@@ -153,6 +170,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ```
 
 **What to look for**:
+
 - ↑ Trending products = Make sure inventory is stocked
 - NEW products in top 5 = Marketing working!
 - ↓ Declining products = Consider promotion
@@ -162,9 +180,11 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### 😊 Customer Mood
+
 **What it shows**: Customer satisfaction based on recent interactions
 
 **Example**:
+
 ```
 ┌──────────────────────────────────────┐
 │ 😊 Customer Mood                     │
@@ -183,6 +203,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ```
 
 **What to look for**:
+
 - 😊 >80% happy = You're crushing it!
 - 😐 >20% unhappy = Something's wrong (investigate)
 - 📝 Praise themes = Double down on what's working
@@ -194,6 +215,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ## Common Workflows
 
 ### Morning Routine (2 Minutes)
+
 1. **Check Sales Pulse**: Revenue on track?
 2. **Review Inventory Alerts**: Any urgent reorders?
 3. **Check Ops Pulse**: Any approvals needed?
@@ -204,6 +226,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### Weekly Review (15 Minutes)
+
 1. **Compare week-over-week trends** (Sales Pulse)
 2. **Review top products** (adjust inventory strategy)
 3. **Check avg response times** (team performance)
@@ -214,6 +237,7 @@ Best practice: **Check your dashboard every morning** (2 minutes)
 ---
 
 ### Action Items Management
+
 When tiles show **"Action Needed"**:
 
 1. **🔴 Red (Urgent)**: Handle today
@@ -236,12 +260,13 @@ When you see **"Needs Approval"**:
 
 1. Click **"Review Approvals"**
 2. See each request with context:
+
    ```
    Customer: John Doe
    Request: Refund $245 (defective part)
    Reason: Part arrived damaged, photo verified
    Team recommendation: Approve full refund
-   
+
    [Approve] [Deny] [Ask for More Info]
    ```
 
@@ -256,6 +281,7 @@ When you see **"Needs Approval"**:
 ## Mobile Access
 
 **On the go?** Access your dashboard from your phone:
+
 - Same URL: https://hotdash.app
 - Mobile-optimized tiles
 - Quick approve/deny buttons
@@ -281,15 +307,18 @@ When you see **"Needs Approval"**:
 ## Getting Help
 
 **Questions?**
+
 - In-app: Click "?" icon (bottom-right)
 - Email: support@hotdash.app
 - Text: We'll set up a direct line
 
 **Feedback?**
+
 - Click "Feedback" button in dashboard
 - We read every message and iterate fast
 
 **Weekly Check-Ins**:
+
 - Your Account Manager will check in weekly
 - Share what's working and what's not
 - We'll improve the dashboard based on YOUR needs
@@ -357,4 +386,3 @@ When you see **"Needs Approval"**:
 **Owner**: Product Agent  
 **Status**: ✅ Ready for Hot Rodan CEO pilot launch  
 **Next**: Share during onboarding call, print quick reference card
-

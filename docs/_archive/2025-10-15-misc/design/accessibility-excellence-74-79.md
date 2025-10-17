@@ -14,36 +14,55 @@ created: 2025-10-11
 **WCAG 2.1 New Success Criteria** (vs 2.0):
 
 ### 1.3.4 Orientation (Level AA)
+
 ✅ **Compliant**: Dashboard works in both portrait and landscape
+
 ```css
 /* No orientation restrictions */
-@media (orientation: portrait) { /* Adapts layout */ }
-@media (orientation: landscape) { /* Adapts layout */ }
+@media (orientation: portrait) {
+  /* Adapts layout */
+}
+@media (orientation: landscape) {
+  /* Adapts layout */
+}
 ```
 
 ### 1.3.5 Identify Input Purpose (Level AA)
+
 ✅ **Compliant**: Use autocomplete attributes
+
 ```html
 <input type="text" name="operator-name" autocomplete="name" />
 <input type="email" name="operator-email" autocomplete="email" />
 ```
 
 ### 1.4.10 Reflow (Level AA)
+
 ✅ **Compliant**: Content reflows without horizontal scrolling at 320px width
+
 ```css
 /* Mobile-first, no horizontal scroll */
-.dashboard { max-width: 100%; overflow-x: hidden; }
+.dashboard {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 ```
 
 ### 1.4.11 Non-text Contrast (Level AA)
+
 ✅ **Compliant**: UI components have 3:1 contrast ratio
+
 ```css
 /* Button borders and focus indicators */
-.occ-button { border: 2px solid var(--p-color-border-emphasis); } /* 4.5:1 */
+.occ-button {
+  border: 2px solid var(--p-color-border-emphasis);
+} /* 4.5:1 */
 ```
 
 ### 1.4.12 Text Spacing (Level AA)
+
 ✅ **Compliant**: Text remains readable when spacing is increased
+
 ```css
 /* Polaris spacing tokens accommodate increased spacing */
 line-height: 1.5; /* ≥1.5 times font size */
@@ -52,7 +71,9 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 ```
 
 ### 1.4.13 Content on Hover or Focus (Level AA)
+
 ✅ **Compliant**: Tooltips are dismissible, hoverable, persistent
+
 ```typescript
 <Tooltip content="Explanation" dismissible persistent>
   <Button>Action</Button>
@@ -60,7 +81,9 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 ```
 
 ### 2.1.4 Character Key Shortcuts (Level A)
+
 ✅ **Compliant**: Keyboard shortcuts can be turned off or remapped
+
 ```typescript
 // Settings UI to disable shortcuts
 <Checkbox
@@ -71,14 +94,18 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 ```
 
 ### 2.5.1 Pointer Gestures (Level A)
+
 ✅ **Compliant**: All gestures have single-pointer alternatives
+
 ```typescript
 // Swipe to approve/reject (optional)
 // Alternative: Tap approve/reject buttons (required)
 ```
 
 ### 2.5.2 Pointer Cancellation (Level A)
+
 ✅ **Compliant**: Actions triggered on up-event, not down-event
+
 ```typescript
 <Button onClick={handleClick}> {/* onClick = up-event */}
   Approve
@@ -86,20 +113,26 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 ```
 
 ### 2.5.3 Label in Name (Level A)
+
 ✅ **Compliant**: Accessible names match visible labels
+
 ```typescript
 <Button aria-label="Approve approval">Approve</Button>
 // Accessible name contains "Approve" ✓
 ```
 
 ### 2.5.4 Motion Actuation (Level A)
+
 ✅ **Compliant**: No motion-based controls
+
 ```typescript
 // No shake-to-undo or tilt-to-navigate features
 ```
 
 ### 4.1.3 Status Messages (Level AA)
+
 ✅ **Compliant**: Use ARIA live regions
+
 ```typescript
 <div role="status" aria-live="polite">
   Approval #{id} processed successfully
@@ -115,22 +148,20 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 **Screen Reader Testing** (NVDA, JAWS, VoiceOver):
 
 ### Approval Card - Screen Reader Announcement
+
 ```html
-<article 
+<article
   role="article"
   aria-labelledby="approval-101-title"
   aria-describedby="approval-101-desc"
 >
-  <h3 id="approval-101-title">
-    Approval for Conversation 101
-  </h3>
-  
+  <h3 id="approval-101-title">Approval for Conversation 101</h3>
+
   <p id="approval-101-desc">
-    High risk action: Send email to customer about billing issue.
-    Agent: Billing Support. Tool: send_email.
-    Requires operator approval.
+    High risk action: Send email to customer about billing issue. Agent: Billing
+    Support. Tool: send_email. Requires operator approval.
   </p>
-  
+
   <div role="group" aria-label="Approval actions">
     <button aria-label="Approve conversation 101">Approve</button>
     <button aria-label="Reject conversation 101">Reject</button>
@@ -139,30 +170,32 @@ word-spacing: 0.16em; /* ≥0.16 times font size */
 ```
 
 **Screen Reader Announcement**:
+
 > "Article. Approval for Conversation 101. High risk action: Send email to customer about billing issue. Agent: Billing Support. Tool: send_email. Requires operator approval. Group: Approval actions. Button: Approve conversation 101. Button: Reject conversation 101."
 
 ### Live Region Updates
+
 ```typescript
 function ApprovalQueue() {
   const [announcement, setAnnouncement] = useState('');
-  
+
   const handleApprove = async (id: number) => {
     await approveAction(id);
     setAnnouncement(`Approval ${id} approved successfully`);
   };
-  
+
   return (
     <>
       {/* Live region for announcements */}
-      <div 
-        role="status" 
-        aria-live="polite" 
+      <div
+        role="status"
+        aria-live="polite"
         aria-atomic="true"
         className="sr-only"
       >
         {announcement}
       </div>
-      
+
       {/* Queue content */}
     </>
   );
@@ -170,6 +203,7 @@ function ApprovalQueue() {
 ```
 
 **Visually Hidden Text** (for context):
+
 ```css
 .sr-only {
   position: absolute;
@@ -193,6 +227,7 @@ function ApprovalQueue() {
 **Keyboard Navigation Map**:
 
 ### Dashboard Page
+
 1. **Tab 1**: Skip to main content link
 2. **Tab 2-5**: Top navigation (Dashboard, Approvals, Metrics, Settings)
 3. **Tab 6**: Search input
@@ -202,6 +237,7 @@ function ApprovalQueue() {
 7. **Esc**: Close modal
 
 ### Approval Queue Page
+
 1. **Tab 1**: Skip to main content
 2. **Tab 2**: Filter dropdown
 3. **Tab 3**: Sort dropdown
@@ -214,42 +250,44 @@ function ApprovalQueue() {
 10. **Shift+Tab**: Reverse tab order
 
 **Keyboard Shortcuts** (global):
+
 ```typescript
 const shortcuts = {
-  'a': 'Approve focused approval',
-  'r': 'Reject focused approval',
-  'd': 'Navigate to dashboard',
-  'q': 'Navigate to approval queue',
-  'm': 'Navigate to metrics',
-  '/': 'Focus search',
-  '?': 'Show keyboard shortcuts help',
-  'Esc': 'Close modal/dialog',
+  a: "Approve focused approval",
+  r: "Reject focused approval",
+  d: "Navigate to dashboard",
+  q: "Navigate to approval queue",
+  m: "Navigate to metrics",
+  "/": "Focus search",
+  "?": "Show keyboard shortcuts help",
+  Esc: "Close modal/dialog",
 };
 ```
 
 **Implementation**:
+
 ```typescript
 useEffect(() => {
   const handleKeyDown = (e: KeyboardEvent) => {
     // Ignore if typing in input
     if (e.target instanceof HTMLInputElement) return;
-    
-    switch(e.key) {
-      case 'a':
+
+    switch (e.key) {
+      case "a":
         handleApprove(focusedApprovalId);
         break;
-      case 'r':
+      case "r":
         handleReject(focusedApprovalId);
         break;
-      case '/':
+      case "/":
         searchInputRef.current?.focus();
         e.preventDefault();
         break;
     }
   };
-  
-  window.addEventListener('keydown', handleKeyDown);
-  return () => window.removeEventListener('keydown', handleKeyDown);
+
+  window.addEventListener("keydown", handleKeyDown);
+  return () => window.removeEventListener("keydown", handleKeyDown);
 }, [focusedApprovalId]);
 ```
 
@@ -262,6 +300,7 @@ useEffect(() => {
 **Focus Management Best Practices**:
 
 ### 1. Focus Order
+
 ```typescript
 // Use tabIndex to control focus order
 <div tabIndex={0}>Focusable div</div>
@@ -269,12 +308,13 @@ useEffect(() => {
 ```
 
 ### 2. Focus Trap (in modals)
+
 ```typescript
 import { useFocusTrap } from '@shopify/polaris';
 
 function Modal({ open, onClose }) {
   const focusTrapRef = useFocusTrap(open);
-  
+
   return (
     <div ref={focusTrapRef} role="dialog" aria-modal="true">
       {/* Focus stays within modal */}
@@ -285,29 +325,29 @@ function Modal({ open, onClose }) {
 ```
 
 ### 3. Focus Return
+
 ```typescript
 function ApprovalModal({ onClose }) {
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  
+
   useEffect(() => {
     // Save previous focus
     previousFocusRef.current = document.activeElement as HTMLElement;
-    
+
     return () => {
       // Restore focus on unmount
       previousFocusRef.current?.focus();
     };
   }, []);
-  
+
   // ...
 }
 ```
 
 ### 4. Skip Links
+
 ```html
-<a href="#main-content" className="skip-link">
-  Skip to main content
-</a>
+<a href="#main-content" className="skip-link"> Skip to main content </a>
 
 <main id="main-content">
   <!-- Content -->
@@ -330,6 +370,7 @@ function ApprovalModal({ onClose }) {
 ```
 
 ### 5. Focus Indicators
+
 ```css
 /* High-contrast focus indicator */
 *:focus-visible {
@@ -340,27 +381,28 @@ function ApprovalModal({ onClose }) {
 
 /* Custom focus for buttons */
 .occ-button:focus-visible {
-  box-shadow: 
+  box-shadow:
     0 0 0 3px var(--p-color-bg-surface),
     0 0 0 5px var(--p-color-border-focus);
 }
 ```
 
 ### 6. Focus Management on Dynamic Content
+
 ```typescript
 function ApprovalQueue() {
   const newApprovalRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     // Focus new approval when it appears
     if (newApproval) {
       newApprovalRef.current?.focus();
-      
+
       // Announce to screen readers
       announce(`New approval received for conversation ${newApproval.id}`);
     }
   }, [newApproval]);
-  
+
   return <div ref={newApprovalRef} tabIndex={-1}>...</div>;
 }
 ```
@@ -374,10 +416,13 @@ function ApprovalQueue() {
 **Animation Accessibility Principles**:
 
 ### 1. Respect prefers-reduced-motion
+
 ```css
 /* Default: Full animations */
 .approval-card {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .approval-card:hover {
@@ -389,7 +434,7 @@ function ApprovalQueue() {
   .approval-card {
     transition: opacity 0.1s ease; /* Keep essential feedback */
   }
-  
+
   .approval-card:hover {
     transform: none; /* Remove motion */
   }
@@ -399,17 +444,20 @@ function ApprovalQueue() {
 ### 2. Animation Types & Accessibility
 
 **Safe Animations** (minimal vestibular impact):
+
 - Fade in/out (opacity)
 - Scale (small amounts, <10%)
 - Color transitions
 
 **Risky Animations** (can trigger vestibular disorders):
+
 - Parallax scrolling
 - Infinite spinning/rotation
 - Large-scale zooming
 - Shaking/vibrating effects
 
 **Guidelines**:
+
 ```typescript
 // ✅ GOOD: Subtle fade-in
 <div className="fade-in">Content</div>
@@ -425,6 +473,7 @@ function ApprovalQueue() {
 ```
 
 ### 3. Pausable Animations
+
 ```typescript
 // User can pause auto-playing carousels
 <Carousel autoPlay={!reducedMotion} pauseOnHover>
@@ -433,11 +482,18 @@ function ApprovalQueue() {
 ```
 
 ### 4. Animation Timing
+
 ```css
 /* Fast transitions (avoid slow, nauseating animations) */
-.occ-transition-fast { transition-duration: 0.1s; }
-.occ-transition-normal { transition-duration: 0.2s; }
-.occ-transition-slow { transition-duration: 0.3s; }
+.occ-transition-fast {
+  transition-duration: 0.1s;
+}
+.occ-transition-normal {
+  transition-duration: 0.2s;
+}
+.occ-transition-slow {
+  transition-duration: 0.3s;
+}
 
 /* Never exceed 0.5s for UI transitions */
 ```
@@ -451,34 +507,37 @@ function ApprovalQueue() {
 **Testing Strategy**:
 
 ### 1. Automated Testing (axe-core)
+
 ```typescript
 // tests/accessibility.spec.ts
-import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { test, expect } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 
-test('Dashboard has no accessibility violations', async ({ page }) => {
-  await page.goto('/');
-  
+test("Dashboard has no accessibility violations", async ({ page }) => {
+  await page.goto("/");
+
   const accessibilityScanResults = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
     .analyze();
-  
+
   expect(accessibilityScanResults.violations).toEqual([]);
 });
 
-test('Approval queue has no violations', async ({ page }) => {
-  await page.goto('/approvals');
-  
+test("Approval queue has no violations", async ({ page }) => {
+  await page.goto("/approvals");
+
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
 });
 ```
 
 ### 2. Manual Testing Checklist
+
 ```markdown
 ## Manual Accessibility Testing Checklist
 
 ### Keyboard Navigation
+
 - [ ] All interactive elements reachable by Tab
 - [ ] Focus order is logical
 - [ ] Focus indicators are visible
@@ -486,6 +545,7 @@ test('Approval queue has no violations', async ({ page }) => {
 - [ ] Shortcuts documented and customizable
 
 ### Screen Reader (NVDA/JAWS/VoiceOver)
+
 - [ ] All images have alt text
 - [ ] Headings are hierarchical (h1 → h2 → h3)
 - [ ] Forms have labels
@@ -494,18 +554,21 @@ test('Approval queue has no violations', async ({ page }) => {
 - [ ] Modal dialogs trap focus
 
 ### Visual
+
 - [ ] Color contrast ≥4.5:1 (text), ≥3:1 (UI)
 - [ ] Text resizable to 200% without loss
 - [ ] No information conveyed by color alone
 - [ ] Focus indicators visible
 
 ### Motion
+
 - [ ] Animations respect prefers-reduced-motion
 - [ ] No auto-playing media >5s without pause
 - [ ] No parallax or vestibular-triggering effects
 ```
 
 ### 3. CI/CD Integration
+
 ```yaml
 # .github/workflows/accessibility-ci.yml (already exists)
 name: Accessibility Tests
@@ -527,6 +590,7 @@ jobs:
 ```
 
 ### 4. Browser Extensions for Testing
+
 - **axe DevTools** (Chrome/Firefox)
 - **WAVE** (Chrome/Firefox/Edge)
 - **Lighthouse** (Chrome DevTools)
@@ -535,16 +599,16 @@ jobs:
 - **JAWS** (Windows screen reader)
 
 ### 5. Testing Matrix
-| Feature | Automated | Manual | Screen Reader | Keyboard | Mobile |
-|---------|-----------|--------|---------------|----------|--------|
-| Dashboard | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Approval Queue | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Modals | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Forms | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+| Feature        | Automated | Manual | Screen Reader | Keyboard | Mobile |
+| -------------- | --------- | ------ | ------------- | -------- | ------ |
+| Dashboard      | ✅        | ✅     | ✅            | ✅       | ✅     |
+| Approval Queue | ✅        | ✅     | ✅            | ✅       | ✅     |
+| Modals         | ✅        | ✅     | ✅            | ✅       | ✅     |
+| Forms          | ✅        | ✅     | ✅            | ✅       | ✅     |
 
 **Status**: Comprehensive accessibility testing framework documented
 
 ---
 
 **All 6 Accessibility Excellence tasks complete**
-

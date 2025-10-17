@@ -16,6 +16,7 @@ This specification defines the overlay behavior and implementation patterns for 
 ## Goals and Constraints
 
 ### Goals
+
 - ✅ Seamless integration with Shopify Admin UI patterns
 - ✅ Polaris-aligned visual design and accessibility compliance
 - ✅ Consistent focus management across Admin and OCC contexts
@@ -24,6 +25,7 @@ This specification defines the overlay behavior and implementation patterns for 
 - ✅ Support for Shopify Admin native modal behavior
 
 ### Constraints
+
 - 🚫 Cannot override Shopify Admin global styles
 - 🚫 Must respect Admin iframe security boundaries
 - 🚫 Cannot modify Admin navigation or global layout
@@ -33,6 +35,7 @@ This specification defines the overlay behavior and implementation patterns for 
 ## Admin Integration Context
 
 ### Embedded App Environment
+
 The HotDash OCC operates as an embedded app within the Shopify Admin iframe context:
 
 ```
@@ -57,14 +60,15 @@ The HotDash OCC operates as an embedded app within the Shopify Admin iframe cont
 ```
 
 ### App Bridge Integration
+
 HotDash leverages Shopify App Bridge for modal overlays that transcend the app iframe:
 
 ```typescript
 // App Bridge Modal API Usage Pattern
 await shopify.modal.show({
-  variant: 'large', // 'small' | 'base' | 'large' | 'max'
+  variant: "large", // 'small' | 'base' | 'large' | 'max'
   content: `<OCC Modal HTML Content>`,
-  title: 'CX Escalation — Customer Name'
+  title: "CX Escalation — Customer Name",
 });
 ```
 
@@ -73,38 +77,44 @@ await shopify.modal.show({
 ### Modal Overlay Types
 
 #### 1. App Bridge Native Modal (Primary)
+
 **Use Case**: CX Escalations, Sales Pulse detail modals
 **Characteristics**:
+
 - Rendered by Shopify Admin outside app iframe
 - Centered in full Admin viewport
 - Automatic focus trap and Escape key handling
 - Polaris styling applied by Admin
 
 **Implementation**:
+
 ```typescript
 // Modal content prepared in app context
 const modalContent = renderModalContentToString({
-  type: 'cx-escalation',
+  type: "cx-escalation",
   data: conversation,
-  onAction: handleModalAction
+  onAction: handleModalAction,
 });
 
 // Modal shown via App Bridge
 await shopify.modal.show({
-  variant: 'large',
+  variant: "large",
   content: modalContent,
-  title: `CX Escalation — ${conversation.customerName}`
+  title: `CX Escalation — ${conversation.customerName}`,
 });
 ```
 
 #### 2. In-Frame Tooltip Overlays (Secondary)
+
 **Use Case**: Quick status indicators, help text, metric explanations
 **Characteristics**:
+
 - Rendered within app iframe using Polaris components
 - Positioned relative to trigger elements
 - Limited to app frame boundaries
 
 **Implementation**:
+
 ```tsx
 // Using Polaris Web Component Pattern
 <s-tooltip id="metric-explanation">
@@ -117,8 +127,10 @@ await shopify.modal.show({
 ```
 
 #### 3. Admin Action Extension Modal (Future)
+
 **Use Case**: Deep integration with Shopify Admin pages (Orders, Products, Customers)
 **Characteristics**:
+
 - Admin UI Extension modal triggered from Admin pages
 - Full Admin modal behavior with custom content
 - Access to Admin page context and data
@@ -126,6 +138,7 @@ await shopify.modal.show({
 ### Token Mapping System
 
 #### OCC to Polaris Token Mapping
+
 Create placeholder token file for overlay-specific styling:
 
 ```json
@@ -134,7 +147,7 @@ Create placeholder token file for overlay-specific styling:
     "modal": {
       "width": {
         "small": "400px",
-        "base": "600px", 
+        "base": "600px",
         "large": "800px",
         "max": "calc(100vw - var(--p-space-8, 32px))"
       },
@@ -174,6 +187,7 @@ Create placeholder token file for overlay-specific styling:
 ```
 
 #### Placeholder Token File Structure
+
 Store at `tokens/shopify-overlay.json`:
 
 ```json
@@ -212,46 +226,49 @@ Store at `tokens/shopify-overlay.json`:
 ## Focus Management and Accessibility
 
 ### Focus Trap Strategy for Admin Context
+
 When App Bridge modal is active:
 
 1. **Initial Focus**: App Bridge handles initial focus to modal
-2. **Focus Containment**: Automatic focus trap within modal boundaries  
+2. **Focus Containment**: Automatic focus trap within modal boundaries
 3. **Escape Behavior**: App Bridge provides Escape key handling
 4. **Return Focus**: Returns to originating Admin element on close
 
 ### Custom Focus Management (In-Frame)
+
 For tooltips and in-frame overlays:
 
 ```typescript
 // Focus management for tooltip overlays
 class TooltipFocusManager {
   private originalFocus: HTMLElement | null = null;
-  
+
   show(trigger: HTMLElement, tooltip: HTMLElement) {
     this.originalFocus = trigger;
-    
+
     // Make tooltip focusable for screen readers
-    tooltip.setAttribute('tabindex', '-1');
+    tooltip.setAttribute("tabindex", "-1");
     tooltip.focus();
-    
+
     // Announce tooltip content
-    tooltip.setAttribute('role', 'tooltip');
-    tooltip.setAttribute('aria-live', 'polite');
+    tooltip.setAttribute("role", "tooltip");
+    tooltip.setAttribute("aria-live", "polite");
   }
-  
+
   hide(tooltip: HTMLElement) {
     // Return focus to original trigger
     if (this.originalFocus) {
       this.originalFocus.focus();
       this.originalFocus = null;
     }
-    
-    tooltip.removeAttribute('tabindex');
+
+    tooltip.removeAttribute("tabindex");
   }
 }
 ```
 
 ### Screen Reader Support
+
 - **Modal Content**: Proper heading structure with `aria-labelledby`
 - **Live Regions**: Status updates announced via `aria-live="polite"`
 - **Context Preservation**: Clear indication of Admin context vs OCC content
@@ -259,14 +276,15 @@ class TooltipFocusManager {
 ## Z-Index and Stacking Context Strategy
 
 ### Z-Index Hierarchy
+
 Based on Shopify Admin z-index conventions:
 
 ```css
 /* OCC Overlay Z-Index Scale */
 :root {
-  --occ-z-admin-overlay: 1000;     /* Above Admin content, below Admin modals */
-  --occ-z-tooltip: 1010;           /* Tooltips above overlay content */
-  --occ-z-app-bridge-modal: 1200;  /* App Bridge controls this automatically */
+  --occ-z-admin-overlay: 1000; /* Above Admin content, below Admin modals */
+  --occ-z-tooltip: 1010; /* Tooltips above overlay content */
+  --occ-z-app-bridge-modal: 1200; /* App Bridge controls this automatically */
   --occ-z-app-bridge-backdrop: 1100; /* App Bridge controls this automatically */
 }
 
@@ -283,6 +301,7 @@ Based on Shopify Admin z-index conventions:
 ```
 
 ### Stacking Context Isolation
+
 Ensure overlays don't interfere with Admin UI:
 
 ```css
@@ -302,6 +321,7 @@ Ensure overlays don't interfere with Admin UI:
 ## Responsive Behavior in Admin Context
 
 ### Container Query Strategy
+
 Since we're in an iframe, use container queries instead of viewport queries:
 
 ```css
@@ -328,6 +348,7 @@ Since we're in an iframe, use container queries instead of viewport queries:
 ```
 
 ### Adaptive Content Layout
+
 Overlay content adapts to Admin container size:
 
 ```css
@@ -356,6 +377,7 @@ Overlay content adapts to Admin container size:
 ## Interaction Patterns
 
 ### Modal Trigger Patterns
+
 ```typescript
 // From tile action button
 const handleEscalationClick = async (conversationId: string) => {
@@ -364,14 +386,14 @@ const handleEscalationClick = async (conversationId: string) => {
     conversationId,
     onApprove: handleApproveAction,
     onEscalate: handleEscalateAction,
-    onResolve: handleResolveAction
+    onResolve: handleResolveAction,
   });
-  
+
   // Show via App Bridge
   await shopify.modal.show({
-    variant: 'large',
+    variant: "large",
     title: `CX Escalation — ${conversation.customerName}`,
-    content: modalHTML
+    content: modalHTML,
   });
 };
 
@@ -381,47 +403,48 @@ const handleApproveAction = async (formData: FormData) => {
     await submitEscalationDecision(formData);
     await shopify.modal.hide();
     await shopify.toast.show({
-      message: 'Decision logged successfully',
-      duration: 5000
+      message: "Decision logged successfully",
+      duration: 5000,
     });
   } catch (error) {
     await shopify.toast.show({
-      message: 'Network error. Please try again.',
-      isError: true
+      message: "Network error. Please try again.",
+      isError: true,
     });
   }
 };
 ```
 
 ### Tooltip Interaction Patterns
+
 ```typescript
 // Hover/focus-based tooltip display
 const setupTooltipInteractions = () => {
-  document.querySelectorAll('[data-occ-tooltip]').forEach(trigger => {
-    const tooltipId = trigger.getAttribute('data-occ-tooltip');
+  document.querySelectorAll("[data-occ-tooltip]").forEach((trigger) => {
+    const tooltipId = trigger.getAttribute("data-occ-tooltip");
     const tooltip = document.getElementById(tooltipId);
-    
+
     if (!tooltip) return;
-    
+
     let hideTimeout: number;
-    
+
     const showTooltip = () => {
       clearTimeout(hideTimeout);
-      tooltip.setAttribute('aria-hidden', 'false');
-      tooltip.classList.add('occ-tooltip--visible');
+      tooltip.setAttribute("aria-hidden", "false");
+      tooltip.classList.add("occ-tooltip--visible");
     };
-    
+
     const hideTooltip = () => {
       hideTimeout = window.setTimeout(() => {
-        tooltip.setAttribute('aria-hidden', 'true');
-        tooltip.classList.remove('occ-tooltip--visible');
+        tooltip.setAttribute("aria-hidden", "true");
+        tooltip.classList.remove("occ-tooltip--visible");
       }, 100);
     };
-    
-    trigger.addEventListener('mouseenter', showTooltip);
-    trigger.addEventListener('mouseleave', hideTooltip);
-    trigger.addEventListener('focus', showTooltip);
-    trigger.addEventListener('blur', hideTooltip);
+
+    trigger.addEventListener("mouseenter", showTooltip);
+    trigger.addEventListener("mouseleave", hideTooltip);
+    trigger.addEventListener("focus", showTooltip);
+    trigger.addEventListener("blur", hideTooltip);
   });
 };
 ```
@@ -429,36 +452,42 @@ const setupTooltipInteractions = () => {
 ## Content and Copy Guidelines
 
 ### Modal Content Alignment
+
 - **Titles**: Follow Admin convention: "Function — Context" (e.g., "CX Escalation — Jamie Lee")
 - **Helper Text**: Reference `customer.support@hotrodan.com` consistently
 - **Button Labels**: Use Polaris-aligned action language ("Approve & Send", "Log follow-up")
 - **Error Messages**: Standard Admin error patterns with recovery guidance
 
 ### Accessibility Copy Patterns
+
 ```typescript
 // Screen reader announcements
 const announceModalOpen = (modalType: string, context: string) => {
-  const announcement = document.createElement('div');
-  announcement.setAttribute('aria-live', 'assertive');
-  announcement.setAttribute('aria-atomic', 'true');
-  announcement.className = 'sr-only';
+  const announcement = document.createElement("div");
+  announcement.setAttribute("aria-live", "assertive");
+  announcement.setAttribute("aria-atomic", "true");
+  announcement.className = "sr-only";
   announcement.textContent = `${modalType} modal opened for ${context}`;
-  
+
   document.body.appendChild(announcement);
   setTimeout(() => document.body.removeChild(announcement), 1000);
 };
 
 // Contextual help text
 const contextualHelp = {
-  escalation: 'Escalation decisions are logged to customer.support@hotrodan.com and added to the customer record.',
-  salesPulse: 'Revenue calculations include taxes and shipping. Variance alerts are sent to operations team.',
-  supportNote: 'Internal notes are visible to operators only and included in audit trail.'
+  escalation:
+    "Escalation decisions are logged to customer.support@hotrodan.com and added to the customer record.",
+  salesPulse:
+    "Revenue calculations include taxes and shipping. Variance alerts are sent to operations team.",
+  supportNote:
+    "Internal notes are visible to operators only and included in audit trail.",
 };
 ```
 
 ## Technical Implementation Patterns
 
 ### App Bridge Modal Integration
+
 ```typescript
 // Modal state management with App Bridge
 interface AppBridgeModalManager {
@@ -469,22 +498,22 @@ interface AppBridgeModalManager {
 
 class OCCModalManager implements AppBridgeModalManager {
   private activeModal: string | null = null;
-  
+
   async show(config: ModalConfig): Promise<void> {
     // Prepare content with proper Polaris styling
     const styledContent = this.applyPolarisStyles(config.content);
-    
+
     // Show via App Bridge with size constraints
     await shopify.modal.show({
-      variant: config.size || 'base',
+      variant: config.size || "base",
       content: styledContent,
-      title: config.title
+      title: config.title,
     });
-    
+
     this.activeModal = config.id;
     this.bindModalEventHandlers(config);
   }
-  
+
   private applyPolarisStyles(content: string): string {
     // Inject Polaris tokens and OCC overlay styles
     return `
@@ -496,7 +525,7 @@ class OCCModalManager implements AppBridgeModalManager {
       </div>
     `;
   }
-  
+
   private getOverlayStyles(): string {
     return `
       .occ-modal-wrapper {
@@ -546,29 +575,30 @@ class OCCModalManager implements AppBridgeModalManager {
 ```
 
 ### Focus Management Implementation
+
 ```typescript
 // Custom focus management for complex overlays
 class OverlayFocusManager {
   private focusableSelectors = [
-    'button:not([disabled])',
-    'input:not([disabled])',
-    'select:not([disabled])',
-    'textarea:not([disabled])',
-    'a[href]',
-    '[tabindex]:not([tabindex="-1"])'
+    "button:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    "a[href]",
+    '[tabindex]:not([tabindex="-1"])',
   ];
-  
+
   trapFocus(container: HTMLElement): () => void {
     const focusableElements = container.querySelectorAll(
-      this.focusableSelectors.join(', ')
+      this.focusableSelectors.join(", "),
     ) as NodeListOf<HTMLElement>;
-    
+
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
-    
+
     const handleTabKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab') return;
-      
+      if (e.key !== "Tab") return;
+
       if (e.shiftKey) {
         if (document.activeElement === firstFocusable) {
           e.preventDefault();
@@ -581,12 +611,12 @@ class OverlayFocusManager {
         }
       }
     };
-    
-    container.addEventListener('keydown', handleTabKey);
+
+    container.addEventListener("keydown", handleTabKey);
     firstFocusable?.focus();
-    
+
     return () => {
-      container.removeEventListener('keydown', handleTabKey);
+      container.removeEventListener("keydown", handleTabKey);
     };
   }
 }
@@ -595,49 +625,50 @@ class OverlayFocusManager {
 ## Error Handling and Resilience
 
 ### App Bridge Connection Issues
+
 ```typescript
 // Graceful degradation when App Bridge is unavailable
 const showModalWithFallback = async (config: ModalConfig) => {
   try {
-    if (typeof shopify !== 'undefined' && shopify.modal) {
+    if (typeof shopify !== "undefined" && shopify.modal) {
       await shopify.modal.show(config);
     } else {
       // Fallback to in-frame modal
       showInFrameModal(config);
     }
   } catch (error) {
-    console.warn('App Bridge modal failed, using fallback:', error);
+    console.warn("App Bridge modal failed, using fallback:", error);
     showInFrameModal(config);
   }
 };
 
 const showInFrameModal = (config: ModalConfig) => {
   // Create in-frame modal with proper styling and focus management
-  const modal = document.createElement('div');
-  modal.className = 'occ-fallback-modal';
+  const modal = document.createElement("div");
+  modal.className = "occ-fallback-modal";
   modal.innerHTML = config.content;
-  
-  const backdrop = document.createElement('div');
-  backdrop.className = 'occ-fallback-backdrop';
+
+  const backdrop = document.createElement("div");
+  backdrop.className = "occ-fallback-backdrop";
   backdrop.appendChild(modal);
-  
+
   document.body.appendChild(backdrop);
-  
+
   // Apply focus trap
   const releaseFocusTrap = this.focusManager.trapFocus(modal);
-  
+
   // Handle close
   const handleClose = () => {
     releaseFocusTrap();
     document.body.removeChild(backdrop);
   };
-  
-  backdrop.addEventListener('click', (e) => {
+
+  backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) handleClose();
   });
-  
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') handleClose();
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") handleClose();
   });
 };
 ```
@@ -645,12 +676,14 @@ const showInFrameModal = (config: ModalConfig) => {
 ## Testing and Validation Strategy
 
 ### Cross-Browser Testing Matrix
+
 - **Chrome 110+**: Primary development and testing target
 - **Firefox 110+**: Focus management and keyboard navigation verification
 - **Safari 16+**: Container query support and iOS WebView testing
 - **Edge 110+**: Windows accessibility tools compatibility
 
 ### Accessibility Testing Checklist
+
 - [ ] **Keyboard Navigation**: Tab order, focus trap, Escape handling
 - [ ] **Screen Reader**: NVDA/VoiceOver modal announcements
 - [ ] **Color Contrast**: 4.5:1 minimum for all text elements
@@ -658,6 +691,7 @@ const showInFrameModal = (config: ModalConfig) => {
 - [ ] **Touch Targets**: 44px minimum for all interactive elements
 
 ### Admin Integration Testing
+
 - [ ] **Modal Centering**: Proper position in various Admin layouts
 - [ ] **Z-Index Behavior**: No interference with Admin UI elements
 - [ ] **Responsive Layout**: Container-based responsive behavior
@@ -667,6 +701,7 @@ const showInFrameModal = (config: ModalConfig) => {
 ## Dependencies and Environment Requirements
 
 ### Required Environment Setup
+
 ```bash
 # Shopify App Bridge script (automatically updated)
 <script src="https://cdn.shopify.com/shopifycloud/app-bridge.js"></script>
@@ -676,11 +711,13 @@ const showInFrameModal = (config: ModalConfig) => {
 ```
 
 ### Token Delivery Dependencies
+
 - **Shopify Admin Team Token**: Required for production Polaris token access
 - **Figma Workspace Access**: Required for component library updates
 - **Design Review Cycle**: PM and Engineering sign-off required
 
 ### Implementation Timeline
+
 - **Phase 1** (Week 1): Placeholder tokens and basic App Bridge integration
 - **Phase 2** (Week 2): Focus management and accessibility compliance
 - **Phase 3** (Week 3): Production token integration (pending delivery)
@@ -689,6 +726,7 @@ const showInFrameModal = (config: ModalConfig) => {
 ---
 
 **Next Steps:**
+
 1. Create placeholder token file at `tokens/shopify-overlay.json`
 2. Implement App Bridge modal integration for CX Escalations
 3. Set up container query-based responsive behavior

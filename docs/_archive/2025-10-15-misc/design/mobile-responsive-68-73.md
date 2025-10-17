@@ -10,18 +10,20 @@ created: 2025-10-11
 ## Task 68: Responsive Breakpoints & Layout System
 
 **Breakpoints** (aligned with Polaris and modern standards):
+
 ```css
 :root {
   /* Polaris-aligned breakpoints */
-  --breakpoint-xs: 0px;       /* Mobile portrait */
-  --breakpoint-sm: 490px;     /* Mobile landscape / Polaris sm */
-  --breakpoint-md: 768px;     /* Tablet / Polaris md */
-  --breakpoint-lg: 1040px;    /* Desktop / Polaris lg */
-  --breakpoint-xl: 1440px;    /* Large desktop / Polaris xl */
+  --breakpoint-xs: 0px; /* Mobile portrait */
+  --breakpoint-sm: 490px; /* Mobile landscape / Polaris sm */
+  --breakpoint-md: 768px; /* Tablet / Polaris md */
+  --breakpoint-lg: 1040px; /* Desktop / Polaris lg */
+  --breakpoint-xl: 1440px; /* Large desktop / Polaris xl */
 }
 ```
 
 **Media Query Strategy**:
+
 ```css
 /* Mobile-first approach */
 .dashboard {
@@ -62,6 +64,7 @@ created: 2025-10-11
 ```
 
 **Container Queries** (for component-level responsiveness):
+
 ```css
 .approval-card {
   container-type: inline-size;
@@ -85,6 +88,7 @@ created: 2025-10-11
 **Component Adaptation Strategy**:
 
 ### ApprovalCard - Mobile
+
 ```typescript
 <Card>
   <BlockStack gap="300">
@@ -92,13 +96,13 @@ created: 2025-10-11
     <Text variant="headingSm" as="h3">
       Conversation #{conversationId}
     </Text>
-    
+
     <Badge tone={riskTone}>{risk} Risk</Badge>
-    
+
     <Text variant="bodyMd" as="p" truncate>
       {toolName}: {toolDescription}
     </Text>
-    
+
     {/* Mobile: Full-width buttons, stacked */}
     <BlockStack gap="200">
       <Button fullWidth variant="primary" tone="success">
@@ -113,6 +117,7 @@ created: 2025-10-11
 ```
 
 ### ApprovalCard - Desktop
+
 ```typescript
 <Card>
   <InlineGrid columns={['oneThird', 'twoThirds']} gap="400">
@@ -123,10 +128,10 @@ created: 2025-10-11
       </Text>
       <Badge tone={riskTone}>{risk} Risk</Badge>
     </BlockStack>
-    
+
     <BlockStack gap="200">
       <Text>{toolName}: {toolDescription}</Text>
-      
+
       {/* Desktop: Inline buttons */}
       <InlineStack gap="200">
         <Button variant="primary" tone="success">Approve</Button>
@@ -138,6 +143,7 @@ created: 2025-10-11
 ```
 
 **Polaris Responsive Components**:
+
 - Use `BlockStack` (vertical) for mobile
 - Use `InlineStack` + `InlineGrid` for desktop
 - Use `fullWidth` prop on buttons for mobile
@@ -150,6 +156,7 @@ created: 2025-10-11
 ## Task 70: Touch Interaction Patterns
 
 **Touch Target Sizing** (WCAG 2.5.5 - Target Size):
+
 ```css
 /* Minimum touch target: 44x44px (iOS), 48x48px (Android) */
 .occ-button-mobile {
@@ -165,6 +172,7 @@ created: 2025-10-11
 ```
 
 **Touch Gestures**:
+
 ```typescript
 // Swipe to approve/reject (optional enhancement)
 import { useTouchGesture } from '@shopify/polaris-react';
@@ -174,7 +182,7 @@ function ApprovalCard() {
     if (direction === 'right') handleApprove();
     if (direction === 'left') handleReject();
   };
-  
+
   return (
     <div onTouchMove={handleSwipeDetection}>
       {/* Card content */}
@@ -184,6 +192,7 @@ function ApprovalCard() {
 ```
 
 **Touch Feedback**:
+
 ```css
 /* Visual feedback on touch */
 .occ-button:active {
@@ -200,18 +209,19 @@ function ApprovalCard() {
 ```
 
 **Pull-to-Refresh** (for mobile):
+
 ```typescript
 import { useCallback, useState } from 'react';
 
 function ApprovalQueue() {
   const [refreshing, setRefreshing] = useState(false);
-  
+
   const handleRefresh = useCallback(async () => {
     setRefreshing(true);
     await refetchApprovals();
     setRefreshing(false);
   }, []);
-  
+
   return (
     <div onTouchStart={handlePullStart}>
       {refreshing && <Spinner size="small" />}
@@ -228,6 +238,7 @@ function ApprovalQueue() {
 ## Task 71: Mobile Navigation Patterns
 
 **Bottom Navigation** (for mobile):
+
 ```typescript
 <div className="occ-mobile-nav">
   <InlineStack gap="0" align="space-around">
@@ -257,6 +268,7 @@ function ApprovalQueue() {
 ```
 
 **Hamburger Menu** (for secondary navigation):
+
 ```typescript
 <TopBar>
   <TopBar.Menu
@@ -273,6 +285,7 @@ function ApprovalQueue() {
 ```
 
 **Mobile-Optimized Routing**:
+
 ```typescript
 // app/routes/_layout.mobile.tsx
 export default function MobileLayout() {
@@ -297,10 +310,11 @@ export default function MobileLayout() {
 **Concept**: Show essential info first, reveal details on demand
 
 **Example: Collapsed Approval Card**
+
 ```typescript
 function ApprovalCard({ approval, onExpand }) {
   const [expanded, setExpanded] = useState(false);
-  
+
   return (
     <Card>
       {/* Always visible: Essential info */}
@@ -308,23 +322,23 @@ function ApprovalCard({ approval, onExpand }) {
         <Text variant="headingSm">Conv #{approval.conversationId}</Text>
         <Badge tone={riskTone}>{approval.risk}</Badge>
       </InlineStack>
-      
+
       {/* Tap to expand */}
-      <Button 
+      <Button
         plain
         icon={expanded ? ChevronUpMinor : ChevronDownMinor}
         onClick={() => setExpanded(!expanded)}
       >
         {expanded ? 'Less' : 'More'} Details
       </Button>
-      
+
       {/* Conditionally visible: Full details */}
       {expanded && (
         <BlockStack gap="200">
           <Text>Tool: {approval.toolName}</Text>
           <Text>Args: {JSON.stringify(approval.args)}</Text>
           <Text>Timestamp: {approval.createdAt}</Text>
-          
+
           {/* Actions */}
           <InlineStack gap="200">
             <Button fullWidth tone="success">Approve</Button>
@@ -338,6 +352,7 @@ function ApprovalCard({ approval, onExpand }) {
 ```
 
 **Accordion Pattern** (for long lists):
+
 ```typescript
 <Collapsible open={isOpen} id="details">
   {/* Hidden content */}
@@ -353,6 +368,7 @@ function ApprovalCard({ approval, onExpand }) {
 **Performance Guidelines**:
 
 1. **Code Splitting** (lazy load mobile components):
+
 ```typescript
 const MobileApprovalQueue = lazy(() => import('./MobileApprovalQueue'));
 
@@ -362,6 +378,7 @@ const MobileApprovalQueue = lazy(() => import('./MobileApprovalQueue'));
 ```
 
 2. **Image Optimization**:
+
 ```tsx
 <img
   src="/assets/icon.png"
@@ -372,11 +389,13 @@ const MobileApprovalQueue = lazy(() => import('./MobileApprovalQueue'));
 ```
 
 3. **Reduce Bundle Size**:
+
 - Tree-shake unused Polaris components
 - Use dynamic imports for heavy components
 - Minimize dependencies
 
 4. **Optimize Rendering**:
+
 ```typescript
 // Virtualize long lists
 import { VirtualScroll } from '@shopify/polaris';
@@ -385,6 +404,7 @@ import { VirtualScroll } from '@shopify/polaris';
 ```
 
 5. **Prefetch Critical Data**:
+
 ```typescript
 // Prefetch next page while user reviews current
 useEffect(() => {
@@ -395,12 +415,14 @@ useEffect(() => {
 ```
 
 6. **Optimize Network**:
+
 - Use HTTP/2 multiplexing
 - Enable Brotli compression
 - Set proper cache headers
 - Use Service Workers for offline support
 
 7. **Performance Budget**:
+
 - Max bundle size: 200KB (gzipped)
 - First Contentful Paint: <2s on 3G
 - Time to Interactive: <5s on 3G
@@ -411,4 +433,3 @@ useEffect(() => {
 ---
 
 **All 6 Mobile & Responsive tasks complete**
-

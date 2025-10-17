@@ -9,6 +9,7 @@
 ## Full White-Label Features
 
 **Branding Customization**:
+
 - Custom domain (support.customer.com)
 - Logo and color scheme
 - Email templates (from customer's domain)
@@ -16,11 +17,13 @@
 - Mobile app branding
 
 **Data Sovereignty**:
+
 - Option for dedicated database
 - Regional hosting (US, EU, APAC)
 - Custom data retention policies
 
 **Feature Gating**:
+
 - Enable/disable features per customer
 - Custom workflows
 - Tenant-specific AI prompts
@@ -29,4 +32,3 @@
 
 **Document Owner**: Product Agent
 **Status**: White-label capabilities defined
-

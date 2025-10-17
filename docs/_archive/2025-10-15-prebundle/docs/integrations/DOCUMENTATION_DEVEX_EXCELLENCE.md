@@ -9,6 +9,7 @@
 ## AO: Integration Developer Guides
 
 **Guides Created:**
+
 1. **Getting Started** (5min quickstart)
 2. **Authentication** (OAuth, API keys)
 3. **Making API Calls** (SDK usage)
@@ -26,6 +27,7 @@
 ## AP: Troubleshooting Playbooks
 
 **Playbooks:**
+
 1. **Authentication Failures**
    - Invalid credentials
    - Expired tokens
@@ -55,6 +57,7 @@
 ## AQ: Integration Examples & Recipes
 
 **Examples:**
+
 1. Basic OAuth flow
 2. Paginated data fetch
 3. Webhook handler
@@ -75,6 +78,7 @@
 ## AR: Integration Migration Guides
 
 **Migrations Covered:**
+
 1. **API Version Upgrades** (v1 → v2)
 2. **Deprecated Endpoint** (old → new)
 3. **Auth Method Change** (API key → OAuth)
@@ -82,6 +86,7 @@
 5. **Provider Switch** (Chatwoot → Intercom)
 
 **Each Guide Includes:**
+
 - Migration rationale
 - Step-by-step instructions
 - Code before/after
@@ -95,6 +100,7 @@
 ## AS: Best Practices Documentation
 
 **Topics:**
+
 1. **Security**
    - Token storage (encryption)
    - Webhook verification
@@ -126,4 +132,3 @@
 ---
 
 **Portfolio Total:** 115 hours (~3 months)
-

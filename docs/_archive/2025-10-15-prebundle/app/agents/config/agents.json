@@ -28,9 +28,7 @@
     {
       "id": "ai-customer",
       "human_review": true,
-      "reviewers": [
-        "github:justin"
-      ]
+      "reviewers": ["github:justin"]
     },
     {
       "id": "ai-knowledge",

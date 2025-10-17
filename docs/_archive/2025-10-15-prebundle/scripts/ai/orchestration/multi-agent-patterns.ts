@@ -1,35 +1,35 @@
 /**
  * Multi-Agent Orchestration Patterns
- * 
+ *
  * Design patterns for coordinating multiple AI agents in customer support
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 // Orchestration Pattern Types
-export type OrchestrationPattern = 
-  | 'sequential'      // One agent after another
-  | 'parallel'        // Multiple agents simultaneously
-  | 'conditional'     // Route based on conditions
-  | 'hierarchical'    // Supervisor coordinates workers
-  | 'collaborative';  // Agents work together on same task
+export type OrchestrationPattern =
+  | "sequential" // One agent after another
+  | "parallel" // Multiple agents simultaneously
+  | "conditional" // Route based on conditions
+  | "hierarchical" // Supervisor coordinates workers
+  | "collaborative"; // Agents work together on same task
 
 /**
  * Pattern 1: Sequential Handoff (Default)
  * Triage → Specialist → Resolution
  */
 export const SequentialPattern = {
-  name: 'Sequential Handoff',
-  description: 'Linear progression through agents',
-  
+  name: "Sequential Handoff",
+  description: "Linear progression through agents",
+
   flow: [
-    { agent: 'Triage', action: 'classify_intent' },
-    { agent: 'Specialist', action: 'handle_request' },
-    { agent: 'Triage', action: 'verify_resolution' },
+    { agent: "Triage", action: "classify_intent" },
+    { agent: "Specialist", action: "handle_request" },
+    { agent: "Triage", action: "verify_resolution" },
   ],
-  
-  useWhen: 'Simple, single-intent customer requests',
-  
+
+  useWhen: "Simple, single-intent customer requests",
+
   example: `
     Customer: "Where is my order #12345?"
     → Triage classifies as 'order_status'
@@ -44,17 +44,17 @@ export const SequentialPattern = {
  * Multiple specialists consulted simultaneously
  */
 export const ParallelPattern = {
-  name: 'Parallel Consultation',
-  description: 'Query multiple specialists at once',
-  
+  name: "Parallel Consultation",
+  description: "Query multiple specialists at once",
+
   flow: [
-    { agent: 'Triage', action: 'identify_multi_intent' },
-    { agents: ['Order Support', 'Product Q&A'], action: 'parallel_query' },
-    { agent: 'Synthesis', action: 'combine_responses' },
+    { agent: "Triage", action: "identify_multi_intent" },
+    { agents: ["Order Support", "Product Q&A"], action: "parallel_query" },
+    { agent: "Synthesis", action: "combine_responses" },
   ],
-  
-  useWhen: 'Customer asks multiple questions spanning domains',
-  
+
+  useWhen: "Customer asks multiple questions spanning domains",
+
   example: `
     Customer: "Can I return my order #12345 and do you have it in blue?"
     → Triage identifies: order_status + product_question
@@ -62,7 +62,7 @@ export const ParallelPattern = {
     → Product Q&A checks blue availability (parallel)
     → Triage synthesizes combined response
   `,
-  
+
   implementation: `
     const [returnInfo, productInfo] = await Promise.all([
       orderAgent.handle({ query: 'return eligibility', order: '#12345' }),
@@ -78,19 +78,19 @@ export const ParallelPattern = {
  * Route to different agents based on conditions
  */
 export const ConditionalPattern = {
-  name: 'Conditional Routing',
-  description: 'Dynamic routing based on customer attributes or context',
-  
+  name: "Conditional Routing",
+  description: "Dynamic routing based on customer attributes or context",
+
   conditions: [
-    { if: 'vip_customer', then: 'VIP Agent' },
-    { if: 'order_value > $500', then: 'Premium Support' },
-    { if: 'language !== "en"', then: 'Multilingual Agent' },
-    { if: 'angry_sentiment', then: 'Escalation Agent' },
-    { else: 'Standard Agent' },
+    { if: "vip_customer", then: "VIP Agent" },
+    { if: "order_value > $500", then: "Premium Support" },
+    { if: 'language !== "en"', then: "Multilingual Agent" },
+    { if: "angry_sentiment", then: "Escalation Agent" },
+    { else: "Standard Agent" },
   ],
-  
-  useWhen: 'Need specialized handling based on customer segment',
-  
+
+  useWhen: "Need specialized handling based on customer segment",
+
   implementation: `
     function routeAgent(customer: Customer, context: Context): Agent {
       if (customer.vip) return vipAgent;
@@ -106,24 +106,24 @@ export const ConditionalPattern = {
  * Supervisor agent oversees and coordinates workers
  */
 export const HierarchicalPattern = {
-  name: 'Hierarchical Supervision',
-  description: 'Supervisor coordinates multiple worker agents',
-  
+  name: "Hierarchical Supervision",
+  description: "Supervisor coordinates multiple worker agents",
+
   structure: {
-    supervisor: 'Coordinator Agent',
-    workers: ['Order Support', 'Product Q&A', 'Technical Support'],
-    escalation: 'Human Supervisor',
+    supervisor: "Coordinator Agent",
+    workers: ["Order Support", "Product Q&A", "Technical Support"],
+    escalation: "Human Supervisor",
   },
-  
+
   flow: [
-    { agent: 'Coordinator', action: 'decompose_request' },
-    { agents: 'Workers', action: 'execute_subtasks' },
-    { agent: 'Coordinator', action: 'validate_and_synthesize' },
-    { agent: 'Coordinator', action: 'quality_check' },
+    { agent: "Coordinator", action: "decompose_request" },
+    { agents: "Workers", action: "execute_subtasks" },
+    { agent: "Coordinator", action: "validate_and_synthesize" },
+    { agent: "Coordinator", action: "quality_check" },
   ],
-  
-  useWhen: 'Complex multi-step requests requiring coordination',
-  
+
+  useWhen: "Complex multi-step requests requiring coordination",
+
   example: `
     Customer: "I ordered wrong size, want exchange, and have question about warranty"
     
@@ -143,18 +143,18 @@ export const HierarchicalPattern = {
  * Agents work together iteratively
  */
 export const CollaborativePattern = {
-  name: 'Collaborative Problem-Solving',
-  description: 'Agents collaborate iteratively on complex issues',
-  
+  name: "Collaborative Problem-Solving",
+  description: "Agents collaborate iteratively on complex issues",
+
   phases: [
-    { phase: 'Discovery', agents: ['Triage', 'Specialist'] },
-    { phase: 'Analysis', agents: ['Specialist', 'Technical'] },
-    { phase: 'Solution', agents: ['Specialist', 'Approval'] },
-    { phase: 'Verification', agents: ['Triage', 'Quality'] },
+    { phase: "Discovery", agents: ["Triage", "Specialist"] },
+    { phase: "Analysis", agents: ["Specialist", "Technical"] },
+    { phase: "Solution", agents: ["Specialist", "Approval"] },
+    { phase: "Verification", agents: ["Triage", "Quality"] },
   ],
-  
-  useWhen: 'Unclear issues requiring iterative refinement',
-  
+
+  useWhen: "Unclear issues requiring iterative refinement",
+
   example: `
     Customer: "Your app isn't working and I can't find my order"
     
@@ -169,81 +169,79 @@ export const CollaborativePattern = {
  * Orchestration Framework
  */
 export class AgentOrchestrator {
-  
   /**
    * Select appropriate orchestration pattern
    */
   selectPattern(context: {
     intentCount: number;
-    complexity: 'simple' | 'medium' | 'complex';
-    customerType: 'standard' | 'vip';
-    urgency: 'low' | 'medium' | 'high';
+    complexity: "simple" | "medium" | "complex";
+    customerType: "standard" | "vip";
+    urgency: "low" | "medium" | "high";
   }): OrchestrationPattern {
-    
     // Multiple intents → Parallel
-    if (context.intentCount > 1) return 'parallel';
-    
+    if (context.intentCount > 1) return "parallel";
+
     // VIP or complex → Hierarchical
-    if (context.customerType === 'vip' || context.complexity === 'complex') {
-      return 'hierarchical';
+    if (context.customerType === "vip" || context.complexity === "complex") {
+      return "hierarchical";
     }
-    
+
     // High urgency → Sequential (fastest)
-    if (context.urgency === 'high') return 'sequential';
-    
+    if (context.urgency === "high") return "sequential";
+
     // Default
-    return 'sequential';
+    return "sequential";
   }
-  
+
   /**
    * Execute pattern
    */
   async execute(pattern: OrchestrationPattern, request: any): Promise<any> {
     switch (pattern) {
-      case 'sequential':
+      case "sequential":
         return this.executeSequential(request);
-      case 'parallel':
+      case "parallel":
         return this.executeParallel(request);
-      case 'hierarchical':
+      case "hierarchical":
         return this.executeHierarchical(request);
-      case 'conditional':
+      case "conditional":
         return this.executeConditional(request);
-      case 'collaborative':
+      case "collaborative":
         return this.executeCollaborative(request);
     }
   }
-  
+
   private async executeSequential(request: any) {
     // Triage → Specialist → Done
     const intent = await triageAgent.classify(request);
     const response = await specialistAgent[intent].handle(request);
     return response;
   }
-  
+
   private async executeParallel(request: any) {
     // Multiple agents at once
     const { intents } = await triageAgent.classify(request);
     const responses = await Promise.all(
-      intents.map(intent => specialistAgent[intent].handle(request))
+      intents.map((intent) => specialistAgent[intent].handle(request)),
     );
     return synthesizeResponses(responses);
   }
-  
+
   private async executeHierarchical(request: any) {
     // Supervisor coordinates workers
     const plan = await supervisorAgent.createPlan(request);
     const results = await Promise.all(
-      plan.tasks.map(task => task.agent.execute(task))
+      plan.tasks.map((task) => task.agent.execute(task)),
     );
     return supervisorAgent.synthesize(results);
   }
-  
+
   private async executeConditional(request: any) {
     // Route based on conditions
     const agent = this.routeAgent(request);
     return agent.handle(request);
   }
-  
+
   private async executeCollaborative(request: any) {
     // Iterative collaboration
     let context = request;
@@ -260,26 +258,25 @@ export class AgentOrchestrator {
 export const ORCHESTRATION_OPTIMIZATIONS = {
   // Cache pattern decisions
   patternCache: new Map<string, OrchestrationPattern>(),
-  
+
   // Parallel execution limits
-  maxParallelAgents: 3,  // Don't overwhelm system
-  
+  maxParallelAgents: 3, // Don't overwhelm system
+
   // Timeout per pattern
   timeouts: {
-    sequential: 10000,    // 10s
-    parallel: 15000,      // 15s (multiple agents)
-    hierarchical: 20000,  // 20s (coordination overhead)
-    conditional: 10000,   // 10s
+    sequential: 10000, // 10s
+    parallel: 15000, // 15s (multiple agents)
+    hierarchical: 20000, // 20s (coordination overhead)
+    conditional: 10000, // 10s
     collaborative: 30000, // 30s (iterative)
   },
-  
+
   // Fallback strategies
   fallbacks: {
-    parallel_timeout: 'sequential',  // If parallel times out, try sequential
-    hierarchical_error: 'sequential', // Simpler fallback
-    collaborative_stuck: 'hierarchical', // Get supervisor help
+    parallel_timeout: "sequential", // If parallel times out, try sequential
+    hierarchical_error: "sequential", // Simpler fallback
+    collaborative_stuck: "hierarchical", // Get supervisor help
   },
 };
 
 export const orchestrator = new AgentOrchestrator();
-

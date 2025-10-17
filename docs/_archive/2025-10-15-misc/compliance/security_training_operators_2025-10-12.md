@@ -18,6 +18,7 @@
 - **Refresher:** Annually + quarterly phishing tests
 
 **Deliverables:**
+
 - Complete training curriculum (5 modules)
 - Interactive scenarios (10 examples)
 - Quick reference cards
@@ -31,6 +32,7 @@
 ### 1.1 Why Security Matters
 
 **Learning Objectives:**
+
 - Understand the importance of data security
 - Know your role in protecting customer data
 - Recognize consequences of security breaches
@@ -38,20 +40,24 @@
 **Content:**
 
 **Introduction:**
+
 > You are the first line of defense. Every action you take in HotDash affects customer trust and data security.
 
 **Real-World Impact:**
+
 - Data breaches cost average $4.45M (IBM Security Report)
 - 95% of breaches involve human error
 - Customer trust is hard to earn, easy to lose
 
 **Your Responsibilities:**
+
 1. Protect customer data
 2. Follow security procedures
 3. Report suspicious activity
 4. Complete security training
 
 **HotDash Security Score:** 8.5/10 (STRONG)
+
 - Your actions help maintain this score
 - Following procedures keeps customers safe
 
@@ -64,12 +70,14 @@
 #### P1: PROTECT Your Credentials
 
 **What to Protect:**
+
 - Shopify Admin password
 - Two-factor authentication (2FA) codes
 - Physical devices with HotDash access
 - Session tokens (automatic, but be aware)
 
 **How to Protect:**
+
 - ✅ Use strong, unique passwords (12+ characters)
 - ✅ Enable 2FA on Shopify Admin (REQUIRED)
 - ✅ Never share your login with anyone
@@ -77,6 +85,7 @@
 - ✅ Log out from shared computers
 
 **What NOT to Do:**
+
 - ❌ Share passwords with coworkers
 - ❌ Write passwords on sticky notes
 - ❌ Use same password across multiple sites
@@ -87,24 +96,28 @@
 #### P2: PRIVACY - Access Only What You Need
 
 **Data Minimization:**
+
 - Only open customer conversations you're assigned to
 - Don't browse customer records out of curiosity
 - Close tabs when done with customer data
 - Don't download customer data to personal devices
 
 **Conversation Privacy:**
+
 - Don't discuss customer details in public spaces
 - Don't share customer stories (even anonymized)
 - Use secure channels for internal communication
 - Respect customer confidentiality
 
 **What You Can Access:**
+
 - Customer name, email (for support)
 - Message content (to respond)
 - Order history (if referenced)
 - Conversation history (for context)
 
 **What You Should NOT Access:**
+
 - Other operators' conversations (unless assigned)
 - Customer payment information (stored by Shopify, not us)
 - Unrelated customer data
@@ -114,12 +127,14 @@
 #### P3: PRUDENCE - Think Before You Click
 
 **Email Safety:**
+
 - Verify sender before clicking links
 - Hover over links to see real destination
 - Be suspicious of urgent requests
 - Don't open unexpected attachments
 
 **Phishing Red Flags:**
+
 - ⚠️ Urgent language ("Act now!", "Account suspended!")
 - ⚠️ Asks for password or credentials
 - ⚠️ Sender email doesn't match company domain
@@ -127,6 +142,7 @@
 - ⚠️ Unexpected attachments
 
 **When in Doubt:**
+
 - Don't click
 - Forward to manager with "SUSPECTED PHISHING"
 - Delete the email
@@ -137,6 +153,7 @@
 #### P4: PROMPTNESS - Report Issues Immediately
 
 **Report These Immediately:**
+
 - Suspected security breach
 - Lost or stolen device
 - Phishing emails
@@ -145,12 +162,14 @@
 - Unusual system behavior
 
 **How to Report:**
+
 1. Contact your manager
 2. Or compliance team
 3. Email: support@hotrodan.com (Subject: "Security Issue")
 4. Don't wait - report now, investigate later
 
 **You Won't Get in Trouble For:**
+
 - Honest mistakes
 - False alarms
 - Asking questions
@@ -161,12 +180,14 @@
 #### P5: PROFESSIONALISM - Follow Procedures
 
 **Security Procedures:**
+
 - Read and follow security policies
 - Complete required training
 - Follow data handling procedures
 - Ask questions when unsure
 
 **Best Practices:**
+
 - Log out when done for the day
 - Review AI suggestions before approving
 - Use approved tools only
@@ -204,6 +225,7 @@
 **Definition:** Fraudulent attempt to steal credentials, data, or money by impersonating legitimate organizations
 
 **Common Phishing Methods:**
+
 1. **Email Phishing** - Fake emails from "Shopify", "your bank", etc.
 2. **Spear Phishing** - Targeted emails using personal information
 3. **Whaling** - Phishing attacks targeting executives
@@ -226,6 +248,7 @@
 - [ ] **Mismatched URLs** - Link text says one thing, actual URL is different
 
 **Example Phishing Email:**
+
 ```
 From: shopify-security@shopifiy.com (NOTE: misspelling!)
 Subject: URGENT: Your account will be suspended
@@ -243,6 +266,7 @@ Shopify Security Team
 ```
 
 **Red Flags in Example:**
+
 - ❌ Misspelling in email (shopifiy vs shopify)
 - ❌ Generic greeting
 - ❌ Urgent threat
@@ -254,6 +278,7 @@ Shopify Security Team
 ### 2.3 Real vs. Fake Email Comparison
 
 **FAKE Email (Phishing):**
+
 ```
 From: security@sh0pify.com (0 instead of o)
 Subject: URGENT ACTION REQUIRED
@@ -264,13 +289,14 @@ Your Shopify account has been compromised. Click here to secure it now.
 ```
 
 **REAL Email (Legitimate):**
+
 ```
 From: no-reply@shopify.com
 Subject: Shopify Login Notification
 
 Hi [Your Name],
 
-We noticed a new login to your Shopify account from [Location]. 
+We noticed a new login to your Shopify account from [Location].
 If this was you, no action needed.
 
 If this wasn't you, secure your account:
@@ -283,6 +309,7 @@ The Shopify Team
 ```
 
 **Differences:**
+
 - ✅ Real email uses official @shopify.com
 - ✅ Personal greeting with your name
 - ✅ No urgent threats or pressure
@@ -303,6 +330,7 @@ The Shopify Team
 6. **REPORT** to IT/security team
 
 **If You Already Clicked:**
+
 1. ❗ Report immediately (within minutes)
 2. Don't panic - quick reporting helps
 3. Change your password if you entered it
@@ -314,30 +342,35 @@ The Shopify Team
 ### 2.5 Phishing Scenarios
 
 **Scenario 1: Shopify Account Suspension**
+
 ```
 Email: "Your Shopify account will be suspended. Click to verify."
 Action: DON'T CLICK → Forward to manager → Delete
 ```
 
 **Scenario 2: CEO Urgent Request** (Whaling)
+
 ```
 Email from "CEO": "I need you to buy gift cards urgently for client gifts."
 Action: Verify via alternate channel (call CEO) → Don't send money → Report
 ```
 
 **Scenario 3: IT Password Reset**
+
 ```
 Email: "IT requires password update. Click here to reset."
 Action: Don't click → Contact IT directly → Verify if legitimate
 ```
 
 **Scenario 4: Customer Complaint Email**
+
 ```
 Suspicious email claiming to be customer with attached "proof.pdf"
 Action: Don't open attachment → Verify customer via official channels → Report if suspicious
 ```
 
 **Scenario 5: Invoice Phishing**
+
 ```
 Email: "Overdue invoice attached. Pay immediately."
 Action: Don't open → Verify with accounting → Report suspicious invoice
@@ -374,18 +407,21 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 ### 3.1 Creating Strong Passwords
 
 **Password Requirements:**
+
 - Minimum 12 characters (longer is better)
 - Mix of uppercase and lowercase letters
 - Include numbers
-- Include symbols (!@#$%^&*)
+- Include symbols (!@#$%^&\*)
 - Unique for each account
 
 **Good Password Examples:**
+
 - `MyDog$L0vesT0Bark!2025`
 - `Coffee&Code#Morning99`
 - `HotRodan$Support!2025`
 
 **Bad Password Examples:**
+
 - ❌ `password123` (too common)
 - ❌ `hotrodan` (too simple)
 - ❌ `abc12345` (predictable)
@@ -398,12 +434,14 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 **Best Practices:**
 
 **DO:**
+
 - ✅ Use a password manager (1Password, LastPass, Bitwarden)
 - ✅ Use unique passwords for each site
 - ✅ Change passwords if compromised
 - ✅ Store passwords securely
 
 **DON'T:**
+
 - ❌ Reuse passwords across sites
 - ❌ Share passwords with anyone
 - ❌ Write passwords on sticky notes
@@ -415,10 +453,12 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 ### 3.3 Two-Factor Authentication (2FA)
 
 **What is 2FA?**
+
 - Extra security layer beyond password
 - Requires: Something you know (password) + Something you have (phone/token)
 
 **How to Enable on Shopify:**
+
 1. Log in to Shopify Admin
 2. Settings → Account → Security
 3. Enable Two-Step Authentication
@@ -426,12 +466,14 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 5. Save backup codes in secure location
 
 **2FA Best Practices:**
+
 - ✅ Use authenticator app (more secure than SMS)
 - ✅ Keep backup codes safe (encrypted file or password manager)
 - ✅ Don't share 2FA codes with anyone
 - ✅ Set up 2FA on all critical accounts
 
 **What NOT to Do:**
+
 - ❌ Use SMS if authenticator app available (SMS can be intercepted)
 - ❌ Share 2FA codes
 - ❌ Skip 2FA (it's required for HotDash)
@@ -443,16 +485,19 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 **Session Best Practices:**
 
 **When Working:**
+
 - Log in via Shopify Admin
 - Session auto-expires after inactivity
 - Don't leave sessions open overnight
 
 **When Leaving:**
+
 - Log out from Shopify Admin
 - Lock your computer (Win+L or Cmd+Ctrl+Q)
 - Close browser tabs with customer data
 
 **On Shared Computers:**
+
 - Use private/incognito mode
 - Log out immediately when done
 - Clear browser history and cookies
@@ -463,18 +508,21 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 ### 3.5 Physical Security
 
 **Device Security:**
+
 - Enable screen lock (password/PIN/biometric)
 - Auto-lock after 5 minutes
 - Full disk encryption (FileVault on Mac, BitLocker on Windows)
 - Keep devices physically secure
 
 **Work Area Security:**
+
 - Lock your screen when leaving desk
 - Don't leave devices unattended
 - Shred documents with customer data
 - Keep sensitive documents out of sight
 
 **Remote Work:**
+
 - Use secure WiFi (not public WiFi for sensitive work)
 - VPN if required
 - Secure home office
@@ -508,6 +556,7 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 ### 4.1 What is Customer Data?
 
 **Personal Data We Handle:**
+
 - Customer names
 - Email addresses
 - Message content
@@ -515,6 +564,7 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 - Conversation history
 
 **Sensitive Data We DON'T Handle:**
+
 - Payment card numbers (Shopify stores these)
 - Passwords
 - Social security numbers
@@ -527,12 +577,14 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 **The Golden Rule:** Only access customer data when necessary for support.
 
 **Data Handling Dos:**
+
 - ✅ Access only assigned conversations
 - ✅ Use data only for support purposes
 - ✅ Close conversations when resolved
 - ✅ Let retention policies handle deletion (14 days automatic)
 
 **Data Handling Don'ts:**
+
 - ❌ Browse customer records for curiosity
 - ❌ Copy customer data to personal devices
 - ❌ Share customer data on personal email/chat
@@ -552,6 +604,7 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 5. **Opt-Out of AI** - "No AI assistance" (Immediate)
 
 **How to Handle Privacy Requests:**
+
 1. Recognize the request (subject line: "Privacy Request")
 2. Follow DSR procedure in `docs/runbooks/data_subject_requests.md`
 3. Escalate to compliance team
@@ -559,6 +612,7 @@ Action: Don't open → Verify with accounting → Report suspicious invoice
 5. Respond within timeline
 
 **Response Template:**
+
 ```
 Thank you for your privacy request. We've forwarded this to our compliance team who will respond within [timeline] days as required by law.
 ```
@@ -568,12 +622,14 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 ### 4.4 AI-Assisted Support
 
 **How AI Works:**
+
 1. Customer sends message
 2. AI generates suggested reply (with PII removed)
 3. **YOU review and approve** (or reject/edit)
 4. Only then is reply sent
 
 **Your Responsibilities with AI:**
+
 - ✅ Always read AI suggestions before approving
 - ✅ Edit for accuracy and tone
 - ✅ Reject if inappropriate or incorrect
@@ -581,12 +637,14 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 - ✅ Inform customers AI is used (if asked)
 
 **AI Safety:**
+
 - Personal information removed before AI processing
 - AI never sends automatically
 - You always have final approval
 - Customers can opt out anytime
 
 **When to Reject AI:**
+
 - Factually incorrect
 - Inappropriate tone
 - Missing context
@@ -598,16 +656,19 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 ### 4.5 Data Retention
 
 **How Long We Keep Data:**
+
 - Customer messages: 14 days
 - Decision logs (audit): 1 year
 - Analytics (aggregated): 180 days
 
 **Deletion:**
+
 - Automatic (pg_cron jobs)
 - You don't need to delete manually
 - UNLESS: Customer requests deletion (follow DSR procedure)
 
 **Why These Periods:**
+
 - 14 days: Enough for follow-up support
 - 1 year: Legal requirement for audit trail
 - 180 days: Performance monitoring and improvement
@@ -642,6 +703,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Definition:** Any event that compromises data security, privacy, or system integrity
 
 **Types of Incidents:**
+
 1. **Data Breach** - Unauthorized access to customer data
 2. **Secret Exposure** - Passwords/tokens revealed
 3. **Phishing Success** - Someone clicked and entered credentials
@@ -654,23 +716,27 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 ### 5.2 Incident Severity
 
 **P0 - CRITICAL (Report Immediately, 24/7):**
+
 - Active data breach
 - Customer data exposed publicly
 - System compromised
 - Malware detected
 
 **P1 - HIGH (Report within 1 hour):**
+
 - Lost device with HotDash access
 - Clicked phishing link and entered password
 - Suspicious account activity
 - Potential data exposure
 
 **P2 - MEDIUM (Report within 4 hours):**
+
 - Received phishing email (didn't click)
 - Minor security concern
 - Policy violation noticed
 
 **P3 - LOW (Report within 24 hours):**
+
 - Security question
 - Training needed
 - Documentation issue
@@ -682,6 +748,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Incident 1: You Clicked a Phishing Link**
 
 **What to Do:**
+
 1. Report immediately to manager (P1)
 2. Change your Shopify password NOW
 3. Document: what link, when clicked, what you entered
@@ -693,6 +760,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Incident 2: You Lost Your Phone/Laptop**
 
 **What to Do:**
+
 1. Report to manager within 1 hour (P1)
 2. Change Shopify password immediately
 3. Document: what device, when lost, what data was accessible
@@ -704,6 +772,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Incident 3: You Accidentally Sent Customer Data to Wrong Person**
 
 **What to Do:**
+
 1. Report immediately to manager (P1 or P2)
 2. Document: what data, who received it, when sent
 3. Don't try to "unsend" (may make it worse)
@@ -717,12 +786,14 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Incident 4: You See Unusual Activity**
 
 **Examples:**
+
 - Unknown user in your Shopify Admin
 - Unexpected changes to customer records
 - System behaving strangely
 - Files you didn't create
 
 **What to Do:**
+
 1. Take screenshot (if safe)
 2. Note time and details
 3. Report immediately to manager
@@ -734,6 +805,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **Incident 5: Customer Complains About Unauthorized Access**
 
 **What to Do:**
+
 1. Treat as P0/P1 incident
 2. Report immediately to manager
 3. Document customer's complaint
@@ -747,6 +819,7 @@ Thank you for your privacy request. We've forwarded this to our compliance team 
 **How to Report:**
 
 **Email:**
+
 ```
 To: manager@hotrodan.com
 Subject: [P0/P1/P2] Security Incident - [Brief Description]
@@ -763,6 +836,7 @@ Evidence: [Screenshots, etc.]
 **Or:** Use incident reporting form (if available)
 
 **What to Include:**
+
 - What happened
 - When it happened
 - What systems/data affected
@@ -801,6 +875,7 @@ Evidence: [Screenshots, etc.]
 **For Hot Rodan Pilot (10 support staff):**
 
 **Pre-Pilot Session** (Required):
+
 - **Format:** Live training (90 minutes)
 - **Schedule:** Before pilot launch
 - **Delivery:** Compliance Agent + Manager
@@ -808,6 +883,7 @@ Evidence: [Screenshots, etc.]
 - **Assessment:** 20-question quiz (pass: 80%)
 
 **Ongoing Training:**
+
 - **Refresher:** Annually (60 minutes)
 - **Phishing Tests:** Quarterly (simulated phishing emails)
 - **Spot Training:** As needed for new threats
@@ -818,6 +894,7 @@ Evidence: [Screenshots, etc.]
 ### Training Materials
 
 **Provided:**
+
 1. This training document (printable)
 2. Quick reference cards (1-page per module)
 3. Assessment quiz (20 questions)
@@ -825,6 +902,7 @@ Evidence: [Screenshots, etc.]
 5. Incident reporting forms
 
 **To Create (Before Pilot):**
+
 - Slide deck (PowerPoint/Google Slides)
 - Video training (optional, for remote teams)
 - Interactive scenarios (online quiz)
@@ -834,6 +912,7 @@ Evidence: [Screenshots, etc.]
 ### Assessment
 
 **Final Quiz (20 questions):**
+
 - 5 from Module 1 (Security Fundamentals)
 - 5 from Module 2 (Phishing Prevention)
 - 5 from Module 3 (Credential Management)
@@ -922,17 +1001,20 @@ Evidence: [Screenshots, etc.]
 ### Pre-Pilot (Required)
 
 **Week Before Pilot:**
+
 - Schedule 90-minute live training session
 - Send pre-reading materials
 - Set up assessment quiz
 
 **Day of Training:**
+
 - 90-minute session covering all 5 modules
 - Interactive scenarios
 - Q&A
 - Assessment quiz
 
 **After Training:**
+
 - Review quiz results
 - Retake for anyone who didn't pass
 - Issue completion certificates
@@ -943,17 +1025,20 @@ Evidence: [Screenshots, etc.]
 ### Ongoing (After Pilot)
 
 **Quarterly:**
+
 - Phishing simulation tests (send fake phishing emails)
 - Review results, provide feedback
 - Spot training for those who clicked
 
 **Annually:**
+
 - 60-minute refresher training
 - Updated threats and procedures
 - Re-assessment quiz
 - Update materials based on incidents
 
 **As Needed:**
+
 - New threat briefings
 - Incident lessons learned
 - Policy updates
@@ -970,6 +1055,7 @@ Evidence: [Screenshots, etc.]
 **Subject:** URGENT: Verify Your Account
 
 **Body:**
+
 ```
 Dear Shopify User,
 
@@ -995,10 +1081,11 @@ Shopify Security
 **Subject:** Urgent: Need Gift Cards
 
 **Body:**
+
 ```
 Hi,
 
-I need you to purchase $500 in Amazon gift cards for client gifts. 
+I need you to purchase $500 in Amazon gift cards for client gifts.
 Please do this today and send me the codes.
 
 Thanks,
@@ -1018,6 +1105,7 @@ Thanks,
 **Subject:** Required: Password Update
 
 **Body:**
+
 ```
 Your password expires today. Click to update:
 
@@ -1037,6 +1125,7 @@ IT Support
 **20-Question Final Assessment:**
 
 ### Security Fundamentals (5 Q)
+
 1. What are the 5 Ps of Security?
 2. Why is security your responsibility?
 3. What's HotDash's current security score?
@@ -1044,6 +1133,7 @@ IT Support
 5. What happens if there's a data breach?
 
 ### Phishing Prevention (5 Q)
+
 6. What is phishing?
 7. Name 3 phishing red flags
 8. What should you do with a suspicious email?
@@ -1051,6 +1141,7 @@ IT Support
 10. What if you already clicked a phishing link?
 
 ### Credential Management (5 Q)
+
 11. How long should passwords be?
 12. Should you reuse passwords?
 13. What's the best 2FA method?
@@ -1058,6 +1149,7 @@ IT Support
 15. What should you do when leaving your desk?
 
 ### Customer Data (5 Q)
+
 16. What customer data can you access?
 17. How long are messages retained?
 18. Can you use support data for marketing?
@@ -1065,6 +1157,7 @@ IT Support
 20. Must you approve AI suggestions?
 
 **Answer Key:**
+
 1. Protect, Privacy, Prudence, Promptness, Professionalism
 2. You're the first line of defense, your actions affect customer trust
 3. 8.5/10 (STRONG)
@@ -1093,6 +1186,7 @@ IT Support
 ## Certification
 
 **Certificate Template:**
+
 ```
 ┌───────────────────────────────────────────────────────────┐
 │                                                           │
@@ -1137,6 +1231,7 @@ IT Support
 ### Tracking
 
 **Track These Metrics:**
+
 - Operators trained (count)
 - Pass rate (percentage)
 - Average score
@@ -1145,6 +1240,7 @@ IT Support
 - Phishing test results (quarterly)
 
 **Report Monthly:**
+
 - Training completion status
 - Assessment results
 - Phishing test performance
@@ -1157,6 +1253,7 @@ IT Support
 **Security Training Program:** ✅ READY FOR DEPLOYMENT
 
 **Deliverables:**
+
 - 5 comprehensive training modules (90 minutes)
 - 20-question assessment quiz
 - 3 quick reference cards
@@ -1165,6 +1262,7 @@ IT Support
 - Training metrics framework
 
 **Pre-Pilot Requirements:**
+
 - ✅ Training materials created
 - 🟡 Schedule live training session
 - 🟡 Create slide deck (optional, can use this document)
@@ -1172,6 +1270,7 @@ IT Support
 - 🟡 Print quick reference cards
 
 **Post-Pilot:**
+
 - Quarterly phishing tests
 - Annual refresher training
 - Ongoing security tips
@@ -1185,4 +1284,3 @@ IT Support
 
 **Task BZ-I: ✅ COMPLETE**  
 **Security Training:** 🎓 READY FOR HOT RODAN TEAM
-

@@ -6,11 +6,13 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Staging Screenshot & Overlay Checklist — Operator Control Center
 
 > Use this runbook once QA signals the staging host is green. Captured assets unblock enablement/support dry-run packets and engineering visual QA. Mirror evidence links into `feedback/designer.md` and `feedback/manager.md` when complete.
 
 ## Prerequisites
+
 - ✅ QA confirms smoke test pass on staging (`hotdash-staging.fly.dev`) and provides timestamp + build hash.
 - ✅ Latest design assets pulled from `docs/design/assets/` (annotated SVGs, status icons, token references).
 - ✅ Browser tools prepped for high-resolution capture (Chrome/Edge DevTools, 1280px width minimum).
@@ -18,6 +20,7 @@ expires: 2025-10-17
 - ✅ Supabase decision log accessible or fallback evidence path agreed with reliability.
 
 ## Capture Targets
+
 1. **Dashboard Overview (Desktop 1440x900)**
    - Show full tile grid with mixed states (healthy, attention, critical).
    - Overlay focus order arrows for first tile row.
@@ -40,6 +43,7 @@ expires: 2025-10-17
    - Filename: `tile-state-<sales|cx|inventory>-<error|empty>-YYYYMMDD.png`.
 
 ## Capture Workflow
+
 1. **Set Viewport**
    - Desktop: 1440px width, 100% zoom.
    - Tablet: 834px width for responsive verification (optional evidence).
@@ -64,6 +68,7 @@ expires: 2025-10-17
 ## Modal Capture Playbook
 
 ### Sales Pulse Modal
+
 - **Entry workflow:**
   1. Ensure staging feature flag `FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL=1` is enabled.
   2. From the Sales Pulse tile, activate the `View details` link button (`page.getByRole("button", { name: "View details" })`).
@@ -82,6 +87,7 @@ expires: 2025-10-17
   ```
 
 ### CX Escalations Modal
+
 - **Entry workflow:**
   1. Enable `FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL=1` in staging.
   2. From the CX Escalations tile list, choose the first breach row and press `Review` (`page.getByRole("button", { name: "Review" }).first()`).
@@ -94,12 +100,15 @@ expires: 2025-10-17
   ```ts
   await page.getByRole("button", { name: "Review" }).first().click();
   const dialog = page.getByRole("dialog", { name: /CX Escalation/ });
-  await expect(dialog.getByRole("log", { name: "Conversation history" })).toBeVisible();
+  await expect(
+    dialog.getByRole("log", { name: "Conversation history" }),
+  ).toBeVisible();
   await dialog.getByLabel("Reply text").fill("Approved as drafted");
   await dialog.getByRole("button", { name: "Approve & send" }).click();
   ```
 
 ### Inventory Heatmap Modal (pending implementation)
+
 - **Entry workflow (to be validated with engineering):**
   1. Confirm forthcoming feature flag `FEATURE_AGENT_ENGINEER_INVENTORY_HEATMAP_MODAL=1` or equivalent route toggle.
   2. Tile trigger should surface as `page.getByRole("button", { name: /View heatmap/i })` or `... { name: "Review inventory" }` per copy deck. Verify final label before scripting.
@@ -110,14 +119,20 @@ expires: 2025-10-17
   - Action bar should include `Confirm action`, `Mark as intentional`, `Snooze alert`, with accessible labels matching copy deck casing.
 - **Playwright reference stub:**
   ```ts
-  await page.getByRole("button", { name: /View heatmap|Review inventory/i }).first().click();
+  await page
+    .getByRole("button", { name: /View heatmap|Review inventory/i })
+    .first()
+    .click();
   const heatmapModal = page.getByRole("dialog", { name: /Inventory Alert/ });
-  await expect(heatmapModal.getByRole("heading", { name: "14-Day Velocity Analysis" })).toBeVisible();
+  await expect(
+    heatmapModal.getByRole("heading", { name: "14-Day Velocity Analysis" }),
+  ).toBeVisible();
   await heatmapModal.getByRole("button", { name: "Confirm action" }).focus();
   ```
 - **Designer TODO:** finalize selector names with engineering once modal lands; update this section with concrete button labels/test IDs before capture day.
 
 ## Pre-built Annotation Templates
+
 - Templates for outline boxes and numbered callouts live under `docs/design/assets/templates/`:
   - `modal-sales-pulse-overlay-template.svg`
   - `modal-cx-escalations-overlay-template.svg`
@@ -130,16 +145,19 @@ expires: 2025-10-17
 - Track edits in version control; if staging layout shifts, update the template coordinates first so downstream overlays stay consistent.
 
 ## Alt Text & Caption Template
+
 - **Structure:** `Context — Key insight — Action expectation`. Example: `Inventory Heatmap modal highlighting Powder Board XL low stock; Days of Cover tooltip explains 2.5 day projection; primary action Confirm highlighted for approval logging.`
 - Align with annotated callouts (1–5) so screen reader narratives match visual cues.
 - Store final alt text in `docs/enablement/job_aids/annotations/2025-10-16_dry_run_callouts.md` under relevant bullet.
 
 ## Blockers & Escalation
+
 - If staging host unavailable → escalate to reliability/deployment immediately; note downtime in `feedback/designer.md`.
 - If Figma access still blocked → continue using SVG overlays; log status in `feedback/designer.md` and request manager escalation.
 - If Supabase sync unresolved → capture fallback logs/screenshots with `mock=1` flag and tag QA for evidence acceptance.
 
 ## Deliverables Checklist
+
 - [ ] Dashboard overview screenshot exported and logged.
 - [ ] CX Escalations modal overlay exported, alt text drafted.
 - [ ] Sales Pulse modal overlay exported, alt text drafted.

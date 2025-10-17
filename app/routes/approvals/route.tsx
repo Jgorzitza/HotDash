@@ -1,94 +1,107 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
+import { useLoaderData, useRevalidator, useSearchParams } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
+import {
+  Page,
+  Layout,
+  Card,
+  EmptyState,
+  InlineStack,
+  Badge,
+  Button,
+} from "@shopify/polaris";
+import { ApprovalCard } from "../../components/ApprovalCard";
+import { ApprovalsDrawer } from "../../components/approvals/ApprovalsDrawer";
+import type { Approval } from "../../components/approvals/ApprovalsDrawer";
+import { getApprovals, getApprovalCounts } from "../../services/approvals";
 
-import { useLoaderData, useRevalidator, useSearchParams } from 'react-router';
-import { Page, Layout, Card, EmptyState, InlineStack, Badge, Button } from '@shopify/polaris';
-import { ApprovalCard } from '../../components/ApprovalCard';
-import { ApprovalsDrawer } from '../../components/approvals/ApprovalsDrawer';
-
-interface Approval {
-  id: string;
-  conversationId: number;
-  createdAt: string;
-  pending: {
-    agent: string;
-    tool: string;
-    args: Record<string, any>;
-  }[];
-}
-
-// Loader: Fetch approvals from agent service
-export async function loader({ request }: any) {
+/**
+ * Loader: Fetch approvals from Supabase
+ *
+ * Supports filtering by state and kind via URL params
+ * Tabs handle filtering on the client side
+ */
+export async function loader({ request }: LoaderFunctionArgs) {
   try {
-    const response = await fetch('http://localhost:8002/approvals');
+    const url = new URL(request.url);
+    const state = url.searchParams.get("state") as Approval["state"] | null;
+    const kind = url.searchParams.get("kind") as Approval["kind"] | null;
+    const page = parseInt(url.searchParams.get("page") || "1", 10);
+    const pageSize = 50;
 
-    if (!response.ok) {
-      console.error('Failed to fetch approvals:', response.status);
-      return Response.json({ approvals: [], error: 'Failed to load approvals' });
-    }
+    // Fetch approvals with filters
+    const filters: any = {
+      limit: pageSize,
+      offset: (page - 1) * pageSize,
+    };
 
-    const approvals: Approval[] = await response.json();
-    return Response.json({ approvals, error: null });
+    if (state) filters.state = state;
+    if (kind) filters.kind = kind;
+
+    const { approvals, total, error } = await getApprovals(filters);
+
+    // Fetch counts for all states (for tab badges)
+    const counts = await getApprovalCounts();
+
+    return Response.json({
+      approvals,
+      total,
+      counts,
+      error: error || null,
+    });
   } catch (error) {
-    console.error('Error fetching approvals:', error);
-    return Response.json({ approvals: [], error: 'Agent service unavailable' });
+    console.error("Error in approvals loader:", error);
+    return Response.json({
+      approvals: [],
+      total: 0,
+      counts: {},
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
   }
-
 }
 
 export default function ApprovalsRoute() {
-  const { approvals, error } = useLoaderData<typeof loader>();
+  const { approvals, total, counts, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selected, setSelected] = useState<any | null>(null);
+  const [selected, setSelected] = useState<Approval | null>(null);
   const [suppressedIds, setSuppressedIds] = useState<Set<string>>(new Set());
 
-  const stateFilter = searchParams.get('state') || undefined;
-  const kindFilter = searchParams.get('kind') || undefined;
-  const page = Number(searchParams.get('page') || '1');
-  const pageSize = 10;
+  const stateFilter = searchParams.get("state") || undefined;
+  const kindFilter = searchParams.get("kind") || undefined;
+  const page = Number(searchParams.get("page") || "1");
 
-  const filtered = useMemo(() => {
-    let list = approvals as Approval[];
-    if (stateFilter) {
-      list = list.filter(() => true); // placeholder until backend filters
-    }
-    if (kindFilter) {
-      list = list.filter(() => true); // placeholder until backend filters
-    }
-    return list;
-  }, [approvals, stateFilter, kindFilter]);
-
+  // Filter is now handled by the loader, but we still filter out suppressed items
   const visible = useMemo(
-    () => filtered.filter((a) => !suppressedIds.has(a.id)),
-    [filtered, suppressedIds]
+    () => (approvals as Approval[]).filter((a) => !suppressedIds.has(a.id)),
+    [approvals, suppressedIds],
   );
-  const total = visible.length;
-  const start = (page - 1) * pageSize;
-  const pageItems = visible.slice(start, start + pageSize);
 
-  function openDetails(a: Approval) {
-    setSelected({
-      id: a.id,
-      conversationId: a.conversationId,
-      createdAt: a.createdAt,
-      agent: a.pending[0]?.agent,
-      tool: a.pending[0]?.tool,
-      args: a.pending[0]?.args,
-      evidence: { summary: 'Auto-generated summary based on pending tool call.' },
-      projectedImpact: 'N/A',
-      risks: [],
-      rollback: { steps: [] },
-    });
+  function openDetails(approval: Approval) {
+    setSelected(approval);
   }
 
-  async function handleApprove() {
+  async function handleApprove(grades?: {
+    tone: number;
+    accuracy: number;
+    policy: number;
+  }) {
     if (!selected) return;
-    // optimistic hide
+
+    // Optimistic hide
     setSuppressedIds((prev) => new Set(prev).add(selected.id));
     setSelected(null);
+
     try {
-      await fetch(`/approvals/${selected.id}/0/approve`, { method: 'POST' });
+      // TODO: Implement approve action (Task 3)
+      await fetch(`/api/approvals/${selected.id}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ grades }),
+      });
+    } catch (error) {
+      console.error("Error approving:", error);
     } finally {
       revalidator.revalidate();
     }
@@ -96,11 +109,58 @@ export default function ApprovalsRoute() {
 
   async function handleReject(reason: string) {
     if (!selected) return;
-    // optimistic hide
+
+    // Optimistic hide
     setSuppressedIds((prev) => new Set(prev).add(selected.id));
     setSelected(null);
+
     try {
-      await fetch(`/approvals/${selected.id}/0/reject`, { method: 'POST' });
+      // TODO: Implement reject action (Task 3)
+      await fetch(`/api/approvals/${selected.id}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason }),
+      });
+    } catch (error) {
+      console.error("Error rejecting:", error);
+    } finally {
+      revalidator.revalidate();
+    }
+  }
+
+  async function handleRequestChanges(note: string) {
+    if (!selected) return;
+
+    // Don't hide - just close drawer
+    setSelected(null);
+
+    try {
+      await fetch(`/api/approvals/${selected.id}/request-changes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ note }),
+      });
+    } catch (error) {
+      console.error("Error requesting changes:", error);
+    } finally {
+      revalidator.revalidate();
+    }
+  }
+
+  async function handleApply() {
+    if (!selected) return;
+
+    // Optimistic hide
+    setSuppressedIds((prev) => new Set(prev).add(selected.id));
+    setSelected(null);
+
+    try {
+      await fetch(`/api/approvals/${selected.id}/apply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("Error applying:", error);
     } finally {
       revalidator.revalidate();
     }
@@ -117,35 +177,46 @@ export default function ApprovalsRoute() {
   return (
     <Page
       title="Approval Queue"
-      subtitle={`${approvals.length} pending ${approvals.length === 1 ? 'approval' : 'approvals'}`}
+      subtitle={`${total} ${total === 1 ? "approval" : "approvals"}`}
     >
+      <Layout>
         {/* Active filters */}
         {(stateFilter || kindFilter) && (
           <Layout.Section>
             <InlineStack gap="200">
               {stateFilter && <Badge>state: {stateFilter}</Badge>}
               {kindFilter && <Badge>kind: {kindFilter}</Badge>}
-              <Button onClick={() => setSearchParams((prev) => { const p = new URLSearchParams(prev); p.delete('state'); p.delete('kind'); p.set('page', '1'); return p; })}>Clear filters</Button>
+              <Button
+                onClick={() =>
+                  setSearchParams((prev) => {
+                    const p = new URLSearchParams(prev);
+                    p.delete("state");
+                    p.delete("kind");
+                    p.set("page", "1");
+                    return p;
+                  })
+                }
+              >
+                Clear filters
+              </Button>
             </InlineStack>
           </Layout.Section>
         )}
 
-      <Layout>
         {error && (
           <Layout.Section>
             <Card>
-              <div style={{ padding: '16px', color: '#bf0711' }}>
+              <div style={{ padding: "16px", color: "#bf0711" }}>
                 <strong>Error:</strong> {error}
               </div>
             </Card>
           </Layout.Section>
         )}
 
-        {approvals.length === 0 ? (
+        {visible.length === 0 ? (
           <Layout.Section>
             <Card>
               <EmptyState
-
                 heading="All clear!"
                 image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
               >
@@ -154,33 +225,50 @@ export default function ApprovalsRoute() {
             </Card>
           </Layout.Section>
         ) : (
-          pageItems.map((approval) => (
+          visible.map((approval) => (
             <Layout.Section key={approval.id}>
-              <ApprovalCard approval={approval} onDetails={() => openDetails(approval)} />
+              <ApprovalCard
+                approval={approval}
+                onDetails={() => openDetails(approval)}
+              />
             </Layout.Section>
           ))
         )}
 
         {/* Pagination controls */}
-        <Layout.Section>
-          <InlineStack gap="200" align="space-between" blockAlign="center">
-            <Badge>Total: {total}</Badge>
-            <InlineStack gap="200">
-              <Button
-                disabled={page <= 1}
-                onClick={() => setSearchParams((prev) => { const p = new URLSearchParams(prev); p.set('page', String(Math.max(1, page - 1))); return p; })}
-              >
-                Prev
-              </Button>
-              <Button
-                disabled={start + pageSize >= total}
-                onClick={() => setSearchParams((prev) => { const p = new URLSearchParams(prev); p.set('page', String(page + 1)); return p; })}
-              >
-                Next
-              </Button>
+        {total > 0 && (
+          <Layout.Section>
+            <InlineStack gap="200" align="space-between" blockAlign="center">
+              <Badge>Total: {total}</Badge>
+              <InlineStack gap="200">
+                <Button
+                  disabled={page <= 1}
+                  onClick={() =>
+                    setSearchParams((prev) => {
+                      const p = new URLSearchParams(prev);
+                      p.set("page", String(Math.max(1, page - 1)));
+                      return p;
+                    })
+                  }
+                >
+                  Prev
+                </Button>
+                <Button
+                  disabled={approvals.length < 50}
+                  onClick={() =>
+                    setSearchParams((prev) => {
+                      const p = new URLSearchParams(prev);
+                      p.set("page", String(page + 1));
+                      return p;
+                    })
+                  }
+                >
+                  Next
+                </Button>
+              </InlineStack>
             </InlineStack>
-          </InlineStack>
-        </Layout.Section>
+          </Layout.Section>
+        )}
 
         {/* Drawer */}
         {selected && (
@@ -188,12 +276,13 @@ export default function ApprovalsRoute() {
             open={true}
             approval={selected}
             onClose={() => setSelected(null)}
-            onApprove={() => handleApprove()}
+            onApprove={(grades) => handleApprove(grades)}
             onReject={(reason) => handleReject(reason)}
+            onRequestChanges={(note) => handleRequestChanges(note)}
+            onApply={() => handleApply()}
           />
         )}
       </Layout>
     </Page>
   );
 }
-

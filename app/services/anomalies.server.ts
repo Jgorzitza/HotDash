@@ -102,7 +102,8 @@ export function detectAnomaly(
   // Percent change detection
   if (config.thresholds.percentChange && baselineValue !== undefined) {
     const delta = currentValue - baselineValue;
-    const percentChange = baselineValue !== 0 ? Math.abs(delta / baselineValue) : 0;
+    const percentChange =
+      baselineValue !== 0 ? Math.abs(delta / baselineValue) : 0;
 
     const { warning, critical } = config.thresholds.percentChange;
 
@@ -149,7 +150,8 @@ export function detectAnomaly(
     const { warning, critical } = config.thresholds.absoluteValue;
 
     // For metrics where higher is worse (breach rates, issue rates)
-    const isHigherWorse = config.metric.includes("Rate") || config.metric.includes("breach");
+    const isHigherWorse =
+      config.metric.includes("Rate") || config.metric.includes("breach");
 
     if (isHigherWorse) {
       if (currentValue >= critical) {
@@ -319,7 +321,8 @@ export async function forecast(
   if (params.method === "simple_average") {
     const average = values.reduce((sum, val) => sum + val, 0) / values.length;
     const stdDev = Math.sqrt(
-      values.reduce((sum, val) => sum + Math.pow(val - average, 2), 0) / values.length,
+      values.reduce((sum, val) => sum + Math.pow(val - average, 2), 0) /
+        values.length,
     );
 
     assumptions.push("Assumes stable trend (simple average)");
@@ -383,7 +386,9 @@ export async function recordAnomalyDetection(
       },
       metadata: {
         ...(anomalyResult as unknown as Record<string, unknown>),
-        ...(additionalMetadata ? (additionalMetadata as unknown as Record<string, unknown>) : {}),
+        ...(additionalMetadata
+          ? (additionalMetadata as unknown as Record<string, unknown>)
+          : {}),
         detectedAt: new Date().toISOString(),
       },
     },

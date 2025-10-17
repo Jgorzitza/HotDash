@@ -11,21 +11,25 @@
 **Who Gets What Insights**:
 
 ### Engineering Team
+
 - Feature requests with usage data
 - Bug reports with severity
 - Performance issues from customers
 
 ### Sales Team
+
 - Objections and competitive intel
 - Success stories and ROI data
 - Pricing feedback
 
 ### Customer Success Team
+
 - Health scores and churn risks
 - Usage patterns and adoption rates
 - Training needs and gaps
 
 ### Executive Team
+
 - Monthly NPS and trends
 - Strategic customer feedback
 - Market opportunity insights
@@ -41,4 +45,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Distribution system defined
-

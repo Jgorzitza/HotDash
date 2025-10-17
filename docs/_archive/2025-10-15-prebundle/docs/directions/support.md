@@ -6,8 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Support — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -47,11 +50,13 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 ---
 
 ## Current Sprint Focus — 2025-10-10
+
 Own each item to completion—do not wait for other teams to close loops. Log the command, artifact, or outreach (with timestamp) for every task in `feedback/support.md`, and follow up until blockers clear.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Section 13 for training loop and feedback collection
 - docs/runbooks/operator_training_qa_template.md
 
@@ -70,36 +75,40 @@ Own each item to completion—do not wait for other teams to close loops. Log th
 **Immediate Work - Prepare for Launch**:
 
 1A. **Draft Quick Start Content** (Can do now)
-   - Write draft guide content (pending screenshots)
-   - Document decision criteria and escalation
-   - Create FAQ structure
-   - Prepare operator checklist
-   - Evidence: Draft guide ready for screenshots
-   - Timeline: 2-3 hours
+
+- Write draft guide content (pending screenshots)
+- Document decision criteria and escalation
+- Create FAQ structure
+- Prepare operator checklist
+- Evidence: Draft guide ready for screenshots
+- Timeline: 2-3 hours
 
 1B. **Pilot Customer Selection Criteria**
-   - Define ideal pilot customer profile
-   - Create pilot screening questions
-   - Document pilot success criteria
-   - Create pilot feedback collection plan
-   - Evidence: Pilot criteria document
-   - Timeline: 2-3 hours
+
+- Define ideal pilot customer profile
+- Create pilot screening questions
+- Document pilot success criteria
+- Create pilot feedback collection plan
+- Evidence: Pilot criteria document
+- Timeline: 2-3 hours
 
 1C. **Support Playbook for Agent SDK**
-   - Document how to troubleshoot agent issues
-   - Create escalation matrix (when to involve engineer)
-   - Document known limitations
-   - Create support ticket templates
-   - Evidence: Support playbook
-   - Timeline: 2-3 hours
+
+- Document how to troubleshoot agent issues
+- Create escalation matrix (when to involve engineer)
+- Document known limitations
+- Create support ticket templates
+- Evidence: Support playbook
+- Timeline: 2-3 hours
 
 1D. **Operator Feedback Collection System**
-   - Design feedback form for operators
-   - Create feedback collection schedule
-   - Document feedback analysis process
-   - Plan feedback → improvement loop
-   - Evidence: Feedback system design
-   - Timeline: 1-2 hours
+
+- Design feedback form for operators
+- Create feedback collection schedule
+- Document feedback analysis process
+- Plan feedback → improvement loop
+- Evidence: Feedback system design
+- Timeline: 1-2 hours
 
 **DO FIRST**: Tasks 1A-1D (prep work while waiting for UI)
 
@@ -124,6 +133,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/support.md.
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth Hot Rodan Focus)
 
 **Task 1E**: Hot Rod Industry Training Content
+
 - Create training specific to automotive aftermarket
 - Use hot rod terminology and examples
 - Address industry-specific scenarios
@@ -131,6 +141,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/support.md.
 - Timeline: 2-3 hours
 
 **Task 1F**: High-Value Customer Handling Guide
+
 - Define VIP customer criteria for Hot Rodan
 - Create escalation paths for high-dollar orders (>$5K)
 - Document hot rod enthusiast community expectations
@@ -138,6 +149,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/support.md.
 - Timeline: 2-3 hours
 
 **Task 1G**: Product Knowledge Base
+
 - Document Hot Rodan's top-selling products
 - Create quick reference for common customer questions
 - Link to product pages on www.hotrodan.com
@@ -145,6 +157,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/support.md.
 - Timeline: 2-3 hours
 
 **Task 1H**: Seasonal Support Planning
+
 - Document hot rod racing season patterns
 - Plan for peak seasons (spring/summer)
 - Create surge support protocols
@@ -152,6 +165,7 @@ Execute Tasks 1A-1D. Report evidence in feedback/support.md.
 - Timeline: 2-3 hours
 
 **Task 1I**: Community Engagement Guidelines
+
 - Hot rod enthusiast community communication style
 - Forum/social media support guidelines
 - Brand voice for automotive audience
@@ -165,6 +179,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 ## 📋 NEXT WAVE - DEEP SUPPORT OPERATIONS (Tasks 1J-1T)
 
 **Task 1J**: Hot Rodan Return/Warranty Process
+
 - Document return policy for automotive parts
 - Create warranty claim workflow
 - Handle fitment issues (wrong part for car)
@@ -172,6 +187,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1K**: Technical Support Escalation Matrix
+
 - When to escalate to product experts
 - Hot rod technical questions routing
 - Engine/transmission specialist coordination
@@ -179,6 +195,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1L**: Order Modification and Rush Orders
+
 - Handle rush shipping for race weekends
 - Order modification before shipping
 - Custom part orders process
@@ -186,6 +203,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1M**: Customer Lifecycle Management
+
 - First-time buyer onboarding
 - Repeat customer recognition
 - At-risk customer outreach
@@ -193,6 +211,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1N**: Hot Rod Event Support
+
 - Support for customers at races/shows
 - Event-specific promotions handling
 - On-site support procedures
@@ -200,6 +219,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1O**: Parts Compatibility Support
+
 - Help customers find right parts for their build
 - Fitment verification process
 - Alternative recommendations
@@ -207,6 +227,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1P**: Bulk Order and Fleet Support
+
 - Handle shop/fleet orders (multi-vehicle)
 - Volume pricing inquiries
 - Business account setup
@@ -214,6 +235,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1Q**: Quality Issue Handling
+
 - Defective part process
 - Quality claims escalation
 - Supplier coordination
@@ -221,6 +243,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1R**: Shipping and Logistics Support
+
 - Tracking and delivery issues
 - International shipping (if applicable)
 - Freight/LTL for large items
@@ -228,6 +251,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1S**: Customer Retention Program
+
 - Win-back campaigns for inactive customers
 - Loyalty program support
 - VIP customer recognition
@@ -235,6 +259,7 @@ Execute 1A-1I (all Hot Rodan-aligned). Total: ~20-25 hours work.
 - Timeline: 2-3 hours
 
 **Task 1T**: Support Metrics and KPIs
+
 - Define support success metrics
 - Response time targets
 - Customer satisfaction measurement
@@ -255,9 +280,9 @@ Execute 1J-1T. Total: ~45-55 hours Hot Rodan support work.
 2. **Knowledge Base Content Preparation** - ✅ REASSIGNED TO AI AGENT
 
    **Manager Decision (2025-10-11T21:45Z)**: Task reassigned to @ai agent (better suited for content creation)
-   
+
    **Your Action**: **SKIP to Task 3** - Your operational expertise more valuable on operator training
-   
+
    **Optional**: Review KB content quality after @ai creates it, provide operator perspective
 
 3. **Operator Training for Agent SDK** - Create training materials for approval queue
@@ -290,6 +315,7 @@ Execute 1J-1T. Total: ~45-55 hours Hot Rodan support work.
    - Evidence: Communication templates
 
 **Ongoing Requirements**:
+
 - Coordinate with @chatwoot on conversation workflows
 - Tag @ai for content ingestion coordination
 - Log all training materials in feedback/support.md
@@ -301,6 +327,7 @@ Execute 1J-1T. Total: ~45-55 hours Hot Rodan support work.
 **Task 2: Knowledge Base Content Preparation** - URGENT for AI agent
 
 Create comprehensive support content:
+
 - data/support/shipping-policy.md (return window, procedures, costs)
 - data/support/refund-policy.md (eligibility, process, timelines)
 - data/support/product-troubleshooting.md (common issues, solutions)
@@ -321,6 +348,7 @@ Create comprehensive support content:
 ### 🚀 ADDITIONAL PARALLEL TASKS
 
 **Task A: Operator Training Materials** - Update for Agent SDK
+
 - Update operator_training_qa_template.md
 - Add Agent SDK approval queue workflows
 - Document decision guide for approvals
@@ -333,6 +361,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task 7: Customer Support Escalation Matrix**
+
 - Create detailed escalation procedures for all issue types
 - Document when to escalate vs resolve with agents
 - Define SLA thresholds for escalations
@@ -340,6 +369,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 - Evidence: Escalation matrix document
 
 **Task 8: Support Metrics Tracking Design**
+
 - Define support metrics to track (CSAT, response time, resolution rate)
 - Design metrics collection process
 - Create reporting dashboard specification
@@ -347,6 +377,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 - Evidence: Metrics tracking framework
 
 **Task 9: Customer Communication Templates**
+
 - Create email templates for common scenarios
 - Design chat response templates
 - Document tone and style guidelines
@@ -354,6 +385,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 - Evidence: Complete template library
 
 **Task 10: Support Knowledge Base Organization**
+
 - Organize existing support content by category
 - Create tagging and categorization system
 - Design search and retrieval workflow
@@ -361,6 +393,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 - Evidence: KB organization framework
 
 **Task 11: Operator Efficiency Analysis**
+
 - Analyze current operator time allocation
 - Identify time-consuming tasks for automation
 - Calculate potential efficiency gains
@@ -368,6 +401,7 @@ Execute Task 2 FIRST (AI needs it), then Task A.
 - Evidence: Efficiency analysis report
 
 **Task 12: Customer Feedback Loop Design**
+
 - Design customer satisfaction survey system
 - Create feedback collection workflow
 - Plan for feedback analysis and action
@@ -381,6 +415,7 @@ Execute 7-12 in any order - all improve support operations.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 18 Additional Tasks
 
 **Task 13-18: Advanced Support Operations** (6 tasks)
+
 - 13: Design proactive support system (detect issues before customers report)
 - 14: Create customer health monitoring dashboard
 - 15: Implement support ticket prioritization algorithm
@@ -389,6 +424,7 @@ Execute 7-12 in any order - all improve support operations.
 - 18: Plan omnichannel support strategy (email, chat, phone, social)
 
 **Task 19-24: Quality & Performance** (6 tasks)
+
 - 19: Design quality assurance program for support interactions
 - 20: Create mystery shopper program for support quality
 - 21: Implement support interaction recording and review system
@@ -397,6 +433,7 @@ Execute 7-12 in any order - all improve support operations.
 - 24: Plan continuous improvement program based on metrics
 
 **Task 25-30: Customer Experience** (6 tasks)
+
 - 25: Design VIP customer support program
 - 26: Create customer loyalty program integration with support
 - 27: Implement customer effort score (CES) measurement
@@ -418,7 +455,8 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of support strategy wo
 
 **What to Execute**: Lines 50-209 (numbered Tasks 1-30 - your actual work)
 
-**Current Status**: 
+**Current Status**:
+
 - Task 1: ✅ Done
 - Task 2: ⏩ Skipped (reassigned to @ai)
 - **Task 3**: ➡️ **START HERE** (Operator training for Agent SDK)
@@ -428,6 +466,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of support strategy wo
 ### 🚀 SECOND MASSIVE EXPANSION (Another 15 Tasks)
 
 **Task 31-36: Support Automation Design** (6 tasks)
+
 - 31: Design intelligent ticket routing based on conversation analysis
 - 32: Create automated response suggestion system for operators
 - 33: Design support workload balancing and distribution
@@ -436,6 +475,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of support strategy wo
 - 36: Create support team collaboration tools
 
 **Task 37-42: Customer Experience Programs** (6 tasks)
+
 - 37: Design customer onboarding support program
 - 38: Create proactive outreach program for at-risk customers
 - 39: Design customer education content series
@@ -444,6 +484,7 @@ Execute 13-30 in any order. Total: 30 tasks, ~18-20 hours of support strategy wo
 - 42: Create customer success milestone celebration program
 
 **Task 43-45: Support Analytics** (3 tasks)
+
 - 43: Design support forecasting model (volume, staffing needs)
 - 44: Create cost-per-ticket analysis framework
 - 45: Design support ROI measurement system
@@ -455,6 +496,7 @@ Execute 31-45 in any order. Total: 45 tasks, ~25-30 hours work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task 46-51: Advanced Training** (6 tasks)
+
 - 46: Design advanced troubleshooting training modules
 - 47: Create escalation handling certification program
 - 48: Implement scenario-based learning simulations
@@ -463,6 +505,7 @@ Execute 31-45 in any order. Total: 45 tasks, ~25-30 hours work.
 - 51: Implement continuous learning pathways
 
 **Task 52-57: Quality Assurance** (6 tasks)
+
 - 52: Design conversation quality scoring system
 - 53: Create quality calibration sessions framework
 - 54: Implement automated quality monitoring
@@ -471,6 +514,7 @@ Execute 31-45 in any order. Total: 45 tasks, ~25-30 hours work.
 - 57: Implement quality metrics dashboard
 
 **Task 58-65: Customer Success** (8 tasks)
+
 - 58: Design proactive customer health monitoring
 - 59: Create customer success playbooks
 - 60: Implement customer milestone tracking

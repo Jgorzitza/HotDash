@@ -35,7 +35,9 @@ describe("getShopifyServiceContext", () => {
       session: { shop: "test-shop.myshopify.com", email: "ops@example.com" },
     });
 
-    const context = await getShopifyServiceContext(new Request("https://example.com"));
+    const context = await getShopifyServiceContext(
+      new Request("https://example.com"),
+    );
     const response = await context.admin.graphql("#graphql\nquery {}", {});
 
     expect(response.status).toBe(200);
@@ -72,7 +74,9 @@ describe("getShopifyServiceContext", () => {
       session: { shop: "retry-shop.myshopify.com" },
     });
 
-    const context = await getShopifyServiceContext(new Request("https://example.com"));
+    const context = await getShopifyServiceContext(
+      new Request("https://example.com"),
+    );
     const response = await context.admin.graphql("#graphql\nquery {}", {});
 
     expect(response.status).toBe(200);
@@ -108,7 +112,9 @@ describe("getShopifyServiceContext", () => {
       session: { shop: "fail-shop.myshopify.com" },
     });
 
-    const context = await getShopifyServiceContext(new Request("https://example.com"));
+    const context = await getShopifyServiceContext(
+      new Request("https://example.com"),
+    );
     const response = await context.admin.graphql("#graphql\nquery {}", {});
 
     expect(response.status).toBe(429);

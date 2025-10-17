@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Compliance — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -37,6 +40,7 @@ You may run local, non-interactive commands (audits, evidence packaging) without
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/compliance.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
+
 You own each deliverable below from start to finish. Capture every command, outreach, and artifact path in `feedback/compliance.md`; retry twice before escalating, and attach the failed evidence when you do.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
@@ -92,6 +96,7 @@ You own each deliverable below from start to finish. Capture every command, outr
    - Evidence: Security approval document
 
 **Ongoing Requirements**:
+
 - Monitor secret scanning alerts
 - Update compliance posture in feedback/compliance.md
 - Coordinate with @deployment on credential rotation
@@ -105,6 +110,7 @@ You own each deliverable below from start to finish. Capture every command, outr
 ### 🚀 ONGOING MONITORING TASKS
 
 **Task A: Daily Secret Scan** - Automated security monitoring
+
 - Run gitleaks scan daily
 - Check feedback files for new exposures
 - Monitor vault/ permissions
@@ -112,6 +118,7 @@ You own each deliverable below from start to finish. Capture every command, outr
 - Evidence: Daily scan logs
 
 **Task B: Agent SDK Security Monitoring** - Monitor new services
+
 - Review Agent SDK code as @engineer builds
 - Check for security issues (auth, validation, secrets)
 - Test approval endpoint security
@@ -120,6 +127,7 @@ You own each deliverable below from start to finish. Capture every command, outr
 - Evidence: Security review notes
 
 **Task C: Compliance Dashboard** - Create compliance tracking
+
 - Create dashboard for compliance posture
 - Track P0/P1/P2 findings status
 - Monitor DPA vendor responses
@@ -133,6 +141,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task D: Data Privacy Impact Assessment**
+
 - Conduct DPIA for Agent SDK (customer data processing)
 - Document data flows and retention
 - Assess GDPR/CCPA compliance requirements
@@ -140,6 +149,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Privacy impact assessment report
 
 **Task E: Security Incident Response Testing**
+
 - Test incident response procedures
 - Conduct tabletop exercise for data breach
 - Document lessons learned
@@ -147,6 +157,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Incident response test results
 
 **Task F: Compliance Automation**
+
 - Design automated compliance checking
 - Create compliance reporting dashboards
 - Implement policy violation detection
@@ -154,6 +165,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Compliance automation framework
 
 **Task G: Third-Party Risk Assessment**
+
 - Assess risks from all third-party services
 - Document vendor security posture
 - Create vendor risk matrix
@@ -161,6 +173,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Third-party risk assessment
 
 **Task H: Access Control Audit**
+
 - Audit all system access controls
 - Review role-based permissions
 - Document principle of least privilege compliance
@@ -168,6 +181,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Access control audit report
 
 **Task I: Compliance Documentation**
+
 - Create comprehensive compliance documentation
 - Document all policies and procedures
 - Design compliance evidence repository
@@ -175,6 +189,7 @@ Execute A daily, B as Engineer progresses, C for ongoing visibility.
 - Evidence: Compliance documentation suite
 
 **Task J: Regulatory Change Monitoring**
+
 - Set up monitoring for regulatory changes (GDPR, CCPA, etc.)
 - Create change impact assessment process
 - Document compliance update workflow
@@ -188,6 +203,7 @@ Execute D-J in any order - all strengthen compliance posture.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 20 Additional Tasks
 
 **Task K-O: Advanced Compliance Programs** (5 tasks)
+
 - K: Design comprehensive information security management system (ISMS)
 - L: Create SOC 2 Type II readiness program and gap analysis
 - M: Implement ISO 27001 compliance framework
@@ -195,6 +211,7 @@ Execute D-J in any order - all strengthen compliance posture.
 - O: Create HIPAA compliance framework (if health data processed)
 
 **Task P-T: Security Operations** (5 tasks)
+
 - P: Design security operations center (SOC) procedures
 - Q: Create threat intelligence monitoring and response
 - R: Implement vulnerability management program
@@ -202,6 +219,7 @@ Execute D-J in any order - all strengthen compliance posture.
 - T: Create security awareness training program for all team members
 
 **Task U-Y: Audit & Certification** (5 tasks)
+
 - U: Prepare for external security audit (readiness checklist)
 - V: Create internal audit program (quarterly reviews)
 - W: Design compliance certification tracking system
@@ -209,6 +227,7 @@ Execute D-J in any order - all strengthen compliance posture.
 - Y: Create compliance dashboard for executive reporting
 
 **Task Z-AD: Risk Management** (5 tasks)
+
 - Z: Design comprehensive risk assessment framework
 - AA: Create business continuity and disaster recovery plans
 - AB: Implement cyber insurance requirements assessment
@@ -222,6 +241,7 @@ Execute K-AD in any order. Total: 27 tasks, ~18-20 hours of compliance work.
 ### 🚀 FOURTH MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task AE-AJ: Security Architecture** (6 tasks)
+
 - AE: Design zero-trust security architecture
 - AF: Create security reference architecture documentation
 - AG: Implement defense-in-depth strategy
@@ -230,6 +250,7 @@ Execute K-AD in any order. Total: 27 tasks, ~18-20 hours of compliance work.
 - AJ: Implement security design review process
 
 **Task AK-AP: Threat Management** (6 tasks)
+
 - AK: Create threat modeling for all services
 - AL: Design attack surface analysis and reduction
 - AM: Implement security incident simulation program
@@ -238,6 +259,7 @@ Execute K-AD in any order. Total: 27 tasks, ~18-20 hours of compliance work.
 - AP: Implement security metrics dashboard
 
 **Task AQ-AV: Governance & Policy** (6 tasks)
+
 - AQ: Create information classification policy
 - AR: Design acceptable use policy
 - AS: Implement data retention and destruction policy
@@ -246,6 +268,7 @@ Execute K-AD in any order. Total: 27 tasks, ~18-20 hours of compliance work.
 - AV: Implement security policy review and update cycle
 
 **Task AW-BA: Compliance Operations** (7 tasks)
+
 - AW: Design compliance testing and validation program
 - AX: Create compliance reporting automation
 - AY: Implement compliance KPI tracking
@@ -259,6 +282,7 @@ Execute AE-BA in any order. Total: 52 tasks, ~30-35 hours work.
 ### 🚀 SIXTH MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task BB-BF: Privacy Engineering** (5 tasks)
+
 - BB: Design privacy-by-design framework
 - BC: Create data minimization strategies
 - BD: Implement consent management system
@@ -266,6 +290,7 @@ Execute AE-BA in any order. Total: 52 tasks, ~30-35 hours work.
 - BF: Create privacy engineering training
 
 **Task BG-BK: Security Operations Center** (5 tasks)
+
 - BG: Design 24/7 SOC operations model
 - BH: Create security playbooks library
 - BI: Implement security orchestration automation
@@ -273,6 +298,7 @@ Execute AE-BA in any order. Total: 52 tasks, ~30-35 hours work.
 - BK: Create security team training program
 
 **Task BL-BP: Compliance Automation** (5 tasks)
+
 - BL: Design automated compliance testing
 - BM: Create continuous compliance monitoring
 - BN: Implement compliance evidence automation
@@ -280,6 +306,7 @@ Execute AE-BA in any order. Total: 52 tasks, ~30-35 hours work.
 - BP: Create compliance dashboard
 
 **Task BQ-BU: Third-Party Risk** (5 tasks)
+
 - BQ: Design vendor security assessment
 - BR: Create third-party monitoring program
 - BS: Implement vendor risk scoring
@@ -287,6 +314,7 @@ Execute AE-BA in any order. Total: 52 tasks, ~30-35 hours work.
 - BU: Create vendor incident response
 
 **Task BV-BZ: Advanced Security** (5 tasks)
+
 - BV: Design quantum-resistant cryptography roadmap
 - BW: Create AI/ML security framework
 - BX: Implement blockchain for audit trails
@@ -320,9 +348,10 @@ Execute BB-BZ in any order. Total: 77 tasks, ~45-50 hours work.
 **Manager Assignment**: Continue monitoring + execute aligned security tasks
 
 **Focus Areas**:
+
 - Monitor launch for security issues
 - Daily secret scans
-- Agent SDK security monitoring  
+- Agent SDK security monitoring
 - Support launch as needed
 
 Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/compliance.md.
@@ -332,6 +361,7 @@ Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/complian
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
 
 **Task BZ-A**: Launch Security Monitoring
+
 - Monitor all endpoints for security issues
 - Watch for exposed secrets in logs
 - Track authentication failures
@@ -339,6 +369,7 @@ Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/complian
 - Timeline: 2-3 hours
 
 **Task BZ-B**: Data Privacy Compliance for Hot Rodan
+
 - Verify customer data handling complies with policies
 - Audit data retention
 - Document privacy controls
@@ -346,6 +377,7 @@ Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/complian
 - Timeline: 2-3 hours
 
 **Task BZ-C**: API Security Hardening
+
 - Review all API endpoints for security
 - Verify input validation
 - Test rate limiting
@@ -353,6 +385,7 @@ Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/complian
 - Timeline: 2-3 hours
 
 **Task BZ-D**: Incident Response Preparation
+
 - Create incident response playbook
 - Define escalation paths
 - Prepare communication templates
@@ -360,6 +393,7 @@ Execute security monitoring + aligned tasks (BB-BZ). Report in feedback/complian
 - Timeline: 2-3 hours
 
 **Task BZ-E**: Security Documentation
+
 - Document all security controls
 - Create security FAQ for operators
 - Security best practices guide
@@ -373,6 +407,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 ## 📋 NEXT WAVE - DEEP SECURITY & COMPLIANCE (Tasks BZ-F to BZ-O)
 
 **Task BZ-F**: Hot Rodan Customer Data Privacy
+
 - Audit all customer data collection points
 - Document data usage and retention
 - Create privacy policy updates
@@ -380,6 +415,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-G**: GDPR/CCPA Compliance Check
+
 - Verify data rights (access, delete, export)
 - Create compliance documentation
 - Test data deletion workflows
@@ -387,6 +423,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-H**: Penetration Testing Prep
+
 - Create penetration test scope
 - Document attack surfaces
 - Prepare test environment
@@ -394,6 +431,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-I**: Security Training for Operators
+
 - Create security awareness training
 - Phishing prevention
 - Password and credential management
@@ -401,6 +439,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-J**: Vulnerability Scanning
+
 - Set up automated vulnerability scans
 - Review scan results
 - Create remediation plan
@@ -408,6 +447,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-K**: Third-Party Security Assessment
+
 - Audit third-party services (Shopify, Chatwoot, Supabase)
 - Document security posture of each
 - Verify compliance with our standards
@@ -415,6 +455,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-L**: Incident Response Drill
+
 - Conduct tabletop exercise for security incident
 - Test escalation paths
 - Document lessons learned
@@ -422,6 +463,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-M**: Compliance Reporting Automation
+
 - Automate security compliance reports
 - Monthly security posture summary
 - Trend analysis
@@ -429,6 +471,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-N**: Access Control Audit
+
 - Review all user permissions and roles
 - Verify least-privilege access
 - Document access matrix
@@ -436,6 +479,7 @@ Execute BZ-A to BZ-E first, then BB-BZ. Total: ~50-55 hours aligned work.
 - Timeline: 2-3 hours
 
 **Task BZ-O**: Security Metrics Dashboard
+
 - Track security metrics (failed logins, API errors, etc.)
 - Create security KPI dashboard
 - Alert thresholds
@@ -469,6 +513,7 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 **GitGuardian Alert**: 2 secrets exposed in commit 8baf10f (2025-10-11 10:20 PM UTC)
 
 **Exposed Secrets in `.mcp.json`** (REDACTED - tokens were rotated):
+
 1. `GITHUB_PERSONAL_ACCESS_TOKEN`: `gho_REDACTED_TOKEN_WAS_ROTATED`
 2. `SUPABASE_ACCESS_TOKEN`: `sbp_REDACTED_TOKEN_WAS_ROTATED`
 
@@ -477,6 +522,7 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 **CEO Decision**: No need to revoke tokens as long as removed from git ✅
 
 **Step 1: Remove Secrets from Repository**
+
 1. Remove hardcoded secrets from `.mcp.json`
 2. Update `.mcp.json` to use environment variables:
    ```json
@@ -488,16 +534,19 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 4. Verify secrets removed: `git diff HEAD~1 .mcp.json`
 
 **Step 3: Verify Environment Variables**
+
 1. Confirm tokens loaded from environment variables (not hardcoded)
 2. Test `.mcp.json` reads from `${GITHUB_PERSONAL_ACCESS_TOKEN}` env var
 3. Document env var setup in feedback
 
 **Step 4: Git History Cleanup** (Optional)
+
 1. Use `git filter-repo` or BFG Repo-Cleaner to remove secrets from history
 2. Force push cleaned history (coordinate with CEO first)
 3. All team members must re-clone repository
 
 **Step 5: Post-Incident Documentation**
+
 - Document in `feedback/compliance.md`:
   - Timeline of incident
   - CEO decision: No revocation needed (tokens removed from git)
@@ -508,6 +557,7 @@ Execute BZ-F to BZ-O. Total: ~70-80 hours security/compliance work.
 **Root Cause**: Hardcoded secrets in `.mcp.json` instead of environment variables
 
 **Prevention** (implement after immediate fix):
+
 1. Add pre-commit hook to scan for secrets
 2. Update `.gitignore` to never commit `.mcp.json` with real values
 3. Create `.mcp.json.example` with placeholder values

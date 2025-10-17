@@ -1,108 +1,65 @@
-# Direction: ads
+# Ads Direction
 
-> Location: `docs/directions/ads.md`
-> Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+- **Owner:** Manager Sub-Agent
+- **Effective:** 2025-10-17
+- **Version:** 1.3
 
----
+## Objective
 
-## Status: ACTIVE
+Deliver an ads execution plan that aligns idea pool launches with Publer scheduling, analytics KPIs, and stakeholder approvals so the CEO can green-light high-ROI campaigns with confidence.
 
-## 1) Purpose
-Build ads performance tracking for future HITL campaign management.
+## Current Tasks
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+1. Build the launch ad brief referencing idea pool products, KPIs, and Publer cadence; store in `docs/specs/ads_pipeline.md`.
+2. Coordinate with Analytics on ROAS and CAC targets; capture agreed thresholds in the feedback entry.
+3. Produce creative copy variants (top, middle, bottom funnel) aligned with existing content assets; attach representative examples.
+4. Map ad campaigns to Publer scheduling windows and record the release timeline.
+5. Configure UTM tracking parameters, verify Supabase ingestion, and document the mapping.
+6. Draft the budget allocation table, review with the CEO, and persist in `docs/specs/success_metrics.md`.
+7. Prepare an A/B test plan for idea pool-driven ads including hypotheses and success metrics.
+8. Sync with SEO to avoid keyword cannibalization and record the alignment summary.
+9. Validate analytics dashboards reflect ad metrics (revenue, CTR, ROAS) and attach the supporting screenshot.
+10. Plan the post-approval workflow from Publer to Meta/Google and document it in `docs/specs/stakeholder_comms.md`.
+11. Develop alerting rules for underperforming ads aligned with DevOps health notifications.
+12. Update the backlog in `docs/specs/ads_pipeline.md` with status, owner, and next steps.
+13. Create an ad review checklist ensuring compliance and brand voice alignment.
+14. Prepare a cross-channel weekly performance report template.
+15. Contribute to the launch communications document with the ad messaging timeline.
+16. Write feedback to `feedback/ads/2025-10-17.md` and clean up stray md files.
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P2 - Ads Management
+## Constraints
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `rg`
+- **Touched Directories:** `docs/directions/ads.md`, `docs/specs/`, `feedback/ads/`, `feedback/manager/`
+- **Budget:** ≤ 30 minutes runtime, ≤ 4,000 tokens, ≤ 3 files modified/staged
+- **Guardrails:** Keep edits scoped to the ads direction deliverables; log blockers in `feedback/manager/2025-10-17.md` before pausing work.
 
-### Task List (9 tasks):
+## Definition of Done
 
-**1. Ads Performance Tracking (NEXT - 3h)**
-- ROAS, CPC, CPM, CPA tracking
-- Allowed paths: `app/lib/ads/tracking.ts`
+- [ ] Objective satisfied with deliverables stored in referenced specs and feedback.
+- [ ] `npm run fmt`
+- [ ] `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- [ ] Docs and runbooks updated where workflows change.
+- [ ] Feedback recorded in `feedback/ads/2025-10-17.md` with evidence and attachments.
+- [ ] Blockers, if any, noted in `feedback/manager/2025-10-17.md`.
 
-**2. ROAS Calculation Engine (2h)**
-- Accurate revenue / ad_spend
-- Allowed paths: `app/lib/ads/roas.ts`
+## Risk & Rollback
 
-**3. Budget Allocation Optimizer (4h)**
-- Optimize budget across channels
-- Allowed paths: `app/services/ads/budget-optimizer.ts`
+- **Risk Level:** Low — misaligned ads reduce growth impact but are reversible.
+- **Rollback Plan:** `git checkout -- docs/directions/ads.md` prior to staging if updates need to be reverted.
+- **Monitoring:** Track ROAS, CAC, CTR, and Publer cadence adherence via analytics dashboards and ad alerting rules.
 
-**4. Campaign Performance Dashboard (4h)**
-- Visual dashboard for all campaigns
-- Allowed paths: `app/routes/ads.dashboard.tsx`
+## Links & References
 
-**5. Creative Performance Analysis (3h)**
-- Track ad creative effectiveness
-- Allowed paths: `app/lib/ads/creative-analysis.ts`
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/ads/2025-10-17.md`
+- Specs / Runbooks: `docs/specs/ads_pipeline.md`, `docs/specs/success_metrics.md`, `docs/specs/stakeholder_comms.md`
 
-**6. Audience Insights (3h)**
-- Analyze audience performance
-- Allowed paths: `app/lib/ads/audience-insights.ts`
+## Change Log
 
-**7. A/B Test Tracking (3h)**
-- Track ad A/B tests
-- Allowed paths: `app/lib/ads/ab-tests.ts`
-
-**8. Attribution Modeling (4h)**
-- Multi-touch attribution for ads
-- Allowed paths: `app/lib/ads/attribution.ts`
-
-**9. HITL Campaign Recommendations (4h)**
-- AI-powered campaign suggestions
-- Allowed paths: `app/services/ads/recommendations.ts`
-
-### Current Focus: Task 1 (Performance Tracking)
-
-### Blockers: None
-
-### Critical:
-- ✅ ROAS must be accurate
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ Support Meta, Google, TikTok
-
-## Changelog
-* 2.0 (2025-10-15) — ACTIVE: Ads performance tracking
-* 1.0 (2025-10-15) — Placeholder
-
-### Feedback Process (Canonical)
-- Use exactly: \ for today
-- Append evidence and tool outputs through the day
-- On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Ads tracking library (ROAS, CPC, CPM, CPA)
-2) Aggregation job (daily)
-3) Budget pacing monitor
-4) Creative performance analyzer
-5) Channel breakdown (FB/Google/TikTok)
-6) Campaign → adset → ad drill-down
-7) Attribution model selector
-8) Anomaly alerts (read-only)
-9) Lift tests pipeline (A/B placeholders)
-10) Export CSV of performance
-11) Unit tests for metrics math
-12) Integration tests with adapters
-13) Caching for heavy reports
-14) Perf budget for ads routes
-15) Telemetry for cost/latency
-16) Docs for metrics definitions
-17) Dashboard tiles for ads
-18) Recommendations (HITL only)
-19) Forecast spend vs target
-20) Cost cap & bid strategy report
-21) Audience overlap insights
-22) UTM enforcement helper
-23) Error handling taxonomy
-24) Staging vs prod adapters
-25) SLO dashboard for ads APIs
+- 2025-10-17: Version 1.3 – Template rewrite aligning ads strategy with Publer cadence and analytics tasks.
+- 2025-10-16: Version 1.2 – Ads intelligence launch plan (aggregates, approvals, anomalies).
+- 2025-10-15: Version 1.1 – Ads performance tracking foundation.

@@ -6,25 +6,30 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Risk Management and Incident Readiness Framework — HotDash OCC Sprint 2025-10-11T04:07Z
 
 ## Live Risk Register Structure
 
 ### Linear Risk Register Configuration
+
 **Project**: HotDash OCC Risk Register
 **Workflow States**: `Active` → `Monitoring` → `Mitigated` → `Closed`
 **Priority Levels**: `P0-Critical`, `P1-High`, `P2-Medium`, `P3-Low`
 
 ### Risk Issue Template
+
 ```markdown
 Title: [RISK-XXX] [Brief Risk Description]
 Priority: [P0-Critical/P1-High/P2-Medium/P3-Low]
 Labels: risk, [category], [owner-team]
 
 ## Risk Description
+
 Brief description of the risk and potential impact.
 
 ## Risk Details
+
 - **Category**: [Technical/Compliance/Operational/External]
 - **Owner**: [Primary responsible team/individual]
 - **Likelihood**: [Very High/High/Medium/Low/Very Low] (1-5 scale)
@@ -34,33 +39,41 @@ Brief description of the risk and potential impact.
 - **Last Updated**: [YYYY-MM-DD]
 
 ## Current Status
+
 - **Mitigation Status**: [Not Started/In Progress/Completed/Monitoring]
 - **Mitigation Owner**: [Team/Individual]
 - **Target Resolution**: [YYYY-MM-DD]
 - **Budget Impact**: [None/Low/Medium/High/Critical]
 
 ## Mitigation Plan
+
 ### Immediate Actions (0-7 days)
+
 - [ ] Action item 1 with owner and date
 - [ ] Action item 2 with owner and date
 
 ### Short-term Actions (1-4 weeks)
+
 - [ ] Action item 1 with owner and date
 - [ ] Action item 2 with owner and date
 
 ### Long-term Actions (1-3 months)
+
 - [ ] Action item 1 with owner and date
 - [ ] Action item 2 with owner and date
 
 ## Monitoring & Detection
+
 - **Key Metrics**: [Metrics to monitor for this risk]
 - **Alert Thresholds**: [When to escalate]
 - **Review Frequency**: [Daily/Weekly/Monthly]
 
 ## Contingency Plan
+
 Detailed plan for what to do if mitigation fails and risk materializes.
 
 ## Related Issues
+
 - Links to related Linear issues
 - Dependencies on other risks
 - Evidence artifacts and documentation
@@ -69,12 +82,14 @@ Detailed plan for what to do if mitigation fails and risk materializes.
 ### Risk Categories and Scoring
 
 #### Category Definitions
+
 1. **Technical**: Infrastructure, performance, security, integration risks
-2. **Compliance**: Legal, regulatory, data protection, audit risks  
+2. **Compliance**: Legal, regulatory, data protection, audit risks
 3. **Operational**: Process, team capacity, coordination, dependency risks
 4. **External**: Vendor, market, regulatory change, third-party risks
 
 #### Likelihood Scale
+
 - **5 - Very High**: Almost certain to occur (>90% probability)
 - **4 - High**: Likely to occur (70-90% probability)
 - **3 - Medium**: Moderate chance (30-70% probability)
@@ -82,6 +97,7 @@ Detailed plan for what to do if mitigation fails and risk materializes.
 - **1 - Very Low**: Very unlikely (<10% probability)
 
 #### Impact Scale
+
 - **5 - Critical**: Sprint failure, major security incident, legal violation
 - **4 - High**: Significant delays, performance degradation, compliance issues
 - **3 - Medium**: Minor delays, workarounds required, some user impact
@@ -89,6 +105,7 @@ Detailed plan for what to do if mitigation fails and risk materializes.
 - **1 - Minimal**: Negligible impact, easy to resolve
 
 #### Risk Score Matrix
+
 ```
 Impact →     1    2    3    4    5
 Likelihood ↓ Min  Low  Med  High Crit
@@ -100,6 +117,7 @@ Likelihood ↓ Min  Low  Med  High Crit
 ```
 
 **Escalation Thresholds**:
+
 - **Score 15-25**: P0-Critical - Immediate manager escalation
 - **Score 10-14**: P1-High - Daily monitoring and mitigation
 - **Score 6-9**: P2-Medium - Weekly review and planning
@@ -108,6 +126,7 @@ Likelihood ↓ Min  Low  Med  High Crit
 ## Current Risk Inventory
 
 ### RISK-001: Compliance Approval Delays
+
 ```
 Priority: P1-High
 Risk Score: 16 (High Likelihood × High Impact)
@@ -132,8 +151,9 @@ If approvals delayed >14 days, implement staged rollout with minimal data collec
 ```
 
 ### RISK-002: Nightly Job Infrastructure Failure
+
 ```
-Priority: P1-High  
+Priority: P1-High
 Risk Score: 12 (Medium Likelihood × High Impact)
 Owner: Reliability Team
 Status: Monitoring - Automation In Place
@@ -156,9 +176,10 @@ Manual evidence collection procedures, reduced bundle scope if necessary, escala
 ```
 
 ### RISK-003: Performance Degradation in Production
+
 ```
 Priority: P0-Critical
-Risk Score: 20 (High Likelihood × Critical Impact) 
+Risk Score: 20 (High Likelihood × Critical Impact)
 Owner: Engineering Team
 Status: Active - Continuous Monitoring
 
@@ -180,10 +201,11 @@ Immediate rollback capability (<15 minutes), performance optimization sprint, ad
 ```
 
 ### RISK-004: Stack Guardrail Violations
+
 ```
 Priority: P2-Medium
 Risk Score: 9 (Medium Likelihood × Medium Impact)
-Owner: Engineering Team  
+Owner: Engineering Team
 Status: Mitigated - Automation Active
 
 Description: Unauthorized dependencies or services could be introduced, violating canonical toolkit requirements.
@@ -204,6 +226,7 @@ Immediate PR rejection, dependency removal, compliance review for any violations
 ```
 
 ### RISK-005: Key Personnel Unavailability
+
 ```
 Priority: P2-Medium
 Risk Score: 8 (Low Likelihood × High Impact)
@@ -232,6 +255,7 @@ Manager escalation, external consultant engagement, delayed sprint timeline with
 ### Incident Classification
 
 #### Severity Levels
+
 1. **SEV-1 (Critical)**: Production down, security breach, data loss
 2. **SEV-2 (High)**: Significant performance degradation, partial outage
 3. **SEV-3 (Medium)**: Minor functionality issues, workaround available
@@ -240,30 +264,33 @@ Manager escalation, external consultant engagement, delayed sprint timeline with
 ### Incident Thresholds
 
 #### Performance Thresholds
+
 ```typescript
 interface PerformanceThresholds {
   responseTime: {
-    p95Warning: 250,      // Warning at 250ms
-    p95Critical: 400,     // Critical at 400ms
-    p99Critical: 800      // P99 critical at 800ms
-  },
+    p95Warning: 250; // Warning at 250ms
+    p95Critical: 400; // Critical at 400ms
+    p99Critical: 800; // P99 critical at 800ms
+  };
   errorRate: {
-    warning: 0.001,       // 0.1% error rate warning
-    critical: 0.005       // 0.5% error rate critical
-  },
+    warning: 0.001; // 0.1% error rate warning
+    critical: 0.005; // 0.5% error rate critical
+  };
   availability: {
-    warning: 0.99,        // <99% uptime warning
-    critical: 0.95        // <95% uptime critical
-  }
+    warning: 0.99; // <99% uptime warning
+    critical: 0.95; // <95% uptime critical
+  };
 }
 ```
 
 #### Failed Nightly Jobs
+
 - **1 failure**: Auto-retry, log incident
 - **2 consecutive failures**: SEV-3 incident, manual intervention required
 - **3+ failures or >48h gap**: SEV-2 incident, reliability escalation
 
 #### Compliance Violations
+
 - **PII exposure detected**: SEV-1 incident, immediate containment
 - **Data retention policy violation**: SEV-2 incident, audit escalation
 - **Stack guardrail violation**: SEV-3 incident, compliance review
@@ -271,6 +298,7 @@ interface PerformanceThresholds {
 ### Incident Response Procedures
 
 #### SEV-1 Response (Critical)
+
 1. **Immediate (0-15 minutes)**:
    - Page reliability on-call team
    - Create incident Linear issue with SEV-1 label
@@ -290,6 +318,7 @@ interface PerformanceThresholds {
    - Plan follow-up actions
 
 #### SEV-2 Response (High)
+
 1. **Immediate (0-30 minutes)**:
    - Create incident Linear issue with SEV-2 label
    - Notify relevant team leads
@@ -305,6 +334,7 @@ interface PerformanceThresholds {
 #### Communication Templates
 
 ##### Incident Notification (SEV-1)
+
 ```
 🚨 SEV-1 INCIDENT: [Brief Description]
 
@@ -323,6 +353,7 @@ Incident Bridge: [Link if applicable]
 ```
 
 ##### Incident Resolution
+
 ```
 ✅ RESOLVED: SEV-X incident [Brief Description]
 
@@ -345,6 +376,7 @@ Post-mortem doc: [Link when available]
 ### Runbooks and Playbooks
 
 #### Token Revocation/Re-issuance Playbook
+
 **Scenario**: Shopify Admin tokens compromised or need rotation
 **Owner**: Reliability Team
 **SLA**: <2 hours for revocation, <24 hours for re-issuance
@@ -374,29 +406,30 @@ shopify app auth --shop=${SHOP_DOMAIN}
 ```
 
 #### Database Recovery Playbook
+
 **Scenario**: Supabase database issues or data corruption
 **Owner**: Reliability Team  
 **SLA**: <1 hour for assessment, <4 hours for recovery
 
 ```sql
 -- Database Health Check
-SELECT 
+SELECT
   schemaname,
   tablename,
   n_tup_ins as inserts,
   n_tup_upd as updates,
   n_tup_del as deletes
-FROM pg_stat_user_tables 
+FROM pg_stat_user_tables
 WHERE schemaname = 'public'
 ORDER BY n_tup_ins DESC;
 
 -- Backup validation
-SELECT 
+SELECT
   backup_name,
   created_at,
   size_bytes,
   status
-FROM supabase_backups 
+FROM supabase_backups
 WHERE created_at > NOW() - INTERVAL '7 days'
 ORDER BY created_at DESC;
 ```
@@ -404,6 +437,7 @@ ORDER BY created_at DESC;
 ### Monitoring and Alerting
 
 #### Alert Configuration
+
 ```yaml
 # monitoring/alerts.yml
 alerts:
@@ -411,17 +445,17 @@ alerts:
     condition: response_time_p95 > 300
     severity: SEV-2
     escalation: reliability-team
-    
-  - name: error_rate_critical  
+
+  - name: error_rate_critical
     condition: error_rate > 0.005
     severity: SEV-1
     escalation: reliability-oncall
-    
+
   - name: nightly_job_failed
     condition: nightly_job_status != "success"
     severity: SEV-3
     escalation: product-team
-    
+
   - name: compliance_violation
     condition: pii_exposure_detected == true
     severity: SEV-1
@@ -429,6 +463,7 @@ alerts:
 ```
 
 #### Dashboard Requirements
+
 - **Real-time Metrics**: Response times, error rates, availability
 - **Risk Register Status**: Active risks, mitigation progress, aging
 - **Incident History**: Recent incidents, MTTR trends, resolution rates
@@ -437,25 +472,30 @@ alerts:
 ### Success Metrics and KPIs
 
 #### Risk Management Metrics
+
 - **Risk Resolution Rate**: % of risks mitigated within target timeline
 - **Risk Aging**: Average days from identification to resolution
 - **Risk Prevention**: % of risks prevented vs materialized
 - **Compliance Score**: % of compliance requirements satisfied
 
 #### Incident Response Metrics
+
 - **MTTR (Mean Time To Resolution)**: Average incident resolution time
 - **MTTD (Mean Time To Detection)**: Average time to incident detection
 - **Incident Frequency**: Number of incidents per sprint/month
 - **Escalation Rate**: % of incidents requiring manager involvement
 
 #### Target SLAs
+
 - **SEV-1 MTTR**: <4 hours
-- **SEV-2 MTTR**: <24 hours  
+- **SEV-2 MTTR**: <24 hours
 - **Risk Resolution**: <30 days for P1 risks
 - **Compliance Issues**: <7 days for critical findings
 
 ---
+
 **Implementation Priority**:
+
 1. Create Linear risk register project and initial risk inventory
 2. Set up incident response procedures and communication channels
 3. Implement monitoring dashboards and alert configurations

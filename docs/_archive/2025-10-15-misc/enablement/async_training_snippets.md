@@ -6,9 +6,11 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Asynchronous Training Snippets — Loom Script Outlines
 
 ## Overview
+
 **Purpose:** Enable self-paced operator training while staging access is blocked  
 **Format:** 5-7 minute Loom recordings with downloadable scripts  
 **Target Audience:** Operators, support staff, enablement facilitators  
@@ -19,12 +21,14 @@ expires: 2025-10-18
 ---
 
 ## Module 1: Operator Control Center Overview & Architecture
+
 **Duration:** 6 minutes  
 **Recording Focus:** High-level architecture and value proposition
 
 ### Loom Script Outline
 
 **[0:00-0:30] Introduction & Context**
+
 ```
 Hi team! This is [Recorder Name] from Enablement. Today we're covering the Operator Control Center architecture and value proposition. This training will help you understand the big picture before we dive into specific workflows.
 
@@ -32,6 +36,7 @@ Since staging access is temporarily limited, we'll use slides and mockups, but t
 ```
 
 **[0:30-2:00] OCC Value Proposition**
+
 ```
 The Operator Control Center solves three core problems:
 1. Tab fatigue - jumping between Shopify, Chatwoot, and analytics
@@ -45,6 +50,7 @@ Key principle: Everything requires operator approval. The AI suggests, you decid
 ```
 
 **[2:00-3:30] Chatwoot-on-Supabase Architecture**
+
 ```
 [SLIDE: Architecture diagram]
 Here's what happens behind the scenes:
@@ -58,6 +64,7 @@ This means faster modal load times - typically under 200ms - and complete audit 
 ```
 
 **[3:30-5:00] React Router 7 + Shopify CLI v3 Development Workflow**
+
 ```
 [SLIDE: Development workflow]
 Development and navigation happen through React Router 7 patterns with Shopify CLI v3:
@@ -71,6 +78,7 @@ Authentication is handled automatically through Shopify's standard app context -
 ```
 
 **[5:00-5:30] Support & Escalation**
+
 ```
 [SLIDE: Escalation contacts]
 For any issues or questions:
@@ -82,8 +90,9 @@ The new support inbox routes through Chatwoot-on-Supabase, so responses will be 
 ```
 
 **[5:30-6:00] Next Steps**
+
 ```
-This foundation sets you up for the hands-on modules covering CX Escalations and Sales Pulse workflows. 
+This foundation sets you up for the hands-on modules covering CX Escalations and Sales Pulse workflows.
 
 Questions? Drop them in #occ-enablement or email customer.support@hotrodan.com.
 
@@ -91,20 +100,23 @@ Next up: Module 2 - CX Escalations Deep Dive. See you there!
 ```
 
 **Recording Assets Needed:**
+
 - [ ] Dashboard mockup slide
-- [ ] Architecture diagram slide  
+- [ ] Architecture diagram slide
 - [ ] React Router 7 + Shopify CLI v3 development workflow diagram
 - [ ] Contact information slide
 
 ---
 
 ## Module 2: CX Escalations Workflow Deep Dive
+
 **Duration:** 7 minutes  
 **Recording Focus:** Step-by-step modal workflow and decision making
 
 ### Loom Script Outline
 
 **[0:00-0:30] Module Introduction**
+
 ```
 Welcome to CX Escalations training! I'm [Name] from Enablement.
 
@@ -112,13 +124,14 @@ This module covers the most critical operator workflow: triaging SLA-breached co
 ```
 
 **[0:30-2:00] CX Escalations Modal Walkthrough**
+
 ```
 [SCREEN: Mockup of CX Escalations tile]
 The CX Escalations tile shows conversations that have breached your SLA - default is 60 minutes.
 
 Each row shows:
 - Customer name and status
-- How long the breach has been active  
+- How long the breach has been active
 - Last message preview
 
 [SCREEN: Modal mockup]
@@ -129,6 +142,7 @@ Click any row to open the modal. Here you see:
 ```
 
 **[2:00-3:30] Decision Framework & Guardrails**
+
 ```
 Here's your decision framework:
 
@@ -149,6 +163,7 @@ MARK RESOLVED only when:
 ```
 
 **[3:30-5:00] AI Integration & Editing**
+
 ```
 [SCREEN: AI suggestion example]
 The AI pulls from our knowledge base to suggest replies. Key points:
@@ -166,11 +181,12 @@ You can edit any part of the suggested reply. Common edits:
 ```
 
 **[5:00-6:00] Decision Logging & Audit Trail**
+
 ```
 [SCREEN: Decision log example]
 Every action creates an audit record:
 - Your operator email
-- Timestamp  
+- Timestamp
 - Action taken (approve/escalate/resolve)
 - Full message payload
 - Customer conversation ID
@@ -179,6 +195,7 @@ This data syncs to Supabase for compliance reporting. You can export decision lo
 ```
 
 **[6:00-6:30] Error Handling & Support**
+
 ```
 If you see modal errors:
 1. Screenshot the error message
@@ -190,11 +207,12 @@ Most errors resolve with a Shopify Admin refresh, but we want to track patterns.
 ```
 
 **[6:30-7:00] Practice & Next Steps**
+
 ```
 Before the live rehearsal, practice this mental checklist:
 1. Read the last 2-3 messages for context
 2. Verify AI suggestion matches customer need
-3. Check tone and policy compliance  
+3. Check tone and policy compliance
 4. Choose appropriate action
 5. Confirm success toast appears
 
@@ -202,6 +220,7 @@ Next: Module 3 covers Sales Pulse workflows. Thanks for watching!
 ```
 
 **Recording Assets Needed:**
+
 - [ ] CX Escalations tile mockup
 - [ ] Modal interface mockup with conversation
 - [ ] AI suggestion editing interface
@@ -210,12 +229,14 @@ Next: Module 3 covers Sales Pulse workflows. Thanks for watching!
 ---
 
 ## Module 3: Sales Pulse & Cross-Modal Integration
+
 **Duration:** 5 minutes  
 **Recording Focus:** Sales monitoring and cross-system decision making
 
 ### Loom Script Outline
 
 **[0:00-0:30] Introduction**
+
 ```
 Hi everyone! This is Sales Pulse training - your window into daily sales health and its connection to customer experience.
 
@@ -223,6 +244,7 @@ Sales Pulse differs from CX Escalations because you're usually creating proactiv
 ```
 
 **[0:30-2:00] Sales Pulse Modal Overview**
+
 ```
 [SCREEN: Sales Pulse tile mockup]
 The tile shows:
@@ -238,6 +260,7 @@ The modal expands this with:
 ```
 
 **[2:00-3:00] Decision Triggers & Thresholds**
+
 ```
 Watch for these decision triggers:
 
@@ -251,6 +274,7 @@ These thresholds come from docs/data/kpis.md and are configurable per merchant.
 ```
 
 **[3:00-4:00] Cross-Modal Data Integration**
+
 ```
 [SCREEN: Integration flow diagram]
 Here's where Sales Pulse connects to CX Escalations:
@@ -264,6 +288,7 @@ This prevents customers from hearing about shipping delays through support ticke
 ```
 
 **[4:00-4:30] Supabase Decision Logging**
+
 ```
 [SCREEN: Decision log interface]
 Sales Pulse decisions capture:
@@ -276,6 +301,7 @@ All decisions sync to the same Supabase audit trail as CX actions.
 ```
 
 **[4:30-5:00] Wrap-up & Integration**
+
 ```
 Sales Pulse works best when you think about downstream effects:
 - Revenue dips often predict CX volume spikes
@@ -286,6 +312,7 @@ Next step: Live rehearsal where you'll practice both modules together. Questions
 ```
 
 **Recording Assets Needed:**
+
 - [ ] Sales Pulse tile and modal mockups
 - [ ] KPI threshold visualization
 - [ ] Cross-modal integration flow diagram
@@ -294,12 +321,14 @@ Next step: Live rehearsal where you'll practice both modules together. Questions
 ---
 
 ## Module 4: Troubleshooting & Support Escalation
+
 **Duration:** 4 minutes  
 **Recording Focus:** Common issues and resolution paths
 
 ### Loom Script Outline
 
 **[0:00-0:30] Introduction**
+
 ```
 Final training module: troubleshooting common issues and knowing when to escalate.
 
@@ -307,6 +336,7 @@ Even with great architecture, things can go wrong. This module prepares you to h
 ```
 
 **[0:30-1:30] Navigation and Routing Issues**
+
 ```
 [SCREEN: Error state mockups]
 Most common issue: Modal navigation or routing errors
@@ -321,6 +351,7 @@ Navigation issues often resolve with app reload or development server restart.
 ```
 
 **[1:30-2:30] Data Freshness & Sync Issues**
+
 ```
 [SCREEN: Data freshness indicators]
 Each tile shows last refresh timestamp. Flag these scenarios:
@@ -333,6 +364,7 @@ Quick check: Visit the source system (Shopify Admin, Chatwoot) to compare. If th
 ```
 
 **[2:30-3:30] Modal Load Failures & Performance**
+
 ```
 [SCREEN: Performance monitoring]
 Expected performance:
@@ -349,6 +381,7 @@ Screenshot the issue, note the time, and escalate immediately. Performance probl
 ```
 
 **[3:30-4:00] Support Escalation & Evidence**
+
 ```
 [SCREEN: Escalation template]
 When escalating to customer.support@hotrodan.com:
@@ -364,8 +397,9 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
 ```
 
 **Recording Assets Needed:**
+
 - [ ] Error state screenshots
-- [ ] Data freshness indicator mockups  
+- [ ] Data freshness indicator mockups
 - [ ] Performance monitoring dashboard
 - [ ] Escalation email template
 
@@ -374,19 +408,22 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
 ## Production & Distribution Plan
 
 ### Recording Schedule
+
 **Target Completion:** 2025-10-12 EOD  
 **Recording Owner:** Enablement lead  
 **Review Required:** Support lead approval before publication
 
 ### Recording Checklist (Per Module)
+
 - [ ] Script rehearsal completed
-- [ ] All mockup assets prepared  
+- [ ] All mockup assets prepared
 - [ ] Loom recording completed (<8 minutes each)
 - [ ] Closed captions added
 - [ ] Video quality check passed
 - [ ] Link security verified (team access only)
 
 ### Distribution Protocol
+
 1. **Upload & Processing** (T+0)
    - Record via Loom with team access permissions
    - Add closed captions and module titles
@@ -394,7 +431,7 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
 
 2. **Internal Review** (T+24h)
    - Share with support lead for content validation
-   - Test all links and asset accessibility  
+   - Test all links and asset accessibility
    - Confirm alignment with live system architecture
 
 3. **Team Distribution** (T+48h)
@@ -403,10 +440,11 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
    - Archive links in `feedback/enablement.md` for reference
 
 ### Completed Recording Links
+
 **Update this section as recordings are completed:**
 
 - [ ] **Module 1:** OCC Overview & Architecture - [LINK PENDING]
-- [ ] **Module 2:** CX Escalations Deep Dive - [LINK PENDING]  
+- [ ] **Module 2:** CX Escalations Deep Dive - [LINK PENDING]
 - [ ] **Module 3:** Sales Pulse & Integration - [LINK PENDING]
 - [ ] **Module 4:** Troubleshooting & Support - [LINK PENDING]
 
@@ -414,8 +452,9 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
 **Backup Storage:** Archive MP4 files to `artifacts/training/async_modules/2025-10-11/`
 
 ### Success Metrics
+
 - [ ] **Completion Rate:** >80% of operators view all modules before rehearsal
-- [ ] **Question Reduction:** <3 architecture questions during live rehearsal  
+- [ ] **Question Reduction:** <3 architecture questions during live rehearsal
 - [ ] **Preparation Quality:** Operators demonstrate understanding of workflows in practice scenarios
 
 **Review Date:** 2025-10-17 - Assess effectiveness based on rehearsal feedback and update scripts as needed
@@ -423,5 +462,6 @@ That's it! You're ready for hands-on practice. See you at the rehearsal!
 ---
 
 ## Change Log
+
 - **2025-10-11T01:45Z:** Initial script outlines created for all four training modules
 - **Pending:** Record Loom videos and update with actual links as completed

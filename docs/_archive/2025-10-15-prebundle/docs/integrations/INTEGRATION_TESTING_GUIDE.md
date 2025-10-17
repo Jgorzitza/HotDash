@@ -17,39 +17,46 @@ HotDash integrates with external APIs (Shopify, Chatwoot, Google Analytics). Thi
 ### Individual Integration Tests
 
 **1. Shopify Integration Test**
+
 ```bash
 ./scripts/ops/test-shopify-integration.sh
 ```
 
 Tests:
+
 - Shopify MCP availability
 - Staging secrets present
 - GraphQL query patterns (deprecated check)
 - Retry logic implementation
 
 **2. Chatwoot Integration Test**
+
 ```bash
 ./scripts/ops/test-chatwoot-integration.sh
 ```
 
 Tests:
+
 - Chatwoot staging secrets present
 - Health endpoint status
 - Client implementation
 - Escalation templates
 
 **3. Google Analytics Integration Test**
+
 ```bash
 ./scripts/ops/test-ga-integration.sh
 ```
 
 Tests:
+
 - Service account credentials present and valid
 - File permissions (must be 600)
 - Direct API client implementation
 - Package dependencies current
 
 ### All-In-One Test Suite
+
 ```bash
 ./scripts/ops/test-all-integrations.sh
 ```
@@ -61,15 +68,18 @@ Runs all 3 tests and generates summary report in `artifacts/integrations/integra
 ## Mock Data & Fixtures
 
 ### Shopify Fixtures
+
 **Location:** `tests/fixtures/shopify/`
 
 **Required Fixtures:**
+
 - `orders.json` - Sample order data matching SALES_PULSE_QUERY response
 - `fulfillments.json` - Sample fulfillment data
 - `inventory.json` - Sample inventory levels
 
 **Regeneration:**
 When Shopify queries are fixed, regenerate fixtures from real staging data:
+
 ```bash
 # Manual process:
 # 1. Run query against staging Shopify store
@@ -79,17 +89,21 @@ When Shopify queries are fixed, regenerate fixtures from real staging data:
 ```
 
 ### Chatwoot Fixtures
+
 **Location:** `tests/fixtures/chatwoot/`
 
 **Required Fixtures:**
+
 - `conversations.json` - Sample conversations with SLA data
 - `messages.json` - Sample message history
 - `templates.json` - Template matching test data
 
 ### Google Analytics Fixtures
+
 **Location:** `tests/fixtures/ga/`
 
 **Required Fixtures:**
+
 - `landing-pages.json` - Sample runReport response
 - `sessions.json` - Transformed session data
 
@@ -98,6 +112,7 @@ When Shopify queries are fixed, regenerate fixtures from real staging data:
 ## CI/CD Integration
 
 ### GitHub Actions
+
 ```yaml
 # Add to existing test workflow
 - name: Test External Integrations
@@ -105,6 +120,7 @@ When Shopify queries are fixed, regenerate fixtures from real staging data:
 ```
 
 ### Pre-commit Hooks
+
 ```bash
 # Add to .github/hooks/pre-commit
 ./scripts/ops/test-all-integrations.sh || {
@@ -120,41 +136,44 @@ When Shopify queries are fixed, regenerate fixtures from real staging data:
 ### For Unit Tests
 
 **Shopify Admin API Mock:**
+
 ```typescript
 // tests/mocks/shopify.ts
 export const mockShopifyAdmin = {
   graphql: jest.fn().mockImplementation((query, options) => {
     // Return fixture based on query
-    if (query.includes('SalesPulse')) {
+    if (query.includes("SalesPulse")) {
       return {
         ok: true,
-        json: () => Promise.resolve(require('../fixtures/shopify/orders.json'))
+        json: () => Promise.resolve(require("../fixtures/shopify/orders.json")),
       };
     }
     // ... other queries
-  })
+  }),
 };
 ```
 
 **Chatwoot API Mock:**
+
 ```typescript
 // tests/mocks/chatwoot.ts
 export const mockChatwootClient = {
-  listConversations: jest.fn().mockResolvedValue(
-    require('../fixtures/chatwoot/conversations.json')
-  )
+  listConversations: jest
+    .fn()
+    .mockResolvedValue(require("../fixtures/chatwoot/conversations.json")),
 };
 ```
 
 **Google Analytics Mock:**
+
 ```typescript
 // tests/mocks/ga.ts
-jest.mock('@google-analytics/data', () => ({
+jest.mock("@google-analytics/data", () => ({
   BetaAnalyticsDataClient: jest.fn().mockImplementation(() => ({
-    runReport: jest.fn().mockResolvedValue([
-      require('../fixtures/ga/landing-pages.json')
-    ])
-  }))
+    runReport: jest
+      .fn()
+      .mockResolvedValue([require("../fixtures/ga/landing-pages.json")]),
+  })),
 }));
 ```
 
@@ -165,6 +184,7 @@ jest.mock('@google-analytics/data', () => ({
 ### Shopify Test Data
 
 **Orders Fixture Requirements:**
+
 - At least 5 orders spanning last 7 days
 - Mix of fulfillment statuses (FULFILLED, PENDING, UNFULFILLED)
 - Mix of financial statuses (PAID, PENDING, AUTHORIZED)
@@ -173,6 +193,7 @@ jest.mock('@google-analytics/data', () => ({
 - Currency data (amount + code)
 
 **Inventory Fixture Requirements:**
+
 - At least 10 product variants
 - Mix of inventory levels (0, low stock, adequate stock)
 - Multiple locations
@@ -182,6 +203,7 @@ jest.mock('@google-analytics/data', () => ({
 ### Chatwoot Test Data
 
 **Conversations Fixture Requirements:**
+
 - At least 5 unassigned conversations
 - Mix of SLA status (breached, not breached)
 - Message history (customer + agent messages)
@@ -191,6 +213,7 @@ jest.mock('@google-analytics/data', () => ({
 ### Google Analytics Test Data
 
 **Sessions Fixture Requirements:**
+
 - At least 20 landing pages
 - Session counts (realistic distribution)
 - Date range: Last 7 days
@@ -201,16 +224,19 @@ jest.mock('@google-analytics/data', () => ({
 ## Continuous Monitoring
 
 ### Scheduled Test Execution
+
 **Frequency:** Daily (via GitHub Actions or cron)  
 **Purpose:** Detect API changes, credential expiry, service degradation
 
 **Cron Setup:**
+
 ```bash
 # Daily integration test at 2 AM UTC
 0 2 * * * cd /path/to/hotdash && ./scripts/ops/test-all-integrations.sh >> /tmp/integration-tests.log 2>&1
 ```
 
 ### Alert Conditions
+
 - Any integration test fails
 - Health endpoints return non-200
 - Deprecated patterns detected in new code
@@ -221,4 +247,3 @@ jest.mock('@google-analytics/data', () => ({
 **Guide Created:** 2025-10-11 21:32 UTC  
 **Test Scripts:** 4 scripts (3 individual + 1 suite runner)  
 **Next:** Create fixture templates and add to CI/CD
-

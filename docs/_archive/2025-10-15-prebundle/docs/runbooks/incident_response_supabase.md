@@ -6,12 +6,15 @@ last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-15
 ---
+
 # Incident Response Runbook — Supabase Decision Logging
 
 ## Purpose
+
 Provide a dedicated playbook for outages, integrity failures, or breaches affecting the Supabase-backed decision logging service. Align response with HotDash privacy commitments, GDPR/CCPA timelines, and operator control center audit requirements.
 
 ## Scope
+
 - Supabase database storing decision logs and analytics mirrors for Operator Control Center.
 - Service key leakage, RLS misconfiguration, or unauthorized access to decision log tables.
 - Data loss or replication failures that compromise audit completeness or retention obligations.
@@ -20,6 +23,7 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
 ---
 
 ## Current Exposure Summary — 2025-10-15
+
 - 2025-10-15T19:45Z — Re-verified pg_cron evidence bundle (`docs/compliance/evidence/retention_runs/2025-10-13_pg_cron/`) with SHA256 hashes logged in `pg_cron_hash_register_2025-10-13.md`.
 - 2025-10-15T19:00Z — Completed incident tabletop; summary + action items stored under `docs/compliance/evidence/supabase/tabletop_20251015/`.
 - 2025-10-10T19:26Z — Analyzer rerun on restored DecisionLog export (`artifacts/logs/supabase_decision_log_export_2025-10-10T14-50-23Z.ndjson`); summary archived at `artifacts/monitoring/supabase-sync-summary-2025-10-10T19-26-50-307Z.json` (0 records, failure rate 0, awaiting Supabase repopulation).
@@ -38,6 +42,7 @@ Provide a dedicated playbook for outages, integrity failures, or breaches affect
 ---
 
 ## Response Team & Contacts
+
 - **Compliance Lead (Incident Manager)** — Owns regulatory assessment, evidence capture, and stakeholder comms (`docs/directions/compliance.md`).
 - **Reliability On-Call** — Executes key rotation, access lockdown, and restoration tasks (`docs/directions/reliability.md`).
 - **Support Liaison** — Coordinates operator/merchant messaging and tracks inbound reports (`docs/directions/support.md`).
@@ -48,6 +53,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Prerequisites & Reference Docs
+
 - Architecture overview: `docs/compliance/data_inventory.md` (Supabase section) and `docs/runbooks/prisma_staging_postgres.md` (connection handling).
 - Retention plan + cron design: `docs/compliance/retention_automation_plan.md`.
 - Purge tooling: `scripts/ops/purge-dashboard-data.ts`, npm script `ops:purge-dashboard-data`.
@@ -57,6 +63,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Detection & Triage (T+0 – T+30 minutes)
+
 1. **Trigger Sources**
    - Reliability alerts from Supabase (status page, webhook, or Grafana).
    - Application logs surfacing sync failures (`supabase.decisionSync`, `supabase.analyticsSync`).
@@ -76,6 +83,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Containment (T+30 – T+90 minutes)
+
 1. **Secure Credentials**
    - Reliability rotates Supabase service key + anon key; update GitHub `SUPABASE_SERVICE_KEY` secret and workstation `.env` where stored.
    - Regenerate JWT secret if compromised; document rotation evidence in incident folder.
@@ -90,6 +98,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Investigation & Impact Analysis (T+90 minutes – T+6 hours)
+
 1. **Data Integrity Review**
    - Run differential queries comparing Prisma primary DB and Supabase mirror to identify missing or altered rows.
    - Validate purge cron job evidence to ensure retention windows were honored.
@@ -105,6 +114,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Communication (T+6 – T+24 hours)
+
 1. **Internal**
    - Hourly updates in incident log; include containment status and outstanding actions.
    - Brief manager + leadership with summary, severity, and ETA to recovery.
@@ -120,6 +130,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Recovery (T+24 – T+48 hours)
+
 1. Restore service writes after:
    - Integrity verification queries pass.
    - Rotated credentials deployed across environments.
@@ -131,6 +142,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Post-Incident (Within 5 business days)
+
 1. Produce postmortem in incident evidence folder summarizing timeline, root cause, remediation, and lessons learned.
 2. Update relevant artifacts:
    - Data inventory + retention plan for any schema or process changes.
@@ -142,6 +154,7 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 ---
 
 ## Preparedness Checklist (Weekly)
+
 - [ ] Confirm Supabase cron jobs succeeded; file logs in `docs/compliance/evidence/retention_runs/`.
 - [ ] Validate backups (`pg_dump`, object storage) and restore samples quarterly.
 - [ ] Review Supabase role/RLS configuration for least privilege.
@@ -151,5 +164,6 @@ Store contact rotation and escalation order in the shared on-call sheet; update 
 Escalate any unchecked item to manager with remediation ETA.
 
 ## Verification - 2025-10-11
+
 - Tabletop drill: docs/compliance/evidence/tabletop_supabase_2025-10-11.md
 - Retention hash register: docs/compliance/evidence/pg_cron_hash_register_2025-10-11.md

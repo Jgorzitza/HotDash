@@ -9,6 +9,7 @@
 The HTTP wrapper had a **concurrency bug** that caused the RED connection status:
 
 ### Root Cause
+
 - The wrapper tried to reuse a single MCP subprocess for all requests
 - When Cursor made multiple simultaneous requests (which it does during initialization), they all tried to read/write to the same stdin/stdout
 - This caused race conditions: `"readuntil() called while another coroutine is already waiting for incoming data"`
@@ -19,7 +20,9 @@ The HTTP wrapper had a **concurrency bug** that caused the RED connection status
 ## Solution Implemented
 
 ### Changed Architecture
+
 **Before**: Single shared subprocess (concurrent requests conflicted)
+
 ```
 Request 1 ──┐
 Request 2 ──┼──> Single MCP Process ──> Race conditions!
@@ -27,6 +30,7 @@ Request 3 ──┘
 ```
 
 **After**: Each request gets its own isolated subprocess
+
 ```
 Request 1 ──> MCP Process 1 ──> Clean response
 Request 2 ──> MCP Process 2 ──> Clean response
@@ -43,19 +47,22 @@ Request 3 ──> MCP Process 3 ──> Clean response
 ## Verification
 
 ### ✅ Single Request Test
+
 ```bash
 curl -X POST https://hotdash-analytics-mcp.fly.dev/mcp \
   -H "Authorization: Bearer <token>" \
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize",...}'
-  
+
 Response: ✅ {"jsonrpc":"2.0","id":1,"result":{...}}
 ```
 
 ### ✅ Logs Clean
+
 **Before**: Multiple "readuntil() called while another coroutine is already waiting" errors  
 **After**: No concurrency errors, clean startup
 
 ### ✅ Deployment Status
+
 - **Version**: 5 (deployment-01K7ACXQMCZDEZC5KVF2VSS4KG)
 - **Health Checks**: Passing
 - **Region**: ord (Chicago)
@@ -64,15 +71,19 @@ Response: ✅ {"jsonrpc":"2.0","id":1,"result":{...}}
 ## Testing in Cursor
 
 ### 1. Restart Cursor
+
 The new server version is deployed. Restart Cursor to reconnect.
 
 ### 2. Expected Behavior
+
 - ✅ **No RED connection** - Should show green/connected
 - ✅ **Tools visible** - All 6 Google Analytics tools should appear
 - ✅ **Fast responses** - First request ~10 seconds (auto-start), then fast
 
 ### 3. Sample Test
+
 After restarting, type:
+
 ```
 Using the google-analytics MCP server, get my account summaries
 ```
@@ -82,12 +93,14 @@ You should see a clean response with your GA properties listed.
 ## Performance Notes
 
 ### Subprocess Overhead
+
 - Each request spawns a new subprocess
 - **Startup time**: ~1-2 seconds per request
 - **Trade-off**: Slightly slower, but 100% reliable
 - For analytics queries, this overhead is acceptable
 
 ### Auto-Stop Behavior
+
 - Server still auto-stops after idle (~5 minutes)
 - First request after auto-stop: ~10-15 seconds (machine + subprocess start)
 - Subsequent requests: ~1-2 seconds (just subprocess start)
@@ -107,4 +120,3 @@ You should see a clean response with your GA properties listed.
 ---
 
 **Fix deployed and verified**: Connection issues resolved, ready for testing! 🎉
-

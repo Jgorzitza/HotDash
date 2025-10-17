@@ -20,8 +20,8 @@ export interface HotDashEnvironmentConfig {
  * Throws if required environment variables are missing
  */
 export function getEnvironmentConfig(): HotDashEnvironmentConfig {
-  const nodeEnv = process.env.NODE_ENV || 'development';
-  
+  const nodeEnv = process.env.NODE_ENV || "development";
+
   // Required environment variables
   const shopifyApiKey = process.env.SHOPIFY_API_KEY;
   const shopifyApiSecret = process.env.SHOPIFY_API_SECRET;
@@ -29,30 +29,30 @@ export function getEnvironmentConfig(): HotDashEnvironmentConfig {
   const scopes = process.env.SCOPES;
 
   if (!shopifyApiKey) {
-    throw new Error('SHOPIFY_API_KEY environment variable is required');
+    throw new Error("SHOPIFY_API_KEY environment variable is required");
   }
 
   if (!shopifyApiSecret) {
-    throw new Error('SHOPIFY_API_SECRET environment variable is required');
+    throw new Error("SHOPIFY_API_SECRET environment variable is required");
   }
 
   if (!shopifyAppUrl) {
-    throw new Error('SHOPIFY_APP_URL environment variable is required');
+    throw new Error("SHOPIFY_APP_URL environment variable is required");
   }
 
   if (!scopes) {
-    throw new Error('SCOPES environment variable is required');
+    throw new Error("SCOPES environment variable is required");
   }
 
   return {
     shopifyApiKey,
     shopifyApiSecret,
     shopifyAppUrl,
-    scopes: scopes.split(',').map(s => s.trim()),
+    scopes: scopes.split(",").map((s) => s.trim()),
     nodeEnv,
-    isDevelopment: nodeEnv === 'development',
-    isProduction: nodeEnv === 'production',
-    isTest: nodeEnv === 'test',
+    isDevelopment: nodeEnv === "development",
+    isProduction: nodeEnv === "production",
+    isTest: nodeEnv === "test",
     customShopDomain: process.env.SHOP_CUSTOM_DOMAIN,
   };
 }
@@ -63,10 +63,10 @@ export function getEnvironmentConfig(): HotDashEnvironmentConfig {
  */
 export function isMockMode(request: Request): boolean {
   const url = new URL(request.url);
-  const mockParam = url.searchParams.get('mock');
-  const isTestEnv = process.env.NODE_ENV === 'test';
-  
-  return mockParam === '1' || isTestEnv;
+  const mockParam = url.searchParams.get("mock");
+  const isTestEnv = process.env.NODE_ENV === "test";
+
+  return mockParam === "1" || isTestEnv;
 }
 
 /**
@@ -75,13 +75,13 @@ export function isMockMode(request: Request): boolean {
  */
 export function getAppUrl(request?: Request): string {
   const config = getEnvironmentConfig();
-  
+
   if (config.isDevelopment && request) {
     // In development, use the request origin
     const url = new URL(request.url);
     return `${url.protocol}//${url.host}`;
   }
-  
+
   return config.shopifyAppUrl;
 }
 
@@ -90,8 +90,8 @@ export function getAppUrl(request?: Request): string {
  * Supports both legacy /api/auth and new /auth/callback patterns
  */
 export function getAuthRedirectUrls(baseUrl?: string): string[] {
-  const base = baseUrl || process.env.SHOPIFY_APP_URL || 'https://example.com';
-  
+  const base = baseUrl || process.env.SHOPIFY_APP_URL || "https://example.com";
+
   return [
     `${base}/auth/callback`,
     `${base}/api/auth`, // Legacy support

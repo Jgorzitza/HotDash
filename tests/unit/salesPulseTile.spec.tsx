@@ -13,7 +13,12 @@ const summary = {
     { sku: "SKU2", title: "Gadget", quantity: 3, revenue: 300 },
   ],
   pendingFulfillment: [
-    { orderId: "1", name: "#1001", displayStatus: "UNFULFILLED", createdAt: new Date().toISOString() },
+    {
+      orderId: "1",
+      name: "#1001",
+      displayStatus: "UNFULFILLED",
+      createdAt: new Date().toISOString(),
+    },
   ],
   generatedAt: new Date().toISOString(),
 };
@@ -28,6 +33,8 @@ describe("SalesPulseTile", () => {
   it("renders modal trigger when enabled", () => {
     render(<SalesPulseTile summary={summary} enableModal />);
 
-    expect(screen.getByRole("button", { name: /view details/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /view details/i }),
+    ).toBeInTheDocument();
   });
 });

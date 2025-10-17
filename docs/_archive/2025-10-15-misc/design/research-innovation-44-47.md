@@ -37,12 +37,14 @@ created: 2025-10-11
    - Learnings: Operator-specific features needed
 
 **HotDash Competitive Advantages**:
+
 - ✅ Polaris design (matches Shopify Admin)
 - ✅ AI agent integration (unique)
 - ✅ Real-time approvals (faster than competitors)
 - ✅ Accessibility-first (WCAG 2.2 AA)
 
 **Opportunities**:
+
 - Add keyboard shortcuts (like Intercom)
 - Add customization (like Freshdesk)
 - Improve onboarding (simpler than HubSpot)
@@ -52,6 +54,7 @@ created: 2025-10-11
 ## Task 45: Future-State Concepts (AI-First)
 
 **Concept 1: Proactive Agent Suggestions**
+
 ```
 Instead of waiting for approval:
 → Agent shows confidence score
@@ -61,6 +64,7 @@ Instead of waiting for approval:
 ```
 
 **Concept 2: Natural Language Dashboard**
+
 ```
 Operator types: "Show me approvals from Order Support with high risk"
 → Dashboard filters automatically
@@ -68,6 +72,7 @@ Operator types: "Show me approvals from Order Support with high risk"
 ```
 
 **Concept 3: Predictive Escalations**
+
 ```
 AI predicts which conversations will escalate
 → Proactive notifications
@@ -76,6 +81,7 @@ AI predicts which conversations will escalate
 ```
 
 **Concept 4: Automated Workflow Routing**
+
 ```
 Agent determines best operator based on:
 → Expertise (who handles this topic best)
@@ -88,6 +94,7 @@ Agent determines best operator based on:
 ## Task 46: Operator Journey Maps
 
 **Journey 1: Morning Routine**
+
 ```
 8:00 AM - Login → View dashboard
 8:02 AM - Check AI Agent Pulse (3 new approvals)
@@ -99,6 +106,7 @@ Agent determines best operator based on:
 ```
 
 **Journey 2: Approval Flow**
+
 ```
 Notification arrives → "New approval needed"
 Click notification → Open approval queue
@@ -109,6 +117,7 @@ Return to work → Queue badge updates
 ```
 
 **Journey 3: Training Data Review**
+
 ```
 Weekly task → Review 20 agent responses
 Open training queue → Filter unrated
@@ -119,6 +128,7 @@ Complete 20 → Export for AI team
 ```
 
 **Journey 4: Performance Monitoring**
+
 ```
 End of day → Check agent metrics
 View approval rate → 87% (good)
@@ -132,6 +142,7 @@ Adjust agent permissions if needed
 ## Task 47: Gamification and Engagement
 
 **Operator Leaderboard** (optional, for larger teams):
+
 ```typescript
 <Card>
   <BlockStack gap="400">
@@ -146,17 +157,19 @@ Adjust agent permissions if needed
 ```
 
 **Achievement Badges**:
+
 - 🏃 Speed Demon: <2 min avg response time
 - 🎯 Accuracy Expert: >95% approval rate
 - 📚 Trainer: 50+ training samples rated
 - 🚀 Early Bird: First approval of the day
 
 **Progress Indicators**:
+
 ```typescript
 <Card>
   <BlockStack gap="300">
     <Text variant="bodyMd">Your Stats Today:</Text>
-    <ProgressBar progress={75} /> 
+    <ProgressBar progress={75} />
     <Text variant="bodySm" tone="subdued">
       15 of 20 daily goal (75%)
     </Text>
@@ -165,6 +178,7 @@ Adjust agent permissions if needed
 ```
 
 **Weekly Challenges** (optional):
+
 - "Reduce avg response time by 10%"
 - "Maintain >90% approval rate"
 - "Rate 30 training samples"
@@ -174,4 +188,3 @@ Adjust agent permissions if needed
 ---
 
 **All 4 Research & Innovation tasks complete**
-

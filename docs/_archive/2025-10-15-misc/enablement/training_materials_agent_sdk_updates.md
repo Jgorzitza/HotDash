@@ -27,11 +27,13 @@ As of 2025-10-11, HotDash has introduced the **Agent SDK Approval Queue** - a co
 ### What Changed
 
 **Before Agent SDK:**
+
 - Operators manually searched knowledge base
 - Operators wrote all responses from scratch
 - Limited AI assistance (template suggestions only)
 
 **After Agent SDK:**
+
 - AI agents analyze customer inquiries
 - AI retrieves relevant knowledge base articles
 - AI prepares draft responses with confidence scores
@@ -41,6 +43,7 @@ As of 2025-10-11, HotDash has introduced the **Agent SDK Approval Queue** - a co
 ### Training Materials Impact
 
 Existing training materials need updates to:
+
 1. Explain the Agent SDK approval queue workflow
 2. Incorporate the 5-Question decision framework
 3. Update escalation procedures
@@ -104,9 +107,11 @@ Existing training materials need updates to:
 
 ```markdown
 ### 3.5 Agent SDK Approval Queue Workflow (30 minutes)
+
 **Objective:** Master the AI-assisted approval workflow for efficient customer support
 
 **New Materials Referenced:**
+
 - [Agent SDK Operator Training Module](../enablement/agent_sdk_operator_training_module.md) - Complete guide
 - [Approval Queue Quick Start](../enablement/approval_queue_quick_start.md) - One-page reference
 - [Approval Queue FAQ](../enablement/approval_queue_faq.md) - Common questions
@@ -114,12 +119,14 @@ Existing training materials need updates to:
 **Walkthrough:**
 
 **3.5.1 Introduction to Agent SDK (5 min)**
+
 - What is the approval queue and why we use it
 - Benefits: More time for complex issues, less time on repetitive tasks
 - Human-in-the-loop philosophy: AI suggests, you decide
 - How your decisions teach the AI
 
 **3.5.2 Approval Queue Interface Tour (5 min)**
+
 - Accessing the approval queue (route: `/app/approvals`)
 - Queue overview: Pending count, filters, stats dashboard
 - Individual approval cards: Structure and components
@@ -128,6 +135,7 @@ Existing training materials need updates to:
 
 **3.5.3 The 5-Question Framework (5 min)**
 Teach operators to evaluate every approval using:
+
 1. **Accuracy** - Is all information correct?
 2. **Completeness** - Are all questions answered?
 3. **Tone** - Is it friendly, professional, empathetic?
@@ -138,26 +146,32 @@ Teach operators to evaluate every approval using:
 
 **Demo 1: Standard Approval (High Confidence)**
 ```
+
 Customer: "Where is my order #12345?"
 AI Draft (95% confidence): [Accurate order status with tracking]
 Action: Walk through 5-Question Framework → Approve
 Result: Show response sent to customer immediately
+
 ```
 
 **Demo 2: Edit & Approve (Medium Confidence)**
 ```
+
 Customer: "I got the wrong item and I'm frustrated!"
 AI Draft (78% confidence): [Correct info but lacks empathy]
 Action: Show how to edit for warmth → Approve edited version
 Result: Demonstrate how system learns from edits
+
 ```
 
 **Demo 3: Escalation (High Risk)**
 ```
+
 Customer: "Charged me 3× for same order! Disputing with bank!"
 AI Draft (68% confidence): [Generic response]
 Action: Identify red flags → Escalate with detailed notes
 Result: Show manager notification and next steps
+
 ```
 
 **3.5.5 Hands-On Practice (5 min)**
@@ -193,8 +207,10 @@ Result: Show manager notification and next steps
 #### Updates to Existing Sections
 
 **Section 1: Introduction - Add:**
+
 ```markdown
 **Agent SDK Approval Queue:**
+
 - AI-powered draft response system with human approval
 - Reduces time on routine tasks, increases time on complex issues
 - Continuous learning system that improves from operator decisions
@@ -202,8 +218,10 @@ Result: Show manager notification and next steps
 ```
 
 **Section 3: CX Escalations Deep Dive - Update:**
+
 ```markdown
 **Integration with Approval Queue:**
+
 - CX escalations now appear in both the dashboard tile AND the approval queue
 - High-priority escalations route through approval queue for faster handling
 - AI pre-analyzes conversations and suggests appropriate templates
@@ -211,14 +229,17 @@ Result: Show manager notification and next steps
 - Manual Chatwoot access still available for complex cases
 
 **Approval Queue vs. Manual Handling:**
+
 - Use approval queue for: Order status, policy questions, routine issues
 - Use manual Chatwoot for: Emotionally charged situations, highly complex issues, special customer relationships
 - Hybrid approach is encouraged - use the tool that fits the situation
 ```
 
 **Section 8: Metrics & Success Criteria - Add:**
+
 ```markdown
 **Agent SDK Approval Queue Metrics:**
+
 - **Approval Rate:** Target 70%+ (shows AI is learning your preferences)
 - **Edit Rate:** Percentage of drafts you improve before approving
 - **Rejection Rate:** Percentage of drafts discarded (should be low ~1-2%)
@@ -228,6 +249,7 @@ Result: Show manager notification and next steps
 - **Customer Satisfaction:** Still #1 most important metric (4.5+/5.0)
 
 **Metric Shift:**
+
 - Less emphasis on: Raw response volume, typing speed
 - More emphasis on: Decision quality, customer satisfaction, appropriate escalations
 ```
@@ -254,6 +276,7 @@ Result: Show manager notification and next steps
 5. **System logs** → Decision recorded in Supabase for audit trail
 
 **When to use approval queue vs. direct Chatwoot:**
+
 - **Approval queue:** Routine inquiries (order status, policy questions, tracking)
 - **Direct Chatwoot:** Complex emotional situations, special relationships, issues requiring extensive back-and-forth
 
@@ -294,6 +317,7 @@ Result: Show manager notification and next steps
 **Scenario**: AI has prepared a draft response for operator approval
 
 **Steps**:
+
 1. **Access approval queue** at `/app/approvals`
 2. **Review pending items** sorted by age (oldest first)
 3. **Open approval card** to see full details
@@ -319,36 +343,45 @@ Result: Show manager notification and next steps
 
 **Approve:**
 ```
+
 Customer: "Where is order #123?"
 AI (95% conf): "Hi! Order #123 shipped Oct 8 via FedEx..."
 Assessment: ✅✅✅✅✅ All checks pass
 Action: Approve & Execute
+
 ```
 
 **Edit & Approve:**
 ```
+
 Customer: "Wrong item sent! Very frustrated!"
 AI (78% conf): "You can return per our policy..."
 Assessment: Accurate but lacks empathy ⚠️
 Edit: Add apology, urgency, expedited solution
 Action: Approve & Execute (edited)
+
 ```
 
 **Reject:**
 ```
+
 Customer: "Can I return after 20 days?"
 AI (85% conf): "Policy is 14 days..." [WRONG - policy is 30 days]
 Assessment: Factually incorrect ❌
 Action: Reject with notes, write correct response
+
 ```
 
 **Escalate:**
 ```
+
 Customer: "Charged 3× - $1,350! Calling bank!"
 AI (68% conf): "Contact billing@..."
 Assessment: High-value + threats ⚠️⚠️⚠️
 Action: Escalate to manager (15-min SLA)
+
 ```
+
 ```
 
 ---
@@ -365,6 +398,7 @@ Action: Escalate to manager (15-min SLA)
 ### Complete Training Package (Created 2025-10-11)
 
 **Core Training Modules:**
+
 1. **[Agent SDK Operator Training Module](./agent_sdk_operator_training_module.md)** (20-25 min)
    - Complete training guide for approval queue workflow
    - 5-Question Framework detailed explanation
@@ -393,16 +427,19 @@ Action: Escalate to manager (15-min SLA)
 ### Training Path for Operators
 
 **Pre-Session (Self-Paced):**
+
 1. Watch 4 Loom modules (18m 25s total)
 2. Read Quick Start Guide (5 minutes)
 3. Review FAQ - Top 10 questions (10 minutes)
 
 **Live Session (90 minutes):**
+
 1. Agent SDK overview and demos (30 minutes)
 2. Hands-on practice with scenarios (45 minutes)
 3. Q&A and feedback (15 minutes)
 
 **Post-Session (Weeks 1-4):**
+
 1. Supervised practice (Week 1)
 2. Independent with support (Week 2)
 3. Fully independent (Week 3+)
@@ -414,26 +451,32 @@ Action: Escalate to manager (15-min SLA)
 
 **Easy: Order Status**
 ```
+
 Customer: "Where is order #12345?"
 AI (95%): Accurate tracking info + friendly tone
 Task: Quick review and approve
 Goal: Build confidence
+
 ```
 
 **Medium: Needs Editing**
 ```
+
 Customer: "Wrong item! Event Saturday!"
 AI (78%): Correct process, lacks empathy/urgency
 Task: Edit to add warmth and expedited solution
 Goal: Practice improving drafts
+
 ```
 
 **Hard: Escalation Required**
 ```
+
 Customer: "Charged 3x! $1,350! Legal action!"
 AI (68%): Generic billing redirect
 Task: Identify red flags and escalate
 Goal: Practice urgent escalations
+
 ```
 
 **Integration Points:**
@@ -464,17 +507,20 @@ Goal: Practice urgent escalations
 
 **Operator Testimonials to Highlight:**
 [To be collected after 2-4 weeks of use]
+
 - "I used to spend 60% of my time searching for policy information. Now I spend that time actually helping customers."
 - "The approval queue lets me handle twice as many routine inquiries, which means I have more time for the really challenging cases."
 - "I love that I can quickly review AI suggestions but always have final say. It's the best of both worlds."
 
 **Key Messages:**
+
 - Human-in-the-loop approach: AI suggests, operators decide
 - Quality over speed: Operators take time needed for good decisions
 - Continuous improvement: System learns from operator expertise
 - Empowerment, not replacement: Operators' roles become more valuable
 
 **Addressing Concerns:**
+
 - Q: "Will AI replace operators?"
   A: "No. AI handles repetitive tasks so operators can focus on complex, high-value work that requires human judgment."
 
@@ -501,43 +547,53 @@ Created: 2025-10-11
 Status: ✅ Production-ready
 
 ### Module 1: OCC Overview & Architecture (5m 47s)
+
 **URL:** https://loom.com/share/module1-occ-overview
 **Content Highlights:**
+
 - Dashboard overview and value proposition
 - Agent SDK approval queue introduction
 - Chatwoot-on-Supabase architecture
 - React Router 7 + Shopify CLI v3 workflow
-**Target Audience:** All operators, first module to watch
+  **Target Audience:** All operators, first module to watch
 
 ### Module 2: Customer Lifecycle Management (3m 52s)
+
 **URL:** https://loom.com/share/module2-customer-lifecycle
 **Content Highlights:**
+
 - CX escalations tile deep dive
 - Decision logging and audit trails
 - Template selection and approval workflow
-**Target Audience:** All operators, focus on CX
+  **Target Audience:** All operators, focus on CX
 
 ### Module 3: Sales Pulse Integration (4m 58s)
+
 **Content Highlights:**
+
 - Sales metrics and KPIs
 - Cross-functional data visibility
 - Decision logging for sales actions
-**Target Audience:** Operators who handle sales inquiries
+  **Target Audience:** Operators who handle sales inquiries
 
 ### Module 4: Troubleshooting & Support (3m 48s)
+
 **URL:** https://loom.com/share/module4-troubleshooting
 **Content Highlights:**
+
 - Common approval queue issues
 - Escalation procedures
 - Support resources and contacts
-**Target Audience:** All operators, reference module
+  **Target Audience:** All operators, reference module
 
 **Distribution:**
+
 - Available via customer.support@hotrodan.com
 - Also in internal training portal
 - All operators should complete before using approval queue
 
 **Success Metrics:**
+
 - Target: >80% operator completion before first shift
 - Goal: <3 architecture questions during dry-run session
 ```
@@ -580,6 +636,7 @@ Status: ✅ Production-ready
 ### Training Materials Summary
 
 **Total New Content Created:**
+
 - 4 comprehensive training documents
 - 8 demo scenarios with solutions
 - 8 practice exercises with answer keys
@@ -588,6 +645,7 @@ Status: ✅ Production-ready
 - Multiple quick reference materials
 
 **Total Training Time:**
+
 - Self-paced reading: ~60 minutes
 - Loom videos: 18 minutes 25 seconds
 - Live dry-run session: 90 minutes
@@ -685,24 +743,28 @@ Status: ✅ Production-ready
 ### Training Materials Are Successfully Updated When:
 
 ✅ **Completeness:**
+
 - All existing training documents reference Agent SDK
 - No conflicting information between old and new materials
 - Operators can find answers to all common questions
 - Clear pathways from one document to another
 
 ✅ **Clarity:**
+
 - Operators understand when to use approval queue vs. manual handling
 - 5-Question Framework is consistently explained across materials
 - Escalation procedures are clear and unambiguous
 - Examples are realistic and helpful
 
 ✅ **Accessibility:**
+
 - All materials follow consistent format
 - Cross-references work correctly
 - Print-friendly versions available
 - Mobile-accessible where appropriate
 
 ✅ **Effectiveness:**
+
 - **80%+** operators complete pre-training successfully
 - **4+/5** operator confidence rating after training
 - **<10** questions during dry-run that indicate training gaps
@@ -715,18 +777,21 @@ Status: ✅ Production-ready
 ### Ongoing Responsibilities
 
 **Enablement Team:**
+
 - Monitor operator questions and update FAQ monthly
 - Collect feedback after each training session
 - Update scenarios based on real-world examples
 - Maintain cross-references between documents
 
 **Support Lead:**
+
 - Review operator performance and identify training needs
 - Suggest scenario updates based on common issues
 - Validate technical accuracy of all materials
 - Approve all major changes
 
 **Product Team:**
+
 - Alert Enablement to feature changes
 - Provide roadmap for upcoming capabilities
 - Review materials for technical accuracy
@@ -744,16 +809,19 @@ Status: ✅ Production-ready
 ## Contact & Support
 
 **Questions About Updates:**
+
 - **Slack:** #occ-enablement
 - **Email:** customer.support@hotrodan.com
 - **Owner:** Enablement Team
 
 **Suggest Improvements:**
+
 - Submit via #occ-enablement Slack channel
 - Email specific suggestions with examples
 - Participate in weekly knowledge sharing
 
 **Request Training:**
+
 - Contact your manager for scheduling
 - Additional one-on-one coaching available
 - Refresher sessions offered quarterly
@@ -768,10 +836,10 @@ Status: ✅ Production-ready
 ---
 
 **Related Documents:**
+
 - [Agent SDK Operator Training Module](./agent_sdk_operator_training_module.md)
 - [Approval Queue Quick Start Guide](./approval_queue_quick_start.md)
 - [Approval Queue FAQ](./approval_queue_faq.md)
 - [Internal Dry-Run Session Guide](./internal_dry_run_session_guide.md)
 - [Operator Training Agenda](../runbooks/operator_training_agenda.md)
 - [Operator Training QA Template](../runbooks/operator_training_qa_template.md)
-

@@ -11,6 +11,7 @@
 ### 1. Operator Selection
 
 **Pilot Operators Criteria:**
+
 - [ ] 2+ months experience (familiar with Chatwoot and policies)
 - [ ] Strong performers (representative of capable operators)
 - [ ] Mix of experience levels (some newer, some veterans)
@@ -20,11 +21,12 @@
 **Recommended Pilot Size:** 5-10 operators
 
 **Selected Operators:**
-- [ ] Operator 1: _______________ (experience: ____)
-- [ ] Operator 2: _______________ (experience: ____)
-- [ ] Operator 3: _______________ (experience: ____)
-- [ ] Operator 4: _______________ (experience: ____)
-- [ ] Operator 5: _______________ (experience: ____)
+
+- [ ] Operator 1: ******\_\_\_****** (experience: \_\_\_\_)
+- [ ] Operator 2: ******\_\_\_****** (experience: \_\_\_\_)
+- [ ] Operator 3: ******\_\_\_****** (experience: \_\_\_\_)
+- [ ] Operator 4: ******\_\_\_****** (experience: \_\_\_\_)
+- [ ] Operator 5: ******\_\_\_****** (experience: \_\_\_\_)
 
 ---
 
@@ -33,22 +35,26 @@
 **For Each Pilot Operator:**
 
 **Shopify Admin Access:**
+
 - [ ] Operator has Shopify Admin login
 - [ ] Permissions verified (can access HotDash app)
 - [ ] Test login successful
 
 **Approval Queue Access:**
+
 - [ ] Operator can navigate to `/app/approvals`
 - [ ] Queue loads without errors
 - [ ] Can see pending approvals (if any)
 - [ ] Buttons functional (test in demo mode if available)
 
 **Chatwoot Access:**
+
 - [ ] Existing Chatwoot access confirmed
 - [ ] Can still handle manual conversations
 - [ ] Integration between queue and Chatwoot working
 
 **Slack Access:**
+
 - [ ] Added to #occ-enablement channel
 - [ ] Added to #support-questions (if not already)
 - [ ] Knows how to reach Support Manager
@@ -73,7 +79,7 @@ Subject: Agent SDK Approval Queue Pilot - You're Invited!
 Hi [Name],
 
 You've been selected to participate in the Agent SDK approval queue pilot!
-This is exciting - you'll be among the first to use our new AI-assisted 
+This is exciting - you'll be among the first to use our new AI-assisted
 workflow.
 
 WHAT IS IT:
@@ -123,6 +129,7 @@ Support Manager
 ### 4. Training Session Logistics
 
 **Schedule:**
+
 - [ ] Date/time selected (after UI is live)
 - [ ] Calendar invites sent
 - [ ] Zoom/Teams meeting created
@@ -130,6 +137,7 @@ Support Manager
 - [ ] Co-facilitator identified (backup)
 
 **Materials Prepared:**
+
 - [ ] Session outline finalized
 - [ ] Demo environment tested
 - [ ] Quick Start Guides printed
@@ -137,6 +145,7 @@ Support Manager
 - [ ] Backup plan if tech fails
 
 **Attendance:**
+
 - [ ] All pilot operators confirmed
 - [ ] Support Manager attending
 - [ ] Optional: Product team observer
@@ -181,6 +190,7 @@ See you tomorrow!
 ### Immediately After Training
 
 **Facilitator:**
+
 - [ ] Send recording link to all operators
 - [ ] Send follow-up email with resources
 - [ ] Post summary in #occ-enablement Slack
@@ -226,11 +236,13 @@ You've got this!
 ### Day 1 of Pilot
 
 **Morning:**
+
 - [ ] Send encouragement message: "Today's the day! Remember your Quick Start Guide is there if you need it."
 - [ ] Monitor for any immediate technical issues
 - [ ] Be available in Slack for quick questions
 
 **End of Day:**
+
 - [ ] 15-minute check-in (Zoom or Slack)
 - [ ] Questions: How did it go? Confusing moments? Technical issues?
 - [ ] Log feedback for analysis
@@ -241,6 +253,7 @@ You've got this!
 ### Day 3 of Pilot
 
 **Mid-Week Check:**
+
 - [ ] 15-minute group check-in
 - [ ] Any patterns in questions/confusion?
 - [ ] Technical issues resolved?
@@ -252,6 +265,7 @@ You've got this!
 ### End of Week 1
 
 **30-Minute Feedback Session:**
+
 - [ ] What's working well?
 - [ ] What's confusing or frustrating?
 - [ ] What additional training would help?
@@ -259,6 +273,7 @@ You've got this!
 - [ ] Collect suggestions for improvements
 
 **Document:**
+
 - [ ] Log all feedback in feedback/enablement.md
 - [ ] Identify training gaps
 - [ ] Plan adjustments if needed
@@ -271,12 +286,14 @@ You've got this!
 ### Weekly Check-Ins
 
 **Week 2:**
+
 - [ ] Operators still engaged?
 - [ ] Approval rate reasonable (70-80% expected)?
 - [ ] Escalations appropriate?
 - [ ] Any drop-off in usage?
 
 **Week 3-4:**
+
 - [ ] Confidence level stable or improving?
 - [ ] Questions decreasing (learning curve)?
 - [ ] Ready to expand to more operators?
@@ -286,6 +303,7 @@ You've got this!
 ### End-of-Pilot Assessment
 
 **Operator Survey:**
+
 ```
 1. How confident do you feel using the approval queue? (1-5)
 2. Was the 30-min training sufficient? (Yes/No/Needs more)
@@ -297,6 +315,7 @@ You've got this!
 ```
 
 **Usage Metrics:**
+
 - [ ] How many approvals per operator per day?
 - [ ] Approval rate (how many approved vs rejected)?
 - [ ] Escalation rate (appropriate or over/under escalating)?
@@ -304,6 +323,7 @@ You've got this!
 - [ ] Customer satisfaction impact?
 
 **Decision:**
+
 - [ ] Expand to all operators?
 - [ ] Need more training first?
 - [ ] What from Tasks 4-42 should we activate?
@@ -314,6 +334,7 @@ You've got this!
 ## Success Criteria
 
 **Pilot is Successful If:**
+
 - ✅ 80%+ operators feel confident using queue
 - ✅ <5 questions per operator about basics
 - ✅ Operators using queue regularly (not avoiding it)
@@ -322,6 +343,7 @@ You've got this!
 - ✅ Feedback is positive or constructively critical
 
 **Indicates Need for Adjustment:**
+
 - ⚠️ Operators avoiding queue (prefer manual)
 - ⚠️ Frequent confusion about basic workflow
 - ⚠️ Over-escalating (>20%) or under-escalating (<5%)
@@ -333,6 +355,7 @@ You've got this!
 ## Evidence Collection
 
 **Document Everything:**
+
 - [ ] Operator questions (type, frequency)
 - [ ] Technical issues (what, when, resolved how)
 - [ ] Feedback themes (what's working, what's not)
@@ -340,6 +363,7 @@ You've got this!
 - [ ] Escalation patterns (appropriate or not)
 
 **Use Evidence To:**
+
 - Determine if Quick Start Guide needs updates
 - Decide if additional training needed
 - Identify which paused materials (Tasks 4-42) to activate
@@ -350,12 +374,14 @@ You've got this!
 ## Post-Pilot Next Steps (Evidence-Based)
 
 **If Pilot is Successful:**
+
 - [ ] Expand to all operators (schedule training sessions)
 - [ ] Activate needed materials from Tasks 4-42
 - [ ] Create any additional training based on feedback
 - [ ] Plan full rollout
 
 **If Pilot Needs Adjustment:**
+
 - [ ] Extend pilot period
 - [ ] Add targeted training for confusion points
 - [ ] Fix technical issues
@@ -371,4 +397,3 @@ You've got this!
 **Philosophy:** Minimal training → Launch → Learn from evidence → Iterate based on reality
 
 ✅ **Simple. Practical. Evidence-Based.**
-

@@ -38,6 +38,7 @@
 ### VILT Session Structure
 
 **Session 1: Agent SDK Approval Queue Fundamentals** (90 min)
+
 ```
 AGENDA:
 00:00-00:10: Welcome, introductions, session goals
@@ -72,6 +73,7 @@ FACILITATOR TEAM:
 ---
 
 **Session 2: Advanced Escalation & Complex Scenarios** (60 min)
+
 ```
 TARGET: Operators with 2+ weeks experience
 
@@ -98,6 +100,7 @@ Result: Collaborative learning + multiple perspectives
 ### VILT Best Practices
 
 **Engagement Techniques:**
+
 - ✅ Poll every 10 minutes (maintain attention)
 - ✅ Breakout rooms for practice (active learning)
 - ✅ Chat interaction (questions welcome anytime)
@@ -105,6 +108,7 @@ Result: Collaborative learning + multiple perspectives
 - ✅ Record for replay (accommodate schedules)
 
 **Avoid:**
+
 - ❌ Lecture for 90 minutes straight (boring!)
 - ❌ No interaction (passive = low retention)
 - ❌ Too many attendees (>20 = hard to engage)
@@ -124,6 +128,7 @@ Result: Collaborative learning + multiple perspectives
 ### Blended Learning Mix
 
 **Self-Paced Online (40% of learning):**
+
 - Video modules (visual demonstration)
 - Microlearning (bite-sized concepts)
 - Reading materials (comprehensive guides)
@@ -134,6 +139,7 @@ Result: Collaborative learning + multiple perspectives
 ---
 
 **Live Virtual (30% of learning):**
+
 - VILT sessions (interactive teaching)
 - Live Q&A (clarify confusion)
 - Breakout practice (collaborative learning)
@@ -144,6 +150,7 @@ Result: Collaborative learning + multiple perspectives
 ---
 
 **Hands-On Practice (20% of learning):**
+
 - Supervised approvals (real work with mentor)
 - Role-play scenarios (practice with peers)
 - Simulation environment (safe practice space)
@@ -154,6 +161,7 @@ Result: Collaborative learning + multiple perspectives
 ---
 
 **Peer/Social Learning (10% of learning):**
+
 - Learning community discussions
 - Peer learning pods (weekly meetings)
 - Teach-to-learn sessions (operators teach topics)
@@ -166,6 +174,7 @@ Result: Collaborative learning + multiple perspectives
 ### 30-Day Blended Curriculum
 
 **Week 1: Foundation (Heavy Self-Paced + Live Kickoff)**
+
 ```
 Monday:
 ├─ Morning: VILT Kickoff (90 min live)
@@ -191,6 +200,7 @@ BLEND: 60% self-paced, 30% live, 10% hands-on
 ```
 
 **Week 2: Supervised Practice (Heavy Hands-On + Peer Learning)**
+
 ```
 Monday-Thursday:
 ├─ All day: Supervised approval handling (hands-on, 6 hours/day)
@@ -205,6 +215,7 @@ BLEND: 10% self-paced, 20% live, 60% hands-on, 10% peer
 ```
 
 **Week 3-4: Independent + Continuous (Balanced Mix)**
+
 ```
 Ongoing:
 ├─ Daily: Independent work with JIT support (as needed)
@@ -229,6 +240,7 @@ BLEND: 20% self-paced, 15% live, 50% hands-on, 15% peer
 ### LMS Requirements
 
 **Must-Have Features:**
+
 - ✅ Content hosting (video, docs, quizzes)
 - ✅ Progress tracking (per operator, per module)
 - ✅ Assessment engine (quizzes, exams, certifications)
@@ -239,6 +251,7 @@ BLEND: 20% self-paced, 15% live, 50% hands-on, 15% peer
 - ✅ SCORM compliance (if migrating content)
 
 **Nice-to-Have:**
+
 - Gamification built-in
 - Social learning features
 - AI-powered personalization
@@ -249,14 +262,14 @@ BLEND: 20% self-paced, 15% live, 50% hands-on, 15% peer
 
 ### Platform Options Evaluation
 
-| Feature | TalentLMS | Docebo | Litmos | Custom Build |
-|---------|-----------|---------|---------|--------------|
-| **Cost** | $$ | $$$ | $$$ | $$$$ |
-| **Ease of Use** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
-| **Features** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **Customization** | ⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| **Setup Time** | 2 weeks | 4-6 weeks | 4 weeks | 3-6 months |
-| **Best For** | SMB, quick start | Enterprise, full-featured | Enterprise, support focus | Full control, long-term |
+| Feature           | TalentLMS        | Docebo                    | Litmos                    | Custom Build            |
+| ----------------- | ---------------- | ------------------------- | ------------------------- | ----------------------- |
+| **Cost**          | $$               | $$$                       | $$$                       | $$$$                    |
+| **Ease of Use**   | ⭐⭐⭐⭐⭐       | ⭐⭐⭐⭐                  | ⭐⭐⭐⭐                  | ⭐⭐                    |
+| **Features**      | ⭐⭐⭐⭐         | ⭐⭐⭐⭐⭐                | ⭐⭐⭐⭐⭐                | ⭐⭐⭐⭐⭐              |
+| **Customization** | ⭐⭐⭐           | ⭐⭐⭐⭐                  | ⭐⭐⭐                    | ⭐⭐⭐⭐⭐              |
+| **Setup Time**    | 2 weeks          | 4-6 weeks                 | 4 weeks                   | 3-6 months              |
+| **Best For**      | SMB, quick start | Enterprise, full-featured | Enterprise, support focus | Full control, long-term |
 
 **Recommendation:** TalentLMS for MVP (Month 1-3), evaluate Docebo for scale (Month 6+)
 
@@ -297,21 +310,25 @@ DATA FLOW:
 ### Certification Levels (Expanded from Task 8)
 
 **Level 1: Certified Operator** 🎓
+
 - **Requirements:** 30-day onboarding complete, 85% exam, 80% practical
 - **Badge:** Bronze "Certified Operator" badge
 - **Benefits:** Independent work authorization, baseline recognition
 
 **Level 2: Senior Operator** 🥈
+
 - **Requirements:** 3 months experience, proficient-level competency, mentor 1 operator, 85% advanced exam
 - **Badge:** Silver "Senior Operator" badge
 - **Benefits:** Mentorship assignments, advanced training access, pay increase consideration
 
 **Level 3: Expert Operator** 🥇
+
 - **Requirements:** 6 months experience, expert competency, top 10% metrics, mentor 2+ operators, contribute to training, 90% expert exam
 - **Badge:** Gold "Expert Operator" badge
 - **Benefits:** Leadership opportunities, highest pay tier, expert community access
 
 **Specialty Certifications:**
+
 - 🎯 "Escalation Expert" (exceptional escalation judgment)
 - ⚡ "Speed Specialist" (<60 sec avg review time)
 - 💎 "Quality Champion" (4.9+ CSAT, 99.5%+ accuracy)
@@ -323,6 +340,7 @@ DATA FLOW:
 ### Digital Badge System
 
 **Badge Metadata (Open Badges Standard):**
+
 ```json
 {
   "name": "HotDash Expert Operator",
@@ -337,12 +355,13 @@ DATA FLOW:
     "identity": "operator@hotdash.com"
   },
   "issuedOn": "2025-10-11",
-  "expires": "2026-10-11",  // Annual recertification
+  "expires": "2026-10-11", // Annual recertification
   "evidence": "https://hotdash.com/cert/evidence/123456"
 }
 ```
 
 **Badge Display:**
+
 - LinkedIn profile (sharable achievement)
 - Email signature (professional credibility)
 - Internal profile (team recognition)
@@ -361,12 +380,14 @@ DATA FLOW:
 ### TTT Curriculum (16 hours)
 
 **Module 1: Adult Learning Principles** (2 hours)
+
 - How adults learn differently
 - Motivation and engagement
 - Learning styles
 - Creating safe learning environments
 
 **Module 2: Facilitation Skills** (3 hours)
+
 - Presentation techniques
 - Managing group dynamics
 - Handling difficult participants
@@ -374,24 +395,28 @@ DATA FLOW:
 - Virtual facilitation (Zoom/Teams)
 
 **Module 3: HotDash Training Content Mastery** (4 hours)
+
 - Deep dive into all training materials
 - Practice delivering each module
 - Q&A preparation
 - Troubleshooting common confusions
 
 **Module 4: Assessment & Feedback** (2 hours)
+
 - How to evaluate operator performance
 - Giving constructive feedback
 - Coaching techniques
 - When to escalate to formal training team
 
 **Module 5: Practice Teaching** (3 hours)
+
 - Teach 15-minute session to peers
 - Receive feedback
 - Iterate and improve
 - Final teaching demonstration
 
 **Module 6: Certification** (2 hours)
+
 - Written exam (facilitation knowledge)
 - Practical: Deliver 30-minute training session
 - Feedback incorporation
@@ -402,6 +427,7 @@ DATA FLOW:
 ### Trainer Certification Requirements
 
 **Prerequisites:**
+
 - ✅ Expert Operator certification
 - ✅ 6+ months HotDash experience
 - ✅ Top 25% performance metrics
@@ -409,6 +435,7 @@ DATA FLOW:
 - ✅ Passion for teaching
 
 **Certification Process:**
+
 - Complete 16-hour TTT curriculum
 - Pass written exam (85%+)
 - Deliver successful practice session (rated 4+/5 by participants)
@@ -416,6 +443,7 @@ DATA FLOW:
 - Independently facilitate 1 session (observed and approved)
 
 **Benefits:**
+
 - Certified Internal Trainer credential
 - Priority for leadership roles
 - Training delivery compensation
@@ -434,6 +462,7 @@ DATA FLOW:
 **Purpose:** Practice approvals without affecting real customers
 
 **Features:**
+
 ```
 REALISTIC SIMULATION:
 ├─ Mock approval queue with 50+ realistic scenarios
@@ -461,6 +490,7 @@ After each decision:
 ---
 
 **Implementation:**
+
 ```
 OPTION 1: Mock Mode (Current)
 - Use ?mock=1 flag on approval queue
@@ -487,6 +517,7 @@ OPTION 3: AI-Generated Scenarios (Future)
 **Purpose:** Practice difficult customer interactions
 
 **Setup:**
+
 ```
 ROLE-PLAY PAIRS:
 ├─ Operator A: Plays themselves
@@ -522,6 +553,7 @@ Result: 3× learning opportunities per scenario
 ### Track 1: General Support Operator (Standard)
 
 **Curriculum:**
+
 - All foundation modules (Tasks 2-6)
 - Core skill builders (efficiency, quality, decision-making)
 - Generalist approach (handle all inquiry types)
@@ -534,6 +566,7 @@ Result: 3× learning opportunities per scenario
 ### Track 2: Technical Support Specialist
 
 **Added Training:**
+
 ```
 TECHNICAL MODULES:
 ├─ Technical troubleshooting advanced
@@ -556,6 +589,7 @@ CERTIFICATION: Technical Support Specialist (in addition to base cert)
 ### Track 3: Escalation Specialist
 
 **Added Training:**
+
 ```
 ESCALATION MODULES:
 ├─ Advanced escalation analysis
@@ -578,6 +612,7 @@ CERTIFICATION: Escalation Specialist
 ### Track 4: Training & Mentorship Specialist
 
 **Added Training:**
+
 ```
 MENTORSHIP MODULES:
 ├─ Train-the-Trainer program (16 hours)
@@ -600,6 +635,7 @@ CERTIFICATION: Certified Internal Trainer
 ### Track 5: Team Lead / Supervisor
 
 **Added Training:**
+
 ```
 LEADERSHIP MODULES:
 ├─ Team management fundamentals
@@ -630,6 +666,7 @@ CERTIFICATION: Support Team Lead
 ### Weekly Learning (Mandatory)
 
 **Team Knowledge Sharing** (30 min, Fridays)
+
 ```
 AGENDA:
 ├─ Case of the Week (10 min): Interesting/complex approval
@@ -646,6 +683,7 @@ Result: 26 hours/year of collaborative learning
 ### Monthly Learning (Mandatory)
 
 **Skill Development Workshop** (2 hours, last Friday)
+
 ```
 ROTATING TOPICS:
 Month 1: Advanced product knowledge
@@ -666,6 +704,7 @@ Result: 24 hours/year of structured skill development
 ### Quarterly Learning (Mandatory)
 
 **Advanced Topic Deep Dive** (3.5 hours)
+
 ```
 TOPICS:
 Q1: Complex scenario mastery
@@ -682,6 +721,7 @@ Result: 14 hours/year of advanced learning
 ### Annual Learning (Mandatory)
 
 **Recertification Program** (4 hours learning + 2 hours exam)
+
 ```
 COMPONENTS:
 ├─ Refresher on core concepts (2 hours)
@@ -707,6 +747,7 @@ Result: 6 hours/year, maintains certification
 ---
 
 **Total Annual Continuous Learning:**
+
 - Weekly: 26 hours
 - Monthly: 24 hours
 - Quarterly: 14 hours
@@ -726,6 +767,7 @@ Result: 6 hours/year, maintains certification
 ### Tool 1: Contextual Help System
 
 **Integrated Help in Approval Queue:**
+
 ```
 Operator reviewing approval with low confidence (65%)
     ↓
@@ -757,6 +799,7 @@ Result: Help exactly when needed
 ### Tool 2: Smart Checklists
 
 **Decision Support Checklists:**
+
 ```
 Reviewing approval for angry customer:
     ↓
@@ -780,6 +823,7 @@ Built into approval card when anger detected
 ### Tool 3: Quick Reference Panel
 
 **Always-Visible Reference:**
+
 ```
 Collapsible sidebar in approval queue:
 
@@ -798,6 +842,7 @@ One-click access without leaving approval
 ### Tool 4: AI-Powered Suggestions
 
 **Smart Suggestions Based on Context:**
+
 ```
 Operator about to approve draft with:
 - Customer mentioning "lawyer"
@@ -830,6 +875,7 @@ Result: Catch mistakes before they happen
 ### JIT Triggers
 
 **Trigger 1: Performance Gap Detected**
+
 ```
 System notices: Operator escalation rate is 25% (target: 10-15%)
     ↓
@@ -845,6 +891,7 @@ System tracks: JIT training effective
 ```
 
 **Trigger 2: New Feature Launch**
+
 ```
 New feature launched: Bulk approve function
     ↓
@@ -863,6 +910,7 @@ Result: Zero lag between feature launch and usage
 ```
 
 **Trigger 3: Error Pattern Detected**
+
 ```
 Operator rejected 3 AI drafts in a row (unusual)
     ↓
@@ -879,12 +927,14 @@ Result: Support before frustration builds
 ### JIT Content Library
 
 **Micro-Content Optimized for JIT:**
+
 - 2-3 minute videos (not 30-minute courses)
 - One-page guides (not comprehensive manuals)
 - Quick checklists (not detailed procedures)
 - Interactive decision trees (not policy docs)
 
 **Indexed by:**
+
 - Situation (low confidence, angry customer, technical issue)
 - Skill gap (slow, accuracy issues, over-escalating)
 - Feature (new launch, updated process)
@@ -902,6 +952,7 @@ Result: Support before frustration builds
 ### Mobile-Optimized Content
 
 **Content Adapted for Mobile:**
+
 ```
 MOBILE-FRIENDLY:
 ✅ Microlearning modules (5 min, text-based)
@@ -922,6 +973,7 @@ NOT MOBILE-FRIENDLY:
 ### Mobile Learning App (Concept)
 
 **Features:**
+
 ```
 HOME SCREEN:
 ├─ Today's Micro-Module (push notification sent)
@@ -956,6 +1008,7 @@ PUSH NOTIFICATIONS:
 ### Feature 1: Shared Case Library
 
 **Operators Share Interesting Cases:**
+
 ```
 CASE SUBMISSION:
 Operator encounters complex approval
@@ -985,6 +1038,7 @@ Result: Learn from team's collective 1,000+ approvals/week
 ### Feature 2: Collaborative Learning Challenges
 
 **Team-Based Learning:**
+
 ```
 MONTHLY CHALLENGE: "Master Difficult Customers"
 
@@ -1004,6 +1058,7 @@ Result: Collaborative > competitive = better culture
 ### Feature 3: Expert Office Hours
 
 **Live Access to Experts:**
+
 ```
 WEEKLY OFFICE HOURS (30 min):
 Expert Operator or Manager available in Zoom
@@ -1033,12 +1088,14 @@ No formal agenda - come with questions, leave with answers
 ### Program Structure
 
 **Level 1: New Operator Mentoring** (Weeks 1-4)
+
 - Dedicated mentor assigned
 - Daily interaction
 - Hands-on guidance
 - Covered in Task 10 (Onboarding Program)
 
 **Level 2: Performance Coaching** (Ongoing)
+
 ```
 MONTHLY 1:1 WITH MANAGER (30 min):
 
@@ -1062,6 +1119,7 @@ EXAMPLE GOALS:
 ```
 
 **Level 3: Expert Development Coaching** (Quarterly)
+
 ```
 QUARTERLY DEVELOPMENT SESSIONS (60 min):
 
@@ -1081,12 +1139,14 @@ FOCUS: Career growth, thought leadership, system impact
 ### Coaching Tools & Resources
 
 **Manager Coaching Guide:**
+
 - How to give constructive feedback
 - GROW model for coaching conversations
 - Performance improvement plans
 - Difficult conversation scripts
 
 **Peer Coaching:**
+
 - Operators coach each other informally
 - "Shadow me" sessions
 - Technique sharing
@@ -1105,6 +1165,7 @@ FOCUS: Career growth, thought leadership, system impact
 ### Cultural Elements
 
 **1. Leadership Commitment**
+
 ```
 VISIBLE SUPPORT FROM LEADERSHIP:
 ├─ Manager participates in learning (leads sessions)
@@ -1117,6 +1178,7 @@ MESSAGE: "We invest in you because you're our most valuable asset"
 ```
 
 **2. Psychological Safety**
+
 ```
 SAFE TO LEARN = SAFE TO MAKE MISTAKES:
 ├─ Questions encouraged ("no stupid questions")
@@ -1129,6 +1191,7 @@ MESSAGE: "This is a learning organization - growth is expected and supported"
 ```
 
 **3. Recognition & Celebration**
+
 ```
 CELEBRATE LEARNING:
 ├─ Weekly: Shout-outs for completed modules
@@ -1146,6 +1209,7 @@ MESSAGE: "Learning is valued and visible"
 ```
 
 **4. Learning Time Protected**
+
 ```
 DEDICATED LEARNING TIME:
 ├─ 30 min/week: Scheduled learning time (blocked calendar)
@@ -1157,6 +1221,7 @@ MESSAGE: "Learning isn't extra - it's essential"
 ```
 
 **5. Peer Learning Culture**
+
 ```
 KNOWLEDGE SHARING EXPECTED:
 ├─ Everyone teaches something (rotate weekly sessions)
@@ -1172,24 +1237,28 @@ MESSAGE: "We learn together, we grow together"
 ### Culture Development Roadmap
 
 **Month 1-3: Foundation**
+
 - Establish weekly knowledge sharing (start small)
 - Protect learning time (block calendars)
 - Begin recognition program (celebrate early wins)
 - Leadership participation (manager leads first session)
 
 **Month 4-6: Expansion**
+
 - Launch peer learning pods
 - Implement gamification
 - Expand recognition program
 - Increase learning time investment
 
 **Month 7-12: Maturity**
+
 - Full learning culture embedded
 - Operators self-organize learning
 - Innovation from front-line
 - Industry reputation as learning organization
 
 **Year 2+: Excellence**
+
 - Best-in-class training program
 - Low turnover due to development opportunities
 - Operators sought after by competitors (but stay because culture)
@@ -1243,4 +1312,3 @@ MESSAGE: "We learn together, we grow together"
 ✅ **TASKS 29-42 COMPLETE (14 TRAINING DELIVERY SYSTEMS DESIGNED)**
 
 🎉 **ALL 42 TASKS COMPLETE!** 🎉
-

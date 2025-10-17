@@ -12,6 +12,7 @@
 ### Current Status: Staging Secrets ✅
 
 **Staging Secrets Present (13 files):**
+
 1. `chatwoot/api_token_staging.env` ✅
 2. `chatwoot/redis_staging.env` ✅
 3. `chatwoot/super_admin_staging.env` ✅
@@ -33,30 +34,36 @@
 ### Critical Path (Required for Launch)
 
 **Shopify Production:**
+
 - [ ] `shopify/api_key_production.env`
 - [ ] `shopify/api_secret_production.env`
 - [ ] `shopify/app_url_production.env`
 - [ ] `shopify/shop_domain_production.env` (Hot Rodan production store)
 
 **Supabase Production:**
+
 - [ ] `supabase/database_url_production.env`
 - [ ] `supabase/service_key_production.env`
 - [ ] `supabase/anon_key_production.env`
 
 **Chatwoot Production:**
+
 - [ ] `chatwoot/api_token_production.env`
 - [ ] `chatwoot/base_url_production.env` (hotdash-chatwoot.fly.dev)
 - [ ] `chatwoot/account_id_production.env`
 - [ ] `chatwoot/webhook_secret_production.env`
 
 **OpenAI Production:**
+
 - [ ] `openai/api_key_production.env`
 
 **Google Analytics Production:**
+
 - [ ] `google/analytics-service-account-production.json`
 - [ ] `google/analytics-property-id-production.env`
 
 **Fly.io Production:**
+
 - [ ] `fly/api_token.env` (already exists, verify still valid)
 
 ---
@@ -66,29 +73,34 @@
 ### Phase 1: Generate Production Secrets (Deployment Team)
 
 **Shopify:**
+
 1. Create production Shopify app (or use existing)
 2. Get API key and secret from Partner Dashboard
 3. Save to `vault/occ/shopify/*_production.env`
 4. Set permissions: `chmod 600 *.env`
 
 **Supabase:**
+
 1. Use existing production Supabase project
 2. Get connection string from project settings
 3. Get service role key from API settings
 4. Save securely
 
 **Chatwoot:**
+
 1. Generate production API token in Chatwoot admin
 2. Get production URL (hotdash-chatwoot.fly.dev)
 3. Generate webhook secret: `openssl rand -hex 32`
 4. Save all credentials
 
 **OpenAI:**
+
 1. Use existing OpenAI account
 2. Generate new API key for production
 3. Save securely
 
 **Google Analytics:**
+
 1. Use existing service account or create new
 2. Download JSON credentials
 3. Get production property ID
@@ -99,6 +111,7 @@
 ### Phase 2: Mirror to GitHub Actions (Deployment Team)
 
 **Repository Secrets to Set:**
+
 ```bash
 # Shopify
 SHOPIFY_API_KEY
@@ -129,6 +142,7 @@ FLY_API_TOKEN
 ```
 
 **Set via:**
+
 ```bash
 gh secret set SHOPIFY_API_KEY < vault/occ/shopify/api_key_production.env
 # ... repeat for all secrets
@@ -141,6 +155,7 @@ gh secret set SHOPIFY_API_KEY < vault/occ/shopify/api_key_production.env
 **Before Launch - Verify Each Secret:**
 
 **Shopify:**
+
 ```bash
 # Test API connection
 curl -X POST "https://${SHOPIFY_SHOP_DOMAIN}/admin/api/2024-10/graphql.json" \
@@ -152,6 +167,7 @@ curl -X POST "https://${SHOPIFY_SHOP_DOMAIN}/admin/api/2024-10/graphql.json" \
 ```
 
 **Supabase:**
+
 ```bash
 # Test database connection
 psql "${SUPABASE_DATABASE_URL}" -c "SELECT 1;"
@@ -160,6 +176,7 @@ psql "${SUPABASE_DATABASE_URL}" -c "SELECT 1;"
 ```
 
 **Chatwoot:**
+
 ```bash
 # Test API token
 curl "${CHATWOOT_BASE_URL}/api/v1/accounts/${CHATWOOT_ACCOUNT_ID}/conversations" \
@@ -169,6 +186,7 @@ curl "${CHATWOOT_BASE_URL}/api/v1/accounts/${CHATWOOT_ACCOUNT_ID}/conversations"
 ```
 
 **OpenAI:**
+
 ```bash
 # Test API key
 curl https://api.openai.com/v1/models \
@@ -178,6 +196,7 @@ curl https://api.openai.com/v1/models \
 ```
 
 **Google Analytics:**
+
 ```bash
 # Verify service account file exists and is valid JSON
 cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
@@ -190,18 +209,21 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 ## Security Checklist
 
 **Before Mirroring:**
+
 - [ ] All secrets use secure generation (crypto-random, not predictable)
 - [ ] All .env files have 600 permissions (owner read/write only)
 - [ ] No secrets committed to git (verify with `git log -p | grep -i 'api.*key'`)
 - [ ] Vault directory has 700 permissions
 
 **During Mirroring:**
+
 - [ ] Use secure channel (gh CLI, not manual copy-paste)
 - [ ] Verify GitHub repository secrets are encrypted at rest
 - [ ] Limit secret access to necessary workflows only
 - [ ] Document who has access to which secrets
 
 **After Mirroring:**
+
 - [ ] Run smoke tests for all secrets
 - [ ] Verify no secrets in application logs
 - [ ] Test secret rotation procedure
@@ -212,6 +234,7 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 ## Production Deployment Coordination
 
 **Deployment Team Actions:**
+
 1. Generate all production secrets (using procedures above)
 2. Save to `vault/occ/*_production.env` files
 3. Mirror to GitHub Actions secrets
@@ -221,12 +244,14 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 7. Monitor for 24 hours post-launch
 
 **Integrations Team Actions:**
+
 1. ✅ Provide this checklist to Deployment team
 2. ⏳ Verify smoke test results after mirroring
 3. ⏳ Monitor integration health post-launch
 4. ⏳ Document any issues in incident log
 
 **Timeline:**
+
 - Secrets generation: 2-4 hours
 - Mirroring and testing: 1-2 hours
 - Total: 3-6 hours (plan for 1 business day)
@@ -236,12 +261,14 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 ## Rollback Plan
 
 **If Production Secrets Fail:**
+
 1. Revert to staging secrets (immediate)
 2. Investigate secret issue (parallel)
 3. Regenerate failing secret
 4. Re-test and redeploy
 
 **If Secrets Compromised:**
+
 1. Rotate ALL secrets immediately
 2. Revoke compromised credentials
 3. Audit access logs
@@ -252,6 +279,7 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 ## Ongoing Maintenance
 
 **Rotation Schedule:**
+
 - Shopify: 90 days (or on security incident)
 - Supabase: 90 days
 - Chatwoot: 90 days
@@ -260,6 +288,7 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 - Webhook secrets: 90 days
 
 **Rotation Process:**
+
 1. Generate new secret
 2. Store as `*_new.env`
 3. Update application to accept both old and new
@@ -273,4 +302,3 @@ cat "${GOOGLE_APPLICATION_CREDENTIALS}" | jq . > /dev/null
 **Checklist Complete:** 2025-10-12 04:11 UTC  
 **Status:** Ready for Deployment team execution  
 **Coordination:** Tag @deployment when ready to mirror secrets
-

@@ -10,6 +10,7 @@ created: 2025-10-11
 ## Task 36: Advanced Dashboard Customization
 
 **Drag-Drop Widget System**:
+
 ```typescript
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
@@ -39,14 +40,15 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 ## Task 37: Workspace Personalization
 
 **Settings Panel**:
+
 ```typescript
 <Card>
   <BlockStack gap="400">
     <Text variant="headingMd" as="h2">Dashboard Preferences</Text>
-    
+
     <Checkbox label="Show AI Agent Pulse tile" checked={showAI} onChange={setShowAI} />
     <Checkbox label="Auto-refresh every 30s" checked={autoRefresh} onChange={setAutoRefresh} />
-    
+
     <Select
       label="Default view"
       options={[
@@ -57,7 +59,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
       value={density}
       onChange={setDensity}
     />
-    
+
     <Button variant="primary" onClick={save}>Save Preferences</Button>
   </BlockStack>
 </Card>
@@ -68,6 +70,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 ## Task 38: Multi-View Layouts
 
 **View Switcher**:
+
 ```typescript
 <ButtonGroup variant="segmented">
   <Button pressed={view === 'grid'} onClick={() => setView('grid')}>Grid</Button>
@@ -85,6 +88,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 ## Task 39: Advanced Filtering and Search
 
 **Filter Panel**:
+
 ```typescript
 <Filters
   queryValue={searchQuery}
@@ -106,6 +110,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 ## Task 40: Bulk Operations UI
 
 **Bulk Action Pattern**:
+
 ```typescript
 const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -138,6 +143,7 @@ const [selectedItems, setSelectedItems] = useState<string[]>([]);
 ## Task 41: Keyboard Shortcut Overlay
 
 **Shortcut Panel** (Cmd/Ctrl + K):
+
 ```typescript
 <Modal open={showShortcuts} onClose={close} title="Keyboard Shortcuts">
   <Modal.Section>
@@ -158,6 +164,7 @@ const [selectedItems, setSelectedItems] = useState<string[]>([]);
 ## Task 42: Command Palette (Cmd+K)
 
 **Palette UI**:
+
 ```typescript
 import { Combobox, Listbox } from '@shopify/polaris';
 
@@ -180,6 +187,7 @@ import { Combobox, Listbox } from '@shopify/polaris';
 ## Task 43: Quick Actions Menu
 
 **Floating Action Button** (bottom-right):
+
 ```typescript
 <Popover
   active={showQuickActions}
@@ -200,4 +208,3 @@ import { Combobox, Listbox } from '@shopify/polaris';
 ---
 
 **All 8 Product Design tasks complete**
-

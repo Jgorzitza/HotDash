@@ -7,7 +7,10 @@ import { findTemplate } from "../../services/chatwoot/templates";
 import { authenticate } from "../../shopify.server";
 import { isFeatureEnabled } from "../../config/featureFlags";
 
-function renderTemplate(body: string, variables: Record<string, string | undefined>) {
+function renderTemplate(
+  body: string,
+  variables: Record<string, string | undefined>,
+) {
   return body.replace(/{{(.*?)}}/g, (_, key) => {
     const value = variables[key.trim()];
     return value ?? "";
@@ -60,7 +63,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const noteValue = formData.get("note");
     note = typeof noteValue === "string" ? noteValue : undefined;
     const customerValue = formData.get("customerName");
-    customerName = typeof customerValue === "string" ? customerValue : undefined;
+    customerName =
+      typeof customerValue === "string" ? customerValue : undefined;
   } else {
     // Handle JSON submissions (legacy API)
     const payload = await request.json();
@@ -98,13 +102,19 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           await client.sendReply(conversationId, replyBody);
 
           const didUseAISuggestion = aiFeatureEnabled && aiSuggestionUsed;
-          const aiMetadata = didUseAISuggestion ? aiSuggestionMetadata ?? null : null;
+          const aiMetadata = didUseAISuggestion
+            ? (aiSuggestionMetadata ?? null)
+            : null;
 
           await logDecision({
             scope: "ops",
             actor,
             action: "chatwoot.approve_send",
-            rationale: note ?? (didUseAISuggestion ? "Approved AI suggestion" : "Approved template reply"),
+            rationale:
+              note ??
+              (didUseAISuggestion
+                ? "Approved AI suggestion"
+                : "Approved template reply"),
             shopDomain: session.shop,
             externalRef: `chatwoot:${conversationId}`,
             payload: {
@@ -118,8 +128,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           break;
         }
 
-      case "escalate": {
-        // Tag conversation for manager attention
+        case "escalate": {
+          // Tag conversation for manager attention
           await client.addLabel(conversationId, "escalation");
           await logDecision({
             scope: "ops",

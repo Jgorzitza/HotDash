@@ -1,18 +1,18 @@
 /**
  * GA4 Analytics Library
- * 
+ *
  * Provides high-level analytics data for dashboard tiles:
  * - Revenue metrics (last 30 days, trends)
  * - Traffic metrics (sessions, organic traffic)
  * - Conversion metrics (conversion rate, transactions)
- * 
+ *
  * Uses the existing GA4 Direct API client for data fetching.
  */
 
-import { createDirectGaClient } from '../../services/ga/directClient';
-import { getGaConfig } from '../../config/ga.server';
-import { appMetrics } from '../../utils/metrics.server';
-import { getCached, setCached } from '../../services/cache.server';
+import { createDirectGaClient } from "../../services/ga/directClient";
+import { getGaConfig } from "../../config/ga.server";
+import { appMetrics } from "../../utils/metrics.server";
+import { getCached, setCached } from "../../services/cache.server";
 
 // ============================================================================
 // Types
@@ -71,7 +71,7 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
   const startTime = Date.now();
 
   // Check cache first
-  const cacheKey = 'analytics:revenue:30d';
+  const cacheKey = "analytics:revenue:30d";
   const cached = getCached<RevenueMetrics>(cacheKey);
   if (cached) {
     appMetrics.cacheHit(cacheKey);
@@ -87,14 +87,14 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
     const today = new Date();
     const thirtyDaysAgo = new Date(today);
     thirtyDaysAgo.setDate(today.getDate() - 30);
-    
+
     const sixtyDaysAgo = new Date(today);
     sixtyDaysAgo.setDate(today.getDate() - 60);
 
-    const currentStart = thirtyDaysAgo.toISOString().split('T')[0];
-    const currentEnd = today.toISOString().split('T')[0];
-    const previousStart = sixtyDaysAgo.toISOString().split('T')[0];
-    const previousEnd = thirtyDaysAgo.toISOString().split('T')[0];
+    const currentStart = thirtyDaysAgo.toISOString().split("T")[0];
+    const currentEnd = today.toISOString().split("T")[0];
+    const previousStart = sixtyDaysAgo.toISOString().split("T")[0];
+    const previousEnd = thirtyDaysAgo.toISOString().split("T")[0];
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
@@ -105,19 +105,19 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
     // Calculate trends
     const revenueChange = calculatePercentageChange(
       currentData.revenue,
-      previousData.revenue
+      previousData.revenue,
     );
     const aovChange = calculatePercentageChange(
       currentData.aov,
-      previousData.aov
+      previousData.aov,
     );
     const transactionsChange = calculatePercentageChange(
       currentData.transactions,
-      previousData.transactions
+      previousData.transactions,
     );
 
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getRevenueMetrics', true, duration);
+    appMetrics.gaApiCall("getRevenueMetrics", true, duration);
 
     const result: RevenueMetrics = {
       totalRevenue: currentData.revenue,
@@ -140,7 +140,7 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
     return result;
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getRevenueMetrics', false, duration);
+    appMetrics.gaApiCall("getRevenueMetrics", false, duration);
     throw error;
   }
 }
@@ -151,23 +151,25 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
 async function fetchRevenueData(
   client: any,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<{ revenue: number; aov: number; transactions: number }> {
-  const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+  const { BetaAnalyticsDataClient } = await import("@google-analytics/data");
   const gaClient = new BetaAnalyticsDataClient();
-  
+
   const config = getGaConfig();
   const [response] = await gaClient.runReport({
     property: `properties/${config.propertyId}`,
     dateRanges: [{ startDate, endDate }],
-    metrics: [
-      { name: 'totalRevenue' },
-      { name: 'transactions' },
-    ],
+    metrics: [{ name: "totalRevenue" }, { name: "transactions" }],
   });
 
-  const revenue = parseFloat(response.rows?.[0]?.metricValues?.[0]?.value || '0');
-  const transactions = parseInt(response.rows?.[0]?.metricValues?.[1]?.value || '0', 10);
+  const revenue = parseFloat(
+    response.rows?.[0]?.metricValues?.[0]?.value || "0",
+  );
+  const transactions = parseInt(
+    response.rows?.[0]?.metricValues?.[1]?.value || "0",
+    10,
+  );
   const aov = transactions > 0 ? revenue / transactions : 0;
 
   return { revenue, aov, transactions };
@@ -184,7 +186,7 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
   const startTime = Date.now();
 
   // Check cache first
-  const cacheKey = 'analytics:traffic:30d';
+  const cacheKey = "analytics:traffic:30d";
   const cached = getCached<TrafficMetrics>(cacheKey);
   if (cached) {
     appMetrics.cacheHit(cacheKey);
@@ -200,14 +202,14 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
     const today = new Date();
     const thirtyDaysAgo = new Date(today);
     thirtyDaysAgo.setDate(today.getDate() - 30);
-    
+
     const sixtyDaysAgo = new Date(today);
     sixtyDaysAgo.setDate(today.getDate() - 60);
 
-    const currentStart = thirtyDaysAgo.toISOString().split('T')[0];
-    const currentEnd = today.toISOString().split('T')[0];
-    const previousStart = sixtyDaysAgo.toISOString().split('T')[0];
-    const previousEnd = thirtyDaysAgo.toISOString().split('T')[0];
+    const currentStart = thirtyDaysAgo.toISOString().split("T")[0];
+    const currentEnd = today.toISOString().split("T")[0];
+    const previousStart = sixtyDaysAgo.toISOString().split("T")[0];
+    const previousEnd = thirtyDaysAgo.toISOString().split("T")[0];
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
@@ -218,19 +220,20 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
     // Calculate trends
     const sessionsChange = calculatePercentageChange(
       currentData.totalSessions,
-      previousData.totalSessions
+      previousData.totalSessions,
     );
     const organicChange = calculatePercentageChange(
       currentData.organicSessions,
-      previousData.organicSessions
+      previousData.organicSessions,
     );
 
-    const organicPercentage = currentData.totalSessions > 0
-      ? (currentData.organicSessions / currentData.totalSessions) * 100
-      : 0;
+    const organicPercentage =
+      currentData.totalSessions > 0
+        ? (currentData.organicSessions / currentData.totalSessions) * 100
+        : 0;
 
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getTrafficMetrics', true, duration);
+    appMetrics.gaApiCall("getTrafficMetrics", true, duration);
 
     const result: TrafficMetrics = {
       totalSessions: currentData.totalSessions,
@@ -252,7 +255,7 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
     return result;
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getTrafficMetrics', false, duration);
+    appMetrics.gaApiCall("getTrafficMetrics", false, duration);
     throw error;
   }
 }
@@ -263,29 +266,29 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
 async function fetchTrafficData(
   client: any,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<{ totalSessions: number; organicSessions: number }> {
-  const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+  const { BetaAnalyticsDataClient } = await import("@google-analytics/data");
   const gaClient = new BetaAnalyticsDataClient();
-  
+
   const config = getGaConfig();
   const [response] = await gaClient.runReport({
     property: `properties/${config.propertyId}`,
     dateRanges: [{ startDate, endDate }],
-    dimensions: [{ name: 'sessionDefaultChannelGroup' }],
-    metrics: [{ name: 'sessions' }],
+    dimensions: [{ name: "sessionDefaultChannelGroup" }],
+    metrics: [{ name: "sessions" }],
   });
 
   let totalSessions = 0;
   let organicSessions = 0;
 
   response.rows?.forEach((row) => {
-    const channelGroup = row.dimensionValues?.[0]?.value || '';
-    const sessions = parseInt(row.metricValues?.[0]?.value || '0', 10);
-    
+    const channelGroup = row.dimensionValues?.[0]?.value || "";
+    const sessions = parseInt(row.metricValues?.[0]?.value || "0", 10);
+
     totalSessions += sessions;
-    
-    if (channelGroup.toLowerCase().includes('organic')) {
+
+    if (channelGroup.toLowerCase().includes("organic")) {
       organicSessions += sessions;
     }
   });
@@ -302,7 +305,7 @@ async function fetchTrafficData(
  */
 export async function getConversionMetrics(): Promise<ConversionMetrics> {
   const startTime = Date.now();
-  
+
   try {
     const config = getGaConfig();
     const client = createDirectGaClient(config.propertyId);
@@ -311,14 +314,14 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
     const today = new Date();
     const thirtyDaysAgo = new Date(today);
     thirtyDaysAgo.setDate(today.getDate() - 30);
-    
+
     const sixtyDaysAgo = new Date(today);
     sixtyDaysAgo.setDate(today.getDate() - 60);
 
-    const currentStart = thirtyDaysAgo.toISOString().split('T')[0];
-    const currentEnd = today.toISOString().split('T')[0];
-    const previousStart = sixtyDaysAgo.toISOString().split('T')[0];
-    const previousEnd = thirtyDaysAgo.toISOString().split('T')[0];
+    const currentStart = thirtyDaysAgo.toISOString().split("T")[0];
+    const currentEnd = today.toISOString().split("T")[0];
+    const previousStart = sixtyDaysAgo.toISOString().split("T")[0];
+    const previousEnd = thirtyDaysAgo.toISOString().split("T")[0];
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
@@ -329,11 +332,11 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
     // Calculate trend
     const conversionRateChange = calculatePercentageChange(
       currentData.conversionRate,
-      previousData.conversionRate
+      previousData.conversionRate,
     );
 
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getConversionMetrics', true, duration);
+    appMetrics.gaApiCall("getConversionMetrics", true, duration);
 
     return {
       conversionRate: currentData.conversionRate,
@@ -349,7 +352,7 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
     };
   } catch (error) {
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall('getConversionMetrics', false, duration);
+    appMetrics.gaApiCall("getConversionMetrics", false, duration);
     throw error;
   }
 }
@@ -360,29 +363,226 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
 async function fetchConversionData(
   client: any,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<{ conversionRate: number; transactions: number; revenue: number }> {
-  const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+  const { BetaAnalyticsDataClient } = await import("@google-analytics/data");
   const gaClient = new BetaAnalyticsDataClient();
-  
+
   const config = getGaConfig();
   const [response] = await gaClient.runReport({
     property: `properties/${config.propertyId}`,
     dateRanges: [{ startDate, endDate }],
     metrics: [
-      { name: 'sessions' },
-      { name: 'transactions' },
-      { name: 'totalRevenue' },
+      { name: "sessions" },
+      { name: "transactions" },
+      { name: "totalRevenue" },
     ],
   });
 
-  const sessions = parseInt(response.rows?.[0]?.metricValues?.[0]?.value || '0', 10);
-  const transactions = parseInt(response.rows?.[0]?.metricValues?.[1]?.value || '0', 10);
-  const revenue = parseFloat(response.rows?.[0]?.metricValues?.[2]?.value || '0');
-  
+  const sessions = parseInt(
+    response.rows?.[0]?.metricValues?.[0]?.value || "0",
+    10,
+  );
+  const transactions = parseInt(
+    response.rows?.[0]?.metricValues?.[1]?.value || "0",
+    10,
+  );
+  const revenue = parseFloat(
+    response.rows?.[0]?.metricValues?.[2]?.value || "0",
+  );
+
   const conversionRate = sessions > 0 ? (transactions / sessions) * 100 : 0;
 
   return { conversionRate, transactions, revenue };
+}
+
+// ============================================================================
+// Traffic Breakdown (Detailed by Channel)
+// ============================================================================
+
+export interface ChannelMetrics {
+  channel: string;
+  sessions: number;
+  users: number;
+  engagedSessions: number;
+  averageSessionDuration: number;
+  bounceRate: number;
+  sessionsPerUser: number;
+  trend: {
+    sessionsChange: number;
+    usersChange: number;
+  };
+}
+
+export interface TrafficBreakdown {
+  channels: ChannelMetrics[];
+  totalSessions: number;
+  totalUsers: number;
+  period: {
+    start: string;
+    end: string;
+  };
+}
+
+/**
+ * Fetch detailed traffic breakdown by channel for the last 30 days
+ */
+export async function getTrafficBreakdown(): Promise<TrafficBreakdown> {
+  const startTime = Date.now();
+
+  // Check cache first
+  const cacheKey = "analytics:traffic-breakdown:30d";
+  const cached = getCached<TrafficBreakdown>(cacheKey);
+  if (cached) {
+    appMetrics.cacheHit(cacheKey);
+    return cached;
+  }
+  appMetrics.cacheMiss(cacheKey);
+
+  try {
+    const config = getGaConfig();
+    const client = createDirectGaClient(config.propertyId);
+
+    // Calculate date ranges
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    const sixtyDaysAgo = new Date(today);
+    sixtyDaysAgo.setDate(today.getDate() - 60);
+
+    const currentStart = thirtyDaysAgo.toISOString().split("T")[0];
+    const currentEnd = today.toISOString().split("T")[0];
+    const previousStart = sixtyDaysAgo.toISOString().split("T")[0];
+    const previousEnd = thirtyDaysAgo.toISOString().split("T")[0];
+
+    // Fetch current and previous period data
+    const [currentData, previousData] = await Promise.all([
+      fetchTrafficBreakdownData(client, currentStart, currentEnd),
+      fetchTrafficBreakdownData(client, previousStart, previousEnd),
+    ]);
+
+    // Merge current and previous data to calculate trends
+    const channels: ChannelMetrics[] = currentData.map((current) => {
+      const previous = previousData.find((p) => p.channel === current.channel);
+
+      return {
+        channel: current.channel,
+        sessions: current.sessions,
+        users: current.users,
+        engagedSessions: current.engagedSessions,
+        averageSessionDuration: current.averageSessionDuration,
+        bounceRate: current.bounceRate,
+        sessionsPerUser: current.sessionsPerUser,
+        trend: {
+          sessionsChange: previous
+            ? calculatePercentageChange(current.sessions, previous.sessions)
+            : 0,
+          usersChange: previous
+            ? calculatePercentageChange(current.users, previous.users)
+            : 0,
+        },
+      };
+    });
+
+    // Sort by sessions descending
+    channels.sort((a, b) => b.sessions - a.sessions);
+
+    const totalSessions = channels.reduce((sum, c) => sum + c.sessions, 0);
+    const totalUsers = channels.reduce((sum, c) => sum + c.users, 0);
+
+    const duration = Date.now() - startTime;
+    appMetrics.gaApiCall("getTrafficBreakdown", true, duration);
+
+    const result: TrafficBreakdown = {
+      channels,
+      totalSessions,
+      totalUsers,
+      period: {
+        start: currentStart,
+        end: currentEnd,
+      },
+    };
+
+    // Cache for 5 minutes
+    setCached(cacheKey, result, 300000);
+
+    return result;
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    appMetrics.gaApiCall("getTrafficBreakdown", false, duration);
+    throw error;
+  }
+}
+
+/**
+ * Fetch traffic breakdown data for a specific date range
+ */
+async function fetchTrafficBreakdownData(
+  client: any,
+  startDate: string,
+  endDate: string,
+): Promise<
+  Array<{
+    channel: string;
+    sessions: number;
+    users: number;
+    engagedSessions: number;
+    averageSessionDuration: number;
+    bounceRate: number;
+    sessionsPerUser: number;
+  }>
+> {
+  const { BetaAnalyticsDataClient } = await import("@google-analytics/data");
+  const gaClient = new BetaAnalyticsDataClient();
+
+  const config = getGaConfig();
+  const [response] = await gaClient.runReport({
+    property: `properties/${config.propertyId}`,
+    dateRanges: [{ startDate, endDate }],
+    dimensions: [{ name: "sessionDefaultChannelGroup" }],
+    metrics: [
+      { name: "sessions" },
+      { name: "totalUsers" },
+      { name: "engagedSessions" },
+      { name: "averageSessionDuration" },
+      { name: "bounceRate" },
+    ],
+  });
+
+  const channels: Array<{
+    channel: string;
+    sessions: number;
+    users: number;
+    engagedSessions: number;
+    averageSessionDuration: number;
+    bounceRate: number;
+    sessionsPerUser: number;
+  }> = [];
+
+  response.rows?.forEach((row) => {
+    const channel = row.dimensionValues?.[0]?.value || "Unknown";
+    const sessions = parseInt(row.metricValues?.[0]?.value || "0", 10);
+    const users = parseInt(row.metricValues?.[1]?.value || "0", 10);
+    const engagedSessions = parseInt(row.metricValues?.[2]?.value || "0", 10);
+    const averageSessionDuration = parseFloat(
+      row.metricValues?.[3]?.value || "0",
+    );
+    const bounceRate = parseFloat(row.metricValues?.[4]?.value || "0");
+    const sessionsPerUser = users > 0 ? sessions / users : 0;
+
+    channels.push({
+      channel,
+      sessions,
+      users,
+      engagedSessions,
+      averageSessionDuration,
+      bounceRate,
+      sessionsPerUser,
+    });
+  });
+
+  return channels;
 }
 
 // ============================================================================
@@ -398,4 +598,3 @@ function calculatePercentageChange(current: number, previous: number): number {
   }
   return ((current - previous) / previous) * 100;
 }
-

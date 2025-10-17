@@ -18,6 +18,7 @@ Status: Running with auto-restart policy
 ```
 
 Check status:
+
 ```bash
 docker ps | grep context7-mcp
 docker logs context7-mcp
@@ -107,6 +108,7 @@ docker ps | grep context7-mcp
 ```
 
 Expected output:
+
 ```
 context7-mcp   Up X minutes   0.0.0.0:3001->8080/tcp
 ```
@@ -118,6 +120,7 @@ docker logs context7-mcp
 ```
 
 Expected output:
+
 ```
 Context7 Documentation MCP Server running on HTTP at http://localhost:8080/mcp
 ```
@@ -144,6 +147,7 @@ Should return MCP protocol events (not an error).
 Context7 indexes the HotDash project at `/home/justin/HotDash/hot-dash` with respect to `.context7ignore`:
 
 ✅ **Included:**
+
 - `app/` - Application source code
 - `docs/` - All documentation
 - `scripts/` - Operational scripts
@@ -154,6 +158,7 @@ Context7 indexes the HotDash project at `/home/justin/HotDash/hot-dash` with res
 - Root config files
 
 ❌ **Excluded** (via `.context7ignore`):
+
 - `node_modules/` - Dependencies
 - `build/`, `.react-router/` - Build outputs
 - `test-results/`, `coverage/` - Test artifacts
@@ -169,6 +174,7 @@ Context7 indexes the HotDash project at `/home/justin/HotDash/hot-dash` with res
 ### Issue: "No tools, prompts, or resources"
 
 **Solution:**
+
 1. Verify container is running: `docker ps | grep context7-mcp`
 2. If not running: `./scripts/ops/start-context7.sh`
 3. Reload Cursor window
@@ -177,6 +183,7 @@ Context7 indexes the HotDash project at `/home/justin/HotDash/hot-dash` with res
 ### Issue: Container not starting
 
 **Solution:**
+
 ```bash
 # Check if port 3001 is available
 lsof -i :3001
@@ -191,6 +198,7 @@ docker run -d --name context7-mcp -p 3002:8080 ...
 ### Issue: Container exits immediately
 
 **Solution:**
+
 ```bash
 # Check logs for errors
 docker logs context7-mcp
@@ -206,6 +214,7 @@ docker rm -f context7-mcp
 ### Issue: Context7 returns old/stale results
 
 **Solution:**
+
 ```bash
 # Restart container to force re-indexing
 docker restart context7-mcp
@@ -220,11 +229,13 @@ docker rm -f context7-mcp
 ## Key Differences from Initial Setup
 
 ### ❌ What Didn't Work
+
 - **stdio transport**: Context7 Docker image doesn't support stdio, only HTTP
 - **npx method**: The `@upstash/context7-mcp` package requires API key (cloud service)
 - **Inline Docker in .mcp.json**: Cursor expects pre-running HTTP servers
 
 ### ✅ What Works
+
 - **HTTP transport**: Context7 runs as HTTP server with Server-Sent Events
 - **Pre-started container**: Docker container runs separately, Cursor connects to it
 - **Auto-restart policy**: Container survives reboots (unless explicitly stopped)
@@ -239,6 +250,7 @@ docker rm -f context7-mcp
 Once Context7 is running and Cursor is reloaded, agents can query:
 
 **Finding Code:**
+
 ```
 "Show me the Sales Pulse dashboard tile implementation"
 "Find the Shopify service client for order fulfillment"
@@ -246,6 +258,7 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 ```
 
 **Understanding Patterns:**
+
 ```
 "How are dashboard tiles structured?"
 "What's the pattern for service clients?"
@@ -253,6 +266,7 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 ```
 
 **Finding Documentation:**
+
 ```
 "Show me the production deployment checklist"
 "Find the incident response runbook"
@@ -260,6 +274,7 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 ```
 
 **Configuration:**
+
 ```
 "What environment variables are needed for staging?"
 "Show me the Prisma schema for dashboard facts"
@@ -271,16 +286,20 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 ## Maintenance
 
 ### Daily
+
 - No maintenance required (container auto-restarts)
 
 ### After System Reboot
+
 - Container should auto-start due to `--restart unless-stopped`
 - If not: `docker start context7-mcp`
 
 ### After Updating HotDash Code
+
 - No action needed (Context7 re-indexes automatically)
 
 ### When Adding Large Directories
+
 - Update `.context7ignore` to exclude them
 - Restart container: `docker restart context7-mcp`
 
@@ -304,7 +323,7 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 ✅ **Project Config**: `.mcp.json` updated  
 ✅ **Exclusions**: `.context7ignore` configured  
 ✅ **Documentation**: All docs updated  
-✅ **Start Script**: `scripts/ops/start-context7.sh` created  
+✅ **Start Script**: `scripts/ops/start-context7.sh` created
 
 **Next Step**: Reload Cursor and test a query!
 
@@ -313,4 +332,3 @@ Once Context7 is running and Cursor is reloaded, agents can query:
 **Last Updated**: 2025-10-11  
 **Working Configuration**: HTTP transport on port 3001  
 **Container**: context7-mcp (auto-restart enabled)
-

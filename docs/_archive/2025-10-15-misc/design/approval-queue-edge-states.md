@@ -34,6 +34,7 @@ expires: 2025-10-25
 **Scenario**: User navigates to `/app/approvals` for the first time
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Approval Queue                                    [Nav] │
@@ -59,6 +60,7 @@ expires: 2025-10-25
 ```
 
 **Implementation (Polaris)**:
+
 ```typescript
 import { Page, Layout, Card, SkeletonBodyText, SkeletonDisplayText, BlockStack } from '@shopify/polaris';
 
@@ -85,7 +87,7 @@ function ApprovalQueueSkeleton() {
             </InlineStack>
           </Card>
         </Layout.Section>
-        
+
         <Layout.Section>
           <BlockStack gap="400">
             <ApprovalCardSkeleton />
@@ -124,6 +126,7 @@ function ApprovalCardSkeleton() {
 **Scenario**: Page is polling for new approvals every 5 seconds
 
 **Visual Design**:
+
 - Small spinner in page title area
 - No full skeleton (existing cards remain visible)
 - Subtle visual indicator
@@ -143,6 +146,7 @@ function ApprovalCardSkeleton() {
 **Scenario**: User clicks "Approve & Execute" or "Reject"
 
 **Visual Design**:
+
 - Button shows spinner
 - Button text changes to "Approving..." or "Rejecting..."
 - Other buttons disabled
@@ -153,7 +157,7 @@ function ApprovalCardSkeleton() {
   <Box opacity={state === 'approving' || state === 'rejecting' ? '0.7' : '1'}>
     <BlockStack gap="400">
       {/* Content */}
-      
+
       <ButtonGroup>
         <Button
           variant="primary"
@@ -186,6 +190,7 @@ function ApprovalCardSkeleton() {
 **Scenario**: User's internet connection drops
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Approval Queue                               🔴 Offline │
@@ -207,6 +212,7 @@ function ApprovalCardSkeleton() {
 ```
 
 **Implementation**:
+
 ```typescript
 import { Banner, Button, Page } from '@shopify/polaris';
 
@@ -216,10 +222,10 @@ const [isOnline, setIsOnline] = useState(navigator.onLine);
 useEffect(() => {
   const handleOnline = () => setIsOnline(true);
   const handleOffline = () => setIsOnline(false);
-  
+
   window.addEventListener('online', handleOnline);
   window.addEventListener('offline', handleOffline);
-  
+
   return () => {
     window.removeEventListener('online', handleOnline);
     window.removeEventListener('offline', handleOffline);
@@ -234,7 +240,7 @@ useEffect(() => {
     action={{ content: 'Retry Connection', onAction: () => revalidator.revalidate() }}
   >
     <Text variant="bodyMd">
-      You are currently offline. Your approvals are safe and will automatically 
+      You are currently offline. Your approvals are safe and will automatically
       sync when your connection is restored.
     </Text>
   </Banner>
@@ -254,6 +260,7 @@ useEffect(() => {
 **Scenario**: Agent service is down or overloaded
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                     ⚠                                   │
@@ -274,14 +281,15 @@ useEffect(() => {
 ```
 
 **Implementation**:
+
 ```typescript
-function ServiceUnavailableState({ 
-  errorId, 
-  lastSync, 
-  onRetry 
-}: { 
-  errorId: string; 
-  lastSync: Date; 
+function ServiceUnavailableState({
+  errorId,
+  lastSync,
+  onRetry
+}: {
+  errorId: string;
+  lastSync: Date;
   onRetry: () => void;
 }) {
   return (
@@ -291,7 +299,7 @@ function ServiceUnavailableState({
     >
       <BlockStack gap="400">
         <Text variant="bodyMd" alignment="center">
-          Our team has been notified and is working to restore service. 
+          Our team has been notified and is working to restore service.
           Please try again in a few moments.
         </Text>
         <Text variant="bodyMd" alignment="center">
@@ -320,6 +328,7 @@ function ServiceUnavailableState({
 **Scenario**: User doesn't have permission to approve actions
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                     🔒                                  │
@@ -338,6 +347,7 @@ function ServiceUnavailableState({
 ```
 
 **Implementation**:
+
 ```typescript
 function UnauthorizedState({ userRole }: { userRole: string }) {
   return (
@@ -347,7 +357,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
     >
       <BlockStack gap="300">
         <Text variant="bodyMd" alignment="center">
-          Your account does not have permission to approve agent actions. 
+          Your account does not have permission to approve agent actions.
           Contact your administrator to request access.
         </Text>
         <Box background="bg-surface-secondary" padding="300" borderRadius="200">
@@ -360,7 +370,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
             </Text>
           </BlockStack>
         </Box>
-        <Button 
+        <Button
           url="mailto:customer.support@hotrodan.com?subject=Request Approval Queue Access"
         >
           Contact Administrator
@@ -376,6 +386,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
 **Scenario**: Another operator approved/rejected while user had page open
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Agent Proposal                    [PROCESSED]      [×] │
@@ -393,6 +404,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
 ```
 
 **Implementation**:
+
 ```typescript
 {state === 'already_processed' && (
   <Card>
@@ -401,7 +413,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
         <Text variant="headingMd" as="h2">Agent Proposal</Text>
         <Badge>PROCESSED</Badge>
       </InlineStack>
-      
+
       <Banner tone="info">
         <BlockStack gap="200">
           <Text variant="bodyMd">
@@ -424,7 +436,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
           )}
         </BlockStack>
       </Banner>
-      
+
       <Button onClick={() => onRemove?.(action.id)}>
         Dismiss
       </Button>
@@ -442,6 +454,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
 **Scenario**: All approvals processed, queue is empty
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Approval Queue                                0 Pending │
@@ -463,6 +476,7 @@ function UnauthorizedState({ userRole }: { userRole: string }) {
 ```
 
 **Implementation**:
+
 ```typescript
 import { EmptyState, Page } from '@shopify/polaris';
 
@@ -475,7 +489,7 @@ function NoApprovalsState({ lastProcessedTime }: { lastProcessedTime?: Date }) {
       >
         <BlockStack gap="400">
           <Text variant="bodyMd" alignment="center">
-            There are no pending approvals at this time. Agent actions are 
+            There are no pending approvals at this time. Agent actions are
             either approved or completed without requiring approval.
           </Text>
           {lastProcessedTime && (
@@ -498,6 +512,7 @@ function NoApprovalsState({ lastProcessedTime }: { lastProcessedTime?: Date }) {
 **Scenario**: App just installed, no agent activity yet
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Approval Queue                                0 Pending │
@@ -518,6 +533,7 @@ function NoApprovalsState({ lastProcessedTime }: { lastProcessedTime?: Date }) {
 ```
 
 **Implementation**:
+
 ```typescript
 function FirstTimeEmptyState() {
   return (
@@ -527,7 +543,7 @@ function FirstTimeEmptyState() {
     >
       <BlockStack gap="400">
         <Text variant="bodyMd" alignment="center">
-          Your AI agents will propose actions here when they need human 
+          Your AI agents will propose actions here when they need human
           approval. You'll be able to review and approve or reject each action.
         </Text>
         <ButtonGroup>
@@ -549,6 +565,7 @@ function FirstTimeEmptyState() {
 **Scenario**: User applies filters and no approvals match
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Approval Queue                                0 Pending │
@@ -569,6 +586,7 @@ function FirstTimeEmptyState() {
 ```
 
 **Implementation**:
+
 ```typescript
 function FilteredEmptyState({ activeFilters, onClearFilters }: {
   activeFilters: string[];
@@ -608,6 +626,7 @@ function FilteredEmptyState({ activeFilters, onClearFilters }: {
 **Scenario**: Approval has been pending for >15 minutes (configurable)
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ 🤖 Agent Proposal · Expiring Soon           HIGH RISK │
@@ -625,37 +644,38 @@ function FilteredEmptyState({ activeFilters, onClearFilters }: {
 ```
 
 **Implementation**:
+
 ```typescript
 function ApprovalCard({ action, ... }: ApprovalCardProps) {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
-  
+
   useEffect(() => {
     if (!action.timeoutSeconds) return;
-    
+
     const calculateRemaining = () => {
       const elapsed = (Date.now() - new Date(action.timestamp).getTime()) / 1000;
       const remaining = action.timeoutSeconds! - elapsed;
       return Math.max(0, remaining);
     };
-    
+
     setTimeRemaining(calculateRemaining());
-    
+
     const interval = setInterval(() => {
       const remaining = calculateRemaining();
       setTimeRemaining(remaining);
-      
+
       if (remaining <= 0) {
         setState('expired');
         onTimeout?.(action.id);
         clearInterval(interval);
       }
     }, 1000);
-    
+
     return () => clearInterval(interval);
   }, [action.timeoutSeconds, action.timestamp, onTimeout]);
-  
+
   const isExpiringSoon = timeRemaining !== null && timeRemaining < 120; // 2 minutes
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -670,9 +690,9 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
             </InlineStack>
           </Banner>
         )}
-        
+
         {/* Card content */}
-        
+
         <ButtonGroup>
           <Button variant="primary" onClick={handleApprove}>
             Approve & Execute
@@ -697,6 +717,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
 **Scenario**: Timeout reached, approval no longer valid
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ 🤖 Agent Proposal · EXPIRED                  HIGH RISK │
@@ -716,6 +737,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
 ```
 
 **Implementation**:
+
 ```typescript
 {state === 'expired' && (
   <Card>
@@ -724,11 +746,11 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
         <Text variant="headingMd" as="h2">Agent Proposal</Text>
         <Badge tone="warning">EXPIRED</Badge>
       </InlineStack>
-      
+
       <Banner tone="warning" title="This approval has expired">
         <BlockStack gap="200">
           <Text variant="bodyMd">
-            The conversation may have progressed or the agent may have taken 
+            The conversation may have progressed or the agent may have taken
             alternative action. This approval cannot be processed.
           </Text>
           <Text variant="bodySm" tone="subdued">
@@ -739,7 +761,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
           </Text>
         </BlockStack>
       </Banner>
-      
+
       <ButtonGroup>
         <Button url={`/app/conversations/${action.conversationId}`}>
           View Conversation
@@ -762,6 +784,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
 **Scenario**: Local data is >1 minute old during active polling
 
 **Visual Design**:
+
 - Small banner at top of page
 - Doesn't block interaction
 - Auto-dismisses when data refreshes
@@ -774,7 +797,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
     action={{ content: 'Refresh Now', onAction: () => revalidator.revalidate() }}
   >
     <Text variant="bodyMd">
-      This data is {Math.floor(dataStaleness / 60)} minute(s) old. 
+      This data is {Math.floor(dataStaleness / 60)} minute(s) old.
       New approvals may be available.
     </Text>
   </Banner>
@@ -786,6 +809,7 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
 **Scenario**: User tries to approve but action was just rejected by another operator
 
 **Visual Design**:
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ 🤖 Agent Proposal                         [CONFLICT]   │
@@ -805,16 +829,17 @@ function ApprovalCard({ action, ... }: ApprovalCardProps) {
 ```
 
 **Implementation**:
+
 ```typescript
 // API returns 409 Conflict
 const handleApprove = async () => {
   setState('approving');
-  
+
   try {
     const response = await fetch(`/api/approvals/${action.id}/approve`, {
       method: 'POST',
     });
-    
+
     if (response.status === 409) {
       // Conflict - already processed
       const conflict = await response.json();
@@ -826,7 +851,7 @@ const handleApprove = async () => {
       });
       return;
     }
-    
+
     // Handle success/other errors...
   } catch (error) {
     // Handle network errors...
@@ -874,6 +899,7 @@ const handleApprove = async () => {
 **Scenario**: Network recovers after being offline
 
 **Visual Design**:
+
 - Success toast notification
 - Automatic data refresh
 - No user action required
@@ -885,7 +911,7 @@ function ApprovalQueue() {
   const [wasOffline, setWasOffline] = useState(false);
   const toast = useToast();
   const revalidator = useRevalidator();
-  
+
   useEffect(() => {
     const handleOnline = () => {
       if (wasOffline) {
@@ -894,21 +920,21 @@ function ApprovalQueue() {
         setWasOffline(false);
       }
     };
-    
+
     const handleOffline = () => {
       setWasOffline(true);
       toast.show('Connection lost. Working in offline mode.', { isError: true });
     };
-    
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-    
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, [wasOffline, toast, revalidator]);
-  
+
   return (/* ... */);
 }
 ```
@@ -921,57 +947,59 @@ function ApprovalQueue() {
 async function fetchWithRetry<T>(
   url: string,
   options: RequestInit = {},
-  maxRetries = 3
+  maxRetries = 3,
 ): Promise<T> {
   let lastError: Error | null = null;
-  
+
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       const response = await fetch(url, options);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       return await response.json();
     } catch (error) {
-      lastError = error instanceof Error ? error : new Error('Unknown error');
-      
+      lastError = error instanceof Error ? error : new Error("Unknown error");
+
       // Don't retry on 4xx errors (client errors)
-      if (lastError.message.includes('HTTP 4')) {
+      if (lastError.message.includes("HTTP 4")) {
         throw lastError;
       }
-      
+
       // Exponential backoff: 1s, 2s, 4s
       if (attempt < maxRetries - 1) {
         const delay = Math.pow(2, attempt) * 1000;
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }
-  
-  throw lastError || new Error('Max retries exceeded');
+
+  throw lastError || new Error("Max retries exceeded");
 }
 
 // Usage
 const handleApprove = async () => {
-  setState('approving');
-  
+  setState("approving");
+
   try {
     const result = await fetchWithRetry<ApprovalActionResult>(
       `/api/approvals/${action.id}/approve`,
-      { method: 'POST' }
+      { method: "POST" },
     );
-    
+
     if (result.success) {
-      setState('approved');
+      setState("approved");
     } else {
-      setState('error');
+      setState("error");
       setErrorMessage(result.error);
     }
   } catch (error) {
-    setState('error');
-    setErrorMessage('Unable to approve after multiple attempts. Please try again.');
+    setState("error");
+    setErrorMessage(
+      "Unable to approve after multiple attempts. Please try again.",
+    );
   }
 };
 ```
@@ -981,6 +1009,7 @@ const handleApprove = async () => {
 **Scenario**: Background polling fails repeatedly
 
 **Visual Design**:
+
 - Subtle banner (not full page error)
 - Manual refresh option
 - Shows last successful sync time
@@ -999,7 +1028,7 @@ useEffect(() => {
       setConsecutiveFailures(prev => prev + 1);
     }
   }, 5000);
-  
+
   return () => clearInterval(interval);
 }, []);
 
@@ -1017,7 +1046,7 @@ useEffect(() => {
     }}
   >
     <Text variant="bodyMd">
-      We're having trouble fetching the latest approvals. 
+      We're having trouble fetching the latest approvals.
       Last successful sync: {formatRelativeTime(lastSuccessfulSync)}
     </Text>
   </Banner>
@@ -1029,6 +1058,7 @@ useEffect(() => {
 ## 7. Edge Case Checklist
 
 ### Must Handle
+
 - [ ] Initial page load (skeleton)
 - [ ] Background refresh (subtle indicator)
 - [ ] Button action loading (spinner on button)
@@ -1048,6 +1078,7 @@ useEffect(() => {
 - [ ] Stale data warning (data >1 min old)
 
 ### Should Handle (Future)
+
 - [ ] Bulk approval loading
 - [ ] Pagination loading
 - [ ] Search/filter loading
@@ -1062,12 +1093,14 @@ useEffect(() => {
 ### Tone & Voice
 
 **Principles**:
+
 - **Clear**: Explain what happened in simple terms
 - **Actionable**: Tell user what they can do
 - **Reassuring**: Confirm their data/work is safe
 - **Specific**: Include error IDs for support
 
 **Good Examples**:
+
 ```
 ✓ "Unable to connect. Check your internet connection and try again."
 ✓ "This approval was already processed by another operator."
@@ -1076,6 +1109,7 @@ useEffect(() => {
 ```
 
 **Bad Examples**:
+
 ```
 ✗ "Error 500"
 ✗ "Something went wrong"
@@ -1088,39 +1122,45 @@ useEffect(() => {
 ```typescript
 const ERROR_TEMPLATES = {
   NETWORK: {
-    title: 'Connection Lost',
-    message: 'Unable to connect. Check your internet connection and try again.',
-    action: 'Retry',
+    title: "Connection Lost",
+    message: "Unable to connect. Check your internet connection and try again.",
+    action: "Retry",
   },
   TIMEOUT: {
-    title: 'Request Timed Out',
-    message: 'The server took too long to respond. This might be due to high load.',
-    action: 'Retry',
+    title: "Request Timed Out",
+    message:
+      "The server took too long to respond. This might be due to high load.",
+    action: "Retry",
   },
   SERVER_ERROR: {
-    title: 'Service Temporarily Unavailable',
-    message: 'Our team has been notified. Your approvals are safe and will reload when service is restored.',
-    action: 'Retry in 30s',
+    title: "Service Temporarily Unavailable",
+    message:
+      "Our team has been notified. Your approvals are safe and will reload when service is restored.",
+    action: "Retry in 30s",
   },
   UNAUTHORIZED: {
-    title: 'Insufficient Permissions',
-    message: 'You do not have permission to perform this action. Contact your administrator.',
-    action: 'Contact Support',
+    title: "Insufficient Permissions",
+    message:
+      "You do not have permission to perform this action. Contact your administrator.",
+    action: "Contact Support",
   },
   CONFLICT: {
-    title: 'Already Processed',
-    message: 'This approval was processed by another operator while you were reviewing it.',
-    action: 'Refresh Queue',
+    title: "Already Processed",
+    message:
+      "This approval was processed by another operator while you were reviewing it.",
+    action: "Refresh Queue",
   },
   EXPIRED: {
-    title: 'Approval Expired',
-    message: 'This approval is no longer valid. The conversation may have progressed.',
-    action: 'View Conversation',
+    title: "Approval Expired",
+    message:
+      "This approval is no longer valid. The conversation may have progressed.",
+    action: "View Conversation",
   },
   UNKNOWN: {
-    title: 'Unexpected Error',
-    message: 'An unexpected error occurred. Please try again or contact support if the issue persists.',
-    action: 'Retry',
+    title: "Unexpected Error",
+    message:
+      "An unexpected error occurred. Please try again or contact support if the issue persists.",
+    action: "Retry",
   },
 };
 ```
@@ -1190,6 +1230,7 @@ const ERROR_SHAKE = {
 ## 10. Implementation Priority
 
 ### P0 - Must Have for MVP
+
 - ✅ Initial load skeleton
 - ✅ Button loading states
 - ✅ Network offline detection
@@ -1198,6 +1239,7 @@ const ERROR_SHAKE = {
 - ✅ Error banner with retry
 
 ### P1 - Should Have for Production
+
 - ✅ Unauthorized handling
 - ✅ Already processed conflict
 - ✅ Timeout warnings
@@ -1206,6 +1248,7 @@ const ERROR_SHAKE = {
 - ✅ Stale data warning
 
 ### P2 - Nice to Have
+
 - ⏳ Keyboard shortcuts
 - ⏳ Error shake animation
 - ⏳ Optimistic success animation
@@ -1219,6 +1262,7 @@ const ERROR_SHAKE = {
 ### Manual Test Cases
 
 **Scenario 1: Happy Path**
+
 1. Load approval queue → See 3 pending approvals
 2. Click "Approve & Execute" → Button shows spinner
 3. API succeeds → Success banner appears
@@ -1226,6 +1270,7 @@ const ERROR_SHAKE = {
 5. Toast shows "Approval processed successfully"
 
 **Scenario 2: Network Error**
+
 1. Disconnect internet
 2. Try to approve → Error banner appears
 3. Error message: "Connection lost..."
@@ -1233,12 +1278,14 @@ const ERROR_SHAKE = {
 5. Click "Retry" → Approval succeeds
 
 **Scenario 3: API Error**
+
 1. API returns 500 error
 2. Error banner shows with error ID
 3. Click "Retry" → Same error
 4. Click "Contact Support" → Opens mailto with error ID
 
 **Scenario 4: Concurrent Modification**
+
 1. Two operators view same approval
 2. Operator A clicks approve → Succeeds
 3. Operator B clicks approve → Gets 409 Conflict
@@ -1246,6 +1293,7 @@ const ERROR_SHAKE = {
 5. Operator B clicks "Refresh Queue" → Card removed
 
 **Scenario 5: Timeout Expiration**
+
 1. Approval sits for 14 minutes
 2. Warning banner appears: "Expires in 2 min"
 3. Wait 2 more minutes → Approval expires
@@ -1260,39 +1308,39 @@ describe('ApprovalCard - Edge States', () => {
     render(<ApprovalQueueSkeleton />);
     expect(screen.getAllByRole('progressbar')).toHaveLength(3);
   });
-  
+
   it('shows spinner on approve button while processing', async () => {
     const { user } = render(<ApprovalCard {...mockProps} />);
     const approveBtn = screen.getByText('Approve & Execute');
-    
+
     await user.click(approveBtn);
-    
+
     expect(approveBtn).toHaveAttribute('aria-busy', 'true');
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
-  
+
   it('shows error banner and retry on API failure', async () => {
     const onApprove = jest.fn().mockRejectedValue(new Error('Network error'));
     const { user } = render(<ApprovalCard {...mockProps} onApprove={onApprove} />);
-    
+
     await user.click(screen.getByText('Approve & Execute'));
-    
+
     expect(screen.getByRole('alert')).toHaveTextContent('Network error');
     expect(screen.getByText('Retry')).toBeInTheDocument();
   });
-  
+
   it('shows empty state when no approvals', () => {
     render(<ApprovalQueue approvals={[]} />);
-    
+
     expect(screen.getByText('All caught up!')).toBeInTheDocument();
     expect(screen.getByText(/no pending approvals/i)).toBeInTheDocument();
   });
-  
+
   it('handles offline state gracefully', () => {
     Object.defineProperty(navigator, 'onLine', { value: false });
-    
+
     render(<ApprovalQueue />);
-    
+
     expect(screen.getByText(/offline/i)).toBeInTheDocument();
     expect(screen.getByText('Retry Connection')).toBeInTheDocument();
   });
@@ -1305,29 +1353,29 @@ describe('ApprovalCard - Edge States', () => {
 
 ### State Comparison Table
 
-| State | Badge | Banner | Actions | Auto-Remove | Animation |
-|-------|-------|--------|---------|-------------|-----------|
-| pending | - | - | Approve, Reject | No | None |
-| approving | - | - | None (disabled) | No | Spinner |
-| rejecting | - | - | None (disabled) | No | Spinner |
-| approved | ✓ | Success | None | Yes (3s) | Fade out |
-| rejected | - | - | None | Yes (3s) | Fade out |
-| error | - | Critical | Retry, Cancel | No | Shake |
-| expired | EXPIRED | Warning | Dismiss | No | None |
-| conflict | CONFLICT | Warning | Refresh, Dismiss | No | None |
-| offline | - | Warning | Retry Connection | No | None |
+| State     | Badge    | Banner   | Actions          | Auto-Remove | Animation |
+| --------- | -------- | -------- | ---------------- | ----------- | --------- |
+| pending   | -        | -        | Approve, Reject  | No          | None      |
+| approving | -        | -        | None (disabled)  | No          | Spinner   |
+| rejecting | -        | -        | None (disabled)  | No          | Spinner   |
+| approved  | ✓        | Success  | None             | Yes (3s)    | Fade out  |
+| rejected  | -        | -        | None             | Yes (3s)    | Fade out  |
+| error     | -        | Critical | Retry, Cancel    | No          | Shake     |
+| expired   | EXPIRED  | Warning  | Dismiss          | No          | None      |
+| conflict  | CONFLICT | Warning  | Refresh, Dismiss | No          | None      |
+| offline   | -        | Warning  | Retry Connection | No          | None      |
 
 ### Color Coding (Polaris Tones)
 
-| Element | Tone | Polaris Token |
-|---------|------|---------------|
-| Success badge | success | bg-success |
-| Warning badge | warning | bg-warning |
-| Critical badge | critical | bg-critical |
-| Info banner | info | bg-info |
-| Warning banner | warning | bg-warning |
-| Critical banner | critical | bg-critical |
-| Success banner | success | bg-success |
+| Element         | Tone     | Polaris Token |
+| --------------- | -------- | ------------- |
+| Success badge   | success  | bg-success    |
+| Warning badge   | warning  | bg-warning    |
+| Critical badge  | critical | bg-critical   |
+| Info banner     | info     | bg-info       |
+| Warning banner  | warning  | bg-warning    |
+| Critical banner | critical | bg-critical   |
+| Success banner  | success  | bg-success    |
 
 ---
 
@@ -1365,28 +1413,28 @@ function KeyboardShortcutsHelpModal() {
             </Box>
             <Text variant="bodyMd">Navigate between approvals</Text>
           </InlineStack>
-          
+
           <InlineStack gap="600" blockAlign="start">
             <Box minWidth="100px">
               <Text variant="bodyMd" fontWeight="semibold">Ctrl + A</Text>
             </Box>
             <Text variant="bodyMd">Approve current item</Text>
           </InlineStack>
-          
+
           <InlineStack gap="600" blockAlign="start">
             <Box minWidth="100px">
               <Text variant="bodyMd" fontWeight="semibold">Ctrl + R</Text>
             </Box>
             <Text variant="bodyMd">Reject current item</Text>
           </InlineStack>
-          
+
           <InlineStack gap="600" blockAlign="start">
             <Box minWidth="100px">
               <Text variant="bodyMd" fontWeight="semibold">Escape</Text>
             </Box>
             <Text variant="bodyMd">Close dialogs and modals</Text>
           </InlineStack>
-          
+
           <InlineStack gap="600" blockAlign="start">
             <Box minWidth="100px">
               <Text variant="bodyMd" fontWeight="semibold">Ctrl + K</Text>
@@ -1409,25 +1457,27 @@ function KeyboardShortcutsHelpModal() {
 **Scenario**: 100+ pending approvals
 
 **Solutions**:
+
 1. **Virtualization**: Use virtual scrolling for long lists
 2. **Pagination**: Load 20 approvals per page
 3. **Infinite Scroll**: Load more as user scrolls
 4. **Filtering**: Reduce visible items
 
 **Implementation (Virtualization)**:
+
 ```typescript
 import { Virtualizer } from '@tanstack/react-virtual';
 
 function ApprovalQueue({ approvals }: { approvals: ApprovalAction[] }) {
   const parentRef = useRef<HTMLDivElement>(null);
-  
+
   const virtualizer = useVirtualizer({
     count: approvals.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 250, // Estimated card height
     overscan: 3, // Render 3 extra cards above/below viewport
   });
-  
+
   return (
     <div ref={parentRef} style={{ height: '800px', overflow: 'auto' }}>
       <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
@@ -1465,14 +1515,14 @@ const [processedIds, setProcessedIds] = useState<Set<string>>(new Set());
 
 const handleRemove = (id: string) => {
   // Remove from UI
-  setApprovals(prev => prev.filter(a => a.id !== id));
-  
+  setApprovals((prev) => prev.filter((a) => a.id !== id));
+
   // Track processed to avoid re-adding on refresh
-  setProcessedIds(prev => new Set([...prev, id]));
+  setProcessedIds((prev) => new Set([...prev, id]));
 };
 
 // On revalidation, filter out already processed
-const newApprovals = freshData.filter(a => !processedIds.has(a.id));
+const newApprovals = freshData.filter((a) => !processedIds.has(a.id));
 setApprovals(newApprovals);
 ```
 
@@ -1549,5 +1599,3 @@ setApprovals(newApprovals);
 **Created**: 2025-10-11  
 **Owner**: Designer Agent  
 **Ready For**: Engineer Implementation (Phase 2-3)
-
-

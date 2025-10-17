@@ -1,26 +1,26 @@
 /**
  * API Route: Shopify Stock Risk
- * 
+ *
  * GET /api/shopify/stock
- * 
+ *
  * Purpose: Calculate stock risk (items with WOS < 14 days)
  * Owner: integrations agent
  * Date: 2025-10-15
- * 
+ *
  * Features:
  * - Read-only GraphQL query
  * - Audit logging to DashboardFact
  * - 5-minute caching
  * - Error handling with structured errors
- * 
+ *
  * Security:
  * - Requires Shopify authentication
  * - No PII in logs
  * - Read-only operations only
  */
 
-import type { LoaderFunctionArgs} from "react-router";
-import { json } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
+import { json } from "~/utils/http.server";
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -82,9 +82,9 @@ interface StockRiskData {
 
 /**
  * GET /api/shopify/stock
- * 
+ *
  * Calculate stock risk (items with WOS < 14 days).
- * 
+ *
  * Response:
  * {
  *   "atRiskCount": 12,
@@ -167,7 +167,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
       atRiskCount++;
 
       // Calculate weeks of supply (WOS)
-      const daysOfCover = averageDailySales > 0 ? quantity / averageDailySales : 0;
+      const daysOfCover =
+        averageDailySales > 0 ? quantity / averageDailySales : 0;
 
       if (daysOfCover < CRITICAL_WOS_DAYS) {
         criticalCount++;
@@ -255,7 +256,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return json(
       {
         error: {
-          message: "An unexpected error occurred while fetching stock risk data",
+          message:
+            "An unexpected error occurred while fetching stock risk data",
           scope: "shopify.stock",
           code: "INTERNAL_ERROR",
           retryable: false,
@@ -270,4 +272,3 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
   }
 }
-

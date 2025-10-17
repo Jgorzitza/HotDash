@@ -17,7 +17,7 @@ beforeEach(() => {
     if (url.includes("/job_status/")) {
       return new Response(
         JSON.stringify({ status: "complete", payload: { failures: {} } }),
-        { status: 200 }
+        { status: 200 },
       );
     }
     if (url.includes("/accounts")) {

@@ -8,11 +8,13 @@ created: 2025-10-12
 # Task 1C: Real-Time Update Indicators
 
 ## Purpose
+
 Design visual indicators for real-time updates in the approval queue, including new approval notifications, update animations, timestamp refresh, and connection status.
 
 ## 1. New Approval Notification Badge
 
 ### Navigation Badge (Pending Count)
+
 ```typescript
 <Navigation>
   <Navigation.Item
@@ -25,13 +27,15 @@ Design visual indicators for real-time updates in the approval queue, including 
 ```
 
 **Visual**: Red badge with white text showing count
-**Behavior**: 
+**Behavior**:
+
 - Shows count when > 0
 - Hides when count = 0
 - Updates in real-time as approvals arrive
-**Accessibility**: Badge content announced to screen readers
+  **Accessibility**: Badge content announced to screen readers
 
 ### Page Title Badge
+
 ```typescript
 <Page
   title="Approval Queue"
@@ -44,6 +48,7 @@ Design visual indicators for real-time updates in the approval queue, including 
 **Tone**: "attention" (not critical, but needs action)
 
 ### New Approval Toast (Optional Enhancement)
+
 ```typescript
 // When new approval arrives while on page
 <Toast
@@ -66,6 +71,7 @@ Design visual indicators for real-time updates in the approval queue, including 
 ## 2. Update Animation
 
 ### New Approval Entry Animation
+
 ```css
 @keyframes slideIn {
   from {
@@ -99,6 +105,7 @@ Design visual indicators for real-time updates in the approval queue, including 
 ```
 
 ### Approved/Rejected Exit Animation
+
 ```css
 @keyframes slideOut {
   from {
@@ -122,11 +129,18 @@ Design visual indicators for real-time updates in the approval queue, including 
 **Removal**: Card removed from DOM after animation completes
 
 ### Highlight Flash (Updated Item)
+
 ```css
 @keyframes highlight {
-  0% { background-color: var(--p-color-bg-surface); }
-  50% { background-color: var(--p-color-bg-success-subdued); }
-  100% { background-color: var(--p-color-bg-surface); }
+  0% {
+    background-color: var(--p-color-bg-surface);
+  }
+  50% {
+    background-color: var(--p-color-bg-success-subdued);
+  }
+  100% {
+    background-color: var(--p-color-bg-surface);
+  }
 }
 
 .updated-approval-card {
@@ -144,6 +158,7 @@ Design visual indicators for real-time updates in the approval queue, including 
 ## 3. Timestamp Refresh Indicator
 
 ### Relative Time Display
+
 ```typescript
 import { formatDistanceToNow } from 'date-fns';
 
@@ -157,24 +172,26 @@ import { formatDistanceToNow } from 'date-fns';
 **Library**: `date-fns` for formatting
 
 ### Implementation
+
 ```typescript
-const [relativeTime, setRelativeTime] = useState('');
+const [relativeTime, setRelativeTime] = useState("");
 
 useEffect(() => {
   const updateTime = () => {
     setRelativeTime(
-      formatDistanceToNow(new Date(createdAt), { addSuffix: true })
+      formatDistanceToNow(new Date(createdAt), { addSuffix: true }),
     );
   };
-  
+
   updateTime(); // Initial
   const interval = setInterval(updateTime, 30000); // Every 30s
-  
+
   return () => clearInterval(interval);
 }, [createdAt]);
 ```
 
 ### Hover for Absolute Time (Tooltip)
+
 ```typescript
 <Tooltip content={new Date(createdAt).toLocaleString()}>
   <Text variant="bodySm" tone="subdued">
@@ -188,10 +205,16 @@ useEffect(() => {
 **Accessibility**: Full timestamp in aria-label
 
 ### Refresh Animation (Subtle)
+
 ```css
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .timestamp-updating {
@@ -208,6 +231,7 @@ useEffect(() => {
 ## 4. Connection Status Indicator
 
 ### Online Status (Normal Operation)
+
 ```typescript
 // No indicator needed - default state
 // Only show indicator when offline or connecting
@@ -217,6 +241,7 @@ useEffect(() => {
 **Rationale**: Don't clutter UI when everything works
 
 ### Offline Status (Network Lost)
+
 ```typescript
 <Banner tone="critical">
   <InlineStack gap="200" blockAlign="center">
@@ -232,6 +257,7 @@ useEffect(() => {
 **Retry**: Automatic reconnection attempts every 5s
 
 ### Connecting Status (Reconnecting)
+
 ```typescript
 <Banner tone="info">
   <InlineStack gap="200" blockAlign="center">
@@ -246,6 +272,7 @@ useEffect(() => {
 **Success**: Banner disappears when connected
 
 ### Connection Restored (Success Message)
+
 ```typescript
 <Toast
   content="Connection restored"
@@ -259,6 +286,7 @@ useEffect(() => {
 **Purpose**: Reassure operator that connection is back
 
 ### Status in Header (Alternative)
+
 ```typescript
 <div style={{
   position: 'fixed',
@@ -281,6 +309,7 @@ useEffect(() => {
 ## 5. Auto-Refresh Indicator
 
 ### Refresh Progress Bar (Subtle)
+
 ```typescript
 <div style={{
   position: 'fixed',
@@ -303,6 +332,7 @@ useEffect(() => {
 **Accessibility**: Hidden from screen readers (decorative only)
 
 ### Last Updated Timestamp
+
 ```typescript
 <Text variant="bodySm" tone="subdued">
   Last updated: {formatTime(lastRefresh)}
@@ -314,6 +344,7 @@ useEffect(() => {
 **Format**: "3:45 PM" (time only, not date)
 
 ### Manual Refresh Button
+
 ```typescript
 <Button
   plain
@@ -336,23 +367,26 @@ useEffect(() => {
 ## 6. Loading Transitions (Optimistic Updates)
 
 ### Optimistic Approve (Instant Feedback)
+
 ```typescript
 // 1. Immediately mark as approved (optimistic)
-const optimisticApproval = { ...approval, status: 'approved' };
-setApprovals(approvals.map(a => a.id === approval.id ? optimisticApproval : a));
+const optimisticApproval = { ...approval, status: "approved" };
+setApprovals(
+  approvals.map((a) => (a.id === approval.id ? optimisticApproval : a)),
+);
 
 // 2. Send request
-const response = await fetch(`/approvals/${id}/approve`, { method: 'POST' });
+const response = await fetch(`/approvals/${id}/approve`, { method: "POST" });
 
 // 3. If fails, revert
 if (!response.ok) {
   setApprovals(originalApprovals);
-  showError('Failed to approve. Please try again.');
+  showError("Failed to approve. Please try again.");
 }
 
 // 4. If succeeds, remove from queue after animation
 setTimeout(() => {
-  setApprovals(approvals.filter(a => a.id !== approval.id));
+  setApprovals(approvals.filter((a) => a.id !== approval.id));
 }, 300); // Match exit animation duration
 ```
 
@@ -361,6 +395,7 @@ setTimeout(() => {
 **Fallback**: Reverts if API fails
 
 ### Approved State Visual
+
 ```typescript
 <Card>
   <BlockStack gap="300">
@@ -382,6 +417,7 @@ setTimeout(() => {
 ## 7. Batch Update Indicators
 
 ### Multiple New Approvals (Batch)
+
 ```typescript
 <Toast
   content={`${newCount} new approvals arrived`}
@@ -397,6 +433,7 @@ setTimeout(() => {
 **Action**: Scrolls to top where new approvals appear
 
 ### Refreshing All Approvals
+
 ```typescript
 <div style={{
   position: 'fixed',
@@ -433,4 +470,3 @@ setTimeout(() => {
 ✅ **Accessibility**: All animations respect prefers-reduced-motion
 
 **Evidence**: Complete real-time update indicator specification
-

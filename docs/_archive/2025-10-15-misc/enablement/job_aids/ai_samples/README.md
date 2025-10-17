@@ -12,11 +12,12 @@ This folder houses the facilitator packets referenced in `docs/enablement/dry_ru
 > Append annotated screenshots and Supabase decision IDs once staging secrets and design overlays land (dependency tracked in `feedback/enablement.md`).
 
 ## Latest Supabase Evidence (2025-10-10 export)
+
 Use the refreshed log bundle while rehearsing (`artifacts/logs/supabase_decision_export_2025-10-10T07-29-39Z.ndjson`, summary in `artifacts/monitoring/supabase-sync-summary-latest.json`). Pair the sample IDs with the scenario tables inside each kit and note the hourly monitor now references the same dataset.
 
-| decisionId | Status | Attempt | Duration (ms) | Suggested usage |
-| --- | --- | --- | --- | --- |
-| 101 | SUCCESS | 1 | 241.12 | Baseline approval reference (Sales Surge, CX ship_update, Inventory restock). |
-| 102 | SUCCESS | 1 | 198.77 | Secondary success sample for marketing/intentional-low-stock narratives. |
-| 103 | TIMEOUT | 3 | 1500.55 | Use to illustrate escalation when Supabase logs `ETIMEDOUT` and operators must capture fallbacks. |
-| 104 | SUCCESS | 2 | 265.43 | Demonstrate retry metadata; call out documenting follow-up actions in Q&A templates. |
+| decisionId | Status  | Attempt | Duration (ms) | Suggested usage                                                                                   |
+| ---------- | ------- | ------- | ------------- | ------------------------------------------------------------------------------------------------- |
+| 101        | SUCCESS | 1       | 241.12        | Baseline approval reference (Sales Surge, CX ship_update, Inventory restock).                     |
+| 102        | SUCCESS | 1       | 198.77        | Secondary success sample for marketing/intentional-low-stock narratives.                          |
+| 103        | TIMEOUT | 3       | 1500.55       | Use to illustrate escalation when Supabase logs `ETIMEDOUT` and operators must capture fallbacks. |
+| 104        | SUCCESS | 2       | 265.43        | Demonstrate retry metadata; call out documenting follow-up actions in Q&A templates.              |

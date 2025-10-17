@@ -9,6 +9,7 @@
 ## E2E TEST PLAN
 
 ### Prerequisites
+
 - ✅ Webhook configured in Chatwoot (Task 2)
 - ✅ Webhook endpoint deployed and healthy
 - ✅ Agent SDK service running (port 8006)
@@ -22,6 +23,7 @@
 **Objective:** Verify high-confidence draft generation and approval
 
 **Steps:**
+
 1. Create test conversation in Chatwoot
 2. Send message: "What's your return policy?"
 3. Verify webhook received
@@ -33,6 +35,7 @@
 9. Verify customer receives email
 
 **Expected Results:**
+
 - Draft generated in < 5 seconds
 - Confidence score: 90-95%
 - Knowledge source: Return Policy cited
@@ -46,6 +49,7 @@
 **Objective:** Test order data integration
 
 **Steps:**
+
 1. Send message: "Where is my order #12345?"
 2. Verify webhook triggers Shopify lookup
 3. Check draft includes tracking info
@@ -53,6 +57,7 @@
 5. Verify customer gets tracking details
 
 **Expected Results:**
+
 - Order data fetched from Shopify
 - Tracking number included
 - Delivery date estimated
@@ -65,6 +70,7 @@
 **Objective:** Test escalation workflow
 
 **Steps:**
+
 1. Send message with angry sentiment
 2. Verify sentiment detected as "angry"
 3. Check draft flagged for escalation
@@ -74,6 +80,7 @@
 7. Verify manager notified
 
 **Expected Results:**
+
 - Sentiment: "angry" detected
 - Priority: "urgent"
 - Recommended action: "escalate"
@@ -87,6 +94,7 @@
 **Objective:** Test senior agent routing
 
 **Steps:**
+
 1. Send complex technical question
 2. Verify draft confidence < 70%
 3. Check auto-assigned to senior agent
@@ -94,6 +102,7 @@
 5. Track edit for learning data
 
 **Expected Results:**
+
 - Confidence: 50-69%
 - Assigned to: Senior agent
 - Priority: "high"
@@ -106,6 +115,7 @@
 **Objective:** End-to-end conversation flow
 
 **Timeline Test:**
+
 - T+0s: Customer sends message
 - T+3s: Webhook processed
 - T+5s: Draft created as private note
@@ -117,6 +127,7 @@
 - T+1hr: Operator resolves conversation
 
 **Validation Points:**
+
 - Each step logged
 - Timestamps recorded
 - All data synced to Supabase
@@ -137,4 +148,3 @@
 ---
 
 **Status:** Task 5 specification COMPLETE - Ready for execution once webhook configured
-

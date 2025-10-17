@@ -6,9 +6,11 @@ last_reviewed: 2025-10-15
 doc_hash: TBD
 expires: 2026-01-15
 ---
+
 # Mock Outputs — Supabase Tabletop 2025-10-15
 
 ## Detection Evidence
+
 ```
 2025-10-15T18:07:12Z grafana.occ
 ALERT: Supabase Audit Log Anomaly — Unknown IP 203.0.113.88 accessed `decision_log`.
@@ -16,6 +18,7 @@ Action: Paging reliability@hotdash.internal (Supabase On-call).
 ```
 
 ## Audit Log Excerpt (Simulated)
+
 ```json
 {
   "event": "access",
@@ -30,6 +33,7 @@ Action: Paging reliability@hotdash.internal (Supabase On-call).
 ```
 
 ## Parity Check Summary (Post-Rotation)
+
 ```json
 {
   "event": "analytics.parity.check",
@@ -44,6 +48,7 @@ Action: Paging reliability@hotdash.internal (Supabase On-call).
 ```
 
 ## Communication Draft Snippet
+
 ```
 Operators: We detected and contained an issue with our Supabase decision log replica. Audit trails remain intact in Prisma, and retention jobs are confirmed. No customer-facing action required.
 ```

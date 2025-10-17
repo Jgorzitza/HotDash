@@ -42,7 +42,11 @@ async function ensureDir(path: string) {
   await fs.mkdir(path, { recursive: true });
 }
 
-async function writeDetailFile(directory: string, fileName: string, payload: unknown) {
+async function writeDetailFile(
+  directory: string,
+  fileName: string,
+  payload: unknown,
+) {
   await ensureDir(directory);
   const filePath = join(directory, fileName);
   await fs.writeFile(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
@@ -84,7 +88,9 @@ async function buildAdapters(options: CliOptions): Promise<MemoryAdapter[]> {
   }
 
   if (!adapters.length) {
-    throw new Error("No logging backends configured. Specify at least one backend (`file`, `supabase`).");
+    throw new Error(
+      "No logging backends configured. Specify at least one backend (`file`, `supabase`).",
+    );
   }
 
   return adapters;
@@ -113,15 +119,21 @@ async function run() {
     ".env",
   ]);
 
-  const supabaseEnvAvailable = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY);
-  const defaultBackends = supabaseEnvAvailable ? ["file", "supabase"] : ["file"];
+  const supabaseEnvAvailable = Boolean(
+    process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY,
+  );
+  const defaultBackends = supabaseEnvAvailable
+    ? ["file", "supabase"]
+    : ["file"];
 
   const backendValues = (values.backend as string[] | undefined)?.length
     ? (values.backend as string[])
     : defaultBackends;
 
   if (typeof values.case !== "string" || values.case.trim() === "") {
-    throw new Error("Argument `--case` is required and must be a non-empty string.");
+    throw new Error(
+      "Argument `--case` is required and must be a non-empty string.",
+    );
   }
 
   const caseId = values.case as string;
@@ -141,11 +153,15 @@ async function run() {
   };
 
   if (!options.output && !options.outputPath) {
-    throw new Error("Provide `--output` or `--output-path` so the recommendation text can be logged.");
+    throw new Error(
+      "Provide `--output` or `--output-path` so the recommendation text can be logged.",
+    );
   }
 
   const recommendationOutput =
-    options.output ?? (await readFileMaybe(options.outputPath)) ?? "/* output missing */";
+    options.output ??
+    (await readFileMaybe(options.outputPath)) ??
+    "/* output missing */";
   const recommendationInput = await readFileMaybe(options.inputPath);
 
   const decisionId = options.id ?? generateId(options.caseId);
@@ -189,7 +205,9 @@ async function run() {
         await memory.putDecision(decision);
       } catch (error) {
         const message = (error as Error)?.message ?? String(error);
-        throw new Error(`[ai:log-recommendation] ${label} backend failed: ${message}`);
+        throw new Error(
+          `[ai:log-recommendation] ${label} backend failed: ${message}`,
+        );
       }
     }),
   );

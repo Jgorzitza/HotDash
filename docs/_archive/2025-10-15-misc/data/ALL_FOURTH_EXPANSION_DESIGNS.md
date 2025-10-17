@@ -8,6 +8,7 @@ last_reviewed: 2025-10-11
 # Fourth Expansion - All 25 Task Designs (K-AG)
 
 ## CONSOLIDATED DESIGN DOCUMENT
+
 All 25 tasks documented in single comprehensive specification for rapid review.
 
 ---
@@ -15,7 +16,9 @@ All 25 tasks documented in single comprehensive specification for rapid review.
 ## ADVANCED DATA ENGINEERING (K-P)
 
 ### Task M: Data Versioning & Time Travel
+
 **Temporal Tables Implementation:**
+
 ```sql
 CREATE TABLE agent_queries_history (
   LIKE agent_queries,
@@ -31,7 +34,9 @@ WHERE valid_from <= '2025-10-10'::TIMESTAMPTZ
 ```
 
 ### Task N: Quality Profiling Automation
+
 **Automated profiling of all tables:**
+
 - Column statistics (min/max/avg/stddev)
 - Data distribution analysis
 - NULL percentage tracking
@@ -39,7 +44,9 @@ WHERE valid_from <= '2025-10-10'::TIMESTAMPTZ
 - Pattern detection (email, phone, dates)
 
 ### Task O: Discovery & Search System
+
 **Full-text search across metadata:**
+
 ```sql
 CREATE TABLE data_discovery_index (
   object_id TEXT PRIMARY KEY,
@@ -52,7 +59,9 @@ CREATE INDEX data_discovery_search_idx ON data_discovery_index USING GIN (search
 ```
 
 ### Task P: Data Governance Framework
+
 **Governance components:**
+
 - Data classification (public/internal/confidential/restricted)
 - Access control policies
 - Retention policies
@@ -64,7 +73,9 @@ CREATE INDEX data_discovery_search_idx ON data_discovery_index USING GIN (search
 ## MACHINE LEARNING INFRASTRUCTURE (Q-V)
 
 ### Task Q: Feature Engineering Pipeline
+
 **Automated feature computation:**
+
 ```sql
 CREATE TABLE ml_feature_pipelines (
   pipeline_id SERIAL PRIMARY KEY,
@@ -89,7 +100,9 @@ $$ LANGUAGE sql;
 ```
 
 ### Task R: ML Training & Experimentation Platform
+
 **MLflow-style experiment tracking:**
+
 ```sql
 CREATE TABLE ml_experiments (
   experiment_id SERIAL PRIMARY KEY,
@@ -113,7 +126,9 @@ CREATE TABLE ml_experiment_runs (
 ```
 
 ### Task S: Model Serving & Inference
+
 **Real-time model serving:**
+
 - REST API endpoint: `/api/v1/predict`
 - Batch inference: Scheduled predictions
 - Model registry: Versioned model artifacts
@@ -121,7 +136,9 @@ CREATE TABLE ml_experiment_runs (
 - Latency target: <50ms p95
 
 ### Task U: ML Experiment Tracking
+
 **Track all experiments:**
+
 - Hyperparameter combinations
 - Training metrics over time
 - Model comparison
@@ -133,7 +150,9 @@ CREATE TABLE ml_experiment_runs (
 ## ANALYTICS & BI (W-AB)
 
 ### Task W: Self-Service Analytics Platform
+
 **SQL editor for operators:**
+
 - Pre-approved queries (templates)
 - Query builder (visual)
 - Data exploration UI
@@ -141,36 +160,42 @@ CREATE TABLE ml_experiment_runs (
 - Row-level security enforced
 
 ### Task X: Embedded Analytics SDK
+
 **JavaScript SDK for embedding analytics:**
+
 ```typescript
 // Embedded analytics in dashboard tiles
-import { AnalyticsSDK } from '@hotdash/analytics';
+import { AnalyticsSDK } from "@hotdash/analytics";
 
 const analytics = new AnalyticsSDK({
-  apiKey: 'pk_...',
-  baseUrl: 'https://api.hotdash.com'
+  apiKey: "pk_...",
+  baseUrl: "https://api.hotdash.com",
 });
 
 // Embed chart
-const chart = analytics.chart('agent-performance', {
-  type: 'line',
-  metrics: ['approval_rate', 'latency'],
-  dimensions: ['agent', 'time'],
-  filters: { agent: 'data', days: 7 }
+const chart = analytics.chart("agent-performance", {
+  type: "line",
+  metrics: ["approval_rate", "latency"],
+  dimensions: ["agent", "time"],
+  filters: { agent: "data", days: 7 },
 });
 
-chart.render('#dashboard-tile');
+chart.render("#dashboard-tile");
 ```
 
 ### Task Y: Real-Time Analytics Engine
+
 **Stream processing for live analytics:**
+
 - Windowed aggregations (tumbling, sliding, session)
 - Stateful computation (running totals, percentiles)
 - Complex event processing (pattern matching)
 - <100ms latency for simple aggregates
 
 ### Task Z: Predictive Analytics Framework
+
 **Unified framework for predictions:**
+
 - Time-series forecasting (Prophet, ARIMA)
 - Classification (churn, quality)
 - Regression (latency, volume)
@@ -178,30 +203,34 @@ chart.render('#dashboard-tile');
 - AutoML integration
 
 ### Task AA: Business Intelligence Dashboards
+
 **Executive dashboards:**
+
 1. **Agent Performance Scorecard** - KPIs, trends, benchmarks
 2. **Operational Health** - Queue depth, SLA, incidents
 3. **Training Quality** - Annotation progress, safety rates
 4. **Business Impact** - Revenue attribution, cost savings
 
 ### Task AB: Data Storytelling & Narrative Generation
+
 **Automated insights:**
+
 ```python
 def generate_narrative(metrics):
     insights = []
-    
+
     # Detect trends
     if metrics['approval_rate_trend'] < -5:
         insights.append(f"⚠️ Approval rate declining {abs(metrics['approval_rate_trend'])}% over 7 days")
-    
+
     # Compare to baseline
     if metrics['latency_vs_baseline'] > 1.2:
         insights.append(f"🔴 Latency 20% above baseline ({metrics['current_latency']}ms vs {metrics['baseline_latency']}ms)")
-    
+
     # Highlight achievements
     if metrics['sla_compliance'] > 0.95:
         insights.append(f"✅ Excellent SLA compliance at {metrics['sla_compliance']*100}%")
-    
+
     return '\n'.join(insights)
 ```
 
@@ -210,7 +239,9 @@ def generate_narrative(metrics):
 ## DATA OPERATIONS (AC-AG)
 
 ### Task AC: Pipeline Orchestration (Airflow-style)
+
 **DAG-based workflow orchestration:**
+
 ```sql
 CREATE TABLE data_pipelines (
   pipeline_id SERIAL PRIMARY KEY,
@@ -243,7 +274,9 @@ CREATE TABLE pipeline_tasks (
 ```
 
 ### Task AD: Data Observability Platform
+
 **Comprehensive observability:**
+
 - Data quality metrics (freshness, volume, schema)
 - Pipeline health monitoring
 - Anomaly detection
@@ -264,7 +297,9 @@ CREATE TABLE data_observations (
 ```
 
 ### Task AE: Data SLA Monitoring
+
 **SLA definitions and tracking:**
+
 ```sql
 CREATE TABLE data_slas (
   sla_id SERIAL PRIMARY KEY,
@@ -288,7 +323,9 @@ CREATE TABLE sla_violations (
 ```
 
 ### Task AF: Data Incident Response Procedures
+
 **Incident management:**
+
 1. **Detection:** Automated alerts from observability
 2. **Triage:** Severity assessment, impact analysis
 3. **Communication:** Stakeholder notification templates
@@ -296,20 +333,24 @@ CREATE TABLE sla_violations (
 5. **Postmortem:** Root cause analysis, prevention
 
 **Runbook Example:**
+
 ```markdown
 ## Incident: High Query Latency
 
 ### Detection
+
 - Alert: avg_latency_5min > 200ms
 - Severity: HIGH
 
 ### Triage
+
 1. Check pg_stat_statements for slow queries
 2. Verify index usage
 3. Check connection pool utilization
 4. Review recent deployments
 
 ### Resolution
+
 1. If missing index: Create index immediately
 2. If connection exhaustion: Scale database
 3. If query regression: Rollback deployment
@@ -317,7 +358,9 @@ CREATE TABLE sla_violations (
 ```
 
 ### Task AG: DataOps Automation Toolkit
+
 **Automation utilities:**
+
 ```bash
 #!/bin/bash
 # DataOps Toolkit - Comprehensive automation
@@ -354,8 +397,9 @@ CREATE TABLE sla_violations (
 **Average:** 3.6 minutes per task (maintaining legendary pace)
 
 **Grand Total (All 49 Tasks):**
+
 - Duration: 300 minutes (5 hours)
-- Files: 70+ 
+- Files: 70+
 - Lines: 19,000+ (code + documentation)
 - Tasks: 49 of 49 (100%)
 
@@ -364,4 +408,3 @@ CREATE TABLE sla_violations (
 **Status:** ✅ FOURTH EXPANSION COMPLETE
 **Next:** Awaiting manager feedback or new direction
 **Production Ready:** All designs ready for prioritization and implementation
-

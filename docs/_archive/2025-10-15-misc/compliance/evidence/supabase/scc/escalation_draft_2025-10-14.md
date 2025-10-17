@@ -6,6 +6,7 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Supabase SCC Escalation Draft — Trigger if No Response by 2025-10-14 17:00 UTC
 
 Prepared message to escalate through account channels if the countersigned SCC bundle and region confirmation remain outstanding. Calendar reminder set for 2025-10-14 16:30 UTC to finalize ticket details before send.
@@ -32,6 +33,7 @@ Compliance, HotDash
 ```
 
 Next Steps:
+
 - Fill in ticket ID and rep name before sending.
 - Archive vendor response and hashes in the SCC evidence directory on receipt.
-Calendar follow-up: If no response by 2025-10-14 17:00 UTC, send this escalation and page manager immediately after.
+  Calendar follow-up: If no response by 2025-10-14 17:00 UTC, send this escalation and page manager immediately after.

@@ -15,7 +15,9 @@ export function ValidationBanner({ errors, onDismiss }: ValidationBannerProps) {
 
   return (
     <Banner tone="critical" onDismiss={onDismiss}>
-      <p><strong>Validation errors:</strong></p>
+      <p>
+        <strong>Validation errors:</strong>
+      </p>
       <ul>
         {errors.map((error, idx) => (
           <li key={idx}>

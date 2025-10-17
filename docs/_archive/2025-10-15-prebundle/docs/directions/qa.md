@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # QA — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -40,6 +43,7 @@ You may run local, non-interactive test and audit commands without asking for ap
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/qa.md` without waiting for additional manager approval. For every finding, document the remediation attempts you executed (command + output). Only escalate to another team when the fix is out of QA scope or fails twice with evidence attached.
 
 ## Current Sprint Focus — 2025-10-12
+
 QA operates as the audit arm of the team. Validate the health of the environment and surface risks; individual feature owners are responsible for their own tests. Execute the steps below in parallel and log findings in `feedback/qa.md`.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
@@ -58,36 +62,40 @@ QA operates as the audit arm of the team. Validate the health of the environment
 **While Waiting for Engineer - Execute These**:
 
 1A. **Prepare LlamaIndex MCP Test Suite**
-   - Write test plan for all 3 MCP tools
-   - Create test queries for each tool
-   - Document expected responses
-   - Prepare performance benchmarks
-   - Evidence: Test plan document
-   - Timeline: 2-3 hours
+
+- Write test plan for all 3 MCP tools
+- Create test queries for each tool
+- Document expected responses
+- Prepare performance benchmarks
+- Evidence: Test plan document
+- Timeline: 2-3 hours
 
 1B. **Prepare Agent SDK Test Scenarios**
-   - Design E2E test scenarios for approval flow
-   - Create test data (sample customer inquiries)
-   - Document expected agent responses
-   - Prepare approval test cases
-   - Evidence: Test scenario document
-   - Timeline: 2-3 hours
+
+- Design E2E test scenarios for approval flow
+- Create test data (sample customer inquiries)
+- Document expected agent responses
+- Prepare approval test cases
+- Evidence: Test scenario document
+- Timeline: 2-3 hours
 
 1C. **Prepare Webhook Test Strategy**
-   - Design webhook test payloads
-   - Document signature verification tests
-   - Create error handling test cases
-   - Prepare integration test plan
-   - Evidence: Webhook test strategy
-   - Timeline: 1-2 hours
+
+- Design webhook test payloads
+- Document signature verification tests
+- Create error handling test cases
+- Prepare integration test plan
+- Evidence: Webhook test strategy
+- Timeline: 1-2 hours
 
 1D. **Review Existing Test Coverage**
-   - Audit current test suite for gaps
-   - Identify untested critical paths
-   - Document areas needing coverage
-   - Prioritize test additions
-   - Evidence: Coverage gap report
-   - Timeline: 2-3 hours
+
+- Audit current test suite for gaps
+- Identify untested critical paths
+- Document areas needing coverage
+- Prioritize test additions
+- Evidence: Coverage gap report
+- Timeline: 2-3 hours
 
 2. **Test Agent SDK Service** (when Engineer completes Task 4)
    - Test agent receives webhook, processes request
@@ -124,6 +132,7 @@ QA operates as the audit arm of the team. Validate the health of the environment
 **Manager Action**: Escalated to Engineer as P0 blocker
 
 **Your Next Steps**:
+
 1. Continue with Tasks 1A-1D (prep work)
 2. Execute 4-hour quality validation cycle NOW
 3. When Engineer fixes LlamaIndex MCP, retest immediately
@@ -136,6 +145,7 @@ QA operates as the audit arm of the team. Validate the health of the environment
 ## 🆕 URGENT TASK (CEO Request - Do FIRST)
 
 **Task 0**: Verify Engineer's Claims Using MCPs
+
 - Use Fly MCP: Check if llamaindex-mcp app actually deployed
 - Use GitHub MCP: Check commits today (verify work is in git)
 - Use Shopify MCP: Validate if Shopify queries actually fixed
@@ -151,6 +161,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 ## 📋 ADDITIONAL LAUNCH-ALIGNED TASKS (In-Depth)
 
 **Task 1E**: Hot Rodan Smoke Test Suite
+
 - Create smoke tests specific to Hot Rodan product catalog
 - Test with actual hot rod parts SKUs
 - Verify automotive-specific data displays correctly
@@ -158,6 +169,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 - Timeline: 2-3 hours
 
 **Task 1F**: Performance Budget Enforcement
+
 - Set performance budgets per tile (<300ms load)
 - Create automated performance tests
 - Test with production data volumes
@@ -165,6 +177,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 - Timeline: 2-3 hours
 
 **Task 1G**: Accessibility Testing
+
 - Screen reader testing for approval queue
 - Keyboard navigation validation
 - WCAG 2.1 AA compliance check
@@ -172,6 +185,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 - Timeline: 2-3 hours
 
 **Task 1H**: Cross-Browser Testing
+
 - Test in Chrome, Firefox, Safari
 - Test on mobile devices (iOS/Android)
 - Document any browser-specific issues
@@ -179,6 +193,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 - Timeline: 2-3 hours
 
 **Task 1I**: Security Testing
+
 - Test webhook signature validation
 - Test SQL injection protection
 - Test XSS prevention
@@ -186,6 +201,7 @@ Execute Task 0 FIRST, then validation cycle + prep tasks. Report in feedback/qa.
 - Timeline: 2-3 hours
 
 **Task 1J**: Load Testing
+
 - Simulate multiple concurrent operators
 - Test approval queue under load
 - Verify no race conditions
@@ -256,6 +272,7 @@ Execute 1A-1J + validation cycles. Total: ~25-30 hours launch-aligned work.
    - Evidence: Lighthouse report, performance metrics
 
 **Ongoing Requirements**:
+
 - Coordinate with @engineer on test environment setup
 - Run tests continuously as features are built
 - Report failures immediately in feedback/qa.md
@@ -266,6 +283,7 @@ Execute 1A-1J + validation cycles. Total: ~25-30 hours launch-aligned work.
 ### 🚀 PRIORITY: Execute Task 3 NOW (Doesn't Require Implementation)
 
 **Task 3: Agent SDK Test Strategy** - Can start immediately
+
 - Write integration test plan for webhook flow
 - Create E2E test scenarios (approve/reject/timeout)
 - Document test data requirements
@@ -277,6 +295,7 @@ Execute 1A-1J + validation cycles. Total: ~25-30 hours launch-aligned work.
 ### 🚀 ADDITIONAL PARALLEL TASKS
 
 **Task A: Performance Testing Framework** - Prepare for load testing
+
 - Design load test scenarios for approval queue
 - Create performance benchmarking scripts
 - Document performance budgets (<100ms routes, <500ms MCP)
@@ -284,6 +303,7 @@ Execute 1A-1J + validation cycles. Total: ~25-30 hours launch-aligned work.
 - Evidence: Performance test framework
 
 **Task B: Security Test Suite** - Prepare security tests
+
 - Design security test scenarios (CSRF, auth, injection)
 - Create test data for security testing
 - Document security requirements
@@ -297,6 +317,7 @@ Execute Task 3 immediately, then A and B in parallel.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
 
 **Task C-G: Automated Testing Infrastructure** (5 tasks)
+
 - C: Create visual regression testing suite (Percy or Chromatic)
 - D: Implement API contract testing (Pact or similar)
 - E: Design mutation testing framework
@@ -304,6 +325,7 @@ Execute Task 3 immediately, then A and B in parallel.
 - G: Implement test data generation framework
 
 **Task H-L: Quality Assurance Processes** (5 tasks)
+
 - H: Design code review checklist and automation
 - I: Create quality gates for all PRs
 - J: Implement automated security scanning (SAST/DAST)
@@ -311,6 +333,7 @@ Execute Task 3 immediately, then A and B in parallel.
 - L: Create test coverage monitoring and alerts
 
 **Task M-Q: Testing Documentation** (5 tasks)
+
 - M: Write comprehensive testing guide for all developers
 - N: Create test best practices documentation
 - O: Document QA processes and workflows
@@ -330,13 +353,14 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 **Validation Process** (Execute every 4 hours):
 
 1. **Evidence Review** (30 min): Check all agent feedback for completed tasks have proper proof
-2. **Proof Validation** (60 min): Random sample 3-5 tasks per agent, verify quality  
+2. **Proof Validation** (60 min): Random sample 3-5 tasks per agent, verify quality
 3. **Quality Report** (15 min): Rate agents 🟢🟡🔴, escalate issues to Manager
 
 **Evidence Standards**:
+
 - ✅ Code: File path + line numbers + description
 - ✅ Tests: Test file + passing status
-- ✅ Docs: Document path + sections  
+- ✅ Docs: Document path + sections
 - ✅ Design: Asset paths + screenshots
 - ❌ NOT acceptable: "Done", "Complete", "Finished"
 
@@ -347,6 +371,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 ### 🚀 SIXTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task R-W: Quality Engineering** (5 tasks)
+
 - R: Design shift-left testing methodology
 - S: Create quality metrics framework
 - T: Implement defect prediction models
@@ -354,6 +379,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 - V: Create quality engineering training
 
 **Task W-AB: Advanced Testing** (6 tasks)
+
 - W: Design mutation testing framework
 - X: Create property-based testing
 - Y: Implement metamorphic testing
@@ -362,6 +388,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 - AB: Implement test impact analysis
 
 **Task AC-AH: Test Automation Platform** (6 tasks)
+
 - AC: Design test automation framework architecture
 - AD: Create test orchestration platform
 - AE: Implement parallel test execution
@@ -370,6 +397,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 - AH: Implement test healing automation
 
 **Task AI-AN: Quality Assurance Operations** (6 tasks)
+
 - AI: Design QA metrics dashboard
 - AJ: Create defect lifecycle management
 - AK: Implement quality gates automation
@@ -378,6 +406,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 - AN: Implement quality forecasting
 
 **Task AO-AT: Specialized Testing** (7 tasks)
+
 - AO: Design API contract testing framework
 - AP: Create microservices testing strategy
 - AQ: Implement data quality testing
@@ -393,6 +422,7 @@ Execute C-Q in any order. Total: 24 tasks, ~15 hours of QA work.
 Total: 5 P0 tasks + validation duty + 30 post-launch tasks
 
 ## Previous Task List — 2025-10-11
+
 - Canonical toolkit checks
   - Verify no alt DBs or direct redis usage in app builds via CI status; flag violations.
 - Shopify Admin testing

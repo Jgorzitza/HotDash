@@ -11,6 +11,7 @@
 ## Recording Setup
 
 **Before Recording:**
+
 - [ ] Approval queue UI is live
 - [ ] Demo environment with 3 sample approvals loaded
 - [ ] Screen recording software ready (Loom recommended)
@@ -19,6 +20,7 @@
 - [ ] Mock data only (no real customer info)
 
 **Recording Settings:**
+
 - Resolution: 1080p
 - Frame rate: 30fps
 - Capture: Application window (not full screen)
@@ -156,6 +158,7 @@ Customer says: 'You charged me TWICE! $600 total instead of $300! I'm calling my
 **[Point to red flags]**
 
 I see two major red flags here:
+
 - First, high value - $600 dispute
 - Second, threat - 'calling my bank' means potential chargeback
 
@@ -187,6 +190,7 @@ When in doubt, escalate. That's good judgment, not weakness."
 
 **Say:**
 "That's it! You now know how to:
+
 - Approve simple ones
 - Reject wrong ones
 - Escalate risky ones
@@ -210,6 +214,7 @@ Now let's try it for real - you've got this!"
 ## Screen Recording Flow
 
 **Sequence:**
+
 1. Navigate to approval queue
 2. Show queue overview (pending, stats)
 3. Open Approval #1 (simple order status)
@@ -236,6 +241,7 @@ Now let's try it for real - you've got this!"
 **Emphasis:** RED FLAGS, escalation criteria, "you're in control"
 
 **Key Phrases to Use:**
+
 - "You're in control"
 - "AI suggests, you decide"
 - "This is simple"
@@ -247,6 +253,7 @@ Now let's try it for real - you've got this!"
 ## Post-Production
 
 **Add:**
+
 - [ ] Captions (auto-generate, then edit)
 - [ ] Arrows highlighting key UI elements
 - [ ] Text overlay for "RED FLAGS" moment
@@ -254,6 +261,7 @@ Now let's try it for real - you've got this!"
 - [ ] Outro card (Resources: Slack #occ-enablement, Quick Start Guide)
 
 **Quality Check:**
+
 - [ ] Audio clear throughout
 - [ ] All UI elements visible and readable
 - [ ] Pacing appropriate (not too fast)
@@ -267,6 +275,7 @@ Now let's try it for real - you've got this!"
 **Upload to:** Loom (or company video platform)  
 **Access:** Restricted to @hotrodan.com emails  
 **Share via:**
+
 - Email to pilot operators
 - Link in #occ-enablement Slack
 - Embedded in Quick Start Guide (QR code)
@@ -278,4 +287,3 @@ Now let's try it for real - you've got this!"
 **Status:** Script ready, record when UI is live  
 **Estimated Production Time:** 2 hours (recording + editing)  
 **Priority:** Complete before pilot launches
-

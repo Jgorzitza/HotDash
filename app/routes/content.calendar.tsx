@@ -1,6 +1,6 @@
 /**
  * Content Calendar Route
- * 
+ *
  * Schedule and track social media posts across platforms.
  * Features:
  * - Calendar view of scheduled posts
@@ -9,10 +9,11 @@
  * - Status tracking (draft, scheduled, published, failed)
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from 'react-router';
-import { authenticate } from '../shopify.server';
-import type { ContentPost, SocialPlatform } from '../lib/content/tracking';
+import { type LoaderFunctionArgs } from "react-router";
+import { json } from "~/utils/http.server";
+import { useLoaderData } from "react-router";
+import { authenticate } from "../shopify.server";
+import type { ContentPost, SocialPlatform } from "../lib/content/tracking";
 
 // ============================================================================
 // Types
@@ -44,8 +45,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   await authenticate.admin(request);
 
   const url = new URL(request.url);
-  const month = url.searchParams.get('month') || new Date().getMonth().toString();
-  const year = url.searchParams.get('year') || new Date().getFullYear().toString();
+  const month =
+    url.searchParams.get("month") || new Date().getMonth().toString();
+  const year =
+    url.searchParams.get("year") || new Date().getFullYear().toString();
 
   // TODO: Fetch scheduled posts from Supabase
   const posts: CalendarPost[] = [];
@@ -58,10 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     month: parseInt(month),
     year: parseInt(year),
     stats: {
-      totalScheduled: posts.filter(p => p.status === 'scheduled').length,
-      totalDrafts: posts.filter(p => p.status === 'draft').length,
-      totalPublished: posts.filter(p => p.status === 'published').length,
-      totalFailed: posts.filter(p => p.status === 'failed').length,
+      totalScheduled: posts.filter((p) => p.status === "scheduled").length,
+      totalDrafts: posts.filter((p) => p.status === "draft").length,
+      totalPublished: posts.filter((p) => p.status === "published").length,
+      totalFailed: posts.filter((p) => p.status === "failed").length,
     },
   });
 }
@@ -79,7 +82,9 @@ export default function ContentCalendar() {
         <h1>Content Calendar</h1>
         <div className="calendar-nav">
           <button>← Previous Month</button>
-          <span>{getMonthName(month)} {year}</span>
+          <span>
+            {getMonthName(month)} {year}
+          </span>
           <button>Next Month →</button>
         </div>
       </div>
@@ -105,8 +110,10 @@ export default function ContentCalendar() {
 
       <div className="calendar-grid">
         <div className="calendar-weekdays">
-          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="weekday">{day}</div>
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+            <div key={day} className="weekday">
+              {day}
+            </div>
           ))}
         </div>
 
@@ -137,8 +144,8 @@ export default function ContentCalendar() {
 
 function CalendarDayCell({ day }: { day: CalendarDay }) {
   return (
-    <div 
-      className={`calendar-day ${day.isToday ? 'today' : ''} ${day.isPast ? 'past' : ''}`}
+    <div
+      className={`calendar-day ${day.isToday ? "today" : ""} ${day.isPast ? "past" : ""}`}
       data-date={day.date}
     >
       <div className="day-header">
@@ -176,7 +183,7 @@ function PostPreview({ post }: { post: CalendarPost }) {
 function generateCalendar(
   year: number,
   month: number,
-  posts: CalendarPost[]
+  posts: CalendarPost[],
 ): CalendarWeek[] {
   const weeks: CalendarWeek[] = [];
   const firstDay = new Date(year, month, 1);
@@ -192,7 +199,7 @@ function generateCalendar(
   for (let i = 0; i < firstDayOfWeek; i++) {
     const date = new Date(year, month, 1 - (firstDayOfWeek - i));
     currentWeek.push({
-      date: date.toISOString().split('T')[0],
+      date: date.toISOString().split("T")[0],
       posts: [],
       isToday: false,
       isPast: date < today,
@@ -202,12 +209,12 @@ function generateCalendar(
   // Add days of current month
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const date = new Date(year, month, day);
-    const dateStr = date.toISOString().split('T')[0];
-    
+    const dateStr = date.toISOString().split("T")[0];
+
     currentWeek.push({
       date: dateStr,
-      posts: posts.filter(p => p.scheduledFor?.startsWith(dateStr)),
-      isToday: dateStr === today.toISOString().split('T')[0],
+      posts: posts.filter((p) => p.scheduledFor?.startsWith(dateStr)),
+      isToday: dateStr === today.toISOString().split("T")[0],
       isPast: date < today,
     });
 
@@ -224,7 +231,7 @@ function generateCalendar(
     for (let i = 1; i <= remaining; i++) {
       const date = new Date(year, month + 1, i);
       currentWeek.push({
-        date: date.toISOString().split('T')[0],
+        date: date.toISOString().split("T")[0],
         posts: [],
         isToday: false,
         isPast: date < today,
@@ -238,18 +245,27 @@ function generateCalendar(
 
 function getMonthName(month: number): string {
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
-  return months[month] || 'Unknown';
+  return months[month] || "Unknown";
 }
 
 function getPlatformIcon(platform: SocialPlatform): string {
   const icons = {
-    instagram: '📷',
-    facebook: '👥',
-    tiktok: '🎵',
+    instagram: "📷",
+    facebook: "👥",
+    tiktok: "🎵",
   };
-  return icons[platform] || '📱';
+  return icons[platform] || "📱";
 }
-

@@ -121,20 +121,26 @@ export async function getSalesPulseSummary(
   });
 
   if (!response.ok) {
-    throw new ServiceError(`Shopify orders query failed with ${response.status}.`, {
-      scope: "shopify.orders",
-      code: `${response.status}`,
-      retryable: response.status >= 500,
-    });
+    throw new ServiceError(
+      `Shopify orders query failed with ${response.status}.`,
+      {
+        scope: "shopify.orders",
+        code: `${response.status}`,
+        retryable: response.status >= 500,
+      },
+    );
   }
 
   const payload = (await response.json()) as SalesPulseResponse;
 
   if (payload.errors?.length) {
-    throw new ServiceError(payload.errors.map((err) => err.message).join("; "), {
-      scope: "shopify.orders",
-      code: "GRAPHQL_ERROR",
-    });
+    throw new ServiceError(
+      payload.errors.map((err) => err.message).join("; "),
+      {
+        scope: "shopify.orders",
+        code: "GRAPHQL_ERROR",
+      },
+    );
   }
 
   const edges = payload.data?.orders.edges ?? [];
@@ -150,7 +156,10 @@ export async function getSalesPulseSummary(
       currency = node.currentTotalPriceSet?.shopMoney.currencyCode ?? currency;
     }
 
-    if (node.displayFulfillmentStatus && node.displayFulfillmentStatus !== "FULFILLED") {
+    if (
+      node.displayFulfillmentStatus &&
+      node.displayFulfillmentStatus !== "FULFILLED"
+    ) {
       pending.push({
         orderId: node.id,
         name: node.name,
@@ -168,7 +177,9 @@ export async function getSalesPulseSummary(
         revenue: 0,
       };
       bucket.quantity += lineItem.quantity;
-      const lineRevenue = toNumber(lineItem.discountedTotalSet?.shopMoney.amount);
+      const lineRevenue = toNumber(
+        lineItem.discountedTotalSet?.shopMoney.amount,
+      );
       bucket.revenue += lineRevenue;
       topSkuMap.set(skuKey, bucket);
     }
@@ -221,31 +232,34 @@ export async function getPendingFulfillments(
   });
 
   if (!response.ok) {
-    throw new ServiceError(`Shopify fulfillment query failed with ${response.status}.`, {
-      scope: "shopify.fulfillment",
-      code: `${response.status}`,
-      retryable: response.status >= 500,
-    });
+    throw new ServiceError(
+      `Shopify fulfillment query failed with ${response.status}.`,
+      {
+        scope: "shopify.fulfillment",
+        code: `${response.status}`,
+        retryable: response.status >= 500,
+      },
+    );
   }
 
   const json = await response.json();
 
   const edges = json?.data?.orders?.edges ?? [];
-  const mappedIssues = edges
-    .map((edge: any): FulfillmentIssue => {
-      const order = edge.node;
-      const createdAt =
-        order.fulfillments?.edges?.[0]?.node?.events?.edges?.[0]?.node?.createdAt ??
-        order.createdAt ??
-        new Date().toISOString();
-      const issue: FulfillmentIssue = {
-        orderId: order.id,
-        name: order.name,
-        displayStatus: order.displayFulfillmentStatus,
-        createdAt,
-      };
-      return issue;
-    }) as FulfillmentIssue[];
+  const mappedIssues = edges.map((edge: any): FulfillmentIssue => {
+    const order = edge.node;
+    const createdAt =
+      order.fulfillments?.edges?.[0]?.node?.events?.edges?.[0]?.node
+        ?.createdAt ??
+      order.createdAt ??
+      new Date().toISOString();
+    const issue: FulfillmentIssue = {
+      orderId: order.id,
+      name: order.name,
+      displayStatus: order.displayFulfillmentStatus,
+      createdAt,
+    };
+    return issue;
+  }) as FulfillmentIssue[];
 
   const fulfillmentIssues = mappedIssues.filter(
     (issue): issue is FulfillmentIssue =>

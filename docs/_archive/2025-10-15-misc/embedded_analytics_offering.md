@@ -13,6 +13,7 @@ Allow customers to embed HotDash metrics dashboards into their own applications.
 **Use Case**: E-commerce brand wants to show support metrics in their internal ops dashboard
 
 **Features**:
+
 - Embeddable iframes (responsive)
 - White-labeled (customer's branding)
 - Real-time data via API
@@ -24,4 +25,3 @@ Allow customers to embed HotDash metrics dashboards into their own applications.
 
 **Document Owner**: Product Agent
 **Status**: Embedded analytics spec
-

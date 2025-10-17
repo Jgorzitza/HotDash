@@ -22,7 +22,7 @@
       "body": "Hi {{contact.name}}, thanks for your patience. I'm checking on your order now and will follow up with an update shortly.",
       "category": "acknowledgment",
       "variables": ["contact.name"],
-      "confidence_threshold": 0.70
+      "confidence_threshold": 0.7
     },
     {
       "id": 104,

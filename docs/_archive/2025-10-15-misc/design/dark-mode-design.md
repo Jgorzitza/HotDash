@@ -3,7 +3,7 @@ epoch: 2025.10.E1
 doc: docs/design/dark-mode-design.md
 owner: designer
 created: 2025-10-11
-last_reviewed: 2025-10-11  
+last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-25
 ---
@@ -38,9 +38,10 @@ expires: 2025-10-25
 All `--p-color-*` tokens have dark mode variants built-in.
 
 **Light → Dark Mapping**:
+
 ```
 bg-surface: #ffffff → #1a1a1a
-bg-surface-secondary: #f6f6f7 → #2c2c2c  
+bg-surface-secondary: #f6f6f7 → #2c2c2c
 text: #202223 → #e3e3e3
 text-subdued: #637381 → #b5b5b5
 border: #d2d5d8 → #3333 33
@@ -62,11 +63,11 @@ border: #d2d5d8 → #3333 33
 ### Automated Testing
 
 ```typescript
-describe('Dark Mode', () => {
-  it('maintains contrast in dark mode', () => {
+describe("Dark Mode", () => {
+  it("maintains contrast in dark mode", () => {
     // Test with dark mode enabled
-    document.documentElement.setAttribute('data-color-scheme', 'dark');
-    
+    document.documentElement.setAttribute("data-color-scheme", "dark");
+
     // Verify all text readable
     // Verify borders visible
     // Verify status colors distinct
@@ -87,5 +88,3 @@ describe('Dark Mode', () => {
 
 **Status**: Complete (Polaris provides dark mode automatically)  
 **Action**: Ensure all custom components use Polaris tokens
-
-

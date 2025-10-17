@@ -32,7 +32,11 @@
       "conversation_id": 204,
       "has_suggestion": false,
       "suggestion_confidence": null,
-      "expected_actions": ["show_no_suggestion", "require_manual", "log_manual_handling"],
+      "expected_actions": [
+        "show_no_suggestion",
+        "require_manual",
+        "log_manual_handling"
+      ],
       "telemetry_events": [
         "no_suggestion_available",
         "manual_composition_required",

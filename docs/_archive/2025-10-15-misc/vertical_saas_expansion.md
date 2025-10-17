@@ -11,6 +11,7 @@
 Instead of horizontal platform for all industries, create deep vertical solutions.
 
 **Vertical 1: "HotDash for Shopify"**
+
 - Positioned as THE AI support tool for Shopify merchants
 - Deep Shopify integration (admin API, Shopify Flow, POS)
 - Shopify-specific KB templates
@@ -23,6 +24,7 @@ Instead of horizontal platform for all industries, create deep vertical solution
 ---
 
 **Vertical 2: "HotDash for B2B SaaS"** (Year 3)
+
 - Technical support focus
 - API documentation integration
 - Bug tracking workflows
@@ -38,4 +40,3 @@ Instead of horizontal platform for all industries, create deep vertical solution
 
 **Document Owner**: Product Agent
 **Status**: Vertical SaaS strategy
-

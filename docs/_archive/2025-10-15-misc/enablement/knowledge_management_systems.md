@@ -32,6 +32,7 @@
 ### Architecture Layers
 
 **Layer 1: Content Storage (Supabase + File System)**
+
 ```
 data/
 ├── policies/              # Official company policies
@@ -74,6 +75,7 @@ data/
 ---
 
 **Layer 2: Metadata & Indexing (Supabase Tables)**
+
 ```sql
 -- Knowledge Base Articles Table
 CREATE TABLE kb_articles (
@@ -120,6 +122,7 @@ CREATE TABLE kb_usage (
 ---
 
 **Layer 3: Search & Retrieval (LlamaIndex + Vector DB)**
+
 ```
 VECTOR EMBEDDINGS:
 ├─ Each KB article converted to vector embedding
@@ -137,6 +140,7 @@ INTEGRATION WITH AGENT SDK:
 ---
 
 **Layer 4: Knowledge Access (APIs & UI)**
+
 ```
 ACCESS METHODS:
 
@@ -174,6 +178,7 @@ ACCESS METHODS:
 ### Capture Method 1: Escalation Mining
 
 **Process:**
+
 ```
 1. Operator escalates complex case
     ↓
@@ -205,6 +210,7 @@ Future operators: KB article guides decision
 ### Capture Method 2: Rejection Note Analysis
 
 **Process:**
+
 ```
 1. Operator rejects AI draft with notes:
    "AI cited 14-day return policy but current is 30 days"
@@ -233,6 +239,7 @@ Enablement team addresses
 ### Capture Method 3: Edit Pattern Recognition
 
 **Process:**
+
 ```
 Operator consistently adds "I'm sorry" to product damage responses
     ↓
@@ -253,6 +260,7 @@ AI learns pattern, starts including empathy automatically
 ### Capture Method 4: Team Knowledge Sharing Transcription
 
 **Process:**
+
 ```
 Weekly team meeting: Operator shares complex case solution
     ↓
@@ -284,6 +292,7 @@ Searchable and reusable by all
 ### Knowledge Graph Structure
 
 **Nodes (Concepts):**
+
 ```
 ARTICLE NODES:
 ├─ Policy Articles (Return Policy v2.1, Shipping Policy v2.1, etc.)
@@ -300,6 +309,7 @@ CONCEPT NODES:
 ```
 
 **Edges (Relationships):**
+
 ```
 RELATIONSHIP TYPES:
 
@@ -355,6 +365,7 @@ Example: "Refund Process" → references → "Refund Policy v2.1"
 ### Graph-Powered Features
 
 **Feature 1: Smart Suggestions**
+
 ```
 Operator searches: "customer wants refund"
     ↓
@@ -369,6 +380,7 @@ Result: Comprehensive answer, not just one article
 ```
 
 **Feature 2: Learning Path Generation**
+
 ```
 Want to learn: "Expert Escalation"
     ↓
@@ -382,6 +394,7 @@ Result: Optimal learning sequence auto-generated
 ```
 
 **Feature 3: Gap Identification**
+
 ```
 Graph analysis shows:
 "Refund Policy" has 15 outgoing connections
@@ -406,13 +419,14 @@ Action: Create more warranty-related procedures and examples
 **Powered by:** LlamaIndex + OpenAI Embeddings
 
 **How It Works:**
+
 ```
 Operator searches: "customer mad about late delivery"
     ↓
 NOT keyword matching ("mad" "late" "delivery")
     ↓
 INSTEAD semantic understanding:
-"Operator needs information about handling frustrated customers 
+"Operator needs information about handling frustrated customers
 regarding shipping delays"
     ↓
 Returns:
@@ -429,6 +443,7 @@ Result: Finds what operator MEANS, not just what they TYPE
 ### Search Method 2: Contextual Search
 
 **Uses Current Work Context:**
+
 ```
 Operator currently reviewing approval for:
 - Conversation ID: #501
@@ -453,6 +468,7 @@ Result: Answers tailored to specific situation
 ### Search Method 3: Conversational Search
 
 **Ask Questions in Natural Language:**
+
 ```
 Search: "Can I approve a return if it's been 35 days?"
     ↓
@@ -478,6 +494,7 @@ Result: Direct answer + supporting articles
 ### Discovery Features
 
 **Feature 1: "Operators Who Found This Helpful Also Viewed..."**
+
 ```
 You're reading: "5-Question Framework"
 
@@ -490,6 +507,7 @@ Result: Discover related content automatically
 ```
 
 **Feature 2: "Related to Your Current Work"**
+
 ```
 Based on your recent approvals, you might find helpful:
 ├─ Handling Shipping Delays (you reviewed 8 shipping cases this week)
@@ -500,6 +518,7 @@ Result: Just-in-time learning suggestions
 ```
 
 **Feature 3: "Trending This Week"**
+
 ```
 🔥 What operators are searching for:
 1. "Return policy after 40 days" (23 searches) - Holiday returns season
@@ -522,6 +541,7 @@ Action: Create quick guides for trending topics
 ### Quality Dimensions
 
 **1. Accuracy (100% Required)**
+
 ```
 VERIFICATION CHECKLIST:
 □ Facts verified against source systems
@@ -533,6 +553,7 @@ VERIFICATION CHECKLIST:
 ```
 
 **2. Currency (Review Schedule)**
+
 ```
 FRESHNESS REQUIREMENTS:
 ├─ Critical (Policies): Review monthly
@@ -546,6 +567,7 @@ Articles >180 days → Red flag (immediate review)
 ```
 
 **3. Completeness**
+
 ```
 COMPLETENESS CRITERIA:
 □ Addresses the core question fully
@@ -556,6 +578,7 @@ COMPLETENESS CRITERIA:
 ```
 
 **4. Clarity (Operator-Tested)**
+
 ```
 CLARITY CHECKLIST:
 □ Written at appropriate level (no jargon)
@@ -566,6 +589,7 @@ CLARITY CHECKLIST:
 ```
 
 **5. Helpfulness (User-Rated)**
+
 ```
 HELPFULNESS TRACKING:
 Every KB article has:
@@ -585,24 +609,28 @@ Re-publishes with improvements
 ### Quality Assurance Process
 
 **Stage 1: Creation/Update**
+
 - Author drafts content
 - Self-review against quality checklist
 - SME technical review
 - Operator pilot test (3 operators)
 
 **Stage 2: Publication**
+
 - Final approval by Support Lead
 - Publish to KB with metadata
 - Index in LlamaIndex
 - Announce in learning community
 
 **Stage 3: Monitoring**
+
 - Track usage (views, searches, helpfulness)
 - Monitor for outdating (90-day clock)
 - Collect operator feedback
 - Watch for pattern changes
 
 **Stage 4: Maintenance**
+
 - Scheduled reviews (per freshness tier)
 - Update as needed
 - Deprecate if obsolete
@@ -623,16 +651,19 @@ Re-publishes with improvements
 **Format:** `MAJOR.MINOR.PATCH` (same as training content)
 
 **MAJOR (1.0.0 → 2.0.0):**
+
 - Policy fundamentally changes
 - Complete rewrite
 - Breaking change (old version incompatible)
 
 **MINOR (1.0.0 → 1.1.0):**
+
 - Policy clarification or addition
 - New sections added
 - Significant updates
 
 **PATCH (1.0.0 → 1.0.1):**
+
 - Typo fixes
 - Minor clarifications
 - Link updates
@@ -642,11 +673,14 @@ Re-publishes with improvements
 ### Version History Tracking
 
 **Each Article Maintains:**
+
 ```markdown
 ## Version History
 
 ### v2.1.0 (2025-10-11)
+
 **Changes:**
+
 - Extended return window from 14 to 30 days
 - Added international return procedures
 - Updated refund timelines
@@ -656,7 +690,9 @@ Re-publishes with improvements
 **Previous Version:** v2.0.0 (deprecated 2025-10-11)
 
 ### v2.0.1 (2025-09-15)
+
 **Changes:**
+
 - Fixed typo in shipping timeline
 - Updated carrier list
 
@@ -664,7 +700,9 @@ Re-publishes with improvements
 **Previous Version:** v2.0.0
 
 ### v2.0.0 (2025-08-01)
+
 **Changes:**
+
 - Complete rewrite for clarity
 - Added 15 FAQ entries
 - New examples
@@ -678,6 +716,7 @@ Re-publishes with improvements
 ### Version Control Integration
 
 **Git Integration:**
+
 ```
 All KB articles in git repository
 
@@ -694,6 +733,7 @@ History available:
 ```
 
 **Supabase Tracking:**
+
 ```sql
 -- Version History Table
 CREATE TABLE kb_versions (
@@ -715,6 +755,7 @@ CREATE TABLE kb_versions (
 ### Version Notification System
 
 **When Policy Changes:**
+
 ```
 1. New version published (Return Policy v2.1.0)
     ↓
@@ -766,6 +807,7 @@ Action Required:
 ### Analytics Tracked
 
 **Article-Level Analytics:**
+
 ```
 Article: "Return Policy v2.1"
 ├─ Views (30 days): 1,250
@@ -783,6 +825,7 @@ INSIGHTS:
 ```
 
 **Category-Level Analytics:**
+
 ```
 Category: "Policies"
 ├─ Total articles: 12
@@ -796,6 +839,7 @@ Action: Create "Common Warranty Scenarios" article
 ```
 
 **Search Analytics:**
+
 ```
 TOP SEARCHES (30 days):
 1. "return policy" (890 searches) - Well served
@@ -817,6 +861,7 @@ Action: Create articles for unserved search queries
 ### AI Performance Analytics
 
 **How KB Quality Affects AI Draft Quality:**
+
 ```
 CORRELATION ANALYSIS:
 
@@ -847,6 +892,7 @@ ACTION: Prioritize improvement of low-rated articles
 ### Strategy 1: Core Knowledge Internalization
 
 **Essential Knowledge to Memorize:**
+
 ```
 TIER 1: Must Know by Heart (No lookup needed)
 ├─ Return policy: 30 days from delivery
@@ -882,6 +928,7 @@ Retention Method: Familiarity with KB structure, quick search skills
 
 **5-Question Framework Mnemonic:**
 **A.C.T.C.R.**
+
 - **A**ccuracy
 - **C**ompleteness
 - **T**one
@@ -892,12 +939,14 @@ Retention Method: Familiarity with KB structure, quick search skills
 
 **Escalation SLA Mnemonic:**
 **"U-H-S = 15-2-4"**
+
 - **U**rgent = **15** minutes
 - **H**igh = **2** hours
 - **S**tandard = **4** hours
 
 **Red Flags Mnemonic:**
 **"L.E.T. T.H.E.M. go to manager"**
+
 - **L**egal threats
 - **E**xecutive complaints (C-suite)
 - **T**hreatening behavior
@@ -911,6 +960,7 @@ Retention Method: Familiarity with KB structure, quick search skills
 ### Strategy 3: Deliberate Practice Schedules
 
 **Spaced Practice Sessions:**
+
 ```
 DAILY MICRO-PRACTICE (5 min):
 - One scenario from memory
@@ -938,6 +988,7 @@ Result: Constant reinforcement prevents knowledge decay
 ### Strategy 4: Real-World Application Tracking
 
 **Learn → Apply → Reflect Loop:**
+
 ```
 Monday: Learn new technique (e.g., "Strategic escalation analysis")
     ↓
@@ -959,6 +1010,7 @@ Result: Theory → Practice → Mastery
 ### Strategy 5: Knowledge Sharing Reinforcement
 
 **Teaching = Best Retention:**
+
 ```
 Month 1: Learn "Advanced editing techniques"
 Month 2: Practice and refine
@@ -979,6 +1031,7 @@ Strategy: Create opportunities to teach
 ## Summary: Tasks 21-28
 
 ✅ **Task 21: Knowledge Base Architecture**
+
 - 4-layer architecture (Storage, Metadata, Search, Access)
 - Organized structure (policies, procedures, troubleshooting, training, operator wisdom)
 - Supabase database schema for metadata
@@ -986,6 +1039,7 @@ Strategy: Create opportunities to teach
 - Multiple access methods (UI, API, mobile)
 
 ✅ **Task 22: Knowledge Capture Automation**
+
 - Escalation mining (patterns → KB articles)
 - Rejection note analysis (errors → improvements)
 - Edit pattern recognition (best practices → KB)
@@ -993,6 +1047,7 @@ Strategy: Create opportunities to teach
 - Operator expertise automatically captured
 
 ✅ **Task 23: Knowledge Graph for Connections**
+
 - Graph structure (nodes = articles/concepts, edges = relationships)
 - 6 relationship types (prerequisite, related, supersedes, example, solves, references)
 - Smart suggestions (comprehensive answers, not isolated articles)
@@ -1000,6 +1055,7 @@ Strategy: Create opportunities to teach
 - Gap identification (under-connected topics need work)
 
 ✅ **Task 24: Knowledge Search & Discovery**
+
 - Semantic search (meaning, not keywords - LlamaIndex powered)
 - Contextual search (uses current work context)
 - Conversational search (natural language questions)
@@ -1007,6 +1063,7 @@ Strategy: Create opportunities to teach
 - Just-in-time suggestions based on recent work
 
 ✅ **Task 25: Knowledge Quality Assurance**
+
 - 5 quality dimensions (accuracy, currency, completeness, clarity, helpfulness)
 - Quality assurance process (creation → publication → monitoring → maintenance)
 - Auto-flagging for outdated content
@@ -1014,6 +1071,7 @@ Strategy: Create opportunities to teach
 - Continuous improvement cycle
 
 ✅ **Task 26: Knowledge Versioning**
+
 - Version scheme (MAJOR.MINOR.PATCH)
 - Version history tracking (all changes documented)
 - Git integration (version control, rollback capability)
@@ -1021,6 +1079,7 @@ Strategy: Create opportunities to teach
 - Notification system for changes (operator awareness 100%)
 
 ✅ **Task 27: Knowledge Analytics**
+
 - Article-level analytics (views, helpful ratings, usage in approvals)
 - Category-level analytics (coverage, gaps)
 - Search analytics (what operators need, what's missing)
@@ -1028,6 +1087,7 @@ Strategy: Create opportunities to teach
 - Data-driven KB improvement prioritization
 
 ✅ **Task 28: Knowledge Retention Strategies**
+
 - Core knowledge internalization (3 tiers: must know, know well, know where to find)
 - Chunking & mnemonics (memorable frameworks)
 - Deliberate practice schedules (daily, weekly, monthly)
@@ -1048,4 +1108,3 @@ Strategy: Create opportunities to teach
 **Evidence:** `/home/justin/HotDash/hot-dash/docs/enablement/knowledge_management_systems.md`
 
 ✅ **TASKS 21-28 COMPLETE (8 KNOWLEDGE MANAGEMENT SYSTEMS DESIGNED)**
-

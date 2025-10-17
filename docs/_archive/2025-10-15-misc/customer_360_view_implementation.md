@@ -11,6 +11,7 @@
 **Display When**: Operator reviews draft in approval queue
 
 **Sections**:
+
 1. **Profile**: Name, email, customer since, loyalty tier
 2. **Order History**: Last 5 orders, total lifetime value
 3. **Support History**: Previous tickets, CSAT ratings, common issues
@@ -23,4 +24,3 @@
 
 **Document Owner**: Product Agent
 **Status**: 360 view spec
-

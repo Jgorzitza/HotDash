@@ -8,9 +8,11 @@ last_reviewed: 2025-10-11
 # Data Streaming Platform (Kafka/Kinesis Style)
 
 ## Overview
+
 Event streaming platform for real-time data processing using Supabase Realtime + pg_notify as event backbone.
 
 ## Architecture
+
 ```
 Event Sources → pg_notify → Supabase Realtime → Stream Consumers
                     ↓
@@ -18,12 +20,14 @@ Event Sources → pg_notify → Supabase Realtime → Stream Consumers
 ```
 
 ## Implementation
+
 - **Topics:** approval_events, query_events, feedback_events, performance_alerts
 - **Partitioning:** By agent (for parallel processing)
 - **Retention:** 7 days in event store
 - **Throughput:** 1000 events/second target
 
 ## Event Schema
+
 ```sql
 CREATE TABLE event_stream (
   event_id BIGSERIAL PRIMARY KEY,
@@ -40,4 +44,3 @@ CREATE INDEX event_stream_processed_idx ON event_stream (processed) WHERE proces
 
 **Status:** Streaming platform designed with Supabase Realtime
 **Estimated Implementation:** 2 weeks
-

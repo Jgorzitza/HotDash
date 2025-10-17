@@ -10,6 +10,7 @@
 ## Purpose
 
 Build content performance tracking infrastructure to support future HITL social posting workflow. This enables the content agent to:
+
 1. Track performance metrics across multiple social platforms
 2. Provide data-driven content recommendations
 3. Measure impact of approved social posts
@@ -34,11 +35,11 @@ Represents a social media post across platforms.
 ```typescript
 interface ContentPost {
   id: string;
-  platform: 'instagram' | 'facebook' | 'tiktok';
+  platform: "instagram" | "facebook" | "tiktok";
   content: string;
   mediaUrls?: string[];
   publishedAt: string;
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  status: "draft" | "scheduled" | "published" | "failed";
   metadata?: {
     hashtags?: string[];
     mentions?: string[];
@@ -62,6 +63,7 @@ interface EngagementMetrics {
 ```
 
 **Engagement Rate Formula:**
+
 ```
 engagementRate = (likes + comments + shares + saves) / impressions × 100
 ```
@@ -92,6 +94,7 @@ interface ClickMetrics {
 ```
 
 **Click-Through Rate Formula:**
+
 ```
 clickThroughRate = clicks / impressions × 100
 ```
@@ -110,6 +113,7 @@ interface ConversionMetrics {
 ```
 
 **Conversion Rate Formula:**
+
 ```
 conversionRate = conversions / clicks × 100
 ```
@@ -175,15 +179,18 @@ Fetch content performance metrics with flexible query parameters.
 **type** (required): `'post' | 'aggregated' | 'top'`
 
 **For type=post:**
+
 - `postId` (required): Post identifier
 - `platform` (required): `'instagram' | 'facebook' | 'tiktok'`
 
 **For type=aggregated:**
+
 - `startDate` (required): Start date in YYYY-MM-DD format
 - `endDate` (required): End date in YYYY-MM-DD format
 - `platform` (optional): Filter by specific platform
 
 **For type=top:**
+
 - `startDate` (required): Start date in YYYY-MM-DD format
 - `endDate` (required): End date in YYYY-MM-DD format
 - `limit` (optional): Number of posts to return (1-100, default: 10)
@@ -206,7 +213,9 @@ GET /api/content/performance?type=top&startDate=2025-10-01&endDate=2025-10-15&li
 
 ```json
 {
-  "performance": { /* ContentPerformance or AggregatedPerformance */ }
+  "performance": {
+    /* ContentPerformance or AggregatedPerformance */
+  }
 }
 ```
 
@@ -214,7 +223,9 @@ or
 
 ```json
 {
-  "posts": [ /* Array of ContentPerformance */ ]
+  "posts": [
+    /* Array of ContentPerformance */
+  ]
 }
 ```
 
@@ -245,7 +256,8 @@ The following functions are implemented as placeholders and return mock data:
 - `getTopPerformingPosts()` - Fetch top performing posts
 
 **Future Integration Points:**
-1. **Ayrshare API** - Fetch social media metrics from Ayrshare adapter
+
+1. **Publer API** - Fetch social media metrics from Publer adapter
 2. **Supabase** - Store and query historical performance data
 3. **GA4 Integration** - Correlate social traffic with conversions
 4. **Platform APIs** - Direct integration with Instagram, Facebook, TikTok APIs (if needed)
@@ -274,7 +286,7 @@ This tracking infrastructure supports the future HITL social posting workflow:
 1. **Draft** - Content agent drafts social post with evidence
 2. **Review** - CEO reviews with projected performance metrics
 3. **Approve** - CEO approves (with optional edits and grades)
-4. **Post** - System posts via Ayrshare adapter
+4. **Post** - System posts via Publer adapter
 5. **Track** - Performance metrics collected via this tracking system
 6. **Learn** - High-performing patterns fed back to content agent
 
@@ -283,6 +295,7 @@ This tracking infrastructure supports the future HITL social posting workflow:
 ## Rollback Plan
 
 If issues arise:
+
 1. API route can be disabled by removing the file
 2. No database migrations required (placeholder implementation)
 3. No external dependencies added
@@ -292,10 +305,9 @@ If issues arise:
 
 ## Next Steps (Milestone M6)
 
-1. Integrate Ayrshare API for real metrics
+1. Integrate Publer API for real metrics
 2. Create Supabase tables for content posts and performance history
 3. Implement actual data fetching in placeholder functions
 4. Add GA4 correlation for conversion tracking
 5. Build dashboard tile for content performance
 6. Implement HITL posting workflow
-

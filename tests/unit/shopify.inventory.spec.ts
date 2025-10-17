@@ -27,11 +27,12 @@ vi.mock("../../app/services/facts.server", () => ({
 }));
 
 const mockAdmin = (payload: MockResponsePayload) => ({
-  graphql: vi.fn(async () =>
-    new Response(JSON.stringify(payload), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    }),
+  graphql: vi.fn(
+    async () =>
+      new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      }),
   ),
 });
 
@@ -59,7 +60,10 @@ describe("getInventoryAlerts", () => {
                       {
                         node: {
                           id: "gid://shopify/InventoryLevel/1",
-                          location: { id: "gid://shopify/Location/1", name: "HQ" },
+                          location: {
+                            id: "gid://shopify/Location/1",
+                            name: "HQ",
+                          },
                           available: 3,
                         },
                       },

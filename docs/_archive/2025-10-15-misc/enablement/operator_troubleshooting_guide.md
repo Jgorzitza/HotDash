@@ -9,6 +9,7 @@
 ## How to Use This Guide
 
 **When something goes wrong:**
+
 1. Find your issue in the list below
 2. Try the "Quick Fix" first
 3. If that doesn't work, try "If Still Broken"
@@ -23,11 +24,13 @@
 ### 1. "Dashboard is slow to load"
 
 **Symptoms:**
+
 - Approval queue takes >10 seconds to load
 - Spinning wheel won't stop
 - Page freezes
 
 **Quick Fix:**
+
 ```
 1. Refresh the page (Cmd/Ctrl + R)
 2. Clear browser cache (Cmd/Ctrl + Shift + Delete)
@@ -35,6 +38,7 @@
 ```
 
 **If Still Broken:**
+
 - Check internet connection
 - Try different browser (Chrome → Firefox or vice versa)
 - Report in #incidents: "Approval queue slow to load - [your browser] [your location]"
@@ -45,14 +49,16 @@
 
 ###
 
- 2. "AI suggestion seems wrong"
+2.  "AI suggestion seems wrong"
 
 **Symptoms:**
+
 - AI cites wrong policy
 - Information doesn't match order details
 - Response doesn't answer customer question
 
 **Quick Fix:**
+
 ```
 1. Click "Reject"
 2. Add note explaining what's wrong:
@@ -63,6 +69,7 @@
 ```
 
 **If Pattern Emerges:**
+
 - Same error happens 3+ times → Report in #occ-enablement
 - Include examples: "AI keeps citing old return policy (v2.0)"
 
@@ -73,11 +80,13 @@
 ### 3. "Approval doesn't send after I click"
 
 **Symptoms:**
+
 - Clicked "Approve & Execute"
 - No confirmation message
 - Customer didn't receive response
 
 **Quick Fix:**
+
 ```
 1. Check if there's an error message (red banner)
 2. Check Chatwoot - did message actually send?
@@ -86,6 +95,7 @@
 ```
 
 **If Still Broken:**
+
 - Screenshot the error message
 - Note the conversation ID
 - Send manually in Chatwoot
@@ -98,11 +108,13 @@
 ### 4. "Can't find a conversation in the queue"
 
 **Symptoms:**
+
 - You know there are pending approvals
 - Queue shows empty or wrong count
 - Specific conversation missing
 
 **Quick Fix:**
+
 ```
 1. Refresh page
 2. Check filters - make sure "Show All" is selected
@@ -111,6 +123,7 @@
 ```
 
 **If Still Broken:**
+
 - Verify in Chatwoot - is conversation actually pending?
 - Report discrepancy in #occ-enablement
 - Continue working in Chatwoot if urgent
@@ -122,11 +135,13 @@
 ### 5. "Confidence score doesn't make sense"
 
 **Symptoms:**
+
 - AI very confident (95%) but response is clearly wrong
 - AI uncertain (65%) but response looks perfect
 - Confidence seems random
 
 **Quick Fix:**
+
 ```
 This is expected in pilot! Confidence scores will improve as AI learns.
 
@@ -138,6 +153,7 @@ Your job: Trust your judgment, not just the score.
 ```
 
 **Report Patterns:**
+
 - If AI is consistently overconfident about errors
 - If scores seem totally random
 - Include examples in #occ-enablement
@@ -149,11 +165,13 @@ Your job: Trust your judgment, not just the score.
 ### 6. "KB sources link is broken"
 
 **Symptoms:**
+
 - Click "View Source" but get 404 error
 - KB article won't open
 - Link goes to wrong article
 
 **Quick Fix:**
+
 ```
 1. Try opening KB source in new tab
 2. Search for article manually in knowledge base
@@ -162,11 +180,13 @@ Your job: Trust your judgment, not just the score.
 ```
 
 **If Still Broken:**
+
 - Note which KB article is broken
 - Report in #occ-enablement: "KB article [name] returns 404"
 - This helps fix KB indexing issues
 
 **For the approval:**
+
 - If you know the answer: Use your knowledge
 - If unsure without KB source: Escalate with note "KB source unavailable, need verification"
 
@@ -175,11 +195,13 @@ Your job: Trust your judgment, not just the score.
 ### 7. "Customer message not showing"
 
 **Symptoms:**
+
 - Approval card shows AI draft
 - But customer's original message is blank or missing
 - Can't understand what customer asked
 
 **Quick Fix:**
+
 ```
 1. Click conversation ID link to open in Chatwoot
 2. Read customer message there
@@ -187,6 +209,7 @@ Your job: Trust your judgment, not just the score.
 ```
 
 **If Still Broken:**
+
 - Screenshot the issue
 - Report in #incidents: "Customer message missing from approval card"
 - Include conversation ID
@@ -198,15 +221,17 @@ Your job: Trust your judgment, not just the score.
 ### 8. "Escalation button not working"
 
 **Symptoms:**
+
 - Need to escalate but button is grayed out
 - Click escalate but nothing happens
 - Escalation form won't submit
 
 **Quick Fix:**
+
 ```
 IMMEDIATE WORKAROUND:
 1. Screenshot the approval
-2. Slack your manager directly: 
+2. Slack your manager directly:
    "@manager - Need escalation for conversation #[ID] - [quick reason]"
 3. Include screenshot
 4. Manager will handle from Chatwoot
@@ -221,11 +246,13 @@ Then report in #incidents: "Escalation button not working"
 ### 9. "Seeing duplicate approvals"
 
 **Symptoms:**
+
 - Same conversation appears twice in queue
 - Approve one, both disappear
 - Confused about which to handle
 
 **Quick Fix:**
+
 ```
 1. Check conversation IDs - are they actually the same?
 2. If same ID: Handle once, both should clear
@@ -233,6 +260,7 @@ Then report in #incidents: "Escalation button not working"
 ```
 
 **Report:**
+
 - Note in #occ-enablement: "Seeing duplicate approvals for conversation #[ID]"
 - This helps identify UI bugs
 
@@ -243,11 +271,13 @@ Then report in #incidents: "Escalation button not working"
 ### 10. "I clicked wrong button by mistake"
 
 **Symptoms:**
+
 - Meant to reject, clicked approve
 - Meant to escalate, clicked approve
 - Wrong action taken
 
 **Quick Fix:**
+
 ```
 IF IMMEDIATELY NOTICED (<30 seconds):
 1. Open conversation in Chatwoot
@@ -273,6 +303,7 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 ### Browser Compatibility Issues
 
 **Supported Browsers:**
+
 - Chrome (latest)
 - Firefox (latest)
 - Safari (latest)
@@ -287,11 +318,13 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 ### Login/Authentication Issues
 
 **Symptoms:**
+
 - Can't access approval queue
 - "Not authorized" error
 - Kicked out repeatedly
 
 **Fix:**
+
 ```
 1. Verify you're logged into Shopify Admin
 2. Verify HotDash app is installed
@@ -306,10 +339,12 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 ### Data Not Loading
 
 **Symptoms:**
+
 - Everything loads except approval data
 - Error: "Failed to fetch approvals"
 
 **Fix:**
+
 ```
 1. Check if Chatwoot is accessible (test in separate tab)
 2. Check if Shopify Admin is accessible
@@ -324,16 +359,19 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 ## Getting Help
 
 **For Quick Questions:**
+
 - **Slack #occ-enablement** - General approval queue questions
 - **Quick Start Guide** - On your desk for common decisions
 - **This Troubleshooting Guide** - For technical issues
 
 **For Urgent Issues:**
+
 - **Slack #incidents** - Technical failures, blocking issues
 - **Your Manager (DM)** - Escalations, urgent approvals, serious problems
 - **Support Lead** - Policy questions, unusual situations
 
 **For Feedback/Suggestions:**
+
 - **Slack #occ-enablement** - "This would be better if..."
 - **Weekly feedback session** - Structured feedback time
 - **Daily check-ins** (first week) - Quick issues and improvements
@@ -343,6 +381,7 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 ## What to Include When Reporting Issues
 
 **Always Provide:**
+
 1. **What you were trying to do**: "I was trying to approve a customer response"
 2. **What happened**: "Clicked approve but got error message"
 3. **Error message** (if any): Screenshot or exact text
@@ -351,12 +390,15 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 6. **Browser**: "Chrome version 118"
 
 **Example Good Report:**
+
 > "🚨 #incidents - Approval button not working. Tried to approve conversation #OX-4521 at 2:30 PM. Clicked 'Approve & Execute' but got red error 'Failed to send'. Using Chrome 118. Customer still waiting. [screenshot attached]"
 
 **Example Weak Report:**
+
 > "Something's broken"
 
 **Why Good Reports Help:**
+
 - Engineering can reproduce and fix faster
 - We can identify patterns (widespread vs one-off)
 - You get unblocked sooner
@@ -403,6 +445,7 @@ IF ESCALATION WAS NEEDED BUT YOU APPROVED:
 **These are NOT blockers** - pilot continues, we're fixing as we go
 
 **What IS a Blocker:**
+
 - Can't access approval queue at all
 - Can't escalate urgent issues
 - Mass approval failures (>50% failing)
@@ -431,6 +474,7 @@ NO IMPACT TO CUSTOMERS - they're still supported
 ## Feedback Helps Improve the System
 
 **Every issue you report:**
+
 - Helps us fix bugs faster
 - Improves the experience for all operators
 - Makes you a contributor to the product
@@ -441,18 +485,18 @@ NO IMPACT TO CUSTOMERS - they're still supported
 
 ## Quick Reference Summary
 
-| Issue | Quick Fix |
-|-------|-----------|
-| **Slow loading** | Refresh, clear cache |
-| **AI wrong** | Reject with note, handle manually |
-| **Approval won't send** | Try again, check Chatwoot, report |
-| **Can't find conversation** | Refresh, check filters |
-| **Confidence weird** | Trust your judgment, not score |
-| **KB link broken** | Open in Chatwoot, report |
-| **Customer message missing** | Check in Chatwoot |
-| **Escalation broken** | Slack manager immediately |
-| **Duplicates** | Handle once, report |
-| **Wrong button clicked** | Correct in Chatwoot ASAP |
+| Issue                        | Quick Fix                         |
+| ---------------------------- | --------------------------------- |
+| **Slow loading**             | Refresh, clear cache              |
+| **AI wrong**                 | Reject with note, handle manually |
+| **Approval won't send**      | Try again, check Chatwoot, report |
+| **Can't find conversation**  | Refresh, check filters            |
+| **Confidence weird**         | Trust your judgment, not score    |
+| **KB link broken**           | Open in Chatwoot, report          |
+| **Customer message missing** | Check in Chatwoot                 |
+| **Escalation broken**        | Slack manager immediately         |
+| **Duplicates**               | Handle once, report               |
+| **Wrong button clicked**     | Correct in Chatwoot ASAP          |
 
 **General Rule:** When in doubt, work in Chatwoot manually and report the issue.
 
@@ -465,4 +509,3 @@ NO IMPACT TO CUSTOMERS - they're still supported
 **Emergency Fallback:** Work manually in Chatwoot (always available)
 
 ✅ **TASK 2F COMPLETE: Troubleshooting guide ready for operators**
-

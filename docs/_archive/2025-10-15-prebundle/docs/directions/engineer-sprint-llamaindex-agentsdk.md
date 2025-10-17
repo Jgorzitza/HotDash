@@ -6,6 +6,7 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-25
 ---
+
 # Engineer — Sprint Direction: LlamaIndex MCP + Agent SDK Implementation
 
 **Sprint Duration**: 2-3 weeks  
@@ -17,6 +18,7 @@ expires: 2025-10-25
 ## Executive Summary
 
 Implement the approved MCP-first agent architecture combining:
+
 1. **Google Analytics Direct API** integration (2-4 hours)
 2. **LlamaIndex RAG MCP Server** on Fly.io (Week 1)
 3. **OpenAI Agent SDK Service** with approval workflows (Week 2-3)
@@ -26,6 +28,7 @@ This sprint transforms HotDash from manual support to AI-assisted customer servi
 ---
 
 ## Canon References
+
 - North Star: `docs/NORTH_STAR.md` (updated with MCP architecture)
 - Git Protocol: `docs/git_protocol.md`
 - Direction Governance: `docs/directions/README.md`
@@ -38,9 +41,11 @@ This sprint transforms HotDash from manual support to AI-assisted customer servi
 ## Phase 1: Google Analytics Direct API Integration (Priority 1)
 
 ### Goal
+
 Replace mock GA client with direct Google Analytics Data API to enable real-time analytics tiles.
 
 ### Background
+
 - Design doc exists: `docs/design/ga_ingest.md`
 - Current state: Mock mode (`GA_USE_MOCK=1`)
 - Service account ready: `vault/occ/google/analytics-service-account.json`
@@ -49,16 +54,18 @@ Replace mock GA client with direct Google Analytics Data API to enable real-time
 ### Implementation Tasks
 
 #### 1.1 Add GA Client Library
+
 ```bash
 npm install @google-analytics/data@^4.0.0
 ```
 
 #### 1.2 Implement Direct API Client
+
 **File**: `app/services/ga/directClient.ts`
 
 ```typescript
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
-import type { GaClient, GaSession, DateRange } from './types';
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import type { GaClient, GaSession, DateRange } from "./types";
 
 export class GoogleAnalyticsDirectClient implements GaClient {
   private client: BetaAnalyticsDataClient;
@@ -68,30 +75,32 @@ export class GoogleAnalyticsDirectClient implements GaClient {
     // Uses GOOGLE_APPLICATION_CREDENTIALS env var automatically
     this.client = new BetaAnalyticsDataClient();
     this.propertyId = process.env.GA_PROPERTY_ID!;
-    
+
     if (!this.propertyId) {
-      throw new Error('GA_PROPERTY_ID environment variable required');
+      throw new Error("GA_PROPERTY_ID environment variable required");
     }
   }
 
   async fetchLandingPageSessions(range: DateRange): Promise<GaSession[]> {
     const request = {
       property: `properties/${this.propertyId}`,
-      dateRanges: [{
-        startDate: range.startDate,
-        endDate: range.endDate,
-      }],
-      dimensions: [{ name: 'pagePath' }],
-      metrics: [{ name: 'sessions' }],
+      dateRanges: [
+        {
+          startDate: range.startDate,
+          endDate: range.endDate,
+        },
+      ],
+      dimensions: [{ name: "pagePath" }],
+      metrics: [{ name: "sessions" }],
       limit: 100,
     };
 
     const [response] = await this.client.runReport(request);
-    
+
     // Transform to GaSession format
-    return (response.rows || []).map(row => ({
-      landingPage: row.dimensionValues?.[0]?.value || '',
-      sessions: parseInt(row.metricValues?.[0]?.value || '0', 10),
+    return (response.rows || []).map((row) => ({
+      landingPage: row.dimensionValues?.[0]?.value || "",
+      sessions: parseInt(row.metricValues?.[0]?.value || "0", 10),
       wowDelta: 0, // Calculated separately
     }));
   }
@@ -99,7 +108,9 @@ export class GoogleAnalyticsDirectClient implements GaClient {
 ```
 
 #### 1.3 Update Environment Configuration
+
 **File**: `.env.local.example`
+
 ```bash
 # Google Analytics (Direct API - not MCP)
 GOOGLE_APPLICATION_CREDENTIALS=/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json
@@ -108,38 +119,43 @@ GA_USE_MOCK=0  # Set to 1 for local dev without GA access
 ```
 
 #### 1.4 Update Service Factory
+
 **File**: `app/services/ga/client.ts`
+
 ```typescript
-import { GoogleAnalyticsDirectClient } from './directClient';
-import { MockGAClient } from './mockClient';
-import type { GaClient } from './types';
+import { GoogleAnalyticsDirectClient } from "./directClient";
+import { MockGAClient } from "./mockClient";
+import type { GaClient } from "./types";
 
 export function createGAClient(): GaClient {
-  const useMock = process.env.GA_USE_MOCK === '1';
-  
+  const useMock = process.env.GA_USE_MOCK === "1";
+
   if (useMock) {
-    console.log('[GA] Using mock client');
+    console.log("[GA] Using mock client");
     return new MockGAClient();
   }
-  
-  console.log('[GA] Using direct API client');
+
+  console.log("[GA] Using direct API client");
   return new GoogleAnalyticsDirectClient();
 }
 ```
 
 #### 1.5 Testing Requirements
+
 - ✅ Unit tests with mocked GA API responses
 - ✅ Integration test with real credentials (skip in CI if not available)
 - ✅ Verify dashboard tile shows real data when `GA_USE_MOCK=0`
 - ✅ Confirm mock mode still works for development
 
 ### Evidence Required
+
 - [ ] Working GA tile with real data
 - [ ] Test coverage >80% for GA service
 - [ ] Screenshot of live analytics data
 - [ ] Log in `feedback/engineer.md`
 
 ### Timeline
+
 **2-4 hours** (can complete in parallel with LlamaIndex MCP setup)
 
 ---
@@ -147,15 +163,19 @@ export function createGAClient(): GaClient {
 ## Phase 2: LlamaIndex RAG MCP Server (Week 1)
 
 ### Goal
+
 Deploy LlamaIndex RAG capabilities as an HTTP MCP server on Fly.io, making knowledge base queries available to all agents and the Agent SDK.
 
 ### Architecture Decision
+
 **Approach**: Thin HTTP MCP wrapper around existing `scripts/ai/llama-workflow/` CLI
+
 - ✅ Reuses completed LlamaIndex implementation (2025-10-11)
 - ✅ Zero regression risk
 - ✅ Fast implementation (1-2 days)
 
 ### Directory Structure
+
 ```
 apps/llamaindex-mcp-server/
 ├── package.json
@@ -174,6 +194,7 @@ apps/llamaindex-mcp-server/
 ### Implementation Tasks
 
 #### 2.1 Scaffold MCP Server
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 mkdir -p apps/llamaindex-mcp-server/src/handlers
@@ -185,66 +206,74 @@ npm install -D typescript @types/node @types/express ts-node
 ```
 
 #### 2.2 Implement MCP Protocol Handler
+
 **File**: `apps/llamaindex-mcp-server/src/server.ts`
 
 ```typescript
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import express from 'express';
-import { queryHandler } from './handlers/query';
-import { refreshHandler } from './handlers/refresh';
-import { insightHandler } from './handlers/insight';
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import express from "express";
+import { queryHandler } from "./handlers/query";
+import { refreshHandler } from "./handlers/refresh";
+import { insightHandler } from "./handlers/insight";
 
 const app = express();
 app.use(express.json());
 
 // MCP server instance
-const server = new Server({
-  name: 'llamaindex-rag-mcp',
-  version: '1.0.0',
-}, {
-  capabilities: {
-    tools: {
-      list: true,
-      call: true,
+const server = new Server(
+  {
+    name: "llamaindex-rag-mcp",
+    version: "1.0.0",
+  },
+  {
+    capabilities: {
+      tools: {
+        list: true,
+        call: true,
+      },
     },
-  }
-});
+  },
+);
 
 // Tool definitions
-server.setRequestHandler('tools/list', async () => ({
+server.setRequestHandler("tools/list", async () => ({
   tools: [
     {
-      name: 'query_support',
-      description: 'Query knowledge base for support information',
+      name: "query_support",
+      description: "Query knowledge base for support information",
       inputSchema: {
-        type: 'object',
+        type: "object",
         properties: {
-          q: { type: 'string', description: 'Search query' },
-          topK: { type: 'number', default: 5 },
+          q: { type: "string", description: "Search query" },
+          topK: { type: "number", default: 5 },
         },
-        required: ['q'],
+        required: ["q"],
       },
     },
     {
-      name: 'refresh_index',
-      description: 'Rebuild vector index from all sources',
+      name: "refresh_index",
+      description: "Rebuild vector index from all sources",
       inputSchema: {
-        type: 'object',
+        type: "object",
         properties: {
-          sources: { type: 'string', default: 'all' },
-          full: { type: 'boolean', default: true },
+          sources: { type: "string", default: "all" },
+          full: { type: "boolean", default: true },
         },
       },
     },
     {
-      name: 'insight_report',
-      description: 'Generate AI insights from telemetry',
+      name: "insight_report",
+      description: "Generate AI insights from telemetry",
       inputSchema: {
-        type: 'object',
+        type: "object",
         properties: {
-          window: { type: 'string', default: '7d' },
-          format: { type: 'string', enum: ['md', 'json', 'txt'], default: 'md' },
+          window: { type: "string", default: "7d" },
+          format: {
+            type: "string",
+            enum: ["md", "json", "txt"],
+            default: "md",
+          },
         },
       },
     },
@@ -252,15 +281,15 @@ server.setRequestHandler('tools/list', async () => ({
 }));
 
 // Tool execution
-server.setRequestHandler('tools/call', async (request) => {
+server.setRequestHandler("tools/call", async (request) => {
   const { name, arguments: args } = request.params;
-  
+
   switch (name) {
-    case 'query_support':
+    case "query_support":
       return queryHandler(args);
-    case 'refresh_index':
+    case "refresh_index":
       return refreshHandler(args);
-    case 'insight_report':
+    case "insight_report":
       return insightHandler(args);
     default:
       throw new Error(`Unknown tool: ${name}`);
@@ -268,7 +297,7 @@ server.setRequestHandler('tools/call', async (request) => {
 });
 
 // HTTP endpoint for remote access
-app.post('/mcp', async (req, res) => {
+app.post("/mcp", async (req, res) => {
   // Implement MCP over HTTP (if needed for Fly.io)
   // For now, stdio is sufficient for Agent SDK
 });
@@ -284,28 +313,32 @@ server.connect(transport);
 ```
 
 #### 2.3 Implement Tool Handlers (Thin Wrappers)
+
 **File**: `apps/llamaindex-mcp-server/src/handlers/query.ts`
 
 ```typescript
-import { execSync } from 'child_process';
-import path from 'path';
+import { execSync } from "child_process";
+import path from "path";
 
 export async function queryHandler(args: { q: string; topK?: number }) {
   const { q, topK = 5 } = args;
-  
+
   // Path to existing llama-workflow CLI
-  const cliPath = path.join(__dirname, '../../../scripts/ai/llama-workflow/dist/cli.js');
-  
+  const cliPath = path.join(
+    __dirname,
+    "../../../scripts/ai/llama-workflow/dist/cli.js",
+  );
+
   try {
-    const result = execSync(
-      `node ${cliPath} query -q "${q}" --topK ${topK}`,
-      { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 }
-    );
-    
+    const result = execSync(`node ${cliPath} query -q "${q}" --topK ${topK}`, {
+      encoding: "utf-8",
+      maxBuffer: 10 * 1024 * 1024,
+    });
+
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: result,
         },
       ],
@@ -314,7 +347,7 @@ export async function queryHandler(args: { q: string; topK?: number }) {
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Error: ${error.message}`,
         },
       ],
@@ -327,6 +360,7 @@ export async function queryHandler(args: { q: string; topK?: number }) {
 **Similar implementation for** `refresh.ts` and `insight.ts`
 
 #### 2.4 Deploy to Fly.io
+
 **File**: `apps/llamaindex-mcp-server/fly.toml`
 
 ```toml
@@ -354,6 +388,7 @@ primary_region = "iad"
 ```
 
 **Deployment Commands:**
+
 ```bash
 cd apps/llamaindex-mcp-server
 fly launch --no-deploy
@@ -364,7 +399,9 @@ fly deploy
 ```
 
 #### 2.5 Update MCP Config
+
 **File**: `.mcp.json`
+
 ```json
 {
   "mcpServers": {
@@ -377,6 +414,7 @@ fly deploy
 ```
 
 ### Evidence Required
+
 - [ ] MCP server deployed and healthy on Fly
 - [ ] Can query from Cursor: "Using llamaindex-rag, query support KB: shipping policy"
 - [ ] API responds with <500ms P95
@@ -384,6 +422,7 @@ fly deploy
 - [ ] Documentation in `docs/runbooks/llamaindex-mcp-server.md`
 
 ### Timeline
+
 **Week 1** (5-7 days, can overlap with AI agent's LlamaIndex improvements)
 
 ---
@@ -391,9 +430,11 @@ fly deploy
 ## Phase 3: OpenAI Agent SDK Service (Week 2-3)
 
 ### Goal
+
 Build customer support agent orchestration using OpenAI Agent SDK, calling LlamaIndex MCP for knowledge base access.
 
 ### Architecture
+
 ```
 apps/agent-service/
 ├── package.json
@@ -416,6 +457,7 @@ apps/agent-service/
 ### Implementation Tasks
 
 #### 3.1 Scaffold Agent Service
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 mkdir -p apps/agent-service/src/{agents,tools,feedback}
@@ -427,55 +469,59 @@ npm install -D typescript @types/node @types/express ts-node
 ```
 
 #### 3.2 Implement RAG Tool (MCP Wrapper)
+
 **File**: `apps/agent-service/src/tools/rag.ts`
 
 ```typescript
-import { tool } from '@openai/agents';
-import { z } from 'zod';
+import { tool } from "@openai/agents";
+import { z } from "zod";
 
 // Agent SDK calls LlamaIndex MCP automatically
 export const answerFromDocs = tool({
-  name: 'answer_from_docs',
-  description: 'Answer questions using internal docs/FAQs/policies via RAG',
+  name: "answer_from_docs",
+  description: "Answer questions using internal docs/FAQs/policies via RAG",
   parameters: z.object({
     question: z.string(),
     topK: z.number().optional(),
   }),
   // This tells Agent SDK to route to MCP server
   mcp: {
-    server: 'llamaindex-rag',
-    operation: 'query_support',
+    server: "llamaindex-rag",
+    operation: "query_support",
   },
 });
 ```
 
 #### 3.3 Implement Shopify + Chatwoot Tools
+
 **Follow patterns from** `docs/AgentSDKopenAI.md` sections 4-5
 
 Key tools:
+
 - `shopifyFindOrders` (read-only, no approval)
 - `shopifyCancelOrder` (needsApproval: true)
 - `cwCreatePrivateNote` (no approval)
 - `cwSendPublicReply` (needsApproval: true)
 
 #### 3.4 Define Agents
+
 **File**: `apps/agent-service/src/agents/index.ts`
 
 ```typescript
-import { Agent } from '@openai/agents';
-import { answerFromDocs } from '../tools/rag';
-import { shopifyFindOrders, shopifyCancelOrder } from '../tools/shopify';
-import { cwCreatePrivateNote, cwSendPublicReply } from '../tools/chatwoot';
+import { Agent } from "@openai/agents";
+import { answerFromDocs } from "../tools/rag";
+import { shopifyFindOrders, shopifyCancelOrder } from "../tools/shopify";
+import { cwCreatePrivateNote, cwSendPublicReply } from "../tools/chatwoot";
 
 export const orderSupportAgent = new Agent({
-  name: 'Order Support',
+  name: "Order Support",
   instructions: [
-    'You help with order status, returns, exchanges, cancellations.',
-    'Always check order status first (shopify_find_orders).',
-    'For policy questions, use answer_from_docs.',
-    'Never send public replies without approval.',
-    'Create private notes with your recommendations.',
-  ].join('\n'),
+    "You help with order status, returns, exchanges, cancellations.",
+    "Always check order status first (shopify_find_orders).",
+    "For policy questions, use answer_from_docs.",
+    "Never send public replies without approval.",
+    "Create private notes with your recommendations.",
+  ].join("\n"),
   tools: [
     answerFromDocs,
     shopifyFindOrders,
@@ -486,37 +532,40 @@ export const orderSupportAgent = new Agent({
 });
 
 export const productQAAgent = new Agent({
-  name: 'Product Q&A',
+  name: "Product Q&A",
   instructions: [
-    'Answer product questions using answer_from_docs.',
-    'Be factual and cite sources when possible.',
-    'If unsure, create a private note requesting human input.',
-  ].join('\n'),
+    "Answer product questions using answer_from_docs.",
+    "Be factual and cite sources when possible.",
+    "If unsure, create a private note requesting human input.",
+  ].join("\n"),
   tools: [answerFromDocs, cwCreatePrivateNote, cwSendPublicReply],
 });
 
 export const triageAgent = new Agent({
-  name: 'Triage',
+  name: "Triage",
   instructions: [
-    'Classify conversation intent: order_status, product_question, return, etc.',
-    'Hand off to appropriate specialist agent.',
-    'If unclear, create a private note requesting clarification.',
-  ].join('\n'),
+    "Classify conversation intent: order_status, product_question, return, etc.",
+    "Hand off to appropriate specialist agent.",
+    "If unclear, create a private note requesting clarification.",
+  ].join("\n"),
   tools: [],
   handoffs: [orderSupportAgent, productQAAgent],
 });
 ```
 
 #### 3.5 Implement Webhook + Approval Endpoints
+
 **Follow pattern from** `docs/AgentSDKopenAI.md` section 7
 
 Key endpoints:
+
 - `POST /webhooks/chatwoot` - Incoming messages
 - `GET /approvals` - List pending approvals
 - `POST /approvals/:id/:idx/approve` - Approve action
 - `POST /approvals/:id/:idx/reject` - Reject action
 
 #### 3.6 Deploy to Fly.io
+
 ```bash
 cd apps/agent-service
 fly launch --no-deploy
@@ -527,15 +576,18 @@ fly deploy
 ```
 
 #### 3.7 Dashboard Integration (Approval Queue UI)
+
 **Coordinate with Product agent** for UI design
 
 Required UI components:
+
 - `/approvals` route - List pending approvals
 - `ApprovalCard` component - Shows tool call details
 - Approve/Reject buttons
 - Real-time updates (polling or websockets)
 
 **File**: `app/routes/approvals.tsx`
+
 ```typescript
 import { json } from '@react-router/node';
 import { useLoaderData } from '@react-router/react';
@@ -548,7 +600,7 @@ export async function loader() {
 
 export default function ApprovalsRoute() {
   const { approvals } = useLoaderData<typeof loader>();
-  
+
   return (
     <div className="approvals-queue">
       <h1>Pending Agent Approvals</h1>
@@ -561,6 +613,7 @@ export default function ApprovalsRoute() {
 ```
 
 ### Evidence Required
+
 - [ ] Agent service deployed on Fly
 - [ ] Can process Chatwoot webhooks
 - [ ] Approval queue UI functional
@@ -569,6 +622,7 @@ export default function ApprovalsRoute() {
 - [ ] Monitoring dashboard (latency, approval queue depth)
 
 ### Timeline
+
 **Week 2-3** (10-14 days)
 
 ---
@@ -576,24 +630,28 @@ export default function ApprovalsRoute() {
 ## Coordination Points
 
 ### With AI Agent
+
 - LlamaIndex MCP server implementation (parallel work)
 - Index refresh procedures
 - Query optimization
 - Training data format
 
 ### With Product Agent
+
 - Approval queue UI design
 - Operator workflows
 - Error messaging
 - Success metrics
 
 ### With Support Agent
+
 - Chatwoot webhook configuration
 - Operator training materials
 - Escalation procedures
 - Feedback collection
 
 ### With CEO
+
 - **CRITICAL**: Verify GA service account access before implementing Direct API
 - Approval for Agent SDK in production
 - Customer communication about AI assistance
@@ -603,18 +661,21 @@ export default function ApprovalsRoute() {
 ## Testing Strategy
 
 ### Unit Tests
+
 - ✅ GA client (mock API responses)
 - ✅ MCP tool handlers
 - ✅ Agent tool execution
 - ✅ Approval state management
 
 ### Integration Tests
+
 - ✅ GA Direct API with real credentials
 - ✅ LlamaIndex MCP end-to-end
 - ✅ Agent SDK + MCP tool calls
 - ✅ Chatwoot webhook → agent → approval
 
 ### E2E Tests (Playwright)
+
 - ✅ Operator views approval queue
 - ✅ Operator approves/rejects actions
 - ✅ GA tile shows real data
@@ -624,16 +685,19 @@ export default function ApprovalsRoute() {
 ## Rollout Plan
 
 ### Week 1: GA + LlamaIndex MCP
+
 - Day 1-2: GA Direct API implementation
 - Day 3-5: LlamaIndex MCP server scaffold and deployment
 - Day 5-7: Testing and documentation
 
 ### Week 2: Agent SDK Foundation
+
 - Day 8-10: Agent service scaffolding
 - Day 11-12: Tool implementations
 - Day 13-14: Agent definitions and handoffs
 
 ### Week 3: Integration + Approval UI
+
 - Day 15-17: Approval queue UI
 - Day 18-19: End-to-end testing
 - Day 20-21: Documentation and operator training
@@ -643,17 +707,20 @@ export default function ApprovalsRoute() {
 ## Success Criteria
 
 ### Phase 1 (GA Direct API)
+
 - ✅ Dashboard shows real analytics data
 - ✅ <100ms P95 query latency
 - ✅ Zero mock mode usage in production
 
 ### Phase 2 (LlamaIndex MCP)
+
 - ✅ MCP server responds to queries
 - ✅ <500ms P95 response time
 - ✅ Accessible from Cursor and Agent SDK
 - ✅ 99% uptime
 
 ### Phase 3 (Agent SDK)
+
 - ✅ Agents handle 3+ conversation types
 - ✅ Zero unapproved customer-facing actions
 - ✅ <30s approval queue latency
@@ -664,14 +731,17 @@ export default function ApprovalsRoute() {
 ## Rollback Plan
 
 ### GA Direct API
+
 - Set `GA_USE_MOCK=1` to revert to mock mode
 - Zero customer impact
 
 ### LlamaIndex MCP
+
 - Remove from `.mcp.json`
 - Agent SDK falls back to inline implementations
 
 ### Agent SDK Service
+
 - Disable Chatwoot webhook
 - Revert to manual support
 - Preserve training data
@@ -681,6 +751,7 @@ export default function ApprovalsRoute() {
 ## Evidence Logging
 
 All work must be logged in `feedback/engineer.md` with:
+
 - Timestamp
 - Commands executed
 - Output/log paths
@@ -689,6 +760,7 @@ All work must be logged in `feedback/engineer.md` with:
 - Deployment confirmations
 
 Example entry:
+
 ```
 ## 2025-10-11T14:30:00Z — GA Direct API Implementation Complete
 
@@ -711,11 +783,13 @@ Example entry:
 ## Questions/Escalation
 
 ### Blockers
+
 - Missing GA credentials? → Escalate to CEO
 - LlamaIndex API changes? → Coordinate with AI agent
 - Agent SDK questions? → Reference `docs/AgentSDKopenAI.md`, escalate if unclear
 
 ### Clarifications Needed
+
 - Log in `feedback/engineer.md` with clear question
 - Include context and what you've tried
 - Tag relevant agents (@ai, @product, @support)
@@ -723,9 +797,9 @@ Example entry:
 ---
 
 **PRIORITY ORDER**:
+
 1. 🚨 GA Direct API (2-4 hours, unblocks analytics)
 2. 🏗️ LlamaIndex MCP (Week 1, enables Agent SDK)
 3. 🤖 Agent SDK (Week 2-3, delivers customer value)
 
 Start immediately. Log everything. Ship with confidence.
-

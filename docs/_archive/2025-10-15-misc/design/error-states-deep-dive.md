@@ -9,6 +9,7 @@ task: 1G
 # Task 1G: Error State Design Deep Dive
 
 ## Purpose
+
 Design all possible error states with helpful messages and recovery actions for operators.
 
 ## Error State Catalog
@@ -16,6 +17,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 1. Network Errors
 
 #### Lost Connection
+
 ```typescript
 <Banner tone="critical">
   <InlineStack gap="200" blockAlign="center">
@@ -33,6 +35,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Auto-retry every 5s, manual retry button
 
 #### Slow Connection
+
 ```typescript
 <Banner tone="info">
   <Text>Connection is slow. This may take a moment...</Text>
@@ -44,6 +47,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 2. API Errors
 
 #### 500 Internal Server Error
+
 ```typescript
 <Banner tone="critical">
   <BlockStack gap="200">
@@ -64,11 +68,13 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Retry button, error ID for support, support link
 
 **Copy Guidelines**:
+
 - ❌ "Internal server error" (too technical)
 - ✅ "Something went wrong" (operator-friendly)
 - ✅ "Our team has been notified" (reassurance)
 
 #### 503 Service Unavailable
+
 ```typescript
 <Banner tone="warning">
   <BlockStack gap="200">
@@ -85,6 +91,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Auto-retry after 10s, suggest waiting
 
 #### 404 Not Found
+
 ```typescript
 <EmptyState
   heading="Page not found"
@@ -100,6 +107,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 3. Authorization Errors
 
 #### 401 Unauthorized
+
 ```typescript
 <Banner tone="critical">
   <BlockStack gap="200">
@@ -114,6 +122,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Redirect to login, preserve current URL for return
 
 #### 403 Forbidden
+
 ```typescript
 <Banner tone="critical">
   <BlockStack gap="200">
@@ -132,6 +141,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 4. Validation Errors
 
 #### Missing Required Field
+
 ```typescript
 <TextField
   label="Conversation ID"
@@ -145,6 +155,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Inline error, clear guidance on what's needed
 
 #### Invalid Format
+
 ```typescript
 <TextField
   label="Email"
@@ -160,6 +171,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 5. Conflict Errors
 
 #### Already Processed
+
 ```typescript
 <Banner tone="warning" onDismiss={() => removeCard(id)}>
   <BlockStack gap="200">
@@ -174,6 +186,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Remove from queue, avoid confusion
 
 #### Expired Approval
+
 ```typescript
 <Banner tone="info">
   <BlockStack gap="200">
@@ -190,6 +203,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 6. Data Errors
 
 #### Empty State (No Data)
+
 ```typescript
 <EmptyState
   heading="No approvals pending"
@@ -202,6 +216,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Positive message, no action needed
 
 #### Failed to Load Data
+
 ```typescript
 <Banner tone="critical">
   <BlockStack gap="200">
@@ -219,6 +234,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Retry button, full page refresh option
 
 #### Partial Data Load
+
 ```typescript
 <Banner tone="warning">
   <Text>Some data couldn't be loaded. Showing what's available.</Text>
@@ -230,6 +246,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 7. Action Errors
 
 #### Failed to Approve
+
 ```typescript
 <Toast
   content="Failed to approve. Please try again."
@@ -245,6 +262,7 @@ Design all possible error states with helpful messages and recovery actions for 
 **Recovery**: Toast notification, retry action
 
 #### Failed to Reject
+
 ```typescript
 <Toast
   content="Failed to reject. Please try again."
@@ -262,6 +280,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 8. Timeout Errors
 
 #### Request Timeout
+
 ```typescript
 <Banner tone="warning">
   <BlockStack gap="200">
@@ -281,6 +300,7 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 9. Rate Limit Errors
 
 #### Too Many Requests
+
 ```typescript
 <Banner tone="warning">
   <BlockStack gap="200">
@@ -299,15 +319,16 @@ Design all possible error states with helpful messages and recovery actions for 
 ### 10. Browser/Client Errors
 
 #### JavaScript Error (Uncaught)
+
 ```typescript
 // Error Boundary
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
-  
+
   render() {
     if (this.state.hasError) {
       return (
@@ -333,6 +354,7 @@ class ErrorBoundary extends React.Component {
 **Recovery**: Reload page, log error to monitoring
 
 #### Local Storage Full
+
 ```typescript
 <Banner tone="warning">
   <Text>
@@ -346,6 +368,7 @@ class ErrorBoundary extends React.Component {
 ## Error Message Templates
 
 ### Template Structure
+
 ```
 [SEVERITY] [WHAT HAPPENED] [WHY (optional)] [WHAT TO DO]
 
@@ -358,12 +381,14 @@ Examples:
 ### Tone Guidelines
 
 **DO**:
+
 - ✅ Use simple language ("Something went wrong" not "Internal server error")
 - ✅ Be specific ("Failed to approve" not "Error occurred")
 - ✅ Provide action ("Try again" not just "Error")
 - ✅ Reassure ("Our team has been notified")
 
 **DON'T**:
+
 - ❌ Blame user ("You did something wrong")
 - ❌ Use technical jargon ("HTTP 500")
 - ❌ Be vague ("Error")
@@ -372,6 +397,7 @@ Examples:
 ## Recovery Action Patterns
 
 ### 1. Retry
+
 ```typescript
 <Button onClick={handleRetry}>Try again</Button>
 ```
@@ -379,6 +405,7 @@ Examples:
 **When**: Transient errors (network, timeout, 500)
 
 ### 2. Refresh
+
 ```typescript
 <Button onClick={() => window.location.reload()}>Refresh page</Button>
 ```
@@ -386,6 +413,7 @@ Examples:
 **When**: Data stale, persistent errors
 
 ### 3. Dismiss
+
 ```typescript
 <Banner onDismiss={() => setError(null)}>
   {errorMessage}
@@ -395,6 +423,7 @@ Examples:
 **When**: Non-blocking errors, user can continue
 
 ### 4. Navigate
+
 ```typescript
 <Button url="/dashboard">Go to dashboard</Button>
 ```
@@ -402,6 +431,7 @@ Examples:
 **When**: 404, forbidden, nowhere to go forward
 
 ### 5. Contact Support
+
 ```typescript
 <Button plain url="/support">Contact support</Button>
 ```
@@ -414,7 +444,7 @@ Examples:
 function handleError(error: Error, context: string) {
   // Log to monitoring service
   console.error(`[${context}]`, error);
-  
+
   // Send to error tracking (Sentry, etc.)
   logError({
     message: error.message,
@@ -423,7 +453,7 @@ function handleError(error: Error, context: string) {
     userId: currentUser.id,
     timestamp: new Date().toISOString(),
   });
-  
+
   // Show user-friendly message
   showToast({
     content: getUserFriendlyMessage(error),
@@ -432,10 +462,10 @@ function handleError(error: Error, context: string) {
 }
 
 function getUserFriendlyMessage(error: Error): string {
-  if (error.message.includes('Network')) {
+  if (error.message.includes("Network")) {
     return "You're offline. Check your connection.";
   }
-  if (error.message.includes('500')) {
+  if (error.message.includes("500")) {
     return "Something went wrong. Our team has been notified.";
   }
   return "Failed to complete action. Please try again.";
@@ -449,13 +479,13 @@ function getUserFriendlyMessage(error: Error): string {
 if (import.meta.env.DEV) {
   window.forceError = (type: string) => {
     switch (type) {
-      case 'network':
-        throw new Error('Network error');
-      case '500':
-        return { status: 500, message: 'Internal server error' };
-      case 'timeout':
-        return new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), 100)
+      case "network":
+        throw new Error("Network error");
+      case "500":
+        return { status: 500, message: "Internal server error" };
+      case "timeout":
+        return new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Timeout")), 100),
         );
     }
   };
@@ -465,4 +495,3 @@ if (import.meta.env.DEV) {
 ---
 
 **Status**: Comprehensive error state catalog - 10 error types, helpful messages, clear recovery paths
-

@@ -11,11 +11,13 @@
 **Platform**: LaunchDarkly or in-house feature flags
 
 **Use Cases**:
+
 - Test two prompt strategies (concise vs detailed)
 - Test UI variations (button placement, colors)
 - Test pricing (show different tiers to different segments)
 
 **Process**:
+
 1. Hypothesis: "Concise drafts have higher approval rate"
 2. Design experiment: 50% get concise, 50% get detailed
 3. Run for 2 weeks (statistical significance)
@@ -26,4 +28,3 @@
 
 **Document Owner**: Product Agent
 **Status**: Experimentation framework
-

@@ -44,6 +44,7 @@ npx playwright test --ui   # Interactive E2E debugging
 ## Testing Philosophy
 
 **Test Pyramid**:
+
 ```
           /\
          /  \   E2E Tests (Playwright)
@@ -58,6 +59,7 @@ npx playwright test --ui   # Interactive E2E debugging
 ```
 
 **Principles**:
+
 - **Fast**: Unit tests < 1s total, E2E < 5min total
 - **Reliable**: < 1% flakiness rate
 - **Independent**: Tests don't depend on execution order
@@ -65,6 +67,7 @@ npx playwright test --ui   # Interactive E2E debugging
 - **Self-documenting**: Test names describe behavior
 
 **Coverage Targets**:
+
 - **Overall**: > 80% line coverage
 - **Critical paths**: 100% coverage (approval actions, webhook flow)
 - **Services**: > 90% coverage
@@ -77,6 +80,7 @@ npx playwright test --ui   # Interactive E2E debugging
 ### Technology: Vitest + React Testing Library
 
 ### File Structure
+
 ```
 tests/unit/
   ├── services/           # Service layer tests
@@ -89,51 +93,55 @@ tests/unit/
 ### Writing a Unit Test
 
 #### Example: Service Test
+
 ```typescript
 // tests/unit/services/chatwoot.escalations.spec.ts
-import { describe, it, expect, beforeEach } from 'vitest';
-import { getEscalations } from '~/services/chatwoot/escalations';
-import { mockChatwootClient } from '../fixtures/chatwoot-mocks';
+import { describe, it, expect, beforeEach } from "vitest";
+import { getEscalations } from "~/services/chatwoot/escalations";
+import { mockChatwootClient } from "../fixtures/chatwoot-mocks";
 
-describe('Chatwoot Escalations', () => {
+describe("Chatwoot Escalations", () => {
   beforeEach(() => {
     // Reset mocks before each test
     vi.clearAllMocks();
   });
 
-  it('should return escalations when SLA breached', async () => {
+  it("should return escalations when SLA breached", async () => {
     // Arrange
-    const shopDomain = 'test-shop.myshopify.com';
+    const shopDomain = "test-shop.myshopify.com";
     const mockClient = mockChatwootClient();
-    
+
     // Act
     const result = await getEscalations(shopDomain, mockClient);
-    
+
     // Assert
     expect(result).toBeDefined();
     expect(result.escalations).toHaveLength(1);
     expect(result.escalations[0]).toMatchObject({
       conversationId: expect.any(Number),
       slaBreached: true,
-      template: expect.any(String)
+      template: expect.any(String),
     });
   });
 
-  it('should select appropriate template based on keywords', async () => {
+  it("should select appropriate template based on keywords", async () => {
     const mockClient = mockChatwootClient({
-      conversations: [{
-        messages: [{ content: 'I want a refund for my order' }]
-      }]
+      conversations: [
+        {
+          messages: [{ content: "I want a refund for my order" }],
+        },
+      ],
     });
-    
-    const result = await getEscalations('test-shop', mockClient);
-    
-    expect(result.escalations[0].template).toBe('refund_offer');
+
+    const result = await getEscalations("test-shop", mockClient);
+
+    expect(result.escalations[0].template).toBe("refund_offer");
   });
 });
 ```
 
 #### Example: Component Test
+
 ```typescript
 // tests/unit/components/ApprovalCard.spec.tsx
 import { describe, it, expect } from 'vitest';
@@ -148,9 +156,9 @@ describe('ApprovalCard', () => {
       draft_response: 'Test draft',
       confidence_score: 85
     };
-    
+
     render(<ApprovalCard item={queueItem} />);
-    
+
     expect(screen.getByText('John Doe')).toBeInTheDocument();
     expect(screen.getByText(/Confidence: 85%/)).toBeInTheDocument();
     expect(screen.getByText('Test draft')).toBeInTheDocument();
@@ -159,11 +167,11 @@ describe('ApprovalCard', () => {
   it('should call onApprove when approve button clicked', () => {
     const onApproveMock = vi.fn();
     const queueItem = { id: 'test-123' };
-    
+
     render(<ApprovalCard item={queueItem} onApprove={onApproveMock} />);
-    
+
     fireEvent.click(screen.getByRole('button', { name: /approve/i }));
-    
+
     expect(onApproveMock).toHaveBeenCalledWith('test-123');
   });
 });
@@ -172,46 +180,54 @@ describe('ApprovalCard', () => {
 ### Best Practices
 
 1. **Test Behavior, Not Implementation**
+
    ```typescript
    // ❌ Bad: Testing implementation details
    expect(component.state.isLoading).toBe(true);
-   
+
    // ✅ Good: Testing observable behavior
-   expect(screen.getByRole('status')).toHaveTextContent('Loading...');
+   expect(screen.getByRole("status")).toHaveTextContent("Loading...");
    ```
 
 2. **Arrange-Act-Assert Pattern**
+
    ```typescript
-   it('should calculate discount correctly', () => {
+   it("should calculate discount correctly", () => {
      // Arrange: Set up test data
      const price = 100;
      const discountPercent = 20;
-     
+
      // Act: Execute the code being tested
      const result = calculateDiscount(price, discountPercent);
-     
+
      // Assert: Verify the outcome
      expect(result).toBe(80);
    });
    ```
 
 3. **Use Descriptive Test Names**
+
    ```typescript
    // ❌ Bad: Vague test name
-   it('works correctly', () => { /* ... */ });
-   
+   it("works correctly", () => {
+     /* ... */
+   });
+
    // ✅ Good: Describes expected behavior
-   it('should return empty array when no escalations exist', () => { /* ... */ });
+   it("should return empty array when no escalations exist", () => {
+     /* ... */
+   });
    ```
 
 4. **One Assertion Per Test (when practical)**
+
    ```typescript
    // ✅ Good: Focused test
-   it('should return escalations array', () => {
+   it("should return escalations array", () => {
      expect(result.escalations).toBeInstanceOf(Array);
    });
-   
-   it('should include SLA breach information', () => {
+
+   it("should include SLA breach information", () => {
      expect(result.escalations[0].slaBreached).toBe(true);
    });
    ```
@@ -221,9 +237,11 @@ describe('ApprovalCard', () => {
 ## Integration Testing
 
 ### Purpose
+
 Test interactions between multiple modules/services without external dependencies.
 
 ### File Structure
+
 ```
 tests/integration/
   ├── agent-sdk-webhook.spec.ts    # Webhook flow integration
@@ -232,58 +250,59 @@ tests/integration/
 ```
 
 ### Example: Webhook Integration Test
+
 ```typescript
 // tests/integration/agent-sdk-webhook.spec.ts
-import { describe, it, expect } from 'vitest';
-import { processWebhook } from '~/functions/chatwoot-webhook';
-import { supabase } from '~/config/supabase.server';
+import { describe, it, expect } from "vitest";
+import { processWebhook } from "~/functions/chatwoot-webhook";
+import { supabase } from "~/config/supabase.server";
 
-describe('Chatwoot → Agent SDK → Approval Queue', () => {
-  it('should process webhook end-to-end', async () => {
+describe("Chatwoot → Agent SDK → Approval Queue", () => {
+  it("should process webhook end-to-end", async () => {
     // Arrange: Mock services
     const mockLlamaIndex = mockLlamaIndexService();
     const mockAgentSDK = mockAgentSDKService();
     const mockChatwoot = mockChatwootClient();
-    
+
     const payload = mockChatwootMessageCreated({
       conversation: { id: 12345 },
-      message: { content: 'What is your return policy?' }
+      message: { content: "What is your return policy?" },
     });
-    
+
     // Act: Process webhook
     const result = await processWebhook(payload, {
       llamaIndex: mockLlamaIndex,
       agentSDK: mockAgentSDK,
-      chatwoot: mockChatwoot
+      chatwoot: mockChatwoot,
     });
-    
+
     // Assert: Verify complete pipeline
     expect(result.success).toBe(true);
-    
+
     // Knowledge was queried
     expect(mockLlamaIndex.query).toHaveBeenCalledWith(
-      expect.objectContaining({ query: expect.stringContaining('return') })
+      expect.objectContaining({ query: expect.stringContaining("return") }),
     );
-    
+
     // Draft was generated
     expect(mockAgentSDK.generateDraft).toHaveBeenCalled();
-    
+
     // Private note created
     expect(mockChatwoot.createPrivateNote).toHaveBeenCalledWith(
       12345,
-      expect.stringContaining('AGENT SDK DRAFT')
+      expect.stringContaining("AGENT SDK DRAFT"),
     );
-    
+
     // Queue entry created
     const queueItems = await supabase
-      .from('agent_sdk_approval_queue')
-      .select('*')
-      .eq('conversation_id', 12345);
-    
+      .from("agent_sdk_approval_queue")
+      .select("*")
+      .eq("conversation_id", 12345);
+
     expect(queueItems.data).toHaveLength(1);
     expect(queueItems.data[0]).toMatchObject({
-      status: 'pending',
-      customer_message: 'What is your return policy?'
+      status: "pending",
+      customer_message: "What is your return policy?",
     });
   });
 });
@@ -296,6 +315,7 @@ describe('Chatwoot → Agent SDK → Approval Queue', () => {
 ### Technology: Playwright
 
 ### File Structure
+
 ```
 tests/e2e/
   ├── approval-queue.spec.ts      # Approval queue workflows
@@ -307,25 +327,27 @@ tests/e2e/
 ### Writing an E2E Test
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('operator can approve draft from queue', async ({ page }) => {
+test("operator can approve draft from queue", async ({ page }) => {
   // Navigate to approval queue
-  await page.goto('http://localhost:3000/app/approvals');
-  
+  await page.goto("http://localhost:3000/app/approvals");
+
   // Verify queue loads
-  await expect(page.locator('h1')).toContainText('Approval Queue');
-  
+  await expect(page.locator("h1")).toContainText("Approval Queue");
+
   // Click approve on first item
   await page.click('[data-testid="approve-button"]').first();
-  
+
   // Confirm in modal
   await expect(page.locator('[role="dialog"]')).toBeVisible();
   await page.click('[data-testid="confirm-approve"]');
-  
+
   // Verify success message
-  await expect(page.locator('[role="alert"]')).toContainText('Approved successfully');
-  
+  await expect(page.locator('[role="alert"]')).toContainText(
+    "Approved successfully",
+  );
+
   // Verify item removed from queue
   const itemCount = await page.locator('[data-testid="queue-item"]').count();
   expect(itemCount).toBe(0);
@@ -340,7 +362,7 @@ export class ApprovalQueuePage {
   constructor(private page: Page) {}
 
   async goto() {
-    await this.page.goto('/app/approvals');
+    await this.page.goto("/app/approvals");
     await this.page.waitForSelector('[data-testid="queue-item"]');
   }
 
@@ -355,11 +377,11 @@ export class ApprovalQueuePage {
 }
 
 // Usage in tests
-test('approval flow', async ({ page }) => {
+test("approval flow", async ({ page }) => {
   const queuePage = new ApprovalQueuePage(page);
   await queuePage.goto();
   await queuePage.approveFirst();
-  
+
   expect(await queuePage.getQueueCount()).toBe(0);
 });
 ```
@@ -371,35 +393,37 @@ test('approval flow', async ({ page }) => {
 ### Technology: axe-core + Playwright
 
 ### Running Accessibility Tests
+
 ```bash
 npm run test:a11y          # Run all accessibility tests
 npm run test:a11y:report   # Generate HTML report
 ```
 
 ### Example Test
-```typescript
-import AxeBuilder from '@axe-core/playwright';
 
-test('dashboard should have no accessibility violations', async ({ page }) => {
-  await page.goto('http://localhost:3000/app');
-  
+```typescript
+import AxeBuilder from "@axe-core/playwright";
+
+test("dashboard should have no accessibility violations", async ({ page }) => {
+  await page.goto("http://localhost:3000/app");
+
   const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa'])
+    .withTags(["wcag2a", "wcag2aa"])
     .analyze();
-  
+
   expect(results.violations).toEqual([]);
 });
 ```
 
 ### Common Accessibility Fixes
 
-| Violation | Fix |
-|-----------|-----|
-| Missing alt text | Add `alt="description"` to images |
-| Poor contrast | Use darker colors (4.5:1 ratio) |
-| Missing form labels | Add `<label>` with `for` attribute |
+| Violation             | Fix                                    |
+| --------------------- | -------------------------------------- |
+| Missing alt text      | Add `alt="description"` to images      |
+| Poor contrast         | Use darker colors (4.5:1 ratio)        |
+| Missing form labels   | Add `<label>` with `for` attribute     |
 | Non-descriptive links | Use descriptive text, not "click here" |
-| Missing ARIA labels | Add `aria-label` to icon buttons |
+| Missing ARIA labels   | Add `aria-label` to icon buttons       |
 
 ---
 
@@ -408,6 +432,7 @@ test('dashboard should have no accessibility violations', async ({ page }) => {
 ### Technology: Lighthouse + Custom Benchmarks
 
 ### Running Performance Tests
+
 ```bash
 npm run test:lighthouse         # Run Lighthouse audit
 npm run perf:benchmark-routes   # Benchmark all routes
@@ -416,19 +441,21 @@ npm run perf:all                # Run all performance tests
 ```
 
 ### Performance Budgets
+
 - **Critical routes**: < 100ms P95
 - **Standard routes**: < 200ms P95
 - **MCP services**: < 500ms P95
 - **Lighthouse Performance**: ≥ 90
 
 ### Example Performance Test
+
 ```typescript
-test('approval queue should load in < 200ms', async () => {
+test("approval queue should load in < 200ms", async () => {
   const start = performance.now();
-  
-  const response = await fetch('http://localhost:3000/api/approvals/queue');
+
+  const response = await fetch("http://localhost:3000/api/approvals/queue");
   await response.json();
-  
+
   const duration = performance.now() - start;
   expect(duration).toBeLessThan(200);
 });
@@ -441,6 +468,7 @@ test('approval queue should load in < 200ms', async () => {
 ### Technology: axe-core + Custom Security Tests
 
 ### Running Security Tests
+
 ```bash
 npm run test:security      # Run security test suite
 npm audit                  # Check dependencies
@@ -448,18 +476,19 @@ npm run lint:security      # Security linting rules
 ```
 
 ### Example Security Test
+
 ```typescript
-test('should sanitize XSS in user input', async () => {
+test("should sanitize XSS in user input", async () => {
   const xssPayload = '<script>alert("xss")</script>Hello';
-  
-  const response = await POST('/api/approvals/edit-approve', {
-    queueItemId: 'test-123',
-    editedResponse: xssPayload
+
+  const response = await POST("/api/approvals/edit-approve", {
+    queueItemId: "test-123",
+    editedResponse: xssPayload,
   });
-  
-  const saved = await getQueueItem('test-123');
-  expect(saved.edited_response).not.toContain('<script>');
-  expect(saved.edited_response).toContain('Hello');
+
+  const saved = await getQueueItem("test-123");
+  expect(saved.edited_response).not.toContain("<script>");
+  expect(saved.edited_response).toContain("Hello");
 });
 ```
 
@@ -468,6 +497,7 @@ test('should sanitize XSS in user input', async () => {
 ## Test Data & Mocking
 
 ### Mock Data Location
+
 ```
 tests/fixtures/
   ├── agent-sdk-mocks.ts      # Agent SDK test data
@@ -484,11 +514,11 @@ export function mockQueueData(overrides = {}) {
   return {
     id: `queue-${Date.now()}`,
     conversation_id: Math.floor(Math.random() * 10000),
-    customer_name: 'Test Customer',
-    draft_response: 'Test draft response',
+    customer_name: "Test Customer",
+    draft_response: "Test draft response",
     confidence_score: 80,
-    status: 'pending',
-    ...overrides
+    status: "pending",
+    ...overrides,
   };
 }
 
@@ -500,26 +530,27 @@ const lowConfidenceItem = mockQueueData({ confidence_score: 45 });
 ### Mocking External Services
 
 #### Mocking HTTP Requests (Vitest)
+
 ```typescript
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Mock global fetch
 global.fetch = vi.fn();
 
 beforeEach(() => {
   vi.mocked(fetch).mockResolvedValue(
-    new Response(JSON.stringify({ success: true }), { status: 200 })
+    new Response(JSON.stringify({ success: true }), { status: 200 }),
   );
 });
 
 // Or use MSW (Mock Service Worker) for more complex scenarios
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 
 const server = setupServer(
-  rest.post('http://localhost:8005/api/query', (req, res, ctx) => {
+  rest.post("http://localhost:8005/api/query", (req, res, ctx) => {
     return res(ctx.json({ sources: [] }));
-  })
+  }),
 );
 
 beforeAll(() => server.listen());
@@ -528,22 +559,23 @@ afterAll(() => server.close());
 ```
 
 #### Mocking Database (Supabase)
+
 ```typescript
-import { supabase } from '~/config/supabase.server';
+import { supabase } from "~/config/supabase.server";
 
 // Use test database
 beforeEach(async () => {
-  await supabase.from('agent_sdk_approval_queue').delete().neq('id', '0');
+  await supabase.from("agent_sdk_approval_queue").delete().neq("id", "0");
 });
 
 // Or mock Supabase client entirely
-vi.mock('~/config/supabase.server', () => ({
+vi.mock("~/config/supabase.server", () => ({
   supabase: {
     from: vi.fn(() => ({
       select: vi.fn().mockResolvedValue({ data: [], error: null }),
-      insert: vi.fn().mockResolvedValue({ data: {}, error: null })
-    }))
-  }
+      insert: vi.fn().mockResolvedValue({ data: {}, error: null }),
+    })),
+  },
 }));
 ```
 
@@ -552,6 +584,7 @@ vi.mock('~/config/supabase.server', () => ({
 ## Debugging Tests
 
 ### Debugging Unit Tests (Vitest)
+
 ```bash
 # Run tests in debug mode
 npm run test:unit -- --reporter=verbose
@@ -567,6 +600,7 @@ npm run test:unit -- --watch
 ```
 
 ### Debugging E2E Tests (Playwright)
+
 ```bash
 # Run in UI mode (interactive)
 npx playwright test --ui
@@ -588,37 +622,43 @@ npx playwright show-trace trace.zip
 ### Common Issues & Solutions
 
 #### Issue: Test timeout
+
 **Solution**: Increase timeout or optimize test
+
 ```typescript
-test('slow operation', async ({ page }) => {
+test("slow operation", async ({ page }) => {
   test.setTimeout(60000); // 60 seconds
   // ... test code
 });
 ```
 
 #### Issue: Flaky test (passes sometimes, fails sometimes)
+
 **Solution**: Add proper waits
+
 ```typescript
 // ❌ Bad: Race condition
-await page.click('button');
-expect(await page.textContent('.result')).toBe('Success');
+await page.click("button");
+expect(await page.textContent(".result")).toBe("Success");
 
 // ✅ Good: Wait for state
-await page.click('button');
-await page.waitForSelector('.result');
-expect(await page.textContent('.result')).toBe('Success');
+await page.click("button");
+await page.waitForSelector(".result");
+expect(await page.textContent(".result")).toBe("Success");
 ```
 
 #### Issue: Mock not working
+
 **Solution**: Verify mock is set up before import
+
 ```typescript
 // ❌ Bad: Mock after import
-import { service } from './service';
-vi.mock('./service');
+import { service } from "./service";
+vi.mock("./service");
 
 // ✅ Good: Mock before import
-vi.mock('./service');
-import { service } from './service';
+vi.mock("./service");
+import { service } from "./service";
 ```
 
 ---
@@ -626,6 +666,7 @@ import { service } from './service';
 ## CI/CD Integration
 
 ### Quality Gates (All Must Pass)
+
 1. ✅ Code Quality (typecheck + lint)
 2. ✅ Unit Tests (100% pass rate)
 3. ✅ E2E Tests (critical paths)
@@ -635,6 +676,7 @@ import { service } from './service';
 7. ✅ PR Metadata (title format, description)
 
 ### Running Tests Locally Before Commit
+
 ```bash
 # Quick check (5-10 seconds)
 npm run typecheck && npm run lint
@@ -649,6 +691,7 @@ npm run test:a11y          # Accessibility (~1min)
 ```
 
 ### Pre-Commit Hook (Recommended)
+
 ```bash
 # .husky/pre-commit
 #!/bin/sh
@@ -661,16 +704,17 @@ npm run test:unit
 ## Writing Testable Code
 
 ### 1. Dependency Injection
+
 ```typescript
 // ❌ Bad: Hard to test (hardcoded dependency)
 export function getUser() {
   const db = new Database();
-  return db.query('SELECT * FROM users');
+  return db.query("SELECT * FROM users");
 }
 
 // ✅ Good: Easy to test (injectable dependency)
 export function getUser(db: Database) {
-  return db.query('SELECT * FROM users');
+  return db.query("SELECT * FROM users");
 }
 
 // Test
@@ -680,6 +724,7 @@ expect(mockDb.query).toHaveBeenCalled();
 ```
 
 ### 2. Pure Functions
+
 ```typescript
 // ❌ Bad: Depends on external state
 let total = 0;
@@ -695,6 +740,7 @@ function add(a, b) {
 ```
 
 ### 3. Small, Focused Functions
+
 ```typescript
 // ❌ Bad: God function (hard to test)
 function processOrderAndSendEmailAndUpdateInventory(order) {
@@ -702,9 +748,15 @@ function processOrderAndSendEmailAndUpdateInventory(order) {
 }
 
 // ✅ Good: Single responsibility
-function processOrder(order) { /* ... */ }
-function sendOrderEmail(order) { /* ... */ }
-function updateInventory(order) { /* ... */ }
+function processOrder(order) {
+  /* ... */
+}
+function sendOrderEmail(order) {
+  /* ... */
+}
+function updateInventory(order) {
+  /* ... */
+}
 ```
 
 ---
@@ -712,6 +764,7 @@ function updateInventory(order) { /* ... */ }
 ## Test Coverage
 
 ### Viewing Coverage Report
+
 ```bash
 npm run test:unit -- --coverage
 open coverage/vitest/index.html
@@ -719,27 +772,23 @@ open coverage/vitest/index.html
 
 ### Coverage Targets by File Type
 
-| File Type | Target | Critical |
-|-----------|--------|----------|
-| Services | > 90% | Yes |
-| Utilities | > 95% | Yes |
-| Routes | > 70% | No (E2E coverage) |
-| Components | > 80% | Medium |
+| File Type  | Target | Critical          |
+| ---------- | ------ | ----------------- |
+| Services   | > 90%  | Yes               |
+| Utilities  | > 95%  | Yes               |
+| Routes     | > 70%  | No (E2E coverage) |
+| Components | > 80%  | Medium            |
 
 ### Excluding Files from Coverage
+
 ```javascript
 // vitest.config.ts
 export default defineConfig({
   test: {
     coverage: {
-      exclude: [
-        'tests/**',
-        '**/*.spec.ts',
-        '**/*.config.ts',
-        'scripts/**'
-      ]
-    }
-  }
+      exclude: ["tests/**", "**/*.spec.ts", "**/*.config.ts", "scripts/**"],
+    },
+  },
 });
 ```
 
@@ -750,12 +799,14 @@ export default defineConfig({
 ### When to Update Tests
 
 **Always update tests when**:
+
 - Changing business logic
 - Adding new features
 - Fixing bugs (add regression test)
 - Refactoring (update test structure)
 
 **Test First (TDD) Recommended For**:
+
 - Complex business logic
 - Bug fixes (write failing test, then fix)
 - API endpoints
@@ -768,7 +819,7 @@ export default defineConfig({
 3. **Fix**: Add proper waits, use deterministic test data
 4. **Skip as last resort**: Mark `.skip()` with issue reference
    ```typescript
-   test.skip('flaky test (see issue #123)', async () => {
+   test.skip("flaky test (see issue #123)", async () => {
      // ... test code
    });
    ```
@@ -776,6 +827,7 @@ export default defineConfig({
 ### Test Debt Reduction
 
 **Monthly review of**:
+
 - Skipped tests (convert to .todo() or fix)
 - Slow tests (optimize or split)
 - Duplicate tests (consolidate)
@@ -786,34 +838,37 @@ export default defineConfig({
 ## Quick Reference
 
 ### Vitest Assertions
+
 ```typescript
-expect(value).toBe(expected)                    // Strict equality
-expect(value).toEqual(expected)                 // Deep equality
-expect(array).toContain(item)                   // Array includes
-expect(object).toMatchObject(partial)           // Partial match
-expect(fn).toHaveBeenCalled()                   // Mock called
-expect(fn).toHaveBeenCalledWith(arg1, arg2)    // Mock called with args
-expect(value).toBeDefined()                     // Not undefined
-expect(value).toBeTruthy()                      // Truthy value
-expect(value).toBeGreaterThan(10)              // Numeric comparison
+expect(value).toBe(expected); // Strict equality
+expect(value).toEqual(expected); // Deep equality
+expect(array).toContain(item); // Array includes
+expect(object).toMatchObject(partial); // Partial match
+expect(fn).toHaveBeenCalled(); // Mock called
+expect(fn).toHaveBeenCalledWith(arg1, arg2); // Mock called with args
+expect(value).toBeDefined(); // Not undefined
+expect(value).toBeTruthy(); // Truthy value
+expect(value).toBeGreaterThan(10); // Numeric comparison
 ```
 
 ### Playwright Assertions
+
 ```typescript
-await expect(locator).toBeVisible()             // Element visible
-await expect(locator).toContainText('text')     // Text content
-await expect(locator).toHaveAttribute('href')   // Has attribute
-await expect(locator).toHaveCount(5)            // Element count
-await expect(page).toHaveTitle('Title')         // Page title
-await expect(page).toHaveURL(/pattern/)         // URL matches
+await expect(locator).toBeVisible(); // Element visible
+await expect(locator).toContainText("text"); // Text content
+await expect(locator).toHaveAttribute("href"); // Has attribute
+await expect(locator).toHaveCount(5); // Element count
+await expect(page).toHaveTitle("Title"); // Page title
+await expect(page).toHaveURL(/pattern/); // URL matches
 ```
 
 ### Test Lifecycle Hooks
+
 ```typescript
-beforeAll(() => {})        // Once before all tests
-beforeEach(() => {})       // Before each test
-afterEach(() => {})        // After each test
-afterAll(() => {})         // Once after all tests
+beforeAll(() => {}); // Once before all tests
+beforeEach(() => {}); // Before each test
+afterEach(() => {}); // After each test
+afterAll(() => {}); // Once after all tests
 ```
 
 ---
@@ -854,4 +909,3 @@ A: No, TypeScript compiler handles that. Test runtime behavior.
 **Maintained by**: QA Team  
 **Last Updated**: 2025-10-11  
 **Next Review**: 2025-11-11
-

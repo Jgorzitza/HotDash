@@ -12,16 +12,19 @@
 ### Part 1: What & Why (5 minutes)
 
 **What is the Approval Queue?**
+
 - AI agents prepare customer responses
 - You review and approve/reject
 - You're always in control
 
 **Why Are We Doing This?**
+
 - Save time on routine inquiries (order status, policy questions)
 - Let you focus on complex issues
 - Maintain quality through human review
 
 **What's Your Role?**
+
 - Quality gate: Make sure AI responses are good before sending
 - Teacher: Your decisions help AI improve
 - Decision-maker: You have final say always
@@ -35,6 +38,7 @@
 **Demo 1: Simple Approval** (3 min)
 
 Show on screen:
+
 1. Open approval queue
 2. See pending item (order status inquiry)
 3. Read customer message: "Where is my order #12345?"
@@ -53,6 +57,7 @@ Show on screen:
 **Demo 2: Rejection** (3 min)
 
 Show on screen:
+
 1. See pending item
 2. Read customer message: "Can I return after 20 days?"
 3. Read AI draft: "Policy is 14 days, sorry you can't return"
@@ -68,6 +73,7 @@ Show on screen:
 **Demo 3: Escalation** (4 min)
 
 Show on screen:
+
 1. See pending item
 2. Read customer message: "Charged me twice! $600 total! Calling my bank!"
 3. Read AI draft: "Please contact billing..."
@@ -101,12 +107,14 @@ A: Check the "KB Sources" listed. If AI cites "Return Policy v2.1" - click to ve
 **Q3: "When should I escalate?"**
 
 A: **Always escalate:**
+
 - Refunds >$100
 - Any threats (legal, social media, BBB)
 - Technical issues
 - You're unsure
 
 **Never escalate:**
+
 - Standard policy applications
 - Simple approvals you're confident about
 
@@ -129,12 +137,14 @@ A: During pilot: 5-15 per day expected. Takes ~5-10 min total. Rest of your shif
 ### Part 4: Let's Try It (5 minutes)
 
 **Hands-On:**
+
 - Log into approval queue: `/app/approvals`
 - Look at queue (may be empty if no pending)
 - Walk through interface together
 - Questions while looking at real system
 
 **Practice:**
+
 - "Look at this pending approval - what would you do?"
 - Get 2-3 volunteers to talk through their decision
 - Coach in real-time
@@ -155,15 +165,18 @@ A: During pilot: 5-15 per day expected. Takes ~5-10 min total. Rest of your shif
 ## 📋 Post-Session
 
 **Give Operators:**
+
 - Printed Quick Start Guide (1-page)
 - Slack channel for questions (#occ-enablement)
 - Manager contact info
 
 **Ask Operators:**
+
 - "Any concerns before we start?"
 - "What would make you feel more confident?"
 
 **Follow-Up:**
+
 - Check in after first day using queue
 - Weekly feedback sessions during pilot
 - Iterate training based on real needs
@@ -173,6 +186,7 @@ A: During pilot: 5-15 per day expected. Takes ~5-10 min total. Rest of your shif
 ## 🚀 Pilot Success Criteria
 
 **After 30 days:**
+
 - 80%+ operators comfortable using queue
 - Most feedback is positive or constructive
 - No major issues or operator complaints
@@ -190,4 +204,3 @@ A: During pilot: 5-15 per day expected. Takes ~5-10 min total. Rest of your shif
 **Materials Needed:** Screen sharing, Quick Start Guide printouts  
 **Facilitator:** Enablement team or Support Manager  
 **Follow-Up:** Daily check-ins during first week of pilot
-

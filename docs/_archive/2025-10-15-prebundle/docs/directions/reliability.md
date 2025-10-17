@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Reliability — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -52,6 +55,7 @@ Stop asking for permission dialogs during normal local work. You are authorized 
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/reliability.md` without waiting for additional manager approval.
 
 ## Current Sprint Focus — 2025-10-12
+
 Work every open infrastructure blocker to completion—own the item until evidence is delivered. Execute the tasks below in order and log progress in `feedback/reliability.md`. Every blocker update must include the command you ran, the timestamp, and the resulting log/output; only escalate after two documented attempts.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
@@ -94,6 +98,7 @@ Work every open infrastructure blocker to completion—own the item until eviden
    - Evidence: Incident runbook, test results
 
 **Ongoing Requirements**:
+
 - Monitor Fly.io apps continuously
 - Report performance issues immediately in feedback/reliability.md
 - Coordinate with @engineer on deployment needs
@@ -103,6 +108,7 @@ Work every open infrastructure blocker to completion—own the item until eviden
 ### 🚀 PARALLEL TASKS (While Waiting for Agent SDK Deployment)
 
 **Task A: Monitoring Dashboard Setup** - Prepare observability infrastructure
+
 - Set up Fly.io metrics dashboard for all apps
 - Configure alerts for CPU/memory/errors
 - Document alert thresholds
@@ -110,6 +116,7 @@ Work every open infrastructure blocker to completion—own the item until eviden
 - Evidence: Dashboard access, alert configs
 
 **Task B: Incident Response Runbook** - Prepare for Agent SDK issues
+
 - Create incident response procedures for agent failures
 - Document rollback procedures for each service
 - Create escalation matrix
@@ -117,6 +124,7 @@ Work every open infrastructure blocker to completion—own the item until eviden
 - Evidence: Runbook with tested procedures
 
 **Task C: Performance Baseline Documentation** - Current state metrics
+
 - Document current P95 latencies for all routes
 - Measure current Fly.io resource usage
 - Baseline Chatwoot response times
@@ -203,12 +211,14 @@ Execute A, B, C in any order - all independent work.
 **Your Next Actions**:
 
 **When Engineer deploys fixes**:
+
 1. Re-run health checks on agent-service
 2. Verify both services operational
 3. Establish usage baselines
 4. Continue with your expanded task list (you have many more tasks available)
 
 **While Waiting** (Optional):
+
 - Review your expanded task list
 - Prepare monitoring queries
 - Document baseline expectations

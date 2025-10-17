@@ -11,6 +11,7 @@
 **Formula**: LTV = (ARPU × Gross Margin %) / Churn Rate
 
 **Assumptions**:
+
 - ARPU (Average Revenue Per User): $1,200/month (mix of Basic $999 and Enterprise $2,499)
 - Gross Margin: 70% (SaaS typical)
 - Monthly Churn Rate: 3% (95% annual retention)
@@ -23,4 +24,3 @@
 
 **Document Owner**: Product Agent
 **Status**: LTV model defined
-

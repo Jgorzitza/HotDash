@@ -1,7 +1,8 @@
 # System Overview
 
 ## Components
-- **Signals Ingestor** — pulls/receives: 
+
+- **Signals Ingestor** — pulls/receives:
   - Google Search Console (GSC) → query/page daily export
   - GA4 Data API → organic revenue + behavior
   - Shopify → orders, inventory (webhooks + Admin API)
@@ -38,7 +39,8 @@ HotDash UI (Approve/Edit) ──> Action Service ──> Adapters ──> System
 ```
 
 ## Tech Notes
-- **Warehouse:** BigQuery (GSC export) + Postgres (actions, edits, experiments). 
+
+- **Warehouse:** BigQuery (GSC export) + Postgres (actions, edits, experiments).
 - **Jobs:** Containerized schedulers (cron/Cloud Run Jobs). Webhooks handled via a small queue (Redis/Cloud Tasks).
 - **LLM Use:** Small, bounded prompts; Retrieval from your own content (metaobjects + AN Hose 101). No external browsing at runtime.
 - **Rollbacks:** All adapters must support dry-run previews and atomic rollbacks (e.g., revert a title/meta change or unpublish a metaobject entry).

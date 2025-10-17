@@ -15,6 +15,7 @@ tasks: 1Q-1S (4 tasks)
 **Empty States** (Hot Rod Theme):
 
 **1. No Approvals (Checkered Flag)**:
+
 ```
 Illustration: Simple checkered flag (racing finish line)
 Heading: "All systems go!"
@@ -22,6 +23,7 @@ Copy: "No approvals pending. You're running at full speed."
 ```
 
 **SVG Code** (Simple):
+
 ```svg
 <svg width="120" height="120" viewBox="0 0 120 120">
   <!-- Checkered flag pattern -->
@@ -34,6 +36,7 @@ Copy: "No approvals pending. You're running at full speed."
 ```
 
 **2. Dashboard Setup (Hot Rod Gauge)**:
+
 ```
 Illustration: Speedometer/gauge showing "0"
 Heading: "Rev up your dashboard"
@@ -41,6 +44,7 @@ Copy: "Connect integrations to get real-time insights."
 ```
 
 **3. Success Celebration (Trophy)**:
+
 ```
 Illustration: Trophy/checkered flag
 Heading: "Winner's circle!"
@@ -48,6 +52,7 @@ Copy: "All tasks complete. Excellent work today."
 ```
 
 **Industry-Specific Success** (Automotive metaphors):
+
 - "Pit stop complete!" (when setup finished)
 - "Running on all cylinders" (all systems healthy)
 - "Full throttle!" (high performance)
@@ -61,6 +66,7 @@ Copy: "All tasks complete. Excellent work today."
 ### Data Table Component
 
 **Desktop Table** (Full features):
+
 ```typescript
 <DataTable
   columnContentTypes={['text', 'numeric', 'text', 'text', 'text']}
@@ -74,6 +80,7 @@ Copy: "All tasks complete. Excellent work today."
 ```
 
 **Mobile Table** (Simplified):
+
 ```typescript
 <BlockStack gap="300">
   {approvals.map(approval => (
@@ -94,6 +101,7 @@ Copy: "All tasks complete. Excellent work today."
 ```
 
 **Responsive Strategy**:
+
 ```typescript
 const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -105,6 +113,7 @@ const isMobile = useMediaQuery('(max-width: 767px)');
 ```
 
 **Sortable Columns**:
+
 ```typescript
 <DataTable
   sortable={[true, true, true, true, true]}
@@ -116,6 +125,7 @@ const isMobile = useMediaQuery('(max-width: 767px)');
 ```
 
 **Filters**:
+
 ```typescript
 <Filters
   queryValue={searchValue}
@@ -142,6 +152,7 @@ const isMobile = useMediaQuery('(max-width: 767px)');
 ```
 
 **Bulk Actions**:
+
 ```typescript
 const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -163,6 +174,7 @@ const [selectedItems, setSelectedItems] = useState<string[]>([]);
 ```
 
 **Mobile Patterns**:
+
 - Cards instead of table
 - Swipe for details
 - Tap to select (checkbox)
@@ -175,13 +187,16 @@ const [selectedItems, setSelectedItems] = useState<string[]>([]);
 ### Component Library Documentation
 
 **Format** (per component):
-```markdown
+
+````markdown
 # ComponentName
 
 ## Overview
+
 Brief description of what the component does
 
 ## Usage
+
 ```typescript
 import { ComponentName } from '~/components/ComponentName';
 
@@ -191,31 +206,39 @@ import { ComponentName } from '~/components/ComponentName';
   onAction={handleAction}
 />
 ```
+````
 
 ## Props
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| prop1 | string | Yes | - | Description |
-| prop2 | number | No | 0 | Description |
+
+| Prop  | Type   | Required | Default | Description |
+| ----- | ------ | -------- | ------- | ----------- |
+| prop1 | string | Yes      | -       | Description |
+| prop2 | number | No       | 0       | Description |
 
 ## Examples
+
 ### Basic Usage
+
 [Code example]
 
 ### Advanced Usage
+
 [Code example]
 
 ## Accessibility
+
 - Keyboard navigation: Tab, Enter
 - Screen reader: aria-label provided
 - Focus indicator: Visible
 - Color contrast: WCAG AA
 
 ## Design Tokens
+
 - --p-color-bg-surface
 - --p-space-400
 - --p-font-size-300
-```
+
+````
 
 **Components to Document**:
 1. ApprovalCard
@@ -250,9 +273,10 @@ import { ComponentName } from '~/components/ComponentName';
 >
   <Text variant="heading2xl">$12,450</Text>
 </TileCard>
-```
+````
 
 **Accessibility Guidelines** (Standard):
+
 - All interactive elements keyboard accessible
 - Focus indicators visible (3:1 contrast)
 - ARIA labels for icons
@@ -265,4 +289,3 @@ All examples are complete, working code that Engineer can copy directly
 ---
 
 **Status**: Tasks 1Q-1S complete - Hot Rodan illustrations, responsive tables, component documentation
-

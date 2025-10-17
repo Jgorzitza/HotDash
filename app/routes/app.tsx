@@ -15,7 +15,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   // Return API key for App Bridge initialization
-  return { 
+  return {
     apiKey: process.env.SHOPIFY_API_KEY || "",
     mockMode: isTestMode,
   };
@@ -31,9 +31,7 @@ export default function App() {
         <s-link href="/approvals">Approvals</s-link>
         <s-link href="/app/additional">Additional page</s-link>
         <s-link href="/app/tools/session-token">Session token tool</s-link>
-        {mockMode && (
-          <s-badge tone="warning">Mock Mode</s-badge>
-        )}
+        {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
       </s-app-nav>
       <Outlet />
     </AppProvider>

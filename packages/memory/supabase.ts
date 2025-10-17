@@ -12,9 +12,22 @@ type SupabaseResponse<T = unknown> = {
   error?: SupabaseError | null;
 };
 
-const RETRYABLE_ERROR_CODES = new Set(["408", "425", "429", "500", "502", "503", "504"]);
+const RETRYABLE_ERROR_CODES = new Set([
+  "408",
+  "425",
+  "429",
+  "500",
+  "502",
+  "503",
+  "504",
+]);
 const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
-const RETRYABLE_MESSAGE_TOKENS = ["ETIMEDOUT", "timeout", "ECONNRESET", "fetch failed"];
+const RETRYABLE_MESSAGE_TOKENS = [
+  "ETIMEDOUT",
+  "timeout",
+  "ECONNRESET",
+  "fetch failed",
+];
 
 const DECISION_TABLE_PRIMARY = "DecisionLog";
 const DECISION_TABLE_LEGACY = "decision_log";
@@ -34,7 +47,10 @@ function stripUndefined<T extends Record<string, unknown>>(payload: T): T {
   return payload;
 }
 
-function buildDecisionInsertPayload(decision: DecisionLog, schema: DecisionInsertSchema) {
+function buildDecisionInsertPayload(
+  decision: DecisionLog,
+  schema: DecisionInsertSchema,
+) {
   if (schema === "actor") {
     return stripUndefined({
       scope: decision.scope,
@@ -58,7 +74,10 @@ function buildDecisionInsertPayload(decision: DecisionLog, schema: DecisionInser
   });
 }
 
-function mapDecisionRows(rows: Array<Record<string, unknown>>, schema: DecisionInsertSchema): DecisionLog[] {
+function mapDecisionRows(
+  rows: Array<Record<string, unknown>>,
+  schema: DecisionInsertSchema,
+): DecisionLog[] {
   return rows.map((row) => {
     const scope = (row?.scope ?? "ops") as DecisionLog["scope"];
 
@@ -141,7 +160,11 @@ function shouldFallbackToLegacy(error: unknown): boolean {
     return true;
   }
 
-  if (lower.includes("table") && lower.includes("not") && lower.includes("found")) {
+  if (
+    lower.includes("table") &&
+    lower.includes("not") &&
+    lower.includes("found")
+  ) {
     return true;
   }
 
@@ -155,12 +178,16 @@ function isRetryable(error: unknown): boolean {
 
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
-    return RETRYABLE_MESSAGE_TOKENS.some((token) => message.includes(token.toLowerCase()));
+    return RETRYABLE_MESSAGE_TOKENS.some((token) =>
+      message.includes(token.toLowerCase()),
+    );
   }
 
   if (typeof error === "string") {
     const lower = error.toLowerCase();
-    return RETRYABLE_MESSAGE_TOKENS.some((token) => lower.includes(token.toLowerCase()));
+    return RETRYABLE_MESSAGE_TOKENS.some((token) =>
+      lower.includes(token.toLowerCase()),
+    );
   }
 
   if (typeof error === "object") {
@@ -176,7 +203,9 @@ function isRetryable(error: unknown): boolean {
 
     if (typeof message === "string") {
       const lower = message.toLowerCase();
-      return RETRYABLE_MESSAGE_TOKENS.some((token) => lower.includes(token.toLowerCase()));
+      return RETRYABLE_MESSAGE_TOKENS.some((token) =>
+        lower.includes(token.toLowerCase()),
+      );
     }
   }
 
@@ -191,7 +220,9 @@ async function wait(ms: number): Promise<void> {
 
 let sleepImpl: (ms: number) => Promise<void> = wait;
 
-async function executeWithRetry<T>(operation: () => Promise<T | SupabaseResponse>): Promise<T | SupabaseResponse> {
+async function executeWithRetry<T>(
+  operation: () => Promise<T | SupabaseResponse>,
+): Promise<T | SupabaseResponse> {
   let attempt = 0;
   let delay = INITIAL_DELAY_MS;
   let lastError: unknown;
@@ -245,7 +276,9 @@ export function supabaseMemory(url: string, key: string): Memory {
     async putDecision(decision: DecisionLog) {
       try {
         await executeWithRetry(async () => {
-          return await sb.from(DECISION_TABLE_PRIMARY).insert(buildDecisionInsertPayload(decision, "actor"));
+          return await sb
+            .from(DECISION_TABLE_PRIMARY)
+            .insert(buildDecisionInsertPayload(decision, "actor"));
         });
       } catch (error) {
         if (!shouldFallbackToLegacy(error)) {
@@ -253,7 +286,9 @@ export function supabaseMemory(url: string, key: string): Memory {
         }
 
         await executeWithRetry(async () => {
-          return await sb.from(DECISION_TABLE_LEGACY).insert(buildDecisionInsertPayload(decision, "legacy"));
+          return await sb
+            .from(DECISION_TABLE_LEGACY)
+            .insert(buildDecisionInsertPayload(decision, "legacy"));
         });
       }
     },
@@ -263,7 +298,9 @@ export function supabaseMemory(url: string, key: string): Memory {
         const result = await executeWithRetry(async () => {
           let query = sb
             .from(DECISION_TABLE_PRIMARY)
-            .select("id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt");
+            .select(
+              "id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt",
+            );
 
           if (scope) {
             query = query.eq("scope", scope);
@@ -272,7 +309,9 @@ export function supabaseMemory(url: string, key: string): Memory {
           return await query.order("createdAt", { ascending: false });
         });
 
-        const { data, error } = result as SupabaseResponse<Array<Record<string, unknown>>>;
+        const { data, error } = result as SupabaseResponse<
+          Array<Record<string, unknown>>
+        >;
 
         if (error) {
           throw error;
@@ -294,10 +333,8 @@ export function supabaseMemory(url: string, key: string): Memory {
         return await legacyQuery.order("created_at", { ascending: false });
       });
 
-      const {
-        data: legacyData,
-        error: legacyError,
-      } = legacyResult as SupabaseResponse<Array<Record<string, unknown>>>;
+      const { data: legacyData, error: legacyError } =
+        legacyResult as SupabaseResponse<Array<Record<string, unknown>>>;
 
       if (legacyError) {
         throw legacyError;
@@ -331,7 +368,9 @@ export function supabaseMemory(url: string, key: string): Memory {
         return await query.order("created_at", { ascending: false });
       });
 
-      const { data, error } = result as SupabaseResponse<Array<Record<string, unknown>>>;
+      const { data, error } = result as SupabaseResponse<
+        Array<Record<string, unknown>>
+      >;
 
       if (error) {
         throw error;

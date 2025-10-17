@@ -6,12 +6,15 @@ last_reviewed: 2025-10-05
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Nightly Metrics Rollup — Operator Control Center
 
 ## Purpose
+
 Automate aggregation of operator activation and Chatwoot SLA response KPIs so product, ops, and leadership teams have a single fact stream to reference during standups and release reviews.
 
 ## Job Overview
+
 - **Entry point:** `npm run ops:nightly-metrics` (executes `scripts/ops/run-nightly-metrics.ts`).
 - **Schedule:** Nightly at 02:00 UTC via cron (to be wired into deployment environment).
 - **Source tables:** `dashboardFact` (`dashboard.session.opened`, `chatwoot.escalations`), `decisionLog` (scope `ops`).
@@ -22,12 +25,14 @@ Automate aggregation of operator activation and Chatwoot SLA response KPIs so pr
 - **Automation:** Scheduled via GitHub Actions workflow `.github/workflows/nightly-metrics.yml` (02:00 UTC) with manual trigger fallback.
 
 ## Data Contract
-| Fact Type | Scope | Value Shape | Metadata |
-| --- | --- | --- | --- |
-| `metrics.activation.rolling7d` | `ops` | `{ windowStart, windowEnd, totalActiveShops, activatedShops, activationRate }` | `{ generatedAt, notes }` |
-| `metrics.sla_resolution.rolling7d` | `ops` | `{ windowStart, windowEnd, sampleSize, medianMinutes, p90Minutes }` | `{ generatedAt, sampleSize, notes }` |
+
+| Fact Type                          | Scope | Value Shape                                                                    | Metadata                             |
+| ---------------------------------- | ----- | ------------------------------------------------------------------------------ | ------------------------------------ |
+| `metrics.activation.rolling7d`     | `ops` | `{ windowStart, windowEnd, totalActiveShops, activatedShops, activationRate }` | `{ generatedAt, notes }`             |
+| `metrics.sla_resolution.rolling7d` | `ops` | `{ windowStart, windowEnd, sampleSize, medianMinutes, p90Minutes }`            | `{ generatedAt, sampleSize, notes }` |
 
 ## Operational Playbook
+
 1. Ensure `dashboard.session.opened` and `chatwoot.escalations` facts are landing daily (check `dashboardFact` table).
 2. Run `npm run ops:backfill-chatwoot` once to normalize historical breach metadata.
 3. Configure repository secret `DATABASE_URL` before enabling the GitHub Actions schedule (workflow fails fast if unset).

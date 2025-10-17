@@ -25,6 +25,7 @@
 ### Ebbinghaus Forgetting Curve
 
 **Research Finding:** Without reinforcement, people forget:
+
 - **20 minutes:** 42% forgotten
 - **1 day:** 67% forgotten
 - **7 days:** 75% forgotten
@@ -42,6 +43,7 @@
 **Principle:** Review information just before you're about to forget it
 
 **Timeline:**
+
 ```
 Initial Learning (Day 0)
     ↓
@@ -93,12 +95,14 @@ Failed recall → restart cycle
 ### Agent SDK Approval Queue Training Schedule
 
 **Day 0: Initial Training**
+
 - Complete comprehensive training module
 - Watch video modules
 - Read Quick Start Guide
 - Take module quiz
 
 **Day 1: First Reinforcement (24 hours later)**
+
 - **Format:** 5-minute quiz
 - **Content:** 10 questions from Day 0 training
 - **Focus:** 5-Question Framework, confidence scores
@@ -107,6 +111,7 @@ Failed recall → restart cycle
 - **Result:** Refresh before forgetting begins
 
 **Day 3: Second Reinforcement (72 hours after initial)**
+
 - **Format:** Scenario review
 - **Content:** 3 approval scenarios from training
 - **Focus:** Decision-making application
@@ -115,6 +120,7 @@ Failed recall → restart cycle
 - **Result:** Strengthen decision patterns
 
 **Day 7: Third Reinforcement (1 week after initial)**
+
 - **Format:** Mixed quiz + scenario
 - **Content:** 5 questions + 2 scenarios
 - **Focus:** Escalation procedures, policy application
@@ -123,6 +129,7 @@ Failed recall → restart cycle
 - **Result:** Move to medium-term memory
 
 **Day 14: Fourth Reinforcement (2 weeks after initial)**
+
 - **Format:** Comprehensive mini-assessment
 - **Content:** 15 questions covering all topics
 - **Focus:** Full framework application
@@ -131,6 +138,7 @@ Failed recall → restart cycle
 - **Result:** Validate retention, identify gaps
 
 **Day 30: Fifth Reinforcement (1 month, certification)**
+
 - **Format:** Full certification exam
 - **Content:** 30 questions + practical assessment
 - **Focus:** Comprehensive competency
@@ -139,6 +147,7 @@ Failed recall → restart cycle
 - **Result:** Certification or extended training
 
 **Day 90, 180, 270 (Quarterly): Maintenance Reviews**
+
 - **Format:** 10-minute refresher
 - **Content:** Core concepts + new updates
 - **Focus:** Prevent skill decay
@@ -151,6 +160,7 @@ Failed recall → restart cycle
 ### Customized Schedules by Content Type
 
 **High-Priority Content (Critical for Safety/Accuracy):**
+
 ```
 Examples: Escalation procedures, red flags, policy authority
 
@@ -159,6 +169,7 @@ Day 0 → Day 1 → Day 3 → Day 7 → Day 14 → Day 30 → Monthly
 ```
 
 **Medium-Priority Content (Important for Performance):**
+
 ```
 Examples: Efficiency techniques, quality skills
 
@@ -167,6 +178,7 @@ Day 0 → Day 3 → Day 7 → Day 21 → Day 60 → Quarterly
 ```
 
 **Low-Priority Content (Nice-to-Know):**
+
 ```
 Examples: Advanced techniques, system optimization
 
@@ -201,11 +213,13 @@ Example: Day 3 → Day 7 becomes Day 3 → Day 5
 ### Topic-Based Difficulty Adjustment
 
 **Track Per Topic:**
+
 - Operator success rate on topic
 - Identify challenging vs easy topics
 - Adjust review frequency accordingly
 
 **Example:**
+
 ```
 Topic: "Escalation Procedures"
 - Sarah: 95% success → Review every 14 days
@@ -222,24 +236,28 @@ Result: Each operator masters at their own pace
 ### Reinforcement Methods (Variety Prevents Boredom)
 
 **Method 1: Quick Quiz (70% of reviews)**
+
 - 5-10 multiple choice questions
 - Instant feedback
 - Retake if needed
 - Time: 5 minutes
 
 **Method 2: Scenario Decision (20% of reviews)**
+
 - Real-world scenario
 - Make a decision
 - See expert analysis
 - Time: 5-7 minutes
 
 **Method 3: Peer Discussion (5% of reviews)**
+
 - Discuss topic with peer
 - Share approaches
 - Learn from each other
 - Time: 10-15 minutes
 
 **Method 4: Practical Application (5% of reviews)**
+
 - Use the skill in real work
 - Submit example
 - Get feedback
@@ -250,6 +268,7 @@ Result: Each operator masters at their own pace
 ### Review Content Examples
 
 **Day 1 Review: 5-Question Framework**
+
 ```
 QUICK QUIZ (5 minutes):
 
@@ -279,11 +298,12 @@ RESULT:
 ---
 
 **Day 3 Review: Escalation Decision-Making**
+
 ```
 SCENARIO DECISION (7 minutes):
 
 Scenario:
-Customer ordered item 45 days ago, requests return exception. Item unused with tags. 
+Customer ordered item 45 days ago, requests return exception. Item unused with tags.
 Customer has 10 previous orders totaling $1,200. Polite tone.
 
 AI Draft (82% confidence):
@@ -299,7 +319,7 @@ D) Escalate for manager policy exception decision
 
 EXPERT ANALYSIS:
 Correct: D) Escalate
-Why: Policy exceptions >30 days require manager approval. Your job is to 
+Why: Policy exceptions >30 days require manager approval. Your job is to
 recommend (approval likely given customer value), but manager decides.
 
 What you'd include in escalation:
@@ -339,6 +359,7 @@ Next Review: Day 7
    - Becomes automatic/instinctive
 
 **Example: "Adding Empathy" Skill**
+
 ```
 Day 0: Complete Module S-12 "Empathy in 3 Seconds" (5 min)
 Day 1: Quiz - 5 questions about empathy techniques (3 min)
@@ -394,6 +415,7 @@ Result: Empathy becomes natural part of your editing approach
 **Option 1: Manual Process (MVP)**
 
 **Tools:**
+
 - Spreadsheet for tracking
 - Calendar reminders
 - Manual email sending
@@ -409,12 +431,14 @@ Result: Empathy becomes natural part of your editing approach
 **Option 2: Semi-Automated (Recommended)**
 
 **Tools:**
+
 - Zapier or similar automation
 - Google Forms for quizzes
 - Slack bot for reminders
 - Spreadsheet for tracking + calculations
 
 **Workflow:**
+
 ```
 1. Operator completes training → Add to spreadsheet
 2. Zapier calculates review dates
@@ -435,6 +459,7 @@ Result: Empathy becomes natural part of your editing approach
 **Option 3: Fully Automated LMS (Future)**
 
 **Tools:**
+
 - Learning Management System (Docebo, TalentLMS, etc.)
 - Built-in spaced repetition algorithms
 - Complete analytics
@@ -450,6 +475,7 @@ Result: Empathy becomes natural part of your editing approach
 ### MVP Implementation (Start Immediately)
 
 **Week 1: Foundation Setup**
+
 ```
 1. Create Review Schedule Spreadsheet
    Columns: Operator Name | Training Date | Topic | Review1 | Review2 | Review3 | etc.
@@ -471,12 +497,14 @@ Result: Empathy becomes natural part of your editing approach
 ```
 
 **Week 2: Pilot Test**
+
 - Test with 5 operators
 - Send Day 1 reviews
 - Collect feedback
 - Refine process
 
 **Week 3: Rollout**
+
 - All operators enrolled
 - Automated calendar system active
 - Tracking active
@@ -488,11 +516,13 @@ Result: Empathy becomes natural part of your editing approach
 ### 30-Day Retention Plan
 
 **Day 0: Comprehensive Training**
+
 - Agent SDK Operator Training Module (complete read)
 - 4 Loom video modules (watch all)
 - Quick Start Guide (read and bookmark)
 
 **Day 1: Quick Recall Check**
+
 ```
 EMAIL: "Day 1 Review - Agent SDK Approval Queue"
 
@@ -504,7 +534,7 @@ Answer these 10 questions:
 [Link to Google Form]
 
 Why we're doing this:
-Research shows we forget 67% within 24 hours without review. 
+Research shows we forget 67% within 24 hours without review.
 This quick check strengthens your memory before forgetting kicks in.
 
 Takes 5 minutes. You've got this!
@@ -514,6 +544,7 @@ Enablement Team
 ```
 
 **Day 3: Application Practice**
+
 ```
 EMAIL: "Day 3 Review - Practice Scenarios"
 
@@ -533,6 +564,7 @@ Takes 7 minutes. Strengthens your decision-making!
 ```
 
 **Day 7: Comprehensive Check**
+
 ```
 EMAIL: "Day 7 Review - Week 1 Reinforcement"
 
@@ -555,6 +587,7 @@ Great work this week!
 ```
 
 **Day 14: Skill Validation**
+
 ```
 EMAIL: "Day 14 Review - Mid-Point Assessment"
 
@@ -579,10 +612,12 @@ You're doing great!
 ```
 
 **Day 30: Certification**
+
 - Full certification exam (covered in Task 8)
 - Validates 30 days of spaced repetition worked
 
 **Day 90, 180, 270: Quarterly Refreshers**
+
 - 10-minute review of core concepts
 - New content integrated
 - Skill maintenance
@@ -621,12 +656,14 @@ Return: 90%+ retention vs 21% without reviews
 **Critical Topics (More Frequent Reviews):**
 
 **Escalation Procedures:**
+
 ```
 Day 0 → Day 1 → Day 2 → Day 4 → Day 7 → Day 14 → Day 30
 (6 reviews in 30 days - critical safety topic)
 ```
 
 **5-Question Framework:**
+
 ```
 Day 0 → Day 1 → Day 3 → Day 7 → Day 14 → Day 30
 (5 reviews in 30 days - foundational skill)
@@ -635,6 +672,7 @@ Day 0 → Day 1 → Day 3 → Day 7 → Day 14 → Day 30
 **Standard Topics (Normal Schedule):**
 
 **Confidence Scores, KB Verification:**
+
 ```
 Day 0 → Day 1 → Day 3 → Day 7 → Day 30
 (4 reviews in 30 days - important but less critical)
@@ -643,6 +681,7 @@ Day 0 → Day 1 → Day 3 → Day 7 → Day 30
 **Advanced Topics (Lighter Schedule):**
 
 **Expert Techniques, Optimization:**
+
 ```
 Day 0 → Day 7 → Day 30 → Day 90
 (3 reviews only - for experienced operators)
@@ -657,6 +696,7 @@ Day 0 → Day 7 → Day 30 → Day 90
 **Principle:** Don't just repeat - VARY the retrieval practice
 
 **Day 1 Review:**
+
 ```
 Format: Direct recall
 Question: "What are the 5 questions in the decision framework?"
@@ -667,6 +707,7 @@ Purpose: Basic recall, prevent initial forgetting
 ```
 
 **Day 3 Review:**
+
 ```
 Format: Application
 Scenario: "Customer frustrated about delay. AI draft lacks empathy. Which framework question failed?"
@@ -677,6 +718,7 @@ Purpose: Apply knowledge to scenarios
 ```
 
 **Day 7 Review:**
+
 ```
 Format: Analysis
 Scenario: [Complex approval with multiple issues]
@@ -688,6 +730,7 @@ Purpose: Deep processing, strengthen retention
 ```
 
 **Day 14 Review:**
+
 ```
 Format: Real-world application
 Task: "Submit 3 examples from your real work this week where you applied the 5-Question Framework."
@@ -704,11 +747,13 @@ Purpose: Connect theory to practice
 **Don't Review Topics in Blocks:**
 
 **Bad:**
+
 - Day 1: All escalation questions
 - Day 3: All framework questions
 - Day 7: All policy questions
 
 **Good (Interleaved):**
+
 - Day 1: Mix of escalation, framework, policy
 - Day 3: Different mix of same topics
 - Day 7: Another mix
@@ -716,6 +761,7 @@ Purpose: Connect theory to practice
 **Why:** Forces brain to discriminate between topics, strengthens learning
 
 **Example Day 1 Quiz (Interleaved):**
+
 ```
 Q1: Framework question
 Q2: Escalation question
@@ -740,6 +786,7 @@ Result: Brain works harder, remembers better
 **Slack Bot Features:**
 
 **1. Automatic Review Reminders**
+
 ```
 SlackBot: "Hi [Name]! Time for your Day 3 review - 7 minutes 🎯"
 
@@ -749,6 +796,7 @@ SlackBot: "Complete by end of shift for optimal retention!"
 ```
 
 **2. Quick Quizzes in Slack**
+
 ```
 SlackBot: "Question 1/10: What are the 5 questions..."
 
@@ -762,6 +810,7 @@ SlackBot: "You got 9/10! Excellent! 🎉 Next review: Oct 18"
 ```
 
 **3. Progress Tracking**
+
 ```
 SlackBot: "/learning-progress"
 
@@ -776,6 +825,7 @@ Streak: 7 days consecutive reviews 🔥
 ```
 
 **4. Gamification Elements**
+
 ```
 SlackBot: "🔥 7-day review streak! Keep it up!"
 SlackBot: "🏆 Achievement Unlocked: Framework Master"
@@ -789,10 +839,10 @@ SlackBot: "📈 You're in the top 20% for retention this month!"
 ```python
 def calculate_next_review(operator, topic, score):
     """Calculate optimal next review date based on performance"""
-    
+
     # Get current interval for this topic and review number
     current_interval = get_interval(topic, review_number)
-    
+
     # Adjust based on score
     if score >= 90:  # Aced it
         next_interval = current_interval * 1.5  # Extend 50%
@@ -800,18 +850,18 @@ def calculate_next_review(operator, topic, score):
         next_interval = current_interval  # Keep same
     else:  # Struggled
         next_interval = current_interval * 0.5  # Shorten 50%
-    
+
     # Calculate next review date
     next_review_date = last_review_date + next_interval
-    
+
     # Save to operator profile
     save_next_review(operator, topic, next_review_date, next_interval)
-    
+
     return next_review_date
 
 def get_interval(topic, review_number):
     """Standard intervals by priority"""
-    
+
     if topic.priority == "critical":
         intervals = [1, 2, 4, 7, 14, 30]  # days
     elif topic.priority == "high":
@@ -820,7 +870,7 @@ def get_interval(topic, review_number):
         intervals = [3, 7, 21, 60]
     else:  # low priority
         intervals = [7, 30, 90]
-    
+
     return intervals[review_number]
 ```
 
@@ -831,18 +881,21 @@ def get_interval(topic, review_number):
 ### Track These Metrics
 
 **Retention Metrics:**
+
 - % retained at each review point (Day 1, 3, 7, 14, 30)
 - Topic-specific retention rates
 - Operator-specific retention patterns
 - Comparison: Spaced repetition vs no repetition cohorts
 
 **Engagement Metrics:**
+
 - Review completion rates (target: 90%+)
 - Average time to complete reviews
 - Operator satisfaction with reviews
 - Perceived helpfulness ratings
 
 **Performance Correlation:**
+
 - Do operators with better retention → better performance metrics?
 - Which topics correlate most with performance?
 - ROI of time invested in reviews
@@ -860,6 +913,7 @@ def get_interval(topic, review_number):
 ✅ **Satisfaction:** 4.5+/5.0 rating on review system
 
 **Compare to Baseline:**
+
 - Without spaced repetition: 21% retention at Day 30
 - With spaced repetition: 90%+ retention at Day 30
 - **Improvement:** 4.3× better retention
@@ -869,18 +923,21 @@ def get_interval(topic, review_number):
 ### Optimization Process
 
 **Monthly:**
+
 - Review completion rates by topic
 - Identify topics with low retention (need more/different reviews)
 - Adjust intervals based on data
 - Update question pool based on operator feedback
 
 **Quarterly:**
+
 - Comprehensive retention analysis
 - A/B test different review strategies
 - Optimize timing intervals
 - Refine content based on what works
 
 **Annually:**
+
 - Full system assessment
 - Compare retention year-over-year
 - Benchmark against industry standards
@@ -891,6 +948,7 @@ def get_interval(topic, review_number):
 ## Implementation Roadmap
 
 ### Phase 1: Manual MVP (Weeks 1-4)
+
 - [ ] Create review content library (50 questions, 20 scenarios)
 - [ ] Set up tracking spreadsheet
 - [ ] Create email templates
@@ -902,6 +960,7 @@ def get_interval(topic, review_number):
 ---
 
 ### Phase 2: Slack Bot Automation (Weeks 5-8)
+
 - [ ] Build or configure Slack bot
 - [ ] Integrate with tracking system
 - [ ] Test automated reminders
@@ -913,6 +972,7 @@ def get_interval(topic, review_number):
 ---
 
 ### Phase 3: Advanced Personalization (Months 3-4)
+
 - [ ] Implement difficulty adjustment algorithm
 - [ ] Topic-specific interval optimization
 - [ ] Operator-specific schedules
@@ -923,6 +983,7 @@ def get_interval(topic, review_number):
 ---
 
 ### Phase 4: LMS Integration (Months 5-6)
+
 - [ ] Evaluate and select LMS platform
 - [ ] Migrate content and tracking
 - [ ] Train team on new system
@@ -937,15 +998,18 @@ def get_interval(topic, review_number):
 ### For Operators
 
 ✅ **Complete Reviews Promptly**
+
 - Do them on scheduled day (timing is science-based)
 - 5 minutes now saves hours of re-learning later
 
 ✅ **Engage Deeply**
+
 - Don't just guess - think through answers
 - Review explanations even when correct
 - Apply immediately in your work
 
 ✅ **Request Help if Struggling**
+
 - Low scores = need support (not failure!)
 - Additional coaching available
 - Adjust schedule if needed
@@ -955,16 +1019,19 @@ def get_interval(topic, review_number):
 ### For Enablement Team
 
 ✅ **Monitor Engagement**
+
 - Track who's completing vs skipping reviews
 - Reach out proactively if operator falls behind
 - Make it easy and quick (5 minutes only)
 
 ✅ **Iterate Content**
+
 - Which questions are too easy/hard?
 - Which topics need more or fewer reviews?
 - Update based on data
 
 ✅ **Celebrate Progress**
+
 - Acknowledge completion streaks
 - Recognize high retention
 - Gamify where appropriate
@@ -974,6 +1041,7 @@ def get_interval(topic, review_number):
 ## Summary
 
 **Spaced Repetition System:**
+
 - ✅ **Science-backed:** 4.3× better retention (90% vs 21%)
 - ✅ **Efficient:** <60 minutes total in first 30 days
 - ✅ **Personalized:** Adjusts to individual performance
@@ -981,11 +1049,13 @@ def get_interval(topic, review_number):
 - ✅ **Measured:** Track retention and optimize
 
 **Implementation:**
+
 - **MVP:** Manual spreadsheet + email (start immediately)
 - **v2:** Slack bot automation (Week 5-8)
 - **v3:** Full LMS integration (Months 5-6)
 
 **ROI:**
+
 - Investment: 60 minutes operator time over 30 days
 - Return: 90% retention vs 21% = 4.3× better
 - Impact: Less re-training, better performance, higher confidence
@@ -998,9 +1068,9 @@ def get_interval(topic, review_number):
 **Next Review:** After first cohort completes 30-day cycle
 
 **Related Documents:**
+
 - [Microlearning Content Library](./microlearning_content_library.md) - Content for reviews
 - [Training Effectiveness Measurement](./training_effectiveness_measurement_system.md) - Assessment integration
 - [Operator Onboarding Program](./operator_onboarding_program.md) - Where spaced repetition applies
 
 ✅ **SPACED REPETITION LEARNING SYSTEM COMPLETE - MAXIMIZE RETENTION, MINIMIZE FORGETTING**
-

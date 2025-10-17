@@ -11,7 +11,7 @@ describe("Logger", () => {
     vi.resetAllMocks();
     // Mock successful edge function response
     vi.mocked(fetch).mockResolvedValue(
-      new Response(JSON.stringify({ ok: true }), { status: 200 })
+      new Response(JSON.stringify({ ok: true }), { status: 200 }),
     );
   });
 
@@ -27,7 +27,7 @@ describe("Logger", () => {
       logger.info(message, metadata);
 
       // Wait for async call to complete
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(fetch).toHaveBeenCalledWith(
         expect.stringContaining("/functions/v1/occ-log"),
@@ -37,7 +37,7 @@ describe("Logger", () => {
             "Content-Type": "application/json",
           }),
           body: expect.stringContaining(message),
-        })
+        }),
       );
     });
 
@@ -47,9 +47,11 @@ describe("Logger", () => {
 
       logger.error(message, metadata);
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const callBody = JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string);
+      const callBody = JSON.parse(
+        vi.mocked(fetch).mock.calls[0][1]?.body as string,
+      );
       expect(callBody.level).toBe("ERROR");
       expect(callBody.message).toBe(message);
       expect(callBody.metadata.component).toBe("test");
@@ -67,9 +69,11 @@ describe("Logger", () => {
 
       logger.logServiceError(serviceError);
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const callBody = JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string);
+      const callBody = JSON.parse(
+        vi.mocked(fetch).mock.calls[0][1]?.body as string,
+      );
       expect(callBody.level).toBe("ERROR");
       expect(callBody.message).toContain("ServiceError in test.service");
       expect(callBody.metadata.scope).toBe("test.service");
@@ -90,9 +94,11 @@ describe("Logger", () => {
 
       logger.logServiceError(serviceError, undefined, additionalMetadata);
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const callBody = JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string);
+      const callBody = JSON.parse(
+        vi.mocked(fetch).mock.calls[0][1]?.body as string,
+      );
       expect(callBody.metadata.requestPath).toBe("/api/test");
       expect(callBody.metadata.userId).toBe("user123");
     });
@@ -110,9 +116,11 @@ describe("Logger", () => {
       const requestLogger = withRequestLogger(mockRequest);
       requestLogger.info("Request processed", { status: "success" });
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const callBody = JSON.parse(vi.mocked(fetch).mock.calls[0][1]?.body as string);
+      const callBody = JSON.parse(
+        vi.mocked(fetch).mock.calls[0][1]?.body as string,
+      );
       expect(callBody.requestId).toBe("req-123");
       expect(callBody.userAgent).toBe("test-agent/1.0");
       expect(callBody.metadata.status).toBe("success");
@@ -123,21 +131,23 @@ describe("Logger", () => {
     it("should fall back to console logging when edge function fails", async () => {
       // Mock fetch to fail
       vi.mocked(fetch).mockRejectedValue(new Error("Network error"));
-      
+
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
 
       logger.info("Test message", { test: true });
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         "Failed to send log to edge function:",
-        expect.any(Error)
+        expect.any(Error),
       );
       expect(consoleSpy).toHaveBeenCalledWith(
         "[INFO] Test message",
-        expect.objectContaining({ test: true })
+        expect.objectContaining({ test: true }),
       );
 
       consoleSpy.mockRestore();
@@ -149,9 +159,9 @@ describe("Logger", () => {
       // The logger is instantiated once at module load with env vars present
       // Re-importing the module doesn't create a new instance
       // TODO (@engineer): Convert logger to factory pattern if testing unconfigured state is required
-      // For now, the first test in this suite ("should fall back... when edge function fails") 
+      // For now, the first test in this suite ("should fall back... when edge function fails")
       // adequately tests the fallback mechanism
-      
+
       // Create a logger instance with missing config
       const originalEnv = process.env;
       process.env = { ...originalEnv };
@@ -161,14 +171,16 @@ describe("Logger", () => {
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
       // Import logger again to get instance without config
-      const { logger: unconfiguredLogger } = await import("../../app/utils/logger.server");
+      const { logger: unconfiguredLogger } = await import(
+        "../../app/utils/logger.server"
+      );
       unconfiguredLogger.warn("Test warning", { fallback: true });
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(consoleSpy).toHaveBeenCalledWith(
         "[WARN] Test warning",
-        expect.objectContaining({ fallback: true })
+        expect.objectContaining({ fallback: true }),
       );
 
       // Don't call fetch when not configured
@@ -182,22 +194,24 @@ describe("Logger", () => {
   describe("error handling", () => {
     it("should handle HTTP error responses gracefully", async () => {
       vi.mocked(fetch).mockResolvedValue(
-        new Response("Internal Server Error", { status: 500 })
+        new Response("Internal Server Error", { status: 500 }),
       );
 
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
       const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
 
       logger.error("Test error message");
 
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "Logger edge function error: 500 Internal Server Error"
+        "Logger edge function error: 500 Internal Server Error",
       );
       expect(consoleSpy).toHaveBeenCalledWith(
         "[ERROR] Test error message",
-        expect.any(Object)
+        expect.any(Object),
       );
 
       consoleErrorSpy.mockRestore();

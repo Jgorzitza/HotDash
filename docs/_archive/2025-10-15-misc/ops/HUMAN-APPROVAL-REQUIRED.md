@@ -18,6 +18,7 @@ last_reviewed: 2025-10-11
 **100% Human-in-the-Loop for ALL Customer-Facing Actions**
 
 **What This Means**:
+
 - ❌ NO automated customer responses (ever, during training phase)
 - ❌ NO auto-execute for customer inquiries
 - ❌ NO "low-risk auto-approve" for customers
@@ -25,6 +26,7 @@ last_reviewed: 2025-10-11
 - ✅ EVERY response reviewed by CEO before sending
 
 **Why**:
+
 - CEO trains agents to match their voice
 - CEO validates technical accuracy
 - CEO builds trust in agent responses
@@ -41,6 +43,7 @@ last_reviewed: 2025-10-11
 **Step 3**: Response goes to approval queue (pending_approvals table)
 
 **Step 4**: **CEO reviews and decides**:
+
 - ✅ Approve → Send to customer
 - ✅ Edit → Modify response, then send
 - ❌ Reject → Don't send, agent learns from feedback
@@ -76,12 +79,14 @@ last_reviewed: 2025-10-11
 ## 📊 METRICS TO TRACK
 
 **Agent Training Progress**:
+
 - Approval rate (% approved without edits)
 - Edit distance (how much CEO changes responses)
 - Rejection rate (% completely rejected)
 - Time to approval (CEO review time)
 
 **CEO Feedback Capture**:
+
 - Common edit patterns
 - Frequently changed words/phrases
 - Technical corrections made
@@ -94,6 +99,7 @@ last_reviewed: 2025-10-11
 ## 🔧 IMPLEMENTATION REQUIREMENTS
 
 **Agent SDK Service Must**:
+
 1. ✅ Route ALL customer responses through approval queue
 2. ✅ Never auto-send to customers (even "low-risk")
 3. ✅ Capture CEO edits when they modify responses
@@ -101,6 +107,7 @@ last_reviewed: 2025-10-11
 5. ✅ Feed approval patterns back into agent training
 
 **Approval Queue UI Must**:
+
 1. ✅ Show proposed agent response
 2. ✅ Allow CEO to approve/edit/reject
 3. ✅ Capture edits (diff between agent version and CEO version)
@@ -108,6 +115,7 @@ last_reviewed: 2025-10-11
 5. ✅ Show agent's confidence score (if available)
 
 **Training Loop Must**:
+
 1. ✅ Analyze approved vs. rejected responses
 2. ✅ Extract CEO's style patterns
 3. ✅ Update agent prompts with examples
@@ -119,6 +127,7 @@ last_reviewed: 2025-10-11
 ## 🚫 WHAT NOT TO BUILD (Yet)
 
 **DO NOT Implement** (During Training Phase):
+
 - ❌ Auto-approve rules for "simple" questions
 - ❌ Low-risk decision auto-execute
 - ❌ Bulk approve functionality
@@ -131,16 +140,19 @@ last_reviewed: 2025-10-11
 ## 📅 PHASE TIMELINE
 
 **Phase 1 (Now - Week 12)**: 100% CEO Approval Required
+
 - Every customer response reviewed by CEO
 - CEO trains agents through approvals/edits/rejections
 - Agents learn CEO's voice and technical standards
 
 **Phase 2 (Week 12+)**: Selective Auto-Approve (If agents performing well)
+
 - CEO can enable auto-approve for specific scenarios
 - Only after approval rate >80%
 - CEO still reviews audit trail daily
 
 **Phase 3 (6+ months)**: Mostly Automated (If agents trusted)
+
 - CEO reviews sample of responses (not all)
 - Agents handle routine, CEO handles exceptions
 - Continuous monitoring of quality
@@ -152,6 +164,7 @@ last_reviewed: 2025-10-11
 ## ✅ SUCCESS CRITERIA
 
 **Agent is "Trained" When**:
+
 - 80%+ approval rate without edits (CEO trusts agent's judgment)
 - <5% rejection rate (agent rarely makes bad suggestions)
 - CEO's average edit distance <10 words (minor tweaks only)
@@ -168,11 +181,13 @@ last_reviewed: 2025-10-11
 **See**: `agentfeedbackprocess.md` for metrics schema
 
 **Database Tables**:
+
 - `agent_run`: Tracks every agent execution
 - `agent_qc`: Tracks CEO's quality ratings and feedback
 - `v_agent_kpis`: Dashboard metrics
 
 **Approval Workflow**:
+
 - `pending_approvals`: Queue for CEO review
 - CEO approves/edits/rejects
 - Feedback logged in `agent_qc`

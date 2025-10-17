@@ -6,8 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Data — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -41,6 +44,7 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/data.md` without waiting for additional manager confirmation.
 
 ## Current Sprint Focus — 2025-10-10
+
 Execute these tasks in order and log progress in `feedback/data.md`. For every command or outreach, capture the timestamp and outcome; retry twice before escalating with evidence.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
@@ -78,6 +82,7 @@ Execute these tasks in order and log progress in `feedback/data.md`. For every c
    - Evidence: View definitions, sample queries
 
 **Ongoing Requirements**:
+
 - Coordinate with @engineer on schema access patterns
 - Log all schema changes in feedback/data.md
 - Test all migrations locally before proposing for staging
@@ -89,6 +94,7 @@ Execute these tasks in order and log progress in `feedback/data.md`. For every c
 **Execute these while Engineer works on Shopify fixes and LlamaIndex MCP**:
 
 **Task A: Agent Metrics Dashboard Design** - Create monitoring views
+
 - Design database views for agent performance metrics
 - Create view for approval queue depth over time
 - Create view for response accuracy by agent type
@@ -97,6 +103,7 @@ Execute these tasks in order and log progress in `feedback/data.md`. For every c
 - Evidence: View SQL definitions, sample queries
 
 **Task B: Data Retention Automation** - Implement 30-day purge
+
 - Create script for agent data retention (30-day window)
 - Implement automated cleanup for old approval records
 - Create backup procedure before purge
@@ -105,6 +112,7 @@ Execute these tasks in order and log progress in `feedback/data.md`. For every c
 - Evidence: Cleanup script, test results
 
 **Task C: Performance Monitoring Queries** - Optimize database performance
+
 - Create indexes for agent query patterns
 - Analyze slow query logs
 - Document optimization opportunities
@@ -118,6 +126,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task D: Real-time Analytics Pipeline**
+
 - Design real-time analytics for agent performance
 - Create streaming data pipeline specification
 - Plan for live dashboard updates
@@ -125,6 +134,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Real-time pipeline design
 
 **Task E: Data Warehouse Design**
+
 - Design dimensional model for agent analytics
 - Create fact and dimension table specifications
 - Plan for historical data analysis
@@ -132,6 +142,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Data warehouse schema
 
 **Task F: Query Performance Optimization**
+
 - Analyze query execution plans for agent tables
 - Create additional indexes where beneficial
 - Implement query result caching strategy
@@ -139,6 +150,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Performance optimization report
 
 **Task G: Data Quality Framework**
+
 - Create data quality validation rules
 - Design data quality monitoring
 - Implement automated quality checks
@@ -146,6 +158,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Data quality framework
 
 **Task H: Agent Training Data Export**
+
 - Create export utilities for training data
 - Design export formats (CSV, JSON, parquet)
 - Implement privacy-preserving export (PII redaction)
@@ -153,6 +166,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Export utility scripts
 
 **Task I: Database Backup Automation**
+
 - Implement automated backup procedures for agent tables
 - Create backup verification scripts
 - Document recovery procedures
@@ -160,6 +174,7 @@ Execute A, B, C in any order. All independent of Engineer work.
 - Evidence: Backup automation, test results
 
 **Task J: Analytics API Design**
+
 - Design REST API for agent metrics queries
 - Document API endpoints and responses
 - Create API security specifications
@@ -173,6 +188,7 @@ Execute D-J in any order - all enhance data infrastructure.
 ### 🚀 FOURTH MASSIVE EXPANSION (Another 25 Tasks)
 
 **Task K-P: Advanced Data Engineering** (6 tasks)
+
 - K: Design data streaming platform (Kafka/Kinesis style)
 - L: Create data catalog with lineage tracking
 - M: Implement data versioning and time travel
@@ -181,6 +197,7 @@ Execute D-J in any order - all enhance data infrastructure.
 - P: Implement data governance framework
 
 **Task Q-V: Machine Learning Infrastructure** (6 tasks)
+
 - Q: Design feature engineering pipeline
 - R: Create model training and experimentation platform
 - S: Implement model serving and inference infrastructure
@@ -189,6 +206,7 @@ Execute D-J in any order - all enhance data infrastructure.
 - V: Implement automated model retraining pipeline
 
 **Task W-AB: Analytics & BI** (6 tasks)
+
 - W: Design self-service analytics platform for operators
 - X: Create embedded analytics SDK
 - Y: Implement real-time analytics engine
@@ -197,6 +215,7 @@ Execute D-J in any order - all enhance data infrastructure.
 - AB: Implement data storytelling and narrative generation
 
 **Task AC-AG: Data Operations** (7 tasks)
+
 - AC: Design data pipeline orchestration (Airflow-style)
 - AD: Create data observability platform
 - AE: Implement data SLA monitoring
@@ -210,6 +229,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 ## 📋 NEXT WAVE - DEEP DATA INFRASTRUCTURE (Tasks AG-1 to AG-10)
 
 **Task AG-1**: Hot Rodan Specific Data Models
+
 - Create data models for hot rod product analytics
 - Automotive parts categorization schema
 - Hot rod customer segmentation
@@ -217,6 +237,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-2**: Real-Time Dashboard Queries
+
 - Optimize queries for live dashboard data
 - Sub-second query performance for tiles
 - Caching strategy for frequently accessed data
@@ -224,6 +245,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-3**: Historical Trend Analysis
+
 - Design schema for tracking trends over time
 - Sales patterns, inventory velocity, SEO performance
 - Seasonality detection (racing season vs. off-season)
@@ -231,6 +253,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-4**: Data Quality Monitoring
+
 - Create data quality checks for Shopify/Chatwoot/GA data
 - Alert on data anomalies
 - Automated data validation
@@ -238,6 +261,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-5**: Operator Performance Analytics
+
 - Track operator efficiency metrics
 - Approval speed, decision quality
 - Operator productivity dashboard
@@ -245,6 +269,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-6**: Hot Rodan Growth Metrics Dashboard
+
 - Revenue tracking toward $10MM goal
 - Monthly/quarterly progress visualizations
 - Leading indicators dashboard
@@ -252,6 +277,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-7**: Agent Training Data Pipeline
+
 - Design pipeline for CEO feedback → agent training
 - Capture approved vs. edited vs. rejected responses
 - Create training dataset exports
@@ -259,6 +285,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-8**: Data Backup and Recovery
+
 - Automated backup strategy for critical data
 - Point-in-time recovery procedures
 - Data retention policies
@@ -266,6 +293,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-9**: API Performance Monitoring
+
 - Track Shopify/Chatwoot/GA API latency
 - Alert on slow queries or failures
 - Historical performance trends
@@ -273,6 +301,7 @@ Execute K-AG in any order. Total: 49 tasks, ~25-30 hours work.
 - Timeline: 2-3 hours
 
 **Task AG-10**: Data Documentation
+
 - Document all tables, views, schemas
 - Create data dictionary
 - Usage examples for common queries
@@ -286,6 +315,7 @@ Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task AH-AL: Data Quality** (5 tasks)
+
 - AH: Design data validation rules engine
 - AI: Create data cleansing automation
 - AJ: Implement data consistency monitoring
@@ -293,6 +323,7 @@ Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
 - AL: Create data quality dashboards
 
 **Task AM-AQ: Advanced Analytics** (5 tasks)
+
 - AM: Design cohort analysis framework
 - AN: Create funnel analysis platform
 - AO: Implement retention analysis tools
@@ -300,6 +331,7 @@ Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
 - AQ: Create experimentation analysis framework
 
 **Task AR-AV: Data Platform** (5 tasks)
+
 - AR: Design data mesh architecture
 - AS: Create data products catalog
 - AT: Implement data democratization platform
@@ -307,6 +339,7 @@ Execute AG-1 to AG-10. Total: ~70-80 hours data infrastructure work.
 - AV: Create data literacy program
 
 **Task AW-AZ: Data Science Infrastructure** (5 tasks)
+
 - AW: Design notebook environment (Jupyter-style)
 - AX: Create model registry and versioning
 - AY: Implement feature store
@@ -320,6 +353,7 @@ Execute AH-BA in any order. Total: 69 tasks, ~35-40 hours work.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
 
 **Task K-O: Advanced Analytics** (5 tasks)
+
 - K: Design predictive analytics for agent performance forecasting
 - L: Create customer churn risk scoring based on support interactions
 - M: Implement anomaly detection for conversation patterns
@@ -327,6 +361,7 @@ Execute AH-BA in any order. Total: 69 tasks, ~35-40 hours work.
 - O: Create attribution modeling for agent-assisted conversions
 
 **Task P-T: Data Engineering** (5 tasks)
+
 - P: Design data lakehouse architecture for long-term storage
 - Q: Create data cataloging and discovery system
 - R: Implement data lineage tracking
@@ -334,6 +369,7 @@ Execute AH-BA in any order. Total: 69 tasks, ~35-40 hours work.
 - T: Create automated data documentation generation
 
 **Task U-Y: ML/AI Data Infrastructure** (5 tasks)
+
 - U: Design feature store for ML models
 - V: Create training dataset versioning system
 - W: Implement A/B testing data infrastructure
@@ -343,6 +379,7 @@ Execute AH-BA in any order. Total: 69 tasks, ~35-40 hours work.
 Execute K-Y in any order. Total: 24 tasks, ~15-18 hours of data work.
 
 ## Previous Task List — 2025-10-11
+
 - Supabase only
   - Ensure read-only roles and RLS in place; provide gold-reply webhook endpoint + secret path to Chatwoot/Support.
 - Shopify contracts

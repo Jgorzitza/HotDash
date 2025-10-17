@@ -6,17 +6,18 @@ last_reviewed: 2025-10-05
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Responsive Breakpoints — Operator Control Center
 
 ## Breakpoint System
 
 ### Primary Breakpoints
 
-| Breakpoint | Min Width | Grid Columns | Tile Min Width | Use Case |
-|------------|-----------|--------------|----------------|----------|
+| Breakpoint | Min Width | Grid Columns | Tile Min Width | Use Case                     |
+| ---------- | --------- | ------------ | -------------- | ---------------------------- |
 | Desktop    | 1280px    | 3            | 320px          | Primary operator workstation |
 | Tablet     | 768px     | 2            | 320px          | Secondary devices, on-the-go |
-| Mobile     | 0px       | 1            | 100%           | Emergency access only |
+| Mobile     | 0px       | 1            | 100%           | Emergency access only        |
 
 ### Implementation
 
@@ -49,6 +50,7 @@ expires: 2025-10-18
 ### Current Implementation (Auto-fit)
 
 The existing dashboard uses:
+
 ```css
 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 ```
@@ -77,23 +79,24 @@ For Shopify Admin embedded context, consider container queries to adapt to app f
 
 ### Tile Content Adaptation
 
-| Screen Size | Tile Height | Action Buttons | Metric Display |
-|-------------|-------------|----------------|----------------|
-| Desktop     | Auto (min 280px) | Horizontal layout | Full |
-| Tablet      | Auto (min 280px) | Horizontal layout | Full |
-| Mobile      | Auto (min 200px) | Stack vertical | Abbreviated |
+| Screen Size | Tile Height      | Action Buttons    | Metric Display |
+| ----------- | ---------------- | ----------------- | -------------- |
+| Desktop     | Auto (min 280px) | Horizontal layout | Full           |
+| Tablet      | Auto (min 280px) | Horizontal layout | Full           |
+| Mobile      | Auto (min 200px) | Stack vertical    | Abbreviated    |
 
 ### Modal Responsive Behavior
 
-| Screen Size | Modal Width | Modal Position | Actions Layout |
-|-------------|-------------|----------------|----------------|
-| Desktop     | 600px       | Center screen  | Horizontal |
-| Tablet      | 90vw (max 600px) | Center screen | Horizontal |
-| Mobile      | 100vw       | Full screen    | Stack vertical |
+| Screen Size | Modal Width      | Modal Position | Actions Layout |
+| ----------- | ---------------- | -------------- | -------------- |
+| Desktop     | 600px            | Center screen  | Horizontal     |
+| Tablet      | 90vw (max 600px) | Center screen  | Horizontal     |
+| Mobile      | 100vw            | Full screen    | Stack vertical |
 
 ## Touch Targets (Mobile)
 
 All interactive elements meet minimum touch target size:
+
 - Buttons: min 44px × 44px
 - Tile cards: min 48px touch area
 - Modal close: min 44px × 44px
@@ -101,18 +104,21 @@ All interactive elements meet minimum touch target size:
 ## Typography Scaling
 
 ### Desktop (1280px+)
+
 - H1 (Page heading): 2rem (32px)
 - H2 (Tile heading): 1.15rem (18.4px)
 - Body: 1rem (16px)
 - Meta: 0.85rem (13.6px)
 
 ### Tablet (768px - 1279px)
+
 - H1: 1.75rem (28px)
 - H2: 1.1rem (17.6px)
 - Body: 1rem (16px)
 - Meta: 0.85rem (13.6px)
 
 ### Mobile (<768px)
+
 - H1: 1.5rem (24px)
 - H2: 1rem (16px)
 - Body: 0.95rem (15.2px)
@@ -121,16 +127,19 @@ All interactive elements meet minimum touch target size:
 ## Spacing Adjustments
 
 ### Desktop
+
 - Tile padding: var(--p-space-5, 20px)
 - Tile gap: var(--p-space-5, 20px)
 - Internal gaps: var(--p-space-4, 16px)
 
 ### Tablet
+
 - Tile padding: var(--p-space-4, 16px)
 - Tile gap: var(--p-space-4, 16px)
 - Internal gaps: var(--p-space-3, 12px)
 
 ### Mobile
+
 - Tile padding: var(--p-space-3, 12px)
 - Tile gap: var(--p-space-3, 12px)
 - Internal gaps: var(--p-space-2, 8px)
@@ -139,11 +148,11 @@ All interactive elements meet minimum touch target size:
 
 ### Viewport Testing Matrix
 
-| Device Class | Viewports to Test | Orientation |
-|--------------|-------------------|-------------|
-| Desktop      | 1280px, 1440px, 1920px | Landscape |
-| Tablet       | 768px, 834px, 1024px | Both |
-| Mobile       | 375px, 390px, 428px | Portrait |
+| Device Class | Viewports to Test      | Orientation |
+| ------------ | ---------------------- | ----------- |
+| Desktop      | 1280px, 1440px, 1920px | Landscape   |
+| Tablet       | 768px, 834px, 1024px   | Both        |
+| Mobile       | 375px, 390px, 428px    | Portrait    |
 
 ### Browser Support
 
@@ -155,6 +164,7 @@ All interactive elements meet minimum touch target size:
 ### Shopify Admin Embedded
 
 Test within:
+
 - Shopify Admin desktop frame
 - Shopify Admin mobile app (iOS/Android)
 - Shopify Admin tablet view

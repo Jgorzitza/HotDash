@@ -12,6 +12,7 @@
 **Validate all agent task completions for quality and evidence standards before manager review.**
 
 Guard the evidence gates - ensure every task completion includes verifiable proof:
+
 - File paths (not just "created document")
 - Line numbers for code changes
 - Test results (not just "tests pass")
@@ -22,12 +23,14 @@ Guard the evidence gates - ensure every task completion includes verifiable proo
 ## Validation Cycle
 
 ### Schedule
+
 - **Frequency**: Every 4 hours
 - **Scope**: All agent feedback files
 - **Sample Size**: 3-5 tasks per agent (random selection)
 - **Deliverable**: Validation report in feedback/qa.md
 
 ### Timing
+
 - **Cycle 1**: 00:00-04:00 UTC (validate at 04:00)
 - **Cycle 2**: 04:00-08:00 UTC (validate at 08:00)
 - **Cycle 3**: 08:00-12:00 UTC (validate at 12:00)
@@ -40,18 +43,22 @@ Guard the evidence gates - ensure every task completion includes verifiable proo
 ## Evidence Standards
 
 ### Code Changes
+
 **Required**:
+
 - ✅ Exact file path (e.g., `app/services/chatwoot/escalations.ts`)
 - ✅ Line numbers or function names (e.g., `lines 45-67` or `getEscalations function`)
 - ✅ Description of what changed
 - ✅ Why it changed (business reason)
 
 **NOT Acceptable**:
+
 - ❌ "Updated the code"
 - ❌ "Made changes to service"
 - ❌ "Fixed the file"
 
 **Example - GOOD**:
+
 ```
 File: app/services/chatwoot/escalations.ts (lines 102-145)
 Changes: Added template selection heuristics
@@ -64,18 +71,22 @@ Reason: Enable AI to suggest appropriate response templates
 ---
 
 ### Test Evidence
+
 **Required**:
+
 - ✅ Test file path (e.g., `tests/unit/chatwoot.escalations.spec.ts`)
 - ✅ Test count (e.g., "6 tests passing")
 - ✅ Test execution output or screenshot
 - ✅ Coverage impact (if applicable)
 
 **NOT Acceptable**:
+
 - ❌ "Tests pass"
 - ❌ "All tests working"
 - ❌ "Tested it"
 
 **Example - GOOD**:
+
 ```
 Test File: tests/unit/chatwoot.escalations.spec.ts
 Results: 6/6 tests passing
@@ -89,18 +100,22 @@ New Tests:
 ---
 
 ### Documentation Evidence
+
 **Required**:
+
 - ✅ Document path (e.g., `docs/testing/TESTING_GUIDE.md`)
 - ✅ Section names or headings
 - ✅ Word/line count
 - ✅ Key topics covered
 
 **NOT Acceptable**:
+
 - ❌ "Created documentation"
 - ❌ "Documented the feature"
 - ❌ "Added docs"
 
 **Example - GOOD**:
+
 ```
 Document: docs/testing/TESTING_GUIDE.md (20KB, 600 lines)
 Sections:
@@ -114,18 +129,22 @@ Topics: Test pyramid, mocking, fixtures, CI integration
 ---
 
 ### Design Evidence
+
 **Required**:
+
 - ✅ Asset file paths (e.g., `artifacts/design/approval-card-mockup.png`)
 - ✅ Screenshots or visual proof
 - ✅ Specifications document
 - ✅ Component names and properties
 
 **NOT Acceptable**:
+
 - ❌ "Designed the UI"
 - ❌ "Created mockups"
 - ❌ "Completed design"
 
 **Example - GOOD**:
+
 ```
 Design: Approval Card Component
 Spec: docs/design/approval-card-spec.md (12KB)
@@ -148,6 +167,7 @@ ls feedback/*.md | grep -v manager.md | grep -v qa.md
 ```
 
 **Active Agents** (expected):
+
 - ai.md (AI agent)
 - engineer.md (Engineer agent)
 - designer.md (Designer agent)
@@ -176,18 +196,21 @@ For each agent:
 For each sampled task, check:
 
 **Question 1: Is there evidence?**
+
 - [ ] File paths provided?
 - [ ] Test results shown?
 - [ ] Artifacts referenced?
 - [ ] Line numbers or specific locations?
 
 **Question 2: Can I verify it?**
+
 - [ ] Do the files exist?
 - [ ] Do the tests actually pass?
 - [ ] Are the artifacts accessible?
 - [ ] Can I reproduce the results?
 
 **Question 3: Is the quality acceptable?**
+
 - [ ] Work meets requirements?
 - [ ] No obvious bugs or issues?
 - [ ] Follows project standards?
@@ -198,6 +221,7 @@ For each sampled task, check:
 ### Step 4: Rate Quality
 
 **🟢 High Quality** (Excellent):
+
 - All evidence provided
 - Files exist and are high quality
 - Tests pass, coverage good
@@ -206,6 +230,7 @@ For each sampled task, check:
 - **Action**: Approve, commend in report
 
 **🟡 Needs Work** (Acceptable with Issues):
+
 - Most evidence provided
 - Files exist but quality issues
 - Tests pass but coverage gaps
@@ -214,6 +239,7 @@ For each sampled task, check:
 - **Action**: Note issues, agent should improve
 
 **🔴 Rework Required** (Unacceptable):
+
 - Missing evidence
 - Files don't exist or are broken
 - Tests fail
@@ -240,8 +266,10 @@ For each sampled task, check:
 **Sample Size**: 3-5 tasks (random selection)
 
 #### Sample 1: {Task Name}
+
 **Claim**: {What agent said they did}
 **Evidence Check**:
+
 - Files: {exist/missing}
 - Tests: {pass/fail/not found}
 - Artifacts: {found/not found}
@@ -251,6 +279,7 @@ For each sampled task, check:
 **Notes**: {specific findings}
 
 #### Sample 2: {Task Name}
+
 ...
 
 **Overall Agent Rating**: 🟢 / 🟡 / 🔴
@@ -259,6 +288,7 @@ For each sampled task, check:
 ---
 
 **Summary**:
+
 - 🟢 High Quality: X agents
 - 🟡 Needs Work: Y agents
 - 🔴 Rework Required: Z agents
@@ -271,29 +301,34 @@ For each sampled task, check:
 ## Verification Commands
 
 ### Check File Exists
+
 ```bash
 ls -lh {file_path}
 ```
 
 ### Check Code Changes
+
 ```bash
 git log --oneline --all -- {file_path}
 grep -n "function_name" {file_path}
 ```
 
 ### Run Tests
+
 ```bash
 npm run test:unit {test_file}
 npm run test:e2e {test_file}
 ```
 
 ### Check Artifacts
+
 ```bash
 ls -lh artifacts/{agent}/*
 find artifacts/ -name "*{pattern}*" -mtime -1
 ```
 
 ### Verify Documentation
+
 ```bash
 wc -l {doc_path}
 grep -n "## Section Name" {doc_path}
@@ -304,6 +339,7 @@ grep -n "## Section Name" {doc_path}
 ## Escalation Criteria
 
 **Immediate Escalation to Manager**:
+
 - Agent claims 10+ tasks but provides zero evidence
 - Critical security issue found (secrets in code)
 - Tests failing that agent claims pass
@@ -312,6 +348,7 @@ grep -n "## Section Name" {doc_path}
 - Multiple 🔴 ratings for same agent
 
 **Report in Next Cycle**:
+
 - Agent needs minor improvements (🟡 ratings)
 - Documentation gaps (non-critical)
 - Test coverage below target but improving
@@ -352,34 +389,39 @@ grep -n "## Section Name" {doc_path}
 
 **Track Over Time**:
 
-| Agent | Cycle 1 | Cycle 2 | Cycle 3 | Trend | Notes |
-|-------|---------|---------|---------|-------|-------|
-| AI | 🟢 | 🟢 | 🟢 | Stable | Excellent evidence |
-| Engineer | 🟢 | 🟡 | 🟢 | Improving | Minor doc gaps |
-| Designer | 🟢 | 🟢 | 🟢 | Stable | Great screenshots |
-| Data | 🟡 | 🟢 | 🟢 | Improving | Added artifacts |
+| Agent    | Cycle 1 | Cycle 2 | Cycle 3 | Trend     | Notes              |
+| -------- | ------- | ------- | ------- | --------- | ------------------ |
+| AI       | 🟢      | 🟢      | 🟢      | Stable    | Excellent evidence |
+| Engineer | 🟢      | 🟡      | 🟢      | Improving | Minor doc gaps     |
+| Designer | 🟢      | 🟢      | 🟢      | Stable    | Great screenshots  |
+| Data     | 🟡      | 🟢      | 🟢      | Improving | Added artifacts    |
 
 ---
 
 ## Common Issues & Remediation
 
 ### Issue: "Task complete" with no evidence
+
 **Remediation**: Tag agent, request file paths and test results
 **Rating**: 🔴 if critical, 🟡 if minor
 
 ### Issue: Files claimed but don't exist
+
 **Remediation**: Escalate immediately to manager
 **Rating**: 🔴 Always
 
 ### Issue: Tests claimed passing but actually failing
+
 **Remediation**: Run tests, document actual results, escalate
 **Rating**: 🔴 Always
 
 ### Issue: Documentation incomplete
+
 **Remediation**: Note in report, agent should enhance
 **Rating**: 🟡 Usually
 
 ### Issue: Good work but poor documentation
+
 **Remediation**: Commend work, request better evidence
 **Rating**: 🟡 with guidance
 
@@ -403,7 +445,9 @@ grep -n "## Section Name" {doc_path}
 **Sample Size**: 5 tasks (random selection from last 4 hours)
 
 #### Sample 1: "Implement Agent SDK webhook handler"
+
 **Evidence Check**:
+
 - File: supabase/functions/chatwoot-webhook/index.ts ✅ EXISTS (267 lines)
 - Tests: tests/integration/chatwoot-webhook.spec.ts ✅ EXISTS (stub with TODOs)
 - Code Quality: Comprehensive implementation with error handling ✅
@@ -413,7 +457,9 @@ grep -n "## Section Name" {doc_path}
 **Notes**: Excellent work. Well-structured code, error handling present, integration points clear.
 
 #### Sample 2: "Add Chatwoot API client methods"
+
 **Evidence Check**:
+
 - File: packages/integrations/chatwoot.ts ✅ EXISTS
 - Methods: createPrivateNote (lines 89-97), assignAgent (lines 99-107) ✅ VERIFIED
 - Tests: tests/unit/chatwoot.action.spec.ts ✅ PASSING
@@ -435,9 +481,11 @@ grep -n "## Section Name" {doc_path}
 **Sample Size**: 4 tasks
 
 #### Sample 1: "Create approval card component specification"
+
 **Evidence Check**:
+
 - Spec: docs/design/approvalcard-component-spec.md ✅ EXISTS (15KB)
-- Mockups: ❌ NOT FOUND in artifacts/design/ 
+- Mockups: ❌ NOT FOUND in artifacts/design/
 - Component props: ✅ DOCUMENTED
 - Tokens: ✅ REFERENCED
 
@@ -452,6 +500,7 @@ grep -n "## Section Name" {doc_path}
 ---
 
 **Summary**:
+
 - 🟢 High Quality: 6 agents (Engineer, AI, Reliability, Data, Integrations, Compliance)
 - 🟡 Needs Work: 2 agents (Designer, Marketing) - missing visual artifacts
 - 🔴 Rework Required: 0 agents
@@ -477,6 +526,7 @@ python3 -c "import random; random.seed($SEED); print(random.sample(range(1, 20),
 ```
 
 Or manual selection:
+
 - First completed task
 - Last completed task
 - Middle task
@@ -490,6 +540,7 @@ Or manual selection:
 **Storage**: `artifacts/qa/validation/{timestamp}/`
 
 **Files**:
+
 - validation-report.md (detailed findings)
 - agent-scores.json (structured data)
 - evidence-verification.log (commands run + results)
@@ -500,12 +551,14 @@ Or manual selection:
 ## Authority & Responsibility
 
 **Authority**:
+
 - QA can request evidence from any agent
 - QA can rate agent work quality
 - QA can escalate to manager
 - QA validates before manager reviews
 
 **Responsibility**:
+
 - Validate fairly and consistently
 - Provide constructive feedback
 - Document all findings with evidence
@@ -513,6 +566,7 @@ Or manual selection:
 - Help agents improve evidence quality
 
 **Not Responsible For**:
+
 - Doing agent's work for them
 - Accepting "trust me" without evidence
 - Approving incomplete work
@@ -523,6 +577,7 @@ Or manual selection:
 ## Communication Templates
 
 ### Requesting Evidence (Slack/Comment)
+
 ```
 @{agent}: Your task "{task_name}" is missing evidence.
 
@@ -536,6 +591,7 @@ QA validation cycle: {timestamp}
 ```
 
 ### Escalation to Manager
+
 ```
 @manager: Critical issue in agent validation
 

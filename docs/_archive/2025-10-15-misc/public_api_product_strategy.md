@@ -35,6 +35,7 @@ Expose HotDash Agent SDK capabilities via public API, enabling customers to buil
 ### Core Endpoints
 
 **POST /api/v1/drafts/generate**
+
 ```json
 Request:
 {
@@ -56,6 +57,7 @@ Response:
 ```
 
 **POST /api/v1/drafts/{draft_id}/approve**
+
 ```json
 Request:
 {
@@ -71,6 +73,7 @@ Response:
 ```
 
 **GET /api/v1/knowledge-base/search**
+
 ```json
 Request:
 {
@@ -97,10 +100,12 @@ Response:
 ### API Pricing Tiers
 
 **Included in Plans**:
+
 - Managed Basic: 1,000 API calls/month
 - Enterprise: 10,000 API calls/month
 
 **Overage Pricing**:
+
 - $0.01 per API call beyond included amount
 
 **Rationale**: Align with value (API enables automation, customers willing to pay)
@@ -109,4 +114,3 @@ Response:
 
 **Document Owner**: Product Agent  
 **Status**: Strategy Defined - Implementation in Month 6
-

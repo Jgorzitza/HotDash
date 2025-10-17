@@ -5,11 +5,13 @@ owner: manager
 last_reviewed: 2025-10-12
 expires: 2025-10-19
 ---
+
 # Agent Launch Checklist
 
 Run this checklist before starting any automation or human agent. Skip nothingâ€”every item ensures the agent has the tools, secrets, and context to execute end-to-end.
 
 ## 1. Canon Review
+
 - [ ] Confirm the agent has read:
   - `docs/NORTH_STAR.md`
   - `docs/git_protocol.md`
@@ -18,6 +20,7 @@ Run this checklist before starting any automation or human agent. Skip nothingâ€
   - `docs/ops/credential_index.md`
 
 ## 2. Credential Readiness
+
 - [ ] Source vault secrets required for the role (refer to `docs/ops/credential_index.md`).
 - [ ] Verify CLI auth for required tools:
   - `gh auth status`
@@ -25,14 +28,17 @@ Run this checklist before starting any automation or human agent. Skip nothingâ€
 - [ ] Document the confirmation (command + timestamp) in the agentâ€™s feedback file before launch.
 
 ## 3. Evidence Gate Reminder
+
 - [ ] Reiterate: every feedback update must include command, timestamp, output path.
 - [ ] Confirm the agent has access to `artifacts/` directory to store logs/screenshots.
 
 ## 4. Blocker Sweep
+
 - [ ] Review recent feedback for unresolved blockers tied to this role.
 - [ ] Ensure direction docs reflect latest decisions; if not, update before launch.
 
 ## 5. Launch Approval
+
 - [ ] Manager signs off in `feedback/manager.md` with:
   - Agent name
   - Launch time

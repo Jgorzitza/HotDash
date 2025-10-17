@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { createDirectGaClient } from '../../app/services/ga/directClient';
-import type { DateRange } from '../../app/services/ga/client';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { createDirectGaClient } from "../../app/services/ga/directClient";
+import type { DateRange } from "../../app/services/ga/client";
 
 // Mock the Google Analytics client
-vi.mock('@google-analytics/data', () => {
+vi.mock("@google-analytics/data", () => {
   return {
     BetaAnalyticsDataClient: vi.fn(() => ({
       runReport: vi.fn(),
@@ -11,7 +11,7 @@ vi.mock('@google-analytics/data', () => {
   };
 });
 
-describe('DirectGAClient', () => {
+describe("DirectGAClient", () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
@@ -24,60 +24,62 @@ describe('DirectGAClient', () => {
     vi.clearAllMocks();
   });
 
-  describe('createDirectGaClient', () => {
-    it('should throw error if propertyId is not provided', () => {
-      process.env.GOOGLE_APPLICATION_CREDENTIALS = '/path/to/creds.json';
-      
-      expect(() => createDirectGaClient('')).toThrow(
-        'GA_PROPERTY_ID environment variable required'
+  describe("createDirectGaClient", () => {
+    it("should throw error if propertyId is not provided", () => {
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = "/path/to/creds.json";
+
+      expect(() => createDirectGaClient("")).toThrow(
+        "GA_PROPERTY_ID environment variable required",
       );
     });
 
-    it('should throw error if GOOGLE_APPLICATION_CREDENTIALS is not set', () => {
+    it("should throw error if GOOGLE_APPLICATION_CREDENTIALS is not set", () => {
       delete process.env.GOOGLE_APPLICATION_CREDENTIALS;
-      
-      expect(() => createDirectGaClient('12345')).toThrow(
-        'GOOGLE_APPLICATION_CREDENTIALS environment variable required'
+
+      expect(() => createDirectGaClient("12345")).toThrow(
+        "GOOGLE_APPLICATION_CREDENTIALS environment variable required",
       );
     });
 
-    it('should create client successfully with valid configuration', () => {
-      process.env.GOOGLE_APPLICATION_CREDENTIALS = '/path/to/creds.json';
-      
-      const client = createDirectGaClient('12345');
-      
+    it("should create client successfully with valid configuration", () => {
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = "/path/to/creds.json";
+
+      const client = createDirectGaClient("12345");
+
       expect(client).toBeDefined();
       expect(client.fetchLandingPageSessions).toBeDefined();
     });
   });
 
-  describe('fetchLandingPageSessions', () => {
-    const mockPropertyId = '123456789';
+  describe("fetchLandingPageSessions", () => {
+    const mockPropertyId = "123456789";
     const mockDateRange: DateRange = {
-      start: '2025-10-01',
-      end: '2025-10-07',
+      start: "2025-10-01",
+      end: "2025-10-07",
     };
 
     beforeEach(() => {
-      process.env.GOOGLE_APPLICATION_CREDENTIALS = '/path/to/creds.json';
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = "/path/to/creds.json";
     });
 
-    it('should fetch and transform GA sessions data correctly', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should fetch and transform GA sessions data correctly", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([
         {
           rows: [
             {
-              dimensionValues: [{ value: '/collections/new-arrivals' }],
-              metricValues: [{ value: '420' }],
+              dimensionValues: [{ value: "/collections/new-arrivals" }],
+              metricValues: [{ value: "420" }],
             },
             {
-              dimensionValues: [{ value: '/products/featured-widget' }],
-              metricValues: [{ value: '310' }],
+              dimensionValues: [{ value: "/products/featured-widget" }],
+              metricValues: [{ value: "310" }],
             },
             {
-              dimensionValues: [{ value: '/blogs/news/october-launch' }],
-              metricValues: [{ value: '120' }],
+              dimensionValues: [{ value: "/blogs/news/october-launch" }],
+              metricValues: [{ value: "120" }],
             },
           ],
         },
@@ -93,19 +95,19 @@ describe('DirectGAClient', () => {
 
       expect(sessions).toHaveLength(3);
       expect(sessions[0]).toEqual({
-        landingPage: '/collections/new-arrivals',
+        landingPage: "/collections/new-arrivals",
         sessions: 420,
         wowDelta: 0,
         evidenceUrl: undefined,
       });
       expect(sessions[1]).toEqual({
-        landingPage: '/products/featured-widget',
+        landingPage: "/products/featured-widget",
         sessions: 310,
         wowDelta: 0,
         evidenceUrl: undefined,
       });
       expect(sessions[2]).toEqual({
-        landingPage: '/blogs/news/october-launch',
+        landingPage: "/blogs/news/october-launch",
         sessions: 120,
         wowDelta: 0,
         evidenceUrl: undefined,
@@ -119,11 +121,11 @@ describe('DirectGAClient', () => {
             endDate: mockDateRange.end,
           },
         ],
-        dimensions: [{ name: 'pagePath' }],
-        metrics: [{ name: 'sessions' }],
+        dimensions: [{ name: "pagePath" }],
+        metrics: [{ name: "sessions" }],
         orderBys: [
           {
-            metric: { metricName: 'sessions' },
+            metric: { metricName: "sessions" },
             desc: true,
           },
         ],
@@ -131,8 +133,10 @@ describe('DirectGAClient', () => {
       });
     });
 
-    it('should handle empty response from GA API', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should handle empty response from GA API", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([{ rows: [] }]);
 
       // @ts-ignore - mocking
@@ -146,14 +150,16 @@ describe('DirectGAClient', () => {
       expect(sessions).toEqual([]);
     });
 
-    it('should handle missing dimensionValues gracefully', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should handle missing dimensionValues gracefully", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([
         {
           rows: [
             {
               dimensionValues: [],
-              metricValues: [{ value: '100' }],
+              metricValues: [{ value: "100" }],
             },
           ],
         },
@@ -169,20 +175,22 @@ describe('DirectGAClient', () => {
 
       expect(sessions).toHaveLength(1);
       expect(sessions[0]).toEqual({
-        landingPage: '',
+        landingPage: "",
         sessions: 100, // The metric value is still parsed correctly
         wowDelta: 0,
         evidenceUrl: undefined,
       });
     });
 
-    it('should handle missing metricValues gracefully', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should handle missing metricValues gracefully", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([
         {
           rows: [
             {
-              dimensionValues: [{ value: '/test-page' }],
+              dimensionValues: [{ value: "/test-page" }],
               metricValues: [],
             },
           ],
@@ -199,16 +207,18 @@ describe('DirectGAClient', () => {
 
       expect(sessions).toHaveLength(1);
       expect(sessions[0]).toEqual({
-        landingPage: '/test-page',
+        landingPage: "/test-page",
         sessions: 0,
         wowDelta: 0,
         evidenceUrl: undefined,
       });
     });
 
-    it('should throw error with context when API call fails', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
-      const mockError = new Error('API quota exceeded');
+    it("should throw error with context when API call fails", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
+      const mockError = new Error("API quota exceeded");
       const mockRunReport = vi.fn().mockRejectedValue(mockError);
 
       // @ts-ignore - mocking
@@ -219,21 +229,23 @@ describe('DirectGAClient', () => {
       const client = createDirectGaClient(mockPropertyId);
 
       await expect(
-        client.fetchLandingPageSessions(mockDateRange)
+        client.fetchLandingPageSessions(mockDateRange),
       ).rejects.toThrow(
         `Google Analytics API request failed: API quota exceeded. ` +
-        `Property ID: ${mockPropertyId}, Date range: ${mockDateRange.start} to ${mockDateRange.end}`
+          `Property ID: ${mockPropertyId}, Date range: ${mockDateRange.start} to ${mockDateRange.end}`,
       );
     });
 
-    it('should handle non-numeric session values', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should handle non-numeric session values", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([
         {
           rows: [
             {
-              dimensionValues: [{ value: '/page1' }],
-              metricValues: [{ value: 'invalid' }],
+              dimensionValues: [{ value: "/page1" }],
+              metricValues: [{ value: "invalid" }],
             },
           ],
         },
@@ -251,8 +263,10 @@ describe('DirectGAClient', () => {
       expect(sessions[0].sessions).toBeNaN(); // parseInt on invalid string returns NaN
     });
 
-    it('should pass correct date range format to API', async () => {
-      const { BetaAnalyticsDataClient } = await import('@google-analytics/data');
+    it("should pass correct date range format to API", async () => {
+      const { BetaAnalyticsDataClient } = await import(
+        "@google-analytics/data"
+      );
       const mockRunReport = vi.fn().mockResolvedValue([{ rows: [] }]);
 
       // @ts-ignore - mocking
@@ -262,8 +276,8 @@ describe('DirectGAClient', () => {
 
       const client = createDirectGaClient(mockPropertyId);
       const customRange: DateRange = {
-        start: '2025-09-01',
-        end: '2025-09-30',
+        start: "2025-09-01",
+        end: "2025-09-30",
       };
 
       await client.fetchLandingPageSessions(customRange);
@@ -272,13 +286,12 @@ describe('DirectGAClient', () => {
         expect.objectContaining({
           dateRanges: [
             {
-              startDate: '2025-09-01',
-              endDate: '2025-09-30',
+              startDate: "2025-09-01",
+              endDate: "2025-09-30",
             },
           ],
-        })
+        }),
       );
     });
   });
 });
-

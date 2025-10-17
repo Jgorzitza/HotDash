@@ -38,7 +38,8 @@ Turn delighted customers into vocal advocates through referrals, testimonials, a
 **Benefit**: 10% recurring commission on referral revenue
 **Program**: Automated referral tracking + payouts
 
-**Example**: 
+**Example**:
+
 - Refer 5 customers who buy Basic ($999/mo each)
 - Commission: $999 × 5 × 10% = $500/month
 - Annual benefit: $6,000
@@ -55,4 +56,3 @@ Turn delighted customers into vocal advocates through referrals, testimonials, a
 
 **Document Owner**: Product Agent  
 **Status**: Program Framework Complete
-

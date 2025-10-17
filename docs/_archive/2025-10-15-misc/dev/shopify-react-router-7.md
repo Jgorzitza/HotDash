@@ -57,6 +57,7 @@ const redirectUrls = getAuthRedirectUrls("https://my-app.fly.dev");
 ### Mock Mode Testing
 
 The system supports mock mode via:
+
 - URL parameter: `?mock=1`
 - Environment variable: `NODE_ENV=test`
 
@@ -65,6 +66,7 @@ This allows E2E testing without Shopify authentication.
 ### App Bridge Integration
 
 The `AppProvider` is configured with:
+
 - Proper API key from environment
 - Embedded mode enabled
 - Mock mode visual indication
@@ -73,12 +75,14 @@ The `AppProvider` is configured with:
 ## Testing
 
 Unit tests cover:
+
 - Environment configuration validation
 - Mock mode detection
 - Redirect URL generation
 - Error handling for missing variables
 
 Run tests with:
+
 ```bash
 npm run test:unit -- tests/unit/env.server.spec.ts
 ```

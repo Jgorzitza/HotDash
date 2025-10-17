@@ -18,6 +18,7 @@ Enable operators to quickly identify and respond to SEO issues that could impact
 ## Scope
 
 ### In Scope
+
 - Traffic anomaly detection (GA4)
 - Keyword ranking monitoring (Search Console)
 - Core Web Vitals tracking (PageSpeed/CrUX)
@@ -26,6 +27,7 @@ Enable operators to quickly identify and respond to SEO issues that could impact
 - Dashboard tile integration
 
 ### Out of Scope (Future)
+
 - Automated SEO fixes
 - Content recommendations
 - Backlink monitoring
@@ -36,15 +38,18 @@ Enable operators to quickly identify and respond to SEO issues that could impact
 ## Anomaly Types
 
 ### 1. Traffic Anomalies
+
 **Source:** Google Analytics 4  
 **Detection:** Week-over-week session comparison per landing page
 
 **Thresholds:**
+
 - **Critical:** ≥ 40% drop in sessions
 - **Warning:** 20-40% drop in sessions
 - **Info:** < 20% drop (not flagged)
 
 **Data Structure:**
+
 ```typescript
 interface TrafficAnomalyInput {
   landingPage: string;
@@ -55,6 +60,7 @@ interface TrafficAnomalyInput {
 ```
 
 **Example:**
+
 ```json
 {
   "id": "traffic-products-hot-rods",
@@ -74,15 +80,18 @@ interface TrafficAnomalyInput {
 ```
 
 ### 2. Ranking Anomalies
+
 **Source:** Google Search Console  
 **Detection:** Position changes for tracked keywords
 
 **Thresholds:**
+
 - **Critical:** Dropped ≥ 10 positions
 - **Warning:** Dropped 5-10 positions
 - **Info:** Dropped < 5 positions (not flagged)
 
 **Data Structure:**
+
 ```typescript
 interface RankingAnomalyInput {
   keyword: string;
@@ -94,6 +103,7 @@ interface RankingAnomalyInput {
 ```
 
 **Example:**
+
 ```json
 {
   "id": "ranking-custom-hot-rods",
@@ -115,38 +125,44 @@ interface RankingAnomalyInput {
 ```
 
 ### 3. Core Web Vitals Anomalies
+
 **Source:** PageSpeed Insights API / Chrome UX Report  
 **Detection:** Metrics exceeding Google's thresholds
 
 **Thresholds:**
 
 **LCP (Largest Contentful Paint):**
+
 - **Good:** ≤ 2.5s
 - **Needs Improvement:** 2.5s - 4.0s (warning)
 - **Poor:** > 4.0s (critical)
 
 **FID (First Input Delay):**
+
 - **Good:** ≤ 100ms
 - **Needs Improvement:** 100ms - 300ms (warning)
 - **Poor:** > 300ms (critical)
 
 **CLS (Cumulative Layout Shift):**
+
 - **Good:** ≤ 0.1
 - **Needs Improvement:** 0.1 - 0.25 (warning)
 - **Poor:** > 0.25 (critical)
 
 **Data Structure:**
+
 ```typescript
 interface VitalsAnomalyInput {
   url: string;
-  metric: 'LCP' | 'FID' | 'CLS';
+  metric: "LCP" | "FID" | "CLS";
   value: number;
   threshold: number;
-  device: 'mobile' | 'desktop';
+  device: "mobile" | "desktop";
 }
 ```
 
 **Example:**
+
 ```json
 {
   "id": "vitals-LCP-products-hot-rods",
@@ -167,15 +183,18 @@ interface VitalsAnomalyInput {
 ```
 
 ### 4. Crawl Error Anomalies
+
 **Source:** Google Search Console  
 **Detection:** 404s, 5xx errors, robots.txt blocks
 
 **Thresholds:**
+
 - **Critical:** ≥ 10 errors
 - **Warning:** 3-10 errors
 - **Info:** < 3 errors (not flagged)
 
 **Data Structure:**
+
 ```typescript
 interface CrawlErrorInput {
   url: string;
@@ -186,6 +205,7 @@ interface CrawlErrorInput {
 ```
 
 **Example:**
+
 ```json
 {
   "id": "crawl-products-discontinued",
@@ -206,14 +226,17 @@ interface CrawlErrorInput {
 ## API Specification
 
 ### Endpoint
+
 ```
 GET /api/seo/anomalies
 ```
 
 ### Query Parameters
+
 - `shop` (optional): Shopify domain (default: 'default-shop.myshopify.com')
 
 ### Response Format
+
 ```typescript
 {
   success: boolean;
@@ -243,6 +266,7 @@ GET /api/seo/anomalies
 ```
 
 ### Example Response
+
 ```json
 {
   "success": true,
@@ -292,6 +316,7 @@ GET /api/seo/anomalies
 ## Implementation Details
 
 ### File Structure
+
 ```
 app/lib/seo/
   └── anomalies.ts          # Core detection logic
@@ -304,6 +329,7 @@ docs/specs/
 ```
 
 ### Dependencies
+
 - `app/services/ga/ingest.ts` - GA4 traffic data
 - Google Search Console API (future)
 - PageSpeed Insights API (future)
@@ -311,17 +337,20 @@ docs/specs/
 ### Current Implementation Status
 
 **✅ Implemented:**
+
 - Traffic anomaly detection (GA4)
 - Severity classification
 - API route with aggregation
 - TypeScript types and interfaces
 
 **🚧 Mock/Placeholder:**
+
 - Keyword ranking detection (returns empty array)
 - Core Web Vitals detection (returns empty array)
 - Crawl error detection (returns empty array)
 
 **📋 Future Work:**
+
 - Google Search Console API integration
 - PageSpeed Insights API integration
 - Caching strategy (5-minute TTL)
@@ -333,17 +362,20 @@ docs/specs/
 ## Testing Strategy
 
 ### Unit Tests
+
 - Test each detection function with sample data
 - Verify threshold calculations
 - Validate severity classification
 - Test aggregation logic
 
 ### Integration Tests
+
 - Test API route with mock GA data
 - Verify response format
 - Test error handling
 
 ### Manual Testing
+
 ```bash
 # Test API endpoint
 curl http://localhost:3000/api/seo/anomalies?shop=test-shop.myshopify.com
@@ -364,6 +396,7 @@ curl http://localhost:3000/api/seo/anomalies?shop=test-shop.myshopify.com
 ## Rollback Plan
 
 If issues detected:
+
 1. Revert API route changes
 2. Dashboard tile falls back to existing `getLandingPageAnomalies()`
 3. No data loss (read-only operations)
@@ -408,4 +441,3 @@ If issues detected:
 - Google Search Console API: https://developers.google.com/webmaster-tools/search-console-api-original
 - Core Web Vitals: https://web.dev/vitals/
 - PageSpeed Insights API: https://developers.google.com/speed/docs/insights/v5/get-started
-

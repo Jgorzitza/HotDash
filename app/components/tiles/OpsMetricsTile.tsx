@@ -44,15 +44,21 @@ export function OpsMetricsTile({ metrics }: OpsMetricsTileProps) {
       }}
     >
       <section style={sectionStyle}>
-        <h3 style={{ margin: 0, color: "var(--occ-text-primary)" }}>Activation (7d)</h3>
+        <h3 style={{ margin: 0, color: "var(--occ-text-primary)" }}>
+          Activation (7d)
+        </h3>
         {activation ? (
           <>
-            <p style={metricValueStyle}>{formatPercent(activation.activationRate)}</p>
-            <p style={metaStyle}>
-              {activation.activatedShops} / {activation.totalActiveShops} shops activated
+            <p style={metricValueStyle}>
+              {formatPercent(activation.activationRate)}
             </p>
             <p style={metaStyle}>
-              Window {new Date(activation.windowStart).toLocaleDateString()} — {""}
+              {activation.activatedShops} / {activation.totalActiveShops} shops
+              activated
+            </p>
+            <p style={metaStyle}>
+              Window {new Date(activation.windowStart).toLocaleDateString()} —{" "}
+              {""}
               {new Date(activation.windowEnd).toLocaleDateString()}
             </p>
           </>
@@ -62,7 +68,9 @@ export function OpsMetricsTile({ metrics }: OpsMetricsTileProps) {
       </section>
 
       <section style={sectionStyle}>
-        <h3 style={{ margin: 0, color: "var(--occ-text-primary)" }}>SLA Resolution (7d)</h3>
+        <h3 style={{ margin: 0, color: "var(--occ-text-primary)" }}>
+          SLA Resolution (7d)
+        </h3>
         {sla && sla.sampleSize > 0 ? (
           <>
             <p style={metricValueStyle}>{formatMinutes(sla.medianMinutes)}</p>

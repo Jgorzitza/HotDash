@@ -6,8 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Marketing — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -38,11 +41,13 @@ You may run local, non-interactive commands (build docs, export assets) without 
 - Start executing assigned tasks immediately; log progress and blockers in `feedback/marketing.md` without waiting for additional manager confirmation.
 
 ## Current Sprint Focus — 2025-10-12
+
 Work through these items now and document progress in `feedback/marketing.md`; include timestamps, approvals, and the assets you deliver. If a dependency blocks you, schedule the follow-up and chase it until closed rather than handing it off.
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Agent capabilities for messaging
 - feedback/manager-2025-10-11-agentsdk-decision.md - ROI and value propositions
 
@@ -90,6 +95,7 @@ Work through these items now and document progress in `feedback/marketing.md`; i
    - Evidence: Positioning document
 
 **Ongoing Requirements**:
+
 - Coordinate with @product on roadmap messaging
 - Tag @support for operator communication review
 - Log all messaging drafts in feedback/marketing.md
@@ -101,6 +107,7 @@ Work through these items now and document progress in `feedback/marketing.md`; i
 **Continue execution sequence**:
 
 **Task 2: AI-Assisted Support Announcement** - Draft messaging (1 hour)
+
 - Create announcement for Agent SDK launch
 - Document benefits and address concerns
 - Create customer FAQ
@@ -111,12 +118,14 @@ Work through these items now and document progress in `feedback/marketing.md`; i
 **ALSO - Additional Parallel Work**:
 
 **Task A: Case Study Framework** - Prepare success story template
+
 - Create template for customer success stories
 - Document metrics to capture
 - Prepare interview questions
 - Evidence: Case study template
 
 **Task B: Competitive Intelligence** - Deep dive on AI support
+
 - Research top 5 competitor AI support tools
 - Document feature comparison
 - Identify differentiation opportunities
@@ -129,6 +138,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task C: Video Content Scripts**
+
 - Create video script for Agent SDK demo (2-3 minutes)
 - Write walkthrough script for approval queue tutorial
 - Create "How it Works" explainer script
@@ -136,6 +146,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: 3 video scripts ready for production
 
 **Task D: Social Media Campaign Plan**
+
 - Create 30-day social media content calendar for Agent SDK launch
 - Draft posts for LinkedIn, Twitter, Instagram
 - Design engagement strategy (polls, Q&A, testimonials)
@@ -143,6 +154,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: Content calendar with 30+ posts drafted
 
 **Task E: Press Release Draft**
+
 - Write press release for Agent SDK launch
 - Highlight innovation (human-in-loop AI, Shopify-native)
 - Include quotes from CEO/operators
@@ -150,6 +162,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: Press release draft
 
 **Task F: Partner/Affiliate Messaging**
+
 - Create partner announcement for Agent SDK
 - Document co-marketing opportunities
 - Draft affiliate promotion materials
@@ -157,6 +170,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: Partner messaging package
 
 **Task G: Customer Success Story Framework**
+
 - Create interview guide for pilot customers
 - Design metrics tracking for success stories
 - Draft case study template
@@ -164,6 +178,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: Success story framework
 
 **Task H: Internal Launch Communication**
+
 - Draft all-hands announcement
 - Create celebration plan for launch day
 - Design internal recognition for team
@@ -171,6 +186,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: Internal communication plan
 
 **Task I: SEO/Content Strategy**
+
 - Create blog post series plan (AI support, automation, efficiency)
 - Draft 3 blog posts about Agent SDK features
 - Optimize for SEO keywords
@@ -178,6 +194,7 @@ Execute Tasks 2-6, plus A and B. All ready to go.
 - Evidence: 3 blog post drafts, SEO strategy
 
 **Task J: Email Campaign Series**
+
 - Design email sequence for Agent SDK announcement (5 emails)
 - Create segmentation strategy (customers, prospects, partners)
 - Draft subject lines and preview text
@@ -193,30 +210,35 @@ Execute C-J in priority order or parallel - all ready for execution.
 **Task K-Z: Comprehensive Marketing Campaign Development**
 
 **K-N: Content Creation** (4 tasks)
+
 - K: Create 10 LinkedIn thought leadership articles about AI + support automation
 - L: Draft 5 customer education webinar scripts
 - M: Write 15 help center articles about Agent SDK features
 - N: Create operator success story interview templates
 
 **O-R: Digital Marketing** (4 tasks)
+
 - O: Design complete Google Ads campaign (search + display)
 - P: Create retargeting campaign strategy
 - Q: Develop influencer partnership program for Shopify ecosystem
 - R: Build affiliate marketing program with commission structure
 
 **S-V: Community & PR** (4 tasks)
+
 - S: Create community engagement program (forums, Discord, Slack)
 - T: Draft analyst briefing materials (Gartner, Forrester)
 - U: Design customer advisory board program
 - V: Create press kit with media assets
 
 **W-Z: Brand & Positioning** (4 tasks)
+
 - W: Develop brand style guide for all Agent SDK communications
 - X: Create competitive battle cards for sales team (vs 10 competitors)
 - Y: Design customer testimonial collection and showcase program
 - Z: Build ROI calculator tool for prospects
 
 **AA-AE: Launch Mechanics** (5 tasks)
+
 - AA: Create detailed launch day runbook (hour-by-hour)
 - AB: Design post-launch communication cadence (D+1, D+7, D+30)
 - AC: Build customer adoption tracking dashboard
@@ -236,24 +258,28 @@ Execute K-AE in any order. Total: 34 tasks, ~20 hours of marketing work.
 **Updated Tasks** (Hot Rodan Dashboard Launch):
 
 **Task AE-1**: Hot Rodan Launch Email (Internal)
+
 - Email to Hot Rodan team announcing dashboard
 - Position: "AI co-pilot for $10MM growth"
 - Evidence: Email draft ready
 - Timeline: 1-2 hours
 
 **Task AE-2**: Dashboard One-Pager
+
 - 1-page overview for Hot Rodan operators
 - 5 tiles explained simply
 - Evidence: One-pager PDF
 - Timeline: 1-2 hours
 
 **Task AE-3**: Hot Rod Audience Messaging
+
 - Messaging for automotive aftermarket audience
 - Language for mechanics/enthusiasts
 - Evidence: Messaging guide
 - Timeline: 1-2 hours
 
 **Task AE-4**: Operator FAQ
+
 - Plain English explanations
 - Address AI concerns
 - Evidence: FAQ document
@@ -266,6 +292,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 ## 📋 NEXT WAVE - DEEP LAUNCH MARKETING (Tasks AE-5 to AE-14)
 
 **Task AE-5**: Hot Rodan Customer Success Stories
+
 - Interview Hot Rodan operators about current pain points
 - Document time wasted on manual tasks dashboard will solve
 - Create before/after scenarios
@@ -273,6 +300,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-6**: Hot Rod Community Engagement Plan
+
 - Identify hot rod forums, Facebook groups, subreddits
 - Create engagement strategy for automotive community
 - Draft community posts about dashboard
@@ -280,6 +308,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-7**: SEO Content for Hot Rodan Growth
+
 - Write blog posts: "10x Your Hot Rod Shop Revenue"
 - Create landing page copy for dashboard
 - Automotive industry SEO keywords
@@ -287,6 +316,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 3-4 hours
 
 **Task AE-8**: Video Marketing Content
+
 - Script for Hot Rodan dashboard demo video
 - Storyboard for feature highlights
 - Automotive enthusiast language
@@ -294,6 +324,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-9**: Email Campaign Series
+
 - Welcome sequence for new Hot Rodan operators
 - Feature spotlight emails (one per tile)
 - Success metric sharing
@@ -301,6 +332,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 3-4 hours
 
 **Task AE-10**: Social Media Content Calendar
+
 - 30 days of Hot Rodan dashboard posts
 - Mix: Tips, features, behind-scenes, customer wins
 - Automotive industry relevant content
@@ -308,6 +340,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-11**: Partner/Supplier Messaging
+
 - Messaging for Hot Rodan's suppliers
 - How dashboard improves ordering accuracy
 - Strengthens supplier relationships
@@ -315,6 +348,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 1-2 hours
 
 **Task AE-12**: Trade Show/Event Materials
+
 - Hot rod show booth materials
 - SEMA show presence planning
 - Industry event marketing
@@ -322,6 +356,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-13**: Press Release and Media Kit
+
 - Press release for Hot Rodan dashboard launch
 - Media kit with screenshots, quotes, stats
 - Industry publication outreach list
@@ -329,6 +364,7 @@ Execute AE-1 to AE-4 first (Hot Rodan-specific). Previous tasks remain for post-
 - Timeline: 2-3 hours
 
 **Task AE-14**: Referral and Growth Program
+
 - Operator referral program design
 - Incentives for Hot Rodan team adoption
 - Word-of-mouth growth tactics
@@ -342,6 +378,7 @@ Execute AE-5 to AE-14. Total: ~50-55 hours Hot Rodan marketing.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 30 Tasks)
 
 **Task AF-AO: Growth Marketing** (10 tasks)
+
 - AF: Design viral growth loops and mechanics
 - AG: Create referral marketing program with incentives
 - AH: Plan influencer marketing strategy
@@ -354,6 +391,7 @@ Execute AE-5 to AE-14. Total: ~50-55 hours Hot Rodan marketing.
 - AO: Design retention marketing automation
 
 **Task AP-AY: Channel Strategy** (10 tasks)
+
 - AP: Create direct sales enablement program
 - AQ: Design inside sales playbook
 - AR: Plan field marketing strategy
@@ -366,6 +404,7 @@ Execute AE-5 to AE-14. Total: ~50-55 hours Hot Rodan marketing.
 - AY: Implement marketing attribution modeling
 
 **Task AZ-BI: Brand & Creative** (10 tasks)
+
 - AZ: Design brand evolution and refresh program
 - BA: Create creative asset production system
 - BB: Plan brand awareness campaigns

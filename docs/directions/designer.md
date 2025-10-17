@@ -1,113 +1,61 @@
-# Direction: designer
+# Designer Direction
 
-> Location: `docs/directions/designer.md`
-> Owner: manager
-> Version: 2.0
-> Effective: 2025-10-15
+- **Owner:** Manager Sub-Agent
+- **Effective:** 2025-10-17
+- **Version:** 1.0
 
----
+## Objective
 
-## 1) Purpose
+Deliver launch-ready dark mode tokens, diagnostics panel assets, and Publer workflow polish with complete feedback hygiene and accessibility coverage.
 
-Create **UI/UX specs and design documentation** for dashboard tiles and approvals workflow, ensuring Polaris compliance.
+## Current Tasks
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+1. Finalize dark mode token updates for dashboard and approvals surfaces; attach the Figma snapshot link.
+2. Deliver the diagnostics panel design for the health tile (Chatwoot/Publer) and include annotations.
+3. Produce Publer workflow UI specs for tabs and first-comment area in `docs/design/dashboard-tiles.md`.
+4. Update the responsive layouts for the idea pool tile and approvals drawer; confirm breakpoints.
+5. Provide motion guidelines for tile skeletons/loading states and attach the reference.
+6. Collaborate with the Engineer on AppProvider harness visual checks and log findings.
+7. Refresh the iconography set for inventory alerts and supply it to the assets folder.
+8. Create empty and error state illustrations for the idea pool and Publer screens; include the assets path.
+9. Audit accessibility color contrast for dark mode tokens and attach the report.
+10. Update the copy deck with tone guidance aligned to CEO feedback.
+11. Prepare the handoff checklist in `docs/specs/stakeholder_comms.md` for designers to engineers.
+12. Coordinate with Product to validate user journeys map to the design specs.
+13. Document the design QA procedure in the design section of `docs/runbooks/qa_review_checklist.md`.
+14. Produce the asset bundle for launch (logos, badges) and place it in `artifacts/design/`.
+15. Review the Publer adapter UI after integration to ensure alignment and note adjustments.
+16. Write feedback to `feedback/designer/2025-10-17.md` and clean up stray markdown files.
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P1 - Design Support
+## Constraints
 
-### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `codex exec`, `rg`, `npx prettier`
+- **Touched Directories:** `docs/directions/designer.md`
+- **Budget:** ≤ 30 minutes runtime, ≤ 4,000 tokens, ≤ 3 files modified/staged
+- **Guardrails:** Apply this template, keep edits scoped to the designer direction file, attach logs or screenshots for required checks in the PR description, never commit secrets, follow escalation rules in `docs/RULES.md`
 
-### Task List (9 tasks):
+## Definition of Done
 
-**1. ✅ Approval Queue UI Specs (COMPLETE)**
+- [ ] Objective satisfied with dark mode, diagnostics, and Publer deliverables ready for handoff
+- [ ] `npm run fmt` and `npm run lint` executed with proof attached
+- [ ] `npm run test:ci` (or task-specific suite) executed with proof attached
+- [ ] `npm run scan` (secrets) executed with a clean report attached
+- [ ] Related docs and runbooks updated when behavior or specs change
+- [ ] Feedback entry written to `feedback/designer/2025-10-17.md` and stray markdown files cleaned
 
-**2. Dashboard Tile Design System (NEXT - 4h)**
-- Design specs for all 7 tiles
-- Consistent layout, spacing, typography
-- Allowed paths: `docs/design/dashboard-tiles.md`
+## Risk & Rollback
 
-**3. Responsive Breakpoints (2h)**
-- Mobile (320-767px), Tablet (768-1023px), Desktop (1024+)
-- Breakpoint documentation
-- Allowed paths: `docs/design/responsive-breakpoints.md`
+- **Risk Level:** Low — design misalignment may delay UI polish but not core functionality
+- **Rollback Plan:** `git checkout -- docs/directions/designer.md` before staging or revert the direction update prior to merge
+- **Monitoring:** Track dark mode token adoption, diagnostics panel readiness, and Publer workflow alignment during design reviews
 
-**4. Loading States and Skeletons (2h)**
-- Skeleton screens for all components
-- Loading animations
-- Allowed paths: `docs/design/loading-states.md`
+## Links & References
 
-**5. Error States and Empty States (2h)**
-- Error messages, empty state illustrations
-- User guidance
-- Allowed paths: `docs/design/error-states.md`
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/designer/2025-10-17.md`
+- Specs / Runbooks: `docs/design/dashboard-tiles.md`, `docs/specs/frontend_overview.md`, `docs/specs/stakeholder_comms.md`, `docs/runbooks/qa_review_checklist.md`, `artifacts/design/`
 
-**6. Accessibility Annotations (3h)**
-- WCAG 2.1 AA requirements
-- ARIA labels, keyboard navigation
-- Allowed paths: `docs/design/accessibility.md`
+## Change Log
 
-**7. Polaris Component Usage Guide (2h)**
-- When to use each component
-- Best practices
-- Allowed paths: `docs/design/polaris-guide.md`
-
-**8. Design Tokens Documentation (2h)**
-- Colors, spacing, typography tokens
-- Allowed paths: `docs/design/design-tokens.md`
-
-**9. Handoff Specs for All Features (3h)**
-- Complete handoff docs for Engineer
-- Allowed paths: `docs/design/HANDOFF-*.md`
-
-### Current Focus: Task 2 (Dashboard Tile Design)
-
-### Blockers: None
-
-### Critical:
-- ✅ Use Shopify MCP to verify Polaris components
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ WCAG 2.1 AA compliance
-
----
-
-## Changelog
-* 2.0 (2025-10-15) — ACTIVE: Dashboard and approvals design specs
-* 1.0 (2025-10-15) — Placeholder: Awaiting feature requests
-
-### Feedback Process (Canonical)
-- Use exactly: \ for today
-- Append evidence and tool outputs through the day
-- On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Design tokens (spacing/color/typography)
-2) Tile card variants (success/warn/error)
-3) Approvals Drawer layout spec
-4) Drawer microcopy + grade rubric hints
-5) Tile iconography set
-6) Mobile-first tile layouts
-7) Tablet grid templates
-8) Desktop grid templates
-9) Empty state designs per tile
-10) Error state designs per tile
-11) Loading skeletons per tile
-12) Interactive states (hover/focus/active)
-13) Components: Badge/Tag/Chip spec
-14) Components: Pagination spec
-15) Components: Filter bar spec
-16) A11y annotations per component
-17) High-fidelity prototypes (Figma)
-18) Export assets pipeline
-19) Screenshot baselines for UI diffs
-20) Dark mode token adjustments
-21) Typography scale & rhythm
-22) Chart styles (sparkline/line/bar)
-23) Drawer forms validation styles
-24) UX copy style guide
-25) Design QA checklist
+- 2025-10-17: Version 1.0 – Template rewrite with dark mode, diagnostics, and Publer launch tasks

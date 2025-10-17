@@ -1,5 +1,5 @@
 ---
-epoch: 2025.10.E1  
+epoch: 2025.10.E1
 doc: docs/data/data_quality_framework.md
 owner: data
 last_reviewed: 2025-10-11
@@ -15,26 +15,31 @@ Automated data quality validation rules and monitoring for Agent SDK tables to e
 ## Quality Dimensions
 
 ### 1. Completeness
+
 - **Definition:** All required fields populated
 - **Target:** >99% completeness
 - **Validation:** Check for NULL values in required columns
 
 ### 2. Accuracy
+
 - **Definition:** Data values within expected ranges
 - **Target:** >99.5% accuracy
 - **Validation:** Check constraints, referential integrity
 
 ### 3. Consistency
+
 - **Definition:** Data relationships and timestamps logical
 - **Target:** 100% consistency
 - **Validation:** Cross-table validation, temporal logic
 
 ### 4. Timeliness
+
 - **Definition:** Data freshness and update frequency
 - **Target:** <1 minute lag for operational data
 - **Validation:** Check last_updated_at timestamps
 
 ### 5. Uniqueness
+
 - **Definition:** No duplicate records
 - **Target:** 100% uniqueness on primary/unique keys
 - **Validation:** Check for duplicate conversation_ids
@@ -71,8 +76,8 @@ WHERE status IN ('approved', 'rejected') AND approved_by IS NULL;
 -- Rule 1: Completeness
 SELECT COUNT(*) as completeness_violations
 FROM agent_feedback
-WHERE conversation_id IS NULL 
-   OR input_text IS NULL 
+WHERE conversation_id IS NULL
+   OR input_text IS NULL
    OR model_draft IS NULL;
 
 -- Rule 2: Rubric scores in range (1-5)
@@ -113,21 +118,21 @@ WHERE approved = true AND human_edited = true;
 
 ```sql
 CREATE OR REPLACE VIEW v_data_quality_report AS
-SELECT 
+SELECT
   'agent_approvals' as table_name,
   (SELECT COUNT(*) FROM agent_approvals WHERE conversation_id IS NULL OR serialized IS NULL) as completeness_violations,
   (SELECT COUNT(*) FROM agent_approvals WHERE status NOT IN ('pending', 'approved', 'rejected', 'expired')) as accuracy_violations,
   (SELECT COUNT(*) FROM agent_approvals WHERE updated_at < created_at) as consistency_violations,
   NOW() as checked_at
 UNION ALL
-SELECT 
+SELECT
   'agent_feedback',
   (SELECT COUNT(*) FROM agent_feedback WHERE conversation_id IS NULL OR input_text IS NULL OR model_draft IS NULL),
   (SELECT COUNT(*) FROM agent_feedback WHERE (rubric->>'clarity')::INTEGER NOT BETWEEN 1 AND 5),
   (SELECT COUNT(*) FROM agent_feedback WHERE safe_to_send IS NOT NULL AND annotator IS NULL),
   NOW()
 UNION ALL
-SELECT 
+SELECT
   'agent_queries',
   (SELECT COUNT(*) FROM agent_queries WHERE conversation_id IS NULL OR query IS NULL OR result IS NULL),
   (SELECT COUNT(*) FROM agent_queries WHERE latency_ms < 0 OR latency_ms > 60000),
@@ -145,13 +150,13 @@ SELECT
 # Run: Daily at 05:00 UTC
 
 psql $DATABASE_URL << 'EOF'
-SELECT 
+SELECT
   table_name,
   completeness_violations,
   accuracy_violations,
   consistency_violations,
-  CASE 
-    WHEN completeness_violations + accuracy_violations + consistency_violations = 0 
+  CASE
+    WHEN completeness_violations + accuracy_violations + consistency_violations = 0
     THEN '✅ PASS'
     ELSE '❌ FAIL'
   END as status
@@ -162,10 +167,10 @@ DO $$
 DECLARE
   v_total_violations INTEGER;
 BEGIN
-  SELECT SUM(completeness_violations + accuracy_violations + consistency_violations) 
+  SELECT SUM(completeness_violations + accuracy_violations + consistency_violations)
   INTO v_total_violations
   FROM v_data_quality_report;
-  
+
   IF v_total_violations > 0 THEN
     INSERT INTO observability_logs (level, message, metadata)
     VALUES (
@@ -182,4 +187,3 @@ EOF
 
 **Status:** Framework defined, ready for implementation  
 **Next:** Create quality monitoring scripts and alerts
-

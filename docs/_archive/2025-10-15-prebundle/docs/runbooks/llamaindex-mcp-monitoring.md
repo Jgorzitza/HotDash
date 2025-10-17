@@ -20,9 +20,10 @@ expires: 2025-10-25
 This document defines monitoring, alerting, and incident response procedures for the LlamaIndex MCP server. The strategy ensures early detection of performance degradation, proactive capacity planning, and rapid incident resolution.
 
 **Success Criteria:**
+
 - 99%+ uptime
 - <500ms P95 query latency
-- >75% cache hit rate
+- > 75% cache hit rate
 - <1% error rate
 - <5 minute incident detection time
 - <15 minute incident resolution time
@@ -75,116 +76,116 @@ This document defines monitoring, alerting, and incident response procedures for
 **File:** `apps/llamaindex-mcp-server/src/monitoring/metrics.ts`
 
 ```typescript
-import { Registry, Counter, Histogram, Gauge } from 'prom-client';
+import { Registry, Counter, Histogram, Gauge } from "prom-client";
 
 export const register = new Registry();
 
 // === Query Performance ===
 export const queryLatency = new Histogram({
-  name: 'llamaindex_query_latency_ms',
-  help: 'Query latency in milliseconds',
-  labelNames: ['cached'],
+  name: "llamaindex_query_latency_ms",
+  help: "Query latency in milliseconds",
+  labelNames: ["cached"],
   buckets: [50, 100, 250, 500, 1000, 2500, 5000, 10000],
   registers: [register],
 });
 
 export const queryTotal = new Counter({
-  name: 'llamaindex_query_total',
-  help: 'Total number of queries',
-  labelNames: ['status'], // 'success' | 'error'
+  name: "llamaindex_query_total",
+  help: "Total number of queries",
+  labelNames: ["status"], // 'success' | 'error'
   registers: [register],
 });
 
 // === Cache Performance ===
 export const cacheHits = new Counter({
-  name: 'llamaindex_cache_hits_total',
-  help: 'Total number of cache hits',
+  name: "llamaindex_cache_hits_total",
+  help: "Total number of cache hits",
   registers: [register],
 });
 
 export const cacheMisses = new Counter({
-  name: 'llamaindex_cache_misses_total',
-  help: 'Total number of cache misses',
+  name: "llamaindex_cache_misses_total",
+  help: "Total number of cache misses",
   registers: [register],
 });
 
 export const cacheSize = new Gauge({
-  name: 'llamaindex_cache_size',
-  help: 'Current number of entries in cache',
+  name: "llamaindex_cache_size",
+  help: "Current number of entries in cache",
   registers: [register],
 });
 
 export const cacheHitRate = new Gauge({
-  name: 'llamaindex_cache_hit_rate',
-  help: 'Cache hit rate (0-1)',
+  name: "llamaindex_cache_hit_rate",
+  help: "Cache hit rate (0-1)",
   registers: [register],
 });
 
 // === Tool Execution ===
 export const toolCalls = new Counter({
-  name: 'llamaindex_tool_calls_total',
-  help: 'Total number of tool calls',
-  labelNames: ['tool', 'status'], // tool: query_support|refresh_index|insight_report
+  name: "llamaindex_tool_calls_total",
+  help: "Total number of tool calls",
+  labelNames: ["tool", "status"], // tool: query_support|refresh_index|insight_report
   registers: [register],
 });
 
 export const toolLatency = new Histogram({
-  name: 'llamaindex_tool_latency_ms',
-  help: 'Tool execution latency',
-  labelNames: ['tool'],
+  name: "llamaindex_tool_latency_ms",
+  help: "Tool execution latency",
+  labelNames: ["tool"],
   buckets: [100, 500, 1000, 5000, 10000, 30000, 60000],
   registers: [register],
 });
 
 // === Index Health ===
 export const indexAge = new Gauge({
-  name: 'llamaindex_index_age_seconds',
-  help: 'Age of the current index in seconds',
+  name: "llamaindex_index_age_seconds",
+  help: "Age of the current index in seconds",
   registers: [register],
 });
 
 export const indexDocumentCount = new Gauge({
-  name: 'llamaindex_index_document_count',
-  help: 'Number of documents in the index',
+  name: "llamaindex_index_document_count",
+  help: "Number of documents in the index",
   registers: [register],
 });
 
 export const indexLastRefresh = new Gauge({
-  name: 'llamaindex_index_last_refresh_timestamp',
-  help: 'Unix timestamp of last index refresh',
+  name: "llamaindex_index_last_refresh_timestamp",
+  help: "Unix timestamp of last index refresh",
   registers: [register],
 });
 
 // === System Resources ===
 export const heapUsed = new Gauge({
-  name: 'llamaindex_heap_used_bytes',
-  help: 'Node.js heap usage in bytes',
+  name: "llamaindex_heap_used_bytes",
+  help: "Node.js heap usage in bytes",
   registers: [register],
 });
 
 export const eventLoopLag = new Histogram({
-  name: 'llamaindex_event_loop_lag_ms',
-  help: 'Event loop lag in milliseconds',
+  name: "llamaindex_event_loop_lag_ms",
+  help: "Event loop lag in milliseconds",
   buckets: [1, 5, 10, 50, 100, 500],
   registers: [register],
 });
 
 // === Error Tracking ===
 export const errorTotal = new Counter({
-  name: 'llamaindex_errors_total',
-  help: 'Total number of errors',
-  labelNames: ['type'], // 'cli_timeout' | 'cli_error' | 'validation_error' | 'unknown'
+  name: "llamaindex_errors_total",
+  help: "Total number of errors",
+  labelNames: ["type"], // 'cli_timeout' | 'cli_error' | 'validation_error' | 'unknown'
   registers: [register],
 });
 
 // Update cache metrics periodically
 export function updateCacheMetrics(cache: any) {
   cacheSize.set(cache.size);
-  
-  const hits = cacheHits['hashMap']['']['value'] || 0;
-  const misses = cacheMisses['hashMap']['']['value'] || 0;
+
+  const hits = cacheHits["hashMap"][""]["value"] || 0;
+  const misses = cacheMisses["hashMap"][""]["value"] || 0;
   const total = hits + misses;
-  
+
   if (total > 0) {
     cacheHitRate.set(hits / total);
   }
@@ -194,7 +195,7 @@ export function updateCacheMetrics(cache: any) {
 export function updateSystemMetrics() {
   const mem = process.memoryUsage();
   heapUsed.set(mem.heapUsed);
-  
+
   // Measure event loop lag
   const start = Date.now();
   setImmediate(() => {
@@ -205,8 +206,8 @@ export function updateSystemMetrics() {
 
 // Metrics endpoint handler
 export function metricsHandler(req, res) {
-  res.set('Content-Type', register.contentType);
-  register.metrics().then(metrics => {
+  res.set("Content-Type", register.contentType);
+  register.metrics().then((metrics) => {
     res.end(metrics);
   });
 }
@@ -235,7 +236,7 @@ export function metricsHandler(req, res) {
   "timestamp": "2025-10-11T14:00:00Z",
   "uptime_seconds": 3600,
   "version": "1.0.0",
-  
+
   "checks": {
     "cli_available": true,
     "index_present": true,
@@ -243,7 +244,7 @@ export function metricsHandler(req, res) {
     "cache_operational": true,
     "memory_healthy": true
   },
-  
+
   "metrics": {
     "cache_size": 234,
     "cache_hit_rate": 0.78,
@@ -253,7 +254,7 @@ export function metricsHandler(req, res) {
     "index_age_hours": 2.5,
     "heap_used_mb": 512
   },
-  
+
   "warnings": [
     "Index older than 24 hours"
   ]
@@ -271,7 +272,7 @@ export async function healthCheck(req, res) {
     cache_operational: checkCacheOperational(),
     memory_healthy: checkMemoryHealthy(), // <80% heap
   };
-  
+
   const metrics = {
     cache_size: queryCache.size,
     cache_hit_rate: calculateCacheHitRate(),
@@ -281,39 +282,40 @@ export async function healthCheck(req, res) {
     index_age_hours: await getIndexAge(),
     heap_used_mb: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
   };
-  
+
   const warnings = [];
-  
+
   if (metrics.index_age_hours > 24) {
-    warnings.push('Index older than 24 hours');
+    warnings.push("Index older than 24 hours");
   }
-  
+
   if (metrics.cache_hit_rate < 0.7) {
-    warnings.push('Cache hit rate below 70%');
+    warnings.push("Cache hit rate below 70%");
   }
-  
+
   if (metrics.p95_latency_last_hour_ms > 500) {
-    warnings.push('P95 latency exceeds 500ms');
+    warnings.push("P95 latency exceeds 500ms");
   }
-  
-  const failedChecks = Object.values(checks).filter(v => v === false).length;
-  
-  let status: 'healthy' | 'degraded' | 'unhealthy';
+
+  const failedChecks = Object.values(checks).filter((v) => v === false).length;
+
+  let status: "healthy" | "degraded" | "unhealthy";
   if (failedChecks === 0 && warnings.length === 0) {
-    status = 'healthy';
+    status = "healthy";
   } else if (failedChecks < 2) {
-    status = 'degraded';
+    status = "degraded";
   } else {
-    status = 'unhealthy';
+    status = "unhealthy";
   }
-  
-  const statusCode = status === 'healthy' ? 200 : (status === 'degraded' ? 200 : 503);
-  
+
+  const statusCode =
+    status === "healthy" ? 200 : status === "degraded" ? 200 : 503;
+
   res.status(statusCode).json({
     status,
     timestamp: new Date().toISOString(),
     uptime_seconds: Math.round(process.uptime()),
-    version: process.env.npm_package_version || '1.0.0',
+    version: process.env.npm_package_version || "1.0.0",
     checks,
     metrics,
     warnings,
@@ -333,33 +335,33 @@ export async function healthCheck(req, res) {
 
 ### Critical Alerts (Page on-call)
 
-| Alert | Condition | Threshold | Action |
-|-------|-----------|-----------|--------|
-| **MCP Server Down** | Health check returns 503 | 2 consecutive failures | Page engineer immediately |
-| **High Error Rate** | Error rate >10% | Over 5 minutes | Page engineer |
-| **Extreme Latency** | P95 >1000ms | Over 5 minutes | Page engineer |
-| **Index Missing** | index_present = false | Immediate | Page engineer |
-| **Memory Exhaustion** | Heap >90% | Over 2 minutes | Page engineer, auto-restart |
+| Alert                 | Condition                | Threshold              | Action                      |
+| --------------------- | ------------------------ | ---------------------- | --------------------------- |
+| **MCP Server Down**   | Health check returns 503 | 2 consecutive failures | Page engineer immediately   |
+| **High Error Rate**   | Error rate >10%          | Over 5 minutes         | Page engineer               |
+| **Extreme Latency**   | P95 >1000ms              | Over 5 minutes         | Page engineer               |
+| **Index Missing**     | index_present = false    | Immediate              | Page engineer               |
+| **Memory Exhaustion** | Heap >90%                | Over 2 minutes         | Page engineer, auto-restart |
 
 ### Warning Alerts (Slack notification)
 
-| Alert | Condition | Threshold | Action |
-|-------|-----------|-----------|--------|
-| **Degraded Performance** | P95 >500ms | Over 10 minutes | Slack #hotdash-alerts |
-| **Low Cache Hit Rate** | <70% | Over 15 minutes | Slack #hotdash-alerts |
-| **Moderate Error Rate** | Error rate >5% | Over 5 minutes | Slack #hotdash-alerts |
-| **Stale Index** | Index age >24 hours | Immediate | Slack #hotdash-alerts |
-| **High Memory Usage** | Heap >80% | Over 5 minutes | Slack #hotdash-alerts |
-| **Event Loop Lag** | Lag >100ms P95 | Over 5 minutes | Slack #hotdash-alerts |
+| Alert                    | Condition           | Threshold       | Action                |
+| ------------------------ | ------------------- | --------------- | --------------------- |
+| **Degraded Performance** | P95 >500ms          | Over 10 minutes | Slack #hotdash-alerts |
+| **Low Cache Hit Rate**   | <70%                | Over 15 minutes | Slack #hotdash-alerts |
+| **Moderate Error Rate**  | Error rate >5%      | Over 5 minutes  | Slack #hotdash-alerts |
+| **Stale Index**          | Index age >24 hours | Immediate       | Slack #hotdash-alerts |
+| **High Memory Usage**    | Heap >80%           | Over 5 minutes  | Slack #hotdash-alerts |
+| **Event Loop Lag**       | Lag >100ms P95      | Over 5 minutes  | Slack #hotdash-alerts |
 
 ### Informational Alerts (Dashboard only)
 
-| Metric | Threshold | Display |
-|--------|-----------|---------|
-| Cache Hit Rate | <75% | Yellow indicator |
-| P95 Latency | 400-500ms | Yellow indicator |
-| Error Rate | 1-5% | Yellow indicator |
-| Request Rate | Unusual spikes | Graph annotation |
+| Metric         | Threshold      | Display          |
+| -------------- | -------------- | ---------------- |
+| Cache Hit Rate | <75%           | Yellow indicator |
+| P95 Latency    | 400-500ms      | Yellow indicator |
+| Error Rate     | 1-5%           | Yellow indicator |
+| Request Rate   | Unusual spikes | Graph annotation |
 
 ---
 
@@ -381,7 +383,7 @@ groups:
         annotations:
           summary: "LlamaIndex MCP server is down"
           description: "MCP server has been unreachable for 1 minute"
-      
+
       - alert: HighErrorRate
         expr: |
           rate(llamaindex_errors_total[5m]) / rate(llamaindex_query_total[5m]) > 0.10
@@ -391,7 +393,7 @@ groups:
         annotations:
           summary: "High error rate detected"
           description: "Error rate is {{ $value | humanizePercentage }} over last 5 minutes"
-      
+
       - alert: ExtremeLatency
         expr: |
           histogram_quantile(0.95, rate(llamaindex_query_latency_ms_bucket[5m])) > 1000
@@ -401,7 +403,7 @@ groups:
         annotations:
           summary: "Extreme query latency detected"
           description: "P95 latency is {{ $value }}ms, exceeding 1000ms threshold"
-      
+
       - alert: IndexMissing
         expr: llamaindex_index_document_count == 0
         for: 1m
@@ -410,7 +412,7 @@ groups:
         annotations:
           summary: "Vector index is missing or empty"
           description: "Index has 0 documents, queries will fail"
-      
+
       # === Warning Alerts ===
       - alert: DegradedPerformance
         expr: |
@@ -421,7 +423,7 @@ groups:
         annotations:
           summary: "Query performance degraded"
           description: "P95 latency is {{ $value }}ms, exceeding 500ms target"
-      
+
       - alert: LowCacheHitRate
         expr: llamaindex_cache_hit_rate < 0.70
         for: 15m
@@ -430,7 +432,7 @@ groups:
         annotations:
           summary: "Cache hit rate below target"
           description: "Cache hit rate is {{ $value | humanizePercentage }}, target is 75%"
-      
+
       - alert: StaleIndex
         expr: time() - llamaindex_index_last_refresh_timestamp > 86400
         for: 1m
@@ -439,7 +441,7 @@ groups:
         annotations:
           summary: "Vector index is stale"
           description: "Index hasn't been refreshed in 24+ hours"
-      
+
       - alert: HighMemoryUsage
         expr: llamaindex_heap_used_bytes / process_resident_memory_bytes > 0.80
         for: 5m
@@ -519,7 +521,7 @@ vector(500)
 
 ```promql
 # Hit rate
-sum(rate(llamaindex_cache_hits_total[5m])) / 
+sum(rate(llamaindex_cache_hits_total[5m])) /
 (sum(rate(llamaindex_cache_hits_total[5m])) + sum(rate(llamaindex_cache_misses_total[5m])))
 ```
 
@@ -563,6 +565,7 @@ sum(rate(llamaindex_cache_hits_total[5m])) /
 ### Key Events to Log
 
 **Query Lifecycle:**
+
 - `query_received` (INFO)
 - `cache_hit` or `cache_miss` (INFO)
 - `cli_execution_started` (DEBUG)
@@ -571,17 +574,20 @@ sum(rate(llamaindex_cache_hits_total[5m])) /
 - `query_error` (ERROR)
 
 **Cache Operations:**
+
 - `cache_entry_added` (DEBUG)
 - `cache_entry_evicted` (DEBUG)
 - `cache_cleared` (INFO)
 
 **Index Operations:**
+
 - `index_refresh_started` (INFO)
 - `index_refresh_completed` (INFO)
 - `index_refresh_failed` (ERROR)
 - `index_staleness_warning` (WARN)
 
 **System Events:**
+
 - `server_started` (INFO)
 - `server_shutdown` (INFO)
 - `health_check_failed` (WARN)
@@ -600,11 +606,13 @@ sum(rate(llamaindex_cache_hits_total[5m])) /
 ### Severity Levels
 
 #### SEV-1 (Critical)
+
 - MCP server completely down
 - Error rate >10%
 - P95 latency >1000ms sustained
 
 **Response:**
+
 1. Page on-call engineer immediately
 2. Check Fly.io status
 3. Rollback deployment if recent change
@@ -613,11 +621,13 @@ sum(rate(llamaindex_cache_hits_total[5m])) /
 6. Post-incident review required
 
 #### SEV-2 (Warning)
+
 - Degraded performance (P95 >500ms)
 - Cache hit rate <70%
 - Stale index (>24 hours)
 
 **Response:**
+
 1. Slack notification to #hotdash-alerts
 2. Investigate logs for errors
 3. Check cache configuration
@@ -625,11 +635,13 @@ sum(rate(llamaindex_cache_hits_total[5m])) /
 5. Monitor for escalation to SEV-1
 
 #### SEV-3 (Informational)
+
 - Minor performance variations
 - Low request volume
 - Single failed health check
 
 **Response:**
+
 1. Dashboard annotation
 2. Review during next sprint
 3. No immediate action required
@@ -670,24 +682,24 @@ curl -X POST https://hotdash-llamaindex-mcp.fly.dev/admin/cache/clear \
 
 ### Expected Performance Targets
 
-| Metric | Target | Acceptable | Critical |
-|--------|--------|------------|----------|
-| **P50 Latency** | <250ms | <350ms | >500ms |
-| **P95 Latency** | <500ms | <750ms | >1000ms |
-| **P99 Latency** | <1000ms | <2000ms | >5000ms |
-| **Cache Hit Rate** | >75% | >70% | <60% |
-| **Error Rate** | <0.5% | <1% | >5% |
-| **Availability** | >99.5% | >99% | <95% |
-| **Memory Usage** | <70% | <80% | >90% |
+| Metric             | Target  | Acceptable | Critical |
+| ------------------ | ------- | ---------- | -------- |
+| **P50 Latency**    | <250ms  | <350ms     | >500ms   |
+| **P95 Latency**    | <500ms  | <750ms     | >1000ms  |
+| **P99 Latency**    | <1000ms | <2000ms    | >5000ms  |
+| **Cache Hit Rate** | >75%    | >70%       | <60%     |
+| **Error Rate**     | <0.5%   | <1%        | >5%      |
+| **Availability**   | >99.5%  | >99%       | <95%     |
+| **Memory Usage**   | <70%    | <80%       | >90%     |
 
 ### Load Capacity
 
-| Scenario | Expected RPS | P95 Latency |
-|----------|--------------|-------------|
-| **Low Load** | <50 req/s | <200ms |
-| **Normal Load** | 50-200 req/s | <400ms |
-| **High Load** | 200-500 req/s | <500ms |
-| **Peak Load** | >500 req/s | Scale up required |
+| Scenario        | Expected RPS  | P95 Latency       |
+| --------------- | ------------- | ----------------- |
+| **Low Load**    | <50 req/s     | <200ms            |
+| **Normal Load** | 50-200 req/s  | <400ms            |
+| **High Load**   | 200-500 req/s | <500ms            |
+| **Peak Load**   | >500 req/s    | Scale up required |
 
 ---
 
@@ -727,16 +739,19 @@ curl -X POST https://hotdash-llamaindex-mcp.fly.dev/admin/cache/clear \
 ## Contact Information
 
 **On-Call Rotation:**
+
 - Primary: Engineer agent (Slack @engineer)
 - Backup: AI agent (Slack @ai)
 - Escalation: Manager (Slack @manager)
 
 **Alert Channels:**
+
 - Critical: PagerDuty → On-call phone
 - Warning: Slack #hotdash-alerts
 - Info: Grafana dashboard
 
 **Monitoring Endpoints:**
+
 - Grafana: `https://grafana.hotdash.internal/d/llamaindex-mcp`
 - Prometheus: `https://prometheus.hotdash.internal`
 - Health Check: `https://hotdash-llamaindex-mcp.fly.dev/health`
@@ -746,4 +761,3 @@ curl -X POST https://hotdash-llamaindex-mcp.fly.dev/admin/cache/clear \
 **Document Status:** Implementation Ready  
 **Next Review:** 2025-10-18  
 **Owner:** AI Agent
-

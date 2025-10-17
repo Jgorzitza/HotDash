@@ -10,12 +10,14 @@ created: 2025-10-11
 ## Task 18: Design Token Management System
 
 **Token Categories**:
+
 - Colors (surface, text, status, borders)
 - Spacing (050-1200 scale)
 - Typography (size, weight, line-height)
 - Effects (shadows, radius, motion)
 
 **Management Process**:
+
 1. Propose new token in design file
 2. Review for duplication/necessity
 3. Add to tokens.css with Polaris fallback
@@ -29,10 +31,15 @@ created: 2025-10-11
 ## Task 18: Component Versioning and Deprecation
 
 **Versioning Strategy**:
+
 ```typescript
 // Component version in filename or export
-export const ApprovalCardV2 = () => {/* new version */};
-export const ApprovalCardV1 = () => {/* deprecated */};
+export const ApprovalCardV2 = () => {
+  /* new version */
+};
+export const ApprovalCardV1 = () => {
+  /* deprecated */
+};
 
 // Deprecation warning
 /** @deprecated Use ApprovalCardV2 instead. Will be removed in v2.0.0 */
@@ -40,6 +47,7 @@ export const ApprovalCard = ApprovalCardV1;
 ```
 
 **Deprecation Process**:
+
 1. Mark component as deprecated (TypeScript + JSDoc)
 2. Create migration guide
 3. Update design-system-guide.md
@@ -51,6 +59,7 @@ export const ApprovalCard = ApprovalCardV1;
 ## Task 20: Design Review and Approval Workflow
 
 **Process**:
+
 1. Designer creates specs (markdown + mockups)
 2. Tag @engineer in feedback file
 3. Engineer reviews and asks questions
@@ -60,6 +69,7 @@ export const ApprovalCard = ApprovalCardV1;
 7. Sign-off in feedback file
 
 **Review Checklist**:
+
 - [ ] Polaris components used
 - [ ] Accessibility requirements met
 - [ ] Responsive behavior correct
@@ -71,6 +81,7 @@ export const ApprovalCard = ApprovalCardV1;
 ## Task 21: Design QA Checklist
 
 **Before Engineer Handoff**:
+
 - [ ] All states designed (loading, error, empty, success)
 - [ ] Responsive breakpoints specified
 - [ ] Accessibility requirements documented
@@ -79,6 +90,7 @@ export const ApprovalCard = ApprovalCardV1;
 - [ ] Implementation examples included
 
 **After Implementation**:
+
 - [ ] Visual accuracy (matches mockups)
 - [ ] Spacing correct (uses tokens)
 - [ ] Colors correct (uses Polaris)
@@ -91,6 +103,7 @@ export const ApprovalCard = ApprovalCardV1;
 ## Task 22: Design System Documentation Site
 
 **Structure** (using existing docs/design/ directory):
+
 ```
 docs/design/
   ├── README.md (index of all design docs)

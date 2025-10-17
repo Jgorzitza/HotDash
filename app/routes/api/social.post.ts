@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "react-router";
-import { json } from "react-router";
+import { json } from "~/utils/http.server";
 import shopify from "~/shopify.server";
 import { schedulePost } from "../../../packages/integrations/publer.ts";
 
@@ -29,7 +29,10 @@ export async function action({ request }: ActionFunctionArgs) {
     !Array.isArray(payload?.accountIds) ||
     payload.accountIds.length === 0
   ) {
-    return json({ error: "text and accountIds[] are required" }, { status: 400 });
+    return json(
+      { error: "text and accountIds[] are required" },
+      { status: 400 },
+    );
   }
 
   try {
@@ -41,7 +44,10 @@ export async function action({ request }: ActionFunctionArgs) {
     });
     return json({ ok: true, jobId: job.job_id, shop: session.shop });
   } catch (e) {
-    return json({ ok: false, error: "Failed to schedule post" }, { status: 502 });
+    return json(
+      { ok: false, error: "Failed to schedule post" },
+      { status: 502 },
+    );
   }
 }
 

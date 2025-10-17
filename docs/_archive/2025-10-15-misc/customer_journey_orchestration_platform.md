@@ -11,6 +11,7 @@
 Orchestrate multi-touchpoint customer journeys with AI-powered triggers and actions across email, chat, SMS, and push notifications.
 
 **Example Journey**: New customer welcome sequence
+
 1. Order placed → Welcome email with tracking
 2. Day 3 → "Your order shipped!" notification
 3. Day 5 → "Should arrive tomorrow" reminder
@@ -23,4 +24,3 @@ Orchestrate multi-touchpoint customer journeys with AI-powered triggers and acti
 
 **Document Owner**: Product Agent
 **Status**: Future vision (2028+)
-

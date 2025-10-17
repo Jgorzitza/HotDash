@@ -13,6 +13,7 @@ The GA4 Analytics API provides high-level analytics data for dashboard tiles. It
 ### Real Data Verified
 
 **Test Results (Last 30 Days):**
+
 - ✅ Revenue: $7,091.81 (39 transactions)
 - ✅ Traffic: 4,167 sessions (68% organic)
 - ✅ Conversion Rate: 0.94%
@@ -26,6 +27,7 @@ The GA4 Analytics API provides high-level analytics data for dashboard tiles. It
 **Endpoint:** `GET /api/analytics/revenue`
 
 **Returns:**
+
 ```typescript
 {
   success: true,
@@ -48,6 +50,7 @@ The GA4 Analytics API provides high-level analytics data for dashboard tiles. It
 ```
 
 **Example Response:**
+
 ```json
 {
   "success": true,
@@ -70,12 +73,15 @@ The GA4 Analytics API provides high-level analytics data for dashboard tiles. It
 ```
 
 **Usage in Dashboard:**
+
 ```typescript
-const response = await fetch('/api/analytics/revenue');
+const response = await fetch("/api/analytics/revenue");
 const { data } = await response.json();
 
 console.log(`Revenue: $${data.totalRevenue.toFixed(2)}`);
-console.log(`Trend: ${data.trend.revenueChange > 0 ? '+' : ''}${data.trend.revenueChange.toFixed(1)}%`);
+console.log(
+  `Trend: ${data.trend.revenueChange > 0 ? "+" : ""}${data.trend.revenueChange.toFixed(1)}%`,
+);
 ```
 
 ---
@@ -85,6 +91,7 @@ console.log(`Trend: ${data.trend.revenueChange > 0 ? '+' : ''}${data.trend.reven
 **Endpoint:** `GET /api/analytics/traffic`
 
 **Returns:**
+
 ```typescript
 {
   success: true,
@@ -106,6 +113,7 @@ console.log(`Trend: ${data.trend.revenueChange > 0 ? '+' : ''}${data.trend.reven
 ```
 
 **Example Response:**
+
 ```json
 {
   "success": true,
@@ -127,8 +135,9 @@ console.log(`Trend: ${data.trend.revenueChange > 0 ? '+' : ''}${data.trend.reven
 ```
 
 **Usage in Dashboard:**
+
 ```typescript
-const response = await fetch('/api/analytics/traffic');
+const response = await fetch("/api/analytics/traffic");
 const { data } = await response.json();
 
 console.log(`Sessions: ${data.totalSessions.toLocaleString()}`);
@@ -142,7 +151,7 @@ console.log(`Organic: ${data.organicPercentage.toFixed(1)}%`);
 ### Revenue Metrics
 
 ```typescript
-import { getRevenueMetrics } from '~/lib/analytics/ga4';
+import { getRevenueMetrics } from "~/lib/analytics/ga4";
 
 const metrics = await getRevenueMetrics();
 ```
@@ -150,6 +159,7 @@ const metrics = await getRevenueMetrics();
 **Returns:** `RevenueMetrics` object (see API endpoint above)
 
 **Metrics Tracked:**
+
 - `totalRevenue` - Sum of all transaction revenue
 - `averageOrderValue` - Revenue / Transactions
 - `transactions` - Count of completed transactions
@@ -160,7 +170,7 @@ const metrics = await getRevenueMetrics();
 ### Traffic Metrics
 
 ```typescript
-import { getTrafficMetrics } from '~/lib/analytics/ga4';
+import { getTrafficMetrics } from "~/lib/analytics/ga4";
 
 const metrics = await getTrafficMetrics();
 ```
@@ -168,12 +178,14 @@ const metrics = await getTrafficMetrics();
 **Returns:** `TrafficMetrics` object (see API endpoint above)
 
 **Metrics Tracked:**
+
 - `totalSessions` - All sessions across all channels
 - `organicSessions` - Sessions from organic search
-- `organicPercentage` - (organicSessions / totalSessions) * 100
+- `organicPercentage` - (organicSessions / totalSessions) \* 100
 - Trends calculated by comparing with previous 30-day period
 
 **Channel Detection:**
+
 - Organic: `sessionDefaultChannelGroup` contains "organic"
 - Includes: Organic Search, Organic Social, Organic Video
 
@@ -182,7 +194,7 @@ const metrics = await getTrafficMetrics();
 ### Conversion Metrics
 
 ```typescript
-import { getConversionMetrics } from '~/lib/analytics/ga4';
+import { getConversionMetrics } from "~/lib/analytics/ga4";
 
 const metrics = await getConversionMetrics();
 ```
@@ -223,12 +235,14 @@ GA_CACHE_TTL_MS=300000  # 5 minutes (default)
 ### Date Ranges
 
 All metrics use **last 30 days** by default:
+
 - Current period: Today - 30 days to Today
 - Previous period: Today - 60 days to Today - 30 days
 
 **Trend calculation:**
+
 ```typescript
-trend = ((current - previous) / previous) * 100
+trend = ((current - previous) / previous) * 100;
 ```
 
 ---
@@ -249,6 +263,7 @@ ga.api_latency{operation="getRevenueMetrics"}
 **Not yet implemented** - Each API call fetches fresh data from GA4.
 
 **Recommendation:** Add caching layer with 5-minute TTL:
+
 ```typescript
 const cacheKey = `analytics:revenue:${startDate}:${endDate}`;
 const cached = getCached(cacheKey);
@@ -284,14 +299,17 @@ return data;
 ### Common Errors
 
 **PERMISSION_DENIED:**
+
 - Service account doesn't have access to GA4 property
 - Fix: Add service account with "Viewer" role in GA4
 
 **UNAUTHENTICATED:**
+
 - Credentials invalid or not loaded
 - Fix: Verify `GOOGLE_APPLICATION_CREDENTIALS` is set correctly
 
 **NOT_FOUND:**
+
 - Property ID incorrect
 - Fix: Verify `GA_PROPERTY_ID=339826228`
 
@@ -309,6 +327,7 @@ node scripts/test-ga-analytics.mjs
 ```
 
 **Expected Output:**
+
 ```
 ✅ Revenue Metrics Retrieved:
   Total Revenue: $7091.81
@@ -346,13 +365,15 @@ curl http://localhost:3000/api/analytics/traffic | jq
 **Use:** Revenue metrics + traffic correlation
 
 ```typescript
-const revenue = await fetch('/api/analytics/revenue').then(r => r.json());
-const traffic = await fetch('/api/analytics/traffic').then(r => r.json());
+const revenue = await fetch("/api/analytics/revenue").then((r) => r.json());
+const traffic = await fetch("/api/analytics/traffic").then((r) => r.json());
 
 // Show revenue with traffic context
 console.log(`Revenue: $${revenue.data.totalRevenue.toFixed(2)}`);
 console.log(`Traffic: ${traffic.data.totalSessions} sessions`);
-console.log(`Revenue per session: $${(revenue.data.totalRevenue / traffic.data.totalSessions).toFixed(2)}`);
+console.log(
+  `Revenue per session: $${(revenue.data.totalRevenue / traffic.data.totalSessions).toFixed(2)}`,
+);
 ```
 
 ### Ops Metrics Tile
@@ -360,8 +381,10 @@ console.log(`Revenue per session: $${(revenue.data.totalRevenue / traffic.data.t
 **Use:** Conversion rate + GA API health
 
 ```typescript
-const conversion = await fetch('/api/analytics/conversion').then(r => r.json());
-const metrics = await fetch('/metrics').then(r => r.text());
+const conversion = await fetch("/api/analytics/conversion").then((r) =>
+  r.json(),
+);
+const metrics = await fetch("/metrics").then((r) => r.text());
 
 // Show conversion rate with API health
 console.log(`Conversion Rate: ${conversion.data.conversionRate.toFixed(2)}%`);
@@ -373,6 +396,7 @@ console.log(`GA API Health: ${parseMetrics(metrics).ga_api_success_rate}%`);
 ## Roadmap
 
 ### Phase 1: Core Metrics ✅ (Complete)
+
 - [x] Revenue metrics (revenue, AOV, transactions)
 - [x] Traffic metrics (sessions, organic %)
 - [x] Conversion metrics (conversion rate)
@@ -382,17 +406,20 @@ console.log(`GA API Health: ${parseMetrics(metrics).ga_api_success_rate}%`);
 - [x] Documentation
 
 ### Phase 2: Caching (Next)
+
 - [ ] Add 5-minute cache layer
 - [ ] Cache hit/miss metrics
 - [ ] Cache invalidation strategy
 
 ### Phase 3: Enhanced Metrics (Week 2)
+
 - [ ] Traffic sources breakdown (organic, paid, direct, referral)
 - [ ] Top landing pages with revenue
 - [ ] Product performance (views, conversions)
 - [ ] Time-series data (daily/weekly trends)
 
 ### Phase 4: Advanced Features (Month 2)
+
 - [ ] Conversion funnels
 - [ ] Custom reports
 - [ ] Scheduled exports
@@ -411,4 +438,3 @@ console.log(`GA API Health: ${parseMetrics(metrics).ga_api_success_rate}%`);
 **Last Tested:** 2025-10-15 with real GA4 data ✅
 **Status:** Production-ready
 **Owner:** Analytics Agent
-

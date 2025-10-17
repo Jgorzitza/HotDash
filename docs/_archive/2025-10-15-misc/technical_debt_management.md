@@ -11,6 +11,7 @@
 **Rule**: Allocate 20% of engineering time to tech debt reduction (every sprint)
 
 **Debt Categories**:
+
 1. **Critical**: Security vulnerabilities, data integrity issues
 2. **High**: Performance bottlenecks, scalability limits
 3. **Medium**: Code quality, refactoring needs
@@ -22,4 +23,3 @@
 
 **Document Owner**: Product Agent (coordinate with Engineering)
 **Status**: Tech debt framework
-

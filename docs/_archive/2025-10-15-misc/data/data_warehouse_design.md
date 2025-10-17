@@ -62,6 +62,7 @@ Dimensional model for Agent SDK analytics using star schema for efficient histor
 **Purpose:** Agent metadata and attributes
 
 **Schema:**
+
 ```sql
 CREATE TABLE dim_agent (
   agent_key SERIAL PRIMARY KEY,
@@ -81,6 +82,7 @@ CREATE INDEX dim_agent_current_idx ON dim_agent (is_current) WHERE is_current = 
 ```
 
 **Sample Data:**
+
 ```sql
 INSERT INTO dim_agent (agent_name, agent_type, capabilities, sla_target_seconds) VALUES
   ('data', 'data', '["query", "analytics", "schema"]'::jsonb, 300),
@@ -94,6 +96,7 @@ INSERT INTO dim_agent (agent_name, agent_type, capabilities, sla_target_seconds)
 **Purpose:** Comprehensive time attributes for temporal analysis
 
 **Schema:**
+
 ```sql
 CREATE TABLE dim_time (
   time_key INTEGER PRIMARY KEY,
@@ -121,6 +124,7 @@ CREATE INDEX dim_time_week_idx ON dim_time (year, week);
 ```
 
 **Population Function:**
+
 ```sql
 CREATE OR REPLACE FUNCTION populate_dim_time(start_date DATE, end_date DATE)
 RETURNS void AS $$
@@ -145,7 +149,7 @@ BEGIN
       TO_CHAR(current_date, 'Month'),
       EXTRACT(DOW FROM current_date) IN (0, 6)
     ) ON CONFLICT (full_date) DO NOTHING;
-    
+
     current_date := current_date + INTERVAL '1 day';
   END LOOP;
 END;
@@ -160,6 +164,7 @@ SELECT populate_dim_time('2025-01-01'::DATE, '2027-12-31'::DATE);
 **Purpose:** Conversation context and aggregates
 
 **Schema:**
+
 ```sql
 CREATE TABLE dim_conversation (
   conv_key SERIAL PRIMARY KEY,
@@ -181,6 +186,7 @@ CREATE INDEX dim_conversation_first_seen_idx ON dim_conversation (first_seen_at)
 **Purpose:** User and annotator attributes
 
 **Schema:**
+
 ```sql
 CREATE TABLE dim_user (
   user_key SERIAL PRIMARY KEY,
@@ -204,6 +210,7 @@ CREATE INDEX dim_user_current_idx ON dim_user (is_current) WHERE is_current = tr
 **Purpose:** Grain: One row per agent query
 
 **Schema:**
+
 ```sql
 CREATE TABLE fact_agent_query (
   query_key BIGSERIAL PRIMARY KEY,
@@ -234,6 +241,7 @@ CREATE INDEX fact_agent_query_latency_idx ON fact_agent_query (latency_ms DESC) 
 **Purpose:** Grain: One row per approval request
 
 **Schema:**
+
 ```sql
 CREATE TABLE fact_approval (
   approval_key BIGSERIAL PRIMARY KEY,
@@ -263,6 +271,7 @@ CREATE INDEX fact_approval_created_idx ON fact_approval (created_at DESC);
 **Purpose:** Grain: One row per training feedback entry
 
 **Schema:**
+
 ```sql
 CREATE TABLE fact_training (
   training_key BIGSERIAL PRIMARY KEY,
@@ -299,9 +308,10 @@ CREATE INDEX fact_training_labels_gin ON fact_training USING GIN (labels);
 **Source:** Operational tables (agent_queries, agent_approvals, agent_feedback)  
 **Target:** Warehouse fact tables  
 **Frequency:** Nightly at 03:00 UTC  
-**Type:** Incremental load (last 24 hours)  
+**Type:** Incremental load (last 24 hours)
 
 **ETL Script:**
+
 ```sql
 -- File: supabase/sql/etl_operational_to_warehouse.sql
 
@@ -312,11 +322,11 @@ DECLARE
 BEGIN
   -- Get time_key for the date
   SELECT time_key INTO v_time_key FROM dim_time WHERE full_date = p_date;
-  
+
   -- Insert into fact table
   WITH new_queries AS (
     INSERT INTO fact_agent_query (agent_key, time_key, conv_key, query_hash, latency_ms, approved, human_edited, created_at)
-    SELECT 
+    SELECT
       a.agent_key,
       v_time_key,
       c.conv_key,
@@ -330,14 +340,14 @@ BEGIN
     LEFT JOIN dim_conversation c ON c.conversation_id = q.conversation_id
     WHERE DATE(q.created_at) = p_date
       AND NOT EXISTS (
-        SELECT 1 FROM fact_agent_query f 
-        WHERE f.created_at = q.created_at 
+        SELECT 1 FROM fact_agent_query f
+        WHERE f.created_at = q.created_at
           AND f.agent_key = a.agent_key
       )
     RETURNING *
   )
   SELECT COUNT(*)::INTEGER FROM new_queries INTO rows_inserted;
-  
+
   RETURN NEXT;
 END;
 $$ LANGUAGE plpgsql;
@@ -350,6 +360,7 @@ $$ LANGUAGE plpgsql;
 **Purpose:** Update slowly changing dimensions (SCD Type 2)
 
 **Example:**
+
 ```sql
 -- Update agent dimension when capabilities change
 CREATE OR REPLACE FUNCTION update_dim_agent(
@@ -362,7 +373,7 @@ BEGIN
   UPDATE dim_agent
   SET valid_to = NOW(), is_current = false
   WHERE agent_name = p_agent_name AND is_current = true;
-  
+
   -- Insert new version
   INSERT INTO dim_agent (agent_name, agent_type, capabilities, valid_from)
   VALUES (p_agent_name, 'unknown', p_new_capabilities, NOW());
@@ -375,7 +386,7 @@ $$ LANGUAGE plpgsql;
 ### Query 1: Agent Performance Trends (7-day)
 
 ```sql
-SELECT 
+SELECT
   d.full_date,
   a.agent_name,
   COUNT(*) as total_queries,
@@ -393,7 +404,7 @@ ORDER BY d.full_date DESC, a.agent_name;
 ### Query 2: Approval Queue Analysis (Monthly)
 
 ```sql
-SELECT 
+SELECT
   d.month_name,
   COUNT(*) as total_approvals,
   ROUND(AVG(f.resolution_time_seconds) / 60, 2) as avg_resolution_minutes,
@@ -409,7 +420,7 @@ ORDER BY d.month;
 ### Query 3: Training Data Quality (By Annotator)
 
 ```sql
-SELECT 
+SELECT
   u.user_id as annotator,
   COUNT(*) as total_annotations,
   ROUND(AVG(f.overall_score), 2) as avg_overall_score,
@@ -432,6 +443,7 @@ ORDER BY total_annotations DESC;
 **Purpose:** Pre-aggregated daily metrics per agent
 
 **Schema:**
+
 ```sql
 CREATE TABLE agg_agent_daily_performance (
   agent_key INTEGER NOT NULL REFERENCES dim_agent(agent_key),
@@ -453,14 +465,15 @@ CREATE INDEX agg_agent_daily_time_idx ON agg_agent_daily_performance (time_key);
 ```
 
 **Refresh Procedure:**
+
 ```sql
 CREATE OR REPLACE FUNCTION refresh_agg_agent_daily_performance(p_date DATE DEFAULT CURRENT_DATE - 1)
 RETURNS void AS $$
 BEGIN
   DELETE FROM agg_agent_daily_performance WHERE time_key = TO_CHAR(p_date, 'YYYYMMDD')::INTEGER;
-  
+
   INSERT INTO agg_agent_daily_performance
-  SELECT 
+  SELECT
     f.agent_key,
     f.time_key,
     COUNT(*) as total_queries,
@@ -483,16 +496,19 @@ $$ LANGUAGE plpgsql;
 ## Benefits of Data Warehouse
 
 ### Performance
+
 - **Fast Queries:** Pre-aggregated metrics, optimized indexes
 - **Scalability:** Separate from operational database
 - **Historical Analysis:** Efficiently query years of data
 
 ### Flexibility
+
 - **Ad-hoc Analysis:** Business analysts can query directly
 - **Custom Reports:** Easy to create new aggregations
 - **Data Science:** Clean dimensional model for ML
 
 ### Compliance
+
 - **Audit Trail:** Immutable fact tables
 - **Data Lineage:** ETL logs track transformations
 - **Retention:** Separate retention policies from operational data
@@ -500,6 +516,7 @@ $$ LANGUAGE plpgsql;
 ## Storage Estimates
 
 ### Dimensions (Relatively Small)
+
 - dim_agent: <1MB (10-20 rows)
 - dim_time: <10MB (3 years × 365 days)
 - dim_conversation: ~100MB (estimate 100K conversations/year)
@@ -508,6 +525,7 @@ $$ LANGUAGE plpgsql;
 **Total Dimensions:** ~115MB
 
 ### Facts (Growing)
+
 - fact_agent_query: ~10GB/year (estimate 10M queries/year × 1KB/row)
 - fact_approval: ~1GB/year (estimate 1M approvals/year × 1KB/row)
 - fact_training: ~500MB/year (estimate 500K feedback/year × 1KB/row)
@@ -516,6 +534,7 @@ $$ LANGUAGE plpgsql;
 **Total Facts (Year 3):** ~35GB
 
 ### Aggregates
+
 - agg_agent_daily_performance: ~50MB/year
 
 **Total Warehouse (Year 1):** ~12GB  
@@ -524,6 +543,7 @@ $$ LANGUAGE plpgsql;
 ## Implementation Plan
 
 ### Phase 1: Foundation (Week 1-2)
+
 - [x] Design dimensional model
 - [ ] Create dimension tables
 - [ ] Populate dim_time and dim_agent
@@ -531,18 +551,21 @@ $$ LANGUAGE plpgsql;
 - [ ] Add indexes and constraints
 
 ### Phase 2: ETL (Week 3-4)
+
 - [ ] Build ETL functions for each fact table
 - [ ] Schedule nightly ETL jobs
 - [ ] Implement dimension updates (SCD Type 2)
 - [ ] Create validation and reconciliation queries
 
 ### Phase 3: Aggregations (Week 5)
+
 - [ ] Create aggregate tables
 - [ ] Build refresh procedures
 - [ ] Schedule daily aggregation jobs
 - [ ] Test query performance
 
 ### Phase 4: BI Integration (Week 6)
+
 - [ ] Connect BI tool (Metabase, Superset, or Tableau)
 - [ ] Create standard report templates
 - [ ] Train team on warehouse queries
@@ -553,4 +576,3 @@ $$ LANGUAGE plpgsql;
 **Status:** Design complete, ready for Phase 1 implementation  
 **Estimated Total Effort:** 6 weeks  
 **Dependencies:** None (can start immediately)
-

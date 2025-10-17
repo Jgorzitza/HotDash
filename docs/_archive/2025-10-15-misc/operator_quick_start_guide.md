@@ -21,6 +21,7 @@
 ### Step 2: Review Your First Draft (2 minutes)
 
 **What's on your screen**:
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ Customer: John Doe (john@example.com)           │
@@ -92,15 +93,18 @@
 ## 💡 Pro Tips (From Pilot Operators)
 
 ### Tip 1: Trust the AI (But Verify)
+
 > "The AI is usually 80-90% right. I just scan for accuracy and add empathy. Saves me tons of time." - Marcus, 2 years experience
 
 **What to verify**:
+
 - ✅ Order numbers are correct
 - ✅ Tracking links work
 - ✅ Tone matches customer's urgency
 - ✅ Policy info is current
 
 ### Tip 2: Use Keyboard Shortcuts
+
 - `Ctrl+A`: Approve
 - `Ctrl+E`: Edit
 - `Ctrl+X`: Escalate
@@ -109,13 +113,16 @@
 > "Keyboard shortcuts make me 2x faster. I barely touch my mouse now." - Sarah, 8 months
 
 ### Tip 3: Add Your Personal Touch
+
 > "I always add a bit more empathy or a friendly emoji. The AI gives me the facts, I add the heart." - Emily, 1 year
 
 **Example**:
+
 - AI draft: "Your order shipped on Oct 8."
 - Your edit: "Great news! Your order shipped on Oct 8 📦"
 
 ### Tip 4: Don't Overthink It
+
 > "First week I spent 3 minutes per draft trying to make it perfect. Now I trust the AI and spend 1 minute. Quality is the same, I'm just faster." - David, 4 months
 
 **Remember**: Good enough > perfect. Customers want speed + accuracy, not perfection.
@@ -127,6 +134,7 @@
 ### Problem: "The draft doesn't match the customer's question"
 
 **Solution**:
+
 1. Click "Reject"
 2. Write your own response
 3. The system learns and won't make that mistake again
@@ -138,6 +146,7 @@
 ### Problem: "I don't know if the information is correct"
 
 **Solution**:
+
 1. Check the "Sources Used" section
 2. Click on source to verify
 3. If uncertain, click "Escalate" and let senior support handle it
@@ -149,6 +158,7 @@
 ### Problem: "The queue is empty - nothing to review"
 
 **This is good!** It means:
+
 - No customers waiting (celebrate low queue depth)
 - Or we're routing fewer inquiries to you (gradual rollout)
 
@@ -159,6 +169,7 @@
 ### Problem: "I'm reviewing too slowly (>3 min average)"
 
 **Solutions**:
+
 1. Use keyboard shortcuts (saves 20-30 seconds)
 2. Trust the AI more (stop re-verifying everything)
 3. Use "Edit" instead of "Reject" when possible
@@ -173,12 +184,14 @@
 **Access**: Click "My Stats" in top-right corner
 
 **What you'll see**:
+
 - Drafts reviewed today
 - Your approval rate
 - Average review time
 - How you compare to team
 
 **Use it to**:
+
 - See if you're getting faster over time
 - Compare to team average (friendly competition!)
 - Identify where you can improve
@@ -189,7 +202,7 @@
 
 **Slack**: #agent-sdk-pilot (during pilot)  
 **Email**: product@hotdash.com  
-**Ask**: Your team lead or a pilot buddy  
+**Ask**: Your team lead or a pilot buddy
 
 **Remember**: Everyone was new to this once. Ask questions, share tips, help each other!
 
@@ -198,24 +211,28 @@
 ## ✅ Success Checklist (First Week)
 
 Day 1:
+
 - [ ] Log in to approval queue
 - [ ] Review first 5 drafts
 - [ ] Try all 4 actions (approve, edit, escalate, reject)
 - [ ] Attend daily standup and share feedback
 
 Day 3:
+
 - [ ] Review 10-15 drafts
 - [ ] Find your rhythm (speed up)
 - [ ] Use keyboard shortcuts
 - [ ] Check your dashboard stats
 
 Day 5:
+
 - [ ] Review 15-20 drafts
 - [ ] Approval rate >50%
 - [ ] Review time <2 minutes average
 - [ ] Share a tip with the team
 
-**By End of Week 1**: 
+**By End of Week 1**:
+
 - ✅ Comfortable with approval queue
 - ✅ Faster than manual workflow
 - ✅ Enjoying the time saved
@@ -226,7 +243,6 @@ Day 5:
 **Document Owner**: Product Agent  
 **Path**: `docs/operator_quick_start_guide.md`  
 **Purpose**: Practical guide for operators starting with Agent SDK  
-**Status**: Ready for pilot operator training (Oct 23-25)  
+**Status**: Ready for pilot operator training (Oct 23-25)
 
 **This is operator-first, practical, and useful RIGHT NOW** ✅
-

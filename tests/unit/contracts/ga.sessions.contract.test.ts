@@ -68,7 +68,7 @@ describe("GA Sessions API Contract (Mock Mode)", () => {
     });
 
     // Per docs/data/ga_mock_dataset.md, mock should include >20% drop for testing
-    const anomalies = data.filter(s => s.wowDelta <= -0.2);
+    const anomalies = data.filter((s) => s.wowDelta <= -0.2);
 
     expect(anomalies.length).toBeGreaterThan(0);
   });

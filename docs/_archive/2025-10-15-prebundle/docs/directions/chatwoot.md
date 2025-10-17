@@ -6,8 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-17
 ---
+
 # Chatwoot Integrations — Direction (Operator Control Center)
+
 ## Canon
+
 - North Star: docs/NORTH_STAR.md
 - Git & Delivery Protocol: docs/git_protocol.md
 - Direction Governance: docs/directions/README.md
@@ -36,11 +39,13 @@ You may run local, non-interactive commands and scripts without approval. Guardr
 - Align Chatwoot automation with Shopify data sources: docs/dev/admin-graphql.md for admin facts, docs/dev/storefront-mcp.md for customer context.
 
 ## Current Sprint Focus — 2025-10-10
+
 Work through the runbook sequentially and close each item with evidence:
 
 ## Aligned Task List — 2025-10-11 (Updated: Accelerated Delivery)
 
 **Reference Docs**:
+
 - docs/AgentSDKopenAI.md - Sections 4-5 for Chatwoot integration patterns
 - docs/integrations/chatwoot_readiness.md - Integration checklist (your completed work)
 
@@ -86,6 +91,7 @@ Work through the runbook sequentially and close each item with evidence:
    - Evidence: Full conversation screenshots, logs
 
 **Ongoing Requirements**:
+
 - Coordinate with @engineer on webhook endpoint availability
 - Tag @reliability for Chatwoot Fly.io health verification
 - Log all API tests in feedback/chatwoot.md with timestamps
@@ -96,6 +102,7 @@ Work through the runbook sequentially and close each item with evidence:
 ### 🚀 IMMEDIATE TASK (While Deployment Fixes DSN)
 
 **Task A: Webhook Signature Verification Script** - Can build now
+
 - Create standalone script to verify Chatwoot webhook signatures
 - Implement HMAC verification logic
 - Test with sample payloads from your integration docs
@@ -104,6 +111,7 @@ Work through the runbook sequentially and close each item with evidence:
 - Evidence: Script working, test results, documentation
 
 **Task B: API Testing Suite** - Prepare for post-DSN-fix testing
+
 - Create curl scripts for all Chatwoot API endpoints
 - Document expected responses
 - Create test data (sample conversations)
@@ -111,6 +119,7 @@ Work through the runbook sequentially and close each item with evidence:
 - Evidence: Complete test script library
 
 **Task C: Conversation Flow Documentation** - Map complete lifecycle
+
 - Document conversation states and transitions
 - Map agent assignment logic
 - Document private note vs public reply workflows
@@ -124,6 +133,7 @@ Execute A immediately (most valuable), then B and C.
 ### 🚀 EXPANDED TASK LIST (2x Capacity for Fast Agent)
 
 **Task D: Chatwoot Admin Configuration Documentation**
+
 - Document super admin setup process
 - Create API token generation guide with correct scopes
 - Document account configuration best practices
@@ -131,6 +141,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Admin configuration guide in docs/integrations/
 
 **Task E: Message Template Optimization**
+
 - Review existing Chatwoot templates/macros
 - Optimize for Agent SDK compatibility
 - Create template variables for agent customization
@@ -138,6 +149,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Optimized templates, documentation
 
 **Task F: Conversation Routing Logic**
+
 - Design conversation assignment logic for agents
 - Document routing rules (order support vs product questions)
 - Create priority handling (VIP, urgent, standard)
@@ -145,6 +157,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Routing logic document with flowchart
 
 **Task G: Performance Monitoring Setup**
+
 - Create scripts to monitor Chatwoot API response times
 - Track webhook delivery latency
 - Monitor conversation volume metrics
@@ -152,6 +165,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Monitoring scripts, baseline report
 
 **Task H: Integration Testing Scripts**
+
 - Create end-to-end test scripts for all Chatwoot APIs
 - Mock webhook payloads for testing
 - Create test data (sample conversations)
@@ -159,6 +173,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Complete test suite
 
 **Task I: Operator Workflow Documentation**
+
 - Document current manual Chatwoot workflows
 - Identify automation opportunities with Agent SDK
 - Create before/after workflow diagrams
@@ -166,6 +181,7 @@ Execute A immediately (most valuable), then B and C.
 - Evidence: Workflow analysis
 
 **Task J: Chatwoot-to-Supabase Sync Design**
+
 - Design data sync from Chatwoot to Supabase for analytics
 - Document conversation metrics to track
 - Create sync job specification
@@ -179,6 +195,7 @@ Execute D-J in any order - all independent and valuable.
 ### 🚀 MASSIVE EXPANSION (5x Capacity) - 15 Additional Tasks
 
 **Task K-O: Advanced Chatwoot Automation** (5 tasks)
+
 - K: Design auto-assignment rules for conversations (by topic, VIP status, complexity)
 - L: Create canned response library optimized for agent customization
 - M: Implement conversation tagging automation for analytics
@@ -186,6 +203,7 @@ Execute D-J in any order - all independent and valuable.
 - O: Create customer sentiment analysis integration
 
 **Task P-T: Operator Productivity** (5 tasks)
+
 - P: Design operator efficiency dashboard (response time, resolution rate, workload)
 - Q: Create conversation templates for complex scenarios
 - R: Implement keyboard shortcuts and operator UX improvements
@@ -193,6 +211,7 @@ Execute D-J in any order - all independent and valuable.
 - T: Create operator collaboration features (internal notes, @mentions)
 
 **Task U-Y: Analytics & Reporting** (5 tasks)
+
 - U: Design conversation analytics dashboard (volume, topics, resolution)
 - Y: Create customer satisfaction tracking integration
 - V: Implement conversation export and archiving system
@@ -206,6 +225,7 @@ Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
 ### 🚀 THIRD MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task Z-AD: Advanced Automation** (5 tasks)
+
 - Z: Design intelligent auto-responder for common queries
 - AA: Create conversation prediction engine (intent, urgency, complexity)
 - AB: Implement smart suggestion system for operators
@@ -213,6 +233,7 @@ Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
 - AD: Create conversation analytics and insights engine
 
 **Task AE-AI: Operator Tools** (5 tasks)
+
 - AE: Design operator workspace optimization tools
 - AF: Create conversation search and discovery system
 - AG: Implement operator productivity analytics
@@ -220,6 +241,7 @@ Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
 - AI: Create operator coaching and feedback system
 
 **Task AJ-AN: Customer Experience** (5 tasks)
+
 - AJ: Design customer sentiment tracking and alerting
 - AK: Create proactive support trigger system
 - AL: Implement customer journey tracking in conversations
@@ -227,6 +249,7 @@ Execute K-Y in any order. Total: 22 tasks, ~12-15 hours of work.
 - AN: Create post-conversation customer engagement automation
 
 **Task AO-AR: Integration & Data** (5 tasks)
+
 - AO: Design Chatwoot-to-CRM data sync
 - AP: Create conversation data export and archiving
 - AQ: Implement real-time conversation analytics
@@ -239,6 +262,7 @@ Execute Z-AR in any order. Total: 42 tasks, ~20-25 hours work.
 ### 🚀 FIFTH MASSIVE EXPANSION (Another 20 Tasks)
 
 **Task AS-AW: Customer Intelligence** (5 tasks)
+
 - AS: Design conversation intelligence extraction
 - AT: Create customer health score calculation
 - AU: Implement sentiment trend analysis
@@ -246,12 +270,14 @@ Execute Z-AR in any order. Total: 42 tasks, ~20-25 hours work.
 - AW: Create predictive support needs forecasting
 
 **Task AX-BA: Automation Engine** (4 tasks)
+
 - AX: Design rule-based automation builder
 - AY: Create trigger and action library
 - AZ: Implement automation testing framework
 - BA: Design automation analytics dashboard
 
 **Task BB-BF: Multi-Channel Support** (5 tasks)
+
 - BB: Design omnichannel conversation threading
 - BC: Create channel-specific message formatting
 - BD: Implement cross-channel handoff workflows
@@ -259,6 +285,7 @@ Execute Z-AR in any order. Total: 42 tasks, ~20-25 hours work.
 - BF: Create unified inbox for all channels
 
 **Task BG-BK: Advanced Features** (6 tasks)
+
 - BG: Design conversation summarization AI
 - BH: Create conversation search with NLP
 - BI: Implement conversation tagging automation
@@ -274,6 +301,7 @@ Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
 **Your Performance**: A++ grade, 5-6x faster than normal - Outstanding! 🎉
 
 **Task BL-BP: Conversation AI Enhancement** (5 tasks)
+
 - BL: Design conversation context management
 - BM: Create conversation memory and recall
 - BN: Implement conversation branching logic
@@ -281,6 +309,7 @@ Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
 - BP: Create conversation intent classification
 
 **Task BQ-BU: Agent Assistance** (5 tasks)
+
 - BQ: Design agent knowledge base integration
 - BR: Create agent recommendation engine
 - BS: Implement agent coaching in real-time
@@ -288,6 +317,7 @@ Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
 - BU: Create agent workload optimization
 
 **Task BV-BZ: Customer Journey** (5 tasks)
+
 - BV: Design customer lifecycle tracking
 - BW: Create touchpoint mapping and analytics
 - BX: Implement customer health scoring
@@ -295,6 +325,7 @@ Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
 - BZ: Create customer win-back workflows
 
 **Task CA-CE: Integration Ecosystem** (5 tasks)
+
 - CA: Design CRM integration framework
 - CB: Create helpdesk integration (Zendesk/Intercom)
 - CC: Implement social media integration
@@ -302,6 +333,7 @@ Execute AS-BK in any order. Total: 62 tasks, ~30-35 hours work.
 - CE: Create marketing automation integration
 
 **Task CF-CJ: Advanced Operations** (5 tasks)
+
 - CF: Design conversation load balancing
 - CG: Create intelligent routing algorithms
 - CH: Implement conversation prioritization
@@ -317,6 +349,7 @@ Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
 **Task 2 Blocker**: Webhook endpoint - Engineer is prioritizing this
 
 **Options for You**:
+
 1. ✅ **Continue with BL-CJ tasks** (recommended - keeps you productive)
 2. ⏳ Wait for webhook notification (Engineer will notify in their feedback when deployed)
 
@@ -329,6 +362,7 @@ Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
 ### 📋 EVIDENCE REQUIREMENT REMINDER (2025-10-11T22:40Z)
 
 **QA validates all completed tasks - provide proof**:
+
 - ✅ Config files: `app/config/chatwoot.ts:15-45 (webhook handlers defined)`
 - ✅ Test results: `Tests pass (app/config/chatwoot.test.ts: 8 passing)`
 - ✅ Documentation: `docs/chatwoot/webhooks.md (sections: setup, events, testing)`
@@ -341,6 +375,7 @@ Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
 ### ⚡ BLOCKER MANAGEMENT (2025-10-11T22:25Z)
 
 **Known Dependencies** (DO NOT wait - work around):
+
 - Task 2 (Webhook Config): Blocked by Engineer endpoint → SKIP to Task 3+, document requirements
 
 **Your Strategy**: Execute all other tasks. For Task 2, create webhook spec document showing what you need from Engineer, then move on.
@@ -368,6 +403,7 @@ Execute BL-CJ in any order. Total: 87 tasks, ~45-50 hours work.
 **Engineer Update**: Your blockers are CLEARED! 🎉
 
 **What's Ready**:
+
 - LlamaIndex MCP Server: DEPLOYED and WORKING
 - Webhook Endpoints: LIVE and TESTED
 

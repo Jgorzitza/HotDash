@@ -59,6 +59,7 @@ HotDash follows the **Shopify Polaris Design System** to ensure consistency with
 ### Layout Components
 
 #### `<Page>`
+
 **Purpose**: Top-level page container  
 **Usage**: Every route should use `<Page>` or Shopify App Bridge `<s-page>`
 
@@ -83,6 +84,7 @@ import { Page } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Every top-level route
 - ✅ When you need page-level actions
 - ❌ Inside modals or nested components
@@ -90,6 +92,7 @@ import { Page } from '@shopify/polaris';
 ---
 
 #### `<Layout>` & `<Layout.Section>`
+
 **Purpose**: Create page layouts with consistent spacing
 
 ```typescript
@@ -100,7 +103,7 @@ import { Layout } from '@shopify/polaris';
     <Layout.Section>
       {/* Main content - full width */}
     </Layout.Section>
-    
+
     <Layout.Section variant="oneThird">
       {/* Sidebar - 1/3 width */}
     </Layout.Section>
@@ -109,6 +112,7 @@ import { Layout } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Multi-column layouts
 - ✅ Sidebar + main content
 - ❌ Simple single-column content (use BlockStack instead)
@@ -116,6 +120,7 @@ import { Layout } from '@shopify/polaris';
 ---
 
 #### `<Card>`
+
 **Purpose**: Container for related content (tiles, lists, forms)
 
 ```typescript
@@ -148,6 +153,7 @@ import { Card } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Dashboard tiles
 - ✅ Approval cards
 - ✅ Form containers
@@ -155,6 +161,7 @@ import { Card } from '@shopify/polaris';
 - ❌ Page-level layout (use Layout instead)
 
 **Current Usage in HotDash**:
+
 - Dashboard tiles (via custom `.occ-tile` class - consider migrating to `<Card>`)
 - Approval queue cards
 - Modal content sections
@@ -162,6 +169,7 @@ import { Card } from '@shopify/polaris';
 ---
 
 #### `<BlockStack>` & `<InlineStack>`
+
 **Purpose**: Flexible vertical (BlockStack) and horizontal (InlineStack) layouts
 
 ```typescript
@@ -192,6 +200,7 @@ import { BlockStack, InlineStack } from '@shopify/polaris';
 ```
 
 **Gap Values** (Polaris spacing scale):
+
 - `gap="100"` → 4px (tight)
 - `gap="200"` → 8px (default)
 - `gap="300"` → 12px (comfortable)
@@ -199,6 +208,7 @@ import { BlockStack, InlineStack } from '@shopify/polaris';
 - `gap="500"` → 20px (very spacious)
 
 **When to Use**:
+
 - ✅ ANY vertical or horizontal layout
 - ✅ Spacing between related elements
 - ✅ Alignment control
@@ -207,6 +217,7 @@ import { BlockStack, InlineStack } from '@shopify/polaris';
 ---
 
 #### `<Box>`
+
 **Purpose**: Generic container with Polaris styling props
 
 ```typescript
@@ -237,6 +248,7 @@ import { Box } from '@shopify/polaris';
 ```
 
 **Common Props**:
+
 - `background` - Surface colors
 - `padding` - Internal spacing
 - `borderRadius` - Corner rounding
@@ -245,6 +257,7 @@ import { Box } from '@shopify/polaris';
 - `position` - Layout positioning
 
 **When to Use**:
+
 - ✅ Custom backgrounds
 - ✅ Borders and shadows
 - ✅ Padding without flex/grid
@@ -255,6 +268,7 @@ import { Box } from '@shopify/polaris';
 ### Typography Components
 
 #### `<Text>`
+
 **Purpose**: All text content with semantic variants
 
 ```typescript
@@ -294,12 +308,14 @@ import { Text } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ ALL text content
 - ✅ Headings (with semantic `as` prop)
 - ✅ Body text with tone/weight variants
 - ❌ Don't use raw `<p>`, `<span>`, `<h1>` elements
 
 **Current Usage**:
+
 - Tile headings: `variant="headingMd"`
 - Body text: `variant="bodyMd"`
 - Meta info: `variant="bodySm" tone="subdued"`
@@ -309,6 +325,7 @@ import { Text } from '@shopify/polaris';
 ### Action Components
 
 #### `<Button>`
+
 **Purpose**: Primary, secondary, and tertiary actions
 
 ```typescript
@@ -356,23 +373,27 @@ import { PlusIcon } from '@shopify/polaris-icons';
 ```
 
 **Variants**:
+
 - `primary` - Main action (blue filled)
 - `secondary` - Secondary action (outlined) - DEFAULT
 - `plain` - Tertiary action (text only)
 - `monochromePlain` - Subtle text button
 
 **Tones**:
+
 - Default - Interactive blue
 - `critical` - Red (destructive actions)
 - `success` - Green (confirmations)
 
 **When to Use**:
+
 - ✅ All clickable actions
 - ✅ Form submissions
 - ✅ Navigation actions
 - ❌ Don't use `<button>` or `<a>` directly
 
 **Current Usage**:
+
 - Modal actions: Primary for confirm, plain for cancel
 - Tile actions: Plain variant for "View Details"
 - Approval queue: Primary for approve, critical tone for reject
@@ -380,6 +401,7 @@ import { PlusIcon } from '@shopify/polaris-icons';
 ---
 
 #### `<ButtonGroup>`
+
 **Purpose**: Group related buttons with consistent spacing
 
 ```typescript
@@ -407,6 +429,7 @@ import { ButtonGroup } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Multiple related actions (approve/reject/cancel)
 - ✅ Modal footer actions
 - ✅ Toolbar buttons
@@ -417,6 +440,7 @@ import { ButtonGroup } from '@shopify/polaris';
 ### Feedback Components
 
 #### `<Badge>`
+
 **Purpose**: Status indicators and labels
 
 ```typescript
@@ -441,6 +465,7 @@ import { Badge } from '@shopify/polaris';
 ```
 
 **Tone Mapping**:
+
 - `success` - Green (healthy status, completed)
 - `warning` - Yellow (caution, needs attention)
 - `critical` - Red (errors, high risk)
@@ -448,18 +473,21 @@ import { Badge } from '@shopify/polaris';
 - `attention` - Amber (moderate risk, warnings)
 
 **When to Use**:
+
 - ✅ Status indicators (healthy, error, unconfigured)
 - ✅ Risk levels (low, medium, high)
 - ✅ Counts and labels
 - ❌ Don't use for long text (use Text instead)
 
 **Current Usage**:
+
 - Tile status: "Healthy" (success), "Attention needed" (critical)
 - Approval risk: "LOW RISK" (success), "MEDIUM RISK" (warning), "HIGH RISK" (critical)
 
 ---
 
 #### `<Banner>`
+
 **Purpose**: Page-level or section-level notifications
 
 ```typescript
@@ -504,12 +532,14 @@ import { Banner } from '@shopify/polaris';
 ```
 
 **Tone Guidelines**:
+
 - `info` - Informational, neutral
 - `success` - Positive outcomes
 - `warning` - Caution, needs attention
 - `critical` - Errors, failures
 
 **When to Use**:
+
 - ✅ Page-level notifications
 - ✅ Error messages with context
 - ✅ Success confirmations
@@ -518,6 +548,7 @@ import { Banner } from '@shopify/polaris';
 - ❌ Don't use for transient messages (use Toast)
 
 **Current Usage**:
+
 - Mock mode banner (info tone)
 - Error states in approval cards (critical tone)
 - Offline detection (warning tone)
@@ -525,6 +556,7 @@ import { Banner } from '@shopify/polaris';
 ---
 
 #### `<Toast>` (via App Bridge)
+
 **Purpose**: Transient success/error messages
 
 ```typescript
@@ -532,7 +564,7 @@ import { useToast } from '@shopify/app-bridge-react';
 
 function MyComponent() {
   const toast = useToast();
-  
+
   const handleSave = async () => {
     try {
       await saveData();
@@ -541,12 +573,13 @@ function MyComponent() {
       toast.show('Save failed', { isError: true });
     }
   };
-  
+
   return <Button onClick={handleSave}>Save</Button>;
 }
 ```
 
 **When to Use**:
+
 - ✅ Action confirmations ("Saved", "Deleted")
 - ✅ Quick feedback (< 5 seconds)
 - ✅ Non-critical errors
@@ -558,6 +591,7 @@ function MyComponent() {
 ### Form Components
 
 #### `<TextField>`
+
 **Purpose**: Single-line text input
 
 ```typescript
@@ -608,6 +642,7 @@ import { TextField } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ All single-line text inputs
 - ✅ Email, URL, phone fields
 - ✅ Numbers with prefix/suffix
@@ -616,6 +651,7 @@ import { TextField } from '@shopify/polaris';
 ---
 
 #### `<Select>`
+
 **Purpose**: Dropdown selection
 
 ```typescript
@@ -656,17 +692,20 @@ import { Select } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ < 10 options
 - ✅ Single selection
 - ❌ Many options (use Autocomplete or Combobox)
 - ❌ Don't use HTML `<select>` directly
 
 **Current Usage**:
+
 - Sales Pulse modal: Action selection dropdown
 
 ---
 
 #### `<Checkbox>` & `<RadioButton>`
+
 **Purpose**: Boolean and single-choice selections
 
 ```typescript
@@ -701,6 +740,7 @@ import { Checkbox, RadioButton, BlockStack } from '@shopify/polaris';
 ### Overlay Components
 
 #### `<Modal>`
+
 **Purpose**: Modal dialogs for focused tasks
 
 ```typescript
@@ -748,18 +788,21 @@ import { Modal } from '@shopify/polaris';
 ```
 
 **Sizes**:
+
 - `small` - 400px max width
 - `medium` - 600px max width (default)
 - `large` - 800px max width
 - `fullScreen` - Full viewport
 
 **When to Use**:
+
 - ✅ Forms and data entry
 - ✅ Confirmations
 - ✅ Detailed views
 - ❌ Don't use HTML `<dialog>` directly (unless App Bridge pattern)
 
 **Current Usage**:
+
 - CX Escalation modal: Medium size with approve/reject actions
 - Sales Pulse modal: Medium size with action selection
 
@@ -770,6 +813,7 @@ import { Modal } from '@shopify/polaris';
 ### Feedback & Status Components
 
 #### `<Spinner>`
+
 **Purpose**: Loading indicators
 
 ```typescript
@@ -787,6 +831,7 @@ import { Spinner } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Page-level loading
 - ✅ Section loading
 - ❌ Don't use in buttons (use Button's `loading` prop)
@@ -794,6 +839,7 @@ import { Spinner } from '@shopify/polaris';
 ---
 
 #### `<ProgressBar>`
+
 **Purpose**: Show progress of operations
 
 ```typescript
@@ -812,6 +858,7 @@ import { ProgressBar } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ File uploads
 - ✅ Multi-step processes
 - ✅ Known-duration operations
@@ -820,12 +867,13 @@ import { ProgressBar } from '@shopify/polaris';
 ---
 
 #### `<Skeleton>` Components
+
 **Purpose**: Loading placeholders that match content shape
 
 ```typescript
-import { 
-  SkeletonBodyText, 
-  SkeletonDisplayText, 
+import {
+  SkeletonBodyText,
+  SkeletonDisplayText,
   SkeletonThumbnail,
   SkeletonTabs,
 } from '@shopify/polaris';
@@ -848,12 +896,14 @@ import {
 ```
 
 **When to Use**:
+
 - ✅ Initial page load
 - ✅ Lazy-loaded content
 - ✅ Known content structure
 - ❌ Unknown content (use Spinner)
 
 **Current Usage** (Recommended):
+
 - Approval queue: Use SkeletonBodyText for card loading
 
 ---
@@ -861,6 +911,7 @@ import {
 ### Data Display Components
 
 #### `<DataTable>`
+
 **Purpose**: Tabular data with sorting
 
 ```typescript
@@ -880,6 +931,7 @@ import { DataTable } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Tabular data
 - ✅ Sorting needed
 - ✅ Numeric alignment
@@ -888,6 +940,7 @@ import { DataTable } from '@shopify/polaris';
 ---
 
 #### `<List>` & `<List.Item>`
+
 **Purpose**: Unordered or ordered lists
 
 ```typescript
@@ -914,11 +967,13 @@ import { List } from '@shopify/polaris';
 ```
 
 **When to Use**:
+
 - ✅ Bulleted/numbered lists
 - ✅ Steps or sequences
 - ❌ Complex data (use DataTable)
 
 **Current Usage**:
+
 - Tile content: Uses custom styled `<ul>` - **consider migrating to `<List>`**
 
 ---
@@ -928,11 +983,13 @@ import { List } from '@shopify/polaris';
 ### Custom Components We've Created
 
 #### `<TileCard>`
+
 **Purpose**: Wrapper for dashboard tiles with status handling
 
 **File**: `app/components/tiles/TileCard.tsx`
 
 **Props**:
+
 ```typescript
 interface TileCardProps<T> {
   title: string;
@@ -943,6 +1000,7 @@ interface TileCardProps<T> {
 ```
 
 **States**:
+
 - `ok` - Healthy status (green badge)
 - `error` - Error status (red badge)
 - `unconfigured` - Not configured (gray badge)
@@ -956,6 +1014,7 @@ interface TileCardProps<T> {
 All tile components follow the same pattern:
 
 **Files**:
+
 - `CXEscalationsTile.tsx`
 - `SalesPulseTile.tsx`
 - `FulfillmentHealthTile.tsx`
@@ -964,20 +1023,21 @@ All tile components follow the same pattern:
 - `OpsMetricsTile.tsx`
 
 **Common Pattern**:
+
 ```typescript
 export function SomeTile({ data }: Props) {
   return (
     <>
       {/* Main content */}
       <Text variant="headingMd">{data.metric}</Text>
-      
+
       {/* List of items */}
       <ul style={{...}}>  {/* Could use <List> */}
         {items.map(item => (
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
-      
+
       {/* Action button */}
       <button className="occ-link-button">  {/* Could use <Button variant="plain"> */}
         View Details
@@ -988,6 +1048,7 @@ export function SomeTile({ data }: Props) {
 ```
 
 **Improvement Opportunities**:
+
 1. Replace custom `<ul>` styling with `<List>`
 2. Replace `.occ-link-button` with `<Button variant="plain">`
 3. Use `<BlockStack>` for vertical spacing instead of inline styles
@@ -997,12 +1058,14 @@ export function SomeTile({ data }: Props) {
 ### Custom Modal Components
 
 #### `<CXEscalationModal>`
+
 **Purpose**: Customer escalation review and response
 
 **Current Pattern**: Uses HTML `<dialog>` with custom classes  
 **Polaris Migration**: Replace with `<Modal>` component
 
 **Before** (Current):
+
 ```typescript
 <dialog open className="occ-modal">
   <div className="occ-modal__header">
@@ -1014,6 +1077,7 @@ export function SomeTile({ data }: Props) {
 ```
 
 **After** (Polaris):
+
 ```typescript
 <Modal
   open={open}
@@ -1032,6 +1096,7 @@ export function SomeTile({ data }: Props) {
 ```
 
 **Benefits**:
+
 - Automatic focus management
 - Built-in ARIA attributes
 - Consistent styling with Shopify Admin
@@ -1046,6 +1111,7 @@ export function SomeTile({ data }: Props) {
 #### Polaris Color System
 
 **Surface Colors**:
+
 ```css
 background="bg-surface"              /* #ffffff - Primary white */
 background="bg-surface-secondary"    /* #f6f6f7 - Light gray */
@@ -1056,6 +1122,7 @@ background="bg-surface-selected"     /* #f2f7fe - Selected blue */
 ```
 
 **Status Colors**:
+
 ```css
 /* Success (Green) */
 background="bg-success"              /* #1a7f37 */
@@ -1079,6 +1146,7 @@ tone="info"
 ```
 
 **Text Colors**:
+
 ```css
 tone="base"       /* #202223 - Primary text */
 tone="subdued"    /* #637381 - Secondary text */
@@ -1090,6 +1158,7 @@ tone="info"       /* #1f5d99 - Info text */
 ```
 
 **Border Colors**:
+
 ```css
 borderColor="border"                 /* #d2d5d8 - Default */
 borderColor="border-secondary"       /* #e8eaed - Subtle */
@@ -1103,6 +1172,7 @@ borderColor="border-critical"        /* #e85c4a */
 ### Spacing Tokens
 
 **Polaris Spacing Scale**:
+
 ```css
 "050"  →  2px   (Hairline)
 "100"  →  4px   (Tight)
@@ -1117,6 +1187,7 @@ borderColor="border-critical"        /* #e85c4a */
 ```
 
 **Usage in Components**:
+
 ```typescript
 <BlockStack gap="400">       {/* 16px vertical gap */}
 <InlineStack gap="200">      {/* 8px horizontal gap */}
@@ -1130,6 +1201,7 @@ borderColor="border-critical"        /* #e85c4a */
 ### Typography Tokens
 
 **Font Sizes** (via Text variants):
+
 ```typescript
 variant="headingXl"  → 28px (Page titles)
 variant="headingLg"  → 24px (Major sections)
@@ -1141,6 +1213,7 @@ variant="bodySm"     → 14px (Small text, meta)
 ```
 
 **Font Weights**:
+
 ```typescript
 fontWeight="regular"   → 400
 fontWeight="medium"    → 500
@@ -1149,6 +1222,7 @@ fontWeight="bold"      → 700
 ```
 
 **Line Heights**:
+
 - Automatically set by Polaris based on variant
 - `headings`: 1.25 (tight)
 - `body`: 1.5 (comfortable)
@@ -1167,6 +1241,7 @@ borderRadius="full" →  9999px (Pills)
 ```
 
 **Usage**:
+
 ```typescript
 <Box borderRadius="200">  {/* 8px - Default for cards */}
 <Box borderRadius="300">  {/* 12px - Modals */}
@@ -1186,6 +1261,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Usage**:
+
 ```typescript
 <Box shadow="100">  {/* Card default */}
 <Box shadow="400">  {/* Modal */}
@@ -1198,6 +1274,7 @@ shadow="500"  → Highest elevation (popovers)
 ### Dashboard Tiles
 
 **Current Pattern**:
+
 ```typescript
 <TileCard
   title="Sales Pulse"
@@ -1207,6 +1284,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Recommended Enhancement**:
+
 ```typescript
 <Card>
   <BlockStack gap="400">
@@ -1214,9 +1292,9 @@ shadow="500"  → Highest elevation (popovers)
       <Text variant="headingMd" as="h2">Sales Pulse</Text>
       <Badge tone={statusTone}>{statusLabel}</Badge>
     </InlineStack>
-    
+
     <SalesPulseTile summary={data} />
-    
+
     <Button variant="plain" onClick={openModal}>
       View Details
     </Button>
@@ -1225,6 +1303,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Benefits**:
+
 - Native Polaris Card styling
 - Better accessibility
 - Automatic responsive behavior
@@ -1235,6 +1314,7 @@ shadow="500"  → Highest elevation (popovers)
 ### Modal Patterns
 
 **Current Pattern** (HTML dialog):
+
 ```typescript
 <dialog open className="occ-modal">
   <div className="occ-modal__header">{/* ... */}</div>
@@ -1244,6 +1324,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Recommended Pattern** (Polaris Modal):
+
 ```typescript
 <Modal
   open={open}
@@ -1262,6 +1343,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Benefits**:
+
 - Automatic focus trap
 - Escape key handling
 - Consistent spacing
@@ -1272,6 +1354,7 @@ shadow="500"  → Highest elevation (popovers)
 ### Form Patterns
 
 **Best Practice**:
+
 ```typescript
 <BlockStack gap="400">
   <TextField
@@ -1283,14 +1366,14 @@ shadow="500"  → Highest elevation (popovers)
     requiredIndicator
     autoComplete="email"
   />
-  
+
   <Select
     label="Priority"
     options={priorityOptions}
     value={priority}
     onChange={setPriority}
   />
-  
+
   <Checkbox
     label="Send notification"
     checked={sendNotif}
@@ -1300,6 +1383,7 @@ shadow="500"  → Highest elevation (popovers)
 ```
 
 **Key Points**:
+
 - Use `<BlockStack>` for consistent vertical spacing
 - Include labels (accessibility requirement)
 - Use `requiredIndicator` for required fields
@@ -1313,6 +1397,7 @@ shadow="500"  → Highest elevation (popovers)
 ### ✅ DO
 
 **Component Selection**:
+
 - ✅ Use Polaris components first, always
 - ✅ Use `<Text>` for all text content
 - ✅ Use `<Button>` for all actions
@@ -1322,12 +1407,14 @@ shadow="500"  → Highest elevation (popovers)
 - ✅ Use semantic heading variants with `as` prop
 
 **Styling**:
+
 - ✅ Use Polaris props (`background`, `padding`, `gap`)
 - ✅ Use tone prop for color variants
 - ✅ Respect Polaris spacing scale
 - ✅ Use Polaris icons from `@shopify/polaris-icons`
 
 **Accessibility**:
+
 - ✅ Include labels on all form inputs
 - ✅ Use semantic headings (h1, h2, h3)
 - ✅ Provide `accessibilityLabel` for icon-only buttons
@@ -1340,12 +1427,14 @@ shadow="500"  → Highest elevation (popovers)
 ### ❌ DON'T
 
 **Component Selection**:
+
 - ❌ Don't use raw HTML elements (`<button>`, `<input>`, `<select>`)
 - ❌ Don't use `<div>` for layout (use `<Box>`, `<BlockStack>`, `<InlineStack>`)
 - ❌ Don't use `<span>` or `<p>` for text (use `<Text>`)
 - ❌ Don't create custom buttons (use `<Button>`)
 
 **Styling**:
+
 - ❌ Don't use inline styles (except Polaris-generated values)
 - ❌ Don't use custom CSS classes for Polaris components
 - ❌ Don't use arbitrary spacing values (use Polaris scale)
@@ -1353,6 +1442,7 @@ shadow="500"  → Highest elevation (popovers)
 - ❌ Don't use CSS flexbox/grid (use Polaris stack components)
 
 **Accessibility**:
+
 - ❌ Don't skip labels on form inputs
 - ❌ Don't use color alone to convey information
 - ❌ Don't use non-semantic headings (div styled as heading)
@@ -1390,6 +1480,7 @@ All components must meet:
 ### Polaris Accessibility Features
 
 Polaris components include:
+
 - ✅ Proper ARIA attributes
 - ✅ Keyboard navigation
 - ✅ Focus management
@@ -1400,6 +1491,7 @@ Polaris components include:
 ### Testing Checklist
 
 For every new component:
+
 - [ ] Keyboard navigation works
 - [ ] Screen reader announces correctly
 - [ ] Focus indicators visible
@@ -1417,7 +1509,7 @@ For every new component:
 ```typescript
 // Polaris uses these breakpoints:
 xs:  0px      // Mobile portrait
-sm:  490px    // Mobile landscape  
+sm:  490px    // Mobile landscape
 md:  768px    // Tablet
 lg:  1040px   // Desktop
 xl:  1440px   // Large desktop
@@ -1434,6 +1526,7 @@ Desktop:  1280px+    // Three columns
 ### Responsive Component Patterns
 
 **Use Polaris responsive props**:
+
 ```typescript
 // Hide on mobile
 <Box display={{ xs: 'none', md: 'block' }}>
@@ -1452,6 +1545,7 @@ Desktop:  1280px+    // Three columns
 ```
 
 **Current Dashboard Grid**:
+
 ```css
 .occ-tile-grid {
   display: grid;
@@ -1461,6 +1555,7 @@ Desktop:  1280px+    // Three columns
 ```
 
 **Polaris Alternative**:
+
 ```typescript
 <Layout>
   {tiles.map(tile => (
@@ -1478,6 +1573,7 @@ Desktop:  1280px+    // Three columns
 ### Phase 1: Low-Risk Migrations
 
 **Replace link buttons with Polaris Button**:
+
 ```typescript
 // Before:
 <button className="occ-link-button" onClick={...}>View Details</button>
@@ -1487,6 +1583,7 @@ Desktop:  1280px+    // Three columns
 ```
 
 **Replace custom lists with Polaris List**:
+
 ```typescript
 // Before:
 <ul style={{ margin: 0, paddingLeft: '1.1rem', ... }}>
@@ -1504,6 +1601,7 @@ Desktop:  1280px+    // Three columns
 ### Phase 2: Medium-Risk Migrations
 
 **Replace custom modals with Polaris Modal**:
+
 ```typescript
 // Before:
 <dialog open className="occ-modal">...</dialog>
@@ -1519,6 +1617,7 @@ Desktop:  1280px+    // Three columns
 ### Phase 3: Custom Components Enhancement
 
 **Enhance TileCard with Polaris**:
+
 ```typescript
 // Current: Custom component with inline styles
 // Future: Polaris Card with BlockStack
@@ -1545,6 +1644,7 @@ function TileCard({ title, status, children }: Props) {
 ### Common Patterns Cheat Sheet
 
 **Page with content**:
+
 ```typescript
 <Page title="Page Title">
   <Layout>
@@ -1561,6 +1661,7 @@ function TileCard({ title, status, children }: Props) {
 ```
 
 **Form with validation**:
+
 ```typescript
 <BlockStack gap="400">
   <TextField label="Name" value={name} onChange={setName} error={errors.name} requiredIndicator />
@@ -1572,6 +1673,7 @@ function TileCard({ title, status, children }: Props) {
 ```
 
 **Status indicator**:
+
 ```typescript
 <InlineStack gap="200" blockAlign="center">
   <Icon source={CheckIcon} tone="success" />
@@ -1580,6 +1682,7 @@ function TileCard({ title, status, children }: Props) {
 ```
 
 **Loading state**:
+
 ```typescript
 {isLoading ? (
   <SkeletonBodyText lines={3} />
@@ -1589,6 +1692,7 @@ function TileCard({ title, status, children }: Props) {
 ```
 
 **Error banner**:
+
 ```typescript
 {error && (
   <Banner tone="critical" title="Error" onDismiss={clearError}>
@@ -1602,18 +1706,21 @@ function TileCard({ title, status, children }: Props) {
 ## 11. Resources
 
 ### Documentation
+
 - **Polaris Components**: https://polaris.shopify.com/components
 - **Polaris Tokens**: https://polaris.shopify.com/tokens
 - **Polaris Patterns**: https://polaris.shopify.com/patterns
 - **Polaris Icons**: https://polaris.shopify.com/icons
 
 ### Internal Docs
+
 - **Design Tokens**: `docs/design/tokens/design_tokens.md`
 - **Figma Variables**: `docs/design/figma-variables-export.md`
 - **Accessibility**: `docs/design/accessibility_criteria.md`
 - **Visual Hierarchy**: `docs/design/visual_hierarchy_review.md`
 
 ### Tools
+
 - **Polaris Figma Kit**: Available in Shopify Partner resources
 - **Color Contrast Checker**: https://webaim.org/resources/contrastchecker/
 - **Accessibility Testing**: axe DevTools browser extension
@@ -1625,12 +1732,14 @@ function TileCard({ title, status, children }: Props) {
 ### Current HotDash Components
 
 **Polaris Components in Use**:
+
 - Page (via App Bridge `<s-page>`)
 - Text (limited usage)
 - Button (limited usage)
 - (More Polaris components to be adopted)
 
 **Custom OCC Components**:
+
 - TileCard (wrapper with status handling)
 - SalesPulseTile (content renderer)
 - FulfillmentHealthTile (content renderer)
@@ -1642,6 +1751,7 @@ function TileCard({ title, status, children }: Props) {
 - SalesPulseModal (dialog with action selection)
 
 **Custom CSS Classes** (to be migrated):
+
 - `.occ-tile` → Migrate to `<Card>`
 - `.occ-tile-grid` → Migrate to `<Layout>` or grid utilities
 - `.occ-button` variants → Migrate to `<Button>`
@@ -1655,6 +1765,7 @@ function TileCard({ title, status, children }: Props) {
 ### Adding New Components
 
 **Process**:
+
 1. Check if Polaris component exists
 2. If yes, use Polaris component
 3. If no, create custom component following Polaris patterns
@@ -1664,6 +1775,7 @@ function TileCard({ title, status, children }: Props) {
 ### Modifying Existing Components
 
 **Process**:
+
 1. Identify component to modify
 2. Check Polaris patterns for guidance
 3. Maintain accessibility standards
@@ -1674,6 +1786,7 @@ function TileCard({ title, status, children }: Props) {
 ### Component Review Criteria
 
 Before approval, verify:
+
 - [ ] Uses Polaris components where possible
 - [ ] Follows Polaris token system
 - [ ] Meets WCAG 2.2 AA standards
@@ -1688,4 +1801,3 @@ Before approval, verify:
 **Created**: 2025-10-11  
 **Owner**: Designer Agent  
 **Next Review**: After Polaris migration (if initiated)
-

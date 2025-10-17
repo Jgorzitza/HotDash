@@ -9,6 +9,7 @@ task: 1F
 # Task 1F: Mobile Operator Experience
 
 ## Purpose
+
 Design mobile-responsive approval queue and touch-optimized controls for operators on phones and tablets.
 
 ## Mobile Breakpoints
@@ -38,6 +39,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ## Mobile Approval Queue
 
 ### Page Layout (Mobile)
+
 ```typescript
 <Page
   title="Mission Control"
@@ -52,6 +54,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ```
 
 ### Mobile Approval Card
+
 ```typescript
 <Card>
   <BlockStack gap="300">
@@ -60,11 +63,11 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
       <Text variant="headingSm">Conv #{id}</Text>
       <Badge tone="critical">HIGH</Badge>
     </InlineStack>
-    
+
     {/* Tool info */}
     <Text>Tool: send_email</Text>
     <Text variant="bodySm" tone="subdued">2 min ago</Text>
-    
+
     {/* Full-width buttons (stacked) */}
     <BlockStack gap="200">
       <Button
@@ -91,21 +94,23 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ## Touch Optimization
 
 ### Touch Target Sizes (WCAG 2.5.5)
+
 ```css
 /* Minimum 44x44px (iOS), 48x48px (Android) */
 .mobile-button {
   min-height: 48px;
   min-width: 48px;
   padding: 16px 20px;
-  font-size: 16px;  /* Prevents iOS zoom on focus */
+  font-size: 16px; /* Prevents iOS zoom on focus */
 }
 
 .mobile-approve-button {
-  min-height: 56px;  /* Larger for critical action */
+  min-height: 56px; /* Larger for critical action */
 }
 ```
 
 ### Touch Gestures (Optional Enhancement)
+
 ```typescript
 // Swipe right = approve, swipe left = reject
 <div
@@ -120,6 +125,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 **Note**: Buttons are primary interaction. Swipe is secondary enhancement.
 
 ### Touch Feedback
+
 ```css
 .mobile-button:active {
   transform: scale(0.98);
@@ -130,6 +136,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ## Mobile Navigation
 
 ### Bottom Nav Bar (Fixed)
+
 ```typescript
 <div className="mobile-bottom-nav">
   <InlineStack gap="0" align="space-around">
@@ -171,6 +178,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ## Mobile Tile Views
 
 ### Dashboard Tiles (Mobile)
+
 ```typescript
 // Desktop: 3-4 column grid
 // Mobile: 1 column, stacked
@@ -186,7 +194,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 .dashboard-grid {
   display: grid;
   gap: var(--p-space-400);
-  
+
   /* Mobile: 1 column */
   grid-template-columns: 1fr;
 }
@@ -209,6 +217,7 @@ Design mobile-responsive approval queue and touch-optimized controls for operato
 ## Mobile-Specific Features
 
 ### Pull-to-Refresh
+
 ```typescript
 const [refreshing, setRefreshing] = useState(false);
 
@@ -227,6 +236,7 @@ const [refreshing, setRefreshing] = useState(false);
 ```
 
 ### Sticky Header (Mobile)
+
 ```css
 .mobile-page-header {
   position: sticky;
@@ -239,6 +249,7 @@ const [refreshing, setRefreshing] = useState(false);
 ```
 
 ### Mobile Empty State
+
 ```typescript
 <EmptyState
   heading="All clear!"
@@ -252,6 +263,7 @@ const [refreshing, setRefreshing] = useState(false);
 ## Responsive Patterns
 
 ### Hide on Mobile
+
 ```css
 .desktop-only {
   display: none;
@@ -265,6 +277,7 @@ const [refreshing, setRefreshing] = useState(false);
 ```
 
 ### Show on Mobile Only
+
 ```css
 .mobile-only {
   display: block;
@@ -278,6 +291,7 @@ const [refreshing, setRefreshing] = useState(false);
 ```
 
 ### Responsive Text
+
 ```typescript
 // Desktop: "Conversation #101"
 // Mobile: "Conv #101"
@@ -292,17 +306,20 @@ const [refreshing, setRefreshing] = useState(false);
 ## Mobile Performance
 
 ### Lazy Load Images
+
 ```html
-<img src={imageUrl} loading="lazy" alt={alt} />
+<img src="{imageUrl}" loading="lazy" alt="{alt}" />
 ```
 
 ### Reduce Bundle Size
+
 ```typescript
 // Code split mobile components
-const MobileApprovalQueue = lazy(() => import('./MobileApprovalQueue'));
+const MobileApprovalQueue = lazy(() => import("./MobileApprovalQueue"));
 ```
 
 ### Optimize for 3G
+
 - Minimize API calls
 - Use pagination (10 items/page on mobile)
 - Compress images
@@ -323,4 +340,3 @@ const MobileApprovalQueue = lazy(() => import('./MobileApprovalQueue'));
 ---
 
 **Status**: Mobile operator experience designed - touch-optimized, responsive, performant
-

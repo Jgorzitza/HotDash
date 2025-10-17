@@ -31,6 +31,7 @@ expires: 2025-10-25
 ```
 
 **Use For**:
+
 - No pending approvals
 - No escalations
 - No errors
@@ -54,6 +55,7 @@ expires: 2025-10-25
 ```
 
 **Use For**:
+
 - New installations
 - Features not yet configured
 - First-time user experience
@@ -77,6 +79,7 @@ expires: 2025-10-25
 ```
 
 **Use For**:
+
 - Search with no results
 - Filtered views with no matches
 - Date range with no data
@@ -105,6 +108,7 @@ expires: 2025-10-25
 ```
 
 **Use For**:
+
 - API failures
 - Network errors
 - Permission errors
@@ -116,6 +120,7 @@ expires: 2025-10-25
 ### Skeleton Patterns
 
 **Card Skeleton**:
+
 ```typescript
 <Card>
   <BlockStack gap="400">
@@ -127,18 +132,20 @@ expires: 2025-10-25
 ```
 
 **Table Skeleton**:
+
 ```typescript
 <Card>
   <DataTable
     columnContentTypes={['text', 'numeric', 'numeric']}
     headings={['Name', 'Count', 'Rate']}
-    rows={[]} 
+    rows={[]}
   />
   <SkeletonBodyText lines={5} />
 </Card>
 ```
 
 **Metric Skeleton**:
+
 ```typescript
 <Card>
   <BlockStack gap="200">
@@ -185,8 +192,9 @@ expires: 2025-10-25
 ## 4. Component Inventory
 
 **Created** (reusable components):
+
 - SuccessEmptyState
-- FirstTimeEmptyState  
+- FirstTimeEmptyState
 - FilteredEmptyState
 - ErrorEmptyState
 - CardSkeleton
@@ -198,5 +206,3 @@ expires: 2025-10-25
 **Status**: Complete Empty State Library  
 **Created**: 2025-10-11  
 **Owner**: Designer Agent
-
-

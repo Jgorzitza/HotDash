@@ -5,6 +5,7 @@ owner: manager
 last_reviewed: 2025-10-12
 expires: 2025-10-19
 ---
+
 # Daily Manager Stand-up Note Template
 
 _Post notes in `feedback/manager.md` before 15:00 UTC each day._
@@ -38,6 +39,7 @@ _Post notes in `feedback/manager.md` before 15:00 UTC each day._
 ```
 
 **Usage rules**
+
 1. Every bullet must include the deliverable, success evidence, and deadline.
 2. Reference vault paths or artifacts when assigning secret work.
 3. If a task stays open past its deadline, escalate in the same section with blocker evidence.

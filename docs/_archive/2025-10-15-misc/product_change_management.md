@@ -10,6 +10,7 @@
 ## Change Management Process
 
 **For Major Changes** (affect >50% of users):
+
 1. **Announce**: 2 weeks before (email + in-app)
 2. **Educate**: Training materials, webinars
 3. **Roll out**: Gradual (10% → 50% → 100%)
@@ -23,4 +24,3 @@
 
 **Document Path**: `docs/product_change_management.md`
 **Status**: Change management framework
-

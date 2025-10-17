@@ -2,7 +2,7 @@
 epoch: 2025.10.E1
 doc: docs/design/mobile-responsive-optimization.md
 owner: designer
-created: 2025-10-11  
+created: 2025-10-11
 last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-25
@@ -20,6 +20,7 @@ expires: 2025-10-25
 ### Layout: Single Column Stack
 
 **Tiles**: Stack vertically with full width
+
 ```typescript
 <InlineGrid columns={{ xs: 1, md: 2, lg: 3 }} gap="400">
   {tiles.map(tile => <TileCard key={tile.id} {...tile} />)}
@@ -52,7 +53,7 @@ expires: 2025-10-25
       <Text variant="headingMd" as="h2">Agent Proposal</Text>
       <Badge>HIGH RISK</Badge>
     </InlineStack>
-    
+
     {/* Mobile: Show summary only */}
     <Box display={{ xs: 'block', md: 'none' }}>
       <Text variant="bodyMd">
@@ -60,7 +61,7 @@ expires: 2025-10-25
       </Text>
       <Button fullWidth onClick={expand}>Show Details</Button>
     </Box>
-    
+
     {/* Desktop: Show all details */}
     <Box display={{ xs: 'none', md: 'block' }}>
       {/* Full card content */}
@@ -124,5 +125,3 @@ expires: 2025-10-25
 
 **Status**: Complete  
 **Owner**: Designer Agent
-
-

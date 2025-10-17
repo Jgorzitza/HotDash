@@ -1,6 +1,6 @@
 /**
  * Engagement Analysis Service
- * 
+ *
  * Analyzes historical content performance to provide insights for:
  * - Optimal posting times
  * - High-performing hashtags
@@ -8,7 +8,10 @@
  * - Platform-specific best practices
  */
 
-import type { SocialPlatform, ContentPerformance } from '../../lib/content/tracking';
+import type {
+  SocialPlatform,
+  ContentPerformance,
+} from "../../lib/content/tracking";
 
 // ============================================================================
 // Types
@@ -60,7 +63,7 @@ export interface TimePerformance {
  * Content pattern analysis
  */
 export interface ContentPattern {
-  type: 'question' | 'emoji' | 'link' | 'mention' | 'long-form' | 'short-form';
+  type: "question" | "emoji" | "link" | "mention" | "long-form" | "short-form";
   description: string;
   averageEngagementRate: number;
   sampleSize: number;
@@ -73,7 +76,7 @@ export interface ContentPattern {
 
 /**
  * Analyze engagement patterns for a specific platform
- * 
+ *
  * NOTE: This is a placeholder implementation. In production, this would:
  * 1. Query Supabase for historical post performance
  * 2. Aggregate metrics by hashtag, time, content type
@@ -82,27 +85,27 @@ export interface ContentPattern {
  */
 export async function analyzeEngagementPatterns(
   platform: SocialPlatform,
-  dateRange?: { start: string; end: string }
+  dateRange?: { start: string; end: string },
 ): Promise<EngagementInsights> {
   // TODO: Implement actual data fetching from Supabase
   // For now, return mock insights
-  
+
   return {
     platform,
     totalPosts: 0,
     averageEngagementRate: 0,
     topPerformingHashtags: [],
     bestPostingTimes: {
-      dayOfWeek: 'Tuesday',
-      timeOfDay: '10:00 AM',
-      timezone: 'America/Denver',
+      dayOfWeek: "Tuesday",
+      timeOfDay: "10:00 AM",
+      timezone: "America/Denver",
     },
     contentPatterns: [],
     recommendations: [
-      'Post during peak engagement times (10 AM - 2 PM)',
-      'Use 5-7 relevant hashtags',
-      'Include questions to boost comments',
-      'Add visual content for higher engagement',
+      "Post during peak engagement times (10 AM - 2 PM)",
+      "Use 5-7 relevant hashtags",
+      "Include questions to boost comments",
+      "Add visual content for higher engagement",
     ],
   };
 }
@@ -112,11 +115,11 @@ export async function analyzeEngagementPatterns(
  */
 export async function analyzeHashtagPerformance(
   platform: SocialPlatform,
-  limit: number = 20
+  limit: number = 20,
 ): Promise<HashtagPerformance[]> {
   // TODO: Implement actual hashtag analysis from Supabase
   // For now, return empty array
-  
+
   return [];
 }
 
@@ -124,11 +127,11 @@ export async function analyzeHashtagPerformance(
  * Analyze optimal posting times based on historical engagement
  */
 export async function analyzePostingTimes(
-  platform: SocialPlatform
+  platform: SocialPlatform,
 ): Promise<TimePerformance[]> {
   // TODO: Implement actual time-based analysis
   // For now, return empty array
-  
+
   return [];
 }
 
@@ -136,7 +139,7 @@ export async function analyzePostingTimes(
  * Identify content patterns that drive engagement
  */
 export async function analyzeContentPatterns(
-  platform: SocialPlatform
+  platform: SocialPlatform,
 ): Promise<ContentPattern[]> {
   // TODO: Implement pattern recognition
   // Analyze for:
@@ -145,7 +148,7 @@ export async function analyzeContentPatterns(
   // - Link inclusion
   // - Mentions
   // - Post length
-  
+
   return [];
 }
 
@@ -153,15 +156,18 @@ export async function analyzeContentPatterns(
  * Compare performance across platforms
  */
 export async function comparePlatformPerformance(): Promise<{
-  platforms: Record<SocialPlatform, {
-    averageEngagementRate: number;
-    averageReach: number;
-    totalPosts: number;
-  }>;
+  platforms: Record<
+    SocialPlatform,
+    {
+      averageEngagementRate: number;
+      averageReach: number;
+      totalPosts: number;
+    }
+  >;
   recommendations: string[];
 }> {
   // TODO: Implement cross-platform comparison
-  
+
   return {
     platforms: {
       instagram: {
@@ -189,7 +195,7 @@ export async function comparePlatformPerformance(): Promise<{
  */
 export async function getPostInsights(
   postId: string,
-  platform: SocialPlatform
+  platform: SocialPlatform,
 ): Promise<{
   performance: ContentPerformance | null;
   insights: {
@@ -199,7 +205,7 @@ export async function getPostInsights(
   };
 }> {
   // TODO: Implement post-specific insights
-  
+
   return {
     performance: null,
     insights: {
@@ -216,14 +222,14 @@ export async function getPostInsights(
 export async function predictEngagement(
   content: string,
   platform: SocialPlatform,
-  hashtags: string[]
+  hashtags: string[],
 ): Promise<{
   estimatedEngagementRate: number;
   estimatedReach: number;
   confidence: number; // 0-1
   factors: {
     factor: string;
-    impact: 'positive' | 'negative' | 'neutral';
+    impact: "positive" | "negative" | "neutral";
     weight: number;
   }[];
 }> {
@@ -233,7 +239,7 @@ export async function predictEngagement(
   // - Hashtag performance
   // - Time of posting
   // - Historical patterns
-  
+
   return {
     estimatedEngagementRate: 0,
     estimatedReach: 0,
@@ -253,7 +259,7 @@ export function calculateEngagementRate(
   likes: number,
   comments: number,
   shares: number,
-  impressions: number
+  impressions: number,
 ): number {
   if (impressions === 0) return 0;
   return ((likes + comments + shares) / impressions) * 100;
@@ -265,25 +271,285 @@ export function calculateEngagementRate(
 export function isTrendingHashtag(
   hashtag: string,
   recentUsage: number,
-  historicalAverage: number
+  historicalAverage: number,
 ): boolean {
   // Consider trending if recent usage is 50% higher than historical average
   return recentUsage > historicalAverage * 1.5;
+}
+
+// ============================================================================
+// Multi-Platform Metrics Aggregation (Task 3.2)
+// ============================================================================
+
+/**
+ * Multi-platform engagement metrics
+ */
+export interface MultiPlatformMetrics {
+  platforms: {
+    [K in SocialPlatform]: {
+      totalPosts: number;
+      averageEngagementRate: number;
+      totalReach: number;
+      totalImpressions: number;
+      growthRate: number; // Week-over-week growth
+      trendScore: number; // 0-100 trend score
+    };
+  };
+  overall: {
+    totalPosts: number;
+    averageEngagementRate: number;
+    totalReach: number;
+    bestPerformingPlatform: SocialPlatform;
+    worstPerformingPlatform: SocialPlatform;
+  };
+  trends: {
+    platform: SocialPlatform;
+    direction: "up" | "down" | "stable";
+    change: number; // Percentage change
+    significance: "high" | "medium" | "low";
+  }[];
+}
+
+/**
+ * Aggregate metrics across all platforms
+ *
+ * NOTE: This is a placeholder implementation. In production, this would:
+ * 1. Query Supabase for all platform metrics
+ * 2. Calculate aggregated statistics
+ * 3. Compute growth rates and trends
+ * 4. Return comprehensive multi-platform view
+ */
+export async function aggregateMultiPlatformMetrics(dateRange: {
+  start: string;
+  end: string;
+}): Promise<MultiPlatformMetrics> {
+  // TODO: Implement actual Supabase aggregation
+  // For now, return mock structure
+
+  return {
+    platforms: {
+      instagram: {
+        totalPosts: 0,
+        averageEngagementRate: 0,
+        totalReach: 0,
+        totalImpressions: 0,
+        growthRate: 0,
+        trendScore: 0,
+      },
+      facebook: {
+        totalPosts: 0,
+        averageEngagementRate: 0,
+        totalReach: 0,
+        totalImpressions: 0,
+        growthRate: 0,
+        trendScore: 0,
+      },
+      tiktok: {
+        totalPosts: 0,
+        averageEngagementRate: 0,
+        totalReach: 0,
+        totalImpressions: 0,
+        growthRate: 0,
+        trendScore: 0,
+      },
+    },
+    overall: {
+      totalPosts: 0,
+      averageEngagementRate: 0,
+      totalReach: 0,
+      bestPerformingPlatform: "instagram",
+      worstPerformingPlatform: "facebook",
+    },
+    trends: [],
+  };
+}
+
+// ============================================================================
+// Trend Scoring Algorithm (Task 3.3)
+// ============================================================================
+
+/**
+ * Trend score components
+ */
+export interface TrendScoreComponents {
+  engagementTrend: number; // 0-25 points
+  reachTrend: number; // 0-25 points
+  growthMomentum: number; // 0-25 points
+  consistency: number; // 0-25 points
+  totalScore: number; // 0-100
+  grade: "A" | "B" | "C" | "D" | "F";
+}
+
+/**
+ * Calculate trend score for a platform
+ *
+ * Scoring algorithm:
+ * - Engagement trend (0-25): Week-over-week engagement rate change
+ * - Reach trend (0-25): Week-over-week reach growth
+ * - Growth momentum (0-25): Acceleration of growth (second derivative)
+ * - Consistency (0-25): Standard deviation of engagement rates
+ *
+ * Total score (0-100):
+ * - 90-100: A (Excellent, strong upward trend)
+ * - 80-89: B (Good, positive trend)
+ * - 70-79: C (Average, stable)
+ * - 60-69: D (Below average, declining)
+ * - 0-59: F (Poor, significant decline)
+ */
+export function calculateTrendScore(
+  currentWeekMetrics: {
+    engagementRate: number;
+    reach: number;
+    posts: number;
+  },
+  previousWeekMetrics: {
+    engagementRate: number;
+    reach: number;
+    posts: number;
+  },
+  twoWeeksAgoMetrics: {
+    engagementRate: number;
+    reach: number;
+    posts: number;
+  },
+): TrendScoreComponents {
+  // Engagement trend (0-25 points)
+  const engagementChange =
+    currentWeekMetrics.engagementRate - previousWeekMetrics.engagementRate;
+  const engagementTrend = Math.min(
+    25,
+    Math.max(0, 12.5 + engagementChange * 2.5),
+  );
+
+  // Reach trend (0-25 points)
+  const reachChange =
+    (currentWeekMetrics.reach - previousWeekMetrics.reach) /
+    previousWeekMetrics.reach;
+  const reachTrend = Math.min(25, Math.max(0, 12.5 + reachChange * 50));
+
+  // Growth momentum (0-25 points) - acceleration
+  const currentGrowth =
+    currentWeekMetrics.engagementRate - previousWeekMetrics.engagementRate;
+  const previousGrowth =
+    previousWeekMetrics.engagementRate - twoWeeksAgoMetrics.engagementRate;
+  const acceleration = currentGrowth - previousGrowth;
+  const growthMomentum = Math.min(25, Math.max(0, 12.5 + acceleration * 5));
+
+  // Consistency (0-25 points) - inverse of volatility
+  const avgEngagement =
+    (currentWeekMetrics.engagementRate +
+      previousWeekMetrics.engagementRate +
+      twoWeeksAgoMetrics.engagementRate) /
+    3;
+  const variance =
+    [
+      Math.pow(currentWeekMetrics.engagementRate - avgEngagement, 2),
+      Math.pow(previousWeekMetrics.engagementRate - avgEngagement, 2),
+      Math.pow(twoWeeksAgoMetrics.engagementRate - avgEngagement, 2),
+    ].reduce((a, b) => a + b, 0) / 3;
+  const stdDev = Math.sqrt(variance);
+  const consistency = Math.min(25, Math.max(0, 25 - stdDev * 2));
+
+  // Total score
+  const totalScore = Math.round(
+    engagementTrend + reachTrend + growthMomentum + consistency,
+  );
+
+  // Grade
+  let grade: "A" | "B" | "C" | "D" | "F";
+  if (totalScore >= 90) grade = "A";
+  else if (totalScore >= 80) grade = "B";
+  else if (totalScore >= 70) grade = "C";
+  else if (totalScore >= 60) grade = "D";
+  else grade = "F";
+
+  return {
+    engagementTrend: Math.round(engagementTrend * 10) / 10,
+    reachTrend: Math.round(reachTrend * 10) / 10,
+    growthMomentum: Math.round(growthMomentum * 10) / 10,
+    consistency: Math.round(consistency * 10) / 10,
+    totalScore,
+    grade,
+  };
+}
+
+/**
+ * Get trend analysis for all platforms
+ */
+export async function getTrendAnalysis(dateRange: {
+  start: string;
+  end: string;
+}): Promise<
+  {
+    platform: SocialPlatform;
+    trendScore: TrendScoreComponents;
+    recommendation: string;
+  }[]
+> {
+  // TODO: Implement actual trend calculation from historical data
+  // For now, return mock structure
+
+  return [
+    {
+      platform: "instagram",
+      trendScore: {
+        engagementTrend: 0,
+        reachTrend: 0,
+        growthMomentum: 0,
+        consistency: 0,
+        totalScore: 0,
+        grade: "C",
+      },
+      recommendation: "Maintain current posting strategy",
+    },
+    {
+      platform: "facebook",
+      trendScore: {
+        engagementTrend: 0,
+        reachTrend: 0,
+        growthMomentum: 0,
+        consistency: 0,
+        totalScore: 0,
+        grade: "C",
+      },
+      recommendation: "Maintain current posting strategy",
+    },
+    {
+      platform: "tiktok",
+      trendScore: {
+        engagementTrend: 0,
+        reachTrend: 0,
+        growthMomentum: 0,
+        consistency: 0,
+        totalScore: 0,
+        grade: "C",
+      },
+      recommendation: "Maintain current posting strategy",
+    },
+  ];
 }
 
 /**
  * Get day of week name from number
  */
 export function getDayName(dayNumber: number): string {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  return days[dayNumber] || 'Unknown';
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  return days[dayNumber] || "Unknown";
 }
 
 /**
  * Format time for display
  */
 export function formatTime(hour: number): string {
-  const period = hour >= 12 ? 'PM' : 'AM';
+  const period = hour >= 12 ? "PM" : "AM";
   const displayHour = hour % 12 || 12;
   return `${displayHour}:00 ${period}`;
 }
@@ -293,7 +559,7 @@ export function formatTime(hour: number): string {
  */
 export function isStatisticallySignificant(
   sampleSize: number,
-  minSampleSize: number = 30
+  minSampleSize: number = 30,
 ): boolean {
   return sampleSize >= minSampleSize;
 }
@@ -303,7 +569,7 @@ export function isStatisticallySignificant(
  */
 export function normalizeEngagementRate(
   rate: number,
-  platform: SocialPlatform
+  platform: SocialPlatform,
 ): number {
   // Platform-specific normalization factors
   const factors = {
@@ -311,7 +577,6 @@ export function normalizeEngagementRate(
     facebook: 0.5, // Facebook typically has lower engagement
     tiktok: 2.0, // TikTok typically has higher engagement
   };
-  
+
   return rate * factors[platform];
 }
-

@@ -1,15 +1,18 @@
 # Supabase NDJSON Analyzer — Notebook Plan (2025-10-11)
 
 ## Objective
+
 - Provide a reproducible workflow for quantifying Supabase decision sync health using the raw NDJSON exports delivered by reliability.
 - Generate evidence bundles (JSON summaries, charts, narrative notes) that can be attached to `feedback/data.md`, manager updates, and incident retros.
 
 ## Parameterization
+
 - `LOG_PATH`: Absolute or relative path to the NDJSON export (line-delimited JSON).
 - `OUTPUT_DIR`: Destination for derived artifacts (defaults to `artifacts/monitoring/`).
 - `WINDOW_HOURS` (optional): Slice the dataset to the last _n_ hours for focused failure analysis.
 
 ## Recommended Execution Flow
+
 1. **Baseline Summary**
    - Run `npm run ops:analyze-supabase -- --input "$LOG_PATH"` to produce `supabase-sync-summary-latest.json` plus a timestamped snapshot.
    - Review `failureSamples` and `errors.byCode` in the JSON output; capture notable signatures in the notebook preface.
@@ -28,11 +31,13 @@
    - Mirror any schema or telemetry drift to `feedback/data.md`.
 
 ## Pending Dependencies
+
 - Staging `SUPABASE_SERVICE_KEY` to verify live parity queries.
 - Reliability confirmation on NDJSON export cadence & naming convention.
 - Decision log schema changelog (if new fields land during incident response).
 
 ## Checklist Before Publishing
+
 - [ ] Attach analyzer JSON + charts to the relevant blocker entry in `feedback/data.md`.
 - [ ] Update `docs/insights/2025-10-09_supabase_decision_sync.md` with headline metrics and next steps.
 - [ ] Share highlights with engineering/reliability for cross-validation on mitigation effectiveness.

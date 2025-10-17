@@ -6,21 +6,23 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-25
 ---
+
 # Chatwoot on Fly.io — Deployment Runbook
 
 ## Goal
+
 Stand up a managed Chatwoot instance on Fly.io so the OCC dashboard can rely on a shared, long-lived CX sandbox instead of local Docker processes.
 
 ## Architecture Overview
 
-| Component | Purpose | Resource |
-| --- | --- | --- |
-| Chatwoot Rails + Sidekiq | Web UI, API, background jobs | Fly app `hotdash-chatwoot` |
-| Postgres (Supabase) | Persistent data store | Supabase project (`vault/occ/supabase/database_url_staging.env`) |
-| Redis | Caching + job queue | Upstash via Fly `hotdash-chatwoot-cache` |
-| Object storage (optional) | Attachments, avatars | Supabase storage bucket (existing) or future S3-compatible store |
+| Component                 | Purpose                      | Resource                                                         |
+| ------------------------- | ---------------------------- | ---------------------------------------------------------------- |
+| Chatwoot Rails + Sidekiq  | Web UI, API, background jobs | Fly app `hotdash-chatwoot`                                       |
+| Postgres (Supabase)       | Persistent data store        | Supabase project (`vault/occ/supabase/database_url_staging.env`) |
+| Redis                     | Caching + job queue          | Upstash via Fly `hotdash-chatwoot-cache`                         |
+| Object storage (optional) | Attachments, avatars         | Supabase storage bucket (existing) or future S3-compatible store |
 
-> ℹ️  Chatwoot requires **both** a web process and a Sidekiq worker. Fly process groups let us run them from the same image.
+> ℹ️ Chatwoot requires **both** a web process and a Sidekiq worker. Fly process groups let us run them from the same image.
 
 ## Prerequisites
 
@@ -59,16 +61,16 @@ REDIS_URL=redis://default:<password>@<host>:6379
 
 Minimal set:
 
-| Secret | Notes |
-| --- | --- |
-| `SECRET_KEY_BASE` | `openssl rand -hex 64` |
-| `FRONTEND_URL` / `BACKEND_URL` | `https://hotdash-chatwoot.fly.dev` (update once custom domain attached) |
-| `POSTGRES_DATABASE`, `POSTGRES_HOST`, `POSTGRES_PASSWORD`, `POSTGRES_USERNAME`, `POSTGRES_PORT` | Derived from Supabase DSN |
-| `REDIS_URL` | `redis://default:<password>@<host>:6379` |
-| `SMTP_*` | Optional until we wire email (set to dummy + disable) |
-| `DEFAULT_FROM_EMAIL` / `MAILER_SENDER_EMAIL` | `customer.support@hotrodan.com` |
-| `INSTALLATION_ENV` | `fly` |
-| `ENABLE_ACCOUNT_SIGNUP` | `false` (we’ll create agents manually) |
+| Secret                                                                                          | Notes                                                                   |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `SECRET_KEY_BASE`                                                                               | `openssl rand -hex 64`                                                  |
+| `FRONTEND_URL` / `BACKEND_URL`                                                                  | `https://hotdash-chatwoot.fly.dev` (update once custom domain attached) |
+| `POSTGRES_DATABASE`, `POSTGRES_HOST`, `POSTGRES_PASSWORD`, `POSTGRES_USERNAME`, `POSTGRES_PORT` | Derived from Supabase DSN                                               |
+| `REDIS_URL`                                                                                     | `redis://default:<password>@<host>:6379`                                |
+| `SMTP_*`                                                                                        | Optional until we wire email (set to dummy + disable)                   |
+| `DEFAULT_FROM_EMAIL` / `MAILER_SENDER_EMAIL`                                                    | `customer.support@hotrodan.com`                                         |
+| `INSTALLATION_ENV`                                                                              | `fly`                                                                   |
+| `ENABLE_ACCOUNT_SIGNUP`                                                                         | `false` (we’ll create agents manually)                                  |
 
 Derive Supabase fields:
 
@@ -219,20 +221,21 @@ Archive the HTTP status/body for each attempt in the deployment artifact directo
   - Confirm support captured the update in `docs/runbooks/cx_escalations.md` before closing the deployment handoff.
 
 ### Secret mapping & documentation sync — 2025-10-10
+
 - `CHATWOOT_BASE_URL_STAGING` updated to `https://hotdash-chatwoot.fly.dev` in vault and mirrored to GitHub staging secrets.
 - `CHATWOOT_TOKEN_STAGING` and `CHATWOOT_ACCOUNT_ID_STAGING` remain valid; no rotation required until Fly cut-over completes (tracked in `docs/deployment/env_matrix.md`).
 - Env matrix + integration dashboard refreshed to reflect Fly host and no-rotation posture; reference `feedback/deployment.md` for timestamped evidence.
 
 ## 10. Cut-over checklist
 
-| Task | Owner | Status |
-| --- | --- | --- |
-| Deploy Fly app + migrations | Reliability | ☐ |
-| Create API token & update vault | Support/Integrations | ☐ |
-| Update OCC secrets (`CHATWOOT_*`) | Reliability | ☐ (staging secret now points to Fly host; production pending) |
-| Smoke test from OCC (`/app?mock=0`) | QA | ☐ |
-| Update runbooks (`docs/runbooks/cx_escalations.md`) | Support | ☐ (pending embed token + Fly host confirmation) |
-| Decommission local Docker instructions | Deployment | ☐ |
+| Task                                                | Owner                | Status                                                        |
+| --------------------------------------------------- | -------------------- | ------------------------------------------------------------- |
+| Deploy Fly app + migrations                         | Reliability          | ☐                                                             |
+| Create API token & update vault                     | Support/Integrations | ☐                                                             |
+| Update OCC secrets (`CHATWOOT_*`)                   | Reliability          | ☐ (staging secret now points to Fly host; production pending) |
+| Smoke test from OCC (`/app?mock=0`)                 | QA                   | ☐                                                             |
+| Update runbooks (`docs/runbooks/cx_escalations.md`) | Support              | ☐ (pending embed token + Fly host confirmation)               |
+| Decommission local Docker instructions              | Deployment           | ☐                                                             |
 
 ## Troubleshooting
 

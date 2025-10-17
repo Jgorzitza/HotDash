@@ -10,7 +10,7 @@ expires: 2025-11-11
 
 **Purpose:** Document data pipeline access and retention for Monday/Thursday manager review  
 **Scope:** Supabase-only Postgres stack, RLS policies, AI access, data retention  
-**Status:** ✅ COMPLIANT with docs/directions/README.md#canonical-toolkit  
+**Status:** ✅ COMPLIANT with docs/directions/README.md#canonical-toolkit
 
 ---
 
@@ -19,12 +19,14 @@ expires: 2025-11-11
 ### ✅ Canonical Toolkit (Supabase-Only)
 
 **Requirement:** Follow `docs/directions/README.md#canonical-toolkit--secrets`
+
 - Supabase-only Postgres
 - Chatwoot on Supabase
 - React Router 7
 - OpenAI + LlamaIndex
 
 **Current State:**
+
 - ✅ All database operations on Supabase Postgres (local: 127.0.0.1:54322)
 - ✅ No Fly Postgres provisioned (blocked by Canonical Toolkit Guard)
 - ✅ No alternative databases (MongoDB, Redis, etc.)
@@ -41,11 +43,13 @@ expires: 2025-11-11
 ### Database Roles & Permissions
 
 **Service Role (postgres):**
+
 - Full access to all tables
 - Used for: Migrations, admin operations, edge functions
 - Security: Credentials in vault/env
 
 **AI Readonly Role:**
+
 - **Username:** ai_readonly
 - **Grants:** SELECT only on:
   - decision_sync_event_logs
@@ -58,6 +62,7 @@ expires: 2025-11-11
 - **Credentials:** vault/ai_readonly_credentials.txt
 
 **Authenticated Role:**
+
 - Used by: Shopify app users
 - RLS: Row-level security enforced on all tables
 - Access: Project/scope-based isolation
@@ -65,6 +70,7 @@ expires: 2025-11-11
 ### RLS Policy Coverage
 
 **Tables with RLS Enabled (7 total):**
+
 1. ✅ `facts` - 6 policies (project isolation, no update/delete)
 2. ✅ `decision_sync_event_logs` - 6 policies (scope isolation)
 3. ✅ `observability_logs` - 5 policies (service role + monitoring team)
@@ -84,24 +90,28 @@ expires: 2025-11-11
 ### Agent SDK Tables (30-Day Retention)
 
 **agent_approvals:**
+
 - Retention: 30 days
 - Reason: Training data freshness
 - Cleanup: `scripts/data/retention-cleanup.sh`
 - Exceptions: Approved records retained 90 days
 
 **agent_feedback:**
+
 - Retention: 30 days
 - Reason: Annotation relevance
 - Cleanup: `scripts/data/retention-cleanup.sh`
 - Exceptions: Safe-to-send=true retained 90 days
 
 **agent_queries:**
+
 - Retention: 30 days
 - Reason: Query pattern analysis
 - Cleanup: `scripts/data/retention-cleanup.sh`
 - Exceptions: Approved queries retained 90 days
 
 **Automated Cleanup:**
+
 - Script: `scripts/data/retention-cleanup.sh`
 - Schedule: Weekly (recommended via cron)
 - Verification: Test results in artifacts/data/
@@ -110,21 +120,25 @@ expires: 2025-11-11
 ### Operational Tables (Permanent Retention)
 
 **decision_sync_event_logs:**
+
 - Retention: Permanent
 - Reason: Audit trail, decision history
 - Archival: Not yet implemented
 
 **support_curated_replies:**
+
 - Retention: Permanent
 - Reason: Gold knowledge base
 - Growth: Incremental (Support team curated)
 
 **facts:**
+
 - Retention: 2 years
 - Reason: Historical KPI trends
 - Archival: Cold storage after 6 months (future)
 
 **observability_logs:**
+
 - Retention: 90 days
 - Reason: Incident investigation window
 - Cleanup: Manual purge (future automation)
@@ -136,21 +150,25 @@ expires: 2025-11-11
 ### AI Ingestion (LlamaIndex)
 
 **Source Tables:**
+
 1. decision_sync_event_logs (decision history)
 2. support_curated_replies (gold answers)
 3. facts (KPI time series)
 
 **Access Method:**
+
 - SupabaseReader via ai_readonly role
 - Read-only SELECT queries
 - No write permissions
 
 **Refresh Cadence:**
+
 - Decision logs: Real-time (as decisions occur)
 - Curated replies: On webhook trigger (Chatwoot)
 - Facts: Every 15-30 minutes (tile updates)
 
 **Compliance:**
+
 - ✅ Documented in docs/runbooks/llamaindex_workflow.md
 - ✅ PII redaction not yet required (no customer PII in ingested tables)
 - ✅ Compliance sign-off: Pending with manager
@@ -158,17 +176,20 @@ expires: 2025-11-11
 ### Dashboard Tiles (Operator UI)
 
 **Source Views:**
+
 1. v_agent_performance_snapshot
 2. v_approval_queue_status
 3. v_training_data_quality
 4. mv_realtime_agent_performance (materialized)
 
 **Access Method:**
+
 - React Router 7 loaders
 - Service role queries
 - <10ms performance target
 
 **Refresh:**
+
 - Real-time: pg_notify triggers
 - Materialized: Every 5 minutes
 - Dashboard: Live updates via WebSocket
@@ -179,24 +200,26 @@ expires: 2025-11-11
 
 ### Access Control Matrix
 
-| Role | Tables | Permissions | Purpose |
-|------|--------|-------------|---------|
-| postgres (service) | All | Full | Admin, migrations |
-| ai_readonly | 4 tables | SELECT | LlamaIndex ingestion |
-| authenticated | All (RLS) | Project/scope isolated | Shopify app users |
-| operator_readonly | agent_queries, decision_logs | SELECT | Operator dashboards |
-| annotator | agent_feedback | SELECT, UPDATE | QA annotation |
-| qa_team | agent_feedback, decision_logs | SELECT | Quality review |
-| monitoring_team | observability_logs | SELECT | Incident response |
+| Role               | Tables                        | Permissions            | Purpose              |
+| ------------------ | ----------------------------- | ---------------------- | -------------------- |
+| postgres (service) | All                           | Full                   | Admin, migrations    |
+| ai_readonly        | 4 tables                      | SELECT                 | LlamaIndex ingestion |
+| authenticated      | All (RLS)                     | Project/scope isolated | Shopify app users    |
+| operator_readonly  | agent_queries, decision_logs  | SELECT                 | Operator dashboards  |
+| annotator          | agent_feedback                | SELECT, UPDATE         | QA annotation        |
+| qa_team            | agent_feedback, decision_logs | SELECT                 | Quality review       |
+| monitoring_team    | observability_logs            | SELECT                 | Incident response    |
 
 ### Credential Storage
 
 **Vault Structure (vault/):**
+
 - ✅ `ai_readonly_credentials.txt` - AI role credentials
 - ✅ `.env.local` - Local Supabase connection
 - 🔐 Production secrets via GitHub environments (not in repo)
 
 **Credential Rotation:**
+
 - AI readonly: Rotate quarterly
 - Service role: Rotate on team changes
 - Documented: docs/ops/credential_index.md
@@ -253,6 +276,7 @@ expires: 2025-11-11
 - [ ] AI ingestion compliance sign-off (pending manager)
 
 **Evidence Attached:**
+
 - feedback/data.md (3,000+ lines)
 - supabase/migrations/ (12 files)
 - vault/ai_readonly_credentials.txt
@@ -266,4 +290,3 @@ expires: 2025-11-11
 **Next Review:** 2025-10-14 (Monday)  
 **Owner:** data agent  
 **Escalations:** None - all findings have action plans
-

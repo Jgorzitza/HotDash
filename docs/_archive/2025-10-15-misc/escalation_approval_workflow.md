@@ -13,6 +13,7 @@
 ### Scenario 1: High-Value Refunds (>$100)
 
 **Process**:
+
 1. Operator clicks "Escalate"
 2. Selects reason: "Refund approval needed"
 3. Enters refund amount and reason
@@ -29,11 +30,13 @@
 ### Scenario 2: Policy Exceptions
 
 **Examples**:
+
 - Customer wants to return after 30-day window
 - Customer wants refund on final-sale item
 - Customer requests expedited shipping at standard price
 
 **Process**:
+
 1. Operator explains standard policy in draft
 2. Customer pushes back or asks for exception
 3. Operator escalates to Manager: "Policy exception request"
@@ -45,12 +48,14 @@
 ### Scenario 3: Angry/Threatening Customers
 
 **Triggers**:
+
 - Customer uses legal language ("lawsuit", "BBB", "lawyer")
 - Customer is abusive to operator
 - Customer threatens to cancel/churn (high-value customer)
 - Situation is escalating
 
 **Process**:
+
 1. Operator does NOT respond immediately
 2. Escalates to Manager or Senior Support
 3. Includes context: "Customer threatening legal action"
@@ -102,9 +107,11 @@
 ### What to Include in Escalation Notes
 
 **Good escalation note**:
+
 > "Customer ordered $250 item, received damaged. Wants refund. I verified photos show damage. Refund amount >$100 so needs your approval. Customer is polite but needs quick response. Recommend: Full refund + 10% discount on next order."
 
 **What it has**:
+
 - ✅ Context (order value, issue)
 - ✅ Evidence (photos verified)
 - ✅ Why escalating (>$100 threshold)
@@ -112,6 +119,7 @@
 - ✅ Recommendation (what you think should happen)
 
 **Bad escalation note**:
+
 > "Customer wants refund, need approval"
 
 **What's missing**: Context, amount, why, recommendation
@@ -121,11 +129,13 @@
 ### When NOT to Escalate
 
 **Don't escalate if**:
+
 - ❌ You're just uncertain (reject and write manually instead)
 - ❌ Draft needs editing (just edit it yourself)
 - ❌ Standard inquiry within your authority (order status, tracking)
 
 **DO escalate if**:
+
 - ✅ Requires manager approval (>$100, policy exception)
 - ✅ Customer is angry/threatening
 - ✅ Complex issue beyond your expertise
@@ -140,6 +150,7 @@
 **For Engineering**: How to build the escalation queue
 
 **Database**:
+
 ```sql
 CREATE TABLE escalations (
   id SERIAL PRIMARY KEY,
@@ -155,12 +166,14 @@ CREATE TABLE escalations (
 ```
 
 **API**:
+
 - POST /api/escalations/create (operator creates escalation)
 - GET /api/escalations/queue (manager sees all pending)
 - POST /api/escalations/{id}/approve (manager approves)
 - POST /api/escalations/{id}/deny (manager denies with reason)
 
 **Notifications**:
+
 - Operator → Escalates → Manager gets Slack notification
 - Manager → Approves → Operator gets Slack notification
 - SLA tracking: Alert if manager hasn't responded in 2 hours
@@ -170,6 +183,7 @@ CREATE TABLE escalations (
 ## Escalation Metrics (To Track)
 
 **For Product Agent to Monitor**:
+
 - Escalation rate: <10% of inquiries (target)
 - Manager response time: <2 hours (target)
 - Escalation accuracy: >90% (appropriate escalations)
@@ -183,4 +197,3 @@ CREATE TABLE escalations (
 **Owner**: Product Agent (Supporting Operations)  
 **Status**: Ready for manager queue implementation  
 **North Star**: ✅ **Clear escalation paths protect operators from stress and ensure quality**
-

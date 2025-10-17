@@ -6,9 +6,11 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # RISK-EMBED Blocker Tracking Plan — 2025-10-11T01:35Z
 
 ## Embed Token Dependency Overview
+
 - **Primary Blocker:** Shopify Admin embed token validation and compliance clearance
 - **Impact:** Blocks staging access for all teams, prevents dry run execution
 - **Current Status:** BLOCKED pending legal/compliance approval for token usage patterns
@@ -17,10 +19,12 @@ expires: 2025-10-18
 ## Twice-Daily Update Schedule
 
 ### Morning Update (09:30 UTC)
+
 **Checklist items to assess and log:**
+
 1. **Token Availability Status**
    - Current embed token value in staging environment
-   - Any rotation events or token refreshes since previous update  
+   - Any rotation events or token refreshes since previous update
    - Staging environment accessibility tests by team
 
 2. **Compliance Progress**
@@ -35,12 +39,14 @@ expires: 2025-10-18
 
 4. **Required Team Actions**
    - Deployment: Environment setup or credential rotation needed
-   - Integrations: API validation or Shopify app configuration  
+   - Integrations: API validation or Shopify app configuration
    - QA: Test suite execution or artifact collection
    - Compliance: Legal review progress or vendor escalations
 
 ### Afternoon Update (16:30 UTC)
+
 **Checklist items to assess and log:**
+
 1. **New Evidence or Incidents**
    - Any token-related failures or access issues during business hours
    - New documentation or approval communications received
@@ -54,7 +60,7 @@ expires: 2025-10-18
 
 3. **Escalation Decisions**
    - Whether to escalate specific blockers to manager level
-   - Vendor communication timing and approach decisions  
+   - Vendor communication timing and approach decisions
    - Resource allocation adjustments based on new information
 
 4. **Next 24-Hour Action Plan**
@@ -64,19 +70,22 @@ expires: 2025-10-18
 
 ## Unblocking Criteria (Clear Exit Conditions)
 
-### 1. Legal/Compliance Written Approval  
+### 1. Legal/Compliance Written Approval
+
 - **Required:** Documented approval for Shopify Admin embed token usage patterns
 - **Format:** Email or formal approval memo from legal/compliance teams
 - **Content:** Explicit authorization for token storage, transmission, and lifecycle management
 - **Evidence Path:** `docs/compliance/evidence/shopify/embed_token_approval_YYYY-MM-DD.pdf`
 
 ### 2. QA Testing Pass with Current Tokens
+
 - **Required:** Full QA test suite execution with staging embed token
-- **Performance:** Sub-300ms latency proof and Playwright test completion  
+- **Performance:** Sub-300ms latency proof and Playwright test completion
 - **Artifacts:** Test results, screenshots, and latency measurements documented
 - **Evidence Path:** Link to DEPLOY-147 QA evidence bundle with token validation
 
 ### 3. Reliability Production Risk Signoff
+
 - **Required:** Reliability team written signoff for production risk assessment
 - **Scope:** Token rotation procedures, incident response, and monitoring coverage
 - **Documentation:** Runbook references for token revocation and re-issuance
@@ -84,17 +93,18 @@ expires: 2025-10-18
 
 ## Risk Assessment Matrix
 
-| Risk Category | Likelihood | Impact | Current Mitigation | Owner |
-|---------------|------------|--------|-------------------|-------|
-| Token exposure in logs | Medium | High | TLS enforcement, log sanitization | Engineering |
-| Unauthorized access | Low | High | Service key scoping, access controls | Reliability |
-| Compliance violation | High | Medium | Legal review in progress, DPA pending | Compliance |
-| Production incident | Medium | High | Incident response runbook, monitoring | Reliability |
-| QA test failures | Medium | Medium | Staging environment isolation, rollback | QA |
+| Risk Category          | Likelihood | Impact | Current Mitigation                      | Owner       |
+| ---------------------- | ---------- | ------ | --------------------------------------- | ----------- |
+| Token exposure in logs | Medium     | High   | TLS enforcement, log sanitization       | Engineering |
+| Unauthorized access    | Low        | High   | Service key scoping, access controls    | Reliability |
+| Compliance violation   | High       | Medium | Legal review in progress, DPA pending   | Compliance  |
+| Production incident    | Medium     | High   | Incident response runbook, monitoring   | Reliability |
+| QA test failures       | Medium     | Medium | Staging environment isolation, rollback | QA          |
 
 ## Linear Issue Structure
 
 ### RISK-EMBED Issue Template
+
 ```
 Title: RISK-EMBED - Shopify Admin Embed Token Dependency Tracking
 Status: Blocked
@@ -106,13 +116,13 @@ Tracks Shopify Admin embed token validation and compliance clearance blocking st
 
 Acceptance Criteria:
 - [ ] Legal/compliance written approval obtained and documented
-- [ ] QA testing pass with sub-300ms performance proof  
+- [ ] QA testing pass with sub-300ms performance proof
 - [ ] Reliability production risk signoff recorded
 - [ ] All teams have staging access confirmation
 
 Watchers:
 - Product (owner)
-- Deployment 
+- Deployment
 - Integrations
 - QA
 - Compliance
@@ -124,12 +134,13 @@ Daily Update Links:
 ```
 
 ### Daily Comment Template
+
 ```
 ## RISK-EMBED Daily Update - YYYY-MM-DD [Morning|Afternoon]
 
 ### Status Summary
 - Token availability: [Available|Blocked|Unknown]
-- Compliance progress: [In Review|Pending|Approved|Blocked]  
+- Compliance progress: [In Review|Pending|Approved|Blocked]
 - Team readiness: [Ready|Waiting|Blocked]
 
 ### New Evidence
@@ -149,30 +160,35 @@ Daily Update Links:
 ## Automation and Reminders
 
 ### Daily Reminder Schedule
+
 - **09:25 UTC:** Automated reminder to collect morning update data
 - **09:30 UTC:** Morning update published to feedback/product.md and Linear
-- **16:25 UTC:** Automated reminder to collect afternoon update data  
+- **16:25 UTC:** Automated reminder to collect afternoon update data
 - **16:30 UTC:** Afternoon update published to feedback/product.md and Linear
 - **17:00 UTC:** Daily summary comment added to Linear RISK-EMBED issue
 
 ### Evidence Collection Automation
+
 - **Staging Check:** Automated test of token accessibility every 2 hours during business hours
-- **Documentation Scan:** Daily scan of evidence folders for new compliance documents  
+- **Documentation Scan:** Daily scan of evidence folders for new compliance documents
 - **Vendor Communication:** Tracking of email threads with timestamps for response SLA
 - **Team Status:** Integration with feedback files to pull latest status from each team
 
 ## Success Metrics & SLA Targets
 
 ### Response Time Targets
+
 - **Compliance Review:** 48 hours from legal submission to written approval
 - **QA Testing:** 24 hours from token access to evidence bundle completion
 - **Reliability Signoff:** 12 hours from QA approval to production risk assessment
 - **Vendor Response:** 72 hours from escalation to vendor acknowledgement
 
 ### Evidence Completeness Tracking
+
 - **Daily:** Percentage of required evidence items collected and documented
 - **Weekly:** Compliance milestone completion rate vs. target schedule
 - **Sprint:** Overall DEPLOY-147 dependency resolution progress percentage
 
 ---
+
 **Implementation:** Add RISK-EMBED Linear issue with this tracking plan; establish 09:30/16:30 UTC update routine in feedback/product.md

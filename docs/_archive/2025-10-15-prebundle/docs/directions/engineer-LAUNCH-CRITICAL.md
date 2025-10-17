@@ -24,6 +24,7 @@ last_reviewed: 2025-10-11
 **Goal**: Deploy working LlamaIndex RAG MCP server to Fly.io
 
 **Tasks**:
+
 - Fix TypeScript compilation issues in llama-workflow
 - Build and test MCP server locally
 - Deploy to Fly.io
@@ -42,6 +43,7 @@ last_reviewed: 2025-10-11
 **Goal**: Implement core Agent SDK service with approval queue
 
 **Tasks**:
+
 - Create Agent SDK service scaffolding (per docs/AgentSDKopenAI.md)
 - Implement basic agent with OpenAI function calling
 - Implement approval queue (pending approvals table)
@@ -60,6 +62,7 @@ last_reviewed: 2025-10-11
 **Goal**: Implement webhook endpoints for Chatwoot
 
 **Tasks**:
+
 - Create POST /api/webhooks/chatwoot endpoint
 - Implement signature verification
 - Parse webhook events
@@ -76,6 +79,7 @@ last_reviewed: 2025-10-11
 ## 📋 EVIDENCE REQUIREMENTS
 
 For each completed P0 task, provide:
+
 - ✅ File paths and line numbers of implementation
 - ✅ Deployment URL or endpoint
 - ✅ Test results showing it works
@@ -83,6 +87,7 @@ For each completed P0 task, provide:
 - ✅ Brief description of what was built
 
 **Example**:
+
 ```
 Task 1 Complete: LlamaIndex MCP deployed
 - Implementation: scripts/ai/llama-workflow/src/mcp-server.ts (lines 1-150)
@@ -111,6 +116,7 @@ Task 1 Complete: LlamaIndex MCP deployed
 ## 🚫 WHAT TO IGNORE (Until P0s Complete)
 
 **PAUSE These** (from previous expansions):
+
 - Tasks 7-85: Microservices, performance, infrastructure, dev tools
 - All advanced architecture work
 - All future planning
@@ -122,6 +128,7 @@ Task 1 Complete: LlamaIndex MCP deployed
 ## 🎯 SUCCESS CRITERIA
 
 **48-72 Hours from Now**:
+
 - ✅ LlamaIndex MCP server live and queryable
 - ✅ Agent SDK service running with approval queue
 - ✅ Webhook endpoints receiving and processing events
@@ -147,11 +154,11 @@ Task 1 Complete: LlamaIndex MCP deployed
 
 ## 📊 PRIORITY MATRIX
 
-| Task | Priority | Blocking | Hours | Order |
-|------|----------|----------|-------|-------|
-| Webhook Endpoints | P0 | Chatwoot (1 agent) | 4-6 | 1st (quickest win) |
-| LlamaIndex MCP | P0 | AI, Integrations (3 agents) | 8-12 | 2nd (unblocks most) |
-| Agent SDK | P0 | Multiple agents | 12-16 | 3rd (most complex) |
+| Task              | Priority | Blocking                    | Hours | Order               |
+| ----------------- | -------- | --------------------------- | ----- | ------------------- |
+| Webhook Endpoints | P0       | Chatwoot (1 agent)          | 4-6   | 1st (quickest win)  |
+| LlamaIndex MCP    | P0       | AI, Integrations (3 agents) | 8-12  | 2nd (unblocks most) |
+| Agent SDK         | P0       | Multiple agents             | 12-16 | 3rd (most complex)  |
 
 **Recommended Order**: 3 → 1 → 2 (quick win first, then unblock agents, then complex work)
 
@@ -160,6 +167,7 @@ Task 1 Complete: LlamaIndex MCP deployed
 ## 🚀 MANAGER SUPPORT
 
 **You Have**:
+
 - ✅ Full support from Deployment for infrastructure
 - ✅ QA ready to test immediately
 - ✅ Designer ready to build UI on your APIs
@@ -176,4 +184,3 @@ Task 1 Complete: LlamaIndex MCP deployed
 **Support**: Manager monitoring continuously, clearing blockers immediately
 
 Let's ship this! 🚀
-

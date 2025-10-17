@@ -6,7 +6,10 @@ export function tokenize(text: string): string[] {
     .filter(Boolean);
 }
 
-export function bleu1(referenceTokens: string[], candidateTokens: string[]): number {
+export function bleu1(
+  referenceTokens: string[],
+  candidateTokens: string[],
+): number {
   if (!referenceTokens.length || !candidateTokens.length) {
     return 0;
   }
@@ -31,7 +34,9 @@ export function bleu1(referenceTokens: string[], candidateTokens: string[]): num
 }
 
 function longestCommonSubsequenceLength(a: string[], b: string[]): number {
-  const dp: number[][] = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  const dp: number[][] = Array.from({ length: a.length + 1 }, () =>
+    Array(b.length + 1).fill(0),
+  );
 
   for (let i = 1; i <= a.length; i += 1) {
     for (let j = 1; j <= b.length; j += 1) {
@@ -46,7 +51,10 @@ function longestCommonSubsequenceLength(a: string[], b: string[]): number {
   return dp[a.length][b.length];
 }
 
-export function rougeL(referenceTokens: string[], candidateTokens: string[]): number {
+export function rougeL(
+  referenceTokens: string[],
+  candidateTokens: string[],
+): number {
   if (!referenceTokens.length || !candidateTokens.length) {
     return 0;
   }

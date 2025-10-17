@@ -17,6 +17,7 @@ last_reviewed: 2025-10-12
 **Platform**: Embedded in Shopify Admin
 
 **What We're Launching**:
+
 - AI-powered operator dashboard
 - 5 tiles: CX Escalations, Sales Pulse, Inventory Heatmap, SEO Watch, Fulfillment Health
 - Human-in-the-loop approvals (CEO approves all AI recommendations)
@@ -29,6 +30,7 @@ last_reviewed: 2025-10-12
 ### Phase 1: Pre-Launch (Do NOW - Next 4-6 hours)
 
 **Task 1**: Hot Rodan Launch Email (Internal/Pilot)
+
 - Write email to Hot Rodan team announcing dashboard
 - Position as "Your AI co-pilot for growing to $10MM"
 - Highlight: Faster CX, smarter inventory, proactive sales alerts
@@ -37,6 +39,7 @@ last_reviewed: 2025-10-12
 - Timeline: 1-2 hours
 
 **Task 2**: Hot Rodan Dashboard One-Pager
+
 - Create 1-page overview for operators
 - What it does: 5 tiles explained simply
 - Why it matters: 10x growth enabler
@@ -45,6 +48,7 @@ last_reviewed: 2025-10-12
 - Timeline: 1-2 hours
 
 **Task 3**: Hot Rod Audience Messaging
+
 - Key message: "Built for hot rod shops by hot rod people"
 - Value props specific to automotive aftermarket
 - Language that resonates with mechanics/enthusiasts
@@ -53,6 +57,7 @@ last_reviewed: 2025-10-12
 - Timeline: 1-2 hours
 
 **Task 4**: FAQ for Hot Rodan Operators
+
 - "What is AI doing?" (explain in plain English)
 - "Will AI replace me?" (No - AI suggests, you decide)
 - "What if AI is wrong?" (You approve everything)
@@ -63,6 +68,7 @@ last_reviewed: 2025-10-12
 ### Phase 2: Launch Day (When Engineer Ships)
 
 **Task 5**: Launch Announcement (Internal Slack/Email)
+
 - Announce to Hot Rodan team
 - Demo video or screenshots
 - Training schedule
@@ -71,6 +77,7 @@ last_reviewed: 2025-10-12
 - Timeline: 30 min
 
 **Task 6**: Operator Adoption Campaign
+
 - Email sequence (Day 1, Day 3, Day 7)
 - Highlight different tiles each email
 - Share early wins
@@ -81,6 +88,7 @@ last_reviewed: 2025-10-12
 ### Phase 3: Post-Launch (Week 1)
 
 **Task 7**: Success Story Documentation
+
 - Capture first approved AI recommendation
 - Document time saved, revenue protected
 - Create internal case study
@@ -88,6 +96,7 @@ last_reviewed: 2025-10-12
 - Timeline: 1-2 hours
 
 **Task 8**: Feedback Loop Setup
+
 - Weekly operator survey
 - Track dashboard usage
 - Collect improvement ideas
@@ -102,6 +111,7 @@ last_reviewed: 2025-10-12
 "Your AI co-pilot for scaling Hot Rodan from $1MM to $10MM"
 
 **Key Themes**:
+
 - Built for automotive aftermarket (not generic retail)
 - Operator-first (not executive dashboards)
 - AI suggests, you approve (human expertise valued)
@@ -109,12 +119,14 @@ last_reviewed: 2025-10-12
 - All-in-one (no tool sprawl)
 
 **Language**:
+
 - Use "hot rod" and "automotive" terminology
 - Speak to mechanics and gearheads
 - Avoid corporate jargon
 - Practical, not hype
 
 **Value Props**:
+
 1. Faster customer support = happier enthusiasts = more repeat business
 2. Smarter inventory = never run out of fast-moving parts
 3. Proactive SEO = more organic traffic from hot rod searches
@@ -125,6 +137,7 @@ last_reviewed: 2025-10-12
 ## 📊 METRICS FOR HOT RODAN
 
 **Success Metrics** (Track Weekly):
+
 - Dashboard daily active users (operators)
 - AI recommendations approved vs. rejected
 - Time saved per operator per day
@@ -132,6 +145,7 @@ last_reviewed: 2025-10-12
 - Operator satisfaction (NPS)
 
 **Growth Metrics**:
+
 - Monthly revenue trend
 - Customer acquisition cost
 - Average order value
@@ -139,6 +153,7 @@ last_reviewed: 2025-10-12
 - Repeat purchase rate
 
 **Dashboard Metrics**:
+
 - Tile usage (which tiles most valuable)
 - Approval time (CEO review speed)
 - Decision audit trail completeness
@@ -148,12 +163,14 @@ last_reviewed: 2025-10-12
 ## ✅ DELIVERABLES (Next 6-8 Hours)
 
 **Immediate** (Tasks 1-4):
+
 - Launch email draft
 - Dashboard one-pager
 - Hot rod messaging guide
 - Operator FAQ
 
 **Then** (Tasks 5-8):
+
 - Launch announcement
 - Adoption campaign
 - Success story template
@@ -172,4 +189,3 @@ last_reviewed: 2025-10-12
 ---
 
 **Execute Tasks 1-4 immediately. Report in feedback/marketing.md with evidence.**
-

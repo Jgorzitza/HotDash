@@ -6,9 +6,11 @@ last_reviewed: 2025-10-08
 doc_hash: TBD
 expires: 2025-10-15
 ---
+
 # Sales Pulse Modal — Operator Job Aid
 
 ## Overview
+
 Surface daily sales health in one place. Use the Sales Pulse modal to compare today's performance against the 7-day baseline, review top-performing SKUs, and triage fulfillment blockers before they impact customers.
 
 > Screenshot callouts pending final design assets. Coordinate with designer per docs/directions/designer.md before distributing printed copies.
@@ -16,6 +18,7 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 ---
 
 ## Pre-Flight Checklist
+
 - Shopify integration connected and data refresh < 15 minutes old (check tile meta text).
 - Operator signed into Shopify Admin with appropriate permissions.
 - Inventory Heatmap tile reviewed for overlapping SKU risks.
@@ -26,11 +29,13 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 ## Data Architecture & Cross-Modal Integration
 
 ### Supabase-Centralized Data Flow
+
 - **Sales Metrics:** Revenue, order volume, and SKU performance data flows from Shopify Admin API to Supabase tables, refreshed every 15 minutes during business hours.
 - **Decision Logging:** All operator actions (follow-up creation, escalations, staffing notifications) write to Supabase `decision_log` with cross-references to affected orders and customers.
 - **CX Integration:** Sales anomalies that trigger CX escalations (delivery delays, inventory issues) automatically create linked decision records in both Sales Pulse and CX Escalations audit trails.
 
 ### Performance & Reliability
+
 - **Data Freshness:** Modal shows last refresh timestamp; flag any data >30 minutes old to `customer.support@hotrodan.com`.
 - **Cross-Service Sync:** Sales decisions affecting fulfillment or CX automatically generate notifications in Chatwoot-on-Supabase for coordinated operator response.
 - **Audit Compliance:** All sales health decisions retained for 90 days in Supabase with NDJSON export capability for compliance reporting.
@@ -38,6 +43,7 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 ---
 
 ## Workflow Steps
+
 1. **Open the modal** — Click `View details` on the Sales Pulse tile from the Operator Control Center dashboard.
 2. **Review the revenue snapshot** — Note today's revenue versus the rolling 7-day average. Use the KPI thresholds from `docs/data/kpis.md` (warning at ±15%, critical at ±30%).
 3. **Scan order volume** — Confirm the order count matches expectations for the time of day. Flag unexpected dips or spikes in `#occ-ops` internal channel.
@@ -48,12 +54,14 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 ---
 
 ## Decision Guardrails
+
 - **Revenue delta > 15% drop** — Create an action item for operations; escalate to product if drop exceeds 30% or persists >2 checkpoints. Email `customer.support@hotrodan.com` with the summary so support has audit coverage.
 - **Sustained order spike (>25% over baseline)** — Notify fulfillment lead to adjust staffing, confirm carriers can absorb the volume.
 - **Pending fulfillment older than 24h** — Page fulfillment lead for immediate follow-up; if order value >$500, notify operations manager.
 - **Top SKU out of stock or <3 days of cover** — Partner with inventory owner to trigger reorder workflow or mark as intentional scarcity.
 
 ### AI Guardrails & Evidence — 2025-10-10
+
 - Modal insights load from the same operator knowledge index refreshed at 2025-10-10T19:26:46Z (`packages/memory/indexes/operator_knowledge/index_metadata.json`); postpone coaching if the timestamp drifts or `usingMockProviders` flips to `true`.
 - Hotrodan corpus snapshot logged at `packages/memory/logs/build/hotrodan_content/hotrodan-2025-10-10-19-26-14.ndjson`; confirm future training pulls append (not overwrite) before citing AI context in operator Q&A.
 - Nightly recommendation logging test (`packages/memory/logs/build/recommendations/build-nightly-logging-2025-10-10-20251010T192605.json`) proves audit trail coverage—spot check that a decision record posts before sharing AI-driven sales actions.
@@ -62,6 +70,7 @@ Surface daily sales health in one place. Use the Sales Pulse modal to compare to
 ---
 
 ## Escalation Path
+
 - **Ops Lead (Riley Chen):** Revenue anomalies, fulfillment bottlenecks, staffing adjustments.
 - **Support Lead (Morgan Patel):** Orders blocked due to CX escalations or policy issues.
 - **Product (Jordan Alvarez):** Metric anomalies tied to instrumentation or data quality.
@@ -72,6 +81,7 @@ Record each escalation in `feedback/enablement.md` with timestamp, channel, and 
 ---
 
 ## Training Tips
+
 - Anchor conversations around "What changed vs. last week?" to drive proactive investigation.
 - Pair the modal review with live Shopify order lookups for realism.
 - Encourage operators to narrate their decision path; capture phrasing for future scripts.
@@ -79,6 +89,7 @@ Record each escalation in `feedback/enablement.md` with timestamp, channel, and 
 ---
 
 ## Follow-Up Materials
+
 - Training agenda reference: `docs/runbooks/operator_training_agenda.md`
 - KPI source of truth: `docs/data/kpis.md`
 - Fulfillment blocker SOPs: `docs/runbooks/cx_escalations.md` (coordinate when blockers stem from CX issues)

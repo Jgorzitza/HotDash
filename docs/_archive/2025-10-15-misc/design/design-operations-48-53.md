@@ -12,6 +12,7 @@ created: 2025-10-11
 **System**: Git for design files, organized directory structure
 
 **Structure**:
+
 ```
 docs/design/
 ├── components/ (component specs)
@@ -36,6 +37,7 @@ assets/design/
 ## Task 49: Design Handoff Automation (Figma → Code)
 
 **Process**:
+
 1. Designer creates Figma design
 2. Export design tokens (JSON)
 3. Auto-generate CSS variables
@@ -53,6 +55,7 @@ assets/design/
 **Already Documented** in design-governance-18-22.md
 
 **Process**:
+
 1. Designer creates specs → Tag @engineer
 2. Engineer reviews → Ask questions
 3. Designer clarifies → Update specs
@@ -68,6 +71,7 @@ assets/design/
 ## Task 51: Design Metrics and KPI Dashboard
 
 **Designer KPIs**:
+
 - Spec completion time
 - Implementation accuracy (matches design)
 - Accessibility compliance rate
@@ -75,6 +79,7 @@ assets/design/
 - Revision count (lower = better)
 
 **Dashboard** (internal):
+
 ```typescript
 <Card>
   <InlineGrid columns={4} gap="400">
@@ -93,12 +98,14 @@ assets/design/
 ## Task 52: Design Collaboration Tools
 
 **Tools for Design Team**:
+
 - Figma (primary design tool)
 - Feedback files (async communication)
 - Git (version control)
 - Slack/Discord (real-time chat - if needed)
 
 **Collaboration Workflow**:
+
 - Design reviews in feedback files
 - Tag system for notifications (@engineer, @designer)
 - Evidence-based decisions (screenshots, mockups)
@@ -110,6 +117,7 @@ assets/design/
 ## Task 53: Design System Governance Model
 
 **Governance Structure**:
+
 ```
 Designer Agent (Owner)
 ├── Design System Maintenance
@@ -131,6 +139,7 @@ Manager (Overseer)
 ```
 
 **Decision Making**:
+
 - Design decisions: Designer authority
 - Technical decisions: Engineer authority
 - Strategic decisions: Manager/CEO authority
@@ -141,4 +150,3 @@ Manager (Overseer)
 ---
 
 **All 6 Design Operations tasks complete**
-

@@ -6,11 +6,13 @@ last_reviewed: 2025-10-11
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Linear Workspace Implementation — HotDash OCC Sprint 2025-10-11T03:52Z
 
 ## Workspace Configuration
 
 ### Project Structure
+
 ```
 HotDash OCC Sprint 2025-10-11 to 2025-10-18
 ├── DEPLOY-147 [Primary]     # Evidence anchoring and QA validation
@@ -24,6 +26,7 @@ HotDash OCC Sprint 2025-10-11 to 2025-10-18
 ```
 
 ### Workflow States
+
 1. **Triage** → New issues requiring priority assessment
 2. **In Progress** → Actively being worked on
 3. **Waiting on External** → Blocked by external dependencies
@@ -32,13 +35,16 @@ HotDash OCC Sprint 2025-10-11 to 2025-10-18
 6. **Done** → Completed and verified
 
 ### Labels System
+
 #### Priority Labels
+
 - `P0-Critical` - Sprint blocking, immediate attention
 - `P1-High` - Sprint critical, complete this sprint
 - `P2-Medium` - Important but can slip to next sprint
 - `P3-Low` - Nice to have, long-term backlog
 
 #### Category Labels
+
 - `compliance` - SCC/DPA/legal requirements
 - `risk` - Risk management and incident readiness
 - `qa` - Quality assurance and testing
@@ -51,6 +57,7 @@ HotDash OCC Sprint 2025-10-11 to 2025-10-18
 - `blocker` - Active blocker requiring escalation
 
 #### Team Labels
+
 - `team:product` - Product agent ownership
 - `team:qa` - QA agent coordination required
 - `team:compliance` - Compliance team involvement
@@ -59,12 +66,14 @@ HotDash OCC Sprint 2025-10-11 to 2025-10-18
 - `team:marketing` - Marketing team coordination
 
 ### WIP Limits
+
 - **In Progress**: 3 issues (focus on completion)
 - **Review**: 5 issues (stakeholder bandwidth)
 - **Waiting on External**: No limit (tracking only)
 - **Blocked**: No limit (escalation tracking)
 
 ### Watchers Configuration
+
 - **Product Agent**: All issues (primary coordinator)
 - **QA Agent**: qa, evidence, release labels
 - **Compliance Team**: compliance, audit, risk labels
@@ -75,6 +84,7 @@ HotDash OCC Sprint 2025-10-11 to 2025-10-18
 ## Core Sprint Issues
 
 ### DEPLOY-147: Evidence Anchoring and QA Validation
+
 ```
 Status: Done (100% Complete)
 Priority: P0-Critical
@@ -98,6 +108,7 @@ Next Actions: Archive evidence and prepare for release gate review
 ```
 
 ### COMP-SCC-DPA: Compliance Escalations and Approvals
+
 ```
 Status: In Progress
 Priority: P1-High
@@ -129,8 +140,9 @@ Blockers:
 ```
 
 ### OPS-NIGHTLY: Nightly AI Logging and Evidence Bundling
+
 ```
-Status: In Progress  
+Status: In Progress
 Priority: P1-High
 Labels: evidence, ai-logging, automation, team:data
 Watchers: Product Agent, QA Agent, Data Agent
@@ -159,6 +171,7 @@ Success Criteria:
 ```
 
 ### RELEASE-CADENCE: Release Review Gates Coordination
+
 ```
 Status: Triage
 Priority: P1-High
@@ -176,7 +189,7 @@ Release Gates:
    - [ ] Guardrail validation checks
    - [ ] Signoff documentation
 
-2. **Staging Review Gate** 
+2. **Staging Review Gate**
    - [ ] Staging access confirmed
    - [ ] QA evidence bundle validation
    - [ ] Performance thresholds met (<300ms p95)
@@ -198,9 +211,10 @@ All gate decisions logged in feedback/product.md and Linear with:
 ```
 
 ### RISK-EMBED: Legacy Embed-Token Dependency Tracking
+
 ```
 Status: Review (Legacy - May Close)
-Priority: P3-Low  
+Priority: P3-Low
 Labels: embed-token, legacy, risk, team:devops
 Watchers: Product Agent, DevOps
 
@@ -225,6 +239,7 @@ Evidence:
 ```
 
 ### AUDIT-STACK: Monday/Thursday Stack Compliance Audits
+
 ```
 Status: Triage
 Priority: P2-Medium
@@ -260,9 +275,10 @@ Automation:
 ```
 
 ### DOCS-DRY-RUN: Operator Dry Run Pre-Read Documentation
+
 ```
 Status: Review
-Priority: P2-Medium  
+Priority: P2-Medium
 Labels: docs, dry-run, publication, team:product
 Watchers: Product Agent, Marketing, Support
 
@@ -293,6 +309,7 @@ Publication Plan:
 ## Automation and Reminders
 
 ### Daily Reminders (UTC)
+
 - **08:30**: Nightly job verification and bundle linking
 - **09:00**: Morning evidence bundle routine
 - **09:30**: Blocker updates (morning)
@@ -300,11 +317,13 @@ Publication Plan:
 - **16:30**: Blocker updates (afternoon)
 
 ### Weekly Reminders
+
 - **Monday 09:00**: Stack compliance audit preparation
 - **Thursday 09:00**: Stack compliance audit follow-up
 - **Sunday 15:00**: Sprint progress review and next week planning
 
 ### Linear Automations
+
 1. **Issue Creation**: Auto-assign based on labels (team:product → Product Agent)
 2. **Status Updates**: Auto-comment when moved to Review/Blocked states
 3. **Reminder Triggers**: Daily notifications for overdue items
@@ -312,6 +331,7 @@ Publication Plan:
 5. **Sprint Tracking**: Weekly progress reports to stakeholders
 
 ### Escalation Rules
+
 - **P0-Critical**: Immediate Slack notification to all watchers
 - **P1-High Blocked >24h**: Daily escalation to manager
 - **Compliance Issues**: Auto-notify legal and compliance teams
@@ -320,18 +340,21 @@ Publication Plan:
 ## Success Metrics and SLOs
 
 ### Sprint Velocity Metrics
+
 - **Issue Completion Rate**: Target 85% of planned issues per sprint
 - **Blocker Resolution Time**: Average <48 hours for P1 issues
 - **Evidence Bundle Timeliness**: 100% daily bundles linked by 09:30 UTC
 - **Stakeholder Response Time**: <4 hours for P0, <24 hours for P1
 
 ### Quality Indicators
+
 - **Compliance Score**: 100% audit pass rate, zero violations
 - **Documentation Coverage**: All P0/P1 issues have evidence links
 - **Cross-Team Coordination**: <2 handoff delays per sprint
 - **Release Gate Success**: Zero rollbacks due to missing evidence
 
 ### Reporting Dashboard
+
 - Sprint burn-down chart with completion projections
 - Blocker aging report with escalation triggers
 - Evidence bundle health status (generation/consumption rates)
@@ -341,23 +364,27 @@ Publication Plan:
 ## Implementation Timeline
 
 ### Phase 1: Immediate Setup (Today)
+
 - [ ] Create Linear project with workspace structure
 - [ ] Configure labels, workflow states, and watchers
 - [ ] Create core sprint issues with initial content
 - [ ] Set up basic automation rules and reminders
 
 ### Phase 2: Integration (Week 1)
+
 - [ ] Integrate evidence bundling automation
 - [ ] Configure morning routine triggers
 - [ ] Test cross-agent workflow coordination
 - [ ] Validate escalation and notification paths
 
-### Phase 3: Optimization (Week 2) 
+### Phase 3: Optimization (Week 2)
+
 - [ ] Tune automation based on usage patterns
 - [ ] Optimize notification frequency and targeting
 - [ ] Add advanced reporting and dashboard views
 - [ ] Document lessons learned and best practices
 
 ---
+
 **Sprint Link**: [To be populated with actual Linear workspace URL]
 **Next Actions**: Create Linear workspace, implement core issues, configure automation triggers

@@ -6,6 +6,7 @@
 ## 🎯 Server Verification Complete
 
 The Google Analytics MCP server is successfully:
+
 - ✅ Deployed on Fly.io at `https://hotdash-analytics-mcp.fly.dev`
 - ✅ Responding to health checks
 - ✅ Initializing correctly (Google Analytics Server v1.17.0)
@@ -17,11 +18,13 @@ The Google Analytics MCP server is successfully:
 The server provides these tools for querying Google Analytics:
 
 ### Account & Property Information
+
 - `get_account_summaries` - List all your GA accounts and properties
 - `get_property_details` - Get details about a specific property
 - `list_google_ads_links` - List Google Ads connections
 
 ### Reporting
+
 - `run_report` - Run custom GA reports
 - `run_realtime_report` - Get realtime analytics data
 - `get_custom_dimensions_and_metrics` - List custom dimensions/metrics for a property
@@ -29,6 +32,7 @@ The server provides these tools for querying Google Analytics:
 ## 🧪 How to Test (In Cursor)
 
 ### Step 1: Restart Cursor
+
 **IMPORTANT**: You must restart Cursor to load the new MCP configuration from `.mcp.json`.
 
 After restarting, the `google-analytics` MCP server will be available.
@@ -36,6 +40,7 @@ After restarting, the `google-analytics` MCP server will be available.
 ### Step 2: Verify MCP Connection
 
 In Cursor, type:
+
 ```
 /mcp
 ```
@@ -45,6 +50,7 @@ You should see `google-analytics` listed among your available MCP servers.
 ### Step 3: Test Basic Query
 
 Try this prompt:
+
 ```
 Using the google-analytics MCP server, get my account summaries and list all my Google Analytics properties
 ```
@@ -52,6 +58,7 @@ Using the google-analytics MCP server, get my account summaries and list all my 
 ### Step 4: Get Property Details
 
 Once you see your properties, try:
+
 ```
 Using google-analytics MCP, get details about property [PROPERTY_ID]
 ```
@@ -59,6 +66,7 @@ Using google-analytics MCP, get details about property [PROPERTY_ID]
 ### Step 5: Run a Report
 
 Try running a simple report:
+
 ```
 Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active users in the last 7 days
 ```
@@ -66,26 +74,31 @@ Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active user
 ## 📋 Sample Prompts to Try
 
 1. **List all properties**:
+
    ```
    What are all my Google Analytics properties?
    ```
 
 2. **Get property details**:
+
    ```
    Give me details about my Google Analytics property with 'hotrodan' in the name
    ```
 
 3. **Popular events**:
+
    ```
    What are the most popular events in my Google Analytics property in the last 30 days?
    ```
 
 4. **User analysis**:
+
    ```
    Were most of my users in the last month logged in?
    ```
 
 5. **Custom dimensions**:
+
    ```
    What are the custom dimensions and custom metrics in my property?
    ```
@@ -100,11 +113,13 @@ Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active user
 ### If MCP Server Doesn't Appear
 
 1. **Verify .mcp.json**:
+
    ```bash
    cat /home/justin/HotDash/hot-dash/.mcp.json | grep -A5 "google-analytics"
    ```
 
 2. **Check server status**:
+
    ```bash
    ~/.fly/bin/flyctl status --app hotdash-analytics-mcp
    ```
@@ -128,11 +143,13 @@ Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active user
 ## ⚙️ Configuration Details
 
 ### Service Account
+
 - **Email**: `analytics-mcp-fly@hotrodan-seo-reports.iam.gserviceaccount.com`
 - **Project**: `hotrodan-seo-reports`
 - **GA Role**: Marketer (full read/write capabilities)
 
 ### MCP Configuration
+
 **File**: `/home/justin/HotDash/hot-dash/.mcp.json`
 
 ```json
@@ -148,6 +165,7 @@ Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active user
 ```
 
 ### Server Details
+
 - **URL**: https://hotdash-analytics-mcp.fly.dev
 - **Health**: https://hotdash-analytics-mcp.fly.dev/health
 - **Region**: ord (Chicago)
@@ -171,4 +189,3 @@ Using google-analytics MCP, run a report for [PROPERTY_NAME] showing active user
 ---
 
 **Ready to test!** Restart Cursor and try the sample prompts above. 🚀
-

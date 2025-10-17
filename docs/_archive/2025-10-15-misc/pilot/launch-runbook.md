@@ -25,6 +25,7 @@ Oct 18 (Fri)  → LAUNCH: Pilot Week 1 begins
 ### System Verification
 
 **Run Health Checks**:
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 
@@ -40,6 +41,7 @@ npm run health-check
 ```
 
 **Verify Components**:
+
 - [ ] Dashboard tiles load in <2 seconds
 - [ ] Shopify data syncing (test with dev store)
 - [ ] Approval queue functional
@@ -51,6 +53,7 @@ npm run health-check
 ### Hot Rodan Preparation
 
 **Gather Hot Rodan Details**:
+
 - [ ] Shopify store URL: [hot-rodan.myshopify.com]
 - [ ] CEO name and email: [Name, email@hotrodan.com]
 - [ ] Team members (2-3): [Names, emails]
@@ -58,6 +61,7 @@ npm run health-check
 - [ ] Success criteria agreed
 
 **Prepare Materials**:
+
 - [ ] Quick start guide printed/sent
 - [ ] Onboarding call agenda
 - [ ] Demo environment ready
@@ -68,12 +72,14 @@ npm run health-check
 ### Internal Team Alignment
 
 **Team Briefing** (Oct 14, 4 PM):
+
 - [ ] Product Agent: Primary contact, runs check-ins
 - [ ] Engineer: On-call for setup + bugs
 - [ ] Manager: Available for escalations
 - [ ] QA: Monitoring error logs
 
 **Backup Plan**:
+
 - [ ] If CEO unavailable Oct 15 → Reschedule to Oct 16
 - [ ] If critical bug discovered → Delay launch 1-2 days
 - [ ] If Hot Rodan cancels → Document learnings, move on
@@ -85,6 +91,7 @@ npm run health-check
 ### 9:00 AM - Final Pre-Call Check
 
 **Run pre-flight checks**:
+
 ```bash
 # Verify system health
 npm run health-check
@@ -97,6 +104,7 @@ curl https://hotdash.app/health
 ```
 
 **Confirm**:
+
 - [ ] All green lights
 - [ ] Demo account works
 - [ ] Screen share ready
@@ -109,11 +117,13 @@ curl https://hotdash.app/health
 **Agenda**:
 
 **Introduction (5 min)**:
+
 - Welcome to HotDash!
 - Brief overview: "Your command center for running Hot Rodan"
 - Today's goal: Get you set up and comfortable
 
 **Shopify Installation (10 min)**:
+
 1. Share screen with CEO
 2. Navigate to Hot Rodan Shopify admin
 3. Install HotDash app:
@@ -123,11 +133,13 @@ curl https://hotdash.app/health
 5. Redirect to HotDash dashboard
 
 **Data Sync (5 min)**:
+
 - Initial sync starts automatically
 - Takes 2-5 minutes for first load
 - CEO can see progress bar: "Importing your data..."
 
 **Dashboard Walkthrough (15 min)**:
+
 - Quick tour of each tile (use Quick Start Guide)
 - Show CEO their actual data (sales, inventory, etc.)
 - Demo morning routine workflow:
@@ -137,16 +149,19 @@ curl https://hotdash.app/health
   4. Scan Customer Mood
 
 **CEO Tries It (5 min)**:
+
 - Have CEO navigate dashboard themselves
 - Answer questions as they arise
 - Note any confusion or friction
 
 **Next Steps (5 min)**:
+
 - Tomorrow: Team onboarding call (Oct 16, 10 AM)
 - Your homework: Try morning routine workflow
 - How to reach us: Slack #hot-rodan-pilot or email
 
 **Post-Call Actions**:
+
 - [ ] Verify Hot Rodan data synced correctly
 - [ ] Send follow-up email with quick start guide
 - [ ] Log call notes in `feedback/product.md`
@@ -157,6 +172,7 @@ curl https://hotdash.app/health
 ### 11:00 AM - Post-Call Verification
 
 **Check Hot Rodan Dashboard**:
+
 ```bash
 # Query Hot Rodan's data in database
 npm run pilot:verify-customer --customer=hot-rodan
@@ -169,12 +185,14 @@ npm run pilot:verify-customer --customer=hot-rodan
 ```
 
 **Manual Spot Checks**:
+
 - [ ] Sales Pulse shows accurate revenue
 - [ ] Inventory counts match Shopify
 - [ ] Support tickets are recent
 - [ ] No data showing for wrong store
 
 **If issues found**:
+
 1. Fix immediately (same-day priority)
 2. Call CEO if blocking (don't let them discover bugs first)
 3. Log issue and resolution
@@ -228,16 +246,19 @@ Product Team
 **Agenda**:
 
 **Welcome Team (5 min)**:
+
 - Introduce HotDash
 - CEO shares their experience from Day 1
 
 **Dashboard Tour for Team (10 min)**:
+
 - Focus on their roles:
   - Ops Manager: Inventory Alerts, Order Status
   - Support Lead: Ops Pulse, Approval Queue
 - Show how to collaborate with CEO on approvals
 
 **Approval Queue Setup (10 min)**:
+
 - Demo approval workflow:
   1. Request comes in (e.g., refund over $200)
   2. Team prepares recommendation
@@ -246,11 +267,13 @@ Product Team
 - Set approval thresholds (e.g., refunds >$200, shipping upgrades >$50)
 
 **Access and Logins (5 min)**:
+
 - Send team member login invites
 - Verify they can access dashboard
 - Set up mobile access
 
 **Post-Call**:
+
 - [ ] Team logins working
 - [ ] Approval thresholds configured
 - [ ] Slack channel invites sent
@@ -260,11 +283,13 @@ Product Team
 ### 2:00 PM - Data Accuracy Validation
 
 **CEO Homework Check**:
+
 - Did CEO log in today?
 - Any feedback from CEO?
 - Any data issues reported?
 
 **Run Validation Tests**:
+
 ```bash
 # Compare HotDash data vs Shopify directly
 npm run pilot:validate-data --customer=hot-rodan
@@ -283,6 +308,7 @@ npm run pilot:validate-data --customer=hot-rodan
 ### 4:00 PM - Configuration Review
 
 **Verify All Settings**:
+
 - [ ] Approval thresholds correct
 - [ ] Notification settings (email, Slack)
 - [ ] Tile preferences (which tiles to show)
@@ -290,6 +316,7 @@ npm run pilot:validate-data --customer=hot-rodan
 - [ ] Team access levels set
 
 **Test Approval Queue**:
+
 - [ ] Create test approval request
 - [ ] CEO receives notification
 - [ ] CEO can approve/deny
@@ -302,6 +329,7 @@ npm run pilot:validate-data --customer=hot-rodan
 ### 9:00 AM - CEO Trial Run
 
 **Send CEO Slack message**:
+
 ```
 Good morning! Today is trial run day.
 
@@ -317,6 +345,7 @@ We'll chat at 2 PM to review. Questions? Ping me!
 ```
 
 **Monitor Usage**:
+
 - [ ] Is CEO logging in?
 - [ ] Which tiles are they clicking?
 - [ ] Any errors in logs?
@@ -329,31 +358,37 @@ We'll chat at 2 PM to review. Questions? Ping me!
 **Agenda**:
 
 **Check-In (5 min)**:
+
 - How did today's trial run go?
 - Did morning routine workflow feel natural?
 - Any confusion or friction?
 
 **Data Validation (5 min)**:
+
 - Walk through dashboard together
 - CEO confirms: "These numbers look right"
 - Fix any discrepancies spotted
 
 **Feature Review (10 min)**:
+
 - Which tiles are most useful?
 - Which tiles are confusing or not useful?
 - Any missing features?
 
 **Mobile Check (5 min)**:
+
 - Has CEO tried mobile?
 - Is mobile experience acceptable?
 - Set up push notifications?
 
 **Go/No-Go Decision (5 min)**:
+
 - CEO: "Are you ready to officially start the pilot on Friday?"
 - If YES: Launch Friday (Oct 18)
 - If NO: What needs to be fixed first?
 
 **Post-Call**:
+
 - [ ] Log go/no-go decision
 - [ ] If issues: Fix by Thursday
 - [ ] Send pre-launch email (if GO)
@@ -363,6 +398,7 @@ We'll chat at 2 PM to review. Questions? Ping me!
 ### 4:00 PM - Final Pre-Launch Checks (If GO)
 
 **System Verification**:
+
 ```bash
 # Final health check
 npm run health-check
@@ -375,6 +411,7 @@ npm run logs:errors --since=24h
 ```
 
 **Confirm**:
+
 - [ ] No critical bugs
 - [ ] Performance acceptable (<2s load time)
 - [ ] All team members can access
@@ -382,6 +419,7 @@ npm run logs:errors --since=24h
 - [ ] Approval queue functional
 
 **If any RED FLAGS**:
+
 - Delay launch 1-2 days
 - Fix critical issues
 - Re-validate before launching
@@ -433,6 +471,7 @@ Product Team
 ### 9:00 AM - Launch Day Monitoring
 
 **Morning Check**:
+
 ```bash
 # System health
 npm run health-check
@@ -445,6 +484,7 @@ npm run logs:errors --live
 ```
 
 **Watch For**:
+
 - [ ] CEO logging in
 - [ ] Team activity
 - [ ] Any errors in logs
@@ -455,6 +495,7 @@ npm run logs:errors --live
 ### 12:00 PM - Mid-Day Check-In (Slack)
 
 **Post in #hot-rodan-pilot**:
+
 ```
 How's your first official day with the dashboard going?
 
@@ -464,6 +505,7 @@ We're monitoring everything and here to help!
 ```
 
 **Monitor responses**:
+
 - Address questions immediately (<30 min)
 - Create tickets for any bugs
 - Celebrate any wins shared
@@ -475,6 +517,7 @@ We're monitoring everything and here to help!
 **Use**: `weekly-checkin-template.md`
 
 **Key Questions**:
+
 1. How was your first week (3 days so far)?
 2. Is the dashboard becoming part of your routine?
 3. What's working well?
@@ -488,6 +531,7 @@ We're monitoring everything and here to help!
 ### 5:00 PM - Day 1 Summary
 
 **Run Metrics Report**:
+
 ```bash
 # Generate Day 1 report
 npm run pilot:report --customer=hot-rodan --period=today
@@ -500,6 +544,7 @@ npm run pilot:report --customer=hot-rodan --period=today
 ```
 
 **Post Summary in Slack**:
+
 ```
 📊 Hot Rodan Pilot - Day 1 Complete!
 
@@ -520,6 +565,7 @@ See you Monday for Week 1 continuation!
 ### Daily Monitoring (Every Day)
 
 **9:00 AM - Morning Check**:
+
 ```bash
 # Health check
 npm run health-check
@@ -529,17 +575,20 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ```
 
 **Confirm**:
+
 - [ ] CEO logged in yesterday
 - [ ] No errors in logs
 - [ ] Performance acceptable
 
 **If CEO didn't log in**:
+
 - Send Slack message: "Hey, missed you yesterday! Everything ok?"
 - Understand barrier (too busy, forgot, not useful?)
 
 ---
 
 **12:00 PM - Noon Check**:
+
 - [ ] Check #hot-rodan-pilot Slack for questions
 - [ ] Respond to any issues immediately
 - [ ] Monitor error logs
@@ -547,6 +596,7 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 **5:00 PM - End of Day**:
+
 - [ ] Review day's activity
 - [ ] Log any feedback received
 - [ ] Create tickets for bugs/features
@@ -559,6 +609,7 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 **Use**: `weekly-checkin-template.md`
 
 **Track**:
+
 - [ ] Week 1: Oct 18 (Day 1 + first call)
 - [ ] Week 2: Oct 25
 - [ ] Week 3: Nov 1
@@ -569,11 +620,13 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ## Escalation Paths
 
 ### Level 1: Minor Issues (Product Agent Handles)
+
 **Examples**: UX confusion, tile layout preferences, feature requests
 
 **Response Time**: <2 hours during business hours
 
 **Process**:
+
 1. CEO reports issue via Slack or call
 2. Product Agent logs issue
 3. Product Agent creates ticket (P2/P3)
@@ -582,11 +635,13 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 ### Level 2: Bugs (Engineer Required)
+
 **Examples**: Data inaccuracy, tile not loading, approval queue broken
 
 **Response Time**: <4 hours for P1, same-day for P2
 
 **Process**:
+
 1. CEO reports bug
 2. Product Agent reproduces bug
 3. Product Agent escalates to Engineer
@@ -596,11 +651,13 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 ### Level 3: Critical Issues (All Hands)
+
 **Examples**: Dashboard down, data loss, security issue
 
 **Response Time**: <30 minutes
 
 **Process**:
+
 1. CEO reports critical issue OR we detect it
 2. Product Agent immediately escalates to Manager + Engineer
 3. Manager calls CEO within 30 min
@@ -608,6 +665,7 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 5. Post-mortem and prevention plan
 
 **Criteria for Critical**:
+
 - Dashboard completely unavailable
 - Data loss or corruption
 - Security/privacy breach
@@ -618,17 +676,20 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ## Success Metrics (Week 1)
 
 ### Usage Metrics
+
 - [ ] CEO logs in ≥5 days
 - [ ] Avg session duration: 2-10 minutes
 - [ ] Approvals processed: ≥1
 - [ ] Mobile access used: Yes/No
 
 ### Satisfaction Metrics
+
 - [ ] Week 1 rating: ≥6/10
 - [ ] CEO shares ≥1 positive feedback
 - [ ] No "I want to stop" signals
 
 ### Impact Metrics
+
 - [ ] Time savings (CEO self-reported): ≥3 hours
 - [ ] Quick wins: ≥1 (caught inventory alert, fast approval, etc.)
 
@@ -639,9 +700,11 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ## Contingency Plans
 
 ### Scenario 1: CEO Doesn't Use Dashboard
+
 **Trigger**: <3 logins in first week
 
 **Action**:
+
 1. Call CEO immediately: "We noticed you haven't been using it much. What's going on?"
 2. Understand barrier: too busy, not useful, forgot, etc.
 3. Options:
@@ -653,9 +716,11 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 ### Scenario 2: Data Accuracy Issues
+
 **Trigger**: CEO reports "This number is wrong"
 
 **Action**:
+
 1. Reproduce issue immediately
 2. Compare HotDash data vs Shopify directly
 3. Fix within 2 hours
@@ -667,9 +732,11 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 ### Scenario 3: Dashboard Too Slow
+
 **Trigger**: CEO reports "This is too slow to use"
 
 **Action**:
+
 1. Measure load times (should be <2 seconds)
 2. Optimize immediately (caching, query optimization)
 3. Target: <1 second load time
@@ -678,9 +745,11 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 ---
 
 ### Scenario 4: CEO Wants to Stop
+
 **Trigger**: CEO says "I don't think this is working"
 
 **Action**:
+
 1. Don't argue or defend
 2. Ask: "Help me understand—what's not working?"
 3. Assess: Is it fixable in 2-3 days?
@@ -695,4 +764,3 @@ npm run pilot:activity --customer=hot-rodan --date=yesterday
 **Owner**: Product Agent  
 **Status**: ✅ Ready for Hot Rodan launch execution (Oct 15)  
 **Next**: Execute day-by-day starting Oct 15, 2025
-

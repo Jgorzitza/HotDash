@@ -8,6 +8,7 @@
 ## ⚠️ Your Training Data is OUTDATED for HotDash
 
 Most AI agents were trained on data from 2023 or earlier. HotDash uses:
+
 - **React Router 7** (released late 2024)
 - **Shopify Admin API 2024-10** (monthly updates)
 - **Shopify App Bridge v3.7+** (frequent updates)
@@ -21,6 +22,7 @@ Most AI agents were trained on data from 2023 or earlier. HotDash uses:
 ✅ **Mandatory MCP verification for:**
 
 ### React Router 7
+
 - [ ] Loader functions (`export async function loader`)
 - [ ] Action functions (`export async function action`)
 - [ ] Client loaders (`export async function clientLoader`)
@@ -30,6 +32,7 @@ Most AI agents were trained on data from 2023 or earlier. HotDash uses:
 - [ ] Error boundaries in routes
 
 ### Shopify
+
 - [ ] GraphQL queries (any query/mutation)
 - [ ] Admin API REST endpoints
 - [ ] API version parameters (`2024-10`)
@@ -43,6 +46,7 @@ Most AI agents were trained on data from 2023 or earlier. HotDash uses:
 ## ✅ You Can Trust Training For
 
 Safe to use without verification:
+
 - Basic React hooks (`useState`, `useEffect`, etc.)
 - TypeScript syntax
 - JavaScript fundamentals
@@ -69,25 +73,30 @@ Am I writing code that involves:
 ## Quick Verification Commands
 
 ### For React Router 7
+
 ```typescript
 // Before writing loader:
-mcp_context7_get-library-docs({
-  context7CompatibleLibraryID: "/remix-run/react-router",
-  topic: "loader function signature and types",
-  tokens: 800
-})
+mcp_context7_get -
+  library -
+  docs({
+    context7CompatibleLibraryID: "/remix-run/react-router",
+    topic: "loader function signature and types",
+    tokens: 800,
+  });
 ```
 
 ### For Shopify GraphQL
+
 ```typescript
 // Before any query:
 mcp_shopify_validate_graphql_query({
   query: `query { ... }`,
-  api: "admin"
-})
+  api: "admin",
+});
 ```
 
 ### For HotDash Patterns
+
 ```bash
 # Always search codebase first:
 grep("loader pattern")
@@ -116,7 +125,7 @@ export const loader = async () => {
 # ❌ This might use deprecated fields
 query {
   customer {
-    email  # Field access changed in 2024
+    email # Field access changed in 2024
   }
 }
 ```
@@ -128,22 +137,27 @@ query {
 ## Common Mistakes from Outdated Training
 
 ### Mistake 1: Wrong React Router 7 Import
+
 ❌ `import { json } from "@remix-run/node"`  
 ✅ `import type { Route } from "./+types/product"`
 
 ### Mistake 2: Wrong Loader Pattern
+
 ❌ `export const loader = async () => json({ data })`  
 ✅ `export async function loader() { return { data } }`
 
 ### Mistake 3: Wrong Type Definitions
+
 ❌ `const data = useLoaderData<MyType>()`  
 ✅ `function Component({ loaderData }: Route.ComponentProps)`
 
 ### Mistake 4: Outdated Shopify Fields
+
 ❌ Assuming all 2023 fields still exist  
 ✅ Validate schema with Shopify MCP
 
 ### Mistake 5: Wrong API Version
+
 ❌ Using hardcoded old version strings  
 ✅ Check current version in HotDash config
 
@@ -157,18 +171,20 @@ query {
 ❌ Using `json()` wrapper in RR7 loaders  
 ❌ Shopify API calls without version check  
 ❌ Context7 calls without token limits  
-❌ Not searching HotDash codebase first  
+❌ Not searching HotDash codebase first
 
 ---
 
 ## Cost vs Benefit
 
 **Verification Cost:**
+
 - 800-1200 tokens per Context7 call
 - < 500 tokens per Shopify validation
 - ~30 seconds of time
 
 **Cost of NOT Verifying:**
+
 - Broken application
 - Type errors
 - Deprecated API usage
@@ -230,7 +246,7 @@ Before trusting your training data:
 ---
 
 **Related Docs:**
+
 - `docs/directions/mcp-usage-efficiency.md` - Full decision matrix
 - `docs/directions/mcp-tools-reference.md` - Tool usage guide
 - `docs/NORTH_STAR.md` - Development principles
-

@@ -13,6 +13,7 @@ Unified customer data across all touchpoints: support tickets, product usage, bi
 **Goal**: 360-degree customer view for operators
 
 **Data Sources**:
+
 - Chatwoot (support conversations)
 - Agent SDK (draft approvals, metrics)
 - Shopify (orders, products, customer profile)
@@ -23,4 +24,3 @@ Unified customer data across all touchpoints: support tickets, product usage, bi
 
 **Document Owner**: Product Agent
 **Status**: CDP strategy outline
-

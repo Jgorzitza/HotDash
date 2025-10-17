@@ -10,9 +10,11 @@ created: 2025-10-11
 # 🚨 P0 HANDOFF: Approval Queue UI Implementation
 
 ## Purpose
+
 This document provides implementation-ready specifications for Engineer to build the approval queue UI that displays pending agent actions and allows operators to approve/reject them.
 
 ## API Contract (Already Built by Engineer ✅)
+
 ```typescript
 // GET /approvals
 Response: [{
@@ -60,7 +62,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function ApprovalsRoute() {
   const { approvals } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
-  
+
   // Auto-refresh every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,7 +70,7 @@ export default function ApprovalsRoute() {
     }, 5000);
     return () => clearInterval(interval);
   }, [revalidator]);
-  
+
   return (
     <Page
       title="Approval Queue"
@@ -133,10 +135,10 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
   const submit = useSubmit();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const action = approval.pending[0]; // First pending action
   const riskLevel = getRiskLevel(action.tool);
-  
+
   const handleApprove = async () => {
     setLoading(true);
     setError(null);
@@ -153,7 +155,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
       setLoading(false);
     }
   };
-  
+
   const handleReject = async () => {
     setLoading(true);
     setError(null);
@@ -169,7 +171,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
       setLoading(false);
     }
   };
-  
+
   return (
     <Card>
       <BlockStack gap="400">
@@ -182,7 +184,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
             {riskLevel.toUpperCase()} RISK
           </Badge>
         </InlineStack>
-        
+
         {/* Agent & Tool Info */}
         <BlockStack gap="200">
           <Text variant="bodyMd" as="p">
@@ -198,14 +200,14 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
             Requested {new Date(approval.createdAt).toLocaleString()}
           </Text>
         </BlockStack>
-        
+
         {/* Error Message */}
         {error && (
           <Banner tone="critical" onDismiss={() => setError(null)}>
             {error}
           </Banner>
         )}
-        
+
         {/* Actions */}
         <InlineStack gap="200">
           <Button
@@ -236,7 +238,7 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
 function getRiskLevel(tool: string): 'low' | 'medium' | 'high' {
   const highRisk = ['send_email', 'create_refund', 'cancel_order'];
   const mediumRisk = ['create_private_note', 'update_conversation'];
-  
+
   if (highRisk.includes(tool)) return 'high';
   if (mediumRisk.includes(tool)) return 'medium';
   return 'low';
@@ -248,32 +250,32 @@ function getRiskLevel(tool: string): 'low' | 'medium' | 'high' {
 **Create**: `app/routes/approvals.$id.$idx.approve/route.tsx`
 
 ```typescript
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
 
 export async function action({ params }: ActionFunctionArgs) {
   const { id, idx } = params;
-  
+
   await fetch(`http://localhost:8002/approvals/${id}/${idx}/approve`, {
-    method: 'POST',
+    method: "POST",
   });
-  
-  return redirect('/approvals');
+
+  return redirect("/approvals");
 }
 ```
 
 **Create**: `app/routes/approvals.$id.$idx.reject/route.tsx`
 
 ```typescript
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
 
 export async function action({ params }: ActionFunctionArgs) {
   const { id, idx } = params;
-  
+
   await fetch(`http://localhost:8002/approvals/${id}/${idx}/reject`, {
-    method: 'POST',
+    method: "POST",
   });
-  
-  return redirect('/approvals');
+
+  return redirect("/approvals");
 }
 ```
 
@@ -331,4 +333,3 @@ Add approval queue link to main navigation:
 @engineer - This handoff is complete. All specs provided above. Let me know if you need clarification on any part.
 
 **Evidence of completion**: Tag @designer when approval queue route is working and I can review the implementation.
-

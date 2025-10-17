@@ -136,6 +136,7 @@
 ## State Definitions
 
 ### Open State
+
 - **Definition:** Conversation is active and awaiting response
 - **Entry Conditions:**
   - New customer message received
@@ -149,6 +150,7 @@
   - Resolve conversation
 
 ### Pending State
+
 - **Definition:** Waiting for customer response
 - **Entry Conditions:**
   - Agent sent reply, awaiting customer
@@ -158,6 +160,7 @@
   - Set back to Open if urgency increases
 
 ### Resolved State
+
 - **Definition:** Conversation is closed/completed
 - **Entry Conditions:**
   - Agent manually resolved
@@ -173,6 +176,7 @@
 ## Message Types
 
 ### Private Notes (message_type: 0, private: true)
+
 - **Visibility:** Agents only (not visible to customer)
 - **Use Cases:**
   - Agent SDK draft responses
@@ -190,12 +194,14 @@
   ```
 
 ### Incoming Messages (message_type: 0, private: false)
+
 - **Visibility:** Public (visible to customer and agents)
 - **Source:** Customer
 - **Triggers:** Webhook event (message_created)
 - **Agent SDK Action:** Generate draft response
 
 ### Outgoing Messages (message_type: 1)
+
 - **Visibility:** Public (visible to customer and agents)
 - **Source:** Agent
 - **Use Cases:**
@@ -260,14 +266,16 @@ Check Conversation Attributes
 **API Endpoint:** `POST /conversations/{id}/assignments`
 
 **Payload:**
+
 ```json
 {
-  "assignee_id": 5,  // Agent user ID
-  "team_id": 2       // Optional team ID
+  "assignee_id": 5, // Agent user ID
+  "team_id": 2 // Optional team ID
 }
 ```
 
 **Use Cases:**
+
 - Operator escalates to specialist
 - Manager takes over critical issue
 - Team handoff (sales → support)
@@ -338,16 +346,16 @@ Check Conversation Attributes
 
 ## Workflow Comparison Table
 
-| Aspect | Private Note | Public Reply |
-|--------|-------------|--------------|
-| **API message_type** | 0 | 1 |
-| **API private flag** | true | false (or omitted) |
-| **Visible to Customer** | ❌ No | ✅ Yes |
-| **Visible to Agents** | ✅ Yes | ✅ Yes |
-| **Sends Email** | ❌ No | ✅ Yes |
-| **Use Case** | Internal draft, comments | Customer response |
-| **Agent SDK Phase** | Draft creation | Approval execution |
-| **Queue Status** | Creates entry | Completes entry |
+| Aspect                  | Private Note             | Public Reply       |
+| ----------------------- | ------------------------ | ------------------ |
+| **API message_type**    | 0                        | 1                  |
+| **API private flag**    | true                     | false (or omitted) |
+| **Visible to Customer** | ❌ No                    | ✅ Yes             |
+| **Visible to Agents**   | ✅ Yes                   | ✅ Yes             |
+| **Sends Email**         | ❌ No                    | ✅ Yes             |
+| **Use Case**            | Internal draft, comments | Customer response  |
+| **Agent SDK Phase**     | Draft creation           | Approval execution |
+| **Queue Status**        | Creates entry            | Completes entry    |
 
 ---
 
@@ -413,34 +421,38 @@ T+1h+1s: Conversation status → "resolved"
 
 ## State Transition Matrix
 
-| Current State | Trigger | Next State | Actions |
-|--------------|---------|------------|---------|
-| **Created** | Customer message | Open | Create draft, notify operators |
-| **Open** | Operator sends reply | Pending | Send public message, update queue |
-| **Open** | Operator escalates | Open | Assign senior agent, create handoff note |
-| **Open** | Operator resolves | Resolved | Set status, archive queue entry |
-| **Pending** | Customer replies | Open | New draft cycle begins |
-| **Pending** | No reply for 7 days | Resolved | Auto-resolve (configurable) |
-| **Resolved** | Customer replies | Open | Reopen conversation, new draft |
+| Current State | Trigger              | Next State | Actions                                  |
+| ------------- | -------------------- | ---------- | ---------------------------------------- |
+| **Created**   | Customer message     | Open       | Create draft, notify operators           |
+| **Open**      | Operator sends reply | Pending    | Send public message, update queue        |
+| **Open**      | Operator escalates   | Open       | Assign senior agent, create handoff note |
+| **Open**      | Operator resolves    | Resolved   | Set status, archive queue entry          |
+| **Pending**   | Customer replies     | Open       | New draft cycle begins                   |
+| **Pending**   | No reply for 7 days  | Resolved   | Auto-resolve (configurable)              |
+| **Resolved**  | Customer replies     | Open       | Reopen conversation, new draft           |
 
 ---
 
 ## API Endpoints Summary
 
 ### Conversation Management
+
 - `GET /conversations?status=open` - List open conversations
 - `GET /conversations/{id}` - Get conversation details
 - `POST /conversations/{id}/toggle_status` - Change conversation status
 
 ### Message Management
+
 - `GET /conversations/{id}/messages` - List all messages
 - `POST /conversations/{id}/messages` - Create message (private or public)
 
 ### Agent Assignment
+
 - `POST /conversations/{id}/assignments` - Assign agent
 - `GET /conversations/{id}/assignments` - Get current assignment
 
 ### Labels/Tags
+
 - `GET /labels` - List all labels
 - `POST /conversations/{id}/labels` - Add labels to conversation
 
@@ -449,26 +461,31 @@ T+1h+1s: Conversation status → "resolved"
 ## Agent SDK Integration Points
 
 ### 1. Webhook Reception
+
 - **Trigger:** `message_created` event from Chatwoot
 - **Validation:** HMAC signature verification
 - **Action:** Parse payload, filter for customer messages
 
 ### 2. Draft Generation
+
 - **Input:** Customer message + conversation context
 - **Process:** LlamaIndex query → OpenAI draft
 - **Output:** Draft response + confidence score
 
 ### 3. Private Note Creation
+
 - **Method:** POST to `/conversations/{id}/messages`
 - **Payload:** Draft with metadata (private: true)
 - **Purpose:** Store draft for operator review
 
 ### 4. Queue Management
+
 - **Action:** Insert into `agent_sdk_approval_queue` table
 - **Notification:** Real-time alert to operators
 - **Tracking:** Monitor operator actions
 
 ### 5. Approval Execution
+
 - **Action:** Send public reply (message_type: 1)
 - **Metadata:** Add labels, update queue status
 - **Learning:** Log outcome for model improvement
@@ -477,29 +494,32 @@ T+1h+1s: Conversation status → "resolved"
 
 ## Performance Targets
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Webhook → Draft Created | < 3s | ~5-7s (estimated) |
-| Draft → Operator Notified | < 1s | TBD |
-| Operator Review Time | < 2min avg | TBD |
-| Total Customer Wait | < 5min | TBD |
-| Draft Approval Rate | > 60% | TBD |
+| Metric                    | Target     | Current           |
+| ------------------------- | ---------- | ----------------- |
+| Webhook → Draft Created   | < 3s       | ~5-7s (estimated) |
+| Draft → Operator Notified | < 1s       | TBD               |
+| Operator Review Time      | < 2min avg | TBD               |
+| Total Customer Wait       | < 5min     | TBD               |
+| Draft Approval Rate       | > 60%      | TBD               |
 
 ---
 
 ## Error Handling
 
 ### Webhook Delivery Failures
+
 - **Retry:** Chatwoot retries 3 times with exponential backoff
 - **Fallback:** Manual operator notification if webhook fails
 - **Monitoring:** Log all webhook errors to observability_logs
 
 ### Draft Generation Failures
+
 - **Timeout:** 10s timeout for LlamaIndex + OpenAI
 - **Fallback:** Skip private note, direct to operator queue
 - **Notification:** Alert operator of generation failure
 
 ### API Call Failures
+
 - **Retry:** 2 attempts with 1s delay
 - **Fallback:** Log error, notify operator manually
 - **Escalation:** Page engineering if sustained failures
@@ -520,4 +540,3 @@ T+1h+1s: Conversation status → "resolved"
 **Last Updated:** 2025-10-11  
 **Maintained By:** Chatwoot Agent  
 **Review Cadence:** Monthly or after significant workflow changes
-

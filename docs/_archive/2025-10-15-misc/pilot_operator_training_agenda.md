@@ -18,17 +18,20 @@
 ### Agenda (90 minutes)
 
 **Welcome & Context** (10 minutes - Product Agent)
+
 - Why we built Agent SDK (operators asked for it!)
 - What problem it solves (68% of time on repetitive work)
 - What it doesn't do (replace you—YOU are in control)
 
 **Live Demo** (20 minutes - Engineering Agent)
+
 - Walk through approval queue interface
 - Show all 4 actions (approve, edit, escalate, reject)
 - Demonstrate keyboard shortcuts
 - Show dashboard (your stats)
 
 **Hands-On Practice** (40 minutes - Self-Paced)
+
 - Log in to sandbox environment
 - Review 10 mock drafts
 - Try approving, editing, escalating
@@ -36,12 +39,14 @@
 - Ask questions as you go
 
 **Best Practices** (15 minutes - Product Agent)
+
 - When to approve vs edit
 - How to add your personal touch
 - When to escalate
 - Tips from beta testing
 
 **Q&A** (5 minutes)
+
 - Open questions
 - Address concerns
 - Schedule office hours
@@ -57,23 +62,27 @@
 ### Agenda (60 minutes)
 
 **Advanced Features** (20 minutes - Engineering Agent)
+
 - Bulk approve (for power users)
 - Quick templates
 - Confidence score interpretation
 - Source citations
 
 **Edge Cases** (20 minutes - Product Agent)
+
 - What if the draft is completely wrong? (Reject)
 - What if customer is angry? (Check sentiment, escalate if needed)
 - What if order doesn't exist? (AI will say so, you verify)
 - What if policy changed recently? (Check source version)
 
 **Escalation Procedures** (15 minutes - Manager Agent)
+
 - When to escalate (complex, high-value, angry customers)
 - How to write good escalation notes
 - What senior support needs to know
 
 **Office Hours** (5 minutes)
+
 - Open Q&A
 - Share any concerns
 - Get ready for Monday launch!
@@ -83,18 +92,21 @@
 ## Hands-On Exercises (For Practice)
 
 ### Exercise 1: Standard Order Status
+
 **Customer Message**: "Where is my order #12345?"
 **AI Draft**: [Check if includes tracking, delivery date, empathy]
 **Your Task**: Decide to approve, edit, or reject
 **Goal**: Practice quick decision-making
 
 ### Exercise 2: Angry Customer
+
 **Customer Message**: "This is UNACCEPTABLE. I've been waiting 2 weeks!"
 **AI Draft**: [May or may not handle anger well]
 **Your Task**: Add extra empathy, or escalate if very angry
 **Goal**: Practice tone adjustment
 
 ### Exercise 3: Complex Refund
+
 **Customer Message**: "I want a refund. Item was damaged."
 **AI Draft**: [May suggest refund process]
 **Your Task**: Verify refund eligibility, escalate if >$100
@@ -105,11 +117,13 @@
 ## Post-Training Support
 
 **Week 1** (Oct 28-Nov 1):
+
 - Daily 15-minute standups (9:00 AM)
 - Slack channel: #agent-sdk-pilot (ask anything!)
 - Office hours: 2-3 PM daily (Product Agent available)
 
 **Week 2** (Nov 4-Nov 8):
+
 - Continue daily standups
 - Share wins and challenges
 - Final prep for go/no-go decision
@@ -119,6 +133,7 @@
 ## Success Criteria (For You)
 
 **By End of Training**:
+
 - [ ] Logged in and reviewed 10+ mock drafts
 - [ ] Comfortable with all 4 actions
 - [ ] Know when to approve vs edit vs escalate
@@ -126,12 +141,14 @@
 - [ ] Excited (or at least willing!) to try on Monday
 
 **By End of Week 1**:
+
 - [ ] Reviewed 50+ real drafts
 - [ ] Approval rate >40%
 - [ ] Review time <2.5 minutes
 - [ ] Feeling: "This is faster than manual!"
 
 **By End of Pilot (Nov 8)**:
+
 - [ ] Reviewed 200+ drafts
 - [ ] Approval rate >50%
 - [ ] Review time <2 minutes
@@ -164,7 +181,6 @@
 **Document Owner**: Product Agent  
 **Path**: `docs/pilot_operator_training_agenda.md`  
 **Purpose**: Practical training plan for pilot operators  
-**Status**: Ready for Oct 23-25 training sessions  
+**Status**: Ready for Oct 23-25 training sessions
 
 **North Star Alignment**: ✅ **Operator-focused, practical, immediately useful**
-

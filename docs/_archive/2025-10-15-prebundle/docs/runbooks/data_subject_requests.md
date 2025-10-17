@@ -12,6 +12,7 @@
 This runbook defines procedures for handling Data Subject Requests (DSRs) under GDPR and CCPA. DSRs allow customers to exercise their privacy rights.
 
 **Supported Rights:**
+
 - Right to Access (GDPR Art. 15, CCPA §1798.100)
 - Right to Rectification (GDPR Art. 16)
 - Right to Erasure (GDPR Art. 17, CCPA §1798.105)
@@ -30,12 +31,14 @@ This runbook defines procedures for handling Data Subject Requests (DSRs) under 
 **Subject Line:** "Privacy Request - [Request Type]"
 
 **Required Information:**
+
 - Full name
 - Email address
 - Type of request (access, delete, rectify, export, opt-out)
 - Details of request
 
 **Example Email:**
+
 ```
 To: support@hotrodan.com
 Subject: Privacy Request - Delete My Data
@@ -57,6 +60,7 @@ John Doe
 **Respond within:** 48 hours (acknowledge receipt)
 
 **Response Template:**
+
 ```
 Dear [Customer Name],
 
@@ -81,10 +85,12 @@ Hot Rodan Support Team
 ### 3.1 Verification Methods
 
 **Low-Risk Requests (Access, Export):**
+
 - Email match: Request email matches customer email on file
 - OR: Provide recent order number
 
 **High-Risk Requests (Delete, Rectify):**
+
 - Email match + Order number
 - OR: Phone verification call
 - OR: Multi-factor email challenge
@@ -97,6 +103,7 @@ Hot Rodan Support Team
 - [ ] No red flags (suspicious request, impersonation risk)
 
 **If verification fails:**
+
 - Request additional information
 - Call customer for phone verification
 - Extend timeline if needed (document reason)
@@ -112,13 +119,14 @@ Hot Rodan Support Team
 **Procedure:**
 
 **Step 1: Gather Data**
+
 ```sql
 -- Query decision logs
-SELECT 
-  id, created_at, scope, actor, action, rationale, 
+SELECT
+  id, created_at, scope, actor, action, rationale,
   shop_domain, external_ref, payload
 FROM decision_sync_event_logs
-WHERE external_ref LIKE 'chatwoot:%' 
+WHERE external_ref LIKE 'chatwoot:%'
   AND (
     payload->>'customerName' ILIKE '%[Customer Name]%'
     OR external_ref LIKE '%[conversation_id]%'
@@ -133,12 +141,14 @@ WHERE value::jsonb @> '{"customerName": "[Customer Name]"}';
 ```
 
 **Step 2: Export Data**
+
 - Format: JSON or structured PDF
 - Include: All personal data found
 - Redact: Other customers' data if in shared records
 - Include: Data categories, purposes, retention periods
 
 **Step 3: Deliver to Customer**
+
 ```
 To: [customer email]
 Subject: Your Data Access Request - Hot Rodan
@@ -159,6 +169,7 @@ Hot Rodan Support Team
 ```
 
 **Step 4: Document**
+
 - Log DSR in compliance records
 - Store export copy (encrypted) for 90 days
 - Update metrics
@@ -170,11 +181,13 @@ Hot Rodan Support Team
 **Procedure:**
 
 **Step 1: Verify Request**
+
 - Customer identity verified (Section 3)
 - No legal hold applies
 - No overriding legitimate interest
 
 **Step 2: Delete Data**
+
 ```sql
 -- Delete from decision logs
 DELETE FROM decision_sync_event_logs
@@ -195,6 +208,7 @@ WHERE payload->>'customerName' = '[Customer Name]';
 ```
 
 **Step 3: Confirm to Customer**
+
 ```
 To: [customer email]
 Subject: Your Data Deletion Request - Complete
@@ -219,11 +233,13 @@ Hot Rodan Support Team
 ```
 
 **Step 4: Document**
+
 - Log deletion in compliance records
 - Store confirmation (no PII) for 3 years
 - Update metrics
 
 **Exceptions to Deletion:**
+
 - Legal hold (litigation)
 - Regulatory requirement
 - Customer's other active account (explain separately)
@@ -235,10 +251,12 @@ Hot Rodan Support Team
 **Procedure:**
 
 **Step 1: Identify Inaccurate Data**
+
 - Customer specifies what needs correction
 - Verify the correction is accurate
 
 **Step 2: Update Records**
+
 ```sql
 -- Update decision logs (if name incorrect)
 UPDATE decision_sync_event_logs
@@ -258,11 +276,13 @@ PATCH /api/v1/contacts/[contact_id]
 ```
 
 **Step 3: Confirm to Customer**
+
 ```
 Your data has been corrected as requested. The updated information is now reflected in our systems.
 ```
 
 **Step 4: Document**
+
 - Log rectification in compliance records
 
 ### 4.4 Right to Restriction (GDPR Art. 18)
@@ -272,6 +292,7 @@ Your data has been corrected as requested. The updated information is now reflec
 **Procedure:**
 
 **Step 1: Add Restriction Flag**
+
 ```sql
 -- Add restriction note to conversation
 -- Via Chatwoot API: add tag "restricted"
@@ -282,10 +303,12 @@ POST /api/v1/conversations/[id]/labels
 ```
 
 **Step 2: Notify Team**
+
 - Alert support operators
 - Do not process further without customer approval
 
 **Step 3: Confirm to Customer**
+
 ```
 Processing of your data has been restricted as requested. We will not process your data further until you authorize us to do so.
 ```
@@ -297,6 +320,7 @@ Processing of your data has been restricted as requested. We will not process yo
 **Procedure:**
 
 **Step 1: Export Data**
+
 ```json
 {
   "customer": {
@@ -335,10 +359,12 @@ Processing of your data has been restricted as requested. We will not process yo
 **Format Options:** JSON (default) or CSV
 
 **Step 2: Deliver**
+
 - Secure download link (encrypted, expires in 7 days)
 - Or: Encrypted email attachment
 
 **Step 3: Document**
+
 - Log export in compliance records
 
 ### 4.6 Right to Object (GDPR Art. 21)
@@ -348,6 +374,7 @@ Processing of your data has been restricted as requested. We will not process yo
 **Procedure:**
 
 **Step 1: Disable AI for Customer**
+
 ```sql
 -- Add opt-out flag to customer record
 -- Implementation: via Chatwoot metadata or separate table
@@ -357,6 +384,7 @@ ON CONFLICT (email) DO UPDATE SET ai_enabled = false;
 ```
 
 **Step 2: Confirm to Customer**
+
 ```
 AI assistance has been disabled for your support conversations. All responses will be written by human operators.
 
@@ -364,6 +392,7 @@ This does not affect the quality or speed of support.
 ```
 
 **Step 3: Notify Team**
+
 - Alert operators that AI is disabled for this customer
 - Display notice in HotDash UI
 
@@ -374,11 +403,13 @@ This does not affect the quality or speed of support.
 **Procedure:**
 
 **Quick Opt-Out (Customer Says "No AI"):**
+
 1. Operator adds "no-ai" tag to conversation
 2. AI disabled immediately for that customer
 3. Confirm to customer in same conversation
 
 **Formal Opt-Out (Email Request):**
+
 1. Customer emails support@hotrodan.com
 2. Process as "Right to Object" (Section 4.6)
 3. Confirm within 24 hours
@@ -392,24 +423,27 @@ This does not affect the quality or speed of support.
 **Create log in:** `artifacts/compliance/dsr_log_[YYYY].md`
 
 **Log Template:**
+
 ```markdown
 # Data Subject Requests - [Year]
 
-| Date Received | Customer | Request Type | Timeline | Status | Completed |
-|---------------|----------|--------------|----------|--------|-----------|
-| 2025-10-15 | John Doe | Delete | 14 days | Processing | - |
-| 2025-10-16 | Jane Smith | Access | 30 days | Completed | 2025-10-20 |
+| Date Received | Customer   | Request Type | Timeline | Status     | Completed  |
+| ------------- | ---------- | ------------ | -------- | ---------- | ---------- |
+| 2025-10-15    | John Doe   | Delete       | 14 days  | Processing | -          |
+| 2025-10-16    | Jane Smith | Access       | 30 days  | Completed  | 2025-10-20 |
 ```
 
 ### 5.2 Metrics to Track
 
 **Monthly:**
+
 - Total DSRs received
 - DSRs by type
 - Average response time
 - On-time completion rate
 
 **KPIs:**
+
 - Response time < legal deadline (100%)
 - Customer satisfaction with DSR process
 - Escalations (should be 0)
@@ -425,6 +459,7 @@ This does not affect the quality or speed of support.
 **Test Steps:**
 
 **Step 1: Create Test Data**
+
 ```sql
 -- Create test conversation in Chatwoot (via UI)
 -- Create test decision log
@@ -438,6 +473,7 @@ INSERT INTO decision_sync_event_logs (
 ```
 
 **Step 2: Execute Deletion**
+
 ```sql
 -- Delete test data
 DELETE FROM decision_sync_event_logs
@@ -450,11 +486,13 @@ WHERE payload->>'customerName' = 'Test Customer';
 ```
 
 **Step 3: Verify No Remnants**
+
 - Check all tables
 - Search logs for customer name
 - Verify complete removal
 
 **Step 4: Document**
+
 - Test date, time
 - Steps executed
 - Results (success/failure)
@@ -469,11 +507,13 @@ WHERE payload->>'customerName' = 'Test Customer';
 ### 7.1 Deletion Exceptions
 
 **Cannot Delete If:**
+
 1. **Legal Hold:** Litigation or investigation in progress
 2. **Regulatory Requirement:** Law requires retention
 3. **Contract Obligation:** Active subscription or account
 
 **Customer Response:**
+
 ```
 We cannot fully delete your data at this time because [reason]. However, we can restrict processing and anonymize your data.
 
@@ -485,16 +525,19 @@ Your data will be deleted once [condition] is met.
 ### 7.2 Complex Requests
 
 **Multiple Rights in One Request:**
+
 - Process each right separately
 - Respond with combined result
 - Use longest timeline
 
 **Ambiguous Requests:**
+
 - Email customer for clarification
 - Timeline starts from clarification date
 - Document all communication
 
 **Third-Party Data:**
+
 - Cannot delete data held by Shopify/Chatwoot directly
 - Provide instructions for customer to contact them
 - Delete our copies
@@ -506,6 +549,7 @@ Your data will be deleted once [condition] is met.
 ### 8.1 Current State (Manual)
 
 **Pilot:** Manual DSR processing acceptable
+
 - Low volume (10 customers)
 - 30-day pilot duration
 - Compliance team handles requests
@@ -533,6 +577,7 @@ Your data will be deleted once [condition] is met.
    - Alert for overdue
 
 **Tools:**
+
 - Supabase Functions for automation
 - Email integration for notifications
 - Dashboard for tracking
@@ -544,6 +589,7 @@ Your data will be deleted once [condition] is met.
 ### 9.1 Documentation
 
 **For Each DSR:**
+
 - Customer request (email)
 - Identity verification record
 - Actions taken (SQL queries, API calls)
@@ -557,6 +603,7 @@ Your data will be deleted once [condition] is met.
 ### 9.2 Annual Report
 
 **Include:**
+
 - Total DSRs processed
 - DSRs by type
 - Average response time
@@ -573,6 +620,7 @@ Your data will be deleted once [condition] is met.
 ### 10.1 Support Team Training
 
 **Topics:**
+
 - What is a DSR?
 - How to identify DSR emails
 - Initial response templates
@@ -586,6 +634,7 @@ Your data will be deleted once [condition] is met.
 ### 10.2 Compliance Team Training
 
 **Topics:**
+
 - Identity verification procedures
 - SQL queries for data extraction
 - Deletion procedures
@@ -601,18 +650,19 @@ Your data will be deleted once [condition] is met.
 
 ### 11.1 DSR Timeline Summary
 
-| Right | GDPR Timeline | CCPA Timeline | Our Timeline |
-|-------|---------------|---------------|--------------|
-| Access | 1 month | N/A | 30 days |
-| Delete | Without undue delay | 45 days | 14 days |
-| Rectify | 1 month | N/A | 7 days |
-| Restrict | Without undue delay | N/A | Immediate |
-| Export | 1 month | N/A | 30 days |
-| Object / Opt-Out | Without undue delay | N/A | Immediate |
+| Right            | GDPR Timeline       | CCPA Timeline | Our Timeline |
+| ---------------- | ------------------- | ------------- | ------------ |
+| Access           | 1 month             | N/A           | 30 days      |
+| Delete           | Without undue delay | 45 days       | 14 days      |
+| Rectify          | 1 month             | N/A           | 7 days       |
+| Restrict         | Without undue delay | N/A           | Immediate    |
+| Export           | 1 month             | N/A           | 30 days      |
+| Object / Opt-Out | Without undue delay | N/A           | Immediate    |
 
 ### 11.2 SQL Quick Reference
 
 **Find Customer Data:**
+
 ```sql
 SELECT * FROM decision_sync_event_logs
 WHERE external_ref LIKE 'chatwoot:%'
@@ -620,12 +670,14 @@ WHERE external_ref LIKE 'chatwoot:%'
 ```
 
 **Delete Customer Data:**
+
 ```sql
 DELETE FROM decision_sync_event_logs
 WHERE external_ref = 'chatwoot:[conversation_id]';
 ```
 
 **Export Customer Data:**
+
 ```sql
 SELECT jsonb_pretty(jsonb_agg(row_to_json(t)))
 FROM (
@@ -644,6 +696,7 @@ FROM (
 **Legal (if complex):** [To be added]
 
 **Escalate If:**
+
 - Identity verification fails
 - Legal exception applies
 - Timeline cannot be met

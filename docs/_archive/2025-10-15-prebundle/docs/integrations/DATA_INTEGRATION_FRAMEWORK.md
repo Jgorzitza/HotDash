@@ -10,29 +10,34 @@
 ## Task Z: ETL Pipelines
 
 ### Architecture
+
 ```
 External APIs → Extract → Transform → Load → Supabase
 ```
 
 ### Extract
+
 - API clients with retry logic
 - Pagination handling
 - Incremental sync (last_synced_at)
 - Rate limit management
 
 ### Transform
+
 - Data normalization
 - Schema mapping
 - Type conversion
 - Validation
 
 ### Load
+
 - Batch inserts to Supabase
 - Upsert logic (update if exists)
 - Transaction management
 - Error handling
 
 ### Technology
+
 - Node.js/TypeScript
 - Bull/BullMQ (job queue)
 - Redis (caching, locks)
@@ -44,12 +49,14 @@ External APIs → Extract → Transform → Load → Supabase
 ## Task AA: Data Sync Orchestration
 
 ### Sync Strategies
+
 1. **Real-time:** Webhooks
 2. **Frequent:** Every 15 minutes
 3. **Regular:** Hourly
 4. **Batch:** Daily
 
 ### Orchestration
+
 - Job scheduling (node-cron)
 - Dependency management
 - Parallel execution
@@ -57,6 +64,7 @@ External APIs → Extract → Transform → Load → Supabase
 - Manual triggers
 
 ### Monitoring
+
 - Sync status per integration
 - Last successful sync
 - Error tracking
@@ -69,17 +77,20 @@ External APIs → Extract → Transform → Load → Supabase
 ## Task AB: Conflict Resolution
 
 ### Conflict Types
+
 1. **Concurrent Updates:** Same record updated in multiple systems
 2. **Stale Data:** Outdated sync overwrites fresh data
 3. **Schema Conflicts:** Field type mismatches
 
 ### Resolution Strategies
+
 1. **Last Write Wins:** Most recent timestamp
 2. **Source Priority:** External system wins
 3. **Manual Review:** Flag for operator
 4. **Versioning:** Track all versions
 
 ### Implementation
+
 - Conflict detection logic
 - Resolution rules engine
 - Conflict queue UI
@@ -92,12 +103,14 @@ External APIs → Extract → Transform → Load → Supabase
 ## Task AC: Data Mapping Framework
 
 ### Mapping Types
+
 1. **Field Mapping:** External field → Internal field
 2. **Type Conversion:** String → Number, Date parsing
 3. **Enumeration Mapping:** Status codes, categories
 4. **Nested Object Handling:** Flatten/expand
 
 ### Configuration
+
 ```json
 {
   "integration": "klaviyo",
@@ -119,6 +132,7 @@ External APIs → Extract → Transform → Load → Supabase
 ```
 
 ### Features
+
 - Visual mapping UI
 - Mapping validation
 - Transformation functions
@@ -131,6 +145,7 @@ External APIs → Extract → Transform → Load → Supabase
 ## Task AD: Data Quality Monitoring
 
 ### Quality Checks
+
 1. **Completeness:** Required fields present
 2. **Validity:** Data type, format correct
 3. **Consistency:** Cross-field validation
@@ -138,12 +153,14 @@ External APIs → Extract → Transform → Load → Supabase
 5. **Timeliness:** Data freshness
 
 ### Monitoring
+
 - Quality score per integration
 - Anomaly detection
 - Alert on quality drops
 - Data quality dashboard
 
 ### Metrics
+
 - % records passing validation
 - Common errors
 - Data drift detection
@@ -158,6 +175,7 @@ External APIs → Extract → Transform → Load → Supabase
 **Total Implementation:** 200 hours (~5 months)
 
 **Priority Order:**
+
 1. ETL Pipelines (foundation)
 2. Sync Orchestration (automation)
 3. Data Mapping (flexibility)
@@ -167,4 +185,3 @@ External APIs → Extract → Transform → Load → Supabase
 ---
 
 **Framework Complete:** 2025-10-11 22:15 UTC
-

@@ -8,9 +8,11 @@ last_reviewed: 2025-10-11
 # Attribution Modeling for Agent-Assisted Conversions
 
 ## Overview
+
 Multi-touch attribution model to measure agent contribution to customer conversions and revenue.
 
 ## Attribution Models
+
 1. **Last-touch:** Credit to final agent interaction before conversion
 2. **First-touch:** Credit to first agent interaction in journey
 3. **Linear:** Equal credit across all touchpoints
@@ -18,6 +20,7 @@ Multi-touch attribution model to measure agent contribution to customer conversi
 5. **Position-based:** 40% first, 40% last, 20% middle
 
 ## SQL Implementation
+
 ```sql
 CREATE TABLE agent_attribution (
   conversion_id TEXT PRIMARY KEY,
@@ -44,4 +47,3 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Status:** Attribution framework designed
-

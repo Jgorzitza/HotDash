@@ -12,6 +12,7 @@ created: 2025-10-12
 **Source**: Use Shopify Polaris icons (already included)
 
 ### Approve Action
+
 ```typescript
 import { CheckCircleIcon } from '@shopify/polaris-icons';
 
@@ -25,6 +26,7 @@ import { CheckCircleIcon } from '@shopify/polaris-icons';
 **Size**: 20px (standard button icon size)
 
 ### Reject Action
+
 ```typescript
 import { CancelSmallIcon } from '@shopify/polaris-icons';
 
@@ -38,6 +40,7 @@ import { CancelSmallIcon } from '@shopify/polaris-icons';
 **Size**: 20px
 
 ### Alternative: Text-Only Buttons (Recommended)
+
 For better accessibility and clarity, use text-only buttons without icons:
 
 ```typescript
@@ -52,6 +55,7 @@ For better accessibility and clarity, use text-only buttons without icons:
 ## Loading States
 
 ### 1. Initial Page Load (Skeleton)
+
 ```typescript
 import { SkeletonPage, Card, SkeletonBodyText } from '@shopify/polaris';
 
@@ -70,6 +74,7 @@ import { SkeletonPage, Card, SkeletonBodyText } from '@shopify/polaris';
 **Animation**: Built-in Polaris skeleton animation
 
 ### 2. Action Loading (Approve/Reject in Progress)
+
 ```typescript
 <Button
   variant="primary"
@@ -86,14 +91,15 @@ import { SkeletonPage, Card, SkeletonBodyText } from '@shopify/polaris';
 **Duration**: Until API responds (typically 0.5-2s)
 
 ### 3. Background Refresh (Non-Intrusive)
+
 ```typescript
 <div style={{ position: 'relative' }}>
   {isRefreshing && (
-    <div style={{ 
-      position: 'absolute', 
-      top: 8, 
+    <div style={{
+      position: 'absolute',
+      top: 8,
       right: 8,
-      opacity: 0.6 
+      opacity: 0.6
     }}>
       <Spinner size="small" />
     </div>
@@ -111,6 +117,7 @@ import { SkeletonPage, Card, SkeletonBodyText } from '@shopify/polaris';
 ## Empty State Illustration
 
 ### No Pending Approvals
+
 ```typescript
 import { EmptyState } from '@shopify/polaris';
 
@@ -123,15 +130,17 @@ import { EmptyState } from '@shopify/polaris';
 ```
 
 **Visual**: Polaris standard empty state illustration (file folder)
-**Copy**: 
+**Copy**:
+
 - Heading: "All clear!"
 - Body: "No pending approvals at this time. Check back later."
-**Tone**: Positive (this is a good state - no work needed)
+  **Tone**: Positive (this is a good state - no work needed)
 
 ### Alternative Custom Empty State
+
 ```typescript
-<div style={{ 
-  textAlign: 'center', 
+<div style={{
+  textAlign: 'center',
   padding: '60px 20px',
   color: 'var(--p-color-text-subdued)'
 }}>
@@ -152,6 +161,7 @@ import { EmptyState } from '@shopify/polaris';
 ## Error State Visuals
 
 ### 1. Failed to Load Approvals (Network Error)
+
 ```typescript
 <Banner tone="critical">
   <p>
@@ -166,13 +176,14 @@ import { EmptyState } from '@shopify/polaris';
 **Auto-retry**: Attempt automatic retry after 5s
 
 ### 2. Failed to Approve/Reject (Action Error)
+
 ```typescript
-<Banner 
-  tone="critical" 
+<Banner
+  tone="critical"
   onDismiss={() => setError(null)}
 >
   <p>
-    Failed to {action === 'approve' ? 'approve' : 'reject'} this action. 
+    Failed to {action === 'approve' ? 'approve' : 'reject'} this action.
     Please try again.
   </p>
 </Banner>
@@ -183,6 +194,7 @@ import { EmptyState } from '@shopify/polaris';
 **Persistence**: Remains until dismissed or retry succeeds
 
 ### 3. Expired Approval (Already Processed)
+
 ```typescript
 <Card>
   <BlockStack gap="400">
@@ -199,10 +211,11 @@ import { EmptyState } from '@shopify/polaris';
 **Auto-remove**: After 30s, fade out and remove
 
 ### 4. API Error (500 Response)
+
 ```typescript
 <Banner tone="critical">
   <p>
-    <strong>Something went wrong.</strong> Our team has been notified. 
+    <strong>Something went wrong.</strong> Our team has been notified.
     Please <Button plain onClick={retry}>try again</Button> in a moment.
   </p>
 </Banner>
@@ -217,6 +230,7 @@ import { EmptyState } from '@shopify/polaris';
 ## Visual Specifications
 
 ### Color Tokens (Polaris)
+
 ```css
 /* Status colors */
 --status-success: var(--p-color-bg-success-strong);
@@ -235,6 +249,7 @@ import { EmptyState } from '@shopify/polaris';
 ```
 
 ### Spacing (Polaris)
+
 ```css
 /* Card padding */
 padding: var(--p-space-400); /* 16px */
@@ -247,6 +262,7 @@ margin-bottom: var(--p-space-500); /* 20px */
 ```
 
 ### Typography (Polaris)
+
 ```typescript
 // Heading (Conversation #101)
 <Text variant="headingMd" as="h2">
@@ -284,4 +300,3 @@ margin-bottom: var(--p-space-500); /* 20px */
 6. **Colors/spacing** - Reference Polaris tokens only, no hardcoded values
 
 **Evidence**: All assets specified using Polaris components - ready for implementation
-

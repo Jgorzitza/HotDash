@@ -1,9 +1,30 @@
 {
   "epoch": "2025.10.E1",
   "servers": [
-    {"name":"google-analytics-mcp","version":">=1.0.0","checksum":"<sha256>","endpoint":"http://127.0.0.1:8780"},
-    {"name":"supabase-mcp","version":">=1.0.0","checksum":"<sha256>","endpoint":"http://127.0.0.1:8781","mode":"read-only-views-prod"},
-    {"name":"github-mcp","version":">=1.0.0","checksum":"<sha256>","endpoint":"http://127.0.0.1:8770"},
-    {"name":"memory-mcp","version":">=1.0.0","checksum":"<sha256>","endpoint":"http://127.0.0.1:8774"}
+    {
+      "name": "google-analytics-mcp",
+      "version": ">=1.0.0",
+      "checksum": "<sha256>",
+      "endpoint": "http://127.0.0.1:8780"
+    },
+    {
+      "name": "supabase-mcp",
+      "version": ">=1.0.0",
+      "checksum": "<sha256>",
+      "endpoint": "http://127.0.0.1:8781",
+      "mode": "read-only-views-prod"
+    },
+    {
+      "name": "github-mcp",
+      "version": ">=1.0.0",
+      "checksum": "<sha256>",
+      "endpoint": "http://127.0.0.1:8770"
+    },
+    {
+      "name": "memory-mcp",
+      "version": ">=1.0.0",
+      "checksum": "<sha256>",
+      "endpoint": "http://127.0.0.1:8774"
+    }
   ]
 }

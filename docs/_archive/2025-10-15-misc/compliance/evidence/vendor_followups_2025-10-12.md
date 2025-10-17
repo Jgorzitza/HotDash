@@ -6,9 +6,11 @@ last_reviewed: 2025-10-12
 doc_hash: TBD
 expires: 2025-10-19
 ---
+
 # Vendor Follow-ups — 2025-10-12
 
 ## Google Analytics MCP
+
 - Channel: Google Cloud Support portal message (submitted 2025-10-12 20:05 UTC).
 - Summary: Requested ticket number confirmation and ETA for GA MCP DPA package + regional commitment letter.
 - Notes: Portal auto-response pending; follow-up reminder set for 2025-10-14 10:00 UTC if no acknowledgement.

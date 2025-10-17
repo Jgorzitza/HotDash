@@ -6,6 +6,7 @@ last_reviewed: 2025-10-05
 doc_hash: TBD
 expires: 2025-10-18
 ---
+
 # Accessibility Acceptance Criteria — Operator Control Center
 
 ## WCAG 2.2 Level AA Compliance
@@ -13,15 +14,18 @@ expires: 2025-10-18
 ### 1. Perceivable
 
 #### 1.1 Text Alternatives (A)
+
 - **1.1.1 Non-text Content**
   - [ ] All status icons have text labels or aria-label attributes
   - [ ] Loading spinners have aria-live regions announcing status
   - [ ] Charts/graphs have text descriptions or data tables
 
 #### 1.2 Time-based Media (A)
-  - N/A - No video/audio content in dashboard
+
+- N/A - No video/audio content in dashboard
 
 #### 1.3 Adaptable (A)
+
 - **1.3.1 Info and Relationships**
   - [ ] Tile headings use semantic heading tags (h2)
   - [ ] Lists use proper `<ul>` or `<ol>` markup
@@ -57,13 +61,13 @@ expires: 2025-10-18
 
 **Color Contrast Verification:**
 
-| Element | Foreground | Background | Ratio | Pass |
-|---------|------------|------------|-------|------|
-| Body text | #202223 | #ffffff | 16.6:1 | ✓ |
-| Meta text | #637381 | #ffffff | 7.2:1 | ✓ |
-| Success text | #1a7f37 | #e3f9e5 | 5.8:1 | ✓ |
-| Critical text | #d82c0d | #fff4f4 | 6.1:1 | ✓ |
-| Button text | #ffffff | #2c6ecb | 8.4:1 | ✓ |
+| Element       | Foreground | Background | Ratio  | Pass |
+| ------------- | ---------- | ---------- | ------ | ---- |
+| Body text     | #202223    | #ffffff    | 16.6:1 | ✓    |
+| Meta text     | #637381    | #ffffff    | 7.2:1  | ✓    |
+| Success text  | #1a7f37    | #e3f9e5    | 5.8:1  | ✓    |
+| Critical text | #d82c0d    | #fff4f4    | 6.1:1  | ✓    |
+| Button text   | #ffffff    | #2c6ecb    | 8.4:1  | ✓    |
 
 - **1.4.4 Resize Text (AA)**
   - [ ] Text can be resized to 200% without loss of content/functionality
@@ -139,6 +143,7 @@ expires: 2025-10-18
   - [ ] Tab sequence: Tile 1 → Tile 2 → Tile 3... → Tile N → Action buttons
 
 **Focus Order Map:**
+
 ```
 1. Skip to main content (hidden link)
 2. App navigation links
@@ -161,6 +166,7 @@ expires: 2025-10-18
 ```
 
 **Modal Focus Snapshots**
+
 - CX Escalations: Close → Heading → Conversation log → Suggested reply → Internal note → Approve & Send Reply → Escalate to Manager → Mark Resolved → Cancel
 - Sales Pulse: Close → Heading → Action select → Notes textarea → Primary CTA (label matches select) → Cancel
 
@@ -182,6 +188,7 @@ expires: 2025-10-18
   - [ ] Focus outline doesn't obscure content
 
 **Focus Indicator Styles:**
+
 ```css
 *:focus-visible {
   outline: 2px solid var(--p-color-border-focus, #2c6ecb);
@@ -274,17 +281,12 @@ expires: 2025-10-18
 ## ARIA Implementation
 
 ### Tile Card Structure
+
 ```html
-<article
-  role="region"
-  aria-labelledby="tile-sales-heading"
-  class="tile-card"
->
+<article role="region" aria-labelledby="tile-sales-heading" class="tile-card">
   <h2 id="tile-sales-heading">Sales Pulse</h2>
   <span aria-label="Status: Healthy" class="status-badge">Healthy ✓</span>
-  <p aria-label="Last refreshed 2 minutes ago">
-    Last refreshed 2 min ago
-  </p>
+  <p aria-label="Last refreshed 2 minutes ago">Last refreshed 2 min ago</p>
   <div class="tile-content">
     <!-- Content -->
   </div>
@@ -293,6 +295,7 @@ expires: 2025-10-18
 ```
 
 ### Modal Dialog
+
 ```html
 <div
   role="dialog"
@@ -301,32 +304,24 @@ expires: 2025-10-18
   aria-modal="true"
 >
   <h2 id="modal-title">CX Escalation — Jamie Lee</h2>
-  <div id="modal-description">
-    Review and respond to customer escalation
-  </div>
+  <div id="modal-description">Review and respond to customer escalation</div>
   <!-- Modal content -->
   <button aria-label="Close modal">✕</button>
 </div>
 ```
 
 ### Loading State
+
 ```html
-<div
-  role="status"
-  aria-live="polite"
-  aria-busy="true"
->
+<div role="status" aria-live="polite" aria-busy="true">
   <span aria-label="Refreshing tile data">Refreshing...</span>
 </div>
 ```
 
 ### Toast Notification
+
 ```html
-<div
-  role="alert"
-  aria-live="assertive"
-  class="toast toast-success"
->
+<div role="alert" aria-live="assertive" class="toast toast-success">
   <span aria-label="Success: Reply sent to Jamie Lee">
     ✓ Reply sent to Jamie Lee
   </span>
@@ -337,18 +332,19 @@ expires: 2025-10-18
 
 ### Test Cases
 
-| Scenario | Expected Behavior |
-|----------|-------------------|
-| Navigate tiles | Screen reader announces tile name, status, and content |
-| Open modal | Focus moves to modal, dialog role announced |
-| Submit approval | Success toast announced, focus returns appropriately |
-| Keyboard nav | All interactive elements reachable, focus visible |
-| Error state | Error message announced, suggested action provided |
-| Loading state | "Loading" or "Refreshing" announced |
+| Scenario        | Expected Behavior                                      |
+| --------------- | ------------------------------------------------------ |
+| Navigate tiles  | Screen reader announces tile name, status, and content |
+| Open modal      | Focus moves to modal, dialog role announced            |
+| Submit approval | Success toast announced, focus returns appropriately   |
+| Keyboard nav    | All interactive elements reachable, focus visible      |
+| Error state     | Error message announced, suggested action provided     |
+| Loading state   | "Loading" or "Refreshing" announced                    |
 
 ### Screen Reader Support
 
 Test with:
+
 - NVDA (Windows + Firefox)
 - JAWS (Windows + Chrome)
 - VoiceOver (macOS + Safari)
@@ -357,13 +353,13 @@ Test with:
 
 ## Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate forward through interactive elements |
-| Shift+Tab | Navigate backward |
-| Enter/Space | Activate buttons, links |
-| Escape | Close modal dialogs |
-| Arrow keys | Navigate within modals (future enhancement) |
+| Key         | Action                                        |
+| ----------- | --------------------------------------------- |
+| Tab         | Navigate forward through interactive elements |
+| Shift+Tab   | Navigate backward                             |
+| Enter/Space | Activate buttons, links                       |
+| Escape      | Close modal dialogs                           |
+| Arrow keys  | Navigate within modals (future enhancement)   |
 
 ## Reduced Motion
 
@@ -380,6 +376,7 @@ Test with:
 ## Testing Checklist
 
 ### Manual Testing
+
 - [ ] Keyboard-only navigation through entire dashboard
 - [ ] Screen reader announces all content correctly
 - [ ] Zoom to 200% - no loss of functionality
@@ -387,6 +384,7 @@ Test with:
 - [ ] Color blindness simulation (Protanopia, Deuteranopia, Tritanopia)
 
 ### Automated Testing
+
 - [ ] axe DevTools scan - 0 violations
 - [ ] WAVE browser extension - 0 errors
 - [ ] Lighthouse accessibility score - 100
@@ -394,14 +392,14 @@ Test with:
 
 ### Browser/AT Matrix
 
-| Browser | Screen Reader | Priority |
-|---------|---------------|----------|
-| Chrome | NVDA | P0 |
-| Firefox | NVDA | P0 |
-| Safari | VoiceOver (macOS) | P0 |
-| Safari (iOS) | VoiceOver | P1 |
-| Chrome (Android) | TalkBack | P1 |
-| Edge | JAWS | P2 |
+| Browser          | Screen Reader     | Priority |
+| ---------------- | ----------------- | -------- |
+| Chrome           | NVDA              | P0       |
+| Firefox          | NVDA              | P0       |
+| Safari           | VoiceOver (macOS) | P0       |
+| Safari (iOS)     | VoiceOver         | P1       |
+| Chrome (Android) | TalkBack          | P1       |
+| Edge             | JAWS              | P2       |
 
 ## Engineer Collaboration Notes
 
@@ -426,6 +424,7 @@ Test with:
 ### Code Review Checklist
 
 For each PR:
+
 - [ ] Run axe DevTools - no new violations
 - [ ] Test keyboard navigation
 - [ ] Verify focus indicators visible
@@ -435,6 +434,7 @@ For each PR:
 ### Documentation
 
 Accessibility implementation tracked in:
+
 - `docs/design/accessibility_criteria.md` (this file)
 - `tests/accessibility/*.spec.ts` (automated tests)
 - `feedback/manager.md` (daily progress)

@@ -10,9 +10,11 @@
 ## Task U: API Gateway
 
 ### Purpose
+
 Unified entry point for all integration API calls with routing, rate limiting, authentication, and monitoring.
 
 ### Architecture
+
 ```
 External APIs ← API Gateway ← HotDash Core
                     ↓
@@ -21,6 +23,7 @@ External APIs ← API Gateway ← HotDash Core
 ```
 
 ### Features
+
 - Request routing to correct integration
 - Authentication/authorization
 - Rate limiting per integration/user
@@ -29,6 +32,7 @@ External APIs ← API Gateway ← HotDash Core
 - Error handling and retry
 
 ### Technology Options
+
 - Kong Gateway (open source)
 - AWS API Gateway
 - Custom (Express + middleware)
@@ -40,15 +44,18 @@ External APIs ← API Gateway ← HotDash Core
 ## Task V: API Versioning Strategy
 
 ### Approach
+
 Semantic versioning (v1, v2, etc.) with deprecation timeline.
 
 ### URL Structure
+
 ```
 https://api.hotdash.app/v1/customers
 https://api.hotdash.app/v2/customers
 ```
 
 ### Deprecation Process
+
 1. Announce 6 months in advance
 2. Mark as deprecated in docs
 3. Add deprecation header to responses
@@ -56,6 +63,7 @@ https://api.hotdash.app/v2/customers
 5. Remove deprecated version
 
 ### Version Headers
+
 ```http
 X-API-Version: 2.0
 X-API-Deprecated: This version will be sunset on 2026-10-01
@@ -68,14 +76,17 @@ X-API-Deprecated: This version will be sunset on 2026-10-01
 ## Task W: API Documentation Auto-Generation
 
 ### Approach
+
 OpenAPI/Swagger spec generation from TypeScript types.
 
 ### Tools
+
 - TypeDoc for SDK
 - Swagger UI for REST API
 - Postman collections
 
 ### Features
+
 - Interactive API explorer
 - Code examples (TypeScript, Python, cURL)
 - Authentication guides
@@ -88,6 +99,7 @@ OpenAPI/Swagger spec generation from TypeScript types.
 ## Task X: API Analytics
 
 ### Metrics
+
 - Request volume (per integration, per endpoint)
 - Response times (p50, p95, p99)
 - Error rates (4xx, 5xx)
@@ -95,7 +107,9 @@ OpenAPI/Swagger spec generation from TypeScript types.
 - Top consumers
 
 ### Dashboard
+
 Real-time analytics for:
+
 - HotDash team (system-wide)
 - Integration developers (their app)
 - Users (their usage)
@@ -107,6 +121,7 @@ Real-time analytics for:
 ## Task Y: API Key Management
 
 ### Features
+
 - Key generation (cryptographically secure)
 - Key rotation (90-day schedule)
 - Key scopes (read/write permissions)
@@ -114,6 +129,7 @@ Real-time analytics for:
 - Usage tracking per key
 
 ### Security
+
 - Keys encrypted at rest (AES-256)
 - Keys hashed in logs
 - Automatic expiration
@@ -128,6 +144,7 @@ Real-time analytics for:
 **Total Implementation:** 180 hours (~4.5 months)
 
 **Priority Order:**
+
 1. API Gateway (foundation)
 2. Versioning (stability)
 3. Documentation (developer experience)
@@ -137,4 +154,3 @@ Real-time analytics for:
 ---
 
 **Platform Complete:** 2025-10-11 22:14 UTC
-

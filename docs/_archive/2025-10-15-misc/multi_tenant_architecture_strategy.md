@@ -23,12 +23,14 @@ This document outlines the multi-tenant architecture strategy for HotDash Agent 
 **Architecture**: Each customer gets dedicated infrastructure
 
 **Pros**:
+
 - Complete data isolation
 - Customer-specific customization easy
 - No "noisy neighbor" performance issues
 - Simpler security model
 
 **Cons**:
+
 - Expensive to operate (1 instance per customer)
 - Hard to scale to 100+ customers
 - Updates require deploying to each instance
@@ -43,12 +45,14 @@ This document outlines the multi-tenant architecture strategy for HotDash Agent 
 **Architecture**: All customers share database, data isolated by tenant_id
 
 **Pros**:
+
 - Cost-effective (1 infrastructure for all customers)
 - Easy to scale (add customers without new infra)
 - Central updates (deploy once, all customers updated)
 - Easier monitoring and maintenance
 
 **Cons**:
+
 - Data isolation via application logic (must be perfect)
 - Performance impacts from one tenant affect others
 - Security is critical (tenant_id leaks = data breach)
@@ -62,6 +66,7 @@ This document outlines the multi-tenant architecture strategy for HotDash Agent 
 **Architecture**: Multi-tenant by default, single-tenant for enterprise on request
 
 **Implementation**:
+
 - Managed Basic: Multi-tenant (shared DB)
 - Enterprise: Multi-tenant by default, single-tenant option (+$1,000/month)
 - Open Source: Self-hosted (customers manage their own)
@@ -84,9 +89,9 @@ CREATE TABLE draft_actions (
   operator_id INTEGER NOT NULL,
   action VARCHAR(20) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
-  
+
   -- Composite index for tenant isolation
-  CONSTRAINT fk_tenant FOREIGN KEY (tenant_id) 
+  CONSTRAINT fk_tenant FOREIGN KEY (tenant_id)
     REFERENCES tenants(id) ON DELETE CASCADE
 );
 
@@ -111,14 +116,14 @@ CREATE POLICY tenant_isolation_policy ON draft_actions
 // Middleware: Set tenant context for all requests
 app.use((req, res, next) => {
   const tenantId = req.user.tenant_id;
-  req.db.query('SET LOCAL app.current_tenant_id = $1', [tenantId]);
+  req.db.query("SET LOCAL app.current_tenant_id = $1", [tenantId]);
   next();
 });
 
 // All queries automatically filtered by tenant_id
 const drafts = await db.query(
-  'SELECT * FROM draft_actions WHERE created_at > $1',
-  [startDate]
+  "SELECT * FROM draft_actions WHERE created_at > $1",
+  [startDate],
 ); // RLS ensures only current tenant's data returned
 ```
 
@@ -129,6 +134,7 @@ const drafts = await db.query(
 ### New Customer Onboarding Flow
 
 **Step 1: Tenant Creation** (30 seconds)
+
 ```
 Customer signs up → Create tenant record
   ↓
@@ -138,6 +144,7 @@ Generate tenant_id: 1234
 ```
 
 **Step 2: Initial Setup** (2-5 minutes)
+
 - Create admin user for tenant
 - Provision knowledge base index (LlamaIndex namespace)
 - Configure OpenAI API key (tenant-specific or shared)
@@ -145,6 +152,7 @@ Generate tenant_id: 1234
 - Import initial knowledge base documents (if provided)
 
 **Step 3: Operator Onboarding** (15 minutes per operator)
+
 - Invite operators via email
 - Operators create accounts (SSO or password)
 - Assign roles (operator, team lead, manager)
@@ -161,6 +169,7 @@ Generate tenant_id: 1234
 **Row-Level Security (RLS)**: PostgreSQL RLS policies ensure queries only return tenant's data
 
 **Verification**:
+
 ```sql
 -- Test: Attempt to access another tenant's data
 SET app.current_tenant_id = '1234';
@@ -176,11 +185,11 @@ SELECT * FROM draft_actions WHERE tenant_id = '5678';
 function validateTenant(req, res, next) {
   const userTenantId = req.user.tenant_id;
   const requestTenantId = req.params.tenant_id || req.body.tenant_id;
-  
+
   if (userTenantId !== requestTenantId) {
-    return res.status(403).json({ error: 'Forbidden: Tenant mismatch' });
+    return res.status(403).json({ error: "Forbidden: Tenant mismatch" });
   }
-  
+
   next();
 }
 ```
@@ -220,18 +229,21 @@ Company policies: {tenant.policies}
 ### Resource Allocation
 
 **Shared Resources**:
+
 - Database pool (connection limit: 200)
 - API servers (load balanced)
 - Redis cache (separate keyspaces per tenant)
 - LlamaIndex service (namespaced indexes)
 
 **Per-Tenant Limits**:
+
 - Max concurrent requests: 50 (prevents one tenant monopolizing)
 - Rate limiting: 100 requests/minute per tenant
 - OpenAI API quota: Based on plan (5K tickets for Basic, 20K for Enterprise)
 - Knowledge base size: 10GB per tenant
 
 **Scaling Strategy**:
+
 - **0-50 customers**: Single database + API cluster
 - **51-200 customers**: Sharded database (by tenant_id range)
 - **201-500 customers**: Multi-region deployment
@@ -244,16 +256,19 @@ Company policies: {tenant.policies}
 ### Tenant Data Security
 
 **Encryption**:
+
 - At rest: AES-256 encryption of all sensitive fields
 - In transit: TLS 1.3 for all API calls
 - Tenant-specific encryption keys (optional for Enterprise)
 
 **Access Control**:
+
 - Role-based permissions (operator, team lead, manager, admin)
 - Operators can only see their assigned tickets
 - Admins can access all tenant data (audit trail logged)
 
 **Audit Logging**:
+
 ```sql
 CREATE TABLE audit_log (
   id SERIAL PRIMARY KEY,
@@ -272,6 +287,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 ```
 
 **Compliance**:
+
 - GDPR: Tenant data can be deleted on request
 - CCPA: Tenant data exportable (JSON format)
 - SOC 2: Annual audit for multi-tenant infrastructure
@@ -283,6 +299,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 ### Tenant Admin Portal
 
 **Features**:
+
 - Manage operators (invite, remove, change roles)
 - Configure knowledge base (upload/edit documents)
 - View usage metrics (tickets, API calls, costs)
@@ -290,6 +307,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 - Export data (compliance)
 
 **Self-Service**:
+
 - Upgrade plan: Instant (credit card on file)
 - Add operators: Instant (send invite)
 - Knowledge base updates: Instant (auto-reindex)
@@ -304,6 +322,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 **Future**: Migrate to multi-tenant (Dec 2025)
 
 **Migration Plan**:
+
 1. Build multi-tenant infrastructure (parallel to pilot)
 2. Migrate pilot customers one-by-one (zero downtime)
 3. Test data isolation thoroughly
@@ -318,6 +337,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 ### Multi-Tenant Savings
 
 **Single-Tenant Costs** (per customer):
+
 - Database: $100/month
 - App servers: $150/month
 - Monitoring: $50/month
@@ -325,6 +345,7 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 - **200 customers**: $60,000/month
 
 **Multi-Tenant Costs** (shared):
+
 - Database cluster: $2,000/month (handles 200 customers)
 - App servers: $3,000/month (load balanced)
 - Monitoring: $500/month
@@ -340,6 +361,6 @@ VALUES (1234, 567, 'viewed_draft', 'draft', 8910);
 **Next Action**: Coordinate with Engineering on implementation plan (Month 4-6)
 
 **Related Documents**:
+
 - [Product Vision](product_vision_12_month.md)
 - [Pricing Strategy](pricing_strategy_ai_features.md)
-

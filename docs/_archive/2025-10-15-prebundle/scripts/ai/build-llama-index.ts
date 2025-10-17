@@ -2,7 +2,14 @@ import { parseArgs } from "node:util";
 import { promises as fs } from "fs";
 import { join, relative, resolve, extname } from "path";
 import OpenAI from "openai";
-import { BaseEmbedding, Document, Settings, SimpleNodeParser, VectorStoreIndex, storageContextFromDefaults } from "llamaindex";
+import {
+  BaseEmbedding,
+  Document,
+  Settings,
+  SimpleNodeParser,
+  VectorStoreIndex,
+  storageContextFromDefaults,
+} from "llamaindex";
 import type { LLM } from "llamaindex";
 import { loadEnvFromFiles } from "../utils/env";
 
@@ -40,7 +47,8 @@ class LocalEmbedding extends BaseEmbedding {
       const index = code % this.dimensions;
       vector[index] += (code % 13) / 13;
     }
-    const magnitude = Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0)) || 1;
+    const magnitude =
+      Math.sqrt(vector.reduce((sum, value) => sum + value * value, 0)) || 1;
     return vector.map((value) => value / magnitude);
   }
 }
@@ -171,10 +179,15 @@ async function buildIndex(options: BuildOptions) {
     Settings.embedModel = new LocalEmbedding();
   } else {
     if (!options.apiKey) {
-      throw new Error("OPENAI_API_KEY is required for OpenAI-backed index builds.");
+      throw new Error(
+        "OPENAI_API_KEY is required for OpenAI-backed index builds.",
+      );
     }
     Settings.llm = undefined as unknown as LLM;
-    Settings.embedModel = new OpenAIEmbeddingProvider(options.apiKey, options.embeddingModel);
+    Settings.embedModel = new OpenAIEmbeddingProvider(
+      options.apiKey,
+      options.embeddingModel,
+    );
   }
 
   const storageContext = await storageContextFromDefaults({
@@ -187,7 +200,9 @@ async function buildIndex(options: BuildOptions) {
 
   const creationTimestamp = new Date().toISOString();
 
-  const embeddingModelName = options.useMock ? "local-hash-embedding" : options.embeddingModel;
+  const embeddingModelName = options.useMock
+    ? "local-hash-embedding"
+    : options.embeddingModel;
 
   const llmModelName = options.useMock ? "disabled" : options.llmModel;
 
@@ -247,23 +262,40 @@ async function writeServiceContext(
 async function main() {
   const { values } = parseArgs({
     options: {
-      "persist-dir": { type: "string", default: "packages/memory/indexes/operator_knowledge" },
+      "persist-dir": {
+        type: "string",
+        default: "packages/memory/indexes/operator_knowledge",
+      },
       source: { type: "string", multiple: true },
-      "llm-model": { type: "string", default: process.env.OPENAI_MODEL ?? "gpt-4o-mini" },
-      "embedding-model": { type: "string", default: process.env.OPENAI_EMBED_MODEL ?? "text-embedding-3-small" },
+      "llm-model": {
+        type: "string",
+        default: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
+      },
+      "embedding-model": {
+        type: "string",
+        default: process.env.OPENAI_EMBED_MODEL ?? "text-embedding-3-small",
+      },
       "force-mock": { type: "boolean", default: false },
     },
   });
 
-  await loadEnvFromFiles(["vault/occ/openai/api_key_staging.env", ".env.staging", ".env"]);
+  await loadEnvFromFiles([
+    "vault/occ/openai/api_key_staging.env",
+    ".env.staging",
+    ".env",
+  ]);
 
   const persistDir = resolve(process.cwd(), values["persist-dir"]);
-  const sources: string[] = (values.source as string[] | undefined)?.length ? (values.source as string[]) : DEFAULT_SOURCES;
+  const sources: string[] = (values.source as string[] | undefined)?.length
+    ? (values.source as string[])
+    : DEFAULT_SOURCES;
   const openAiKey = process.env.OPENAI_API_KEY;
   const useMock = values["force-mock"] || !openAiKey;
 
   if (!useMock && !openAiKey) {
-    throw new Error("OPENAI_API_KEY is required unless --force-mock is provided.");
+    throw new Error(
+      "OPENAI_API_KEY is required unless --force-mock is provided.",
+    );
   }
 
   await ensureCleanDir(persistDir);

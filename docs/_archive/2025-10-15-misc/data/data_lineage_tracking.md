@@ -8,11 +8,13 @@ last_reviewed: 2025-10-11
 # Data Lineage Tracking
 
 ## Overview
+
 Track data flow from source to destination across tables, views, ETL processes, and transformations for impact analysis and debugging.
 
 ## Lineage Graph
+
 ```
-agent_queries (source) 
+agent_queries (source)
   → v_agent_response_accuracy (view)
   → mv_daily_agent_metrics (materialized view)
   → fact_agent_query (data warehouse)
@@ -20,6 +22,7 @@ agent_queries (source)
 ```
 
 ## Implementation
+
 ```sql
 CREATE TABLE data_lineage (
   lineage_id BIGSERIAL PRIMARY KEY,
@@ -37,10 +40,10 @@ CREATE OR REPLACE FUNCTION discover_lineage()
 RETURNS void AS $$
 BEGIN
   INSERT INTO data_lineage (source_object, target_object, lineage_type)
-  SELECT 
+  SELECT
     source_ns.nspname || '.' || source_class.relname,
     target_ns.nspname || '.' || target_class.relname,
-    CASE target_class.relkind 
+    CASE target_class.relkind
       WHEN 'v' THEN 'view'
       WHEN 'm' THEN 'materialized_view'
       ELSE 'other'
@@ -57,4 +60,3 @@ $$ LANGUAGE plpgsql;
 ```
 
 **Status:** Lineage tracking designed with auto-discovery from pg_depend
-

@@ -10,6 +10,7 @@
 ## Feature Metrics Template
 
 **For Each Feature Track**:
+
 1. **Adoption Rate**: % of users who tried feature
 2. **Usage Frequency**: How often used (daily/weekly/monthly)
 3. **Stickiness**: DAU/MAU ratio
@@ -17,6 +18,7 @@
 5. **User Satisfaction**: Feature-specific rating
 
 **Example - Bulk Approve Feature**:
+
 - Adoption: 65% of power users
 - Frequency: 5.2 times/day average
 - Stickiness: 0.7 (used 21 days/month)
@@ -25,4 +27,3 @@
 
 **Document Path**: `docs/feature_usage_analytics.md`
 **Status**: Feature analytics framework complete
-

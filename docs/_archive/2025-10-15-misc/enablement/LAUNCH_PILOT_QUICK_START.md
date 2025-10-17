@@ -20,6 +20,7 @@ AI agents prepare customer responses. You review and decide: **Approve or Reject
 ## ⚡ How to Approve/Reject (30 Seconds)
 
 **Approve When:**
+
 - ✅ Information is accurate
 - ✅ Tone is professional and friendly
 - ✅ Answers the customer's question
@@ -29,6 +30,7 @@ AI agents prepare customer responses. You review and decide: **Approve or Reject
 ---
 
 **Reject When:**
+
 - ❌ Information is wrong
 - ❌ Doesn't answer customer's question
 - ❌ Tone is inappropriate
@@ -55,6 +57,7 @@ AI agents prepare customer responses. You review and decide: **Approve or Reject
 ## 📋 Quick Decision Checklist
 
 **Before clicking Approve:**
+
 ```
 □ Read customer's original message
 □ Read AI's draft response
@@ -102,6 +105,7 @@ If unsure → Escalate
 ## ⚠️ What to Watch For
 
 **Report these issues immediately:**
+
 - AI gives factually incorrect information
 - System errors or slow performance
 - Confusing interface elements
@@ -114,4 +118,3 @@ If unsure → Escalate
 **That's It!** You're ready for the pilot. **Keep it simple, ask questions, and provide honest feedback.**
 
 **Questions:** Slack #occ-enablement | Email: customer.support@hotrodan.com
-

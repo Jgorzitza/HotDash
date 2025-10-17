@@ -3,7 +3,7 @@
 
 export interface DecisionLog {
   id: string;
-  scope: 'build'|'ops';
+  scope: "build" | "ops";
   who: string;
   what: string;
   why: string;
@@ -14,7 +14,7 @@ export interface DecisionLog {
 
 export interface Fact {
   project: string;
-  topic: string;   // e.g., 'seo', 'inventory', 'cx'
+  topic: string; // e.g., 'seo', 'inventory', 'cx'
   key: string;
   value: string;
   createdAt: string;
@@ -22,7 +22,7 @@ export interface Fact {
 
 export interface Memory {
   putDecision(d: DecisionLog): Promise<void>;
-  listDecisions(scope?: 'build'|'ops'): Promise<DecisionLog[]>;
+  listDecisions(scope?: "build" | "ops"): Promise<DecisionLog[]>;
   putFact(f: Fact): Promise<void>;
   getFacts(topic?: string, key?: string): Promise<Fact[]>;
 }

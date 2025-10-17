@@ -18,6 +18,7 @@
 
 **The Challenge:**
 Our support operators spend 60-80% of their time on repetitive tasks:
+
 - Searching knowledge base for policy information
 - Copy-pasting standard responses
 - Looking up order statuses
@@ -72,26 +73,31 @@ That's the leverage."
 "Here's what this means for HotDash:
 
 **Operator Capacity:**
+
 - Current: Operator handles ~20-30 inquiries per day
 - With Agent SDK: Same operator handles 50-80 per day
 - **2-3× capacity increase** without adding headcount
 
 **Response Quality:**
+
 - AI uses knowledge base 100% of the time (operators might miss articles)
 - Consistent policy application across all responses
 - Human review maintains quality and empathy
 
 **Customer Experience:**
+
 - Faster response times (AI drafts ready in seconds)
 - More accurate (KB-backed responses)
 - Still gets human judgment and empathy
 
 **Cost Efficiency:**
+
 - Current: ~$15 per resolved inquiry (operator time + overhead)
 - With Agent SDK: ~$6 per resolved inquiry (AI research + operator review)
 - **60% cost reduction** while improving quality
 
 **Operator Experience:**
+
 - Less time on repetitive work (boring)
 - More time on complex problems (engaging)
 - Higher job satisfaction (more meaningful work)
@@ -99,6 +105,7 @@ That's the leverage."
 
 **The Learning Loop:**
 Every operator decision teaches the AI:
+
 - Approvals → 'This approach works'
 - Edits → 'Use this tone and style'
 - Rejections → 'Don't do this'
@@ -116,27 +123,32 @@ AI gets better every week. In 3 months, approval rate should increase from 70% t
 "You're probably wondering about risks. We've designed this carefully:
 
 **Human-in-the-Loop:**
+
 - Operators approve EVERYTHING before it goes to customers
 - AI never sends directly
 - Quality gate maintained
 
 **Escalation Safeguards:**
+
 - High-value issues (>$100) → Require manager approval
 - Threats (legal, social media) → Escalated to manager immediately
 - Technical issues → Routed to engineering
 - Uncertainty → Operators escalate rather than guess
 
 **Knowledge Base Foundation:**
+
 - AI only uses our verified knowledge base (not internet)
 - LlamaIndex semantic search finds relevant articles
 - Version-controlled policies (operators verify currency)
 
 **Audit Trail:**
+
 - Every approval/rejection logged in Supabase
 - Full decision history for compliance
 - Can review operator decisions for quality
 
 **Pilot Approach:**
+
 - Starting with 5-10 experienced operators
 - Low volume (5-15 approvals per day)
 - Close monitoring and feedback
@@ -159,6 +171,7 @@ This is low-risk, high-reward innovation."
 
 **Industry Trend:**
 AI-assisted support is becoming table stakes. Companies like:
+
 - Zendesk: AI assistance in all tiers
 - Intercom: Fin AI answering customer questions
 - Salesforce: Einstein for Support
@@ -167,6 +180,7 @@ Customers expect fast, accurate responses. Our competitors are using AI. We need
 
 **HotDash Differentiation:**
 Unlike competitors who automate fully (AI answers directly), we maintain human-in-the-loop:
+
 - Better quality (human judgment)
 - Better brand (human touch)
 - Better operator experience (empowerment not replacement)
@@ -175,6 +189,7 @@ We're using AI to make our operators better, not to replace them.
 
 **Strategic Alignment:**
 This fits our operator-first philosophy. From our North Star:
+
 - 'Operators are our internal customers'
 - 'Automation should augment human capability, not replace judgment'
 - 'Humans in the loop, not the loop'
@@ -190,22 +205,26 @@ This is us living our values through technology."
 "Here's the plan:
 
 **Phase 1: Pilot (Next 2-4 weeks)**
+
 - 5-10 operators
 - Monitor closely
 - Collect feedback
 - Validate business case
 
 **Phase 2: Expand (If pilot successful)**
+
 - Roll out to all support operators
 - Measure impact on key metrics
 - Iterate based on learnings
 
 **Phase 3: Optimize (Months 2-3)**
+
 - AI learns and improves
 - Approval rate increases
 - Operator efficiency gains compound
 
 **Success Metrics We're Tracking:**
+
 - Operator capacity (target: 2× increase)
 - Response time (target: 30% faster)
 - Customer satisfaction (target: maintain or improve)
@@ -250,49 +269,59 @@ After the pilot, we'll share results and recommendations. Questions now?"
 **If slides requested:**
 
 **Slide 1: Title**
+
 - Agent SDK Approval Queue
 - Human-in-the-Loop AI for Support Operations
 
 **Slide 2: The Problem**
+
 - Current operator time allocation (80% repetitive, 20% high-value)
 - Opportunity to flip this ratio
 
 **Slide 3: The Solution**
+
 - AI prepares, operator decides
 - Simple workflow diagram
 
 **Slide 4: Live Demo**
+
 - Screen recording or live demo of approval flow
 - "See how simple it is"
 
 **Slide 5: Business Impact**
+
 - 2-3× capacity increase
 - 60% cost reduction
 - Quality maintained/improved
 - Operator satisfaction up
 
 **Slide 6: Risk Mitigation**
+
 - Human-in-the-loop
 - Escalation safeguards
 - Pilot approach
 - Audit trail
 
 **Slide 7: Competitive Context**
+
 - Industry trend
 - HotDash differentiation
 - Strategic alignment with values
 
 **Slide 8: Pilot Plan**
+
 - Timeline (2-4 weeks)
 - Metrics tracked
 - Go/no-go criteria
 
 **Slide 9: ROI**
+
 - Investment: AI API costs
 - Return: Operator time savings
 - Payback: Month 1
 
 **Slide 10: Q&A**
+
 - Questions welcome
 
 **Total: 10 slides, 15 minutes**
@@ -323,6 +352,7 @@ After the pilot, we'll share results and recommendations. Questions now?"
 ## Preparation Checklist
 
 **Before Session:**
+
 - [ ] Approval queue UI is live and demo-ready
 - [ ] Load 2-3 sample approvals for demo
 - [ ] Prepare slides (if using)
@@ -332,6 +362,7 @@ After the pilot, we'll share results and recommendations. Questions now?"
 - [ ] 5-minute practice run through
 
 **During Session:**
+
 - [ ] Keep it high-level (CEO doesn't need operator details)
 - [ ] Focus on business impact and strategy
 - [ ] Show don't tell (demo is powerful)
@@ -339,6 +370,7 @@ After the pilot, we'll share results and recommendations. Questions now?"
 - [ ] Welcome questions and concerns
 
 **After Session:**
+
 - [ ] Send follow-up with key metrics
 - [ ] Address any outstanding questions
 - [ ] Share pilot results when available
@@ -348,6 +380,7 @@ After the pilot, we'll share results and recommendations. Questions now?"
 ## Success Criteria
 
 **Session is Successful If:**
+
 - ✅ CEO understands the business case (capacity, cost, quality)
 - ✅ CEO sees strategic alignment with values
 - ✅ CEO comfortable with risk management approach
@@ -355,6 +388,7 @@ After the pilot, we'll share results and recommendations. Questions now?"
 - ✅ CEO asks good questions (engagement)
 
 **Follow-Up:**
+
 - Share pilot results after 2-4 weeks
 - Update on metrics (did we achieve projections?)
 - Recommendation on expansion
@@ -365,18 +399,21 @@ After the pilot, we'll share results and recommendations. Questions now?"
 ## Quick Reference: Business Metrics
 
 **Current State:**
+
 - Operator capacity: 20-30 inquiries/day
 - Cost per inquiry: ~$15
 - Response time: 4-6 minutes average
 - CSAT: 4.3/5.0
 
 **Projected with Agent SDK:**
+
 - Operator capacity: 50-80 inquiries/day (2-3× increase)
 - Cost per inquiry: ~$6 (60% reduction)
 - Response time: 1-2 minutes (70% faster)
 - CSAT: 4.5+/5.0 (maintained or improved)
 
 **ROI:**
+
 - Investment: ~$0.10 per AI-assisted inquiry
 - Savings: ~$9 in operator time per inquiry
 - Return: 90× on AI cost
@@ -391,4 +428,3 @@ After the pilot, we'll share results and recommendations. Questions now?"
 **Status:** Ready to deliver when UI is live
 
 **Keep It:** Simple, strategic, compelling. CEO wants business case, not technical details. ✅
-

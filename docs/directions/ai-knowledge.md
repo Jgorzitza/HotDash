@@ -2,105 +2,77 @@
 
 > Location: `docs/directions/ai-knowledge.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.2
+> Effective: 2025-10-16
 
 ---
 
 ## Status: ACTIVE
 
 ## 1) Purpose
-Design knowledge base structure and learning extraction process for AI customer support.
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+Deliver the **knowledge backbone** that feeds AI-customer/support agents: schema, ingestion, learning loops, and search services aligned with HITL approvals.
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P2 - Knowledge Management
+## 2) Current Objective (2025-10-16) — Sprint Lock Knowledge Deliverables (P0)
+
+**Priority:** Guarantee the KB + learning loop power launch-ready agents.
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
 
-### Task List (9 tasks):
+**YOU DO NOT USE GIT COMMANDS.** Log receipts in `feedback/ai-knowledge/<date>.md`; manager handles git operations.
 
-**1. ✅ KB Design Spec (COMPLETE - PR #31)**
+### P0 Tasks (Due Oct 18)
 
-**2. KB Schema Implementation (NEXT - 3h)**
-- Create tables for KB articles
-- Allowed paths: `supabase/migrations/*`
+1. **Migration + RLS verification**
+   - Confirm the knowledge migrations applied by Data are live; run `supabase/rls_tests.sql` for KB tables and attach results.
+   - Update `docs/specs/knowledge_pipeline.md` with any schema tweaks.
 
-**3. Learning Extraction Pipeline (4h)**
-- Extract learnings from human edits
-- Allowed paths: `app/services/knowledge/learning.ts`
+2. **Ingestion + search QA**
+   - Rebuild the KB index (`scripts/rag/build-index.ts`) and validate semantic/keyword search responses for top articles; capture timings + accuracy notes.
+   - Provide fixtures/tests so QA can automate regression checks.
 
-**4. Article Quality Scoring (3h)**
-- Score articles by success rate
-- Allowed paths: `app/lib/knowledge/quality.ts`
+3. **Learning signal hand-off**
+   - Ensure `app/services/knowledge/learning.ts` pushes edit diffs + quality metrics to Supabase and is consumed by AI-customer/support agents.
+   - Share dashboards/queries with Manager + Support summarizing article freshness.
 
-**5. Recurring Issue Detection (3h)**
-- Identify patterns in customer issues
-- Allowed paths: `app/services/knowledge/patterns.ts`
+4. **Idea feedback integration**
+   - Feed recurring questions and content gaps into idea pool weighting; document SQL or service call in feedback and inform Product.
 
-**6. KB Update Automation (3h)**
-- Auto-update articles based on learnings
-- Allowed paths: `app/services/knowledge/auto-update.ts`
+5. **Feedback hygiene**
+   - All progress recorded in `feedback/ai-knowledge/2025-10-16.md` with CLI output, test logs, and doc links.
 
-**7. Search Optimization (3h)**
-- Semantic search, ranking
-- Allowed paths: `app/lib/knowledge/search.ts`
+### Blockers: Coordinate with Support/AI-Customer for tooling needs; align with Data migration timing
 
-**8. Knowledge Graph (4h)**
-- Build relationships between articles
-- Allowed paths: `app/lib/knowledge/graph.ts`
+### Critical Reminders
 
-**9. Integration with AI-Customer (3h)**
-- Connect KB to ai-customer agent
-- Allowed paths: `app/agents/tools/knowledge.ts`
+- ✅ Respect allowed paths; no git commands.
+- ✅ Ensure KB remains HITL-aligned—agents must cite evidence.
+- ✅ Protect PII when ingesting/supporting content.
+- ✅ Keep QA supplied with fixtures and test coverage.
 
-### Current Focus: Task 2 (KB Schema)
+### Dependencies & Coordination
 
-### Blockers: None
+- **Data:** applies KB migrations + seeds; share schema updates early.
+- **Support/AI-Customer:** define query needs, learning signals, and tone/tags.
+- **Product/Content:** consume idea pool intelligence + content gaps.
+- **DevOps:** ingest metrics into monitoring stack.
+- **QA:** validates fixtures, regression suites, and governance controls.
 
 ### Critical:
+
 - ✅ Learning from edits is key
 - ✅ Signal "WORK COMPLETE - READY FOR PR" when done
 - ✅ NO git commands
 - ✅ KB must evolve with needs
 
 ## Changelog
-* 2.0 (2025-10-15) — ACTIVE: KB design and learning extraction
-* 1.0 (2025-10-15) — Placeholder
+
+- 1.1 (2025-10-16) — Knowledge pipeline launch plan (schema, ingestion, learning, search)
+- 2.0 (2025-10-15) — KB design and learning extraction
+- 1.0 (2025-10-15) — Placeholder
 
 ### Feedback Process (Canonical)
+
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) KB schema (articles, topics, tags, links)
-2) Quality scoring heuristic
-3) Learning pipeline (edits/grades)
-4) Article ingestion scripts
-5) Embeddings index builder
-6) Search API (semantic + keyword)
-7) Relevancy evaluation set
-8) Hallucination guardrails (evidence required)
-9) Summarization tune params
-10) Answer templates (policy-safe)
-11) Feedback capture on answers
-12) Link resolver & dedup
-13) Staleness detector
-14) Update recommender (what to refresh)
-15) Audit logging of reads/writes
-16) Unit tests for parsers
-17) Integration tests for search
-18) Fixtures for KB docs
-19) Docs/specs for KB
-20) Access control (RLS)
-21) Telemetry events (search, answers)
-22) SLOs for search latency
-23) Privacy rules (PII scrubbing)
-24) Backup/restore docs
-25) Rollback for schema changes

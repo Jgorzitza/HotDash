@@ -12,6 +12,7 @@
 Create a marketplace where developers build extensions/integrations for HotDash Agent SDK, similar to Shopify App Store or Salesforce AppExchange.
 
 **Examples**:
+
 - "Sentiment Analysis Pro" (advanced sentiment detection)
 - "Multi-Language Pack" (20+ languages)
 - "Shopify Deep Integration" (order management)
@@ -25,4 +26,3 @@ Create a marketplace where developers build extensions/integrations for HotDash 
 
 **Document Owner**: Product Agent  
 **Status**: Vision Only - No Immediate Action
-

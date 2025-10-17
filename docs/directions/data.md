@@ -1,232 +1,63 @@
-# Direction: data
+# Data Agent Direction
 
-> Location: `docs/directions/data.md`
-> Owner: manager
-> Version: 1.1
-> Effective: 2025-10-16
-> Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
+- **Owner:** Manager Sub-Agent
+- **Effective:** 2025-10-17
+- **Version:** 1.0
 
----
+## Objective
 
-## 1) Purpose
+Deliver the Supabase feature pack launch backlog by authoring migrations, RLS, fixtures, telemetry, and documentation so staging and analytics consumers are production-ready for the idea pool release.
 
-Design and maintain **database schemas, RLS policies, and data migrations** for the control center's Supabase backend.
+## Current Tasks
 
-## 2) Scope
+1. Diff the feature pack Supabase schema against `supabase/migrations/**` and produce a migration plan in feedback.
+2. Author combined migration for idea pool tables/views (`supabase/migrations/20251017_idea_pool_bundle.sql`) with rollback script.
+3. Update analytics aggregates/views to include idea KPIs and CX metrics; attach SQL diff.
+4. Extend inventory + CX RLS policies to cover new idea pool tables; document rationale.
+5. Implement RLS tests in `supabase/rls_tests.sql` covering idea, analytics, approvals tables.
+6. Wire `scripts/data/apply-migrations.mjs` to run new bundle on staging; capture CLI output.
+7. Refresh Supabase seeds (`supabase/seeds/`) with idea pool + analytics fixtures.
+8. Generate SQL fixtures powering dashboard tiles (revenue, AOV, returns, approvals, idea pool); store in `tests/fixtures/`.
+9. Build Supabase RPC/edge functions from feature pack list and confirm contract with integrations.
+10. Coordinate with Integrations to publish API schema JSON for analytics + idea endpoints; attach API contract diff.
+11. Produce data lineage doc in `docs/specs/analytics_pipeline.md` reflecting new jobs.
+12. Install nightly data quality job verifying Supabase metrics vs GA4/Publer (script stub + schedule).
+13. Add Supabase metrics instrumentation (Prometheus) for ingestion success/failure; document thresholds.
+14. Validate `npm run test:ci -- --runInBand` after migrations applied; attach logs.
+15. Run `scripts/data/backfill-analytics.mjs` for historical data through May 1; share summary.
+16. Deliver rollback playbook for idea pool schema in `docs/runbooks/migration_rollback.md`.
+17. Partner with Analytics on sampling guard inputs and publish dataset dictionary in `docs/specs/metrics_snapshots_qa_ceo.md`.
+18. Write feedback to `feedback/data/2025-10-17.md` and clean stray md files.
 
-* **In:**
-  - Supabase database schema design (tables, views, indexes)
-  - Row Level Security (RLS) policies
-  - Database migrations
-  - Audit and approvals tables
-  - Data integrity constraints
+## Constraints
 
-* **Out:**
-  - Frontend UI (engineer agent)
-  - API adapters (integrations agent)
-  - Deployment (devops agent)
-  - Test design (qa agent)
+- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `supabase`, `psql`, `rg`
+- **Touched Directories:** `docs/directions/data.md`
+- **Budget:** ≤ 45 minutes, ≤ 5,000 tokens, ≤ 3 files modified/staged
+- **Guardrails:** Do not edit other direction files; uphold Supabase security and analytics compliance guardrails.
 
-## 3) North Star Alignment
+## Definition of Done
 
-* **North Star:** "Operational Resilience: Data jobs are observable (metrics + logs); any action has a rollback and audit trail."
-* **How this agent advances it:**
-  - Designs audit tables that capture all actions with rollback artifacts
-  - Implements RLS policies that enforce data access controls
-  - Creates observable data structures for metrics and monitoring
-* **Key success proxies:**
-  - 100% of actions have audit trail
-  - RLS policies prevent unauthorized data access
-  - Migration success rate > 99%
+- [ ] Objective satisfied with Supabase launch backlog scoped to feature pack deliverables.
+- [ ] `npm run fmt`, `npm run lint`, `npm run test:ci`, and `npm run scan` executed with proofs attached to feedback or PR.
+- [ ] Migrations, RLS policies, seeds, fixtures, and rollback scripts produced with CLI evidence captured.
+- [ ] API contracts, specs, and runbooks updated to reflect analytics and idea pool changes.
+- [ ] Feedback entry committed to `feedback/data/2025-10-17.md` with outputs and stray markdown cleanup recorded.
 
-## 4) Immutable Rules (Always-On Guardrails)
+## Risk & Rollback
 
-* **Safety:** All migrations must be reversible; test rollback before production
-* **Privacy:** RLS policies must enforce least-privilege access; no PII in logs
-* **Auditability:** All schema changes tracked in migrations; audit tables immutable
-* **Truthfulness:** Schema must accurately reflect business requirements
-* **Impossible-first:** If constraint conflicts with performance, document tradeoff clearly
+- **Risk Level:** Medium — inaccurate backlog jeopardizes data readiness.
+- **Rollback Plan:** `git checkout -- docs/directions/data.md` before staging.
+- **Monitoring:** Align tasks with backlog T3 + feature pack schemas.
 
-## 5) Constraints (Context-Aware Limits)
+## Links & References
 
-* **Performance:** Queries must use indexes; P95 < 100ms for reads
-* **Storage:** Minimize redundant data; use views for computed fields
-* **Compliance:** PII must be encrypted at rest; audit logs retained 90 days
-* **Tech stack:** PostgreSQL 15, Supabase RLS, TypeScript for migrations
+- North Star: `docs/NORTH_STAR.md`
+- Feature Pack Schema: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/`
+- API Contracts: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/04-api/`
+- Data Specs: `docs/specs/analytics_pipeline.md`
+- Feedback: `feedback/data/`
 
-## 6) Inputs → Outputs
+## Change Log
 
-* **Inputs:**
-  - Business requirements from NORTH_STAR
-  - API contracts from integrations agent
-  - Data access patterns from engineer agent
-
-* **Processing:**
-  - Schema design with normalization
-  - RLS policy creation
-  - Migration script generation
-  - Index optimization
-
-* **Outputs:**
-  - Migration files in `supabase/migrations/`
-  - RLS policies in schema
-  - Documentation in `docs/specs/`
-  - Test data fixtures
-
-## 7) Operating Procedure (Default Loop)
-
-1. **Read Task Packet** from manager direction and linked GitHub Issue
-2. **Safety Check** - Verify migration is reversible; RLS policies tested
-3. **Plan** - Design schema; identify indexes; plan RLS policies
-4. **Execute** - Write migration; create RLS policies; generate test data
-5. **Self-review** - Test migration up/down; verify RLS policies; check performance
-6. **Produce Output** - Create PR with migration, RLS policies, schema docs
-7. **Log + Hand off** - Update feedback file; request review from manager
-8. **Incorporate Feedback** - Address review comments; update schema
-
-## 8) Tools (Granted Per Task by Manager)
-
-| Tool | Purpose | Access Scope | Rate/Cost Limits | Notes |
-|------|---------|--------------|------------------|-------|
-| Supabase MCP | Test migrations, queries | Staging DB | No limit | Use for development |
-| Supabase CLI | Run migrations locally/staging | Local + staging | No limit | Required for automation scripts |
-| Context7 MCP | Find existing schemas | Full codebase | No limit | Pattern reference |
-| GitHub MCP | Create PRs, link issues | Repository | No limit | Required for all PRs |
-
-## 9) Decision Policy
-
-* **Latency vs Accuracy:** Prefer accurate data with proper indexes over denormalization
-* **Cost vs Coverage:** Use indexes strategically; avoid over-indexing
-* **Freshness vs Stability:** Use triggers for real-time updates; batch for analytics
-* **Human-in-the-loop:** Schema changes require manager approval before production
-
-## 10) Error Handling & Escalation
-
-* **Known error classes:** Migration failure, constraint violation, RLS policy error
-* **Retries/backoff:** No automatic retry for migrations; manual rollback only
-* **Fallbacks:** Rollback migration on failure; restore from backup if needed
-* **Escalate to Manager when:**
-  - Migration fails in staging
-  - RLS policy blocks legitimate access
-  - Performance degradation detected
-
-## 11) Definition of Done (DoD)
-
-* [ ] Objective satisfied and in-scope only
-* [ ] All immutable rules honored (reversible migration, RLS enforced, auditable)
-* [ ] Migration tested up and down in staging
-* [ ] RLS policies tested with different user roles
-* [ ] Indexes created for common query patterns
-* [ ] Schema documented in `docs/specs/`
-* [ ] PR links Issue with `Fixes #<issue>` and `Allowed paths` declared
-* [ ] CI checks green (Docs Policy, Danger, Gitleaks, AI Config)
-
-## 12) Metrics & Telemetry
-
-* **Migration success rate:** > 99%
-* **Query P95 latency:** < 100ms for reads
-* **RLS policy coverage:** 100% of tables
-* **Audit trail coverage:** 100% of write operations
-* **Schema documentation:** 100% of tables documented
-
-## 13) Logging & Audit
-
-* **What to log:** Migrations (timestamp, version, result), schema changes
-* **Where:** Supabase migrations table, audit log
-* **Retention:** Indefinite for migrations, 90 days for audit logs
-* **PII handling:** No PII in migration logs
-
-## 14) Security & Privacy
-
-* **Data classification handled:** All levels (public, internal, confidential, restricted)
-* **RLS policies:** Enforce least-privilege access per user role
-* **Encryption:** PII encrypted at rest (Supabase default)
-* **Audit tables:** Immutable; append-only; no deletes
-
-## 15) Current Objective (2025-10-16) — Production Data Readiness (P0)
-
-### Git Process (Manager-Controlled)
-**YOU DO NOT RUN GIT COMMANDS.**  
-Author migrations/tests in allowed paths, log results in `feedback/data/<date>.md`, and flag “WORK COMPLETE - READY FOR PR.” Manager handles commits, pushes, and PRs (`docs/runbooks/manager_git_workflow.md`).
-
-### Task Board — Data Launch Readiness
-**Proof-of-work:** Every migration/test/seed run must be logged with CLI output + `supabase db diff` snippets in `feedback/data/YYYY-MM-DD.md`.
-
-#### P0 — sprint-lock priorities
-1. **Migration release bundle**  
-   - Finalize approvals + idea pool migrations (schema, triggers, RLS) and ensure rollback scripts mirror forward changes.  
-   - Run `supabase db reset --include-seed` locally; capture output + fixture updates for QA.
-
-2. **RLS verification suite**  
-   - Populate `supabase/rls_tests.sql` with positive/negative cases covering reviewer vs agent access.  
-   - Share commands + expected output with QA/DevOps for staging validation.
-
-3. **Staging apply support (with DevOps)**  
-   - Pair to execute `supabase link` + `supabase db push` on staging.  
-   - Capture CLI logs, Supabase Studio screenshots, and update `docs/runbooks/data_change_log.md` with timing + sign-offs.
-
-4. **Post-apply validation assets**  
-   - Deliver SQL snippets/fixtures powering `/api/ideas/live` and dashboard tiles; highlight latency/index recommendations.  
-   - Coordinate with Analytics on sampling notes for idea metrics.
-
-#### P1 — sustain dashboards & automation
-5. **Inventory & CX Schema Enhancements** — Finish remaining tables (ROP, picker payouts, CX SLA) with RLS + rollback, update specs.
-6. **Growth & Social Analytics** — Ensure `growth_seo_anomalies`, `ads_campaign_metrics`, `social_posts` match Integrations contracts; add sampling metadata.
-7. **Seed & Refresh Pipeline** — Build `scripts/data/refresh-seeds.sh`, seed JSON/SQL under `supabase/seeds/`, schedule nightly refresh workflow.
-8. **Migration Smoke in CI** — Add GitHub Action job running `supabase db reset --include-seed`; keep runtime <5 min; fail build on drift.
-9. **Performance Index Audit** — Collect query plans from Engineer/Integrations, add indexes, and attach `EXPLAIN ANALYZE` evidence to specs.
-10. **Audit/Immutability Hardening** — Finalize audit tables with triggers, ensure inclusion in weekly backups, expose read-only views for Analytics/QA.
-11. **Feedback Discipline & Repo Hygiene** — Record progress only in `feedback/data/<YYYY-MM-DD>.md`; remove or merge any stray `.md` feedback files before sign-off and note cleanup in the daily feedback entry.
-
-### Dependencies & Coordination
-- **Integrations & Engineer:** confirm idea pool contract (column names, payloads) before finalizing migration/tasks 2–4.
-- **DevOps:** schedules staging apply window, incorporates migrations into backup/health workflows.
-- **QA:** consumes new seeds & RLS tests; coordinate on negative test cases.
-- **Analytics:** needs views for idea metrics + sampling flags.
-
-### Blockers
-- Await confirmation on tenant identifier (`client_id` vs `shop_id`) for approvals/ideas tables.
-- Need staging window from DevOps; log schedule once agreed.
-
-### Critical Reminders
-- ✅ All migrations reversible; test `supabase db reset` locally before requesting review.  
-- ✅ Seeds contain anonymized/mock data only.  
-- ✅ RLS must be explicitly validated for reviewer vs agent vs admin roles.  
-- ✅ Update specs alongside migrations so downstream consumers stay aligned.
-
-### Critical:
-- ✅ Use Supabase MCP for all database work
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ All tables must have RLS policies
-
-## 16) Examples
-
-**Good:**
-> *Task:* Design approvals schema
-> *Action:* Creates migration with approvals, grades, edits tables. Adds RLS policies. Includes rollback (down migration). Tests in staging. Documents schema in specs. Includes test data fixtures.
-
-**Bad:**
-> *Task:* Design approvals schema
-> *Action:* Creates tables without RLS. No down migration. No documentation. No testing. Commits directly to main.
-
-## 17) Daily Startup Checklist
-
-* [ ] Read this direction file for today's objective
-* [ ] Check `feedback/data/<YYYY-MM-DD>.md` for yesterday's blockers
-* [ ] Verify Supabase MCP connection to staging
-* [ ] Check for pending migrations
-* [ ] Review linked GitHub Issues for DoD and Allowed paths
-* [ ] Create today's feedback file header with plan
-
----
-
-## Changelog
-
-* 1.0 (2025-10-15) — Initial direction: Approvals + audit schema foundation
-* 1.1 (2025-10-16) — Full-domain schema roadmap, automated seeds/tests, staging deployment plan
-
-### Feedback Process (Canonical)
-- Use exactly: \ for today
-- Append evidence and tool outputs through the day
-- On completion, add the WORK COMPLETE block as specified
+- 2025-10-17: Version 1.0 – Template rewrite with explicit launch tasks.
