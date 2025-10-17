@@ -1,0 +1,7 @@
+export type Grade = 1|2|3|4|5;
+export interface GradedEdit { suggestionId:string; editor:string; tone:Grade; accuracy:Grade; policy:Grade; original:string; approved:string; evidenceRefs?:string[]; occurredAt:string }
+export interface AuditRecord { id:string; suggestionId:string; editor:string; grades:{tone:Grade;accuracy:Grade;policy:Grade}; edits:{diffSummary:string;editDistance:number}; evidenceRefs:string[]; createdAt:string; provenance:{source:"HITL";version:string} }
+function simpleEditDistance(a:string,b:string){ const ta=a.split(/\s+/), tb=b.split(/\s+/); const dp=Array.from({length:ta.length+1},()=>new Array(tb.length+1).fill(0)); for(let i=0;i<=ta.length;i++)dp[i][0]=i; for(let j=0;j<=tb.length;j++)dp[0][j]=j; for(let i=1;i<=ta.length;i++){ for(let j=1;j<=tb.length;j++){ const cost=ta[i-1]===tb[j-1]?0:1; dp[i][j]=Math.min(dp[i-1][j]+1,dp[i][j-1]+1,dp[i-1][j-1]+cost) } } return dp[ta.length][tb.length] }
+export function buildAuditRecord(input:GradedEdit):AuditRecord{ const editDistance=simpleEditDistance(input.original,input.approved); return { id:`audit_${input.suggestionId}_${Date.now()}`, suggestionId:input.suggestionId, editor:input.editor, grades:{tone:input.tone,accuracy:input.accuracy,policy:input.policy}, edits:{diffSummary:`tokens_changed=${editDistance}`, editDistance}, evidenceRefs:input.evidenceRefs??[], createdAt:new Date().toISOString(), provenance:{source:"HITL",version:"v1"} } }
+export async function recordLearningStub(input:GradedEdit){ return { status:"stub" as const, audit:buildAuditRecord(input) } }
+
