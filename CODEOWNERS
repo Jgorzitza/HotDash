@@ -1,2 +1,6 @@
-/docs/**     @MANAGER_GH_HANDLE
-/feedback/** @MANAGER_GH_HANDLE
+# Require multi-team sign-off on critical paths
+/app/routes/**           @product-lead @qa-lead @security-lead
+/supabase/migrations/**  @data-lead @qa-lead
+/.github/workflows/**    @devops-lead @qa-lead
+/scripts/**              @devops-lead @qa-lead
+/docs/**                 @product-lead
