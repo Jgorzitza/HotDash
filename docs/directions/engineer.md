@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #109
+
 
 Ship production-ready UI/application code (dashboard tiles, approvals drawer, idea pool) with full HITL governance and test coverage.
 
 ## Tasks
+
+
 
 1. Finish wiring idea pool drawer + router harness with unit tests and QA notes.
 2. Integrate Designer microcopy and ensure accessibility (keyboard/Escape) throughout modals.

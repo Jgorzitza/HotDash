@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #115
+
 
 Deliver production-ready SEO monitoring and HITL recommendations with clear evidence, anomaly triage, and rollback guidance.
 
 ## Tasks
+
+
 
 1. Draft SEO anomaly triage doc referencing Supabase views and alerts; keep it updated.
 2. Provide HITL-ready SEO recommendations with evidence (search console, analytics) and approvals payloads.

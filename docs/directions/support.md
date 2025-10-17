@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #116
+
 
 Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge workflows) is production-hardened with tests and documentation.
 
 ## Tasks
+
+
 
 1. Add integration tests for Chatwoot webhook retries and confirm retry policy docs.
 2. Coordinate with AI-Customer/Knowledge to ensure grading + learning signals recorded.

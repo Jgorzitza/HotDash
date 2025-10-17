@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #112
+
 
 Keep the entire program aligned to the North Star: directions current, feedback recorded, CI enforced, and production launch blockers surfaced.
 
 ## Tasks
+
+
 
 1. Maintain `reports/manager/plan.json`, `kickoff.md`, and merge deltas; ensure all lanes are sized ≤60 minutes and active.
 2. Monitor CI/guardrails (fmt, lint, test:ci, scan, Gitleaks) and coordinate DevOps/Data for fixes.

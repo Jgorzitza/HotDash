@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #114
+
 
 Guarantee production confidence by running targeted Playwright, accessibility, and regression suites with documented evidence and blocker tracking.
 
 ## Tasks
+
+
 
 1. Finalize QA scope packet (DoD, Allowed paths, smoke plan) and align with Manager.
 2. Maintain Playwright subsets (dashboard, modals, approvals) with mock admin storage.

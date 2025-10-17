@@ -5,10 +5,14 @@
 - **Version:** 2.0
 
 ## Objective
+Current Issue: #113
+
 
 Align stakeholders on production launch readiness: approvals loop, idea pool pipeline, and risk/rollback messaging for CEO/partners.
 
 ## Tasks
+
+
 
 1. Maintain launch checklist (`docs/specs/dashboard_launch_checklist.md`) with current blockers/owners.
 2. Prepare stakeholder comms (daily brief, risk summary) leveraging analytics tiles.
