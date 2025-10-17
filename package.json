@@ -14,6 +14,7 @@
     "setup": "prisma generate && prisma migrate deploy",
     "seed": "tsx prisma/seeds/dashboard-facts.seed.ts",
     "ops:backfill-chatwoot": "npx -y tsx scripts/ops/backfill-chatwoot-breach.ts",
+    "ops:check-chatwoot-health": "node scripts/ops/check-chatwoot-health.mjs",
     "ops:nightly-metrics": "npx -y tsx scripts/ops/run-nightly-metrics.ts",
     "ops:purge-dashboard-data": "npx -y tsx scripts/ops/purge-dashboard-data.ts",
     "ops:ads-backfill": "npx -y tsx scripts/ops/backfill-ads-aggregations.ts",
@@ -36,7 +37,11 @@
     "ai:regression": "npx -y tsx scripts/ai/run-prompt-regression.ts",
     "playwright:admin": "PLAYWRIGHT_SHOPIFY_EMAIL=${PLAYWRIGHT_SHOPIFY_EMAIL} PLAYWRIGHT_SHOPIFY_PASSWORD=${PLAYWRIGHT_SHOPIFY_PASSWORD} npx playwright test tests/playwright/admin-embed.spec.ts",
     "ai:refresh": "npm --prefix scripts/ai/llama-workflow run build && npm --prefix scripts/ai/llama-workflow run refresh | tee packages/memory/logs/build/last_refresh.log",
-    "ai:eval": "npm --prefix scripts/ai/llama-workflow run build && node scripts/ai/llama-workflow/dist/eval/run.js | tee packages/memory/logs/build/last_eval.log"
+    "ai:eval": "npm --prefix scripts/ai/llama-workflow run build && node scripts/ai/llama-workflow/dist/eval/run.js | tee packages/memory/logs/build/last_eval.log",
+    "fmt": "npx prettier --write \"{app,packages,tests,scripts,docs}/**/*.{ts,tsx,js,jsx,json,md}\"",
+    "scan": "./scripts/security/scan-secrets.sh",
+    "ci": "npm run fmt && npm run lint && npm run test:ci && npm run scan",
+    "test": "npm run test:ci"
   },
   "type": "module",
   "engines": {

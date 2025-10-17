@@ -1,0 +1,22 @@
+name: Manager Batch Guardrails
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  guardrails:
+    if: startsWith(github.head_ref, 'manager-batch-') || startsWith(github.head_ref, 'guardrails-')
+    runs-on: ubuntu-latest
+    env:
+      CI_BASE_REF: origin/${{ github.base_ref }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify branch naming
+        run: ./scripts/policy/check-branch.sh
+      - name: Check diff scope
+        run: CI=1 ./scripts/policy/check-diff-scope.sh
+      - name: Ensure no env keys leak
+        run: CI=1 ./scripts/policy/block-env-keys.sh

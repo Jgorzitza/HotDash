@@ -58,3 +58,10 @@ artifacts/
 # Binary installers
 *.deb
 feedback/img/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Manager scratch space
+tmp/

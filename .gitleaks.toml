@@ -2,6 +2,13 @@ title = "HotDash Gitleaks Configuration"
 
 author = "Augment Agent"
 
+# Baseline for historical findings lives in security/gitleaks-baseline.json and is applied via
+# scripts/security/scan-secrets.sh (`gitleaks detect --baseline-path ...`).
+
+[report]
+  path = "artifacts/security/gitleaks-report.json"
+  format = "json"
+
 [allowlist]
   description = "Ignore redacted placeholders and archived docs"
   # Ignore the literal word REDACTED (common in docs/tests/examples)
@@ -12,4 +19,3 @@ author = "Augment Agent"
   paths = [
     "^docs/_archive/.*"
   ]
-

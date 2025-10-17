@@ -1,20 +1,24 @@
-## What changed
--
+## Summary
+- What changed?
+- Why now?
 
-## Why
--
+## Testing
+- [ ] `npm run fmt`
+- [ ] `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- Evidence (paste screenshots/logs/links):
 
-## Evidence (paste screenshots/logs/links)
--
+## Risk & Mitigations
+- Risk level (Low/Medium/High):
+- Mitigation steps:
+- Rollback plan (commands or playbook link):
 
-## Tests
-- [ ] Unit tests updated/passing
-- [ ] Playwright smoke green
-- [ ] Axe accessibility checks pass
+## Security & Compliance
+- [ ] Shopify session token enforced on embedded routes
+- [ ] Supabase RLS reviewed/updated
+- [ ] Secrets not committed; vault updated if new keys needed
 
-## Security
-- [ ] Shopify session token enforced on any embedded routes
-- [ ] Supabase RLS unaffected or tightened
-
-## Rollback plan
--
+## Deployment Notes
+- Affected infrastructure (Fly, Supabase, Publer, Chatwoot, etc.):
+- Post-deploy verification steps:

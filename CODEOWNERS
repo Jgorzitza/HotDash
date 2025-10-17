@@ -1,6 +1,14 @@
-# Require multi-team sign-off on critical paths
-/app/routes/**           @product-lead @qa-lead @security-lead
-/supabase/migrations/**  @data-lead @qa-lead
-/.github/workflows/**    @devops-lead @qa-lead
+# Guardrail ownership for launch-critical surfaces
+/app/**                  @product-lead @qa-lead @security-lead
+/src/**                  @product-lead @qa-lead @security-lead
+/packages/**             @product-lead @qa-lead
+/supabase/**             @data-lead @qa-lead @security-lead
 /scripts/**              @devops-lead @qa-lead
+/deploy/**               @devops-lead @security-lead
+/fly-apps/**             @devops-lead @security-lead
+/.github/workflows/**    @devops-lead @qa-lead
+/infra/**                @devops-lead @security-lead
 /docs/**                 @product-lead
+
+# Default catch-all requires product review
+*                       @product-lead
