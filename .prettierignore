@@ -5,3 +5,9 @@ node_modules
 prisma
 public
 .shopify
+
+# Exclude archived evidence and logs
+docs/_archive/**
+# Exclude generated dist outputs
+apps/**/dist/**
+packages/**/dist/**

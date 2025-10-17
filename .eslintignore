@@ -4,3 +4,11 @@ public/build
 */*.yml
 .shopify
 supabase/functions
+
+# Archived docs and evidence
+docs/_archive/**
+# Built artifacts
+apps/**/dist/**
+packages/**/dist/**
+# Supabase edge functions (Deno URLs)
+supabase/functions/**

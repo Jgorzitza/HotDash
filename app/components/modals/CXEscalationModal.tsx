@@ -39,6 +39,17 @@ export function CXEscalationModal({
       onClose();
     }
   }, [fetcher.state, fetcher.data, onClose, open]);
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open, onClose]);
+
 
   const isSubmitting = fetcher.state !== "idle";
 
@@ -107,10 +118,15 @@ export function CXEscalationModal({
       <dialog
         open
         className="occ-modal"
-        role="dialog"
         aria-modal="true"
         aria-labelledby={`cx-escalation-${conversation.id}-title`}
         data-testid="cx-escalation-dialog"
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            e.preventDefault();
+            onClose();
+          }
+        }}
       >
         <div className="occ-modal__header">
           <div>

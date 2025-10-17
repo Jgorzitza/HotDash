@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "../../../utils/render";
+import { render, screen } from "../../utils/render";
 import { AOVTile } from "../../../../app/components/dashboard/AOVTile";
 import { ReturnsTile } from "../../../../app/components/dashboard/ReturnsTile";
 import { StockRiskTile } from "../../../../app/components/dashboard/StockRiskTile";

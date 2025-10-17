@@ -23,7 +23,7 @@
     "ai:build-index": "npx -y tsx scripts/ai/build-llama-index.ts",
     "ai:log-recommendation": "npx -y tsx scripts/ai/log-recommendation.ts",
     "ai:score": "npx -y tsx scripts/ai/score-text.ts",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint": "eslint --ignore-path .eslintignore --cache --cache-location ./node_modules/.cache/eslint .",
     "shopify": "shopify",
     "prisma": "prisma",
     "graphql-codegen": "graphql-codegen",
