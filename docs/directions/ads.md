@@ -1,6 +1,6 @@
 # Ads Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Ads Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
@@ -18,11 +18,11 @@ Deliver production-ready Ads intelligence that keeps the dashboard tiles live, r
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
 - **Touched Directories:** `app/lib/ads/**`, `app/routes/api.ads.*`, `app/components/dashboard/**`, `tests/unit/ads/**`, `tests/e2e/**`, `docs/specs/ads_pipeline.md`, `feedback/ads/2025-10-17.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** Respect Allowed paths; HITL-only publishing via Publer; no secrets committed; ensure CI green before merge.
+- **Guardrails:** Respect Allowed paths; HITL-only publishing via Publer; no secrets committed; ensure CI green before merge; work must tie to the current Issue and Allowed paths listed there.
 
 ## Definition of Done
 

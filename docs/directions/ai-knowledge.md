@@ -1,6 +1,6 @@
 # AI-Knowledge Direction
 
-- **Owner:** Manager Agent
+- **Owner:** AI-Knowledge Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

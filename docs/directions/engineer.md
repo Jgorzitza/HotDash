@@ -1,6 +1,6 @@
 # Engineer Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Engineer Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

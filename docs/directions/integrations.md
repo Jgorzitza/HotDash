@@ -1,6 +1,6 @@
 # Integrations Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Integrations Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

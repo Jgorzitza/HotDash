@@ -1,6 +1,6 @@
 # Support Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Support Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

@@ -1,6 +1,6 @@
 # Content Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Content Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

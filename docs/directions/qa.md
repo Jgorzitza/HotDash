@@ -1,6 +1,6 @@
 # QA Direction
 
-- **Owner:** Manager Agent
+- **Owner:** QA Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

@@ -1,194 +1,378 @@
 [
   {
-    "id": "ads_slice_b",
+    "id": "ads_task",
     "title": "Complete Ads Slice B",
     "objective": "Ship Slice B metrics diff with tests and evidence",
     "success_criteria": [
-      "Slice B PR ≤50 files with ROAS/CPA coverage",
-      "Feedback updated with commands and results"
+      "Finalize ROAS metrics helpers",
+      "Write Vitest coverage for Slice B helpers",
+      "Run `npx vitest run tests/unit/ads/tracking.spec.ts` and attach log",
+      "Update `feedback/ads/2025-10-17.md` with results"
     ],
     "est_minutes": 60,
-    "target_paths": ["app/lib/ads/**", "tests/unit/ads/**", "feedback/ads/2025-10-17.md"],
-    "linked_agent": "ads"
+    "target_paths": [
+      "app/lib/ads/**",
+      "tests/unit/ads/**",
+      "feedback/ads/2025-10-17.md"
+    ],
+    "linked_agent": "ads",
+    "issue": "#101",
+    "tasks": [
+      "Finalize ROAS metrics helpers",
+      "Write Vitest coverage for Slice B helpers",
+      "Run `npx vitest run tests/unit/ads/tracking.spec.ts` and attach log",
+      "Update `feedback/ads/2025-10-17.md` with results"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "ai_customer_ci_stub",
+    "id": "ai_customer_task",
     "title": "Stub AI-Customer edge logger",
     "objective": "Keep npm run test:ci green by stubbing Supabase edge logger",
     "success_criteria": [
-      "Edge logger stub merged with tests",
-      "feedback/ai-customer/2025-10-17.md records rerun output"
+      "Implement Supabase edge logger stub in app/agents/customer/*",
+      "Add tests covering stubbed behavior",
+      "Run `npm run test:ci` and attach output to feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["app/agents/customer/**", "feedback/ai-customer/2025-10-17.md"],
-    "linked_agent": "ai-customer"
+    "target_paths": [
+      "app/agents/customer/**",
+      "tests/**",
+      "feedback/ai-customer/2025-10-17.md"
+    ],
+    "linked_agent": "ai-customer",
+    "issue": "#102",
+    "tasks": [
+      "Implement Supabase edge logger stub in app/agents/customer/*",
+      "Add tests covering stubbed behavior",
+      "Run `npm run test:ci` and attach output to feedback"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "ai_knowledge_credentials",
-    "title": "Provision knowledge ingestion creds",
+    "id": "ai_knowledge_task",
+    "title": "Provision knowledge ingestion credentials",
     "objective": "Document OpenAI + Supabase credentials and approvals",
     "success_criteria": [
-      "vault/rotation_log.md updated",
-      "feedback/ai-knowledge/2025-10-17.md logs credential hand-off"
+      "Document OpenAI credential usage (text-embedding-3-small)",
+      "Add Supabase service role configuration to runbook",
+      "Update feedback with credential status"
     ],
     "est_minutes": 45,
-    "target_paths": ["feedback/ai-knowledge/2025-10-17.md", "vault/rotation_log.md"],
-    "linked_agent": "ai-knowledge"
+    "target_paths": [
+      "app/services/knowledge/**",
+      "docs/specs/knowledge_pipeline.md",
+      "feedback/ai-knowledge/2025-10-17.md"
+    ],
+    "linked_agent": "ai-knowledge",
+    "issue": "#103",
+    "tasks": [
+      "Document OpenAI credential usage (text-embedding-3-small)",
+      "Add Supabase service role configuration to runbook",
+      "Update feedback with credential status"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "analytics_migration_window",
-    "title": "Schedule analytics migration window",
+    "id": "analytics_task",
+    "title": "Schedule analytics migration apply",
     "objective": "Secure staging + production apply windows for analytics migrations",
     "success_criteria": [
-      "Apply schedule documented in docs/specs/analytics_pipeline.md",
-      "feedback/analytics/2025-10-17.md captures plan"
+      "Coordinate staging + production migration windows with DevOps",
+      "Document apply plan in `docs/specs/analytics_pipeline.md`",
+      "Attach apply timeline to `feedback/analytics/2025-10-17.md`"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/specs/analytics_pipeline.md", "feedback/analytics/2025-10-17.md"],
-    "linked_agent": "analytics"
+    "target_paths": [
+      "docs/specs/analytics_pipeline.md",
+      "feedback/analytics/2025-10-17.md"
+    ],
+    "linked_agent": "analytics",
+    "issue": "#104",
+    "tasks": [
+      "Coordinate staging + production migration windows with DevOps",
+      "Document apply plan in `docs/specs/analytics_pipeline.md`",
+      "Attach apply timeline to `feedback/analytics/2025-10-17.md`"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "content_launch_brief",
-    "title": "Finalize content brief",
+    "id": "content_task",
+    "title": "Finalize launch content brief",
     "objective": "Populate metrics and copy approvals for launch brief",
     "success_criteria": [
-      "docs/specs/content_pipeline.md updated",
-      "feedback/content/2025-10-17.md logs metrics + approvals"
+      "Populate engagement metrics in the brief",
+      "Review tone checklist with CEO",
+      "Update feedback with approvals + metrics sources"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/specs/content_pipeline.md", "feedback/content/2025-10-17.md"],
-    "linked_agent": "content"
+    "target_paths": [
+      "docs/specs/content_pipeline.md",
+      "feedback/content/2025-10-17.md"
+    ],
+    "linked_agent": "content",
+    "issue": "#105",
+    "tasks": [
+      "Populate engagement metrics in the brief",
+      "Review tone checklist with CEO",
+      "Update feedback with approvals + metrics sources"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "data_prod_migration",
+    "id": "data_task",
     "title": "Execute production data migration",
     "objective": "Coordinate and apply inventory/analytics migrations with rollback evidence",
     "success_criteria": [
-      "Apply logs stored in artifacts",
-      "feedback/data/2025-10-17.md updated with results"
+      "Coordinate production window with DevOps",
+      "Apply migrations and store logs in artifacts",
+      "Report results + rollback notes in feedback"
     ],
     "est_minutes": 60,
-    "target_paths": ["supabase/migrations/**", "feedback/data/2025-10-17.md"],
-    "linked_agent": "data"
+    "target_paths": [
+      "supabase/migrations/**",
+      "feedback/data/2025-10-17.md"
+    ],
+    "linked_agent": "data",
+    "issue": "#106",
+    "tasks": [
+      "Coordinate production window with DevOps",
+      "Apply migrations and store logs in artifacts",
+      "Report results + rollback notes in feedback"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "designer_microcopy_signoff",
-    "title": "Secure microcopy sign-off",
+    "id": "designer_task",
+    "title": "Secure microcopy & responsive sign-off",
     "objective": "Review production microcopy/responsive specs with stakeholders",
     "success_criteria": [
-      "docs/design/approvals_microcopy.md approved",
-      "feedback/designer/2025-10-17.md notes sign-off"
+      "Review microcopy with CEO/QA",
+      "Update docs/design/approvals_microcopy.md with final copy",
+      "Attach sign-off notes to feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/design/approvals_microcopy.md", "feedback/designer/2025-10-17.md"],
-    "linked_agent": "designer"
+    "target_paths": [
+      "docs/design/**",
+      "feedback/designer/2025-10-17.md"
+    ],
+    "linked_agent": "designer",
+    "issue": "#107",
+    "tasks": [
+      "Review microcopy with CEO/QA",
+      "Update docs/design/approvals_microcopy.md with final copy",
+      "Attach sign-off notes to feedback"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "devops_ci_billing",
-    "title": "Resolve CI billing + drift sweeps",
+    "id": "devops_task",
+    "title": "Close sandbox escalation and automate drift sweep",
     "objective": "Restore GitHub Actions and automate daily drift sweeps",
     "success_criteria": [
-      "billing issue closed and workflows rerun",
-      "drift sweep script documented and logged"
+      "Resolve workspace-write sandbox issue",
+      "Document drift sweep automation and schedule",
+      "Confirm CI guardrail checks passing"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/runbooks/ci_billing_recovery.md", "feedback/devops/2025-10-17.md"],
-    "linked_agent": "devops"
+    "target_paths": [
+      "scripts/ops/**",
+      "docs/runbooks/ci_billing_recovery.md",
+      "feedback/devops/2025-10-17.md"
+    ],
+    "linked_agent": "devops",
+    "issue": "#108",
+    "tasks": [
+      "Resolve workspace-write sandbox issue",
+      "Document drift sweep automation and schedule",
+      "Confirm CI guardrail checks passing"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "engineer_playwright_tagging",
-    "title": "Finalize Playwright tagging",
+    "id": "engineer_task",
+    "title": "Finalize Playwright tagging with QA",
     "objective": "Align Engineer + QA on Playwright routes and accessibility fixes",
     "success_criteria": [
-      "tests/playwright/** updated",
-      "feedback/engineer/2025-10-17.md records QA sign-off"
+      "Review Playwright route tagging with QA",
+      "Ensure accessibility fixes remain passing",
+      "Log outcomes in feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["tests/playwright/**", "feedback/engineer/2025-10-17.md"],
-    "linked_agent": "engineer"
+    "target_paths": [
+      "tests/playwright/**",
+      "feedback/engineer/2025-10-17.md"
+    ],
+    "linked_agent": "engineer",
+    "issue": "#109",
+    "tasks": [
+      "Review Playwright route tagging with QA",
+      "Ensure accessibility fixes remain passing",
+      "Log outcomes in feedback"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "integrations_live_mode",
-    "title": "Prep integrations live mode",
+    "id": "integrations_task",
+    "title": "Prepare integrations live mode",
     "objective": "Document feature flags and tests for enabling live Supabase calls",
     "success_criteria": [
-      "Runbook updated with activation steps",
-      "feedback/integrations/2025-10-17.md logs readiness"
+      "Document feature flag activation steps",
+      "Draft live-mode contract tests pending Data migrations",
+      "Update feedback with readiness and dependencies"
     ],
     "est_minutes": 45,
-    "target_paths": ["tests/integration/idea-pool.api.spec.ts", "feedback/integrations/2025-10-17.md"],
-    "linked_agent": "integrations"
+    "target_paths": [
+      "tests/integration/**",
+      "feedback/integrations/2025-10-17.md"
+    ],
+    "linked_agent": "integrations",
+    "issue": "#110",
+    "tasks": [
+      "Document feature flag activation steps",
+      "Draft live-mode contract tests pending Data migrations",
+      "Update feedback with readiness and dependencies"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "inventory_rollout",
-    "title": "Inventory rollout execution",
+    "id": "inventory_task",
+    "title": "Coordinate inventory rollout",
     "objective": "Coordinate inventory migration rollout and Support training",
     "success_criteria": [
-      "Staging -> production apply logs stored",
-      "feedback/inventory/2025-10-17.md documents Support hand-off"
+      "Schedule rollout with Support and DevOps",
+      "Run end-to-end validation after migrations",
+      "Log training and validation results in feedback"
     ],
     "est_minutes": 60,
-    "target_paths": ["supabase/migrations/**", "feedback/inventory/2025-10-17.md"],
-    "linked_agent": "inventory"
+    "target_paths": [
+      "supabase/migrations/**",
+      "feedback/inventory/2025-10-17.md"
+    ],
+    "linked_agent": "inventory",
+    "issue": "#111",
+    "tasks": [
+      "Schedule rollout with Support and DevOps",
+      "Run end-to-end validation after migrations",
+      "Log training and validation results in feedback"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "manager_escalations",
-    "title": "Close sandbox escalation",
+    "id": "manager_task",
+    "title": "Resolve escalations and relaunch lanes",
     "objective": "Resolve sandbox write issue and relaunch automation lanes",
     "success_criteria": [
-      "Escalation closed with owner/date",
-      "reports/manager/ESCALATION.md updated"
+      "Close sandbox escalation and relaunch automation lanes",
+      "Ensure CI guardrails remain green",
+      "Update merge/status/plan artifacts after relaunch"
     ],
     "est_minutes": 30,
-    "target_paths": ["reports/manager/ESCALATION.md", "feedback/manager/2025-10-17.md"],
-    "linked_agent": "manager"
+    "target_paths": [
+      "reports/manager/**",
+      "feedback/manager/2025-10-17.md"
+    ],
+    "linked_agent": "manager",
+    "issue": "#112",
+    "tasks": [
+      "Close sandbox escalation and relaunch automation lanes",
+      "Ensure CI guardrails remain green",
+      "Update merge/status/plan artifacts after relaunch"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "product_launch_comms",
-    "title": "Finalize launch comms",
+    "id": "product_task",
+    "title": "Finalize launch comms & checklist",
     "objective": "Deliver stakeholder comms with current blockers and metrics",
     "success_criteria": [
-      "docs/specs/stakeholder_comms.md updated",
-      "feedback/product/2025-10-17.md notes distribution"
+      "Review comms with CEO/Marketing",
+      "Update checklist with resolved blockers",
+      "Log status in feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/specs/stakeholder_comms.md", "feedback/product/2025-10-17.md"],
-    "linked_agent": "product"
+    "target_paths": [
+      "docs/specs/dashboard_launch_checklist.md",
+      "docs/specs/stakeholder_comms.md",
+      "feedback/product/2025-10-17.md"
+    ],
+    "linked_agent": "product",
+    "issue": "#113",
+    "tasks": [
+      "Review comms with CEO/Marketing",
+      "Update checklist with resolved blockers",
+      "Log status in feedback"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "qa_accessibility_run",
-    "title": "Run accessibility suite",
+    "id": "qa_task",
+    "title": "Run accessibility suite and publish report",
     "objective": "Execute npm run test:a11y and publish QA report",
     "success_criteria": [
-      "Accessibility report attached to feedback",
-      "QA daily report published"
+      "Execute `npm run test:a11y`",
+      "Publish pass/fail summary with follow-ups",
+      "Update feedback with results"
     ],
     "est_minutes": 45,
-    "target_paths": ["tests/playwright/**", "feedback/qa/2025-10-17.md"],
-    "linked_agent": "qa"
+    "target_paths": [
+      "tests/playwright/**",
+      "feedback/qa/2025-10-17.md"
+    ],
+    "linked_agent": "qa",
+    "issue": "#114",
+    "tasks": [
+      "Execute `npm run test:a11y`",
+      "Publish pass/fail summary with follow-ups",
+      "Update feedback with results"
+    ],
+    "priority": "P0"
   },
   {
-    "id": "seo_recommendations",
-    "title": "Publish SEO HITL recommendations",
+    "id": "seo_task",
+    "title": "Publish SEO recommendations with evidence",
     "objective": "Review anomaly doc with Product and submit HITL-approved recommendations",
     "success_criteria": [
-      "docs/specs/seo_anomaly_triage.md updated",
-      "feedback/seo/2025-10-17.md logs recommendations"
+      "Review anomaly doc with Product/Ads/Content",
+      "Submit HITL recommendations with metrics",
+      "Log approvals and follow-ups in feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["docs/specs/seo_anomaly_triage.md", "feedback/seo/2025-10-17.md"],
-    "linked_agent": "seo"
+    "target_paths": [
+      "docs/specs/seo_anomaly_triage.md",
+      "feedback/seo/2025-10-17.md"
+    ],
+    "linked_agent": "seo",
+    "issue": "#115",
+    "tasks": [
+      "Review anomaly doc with Product/Ads/Content",
+      "Submit HITL recommendations with metrics",
+      "Log approvals and follow-ups in feedback"
+    ],
+    "priority": "P1"
   },
   {
-    "id": "support_webhook_tests",
-    "title": "Finalize support webhook tests",
+    "id": "support_task",
+    "title": "Finalize webhook retry coverage and runbook",
     "objective": "Complete webhook retry coverage and runbook update",
     "success_criteria": [
-      "tests/integration/support.webhook.spec.ts green",
-      "docs/runbooks/support_webhooks.md updated"
+      "Complete webhook retry tests and ensure `npm run test:ci` passes",
+      "Update runbook with retry policy",
+      "Log weekly health report in feedback"
     ],
     "est_minutes": 45,
-    "target_paths": ["tests/integration/support.webhook.spec.ts", "feedback/support/2025-10-17.md"],
-    "linked_agent": "support"
+    "target_paths": [
+      "tests/integration/support.webhook.spec.ts",
+      "docs/runbooks/support_webhooks.md",
+      "feedback/support/2025-10-17.md"
+    ],
+    "linked_agent": "support",
+    "issue": "#116",
+    "tasks": [
+      "Complete webhook retry tests and ensure `npm run test:ci` passes",
+      "Update runbook with retry policy",
+      "Log weekly health report in feedback"
+    ],
+    "priority": "P1"
   }
 ]

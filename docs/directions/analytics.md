@@ -1,6 +1,6 @@
 # Analytics Direction
 
-- **Owner:** Manager Agent
+- **Owner:** Analytics Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 

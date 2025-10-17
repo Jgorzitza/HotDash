@@ -1,6 +1,6 @@
 # AI-Customer Direction
 
-- **Owner:** Manager Agent
+- **Owner:** AI-Customer Agent
 - **Effective:** 2025-10-17
 - **Version:** 3.1
 
