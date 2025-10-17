@@ -1,63 +1,59 @@
-# Data Agent Direction
+# Data Direction
 
-- **Owner:** Manager Sub-Agent
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-17
-- **Version:** 1.0
+- **Version:** 2.0
 
 ## Objective
 
-Deliver the Supabase feature pack launch backlog by authoring migrations, RLS, fixtures, telemetry, and documentation so staging and analytics consumers are production-ready for the idea pool release.
+Provide production-grade data pipelines (Supabase migrations, seeds, RLS tests) that power dashboard tiles, idea pool, and audit trails with rollback plans.
 
-## Current Tasks
+## Tasks
 
-1. Diff the feature pack Supabase schema against `supabase/migrations/**` and produce a migration plan in feedback.
-2. Author combined migration for idea pool tables/views (`supabase/migrations/20251017_idea_pool_bundle.sql`) with rollback script.
-3. Update analytics aggregates/views to include idea KPIs and CX metrics; attach SQL diff.
-4. Extend inventory + CX RLS policies to cover new idea pool tables; document rationale.
-5. Implement RLS tests in `supabase/rls_tests.sql` covering idea, analytics, approvals tables.
-6. Wire `scripts/data/apply-migrations.mjs` to run new bundle on staging; capture CLI output.
-7. Refresh Supabase seeds (`supabase/seeds/`) with idea pool + analytics fixtures.
-8. Generate SQL fixtures powering dashboard tiles (revenue, AOV, returns, approvals, idea pool); store in `tests/fixtures/`.
-9. Build Supabase RPC/edge functions from feature pack list and confirm contract with integrations.
-10. Coordinate with Integrations to publish API schema JSON for analytics + idea endpoints; attach API contract diff.
-11. Produce data lineage doc in `docs/specs/analytics_pipeline.md` reflecting new jobs.
-12. Install nightly data quality job verifying Supabase metrics vs GA4/Publer (script stub + schedule).
-13. Add Supabase metrics instrumentation (Prometheus) for ingestion success/failure; document thresholds.
-14. Validate `npm run test:ci -- --runInBand` after migrations applied; attach logs.
-15. Run `scripts/data/backfill-analytics.mjs` for historical data through May 1; share summary.
-16. Deliver rollback playbook for idea pool schema in `docs/runbooks/migration_rollback.md`.
-17. Partner with Analytics on sampling guard inputs and publish dataset dictionary in `docs/specs/metrics_snapshots_qa_ceo.md`.
-18. Write feedback to `feedback/data/2025-10-17.md` and clean stray md files.
+1. Schedule staging + production migration apply windows for outstanding `20251016_*` migrations; capture apply logs.
+2. Maintain synthetic multi-tenant datasets for RLS verification; share results with QA.
+3. Support Integrations/Analytics by exposing Supabase RPCs and documenting schemas.
+4. Keep data change log (`docs/specs/inventory_pipeline.md`, `data_change_log.md`) updated with rollbacks.
+5. Write feedback to `feedback/data/2025-10-17.md` and clean up stray md files.
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `supabase`, `psql`, `rg`
-- **Touched Directories:** `docs/directions/data.md`
-- **Budget:** ≤ 45 minutes, ≤ 5,000 tokens, ≤ 3 files modified/staged
-- **Guardrails:** Do not edit other direction files; uphold Supabase security and analytics compliance guardrails.
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `psql`, `rg`, `jq`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `supabase/migrations/**`, `supabase/seeds/**`, `docs/runbooks/**`, `feedback/data/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** No direct prod changes without migration; RLS tests mandatory.
 
 ## Definition of Done
 
-- [ ] Objective satisfied with Supabase launch backlog scoped to feature pack deliverables.
-- [ ] `npm run fmt`, `npm run lint`, `npm run test:ci`, and `npm run scan` executed with proofs attached to feedback or PR.
-- [ ] Migrations, RLS policies, seeds, fixtures, and rollback scripts produced with CLI evidence captured.
-- [ ] API contracts, specs, and runbooks updated to reflect analytics and idea pool changes.
-- [ ] Feedback entry committed to `feedback/data/2025-10-17.md` with outputs and stray markdown cleanup recorded.
+- [ ] Migrations applied with logs stored in artifacts
+- [ ] RLS verification evidence attached
+- [ ] `npm run fmt` and `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- [ ] Docs/runbooks updated
+- [ ] Feedback recorded with commands
+- [ ] Contract test passes
+
+## Contract Test
+
+- **Command:** `psql $SUPABASE_URL -f supabase/rls_tests.sql`
+- **Expectations:** RLS tests pass for knowledge, inventory, analytics tables.
 
 ## Risk & Rollback
 
-- **Risk Level:** Medium — inaccurate backlog jeopardizes data readiness.
-- **Rollback Plan:** `git checkout -- docs/directions/data.md` before staging.
-- **Monitoring:** Align tasks with backlog T3 + feature pack schemas.
+- **Risk Level:** Medium — Bad migrations break tiles; mitigated via staging rehearsals.
+- **Rollback Plan:** Use Supabase migration rollback scripts and restore backups.
+- **Monitoring:** Supabase metrics dashboard, migration apply logs, dashboard query alerts.
 
 ## Links & References
 
 - North Star: `docs/NORTH_STAR.md`
-- Feature Pack Schema: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/`
-- API Contracts: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/04-api/`
-- Data Specs: `docs/specs/analytics_pipeline.md`
-- Feedback: `feedback/data/`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/data/2025-10-17.md`
+- Specs / Runbooks: `docs/runbooks/data_staging_apply.md`
 
 ## Change Log
 
-- 2025-10-17: Version 1.0 – Template rewrite with explicit launch tasks.
+- 2025-10-17: Version 2.0 – Production apply plan + evidence requirements
+- 2025-10-15: Version 1.0 – Initial data alignment tasks

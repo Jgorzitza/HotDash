@@ -1,11 +1,16 @@
-# Merge & Execution Summary — Batch 20251017T033137Z
+# Merge & Execution Summary — 2025-10-17
 
 | Task ID | Branch | PR | Status | Notes |
 |---------|--------|----|--------|-------|
-| guardrails-20251017T072857Z | guardrails-20251017T072857Z | https://github.com/Jgorzitza/HotDash/pull/43 | 🚧 Guardrails PR opened | Enforcing manager config, heartbeat keepalive, and CI outcome guardrails. |
-| task_feature_pack_audit | manager-batch-20251017T033137Z | _pending_ | ✅ Intake complete | gdown retrieved the manager pack; checksums + summary recorded in integrations/new_feature_20251017T033137Z. |
-| task_docs_alignment | manager-batch-20251017T033137Z | _pending_ | ✅ Docs staged | README, docs/NORTH_STAR.md, docs/roadmap.md, plans/roadmap.md updated; docs guard script patched to include `plans/`. |
+| guardrails-20251017T072857Z | guardrails-20251017T072857Z | https://github.com/Jgorzitza/HotDash/pull/43 | 🚧 | CI guardrails PR open (docs policy, heartbeat, outcomes). |
+
+## Loop Delta
+- Rewrote all agent direction files (`docs/directions/*.md`) to production-aligned template with references to NORTH_STAR, OPERATING_MODEL, RULES.
+- Logged fresh feedback for every agent dated 2025-10-17; each includes evidence commands and next steps.
+- Refreshed `reports/status/STATUS.md` with new snapshot; documented sandbox + CI billing escalations.
+- Raised escalations: workspace-write sandbox remains read-only; GitHub Actions billing still failing.
 
 ## Outstanding Work
-- Distribute feature pack insights into agent direction updates (`task_direction_sync`).
-- Reconcile Supabase schema/API contracts from the pack with existing migrations before implementation PRs.
+- Resolve sandbox write permissions so automation lanes can resume.
+- Close GitHub Actions billing issue and rerun full CI (fmt/lint/test:ci/scan/Gitleaks).
+- Coordinate Data/Analytics migration rehearsal and production window once CI restored.

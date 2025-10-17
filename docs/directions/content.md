@@ -1,59 +1,58 @@
-# Content Agent Direction
+# Content Direction
 
-- **Owner:** Manager Sub-Agent
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-17
-- **Version:** 1.0
+- **Version:** 2.0
 
 ## Objective
 
-Drive content operations so Publer launch messaging, idea briefs, approvals alignment, and feedback hygiene are ready for execution and measurable against campaign goals.
+Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts that feed the approvals loop with evidence and copy that matches CEO tone.
 
-## Current Tasks
+## Tasks
 
-1. Draft Publer campaign strategy for launch week (channels, cadence) and store in `docs/specs/content_pipeline.md`.
-2. Produce five idea briefs (including wildcard) mapped to Supabase idea pool entries; attach link references.
-3. Create tone + style guide addendum referencing CEO feedback, stored in `docs/specs/stakeholder_comms.md`.
-4. Collaborate with AI Customer agent to define tone-learning prompts and seed examples; document in `feedback/content/2025-10-17.md`.
-5. Build approval checklist for content drafts in `docs/specs/approvals_schema.md` (content section) aligned with Publer fields.
-6. Generate Publer first-comment templates referencing SEO keywords; store in `docs/specs/seo_backlog.md` cross-links.
-7. Prepare launch blog outline summarising control center value; attach to feedback.
-8. Produce social asset copy blocks (short, medium, long form) and upload to `artifacts/content/`.
-9. Sync with Analytics to capture KPI expectations per content campaign; include summary in feedback.
-10. Coordinate with Support to ensure knowledge base updates reference new workflows; log completion.
-11. Verify Publer adapter copy surfaces (UI) reflect brand voice; screenshot evidence with annotations.
-12. Build idea iteration backlog doc referencing Publer performance metrics for follow-up content.
-13. Ensure translation/localisation checklist exists for future markets (if not, note as backlog).
-14. Update `docs/specs/content_iteration_backlog.md` with priority, owner, status for each content asset.
-15. Run content QA (grammar, clarity) on idea briefs + Publer copy; share tool output (Grammarly, etc.).
-16. Write feedback to `feedback/content/2025-10-17.md` and clean stray md files.
+1. Maintain idea pool fixtures (`app/fixtures/content/idea-pool.json`) and ensure each scenario has evidence + Supabase linkage.
+2. Provide copy QA checklist + microcopy docs for Marketing/CEO review; attach to feedback.
+3. Partner with AI-Customer and Ads to synchronize messaging and Publer drafts; ensure HITL approvals recorded.
+4. Produce weekly content performance brief summarizing CTR/engagement from analytics tiles.
+5. Write feedback to `feedback/content/2025-10-17.md` and clean up stray md files.
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `rg`.
-- **Touched Directories:** `docs/directions/content.md`.
-- **Budget:** ≤ 30 minutes, ≤ 4,000 tokens, ≤ 3 files modified/staged.
-- **Guardrails:** Edits limited to content direction file.
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/fixtures/content/**`, `docs/specs/content_pipeline.md`, `docs/design/**`, `feedback/content/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** No publishing without HITL approval; maintain tone guidelines.
 
 ## Definition of Done
 
-- [ ] Template applied with tasks and sections.
-- [ ] Prettier executed on `docs/directions/content.md`.
-- [ ] Only `docs/directions/content.md` staged.
-- [ ] Blockers logged in `feedback/manager/2025-10-17.md` if encountered.
+- [ ] Fixtures + specs updated for production cadence
+- [ ] `npm run fmt` and `npm run lint`
+- [ ] `npm run test:ci` (relevant suites) green
+- [ ] `npm run scan`
+- [ ] Docs/runbooks updated for new workflows
+- [ ] Feedback entry completed with evidence
+- [ ] Contract test passes
+
+## Contract Test
+
+- **Command:** `jq '. | length >= 3' app/fixtures/content/idea-pool.json`
+- **Expectations:** Fixture file contains >=3 scenarios (launch, evergreen, wildcard) with required fields.
 
 ## Risk & Rollback
 
-- **Risk Level:** Low — misaligned content reduces launch impact but not system stability.
-- **Rollback Plan:** `git checkout -- docs/directions/content.md` before staging.
-- **Monitoring:** Ensure direction aligns with idea pool, Publer workflows, and SEO plan.
+- **Risk Level:** Low — Incorrect copy is caught by HITL, but delays launches.
+- **Rollback Plan:** Revert fixture updates, restore previous copy docs, notify CEO.
+- **Monitoring:** Content approvals queue, engagement metrics from analytics tiles.
 
 ## Links & References
 
-- Template: `docs/directions/agenttemplate.md`
-- Content specs: `docs/specs/content_pipeline.md`, `docs/specs/content_iteration_backlog.md`
-- Publer docs: `docs/integrations/social_adapter.md`
-- Feedback: `feedback/content/`
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/content/2025-10-17.md`
+- Specs / Runbooks: `docs/specs/content_pipeline.md`
 
 ## Change Log
 
-- 2025-10-17: Version 1.0 — Template rewrite for launch content ops.
+- 2025-10-17: Version 2.0 – Production alignment for fixtures + briefs
+- 2025-10-15: Version 1.0 – Initial launch planning

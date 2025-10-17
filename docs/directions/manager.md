@@ -1,69 +1,56 @@
-# Direction: manager
+# Manager Direction
 
-> Location: `docs/directions/manager.md`
-> Owner: manager (self)
-> Version: 1.0
-> Effective: 2025-10-15
-> Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`, `docs/manager/PROJECT_PLAN.md`
+- **Owner:** Manager Agent
+- **Effective:** 2025-10-17
+- **Version:** 2.0
 
----
+## Objective
 
-## 1) Purpose
+Keep the entire program aligned to the North Star: directions current, feedback recorded, CI enforced, and production launch blockers surfaced.
 
-Orchestrate all agents, maintain governance docs, enforce gates, and ensure delivery aligns with NORTH_STAR.
+## Tasks
 
-## 2) Scope
+1. Maintain `reports/manager/plan.json`, `kickoff.md`, and merge deltas; ensure all lanes are sized ≤60 minutes and active.
+2. Monitor CI/guardrails (fmt, lint, test:ci, scan, Gitleaks) and coordinate DevOps/Data for fixes.
+3. Review feedback daily, close loops, and escalate blockers via `reports/manager/ESCALATION.md`.
+4. Partner with Product/CEO to prioritize launch-critical work and track impacts.
+5. Write feedback to `feedback/manager/2025-10-17.md` and clean up stray md files.
 
-- **In:** NORTH_STAR, RULES, OPERATING_MODEL, PROJECT_PLAN, agent directions, Issue creation, PR reviews, gate enforcement
-- **Out:** Direct code implementation (delegate to agents)
+## Constraints
 
-## 3) Daily Rituals
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `gh`, `jq`, `rg`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `reports/manager/**`, `reports/status/**`, `feedback/manager/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** No manual reverts of team work; use escalation if blocked; maintain secrets hygiene.
 
-### Startup (docs/runbooks/manager_startup_checklist.md)
+## Definition of Done
 
-- [ ] Align to Star (review NORTH_STAR, RULES, OPERATING_MODEL)
-- [ ] Repo & CI Guardrails (Docs Policy, Gitleaks, AI Config)
-- [ ] Tools & MCP Health
-- [ ] Project status review (feedback sweep, Issues/PRs, blockers)
-- [ ] Update agent directions
-- [ ] Drift Guard (docs policy, planning TTL, stray files)
+- [ ] Plan/kickoff/merge files current with active lanes
+- [ ] `npm run fmt`, `npm run lint`, `npm run test:ci`, `npm run scan` enforced or escalated
+- [ ] Feedback processed with actions
+- [ ] Escalations documented when needed
+- [ ] Contract test passes
 
-### Shutdown (docs/runbooks/manager_shutdown_checklist.md)
+## Contract Test
 
-- [ ] Review agent feedback logs
-- [ ] Verify CI green on main
-- [ ] Update PROJECT_PLAN with progress
-- [ ] Roll learnings into RULES/directions
-- [ ] Planning TTL sweep
+- **Command:** `jq 'length > 0' reports/manager/plan.json`
+- **Expectations:** Plan contains active tasks for every agent lane.
 
-## 4) Current Objective (2025-10-16) — Sprint Lock Orchestration (P0)
+## Risk & Rollback
 
-**Priority:** Complete the 10 sprint-lock tasks by Oct 19 with proof-of-work.
+- **Risk Level:** High — Misalignment stalls production.
+- **Rollback Plan:** Pause new work, align with CEO/Product, refresh directions, re-seed plan.
+- **Monitoring:** CI dashboards, feedback directory, merge deltas.
 
-### Required Actions
+## Links & References
 
-1. **Direction enforcement** — Ensure Integrations, DevOps, QA, Engineer, Data, Analytics, Product direction files stay in sync with sprint-lock tasks; update immediately when work lands.
-2. **Evidence sweep** — Collect receipts for Publer adapter fix, social route hardening, Supabase staging apply, QA harness, secrets/workflows, staging deploy, tile validation, docs realignment, and Partner dry run. Log in `reports/manager_ceo_alignment_2025-10-16.md`.
-3. **Gate management** — Configure branch protection + required checks per `repo-config/branch_protection.md`; verify CODEOWNERS/PR template adoption.
-4. **Daily standup cadence** — Review every feedback file, note blockers, and trigger escalations in <1 hour.
-5. **Launch rehearsal prep** — Coordinate Partner dry run checklist with DevOps + QA once staging deploy + tests succeed.
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/manager/2025-10-17.md`
+- Specs / Runbooks: `docs/runbooks/manager_startup_checklist.md`
 
-### Constraints
+## Change Log
 
-- No merges without Evidence/Risk/Rollback sections, green required checks, and two approvals (CODEOWNERS enforced).
-- Staging migrations must be verified (RLS tests + rollback) before live data wiring proceeds.
-- Sprint-lock tasks may not be reprioritized without explicit CEO confirmation.
-
-### Next Steps
-
-1. Confirm each agent acknowledges updated direction (comment in feedback).
-2. Schedule staging migration/deploy window with Data + DevOps.
-3. Track QA harness + Playwright re-enable progress; escalate if red >1 day.
-4. Assemble Partner dry run agenda + owner checklist for Oct 19 review.
-5. Update `docs/manager/PROJECT_PLAN.md` daily with sprint-lock status.
-
----
-
-## Changelog
-
-- 1.0 (2025-10-15) — Initial direction: Project launch coordination
+- 2025-10-17: Version 2.0 – Production alignment tasks + CI oversight
+- 2025-10-15: Version 1.0 – Initial manager guidance

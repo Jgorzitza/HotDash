@@ -1,63 +1,59 @@
 # Inventory Direction
 
-- **Owner:** Manager Sub-Agent
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-17
-- **Version:** 1.0
+- **Version:** 2.0
 
 ## Objective
 
-Deliver launch-ready inventory automation covering ROP calculations, Supabase views, Shopify sync, picker payout updates, and feedback hygiene for the release.
+Launch the inventory intelligence system (status buckets, ROP calculations, picker payouts) with full test coverage and rollout plan.
 
-## Current Tasks
+## Tasks
 
-1. Diff feature pack inventory schema against current migrations; draft migration plan in feedback.
-2. Author combined migration bundle for inventory tables/views/RPCs with rollback script (`supabase/migrations/20251017_inventory_bundle.sql`).
-3. Implement ROP + safety stock calculations in Supabase views/functions; attach SQL diff.
-4. Update picker payout tables and Supabase policies per feature pack notes; document rationale.
-5. Generate inventory dashboard materialized views feeding `app/components/dashboard/ReturnsTile.tsx` and new heatmap tile.
-6. Refresh bundle + kit metadata sync to Shopify (server + worker) ensuring `PACK:` codes handled; add unit tests.
-7. Extend inventory service to expose payout brackets and publish to dashboard tile; capture API contract.
-8. Wire inventory alert thresholds into Prometheus metrics; log sample output.
-9. Build CSV PO export script and validate with sample data; attach artifact.
-10. Add inventory fixtures to `tests/fixtures/` for Vitest/Playwright coverage.
-11. Coordinate with Integrations on Supabase RPC deployment; log handshake notes.
-12. Validate returns tile metrics vs Supabase aggregates; attach comparison log.
-13. Update `docs/specs/inventory_pipeline.md` with new data flow diagrams.
-14. Produce rollback plan for inventory migrations in `docs/runbooks/migration_rollback.md`.
-15. Run `npm run test:ci` focused on inventory services and record logs.
-16. Ensure monitoring alerts (Prometheus, Fly) capture low stock + urgent reorder thresholds; document configuration.
-17. Sync with QA to confirm Playwright coverage for inventory workflows; note completion.
-18. Write feedback to feedback/inventory/2025-10-17.md and clean stray md files.
+1. Apply and validate inventory migrations; ensure RLS coverage with Data support.
+2. Finalize ROP/payout calculations with unit tests and documentation.
+3. Provide CSV export + Shopify draft automation scripts with rollback notes.
+4. Coordinate with Support to ensure picker payouts integrate into approvals flow.
+5. Write feedback to `feedback/inventory/2025-10-17.md` and clean up stray md files.
 
 ## Constraints
 
-- **Allowed Tools:** bash, node, npm, npx prettier, supabase, rg
-- **Touched Directories:** docs/directions/inventory.md
-- **Budget:** ≤ 30 minutes, ≤ 4,000 tokens, ≤ 3 files modified/staged
-- **Guardrails:** Keep execution scoped to inventory direction scope across Supabase, Shopify, and Prometheus deliverables.
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `psql`, `rg`, `jq`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/services/inventory/**`, `supabase/migrations/**`, `docs/specs/inventory_pipeline.md`, `feedback/inventory/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** HITL approvals for all operational changes; maintain RLS tests.
 
 ## Definition of Done
 
-- [ ] Objective satisfied within inventory automation scope (Supabase, Shopify, Prometheus).
-- [ ] `npm run fmt` and `npm run lint` completed with attached evidence.
-- [ ] `npm run test:ci` (inventory focus) executed with captured logs.
-- [ ] `npm run scan` secrets check recorded clean.
-- [ ] Docs and runbooks updated for inventory migrations and dashboards.
-- [ ] Feedback entry filed in `feedback/inventory/2025-10-17.md`.
+- [ ] Migrations applied with logs
+- [ ] ROP/payout tests passing
+- [ ] `npm run fmt` and `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- [ ] Docs/runbooks updated with rollout steps
+- [ ] Feedback recorded with evidence
+- [ ] Contract test passes
+
+## Contract Test
+
+- **Command:** `npx vitest run tests/unit/services/inventory/payout.spec.ts`
+- **Expectations:** Payout calculations match expected brackets.
 
 ## Risk & Rollback
 
-- **Risk Level:** Medium — inventory mismatches impact operational readiness.
-- **Rollback Plan:** Use migration rollback bundle and disable Shopify sync feature flags if regressions surface.
-- **Monitoring:** Track Supabase job outputs, Prometheus alert thresholds, and dashboard tile metrics post-deploy.
+- **Risk Level:** Medium — Incorrect payouts disrupt operations; mitigated via tests + HITL.
+- **Rollback Plan:** Revert migrations, disable automation flag, notify Ops.
+- **Monitoring:** Inventory tile metrics, Supabase `inventory_events`, picker payout audit logs.
 
 ## Links & References
 
-- Template: `docs/directions/agenttemplate.md`
-- Feature Pack Notes: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/03-database/`, `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/05-integrations/`
-- Specs: `docs/specs/inventory_pipeline.md`, `docs/specs/inventory_sync.md`
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
 - Feedback: `feedback/inventory/2025-10-17.md`
+- Specs / Runbooks: `docs/specs/inventory_pipeline.md`
 
 ## Change Log
 
-- 2025-10-17: Version 1.0 – Template rewrite with launch inventory tasks.
+- 2025-10-17: Version 2.0 – Production-ready rollout plan
+- 2025-10-15: Version 1.0 – Inventory schema/tasks

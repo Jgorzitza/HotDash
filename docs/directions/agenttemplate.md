@@ -19,6 +19,7 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 ## Constraints
 
 - **Allowed Tools:** <bash, npm, codex exec, etc.>
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers, keep feedback logs current.
 - **Touched Directories:** <list of allowed directories>
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 (unless `wide-change` with justification)
 - **Guardrails:** reference immutable rules and any feature flags

@@ -1,65 +1,60 @@
-# DevOps Agent Direction
+# DevOps Direction
 
-- **Owner:** Manager Sub-Agent
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-17
-- **Version:** 1.1
+- **Version:** 2.0
 
 ## Objective
 
-Deliver launch-ready DevOps guidance that equips the team to execute Supabase migrations, Fly deploy rehearsals, health automation, and backup validation with explicit evidence and guardrails for the feature pack launch.
+Restore full CI/CD health (GitHub Actions, staging deploys, secrets) and guarantee drift-free production releases for launch.
 
-## Current Tasks
+## Tasks
 
-1. Apply the Supabase idea pool + analytics migrations to staging (`supabase db push`) and capture the CLI output in feedback.
-2. Run `supabase test db` (or `psql` harness) for RLS checks covering idea pool tables; attach results.
-3. Seed staging with feature pack fixtures (`supabase db seed`) and document evidence.
-4. Produce a staging readiness note (`docs/runbooks/devops_execution_summary.md`) summarising migration status.
-5. Automate Chatwoot health workflow (`.github/workflows/health-check.yml`) invoking `scripts/ops/check-chatwoot-health.{mjs,sh}` nightly; store artifacts in `artifacts/ops/`.
-6. Automate Publer health workflow verifying `/account_info` + `/social_accounts` with staging/prod secrets; persist JSON outputs.
-7. Wire health workflows to notify `justin@hotrodan.com` via Fly/Email on failure; record notification dry run.
-8. Expand `scripts/ops/sync-secrets.sh` to pull Publer + Chatwoot credentials from vault and sync to Fly/GitHub.
-9. Audit GitHub Actions secrets vs vault (`scripts/ops/load-mcp-secrets.sh`) and report drift.
-10. Rehearse Fly production deploy (`fly deploy --config fly.toml --strategy immediate --env production`) using staging image; capture logs & rollback command.
-11. Add CI guard (`.github/workflows/check-ci-guardrails.yml`) enforcing manager batch policy + wide-change opt-in.
-12. Implement rollback script (`scripts/ops/rollback-production.sh`) with tested Fly + Supabase restore steps.
-13. Configure Prometheus alerts (`prometheus-alerts.yml`) for tile latency + idea pool ingestion failures; link to runbook.
-14. Validate `scripts/backup/` pipeline by executing `npm run backup` → restore dry run; document evidence.
-15. Update `docs/runbooks/production_deployment.md` with new deploy/rollback flow, linking to feature pack guardrails.
-16. Pair with QA to expose health artifact links in daily report; document integration notes.
-17. Confirm `npm run ci`, `npm run scan`, and `npm run test:ci` pass on manager-batch branch with updated workflows.
-18. Write feedback to `feedback/devops/2025-10-17.md` and clean stray md files.
+1. Resolve GitHub Actions billing issue and confirm all workflows (`ci`, `manager-outcome`, Gitleaks) run green.
+2. Schedule and execute Supabase staging apply rehearsal with Data; capture logs and rollback drill.
+3. Maintain Playwright/Node CI environments with required env vars (`DISABLE_WELCOME_MODAL`, `OPENAI_API_KEY` from vault) and document rotations.
+4. Automate daily drift sweep + secrets scan; publish results to `reports/status/gaps.md`.
+5. Write feedback to `feedback/devops/2025-10-17.md` and clean up stray md files.
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `supabase`, `flyctl`, `rg`
-- **Touched Directories:** `docs/directions/devops.md`
-- **Budget:** ≤45 minutes, ≤5,000 tokens, ≤3 files modified/staged
-- **Guardrails:** Follow launch guardrails, keep evidence for migrations/deploys, and do not edit other direction files.
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `gh`, `jq`, `rg`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `.github/workflows/**`, `docs/runbooks/**`, `scripts/manager/**`, `feedback/devops/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** No secret leakage; use GitHub environments; document all changes.
 
 ## Definition of Done
 
-- [ ] Objective delivered with template-compliant launch guidance and evidence expectations.
-- [ ] Task list matches 2025-10-17 direction items and ends with the feedback hygiene entry.
-- [ ] Supabase migrations, health workflows, Fly deploy rehearsal, backup validation, and associated runbooks updated with documented proof.
-- [ ] `npm run fmt`, `npm run lint`, `npm run test:ci`, and `npm run scan` executed with artefacts attached in feedback.
-- [ ] Runbooks and guardrail docs refreshed alongside deploy/rollback updates.
-- [ ] Feedback recorded in `feedback/devops/2025-10-17.md` and stray markdown cleaned.
+- [ ] CI billing resolved and workflows green
+- [ ] Staging rehearsal completed with logs
+- [ ] `npm run fmt`
+- [ ] `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- [ ] Runbooks updated with new env requirements
+- [ ] Feedback entry updated with evidence
+- [ ] Contract test passes
+
+## Contract Test
+
+- **Command:** `gh workflow run ci --ref production-smoke-test`
+- **Expectations:** Workflow completes successfully (or logs failure with remediation plan).
 
 ## Risk & Rollback
 
-- **Risk Level:** Medium — inaccurate direction compromises launch readiness.
-- **Rollback Plan:** `git checkout -- docs/directions/devops.md` before staging.
-- **Monitoring:** Ensure tasks align with backlog T2/T6, feature pack ops docs, and Supabase/Fly telemetry.
+- **Risk Level:** High — CI outages block launch.
+- **Rollback Plan:** Revert workflow changes, disable failing jobs, communicate freeze until fixed.
+- **Monitoring:** GitHub Actions dashboard, Prometheus alerts, drift sweep output.
 
 ## Links & References
 
-- Template: `docs/directions/agenttemplate.md`
-- Feature Pack Ops: `integrations/new_feature_20251017T033137Z/manager_agent_pack_v1/07-ops/`
-- Supabase schema: `integrations/.../03-database/supabase_schema.sql`
-- Health scripts: `scripts/ops/`
-- Feedback log: `feedback/devops/2025-10-17.md`
-- Runbooks: `docs/runbooks/production_deployment.md`, `docs/runbooks/devops_execution_summary.md`
+- North Star: `docs/NORTH_STAR.md`
+- Roadmap: `docs/roadmap.md`
+- Feedback: `feedback/devops/2025-10-17.md`
+- Specs / Runbooks: `docs/runbooks/ci_billing_recovery.md`, `docs/runbooks/manager_startup_checklist.md`
 
 ## Change Log
 
-- 2025-10-17: Version 1.1 – Template rewrite with explicit launch tasks.
+- 2025-10-17: Version 2.0 – Production launch CI/CD readiness
+- 2025-10-15: Version 1.0 – Deployment rehearsal tasks

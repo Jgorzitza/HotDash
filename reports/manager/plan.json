@@ -1,310 +1,194 @@
 [
   {
-    "id": "task_feature_pack_audit",
-    "title": "Audit Drive feature pack",
-    "objective": "Download (or verify existing) Google Drive package 1wxfcnjUh6yed0mmuAunAO_qEaYGcKK2h, catalogue files, and map integration targets.",
+    "id": "ads_slice_b",
+    "title": "Complete Ads Slice B",
+    "objective": "Ship Slice B metrics diff with tests and evidence",
     "success_criteria": [
-      "Archive unpacked under integrations/new_feature_20251017T033137Z/ with checksum log",
-      "Summary markdown describing new modules, dependencies, and merge touchpoints is produced",
-      "Risks and required tests captured for downstream tasks"
-    ],
-    "est_minutes": 75,
-    "budget": { "tokens": 7500 },
-    "dependencies": [],
-    "target_paths": [
-      "integrations/new_feature_20251017T033137Z/",
-      "reports/runs/20251017T033137Z/task_feature_pack_audit/"
-    ]
-  },
-  {
-    "id": "task_docs_alignment",
-    "title": "Align top-level docs with feature pack",
-    "objective": "Update README, docs/NORTH_STAR.md, docs/roadmap.md to include Publer integration, Chatwoot health check, and launch priorities informed by the audit.",
-    "success_criteria": [
-      "README communication, setup, and verification sections mention Publer + health check",
-      "docs/NORTH_STAR.md reflects latest objectives, ownership, and success metrics",
-      "plans/roadmap.md and docs/roadmap.md entries synced; risks and dependencies referenced"
+      "Slice B PR ≤50 files with ROAS/CPA coverage",
+      "Feedback updated with commands and results"
     ],
     "est_minutes": 60,
-    "budget": { "tokens": 6000 },
-    "dependencies": ["task_feature_pack_audit"],
-    "target_paths": [
-      "README.md",
-      "docs/NORTH_STAR.md",
-      "docs/roadmap.md",
-      "plans/roadmap.md"
-    ]
+    "target_paths": ["app/lib/ads/**", "tests/unit/ads/**", "feedback/ads/2025-10-17.md"],
+    "linked_agent": "ads"
   },
   {
-    "id": "task_direction_sync",
-    "title": "Refresh agent direction boards",
-    "objective": "Rewrite all docs/directions/*.md using the updated template so each agent has 15-20 launch-aligned tasks and feedback hygiene reminder.",
+    "id": "ai_customer_ci_stub",
+    "title": "Stub AI-Customer edge logger",
+    "objective": "Keep npm run test:ci green by stubbing Supabase edge logger",
     "success_criteria": [
-      "Each direction file uses template sections (Objective, Current Tasks, Constraints, DoD, Risk & Rollback, Links)",
-      "Tasks reflect prioritized blockers removal and launch-critical work",
-      "Final tasks instruct feedback logging and doc cleanup"
-    ],
-    "est_minutes": 90,
-    "budget": { "tokens": 8500 },
-    "dependencies": ["task_docs_alignment"],
-    "target_paths": [
-      "docs/directions/**/*.md",
-      "feedback/**"
-    ]
-  },
-  {
-    "id": "task_direction_engineer",
-    "title": "Refresh Engineer direction",
-    "objective": "Rewrite docs/directions/engineer.md using the new template with 15-20 tasks covering AppProvider harness, idea pool UI, Publer workflow, and QA partnership.",
-    "success_criteria": [
-      "Objective, Current Tasks, Constraints, DoD, Risk & Rollback, Links sections populated",
-      "Task list sequences blocker removal first, ends with feedback hygiene reminder",
-      "Changelog updated for 2025-10-17 and formatting runs through prettier"
+      "Edge logger stub merged with tests",
+      "feedback/ai-customer/2025-10-17.md records rerun output"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/engineer.md",
-      "feedback/engineer/**"
-    ]
+    "target_paths": ["app/agents/customer/**", "feedback/ai-customer/2025-10-17.md"],
+    "linked_agent": "ai-customer"
   },
   {
-    "id": "task_direction_devops",
-    "title": "Refresh DevOps direction",
-    "objective": "Update docs/directions/devops.md with launch-critical tasks (Supabase apply, Fly deploy rehearsal, secret automation, health pipelines).",
+    "id": "ai_knowledge_credentials",
+    "title": "Provision knowledge ingestion creds",
+    "objective": "Document OpenAI + Supabase credentials and approvals",
     "success_criteria": [
-      "Template sections filled with current priorities",
-      "Tasks cover migrations, deploy workflow gates, health checks, backups, feedback hygiene",
-      "Changelog notes the 2025-10-17 update"
+      "vault/rotation_log.md updated",
+      "feedback/ai-knowledge/2025-10-17.md logs credential hand-off"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/devops.md",
-      "feedback/devops/**"
-    ]
+    "target_paths": ["feedback/ai-knowledge/2025-10-17.md", "vault/rotation_log.md"],
+    "linked_agent": "ai-knowledge"
   },
   {
-    "id": "task_direction_data",
-    "title": "Refresh Data direction",
-    "objective": "Rewrite docs/directions/data.md to capture Supabase migrations, RLS tests, backfill jobs, and analytics feed responsibilities.",
+    "id": "analytics_migration_window",
+    "title": "Schedule analytics migration window",
+    "objective": "Secure staging + production apply windows for analytics migrations",
     "success_criteria": [
-      "Template sections filled with north-star alignment",
-      "15-20 tasks sequenced, ending with feedback hygiene",
-      "Formatting validated via prettier"
+      "Apply schedule documented in docs/specs/analytics_pipeline.md",
+      "feedback/analytics/2025-10-17.md captures plan"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/data.md",
-      "feedback/data/**"
-    ]
+    "target_paths": ["docs/specs/analytics_pipeline.md", "feedback/analytics/2025-10-17.md"],
+    "linked_agent": "analytics"
   },
   {
-    "id": "task_direction_qa",
-    "title": "Refresh QA direction",
-    "objective": "Rewrite docs/directions/qa.md with AppProvider harness pairing, Playwright/axe reinstatement, health report automation, and feedback hygiene.",
+    "id": "content_launch_brief",
+    "title": "Finalize content brief",
+    "objective": "Populate metrics and copy approvals for launch brief",
     "success_criteria": [
-      "Template sections updated",
-      "Task list focuses on harness, test reinstatement, smoke runs, report automation, and ends with feedback item",
-      "Changelog updated to 2025-10-17"
+      "docs/specs/content_pipeline.md updated",
+      "feedback/content/2025-10-17.md logs metrics + approvals"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/qa.md",
-      "feedback/qa/**"
-    ]
+    "target_paths": ["docs/specs/content_pipeline.md", "feedback/content/2025-10-17.md"],
+    "linked_agent": "content"
   },
   {
-    "id": "task_direction_analytics",
-    "title": "Refresh Analytics direction",
-    "objective": "Update docs/directions/analytics.md with KPI instrumentation, sampling guard proof, tile validation, and feedback hygiene.",
+    "id": "data_prod_migration",
+    "title": "Execute production data migration",
+    "objective": "Coordinate and apply inventory/analytics migrations with rollback evidence",
     "success_criteria": [
-      "Template structure applied",
-      "Tasks emphasize collaboration with engineer/data and include feedback log item",
-      "Formatting verified"
+      "Apply logs stored in artifacts",
+      "feedback/data/2025-10-17.md updated with results"
+    ],
+    "est_minutes": 60,
+    "target_paths": ["supabase/migrations/**", "feedback/data/2025-10-17.md"],
+    "linked_agent": "data"
+  },
+  {
+    "id": "designer_microcopy_signoff",
+    "title": "Secure microcopy sign-off",
+    "objective": "Review production microcopy/responsive specs with stakeholders",
+    "success_criteria": [
+      "docs/design/approvals_microcopy.md approved",
+      "feedback/designer/2025-10-17.md notes sign-off"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/analytics.md",
-      "feedback/analytics/**"
-    ]
+    "target_paths": ["docs/design/approvals_microcopy.md", "feedback/designer/2025-10-17.md"],
+    "linked_agent": "designer"
   },
   {
-    "id": "task_direction_integrations",
-    "title": "Refresh Integrations direction",
-    "objective": "Rewrite docs/directions/integrations.md so tasks cover Publer adapter, Chatwoot health API, Shopify pipelines, and vault alignment.",
+    "id": "devops_ci_billing",
+    "title": "Resolve CI billing + drift sweeps",
+    "objective": "Restore GitHub Actions and automate daily drift sweeps",
     "success_criteria": [
-      "Template sections updated with constraints and links",
-      "Task list drives API coverage, tests, secrets, feedback hygiene",
-      "Changelog updated"
+      "billing issue closed and workflows rerun",
+      "drift sweep script documented and logged"
     ],
     "est_minutes": 45,
-    "budget": { "tokens": 5000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/integrations.md",
-      "feedback/integrations/**"
-    ]
+    "target_paths": ["docs/runbooks/ci_billing_recovery.md", "feedback/devops/2025-10-17.md"],
+    "linked_agent": "devops"
   },
   {
-    "id": "task_direction_product",
-    "title": "Refresh Product direction",
-    "objective": "Rewrite docs/directions/product.md focusing on launch checklist, CEO packet, idea pool governance, and feedback hygiene.",
+    "id": "engineer_playwright_tagging",
+    "title": "Finalize Playwright tagging",
+    "objective": "Align Engineer + QA on Playwright routes and accessibility fixes",
     "success_criteria": [
-      "Current Tasks reflect roadmap alignment and cross-agent coordination",
-      "Template sections populated and changelog updated",
-      "Ends with feedback hygiene task"
+      "tests/playwright/** updated",
+      "feedback/engineer/2025-10-17.md records QA sign-off"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/product.md",
-      "feedback/product/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["tests/playwright/**", "feedback/engineer/2025-10-17.md"],
+    "linked_agent": "engineer"
   },
   {
-    "id": "task_direction_content",
-    "title": "Refresh Content direction",
-    "objective": "Update docs/directions/content.md with Publer workflow messaging, idea briefs, approvals, and feedback hygiene.",
+    "id": "integrations_live_mode",
+    "title": "Prep integrations live mode",
+    "objective": "Document feature flags and tests for enabling live Supabase calls",
     "success_criteria": [
-      "Template applied",
-      "Task list spans drafting, Publer coordination, analytics alignment, and feedback logging",
-      "Formatting checked"
+      "Runbook updated with activation steps",
+      "feedback/integrations/2025-10-17.md logs readiness"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/content.md",
-      "feedback/content/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["tests/integration/idea-pool.api.spec.ts", "feedback/integrations/2025-10-17.md"],
+    "linked_agent": "integrations"
   },
   {
-    "id": "task_direction_seo",
-    "title": "Refresh SEO direction",
-    "objective": "Rewrite docs/directions/seo.md capturing anomaly response, idea pool briefs, Publer coordination, and feedback hygiene.",
+    "id": "inventory_rollout",
+    "title": "Inventory rollout execution",
+    "objective": "Coordinate inventory migration rollout and Support training",
     "success_criteria": [
-      "Template sections populated",
-      "Tasks reference analytics + content dependencies and end with feedback logging",
-      "Changelog updated"
+      "Staging -> production apply logs stored",
+      "feedback/inventory/2025-10-17.md documents Support hand-off"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/seo.md",
-      "feedback/seo/**"
-    ]
+    "est_minutes": 60,
+    "target_paths": ["supabase/migrations/**", "feedback/inventory/2025-10-17.md"],
+    "linked_agent": "inventory"
   },
   {
-    "id": "task_direction_ads",
-    "title": "Refresh Ads direction",
-    "objective": "Update docs/directions/ads.md with Publer/idea campaign alignment, analytics instrumentation, and feedback hygiene.",
+    "id": "manager_escalations",
+    "title": "Close sandbox escalation",
+    "objective": "Resolve sandbox write issue and relaunch automation lanes",
     "success_criteria": [
-      "Template applied with updated constraints and DoD",
-      "Task list coordinates with analytics/content/support and ends with feedback item",
-      "Changelog updated"
+      "Escalation closed with owner/date",
+      "reports/manager/ESCALATION.md updated"
     ],
     "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/ads.md",
-      "feedback/ads/**"
-    ]
+    "target_paths": ["reports/manager/ESCALATION.md", "feedback/manager/2025-10-17.md"],
+    "linked_agent": "manager"
   },
   {
-    "id": "task_direction_support",
-    "title": "Refresh Support direction",
-    "objective": "Rewrite docs/directions/support.md to focus on Chatwoot monitoring, knowledge handoffs, Publer escalations, and feedback hygiene.",
+    "id": "product_launch_comms",
+    "title": "Finalize launch comms",
+    "objective": "Deliver stakeholder comms with current blockers and metrics",
     "success_criteria": [
-      "Template sections updated",
-      "Tasks include health checks, escalation loops, knowledge updates, and feedback logging",
-      "Formatting via prettier"
+      "docs/specs/stakeholder_comms.md updated",
+      "feedback/product/2025-10-17.md notes distribution"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/support.md",
-      "feedback/support/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["docs/specs/stakeholder_comms.md", "feedback/product/2025-10-17.md"],
+    "linked_agent": "product"
   },
   {
-    "id": "task_direction_inventory",
-    "title": "Refresh Inventory direction",
-    "objective": "Update docs/directions/inventory.md with ROP automation, Supabase views, Shopify sync, and feedback hygiene.",
+    "id": "qa_accessibility_run",
+    "title": "Run accessibility suite",
+    "objective": "Execute npm run test:a11y and publish QA report",
     "success_criteria": [
-      "Template applied",
-      "Tasks prioritize data dependencies, experiments, and feedback logging",
-      "Changelog updated"
+      "Accessibility report attached to feedback",
+      "QA daily report published"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/inventory.md",
-      "feedback/inventory/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["tests/playwright/**", "feedback/qa/2025-10-17.md"],
+    "linked_agent": "qa"
   },
   {
-    "id": "task_direction_ai_customer",
-    "title": "Refresh AI Customer direction",
-    "objective": "Rewrite docs/directions/ai-customer.md to emphasize drafting workflows, tone learning via Publer/Chatwoot, and feedback hygiene.",
+    "id": "seo_recommendations",
+    "title": "Publish SEO HITL recommendations",
+    "objective": "Review anomaly doc with Product and submit HITL-approved recommendations",
     "success_criteria": [
-      "Template sections filled with constraints (MCP tools, datasets)",
-      "Tasks include drafting, tone training, escalation, and feedback logging",
-      "Changelog updated"
+      "docs/specs/seo_anomaly_triage.md updated",
+      "feedback/seo/2025-10-17.md logs recommendations"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/ai-customer.md",
-      "feedback/ai-customer/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["docs/specs/seo_anomaly_triage.md", "feedback/seo/2025-10-17.md"],
+    "linked_agent": "seo"
   },
   {
-    "id": "task_direction_ai_knowledge",
-    "title": "Refresh AI Knowledge direction",
-    "objective": "Update docs/directions/ai-knowledge.md with knowledge base upkeep, Publer/Chatwoot insights ingestion, and feedback hygiene.",
+    "id": "support_webhook_tests",
+    "title": "Finalize support webhook tests",
+    "objective": "Complete webhook retry coverage and runbook update",
     "success_criteria": [
-      "Template applied with constraints and links",
-      "Task list includes ingestion, evals, approvals, and feedback logging",
-      "Changelog updated"
+      "tests/integration/support.webhook.spec.ts green",
+      "docs/runbooks/support_webhooks.md updated"
     ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/ai-knowledge.md",
-      "feedback/ai-knowledge/**"
-    ]
-  },
-  {
-    "id": "task_direction_designer",
-    "title": "Refresh Designer direction",
-    "objective": "Rewrite docs/directions/designer.md focusing on publer UI assets, dark mode tokens, diagnostics panel, and feedback hygiene.",
-    "success_criteria": [
-      "Template sections updated",
-      "Tasks align with launch visuals, QA pairing, and feedback logging",
-      "Changelog updated"
-    ],
-    "est_minutes": 30,
-    "budget": { "tokens": 4000 },
-    "dependencies": ["task_direction_sync"],
-    "target_paths": [
-      "docs/directions/designer.md",
-      "feedback/designer/**"
-    ]
+    "est_minutes": 45,
+    "target_paths": ["tests/integration/support.webhook.spec.ts", "feedback/support/2025-10-17.md"],
+    "linked_agent": "support"
   }
 ]

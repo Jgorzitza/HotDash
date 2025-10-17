@@ -1,61 +1,59 @@
 # SEO Direction
 
-- **Owner:** Manager Sub-Agent
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-17
-- **Version:** 1.0
+- **Version:** 2.0
 
 ## Objective
 
-Deliver end-to-end SEO operations for anomaly response, idea-pool briefs, Publer keyword alignment, and feedback hygiene with documented evidence across Supabase, Lighthouse, and GA4 touchpoints.
+Deliver production-ready SEO monitoring and HITL recommendations with clear evidence, anomaly triage, and rollback guidance.
 
-## Current Tasks
+## Tasks
 
-1. Validate SEO anomaly alerts (`app/lib/seo/diagnostics.ts`) against Supabase data; document results.
-2. Produce keyword briefs for each idea pool suggestion (including wildcard) and store in `docs/specs/seo_pipeline.md`.
-3. Align Publer first-comment keywords with analytics KPIs; update `docs/specs/seo_backlog.md`.
-4. Draft meta title/description templates for upcoming campaigns; attach examples.
-5. Refresh structured data/JSON-LD guidance in `docs/specs/frontend_overview.md` for idea pool items.
-6. Collaborate with Content to ensure tone + SEO guidelines aligned; capture notes in feedback.
-7. Create SEO QA checklist for dashboard and idea pool pages and store in `docs/specs/seo_pipeline.md`.
-8. Run lighthouse/SEO audits on staging build; attach report.
-9. Monitor Publer post performance vs SEO KPIs; summarise weekly in feedback.
-10. Build FAQ schema suggestions for support knowledge base updates; log deliverable.
-11. Ensure analytics sampling guards include SEO metrics; coordinate with Analytics.
-12. Update `docs/specs/seo_backlog.md` prioritisation, owner, status.
-13. Document fallback plan for SERP anomaly (escalation path) in `docs/runbooks/logging.md` or dedicated SEO runbook.
-14. Validate canonical URLs + sitemap updates for new pages; log audit results.
-15. Prepare post-launch SEO retrospective template capturing metrics and experiments.
-16. Write feedback to `feedback/seo/2025-10-17.md` and clean stray md files.
+1. Draft SEO anomaly triage doc referencing Supabase views and alerts; keep it updated.
+2. Provide HITL-ready SEO recommendations with evidence (search console, analytics) and approvals payloads.
+3. Work with Ads/Content to avoid keyword cannibalization across campaigns.
+4. Run web vitals adapter tests and log results.
+5. Write feedback to `feedback/seo/2025-10-17.md` and clean up stray md files.
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `node`, `npm`, `npx prettier`, `lighthouse`, `rg`
-- **Touched Directories:** `docs/directions/seo.md`
-- **Budget:** ≤ 30 minutes runtime, ≤ 4,000 tokens, ≤ 3 files modified or staged
-- **Guardrails:** Restrict edits to the SEO direction file; protect analytics and Publer credentials.
+- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/lib/seo/**`, `docs/specs/seo_pipeline.md`, `docs/specs/seo_anomaly_triage.md`, `feedback/seo/2025-10-17.md`
+- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
+- **Guardrails:** HITL approvals required for SEO changes; evidence mandatory.
 
 ## Definition of Done
 
-- [ ] Objective satisfied with documented anomaly validation, keyword briefs, Publer alignment, and feedback hygiene.
-- [ ] `npm run fmt` and `npm run lint` executed with attached proof.
-- [ ] `npm run test:ci` (or equivalent SEO validation suite) executed with artefacts recorded.
-- [ ] `npm run scan` (secrets) produces a clean report.
-- [ ] Lighthouse, GA4, and Supabase evidence linked in specs/runbooks as updates land.
-- [ ] Feedback entry written to `feedback/seo/2025-10-17.md` with blockers and follow-ups.
+- [ ] Anomaly triage doc updated
+- [ ] Web vitals adapter tests executed
+- [ ] `npm run fmt` and `npm run lint`
+- [ ] `npm run test:ci`
+- [ ] `npm run scan`
+- [ ] Docs updated with recommendations
+- [ ] Feedback entry completed
+- [ ] Contract test passes
+
+## Contract Test
+
+- **Command:** `npx vitest run tests/unit/seo.web-vitals.spec.ts`
+- **Expectations:** Web vitals adapter returns expected metrics.
 
 ## Risk & Rollback
 
-- **Risk Level:** Low — misaligned SEO responses could dampen traffic lift and reporting accuracy.
-- **Rollback Plan:** Revert task outputs and restore prior docs via `git checkout -- <file>` before staging.
-- **Monitoring:** Track Supabase anomaly flags, GA4 KPI deltas, Lighthouse scores, and Publer keyword performance.
+- **Risk Level:** Medium — Poor SEO guidance harms traffic; mitigated by HITL.
+- **Rollback Plan:** Revert recommendations, update triage doc, monitor metrics.
+- **Monitoring:** SEO anomaly dashboards, web vitals telemetry.
 
 ## Links & References
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
 - Feedback: `feedback/seo/2025-10-17.md`
-- Specs / Runbooks: `docs/specs/seo_pipeline.md`, `docs/specs/seo_backlog.md`, `docs/specs/frontend_overview.md`, `docs/runbooks/logging.md`, `docs/specs/analytics_pipeline.md`
+- Specs / Runbooks: `docs/specs/seo_pipeline.md`, `docs/specs/seo_anomaly_triage.md`
 
 ## Change Log
 
-- 2025-10-17: Version 1.0 – Template rewrite with SEO launch tasks.
+- 2025-10-17: Version 2.0 – Production triage + recommendation flow
+- 2025-10-16: Version 1.0 – Direction refreshed awaiting scope
