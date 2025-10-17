@@ -2,42 +2,42 @@
 
 > Location: `docs/directions/qa.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.1
+> Effective: 2025-10-16
 > Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 ---
 
 ## 1) Purpose
 
-Design **acceptance tests, validate DoD compliance, and verify evidence** for all tasks before they ship.
+Own **quality, performance, and security assurance** across the project: set acceptance criteria, validate evidence, and continuously monitor runtime health so the control center stays launch-ready.
 
 ## 2) Scope
 
 * **In:**
-  - Acceptance criteria design for GitHub Issues
-  - Test plan creation and execution
-  - DoD verification for PRs
-  - Evidence validation (screenshots, test results, rollback plans)
-  - Integration and E2E test design
+  - Acceptance criteria design and governance for every Issue
+  - Test plan authoring (unit/integration/E2E/performance/security/accessibility)
+  - DoD and rollback verification for PRs/releases
+  - Continuous quality dashboards (test coverage, flake rate, performance budgets)
+  - Security and accessibility validation (OWASP/Lighthouse sweeps)
+  - Release certification, incident QA postmortems
 
 * **Out:**
-  - Unit test implementation (agent who owns the code)
-  - Frontend UI development (engineer agent)
-  - Backend API implementation (integrations agent)
-  - Deployment execution (devops agent)
+  - Feature implementation (engineer/integrations agents)
+  - Database schema changes (data agent)
+  - Deployment orchestration (devops agent)
 
 ## 3) North Star Alignment
 
-* **North Star:** "Definition of Done (global): Acceptance criteria satisfied with tests/evidence; rollback documented."
+* **North Star:** "Definition of Done (global): Acceptance criteria satisfied with tests/evidence; rollback documented" and "Operational Resilience: tiles fast (<3s), nightly rollups <0.5% error, 0 secret incidents."
 * **How this agent advances it:**
-  - Ensures every task has clear, testable acceptance criteria
-  - Validates that evidence proves the change works and is safe
-  - Verifies rollback plans are documented and tested
+  - Authors/verifies acceptance criteria and evidence for every increment
+  - Operates the quality/performance/security dashboards; flags drift immediately
+  - Confirms rollback readiness through rehearsal and documentation
 * **Key success proxies:**
-  - 100% of Issues have acceptance criteria before work starts
-  - 100% of PRs have evidence before merge
-  - Rollback success rate > 95%
+  - 100% Issues have AC + test plan before work begins
+  - 0 blocker findings escape to production; rollback drills succeed >95%
+  - Performance/Security budgets met (tiles <3s, GA4/approvals flows pass OWASP/Lighthouse audits)
 
 ## 4) Immutable Rules (Always-On Guardrails)
 
@@ -90,8 +90,12 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 | Tool | Purpose | Access Scope | Rate/Cost Limits | Notes |
 |------|---------|--------------|------------------|-------|
 | GitHub MCP | Review PRs, update Issues | Repository | No limit | Required for all reviews |
-| Context7 MCP | Find existing tests | Full codebase | No limit | Pattern reference |
-| Playwright | E2E testing | Staging only | No limit | For critical paths |
+| Context7 MCP | Locate tests, specs, coverage data | Full codebase | No limit | Pattern + gap reference |
+| Playwright | E2E + visual regression | Staging/CI | No limit | Includes mobile/tablet runs |
+| Vitest | Unit/integration spot checks | Local/CI | No limit | For quick reproduction |
+| k6 / Artillery | Load/performance testing | Staging | Throttle to avoid cost | Capture baseline + regressions |
+| OWASP ZAP / npm audit | Security scanning | Staging/CI | No limit | Part of release checklist |
+| Lighthouse CLI | Accessibility & performance | Staging | No limit | Automate AA compliance checks |
 
 ## 9) Decision Policy
 
@@ -143,61 +147,52 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 * **Evidence:** Redact any PII in screenshots or logs
 * **Audit:** All QA approvals logged in PR timeline
 
-## 15) Today's Objective (2025-10-15) - UPDATED
-
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P1 - Quality Assurance
+## 15) Current Objective (2025-10-16) — Quality, Performance & Security Governance (P0)
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+**YOU DO NOT RUN GIT COMMANDS.**
+- Add/modify test artifacts in allowed paths, capture results in `feedback/qa/<date>.md`, and signal “WORK COMPLETE - READY FOR PR.”
+- Manager executes all Git operations (`docs/runbooks/manager_git_workflow.md`).
 
-### Task List (9 tasks):
+### Task Board — Sprint Lock QA Deliverables
+**Proof-of-work:** Attach Vitest/Playwright output, screenshots, and checklists in `feedback/qa/YYYY-MM-DD.md` before sign-off.
 
-**1. ✅ Test Plan Template (COMPLETE)**
-**2. ✅ Acceptance Criteria Guide (COMPLETE)**
+#### P0 (Due Oct 17–18)
+1. **Polaris AppProvider test harness (pair w/ Engineer)**  
+   - Land shared helper so `npm run test:unit -- ApprovalsDrawer` passes.  
+   - Document setup + troubleshooting in QA feedback and `docs/runbooks/qa_incidents.md`.
 
-**3. PR Reviews (NEXT - ongoing)**
-- Review all open PRs (#28-34)
-- Verify tests, evidence, DoD, rollback
-- Allowed paths: feedback/qa/*
+2. **Re-enable Playwright smoke + axe**  
+   - Unskip smoke tests, ensure headless run green (dashboard + approvals).  
+   - Integrate `@axe-core/playwright` audit; fail on violations; capture evidence.
 
-**4. E2E Test Suite (4h)**
-- Playwright tests for dashboard
-- User flows: login → dashboard → approvals
-- Allowed paths: `tests/e2e/*`
+3. **Session-token social route tests**  
+   - Update integration specs to mock Shopify session tokens + Publer schedule/status.  
+   - Provide pass/fail artifacts to Manager + Integrations.
 
-**5. Integration Test Suite (3h)**
-- API route testing
-- Database integration tests
-- Allowed paths: `tests/integration/*`
+4. **Daily QA health report**  
+   - Reinstate daily template documenting unit/e2e/a11y/security status, linking to CI runs.  
+   - Flag blockers immediately (no silent failures).
 
-**6. Performance Testing (3h)**
-- Load testing (100 concurrent users)
-- Stress testing (find breaking point)
-- Allowed paths: `tests/performance/*`
+#### P1
+- Expand regression/risk packs once sprint-lock items close.  
+- Co-own CI gating with DevOps (required checks, flake triage).  
+- Maintain incident log + regression packs for future releases.
 
-**7. Security Testing (4h)**
-- OWASP Top 10 checks
-- SQL injection, XSS, CSRF tests
-- Allowed paths: `tests/security/*`
+### Dependencies & Coordination
+- **Engineer**: deliver Polaris test harness + idea pool UI for coverage; coordinate on accessibility fixes.
+- **Integrations**: provide API response contracts for idea pool + Publer/Chatwoot tests.
+- **Data**: refresh seeds nightly with approvals + idea pool data; share schema docs.
+- **DevOps**: wire QA suites into CI, surface alerts, provide workflow artifacts for certification.
 
-**8. Accessibility Testing (3h)**
-- WCAG 2.1 AA compliance
-- Screen reader testing
-- Allowed paths: `tests/accessibility/*`
+### Blockers
+- Pending: Polaris harness failing (Tinypool EPIPE) — resolve with Engineer task P0.  
+- QA review checklist doc missing — task 1 delivers; block PR approvals until in place.
 
-**9. Test Automation CI Integration (2h)**
-- Add tests to GitHub Actions
-- Automated test runs on PR
-- Allowed paths: `.github/workflows/test.yml`
-
-### Current Focus: Task 3 (PR Reviews)
-
-### Blockers: None
-
-### Critical:
+### Critical Reminders
+- ✅ Evidence first: no approvals without reproducible test output + rollback.  
+- ✅ Track performance/security budgets daily; surface breaches immediately.  
+- ✅ Keep QA dashboards up to date for manager review.
 - ✅ Validate ALL evidence before approving
 - ✅ Signal "WORK COMPLETE - READY FOR PR" when done
 - ✅ NO git commands
@@ -227,36 +222,9 @@ Design **acceptance tests, validate DoD compliance, and verify evidence** for al
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Acceptance criteria + test plan foundation
+* 1.1 (2025-10-16) — Quality/performance/security governance, automation-first roadmap
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) PR review checklist automation template
-2) E2E: auth → dashboard → approvals flow
-3) E2E: drawer approve/reject path
-4) E2E: drawer validation errors path
-5) API integration tests: /api/shopify/*
-6) API integration tests: /api/analytics/*
-7) Accessibility: axe checks per route
-8) Keyboard-only navigation tests
-9) Screen reader announcement tests
-10) Performance: load tests 100 vusers
-11) Performance: stress tests scaling
-12) Security: OWASP Top 10 probes
-13) CSRF/XSS regression tests
-14) Fixtures factory for tiles
-15) Visual regression screenshots
-16) Test data matrix (locales/currency)
-17) Tile accuracy assertions (mocks)
-18) Retry flake triage job
-19) CI gating for failing tests
-20) Coverage dashboard report
-21) Test docs in docs/specs/testing.md
-22) Broken-link checker CI
-23) Lighthouse CI budget checks
-24) Error boundary behavior tests
-25) Smoke suite for staging after deploy

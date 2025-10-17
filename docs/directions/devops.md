@@ -2,8 +2,8 @@
 
 > Location: `docs/directions/devops.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.1
+> Effective: 2025-10-16
 > Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 ---
@@ -93,6 +93,8 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 | Fly.io MCP | Deploy, check status, view logs | All apps | No limit | Use for deployments |
 | GitHub MCP | Manage workflows, secrets | Repository | No limit | Required for CI work |
 | Gitleaks | Secret scanning | Repository | No limit | Required for security |
+| Supabase CLI | Manage backups/restore | Supabase project | No limit | Used for scheduled dumps |
+| Prometheus/Grafana bundle | Metrics collection & dashboards | Fly private apps | No limit | Self-hosted observability stack |
 
 ## 9) Decision Policy
 
@@ -144,60 +146,51 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 * **Forbidden:** Secrets in code, logs, or CI output
 * **Masking/redaction rules:** GitHub Actions auto-masks secrets; verify in logs
 
-## 15) Today's Objective (2025-10-15) - UPDATED
-
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
+## 15) Current Objective (2025-10-16) — Production Stability (P0)
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+**YOU DO NOT RUN GIT COMMANDS.**  
+Author changes in allowed paths, capture evidence in `feedback/devops/<date>.md`, and mark “WORK COMPLETE - READY FOR PR.” Manager handles branches, commits, pushes, and PR creation (`docs/runbooks/manager_git_workflow.md`).
 
-### Task List (9 tasks):
+### Task Board — Sprint Lock Alignment
+**Proof-of-work:** attach CLI logs, workflow URLs, and screenshots in `feedback/devops/YYYY-MM-DD.md` before handing off.
 
-**1. ✅ CI Health + Staging Deployment (COMPLETE - PR #27 MERGED)**
+1. **Apply Supabase migrations to staging (Due Oct 17)**  
+   - Pair with Data to run `supabase link` + `supabase db push`.  
+   - Execute `supabase/rls_tests.sql`; capture pass/fail plus rollback dry run (`supabase/rollback.sql`).  
+   - Update `docs/runbooks/data_change_log.md` with timestamps, evidence, and rollback plan.
 
-**2. Production Deployment Workflow (NEXT - 3h)**
-- Manual workflow_dispatch, health checks, auto-rollback
-- Allowed paths: `.github/workflows/deploy-production.yml`
+2. **Configure secrets + enable workflows (Due Oct 17)**  
+   - Ensure GitHub/Fly secrets for `SUPABASE_*`, `PUBLER_API_KEY`, `PUBLER_WORKSPACE_ID`, `SHOPIFY_*`, `SLACK_WEBHOOK_URL` exist.  
+   - Commit `scripts/verify_secrets.sh` and add to CI as a required step.  
+   - Activate `.github/workflows/health-check.yml`, `workflow-smoke.yml`, and ensure required checks align with `repo-config/branch_protection.md`.
 
-**3. Rollback Workflow (2h)**
-- Manual rollback < 2 minutes
-- Allowed paths: `.github/workflows/rollback-production.yml`
+3. **Fly.io staging deploy rehearsal (Due Oct 18)**  
+   - Trigger staging workflow (`deploy-staging-flyio.yml`), confirm green deploy + health checks.  
+   - Document outcome, attach Fly logs, and chain to QA for smoke validation.
 
-**4. Health Check Monitoring (2h)**
-- Endpoint monitoring, alerting
-- Allowed paths: `.github/workflows/health-check.yml`
+4. **Branch protection confirmation (Due Oct 18)**  
+   - Update branch protection settings per `repo-config/branch_protection.md` and CODEOWNERS.  
+   - Provide screenshot + CLI confirmation (`gh api repos/:owner/:repo/branches/main/protection`).
 
-**5. Prometheus Metrics Setup (3h)**
-- Metrics endpoints, dashboards
-- Allowed paths: `app/metrics/*, prometheus.yml`
+5. **Partner dry-run readiness support (Due Oct 19)**  
+   - Collect artifacts (migration evidence, secrets verification, staging deploy logs) for final checklist with Manager + QA.
+### Dependencies & Coordination
+- **Engineer** needs health-check artifact format + metrics endpoint contract after Task 3.
+- **Integrations** provides Publer smoke expectations and idea pool RPC readiness for migration rollouts.
+- **Data** supplies latest migrations + fixture SQL; coordinate on staging apply windows.
+- **QA** consumes workflow evidence for certification; align on incident response doc.
+- Use secrets from `vault/occ/**` directly; never copy to repo.
 
-**6. Log Aggregation (2h)**
-- Structured logs, centralized collection
-- Allowed paths: `app/lib/logger.ts`
+### Blockers
+- Health workflow currently sees Chatwoot `/rails/health` 404; confirm acceptable fallback with Support/Integrations before enforcing.
+- Await staging window from Data to apply migrations; log scheduling update in feedback.
 
-**7. Alerting (PagerDuty/Slack) (2h)**
-- Critical alerts, escalation
-- Allowed paths: `.github/workflows/alert.yml`
-
-**8. Backup and Restore Procedures (3h)**
-- Database backups, restore testing
-- Allowed paths: `scripts/backup/*`
-
-**9. Disaster Recovery Plan (2h)**
-- Runbook for major incidents
-- Allowed paths: `docs/runbooks/disaster_recovery.md`
-
-### Current Focus: Task 2 (Production Deployment)
-
-### Blockers: None
-
-### Critical:
-- ✅ Use Fly.io MCP for deployments
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
+### Critical Reminders
+- ✅ All notifications go to justin@hotrodan.com—verify before merge.  
+- ✅ Self-host Grafana/Prometheus; no third-party log/metric services.  
+- ✅ Backups run weekly; test restores quarterly.  
+- ✅ Secrets never land in tracked files; use scripts to sync directly into GitHub/Fly.
 - ✅ Manual approval for production
 
 ## 16) Examples
@@ -224,36 +217,9 @@ Maintain **CI/CD pipelines, deployment infrastructure, and observability** to en
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: CI health + staging deployment setup
+* 1.1 (2025-10-16) — Production workflow hardening, self-hosted observability, backups, secret sync automation
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) deploy-production.yml (manual, health checks, rollback)
-2) rollback-production.yml (fast rollback)
-3) health-check workflow (synthetic probes)
-4) Prometheus metrics endpoint
-5) Grafana dashboard (tiles perf, error rates)
-6) Structured logging (request_id, user_id, latency)
-7) Central log collector config
-8) Alerting to Slack/PagerDuty
-9) SLO definitions (tile P95, rollup error rate)
-10) Secrets management policy
-11) CI caching for faster builds
-12) Branch protection updates
-13) Danger rules for Allowed paths enforcement
-14) Docs policy CI improvements
-15) Gitleaks pre-commit hook docs
-16) Backup scripts (DB + files)
-17) Restore drills (quarterly)
-18) Disaster recovery runbook
-19) Staging/prod parity check script
-20) Blue/green deployment exploration
-21) Canary deploy experiment
-22) Rollback verification job
-23) Chaos monkey (controlled)
-24) Cost monitoring (build minutes)
-25) Runbooks for common incidents

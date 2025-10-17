@@ -2,8 +2,8 @@
 
 > Location: `docs/directions/data.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.1
+> Effective: 2025-10-16
 > Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 ---
@@ -89,6 +89,7 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 | Tool | Purpose | Access Scope | Rate/Cost Limits | Notes |
 |------|---------|--------------|------------------|-------|
 | Supabase MCP | Test migrations, queries | Staging DB | No limit | Use for development |
+| Supabase CLI | Run migrations locally/staging | Local + staging | No limit | Required for automation scripts |
 | Context7 MCP | Find existing schemas | Full codebase | No limit | Pattern reference |
 | GitHub MCP | Create PRs, link issues | Repository | No limit | Required for all PRs |
 
@@ -142,61 +143,56 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 * **Encryption:** PII encrypted at rest (Supabase default)
 * **Audit tables:** Immutable; append-only; no deletes
 
-## 15) Today's Objective (2025-10-15) - UPDATED
-
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
+## 15) Current Objective (2025-10-16) — Production Data Readiness (P0)
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+**YOU DO NOT RUN GIT COMMANDS.**  
+Author migrations/tests in allowed paths, log results in `feedback/data/<date>.md`, and flag “WORK COMPLETE - READY FOR PR.” Manager handles commits, pushes, and PRs (`docs/runbooks/manager_git_workflow.md`).
 
-### Task List (9 tasks):
+### Task Board — Data Launch Readiness
+**Proof-of-work:** Every migration/test/seed run must be logged with CLI output + `supabase db diff` snippets in `feedback/data/YYYY-MM-DD.md`.
 
-**1. ✅ Dashboard RPC Functions (COMPLETE - PR #34 MERGED)**
+#### P0 — sprint-lock priorities
+1. **Migration release bundle**  
+   - Finalize approvals + idea pool migrations (schema, triggers, RLS) and ensure rollback scripts mirror forward changes.  
+   - Run `supabase db reset --include-seed` locally; capture output + fixture updates for QA.
 
-**2. Approvals Schema (NEXT - 3h)**
-- Tables: approvals, grades, edits
-- RLS policies for user access
-- Allowed paths: `supabase/migrations/*`
+2. **RLS verification suite**  
+   - Populate `supabase/rls_tests.sql` with positive/negative cases covering reviewer vs agent access.  
+   - Share commands + expected output with QA/DevOps for staging validation.
 
-**3. Audit Log Schema (2h)**
-- Immutable audit trail table
-- Append-only constraints
-- Allowed paths: `supabase/migrations/*`
+3. **Staging apply support (with DevOps)**  
+   - Pair to execute `supabase link` + `supabase db push` on staging.  
+   - Capture CLI logs, Supabase Studio screenshots, and update `docs/runbooks/data_change_log.md` with timing + sign-offs.
 
-**4. Inventory Schema (3h)**
-- Tables: products, inventory_snapshots, sales_velocity, picker_payouts
-- ROP calculation fields
-- Allowed paths: `supabase/migrations/*`
+4. **Post-apply validation assets**  
+   - Deliver SQL snippets/fixtures powering `/api/ideas/live` and dashboard tiles; highlight latency/index recommendations.  
+   - Coordinate with Analytics on sampling notes for idea metrics.
 
-**5. CX Metrics Schema (2h)**
-- Conversation stats, response times, quality grades
-- Allowed paths: `supabase/migrations/*`
+#### P1 — sustain dashboards & automation
+5. **Inventory & CX Schema Enhancements** — Finish remaining tables (ROP, picker payouts, CX SLA) with RLS + rollback, update specs.
+6. **Growth & Social Analytics** — Ensure `growth_seo_anomalies`, `ads_campaign_metrics`, `social_posts` match Integrations contracts; add sampling metadata.
+7. **Seed & Refresh Pipeline** — Build `scripts/data/refresh-seeds.sh`, seed JSON/SQL under `supabase/seeds/`, schedule nightly refresh workflow.
+8. **Migration Smoke in CI** — Add GitHub Action job running `supabase db reset --include-seed`; keep runtime <5 min; fail build on drift.
+9. **Performance Index Audit** — Collect query plans from Engineer/Integrations, add indexes, and attach `EXPLAIN ANALYZE` evidence to specs.
+10. **Audit/Immutability Hardening** — Finalize audit tables with triggers, ensure inclusion in weekly backups, expose read-only views for Analytics/QA.
+11. **Feedback Discipline & Repo Hygiene** — Record progress only in `feedback/data/<YYYY-MM-DD>.md`; remove or merge any stray `.md` feedback files before sign-off and note cleanup in the daily feedback entry.
 
-**6. Growth Metrics Schema (2h)**
-- SEO, ads, content performance
-- Allowed paths: `supabase/migrations/*`
+### Dependencies & Coordination
+- **Integrations & Engineer:** confirm idea pool contract (column names, payloads) before finalizing migration/tasks 2–4.
+- **DevOps:** schedules staging apply window, incorporates migrations into backup/health workflows.
+- **QA:** consumes new seeds & RLS tests; coordinate on negative test cases.
+- **Analytics:** needs views for idea metrics + sampling flags.
 
-**7. RLS Policies for All Tables (3h)**
-- Least-privilege access per user role
-- Test policies thoroughly
-- Allowed paths: `supabase/migrations/*`
+### Blockers
+- Await confirmation on tenant identifier (`client_id` vs `shop_id`) for approvals/ideas tables.
+- Need staging window from DevOps; log schedule once agreed.
 
-**8. Database Indexes for Performance (2h)**
-- Identify slow queries
-- Add indexes strategically
-- Allowed paths: `supabase/migrations/*`
-
-**9. Migration Rollback Scripts (2h)**
-- Down migrations for all changes
-- Test rollback procedures
-- Allowed paths: `supabase/migrations/*.rollback.sql`
-
-### Current Focus: Task 2 (Approvals Schema)
-
-### Blockers: None
+### Critical Reminders
+- ✅ All migrations reversible; test `supabase db reset` locally before requesting review.  
+- ✅ Seeds contain anonymized/mock data only.  
+- ✅ RLS must be explicitly validated for reviewer vs agent vs admin roles.  
+- ✅ Update specs alongside migrations so downstream consumers stay aligned.
 
 ### Critical:
 - ✅ Use Supabase MCP for all database work
@@ -228,36 +224,9 @@ Design and maintain **database schemas, RLS policies, and data migrations** for 
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Approvals + audit schema foundation
+* 1.1 (2025-10-16) — Full-domain schema roadmap, automated seeds/tests, staging deployment plan
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Approvals tables (approvals, grades, edits) + RLS
-2) Audit log table (append-only) + constraints
-3) Inventory tables (snapshots, lead_times, payouts)
-4) CX metrics tables (sla, response_times)
-5) Growth metrics tables (seo, ads, content)
-6) RPC: approvals list w/ filters
-7) RPC: dashboard aggregates per tile
-8) RPC: SEO anomalies feed
-9) RPC: ads performance aggregates
-10) RPC: content engagement aggregates
-11) Views for tiles (materialized where needed)
-12) Indexes for P95 < 3s tile loads
-13) Row-level security policies per role
-14) Triggers for audit logging on writes
-15) Seeds/fixtures for dev
-16) Nightly rollups + cron
-17) Backup/restore scripts (local)
-18) Data retention policies
-19) Schema docs in docs/specs
-20) Query performance dashboard
-21) Test harness for RPCs
-22) Migrations rollback verification
-23) Data quality checks (not null, ranges)
-24) Error budgets & alerts for DB
-25) ETL for historical imports (if needed)

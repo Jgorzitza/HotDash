@@ -34,46 +34,28 @@ Orchestrate all agents, maintain governance docs, enforce gates, and ensure deli
 - [ ] Roll learnings into RULES/directions
 - [ ] Planning TTL sweep
 
-## 4) Today's Objective (2025-10-15)
+## 4) Current Objective (2025-10-16) — Sprint Lock Orchestration (P0)
 
-**Priority:** P0 - Project Launch
-**Deadline:** 2025-10-17 (2 days)
+**Priority:** Complete the 10 sprint-lock tasks by Oct 19 with proof-of-work.
 
-### Completed:
-- ✅ Manager startup checklist executed
-- ✅ Security incident resolved (Gitleaks sanitization)
-- ✅ Augment Code rules established
-- ✅ Agent directions populated
+### Required Actions
+1. **Direction enforcement** — Ensure Integrations, DevOps, QA, Engineer, Data, Analytics, Product direction files stay in sync with sprint-lock tasks; update immediately when work lands.
+2. **Evidence sweep** — Collect receipts for Publer adapter fix, social route hardening, Supabase staging apply, QA harness, secrets/workflows, staging deploy, tile validation, docs realignment, and Partner dry run. Log in `reports/manager_ceo_alignment_2025-10-16.md`.
+3. **Gate management** — Configure branch protection + required checks per `repo-config/branch_protection.md`; verify CODEOWNERS/PR template adoption.
+4. **Daily standup cadence** — Review every feedback file, note blockers, and trigger escalations in <1 hour.
+5. **Launch rehearsal prep** — Coordinate Partner dry run checklist with DevOps + QA once staging deploy + tests succeed.
 
-### In Progress:
-1. **Create GitHub Issues** - For all agent tasks
-   - Dashboard shell (engineer)
-   - Approvals Drawer (engineer)
-   - Shopify adapter (integrations)
-   - Supabase RPC (integrations)
-   - Approvals schema (data)
-   - Audit schema (data)
-   - CI health check (devops)
-   - Staging deployment (devops)
-   - Acceptance criteria (qa)
-   - Test plan template (qa)
+### Constraints
+- No merges without Evidence/Risk/Rollback sections, green required checks, and two approvals (CODEOWNERS enforced).
+- Staging migrations must be verified (RLS tests + rollback) before live data wiring proceeds.
+- Sprint-lock tasks may not be reprioritized without explicit CEO confirmation.
 
-2. **Monitor Agent Progress** - Daily feedback review
-3. **Gate Enforcement** - Review PRs for DoD compliance
-4. **Blocker Resolution** - Unblock agents within 1 hour
-
-### Constraints:
-- All Issues must have: Agent, DoD, Acceptance criteria, Allowed paths
-- All PRs must pass: Docs Policy, Danger, Gitleaks, AI Config
-- No production deployments until staging validated
-- HITL enforced for ai-customer
-
-### Next Steps:
-1. Create GitHub Issues for all agent tasks (use Task template)
-2. Provide staging credentials to integrations and data agents
-3. Monitor agent feedback logs daily
-4. Review PRs and enforce gates
-5. Update PROJECT_PLAN with milestone progress
+### Next Steps
+1. Confirm each agent acknowledges updated direction (comment in feedback).
+2. Schedule staging migration/deploy window with Data + DevOps.
+3. Track QA harness + Playwright re-enable progress; escalate if red >1 day.
+4. Assemble Partner dry run agenda + owner checklist for Oct 19 review.
+5. Update `docs/manager/PROJECT_PLAN.md` daily with sprint-lock status.
 
 ---
 

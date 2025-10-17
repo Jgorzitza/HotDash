@@ -2,66 +2,51 @@
 
 > Location: `docs/directions/product.md`
 > Owner: manager
-> Version: 2.0
-> Effective: 2025-10-15
+> Version: 2.1
+> Effective: 2025-10-16
 
 ---
 
 ## 1) Purpose
 
-Document **product requirements and success metrics** for foundation milestone, ensuring alignment with NORTH_STAR.
+Drive **launch readiness and iteration planning** so the control center meets the NORTH_STAR success metrics (fast tiles, reliable approvals, CEO value) and the team has a clear post-launch roadmap.
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+## 2) Current Objective (2025-10-16) — Launch Readiness & Iteration (P0)
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P1 - Product Management
+**Priority:** P0 — Finalize product acceptance, success metrics, and post-launch plan.
 
 ### Git Process (Manager-Controlled)
 **YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
 - Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
 - See: `docs/runbooks/manager_git_workflow.md`
 
-### Task List (9 tasks):
+### Task Board — Sprint Lock (Oct 16–19)
 
-**1. Dashboard Launch Checklist (NEXT - 2h)**
-- Pre-launch verification, rollback plan
-- Allowed paths: `docs/specs/dashboard_launch_checklist.md`
+1. **Docs realignment sweep (Due Oct 18)**  
+   - Sync `docs/README.md`, `docs/NORTH_STAR.md`, `docs/roadmap.md`, and direction files with current sprint-lock scope (10 tasks).  
+   - Remove stale task references; link to new CODEOWNERS/branch protection requirements.
 
-**2. User Acceptance Criteria (3h)**
-- Testable criteria for all features
-- Allowed paths: `docs/specs/user_acceptance_criteria.md`
+2. **Launch checklist update (Due Oct 18)**  
+   - Refresh `docs/specs/dashboard_launch_checklist.md` with Publer security, Supabase migration evidence, QA harness status, and Partner dry-run steps.  
+   - Ensure each checklist item has owner + proof-of-work reference.
 
-**3. Success Metrics Definition (2h)**
-- Dashboard load time, accuracy, completion rate
-- Allowed paths: `docs/specs/success_metrics.md`
+3. **PR / review guardrails (Due Oct 17)**  
+   - Update `docs/specs/user_acceptance_criteria.md`, `docs/specs/success_metrics.md`, and PR guidance to require Evidence/Risk/Rollback sections.  
+   - Align with new `.github/PULL_REQUEST_TEMPLATE.md` and CODEOWNERS expectations.
 
-**4. User Training Materials (3h)**
-- How-to guides, video scripts
-- Allowed paths: `docs/specs/user_training.md`
+4. **CEO communication packet (Due Oct 19)**  
+   - Condense status for Partner dry run (KPI dashboard, docs, risk log) into `docs/specs/stakeholder_comms.md` for Manager/CEO review.  
+   - Include next review cadence + escalation path.
 
-**5. Feature Prioritization Matrix (3h)**
-- M0-M6 features with impact/effort scores
-- Allowed paths: `docs/specs/feature_prioritization.md`
+5. **Feedback discipline**  
+   - Continue logging updates only in `feedback/product/<YYYY-MM-DD>.md`; confirm removal of stray docs as they are realigned.
 
-**6. Rollback Decision Criteria (2h)**
-- When to rollback, who decides
-- Allowed paths: `docs/specs/rollback_criteria.md`
+### Blockers: None (coordinate cross-agent dependencies as needed)
 
-**7. Post-Launch Monitoring Plan (2h)**
-- What to monitor, alert thresholds
-- Allowed paths: `docs/specs/monitoring_plan.md`
-
-**8. Iteration Planning (3h)**
-- Based on user feedback, next features
-- Allowed paths: `docs/specs/iteration_plan.md`
-
-**9. Stakeholder Communication Plan (2h)**
-- Who to notify, when, how
-- Allowed paths: `docs/specs/stakeholder_comms.md`
-
-### Current Focus: Task 1 (Launch Checklist)
-
-### Blockers: None
+### Critical Reminders
+- ✅ No git commands; manager executes commits/PRs.  
+- ✅ Collaborate with QA/Analytics/Engineer to keep acceptance criteria testable and metrics instrumented.  
+- ✅ Ensure every launch document maps back to a North Star outcome.
 
 ### Critical:
 - ✅ Focus on launch readiness
@@ -72,38 +57,11 @@ Document **product requirements and success metrics** for foundation milestone, 
 ---
 
 ## Changelog
-* 2.0 (2025-10-15) — ACTIVE: Foundation PRD and feature prioritization
+* 2.1 (2025-10-16) — Launch readiness, success metrics, iteration roadmap
+* 2.0 (2025-10-15) — Foundation PRD and feature prioritization
 * 1.0 (2025-10-15) — Placeholder: Awaiting foundation completion
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Dashboard launch checklist (DoD + gates)
-2) Approvals Drawer acceptance criteria
-3) Inventory ROP acceptance criteria
-4) SEO anomalies acceptance criteria
-5) CX HITL acceptance criteria
-6) Ads metrics acceptance criteria
-7) Content planner acceptance criteria
-8) User roles/permissions spec
-9) NFRs (perf, reliability, security)
-10) Telemetry definitions (events + KPIs)
-11) Project plan updates (weekly)
-12) Roadmap (next 4 weeks molecules)
-13) Changelog policy and template
-14) UX writing guidelines
-15) Review design tokens sign-off
-16) Stakeholder demo script
-17) UAT plan (scenarios + owners)
-18) Launch comms draft
-19) Support playbook outline
-20) Risk matrix + mitigations
-21) Rollback plan templates
-22) Post-launch success metrics
-23) Feedback loop plan (grads/edits)
-24) Issue templates review
-25) Allowed paths validation samples

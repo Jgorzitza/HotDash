@@ -2,15 +2,15 @@
 
 > Location: `docs/directions/integrations.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.2
+> Effective: 2025-10-16
 > Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 ---
 
 ## 1) Purpose
 
-Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supabase RPC, Chatwoot API, and social platforms (Ayrshare) that power the control center.
+Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supabase RPC, Chatwoot API, and social platforms (Publer) that power the control center.
 
 ## 2) Scope
 
@@ -18,7 +18,7 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
   - Shopify Admin GraphQL queries and mutations (read-only first, then guarded writes)
   - Supabase RPC functions and database queries
   - Chatwoot API adapter (conversations, messages, private notes)
-  - Social platform adapter (Ayrshare for HITL posting)
+  - Social platform adapter (Publer for HITL posting)
   - API route handlers in `app/routes/api/`
   - Server-side validation and error handling
   - Integration tests for all adapters
@@ -53,7 +53,7 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 
 * **Latency budget:** P95 < 500ms for reads; < 2s for writes
 * **Cost ceiling:** Minimize API calls; use batching where possible; cache read-only data
-* **Rate limits:** Respect Shopify (2 req/sec), Chatwoot (10 req/sec), Ayrshare limits
+* **Rate limits:** Respect Shopify (2 req/sec), Chatwoot (10 req/sec), Publer workspace limits
 * **Data residency:** All data stays in approved regions (US/Canada for Supabase)
 * **Tech stack:** Node/TypeScript, Remix loaders/actions, no direct fetch in components
 
@@ -93,8 +93,10 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 |------|---------|--------------|------------------|-------|
 | Shopify MCP | Validate GraphQL, test queries | Staging store | 2 req/sec | Use for development |
 | Supabase MCP | Test RPC functions, queries | Staging DB | No limit | Use for development |
+| Supabase CLI | Run migrations/seed smoke tests | Local/staging | No limit | Verify DB contracts |
 | Context7 MCP | Find existing adapters | Full codebase | No limit | Pattern reference |
 | GitHub MCP | Create PRs, link issues | Repository | No limit | Required for all PRs |
+| Publer API sandbox | Validate social posting | Publer workspace | Rate limits per plan | Use staging workspace only |
 
 ## 9) Decision Policy
 
@@ -147,69 +149,57 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 * **Forbidden data:** Email, phone, address, payment info in logs
 * **Masking/redaction rules:** Redact all PII before logging; use environment variables for secrets
 
-## 15) Today's Objective (2025-10-15) - UPDATED
+## 15) Current Objective (2025-10-16) — Security & Social Compliance (P0)
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
+**Priority:** Finish the remaining sprint-lock items from `MANAGER_BRIEF.md` that block Partner staging.
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
-- See: `docs/runbooks/manager_git_workflow.md`
+**NO git commands.** Log receipts in `feedback/integrations/<date>.md`; manager will branch/commit/push per `docs/runbooks/manager_git_workflow.md`.
 
-### Task List (9 tasks):
+### P0 — Execute in order (all due Oct 17–18)
+1. **Publer adapter migration**  
+   - Replace Ayrshare implementation with official Publer client (`packages/integrations/publer.ts`).  
+   - Headers: `Authorization: Bearer-API`, `Publer-Workspace-Id`.  
+   - Provide Vitest coverage (`tests/unit/integrations/publer.spec.ts`) and update proof script.
 
-**1. ✅ Dashboard API Routes (COMPLETE - PR #33 MERGED)**
+2. **Secure social route**  
+   - Ensure `/api/social/post` and `/api/social/status/:postId` call `shopify.authenticate.admin(request)` and return 401/502 on invalid tokens.  
+   - Wire new adapter helpers + error handling, add mocks for QA tests.
 
-**2. Shopify Admin GraphQL Client (NEXT - 3h)**
-- Reusable client for all Shopify queries
-- Connection pooling, retry logic
-- Allowed paths: `app/lib/shopify/client.ts`
+3. **Integration + contract tests**  
+   - Update `tests/integration/social.api.spec.ts` to mock Shopify + Publer; confirm success/failure cases.  
+   - Provide curl examples and session-token instructions in feedback.
 
-**3. Supabase RPC Client (3h)**
-- Reusable client for all Supabase RPC calls
-- Error handling, logging
-- Allowed paths: `app/lib/supabase/client.ts`
+4. **Docs & secret alignment**  
+   - Update `docs/runbooks/secrets.md`, `docs/devops/publer-secret-setup.md`, README to reference `PUBLER_API_KEY`/`PUBLER_WORKSPACE_ID`.  
+   - Add/change CODEOWNERS + PR template per repo-config packet.
 
-**4. Chatwoot API Client (3h)**
-- Reusable client for Chatwoot operations
-- Conversation fetching, reply posting
-- Allowed paths: `app/lib/chatwoot/client.ts`
+5. **Handoff to QA/DevOps**  
+   - Deliver summary to QA for Playwright re-enable and to DevOps for secret verification (`scripts/verify_secrets.sh`).
 
-**5. GA4 API Client Integration (2h)**
-- Integrate analytics GA4 client
-- Revenue, traffic queries
-- Allowed paths: `app/lib/analytics/client.ts`
+### P1 — After sprint-lock items
+- Support QA mocking strategy for Publer + Shopify session tests.  
+- Pair with DevOps on secrets verification workflow once GitHub checks are live.  
+- Provide API contract addendum documenting payloads for schedule/status endpoints.
+15. **Final Documentation Sweep** — Update integration reports (`docs/integrations/FINAL-COMPLETE-SUMMARY-*.md`) with new artifacts, add idea pool API examples, ensure all Ayrshare references removed.
+16. **Feedback Discipline & Repo Hygiene** — Keep activity logs confined to `feedback/integrations/<YYYY-MM-DD>.md`; clean up any stray `.md` feedback documents and confirm in the daily log.
 
-**6. Audit Logging Middleware (2h)**
-- Log all external API calls
-- Track request/response, timing, errors
-- Allowed paths: `app/middleware/audit.ts`
+### Blockers
+- Await Data/DevOps staging apply window for new migrations (coordinate schedule in feedback).
+- Chatwoot `/rails/health` returns 404; update health script fallback while DevOps finalizes workflow.
 
-**7. Rate Limiting for External APIs (2h)**
-- Prevent API quota exhaustion
-- Exponential backoff
-- Allowed paths: `app/middleware/rate-limit.ts`
-
-**8. Error Handling and Retries (2h)**
-- Centralized error handling
-- Automatic retries with backoff
-- Allowed paths: `app/lib/errors.ts`
-
-**9. API Integration Tests (3h)**
-- Test all API clients
-- Mock external services
-- Allowed paths: `tests/integration/api/*`
-
-### Current Focus: Task 2 (Shopify Client)
-
-### Blockers: None
+### Dependencies & Coordination
+- **Data:** supplies Supabase migrations + seed fixtures for approvals and idea pool; confirm column names before finalizing contracts.
+- **Engineer:** consumes API payloads for dashboards/idea pool UI; provide fixtures + change notes.
+- **Analytics:** needs Shopify revenue/AOV/returns API parity + sampling metadata.
+- **DevOps:** integrates audit/metrics outputs, health scripts, and secrets sync automation.
+- **QA:** partners on integration test coverage + evidence requirements (attach curl output, logs, proof-of-work).
 
 ### Critical:
-- ✅ Use Shopify MCP to validate queries
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ NO new .md files except feedback
+- ✅ Use staging credentials and MCP tools; no production calls.
+- ✅ Document API contracts/tests alongside implementation.
+- ✅ Ensure audit logging + metrics exist before handoff.
+- ✅ Respect rate limits; return actionable error responses.
 
 ## 16) Examples
 
@@ -235,36 +225,10 @@ Build and maintain **server-side tool adapters** for Shopify Admin GraphQL, Supa
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Shopify + Supabase adapters foundation
+* 1.1 (2025-10-16) — Shopify/Supabase/Chatwoot/Publer rollout, validation contracts, metrics/logging
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Shopify client: retries/backoff + 429 handling
-2) Shopify client: connection pooling
-3) GA4 client: common query helpers
-4) Chatwoot client: pagination + filters
-5) Audit logging middleware (all external calls)
-6) Rate limiting middleware (token bucket)
-7) Error normalization (external → internal codes)
-8) Caching layer for frequent reads (LRU)
-9) Webhooks: Shopify order/create handler
-10) Webhooks: Chatwoot conversation/update
-11) Batching for analytics queries
-12) Cursor-based pagination utilities
-13) Idempotency keys for write endpoints
-14) Health endpoints for each adapter
-15) Secrets via env handles (no logs)
-16) Structured logs (request_id, latency, outcome)
-17) Circuit breaker for flaky deps
-18) SLA monitors per adapter
-19) Retry budget metrics & alerts
-20) API contracts docs for frontend
-21) Mock servers for tests
-22) Integration tests per adapter (happy + fail)
-23) Snapshot tests for schema responses
-24) Sandbox/staging config switchers
-25) Rollback strategy doc for each adapter
 
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified

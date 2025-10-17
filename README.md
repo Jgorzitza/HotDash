@@ -4,6 +4,12 @@ HotDash delivers an operator-first control center for Shopify stores. Tiles surf
 
 This repo contains the full web application, service layer integrations, agent direction docs, and tooling required to run telemetry jobs and nightly metrics rollups.
 
+## Core Capabilities (October 2025)
+- **Always-On Idea Pool** — Supabase-backed `product_suggestions` pipeline keeps five live ideas (one Wildcard) ready for acceptance, rejection, or expiry. Approvals spawn Shopify draft creation jobs automatically.
+- **Approvals Everywhere** — Drawer UI, Supabase schema, and API routes enforce HITL for CX replies, inventory actions, growth moves, and product ideas.
+- **Operations Spine** — Inventory ROP calculators, analytics anomaly detection, GA4 dashboards, Publer scheduling, Chatwoot CX integrations, and Prometheus metrics.
+- **Agent Enablement** — Manager task plans, direction docs, and MCP tooling (GitHub, Context7, Supabase, Shopify, Fly, GA) keep sub-agents coordinated; evidence-first workflows drive commit requirements.
+
 ---
 
 ## Quick Start
@@ -38,7 +44,7 @@ npm install
 
    You can confirm any time with `supabase status`.
 
-2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Keep this file out of git — `.env*` is already ignored.
+2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Add Publer API credentials when you are ready to enable social posting (`PUBLER_API_KEY` and `PUBLER_WORKSPACE_ID`). For the idea pool pipeline, set `IDEMPOTENCY_SALT` and related orchestrator keys as outlined in `integrations/new_feature_*/manager_agent_pack_v1/09-configuration/.env.example`. Keep this file out of git — `.env*` is already ignored.
 
 3. Load the env file when working locally:
 
@@ -70,6 +76,12 @@ The helper uses the Supabase CLI to stream local events. Pass a project ref to t
 - Always reference the Shopify developer MCP (`shopify-dev-mcp`) for APIs, schema, and CLI workflows—no guessing or undocumented endpoints.
 - React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
 - Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
+
+## Social Posting Guardrails (Publer)
+- All social publishing routes proxy through the Publer REST API; no direct client calls with secrets.
+- Queue drafts behind the approvals drawer (`requireApproval: true`) before hitting Publer’s `/posts` or `/posts/schedule` endpoints.
+- Coordinate tokens and workspace IDs via GitHub environment secrets—never hard-code or store them in the repo.
+- See `docs/integrations/social_adapter.md` for the current workflow and Publer API references.
 
 ## AI Agent Support: MCP Tools
 
@@ -350,15 +362,17 @@ tests/                  # Vitest + Playwright suites
 archive/                # Historical status reports and deprecated docs
 artifacts/              # Build artifacts and evidence logs
 supabase/               # Database migrations, edge functions, SQL
+integrations/new_feature_*/manager_agent_pack_v1/  # Manager agent pack (idea pool, product creation artifacts)
 ```
 
 See `REPO_STATUS.md` for detailed repository organization and branch strategy.
 
 Canonical workflow documentation lives in:
-- `docs/directions/README.md` – governance
-- `docs/directions/*` – role-specific expectations (engineer, product, QA, etc.)
-- `docs/strategy/initial_delivery_plan.md` – roadmap
-- `docs/data/nightly_metrics.md` – telemetry automation playbook
+- `docs/README.md` – documentation map + manager updates
+- `docs/NORTH_STAR.md` – vision, outcomes, success metrics
+- `docs/roadmap.md` – milestone plan & cross-agent dependencies
+- `docs/manager/PROJECT_PLAN.md` – daily execution sequencing
+- `docs/directions/*.md` – role-specific expectations (engineer, product, QA, etc.)
 
 ### Supabase Edge Function — Observability
 We ship a lightweight edge function (`supabase/functions/occ-log`) that centralises structured logs in Supabase.

@@ -2,8 +2,8 @@
 
 > Location: `docs/directions/engineer.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.1
+> Effective: 2025-10-16
 > Related: `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`
 
 ---
@@ -94,6 +94,7 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 | GitHub MCP | Create PRs, link issues | Repository | No limit | Required for all PRs |
 | Vite | Build and dev server | Local | No limit | Standard dev tool |
 | Vitest | Unit testing | Local | No limit | Required for all components |
+| Chrome DevTools MCP | Inspect network/console during E2E runs | Local Chrome instance | No limit | Use with Playwright for regression analysis |
 
 ## 9) Decision Policy
 
@@ -145,73 +146,69 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 * **Forbidden data:** Email, phone, address, payment info in frontend logs
 * **Masking/redaction rules:** Mask all PII in error messages and logs
 
-## 15) Today's Objective (2025-10-15) - UPDATED
-
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P0 - Launch Critical
+## 15) Current Objective (2025-10-16) — Launch Readiness (P0)
 
 ### Git Process (Manager-Controlled)
-**YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
-- Write code in allowed paths
-- Signal "WORK COMPLETE - READY FOR PR" in feedback
-- Manager creates branch, commits, pushes, creates PR
-- See: `docs/runbooks/manager_git_workflow.md`
+**YOU DO NOT RUN GIT COMMANDS.**  
+Write code in allowed paths, log results in `feedback/engineer/<date>.md`, and signal “WORK COMPLETE - READY FOR PR.” Manager handles branches, commits, pushes, and PR creation (`docs/runbooks/manager_git_workflow.md`).
 
-### Task List (9 tasks):
+### Task Board — Launch Gate (Updated 2025-10-16)
+**Proof-of-work requirement:** Do not call a task complete until Vitest/Playwright evidence, screenshots, and audit notes are attached in `feedback/engineer/YYYY-MM-DD.md`. Manager will only PR once receipts are logged.
 
-**1. ✅ Approval Queue UI (COMPLETE - PR #29 MERGED)**
+#### P0 — sprint-lock deliverables (execute in order)
+1. **Polaris AppProvider harness + Approvals refactor**  
+   - Land shared render helper (`tests/utils/render.tsx`), break `ApprovalsDrawer` into manageable components, resolve focus trap.  
+   - DoD: `npm run test:unit -- ApprovalsDrawer` green; QA confirmed harness instructions documented.
 
-**2. Approvals Drawer Detail View (NEXT - 3-4h)**
-- Expand ApprovalCard into full Drawer component
-- Show complete evidence, projected impact, risks
-- Approve/Reject with grading interface (tone, accuracy, policy 1-5)
-- Allowed paths: `app/components/approvals/*, tests/**`
+2. **Idea pool live wiring**  
+   - Once DevOps/Data apply migrations, flip `/ideas` routes from fixtures to `/api/ideas/live` and display Supabase-backed badge/counts.  
+   - Provide fallback + feature flag, update unit/Playwright coverage accordingly.
 
-**3. Dashboard Shell with 7 Tile Grid (4-5h)**
-- Create `app/routes/dashboard.tsx` with responsive grid
-- 7 tiles: Revenue, AOV, Returns, Stock Risk, SEO, CX, Approvals
-- Polaris Card components with loading/error states
-- Allowed paths: `app/routes/dashboard.*, app/components/dashboard/*`
+3. **Dashboard tile validation**  
+   - Coordinate with Analytics to assert live data + latency thresholds for Revenue/AOV/Returns/Approvals/Idea tiles.  
+   - Add tests or monitoring hooks capturing thresholds (<3s load) and document evidence.
 
-**4. Revenue Tile (2h)**
-- Connect to integrations API (`/api/shopify/revenue`)
-- Show last 30 days revenue + trend
-- Allowed paths: `app/components/dashboard/RevenueTile.tsx`
+4. **QA automation support**  
+   - Pair with QA on Playwright smoke + axe reinstatement (ensure routes expose stable data/test IDs).  
+   - Provide fixtures/mocks where needed (`tests/playwright/**`).
 
-**5. AOV Tile (2h)**
-- Connect to integrations API (`/api/shopify/aov`)
-- Show average order value + trend
-- Allowed paths: `app/components/dashboard/AOVTile.tsx`
+5. **Social workflow UI touchpoints**  
+   - Ensure frontend uses new Publer adapter contract (schedule job id, status polling).  
+   - Surface error states referencing session-token requirement.
 
-**6. Returns Tile (2h)**
-- Connect to integrations API (`/api/shopify/returns`)
-- Show return rate + trend
-- Allowed paths: `app/components/dashboard/ReturnsTile.tsx`
+#### P1 — next up (start when P0 confirmed by manager)
+6. **Inventory Reorder Workspace** — Build reviewer UI using `app/services/inventory/rop.ts` (table, CSV export, drawer). Coordinate with Inventory agent for sample payloads.
 
-**7. Stock Risk Tile (2h)**
-- Connect to integrations API (`/api/shopify/stock`)
-- Show products with WOS < 14 days
-- Allowed paths: `app/components/dashboard/StockRiskTile.tsx`
+7. **Growth/Publer Review Screen** — HITL tabbed view for Content vs Ads recommendations; integrate with Publer adapter actions + tone learning instructions.
 
-**8. SEO Anomalies Tile (2h)**
-- Connect to SEO API (`/api/seo/anomalies`)
-- Show traffic drops, ranking losses
-- Allowed paths: `app/components/dashboard/SEOTile.tsx`
+8. **Error & Loading Resilience Sweep** — Shared toast queue, retry hook, skeleton standardisation across idea pool + approvals + tiles.
 
-**9. CX Queue Tile (2h)**
-- Connect to Chatwoot API
-- Show pending conversations
-- Allowed paths: `app/components/dashboard/CXTile.tsx`
+9. **Responsive Grid & Dark Mode Pass** — Adopt designer tokens, breakpoints, and verify across mobile/tablet/desktop scenarios.
 
-### Current Focus: Task 2 (Approvals Drawer)
+#### P2 — polish / documentation
+10. **Frontend Architecture Brief** — Refresh `docs/specs/frontend_overview.md` with updated diagrams + sample payloads (idea pool, approvals, Publer flow). Attach render timings.
+11. **Service Health Panel** — Dashboard card showing DevOps health-check workflow status + Supabase migration state (ties into Fly alerts).
 
-### Blockers: None
+12. **Feedback Log Hygiene**  
+    - Record progress in `feedback/engineer/<YYYY-MM-DD>.md` only; merge or delete any stray `.md` feedback files outside the allowed path.  
+    - Confirm cleanup in the daily feedback entry before requesting manager review.
 
-### Critical:
-- ✅ Use Shopify MCP for ALL Polaris components
-- ✅ Signal "WORK COMPLETE - READY FOR PR" in feedback when done
-- ✅ NO git commands (manager handles)
-- ✅ NO new .md files except feedback
+### Dependencies & Coordination
+- **Data agent** must apply the approvals + idea pool migrations with tenant RLS and publish fixture payloads for UI tests.
+- **Integrations agent** owns `/api/ideas/*` + Supabase RPC endpoints; coordinate on payload contracts before merging Tasks 2–3.
+- **DevOps agent** tightens deploy workflow gates and rolls out Supabase migrations to staging before UI launch.
+- **QA agent** provides updated audit checklist + AppProvider test harness verification; pair for regression coverage.
+- **Analytics agent** replays GA4 deploy + exposes idea pool metrics once dashboard tiles are ready.
+
+### Blockers
+- Vitest crash (`MissingAppProviderError` + Tinypool EPIPE) until Task 1 completes — highest priority.
+- Await Data/Integrations delivery of idea pool API + migrations; coordinate via manager before implementation.
+
+### Critical Reminders
+- ✅ Use MCP tools (Shopify/Context7/Chrome DevTools) instead of guesswork.  
+- ✅ Maintain accessibility (WCAG 2.1 AA) and Polaris guidelines.  
+- ✅ Keep Publer/HITL flows behind approvals—no direct posting.  
+- ✅ Update feedback log after each task slice; stop immediately on security check failure.
 
 ## 16) Examples
 
@@ -237,31 +234,4 @@ Build the **Dashboard and Approvals Drawer UI** that centralizes live metrics, i
 ## Changelog
 
 * 1.0 (2025-10-15) — Initial direction: Dashboard shell + Approvals Drawer foundation
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Approvals Drawer: grading UI (tone/accuracy/policy)
-2) Approvals Drawer: evidence sections (queries, diffs, rollback)
-3) Approvals Drawer: validation errors surface
-4) Tile Grid: responsive breakpoints + keyboard nav
-5) Tile Skeletons: loading + error states for all 7 tiles
-6) Revenue Tile: sparkline + tooltip anomalies
-7) AOV Tile: currency/locale handling
-8) Returns Tile: rate calc + drill-down route
-9) Stock Tile: WOS calc + low-stock badge
-10) SEO Tile: top anomalies list modal
-11) CX Tile: Chatwoot queue count + SLA badge
-12) Approvals Tile: pending count + filter chips
-13) Global: date range picker wiring
-14) Global: theming via Polaris tokens
-15) Accessibility: focus traps + ARIA for Drawer
-16) i18n scaffolding (keys only, no strings)
-17) Route guards + error boundaries
-18) Storybook stories for key components
-19) Unit tests coverage ≥85% for dashboard
-20) E2E: dashboard -> approvals happy path
-21) E2E: error states (API down)
-22) Perf pass: P95 < 3s (code-split tiles)
-23) Telemetry: page/time-on-task events
-24) Feature flags for tiles
-25) Screenshot tests (mobile/tablet/desktop)
+* 1.1 (2025-10-16) — Publer integration, approvals data wiring, test/health workflow expansion

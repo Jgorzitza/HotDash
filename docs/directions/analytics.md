@@ -2,105 +2,69 @@
 
 > Location: `docs/directions/analytics.md`
 > Owner: manager
-> Version: 1.0
-> Effective: 2025-10-15
+> Version: 1.1
+> Effective: 2025-10-16
 
 ---
 
 ## Status: ACTIVE
 
 ## 1) Purpose
-Build GA4 integration to provide real data for dashboard tiles (Revenue, AOV, SEO Anomalies).
+Deliver **multi-source analytics feeds** (GA4, Shopify reports, Supabase aggregates) that power revenue/traffic/severity tiles, anomaly detection, and CEO agent recommendations with accurate, auditable data.
 
-## 2) Today's Objective (2025-10-15) - UPDATED
+### Tools (Granted by Manager)
+| Tool | Purpose | Notes |
+|------|---------|-------|
+| GA4 API / google-analytics-data SDK | Traffic & revenue queries | Use staging property `339826228`; enforce strict sampling checks |
+| Shopify Reports API | Supplement GA4 with Shopify order/return metrics | Read-only staging credentials only |
+| Supabase RPC / SQL | Persist backfilled aggregates, expose tiles | Coordinate with Data agent |
+| Context7 MCP | Locate analytics code/tests | Reference existing patterns |
+| GitHub MCP | Manage PRs/issues | Required for reviews |
 
-**Status:** 9 Tasks Aligned to NORTH_STAR
-**Priority:** P2 - Growth Analytics
+## 2) Current Objective (2025-10-16) — Analytics Launch (P0)
+
+**Priority:** P0 — Ensure dashboard analytics are live, accurate, and backfilled to May 1.
 
 ### Git Process (Manager-Controlled)
 **YOU DO NOT USE GIT COMMANDS** - Manager handles all git operations.
 - Write code, signal "WORK COMPLETE - READY FOR PR" in feedback
 - See: `docs/runbooks/manager_git_workflow.md`
 
-### Task List (9 tasks):
+### Task Board — Sprint Lock Focus
+**Proof-of-work:** Capture GA4 query IDs, Shopify GraphQL responses, sampling checks, and dashboards screenshots in `feedback/analytics/YYYY-MM-DD.md`.
 
-**1. ✅ GA4 Integration (COMPLETE - MERGED)**
+1. **Live data validation for dashboard tiles (Due Oct 18)**  
+   - Partner with Engineer to verify Revenue/AOV/Returns/Traffic/CX tiles hit live endpoints post-migration.  
+   - Document latency (<3s) and accuracy checks; file issue if thresholds breached.
 
-**2. Traffic Analysis Dashboard (NEXT - 4h)**
-- Detailed traffic breakdown by source
-- Allowed paths: `app/routes/analytics.traffic.tsx`
+2. **Supabase migration verification (Due Oct 17)**  
+   - Work with Data/DevOps to confirm analytics views deployed in staging.  
+   - Run SQL sanity tests + share results with Manager/QA.
 
-**3. Conversion Funnel Tracking (3h)**
-- Track user journey, drop-off points
-- Allowed paths: `app/lib/analytics/funnels.ts`
+3. **Idea pool KPI instrumentation (Due Oct 18)**  
+   - Provide acceptance rate, wildcard freshness, time-to-launch metrics through analytics endpoints / dashboards.  
+   - Supply test fixtures + documentation for QA/CEO agents.
 
-**4. Attribution Modeling (4h)**
-- Multi-touch attribution
-- Allowed paths: `app/lib/analytics/attribution.ts`
+4. **Sampling guard evidence (Due Oct 18)**  
+   - Re-run GA4 queries verifying unsampled results; log query IDs and fallback handling.  
+   - Update docs with remediation path when sampling occurs.
 
-**5. Custom Event Tracking (2h)**
-- Track custom events (button clicks, etc.)
-- Allowed paths: `app/lib/analytics/events.ts`
+5. **Feedback discipline**  
+   - Continue daily logging, note when staging validation and dashboard checks complete.
 
-**6. Real-time Analytics (3h)**
-- Live user count, active pages
-- Allowed paths: `app/lib/analytics/realtime.ts`
+### Blockers: Supabase migrations awaiting DevOps window
 
-**7. Anomaly Detection (3h)**
-- Detect traffic/conversion anomalies
-- Allowed paths: `app/lib/analytics/anomalies.ts`
-
-**8. Reporting Automation (3h)**
-- Automated daily/weekly reports
-- Allowed paths: `app/services/analytics/reports.ts`
-
-**9. Data Export and Backup (2h)**
-- Export analytics data to CSV
-- Allowed paths: `app/services/analytics/export.ts`
-
-### Current Focus: Task 2 (Traffic Dashboard)
-
-### Blockers: None
-
-### Critical:
-- ✅ Property ID: 339826228
-- ✅ Signal "WORK COMPLETE - READY FOR PR" when done
-- ✅ NO git commands
-- ✅ Test with real data
+### Critical Reminders
+- ✅ Use staging credentials first; promote to prod after verification.  
+- ✅ Backfill must reach May 1, 2025 with unsampled data; split queries as needed.  
+- ✅ Strict sampling: reject sampled results, flag to QA/manager.  
+- ✅ Combine GA4 + Shopify data to support CEO-facing insights.
 
 ## Changelog
-* 2.0 (2025-10-15) — ACTIVE: GA4 dashboard integration
-* 1.0 (2025-10-15) — Placeholder
+* 2.0 (2025-10-16) — Multi-source analytics launch plan (GA4+Shopify, backfill, strict sampling)
+* 1.0 (2025-10-15) — Initial GA4 dashboard integration
 
 ### Feedback Process (Canonical)
 - Use exactly: \ for today
 - Append evidence and tool outputs through the day
 - On completion, add the WORK COMPLETE block as specified
-
-
-## Backlog (Sprint-Ready — 25 tasks)
-1) Traffic dashboard route + API
-2) Funnels (session → view → add → checkout)
-3) Cohort analysis (weekly)
-4) Anomaly detection (Z-score on sessions)
-5) UTM source/medium breakdown
-6) Device/geo breakdown
-7) Landing pages top 20
-8) Exit pages top 20
-9) Time-on-page analysis
-10) Conversion rate tiles
-11) GA4 quota/backoff handling
-12) Sampling detection + warnings
-13) Cache for heavy reports
-14) Export CSV endpoints
-15) Unit tests for metrics math
-16) Integration tests GA4 client
-17) Snapshot tests of responses
-18) Docs/specs for reports
-19) Permission checks on analytics routes
-20) Perf tuning (batching queries)
-21) Index visualizations
-22) Alert hooks to Slack (read-only)
-23) Scheduled weekly rollup
-24) Dashboard drill-down links
-25) SLO dashboard for analytics APIs
