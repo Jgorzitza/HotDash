@@ -1,0 +1,26 @@
+name: pilot-dev-guards
+on:
+  pull_request:
+    branches: [ pilot/dev-memory-rag ]
+  push:
+    branches: [ pilot/dev-memory-rag ]
+
+jobs:
+  guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+
+      - name: Enforce molecules (≤8h & Allowed paths)
+        run: node scripts/policy/assert-molecules.mjs
+
+      - name: Artifacts exist (today)
+        run: node scripts/policy/assert-artifacts.mjs artifacts/pilot
+
+      - name: Credential proof freshness (soft fail initially)
+        run: node scripts/policy/cred-proof.mjs feedback/pilot/$(date +%F).md || true
+
+      - name: Existing repo guards (Docs Policy, Danger, Gitleaks, AI Config)
+        run: echo "Run existing checks here or via separate workflows"
