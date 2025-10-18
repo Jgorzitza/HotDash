@@ -41,7 +41,8 @@
     "fmt": "npx prettier --write \"{app,packages,tests,scripts,docs}/**/*.{ts,tsx,js,jsx,json,md}\"",
     "scan": "./scripts/security/scan-secrets.sh",
     "ci": "npm run fmt && npm run lint && npm run test:ci && npm run scan",
-    "test": "npm run test:ci"
+    "test": "npm run test:ci",
+    "qa:app-usability": "node scripts/ops/qa-app-usability.mjs"
   },
   "type": "module",
   "engines": {

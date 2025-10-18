@@ -1,0 +1,77 @@
+{
+  "date": "2025-10-17",
+  "agents": {
+    "engineer": [
+      "Finalize approvals service (RPCs, API routes, MSW contracts)",
+      "Unit tests: approvals + ideas drawer (clear act() warnings)",
+      "Seed staging approvals data and rehearsal notes",
+      "Lint/type/test cleanup in app/components/approvals/**",
+      "Accessibility checks for approvals drawer",
+      "Error handling: agent-bus receipts + retries",
+      "Add contract tests for API validate/apply/queue"
+    ],
+    "integrations": [
+      "Wire idea-pool APIs to Supabase with feature flags",
+      "Backfill fixtures for idea-pool + approvals",
+      "Update activation runbook (Publer + analytics)",
+      "Contract tests for idea-pool/approvals endpoints",
+      "Document rollback toggles for flags"
+    ],
+    "qa": [
+      "Implement qa:app-usability harness (done)",
+      "Run Tier A suites (a11y, targeted e2e)",
+      "Collect traces/reports under artifacts/qa/<date>/",
+      "Chrome DevTools MCP: capture console errors on /",
+      "Document ≥3 remediation attempts for any failure"
+    ],
+    "devops": [
+      "Ensure CI gates (Docs, Danger, Gitleaks, AI Config) on PR+main",
+      "Add qa:app-usability to CI and publish artifacts",
+      "Verify push protection & secret scanning enabled",
+      "Restore/run lighthouse script or adjust CI target"
+    ],
+    "data": [
+      "Apply staging migrations (inventory, kb, analytics)",
+      "Provide rollback scripts + rehearsal evidence",
+      "Fork/snapshot volumes before risky changes"
+    ],
+    "analytics": [
+      "Stabilize helpers + sampling guard proof",
+      "Coordinate staging apply + credential mounting",
+      "Refresh analytics pipeline spec (rollout/rollback, nightly)"
+    ],
+    "inventory": [
+      "Validate /api.inventory.export route via integration tests",
+      "Confirm migration coverage and seed data"
+    ],
+    "product": [
+      "Draft rollout/rollback + monitoring checklists",
+      "Publish verification steps for launch"
+    ],
+    "ads": [
+      "Run ads backfill + anomaly rehearsal",
+      "Produce anomaly report and logs"
+    ],
+    "seo": [
+      "Implement vitals adapter + anomaly triage doc",
+      "Unit tests for SEO vitals helpers"
+    ],
+    "content": [
+      "Refresh calendar with stabilized metrics",
+      "Prepare Publer drafts and evidence linkage"
+    ],
+    "designer": [
+      "Finalize approvals microcopy + visual checklist"
+    ],
+    "support": [
+      "Validate support webhooks + Chatwoot draft route"
+    ],
+    "ai-customer": [
+      "Verify human_review pipeline + reviewers",
+      "Dry-run review checklist"
+    ],
+    "ai-knowledge": [
+      "Run Knowledge MCP snapshot + index doc delta"
+    ]
+  }
+}
