@@ -14,7 +14,14 @@ import {
   Select,
 } from "@shopify/polaris";
 import { useState } from "react";
-import type { SEOData } from "~/routes/dashboard";
+type SEOAnomaly = {
+  page: string;
+  change: number;
+  severity: "critical" | "warning" | "info";
+};
+type SEOData = {
+  anomalies: SEOAnomaly[];
+};
 
 export interface SEOTileProps {
   data: SEOData;

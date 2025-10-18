@@ -9,11 +9,10 @@
  * - Status tracking (draft, scheduled, published, failed)
  */
 
-import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "react-router";
-import { authenticate } from "../shopify.server";
-import type { ContentPost, SocialPlatform } from "../lib/content/tracking";
+import { authenticate } from "~/shopify.server";
+import type { ContentPost, SocialPlatform } from "~/lib/content/tracking";
 
 // ============================================================================
 // Types
