@@ -61,6 +61,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -201,7 +202,7 @@ jobs:
         if: steps.previous.outputs.version != 'unknown'
         run: |
           echo "Rolling back to version ${{ steps.previous.outputs.version }}..."
-          flyctl releases rollback ${{ steps.previous.outputs.version }} --app hotdash-staging --yes
+          flyctl releases rollback ${{ steps.previous.outputs.version }} --app hotdash-staging
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
