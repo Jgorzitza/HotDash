@@ -1,24 +1,20 @@
-## Summary
-- What changed?
-- Why now?
+Title: <short summary>
 
-## Testing
-- [ ] `npm run fmt`
-- [ ] `npm run lint`
-- [ ] `npm run test:ci`
-- [ ] `npm run scan`
-- Evidence (paste screenshots/logs/links):
+Fixes #<issue-number>
 
-## Risk & Mitigations
-- Risk level (Low/Medium/High):
-- Mitigation steps:
-- Rollback plan (commands or playbook link):
+Allowed paths: <e.g., app/** scripts/** tests/**>
 
-## Security & Compliance
-- [ ] Shopify session token enforced on embedded routes
-- [ ] Supabase RLS reviewed/updated
-- [ ] Secrets not committed; vault updated if new keys needed
+Summary
+- What changed and why
+- Risk and rollback
 
-## Deployment Notes
-- Affected infrastructure (Fly, Supabase, Publer, Chatwoot, etc.):
-- Post-deploy verification steps:
+MCP Evidence (required for code changes)
+- artifacts/<agent>/<YYYY-MM-DD>/mcp/<tool>_*.jsonl
+
+Artifacts
+- Link to logs in artifacts/<agent>/<YYYY-MM-DD>/...
+
+Verification
+- Steps run locally (fmt, lint, tests)
+- Any manual checks
+

@@ -37,6 +37,17 @@ if (allowedMatch) {
   warn('Add "Allowed paths: app/** packages/**" line in PR body');
 }
 
+// Require MCP evidence when code changes
+const codeChanged = changed.some(f => /^(app|apps|packages|scripts|supabase|prisma)\//.test(f));
+if (codeChanged) {
+  const body = pr.body || '';
+  const hasMcpSection = /MCP Evidence:/i.test(body);
+  const hasMcpArtifact = /artifacts\/[a-z0-9_-]+\/[0-9]{4}-[0-9]{2}-[0-9]{2}\/mcp\/.+\.jsonl/i.test(body);
+  if (!hasMcpSection || !hasMcpArtifact) {
+    fail('MCP Evidence missing. Add a section like:\n\nMCP Evidence:\n- artifacts/<agent>/<YYYY-MM-DD>/mcp/<tool>_*.jsonl');
+  }
+}
+
 // Tests nudge
 const appTouched = changed.some(f=>/^(app|apps|packages|supabase|prisma|scripts)\//.test(f));
 const testsTouched = changed.some(f=>/^tests\//.test(f)||/(\.|\/)test\./.test(f));

@@ -7,6 +7,24 @@ on:
     branches: [main]
 
 jobs:
+  validate-mcp-evidence:
+    name: Validate MCP Evidence (PR only)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate MCP Evidence in PR body
+        run: |
+          set -euo pipefail
+          echo "Reading PR body from $GITHUB_EVENT_PATH"
+          BODY=$(jq -r '.pull_request.body // ""' "$GITHUB_EVENT_PATH")
+          echo "$BODY" > pr_body.md
+          echo "--- PR BODY START ---"; sed -n '1,120p' pr_body.md; echo "--- PR BODY END ---"
+          # Require MCP Evidence section
+          echo "$BODY" | grep -qi 'MCP Evidence:' || { echo "❌ Missing 'MCP Evidence:' section in PR body"; exit 1; }
+          # Require at least one artifacts path to mcp/*.jsonl
+          echo "$BODY" | grep -Eqi 'artifacts/.+/[0-9]{4}-[0-9]{2}-[0-9]{2}/mcp/.+\.jsonl' || { echo "❌ Missing MCP artifact reference (artifacts/<agent>/<date>/mcp/*.jsonl)"; exit 1; }
+          echo "✅ MCP evidence present"
+
   build-test:
     runs-on: ubuntu-latest
     steps:

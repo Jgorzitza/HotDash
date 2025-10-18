@@ -14,6 +14,7 @@ const allow = [
   /^docs\/specs\/.+\.md$/, /^docs\/integrations\/.+\.md$/,
   /^feedback\/.+\.md$/,
   /^docs\/_archive\/.+/,
+  /^\.github\/PULL_REQUEST_TEMPLATE\.md$/, // PR template allowed
   /^mcp\/.+\.md$/  // MCP tools documentation (critical infrastructure)
 ];
 
