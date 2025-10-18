@@ -9,7 +9,7 @@
  * HITL enforced: "Approve" disabled until evidence + rollback + /validate OK
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   Tabs,
@@ -21,6 +21,7 @@ import {
   InlineStack,
   Divider,
 } from "@shopify/polaris";
+import type { BadgeProps } from "@shopify/polaris";
 import { ApprovalEvidenceSection } from "./ApprovalEvidenceSection";
 import { ApprovalGradingSection } from "./ApprovalGradingSection";
 import { ApprovalActionsSection } from "./ApprovalActionsSection";
@@ -63,13 +64,13 @@ export interface Approval {
   };
   actions: Array<{
     endpoint: string;
-    payload: any;
+    payload: Record<string, unknown>;
     dry_run_status?: string;
   }>;
   receipts?: Array<{
     id: string;
     timestamp: string;
-    metrics?: any;
+    metrics?: Record<string, unknown>;
   }>;
   created_at: string;
   updated_at: string;
@@ -110,6 +111,12 @@ export function ApprovalsDrawer({
   if (!approval) return null;
 
   // Validate approval
+  interface ValidationResponse {
+    valid: boolean;
+    errors?: string[];
+    warnings?: string[];
+  }
+
   const validateApproval = async () => {
     setValidating(true);
     setValidationErrors([]);
@@ -117,10 +124,10 @@ export function ApprovalsDrawer({
 
     try {
       const response = await fetch(`/api/approvals/${approval.id}/validate`);
-      const result = await response.json();
+      const result: ValidationResponse = await response.json();
 
-      setValidationErrors(result.errors || []);
-      setValidationWarnings(result.warnings || []);
+      setValidationErrors(result.errors ?? []);
+      setValidationWarnings(result.warnings ?? []);
 
       return result.valid;
     } catch (error) {
@@ -153,21 +160,19 @@ export function ApprovalsDrawer({
   // Check if can approve
   const hasEvidence =
     approval.evidence && Object.keys(approval.evidence).length > 0;
-  const hasRollback =
-    approval.rollback &&
-    approval.rollback.steps &&
-    approval.rollback.steps.length > 0;
+  const hasRollback = !!(approval.rollback?.steps && approval.rollback.steps.length > 0);
   const hasValidationErrors =
     approval.validation_errors && approval.validation_errors.length > 0;
-  const canApprove =
-    hasEvidence &&
-    hasRollback &&
-    !hasValidationErrors &&
-    validationErrors.length === 0;
+  const canApprove: boolean = Boolean(
+    hasEvidence && hasRollback && !hasValidationErrors && validationErrors.length === 0,
+  );
 
   // Get state badge
   const getStateBadge = () => {
-    const badges: Record<Approval["state"], { tone: any; label: string }> = {
+    const badges: Record<
+      Approval["state"],
+      { tone: BadgeProps["tone"]; label: string }
+    > = {
       draft: { tone: "info", label: "Draft" },
       pending_review: { tone: "attention", label: "Pending Review" },
       approved: { tone: "success", label: "Approved" },
@@ -187,7 +192,7 @@ export function ApprovalsDrawer({
   ];
 
   return (
-    <Modal open={open} onClose={onClose} title={approval.summary} large>
+    <Modal open={open} onClose={onClose} title={approval.summary}>
       <Modal.Section>
         <BlockStack gap="400">
           {/* Header */}
@@ -317,6 +322,7 @@ export function ApprovalsDrawer({
             onReject={onReject}
             onRequestChanges={onRequestChanges}
             onApply={onApply}
+            isValidating={validating}
           />
         </BlockStack>
       </Modal.Section>

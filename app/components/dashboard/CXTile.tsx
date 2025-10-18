@@ -7,7 +7,11 @@
 
 import { Text, BlockStack, InlineStack, Badge, Button } from "@shopify/polaris";
 import { useState, useEffect } from "react";
-import type { CXData } from "~/routes/dashboard";
+type CXData = {
+  pendingCount: number;
+  breachedSLA: number;
+  avgResponseTime: number; // minutes
+};
 
 export interface CXTileProps {
   data: CXData;
@@ -37,7 +41,7 @@ export function CXTile({ data }: CXTileProps) {
 
   const getSLABadge = () => {
     if (liveData.breachedSLA > 0) {
-      return <Badge tone="critical">{liveData.breachedSLA} SLA breached</Badge>;
+      return <Badge tone="critical">{`${liveData.breachedSLA} SLA breached`}</Badge>;
     }
     return <Badge tone="success">All within SLA</Badge>;
   };
