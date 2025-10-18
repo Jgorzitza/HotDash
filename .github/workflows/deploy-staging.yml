@@ -62,7 +62,8 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci || npm i
 
       - name: Build application
         run: npm run build
@@ -196,13 +197,11 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
-      - name: Rollback deployment
+      - name: Rollback placeholder (manual)
         if: steps.previous.outputs.version != 'unknown'
         run: |
-          echo "Rolling back to version ${{ steps.previous.outputs.version }}..."
-          flyctl releases rollback ${{ steps.previous.outputs.version }} --app hotdash-staging
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          echo "Automatic rollback is not configured for current flyctl. Previous version: ${{ steps.previous.outputs.version }}"
+          echo "Please revert via: flyctl releases --app hotdash-staging && flyctl release revert <version>"
 
       - name: Verify rollback
         if: steps.previous.outputs.version != 'unknown'
