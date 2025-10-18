@@ -25,57 +25,9 @@ import type { BadgeProps } from "@shopify/polaris";
 import { ApprovalEvidenceSection } from "./ApprovalEvidenceSection";
 import { ApprovalGradingSection } from "./ApprovalGradingSection";
 import { ApprovalActionsSection } from "./ApprovalActionsSection";
+import type { Approval } from "~/types/approval";
 
-export interface Approval {
-  id: string;
-  kind: "cx_reply" | "inventory" | "growth" | "misc";
-  state:
-    | "draft"
-    | "pending_review"
-    | "approved"
-    | "applied"
-    | "audited"
-    | "learned";
-  summary: string;
-  created_by: string;
-  reviewer?: string;
-  evidence: {
-    what_changes?: string;
-    why_now?: string;
-    impact_forecast?: string;
-    diffs?: Array<{ path: string; before: string; after: string }>;
-    samples?: Array<{ label: string; content: string }>;
-    queries?: Array<{ label: string; query: string; result?: string }>;
-    screenshots?: Array<{ label: string; url: string }>;
-  };
-  impact: {
-    expected_outcome?: string;
-    metrics_affected?: string[];
-    user_experience?: string;
-    business_value?: string;
-  };
-  risk: {
-    what_could_go_wrong?: string;
-    recovery_time?: string;
-  };
-  rollback: {
-    steps?: string[];
-    artifact_location?: string;
-  };
-  actions: Array<{
-    endpoint: string;
-    payload: Record<string, unknown>;
-    dry_run_status?: string;
-  }>;
-  receipts?: Array<{
-    id: string;
-    timestamp: string;
-    metrics?: Record<string, unknown>;
-  }>;
-  created_at: string;
-  updated_at: string;
-  validation_errors?: string[];
-}
+// Approval type now imported from ~/types/approval
 
 export interface ApprovalsDrawerProps {
   open: boolean;
@@ -89,6 +41,12 @@ export interface ApprovalsDrawerProps {
   onReject: (reason: string) => void;
   onRequestChanges: (note: string) => void;
   onApply?: () => void;
+}
+
+interface ValidationResponse {
+  valid: boolean;
+  errors?: string[];
+  warnings?: string[];
 }
 
 export function ApprovalsDrawer({
@@ -111,12 +69,6 @@ export function ApprovalsDrawer({
   if (!approval) return null;
 
   // Validate approval
-  interface ValidationResponse {
-    valid: boolean;
-    errors?: string[];
-    warnings?: string[];
-  }
-
   const validateApproval = async () => {
     setValidating(true);
     setValidationErrors([]);

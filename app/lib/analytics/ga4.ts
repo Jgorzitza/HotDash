@@ -60,6 +60,17 @@ export interface ConversionMetrics {
   };
 }
 
+interface GaValueContainer {
+  value?: string | null;
+}
+
+type NullableGaValue = GaValueContainer | null | undefined;
+
+interface GaRow {
+  dimensionValues?: Array<NullableGaValue> | null;
+  metricValues?: Array<NullableGaValue> | null;
+}
+
 // ============================================================================
 // Revenue Metrics
 // ============================================================================
@@ -80,8 +91,7 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
   appMetrics.cacheMiss(cacheKey);
 
   try {
-    const config = getGaConfig();
-    const client = createDirectGaClient(config.propertyId);
+    createDirectGaClient(getGaConfig().propertyId);
 
     // Calculate date ranges
     const today = new Date();
@@ -98,8 +108,8 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
-      fetchRevenueData(client, currentStart, currentEnd),
-      fetchRevenueData(client, previousStart, previousEnd),
+      fetchRevenueData(currentStart, currentEnd),
+      fetchRevenueData(previousStart, previousEnd),
     ]);
 
     // Calculate trends
@@ -149,7 +159,6 @@ export async function getRevenueMetrics(): Promise<RevenueMetrics> {
  * Fetch revenue data for a specific date range
  */
 async function fetchRevenueData(
-  client: any,
   startDate: string,
   endDate: string,
 ): Promise<{ revenue: number; aov: number; transactions: number }> {
@@ -163,13 +172,9 @@ async function fetchRevenueData(
     metrics: [{ name: "totalRevenue" }, { name: "transactions" }],
   });
 
-  const revenue = parseFloat(
-    response.rows?.[0]?.metricValues?.[0]?.value || "0",
-  );
-  const transactions = parseInt(
-    response.rows?.[0]?.metricValues?.[1]?.value || "0",
-    10,
-  );
+  const firstRow = response.rows?.[0] as GaRow | undefined;
+  const revenue = getMetricNumber(firstRow, 0, "float");
+  const transactions = getMetricNumber(firstRow, 1, "int");
   const aov = transactions > 0 ? revenue / transactions : 0;
 
   return { revenue, aov, transactions };
@@ -195,8 +200,7 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
   appMetrics.cacheMiss(cacheKey);
 
   try {
-    const config = getGaConfig();
-    const client = createDirectGaClient(config.propertyId);
+    createDirectGaClient(getGaConfig().propertyId);
 
     // Calculate date ranges
     const today = new Date();
@@ -213,8 +217,8 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
-      fetchTrafficData(client, currentStart, currentEnd),
-      fetchTrafficData(client, previousStart, previousEnd),
+      fetchTrafficData(currentStart, currentEnd),
+      fetchTrafficData(previousStart, previousEnd),
     ]);
 
     // Calculate trends
@@ -264,7 +268,6 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
  * Fetch traffic data for a specific date range
  */
 async function fetchTrafficData(
-  client: any,
   startDate: string,
   endDate: string,
 ): Promise<{ totalSessions: number; organicSessions: number }> {
@@ -282,16 +285,18 @@ async function fetchTrafficData(
   let totalSessions = 0;
   let organicSessions = 0;
 
-  response.rows?.forEach((row) => {
-    const channelGroup = row.dimensionValues?.[0]?.value || "";
-    const sessions = parseInt(row.metricValues?.[0]?.value || "0", 10);
+  (response.rows ?? [])
+    .filter(Boolean)
+    .forEach((row: any) => {
+      const channelGroup = getDimensionValue(row, 0);
+      const sessions = getMetricNumber(row, 0, "int");
 
-    totalSessions += sessions;
+      totalSessions += sessions;
 
-    if (channelGroup.toLowerCase().includes("organic")) {
-      organicSessions += sessions;
-    }
-  });
+      if (channelGroup.toLowerCase().includes("organic")) {
+        organicSessions += sessions;
+      }
+    });
 
   return { totalSessions, organicSessions };
 }
@@ -307,8 +312,7 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
   const startTime = Date.now();
 
   try {
-    const config = getGaConfig();
-    const client = createDirectGaClient(config.propertyId);
+    createDirectGaClient(getGaConfig().propertyId);
 
     // Calculate date ranges
     const today = new Date();
@@ -325,8 +329,8 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
-      fetchConversionData(client, currentStart, currentEnd),
-      fetchConversionData(client, previousStart, previousEnd),
+      fetchConversionData(currentStart, currentEnd),
+      fetchConversionData(previousStart, previousEnd),
     ]);
 
     // Calculate trend
@@ -361,7 +365,6 @@ export async function getConversionMetrics(): Promise<ConversionMetrics> {
  * Fetch conversion data for a specific date range
  */
 async function fetchConversionData(
-  client: any,
   startDate: string,
   endDate: string,
 ): Promise<{ conversionRate: number; transactions: number; revenue: number }> {
@@ -379,17 +382,10 @@ async function fetchConversionData(
     ],
   });
 
-  const sessions = parseInt(
-    response.rows?.[0]?.metricValues?.[0]?.value || "0",
-    10,
-  );
-  const transactions = parseInt(
-    response.rows?.[0]?.metricValues?.[1]?.value || "0",
-    10,
-  );
-  const revenue = parseFloat(
-    response.rows?.[0]?.metricValues?.[2]?.value || "0",
-  );
+  const firstRow = response.rows?.[0] as GaRow | undefined;
+  const sessions = getMetricNumber(firstRow, 0, "int");
+  const transactions = getMetricNumber(firstRow, 1, "int");
+  const revenue = getMetricNumber(firstRow, 2, "float");
 
   const conversionRate = sessions > 0 ? (transactions / sessions) * 100 : 0;
 
@@ -440,8 +436,7 @@ export async function getTrafficBreakdown(): Promise<TrafficBreakdown> {
   appMetrics.cacheMiss(cacheKey);
 
   try {
-    const config = getGaConfig();
-    const client = createDirectGaClient(config.propertyId);
+    createDirectGaClient(getGaConfig().propertyId);
 
     // Calculate date ranges
     const today = new Date();
@@ -458,8 +453,8 @@ export async function getTrafficBreakdown(): Promise<TrafficBreakdown> {
 
     // Fetch current and previous period data
     const [currentData, previousData] = await Promise.all([
-      fetchTrafficBreakdownData(client, currentStart, currentEnd),
-      fetchTrafficBreakdownData(client, previousStart, previousEnd),
+      fetchTrafficBreakdownData(currentStart, currentEnd),
+      fetchTrafficBreakdownData(previousStart, previousEnd),
     ]);
 
     // Merge current and previous data to calculate trends
@@ -519,7 +514,6 @@ export async function getTrafficBreakdown(): Promise<TrafficBreakdown> {
  * Fetch traffic breakdown data for a specific date range
  */
 async function fetchTrafficBreakdownData(
-  client: any,
   startDate: string,
   endDate: string,
 ): Promise<
@@ -560,27 +554,27 @@ async function fetchTrafficBreakdownData(
     sessionsPerUser: number;
   }> = [];
 
-  response.rows?.forEach((row) => {
-    const channel = row.dimensionValues?.[0]?.value || "Unknown";
-    const sessions = parseInt(row.metricValues?.[0]?.value || "0", 10);
-    const users = parseInt(row.metricValues?.[1]?.value || "0", 10);
-    const engagedSessions = parseInt(row.metricValues?.[2]?.value || "0", 10);
-    const averageSessionDuration = parseFloat(
-      row.metricValues?.[3]?.value || "0",
-    );
-    const bounceRate = parseFloat(row.metricValues?.[4]?.value || "0");
-    const sessionsPerUser = users > 0 ? sessions / users : 0;
+  (response.rows ?? [])
+    .filter(Boolean)
+    .forEach((row: any) => {
+      const channel = getDimensionValue(row, 0) || "Unknown";
+      const sessions = getMetricNumber(row, 0, "int");
+      const users = getMetricNumber(row, 1, "int");
+      const engagedSessions = getMetricNumber(row, 2, "int");
+      const averageSessionDuration = getMetricNumber(row, 3, "float");
+      const bounceRate = getMetricNumber(row, 4, "float");
+      const sessionsPerUser = users > 0 ? sessions / users : 0;
 
-    channels.push({
-      channel,
-      sessions,
-      users,
-      engagedSessions,
-      averageSessionDuration,
-      bounceRate,
-      sessionsPerUser,
+      channels.push({
+        channel,
+        sessions,
+        users,
+        engagedSessions,
+        averageSessionDuration,
+        bounceRate,
+        sessionsPerUser,
+      });
     });
-  });
 
   return channels;
 }
@@ -597,4 +591,30 @@ function calculatePercentageChange(current: number, previous: number): number {
     return current > 0 ? 100 : 0;
   }
   return ((current - previous) / previous) * 100;
+}
+
+function getMetricNumber(
+  row: GaRow | undefined,
+  index: number,
+  mode: "int" | "float",
+): number {
+  const container = row?.metricValues?.[index];
+  const rawValue =
+    container && typeof container === "object" ? (container.value ?? "0") : "0";
+
+  if (mode === "int") {
+    const parsed = parseInt(rawValue, 10);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  const parsed = parseFloat(rawValue);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+function getDimensionValue(row: GaRow | undefined, index: number): string {
+  const container = row?.dimensionValues?.[index];
+  if (container && typeof container === "object" && container.value) {
+    return container.value;
+  }
+  return "";
 }

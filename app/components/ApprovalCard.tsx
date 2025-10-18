@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   BlockStack,
@@ -8,8 +7,8 @@ import {
   Badge,
   Banner,
 } from "@shopify/polaris";
-import { useSubmit } from "react-router";
-import type { Approval } from "./approvals/ApprovalsDrawer";
+import type { BadgeProps } from "@shopify/polaris";
+import type { Approval } from "~/types/approval";
 
 interface ApprovalCardProps {
   approval: Approval;
@@ -17,10 +16,6 @@ interface ApprovalCardProps {
 }
 
 export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
-  const submit = useSubmit();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   // Get first action for display
   const action = approval.actions[0];
   const riskLevel = action ? getRiskLevel(action.endpoint) : "low";
@@ -38,7 +33,10 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
 
   // Get state badge
   const getStateBadge = () => {
-    const badges: Record<Approval["state"], { tone: any; label: string }> = {
+    const badges: Record<
+      Approval["state"],
+      { tone: BadgeProps["tone"]; label: string }
+    > = {
       draft: { tone: "info", label: "Draft" },
       pending_review: { tone: "attention", label: "Pending Review" },
       approved: { tone: "success", label: "Approved" },
@@ -76,9 +74,22 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
           </Text>
 
           {action && (
-            <Text variant="bodySm" as="p">
-              <strong>Action:</strong> {action.endpoint}
-            </Text>
+            <InlineStack align="space-between" blockAlign="center">
+              <Text variant="bodySm" as="p">
+                <strong>Action:</strong> {action.endpoint}
+              </Text>
+              <Badge
+                tone={
+                  riskLevel === "high"
+                    ? "critical"
+                    : riskLevel === "medium"
+                      ? "warning"
+                      : "info"
+                }
+              >
+                {`${riskLevel.toUpperCase()} RISK`}
+              </Badge>
+            </InlineStack>
           )}
         </BlockStack>
 
@@ -87,7 +98,7 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
           approval.validation_errors.length > 0 && (
             <Banner tone="critical">
               <BlockStack gap="200">
-                {approval.validation_errors!.map((error, idx) => (
+                {approval.validation_errors!.map((error: string, idx: number) => (
                   <Text as="p" key={idx}>
                     • {error}
                   </Text>

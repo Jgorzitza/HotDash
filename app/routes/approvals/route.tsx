@@ -12,7 +12,7 @@ import {
 } from "@shopify/polaris";
 import { ApprovalCard } from "../../components/ApprovalCard";
 import { ApprovalsDrawer } from "../../components/approvals/ApprovalsDrawer";
-import type { Approval } from "../../components/approvals/ApprovalsDrawer";
+import type { Approval } from "~/types/approval";
 import { getApprovals, getApprovalCounts } from "../../services/approvals";
 
 /**
@@ -73,10 +73,10 @@ export default function ApprovalsRoute() {
   const page = Number(searchParams.get("page") || "1");
 
   // Filter is now handled by the loader, but we still filter out suppressed items
-  const visible = useMemo(
-    () => (approvals as Approval[]).filter((a) => !suppressedIds.has(a.id)),
-    [approvals, suppressedIds],
-  );
+  const visible = useMemo(() => {
+    const list = Array.isArray(approvals) ? (approvals as Approval[]) : [];
+    return list.filter((a) => !suppressedIds.has(a.id));
+  }, [approvals, suppressedIds]);
 
   function openDetails(approval: Approval) {
     setSelected(approval);

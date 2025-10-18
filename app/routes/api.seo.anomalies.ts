@@ -72,7 +72,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }));
 
     // Detect all anomaly types
-    const metadata = gaResult.fact.metadata;
+    const metadata: any = (gaResult as any).fact?.metadata ?? undefined;
     const generatedAt =
       metadata &&
       typeof metadata === "object" &&
@@ -81,7 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         ? (metadata as Record<string, unknown>).generatedAt
         : undefined;
     const isSampled =
-      metadata && typeof metadata === "object" && "sampled" in metadata
+      metadata && typeof metadata === "object" && Object.prototype.hasOwnProperty.call(metadata, 'sampled')
         ? Boolean((metadata as Record<string, unknown>).sampled)
         : false;
 
@@ -93,7 +93,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       crawl: detectCrawlAnomalies(getMockCrawlErrors()),
       generatedAt,
       sources: {
-        traffic: String((gaResult as any).source ?? 'ga4'),
+        traffic: gaResult.source,
         ranking: "mock",
         vitals: "mock",
         crawl: "mock",

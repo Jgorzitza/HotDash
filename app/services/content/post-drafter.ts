@@ -14,7 +14,7 @@ import {
   analyzeEngagementPatterns,
   type EngagementInsights,
 } from "./engagement-analyzer";
-import type { Approval } from "../../components/approvals/ApprovalsDrawer";
+import type { Approval } from "~/types/approval";
 import { appMetrics } from "../../utils/metrics.server";
 
 // ============================================================================
