@@ -27,11 +27,20 @@ Current Issue: #78
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Guided Selling/Kit Composer planning (issue #78) — docs/specs/hitl/guided-selling*
+1. Guided Selling/Kit Composer planning (issue #78) — docs/specs/hitl/guided-selling\*
 2. Approvals robustness — add SSR/provider coverage tests for Polaris routes
 3. Feature flags wiring (autopublish toggles surfaced, default OFF)
 4. Error boundaries and a11y checks for core tiles/routes
 5. Tech debt sweep for agent service and route loaders
+6. Standardize Polaris wrappers/hooks; dedupe UI helpers
+7. Structured logging coverage in server loaders/actions
+8. Performance instrumentation for SSR/API routes (timers + histograms)
+9. Code-splitting for large routes; ensure chunks stay < 200kB gz
+10. Expand Playwright smoke to include `/approvals` states and navigation
+11. Lint rule tightening and autofixes for common pitfalls
+12. Test utilities for fixtures/mocks to stabilize unit tests
+13. Add graceful error fallbacks for unknown env (dev/staging)
+14. Document route contracts and loader inputs/outputs
 
 ## Upcoming (broad lanes — break into molecules)
 

@@ -25,11 +25,16 @@ Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promo
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. A/B harness (issue #80) — docs/specs/hitl/ab-harness*
+1. A/B harness (issue #80) — docs/specs/hitl/ab-harness\*
 2. Launch checklist maintenance — docs/specs/dashboard_launch_checklist.md
-3. Guided Selling UX spec — docs/specs/hitl/guided-selling*
+3. Guided Selling UX spec — docs/specs/hitl/guided-selling\*
 4. Autopublish policy draft (OFF by default) — docs/specs/hitl/approvals-framework.config.json
 5. Stakeholder comms template refresh — docs/specs/stakeholder_comms.md
+6. Experiment registry examples and approval gates
+7. Rollback communication playbook and templates
+8. Customer‑visible change log outline and criteria
+9. CEO brief structure with Action Dock highlights
+10. Risk matrix for upcoming molecules and mitigations
 
 ## Upcoming (broad lanes — break into molecules)
 

@@ -48,6 +48,11 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 3. Approvals integration for CX replies (HITL policy)
 4. Draft escalation playbooks updates
 5. Fixture updates for dev mode
+6. Chatwoot custom views and macros inventory doc
+7. SLA dashboards and alert tuning notes
+8. Conversation taxonomy and tagging guidelines
+9. Inbox routing and escalation rules (docs)
+10. Evidence bundling for support PRs (screens/logs)
 
 ## Contract Test
 

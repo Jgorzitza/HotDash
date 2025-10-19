@@ -46,6 +46,11 @@ Prepare the production knowledge backbone. Today: rebuild index and run eval; at
 3. Add search patterns for SEO/Guided Selling knowledge
 4. Prepare MCP tool transcripts for knowledge queries
 5. Document regression tracking for CEO briefings
+6. Retrieval evaluation set curation and maintenance
+7. Chunking strategy doc (by heading vs sliding window)
+8. Fallback search behavior and thresholds (BM25 hybrid)
+9. Synonyms/aliases lists for automotive entities
+10. Evaluation matrix and scoring rubric documentation
 
 ## Contract Test
 

@@ -44,9 +44,14 @@ Deliver production-ready Ads intelligence. Today: run ads aggregation/backfill s
 
 1. Slice‑B foundations — scripts/ops/backfill-ads-aggregations.ts
 2. Slice‑C scaffolding — tests/integration/api.ads.slice-c.spec.ts
-3. Approvals payload shaping — app/routes/api.ads.slice-*.ts
+3. Approvals payload shaping — app/routes/api.ads.slice-\*.ts
 4. Action Dock drilldowns (docs only)
 5. Parity checks vs dashboards
+6. Outlier detection thresholds and alerts (docs)
+7. Metrics aggregator guardrails (divide‑by‑zero, nulls)
+8. Connector stubs for additional ad platforms (docs only)
+9. Test data fixtures for regression stability
+10. Evidence bundling for ads PRs (queries, charts)
 
 ## Contract Test
 

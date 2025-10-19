@@ -43,11 +43,16 @@ Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoo
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Storefront MCP sandbox routes — integrations/**
-2. GA4/GSC adapters proof commands — integrations/**
-3. Publer adapter health proof (no secrets in code) — scripts/proof/**
-4. Shopify Admin adapter parity checks — integrations/**
-5. Support harness improvements (fixtures) — integrations/**
+1. Storefront MCP sandbox routes — integrations/\*\*
+2. GA4/GSC adapters proof commands — integrations/\*\*
+3. Publer adapter health proof (no secrets in code) — scripts/proof/\*\*
+4. Shopify Admin adapter parity checks — integrations/\*\*
+5. Support harness improvements (fixtures) — integrations/\*\*
+6. Webhooks inventory — list and contracts for Admin events
+7. Chatwoot label mapping + transcript export notes
+8. Publer schedule/status poller contract test (docs)
+9. Supabase RPC wiring checklist for adapters
+10. Retry/backoff and idempotency docs for integration calls
 
 ## Contract Test
 

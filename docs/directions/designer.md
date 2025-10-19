@@ -44,11 +44,16 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Guided Selling wireframes — docs/specs/hitl/guided-selling* (with Engineer/Product)
+1. Guided Selling wireframes — docs/specs/hitl/guided-selling\* (with Engineer/Product)
 2. Approvals microcopy + states — docs/design/approvals_microcopy.md
 3. Dashboard tile visual QA checklist — docs/design/dashboard-tiles.md
 4. A/B harness UI hints — docs/specs/hitl/ab-harness.md
 5. Media pipeline UX notes (safe autopublish tiers)
+6. Drawer and modal accessibility checklist updates
+7. Loading/skeleton states for tiles and approvals lists
+8. Visual regression scenarios catalog (docs only)
+9. UX for error and empty states across key pages
+10. Design tokens audit and consistency notes
 
 ## Contract Test
 

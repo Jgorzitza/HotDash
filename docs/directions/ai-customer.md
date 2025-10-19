@@ -49,6 +49,11 @@ Deliver production-safe customer reply drafting that keeps Chatwoot health green
 3. Draft reply grading rubric tuning (tone/accuracy/policy)
 4. Escalation microcopy alignment with Support
 5. Approval queue efficiency notes (no code merges)
+6. Reply style guide (positive, concise, policy‑safe)
+7. Negative language constraints and examples list
+8. Chain‑of‑thought privacy policy and handling (internal only)
+9. Disclaimers/headers for draft replies under HITL
+10. Grade calibration sessions with Support/Product
 
 ## Contract Test
 

@@ -25,11 +25,19 @@ Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec s
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Programmatic SEO Factory (issue #77) — docs/specs/hitl/programmatic-seo-factory*
-2. Closed‑loop SEO Telemetry — docs/specs/hitl/seo-telemetry* (coord. with Analytics #79)
-3. Media Pipeline Tier‑0 planning — docs/specs/hitl/media-pipeline*
-4. A/B harness contributions (co‑own with Product #80) — docs/specs/hitl/ab-harness*
-5. Site Search synonyms/facets — docs/specs/hitl/site-search*
+1. Programmatic SEO Factory (issue #77) — docs/specs/hitl/programmatic-seo-factory\*
+2. Closed‑loop SEO Telemetry — docs/specs/hitl/seo-telemetry\* (coord. with Analytics #79)
+3. Media Pipeline Tier‑0 planning — docs/specs/hitl/media-pipeline\*
+4. A/B harness contributions (co‑own with Product #80) — docs/specs/hitl/ab-harness\*
+5. Site Search synonyms/facets — docs/specs/hitl/site-search\*
+6. Schema markup expansions (FAQ, Breadcrumb, Product) — template notes
+7. Canonicalization and robots/noindex rules for programmatic pages
+8. Sitemap generation planning for programmatic clusters
+9. Internal-link policy and thresholds; nightly sweep guardrails
+10. Alt‑text heuristics for media pipeline; accessibility checklist
+11. Meta description trims policy; safe autopublish Tier‑0 doc
+12. Title/H1 alignment guard and linting rules (docs)
+13. 404/preview flows for draft pages with flags OFF
 
 ## Upcoming (broad lanes — break into molecules)
 

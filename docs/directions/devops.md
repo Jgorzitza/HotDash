@@ -50,6 +50,11 @@ Unblock Deploy to Staging build step and wire a working rollback command so toda
 3. Staging deploy rehearsal doc and rollback scripts
 4. Prometheus alert sanity for tiles; slow query analysis
 5. Runner capacity and cache optimization
+6. Workflow concurrency groups and cancellation to reduce queue time
+7. Cache key strategy and restore/fallback tuning for node_modules
+8. Secrets/Environments audit and branch protection checks
+9. Base image updates and lockfile hygiene guidance
+10. Pre-commit and pre-push guard scripts doc refresh
 
 ## Contract Test
 

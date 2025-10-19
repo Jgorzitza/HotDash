@@ -42,11 +42,16 @@ Deliver production-ready content and approvals-ready copy. Today: finalize launc
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Content upgrades (Tier‑0 safe edits) — docs/specs/hitl/content-upgrades*
+1. Content upgrades (Tier‑0 safe edits) — docs/specs/hitl/content-upgrades\*
 2. SEO briefs pipeline artifacts — docs/specs/content_pipeline.md
 3. Support KB pipeline prep (dev) — docs/specs/support_pipeline.md
 4. Approvals microcopy and UX notes — docs/design/approvals_microcopy.md
 5. Draft comms for A/B harness experiments (with Product)
+6. Alt‑text heuristics and examples catalog
+7. Copy micro‑edits policy (tone, length, links)
+8. Content pipeline backlog triage templates
+9. H1/H2 style guide and linting rules (docs)
+10. Troubleshooting playbook for SEO content issues
 
 ## Contract Test
 

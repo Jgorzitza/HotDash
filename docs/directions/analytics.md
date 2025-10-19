@@ -23,11 +23,18 @@ Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-te
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. CWV→$$ mapping (issue #79) — docs/specs/hitl/seo-telemetry*
+1. CWV→$$ mapping (issue #79) — docs/specs/hitl/seo-telemetry\*
 2. Dashboard tiles verification and latency checks
 3. Sampling guard proof runs — scripts/sampling-guard-proof.mjs
-4. GA4/GSC adapter docs alignment (no MCP) — integrations/**
+4. GA4/GSC adapter docs alignment (no MCP) — integrations/\*\*
 5. Parity test harness improvements and artifacts bundling
+6. Metric definitions catalog (rev, sessions, CR, AOV) with owners
+7. ETL reliability plan (retries, idempotency, alerts) — docs
+8. Backfill strategy notes for empty tables and deltas
+9. Tile SLA checks and error banners spec (when to grey tiles)
+10. Cost guardrails for BigQuery jobs; schedule windows
+11. Sampling thresholds and clamps; anomaly thresholds doc
+12. Evidence bundling for analytics PRs (queries, charts)
 
 ## Upcoming (broad lanes — break into molecules)
 

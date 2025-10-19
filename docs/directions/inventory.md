@@ -43,11 +43,16 @@ Launch the inventory intelligence system (status buckets, ROP calculations, pick
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. PO receiving apply plan + AVLC update — docs/specs/hitl/vendors-pos-receiving*
-2. Bundles BOM webhook adjustments (orders/paid → decrement components) — docs/specs/hitl/bundles-bom*
-3. Overnight settlement design (Canada proxy to zero; WH offsets) — docs/specs/hitl/inventory-updates*
+1. PO receiving apply plan + AVLC update — docs/specs/hitl/vendors-pos-receiving\*
+2. Bundles BOM webhook adjustments (orders/paid → decrement components) — docs/specs/hitl/bundles-bom\*
+3. Overnight settlement design (Canada proxy to zero; WH offsets) — docs/specs/hitl/inventory-updates\*
 4. Approvals reason codes alignment — docs/specs/hitl/agent-reason-codes.json
 5. Telemetry hooks for inventory tiles
+6. Returns flow reconciliation notes (restock + AVLC treatment)
+7. Location transfers and adjustments ledger design
+8. Safety stock & reorder point calculations doc
+9. Supplier lead time variance handling
+10. Evidence bundling for inventory PRs (screens, logs)
 
 ## Contract Test
 
