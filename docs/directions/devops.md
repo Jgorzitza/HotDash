@@ -2,15 +2,15 @@
 
 - **Owner:** DevOps Agent
 - **Effective:** 2025-10-19
-- **Version:** 3.0
+- **Version:** 4.0
 
-## Manager Update (2025-10-19 16:00 UTC)
+## Manager Update (2025-10-19 16:50 UTC)
 
-**Lint Status**: The 590 lint errors in `app/` are now **DEFERRED to v1.1** (P2 technical debt). Engineer attempted automated fix but caused regressions. 
+**Lint Status**: DEFERRED to v1.1 (P2 technical debt). Not blocking production.
 
-**Impact on DevOps**: Lint warnings do NOT block production (build/tests work). You can proceed with your allowed-path work. CI may show lint warnings but this is acceptable for v1.0.
+**Production Status**: App deployed to Fly.io (`https://hotdash-staging.fly.dev`), version hot-dash-22 live ✅
 
-**Your Status**: Complete CI/deployment tasks within allowed paths. Document lint as "deferred to v1.1" in feedback.
+**Your Mission**: Production hardening, monitoring, rollback procedures, deployment automation.
 
 ---
 
@@ -18,55 +18,156 @@
 
 Current Issue: #108
 
-Restore full CI/CD health (GitHub Actions, staging deploys, secrets) and guarantee drift-free production releases for launch.
+Ship production-ready CI/CD pipeline, Fly.io deployment automation, monitoring, and rollback procedures for HotDash on Fly.io.
 
-## Tasks
+## Tasks (18 Molecules - Production Deployment)
 
-1. Resolve GitHub Actions billing issue and confirm all workflows (`ci`, `manager-outcome`, Gitleaks) run green.
-2. Schedule and execute Supabase staging apply rehearsal with Data; capture logs and rollback drill.
-3. Maintain Playwright/Node CI environments with required env vars (`DISABLE_WELCOME_MODAL`, `OPENAI_API_KEY` from vault) and document rotations.
-4. Automate daily drift sweep + secrets scan; publish results to `reports/status/gaps.md`.
-5. Write feedback to `feedback/devops/2025-10-17.md` and clean up stray md files.
+### Phase 1: CI/CD Hardening (5 molecules)
+
+1. **DEV-001: GitHub Actions Optimization** (35 min)
+   - Enable parallel test execution
+   - Add build caching (npm cache, build artifacts)
+   - Optimize workflow runtime (<10 min target)
+   - Evidence: `.github/workflows/*.yml` updated, CI runtime logs
+
+2. **DEV-002: Deploy Preview Environments** (45 min)
+   - PR preview deployments on Fly.io (fly-preview-pr-{number})
+   - Auto-cleanup after PR merge
+   - Comment PR with preview URL
+   - Evidence: Preview deployment working, PR comment automation
+
+3. **DEV-003: Secrets Management Audit** (30 min)
+   - Verify all secrets in GitHub Environments (production, staging)
+   - Document: SHOPIFY_API_KEY, SHOPIFY_API_SECRET, DATABASE_URL, SUPABASE_SERVICE_KEY
+   - Rotate any exposed secrets
+   - Evidence: Secrets audit report
+
+4. **DEV-004: Build Artifacts & Versioning** (35 min)
+   - Upload build artifacts to GitHub Actions
+   - Tag releases with semantic versioning
+   - Store rollback artifacts (previous 3 versions)
+   - Evidence: Artifacts in GitHub Actions, version tags
+
+5. **DEV-005: CI Status Checks** (25 min)
+   - Make required: lint, test, build, security scan
+   - Branch protection rules for main
+   - Evidence: Branch protection screenshot
+
+### Phase 2: Fly.io Production (6 molecules)
+
+6. **DEV-006: Production fly.toml Configuration** (40 min)
+   - Create `fly.production.toml` with proper scaling
+   - Configure: health checks, auto-scaling, regions
+   - Evidence: `fly.production.toml` created
+
+7. **DEV-007: Database Connection Hardening** (35 min)
+   - Use Supabase session pooler for IPv4
+   - Connection pooling limits
+   - Retry logic for transient failures
+   - Evidence: Connection config, retry tests passing
+
+8. **DEV-008: Fly.io Health Checks** (30 min)
+   - Configure `/health` endpoint monitoring
+   - Set grace period, interval, timeout
+   - Test failover behavior
+   - Evidence: Health check config, test results
+
+9. **DEV-009: Auto-Scaling Configuration** (35 min)
+   - Set min/max instances (2-10 machines)
+   - CPU/memory triggers
+   - Scale-to-zero for staging
+   - Evidence: Scaling config, load test results
+
+10. **DEV-010: Deployment Pipeline** (50 min)
+    - GitHub Actions → Fly.io automated deployment
+    - Staging deploy on PR merge to main
+    - Production deploy on release tag
+    - Evidence: Deployment workflow, successful deploy logs
+
+11. **DEV-011: Zero-Downtime Deployment** (40 min)
+    - Blue-green deployment strategy on Fly.io
+    - Health check verification before traffic switch
+    - Evidence: Deployment logs showing zero downtime
+
+### Phase 3: Monitoring & Observability (4 molecules)
+
+12. **DEV-012: Prometheus Metrics Export** (35 min)
+    - Export app metrics to Fly.io metrics
+    - Track: request rate, error rate, response time, tile load time
+    - Evidence: Metrics dashboard screenshot
+
+13. **DEV-013: Structured Logging** (30 min)
+    - Centralized logging to Supabase edge function
+    - Log levels, structured JSON format
+    - Evidence: Log aggregation working
+
+14. **DEV-014: Error Tracking & Alerting** (35 min)
+    - Error rate alerts (>1% triggers notification)
+    - Console error tracking
+    - Evidence: Alert configuration, test alert
+
+15. **DEV-015: Uptime Monitoring** (25 min)
+    - External uptime checks (UptimeRobot or similar)
+    - Monitor: /health endpoint every 5 min
+    - Evidence: Uptime monitor configured
+
+### Phase 4: Rollback & DR (3 molecules)
+
+16. **DEV-016: One-Command Rollback** (40 min)
+    - Script: `scripts/ops/rollback.sh <version>`
+    - Uses Fly.io releases to rollback
+    - Test rollback procedure
+    - Evidence: Rollback script, successful rollback test
+
+17. **DEV-017: Database Backup Verification** (35 min)
+    - Verify Supabase automated daily backups
+    - Document restore procedure
+    - Test restore to staging
+    - Evidence: Backup verification, restore test logs
+
+18. **DEV-018: WORK COMPLETE** (15 min)
+    - Final feedback entry
+    - Production deployment runbook
+    - Evidence: Complete feedback, runbook in `docs/runbooks/production_deploy.md`
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `gh`, `jq`, `rg`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `.github/workflows/**`, `docs/runbooks/**`, `scripts/manager/**`, `feedback/devops/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** No secret leakage; use GitHub environments; document all changes.
+- **Allowed Tools:** `fly`, `gh`, `bash`, `npm`, `curl`, Fly.io CLI
+- **MCP Tools:** `mcp_fly_*` functions for Fly.io management
+- **Allowed Paths:** `.github/workflows/**`, `docs/runbooks/**`, `scripts/ops/**`, `fly.*.toml`, `feedback/devops/2025-10-19.md`
+- **Budget:** ≤60 min per molecule
 
 ## Definition of Done
 
-- [ ] CI billing resolved and workflows green
-- [ ] Staging rehearsal completed with logs
-- [ ] `npm run fmt`
-- [ ] `npm run lint`
-- [ ] `npm run test:ci`
-- [ ] `npm run scan`
-- [ ] Runbooks updated with new env requirements
-- [ ] Feedback entry updated with evidence
-- [ ] Contract test passes
+- [ ] All 18 molecules executed with evidence
+- [ ] CI/CD pipeline optimized (<10 min runtime)
+- [ ] Fly.io production deployment automated
+- [ ] Monitoring and alerting configured
+- [ ] Rollback procedures tested
+- [ ] Production deployment runbook complete
+- [ ] Feedback entry complete
 
 ## Contract Test
 
-- **Command:** `gh workflow run ci --ref production-smoke-test`
-- **Expectations:** Workflow completes successfully (or logs failure with remediation plan).
+- **Production Health:** `curl https://hotdash-staging.fly.dev/health` (200 OK after next deploy)
+- **Deployment:** `fly status --app hot-dash` shows healthy machines
+- **Evidence:** Successful deployment logs, health checks passing
 
 ## Risk & Rollback
 
-- **Risk Level:** High — CI outages block launch.
-- **Rollback Plan:** Revert workflow changes, disable failing jobs, communicate freeze until fixed.
-- **Monitoring:** GitHub Actions dashboard, Prometheus alerts, drift sweep output.
+- **Risk Level:** MEDIUM (deployment automation errors could cause downtime)
+- **Rollback Plan:** Use `fly releases rollback` to revert to previous version
+- **Monitoring:** Fly.io metrics, uptime checks, error rate alerts
 
 ## Links & References
 
+- Production App: https://hotdash-staging.fly.dev
+- Fly.io Dashboard: https://fly.io/apps/hot-dash (or similar)
+- Feedback: `feedback/devops/2025-10-19.md`
 - North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/devops/2025-10-17.md`
-- Specs / Runbooks: `docs/runbooks/ci_billing_recovery.md`, `docs/runbooks/manager_startup_checklist.md`
 
 ## Change Log
 
-- 2025-10-17: Version 2.0 – Production launch CI/CD readiness
-- 2025-10-15: Version 1.0 – Deployment rehearsal tasks
+- 2025-10-19: Version 4.0 – Production deployment focus, lint deferred to v1.1
+- 2025-10-19: Version 3.0 – Lint blocker clarified (assigned to Engineer)
+- 2025-10-17: Version 2.0 – Production launch alignment
