@@ -1,5 +1,7 @@
 Title: Closed‑loop SEO Telemetry (GSC Bulk Export → BigQuery)
 
+Current Issue: #79 (Analytics)
+
 Goal
 
 - Full‑fidelity search telemetry with joins to GA4 revenue to prioritize daily actions.
