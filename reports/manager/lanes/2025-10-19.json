@@ -80,7 +80,7 @@
               "CSV generated with documented headers",
               "Artifacts saved under artifacts/analytics/{date}/exports/",
               "Rollback steps listed"
-            },
+            ],
             "qa": { "owner": "claude", "cases": ["schema-only"] },
             "pr_hint": "update scripts/ops/backfill-dashboard-analytics.ts; add doc"
           }
@@ -129,4 +129,3 @@
     ]
   }
 }
-
