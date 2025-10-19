@@ -26,6 +26,10 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** HITL approvals for customer-facing actions; maintain webhook retries.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Support — Roadmap). Autonomy Mode applies. Log evidence in `feedback/support/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Webhook retry tests passing with mocks

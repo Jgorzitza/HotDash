@@ -26,6 +26,10 @@ Unblock Deploy to Staging build step and wire a working rollback command so toda
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No secret leakage; use GitHub environments; document all changes.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (DevOps — Roadmap). Autonomy Mode applies. Log evidence in `feedback/devops/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Deploy to Staging build passes

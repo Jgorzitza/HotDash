@@ -12,11 +12,7 @@ Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoo
 
 ## Tasks
 
-1. Implement `scripts/ops/check-chatwoot-health.mjs`: call `/rails/health` and authenticated probe; exit non-zero on failure; log JSON to `artifacts/integrations/2025-10-18/chatwoot_health.jsonl`.
-2. Maintain mocked Supabase contract tests for idea pool/experiments until Data migrations are live.
-3. Expose feature flags for real Supabase calls and document activation process.
-4. Keep integration feedback updated with test outputs and follow-ups.
-5. Write feedback to `feedback/integrations/2025-10-18.md` and clean up stray md files.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Integrations — Roadmap). Autonomy Mode applies. Log evidence in `feedback/integrations/<YYYY-MM-DD>.md`.
 
 ## Constraints
 

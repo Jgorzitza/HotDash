@@ -26,6 +26,10 @@ Provide production-grade data pipelines (Supabase migrations, seeds, RLS tests) 
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No direct prod changes without migration; RLS tests mandatory.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Data — Roadmap). Autonomy Mode applies. Log evidence in `feedback/data/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Migrations applied with logs stored in artifacts
@@ -44,10 +48,10 @@ Provide production-grade data pipelines (Supabase migrations, seeds, RLS tests) 
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
-1. Apply/rehearse migrations in staging for: approvals, idea pool, growth analytics, CX metrics, dashboard views (supabase/migrations/*)
+1. Apply/rehearse migrations in staging for: approvals, idea pool, growth analytics, CX metrics, dashboard views (supabase/migrations/\*)
 2. Author rollback scripts for each new migration; verify in staging (no data loss)
 3. Expand RLS tests in `supabase/rls_tests.sql` to cover new tables and views; attach results
-4. Seeds: create/update synthetic datasets for multi-tenant scenarios (supabase/seeds/*)
+4. Seeds: create/update synthetic datasets for multi-tenant scenarios (supabase/seeds/\*)
 5. Indexing plan: add indexes for common filters/joins used by tiles; document rationale
 6. Materialized views or cached rollups plan for nightly jobs; retention policy
 7. Migration idempotency and retry notes; apply logs bundling and hashing

@@ -25,6 +25,10 @@ Deliver production-ready Ads intelligence. Today: run ads aggregation/backfill s
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Respect Allowed paths; HITL-only publishing via Publer; no secrets committed; ensure CI green before merge; work must tie to the current Issue and Allowed paths listed there.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Ads — Roadmap). Autonomy Mode applies. Log evidence in `feedback/ads/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] All ads metrics slices (A–C) merged with evidence and ≤50 files each

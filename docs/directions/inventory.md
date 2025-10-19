@@ -25,6 +25,10 @@ Launch the inventory intelligence system (status buckets, ROP calculations, pick
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** HITL approvals for all operational changes; maintain RLS tests.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Inventory — Roadmap). Autonomy Mode applies. Log evidence in `feedback/inventory/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Migrations applied with logs

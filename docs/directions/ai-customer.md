@@ -26,6 +26,10 @@ Deliver production-safe customer reply drafting that keeps Chatwoot health green
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No direct outbound replies—HITL only. Respect Supabase RLS and secret handling. CI must pass before merge.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (AI‑Customer — Roadmap). Autonomy Mode applies. Log evidence in `feedback/ai-customer/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Chatwoot health checks automated and documented

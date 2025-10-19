@@ -12,9 +12,7 @@ Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-te
 
 ## Tasks
 
-1. Update `docs/specs/hitl/seo-telemetry.*` to include CWV→$$ mapping and validation plan.
-2. Run `npm run ops:check-analytics-parity` and save output to `artifacts/analytics/2025-10-18/parity.log`.
-3. Summarize mismatches (if any) with owner/ETA and potential root causes (cache, seed gaps, query drift); post feedback.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Analytics — Roadmap). Autonomy Mode applies. Log evidence in `feedback/analytics/<YYYY-MM-DD>.md`.
 
 ## Autonomy Mode (Do Not Stop)
 

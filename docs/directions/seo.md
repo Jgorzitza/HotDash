@@ -12,11 +12,7 @@ Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec s
 
 ## Tasks
 
-1. Create spec scaffold under `docs/specs/hitl/programmatic-seo-factory.*` (metaobjects, templates, source mapping, guardrails).
-2. Document flags (OFF by default) and one‑click rollback path.
-3. Run `npx vitest run tests/unit/seo.web-vitals.spec.ts` and save log to `artifacts/seo/2025-10-18/vitals-unit.log`.
-4. Run `npx eslint app/lib/seo/vitals.ts tests/unit/seo.web-vitals.spec.ts` and save log.
-5. Summarize findings and open issues if failures persist; post feedback.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (SEO — Roadmap). Autonomy Mode applies. Log evidence in `feedback/seo/<YYYY-MM-DD>.md`.
 
 ## Autonomy Mode (Do Not Stop)
 

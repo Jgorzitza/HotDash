@@ -24,6 +24,10 @@ Prepare the production knowledge backbone. Today: rebuild index and run eval; at
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Do not ingest unapproved sources; respect Supabase RLS; never commit secrets.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (AI‑Knowledge — Roadmap). Autonomy Mode applies. Log evidence in `feedback/ai-knowledge/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] OpenAI embedding flow documented and ready once credentials approved

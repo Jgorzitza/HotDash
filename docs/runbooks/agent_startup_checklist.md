@@ -19,8 +19,14 @@
 
 ## 2) Tools & Env (60–90 sec)
 
-- [ ] MCP tools resolve and respond (role-specific): Shopify Admin, Supabase, Chatwoot, etc.
+- [ ] MCP tools resolve and respond (role-specific): Shopify Admin, Supabase, Chatwoot, etc. Shopify dev + storefront work requires MCP.
+- [ ] GA4/GSC use internal adapters (no MCP). Use provided scripts/adapters and attach command + stderr to feedback.
 - [ ] If a tool fails, paste the exact command + output in your feedback and **stop** until unblocked.
+
+## 2.5) Pre‑Flight Contract Paths (30 sec)
+
+- [ ] Run `npm run policy:contracts` to verify all Contract Test command paths in your direction exist (tests, scripts, SQL).
+- [ ] If it fails, note the missing path(s) in your feedback and switch to the next task (Autonomy Mode) while the Manager fixes the contract reference or provides a shim.
 
 ## 3) Sandbox (30 sec)
 
@@ -35,7 +41,7 @@
 
 ## 5) Work Protocol
 
-- [ ] **MCP-first / server adapters only.** No freehand HTTP or secrets in logs.
+- [ ] **MCP-first / server adapters only.** Shopify/Supabase/Fly/GitHub via MCP. GA4/GSC via internal adapters. No freehand HTTP or secrets in logs.
 - [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference:
       `Refs #<issue>` → final slice uses `Fixes #<issue>`.
 
@@ -43,6 +49,7 @@
 
 - [ ] Do NOT open a PR yourself; Manager will.
 - [ ] Append the completion block to `feedback/<agent>/<YYYY-MM-DD>.md`:
+
   ```md
   ## WORK COMPLETE - READY FOR PR
 
@@ -51,6 +58,7 @@
   Tests: <summary>
   Evidence: <links/notes>
   ```
+
 - [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in your feedback.
 
 ## 7) Build/Dev Mode Safety
@@ -58,6 +66,7 @@
 - [ ] **No** customer messaging, payments, or production Shopify mutations.
 - [ ] If UI needs sample “approvals,” create **fixtures** only:
       `provenance.mode="dev:test"`, include a `feedback_ref`, and keep **Apply disabled**.
+- [ ] Autopublish toggles exist but are OFF. Do not enable; stage work behind flags.
 
 ## 8) Escalation
 

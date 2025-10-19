@@ -12,11 +12,7 @@ Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promo
 
 ## Tasks
 
-1. Draft `docs/specs/hitl/ab-harness.*` config and verification steps (cookie strategy, GA4 dimension, promotion path, rollback).
-2. Maintain launch checklist (`docs/specs/dashboard_launch_checklist.md`) with current blockers/owners.
-3. Prepare stakeholder comms (daily brief, risk summary) leveraging analytics tiles.
-4. Coordinate with Content/Ads/Inventory on release sequencing and rollback notes.
-5. Write feedback to `feedback/product/2025-10-18.md` and clean up stray md files.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Product — Roadmap). Autonomy Mode applies. Log evidence in `feedback/product/<YYYY-MM-DD>.md`.
 
 ## Autonomy Mode (Do Not Stop)
 

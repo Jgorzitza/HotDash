@@ -25,6 +25,10 @@ Deliver production-ready content and approvals-ready copy. Today: finalize launc
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No publishing without HITL approval; maintain tone guidelines.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Content — Roadmap). Autonomy Mode applies. Log evidence in `feedback/content/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Fixtures + specs updated for production cadence

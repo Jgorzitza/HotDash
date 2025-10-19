@@ -30,6 +30,10 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Keep changes strictly to design docs/microcopy; no layout code without Engineer coordination.
 
+## Tasks
+
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Designer — Roadmap). Autonomy Mode applies. Log evidence in `feedback/designer/<YYYY-MM-DD>.md`.
+
 ## Definition of Done
 
 - [ ] Microcopy + specs updated and reviewed

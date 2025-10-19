@@ -24,6 +24,13 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 (unless `wide-change` with justification)
 - **Guardrails:** reference immutable rules and any feature flags
 
+## Execution Discipline (No‑Wait)
+
+- Execute checklists immediately; do not wait for replies unless the Manager explicitly says “hold”.
+- MCP‑first: before coding, run MCP queries relevant to your task and attach transcripts under `artifacts/<agent>/<date>/mcp/*.jsonl` (hash them).
+- If blocked > 15 minutes: capture evidence (commands + stderr), file a concise blocker with owner/ETA, then continue with parallel work in scope.
+- For shutdown requests: run `docs/runbooks/agent_shutdown_checklist.md` end‑to‑end without waiting, then post the one‑liner handoff in the Issue.
+
 ## Definition of Done
 
 - [ ] Objective satisfied and within scope only

@@ -12,11 +12,7 @@ Guarantee staging readiness today by running a minimal smoke (start server + GET
 
 ## Tasks
 
-1. Create/run a minimal smoke harness: start built server and `curl /` → 200; log to `artifacts/qa/2025-10-18/app_usability/smoke.log`.
-2. Add `/approvals` route check (200 or expected redirect) and record results.
-3. Execute a11y subset if smoke passes (`npm run test:a11y`), attach report.
-4. Publish QA summary with blockers (owner + ETA) and link evidence.
-5. Write feedback to `feedback/qa/2025-10-18.md` and clean up stray md files.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (QA — Roadmap). Autonomy Mode applies. Log evidence in `feedback/qa/<YYYY-MM-DD>.md`.
 
 ## Autonomy Mode (Do Not Stop)
 

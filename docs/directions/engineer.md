@@ -13,12 +13,7 @@ Current Issue: #78
 
 ## Tasks
 
-1. Review failing build tail; fix import/type errors in components/routes (deliverable: PR with only required changes).
-2. Add/adjust minimal unit tests for approvals drawer render states to stabilize imports.
-3. Run scoped lint: `npx eslint app/** tests/unit/**` and fix blockers.
-4. Coordinate with QA to ensure smoke passes after fixes. Address #81 (MissingAppProviderError on `/approvals`) in SSR tree.
-5. Write feedback to `feedback/engineer/2025-10-18.md` and clean up stray md files.
-6. Once green: draft Guided Selling/Kit Composer outline (rules graph + route skeleton) under `docs/specs/hitl/guided-selling*`.
+1. Follow docs/manager/EXECUTION_ROADMAP.md (Engineer — Roadmap). Autonomy Mode applies. Log evidence in `feedback/engineer/<YYYY-MM-DD>.md`.
 
 ## Autonomy Mode (Do Not Stop)
 
