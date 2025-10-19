@@ -1,30 +1,46 @@
 # QA Direction
 
 - **Owner:** QA Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #114
 
-
-Guarantee production confidence by running targeted Playwright, accessibility, and regression suites with documented evidence and blocker tracking.
+Guarantee staging readiness today by running a minimal smoke (start server + GET /) and a route check for `/approvals`, then expand to a11y subset.
 
 ## Tasks
 
+1. Create/run a minimal smoke harness: start built server and `curl /` → 200; log to `artifacts/qa/2025-10-18/app_usability/smoke.log`.
+2. Add `/approvals` route check (200 or expected redirect) and record results.
+3. Execute a11y subset if smoke passes (`npm run test:a11y`), attach report.
+4. Publish QA summary with blockers (owner + ETA) and link evidence.
+5. Write feedback to `feedback/qa/2025-10-18.md` and clean up stray md files.
 
+## Autonomy Mode (Do Not Stop)
 
-1. Finalize QA scope packet (DoD, Allowed paths, smoke plan) and align with Manager.
-2. Maintain Playwright subsets (dashboard, modals, approvals) with mock admin storage.
-3. Execute accessibility smoke (`npm run test:a11y`) and record results.
-4. Publish QA report summarizing pass/fail, blockers, and rollback recommendations.
-5. Write feedback to `feedback/qa/2025-10-17.md` and clean up stray md files.
+- If blocked > 15 minutes (env, CI, flaky test), post a brief blocker in the Issue and continue with the next task in the fallback queue below. Do not idle.
+- Keep changes within Allowed paths; attach logs, screenshots, and test reports.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Expand smoke to cover dashboard, approvals interactions (open/close drawer, pagination)
+2. Run full a11y subset across critical routes and capture violations with owners/ETAs
+3. Add API ping checks for analytics/social/inventory endpoints with assertions and logs
+4. Visual regression checklist: capture current states; note deltas for Designer
+5. Error boundary coverage tests (simulate loader/action failures)
+6. Keyboard navigation and focus trap checks for drawer/modals
+7. Performance smoke: record server P95s for key routes; set thresholds
+8. Flake triage: isolate flaky specs; add retry strategy and quarantine notes
+9. Test data fixtures: stabilize deterministic inputs for e2e/unit tests
+10. Evidence bundling: standardize artifact locations and SHA manifests
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `tests/playwright/**`, `tests/e2e/**`, `docs/tests/**`, `feedback/qa/2025-10-17.md`
+- **Touched Directories:** `scripts/qa/**`, `tests/playwright/**`, `tests/e2e/**`, `docs/tests/**`, `feedback/qa/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No disabling tests without documented blocker; escalate failures immediately.
 
@@ -40,8 +56,8 @@ Guarantee production confidence by running targeted Playwright, accessibility, a
 
 ## Contract Test
 
-- **Command:** `npm run test:a11y`
-- **Expectations:** Accessibility suite runs; failures documented with follow-up.
+- **Command:** `npm run test:a11y`; and smoke script `scripts/qa/smoke.sh`
+- **Expectations:** Smoke returns 200 on `/`; a11y passes or documents failures
 
 ## Risk & Rollback
 
@@ -53,10 +69,11 @@ Guarantee production confidence by running targeted Playwright, accessibility, a
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/qa/2025-10-17.md`
+- Feedback: `feedback/qa/2025-10-18.md`
 - Specs / Runbooks: `docs/tests/qa_scope_packet.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Launch-day smoke focus
 - 2025-10-17: Version 2.0 – Production QA scope + reporting
 - 2025-10-16: Version 1.0 – Smoke/axe checklists
