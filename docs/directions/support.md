@@ -1,24 +1,39 @@
 # Support Direction
 
 - **Owner:** Support Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-19
+- **Version:** 3.0
 
 ## Objective
+
 Current Issue: #116
 
+**P0 PRIORITY:** Fix webhook retry timeout tests FIRST, then ensure support pipeline is production-hardened.
 
-Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge workflows) is production-hardened with tests and documentation.
+## Tasks (16 Molecules - Unblocker First)
 
-## Tasks
+### P0 CRITICAL UNBLOCKER (Execute First)
 
+1. **SUP-000-P0:** Fix Webhook Retry Timeout Tests (30 min) **PRIORITY 1**
+   - **Blocker Impact:** QA reports 2 tests timing out at 5000ms in `tests/integration/support.webhook.spec.ts`
+   - **Root Cause:** Retry logic takes too long or test timeout is too short
+   - **Location:** `tests/integration/support.webhook.spec.ts`
+   - **Action:**
+     - Increase test timeout to 10000ms for retry tests OR
+     - Mock retry delays to speed up test execution OR
+     - Reduce actual retry delay in test environment (use env var)
+     - Ensure retry logic completes within test timeout
+     - Run test: `npx vitest run tests/integration/support.webhook.spec.ts`
+   - **Evidence:** All tests pass within timeout, no hanging tests
+   - **ETA:** 30 minutes
 
+### Original Tasks (now 2-6)
 
-1. Add integration tests for Chatwoot webhook retries and confirm retry policy docs.
-2. Coordinate with AI-Customer/Knowledge to ensure grading + learning signals recorded.
-3. Provide support runbook updates for outage response and escalation.
-4. Share weekly support health report (SLA adherence, escalation counts).
-5. Write feedback to `feedback/support/2025-10-17.md` and clean up stray md files.
+2. Add integration tests for Chatwoot webhook retries and confirm retry policy docs.
+3. Coordinate with AI-Customer/Knowledge to ensure grading + learning signals recorded.
+4. Provide support runbook updates for outage response and escalation.
+5. Share weekly support health report (SLA adherence, escalation counts).
+6. Write feedback to `feedback/support/2025-10-19.md` and clean up stray md files.
 
 ## Constraints
 
@@ -34,6 +49,7 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 - [ ] `npm run fmt` and `npm run lint`
 - [ ] `npm run test:ci`
 - [ ] `npm run scan`
+- [ ] **P0 test fix verified FIRST** (webhook retry tests pass)
 - [ ] Runbook updated
 - [ ] Feedback entry updated
 - [ ] Contract test passes
@@ -58,5 +74,6 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 
 ## Change Log
 
+- 2025-10-19: Version 3.0 – Added P0 unblocker (webhook retry timeout fix)
 - 2025-10-17: Version 2.0 – Production webhook/testing alignment
 - 2025-10-15: Version 1.0 – Chatwoot integration spec

@@ -126,17 +126,20 @@ The helper uses the Supabase CLI to stream local events. Pass a project ref to t
 
 ## AI Agent Support: MCP Tools
 
-HotDash provides **6 MCP servers** to help AI agents work effectively:
+HotDash provides **4 MCP servers** to help AI agents work effectively:
 
 | Tool                 | Purpose                              | Status                |
 | -------------------- | ------------------------------------ | --------------------- |
 | **github-official**  | GitHub repo management               | ✅ Active             |
 | **context7**         | HotDash codebase + library search    | ✅ Active (port 3001) |
-| **supabase**         | Database & edge functions            | ✅ Active             |
 | **fly**              | Deployment & infrastructure          | ✅ Active (port 8080) |
 | **shopify**          | Shopify API docs, GraphQL validation | ✅ Active             |
-| **google-analytics** | GA data queries (dev tools only)     | ✅ Active             |
 | **llamaindex-rag**   | Knowledge base RAG queries           | 🚧 In development     |
+
+### Tools NOT Using MCP
+
+- **Supabase**: Use `supabase` CLI directly (migrations, queries, edge functions)
+- **Google Analytics**: Use built-in API connectors in `app/services/analytics/`
 
 ### 📚 MCP Documentation (Protected)
 
@@ -326,10 +329,12 @@ mkdir -p ~/.config/Claude  # Linux
 - 🏪 **Shopify**: API docs, GraphQL validation
 - 🔍 **Context7**: HotDash code search + React Router/Prisma/etc. docs
 - 🐙 **GitHub**: PR/issue management, code search
-- 🗄️ **Supabase**: Migrations, queries, edge functions
 - ✈️ **Fly.io**: Deployments, logs, secrets
-- 📊 **Google Analytics**: GA property queries (Cursor/dev tools)
 - 🧠 **LlamaIndex RAG**: Knowledge base queries, support insights
+
+**Non-MCP Tools (Use Directly)**:
+- 🗄️ **Supabase CLI**: Migrations, queries, edge functions
+- 📊 **GA4 API**: Built-in connectors in `app/services/analytics/`
 
 **Example Agent Queries:**
 
@@ -337,10 +342,12 @@ mkdir -p ~/.config/Claude  # Linux
 "Show me the Sales Pulse tile implementation"  (context7)
 "Validate this Shopify GraphQL query"          (shopify)
 "Create a PR for this feature"                 (github-official)
-"Run migration for new dashboard_facts column" (supabase)
 "Deploy hot-dash to production"                (fly)
-"What are my GA properties?"                   (google-analytics, dev only)
 "Query support knowledge base"                 (llamaindex-rag, coming soon)
+
+# Use CLI/API directly (NOT MCP):
+"Run migration: supabase migration up"         (Supabase CLI)
+"Get GA4 metrics: app/services/analytics/"     (Built-in API)
 ```
 
 ### What Context7 Indexes

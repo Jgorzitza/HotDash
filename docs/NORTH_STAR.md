@@ -47,7 +47,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **Frontend:** React Router 7 template; Polaris; Vite.
 - **Backend:** Node/TS app; Supabase (Postgres + RLS); workers/cron for jobs; SSE/webhooks.
 - **Agents:**
-  - **Dev:** Cursor/Codex/Claude with **MCP** (6 servers: GitHub, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full setup in `mcp/` directory. Constrained by runbooks/directions + CI.
+  - **Dev:** Cursor/Codex/Claude with **MCP** (4 servers: GitHub Official, Context7, Fly.io, Shopify Dev). Full setup in `mcp/` directory. Use Supabase CLI and built-in GA4 API for those integrations. Constrained by runbooks/directions + CI.
   - **In‑app:** OpenAI **Agents SDK** (TS) with **HITL**; call server tools (Shopify Admin GraphQL, Supabase RPC, Chatwoot API, Social adapter).
 - **Observability:** Prometheus/metrics endpoints; structured logs; approvals/audit tables.
 - **MCP Infrastructure:** Critical documentation in `mcp/` directory (protected by CI allow-list). See `mcp/README.md` for setup and `mcp/ALL_SYSTEMS_GO.md` for usage.

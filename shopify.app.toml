@@ -1,0 +1,34 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "hot-dash"
+client_id = ""  # Set via: shopify app config link
+application_url = "https://hot-dash.fly.dev"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = ""  # Set via: shopify app dev
+
+[access_scopes]
+scopes = "read_orders,read_products,read_inventory,read_locations,read_customers,read_assigned_fulfillment_orders,read_merchant_managed_fulfillment_orders"
+
+[auth]
+redirect_urls = [
+  "https://hot-dash.fly.dev/auth/callback",
+  "https://hot-dash.fly.dev/auth/shopify/callback"
+]
+
+[webhooks]
+api_version = "2025-10"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+uri = "/webhooks/app/uninstalled"
+
+[[webhooks.subscriptions]]
+topics = ["app/scopes_update"]
+uri = "/webhooks/app/scopes_update"
+
+[pos]
+embedded = false
+
