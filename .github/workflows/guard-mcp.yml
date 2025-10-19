@@ -32,26 +32,18 @@ jobs:
       - name: Fail if Remix referenced (RR7 only)
         if: steps.diff.outputs.code_change == 'true'
         run: |
-        run: |
           FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
           BAD=""
           if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
-          BAD=$(grep -RInE "from ['\"]@remix-run|import .*remix" app/ src/ server/ packages/ 2>/dev/null || true)
           if [ -n "$BAD" ]; then
-            echo "::error::Remix usage detected. Project uses React Router 7."; echo "$BAD"; exit 10;
+            echo "::error::Remix usage detected in changed files."
+            echo "$BAD"
+            exit 10
           fi
 
       - name: Extract MCP Evidence paths from PR body
         id: evidence
         run: |
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          BAD=""
-          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
           BODY="${{ steps.pr.outputs.BODY }}"
           PATHS=$(echo "$BODY" | awk '/^## MCP Evidence:/{flag=1;next}/^## /{flag=0}flag' | sed 's/\r//g' | grep -E '^artifacts/.+\.jsonl$' || true)
           echo "paths<<EOF" >> $GITHUB_OUTPUT
@@ -61,12 +53,6 @@ jobs:
       - name: Require MCP evidence for code changes
         if: steps.diff.outputs.code_change == 'true'
         run: |
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          BAD=""
-          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
           if [ -z "${{ steps.evidence.outputs.paths }}" ]; then
             echo "::error::Code changed, but no MCP Evidence paths listed in PR body."; exit 20;
           fi
@@ -74,12 +60,6 @@ jobs:
       - name: Validate evidence files exist and are JSONL
         if: steps.diff.outputs.code_change == 'true'
         run: |
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          BAD=""
-          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
           FAIL=0
           while IFS= read -r p; do
             [ -z "$p" ] && continue
@@ -93,12 +73,6 @@ jobs:
       - name: Validate required fields in JSONL
         if: steps.diff.outputs.code_change == 'true'
         run: |
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          BAD=""
-          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
           while IFS= read -r p; do
             [ -z "$p" ] && continue
             awk 'NF' "$p" | jq -e '
@@ -110,12 +84,6 @@ jobs:
       - name: Auto-draft & label
         if: failure()
         run: |
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          BAD=""
-          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
-          if [ -n "$BAD" ]; then echo "::error::Remix usage detected in changed files."; echo "$BAD"; exit 10; fi
-          exit 0
           echo "Marking PR as draft and labeling non-compliant"
           if command -v gh >/dev/null 2>&1; then
             gh pr ready ${{ github.event.pull_request.number }} --undo || true
