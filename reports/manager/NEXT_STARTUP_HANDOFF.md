@@ -10,6 +10,9 @@
 > 3. docs/RULES.md (governance)
 > 4. docs/runbooks/manager_startup_checklist.md (standard startup tasks)
 > 5. **THIS DOCUMENT** (session-specific handoff - prevents regression)
+> 6. reports/manager/FINAL_DIRECTION_UPDATE_2025-10-19.md (complete session details)
+> 7. reports/manager/SHUTDOWN_SUMMARY_2025-10-19.md (achievements & metrics)
+> 8. feedback/manager/2025-10-19.md (CEO summary, agent grades)
 
 ---
 
