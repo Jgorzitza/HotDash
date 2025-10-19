@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "4f72376ea61be956c860dd020552124d"
+name = "HotDash"
+application_url = "https://hotdash-staging.fly.dev"
+embedded = true
+
+[webhooks]
+api_version = "2026-01"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_assigned_fulfillment_orders,read_customers,read_inventory,read_locations,read_merchant_managed_fulfillment_orders,read_orders,read_products,write_products"
+
+[auth]
+redirect_urls = [
+  "https://hotdash-staging.fly.dev/auth/callback",
+  "https://hotdash-staging.fly.dev/api/auth"
+]
