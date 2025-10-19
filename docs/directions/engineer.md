@@ -6,10 +6,10 @@
 
 ## Objective
 
-Current Issue: #109
+Current Issue: #78
 
-1) Unblock build by fixing top lint/type/test issues in `app/**` (minimal diffs to get staging green today).
-2) After green, begin Guided Selling/Kit Composer planning per manager plan (`programmatic lanes`), focusing on rules graph and route skeleton (no merges yet).
+1. Unblock build by fixing top lint/type/test issues in `app/**` (minimal diffs to get staging green today).
+2. After green, begin Guided Selling/Kit Composer planning per manager plan (`programmatic lanes`), focusing on rules graph and route skeleton (no merges yet).
 
 ## Tasks
 

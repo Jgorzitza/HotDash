@@ -6,7 +6,7 @@
 
 ## Objective
 
-Current Issue: #113
+Current Issue: #80
 
 Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promote and rollback; maintain launch readiness comms and HITL checklist.
 

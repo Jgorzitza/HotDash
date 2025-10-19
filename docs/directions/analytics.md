@@ -6,7 +6,7 @@
 
 ## Objective
 
-Current Issue: #104
+Current Issue: #79
 
 Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-telemetry` spec and outline validation steps; run parity check and attach evidence.
 

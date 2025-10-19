@@ -6,7 +6,7 @@
 
 ## Objective
 
-Current Issue: #115
+Current Issue: #77
 
 Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec skeleton and flag design with rollback notes; keep vitals unit test/lint evidence attached.
 
