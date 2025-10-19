@@ -1,6 +1,99 @@
 {
   "date": "2025-10-19",
   "lanes": {
+    "ads": [
+      {
+        "id": "LANE-ADS-001",
+        "title": "Ads telemetry slices to dashboard (staging)",
+        "spec_path": "docs/specs/hitl/ads-analytics.md#staging-slices",
+        "molecules": [
+          {
+            "id": "M-ADS-01",
+            "desc": "Supabase migrations + views for ads exposures/pacing; seed + snapshot policy",
+            "status": "todo",
+            "allowed_paths": [
+              "supabase/migrations/**",
+              "scripts/pilot/snapshot-policy.mjs",
+              "feedback/ads/**",
+              "artifacts/ads/**"
+            ],
+            "mcp_required": false,
+            "evidence": {
+              "mcp": [],
+              "tests": ["tests/unit/ads/pacing.spec.ts", "tests/unit/ads/attribution.spec.ts"],
+              "preview": [],
+              "logs": ["artifacts/ads/{YYYY-MM-DD}/logs/migrations.txt"],
+              "rollback": "supabase/migrations.backup/* rollback scripts present"
+            },
+            "dod": [
+              "Migrations apply locally and in CI",
+              "Snapshot policy script runs and records evidence",
+              "Rollback scripts created"
+            ],
+            "qa": { "owner": "claude", "cases": ["migrations-apply", "snapshot"] },
+            "pr_hint": "touch supabase/migrations/*.sql; scripts/pilot/snapshot-policy.mjs"
+          },
+          {
+            "id": "M-ADS-02",
+            "desc": "Implement API endpoints /api.ads.slice-b and /api.ads.slice-c behind flags with tests",
+            "status": "todo",
+            "allowed_paths": [
+              "app/routes/api.ads.slice-b.ts",
+              "app/routes/api.ads.slice-c.ts",
+              "app/lib/ads/**",
+              "tests/integration/api.ads.slice-b.spec.ts",
+              "tests/integration/api.ads.slice-c.spec.ts",
+              "feedback/ads/**"
+            ],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": [],
+              "tests": [
+                "tests/integration/api.ads.slice-b.spec.ts",
+                "tests/integration/api.ads.slice-c.spec.ts"
+              ],
+              "preview": ["/health"],
+              "logs": [],
+              "rollback": "feature flag documented; endpoints gated"
+            },
+            "dod": [
+              "Endpoints return sample payloads in staging",
+              "Feature flag default OFF",
+              "Integration tests pass"
+            ],
+            "qa": { "owner": "claude", "cases": ["happy", "flag-off"] },
+            "pr_hint": "update app/lib/ads/* and app/routes/api.ads.slice-*.ts; add tests"
+          },
+          {
+            "id": "M-ADS-03",
+            "desc": "Wire AdsTile snapshot and sampling guard into CI; document CSV header for export",
+            "status": "todo",
+            "allowed_paths": [
+              "app/components/dashboard/AdsTile.tsx",
+              "scripts/ops/backfill-ads-aggregations.ts",
+              "docs/specs/hitl/ads-analytics.md",
+              "tests/unit/ads/*.spec.ts",
+              "artifacts/ads/**"
+            ],
+            "mcp_required": false,
+            "evidence": {
+              "mcp": [],
+              "tests": ["tests/unit/ads/pacing.spec.ts"],
+              "preview": ["artifacts/ads/{YYYY-MM-DD}/exports/*.csv"],
+              "logs": ["artifacts/ads/{YYYY-MM-DD}/logs/export.txt"],
+              "rollback": "disable job/exports via npm script flag"
+            },
+            "dod": [
+              "Tile snapshot updated",
+              "CSV export documented and present",
+              "CI sampling guard runs"
+            ],
+            "qa": { "owner": "claude", "cases": ["schema-only"] },
+            "pr_hint": "touch AdsTile.tsx, backfill-ads-aggregations.ts, tests/unit/ads/*.spec.ts"
+          }
+        ]
+      }
+    ],
     "analytics": [
       {
         "id": "LANE-104-A",
