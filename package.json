@@ -40,8 +40,9 @@
     "ai:eval": "npm --prefix scripts/ai/llama-workflow run build && node scripts/ai/llama-workflow/dist/eval/run.js | tee packages/memory/logs/build/last_eval.log",
     "fmt": "npx prettier --write \"{app,packages,tests,scripts,docs}/**/*.{ts,tsx,js,jsx,json,md}\"",
     "scan": "./scripts/security/scan-secrets.sh",
-    "ci": "npm run fmt && npm run lint && npm run test:ci && npm run scan",
-    "test": "npm run test:ci"
+    "ci": "npm run policy:contracts && npm run fmt && npm run lint && npm run test:ci && npm run scan",
+    "test": "npm run test:ci",
+    "policy:contracts": "node scripts/policy/check-contract-paths.mjs"
   },
   "type": "module",
   "engines": {
