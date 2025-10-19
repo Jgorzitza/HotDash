@@ -4,11 +4,13 @@
 - **Effective:** 2025-10-19
 - **Version:** 3.0
 
-## Manager Clarification (2025-10-19)
+## Manager Update (2025-10-19 16:00 UTC)
 
-**Lint Blocker**: The 590 lint errors in `app/` are ASSIGNED to Engineer (ENG-000-P0). DevOps does NOT need to fix these - they are outside your allowed paths. Engineer will resolve this P0 blocker (ETA: 2 hours).
+**Lint Status**: The 590 lint errors in `app/` are now **DEFERRED to v1.1** (P2 technical debt). Engineer attempted automated fix but caused regressions. 
 
-**Your Status**: Complete what you can within allowed paths, document lint blocker as "assigned to Engineer" in feedback.
+**Impact on DevOps**: Lint warnings do NOT block production (build/tests work). You can proceed with your allowed-path work. CI may show lint warnings but this is acceptable for v1.0.
+
+**Your Status**: Complete CI/deployment tasks within allowed paths. Document lint as "deferred to v1.1" in feedback.
 
 ---
 
