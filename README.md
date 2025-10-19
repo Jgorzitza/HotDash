@@ -371,10 +371,20 @@ mkdir -p ~/.config/Claude  # Linux
 
 **Your training data is outdated for:**
 
-- React Router 7 (you have v6/Remix patterns)
+- React Router 7 (you may have v6 or Remix patterns - React Router 7 ≠ Remix)
 - Shopify APIs (you have 2023 or older)
 
-**Always verify with MCP tools before implementing RR7 or Shopify code.**  
+**MANDATORY: Use MCP tools before implementing any code:**
+
+- **React Router 7**: `mcp_context7_get-library-docs` with library ID `/remix-run/react-router`
+  - Topics: "loaders", "actions", "server-side", "data loading", "useFetcher"
+  - Verify: Correct `Route.LoaderArgs` types, no `@remix-run/*` imports
+- **Shopify Admin API**: `mcp_shopify_introspect_graphql_schema`, `mcp_shopify_validate_graphql_codeblocks`
+  - Verify: Current API structure, correct mutations, proper scopes
+- **Google Analytics**: `mcp_google-analytics_run_report` for GA4 Data API
+- **Supabase**: Direct `@supabase/supabase-js` with SERVICE KEY in server loaders
+
+See `docs/directions/ALL_AGENTS_REACT_ROUTER_7.md` for correct patterns.
 See `docs/directions/training-data-reliability-check.md` for decision matrix.
 
 ### Troubleshooting

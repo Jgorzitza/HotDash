@@ -1,63 +1,195 @@
-# Analytics Direction
+# Analytics - Real GA4 + Shopify Metrics
 
-> Direction: Follow reports/manager/lanes/latest.json (analytics — molecules). NO-ASK.
+> Wire real analytics. Dashboard tiles with live data. Cache strategy. Ship it.
 
-- **Owner:** Analytics Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
-
-## Objective
-
-Current Issue: #104
-
-Launch production-grade analytics pipelines that feed the dashboard tiles, approvals evidence, and growth retros with trustworthy GA4/Shopify metrics under HITL control.
-
-## Tasks
-
-1. Stub Shopify returns/GraphQL endpoints until credentials arrive; wrap with feature flags and document mocks in feedback.
-2. Ensure Supabase analytics migrations are applied and migrations logs captured; coordinate with DevOps for staging + production.
-3. Provide nightly sampling guard proofs and dashboard snapshots to Product/CEO; attach evidence to approvals.
-4. Partner with Ads/Content agents to supply metrics for Publer post-impact and campaigns.
-5. Write feedback to `feedback/analytics/2025-10-17.md` and clean up stray md files.
+**Issue**: #104 | **Repository**: Jgorzitza/HotDash | **Allowed Paths**: app/lib/analytics/**, app/routes/api.analytics.**, tests/unit/analytics/\*\*
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/lib/analytics/**`, `app/routes/api.analytics.*`, `scripts/sampling-guard-proof.mjs`, `docs/specs/analytics_pipeline.md`, `feedback/analytics/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** No live credential handling in repo; feature flag real data; tests must run green before merge.
+- MCP Tools: MANDATORY for all discovery/grounding
+  - `mcp_google-analytics_*` for GA4 operations
+  - `mcp_context7_get-library-docs` for React Router 7 patterns (library: `/remix-run/react-router`)
+- CLI Tools: Direct GA4 Data API with service account from vault
+- Framework: React Router 7 (NOT Remix) - use loaders for server-side data
+- Feature flags: ANALYTICS_REAL_DATA controls mock vs real
+- Cache: 5 min TTL for expensive queries
+- No secrets in code
 
 ## Definition of Done
 
-- [ ] Shopify returns stubs + flags delivered with tests
-- [ ] Supabase migrations applied/logged
-- [ ] `npm run fmt` and `npm run lint`
-- [ ] `npm run test:ci`
-- [ ] `npm run scan`
-- [ ] Docs/runbooks updated with rollout/rollback steps
-- [ ] Feedback updated with evidence + commands
-- [ ] Contract test passes
+- [ ] GA4 Data API integrated with real property (339826228)
+- [ ] Shopify revenue queries working
+- [ ] All analytics tiles <3s load time
+- [ ] Cache strategy implemented
+- [ ] Tests passing with mock + real scenarios
+- [ ] Evidence: Dashboard showing real data
 
-## Contract Test
+## Production Molecules
 
-- **Command:** `node scripts/sampling-guard-proof.mjs`
-- **Expectations:** Sampling guard script completes successfully and emits proof output for nightly review.
+### ANA-001: GA4 Real Data Integration (40 min)
 
-## Risk & Rollback
+**Pattern**: React Router 7 loader (server-side)
+**File**: app/routes/api.analytics.traffic.ts (refactor to use loader)
+**MCP**:
 
-- **Risk Level:** Medium — Bad metrics misguide leadership; mitigated with mocks + HITL.
-- **Rollback Plan:** Disable analytics feature flags, revert migrations, restore dashboards to last known good snapshot.
-- **Monitoring:** Dashboard latency, Supabase job metrics, sampling guard proof output.
+- `mcp_google-analytics_run_report` for GA4 data
+- `mcp_context7_get-library-docs` (library: `/remix-run/react-router`, topic: "loaders server-side")
+  **Property**: 339826228 (Hot Rod AN)
+  **Metrics**: sessions, users, pageviews, conversions
 
-## Links & References
+**Loader Pattern**:
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/analytics/2025-10-17.md`
-- Specs / Runbooks: `docs/specs/analytics_pipeline.md`
+```typescript
+import type { Route } from "./+types/api.analytics.traffic";
 
-## Change Log
+export async function loader({ request }: Route.LoaderArgs) {
+  // Server-side GA4 call
+  const data = await fetchGA4Metrics();
+  return { metrics: data };
+}
+```
 
-- 2025-10-17: Version 2.0 – Production alignment with stubs + rollout plan
-- 2025-10-15: Version 1.0 – Initial direction awaiting integration foundation
+**Test**: Feature flag toggles mock/real
+**Evidence**: Real data in dashboard tile
+
+### ANA-002: Shopify Revenue Queries (35 min)
+
+**File**: app/routes/api.analytics.revenue.ts (refactor to use loader)
+**MCP**:
+
+- `mcp_shopify_introspect_graphql_schema` + `mcp_shopify_validate_graphql_codeblocks`
+- `mcp_context7_get-library-docs` (library: `/remix-run/react-router`, topic: "loaders")
+
+**React Router 7 Loader Pattern**:
+
+```typescript
+import type { Route } from "./+types/api.analytics.revenue";
+
+export async function loader({ request }: Route.LoaderArgs) {
+  // Server-side Shopify query
+  const revenue = await queryShopifyOrders();
+  return { revenue }; // Auto-serialized
+}
+```
+
+**GraphQL Query**: Orders with totalPriceSet, created_at filter
+**Test**: Calculate revenue by period
+**Evidence**: Revenue tile showing correct totals
+
+### ANA-003: Conversion Rate Calculation (30 min)
+
+**File**: app/lib/analytics/conversion.ts
+**Formula**: (GA4 transactions / GA4 sessions) \* 100
+**Handle**: Division by zero
+**Test**: Unit test with various scenarios
+**Evidence**: Conversion tile accurate
+
+### ANA-004: Traffic Metrics Integration (30 min)
+
+**File**: app/lib/analytics/traffic.ts
+**GA4 Metrics**: sessions, users, pageviews, bounce rate, avg session duration
+**Include**: Period comparison (this week vs last week)
+**Evidence**: Traffic tile with trends
+
+### ANA-005: Dashboard Tiles Wiring (45 min)
+
+**Files**: app/components/dashboard/{Revenue,Conversion,Traffic}Tile.tsx
+**Connect**: Real API routes with feature flags
+**Loading states**: Skeleton during fetch
+**Error handling**: Retry button on failure
+**Evidence**: All tiles <3s, graceful errors
+
+### ANA-006: Caching Strategy Implementation (35 min)
+
+**File**: app/services/cache.server.ts
+**TTL**: 5 minutes for GA4/Shopify queries
+**Storage**: In-memory cache (simple Map)
+**Invalidation**: Time-based
+**Evidence**: Cache hits logged, performance improved
+
+### ANA-007: Sampling Guard Proof (25 min)
+
+**File**: app/lib/analytics/sampling-guard.ts
+**Check**: GA4 response for (ga:)samplingLevel
+**Alert**: If sampled data detected
+**Log**: Warning to console
+**Evidence**: Sampling detection working
+
+### ANA-008: Analytics Tables Integration (30 min)
+
+**Coordinate with Data agent**: analytics_metrics_daily table
+**Query**: Historical metrics from Supabase
+**Fallback**: If table empty, use real-time only
+**Evidence**: Historical data displayed
+
+### ANA-009: Nightly Rollup Script (40 min)
+
+**File**: scripts/analytics/nightly-rollup.mjs
+**Action**: Aggregate daily metrics from GA4 → Supabase
+**Schedule**: Via cron or GitHub Actions
+**Evidence**: Script created, test run successful
+
+### ANA-010: Error Logging + Retry (25 min)
+
+**File**: app/lib/analytics/error-logger.ts
+**Handle**: GA4 timeouts, Shopify rate limits, network errors
+**Retry**: Exponential backoff (3 attempts)
+**Evidence**: Errors logged, retries working
+
+### ANA-011: Performance Optimization (30 min)
+
+**Actions**:
+
+- Batch GA4 queries where possible
+- Parallel Shopify + GA4 fetches
+- Preload data on dashboard mount
+  **Evidence**: Reduced total load time
+
+### ANA-012: Contract Tests (25 min)
+
+**Files**: tests/unit/contracts/ga.\*.contract.test.ts
+**Verify**: GA4 response shape matches schemas
+**MCP**: Use actual GA4 API in test mode
+**Evidence**: Contracts passing
+
+### ANA-013: Documentation (20 min)
+
+**File**: docs/specs/analytics_pipeline.md
+**Include**: Data sources, calculations, caching, feature flags
+**Evidence**: Doc complete and accurate
+
+### ANA-014: Feature Flag Testing (20 min)
+
+**Scenarios**:
+
+- ANALYTICS_REAL_DATA=false → Mocks only
+- ANALYTICS_REAL_DATA=true → Real GA4/Shopify
+  **Test**: Toggle, verify data source changes
+  **Evidence**: Both modes working
+
+### ANA-015: WORK COMPLETE Block (10 min)
+
+**Update**: feedback/analytics/2025-10-19.md
+**Include**: Real analytics live, all tiles working, tests passing
+**Evidence**: Feedback entry
+
+## Foreground Proof
+
+1. ga4.ts with real API integration
+2. shopify-revenue.ts with GraphQL
+3. conversion.ts calculations
+4. traffic.ts metrics
+5. Dashboard tiles wired
+6. cache.server.ts implementation
+7. sampling-guard.ts detection
+8. Supabase analytics table queries
+9. nightly-rollup.mjs script
+10. error-logger.ts with retry
+11. Performance metrics
+12. Contract tests passing
+13. analytics_pipeline.md docs
+14. Feature flag toggle demo
+15. WORK COMPLETE feedback
+
+**TOTAL ESTIMATE**: ~6 hours
+**SUCCESS**: Real analytics in production, <3s load, cached, monitored

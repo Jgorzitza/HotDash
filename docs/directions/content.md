@@ -1,63 +1,149 @@
-# Content Direction
+# Content - Social Posts + Engagement + Publer
 
-> Direction: Follow reports/manager/lanes/latest.json (content — molecules). NO-ASK.
+> Generate posts. Validate tone. Schedule via Publer. Track engagement. HITL approvals.
 
-
-- **Owner:** Content Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
-
-## Objective
-
-Current Issue: #105
-
-Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts that feed the approvals loop with evidence and copy that matches CEO tone.
-
-## Tasks
-
-1. Maintain idea pool fixtures (`app/fixtures/content/idea-pool.json`) and ensure each scenario has evidence + Supabase linkage.
-2. Provide copy QA checklist + microcopy docs for Marketing/CEO review; attach to feedback.
-3. Partner with AI-Customer and Ads to synchronize messaging and Publer drafts; ensure HITL approvals recorded.
-4. Produce weekly content performance brief summarizing CTR/engagement from analytics tiles.
-5. Write feedback to `feedback/content/2025-10-17.md` and clean up stray md files.
+**Issue**: #116 | **Repository**: Jgorzitza/HotDash | **Allowed Paths**: app/lib/content/**, app/services/content/**, tests/unit/content/\*\*
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/fixtures/content/**`, `docs/specs/content_pipeline.md`, `docs/design/**`, `feedback/content/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** No publishing without HITL approval; maintain tone guidelines.
+- MCP Tools: MANDATORY for all discovery
+  - `mcp_context7_get-library-docs` for React Router 7 patterns (library: `/remix-run/react-router`)
+  - Context7 for Publer API docs (if available)
+- Framework: React Router 7 (NOT Remix) - use loaders/actions for server-side
+- All posts require HITL approval
+- Tone validation: MANDATORY before approval
+- Publer queue: ≤5 pending approvals
+- Feature flag: PUBLER_LIVE controls mock vs real posting
 
 ## Definition of Done
 
-- [ ] Fixtures + specs updated for production cadence
-- [ ] `npm run fmt` and `npm run lint`
-- [ ] `npm run test:ci` (relevant suites) green
-- [ ] `npm run scan`
-- [ ] Docs/runbooks updated for new workflows
-- [ ] Feedback entry completed with evidence
-- [ ] Contract test passes
+- [ ] Post drafter generating platform-optimized content
+- [ ] Tone validator enforcing brand voice
+- [ ] Publer integration operational
+- [ ] Content approval flow complete
+- [ ] Engagement analytics tracked
+- [ ] Evidence: Posts approved and scheduled
 
-## Contract Test
+## Production Molecules
 
-- **Command:** `jq '. | length >= 3' app/fixtures/content/idea-pool.json`
-- **Expectations:** Fixture file contains >=3 scenarios (launch, evergreen, wildcard) with required fields.
+### CON-001: Post Drafter - Platform Optimization (40 min)
 
-## Risk & Rollback
+**File**: app/services/content/post-drafter.ts
+**Optimize**: Character limits, hashtags, emoji per platform
+**Platforms**: Instagram, Facebook, Twitter/X
+**Evidence**: Posts generated, platform-specific
 
-- **Risk Level:** Low — Incorrect copy is caught by HITL, but delays launches.
-- **Rollback Plan:** Revert fixture updates, restore previous copy docs, notify CEO.
-- **Monitoring:** Content approvals queue, engagement metrics from analytics tiles.
+### CON-002: Tone Validator (35 min)
 
-## Links & References
+**File**: app/lib/content/tone-validator.ts
+**Rules**: Brand voice guidelines, prohibited words, sentiment check
+**Block**: Posts that fail validation
+**Evidence**: Tone validation working (tests exist per Manager)
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/content/2025-10-17.md`
-- Specs / Runbooks: `docs/specs/content_pipeline.md`
+### CON-003: Publer API Client Integration (40 min)
 
-## Change Log
+**File**: app/adapters/publer/client.real.ts (verify completeness)
+**MCP**: Context7 for API reference
+**Endpoints**: /post_create, /post_status, /social_accounts
+**Evidence**: API client operational
 
-- 2025-10-17: Version 2.0 – Production alignment for fixtures + briefs
-- 2025-10-15: Version 1.0 – Initial launch planning
+### CON-004: Content Approval Card (30 min)
+
+**File**: app/components/approvals/ContentApprovalCard.tsx
+**Display**: Post preview, platform, schedule time, tone score
+**Actions**: Approve, reject, edit, grade
+**Evidence**: Approval UI working
+
+### CON-005: Publer Scheduling Integration (35 min)
+
+**File**: app/services/content/post-scheduler.ts
+**Schedule**: Via Publer API with approved posts
+**Feature flag**: PUBLER_LIVE guards real posting
+**Evidence**: Posts scheduled (mock in dev, real in staging)
+
+### CON-006: Content Calendar Fixture (25 min)
+
+**File**: app/fixtures/content/content-calendar.json
+**Data**: 30 days of scheduled posts
+**Use**: For dashboard display and testing
+**Evidence**: Calendar populated
+
+### CON-007: Engagement Analytics Fetcher (35 min)
+
+**File**: app/services/content/publer-analytics-fetcher.ts
+**Fetch**: Likes, shares, comments, reach per post
+**Periods**: 24h, 7d, 30d
+**Evidence**: Analytics retrieved
+
+### CON-008: Engagement Analyzer (30 min)
+
+**File**: app/services/content/engagement-analyzer.ts
+**Analyze**: Best performing content types, optimal posting times
+**Report**: Weekly insights
+**Evidence**: Analysis accurate
+
+### CON-009: Content Performance Tile (30 min)
+
+**File**: app/components/dashboard/ContentTile.tsx
+**Display**: Top 3 posts, engagement metrics, queue status
+**Evidence**: Tile rendering
+
+### CON-010: A/B Testing Framework (Optional) (35 min)
+
+**File**: app/services/content/ab-testing.ts
+**Test**: Different post variations, measure performance
+**Report**: Which performed better
+**Evidence**: A/B logic implemented
+
+### CON-011: Media Upload Handler (25 min)
+
+**File**: app/lib/content/media-uploader.ts
+**Upload**: Images/videos to Publer
+**Validation**: File size, format, dimensions
+**Evidence**: Uploads working
+
+### CON-012: Publer Health Check (20 min)
+
+**File**: app/services/content/publer-health-checker.ts
+**Check**: API accessible, rate limits, account status
+**Evidence**: Health monitored
+
+### CON-013: Weekly Performance Brief (30 min)
+
+**File**: scripts/content/weekly-brief.mjs
+**Generate**: docs/reports/content/weekly-YYYY-MM-DD.md
+**Include**: Top posts, engagement trends, recommendations
+**Evidence**: Report generated
+
+### CON-014: Documentation (20 min)
+
+**Files**: docs/specs/content_pipeline.md, docs/integrations/publer-oauth-setup.md (verify)
+**Update**: Current state, scheduling flow
+**Evidence**: Docs accurate
+
+### CON-015: WORK COMPLETE Block (10 min)
+
+**Update**: feedback/content/2025-10-19.md
+**Include**: Posts generating, tone validated, Publer integrated, approvals working
+**Evidence**: Feedback entry
+
+## Foreground Proof
+
+1. post-drafter.ts implementation
+2. tone-validator.ts working
+3. publer/client.real.ts integration
+4. ContentApprovalCard.tsx UI
+5. post-scheduler.ts scheduling
+6. content-calendar.json fixture
+7. publer-analytics-fetcher.ts data
+8. engagement-analyzer.ts insights
+9. ContentTile.tsx component
+10. A/B testing framework (optional)
+11. media-uploader.ts uploads
+12. publer-health-checker.ts monitoring
+13. weekly-brief.mjs report
+14. Documentation updated
+15. WORK COMPLETE feedback
+
+**TOTAL ESTIMATE**: ~6 hours
+**SUCCESS**: Social posts scheduled, tone validated, engagement tracked, Publer operational

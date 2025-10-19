@@ -1,66 +1,147 @@
-# AI-Customer Direction
+# AI-Customer - CX HITL + Grading + Learning
 
-> Direction: Follow reports/manager/lanes/latest.json (ai-customer — molecules). NO-ASK.
+> Draft CX replies. HITL approval. Grade quality. Learn from feedback. Ship.
 
-- **Owner:** AI-Customer Agent
-- **Effective:** 2025-10-17
-- **Version:** 3.1
-
-## Objective
-
-Current Issue: #102
-
-Deliver production-safe customer reply drafting that keeps Chatwoot health green, routes every message through HITL approvals, and records learning signals for tone/accuracy/policy grades.
-
-## Tasks
-
-1. Keep Chatwoot `/rails/health` + authenticated probes green; document evidence in feedback before any release.
-2. Maintain the Playwright regression suite (modal flows, keyboard accessibility) and stub external calls (Supabase edge logger) so `npm run test:ci` stays green.
-3. Ensure AI drafts land as Private Notes with full evidence (conversation context, suggested reply, risk/rollback) and grading metadata written to Supabase.
-4. Coordinate with Support to replay and learn from graded edits weekly; update RAG index as articles change.
-5. Write feedback to `feedback/ai-customer/2025-10-17.md` and clean up stray md files.
+**Issue**: #114 | **Repository**: Jgorzitza/HotDash | **Allowed Paths**: app/agents/customer/**, packages/agents/src/ai-customer.ts, tests/unit/agents/**
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/agents/customer/**`, `app/routes/api/chatwoot.*`, `tests/playwright/**`, `tests/integration/chatwoot.api.spec.ts`, `docs/specs/content_pipeline.md`, `feedback/ai-customer/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** No direct outbound replies—HITL only. Respect Supabase RLS and secret handling. CI must pass before merge.
+- MCP Tools: MANDATORY for framework patterns
+  - `mcp_context7_get-library-docs` for React Router 7 patterns (library: `/remix-run/react-router`)
+  - Direct OpenAI API for AI operations (no MCP)
+- Framework: React Router 7 (NOT Remix) - use loaders/actions for server-side
+- HITL: MANDATORY for all customer-facing replies
+- Grading: Tone ≥4.5, Accuracy ≥4.7, Policy ≥4.8 (averages)
+- Learning: Log all grades for model improvement
+- Feature flag: AI_CUSTOMER_DRAFT_ENABLED
 
 ## Definition of Done
 
-- [ ] Chatwoot health checks automated and documented
-- [ ] Conversation drafts include evidence + grading metadata
-- [ ] `npm run fmt` and `npm run lint`
-- [ ] `npm run test:ci` and Playwright suite green
-- [ ] `npm run scan` clean
-- [ ] Docs/runbooks updated for new workflows
-- [ ] Feedback entry updated with logs and metrics
-- [ ] Contract test passes
+- [ ] AI drafting working with OpenAI API
+- [ ] HITL approval flow complete
+- [ ] Grading UI functional (1-5 scales)
+- [ ] Learning signals logged
+- [ ] CX quality tile showing metrics
+- [ ] Evidence: Drafts generated, approved, graded
 
-## Contract Test
+## Production Molecules
 
-- **Command:** `npm run test:e2e -- tests/playwright/modals.spec.ts`
-- **Expectations:** CX escalation modal and approvals flows pass accessibility + Escape handling with mock admin session.
+### AIC-001: OpenAI Draft Generator (40 min)
 
-## Risk & Rollback
+**File**: app/agents/customer/draft-generator.ts
+**Model**: gpt-4-turbo
+**Prompt**: Include company tone, customer context, conversation history
+**Evidence**: Drafts generated, quality reasonable
 
-- **Risk Level:** Medium — Misaligned replies risk customer trust; mitigated by HITL + grading.
-- **Rollback Plan:** Disable AI drafting flag (`AI_CUSTOMER_DRAFT_ENABLED=false`) and rely on manual replies while investigating.
-- **Monitoring:** Chatwoot health script, tone/accuracy/policy averages, approval SLA dashboard.
+### AIC-002: Chatwoot Integration - Fetch Conversations (30 min)
 
-## Links & References
+**File**: app/agents/customer/chatwoot-api.ts
+**Fetch**: Open conversations, customer data, message history
+**Evidence**: Conversations retrieved
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/ai-customer/2025-10-17.md`
-- Specs / Runbooks: `docs/specs/content_pipeline.md`, `docs/specs/approvals_schema.md`
+### AIC-003: Draft Approval Flow (35 min)
 
-## Change Log
+**File**: app/components/approvals/CustomerReplyApproval.tsx
+**Display**: Original message, AI draft, edit field, approve/reject
+**Evidence**: Approval UI working
 
-- 2025-10-17: Version 3.1 – Production alignment, Playwright fixes, edge logger stubbing
-- 2025-10-17: Version 3.0 – CEO tone directives, Publer hooks, Supabase learning loops
-- 2025-10-16: Version 2.1 – AI assistant launch plan for support + CEO insights with HITL learning
-- 2025-10-15: Version 2.0 – OpenAI Agents SDK implementation across customer and CEO agents
-- 2025-10-15: Version 1.0 – Initial direction awaiting integration foundation
+### AIC-004: Grading Interface (35 min)
+
+**File**: app/components/approvals/ApprovalGradingSection.tsx
+**Scales**: Tone (1-5), Accuracy (1-5), Policy (1-5)
+**Required**: All 3 grades before approval
+**Evidence**: Grading UI functional
+
+### AIC-005: Grading Schema + Validation (25 min)
+
+**File**: app/agents/customer/grading-schema.ts
+**Validate**: All grades 1-5, required before submission
+**Store**: In database for learning
+**Evidence**: Grades validated and stored
+
+### AIC-006: Learning Signals Logger (30 min)
+
+**File**: app/agents/customer/learning-signals.ts
+**Log**: Draft, human edits, grades, conversation outcome
+**Format**: JSONL for fine-tuning
+**Evidence**: Signals logged
+
+### AIC-007: CX Quality Dashboard Tile (30 min)
+
+**File**: app/components/dashboard/CXQualityTile.tsx
+**Display**: Avg grades, draft acceptance rate, human edit %
+**Evidence**: Tile showing quality metrics
+
+### AIC-008: Confidence Tuning (30 min)
+
+**File**: app/agents/customer/confidence-tuner.ts
+**Adjust**: Auto-submit threshold based on grade history
+**Start**: Manual review for all (confidence threshold = 1.0)
+**Evidence**: Confidence logic implemented
+
+### AIC-009: Batch Draft Processing (25 min)
+
+**File**: app/routes/api.chatwoot.batch-draft.ts
+**Process**: Multiple conversations in parallel
+**Limit**: Max 10 concurrent to respect rate limits
+**Evidence**: Batch processing working
+
+### AIC-010: Edit Distance Tracking (25 min)
+
+**File**: app/lib/metrics/customer-reply-quality.ts
+**Measure**: Levenshtein distance between draft and approved
+**Goal**: Decrease over time as model learns
+**Evidence**: Edit distance tracked
+
+### AIC-011: Tone Analyzer - Pre-Grading (30 min)
+
+**File**: app/lib/analysis/tone-analyzer.ts
+**Check**: Draft matches brand voice before sending to human
+**Flag**: If tone seems off
+**Evidence**: Tone checked
+
+### AIC-012: Learning Data Export (25 min)
+
+**File**: scripts/ai/export-learning-signals.ts
+**Export**: Graded conversations for fine-tuning
+**Format**: JSONL with prompt/completion pairs
+**Evidence**: Export script working
+
+### AIC-013: Contract Tests - OpenAI (20 min)
+
+**File**: tests/unit/agents/openai.contract.test.ts
+**Verify**: Chat completion response shapes
+**Evidence**: Contracts passing
+
+### AIC-014: Documentation (20 min)
+
+**File**: docs/specs/cx_ai_pipeline.md
+**Include**: Draft flow, grading, learning loop
+**Evidence**: Docs complete
+
+### AIC-015: WORK COMPLETE Block (10 min)
+
+**Update**: feedback/ai-customer/2025-10-19.md
+**Include**: HITL working, grading active, learning logged
+**Evidence**: Feedback entry
+
+## Foreground Proof
+
+1. draft-generator.ts with OpenAI
+2. chatwoot-api.ts integration
+3. CustomerReplyApproval.tsx component
+4. ApprovalGradingSection.tsx UI
+5. grading-schema.ts validation
+6. learning-signals.ts logger
+7. CXQualityTile.tsx component
+8. confidence-tuner.ts logic
+9. batch-draft.ts endpoint
+10. Edit distance tracking
+11. tone-analyzer.ts checker
+12. export-learning-signals.ts script
+13. OpenAI contract tests
+14. cx_ai_pipeline.md docs
+15. WORK COMPLETE feedback
+
+**TOTAL ESTIMATE**: ~6 hours
+**SUCCESS**: CX HITL operational, grading active, learning loop logging

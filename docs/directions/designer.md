@@ -1,64 +1,143 @@
-# Designer Direction
+# Designer - Design System Sign-Off + Engineer Pairing
 
-> Direction: Follow reports/manager/lanes/latest.json (designer — molecules). NO-ASK.
+> Verify implementations. Sign off on UI. Pair with Engineer. Ship polished.
 
-
-- **Owner:** Designer Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
-
-## Objective
-
-Current Issue: #107
-
-Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and microcopy meet Polaris standards and HITL requirements.
-
-## Tasks
-
-1. Finalize production microcopy for approvals drawer, idea pool, and Publer flows; store in `docs/design/approvals_microcopy.md`.
-2. Deliver responsive specs for dashboard tiles (desktop/tablet) including accessibility annotations.
-3. Pair with Engineer to review component implementation and provide acceptance criteria.
-4. Support QA with visual regression checklist and sign-off artifacts.
-5. Write feedback to `feedback/designer/2025-10-17.md` and clean up stray md files.
+**Issue**: #118 | **Repository**: Jgorzitza/HotDash | **Allowed Paths**: docs/design/\*\*
 
 ## Constraints
 
-- **Allowed Tools:** Design tools, `bash`, `npm`, `npx`, `node`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `docs/design/**`, `app/components/**` (copy only), `feedback/designer/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** Keep changes strictly to design docs/microcopy; no layout code without Engineer coordination.
+- All UI must match design system (docs/design/design-system-guide.md)
+- Polaris components used correctly
+- Accessibility: WCAG 2.1 AA compliance verified
+- No new design work - verification and pairing only
+- All design docs already complete (Manager confirmed 46 tasks done)
 
 ## Definition of Done
 
-- [ ] Microcopy + specs updated and reviewed
-- [ ] `npm run fmt`
-- [ ] `npm run lint`
-- [ ] `npm run test:ci` (visual acceptance via QA partner) noted
-- [ ] `npm run scan`
-- [ ] Docs/runbooks updated
-- [ ] Feedback entry completed
-- [ ] Contract test passes
+- [ ] All 8 dashboard tiles reviewed and signed off
+- [ ] Approvals drawer reviewed and signed off
+- [ ] Idea pool drawer reviewed and signed off
+- [ ] Design system compliance verified
+- [ ] Engineer pairing sessions completed
+- [ ] Evidence: Sign-off document with screenshots
 
-## Contract Test
+## Production Molecules
 
-- **Command:** `rg 'CX Escalation —' docs/design/approvals_microcopy.md`
-- **Expectations:** Microcopy doc includes current production copy blocks.
+### DES-001: Design System Compliance Audit (45 min)
 
-## Risk & Rollback
+**Review**: All components against docs/design/design-system-guide.md
+**Check**: Colors, typography, spacing, borders, shadows
+**Document**: Any deviations
+**Evidence**: Compliance report
 
-- **Risk Level:** Low — Visual issues caught in HITL, but may slow launch.
-- **Rollback Plan:** Revert microcopy doc, notify stakeholders, update acceptance notes.
-- **Monitoring:** QA visual regression results, accessibility audit findings.
+### DES-002: Dashboard Tiles Visual Review (40 min)
 
-## Links & References
+**Review**: All 8 tiles (Revenue, AOV, Conversion, Inventory, CX, SEO, Approvals, Ideas)
+**Check**: Layout, spacing, loading states, error states, empty states
+**Screenshot**: Each state
+**Evidence**: Screenshots + feedback
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/designer/2025-10-17.md`
-- Specs / Runbooks: `docs/design/approvals_microcopy.md`, `docs/design/dashboard-tiles.md`
+### DES-003: Approvals Drawer Visual Review (35 min)
 
-## Change Log
+**Review**: app/components/approvals/ApprovalsDrawer.tsx implementation
+**Check**: Microcopy matches docs/design/approvals_microcopy.md
+**Verify**: Grading scales, evidence section, button states
+**Evidence**: Screenshots + sign-off
 
-- 2025-10-17: Version 2.0 – Production microcopy + responsive specs
-- 2025-10-15: Version 1.0 – Approval queue UI specs
+### DES-004: Idea Pool Drawer Visual Review (30 min)
+
+**Review**: Idea pool drawer implementation
+**Check**: 5 ideas display, wildcard highlighting, approval actions
+**Evidence**: Screenshots + feedback
+
+### DES-005: Responsive Layout Verification (35 min)
+
+**Test**: Desktop (1920x1080), Tablet (768x1024), Mobile (375x667)
+**Check**: Grid adapts correctly, no overflow, readable text
+**Evidence**: Multi-viewport screenshots
+
+### DES-006: Accessibility Review (40 min)
+
+**Tool**: Axe DevTools
+**Check**: Color contrast, focus indicators, ARIA labels, keyboard nav
+**Requirement**: 0 critical violations
+**Evidence**: Accessibility report
+
+### DES-007: Loading States Review (25 min)
+
+**Check**: Skeleton loaders, spinners, progressive loading
+**Verify**: No content jumps (CLS), smooth transitions
+**Evidence**: Loading state screenshots
+
+### DES-008: Error States Review (25 min)
+
+**Check**: Error messages helpful, retry buttons present, icons appropriate
+**Verify**: Tone friendly, no technical jargon
+**Evidence**: Error state screenshots
+
+### DES-009: Empty States Review (25 min)
+
+**Check**: Empty state messaging helpful, CTAs clear, illustrations (if any)
+**Verify**: User knows what to do next
+**Evidence**: Empty state screenshots
+
+### DES-010: Engineer Pairing - Tile Refinements (40 min)
+
+**Pair with**: Engineer agent
+**Review**: Any visual issues in tiles
+**Fix**: Spacing, alignment, font sizes together
+**Evidence**: Pairing notes, fixes applied
+
+### DES-011: Engineer Pairing - Drawer Refinements (35 min)
+
+**Pair with**: Engineer agent
+**Review**: Drawer animations, focus management, close behavior
+**Fix**: Any UX issues together
+**Evidence**: Pairing notes, improvements
+
+### DES-012: Polaris Component Usage Verification (30 min)
+
+**Check**: All Polaris components used correctly per docs
+**Verify**: Props match Polaris API, no custom reimplementations
+**Evidence**: Component usage report
+
+### DES-013: Final Design Sign-Off (30 min)
+
+**File**: docs/design/final-design-signoff.md (update)
+**Document**: All reviewed components with sign-off status
+**Include**: Screenshots of final implementations
+**Evidence**: Sign-off document complete
+
+### DES-014: Design Debt Documentation (Optional) (25 min)
+
+**Document**: Any compromises made, future improvements
+**File**: docs/design/design-debt.md
+**Prioritize**: For post-launch iterations
+**Evidence**: Debt documented
+
+### DES-015: WORK COMPLETE Block (10 min)
+
+**Update**: feedback/designer/2025-10-19.md
+**Include**: All components reviewed, signed off, Engineer pairing done
+**Evidence**: Feedback entry
+
+## Foreground Proof
+
+1. Design system compliance report
+2. All 8 tile screenshots
+3. Approvals drawer screenshots
+4. Idea pool drawer screenshots
+5. Responsive layout screenshots
+6. Accessibility audit report
+7. Loading states screenshots
+8. Error states screenshots
+9. Empty states screenshots
+10. Engineer pairing notes (tiles)
+11. Engineer pairing notes (drawers)
+12. Polaris component usage report
+13. final-design-signoff.md updated
+14. Design debt documented (optional)
+15. WORK COMPLETE feedback
+
+**TOTAL ESTIMATE**: ~7 hours
+**SUCCESS**: All UI signed off, design system compliance verified, polished product

@@ -2,7 +2,6 @@
 
 > Direction: Follow reports/manager/lanes/latest.json (manager — molecules). NO-ASK.
 
-
 - **Owner:** Manager Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0

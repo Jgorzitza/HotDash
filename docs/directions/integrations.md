@@ -1,63 +1,148 @@
-# Integrations Direction
+# Integrations - API Contracts + Health Checks
 
-> Direction: Follow reports/manager/lanes/latest.json (integrations — molecules). NO-ASK.
+> All integrations tested. Contracts verified. Health monitored. Graceful degradation.
 
-
-- **Owner:** Integrations Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
-
-## Objective
-
-Current Issue: #110
-
-Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoot) with contract tests and feature flags for production.
-
-## Tasks
-
-1. Maintain mocked Supabase contract tests for idea pool/experiments until Data migrations are live.
-2. Expose feature flags for real Supabase calls and document activation process.
-3. Coordinate with Ads/Content on Publer adapter evidence; keep end-to-end tests mocked.
-4. Keep integration feedback updated with test outputs and follow-ups.
-5. Write feedback to `feedback/integrations/2025-10-17.md` and clean up stray md files.
+**Issue**: #113 | **Repository**: Jgorzitza/HotDash | **Allowed Paths**: app/services/**, tests/integration/**, tests/contract/\*\*
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/routes/api.analytics.idea-pool.ts`, `tests/integration/**`, `feedback/integrations/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** Keep mocks until migrations delivered; HITL approvals for any live actions.
+- MCP Tools: MANDATORY for all API discovery
+  - `mcp_shopify_validate_graphql_codeblocks` for contract validation
+  - `mcp_google-analytics_run_report` for GA4 testing
+  - `mcp_context7_get-library-docs` for React Router 7 patterns (library: `/remix-run/react-router`)
+- Framework: React Router 7 (NOT Remix) - all API routes use loaders
+- All external APIs must have contract tests
+- Feature flags control all external calls
+- Graceful degradation: App works with mocks if API down
+- Health checks: Every integration monitored
+- Rate limiting: Respect all API limits
 
 ## Definition of Done
 
-- [ ] Contract tests passing with mocks and flags documented
-- [ ] `npm run fmt` and `npm run lint`
-- [ ] `npm run test:ci`
-- [ ] `npm run scan`
-- [ ] Docs/runbooks updated with activation steps
-- [ ] Feedback entry updated
-- [ ] Contract test passes
+- [ ] All 6 integrations have contract tests
+- [ ] Health checks for all integrations
+- [ ] Feature flags enforced
+- [ ] Graceful degradation tested
+- [ ] Integration health tile working
+- [ ] Evidence: All contracts passing
 
-## Contract Test
+## Production Molecules
 
-- **Command:** `npx vitest run tests/integration/idea-pool.api.spec.ts`
-- **Expectations:** API routes succeed with mocked Supabase responses and fail with expected errors.
+### INT-001: Integration Health Dashboard Tile (35 min)
 
-## Risk & Rollback
+**File**: app/components/dashboard/IntegrationsHealthTile.tsx
+**Display**: All 6 integrations (Shopify, Supabase, GA4, Chatwoot, Publer, OpenAI)
+**Status**: Green/yellow/red indicators
+**Evidence**: Tile showing all statuses
 
-- **Risk Level:** Medium — Bad mocks can hide production issues.
-- **Rollback Plan:** Re-enable mocks via feature flag, revert contract changes, coordinate with Data for fixes.
-- **Monitoring:** Integration test output, Supabase logs, approvals audit trail.
+### INT-002: Shopify Contract Tests (30 min)
 
-## Links & References
+**Files**: tests/contract/shopify.\*.contract.test.ts
+**MCP**: `mcp_shopify_validate_graphql_codeblocks`
+**Verify**: Orders, Products, Inventory API shapes
+**Evidence**: All Shopify contracts passing
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/integrations/2025-10-17.md`
-- Specs / Runbooks: `docs/specs/analytics_pipeline.md`
+### INT-003: Supabase Contract Tests (30 min)
 
-## Change Log
+**Files**: tests/contract/supabase.\*.contract.test.ts
+**Verify**: Table schemas, RPC function signatures, RLS behavior
+**Evidence**: All Supabase contracts passing
 
-- 2025-10-17: Version 2.0 – Production alignment with contract tests
-- 2025-10-15: Version 1.0 – Initial API suite direction
+### INT-004: GA4 Contract Tests (25 min)
+
+**Files**: tests/contract/ga4.\*.contract.test.ts
+**MCP**: `mcp_google-analytics_run_report` (test mode)
+**Verify**: Metrics response shapes
+**Evidence**: GA4 contracts passing
+
+### INT-005: Chatwoot Contract Tests (25 min)
+
+**Files**: tests/contract/chatwoot.\*.contract.test.ts
+**Verify**: Conversations, messages, webhook payloads
+**Evidence**: Chatwoot contracts passing
+
+### INT-006: Publer Contract Tests (25 min)
+
+**Files**: tests/contract/publer.\*.contract.test.ts
+**Verify**: Account info, social accounts, post status
+**Evidence**: Publer contracts passing
+
+### INT-007: OpenAI Contract Tests (25 min)
+
+**Files**: tests/contract/openai.\*.contract.test.ts
+**Verify**: Chat completions, embeddings responses
+**Evidence**: OpenAI contracts passing
+
+### INT-008: Health Check Aggregator (35 min)
+
+**File**: app/services/integrations/health-aggregator.ts
+**Poll**: All integration health endpoints (5 min interval)
+**Cache**: Health statuses
+**Evidence**: Aggregator working
+
+### INT-009: Feature Flag Enforcement Audit (30 min)
+
+**Action**: Scan codebase for external API calls
+**Verify**: All wrapped in feature flag checks
+**Script**: scripts/audit/check-feature-flags.mjs
+**Evidence**: No unguarded external calls
+
+### INT-010: Graceful Degradation Testing (40 min)
+
+**Test**: Disable each integration, verify app still works
+**Fallback**: Mocks used when integration down
+**Evidence**: All degradation scenarios passing
+
+### INT-011: Rate Limiting Implementation (30 min)
+
+**File**: app/middleware/rate-limiter.ts
+**Limits**: GA4 (10 req/s), Shopify (4 req/s), Chatwoot (60 req/min)
+**Queue**: Requests if limit approached
+**Evidence**: Rate limits respected
+
+### INT-012: Integration Monitoring Setup (25 min)
+
+**File**: app/services/integrations/monitor.ts
+**Track**: Success rate, latency, error types per integration
+**Alert**: If success rate <95%
+**Evidence**: Monitoring active
+
+### INT-013: Retry Policies - All Integrations (30 min)
+
+**File**: app/services/integrations/retry-policy.ts
+**Strategy**: Exponential backoff, 3 attempts
+**Idempotency**: Ensure safe to retry
+**Evidence**: Retries working
+
+### INT-014: Documentation (25 min)
+
+**File**: docs/specs/integrations_architecture.md (verify completeness)
+**Update**: Contract test locations, health check endpoints
+**Evidence**: Docs complete and accurate
+
+### INT-015: WORK COMPLETE Block (10 min)
+
+**Update**: feedback/integrations/2025-10-19.md
+**Include**: All contracts passing, health monitored, degradation tested
+**Evidence**: Feedback entry
+
+## Foreground Proof
+
+1. IntegrationsHealthTile.tsx component
+2. Shopify contract tests passing
+3. Supabase contract tests passing
+4. GA4 contract tests passing
+5. Chatwoot contract tests passing
+6. Publer contract tests passing
+7. OpenAI contract tests passing
+8. health-aggregator.ts implementation
+9. Feature flag audit results
+10. Degradation test results
+11. rate-limiter.ts implementation
+12. Integration monitoring active
+13. retry-policy.ts implementation
+14. integrations_architecture.md updated
+15. WORK COMPLETE feedback
+
+**TOTAL ESTIMATE**: ~6 hours
+**SUCCESS**: All integrations tested, monitored, gracefully degrading
