@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLoaderData, useRevalidator, useSearchParams } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import {
   Page,
   Layout,
@@ -10,10 +10,12 @@ import {
   Badge,
   Button,
 } from "@shopify/polaris";
+import { PolarisProvider } from "~/providers/PolarisProvider";
 import { ApprovalCard } from "../../components/ApprovalCard";
 import { ApprovalsDrawer } from "../../components/approvals/ApprovalsDrawer";
 import type { Approval } from "~/types/approval";
 import { getApprovals, getApprovalCounts } from "../../services/approvals";
+import type { ApprovalFilters } from "../../services/approvals.server";
 
 /**
  * Loader: Fetch approvals from Supabase
@@ -30,7 +32,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const pageSize = 50;
 
     // Fetch approvals with filters
-    const filters: any = {
+    const filters: ApprovalFilters = {
       limit: pageSize,
       offset: (page - 1) * pageSize,
     };
@@ -43,7 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Fetch counts for all states (for tab badges)
     const counts = await getApprovalCounts();
 
-    return Response.json({
+    return json({
       approvals,
       total,
       counts,
@@ -51,7 +53,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("Error in approvals loader:", error);
-    return Response.json({
+    return json({
       approvals: [],
       total: 0,
       counts: {},
@@ -61,7 +63,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function ApprovalsRoute() {
-  const { approvals, total, counts, error } = useLoaderData<typeof loader>();
+  const { approvals, total, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -175,7 +177,8 @@ export default function ApprovalsRoute() {
   }, [revalidator]);
 
   return (
-    <Page
+    <PolarisProvider>
+      <Page
       title="Approval Queue"
       subtitle={`${total} ${total === 1 ? "approval" : "approvals"}`}
     >
@@ -188,7 +191,7 @@ export default function ApprovalsRoute() {
               {kindFilter && <Badge>{`kind: ${kindFilter}`}</Badge>}
               <Button
                 onClick={() =>
-                  setSearchParams((prev) => {
+                  setSearchParams((prev: URLSearchParams) => {
                     const p = new URLSearchParams(prev);
                     p.delete("state");
                     p.delete("kind");
@@ -254,9 +257,13 @@ export default function ApprovalsRoute() {
                   Prev
                 </Button>
                 <Button
-                  disabled={Array.isArray(approvals) ? approvals.length < 50 : true}
+                  disabled={
+                    Array.isArray(approvals)
+                      ? (approvals as Approval[]).length < 50
+                      : true
+                  }
                   onClick={() =>
-                    setSearchParams((prev) => {
+                    setSearchParams((prev: URLSearchParams) => {
                       const p = new URLSearchParams(prev);
                       p.set("page", String(page + 1));
                       return p;
@@ -284,5 +291,6 @@ export default function ApprovalsRoute() {
         )}
       </Layout>
     </Page>
+    </PolarisProvider>
   );
 }
