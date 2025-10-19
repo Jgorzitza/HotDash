@@ -21,8 +21,31 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Run CI suite
-        run: npm run ci
+      - name: Detect changed files
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+          echo "Changed files:" && cat changed.txt || true
+      - name: Compute test globs
+        id: globs
+        run: |
+          node scripts/ci/compute-test-globs.mjs > test-globs.txt
+          echo "globs<<EOF" >> $GITHUB_OUTPUT
+          cat test-globs.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Test globs:" && cat test-globs.txt
+      - name: Run fmt and lint
+        run: |
+          npm run fmt
+          npm run lint
+      - name: Run targeted tests (affected)
+        run: |
+          # If globs is '.' run full suite, otherwise run affected tests
+          if grep -qx '.' test-globs.txt; then
+            npm run test:ci
+          else
+            npx vitest run $(tr '\n' ' ' < test-globs.txt)
+          fi
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
