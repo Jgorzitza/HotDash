@@ -1,18 +1,19 @@
 # Content Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (content — molecules). NO-ASK.
+
+
 - **Owner:** Content Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #105
 
+Current Issue: #105
 
 Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts that feed the approvals loop with evidence and copy that matches CEO tone.
 
 ## Tasks
-
-
 
 1. Maintain idea pool fixtures (`app/fixtures/content/idea-pool.json`) and ensure each scenario has evidence + Supabase linkage.
 2. Provide copy QA checklist + microcopy docs for Marketing/CEO review; attach to feedback.

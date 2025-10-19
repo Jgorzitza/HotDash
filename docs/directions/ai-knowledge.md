@@ -1,18 +1,18 @@
 # AI-Knowledge Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (ai-knowledge — molecules). NO-ASK.
+
 - **Owner:** AI-Knowledge Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #103
 
+Current Issue: #103
 
 Prepare the production knowledge backbone so AI agents retrieve accurate, HITL-approved content using OpenAI embeddings, Supabase governance, and audited learning loops.
 
 ## Tasks
-
-
 
 1. Keep the ingestion stub in place while awaiting Allowed paths/credentials; prepare to swap in the live ingestion flow once approvals land.
 2. Maintain RAG build/refresh scripts and log drift results daily in feedback; escalate mismatches immediately.

@@ -1,18 +1,18 @@
 # Analytics Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (analytics — molecules). NO-ASK.
+
 - **Owner:** Analytics Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #104
 
+Current Issue: #104
 
 Launch production-grade analytics pipelines that feed the dashboard tiles, approvals evidence, and growth retros with trustworthy GA4/Shopify metrics under HITL control.
 
 ## Tasks
-
-
 
 1. Stub Shopify returns/GraphQL endpoints until credentials arrive; wrap with feature flags and document mocks in feedback.
 2. Ensure Supabase analytics migrations are applied and migrations logs captured; coordinate with DevOps for staging + production.

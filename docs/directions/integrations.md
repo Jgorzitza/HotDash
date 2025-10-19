@@ -1,18 +1,19 @@
 # Integrations Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (integrations — molecules). NO-ASK.
+
+
 - **Owner:** Integrations Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #110
 
+Current Issue: #110
 
 Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoot) with contract tests and feature flags for production.
 
 ## Tasks
-
-
 
 1. Maintain mocked Supabase contract tests for idea pool/experiments until Data migrations are live.
 2. Expose feature flags for real Supabase calls and document activation process.
