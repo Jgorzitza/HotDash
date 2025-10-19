@@ -18,7 +18,9 @@ BEGIN
   END IF;
 END$$;
 
--- Policy 1: Service role has full access (system operations)
+DROP POLICY IF EXISTS facts_service_role_all
+  ON public.facts;
+
 CREATE POLICY facts_service_role_all
   ON public.facts
   FOR ALL
@@ -28,6 +30,9 @@ CREATE POLICY facts_service_role_all
 
 -- Policy 2: Authenticated users can read facts for their project
 -- Uses JWT claim 'app.current_project' or falls back to service_role
+DROP POLICY IF EXISTS facts_read_by_project
+  ON public.facts;
+
 CREATE POLICY facts_read_by_project
   ON public.facts
   FOR SELECT
@@ -41,6 +46,9 @@ CREATE POLICY facts_read_by_project
   );
 
 -- Policy 3: AI readonly role can read all facts (for cross-project analysis)
+DROP POLICY IF EXISTS facts_read_ai_readonly
+  ON public.facts;
+
 CREATE POLICY facts_read_ai_readonly
   ON public.facts
   FOR SELECT
@@ -48,6 +56,9 @@ CREATE POLICY facts_read_ai_readonly
   USING (true);
 
 -- Policy 4: Authenticated users can insert facts for their project
+DROP POLICY IF EXISTS facts_insert_by_project
+  ON public.facts;
+
 CREATE POLICY facts_insert_by_project
   ON public.facts
   FOR INSERT
@@ -62,6 +73,9 @@ CREATE POLICY facts_insert_by_project
 
 -- Policy 5: Prevent updates (facts are immutable audit records)
 -- Only service_role can update for corrections
+DROP POLICY IF EXISTS facts_no_update
+  ON public.facts;
+
 CREATE POLICY facts_no_update
   ON public.facts
   FOR UPDATE
@@ -71,6 +85,9 @@ CREATE POLICY facts_no_update
 
 -- Policy 6: Prevent deletes (facts are immutable audit records)
 -- Only service_role can delete for retention/cleanup
+DROP POLICY IF EXISTS facts_no_delete
+  ON public.facts;
+
 CREATE POLICY facts_no_delete
   ON public.facts
   FOR DELETE
@@ -87,4 +104,3 @@ GRANT SELECT ON public.facts TO ai_readonly;
 GRANT SELECT ON public.facts TO analytics_reader;
 GRANT INSERT ON public.facts TO authenticated;
 GRANT ALL ON public.facts TO service_role;
-

@@ -3,7 +3,7 @@
  * GET /api/shopify/aov
  */
 
-import type { LoaderFunctionArgs } from "react-router";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -12,7 +12,34 @@ import { toInputJson } from "../../services/json";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const AOV_WINDOW_DAYS = 30;
-const cache = new Map<string, { data: any; expiresAt: number }>();
+interface ShopifyOrdersPayload {
+  data?: {
+    orders: {
+      edges: Array<{
+        node: {
+          currentTotalPriceSet?: {
+            shopMoney: {
+              amount?: string;
+              currencyCode?: string;
+            };
+          };
+        };
+      }>;
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
+interface AovResponse {
+  averageOrderValue: number;
+  currency: string;
+  orderCount: number;
+  totalRevenue: number;
+  windowDays: number;
+  generatedAt: string;
+}
+
+const cache = new Map<string, { data: AovResponse; expiresAt: number }>();
 
 const AOV_QUERY = `#graphql
   query AOVMetrics($first: Int!, $query: String) {
@@ -37,7 +64,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     if (shouldUseCache) {
       const cached = cache.get(cacheKey);
       if (cached && cached.expiresAt > Date.now()) {
-        return Response.json(cached.data, { headers: { "X-Cache": "HIT" } });
+        return json(cached.data, { headers: { "X-Cache": "HIT" } });
       }
     }
 
@@ -54,7 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         retryable: response.status >= 500,
       });
     }
-    const payload = await response.json();
+    const payload: ShopifyOrdersPayload = await response.json();
     if (payload.errors?.length) {
       throw new ServiceError(payload.errors[0].message, {
         scope: "shopify.aov",
@@ -70,11 +97,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
         node.currentTotalPriceSet?.shopMoney.amount ?? "0",
       );
       totalRevenue += amount;
-      if (node.currentTotalPriceSet?.shopMoney.currencyCode)
+      if (node.currentTotalPriceSet?.shopMoney.currencyCode) {
         currency = node.currentTotalPriceSet.shopMoney.currencyCode;
+      }
     }
 
-    const aovData = {
+    const aovData: AovResponse = {
       averageOrderValue:
         orders.length > 0
           ? Number((totalRevenue / orders.length).toFixed(2))
@@ -98,13 +126,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
         expiresAt: Date.now() + CACHE_TTL_MS,
       });
     }
-    return Response.json(aovData, {
+    return json(aovData, {
       headers: {
         "X-Cache": shouldUseCache ? "MISS" : "BYPASS",
         "X-Response-Time": `${Date.now() - startTime}ms`,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof ServiceError) {
       logger.error("AOV service error", {
         message: error.message,
@@ -118,7 +146,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           : error.retryable
             ? 503
             : 500;
-      return Response.json(
+      return json(
         {
           error: {
             message: error.message,
@@ -132,7 +160,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     logger.error("AOV unexpected error", {
       error: error instanceof Error ? error.message : String(error),
     });
-    return Response.json(
+    return json(
       {
         error: {
           message: "AOV fetch failed",

@@ -22,11 +22,11 @@
 
 **Selected Operators:**
 
-- [ ] Operator 1: ******\_\_\_****** (experience: \_\_\_\_)
-- [ ] Operator 2: ******\_\_\_****** (experience: \_\_\_\_)
-- [ ] Operator 3: ******\_\_\_****** (experience: \_\_\_\_)
-- [ ] Operator 4: ******\_\_\_****** (experience: \_\_\_\_)
-- [ ] Operator 5: ******\_\_\_****** (experience: \_\_\_\_)
+- [ ] Operator 1: **\*\***\_\_\_**\*\*** (experience: \_\_\_\_)
+- [ ] Operator 2: **\*\***\_\_\_**\*\*** (experience: \_\_\_\_)
+- [ ] Operator 3: **\*\***\_\_\_**\*\*** (experience: \_\_\_\_)
+- [ ] Operator 4: **\*\***\_\_\_**\*\*** (experience: \_\_\_\_)
+- [ ] Operator 5: **\*\***\_\_\_**\*\*** (experience: \_\_\_\_)
 
 ---
 

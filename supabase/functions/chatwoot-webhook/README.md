@@ -15,8 +15,8 @@ POST https://<project-ref>.supabase.co/functions/v1/chatwoot-webhook
 Webhooks are verified using HMAC-SHA256 signature validation:
 
 ```typescript
-const signature = request.headers.get('X-Chatwoot-Signature');
-const webhookSecret = Deno.env.get('CHATWOOT_WEBHOOK_SECRET');
+const signature = request.headers.get("X-Chatwoot-Signature");
+const webhookSecret = Deno.env.get("CHATWOOT_WEBHOOK_SECRET");
 
 // Verify signature matches HMAC-SHA256 of request body
 ```
@@ -25,16 +25,17 @@ const webhookSecret = Deno.env.get('CHATWOOT_WEBHOOK_SECRET');
 
 ### Supported Events
 
-| Event | Description | Agent SDK Action |
-|-------|-------------|------------------|
-| `message_created` | New customer message | Generate draft response → approval queue |
-| `conversation_created` | New conversation | Initialize workflow tracking |
-| `conversation_status_changed` | Status updated | Update queue state |
-| `conversation_resolved` | Closed by agent | Archive from queue |
+| Event                         | Description          | Agent SDK Action                         |
+| ----------------------------- | -------------------- | ---------------------------------------- |
+| `message_created`             | New customer message | Generate draft response → approval queue |
+| `conversation_created`        | New conversation     | Initialize workflow tracking             |
+| `conversation_status_changed` | Status updated       | Update queue state                       |
+| `conversation_resolved`       | Closed by agent      | Archive from queue                       |
 
 ### Event Filtering
 
 Only process messages where:
+
 - `message.sender.type === 'contact'` (from customer, not agent)
 - `conversation.status === 'open'` (active conversations only)
 - `message.message_type === 0` (incoming messages)
@@ -114,14 +115,14 @@ Only process messages where:
 ### LlamaIndex Query Service (Port 8005)
 
 ```typescript
-const response = await fetch('http://localhost:8005/api/llamaindex/query', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("http://localhost:8005/api/llamaindex/query", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     query: message.content,
     top_k: 5,
-    min_relevance: 0.7
-  })
+    min_relevance: 0.7,
+  }),
 });
 
 const { results } = await response.json();
@@ -130,19 +131,19 @@ const { results } = await response.json();
 ### Agent SDK Draft Service (Port 8006)
 
 ```typescript
-const response = await fetch('http://localhost:8006/api/agentsdk/draft', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("http://localhost:8006/api/agentsdk/draft", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     customer_message: message.content,
     customer_context: {
       name: contact.name,
       email: contact.email,
-      conversation_id: conversation.id
+      conversation_id: conversation.id,
     },
     knowledge_context: llamaIndexResults,
-    conversation_history: previousMessages
-  })
+    conversation_history: previousMessages,
+  }),
 });
 
 const draft = await response.json();
@@ -152,9 +153,9 @@ const draft = await response.json();
 
 ```typescript
 const chatwootClient = createChatwootClient({
-  baseUrl: 'https://hotdash-chatwoot.fly.dev',
-  token: Deno.env.get('CHATWOOT_API_TOKEN'),
-  accountId: 1
+  baseUrl: "https://hotdash-chatwoot.fly.dev",
+  token: Deno.env.get("CHATWOOT_API_TOKEN"),
+  accountId: 1,
 });
 
 const draftContent = `
@@ -163,48 +164,41 @@ const draftContent = `
 ${draft.draft_response}
 
 📚 Sources:
-${draft.sources.map(s => `- ${s.title} (v${s.version})`).join('\n')}
+${draft.sources.map((s) => `- ${s.title} (v${s.version})`).join("\n")}
 
 🎯 Suggested Action: ${draft.recommended_action}
 `;
 
-await chatwootClient.createPrivateNote(
-  conversation.id,
-  draftContent
-);
+await chatwootClient.createPrivateNote(conversation.id, draftContent);
 ```
 
 ### Approval Queue Table Insert
 
 ```typescript
-await supabase
-  .from('agent_sdk_approval_queue')
-  .insert({
-    conversation_id: conversation.id,
-    chatwoot_message_id: privateNote.id,
-    customer_message: message.content,
-    draft_response: draft.draft_response,
-    confidence_score: draft.confidence_score,
-    knowledge_sources: draft.sources,
-    suggested_tags: draft.suggested_tags,
-    sentiment_analysis: draft.sentiment,
-    recommended_action: draft.recommended_action,
-    status: 'pending'
-  });
+await supabase.from("agent_sdk_approval_queue").insert({
+  conversation_id: conversation.id,
+  chatwoot_message_id: privateNote.id,
+  customer_message: message.content,
+  draft_response: draft.draft_response,
+  confidence_score: draft.confidence_score,
+  knowledge_sources: draft.sources,
+  suggested_tags: draft.suggested_tags,
+  sentiment_analysis: draft.sentiment,
+  recommended_action: draft.recommended_action,
+  status: "pending",
+});
 ```
 
 ### Real-time Notification
 
 ```typescript
-await supabase
-  .from('agent_sdk_notifications')
-  .insert({
-    type: 'new_draft',
-    queue_item_id: queueItem.id,
-    conversation_id: conversation.id,
-    priority: draft.sentiment.urgency,
-    created_at: new Date().toISOString()
-  });
+await supabase.from("agent_sdk_notifications").insert({
+  type: "new_draft",
+  queue_item_id: queueItem.id,
+  conversation_id: conversation.id,
+  priority: draft.sentiment.urgency,
+  created_at: new Date().toISOString(),
+});
 ```
 
 ## Environment Variables
@@ -299,6 +293,7 @@ curl -X POST http://localhost:54321/functions/v1/chatwoot-webhook \
 ## Performance Metrics
 
 Target SLAs:
+
 - Webhook processing: < 2 seconds
 - LlamaIndex query: < 500ms
 - OpenAI draft generation: < 1.5 seconds
@@ -309,18 +304,16 @@ Target SLAs:
 Log to `observability_logs` table:
 
 ```typescript
-await supabase
-  .from('observability_logs')
-  .insert({
-    level: 'INFO',
-    message: 'Chatwoot webhook processed',
-    metadata: {
-      event: 'message_created',
-      conversation_id: conversation.id,
-      processing_time_ms: duration,
-      draft_confidence: draft.confidence_score
-    }
-  });
+await supabase.from("observability_logs").insert({
+  level: "INFO",
+  message: "Chatwoot webhook processed",
+  metadata: {
+    event: "message_created",
+    conversation_id: conversation.id,
+    processing_time_ms: duration,
+    draft_confidence: draft.confidence_score,
+  },
+});
 ```
 
 ## Deployment
@@ -337,6 +330,7 @@ supabase secrets set CHATWOOT_API_TOKEN=<token>
 ## Chatwoot Configuration
 
 In Chatwoot settings:
+
 1. Navigate to Settings → Integrations → Webhooks
 2. Add webhook URL: `https://<project>.supabase.co/functions/v1/chatwoot-webhook`
 3. Select events: `message_created`, `conversation_created`
@@ -347,4 +341,3 @@ In Chatwoot settings:
 - [Chatwoot Webhook Docs](https://www.chatwoot.com/docs/product/channels/api/webhooks)
 - [Agent SDK OpenAI Integration](../../docs/AgentSDKopenAI.md)
 - [LlamaIndex Integration Spec](../../docs/directions/engineer-sprint-llamaindex-agentsdk.md)
-

@@ -45,8 +45,8 @@ export function parseISODate(dateString: string): Date {
 /**
  * Check if date is valid
  */
-export function isValidDate(date: any): date is Date {
-  return date instanceof Date && !isNaN(date.getTime());
+export function isValidDate(date: unknown): date is Date {
+  return date instanceof Date && !Number.isNaN(date.getTime());
 }
 
 /**

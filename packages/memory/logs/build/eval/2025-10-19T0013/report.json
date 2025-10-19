@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-10-19T00:13:04.700Z",
+  "total_cases": 2,
+  "avg_bleu": 0.072,
+  "avg_rouge_l": 0.107,
+  "avg_citation_score": 0,
+  "results": [
+    {
+      "question": "What is the launch checklist?",
+      "answer": "Based on available documentation, here's information about: What is the launch checklist?. This is a mock response for testing purposes.",
+      "reference": "The launch checklist describes gates and rollback.",
+      "bleu": 0.143,
+      "rouge_l": 0.214,
+      "citation_check": {
+        "found": [],
+        "missing": ["hotrodan.com"],
+        "score": 0
+      },
+      "response_time_ms": 0
+    },
+    {
+      "question": "How do we validate AI content?",
+      "answer": "Based on available documentation, here's information about: How do we validate AI content?. This is a mock response for testing purposes.",
+      "reference": "Use HITL review checklist.",
+      "bleu": 0,
+      "rouge_l": 0,
+      "citation_check": {
+        "found": [],
+        "missing": ["curated"],
+        "score": 0
+      },
+      "response_time_ms": 0
+    }
+  ]
+}

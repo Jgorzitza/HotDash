@@ -1,0 +1,12 @@
+{
+  "key": "hero_copy_v1",
+  "hypothesis": "Shorter hero copy improves CTR and revenue",
+  "metric": "cv_rate",
+  "min_effect": 0.02,
+  "arms": [
+    { "name": "control", "weight": 0.5 },
+    { "name": "short_copy", "weight": 0.5 }
+  ],
+  "guardrails": ["bounce_rate<0.6", "cls<0.1"],
+  "rollout_plan": "If uplift >= 2pp at 95% conf or 7d, promote"
+}

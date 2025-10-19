@@ -1278,8 +1278,8 @@ SECURITY & PRIVACY:
 
 ### Sign-Off
 
-Enablement Lead: ********\_******** Date: **\_\_\_**
-Manager: ********\_******** Date: **\_\_\_**
+Enablement Lead: **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
+Manager: **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
 ```
 
 ---

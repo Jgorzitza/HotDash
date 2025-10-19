@@ -1,21 +1,28 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "../../../utils/render";
+import { render, screen } from "@testing-library/react";
+import { PolarisTestProvider } from "@shopify/polaris";
+import type { ReactElement } from "react";
 import { AOVTile } from "../../../../app/components/dashboard/AOVTile";
 import { ReturnsTile } from "../../../../app/components/dashboard/ReturnsTile";
 import { StockRiskTile } from "../../../../app/components/dashboard/StockRiskTile";
 import { SEOTile } from "../../../../app/components/dashboard/SEOTile";
 import { CXTile } from "../../../../app/components/dashboard/CXTile";
 
+const renderWithProviders = (ui: ReactElement) =>
+  render(<PolarisTestProvider>{ui}</PolarisTestProvider>);
+
 describe("Dashboard Tiles", () => {
   describe("AOVTile", () => {
     it("should render value and trend", () => {
-      render(<AOVTile value="$145.27" trend="up" percentChange="+12%" />);
+      renderWithProviders(
+        <AOVTile value="$145.27" trend="up" percentChange="+12%" />,
+      );
       expect(screen.getByText("$145.27")).toBeInTheDocument();
       expect(screen.getByText("+12% vs yesterday")).toBeInTheDocument();
     });
 
     it("should show loading state", () => {
-      render(
+      renderWithProviders(
         <AOVTile value="$145.27" trend="up" percentChange="+12%" loading />,
       );
       expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -24,7 +31,9 @@ describe("Dashboard Tiles", () => {
 
   describe("ReturnsTile", () => {
     it("should render count and pending", () => {
-      render(<ReturnsTile count={3} pendingReview={2} trend="neutral" />);
+      renderWithProviders(
+        <ReturnsTile count={3} pendingReview={2} trend="neutral" />,
+      );
       expect(screen.getByText("3")).toBeInTheDocument();
       expect(screen.getByText("2 pending review")).toBeInTheDocument();
     });
@@ -32,7 +41,7 @@ describe("Dashboard Tiles", () => {
 
   describe("StockRiskTile", () => {
     it("should render SKU count", () => {
-      render(
+      renderWithProviders(
         <StockRiskTile
           skuCount={2}
           subtitle="Below reorder point"
@@ -45,7 +54,7 @@ describe("Dashboard Tiles", () => {
 
   describe("SEOTile", () => {
     it("should render alert count", () => {
-      render(
+      renderWithProviders(
         <SEOTile
           data={{
             anomalies: [
@@ -73,7 +82,7 @@ describe("Dashboard Tiles", () => {
 
   describe("CXTile", () => {
     it("should render escalation count", () => {
-      render(
+      renderWithProviders(
         <CXTile
           data={{
             pendingCount: 3,

@@ -39,11 +39,18 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 - [ ] Runbook updated
 - [ ] Feedback entry updated
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/support/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, post blocker and continue with next task. Do not idle.
 - Keep changes within Allowed paths; attach logs and screenshots.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh support -- <command>`.
+- Append ISO timestamps on each step to `artifacts/support/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

@@ -1,0 +1,25 @@
+{
+  "status": "planned_only_do_not_seed",
+  "decisionTree": ["vehicle", "engine", "fuel", "hp"],
+  "composer": {
+    "rulesGraph": true,
+    "copurchase": ["gauges", "filters", "regulators"],
+    "exactAdapters": true,
+    "conflictRules": true
+  },
+  "cart": { "oneClick": true, "chatDeepLinks": true },
+  "featureFlags": {
+    "guidedSelling": { "default": false },
+    "guidedSellingCart": { "default": false }
+  },
+  "targets": {
+    "attachRateLiftMinPct": 15,
+    "attachRateLiftMaxPct": 25,
+    "chatCartLinkPct": 20
+  },
+  "telemetry": {
+    "decisionLogScope": "guided-kit",
+    "ga4Dimension": "guided_kit_variant"
+  },
+  "approvals": { "role": "CEO", "reasonsRequired": true }
+}

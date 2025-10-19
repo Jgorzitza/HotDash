@@ -50,10 +50,10 @@ Object.defineProperty(window, "scroll", {
 
 // Provide Remix-style json helper for loaders/actions across integration tests
 vi.mock("react-router", async () => {
-  const actual = await vi.importActual<any>("react-router");
+  const actual =
+    await vi.importActual<typeof import("react-router")>("react-router");
   return {
     ...actual,
-    json: (data: unknown, init?: ResponseInit) =>
-      Response.json(data as any, init),
+    json: (data: unknown, init?: ResponseInit) => Response.json(data, init),
   };
 });

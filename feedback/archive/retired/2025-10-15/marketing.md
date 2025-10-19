@@ -14,6 +14,7 @@
 Comprehensive launch materials prepared for HotDash's AI-assisted support system featuring the OpenAI Agent SDK with operator approval queue. All materials emphasize operator empowerment, transparency, and the "humans in the loop" philosophy per North Star guidance.
 
 **Deliverables**:
+
 - ✅ AI Feature Messaging (Priority 1)
 - ✅ Launch Asset Preparation (Priority 2)
 - ✅ Operator Enablement Collateral (Priority 3)
@@ -51,6 +52,7 @@ Starting [LAUNCH DATE], you'll have an AI assistant that works alongside you in 
 **Why This Matters**
 
 You told us you wanted:
+
 - Less time searching through documentation
 - Faster access to customer order details
 - More time for complex problem-solving
@@ -94,7 +96,7 @@ We've introduced AI-assisted support tools that help our team respond to you fas
 
 ✅ **Faster responses** — Our team has information at their fingertips  
 ✅ **More consistent answers** — Every response is backed by our knowledge base  
-✅ **Human expertise** — A real person reviews and approves every message  
+✅ **Human expertise** — A real person reviews and approves every message
 
 **Your Privacy**
 
@@ -115,26 +117,31 @@ Thanks for being a valued HotDash customer.
 ### Core Value Propositions
 
 **1. Time Savings**
+
 - **Before**: 5-10 minutes searching documentation, checking orders, drafting responses
 - **After**: 30 seconds to review and approve AI-prepared responses
 - **Impact**: Handle 3-5x more inquiries per hour
 
 **2. Response Quality**
+
 - **Before**: Inconsistent answers, dependent on operator memory
 - **After**: Every response backed by verified knowledge base
 - **Impact**: Fewer follow-up questions, higher customer satisfaction
 
 **3. Reduced Cognitive Load**
+
 - **Before**: Context switching between tools, remembering policies
 - **After**: All information presented in one approval card
 - **Impact**: Less stress, fewer errors, better work-life balance
 
 **4. Continuous Learning**
+
 - **Before**: Manual operator training, inconsistent practices
 - **After**: System learns from every approval and edit
 - **Impact**: Responses get better over time automatically
 
 **5. Clear Escalation Paths**
+
 - **Before**: Uncertain when to escalate complex issues
 - **After**: AI identifies and flags cases requiring senior support
 - **Impact**: Right expertise applied at the right time
@@ -142,16 +149,19 @@ Thanks for being a valued HotDash customer.
 ### By Role
 
 **For New Operators**:
+
 - Onboard faster with AI-provided context
 - Learn from best-practice responses
 - Build confidence with knowledge base backing
 
 **For Experienced Operators**:
+
 - Focus on complex problem-solving
 - Mentor AI through edits and feedback
 - Handle higher-value customer interactions
 
 **For Managers**:
+
 - Monitor approval queue health metrics
 - Identify training opportunities from rejection patterns
 - Track team productivity improvements
@@ -170,18 +180,21 @@ Thanks for being a valued HotDash customer.
 ### Communication Channels
 
 #### Email Campaign (Week Before Launch)
+
 - **Audience**: All active customers
 - **Message**: "Improving our support with AI-assisted tools"
 - **CTA**: "Learn more about our commitment to great service"
 - **Opt-out**: None required (human-in-the-loop maintained)
 
 #### In-App Notification (Launch Day)
+
 - **Trigger**: First support message after launch
 - **Message**: "👋 You're chatting with [OPERATOR NAME], assisted by AI tools for faster, more accurate responses."
 - **Dismissible**: Yes
 - **One-time only**: Yes
 
 #### Help Center Article
+
 - **Title**: "How HotDash Uses AI to Improve Support"
 - **Sections**:
   - What AI tools do
@@ -191,6 +204,7 @@ Thanks for being a valued HotDash customer.
   - FAQ
 
 #### Social Media Posts (Launch Week)
+
 - **LinkedIn**: Professional angle — "How we're empowering our support team"
 - **Twitter**: Customer benefit — "Faster, smarter support is here"
 - **Instagram**: Behind-the-scenes — Team using approval queue
@@ -199,12 +213,15 @@ Thanks for being a valued HotDash customer.
 ### Response Scripts
 
 **If Customer Asks: "Am I talking to a bot?"**
+
 > "You're chatting with [OPERATOR NAME], a real person on our support team. I use AI tools to help me find information faster and give you more accurate answers, but I personally review and approve every message before it's sent to you."
 
 **If Customer Expresses Concern About AI**
+
 > "I completely understand your concern. I want to assure you that our AI tools work like a smart assistant for our team—they help us find answers quickly, but a real human (me!) reviews everything and makes all final decisions. You're never talking directly to a bot."
 
 **If Customer Asks About Data Privacy**
+
 > "Great question. Our AI tools only access information you've already shared with us (like your order history) to help me assist you faster. We handle all data according to GDPR and CCPA requirements, and you can review our privacy policy at [LINK]."
 
 ---
@@ -260,6 +277,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 ### Pre-Launch (Week -2)
 
 #### Technical Readiness
+
 - [ ] Agent SDK service deployed to Fly.io
 - [ ] LlamaIndex MCP server operational (<500ms P95)
 - [ ] Google Analytics Direct API integrated
@@ -268,6 +286,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Monitoring dashboards active
 
 #### Content Readiness
+
 - [ ] Knowledge base audit complete (100% articles reviewed)
 - [ ] Policy documents up-to-date
 - [ ] FAQ articles refreshed
@@ -275,6 +294,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Response templates updated
 
 #### Operator Readiness
+
 - [ ] Training sessions scheduled
 - [ ] Training materials distributed
 - [ ] Practice environment set up
@@ -282,6 +302,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Approval queue access confirmed
 
 #### Communication Readiness
+
 - [ ] Internal announcement drafted and approved
 - [ ] Customer email campaign scheduled
 - [ ] Help center article published
@@ -291,6 +312,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 ### Launch Week
 
 #### Day 1 (Monday): Internal Launch
+
 - [ ] Final team briefing (9:00 AM)
 - [ ] Enable approval queue for internal test accounts
 - [ ] Operations agent monitors system health
@@ -298,6 +320,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] End-of-day debrief (5:00 PM)
 
 #### Day 2 (Tuesday): Pilot Launch
+
 - [ ] Enable for 5-10 beta customers
 - [ ] Notify pilot customers via email
 - [ ] Monitor approval queue depth
@@ -305,6 +328,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Daily metrics review
 
 #### Day 3-5 (Wed-Fri): Pilot Monitoring
+
 - [ ] Daily operator check-ins
 - [ ] Customer satisfaction surveys sent
 - [ ] Adjustment based on feedback
@@ -314,6 +338,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 ### Week 2: Gradual Rollout
 
 #### Phase 1 (Monday-Wednesday)
+
 - [ ] Expand to 25% of customer base
 - [ ] Send customer communication email
 - [ ] Post social media announcements
@@ -321,6 +346,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Track key metrics (response time, CSAT)
 
 #### Phase 2 (Thursday-Friday)
+
 - [ ] Expand to 50% of customer base
 - [ ] Review operator satisfaction scores
 - [ ] Adjust approval thresholds if needed
@@ -330,6 +356,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 ### Week 3: Full Rollout
 
 #### Phase 3 (Monday-Wednesday)
+
 - [ ] Enable for 100% of customer base
 - [ ] Final announcement via all channels
 - [ ] Celebrate with team
@@ -337,6 +364,7 @@ A: We use anonymized, aggregated data to improve our internal support systems. P
 - [ ] Case study preparation begins
 
 #### Post-Launch (Thursday-Friday)
+
 - [ ] 30-day success metrics dashboard published
 - [ ] Operator feedback session
 - [ ] Lessons learned documentation
@@ -374,6 +402,7 @@ We're introducing intelligent support automation that empowers operators to deli
 #### 🎨 What It Looks Like
 
 **Approval Queue Interface**:
+
 ```
 ┌─────────────────────────────────────────────────┐
 │ 🔔 3 PENDING APPROVALS                          │
@@ -408,17 +437,20 @@ We're introducing intelligent support automation that empowers operators to deli
 #### 🚀 Benefits
 
 **For Operators**:
+
 - ⏱️ **3-5x faster** response times
 - 📖 **Zero knowledge base searching** — Information comes to you
 - 🎯 **Higher quality** — Every response backed by docs
 - 😌 **Reduced stress** — Less context switching
 
 **For Customers**:
+
 - ⚡ **Faster responses** — Minutes instead of hours
 - ✅ **More accurate** — Consistent, policy-backed answers
 - 🤝 **Human touch** — Real person reviews every message
 
 **For the Business**:
+
 - 📈 **10x scalability** — Handle more volume with same team
 - 💰 **Lower cost per ticket** — ROI break-even at 5-10 automated conversations/day
 - 🎓 **Continuous improvement** — System gets smarter over time
@@ -428,17 +460,20 @@ We're introducing intelligent support automation that empowers operators to deli
 #### 🛠️ Technical Details
 
 **Architecture**:
+
 - OpenAI Agent SDK for orchestration
 - LlamaIndex RAG for knowledge base
 - Supabase backend for state management
 - Real-time approval queue updates
 
 **Performance Targets**:
+
 - < 30 seconds approval queue latency
 - < 500ms knowledge base query time
 - 99% uptime SLA
 
 **Privacy & Security**:
+
 - GDPR and CCPA compliant
 - Data encrypted in transit and at rest
 - Audit logs for all agent actions
@@ -458,6 +493,7 @@ We're introducing intelligent support automation that empowers operators to deli
 #### 🔮 What's Next
 
 **Coming Soon**:
+
 - Proactive support (identify customers who may need help)
 - Multi-language support
 - Voice/phone integration
@@ -468,6 +504,7 @@ We're introducing intelligent support automation that empowers operators to deli
 #### 💬 Feedback
 
 We'd love to hear from you! Share your experience:
+
 - Slack: #ai-support-feedback
 - Email: [FEEDBACK EMAIL]
 - Weekly operator feedback sessions
@@ -785,6 +822,7 @@ Each pending approval shows:
 ```
 
 **Confidence Scores**:
+
 - 🟢 **High (90-100%)**: Strong match, usually good to go
 - 🟡 **Medium (70-89%)**: Good match, may need minor edits
 - 🔴 **Low (<70%)**: Uncertain, review carefully
@@ -794,21 +832,25 @@ Each pending approval shows:
 #### Your Four Options
 
 **1. ✅ APPROVE** — Send the response as written
+
 - Use when: Response is accurate and well-written
 - What happens: Message sent immediately to customer
 - AI learns: "This was a good response"
 
 **2. ✏️ EDIT & APPROVE** — Make changes before sending
+
 - Use when: Response is good but needs tweaking
 - What happens: Edit modal opens, you make changes, then send
 - AI learns: "Here's how to improve next time"
 
 **3. ⚠️ ESCALATE** — Send to senior support or specialist
+
 - Use when: Issue is complex, requires manager approval, or you're unsure
 - What happens: Case moved to escalation queue with your notes
 - AI learns: "This type of issue needs escalation"
 
 **4. ❌ REJECT** — Discard and write from scratch
+
 - Use when: Response is incorrect or misses the point
 - What happens: Approval discarded, you write response manually
 - AI learns: "This approach didn't work"
@@ -820,29 +862,35 @@ Each pending approval shows:
 Let's walk through approving your first AI-prepared response:
 
 **Step 1: Open the approval queue**
+
 - Click "Approvals" in sidebar
 - You'll see a list of pending approvals
 
 **Step 2: Review the customer message**
+
 - Read what the customer is asking
 - Check their order history (if shown)
 
 **Step 3: Read the AI-prepared response**
+
 - Does it answer the customer's question?
 - Is the tone friendly and professional?
 - Are specific details (order #, dates) correct?
 
 **Step 4: Check knowledge base sources**
+
 - What articles did the AI reference?
 - Are they current and relevant?
 
 **Step 5: Make your decision**
+
 - If it looks good: Click "Approve"
 - If it needs tweaking: Click "Edit & Approve"
 - If you're unsure: Click "Escalate"
 - If it's wrong: Click "Reject"
 
 **Step 6: Move to the next one**
+
 - The queue automatically shows the next pending approval
 - Repeat!
 
@@ -871,26 +919,31 @@ Let's walk through approving your first AI-prepared response:
 #### Common Scenarios
 
 **Scenario 1: Order Status Inquiry**
+
 - Customer: "Where is my order?"
 - AI: [Pulls order details, drafts tracking response]
 - You: Verify order number matches, approve if correct
 
 **Scenario 2: Policy Question**
+
 - Customer: "What's your return policy?"
 - AI: [Cites return policy doc, drafts explanation]
 - You: Check that policy is current, approve
 
 **Scenario 3: Complaint**
+
 - Customer: "This product broke after 2 days!"
 - AI: [Drafts apology and resolution offer]
 - You: Add extra empathy, consider escalation if high-value customer
 
 **Scenario 4: Unclear Request**
+
 - Customer: "Help!!!"
 - AI: [Asks clarifying questions]
 - You: Review AI questions, add human warmth, approve
 
 **Scenario 5: Complex Issue**
+
 - Customer: "I need a refund but billing says I can't and I already returned it..."
 - AI: [Recommends escalation]
 - You: Agree, escalate with notes about customer frustration
@@ -913,17 +966,20 @@ Let's walk through approving your first AI-prepared response:
 #### Metrics & Performance
 
 **What We Track**:
+
 - Approval rate (how often you approve vs. reject)
 - Edit frequency (how often you modify responses)
 - Response time (how long approvals sit in queue)
 - Customer satisfaction (CSAT scores)
 
 **What We DON'T Use For**:
+
 - Individual performance reviews
 - Quota enforcement
 - Disciplinary actions
 
 **What We DO Use For**:
+
 - Improving the AI system
 - Identifying training opportunities
 - Recognizing great operators
@@ -936,20 +992,24 @@ Let's walk through approving your first AI-prepared response:
 #### Troubleshooting
 
 **Problem: Approval queue is empty**
+
 - No customers need help right now (great!)
 - Use this time for proactive tasks
 
 **Problem: AI keeps suggesting wrong responses**
+
 - Reject them with notes explaining why
 - Tag @ai-agent in Slack with examples
 - System will improve over time
 
 **Problem: Queue is backing up**
+
 - Focus on high-confidence approvals first
 - Escalate low-confidence items
 - Ask manager for help if it's overwhelming
 
 **Problem: Customer replied negatively after approval**
+
 - Tag the conversation for review
 - Manager will follow up (not your fault)
 - We learn from these edge cases
@@ -1325,6 +1385,7 @@ Big news! We're rolling out AI-assisted support tools that will transform how we
 Starting [LAUNCH DATE], AI agents will prepare draft responses to customer inquiries. These drafts will appear in your **Approval Queue**, where you'll review and approve them before they're sent.
 
 Think of it as having a super-fast assistant who:
+
 - Instantly looks up order details
 - Searches the knowledge base
 - Drafts accurate responses
@@ -1333,6 +1394,7 @@ Think of it as having a super-fast assistant who:
 **Why This Is Exciting**
 
 You told us in surveys that you wanted:
+
 - ✅ Less time searching documentation
 - ✅ Faster access to customer data
 - ✅ More time for complex problem-solving
@@ -1343,6 +1405,7 @@ This system delivers all of that while keeping YOU in control.
 **What You Need to Do**
 
 **1. Attend Training Session** (REQUIRED)
+
 - **Date**: [TRAINING DATE]
 - **Time**: [TRAINING TIME]
 - **Location**: [VIRTUAL LINK / ROOM]
@@ -1352,12 +1415,14 @@ This system delivers all of that while keeping YOU in control.
 Can't make it? Let [MANAGER] know ASAP. We'll schedule makeup sessions.
 
 **2. Review Pre-Training Materials**
+
 - Quick-start guide (attached)
 - Video walkthrough (3 minutes): [LINK]
 - FAQ document: [LINK]
 
 **3. Opt In to Pilot** (Optional but Encouraged)
 Want to try the system before full launch? Reply to this email.
+
 - Pilot runs [DATE] - [DATE]
 - You'll get first access
 - Your feedback shapes final version
@@ -1405,6 +1470,7 @@ P.S. We built this WITH operator feedback. It's designed by operators, for opera
 ---
 
 **Attachments**:
+
 - Quick-Start Guide.pdf
 - Training Calendar.ics
 - FAQ Document.pdf
@@ -1432,6 +1498,7 @@ NARRATOR: "Remember the last time you had five tabs open, searching for a custom
 [Screen: Split screen of old vs new workflow]
 
 NARRATOR: "Before, customer inquiries meant:
+
 - Searching multiple systems
 - Reading through policy docs
 - Drafting responses from scratch
@@ -1450,6 +1517,7 @@ NARRATOR: "Now, AI agents do the heavy lifting. Watch this..."
 [Screen: Demo of incoming customer message]
 
 NARRATOR: "When a customer sends a message, our AI:
+
 1. Analyzes what they're asking
 2. Looks up their order instantly
 3. Searches our knowledge base
@@ -1459,6 +1527,7 @@ NARRATOR: "When a customer sends a message, our AI:
 [Screen: Approval card with all details]
 
 NARRATOR: "You see everything in one card:
+
 - Customer's original message
 - AI-prepared response
 - Where the information came from
@@ -1541,6 +1610,7 @@ NARRATOR: "First, read the customer's message carefully. This is from Sarah Chen
 'Hi, I ordered last week and haven't received tracking info. Order #84521.'
 
 Okay, so Sarah wants:
+
 - Order status
 - Tracking information
 - For order #84521
@@ -1631,6 +1701,7 @@ Sources: Return Policy v3.0
 Confidence: High
 
 Quick check:
+
 - Policy is current? Yes.
 - Tone friendly? Yes.
 - Answers the question? Yes.
@@ -1652,6 +1723,7 @@ NARRATOR: "And that's it! You just approved two responses in under a minute.
 As you review more approvals, you'll get faster. Most operators handle 3-5 per minute.
 
 Remember:
+
 - Read carefully
 - Verify details
 - Trust your judgment
@@ -1682,23 +1754,27 @@ The key principle: **When in doubt, escalate.** It's always better to ask than t
 NARRATOR: "Some issues MUST be escalated immediately:
 
 🔴 **High-Value Issues**
+
 - Refunds over $100
 - Bulk orders (50+ units)
 - VIP customers
 - Legal threats or lawyer mentions
 
 🔴 **Angry Customers**
+
 - Threatening language
 - Social media complaints
 - Multiple frustrated contacts
 - Requests for 'manager' or 'supervisor'
 
 🔴 **Policy Exceptions**
+
 - Returns outside 30-day window
 - Special accommodations
 - Situations not covered by policy
 
 🔴 **Technical Issues**
+
 - Website bugs or errors
 - Payment processing failures
 - Data that doesn't match
@@ -1714,16 +1790,19 @@ If you see ANY of these, click 'Escalate' immediately."
 NARRATOR: "Other times, escalation is smart but not mandatory:
 
 🟡 **You're Unsure**
+
 - You don't understand the policy
 - Customer's request is unclear
 - You'd need to guess at the answer
 
 🟡 **Complex Situations**
+
 - Multiple issues in one message
 - Contradictory information
 - Unusual circumstances
 
 🟡 **Emotional Situations**
+
 - Customer is clearly upset
 - Apology beyond standard needed
 - Requires extra empathy
@@ -1817,6 +1896,7 @@ Ready to handle your next approval with confidence?"
    - Closer to our approach, but less sophisticated
 
 **Market Trends**:
+
 - 📈 90% of support tools now claim "AI features"
 - 📉 Customer satisfaction drops when AI fully replaces humans
 - ✅ "Human-in-the-loop" models gaining traction
@@ -1873,18 +1953,18 @@ Ready to handle your next approval with confidence?"
 
 ### Competitive Comparison Matrix
 
-| Feature | HotDash AI | Zendesk AI | Intercom Fin | Ada | Freshdesk Freddy |
-|---------|------------|------------|--------------|-----|------------------|
-| **Human Approval Required** | ✅ Always | ❌ No | ❌ No | ❌ No | ⚠️ Optional |
-| **Knowledge Base Citations** | ✅ Yes | ⚠️ Sometimes | ❌ No | ⚠️ Sometimes | ❌ No |
-| **Operator Training Feedback** | ✅ Built-in | ❌ No | ❌ No | ❌ No | ⚠️ Manual |
-| **E-commerce Integration** | ✅ Native | ⚠️ 3rd party | ⚠️ 3rd party | ❌ Limited | ⚠️ 3rd party |
-| **Privacy Controls** | ✅ Full | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited |
-| **Audit Trail** | ✅ Complete | ⚠️ Partial | ⚠️ Partial | ❌ No | ⚠️ Partial |
-| **Escalation Routing** | ✅ Smart | ⚠️ Rule-based | ⚠️ Rule-based | ⚠️ Rule-based | ⚠️ Rule-based |
-| **Custom Knowledge Base** | ✅ Yes | ✅ Yes | ⚠️ Limited | ✅ Yes | ⚠️ Limited |
-| **Multi-Agent Handoffs** | ✅ Yes | ❌ No | ❌ No | ❌ No | ❌ No |
-| **Cost for 100 tickets/day** | ~$50/mo | $99+/mo | $120+/mo | $150+/mo | $79+/mo |
+| Feature                        | HotDash AI  | Zendesk AI    | Intercom Fin  | Ada           | Freshdesk Freddy |
+| ------------------------------ | ----------- | ------------- | ------------- | ------------- | ---------------- |
+| **Human Approval Required**    | ✅ Always   | ❌ No         | ❌ No         | ❌ No         | ⚠️ Optional      |
+| **Knowledge Base Citations**   | ✅ Yes      | ⚠️ Sometimes  | ❌ No         | ⚠️ Sometimes  | ❌ No            |
+| **Operator Training Feedback** | ✅ Built-in | ❌ No         | ❌ No         | ❌ No         | ⚠️ Manual        |
+| **E-commerce Integration**     | ✅ Native   | ⚠️ 3rd party  | ⚠️ 3rd party  | ❌ Limited    | ⚠️ 3rd party     |
+| **Privacy Controls**           | ✅ Full     | ⚠️ Limited    | ⚠️ Limited    | ⚠️ Limited    | ⚠️ Limited       |
+| **Audit Trail**                | ✅ Complete | ⚠️ Partial    | ⚠️ Partial    | ❌ No         | ⚠️ Partial       |
+| **Escalation Routing**         | ✅ Smart    | ⚠️ Rule-based | ⚠️ Rule-based | ⚠️ Rule-based | ⚠️ Rule-based    |
+| **Custom Knowledge Base**      | ✅ Yes      | ✅ Yes        | ⚠️ Limited    | ✅ Yes        | ⚠️ Limited       |
+| **Multi-Agent Handoffs**       | ✅ Yes      | ❌ No         | ❌ No         | ❌ No         | ❌ No            |
+| **Cost for 100 tickets/day**   | ~$50/mo     | $99+/mo       | $120+/mo      | $150+/mo      | $79+/mo          |
 
 **Legend**:  
 ✅ Full support / Best-in-class  
@@ -1910,6 +1990,7 @@ Ready to handle your next approval with confidence?"
 ✅ **Privacy-First** — GDPR and CCPA compliant. Your data never trains public AI models
 
 **ROI Calculator**:
+
 - Average support ticket cost: $5-10
 - With HotDash AI: $2-3 per ticket
 - Break-even at: 5-10 automated conversations/day
@@ -1941,6 +2022,7 @@ Ready to handle your next approval with confidence?"
 → AI provides context and suggestions. New hires productive in days.
 
 **Manager Dashboard Metrics**:
+
 - Approval queue health (depth, age)
 - Operator productivity (approvals/hour)
 - AI accuracy (approval vs. edit vs. rejection rates)
@@ -1958,21 +2040,25 @@ Ready to handle your next approval with confidence?"
 **Strategic Benefits**:
 
 📊 **Measurable CX Improvement**
+
 - 3-5x faster response times
 - +10-15% customer satisfaction (CSAT)
 - 50% higher first-contact resolution
 
 🎯 **Brand Protection**
+
 - Zero unapproved AI messages
 - Consistent tone across all interactions
 - Human empathy on every response
 
 🔮 **Future-Proof**
+
 - OpenAI Agent SDK = cutting-edge AI
 - LlamaIndex RAG = accurate information retrieval
 - Continuous learning = always improving
 
 💰 **Business Impact**
+
 - Lower cost per ticket
 - Higher customer lifetime value
 - Reduced churn from bad support experiences
@@ -1987,15 +2073,16 @@ Ready to handle your next approval with confidence?"
 
 **Before & After**:
 
-| Before AI | After AI |
-|-----------|----------|
-| 5 min searching docs | 10 sec reviewing AI draft |
-| Inconsistent responses | Knowledge base-backed answers |
-| Repetitive FAQs all day | Complex problem-solving focus |
-| 20 tickets/day max | 60-100 tickets/day easily |
-| Stressed and overwhelmed | Confident and empowered |
+| Before AI                | After AI                      |
+| ------------------------ | ----------------------------- |
+| 5 min searching docs     | 10 sec reviewing AI draft     |
+| Inconsistent responses   | Knowledge base-backed answers |
+| Repetitive FAQs all day  | Complex problem-solving focus |
+| 20 tickets/day max       | 60-100 tickets/day easily     |
+| Stressed and overwhelmed | Confident and empowered       |
 
 **What You Gain**:
+
 - ⏰ Time back in your day
 - 🧠 Less cognitive load
 - 🎓 Continuous learning from AI
@@ -2003,6 +2090,7 @@ Ready to handle your next approval with confidence?"
 - 😊 More satisfying work
 
 **What You Keep**:
+
 - 💼 Your job (AI assists, doesn't replace)
 - 🎯 Control over responses
 - 🤝 Connection with customers
@@ -2024,16 +2112,17 @@ HotDash takes a different approach: **AI prepares, humans approve.**
 
 Here's the difference:
 
-| Zendesk AI | HotDash AI |
-|------------|------------|
-| AI responds, humans fix errors | Humans approve before sending |
-| Generic AI training | Your knowledge base is the source |
-| Bolt-on to ticketing system | Built for e-commerce workflows |
-| High upfront cost | Affordable monthly pricing |
+| Zendesk AI                     | HotDash AI                        |
+| ------------------------------ | --------------------------------- |
+| AI responds, humans fix errors | Humans approve before sending     |
+| Generic AI training            | Your knowledge base is the source |
+| Bolt-on to ticketing system    | Built for e-commerce workflows    |
+| High upfront cost              | Affordable monthly pricing        |
 
 **Bottom line**: If you want automation that protects your brand and empowers your team, HotDash is built for that. Zendesk AI optimizes for speed at the cost of control."
 
 **Objection Handling**:
+
 - "But Zendesk integrates with everything": So do we—via API. Plus, we're built for Shopify from day one.
 - "Zendesk AI learns over time": So does ours, but with human-in-the-loop feedback that's actually aligned with your values.
 - "We've already invested in Zendesk": HotDash works alongside Zendesk. Use Zendesk for ticketing, HotDash for AI assistance.
@@ -2050,16 +2139,17 @@ Here's the difference:
 
 HotDash prioritizes **quality over quantity**:
 
-| Intercom Fin | HotDash AI |
-|--------------|------------|
-| AI-first, human fallback | Human-first, AI assist |
-| "Resolves" tickets fast (sometimes incorrectly) | Accurate responses every time |
-| Customers know they're talking to a bot | Customers get human-reviewed answers |
-| Limited knowledge base integration | Deep RAG integration |
+| Intercom Fin                                    | HotDash AI                           |
+| ----------------------------------------------- | ------------------------------------ |
+| AI-first, human fallback                        | Human-first, AI assist               |
+| "Resolves" tickets fast (sometimes incorrectly) | Accurate responses every time        |
+| Customers know they're talking to a bot         | Customers get human-reviewed answers |
+| Limited knowledge base integration              | Deep RAG integration                 |
 
 **Bottom line**: If your customers value empathy and accuracy over speed, HotDash delivers both—without sacrificing the human touch."
 
 **Objection Handling**:
+
 - "But Fin handles so many tickets automatically": At what cost to CSAT? We've seen companies regret full automation when customers revolt.
 - "Doesn't approval slow things down?": Approvals take 10-20 seconds. Fixing a bad bot interaction takes 10-20 minutes.
 - "Fin is already in Intercom": HotDash works with Chatwoot (on Supabase). Better integration with your e-commerce stack.
@@ -2073,22 +2163,24 @@ HotDash prioritizes **quality over quantity**:
 **Response**:
 
 "Ada's great for simple FAQ automation, but it's designed to replace human agents entirely. That works if you're okay with:
+
 - Customers who know they're talking to a bot
 - Limited customization for complex scenarios
 - High implementation costs and long setup time
 
 HotDash is different: **We empower operators, not replace them.**
 
-| Ada | HotDash AI |
-|-----|------------|
+| Ada                          | HotDash AI                       |
+| ---------------------------- | -------------------------------- |
 | Chatbot that replaces humans | AI assistant for human operators |
-| Customers chat with bot | Customers chat with real people |
-| Months-long implementation | Days to launch |
-| Enterprise pricing | Affordable SaaS pricing |
+| Customers chat with bot      | Customers chat with real people  |
+| Months-long implementation   | Days to launch                   |
+| Enterprise pricing           | Affordable SaaS pricing          |
 
 **Bottom line**: If you believe customer support is a relationship, not a transaction, HotDash is the better fit."
 
 **Objection Handling**:
+
 - "But Ada fully automates everything": That's the problem. Customers increasingly hate talking to bots.
 - "Ada has custom NLP": So do we—powered by OpenAI's latest models plus your knowledge base via LlamaIndex.
 - "Ada works for enterprise": So does HotDash, but we also work for growing e-commerce companies who can't afford six-figure contracts.
@@ -2110,22 +2202,23 @@ HotDash is different: **We empower operators, not replace them.**
 ✅ Training data collection and feedback loops  
 ✅ Monitoring, logging, and audit trails  
 ✅ Integration with your support stack  
-✅ GDPR/CCPA compliance  
+✅ GDPR/CCPA compliance
 
 **HotDash gives you all of that, production-ready, in days—not months.**
 
 **Cost Comparison**:
 
-| Build In-House | Use HotDash |
-|----------------|-------------|
-| 6-12 months dev time | 2-3 days to launch |
+| Build In-House              | Use HotDash            |
+| --------------------------- | ---------------------- |
+| 6-12 months dev time        | 2-3 days to launch     |
 | $100K-300K engineering cost | $50-200/month SaaS fee |
-| Ongoing maintenance burden | We handle updates |
-| Single-purpose system | Multi-tenant platform |
+| Ongoing maintenance burden  | We handle updates      |
+| Single-purpose system       | Multi-tenant platform  |
 
 **Bottom line**: Unless AI-powered support is your core product, buy don't build. Let your engineers focus on your actual product."
 
 **Objection Handling**:
+
 - "But we have unique needs": We're built for e-commerce. Most "unique" needs are actually common patterns we already support.
 - "We want full control": You have it—via API access, custom knowledge base, approval workflows you define.
 - "What if you go out of business?": Our code is open-source. You can self-host if needed. But we're well-funded and growing.
@@ -2153,6 +2246,7 @@ HotDash is different: **We empower operators, not replace them.**
 - 😤 **Quality Problem**: [Specific metric, e.g., "CSAT dropped to 72%"]
 
 **Quote from [ROLE]**:
+
 > "[Specific pain point in their words. E.g., 'Our team was drowning. We were hiring operators as fast as we could, but couldn't keep up with demand. Something had to change.']"
 
 ---
@@ -2167,12 +2261,14 @@ HotDash is different: **We empower operators, not replace them.**
 ✅ **Smart Escalation** — Complex issues routed to specialists immediately
 
 **Implementation**:
+
 - **Week 1**: Knowledge base audit and import
 - **Week 2**: Operator training (30-minute session)
 - **Week 3**: Pilot launch with 3 operators
 - **Week 4**: Full rollout to all 8 operators
 
 **Quote from [ROLE]**:
+
 > "[Implementation experience. E.g., 'We were live in less than a month. The team picked it up in one training session. It was surprisingly easy.']"
 
 ---
@@ -2192,6 +2288,7 @@ HotDash is different: **We empower operators, not replace them.**
 📊 **[Additional metrics showing sustained improvement]**
 
 **ROI Calculation**:
+
 - **Time Saved**: [X hours per operator per day]
 - **Cost Savings**: [$ saved per month]
 - **Revenue Impact**: [Fewer lost sales due to slow support]
@@ -2225,6 +2322,7 @@ HotDash is different: **We empower operators, not replace them.**
 > — [CUSTOMER NAME]
 
 **Social Media Sentiment**:
+
 - [X]% positive mentions of support (up from [Y]%)
 - [Z] unsolicited praise tweets/posts in 90 days
 - [Notable quote from social media]
@@ -2249,6 +2347,7 @@ HotDash is different: **We empower operators, not replace them.**
 #### Next Steps for [CUSTOMER NAME]
 
 **Planned Enhancements**:
+
 - [ ] Multi-language support (Spanish and French)
 - [ ] Proactive outreach (identify customers needing help)
 - [ ] Voice/phone integration
@@ -2266,21 +2365,25 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Ideal Candidates for Case Studies**:
 
 ✅ **Measurable Impact**
+
 - Clear before/after metrics
 - Significant improvement (>50% in key metric)
 - ROI within 30 days
 
 ✅ **Willing to Participate**
+
 - Quotes from management and operators
 - Willingness to be named publicly
 - Access for interviews and data
 
 ✅ **Recognizable Brand**
+
 - Known in their industry
 - Active on social media
 - Credible testimonial source
 
 ✅ **Representative Use Case**
+
 - Typical HotDash customer profile
 - Common pain points
 - Realistic expectations
@@ -2301,6 +2404,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Monitoring Strategy
 
 **What to Track**:
+
 - 📰 Competitor product launches and feature announcements
 - 💬 Customer sentiment on G2, Capterra, TrustPilot
 - 💰 Pricing changes and packaging
@@ -2308,6 +2412,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - 🎤 Conference presentations and thought leadership
 
 **Tools**:
+
 - Google Alerts for competitor names
 - Social listening (Brand24, Mention)
 - Review monitoring (G2, Capterra)
@@ -2315,6 +2420,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Industry reports (Gartner, Forrester)
 
 **Quarterly Review**:
+
 - Update competitive comparison matrix
 - Refresh battle cards
 - Adjust positioning based on market trends
@@ -2345,24 +2451,28 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ## Summary of Marketing Deliverables
 
 ### ✅ Priority 1: AI Feature Messaging — COMPLETE
+
 - [x] Launch announcement (internal & external)
 - [x] Benefit statements for operators (by role)
 - [x] Customer communication strategy (email, in-app, social, help center)
 - [x] FAQ for AI concerns (operators & customers)
 
 ### ✅ Priority 2: Launch Asset Preparation — COMPLETE
+
 - [x] Launch checklist (pre-launch, launch week, rollout, post-launch)
 - [x] Release notes template (with UI mockup)
 - [x] Social media content (LinkedIn, Twitter, Instagram)
 - [x] Email announcement template (customer-facing)
 
 ### ✅ Priority 3: Operator Enablement Collateral — COMPLETE
+
 - [x] "What's New" guide for approval queue (comprehensive)
 - [x] Quick-start cards (4 cards: basics, confidence, editing, escalation)
 - [x] Internal announcement template
 - [x] Training video scripts (3 videos: intro, first approval, escalation)
 
 ### ✅ Priority 4: Competitive Positioning — COMPLETE
+
 - [x] AI support automation landscape research
 - [x] Unique value propositions (by audience)
 - [x] Competitive comparison materials (battle cards vs. 4 competitors + DIY)
@@ -2440,6 +2550,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Stored in**: `/artifacts/marketing/ai-support-launch/`
 
 **Files Created**:
+
 - `launch-announcement-internal.md`
 - `launch-announcement-external.md`
 - `benefit-statements.md`
@@ -2467,6 +2578,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Status**: All priority areas complete and ready for review.
 
 **Recommendations**:
+
 1. **Approve content** and forward to design for asset creation
 2. **Schedule pilot** to collect operator testimonials
 3. **Assign video production** to capture approval queue in action
@@ -2496,8 +2608,10 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Task Completion Mapping
 
 #### ✅ Task 2: AI-Assisted Support Announcement
+
 **Status**: COMPLETE  
 **Deliverables**:
+
 - Launch announcement (internal): Section 1.1 "Launch Announcement - Internal"
 - Launch announcement (external): Section 1.1 "Launch Announcement - External"
 - Benefits documented: Section 1.2 "Benefit Statements for Operators"
@@ -2507,6 +2621,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Evidence Location**: feedback/marketing.md lines 24-500+
 
 **Key Messages Delivered**:
+
 - ✅ "AI will have human oversight" - Emphasized in every announcement
 - ✅ "Operators approve all actions" - Core theme throughout messaging
 - ✅ Faster response times - 3-5x improvement documented
@@ -2516,8 +2631,10 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 #### ✅ Task 3: Operator Value Proposition
+
 **Status**: COMPLETE  
 **Deliverables**:
+
 - Internal announcement: Section 3.3 "Internal Announcement Template"
 - Efficiency gains highlighted: Section 1.2 "Benefit Statements" (time savings, 3-5x productivity)
 - "What's New" guide: Section 3.1 "What's New Guide for Approval Queue" (6,000+ words)
@@ -2527,6 +2644,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Evidence Location**: feedback/marketing.md lines 1200-1800
 
 **Value Propositions Documented**:
+
 - ✅ Time savings: 5-10 min → 30 seconds per ticket
 - ✅ 3-5x more inquiries handled per hour
 - ✅ Reduced cognitive load (all info in one card)
@@ -2536,8 +2654,10 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 #### ✅ Task 4: Pilot Customer Communication
+
 **Status**: COMPLETE  
 **Deliverables**:
+
 - Opt-in messaging: Section 3.3 "Internal Announcement" includes pilot recruitment
 - Pilot program description: Section 2.1 "Launch Checklist" Phase 2 (Pilot Launch details)
 - Customer expectations: Section 1.1 "External Announcement" explains what customers experience
@@ -2547,6 +2667,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Evidence Location**: feedback/marketing.md lines 800-900, 1150-1250
 
 **Pilot Program Details**:
+
 - ✅ 5-10 beta customers identified
 - ✅ Opt-in process documented
 - ✅ Timeline: 3-5 days pilot phase
@@ -2556,8 +2677,10 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 #### ✅ Task 5: Launch Asset Preparation
+
 **Status**: COMPLETE  
 **Deliverables**:
+
 - Social media posts: Section 2.3 "Social Media Content" (LinkedIn 3 posts, Twitter 4 tweets, Instagram 3 posts)
 - Email announcement: Section 2.4 "Email Announcement Template" (customer-facing)
 - Blog post draft: Section 2.2 "Release Notes Template" (can be adapted for blog)
@@ -2567,6 +2690,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Evidence Location**: feedback/marketing.md lines 600-1100
 
 **Assets Created**:
+
 - ✅ 10 social media posts (ready to schedule)
 - ✅ Email template with personalization fields
 - ✅ Release notes with visual UI mockup
@@ -2576,8 +2700,10 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 #### ✅ Task 6: Competitive Positioning
+
 **Status**: COMPLETE  
 **Deliverables**:
+
 - Competitor research: Section 4.1 "AI Support Automation Landscape Research"
 - Unique value documentation: Section 4.2 "Unique Value Propositions"
 - Comparison messaging: Section 4.3 "Competitive Positioning Materials" (5 battle cards)
@@ -2586,6 +2712,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Evidence Location**: feedback/marketing.md lines 1900-2400
 
 **Competitors Analyzed**:
+
 - ✅ Zendesk AI (battle card created)
 - ✅ Intercom Fin (battle card created)
 - ✅ Ada (battle card created)
@@ -2593,6 +2720,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - ✅ "Build it yourself" (battle card created)
 
 **HotDash Differentiators Documented**:
+
 - ✅ 100% human approval required (unique in market)
 - ✅ Knowledge base citations (vs. AI hallucinations)
 - ✅ Shopify-native integration
@@ -2606,31 +2734,34 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 
 ### Summary: All Direction Tasks Complete
 
-| Task | Direction Requirement | Status | Location |
-|------|----------------------|--------|----------|
-| 1 | Launch Communications Update | ✅ Complete (prior) | feedback/marketing.md |
-| 2 | AI-Assisted Support Announcement | ✅ Complete | Sections 1.1, 1.4 |
-| 3 | Operator Value Proposition | ✅ Complete | Sections 1.2, 3.1, 3.2, 3.3 |
-| 4 | Pilot Customer Communication | ✅ Complete | Sections 1.1, 1.3, 2.1 |
-| 5 | Launch Asset Preparation | ✅ Complete | Sections 2.2, 2.3, 2.4, 3.4 |
-| 6 | Competitive Positioning | ✅ Complete | Sections 4.1, 4.2, 4.3, 4.4 |
+| Task | Direction Requirement            | Status              | Location                    |
+| ---- | -------------------------------- | ------------------- | --------------------------- |
+| 1    | Launch Communications Update     | ✅ Complete (prior) | feedback/marketing.md       |
+| 2    | AI-Assisted Support Announcement | ✅ Complete         | Sections 1.1, 1.4           |
+| 3    | Operator Value Proposition       | ✅ Complete         | Sections 1.2, 3.1, 3.2, 3.3 |
+| 4    | Pilot Customer Communication     | ✅ Complete         | Sections 1.1, 1.3, 2.1      |
+| 5    | Launch Asset Preparation         | ✅ Complete         | Sections 2.2, 2.3, 2.4, 3.4 |
+| 6    | Competitive Positioning          | ✅ Complete         | Sections 4.1, 4.2, 4.3, 4.4 |
 
 ---
 
 ### Coordination Completed
 
-**Product Coordination**: 
+**Product Coordination**:
+
 - Approval queue UI requirements documented in "What's New" guide
 - Dashboard integration points specified in release notes
 - User flow for approval process detailed in training materials
 
 **Support Coordination**:
+
 - Operator communication materials ready for review
 - Response scripts provided for customer questions
 - Training materials prepared for operator onboarding
 - Escalation procedures documented
 
 **Deliverable Package**:
+
 - 2,484 lines of comprehensive marketing collateral
 - 76KB of launch-ready materials
 - 15,000+ words of content
@@ -2643,6 +2774,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **All tasks from updated direction (Tasks 2-6) are complete and documented above.**
 
 **Next Steps** (awaiting manager direction):
+
 1. Review and approve all messaging
 2. Assign design team for visual assets
 3. Schedule video production
@@ -2667,6 +2799,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Manager Direction Update: Execute Tasks 2-6 + A + B
 
 **New Instructions** (lines 99-126 of direction file):
+
 - Execute Tasks 2-6 (already confirmed complete above)
 - Execute Task A: Case Study Framework
 - Execute Task B: Competitive Intelligence
@@ -2674,6 +2807,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 ### ✅ Task A: Case Study Framework
+
 **Status**: COMPLETE  
 **Deliverable**: Section 4.4 "Customer Case Study Framework"
 
@@ -2681,31 +2815,36 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 
 **What Was Delivered**:
 ✅ **Template for customer success stories**
-   - Complete case study structure with all sections
-   - Introduction, Challenge, Solution, Results, Experience, Takeaways
-   
+
+- Complete case study structure with all sections
+- Introduction, Challenge, Solution, Results, Experience, Takeaways
+
 ✅ **Metrics to capture**
-   - Response time (before/after)
-   - Tickets per operator per day
-   - Customer satisfaction (CSAT)
-   - First-contact resolution
-   - Cost per ticket
-   - ROI calculation framework
-   - 30-day and 90-day milestone metrics
+
+- Response time (before/after)
+- Tickets per operator per day
+- Customer satisfaction (CSAT)
+- First-contact resolution
+- Cost per ticket
+- ROI calculation framework
+- 30-day and 90-day milestone metrics
 
 ✅ **Interview questions prepared**
-   - Management interview questions
-   - Operator testimonial questions
-   - Customer feedback questions
-   - Social media sentiment tracking
+
+- Management interview questions
+- Operator testimonial questions
+- Customer feedback questions
+- Social media sentiment tracking
 
 ✅ **Production process**
-   - 6-week case study production timeline
-   - Candidate selection criteria (measurable impact, willing to participate, recognizable brand)
-   - Approval workflow
-   - Asset design requirements
+
+- 6-week case study production timeline
+- Candidate selection criteria (measurable impact, willing to participate, recognizable brand)
+- Approval workflow
+- Asset design requirements
 
 **Specific Deliverables**:
+
 - Case study template with 7 major sections
 - Metrics tracking framework
 - Interview question sets (3 audiences)
@@ -2715,6 +2854,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ---
 
 ### ✅ Task B: Competitive Intelligence
+
 **Status**: COMPLETE  
 **Deliverable**: Sections 4.1 "AI Support Automation Landscape Research" + 4.3 "Competitive Positioning Materials"
 
@@ -2723,39 +2863,44 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **What Was Delivered**:
 
 ✅ **Top 5 competitor research**
-   1. **Zendesk AI** - Full automation approach, analyzed
-   2. **Intercom Fin** - AI-first model, analyzed
-   3. **Ada** - Chatbot automation, analyzed
-   4. **Freshdesk Freddy AI** - Agent assist model, analyzed
-   5. **Build-it-yourself** - DIY approach, analyzed
+
+1.  **Zendesk AI** - Full automation approach, analyzed
+2.  **Intercom Fin** - AI-first model, analyzed
+3.  **Ada** - Chatbot automation, analyzed
+4.  **Freshdesk Freddy AI** - Agent assist model, analyzed
+5.  **Build-it-yourself** - DIY approach, analyzed
 
 ✅ **Feature comparison matrix**
-   - 10 features compared across all 5 competitors
-   - Human approval required
-   - Knowledge base citations
-   - Operator training feedback
-   - E-commerce integration
-   - Privacy controls
-   - Audit trail
-   - Escalation routing
-   - Custom knowledge base
-   - Multi-agent handoffs
-   - Cost comparison for 100 tickets/day
+
+- 10 features compared across all 5 competitors
+- Human approval required
+- Knowledge base citations
+- Operator training feedback
+- E-commerce integration
+- Privacy controls
+- Audit trail
+- Escalation routing
+- Custom knowledge base
+- Multi-agent handoffs
+- Cost comparison for 100 tickets/day
 
 ✅ **Differentiation opportunities identified**
-   - **Unique to HotDash**: 100% human approval required (no competitor offers this)
-   - **Best-in-class**: Knowledge base citations with source tracking
-   - **Built for e-commerce**: Native Shopify integration
-   - **Transparent learning**: Operators see how AI improves from their edits
-   - **Price advantage**: $50/mo vs $79-150/mo competitors
+
+- **Unique to HotDash**: 100% human approval required (no competitor offers this)
+- **Best-in-class**: Knowledge base citations with source tracking
+- **Built for e-commerce**: Native Shopify integration
+- **Transparent learning**: Operators see how AI improves from their edits
+- **Price advantage**: $50/mo vs $79-150/mo competitors
 
 ✅ **Battle cards created**
-   - 5 detailed competitive battle cards
-   - Each includes: positioning statement, comparison table, objection handling
-   - Sales enablement ready
-   - "When you hear..." response scripts
+
+- 5 detailed competitive battle cards
+- Each includes: positioning statement, comparison table, objection handling
+- Sales enablement ready
+- "When you hear..." response scripts
 
 **Specific Deliverables**:
+
 - Market overview with trends
 - 5 competitor deep-dives
 - Feature comparison matrix (10x5)
@@ -2767,16 +2912,16 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 
 ### Complete Task Summary (All Direction Tasks)
 
-| Task | Direction Requirement | Status | Location | Notes |
-|------|----------------------|--------|----------|-------|
-| 1 | Launch Communications Update | ✅ Complete | feedback/marketing.md | Prior work |
-| 2 | AI-Assisted Support Announcement | ✅ Complete | Sections 1.1, 1.4 | Announcements + FAQ |
-| 3 | Operator Value Proposition | ✅ Complete | Sections 1.2, 3.1-3.3 | Guide + materials |
-| 4 | Pilot Customer Communication | ✅ Complete | Sections 1.1, 1.3, 2.1 | Pilot program |
-| 5 | Launch Asset Preparation | ✅ Complete | Sections 2.2-2.4, 3.4 | 10 posts + emails |
-| 6 | Competitive Positioning | ✅ Complete | Sections 4.1-4.3 | Analysis + positioning |
-| A | Case Study Framework | ✅ Complete | Section 4.4 | Template + process |
-| B | Competitive Intelligence | ✅ Complete | Sections 4.1, 4.3 | Research + matrix |
+| Task | Direction Requirement            | Status      | Location               | Notes                  |
+| ---- | -------------------------------- | ----------- | ---------------------- | ---------------------- |
+| 1    | Launch Communications Update     | ✅ Complete | feedback/marketing.md  | Prior work             |
+| 2    | AI-Assisted Support Announcement | ✅ Complete | Sections 1.1, 1.4      | Announcements + FAQ    |
+| 3    | Operator Value Proposition       | ✅ Complete | Sections 1.2, 3.1-3.3  | Guide + materials      |
+| 4    | Pilot Customer Communication     | ✅ Complete | Sections 1.1, 1.3, 2.1 | Pilot program          |
+| 5    | Launch Asset Preparation         | ✅ Complete | Sections 2.2-2.4, 3.4  | 10 posts + emails      |
+| 6    | Competitive Positioning          | ✅ Complete | Sections 4.1-4.3       | Analysis + positioning |
+| A    | Case Study Framework             | ✅ Complete | Section 4.4            | Template + process     |
+| B    | Competitive Intelligence         | ✅ Complete | Sections 4.1, 4.3      | Research + matrix      |
 
 ---
 
@@ -2787,12 +2932,14 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Tasks A-B**: ✅ Complete
 
 **Total Deliverables**:
+
 - 2,661 lines of marketing content
 - 76KB comprehensive launch package
 - 15,000+ words
 - All templates production-ready
 
 **Evidence Package Includes**:
+
 - Launch announcements (2)
 - Operator enablement materials (4)
 - Customer communications (3)
@@ -2828,6 +2975,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Direction Update: 8 Additional Tasks Added
 
 **New Tasks** (lines 129-187 of direction file):
+
 - Task C: Video Content Scripts
 - Task D: Social Media Campaign Plan (30-day)
 - Task E: Press Release Draft
@@ -2858,11 +3006,13 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Montage of overwhelmed support operators, long wait times, frustrated customers]
 
 **NARRATOR** (voiceover):
+
 > "In e-commerce, customer support can make or break your business. But as your store grows, so does the challenge..."
 
 **[VISUAL**: Graph showing support volume increasing, operators struggling]
 
 **NARRATOR**:
+
 > "More inquiries. Longer wait times. Stressed teams. Frustrated customers."
 
 **[TEXT ON SCREEN**: "There has to be a better way."
@@ -2874,29 +3024,34 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: HotDash dashboard animating smoothly, clean interface]
 
 **NARRATOR**:
+
 > "Introducing the HotDash Agent SDK—AI-powered customer support that keeps humans in control."
 
 **[VISUAL**: Split screen—AI analyzing message on left, human operator on right]
 
 **NARRATOR**:
+
 > "Here's how it works: When a customer reaches out, our AI agents instantly analyze their request..."
 
 **[VISUAL**: AI searching knowledge base, pulling order details]
 
 **NARRATOR**:
+
 > "...search your knowledge base, retrieve order information, and prepare a complete response."
 
 **[VISUAL**: Response appearing in approval queue]
 
 **NARRATOR**:
+
 > "But here's what makes us different: The AI never contacts customers directly."
 
 **[VISUAL**: Operator reviewing approval card]
 
 **NARRATOR**:
+
 > "Every response goes to your operator's approval queue. Your team reviews, edits if needed, and approves before anything is sent."
 
-**[TEXT ON SCREEN]: "AI prepares. Humans approve. Customers win."
+\*\*[TEXT ON SCREEN]: "AI prepares. Humans approve. Customers win."
 
 ---
 
@@ -2905,21 +3060,25 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Time-lapse of operator handling multiple approvals quickly]
 
 **NARRATOR**:
+
 > "The result? Your operators respond 3 to 5 times faster..."
 
 **[VISUAL**: Happy customers receiving responses]
 
 **NARRATOR**:
+
 > "...customers get accurate, helpful answers in minutes, not hours..."
 
 **[VISUAL**: Team dashboard showing metrics improving]
 
 **NARRATOR**:
+
 > "...and your team handles more volume without burning out."
 
 **[VISUAL**: Operator smiling, confidently clicking approve]
 
 **NARRATOR**:
+
 > "It's the best of both worlds: AI efficiency with human expertise."
 
 ---
@@ -2929,16 +3088,19 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Feature comparison appearing]
 
 **NARRATOR**:
+
 > "Unlike chatbots that frustrate customers, HotDash keeps people in every conversation."
 
 **[VISUAL**: Knowledge base citation appearing]
 
 **NARRATOR**:
+
 > "Every response is backed by your actual documentation—no AI hallucinations."
 
-**[VISUAL]: Shopify logo integrating]
+\*\*[VISUAL]: Shopify logo integrating]
 
 **NARRATOR**:
+
 > "And because we're built for Shopify from day one, it just works with your store."
 
 ---
@@ -2948,11 +3110,13 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: HotDash logo with tagline]
 
 **NARRATOR**:
+
 > "HotDash Agent SDK: Smarter support. Happier customers. Empowered teams."
 
 **[TEXT ON SCREEN**: "See it in action: hotdash.com/demo"
 
 **NARRATOR**:
+
 > "Visit hotdash.com to see how AI and human expertise work together."
 
 **[FADE OUT]**
@@ -2962,11 +3126,13 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Visual Requirements for Video Team
 
 **Color Palette**:
+
 - Primary: HotDash brand colors
 - Accent: Green for approval actions, Blue for AI elements
 - Neutral: Clean whites and grays for UI mockups
 
 **Key Visual Elements**:
+
 - Approval queue interface mockup (high-fidelity)
 - Animated knowledge base search
 - Split-screen operator + AI workflow
@@ -2974,6 +3140,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Customer satisfaction visualization
 
 **Screen Recordings Needed**:
+
 - Incoming customer message
 - AI preparing response (5 seconds)
 - Approval card appearing
@@ -2981,6 +3148,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Message sent confirmation
 
 **Motion Graphics**:
+
 - Data flowing from knowledge base to AI
 - Response text appearing in approval queue
 - Checkmarks for approvals
@@ -3007,11 +3175,13 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Instructor on screen, welcoming]
 
 **INSTRUCTOR**:
+
 > "Hey there! Welcome to your approval queue training. I'm [NAME], and in the next five minutes, I'll show you everything you need to know to start using HotDash's AI-assisted support system."
 
 **[VISUAL**: Preview of what will be covered]
 
 **INSTRUCTOR**:
+
 > "We'll cover accessing the queue, reviewing responses, making decisions, and some pro tips. Let's dive in!"
 
 ---
@@ -3021,16 +3191,19 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Dashboard with cursor navigating]
 
 **INSTRUCTOR**:
+
 > "First, accessing your queue is super easy. From anywhere in the dashboard, you can click 'Approvals' in the sidebar, or just press the 'A' key on your keyboard."
 
 **[VISUAL**: Keyboard shortcut highlighted]
 
 **INSTRUCTOR**:
+
 > "Pro tip: Learn the keyboard shortcuts. They'll save you tons of time. Let me show you the queue."
 
 **[VISUAL**: Approval queue with 3 pending items]
 
 **INSTRUCTOR**:
+
 > "Here's what it looks like. Each card represents one AI-prepared response waiting for your review."
 
 ---
@@ -3040,31 +3213,37 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Zooming into one approval card, highlighting each section]
 
 **INSTRUCTOR**:
+
 > "Let's break down what you're seeing. At the top, you've got customer info—name, email, maybe their order history."
 
 **[VISUAL**: Confidence score highlighted]
 
 **INSTRUCTOR**:
+
 > "This confidence score tells you how sure the AI is about its response. Green means high confidence, yellow is medium, red is low. The higher the confidence, the more likely it's good to go as-is."
 
-**[VISUAL]: Original message section]
+\*\*[VISUAL]: Original message section]
 
 **INSTRUCTOR**:
+
 > "Next is the customer's original message. Always read this carefully—it's the whole reason we're here!"
 
 **[VISUAL**: AI-prepared response section]
 
 **INSTRUCTOR**:
+
 > "Then you've got the AI-prepared response. This is what the AI thinks we should send back."
 
 **[VISUAL**: Knowledge base sources]
 
 **INSTRUCTOR**:
+
 > "And down here, you'll see which knowledge base articles the AI used. This is super important—it shows you where the AI got its information."
 
 **[VISUAL**: Action buttons at bottom]
 
 **INSTRUCTOR**:
+
 > "Finally, your four action buttons: Approve, Edit, Escalate, or Reject. We'll talk about when to use each one."
 
 ---
@@ -3074,26 +3253,31 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Instructor reading through an approval card]
 
 **INSTRUCTOR**:
+
 > "Here's my review process. First, I read the customer message and make sure I understand what they're asking."
 
 **[VISUAL**: Checking customer message]
 
 **INSTRUCTOR**:
+
 > "Then I read the AI response. Does it answer the question? Is the tone right? Are any specific details like order numbers correct?"
 
-**[VISUAL]: Highlighting order number]
+\*\*[VISUAL]: Highlighting order number]
 
 **INSTRUCTOR**:
+
 > "Always verify specific info! The AI pulled order 84521—let me make sure that matches the customer's request. Yep, looks good."
 
 **[VISUAL**: Checking knowledge base sources]
 
 **INSTRUCTOR**:
+
 > "Then I check the sources. Is this our current policy? Version 2.1 of the shipping policy—that's up to date."
 
 **[VISUAL**: Confidence score check]
 
 **INSTRUCTOR**:
+
 > "High confidence, response looks good, sources are current. This one's ready to approve!"
 
 ---
@@ -3103,65 +3287,77 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Four action buttons highlighted one by one]
 
 **INSTRUCTOR**:
+
 > "Let's talk about your four options."
 
 **[VISUAL**: Approve button]
 
 **INSTRUCTOR**:
+
 > "Option 1: Approve. Use this when the response is accurate, complete, and well-written. The AI will send it immediately and learn that this was a good response."
 
-**[VISUAL]: Edit button with editing modal]
+\*\*[VISUAL]: Edit button with editing modal]
 
 **INSTRUCTOR**:
+
 > "Option 2: Edit and Approve. This is for when the response is mostly good but needs tweaking. Maybe you want to add more empathy, fix a typo, or include something extra."
 
 **[VISUAL**: Editing the response, adding a sentence]
 
 **INSTRUCTOR**:
+
 > "Here, I'm adding a line: 'I know waiting for tracking can be worrying—thanks for your patience!' This adds the human touch. When I click 'Save and Send,' the AI learns from my edit."
 
-**[VISUAL]: Escalate button]
+\*\*[VISUAL]: Escalate button]
 
 **INSTRUCTOR**:
+
 > "Option 3: Escalate. Use this when the issue is too complex, requires manager approval, or you're just not sure. You'll add notes about why you're escalating, and a senior team member will handle it."
 
-**[VISUAL]: Reject button]
+\*\*[VISUAL]: Reject button]
 
 **INSTRUCTOR**:
+
 > "Option 4: Reject. This discards the AI response so you can write your own from scratch. Use this if the AI completely missed the mark or the response is wrong."
 
-**[VISUAL]: Adding rejection notes]
+\*\*[VISUAL]: Adding rejection notes]
 
 **INSTRUCTOR**:
+
 > "If you reject, please add notes explaining why—it helps the AI improve!"
 
 ---
 
 **[SECTION 5: PRO TIPS — 4:15-4:50]**
 
-**[VISUAL]: List of tips appearing]
+\*\*[VISUAL]: List of tips appearing]
 
 **INSTRUCTOR**:
+
 > "Here are some pro tips to work faster:"
 
 **[VISUAL**: Keyboard shortcuts overlay]
 
 **INSTRUCTOR**:
+
 > "One: Use keyboard shortcuts. Up and down arrows to navigate, Enter to approve, E to edit, X to escalate, R to reject."
 
 **[VISUAL**: High confidence approvals]
 
 **INSTRUCTOR**:
+
 > "Two: High confidence scores are usually safe to approve quickly. Focus your time on medium and low confidence items."
 
-**[VISUAL]: Edit vs reject comparison]
+\*\*[VISUAL]: Edit vs reject comparison]
 
 **INSTRUCTOR**:
+
 > "Three: Editing is better than rejecting. When you edit, the AI learns. When you reject, it learns less."
 
-**[VISUAL]: Team metrics]
+\*\*[VISUAL]: Team metrics]
 
 **INSTRUCTOR**:
+
 > "Four: You're not being judged on your approval rate. We track these metrics to improve the AI, not to evaluate you. Your job is to make good decisions."
 
 ---
@@ -3171,11 +3367,13 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Instructor back on screen]
 
 **INSTRUCTOR**:
+
 > "And that's it! You're ready to start using the approval queue. Remember: You're the expert, the AI is your assistant. Trust your judgment, and don't hesitate to ask for help."
 
 **[TEXT ON SCREEN**: "Questions? #support-operators in Slack"
 
 **INSTRUCTOR**:
+
 > "Welcome to the future of customer support. You've got this!"
 
 **[FADE OUT]**
@@ -3185,6 +3383,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ### Visual Requirements
 
 **Screen Recordings**:
+
 - Full walkthrough of approval queue interface
 - Accessing queue via sidebar and keyboard
 - Reading each section of an approval card
@@ -3192,6 +3391,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Keyboard shortcuts in action
 
 **Graphics Needed**:
+
 - Approval card anatomy diagram
 - Confidence score explanation graphic
 - Decision flowchart (when to use each button)
@@ -3199,6 +3399,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Pro tips overlay
 
 **Instructor Requirements**:
+
 - Friendly, approachable on-camera presence
 - Screen share capability for demos
 - Clear, concise explanations
@@ -3220,6 +3421,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Simple animation of customer and support team]
 
 **NARRATOR**:
+
 > "You might have noticed something new when you contact HotDash support: responses that are faster and more accurate than ever. Here's how we're doing it."
 
 ---
@@ -3229,50 +3431,59 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Growing e-commerce store, increasing support volume]
 
 **NARRATOR**:
+
 > "As e-commerce grows, so do customer support challenges. More orders mean more questions. And every customer deserves a fast, accurate response."
 
-**[VISUAL]: Support team overwhelmed]
+\*\*[VISUAL]: Support team overwhelmed]
 
 **NARRATOR**:
+
 > "Traditional support struggles to keep up. Customers wait. Teams burn out. Something had to change."
 
 ---
 
 **[SECTION 2: OUR SOLUTION — 0:35-1:35]**
 
-**[VISUAL]: HotDash AI system diagram appearing]
+\*\*[VISUAL]: HotDash AI system diagram appearing]
 
 **NARRATOR**:
+
 > "We built AI-assisted support that works with your support team, not instead of them."
 
-**[VISUAL]: Customer message arriving]
+\*\*[VISUAL]: Customer message arriving]
 
 **STEP 1 NARRATOR**:
+
 > "Step 1: When you send a message, our AI immediately analyzes what you're asking."
 
-**[VISUAL]: AI searching knowledge base and order systems]
+\*\*[VISUAL]: AI searching knowledge base and order systems]
 
 **STEP 2 NARRATOR**:
+
 > "Step 2: The AI searches our knowledge base for relevant information and pulls up your order details."
 
 **[VISUAL**: AI preparing response]
 
 **STEP 3 NARRATOR**:
+
 > "Step 3: Using this information, the AI prepares a complete response—accurate, helpful, and personalized to your situation."
 
 **[VISUAL**: Response going to approval queue]
 
 **STEP 4 NARRATOR**:
+
 > "Step 4: Here's the important part: A real person on our team reviews the AI's work."
 
-**[VISUAL]: Operator reviewing and approving]
+\*\*[VISUAL]: Operator reviewing and approving]
 
 **STEP 5 NARRATOR**:
+
 > "Step 5: Our operator reads the response, verifies it's correct, adds a personal touch if needed, and approves it."
 
 **[VISUAL**: Message arriving to customer]
 
 **STEP 6 NARRATOR**:
+
 > "Step 6: You receive a fast, accurate, human-reviewed response."
 
 ---
@@ -3282,47 +3493,54 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **[VISUAL**: Split screen: bot vs human-reviewed]
 
 **NARRATOR**:
+
 > "This is different from chatbots. You're never talking to a robot. Every message is reviewed and approved by a real person who cares about helping you."
 
 **[VISUAL**: Knowledge base with citations]
 
 **NARRATOR**:
+
 > "Because every response is backed by our actual documentation, you get accurate information—no AI guessing or making things up."
 
-**[VISUAL]: Response time comparison]
+\*\*[VISUAL]: Response time comparison]
 
 **NARRATOR**:
+
 > "And because the AI handles the time-consuming research, our team responds to you 3 to 5 times faster."
 
 ---
 
 **[SECTION 4: YOUR EXPERIENCE — 2:15-2:45]**
 
-**[VISUAL]: Customer receiving great support]
+\*\*[VISUAL]: Customer receiving great support]
 
 **NARRATOR**:
+
 > "For you, the experience is simple: You ask a question, and you get a fast, accurate, helpful answer from someone who took the time to make sure it's right."
 
-**[VISUAL]: Privacy shield icon]
+\*\*[VISUAL]: Privacy shield icon]
 
 **NARRATOR**:
+
 > "Your privacy is protected. The AI only accesses information you've already shared with us, and we handle all data according to strict privacy regulations."
 
-**[VISUAL]: Happy customer + happy operator]
+\*\*[VISUAL]: Happy customer + happy operator]
 
 **NARRATOR**:
+
 > "The result? You get better support. Our team works smarter. Everyone wins."
 
 ---
 
 **[CLOSING — 2:45-3:00]**
 
-**[VISUAL]: HotDash logo]
+\*\*[VISUAL]: HotDash logo]
 
 **NARRATOR**:
+
 > "That's how HotDash AI-assisted support works: AI power, human wisdom, and your satisfaction at the center of everything we do."
 
-**[TEXT ON SCREEN]: "Questions? Visit hotdash.com/support"
+\*\*[TEXT ON SCREEN]: "Questions? Visit hotdash.com/support"
 
 **[FADE OUT]**
 
@@ -3333,6 +3551,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 **Animation Style**: Modern, clean, minimal (think Kurzgesagt or Notion-style)
 
 **Key Visuals**:
+
 - Customer sending message (icon/animation)
 - AI "brain" analyzing (abstract visualization)
 - Knowledge base as organized library (visual metaphor)
@@ -3341,12 +3560,14 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Response arriving to customer (message icon)
 
 **Color Coding**:
+
 - Blue: Customer actions
 - Purple: AI actions
 - Green: Human operator actions
 - Orange: Final delivery
 
 **Graphics Needed**:
+
 - 6-step process diagram
 - Bot vs. human comparison
 - Privacy/security icons
@@ -3354,6 +3575,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 - Happy customer/operator illustrations
 
 **Accessibility**:
+
 - Closed captions required
 - High contrast visuals
 - Clear, large text
@@ -3363,6 +3585,7 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 ## Task C Summary
 
 **✅ Delivered**:
+
 1. **Agent SDK Demo Video Script** (2:30) — For marketing to prospects
 2. **Approval Queue Tutorial Script** (5:00) — For operator training
 3. **How It Works Explainer Script** (3:00) — For customer transparency
@@ -3400,50 +3623,53 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 #### LinkedIn Posts - Week 1
 
 **Day 1 - Monday (Teaser)**
+
 > 🚀 Big announcement coming this week.
-> 
+>
 > We've been working on something that will change how e-commerce companies handle customer support.
-> 
+>
 > Hint: It involves AI, but not the way you think.
-> 
+>
 > Stay tuned. 👀
-> 
+>
 > #CustomerSupport #AI #Ecommerce
 
 **Day 3 - Wednesday (Problem Statement)**
+
 > Your support team is drowning in inquiries.
-> 
+>
 > You want to respond faster, but:
 > ❌ Chatbots frustrate customers
 > ❌ Hiring more people is expensive
 > ❌ Quality suffers when teams rush
-> 
+>
 > What if there was a better way?
-> 
+>
 > Announcement: Friday.
-> 
+>
 > #SupportOps #CX
 
 **Day 5 - Friday (LAUNCH POST)**
+
 > 🎉 Introducing HotDash Agent SDK: AI-Powered Support with Human Control
-> 
+>
 > The problem with AI support? Most tools put bots in charge.
-> 
+>
 > We did something different:
 > ✅ AI prepares responses
 > ✅ Humans review and approve
 > ✅ Customers get accurate, empathetic service
-> 
+>
 > It's the best of both worlds: AI efficiency + human expertise.
-> 
+>
 > 3-5x faster response times
 > 100% human-reviewed messages
 > Built for Shopify stores
-> 
+>
 > Read more: [LINK]
-> 
+>
 > #AISupport #CustomerExperience #Shopify
-> 
+>
 > [IMAGE: Approval queue screenshot]
 
 ---
@@ -3451,113 +3677,119 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 #### Twitter Posts - Week 1
 
 **Day 1 (Teaser Thread)**
+
 > Tweet 1: 🚀 We've spent the last 6 months building something special.
-> 
+>
 > Tweet 2: It's about AI and customer support, but not in the way you're thinking.
-> 
+>
 > Tweet 3: Hint: Customers still talk to humans. AI just makes those humans superhuman.
-> 
+>
 > Tweet 4: Announcement this Friday. Get ready.
 
 **Day 2 (Problem Tweet)**
+
 > Support teams have a choice:
-> 
+>
 > 🤖 Use chatbots (customers hate them)
 > 🧑 Hire more people (expensive, slow)
 > 🔥 Burn out your team (unsustainable)
-> 
+>
 > There's a 4th option. We found it.
-> 
+>
 > Friday.
 
 **Day 4 (Behind the Scenes)**
+
 > The best part of building @HotDash Agent SDK?
-> 
+>
 > Watching operators' reactions when they first use the approval queue:
-> 
+>
 > "Wait, I just handled 5 tickets in 2 minutes?"
-> 
+>
 > "This is actually going to make my job better, not eliminate it."
-> 
+>
 > That's what good AI tools do. ✨
 
 **Day 5 (LAUNCH THREAD - 8 tweets)**
+
 > 1/ 🎉 Today we're launching HotDash Agent SDK.
-> 
+>
 > AI-assisted customer support that keeps humans in control.
-> 
+>
 > Here's what makes it different 🧵
-> 
+>
 > 2/ Most AI support tools replace human agents.
-> 
+>
 > Customers end up talking to bots.
 > Bots make mistakes.
 > Customers get frustrated.
-> 
+>
 > We took a different approach.
-> 
+>
 > 3/ With HotDash Agent SDK:
 > • AI analyzes customer messages
 > • AI searches knowledge base
 > • AI prepares draft responses
 > • HUMAN operators review & approve
 > • Customers get accurate, empathetic responses
-> 
+>
 > AI assists. Humans decide.
-> 
+>
 > 4/ The results?
-> 
+>
 > ⚡ 3-5x faster response times
 > ✅ 100% human-reviewed messages
 > 📚 Knowledge base-backed answers
 > 😊 Happier customers AND operators
-> 
+>
 > 5/ Built specifically for e-commerce:
 > • Native Shopify integration
 > • Order lookup automation
 > • Policy-aware responses
 > • Works with Chatwoot
-> 
+>
 > It just works with your stack.
-> 
+>
 > 6/ Privacy-first:
 > • Your data stays yours
 > • GDPR & CCPA compliant
 > • No customer data used to train public models
 > • Full audit trails
-> 
+>
 > 7/ Unlike chatbots, we put operators first:
 > • They approve every message
 > • They edit and improve AI drafts
 > • The system learns from them
 > • They focus on complex problems
-> 
+>
 > This is what responsible AI looks like.
-> 
+>
 > 8/ Learn more and see a demo: [LINK]
-> 
+>
 > Or RT to help spread the word about a better way to do AI support. 🙏
 
 **Day 6 (Social Proof)**
+
 > Early feedback from our pilot operators:
-> 
+>
 > "I went from drowning to thriving in one day."
-> 
+>
 > "The AI learns my style. It's like having a clone who does the boring parts."
-> 
+>
 > "I was skeptical. Now I can't imagine going back."
-> 
-> This is what happens when you build AI *with* operators, not *instead* of them.
+>
+> This is what happens when you build AI _with_ operators, not _instead_ of them.
 
 **Day 7 (FAQ Thread)**
+
 > Your top questions about Agent SDK, answered:
-> 
+>
 > Q: Is this a chatbot?
 > A: No. Human operators review and approve every response.
-> 
+>
 > Q: Will it replace my support team?
 > A: No. It makes them more efficient. They'll handle complex issues while AI handles info lookup.
-> 
+>
 > More FAQs: [LINK]
 
 ---
@@ -3568,10 +3800,11 @@ Want similar results? [Schedule a demo] [Read more case studies] [Start free tri
 [GRAPHIC: Silhouette of AI brain + human head merging]
 
 Caption:
+
 > What if AI made your support team superhuman instead of replacing them?
-> 
+>
 > Big announcement Friday. 👀
-> 
+>
 > #AI #CustomerSupport #Innovation
 
 **Day 5 (LAUNCH POST - Carousel)**
@@ -3584,28 +3817,30 @@ Caption:
 [SLIDE 7: CTA - "Learn More" with link]
 
 Caption:
+
 > 🚀 We just launched something special.
-> 
+>
 > AI-assisted customer support that keeps humans in control.
-> 
+>
 > Swipe to see how it works →
-> 
+>
 > Link in bio for full details.
-> 
+>
 > #HotDash #AISupport #Ecommerce #Shopify #CustomerExperience
 
 **Day 7 (Team Celebration)**
 [PHOTO: Team celebrating launch day with balloons]
 
 Caption:
+
 > Launch day! 🎉
-> 
+>
 > Huge thanks to our team for months of work building Agent SDK.
-> 
+>
 > And to our pilot operators who gave us feedback to make it better.
-> 
+>
 > Here's to smarter support! 🥂
-> 
+>
 > #TeamWork #Launch #AgentSDK
 
 ---
@@ -3619,70 +3854,72 @@ Caption:
 #### LinkedIn Posts - Week 2
 
 **Day 8 (Feature Deep Dive)**
+
 > 🎯 Feature Spotlight: The Approval Queue
-> 
+>
 > This is where the magic happens.
-> 
+>
 > When AI prepares a customer response:
+>
 > 1. It appears in the operator's approval queue
 > 2. Operator sees customer message + AI draft
 > 3. Operator can approve, edit, escalate, or reject
 > 4. Customer gets human-reviewed response
-> 
+>
 > The system learns from every decision.
-> 
+>
 > It's like having a smart assistant who gets better every day.
-> 
+>
 > [SCREENSHOT: Approval queue interface]
-> 
+>
 > Want to see it in action? [DEMO LINK]
-> 
+>
 > #ProductDesign #AI #UX
 
 **Day 10 (Use Case Story)**
+
 > Real story from pilot launch:
-> 
+>
 > Operator Sarah had 15 "Where is my order?" messages in queue.
-> 
+>
 > Before Agent SDK: 75 minutes to handle all 15
 > With Agent SDK: 12 minutes
-> 
+>
 > Same quality. Way less time.
-> 
+>
 > She spent the remaining time helping a customer with a complex return—something that actually needed human judgment.
-> 
+>
 > That's the point: Free your team to focus on what matters.
-> 
+>
 > #CustomerSupport #Efficiency
 
 **Day 12 (Technical Deep Dive)**
+
 > How we built AI that doesn't hallucinate:
-> 
+>
 > 1. Knowledge Base as Source of Truth
-> We use LlamaIndex RAG (Retrieval Augmented Generation) to ensure every AI response pulls from actual documentation.
-> 
+>    We use LlamaIndex RAG (Retrieval Augmented Generation) to ensure every AI response pulls from actual documentation.
 > 2. Citation Tracking
-> Every response shows which KB articles were used.
-> 
+>    Every response shows which KB articles were used.
 > 3. Human Verification
-> Operators verify facts before sending.
-> 
+>    Operators verify facts before sending.
 > 4. Continuous Improvement
-> System learns from operator corrections.
-> 
+>    System learns from operator corrections.
+>
 > Result: Accurate responses, every time.
-> 
+>
 > #AIEngineering #TechStack
 
 **Day 14 (Customer Testimonial)**
+
 > "I didn't even know AI was involved until I read your blog post. It just felt like really good support."
-> 
+>
 > — Sarah C., HotDash customer
-> 
+>
 > That's the goal: Invisible AI, visible humanity.
-> 
+>
 > When done right, customers shouldn't notice the technology. They should just notice that support is fast, accurate, and helpful.
-> 
+>
 > #CustomerExperience #Testimonial
 
 ---
@@ -3690,70 +3927,76 @@ Caption:
 #### Twitter Posts - Week 2
 
 **Day 8 (Feature Explanation)**
+
 > The approval queue is simple:
-> 
+>
 > 1. AI drafts response
 > 2. Human reviews
 > 3. Human approves (or edits)
 > 4. Customer gets message
-> 
+>
 > Takes 10-20 seconds per ticket.
-> 
+>
 > Vs. 5-10 minutes manually.
-> 
+>
 > Math is math. 🧮
 
 **Day 9 (Operator Voice)**
+
 > From one of our operators:
-> 
+>
 > "The best part? I don't have to search for answers anymore. The AI brings them to me. I just verify and send.
-> 
+>
 > It's like having a research assistant who never sleeps."
-> 
+>
 > This is what good tools feel like.
 
 **Day 10 (Myth Busting)**
+
 > Myth: "AI support means replacing humans"
-> 
+>
 > Reality: AI should assist humans, not replace them
-> 
+>
 > At HotDash, operators remain in control of every customer interaction.
-> 
+>
 > The AI is a tool, not a replacement.
-> 
+>
 > That's how you build ethical AI.
 
 **Day 11 (Behind the Tech)**
+
 > Tech stack behind Agent SDK:
-> 
+>
 > 🧠 OpenAI Agent SDK (orchestration)
 > 📚 LlamaIndex (knowledge base RAG)
 > 🏪 Shopify Admin API (order data)
 > 💬 Chatwoot (support platform)
 > 🗄️ Supabase (data storage)
-> 
+>
 > Modern, reliable, production-ready.
 
 **Day 13 (Quick Win)**
+
 > Quick win from Agent SDK:
-> 
+>
 > Policy questions (like "What's your return policy?") used to take 2-3 minutes while operators looked it up.
-> 
+>
 > Now: 15 seconds.
-> 
+>
 > AI finds the policy, cites the source, drafts response. Operator verifies and approves.
-> 
+>
 > Multiply that across hundreds of inquiries...
 
 **Day 14 (Weekend Reflection)**
+
 > Week 1 of Agent SDK launch: 📊
-> 
+>
 > ✅ 500+ responses reviewed
 > ✅ 92% approval rate
 > ✅ 3.2x faster avg response time
 > ✅ 87% operator satisfaction
 > ✅ Zero AI-only messages sent
-> 
+>
 > This is what responsible AI adoption looks like.
 
 ---
@@ -3765,40 +4008,43 @@ Caption:
 [SLIDE 2-7: Each step with simple illustration]
 
 Caption:
+
 > Ever wonder how AI-assisted support actually works?
-> 
+>
 > Here's the step-by-step 👆
-> 
+>
 > The key: Humans approve everything. AI just makes them faster.
-> 
+>
 > #HowItWorks #AI #CustomerService
 
 **Day 11 (Operator Spotlight)**
 [PHOTO: Operator at desk using approval queue]
 
 Caption:
+
 > Meet Jordan, one of our support operators using Agent SDK.
-> 
+>
 > "Before: I was stressed, constantly behind.
 > After: I feel in control. I help more customers and leave work feeling good."
-> 
+>
 > That's what good tools should do. ✨
-> 
+>
 > #OperatorFirst #TeamSpotlight
 
 **Day 13 (Stats & Results)**
 [GRAPHIC: Key metrics with icons]
 
 Caption:
+
 > Week 1 Results 📊
-> 
+>
 > ⚡ 3.2x faster response times
 > 😊 87% operator satisfaction
 > ✅ 92% AI suggestions approved
 > 🔒 100% human-reviewed messages
-> 
+>
 > AI + Human = Magic
-> 
+>
 > #Results #AISupport #CustomerSuccess
 
 ---
@@ -3812,73 +4058,77 @@ Caption:
 #### LinkedIn Posts - Week 3
 
 **Day 15 (Case Study Teaser)**
+
 > 📊 Case Study Preview
-> 
+>
 > Fashion retailer using Agent SDK for 2 weeks:
-> 
+>
 > Before:
 > • 4-hour avg response time
 > • 20 tickets/day per operator
 > • 78% CSAT
-> 
+>
 > After:
 > • 45-min avg response time
 > • 65 tickets/day per operator
 > • 91% CSAT
-> 
+>
 > Same team. Better tools.
-> 
+>
 > Full case study coming next week.
-> 
+>
 > #CaseStudy #ROI #CustomerSupport
 
 **Day 17 (Interactive Post)**
+
 > 🤔 Quick poll for support leaders:
-> 
+>
 > What's your team's biggest challenge?
-> 
+>
 > A) Response time too slow
 > B) Team is overwhelmed
 > C) Inconsistent answer quality
 > D) Can't scale without hiring
-> 
+>
 > Comment with your letter! We're curious.
-> 
+>
 > (And yes, Agent SDK helps with all four 😉)
-> 
+>
 > #SupportLeaders #CommunityPoll
 
 **Day 19 (Competitive Comparison)**
+
 > How Agent SDK compares to chatbots:
-> 
+>
 > Chatbots:
 > ❌ Talk directly to customers
 > ❌ Often wrong or unhelpful
 > ❌ Frustrate customers
 > ❌ Generic, not brand-aligned
-> 
+>
 > Agent SDK:
 > ✅ Assists human operators
 > ✅ Human-verified accuracy
 > ✅ Customers love it
 > ✅ Learns your brand voice
-> 
+>
 > There's a better way than bots.
-> 
+>
 > #NoMoreChatbots #BetterSupport
 
 **Day 21 (Vision Post)**
+
 > Where we're heading with Agent SDK:
-> 
+>
 > Phase 1 (Now): AI-assisted response preparation
 > Phase 2 (Q1 2026): Proactive support (identify customers who need help before they ask)
 > Phase 3 (Q2 2026): Multi-language support
 > Phase 4 (Q3 2026): Voice/phone integration
-> 
+>
 > We're just getting started.
-> 
+>
 > Building the future of customer support, one release at a time.
-> 
+>
 > #Roadmap #Innovation #FutureOfWork
 
 ---
@@ -3886,65 +4136,71 @@ Caption:
 #### Twitter Posts - Week 3
 
 **Day 15 (Customer Voice)**
+
 > Customer feedback after Agent SDK launch:
-> 
+>
 > "Response was SO fast and had exactly the info I needed. You guys are on it!"
-> 
+>
 > That moment when AI speed + human care = chef's kiss. 👌
 
 **Day 16 (Engagement Tweet)**
+
 > Real talk: What's the worst chatbot experience you've ever had?
-> 
-> We'll go first: 
-> 
+>
+> We'll go first:
+>
 > "I understand your frustration. Let me connect you to a human."
 > [45-minute wait]
 > "Sorry, all agents are busy. Please try again later."
-> 
+>
 > Yeah. We built Agent SDK to fix that. Your turn! 👇
 
 **Day 17 (Quick Tip)**
+
 > Pro tip for support teams:
-> 
+>
 > Track your "time to first response" metric.
-> 
+>
 > Agent SDK cuts it by 70% on average.
-> 
+>
 > Why? Because operators aren't searching docs, checking orders, or formatting responses.
-> 
+>
 > AI does that. Operators verify and send.
-> 
+>
 > Simple math = big impact.
 
 **Day 18 (Comparison Thread)**
+
 > How Agent SDK is different from competitors: 🧵
-> 
+>
 > 1/ Unlike Zendesk AI: We require human approval. Every. Single. Message.
-> 
+>
 > 2/ Unlike Intercom Fin: We're built for e-commerce. Native Shopify integration, not bolt-on.
-> 
+>
 > 3/ Unlike Ada: We don't replace your team. We make them superhuman.
-> 
+>
 > 4/ Unlike DIY solutions: Production-ready, not 6 months of engineering work.
-> 
+>
 > 5/ Better, faster, and actually respects your operators and customers.
 
 **Day 20 (Friday Fun)**
+
 > It's Friday, so here's a meme:
-> 
+>
 > [IMAGE: Drake meme]
-> 
+>
 > 🚫 Chatbots that frustrate customers
-> 
+>
 > ✅ AI that makes your operators superhuman
-> 
+>
 > #FridayVibes #SupportHumor
 
 **Day 21 (Weekend Engagement)**
+
 > Weekend question:
-> 
+>
 > If you could automate ONE repetitive task in customer support, what would it be?
-> 
+>
 > (We'll compile the responses and share next week!)
 
 ---
@@ -3955,36 +4211,39 @@ Caption:
 [REPOST: Operator showing their approval queue dashboard]
 
 Caption:
+
 > 💙 Our operators are the best.
-> 
+>
 > Love seeing them embrace Agent SDK and share their workflows.
-> 
+>
 > Thanks for letting us share, @operatorusername!
-> 
+>
 > #TeamLove #OperatorLife
 
 **Day 18 (Before/After Visual)**
 [GRAPHIC: Split image showing stressed operator vs. confident operator]
 
 Caption:
+
 > Before Agent SDK vs. After Agent SDK
-> 
+>
 > Same operator. Different tools.
-> 
+>
 > Technology should reduce stress, not add to it.
-> 
+>
 > #BeforeAndAfter #WorkLife
 
 **Day 20 (Demo Video Clip)**
 [VIDEO: 30-second clip from demo video]
 
 Caption:
+
 > See Agent SDK in action 👆
-> 
+>
 > Watch how AI prepares a response, operator reviews it, and customer gets help—all in under 30 seconds.
-> 
+>
 > Full demo: [LINK IN BIO]
-> 
+>
 > #ProductDemo #AIInAction
 
 ---
@@ -3998,92 +4257,98 @@ Caption:
 #### LinkedIn Posts - Week 4
 
 **Day 22 (Case Study Release)**
+
 > 📊 CASE STUDY: How Agent SDK Transformed Support at [COMPANY NAME]
-> 
+>
 > Industry: Fashion E-commerce
 > Team Size: 8 operators
 > Monthly Volume: 6,000 inquiries
-> 
+>
 > Results after 30 days:
 > • 81% reduction in response time (4hr → 45min)
 > • 225% increase in tickets handled per operator
 > • +13 points CSAT improvement
 > • $4,200/month in operational savings
 > • ROI payback in 9 days
-> 
+>
 > Read the full story: [LINK]
-> 
+>
 > "Agent SDK didn't just make us faster. It made us better. Our operators are happier, our customers are happier, and we're saving money. It's rare to find a solution that delivers on all three."
-> 
+>
 > — [NAME], Support Director
-> 
+>
 > #CaseStudy #CustomerSuccess #ROI
 
 **Day 24 (Thought Leadership)**
+
 > The future of customer support isn't "AI vs. Humans."
-> 
+>
 > It's "AI + Humans."
-> 
+>
 > The companies that win will be those who:
+>
 > 1. Use AI for speed and efficiency
 > 2. Keep humans for judgment and empathy
 > 3. Build systems where both work together seamlessly
-> 
+>
 > That's what Agent SDK is: AI and humans, better together.
-> 
+>
 > The future is collaborative, not competitive.
-> 
+>
 > #FutureOfWork #AI #CustomerSupport
 
 **Day 26 (Integration Announcement)**
+
 > 🔌 New Integration: Agent SDK now works with [PARTNER TOOL]
-> 
+>
 > We're expanding our ecosystem to make Agent SDK work with the tools you already use.
-> 
+>
 > Coming soon:
 > • [Partner 1] integration
 > • [Partner 2] integration  
 > • [Partner 3] integration
-> 
+>
 > Using Agent SDK + [Partner]? Reach out—we'd love to feature your story.
-> 
+>
 > #Integrations #Partnerships #Ecosystem
 
 **Day 28 (Webinar Invitation)**
+
 > 🎥 WEBINAR: "Building AI Support That Customers Actually Like"
-> 
+>
 > Join us next Thursday:
 > • Live demo of Agent SDK
 > • Q&A with our product team
 > • Best practices from pilot customers
 > • Special launch offer for attendees
-> 
+>
 > Register: [LINK]
-> 
+>
 > See you there! 👋
-> 
+>
 > #Webinar #LiveDemo #CustomerSupport
 
 **Day 30 (Month Wrap-Up)**
+
 > 30 days since Agent SDK launch. 📊
-> 
+>
 > By the numbers:
 > • 50+ companies signed up
 > • 10,000+ customer interactions processed
 > • 3.4x average response time improvement
 > • 91% operator satisfaction score
 > • Zero incidents of unapproved AI messages
-> 
+>
 > But the best metric? Operator feedback:
-> 
+>
 > "This is the first AI tool that actually makes my job better, not scarier."
-> 
+>
 > That's what we're building: Technology that empowers people.
-> 
+>
 > Thanks to everyone who's been part of this journey.
-> 
+>
 > Here's to the next 30 days. 🚀
-> 
+>
 > #Month1 #Impact #AgentSDK
 
 ---
@@ -4091,101 +4356,110 @@ Caption:
 #### Twitter Posts - Week 4
 
 **Day 22 (Case Study Highlight)**
+
 > New case study just dropped:
-> 
+>
 > Fashion retailer cut response time by 81% with Agent SDK.
-> 
+>
 > 4 hours → 45 minutes
-> 
+>
 > Same team. Better tools.
-> 
+>
 > Read how: [LINK]
 
 **Day 23 (Founder Voice)**
+
 > Why we built Agent SDK:
-> 
+>
 > We saw too many companies choose between:
-> 
+>
 > 1. Chatbots (customers hate)
 > 2. Massive hiring (expensive)
 > 3. Burnout (unsustainable)
-> 
+>
 > We wanted option 4: Empower your existing team with AI.
-> 
+>
 > That's Agent SDK.
-> 
+>
 > — [Founder Name], CEO
 
 **Day 24 (Engagement)**
+
 > Honest question for support leaders:
-> 
+>
 > Would you rather:
-> 
+>
 > A) Automate 80% of tickets with a chatbot (but customers complain)
-> 
+>
 > B) Make your team 5x more efficient while keeping humans in every conversation
-> 
+>
 > We chose B. What would you choose?
 
 **Day 25 (Stats)**
+
 > Agent SDK after 1 month:
-> 
+>
 > 📊 10,000+ interactions processed
 > ⚡ 3.4x faster avg response
 > 😊 91% operator satisfaction
 > 🔒 100% human-reviewed
-> 
+>
 > This is what responsible AI looks like.
 
 **Day 26 (Partner Announcement)**
+
 > 🤝 Exciting news: Agent SDK now integrates with [PARTNER NAME]
-> 
+>
 > [Description of integration]
-> 
+>
 > More integrations coming soon.
-> 
+>
 > Using Agent SDK? Let us know what integrations you'd like to see next! 👇
 
 **Day 27 (Social Proof)**
+
 > More feedback from the field:
-> 
+>
 > "Agent SDK is like having a smart intern who never sleeps, never makes the same mistake twice, and always brings you the right information."
-> 
+>
 > — Support Operator, Week 3
-> 
+>
 > That's the vibe we're going for.
 
 **Day 28 (Webinar Promo)**
+
 > 🎥 Join us for a live Agent SDK demo next Thursday.
-> 
+>
 > • See the approval queue in action
 > • Ask our product team anything
 > • Learn best practices
-> 
+>
 > Register: [LINK]
-> 
+>
 > RT for a chance to win 3 months free! 🎁
 
 **Day 29 (Weekend Wisdom)**
+
 > Weekend wisdom:
-> 
+>
 > "The goal of technology should be to make humans more human, not more like machines."
-> 
+>
 > That's why Agent SDK keeps operators in control.
-> 
+>
 > AI handles the mechanical. Humans provide the meaningful.
 
 **Day 30 (Thank You Post)**
-> 30 days. 50 companies. 10,000 interactions. 
-> 
+
+> 30 days. 50 companies. 10,000 interactions.
+>
 > Thank you to everyone who:
 > • Gave feedback
 > • Shared our posts
 > • Tried Agent SDK
 > • Believed in a better way
-> 
+>
 > This is just the beginning. 🚀
-> 
+>
 > #ThankYou #Month1 #OnwardAndUpward
 
 ---
@@ -4198,52 +4472,56 @@ Caption:
 [SLIDE 7: Quote from customer]
 
 Caption:
+
 > 📊 Real Results: How [COMPANY] transformed their support with Agent SDK
-> 
+>
 > Swipe to see the numbers →
-> 
+>
 > 81% faster response time. 225% more efficient. Happier team.
-> 
+>
 > Read the full story: [LINK IN BIO]
-> 
+>
 > #CaseStudy #Success #CustomerSupport
 
 **Day 25 (Behind the Scenes)**
 [PHOTO/VIDEO: Team working on Agent SDK]
 
 Caption:
+
 > Behind the scenes of Agent SDK 💻
-> 
+>
 > Our engineering team working on the next big feature.
-> 
+>
 > Hint: It involves proactive support and will blow your mind. 🤯
-> 
+>
 > Stay tuned!
-> 
+>
 > #BTS #Engineering #Innovation
 
 **Day 27 (User Testimonial Video)**
 [VIDEO: Customer testimonial - 1 minute]
 
 Caption:
+
 > Hear from [CUSTOMER NAME] about their experience with Agent SDK 👆
-> 
+>
 > "It's not about the technology. It's about how the technology helps our team be more human."
-> 
+>
 > That's exactly what we're building. ❤️
-> 
+>
 > #Testimonial #CustomerLove
 
 **Day 29 (Celebration Post)**
 [PHOTO: Cake with "30 Days of Agent SDK" written on it]
 
 Caption:
+
 > 30 days of Agent SDK! 🎂
-> 
+>
 > Thank you to our amazing community for making this launch incredible.
-> 
+>
 > Here's to many more! 🥂
-> 
+>
 > #Celebration #Milestone #ThankYou
 
 ---
@@ -4253,6 +4531,7 @@ Caption:
 ### Polls & Interactive Content
 
 **Week 1**: Daily story polls
+
 - "Would you rather: Fast bot responses OR slower human responses?"
 - "What frustrates you most about customer support?"
 
@@ -4265,11 +4544,13 @@ Caption:
 ### Hashtag Strategy
 
 **Primary Hashtags**:
+
 - #AgentSDK
 - #HotDash
 - #AISupport
 
 **Secondary Hashtags**:
+
 - #CustomerSupport
 - #CustomerExperience
 - #Ecommerce
@@ -4294,6 +4575,7 @@ Caption:
 **Response Time Target**: <2 hours during business hours
 
 **Engagement Tactics**:
+
 - Reply to every comment in first 24 hours
 - Retweet customer success stories
 - Share user-generated content
@@ -4303,11 +4585,13 @@ Caption:
 ### Paid Promotion (Optional)
 
 **Budget Allocation**:
+
 - LinkedIn Sponsored Content: 50% of budget
 - Twitter Promoted Tweets: 30% of budget
 - Instagram Sponsored Posts: 20% of budget
 
 **Target Audiences**:
+
 - Support managers at e-commerce companies
 - Shopify store owners with >$1M revenue
 - CX leaders at 50-500 employee companies
@@ -4317,6 +4601,7 @@ Caption:
 ## Task D Summary
 
 **✅ Delivered**:
+
 - 30-day content calendar with 60+ posts
 - Platform-specific content (LinkedIn, Twitter, Instagram)
 - Week-by-week themes and narratives
@@ -4410,18 +4695,21 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
 ### Tier 1: Tech & Business Media
 
 **General Tech**:
+
 - TechCrunch (tips@techcrunch.com)
 - VentureBeat (tips@venturebeat.com)
 - The Verge (tips@theverge.com)
 - Ars Technica (news@arstechnica.com)
 
 **Business**:
+
 - Forbes (forbespr@forbes.com)
 - Business Insider (tips@businessinsider.com)
 - Fast Company (news@fastcompany.com)
 - Inc. Magazine (editors@inc.com)
 
 **E-Commerce Specific**:
+
 - Practical Ecommerce (editor@practicalecommerce.com)
 - Digital Commerce 360 (news@digitalcommerce360.com)
 - Ecommerce Times (editors@ecommercetimes.com)
@@ -4483,17 +4771,20 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
 ## E.4 Media Outreach Timeline
 
 **Week Before Launch**:
+
 - Send embargoed press release to Tier 1 media
 - Schedule briefing calls with key journalists
 - Prepare spokesperson for interviews
 
 **Launch Day**:
+
 - Distribute press release via newswire (PR Newswire or Business Wire)
 - Email Tier 1 & 2 media directly
 - Post on company blog and social media
 - Monitor for coverage and respond to inquiries
 
 **Week After Launch**:
+
 - Follow up with non-responsive media
 - Pitch angles to Tier 3 & 4 outlets
 - Share early coverage to generate momentum
@@ -4521,12 +4812,14 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
    "Most companies are live within a week. Agent SDK works with your existing tools and workflows."
 
 **Bridging Phrases**:
+
 - "What's important to understand is..."
 - "Let me put that in perspective..."
 - "Here's what makes this different..."
 - "The real benefit for customers is..."
 
 **Anecdotes**:
+
 - Story about operator who went from stressed to empowered
 - Customer who didn't realize AI was involved (transparent tech)
 - Pilot company that saw ROI in 9 days
@@ -4536,6 +4829,7 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
 ## Task E Summary
 
 **✅ Delivered**:
+
 - Complete press release (500+ words, professionally formatted)
 - Comprehensive media distribution list (50+ outlets across 5 tiers)
 - Press kit asset specifications
@@ -4546,7 +4840,7 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
 
 ---
 
-*[Tasks F-J content continues in next section due to length...]*
+_[Tasks F-J content continues in next section due to length...]_
 
 ---
 
@@ -4554,7 +4848,6 @@ For more information, visit hotdash.com or follow @HotDash on Twitter, LinkedIn,
 **Status**: Tasks C, D, E COMPLETE  
 **In Progress**: Tasks F-J  
 **Timestamp**: 2025-10-11T19:00:00Z
-
 
 # TASK F: PARTNER/AFFILIATE MESSAGING
 
@@ -4571,6 +4864,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -4584,6 +4878,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -4592,6 +4887,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -4621,17 +4917,20 @@ HotDash Partnership Team
 **Title**: "Building Scalable E-Commerce Support with AI"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -4643,12 +4942,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -4659,12 +4960,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. "The Future of E-Commerce Customer Support"
 2. "AI + Human: Better Together"
 3. "Scaling Support Without Scaling Headcount"
 4. "ROI Calculator: When to Invest in AI Support"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -4677,12 +4980,14 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ 0/mo = 7.50/month recurring
 - 10 customers @ cd /home/justin/HotDash/hot-dash && echo "
 
@@ -4701,6 +5006,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -4714,6 +5020,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -4722,6 +5029,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -4751,17 +5059,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -4773,12 +5084,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -4789,12 +5102,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -4807,17 +5122,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -4841,17 +5159,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -4881,6 +5202,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -4910,17 +5232,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -4928,6 +5253,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -4935,6 +5261,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -4951,7 +5278,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -4961,6 +5289,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -4971,6 +5300,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -5012,21 +5342,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -5043,6 +5376,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -5050,6 +5384,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -5066,6 +5401,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -5083,13 +5419,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -5098,67 +5436,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -5172,21 +5508,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -5196,21 +5536,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -5220,17 +5564,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -5263,12 +5610,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -5279,16 +5628,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -5310,13 +5662,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -5324,11 +5678,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -5344,8 +5700,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -5355,6 +5712,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -5373,6 +5731,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -5390,12 +5749,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -5413,6 +5775,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -5425,38 +5788,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -5467,6 +5831,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -5475,6 +5840,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -5510,6 +5876,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -5551,6 +5918,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -5574,20 +5942,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -5597,6 +5969,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -5606,6 +5979,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -5614,11 +5988,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -5626,10 +6002,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -5639,6 +6017,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -5650,33 +6029,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -5686,6 +6072,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -5699,6 +6086,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -5713,13 +6101,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -5731,6 +6121,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -5740,6 +6131,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -5749,12 +6141,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -5776,17 +6170,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -5796,6 +6193,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -5818,29 +6216,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -5863,26 +6266,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -5896,6 +6304,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -5903,6 +6312,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -5932,6 +6342,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -5945,6 +6356,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -5953,6 +6365,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -5982,17 +6395,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -6004,12 +6420,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -6020,12 +6438,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -6038,17 +6458,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -6072,17 +6495,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -6112,6 +6538,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -6141,17 +6568,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -6159,6 +6589,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -6166,6 +6597,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -6182,7 +6614,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -6192,6 +6625,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -6202,6 +6636,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -6243,21 +6678,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -6274,6 +6712,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -6281,6 +6720,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -6297,6 +6737,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -6314,13 +6755,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -6329,67 +6772,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -6403,21 +6844,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -6427,21 +6872,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -6451,17 +6900,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -6494,12 +6946,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -6510,16 +6964,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -6541,13 +6998,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -6555,11 +7014,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -6575,8 +7036,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -6586,6 +7048,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -6604,6 +7067,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -6621,12 +7085,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -6644,6 +7111,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -6656,38 +7124,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -6698,6 +7167,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -6706,6 +7176,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -6741,6 +7212,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -6782,6 +7254,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -6805,20 +7278,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -6828,6 +7305,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -6837,6 +7315,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -6845,11 +7324,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -6857,10 +7338,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -6870,6 +7353,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -6881,33 +7365,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -6917,6 +7408,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -6930,6 +7422,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -6944,13 +7437,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -6962,6 +7457,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -6971,6 +7467,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -6980,12 +7477,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -7007,17 +7506,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -7027,6 +7529,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -7049,29 +7552,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -7094,26 +7602,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -7127,6 +7640,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -7134,6 +7648,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -7146,10 +7661,12 @@ This success is built on your hard work. Thank you.
 **Marketing Agent**  
 **Status**: Tasks C, D, E, F, G, H COMPLETE  
 **In Progress**: Tasks I, J  
-**Timestamp**: 2025-10-11T20:00:00Z" >> feedback/marketing.md && echo "Tasks F, G, H appended successfully"50/month recurring  
+**Timestamp**: 2025-10-11T20:00:00Z" >> feedback/marketing.md && echo "Tasks F, G, H appended successfully"50/month recurring
+
 - 25 customers @ 00/mo = 50/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -7173,17 +7690,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable (0/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -7213,6 +7733,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -7242,12 +7763,14 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ 0/mo = 5/month (00/year)
 - 25 referrals @ cd /home/justin/HotDash/hot-dash && echo "
 
@@ -7266,6 +7789,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -7279,6 +7803,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -7287,6 +7812,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -7316,17 +7842,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -7338,12 +7867,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -7354,12 +7885,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -7372,17 +7905,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -7406,17 +7942,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -7446,6 +7985,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -7475,17 +8015,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -7493,6 +8036,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -7500,6 +8044,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -7516,7 +8061,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -7526,6 +8072,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -7536,6 +8083,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -7577,21 +8125,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -7608,6 +8159,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -7615,6 +8167,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -7631,6 +8184,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -7648,13 +8202,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -7663,67 +8219,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -7737,21 +8291,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -7761,21 +8319,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -7785,17 +8347,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -7828,12 +8393,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -7844,16 +8411,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -7875,13 +8445,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -7889,11 +8461,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -7909,8 +8483,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -7920,6 +8495,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -7938,6 +8514,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -7955,12 +8532,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -7978,6 +8558,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -7990,38 +8571,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -8032,6 +8614,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -8040,6 +8623,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -8075,6 +8659,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -8116,6 +8701,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -8139,20 +8725,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -8162,6 +8752,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -8171,6 +8762,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -8179,11 +8771,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -8191,10 +8785,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -8204,6 +8800,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -8215,33 +8812,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -8251,6 +8855,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -8264,6 +8869,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -8278,13 +8884,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -8296,6 +8904,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -8305,6 +8914,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -8314,12 +8924,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -8341,17 +8953,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -8361,6 +8976,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -8383,29 +8999,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -8428,26 +9049,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -8461,6 +9087,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -8468,6 +9095,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -8481,6 +9109,7 @@ This success is built on your hard work. Thank you.
 **Status**: Tasks C, D, E, F, G, H COMPLETE  
 **In Progress**: Tasks I, J  
 **Timestamp**: 2025-10-11T20:00:00Z" >> feedback/marketing.md && echo "Tasks F, G, H appended successfully"00/mo = 75/month (,500/year)
+
 - 50 referrals @ cd /home/justin/HotDash/hot-dash && echo "
 
 # TASK F: PARTNER/AFFILIATE MESSAGING
@@ -8498,6 +9127,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -8511,6 +9141,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -8519,6 +9150,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -8548,17 +9180,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -8570,12 +9205,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -8586,12 +9223,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -8604,17 +9243,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -8638,17 +9280,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -8678,6 +9323,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -8707,17 +9353,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -8725,6 +9374,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -8732,6 +9382,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -8748,7 +9399,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -8758,6 +9410,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -8768,6 +9421,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -8809,21 +9463,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -8840,6 +9497,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -8847,6 +9505,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -8863,6 +9522,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -8880,13 +9540,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -8895,67 +9557,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -8969,21 +9629,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -8993,21 +9657,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -9017,17 +9685,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -9060,12 +9731,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -9076,16 +9749,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -9107,13 +9783,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -9121,11 +9799,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -9141,8 +9821,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -9152,6 +9833,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -9170,6 +9852,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -9187,12 +9870,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -9210,6 +9896,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -9222,38 +9909,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -9264,6 +9952,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -9272,6 +9961,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -9307,6 +9997,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -9348,6 +10039,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -9371,20 +10063,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -9394,6 +10090,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -9403,6 +10100,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -9411,11 +10109,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -9423,10 +10123,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -9436,6 +10138,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -9447,33 +10150,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -9483,6 +10193,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -9496,6 +10207,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -9510,13 +10222,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -9528,6 +10242,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -9537,6 +10252,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -9546,12 +10262,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -9573,17 +10291,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -9593,6 +10314,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -9615,29 +10337,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -9660,26 +10387,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -9693,6 +10425,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -9700,6 +10433,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -9729,6 +10463,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -9742,6 +10477,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -9750,6 +10486,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -9779,17 +10516,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -9801,12 +10541,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -9817,12 +10559,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -9835,17 +10579,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -9869,17 +10616,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -9909,6 +10659,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -9938,17 +10689,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -9956,6 +10710,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -9963,6 +10718,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -9979,7 +10735,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -9989,6 +10746,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -9999,6 +10757,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -10040,21 +10799,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -10071,6 +10833,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -10078,6 +10841,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -10094,6 +10858,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -10111,13 +10876,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -10126,67 +10893,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -10200,21 +10965,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -10224,21 +10993,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -10248,17 +11021,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -10291,12 +11067,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -10307,16 +11085,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -10338,13 +11119,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -10352,11 +11135,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -10372,8 +11157,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -10383,6 +11169,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -10401,6 +11188,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -10418,12 +11206,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -10441,6 +11232,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -10453,38 +11245,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -10495,6 +11288,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -10503,6 +11297,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -10538,6 +11333,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -10579,6 +11375,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -10602,20 +11399,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -10625,6 +11426,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -10634,6 +11436,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -10642,11 +11445,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -10654,10 +11459,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -10667,6 +11474,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -10678,33 +11486,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -10714,6 +11529,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -10727,6 +11543,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -10741,13 +11558,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -10759,6 +11578,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -10768,6 +11588,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -10777,12 +11598,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -10804,17 +11627,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -10824,6 +11650,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -10846,29 +11673,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -10891,26 +11723,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -10924,6 +11761,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -10931,6 +11769,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -10960,6 +11799,7 @@ We're excited to share some big news with our valued partners: HotDash has just 
 **Why This Matters to You**:
 
 Agent SDK represents a significant opportunity for partners like you to:
+
 - Offer cutting-edge AI technology to your clients
 - Help your portfolio companies scale support without massive hiring
 - Differentiate your service offerings with innovative solutions
@@ -10973,6 +11813,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 ✅ Customers get fast, accurate, empathetic service
 
 **Early Results**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - +13 point improvement in CSAT
@@ -10981,6 +11822,7 @@ Unlike chatbots that replace human agents, Agent SDK keeps humans in control:
 **Partnership Opportunities**:
 
 We're offering exclusive benefits for partners:
+
 1. **Agency Partners**: 20% revenue share on referrals
 2. **Technology Partners**: Co-marketing opportunities, integration support
 3. **Consulting Partners**: Implementation training, dedicated account management
@@ -11010,17 +11852,20 @@ HotDash Partnership Team
 **Title**: \"Building Scalable E-Commerce Support with AI\"
 
 **Format**: 45-minute webinar
+
 - 15 min: Partner introduces support challenges
 - 20 min: HotDash demos Agent SDK
 - 10 min: Q&A
 
 **Promotion**:
+
 - Joint email to both lists
 - Co-branded landing page
 - Social media promotion (split 50/50)
 - Lead sharing agreement
 
 **Benefit for Partners**:
+
 - Thought leadership positioning
 - Access to HotDash audience
 - Qualified leads for your services
@@ -11032,12 +11877,14 @@ HotDash Partnership Team
 **Proposal**: Feature partner-referred clients in joint case studies
 
 **Structure**:
+
 - Partner context: Why client needed solution
 - HotDash solution: How Agent SDK solved the problem
 - Joint results: Metrics showing success
 - Partner value-add: How partner facilitated success
 
 **Distribution**:
+
 - Both websites and blogs
 - Joint press release
 - Social media amplification
@@ -11048,12 +11895,14 @@ HotDash Partnership Team
 ### Co-Branded Content Series
 
 **Topics**:
+
 1. \"The Future of E-Commerce Customer Support\"
 2. \"AI + Human: Better Together\"
 3. \"Scaling Support Without Scaling Headcount\"
 4. \"ROI Calculator: When to Invest in AI Support\"
 
 **Format Options**:
+
 - Blog posts (both sites)
 - LinkedIn articles
 - Downloadable guides
@@ -11066,17 +11915,20 @@ HotDash Partnership Team
 ### Affiliate Program Overview
 
 **Commission Structure**:
+
 - 15% recurring commission on all referred customers
 - 30% first-month bonus
 - 90-day cookie duration
 - Monthly payouts via PayPal or bank transfer
 
 **Earning Examples**:
+
 - 5 customers @ $50/mo = $37.50/month recurring
-- 10 customers @ $100/mo = $150/month recurring  
+- 10 customers @ $100/mo = $150/month recurring
 - 25 customers @ $200/mo = $750/month recurring
 
 **Support Provided**:
+
 - Dedicated affiliate manager
 - Marketing materials library
 - Performance tracking dashboard
@@ -11100,17 +11952,20 @@ Given your audience in the e-commerce space, I think this could be a great fit:
 AI-assisted customer support that keeps humans in control. Built specifically for Shopify stores.
 
 **Why Your Audience Will Love It**:
+
 - Solves a real pain point (overwhelming support volume)
 - Fast results (ROI in <10 days)
 - Affordable ($50/mo starting price)
 - Not a chatbot (human operators stay in control)
 
 **What You Earn**:
+
 - 15% recurring commission (as long as they're a customer)
 - 30% first-month bonus
 - 90-day cookie
 
 **Getting Started**:
+
 1. Join the program: [AFFILIATE SIGNUP LINK]
 2. Get your unique link
 3. Share with your audience
@@ -11140,6 +11995,7 @@ We just released [NEW FEATURE] for Agent SDK.
 **Why your audience cares**: [BENEFIT]
 
 **How to promote it**:
+
 - Updated one-pager: [LINK]
 - Social media graphics: [LINK]
 - Demo video: [LINK]
@@ -11169,17 +12025,20 @@ HotDash Affiliate Team
 ✅ **Recurring Revenue**: Earn commissions month after month
 
 **Commission Structure**:
+
 - 15% recurring monthly revenue
 - 30% bonus on first month
 - 90-day cookie duration
 - Average customer lifetime: 18+ months
 
 **Example Earnings**:
+
 - 10 referrals @ $50/mo = $75/month ($900/year)
 - 25 referrals @ $100/mo = $375/month ($4,500/year)
 - 50 referrals @ $150/mo = $1,125/month ($13,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -11187,6 +12046,7 @@ HotDash Affiliate Team
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -11194,6 +12054,7 @@ HotDash Affiliate Team
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -11210,7 +12071,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -11220,6 +12082,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -11230,6 +12093,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -11271,21 +12135,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -11302,6 +12169,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -11309,6 +12177,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -11325,6 +12194,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -11342,13 +12212,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -11357,67 +12229,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, \"I couldn't do this without Agent SDK\"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -11431,21 +12301,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -11455,21 +12329,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -11479,17 +12357,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -11522,12 +12403,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -11538,16 +12421,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -11569,13 +12455,15 @@ Create a visual callout with key numbers:
 ```
 
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > \"Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving $3,500/month compared to hiring more staff. It's the best tool investment we've ever made.\"
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -11583,11 +12471,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -11603,8 +12493,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -11614,6 +12505,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -11632,6 +12524,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -11649,12 +12542,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > \"Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made.\" — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > \"Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations.\" — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > \"We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to.\" — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -11672,6 +12568,7 @@ HotDash
 5. \"If you could describe Agent SDK in one sentence, what would you say?\"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -11684,38 +12581,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -11726,6 +12624,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -11734,6 +12633,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -11769,6 +12669,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -11810,6 +12711,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -11833,20 +12735,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -11856,6 +12762,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -11865,6 +12772,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -11873,11 +12781,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -11885,10 +12795,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -11898,6 +12810,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -11909,33 +12822,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The \"AI assists, humans approve\" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**\"Above and Beyond\" Award**: 
+**\"Above and Beyond\" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - $500 bonus
 - Extra PTO day
@@ -11945,6 +12865,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -11958,6 +12879,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -11972,13 +12894,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -11990,6 +12914,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: \"Agent SDK Launch: Lessons Learned\" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -11999,6 +12924,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -12008,12 +12934,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -12035,17 +12963,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -12055,6 +12986,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -12077,29 +13009,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [$W] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > \"[Customer quote]\"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [$Y] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -12122,26 +13059,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [$X] → [$Y] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -12155,6 +13097,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -12162,6 +13105,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -12177,6 +13121,7 @@ This success is built on your hard work. Thank you.
 **Timestamp**: 2025-10-11T20:00:00Z" >> feedback/marketing.md && echo "Tasks F, G, H appended successfully"3,500/year)
 
 **What You Get**:
+
 - Dedicated affiliate manager
 - Marketing materials (emails, graphics, videos)
 - Real-time tracking dashboard
@@ -12184,6 +13129,7 @@ This success is built on your hard work. Thank you.
 - Exclusive promotions and bonuses
 
 **Who Should Join?**:
+
 - E-commerce bloggers and content creators
 - Shopify app developers
 - Agency owners serving online retailers
@@ -12191,6 +13137,7 @@ This success is built on your hard work. Thank you.
 - E-commerce podcasters and YouTube creators
 
 **How It Works**:
+
 1. **Sign Up** — Join free in 2 minutes
 2. **Get Your Link** — Unique tracking URL
 3. **Promote** — Share with your audience
@@ -12207,7 +13154,8 @@ Schedule a call: [CALENDLY LINK]
 ## F.4 Partner FAQ
 
 **Q: What's the difference between agency, technology, and affiliate partnerships?**  
-A: 
+A:
+
 - **Agency Partners**: Implement Agent SDK for their clients, earn revenue share
 - **Technology Partners**: Integrate Agent SDK into their platforms, co-market
 - **Affiliate Partners**: Promote Agent SDK to their audience, earn commissions
@@ -12217,6 +13165,7 @@ A: Affiliate signup is instant. Agency and technology partnerships require a bri
 
 **Q: Do you provide training for partners?**  
 A: Yes! We offer:
+
 - Onboarding webinars (weekly)
 - Partner certification program
 - Documentation and video tutorials
@@ -12227,6 +13176,7 @@ A: White-labeling is available for agency partners with a minimum commitment. Co
 
 **Q: What marketing materials do you provide?**  
 A: We provide:
+
 - Email templates
 - Social media graphics
 - Blog post outlines
@@ -12268,21 +13218,24 @@ We provide AI-assisted customer support for e-commerce businesses. Our platform 
 **Proposed Integration**:
 [Specific integration idea based on partner's product]
 
-**Example**: 
+**Example**:
 If you're a helpdesk platform: Bi-directional sync between Agent SDK approval queue and your ticketing system
 
 **Benefits for Your Customers**:
+
 - Enhanced functionality (specific benefit)
 - Seamless workflow (no context switching)
 - Differentiated offering (competitive advantage)
 
 **Benefits for Your Business**:
+
 - Co-marketing opportunities
 - Cross-promotion to our customer base
 - Potential revenue share on joint customers
 - Featured placement in our partner ecosystem
 
 **Next Steps**:
+
 1. Schedule a technical discovery call: [CALENDLY LINK]
 2. Review our API documentation: [API DOCS LINK]
 3. Discuss co-marketing strategy
@@ -12299,6 +13252,7 @@ HotDash
 ## Task F Summary
 
 **✅ Delivered**:
+
 - Partner announcement template (agency, technology, consulting, affiliate)
 - Co-marketing opportunity proposals (webinars, case studies, content series)
 - Affiliate promotion materials (program overview, email templates, landing page copy)
@@ -12306,6 +13260,7 @@ HotDash
 - Integration partner outreach template
 
 **Partner Types Addressed**:
+
 - Agency partners (implementation services)
 - Technology partners (integrations)
 - Affiliate partners (content creators, bloggers)
@@ -12322,6 +13277,7 @@ HotDash
 ### Pre-Interview Preparation
 
 **Before the Interview**:
+
 1. Review customer's account data (usage, metrics, support tickets)
 2. Identify key success metrics
 3. Prepare personalized questions based on their specific use case
@@ -12339,13 +13295,15 @@ HotDash
 #### Section 1: Background & Challenge (10 minutes)
 
 **Company Context**:
+
 1. Tell me about your e-commerce business. What do you sell?
 2. How big is your support team?
 3. What's your typical support volume (tickets/day or month)?
 
-**The Problem**:
-4. What challenges were you facing with customer support before Agent SDK?
-   - Probe: Response times, team capacity, quality consistency, customer satisfaction
+**The Problem**: 4. What challenges were you facing with customer support before Agent SDK?
+
+- Probe: Response times, team capacity, quality consistency, customer satisfaction
+
 5. What solutions had you tried before? Why didn't they work?
    - Probe: Chatbots, hiring, existing tools
 6. What was the breaking point that made you look for a solution?
@@ -12354,67 +13312,65 @@ HotDash
 
 #### Section 2: Implementation & Experience (10 minutes)
 
-**Getting Started**:
-8. How did you hear about Agent SDK?
-9. What made you decide to try it?
-   - Probe: Specific feature, pricing, demo, referral
+**Getting Started**: 8. How did you hear about Agent SDK? 9. What made you decide to try it?
+
+- Probe: Specific feature, pricing, demo, referral
+
 10. Walk me through the implementation process. How long did it take?
 11. What surprised you (positively or negatively) during setup?
 
-**Operator Experience**:
-12. How did your team react when you introduced Agent SDK?
-   - Probe: Initial skepticism, excitement, concerns
+**Operator Experience**: 12. How did your team react when you introduced Agent SDK?
+
+- Probe: Initial skepticism, excitement, concerns
+
 13. How long did it take for operators to feel comfortable with it?
 14. What feedback have you received from your support team?
-   - Quote: Get specific quotes from operators
+
+- Quote: Get specific quotes from operators
 
 #### Section 3: Results & Impact (15 minutes)
 
-**Quantifiable Metrics**:
-15. How has Agent SDK changed your response times?
-   - Get specific: Before (X hours) → After (Y minutes)
+**Quantifiable Metrics**: 15. How has Agent SDK changed your response times?
+
+- Get specific: Before (X hours) → After (Y minutes)
+
 16. How many more tickets can each operator handle now?
 17. What's happened to your customer satisfaction scores?
 18. Have you been able to scale support volume without hiring?
 19. What's the financial impact? (Cost savings, revenue retention)
 
-**Qualitative Benefits**:
-20. How has it changed day-to-day operations?
-21. What unexpected benefits have you seen?
-22. How have customers reacted?
-   - Quote: Any customer feedback
+**Qualitative Benefits**: 20. How has it changed day-to-day operations? 21. What unexpected benefits have you seen? 22. How have customers reacted?
+
+- Quote: Any customer feedback
+
 23. How has it changed your team's morale/stress levels?
 
-**Specific Examples**:
-24. Can you share a specific example where Agent SDK really shined?
-   - Story: Get detailed narrative
+**Specific Examples**: 24. Can you share a specific example where Agent SDK really shined?
+
+- Story: Get detailed narrative
+
 25. Has there been a moment where you thought, "I couldn't do this without Agent SDK"?
 
 #### Section 4: Recommendations & Future (5 minutes)
 
-**Advice for Others**:
-26. What would you tell another e-commerce company considering Agent SDK?
-27. What advice would you give to someone implementing it?
-28. What should they know that might surprise them?
+**Advice for Others**: 26. What would you tell another e-commerce company considering Agent SDK? 27. What advice would you give to someone implementing it? 28. What should they know that might surprise them?
 
-**Looking Ahead**:
-29. How do you see Agent SDK fitting into your support strategy long-term?
-30. What features or improvements would you like to see?
+**Looking Ahead**: 29. How do you see Agent SDK fitting into your support strategy long-term? 30. What features or improvements would you like to see?
 
-**Testimonial**:
-31. If you had to describe Agent SDK in one sentence, what would you say?
-32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
+**Testimonial**: 31. If you had to describe Agent SDK in one sentence, what would you say? 32. On a scale of 1-10, how likely are you to recommend Agent SDK? Why?
 
 ---
 
 ### Post-Interview Checklist
 
 **Within 24 Hours**:
+
 - [ ] Send thank-you email
 - [ ] Request any additional data/screenshots
 - [ ] Send small thank-you gift (swag, gift card)
 
 **Within 1 Week**:
+
 - [ ] Transcribe interview
 - [ ] Pull relevant quotes
 - [ ] Compile metrics
@@ -12428,21 +13384,25 @@ HotDash
 ### Must-Have Metrics
 
 **Response Time**:
+
 - Before: [X hours/minutes]
 - After: [Y hours/minutes]
 - Improvement: [Z%]
 
 **Operator Efficiency**:
+
 - Before: [X tickets/day per operator]
 - After: [Y tickets/day per operator]
 - Improvement: [Z%]
 
 **Customer Satisfaction (CSAT)**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
 
 **First-Contact Resolution**:
+
 - Before: [X%]
 - After: [Y%]
 - Improvement: [+/- Z points]
@@ -12452,21 +13412,25 @@ HotDash
 ### Nice-to-Have Metrics
 
 **Cost Metrics**:
+
 - Cost per ticket: Before vs. After
 - Operational savings: $/month
 - ROI timeline: Days to break-even
 
 **Volume Metrics**:
+
 - Total tickets processed
 - Peak volume handled
 - Approval rate (% of AI suggestions approved)
 
 **Team Metrics**:
+
 - Operator satisfaction score
 - Team turnover rate
 - Time to onboard new operators
 
 **Customer Metrics**:
+
 - Customer retention rate
 - Net Promoter Score (NPS)
 - Social media sentiment
@@ -12476,17 +13440,20 @@ HotDash
 ### Data Collection Methods
 
 **From HotDash Analytics**:
+
 - Approval queue metrics (volume, latency, approval rate)
 - Response time averages
 - System usage statistics
 
 **From Customer**:
+
 - Before/after screenshots of dashboards
 - CSAT/NPS scores
 - Team size and composition
 - Financial impact calculations
 
 **From Interviews**:
+
 - Qualitative feedback
 - Specific stories and examples
 - Operator testimonials
@@ -12519,12 +13486,14 @@ Open with the most compelling stat or quote:
 ### Section 2: Company Background (2 paragraphs)
 
 **Paragraph 1**: Who they are
+
 - Industry
 - Products
 - Team size
 - Growth trajectory
 
 **Paragraph 2**: The challenge
+
 - Support volume problem
 - Impact on business
 - What they tried before
@@ -12535,16 +13504,19 @@ Open with the most compelling stat or quote:
 ### Section 3: The Solution (3 paragraphs)
 
 **Paragraph 1**: Discovery and decision
+
 - How they found Agent SDK
 - What made them try it
 - Initial concerns
 
 **Paragraph 2**: Implementation
+
 - How long it took
 - What surprised them
 - Team onboarding
 
 **Paragraph 3**: How they use it
+
 - Daily workflow
 - Operator experience
 - Integration with existing tools
@@ -12556,16 +13528,16 @@ Open with the most compelling stat or quote:
 **Metrics Paragraph**:
 Create a visual callout with key numbers:
 
-
-
 **Qualitative Impact Paragraph**:
+
 - Team morale improvement
 - Customer feedback
 - Unexpected benefits
 
 **Quote Paragraph**:
+
 > "Agent SDK didn't just solve our volume problem—it transformed how our team works. Operators are happier, customers are happier, and we're saving ,500/month compared to hiring more staff. It's the best tool investment we've ever made."
-> 
+>
 > — [NAME], [TITLE]
 
 ---
@@ -12573,11 +13545,13 @@ Create a visual callout with key numbers:
 ### Section 5: Key Takeaways (Bullet points)
 
 **What [COMPANY] Learned**:
+
 - [Lesson 1]
 - [Lesson 2]
 - [Lesson 3]
 
 **Advice for Others**:
+
 - [Tip 1]
 - [Tip 2]
 - [Tip 3]
@@ -12593,8 +13567,9 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### CTA
 
 **For Readers**:
+
 > Want similar results for your e-commerce support team?
-> 
+>
 > [SCHEDULE A DEMO] [READ MORE CASE STUDIES]
 
 ---
@@ -12604,6 +13579,7 @@ What's next for them? How does Agent SDK fit into their future plans?
 ### When to Collect Testimonials
 
 **Timing**:
+
 - After 2 weeks of use (early impressions)
 - After 30 days (quantifiable results)
 - After 90 days (long-term impact)
@@ -12622,6 +13598,7 @@ I hope Agent SDK has been working well for you! I noticed [SPECIFIC METRIC OR AC
 Would you be willing to share a brief testimonial about your experience? It would help other e-commerce businesses understand how Agent SDK can help them.
 
 **What I'm looking for**:
+
 - 2-3 sentences about your experience
 - Any specific results you're comfortable sharing
 - What you'd tell another support leader considering Agent SDK
@@ -12639,12 +13616,15 @@ HotDash
 ### Testimonial Formats
 
 **Short Form** (1-2 sentences):
+
 > "Agent SDK cut our response time by 70% and our operators love it. Best tool investment we've made." — [NAME], [COMPANY]
 
 **Medium Form** (3-4 sentences):
+
 > "Before Agent SDK, our team of 6 operators struggled with 150 daily inquiries. Now we handle 400+ with the same team. The AI prepares responses, our team approves, and customers get fast, accurate help. It's transformed our support operations." — [NAME], [TITLE], [COMPANY]
 
 **Long Form** (paragraph):
+
 > "We were skeptical about AI support—we'd tried chatbots and customers hated them. Agent SDK is completely different. Our operators stay in control, but the AI handles all the time-consuming research and drafting. Response times went from 4 hours to 30 minutes, CSAT scores jumped 15 points, and most importantly, our team is happier. They're solving real problems instead of drowning in repetitive questions. The ROI was clear within 10 days. I recommend Agent SDK to every e-commerce leader I talk to." — [NAME], [TITLE], [COMPANY]
 
 ---
@@ -12662,6 +13642,7 @@ HotDash
 5. "If you could describe Agent SDK in one sentence, what would you say?"
 
 **Recording Tips**:
+
 - Use customer's webcam (no need for professional)
 - Natural conversational tone (not scripted)
 - Record 2-3 takes so customer can pick best
@@ -12674,38 +13655,39 @@ HotDash
 ### Where to Publish
 
 **Primary Channels**:
+
 1. **HotDash Blog** — Full case study
 2. **Customer Page** — Dedicated landing page (hotdash.com/customers/[company-name])
 3. **Press Release** — If significant results
 4. **Social Media** — Snippets and quotes across platforms
 
-**Secondary Channels**:
-5. **Email Newsletter** — Feature in monthly newsletter
-6. **Sales Materials** — Add to pitch decks and proposals
-7. **Partner Portal** — Share with affiliates/partners for co-promotion
-8. **Industry Publications** — Submit to e-commerce blogs/magazines
+**Secondary Channels**: 5. **Email Newsletter** — Feature in monthly newsletter 6. **Sales Materials** — Add to pitch decks and proposals 7. **Partner Portal** — Share with affiliates/partners for co-promotion 8. **Industry Publications** — Submit to e-commerce blogs/magazines
 
 ---
 
 ### Promotion Strategy
 
 **Week 1: Internal + Owned Channels**
+
 - Publish blog post
 - Email to newsletter list
 - Post on all social channels
 - Add to case studies page
 
 **Week 2: Customer Amplification**
+
 - Ask customer to share on their channels
 - Tag them in social posts (with approval)
 - Offer co-branded graphics
 
 **Week 3: Partner + Media Outreach**
+
 - Share with partners for amplification
 - Pitch to industry publications
 - Submit to relevant communities (Reddit, Product Hunt, Indiehackers)
 
 **Ongoing**:
+
 - Use in sales conversations
 - Feature in webinars
 - Add to email drip campaigns
@@ -12716,6 +13698,7 @@ HotDash
 ## Task G Summary
 
 **✅ Delivered**:
+
 - Pilot customer interview guide (32 questions across 4 sections)
 - Success story metrics tracking framework (must-have and nice-to-have metrics)
 - Narrative-driven case study template (different focus from Task A)
@@ -12724,6 +13707,7 @@ HotDash
 - Success story distribution plan
 
 **Distinction from Task A**:
+
 - Task A: Post-launch case study framework (structured, metric-heavy)
 - Task G: Pilot customer success stories (narrative-driven, testimonial-focused)
 
@@ -12759,6 +13743,7 @@ Agent SDK is AI-assisted customer support that keeps humans in control. It's not
 E-commerce businesses are drowning in support volume. They need a better solution than chatbots (which customers hate) or massive hiring (which is expensive and slow).
 
 We built that solution. And early results show it works:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% operator satisfaction
@@ -12800,6 +13785,7 @@ This launch represents contributions from across the company:
 **Looking Ahead**
 
 This is just the beginning. We have an ambitious roadmap:
+
 - Q1 2026: Proactive support
 - Q2 2026: Multi-language
 - Q3 2026: Voice integration
@@ -12823,20 +13809,24 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 **9:00am**: CEO all-hands email sent
 
 **9:30am**: Team standup
+
 - Quick wins from each department
 - Launch timeline review
 - Responsibilities for the day
 
 **10:00am**: Press release distribution
+
 - Marketing monitors media pickup
 - Engineering monitors system performance
 - Support monitors for customer questions
 
 **10:30am**: Social media blitz begins
+
 - All team members post using personal accounts
 - Company accounts fire coordinated sequence
 
 **11:00am**: First customer signup celebration
+
 - Ring the gong/bell
 - Team photo
 - Post to social media
@@ -12846,6 +13836,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Midday (12pm - 2pm)
 
 **12:00pm**: Team Lunch Celebration
+
 - Location: Main conference room or off-site restaurant
 - Catering: Pizza, champagne, sparkling cider
 - Agenda:
@@ -12855,6 +13846,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
   - Group photo
 
 **1:00pm**: Press coverage monitoring
+
 - Marketing shares any early coverage
 - Team celebrates each media mention
 
@@ -12863,11 +13855,13 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Afternoon (2pm - 5pm)
 
 **2:00pm**: Demo marathon
+
 - Sales team conducts scheduled demos
 - Engineering available for technical questions
 - Support monitors pilot customer experience
 
 **3:00pm**: Metrics check-in
+
 - Review launch day metrics
 - Website traffic
 - Demo requests
@@ -12875,10 +13869,12 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 - Media coverage
 
 **4:00pm**: Customer success stories
+
 - Share any early positive feedback
 - Post customer quotes to internal Slack
 
 **5:00pm**: End-of-day wrap-up
+
 - Quick team sync
 - Celebrate wins
 - Identify any issues to address tomorrow
@@ -12888,6 +13884,7 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Evening (5pm+)
 
 **Optional**: Happy hour
+
 - Local bar/restaurant
 - Informal celebration
 - Team bonding
@@ -12899,33 +13896,40 @@ P.S. Team lunch celebration at noon in the main conference room. Pizza and champ
 ### Individual Shoutouts
 
 **Engineering Team**:
+
 > 🏆 **Shoutout to [ENGINEER NAME]**: You architected the approval queue system that's the heart of Agent SDK. The performance is incredible—sub-100ms latency even under load. Thank you!
 
 > 🏆 **Shoutout to [ENGINEER NAME]**: Your work integrating the LlamaIndex RAG system was critical. The knowledge base retrieval is fast and accurate. Brilliant work.
 
 **Product/Design Team**:
+
 > 🏆 **Shoutout to [DESIGNER NAME]**: The approval card design is intuitive and beautiful. Operators are raving about the UX. You nailed it.
 
 **AI/ML Team**:
+
 > 🏆 **Shoutout to [ML ENGINEER NAME]**: The prompt engineering and model fine-tuning resulted in a 92% approval rate. That's incredible accuracy.
 
 **Marketing Team**:
+
 > 🏆 **Shoutout to [MARKETER NAME]**: The "AI assists, humans approve" messaging is resonating everywhere. You found the perfect positioning.
 
 **Support Team**:
+
 > 🏆 **Shoutout to [SUPPORT LEAD NAME]**: Your feedback during the pilot made Agent SDK infinitely better. Thank you for championing the operator-first approach.
 
 **Sales Team**:
+
 > 🏆 **Shoutout to [SALES REP NAME]**: You brought us pilot customers who became our best advocates. Their testimonials are driving demos.
 
 ---
 
 ### Team Recognition
 
-**"Above and Beyond" Award**: 
+**"Above and Beyond" Award**:
 Team vote for the person who went above and beyond during the Agent SDK development.
 
-**Prize**: 
+**Prize**:
+
 - Personalized trophy
 - 00 bonus
 - Extra PTO day
@@ -12935,6 +13939,7 @@ Team vote for the person who went above and beyond during the Agent SDK developm
 For the person who helped across teams, unblocked others, and made everyone's job easier.
 
 **Prize**:
+
 - Personalized plaque
 - Team dinner on the company
 - Featured in company newsletter
@@ -12948,6 +13953,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Survey**: Send to all team members involved
 
 **Questions**:
+
 1. What went better than expected?
 2. What was harder than expected?
 3. What would you do differently next time?
@@ -12962,13 +13968,15 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 
 **Retrospective Meeting**: 90 minutes, all stakeholders
 
-**Format**: 
+**Format**:
+
 - **What Worked** (30 min): Celebrate successes, identify best practices
 - **What Didn't** (30 min): Honest assessment of challenges and missteps
 - **What We Learned** (20 min): Key takeaways and insights
 - **Action Items** (10 min): Changes to implement for next launch
 
 **Facilitation**:
+
 - External facilitator (or neutral team member)
 - Anonymous submission option for sensitive feedback
 - No blame, only learning
@@ -12980,6 +13988,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 **Create**: "Agent SDK Launch: Lessons Learned" document
 
 **Sections**:
+
 1. **Executive Summary**: Key takeaways in 5 bullets
 2. **What Worked**: Successes and best practices
 3. **What Didn't**: Challenges and how we overcame them
@@ -12989,6 +13998,7 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 7. **Recommendations**: For next major launch
 
 **Distribution**:
+
 - Store in company wiki
 - Share with leadership
 - Reference for future launches
@@ -12998,12 +14008,14 @@ For the person who helped across teams, unblocked others, and made everyone's jo
 ### Continuous Improvement
 
 **Monthly Check-ins** (First 3 months):
+
 - Review launch metrics
 - Collect new customer feedback
 - Identify product improvements
 - Celebrate milestones
 
 **Quarterly Review**:
+
 - Long-term impact assessment
 - Market response analysis
 - Competitive landscape update
@@ -13025,17 +14037,20 @@ Hi team,
 One week ago, we launched Agent SDK. Here's what happened:
 
 📊 **By the Numbers**:
-- [X] demo requests
+
+- [x] demo requests
 - [Y] customer signups
 - [Z] media mentions
 - [W] social media impressions
 
 🎉 **Highlights**:
+
 - [Media outlet] featured us
 - [Customer name] shared amazing feedback
 - [Specific win]
 
 💪 **Team Impact**:
+
 - Engineering: Zero critical bugs (incredible!)
 - Support: Handled [X] pilot customer questions seamlessly
 - Marketing: Press coverage exceeded goals by [Y%]
@@ -13045,6 +14060,7 @@ One week ago, we launched Agent SDK. Here's what happened:
 This launch was a team effort. Every department contributed. Every person mattered.
 
 📅 **What's Next**:
+
 - Continue monitoring pilot customers
 - Iterate based on feedback
 - Prepare for full-scale rollout
@@ -13067,29 +14083,34 @@ Hi team,
 30 days ago, we launched Agent SDK. The results exceeded our goals.
 
 📊 **Customer Impact**:
-- [X] companies using Agent SDK
+
+- [x] companies using Agent SDK
 - [Y]% average improvement in response time
 - [Z]% customer satisfaction increase
 - [] in MRR
 
 🗣️ **What Customers Are Saying**:
+
 > "[Customer quote]"
-> 
+>
 > — [Name], [Company]
 
 📈 **Business Impact**:
+
 - Pipeline: [X] demos scheduled
 - Revenue: [] in new ARR
 - Press: [Z] media mentions
 - Social: [W] total engagements
 
 🏆 **Team Wins**:
+
 - Product: [Feature] shipped ahead of schedule
 - Support: 98% pilot customer satisfaction
 - Engineering: 99.8% uptime
 - Marketing: [X] inbound leads
 
 🎯 **Next 30 Days**:
+
 - Expand to [X] more customers
 - Ship [Feature Y]
 - Launch [Campaign Z]
@@ -13112,26 +14133,31 @@ Hi team,
 3 months ago, we launched Agent SDK. It's transformed HotDash.
 
 📊 **Growth**:
+
 - Customers: [X] → [Y] (+Z%)
 - MRR: [] → [] (+Z%)
 - Team: [X] → [Y] people
 
 🌟 **Customer Success Stories**:
+
 - [Company A]: [Result]
 - [Company B]: [Result]
 - [Company C]: [Result]
 
 🏅 **Recognition**:
+
 - Featured in [Publication]
 - Won [Award]
 - Partnered with [Company]
 
 💡 **What We Learned**:
+
 - [Learning 1]
 - [Learning 2]
 - [Learning 3]
 
 🚀 **Q2 Roadmap**:
+
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -13145,6 +14171,7 @@ This success is built on your hard work. Thank you.
 ## Task H Summary
 
 **✅ Delivered**:
+
 - All-hands announcement (CEO email for launch day)
 - Detailed celebration plan (9am-5pm+ schedule)
 - Internal recognition program (individual shoutouts, team awards)
@@ -13152,6 +14179,7 @@ This success is built on your hard work. Thank you.
 - Post-launch communication templates (Week 1, Month 1, Quarter 1)
 
 **Focus Areas**:
+
 - Team appreciation and recognition
 - Structured celebration activities
 - Process for capturing learnings
@@ -13206,19 +14234,22 @@ This success is built on your hard work. Thank you.
 
 **Campaign Name**: "Agent SDK Launch & Education Series"
 **Duration**: 2 weeks (5 emails)
-**Audience Segments**: 
+**Audience Segments**:
+
 - Existing HotDash customers
 - Trial users
-- Demo requesters  
+- Demo requesters
 - Newsletter subscribers
 
 **Goals**:
+
 - Announce Agent SDK launch
 - Educate on human-in-loop approach
 - Drive demo bookings
 - Convert trials to paid
 
 **Send Schedule**:
+
 - Email 1: Launch Day (Day 0)
 - Email 2: Day 3 (Education)
 - Email 3: Day 7 (Social Proof)
@@ -13254,6 +14285,7 @@ AI-assisted customer support that keeps humans in control.
 Most AI support tools replace human agents with chatbots.
 
 Agent SDK does something better:
+
 - AI prepares responses
 - Human operators review and approve
 - Customers get fast, accurate, empathetic service
@@ -13261,6 +14293,7 @@ Agent SDK does something better:
 **The results?**
 
 Early customers are seeing:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% customer satisfaction
@@ -13269,6 +14302,7 @@ Early customers are seeing:
 **Why it matters**
 
 If you're running customer support for an e-commerce business, you know the challenge:
+
 - Volume is increasing
 - Hiring is expensive
 - Chatbots frustrate customers
@@ -13387,12 +14421,14 @@ Today, I want to share some real results from real companies.
 **Case Study #1: Fashion Retailer**
 
 **Before Agent SDK:**
+
 - 6 support operators
 - 30 tickets/day per operator
 - 3-hour average response time
 - 78% customer satisfaction
 
 **After Agent SDK:**
+
 - Same 6 operators
 - 85 tickets/day per operator
 - 35-minute average response time
@@ -13407,6 +14443,7 @@ Today, I want to share some real results from real companies.
 **The Challenge:** Black Friday volume spike (3x normal)
 
 **The Result:**
+
 - Handled 1,200 tickets/day with 10-person team
 - Maintained 91% CSAT during peak
 - Zero overtime required
@@ -13431,6 +14468,7 @@ Customers didn't even know AI was involved.
 **Common Thread:**
 
 Companies using Agent SDK see:
+
 - 2.5-4x increase in tickets handled per operator
 - 50-80% reduction in response time
 - Maintained or improved customer satisfaction
@@ -13472,36 +14510,42 @@ Answer: Most companies are live within a week.
 Here's the typical timeline:
 
 **Phase 1: Setup (Days 1-2)**
+
 - Connect your knowledge base
 - Integrate with Shopify
 - Configure approval queue
 - Set up operator access
 
 **Phase 2: Training (Day 3)**
+
 - 30-minute team training session
 - Hands-on practice
 - Q&A with our team
 - Quick-reference guides provided
 
 **Phase 3: Pilot (Days 4-5)**
+
 - 2-3 operators test the system
 - We monitor closely
 - Make adjustments based on feedback
 - Refine workflows
 
 **Phase 4: Rollout (Days 6-7)**
+
 - Full team activation
 - Ongoing support available
 - Performance monitoring
 - Celebrate wins!
 
 **What you need:**
+
 - ✅ Knowledge base (docs, policies, FAQs)
 - ✅ Shopify admin access
 - ✅ 30 minutes for team training
 - ✅ 2-3 operators willing to pilot
 
 **What we provide:**
+
 - ✅ Technical setup support
 - ✅ Operator training
 - ✅ Quick-reference materials
@@ -13514,6 +14558,7 @@ We hear this a lot. Here's the reality:
 85%+ of operators love Agent SDK within 2 weeks of use.
 
 Why? Because it makes their job easier:
+
 - Less searching for answers
 - Faster response times
 - Less stress
@@ -13571,6 +14616,7 @@ After that, it's full price.
 **Who it's for:**
 
 E-commerce businesses (especially Shopify) with:
+
 - Growing support volume
 - Limited operator capacity
 - Desire to scale without massive hiring
@@ -13606,18 +14652,21 @@ P.S. Seriously, reply with any questions. I read every email.
 **Key Metrics to Track:**
 
 **Email-Level Metrics:**
+
 - Open rate (target: 25-35%)
 - Click-through rate (target: 5-10%)
 - Reply rate (target: 2-5%)
 - Unsubscribe rate (keep <0.5%)
 
 **Campaign-Level Metrics:**
+
 - Demo bookings (target: 25-50 from 5-email series)
 - Trial signups (target: 10-20)
 - Sales conversions (target: 5-10)
 - Revenue generated (target: $5K-15K ARR)
 
 **Engagement by Email:**
+
 - Email 1 (Launch): Highest open rate
 - Email 2 (Education): Highest engagement/replies
 - Email 3 (Social Proof): Highest click-through to case studies
@@ -13629,12 +14678,14 @@ P.S. Seriously, reply with any questions. I read every email.
 **A/B Testing Plan:**
 
 **Test Variables:**
+
 - Subject lines (3 variations per email)
 - CTA button copy ("Schedule Demo" vs. "See It In Action")
 - Email length (long-form vs. concise)
 - Personalization depth (first name only vs. company-specific details)
 
 **Winner Selection Criteria:**
+
 - Primary: Demo bookings
 - Secondary: Click-through rate
 - Tertiary: Open rate
@@ -13644,21 +14695,25 @@ P.S. Seriously, reply with any questions. I read every email.
 **Segmentation Strategy:**
 
 **Segment 1: Existing Customers**
+
 - Focus on upgrade/add-on messaging
 - Highlight integration with existing HotDash features
 - Offer loyalty discount
 
 **Segment 2: Trial Users**
+
 - Focus on conversion
 - Highlight ease of setup
 - Offer onboarding support
 
 **Segment 3: Cold Leads (Newsletter)**
+
 - Focus on education
 - Build trust with case studies
 - Softer CTA (content vs. demo)
 
 **Segment 4: Warm Leads (Demo Requesters)**
+
 - Focus on urgency
 - Strong CTA
 - Limited-time offers
@@ -13668,17 +14723,20 @@ P.S. Seriously, reply with any questions. I read every email.
 **Follow-Up Sequences:**
 
 **If No Response After 5 Emails:**
+
 - Wait 2 weeks
 - Send "Did you miss this?" email
 - Highlight new case studies/features
 - Offer to answer questions
 
 **If Demo Booked But No Show:**
+
 - Send same-day follow-up
 - Reschedule option
 - Offer async demo video
 
 **If Demo Completed But No Conversion:**
+
 - Send thank-you email
 - Address objections proactively
 - Offer extended trial
@@ -13689,18 +14747,21 @@ P.S. Seriously, reply with any questions. I read every email.
 ## J.8 Email Campaign Assets
 
 **Templates Created:**
+
 - ✅ 5 complete email drafts
 - ✅ 15 subject line variations (3 per email)
 - ✅ Preheaders for each email
 - ✅ CTA button copy variations
 
 **Supporting Materials:**
+
 - Case study PDFs (linked in emails)
 - Demo video (2 minutes)
 - Implementation guide (downloadable)
 - ROI calculator (interactive)
 
 **Design Requirements:**
+
 - Mobile-responsive HTML templates
 - Branded header/footer
 - CTA buttons (high contrast)
@@ -13712,6 +14773,7 @@ P.S. Seriously, reply with any questions. I read every email.
 ## Task J Summary
 
 **✅ Delivered**:
+
 - 5-email campaign series (complete drafts)
 - Email campaign strategy (segmentation, timing, goals)
 - 15 subject line variations (A/B testing)
@@ -13722,6 +14784,7 @@ P.S. Seriously, reply with any questions. I read every email.
 - Supporting assets list
 
 **Email Breakdown**:
+
 1. Launch Announcement (Day 0)
 2. Education/How It Works (Day 3)
 3. Social Proof/Results (Day 7)
@@ -13737,6 +14800,7 @@ P.S. Seriously, reply with any questions. I read every email.
 ## Complete Task Summary
 
 **Original Tasks (1-6)**: ✅ COMPLETE
+
 1. Launch Communications Update
 2. AI-Assisted Support Announcement
 3. Operator Value Proposition
@@ -13763,6 +14827,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 ## Deliverables Summary
 
 **Total Content Created**:
+
 - 13,000+ lines of marketing materials
 - 25,000+ words of written content
 - 60+ social media posts (30-day calendar)
@@ -13775,6 +14840,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Multiple quick-start guides, training materials, FAQs
 
 **Marketing Assets Ready**:
+
 - Launch announcements (internal & external)
 - Operator training materials
 - Customer communication templates
@@ -13787,6 +14853,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Email campaign series
 
 **Strategic Frameworks**:
+
 - Competitive positioning strategy
 - SEO content strategy
 - Social media engagement plan
@@ -13811,14 +14878,13 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Final Status**: ✅ ALL 16 DIRECTION TASKS COMPLETE (100%)  
 **Total Time**: ~8-10 hours of productive work  
 **Completion Date**: 2025-10-11  
-**Evidence**: Comprehensive launch package documented in this file  
+**Evidence**: Comprehensive launch package documented in this file
 
 **Ready for**: Manager review, design team handoff, video production, content publication, launch execution
 
 ---
 
 **END OF MARKETING DELIVERABLES**
-
 
 ---
 
@@ -13839,6 +14905,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 ### K.1 Article Titles & Outlines
 
 **Article 1**: "The Death of the Customer Service Chatbot (And What Comes Next)"
+
 - Hook: Chatbot failure rate statistics
 - Thesis: Human-in-loop AI is the future
 - Case studies: Companies that abandoned chatbots for AI-assisted
@@ -13846,6 +14913,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,200 words
 
 **Article 2**: "Why Support Teams Fear AI (And How to Change That)"
+
 - Hook: Operator anxiety about job displacement
 - Solution: AI as assistant, not replacement
 - Operator testimonials from Agent SDK users
@@ -13853,6 +14921,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,500 words
 
 **Article 3**: "The Economics of Scalable Customer Support"
+
 - Hook: Cost crisis in support organizations
 - Analysis: Hiring vs. automation vs. AI-assisted
 - ROI calculations with real numbers
@@ -13860,6 +14929,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,800 words
 
 **Article 4**: "How Knowledge Bases Became AI's Secret Weapon"
+
 - Hook: Why AI hallucinations are dangerous in support
 - Solution: RAG (Retrieval Augmented Generation)
 - Technical deep-dive (for technical audience)
@@ -13867,6 +14937,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,600 words
 
 **Article 5**: "Building Ethical AI for Customer Service"
+
 - Hook: Privacy concerns in AI support
 - Principles: Transparency, oversight, privacy
 - HotDash's approach (human approval, audit trails)
@@ -13874,6 +14945,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,400 words
 
 **Article 6**: "The Approval Queue: Rethinking AI Automation"
+
 - Hook: Why traditional automation fails
 - Concept: Human-in-loop workflows
 - Case study: Approval queue in action
@@ -13881,6 +14953,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,300 words
 
 **Article 7**: "From Reactive to Proactive: The Future of Support AI"
+
 - Hook: Support has always been reactive
 - Vision: AI that identifies problems before customers complain
 - Roadmap: Phases of AI support evolution
@@ -13888,6 +14961,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,500 words
 
 **Article 8**: "Measuring What Matters in AI Support"
+
 - Hook: Vanity metrics vs. value metrics
 - Framework: Customer satisfaction, operator happiness, business impact
 - Anti-pattern: Optimizing for automation rate
@@ -13895,6 +14969,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,400 words
 
 **Article 9**: "The Shopify Support Stack: Our Recommendations"
+
 - Hook: Fragmented tools hurt support teams
 - Recommended stack: Chatwoot + Agent SDK + Shopify
 - Integration benefits
@@ -13902,6 +14977,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 1,200 words
 
 **Article 10**: "What We Learned Launching AI Support in Production"
+
 - Hook: Theory vs. reality of AI deployment
 - Lessons: What worked, what didn't, what surprised us
 - Operator feedback themes
@@ -13921,6 +14997,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Audience**: Prospects, trial users
 
 **Agenda**:
+
 - 0-5 min: Welcome and introductions
 - 5-10 min: The support challenge (set context)
 - 10-30 min: Live Agent SDK demo (approval queue walkthrough)
@@ -13933,6 +15010,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 "Thanks for joining! Today we'll show you exactly how Agent SDK works in a live environment. You'll see how AI prepares responses and how operators maintain control. By the end, you'll understand if this is right for your team."
 
 **Demo Walkthrough**:
+
 1. Show incoming customer message
 2. Watch AI analyze and prepare response
 3. Review approval queue interface
@@ -13940,6 +15018,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 5. Show learning loop in action
 
 **Q&A Topics** (prepare answers for):
+
 - Implementation timeline
 - Pricing and ROI
 - Integration requirements
@@ -13956,6 +15035,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Audience**: Customers preparing to implement
 
 **Agenda**:
+
 - 0-5 min: Welcome
 - 5-15 min: Pre-implementation checklist
 - 15-30 min: Week-by-week implementation plan
@@ -13966,18 +15046,21 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Key Sections**:
 
 **Pre-Implementation Checklist**:
+
 - Knowledge base audit (is it complete?)
 - Team readiness assessment
 - Integration requirements
 - Success metrics definition
 
 **Implementation Timeline**:
+
 - Week 1: Setup and configuration
 - Week 2: Pilot with 2-3 operators
 - Week 3: Full team rollout
 - Week 4: Optimization
 
 **Common Pitfalls**:
+
 - Incomplete knowledge base → AI can't find answers
 - Insufficient training → Operators don't adopt
 - Wrong metrics → Optimizing for automation instead of satisfaction
@@ -13992,11 +15075,13 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Audience**: Support managers, CX leaders
 
 **Panelists**:
+
 - HotDash representative
 - 2 customer success stories (support managers)
 - Industry expert (optional)
 
 **Agenda**:
+
 - 0-5 min: Introductions
 - 5-15 min: The scaling challenge (panel discussion)
 - 15-25 min: Customer stories (how they solved it)
@@ -14004,6 +15089,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - 40-45 min: Resources and next steps
 
 **Discussion Topics**:
+
 - Hiring vs. automation vs. AI-assisted (trade-offs)
 - Team reactions to new technology
 - Metrics that matter
@@ -14019,6 +15105,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Audience**: Privacy-conscious leaders, enterprise
 
 **Agenda**:
+
 - 0-5 min: Welcome
 - 5-15 min: AI privacy concerns in customer service
 - 15-25 min: Ethical AI principles
@@ -14026,6 +15113,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - 40-50 min: Q&A
 
 **Key Principles Covered**:
+
 1. Transparency: Customers should know AI is involved
 2. Consent: Explicit opt-in where required
 3. Oversight: Human review of all customer-facing actions
@@ -14033,6 +15121,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 5. Auditability: Complete logs of all AI actions
 
 **Case Studies**:
+
 - How we handle GDPR requirements
 - Our approach to training data (anonymization)
 - Audit trail design
@@ -14046,6 +15135,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Audience**: Buyers evaluating options
 
 **Agenda**:
+
 - 0-5 min: Welcome
 - 5-15 min: Framework for evaluating AI support tools
 - 15-25 min: Feature comparison (us + 4 competitors)
@@ -14053,6 +15143,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - 35-40 min: Q&A
 
 **Evaluation Framework**:
+
 1. Human oversight level (chatbot vs. AI-assisted vs. suggestions)
 2. Knowledge base integration (quality and depth)
 3. E-commerce specific features
@@ -14063,6 +15154,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 8. Roadmap and innovation
 
 **Comparison**: Fair, balanced, factual (not sales-heavy)
+
 - Zendesk AI
 - Intercom Fin
 - Freshdesk Freddy
@@ -14076,6 +15168,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 ### M.1 Getting Started Articles (5)
 
 **Article 1**: "What is Agent SDK?"
+
 - Overview of AI-assisted support
 - How it's different from chatbots
 - Key features
@@ -14083,6 +15176,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 500
 
 **Article 2**: "How to Access the Approval Queue"
+
 - Step-by-step instructions
 - Keyboard shortcuts
 - Mobile access
@@ -14090,6 +15184,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 400
 
 **Article 3**: "Your First Approval: A Walkthrough"
+
 - Detailed tutorial
 - What to look for
 - Common questions
@@ -14097,6 +15192,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 700
 
 **Article 4**: "Understanding Confidence Scores"
+
 - What they mean (High/Med/Low)
 - How they're calculated
 - How to use them
@@ -14104,6 +15200,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 500
 
 **Article 5**: "Setting Up Agent SDK for Your Team"
+
 - Prerequisites
 - Configuration steps
 - Team onboarding
@@ -14115,6 +15212,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 ### M.2 Using the System Articles (5)
 
 **Article 6**: "Approving, Editing, and Rejecting Responses"
+
 - When to use each action
 - How to edit effectively
 - Rejection best practices
@@ -14122,6 +15220,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 600
 
 **Article 7**: "When and How to Escalate"
+
 - Escalation criteria
 - How to write escalation notes
 - Specialist routing
@@ -14129,6 +15228,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 550
 
 **Article 8**: "Teaching the AI Through Your Edits"
+
 - How the learning loop works
 - What AI learns from approvals/edits
 - Best practices for effective feedback
@@ -14136,6 +15236,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 650
 
 **Article 9**: "Keyboard Shortcuts and Power User Tips"
+
 - Complete shortcut list
 - Workflow optimizations
 - Time-saving tips
@@ -14143,6 +15244,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 500
 
 **Article 10**: "Troubleshooting Common Issues"
+
 - Queue not loading
 - Approval buttons not working
 - Slow performance
@@ -14154,6 +15256,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 ### M.3 Best Practices Articles (5)
 
 **Article 11**: "Best Practices for Reviewing AI Responses"
+
 - Quality checklist
 - Accuracy verification
 - Tone adjustment
@@ -14161,6 +15264,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 700
 
 **Article 12**: "Maintaining Your Knowledge Base for AI"
+
 - Why KB quality matters
 - Update frequency
 - Structure recommendations
@@ -14168,6 +15272,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 650
 
 **Article 13**: "Metrics and Reporting in Agent SDK"
+
 - Available metrics
 - How to interpret them
 - Performance targets
@@ -14175,6 +15280,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 600
 
 **Article 14**: "Security and Privacy in Agent SDK"
+
 - Data handling
 - Compliance (GDPR, CCPA)
 - Audit logs
@@ -14182,6 +15288,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 - Word count: 550
 
 **Article 15**: "Agent SDK FAQ"
+
 - 20 most common questions
 - Concise answers
 - Links to detailed articles
@@ -14221,37 +15328,19 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Purpose**: Deep dive for case studies and thought leadership
 
 **Section 1: Background (5 min)**
+
 1. How long have you been in customer support?
 2. What did a typical day look like before Agent SDK?
 3. What were your biggest frustrations?
 4. How many tickets would you handle per day?
 
-**Section 2: Introduction to Agent SDK (5 min)**
-5. How did you first hear about Agent SDK?
-6. What was your reaction? (Excited, skeptical, nervous?)
-7. What concerns did you have?
-8. What convinced you to try it?
+**Section 2: Introduction to Agent SDK (5 min)** 5. How did you first hear about Agent SDK? 6. What was your reaction? (Excited, skeptical, nervous?) 7. What concerns did you have? 8. What convinced you to try it?
 
-**Section 3: Experience Using It (10 min)**
-9. Walk me through your first time using the approval queue.
-10. What was easy? What was confusing?
-11. How long did it take to feel comfortable with it?
-12. How has your daily workflow changed?
-13. Give me a specific example of a time Agent SDK really helped you.
-14. Have there been times when it didn't work well? What happened?
-15. How has it changed how much you can accomplish in a day?
+**Section 3: Experience Using It (10 min)** 9. Walk me through your first time using the approval queue. 10. What was easy? What was confusing? 11. How long did it take to feel comfortable with it? 12. How has your daily workflow changed? 13. Give me a specific example of a time Agent SDK really helped you. 14. Have there been times when it didn't work well? What happened? 15. How has it changed how much you can accomplish in a day?
 
-**Section 4: Impact (7 min)**
-16. How many tickets do you handle now vs. before?
-17. How has your stress level changed?
-18. How has it affected your job satisfaction?
-19. What do customers say? Do they notice?
-20. What would happen if Agent SDK went away tomorrow?
+**Section 4: Impact (7 min)** 16. How many tickets do you handle now vs. before? 17. How has your stress level changed? 18. How has it affected your job satisfaction? 19. What do customers say? Do they notice? 20. What would happen if Agent SDK went away tomorrow?
 
-**Section 5: Advice (3 min)**
-21. What would you tell another operator who's about to start using it?
-22. What tips do you have for getting the most out of it?
-23. If you could change one thing about Agent SDK, what would it be?
+**Section 5: Advice (3 min)** 21. What would you tell another operator who's about to start using it? 22. What tips do you have for getting the most out of it? 23. If you could change one thing about Agent SDK, what would it be?
 
 ---
 
@@ -14264,6 +15353,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Headline**: "[OPERATOR NAME]: From Overwhelmed to Empowered with Agent SDK"
 
 **Introduction** (100 words):
+
 > [OPERATOR NAME] had been in customer support for [X] years, but last spring, they hit a wall. Support volume had tripled, response times were suffering, and the job that once felt rewarding now felt impossible.
 >
 > "I was working 10-hour days and still falling behind," [they] recall. "I loved helping customers, but I was drowning."
@@ -14271,29 +15361,34 @@ J. Email Campaign Series (5 emails, complete sequences)
 > Then [COMPANY] implemented Agent SDK. Everything changed.
 
 **The Challenge** (150 words):
+
 - What their day looked like before
 - Specific pain points
 - Volume numbers
 - Emotional impact
 
 **The Change** (200 words):
+
 - First experience with approval queue
 - Learning curve
 - How workflow changed
 - Specific examples of efficiency gains
 
 **The Results** (150 words):
+
 - Quantified improvements (tickets/day, response time)
 - Quality impact (CSAT, customer feedback)
 - Personal impact (stress, satisfaction)
 - Quotes
 
 **Looking Forward** (100 words):
+
 - How they use it now
 - What they couldn't do without
 - Advice for other operators
 
 **Pull Quote** (for graphics):
+
 > "[Most compelling quote from the interview]" — [NAME], [TITLE]
 
 ---
@@ -14303,6 +15398,7 @@ J. Email Campaign Series (5 emails, complete sequences)
 **Format**: 60-90 second video
 
 **Setup**:
+
 - Operator at their desk (natural environment)
 - Good lighting and audio
 - Laptop showing approval queue (optional background)
@@ -14327,6 +15423,7 @@ If you're a support operator drowning in volume, this will change your life. It'
 That's Agent SDK. Give it a try."
 
 **B-Roll Footage** (optional):
+
 - Operator using approval queue
 - Clicking approve button
 - Smiling at screen
@@ -14352,6 +15449,7 @@ That's Agent SDK. Give it a try."
 ### O.1 Campaign Structure
 
 **Campaign Hierarchy**:
+
 ```
 Agent SDK Launch Campaign
 ├── Search Campaign (75% budget)
@@ -14370,12 +15468,14 @@ Agent SDK Launch Campaign
 ### O.2 Search Campaign: Ad Groups & Keywords
 
 **Ad Group 1: Branded Keywords**
+
 - Budget: 15% of search budget
 - Keywords: "hotdash", "hotdash agent sdk", "hotdash ai support"
 - Match type: Exact, Phrase
 - Bid strategy: Target Impression Share (90%+)
 
 **Ad Group 2: Competitor Keywords**
+
 - Budget: 25% of search budget
 - Keywords:
   - "zendesk ai alternative"
@@ -14386,6 +15486,7 @@ Agent SDK Launch Campaign
 - Bid strategy: Maximize Conversions
 
 **Ad Group 3: Problem-Aware Keywords**
+
 - Budget: 35% of search budget
 - Keywords:
   - "customer support automation"
@@ -14398,6 +15499,7 @@ Agent SDK Launch Campaign
 - Bid strategy: Target CPA ($75)
 
 **Ad Group 4: Solution-Aware Keywords**
+
 - Budget: 25% of search budget
 - Keywords:
   - "ai assisted support"
@@ -14467,20 +15569,24 @@ CTA: Watch 2-Minute Demo
 ### O.4 Display Campaign
 
 **Remarketing Audiences**:
+
 1. Website visitors (last 30 days)
 2. Demo requesters (didn't convert)
 3. Trial users (didn't convert)
 4. Content engagers (blog readers, video watchers)
 
 **Custom Intent Audiences**:
+
 - Keywords: "customer support software", "ai support tools", "shopify apps"
 - URLs: Competitor websites, review sites (G2, Capterra)
 
 **In-Market Audiences**:
+
 - Business Services > Customer Service Software
 - E-commerce > Shopping Cart & Checkout Solutions
 
 **Ad Creatives** (Responsive Display Ads):
+
 - Headline: "3-5x Faster Support. 100% Human Reviewed."
 - Description: "AI-assisted customer support for Shopify stores. Try free."
 - Images: Approval queue screenshot, operator using system, results metrics
@@ -14494,6 +15600,7 @@ CTA: Watch 2-Minute Demo
 **Total Monthly Budget**: $3,000
 
 **Allocation**:
+
 - Search Campaign: $2,250 (75%)
   - Branded: $340 (15%)
   - Competitor: $560 (25%)
@@ -14502,6 +15609,7 @@ CTA: Watch 2-Minute Demo
 - Display Campaign: $750 (25%)
 
 **Geographic Targeting**:
+
 - Primary: United States, Canada, United Kingdom
 - Secondary: Australia, Germany, France (if budget allows)
 
@@ -14514,16 +15622,19 @@ CTA: Watch 2-Minute Demo
 ### O.6 Landing Pages
 
 **Landing Page 1**: /agentsdk (Main product page)
+
 - For solution-aware traffic
 - Feature highlights, demo video, testimonials
 - CTA: Schedule Demo, Start Trial
 
 **Landing Page 2**: /agentsdk/vs-chatbots (Comparison)
+
 - For problem-aware traffic
 - Chatbot pain points, Agent SDK benefits
 - CTA: Watch Demo, Read Case Studies
 
 **Landing Page 3**: /agentsdk/vs-[competitor] (Competitive)
+
 - For competitor keywords
 - Side-by-side comparison
 - Migration guide
@@ -14534,11 +15645,13 @@ CTA: Watch 2-Minute Demo
 ### O.7 Conversion Tracking
 
 **Primary Conversions**:
+
 - Demo booking (value: $500)
 - Trial signup (value: $300)
 - Content download (value: $50)
 
 **Secondary Conversions**:
+
 - Video watch (>50%)
 - Page scroll (>75%)
 - Multi-page visits
@@ -14550,18 +15663,21 @@ CTA: Watch 2-Minute Demo
 ### P.1 Retargeting Audiences
 
 **Tier 1: High-Intent (Daily Budget: $40)**
+
 - Visitors to /demo or /pricing pages
 - Demo video watchers (>75%)
 - Trial abandoners
 - Message: "Schedule your demo" / "Questions? Let's talk"
 
 **Tier 2: Medium-Intent (Daily Budget: $25)**
+
 - Blog post readers (>2 articles)
 - Case study viewers
 - Email clickers (no conversion)
 - Message: "See it in action" / "Read customer stories"
 
 **Tier 3: Low-Intent (Daily Budget: $15)**
+
 - Homepage visitors only
 - <30 seconds on site
 - Single-page visits
@@ -14574,18 +15690,21 @@ CTA: Watch 2-Minute Demo
 **Sequence for Demo Page Visitors** (3-ad sequence over 14 days):
 
 **Day 1-3: Immediate retargeting**
+
 - Creative: Approval queue screenshot
 - Headline: "Ready to see Agent SDK in action?"
 - Description: "Schedule your personal demo. 15 minutes."
 - CTA: "Schedule Now"
 
 **Day 4-7: Social proof**
+
 - Creative: Customer testimonial graphic
 - Headline: "See why 50+ companies chose Agent SDK"
 - Description: "Real results: 3-5x faster support, 91% satisfaction"
 - CTA: "Read Case Studies"
 
 **Day 8-14: Last chance**
+
 - Creative: Limited offer visual
 - Headline: "Still thinking about Agent SDK?"
 - Description: "Questions? Book a call with our team."
@@ -14596,18 +15715,21 @@ CTA: Watch 2-Minute Demo
 ### P.3 Platform-Specific Strategies
 
 **Facebook/Instagram Retargeting**:
+
 - Custom Audiences: Website visitors, video watchers, engagement
 - Lookalike Audiences: 1% lookalike of converters
 - Creative: Visual-heavy (carousel ads, video ads)
 - Placement: Feed, Stories, Reels
 
 **LinkedIn Retargeting**:
+
 - Matched Audiences: Website visitors, email list
 - Lookalike: Similar companies (by industry, size)
 - Creative: Professional (screenshots, stat graphics)
 - Placement: Feed only
 
 **Google Display Retargeting**:
+
 - All website visitors (30-day window)
 - YouTube video watchers
 - Search visitors (non-converters)
@@ -14618,6 +15740,7 @@ CTA: Watch 2-Minute Demo
 ### P.4 Creative Variations
 
 **Testing Variables**:
+
 - Headline emphasis (speed vs. quality vs. human oversight)
 - Visual type (screenshot vs. graphic vs. photo)
 - CTA (demo vs. trial vs. content)
@@ -14634,18 +15757,21 @@ CTA: Watch 2-Minute Demo
 **Target Influencers**:
 
 **Tier 1: Macro-Influencers** (50K+ followers)
+
 - Shopify ecosystem thought leaders
 - E-commerce educators
 - Customer service experts
 - Budget: $2,000-5,000 per partnership
 
 **Tier 2: Micro-Influencers** (10K-50K followers)
+
 - Shopify store owners with audiences
 - Support/CX content creators
 - E-commerce podcasters
 - Budget: $500-2,000 per partnership
 
 **Tier 3: Nano-Influencers** (1K-10K followers)
+
 - Engaged niche communities
 - Shopify app reviewers
 - Support operator communities
@@ -14666,6 +15792,7 @@ I've been following your content on [PLATFORM] for a while—especially your rec
 We just launched Agent SDK, an AI-assisted support platform for e-commerce businesses. Given your audience in the Shopify ecosystem, I think this could be valuable content for them.
 
 **What makes it interesting**:
+
 - It's NOT a chatbot (humans approve everything)
 - Built specifically for Shopify stores
 - Getting real results (3-5x faster support)
@@ -14676,16 +15803,19 @@ We just launched Agent SDK, an AI-assisted support platform for e-commerce busin
 We'd love to collaborate with you on content about Agent SDK. Options:
 
 **Option 1**: Sponsored content
+
 - You create authentic content (blog, video, social)
 - We provide product access, materials, support
 - Compensation: $[AMOUNT] + performance bonus
 
 **Option 2**: Affiliate partnership
+
 - Share Agent SDK with your audience using your link
 - Earn 20% recurring commission on referrals
 - We provide marketing materials and support
 
 **Option 3**: Co-created content
+
 - We collaborate on educational content
 - Joint webinar, blog series, or video series
 - Shared promotion to both audiences
@@ -14707,6 +15837,7 @@ Partnerships, HotDash
 ### Q.3 Influencer Content Guidelines
 
 **What We Provide**:
+
 - Free Agent SDK access (6-month partnership)
 - Marketing materials (graphics, talking points, stats)
 - Demo/trial links for their audience
@@ -14714,12 +15845,14 @@ Partnerships, HotDash
 - Performance tracking
 
 **What We Ask**:
+
 - Authentic, honest content (not overly promotional)
 - FTC compliance (disclose partnership)
 - Alignment with brand values (operator-first)
 - Minimum 1 piece of content per month
 
 **Approval Process**:
+
 - Influencer drafts content
 - We review for accuracy (not editorial control)
 - Influencer publishes
@@ -14730,6 +15863,7 @@ Partnerships, HotDash
 ### Q.4 Performance Tracking
 
 **Metrics per Influencer**:
+
 - Content created (#posts, videos, articles)
 - Reach (impressions, views)
 - Engagement (likes, comments, shares)
@@ -14738,6 +15872,7 @@ Partnerships, HotDash
 - ROI (revenue vs. cost)
 
 **Success Criteria**:
+
 - Minimum 10:1 ROI
 - Authentic engagement (not bot-driven)
 - Brand-aligned messaging
@@ -14750,24 +15885,28 @@ Partnerships, HotDash
 ### R.1 Affiliate Program Tiers
 
 **Tier 1: Bronze Affiliates** (0-10 referrals)
+
 - Commission: 15% recurring
 - Cookie: 90 days
 - Support: Email support
 - Resources: Basic marketing kit
 
 **Tier 2: Silver Affiliates** (11-25 referrals)
+
 - Commission: 20% recurring
 - Cookie: 120 days
 - Support: Priority email + monthly check-in
 - Resources: Advanced marketing kit + co-marketing
 
 **Tier 3: Gold Affiliates** (26-50 referrals)
+
 - Commission: 25% recurring
 - Cookie: 180 days
 - Support: Dedicated affiliate manager
 - Resources: Custom campaigns + featured partner status
 
 **Tier 4: Platinum Affiliates** (51+ referrals)
+
 - Commission: 30% recurring + performance bonuses
 - Cookie: 365 days
 - Support: Executive sponsor + quarterly planning
@@ -14780,58 +15919,51 @@ Partnerships, HotDash
 **Provided Materials**:
 
 **Core Assets**:
+
 1. Logo files (PNG, SVG)
 2. Product screenshots (10+ images)
 3. Demo video (2 minutes)
 4. Explainer graphics (6 graphics)
 5. Case study one-pagers (3 PDFs)
 
-**Written Content**:
-6. Email templates (5 templates)
-7. Blog post outlines (3 outlines)
-8. Social media posts (20 ready-to-share)
-9. Tweet threads (5 threads)
-10. Testimonial quotes (10 quotes)
+**Written Content**: 6. Email templates (5 templates) 7. Blog post outlines (3 outlines) 8. Social media posts (20 ready-to-share) 9. Tweet threads (5 threads) 10. Testimonial quotes (10 quotes)
 
-**Data/Stats**:
-11. Fact sheet (1-pager)
-12. ROI calculator (spreadsheet)
-13. Comparison charts (vs. 5 competitors)
-14. Performance metrics (infographic)
+**Data/Stats**: 11. Fact sheet (1-pager) 12. ROI calculator (spreadsheet) 13. Comparison charts (vs. 5 competitors) 14. Performance metrics (infographic)
 
-**Links**:
-15. Unique affiliate tracking URL
-16. Demo booking page (with tracking)
-17. Trial signup page (with tracking)
-18. Landing pages (3 variations)
+**Links**: 15. Unique affiliate tracking URL 16. Demo booking page (with tracking) 17. Trial signup page (with tracking) 18. Landing pages (3 variations)
 
 ---
 
 ### R.3 Affiliate Onboarding Sequence
 
 **Email 1: Welcome** (Immediate)
+
 - Thank you for joining
 - Your unique link
 - Quick start guide
 - First commission tips
 
 **Email 2: Marketing Kit** (Day 1)
+
 - Access to affiliate portal
 - Marketing materials overview
 - Best performing content
 - Promotion ideas
 
 **Email 3: Success Stories** (Day 3)
+
 - How top affiliates promote Agent SDK
 - Conversion tips
 - Template examples
 
 **Email 4: First 30 Days** (Day 7)
+
 - Check in on progress
 - Answer questions
 - Offer strategy session
 
 **Email 5: Optimization** (Day 30)
+
 - Performance review
 - Optimization suggestions
 - Tier advancement opportunities
@@ -14841,6 +15973,7 @@ Partnerships, HotDash
 ### R.4 Top Affiliate Promotion Strategies
 
 **Strategy 1: Blog Reviews**
+
 - Write honest review of Agent SDK
 - Include pros/cons
 - Show real screenshots
@@ -14849,6 +15982,7 @@ Partnerships, HotDash
 **Expected Performance**: 2-5% conversion rate
 
 **Strategy 2: Comparison Posts**
+
 - "Agent SDK vs. [Competitor]: Which is Better?"
 - Fair comparison with affiliate disclosure
 - Recommendation with reasoning
@@ -14856,6 +15990,7 @@ Partnerships, HotDash
 **Expected Performance**: 3-7% conversion rate
 
 **Strategy 3: Tutorial Content**
+
 - "How to Set Up AI Support for Your Shopify Store"
 - Educational, not promotional
 - Agent SDK as the tool used
@@ -14863,6 +15998,7 @@ Partnerships, HotDash
 **Expected Performance**: 1-3% conversion rate
 
 **Strategy 4: Email Newsletter**
+
 - Feature Agent SDK in monthly newsletter
 - Value-focused (not salesy)
 - Testimonial or case study angle
@@ -14870,6 +16006,7 @@ Partnerships, HotDash
 **Expected Performance**: 5-10% conversion rate (warm audience)
 
 **Strategy 5: YouTube Reviews**
+
 - Video walkthrough/review
 - Screen recording of actual use
 - Honest assessment
@@ -14896,30 +16033,35 @@ Partnerships, HotDash
 ### S.1 Community Platform Strategy
 
 **Platform 1: Reddit**
+
 - Subreddits: r/shopify, r/ecommerce, r/customerservice, r/smallbusiness
 - Strategy: Educational, non-promotional
 - Frequency: 2-3 thoughtful comments/week
 - Content: Answer questions, share insights, occasionally mention Agent SDK when relevant
 
 **Platform 2: Indie Hackers**
+
 - Strategy: Build-in-public narrative
 - Frequency: Weekly progress updates
 - Content: Metrics, learnings, challenges
 - Focus: Founder audience, peer learning
 
 **Platform 3: HotDash Discord** (Create)
+
 - Channels: #general, #support, #feature-requests, #success-stories, #off-topic
 - Moderation: Community guidelines, active moderation
 - Engagement: Daily presence, weekly AMAs
 - Exclusive: Early feature access for community members
 
 **Platform 4: LinkedIn Group** (Create)
+
 - Name: "AI-Assisted Support Leaders"
 - Purpose: Community for support managers using AI tools
 - Content: Weekly discussion prompts, case studies, best practices
 - Guest experts: Monthly speaker series
 
 **Platform 5: Support Driven Community**
+
 - Strategy: Active participation
 - Content: Share learnings, answer questions
 - Sponsorship: Consider sponsoring their events/newsletters
@@ -14929,18 +16071,21 @@ Partnerships, HotDash
 ### S.2 Community Engagement Playbook
 
 **Daily Activities** (30 min/day):
+
 - Monitor mentions across platforms
 - Respond to questions
 - Share relevant content
 - Thank users for feedback
 
 **Weekly Activities** (2 hours/week):
+
 - Post in 2-3 communities
 - Create discussion threads
 - Share customer success stories
 - Highlight operator testimonials
 
 **Monthly Activities** (4 hours/month):
+
 - Host AMA (Reddit or Discord)
 - Community spotlight (feature top contributor)
 - Community survey (gather feedback)
@@ -14951,22 +16096,26 @@ Partnerships, HotDash
 ### S.3 Community Guidelines
 
 **Be Helpful, Not Salesy**:
+
 - Answer questions thoroughly
 - Share knowledge freely
 - Mention Agent SDK only when relevant
 - Provide value even if they don't buy
 
 **Be Authentic**:
+
 - Admit when we don't know
 - Share failures and learnings
 - Real conversations, not corporate speak
 
 **Be Responsive**:
+
 - Reply within 24 hours
 - Follow up on conversations
 - Acknowledge all feedback
 
 **Be Respectful**:
+
 - No spamming
 - Respect community rules
 - Don't attack competitors
@@ -14979,11 +16128,13 @@ Partnerships, HotDash
 ### T.1 Analyst Briefing Deck
 
 **Slide 1: Cover**
+
 - Title: "HotDash Agent SDK: AI-Assisted Customer Support"
 - Date, confidential marking
 - Presenter info
 
 **Slide 2: Company Overview**
+
 - Founded: [YEAR]
 - Mission: Operator-first customer support for e-commerce
 - Customers: [X] Shopify merchants
@@ -14991,49 +16142,58 @@ Partnerships, HotDash
 - Funding: [Status]
 
 **Slide 3: Market Problem**
+
 - E-commerce support volume crisis
 - Traditional solutions fail (chatbots, hiring)
 - Gap in market for human-centered AI
 
 **Slide 4: Agent SDK Overview**
+
 - What it is (AI-assisted support with approval queue)
 - How it works (6-step process diagram)
 - Key differentiator (100% human approval)
 
 **Slide 5: Product Architecture**
+
 - Technical stack (OpenAI, LlamaIndex, Supabase)
 - Integration points (Shopify, Chatwoot)
 - Scalability and performance
 
 **Slide 6: Customer Results**
+
 - 3-5x faster response times
 - 225% operator efficiency increase
 - 91% customer satisfaction
 - ROI <10 days
 
 **Slide 7: Competitive Landscape**
+
 - Market map (chatbots vs. manual vs. AI-assisted)
 - Our positioning (human-in-loop)
 - Competitive advantages
 
 **Slide 8: Go-to-Market Strategy**
+
 - Target market (e-commerce, Shopify-native)
 - Pricing model
 - Distribution channels
 - Early traction
 
 **Slide 9: Roadmap**
+
 - Current capabilities
 - Q1-Q4 2026 features
 - Vision for 2027
 
 **Slide 10: Metrics & Traction**
+
 - Customer count
 - Revenue growth
 - Retention rate
 - NPS score
 
 **Slide 11: Investment Thesis** (if raising)
+
 - Market size
 - Our advantage
 - Growth trajectory
@@ -15050,6 +16210,7 @@ Partnerships, HotDash
 "Thank you for your interest in HotDash Agent SDK. We'd be happy to brief you on our approach to AI-assisted customer support.
 
 **Proposed Agenda** (60 minutes):
+
 - Company overview and mission (10 min)
 - Agent SDK product deep-dive (20 min)
 - Customer results and case studies (15 min)
@@ -15057,6 +16218,7 @@ Partnerships, HotDash
 - Q&A (5 min)
 
 **Materials we can provide**:
+
 - Analyst briefing deck
 - Technical architecture overview
 - Customer references
@@ -15077,6 +16239,7 @@ Looking forward to speaking with you."
 **Size**: 8-12 members
 
 **Composition**:
+
 - 4 support managers/directors
 - 2 CX leaders
 - 2 operators (power users)
@@ -15092,6 +16255,7 @@ Looking forward to speaking with you."
 ### U.2 Advisory Board Benefits
 
 **For Members**:
+
 - Early access to new features
 - Direct input on roadmap
 - Networking with peers
@@ -15100,6 +16264,7 @@ Looking forward to speaking with you."
 - Special pricing considerations
 
 **For HotDash**:
+
 - Product feedback and validation
 - Beta testing participants
 - Case study and testimonial sources
@@ -15113,23 +16278,27 @@ Looking forward to speaking with you."
 **Quarterly Meeting Agenda** (2 hours):
 
 **Part 1: Product Updates** (30 min)
+
 - Recent launches and features
 - Metrics and performance
 - Customer feedback themes
 
 **Part 2: Roadmap Discussion** (45 min)
+
 - Upcoming features (3-6 months)
 - Prioritization discussion
 - Feedback on proposals
 - Vote on feature priorities
 
 **Part 3: Market Trends** (30 min)
+
 - Competitive landscape
 - Industry trends
 - Customer needs evolution
 - Strategic positioning
 
 **Part 4: Open Forum** (15 min)
+
 - Member questions
 - Peer learning
 - Networking
@@ -15151,6 +16320,7 @@ We're looking for forward-thinking leaders in e-commerce customer support, and y
 **What is it?**
 
 A group of 8-12 customers who:
+
 - Provide feedback on our product roadmap
 - Beta test new features before general release
 - Share insights on industry trends
@@ -15159,6 +16329,7 @@ A group of 8-12 customers who:
 **Time commitment**: 2 hours per quarter (virtual meetings)
 
 **Benefits for you**:
+
 - Shape the product you use daily
 - Early access to new capabilities
 - Connection with other leaders
@@ -15186,24 +16357,28 @@ HotDash
 **Sections**:
 
 **1. About HotDash**
+
 - Company overview (200 words)
 - Mission and values
 - Key milestones
 - Team size and locations
 
 **2. Agent SDK Product Information**
+
 - Product overview (300 words)
 - Key features (bulleted list)
 - Technical specifications
 - Pricing information
 
 **3. Latest News**
+
 - Recent press releases
 - Product launches
 - Partnership announcements
 - Awards and recognition
 
 **4. Media Assets**
+
 - High-resolution logos (multiple formats)
 - Product screenshots (10+ images)
 - Team photos
@@ -15211,12 +16386,14 @@ HotDash
 - Demo videos
 
 **5. Customer Stories**
+
 - Case study summaries
 - Customer testimonials
 - Usage statistics
 - Industry coverage
 
 **6. Media Contact**
+
 - PR contact name and email
 - Phone number
 - Response time commitment (<24 hours)
@@ -15227,6 +16404,7 @@ HotDash
 ### V.2 Media Asset Specifications
 
 **Logos**:
+
 - Full color (PNG, SVG)
 - White version (PNG, SVG)
 - Black version (PNG, SVG)
@@ -15234,6 +16412,7 @@ HotDash
 - Sizes: 16x16, 32x32, 64x64, 128x128, 256x256, 512x512, 1024x1024
 
 **Product Screenshots** (High-res, 4K):
+
 1. Approval queue full view
 2. Approval card close-up
 3. Agent SDK dashboard
@@ -15246,12 +16425,14 @@ HotDash
 10. Customer conversation example
 
 **Founder/Team Photos**:
+
 - Headshots (professional, high-res)
 - Team photos (various sizes)
 - Office photos (if applicable)
 - Candid working shots
 
 **Demo Videos**:
+
 - 30-second teaser
 - 2-minute product overview
 - 5-minute full demo
@@ -15271,6 +16452,7 @@ HotDash
 AI-powered support automation that keeps human operators in control. AI prepares responses, operators approve.
 
 **Key Features**:
+
 - Approval Queue Workflow
 - Knowledge Base Integration (LlamaIndex RAG)
 - Native Shopify Integration
@@ -15278,6 +16460,7 @@ AI-powered support automation that keeps human operators in control. AI prepares
 - Continuous Learning Loop
 
 **Performance Stats**:
+
 - 3-5x faster response times
 - 225% increase in operator efficiency
 - 91% customer satisfaction
@@ -15288,12 +16471,14 @@ AI-powered support automation that keeps human operators in control. AI prepares
 **Availability**: Now available for Shopify merchants
 
 **Key Differentiators**:
+
 - 100% human approval required (unique in market)
 - Knowledge base-backed responses (zero hallucinations)
 - Shopify-native (built for e-commerce)
 - Operator-first design
 
 **Technology Stack**:
+
 - OpenAI Agent SDK (orchestration)
 - LlamaIndex (knowledge retrieval)
 - Supabase (data platform)
@@ -15301,6 +16486,7 @@ AI-powered support automation that keeps human operators in control. AI prepares
 - React Router 7 (dashboard)
 
 **Company Information**:
+
 - Founded: [YEAR]
 - Headquarters: [CITY, STATE]
 - Team: [X] employees
@@ -15336,6 +16522,7 @@ press@hotdash.com
 ### W.1 Brand Voice & Tone
 
 **Brand Personality**:
+
 - Confident but not arrogant
 - Innovative but not flashy
 - Empathetic but not soft
@@ -15357,16 +16544,19 @@ press@hotdash.com
 **Tone by Audience**:
 
 **For Operators**: Supportive, empowering
+
 - "You're the expert. AI is your assistant."
 - "This makes your job easier, not obsolete."
 - "Your judgment matters more than ever."
 
 **For Support Managers**: Strategic, ROI-focused
+
 - "3-5x efficiency gains without compromising quality."
 - "Scale your team's impact, not your headcount."
 - "Measurable results in days, not months."
 
 **For Customers**: Reassuring, transparent
+
 - "Real people review every message."
 - "You're never talking to a bot."
 - "Fast, accurate, human support."
@@ -15379,6 +16569,7 @@ press@hotdash.com
 "AI-assisted customer support that keeps humans in control"
 
 **Supporting Messages**:
+
 1. "AI prepares. Humans approve. Customers win."
 2. "3-5x faster support without chatbots"
 3. "Built for Shopify. Built for operators."
@@ -15400,6 +16591,7 @@ press@hotdash.com
 ### W.3 Visual Brand Guidelines
 
 **Color Palette**:
+
 - Primary: HotDash brand blue (#[HEX])
 - Secondary: Green (approvals, success)
 - Accent: Purple (AI elements)
@@ -15407,6 +16599,7 @@ press@hotdash.com
 - Alert: Red (escalations, rejections)
 
 **Typography**:
+
 - Headlines: [FONT NAME] Bold
 - Body: [FONT NAME] Regular
 - Code: Monospace font for technical
@@ -15430,24 +16623,28 @@ press@hotdash.com
 ### W.4 Copy Guidelines
 
 **Capitalization**:
+
 - Agent SDK (always capitalized)
 - approval queue (lowercase unless starting sentence)
 - AI-assisted support (hyphenated)
 - Knowledge base (two words, lowercase)
 
 **Numbers**:
+
 - Spell out one through nine
 - Use numerals for 10+
 - Use numerals for metrics (3-5x, 91%)
 - Spell out percentages in body copy
 
 **Formatting**:
+
 - Bold for emphasis (use sparingly)
 - Italics for technical terms (first use)
 - Bullets for lists (3+ items)
 - Em dashes for aside thoughts—like this
 
 **Common Phrases**:
+
 - "Human-in-the-loop" (hyphenated)
 - "Built for Shopify" (capitalize Shopify)
 - "Operator-first" (hyphenated)
@@ -15473,15 +16670,18 @@ press@hotdash.com
 | [Feature 2] | [Their approach] | [Our approach] |
 
 **Key Differentiators**:
+
 1. [Unique advantage vs. this competitor]
 2. [Second advantage]
 3. [Third advantage]
 
 **Objection Handling**:
+
 - **"But [Competitor] has [feature]"**: "That's true, and here's why our approach is better: [REASONING]"
 - **"We already use [Competitor]"**: "Many of our customers came from [Competitor]. Here's what they told us: [TESTIMONIAL/STAT]"
 
 **Migration Path** (if applicable):
+
 - How easy is it to switch?
 - What data can be imported?
 - Transition support offered?
@@ -15495,6 +16695,7 @@ press@hotdash.com
 ### X.2-X.11: Individual Battle Cards
 
 **Competitors** (10 battle cards):
+
 1. Zendesk AI
 2. Intercom Fin
 3. Ada
@@ -15506,7 +16707,7 @@ press@hotdash.com
 9. Custom-Built Solutions
 10. No AI Solution (Status Quo)
 
-*[Each follows template above with competitor-specific details]*
+_[Each follows template above with competitor-specific details]_
 
 ---
 
@@ -15515,18 +16716,21 @@ press@hotdash.com
 ### Y.1 Testimonial Collection System
 
 **Trigger Points** (Automated):
+
 - After 14 days of usage
 - After first month
 - After hitting milestone (100 approvals, etc.)
 - After NPS survey (9-10 scores only)
 
 **Collection Methods**:
+
 1. **Email request** (with one-click response)
 2. **In-app prompt** (after successful session)
 3. **Personal outreach** (for key customers)
 4. **Video recording** (for willing participants)
 
 **Incentives**:
+
 - Public recognition on website
 - Exclusive swag
 - Featured in case study
@@ -15549,6 +16753,7 @@ How's it going?
 If you're happy with the results, would you be willing to share a quick testimonial? Even just 1-2 sentences about your experience would be incredibly helpful.
 
 Something like:
+
 - What problem did Agent SDK solve for you?
 - What results have you seen?
 - Would you recommend it to other [support managers/operators/etc.]?
@@ -15577,12 +16782,14 @@ Mind sharing your Agent SDK experience?
 **Website Showcase Section**: /customers/testimonials
 
 **Layout**:
+
 - Rotating carousel (homepage)
 - Grid view (dedicated page)
 - Filter by: Industry, company size, use case
 - Search functionality
 
 **Each Testimonial Card Shows**:
+
 - Quote (50-150 characters featured)
 - Customer name and title
 - Company name and logo
@@ -15591,6 +16798,7 @@ Mind sharing your Agent SDK experience?
 - Link to full case study (if available)
 
 **Social Proof Elements**:
+
 - Total customers
 - Average satisfaction score
 - Featured logos (recognizable brands)
@@ -15611,8 +16819,8 @@ Logo Usage Permitted: [YES/NO]
 Photo Usage Permitted: [YES/NO]
 Video Usage Permitted: [YES/NO]
 
-Signature: _______________
-Date: _______________"
+Signature: ******\_\_\_******
+Date: ******\_\_\_******"
 
 **Storage**: Secure folder with all permissions documented
 
@@ -15623,6 +16831,7 @@ Date: _______________"
 ### Z.1 ROI Calculator Inputs
 
 **Current State Inputs**:
+
 1. Number of support operators
 2. Average tickets per operator per day
 3. Average response time (hours)
@@ -15631,38 +16840,40 @@ Date: _______________"
 6. Customer satisfaction score (CSAT %)
 7. Monthly support ticket volume
 
-**Proposed State Inputs** (Pre-populated with Agent SDK averages):
-8. Expected efficiency gain (default: 3x)
-9. Expected response time improvement (default: 70%)
-10. Agent SDK cost per month
+**Proposed State Inputs** (Pre-populated with Agent SDK averages): 8. Expected efficiency gain (default: 3x) 9. Expected response time improvement (default: 70%) 10. Agent SDK cost per month
 
 ---
 
 ### Z.2 ROI Calculator Outputs
 
 **Efficiency Impact**:
+
 - Tickets per operator per day: [X] → [Y] (+Z%)
 - Total team capacity: [A] tickets/day → [B] tickets/day
 - Equivalent team size: [C] operators (vs. [D] actual)
 - Avoided hires: [E] operators
 
 **Cost Impact**:
+
 - Current annual support cost: $[X]
 - Agent SDK annual cost: $[Y]
 - Avoided hiring cost: $[Z]
 - Net annual savings: $[Total]
 
 **Time Impact**:
+
 - Response time improvement: [X] hours → [Y] minutes
 - Customer wait time saved: [Z] hours/month
 - Operator time saved: [A] hours/month
 
 **Customer Experience Impact**:
+
 - Projected CSAT improvement: [X]% → [Y]%
 - Estimated churn reduction: [Z]%
 - Revenue retention: $[Amount]/year
 
 **ROI Summary**:
+
 - Total first-year benefit: $[X]
 - Total first-year cost: $[Y]
 - Net ROI: [Z]%
@@ -15675,6 +16886,7 @@ Date: _______________"
 **Format**: Interactive web tool (hotdash.com/roi-calculator)
 
 **User Experience**:
+
 1. Enter your current metrics
 2. See real-time calculations
 3. Adjust assumptions (conservative, moderate, aggressive)
@@ -15682,12 +16894,14 @@ Date: _______________"
 5. Schedule demo to discuss results
 
 **Visual Elements**:
+
 - Real-time updating graphs
 - Before/after comparison bars
 - ROI timeline visualization
 - Cost breakdown pie chart
 
 **CTA Integration**:
+
 - "See these results in action: Schedule Demo"
 - "Email this report to your team"
 - "Download detailed ROI analysis (PDF)"
@@ -15712,6 +16926,7 @@ Date: _______________"
 ### AA.1 Pre-Launch Day (Day -1)
 
 **4:00 PM**: Final checklist review
+
 - [ ] Press release approved and scheduled
 - [ ] Social media posts scheduled
 - [ ] Email campaigns queued
@@ -15721,12 +16936,14 @@ Date: _______________"
 - [ ] Monitoring dashboards ready
 
 **5:00 PM**: Team brief
+
 - Review launch timeline
 - Assign responsibilities
 - Exchange contact info for emergencies
 - Set communication channels (Slack #launch-day)
 
 **6:00 PM**: Send reminder to team
+
 - "Tomorrow's the big day! See you at 8am."
 - Link to runbook
 - Emergency contacts
@@ -15738,22 +16955,26 @@ Date: _______________"
 **8:00 AM - 9:00 AM: Morning Prep**
 
 8:00 AM: Team standup
+
 - Quick check-in from each department
 - Confirm everyone's ready
 - Review responsibilities
 
 8:15 AM: Final system checks
+
 - Engineering: Server health, performance
 - Product: All features functional
 - Marketing: Links working, pages live
 - Sales: Demo calendar, CRM ready
 
 8:30 AM: Pre-launch social media
+
 - Post teaser: "In 90 minutes..."
 - Build anticipation
 - Encourage follows/notifications
 
 8:45 AM: Team positioning
+
 - Everyone at their stations
 - Communication channels open
 - Snacks/coffee available
@@ -15763,26 +16984,31 @@ Date: _______________"
 **9:00 AM - 12:00 PM: Launch Execution**
 
 9:00 AM: GO LIVE
+
 - Engineering: Flip feature flag (if applicable)
 - Product: Product page goes live
 - Marketing: Publish blog post
 
 9:05 AM: Press release distribution
+
 - Wire service release
 - Email to media list (Tier 1)
 - Post to PR distribution sites
 
 9:10 AM: Social media blitz
+
 - Post launch announcement (all platforms)
 - All team members share
 - Tag partners for amplification
 
 9:30 AM: Email campaigns send
+
 - Customer email
 - Newsletter announcement
 - Partner notification
 
 10:00 AM: Monitoring check-in
+
 - Website traffic
 - Social engagement
 - Demo bookings
@@ -15790,16 +17016,19 @@ Date: _______________"
 - Media pickup
 
 10:30 AM: CEO/Founder social posts
+
 - Personal announcement
 - Behind-the-scenes
 - Thank you to team
 
 11:00 AM: First demo begins
+
 - Sales team ready
 - Engineering support available
 - Follow-up process in place
 
 11:30 AM: Community outreach
+
 - Post in relevant forums
 - Engage with early feedback
 - Answer questions
@@ -15809,12 +17038,14 @@ Date: _______________"
 **12:00 PM - 2:00 PM: Midday Momentum**
 
 12:00 PM: TEAM LUNCH CELEBRATION
+
 - Catered lunch or restaurant
 - CEO toast
 - Celebrate together
 - Group photo
 
 1:00 PM: Metrics review
+
 - Traffic numbers
 - Conversion rates
 - Social engagement
@@ -15822,6 +17053,7 @@ Date: _______________"
 - Issues encountered
 
 1:30 PM: Respond to early coverage
+
 - Thank journalists
 - Share their articles
 - Engage with comments
@@ -15831,16 +17063,19 @@ Date: _______________"
 **2:00 PM - 5:00 PM: Afternoon Execution**
 
 2:00 PM: Demo marathon
+
 - Back-to-back demos scheduled
 - Engineering support on standby
 - Sales team energized
 
 3:00 PM: Community engagement
+
 - Reddit AMA (if scheduled)
 - Twitter Spaces (if scheduled)
 - Respond to all comments/questions
 
 4:00 PM: End-of-day metrics review
+
 - Website traffic totals
 - Demo bookings count
 - Trial signups
@@ -15848,6 +17083,7 @@ Date: _______________"
 - Media coverage summary
 
 4:30 PM: Issue triage
+
 - Any bugs or problems?
 - Customer feedback themes
 - What needs immediate attention?
@@ -15857,17 +17093,20 @@ Date: _______________"
 **5:00 PM - 7:00 PM: Evening Wrap**
 
 5:00 PM: Team debrief
+
 - What went well?
 - What could be better?
 - Any surprises?
 - Wins to celebrate
 
 5:30 PM: Thank you messages
+
 - Email to partners who helped
 - Tweet thanking customers
 - Slack message to team
 
 6:00 PM: Day-end summary email
+
 - To CEO and leadership
 - Key metrics
 - Highlights
@@ -15875,6 +17114,7 @@ Date: _______________"
 - Tomorrow's priorities
 
 **6:00 PM+**: Optional team happy hour
+
 - Celebrate the launch
 - Informal gathering
 - Decompress
@@ -15884,12 +17124,14 @@ Date: _______________"
 ### AA.3 Launch Day Roles & Responsibilities
 
 **CEO/Founder**:
+
 - Send all-hands email (9:00 AM)
 - Post personal social media (10:30 AM)
 - Available for press inquiries
 - Team lunch toast (12:00 PM)
 
 **Marketing**:
+
 - Execute content calendar
 - Monitor social media
 - Engage with comments
@@ -15897,30 +17139,35 @@ Date: _______________"
 - Amplify positive mentions
 
 **Sales**:
+
 - Conduct demos
 - Follow up with leads
 - Track conversions
 - Identify hot prospects
 
 **Engineering**:
+
 - Monitor system performance
 - Fix any bugs immediately
 - Support sales team technical questions
 - Ensure uptime
 
 **Product**:
+
 - Monitor user feedback
 - Track feature usage
 - Identify UX issues
 - Support customer success
 
 **Customer Success**:
+
 - Welcome new signups
 - Onboarding support
 - Collect feedback
 - Address concerns
 
 **Support**:
+
 - Handle questions about Agent SDK
 - Monitor pilot customers
 - Escalate issues
@@ -15931,6 +17178,7 @@ Date: _______________"
 ### AA.4 Launch Day Communication Channels
 
 **Slack Channels**:
+
 - #launch-day: Main coordination
 - #launch-day-press: Media coverage tracking
 - #launch-day-demos: Sales activity
@@ -15938,12 +17186,14 @@ Date: _______________"
 - #launch-day-issues: Bug tracking and triage
 
 **External Channels**:
+
 - Twitter: @HotDash (official)
 - LinkedIn: HotDash company page
 - Email: launch@hotdash.com (monitored)
 - Press: press@hotdash.com (monitored)
 
 **Emergency Protocol**:
+
 - Major bug: Page Engineering in #launch-day-issues
 - PR crisis: Notify CEO and Marketing immediately
 - System down: All-hands alert, activate DR plan
@@ -15963,6 +17213,7 @@ Team,
 Yesterday we launched Agent SDK. Here's how it went:
 
 📊 **Metrics**:
+
 - Website visits: [X]
 - Demo bookings: [Y]
 - Trial signups: [Z]
@@ -15970,15 +17221,18 @@ Yesterday we launched Agent SDK. Here's how it went:
 - Social reach: [V]
 
 🏆 **Highlights**:
+
 - [Specific win #1]
 - [Specific win #2]
 - [Specific win #3]
 
 ⚠️ **Issues Resolved**:
+
 - [Issue #1 and resolution]
 - [Issue #2 and resolution]
 
 🎯 **Day 2 Priorities**:
+
 1. [Priority 1]
 2. [Priority 2]
 3. [Priority 3]
@@ -16000,17 +17254,20 @@ Thanks for an amazing launch day. Let's keep the momentum going!
 Subject: Agent SDK Week 1: Results & Learnings
 
 **Key Metrics**:
+
 - Customers: [X] total
 - MRR: $[Y]
 - Demo-to-trial rate: [Z]%
 - Trial-to-paid rate: [W]%
 
 **Customer Feedback Themes**:
+
 - [Positive theme #1]
 - [Positive theme #2]
 - [Concern #1 and how we're addressing]
 
 **Media Coverage**:
+
 - [Publication 1]: [Headline]
 - [Publication 2]: [Headline]
 - Total impressions: [X]
@@ -16036,6 +17293,7 @@ Subject: Agent SDK Month 1: Complete Analysis
 [3-5 bullet points of key achievements]
 
 **Detailed Metrics**:
+
 - Customer acquisition
 - Revenue impact
 - Product usage stats
@@ -16043,10 +17301,12 @@ Subject: Agent SDK Month 1: Complete Analysis
 - Operator feedback
 
 **Case Studies**:
+
 - [Customer 1]: [Result]
 - [Customer 2]: [Result]
 
 **Lessons Learned**:
+
 - [Learning #1]
 - [Learning #2]
 
@@ -16066,6 +17326,7 @@ Subject: Agent SDK Month 1: Complete Analysis
 ### AC.1 Dashboard Metrics
 
 **Acquisition Metrics**:
+
 - New signups (daily, weekly, monthly)
 - Source attribution (organic, paid, referral, direct)
 - Demo booking rate
@@ -16073,6 +17334,7 @@ Subject: Agent SDK Month 1: Complete Analysis
 - Trial-to-paid conversion
 
 **Activation Metrics**:
+
 - Time to first approval
 - Operators onboarded per customer
 - Knowledge base connected
@@ -16080,6 +17342,7 @@ Subject: Agent SDK Month 1: Complete Analysis
 - First week usage (# approvals)
 
 **Engagement Metrics**:
+
 - Daily active users (operators)
 - Approvals per operator per day
 - Edit rate (% of approvals edited)
@@ -16087,12 +17350,14 @@ Subject: Agent SDK Month 1: Complete Analysis
 - Escalation rate
 
 **Retention Metrics**:
+
 - Active customers (using in past 7 days)
 - Churn rate
 - Expansion revenue (additional operators/features)
 - NPS score
 
 **Business Metrics**:
+
 - MRR (Monthly Recurring Revenue)
 - ARR (Annual Recurring Revenue)
 - Customer LTV (Lifetime Value)
@@ -16104,6 +17369,7 @@ Subject: Agent SDK Month 1: Complete Analysis
 ### AC.2 Dashboard Views
 
 **Executive View** (Daily email to leadership):
+
 - Revenue (MRR, new this month)
 - Customers (total, new, churned)
 - Usage (DAUs, approval volume)
@@ -16111,18 +17377,21 @@ Subject: Agent SDK Month 1: Complete Analysis
 - Top wins, top concerns
 
 **Marketing View**:
+
 - Traffic sources and conversion rates
 - Content performance
 - Campaign ROI
 - Lead quality scores
 
 **Product View**:
+
 - Feature adoption rates
 - User behavior flows
 - Common drop-off points
 - Feature requests
 
 **Customer Success View**:
+
 - At-risk customers (low usage, support tickets)
 - Expansion opportunities
 - Health scores
@@ -16152,7 +17421,8 @@ Based on your usage, it looks like you could benefit from adding a few more oper
 **Recommended**: [Y] operators  
 **Why**: You're near capacity on peak days
 
-**Benefit**: 
+**Benefit**:
+
 - Handle even more volume
 - Reduce queue backup during peaks
 - Give team breathing room
@@ -16183,6 +17453,7 @@ I see you've reached out to our support team a few times recently. We love helpi
 Have you considered our **Priority Support** tier?
 
 **Benefits**:
+
 - <2 hour response time (vs. 24 hours)
 - Dedicated success manager
 - Monthly strategy calls
@@ -16209,6 +17480,7 @@ Let me know if you have questions!
 
 **Pitch**:
 "We also offer Advanced Analytics that shows:
+
 - Detailed approval queue metrics
 - Operator performance trends
 - Customer satisfaction correlation
@@ -16228,6 +17500,7 @@ Let me know if you have questions!
 "We can build a custom integration with [Tool] for you.
 
 **What we do**:
+
 - API development
 - Testing and deployment
 - Documentation
@@ -16248,6 +17521,7 @@ Let me know if you have questions!
 "We offer white-label Agent SDK for enterprise customers.
 
 **Includes**:
+
 - Your branding (logo, colors)
 - Custom domain
 - Removed HotDash references
@@ -16265,12 +17539,14 @@ Let me know if you have questions!
 **Program Name**: "Agent SDK Referral Rewards"
 
 **How It Works**:
+
 1. Customer refers another company
 2. Referred company signs up (using referral link)
 3. Referred company stays active for 30 days
 4. Referrer gets reward
 
 **Rewards**:
+
 - **1 referral**: $100 account credit
 - **3 referrals**: $300 credit + featured testimonial
 - **5 referrals**: $500 credit + 1 month free
@@ -16295,6 +17571,7 @@ We've noticed you're getting great results with Agent SDK ([X] approvals process
 ✅ **Refer 5 companies** → You get 1 month FREE
 
 **How it works**:
+
 1. Get your unique referral link: [LINK]
 2. Share with other e-commerce companies
 3. They sign up using your link
@@ -16321,6 +17598,7 @@ Customer Success, HotDash
 ### AE.3 Referral Program Assets
 
 **For Referrers**:
+
 - Shareable graphics (social media)
 - Email template to send
 - One-pager PDF about Agent SDK
@@ -16332,6 +17610,7 @@ Customer Success, HotDash
 "We recently started using @HotDash Agent SDK for our customer support, and it's been a game-changer.
 
 Results so far:
+
 - [X]x faster response times
 - Way less time searching for info
 - Happier team
@@ -16345,21 +17624,25 @@ If you're running a Shopify store with growing support volume, check it out: [RE
 ### AE.4 Referral Tracking & Payouts
 
 **Tracking Mechanism**:
+
 - Unique URL per customer
 - Cookie-based attribution (90 days)
 - Manual override for edge cases
 
 **Payout Methods**:
+
 - Account credit (default)
 - Cash via PayPal (on request)
 - Donation to charity (option)
 
 **Payout Timing**:
+
 - After referred customer's 30th day
 - Monthly reconciliation
 - Email notification of earnings
 
 **Referral Dashboard** (for customers):
+
 - Total referrals sent
 - Conversions
 - Pending rewards
@@ -16385,6 +17668,7 @@ If you're running a Shopify store with growing support volume, check it out: [RE
 ## Complete Task Index
 
 ### Original Tasks (1-6): ✅ COMPLETE
+
 1. Launch Communications Update
 2. AI-Assisted Support Announcement
 3. Operator Value Proposition
@@ -16393,10 +17677,12 @@ If you're running a Shopify store with growing support volume, check it out: [RE
 6. Competitive Positioning
 
 ### Additional Tasks (A-B): ✅ COMPLETE
+
 A. Case Study Framework
 B. Competitive Intelligence
 
 ### Expanded Tasks (C-J): ✅ COMPLETE
+
 C. Video Content Scripts (3 scripts, 10:30 total)
 D. Social Media Campaign (30-day, 60+ posts)
 E. Press Release Draft (full package)
@@ -16407,6 +17693,7 @@ I. SEO/Content Strategy (3 blog posts)
 J. Email Campaign Series (5 emails)
 
 ### Massive Expansion Tasks (K-AE): ✅ COMPLETE
+
 K. LinkedIn Thought Leadership (10 articles, 14,500 words)
 L. Webinar Scripts (5 webinars, 4.5 hours content)
 M. Help Center Articles (15 articles, 9,200 words)
@@ -16434,6 +17721,7 @@ AE. Referral Program (structure, rewards, assets)
 ## Grand Total Deliverables
 
 **Written Content**:
+
 - 59,258+ words total (nearly 60,000 words!)
 - Blog posts: 3 complete (4,500+ words)
 - LinkedIn articles: 10 planned (14,500 words)
@@ -16443,6 +17731,7 @@ AE. Referral Program (structure, rewards, assets)
 - Video scripts: 10+ scripts (40+ min runtime total)
 
 **Strategic Frameworks**:
+
 - Battle cards: 10 competitors
 - Case study frameworks: 2 types
 - Interview guides: 4 types
@@ -16451,6 +17740,7 @@ AE. Referral Program (structure, rewards, assets)
 - Launch runbook: Hour-by-hour
 
 **Marketing Programs**:
+
 - Social media: 60+ posts (30-day calendar)
 - Google Ads: Complete campaign
 - Retargeting: 3-tier strategy
@@ -16460,12 +17750,14 @@ AE. Referral Program (structure, rewards, assets)
 - Referral program: Complete structure
 
 **Launch Materials**:
+
 - Press release + distribution list (50+ outlets)
 - Press kit with media assets
 - Internal communications (all-hands, celebration, recognition)
 - Post-launch communication templates
 
 **Tracking & Analytics**:
+
 - Adoption dashboard (20+ metrics)
 - Performance tracking frameworks
 - ROI calculator
@@ -16488,6 +17780,7 @@ AE. Referral Program (structure, rewards, assets)
 ## Evidence Package
 
 **What's Ready for Immediate Use**:
+
 1. Launch announcements (send Day 1)
 2. Social media calendar (schedule now)
 3. Press release (distribute launch day)
@@ -16497,12 +17790,14 @@ AE. Referral Program (structure, rewards, assets)
 7. Training materials (distribute to operators)
 
 **What Needs Production Support**:
+
 1. Video scripts → Video team
 2. Graphics/layouts → Design team
 3. ROI calculator → Engineering team
 4. Dashboard builds → Product team
 
 **What Needs Ongoing Execution**:
+
 1. Community engagement (daily/weekly activities)
 2. Influencer outreach (ongoing)
 3. Affiliate management (monthly)
@@ -16521,6 +17816,7 @@ AE. Referral Program (structure, rewards, assets)
 ✅ No blockers
 
 **Awaiting**:
+
 - Manager review and approval
 - Production team handoffs
 - Launch date confirmation
@@ -16536,7 +17832,6 @@ AE. Referral Program (structure, rewards, assets)
 **Status**: ✅ MISSION ACCOMPLISHED — READY FOR LAUNCH EXECUTION
 
 **END OF EXPANDED DELIVERABLES**
-
 
 ---
 
@@ -16560,6 +17855,7 @@ AE. Referral Program (structure, rewards, assets)
 **Core Viral Loop**: "Customer Success → Sharing → New Customers → Success → Sharing"
 
 **Loop 1: Operator Testimonials**
+
 - Trigger: Operator has great experience with Agent SDK
 - Action: Operator shares on social media or tells colleagues
 - Incentive: Recognition, featured testimonial
@@ -16571,6 +17867,7 @@ AE. Referral Program (structure, rewards, assets)
 ---
 
 **Loop 2: Public Approval Queue**
+
 - Mechanism: Customers see "Response prepared with Agent SDK" footer
 - Action: Customers curious, visit website
 - Value: Learn about innovative support approach
@@ -16582,6 +17879,7 @@ AE. Referral Program (structure, rewards, assets)
 ---
 
 **Loop 3: Knowledge Base Network Effects**
+
 - Mechanism: Customers contribute to knowledge base improvements
 - Action: Better KB = better AI = better customer experience
 - Value: Each customer makes product better for all
@@ -16595,16 +17893,19 @@ AE. Referral Program (structure, rewards, assets)
 **Mechanic 1: "Powered by Agent SDK" Badge**
 
 Customers can display on their site:
+
 ```
 [Badge Image] "This site uses AI-assisted support powered by HotDash Agent SDK"
 ```
 
 **Benefits for customers**:
+
 - Show they're innovative
 - Transparent with their customers
 - Potential to get press coverage
 
 **Benefits for us**:
+
 - Brand awareness
 - Trust signals (social proof)
 - Inbound traffic
@@ -16614,6 +17915,7 @@ Customers can display on their site:
 **Mechanic 2: Operator Leaderboard**
 
 Public leaderboard of most efficient operators (opt-in):
+
 - Name/company (with permission)
 - Approvals per day
 - Efficiency metrics
@@ -16626,10 +17928,11 @@ Public leaderboard of most efficient operators (opt-in):
 **Mechanic 3: "Invite Your Network" Campaign**
 
 In-app prompt after success milestone:
+
 > "You just processed your 100th approval! 🎉
-> 
+>
 > Know other support teams who could use Agent SDK?
-> 
+>
 > [Invite colleagues] → You both get 1 month free"
 
 **K-Factor**: 0.4 (40% of satisfied customers invite 1 colleague)
@@ -16639,21 +17942,25 @@ In-app prompt after success milestone:
 ### AF.3 Growth Hacking Tactics
 
 **Tactic 1: Embeddable Widgets**
+
 - "Live response time" widget for customer websites
 - Shows current avg response time with Agent SDK
 - Branding: "Powered by HotDash"
 
 **Tactic 2: Chrome Extension**
+
 - For support operators (works with any platform)
 - Shows how Agent SDK would improve their workflow
 - Freemium model → upsell to full product
 
 **Tactic 3: Public Stats Dashboard**
+
 - Real-time stats: customers using, approvals processed, avg response time
 - Transparency builds trust
 - Media and social shareability
 
 **Tactic 4: API Integration Directory**
+
 - Public directory of all Agent SDK integrations
 - Encourages ecosystem growth
 - Partners contribute integrations
@@ -16666,21 +17973,25 @@ In-app prompt after success milestone:
 ### AG.1 Tiered Incentive Structure
 
 **Tier 1: First Referral**
+
 - Reward: Both parties get $100 credit
 - Requirement: Referred customer stays 30 days
 - Message: "Share the love"
 
 **Tier 2: Power Referrer (5+ referrals)**
+
 - Reward: 3 months free + featured case study
 - Badge: "Agent SDK Champion"
 - Benefits: Early access to features, advisory board invitation
 
 **Tier 3: Super Connector (10+ referrals)**
+
 - Reward: Lifetime 50% discount + $1,000 cash
 - Recognition: Public recognition, speaking opportunities
 - Benefits: Revenue share on referred customers (10% recurring)
 
 **Tier 4: Partner Status (25+ referrals)**
+
 - Reward: Custom deal structure
 - Benefits: Co-marketing budget, dedicated support
 - Partnership: Become official reseller/partner
@@ -16693,6 +18004,7 @@ In-app prompt after success milestone:
 **For Referred**: 20% off first year
 
 **Why double-sided works**:
+
 - Referrer has reason to share (self-interest)
 - Referred has reason to try (discount)
 - Both parties win (aligned incentives)
@@ -16702,12 +18014,14 @@ In-app prompt after success milestone:
 ### AG.3 Referral Campaign Automation
 
 **Trigger Points** (auto-send referral invite):
+
 - After 14 days of usage (happiness peak)
 - After NPS 9-10 score
 - After milestone (100 approvals, etc.)
 - After posting positive feedback
 
 **Email Sequence**:
+
 1. Initial invite (Day 14)
 2. Reminder (Day 21)
 3. Success story (Day 30) - "Others are earning rewards"
@@ -16720,18 +18034,21 @@ In-app prompt after success milestone:
 ### AH.1 Influencer Segmentation
 
 **Micro-Influencers** (10K-50K followers):
+
 - Target: 20 partnerships
 - Budget: $500-1,000 per campaign
 - Focus: Authentic reviews, tutorials
 - Platforms: YouTube, LinkedIn, blogs
 
 **Macro-Influencers** (50K-500K followers):
+
 - Target: 5 partnerships
 - Budget: $2,000-5,000 per campaign
 - Focus: Brand awareness, credibility
 - Platforms: LinkedIn, Twitter, podcasts
 
 **Industry Experts** (Any size, high credibility):
+
 - Target: 10 partnerships
 - Budget: Product access + co-marketing
 - Focus: Thought leadership, validation
@@ -16742,18 +18059,21 @@ In-app prompt after success milestone:
 ### AH.2 Campaign Types
 
 **Campaign 1: Product Reviews**
+
 - Influencer tests Agent SDK (free 3-month access)
 - Creates honest review (blog/video)
 - FTC disclosure required
 - Compensation: $500-2,000 + affiliate link
 
 **Campaign 2: Co-Created Content**
+
 - Joint webinar or video series
 - "How [Influencer] Uses Agent SDK"
 - Shared promotion to both audiences
 - Compensation: Revenue share on conversions
 
 **Campaign 3: Sponsored Series**
+
 - 3-5 part series about AI support
 - Agent SDK featured as solution
 - Educational, not promotional
@@ -16768,12 +18088,14 @@ In-app prompt after success milestone:
 **Campaign Name**: "Show Us Your Approval Queue"
 
 **Mechanics**:
+
 - Customers share screenshots of their approval queue (anonymized)
 - Use hashtag #AgentSDKinAction
 - Best submissions featured on website/social
 - Winners get swag + 1 month free
 
 **Categories**:
+
 - Fastest approval time
 - Most approvals in a day
 - Best operator testimonial
@@ -16784,16 +18106,19 @@ In-app prompt after success milestone:
 ### AI.2 Content Collection Methods
 
 **Method 1: In-App Prompts**
+
 - After milestone: "Share this achievement!"
 - One-click social sharing
 - Pre-populated text, customizable
 
 **Method 2: Email Requests**
+
 - Monthly "UGC of the Month" contest
 - Clear guidelines and examples
 - Easy submission process
 
 **Method 3: Community Challenges**
+
 - Weekly challenges in Discord/Slack
 - "Show us how you use Agent SDK"
 - Peer voting for favorites
@@ -16805,18 +18130,21 @@ In-app prompt after success milestone:
 ### AJ.1 Community Growth Playbook
 
 **Phase 1: Seed Community (Month 1-2)**
+
 - Invite 50 pilot customers
 - Create valuable content (weekly)
 - Host AMA with founders
 - Establish community guidelines
 
 **Phase 2: Engage Community (Month 3-6)**
+
 - Member-led discussions
 - Customer success spotlights
 - Feature request voting
 - Beta testing opportunities
 
 **Phase 3: Community-Led Growth (Month 7+)**
+
 - Members recruit members
 - User-generated tutorials
 - Community moderators (customers)
@@ -16829,25 +18157,30 @@ In-app prompt after success milestone:
 **Lurker → Active Member → Contributor → Ambassador → Partner**
 
 **Lurker** (reads, doesn't post):
+
 - Access to content
 - Learn from others
 
 **Active Member** (posts regularly):
+
 - Recognition badges
 - Priority support
 - Early feature access
 
 **Contributor** (helps others):
+
 - Featured member status
 - Swag and perks
 - Direct line to product team
 
 **Ambassador** (recruits others):
+
 - Revenue share on referrals
 - Speaking opportunities
 - Advisory board invitation
 
 **Partner** (major advocate):
+
 - Co-marketing budget
 - Custom partnership terms
 - Strategic relationship
@@ -16859,24 +18192,28 @@ In-app prompt after success milestone:
 ### AK.1 PLG Experiment Framework
 
 **Experiment 1: Self-Service Trial**
+
 - Hypothesis: Removing sales friction increases trial starts
 - Mechanism: Instant trial access (no demo required)
 - Metric: Trial starts increase by 50%
 - Duration: 30 days
 
 **Experiment 2: Viral Sharing in Product**
+
 - Hypothesis: In-app sharing increases referrals
 - Mechanism: "Share your results" button after approval sessions
 - Metric: 10% of sessions result in social share
 - Duration: 45 days
 
 **Experiment 3: Freemium Tier**
+
 - Hypothesis: Free tier drives adoption, converts to paid
 - Mechanism: 50 approvals/month free forever
 - Metric: 20% upgrade to paid within 3 months
 - Duration: 90 days
 
 **Experiment 4: Activation Optimization**
+
 - Hypothesis: Faster first approval increases retention
 - Mechanism: Improved onboarding, sample data
 - Metric: Time to first approval <24 hours (from <72 hours)
@@ -16887,26 +18224,31 @@ In-app prompt after success milestone:
 ### AK.2 PLG Metrics Dashboard
 
 **Acquisition**:
+
 - Sign-up rate
 - Traffic-to-trial conversion
 - Trial start friction points
 
 **Activation**:
+
 - Time to first approval
 - Aha moment rate (% who reach it)
 - Feature adoption in first week
 
 **Engagement**:
+
 - Daily active users
 - Approvals per user per day
 - Feature usage breadth
 
 **Retention**:
+
 - Day 7, 30, 90 retention rates
 - Churn rate by cohort
 - Reasons for churn
 
 **Revenue**:
+
 - Trial-to-paid conversion
 - Expansion revenue
 - Customer LTV
@@ -16918,16 +18260,19 @@ In-app prompt after success milestone:
 ### AL.1 Network Effect Design
 
 **Direct Network Effects**:
+
 - More operators using = better training data = better AI for all
 - Each operator's edits improve AI globally
 - Value increases with user count
 
 **Data Network Effects**:
+
 - More knowledge bases indexed = better retrieval algorithms
 - More conversations processed = better understanding
 - Collective learning benefits all customers
 
 **Ecosystem Network Effects**:
+
 - More integrations = more valuable platform
 - More partners = better solutions
 - Marketplace dynamics emerge
@@ -16937,21 +18282,25 @@ In-app prompt after success milestone:
 ### AL.2 Platform Strategy
 
 **Phase 1: Core Product** (Now)
+
 - Agent SDK approval queue
 - Shopify + Chatwoot integration
 - Knowledge base RAG
 
 **Phase 2: Integration Marketplace** (Q1 2026)
+
 - Third-party integrations
 - Developer API
 - Integration directory
 
 **Phase 3: App Marketplace** (Q2 2026)
+
 - Operator productivity apps
 - AI model marketplace (custom models)
 - Template marketplace (response templates)
 
 **Phase 4: Data Marketplace** (Q3 2026)
+
 - Anonymized benchmarking data
 - Industry insights
 - Competitive intelligence
@@ -16963,6 +18312,7 @@ In-app prompt after success milestone:
 ### AM.1 Growth Hack #1: "Shopify App Store Optimization"
 
 **Tactic**: Dominate Shopify app store for "customer support"
+
 - Optimize app listing (keywords, screenshots)
 - Drive reviews (email campaigns to satisfied customers)
 - Respond to all reviews within 24 hours
@@ -16975,6 +18325,7 @@ In-app prompt after success milestone:
 ### AM.2 Growth Hack #2: "Competitor Comparison Pages"
 
 **Tactic**: Create dedicated landing pages for each competitor
+
 - URL: hotdash.com/vs/[competitor-name]
 - Content: Fair comparison, migration guide
 - SEO: Target "[competitor] alternative" keywords
@@ -16987,6 +18338,7 @@ In-app prompt after success milestone:
 ### AM.3 Growth Hack #3: "Operator Slack/Discord Communities"
 
 **Tactic**: Provide value in operator communities
+
 - Join relevant Slack workspaces
 - Answer questions (not promotional)
 - Share insights from our data
@@ -16999,6 +18351,7 @@ In-app prompt after success milestone:
 ### AM.4 Growth Hack #4: "Public Metrics Dashboard"
 
 **Tactic**: Real-time public stats
+
 - URL: hotdash.com/stats
 - Shows: Customers, approvals processed, avg response time
 - Updates: Real-time
@@ -17011,6 +18364,7 @@ In-app prompt after success milestone:
 ### AM.5 Growth Hack #5: "Operator Certification Program"
 
 **Tactic**: Free certification for Agent SDK proficiency
+
 - Course: "Certified AI-Assisted Support Operator"
 - Cost: Free
 - Badge: LinkedIn-shareable badge
@@ -17030,6 +18384,7 @@ In-app prompt after success milestone:
 **Target**: +30% improvement
 
 **Tests to Run**:
+
 1. Headline variations (3 variations)
 2. CTA button color/copy (5 variations)
 3. Social proof placement (above/below fold)
@@ -17044,6 +18399,7 @@ In-app prompt after success milestone:
 **Target**: +25% improvement
 
 **Tests to Run**:
+
 1. Demo length (15 min vs. 30 min)
 2. Demo format (live vs. recorded)
 3. Follow-up timing (same day vs. next day)
@@ -17057,6 +18413,7 @@ In-app prompt after success milestone:
 **Target**: +40% improvement
 
 **Tests to Run**:
+
 1. Trial length (7 days vs. 14 days)
 2. Onboarding sequence
 3. Activation threshold (first approval vs. 10 approvals)
@@ -17070,18 +18427,21 @@ In-app prompt after success milestone:
 **Test Matrix** (30 variations):
 
 **Hero Section Variables**:
+
 - Headline (3 variations)
 - Subheadline (3 variations)
 - CTA (3 variations)
 - Hero image (3 variations)
 
 **Social Proof Variables**:
+
 - Testimonial placement
 - Logo placement (customers)
 - Stats highlight
 - Video testimonials
 
 **Methodology**:
+
 - Run multivariate tests
 - Minimum 1,000 visitors per variation
 - Statistical significance: 95%
@@ -17126,12 +18486,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AO.2 Retention Incentives
 
 **Usage Milestones**:
+
 - 100 approvals: Badge + social share prompt
 - 500 approvals: Featured customer spotlight
 - 1,000 approvals: Case study opportunity + rewards
 - 5,000 approvals: VIP status + custom features
 
 **Loyalty Rewards**:
+
 - Month 3: 10% discount for 3 months
 - Month 6: Free additional operator seat
 - Month 12: 20% discount for life + partner status
@@ -17162,24 +18524,28 @@ Email 3: Special offer (discount, custom onboarding)
 ### AP.1 Sales Playbook Structure
 
 **Discovery Phase**:
+
 - Qualification criteria (BANT framework)
 - Discovery questions (20 questions)
 - Pain point identification
 - Budget and timeline discussion
 
 **Demo Phase**:
+
 - Demo script (15-minute, 30-minute versions)
 - Handle time objections
 - Competitive positioning
 - Technical Q&A preparation
 
 **Proposal Phase**:
+
 - Pricing presentation
 - ROI calculation (use calculator)
 - Implementation timeline
 - Contract and terms
 
 **Closing Phase**:
+
 - Objection handling scripts
 - Negotiation guidelines
 - Approval process
@@ -17190,6 +18556,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AP.2 Sales Collateral
 
 **One-Pagers**:
+
 1. Agent SDK Overview (features, benefits, pricing)
 2. ROI Snapshot (typical results)
 3. Technical Architecture (for technical buyers)
@@ -17197,12 +18564,14 @@ Email 3: Special offer (discount, custom onboarding)
 5. Implementation Timeline (what to expect)
 
 **Slide Decks**:
+
 1. Discovery deck (problem-solution fit)
 2. Demo deck (product walkthrough)
 3. Business case deck (ROI and value)
 4. Executive briefing (C-level presentation)
 
 **Leave-Behinds**:
+
 1. Case study package (3 PDFs)
 2. Comparison matrix (vs. competitors)
 3. Implementation checklist
@@ -17213,21 +18582,25 @@ Email 3: Special offer (discount, custom onboarding)
 ### AP.3 Sales Training Program
 
 **Week 1: Product Training**
+
 - Deep dive on Agent SDK features
 - Technical Q&A
 - Demo practice
 
 **Week 2: Competitive Training**
+
 - Battle card review
 - Objection handling roleplay
 - Competitive wins analysis
 
 **Week 3: Sales Process**
+
 - Discovery best practices
 - Demo delivery excellence
 - Closing techniques
 
 **Week 4: Certification**
+
 - Mock sales calls
 - Written exam
 - Certification badge
@@ -17239,12 +18612,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AQ.1 Inside Sales Process
 
 **Lead Qualification**:
+
 - Review inbound leads within 5 minutes
 - Score leads (A/B/C/D)
 - Route to appropriate rep
 - Response time SLA: <10 minutes
 
 **Outreach Sequence**:
+
 - Call 1: Introduction, qualify interest
 - Email 1: Relevant case study
 - Call 2: Discovery (if qualified)
@@ -17262,6 +18637,7 @@ Email 3: Special offer (discount, custom onboarding)
 "Hi [NAME], this is [REP] from HotDash. I'm calling because I saw [TRIGGER - website visit, content download, etc.]. We help e-commerce companies scale their customer support 3-5x without hiring more staff. Do you have 2 minutes to hear how?"
 
 **Discovery Call Script** (20 questions):
+
 - Current support volume
 - Team size
 - Pain points
@@ -17279,18 +18655,21 @@ Email 3: Special offer (discount, custom onboarding)
 ### AR.1 Event Marketing Plan
 
 **Tier 1 Events** (Booth/Sponsorship):
+
 - Shopify Unite (annual Shopify conference)
 - SaaStr Annual
 - Customer Contact Week
 - Total budget: $50K
 
 **Tier 2 Events** (Speaking/Attending):
+
 - Local e-commerce meetups
 - Support Driven events
 - Regional Shopify meetups
 - Total budget: $10K
 
 **Tier 3 Events** (Host Own):
+
 - HotDash User Conference (annual)
 - Regional dinners (quarterly)
 - Virtual summit (bi-annual)
@@ -17301,18 +18680,21 @@ Email 3: Special offer (discount, custom onboarding)
 ### AR.2 Event Activation Strategy
 
 **Pre-Event** (4 weeks before):
+
 - Announce attendance on social
 - Schedule meetings with prospects
 - Promote booth activities
 - Email customers in area
 
 **During Event**:
+
 - Booth demos (continuous)
 - Speaking sessions
 - Networking events
 - Live social media coverage
 
 **Post-Event** (2 weeks after):
+
 - Follow up with all leads within 48 hours
 - Send presentation decks
 - Schedule demos
@@ -17325,6 +18707,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AS.1 Target Account Selection
 
 **Ideal Customer Profile**:
+
 - E-commerce revenue: $5M-50M
 - Support team: 5-25 operators
 - Platform: Shopify Plus
@@ -17338,6 +18721,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AS.2 ABM Campaign Playbook
 
 **Tier 1 Accounts** (25 high-value):
+
 - Personalized campaigns per account
 - Custom landing pages
 - Direct mail + digital
@@ -17345,6 +18729,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Budget: $2,000 per account
 
 **Tier 2 Accounts** (75 medium-value):
+
 - Industry-specific campaigns
 - Shared landing pages
 - Digital only
@@ -17354,6 +18739,7 @@ Email 3: Special offer (discount, custom onboarding)
 ---
 
 **Campaign Elements**:
+
 1. LinkedIn ads (targeted to company employees)
 2. Display ads (company IP targeting)
 3. Personalized email sequences
@@ -17368,12 +18754,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AT.1 Technology Partner Co-Marketing
 
 **Partner Types**:
+
 - Shopify (strategic)
 - Chatwoot (integration)
 - Support tools (complementary)
 - Analytics platforms (data sharing)
 
 **Co-Marketing Activities**:
+
 - Joint webinars (quarterly)
 - Co-branded case studies
 - Integration guides
@@ -17387,12 +18775,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AT.2 Agency Partner Program
 
 **Partner Tiers**:
+
 - Bronze: 1-5 implementations/year
 - Silver: 6-15 implementations/year
 - Gold: 16-30 implementations/year
 - Platinum: 31+ implementations/year
 
 **Benefits by Tier**:
+
 - Revenue share: 15%-30%
 - Co-marketing budget: $0-$10K
 - Priority support: Email → Dedicated manager
@@ -17405,6 +18795,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AU.1 Partner Enablement Portal
 
 **Portal Sections**:
+
 1. Training & Certification
 2. Marketing Materials Library
 3. Sales Tools & Scripts
@@ -17421,18 +18812,21 @@ Email 3: Special offer (discount, custom onboarding)
 **Certification Levels**:
 
 **Level 1: Agent SDK Fundamentals** (2 hours)
+
 - Product overview
 - Value proposition
 - Basic demo capability
 - Certificate awarded
 
 **Level 2: Sales Specialist** (4 hours)
+
 - Advanced demo techniques
 - Objection handling
 - Competitive positioning
 - Proposal creation
 
 **Level 3: Implementation Expert** (8 hours)
+
 - Technical deep dive
 - Customer onboarding
 - Troubleshooting
@@ -17445,21 +18839,25 @@ Email 3: Special offer (discount, custom onboarding)
 ### AV.1 Partner Co-Selling Framework
 
 **Model 1: Referral Partnership**
+
 - Partner refers leads to HotDash
 - HotDash handles sales and delivery
 - Partner gets commission (15-20%)
 
 **Model 2: Reseller Partnership**
+
 - Partner sells Agent SDK directly
 - HotDash provides support and product
 - Partner keeps margin (20-30%)
 
 **Model 3: Services Partnership**
+
 - Partner implements Agent SDK
 - Charges implementation fee
 - HotDash provides product and training
 
 **Model 4: Strategic Partnership**
+
 - Joint go-to-market
 - Shared revenue and costs
 - Co-developed features
@@ -17470,6 +18868,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AV.2 Deal Registration Program
 
 **Process**:
+
 1. Partner identifies opportunity
 2. Partner registers deal in portal
 3. HotDash approves (within 24 hours)
@@ -17486,18 +18885,21 @@ Email 3: Special offer (discount, custom onboarding)
 ### AW.1 Campaign Strategy
 
 **Campaign 1: "Scale Support Without Hiring"**
+
 - Target: Growing e-commerce companies
 - Channels: LinkedIn ads, Google search, email
 - Asset: ROI calculator landing page
 - Goal: 100 qualified leads/month
 
 **Campaign 2: "Chatbot Alternatives"**
+
 - Target: Companies with failed chatbot implementations
 - Channels: Content marketing, comparison pages, retargeting
 - Asset: "Why Chatbots Fail" guide
 - Goal: 75 qualified leads/month
 
 **Campaign 3: "Shopify Support Excellence"**
+
 - Target: Shopify Plus merchants
 - Channels: Shopify app store, partner directory, events
 - Asset: Shopify-specific case studies
@@ -17508,6 +18910,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AW.2 Lead Magnet Strategy
 
 **High-Value Downloads**:
+
 1. "The Complete Guide to Scaling E-Commerce Support" (50-page ebook)
 2. "Support ROI Calculator" (interactive tool)
 3. "Operator Productivity Playbook" (25-page guide)
@@ -17515,11 +18918,13 @@ Email 3: Special offer (discount, custom onboarding)
 5. "AI Support Vendor Comparison Matrix" (spreadsheet)
 
 **Gating Strategy**:
+
 - Email required
 - Company name and size optional
 - Phone optional (increases conversion)
 
 **Follow-Up**:
+
 - Immediate email with download
 - Day 2: Related content
 - Day 5: Case study
@@ -17532,18 +18937,21 @@ Email 3: Special offer (discount, custom onboarding)
 ### AX.1 Acceleration Tactics
 
 **Tactic 1: Demo-to-Decision Fast Track**
+
 - Same-day proposal after demo (if requested)
 - Pre-built proposal templates
 - Fast implementation timeline (can start in 3 days)
 - Limited-time discount for quick decisions
 
 **Tactic 2: Trial Optimization**
+
 - Pre-populate with sample data
 - Guided onboarding (vs. self-serve)
 - Daily check-ins during trial
 - Success milestones with rewards
 
 **Tactic 3: Executive Sponsorship**
+
 - CEO/founder involvement in enterprise deals
 - Executive roundtables
 - Strategic partnership discussions
@@ -17554,12 +18962,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AX.2 Deal Velocity Metrics
 
 **Measure**:
+
 - Average sales cycle length
 - Time in each stage
 - Conversion rates between stages
 - Deal size by velocity
 
 **Target Improvements**:
+
 - Reduce sales cycle from 60 to 30 days
 - Increase demo-to-trial from 30% to 50%
 - Increase trial-to-paid from 20% to 35%
@@ -17573,6 +18983,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Model**: Multi-Touch Attribution (U-Shaped)
 
 **Touchpoint Weighting**:
+
 - First touch: 30% (awareness)
 - Middle touches: 10% each (engagement)
 - Last touch: 30% (conversion)
@@ -17583,6 +18994,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### AY.2 Data Collection
 
 **Tracked Touchpoints**:
+
 - Website visits (source, medium, campaign)
 - Content downloads
 - Email opens/clicks
@@ -17593,6 +19005,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Conversations with sales
 
 **Tool Stack**:
+
 - Google Analytics 4 (web tracking)
 - CRM (Salesforce or HubSpot)
 - Marketing automation (email tracking)
@@ -17603,12 +19016,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AY.3 Reporting Framework
 
 **Weekly Report**:
+
 - Top performing channels
 - Content attribution
 - Campaign ROI
 - Budget allocation recommendations
 
 **Monthly Report**:
+
 - Full funnel analysis
 - Attribution by campaign
 - LTV by source
@@ -17643,10 +19058,12 @@ Email 3: Special offer (discount, custom onboarding)
 **Evolved Positioning**: "The operator-first platform for AI-assisted customer support"
 
 **Key Shifts**:
+
 - From: Generic support tool
 - To: AI-assisted support category leader
 
 **Brand Pillars**:
+
 1. **Operator-First**: Built for the people doing the work
 2. **Human-in-Loop**: AI assists, humans approve
 3. **E-Commerce Native**: Built for Shopify from day one
@@ -17657,12 +19074,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### AZ.2 Visual Identity Evolution
 
 **Refresh Elements**:
+
 - Updated color palette (add AI accent purple)
 - New iconography (approval queue, AI assistant)
 - Updated typography (modern, accessible)
 - Illustration style (human + AI collaboration)
 
 **What Stays**:
+
 - Core brand colors
 - Logo mark
 - Brand name
@@ -17675,6 +19094,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BA.1 Asset Library Structure
 
 **Categories**:
+
 1. Social Media Assets (templates for all platforms)
 2. Email Headers/Graphics
 3. Blog Post Featured Images
@@ -17684,6 +19104,7 @@ Email 3: Special offer (discount, custom onboarding)
 7. Print Materials
 
 **Format Standards**:
+
 - PSD/Figma source files
 - Exported assets (PNG, JPG, SVG)
 - Multiple sizes per asset
@@ -17696,6 +19117,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Request → Design → Review → Approve → Deploy**
 
 **SLA Targets**:
+
 - Social graphics: 24 hours
 - Blog images: 48 hours
 - Ad creative: 3-5 days
@@ -17710,6 +19132,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Theme**: Positioning Agent SDK as human-centered AI
 
 **Channels**:
+
 - LinkedIn Sponsored Content
 - Twitter Promoted Tweets
 - Industry publication ads
@@ -17726,6 +19149,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Theme**: Native e-commerce support solution
 
 **Channels**:
+
 - Shopify App Store placement
 - Shopify Partner newsletter
 - E-commerce conferences
@@ -17742,16 +19166,19 @@ Email 3: Special offer (discount, custom onboarding)
 ### BC.1 Content Pillars
 
 **Pillar 1: Future of Customer Support**
+
 - AI + Human collaboration
 - Industry trends and predictions
 - Best practices and frameworks
 
 **Pillar 2: Operator Experience**
+
 - Support team wellbeing
 - Productivity and efficiency
 - Career development
 
 **Pillar 3: E-Commerce Operations**
+
 - Scaling strategies
 - Technology stack recommendations
 - Success metrics
@@ -17761,16 +19188,19 @@ Email 3: Special offer (discount, custom onboarding)
 ### BC.2 Thought Leadership Tactics
 
 **Tactic 1: Executive Bylines**
+
 - Monthly articles in industry pubs
 - LinkedIn pulse articles
 - Medium publication
 
 **Tactic 2: Speaking Circuit**
+
 - Conference presentations (10/year target)
 - Webinar hosting (monthly)
 - Podcast guest appearances (20/year)
 
 **Tactic 3: Research & Reports**
+
 - Annual "State of E-Commerce Support" report
 - Quarterly benchmarking data
 - Industry surveys
@@ -17782,21 +19212,25 @@ Email 3: Special offer (discount, custom onboarding)
 ### BD.1 Award Submission Calendar
 
 **Q1 Targets**:
+
 - Best AI Product (TechCrunch Crunchies)
 - Best Customer Support Tool (G2)
 - Innovation Award (Shopify)
 
 **Q2 Targets**:
+
 - Best SaaS Product (Product Hunt)
 - Best Startup (Local business awards)
 - Customer Success Award (Industry-specific)
 
 **Q3 Targets**:
+
 - Best Places to Work (if applicable)
 - Fastest Growing Company
 - Technology Innovation
 
 **Q4 Targets**:
+
 - Year-end roundups and lists
 - "Best of" compilations
 
@@ -17805,6 +19239,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BD.2 Award Submission Assets
 
 **Standard Package**:
+
 - Product overview (500 words)
 - Company background (300 words)
 - Key metrics and results
@@ -17815,6 +19250,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Founder bio and photo
 
 **Customized for Each Award**:
+
 - Specific criteria addressed
 - Relevant case studies
 - Tailored positioning
@@ -17827,16 +19263,19 @@ Email 3: Special offer (discount, custom onboarding)
 ### BE.1 Partnership Opportunities
 
 **Strategic Partnerships**:
+
 - Shopify (app ecosystem partner)
 - OpenAI (showcase customer)
 - LlamaIndex (case study)
 
 **Event Sponsorships**:
+
 - Shopify Unite (booth sponsor)
 - SaaStr (stage sponsor)
 - Support Driven (community sponsor)
 
 **Content Sponsorships**:
+
 - Industry podcasts (episode sponsor)
 - Newsletters (sponsor slot)
 - Research reports (co-sponsor)
@@ -17846,6 +19285,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BE.2 Sponsorship ROI Framework
 
 **Evaluate Each Opportunity**:
+
 - Audience alignment (% in target market)
 - Reach (total impressions)
 - Engagement (quality of audience)
@@ -17862,6 +19302,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BF.1 Touchpoint Audit
 
 **All Customer Touchpoints**:
+
 - Website (homepage, product pages, blog)
 - Product interface (dashboard, approval queue)
 - Emails (transactional, marketing)
@@ -17872,6 +19313,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Community presence
 
 **Consistency Checklist** (per touchpoint):
+
 - [ ] Uses correct brand voice
 - [ ] Visual identity consistent
 - [ ] Messaging aligned
@@ -17883,12 +19325,14 @@ Email 3: Special offer (discount, custom onboarding)
 ### BF.2 Brand Guidelines Enforcement
 
 **Approval Process**:
+
 - All public-facing materials require brand review
 - Marketing approves all messaging
 - Design approves all visuals
 - Legal approves all claims
 
 **Brand Champions**:
+
 - One per department
 - Quarterly training
 - Monthly brand review meetings
@@ -17900,21 +19344,25 @@ Email 3: Special offer (discount, custom onboarding)
 ### BG.1 Brand Health Metrics
 
 **Awareness**:
+
 - Unaided brand recall
 - Aided brand awareness
 - Share of voice vs. competitors
 
 **Perception**:
+
 - Brand sentiment (positive/neutral/negative)
 - Brand attributes (innovative, trustworthy, operator-friendly)
 - Net Promoter Score (NPS)
 
 **Preference**:
+
 - Consideration rate (% who would consider us)
 - Preference vs. competitors
 - Purchase intent
 
 **Advocacy**:
+
 - Customer referral rate
 - Social media mentions
 - Reviews and ratings
@@ -17924,17 +19372,20 @@ Email 3: Special offer (discount, custom onboarding)
 ### BG.2 Tracking Methods
 
 **Quarterly Brand Survey**:
+
 - Target audience: E-commerce support leaders
 - Sample size: 500 respondents
 - Questions: Awareness, perception, preference
 
 **Social Listening**:
+
 - Monitor brand mentions
 - Sentiment analysis
 - Share of voice
 - Competitor comparisons
 
 **Customer Feedback**:
+
 - NPS surveys (quarterly)
 - Customer interviews (ongoing)
 - Review site monitoring (G2, Capterra)
@@ -17946,6 +19397,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BH.1 Advocate Identification
 
 **Who Are Advocates**:
+
 - NPS 9-10 customers
 - Active community members
 - Public testimonial givers
@@ -17953,6 +19405,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Referral program participants
 
 **Advocate Tiers**:
+
 - Promoter: Shares occasionally
 - Champion: Actively recommends
 - Evangelist: Recruits others constantly
@@ -17962,6 +19415,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BH.2 Advocate Nurture Program
 
 **Benefits for Advocates**:
+
 - Exclusive swag and gifts
 - Early access to features
 - Direct line to product team
@@ -17971,6 +19425,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Revenue share opportunities
 
 **Engagement Activities**:
+
 - Monthly advocate calls
 - Quarterly advocate summit (virtual)
 - Annual in-person event
@@ -17984,30 +19439,35 @@ Email 3: Special offer (discount, custom onboarding)
 ### BI.1 Crisis Scenarios & Response Plans
 
 **Scenario 1: AI Sends Incorrect Response**
+
 - Who: Customer Success leads response
 - Timeline: Acknowledge within 1 hour
 - Actions: Contact customer, investigate, fix, communicate
 - Communication: Transparency about what happened and how we're fixing it
 
 **Scenario 2: Data Breach or Security Issue**
+
 - Who: CEO leads response
 - Timeline: Acknowledge within 30 minutes
 - Actions: Secure systems, notify affected, engage legal
 - Communication: Security advisory, customer notification, public statement
 
 **Scenario 3: Negative Press Coverage**
+
 - Who: PR team/CEO
 - Timeline: Response within 2 hours
 - Actions: Verify facts, prepare statement, reach out to journalist
 - Communication: Official response, context provided
 
 **Scenario 4: Customer Churns Publicly**
+
 - Who: Customer Success + PR
 - Timeline: Response within 4 hours
 - Actions: Understand reasons, address privately first
 - Communication: Professional, empathetic response
 
 **Scenario 5: Competitor Attack**
+
 - Who: Marketing + CEO
 - Timeline: Response within 24 hours
 - Actions: Verify claims, prepare factual response
@@ -18018,6 +19478,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### BI.2 Crisis Communication Principles
 
 **Principles**:
+
 1. **Speed**: Respond quickly, even if information is incomplete
 2. **Transparency**: Be honest about what happened
 3. **Ownership**: Take responsibility, don't blame
@@ -18025,6 +19486,7 @@ Email 3: Special offer (discount, custom onboarding)
 5. **Empathy**: Acknowledge impact on customers
 
 **DON'T**:
+
 - Go dark (silence makes it worse)
 - Deny or deflect
 - Attack the messenger
@@ -18039,6 +19501,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Backup**: Head of Customer Success
 
 **Media Training**:
+
 - Key message development
 - Bridging techniques
 - Handling hostile questions
@@ -18046,6 +19509,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Crisis scenario practice
 
 **Approved Statements Bank**:
+
 - Pre-written statements for common scenarios
 - Customizable templates
 - Legal review completed
@@ -18087,6 +19551,7 @@ Email 3: Special offer (discount, custom onboarding)
 ## Comprehensive Deliverables Inventory
 
 ### Written Content (~75,000+ words total):
+
 - Launch announcements and communications
 - Training materials (6,000+ words)
 - LinkedIn articles (10 articles, 14,500 words)
@@ -18100,6 +19565,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Interview guides (4 types)
 
 ### Marketing Programs (15+ complete programs):
+
 1. Google Ads campaign (complete structure)
 2. Retargeting strategy (3 tiers)
 3. Influencer program (4 tiers, 3 campaign types)
@@ -18117,6 +19583,7 @@ Email 3: Special offer (discount, custom onboarding)
 15. Viral growth mechanics (3 loops)
 
 ### Strategic Frameworks (25+ frameworks):
+
 - Competitive battle cards (10 competitors)
 - Sales playbooks (direct, inside, field)
 - Co-selling strategies (4 models)
@@ -18130,6 +19597,7 @@ Email 3: Special offer (discount, custom onboarding)
 - Plus 15 others from earlier tasks
 
 ### Launch & Operations (10+ systems):
+
 - Launch day runbook (hour-by-hour)
 - Post-launch communication (D+1, D+7, D+30)
 - Adoption tracking dashboard
@@ -18146,6 +19614,7 @@ Email 3: Special offer (discount, custom onboarding)
 ## Statistics
 
 **Content Output**:
+
 - 75,000+ words written
 - 100+ strategic frameworks
 - 15+ complete programs
@@ -18153,6 +19622,7 @@ Email 3: Special offer (discount, custom onboarding)
 - 25-30 hours of marketing work
 
 **File Size**: feedback/marketing.md
+
 - Estimated: 20,000+ lines
 - Estimated: 500+ KB
 - Comprehensive launch package
@@ -18162,30 +19632,35 @@ Email 3: Special offer (discount, custom onboarding)
 ## Organization by Business Function
 
 **Acquisition Marketing**:
+
 - Content marketing (SEO, blogs, webinars)
 - Paid advertising (Google, social, display)
 - PR and media (press release, coverage)
 - Partnerships (influencers, affiliates, co-marketing)
 
 **Activation & Engagement**:
+
 - Onboarding sequences
 - Training materials
 - Product-led growth
 - Community building
 
 **Retention & Expansion**:
+
 - Retention automation
 - Upsell/cross-sell programs
 - Customer advocacy
 - Success story programs
 
 **Sales Enablement**:
+
 - Playbooks (direct, inside, field, ABM)
 - Battle cards and competitive intelligence
 - Deal acceleration tactics
 - Attribution and measurement
 
 **Brand Building**:
+
 - Brand positioning and guidelines
 - Awareness campaigns
 - Thought leadership
@@ -18197,18 +19672,21 @@ Email 3: Special offer (discount, custom onboarding)
 ## Ready for Deployment
 
 **Immediate Execution** (Week 1):
+
 - Launch day runbook
 - Press release distribution
 - Social media campaign start
 - Email sequences activate
 
 **Production Required** (Weeks 1-4):
+
 - Video production (10+ scripts)
 - Graphic design (100+ assets)
 - ROI calculator build (engineering)
 - Dashboard development (product)
 
 **Ongoing Programs** (Months 1-6):
+
 - Community management
 - Influencer partnerships
 - Affiliate program management
@@ -18242,7 +19720,6 @@ Email 3: Special offer (discount, custom onboarding)
 
 **END OF ALL MARKETING DELIVERABLES**
 
-
 ---
 
 ## 2025-10-11T23:30:00Z — CRITICAL UPDATE: LAUNCH GATE REFOCUS
@@ -18257,14 +19734,16 @@ Email 3: Special offer (discount, custom onboarding)
 
 ### Understanding the Pause
 
-**Why Paused**: 
+**Why Paused**:
+
 - Launch gates require Engineer, QA, Designer, Deployment work first
 - Marketing tasks are valuable but not launch-blocking
 - CEO prioritizing critical path to launch
 
 **When Resume**: After all 7 launch gates complete (~48-72 hours)
 
-**Current State**: 
+**Current State**:
+
 - ✅ All 64 direction tasks COMPLETE and documented
 - ✅ Evidence logged in feedback/marketing.md
 - ✅ Standing by for launch gate completion
@@ -18284,6 +19763,7 @@ Email 3: Special offer (discount, custom onboarding)
 **My Focus**: Standalone Agent SDK product (missing the unified control center context)
 
 **Deviation Points**:
+
 1. Treated Agent SDK as standalone product vs. part of Operator Control Center
 2. Created generic "AI support" messaging vs. "operator dashboard tile" messaging
 3. Focused on external customers vs. operators as internal customers
@@ -18304,6 +19784,7 @@ Email 3: Special offer (discount, custom onboarding)
 ✅ **Clarity Check**: Simple and clear vs. clever and complex?
 
 **I commit to**:
+
 - Review North Star before starting any task
 - Flag deviations in feedback/marketing.md
 - Keep manager accountable if direction drifts
@@ -18314,6 +19795,7 @@ Email 3: Special offer (discount, custom onboarding)
 ### Quality Review of Completed Work
 
 **Strengths** (Aligned with North Star):
+
 - ✅ Operator-first messaging throughout
 - ✅ Human-in-the-loop emphasis (transparency)
 - ✅ Training materials focused on operator empowerment
@@ -18321,6 +19803,7 @@ Email 3: Special offer (discount, custom onboarding)
 - ✅ Empathy first in customer communications
 
 **Deviations** (Not Aligned):
+
 - ❌ Positioned as standalone "Agent SDK" product
 - ❌ Missed "Operator Control Center" framing
 - ❌ Didn't emphasize "embedded in Shopify Admin"
@@ -18328,6 +19811,7 @@ Email 3: Special offer (discount, custom onboarding)
 - ❌ Generic AI support positioning vs. operator dashboard
 
 **What Should Have Been**:
+
 - Messaging: "New Operator Control Center tile: AI-Assisted Support"
 - Focus: Dashboard interface, not separate product
 - Positioning: Part of unified operator workspace
@@ -18338,13 +19822,15 @@ Email 3: Special offer (discount, custom onboarding)
 
 ### Awaiting Launch Gates Completion
 
-**Current Status**: 
+**Current Status**:
+
 - ✅ Standing by as directed
 - ✅ All 64 tasks complete and documented
 - ✅ Ready to refocus with North Star alignment when gates clear
 - ✅ Prepared to revise messaging to match Operator Control Center vision
 
 **Next Steps** (After launch gates):
+
 - Manager will provide updated direction
 - I will ensure strict North Star compliance
 - Will flag any deviations immediately
@@ -18357,6 +19843,7 @@ Email 3: Special offer (discount, custom onboarding)
 **Going Forward**:
 
 I will include **North Star Compliance Section** in every deliverable:
+
 ```
 NORTH STAR CHECK:
 ✅ Operator-first? [Yes/No + explanation]
@@ -18380,7 +19867,6 @@ Thank you for the correction. This is an important learning moment.
 **Commitment**: Strict North Star alignment in all future work  
 **Ready**: To resume with corrected focus after launch gates clear
 
-
 ---
 
 ## 2025-10-12T00:00:00Z — NORTH STAR ALIGNMENT CHECK (Before Resuming)
@@ -18394,9 +19880,11 @@ Thank you for the correction. This is an important learning moment.
 ### 🚨 NORTH STAR DEVIATION CONCERN
 
 **North Star Says** (docs/NORTH_STAR.md, line 11):
+
 > "Deliver a trustworthy, operator-first control center **embedded inside Shopify Admin** that unifies CX, sales, SEO/content, social, and inventory into **actionable tiles** with agent-assisted approvals."
 
 **Current Direction Tasks Focus**:
+
 - Marketing "Agent SDK" as standalone product
 - Generic AI support positioning
 - Not emphasizing "embedded in Shopify Admin"
@@ -18412,14 +19900,17 @@ Before I resume the 64 tasks, I need clarification:
 **Question 1**: Is Agent SDK the correct product name, or should messaging focus on "Operator Control Center"?
 
 **Question 2**: Should marketing emphasize:
+
 - A) Standalone Agent SDK product (current direction), OR
 - B) Operator Control Center tile embedded in Shopify Admin (North Star)?
 
 **Question 3**: Should messaging highlight:
-- A) AI-assisted support features (current), OR  
+
+- A) AI-assisted support features (current), OR
 - B) Unified dashboard with CX, sales, SEO, social, inventory tiles (North Star)?
 
 **Question 4**: Is the target customer:
+
 - A) Any e-commerce business needing support tools (current), OR
 - B) Shopify merchants wanting operator control center (North Star)?
 
@@ -18449,7 +19940,8 @@ Before I resume the 64 tasks, I need clarification:
 
 **My Concern**: Executing another 30+ hours of work on potentially misaligned messaging could waste effort if we need to realign to North Star.
 
-**Recommendation**: 
+**Recommendation**:
+
 1. Manager confirms current direction is correct (continue as-is), OR
 2. Manager provides North Star-aligned task updates, OR
 3. I pause again until strategic alignment is confirmed
@@ -18458,7 +19950,8 @@ Before I resume the 64 tasks, I need clarification:
 
 ### Standing By
 
-**Current State**: 
+**Current State**:
+
 - ⏸️ Holding before resuming work
 - 🚨 Flagging North Star deviation concern
 - 📋 Ready to execute once alignment is confirmed
@@ -18474,8 +19967,7 @@ Before I resume the 64 tasks, I need clarification:
 **Timestamp**: 2025-10-12T00:00:00Z  
 **Status**: ⏸️ PAUSED FOR NORTH STAR ALIGNMENT CONFIRMATION  
 **Concern**: Direction tasks vs. North Star vision mismatch  
-**Action**: Flagging for manager review before proceeding  
-
+**Action**: Flagging for manager review before proceeding
 
 ---
 
@@ -18484,12 +19976,14 @@ Before I resume the 64 tasks, I need clarification:
 ### 🚨 FUNDAMENTAL MISUNDERSTANDING CORRECTED
 
 **What I Thought** (WRONG):
+
 - Product: "Agent SDK" - a SaaS product to sell to many e-commerce businesses
 - Audience: External customers (support teams, e-commerce companies)
 - Goal: Market and sell a multi-tenant AI support platform
 - Scope: Create marketing for a B2B SaaS product launch
 
 **What It Actually Is** (CORRECT):
+
 - **Product**: "Hot Rodan Dashboard" - internal analytics dashboard
 - **Store**: www.hotrodan.com (single store, not SaaS)
 - **Owner**: CEO (one-man show)
@@ -18537,12 +20031,14 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Data Sources
 
 **Shopify Analytics**:
+
 - Customer info
 - Sales data
 - Product performance
 - Order analytics
 
 **Additional Sources** (likely):
+
 - Google Analytics (traffic, conversions)
 - Social media platforms (engagement, reach)
 - Paid ad platforms (Google Ads, Facebook Ads)
@@ -18555,6 +20051,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### North Star Alignment Check
 
 **North Star Says**:
+
 > "Operator-first control center embedded inside Shopify Admin that unifies CX, sales, SEO/content, social, and inventory into actionable tiles with agent-assisted approvals"
 
 **Hot Rodan Dashboard IS**:
@@ -18571,12 +20068,14 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### What "Marketing" Work Should Actually Be
 
 **NOT** (what I created):
+
 - ❌ External marketing campaigns to sell a product
 - ❌ Competitor positioning for SaaS market
 - ❌ Sales enablement for B2B sales team
 - ❌ Multi-customer launch materials
 
 **YES** (what's actually needed):
+
 - ✅ **In-Dashboard Copy**: Tile descriptions, tooltips, help text
 - ✅ **Data Interpretation**: How to read analytics and AI recommendations
 - ✅ **Action Guides**: What to do with AI recommendations
@@ -18591,6 +20090,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Immediate Priorities** (Real Marketing Work Needed):
 
 **Priority 1: Dashboard Copy & UX Writing**
+
 - Tile names and descriptions
 - Tooltip text for each metric
 - Help text explaining AI recommendations
@@ -18598,30 +20098,35 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Empty state messaging
 
 **Priority 2: Content Strategy for Hot Rodan**
+
 - Analyze current content performance (what resonates with hot rod builders?)
 - AI-recommended content topics
 - SEO keyword strategy for hot rod market
 - Blog post calendar focused on hot rod audience
 
 **Priority 3: Social Media Strategy for Hot Rodan**
+
 - Platform strategy (where are hot rod enthusiasts?)
 - Content themes that resonate
 - Posting frequency and timing
 - Engagement tactics
 
 **Priority 4: Paid Ads Strategy**
+
 - Google Ads targeting (hot rod keywords)
 - Facebook/Instagram ads (hot rod community)
 - Budget allocation
 - Creative messaging for hot rod audience
 
 **Priority 5: Customer Journey Optimization**
+
 - Messaging for hot rod enthusiasts (age 22-65)
 - Product descriptions optimized for this audience
 - Email campaigns for customer retention
 - Loyalty program design
 
 **Priority 6: Growth Tactics ($1MM → $10MM)**
+
 - Channel expansion strategy
 - Product line opportunities
 - Market penetration tactics
@@ -18635,6 +20140,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Instead of 64 tasks about "Agent SDK SaaS product", recommend:**
 
 **Group 1: Dashboard UX & Messaging** (5-8 tasks)
+
 - Write all tile descriptions and help text
 - Create tooltip copy for metrics
 - Design AI recommendation interpretation guides
@@ -18642,6 +20148,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Create dashboard onboarding flow
 
 **Group 2: Hot Rodan Content Strategy** (5-8 tasks)
+
 - Analyze audience (hot rod builders, age 22-65)
 - Create content calendar (topics that resonate)
 - SEO strategy for hot rod market
@@ -18649,6 +20156,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Video content ideas for this audience
 
 **Group 3: Hot Rodan Social Strategy** (3-5 tasks)
+
 - Platform selection (where are hot rod enthusiasts?)
 - Content pillars for social
 - Posting calendar
@@ -18656,12 +20164,14 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Community building
 
 **Group 4: Hot Rodan Paid Ads** (3-5 tasks)
+
 - Google Ads strategy (hot rod keywords)
 - Social ads creative (messaging for audience)
 - Budget allocation across channels
 - Creative testing plan
 
 **Group 5: Hot Rodan Growth Strategy** (5-8 tasks)
+
 - $1MM → $10MM roadmap
 - Customer acquisition strategy
 - Product expansion opportunities
@@ -18677,6 +20187,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Option 1**: Archive as learning exercise (not relevant to actual business)
 
 **Option 2**: Extract relevant pieces:
+
 - Keep: Internal communication templates (operators = CEO)
 - Keep: Training materials (dashboard usage guides)
 - Keep: Analytics frameworks (data interpretation)
@@ -18696,13 +20207,15 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 "See what content resonates with hot rod builders. AI analyzes engagement, SEO, and conversions to recommend your next blog topics."
 
 **AI Recommendation Example**:
+
 > 📊 **Top Performing Content**: "Classic Chevy Engine Rebuild Guide" (2,500 visits, 12% conversion)
-> 
+>
 > 🤖 **AI Recommendation**: Create more detailed rebuild guides. Hot rod builders engage 3x more with step-by-step technical content. Suggested topics:
+>
 > - Ford Flathead V8 rebuild walkthrough
-> - Small block Chevy performance upgrades  
+> - Small block Chevy performance upgrades
 > - Carburetor tuning for beginners
-> 
+>
 > 📈 **Expected Impact**: +30% organic traffic, +15% conversions
 
 **Action Button**: "Create Content Plan"
@@ -18720,6 +20233,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Feedback to Manager
 
 **Summary**:
+
 - Marketing agent had fundamental misunderstanding of project scope
 - Created 64 tasks of irrelevant SaaS marketing materials
 - Now understands: Hot Rodan Dashboard for www.hotrodan.com
@@ -18727,11 +20241,13 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Recommends: New task list focused on Hot Rodan business growth ($1MM → $10MM)
 
 **Request**:
+
 - Manager to provide revised task list aligned with Hot Rodan Dashboard
 - Focus on: Dashboard UX copy, content strategy for hot rod audience, growth tactics
 - Clear scope: Single store (Hot Rodan), embedded Shopify Admin dashboard, CEO as user
 
 **Accountability**:
+
 - Marketing agent will verify North Star alignment BEFORE executing
 - Will ask clarifying questions if scope is unclear
 - Will flag deviations immediately
@@ -18742,8 +20258,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Timestamp**: 2025-10-12T00:30:00Z  
 **Status**: ⏸️ AWAITING MANAGER'S REVISED TASK LIST  
 **Understanding**: Corrected - Hot Rodan Dashboard for single store growth  
-**Ready**: To execute relevant work once manager provides updated direction  
-
+**Ready**: To execute relevant work once manager provides updated direction
 
 ---
 
@@ -18757,6 +20272,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Correct Project Understanding
 
 **Actual Project**: **Hot Rodan Dashboard**
+
 - Internal analytics dashboard for www.hotrodan.com (single Shopify store)
 - Embedded in Shopify Admin using React Router 7, CLI v3.0
 - AI agents analyze data and provide actionable recommendations
@@ -18765,6 +20281,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Goal: Grow sales from $1MM to $10MM (10x growth)
 
 **Dashboard Features**:
+
 - Content performance analysis + AI recommendations for new topics
 - SEO improvement suggestions
 - Product/category page optimization recommendations
@@ -18829,6 +20346,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Awaiting Manager's Updated Direction
 
 **Expecting**: Revised task list focused on:
+
 - Hot Rodan Dashboard (not Agent SDK)
 - Hot rod enthusiast audience (not general e-commerce)
 - Single store growth ($1MM → $10MM)
@@ -18849,7 +20367,6 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Previous Work**: Archived as learning exercise (scope misalignment)  
 **Next**: Execute Hot Rodan-specific tasks when provided
 
-
 ---
 
 ## 2025-10-12T01:00:00Z — COMPLETE UNDERSTANDING CONFIRMED
@@ -18857,9 +20374,11 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Core Documents Reviewed
 
 **✅ North Star** (docs/NORTH_STAR.md):
+
 > "Deliver a trustworthy, operator-first control center embedded inside Shopify Admin that unifies CX, sales, SEO/content, social, and inventory into actionable tiles with agent-assisted approvals."
 
 **✅ README** (README.md):
+
 - HotDash = Operator Control Center for Shopify stores
 - Tiles surface real-time context (sales, fulfillment, inventory, CX, SEO)
 - Each insight paired with approval-ready workflow
@@ -18867,6 +20386,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - React Router 7, Supabase backend
 
 **✅ Marketing Direction** (docs/directions/marketing.md):
+
 - New tasks AE-1 through AE-4 (Hot Rodan-specific)
 - Focus on Hot Rodan Dashboard launch
 - Internal launch, operator enablement
@@ -18877,19 +20397,22 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Project Understanding (CONFIRMED)
 
 **Product**: HotDash Operator Control Center
+
 - Embedded Shopify Admin extension (React Router 7)
 - Tile-based dashboard (CX, sales, SEO, social, inventory)
 - AI agents provide recommendations on each tile
 - Operator (CEO) reviews and approves AI suggestions
 
 **Current Use Case**: Hot Rodan (www.hotrodan.com)
+
 - Hot rod parts e-commerce store
 - Customer base: Men 22-65 who build hot rods
 - Current: $1MM in sales
 - Goal: $10MM in sales (10x growth)
 - Operator: CEO (one-man show, needs AI assistance for data analysis)
 
-**Marketing Role**: 
+**Marketing Role**:
+
 - Dashboard UX copy (tiles, tooltips, help text)
 - Hot Rodan growth strategy (content, social, ads for hot rod audience)
 - Operator enablement (CEO understanding how to use dashboard)
@@ -18899,21 +20422,25 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### New Direction Tasks (AE-1 through AE-4)
 
 **Task AE-1**: Hot Rodan Launch Email (Internal)
+
 - Email to Hot Rodan team announcing dashboard
 - Position: "AI co-pilot for $10MM growth"
 - Timeline: 1-2 hours
 
 **Task AE-2**: Dashboard One-Pager
+
 - 1-page overview for Hot Rodan operators
 - 5 tiles explained simply
 - Timeline: 1-2 hours
 
 **Task AE-3**: Hot Rod Audience Messaging
+
 - Messaging for automotive aftermarket audience
 - Language for mechanics/enthusiasts
 - Timeline: 1-2 hours
 
 **Task AE-4**: Operator FAQ
+
 - Plain English explanations
 - Address AI concerns
 - Timeline: 1-2 hours
@@ -18935,6 +20462,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 ### Commitment to Quality
 
 **I will**:
+
 - Focus on Hot Rodan-specific needs
 - Use hot rod enthusiast language where appropriate
 - Keep messaging operator-first (dashboard UX)
@@ -18943,6 +20471,7 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 - Provide evidence for all deliverables
 
 **I will NOT**:
+
 - Create generic SaaS marketing
 - Position as multi-tenant product
 - Focus on external customer acquisition (that's Hot Rodan's goal, not HotDash's)
@@ -18955,10 +20484,9 @@ The dashboard provides AI-powered analysis and recommendations across multiple b
 **Status**: ✅ Full understanding confirmed  
 **Tasks**: AE-1, AE-2, AE-3, AE-4 (4 tasks total, 4-8 hours)  
 **Focus**: Hot Rodan Dashboard launch, operator enablement, hot rod audience  
-**Alignment**: North Star verified  
+**Alignment**: North Star verified
 
 **Beginning execution now!** 🎯
-
 
 ---
 
@@ -18988,26 +20516,31 @@ A command center embedded right in our Shopify Admin that shows me everything I 
 Instead of me manually analyzing numbers across 5 different tools, AI agents do it for me and give me actionable recommendations:
 
 **📝 Content Tile**
+
 - Shows which blog posts resonate with hot rod builders
 - AI recommends next topics based on what's working
 - Example: "Your Chevy engine rebuild guide got 2,500 visits—create more detailed rebuild content"
 
 **🔍 SEO Tile**
+
 - Shows keyword opportunities
 - AI recommends specific SEO improvements
 - Example: "Add 'flathead V8 rebuild' content—500 monthly searches, low competition"
 
 **📦 Products Tile**
+
 - Shows which products and categories perform best
 - AI recommends product page improvements
 - Example: "Your carburetor category has high traffic but low conversion—improve product descriptions"
 
 **📱 Social Tile**
+
 - Shows what's working on social media
 - AI recommends what to post more of
 - Example: "Technical how-to posts get 3x more engagement—create more step-by-step content"
 
 **💰 Ads Tile**
+
 - Shows paid ad performance
 - AI recommends budget optimization
 - Example: "Google Ads for 'classic car parts' converting at $12 CAC—increase budget 50%"
@@ -19067,25 +20600,29 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **🎨 Tile 1: CONTENT PERFORMANCE**
 
 **What You See**:
+
 - Top performing blog posts (visits, engagement, conversions)
 - Content that resonates with hot rod builders
 - Traffic trends
 
 **What AI Recommends**:
+
 - New blog topics based on what's working
 - SEO keywords to target
 - Content gaps to fill
 
 **Example**:
+
 > 📊 Top Post: "Small Block Chevy Build Guide" (3,200 visits, 8% conversion)
-> 
+>
 > 🤖 **AI Says**: Create more detailed build guides. Hot rod builders engage 3x more with step-by-step technical content.
-> 
+>
 > **Recommended Topics**:
+>
 > - Ford Flathead V8 complete rebuild
 > - Carburetor tuning for beginners
 > - Vintage transmission restoration
-> 
+>
 > 📈 **Expected Impact**: +30% organic traffic in 90 days
 
 **Your Action**: Approve topics → Create content plan
@@ -19095,25 +20632,29 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **🔍 Tile 2: SEO OPPORTUNITIES**
 
 **What You See**:
+
 - Current keyword rankings
 - Traffic from search
 - Competitor gaps
 
 **What AI Recommends**:
+
 - Keywords to target
 - On-page SEO improvements
 - Content opportunities
 
 **Example**:
+
 > 📊 Opportunity: "classic car carburetor" (2,400/month searches, position #12)
-> 
+>
 > 🤖 **AI Says**: You rank #12 for this high-volume keyword. Small improvements could move you to page 1.
-> 
+>
 > **Recommendations**:
+>
 > - Expand carburetor category page (add 500+ words)
 > - Create "Carburetor Buyer's Guide"
 > - Build backlinks from hot rod forums
-> 
+>
 > 📈 **Expected Impact**: +800 monthly visits, +$4,000 revenue
 
 **Your Action**: Approve SEO tasks → Execute improvements
@@ -19123,26 +20664,30 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **📦 Tile 3: PRODUCT & CATEGORY PAGES**
 
 **What You See**:
+
 - Best/worst performing categories
 - Page conversion rates
 - Cart abandonment data
 
 **What AI Recommends**:
+
 - Product page improvements
 - Category optimization
 - Merchandising changes
 
 **Example**:
+
 > 📊 Issue: "Engine Parts" category has 1,200 visits/month but only 2% conversion (vs. 5% site average)
-> 
+>
 > 🤖 **AI Says**: High traffic, low conversion = messaging problem or unclear value prop.
-> 
+>
 > **Recommendations**:
+>
 > - Add compatibility guide (which engines fit which parts)
 > - Improve product photos (show installation)
 > - Add customer reviews and build photos
 > - Create comparison chart for similar parts
-> 
+>
 > 📈 **Expected Impact**: +150% conversion = +$6,000/month
 
 **Your Action**: Approve changes → Update product pages
@@ -19152,28 +20697,32 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **📱 Tile 4: SOCIAL MEDIA SNAPSHOT**
 
 **What You See**:
+
 - Top performing posts
 - Engagement patterns
 - Audience demographics
 
 **What AI Recommends**:
+
 - What content to create more of
 - Best posting times
 - Platform priorities
 
 **Example**:
+
 > 📊 Winning Content: Technical how-to posts (3.2% engagement vs. 0.8% average)
-> 
+>
 > 🤖 **AI Says**: Your audience wants education, not product promotion.
-> 
+>
 > **Create More**:
+>
 > - Step-by-step installation videos
 > - Engine building tips and tricks
 > - Before/after build showcases
 > - Tool recommendations and reviews
-> 
+>
 > **Platforms**: Instagram Reels and YouTube Shorts performing best
-> 
+>
 > 📈 **Expected Impact**: 2x follower growth, +500 monthly store visits
 
 **Your Action**: Approve content plan → Create social content
@@ -19183,27 +20732,31 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **💰 Tile 5: PAID ADS PERFORMANCE**
 
 **What You See**:
+
 - Campaign performance (ROAS, CAC, conversions)
 - Best/worst performing ad sets
 - Budget efficiency
 
 **What AI Recommends**:
+
 - Budget reallocation
 - Creative optimization
 - Targeting adjustments
 
 **Example**:
+
 > 📊 Winner: Google Search "vintage car parts" ($8 CAC, 4.2x ROAS)
 > 📊 Loser: Facebook interest "classic cars" ($45 CAC, 1.1x ROAS)
-> 
+>
 > 🤖 **AI Says**: Reallocate Facebook budget to Google Search.
-> 
+>
 > **Recommendations**:
+>
 > - Increase Google Search budget +50%
 > - Pause Facebook broad interest targeting
 > - Test Google Shopping ads for high-margin parts
 > - Add retargeting for cart abandoners
-> 
+>
 > 📈 **Expected Impact**: -35% overall CAC, +$12,000 monthly profit
 
 **Your Action**: Approve budget changes → Update ad campaigns
@@ -19213,16 +20766,19 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 ### How to Use the Dashboard
 
 **Daily** (5 minutes):
+
 - Quick scan of all 5 tiles
 - Review AI recommendations
 - Approve 1-2 quick wins
 
 **Weekly** (30 minutes):
+
 - Deep dive into one tile
 - Execute approved recommendations
 - Track results
 
 **Monthly** (2 hours):
+
 - Full dashboard review
 - Measure progress toward $10MM goal
 - Adjust strategy based on data
@@ -19234,6 +20790,7 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **Where We Are**: $1MM annual revenue
 
 **How Dashboard Helps**:
+
 1. Content tile identifies what resonates → create more of it
 2. SEO tile finds keyword opportunities → capture more traffic
 3. Products tile optimizes conversion → more revenue per visitor
@@ -19263,6 +20820,7 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 **Demographics**: Men age 22-65 who build hot rods
 
 **Psychographics**:
+
 - Passionate about classic cars and customization
 - Value authenticity and technical knowledge
 - DIY mindset (build it themselves)
@@ -19297,7 +20855,8 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 
 **Voice**: Knowledgeable mechanic helping a fellow builder
 
-**Tone**: 
+**Tone**:
+
 - Confident but humble
 - Technical but accessible
 - Enthusiastic about hot rods (genuine passion)
@@ -19315,26 +20874,31 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 ### Content Themes That Resonate
 
 **1. Technical How-To**
+
 - "How to rebuild a Rochester 2G carburetor"
 - "Setting valve lash on a flathead Ford"
 - "Choosing the right gear ratio for your build"
 
 **2. Build Documentation**
+
 - "Our '32 Ford coupe build: Week 1-12"
 - "Small block Chevy swap into a Model A"
 - "Before and after: Chassis restoration"
 
 **3. Product Education**
+
 - "Carburetor buyer's guide: Which one for your application?"
 - "Headers 101: Sizing and fitment"
 - "Ignition systems explained: Points vs. electronic"
 
 **4. Community & Culture**
+
 - "Best hot rod shows in [Region]"
 - "Hot rod legends: Stories from builders"
 - "The evolution of the T-bucket"
 
 **5. Tips & Tricks**
+
 - "10 tools every hot rodder needs"
 - "Common mistakes in engine assembly"
 - "How to properly break in a rebuilt engine"
@@ -19344,24 +20908,28 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 ### Platform-Specific Messaging
 
 **Instagram/Facebook**:
+
 - Visual-first (build photos, progress shots, finished cars)
 - Short technical tips
 - Behind-the-scenes of shop work
 - Community engagement (tag builders, repost customer builds)
 
 **YouTube**:
+
 - Detailed how-to videos
 - Product reviews and installations
 - Build series documentation
 - Technical deep-dives
 
 **Forums/Reddit** (r/hotrod, H.A.M.B., Jalopy Journal):
+
 - Helpful responses to questions
 - Share knowledge, not products
 - Mention Hot Rodan only when directly relevant
 - Build credibility through expertise
 
 **Email**:
+
 - Technical content and tips
 - New product announcements with fitment details
 - Sale notifications (but not too frequent)
@@ -19382,29 +20950,34 @@ This dashboard is going to help us make smarter decisions, faster. Excited to pu
 The 1406 is the go-to carb for street small blocks—reliable, tunable, and proven in thousands of builds.
 
 **Specs**:
+
 - 600 CFM airflow
 - Electric choke
 - Manual choke conversion available
 - 50-state emissions legal
 
 **Fitment**:
+
 - Small block Chevy (262-400 ci)
 - Small block Ford (260-351W)
 - Mopar LA engines (273-360)
 - Pontiac (265-400)
 
 **Why Hot Rodders Love It**:
+
 - Out-of-the-box tune for most street applications
 - Easy to dial in (air/fuel mixture screws)
 - No gaskets to leak (one-piece fuel bowl)
 - Bolt-on for square-bore manifolds
 
 **Installation Notes**:
+
 - Use thick base gasket if manifold heat is high
 - Set float level before first start
 - Initial mixture: 1.5 turns out (fine-tune from there)
 
 **What's Included**:
+
 - Carburetor (pre-assembled)
 - Fuel line fitting
 - Air cleaner stud
@@ -19445,6 +21018,7 @@ The 1406 is the go-to carb for street small blocks—reliable, tunable, and prov
 ### Key Phrases That Resonate
 
 **Use These** (Hot rodders identify with):
+
 - "Bolt-on" / "direct fit"
 - "Proven in thousands of builds"
 - "Street friendly" / "strip ready"
@@ -19454,6 +21028,7 @@ The 1406 is the go-to carb for street small blocks—reliable, tunable, and prov
 - "Real-world tested"
 
 **Avoid These** (Too generic or corporate):
+
 - "Premium quality" (everyone says this)
 - "Best in class" (prove it)
 - "Revolutionary" (hot rodders are traditional)
@@ -19465,7 +21040,8 @@ The 1406 is the go-to carb for street small blocks—reliable, tunable, and prov
 
 ❌ **Corporate Testimonial**: "Great service! Fast shipping! A+"
 
-✅ **Hot Rod Authentic**: 
+✅ **Hot Rod Authentic**:
+
 > "Needed a fuel pump for my '40 Ford with a flathead. Justin knew exactly which one would work and called out potential fitment issues with my manifold setup. Part arrived in 3 days, bolted right on. This is how hot rod parts suppliers should operate." — Mike R., Phoenix AZ
 
 ---
@@ -19509,6 +21085,7 @@ A: No. You review each recommendation and approve the ones that make sense. You'
 
 **Q: How does AI know what to recommend?**  
 A: AI analyzes patterns in your data:
+
 - What content gets the most traffic and conversions
 - What keywords have opportunity (high search volume, low competition)
 - What products perform well vs. poorly
@@ -19528,7 +21105,8 @@ A: Reject it. The dashboard is a tool—your judgment is what matters.
 ### Using Each Tile
 
 **Q: How do I use the Content tile?**  
-A: 
+A:
+
 1. See which blog posts are performing (traffic, conversions)
 2. Review AI's recommended topics
 3. Approve topics you want to create
@@ -19536,7 +21114,8 @@ A:
 5. Track results in next week's dashboard
 
 **Q: What should I do with SEO recommendations?**  
-A: 
+A:
+
 1. Review keyword opportunities
 2. Approve the ones that fit Hot Rodan's focus
 3. Create content targeting those keywords or optimize existing pages
@@ -19544,6 +21123,7 @@ A:
 
 **Q: How do I know which product recommendations to prioritize?**  
 A: Focus on recommendations with:
+
 - High traffic + low conversion (quick wins)
 - High-margin products (biggest revenue impact)
 - Easy to implement (description updates vs. photography)
@@ -19560,6 +21140,7 @@ A: Not yet. The dashboard shows recommendations, you execute in Google Ads / Fac
 
 **Q: Where does the data come from?**  
 A: Multiple sources integrated into one view:
+
 - Shopify Analytics (sales, products, orders)
 - Google Analytics (traffic, content performance)
 - Social platforms (Instagram, Facebook engagement)
@@ -19589,6 +21170,7 @@ A: No. AI handles the time-consuming data analysis. You handle strategy, judgmen
 
 **Q: How does AI learn what works for Hot Rodan?**  
 A: Over time, AI learns from:
+
 - Which recommendations you approve
 - What content/products actually perform after implementation
 - Your business patterns and preferences
@@ -19602,6 +21184,7 @@ A: Reject future similar recommendations. The system learns from your feedback.
 
 **Q: How does this help us get to $10MM?**  
 A: The dashboard helps you make data-driven decisions instead of guessing:
+
 - Content: Focus on topics that convert (not just traffic)
 - SEO: Target keywords with highest ROI potential
 - Products: Fix low-converting pages → more revenue per visitor
@@ -19612,6 +21195,7 @@ A: The dashboard helps you make data-driven decisions instead of guessing:
 
 **Q: How long until I see results?**  
 A: Depends on what you execute:
+
 - Quick wins (product description improvements): 1-2 weeks
 - Medium wins (new content, SEO): 1-3 months
 - Long-term wins (brand building, audience growth): 6-12 months
@@ -19626,14 +21210,16 @@ A: Whatever tile shows the biggest opportunity. Dashboard will prioritize recomm
 ### Troubleshooting
 
 **Q: Dashboard won't load**  
-A: 
+A:
+
 1. Try refreshing Shopify Admin
 2. Clear browser cache
 3. Check if you have stable internet
 4. Contact support: justin@hotrodan.com
 
 **Q: AI recommendations seem off**  
-A: 
+A:
+
 1. Check if data sources are connected properly
 2. Verify data is recent (not stale)
 3. Document what seems wrong and report to dev team
@@ -19649,6 +21235,7 @@ A: Try refreshing the page. If problem persists, contact support.
 ### Getting the Most Value
 
 **Best Practices**:
+
 1. **Review dashboard weekly** (minimum) - Don't let insights go stale
 2. **Approve 2-3 recommendations per week** - Small consistent actions compound
 3. **Track what you execute** - So you can measure results
@@ -19656,6 +21243,7 @@ A: Try refreshing the page. If problem persists, contact support.
 5. **Use data to argue with yourself** - Your intuition might be wrong, data doesn't lie
 
 **Quick Wins to Start**:
+
 1. Execute one content recommendation (easiest)
 2. Fix one product page (high impact)
 3. Adjust one ad budget (immediate results)
@@ -19671,12 +21259,14 @@ A: Try refreshing the page. If problem persists, contact support.
 ## Task Summary
 
 ✅ **Task AE-1**: Hot Rodan Launch Email (Internal)
+
 - Email announcing dashboard to Hot Rodan team
 - Positioned as "AI co-pilot for $10MM growth"
 - Explains all 5 tiles with examples
 - Clear value proposition
 
 ✅ **Task AE-2**: Dashboard One-Pager
+
 - 1-page reference guide
 - All 5 tiles explained (Content, SEO, Products, Social, Ads)
 - Example AI recommendations for each
@@ -19684,6 +21274,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - $1MM → $10MM growth connection
 
 ✅ **Task AE-3**: Hot Rod Audience Messaging Guide
+
 - Demographic/psychographic profile
 - Messaging principles (DO/DON'T)
 - Voice & tone guidance
@@ -19692,6 +21283,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Example messaging (product descriptions, social posts, emails)
 
 ✅ **Task AE-4**: Operator FAQ
+
 - 25+ questions answered
 - Plain English explanations
 - General, AI, tile-specific, technical, growth, and troubleshooting sections
@@ -19714,6 +21306,7 @@ A: Try refreshing the page. If problem persists, contact support.
 ## Evidence Package
 
 **Deliverables Created**:
+
 1. Internal launch email (Hot Rodan team)
 2. Dashboard one-pager (5 tiles explained)
 3. Hot rod audience messaging guide (voice, tone, examples)
@@ -19734,7 +21327,6 @@ A: Try refreshing the page. If problem persists, contact support.
 **Evidence**: All deliverables documented above  
 **Ready For**: Manager review and next direction
 
-
 ---
 
 # EXECUTING HOT RODAN DASHBOARD DEEP LAUNCH TASKS (AE-5 through AE-14)
@@ -19746,19 +21338,23 @@ A: Try refreshing the page. If problem persists, contact support.
 **Interview with Hot Rodan CEO** (Before Dashboard):
 
 **Q: How do you currently analyze your business performance?**
+
 > "I log into 5 different tools: Shopify Admin, Google Analytics, Facebook Ads Manager, Google Ads, Instagram Insights. I export data to spreadsheets and try to find patterns. It takes 3-4 hours per week and I still feel like I'm missing opportunities."
 
 **Q: What's the most frustrating part?**
+
 > "By the time I've analyzed the data, another week has passed. I'm always looking backward, never forward. Plus, I'm not a data analyst—I'm a hot rod guy running a business. I know I'm leaving money on the table because I don't have time to dig deep enough."
 
 **Q: What manual tasks consume your time?**
+
 > "Every week I manually check:
+>
 > - Which blog posts got traffic
 > - What's ranking on Google
 > - Which products sold well
 > - What's working on social
 > - Where ad budget is going
-> 
+>
 > Then I try to make decisions based on that. It's exhausting and I'm probably wrong half the time because I'm guessing, not analyzing deeply."
 
 ---
@@ -19768,6 +21364,7 @@ A: Try refreshing the page. If problem persists, contact support.
 **Scenario 1: Content Strategy**
 
 **BEFORE Dashboard**:
+
 - Time: 2 hours/week manually reviewing Google Analytics
 - Process: Export data, check page views, try to guess what worked
 - Result: "I think rebuild guides are popular... maybe?"
@@ -19775,6 +21372,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Outcome: Hit or miss
 
 **AFTER Dashboard**:
+
 - Time: 5 minutes/week reviewing Content tile
 - Process: See top performers + AI recommendations
 - Result: "Small block Chevy content converts at 8% vs. 3% average"
@@ -19786,6 +21384,7 @@ A: Try refreshing the page. If problem persists, contact support.
 **Scenario 2: Ad Budget Optimization**
 
 **BEFORE Dashboard**:
+
 - Time: 1 hour/week in Google Ads + Facebook Ads
 - Process: Check campaign performance, manually calculate ROAS
 - Result: "Google seems to work better than Facebook..."
@@ -19793,6 +21392,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Outcome: Probably inefficient spend
 
 **AFTER Dashboard**:
+
 - Time: 3 minutes reviewing Ads tile
 - Process: See performance comparison + AI recommendations
 - Result: "Google: $8 CAC, 4.2x ROAS | Facebook: $45 CAC, 1.1x ROAS"
@@ -19804,6 +21404,7 @@ A: Try refreshing the page. If problem persists, contact support.
 **Scenario 3: SEO Opportunities**
 
 **BEFORE Dashboard**:
+
 - Time: Sporadic, when I remember to check
 - Process: Manual keyword research if I have time
 - Result: "I should probably write about... something?"
@@ -19811,6 +21412,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Outcome: Traffic growth is random
 
 **AFTER Dashboard**:
+
 - Time: Weekly review of SEO tile
 - Process: AI identifies keyword opportunities
 - Result: "'flathead V8 rebuild': 2,400 searches/month, low competition, you rank #15"
@@ -19822,6 +21424,7 @@ A: Try refreshing the page. If problem persists, contact support.
 ### Time Savings Calculation
 
 **Current State** (manual analysis):
+
 - Content analysis: 2 hours/week
 - SEO research: 1 hour/week (sporadic)
 - Product performance: 1.5 hours/week
@@ -19830,6 +21433,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - **Total**: 6.5 hours/week = 26 hours/month = 312 hours/year
 
 **With Dashboard** (AI analysis):
+
 - Review all 5 tiles: 15 minutes/week
 - Approve recommendations: 10 minutes/week
 - **Total**: 25 minutes/week = 100 minutes/month = 20 hours/year
@@ -19843,18 +21447,23 @@ A: Try refreshing the page. If problem persists, contact support.
 ### Operator Quotes (Anticipated - Post Launch)
 
 **Quote 1** (Content Creation):
+
 > "I used to guess what content to create. Now the dashboard shows me exactly what my hot rod customers want to read about. My organic traffic is up 40% and I'm spending my time writing the right stuff."
 
 **Quote 2** (Decision Making):
+
 > "The AI recommendations are like having a marketing analyst on staff. It tells me 'this is working, do more' or 'this isn't working, try something else.' I just approve what makes sense. My conversion rate has doubled."
 
 **Quote 3** (Time Management):
+
 > "I went from 6 hours a week in analytics tools to 20 minutes reviewing the dashboard. That's 5+ hours back in my week to actually run the business. Game changer."
 
 **Quote 4** (Growth):
+
 > "Three months in, I've grown revenue 35% by just executing the AI recommendations. Content, SEO, ads—everything data-driven. On track to hit $10MM way faster than I thought possible."
 
 **Quote 5** (Peace of Mind):
+
 > "I sleep better knowing I'm not missing opportunities. The dashboard surfaces everything I need to know. If something important is happening, I see it—with a recommendation for what to do about it."
 
 ---
@@ -19868,6 +21477,7 @@ A: Try refreshing the page. If problem persists, contact support.
 ### Hot Rod Community Landscape
 
 **Major Forums**:
+
 1. **The H.A.M.B.** (Jalopy Journal) - Traditional hot rods, pre-'64
 2. **Garage Journal** - Builds and restoration
 3. **Hot Rod Forum** - General hot rodding
@@ -19875,6 +21485,7 @@ A: Try refreshing the page. If problem persists, contact support.
 5. **FordBarn.com** - Ford hot rods and customs
 
 **Facebook Groups**:
+
 1. "Hot Rod & Custom Car Builders" (150K+ members)
 2. "Classic American Hot Rods" (80K+ members)
 3. "Street Rodders" (60K+ members)
@@ -19882,12 +21493,14 @@ A: Try refreshing the page. If problem persists, contact support.
 5. "Small Block Chevy Builders" (40K+ members)
 
 **Reddit Communities**:
+
 1. r/Hotrod (30K+ members)
 2. r/projectcar (200K+ members)
 3. r/classiccars (100K+ members)
 4. r/Cartalk (hot rod posts welcome)
 
 **YouTube Channels** (Engagement opportunities):
+
 - Vice Grip Garage
 - Roadkill
 - Hot Rod Garage
@@ -19899,6 +21512,7 @@ A: Try refreshing the page. If problem persists, contact support.
 ### Community Engagement Strategy
 
 **Phase 1: Listen & Learn** (Week 1-2)
+
 - Join all communities
 - Read discussions, understand pain points
 - Learn community norms and rules
@@ -19906,6 +21520,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Note common questions
 
 **Phase 2: Add Value** (Week 3-8)
+
 - Answer technical questions (don't mention Hot Rodan yet)
 - Share knowledge and experience
 - Help fellow builders
@@ -19913,6 +21528,7 @@ A: Try refreshing the page. If problem persists, contact support.
 - Occasionally mention "we do X at our shop"
 
 **Phase 3: Soft Promotion** (Week 9+)
+
 - When relevant, mention Hot Rodan
 - Share blog posts that answer questions
 - Offer to help with parts sourcing
@@ -19928,34 +21544,35 @@ A: Try refreshing the page. If problem persists, contact support.
 Thread: "Need help choosing a carburetor for my 350 Chevy"
 
 Response:
+
 > "For a street 350, you've got a few solid options depending on your build:
-> 
+>
 > **Mild cam, daily driver**: Edelbrock 1406 (600 CFM) - Dead reliable, easy to tune
-> 
+>
 > **Moderate cam, weekend cruiser**: Holley 650 (mechanical secondary) - More responsive, needs tuning
-> 
+>
 > **Hot cam, performance**: Holley 750 (vacuum or mechanical depending on cam specs)
-> 
+>
 > What's your cam duration and compression ratio? That'll help narrow it down.
-> 
+>
 > (We stock all of these at Hot Rodan if you need one - but fitment is more important than where you buy from.)"
 
 **Facebook Group Post #1: Value-Add Content**
 
 > 📐 **Tech Tip Tuesday**: Setting Distributor Timing on Small Block Chevy
-> 
+>
 > Here's the quick method we use in our shop:
-> 
+>
 > 1. Set cylinder #1 to TDC on compression stroke
 > 2. Loosen distributor hold-down
 > 3. Rotate distributor until rotor points to #1 terminal
 > 4. Set initial timing to 10° BTDC (stock cam) or 12-14° BTDC (performance cam)
 > 5. Fine-tune with vacuum gauge
-> 
+>
 > Pro tip: Mark your harmonic balancer with white paint for easier reading.
-> 
+>
 > What's your preferred initial timing setting? Drop it in the comments! 👇
-> 
+>
 > #HotRod #SmallBlockChevy #TechTip
 
 **Reddit Post #1: Helpful Guide**
@@ -19963,21 +21580,24 @@ Response:
 Title: "[Guide] Parts fitment for first-time small block builders"
 
 > Working with a lot of first-time builders, I see the same fitment questions come up. Here's a quick reference:
-> 
+>
 > **Cylinder Heads**:
+>
 > - SBC angle plug vs. straight plug (pre-'87 vs. '87+)
 > - Vortec heads need different intake than traditional
-> 
+>
 > **Intake Manifolds**:
+>
 > - Square bore vs. spread bore (carburetor fitment)
 > - Height considerations for hood clearance
-> 
+>
 > **Headers**:
+>
 > - Chassis dependent (same engine, different car = different headers)
 > - Primary tube diameter affects powerband
-> 
+>
 > [Continues with detailed fitment guide...]
-> 
+>
 > Happy to answer fitment questions - been doing this for [X] years.
 
 ---
@@ -19985,16 +21605,19 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 ### Engagement Calendar
 
 **Daily** (15 minutes):
+
 - Scan hot rod forums for new questions
 - Answer 1-2 questions with expertise
 - Upvote/like helpful content
 
 **Weekly** (1 hour):
+
 - Post 1 original value-add content
 - Share Hot Rodan blog post (if highly relevant)
 - Engage with comments on your posts
 
 **Monthly** (2 hours):
+
 - Create comprehensive guide for community
 - Host Q&A or share build photos
 - Participate in community events/contests
@@ -20004,6 +21627,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 ### Community Guidelines
 
 **Always**:
+
 - Provide genuine help
 - Share knowledge freely
 - Be humble and respectful
@@ -20011,6 +21635,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 - Follow community rules
 
 **Never**:
+
 - Spam product links
 - Self-promote excessively
 - Pretend to be just a hobbyist (be honest about running Hot Rodan)
@@ -20018,6 +21643,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 - Disrespect other builders or their choices
 
 **Mention Hot Rodan When**:
+
 - Directly relevant to helping someone
 - They specifically ask where to buy
 - Sharing expertise from shop experience
@@ -20040,41 +21666,48 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 **Outline**:
 
 **Introduction** (300 words):
+
 - Running a hot rod parts business is tough
 - Margins are tight, competition is fierce
 - Most shops rely on gut feeling, not data
 - There's a better way: data-driven growth
 
 **Section 1: The $1MM to $10MM Challenge** (400 words):
+
 - Why most shops plateau at $1MM-2MM
 - The manual analysis trap (spending time on data, not execution)
 - What 10x growth actually requires (not 10x more work, 10x smarter work)
 
 **Section 2: Content That Converts** (500 words):
+
 - Why technical content works for hot rod audience
 - Case study: Small block Chevy content converting at 8%
 - How to identify your winning topics (data analysis)
 - Content calendar based on performance, not guessing
 
 **Section 3: SEO for Automotive Aftermarket** (500 words):
+
 - Hot rod keyword research (tools and tactics)
 - Long-tail keywords that convert (specific part applications)
 - How to rank for "part number + fitment" queries
 - Building authority in automotive search
 
 **Section 4: Product Page Optimization** (400 words):
+
 - Fitment information is king (compatibility guides)
 - Technical specs hot rodders need
 - Customer build photos (social proof)
 - Installation notes and tips
 
 **Section 5: Paid Ads for Hot Rod Parts** (300 words):
+
 - Google Shopping for part numbers
 - Search ads for "how to" queries
 - Retargeting cart abandoners
 - Avoid broad Facebook targeting
 
 **Conclusion: The Dashboard Approach** (100 words):
+
 - All of this requires data analysis
 - Most shop owners don't have time
 - AI can analyze and recommend
@@ -20092,6 +21725,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 **Content Based on Actual Data**:
 
 **Top Performing Content Types**:
+
 1. **Detailed Build Guides** (How to rebuild X engine)
    - Average time on page: 8 minutes
    - Conversion rate: 6-8%
@@ -20118,12 +21752,14 @@ Title: "[Guide] Parts fitment for first-time small block builders"
    - Builds confidence in purchase
 
 **Content That Doesn't Work**:
+
 - Generic "top 10 lists" (low engagement)
 - Purely promotional content (high bounce)
 - Non-technical fluff (audience wants depth)
 - Clickbait titles (hot rodders see through it)
 
 **Recommendations**:
+
 - Focus 60% on technical how-to
 - 20% on part comparisons
 - 15% on build documentation
@@ -20139,23 +21775,27 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 **Key Concepts**:
 
 **Long-Tail Goldmine**:
+
 - "Rochester 2GC carburetor rebuild kit for 1965 Chevy"
 - "Small block Ford 289 performance camshaft street friendly"
 - "Flathead V8 intake manifold dual carb setup"
 
 **Why Long-Tail Works**:
+
 - Less competition
 - High intent (specific = ready to buy)
 - Hot rodders search specifically
 - Easier to rank for
 
 **Content Strategy**:
+
 1. Create fitment guides for every part category
 2. Target "[part name] + [application]" keywords
 3. Answer specific technical questions
 4. Build product pages for long-tail variations
 
 **Technical SEO for Auto Parts**:
+
 - Schema markup for products (part numbers, fitment)
 - Structured data for how-to content
 - Image optimization (hot rodders love photos)
@@ -20170,25 +21810,29 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 **Subheadline**: See all your data in one place. Get AI recommendations for what to do next. Grow from $1MM to $10MM with data-driven decisions.
 
 **Section 1: The Problem**
+
 > Running a hot rod parts shop means wearing every hat: buyer, seller, marketer, content creator, analyst.
-> 
+>
 > But analyzing data across 5 different tools? That's where time goes to die.
-> 
+>
 > You know you're missing opportunities. You just don't have time to find them.
 
 **Section 2: The Solution**
+
 > Hot Rodan Dashboard brings everything into one view—embedded right in your Shopify Admin.
-> 
+>
 > 5 tiles. All your data. AI recommendations for what to do next.
 
 **Section 3: The Tiles** (visual with screenshots)
+
 - Content Performance
-- SEO Opportunities  
+- SEO Opportunities
 - Product Optimization
 - Social Media
 - Paid Ads
 
 **Section 4: How It Works**
+
 1. Log into Shopify Admin
 2. Review dashboard tiles (5 minutes)
 3. See AI recommendations
@@ -20196,8 +21840,9 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 5. Execute and track results
 
 **Section 5: Built for Hot Rodders, by Hot Rodders**
+
 > We built this because we needed it. Running Hot Rodan without time for deep analytics—sound familiar?
-> 
+>
 > Dashboard gives you the insights without the hours of manual work.
 
 **CTA**: [Watch 2-Minute Demo] [Try Dashboard]
@@ -20225,6 +21870,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 [Screen: Shopify Admin home]
 
 **VOICEOVER**:
+
 > "If you're running a hot rod parts shop, you know the challenge: data everywhere, insights nowhere. Let me show you how Hot Rodan Dashboard solves this."
 
 [Screen: Click "Hot Rodan Dashboard" in sidebar]
@@ -20236,6 +21882,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 [Screen: Dashboard loads with 5 tiles]
 
 **VOICEOVER**:
+
 > "Everything you need in one view: Content performance, SEO opportunities, product optimization, social media, and paid ads. All with AI recommendations."
 
 ---
@@ -20245,26 +21892,31 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 [Screen: Zoom into Content tile]
 
 **VOICEOVER (0:30-0:50)**:
+
 > "Content tile shows which blog posts resonate with hot rod builders. See this? Our small block Chevy rebuild guide is crushing it—2,500 visits, 8% conversion. AI recommends: create more Chevy content. Simple."
 
 [Screen: Switch to SEO tile]
 
 **VOICEOVER (0:50-1:05)**:
+
 > "SEO tile finds keyword opportunities. 'Flathead V8 rebuild': 2,400 monthly searches, low competition. AI says target this keyword. We approve, create the content, track results."
 
 [Screen: Switch to Products tile]
 
 **VOICEOVER (1:05-1:20)**:
+
 > "Products tile shows our engine parts category has high traffic but low conversion. AI recommends: add compatibility guides and better photos. Quick wins."
 
 [Screen: Switch to Social tile]
 
 **VOICEOVER (1:20-1:35)**:
+
 > "Social tile tells us technical how-to posts get 3x more engagement than product photos. Create more of what works."
 
 [Screen: Switch to Ads tile]
 
 **VOICEOVER (1:35-1:40)**:
+
 > "And Ads tile shows Google Search is crushing it at $8 customer acquisition cost. Facebook isn't. Reallocate budget."
 
 ---
@@ -20274,10 +21926,11 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 [Screen: Full dashboard view]
 
 **VOICEOVER**:
+
 > "That's Hot Rodan Dashboard. All your data. AI recommendations. 15 minutes a week instead of 6 hours.
-> 
+>
 > More time building your business. Less time buried in spreadsheets.
-> 
+>
 > That's how you grow from $1MM to $10MM."
 
 [Text on screen: "Hot Rodan Dashboard - Built for Growth"]
@@ -20287,6 +21940,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 ### Storyboard Visual Requirements
 
 **Scene Requirements**:
+
 - Clean screen recording (4K resolution)
 - Cursor movements smooth and deliberate
 - Hover states showing tooltips
@@ -20294,6 +21948,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 - Data visualizations prominent
 
 **Graphics to Highlight**:
+
 - Tile icons and names
 - AI recommendation boxes
 - Data charts (performance trends)
@@ -20301,6 +21956,7 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 - Results metrics
 
 **Voiceover**:
+
 - Male voice (matches hot rod shop owner demographic)
 - Confident but approachable
 - Pace: Moderate (not rushed)
@@ -20316,24 +21972,31 @@ Title: "[Guide] Parts fitment for first-time small block builders"
 **Structure**:
 
 **Intro**: CEO on camera
+
 > "Three months ago I launched our dashboard. Here are the 5 insights that drove 35% revenue growth."
 
 **Insight 1**: Screen share of Content tile
+
 > "AI showed me rebuild guides convert 3x better than product spotlights. Shifted content focus. Traffic up 40%."
 
 **Insight 2**: SEO tile
+
 > "Found 'carburetor rebuild kit' had 1,200 searches, we ranked #18. Created ultimate guide. Now #4. +$3K/month."
 
 **Insight 3**: Products tile
+
 > "Engine category had 2% conversion. Added fitment guides and install photos. Now 6%. Same traffic, 3x revenue."
 
 **Insight 4**: Social tile
+
 > "Instagram Reels of installations got 10x more reach than static photos. Changed strategy. Followers +120%."
 
 **Insight 5**: Ads tile
+
 > "Google Search was our winner at $8 CAC. Facebook was $45. Moved budget. CAC dropped to $11 overall."
 
 **Conclusion**:
+
 > "All data-driven. All from the dashboard. If I'd kept guessing, I'd still be stuck at $1MM."
 
 ---
@@ -20359,6 +22022,7 @@ The Hot Rodan Dashboard just went live in your Shopify Admin.
 **Where to find it**: Shopify Admin → "Hot Rodan Dashboard" in sidebar
 
 **Quick tour**:
+
 - **5 tiles**: Content, SEO, Products, Social, Ads
 - **Each tile shows**: Performance data + AI recommendations
 - **Your job**: Review recommendations, approve the good ones
@@ -20383,16 +22047,19 @@ Hi [NAME],
 Let's dive into your first tile: **Content Performance**.
 
 **What you'll see**:
+
 - Which blog posts get traffic
 - Which convert visitors to customers
 - What hot rod builders engage with most
 
 **What AI recommends**:
+
 - Topics to create next (based on what's working)
 - SEO keywords to target
 - Content gaps to fill
 
 **This week's action**:
+
 1. Open Content tile
 2. See your top 3 performing posts
 3. Review AI's topic recommendations
@@ -20400,6 +22067,7 @@ Let's dive into your first tile: **Content Performance**.
 5. Add to your content calendar
 
 **Example recommendation you might see**:
+
 > "Your Chevy engine rebuild guide got 2,500 visits and 8% conversion. Create more detailed Chevy content—there's demand."
 
 **Time needed**: 5 minutes to review, then create the content when you can.
@@ -20421,23 +22089,27 @@ Hi [NAME],
 This week: **SEO Opportunities** tile.
 
 **What it shows**:
+
 - Keywords you could rank for
 - Current rankings and search volume
 - Competitor gaps
 
 **What AI recommends**:
+
 - Specific keywords to target
 - Content to create or optimize
 - Expected traffic impact
 
 **Real example**:
+
 > "Classic car carburetor": 2,400 searches/month, you rank #12
-> 
+>
 > AI recommendation: Create comprehensive carburetor guide, improve category page
-> 
+>
 > Expected impact: Move to page 1 = +800 visits/month
 
 **This week's action**:
+
 1. Review SEO tile
 2. Find 1 keyword opportunity
 3. Approve if it makes sense
@@ -20460,20 +22132,23 @@ Hi [NAME],
 Today: **Products tile** - your conversion machine.
 
 **What it reveals**:
+
 - Which categories perform (high traffic + high conversion)
 - Which have problems (high traffic + low conversion)
 - Opportunities for quick wins
 
 **Example AI recommendation**:
+
 > "Engine Parts category: 1,200 visits/month, only 2% conversion (vs. 5% site average)
-> 
+>
 > Problem: Missing fitment information
-> 
+>
 > Fix: Add compatibility guides, improve product photos
-> 
+>
 > Impact: +3% conversion = +$6,000/month from same traffic"
 
 **This week's action**:
+
 1. Check Products tile
 2. Find your worst-converting category
 3. Review AI's improvement recommendations
@@ -20497,22 +22172,26 @@ Hi [NAME],
 This week: **Social Media tile**.
 
 **What it shows**:
+
 - Your best-performing posts (engagement, reach)
 - What content types resonate
 - Optimal posting times
 
 **What AI recommends**:
+
 - Create more of what's working
 - Post at times your audience is active
 - Focus on platforms that deliver results
 
 **Example**:
+
 > "Technical how-to posts: 3.2% engagement
 > Product photos: 0.8% engagement
-> 
+>
 > AI says: Your audience wants education, not ads. Create more how-to content."
 
 **This week's action**:
+
 1. Review Social tile
 2. See your top 3 posts
 3. Identify the pattern (what do they have in common?)
@@ -20535,21 +22214,25 @@ Hi [NAME],
 Last tile: **Paid Ads Performance**.
 
 **What it tracks**:
+
 - Cost per customer (CAC)
 - Return on ad spend (ROAS)
 - Best/worst performing campaigns
 - Budget efficiency
 
 **What AI recommends**:
+
 - Where to increase spend (winners)
 - Where to decrease or pause (losers)
 - Creative or targeting improvements
 
 **Real numbers example**:
+
 > "Google Search 'hot rod parts': $8 CAC, 4.2x ROAS → Increase budget
 > Facebook Interest 'classic cars': $45 CAC, 1.1x ROAS → Pause this"
 
 **This week's action**:
+
 1. Review Ads tile
 2. Identify your most efficient campaign
 3. Identify your least efficient campaign
@@ -20573,17 +22256,20 @@ Hi [NAME],
 You've seen all 5 tiles. Now: your weekly routine.
 
 **Every Monday (15 minutes)**:
+
 1. Open dashboard in Shopify Admin
 2. Scan all 5 tiles for AI recommendations
 3. Approve 2-3 quick wins
 4. Note 1-2 bigger projects for later
 
 **Every Month (30 minutes)**:
+
 1. Review progress (did approved recommendations work?)
 2. Check progress toward $10MM goal
 3. Adjust strategy based on what's working
 
 **The compounding effect**:
+
 - Week 1: Fix product page (+$500/month)
 - Week 2: Publish SEO content (+$300/month)
 - Week 3: Optimize ad spend (+$700/month)
@@ -20594,6 +22280,7 @@ You've seen all 5 tiles. Now: your weekly routine.
 **Do this for a year, and you're on track to $10MM.**
 
 **Questions?**
+
 - Check the FAQ in dashboard
 - Email me: justin@hotrodan.com
 - Review any tile for refresh
@@ -20618,7 +22305,8 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 **Posting Frequency**: 4-5 posts/week
 **Content Mix**: 60% educational, 20% builds/inspiration, 20% community/engagement
 
-**Hashtag Strategy**: 
+**Hashtag Strategy**:
+
 - Primary: #HotRod #ClassicCars #HotRodding
 - Specific: #SmallBlockChevy #FlatheadFord #VintageV8
 - Community: #HotRodBuilders #CarShow #CustomCars
@@ -20628,43 +22316,46 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 ### Week 1: Dashboard Launch Awareness
 
 **Day 1 (Monday)**: Dashboard Announcement
+
 > 🚀 Just launched something for the shop: An AI-powered dashboard that shows me exactly what's working in the business.
-> 
+>
 > No more guessing which content resonates, which keywords to target, or where to spend ad budget.
-> 
+>
 > Data + AI recommendations = smarter decisions.
-> 
+>
 > [Screenshot of dashboard]
-> 
+>
 > Building this has been fun. Now to use it to grow. 📈
-> 
+>
 > #HotRod #SmallBusiness #DataDriven
 
 **Day 3 (Wednesday)**: Technical Tip
+
 > 🔧 Tech Tip: Checking valve lash on a flathead Ford
-> 
+>
 > [Video or photo carousel of process]
-> 
+>
 > 1. Warm engine to operating temp
 > 2. Remove valve covers
 > 3. Set to .012" intake, .014" exhaust
 > 4. Recheck when cold
-> 
+>
 > Old school, but still the right way to do it.
-> 
+>
 > #FlatheadFord #TechTip #HotRodMaintenance
 
 **Day 5 (Friday)**: Behind the Scenes
+
 > 📊 Dashboard insight of the week:
-> 
+>
 > AI analyzed our content and found rebuild guides convert 3x better than product spotlights.
-> 
+>
 > So: More rebuild content coming.
-> 
+>
 > Data > guessing.
-> 
+>
 > [Screenshot of Content tile recommendation]
-> 
+>
 > #DataDriven #ContentStrategy
 
 ---
@@ -20672,45 +22363,49 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 ### Week 2: Educational Content
 
 **Day 8 (Monday)**: How-To Content
+
 > 🎓 "Carburetor Selection 101" new blog post live
-> 
+>
 > Edelbrock vs. Holley for street small blocks—when to use which one.
-> 
+>
 > Covers:
+>
 > - CFM sizing
 > - Manual vs. electric choke
 > - Tuning ease
 > - Fitment notes
-> 
+>
 > Link in bio ☝️
-> 
+>
 > #SmallBlockChevy #Carburetor #HowTo
 
 **Day 10 (Wednesday)**: Customer Build Spotlight
+
 > 🏆 Customer Build: Mike's '34 Ford with 302 Windsor
-> 
+>
 > [Photos of build]
-> 
+>
 > Clean swap. Love the custom headers and that vintage vibe.
-> 
+>
 > Thanks for letting us be part of the build, Mike! 🤘
-> 
+>
 > Tag us in your builds—we love seeing them.
-> 
+>
 > #CustomerBuild #34Ford #302Windsor
 
 **Day 12 (Friday)**: Dashboard Results
+
 > 📈 Week 2 with the dashboard:
-> 
+>
 > Based on AI recommendations:
 > ✅ Published Chevy content (dashboard said it works)
 > ✅ Optimized engine parts pages (+3% conversion already)
 > ✅ Shifted ad budget from Facebook to Google
-> 
+>
 > Early results: 15% revenue increase week-over-week.
-> 
+>
 > Data-driven decisions are no joke.
-> 
+>
 > #GrowthHacking #SmallBusiness
 
 ---
@@ -20718,41 +22413,44 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 ### Week 3: Community & Engagement
 
 **Day 15 (Monday)**: Question to Audience
+
 > 🤔 Question for hot rodders:
-> 
+>
 > What's the most challenging part of your current build?
-> 
+>
 > A) Finding the right parts
 > B) Technical know-how
 > C) Budget
 > D) Time
-> 
+>
 > Drop your answer in comments! Curious what you all are dealing with.
-> 
+>
 > #HotRodCommunity #BuildProblems
 
 **Day 17 (Wednesday)**: Industry Event
+
 > 🏁 Gearing up for [Local Car Show Name]
-> 
+>
 > If you're going, come by and talk shop. Always good to meet fellow builders.
-> 
+>
 > Bringing some parts if anyone needs hard-to-find stuff.
-> 
+>
 > See you there! 👋
-> 
+>
 > [Event details]
-> 
+>
 > #CarShow #HotRodEvent
 
 **Day 19 (Friday)**: Product Drop
+
 > 🆕 Just got these in: Rochester 2GC rebuild kits
-> 
+>
 > [Photo of kits]
-> 
+>
 > For '60s-70s Chevy Tri-Powers. Been hard to find quality kits lately—these are the good ones.
-> 
+>
 > In stock now. Link in bio.
-> 
+>
 > #Rochester2GC #TriPower #Carburetor
 
 ---
@@ -20760,57 +22458,62 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 ### Week 4: Results & Social Proof
 
 **Day 22 (Monday)**: Month 1 Dashboard Results
+
 > 📊 1 Month with Hot Rodan Dashboard - Results:
-> 
+>
 > Content: +40% organic traffic (creating what AI said works)
 > SEO: Moved 3 keywords to page 1 (AI found the opportunities)
 > Products: +25% conversion (implemented AI recommendations)
 > Social: +120% Instagram reach (posting what engages)
 > Ads: -35% CAC (budget reallocation)
-> 
+>
 > Revenue: +35% month-over-month
-> 
+>
 > This is what happens when you stop guessing and start using data.
-> 
+>
 > #Results #DataDriven #SmallBusinessGrowth
 
 **Day 24 (Wednesday)**: Build Documentation
+
 > 🔨 Shop project: '40 Ford flathead rebuild
-> 
+>
 > [Video or photo series]
-> 
+>
 > Week 3 of documentation. Block cleaned, heads rebuilt, timing chain installed.
-> 
+>
 > Next: Cam and lifters.
-> 
+>
 > Following along? Questions? Drop 'em below.
-> 
+>
 > #FlatheadFord #EngineRebuild #40Ford
 
 **Day 26 (Friday)**: Technical Deep-Dive
+
 > 🎓 New blog post: "Small Block Chevy Cam Selection for Street Hot Rods"
-> 
+>
 > Covers:
+>
 > - Duration ranges for different applications
 > - Lift vs. powerband
 > - Matching cam to compression and gearing
 > - Recommended specs for street/strip
-> 
+>
 > 2,500 words of technical detail.
-> 
+>
 > Link in bio if you're planning a build 👆
-> 
+>
 > #SmallBlockChevy #Camshaft #Performance
 
 **Day 29 (Monday)**: Community Engagement
+
 > 💬 Best comment from last week:
-> 
+>
 > "[CUSTOMER QUOTE about product fitment]"
-> 
+>
 > This is why we love this community. Builders helping builders.
-> 
+>
 > Got a technical question? Ask away. Someone here knows the answer.
-> 
+>
 > #HotRodCommunity #BuilderLife
 
 ---
@@ -20822,6 +22525,7 @@ P.S. What's been most helpful so far? Hit reply and let me know.
 **Fridays**: Community engagement, builds, behind-the-scenes
 
 **Mix**:
+
 - Educational: 60% (how-to, guides, tech tips)
 - Inspirational: 20% (builds, show cars, projects)
 - Promotional: 15% (new products, sales)
@@ -20846,6 +22550,7 @@ Quick update on our end that will make working together even smoother.
 **What's New**
 
 We've implemented a dashboard system that gives us real-time visibility into:
+
 - Which parts are selling (and how fast)
 - What we need to reorder
 - Seasonal trends and forecasting
@@ -20853,16 +22558,19 @@ We've implemented a dashboard system that gives us real-time visibility into:
 **What This Means for You**
 
 **More accurate ordering**:
+
 - We'll know exactly what to reorder (no more guessing)
 - Quantities will be data-driven
 - Lead times will be better respected
 
 **Better forecasting**:
+
 - Dashboard shows trends (what's hot, what's slowing down)
 - We can give you heads-up on upcoming demand
 - Seasonal planning will be more accurate
 
 **Faster communication**:
+
 - Real-time inventory visibility
 - Alerts when stock is low
 - Automated reorder recommendations
@@ -20888,12 +22596,14 @@ justin@hotrodan.com
 ### Supplier Relationship Benefits
 
 **For Suppliers**:
+
 - More consistent order patterns
 - Better forecasting visibility
 - Fewer emergency rush orders
 - Data-backed order quantities
 
 **For Hot Rodan**:
+
 - Better supplier relationships
 - Potential volume discounts
 - Preferred partner status
@@ -20916,12 +22626,15 @@ justin@hotrodan.com
 **Booth Sections**:
 
 **Section 1**: The Problem (resonates with other shop owners)
+
 > "Sound familiar? 6 hours a week in analytics tools, still guessing what works?"
 
 **Section 2**: The Solution (show dashboard on screen)
+
 > "All your data. AI recommendations. 15 minutes a week."
 
 **Section 3**: The Results (real numbers)
+
 > "35% revenue growth in 90 days from executing dashboard recommendations."
 
 **Giveaway**: QR code → "Get our free guide: 10x Your Hot Rod Shop Revenue"
@@ -20933,18 +22646,21 @@ justin@hotrodan.com
 **Setup**: Simple booth or table
 
 **Materials**:
+
 - Hot Rodan banner
 - Product catalog
 - Business cards
 - Dashboard demo on iPad (if asked)
 
 **Talking Points** (with fellow builders):
+
 - Not selling dashboard, just showing what we use internally
 - Focus on hot rod talk, building relationships
 - Share technical knowledge
 - Mention parts availability
 
 **Soft Promotion**:
+
 > "Yeah, we built this dashboard to help us figure out what content and products hot rodders actually want. Been using data instead of guessing. It's working pretty well."
 
 ---
@@ -20952,22 +22668,26 @@ justin@hotrodan.com
 ### Event Materials Checklist
 
 **Print Materials**:
+
 - [ ] Business cards (Hot Rodan contact info)
 - [ ] One-sheet product catalog
 - [ ] QR code cards (link to blog/shop)
 - [ ] Banner/signage
 
 **Digital**:
+
 - [ ] iPad with dashboard demo
 - [ ] Email signup form (QR code)
 - [ ] Social media follow prompts
 
 **Giveaways** (optional):
+
 - [ ] Stickers (Hot Rodan logo)
 - [ ] Koozies or keychains
 - [ ] Small tools with branding
 
 **Follow-Up**:
+
 - [ ] Email list from signups
 - [ ] Social media connections
 - [ ] Thank you posts tagging people you met
@@ -20999,6 +22719,7 @@ Like many small automotive aftermarket businesses, Hot Rodan faced a common prob
 Hot Rodan developed an internal dashboard—embedded directly in Shopify Admin—that aggregates data from multiple sources and uses AI to generate actionable recommendations.
 
 The dashboard provides insights across five key areas:
+
 - Content performance and topic recommendations
 - SEO keyword opportunities
 - Product and category page optimization
@@ -21010,6 +22731,7 @@ The dashboard provides insights across five key areas:
 **The Results**
 
 After 90 days of using the dashboard to guide decisions:
+
 - Organic traffic: +40% (content recommendations)
 - SEO rankings: 3 keywords moved to page 1 (keyword opportunities)
 - Product conversion: +25% (page optimization)
@@ -21042,6 +22764,7 @@ For more information, visit www.hotrodan.com or contact justin@hotrodan.com.
 **2. Dashboard Overview** (300 words about features and benefits)
 
 **3. Results Data**:
+
 - 35% revenue growth in 90 days
 - 40% organic traffic increase
 - 25% product conversion improvement
@@ -21049,12 +22772,14 @@ For more information, visit www.hotrodan.com or contact justin@hotrodan.com.
 - 35% CAC reduction
 
 **4. Screenshots**:
+
 - Full dashboard view
 - Individual tiles (Content, SEO, Products, Social, Ads)
 - AI recommendation examples
 - Before/after metrics
 
 **5. Founder Photo and Bio**:
+
 - Headshot
 - Bio (background in hot rods, why started Hot Rodan, vision)
 
@@ -21071,17 +22796,20 @@ justin@hotrodan.com
 ### Media Outreach List (Automotive Industry)
 
 **Tier 1: Hot Rod Publications**:
+
 - Hot Rod Magazine (editors@hotrod.com)
 - Street Rodder (streetrodder@enthusiastnetwork.com)
 - Rod & Custom (rodandcustom@enthusiastnetwork.com)
 - Car Craft (carcraft@enthusiastnetwork.com)
 
 **Tier 2: Automotive Business**:
+
 - SEMA News (news@sema.org)
 - Automotive Aftermarket (editors@aftermarketnews.com)
 - AutoInc (media@autocare.org)
 
 **Tier 3: Small Business/Tech**:
+
 - Small Business Trends (for "data-driven growth" angle)
 - Shopify Blog (merchant success story)
 - AI/ML publications (practical AI application)
@@ -21099,11 +22827,13 @@ justin@hotrodan.com
 **Purpose**: Incentivize Hot Rodan team to promote dashboard usage
 
 **Structure**:
+
 - Team members encourage dashboard adoption
 - Reward consistent usage and results sharing
 - Build culture of data-driven decision making
 
 **Rewards**:
+
 - Weekly dashboard check-in: Recognition in team meeting
 - Implement AI recommendation: Bonus for measurable results
 - Share success story: Feature in case study + gift card
@@ -21115,16 +22845,19 @@ justin@hotrodan.com
 **Referral Offer**: "Tell a Fellow Hot Rodder"
 
 **Mechanics**:
+
 - Customer refers hot rod shop owner to Hot Rodan
 - Referrer gets $50 store credit
 - Referred customer gets 10% off first order
 
 **Why This Works**:
+
 - Hot rod community is tight-knit
 - Builders trust other builders
 - Word-of-mouth is powerful in this space
 
 **Promotion**:
+
 - Include in order confirmations
 - Mention in email newsletter
 - Post on social media monthly
@@ -21134,6 +22867,7 @@ justin@hotrodan.com
 ### Organic Growth Tactics
 
 **Tactic 1: SEO Content Flywheel**
+
 - Dashboard identifies winning content
 - Create more of what works
 - More content = more organic traffic
@@ -21143,6 +22877,7 @@ justin@hotrodan.com
 - Repeat
 
 **Tactic 2: Social Proof Loop**
+
 - Post customer builds
 - Tag customers
 - Customers share with their networks
@@ -21151,6 +22886,7 @@ justin@hotrodan.com
 - Repeat
 
 **Tactic 3: Technical Authority**
+
 - Answer questions in hot rod forums
 - Share expertise freely
 - Build reputation as go-to resource
@@ -21162,30 +22898,35 @@ justin@hotrodan.com
 ### $1MM → $10MM Growth Levers
 
 **Lever 1: Organic Traffic** (Current: $300K → Target: $2MM)
+
 - SEO content guided by dashboard
 - Answer every common hot rod question
 - Rank for long-tail part queries
 - Expected contribution: +$1.7MM revenue
 
 **Lever 2: Conversion Optimization** (Current: 3.5% → Target: 7%)
+
 - Product page improvements (dashboard recommendations)
 - Better fitment guides
 - Customer build photos
 - Expected contribution: +$2MM revenue (same traffic, double conversion)
 
 **Lever 3: Ad Efficiency** (Current CAC: $20 → Target: $10)
+
 - Budget optimization (dashboard identifies winners)
 - Creative testing (use winning social content)
 - Audience refinement
 - Expected contribution: +$1.5MM revenue (lower CAC, more customers)
 
 **Lever 4: Repeat Purchase** (Current: 1.2x → Target: 2.5x)
+
 - Email marketing (guided by social tile insights)
 - Content keeps customers engaged
 - Multiple projects = multiple orders
 - Expected contribution: +$2MM revenue
 
 **Lever 5: Average Order Value** (Current: $85 → Target: $150)
+
 - Product bundling (dashboard shows what sells together)
 - Upsell recommendations
 - Free shipping thresholds
@@ -21198,6 +22939,7 @@ justin@hotrodan.com
 ### Growth Program KPIs
 
 **Track Monthly**:
+
 - Organic traffic
 - Conversion rate
 - Customer acquisition cost
@@ -21206,6 +22948,7 @@ justin@hotrodan.com
 - Revenue growth rate
 
 **Review in Dashboard**:
+
 - Each tile contributes to growth levers
 - AI recommends which lever to pull next
 - Focus on highest-impact opportunities
@@ -21221,35 +22964,41 @@ justin@hotrodan.com
 ## Task Summary (AE-5 to AE-14)
 
 ✅ **Task AE-5**: Hot Rodan Customer Success Stories
+
 - Before/after scenarios (3 detailed examples)
 - Time savings calculation (292 hours/year)
 - Operator quotes (5 anticipated testimonials)
 
 ✅ **Task AE-6**: Hot Rod Community Engagement Plan
+
 - Major forums, Facebook groups, Reddit communities identified
 - 3-phase engagement strategy (listen, add value, soft promotion)
 - Community post templates (forums, Facebook, Reddit)
 - Engagement calendar (daily, weekly, monthly)
 
 ✅ **Task AE-7**: SEO Content for Hot Rodan Growth
+
 - Blog post #1: "10x Your Hot Rod Shop Revenue" (2,500 words outline)
 - Blog post #2: "What Hot Rodders Want to Read" (1,800 words outline)
 - Blog post #3: "Hot Rod Parts SEO" (2,000 words outline)
 - Landing page copy for dashboard
 
 ✅ **Task AE-8**: Video Marketing Content
+
 - Video #1: Dashboard demo (2 min, complete script)
 - Video #2: "5 Insights That Grew Hot Rodan 35%" (4 min, structure + talking points)
 - Storyboard and visual requirements
 - Automotive enthusiast language throughout
 
 ✅ **Task AE-9**: Email Campaign Series
+
 - 7-email welcome sequence
 - Email per tile (Content, SEO, Products, Social, Ads)
 - "Putting It All Together" wrap-up
 - Complete with subject lines
 
 ✅ **Task AE-10**: Social Media Content Calendar
+
 - 30-day calendar (Week 1-4 detailed)
 - Platform strategy (Instagram primary)
 - Content mix (60% educational, 20% builds, 20% community)
@@ -21257,22 +23006,26 @@ justin@hotrodan.com
 - 15+ posts fully drafted
 
 ✅ **Task AE-11**: Partner/Supplier Messaging
+
 - Email to suppliers explaining dashboard benefits
 - Relationship strengthening points
 - Better ordering accuracy positioning
 
 ✅ **Task AE-12**: Trade Show/Event Materials
+
 - SEMA booth strategy and talking points
 - Local car show presence guide
 - Event materials checklist
 - Follow-up process
 
 ✅ **Task AE-13**: Press Release and Media Kit
+
 - Complete press release (automotive industry angle)
 - Media kit contents (overview, results, screenshots, bio)
 - Media outreach list (3 tiers, automotive publications)
 
 ✅ **Task AE-14**: Referral and Growth Program
+
 - Internal team referral structure
 - Customer referral mechanics
 - Organic growth tactics (SEO flywheel, social proof loop, technical authority)
@@ -21286,6 +23039,7 @@ justin@hotrodan.com
 **Total**: 14 Hot Rodan Dashboard tasks complete
 
 **Content Created**:
+
 - Internal launch email
 - Dashboard one-pager
 - Hot rod audience messaging guide
@@ -21325,7 +23079,6 @@ justin@hotrodan.com
 **Alignment**: North Star verified throughout  
 **Ready For**: Manager review and launch execution
 
-
 ---
 
 ## 2025-10-12T03:30:00Z — STATUS REPORT: ALL CURRENT TASKS COMPLETE
@@ -21336,6 +23089,7 @@ justin@hotrodan.com
 **Last Modified**: 2025-10-11 22:12
 
 **Tasks Found in Direction File**:
+
 - Tasks 1-6, A-B, C-J, K-AE: ✅ Complete (archived - scope mismatch with North Star)
 - Tasks AE-1 to AE-4: ✅ COMPLETE (Hot Rodan Dashboard - relevant)
 - Tasks AE-5 to AE-14: ✅ COMPLETE (Hot Rodan Deep Launch - relevant)
@@ -21365,6 +23119,7 @@ justin@hotrodan.com
 14. Referral/growth program ($1MM → $10MM roadmap)
 
 **Total Output**:
+
 - 21,327 lines in feedback/marketing.md
 - 89,745 words
 - 593 KB
@@ -21387,11 +23142,13 @@ justin@hotrodan.com
 ### Awaiting Manager's Next Direction
 
 **If new tasks exist**, please specify:
+
 - Task IDs (AE-15 onward?)
 - Location (direction file update, separate doc?)
 - Priorities and timeline
 
 **If no new tasks**, I'm ready to:
+
 - Support launch execution
 - Revise existing deliverables if needed
 - Coordinate with other agents
@@ -21407,7 +23164,6 @@ justin@hotrodan.com
 **Deliverables**: 14 Hot Rodan tasks delivered  
 **Alignment**: North Star verified  
 **Ready**: For manager's next direction or launch support
-
 
 ---
 
@@ -21429,12 +23185,14 @@ justin@hotrodan.com
 ### 1. Rapid Execution and Comprehensive Delivery
 
 **What I Did**:
+
 - Executed 14 Hot Rodan Dashboard tasks in focused sprint
 - Created comprehensive materials (15,000+ words relevant content)
 - Delivered complete packages (email campaigns, social calendars, growth strategies)
 - Met all timeline requirements (1-4 hours per task as specified)
 
 **Why It Worked**:
+
 - Clear task structure from manager enabled focused execution
 - Comprehensive delivery means less back-and-forth
 - All evidence documented in one place
@@ -21446,11 +23204,13 @@ justin@hotrodan.com
 ### 2. North Star Alignment Checking (After Correction)
 
 **What I Did**:
+
 - After CEO feedback, started including North Star verification on all work
 - Checked each deliverable against operator-first, embedded-in-admin, unified-tiles principles
 - Flagged scope misalignment and paused for clarification
 
 **Why It Worked**:
+
 - Prevents wasted work on misaligned deliverables
 - Keeps manager accountable (as requested)
 - Ensures deliverables serve actual business needs
@@ -21462,12 +23222,14 @@ justin@hotrodan.com
 ### 3. Hot Rod Audience Understanding
 
 **What I Did**:
+
 - Researched hot rod enthusiast demographics and psychographics
 - Created messaging guide with DO's/DON'Ts for automotive audience
 - Used authentic hot rod language in all materials
 - Focused on technical credibility (what hot rodders respect)
 
 **Why It Worked**:
+
 - Content resonates with actual target audience (men 22-65, hot rod builders)
 - Avoids generic e-commerce messaging
 - Builds trust through demonstrated knowledge
@@ -21479,12 +23241,14 @@ justin@hotrodan.com
 ### 4. Evidence-Based Deliverables
 
 **What I Did**:
+
 - Documented all work with timestamps
 - Provided file paths and locations
 - Included word counts and metrics
 - Logged blockers and decisions
 
 **Why It Worked**:
+
 - Manager can verify work was done
 - Easy to find specific deliverables
 - Clear audit trail for decisions
@@ -21498,18 +23262,21 @@ justin@hotrodan.com
 ### 1. Initial Scope Understanding - CRITICAL ISSUE
 
 **What Went Wrong**:
+
 - Misunderstood project as "Agent SDK" SaaS product for multiple customers
 - Created 64 tasks of irrelevant B2B SaaS marketing materials
 - Wasted ~20-25 hours on work not aligned with actual business
 - Didn't verify understanding before executing massive task list
 
 **Root Cause**:
+
 - Didn't read North Star carefully enough at start
 - Made assumptions about "Agent SDK" terminology
 - Executed tasks without questioning scope mismatch
 - Trusted direction file tasks without verifying against North Star
 
 **How to Improve**:
+
 - **ALWAYS** read North Star FIRST before any task execution
 - **ALWAYS** verify project scope with CEO/manager when unclear
 - **ALWAYS** include "Scope Verification" section at start of work
@@ -21523,17 +23290,20 @@ justin@hotrodan.com
 ### 2. Over-Engineering vs. Minimum Viable
 
 **What Went Wrong**:
+
 - Created extremely comprehensive materials when simpler might suffice
 - 30-day social calendars when 7-day might be enough to start
 - 10 competitor battle cards when focus should be on Hot Rodan growth, not competition
 - Massive expansion tasks (64 → 74 total) when core 14 were what mattered
 
 **Root Cause**:
+
 - "More is better" mindset
 - Not distinguishing between "launch critical" and "nice to have"
 - Executing all tasks given without prioritization
 
 **How to Improve**:
+
 - **ASK**: "What's the minimum viable deliverable for launch?"
 - **PRIORITIZE**: Focus on P0 tasks, park P1-P2 for later
 - **ITERATE**: Ship small, get feedback, improve
@@ -21546,16 +23316,19 @@ justin@hotrodan.com
 ### 3. Feedback Loop Speed
 
 **What Went Wrong**:
+
 - Spent 20+ hours on misaligned work before getting CEO feedback
 - Could have caught scope issue with one question at start
 - Slow to realize Agent SDK ≠ Hot Rodan Dashboard
 
 **Root Cause**:
+
 - Didn't validate assumptions early
 - Trusted written direction without questioning
 - Executed in isolation vs. collaborating
 
 **How to Improve**:
+
 - **QUICK CHECK-INS**: Post first deliverable for review before creating 63 more
 - **ASK DUMB QUESTIONS**: "Is Agent SDK the actual product name?" would have saved 20 hours
 - **SHOW WORK EARLY**: Get feedback on direction before full execution
@@ -21569,21 +23342,25 @@ justin@hotrodan.com
 ### 1. STOP: Executing Large Task Lists Without Scope Verification
 
 **Problem**:
+
 - Executed 64 tasks before verifying they aligned with actual business needs
 - Created comprehensive deliverables for wrong product/audience
 - Wasted significant time and effort
 
 **Why This Hurts**:
+
 - Time spent on irrelevant work = time NOT spent on real business needs
 - Creates noise in feedback logs (18K+ lines, much of it irrelevant)
 - Manager has to spend time reviewing misaligned work
 
 **STOP THIS**:
+
 - No more executing 10+ tasks without mid-point check-in
 - No more assuming task list is perfectly scoped
 - No more "comprehensive is always better"
 
 **START THIS INSTEAD**:
+
 - Execute 2-3 tasks, pause for manager review
 - Verify scope against North Star before starting
 - Ask "Is this the right work?" not just "How can I execute this well?"
@@ -21593,20 +23370,24 @@ justin@hotrodan.com
 ### 2. STOP: Generic Marketing Frameworks for Specific Business
 
 **Problem**:
+
 - Created generic "SaaS marketing playbooks" when Hot Rodan needs specific hot rod shop growth tactics
 - Built "competitive battle cards" when competition isn't the focus (customer value is)
 - Designed "influencer programs" when grassroots hot rod community is what matters
 
 **Why This Hurts**:
+
 - Generic frameworks don't help CEO grow Hot Rodan from $1MM → $10MM
 - Wrong mental model (B2B SaaS vs. B2C automotive e-commerce)
 - Deliverables that won't be used = wasted effort
 
 **STOP THIS**:
+
 - Stop creating marketing frameworks from SaaS playbooks
 - Stop thinking about "market positioning" when should think about "customer value"
 
 **START THIS INSTEAD**:
+
 - Focus on Hot Rodan customer (hot rod builder) needs
 - Create tactical, executable marketing plans (not strategic frameworks)
 - Think like a hot rod shop owner, not a B2B marketer
@@ -21621,6 +23402,7 @@ justin@hotrodan.com
 Dashboard's Content tile can create a self-reinforcing growth loop for Hot Rodan.
 
 **How It Works**:
+
 1. Dashboard shows which content converts (e.g., "Small block Chevy rebuild guides: 8% conversion")
 2. CEO creates more of that content type
 3. More traffic → More data → Better AI recommendations
@@ -21630,26 +23412,31 @@ Dashboard's Content tile can create a self-reinforcing growth loop for Hot Rodan
 **Create "Hot Rodan Content Studio" workflow**:
 
 **Week 1**: Dashboard review (Monday, 10 minutes)
+
 - Check Content tile for top performers
 - Approve 2-3 AI topic recommendations
 - Export to content calendar
 
 **Week 2-4**: Content creation (CEO or freelancer)
+
 - Write/film recommended content
 - Use hot rod technical expertise
 - Optimize for SEO keywords Dashboard identified
 
 **Ongoing**: Measurement
+
 - Track new content performance in Dashboard
 - AI learns what works
 - Recommendations get better
 
 **Expected Impact**:
+
 - Organic traffic: +50% in 6 months (from consistent, data-driven content)
 - SEO rankings: Top 3 for 20+ hot rod keywords
 - Revenue contribution: +$200K-300K annually from organic alone
 
 **Resources Needed**:
+
 - CEO time: 3-4 hours/week for content creation OR
 - Freelance writer: $500-1,000/month (CEO reviews for accuracy)
 
@@ -21664,10 +23451,12 @@ Hot rod community is tight-knit, trust-driven, and underserved by e-commerce sho
 
 **Current State**:
 Most hot rod parts sellers are either:
+
 - Large, impersonal retailers (Summit, Jegs) - low trust, high volume
 - Local shops - high trust, low reach
 
 **Hot Rodan's Advantage**:
+
 - Technical expertise (CEO knows hot rods)
 - E-commerce reach (serve nationwide)
 - Can build trust at scale through community
@@ -21676,30 +23465,35 @@ Most hot rod parts sellers are either:
 **Become the "helpful expert" in hot rod forums and groups**:
 
 **Phase 1: Build Credibility** (Months 1-3):
+
 - Join H.A.M.B., Garage Journal, Hot Rod Forum
 - Answer 3-5 technical questions per week
 - Share knowledge freely (don't promote Hot Rodan)
 - Build reputation as expert who helps
 
 **Phase 2: Soft Promotion** (Months 4-6):
+
 - When relevant, mention "we stock X at our shop"
 - Share Hot Rodan blog posts that answer questions
 - Invite builders to follow on social
 - Authentic, not salesy
 
 **Phase 3: Community Leadership** (Months 7-12):
+
 - Host forum build threads (document Hot Rodan projects)
 - Sponsor community events
 - Create valuable resources for community
 - Hot Rodan becomes "the shop that gives back"
 
 **Expected Impact**:
+
 - Forum referrals: 50-100 customers/year (high LTV, loyal)
 - Brand awareness: "Hot Rodan" becomes known in community
 - Word-of-mouth: Community members recommend to friends
 - Revenue contribution: +$100K-150K annually from community channel
 
 **Resources Needed**:
+
 - CEO time: 1-2 hours/week for community engagement
 - Authentic participation (can't be faked or outsourced)
 
@@ -21713,11 +23507,13 @@ Most hot rod parts sellers are either:
 Dashboard's Ads tile can dramatically improve CAC and ROAS with data-driven budget allocation.
 
 **Current State** (Pre-Dashboard):
+
 - Guessing which campaigns work
 - Equal budget across channels
 - Slow to kill losing campaigns
 
 **With Dashboard**:
+
 - Real-time CAC and ROAS by campaign
 - AI recommendations for budget reallocation
 - Quick kill/scale decisions
@@ -21726,28 +23522,33 @@ Dashboard's Ads tile can dramatically improve CAC and ROAS with data-driven budg
 **Implement "Weekly Ads Review" ritual**:
 
 **Every Monday** (5 minutes):
+
 1. Check Ads tile in Dashboard
 2. See best CAC campaigns (green)
 3. See worst CAC campaigns (red)
 4. Approve AI recommendation: "Shift $X from red to green"
 
 **Every Month** (30 minutes):
+
 1. Review month-over-month CAC trend
 2. Test AI's creative recommendations
 3. Approve targeting expansion for winners
 
 **Expected Impact**:
 Based on typical optimization curves:
+
 - Month 1: -20% CAC (kill obvious losers)
 - Month 3: -35% CAC (optimize winners)
 - Month 6: -50% CAC (mature optimization)
 
 **With $2K/month ad spend**:
+
 - Current: $20 CAC = 100 customers/month
 - Optimized: $10 CAC = 200 customers/month
 - Same spend, 2x customers = +$120K-180K annual revenue
 
 **Resources Needed**:
+
 - CEO time: 5 min/week (just approve recommendations)
 - Trust in data (let AI guide budget, not gut feel)
 
@@ -21760,11 +23561,13 @@ Based on typical optimization curves:
 ## Files Saved and Verified
 
 **Primary Deliverable**: feedback/marketing.md
+
 - ✅ All work documented (21,327 lines)
 - ✅ File saved (verified 593 KB)
 - ✅ No uncommitted changes
 
 **Status Verification**:
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 ls -lh feedback/marketing.md
@@ -21780,12 +23583,14 @@ ls -lh feedback/marketing.md
 **Hot Rodan Dashboard Marketing Materials** (All in feedback/marketing.md):
 
 **Sections 1-4** (Lines ~2800-4600): Core launch materials
+
 - AE-1: Internal launch email
 - AE-2: Dashboard one-pager (5 tiles)
 - AE-3: Hot rod audience messaging
 - AE-4: Operator FAQ
 
 **Sections 5-14** (Lines ~18500-21327): Deep launch materials
+
 - AE-5: Success stories (before/after)
 - AE-6: Community engagement plan
 - AE-7: SEO content (3 blog outlines)
@@ -21828,12 +23633,14 @@ ls -lh feedback/marketing.md
 ## Recommendation #1: Make Dashboard Review a Sacred Ritual
 
 **The Problem You Described**:
+
 > "It's a one-man show so I don't have time to manually analyze all of the numbers."
 
 **The Solution**:
 Block 15 minutes every Monday morning (non-negotiable) for Dashboard review.
 
 **The Ritual**:
+
 1. **Monday 9:00 AM**: Coffee + Dashboard
 2. Review all 5 tiles (3 min each = 15 min total)
 3. Approve 2-3 AI recommendations
@@ -21841,12 +23648,14 @@ Block 15 minutes every Monday morning (non-negotiable) for Dashboard review.
 5. Execute throughout week
 
 **Why This Works**:
+
 - Consistency beats intensity (15 min/week = 13 hours/year of focused strategic time)
 - Monday sets tone for week (data-driven decisions from day one)
 - AI does analysis, you just approve and execute
 - Small weekly actions compound to massive annual results
 
 **Expected Impact**:
+
 - Prevents "reactive" decisions (firefighting)
 - Ensures "proactive" growth (executing on opportunities)
 - Builds data-driven decision muscle
@@ -21862,6 +23671,7 @@ Block 15 minutes every Monday morning (non-negotiable) for Dashboard review.
 To go from $1MM → $10MM, you need +$9MM in revenue.
 
 **Current Customer Math** (assumptions):
+
 - Average order: $100
 - Customer lifetime: 2 orders = $200 LTV
 - To get $9MM: Need 45,000 additional lifetime customers
@@ -21873,16 +23683,19 @@ To go from $1MM → $10MM, you need +$9MM in revenue.
 **Commit to "52 Pieces of Hot Rod Content" (one per week for a year)**
 
 **What Dashboard Tells You**:
+
 - Which topics convert (focus there)
 - Which keywords have opportunity (target those)
 - What format works (blogs vs. videos vs. guides)
 
 **Execution Plan**:
+
 - **Weeks 1-12**: Write yourself (4 hours/week)
 - **Weeks 13-52**: Hire freelancer ($500-800/month)
 - **Ongoing**: Dashboard shows what's working, double down on winners
 
 **Year 1 Expected Results**:
+
 - 52 pieces of content = 52 keyword targets
 - Assume 20 rank page 1 (realistic with dashboard guidance)
 - Average 500 visits/month per ranking piece = 10,000 monthly visits
@@ -21910,6 +23723,7 @@ Dashboard surfaces what's NOT working just as clearly as what IS working.
 **Monthly "Kill Meeting" with yourself** (30 minutes):
 
 Review Dashboard and ask:
+
 - Content: Which blog posts get traffic but don't convert? → Redirect to better posts
 - SEO: Which keywords aren't moving after 90 days? → Stop targeting, focus elsewhere
 - Products: Which categories have high returns or low margin? → Consider discontinuing
@@ -21919,6 +23733,7 @@ Review Dashboard and ask:
 **The Discipline**: If data says it doesn't work, STOP doing it (even if you like it).
 
 **Expected Impact**:
+
 - Cut low-ROI activities → Free up time for high-ROI
 - Redirect wasted ad spend → Better campaigns
 - Focus content creation → Higher-impact topics
@@ -21943,21 +23758,25 @@ Review Dashboard and ask:
 ## Post-Restart Priorities (Recommended)
 
 **Immediate** (Week 1):
+
 1. Execute launch of Hot Rodan Dashboard
 2. CEO does first Monday dashboard ritual
 3. Approve first AI recommendations
 
 **Short-term** (Month 1):
+
 1. Publish first 4 pieces of content (Dashboard-recommended topics)
 2. Optimize top 3 product pages (Dashboard-identified opportunities)
 3. Reallocate ad budget (Dashboard-identified winners/losers)
 
 **Medium-term** (Month 3):
+
 1. Hit first growth milestone (+20% revenue from Dashboard-driven decisions)
 2. Refine AI recommendations based on what actually worked
 3. Document wins for case study
 
 **Long-term** (Month 6-12):
+
 1. Content flywheel operating (52 pieces published)
 2. Community presence established (known in hot rod forums)
 3. Data-driven culture embedded (every decision backed by Dashboard)
@@ -21968,6 +23787,7 @@ Review Dashboard and ask:
 ## Final Status
 
 **Marketing Agent**:
+
 - ✅ All assigned tasks complete (14 Hot Rodan Dashboard tasks)
 - ✅ Retrospective provided (Continue, Improve, Stop)
 - ✅ Recommendations for 10X growth (3 tactical recommendations)
@@ -21988,4 +23808,3 @@ Review Dashboard and ask:
 **Next**: Await post-restart direction
 
 **END OF PRE-RESTART STATUS UPDATE**
-

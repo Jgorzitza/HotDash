@@ -1,20 +1,24 @@
-Title: <short summary>
+## Spec section implemented
+- Path/Section: …
 
 Fixes #<issue-number>
 
 Allowed paths: <e.g., app/** scripts/** tests/**>
 
-Summary
-- What changed and why
-- Risk and rollback
+## MCP Evidence:
+artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl
+artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl
 
-MCP Evidence (required for code changes)
-- artifacts/<agent>/<YYYY-MM-DD>/mcp/<tool>_*.jsonl
+## Env/Flags
+- env: dev/staging
+- flags: …
 
-Artifacts
-- Link to logs in artifacts/<agent>/<YYYY-MM-DD>/...
+## Tests & Rollback
+- unit/integration/smoke: …
+- rollback plan/script: …
 
-Verification
-- Steps run locally (fmt, lint, tests)
-- Any manual checks
+## Foreground Proof
+- artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.ndjson
 
+## Notes
+- React Router 7 confirmed; no Remix imports.

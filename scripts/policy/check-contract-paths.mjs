@@ -13,6 +13,8 @@ function listDirectionFiles() {
   return fs
     .readdirSync(DIR)
     .filter((f) => f.endsWith('.md'))
+    // Ignore template file which contains placeholder commands/paths
+    .filter((f) => f !== 'agenttemplate.md')
     .map((f) => path.join(DIR, f));
 }
 
@@ -110,4 +112,3 @@ try {
   console.error('❌ Error running contract path check:', e?.message || e);
   process.exit(1);
 }
-

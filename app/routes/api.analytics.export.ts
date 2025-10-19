@@ -6,7 +6,9 @@
  * Export analytics data to CSV format.
  */
 
-export async function loader({ request }: any) {
+import type { LoaderFunctionArgs } from "@remix-run/node";
+
+export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
     const type = url.searchParams.get("type") || "revenue";
@@ -17,7 +19,7 @@ export async function loader({ request }: any) {
       exportProductsToCSV,
       exportUTMToCSV,
       generateCSVFilename,
-    } = await import("../services/analytics/export.ts");
+    } = await import("~/services/analytics/export");
 
     let csv: string;
     let filename: string;
@@ -50,8 +52,10 @@ export async function loader({ request }: any) {
         "Content-Disposition": `attachment; filename="${filename}"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[API] Export error:", error);
-    return new Response(error.message, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Failed to export analytics";
+    return new Response(message, { status: 500 });
   }
 }

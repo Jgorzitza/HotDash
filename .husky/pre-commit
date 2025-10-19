@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+CHANGED=$(git diff --cached --name-only)
+CODE=$(echo "$CHANGED" | grep -E '^(app|src|server|packages|scripts|lib)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' || true)
+if [ -n "$CODE" ]; then
+  TODAY=$(date +%F)
+  ANY=$(git ls-files -o --exclude-standard | grep -E "^artifacts/.+/${TODAY}/mcp/.+\.jsonl$" || true)
+  if [ -z "$ANY" ]; then
+    echo "✗ Code changed but no artifacts/<agent>/${TODAY}/mcp/*.jsonl staged."
+    echo "  Add MCP evidence files and list them in PR body under '## MCP Evidence:'"
+    exit 1
+  fi
+fi
+echo "✓ Pre-commit MCP hint passed."

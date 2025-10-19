@@ -14,9 +14,11 @@ task: AG-2 Real-time Dashboard Queries
 **Priority:** P0 - Launch Critical
 
 ### Objective
+
 Build real-time queries that power the 7 dashboard tiles using existing views.
 
 ### Dashboard Tiles Built
+
 1. ✅ Revenue (last 30 days, trend)
 2. ✅ AOV (average order value, trend)
 3. ✅ Returns (return rate, trend)
@@ -30,11 +32,13 @@ Build real-time queries that power the 7 dashboard tiles using existing views.
 ## Work Completed
 
 ### Step 1: Verify Supabase Connection ✅
+
 - Local Supabase running at http://127.0.0.1:54321
 - Database accessible at postgresql://postgres:postgres@127.0.0.1:54322/postgres
 - Verified 37 tables and 44 views exist
 
 ### Step 2: Check Existing Views ✅
+
 - Found 44 existing views including:
   - v_approval_queue_depth
   - v_revenue_trends_30d
@@ -44,6 +48,7 @@ Build real-time queries that power the 7 dashboard tiles using existing views.
 - Identified data sources: facts table, cx_conversations, approvals
 
 ### Step 3: Build RPC Functions ✅
+
 Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 
 1. **get_revenue_tile()** - Revenue last 30 days with trend
@@ -75,6 +80,7 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
    - Data source: approvals table (state = 'pending_review')
 
 ### Step 4: Test Queries ✅
+
 - All 7 functions created successfully
 - Tested get_revenue_tile() - Returns valid JSONB ✅
 - Tested get_approvals_queue_tile() - Returns valid JSONB ✅
@@ -82,6 +88,7 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 - Re-applied migration successfully ✅
 
 **Test Results:**
+
 ```json
 // get_revenue_tile()
 {
@@ -102,6 +109,7 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 ```
 
 ### Step 5: Documentation ✅
+
 - Created `docs/specs/dashboard_queries.md` (300 lines)
 - Documented all 7 tiles with response formats
 - Included frontend integration examples
@@ -113,13 +121,16 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 ## Deliverables
 
 ### Migration Files
+
 - `supabase/migrations/20251015_dashboard_tile_queries.sql` (362 lines)
 - `supabase/migrations/20251015_dashboard_tile_queries.rollback.sql` (9 lines)
 
 ### Documentation
+
 - `docs/specs/dashboard_queries.md` (300 lines)
 
 ### Functions Created (7 total)
+
 1. get_revenue_tile() - Revenue metrics
 2. get_aov_tile() - AOV metrics
 3. get_returns_tile() - Return rate metrics
@@ -133,17 +144,20 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 ## Technical Details
 
 ### Security
+
 - All functions use `SECURITY DEFINER`
 - Granted to `authenticated` and `service_role`
 - Return aggregated metrics only (no PII)
 
 ### Performance
+
 - All queries use indexed columns
 - Time-based queries optimized with `>= NOW() - INTERVAL`
 - COALESCE used for NULL handling
 - Target: P95 < 100ms per tile
 
 ### Data Sources
+
 - **facts table:** Revenue, AOV, Returns, Stock Risk, SEO
 - **cx_conversations table:** CX Queue
 - **approvals table:** Approvals Queue
@@ -167,10 +181,12 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 ## Next Steps
 
 **Ready for PR:**
+
 - Branch: `agent/data/dashboard-queries`
 - Allowed paths: `supabase/migrations/*, docs/specs/dashboard_queries.md`
 
 **Frontend Integration:**
+
 - Engineer can now use these RPC functions in dashboard tiles
 - Example: `const { data } = await supabase.rpc('get_revenue_tile');`
 
@@ -191,4 +207,3 @@ Created 7 RPC functions in `20251015_dashboard_tile_queries.sql`:
 ✅ **COMPLETE** - All 7 dashboard tile queries built, tested, and documented.
 
 Ready for manager review and PR creation.
-

@@ -19,6 +19,12 @@ Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec s
 - If blocked > 15 minutes, open a blocker note and continue with the next queued task below. Do not idle.
 - Keep flags OFF; attach evidence bundles for each doc/update.
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh seo -- <command>`.
+- Append ISO timestamps on each step to `artifacts/seo/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. Programmatic SEO Factory (issue #77) — docs/specs/hitl/programmatic-seo-factory\*
@@ -71,6 +77,7 @@ Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec s
 - [ ] Docs updated with recommendations
 - [ ] Feedback entry completed
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/seo/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

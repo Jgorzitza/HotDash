@@ -7,7 +7,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 ## Outcomes
 
 - **Embedded Excellence:** Shopify-embedded admin app (Polaris). Tiles are real-time and open an **Approve/Reject** drawer with diffs, projected impact, logs, and rollback.
-- **Tool-First Intelligence:** Dev agents use **MCP** (GitHub Official, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full documentation in `mcp/` directory. In-app agents created with **OpenAI Agents SDK (TypeScript)**. No freehand API guessing.
+- **Tool-First Intelligence:** Dev agents use **MCP** (GitHub, Context7, Supabase, Fly.io, Shopify). GA4 and GSC run through our internal adapters (no MCP; same auth domain). Full docs in `mcp/` and `integrations/`. In-app agents use **OpenAI Agents SDK (TypeScript)**. No freehand API guessing.
 - **Human-in-the-Loop by Default:** All customer-facing messages and social posts are **drafted → reviewed → sent**. Approvals capture a 1–5 grade for **tone/accuracy/policy** and store edits for learning.
 - **Always-On Idea Pool:** Maintain five live product suggestions (exactly one Wildcard) backed by Supabase `product_suggestions` tables, ensuring the manager can accept/reject with evidence and auto-create Shopify drafts.
 - **Operational Resilience:** Data jobs are observable (metrics + logs); any action has a rollback and audit trail. Publer + Chatwoot health artifacts live in `artifacts/ops/` and block launches if they fail.
@@ -18,7 +18,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 1. **Dashboard** — Live tiles: revenue, AOV, returns, stock risk (WOS), SEO anomalies, CX queue, **approvals queue**.
 2. **Inventory System** — Centralized view; status buckets (`in_stock`, `low_stock`, `out_of_stock`, `urgent_reorder`); **ROP + safety stock** suggestions; internal PO CSV/email; **kits/bundles** via `BUNDLE:TRUE`; **picker piece counts** via `PACK:X`; picker payout brackets.
 3. **Customer Ops (Chatwoot)** — Email + Website Live Chat + Twilio SMS; AI drafts as **Private Note** → human approves → public reply; graded reviews to Supabase. Daily scripted health checks (`scripts/ops/check-chatwoot-health.{mjs,sh}`) confirm `/rails/health` + authenticated API reachability before green-lighting CX work.
-4. **Growth (Integrated, not separate)** — Read-only social analytics first; then **HITL posting** via adapter (Publer) behind our UI. Agents recommend content/SEO/ads; CEO approves; system tracks impact. Growth follows the **same approvals loop, success metrics, and guardrails** as the rest of the app, with Publer workflows gated behind `/account_info` + `/social_accounts` health monitors.
+4. **Growth (Integrated, not separate)** — Programmatic SEO Factory → Guided Selling/Kit Composer → CWV→$$ actioning → lightweight A/B harness. Read-only social analytics first; then **HITL posting** via Publer behind our UI. Same approvals loop and guardrails.
 5. **Idea Pool & Product Creation** — Always-on ideation pipeline, accept/reject flows, experiment triggers, and Shopify draft automation per manager agent pack (Supabase schema + API contracts).
 
 ## Approvals Loop (single way work happens)
@@ -32,6 +32,15 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **Audit** attaches logs/metrics and optional rollback artifact.
 - **Idea Accept → Product Creation:** Approving a suggestion spawns a `product_creation_jobs` row, hydrates Shopify draft payloads (variants, SEO, media, JSON-LD), and notifies Product/Content/SEO agents for HITL review.
 - **Learn:** human edits + grades are recorded for supervised fine‑tuning / evals.
+
+## Actioning & Learning Enhancements (Gap Analysis Integration)
+
+- Programmatic SEO Factory: metaobjects → pages at scale; internal-link sweeps; CTR lift targets.
+- Guided Selling: fit‑finder + kit composer with exact adapters; attach‑rate goals.
+- Closed‑loop SEO Telemetry: GSC Bulk Export → BigQuery joined to GA4; Action Dock prioritizes by expected revenue.
+- A/B Harness: first‑party cookie + GA4 dimension; auto‑promote winners with one‑click rollback.
+- Media Pipeline: Tier‑0 safe tasks (image compress, alt‑text) staged; autopublish toggles present but disabled by default.
+- Learning Loop: token‑level edit diffs linked to outcome deltas; learning strip on dashboard.
 
 ## Principles
 
@@ -47,7 +56,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **Frontend:** React Router 7 template; Polaris; Vite.
 - **Backend:** Node/TS app; Supabase (Postgres + RLS); workers/cron for jobs; SSE/webhooks.
 - **Agents:**
-  - **Dev:** Cursor/Codex/Claude with **MCP** (6 servers: GitHub, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full setup in `mcp/` directory. Constrained by runbooks/directions + CI.
+  - **Dev:** Cursor/Codex/Claude with **MCP** (GitHub, Context7, Supabase, Fly.io, Shopify). GA4/GSC via internal adapters. Full setup in `mcp/` and `integrations/`. Constrained by runbooks/directions + CI.
   - **In‑app:** OpenAI **Agents SDK** (TS) with **HITL**; call server tools (Shopify Admin GraphQL, Supabase RPC, Chatwoot API, Social adapter).
 - **Observability:** Prometheus/metrics endpoints; structured logs; approvals/audit tables.
 - **MCP Infrastructure:** Critical documentation in `mcp/` directory (protected by CI allow-list). See `mcp/README.md` for setup and `mcp/ALL_SYSTEMS_GO.md` for usage.

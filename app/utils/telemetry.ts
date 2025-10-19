@@ -1,13 +1,13 @@
 interface TelemetryEvent {
   event: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   timestamp: number;
 }
 
 class Telemetry {
   private events: TelemetryEvent[] = [];
 
-  track(event: string, properties?: Record<string, any>) {
+  track(event: string, properties?: Record<string, unknown>) {
     const telemetryEvent: TelemetryEvent = {
       event,
       properties,

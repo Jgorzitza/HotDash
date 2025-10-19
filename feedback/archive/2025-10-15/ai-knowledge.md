@@ -6,12 +6,14 @@
 **13:55 UTC** — Status changed to ACTIVE with concrete tasks
 
 ### Direction Summary
+
 - **Status:** ACTIVE
 - **Objective:** Design Knowledge Base Structure and Learning Pipeline
 - **Branch:** `agent/ai-knowledge/kb-design`
 - **Allowed paths:** `docs/specs/knowledge_base_design.md, feedback/ai-knowledge/*`
 
 ### Tasks Assigned
+
 1. ✅ Create feedback file
 2. ✅ Design KB structure in `docs/specs/knowledge_base_design.md`
 3. ✅ Design learning extraction pipeline
@@ -42,6 +44,7 @@ Creating comprehensive knowledge base design.
 10. **Success Criteria & Rollback** - Clear DoD and rollback plan
 
 **Key Decisions:**
+
 - Confidence-based filtering (≥ 0.60)
 - Weighted formula: success (40%) + accuracy (30%) + tone (20%) + policy (10%)
 - Semantic search via OpenAI embeddings
@@ -53,6 +56,7 @@ Creating comprehensive knowledge base design.
 ✅ Evidence-based with audit trail
 
 **Open Questions:**
+
 1. Confirm OpenAI text-embedding-3-small?
 2. Adjust confidence formula weights?
 3. Manual review SLA?
@@ -62,4 +66,3 @@ Creating comprehensive knowledge base design.
 ### 14:10 UTC — Committing Work
 
 All tasks completed ✅
-

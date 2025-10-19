@@ -1,0 +1,10 @@
+{
+  "status": "planned_only_do_not_seed",
+  "events": ["stockout", "slow_mover", "back_in_stock"],
+  "assets": {
+    "stockout": ["waitlist", "alt_recommendations"],
+    "slow_mover": ["badge", "bundle_suggestion", "promo_draft"],
+    "back_in_stock": ["announcement", "tile_bump"]
+  },
+  "sla": { "timeToAssetMinutes": 5 }
+}

@@ -1,0 +1,91 @@
+{
+  "status": "planned_only_do_not_seed",
+  "allowlist": {
+    "generic": [
+      { "name": "Summit Racing", "domain": "" },
+      { "name": "Jegs Performance", "domain": "" },
+      { "name": "Speedway Motors", "domain": "" }
+    ],
+    "niche_an": [
+      { "name": "Vibrant Performance", "domain": "" },
+      { "name": "Quantum Fuel Systems", "domain": "" },
+      { "name": "Redhorse Performance", "domain": "" },
+      { "name": "Evil Energy", "domain": "" },
+      { "name": "Tanks Inc", "domain": "" },
+      { "name": "Earl’s Performance Plumbing", "domain": "" },
+      { "name": "Fragola Performance Systems", "domain": "" },
+      { "name": "RaceFlux (Improved Racing)", "domain": "" },
+      { "name": "XRP", "domain": "" }
+    ],
+    "diesel_an": [
+      { "name": "Fleece Performance Engineering", "domain": "" },
+      { "name": "BD Diesel Performance", "domain": "" }
+    ]
+  },
+  "monitoring": {
+    "cadence": "eventDriven",
+    "trigger": { "onDecision": true },
+    "notes": "Repopulate exactly one suggestion after each Approve/Reject, post-learning. No periodic polling."
+  },
+  "top5": {
+    "niche": 4,
+    "wildcard": 1,
+    "fallback": {
+      "whenNicheUnavailable": "backfillNicheNow",
+      "alwaysMaintainCount": 5
+    },
+    "strictComposition": true
+  },
+  "admission": {
+    "rule": "bestAvailable",
+    "minSignals": 0,
+    "tiebreak": ["score", "freshness", "nichePreference"]
+  },
+  "backfill": {
+    "relaxThresholds": true,
+    "useLowerConfidence": true,
+    "minScore": 0,
+    "maxSignalAgeDays": 30
+  },
+  "scoring": {
+    "factors": ["demand", "margin", "competitionGap", "seo"],
+    "decay": { "halfLifeDays": 30 }
+  },
+  "learning": {
+    "enabled": true,
+    "sources": ["approve", "reject", "refine"],
+    "weightAdjustments": {
+      "approve": "increase",
+      "reject": "decrease",
+      "refine": "redistribute"
+    },
+    "reasonTaxonomy": "planned"
+  },
+  "dedup": {
+    "enabled": true,
+    "heuristics": {
+      "skuExact": 0.5,
+      "vendorSku": 0.5,
+      "upcEanMpn": 0.5,
+      "titleFuzzy": 0.3,
+      "attributeMatch": 0.3,
+      "competitorMapping": 0.2
+    },
+    "threshold": 0.75,
+    "cardEvidence": { "showPossibleMatch": true, "showConfidence": true },
+    "onMarkDuplicate": {
+      "tombstoneCandidate": true,
+      "addSynonym": true,
+      "createContentTask": true,
+      "preventResuggest": true
+    }
+  },
+  "seoContentFeedback": {
+    "synonymsDictionary": true,
+    "canonicalizeTitlesTags": true,
+    "updateKeywords": true,
+    "internalLinking": true,
+    "proposeRedirects": "manual_approval"
+  },
+  "notes": "Planning artifact only. Fill domains and cadence during implementation; MCP-first for data sources."
+}

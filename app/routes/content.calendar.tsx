@@ -76,7 +76,12 @@ type CalendarData = {
   calendar: CalendarWeek[];
   month: number;
   year: number;
-  stats: { totalScheduled: number; totalDrafts: number; totalPublished: number; totalFailed: number };
+  stats: {
+    totalScheduled: number;
+    totalDrafts: number;
+    totalPublished: number;
+    totalFailed: number;
+  };
 };
 
 export default function ContentCalendar() {

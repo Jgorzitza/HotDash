@@ -19,6 +19,12 @@ Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-te
 - If blocked > 15 minutes, post blocker and continue with fallback work. Do not idle.
 - Keep changes to specs/scripts within Allowed paths; attach logs.
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh analytics -- <command>`.
+- Append ISO timestamps on each step to `artifacts/analytics/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. CWV→$$ mapping (issue #79) — docs/specs/hitl/seo-telemetry\*
@@ -64,6 +70,7 @@ Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-te
 - [ ] Docs/runbooks updated with rollout/rollback steps
 - [ ] Feedback updated with evidence + commands
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/analytics/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

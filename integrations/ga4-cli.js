@@ -1,17 +1,23 @@
 #!/usr/bin/env node
-// Stub GA4 CLI for proof calls in issues. Uses existing parity scripts when available.
+// Minimal GA4 adapter CLI stub for dev proofs (no secrets used)
+// Usage:
+//  node integrations/ga4-cli.js --ping
+//  node integrations/ga4-cli.js --list-custom-dim ab_variant
 const args = process.argv.slice(2);
-if (args.includes('--ping')) {
-  console.log('GA4 CLI stub: ping ok');
+const now = new Date().toISOString();
+function out(obj){
+  process.stdout.write(JSON.stringify(obj)+"\n");
+}
+if(args.includes('--ping')){
+  out({tool:"ga4-cli", action:"ping", ok:true, timestamp:now});
   process.exit(0);
 }
-if (args.includes('--list-custom-dim')) {
-  const idx = args.indexOf('--list-custom-dim');
-  const name = args[idx + 1] || 'ab_variant';
-  console.log(`GA4 CLI stub: custom dimension '${name}' (stub)`);
+const listIdx = args.indexOf('--list-custom-dim');
+if(listIdx !== -1){
+  const name = args[listIdx+1] || null;
+  out({tool:"ga4-cli", action:"list-custom-dim", name, ok:true, timestamp:now});
   process.exit(0);
 }
-console.log('GA4 CLI stub: try --ping or --list-custom-dim <name>. For real parity checks, run:');
-console.log('  npm run ops:check-analytics-parity');
-process.exit(0);
+out({tool:"ga4-cli", ok:false, error:"unknown args", args, timestamp:now});
+process.exit(1);
 

@@ -1,0 +1,84 @@
+Vision & Outcomes
+- One runtime platform to sell, support, and learn faster with CEO-in-the-loop approvals.
+- Customer-facing AI that searches products, answers policies, manages carts, and surfaces order status.
+- Operational backbone for replies, inventory, social, and offers with clear SLAs and evidence-based learning.
+- Single source of truth for data (GA4/GSC/Bing + Shopify), board-ready KPIs, and risk controls (PII, policy, safety).
+
+Day‑1 Feature Set (What Ships)
+- Customer Replies (Chatwoot): CEO-only approvals, inline edit, business-hours SLA, SMS/email alerts, audited diffs + coach notes.
+- Inventory: Vendor/MPN map, POs + partial receiving, AVLC updates, nightly proxy settlement (Canada→0; Washington decremented), bundles as BOM (virtual).
+- Social Publishing: Publer + Google Drive, per-platform variants, UTM governance, CEO approvals, Shopify Marketing linkage.
+- Product Suggestions (Top‑5): 4 niche + 1 wildcard, event-driven refill, duplicate detection, learning loop.
+- Ads + Analytics: Paid (Meta/Google/TikTok/Pinterest) + Organic (GA4/GSC/Bing), 7d last-click attribution, brand/vendor splits.
+- Main Dashboard: Tiles for Sales, Approvals, Tickets/Live Chat, Inventory Health, Ads, and SEO with actionable badges.
+- Approvals Framework: Unified statuses/actions, reasons required on Approve, P0 blocking, immutable audit trail.
+- Notifications: In‑hours SMS/email for live chat; digests and badges elsewhere; business-hours aware.
+- Content Upgrades (SEO): Upgrade pipeline with pre/post 7/28d acceptance metrics (+10% CTR/CVR/Revenue thresholds).
+- AI Knowledge Base (RAG): Canonical docs, macros, and coach notes; citations only; no retraining Day‑1.
+
+Customer‑Facing AI (Storefront MCP)
+- Storefront MCP (no auth): product search, policies/FAQ, cart create/update/get, checkout URL.
+- Customer Accounts MCP (auth optional Day‑1): order status/details via OAuth PKCE; Level‑2 protected customer data compliance.
+- UX: Theme chat bubble; “Connect my account” CTA when needed; fallback order lookup (email/ZIP) if declined.
+- Privacy: No PII in logs; session-scoped tokens; separate from dev MCP.
+
+Operations & Governance
+- Business Hours (America/Edmonton): SLA clocks pause off‑hours; live chat becomes email capture; in‑hours CEO SMS/email for new chats.
+- Approvals (CEO-only): Approve, Approve with Edit (reasons required), Schedule, Request Changes, Reject; P0 blocks Approve/Schedule.
+- Evidence/Audit: Diffs, warnings (policy/safety/link hygiene), canonical links, referenceDocumentUri for cross-system traceability.
+- Learning Loop: Edit diffs + reason codes → coach notes; agent acknowledgment; weekly heatmaps.
+
+Data & Analytics
+- Ads ingestion normalized daily (per-ad grain): spend, impr, clicks, CTR/CPC; GA4 UTM join for Sessions, CVR, Revenue; ROAS/CAC from GA4.
+- Organic SEO: GA4 + GSC + Bing; brand/non‑brand query split; first‑party vendor dimension from Shopify Product.vendor.
+- Dashboards: Ads tile (Spend, Revenue, ROAS, CAC; UTMs/attribution badges), SEO tile (Organic Revenue, Sessions, CVR, CTR/Impressions, Non‑brand share), compare block.
+- Currency: USD base (Shopify converts for customers); no internal FX needed.
+
+Inventory & Fulfillment
+- Vendors/POs/Receiving: App-managed POs, PDF/email to vendor, partial receives with freight/duties allocation (extended cost default), on‑hand apply (reason=received), AVLC recompute.
+- Proxy Settlement (Canada WH): Overnight settlement brings Canada to 0 and decrements Washington; idempotent; surfaced in Inventory tile.
+- Emergency Component Substitution: Economic rule to bridge bundle stockouts with approved local vendor if margin ≥ floor and lost profit avoided ≥ incremental cost; CEO HITL; auto-PO on approve.
+
+Content & Growth
+- Product Suggestions: Data-driven queue (GA4/site search/competitor signals); strict 4 niche + 1 wildcard; event-driven refill; best-available admission.
+- Content Upgrades: Candidate selection rules; title/meta/FAQ/linking/media tasks; guardrails (title churn, link hygiene); pre/post acceptance metrics.
+
+Architecture Highlights
+- MCP-first: Shopify Admin (back-office) vs Storefront MCP (customer) strictly separated; transcripts captured, PII redacted.
+- Publer + Google Drive: media sourcing through Drive connector; fallback signed URLs via service account.
+- Evidence-first: All external calls referenced in evidence; dashboards wired to config bindings for Ads/SEO tiles.
+- Data tables (planned): inventory_ledger, approvals audit, vendors/POs/receipts, suggestions/upgrades with outcomes; durable, queryable.
+
+KPIs & Success Criteria (Day‑1)
+- Customer Replies: TFR (live chat) < 5m in-hours; 100% HITL; coach notes acknowledged.
+- Inventory: Settlement runs daily < 03:00; OOS and high-risk counts down week-over-week; AVLC updates accurate.
+- Social: Maintain ≥5 scheduled posts/7d; CTR/engagement up; discount redemption within guardrails (≤15% default).
+- Ads: ROAS uplift; GA4 join rate ≥ 80%; missing UTM incidents trending down.
+- SEO: Organic Sessions/CTR/CVR +10% on accepted upgrades; non‑brand share growth; decay recovered on targeted pages.
+
+Risks & Mitigations
+- PII exposure: Level‑2 protected data policies; PKCE OAuth; redaction in logs; no secrets in transcripts.
+- Attribution gaps: GA4 sampling and missing UTMs flagged; re‑query or fix checklists; use platform conversions only as reference.
+- Vendor latency: Emergency substitutions for bundles; overnight settlement guarantees Washington inventory truth.
+- Scope creep: HITL guardrails, per-feature configs, and thresholds; reason-required approvals discourage silent drift.
+
+Launch Plan & Gates
+- Shipable Day‑1 (staging): Customer Replies (SLA/alerts), Inventory (POs/receiving/settlement), Social (Publer+Drive), Ads+SEO tiles, Approvals Framework, Notifications, Storefront MCP (anonymous), AI Knowledge Base.
+- Gates: CI/Policy checks; App usability smoke; Staging build green; Marketing linkage enforced; Gitleaks clean.
+- Go-live Checklist: CEO walkthrough of tiles/approvals; SMS/email verified; Storefront chat embedded; MCP tool tests (search, cart, policies).
+
+Next 30/60/90
+- 30: Authenticated Customer Accounts MCP; Emergency substitution POs; first Coach Notes insights report; more Ads drilldowns (Shopping queries).
+- 60: Automated internal link suggester; Core Web Vitals feed to upgrades; Slack notifications opt‑in.
+- 90: Deeper return/exchange flows in Customer Accounts MCP; optional A/B harness for content; multi-currency vendors (prep only).
+
+Board Ask
+- Endorse Day‑1 scope and governance (HITL, reasons-required, P0 blocking).
+- Approve customer-facing MCP adoption (anonymous Day‑1; gated auth scope).
+- Support resource allocation for ingestion + dashboards and Publer media ops.
+- Greenlight staged rollout with explicit success KPIs above.
+
+Why This Wins
+- Accelerates revenue with guardrails: faster replies, resilient inventory, consistent social, and clear offers—without sacrificing quality or safety.
+- Puts data to work: linked marketing activities, clean attribution, high-signal upgrades, and a knowledge loop that compounds agent performance.
+- Builds trust: CEO approvals, evidence, business-hours respect, and customer-appropriate privacy/authentication from day one.

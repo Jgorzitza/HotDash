@@ -1,0 +1,7 @@
+{
+  "status": "planned_only_do_not_seed",
+  "metaobjects": ["garage_vehicle", "build_step", "parts_list"],
+  "theme": { "template": "garage_notebook" },
+  "kpi": ["notebooks_to_orders_pct", "aov_uplift", "organic_landing_count"],
+  "approvals": { "role": "CEO", "reasonsRequired": true }
+}

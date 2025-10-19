@@ -1,0 +1,11 @@
+{
+  "name": "@hot-dash/pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated pilot sidecar with pure, typed-ish functions (no side effects).",
+  "exports": {
+    ".": "./src/index.mjs"
+  },
+  "types": "./types/index.d.ts"
+}

@@ -1,5 +1,6 @@
 import { parseArgs } from "node:util";
 import { promises as fs } from "fs";
+import { fileURLToPath } from "node:url";
 import { join, relative, resolve, extname } from "path";
 import OpenAI from "openai";
 import {
@@ -22,7 +23,7 @@ type BuildOptions = {
   apiKey?: string;
 };
 
-const DEFAULT_SOURCES = [
+export const DEFAULT_SOURCES = [
   "docs/runbooks",
   "docs/enablement/job_aids",
   "docs/marketing/launch_faq.md",
@@ -322,7 +323,10 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  console.error("[ai:build-llama-index] failed", error);
-  process.exitCode = 1;
-});
+const modulePath = fileURLToPath(import.meta.url);
+if (process.argv[1] === modulePath) {
+  main().catch((error) => {
+    console.error("[ai:build-llama-index] failed", error);
+    process.exitCode = 1;
+  });
+}

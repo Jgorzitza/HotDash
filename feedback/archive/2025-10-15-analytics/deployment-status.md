@@ -21,11 +21,12 @@ All GA4 secrets have been configured in Fly.io:
 ```
 
 **Verification:**
+
 ```bash
 $ fly secrets list -a hotdash-staging | grep -i "GOOGLE\|GA_"
-GA_MODE                                    	11b7f6abd131f076	
-GA_PROPERTY_ID                             	d2356f538ddb45ec	
-GOOGLE_APPLICATION_CREDENTIALS_JSON        	14d57aa7c5310114	
+GA_MODE                                    	11b7f6abd131f076
+GA_PROPERTY_ID                             	d2356f538ddb45ec
+GOOGLE_APPLICATION_CREDENTIALS_JSON        	14d57aa7c5310114
 GOOGLE_APPLICATION_CREDENTIALS_BASE64      	14d57aa7c5310114
 ```
 
@@ -71,6 +72,7 @@ The `approvals/route.tsx` file imports Shopify Polaris components, but Polaris i
 ### Fix Required
 
 **Option 1: Move Polaris to dependencies (Recommended)**
+
 ```bash
 # Locally
 npm install --save @shopify/polaris
@@ -81,10 +83,12 @@ fly deploy -a hotdash-staging
 ```
 
 **Option 2: Remove Polaris imports from approvals route**
+
 - Refactor `app/routes/approvals/route.tsx` to not use Polaris
 - Use custom components instead
 
 **Option 3: Install Polaris in Dockerfile**
+
 - Modify Dockerfile to install Polaris separately
 - Not recommended (package.json is the source of truth)
 
@@ -152,6 +156,7 @@ curl https://hotdash-staging.fly.dev/metrics | grep ga_api
    - Or remove Polaris imports from `approvals/route.tsx`
 
 2. **Redeploy**
+
    ```bash
    fly deploy -a hotdash-staging
    ```
@@ -189,11 +194,13 @@ curl https://hotdash-staging.fly.dev/metrics | grep ga_api
 ### If GA4 Still Not Working After Build Fix
 
 **Check 1: Credentials loaded?**
+
 ```bash
 fly logs -a hotdash-staging | grep "Credentials loaded"
 ```
 
 **Check 2: Environment variables set?**
+
 ```bash
 fly ssh console -a hotdash-staging
 echo $GOOGLE_APPLICATION_CREDENTIALS
@@ -202,6 +209,7 @@ echo $GA_MODE
 ```
 
 **Check 3: Credentials file exists?**
+
 ```bash
 fly ssh console -a hotdash-staging
 ls -la /tmp/ga-credentials.json
@@ -209,6 +217,7 @@ cat /tmp/ga-credentials.json | jq .project_id
 ```
 
 **Check 4: API accessible?**
+
 ```bash
 fly ssh console -a hotdash-staging
 node -e "
@@ -225,6 +234,7 @@ client.getMetadata({ name: 'properties/339826228/metadata' })
 ## 📊 What's Ready
 
 ### Code ✅
+
 - [x] GA4 Direct API client with WoW deltas
 - [x] Credentials initialization for Fly.io
 - [x] Prometheus metrics integration
@@ -233,12 +243,14 @@ client.getMetadata({ name: 'properties/339826228/metadata' })
 - [x] Dashboard integration
 
 ### Configuration ✅
+
 - [x] Fly.io secrets set
 - [x] Property ID: 339826228
 - [x] Mode: direct
 - [x] Service account credentials (base64)
 
 ### Documentation ✅
+
 - [x] Setup guide
 - [x] Quick start guide
 - [x] Prometheus metrics explained
@@ -246,6 +258,7 @@ client.getMetadata({ name: 'properties/339826228/metadata' })
 - [x] Troubleshooting guide
 
 ### Testing ✅
+
 - [x] Local testing passed
 - [x] Connection verified
 - [x] WoW deltas calculated correctly
@@ -261,6 +274,7 @@ client.getMetadata({ name: 'properties/339826228/metadata' })
 The GA4 integration is **100% ready** but blocked by a Shopify Polaris dependency issue in the build.
 
 **Fix:**
+
 1. Check if `@shopify/polaris` is in `devDependencies`
 2. Move to `dependencies` if needed
 3. Redeploy
@@ -272,4 +286,3 @@ The GA4 integration is **100% ready** but blocked by a Shopify Polaris dependenc
 **Status:** Waiting for build fix
 **ETA:** Should take 5-10 minutes once Polaris issue is resolved
 **Confidence:** High - all GA4 code tested and secrets configured
-

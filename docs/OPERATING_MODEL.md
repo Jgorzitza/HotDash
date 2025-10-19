@@ -37,8 +37,9 @@
 - **Docs allow‑list** in CI (no stray `.md`), plus weekly (and now **daily startup/shutdown**) drift sweep. **Protected paths include `mcp/**` for MCP tools documentation.\*\*
 - **Danger**: Issue linkage, DoD present, Allowed paths enforced, HITL config enforced.
 - **Secret protection**: GitHub Push Protection + **Gitleaks** CI with SARIF upload.
-- **MCP‑first in dev** (Cursor/Codex/Claude) with 6 active servers (GitHub, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full documentation in `mcp/` directory. **Agents SDK in‑app** (TS) with HITL.
+- **MCP‑first in dev** (Cursor/Codex/Claude) with active servers (GitHub, Context7, Supabase, Fly.io, Shopify). GA4/GSC use internal adapters (no MCP). Full documentation in `mcp/` and `integrations/`. **Agents SDK in‑app** (TS) with HITL.
 - **No secrets in code**; use GitHub Environments/Secrets + server‑side adapters only.
+- **Continuous execution + Foreground Proof**: Agents do not wait for CEO/Manager input. If blocked > 15 minutes, log a blocker and continue with fallback tasks. Long steps run via `scripts/policy/with-heartbeat.sh <agent> -- <command>` and commit `artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.log`. PRs must include a “Foreground Proof” section or CI fails.
 
 ---
 
@@ -99,7 +100,7 @@
 
 - **Core:** Revenue, AOV, Conversion, Returns; Inventory WOS/stockouts/overstocks/ROP coverage; CX FRT/SLA/grade; Growth impressions/clicks/CTR/ROAS/posts approved/week.
 - **Governance:** CI green rate, rogue `.md` prevented, drift sweeps done; secret scanning; tile P95; rollup error rates; uptime.
-- **Learning:** % replies drafted by AI; approval latency; edit‑distance between draft and human edit; impact of approved changes on CTR/ROAS.
+- **Learning:** % replies drafted by AI; approval latency; edit‑distance between draft and human edit; impact of approved changes on CTR/ROAS; Action Dock win‑rates.
 
 ---
 

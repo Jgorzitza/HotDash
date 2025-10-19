@@ -85,8 +85,9 @@ export interface ContentPattern {
  */
 export async function analyzeEngagementPatterns(
   platform: SocialPlatform,
-  dateRange?: { start: string; end: string },
+  _dateRange?: { start: string; end: string },
 ): Promise<EngagementInsights> {
+  void _dateRange;
   // TODO: Implement actual data fetching from Supabase
   // For now, return mock insights
 
@@ -115,8 +116,9 @@ export async function analyzeEngagementPatterns(
  */
 export async function analyzeHashtagPerformance(
   platform: SocialPlatform,
-  limit: number = 20,
+  _limit: number = 20,
 ): Promise<HashtagPerformance[]> {
+  void _limit;
   // TODO: Implement actual hashtag analysis from Supabase
   // For now, return empty array
 
@@ -129,6 +131,7 @@ export async function analyzeHashtagPerformance(
 export async function analyzePostingTimes(
   platform: SocialPlatform,
 ): Promise<TimePerformance[]> {
+  void platform;
   // TODO: Implement actual time-based analysis
   // For now, return empty array
 
@@ -139,8 +142,9 @@ export async function analyzePostingTimes(
  * Identify content patterns that drive engagement
  */
 export async function analyzeContentPatterns(
-  platform: SocialPlatform,
+  _platform: SocialPlatform,
 ): Promise<ContentPattern[]> {
+  void _platform;
   // TODO: Implement pattern recognition
   // Analyze for:
   // - Questions vs statements
@@ -195,7 +199,7 @@ export async function comparePlatformPerformance(): Promise<{
  */
 export async function getPostInsights(
   postId: string,
-  platform: SocialPlatform,
+  _platform: SocialPlatform,
 ): Promise<{
   performance: ContentPerformance | null;
   insights: {
@@ -204,6 +208,7 @@ export async function getPostInsights(
     improvementSuggestions: string[];
   };
 }> {
+  void _platform;
   // TODO: Implement post-specific insights
 
   return {
@@ -244,7 +249,23 @@ export async function predictEngagement(
     estimatedEngagementRate: 0,
     estimatedReach: 0,
     confidence: 0,
-    factors: [],
+    factors: [
+      {
+        factor: `Platform ${platform}`,
+        impact: "neutral",
+        weight: 0,
+      },
+      {
+        factor: `Hashtag count ${hashtags.length}`,
+        impact: "neutral",
+        weight: 0,
+      },
+      {
+        factor: `Content length ${content.length}`,
+        impact: "neutral",
+        weight: 0,
+      },
+    ],
   };
 }
 
@@ -323,6 +344,9 @@ export async function aggregateMultiPlatformMetrics(dateRange: {
   start: string;
   end: string;
 }): Promise<MultiPlatformMetrics> {
+  const { start, end } = dateRange;
+  void start;
+  void end;
   // TODO: Implement actual Supabase aggregation
   // For now, return mock structure
 
@@ -486,6 +510,9 @@ export async function getTrendAnalysis(dateRange: {
     recommendation: string;
   }[]
 > {
+  const { start, end } = dateRange;
+  void start;
+  void end;
   // TODO: Implement actual trend calculation from historical data
   // For now, return mock structure
 

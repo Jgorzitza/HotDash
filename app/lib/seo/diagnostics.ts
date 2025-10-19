@@ -5,15 +5,16 @@ export function buildSeoDiagnostics(bundle: {
     all: SEOAnomaly[];
   };
 }) {
-  const totals = bundle.anomalies.all.reduce(
-    (acc, a) => {
-      acc[a.severity] = (acc[a.severity] || 0) as number;
-      // @ts-ignore - narrow at runtime
-      acc[a.severity] += 1;
+  const totals = bundle.anomalies.all.reduce<
+    Record<SEOAnomaly["severity"], number>
+  >(
+    (acc, anomaly) => {
+      const severity = anomaly.severity;
+      const current = acc[severity] ?? 0;
+      acc[severity] = current + 1;
       return acc;
     },
-    { critical: 0, warning: 0, info: 0 } as Record<string, number>,
+    { critical: 0, warning: 0, info: 0 },
   );
   return { totals };
 }
-

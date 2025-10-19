@@ -85,46 +85,59 @@ CREATE TABLE IF NOT EXISTS customer_segments (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_product_categories_shopify_id ON product_categories(shopify_product_id);
-CREATE INDEX idx_product_categories_l1 ON product_categories(category_l1);
-CREATE INDEX idx_product_categories_l2 ON product_categories(category_l2);
-CREATE INDEX idx_product_categories_vehicle_years ON product_categories USING GIN(fits_vehicle_years);
-CREATE INDEX idx_product_categories_makes ON product_categories USING GIN(fits_makes);
-CREATE INDEX idx_product_categories_velocity ON product_categories(inventory_velocity);
+CREATE INDEX IF NOT EXISTS idx_product_categories_shopify_id ON product_categories(shopify_product_id);
+CREATE INDEX IF NOT EXISTS idx_product_categories_l1 ON product_categories(category_l1);
+CREATE INDEX IF NOT EXISTS idx_product_categories_l2 ON product_categories(category_l2);
+CREATE INDEX IF NOT EXISTS idx_product_categories_vehicle_years ON product_categories USING GIN(fits_vehicle_years);
+CREATE INDEX IF NOT EXISTS idx_product_categories_makes ON product_categories USING GIN(fits_makes);
+CREATE INDEX IF NOT EXISTS idx_product_categories_velocity ON product_categories(inventory_velocity);
 
-CREATE INDEX idx_customer_segments_shopify_id ON customer_segments(shopify_customer_id);
-CREATE INDEX idx_customer_segments_primary ON customer_segments(primary_segment);
-CREATE INDEX idx_customer_segments_lifecycle ON customer_segments(lifecycle_stage);
-CREATE INDEX idx_customer_segments_vehicle_make ON customer_segments(primary_vehicle_make);
-CREATE INDEX idx_customer_segments_vehicle_year ON customer_segments(primary_vehicle_year);
+CREATE INDEX IF NOT EXISTS idx_customer_segments_shopify_id ON customer_segments(shopify_customer_id);
+CREATE INDEX IF NOT EXISTS idx_customer_segments_primary ON customer_segments(primary_segment);
+CREATE INDEX IF NOT EXISTS idx_customer_segments_lifecycle ON customer_segments(lifecycle_stage);
+CREATE INDEX IF NOT EXISTS idx_customer_segments_vehicle_make ON customer_segments(primary_vehicle_make);
+CREATE INDEX IF NOT EXISTS idx_customer_segments_vehicle_year ON customer_segments(primary_vehicle_year);
 
 -- RLS policies
 ALTER TABLE product_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE customer_segments ENABLE ROW LEVEL SECURITY;
 
 -- Service role has full access
+DROP POLICY IF EXISTS product_categories_service_role 
+  ON product_categories;
+
 CREATE POLICY product_categories_service_role 
   ON product_categories FOR ALL 
   USING (auth.role() = 'service_role');
+
+DROP POLICY IF EXISTS customer_segments_service_role 
+  ON customer_segments;
 
 CREATE POLICY customer_segments_service_role 
   ON customer_segments FOR ALL 
   USING (auth.role() = 'service_role');
 
 -- Operators can read product categories
+DROP POLICY IF EXISTS product_categories_read_operators 
+  ON product_categories;
+
 CREATE POLICY product_categories_read_operators 
   ON product_categories FOR SELECT 
   USING (TRUE); -- All authenticated users can read
 
 -- Operators can read anonymized customer segments
+DROP POLICY IF EXISTS customer_segments_read_operators 
+  ON customer_segments;
+
 CREATE POLICY customer_segments_read_operators 
   ON customer_segments FOR SELECT 
   USING (TRUE); -- All authenticated users can read
 
 -- Views for operator dashboard tiles
 
--- Product performance by category
-CREATE OR REPLACE VIEW v_product_performance AS
+DROP VIEW IF EXISTS v_product_performance;
+
+CREATE VIEW v_product_performance AS
 SELECT 
   pc.category_l1,
   pc.category_l2,
@@ -138,8 +151,9 @@ FROM product_categories pc
 GROUP BY pc.category_l1, pc.category_l2
 ORDER BY fast_movers DESC;
 
--- Customer segment distribution
-CREATE OR REPLACE VIEW v_customer_segment_summary AS
+DROP VIEW IF EXISTS v_customer_segment_summary;
+
+CREATE VIEW v_customer_segment_summary AS
 SELECT 
   primary_segment,
   lifecycle_stage,
@@ -152,19 +166,24 @@ FROM customer_segments
 GROUP BY primary_segment, lifecycle_stage
 ORDER BY segment_revenue DESC;
 
--- Seasonal pattern detection
-CREATE OR REPLACE VIEW v_seasonal_patterns AS
+DROP VIEW IF EXISTS v_seasonal_patterns;
+
+CREATE VIEW v_seasonal_patterns AS
 SELECT 
-  EXTRACT(MONTH FROM created_at) as month_num,
-  TO_CHAR(created_at, 'Month') as month_name,
+  EXTRACT(MONTH FROM month_window) as month_num,
+  TO_CHAR(month_window, 'Month') as month_name,
   CASE 
-    WHEN EXTRACT(MONTH FROM created_at) BETWEEN 3 AND 9 THEN 'racing_season'
+    WHEN EXTRACT(MONTH FROM month_window) BETWEEN 3 AND 9 THEN 'racing_season'
     ELSE 'off_season'
   END as season,
   category_l1,
   COUNT(*) as record_count
 FROM product_categories pc
-CROSS JOIN generate_series(NOW() - INTERVAL '2 years', NOW(), INTERVAL '1 month') as created_at
+CROSS JOIN generate_series(
+  date_trunc('month', NOW() - INTERVAL '2 years'),
+  date_trunc('month', NOW()),
+  INTERVAL '1 month'
+) AS month_series(month_window)
 GROUP BY 1, 2, 3, pc.category_l1
 ORDER BY month_num, category_l1;
 
@@ -172,4 +191,3 @@ COMMENT ON TABLE product_categories IS 'Hot Rodan automotive parts categorizatio
 COMMENT ON TABLE customer_segments IS 'Hot Rodan customer segmentation (DIY, Professional, Enthusiast, First-time, Racing)';
 COMMENT ON VIEW v_product_performance IS 'Product performance metrics by category for operator dashboard';
 COMMENT ON VIEW v_customer_segment_summary IS 'Customer segment distribution and revenue for operator insights';
-

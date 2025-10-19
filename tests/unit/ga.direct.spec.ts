@@ -85,7 +85,7 @@ describe("DirectGAClient", () => {
         },
       ]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -139,7 +139,7 @@ describe("DirectGAClient", () => {
       );
       const mockRunReport = vi.fn().mockResolvedValue([{ rows: [] }]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -165,7 +165,7 @@ describe("DirectGAClient", () => {
         },
       ]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -197,7 +197,7 @@ describe("DirectGAClient", () => {
         },
       ]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -221,7 +221,7 @@ describe("DirectGAClient", () => {
       const mockError = new Error("API quota exceeded");
       const mockRunReport = vi.fn().mockRejectedValue(mockError);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -251,7 +251,7 @@ describe("DirectGAClient", () => {
         },
       ]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));
@@ -269,7 +269,7 @@ describe("DirectGAClient", () => {
       );
       const mockRunReport = vi.fn().mockResolvedValue([{ rows: [] }]);
 
-      // @ts-ignore - mocking
+      // @ts-expect-error - mocking
       BetaAnalyticsDataClient.mockImplementation(() => ({
         runReport: mockRunReport,
       }));

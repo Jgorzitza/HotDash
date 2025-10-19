@@ -38,11 +38,18 @@ Deliver production-ready Ads intelligence. Today: run ads aggregation/backfill s
 - [ ] Dashboard tiles and approvals docs updated
 - [ ] Feedback entry completed with test logs and follow-ups recorded
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/ads/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, log blocker and pick the next task below. Do not idle.
 - Keep diffs in Allowed paths; attach evidence.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh ads -- <command>`.
+- Append ISO timestamps on each step to `artifacts/ads/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

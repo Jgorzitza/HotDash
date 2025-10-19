@@ -12,16 +12,15 @@
  * - Combined GA4 + Shopify data (when available)
  */
 
-import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
-import { getRevenueMetrics } from "../lib/analytics/ga4";
+import { json } from "@remix-run/node";
+import { getRevenueMetrics } from "~/lib/analytics/ga4";
 import {
   RevenueResponseSchema,
   type RevenueResponse,
-} from "../lib/analytics/schemas";
-import { isSamplingError } from "../lib/analytics/sampling-guard";
+} from "~/lib/analytics/schemas";
+import { isSamplingError } from "~/lib/analytics/sampling-guard";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader() {
   try {
     const metrics = await getRevenueMetrics();
 
@@ -36,15 +35,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const validated = RevenueResponseSchema.parse(response);
 
     return json(validated);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[API] Revenue metrics error:", error);
 
     // Check if sampling error
     const isSampled = isSamplingError(error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch revenue metrics";
 
     const errorResponse: RevenueResponse = {
       success: false,
-      error: error.message || "Failed to fetch revenue metrics",
+      error: message,
       timestamp: new Date().toISOString(),
       sampled: isSampled,
     };

@@ -1,0 +1,36 @@
+{
+  "status": "planned_only_do_not_seed",
+  "index": {
+    "chunkTokens": 700,
+    "overlapTokens": 100,
+    "storage": "file",
+    "engine": "faiss",
+    "metadataFilters": [
+      "feature",
+      "category",
+      "vendor",
+      "product_variant_id",
+      "tags"
+    ]
+  },
+  "sources": {
+    "internalDocs": {
+      "paths": ["docs/"],
+      "include": ["install", "policy", "faq"],
+      "canonicalLinksMap": "docs/specs/hitl/content-upgrades.config.json:linkMapping"
+    },
+    "shopify": { "products": true, "vendors": true, "readOnly": true },
+    "reasonCodes": { "file": "docs/specs/hitl/agent-reason-codes.json" },
+    "macros": {
+      "list": ["build_snapshot", "sealant_guidance", "efi_filter_sizing"]
+    },
+    "coachNotes": { "fromApprovals": true },
+    "threads": { "chatwoot": false, "piiRedaction": true }
+  },
+  "pii": { "redact": true },
+  "citations": { "canonicalOnly": true, "noRawUrls": true },
+  "mcp": {
+    "requiredForAutoFetch": true,
+    "allowed": ["shopify_admin", "ga4", "gsc", "publer"]
+  }
+}

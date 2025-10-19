@@ -31,12 +31,14 @@ HotDash uses a single Prisma schema (`prisma/schema.prisma`) targeting Postgres.
 
 1. Mirror credentials from vault to GitHub (`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`).
 2. From a privileged terminal (with the staging `.env` sourced), run:
+
    ```bash
    npm run setup
    ```
 
    - `prisma generate` uses `DATABASE_URL` automatically.
    - `prisma migrate deploy` applies `prisma/migrations/*` to the target database.
+
 3. Record the output and any schema changes in `feedback/deployment.md` and `docs/deployment/env_matrix.md`.
 
 ## Rollback / Forward Validation

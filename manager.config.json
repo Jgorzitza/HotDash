@@ -6,6 +6,8 @@
   "token_budget_per_task": 140000,
   "stop_on_ci_red": false,
   "diff_scope_cap_files": 50,
+  "require_foreground_proof": true,
+  "codex_continuous_runner": "scripts/policy/codex-run.mjs",
   "escalation_only_reasons": [
     "missing_credential",
     "external_service_permission",

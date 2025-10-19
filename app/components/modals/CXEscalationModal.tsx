@@ -40,6 +40,24 @@ export function CXEscalationModal({
     }
   }, [fetcher.state, fetcher.data, onClose, open]);
 
+  useEffect(() => {
+    if (!open || typeof window === "undefined") {
+      return undefined;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
   const isSubmitting = fetcher.state !== "idle";
 
   const messageHistory = useMemo(() => {
@@ -107,7 +125,6 @@ export function CXEscalationModal({
       <dialog
         open
         className="occ-modal"
-        role="dialog"
         aria-modal="true"
         aria-labelledby={`cx-escalation-${conversation.id}-title`}
         data-testid="cx-escalation-dialog"

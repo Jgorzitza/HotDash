@@ -12,16 +12,15 @@
  * - Combined GA4 data
  */
 
-import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
-import { getTrafficMetrics } from "../lib/analytics/ga4";
+import { json } from "@remix-run/node";
+import { getTrafficMetrics } from "~/lib/analytics/ga4";
 import {
   TrafficResponseSchema,
   type TrafficResponse,
-} from "../lib/analytics/schemas";
-import { isSamplingError } from "../lib/analytics/sampling-guard";
+} from "~/lib/analytics/schemas";
+import { isSamplingError } from "~/lib/analytics/sampling-guard";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader() {
   try {
     const metrics = await getTrafficMetrics();
 
@@ -36,14 +35,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const validated = TrafficResponseSchema.parse(response);
 
     return json(validated);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[API] Traffic metrics error:", error);
 
     const isSampled = isSamplingError(error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to fetch traffic metrics";
 
     const errorResponse: TrafficResponse = {
       success: false,
-      error: error.message || "Failed to fetch traffic metrics",
+      error: message,
       timestamp: new Date().toISOString(),
       sampled: isSampled,
     };

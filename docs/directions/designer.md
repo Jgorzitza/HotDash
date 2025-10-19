@@ -25,14 +25,17 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 - **Allowed Paths (explicit):**
   - `docs/specs/hitl/main-dashboard*`
   - `docs/design/**` (microcopy, specs, checklists)
+  - `app/components/action-dock/**` (UI harness only, behind `feature.actionDock = OFF`)
+  - `tests/unit/components/action-dock/**` (unit tests for harness)
   - `feedback/designer/**`
-- **Touched Directories:** `docs/design/**`, `docs/specs/hitl/main-dashboard*`, `feedback/designer/**`
+- **Touched Directories:** `docs/design/**`, `docs/specs/hitl/main-dashboard*`, `app/components/action-dock/**`, `tests/unit/components/action-dock/**`, `feedback/designer/**`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** Keep changes strictly to design docs/microcopy; no layout code without Engineer coordination.
+- **Guardrails:** Feature flag `feature.actionDock` must remain OFF; no routes/server changes; SSR‑safe components only; coordinate with Engineer for app integration beyond harness.
 
 ## Tasks
 
 1. Follow docs/manager/EXECUTION_ROADMAP.md (Designer — Roadmap). Autonomy Mode applies. Log evidence in `feedback/designer/<YYYY-MM-DD>.md`.
+2. If UI code is required today: implement `app/components/action-dock/*` harness behind `feature.actionDock` (OFF) with unit tests under `tests/unit/components/action-dock/*` per spec.
 
 ## Definition of Done
 
@@ -44,11 +47,18 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 - [ ] Docs/runbooks updated
 - [ ] Feedback entry completed
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/designer/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, document blocker and continue with next task. Do not idle.
 - Keep changes within Allowed paths; attach screenshots/wireframes.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh designer -- <command>`.
+- Append ISO timestamps on each step to `artifacts/designer/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

@@ -105,9 +105,10 @@ export function createDirectGaClient(propertyId: string): GaClient {
         });
 
         return sessions;
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Wrap API errors with context
-        const message = error.message || "Unknown error";
+        const message =
+          error instanceof Error ? error.message : "Unknown error";
         throw new Error(
           `Google Analytics API request failed: ${message}. ` +
             `Property ID: ${propertyId}, Date range: ${range.start} to ${range.end}`,

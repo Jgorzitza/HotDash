@@ -1,0 +1,194 @@
+{
+  "date": "2025-10-18",
+  "sequence": ["programmatic_seo_factory", "guided_selling", "cwv_to_revenue", "ab_harness"],
+  "policy": {
+    "mcp": {
+      "shopify_dev": true,
+      "shopify_storefront": true,
+      "context7": true,
+      "ga4_gsc_via_adapters": true
+    },
+    "autopublish": { "enabled": false }
+  },
+  "agents": {
+    "seo": {
+      "lanes": [
+        {
+          "id": "seo-psf-1",
+          "title": "Programmatic SEO Factory",
+          "whyNow": "Priority per gap analysis; unlocks scaled landers",
+          "specRef": "docs/specs/hitl/programmatic-seo-factory.md",
+          "allowed_paths": ["docs/specs/hitl/programmatic-seo-factory*", "feedback/seo/**", "artifacts/seo/**"],
+          "tooling": {"mcp": ["shopify_dev","context7"], "adapters": []},
+          "flags": ["feature.programmaticSeoFactory"],
+          "proofCall": "codex exec --json -- \"mcp shopify-admin {'action':'introspect','object':'MetaobjectDefinition'}\"",
+          "DoD": "Metaobject schema + page template plan + internal-link plan; preview/diff; rollback doc",
+          "reviewer": "product",
+          "evidence": "feedback/seo/YYYY-MM-DD.md#programmatic-seo-factory",
+          "rollback": "Disable flag + revert template binding"
+        },
+        {
+          "id": "seo-telemetry-1",
+          "title": "Closed-loop SEO Telemetry (GSC→BQ)",
+          "whyNow": "Daily actions need rank and CTR context",
+          "specRef": "docs/specs/hitl/seo-telemetry.config.json",
+          "allowed_paths": ["docs/specs/hitl/seo-telemetry*", "integrations/**", "feedback/seo/**", "artifacts/seo/**"],
+          "tooling": {"mcp": ["context7"], "adapters": ["ga4","gsc"]},
+          "flags": ["feature.seoTelemetry"],
+          "proofCall": "node integrations/ga4-cli.js --ping && node integrations/gsc-cli.js --ping",
+          "DoD": "BQ tables spec + join logic + Action Dock feed contract",
+          "reviewer": "analytics",
+          "evidence": "artifacts/seo/YYYY-MM-DD/telemetry-plan.log",
+          "rollback": "Stop cron + mark feed inactive"
+        },
+        {
+          "id": "seo-ab-1",
+          "title": "A/B Harness (cookie + GA4 dim)",
+          "whyNow": "Validate copy/layout choices safely",
+          "specRef": "docs/specs/hitl/ab-harness.config.json",
+          "allowed_paths": ["docs/specs/hitl/ab-harness*", "feedback/seo/**", "artifacts/seo/**"],
+          "tooling": {"mcp": ["context7"], "adapters": ["ga4"]},
+          "flags": ["feature.abHarness"],
+          "proofCall": "node integrations/ga4-cli.js --list-custom-dim ab_variant",
+          "DoD": "Experiment registry plan + GA4 dimension mapping (adapter) + preview",
+          "reviewer": "qa",
+          "evidence": "feedback/seo/YYYY-MM-DD.md#ab-harness",
+          "rollback": "Expire cookie + disable mapping"
+        },
+        {
+          "id": "seo-media-1",
+          "title": "Media Pipeline (Tier‑0 staged)",
+          "whyNow": "CWV wins without content risk",
+          "specRef": "docs/specs/hitl/media-pipeline.config.json",
+          "allowed_paths": ["docs/specs/hitl/media-pipeline*", "feedback/seo/**", "artifacts/seo/**"],
+          "tooling": {"mcp": ["context7"], "adapters": []},
+          "flags": ["feature.mediaPipeline"],
+          "proofCall": "npx sharp --version",
+          "DoD": "Compression/alt-text policy + thresholds + rollback plan",
+          "reviewer": "designer",
+          "evidence": "feedback/seo/YYYY-MM-DD.md#media-pipeline",
+          "rollback": "No-op; toggles remain OFF"
+        }
+      ]
+    },
+    "engineer": {
+      "lanes": [
+        {
+          "id": "eng-gs-1",
+          "title": "Guided Selling + Kit Composer (planning)",
+          "whyNow": "Second in priority; informs UX and data contracts",
+          "specRef": "docs/specs/hitl/guided-selling.md",
+          "allowed_paths": ["docs/specs/hitl/guided-selling*", "feedback/engineer/**"],
+          "tooling": {"mcp": ["shopify_dev","context7"], "adapters": []},
+          "flags": ["feature.guidedSelling"],
+          "proofCall": "codex exec --json -- \"mcp shopify-admin {'action':'introspect','object':'Cart'}\"",
+          "DoD": "Rules graph outline + UX skeleton proposal + rollback plan",
+          "reviewer": "product",
+          "evidence": "feedback/engineer/YYYY-MM-DD.md#guided-selling",
+          "rollback": "Flag remains OFF; no runtime impact"
+        },
+        {
+          "id": "eng-inv-overnight-1",
+          "title": "Inventory Overnight Settlement (planning)",
+          "whyNow": "Prevents WH drift; supports Canadian label flow",
+          "specRef": "docs/specs/hitl/inventory-updates.md",
+          "allowed_paths": ["docs/specs/hitl/inventory-updates*", "feedback/engineer/**"],
+          "tooling": {"mcp": ["shopify_dev","context7"], "adapters": []},
+          "flags": ["feature.inventorySettlement"],
+          "proofCall": "codex exec --json -- \"mcp shopify-admin {'action':'introspect','object':'InventoryLevel'}\"",
+          "DoD": "Job design doc (idempotency/retry/ledger) + rollback",
+          "reviewer": "inventory",
+          "evidence": "feedback/engineer/YYYY-MM-DD.md#overnight-settlement",
+          "rollback": "Disable cron + ledger noop"
+        }
+      ]
+    },
+    "analytics": {
+      "lanes": [
+        {
+          "id": "ana-gscbq-1",
+          "title": "GSC Bulk Export→BQ + GA4 joins",
+          "whyNow": "Feeds daily Action Dock decisions",
+          "specRef": "docs/specs/hitl/seo-telemetry.config.json",
+          "allowed_paths": ["docs/specs/hitl/seo-telemetry*", "integrations/**", "scripts/ops/**", "feedback/analytics/**", "artifacts/analytics/**"],
+          "tooling": {"mcp": ["context7"], "adapters": ["ga4","gsc"], "cli": ["bq"]},
+          "flags": ["feature.seoTelemetry"],
+          "proofCall": "node integrations/gsc-cli.js --export --dry-run",
+          "DoD": "Dataset/tables spec + nightly job outline + freshness labels",
+          "reviewer": "manager",
+          "evidence": "artifacts/analytics/YYYY-MM-DD/gsc-bq-dryrun.log",
+          "rollback": "Disable scheduler; leave dataset as draft"
+        }
+      ],
+      "notes": "GA4/GSC via internal adapters (no MCP). Attach adapter command logs."
+    },
+    "manager": {
+      "lanes": [
+        {"id": "mgr-docs-1", "title": "Docs alignment (NS/OM/Rules)", "allowed_paths": ["docs/NORTH_STAR.md", "docs/OPERATING_MODEL.md", "docs/RULES.md"], "DoD": "Docs updated; CI green", "reviewer": "qa", "evidence": "reports/manager/status.md", "rollback": "Revert PR"},
+        {"id": "mgr-runbooks-1", "title": "Runbooks refresh (startup/shutdown)", "allowed_paths": ["docs/runbooks/manager_startup_checklist.md", "docs/runbooks/agent_startup_checklist.md"], "DoD": "Runbooks updated per MCP/adapter clarifications", "reviewer": "qa", "evidence": "reports/manager/status.md", "rollback": "Revert PR"},
+        {"id": "mgr-issues-1", "title": "Create Issues from lanes", "allowed_paths": ["reports/manager/lanes/**", "feedback/manager/**"], "DoD": "Issues opened referencing spec lines", "reviewer": "product", "evidence": "issue links", "rollback": "Close issues"},
+        {"id": "mgr-blockers-1", "title": "Blockers to Green tracking", "allowed_paths": ["reports/manager/BLOCKERS_TO_GREEN.md", "feedback/manager/**"], "DoD": "Owners/ETAs present; verification notes added", "reviewer": "devops", "evidence": "reports/manager/BLOCKERS_TO_GREEN.md", "rollback": "N/A"}
+      ]
+    },
+    "devops": {
+      "lanes": [
+        {"id": "devops-webhook-1", "title": "Webhook HMAC + idempotency harness", "whyNow": "Prevents duplicate actions in staging", "specRef": "docs/specs/hitl/merch-playbooks.md", "allowed_paths": ["scripts/ops/**", "feedback/devops/**", "artifacts/devops/**"], "tooling": {"mcp": ["context7"], "cli": ["openssl"]}, "flags": ["feature.hmacHarness"], "proofCall": "node scripts/ops/webhook-hmac-dryrun.mjs --help", "DoD": "Replay test proves 1 event stored once; logs include request_ids", "reviewer": "qa", "evidence": "artifacts/devops/YYYY-MM-DD/webhook-hmac.log", "rollback": "Disable handler"}
+      ]
+    },
+    "integrations": {
+      "lanes": [
+        {"id": "int-storefront-1", "title": "STOREFRONT MCP sandbox routes (product search/cart)", "whyNow": "Needed by harnesses/tests", "specRef": "docs/specs/hitl/storefront-mcp.md", "allowed_paths": ["integrations/**", "feedback/integrations/**", "artifacts/integrations/**"], "tooling": {"mcp": ["shopify_storefront","context7"]}, "flags": ["feature.storefrontMcpSandbox"], "proofCall": "codex exec --json -- \"mcp shopify-storefront {'action':'tools.list'}\"", "DoD": "Harness + sample payloads; no prod calls", "reviewer": "qa", "evidence": "artifacts/integrations/YYYY-MM-DD/storefront-harness.log", "rollback": "Disable sandbox routes"}
+      ]
+    },
+    "inventory": {
+      "lanes": [
+        {"id": "inv-po-1", "title": "PO Receiving apply plan + AVLC update", "whyNow": "Unlocks cost accuracy", "specRef": "docs/specs/hitl/vendors-pos-receiving.md", "allowed_paths": ["docs/specs/hitl/vendors-pos-receiving*", "feedback/inventory/**"], "tooling": {"mcp": ["shopify_dev","context7"]}, "flags": ["feature.poReceiving"], "proofCall": "codex exec --json -- \"mcp shopify-admin {'action':'introspect','object':'InventoryAdjustmentGroup'}\"", "DoD": "Apply path + AVLC recompute design", "reviewer": "product", "evidence": "feedback/inventory/YYYY-MM-DD.md#po-receiving", "rollback": "Flag OFF"}
+      ]
+    },
+    "product": {
+      "lanes": [
+        {"id": "prod-gs-ux-1", "title": "Guided Selling UX spec", "whyNow": "Enable implementation planning", "specRef": "docs/specs/hitl/guided-selling.md", "allowed_paths": ["docs/specs/hitl/guided-selling*", "feedback/product/**"], "tooling": {"mcp": ["context7"]}, "flags": [], "proofCall": "n/a", "DoD": "Wireframes + acceptance criteria", "reviewer": "designer", "evidence": "feedback/product/YYYY-MM-DD.md#guided-selling", "rollback": "N/A"}
+      ]
+    },
+    "designer": {
+      "lanes": [
+        {"id": "des-actiondock-1", "title": "Dashboard Action Dock UI", "whyNow": "Surface top‑10 actions", "specRef": "docs/specs/hitl/main-dashboard.config.json", "allowed_paths": ["docs/specs/hitl/main-dashboard*", "feedback/designer/**"], "tooling": {"mcp": ["context7"]}, "flags": ["feature.actionDock"], "proofCall": "n/a", "DoD": "Component spec + a11y notes", "reviewer": "product", "evidence": "feedback/designer/YYYY-MM-DD.md#action-dock", "rollback": "N/A"}
+      ]
+    },
+    "qa": {
+      "lanes": [
+        {"id": "qa-smoke-1", "title": "Feature-flag smoke harness", "whyNow": "Ensure all new capabilities gated & testable", "specRef": "docs/runbooks/agent_startup_checklist.md", "allowed_paths": ["tests/**", "feedback/qa/**", "artifacts/qa/**"], "tooling": {"mcp": []}, "flags": ["feature.*"], "proofCall": "npx vitest run tests/smoke/flags.spec.ts", "DoD": "Happy path + 1 edge per feature flag", "reviewer": "manager", "evidence": "artifacts/qa/YYYY-MM-DD/flags-smoke.log", "rollback": "Skip failing flags"}
+      ]
+    },
+    "ads": {
+      "lanes": [
+        {"id": "ads-utm-1", "title": "UTM mapping + brand filter checks", "whyNow": "Required for attribution hygiene", "specRef": "docs/specs/hitl/ads-analytics.config.json", "allowed_paths": ["docs/specs/hitl/ads-analytics.config.json", "docs/specs/hitl/brand-filters.json", "feedback/ads/**"], "tooling": {"mcp": ["context7"]}, "flags": [], "proofCall": "n/a", "DoD": "Mapping tables + non-brand share calc draft", "reviewer": "analytics", "evidence": "feedback/ads/YYYY-MM-DD.md#utm", "rollback": "N/A"}
+      ]
+    },
+    "ai-knowledge": {
+      "lanes": [
+        {"id": "aikb-harness-1", "title": "AI Knowledge base harness (dev)", "whyNow": "Support learning loop", "specRef": "docs/specs/hitl/ai-knowledge-base.md", "allowed_paths": ["docs/specs/hitl/ai-knowledge-base*", "feedback/ai-knowledge/**"], "tooling": {"mcp": ["context7"]}, "flags": ["feature.aiKnowledge"], "proofCall": "n/a", "DoD": "Indexing plan + eval stubs", "reviewer": "manager", "evidence": "feedback/ai-knowledge/YYYY-MM-DD.md#kb", "rollback": "Flag OFF"}
+      ]
+    },
+    "ai-customer": {
+      "lanes": [
+        {"id": "aic-storefront-1", "title": "Storefront MCP tool validation (dev)", "whyNow": "Needed for harness tests; no prod ops", "specRef": "docs/specs/hitl/storefront-mcp.md", "allowed_paths": ["docs/specs/hitl/storefront-mcp*", "feedback/ai-customer/**"], "tooling": {"mcp": ["shopify_storefront","context7"]}, "flags": ["feature.storefrontMcpSandbox"], "proofCall": "codex exec --json -- \"mcp shopify-storefront {'action':'tools.list'}\"", "DoD": "Anonymous tools list/search OK; no prod calls", "reviewer": "qa", "evidence": "feedback/ai-customer/YYYY-MM-DD.md#storefront", "rollback": "Disable sandbox"}
+      ]
+    },
+    "content": {
+      "lanes": [
+        {"id": "content-upgrades-1", "title": "Content upgrades pipeline plan", "whyNow": "Prep for future HITL upgrades", "specRef": "docs/specs/hitl/content-upgrades.md", "allowed_paths": ["docs/specs/hitl/content-upgrades*", "feedback/content/**"], "tooling": {"mcp": ["context7"]}, "flags": ["feature.contentUpgrades"], "proofCall": "n/a", "DoD": "Pre/post measurement plan", "reviewer": "seo", "evidence": "feedback/content/YYYY-MM-DD.md#upgrades", "rollback": "N/A"}
+      ]
+    },
+    "support": {
+      "lanes": [
+        {"id": "sup-chatwoot-1", "title": "Chatwoot health checks & SLA gating", "whyNow": "Ensure readiness without messaging", "specRef": "docs/specs/hitl/customer-replies.md", "allowed_paths": ["scripts/ops/**", "feedback/support/**", "artifacts/support/**"], "tooling": {"mcp": []}, "flags": ["feature.cxHealth"], "proofCall": "npm run ops:check-chatwoot-health", "DoD": "Health script outputs + SLA warn config", "reviewer": "qa", "evidence": "artifacts/support/YYYY-MM-DD/chatwoot-health.log", "rollback": "N/A"}
+      ]
+    },
+    "pilot": {
+      "lanes": [
+        {"id": "pilot-scope-1", "title": "Pilot scope & boundaries doc", "whyNow": "Avoid interference; capture learnings", "specRef": "docs/directions/pilot.md", "allowed_paths": ["docs/directions/pilot.md", "feedback/pilot/**"], "tooling": {"mcp": []}, "flags": [], "proofCall": "n/a", "DoD": "Clarified scope + handoff rules", "reviewer": "manager", "evidence": "feedback/pilot/YYYY-MM-DD.md#scope", "rollback": "N/A"}
+      ]
+    }
+  }
+}

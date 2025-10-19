@@ -1,0 +1,128 @@
+{
+  "status": "planned_only_do_not_seed",
+  "windowDays": 7,
+  "altWindowDays": 28,
+  "tiles": {
+    "ticketsLiveChat": {
+      "metrics": {
+        "openTickets": true,
+        "liveChatsWaiting": true,
+        "overSla": true,
+        "medianTfr": true,
+        "todayResolved": true,
+        "oldestWaitingMin": true
+      },
+      "badges": {
+        "businessHours": true,
+        "ceoAlerts": true,
+        "offlineCapture": true,
+        "chatwootHealth": true
+      },
+      "thresholds": {
+        "liveChatsWaiting": { "redInHours": 1, "yellowOffHours": 1 },
+        "overSla": { "red": 3, "yellowMin": 1, "yellowMax": 2 },
+        "medianTfrMinutes": { "red": 10, "yellow": 5 }
+      },
+      "quickActions": {
+        "replyQueue": "/tickets/queue?filter=unresponded",
+        "liveChatConsole": "/tickets/livechat",
+        "businessHours": "/settings/business-hours",
+        "pageCeo": "/ops/notify/ceo-test"
+      },
+      "dataSources": {
+        "chatwoot": true,
+        "businessHoursConfig": "docs/specs/hitl/customer-replies.config.json",
+        "ceoContactConfig": "docs/specs/hitl/customer-replies.config.json"
+      },
+      "refresh": { "tileSeconds": 60, "drilldownSeconds": 15 }
+    },
+    "approvals": {
+      "metrics": [
+        "pendingTotal",
+        "pendingByFeature",
+        "overSla",
+        "todayApproved"
+      ],
+      "badges": { "p0Present": true, "slaBreach": true, "businessHours": true },
+      "thresholds": {
+        "pendingTotal": { "red": 8, "yellowMin": 4, "yellowMax": 7 },
+        "overSla": { "red": 3, "yellowMin": 1, "yellowMax": 2 }
+      },
+      "quickActions": {
+        "open": "/approvals?status=pending_review",
+        "evidence": "/approvals?status=pending_review&view=evidence",
+        "sla": "/settings/slas"
+      }
+    },
+    "sales": {
+      "metrics": ["netSales", "orders"],
+      "badges": {
+        "refundSpike": true,
+        "slowFulfillment": true,
+        "downWoW": true
+      },
+      "thresholds": {
+        "refundRate": { "red": 0.05, "yellow": 0.03 },
+        "medianTtfHours": { "red": 24, "yellow": 12 },
+        "downWoW": { "yellowDrop": 0.15 }
+      },
+      "quickActions": {
+        "orders": "/orders",
+        "shippingQueue": "/ops/shipping",
+        "refunds": "/ops/refunds"
+      }
+    },
+    "inventory": {
+      "metrics": [
+        "oosSkus",
+        "highRiskSkus",
+        "coverageDaysMin",
+        "settlementStatus"
+      ],
+      "badges": {
+        "lowCoverage": true,
+        "settlementMissed": true,
+        "settlementFailed": true
+      },
+      "thresholds": {
+        "oosSkus": { "red": 10, "yellowMin": 5, "yellowMax": 9 },
+        "highRiskSkus": { "red": 5, "yellowMin": 1, "yellowMax": 4 },
+        "coverageDaysMin": {
+          "minDays": 14,
+          "lowCountRed": 10,
+          "lowCountYellowMin": 3,
+          "lowCountYellowMax": 9
+        },
+        "settlementMissedHours": 26
+      },
+      "quickActions": {
+        "poReceiving": "/inventory/receiving",
+        "settlementLog": "/inventory/settlement",
+        "lowStock": "/inventory/low-stock"
+      }
+    },
+    "ads": {
+      "bind": {
+        "sourceConfig": "docs/specs/hitl/ads-analytics.config.json",
+        "tileKey": "dashboards.tiles.ads"
+      }
+    },
+    "seo": {
+      "bind": {
+        "sourceConfig": "docs/specs/hitl/ads-analytics.config.json",
+        "tileKey": "dashboards.tiles.seo"
+      }
+    },
+    "actionDock": {
+      "topN": 10,
+      "sort": ["expected_revenue", "confidence", "ease"],
+      "fields": ["title", "diff", "whyNow", "evidence"],
+      "quickActions": {
+        "open": "/actions",
+        "approve": "/actions/approve",
+        "rollback": "/actions/rollback"
+      },
+      "learningStrip": true
+    }
+  }
+}

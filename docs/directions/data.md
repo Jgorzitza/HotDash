@@ -40,11 +40,18 @@ Provide production-grade data pipelines (Supabase migrations, seeds, RLS tests) 
 - [ ] Docs/runbooks updated
 - [ ] Feedback recorded with commands
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/data/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes (access, CI, staging locks), record a blocker note on the Issue and proceed to the next item in the fallback queue. Do not idle.
 - Keep all work in allowed data paths; attach commands, logs, and SQL diffs.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh data -- <command>`.
+- Append ISO timestamps on each step to `artifacts/data/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

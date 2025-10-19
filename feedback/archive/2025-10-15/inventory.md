@@ -16,6 +16,7 @@
 **File:** `docs/specs/inventory_data_model.md` (429 lines)
 
 **Sections Delivered:**
+
 - ✅ ROP Calculation formula and fields
 - ✅ Status buckets (in_stock, low_stock, urgent_reorder, out_of_stock)
 - ✅ Kit/bundle structure (tag-based and metafield-based)
@@ -29,6 +30,7 @@
 **File:** `docs/integrations/shopify_inventory_metafields.md` (568 lines)
 
 **Sections Delivered:**
+
 - ✅ Metafields fundamentals and namespace conventions
 - ✅ Proposed schema: 8 core metafields in `app.inventory` namespace
 - ✅ Complete GraphQL query and mutation examples
@@ -40,12 +42,14 @@
 **Data Agent Branch:** `agent/data/schema-foundation` - EXISTS
 
 **Findings:**
+
 - Data agent uses pattern: main table + line items (e.g., `approvals` + `approval_items`)
 - Uses JSONB for flexible structures
 - Includes proper indexes, foreign keys, and rollback migrations
 - My spec follows same pattern for consistency
 
 **Alignment:**
+
 - My `picker_payouts` + `picker_payout_lines` matches their pattern
 - Ready for data agent to implement migrations from my spec
 
@@ -68,6 +72,7 @@
 **Alternative:** Flat rate of $0.12/piece for simplicity
 
 **Calculation Example:**
+
 - Order with 47 pieces → 47 × $0.10 = $4.70
 - Order with 250 pieces → 250 × $0.12 = $30.00
 
@@ -76,23 +81,27 @@
 ## Key Deliverables Summary
 
 ### ROP Formula
+
 ```
 ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 ```
 
 **Fields Required:**
+
 - `lead_time_days` - From Shopify metafield `app.inventory.lead_time_days` (default: 14)
 - `safety_stock` - From metafield or calculated
 - `sales_velocity_30d` - Calculated from Shopify orders
 - `current_stock` - From Shopify `inventoryQuantity`
 
 ### Status Buckets
+
 - `in_stock`: Quantity > ROP
 - `low_stock`: ROP ≥ Quantity > (ROP × 0.5)
 - `urgent_reorder`: (ROP × 0.5) ≥ Quantity > 0
 - `out_of_stock`: Quantity = 0
 
 ### Shopify Metafields (app.inventory namespace)
+
 1. `lead_time_days` (number_integer)
 2. `safety_stock` (number_integer)
 3. `is_bundle` (boolean)
@@ -103,6 +112,7 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 8. `min_order_quantity` (number_integer)
 
 ### Supabase Tables
+
 1. `products` - Product master with metafield values
 2. `inventory_snapshots` - Point-in-time inventory + calculations
 3. `sales_velocity` - Historical sales for ROP calculation
@@ -137,26 +147,31 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 ## Next Steps
 
 ### Immediate (Today)
+
 - ✅ Spec complete
 - ✅ Coordination with data agent complete
 - ⏳ **Awaiting:** Manager review and PR approval
 
 ### Data Agent (Next)
+
 - Implement Supabase migrations based on my spec
 - Create tables: products, inventory_snapshots, sales_velocity, picker_payouts, picker_payout_lines, reorder_suggestions
 - Add indexes and foreign keys as specified
 
 ### Integrations Agent (Next)
+
 - Implement Shopify metafield sync job using my integration guide
 - Query products with `app.inventory` metafields
 - Parse and store in Supabase products table
 
 ### Engineer Agent (Next)
+
 - Build inventory heatmap UI using status bucket definitions
 - Display ROP, current stock, days of cover
 - Color-code by status bucket
 
 ### Inventory Agent (Future - M3)
+
 - Implement ROP calculation service
 - Generate PO drafts
 - Build picker payout calculation service
@@ -178,6 +193,7 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 ## Time Tracking
 
 **Total Time:** ~2 hours
+
 - Research: 30 min (Shopify metafields, existing codebase)
 - Spec writing: 90 min (data model + integration guide)
 - Coordination: 15 min (checking data agent branch)
@@ -190,6 +206,7 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 **Commit:** `55562b2` - "feat(inventory): create data model spec and Shopify metafields integration guide"
 
 **Files Created:**
+
 - `docs/specs/inventory_data_model.md` (429 lines)
 - `docs/integrations/shopify_inventory_metafields.md` (568 lines)
 - `feedback/inventory/2025-10-15.md` (this file)
@@ -203,6 +220,7 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 **Status:** ✅ TODAY'S OBJECTIVE COMPLETE
 
 **Deliverables:**
+
 1. Complete inventory data model specification with ROP formula, status buckets, kit/bundle structure, and picker payout brackets
 2. Comprehensive Shopify metafields integration guide with GraphQL examples
 3. Coordination with data agent - spec ready for schema implementation
@@ -212,4 +230,3 @@ ROP = (Average Daily Sales × Lead Time Days) + Safety Stock
 **Ready for:** PR creation and review, then handoff to data agent for schema implementation
 
 **No Blockers.** All assigned work complete.
-

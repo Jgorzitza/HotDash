@@ -13,7 +13,7 @@ export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
 interface LogEntry {
   level: LogLevel;
   message: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   requestId?: string;
   userAgent?: string;
 }
@@ -71,7 +71,7 @@ class Logger {
   private createEntry(
     level: LogLevel,
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): LogEntry {
     return {
@@ -88,7 +88,7 @@ class Logger {
 
   debug(
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): void {
     const entry = this.createEntry("DEBUG", message, metadata, request);
@@ -97,7 +97,7 @@ class Logger {
 
   info(
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): void {
     const entry = this.createEntry("INFO", message, metadata, request);
@@ -106,7 +106,7 @@ class Logger {
 
   warn(
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): void {
     const entry = this.createEntry("WARN", message, metadata, request);
@@ -115,7 +115,7 @@ class Logger {
 
   error(
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): void {
     const entry = this.createEntry("ERROR", message, metadata, request);
@@ -124,7 +124,7 @@ class Logger {
 
   fatal(
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
     request?: Request,
   ): void {
     const entry = this.createEntry("FATAL", message, metadata, request);
@@ -137,7 +137,7 @@ class Logger {
   logServiceError(
     error: ServiceError,
     request?: Request,
-    additionalMetadata?: Record<string, any>,
+    additionalMetadata?: Record<string, unknown>,
   ): void {
     const metadata = {
       scope: error.scope,
@@ -162,7 +162,7 @@ class Logger {
     error: Error,
     context: string,
     request?: Request,
-    additionalMetadata?: Record<string, any>,
+    additionalMetadata?: Record<string, unknown>,
   ): void {
     const metadata = {
       context,
@@ -183,24 +183,24 @@ export const logger = new Logger();
  */
 export function withRequestLogger(request: Request) {
   return {
-    debug: (message: string, metadata?: Record<string, any>) =>
+    debug: (message: string, metadata?: Record<string, unknown>) =>
       logger.debug(message, metadata, request),
-    info: (message: string, metadata?: Record<string, any>) =>
+    info: (message: string, metadata?: Record<string, unknown>) =>
       logger.info(message, metadata, request),
-    warn: (message: string, metadata?: Record<string, any>) =>
+    warn: (message: string, metadata?: Record<string, unknown>) =>
       logger.warn(message, metadata, request),
-    error: (message: string, metadata?: Record<string, any>) =>
+    error: (message: string, metadata?: Record<string, unknown>) =>
       logger.error(message, metadata, request),
-    fatal: (message: string, metadata?: Record<string, any>) =>
+    fatal: (message: string, metadata?: Record<string, unknown>) =>
       logger.fatal(message, metadata, request),
     logServiceError: (
       error: ServiceError,
-      additionalMetadata?: Record<string, any>,
+      additionalMetadata?: Record<string, unknown>,
     ) => logger.logServiceError(error, request, additionalMetadata),
     logError: (
       error: Error,
       context: string,
-      additionalMetadata?: Record<string, any>,
+      additionalMetadata?: Record<string, unknown>,
     ) => logger.logError(error, context, request, additionalMetadata),
   };
 }

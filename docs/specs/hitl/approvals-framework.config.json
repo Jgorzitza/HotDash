@@ -1,0 +1,52 @@
+{
+  "status": "planned_only_do_not_seed",
+  "roles": { "approver": "CEO", "delegates": [] },
+  "statuses": [
+    "draft",
+    "pending_review",
+    "approved",
+    "scheduled",
+    "applied",
+    "published",
+    "sent",
+    "rejected",
+    "changes_requested",
+    "failed",
+    "canceled"
+  ],
+  "actions": {
+    "approve": { "enabled": true, "requireReasons": true },
+    "approveWithEdit": { "enabled": true, "requireReasons": true },
+    "schedule": { "enabled": true },
+    "requestChanges": { "enabled": true },
+    "reject": { "enabled": true },
+    "cancel": { "enabled": true }
+  },
+  "reasons": {
+    "file": "docs/specs/hitl/reason-codes.json",
+    "agentCodesFile": "docs/specs/hitl/agent-reason-codes.json"
+  },
+  "evidence": { "required": true, "storeDiffs": true, "redactPII": true },
+  "audit": { "immutable": true, "referenceDocumentUri": true },
+  "businessHours": { "timezone": "America/Edmonton", "pauseSlaOffHours": true },
+  "sla": {
+    "customerReplies": { "liveChatWarnMin": 5, "liveChatEscalateMin": 15 },
+    "inventory": { "pendingReviewWarnHours": 24 },
+    "social": { "minScheduledNext7": 5 }
+  },
+  "notifications": {
+    "channels": ["in_app", "email", "sms"],
+    "respectBusinessHours": true
+  },
+  "idempotency": { "key": "${subject_type}:${subject_id}:${target_status}" },
+  "mcp": { "evidenceRequired": true },
+  "autopublish": {
+    "enabled": false,
+    "tiers": {
+      "tier0": ["meta_description_trim", "image_compress", "alt_text_add"],
+      "tier1": ["copy_small_edits", "internal_link_add"],
+      "tier2": ["layout_minor"]
+    },
+    "rollback": { "oneClick": true }
+  }
+}

@@ -1,6 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
-import type { LoaderFunction } from "react-router";
+import {
+  useLoaderData,
+  type LoaderFunction,
+  type LoaderFunctionArgs,
+} from "react-router";
 
 import "../styles/tokens.css";
 import {
@@ -13,6 +15,10 @@ import {
   OpsMetricsTile,
 } from "../components/tiles";
 import type { TileState, TileFact } from "../components/tiles";
+import {
+  AdsTile as AdsPerformanceTile,
+  type AdsTileData,
+} from "../components/dashboard/AdsTile";
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -20,8 +26,11 @@ import type { LandingPageAnomaly } from "../services/ga/ingest";
 import { getLandingPageAnomalies } from "../services/ga/ingest";
 import { getShopifyServiceContext } from "../services/shopify/client";
 import { getInventoryAlerts } from "../services/shopify/inventory";
-import type { InventoryAlert } from "../services/shopify/types";
-import type { FulfillmentIssue, OrderSummary } from "../services/shopify/types";
+import type {
+  FulfillmentIssue,
+  InventoryAlert,
+  OrderSummary,
+} from "../services/shopify/types";
 import { recordDashboardSessionOpen } from "../services/dashboardSession.server";
 import {
   getPendingFulfillments,
@@ -33,6 +42,10 @@ import {
 } from "../services/metrics/aggregate";
 import type { ServiceResult } from "../services/types";
 import { ServiceError } from "../services/types";
+import {
+  getSliceBPacing as fetchSliceBPacing,
+  getSliceCAttribution as fetchSliceCAttribution,
+} from "../lib/ads";
 
 interface LoaderData {
   mode: "live" | "mock";
@@ -42,6 +55,8 @@ interface LoaderData {
   escalations: TileState<EscalationConversation[]>;
   seo: TileState<LandingPageAnomaly[]>;
   opsMetrics: TileState<OpsAggregateMetrics>;
+  adsEnabled: boolean;
+  ads?: TileState<AdsTileData>;
 }
 
 export const loader: LoaderFunction = async ({
@@ -66,6 +81,8 @@ export const loader: LoaderFunction = async ({
   );
   const escalations = await resolveEscalations(context.shopDomain);
   const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  const adsEnabled = isAdsTileEnabled();
+  const ads = adsEnabled ? await resolveAdsTile() : undefined;
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
@@ -81,6 +98,8 @@ export const loader: LoaderFunction = async ({
     escalations,
     seo,
     opsMetrics,
+    adsEnabled,
+    ads,
   });
 };
 
@@ -135,6 +154,37 @@ async function resolveEscalations(
     if (error instanceof ServiceError) {
       return { status: "error", error: error.message };
     }
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+function isAdsTileEnabled(): boolean {
+  return (
+    process.env.ADS_METRICS_SLICE_B === "1" &&
+    process.env.ADS_METRICS_SLICE_C === "1"
+  );
+}
+
+async function resolveAdsTile(): Promise<TileState<AdsTileData>> {
+  try {
+    const [pacing, attribution] = await Promise.all([
+      fetchSliceBPacing(),
+      fetchSliceCAttribution(),
+    ]);
+
+    const fallback = pacing.fallbackReason ?? attribution.fallbackReason;
+
+    return {
+      status: fallback ? "error" : "ok",
+      data: { pacing, attribution },
+      source: fallback ? "mock" : "fresh",
+      error: fallback,
+    };
+  } catch (error) {
+    if (error instanceof Response) throw error;
     return {
       status: "error",
       error: error instanceof Error ? error.message : "Unknown error",
@@ -317,6 +367,7 @@ function buildMockDashboard(): LoaderData {
       source: "mock",
       fact: fact(6),
     },
+    adsEnabled: false,
   };
 }
 
@@ -342,6 +393,15 @@ export default function OperatorDashboard() {
         </div>
       )}
       <div className="occ-tile-grid">
+        {data.adsEnabled && data.ads && (
+          <TileCard
+            title="Ads Performance"
+            tile={data.ads}
+            render={(adsData) => <AdsPerformanceTile data={adsData} />}
+            testId="tile-ads-performance"
+          />
+        )}
+
         <TileCard
           title="Ops Pulse"
           tile={data.opsMetrics}

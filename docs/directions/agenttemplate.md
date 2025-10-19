@@ -31,6 +31,18 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 - If blocked > 15 minutes: capture evidence (commands + stderr), file a concise blocker with owner/ETA, then continue with parallel work in scope.
 - For shutdown requests: run `docs/runbooks/agent_shutdown_checklist.md` end‑to‑end without waiting, then post the one‑liner handoff in the Issue.
 
+### Foreground Proof (required)
+
+- Wrap any command expected to run >15s with the heartbeat wrapper so progress is visible and logged:
+  - `scripts/policy/with-heartbeat.sh <agent> -- <your command>`
+- Append proof to `artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.log` on every step. PRs must include this file and reference it in “Foreground Proof”.
+
+### Codex Quick Start (continuous)
+
+- To avoid any idle periods while running required checks and tests, use the continuous runner:
+  - `node scripts/policy/codex-run.mjs <agent>`
+  - Optional extra args after `--` to include lane-specific steps.
+
 ## Definition of Done
 
 - [ ] Objective satisfied and within scope only
@@ -40,6 +52,7 @@ Describe the outcome this agent must deliver for the current sprint. Keep it act
 - [ ] Docs/runbooks updated when behavior changes
 - [ ] Feedback entry written to the correct file
 - [ ] Contract test in this packet passes (describe how to run it)
+- [ ] Foreground Proof: heartbeat log committed under `artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

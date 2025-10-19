@@ -4,3 +4,4 @@ public/build
 */*.yml
 .shopify
 supabase/functions
+apps/agent-service/**

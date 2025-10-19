@@ -1,0 +1,32 @@
+{
+  "status": "planned_only_do_not_seed",
+  "ceo": {
+    "phone": "+15092639701",
+    "email": "justin@hotrodan.com"
+  },
+  "businessHours": {
+    "timezone": "America/Edmonton",
+    "weekly": {
+      "monday": ["09:00-21:00"],
+      "tuesday": ["09:00-21:00"],
+      "wednesday": ["09:00-21:00"],
+      "thursday": ["09:00-21:00"],
+      "friday": ["09:00-21:00"],
+      "saturday": ["10:00-17:00"],
+      "sunday": ["10:00-17:00"]
+    }
+  },
+  "channels": [
+    "chatwoot:email",
+    "chatwoot:livechat",
+    "chatwoot:sms",
+    "chatwoot:social_dm"
+  ],
+  "slaPolicy": {
+    "countOutsideBusinessHours": false,
+    "startAtNextOpen": true,
+    "autoFallbackReply": false
+  },
+  "offlineChatMessage": "We’re probably elbows-deep in an LS swap or chasing down a stubborn AN fitting.\nDrop your message below — we’ll get back to you faster than you can say \"torque wrench.\" 🔧🔥",
+  "notes": "Planning artifact only. Do not apply seeds/migrations until cross-feature review (inventory, social, data, analytics)."
+}

@@ -1,0 +1,149 @@
+{
+  "status": "planned_only_do_not_seed",
+  "windows": { "dashboardDays": 7, "alt": 28, "attributionDays": 7 },
+  "attribution": {
+    "model": "ga4_last_non_direct",
+    "usePlatformConversionsAsReference": true
+  },
+  "channels": {
+    "paid": ["meta_ads", "google_ads", "tiktok_ads", "pinterest_ads"],
+    "organic": { "gsc": true, "bing_webmaster_tools": true }
+  },
+  "kpis": {
+    "core": ["revenue", "spend", "roas", "cac_cpa", "ctr", "cvr", "aov"],
+    "secondary": [
+      "impressions",
+      "clicks",
+      "sessions",
+      "new_vs_returning",
+      "refund_rate"
+    ]
+  },
+  "brandFilters": {
+    "enabled": true,
+    "patterns": [
+      "hotrodan",
+      "hot rod an",
+      "hotrodan.com",
+      "hot rod an fittings"
+    ],
+    "file": "docs/specs/hitl/brand-filters.json",
+    "caseInsensitive": true,
+    "requireHitlForChanges": true,
+    "vendor": {
+      "useVendorForPageBrand": true,
+      "firstPartyVendors": ["Hot Rod AN"],
+      "mapFromShopify": true
+    },
+    "reportingDims": ["query_brand", "page_vendor", "first_party"]
+  },
+  "siteSearch": {
+    "ga4Event": "view_search_results",
+    "params": ["search_term", "results_count", "no_results", "page_path"],
+    "persistTopTerms": true,
+    "persistNullResults": true
+  },
+  "ingestion": {
+    "schedule": { "cron": "0 4 * * *", "timezone": "America/Edmonton" },
+    "batch": { "maxRows": 5000 },
+    "joins": {
+      "via": ["utm_campaign", "utm_source", "utm_medium"],
+      "fallback": "proportional_by_clicks",
+      "includeContent": true
+    },
+    "repull": { "days": 3 },
+    "backfill": { "days": 35 },
+    "idempotencyKey": "${platform}:${account_id}:${date}:${campaign_id}:${ad_id}",
+    "timezone": "America/Edmonton",
+    "currency": { "base": "USD", "normalize": false }
+  },
+  "utmMapping": {
+    "source": {
+      "meta_ads": "facebook",
+      "google_ads": "google",
+      "tiktok_ads": "tiktok",
+      "pinterest_ads": "pinterest"
+    },
+    "medium": {
+      "meta_ads": "paid_social",
+      "tiktok_ads": "paid_social",
+      "pinterest_ads": "paid_social",
+      "google_ads": { "search": "paid_search", "shopping": "shopping" }
+    },
+    "campaignSlug": { "from": "campaign_name", "sanitize": true },
+    "content": { "from": "ad_id" }
+  },
+  "dashboards": {
+    "tiles": {
+      "ads": {
+        "windowDays": 7,
+        "altWindowDays": 28,
+        "metrics": [
+          "spend",
+          "revenue_ga4",
+          "roas",
+          "cac_cpa",
+          "ctr",
+          "cvr",
+          "aov"
+        ],
+        "badges": {
+          "incompleteAttributionThreshold": 0.8,
+          "missingUtms": true,
+          "overspendVsBudget": true
+        },
+        "quickActions": {
+          "openCampaigns": "/ads/campaigns?badge=problem",
+          "fixUtms": "/ads/utm-checklist",
+          "linkActivity": "/marketing/activities",
+          "exportCsv": "/ads/export?range=7d"
+        }
+      },
+      "seo": {
+        "windowDays": 7,
+        "altWindowDays": 28,
+        "metrics": [
+          "organic_revenue",
+          "sessions_organic",
+          "cvr_organic",
+          "gsc_ctr",
+          "gsc_impressions",
+          "non_brand_share"
+        ],
+        "badges": {
+          "decay": true,
+          "indexability": false,
+          "core_web_vitals": false
+        },
+        "quickActions": {
+          "viewUpgrades": "/seo/upgrades",
+          "approveSuggestions": "/suggestions?type=product",
+          "fixDecay": "/seo/decay"
+        }
+      },
+      "compare": {
+        "channels": ["paid_social", "paid_search", "shopping", "organic"],
+        "trendlines": { "primary": "revenue", "secondary": "spend" }
+      }
+    },
+    "filters": {
+      "datePresets": ["7d", "14d", "28d"],
+      "platforms": ["meta_ads", "google_ads", "tiktok_ads", "pinterest_ads"],
+      "brand": ["query_brand", "non_brand"],
+      "vendor": ["first_party", "other"],
+      "country": "all"
+    }
+  },
+  "optionalIntegrations": {
+    "gsc_url_inspection": false,
+    "crux_core_web_vitals": false,
+    "google_business_profile": false,
+    "backlinks_basic": false
+  },
+  "marketing": {
+    "shopify": {
+      "linkage": { "required": true, "upsertExternal": true },
+      "scopes": ["write_marketing_events", "read_marketing_events"]
+    }
+  }
+}

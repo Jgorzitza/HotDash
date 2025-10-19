@@ -1,0 +1,10 @@
+{
+  "status": "planned_only_do_not_seed",
+  "patterns": ["hotrodan", "hot rod an", "hotrodan.com", "hot rod an fittings"],
+  "caseInsensitive": true,
+  "vendor": {
+    "firstPartyVendors": ["Hot Rod AN"],
+    "mapFromShopify": true
+  },
+  "notes": "Extend patterns and vendor list via HITL approvals. Patterns are simple contains checks, not regex."
+}

@@ -98,11 +98,13 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
           approval.validation_errors.length > 0 && (
             <Banner tone="critical">
               <BlockStack gap="200">
-                {approval.validation_errors!.map((error: string, idx: number) => (
-                  <Text as="p" key={idx}>
-                    • {error}
-                  </Text>
-                ))}
+                {approval.validation_errors!.map(
+                  (error: string, idx: number) => (
+                    <Text as="p" key={idx}>
+                      • {error}
+                    </Text>
+                  ),
+                )}
               </BlockStack>
             </Banner>
           )}

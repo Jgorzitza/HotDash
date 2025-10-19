@@ -9,7 +9,7 @@
  * - Brand voice guidelines
  */
 
-import type { SocialPlatform, ContentPost } from "../../lib/content/tracking";
+import type { SocialPlatform } from "../../lib/content/tracking";
 import {
   analyzeEngagementPatterns,
   type EngagementInsights,
@@ -125,8 +125,6 @@ const PLATFORM_LIMITS = {
  * 4. Use engagement insights for optimization
  */
 export async function draftPost(request: DraftPostRequest): Promise<PostDraft> {
-  const startTime = Date.now();
-
   try {
     const platformConfig = PLATFORM_LIMITS[request.platform];
     const maxLength = request.maxLength || platformConfig.maxLength;
@@ -183,9 +181,10 @@ export async function draftPostVariations(
   const variations: PostDraft[] = [];
 
   for (let i = 0; i < count; i++) {
+    const tones = ["professional", "casual", "playful"] as const;
     const variation = await draftPost({
       ...request,
-      tone: ["professional", "casual", "playful"][i % 3] as any,
+      tone: tones[i % tones.length],
     });
     variations.push(variation);
   }
@@ -332,6 +331,10 @@ function generateContentSuggestions(
 
   if (draft.metadata.wordCount < 10) {
     suggestions.push("Longer posts (10-20 words) tend to perform better");
+  }
+
+  if (insights.averageEngagementRate === 0) {
+    suggestions.push("Gather more engagement data to tailor future drafts");
   }
 
   return suggestions;
@@ -481,6 +484,7 @@ export async function createPostDraftApproval(
               hashtags: draft.metadata.hashtags,
               scheduledTime: scheduledTime || "immediate",
               campaignId,
+              targetAudience,
               provenance: {
                 mode: "dev:test",
                 feedback_ref: `feedback/content/${new Date().toISOString().split("T")[0]}.md`,
@@ -498,6 +502,7 @@ export async function createPostDraftApproval(
               hashtags: draft.metadata.hashtags,
               scheduledTime: scheduledTime || "immediate",
               campaignId,
+              targetAudience,
             },
             dry_run_status: "Ready to publish",
           },
@@ -531,6 +536,7 @@ function calculateEstimatedImpact(
   conversions: number;
   engagementRate: number;
 } {
+  void optimization;
   // Base estimates by platform (placeholder - would use ML in production)
   const baseMetrics = {
     instagram: { impressions: 5000, engagementRate: 5.0 },

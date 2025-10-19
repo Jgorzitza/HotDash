@@ -8,19 +8,23 @@ expires: 2025-10-08
 ---
 
 ## 2025-10-10 — Current Execution
+
 - Blockers: waiting on comms tooling to issue follow-up pings (Supabase SCC, GA MCP, OpenAI DPA) and on reliability to stage updated pg_cron evidence; will escalate through manager if still pending at next checkpoint.
 
 ## 2025-10-10 — Sanitized Branch Reset Complete
 
 ## 2025-10-10 — Sanitized Branch Reset Prep
+
 # Compliance Agent — Daily Status Log
 
 ## Direction Sync — 2025-10-11
+
 - Re-acknowledged `docs/directions/compliance.md` (last reviewed 2025-10-10) and captured new sprint focus: archive Shopify DPA + forthcoming Supabase SCC evidence, refresh Supabase incident checkpoints, and confirm operator comms include privacy notes.
 - Reviewed `docs/runbooks/restart_cycle_checklist.md` again; Step 2/4 requirements noted and latest stash evidence captured under `stash@{0}` (`restart-cycle-2025-10-11`) for restart audit trails.
 - Verified current workspace restored after stash apply attempts; no additional compliance-owned stashes beyond the logged restart cycle entry.
 
 ## 2025-10-11
+
 - Captured Shopify DPA bundle (`docs/compliance/evidence/shopify/`) with subprocessor snapshot and documented review notes in `docs/compliance/evidence/shopify/dpa_review_2025-10-11.md`.
 - Archived Supabase DPA + subprocessor snapshot under `docs/compliance/evidence/supabase/dpa/` and summarized obligations/next steps in `docs/compliance/evidence/supabase/dpa/dpa_review_2025-10-11.md`.
 - Sent follow-up to Supabase support for countersigned SCC + region confirmation; logged in `docs/compliance/evidence/vendor_followups_2025-10-11.md` and updated tracker (`docs/compliance/evidence/vendor_dpa_status.md`).
@@ -32,12 +36,14 @@ expires: 2025-10-08
 - 2025-10-12T20:32Z — Added thread follow-up tagging reliability on-call, reconfirmed 2025-10-13 22:00 UTC delivery target, and offered pairing window for SQL validation (see `docs/compliance/evidence/retention_runs/pg_cron_followup_2025-10-12.md`).
 
 ## 2025-10-14
+
 - **Vendor chase:** Logged reminder round (`docs/compliance/evidence/vendor_followups_2025-10-14.md`) covering Supabase SCC/region, GA MCP DPA, and OpenAI DPA; per-vendor notes filed (Supabase `docs/compliance/evidence/supabase/scc/followup_2025-10-14.md`, GA MCP `.../ga_mcp/followup_2025-10-14.md`, OpenAI `.../openai/followup_2025-10-14.md`). Escalations queued for deadlines (Supabase 17:00 UTC today; GA/OpenAI 15 Oct 18:00 UTC).
 - **pg_cron evidence:** Pinged reliability again via `#occ-ops` thread to confirm delivery of new run logs and reiterated checklist (see `docs/compliance/evidence/retention_runs/pg_cron_followup_2025-10-12.md`). Hash register placeholder ready (`docs/compliance/evidence/retention_runs/pg_cron_hash_register_2025-10-13.md`).
 - **AI logging cadence:** Completed audit and updated inventory/retention plan; action item for engineering to add 30-day purge and capture first-run evidence before 16 Oct (refer `docs/compliance/evidence/ai_logging_audit_2025-10-13.md`).
 - **Tabletop prep:** Expanded Supabase incident tabletop template with full agenda, evidence checklist, and pre-work (`docs/compliance/evidence/tabletop_supabase_scenario.md`). Ready to schedule once SCC/pg_cron evidence lands.
 
 ## 2025-10-13
+
 - **Vendor chase:** Logged new follow-ups (`docs/compliance/evidence/vendor_followups_2025-10-13.md`) for Supabase SCC/region, GA MCP DPA, and OpenAI DPA. Archived outbound messages in respective evidence folders.
 - **Supabase:** Sent 09:05 UTC email (ticket #SUP-49213) reiterating SCC + region confirmation and pg_cron evidence ETA; summary stored in `docs/compliance/evidence/supabase/scc/followup_2025-10-13.md`.
 - **GA MCP:** Submitted portal update at 09:20 UTC requesting DPA packet and region confirmation; notes filed in `docs/compliance/evidence/ga_mcp/followup_2025-10-13.md`.
@@ -48,6 +54,7 @@ expires: 2025-10-08
 - **2025-10-14 follow-ups:** Triggered reminder emails for Supabase (#SUP-49213), GA MCP, and OpenAI (see `docs/compliance/evidence/vendor_followups_2025-10-14.md` for table + evidence links). Awaiting responses; escalation timers set (Supabase 17:00 UTC today, GA MCP/OpenAI 15 Oct 18:00 UTC).
 
 ## 2025-10-12
+
 - **Vendor tracker:** Linked Shopify DPA evidence and stood up Supabase SCC placeholder (`docs/compliance/evidence/supabase/scc/README.md`) in `docs/compliance/evidence/vendor_dpa_status.md`; flagged countersigned SCC as outstanding with 2025-10-14 escalation window.
 - **Runbook:** Expanded `docs/runbooks/incident_response_supabase.md` with credential handoff checkpoints and explicit restart stash reference (format mirrors `docs/compliance/evidence/restart_cycles/2025-10-11_restart_cycle.md`).
 - **Operator comms:** Reviewed `docs/marketing/launch_faq.md`, `docs/marketing/support_training_script_2025-10-16.md`, and updated `docs/marketing/launch_comms_packet.md` to add privacy note covering Shopify Admin access + Supabase telemetry retention in launch email/blog copy; notified marketing/support owners for sign-off.
@@ -68,20 +75,24 @@ expires: 2025-10-08
 - **Risks (active):** Vendor DPAs remain pending (R2) — escalate Supabase if no ticket reply by 2025-10-13 EOD and GA MCP/OpenAI by 2025-10-15; retention automation (R1) still blocked on reliability delivering cron evidence; privacy comm sign-offs from marketing/support still outstanding.
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
+
 - Re-read refreshed sprint focus (data inventory/retention matrix, Supabase incident runbook, vendor DPA audit) per `docs/directions/compliance.md`.
 - Blocked from execution: currently serving as integrations coverage only; no bandwidth or access to drive compliance deliverables. Request dedicated compliance owner to resume tasks; latest status remains as logged below.
 
 ## 2025-10-09 Sprint Execution
+
 - Circulated Supabase incident runbook to reliability/support for sign-off and scheduled follow-up for 2025-10-10 15:00 UTC; awaiting feedback before locking tabletop scenario.
 - Updated vendor DPA reminder cadence (Supabase, GA MCP, OpenAI) and queued escalation note for manager if acknowledgements do not arrive by 2025-10-10 morning.
 - Prepared retention matrix review checklist so collected Supabase cron evidence can be attached immediately once reliability shares logs; pending delivery of first-run artifacts.
 
 ## 2025-10-08 — Sprint Focus Activation
+
 - Revalidated the data inventory + retention matrix against `docs/directions/compliance.md:26` goals; queued manager review of `docs/compliance/data_inventory.md` and `docs/compliance/retention_automation_plan.md` for the next governance sync.
 - Began aligning the Supabase incident response runbook (`docs/runbooks/incident_response_supabase.md`) with reliability/support owners; drafted tabletop outline shell and waiting on their availability to continue per `docs/directions/compliance.md:27`.
 - Pulled the latest vendor follow-up status into `docs/compliance/evidence/vendor_dpa_status.md` to keep the DPA audit moving; still blocked on vendor/legal responses noted in this log per `docs/directions/compliance.md:28`.
 
 ## 2025-10-07
+
 - **Direction**: Acknowledged `docs/directions/compliance.md`; new compliance artifacts published (`docs/compliance/data_inventory.md`, `docs/runbooks/incident_response_breach.md`).
 - **Data Inventory**: Documented processing activities across Shopify, Chatwoot, Supabase, GA MCP, OpenAI (planned), and caches. Flagged required retention automations and DPIA follow-up.
 - **Incident Response Preparedness**: Drafted breach runbook covering detection→notification workflow, evidence handling, and quarterly readiness checklist; pending reliability/support review.
@@ -102,6 +113,7 @@ expires: 2025-10-08
 - **Latest**: Ran purge script (log archived `docs/compliance/evidence/retention_runs/2025-10-08_purge_log.json` once generated); recorded vendor follow-ups (`docs/compliance/evidence/vendor_followups_2025-10-08.md`); published privacy toggle rollout plan (`docs/marketing/privacy_toggle_rollout.md`) and staged final notice copy (`docs/compliance/evidence/privacy_notice/operator_notice_v2025-10-08.md`).
 
 ## 2025-10-08
+
 - **Direction**: Re-read `docs/directions/compliance.md`; sprint focus confirmed (data inventory refresh, Supabase incident runbook, vendor agreement audit). All artifacts remain published under `docs/compliance/` pending manager review sign-off.
 - **Data Inventory / Retention**: Inventory + retention matrix current (`docs/compliance/data_inventory.md`, `docs/compliance/retention_automation_plan.md`). Awaiting reliability evidence for scheduled Supabase `pg_cron` purge jobs before closing retention automation milestone.
 - **Incident Response**: Supabase-specific incident runbook drafted at `docs/runbooks/incident_response_supabase.md` (covers detection, containment, comms, evidence). Need reliability/support review plus first tabletop entry.
@@ -113,6 +125,7 @@ expires: 2025-10-08
 - **Next Actions**: Prepare drill outline + evidence template, escalate DPA/RLS gaps in manager update, coordinate with reliability on cron job deployment window, and backfill QA plan for purge script test harness.
 
 ## 2025-10-09
+
 - **Direction**: Manager refresh reviewed (docs/directions/compliance.md; sprint focus unchanged). Acknowledgement + blocker summary relayed to manager via `feedback/manager.md` (2025-10-09 section).
 - **Retention Automation**: Pending reliability rollout of Supabase `pg_cron` jobs + evidence attachment. Follow-up scheduled with reliability owner for 2025-10-10 14:00 ET; will archive first-run logs under `docs/compliance/evidence/retention_runs/` once provided.
 - **Vendor Agreements**: No responses yet on GA MCP, Supabase, OpenAI DPA/residency requests (see `docs/compliance/evidence/vendor_followups_2025-10-08.md` and `docs/compliance/evidence/vendor_followups_2025-10-09.md`). Added second reminder cadence for 2025-10-10 morning; continue to log receipts in `docs/compliance/evidence/vendor_dpa_status.md`.
@@ -125,6 +138,7 @@ expires: 2025-10-08
 - **Evidenced follow-ups**: Logged today's reminder cadence in `docs/compliance/evidence/vendor_followups_2025-10-09.md`; will attach email receipts once vendors respond.
 
 ## 2025-10-10
+
 - **Supabase Fix**: Revalidated incident runbook scope with reliability checklist; queued 2025-10-10 14:00 ET sync to capture pg_cron deployment evidence and confirm decision log residency. Drafted evidence pack template for `docs/compliance/evidence/retention_runs/` so logs can be archived immediately once delivered. Supabase DPA + residency escalation documented in `docs/compliance/evidence/vendor_followups_2025-10-10.md`.
 - **Staging Postgres + Secrets**: Coordinated with deployment to align on outstanding secret rows in `docs/deployment/env_matrix.md`; compiled compliance review checklist for staging Postgres access (backup policy, RLS validation, audit trail). Waiting on reliability to publish vault paths + smoke artifacts before sign-off.
 - **GA MCP Readiness**: Logged today’s vendor follow-up tracker (`docs/compliance/evidence/vendor_followups_2025-10-10.md`) referencing OCC-INF-221 outcome. Prepared compliance approval gate: block GA MCP go-live until Google DPA + subprocessor list filed under `docs/compliance/evidence/vendor_dpa_status.md`.

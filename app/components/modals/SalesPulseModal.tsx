@@ -96,7 +96,6 @@ export function SalesPulseModal({
       <dialog
         open
         className="occ-modal"
-        role="dialog"
         aria-modal="true"
         aria-labelledby="sales-pulse-modal-title"
         data-testid="sales-pulse-dialog"

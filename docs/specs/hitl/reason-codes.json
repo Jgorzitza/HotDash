@@ -1,0 +1,37 @@
+{
+  "status": "planned_only_do_not_seed",
+  "global": [
+    "Tone/Voice",
+    "Accuracy/Factuality",
+    "Policy/Promise/Scope",
+    "Legal/Compliance/PII",
+    "Brand/Links/Assets",
+    "Clarity/Structure",
+    "Escalation/Ownership",
+    "Missing Context/Info",
+    "Risk/Safety",
+    "Format/Conciseness"
+  ],
+  "inventory": [
+    "Receive PO",
+    "Return/RMA",
+    "Cycle Count",
+    "Damage/Shrinkage",
+    "Supplier Error",
+    "System Correction",
+    "Inter-location Transfer",
+    "Kitting/Assembly",
+    "Other"
+  ],
+  "social": [
+    "Tone/Brand",
+    "Compliance/Claims",
+    "Asset/Media",
+    "Link/UTM",
+    "Timing/Schedule",
+    "Clarity/Conciseness",
+    "Targeting"
+  ],
+  "customerReplies": "CEO will finalize; use global editorial set until then",
+  "notes": "Edits to taxonomy require HITL approvals and should be versioned."
+}

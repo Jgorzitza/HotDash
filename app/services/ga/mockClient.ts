@@ -20,7 +20,8 @@ const SAMPLE_DATA: GaSession[] = [
 
 export function createMockGaClient(): GaClient {
   return {
-    async fetchLandingPageSessions(_range: DateRange) {
+    async fetchLandingPageSessions(_range: DateRange): Promise<GaSession[]> {
+      void _range;
       return SAMPLE_DATA;
     },
   };

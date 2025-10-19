@@ -19,6 +19,9 @@ BEGIN
 END$$;
 
 -- Policy 1: Service role has full access (system operations)
+DROP POLICY IF EXISTS decision_logs_service_role_all
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_service_role_all
   ON public.decision_sync_event_logs
   FOR ALL
@@ -28,6 +31,9 @@ CREATE POLICY decision_logs_service_role_all
 
 -- Policy 2: Authenticated users can read decision logs for their scope
 -- Uses JWT claim 'app.current_scope' for scope isolation
+DROP POLICY IF EXISTS decision_logs_read_by_scope
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_read_by_scope
   ON public.decision_sync_event_logs
   FOR SELECT
@@ -42,6 +48,9 @@ CREATE POLICY decision_logs_read_by_scope
   );
 
 -- Policy 3: Operator readonly role can read all decision logs (for monitoring)
+DROP POLICY IF EXISTS decision_logs_read_operators
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_read_operators
   ON public.decision_sync_event_logs
   FOR SELECT
@@ -49,6 +58,9 @@ CREATE POLICY decision_logs_read_operators
   USING (true);
 
 -- Policy 4: Authenticated users can insert decision logs for their scope
+DROP POLICY IF EXISTS decision_logs_insert_by_scope
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_insert_by_scope
   ON public.decision_sync_event_logs
   FOR INSERT
@@ -63,6 +75,9 @@ CREATE POLICY decision_logs_insert_by_scope
   );
 
 -- Policy 5: Prevent updates (decision logs are immutable audit records)
+DROP POLICY IF EXISTS decision_logs_no_update
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_no_update
   ON public.decision_sync_event_logs
   FOR UPDATE
@@ -72,6 +87,9 @@ CREATE POLICY decision_logs_no_update
 
 -- Policy 6: Prevent deletes (decision logs are immutable audit records)
 -- Only service_role can delete for retention/cleanup
+DROP POLICY IF EXISTS decision_logs_no_delete
+  ON public.decision_sync_event_logs;
+
 CREATE POLICY decision_logs_no_delete
   ON public.decision_sync_event_logs
   FOR DELETE
@@ -92,4 +110,3 @@ GRANT ALL ON public.decision_sync_event_logs TO service_role;
 -- Ensure the view still works after RLS enablement
 -- The view inherits RLS policies from the underlying table
 COMMENT ON VIEW public.decision_sync_events IS 'Public view of decision_sync_event_logs. RLS policies apply from base table.';
-

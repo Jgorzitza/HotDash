@@ -30,6 +30,9 @@ import {
 import { buildSeoAnomalyBundle, GaSamplingError } from "~/lib/seo/pipeline";
 import { buildSeoDiagnostics } from "~/lib/seo/diagnostics";
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
 /**
  * Mock data generators for Search Console and Core Web Vitals
  * TODO: Replace with real Search Console API integration
@@ -72,18 +75,26 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }));
 
     // Detect all anomaly types
-    const metadata: any = (gaResult as any).fact?.metadata ?? undefined;
+    const metadataValue = gaResult.fact.metadata;
+    const metadata = isRecord(metadataValue) ? metadataValue : undefined;
+
+    const generatedAtValue = metadata?.["generatedAt"];
     const generatedAt =
-      metadata &&
-      typeof metadata === "object" &&
-      "generatedAt" in metadata &&
-      typeof (metadata as Record<string, unknown>).generatedAt === "string"
-        ? (metadata as Record<string, unknown>).generatedAt
-        : undefined;
+      typeof generatedAtValue === "string" ? generatedAtValue : undefined;
+
+    const sampledValue = metadata?.["sampled"];
     const isSampled =
-      metadata && typeof metadata === "object" && Object.prototype.hasOwnProperty.call(metadata, 'sampled')
-        ? Boolean((metadata as Record<string, unknown>).sampled)
-        : false;
+      typeof sampledValue === "boolean"
+        ? sampledValue
+        : typeof sampledValue === "string"
+          ? sampledValue.toLowerCase() === "true"
+          : false;
+
+    const trafficSourceValue = metadata?.["source"];
+    const trafficSource =
+      typeof trafficSourceValue === "string"
+        ? trafficSourceValue
+        : `ga4:${gaResult.source}`;
 
     const bundle = buildSeoAnomalyBundle({
       shopDomain,
@@ -93,7 +104,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       crawl: detectCrawlAnomalies(getMockCrawlErrors()),
       generatedAt,
       sources: {
-        traffic: gaResult.source,
+        traffic: trafficSource,
         ranking: "mock",
         vitals: "mock",
         crawl: "mock",

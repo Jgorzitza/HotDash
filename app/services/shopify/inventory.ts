@@ -110,6 +110,31 @@ interface InventoryResponse {
   errors?: Array<{ message: string }>;
 }
 
+interface BundleVariantEdge {
+  node: {
+    id: string;
+    title: string;
+    sku: string | null;
+    inventoryQuantity: number | null;
+  };
+}
+
+interface BundleProductNode {
+  id: string;
+  title: string;
+  tags: string[];
+  variants: { edges: BundleVariantEdge[] };
+}
+
+interface BundleProductsResponse {
+  data?: {
+    products?: {
+      edges: Array<{ node: BundleProductNode }>;
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
 function computeAvailableQuantity(variant: InventoryVariantNode) {
   let total = 0;
   const levels = variant.inventoryItem?.inventoryLevels?.edges ?? [];
@@ -244,7 +269,7 @@ export async function getBundlePackMetadata(
     }>;
   }>
 > {
-  const { shopDomain, admin } = ctx;
+  const { admin } = ctx;
   const limit = options.limit || 250;
 
   // Query for products with BUNDLE or PACK tags
@@ -254,11 +279,11 @@ export async function getBundlePackMetadata(
     variables: { first: limit, query },
   });
 
-  const payload = await response.json();
+  const payload = (await response.json()) as BundleProductsResponse;
 
   if (payload.errors?.length) {
     throw new ServiceError(
-      payload.errors.map((err: any) => err.message).join("; "),
+      payload.errors.map((err) => err.message).join("; "),
       {
         scope: "shopify.inventory.bundlePack",
         code: "GRAPHQL_ERROR",
@@ -266,11 +291,10 @@ export async function getBundlePackMetadata(
     );
   }
 
-  const products = payload.data?.products?.edges || [];
+  const products = payload.data?.products?.edges ?? [];
 
-  return products.map((edge: any) => {
-    const node = edge.node;
-    const tags = node.tags || [];
+  return products.map(({ node }) => {
+    const tags = node.tags ?? [];
 
     // Check for BUNDLE:TRUE tag
     const isBundle = tags.some(
@@ -285,11 +309,11 @@ export async function getBundlePackMetadata(
       ? parseInt(packTag.split(":")[1], 10) || null
       : null;
 
-    const variants = (node.variants?.edges || []).map((v: any) => ({
-      id: v.node.id,
-      title: v.node.title,
-      sku: v.node.sku || "",
-      inventoryQuantity: v.node.inventoryQuantity || 0,
+    const variants = (node.variants?.edges ?? []).map(({ node: variant }) => ({
+      id: variant.id,
+      title: variant.title,
+      sku: variant.sku ?? "",
+      inventoryQuantity: variant.inventoryQuantity ?? 0,
     }));
 
     return {

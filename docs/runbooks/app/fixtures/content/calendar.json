@@ -1,0 +1,31 @@
+{
+  "entries": [
+    {
+      "id": "launch-linkedin-2025-10-21",
+      "channel": "linkedin",
+      "scheduledAt": "2025-10-21T14:00:00Z",
+      "status": "pending_approval",
+      "dependencies": ["ceo_copy_approval", "ci_green"],
+      "evidence": [
+        "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+        "artifacts/content/2025-10-18/manager_brief.md"
+      ]
+    },
+    {
+      "id": "launch-email-2025-10-21",
+      "channel": "email",
+      "scheduledAt": "2025-10-21T15:00:00Z",
+      "status": "pending_approval",
+      "dependencies": ["ceo_copy_approval", "ci_green"],
+      "evidence": ["artifacts/analytics/2025-10-18/ga4-live-metrics.json"]
+    },
+    {
+      "id": "sampling-guard-thread-2025-10-22",
+      "channel": "internal",
+      "scheduledAt": "2025-10-22T10:00:00Z",
+      "status": "blocked",
+      "dependencies": ["analytics_engagement_export"],
+      "evidence": []
+    }
+  ]
+}

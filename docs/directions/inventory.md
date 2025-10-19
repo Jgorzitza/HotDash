@@ -39,11 +39,18 @@ Launch the inventory intelligence system (status buckets, ROP calculations, pick
 - [ ] Docs/runbooks updated with rollout steps
 - [ ] Feedback recorded with evidence
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/inventory/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, log blocker and move to next queued task. Do not idle.
 - Keep diffs within Allowed paths; attach evidence.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh inventory -- <command>`.
+- Append ISO timestamps on each step to `artifacts/inventory/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

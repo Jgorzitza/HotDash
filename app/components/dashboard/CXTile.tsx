@@ -41,7 +41,9 @@ export function CXTile({ data }: CXTileProps) {
 
   const getSLABadge = () => {
     if (liveData.breachedSLA > 0) {
-      return <Badge tone="critical">{`${liveData.breachedSLA} SLA breached`}</Badge>;
+      return (
+        <Badge tone="critical">{`${liveData.breachedSLA} SLA breached`}</Badge>
+      );
     }
     return <Badge tone="success">All within SLA</Badge>;
   };

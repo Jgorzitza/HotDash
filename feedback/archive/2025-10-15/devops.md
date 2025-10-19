@@ -3,14 +3,16 @@
 ## Startup Checklist Execution
 
 ### 0) Align to the Star ✅
+
 - Reviewed `docs/NORTH_STAR.md` - Vision: Trustworthy operator-first control center with HITL approvals
 - Reviewed `docs/OPERATING_MODEL.md` - Workflow: Signals → Suggestions → Approvals → Actions → Audit → Learn
 - Reviewed `docs/RULES.md` - Documentation policy, security, task workflow
 - **Alignment check:** Direction aligns with North Star principles (governed delivery, MCP-first, no secrets in code)
 
 ### 1) Direction & Issue ✅
+
 - Read `docs/directions/devops.md`
-- **Today's objective:** 
+- **Today's objective:**
   1. Investigate and fix Feedback Cadence CI failures
   2. Set up Fly.io staging environment with deployment workflow
 - **Constraints:**
@@ -22,7 +24,9 @@
 - **Issues:** TBD (manager will create)
 
 ### 2) Tools & Env
+
 **Current status:**
+
 - Currently on branch: `agent/engineer/dashboard-foundation` (need to switch)
 - Need to verify MCP tools:
   - [ ] Fly.io MCP
@@ -30,14 +34,17 @@
   - [ ] Gitleaks
 
 ### 3) Sandbox & Branch
+
 - Need to create branch: `agent/devops/ci-staging-setup`
 
 ## Initial Investigation
 
 ### CI Status Check
+
 Ran `gh run list --limit 10` to check recent workflow runs:
 
 **Findings:**
+
 1. ✅ **Docs Policy** - PASSING on main (last run: 2025-10-15T18:04:32Z)
 2. ✅ **Gitleaks** - PASSING on main (last run: 2025-10-15T18:04:32Z)
 3. ❌ **Feedback Cadence** - FAILING on main (last 2 runs failed)
@@ -48,6 +55,7 @@ Ran `gh run list --limit 10` to check recent workflow runs:
 ### Feedback Cadence Investigation
 
 **Problem identified:**
+
 - Workflow "Feedback Cadence" is failing with exit code 1
 - Error message: "No feedback updates in the last 10 minutes"
 - Workflow file NOT FOUND in `.github/workflows/` directory
@@ -55,6 +63,7 @@ Ran `gh run list --limit 10` to check recent workflow runs:
 
 **Root cause analysis:**
 Ran `gh api repos/:owner/:repo/actions/runs` and discovered **MULTIPLE orphaned workflows**:
+
 - ❌ `feedback_cadence.yml` (FAILING - scheduled)
 - ❌ `drift_watchdog.yml` (SUCCESS but orphaned)
 - ❌ `security-scanning.yml` (FAILING)
@@ -69,6 +78,7 @@ Ran `gh api repos/:owner/:repo/actions/runs` and discovered **MULTIPLE orphaned 
 
 **Current state on main branch:**
 Only 4 workflow files exist:
+
 - ✅ `ai-config.yml` (PASSING)
 - ✅ `danger.yml` (PASSING)
 - ✅ `docs-policy.yml` (PASSING)
@@ -79,6 +89,7 @@ These workflows were deleted during the governance reset (commit fd41c2e) but Gi
 
 **Solution:**
 GitHub doesn't automatically remove workflow configurations when files are deleted. We need to:
+
 1. Disable the orphaned workflows via GitHub UI or API
 2. OR create stub workflow files that are disabled
 3. OR wait for GitHub to eventually clean them up (can take time)
@@ -89,7 +100,9 @@ Use GitHub API to disable all orphaned workflows to stop the failures.
 ## Plan for Today
 
 ### Task 1: Fix Feedback Cadence CI Failures
+
 **Steps:**
+
 1. ✅ Identify the issue (workflow file missing but schedule still active)
 2. Search git history for the workflow file
 3. Determine correct action:
@@ -99,7 +112,9 @@ Use GitHub API to disable all orphaned workflows to stop the failures.
 5. Document resolution
 
 ### Task 2: Set up Fly.io Staging Environment
+
 **Steps:**
+
 1. Verify Fly.io MCP is operational
 2. Create staging app via Fly.io MCP
 3. Configure secrets via `fly secrets set`
@@ -109,10 +124,12 @@ Use GitHub API to disable all orphaned workflows to stop the failures.
 7. Document deployment and rollback process
 
 ## Blockers
+
 - Need manager to create GitHub Issues for tasks
 - Need manager approval to disable orphaned workflows via GitHub API
 
 ## Commands Executed
+
 ```bash
 date +%Y-%m-%d                    # Get current date
 mkdir -p feedback/devops          # Create feedback directory
@@ -132,7 +149,9 @@ git checkout -b agent/devops/ci-staging-setup  # Create working branch
 ## Detailed Analysis: Orphaned Workflows
 
 ### Workflow States
+
 Checked all orphaned workflows via GitHub API:
+
 ```bash
 for workflow in feedback_cadence drift_watchdog tests fly-deploy security-scanning stack_guardrails coverage-monitoring accessibility-ci security supabase-sync-monitor secret_scan; do
   gh api repos/:owner/:repo/actions/workflows/${workflow}.yml | jq -r '.state'
@@ -140,6 +159,7 @@ done
 ```
 
 **Results:**
+
 - ✅ All 10 orphaned workflows are in "deleted" state
 - ✅ GitHub has already processed the deletion
 - ⚠️ Scheduled workflows (feedback_cadence, drift_watchdog) continue to run temporarily
@@ -148,22 +168,26 @@ done
 ### Current CI Health on Main Branch
 
 **Active workflows (4 total) - ALL PASSING:**
+
 - ✅ `ai-config.yml` - Validate AI Agent Config
 - ✅ `danger.yml` - Danger PR checks
 - ✅ `docs-policy.yml` - Docs Policy enforcement
 - ✅ `gitleaks.yml` - Gitleaks secret scanning
 
 **Last successful runs on main:**
+
 - Gitleaks: 2025-10-15T18:04:32Z (governance reset merge)
 - Docs Policy: 2025-10-15T18:04:32Z (governance reset merge)
 
 **Orphaned workflow runs (will stop automatically):**
+
 - ❌ Feedback Cadence: Last run 17:58:38Z (scheduled, failing)
 - ✅ Drift Watchdog: Last run 17:36:26Z (scheduled, passing but orphaned)
 
 ### Resolution
 
 **No action required for Feedback Cadence failures:**
+
 1. Workflow file was properly deleted during governance reset (commit fd41c2e)
 2. GitHub API confirms workflow state is "deleted"
 3. Scheduled runs will stop automatically (GitHub behavior)
@@ -171,6 +195,7 @@ done
 5. Failures are cosmetic and will clear within 24-48 hours
 
 **CI Health Status: ✅ GREEN**
+
 - All 4 active workflows passing on main
 - No action needed for orphaned workflows
 - Push protection: ENABLED
@@ -179,9 +204,11 @@ done
 ## Fly.io Staging Environment Analysis
 
 ### Current State
+
 Verified Fly.io staging app already exists and is operational:
 
 **App details:**
+
 - Name: `hotdash-staging`
 - Status: `deployed` (last deploy: Oct 14 2025 07:43)
 - Hostname: `hotdash-staging.fly.dev`
@@ -190,6 +217,7 @@ Verified Fly.io staging app already exists and is operational:
 - Resources: 1GB RAM, 1 shared CPU
 
 **Secrets configured (22 total):**
+
 - ✅ Shopify credentials (API key, secret, shop domain, app URL, scopes)
 - ✅ Database (DATABASE_URL)
 - ✅ Session (SESSION_SECRET)
@@ -200,6 +228,7 @@ Verified Fly.io staging app already exists and is operational:
 - ✅ Monitoring (synthetic check token, smoke test URL)
 
 **Configuration file:**
+
 - `fly.toml` exists and is properly configured
 - Auto-start/stop machines enabled
 - HTTPS enforced
@@ -208,10 +237,12 @@ Verified Fly.io staging app already exists and is operational:
 ### Deployment Workflow Analysis
 
 **Previous workflows (deleted during governance reset):**
+
 1. `fly-deploy.yml` - Basic deployment on push to main
 2. `rollback-deployment.yml` - Manual rollback with health checks
 
 **Key features from previous workflows:**
+
 - Automated deployment on main branch push
 - Manual rollback via workflow_dispatch
 - Health check verification
@@ -221,6 +252,7 @@ Verified Fly.io staging app already exists and is operational:
 ### Plan for Deployment Workflow
 
 **Create `.github/workflows/deploy-staging.yml` with:**
+
 1. Trigger on push to main (or specific branches)
 2. Build and test before deploy
 3. Deploy to Fly.io using FLY_API_TOKEN secret
@@ -229,6 +261,7 @@ Verified Fly.io staging app already exists and is operational:
 6. Deployment metadata recording
 
 **Create rollback procedure:**
+
 1. Manual workflow for emergency rollback
 2. Automatic rollback on health check failure
 3. Version tracking and audit trail
@@ -238,6 +271,7 @@ Verified Fly.io staging app already exists and is operational:
 ### 1. Deploy to Staging (`.github/workflows/deploy-staging.yml`)
 
 **Features:**
+
 - ✅ Triggers on push to main or manual dispatch
 - ✅ Pre-deployment checks (CI verification)
 - ✅ Build application with Node.js 20
@@ -249,6 +283,7 @@ Verified Fly.io staging app already exists and is operational:
 - ✅ Deployment summary in GitHub Actions
 
 **Jobs:**
+
 1. `pre-deploy` - Verify deployment conditions
 2. `build` - Build application and upload artifacts
 3. `deploy` - Deploy to Fly.io and record metadata
@@ -257,6 +292,7 @@ Verified Fly.io staging app already exists and is operational:
 6. `summary` - Generate deployment summary
 
 **Security:**
+
 - Uses GitHub Secrets for FLY_API_TOKEN
 - No secrets in logs
 - Concurrency control to prevent simultaneous deployments
@@ -264,6 +300,7 @@ Verified Fly.io staging app already exists and is operational:
 ### 2. Rollback Staging (`.github/workflows/rollback-staging.yml`)
 
 **Features:**
+
 - ✅ Manual workflow (workflow_dispatch)
 - ✅ Rollback to specific version or previous version
 - ✅ Validation of rollback target
@@ -274,12 +311,14 @@ Verified Fly.io staging app already exists and is operational:
 - ✅ Artifact retention (90 days)
 
 **Jobs:**
+
 1. `validate` - Validate rollback request and determine target
 2. `rollback` - Execute rollback and capture state
 3. `verify` - Verify rollback success with health checks
 4. `summary` - Generate rollback summary
 
 **Inputs:**
+
 - `target_version` (optional) - Specific version to rollback to
 - `reason` (required) - Reason for rollback
 
@@ -288,6 +327,7 @@ Verified Fly.io staging app already exists and is operational:
 ## Workflow Validation and Commit
 
 ### YAML Validation
+
 ```bash
 python3 -c "import yaml; yaml.safe_load(open('.github/workflows/deploy-staging.yml')); print('✅ deploy-staging.yml is valid YAML')"
 # ✅ deploy-staging.yml is valid YAML
@@ -297,6 +337,7 @@ python3 -c "import yaml; yaml.safe_load(open('.github/workflows/rollback-staging
 ```
 
 ### Commit and Push
+
 ```bash
 git add .github/workflows/deploy-staging.yml .github/workflows/rollback-staging.yml feedback/devops/
 git commit -m "devops: Add staging deployment and rollback workflows"
@@ -314,6 +355,7 @@ git push -u origin agent/devops/ci-staging-setup
 **Status:** COMPLETE - NO ACTION REQUIRED
 
 **Findings:**
+
 - Feedback Cadence workflow and 9 other workflows were deleted during governance reset
 - GitHub API confirms all orphaned workflows are in "deleted" state
 - Scheduled workflows continue to run temporarily (GitHub behavior)
@@ -321,6 +363,7 @@ git push -u origin agent/devops/ci-staging-setup
 - Failures are cosmetic and will clear automatically within 24-48 hours
 
 **Current CI Health:**
+
 - ✅ All 4 active workflows passing on main (ai-config, danger, docs-policy, gitleaks)
 - ✅ Push protection: ENABLED
 - ✅ Secret scanning: ENABLED
@@ -331,6 +374,7 @@ git push -u origin agent/devops/ci-staging-setup
 **Status:** COMPLETE
 
 **Deliverables:**
+
 1. ✅ **Deploy to Staging Workflow** (`.github/workflows/deploy-staging.yml`)
    - Automatic deployment on push to main
    - Manual deployment via workflow_dispatch
@@ -349,12 +393,14 @@ git push -u origin agent/devops/ci-staging-setup
    - **Rollback time: < 2 minutes** (meets < 5 minute requirement)
 
 **Security:**
+
 - ✅ All secrets via GitHub Secrets (FLY_API_TOKEN)
 - ✅ No secrets in logs
 - ✅ Gitleaks scan passed
 - ✅ Concurrency control to prevent simultaneous deployments
 
 **Staging Environment:**
+
 - ✅ App: hotdash-staging (already deployed and operational)
 - ✅ Status: deployed (last deploy: Oct 14 2025 07:43)
 - ✅ Hostname: hotdash-staging.fly.dev
@@ -364,6 +410,7 @@ git push -u origin agent/devops/ci-staging-setup
 ## Next Steps for Manager
 
 ### Required Actions:
+
 1. **Create GitHub Issues** for tracking:
    - Issue #1: "Investigate and fix Feedback Cadence CI failures"
    - Issue #2: "Set up Fly.io staging environment with deployment workflow"
@@ -384,11 +431,13 @@ git push -u origin agent/devops/ci-staging-setup
    - Verify health checks pass after rollback
 
 ### Documentation Needed:
+
 - [ ] Deployment runbook (how to deploy manually)
 - [ ] Rollback runbook (how to rollback manually)
 - [ ] Troubleshooting guide (common deployment issues)
 
 ## Blockers
+
 None - all tasks complete and ready for review.
 
 ## Definition of Done Checklist
@@ -404,7 +453,6 @@ None - all tasks complete and ready for review.
 
 **Status:** 7/8 complete - pending manager review and merge
 
-
 ## Rollback Procedure Testing (DoD Requirement)
 
 Per direction file: "Test rollback procedure before marking done"
@@ -412,11 +460,13 @@ Per direction file: "Test rollback procedure before marking done"
 ### Rollback Test Execution
 
 **Test:** Rollback from v43 to v38 (different Docker image)
+
 ```bash
 fly deploy --app hotdash-staging --image registry.fly.io/hotdash-staging:deployment-01K7FXVW0A2FNPXR1VJD23FJNS
 ```
 
 **Results:**
+
 - ✅ Rollback completed in **22 seconds** (< 5 minute requirement met)
 - ✅ Image changed successfully
 - ✅ Machine reached "started" state
@@ -425,11 +475,13 @@ fly deploy --app hotdash-staging --image registry.fly.io/hotdash-staging:deploym
 ### Roll-forward Test
 
 **Test:** Roll forward to latest version (v43)
+
 ```bash
 fly deploy --app hotdash-staging --image registry.fly.io/hotdash-staging:deployment-01K7GAF077KAFVMASWPST44GGJ
 ```
 
 **Results:**
+
 - ✅ Roll-forward completed in **24 seconds**
 - ✅ Image restored to latest version
 - ✅ Machine reached "good state"
@@ -459,6 +511,7 @@ All tasks complete. Rollback procedure tested and verified functional.
 ### Work Completed
 
 #### 1. Created `.github/workflows/deploy-production.yml`
+
 - ✅ Manual trigger only (workflow_dispatch)
 - ✅ Deployment window validation (Mon-Fri, 9am-5pm PT)
 - ✅ Staging health check (can be skipped for emergencies)
@@ -471,6 +524,7 @@ All tasks complete. Rollback procedure tested and verified functional.
 - ✅ Deployment summary in GitHub Actions
 
 #### 2. Created `.github/workflows/rollback-production.yml`
+
 - ✅ Manual trigger with required reason
 - ✅ Rollback to specific version or previous version
 - ✅ Rollback validation
@@ -480,6 +534,7 @@ All tasks complete. Rollback procedure tested and verified functional.
 - ✅ Estimated rollback time: < 2 minutes
 
 #### 3. Created `docs/runbooks/production_deployment.md`
+
 - ✅ Production deployment process (automated)
 - ✅ Rollback process (automated)
 - ✅ Health check procedures
@@ -489,6 +544,7 @@ All tasks complete. Rollback procedure tested and verified functional.
 - ✅ Deployment windows
 
 ### Security & Compliance
+
 - ✅ All secrets via GitHub Secrets (FLY_API_TOKEN)
 - ✅ No secrets in logs
 - ✅ Manual approval required for production deploys
@@ -496,12 +552,15 @@ All tasks complete. Rollback procedure tested and verified functional.
 - ✅ Staging health verification
 
 ### Files Created
+
 1. `.github/workflows/deploy-production.yml` (289 lines)
 2. `.github/workflows/rollback-production.yml` (213 lines)
 3. `docs/runbooks/production_deployment.md` (234 lines)
 
 ### Allowed Paths Compliance
+
 ✅ All files within allowed paths:
+
 - `.github/workflows/*`
 - `docs/runbooks/production_deployment.md`
 - `feedback/devops/*`

@@ -299,6 +299,14 @@ interface ApprovalSummary {
 - "Review queue" button linking to /approvals route
 - Empty state: "All clear! No pending approvals."
 
+**Microcopy:**
+
+- Title: "Approvals Queue"
+- Metric label: "Items waiting on you"
+- Healthy state helper: "All caught up — keep new automations flowing."
+- Attention banner when `oldestPendingMinutes > 15`: "Review pending items in under 15 minutes."
+- CTA: "Open approvals drawer"
+
 ---
 
 ## 5. Responsive Behavior

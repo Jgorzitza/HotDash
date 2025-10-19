@@ -38,11 +38,18 @@ Deliver production-ready content and approvals-ready copy. Today: finalize launc
 - [ ] Docs/runbooks updated for new workflows
 - [ ] Feedback entry completed with evidence
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/content/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, record blocker and continue with next queued task. Do not idle.
 - Keep changes within Allowed paths; attach logs and drafts.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh content -- <command>`.
+- Append ISO timestamps on each step to `artifacts/content/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

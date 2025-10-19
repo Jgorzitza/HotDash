@@ -36,6 +36,7 @@ Keep the entire program aligned to the North Star: directions current, feedback 
 - [ ] Feedback processed with actions
 - [ ] Escalations documented when needed
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/manager/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

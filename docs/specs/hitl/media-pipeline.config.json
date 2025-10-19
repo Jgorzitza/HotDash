@@ -1,0 +1,14 @@
+{
+  "status": "planned_only_do_not_seed",
+  "copyBlocks": { "evidenceLinks": true, "immutable": true },
+  "images": {
+    "maxHeroKB": 150,
+    "compress": true,
+    "altText": { "auto": true, "hitl": true }
+  },
+  "autopublish": {
+    "tier": 0,
+    "tasks": ["image_compress", "alt_text_add"],
+    "rollback": { "oneClick": true }
+  }
+}

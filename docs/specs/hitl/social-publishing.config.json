@@ -1,0 +1,150 @@
+{
+  "status": "planned_only_do_not_seed",
+  "businessHours": { "timezone": "America/Edmonton" },
+  "approvals": { "approver": "CEO_only", "inlineEdit": true },
+  "platforms": [
+    { "name": "facebook", "enabled": true },
+    { "name": "instagram", "enabled": true },
+    { "name": "pinterest", "enabled": true },
+    { "name": "tiktok", "enabled": true },
+    { "name": "google_business", "enabled": true },
+    { "name": "youtube", "enabled": true },
+    { "name": "youtube_shorts", "enabled": true }
+  ],
+  "scheduling": {
+    "preferBusinessHours": true,
+    "allowOverrides": true,
+    "calendar": { "maintainMinScheduled": 5 }
+  },
+  "utm": {
+    "domain": "https://hotrodan.com",
+    "pattern": "{domain}?utm_source={platform}&utm_medium=social&utm_campaign={campaign}&utm_content={variant_id}"
+  },
+  "connectors": {
+    "mode": "publerApi",
+    "provider": "publer",
+    "mcpFirst": true,
+    "secrets": { "managed": true },
+    "notes": "Use Publer API for scheduling/publishing across selected platforms. Capture returned platform post IDs."
+  },
+  "marketing": {
+    "shopify": {
+      "marketingActivities": {
+        "upsertExternal": true,
+        "scopes": ["write_marketing_events", "read_marketing_events"]
+      },
+      "discounts": {
+        "enabled": true,
+        "methods": ["discountCodeBasicCreate", "discountCodeBxgyCreate"],
+        "scopes": ["write_discounts", "read_discounts"]
+      }
+    }
+  },
+  "discountDefaults": {
+    "agentsCreative": true,
+    "maxPercent": 0.15,
+    "elevatedMaxPercent": 0.2,
+    "elevationRequiresDirective": true,
+    "defaultDurationDays": 7,
+    "codeFormat": "{SLUG}{YYYYMMDD}",
+    "constraints": [
+      "no_stack_with_other_autos",
+      "respect_combinations_settings"
+    ]
+  },
+  "assets": {
+    "source": "googleDrive",
+    "publerDriveConnector": true,
+    "fallbackDirectLink": true,
+    "metadata": [
+      "drive_file_id",
+      "publer_asset_id",
+      "checksum",
+      "width",
+      "height",
+      "duration_s",
+      "alt_text"
+    ],
+    "folderConvention": "campaign/YYYY-MM-DD/{platform}/product-slug/",
+    "constraints": {
+      "image": { "minWidth": 1080, "maxMB": 8 },
+      "video": { "portrait": { "w": 1080, "h": 1920 }, "maxSeconds": 60 }
+    }
+  },
+  "retries": { "max": 3, "backoffMs": 500 },
+  "learning": {
+    "signals": [
+      "sales_attributed",
+      "ga4_utm_traffic",
+      "discount_redemption_rate",
+      "ctr",
+      "engagement"
+    ],
+    "update": "decision_and_results_driven",
+    "loop": ["publish", "collect_metrics", "coach_notes", "refine_next_drafts"],
+    "hitl": { "approvals": true, "reasonCodesRequiredOnEdit": true }
+  },
+  "dashboardTile": {
+    "windowDays": 7,
+    "metrics": {
+      "revenueSocialAttributed": true,
+      "sessionsUtmSocial": true,
+      "ctr": true,
+      "engagementCount": true,
+      "engagementRate": true,
+      "activeDiscountCount": true,
+      "discountRedemptions": true,
+      "scheduledNext7": true
+    },
+    "statusThresholds": {
+      "green": { "minScheduled": 5, "maxApprovalsQueue": 1, "maxFailures": 0 },
+      "yellow": {
+        "scheduledRange": [2, 4],
+        "approvalsQueueRange": [2, 3],
+        "failures": 1
+      },
+      "red": { "maxScheduled": 1, "minApprovalsQueue": 4, "minFailures": 2 }
+    },
+    "badges": {
+      "ideasReady": {
+        "label": "4+1 ideas ready",
+        "source": "productSuggestions"
+      },
+      "gaps": { "label": "gaps in next 7 days", "source": "publerCalendar" },
+      "failures": { "label": "failed publishes", "source": "publerApi" },
+      "approvals": { "label": "Approvals waiting", "source": "internal" }
+    },
+    "quickActions": {
+      "approveQueue": { "href": "/approvals?type=social" },
+      "fillPipeline": { "href": "/social/calendar?range=7d&fillGaps=1" },
+      "launchOffer": { "href": "/discounts/new?preset=social-default" },
+      "viewInsights": { "href": "/social/insights?range=7d" }
+    },
+    "dataSources": ["ga4", "publer", "shopifyMarketing", "discounts"],
+    "sparkline": { "metric": "sessionsUtmSocial", "range": "7d" }
+  },
+  "compliance": {
+    "hardBlocks": ["pii", "profanity", "illegal_claims"],
+    "softWarn": ["style", "length", "hashtags"]
+  },
+  "idempotency": { "key": "${post_id}:${platform}" },
+  "metrics": [
+    "impressions",
+    "clicks",
+    "ctr",
+    "likes",
+    "comments",
+    "shares",
+    "saves"
+  ],
+  "reasonCodes": [
+    "Tone/Brand",
+    "Compliance/Claims",
+    "Asset/Media",
+    "Link/UTM",
+    "Timing/Schedule",
+    "Clarity/Conciseness",
+    "Targeting"
+  ],
+  "notes": "Planning artifact only. Enable platforms and domain after confirmation; MCP-first for each connector."
+}

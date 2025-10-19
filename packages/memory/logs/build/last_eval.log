@@ -1,0 +1,1 @@
+{"success":true,"reportPath":"packages/memory/logs/build/eval/2025-10-19T0013/report.json","metrics":{"avg_bleu":0.072,"avg_rouge_l":0.107,"avg_citation_score":0}}

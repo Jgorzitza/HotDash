@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs } from "react-router";
-import shopify, { authenticate } from "../shopify.server";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { authenticate } from "../shopify.server";
 
 interface SessionTokenResponse {
   shopDomain: string;
@@ -12,22 +12,37 @@ interface SessionTokenResponse {
   userId: string | null;
 }
 
-function json(data: SessionTokenResponse, init?: ResponseInit) {
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      "content-type": "application/json",
-      "cache-control": "no-store",
-    },
-    ...init,
-  });
-}
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+const toUnixSeconds = (value: unknown): number | undefined => {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) {
+      return parsed;
+    }
+  }
+  return undefined;
+};
+
+const toMaybeString = (value: unknown): string | null => {
+  if (typeof value === "string") {
+    return value;
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  return null;
+};
+
+const stringOr = (value: unknown, fallback: string): string =>
+  typeof value === "string" ? value : fallback;
 
 function unauthorized(message: string) {
-  return new Response(JSON.stringify({ error: message }), {
-    status: 401,
-    headers: { "content-type": "application/json" },
-  });
+  return json({ error: message }, { status: 401 });
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -46,24 +61,53 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     await authenticate.admin(request);
 
-    const decoded = await (
-      shopify as unknown as {
-        session: { decodeSessionToken(token: string): Promise<any> };
-      }
-    ).session.decodeSessionToken(encodedToken);
+    const parts = encodedToken.split(".");
+    if (parts.length < 2) {
+      throw new Error("Invalid JWT format");
+    }
+    const payloadJson = Buffer.from(parts[1], "base64url").toString("utf8");
+    const parsedPayload: unknown = JSON.parse(payloadJson);
+
+    if (!isRecord(parsedPayload)) {
+      throw new Error("JWT payload must be an object");
+    }
+
+    const destination = stringOr(parsedPayload.dest, "");
+    const audience = stringOr(parsedPayload.aud, "");
+
+    const now = new Date();
+    const fallbackIssued = now.toISOString();
+    const fallbackExpires = new Date(now.getTime() + 60_000).toISOString();
+
+    const issuedAtSeconds = toUnixSeconds(parsedPayload.iat);
+    const notBeforeSeconds = toUnixSeconds(parsedPayload.nbf);
+    const expiresAtSeconds = toUnixSeconds(parsedPayload.exp);
 
     const response: SessionTokenResponse = {
-      shopDomain: decoded.dest,
-      destination: decoded.dest,
-      audience: decoded.aud,
-      issuedAt: new Date(decoded.iat * 1000).toISOString(),
-      notBefore: new Date(decoded.nbf * 1000).toISOString(),
-      expiresAt: new Date(decoded.exp * 1000).toISOString(),
-      sessionId: decoded.sid ?? null,
-      userId: decoded.sub ?? null,
+      shopDomain: destination,
+      destination,
+      audience,
+      issuedAt:
+        issuedAtSeconds !== undefined
+          ? new Date(issuedAtSeconds * 1000).toISOString()
+          : fallbackIssued,
+      notBefore:
+        notBeforeSeconds !== undefined
+          ? new Date(notBeforeSeconds * 1000).toISOString()
+          : fallbackIssued,
+      expiresAt:
+        expiresAtSeconds !== undefined
+          ? new Date(expiresAtSeconds * 1000).toISOString()
+          : fallbackExpires,
+      sessionId: toMaybeString(parsedPayload.sid),
+      userId: toMaybeString(parsedPayload.sub),
     };
 
-    return json(response);
+    return json(response, {
+      headers: {
+        "cache-control": "no-store",
+      },
+    });
   } catch (error) {
     console.error("Failed to decode Shopify session token", error);
     return unauthorized("Invalid or expired session token");

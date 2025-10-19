@@ -12,10 +12,8 @@ vi.mock("../../packages/integrations/publer.ts", () => ({
 }));
 
 vi.mock("../../app/shopify.server", () => ({
-  default: {
-    authenticate: {
-      admin: (...args: unknown[]) => mockAuthenticate(...args),
-    },
+  authenticate: {
+    admin: (...args: unknown[]) => mockAuthenticate(...args),
   },
 }));
 

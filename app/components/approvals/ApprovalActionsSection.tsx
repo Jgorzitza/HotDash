@@ -7,13 +7,21 @@ export function ApprovalActionsSection({
   onReject,
   onRequestChanges,
   onApply,
+  isValidating,
 }: {
-  state: "draft" | "pending_review" | "approved" | "applied" | "audited" | "learned";
+  state:
+    | "draft"
+    | "pending_review"
+    | "approved"
+    | "applied"
+    | "audited"
+    | "learned";
   canApprove: boolean;
   onApprove: () => void;
   onReject: (reason: string) => void;
   onRequestChanges: (note: string) => void;
   onApply?: () => void;
+  isValidating?: boolean;
 }) {
   const disableApprove = !canApprove || state !== "pending_review";
   const disableApply = state !== "approved";
@@ -38,12 +46,17 @@ export function ApprovalActionsSection({
           variant="primary"
           onClick={onApprove}
           disabled={disableApprove}
+          loading={isValidating}
           accessibilityLabel="Approve"
         >
           Approve
         </Button>
         {onApply && (
-          <Button onClick={onApply} disabled={disableApply} accessibilityLabel="Apply">
+          <Button
+            onClick={onApply}
+            disabled={disableApply}
+            accessibilityLabel="Apply"
+          >
             Apply
           </Button>
         )}
@@ -51,4 +64,3 @@ export function ApprovalActionsSection({
     </InlineStack>
   );
 }
-

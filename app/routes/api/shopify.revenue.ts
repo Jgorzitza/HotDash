@@ -6,7 +6,7 @@
  * Date: 2025-10-15
  */
 
-import type { LoaderFunctionArgs } from "react-router";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -15,7 +15,32 @@ import { toInputJson } from "../../services/json";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const REVENUE_WINDOW_DAYS = 30;
-const cache = new Map<string, { data: any; expiresAt: number }>();
+interface ShopifyOrderEdge {
+  node: {
+    currentTotalPriceSet?: {
+      shopMoney: {
+        amount?: string;
+        currencyCode?: string;
+      };
+    };
+  };
+}
+
+interface ShopifyRevenuePayload {
+  data?: {
+    orders: {
+      edges: ShopifyOrderEdge[];
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
+interface CacheEntry<T> {
+  data: T;
+  expiresAt: number;
+}
+
+const cache = new Map<string, CacheEntry<RevenueData>>();
 
 const REVENUE_QUERY = `#graphql
   query RevenueMetrics($first: Int!, $query: String) {
@@ -57,7 +82,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     if (shouldUseCache) {
       const cached = cache.get(cacheKey);
       if (cached && cached.expiresAt > Date.now()) {
-        return Response.json(cached.data, {
+        return json(cached.data, {
           headers: {
             "Cache-Control": "private, max-age=300",
             "X-Cache": "HIT",
@@ -85,10 +110,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       );
     }
 
-    const payload = await response.json();
+    const payload: ShopifyRevenuePayload = await response.json();
     if (payload.errors?.length) {
       throw new ServiceError(
-        payload.errors.map((err: any) => err.message).join("; "),
+        payload.errors.map((err) => err.message).join("; "),
         {
           scope: "shopify.revenue",
           code: "GRAPHQL_ERROR",
@@ -96,7 +121,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       );
     }
 
-    const orders = payload.data?.orders.edges ?? [];
+    const orders: ShopifyOrderEdge[] = payload.data?.orders.edges ?? [];
     let totalRevenue = 0;
     let currency = "USD";
 
@@ -142,15 +167,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
       totalRevenue: revenueData.totalRevenue,
     });
 
-    return Response.json(revenueData, {
+    return json(revenueData, {
       headers: {
         "Cache-Control": "private, max-age=300",
         "X-Response-Time": `${Date.now() - startTime}ms`,
         "X-Cache": shouldUseCache ? "MISS" : "BYPASS",
       },
     });
-  } catch (error) {
-    const duration = Date.now() - startTime;
+  } catch (error: unknown) {
     if (error instanceof ServiceError) {
       logger.error("Revenue service error", {
         message: error.message,
@@ -164,7 +188,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           : error.retryable
             ? 503
             : 500;
-      return Response.json(
+      return json(
         {
           error: {
             message: error.message,
@@ -180,7 +204,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     logger.error("Revenue unexpected error", {
       error: error instanceof Error ? error.message : String(error),
     });
-    return Response.json(
+    return json(
       {
         error: {
           message: "Unexpected error",

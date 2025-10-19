@@ -1,0 +1,117 @@
+{
+  "version": "2025-10-18",
+  "generatedAt": "2025-10-18T07:50:00.000Z",
+  "drafts": [
+    {
+      "id": "draft-launch-001",
+      "status": "ready",
+      "platforms": ["linkedin", "twitter", "email"],
+      "caption": "Approvals Drawer is officially live. Every automation now stops for evidence, rollback, and a human grade before it ships.",
+      "firstComment": "Confidence backed by GA4: Sessions 85,612 (+6.4%), conversion 2.51%, revenue $128,450.32 (+8.6%). Review checklist → docs/runbooks/ai_agent_review_checklist.md",
+      "assets": ["artifacts/content/2025-10-18/approvals_drawer_ready.png"],
+      "metrics": {
+        "sessions30d": 85612,
+        "sessionsTrend": 0.064,
+        "conversionRate30d": 0.0251,
+        "revenue30d": 128450.32,
+        "revenueTrend": 0.086
+      },
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        },
+        {
+          "type": "live_revenue",
+          "path": "artifacts/analytics/2025-10-18/ga4-live-metrics.json",
+          "checksum": "b0c9d522598ea230acce4e2df5ae6614c41d2132fb31d47e7747cdcc317f9dae"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "CEO approval logged in approvals drawer",
+          "status": "required",
+          "owner": "ceo",
+          "eta": "2025-10-19T17:00:00.000Z"
+        },
+        {
+          "description": "CI green (`npm run lint`, `npm run test:ci`)",
+          "status": "required",
+          "owner": "engineering",
+          "eta": "2025-10-19T23:00:00.000Z"
+        }
+      ],
+      "rollbackCopy": "We are pausing the Approvals Drawer rollout while we verify validation warnings. Automations remain draft-only; we will reschedule the announcement once the fix lands.",
+      "notes": "Publish immediately after approvals + analytics owners confirm launch window."
+    },
+    {
+      "id": "draft-evergreen-001",
+      "status": "ready",
+      "platforms": ["linkedin", "blog"],
+      "caption": "Evergreen approvals playbook: keep automation safe, learn from every edit, and watch the gains stack up.",
+      "firstComment": "Stabilized numbers (30d): Transactions 2,145, AOV $59.89, UTM `fall_brand_2025` revenue $25,897. Evidence hash e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5.",
+      "assets": ["artifacts/content/2025-10-18/evergreen_checklist.png"],
+      "metrics": {
+        "transactions30d": 2145,
+        "averageOrderValue": 59.89,
+        "utmRevenue": 25897
+      },
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        },
+        {
+          "type": "content_brief",
+          "path": "artifacts/content/2025-10-18/manager_brief.md"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "Designer confirmation of asset set",
+          "status": "complete",
+          "owner": "design",
+          "eta": "2025-10-18T04:30:00.000Z"
+        }
+      ],
+      "rollbackCopy": "Holding the evergreen approvals story until the analytics variance clears. We will re-share once the GA4 export is refreshed.",
+      "notes": "Keep scheduled one week after launch announcement unless marketing asks for pull-forward."
+    },
+    {
+      "id": "draft-wildcard-001",
+      "status": "blocked",
+      "platforms": ["twitter"],
+      "caption": "Wildcard: Live engagement break-down once sampling guard data lands.",
+      "firstComment": "Waiting on live engagement export to validate 5% engagement target. Evidence placeholder uses stabilized GA4 snapshot (hash e39e3...).",
+      "assets": ["artifacts/content/2025-10-18/wildcard_placeholder.png"],
+      "metrics": {
+        "engagementTarget": 0.05
+      },
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "Live engagement export",
+          "status": "blocked",
+          "owner": "analytics",
+          "eta": null
+        },
+        {
+          "description": "CEO review once analytics numbers refresh",
+          "status": "pending",
+          "owner": "ceo",
+          "eta": "2025-10-24T18:00:00.000Z"
+        }
+      ],
+      "rollbackCopy": "Engagement data is still stabilizing, so we are keeping the wildcard draft internal. We will resurface the thread when analytics confirms the sampling guard numbers.",
+      "notes": "Update metrics + checksum once analytics delivers live export; unblock calendar entry `sampling-guard-thread-2025-10-23`."
+    }
+  ]
+}

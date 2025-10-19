@@ -20,6 +20,12 @@ Current Issue: #78
 - If blocked > 15 minutes (env/CI/review), post a brief blocker note in the Issue and switch to the next item in the fallback work queue below. Do not idle.
 - Always stay within Allowed paths and keep diffs minimal. Attach logs/evidence.
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh engineer -- <command>`.
+- Append ISO timestamps on each step to `artifacts/engineer/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. Guided Selling/Kit Composer planning (issue #78) — docs/specs/hitl/guided-selling\*
@@ -69,6 +75,7 @@ Current Issue: #78
 - [ ] Docs updated (QA/engineer notes)
 - [ ] Feedback entry updated
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/engineer/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

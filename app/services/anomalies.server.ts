@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../db.server";
-import type { RecordDashboardFactInput } from "./facts.server";
 
 /**
  * Anomaly detection and forecasting utilities for Memory service integration.
@@ -259,13 +258,17 @@ export async function calculateBaseline(
 /**
  * Extract metric value from JSON by path (e.g., "totalRevenue" or "metadata.breachRate")
  */
-function extractMetricValue(json: any, path: string): number | undefined {
+function extractMetricValue(data: unknown, path: string): number | undefined {
   const parts = path.split(".");
-  let current = json;
+  let current: unknown = data;
 
   for (const part of parts) {
-    if (current && typeof current === "object" && part in current) {
-      current = current[part];
+    if (
+      current &&
+      typeof current === "object" &&
+      Object.prototype.hasOwnProperty.call(current, part)
+    ) {
+      current = (current as Record<string, unknown>)[part];
     } else {
       return undefined;
     }

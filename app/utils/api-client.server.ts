@@ -29,7 +29,7 @@ export interface RequestOptions {
   /** HTTP method */
   method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   /** Request body (will be JSON.stringify'd) */
-  body?: any;
+  body?: unknown;
   /** Additional headers for this request */
   headers?: Record<string, string>;
   /** Override timeout for this request */
@@ -77,7 +77,7 @@ export class ApiClient {
   /**
    * Make an API request with retries
    */
-  async request<T = any>(
+  async request<T = unknown>(
     path: string,
     requestOptions: RequestOptions = {},
   ): Promise<T> {
@@ -85,7 +85,7 @@ export class ApiClient {
     const method = requestOptions.method || "GET";
     const shouldRetry = requestOptions.retry !== false;
 
-    let lastError: Error | null = null;
+    let lastError: unknown = null;
     const maxAttempts = shouldRetry ? this.options.maxRetries + 1 : 1;
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -101,24 +101,31 @@ export class ApiClient {
 
         const response = await this.executeRequest(url, method, requestOptions);
         return response as T;
-      } catch (error: any) {
+      } catch (error: unknown) {
         lastError = error;
 
         // Don't retry on 4xx errors (client errors)
-        if (error.status && error.status >= 400 && error.status < 500) {
+        const status =
+          typeof error === "object" && error !== null && "status" in error
+            ? Number((error as { status?: number }).status)
+            : null;
+        if (status && status >= 400 && status < 500) {
           throw error;
         }
 
         // Continue to next retry attempt
         console.error(
           `[${this.options.serviceName}] Attempt ${attempt + 1} failed:`,
-          error.message,
+          error instanceof Error ? error.message : "Unknown error",
         );
       }
     }
 
     // All retries failed
-    throw lastError;
+    if (lastError instanceof Error) {
+      throw lastError;
+    }
+    throw new Error("API request failed after retries");
   }
 
   /**
@@ -128,7 +135,7 @@ export class ApiClient {
     url: string,
     method: string,
     options: RequestOptions,
-  ): Promise<any> {
+  ): Promise<unknown> {
     const controller = new AbortController();
     const timeout = setTimeout(
       () => controller.abort(),
@@ -196,7 +203,7 @@ export class ApiClient {
   /**
    * GET request
    */
-  async get<T = any>(
+  async get<T = unknown>(
     path: string,
     options: Omit<RequestOptions, "method" | "body"> = {},
   ): Promise<T> {
@@ -206,9 +213,9 @@ export class ApiClient {
   /**
    * POST request
    */
-  async post<T = any>(
+  async post<T = unknown>(
     path: string,
-    body?: any,
+    body?: unknown,
     options: Omit<RequestOptions, "method" | "body"> = {},
   ): Promise<T> {
     return this.request<T>(path, { ...options, method: "POST", body });
@@ -217,9 +224,9 @@ export class ApiClient {
   /**
    * PUT request
    */
-  async put<T = any>(
+  async put<T = unknown>(
     path: string,
-    body?: any,
+    body?: unknown,
     options: Omit<RequestOptions, "method" | "body"> = {},
   ): Promise<T> {
     return this.request<T>(path, { ...options, method: "PUT", body });
@@ -228,7 +235,7 @@ export class ApiClient {
   /**
    * DELETE request
    */
-  async delete<T = any>(
+  async delete<T = unknown>(
     path: string,
     options: Omit<RequestOptions, "method" | "body"> = {},
   ): Promise<T> {

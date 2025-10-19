@@ -1,0 +1,29 @@
+{
+  "status": "planned_only_do_not_seed",
+  "cookie": {
+    "name": "__ab_variant",
+    "ttlDays": 30,
+    "path": "/",
+    "hashSaltEnv": "AB_VARIANT_SALT"
+  },
+  "ga4": {
+    "customDimension": "ab_variant",
+    "scope": "session"
+  },
+  "flags": {
+    "abHarness": { "default": false },
+    "abHarnessAutopromo": { "default": false }
+  },
+  "promotion": {
+    "minSessions": 500,
+    "minLiftPct": 5,
+    "confidence": 0.9,
+    "script": "scripts/ops/ab-promote.mjs"
+  },
+  "rollback": {
+    "enabled": true,
+    "oneClick": true,
+    "script": "scripts/ops/ab-rollback.mjs"
+  },
+  "artifacts": "artifacts/seo/YYYY-MM-DD/ab-harness/${experiment_key}/"
+}

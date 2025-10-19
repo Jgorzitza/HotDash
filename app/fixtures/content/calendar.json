@@ -1,0 +1,231 @@
+{
+  "version": "2025-10-18",
+  "generatedAt": "2025-10-18T07:45:00.000Z",
+  "launchWindow": "2025-10-21T14:00:00.000Z",
+  "entries": [
+    {
+      "id": "launch-linkedin-2025-10-21",
+      "date": "2025-10-21",
+      "channels": ["linkedin"],
+      "status": "ready",
+      "title": "Approvals Drawer is live for Shopify operators",
+      "copy": {
+        "lead": "Approvals Drawer is live—every automation waits for a human before it ships.",
+        "body": [
+          "Every dashboard suggestion now routes through the Approvals Drawer with evidence, rollback notes, and reviewer grades before apply.",
+          "Stabilized GA4 metrics (last 30 days): Sessions 85,612 (+6.4%), conversion rate 2.51%, revenue $128,450.32 (+8.6%).",
+          "Link the HITL review checklist so operators know the approval flow and audit trail before launch day."
+        ],
+        "cta": {
+          "label": "Read the rollout checklist",
+          "url": "https://hotdash.internal/docs/dashboard-launch"
+        },
+        "hashtags": ["#Shopify", "#HITL", "#HotDash"]
+      },
+      "launchNotes": [
+        "Tag CEO and operations owners so approvals SLA expectations land.",
+        "Call out GA4 snapshot + live revenue artifact for reviewer validation.",
+        "Remind readers that approvals remain in HITL-only mode until CEO sign-off is logged."
+      ],
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        },
+        {
+          "type": "live_revenue",
+          "path": "artifacts/analytics/2025-10-18/ga4-live-metrics.json",
+          "checksum": "b0c9d522598ea230acce4e2df5ae6614c41d2132fb31d47e7747cdcc317f9dae"
+        },
+        {
+          "type": "hitl_checklist",
+          "path": "docs/runbooks/ai_agent_review_checklist.md"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "CEO approval on launch copy",
+          "status": "pending",
+          "owner": "ceo",
+          "eta": "2025-10-19T17:00:00.000Z"
+        }
+      ],
+      "rollback": {
+        "trigger": "Approvals validation errors, GA4 metrics drift greater than 5%, or CEO declines launch messaging.",
+        "message": "Pausing the Approvals Drawer launch while we investigate a validation issue. Operators should continue the existing manual workflow; we will share an updated go-live once the fix is verified.",
+        "owner": "content"
+      }
+    },
+    {
+      "id": "launch-email-2025-10-21",
+      "date": "2025-10-21",
+      "channels": ["email"],
+      "status": "ready",
+      "title": "Launch day email to Shopify operators",
+      "copy": {
+        "subject": "Approvals Drawer launches 21 Oct — what to expect",
+        "preview": "HITL first, metrics-backed confidence, instant rollback.",
+        "body": [
+          "Hi team — the Approvals Drawer is landing on 21 Oct at 10:00 ET.",
+          "Why it matters: no automation ships without evidence, rollback, and a human grade. You will see the new drawer from any dashboard tile, and every decision logs in Supabase.",
+          "Confidence: Sessions 85,612 (+6.4%), conversion 2.51%, revenue $128,450.32 (+8.6%) from the stabilized GA4 export.",
+          "Next steps: follow the HITL checklist, keep pending approvals under 15 minutes, and note any edits in the feedback field for learning."
+        ],
+        "cta": {
+          "label": "Review the HITL checklist",
+          "url": "https://hotdash.internal/runbooks/hitl"
+        }
+      },
+      "launchNotes": [
+        "Send from manager alias; CC analytics owner for quick response on metric questions.",
+        "Attach calendar screenshot referencing the drawer ready state.",
+        "Call out daily watch window with link to docs/specs/dashboard_launch_checklist.md#6."
+      ],
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        },
+        {
+          "type": "live_revenue",
+          "path": "artifacts/analytics/2025-10-18/ga4-live-metrics.json",
+          "checksum": "b0c9d522598ea230acce4e2df5ae6614c41d2132fb31d47e7747cdcc317f9dae"
+        },
+        {
+          "type": "runbook",
+          "path": "docs/specs/dashboard_launch_checklist.md"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "Engineering to resolve lint + SEO CI blockers",
+          "status": "pending",
+          "owner": "engineering",
+          "eta": "2025-10-19T23:00:00.000Z"
+        }
+      ],
+      "rollback": {
+        "trigger": "CI remains red at T-2 hours or analytics export revoked.",
+        "message": "We are delaying the Approvals Drawer launch until CI and analytics checks finish. All automations stay in draft-only mode—no action needed on your side while we stabilize.",
+        "owner": "product"
+      }
+    },
+    {
+      "id": "sampling-guard-thread-2025-10-23",
+      "date": "2025-10-23",
+      "channels": ["slack"],
+      "status": "pending",
+      "title": "Sampling guard explainer thread",
+      "copy": {
+        "lead": "How the sampling guard keeps engagement metrics honest post-launch.",
+        "body": [
+          "Share a 3-step overview of the sampling guard and why we hold wildcard drafts until live engagement data lands.",
+          "Include callout card with GA4 snapshot reference + checksum for audit trail.",
+          "End with reminder that approvals require evidence hashes before publish."
+        ]
+      },
+      "launchNotes": [
+        "Thread to publish once analytics delivers engagement export.",
+        "Drop screenshot of wildcard draft blocking state from Publer once available.",
+        "Coordinate with analytics agent for final engagement rate figure before posting."
+      ],
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "Live engagement export from analytics agent",
+          "status": "blocked",
+          "owner": "analytics",
+          "eta": null
+        }
+      ],
+      "rollback": {
+        "trigger": "Engagement export indicates anomaly or remains unavailable by 2025-10-24.",
+        "message": "Hold the sampling guard explainer until analytics provides a clean engagement dataset. Share a short update in #ops noting the delay and reaffirming that approvals stay evidence-first.",
+        "owner": "analytics"
+      }
+    },
+    {
+      "id": "testimonials-follow-up-2025-10-29",
+      "date": "2025-10-29",
+      "channels": ["linkedin", "blog"],
+      "status": "blocked",
+      "title": "Customer testimonials + activation milestone",
+      "copy": {
+        "lead": "Activation hits 70% — operators share how Approvals restored confidence.",
+        "body": [
+          "Quote CX lead on faster approvals turnaround.",
+          "Highlight activation ≥70% once metric clears, linking to analytics artifact.",
+          "Invite readers to the follow-up webinar focused on audit trails."
+        ],
+        "cta": {
+          "label": "Reserve a seat for the audit trail webinar",
+          "url": "https://hotdash.internal/events/audit-trails"
+        }
+      },
+      "launchNotes": [
+        "Do not publish until activation metric ≥ 0.70 and testimonials recorded.",
+        "Collect 2 customer quotes via support lane; attach evidence paths before publish.",
+        "Schedule Publer draft `draft-wildcard-001` once dependency clears."
+      ],
+      "evidence": [
+        {
+          "type": "analytics_snapshot",
+          "path": "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+          "checksum": "e39e3d25544347dcdd7abe81e2eb2c2b72211af4da0a27a9574eab948c9beea5"
+        }
+      ],
+      "dependencies": [
+        {
+          "description": "Activation metric ≥ 0.70 from analytics export",
+          "status": "blocked",
+          "owner": "analytics",
+          "eta": null
+        },
+        {
+          "description": "Customer testimonial approval",
+          "status": "pending",
+          "owner": "ceo",
+          "eta": "2025-10-27T18:00:00.000Z"
+        }
+      ],
+      "rollback": {
+        "trigger": "Activation metric falls below 0.65 or testimonials vetoed.",
+        "message": "With activation trending below target, we are moving the testimonial story back to draft. We will resurface once the 70% milestone is sustained and quotes clear review.",
+        "owner": "content"
+      }
+    }
+  ],
+  "globalRollback": {
+    "steps": [
+      "Notify CEO, manager, and analytics owners in #launch-coordination of the pause.",
+      "Revert social/email drafts to draft status inside Publer and mark dependencies as blocked in this calendar.",
+      "Update docs/specs/dashboard_launch_checklist.md Section 5 with the rollback decision and attach evidence.",
+      "Log action + evidence hash in feedback/content/2025-10-18.md and artifacts/content/2025-10-18/calendar_metrics.md."
+    ],
+    "contacts": [
+      {
+        "role": "manager",
+        "owner": "manager",
+        "channel": "#launch-coordination"
+      },
+      {
+        "role": "analytics",
+        "owner": "analytics",
+        "channel": "#analytics"
+      },
+      {
+        "role": "support",
+        "owner": "support",
+        "channel": "#support"
+      }
+    ]
+  }
+}

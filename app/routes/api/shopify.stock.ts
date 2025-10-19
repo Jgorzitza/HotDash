@@ -19,13 +19,12 @@
  * - Read-only operations only
  */
 
-import type { LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
-import { getShopifyServiceContext } from "../../services/shopify/client";
-import { ServiceError } from "../../services/types";
-import { logger } from "../../utils/logger.server";
-import { recordDashboardFact } from "../../services/facts.server";
-import { toInputJson } from "../../services/json";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { getShopifyServiceContext } from "~/services/shopify/client";
+import { ServiceError } from "~/services/types";
+import { logger } from "~/utils/logger.server";
+import { recordDashboardFact } from "~/services/facts.server";
+import { toInputJson } from "~/services/json";
 
 // Cache configuration
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
@@ -33,7 +32,7 @@ const LOW_STOCK_THRESHOLD = 10; // Items with quantity < 10
 const CRITICAL_WOS_DAYS = 14; // Weeks of supply threshold
 
 // In-memory cache
-const cache = new Map<string, { data: any; expiresAt: number }>();
+const cache = new Map<string, { data: StockRiskData; expiresAt: number }>();
 
 const STOCK_RISK_QUERY = `#graphql
   query StockRiskMetrics($first: Int!, $query: String!) {
@@ -78,6 +77,19 @@ interface StockRiskData {
   lowStockThreshold: number;
   totalVariantsChecked: number;
   generatedAt: string;
+}
+
+interface ShopifyStockResponse {
+  data?: {
+    productVariants: {
+      edges: Array<{
+        node: {
+          inventoryQuantity: number | null;
+        };
+      }>;
+    };
+  };
+  errors?: Array<{ message: string }>;
 }
 
 /**
@@ -142,11 +154,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
       );
     }
 
-    const payload = await response.json();
+    const payload: ShopifyStockResponse = await response.json();
 
     if (payload.errors?.length) {
       throw new ServiceError(
-        payload.errors.map((err: any) => err.message).join("; "),
+        payload.errors.map((err) => err.message).join("; "),
         {
           scope: "shopify.stock",
           code: "GRAPHQL_ERROR",
@@ -218,7 +230,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         "X-Cache": "MISS",
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     const duration = Date.now() - startTime;
 
     if (error instanceof ServiceError) {

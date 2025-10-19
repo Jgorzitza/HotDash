@@ -1,0 +1,173 @@
+{
+  "status": "planned_only_do_not_seed",
+  "businessHours": {
+    "timezone": "America/Edmonton",
+    "weekly": {
+      "monday": ["09:00-21:00"],
+      "tuesday": ["09:00-21:00"],
+      "wednesday": ["09:00-21:00"],
+      "thursday": ["09:00-21:00"],
+      "friday": ["09:00-21:00"],
+      "saturday": ["10:00-17:00"],
+      "sunday": ["10:00-17:00"]
+    }
+  },
+  "approvals": {
+    "approver": "CEO_only",
+    "inlineEdit": true
+  },
+  "integrations": {
+    "shopify": {
+      "sourceOfTruth": true,
+      "applyOnApprove": true,
+      "multiLocation": "twoWarehousesPlusVendorDropship",
+      "warehouses": ["Canada WH", "Washington WH"],
+      "vendorDropship": {
+        "useFulfillmentService": true,
+        "trackInShopify": true,
+        "name": "Vendor Dropship"
+      }
+    }
+  },
+  "warehouses": {
+    "main": "Washington WH",
+    "proxies": ["Canada WH"],
+    "offsets": {
+      "enabled": true,
+      "mode": "overnightSettlement",
+      "schedule": { "cron": "0 3 * * *", "timezone": "America/Edmonton" },
+      "targets": { "proxies": ["Canada WH"], "exclude": ["Vendor Dropship"] },
+      "normalize": {
+        "onlyWhenNegative": true,
+        "target": 0,
+        "action": "setProxyToZeroAndDecrementMain",
+        "reason": "reconcile_proxy_negative_to_zero"
+      },
+      "idempotencyKey": "${date}:${sku}",
+      "shopifyNegativeAllowed": true
+    }
+  },
+  "bundles": {
+    "mode": "virtual",
+    "adjustment": {
+      "via": "webhook",
+      "events": ["orders/paid"],
+      "reconcileNightly": true,
+      "reservationAtOrderPaid": true
+    }
+  },
+  "webhooks": {
+    "ordersPaid": {
+      "topic": "ORDERS_PAID",
+      "includeFields": [
+        "id",
+        "line_items.id",
+        "line_items.quantity",
+        "line_items.variant_id",
+        "line_items.sku"
+      ],
+      "idempotencyKey": "${order_id}:${line_item_id}:${component_sku}",
+      "referenceDocumentUri": "gid://shopify/Order/${order_id}"
+    }
+  },
+  "batching": {
+    "maxChangesPerCall": 100,
+    "maxPairsPerSettlementCall": 500,
+    "retry": { "retries": 3, "backoffMs": 500 }
+  },
+  "scopes": ["write_inventory", "read_inventory", "read_locations"],
+  "apiCalls": {
+    "bundleReservation": {
+      "mutation": "inventoryAdjustQuantities",
+      "name": "available",
+      "reason": "correction",
+      "referenceDocumentUri": "gid://shopify/Order/${order_id}"
+    },
+    "overnightSettlement": {
+      "mutation": "inventoryAdjustQuantities",
+      "name": "available",
+      "reason": "correction",
+      "referenceDocumentUri": "gid://warehouse-app/Settlement/${date}"
+    },
+    "receiving": {
+      "mutation": "inventorySetOnHandQuantities",
+      "reason": "received",
+      "referenceDocumentUri": "gid://warehouse-app/PurchaseOrder/${po_number}"
+    }
+  },
+  "avlc": {
+    "allocation": {
+      "default": "extendedCost",
+      "distribute": ["freight", "duties"],
+      "overrides": ["quantity", "weight", "volume", "manual"],
+      "rounding": {
+        "mode": "bankers",
+        "precision": 2,
+        "residualToLargest": true
+      }
+    },
+    "updateShopifyUnitCost": "whenMaterialChange",
+    "featureFlag": true
+  },
+  "identifiers": {
+    "canonical": {
+      "mpn": {
+        "name": "HRAN_MPN",
+        "authoritative": true,
+        "derivation": {
+          "fromUpcLast4": true,
+          "note": "HRAN should equal last 4 digits of UPC when UPC is present"
+        }
+      }
+    },
+    "vendor": {
+      "mpn": {
+        "required": true,
+        "alternatesMax": 3,
+        "note": "Vendor alternates are treated as MPNs per direction"
+      }
+    },
+    "upc": {
+      "enabled": true,
+      "optional": true,
+      "validation": {
+        "hranLast4Mismatch": {
+          "enabled": true,
+          "severity": "warn"
+        },
+        "missingUpc": {
+          "prompt": true,
+          "block": false
+        }
+      }
+    }
+  },
+  "slaPolicy": {
+    "countOutsideBusinessHours": false,
+    "startAtNextOpen": true
+  },
+  "alerts": {
+    "channels": {
+      "inApp": true,
+      "email": false,
+      "sms": false
+    },
+    "configurable": true
+  },
+  "riskThresholds": {
+    "absUnits": "clarify",
+    "percent": "clarify"
+  },
+  "reasonCodes": [
+    "Receive PO",
+    "Return/RMA",
+    "Cycle Count",
+    "Damage/Shrinkage",
+    "Supplier Error",
+    "System Correction",
+    "Inter-location Transfer",
+    "Kitting/Assembly",
+    "Other"
+  ],
+  "notes": "Planning artifact only. Await clarifications before seeding."
+}

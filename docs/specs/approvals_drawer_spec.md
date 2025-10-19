@@ -61,6 +61,14 @@ The drawer is the single path for changes. Everything else is read‑only. **No 
 - “Request changes” posts a **private note** (or internal comment) back to origin, state→`draft`.
 - Shortcut: `Cmd/Ctrl+Enter` approves when valid.
 
+### 3.4 Microcopy
+
+- Follow `docs/design/approvals_microcopy.md` for header, evidence cards, and footer action labels.
+- Default header format: `<Kind label> · <summary>` with subheader `Created <time> by <agent> • State: <chip>`.
+- State chips map to human labels (e.g., `pending_review` → “Pending review”, `audited` → “Audited — evidence logged”).
+- Evidence section title: “Evidence & context”; empty state prompt: “Attach query results, diffs, or screenshots so reviewers can validate before approving.”
+- Footer buttons: primary `Approve & apply`, secondary `Request changes`, tertiary `Reject`; validation warning copy: “Run validation to enable Approve & apply.”
+
 ---
 
 ## 4) Data Model (Supabase/Postgres)

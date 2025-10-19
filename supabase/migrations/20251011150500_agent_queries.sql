@@ -56,6 +56,9 @@ COMMENT ON COLUMN public.agent_queries.updated_at IS 'Timestamp of last update';
 ALTER TABLE public.agent_queries ENABLE ROW LEVEL SECURITY;
 
 -- Policy 1: Service role has full access (Agent SDK operations)
+DROP POLICY IF EXISTS agent_queries_service_role_all
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_service_role_all
   ON public.agent_queries
   FOR ALL
@@ -64,6 +67,9 @@ CREATE POLICY agent_queries_service_role_all
   WITH CHECK (true);
 
 -- Policy 2: Authenticated users can read their own conversation queries
+DROP POLICY IF EXISTS agent_queries_read_own
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_read_own
   ON public.agent_queries
   FOR SELECT
@@ -77,6 +83,9 @@ CREATE POLICY agent_queries_read_own
   );
 
 -- Policy 3: Operators and QA can read all queries for monitoring
+DROP POLICY IF EXISTS agent_queries_read_operators
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_read_operators
   ON public.agent_queries
   FOR SELECT
@@ -86,6 +95,9 @@ CREATE POLICY agent_queries_read_operators
   );
 
 -- Policy 4: Only service role can insert queries
+DROP POLICY IF EXISTS agent_queries_insert_service_only
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_insert_service_only
   ON public.agent_queries
   FOR INSERT
@@ -93,6 +105,9 @@ CREATE POLICY agent_queries_insert_service_only
   WITH CHECK (true);
 
 -- Policy 5: Service role and operators can update queries (for approval status)
+DROP POLICY IF EXISTS agent_queries_update_service_and_operators
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_update_service_and_operators
   ON public.agent_queries
   FOR UPDATE
@@ -107,6 +122,9 @@ CREATE POLICY agent_queries_update_service_and_operators
   );
 
 -- Policy 6: Prevent deletes (queries are audit records)
+DROP POLICY IF EXISTS agent_queries_no_delete
+  ON public.agent_queries;
+
 CREATE POLICY agent_queries_no_delete
   ON public.agent_queries
   FOR DELETE
@@ -123,4 +141,3 @@ FOR EACH ROW EXECUTE PROCEDURE public.set_updated_at();
 GRANT SELECT ON public.agent_queries TO authenticated;
 GRANT ALL ON public.agent_queries TO service_role;
 GRANT USAGE, SELECT ON SEQUENCE agent_queries_id_seq TO service_role;
-

@@ -31,11 +31,18 @@ Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoo
 - [ ] Docs/runbooks updated with activation steps
 - [ ] Feedback entry updated
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/integrations/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Autonomy Mode (Do Not Stop)
 
 - If blocked > 15 minutes, log blocker in Issue and move to next queued task. Do not idle.
 - Stay within Allowed paths; attach transcripts/logs.
+
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh integrations -- <command>`.
+- Append ISO timestamps on each step to `artifacts/integrations/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
 
 ## Fallback Work Queue (aligned to NORTH_STAR)
 

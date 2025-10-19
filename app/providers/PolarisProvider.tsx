@@ -8,4 +8,3 @@ type Props = { children: ReactNode };
 export function PolarisProvider({ children }: Props) {
   return <PolarisAppProvider i18n={en}>{children}</PolarisAppProvider>;
 }
-

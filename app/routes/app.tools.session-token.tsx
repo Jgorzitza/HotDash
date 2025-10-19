@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
+import type { HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import type { ClientApplication } from "@shopify/app-bridge/client";
 import { getSessionToken } from "@shopify/app-bridge/utilities";
 
 import { authenticate } from "../shopify.server";
@@ -56,7 +57,8 @@ export default function SessionTokenTool() {
     setCopied(false);
 
     try {
-      const token = await getSessionToken(appBridge as any);
+      const clientApp = appBridge as unknown as ClientApplication;
+      const token = await getSessionToken(clientApp);
       setRawToken(token);
 
       const response = await authenticatedJsonFetch(

@@ -1,0 +1,27 @@
+{
+  "drafts": [
+    {
+      "id": "draft-launch-001",
+      "channel": "linkedin.company",
+      "title": "Approvals Drawer is live — evidence first.",
+      "scheduledAt": "2025-10-21T14:00:00Z",
+      "status": "awaiting_approval",
+      "dependencies": ["ceo_copy_approval", "ci_green"],
+      "evidence": [
+        "artifacts/analytics/2025-10-18/mock-ga4-metrics.json",
+        "artifacts/analytics/2025-10-18/ga4-live-metrics.json"
+      ],
+      "rollback": "Unschedule in Publer; revert content fixtures; keep Autopublish OFF"
+    },
+    {
+      "id": "draft-email-001",
+      "channel": "email.ops",
+      "title": "Approvals launch @ 10:00 ET — HITL on.",
+      "scheduledAt": "2025-10-21T15:00:00Z",
+      "status": "awaiting_approval",
+      "dependencies": ["ceo_copy_approval", "ci_green"],
+      "evidence": ["artifacts/content/2025-10-18/manager_brief.md"],
+      "rollback": "Pause send; revert fixtures; keep Autopublish OFF"
+    }
+  ]
+}

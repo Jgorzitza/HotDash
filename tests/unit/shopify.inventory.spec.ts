@@ -1,8 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getInventoryAlerts } from "../../app/services/shopify/inventory";
+import type {
+  ShopifyGraphqlClient,
+  ShopifyServiceContext,
+} from "../../app/services/shopify/types";
 
 type MockResponsePayload = Record<string, unknown>;
+
+interface RecordDashboardFactInput {
+  shopDomain: string;
+  factType: string;
+  value: unknown;
+  metadata?: unknown;
+}
 
 const defaultFact = {
   id: 2,
@@ -17,16 +28,16 @@ const defaultFact = {
 };
 
 vi.mock("../../app/services/facts.server", () => ({
-  recordDashboardFact: vi.fn(async (data: MockResponsePayload) => ({
+  recordDashboardFact: vi.fn(async (data: RecordDashboardFactInput) => ({
     ...defaultFact,
-    shopDomain: data.shopDomain as string,
-    factType: data.factType as string,
+    shopDomain: data.shopDomain,
+    factType: data.factType,
     value: data.value,
     metadata: data.metadata ?? null,
   })),
 }));
 
-const mockAdmin = (payload: MockResponsePayload) => ({
+const mockAdmin = (payload: MockResponsePayload): ShopifyGraphqlClient => ({
   graphql: vi.fn(
     async () =>
       new Response(JSON.stringify(payload), {
@@ -78,27 +89,25 @@ describe("getInventoryAlerts", () => {
     } satisfies MockResponsePayload;
 
     const admin = mockAdmin(payload);
+    const context: ShopifyServiceContext = {
+      admin,
+      shopDomain: "test-shop",
+    };
 
-    const result = await getInventoryAlerts(
-      {
-        admin: admin as any,
-        shopDomain: "test-shop",
-      },
-      { threshold: 5, averageDailySales: 1 },
-    );
+    const result = await getInventoryAlerts(context, {
+      threshold: 5,
+      averageDailySales: 1,
+    });
 
     expect(result.data).toHaveLength(1);
     expect(result.data[0]?.quantityAvailable).toBe(3);
     expect(result.data[0]?.daysOfCover).toBe(3);
     expect(result.source).toBe("fresh");
 
-    const cached = await getInventoryAlerts(
-      {
-        admin: admin as any,
-        shopDomain: "test-shop",
-      },
-      { threshold: 5, averageDailySales: 1 },
-    );
+    const cached = await getInventoryAlerts(context, {
+      threshold: 5,
+      averageDailySales: 1,
+    });
     expect(cached.source).toBe("cache");
     expect(admin.graphql).toHaveBeenCalledTimes(1);
   });

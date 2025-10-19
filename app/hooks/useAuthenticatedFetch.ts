@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { authenticatedFetch } from "@shopify/app-bridge/utilities";
 import { useAppBridge } from "@shopify/app-bridge-react";
+import type { ClientApplication } from "@shopify/app-bridge/client";
 
 type FetchInput = Parameters<typeof fetch>[0];
 type FetchInit = Parameters<typeof fetch>[1];
@@ -36,10 +37,22 @@ export function useAuthenticatedFetch(
   options: UseAuthenticatedFetchOptions = {},
 ): AuthenticatedFetch {
   const appBridge = useAppBridge();
+  const serializedDefaultHeaders = JSON.stringify(options.defaultHeaders ?? {});
+  const serializedDefaultRequestInit = JSON.stringify({
+    cache: options.defaultRequestInit?.cache,
+    credentials: options.defaultRequestInit?.credentials,
+    mode: options.defaultRequestInit?.mode,
+    redirect: options.defaultRequestInit?.redirect,
+    referrer: options.defaultRequestInit?.referrer,
+  });
+  const serializedDefaultRequestHeaders = JSON.stringify(
+    options.defaultRequestInit?.headers ?? {},
+  );
 
   return useMemo(() => {
+    const clientApp = appBridge as unknown as ClientApplication;
     return authenticatedFetch(
-      appBridge as any,
+      clientApp,
       async (uri: FetchInput, init?: FetchInit) => {
         const mergedInit: RequestInit = {
           ...options.defaultRequestInit,
@@ -74,14 +87,8 @@ export function useAuthenticatedFetch(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     appBridge,
-    JSON.stringify(options.defaultHeaders ?? {}),
-    JSON.stringify({
-      cache: options.defaultRequestInit?.cache,
-      credentials: options.defaultRequestInit?.credentials,
-      mode: options.defaultRequestInit?.mode,
-      redirect: options.defaultRequestInit?.redirect,
-      referrer: options.defaultRequestInit?.referrer,
-    }),
-    JSON.stringify(options.defaultRequestInit?.headers ?? {}),
+    serializedDefaultHeaders,
+    serializedDefaultRequestInit,
+    serializedDefaultRequestHeaders,
   ]);
 }

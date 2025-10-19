@@ -1,0 +1,44 @@
+{
+  "status": "planned_only_do_not_seed",
+  "vendor": {
+    "currency": "USD",
+    "terms": ["net30", "prepaid"],
+    "modes": ["direct", "dropship", "both"]
+  },
+  "po": {
+    "numberPattern": "HRAN-PO-{YYYYMM}-{###}",
+    "statuses": [
+      "draft",
+      "submitted",
+      "sent",
+      "confirmed",
+      "partially_received",
+      "received",
+      "closed",
+      "canceled"
+    ],
+    "shipToDefault": "Washington WH",
+    "applyOnReceipt": {
+      "location": "Washington WH",
+      "mutation": "inventorySetOnHandQuantities",
+      "reason": "received"
+    },
+    "overReceive": { "allow": false, "overridePerLine": true }
+  },
+  "receiving": {
+    "partialAllowed": true,
+    "additionalCosts": ["freight", "duties", "other"],
+    "allocation": {
+      "default": "extendedCost",
+      "overrides": ["quantity", "weight", "volume", "manual"]
+    },
+    "idempotencyKey": "${receipt_id}:${po_line_id}"
+  },
+  "avlc": {
+    "updateShopifyUnitCost": "whenMaterialChange",
+    "featureFlag": true
+  },
+  "notifications": {
+    "overduePo": { "enabled": true, "channel": "in_app", "emailDigest": true }
+  }
+}

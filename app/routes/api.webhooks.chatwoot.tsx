@@ -1,27 +1,51 @@
-/**
- * Chatwoot Webhook Endpoint
- *
- * Receives webhooks from Chatwoot and routes them to the Agent SDK service.
- * Implements signature verification for security.
- *
- * P0 Launch Gate #5
- */
-
-import { type ActionFunction } from "react-router";
 import { createHmac } from "crypto";
+import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { forwardChatwootWebhook } from "~/services/support/chatwoot-webhook.server";
+import { recordReplyLearningSignal } from "~/services/support/chatwoot-learning.server";
+import { chatwootLogger } from "~/utils/structured-logger.server";
 
-/**
- * Verify Chatwoot webhook signature
- */
+interface ChatwootWebhookPayload {
+  event?: string;
+  content?: string;
+  message_type?: number | string;
+  sender?: {
+    type?: string;
+    name?: string;
+  };
+  message?: {
+    content?: string;
+    message_type?: number | string;
+    sender?: {
+      type?: string;
+      name?: string;
+    };
+  };
+  conversation?: {
+    id?: number;
+    status?: string;
+    meta?: {
+      sender?: {
+        name?: string;
+      };
+    };
+    contact?: {
+      name?: string;
+    };
+  };
+  contact?: {
+    name?: string;
+  };
+}
+
 function verifySignature(payload: string, signature: string | null): boolean {
   if (!signature) {
-    console.warn("[Chatwoot Webhook] Missing signature header");
+    chatwootLogger.warn("Missing signature header");
     return false;
   }
 
   const webhookSecret = process.env.CHATWOOT_WEBHOOK_SECRET;
   if (!webhookSecret) {
-    console.error("[Chatwoot Webhook] CHATWOOT_WEBHOOK_SECRET not configured");
+    chatwootLogger.error("CHATWOOT_WEBHOOK_SECRET not configured");
     return false;
   }
 
@@ -32,110 +56,160 @@ function verifySignature(payload: string, signature: string | null): boolean {
   return signature === expectedSignature;
 }
 
-/**
- * POST /api/webhooks/chatwoot
- *
- * Receives Chatwoot webhooks and forwards to Agent SDK service.
- */
-export const action: ActionFunction = async ({ request }) => {
+function extractMessageContent(payload: ChatwootWebhookPayload): string {
+  if (payload.content && payload.content.trim().length > 0) {
+    return payload.content;
+  }
+  if (payload.message?.content && payload.message.content.trim().length > 0) {
+    return payload.message.content;
+  }
+  return "";
+}
+
+function extractCustomerName(
+  payload: ChatwootWebhookPayload,
+): string | undefined {
+  return (
+    payload.contact?.name ??
+    payload.conversation?.contact?.name ??
+    payload.conversation?.meta?.sender?.name ??
+    payload.sender?.name
+  );
+}
+
+export const action = async ({ request }: ActionFunctionArgs) => {
   const startTime = Date.now();
 
   try {
-    // Only accept POST
     if (request.method !== "POST") {
-      return new Response(JSON.stringify({ error: "Method not allowed" }), {
-        status: 405,
-        headers: { "Content-Type": "application/json" },
-      });
+      return json({ error: "Method not allowed" }, { status: 405 });
     }
 
-    // Get raw body for signature verification
     const rawBody = await request.text();
-
-    // Verify signature (skip in development)
     const signature = request.headers.get("X-Chatwoot-Signature");
-    if (process.env.NODE_ENV === "production") {
-      if (!verifySignature(rawBody, signature)) {
-        console.error("[Chatwoot Webhook] Invalid signature");
-        return new Response(JSON.stringify({ error: "Invalid signature" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
+
+    if (
+      process.env.NODE_ENV === "production" &&
+      !verifySignature(rawBody, signature)
+    ) {
+      chatwootLogger.error("Invalid signature");
+      return json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    // Parse webhook payload
-    const payload = JSON.parse(rawBody);
-    console.log("[Chatwoot Webhook] Received:", {
+    const payload = JSON.parse(rawBody) as ChatwootWebhookPayload;
+    const messageContent = extractMessageContent(payload);
+    const customerName = extractCustomerName(payload);
+    chatwootLogger.info("Webhook received", {
       event: payload.event,
       conversationId: payload.conversation?.id,
       messageType: payload.message_type,
     });
 
-    // Forward to Agent SDK service
     const agentSdkUrl =
-      process.env.AGENT_SDK_URL || "https://hotdash-agent-service.fly.dev";
-    const response = await fetch(`${agentSdkUrl}/webhooks/chatwoot`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Forwarded-From": "hotdash-app",
-      },
-      body: rawBody,
+      process.env.AGENT_SDK_URL ?? "https://hotdash-agent-service.fly.dev";
+    const { response, attempts } = await forwardChatwootWebhook({
+      payload: rawBody,
+      agentSdkUrl,
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("[Chatwoot Webhook] Agent SDK error:", {
+      chatwootLogger.error("Agent SDK response not ok", undefined, {
         status: response.status,
         error: errorText,
+        attempts,
       });
-      return new Response(
-        JSON.stringify({
+
+      return json(
+        {
           error: "Agent SDK processing failed",
           details: errorText,
-        }),
-        {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
+          attempts,
         },
+        { status: 502 },
       );
     }
 
-    const result = await response.json();
+    const resultJson: unknown = await response.json();
+    const agentStatus =
+      resultJson && typeof resultJson === "object" && "status" in resultJson
+        ? String((resultJson as { status?: unknown }).status ?? "")
+        : "";
+
+    const resultDraft =
+      resultJson && typeof resultJson === "object" && "draft" in resultJson
+        ? (resultJson as { draft?: unknown }).draft
+        : undefined;
+    const promptVersion =
+      resultJson &&
+      typeof resultJson === "object" &&
+      "promptVersion" in resultJson
+        ? (resultJson as { promptVersion?: unknown }).promptVersion
+        : undefined;
+    const templateId =
+      resultJson && typeof resultJson === "object" && "templateId" in resultJson
+        ? (resultJson as { templateId?: unknown }).templateId
+        : undefined;
+    const conversationIdFromResult =
+      resultJson &&
+      typeof resultJson === "object" &&
+      "conversationId" in resultJson
+        ? (resultJson as { conversationId?: unknown }).conversationId
+        : undefined;
+    const conversationId =
+      (typeof conversationIdFromResult === "number"
+        ? conversationIdFromResult
+        : payload.conversation?.id) ?? undefined;
+
     const duration = Date.now() - startTime;
 
-    console.log("[Chatwoot Webhook] Processed successfully", {
-      duration: `${duration}ms`,
-      status: result.status,
+    chatwootLogger.info("Processed successfully", {
+      durationMs: duration,
+      status: agentStatus,
+      attempts,
     });
 
-    return new Response(
-      JSON.stringify({
+    if (agentStatus === "draft_ready") {
+      await recordReplyLearningSignal({
+        conversationId,
+        draft: typeof resultDraft === "string" ? resultDraft : undefined,
+        messageContent,
+        customerName,
+        promptVersion:
+          typeof promptVersion === "string" ? promptVersion : undefined,
+        templateId: typeof templateId === "string" ? templateId : undefined,
+      });
+    }
+
+    return json(
+      {
         success: true,
         processed: true,
         duration: `${duration}ms`,
-        agentStatus: result.status,
-      }),
+        agentStatus,
+        attempts,
+      },
       {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "X-Processing-Time": `${duration}ms`,
+          attempts,
+        },
       },
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     const duration = Date.now() - startTime;
-    console.error("[Chatwoot Webhook] Error:", error);
+    chatwootLogger.error("Unhandled webhook error", error);
 
-    return new Response(
-      JSON.stringify({
-        error: "Webhook processing failed",
-        message: error.message,
-        duration: `${duration}ms`,
-      }),
+    const message =
+      error instanceof Error ? error.message : "Webhook processing failed";
+
+    return json(
       {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
+        error: "Webhook processing failed",
+        message,
+        duration: `${duration}ms`,
       },
+      { status: 500 },
     );
   }
 };

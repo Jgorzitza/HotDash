@@ -19,6 +19,12 @@ Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promo
 - If blocked > 15 minutes, document blocker and continue with next task in queue. Do not idle.
 - Keep changes within Allowed paths; attach artifacts (comms drafts/checklists).
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh product -- <command>`.
+- Append ISO timestamps on each step to `artifacts/product/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. A/B harness (issue #80) — docs/specs/hitl/ab-harness\*
@@ -65,6 +71,7 @@ Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promo
 - [ ] Docs/runbooks updated
 - [ ] Feedback entry updated
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/product/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

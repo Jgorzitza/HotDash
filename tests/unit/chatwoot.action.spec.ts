@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import type { ActionFunctionArgs } from "@remix-run/node";
 
 import { action } from "../../app/routes/actions/chatwoot.escalate";
 
@@ -45,7 +46,11 @@ describe("chatwoot escalate action", () => {
       }),
     });
 
-    const response = await action({ request } as any);
+    const response = await action({
+      request,
+      params: {},
+      context: {},
+    } satisfies ActionFunctionArgs);
     expect(response.status).toBe(200);
     expect(sendReplyMock).toHaveBeenCalledWith(
       42,

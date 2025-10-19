@@ -1,0 +1,90 @@
+name: guard-mcp
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+  statuses: write
+jobs:
+  enforce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR body
+        id: pr
+        run: |
+          echo "BODY<<EOF" >> $GITHUB_OUTPUT
+          echo "${{ github.event.pull_request.body }}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Detect code changes
+        id: diff
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+          CODE="$(grep -E '^(app|src|server|packages|scripts|lib)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
+          echo "code_change=$([ -n "$CODE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+
+      - name: Fail if Remix referenced (RR7 only)
+        run: |
+          BAD=$(grep -RInE "from ['\"]@remix-run|import .*remix" app/ src/ server/ packages/ 2>/dev/null || true)
+          if [ -n "$BAD" ]; then
+            echo "::error::Remix usage detected. Project uses React Router 7."; echo "$BAD"; exit 10;
+          fi
+
+      - name: Extract MCP Evidence paths from PR body
+        id: evidence
+        run: |
+          BODY="${{ steps.pr.outputs.BODY }}"
+          PATHS=$(echo "$BODY" | awk '/^## MCP Evidence:/{flag=1;next}/^## /{flag=0}flag' | sed 's/\r//g' | grep -E '^artifacts/.+\.jsonl$' || true)
+          echo "paths<<EOF" >> $GITHUB_OUTPUT
+          echo "$PATHS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Require MCP evidence for code changes
+        if: steps.diff.outputs.code_change == 'true'
+        run: |
+          if [ -z "${{ steps.evidence.outputs.paths }}" ]; then
+            echo "::error::Code changed, but no MCP Evidence paths listed in PR body."; exit 20;
+          fi
+
+      - name: Validate evidence files exist and are JSONL
+        if: steps.diff.outputs.code_change == 'true'
+        run: |
+          FAIL=0
+          while IFS= read -r p; do
+            [ -z "$p" ] && continue
+            if [ ! -f "$p" ]; then echo "::error::Missing evidence file: $p"; FAIL=1; continue; fi
+            awk 'NF' "$p" | while read -r line; do
+              echo "$line" | jq -e . >/dev/null 2>&1 || { echo "::error::Invalid JSON in $p: $line"; exit 1; }
+            done
+          done <<< "${{ steps.evidence.outputs.paths }}"
+          [ $FAIL -eq 0 ] || exit 21
+
+      - name: Validate required fields in JSONL
+        if: steps.diff.outputs.code_change == 'true'
+        run: |
+          while IFS= read -r p; do
+            [ -z "$p" ] && continue
+            awk 'NF' "$p" | jq -e '
+              .tool as $t | .doc_ref as $d | .request_id as $r | .timestamp as $ts |
+              ($t|type=="string") and ($d|type=="string") and ($r|type=="string") and ($ts|type=="string")
+            ' >/dev/null || { echo "::error::Evidence missing required fields in $p"; exit 22; }
+          done <<< "${{ steps.evidence.outputs.paths }}"
+
+      - name: Auto-draft & label
+        if: failure()
+        run: |
+          echo "Marking PR as draft and labeling non-compliant"
+          if command -v gh >/dev/null 2>&1; then
+            gh pr ready ${{ github.event.pull_request.number }} --undo || true
+            gh pr edit  ${{ github.event.pull_request.number }} --add-label "needs-mcp-evidence" || true
+          else
+            echo "gh CLI not available; skipping draft/label step"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

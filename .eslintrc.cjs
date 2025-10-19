@@ -19,7 +19,18 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  ignorePatterns: ["!**/.server", "!**/.client"],
+  ignorePatterns: [
+    "!**/.server",
+    "!**/.client",
+    "apps/**",
+    "docs/_archive/**",
+    "packages/**",
+    "scripts/**",
+    "supabase/functions/**",
+    "tests/**",
+    "integrations/**",
+    "dbsetup.js",
+  ],
 
   // Base config
   extends: ["eslint:recommended"],

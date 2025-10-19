@@ -1,0 +1,22 @@
+{
+  "version": "2025-10-18",
+  "source": "CrUX field distributions (monthly)",
+  "multipliers": {
+    "LCP": {
+      "poor_to_needs_improvement": 0.06,
+      "needs_improvement_to_good": 0.11
+    },
+    "INP": {
+      "poor_to_needs_improvement": 0.04,
+      "needs_improvement_to_good": 0.09
+    },
+    "CLS": {
+      "poor_to_needs_improvement": 0.03,
+      "needs_improvement_to_good": 0.07
+    }
+  },
+  "notes": [
+    "Multipliers represent expected session lift fraction when moving an identified cohort up one bucket.",
+    "Values calibrated against top 500 landing pages; revisit monthly with CrUX export."
+  ]
+}

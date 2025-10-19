@@ -1,0 +1,10 @@
+{
+  "status": "planned_only_do_not_seed",
+  "calibration": {
+    "card": true,
+    "instructions": ["lighting", "angle", "distance"]
+  },
+  "inference": { "client": true, "serverVerify": true },
+  "confidence": { "min": 0.7, "routeToHitlBelow": 0.85 },
+  "outcomes": ["return_rate", "time_to_answer", "attach_rate"]
+}

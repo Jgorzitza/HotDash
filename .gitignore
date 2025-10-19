@@ -65,3 +65,6 @@ Thumbs.db
 
 # Manager scratch space
 tmp/
+apps/agent-service/**
+apps/llamaindex-mcp-server/**
+docs/_archive/**

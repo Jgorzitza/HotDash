@@ -285,7 +285,10 @@ export async function getAggregatedPerformance(
     };
 
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall("getAggregatedPerformance", true, duration);
+    const operation = platform
+      ? `getAggregatedPerformance:${platform}`
+      : "getAggregatedPerformance";
+    appMetrics.gaApiCall(operation, true, duration);
 
     return mockData;
   } catch (error) {
@@ -316,7 +319,9 @@ export async function getTopPerformingPosts(
     // For now, return empty array
 
     const duration = Date.now() - startTime;
-    appMetrics.gaApiCall("getTopPerformingPosts", true, duration);
+    const normalizedLimit = Math.max(1, Math.min(limit, 100));
+    const operation = `getTopPerformingPosts:${sortBy}:${normalizedLimit}`;
+    appMetrics.gaApiCall(operation, true, duration);
 
     return [];
   } catch (error) {

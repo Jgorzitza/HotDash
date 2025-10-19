@@ -91,6 +91,39 @@ interface SalesPulseResponse {
   errors?: Array<{ message: string }>;
 }
 
+interface FulfillmentEventEdge {
+  node?: {
+    createdAt?: string | null;
+  };
+}
+
+interface FulfillmentEdge {
+  node?: {
+    events?: {
+      edges?: FulfillmentEventEdge[];
+    };
+  };
+}
+
+interface FulfillmentOrderNode {
+  id: string;
+  name: string;
+  createdAt: string;
+  displayFulfillmentStatus: string | null;
+  fulfillments?: {
+    edges?: FulfillmentEdge[];
+  };
+}
+
+interface FulfillmentResponse {
+  data?: {
+    orders?: {
+      edges?: Array<{ node: FulfillmentOrderNode }>;
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
 function buildQuery() {
   const since = new Date();
   since.setUTCDate(since.getUTCDate() - SALES_WINDOW_DAYS);
@@ -242,24 +275,33 @@ export async function getPendingFulfillments(
     );
   }
 
-  const json = await response.json();
+  const json = (await response.json()) as FulfillmentResponse;
 
-  const edges = json?.data?.orders?.edges ?? [];
-  const mappedIssues = edges.map((edge: any): FulfillmentIssue => {
-    const order = edge.node;
-    const createdAt =
-      order.fulfillments?.edges?.[0]?.node?.events?.edges?.[0]?.node
-        ?.createdAt ??
-      order.createdAt ??
-      new Date().toISOString();
-    const issue: FulfillmentIssue = {
-      orderId: order.id,
-      name: order.name,
-      displayStatus: order.displayFulfillmentStatus,
-      createdAt,
-    };
-    return issue;
-  }) as FulfillmentIssue[];
+  if (json.errors?.length) {
+    throw new ServiceError(json.errors.map((err) => err.message).join("; "), {
+      scope: "shopify.fulfillment",
+      code: "GRAPHQL_ERROR",
+    });
+  }
+
+  const edges = json.data?.orders?.edges ?? [];
+  const mappedIssues = edges
+    .map(({ node }): FulfillmentIssue | null => {
+      const fulfillmentCreatedAt =
+        node.fulfillments?.edges?.[0]?.node?.events?.edges?.[0]?.node
+          ?.createdAt ?? null;
+
+      const createdAt =
+        fulfillmentCreatedAt ?? node.createdAt ?? new Date().toISOString();
+
+      return {
+        orderId: node.id,
+        name: node.name,
+        displayStatus: node.displayFulfillmentStatus,
+        createdAt,
+      };
+    })
+    .filter((issue): issue is FulfillmentIssue => issue !== null);
 
   const fulfillmentIssues = mappedIssues.filter(
     (issue): issue is FulfillmentIssue =>

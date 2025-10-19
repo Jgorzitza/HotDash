@@ -2,6 +2,8 @@
 
 > **Order of operations:** Agents shut down **first**, then the Manager runs their shutdown.  
 > Goal: a **clean restart** where any agent can resume with zero hidden context.
+>
+> **No‑Wait Policy:** Do not wait for Manager acknowledgement. If told to shut down (or at end of day), execute this checklist immediately, capture evidence, and post the handoff note. Only pause if the Manager explicitly says “hold”.
 
 ---
 
@@ -12,6 +14,7 @@
 - [ ] Ensure PR body includes:
   - `Refs #<issue>` or `Fixes #<issue>` (when DoD is fully met)
   - A line: `Allowed paths: <pattern(s)>`
+  - Sections: `MCP Evidence:` with `artifacts/<agent>/<date>/mcp/*.jsonl` and `Foreground Proof:` with `artifacts/<agent>/<date>/logs/heartbeat.log` (the heartbeat log must be committed)
 
 ---
 
@@ -42,6 +45,7 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 
 - Tests/logs/screens: <links or short notes>
 - Tool calls (MCP/adapters) used: <list>
+- Foreground Proof: `artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.log` (last 2 ISO timestamps)
 
 **Blockers**
 

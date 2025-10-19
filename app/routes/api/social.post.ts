@@ -1,6 +1,5 @@
-import type { ActionFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
-import shopify from "~/shopify.server";
+import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { authenticate } from "~/shopify.server";
 import { schedulePost } from "../../../packages/integrations/publer.ts";
 
 type Payload = {
@@ -11,7 +10,7 @@ type Payload = {
 };
 
 export async function action({ request }: ActionFunctionArgs) {
-  const { session } = await shopify.authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
 
   if (request.method.toUpperCase() !== "POST") {
     return json({ error: "Method Not Allowed" }, { status: 405 });
@@ -43,7 +42,8 @@ export async function action({ request }: ActionFunctionArgs) {
       workspaceId: payload.workspaceId,
     });
     return json({ ok: true, jobId: job.job_id, shop: session.shop });
-  } catch (e) {
+  } catch (error) {
+    console.error("[API] Social post schedule error", error);
     return json(
       { ok: false, error: "Failed to schedule post" },
       { status: 502 },

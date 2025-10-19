@@ -62,6 +62,12 @@ Contract Test
 - If blocked > 15 minutes (tooling, CI, review), log a brief blocker in the Issue and continue with the next task in the fallback queue below. Do not idle.
 - Keep all diffs within Approved paths; attach evidence (logs/commands/screens); flags stay OFF.
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh pilot -- <command>`.
+- Append ISO timestamps on each step to `artifacts/pilot/<YYYY-MM-DD>/logs/heartbeat.log` and `artifacts/pilot/<YYYY-MM-DD>/heartbeat.ndjson`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. Scaffold `packages/pilot/` minimal package:
@@ -90,6 +96,7 @@ Contract Test
 - [ ] Allowed paths agreed and documented
 - [ ] Contract test defined and runnable
 - [ ] Feedback entry written with evidence
+- [ ] Foreground Proof: committed `artifacts/pilot/<YYYY-MM-DD>/logs/heartbeat.log` (and `heartbeat.ndjson`)
 
 ## Contract Test
 

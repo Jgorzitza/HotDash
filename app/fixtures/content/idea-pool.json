@@ -1,0 +1,66 @@
+{
+  "version": "2025-10-18",
+  "generatedAt": "2025-10-18T06:42:00.000Z",
+  "ideas": [
+    {
+      "id": "idea-ops-001",
+      "title": "Chatwoot proactive health banner",
+      "category": "support",
+      "status": "approved",
+      "confidence": 0.78,
+      "impactScore": 8,
+      "effortScore": 3,
+      "owner": "ops",
+      "channels": ["email", "in-app"],
+      "summary": "Surface realtime Chatwoot health in the operator dashboard to prevent missed replies.",
+      "nextAction": "Pair with DevOps on production uptime hook",
+      "metrics": {
+        "target": "ack_time < 60m",
+        "winRate": 0.35
+      },
+      "mocked": true,
+      "createdAt": "2025-10-16T18:00:00.000Z",
+      "updatedAt": "2025-10-18T05:10:00.000Z"
+    },
+    {
+      "id": "idea-marketing-002",
+      "title": "Integrations launch storytelling",
+      "category": "marketing",
+      "status": "in_review",
+      "confidence": 0.64,
+      "impactScore": 6,
+      "effortScore": 4,
+      "owner": "marketing",
+      "channels": ["blog", "linkedin"],
+      "summary": "Highlight Supabase-backed idea pool workflows in launch content.",
+      "nextAction": "Collect customer proof points",
+      "metrics": {
+        "target": "3 launch-ready case studies",
+        "winRate": 0.2
+      },
+      "mocked": true,
+      "createdAt": "2025-10-15T14:20:00.000Z",
+      "updatedAt": "2025-10-18T04:05:00.000Z"
+    },
+    {
+      "id": "idea-product-003",
+      "title": "Approvals Supabase contract beta",
+      "category": "product",
+      "status": "draft",
+      "confidence": 0.55,
+      "impactScore": 7,
+      "effortScore": 5,
+      "owner": "product",
+      "channels": ["dashboard"],
+      "summary": "Beta gate the approvals API contract behind Supabase feature flag for early adopters.",
+      "nextAction": "Validate fallback telemetry",
+      "metrics": {
+        "target": "5 pilot teams",
+        "winRate": 0.18
+      },
+      "mocked": true,
+      "createdAt": "2025-10-17T09:45:00.000Z",
+      "updatedAt": "2025-10-18T03:20:00.000Z"
+    }
+  ]
+}

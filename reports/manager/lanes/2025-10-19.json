@@ -1,0 +1,241 @@
+{
+  "date": "2025-10-19",
+  "lanes": {
+    "engineer": [
+      {
+        "id": "ENG-001",
+        "title": "SSR provider verification + smoke",
+        "spec_path": "docs/manager/EXECUTION_ROADMAP.md#engineer-—-roadmap",
+        "molecules": [
+          {
+            "id": "M-001",
+            "desc": "Merge SSR provider fix and run smoke",
+            "status": "todo",
+            "allowed_paths": ["app/**", "tests/**", "scripts/qa/**"],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": ["artifacts/engineer/2025-10-19/mcp/react-router_ssr.jsonl"],
+              "tests": ["artifacts/qa/2025-10-19/app_usability/smoke.log"],
+              "preview": [],
+              "logs": ["artifacts/engineer/2025-10-19/build.log"],
+              "rollback": "git revert <commit>"
+            },
+            "dod": ["/ and /approvals = 200", "unit+integration pass", "PR body has MCP Evidence paths"],
+            "qa": {"owner": "claude", "cases": ["happy", "edge1"]},
+            "pr_hint": "app/root.tsx, app/routes/approvals/route.tsx, tests/smoke"
+          },
+          {
+            "id": "M-002",
+            "desc": "Polaris drawer a11y + aria-disabled test alignment",
+            "status": "todo",
+            "allowed_paths": ["tests/unit/components/approvals/**"],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": ["artifacts/engineer/2025-10-19/mcp/polaris_app_provider.jsonl"],
+              "tests": ["tests/unit/components/approvals/approvals-drawer.spec.tsx"],
+              "preview": [],
+              "logs": [],
+              "rollback": "revert test change"
+            },
+            "dod": ["unit tests pass", "a11y assertions updated"],
+            "qa": {"owner": "claude", "cases": ["happy"]},
+            "pr_hint": "tests/unit/components/approvals/approvals-drawer.spec.tsx"
+          }
+        ]
+      }
+    ],
+    "qa": [
+      {
+        "id": "QA-001",
+        "title": "Smoke + a11y packet",
+        "spec_path": "docs/directions/qa.md#contract-test",
+        "molecules": [
+          {
+            "id": "M-001",
+            "desc": "Run smoke against built artifact and attach logs",
+            "status": "todo",
+            "allowed_paths": ["scripts/qa/**", "artifacts/qa/**"],
+            "mcp_required": false,
+            "evidence": {
+              "mcp": [],
+              "tests": ["artifacts/qa/2025-10-19/app_usability/smoke.log"],
+              "preview": [],
+              "logs": ["artifacts/qa/2025-10-19/app_usability/server.log"],
+              "rollback": "n/a"
+            },
+            "dod": ["/ and /approvals = 200", "artifacts uploaded"],
+            "qa": {"owner": "claude", "cases": ["happy"]},
+            "pr_hint": "none (artifacts only)"
+          },
+          {
+            "id": "M-002",
+            "desc": "Run a11y subset and record violations with owners",
+            "status": "todo",
+            "allowed_paths": ["tests/e2e/**", "artifacts/qa/**"],
+            "mcp_required": false,
+            "evidence": {
+              "mcp": [],
+              "tests": ["artifacts/qa/2025-10-19/a11y/report.json"],
+              "preview": [],
+              "logs": [],
+              "rollback": "n/a"
+            },
+            "dod": ["report saved", "issues opened with owners/ETAs"],
+            "qa": {"owner": "claude", "cases": ["happy", "edge1"]},
+            "pr_hint": "none"
+          }
+        ]
+      }
+    ],
+    "designer": [
+      {
+        "id": "DES-001",
+        "title": "Action Dock harness (flag OFF)",
+        "spec_path": "docs/specs/hitl/main-dashboard.action-dock.md",
+        "molecules": [
+          {
+            "id": "M-001",
+            "desc": "Scaffold app/components/action-dock with SSR-safe shell",
+            "status": "todo",
+            "allowed_paths": ["app/components/action-dock/**", "tests/unit/components/action-dock/**"],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": ["artifacts/designer/2025-10-19/mcp/polaris_components.jsonl"],
+              "tests": ["tests/unit/components/action-dock/harness.spec.tsx"],
+              "preview": ["artifacts/designer/2025-10-19/screenshots/harness.png"],
+              "logs": [],
+              "rollback": "feature.actionDock remains OFF"
+            },
+            "dod": ["unit tests pass", "SSR snapshot stable", "flag OFF"],
+            "qa": {"owner": "claude", "cases": ["happy"]},
+            "pr_hint": "app/components/action-dock/**"
+          }
+        ]
+      }
+    ],
+    "analytics": [
+      {
+        "id": "ANA-001",
+        "title": "Telemetry Top‑10 export (parametric)",
+        "spec_path": "docs/specs/hitl/seo-telemetry.md#parametric-sql-sketch",
+        "molecules": [
+          {
+            "id": "M-001",
+            "desc": "Run sampling-guard proof and save CSV headers doc",
+            "status": "todo",
+            "allowed_paths": ["scripts/**", "docs/specs/hitl/**", "artifacts/analytics/**"],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": ["artifacts/analytics/2025-10-19/mcp/bigquery_sql.jsonl"],
+              "tests": [],
+              "preview": ["artifacts/seo/2025-10-19/telemetry-top10.csv"],
+              "logs": ["artifacts/analytics/2025-10-19/sampling-guard-proof.json"],
+              "rollback": "n/a"
+            },
+            "dod": ["proof JSON written", "CSV headers doc updated"],
+            "qa": {"owner": "claude", "cases": ["happy"]},
+            "pr_hint": "docs/specs/hitl/seo-telemetry.output.md"
+          }
+        ]
+      }
+    ],
+    "seo": [
+      {
+        "id": "SEO-001",
+        "title": "PSF MCP introspection + validations",
+        "spec_path": "docs/specs/hitl/programmatic-seo-factory.md#field-validations",
+        "molecules": [
+          {
+            "id": "M-001",
+            "desc": "MCP Admin: MetaobjectDefinition validate fields",
+            "status": "todo",
+            "allowed_paths": ["docs/specs/hitl/**", "artifacts/seo/**"],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": ["artifacts/seo/2025-10-19/mcp/shopify_admin_metaobjects.jsonl"],
+              "tests": [],
+              "preview": [],
+              "logs": ["artifacts/seo/2025-10-19/psf-validation.json"],
+              "rollback": "n/a"
+            },
+            "dod": ["JSON validation evidence saved", "spec updated if mismatches"],
+            "qa": {"owner": "claude", "cases": ["happy"]},
+            "pr_hint": "docs/specs/hitl/programmatic-seo-factory.md"
+          }
+        ]
+      }
+    ],
+    "ads": [
+      {"id":"ADS-001","title":"Ads metrics staging apply","spec_path":"docs/specs/hitl/ads-analytics.config.json","molecules":[
+        {"id":"M-001","desc":"Coordinate and run Supabase apply for ads metrics","status":"todo","allowed_paths":["supabase/migrations/**","artifacts/ads/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["artifacts/ads/2025-10-19/apply.log"],"rollback":"supabase migration rollback"},
+         "dod":["apply logs saved","views present"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"supabase/migrations/*ads*"}]}
+    ],
+    "content": [
+      {"id":"CON-001","title":"Launch notes Tier‑0","spec_path":"docs/specs/content_pipeline.md","molecules":[
+        {"id":"M-001","desc":"Draft launch notes + rollback messaging","status":"todo","allowed_paths":["docs/specs/**","feedback/content/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":["artifacts/content/2025-10-19/launch-notes.md"],"logs":[],"rollback":"revert doc"},
+         "dod":["doc present","links valid"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"docs/specs/content_pipeline.md"}]}
+    ],
+    "inventory": [
+      {"id":"INV-001","title":"Seed + RLS verify","spec_path":"docs/specs/inventory_pipeline.md","molecules":[
+        {"id":"M-001","desc":"Apply minimal seeds and run RLS tests","status":"todo","allowed_paths":["supabase/seeds/**","supabase/rls_tests.sql","artifacts/inventory/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":["artifacts/inventory/2025-10-19/rls.log"],"preview":[],"logs":["artifacts/inventory/2025-10-19/seed.log"],"rollback":"revert seeds"},
+         "dod":["RLS pass","seed applied"],"qa":{"owner":"claude","cases":["happy","edge1"]},"pr_hint":"supabase/seeds/**"}]}
+    ],
+    "data": [
+      {"id":"DATA-001","title":"Staging apply rehearsal","spec_path":"docs/runbooks/data_staging_apply.md","molecules":[
+        {"id":"M-001","desc":"Run apply rehearsal and save logs","status":"todo","allowed_paths":["docs/runbooks/**","artifacts/data/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["artifacts/data/2025-10-19/apply-rehearsal.log"],"rollback":"n/a"},
+         "dod":["log saved","no destructive ops"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"docs/runbooks/data_staging_apply.md"}]}
+    ],
+    "integrations": [
+      {"id":"INT-001","title":"Chatwoot health evidence bundle","spec_path":"docs/runbooks/support_webhooks.md","molecules":[
+        {"id":"M-001","desc":"Capture /api and authed health probes","status":"todo","allowed_paths":["scripts/ops/**","artifacts/integrations/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["artifacts/integrations/2025-10-19/chatwoot_health.jsonl"],"rollback":"n/a"},
+         "dod":["200 probe evidence present"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"scripts/ops/check-chatwoot-health.mjs"}]}
+    ],
+    "product": [
+      {"id":"PROD-001","title":"A/B registry example + endpoints doc","spec_path":"docs/specs/hitl/ab-harness.md#test-harness-endpoints","molecules":[
+        {"id":"M-001","desc":"Add registry JSON example and endpoint notes","status":"todo","allowed_paths":["docs/specs/hitl/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":[],"rollback":"revert doc"},
+         "dod":["example present","endpoints documented"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"docs/specs/hitl/ab-harness.md"}]}
+    ],
+    "support": [
+      {"id":"SUP-001","title":"Webhook retry evidence + learn signals","spec_path":"docs/runbooks/support_webhooks.md","molecules":[
+        {"id":"M-001","desc":"Run retry scenarios and store logs","status":"todo","allowed_paths":["tests/integration/**","artifacts/support/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":["artifacts/support/2025-10-19/tests/retry.log"],"preview":[],"logs":["artifacts/support/2025-10-19/ops/chatwoot-health.jsonl"],"rollback":"n/a"},
+         "dod":["tests pass","logs saved"],"qa":{"owner":"claude","cases":["happy","edge1"]},"pr_hint":"tests/integration/support.webhook.spec.ts"}]}
+    ],
+    "ai-customer": [
+      {"id":"AIC-001","title":"Health spec alignment (no /rails/health)","spec_path":"docs/runbooks/support_webhooks.md","molecules":[
+        {"id":"M-001","desc":"Update runbook to emphasize /api + authed probes only","status":"todo","allowed_paths":["docs/runbooks/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":[],"rollback":"revert doc"},
+         "dod":["runbook updated"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"docs/runbooks/support_webhooks.md"}]}
+    ],
+    "ai-knowledge": [
+      {"id":"AIK-001","title":"Index + eval logs","spec_path":"docs/specs/knowledge_pipeline.md","molecules":[
+        {"id":"M-001","desc":"Run build/eval and attach logs","status":"todo","allowed_paths":["packages/memory/logs/**","artifacts/ai-knowledge/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["packages/memory/logs/build/last_eval.log"],"rollback":"n/a"},
+         "dod":["logs present","summary in feedback"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"packages/memory/logs/build/*"}]}
+    ],
+    "devops": [
+      {"id":"DEV-001","title":"Deploy to staging run","spec_path":".github/workflows/deploy-staging.yml","molecules":[
+        {"id":"M-001","desc":"Trigger staging deploy and archive outputs","status":"todo","allowed_paths":[".github/workflows/**","artifacts/deployments/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["artifacts/deployments/staging-<run>.md"],"rollback":"use rollback-staging workflow"},
+         "dod":["deployment metadata saved","health passed or rolled back"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":".github/workflows/deploy-staging.yml"}]}
+    ],
+    "pilot": [
+      {"id":"PIL-001","title":"Pilot CI stub evidence","spec_path":"docs/directions/pilot.md#contract-test","molecules":[
+        {"id":"M-001","desc":"Run pilot CI stub and save log","status":"todo","allowed_paths":["docs/directions/pilot.md","artifacts/pilot/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":["artifacts/pilot/2025-10-19/ci-stub.log"],"preview":[],"logs":[],"rollback":"n/a"},
+         "dod":["stub log saved"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"docs/directions/pilot.md"}]}
+    ],
+    "manager": [
+      {"id":"MAN-001","title":"Compile feedback + drive merges","spec_path":"reports/manager/feedback/compiled_2025-10-19.md","molecules":[
+        {"id":"M-001","desc":"Merge SSR provider + policy PRs, trigger CI","status":"todo","allowed_paths":["docs/**","app/**","tests/**"],"mcp_required":false,
+         "evidence":{"mcp":[],"tests":[],"preview":[],"logs":["reports/manager/status.md"],"rollback":"revert PRs"},
+         "dod":["build green","smoke green"],"qa":{"owner":"claude","cases":["happy"]},"pr_hint":"app/root.tsx, tests, docs"}]}
+    ]
+  }
+}

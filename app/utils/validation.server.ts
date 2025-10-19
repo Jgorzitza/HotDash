@@ -56,14 +56,14 @@ export function sanitizeInput(input: string): string {
 /**
  * Validate positive number
  */
-export function isPositiveNumber(value: any): value is number {
-  return typeof value === "number" && value > 0 && isFinite(value);
+export function isPositiveNumber(value: unknown): value is number {
+  return typeof value === "number" && value > 0 && Number.isFinite(value);
 }
 
 /**
  * Validate integer
  */
-export function isInteger(value: any): value is number {
+export function isInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value);
 }
 

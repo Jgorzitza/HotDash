@@ -1,0 +1,87 @@
+{
+  "template": {
+    "id": "tmpl_an6_hose_bundle_v1",
+    "title": "AN6 Hose Bundle",
+    "version": 1,
+    "param_schema": [
+      {
+        "key": "hose_color",
+        "label": "Hose Color",
+        "type": "enum",
+        "required": true,
+        "enum": ["black", "black/red", "black/blue"],
+        "sources": { "variant_option": "Color" },
+        "normalize": {
+          "synonyms": [{ "from": "Black Red", "to": "black/red" }]
+        }
+      },
+      {
+        "key": "hose_length",
+        "label": "Hose Length",
+        "type": "enum",
+        "required": true,
+        "enum": ["20ft", "30ft", "40ft"],
+        "sources": { "variant_option": "Length" }
+      }
+    ],
+    "components": [
+      {
+        "name": "Hose",
+        "qty_per_bundle": 1,
+        "selector": {
+          "kind": "dynamic",
+          "template": "hose-{hose_color}-{hose_length}",
+          "params": ["hose_color", "hose_length"]
+        },
+        "bindings": [
+          { "component_option": "Color", "from_param": "hose_color" },
+          { "component_option": "Length", "from_param": "hose_length" }
+        ]
+      },
+      {
+        "name": "StraightFitting",
+        "qty_per_bundle": 4,
+        "selector": {
+          "kind": "dynamic",
+          "template": "fitting-straight-an6-{hose_color}",
+          "params": ["hose_color"]
+        },
+        "bindings": [
+          { "component_option": "Color", "from_param": "hose_color" }
+        ]
+      },
+      {
+        "name": "45Fitting",
+        "qty_per_bundle": 2,
+        "selector": {
+          "kind": "dynamic",
+          "template": "fitting-45-an6-{hose_color}",
+          "params": ["hose_color"]
+        },
+        "bindings": [
+          { "component_option": "Color", "from_param": "hose_color" }
+        ]
+      },
+      {
+        "name": "90Fitting",
+        "qty_per_bundle": 2,
+        "selector": {
+          "kind": "dynamic",
+          "template": "fitting-90-an6-{hose_color}",
+          "params": ["hose_color"]
+        },
+        "bindings": [
+          { "component_option": "Color", "from_param": "hose_color" }
+        ]
+      }
+    ]
+  },
+  "variant_map": {
+    "bundle_variant_id": "gid://shopify/ProductVariant/1234567890",
+    "template_id": "tmpl_an6_hose_bundle_v1",
+    "param_values": {
+      "hose_color": "black/red",
+      "hose_length": "30ft"
+    }
+  }
+}

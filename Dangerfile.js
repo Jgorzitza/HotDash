@@ -46,6 +46,30 @@ if (codeChanged) {
   if (!hasMcpSection || !hasMcpArtifact) {
     fail('MCP Evidence missing. Add a section like:\n\nMCP Evidence:\n- artifacts/<agent>/<YYYY-MM-DD>/mcp/<tool>_*.jsonl');
   }
+
+  // Foreground Proof: require heartbeat log path and validate content
+  const hasFgSection = /Foreground Proof:/i.test(body);
+  const fgLogMatch = body && body.match(/artifacts\/[a-z0-9_-]+\/[0-9]{4}-[0-9]{2}-[0-9]{2}\/logs\/heartbeat\.(log|ndjson)/i);
+  if (!hasFgSection || !fgLogMatch) {
+    fail('Foreground Proof missing. Add a section with a path like:\n\nForeground Proof:\n- artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.ndjson');
+  } else {
+    const hbPath = fgLogMatch[0];
+    const touched = changed.includes(hbPath);
+    if (!touched) {
+      fail(`Foreground heartbeat file not included in PR changes: ${hbPath}`);
+    } else {
+      try {
+        const content = fs.readFileSync(hbPath, 'utf8');
+        const lines = content.split(/\r?\n/).filter(Boolean);
+        const isoCount = lines.filter(l => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/.test(l)).length;
+        if (isoCount < 2) {
+          fail(`Foreground heartbeat log at ${hbPath} lacks sufficient ISO timestamps (found ${isoCount}).`);
+        }
+      } catch (e) {
+        fail(`Cannot read heartbeat log at ${hbPath}: ${e?.message || e}`);
+      }
+    }
+  }
 }
 
 // Tests nudge

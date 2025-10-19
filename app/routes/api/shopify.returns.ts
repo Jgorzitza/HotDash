@@ -3,7 +3,7 @@
  * GET /api/shopify/returns
  */
 
-import type { LoaderFunctionArgs } from "react-router";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -12,7 +12,45 @@ import { toInputJson } from "../../services/json";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const RETURNS_WINDOW_DAYS = 30;
-const cache = new Map<string, { data: any; expiresAt: number }>();
+interface ShopifyReturnsPayload {
+  data?: {
+    refunds: {
+      edges: Array<{
+        node: {
+          totalRefundedSet?: {
+            shopMoney: {
+              amount?: string;
+              currencyCode?: string;
+            };
+          };
+        };
+      }>;
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
+interface ReturnsResponse {
+  returnCount: number;
+  totalRefundValue: number;
+  currency: string;
+  returnRate: number;
+  windowDays: number;
+  generatedAt: string;
+}
+
+type ShopifyRefundEdge = {
+  node: {
+    totalRefundedSet?: {
+      shopMoney: {
+        amount?: string;
+        currencyCode?: string;
+      };
+    };
+  };
+};
+
+const cache = new Map<string, { data: ReturnsResponse; expiresAt: number }>();
 
 const RETURNS_QUERY = `#graphql
   query ReturnsMetrics($first: Int!, $query: String) {
@@ -37,7 +75,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     if (shouldUseCache) {
       const cached = cache.get(cacheKey);
       if (cached && cached.expiresAt > Date.now()) {
-        return Response.json(cached.data, { headers: { "X-Cache": "HIT" } });
+        return json(cached.data, { headers: { "X-Cache": "HIT" } });
       }
     }
 
@@ -54,7 +92,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         retryable: response.status >= 500,
       });
     }
-    const payload = await response.json();
+    const payload: ShopifyReturnsPayload = await response.json();
     if (payload.errors?.length) {
       throw new ServiceError(payload.errors[0].message, {
         scope: "shopify.returns",
@@ -62,7 +100,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       });
     }
 
-    const refunds = payload.data?.refunds.edges ?? [];
+    const refunds: ShopifyRefundEdge[] = payload.data?.refunds.edges ?? [];
     let totalRefundValue = 0;
     let currency = "USD";
     for (const { node } of refunds) {
@@ -70,11 +108,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
         node.totalRefundedSet?.shopMoney.amount ?? "0",
       );
       totalRefundValue += amount;
-      if (node.totalRefundedSet?.shopMoney.currencyCode)
+      if (node.totalRefundedSet?.shopMoney.currencyCode) {
         currency = node.totalRefundedSet.shopMoney.currencyCode;
+      }
     }
 
-    const returnsData = {
+    const returnsData: ReturnsResponse = {
       returnCount: refunds.length,
       totalRefundValue: Number(totalRefundValue.toFixed(2)),
       currency,
@@ -95,13 +134,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
         expiresAt: Date.now() + CACHE_TTL_MS,
       });
     }
-    return Response.json(returnsData, {
+    return json(returnsData, {
       headers: {
         "X-Cache": shouldUseCache ? "MISS" : "BYPASS",
         "X-Response-Time": `${Date.now() - startTime}ms`,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof ServiceError) {
       logger.error("Returns service error", {
         message: error.message,
@@ -115,7 +154,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           : error.retryable
             ? 503
             : 500;
-      return Response.json(
+      return json(
         {
           error: {
             message: error.message,
@@ -129,7 +168,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     logger.error("Returns unexpected error", {
       error: error instanceof Error ? error.message : String(error),
     });
-    return Response.json(
+    return json(
       {
         error: {
           message: "Returns fetch failed",

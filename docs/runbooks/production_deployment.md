@@ -11,6 +11,8 @@ This runbook describes the process for deploying the HotDash application to prod
 - [ ] Manager approval obtained
 - [ ] Deployment window: Monday-Friday, 9am-5pm PT
 - [ ] FLY_API_TOKEN configured in GitHub Secrets
+- [ ] Verify `scripts/ci/ensure-analytics-modules.mjs` is present (temporary guard that backfills missing GA4 helpers during CI builds)
+- [ ] Review latest staging workflow run to confirm smoke + rollback jobs succeeded (or captured artifacts when skipped)
 
 ### Required CI Checks
 
@@ -42,6 +44,28 @@ Notifications include:
 - Health check status
 
 ## Deployment Process
+
+### Staging Smoke & Rollback Checklist
+
+Before triggering production deploys, review the most recent `Deploy to Staging` workflow run:
+
+1. **Smoke job artifacts**
+   - Artifact name: `smoke-<run_number>`.
+   - Inspect `smoke-logs/http_status.txt` (expect `200`).
+   - Review `smoke-logs/curl.log` for connection retries and final status.
+   - Validate manifest at `smoke-logs/sha256_manifest.txt` to confirm integrity.
+
+2. **Rollback job readiness**
+   - Artifact name: `rollback-<run_number>` (may be absent if deploy succeeded).
+   - If present, ensure `rollback-logs/rollback.log` shows a Fly deploy using the previous `imageRef`.
+   - Confirm `rollback-logs/status.log` shows healthy machines post-rollback.
+   - Check `rollback-logs/app-missing.log` when Fly app does not exist (expected on first run).
+
+3. **Guard script verification**
+   - Confirm build job executed `node scripts/ci/ensure-analytics-modules.mjs` without errors.
+   - If the script created files, schedule follow-up to land real modules and remove the guard.
+
+Only proceed to production once staging smoke passes (HTTP 200) and rollback either succeeds or safely skips.
 
 ### Automated Deployment (Recommended)
 

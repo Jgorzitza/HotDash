@@ -19,6 +19,12 @@ Guarantee staging readiness today by running a minimal smoke (start server + GET
 - If blocked > 15 minutes (env, CI, flaky test), post a brief blocker in the Issue and continue with the next task in the fallback queue below. Do not idle.
 - Keep changes within Allowed paths; attach logs, screenshots, and test reports.
 
+## Foreground Proof (Required)
+
+- For any step expected to run >15s, run via `scripts/policy/with-heartbeat.sh qa -- <command>`.
+- Append ISO timestamps on each step to `artifacts/qa/<YYYY-MM-DD>/logs/heartbeat.log`.
+- Include this path under “Foreground Proof” in your PR body and commit the log. PRs without it fail CI.
+
 ## Fallback Work Queue (aligned to NORTH_STAR)
 
 1. Expand smoke to cover dashboard, approvals interactions (open/close drawer, pagination)
@@ -49,6 +55,7 @@ Guarantee staging readiness today by running a minimal smoke (start server + GET
 - [ ] `npm run scan`
 - [ ] Feedback entry updated with outcomes
 - [ ] Contract test passes
+- [ ] Foreground Proof: committed `artifacts/qa/<YYYY-MM-DD>/logs/heartbeat.log`
 
 ## Contract Test
 

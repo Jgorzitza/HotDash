@@ -1,0 +1,17 @@
+{
+  "status": "planned_only_do_not_seed",
+  "economics": {
+    "marginFloor": 0.2,
+    "otherVariableCostsPerBundle": 0,
+    "includeShippingSurcharge": true
+  },
+  "approvals": {
+    "required": true,
+    "allowQuantityEdit": true,
+    "reasonCodes": ["Prevent stockout", "Launch support", "Seasonal spike"]
+  },
+  "vendors": { "requireApprovedLocal": true },
+  "po": { "createOnApprove": true, "shipTo": "Washington WH" },
+  "notifications": { "inApp": true, "emailDigest": false },
+  "dashboard": { "inventoryTile": { "showProposals": true } }
+}

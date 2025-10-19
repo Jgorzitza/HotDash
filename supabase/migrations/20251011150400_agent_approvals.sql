@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS public.agent_approvals (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+ALTER TABLE public.agent_approvals
+  ADD COLUMN IF NOT EXISTS last_interruptions JSONB DEFAULT '[]'::JSONB;
+
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS agent_approvals_conversation_id_idx 
   ON public.agent_approvals (conversation_id);
@@ -37,14 +40,30 @@ COMMENT ON COLUMN public.agent_approvals.conversation_id IS 'Agent SDK conversat
 COMMENT ON COLUMN public.agent_approvals.serialized IS 'Serialized conversation state (JSONB for flexible schema)';
 COMMENT ON COLUMN public.agent_approvals.last_interruptions IS 'Array of interruption events (JSONB)';
 COMMENT ON COLUMN public.agent_approvals.created_at IS 'Timestamp when approval request created (indexed)';
-COMMENT ON COLUMN public.agent_approvals.approved_by IS 'User identifier who approved/rejected';
 COMMENT ON COLUMN public.agent_approvals.status IS 'Approval status: pending, approved, rejected, expired';
 COMMENT ON COLUMN public.agent_approvals.updated_at IS 'Timestamp of last status change';
+
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'agent_approvals'
+      AND column_name = 'approved_by'
+  ) THEN
+    EXECUTE 'COMMENT ON COLUMN public.agent_approvals.approved_by IS ''User identifier who approved/rejected''';
+  END IF;
+END;
+$$;
 
 -- Enable Row Level Security
 ALTER TABLE public.agent_approvals ENABLE ROW LEVEL SECURITY;
 
 -- Policy 1: Service role has full access (Agent SDK operations)
+DROP POLICY IF EXISTS agent_approvals_service_role_all
+  ON public.agent_approvals;
+
 CREATE POLICY agent_approvals_service_role_all
   ON public.agent_approvals
   FOR ALL
@@ -54,6 +73,9 @@ CREATE POLICY agent_approvals_service_role_all
 
 -- Policy 2: Authenticated users can read their own conversation approvals
 -- Uses JWT claim 'conversation_id' or session variable
+DROP POLICY IF EXISTS agent_approvals_read_own
+  ON public.agent_approvals;
+
 CREATE POLICY agent_approvals_read_own
   ON public.agent_approvals
   FOR SELECT
@@ -67,6 +89,9 @@ CREATE POLICY agent_approvals_read_own
   );
 
 -- Policy 3: Only service role can insert approvals
+DROP POLICY IF EXISTS agent_approvals_insert_service_only
+  ON public.agent_approvals;
+
 CREATE POLICY agent_approvals_insert_service_only
   ON public.agent_approvals
   FOR INSERT
@@ -74,6 +99,9 @@ CREATE POLICY agent_approvals_insert_service_only
   WITH CHECK (true);
 
 -- Policy 4: Only service role can update approvals (for status changes)
+DROP POLICY IF EXISTS agent_approvals_update_service_only
+  ON public.agent_approvals;
+
 CREATE POLICY agent_approvals_update_service_only
   ON public.agent_approvals
   FOR UPDATE
@@ -83,6 +111,9 @@ CREATE POLICY agent_approvals_update_service_only
 
 -- Policy 5: Prevent deletes (approvals are audit records)
 -- Only service role can delete for cleanup
+DROP POLICY IF EXISTS agent_approvals_no_delete
+  ON public.agent_approvals;
+
 CREATE POLICY agent_approvals_no_delete
   ON public.agent_approvals
   FOR DELETE
@@ -106,5 +137,16 @@ FOR EACH ROW EXECUTE PROCEDURE public.set_updated_at();
 -- Grant necessary permissions
 GRANT SELECT ON public.agent_approvals TO authenticated;
 GRANT ALL ON public.agent_approvals TO service_role;
-GRANT USAGE, SELECT ON SEQUENCE agent_approvals_id_seq TO service_role;
 
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.sequences
+    WHERE sequence_schema = 'public'
+      AND sequence_name = 'agent_approvals_id_seq'
+  ) THEN
+    EXECUTE 'GRANT USAGE, SELECT ON SEQUENCE agent_approvals_id_seq TO service_role';
+  END IF;
+END;
+$$;

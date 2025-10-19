@@ -1,6 +1,11 @@
 import type { ShopifyServiceContext } from "./types";
 import { authenticate } from "../../shopify.server";
 
+type GraphqlInvoker = (
+  query: string,
+  options?: RequestInit,
+) => Promise<Response>;
+
 // Test utilities for dependency injection
 let waitFn = async (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -30,9 +35,9 @@ function isRetryableStatus(status: number): boolean {
 }
 
 async function graphqlWithRetry(
-  originalGraphql: (query: string, options: any) => Promise<Response>,
+  originalGraphql: GraphqlInvoker,
   query: string,
-  options: any,
+  options?: RequestInit,
 ): Promise<Response> {
   let lastResponse: Response | null = null;
 
@@ -75,7 +80,7 @@ export async function getShopifyServiceContext(
   const originalGraphql = admin.graphql.bind(admin);
   const wrappedAdmin = {
     ...admin,
-    graphql: (query: string, options: any) =>
+    graphql: (query: string, options?: RequestInit) =>
       graphqlWithRetry(originalGraphql, query, options),
   };
 

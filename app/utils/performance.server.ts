@@ -21,13 +21,16 @@ export async function measure<T>(
 /**
  * Simple memoization decorator for expensive operations
  */
-export function memoize<T extends (...args: any[]) => any>(
+type AnyFunction = (...args: unknown[]) => unknown;
+
+export function memoize<T extends AnyFunction>(
   fn: T,
   options: { ttlMs?: number; keyFn?: (...args: Parameters<T>) => string } = {},
 ): T {
   const cache = new Map<string, { value: ReturnType<T>; expiresAt: number }>();
   const ttlMs = options.ttlMs || 60000; // Default 1 minute
-  const keyFn = options.keyFn || ((...args) => JSON.stringify(args));
+  const keyFn =
+    options.keyFn || ((...args: Parameters<T>) => JSON.stringify(args));
 
   return ((...args: Parameters<T>) => {
     const key = keyFn(...args);
@@ -37,20 +40,20 @@ export function memoize<T extends (...args: any[]) => any>(
       return cached.value;
     }
 
-    const result = fn(...args);
+    const result = fn(...args) as ReturnType<T>;
     cache.set(key, {
       value: result,
       expiresAt: Date.now() + ttlMs,
     });
 
-    return result;
+    return result as ReturnType<T>;
   }) as T;
 }
 
 /**
  * Debounce function execution
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends AnyFunction>(
   fn: T,
   delayMs: number,
 ): (...args: Parameters<T>) => void {

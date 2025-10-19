@@ -18,7 +18,7 @@ export interface HealthCheck {
   status: "pass" | "warn" | "fail";
   message?: string;
   responseTime?: number;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export type HealthCheckFunction = () => Promise<HealthCheck>;
@@ -59,11 +59,11 @@ export class HealthCheckManager {
           ]);
           result.responseTime = Math.round(performance.now() - start);
           return result;
-        } catch (error: any) {
+        } catch (error: unknown) {
           return {
             name,
             status: "fail" as const,
-            message: error.message || "Check failed",
+            message: error instanceof Error ? error.message : "Check failed",
           };
         }
       },
@@ -173,11 +173,12 @@ export async function checkShopifyHealth(): Promise<HealthCheck> {
       message: `Shopify API returned ${response.status}`,
       responseTime,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       name: "shopify",
       status: "fail",
-      message: error.message || "Shopify API check failed",
+      message:
+        error instanceof Error ? error.message : "Shopify API check failed",
     };
   }
 }
@@ -205,11 +206,11 @@ export async function checkGAHealth(): Promise<HealthCheck> {
       status: "pass",
       message: "GA configured",
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       name: "google-analytics",
       status: "warn",
-      message: error.message || "GA check failed",
+      message: error instanceof Error ? error.message : "GA check failed",
     };
   }
 }
@@ -254,11 +255,12 @@ export async function checkChatwootHealth(): Promise<HealthCheck> {
       message: `Chatwoot API returned ${response.status}`,
       responseTime,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     return {
       name: "chatwoot",
       status: "fail",
-      message: error.message || "Chatwoot API check failed",
+      message:
+        error instanceof Error ? error.message : "Chatwoot API check failed",
     };
   }
 }

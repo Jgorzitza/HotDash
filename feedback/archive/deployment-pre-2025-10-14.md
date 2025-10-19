@@ -6,9 +6,11 @@ last_reviewed: 2025-10-10
 doc_hash: TBD
 expires: 2025-10-12
 ---
+
 - Updated staging fallback checklist for current Supabase + Chatwoot posture:
   - Command: `sed -n '1,80p' docs/deployment/staging_redeploy_post_rotation.md`
-    ```
+
+    ````
     ## Preconditions
     - Sanitized branch `agent/ai/staging-push` force-pushed to GitHub with hash logged in `feedback/deployment.md` (latest push: `0079c3192f0b9e8f02243beb9edb8d22deecf210`).
     - Supabase staging credentials verified in vault/GitHub (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `DATABASE_URL`). DSN stored at `vault/occ/supabase/database_url_staging.env` now uses the Supabase session pooler with `sslmode=require` and an encoded password (`%2F`, `%21`).
@@ -27,9 +29,14 @@ expires: 2025-10-12
        STAGING_APP_URL="$STAGING_APP_URL" \
        STAGING_SMOKE_TEST_URL="$STAGING_SMOKE_TEST_URL" \
        scripts/deploy/staging-deploy.sh
-       ```
+    ````
+
     ```
+
+    ```
+
   - Command: `sed -n '80,140p' docs/deployment/staging_redeploy_post_rotation.md`
+
     ```
     5. Capture synthetic check (<300 ms mock + live) via `node scripts/ci/synthetic-check.mjs` with updated Supabase backing. Pair with `scripts/ops/chatwoot-fly-smoke.sh --env staging` to log CX readiness (`artifacts/support/chatwoot-fly-deploy/hotdash-chatwoot.fly.dev/`).
 
@@ -94,6 +101,7 @@ expires: 2025-10-12
     ```
   - Command: `ls artifacts/support/chatwoot-fly-deploy/hotdash-chatwoot.fly.dev`
     ```
+
     ```
     ```
     - Host: hotdash-chatwoot.fly.dev
@@ -103,22 +111,22 @@ expires: 2025-10-12
 - Confirmed Fly secrets match Supabase configuration:
   - Command: `source vault/occ/fly/api_token.env && /home/justin/.fly/bin/fly secrets list --app hotdash-chatwoot`
     ```
-    NAME                 	DIGEST           
-    BACKEND_URL          	dd663b653cb4ce68	
-    DEFAULT_FROM_EMAIL   	55b2e01180bf1612	
-    ENABLE_ACCOUNT_SIGNUP	fa61a13817d73a23	
-    FRONTEND_URL         	dd663b653cb4ce68	
-    INSTALLATION_ENV     	a5a458d4d86fb5f4	
-    MAILER_SENDER_EMAIL  	55b2e01180bf1612	
-    NODE_ENV             	a331102148f18977	
-    POSTGRES_DATABASE    	8a66529be806f1bd	
-    POSTGRES_HOST        	653c025099b59a7e	
-    POSTGRES_PASSWORD    	75821d24133e1f12	
-    POSTGRES_PORT        	5bed575942cb6315	
-    POSTGRES_USERNAME    	6ca40ff5c817ae3f	
-    RAILS_ENV            	a331102148f18977	
-    REDIS_URL            	ec19e3a803eee6f9	
-    SECRET_KEY_BASE      	08d5df5753f555b2	
+    NAME                 	DIGEST
+    BACKEND_URL          	dd663b653cb4ce68
+    DEFAULT_FROM_EMAIL   	55b2e01180bf1612
+    ENABLE_ACCOUNT_SIGNUP	fa61a13817d73a23
+    FRONTEND_URL         	dd663b653cb4ce68
+    INSTALLATION_ENV     	a5a458d4d86fb5f4
+    MAILER_SENDER_EMAIL  	55b2e01180bf1612
+    NODE_ENV             	a331102148f18977
+    POSTGRES_DATABASE    	8a66529be806f1bd
+    POSTGRES_HOST        	653c025099b59a7e
+    POSTGRES_PASSWORD    	75821d24133e1f12
+    POSTGRES_PORT        	5bed575942cb6315
+    POSTGRES_USERNAME    	6ca40ff5c817ae3f
+    RAILS_ENV            	a331102148f18977
+    REDIS_URL            	ec19e3a803eee6f9
+    SECRET_KEY_BASE      	08d5df5753f555b2
     ```
 - Re-encoded Supabase DSN for staging and re-synced GitHub secret:
   - Command: `grep '^DATABASE_URL=' vault/occ/supabase/database_url_staging.env`
@@ -128,11 +136,12 @@ expires: 2025-10-12
   - Command: `gh secret set DATABASE_URL --env staging --body "$(grep '^DATABASE_URL=' vault/occ/supabase/database_url_staging.env | cut -d= -f2-)"`
   - Command: `gh secret list --env staging | grep DATABASE_URL`
     ```
+
     ```
 - Direct API probe still failing — escalated to Chatwoot agent pending resolution:
   - Command: `curl -sSI https://hotdash-chatwoot.fly.dev/public/api/v1/accounts`
     ```
-    HTTP/2 503 
+    HTTP/2 503
     server: Fly/6f91d33b9d (2025-10-08)
     via: 2 fly.io
     fly-request-id: 01K77TA95DPQZ8Y9HRXDGG5YPA-ord
@@ -143,25 +152,31 @@ expires: 2025-10-12
   - Command: `gh secret set SHOPIFY_EMBED_TOKEN_STAGING --env staging --body "$(grep '^SHOPIFY_EMBED_TOKEN=' vault/occ/shopify/embed_token_staging.env | cut -d= -f2-)"` (no stdout)
   - Command: `gh secret list --env staging | grep SHOPIFY_EMBED_TOKEN_STAGING`
     ```
+
     ```
   - Command: `gh secret set DATABASE_URL --env staging --body "$(grep '^DATABASE_URL=' vault/occ/supabase/database_url_staging.env | cut -d= -f2-)"` (no stdout)
   - Command: `gh secret list --env staging | grep DATABASE_URL`
     ```
+
     ```
   - Command: `gh secret set CHATWOOT_TOKEN_STAGING --env staging --body "$(grep '^CHATWOOT_API_TOKEN_STAGING=' vault/occ/chatwoot/api_token_staging.env | cut -d= -f2-)"` (no stdout)
   - Command: `gh secret list --env staging | grep CHATWOOT_TOKEN_STAGING`
     ```
+
     ```
   - Command: `gh secret set CHATWOOT_ACCOUNT_ID_STAGING --env staging --body "$(grep '^CHATWOOT_ACCOUNT_ID_STAGING=' vault/occ/chatwoot/api_token_staging.env | cut -d= -f2-)"` (no stdout)
   - Command: `gh secret list --env staging | grep CHATWOOT_ACCOUNT_ID_STAGING`
     ```
+
     ```
   - Command: `gh secret set CHATWOOT_REDIS_URL_STAGING --env staging --body "$(grep '^REDIS_URL=' vault/occ/chatwoot/redis_staging.env | cut -d= -f2-)"` (no stdout)
   - Command: `gh secret list --env staging | grep CHATWOOT_REDIS_URL_STAGING`
     ```
+
     ```
   - Command: `gh secret list --env staging | egrep 'SHOPIFY_EMBED_TOKEN_STAGING|DATABASE_URL|CHATWOOT_(TOKEN|ACCOUNT_ID)_STAGING'`
     ```
+
     ```
 - GA MCP staging bundle unavailable after two attempts (blocking secret mirror):
   - Command: `bundle_path="vault/occ/ga_mcp/staging_bundle.json"; if [[ -f "$bundle_path" ]]; then gh secret set GA_MCP_BUNDLE_STAGING --env staging --body "$(cat "$bundle_path")"; else echo "[deploy] Missing $bundle_path" >&2; exit 1; fi`
@@ -314,15 +329,20 @@ expires: 2025-10-12
 - Reliability confirmed the Supabase staging breach is contained; keep the existing `DATABASE_URL`, `SUPABASE_URL`, and `SUPABASE_SERVICE_KEY` secrets in GitHub/vault untouched until the coordinated 2025-10-11 rotation window. Standing by to surface latest timestamps/evidence back to reliability.
 
 # Deployment Remote Reset Prep — 2025-10-10 13:39 UTC
+
 - Re-added GitHub remote `origin` (`https://github.com/Jgorzitza/HotDash.git`) per sprint directive; verified fetch/push URLs.
 - Awaiting reliability sign-off before force-pushing sanitized branch `agent/ai/staging-push`; will log resulting commit hash immediately after push.
 - Drafted repository reset instructions for cross-team broadcast so everyone can `git fetch --all --prune` and `git reset --hard origin/agent/ai/staging-push` once the force-push lands.
 - Flagged staging deploy freeze pending Supabase credential rotation; published redeploy command/evidence checklist at `docs/deployment/staging_redeploy_post_rotation.md` for post-rotation execution.
+
 # Deployment Sanitized Push Complete — 2025-10-10 13:47 UTC
+
 - Force-pushed sanitized branch `agent/ai/staging-push` to origin (commit `0079c3192f0b9e8f02243beb9edb8d22deecf210`); history confirmed clean via `git log --oneline | head`.
 - Broadcasting reset instructions so all teams drop compromised history (`git fetch --all --prune`, `git reset --hard origin/agent/ai/staging-push`).
 - Lifting staging deploy freeze now that Supabase credentials validated; clearing HOLD banner and re-enabling scripts.
+
 # Staging Redeploy Command Staged — 2025-10-10 13:55 UTC
+
 - Verified `.env.staging` still carries `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `DATABASE_URL`, and Shopify CLI credentials; sourced `vault/occ/shopify/shop_domain_staging.env` for `STAGING_SHOP_DOMAIN=hotroddash.myshopify.com`.
 - Ready-to-run command (no secrets echoed):
   ```bash
@@ -339,68 +359,88 @@ expires: 2025-10-12
   2. Synthetic JSON (<300 ms mock & live) via `node scripts/ci/synthetic-check.mjs` with `SYNTHETIC_CHECK_URL=$STAGING_SMOKE_TEST_URL`.
   3. Prisma smoke (`npm run db:migrate:postgres` with `DATABASE_URL` from `.env.staging`) recorded in `artifacts/migrations/`.
   4. Fly secrets snapshot (`flyctl secrets list --app hotdash-staging`) archived to confirm Supabase values unchanged post-run.
+
 # GitHub Secrets Audit — 2025-10-10 14:00 UTC
+
 - Reviewed `.github/workflows/*` for Supabase/Postgres references; only `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, and `DATABASE_URL` secrets are consumed (no legacy DSNs present).
 - Verified staging workflow maps Shopify secrets to current names (`SHOPIFY_API_KEY_STAGING`, `SHOPIFY_API_SECRET_STAGING`, `SHOPIFY_CLI_AUTH_TOKEN_STAGING`) and production workflow references the pending `_PROD` entries per reliability inventory.
 - Capture recorded in this log; ready to rerun `gh secret set` diffs if reliability flags discrepancies.
+
 # Shopify Embed Token Plan — 2025-10-10 14:05 UTC
+
 - Partnered with reliability to escrow the sanctioned embed token at `vault/occ/shopify/embed_token_staging.env` and mirror to GitHub staging secret `SHOPIFY_EMBED_TOKEN_STAGING`.
 - Updated `docs/runbooks/shopify_embed_capture.md` with Playwright injection steps: CI will export `PLAYWRIGHT_SHOPIFY_EMBED_TOKEN` from the secret and append `Authorization: Bearer` + `host` parameters during admin flows.
 - Next action: reliability to deliver refreshed token + rotation timestamp; localization resumes modal capture once GitHub secret populated.
+
 # Chatwoot Fly Rollout Sync — 2025-10-10 14:36 UTC
+
 - Updated `docs/deployment/env_matrix.md` Chatwoot rows to reflect Fly staging host (`https://hotdash-chatwoot.fly.dev`) and noted that token/account secrets remain in place until post-cutover rotation.
 - Refreshed `docs/deployment/chatwoot_fly_runbook.md` with secret mapping notes and checklist context; integration dashboard row now references the Fly host and deferred rotation timeline.
 - Awaiting reliability’s confirmation of production host plan + API token rotation schedule; will append evidence once smoke + conversation import complete.
 
 # Embed Token Mirroring & Redeploy Prep — 2025-10-10 15:08 UTC
+
 - Mirrored Shopify embed token to GitHub staging secret via `gh secret set SHOPIFY_EMBED_TOKEN_STAGING`; vault source remains `vault/occ/shopify/embed_token_staging.env`.
 - Updated `docs/deployment/env_matrix.md` to note GitHub mirroring and reaffirm Supabase no-rotation stance; staging host value recorded in Chatwoot row.
 - Reworked `docs/deployment/staging_redeploy_post_rotation.md` to cover current redeploy flow (no rotation) and added rollback checklist referencing embed token + redeploy evidence requirements.
 - Outstanding before clearance: reliability to confirm embed token rotation timestamp, deliver Chatwoot Fly smoke/conversation import evidence, and capture Supabase secret screenshots for compliance.
 
 # Production Checklist Standby — 2025-10-10 15:57 UTC
+
 - Reviewed `docs/deployment/production_environment_setup.md` (no changes required) and confirmed go-live checklist (`docs/deployment/production_go_live_checklist.md`) still aligns with current secret/state expectations.
 - Verified GitHub staging environment secrets still include `SUPABASE_URL`/`SUPABASE_SERVICE_KEY` alongside Shopify entries (via `gh api .../environments/staging/secrets`); captured prefixes for Supabase URL/service key and embed token in local notes for compliance snapshot.
 - Standing by to mirror production secrets (Supabase DSN, embed token if provided) and execute redeploy/rollback steps immediately once reliability posts rotation timestamp + Chatwoot Fly smoke evidence.
+
 # Deployment Staging Redeploy — 2025-10-10 07:18 UTC
 
 ## 2025-10-12 Shopify Embed Token Coordination
+
 - Localization informed us that Playwright modal captures are blocked by Shopify admin redirects without an embed token.
 - Need deployment to partner with reliability/engineering to surface a sanctioned embed token or alternate host for staging captures.
 - Pending next steps: confirm token source, storage (vault + GitHub secret), and distribution plan so localization can resume evidence gathering.
 - Will update env matrix + runbooks once token delivery path is finalized; blocker referenced in `docs/directions/localization.md:34`.
 
 ## 2025-10-13 Localization Embed Token Follow-up
+
 - 2025-10-13T14:10Z — Reconfirmed in `#occ-deployment` that localization remains English-only through launch and needs the sanctioned Shopify embed token to resume modal screenshots.
 - Requested deployment ack on storage plan (vault item + GitHub secret placeholder) and coordination window with reliability so localization can plug the token into Playwright config without violating direction guardrails.
 - Awaiting deployment response; will capture ack + vault path in this log and notify localization once the token path is cleared.
 - Pulled the rotated Shopify CLI token from vault (`vault/occ/shopify/cli_auth_token_staging.env`) and exported to `SHOPIFY_CLI_AUTH_TOKEN`/`SHOPIFY_API_KEY` before executing `./scripts/deploy/staging-deploy.sh`.
 - Synced engineering/QA to flip `agent_engineer_sales_pulse_modal` and `agent_engineer_cx_escalations_modal` in staging (see `feedback/engineer.md:6`, `feedback/qa.md:8`) and confirmed Playwright picks up the staging base URL + feature flags via `playwright.config.ts:7-24`.
 - Next actions: waiting on engineering confirmation that the flags are live, then QA will rerun the admin suite with the refreshed env; still tracking reliability follow-up on >300 ms synthetic spikes and the live `mock=0` 410 regression.
+
 # Deployment Feature Flags & Live Smoke — 2025-10-10 07:25 UTC
+
 - Enabled staging feature flags via Fly secrets: `/home/justin/.fly/bin/flyctl secrets set FEATURE_MODAL_APPROVALS=1 FEATURE_AGENT_ENGINEER_SALES_PULSE_MODAL=1 FEATURE_AGENT_ENGINEER_CX_ESCALATIONS_MODAL=1 --app hotdash-staging` (evidence `artifacts/deploy/staging-feature-flags-20251010T0725Z.md`, snapshot `artifacts/deploy/fly-secrets-20251010T0725Z.txt`).
 - Post-update synthetic checks:
 - GitHub environment review: `gh api repos/Jgorzitza/HotDash/environments/staging` shows `protection_rules=[]`, confirming reviewers not yet enforced; `production` environment lookup returns 404 (not created). Logged in `feedback/manager.md` for repo admin follow-up.
 - Action items: notified engineering/QA (`feedback/engineer.md`, `feedback/qa.md`) that flags are available; partnering with reliability to investigate lingering >300 ms live latency and capture a sub-budget artifact before clearing the gate.
+
 # Deployment Live Smoke Warm-up — 2025-10-10 07:42 UTC
+
 - Restarted the second Fly machine (`/home/justin/.fly/bin/flyctl machine start 56837ddda06568 --app hotdash-staging`) and issued warm-up curls (`curl -s -o /dev/null -w '%{time_total}\n' https://hotdash-staging.fly.dev/app?mock=0` → 0.14–0.23 s) before re-running `node scripts/ci/synthetic-check.mjs` with `SYNTHETIC_CHECK_URL=https://hotdash-staging.fly.dev/app?mock=0`.
 - Holding another `scripts/deploy/staging-deploy.sh` run + QA handoff until reliability lands the fix and we can capture a <300 ms live artifact per direction.
 
 # Deployment Staging Redeploy — 2025-10-10 07:51 UTC
+
 # Deployment Staging Alignment — 2025-10-10 04:21 UTC
+
 - Reset staging smoke configuration to follow direction: `.env.staging`, `.env.staging.example`, `docs/deployment/env_matrix.md`, and Fly secret `STAGING_SMOKE_TEST_URL` now point to `https://hotdash-staging.fly.dev/app?mock=1` (mock mode). Vault entry already matched.
 - Verified Fly secret rollout via `/home/justin/.fly/bin/flyctl secrets set …` (see console output) and confirmed machines restarted cleanly (`flyctl status` shows both ord machines on version 8).
 - Earlier warm-up attempts exceeded the budget (artifacts `...04-20-16.833Z.json`, `...04-20-37.790Z.json`); keeping them for trend tracking. Latest run is green; no CI smoke rerun yet—will fold into next deploy cycle.
 - Next: ensure QA/support consume the updated mock URL and coordinate with reliability on outstanding `mock=0` live-mode investigation if/when required for future evidence.
 
 # Deployment Staging Latency Mitigation — 2025-10-10 06:26 UTC
+
 - Raised Fly floor by setting `min_machines_running = 1` in `fly.toml` and redeploying (`/home/justin/.fly/bin/flyctl deploy --remote-only` → build log `artifacts/deploy/fly-deploy-20251010T0623Z.log`). Machines now stay up on version 16 with the new config.
 - Action: looped reliability with evidence, requesting guidance on holding latency under budget (potential service tuning vs. script adjustment). Will rerun once they advise; holding CI rollout until the spike root cause is identified.
 
 # Deployment Staging Redeploy — 2025-10-10 06:55 UTC
+
 - Coordinated with engineering (ping `feedback/engineer.md:12`) to enable modal feature flags in staging post-deploy so QA can cover the new flows; waiting on their confirmation.
 
 # Deployment Shopify CLI Token Awaiting — 2025-10-10 06:38 UTC
+
 - Current blocker per direction §Sprint Focus: staging Shopify CLI auth token (`SHOPIFY_CLI_AUTH_TOKEN_STAGING`) still pending reliability handoff (DEPLOY-147 bundle). Once token lands, plan is:
   1. Export new token + rerun `scripts/deploy/staging-deploy.sh` end-to-end with updated credentials.
   2. Capture fresh deploy log + synthetic smoke artifacts (`artifacts/deploy/`, `artifacts/monitoring/`) and distribute to QA/enablement.
@@ -408,6 +448,7 @@ expires: 2025-10-12
 - Action items queued; will execute immediately after reliability posts the token and update this log with timestamps/artifacts.
 
 # Deployment Staging Update — 2025-10-10 02:58 UTC
+
 - Mirrored Supabase staging secrets into GitHub `staging` (`gh secret set` for `DATABASE_URL`, `SUPABASE_SERVICE_KEY`); verification snapshot `artifacts/deploy/github-staging-secrets-20251010T0248Z.txt` shows updated timestamps (≈02:48 UTC).
 - Re-applied Fly secrets for `STAGING_APP_URL`/`STAGING_SMOKE_TEST_URL` via `/home/justin/.fly/bin/flyctl secrets set … --app hotdash-staging`; rollout completed but `curl -fsS https://hotdash-staging.fly.dev/app?mock=0` still returns 410 Gone (`artifacts/deploy/curl-hotdash-staging-20251010T0259Z.log`). Blocking reliability follow-up to deliver a session-ready staging endpoint.
 - 2025-10-10 04:41 UTC — received product/integrations ping with the green artifact and reiterated need to drop DEPLOY-147 (store invite + evidence). Action: package invite instructions, update `artifacts/integrations/shopify/2025-10-10/store-access.md` with timestamp, and notify QA/support/product on delivery.
@@ -415,6 +456,7 @@ expires: 2025-10-12
 - Next: reliability to provision a non-interactive staging session/token so `mock=0` responds 200; once resolved, rerun `scripts/deploy/staging-deploy.sh` + synthetic check to capture a green artifact for the readiness bundle.
 
 # Deployment Staging Deploy — 2025-10-10 22:26 UTC
+
 - Reran `scripts/deploy/staging-deploy.sh` using live staging credentials after updating the CLI flags; Shopify CLI released version `hot-dash-5` successfully (structured log `artifacts/engineering/shopify_cli/2025-10-09T22-26-01.757Z-staging-app-deploy.json`, raw console log `artifacts/deploy/staging-deploy-20251009T222601Z.log`).
 - Restored synthetic smoke helper at `scripts/ci/synthetic-check.mjs`. The run captured artifact `artifacts/monitoring/synthetic-check-2025-10-09T22-26-09.805Z.json` and failed with `fetch failed` against `https://staging.hotdash.app/app?mock=0` despite sub-300 ms latency. Need reliability to confirm staging host availability or provide an alternate smoke endpoint before evidence can pass.
 - Next steps: resolve staging endpoint connectivity, rerun deploy + smoke to archive a green log, and circulate the artifact bundle to QA/enablement per direction.
@@ -429,15 +471,18 @@ expires: 2025-10-12
 - Cleaned up stray generated app/database (`hotdash-staging-falling-meadow-8504*`) via `flyctl apps destroy … --yes` to avoid extra resources.
 
 # Deployment Follow-up — 2025-10-10 17:30 UTC (status 19:05 UTC)
+
 - Integrations (per `docs/directions/integrations.md:25-27`) needs `DEPLOY-147` closed with the Shopify secret bundle + shop access details. Please confirm GitHub secrets and vault entries are live (including `SHOPIFY_CLI_AUTH_TOKEN[_PROD]`, `SHOPIFY_API_KEY[_PROD]`, `SHOPIFY_API_SECRET[_PROD]`, `STAGING_SHOP_DOMAIN`, `STAGING_APP_URL`, `STAGING_SMOKE_TEST_URL`, `PRODUCTION_SHOP_DOMAIN`, `PRODUCTION_APP_URL`, `PRODUCTION_SMOKE_TEST_URL`) and share the access handoff so QA can validate.
 - Request acknowledgement by 2025-10-10 19:00 UTC; escalation to manager if no response. As of 19:05 UTC there is still no reply—please respond ASAP so we can update the readiness dashboard (`docs/integrations/integration_readiness_dashboard.md`) and Shopify readiness brief (`docs/integrations/shopify_readiness.md`).
 - Pending tasks: provide Shopify development store access instructions + credentials, attach evidence of GitHub/vault secret sync, and note completion in `DEPLOY-147`.
 
 # Deployment Direction Update — 2025-10-10 09:10 UTC
+
 - Supabase + Shopify staging credentials vaulted and re-synced to GitHub `staging` environment (updated 2025-10-09T21:49-21:50Z). Ready for `.env.staging` distribution and Prisma override guidance for QA.
 - `./scripts/deploy/staging-deploy.sh` currently fails because `shopify app deploy` removed flags (`--json`, `--environment`, `--store`, `--allow-live`). TODO: update the script (and `scripts/ops/run-shopify-cli.mjs`) to use supported options, then rerun staging deploy/smoke and archive artefacts under `artifacts/deploy/`.
 
 ## 2025-10-10 Staging Secret Sync Evidence — 21:45 UTC
+
 - Created GitHub environment: `gh api repos/Jgorzitza/HotDash/environments/staging`.
 - Ran helper script to set Supabase secrets:
   - `./scripts/deploy/sync-supabase-secret.sh staging vault/occ/supabase/database_url_staging.env DATABASE_URL`
@@ -451,6 +496,7 @@ expires: 2025-10-12
 - Secrets set successfully at 2025-10-09T21:44Z; ready for next staging deploy.
 
 # Deployment Update — 2025-10-10 Shopify Dev MCP Staging Auth
+
 - Verified `docs/runbooks/restart_cycle_checklist.md` (staged addition) and noted it needs manager-confirmed publication before we anchor restart automation to it.
 - Authored `scripts/deploy/shopify-dev-mcp-staging-auth.sh` to load staging secrets and launch the Shopify Dev MCP server with non-interactive Shopify CLI credentials; ready to hand to reliability once the staging token lands.
 - Next: pair with reliability on delivering `SHOPIFY_CLI_AUTH_TOKEN_STAGING` and document the restart checklist linkage once the manager provides the missing runbook.
@@ -462,11 +508,14 @@ expires: 2025-10-12
 # Deployment Daily Status — 2025-10-08
 
 ## Direction Sync — 2025-10-09 (Cross-role Coverage)
+
 - Checked sprint focus (staging pipeline, Postgres staging config, env matrix, go-live checklist) per `docs/directions/deployment.md`.
 - Blocked: reallocated to integrations tasks; cannot execute deployment backlog until coverage is restored or priorities are realigned.
 
 ## 2025-10-09 Sprint Focus Kickoff
+
 ## 2025-10-09 Production Blockers Update
+
 - Supabase fix dependency: coordinate with reliability on decision sync monitor scripts once credentials drop so staging deploy evidence can include fresh Supabase health checks.
 - Staging Postgres + secrets: confirmed Prisma override steps with engineer/QA; standing by for reliability to deliver connection strings and GitHub secret population before scheduling rehearsal.
 - GA MCP readiness support: ready to surface deploy requirements once integrations provides credential ETA; will add to env matrix/go-live checklist immediately.
@@ -478,11 +527,13 @@ expires: 2025-10-12
 - Blockers: production GitHub secrets, environment reviewer configuration, and Shopify CLI service token still outstanding; cannot schedule rehearsal until resolved.
 
 ## 2025-10-08 — Sprint Focus Activation
+
 - Kicked off staging pipeline validation run (tracking via `.github/workflows/deploy-staging.yml`) so evidence stays fresh for the operator dry run per `docs/directions/deployment.md:26`.
 - Coordinated with engineer/QA on required variables for the Postgres staging database override checklist and documented prep notes for `docs/runbooks/deployment_staging.md` updates per `docs/directions/deployment.md:27`.
 - Began revisiting `docs/deployment/env_matrix.md` and the production go-live checklist to align with direction items `docs/directions/deployment.md:28`-`docs/directions/deployment.md:29`; awaiting reliability secret ETA before finalizing.
 
 ## 2025-10-09 Sprint Execution
+
 - Distributed `docs/deployment/production_environment_setup.md` to reliability + repo admin and requested confirmation of production secret provisioning steps; waiting on acknowledgements.
 - Validated staging workflow status (`.github/workflows/deploy-staging.yml`) and prepped smoke report template for next run so evidence is ready once production gating opens.
 - Drafted checklist for Postgres staging handoff (connection string, Prisma override instructions) but blocked on reliability delivering database credentials; follow-up scheduled for 2025-10-10.
@@ -490,6 +541,7 @@ expires: 2025-10-12
 - Authored `docs/deployment/environment_check_template.md` to standardize evidence capture when running `scripts/deploy/check-production-env.sh` post-provisioning.
 
 ## 2025-10-10 Production Blocker Sweep
+
 - Supabase decision sync fix: ready to re-run staging deploy smoke once reliability/engineering ship the monitor script so we can attach fresh artifacts to the incident log.
 - Staging Postgres + secrets: pinging reliability today for GitHub `production` secret provisioning + Postgres connection strings; deployment env matrix updates queued for immediate commit once paths provided.
 - GA MCP readiness: monitoring integrations’ credential request so we can add GA MCP secrets to the production environment setup playbook as soon as the bundle arrives.
@@ -497,6 +549,7 @@ expires: 2025-10-12
 - 19:20 ET: Sent follow-up in reliability thread requesting confirmation on secret drop + staging DB credentials; reminded repo admins about `production` environment reviewer requirement so we can run the env check script as soon as keys land.
 
 ## 2025-10-09 Production Blocker Push
+
 - Supabase fix: aligned with reliability on monitor asset restoration so deployment evidence bundles can include fresh Supabase health checks once logs drop.
 - Staging Postgres + secrets: finalized secret provisioning checklist and queued `scripts/deploy/check-production-env.sh` run pending reliability vault updates; documentation ready to capture evidence immediately after secrets land.
 - GA MCP readiness: confirmed deploy workflows reference the GA credential inputs; waiting on integrations to supply host/secret names before locking workflow secrets.
@@ -504,6 +557,7 @@ expires: 2025-10-12
 - Captured current staging workflow review in `artifacts/logs/staging_pipeline_review_2025-10-09.md` to document outstanding smoke target + Slack webhook blockers ahead of the dry run.
 
 ## Summary
+
 - ✅ Re-read the refreshed deployment direction (`docs/directions/deployment.md`, 2025-10-08 focus) and acknowledged today’s directive to prioritize production blockers (Supabase logging readiness, staging Postgres credentials, secrets provisioning, operator dry run prep).
 - ✅ Staging deployment pipeline is live with smoke + Lighthouse gating (`.github/workflows/deploy-staging.yml`, `scripts/deploy/staging-deploy.sh`) and operator-ready runbook coverage (`docs/runbooks/deployment_staging.md`).
 - ✅ Env/secret matrix published (`docs/deployment/env_matrix.md`) and production go-live checklist finalized (`docs/deployment/production_go_live_checklist.md`); both kept current.
@@ -513,6 +567,7 @@ expires: 2025-10-12
 - ⚠️ Localization requires a sanctioned Shopify embed token or approved host to capture modal screenshots; coordinating with reliability to supply the token and define storage/rotation before Playwright workflows resume (`docs/directions/localization.md:34`).
 
 ## Evidence & References
+
 - Direction doc: `docs/directions/deployment.md`
 - Staging workflow: `.github/workflows/deploy-staging.yml`
 - Production workflow draft: `.github/workflows/deploy-production.yml`
@@ -520,12 +575,14 @@ expires: 2025-10-12
 - Documentation: `docs/runbooks/deployment_staging.md`, `docs/runbooks/prisma_staging_postgres.md`, `docs/deployment/env_matrix.md`, `docs/deployment/production_go_live_checklist.md`, `docs/deployment/production_environment_setup.md`
 
 ## Blockers / Requests
+
 1. **Production secrets provisioning (Reliability — ETA 2025-10-09)** — Shopify, Supabase, Chatwoot, OpenAI, GA MCP secrets still pending in GitHub `production` environment; playbook shared with vault + `gh` steps, waiting on execution + vault references.
 2. **Environment reviewers (Repo Admins — ETA 2025-10-09)** — Manager + reliability teams not yet enforced as required reviewers for GitHub `production`; instructions in playbook §3.
 3. **Shopify CLI auth token (Deployment + Reliability — ETA 2025-10-09)** — Service credentials pending; once reliability delivers partner access we can generate `SHOPIFY_CLI_AUTH_TOKEN_PROD` per playbook §2.
 4. **Postgres staging credentials (Reliability — ETA 2025-10-09)** — Need staged Postgres connection strings to unblock QA rollback drills against `prisma/schema.postgres.prisma`.
 
 ## Next Actions (2025-10-09)
+
 - Deliver playbook + new templates to reliability, repo admins, and QA; capture acknowledgements in this log.
 - Sync with reliability on secret ETA (production secrets + Postgres staging creds) and ensure updates land in `feedback/reliability.md` with vault paths.
 - Coordinate with repo admin on configuring `production` environment reviewers using the documented steps.
@@ -536,6 +593,7 @@ expires: 2025-10-12
 # Deployment Daily Status — 2025-10-07
 
 ## Summary
+
 - ✅ Acknowledged manager direction (`docs/directions/deployment.md`) and assumed deployment agent responsibility.
 - ✅ Stood up staging deploy workflow (`deploy-staging.yml`) with smoke verification + artifacts and published runbook support.
 - ✅ Extended env matrix + `.env.example` for production readiness and logged reliability coordination for secret provisioning.
@@ -544,6 +602,7 @@ expires: 2025-10-12
 - ⚠️ Awaiting reliability to provision production secrets before enabling live runs.
 
 ## Evidence & References
+
 - Staging workflow: `.github/workflows/deploy-staging.yml`
 - Production workflow: `.github/workflows/deploy-production.yml`
 - Deploy scripts: `scripts/deploy/staging-deploy.sh`, `scripts/deploy/production-deploy.sh`
@@ -553,11 +612,13 @@ expires: 2025-10-12
 - Updated example env: `.env.example`
 
 ## Risks / Follow-Ups
+
 1. **Production Secrets Gap** — Reliability delivering GitHub environment `production` secrets by 2025-10-09; deployment to verify vault linkage once posted.
 2. **Environment Approvals** — Need repo admins to configure GitHub `production` environment reviewers (manager + reliability) now that workflow enforcement is in place.
 3. **CLI Auth Token** — Generate service `SHOPIFY_CLI_AUTH_TOKEN_PROD` after reliability finalizes app credentials.
 
 ## Next Actions (2025-10-08)
+
 - Confirm reliability updates `feedback/reliability.md` with secret provisioning evidence and vault paths.
 - Coordinate with repo admin to enable environment reviewers for `production`.
 - Generate service account Shopify CLI token and populate GitHub secret once credentials land.

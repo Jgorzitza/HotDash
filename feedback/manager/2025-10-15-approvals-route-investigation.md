@@ -42,16 +42,18 @@
 ### 3. Path Alias Configuration Missing ❌
 
 **Checked:**
+
 - ✅ `tsconfig.json` - No `paths` configuration
 - ✅ `vite.config.ts` - Uses `vite-tsconfig-paths` plugin
 - ✅ `package.json` - No `imports` field
 - ❌ **No `~` alias configured anywhere**
 
 **Current tsconfig.json:**
+
 ```json
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "."
     // NO "paths" configuration!
   }
 }
@@ -62,32 +64,37 @@
 **Finding:** The approvals route is the **ONLY file** in the entire codebase using the `~` alias.
 
 **Evidence:**
+
 ```bash
 $ grep -r "from '~/" app --include="*.tsx" --include="*.ts" | wc -l
 1  # Only the approvals route!
 ```
 
 **All other routes use relative imports:**
+
 ```typescript
 // app/routes/app._index.tsx (working)
 import { TileCard, SalesPulseTile } from "../components/tiles";
 import { getEscalations } from "../services/chatwoot/escalations";
 
 // app/routes/approvals/route.tsx (broken)
-import { ApprovalCard } from '~/components/ApprovalCard';  // ❌
+import { ApprovalCard } from "~/components/ApprovalCard"; // ❌
 ```
 
 ### 5. Build vs Dev Behavior
 
 **Production Build (`npm run build`):**
+
 - ❌ FAILS - Rollup cannot resolve `~/components/ApprovalCard`
 - Error: "Rollup failed to resolve import"
 
 **Development Mode (`npm run dev`):**
+
 - ⚠️ UNKNOWN - Cannot test (requires Shopify app toml)
 - Likely works due to different resolution in dev
 
 **Why the difference:**
+
 - Dev mode: Vite may resolve paths more leniently
 - Production build: Rollup is stricter about path resolution
 - `vite-tsconfig-paths` plugin may not work in production build
@@ -119,21 +126,24 @@ import { ApprovalCard } from '~/components/ApprovalCard';  // ❌
 
 **File:** `app/routes/approvals/route.tsx`
 **Line 5:**
+
 ```typescript
 // Current (broken)
-import { ApprovalCard } from '~/components/ApprovalCard';
+import { ApprovalCard } from "~/components/ApprovalCard";
 
 // Fixed
-import { ApprovalCard } from '../../components/ApprovalCard';
+import { ApprovalCard } from "../../components/ApprovalCard";
 ```
 
 **Pros:**
+
 - ✅ Consistent with rest of codebase
 - ✅ No configuration changes needed
 - ✅ Works in both dev and production
 - ✅ 1-line change, zero risk
 
 **Cons:**
+
 - None
 
 **Estimated time:** 2 minutes
@@ -145,6 +155,7 @@ import { ApprovalCard } from '../../components/ApprovalCard';
 **Change:** Add `~` alias to tsconfig.json
 
 **File:** `tsconfig.json`
+
 ```json
 {
   "compilerOptions": {
@@ -157,10 +168,12 @@ import { ApprovalCard } from '../../components/ApprovalCard';
 ```
 
 **Pros:**
+
 - ✅ Enables `~` alias for future use
 - ✅ Cleaner imports (some prefer this style)
 
 **Cons:**
+
 - ❌ Requires configuration change
 - ❌ May need vite.config.ts update too
 - ❌ Inconsistent with existing codebase patterns
@@ -175,16 +188,19 @@ import { ApprovalCard } from '../../components/ApprovalCard';
 **Change:** Move approvals route out of build
 
 **Command:**
+
 ```bash
 mv app/routes/approvals app/routes/_disabled_approvals
 ```
 
 **Pros:**
+
 - ✅ Immediate unblock for GA4 deployment
 - ✅ Zero risk to other features
 - ✅ Can fix properly later
 
 **Cons:**
+
 - ❌ Approvals feature unavailable
 - ❌ Temporary solution only
 - ❌ Need to remember to re-enable
@@ -198,6 +214,7 @@ mv app/routes/approvals app/routes/_disabled_approvals
 ### Immediate (Today)
 
 **Step 1:** Fix the import path (Option 1)
+
 ```bash
 # Edit app/routes/approvals/route.tsx line 5
 # Change: import { ApprovalCard } from '~/components/ApprovalCard';
@@ -205,12 +222,14 @@ mv app/routes/approvals app/routes/_disabled_approvals
 ```
 
 **Step 2:** Test build
+
 ```bash
 npm run build
 # Should succeed now
 ```
 
 **Step 3:** Commit and deploy
+
 ```bash
 git add app/routes/approvals/route.tsx
 git commit -m "fix: use relative import for ApprovalCard (fixes build)"
@@ -218,6 +237,7 @@ fly deploy -a hotdash-staging
 ```
 
 **Step 4:** Verify GA4 activates
+
 ```bash
 fly logs -a hotdash-staging | grep "\[GA\]"
 # Should see: [GA] Credentials loaded from base64 secret
@@ -230,6 +250,7 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ### Follow-up (Optional)
 
 **If team wants `~` alias support:**
+
 1. Add `paths` configuration to tsconfig.json
 2. Test in both dev and production builds
 3. Update coding standards document
@@ -244,12 +265,14 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ### 1. Approvals Feature Status
 
 **Observations:**
+
 - Route exists and is functional (code-wise)
 - Fetches from `http://localhost:8002/approvals`
 - Has approve/reject actions
 - Auto-refreshes every 5 seconds
 
 **Questions for manager:**
+
 - Is the agent service running at localhost:8002?
 - Is this feature ready for production?
 - Should it be behind a feature flag?
@@ -259,6 +282,7 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 **None found** - The only issue is the import path.
 
 **Verified:**
+
 - ✅ Component code is valid
 - ✅ Dependencies installed (@shopify/polaris)
 - ✅ TypeScript types are correct
@@ -269,6 +293,7 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 **Status:** HEALTHY (except for this one issue)
 
 **Verified:**
+
 - ✅ Vite configuration correct
 - ✅ React Router setup correct
 - ✅ TypeScript configuration mostly correct
@@ -288,12 +313,14 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ### Once Fixed
 
 **Immediate:**
+
 1. Build will succeed
 2. Deployment will complete
 3. GA4 will activate automatically
 4. Dashboard will show live data
 
 **Timeline:**
+
 - Fix import: 2 minutes
 - Build & deploy: 5-8 minutes
 - **Total: ~10 minutes to GA4 live**
@@ -312,6 +339,7 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ### Priority 2: Verify Approvals Feature (This Week)
 
 **Questions to answer:**
+
 - Is agent service deployed and accessible?
 - Is approvals feature ready for production?
 - Should it be behind a feature flag?
@@ -320,6 +348,7 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ### Priority 3: Coding Standards (Future)
 
 **Consider documenting:**
+
 - Use relative imports (current pattern)
 - OR configure `~` alias and migrate all imports
 - Add to coding standards document
@@ -330,17 +359,20 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ## Files Analyzed
 
 ### Approvals Route Files
+
 - ✅ `app/routes/approvals/route.tsx` - Main route (has the issue)
 - ✅ `app/routes/approvals.$id.$idx.approve/route.tsx` - Approve action
 - ✅ `app/routes/approvals.$id.$idx.reject/route.tsx` - Reject action
 - ✅ `app/components/ApprovalCard.tsx` - Component (valid)
 
 ### Configuration Files
+
 - ✅ `tsconfig.json` - No paths configuration
 - ✅ `vite.config.ts` - Uses vite-tsconfig-paths
 - ✅ `package.json` - Dependencies correct
 
 ### Build System
+
 - ✅ Vite 6.3.6
 - ✅ React Router 7.9.4
 - ✅ Rollup (via Vite)
@@ -351,12 +383,14 @@ fly logs -a hotdash-staging | grep "\[GA\]"
 ## Testing Performed
 
 ### Local Build Test
+
 ```bash
 $ npm run build
 ❌ FAILED - Cannot resolve ~/components/ApprovalCard
 ```
 
 ### Import Pattern Analysis
+
 ```bash
 $ grep -r "from '~/" app --include="*.tsx" --include="*.ts"
 app/routes/approvals/route.tsx:import { ApprovalCard } from '~/components/ApprovalCard';
@@ -364,6 +398,7 @@ app/routes/approvals/route.tsx:import { ApprovalCard } from '~/components/Approv
 ```
 
 ### Component Verification
+
 ```bash
 $ ls -la app/components/ApprovalCard.tsx
 -rw-r--r-- 1 justin justin 3847 Oct 15 14:23 app/components/ApprovalCard.tsx
@@ -371,6 +406,7 @@ $ ls -la app/components/ApprovalCard.tsx
 ```
 
 ### Export Verification
+
 ```bash
 $ grep "export.*ApprovalCard" app/components/ApprovalCard.tsx
 export function ApprovalCard({ approval }: ApprovalCardProps) {
@@ -395,11 +431,13 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
 ## Next Steps
 
 **Awaiting manager direction:**
+
 1. Should Analytics agent make the 1-line fix?
 2. OR assign to engineer?
 3. OR temporarily disable approvals route?
 
 **Once fixed:**
+
 1. Deploy to Fly.io
 2. Verify GA4 activation
 3. Configure email alerts
@@ -416,14 +454,15 @@ export function ApprovalCard({ approval }: ApprovalCardProps) {
 **File:** `app/routes/approvals/route.tsx`
 
 **Line 5 - Current:**
+
 ```typescript
-import { ApprovalCard } from '~/components/ApprovalCard';
+import { ApprovalCard } from "~/components/ApprovalCard";
 ```
 
 **Line 5 - Fixed:**
+
 ```typescript
-import { ApprovalCard } from '../../components/ApprovalCard';
+import { ApprovalCard } from "../../components/ApprovalCard";
 ```
 
 **That's it. One line. Build will succeed.**
-

@@ -1,0 +1,67 @@
+{
+  "status": "planned_only_do_not_seed",
+  "gsc": { "bulkExport": true },
+  "bigquery": {
+    "dataset": "seo",
+    "tables": { "gsc": "gsc_bulk", "ga4": "ga4_sessions", "content": "pages" }
+  },
+  "schedule": { "cron": "0 2 * * *", "tz": "America/Edmonton" },
+  "actions": {
+    "rankTargets": [4, 5, 6, 7, 8, 9, 10],
+    "patterns": ["impressions_up_ctr_down"],
+    "topN": 10
+  },
+  "cwvToRevenue": {
+    "formula": "sessions_delta * conversion_rate * aov",
+    "inputs": {
+      "sessionsDelta": {
+        "source": "crux_field",
+        "windowDays": 28,
+        "multipliers": "docs/specs/hitl/seo-telemetry.multipliers.json"
+      },
+      "conversionRate": {
+        "source": "bigquery.ga4_sessions",
+        "windowDays": 28,
+        "sparsityThreshold": 30
+      },
+      "aov": {
+        "source": "bigquery.ga4_sessions",
+        "windowDays": 28,
+        "fallbackWindowDays": 90
+      }
+    },
+    "output": {
+      "fields": [
+        "url",
+        "device_category",
+        "rank_band",
+        "metric_driver",
+        "sessions_delta",
+        "expected_revenue_lift",
+        "confidence",
+        "ease_score"
+      ]
+    },
+    "clamps": {
+      "minSessions": 30,
+      "maxRank": 2,
+      "minLiftPct": 0.01
+    }
+  },
+  "validation": {
+    "backtestSample": 50,
+    "windowDays": 14,
+    "parityLog": "artifacts/analytics/YYYY-MM-DD/parity.log",
+    "artifacts": [
+      "artifacts/seo/YYYY-MM-DD/telemetry-backtest.sql",
+      "artifacts/seo/YYYY-MM-DD/telemetry-top10.csv",
+      "artifacts/seo/YYYY-MM-DD/telemetry-top10.png"
+    ],
+    "ownerMatrix": {
+      "gsc_export": "data",
+      "ga4_join": "analytics",
+      "crux_ingest": "seo"
+    }
+  },
+  "brandFilters": { "file": "docs/specs/hitl/brand-filters.json" }
+}

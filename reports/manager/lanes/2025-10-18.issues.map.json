@@ -1,0 +1,27 @@
+{
+  "created": [
+    {"title":"[seo] seo-psf-1: Programmatic SEO Factory — DEV CAPABILITY (flagged)","agent":"seo","number":"53","url":"https://github.com/Jgorzitza/HotDash/issues/53","status":"created"},
+    {"title":"[seo] seo-telemetry-1: Closed-loop SEO Telemetry (GSC→BQ) — DEV CAPABILITY (flagged)","agent":"seo","number":"54","url":"https://github.com/Jgorzitza/HotDash/issues/54","status":"created"},
+    {"title":"[seo] seo-ab-1: A/B Harness (cookie + GA4 dim) — DEV CAPABILITY (flagged)","agent":"seo","number":"55","url":"https://github.com/Jgorzitza/HotDash/issues/55","status":"created"},
+    {"title":"[seo] seo-media-1: Media Pipeline (Tier‑0 staged) — DEV CAPABILITY (flagged)","agent":"seo","number":"56","url":"https://github.com/Jgorzitza/HotDash/issues/56","status":"created"},
+    {"title":"[engineer] eng-gs-1: Guided Selling + Kit Composer (planning) — DEV CAPABILITY (flagged)","agent":"engineer","number":"57","url":"https://github.com/Jgorzitza/HotDash/issues/57","status":"created"},
+    {"title":"[engineer] eng-inv-overnight-1: Inventory Overnight Settlement (planning) — DEV CAPABILITY (flagged)","agent":"engineer","number":"58","url":"https://github.com/Jgorzitza/HotDash/issues/58","status":"created"},
+    {"title":"[analytics] ana-gscbq-1: GSC Bulk Export→BQ + GA4 joins — DEV CAPABILITY (flagged)","agent":"analytics","number":"59","url":"https://github.com/Jgorzitza/HotDash/issues/59","status":"created"},
+    {"title":"[manager] mgr-docs-1: Docs alignment (NS/OM/Rules) — DEV CAPABILITY (flagged)","agent":"manager","number":"60","url":"https://github.com/Jgorzitza/HotDash/issues/60","status":"created"},
+    {"title":"[manager] mgr-runbooks-1: Runbooks refresh (startup/shutdown) — DEV CAPABILITY (flagged)","agent":"manager","number":"61","url":"https://github.com/Jgorzitza/HotDash/issues/61","status":"created"},
+    {"title":"[manager] mgr-issues-1: Create Issues from lanes — DEV CAPABILITY (flagged)","agent":"manager","number":"62","url":"https://github.com/Jgorzitza/HotDash/issues/62","status":"created"},
+    {"title":"[manager] mgr-blockers-1: Blockers to Green tracking — DEV CAPABILITY (flagged)","agent":"manager","number":"63","url":"https://github.com/Jgorzitza/HotDash/issues/63","status":"created"},
+    {"title":"[devops] devops-webhook-1: Webhook HMAC + idempotency harness — DEV CAPABILITY (flagged)","agent":"devops","number":"64","url":"https://github.com/Jgorzitza/HotDash/issues/64","status":"created"},
+    {"title":"[integrations] int-storefront-1: STOREFRONT MCP sandbox routes (product search/cart) — DEV CAPABILITY (flagged)","agent":"integrations","number":"65","url":"https://github.com/Jgorzitza/HotDash/issues/65","status":"created"},
+    {"title":"[inventory] inv-po-1: PO Receiving apply plan + AVLC update — DEV CAPABILITY (flagged)","agent":"inventory","number":"66","url":"https://github.com/Jgorzitza/HotDash/issues/66","status":"created"},
+    {"title":"[product] prod-gs-ux-1: Guided Selling UX spec — DEV CAPABILITY (flagged)","agent":"product","number":"67","url":"https://github.com/Jgorzitza/HotDash/issues/67","status":"created"},
+    {"title":"[designer] des-actiondock-1: Dashboard Action Dock UI — DEV CAPABILITY (flagged)","agent":"designer","number":"68","url":"https://github.com/Jgorzitza/HotDash/issues/68","status":"created"},
+    {"title":"[qa] qa-smoke-1: Feature-flag smoke harness — DEV CAPABILITY (flagged)","agent":"qa","number":"69","url":"https://github.com/Jgorzitza/HotDash/issues/69","status":"created"},
+    {"title":"[ads] ads-utm-1: UTM mapping + brand filter checks — DEV CAPABILITY (flagged)","agent":"ads","number":"70","url":"https://github.com/Jgorzitza/HotDash/issues/70","status":"created"},
+    {"title":"[ai-knowledge] aikb-harness-1: AI Knowledge base harness (dev) — DEV CAPABILITY (flagged)","agent":"ai-knowledge","number":"71","url":"https://github.com/Jgorzitza/HotDash/issues/71","status":"created"},
+    {"title":"[ai-customer] aic-storefront-1: Storefront MCP tool validation (dev) — DEV CAPABILITY (flagged)","agent":"ai-customer","number":"72","url":"https://github.com/Jgorzitza/HotDash/issues/72","status":"created"},
+    {"title":"[content] content-upgrades-1: Content upgrades pipeline plan — DEV CAPABILITY (flagged)","agent":"content","number":"73","url":"https://github.com/Jgorzitza/HotDash/issues/73","status":"created"},
+    {"title":"[support] sup-chatwoot-1: Chatwoot health checks & SLA gating — DEV CAPABILITY (flagged)","agent":"support","number":"74","url":"https://github.com/Jgorzitza/HotDash/issues/74","status":"created"},
+    {"title":"[pilot] pilot-scope-1: Pilot scope & boundaries doc — DEV CAPABILITY (flagged)","agent":"pilot","number":"75","url":"https://github.com/Jgorzitza/HotDash/issues/75","status":"created"}
+  ]
+}

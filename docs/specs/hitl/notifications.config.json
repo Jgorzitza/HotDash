@@ -1,0 +1,32 @@
+{
+  "status": "planned_only_do_not_seed",
+  "businessHoursSource": "docs/specs/hitl/customer-replies.config.json",
+  "ceoContactSource": "docs/specs/hitl/customer-replies.config.json",
+  "channels": { "in_app": true, "email": true, "sms": true, "slack": false },
+  "sms": { "enabledInHoursOnly": true, "suppressDuplicateMinutes": 10 },
+  "email": { "digests": { "enabled": true, "maxPerHourPerCategory": 1 } },
+  "triggers": {
+    "customerReplies": {
+      "liveChatStarted": {
+        "sms": true,
+        "email": true,
+        "offHours": { "sms": false, "email": true }
+      },
+      "overSla": { "in_app": true, "email": false }
+    },
+    "approvals": {
+      "pendingThreshold": { "in_app": true, "emailDigest": true },
+      "p0Present": { "in_app": true, "emailDigest": true },
+      "overSla": { "in_app": true }
+    },
+    "inventory": {
+      "settlementFailure": { "in_app": true, "email": true },
+      "settlementMissed": { "in_app": true }
+    },
+    "social": {
+      "failedPublish": { "in_app": true, "emailDigest": true },
+      "pipelineGap": { "in_app": true }
+    }
+  },
+  "idempotency": { "key": "${event_type}:${subject_id}:${date_hour}" }
+}

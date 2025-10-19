@@ -1,0 +1,39 @@
+{
+  "status": "planned_only_do_not_seed",
+  "endpoints": {
+    "storefront": "https://{storeDomain}/api/mcp",
+    "customerAccountDiscovery": "https://{storeDomain}/.well-known/customer-account-api",
+    "oauthDiscovery": "https://{storeDomain}/.well-known/openid-configuration"
+  },
+  "features": {
+    "anonymous": [
+      "search_shop_catalog",
+      "search_shop_policies_and_faqs",
+      "get_cart",
+      "update_cart"
+    ],
+    "authenticated": [
+      "get_most_recent_order_status",
+      "get_order_status",
+      "list_orders"
+    ]
+  },
+  "auth": {
+    "enabled": true,
+    "flow": "oauth_pkce",
+    "scopes": ["customer-account-mcp-api:full"],
+    "redirectUris": ["https://your-app-domain.com/callback"],
+    "piiLevel": 2
+  },
+  "privacy": {
+    "logTranscripts": true,
+    "redactPii": true,
+    "sessionOnly": true
+  },
+  "chat": {
+    "themeExtension": true,
+    "connectAccountCta": true,
+    "fallbackOrderLookup": true
+  },
+  "rateLimits": { "respect": true, "backoffMs": 500, "maxRetries": 3 }
+}

@@ -39,11 +39,38 @@
       commands + results, blockers (minimal repro), next intent.
 - [ ] Do **not** create new `.md` beyond allow-list; don’t edit other agents’ files.
 
-## 5) Work Protocol
+## 5) Work Protocol — Continuous, No‑Wait
 
+- [ ] **Continuous execution. Do not wait for CEO/Manager input.** If blocked > 15 minutes, log a one‑line blocker in the Issue and continue with your Fallback Work Queue. No idle gaps.
+- [ ] **Foreground Proof required.** For any step expected to run >15s, wrap the command:
+      `scripts/policy/with-heartbeat.sh <agent> -- <command>`
+      This appends ISO timestamps to `artifacts/<agent>/<YYYY-MM-DD>/logs/heartbeat.log` and prints progress. Include this path in your PR (“Foreground Proof”).
 - [ ] **MCP-first / server adapters only.** Shopify/Supabase/Fly/GitHub via MCP. GA4/GSC via internal adapters. No freehand HTTP or secrets in logs.
-- [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference:
-      `Refs #<issue>` → final slice uses `Fixes #<issue>`.
+- [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference: `Refs #<issue>` → final slice uses `Fixes #<issue>`.
+
+### Codex Quick Start (continuous)
+
+- Run the continuous runner to avoid any idle periods and produce Foreground Proof automatically:
+  - `node scripts/policy/codex-run.mjs <agent>`
+  - Optional extra step(s): `node scripts/policy/codex-run.mjs <agent> -- "npm run test:a11y"`
+  - This wraps each step with `scripts/policy/with-heartbeat.sh` and writes telemetry under `artifacts/<agent>/<YYYY-MM-DD>/logs/`.
+
+### Task + Evidence Files (create on start)
+
+- [ ] Create per-agent task trackers in today’s folder:
+  - `artifacts/<agent>/<YYYY-MM-DD>/tasks.todo.md` (append-only checklist)
+  - `artifacts/<agent>/<YYYY-MM-DD>/tasks.todo.json` (machine-readable mirror)
+- [ ] Before any code edit, produce MCP evidence JSONL:
+  - Path: `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic>.jsonl`
+  - Line format: `{"tool":"context7|shopify-dev|...","doc_ref":"<url|path>","request_id":"<id>","timestamp":"ISO","purpose":"<why>"}`
+- [ ] Foreground Proof while doing work:
+  - Append heartbeats every ~10 min to `artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson`:
+    - `{"ts":"ISO","task":"<id>","status":"doing"}`
+  - Long steps: always use `scripts/policy/with-heartbeat.sh` (also writes `logs/heartbeat.log`)
+- [ ] PR body must include a section:
+  - `## MCP Evidence:` followed by the exact artifact paths (relative) to `mcp/*.jsonl`
+  - `## Foreground Proof:` path to `logs/heartbeat.ndjson` (or `logs/heartbeat.log`) committed in the PR
+- [ ] NO-ASK mode: do not chat. Write artifacts and ship PRs.
 
 ## 6) Completion Protocol (when you finish a slice)
 
@@ -60,6 +87,7 @@
   ```
 
 - [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in your feedback.
+- [ ] Add PR sections: **Allowed paths**, **MCP Evidence** (artifacts/<agent>/<date>/mcp/\*.jsonl), and **Foreground Proof** (artifacts/<agent>/<date>/logs/heartbeat.log). The heartbeat log must be committed.
 
 ## 7) Build/Dev Mode Safety
 
@@ -68,7 +96,7 @@
       `provenance.mode="dev:test"`, include a `feedback_ref`, and keep **Apply disabled**.
 - [ ] Autopublish toggles exist but are OFF. Do not enable; stage work behind flags.
 
-## 8) Escalation
+## 8) Escalation (No CEO involvement)
 
-- [ ] If blocked > 10 minutes after tool attempts, log the blocker with exact error/output
-      in your feedback file and @mention the manager in the **Issue** with a proposed next step.
+- [ ] If blocked > 10–15 minutes after tool attempts, log the blocker with exact error/output in your feedback file and @mention the manager in the **Issue** with a proposed next step.
+- [ ] Do not wait for a reply to continue; proceed to the next fallback task and keep emitting Foreground Proof heartbeats. Use `reports/manager/ESCALATION.md` only for credential/product decisions.

@@ -1,8 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getSalesPulseSummary } from "../../app/services/shopify/orders";
+import type {
+  ShopifyGraphqlClient,
+  ShopifyServiceContext,
+} from "../../app/services/shopify/types";
 
 type MockResponsePayload = Record<string, unknown>;
+
+interface RecordDashboardFactInput {
+  shopDomain: string;
+  factType: string;
+  value: unknown;
+  metadata?: unknown;
+}
 
 const defaultFact = {
   id: 1,
@@ -17,16 +28,16 @@ const defaultFact = {
 };
 
 vi.mock("../../app/services/facts.server", () => ({
-  recordDashboardFact: vi.fn(async (data: MockResponsePayload) => ({
+  recordDashboardFact: vi.fn(async (data: RecordDashboardFactInput) => ({
     ...defaultFact,
-    shopDomain: data.shopDomain as string,
-    factType: data.factType as string,
+    shopDomain: data.shopDomain,
+    factType: data.factType,
     value: data.value,
     metadata: data.metadata ?? null,
   })),
 }));
 
-const mockAdmin = (payload: MockResponsePayload) => ({
+const mockAdmin = (payload: MockResponsePayload): ShopifyGraphqlClient => ({
   graphql: vi.fn(
     async () =>
       new Response(JSON.stringify(payload), {
@@ -88,11 +99,12 @@ describe("getSalesPulseSummary", () => {
     } satisfies MockResponsePayload;
 
     const admin = mockAdmin(responsePayload);
-
-    const result = await getSalesPulseSummary({
-      admin: admin as any,
+    const context: ShopifyServiceContext = {
+      admin,
       shopDomain: "test-shop",
-    });
+    };
+
+    const result = await getSalesPulseSummary(context);
 
     expect(result.data.totalRevenue).toBe(120.5);
     expect(result.data.orderCount).toBe(1);
@@ -113,10 +125,7 @@ describe("getSalesPulseSummary", () => {
     );
 
     // second call should hit cache
-    const cachedResult = await getSalesPulseSummary({
-      admin: admin as any,
-      shopDomain: "test-shop",
-    });
+    const cachedResult = await getSalesPulseSummary(context);
     expect(cachedResult.source).toBe("cache");
     expect(admin.graphql).toHaveBeenCalledTimes(1);
   });

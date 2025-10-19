@@ -1,0 +1,423 @@
+{
+  "status": "planned_only_do_not_seed",
+  "version": "1.0",
+  "notes": "Normalized per-code metadata for approvals reason selection and QA/learning. P0 = block approvals; P1 = warn; P2 = soft note.",
+  "codes": [
+    {
+      "code": "TONE-01",
+      "label": "Corporate or cutesy fluff",
+      "category": "Tone/Voice",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Use straight talk; cut fluff like 'We value your inquiry.'"
+    },
+    {
+      "code": "TONE-02",
+      "label": "Gatekeeping or condescension",
+      "category": "Tone/Voice",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Be respectful; no condescension."
+    },
+    {
+      "code": "TONE-03",
+      "label": "Unexplained jargon",
+      "category": "Tone/Voice",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Define AN vs NPT vs ORB inline when it matters."
+    },
+
+    {
+      "code": "FACT-01",
+      "label": "Wrong sealing guidance",
+      "category": "Accuracy/Factuality",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "AN flare seals metal-to-metal; NPT uses fuel-safe sealant; ORB seals at O-ring."
+    },
+    {
+      "code": "FACT-02",
+      "label": "Wrong EFI filtration guidance",
+      "category": "Accuracy/Factuality",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "EFI needs ≤10 μm (10 micron) on pressure side."
+    },
+    {
+      "code": "FACT-03",
+      "label": "Misstated PTFE compatibility",
+      "category": "Accuracy/Factuality",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "PTFE OK with gasoline/E85/diesel; don’t apply rubber-hose assumptions."
+    },
+    {
+      "code": "FACT-04",
+      "label": "Wrong warranty facts",
+      "category": "Accuracy/Factuality",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies", "discounts"],
+      "hint": "Parts-only defects, RGA required; no labor; commercial installs void coverage."
+    },
+    {
+      "code": "FACT-05",
+      "label": "Wrong/missing policy link",
+      "category": "Accuracy/Factuality",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "When citing policy, link the canonical policy page by name."
+    },
+    {
+      "code": "FACT-06",
+      "label": "PTFE reassembly requires new ferrule",
+      "category": "Accuracy/Factuality",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Do not reuse ferrules on PTFE reassembly."
+    },
+
+    {
+      "code": "POL-01",
+      "label": "Over-promising coverage",
+      "category": "Policy/Promise/Scope",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies", "social", "discounts"],
+      "hint": "Do not promise labor, damage coverage, or guaranteed delivery."
+    },
+    {
+      "code": "POL-02",
+      "label": "Covering third-party parts under our warranty",
+      "category": "Policy/Promise/Scope",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Route third-party warranties to their manufacturer."
+    },
+    {
+      "code": "POL-03",
+      "label": "Unofficial discounts or price-match promises",
+      "category": "Policy/Promise/Scope",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social", "discounts"],
+      "hint": "No ad-hoc price promises."
+    },
+    {
+      "code": "POL-04",
+      "label": "Firm delivery date claims",
+      "category": "Policy/Promise/Scope",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Point to shipping policy and tracking; manage expectations."
+    },
+
+    {
+      "code": "LC-PII-01",
+      "label": "Card data request or storage",
+      "category": "Legal/Compliance/PII",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "Never request full card number or CVV in tickets."
+    },
+    {
+      "code": "LC-PII-02",
+      "label": "Unnecessary sensitive ID request",
+      "category": "Legal/Compliance/PII",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Ask only for order #, last name, ZIP unless necessary."
+    },
+    {
+      "code": "LC-REG-01",
+      "label": "Emissions tampering advice",
+      "category": "Legal/Compliance/PII",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies", "social"],
+      "hint": "Avoid any guidance that could be read as emissions tampering."
+    },
+    {
+      "code": "LC-SAFE-01",
+      "label": "Skipping fuel safety advisories",
+      "category": "Legal/Compliance/PII",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "Include depressurize/ventilate/leak-test when relevant."
+    },
+
+    {
+      "code": "BRAND-01",
+      "label": "Off-brand language or competitor callout",
+      "category": "Brand/Links/Assets",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Keep brand tight; no competitor boosts."
+    },
+    {
+      "code": "BRAND-02",
+      "label": "Non-canonical links",
+      "category": "Brand/Links/Assets",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Use approved link names that resolve to canonical slugs."
+    },
+    {
+      "code": "BRAND-03",
+      "label": "Inconsistent part naming",
+      "category": "Brand/Links/Assets",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Use AN‑6/‑8/‑10, PTFE, ORB, NPT correctly."
+    },
+
+    {
+      "code": "CLR-01",
+      "label": "Burying the lead",
+      "category": "Clarity/Structure",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Answer first, then why, then next step."
+    },
+    {
+      "code": "CLR-02",
+      "label": "No step order in install guidance",
+      "category": "Clarity/Structure",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Use numbered steps; always include leak-test."
+    },
+    {
+      "code": "CLR-03",
+      "label": "Wall of text",
+      "category": "Clarity/Structure",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Use bullets, short paragraphs."
+    },
+    {
+      "code": "CLR-04",
+      "label": "Unexplained acronyms",
+      "category": "Clarity/Structure",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Define EFI/ORB/NPT when it matters."
+    },
+    {
+      "code": "CLR-05",
+      "label": "Citing policy/guide without link",
+      "category": "Clarity/Structure",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Add canonical link when referencing policy or guide."
+    },
+
+    {
+      "code": "OWN-01",
+      "label": "No ticket ownership",
+      "category": "Escalation/Ownership",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Offer to own the next step; don’t push work to the customer."
+    },
+    {
+      "code": "OWN-02",
+      "label": "Not escalating dangerous symptoms",
+      "category": "Escalation/Ownership",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "Fuel leaks/smell/pump overheating must be escalated immediately."
+    },
+    {
+      "code": "OWN-03",
+      "label": "Warranty claim without starting RGA",
+      "category": "Escalation/Ownership",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Open an RGA and link warranty."
+    },
+    {
+      "code": "OWN-04",
+      "label": "Complex build not routed to Build Request",
+      "category": "Escalation/Ownership",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Use Build Request flow for complex setups."
+    },
+    {
+      "code": "OWN-05",
+      "label": "No leak-test ownership confirmation",
+      "category": "Escalation/Ownership",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Confirm customer will perform leak-test; offer guidance."
+    },
+
+    {
+      "code": "CTX-01",
+      "label": "Missing fitment basics",
+      "category": "Missing Context/Info",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Ask engine, fuel type, power, pump/regulator, return vs returnless, threads, hose size."
+    },
+    {
+      "code": "CTX-02",
+      "label": "Missing order identifier",
+      "category": "Missing Context/Info",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Ask order # or email + ZIP."
+    },
+    {
+      "code": "CTX-03",
+      "label": "No photos where threads/clearance matter",
+      "category": "Missing Context/Info",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Request close, well-lit photos; no PII."
+    },
+
+    {
+      "code": "SAFE-01",
+      "label": "Reusing PTFE ferrules",
+      "category": "Risk/Safety",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "Replace ferrules when reassembling PTFE."
+    },
+    {
+      "code": "SAFE-02",
+      "label": "Skipping pressure/leak test",
+      "category": "Risk/Safety",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "Always pressure/leak-test lines before first fire."
+    },
+    {
+      "code": "SAFE-03",
+      "label": "Wrong sealant recommendation",
+      "category": "Risk/Safety",
+      "severity": "P0",
+      "block": true,
+      "features": ["customerReplies"],
+      "hint": "No sealant on AN flares; fuel-safe on NPT; none on ORB threads."
+    },
+    {
+      "code": "SAFE-04",
+      "label": "Routing near heat/sharp edges",
+      "category": "Risk/Safety",
+      "severity": "P1",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Use clamps/mounts and proper routing to avoid heat/abrasion."
+    },
+
+    {
+      "code": "FMT-01",
+      "label": "Overlong reply to simple question",
+      "category": "Format/Conciseness",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Keep to 3–5 short paragraphs."
+    },
+    {
+      "code": "FMT-02",
+      "label": "Over-punctuation/ALL CAPS",
+      "category": "Format/Conciseness",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies", "social"],
+      "hint": "Use calm, readable emphasis."
+    },
+    {
+      "code": "FMT-03",
+      "label": "No bullets/numbers for steps",
+      "category": "Format/Conciseness",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Use bullets for steps."
+    },
+    {
+      "code": "FMT-04",
+      "label": "Missing close or next step",
+      "category": "Format/Conciseness",
+      "severity": "P2",
+      "block": false,
+      "features": ["customerReplies"],
+      "hint": "Recap and offer to own the next step."
+    },
+
+    {
+      "code": "SOC-LINK-01",
+      "label": "Missing UTM or broken link",
+      "category": "Brand/Links/Assets",
+      "severity": "P1",
+      "block": false,
+      "features": ["social"],
+      "hint": "Ensure UTM present and link resolves 200 OK."
+    },
+    {
+      "code": "SOC-CLAIM-01",
+      "label": "Unsupported performance/guarantee claim",
+      "category": "Legal/Compliance/PII",
+      "severity": "P0",
+      "block": true,
+      "features": ["social"],
+      "hint": "Avoid claims not backed by policy; add proofs or rephrase."
+    },
+
+    {
+      "code": "DISC-STACK-01",
+      "label": "Violates discount combination settings",
+      "category": "Policy/Promise/Scope",
+      "severity": "P1",
+      "block": false,
+      "features": ["discounts", "social"],
+      "hint": "Respect store combination rules; no stacking with conflicting autos."
+    },
+    {
+      "code": "DISC-TERM-01",
+      "label": "Missing end date for discount",
+      "category": "Policy/Promise/Scope",
+      "severity": "P2",
+      "block": false,
+      "features": ["discounts", "social"],
+      "hint": "Default to 7-day term unless directed otherwise."
+    }
+  ]
+}

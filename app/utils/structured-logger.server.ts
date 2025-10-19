@@ -13,7 +13,7 @@ export interface LogEntry {
   message: string;
   service?: string;
   module?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   error?: {
     message: string;
     stack?: string;
@@ -54,21 +54,21 @@ export class StructuredLogger {
   /**
    * Log debug message
    */
-  debug(message: string, metadata?: Record<string, any>): void {
+  debug(message: string, metadata?: Record<string, unknown>): void {
     this.log("debug", message, metadata);
   }
 
   /**
    * Log info message
    */
-  info(message: string, metadata?: Record<string, any>): void {
+  info(message: string, metadata?: Record<string, unknown>): void {
     this.log("info", message, metadata);
   }
 
   /**
    * Log warning message
    */
-  warn(message: string, metadata?: Record<string, any>): void {
+  warn(message: string, metadata?: Record<string, unknown>): void {
     this.log("warn", message, metadata);
   }
 
@@ -78,7 +78,7 @@ export class StructuredLogger {
   error(
     message: string,
     error?: Error | unknown,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
   ): void {
     const entry: LogEntry = {
       timestamp: new Date().toISOString(),
@@ -93,7 +93,7 @@ export class StructuredLogger {
       entry.error = {
         message: error.message,
         stack: error.stack,
-        code: (error as any).code,
+        code: isErrorWithCode(error) ? error.code : undefined,
       };
     }
 
@@ -106,7 +106,7 @@ export class StructuredLogger {
   private log(
     level: LogLevel,
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
   ): void {
     // Check if log level is enabled
     if (LOG_LEVELS[level] < LOG_LEVELS[this.minLevel]) {
@@ -194,6 +194,17 @@ export class StructuredLogger {
       throw error;
     }
   }
+}
+
+function isErrorWithCode(error: unknown): error is Error & { code?: string } {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  return (
+    Object.prototype.hasOwnProperty.call(error, "code") &&
+    typeof (error as { code?: unknown }).code === "string"
+  );
 }
 
 /**

@@ -42,13 +42,17 @@ begin
   end if;
 end$$;
 
--- Insert allowed only for webhook role
+drop policy if exists support_curated_replies_insert_by_webhook
+  on public.support_curated_replies;
+
 create policy support_curated_replies_insert_by_webhook
   on public.support_curated_replies
   for insert
   with check (coalesce((auth.jwt() ->> 'role'),'') = 'support_webhook');
 
--- Read allowed for ai_readonly or any authenticated user
+drop policy if exists support_curated_replies_read_ai
+  on public.support_curated_replies;
+
 create policy support_curated_replies_read_ai
   on public.support_curated_replies
   for select

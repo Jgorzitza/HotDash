@@ -1,0 +1,7 @@
+{
+  "status": "planned_only_do_not_seed",
+  "logging": { "tokenLevel": true, "redactPII": true },
+  "windows": { "shortDays": 7, "longDays": 28 },
+  "outcomes": ["ctr", "rank", "attach", "revenue"],
+  "dashboard": { "learningStrip": true }
+}

@@ -179,118 +179,118 @@ export default function ApprovalsRoute() {
   return (
     <PolarisProvider>
       <Page
-      title="Approval Queue"
-      subtitle={`${total} ${total === 1 ? "approval" : "approvals"}`}
-    >
-      <Layout>
-        {/* Active filters */}
-        {(stateFilter || kindFilter) && (
-          <Layout.Section>
-            <InlineStack gap="200">
-              {stateFilter && <Badge>{`state: ${stateFilter}`}</Badge>}
-              {kindFilter && <Badge>{`kind: ${kindFilter}`}</Badge>}
-              <Button
-                onClick={() =>
-                  setSearchParams((prev: URLSearchParams) => {
-                    const p = new URLSearchParams(prev);
-                    p.delete("state");
-                    p.delete("kind");
-                    p.set("page", "1");
-                    return p;
-                  })
-                }
-              >
-                Clear filters
-              </Button>
-            </InlineStack>
-          </Layout.Section>
-        )}
-
-        {error && (
-          <Layout.Section>
-            <Card>
-              <div style={{ padding: "16px", color: "#bf0711" }}>
-                <strong>Error:</strong> {error}
-              </div>
-            </Card>
-          </Layout.Section>
-        )}
-
-        {visible.length === 0 ? (
-          <Layout.Section>
-            <Card>
-              <EmptyState
-                heading="All clear!"
-                image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-              >
-                <p>No pending approvals. Check back later.</p>
-              </EmptyState>
-            </Card>
-          </Layout.Section>
-        ) : (
-          visible.map((approval) => (
-            <Layout.Section key={approval.id}>
-              <ApprovalCard
-                approval={approval}
-                onDetails={() => openDetails(approval)}
-              />
-            </Layout.Section>
-          ))
-        )}
-
-        {/* Pagination controls */}
-        {total > 0 && (
-          <Layout.Section>
-            <InlineStack gap="200" align="space-between" blockAlign="center">
-              <Badge>{`Total: ${total}`}</Badge>
+        title="Approval Queue"
+        subtitle={`${total} ${total === 1 ? "approval" : "approvals"}`}
+      >
+        <Layout>
+          {/* Active filters */}
+          {(stateFilter || kindFilter) && (
+            <Layout.Section>
               <InlineStack gap="200">
+                {stateFilter && <Badge>{`state: ${stateFilter}`}</Badge>}
+                {kindFilter && <Badge>{`kind: ${kindFilter}`}</Badge>}
                 <Button
-                  disabled={page <= 1}
-                  onClick={() =>
-                    setSearchParams((prev) => {
-                      const p = new URLSearchParams(prev);
-                      p.set("page", String(Math.max(1, page - 1)));
-                      return p;
-                    })
-                  }
-                >
-                  Prev
-                </Button>
-                <Button
-                  disabled={
-                    Array.isArray(approvals)
-                      ? (approvals as Approval[]).length < 50
-                      : true
-                  }
                   onClick={() =>
                     setSearchParams((prev: URLSearchParams) => {
                       const p = new URLSearchParams(prev);
-                      p.set("page", String(page + 1));
+                      p.delete("state");
+                      p.delete("kind");
+                      p.set("page", "1");
                       return p;
                     })
                   }
                 >
-                  Next
+                  Clear filters
                 </Button>
               </InlineStack>
-            </InlineStack>
-          </Layout.Section>
-        )}
+            </Layout.Section>
+          )}
 
-        {/* Drawer */}
-        {selected && (
-          <ApprovalsDrawer
-            open={true}
-            approval={selected}
-            onClose={() => setSelected(null)}
-            onApprove={(grades) => handleApprove(grades)}
-            onReject={(reason) => handleReject(reason)}
-            onRequestChanges={(note) => handleRequestChanges(note)}
-            onApply={() => handleApply()}
-          />
-        )}
-      </Layout>
-    </Page>
+          {error && (
+            <Layout.Section>
+              <Card>
+                <div style={{ padding: "16px", color: "#bf0711" }}>
+                  <strong>Error:</strong> {error}
+                </div>
+              </Card>
+            </Layout.Section>
+          )}
+
+          {visible.length === 0 ? (
+            <Layout.Section>
+              <Card>
+                <EmptyState
+                  heading="All clear!"
+                  image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
+                >
+                  <p>No pending approvals. Check back later.</p>
+                </EmptyState>
+              </Card>
+            </Layout.Section>
+          ) : (
+            visible.map((approval) => (
+              <Layout.Section key={approval.id}>
+                <ApprovalCard
+                  approval={approval}
+                  onDetails={() => openDetails(approval)}
+                />
+              </Layout.Section>
+            ))
+          )}
+
+          {/* Pagination controls */}
+          {total > 0 && (
+            <Layout.Section>
+              <InlineStack gap="200" align="space-between" blockAlign="center">
+                <Badge>{`Total: ${total}`}</Badge>
+                <InlineStack gap="200">
+                  <Button
+                    disabled={page <= 1}
+                    onClick={() =>
+                      setSearchParams((prev) => {
+                        const p = new URLSearchParams(prev);
+                        p.set("page", String(Math.max(1, page - 1)));
+                        return p;
+                      })
+                    }
+                  >
+                    Prev
+                  </Button>
+                  <Button
+                    disabled={
+                      Array.isArray(approvals)
+                        ? (approvals as Approval[]).length < 50
+                        : true
+                    }
+                    onClick={() =>
+                      setSearchParams((prev: URLSearchParams) => {
+                        const p = new URLSearchParams(prev);
+                        p.set("page", String(page + 1));
+                        return p;
+                      })
+                    }
+                  >
+                    Next
+                  </Button>
+                </InlineStack>
+              </InlineStack>
+            </Layout.Section>
+          )}
+
+          {/* Drawer */}
+          {selected && (
+            <ApprovalsDrawer
+              open={true}
+              approval={selected}
+              onClose={() => setSelected(null)}
+              onApprove={(grades) => handleApprove(grades)}
+              onReject={(reason) => handleReject(reason)}
+              onRequestChanges={(note) => handleRequestChanges(note)}
+              onApply={() => handleApply()}
+            />
+          )}
+        </Layout>
+      </Page>
     </PolarisProvider>
   );
 }

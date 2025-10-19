@@ -1,0 +1,10 @@
+{
+  "status": "planned_only_do_not_seed",
+  "synonyms": [
+    ["-6an", "an-6", "6an"],
+    ["filter/regulator c5", "c5 filter regulator"],
+    ["e85 ptfe", "ptfe e85"]
+  ],
+  "facets": ["engine_family", "fuel_type", "pressure", "hp_band"],
+  "typoTolerance": true
+}

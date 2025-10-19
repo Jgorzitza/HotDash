@@ -1,0 +1,35 @@
+{
+  "status": "planned_only_do_not_seed",
+  "metaobjects": [
+    "vehicle_model_year",
+    "swap_recipe",
+    "compatibility_fact",
+    "howto_guide"
+  ],
+  "templates": { "publishAsPage": true, "schema": ["Product", "Offer"] },
+  "internalLinks": {
+    "automation": true,
+    "schedule": { "cron": "0 3 * * *", "tz": "America/Edmonton" }
+  },
+  "targets": { "pagesLiveByDays": 60, "ctrLiftPct": 30, "coveragePct": 50 },
+  "approvals": { "role": "CEO", "reasonsRequired": true },
+  "featureFlags": {
+    "programmaticSeoFactory": {
+      "default": false,
+      "description": "Enables preview routes and metaobject ingestion pipeline"
+    },
+    "programmaticSeoFactoryPublisher": {
+      "default": false,
+      "description": "Allows publish job to create/update Shopify Pages"
+    }
+  },
+  "rollback": {
+    "steps": [
+      "Disable programmaticSeoFactoryPublisher to stop new publishes",
+      "Disable programmaticSeoFactory to hide preview routes",
+      "Run scripts/ops/unbind-programmatic-lander.mjs to detach templates",
+      "Notify approvals queue to pause remaining reviews"
+    ]
+  },
+  "idempotencyKey": "${metaobject_type}:${slug}:${template_version}"
+}

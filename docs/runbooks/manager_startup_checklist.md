@@ -8,6 +8,9 @@
 
 - [ ] Skim diffs in `docs/NORTH_STAR.md` and `docs/RULES.md` (if changed since yesterday).
 - [ ] Open `docs/OPERATING_MODEL.md` header; confirm the pipeline: **Signals → Suggestions → Approvals → Actions → Audit → Learn**.
+- [ ] Confirm gap-analysis items are integrated (Programmatic SEO, Guided Selling, CWV→$$, A/B, Media, Learning Loop) and Action Dock is reflected in dashboard config.
+- [ ] MCP usage clarifications: Shopify (dev + storefront) via MCP; GA4/GSC via internal adapters (no MCP). Ensure directions reflect this.
+- [ ] Autopublish: verify toggles exist but are OFF (see `docs/specs/hitl/approvals-framework.config.json`).
 
 ## 1) Repo & CI Guardrails (2–4 min)
 
@@ -80,6 +83,7 @@ For each active agent:
 - [ ] Reflect answers/decisions from step **3.2/3.4** into the direction file
 - [ ] **Archive/remove** completed items (leave “done” note + PR link)
 - [ ] Confirm the **task → Issue → PR** chain is explicit
+- [ ] Ensure each agent direction includes Allowed paths and references MCP usage (Shopify via MCP; GA4/GSC via internal adapters; attach command logs)
 
 ### 3.6 Sandboxes & safety (quick pass)
 
@@ -90,7 +94,7 @@ For each active agent:
 
 ### 3.7 Today plan (30 sec)
 
-- [ ] Assign/resize 10–15 molecules **per agent**; confirm DoD + Allowed paths
+- [ ] Assign/resize 10–15 molecules **per agent**; confirm DoD + Allowed paths; sequence priority: Programmatic SEO → Guided Selling/Kit Composer → CWV→$$ → A/B harness; stage deep ads drilldowns later.
 - [ ] Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`
 
 > **Note:** Approvals/HITL is **out of scope in build/dev mode**. If the UI needs sample approvals to render, use **fixture entries** with `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.

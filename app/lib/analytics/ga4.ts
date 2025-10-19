@@ -286,8 +286,8 @@ async function fetchTrafficData(
   let organicSessions = 0;
 
   (response.rows ?? [])
-    .filter(Boolean)
-    .forEach((row: any) => {
+    .filter((row): row is GaRow => Boolean(row))
+    .forEach((row) => {
       const channelGroup = getDimensionValue(row, 0);
       const sessions = getMetricNumber(row, 0, "int");
 
@@ -555,8 +555,8 @@ async function fetchTrafficBreakdownData(
   }> = [];
 
   (response.rows ?? [])
-    .filter(Boolean)
-    .forEach((row: any) => {
+    .filter((row): row is GaRow => Boolean(row))
+    .forEach((row) => {
       const channel = getDimensionValue(row, 0) || "Unknown";
       const sessions = getMetricNumber(row, 0, "int");
       const users = getMetricNumber(row, 1, "int");

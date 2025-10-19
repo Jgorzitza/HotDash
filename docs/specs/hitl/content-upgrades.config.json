@@ -1,0 +1,39 @@
+{
+  "status": "planned_only_do_not_seed",
+  "windows": { "baselineDays": [7, 28], "postDays": [7, 28] },
+  "thresholds": {
+    "ctrIncrease": 0.1,
+    "cvrIncrease": 0.1,
+    "revenueIncrease": 0.1,
+    "decayDrop": 0.2,
+    "titleChurnMinDays": 14
+  },
+  "candidates": {
+    "minSessions": 200,
+    "maxPosition": 12,
+    "lowCvr": 0.01
+  },
+  "tasks": [
+    "title_meta_rewrite",
+    "faq_add_schema",
+    "body_copy_upgrade",
+    "media_alt_improvement",
+    "internal_linking",
+    "structured_data_fix",
+    "web_vitals_followup"
+  ],
+  "priorityWeights": {
+    "trafficPotential": 0.3,
+    "ctrGap": 0.25,
+    "cvrGap": 0.2,
+    "decay": 0.15,
+    "siteSearchDemand": 0.1
+  },
+  "brandSplit": { "enabled": true, "firstPartyVendor": true },
+  "linkMapping": {
+    "install_guide": "/guides/an-ptfe-install",
+    "warranty": "/policies/warranty",
+    "faq": "/help",
+    "privacy": "/policies/privacy"
+  }
+}

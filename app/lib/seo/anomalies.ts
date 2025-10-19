@@ -115,7 +115,7 @@ export function detectTrafficAnomalies(
 
       return {
         id: `traffic-${input.landingPage.replace(/[^a-z0-9]/gi, "-")}`,
-        type: "traffic",
+        type: "traffic" as const,
         severity,
         title: `Traffic drop on ${input.landingPage}`,
         description: `Sessions dropped ${Math.abs(changePercent)}% week-over-week`,
@@ -152,7 +152,7 @@ export function detectRankingAnomalies(
 
       return {
         id: `ranking-${input.keyword.replace(/\s+/g, "-")}`,
-        type: "ranking",
+        type: "ranking" as const,
         severity,
         title: `Ranking drop for "${input.keyword}"`,
         description: `Dropped from position ${input.previousPosition} to ${input.currentPosition}`,
@@ -195,7 +195,7 @@ export function detectVitalsAnomalies(
 
       return {
         id: `vitals-${input.metric}-${input.url.replace(/[^a-z0-9]/gi, "-")}`,
-        type: "vitals",
+        type: "vitals" as const,
         severity,
         title: `${metricNames[input.metric]} failure`,
         description: `${input.metric} is ${input.value.toFixed(input.metric === "CLS" ? 3 : 0)}${input.metric === "CLS" ? "" : "ms"} (threshold: ${input.threshold}${input.metric === "CLS" ? "" : "ms"})`,
@@ -227,7 +227,7 @@ export function detectCrawlAnomalies(inputs: CrawlErrorInput[]): SEOAnomaly[] {
 
       return {
         id: `crawl-${input.url.replace(/[^a-z0-9]/gi, "-")}`,
-        type: "crawl",
+        type: "crawl" as const,
         severity,
         title: `Crawl errors on ${input.url}`,
         description: `${input.errorCount} ${input.errorType} errors detected`,

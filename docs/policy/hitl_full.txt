@@ -1,0 +1,244 @@
+
+HITL-100 IN LLAMAINDEX (NO LANGCHAIN/LANGGRAPH REQUIRED) — IMPLEMENTATION SPEC
+------------------------------------------------------------------------------
+
+Goal
+----
+Enforce 100% Human-In-The-Loop (HITL) across our *existing LlamaIndex stack* until confidence reaches 100% for 7 consecutive runs. Implement pause/resume, composite eval gates in CI, and workflow-level observability using components we already have (LlamaIndex, Supabase, Langfuse). No LangChain/LangGraph is required.
+
+Scope
+-----
+Manager + all sub-agents (RAG, SEO, Inventory, Sales, Dashboard). Applies to tool calls, external writes, data mutations, customer-facing replies, and deploy actions.
+
+Architecture Overview
+---------------------
+1) Workflow Orchestrator: LlamaIndex Workflows (or custom Node pipeline) with explicit “HITL_GATE” steps.
+2) State & Checkpointing: LlamaIndex StorageContext + custom CheckpointStore (Supabase table).
+3) Approval Bus: Supabase (table + realtime channel) or a simple queue to receive human decisions.
+4) Observability: LlamaIndex Observability + Langfuse handler (latency, cost, traces, errors).
+5) Evaluation & CI Gate: LlamaIndex evaluators + custom composite scorer; gate PRs/Deploys in GitHub Actions.
+6) Policy Files: /docs/policy/hitl_full.txt (authoritative); /docs/policy/eval_gate.yaml; /scripts/ci/eval_gate.py.
+
+Data Contracts
+--------------
+Supabase tables:
+- approvals (id, session_id, agent, node, proposal_json, created_at, decided_at, decision ENUM('approve','reject','edit'), edited_payload JSONB, reviewer, notes TEXT)
+- checkpoints (id, session_id, state_json, created_at, resume_token)
+- metrics_sessions (session_id, p95_latency_ms, token_cost_usd, error_rate, human_override_rate, agent_confidence_avg)
+
+HITL Gate (Pause/Resume) — LlamaIndex Pattern
+---------------------------------------------
+• Insert a mandatory node `HITL_GATE` before every irreversible/externally-visible action.
+
+Pseudocode (Python):
+--------------------
+from llama_index.core.workflow import Workflow, step
+from llama_index.core.storage import StorageContext
+from uuid import uuid4
+import json, time
+
+APPROVAL_POLL_SECS = 2
+APPROVAL_TIMEOUT_SECS = 60*60*8  # 8h
+
+def persist_checkpoint(supabase, session_id, state):
+    supabase.table("checkpoints").insert({
+        "session_id": session_id,
+        "state_json": state,
+        "resume_token": str(uuid4())
+    }).execute()
+
+def request_approval(supabase, payload):
+    # returns approval_id
+    return supabase.table("approvals").insert(payload).execute().data[0]["id"]
+
+def wait_for_decision(supabase, approval_id):
+    waited = 0
+    while waited < APPROVAL_TIMEOUT_SECS:
+        rec = supabase.table("approvals").select("*").eq("id", approval_id).single().execute().data
+        if rec and rec.get("decision"):
+            return rec
+        time.sleep(APPROVAL_POLL_SECS); waited += APPROVAL_POLL_SECS
+    raise TimeoutError("HITL decision timeout")
+
+class CSWorkflow(Workflow):
+    @step()
+    def plan(self, ctx):
+        # ... build proposal, tool call, or reply draft
+        proposal = {"action": "send_reply", "draft": ctx.state["draft"]}
+        ctx.state["proposal"] = proposal
+        return "hitl_gate"
+
+    @step()
+    def hitl_gate(self, ctx):
+        session_id = ctx.state["session_id"]
+        persist_checkpoint(ctx.state["supabase"], session_id, json.dumps(ctx.state))
+        approval_id = request_approval(ctx.state["supabase"], {
+            "session_id": session_id,
+            "agent": ctx.state["agent_name"],
+            "node": "hitl_gate",
+            "proposal_json": ctx.state["proposal"],
+        })
+        decision = wait_for_decision(ctx.state["supabase"], approval_id)
+        if decision["decision"] == "approve":
+            return "execute"
+        elif decision["decision"] == "edit":
+            ctx.state["proposal"] = decision["edited_payload"]
+            return "execute"
+        else:
+            ctx.state["aborted"] = True
+            return "end"
+
+    @step()
+    def execute(self, ctx):
+        # carry out ctx.state["proposal"]
+        # emit trace events; update metrics
+        return "end"
+
+Notes:
+- Use Supabase Realtime to push decisions instantly instead of polling if available.
+- The checkpoint includes the full state; resuming the session reloads state and jumps to the step following HITL approval.
+
+Manager Enforcement
+-------------------
+- Manager enumerates all nodes that call external tools or produce user-visible output and auto-inserts HITL_GATE before them.
+- Manager refuses to run a graph if any irreversible edge lacks HITL_GATE.
+- Manager writes an interrupt map to /artifacts/hitl_map/<DATE>/map.json (node_id -> has_hitl: true/false).
+
+Confidence Policy
+-----------------
+- Log agent_confidence per turn (self-estimate or scorer output) into metrics_sessions.
+- HITL remains 100% until rolling average == 100% for 7 consecutive sessions per agent.
+- Manager computes the rolling average nightly and writes to feedback/metrics.md.
+
+Composite Evaluation (CI Gate) — LlamaIndex Native
+--------------------------------------------------
+Weights (example):
+- correctness: 0.50
+- groundedness: 0.35
+- tone: 0.15
+Threshold: 0.82 (block merge if below)
+
+/scripts/ci/eval_gate.py (sketch):
+----------------------------------
+import json, sys
+from my_evals import correctness_eval, groundedness_eval, tone_eval
+
+def composite(sample):
+    c = correctness_eval(sample)
+    g = groundedness_eval(sample)
+    t = tone_eval(sample)
+    score = 0.5*c + 0.35*g + 0.15*t
+    return score, {"c": c, "g": g, "t": t}
+
+def main():
+    dataset = json.load(open("datasets/ci_eval_set.json"))
+    scores = []
+    for s in dataset:
+        sc, parts = composite(s)
+        scores.append(sc)
+        print("SCORE", sc, parts)
+    avg = sum(scores)/len(scores)
+    if avg < 0.82:
+        print("CI GATE FAILED: avg=", avg)
+        sys.exit(1)
+    print("CI GATE PASSED: avg=", avg)
+
+if __name__ == "__main__":
+    main()
+
+GitHub Actions (snippet):
+-------------------------
+- name: Eval Gate
+  run: |
+    python -m pip install -r requirements-ci.txt
+    python scripts/ci/eval_gate.py
+
+Observability & SLOs (LlamaIndex + Langfuse)
+--------------------------------------------
+- Initialize Langfuse as the global handler at app boot.
+- Emit a session_id for every workflow, attach to all traces.
+- Track:
+  * p95_latency_ms per node and overall
+  * token_cost_usd per session
+  * error_rate
+  * human_override_rate
+- SLOs:
+  * p95_latency_ms < 2000
+  * token_cost_usd < 0.02
+  * error_rate < 1%
+- On SLO breach, manager writes incident to feedback/incidents/<DATE>.md and halts non-essential agents.
+
+Security & Approvals UX
+-----------------------
+- Reviewer UI (minimal):
+  * List pending approvals (session_id, agent, node, proposal preview)
+  * Buttons: Approve, Reject, Edit (inline editor for payload)
+  * Write-back to Supabase approvals table; trigger Realtime event to resume
+- All decisions must be attributed (reviewer identity) and time-stamped.
+- Prevent “auto-approve” by disabling any code path that resumes without a recorded approval row.
+
+Roll-back Ladder (after confidence returns)
+-------------------------------------------
+Stage 1: HITL 100% (current)
+Stage 2: HITL 50% — random sampling of HITL_GATE (manager assigns review buckets)
+Stage 3: HITL 10% — canary post-deploy audits
+Stage 4: HITL <5% — steady-state autonomy
+
+Manager Checklist (Copy-Paste)
+------------------------------
+[ ] Enforce HITL_GATE insertion before all external writes / user-visible outputs
+[ ] Persist checkpoints to Supabase at every HITL_GATE
+[ ] Block execution if approval row not present or decision is pending/deny
+[ ] Initialize Langfuse handler; attach session_id to traces
+[ ] Write /artifacts/hitl_map/<DATE>/map.json and /feedback/metrics.md daily
+[ ] Run CI eval gate on every PR; block merges on failure
+[ ] Maintain rolling confidence; keep HITL=100% until 7/7 @ 100%
+
+File/Path Layout
+----------------
+/docs/policy/hitl_full.txt                (this file)
+/scripts/ci/eval_gate.py
+/datasets/ci_eval_set.json
+/infra/supabase/schema.sql                (tables: approvals, checkpoints, metrics_sessions)
+/artifacts/hitl_map/YYYY-MM-DD/map.json
+/feedback/metrics.md
+/feedback/incidents/YYYY-MM-DD.md
+
+Schema Seed (example SQL)
+-------------------------
+create table if not exists approvals (
+  id uuid primary key default gen_random_uuid(),
+  session_id text not null,
+  agent text not null,
+  node text not null,
+  proposal_json jsonb not null,
+  created_at timestamptz default now(),
+  decided_at timestamptz,
+  decision text check (decision in ('approve','reject','edit')),
+  edited_payload jsonb,
+  reviewer text,
+  notes text
+);
+
+create table if not exists checkpoints (
+  id uuid primary key default gen_random_uuid(),
+  session_id text not null,
+  state_json jsonb not null,
+  created_at timestamptz default now(),
+  resume_token text
+);
+
+create table if not exists metrics_sessions (
+  session_id text primary key,
+  p95_latency_ms int,
+  token_cost_usd numeric,
+  error_rate numeric,
+  human_override_rate numeric,
+  agent_confidence_avg numeric,
+  created_at timestamptz default now()
+);
+
+Exit Criteria
+-------------
+HITL remains at 100% until manager records 7 consecutive sessions per agent with agent_confidence_avg == 1.0 and no SLO breaches. Only then may the manager begin the rollback ladder.
+
