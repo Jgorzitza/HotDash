@@ -1,0 +1,66 @@
+name: Security Audit (OWASP)
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly on Monday at 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  issues: write
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run npm audit
+        id: npm-audit
+        continue-on-error: true
+        run: |
+          npm audit --audit-level=moderate --json > npm-audit-results.json
+          npm audit --audit-level=moderate
+
+      - name: Check for high/critical vulnerabilities
+        run: |
+          HIGH=$(cat npm-audit-results.json | jq '.metadata.vulnerabilities.high // 0')
+          CRITICAL=$(cat npm-audit-results.json | jq '.metadata.vulnerabilities.critical // 0')
+          
+          echo "High vulnerabilities: $HIGH"
+          echo "Critical vulnerabilities: $CRITICAL"
+          
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "❌ CRITICAL vulnerabilities found - immediate action required"
+            exit 1
+          elif [ "$HIGH" -gt 0 ]; then
+            echo "⚠️  HIGH vulnerabilities found - review needed"
+            exit 1
+          else
+            echo "✅ No high/critical vulnerabilities"
+          fi
+
+      - name: Upload audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-results
+          path: npm-audit-results.json
+
+      - name: Create issue for vulnerabilities
+        if: failure()
+        run: |
+          gh issue create \
+            --title "[Security] Vulnerabilities detected in dependencies" \
+            --body "$(cat npm-audit-results.json | jq -r '.metadata | "High: \(.vulnerabilities.high), Critical: \(.vulnerabilities.critical)"')" \
+            --label "security,automated"
+        env:
+          GH_TOKEN: ${{ github.token }}
+

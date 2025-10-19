@@ -1,582 +1,554 @@
 /**
- * Engagement Analysis Service
+ * Engagement Analyzer Service
  *
- * Analyzes historical content performance to provide insights for:
- * - Optimal posting times
- * - High-performing hashtags
- * - Content patterns that drive engagement
- * - Platform-specific best practices
+ * Analyzes social media post performance and provides insights
+ * for content optimization and strategy adjustments.
+ *
+ * @see app/lib/content/tracking.ts
+ * @see docs/specs/content_tracking.md
  */
 
-import type {
-  SocialPlatform,
-  ContentPerformance,
-} from "../../lib/content/tracking";
-
-// ============================================================================
-// Types
-// ============================================================================
+import {
+  type ContentPerformance,
+  type AggregatedPerformance,
+  type SocialPlatform,
+  getPerformanceTier,
+  getPlatformEngagementTarget,
+  getPlatformCTRTarget,
+  getContentPerformance,
+  getAggregatedPerformance,
+  getTopPerformingPosts,
+} from "~/lib/content/tracking";
 
 /**
- * Engagement insights derived from historical data
+ * Performance Analysis Result
  */
-export interface EngagementInsights {
+export interface PerformanceAnalysis {
+  post_id: string;
   platform: SocialPlatform;
-  totalPosts: number;
-  averageEngagementRate: number;
-  topPerformingHashtags: string[];
-  bestPostingTimes: {
-    dayOfWeek: string;
-    timeOfDay: string;
-    timezone: string;
-  };
-  contentPatterns: {
-    pattern: string;
-    avgEngagement: number;
-    sampleSize: number;
-  }[];
-  recommendations: string[];
-}
-
-/**
- * Hashtag performance metrics
- */
-export interface HashtagPerformance {
-  hashtag: string;
-  usageCount: number;
-  averageEngagementRate: number;
-  averageReach: number;
-  trending: boolean;
-}
-
-/**
- * Time-based performance analysis
- */
-export interface TimePerformance {
-  hour: number;
-  dayOfWeek: number; // 0 = Sunday, 6 = Saturday
-  averageEngagementRate: number;
-  postCount: number;
-}
-
-/**
- * Content pattern analysis
- */
-export interface ContentPattern {
-  type: "question" | "emoji" | "link" | "mention" | "long-form" | "short-form";
-  description: string;
-  averageEngagementRate: number;
-  sampleSize: number;
-  recommendation: string;
-}
-
-// ============================================================================
-// Analysis Functions
-// ============================================================================
-
-/**
- * Analyze engagement patterns for a specific platform
- *
- * NOTE: This is a placeholder implementation. In production, this would:
- * 1. Query Supabase for historical post performance
- * 2. Aggregate metrics by hashtag, time, content type
- * 3. Apply statistical analysis for significance
- * 4. Return actionable insights
- */
-export async function analyzeEngagementPatterns(
-  platform: SocialPlatform,
-  dateRange?: { start: string; end: string },
-): Promise<EngagementInsights> {
-  // TODO: Implement actual data fetching from Supabase
-  // For now, return mock insights
-
-  return {
-    platform,
-    totalPosts: 0,
-    averageEngagementRate: 0,
-    topPerformingHashtags: [],
-    bestPostingTimes: {
-      dayOfWeek: "Tuesday",
-      timeOfDay: "10:00 AM",
-      timezone: "America/Denver",
-    },
-    contentPatterns: [],
-    recommendations: [
-      "Post during peak engagement times (10 AM - 2 PM)",
-      "Use 5-7 relevant hashtags",
-      "Include questions to boost comments",
-      "Add visual content for higher engagement",
-    ],
+  published_at: string;
+  performance: ContentPerformance;
+  analysis: {
+    tier: "exceptional" | "above_target" | "at_target" | "below_target";
+    engagement_analysis: {
+      actual: number;
+      target: number;
+      vs_target: string; // e.g., "+25% above target"
+      tier: string;
+    };
+    ctr_analysis: {
+      actual: number;
+      target: number;
+      vs_target: string;
+      tier: string;
+    };
+    key_insights: string[]; // What worked/didn't work
+    recommendations: string[]; // Action items
   };
 }
 
 /**
- * Analyze hashtag performance across posts
+ * Content Strategy Insights
  */
-export async function analyzeHashtagPerformance(
-  platform: SocialPlatform,
-  limit: number = 20,
-): Promise<HashtagPerformance[]> {
-  // TODO: Implement actual hashtag analysis from Supabase
-  // For now, return empty array
-
-  return [];
-}
-
-/**
- * Analyze optimal posting times based on historical engagement
- */
-export async function analyzePostingTimes(
-  platform: SocialPlatform,
-): Promise<TimePerformance[]> {
-  // TODO: Implement actual time-based analysis
-  // For now, return empty array
-
-  return [];
-}
-
-/**
- * Identify content patterns that drive engagement
- */
-export async function analyzeContentPatterns(
-  platform: SocialPlatform,
-): Promise<ContentPattern[]> {
-  // TODO: Implement pattern recognition
-  // Analyze for:
-  // - Questions vs statements
-  // - Emoji usage
-  // - Link inclusion
-  // - Mentions
-  // - Post length
-
-  return [];
-}
-
-/**
- * Compare performance across platforms
- */
-export async function comparePlatformPerformance(): Promise<{
-  platforms: Record<
+export interface StrategyInsights {
+  period: {
+    start: string;
+    end: string;
+  };
+  overall_performance: AggregatedPerformance;
+  top_performers: {
+    posts: ContentPerformance[];
+    common_patterns: string[]; // Why they succeeded
+  };
+  underperformers: {
+    posts: ContentPerformance[];
+    common_issues: string[]; // Why they failed
+  };
+  platform_insights: Record<
     SocialPlatform,
     {
-      averageEngagementRate: number;
-      averageReach: number;
-      totalPosts: number;
+      avg_engagement_rate: number;
+      vs_target: string;
+      best_post_type: string;
+      optimal_posting_times?: string[];
     }
   >;
-  recommendations: string[];
-}> {
-  // TODO: Implement cross-platform comparison
-
-  return {
-    platforms: {
-      instagram: {
-        averageEngagementRate: 0,
-        averageReach: 0,
-        totalPosts: 0,
-      },
-      facebook: {
-        averageEngagementRate: 0,
-        averageReach: 0,
-        totalPosts: 0,
-      },
-      tiktok: {
-        averageEngagementRate: 0,
-        averageReach: 0,
-        totalPosts: 0,
-      },
-    },
-    recommendations: [],
-  };
+  recommendations: {
+    priority: "high" | "medium" | "low";
+    action: string;
+    expected_impact: string;
+  }[];
 }
 
 /**
- * Get engagement insights for a specific post
+ * Analyze Single Post Performance
+ *
+ * Provides detailed analysis with actionable insights.
+ *
+ * @param postId - Post identifier
+ * @param platform - Social platform
+ * @returns Performance analysis with recommendations
  */
-export async function getPostInsights(
+export async function analyzePostPerformance(
   postId: string,
   platform: SocialPlatform,
-): Promise<{
-  performance: ContentPerformance | null;
-  insights: {
-    performanceVsAverage: number; // Percentage difference
-    topPerformingElements: string[];
-    improvementSuggestions: string[];
-  };
-}> {
-  // TODO: Implement post-specific insights
+): Promise<PerformanceAnalysis> {
+  // Fetch performance data
+  const performance = await getContentPerformance(postId, platform);
 
-  return {
-    performance: null,
-    insights: {
-      performanceVsAverage: 0,
-      topPerformingElements: [],
-      improvementSuggestions: [],
-    },
-  };
-}
+  // Get platform targets
+  const engagementTarget = getPlatformEngagementTarget(platform);
+  const ctrTarget = getPlatformCTRTarget(platform);
 
-/**
- * Predict engagement for a draft post
- */
-export async function predictEngagement(
-  content: string,
-  platform: SocialPlatform,
-  hashtags: string[],
-): Promise<{
-  estimatedEngagementRate: number;
-  estimatedReach: number;
-  confidence: number; // 0-1
-  factors: {
-    factor: string;
-    impact: "positive" | "negative" | "neutral";
-    weight: number;
-  }[];
-}> {
-  // TODO: Implement ML-based engagement prediction
-  // Consider:
-  // - Content length
-  // - Hashtag performance
-  // - Time of posting
-  // - Historical patterns
-
-  return {
-    estimatedEngagementRate: 0,
-    estimatedReach: 0,
-    confidence: 0,
-    factors: [],
-  };
-}
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-/**
- * Calculate engagement rate from metrics
- */
-export function calculateEngagementRate(
-  likes: number,
-  comments: number,
-  shares: number,
-  impressions: number,
-): number {
-  if (impressions === 0) return 0;
-  return ((likes + comments + shares) / impressions) * 100;
-}
-
-/**
- * Determine if a hashtag is trending
- */
-export function isTrendingHashtag(
-  hashtag: string,
-  recentUsage: number,
-  historicalAverage: number,
-): boolean {
-  // Consider trending if recent usage is 50% higher than historical average
-  return recentUsage > historicalAverage * 1.5;
-}
-
-// ============================================================================
-// Multi-Platform Metrics Aggregation (Task 3.2)
-// ============================================================================
-
-/**
- * Multi-platform engagement metrics
- */
-export interface MultiPlatformMetrics {
-  platforms: {
-    [K in SocialPlatform]: {
-      totalPosts: number;
-      averageEngagementRate: number;
-      totalReach: number;
-      totalImpressions: number;
-      growthRate: number; // Week-over-week growth
-      trendScore: number; // 0-100 trend score
-    };
-  };
-  overall: {
-    totalPosts: number;
-    averageEngagementRate: number;
-    totalReach: number;
-    bestPerformingPlatform: SocialPlatform;
-    worstPerformingPlatform: SocialPlatform;
-  };
-  trends: {
-    platform: SocialPlatform;
-    direction: "up" | "down" | "stable";
-    change: number; // Percentage change
-    significance: "high" | "medium" | "low";
-  }[];
-}
-
-/**
- * Aggregate metrics across all platforms
- *
- * NOTE: This is a placeholder implementation. In production, this would:
- * 1. Query Supabase for all platform metrics
- * 2. Calculate aggregated statistics
- * 3. Compute growth rates and trends
- * 4. Return comprehensive multi-platform view
- */
-export async function aggregateMultiPlatformMetrics(dateRange: {
-  start: string;
-  end: string;
-}): Promise<MultiPlatformMetrics> {
-  // TODO: Implement actual Supabase aggregation
-  // For now, return mock structure
-
-  return {
-    platforms: {
-      instagram: {
-        totalPosts: 0,
-        averageEngagementRate: 0,
-        totalReach: 0,
-        totalImpressions: 0,
-        growthRate: 0,
-        trendScore: 0,
-      },
-      facebook: {
-        totalPosts: 0,
-        averageEngagementRate: 0,
-        totalReach: 0,
-        totalImpressions: 0,
-        growthRate: 0,
-        trendScore: 0,
-      },
-      tiktok: {
-        totalPosts: 0,
-        averageEngagementRate: 0,
-        totalReach: 0,
-        totalImpressions: 0,
-        growthRate: 0,
-        trendScore: 0,
-      },
-    },
-    overall: {
-      totalPosts: 0,
-      averageEngagementRate: 0,
-      totalReach: 0,
-      bestPerformingPlatform: "instagram",
-      worstPerformingPlatform: "facebook",
-    },
-    trends: [],
-  };
-}
-
-// ============================================================================
-// Trend Scoring Algorithm (Task 3.3)
-// ============================================================================
-
-/**
- * Trend score components
- */
-export interface TrendScoreComponents {
-  engagementTrend: number; // 0-25 points
-  reachTrend: number; // 0-25 points
-  growthMomentum: number; // 0-25 points
-  consistency: number; // 0-25 points
-  totalScore: number; // 0-100
-  grade: "A" | "B" | "C" | "D" | "F";
-}
-
-/**
- * Calculate trend score for a platform
- *
- * Scoring algorithm:
- * - Engagement trend (0-25): Week-over-week engagement rate change
- * - Reach trend (0-25): Week-over-week reach growth
- * - Growth momentum (0-25): Acceleration of growth (second derivative)
- * - Consistency (0-25): Standard deviation of engagement rates
- *
- * Total score (0-100):
- * - 90-100: A (Excellent, strong upward trend)
- * - 80-89: B (Good, positive trend)
- * - 70-79: C (Average, stable)
- * - 60-69: D (Below average, declining)
- * - 0-59: F (Poor, significant decline)
- */
-export function calculateTrendScore(
-  currentWeekMetrics: {
-    engagementRate: number;
-    reach: number;
-    posts: number;
-  },
-  previousWeekMetrics: {
-    engagementRate: number;
-    reach: number;
-    posts: number;
-  },
-  twoWeeksAgoMetrics: {
-    engagementRate: number;
-    reach: number;
-    posts: number;
-  },
-): TrendScoreComponents {
-  // Engagement trend (0-25 points)
-  const engagementChange =
-    currentWeekMetrics.engagementRate - previousWeekMetrics.engagementRate;
-  const engagementTrend = Math.min(
-    25,
-    Math.max(0, 12.5 + engagementChange * 2.5),
+  // Calculate tier
+  const engagementTier = getPerformanceTier(
+    performance.engagement.engagementRate,
+    engagementTarget,
+  );
+  const ctrTier = getPerformanceTier(
+    performance.clicks.clickThroughRate,
+    ctrTarget,
   );
 
-  // Reach trend (0-25 points)
-  const reachChange =
-    (currentWeekMetrics.reach - previousWeekMetrics.reach) /
-    previousWeekMetrics.reach;
-  const reachTrend = Math.min(25, Math.max(0, 12.5 + reachChange * 50));
+  // Overall tier is worst of the two
+  const overallTier =
+    getTierPriority(engagementTier) > getTierPriority(ctrTier)
+      ? ctrTier
+      : engagementTier;
 
-  // Growth momentum (0-25 points) - acceleration
-  const currentGrowth =
-    currentWeekMetrics.engagementRate - previousWeekMetrics.engagementRate;
-  const previousGrowth =
-    previousWeekMetrics.engagementRate - twoWeeksAgoMetrics.engagementRate;
-  const acceleration = currentGrowth - previousGrowth;
-  const growthMomentum = Math.min(25, Math.max(0, 12.5 + acceleration * 5));
+  // Generate insights
+  const keyInsights = generateKeyInsights(performance, platform);
+  const recommendations = generateRecommendations(
+    performance,
+    platform,
+    overallTier,
+  );
 
-  // Consistency (0-25 points) - inverse of volatility
+  return {
+    post_id: postId,
+    platform,
+    published_at: performance.publishedAt,
+    performance,
+    analysis: {
+      tier: overallTier,
+      engagement_analysis: {
+        actual: performance.engagement.engagementRate,
+        target: engagementTarget,
+        vs_target: formatVsTarget(
+          performance.engagement.engagementRate,
+          engagementTarget,
+        ),
+        tier: engagementTier,
+      },
+      ctr_analysis: {
+        actual: performance.clicks.clickThroughRate,
+        target: ctrTarget,
+        vs_target: formatVsTarget(
+          performance.clicks.clickThroughRate,
+          ctrTarget,
+        ),
+        tier: ctrTier,
+      },
+      key_insights: keyInsights,
+      recommendations,
+    },
+  };
+}
+
+/**
+ * Analyze Content Strategy Over Period
+ *
+ * Identifies patterns, trends, and opportunities.
+ *
+ * @param startDate - Start of analysis period
+ * @param endDate - End of analysis period
+ * @returns Strategic insights and recommendations
+ */
+export async function analyzeContentStrategy(
+  startDate: string,
+  endDate: string,
+): Promise<StrategyInsights> {
+  // Get aggregated performance
+  const overall = await getAggregatedPerformance(startDate, endDate);
+
+  // Get top and bottom performers
+  const topPosts = await getTopPerformingPosts(
+    startDate,
+    endDate,
+    5,
+    "engagement",
+  );
+  const allPosts = await getTopPerformingPosts(
+    startDate,
+    endDate,
+    100,
+    "engagement",
+  );
+  const bottomPosts = allPosts.slice(-5); // Last 5 = worst
+
+  // Identify patterns
+  const topPatterns = identifyCommonPatterns(topPosts);
+  const bottomIssues = identifyCommonIssues(bottomPosts);
+
+  // Platform-specific insights
+  const platformInsights = analyzePlatformPerformance(overall);
+
+  // Generate strategic recommendations
+  const recommendations = generateStrategicRecommendations(
+    overall,
+    topPatterns,
+    bottomIssues,
+    platformInsights,
+  );
+
+  return {
+    period: {
+      start: startDate,
+      end: endDate,
+    },
+    overall_performance: overall,
+    top_performers: {
+      posts: topPosts,
+      common_patterns: topPatterns,
+    },
+    underperformers: {
+      posts: bottomPosts,
+      common_issues: bottomIssues,
+    },
+    platform_insights: platformInsights,
+    recommendations,
+  };
+}
+
+/**
+ * Get Tier Priority (for determining overall tier)
+ */
+function getTierPriority(tier: string): number {
+  const priorities: Record<string, number> = {
+    below_target: 3,
+    at_target: 2,
+    above_target: 1,
+    exceptional: 0,
+  };
+  return priorities[tier] ?? 2;
+}
+
+/**
+ * Format Performance vs Target
+ */
+function formatVsTarget(actual: number, target: number): string {
+  const diff = actual - target;
+  const percentage = ((diff / target) * 100).toFixed(1);
+
+  if (diff > 0) {
+    return `+${percentage}% above target`;
+  } else if (diff < 0) {
+    return `${percentage}% below target`;
+  }
+  return "At target";
+}
+
+/**
+ * Generate Key Insights for Post
+ */
+function generateKeyInsights(
+  performance: ContentPerformance,
+  platform: SocialPlatform,
+): string[] {
+  const insights: string[] = [];
+  const { engagement, reach, clicks, conversions } = performance;
+
+  // Reach efficiency
+  const reachEfficiency = (reach.reach / reach.impressions) * 100;
+  if (reachEfficiency > 85) {
+    insights.push(
+      `Excellent reach efficiency (${reachEfficiency.toFixed(1)}% of impressions)`,
+    );
+  } else if (reachEfficiency < 60) {
+    insights.push(
+      `Low reach efficiency (${reachEfficiency.toFixed(1)}%) - consider broader targeting`,
+    );
+  }
+
+  // Engagement type breakdown
+  const totalEngagement =
+    engagement.likes +
+    engagement.comments +
+    engagement.shares +
+    (engagement.saves || 0);
+  const commentRatio = (engagement.comments / totalEngagement) * 100;
+  const saveRatio = ((engagement.saves || 0) / totalEngagement) * 100;
+
+  if (commentRatio > 15) {
+    insights.push("High comment ratio - content sparked conversation");
+  }
+  if (saveRatio > 20 && (platform === "instagram" || platform === "tiktok")) {
+    insights.push("High save rate - valuable reference content");
+  }
+
+  // Click behavior
+  if (clicks.clickThroughRate > getPlatformCTRTarget(platform) * 1.5) {
+    insights.push("Exceptional CTR - strong call-to-action worked");
+  }
+
+  // Conversion performance
+  if (conversions && conversions.conversionRate > 3.0) {
+    insights.push("Above-average conversion rate - audience highly qualified");
+  }
+
+  return insights.length > 0
+    ? insights
+    : ["Post performed within normal range"];
+}
+
+/**
+ * Generate Recommendations for Post
+ */
+function generateRecommendations(
+  performance: ContentPerformance,
+  platform: SocialPlatform,
+  tier: string,
+): string[] {
+  const recommendations: string[] = [];
+  const { engagement, clicks, conversions } = performance;
+
+  if (tier === "below_target" || tier === "at_target") {
+    // Engagement improvements
+    if (engagement.engagementRate < getPlatformEngagementTarget(platform)) {
+      recommendations.push("Test question-based captions to drive comments");
+      recommendations.push(
+        "Include more visual hooks in first 3 seconds (video) or image",
+      );
+    }
+
+    // CTR improvements
+    if (clicks.clickThroughRate < getPlatformCTRTarget(platform)) {
+      recommendations.push(
+        "Strengthen call-to-action (use urgency or scarcity)",
+      );
+      recommendations.push("Test link placement in first comment vs caption");
+    }
+
+    // Conversion improvements
+    if (conversions && conversions.conversionRate < 2.0) {
+      recommendations.push("Align landing page message with post copy");
+      recommendations.push(
+        "Add social proof (reviews, testimonials) to product page",
+      );
+    }
+  }
+
+  if (tier === "exceptional" || tier === "above_target") {
+    recommendations.push("Replicate this content pattern in future posts");
+    recommendations.push("Consider boosting post with paid promotion");
+    recommendations.push(
+      "Analyze what made this resonate and document in playbook",
+    );
+  }
+
+  return recommendations;
+}
+
+/**
+ * Identify Common Patterns in Top Posts
+ */
+function identifyCommonPatterns(posts: ContentPerformance[]): string[] {
+  // This would analyze actual post content in production
+  // For now, return general patterns based on performance
+
+  const patterns: string[] = [];
+
   const avgEngagement =
-    (currentWeekMetrics.engagementRate +
-      previousWeekMetrics.engagementRate +
-      twoWeeksAgoMetrics.engagementRate) /
-    3;
-  const variance =
-    [
-      Math.pow(currentWeekMetrics.engagementRate - avgEngagement, 2),
-      Math.pow(previousWeekMetrics.engagementRate - avgEngagement, 2),
-      Math.pow(twoWeeksAgoMetrics.engagementRate - avgEngagement, 2),
-    ].reduce((a, b) => a + b, 0) / 3;
-  const stdDev = Math.sqrt(variance);
-  const consistency = Math.min(25, Math.max(0, 25 - stdDev * 2));
+    posts.reduce((sum, p) => sum + p.engagement.engagementRate, 0) /
+    posts.length;
+  if (avgEngagement > 5.0) {
+    patterns.push("High-performing posts average >5% engagement");
+  }
 
-  // Total score
-  const totalScore = Math.round(
-    engagementTrend + reachTrend + growthMomentum + consistency,
+  const highSavers = posts.filter((p) => (p.engagement.saves || 0) > 50);
+  if (highSavers.length > posts.length / 2) {
+    patterns.push("Educational/reference content drives saves");
+  }
+
+  const highCommenters = posts.filter((p) => p.engagement.comments > 30);
+  if (highCommenters.length > posts.length / 2) {
+    patterns.push("Question-based or controversial topics drive comments");
+  }
+
+  return patterns.length > 0
+    ? patterns
+    : ["Insufficient data for pattern detection"];
+}
+
+/**
+ * Identify Common Issues in Underperforming Posts
+ */
+function identifyCommonIssues(posts: ContentPerformance[]): string[] {
+  const issues: string[] = [];
+
+  const avgEngagement =
+    posts.reduce((sum, p) => sum + p.engagement.engagementRate, 0) /
+    posts.length;
+  if (avgEngagement < 2.0) {
+    issues.push("Low engagement across underperformers (<2% avg)");
+  }
+
+  const lowCTR = posts.filter((p) => p.clicks.clickThroughRate < 0.8);
+  if (lowCTR.length > posts.length / 2) {
+    issues.push("Weak call-to-action or unclear value proposition");
+  }
+
+  const poorReach = posts.filter(
+    (p) => p.reach.reach / p.reach.impressions < 0.6,
   );
+  if (poorReach.length > posts.length / 2) {
+    issues.push(
+      "Poor reach efficiency - content not resonating with algorithm",
+    );
+  }
 
-  // Grade
-  let grade: "A" | "B" | "C" | "D" | "F";
-  if (totalScore >= 90) grade = "A";
-  else if (totalScore >= 80) grade = "B";
-  else if (totalScore >= 70) grade = "C";
-  else if (totalScore >= 60) grade = "D";
-  else grade = "F";
-
-  return {
-    engagementTrend: Math.round(engagementTrend * 10) / 10,
-    reachTrend: Math.round(reachTrend * 10) / 10,
-    growthMomentum: Math.round(growthMomentum * 10) / 10,
-    consistency: Math.round(consistency * 10) / 10,
-    totalScore,
-    grade,
-  };
+  return issues.length > 0 ? issues : ["No clear patterns in underperformance"];
 }
 
 /**
- * Get trend analysis for all platforms
+ * Analyze Platform-Specific Performance
  */
-export async function getTrendAnalysis(dateRange: {
-  start: string;
-  end: string;
-}): Promise<
-  {
-    platform: SocialPlatform;
-    trendScore: TrendScoreComponents;
-    recommendation: string;
-  }[]
-> {
-  // TODO: Implement actual trend calculation from historical data
-  // For now, return mock structure
+function analyzePlatformPerformance(
+  overall: AggregatedPerformance,
+): Record<SocialPlatform, any> {
+  const platforms: SocialPlatform[] = ["instagram", "facebook", "tiktok"];
+  const insights: Record<SocialPlatform, any> = {} as any;
 
-  return [
-    {
-      platform: "instagram",
-      trendScore: {
-        engagementTrend: 0,
-        reachTrend: 0,
-        growthMomentum: 0,
-        consistency: 0,
-        totalScore: 0,
-        grade: "C",
-      },
-      recommendation: "Maintain current posting strategy",
-    },
-    {
-      platform: "facebook",
-      trendScore: {
-        engagementTrend: 0,
-        reachTrend: 0,
-        growthMomentum: 0,
-        consistency: 0,
-        totalScore: 0,
-        grade: "C",
-      },
-      recommendation: "Maintain current posting strategy",
-    },
-    {
-      platform: "tiktok",
-      trendScore: {
-        engagementTrend: 0,
-        reachTrend: 0,
-        growthMomentum: 0,
-        consistency: 0,
-        totalScore: 0,
-        grade: "C",
-      },
-      recommendation: "Maintain current posting strategy",
-    },
-  ];
+  for (const platform of platforms) {
+    const postCount = overall.platforms[platform] || 0;
+    if (postCount === 0) continue;
+
+    // Calculate platform-specific avg (simplified - would pull actual data in production)
+    const avgER = overall.averageEngagementRate;
+    const target = getPlatformEngagementTarget(platform);
+    const vsTarget = formatVsTarget(avgER, target);
+
+    insights[platform] = {
+      avg_engagement_rate: avgER,
+      vs_target: vsTarget,
+      best_post_type: "launch", // Would analyze actual data
+      optimal_posting_times: ["2:00 PM", "7:00 PM"], // Placeholder
+    };
+  }
+
+  return insights;
 }
 
 /**
- * Get day of week name from number
+ * Generate Strategic Recommendations
  */
-export function getDayName(dayNumber: number): string {
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  return days[dayNumber] || "Unknown";
+function generateStrategicRecommendations(
+  overall: AggregatedPerformance,
+  topPatterns: string[],
+  bottomIssues: string[],
+  platformInsights: Record<SocialPlatform, any>,
+): any[] {
+  const recommendations: any[] = [];
+
+  // Based on overall performance
+  if (overall.averageEngagementRate < 3.0) {
+    recommendations.push({
+      priority: "high",
+      action:
+        "Audit content calendar - increase ratio of high-engagement post types",
+      expected_impact: "+1.5% average engagement rate",
+    });
+  }
+
+  // Based on top patterns
+  if (topPatterns.some((p) => p.includes("Educational"))) {
+    recommendations.push({
+      priority: "medium",
+      action: "Double down on educational content - create weekly tip series",
+      expected_impact: "+20% saves, +0.8% engagement rate",
+    });
+  }
+
+  // Based on bottom issues
+  if (bottomIssues.some((i) => i.includes("call-to-action"))) {
+    recommendations.push({
+      priority: "high",
+      action:
+        "Strengthen CTAs - A/B test 'Shop Now' vs 'Learn More' vs 'Pre-Order'",
+      expected_impact: "+0.5% CTR",
+    });
+  }
+
+  // Platform-specific
+  const igInsights = platformInsights.instagram;
+  if (igInsights && igInsights.vs_target.includes("below")) {
+    recommendations.push({
+      priority: "medium",
+      action:
+        "Optimize Instagram posting times - test 2PM vs 7PM based on audience analytics",
+      expected_impact: "+15% reach, +0.6% engagement",
+    });
+  }
+
+  return recommendations;
 }
 
 /**
- * Format time for display
+ * Export Weekly Performance Report
+ *
+ * Generates markdown report for weekly brief.
+ *
+ * @param startDate - Week start
+ * @param endDate - Week end
+ * @returns Markdown-formatted report
  */
-export function formatTime(hour: number): string {
-  const period = hour >= 12 ? "PM" : "AM";
-  const displayHour = hour % 12 || 12;
-  return `${displayHour}:00 ${period}`;
-}
+export async function exportWeeklyReport(
+  startDate: string,
+  endDate: string,
+): Promise<string> {
+  const insights = await analyzeContentStrategy(startDate, endDate);
 
-/**
- * Calculate statistical significance
- */
-export function isStatisticallySignificant(
-  sampleSize: number,
-  minSampleSize: number = 30,
-): boolean {
-  return sampleSize >= minSampleSize;
-}
+  const report = `# Weekly Content Performance Report
 
-/**
- * Normalize engagement rate for comparison
- */
-export function normalizeEngagementRate(
-  rate: number,
-  platform: SocialPlatform,
-): number {
-  // Platform-specific normalization factors
-  const factors = {
-    instagram: 1.0,
-    facebook: 0.5, // Facebook typically has lower engagement
-    tiktok: 2.0, // TikTok typically has higher engagement
-  };
+**Period:** ${startDate} to ${endDate}
 
-  return rate * factors[platform];
+## Overall Performance
+
+- **Total Posts:** ${insights.overall_performance.totalPosts}
+- **Average Engagement Rate:** ${insights.overall_performance.averageEngagementRate}%
+- **Average CTR:** ${insights.overall_performance.averageClickThroughRate}%
+- **Total Conversions:** ${insights.overall_performance.totalConversions}
+- **Total Revenue:** $${insights.overall_performance.totalRevenue}
+
+## Top Performers
+
+${insights.top_performers.posts.map((p, i) => `${i + 1}. Post ${p.postId} (${p.platform}): ${p.engagement.engagementRate}% ER`).join("\n")}
+
+**Why They Worked:**
+${insights.top_performers.common_patterns.map((p) => `- ${p}`).join("\n")}
+
+## Areas for Improvement
+
+**Common Issues:**
+${insights.underperformers.common_issues.map((i) => `- ${i}`).join("\n")}
+
+## Platform Insights
+
+${Object.entries(insights.platform_insights)
+  .map(
+    ([platform, data]) => `
+### ${platform.charAt(0).toUpperCase() + platform.slice(1)}
+
+- Avg Engagement: ${data.avg_engagement_rate}% (${data.vs_target})
+- Best Post Type: ${data.best_post_type}
+`,
+  )
+  .join("\n")}
+
+## Recommendations
+
+${insights.recommendations.map((r, i) => `${i + 1}. [${r.priority.toUpperCase()}] ${r.action}\n   Expected Impact: ${r.expected_impact}`).join("\n\n")}
+`;
+
+  return report;
 }

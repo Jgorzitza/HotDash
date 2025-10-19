@@ -46,34 +46,30 @@ export default defineConfig({
       testMatch: ["**/dashboard.spec.ts", "**/modals.spec.ts"],
       use: {
         ...devices["Desktop Chrome"],
-        // Force mock mode for local development tests
         extraHTTPHeaders: {
           'X-Playwright-Mock-Mode': '1',
         },
       },
-      // Only run if we're in mock mode or explicitly testing mock
-      testIgnore: shouldUseMock ? undefined : ["**/*"],
     },
-    
+
     {
       name: "admin-embed",
       testMatch: ["**/admin-embed.spec.ts"],
       use: {
         ...devices["Desktop Chrome"],
-        // Use configured mock mode (can be 0 or 1)
         extraHTTPHeaders: {
           'X-Playwright-Mock-Mode': mockValue,
         },
       },
-      // Skip if no admin credentials in mock=0 mode
-      testIgnore: !shouldUseMock && !process.env.PLAYWRIGHT_SHOPIFY_EMAIL 
-        ? ["**/*"] 
+      testIgnore: shouldUseMock || (!process.env.PLAYWRIGHT_SHOPIFY_EMAIL && !shouldUseMock)
+        ? ["**/*"]
         : undefined,
     },
   ],
 
+  // Always start web server for tests to connect to
   webServer: {
-    command: `npm run build && NODE_ENV=test PORT=4173 DASHBOARD_USE_MOCK=${mockValue} npm run start`,
+    command: `PORT=4173 DASHBOARD_USE_MOCK=${mockValue} npm run start`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

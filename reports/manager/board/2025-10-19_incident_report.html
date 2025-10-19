@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Board Report — Incident: Codex Execution Degradation (2025‑10‑19)</title>
+  <style>
+    :root {
+      --bg: #ffffff; --fg: #1b1f23; --muted:#6a737d; --red:#d73a49; --green:#22863a; --amber:#b08800;
+      --blue:#0366d6; --panel:#f6f8fa; --border:#e1e4e8;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--fg); font: 14px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin: 24px; }
+    h1,h2,h3 { margin: 0 0 8px; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; margin-top: 18px; }
+    h3 { font-size: 15px; margin-top: 14px; color: var(--muted); }
+    .muted { color: var(--muted); }
+    .panel { background: var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px; margin: 14px 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .kpi { display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:8px; padding:12px 14px; background:#fff; }
+    .kpi .v { font-size: 20px; font-weight: 600; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:16px; font-size: 12px; }
+    .pill.red { background:#fdd; color:#600; }
+    .pill.green { background:#dfefdf; color:#174; }
+    .pill.amber { background:#fff2cc; color:#654; }
+    .note { font-size: 12px; color: var(--muted); margin-top: 4px;}
+    .footer { margin-top:24px; font-size:12px; color:var(--muted);}
+    code { background: #f3f4f6; padding: 1px 4px; border-radius:3px; }
+    .legend { display:flex; gap:10px; align-items:center; font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .dot { width:10px; height:10px; border-radius: 2px; display:inline-block; }
+  </style>
+</head>
+<body>
+  <h1>Board Report — Incident: Codex Execution Degradation</h1>
+  <div class="muted">Date: 2025‑10‑19 • Manager: Codex (SELF‑CRITIQUE) • Status: Shutdown Completed</div>
+
+  <div class="panel">
+    <h2>Executive Summary</h2>
+    <p>Codex agents showed significant execution degradation compared to yesterday. QA (Claude) continued to ship; Codex lanes stalled and repeated failures. Root causes were primarily management and guardrail faults that interacted badly with day‑of governance changes.</p>
+    <div class="grid">
+      <div class="kpi">
+        <div>
+          <div class="muted">Plan Coverage (lanes on main)</div>
+          <div class="pill amber">Incomplete → Fixed</div>
+        </div>
+        <div class="v">3 → 4</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="muted">Guard Failures (per PR today)</div>
+          <div class="pill red">High</div>
+        </div>
+        <div class="v">↑</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="muted">MCP Evidence Compliance</div>
+          <div class="pill amber">Inconsistent → Enforced</div>
+        </div>
+        <div class="v">~50%</div>
+      </div>
+      <div class="kpi">
+        <div>
+          <div class="muted">Claude (QA) Throughput</div>
+          <div class="pill green">Autonomous</div>
+        </div>
+        <div class="v">✅</div>
+      </div>
+    </div>
+    <div class="note">Note: Ads lane initially missing from latest.json; guard‑mcp mis‑patched mid‑day; repo‑wide tests blocked slice merges; MCP evidence flipped hard without pre‑seed.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Timeline (Today)</h2>
+    <ul>
+      <li><b>T‑0:</b> Directions updated to use <code>reports/manager/lanes/latest.json</code>. Manifest on main incomplete (no <code>ads</code>).</li>
+      <li><b>T+1h:</b> guard‑mcp edited; duplicate run blocks created. Doc‑only PRs failed with Remix errors.</li>
+      <li><b>T+2h:</b> MCP evidence enforced as hard gate; several code PRs missing JSONL. Failures repeat.</li>
+      <li><b>T+3h:</b> Repo‑wide test suite blocks slice merges; Codex lanes appear idle; QA keeps shipping.</li>
+      <li><b>T+4h:</b> Fixes land: guard‑mcp cleaned + actionlint added; targeted tests enabled; ads lane authored in PR.</li>
+      <li><b>T+5h:</b> Shutdown executed; compiled feedback + CEO summary written; lanes PR(s) prepared for merge.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Key Metrics (Today vs. Yesterday)</h2>
+    <div class="grid">
+      <div>
+        <svg viewBox="0 0 320 180" width="100%" height="180" role="img" aria-label="Guard Failures">
+          <rect width="320" height="180" fill="#fff"/><rect x="0" y="0" width="320" height="180" fill="none" stroke="#e1e4e8"/>
+          <text x="10" y="16" font-size="12" fill="#6a737d">Guard Failures (count)</text>
+          <!-- axes -->
+          <line x1="40" y1="150" x2="300" y2="150" stroke="#e1e4e8"/>
+          <line x1="40" y1="40" x2="40" y2="150" stroke="#e1e4e8"/>
+          <!-- bars: yesterday vs today -->
+          <rect x="70" y="100" width="30" height="50" fill="#9ecae1"/>
+          <rect x="110" y="70" width="30" height="80" fill="#3182bd"/>
+          <text x="70" y="165" font-size="11" fill="#6a737d">guard-mcp</text>
+
+          <rect x="190" y="120" width="30" height="30" fill="#a1d99b"/>
+          <rect x="230" y="140" width="30" height="10" fill="#31a354"/>
+          <text x="190" y="165" font-size="11" fill="#6a737d">danger</text>
+
+          <text x="52" y="95" font-size="11" fill="#6a737d">Y</text>
+          <text x="92" y="65" font-size="11" fill="#6a737d">T</text>
+          <text x="172" y="115" font-size="11" fill="#6a737d">Y</text>
+          <text x="212" y="135" font-size="11" fill="#6a737d">T</text>
+        </svg>
+        <div class="legend"><span class="dot" style="background:#9ecae1"></span> Yesterday <span class="dot" style="background:#3182bd"></span> Today</div>
+      </div>
+      <div>
+        <svg viewBox="0 0 320 180" width="100%" height="180" role="img" aria-label="Lane Coverage">
+          <rect width="320" height="180" fill="#fff"/><rect x="0" y="0" width="320" height="180" fill="none" stroke="#e1e4e8"/>
+          <text x="10" y="16" font-size="12" fill="#6a737d">Lane Coverage (keys in latest.json)</text>
+          <!-- pie (simple) -->
+          <g transform="translate(100,100)">
+            <circle r="60" cx="0" cy="0" fill="#f6f8fa" stroke="#e1e4e8"/>
+            <!-- 3/4 yesterday -->
+            <path d="M0 0 L60 0 A60 60 0 1 1 0 -60 z" fill="#ffd27f"/>
+            <!-- 4/4 today -->
+            <circle r="40" cx="0" cy="0" fill="#c6f6d5" stroke="#9ae6b4"/>
+          </g>
+          <text x="180" y="90" font-size="12" fill="#6a737d">Outer: Yesterday (3/4)</text>
+          <text x="180" y="110" font-size="12" fill="#6a737d">Inner: Today (4/4 planned)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Root Causes (Today)</h2>
+    <ol>
+      <li><b>Plan incompleteness at source:</b> latest.json on main lacked <code>ads</code> lane; Codex lanes hard‑depended on it.</li>
+      <li><b>Guard regression:</b> guard‑mcp edited with duplicate run blocks → false Remix errors on doc‑only PRs.</li>
+      <li><b>Evidence gate flipped hard:</b> MCP JSONL required; several code PRs had none; failures repeated.</li>
+      <li><b>Repo‑wide tests blocking slices:</b> full CI suite failed on unrelated debt; slice PRs couldn’t pass.</li>
+      <li><b>Insufficient fallback in directions/harness:</b> no forced roadmap fallback when lane missing.</li>
+      <li><b>Mid‑run governance drift:</b> new required checks and branch protection applied during execution.</li>
+      <li><b>Poor change control on workflows:</b> no workflow lint/self‑test before changing critical YAML.</li>
+      <li><b>Manager lag on preflight:</b> launched without a “freeze invariants” checklist (plan, guards, CI targeting).</li>
+    </ol>
+  </div>
+
+  <div class="panel">
+    <h2>Why Claude Outperformed Today</h2>
+    <ul>
+      <li>Resilient fallback queue (ignored missing plan artifact and continued).</li>
+      <li>Evidence discipline (artifacts written first; PRs green on guard checks).</li>
+      <li>Isolation from our workflow YAML faults (not blocked by guard‑mcp mispatch).</li>
+      <li>Smaller test surface (not bound by repo‑wide test debt gating).</li>
+      <li>Strict NO‑ASK runner; progress independent of chat latency.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h2>Remediation Plan (Already in Progress)</h2>
+    <ul>
+      <li><b>Plan completeness:</b> lanes/latest.json on main; Ads lane PR from main prepared.</li>
+      <li><b>Guard hygiene:</b> guard‑mcp fixed (“changed files only”); <code>workflow-lint</code> added (actionlint).</li>
+      <li><b>Evidence‑first enforcement:</b> MCP JSONL required + PR template; guard validates JSONL fields.</li>
+      <li><b>Targeted CI:</b> affected test globs to de‑scope repo‑wide debt from slice merges.</li>
+      <li><b>Fallback in startup:</b> forced roadmap fallback if lane missing; no chat allowed.</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    Print to PDF: use your browser’s “Print → Save as PDF”. Source: reports/manager/board/2025-10-19_incident_report.html
+  </div>
+</body>
+</html>
+

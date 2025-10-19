@@ -115,6 +115,20 @@ const STATUS_LABELS = {
 **Body Text:** 1rem, regular, primary color  
 **Meta Text:** 0.85rem, regular, secondary color
 
+### 3.5 Responsive Layout (Desktop & Tablet)
+
+| Tile               | Desktop ≥ 1280px                                                   | Tablet 768–1279px                                                                                  | Accessibility Notes                                                |
+| ------------------ | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Ops Pulse          | Two-column metrics panel within tile grid (min two tiles per row). | Stacks activation and SLA sections vertically; tile grid becomes single column when width < 880px. | Preserve heading order: Activation announced before SLA.           |
+| Sales Pulse        | Revenue metrics left, lists right.                                 | All sections stack; "View details" button remains last focusable element.                          | Ensure list headers use `<h3>` for screen reader landmarks.        |
+| Fulfillment Health | Status summary plus blockers list in side-by-side columns.         | Status summary precedes blockers; skeleton loaders stretch full width.                             | Maintain ARIA live region for SLA breach alerts.                   |
+| Inventory Heatmap  | Heatmap table spans full tile width with inline legend.            | Legend drops below table; scroll container gains `role="region"` with label `"Inventory heatmap"`. | Emphasize `scope="col"` on headers for narrow layouts.             |
+| CX Escalations     | Queue list shows primary CTA and escalated count inline.           | CTA moves below description; badge aligns right.                                                   | Keep queue list as ordered list so screen readers retain priority. |
+| SEO Content        | Insight summary and top keywords share a row.                      | Keywords list stacks below insight summary; anomaly banner stays top.                              | Preserve semantic heading order to support quick navigation.       |
+| Idea Pool          | Status badges above counts; CTA anchored bottom-right.             | Counts stack with CTA stretching full width.                                                       | Wildcard badge announced before counts (badge has `aria-label`).   |
+
+> **Breakpoints:** follow Polaris defaults – desktop ≥ 1280px, tablet 768–1279px. Below 768px (future mobile), tiles collapse into single column with consistent heading order.
+
 ---
 
 ## 4. Tile-Specific Designs
@@ -441,6 +455,13 @@ interface ApprovalSummary {
 - Attention: Red text on light red (4.6:1) ✅
 - Unconfigured: Gray text on light gray (4.5:1) ✅
 - Body text: #202223 on white (16.6:1) ✅
+
+### 9.4 Responsive Considerations
+
+- Reading order never changes between desktop and tablet layouts; heading hierarchy continues top-to-bottom.
+- When columns stack, ensure `aria-describedby` references persist so screen readers announce status before metrics.
+- Scrollable regions (Inventory Heatmap, SEO keyword list) require `role="region"` with descriptive labels once constrained on tablet widths.
+- Buttons that stretch to full width on tablet preserve their `aria-label` and remain ordered after informational content.
 
 ---
 

@@ -1,6 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
-import type { LoaderFunction } from "react-router";
+import {
+  useLoaderData,
+  type LoaderFunction,
+  type LoaderFunctionArgs,
+} from "react-router";
 
 import "../styles/tokens.css";
 import {
@@ -20,8 +22,11 @@ import type { LandingPageAnomaly } from "../services/ga/ingest";
 import { getLandingPageAnomalies } from "../services/ga/ingest";
 import { getShopifyServiceContext } from "../services/shopify/client";
 import { getInventoryAlerts } from "../services/shopify/inventory";
-import type { InventoryAlert } from "../services/shopify/types";
-import type { FulfillmentIssue, OrderSummary } from "../services/shopify/types";
+import type {
+  FulfillmentIssue,
+  InventoryAlert,
+  OrderSummary,
+} from "../services/shopify/types";
 import { recordDashboardSessionOpen } from "../services/dashboardSession.server";
 import {
   getPendingFulfillments,

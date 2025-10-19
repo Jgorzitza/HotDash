@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../db.server";
-import type { RecordDashboardFactInput } from "./facts.server";
 
 /**
  * Anomaly detection and forecasting utilities for Memory service integration.

@@ -17,6 +17,9 @@ vi.mock("../../app/shopify.server", () => ({
       admin: (...args: unknown[]) => mockAuthenticate(...args),
     },
   },
+  authenticate: {
+    admin: (...args: unknown[]) => mockAuthenticate(...args),
+  },
 }));
 
 describe("Social posting routes", () => {

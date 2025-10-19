@@ -43,6 +43,7 @@
 
 - [ ] Do NOT open a PR yourself; Manager will.
 - [ ] Append the completion block to `feedback/<agent>/<YYYY-MM-DD>.md`:
+
   ```md
   ## WORK COMPLETE - READY FOR PR
 
@@ -51,6 +52,7 @@
   Tests: <summary>
   Evidence: <links/notes>
   ```
+
 - [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in your feedback.
 
 ## 7) Build/Dev Mode Safety

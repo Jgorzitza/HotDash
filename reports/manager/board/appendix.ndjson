@@ -1,0 +1,70 @@
+{"type":"manager_failure","idx":1,"category":"Planning","reason":"Plan incompleteness at source (missing lane in latest.json)","seed":"1760860052951","ts":"2025-10-19T07:47:32.951Z"}
+{"type":"manager_failure","idx":2,"category":"Planning","reason":"No fallback when plan artifact absent","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":3,"category":"Planning","reason":"Restart without verifying lane coverage across teams","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":4,"category":"Planning","reason":"Late publish of plan; directions pointed to 404","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":5,"category":"Guards","reason":"Workflow mispatch (duplicate run blocks) in guard-mcp","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":6,"category":"Guards","reason":"No workflow lint/self-test before merging CI changes","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":7,"category":"Guards","reason":"Evidence gate flipped hard without seeding PRs","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":8,"category":"Guards","reason":"Branch protection contexts changed mid-run","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":9,"category":"CI","reason":"Repo-wide tests blocked slice merges","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":10,"category":"CI","reason":"No targeted tests by affected paths","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":11,"category":"CI","reason":"Broken manager-outcome step initially","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":12,"category":"CI","reason":"Stale heads / divergence ignored","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":13,"category":"Direction","reason":"Single-source dependency without resilience","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":14,"category":"Direction","reason":"NO-ASK not enforced in harness","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":15,"category":"Direction","reason":"No preflight freeze (guards, plan, CI) before relaunch","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":16,"category":"Direction","reason":"Delayed PR normalization (Fixes #…, Allowed paths…)","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":17,"category":"Ops","reason":"Live-editing CI during agent execution","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":18,"category":"Ops","reason":"Insufficient branch hygiene under new protection rules","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":19,"category":"Ops","reason":"Missing canary to detect model/prompt drift","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":20,"category":"Ops","reason":"Insufficient heartbeat policing of ‘doing’ lanes","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":21,"category":"Planning","reason":"Plan incompleteness at source (missing lane in latest.json)","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":22,"category":"Planning","reason":"No fallback when plan artifact absent","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":23,"category":"Planning","reason":"Restart without verifying lane coverage across teams","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":24,"category":"Planning","reason":"Late publish of plan; directions pointed to 404","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":25,"category":"Guards","reason":"Workflow mispatch (duplicate run blocks) in guard-mcp","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":26,"category":"Guards","reason":"No workflow lint/self-test before merging CI changes","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":27,"category":"Guards","reason":"Evidence gate flipped hard without seeding PRs","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":28,"category":"Guards","reason":"Branch protection contexts changed mid-run","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":29,"category":"CI","reason":"Repo-wide tests blocked slice merges","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":30,"category":"CI","reason":"No targeted tests by affected paths","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":31,"category":"CI","reason":"Broken manager-outcome step initially","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":32,"category":"CI","reason":"Stale heads / divergence ignored","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":33,"category":"Direction","reason":"Single-source dependency without resilience","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":34,"category":"Direction","reason":"NO-ASK not enforced in harness","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":35,"category":"Direction","reason":"No preflight freeze (guards, plan, CI) before relaunch","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":36,"category":"Direction","reason":"Delayed PR normalization (Fixes #…, Allowed paths…)","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":37,"category":"Ops","reason":"Live-editing CI during agent execution","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":38,"category":"Ops","reason":"Insufficient branch hygiene under new protection rules","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":39,"category":"Ops","reason":"Missing canary to detect model/prompt drift","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":40,"category":"Ops","reason":"Insufficient heartbeat policing of ‘doing’ lanes","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":41,"category":"Planning","reason":"Plan incompleteness at source (missing lane in latest.json)","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":42,"category":"Planning","reason":"No fallback when plan artifact absent","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":43,"category":"Planning","reason":"Restart without verifying lane coverage across teams","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":44,"category":"Planning","reason":"Late publish of plan; directions pointed to 404","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":45,"category":"Guards","reason":"Workflow mispatch (duplicate run blocks) in guard-mcp","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":46,"category":"Guards","reason":"No workflow lint/self-test before merging CI changes","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":47,"category":"Guards","reason":"Evidence gate flipped hard without seeding PRs","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":48,"category":"Guards","reason":"Branch protection contexts changed mid-run","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":49,"category":"CI","reason":"Repo-wide tests blocked slice merges","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"manager_failure","idx":50,"category":"CI","reason":"No targeted tests by affected paths","seed":"1760860052951","ts":"2025-10-19T07:47:32.952Z"}
+{"type":"claude_advantage","idx":1,"category":"Fallback","reason":"Resilient internal queue ignored missing plan artifact","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":2,"category":"Fallback","reason":"Executed roadmap molecules without waiting for manifest","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":3,"category":"Discipline","reason":"Evidence-first: artifacts and PR sections written before code","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":4,"category":"Discipline","reason":"Strict NO-ASK loop; zero chat dependency","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":5,"category":"Isolation","reason":"Unaffected by our broken workflow YAML","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":6,"category":"Isolation","reason":"Not gated by repo-wide test debt","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":7,"category":"Cadence","reason":"Consistent heartbeat/evidence cadence","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":8,"category":"Cadence","reason":"Deterministic fallback when external tools unavailable","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":9,"category":"Fallback","reason":"Resilient internal queue ignored missing plan artifact","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":10,"category":"Fallback","reason":"Executed roadmap molecules without waiting for manifest","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":11,"category":"Discipline","reason":"Evidence-first: artifacts and PR sections written before code","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":12,"category":"Discipline","reason":"Strict NO-ASK loop; zero chat dependency","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":13,"category":"Isolation","reason":"Unaffected by our broken workflow YAML","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":14,"category":"Isolation","reason":"Not gated by repo-wide test debt","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":15,"category":"Cadence","reason":"Consistent heartbeat/evidence cadence","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":16,"category":"Cadence","reason":"Deterministic fallback when external tools unavailable","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":17,"category":"Fallback","reason":"Resilient internal queue ignored missing plan artifact","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":18,"category":"Fallback","reason":"Executed roadmap molecules without waiting for manifest","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":19,"category":"Discipline","reason":"Evidence-first: artifacts and PR sections written before code","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}
+{"type":"claude_advantage","idx":20,"category":"Discipline","reason":"Strict NO-ASK loop; zero chat dependency","seed":"1760860052951","ts":"2025-10-19T07:47:32.955Z"}

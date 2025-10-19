@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Card,
   BlockStack,
@@ -8,7 +7,6 @@ import {
   Badge,
   Banner,
 } from "@shopify/polaris";
-import { useSubmit } from "react-router";
 import type { Approval } from "./approvals/ApprovalsDrawer";
 
 interface ApprovalCardProps {
@@ -17,13 +15,8 @@ interface ApprovalCardProps {
 }
 
 export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
-  const submit = useSubmit();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   // Get first action for display
   const action = approval.actions[0];
-  const riskLevel = action ? getRiskLevel(action.endpoint) : "low";
 
   // Format timestamp
   const formatTime = (timestamp: string) => {
@@ -87,9 +80,9 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
           approval.validation_errors.length > 0 && (
             <Banner tone="critical">
               <BlockStack gap="200">
-                {approval.validation_errors!.map((error, idx) => (
+                {approval.validation_errors!.map((validationError, idx) => (
                   <Text as="p" key={idx}>
-                    • {error}
+                    • {validationError}
                   </Text>
                 ))}
               </BlockStack>
@@ -105,18 +98,4 @@ export function ApprovalCard({ approval, onDetails }: ApprovalCardProps) {
       </BlockStack>
     </Card>
   );
-}
-
-// Helper: Determine risk level based on endpoint
-function getRiskLevel(endpoint: string): "low" | "medium" | "high" {
-  const highRisk = [
-    "/api/chatwoot/send-reply",
-    "/api/shopify/create-refund",
-    "/api/shopify/cancel-order",
-  ];
-  const mediumRisk = ["/api/chatwoot/create-note", "/api/shopify/update-order"];
-
-  if (highRisk.some((risk) => endpoint.includes(risk))) return "high";
-  if (mediumRisk.some((risk) => endpoint.includes(risk))) return "medium";
-  return "low";
 }

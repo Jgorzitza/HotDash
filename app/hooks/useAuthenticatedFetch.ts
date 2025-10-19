@@ -37,6 +37,18 @@ export function useAuthenticatedFetch(
 ): AuthenticatedFetch {
   const appBridge = useAppBridge();
 
+  const defaultHeadersSignature = JSON.stringify(options.defaultHeaders ?? {});
+  const defaultInitSignature = JSON.stringify({
+    cache: options.defaultRequestInit?.cache,
+    credentials: options.defaultRequestInit?.credentials,
+    mode: options.defaultRequestInit?.mode,
+    redirect: options.defaultRequestInit?.redirect,
+    referrer: options.defaultRequestInit?.referrer,
+  });
+  const defaultInitHeadersSignature = JSON.stringify(
+    options.defaultRequestInit?.headers ?? {},
+  );
+
   return useMemo(() => {
     return authenticatedFetch(
       appBridge as any,
@@ -74,14 +86,8 @@ export function useAuthenticatedFetch(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     appBridge,
-    JSON.stringify(options.defaultHeaders ?? {}),
-    JSON.stringify({
-      cache: options.defaultRequestInit?.cache,
-      credentials: options.defaultRequestInit?.credentials,
-      mode: options.defaultRequestInit?.mode,
-      redirect: options.defaultRequestInit?.redirect,
-      referrer: options.defaultRequestInit?.referrer,
-    }),
-    JSON.stringify(options.defaultRequestInit?.headers ?? {}),
+    defaultHeadersSignature,
+    defaultInitSignature,
+    defaultInitHeadersSignature,
   ]);
 }

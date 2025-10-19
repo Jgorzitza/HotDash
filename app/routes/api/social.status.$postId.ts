@@ -1,10 +1,10 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import shopify from "~/shopify.server";
+import { authenticate } from "~/shopify.server";
 import { getJobStatus } from "../../../packages/integrations/publer.ts";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  await shopify.authenticate.admin(request);
+  await authenticate.admin(request);
 
   const { postId } = params;
   if (!postId) {

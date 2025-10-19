@@ -160,11 +160,16 @@ export function ApprovalsDrawer({
   // Check if can approve
   const hasEvidence =
     approval.evidence && Object.keys(approval.evidence).length > 0;
-  const hasRollback = !!(approval.rollback?.steps && approval.rollback.steps.length > 0);
+  const hasRollback = !!(
+    approval.rollback?.steps && approval.rollback.steps.length > 0
+  );
   const hasValidationErrors =
     approval.validation_errors && approval.validation_errors.length > 0;
   const canApprove: boolean = Boolean(
-    hasEvidence && hasRollback && !hasValidationErrors && validationErrors.length === 0,
+    hasEvidence &&
+      hasRollback &&
+      !hasValidationErrors &&
+      validationErrors.length === 0,
   );
 
   // Get state badge

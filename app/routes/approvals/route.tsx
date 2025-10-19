@@ -78,6 +78,13 @@ export default function ApprovalsRoute() {
     [approvals, suppressedIds],
   );
 
+  const stateCountBadges = useMemo(() => {
+    if (!counts) return [];
+    return Object.entries(counts as Record<string, number>).filter(
+      ([, value]) => typeof value === "number",
+    );
+  }, [counts]);
+
   function openDetails(approval: Approval) {
     setSelected(approval);
   }
@@ -202,6 +209,17 @@ export default function ApprovalsRoute() {
             </InlineStack>
           </Layout.Section>
         )}
+        {stateCountBadges.length > 0 && (
+          <Layout.Section>
+            <InlineStack gap="200">
+              {stateCountBadges.map(([state, value]) => (
+                <Badge key={state} tone="subdued">
+                  {state}: {value}
+                </Badge>
+              ))}
+            </InlineStack>
+          </Layout.Section>
+        )}
 
         {error && (
           <Layout.Section>
@@ -254,7 +272,9 @@ export default function ApprovalsRoute() {
                   Prev
                 </Button>
                 <Button
-                  disabled={Array.isArray(approvals) ? approvals.length < 50 : true}
+                  disabled={
+                    Array.isArray(approvals) ? approvals.length < 50 : true
+                  }
                   onClick={() =>
                     setSearchParams((prev) => {
                       const p = new URLSearchParams(prev);

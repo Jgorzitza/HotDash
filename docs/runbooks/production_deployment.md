@@ -1,330 +1,165 @@
 # Production Deployment Runbook
 
-## Overview
+**Version**: 1.0
+**Last Updated**: 2025-10-19
+**Owner**: Manager + DevOps
 
-This runbook describes the process for deploying the HotDash application to production on Fly.io.
+## Pre-Deployment Checklist
 
-## Prerequisites
+### Code Quality Gates
 
-- [ ] All CI checks passing on main branch
-- [ ] Staging deployment successful and healthy
-- [ ] Manager approval obtained
-- [ ] Deployment window: Monday-Friday, 9am-5pm PT
-- [ ] FLY_API_TOKEN configured in GitHub Secrets
+- [ ] Build: PASSING (`npm run build` exit code 0)
+- [ ] Unit tests: 100% passing (`npm run test:unit`)
+- [ ] Integration tests: 100% passing
+- [ ] E2E tests: 100% passing (`npm run test:e2e`)
+- [ ] Accessibility: <5 serious violations (`npm run test:a11y`)
+- [ ] Lint: 0 errors, 0 warnings (`npm run lint`)
+- [ ] Format: All files formatted (`npm run fmt`)
+- [ ] Security: 0 secrets detected (`npm run scan`)
 
-### Required CI Checks
+### Database Readiness
 
-The following CI checks MUST pass before production deployment:
+- [ ] Staging migrations: Applied successfully
+- [ ] RLS tests: All passing
+- [ ] Data integrity: Verified
+- [ ] Production backup: Verified exists
+- [ ] Migration dry-run: Completed on staging
 
-1. **Docs Policy** - Ensures all markdown files are in allowed paths
-2. **Danger** - Validates PR has Issue linkage and allowed paths
-3. **Gitleaks** - Scans for secrets in code
-4. **AI Config** - Validates AI agent configuration
-5. **Health Check** - Verifies health check workflow is functional
+### Infrastructure Readiness
 
-These checks are enforced by branch protection on `main` and verified during deployment.
+- [ ] GitHub Actions: All workflows green
+- [ ] Staging environment: Deployed and validated
+- [ ] Health endpoints: All returning 200
+- [ ] Monitoring: Configured and alerting
+- [ ] Secrets: All in GitHub Secrets/Vault (none in code)
 
-### Email Notifications
+### Feature Completeness
 
-All deployments send email notifications to justin@hotrodan.com:
+- [ ] Dashboard: All 8 tiles functional
+- [ ] Approvals: HITL flow working
+- [ ] Idea Pool: 5 suggestions (1 wildcard)
+- [ ] Analytics: Real data flowing
+- [ ] Inventory: ROP calculations working
+- [ ] CX: Chatwoot integrated
+- [ ] Feature flags: All documented with defaults
 
-- **Success:** ✅ Production Deployment Successful
-- **Failure:** 🚨 Production Deployment Failed
-- **Rollback:** ⚠️ Production Rollback Executed
+### Documentation Completeness
 
-Notifications include:
+- [ ] All runbooks: Updated
+- [ ] All specs: Complete
+- [ ] Rollback procedures: Documented
+- [ ] Monitoring guides: Complete
+- [ ] Troubleshooting guides: Ready
 
-- Commit SHA
-- Deployment reason
-- Deployed by (GitHub actor)
-- Deployment time and version
-- Workflow run link
-- Health check status
+---
 
-## Deployment Process
+## Deployment Steps
 
-### Automated Deployment (Recommended)
+### Phase 1: Final Validation (30 min)
 
-1. **Navigate to GitHub Actions**
-   - Go to: https://github.com/Jgorzitza/HotDash/actions/workflows/deploy-production.yml
+1. Run full test suite: `npm run test:ci`
+2. Run security scan: `npm run scan`
+3. Verify staging health: `curl https://staging.hotrodan.com/health`
+4. Review Product Go/No-Go report
+5. CEO approval required
 
-2. **Click "Run workflow"**
-   - Branch: `main`
-   - Reason: Describe the deployment (e.g., "Deploy v1.0.0 with new dashboard features")
-   - Skip staging check: Leave unchecked (only check for emergencies)
+### Phase 2: Database Migration (60 min)
 
-3. **Monitor Deployment**
-   - Watch the workflow progress
-   - Verify each job completes successfully:
-     - Pre-deployment validation
-     - Build
-     - Deploy
-     - Health check
-   - If health check fails, automatic rollback will trigger
+1. Verify production backup exists (Supabase automated)
+2. Run migration: `supabase db push --db-url $PRODUCTION_DB_URL`
+3. Verify migration success
+4. Run smoke tests against production database
+5. Monitor for errors (first 15 minutes)
 
-4. **Verify Deployment**
-   - Check app URL: https://hotdash-production.fly.dev
-   - Verify health endpoint: https://hotdash-production.fly.dev/health
-   - Check Fly.io status: `fly status -a hotdash-production`
-   - Verify email notification received (if deployment failed)
+### Phase 3: Application Deployment (45 min)
 
-### Verification Steps
+1. Build production bundle: `npm run build`
+2. Deploy to production environment
+3. Verify deployment success
+4. Check health endpoints: `/health`, `/api/health`
+5. Verify Shopify Admin embedding works
 
-After deployment completes, perform these verification checks:
+### Phase 4: Verification (30 min)
 
-1. **Health Check Verification**
+1. Run production smoke tests (automated)
+2. Manual verification:
+   - Dashboard loads <3s
+   - All 8 tiles showing data
+   - Approvals drawer opens
+   - Create test approval
+   - Verify HITL flow works
+3. Monitor error rates (target <0.5%)
+4. Check performance metrics
 
-   ```bash
-   # Check health endpoint
-   curl https://hotdash-production.fly.dev/health
+### Phase 5: Monitoring (30 min)
 
-   # Expected response:
-   # {"status":"healthy","timestamp":"...","uptime":...}
-   ```
+1. Verify all monitors active
+2. Verify alerts delivering
+3. Check initial metrics baseline
+4. Document any anomalies
+5. Set up on-call rotation
 
-2. **Fly.io Status Verification**
+---
 
-   ```bash
-   # Check app status
-   fly status -a hotdash-production
+## Rollback Procedure
 
-   # Expected: Status = deployed, Machines = running
-   ```
+### If Issues Found Within First Hour
 
-3. **Application Functionality**
-   - Navigate to https://hotdash-production.fly.dev
-   - Verify login works
-   - Check dashboard loads
-   - Test critical features
+**Trigger Conditions**:
 
-4. **Metrics Verification**
+- Error rate >5%
+- P95 latency >10s
+- Critical feature broken
+- Data integrity issues
 
-   ```bash
-   # Check metrics endpoint
-   curl https://hotdash-production.fly.dev/metrics
+**Rollback Steps**:
 
-   # Should return Prometheus format metrics
-   ```
+1. Revert application deployment (restore previous version)
+2. If database migrated: Restore from backup (Supabase UI)
+3. Verify rollback successful
+4. Notify team + CEO
+5. Document issues for post-mortem
 
-5. **Log Verification**
+**Rollback Time**: <15 minutes
 
-   ```bash
-   # Check recent logs
-   fly logs -a hotdash-production --tail
+### If Issues Found After First Hour
 
-   # Look for deployment success messages
-   # Verify no errors in startup
-   ```
+**Assess severity**:
 
-## Rollback Process
+- P0: Immediate rollback
+- P1: Hotfix if <30 min, otherwise rollback
+- P2: Schedule fix, monitor
 
-### Automated Rollback (Recommended)
+---
 
-1. **Navigate to GitHub Actions**
-   - Go to: https://github.com/Jgorzitza/HotDash/actions/workflows/rollback-production.yml
+## Post-Deployment
 
-2. **Click "Run workflow"**
-   - Target version: Leave empty for previous version, or specify version number
-   - Reason: Describe why rollback is needed (REQUIRED)
+### First 24 Hours
 
-3. **Monitor Rollback**
-   - Watch the workflow progress
-   - Verify rollback completes in < 2 minutes
-   - Check health verification passes
+- [ ] Monitor error rates every hour
+- [ ] Check performance metrics every 2 hours
+- [ ] Review user feedback (if any)
+- [ ] Document any issues
+- [ ] Prepare post-launch report
 
-4. **Verify Rollback**
-   - Check app is healthy: https://hotdash-production.fly.dev
-   - Verify correct version deployed
-   - Check Fly.io status: `fly status -a hotdash-production`
-   - Verify email notification received
+### First Week
 
-### Rollback Verification Steps
+- [ ] Daily metrics review
+- [ ] Weekly retrospective
+- [ ] Update runbooks with learnings
+- [ ] Plan next features
 
-After rollback completes, verify the system is stable:
+---
 
-1. **Version Verification**
+## Emergency Contacts
 
-   ```bash
-   # Check deployed version
-   fly releases -a hotdash-production
+- CEO: Justin
+- Manager Agent: This system
+- DevOps: See feedback/devops/
+- On-call: TBD
 
-   # Verify rollback to previous version
-   ```
+---
 
-2. **Health Check**
-
-   ```bash
-   # Verify health endpoint
-   curl https://hotdash-production.fly.dev/health
-
-   # Expected: {"status":"healthy",...}
-   ```
-
-3. **Functionality Test**
-   - Test critical user flows
-   - Verify no errors in logs
-   - Check metrics are being collected
-
-4. **Incident Documentation**
-   - Document what caused the rollback
-   - Create GitHub issue if needed
-   - Export to audit trail:
-   ```bash
-   ./scripts/ops/export-incident.sh \
-     --type "rollback" \
-     --severity "warning" \
-     --details "Rolled back due to: <reason>"
-   ```
-
-### Rollback Time Targets
-
-- **Target:** < 5 minutes from trigger to healthy
-- **Automated rollback:** Triggered on health check failure
-- **Manual rollback:** Available via workflow_dispatch
-- **Emergency rollback:** Use Fly CLI directly if GitHub Actions unavailable
-
-## Health Checks
-
-### Automated Health Checks
-
-The deployment workflow automatically performs health checks:
-
-1. Tries `/health` endpoint (expects HTTP 200)
-2. Falls back to `/` endpoint (expects HTTP 200 or 302)
-3. Verifies Fly.io machine status
-
-### Manual Health Checks
-
-```bash
-# Check HTTP endpoints
-curl -I https://hotdash-production.fly.dev/health
-curl -I https://hotdash-production.fly.dev/
-
-# Check Fly.io status
-fly status -a hotdash-production
-
-# Check logs
-fly logs -a hotdash-production
-
-# Check machine health
-fly checks list -a hotdash-production
-```
-
-## Monitoring
-
-### Key Metrics
-
-- **Uptime:** Target ≥ 99.9% (30-day)
-- **Response Time:** P95 < 3s
-- **Error Rate:** < 0.5%
-- **Deployment Success Rate:** > 95%
-- **Rollback Time:** < 5 minutes
-
-### Monitoring Tools
-
-- Fly.io Dashboard: https://fly.io/apps/hotdash-production/monitoring
-- GitHub Actions: https://github.com/Jgorzitza/HotDash/actions
-- Application Logs: `fly logs -a hotdash-production`
-
-## Troubleshooting
-
-### Deployment Fails
-
-1. **Check CI Status**
-   - Verify all CI checks passed on main
-   - Review GitHub Actions logs
-
-2. **Check Staging Health**
-   - Verify staging is healthy
-   - Test staging deployment first
-
-3. **Check Secrets**
-   - Verify all required secrets are configured
-   - Check for expired credentials
-
-4. **Check Logs**
-
-   ```bash
-   fly logs -a hotdash-production
-   ```
-
-5. **Rollback if Needed**
-   - Use automated rollback workflow
-
-### Health Check Fails
-
-1. **Check Application Logs**
-
-   ```bash
-   fly logs -a hotdash-production --tail
-   ```
-
-2. **Check Machine Status**
-
-   ```bash
-   fly status -a hotdash-production
-   fly checks list -a hotdash-production
-   ```
-
-3. **Restart Machine**
-
-   ```bash
-   fly machine restart <machine-id> -a hotdash-production
-   ```
-
-4. **Rollback if Persistent**
-   - Use rollback workflow
-   - Investigate issue in staging
-
-## Deployment Checklist
-
-### Pre-Deployment
-
-- [ ] All CI checks passing on main
-- [ ] Staging deployment successful
-- [ ] Staging health checks passing
-- [ ] Manager approval obtained
-- [ ] Within deployment window (Mon-Fri, 9am-5pm PT)
-- [ ] Rollback plan reviewed
-
-### During Deployment
-
-- [ ] Deployment workflow triggered
-- [ ] Build successful
-- [ ] Deployment successful
-- [ ] Health checks passing
-- [ ] No errors in logs
-
-### Post-Deployment
-
-- [ ] Application accessible
-- [ ] Health endpoint responding
-- [ ] Key features verified
-- [ ] Monitoring dashboards updated
-- [ ] Deployment documented
-
-### If Rollback Needed
-
-- [ ] Rollback workflow triggered
-- [ ] Rollback completed in < 5 minutes
-- [ ] Health checks passing after rollback
-- [ ] Incident documented
-- [ ] Root cause investigation scheduled
-
-## Deployment Windows
-
-**Allowed:**
-
-- Monday-Friday, 9am-5pm Pacific Time
-- Emergency deployments require manager approval
-
-**Avoided:**
-
-- Weekends
-- Outside business hours
-- Holidays
-- During high-traffic periods
-
-## Version History
-
-- v1.0 (2025-10-15) - Initial production deployment runbook
+**Status**: Ready for production deployment
+**Last Rehearsal**: TBD (staging dry-run)
+**Production Deploy Date**: TBD (CEO approval required)

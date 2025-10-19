@@ -334,6 +334,29 @@ docs/specs/
 - Google Search Console API (future)
 - PageSpeed Insights API (future)
 
+### Supabase Integration (2025-10-18 refresh)
+
+- **Function:** `public.get_seo_anomalies_tile()` in `supabase/migrations/20251015_dashboard_tile_queries.sql`
+  - Reads from the `facts` table (`topic = 'analytics.traffic'`) and counts landing pages where `traffic_change_pct < -20`.
+  - Returns `{ anomaly_count, total_pages, severity, last_updated }` payload consumed by the dashboard tile.
+- **Views/Tables:**
+  - `facts` — nightly traffic snapshot hydrated by analytics pipeline; ensure freshness < 24h before triage.
+  - `seo_keyword_rankings` (planned) — placeholder for Search Console ingestion; wire up once API adapter ships.
+  - `seo_core_web_vitals` (planned) — placeholder for PageSpeed Insights/CrUX payloads.
+- **Alert Routing:** Supabase task queue publishes `seo.anomaly_detected` events when `anomaly_count > 0`. Subscriptions feed the Approvals queue to guarantee HITL acknowledgement.
+
+### Alerting & Escalation
+
+1. **Critical** (`severity = 'critical'` or ≥3 events for same URL/week):
+   - Trigger Pager channel `#seo-critical`.
+   - Open Issue with template `seo_anomaly_critical`.
+   - Coordinator: SEO agent until Product confirms rollback plan.
+2. **Warning** (single event, severity `warning`):
+   - Log in `feedback/seo/<date>.md` with evidence links.
+   - Schedule review with Product/Ads/Content within same business day.
+3. **Info**:
+   - Monitor only; ensure next GA4 pull resolves noise.
+
 ### Current Implementation Status
 
 **✅ Implemented:**
@@ -356,6 +379,53 @@ docs/specs/
 - Caching strategy (5-minute TTL)
 - Dashboard tile component updates
 - Alert notifications for critical anomalies
+
+## Triage Workflow (HITL — Updated 2025-10-18)
+
+1. **Daily Sweep (08:00 Central)**
+   - Run Supabase RPC `get_seo_anomalies_tile()` via MCP (Supabase server) and store JSON payload under `artifacts/seo/<date>/supabase_tile_snapshot.json`.
+   - If `anomaly_count = 0`, note “clear” state in feedback and stop.
+2. **Evidence Capture**
+   - For each anomaly URL:
+     - Pull GA4 sessions via MCP Google Analytics server; store response as `artifacts/seo/<date>/ga4_<slug>.json`.
+     - Fetch GSC query positions via MCP Search Console server; store response as `artifacts/seo/<date>/gsc_<slug>.json`.
+     - Validate Core Web Vitals thresholds with heartbeat wrapper: `scripts/policy/with-heartbeat.sh seo -- npx vitest run tests/unit/seo.web-vitals.spec.ts`.
+     - Attach raw outputs to `artifacts/seo/<date>/logs/`.
+
+3. **Classification Checklist**
+   - Confirm drop magnitude vs `ANOMALY_THRESHOLDS`.
+   - Determine impacted product line (Inventory) and content owner (Content agent) using tagging matrix.
+   - Identify search intent drift (keyword cannibalization) via Ads/Content shared sheet.
+4. **HITL Handoff**
+   - Draft recommendation summary (Problem → Evidence → Proposed fix → Rollback guard).
+   - Create Approvals drawer payload with:
+     - Evidence links (GA4/GSC logs, Supabase snapshot).
+     - Projected impact (sessions recovered, revenue delta).
+     - Risk/Rollback (revert meta change, pause campaign, etc.).
+   - Route to Product + Ads reviewers; capture grades once reviewed.
+5. **Escalation & Follow-up**
+   - Critical anomalies: open Issue `Fixes #115` sub-task with SLA < 4h.
+   - Warnings: schedule reconsideration in 24h; monitor Supabase events for regression.
+   - Record final disposition in `feedback/seo/<date>.md` (Resolved / Monitoring / Escalated).
+
+---
+
+## Recommendations — 2025-10-18
+
+> Evidence snapshot: `artifacts/seo/2025-10-18/logs/dev_ga4_snapshot.json` (synthetic dev dataset mirroring Supabase feed; verify against production telemetry before rollout).
+
+1. **/products/shoes traffic warning (-25% WoW)**
+   - **Context:** Dev snapshot shows sustained warning-level drop; `get_seo_anomalies_tile()` still flags `anomaly_count = 1`.
+   - **Proposed action:** Refresh PDP hero copy + schema markup; align with Ads on campaign keywords to prevent cannibalization.
+   - **Approvals payload:** Attach GA4 MCP report (sessions + wowDelta), Content diff, and rollback (restore previous meta + hero).
+2. **Keyword “custom hot rods” ranking critical (↓12 positions)**
+   - **Context:** Ranking anomaly highlights visibility loss for `/collections/custom`; likely impacted by recent Publer post targeting same keyword.
+   - **Proposed action:** Draft FAQ expansion + internal links from `/blog/build-guide`; coordinate with Content/Ads for tone and ad group adjustments.
+   - **Approvals payload:** Provide Search Console MCP excerpt, proposed link list, forecasted recovery, and rollback (remove injected links if KPIs drop).
+3. **LCP regression on /products/hot-rods (4.5s mobile)**
+   - **Context:** Core vitals threshold exceeded; treat as critical for mobile conversions.
+   - **Proposed action:** Engage Engineering to lazy-load hero media + compress gallery assets; retest with heartbeat-wrapped vitest run.
+   - **Approvals payload:** Include Lighthouse before/after (once captured), asset diffs, rollback path (restore previous asset bundle).
 
 ---
 

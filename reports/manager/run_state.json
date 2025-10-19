@@ -1,1 +1,7 @@
-{"time":"2025-10-19T05:25:11Z","task_id":"M-MGR-01","action":"create-lane-molecules","result_path":"reports/manager/lanes/2025-10-19.json"}
+{
+  "agent": "product",
+  "date": "2025-10-19",
+  "mode": "checklist",
+  "lanes": "reports/manager/lanes/2025-10-19.json"
+}
+{"time":"2025-10-19T07:21:43Z","task_id":"shutdown","action":"complete","result_path":"artifacts/manager/2025-10-19/done.md"}

@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_full_suite:
+        description: 'Run full test suite (ignore changed files)'
+        required: false
+        default: 'false'
 
 jobs:
   build-test:
@@ -38,6 +44,9 @@ jobs:
         run: |
           npm run fmt
           npm run lint
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
       - name: Run targeted tests (affected)
         run: |
           # If globs is '.' run full suite, otherwise run affected tests

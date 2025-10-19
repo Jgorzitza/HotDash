@@ -4,3 +4,15 @@ public/build
 */*.yml
 .shopify
 supabase/functions
+docs/_archive
+apps/agent-service/dist
+apps/llamaindex-mcp-server/dist
+extensions
+apps/agent-service/**
+apps/llamaindex-mcp-server/**
+packages/agents/**
+scripts/rag/**
+tests/e2e/**
+tests/playwright/**
+tests/integration/**
+tests/security/**

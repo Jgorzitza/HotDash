@@ -1,0 +1,130 @@
+[
+  {
+    "id": "launch-001",
+    "type": "launch",
+    "title": "New Product Launch: Custom Hot Rod Shift Knobs",
+    "description": "Launch new custom machined aluminum shift knobs with laser-etched designs. Target classic hot rod enthusiasts looking for authentic period-correct parts with modern quality.",
+    "provenance": {
+      "mode": "dev:test",
+      "created_at": "2025-10-19T02:15:00Z",
+      "agent": "content",
+      "feedback_ref": "feedback/content/2025-10-19.md"
+    },
+    "evidence": {
+      "market_demand": "37% increase in 'shift knob' searches over 90 days (GA4)",
+      "competitor_analysis": "Top 3 competitors average $89 price point, 4.2★ rating",
+      "inventory_readiness": "Supplier confirmed 2-week lead time, MOQ 50 units",
+      "profit_margin": "Estimated 68% margin at $95 retail price"
+    },
+    "supabase_linkage": {
+      "table": "product_suggestions",
+      "status": "pending_review",
+      "priority": "high",
+      "estimated_revenue": 4750
+    },
+    "messaging": {
+      "headline": "Authentic Style Meets Modern Quality",
+      "key_benefits": [
+        "Period-correct designs for 1950s-1970s hot rods",
+        "Aircraft-grade aluminum construction",
+        "Laser-etched graphics that won't fade",
+        "Universal fitment with included adapters"
+      ],
+      "cta": "Pre-order now - Limited first run of 50 units"
+    },
+    "launch_timeline": {
+      "design_approval": "2025-10-21",
+      "photography": "2025-10-23",
+      "listing_live": "2025-10-25",
+      "first_shipment": "2025-11-08"
+    }
+  },
+  {
+    "id": "evergreen-001",
+    "type": "evergreen",
+    "title": "Evergreen Content: Hot Rod Maintenance Tips Series",
+    "description": "Ongoing blog/social series covering seasonal maintenance, common fixes, and restoration tips. Drives SEO traffic and positions brand as expert resource.",
+    "provenance": {
+      "mode": "dev:test",
+      "created_at": "2025-10-19T02:15:00Z",
+      "agent": "content",
+      "feedback_ref": "feedback/content/2025-10-19.md"
+    },
+    "evidence": {
+      "seo_opportunity": "750+ monthly searches for 'hot rod maintenance' (low competition)",
+      "engagement_benchmark": "Industry blogs average 3.2min read time, 45% scroll depth",
+      "content_gap": "Only 2 competitors have regular maintenance content",
+      "conversion_potential": "Educational content drives 23% higher lifetime value (industry avg)"
+    },
+    "supabase_linkage": {
+      "table": "content_calendar",
+      "status": "active",
+      "cadence": "bi-weekly",
+      "performance_tracking": true
+    },
+    "messaging": {
+      "content_pillars": [
+        "Seasonal prep guides (spring/summer/winter storage)",
+        "DIY repair tutorials with product recommendations",
+        "Restoration project spotlights from customers",
+        "Expert interviews with mechanics and builders"
+      ],
+      "distribution_channels": [
+        "Blog posts (SEO-optimized)",
+        "Instagram/Facebook carousel posts",
+        "Email newsletter features",
+        "YouTube short-form videos"
+      ]
+    },
+    "performance_targets": {
+      "organic_traffic_increase": "15% per quarter",
+      "avg_session_duration": "2.5+ minutes",
+      "conversion_rate": "3.5% (content → product page)",
+      "social_engagement_rate": "4.2%+"
+    }
+  },
+  {
+    "id": "wildcard-001",
+    "type": "wildcard",
+    "title": "Wildcard: Vintage Hot Rod Calendar Collaboration",
+    "description": "Partner with local hot rod club to create limited-edition 2026 calendar featuring member builds. Pre-sell to gauge demand, then use as lead magnet for new customer acquisition.",
+    "provenance": {
+      "mode": "dev:test",
+      "created_at": "2025-10-19T02:15:00Z",
+      "agent": "content",
+      "feedback_ref": "feedback/content/2025-10-19.md"
+    },
+    "evidence": {
+      "community_validation": "Hot rod club has 250+ active members (potential pre-orders)",
+      "similar_campaigns": "Competitor calendar sold 340 units at $24.95 in 2024",
+      "production_cost": "$8.50/unit for 500qty offset printing",
+      "lead_gen_value": "Calendars include QR codes to exclusive parts discount landing page"
+    },
+    "supabase_linkage": {
+      "table": "experimental_campaigns",
+      "status": "hypothesis",
+      "test_budget": 500,
+      "success_criteria": "150+ pre-orders to greenlight production"
+    },
+    "messaging": {
+      "hook": "Your Ride Could Be Famous - Submit for 2026 Calendar",
+      "unique_angle": "Not just a calendar - a showcase of our community's best builds",
+      "incentive_structure": [
+        "Featured builders get free calendar + $50 store credit",
+        "Pre-order discount: $19.95 (reg $24.95)",
+        "Bundle: Calendar + parts kit for featured car type"
+      ]
+    },
+    "risk_assessment": {
+      "downside_scenario": "If <50 pre-orders, pivot to free PDF download lead magnet",
+      "upside_scenario": "If >300 pre-orders, expand to quarterly 'Hot Rod of the Month' series",
+      "rollback_plan": "Cancel printing, refund pre-orders, use photos for social content"
+    },
+    "experiment_timeline": {
+      "pre-order_launch": "2025-10-28",
+      "decision_point": "2025-11-15 (go/no-go based on orders)",
+      "printing_deadline": "2025-11-22",
+      "fulfillment_start": "2025-12-15"
+    }
+  }
+]

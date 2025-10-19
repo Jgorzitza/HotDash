@@ -1,322 +1,143 @@
 {
   "date": "2025-10-19",
-  "lanes": {
-    "analytics": [
-      {
-        "id": "LANE-104-A",
-        "title": "Issue #104 \u2014 GA4/Shopify telemetry to tiles (staging)",
-        "spec_path": "docs/specs/hitl/seo-telemetry.md#staging-pipeline",
-        "molecules": [
-          {
-            "id": "M-104-01",
-            "desc": "Create GA4 adapter stub + nightly proof script (dev \u2192 staging)",
-            "status": "todo",
-            "allowed_paths": [
-              "integrations/ga4-cli.js",
-              "scripts/sampling-guard-proof.mjs",
-              "feedback/analytics/**",
-              "artifacts/analytics/**"
-            ],
-            "mcp_required": true,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/integration/idea-pool.api.spec.ts"
-              ],
-              "preview": [],
-              "logs": [
-                "artifacts/analytics/{YYYY-MM-DD}/logs/*.txt"
-              ],
-              "rollback": "docs/runbooks/data_staging_apply.md#disable-telemetry"
-            },
-            "dod": [
-              "Script runs locally and in CI with sample output",
-              "Evidence JSON saved to artifacts/analytics/{date}/",
-              "Rollback documented"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "happy",
-                "no-data"
-              ]
-            },
-            "pr_hint": "touch scripts/sampling-guard-proof.mjs; update integrations/ga4-cli.js"
-          },
-          {
-            "id": "M-104-02",
-            "desc": "Wire API endpoints for analytics tiles (traffic/conv/revenue) behind flags",
-            "status": "todo",
-            "allowed_paths": [
-              "app/routes/api.analytics.*.ts",
-              "app/lib/analytics/**",
-              "tests/integration/**",
-              "feedback/analytics/**"
-            ],
-            "mcp_required": true,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/integration/idea-pool.api.spec.ts"
-              ],
-              "preview": [
-                "/health"
-              ],
-              "logs": [],
-              "rollback": "Feature flag toggle documented"
-            },
-            "dod": [
-              "Unit + integration pass",
-              "Feature flag default OFF",
-              "Endpoints return sample payloads in staging"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "happy",
-                "flag-off"
-              ]
-            },
-            "pr_hint": "update app/routes/api.analytics.*; add tests"
-          },
-          {
-            "id": "M-104-03",
-            "desc": "Produce nightly CSV export for Product (brand filter join) with header doc",
-            "status": "todo",
-            "allowed_paths": [
-              "scripts/ops/backfill-dashboard-analytics.ts",
-              "docs/specs/hitl/seo-telemetry.output.md",
-              "artifacts/analytics/**"
-            ],
-            "mcp_required": false,
-            "evidence": {
-              "mcp": [],
-              "tests": [],
-              "preview": [
-                "artifacts/analytics/{date}/exports/*.csv"
-              ],
-              "logs": [
-                "artifacts/analytics/{date}/logs/export.txt"
-              ],
-              "rollback": "Disable job via npm script/cron removal"
-            },
-            "dod": [
-              "CSV generated with documented headers",
-              "Artifacts saved under artifacts/analytics/{date}/exports/",
-              "Rollback steps listed"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "schema-only"
-              ]
-            },
-            "pr_hint": "update scripts/ops/backfill-dashboard-analytics.ts; add doc"
-          }
-        ]
-      }
-    ],
-    "engineer": [
-      {
-        "id": "LANE-ENG-001",
-        "title": "Approvals SSR + tests",
-        "spec_path": "docs/specs/hitl/main-dashboard.action-dock.md#approvals",
-        "molecules": [
-          {
-            "id": "M-ENG-01",
-            "desc": "Add integration test for /approvals SSR (no MissingAppProviderError)",
-            "status": "todo",
-            "allowed_paths": [
-              "tests/integration/**",
-              "app/root.tsx",
-              "app/routes/approvals/**"
-            ],
-            "mcp_required": true,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/integration/*.spec.ts"
-              ],
-              "preview": [],
-              "logs": [],
-              "rollback": ""
-            },
-            "dod": [
-              "Test passes locally and CI",
-              "No regressions on /approvals"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "happy"
-              ]
-            },
-            "pr_hint": "add tests/integration/approvals.ssr.spec.ts"
-          }
-        ]
-      }
-    ],
-    "manager": [
-      {
-        "id": "LANE-MGR-000",
-        "title": "Guardrails & Dispatch",
-        "spec_path": "docs/runbooks/manager_startup_checklist.md#1-repo--ci-guardrails-2\u20134-min",
-        "molecules": [
-          {
-            "id": "M-MGR-01",
-            "desc": "Compile feedback and dispatch kickoff (write kickoff.md per lane)",
-            "status": "todo",
-            "allowed_paths": [
-              "reports/manager/**",
-              "artifacts/*/*/kickoff.md"
-            ],
-            "mcp_required": false,
-            "evidence": {
-              "mcp": [],
-              "tests": [],
-              "preview": [],
-              "logs": [
-                "reports/manager/run_state.json"
-              ],
-              "rollback": ""
-            },
-            "dod": [
-              "compiled report present",
-              "kickoff files written"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "file-exists"
-              ]
-            },
-            "pr_hint": "write reports/manager/feedback/compiled_*.md; artifacts/*/*/kickoff.md"
-          }
-        ]
-      }
-    ],
-    "ads": [
-      {
-        "id": "LANE-ADS-001",
-        "title": "Ads telemetry slices to dashboard (staging)",
-        "spec_path": "docs/specs/hitl/ads-analytics.md#staging-slices",
-        "molecules": [
-          {
-            "id": "M-ADS-01",
-            "desc": "Supabase migrations + views for ads exposures/pacing; seed + snapshot policy",
-            "status": "todo",
-            "allowed_paths": [
-              "supabase/migrations/**",
-              "scripts/pilot/snapshot-policy.mjs",
-              "feedback/ads/**",
-              "artifacts/ads/**"
-            ],
-            "mcp_required": false,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/unit/ads/pacing.spec.ts",
-                "tests/unit/ads/attribution.spec.ts"
-              ],
-              "preview": [],
-              "logs": [
-                "artifacts/ads/{YYYY-MM-DD}/logs/migrations.txt"
-              ],
-              "rollback": "supabase/migrations.backup/* rollback scripts present"
-            },
-            "dod": [
-              "Migrations apply locally and in CI",
-              "Snapshot policy script runs and records evidence",
-              "Rollback scripts created"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "migrations-apply",
-                "snapshot"
-              ]
-            },
-            "pr_hint": "touch supabase/migrations/*.sql; scripts/pilot/snapshot-policy.mjs"
-          },
-          {
-            "id": "M-ADS-02",
-            "desc": "Implement API endpoints /api.ads.slice-b and /api.ads.slice-c behind flags with tests",
-            "status": "todo",
-            "allowed_paths": [
-              "app/routes/api.ads.slice-b.ts",
-              "app/routes/api.ads.slice-c.ts",
-              "app/lib/ads/**",
-              "tests/integration/api.ads.slice-b.spec.ts",
-              "tests/integration/api.ads.slice-c.spec.ts",
-              "feedback/ads/**"
-            ],
-            "mcp_required": true,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/integration/api.ads.slice-b.spec.ts",
-                "tests/integration/api.ads.slice-c.spec.ts"
-              ],
-              "preview": [
-                "/health"
-              ],
-              "logs": [],
-              "rollback": "feature flag documented; endpoints gated"
-            },
-            "dod": [
-              "Endpoints return sample payloads in staging",
-              "Feature flag default OFF",
-              "Integration tests pass"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "happy",
-                "flag-off"
-              ]
-            },
-            "pr_hint": "update app/lib/ads/* and app/routes/api.ads.slice-*.ts; add tests"
-          },
-          {
-            "id": "M-ADS-03",
-            "desc": "Wire AdsTile snapshot and sampling guard into CI; document CSV header for export",
-            "status": "todo",
-            "allowed_paths": [
-              "app/components/dashboard/AdsTile.tsx",
-              "scripts/ops/backfill-ads-aggregations.ts",
-              "docs/specs/hitl/ads-analytics.md",
-              "tests/unit/ads/*.spec.ts",
-              "artifacts/ads/**"
-            ],
-            "mcp_required": false,
-            "evidence": {
-              "mcp": [],
-              "tests": [
-                "tests/unit/ads/pacing.spec.ts"
-              ],
-              "preview": [
-                "artifacts/ads/{YYYY-MM-DD}/exports/*.csv"
-              ],
-              "logs": [
-                "artifacts/ads/{YYYY-MM-DD}/logs/export.txt"
-              ],
-              "rollback": "disable job/exports via npm script flag"
-            },
-            "dod": [
-              "Tile snapshot updated",
-              "CSV export documented and present",
-              "CI sampling guard runs"
-            ],
-            "qa": {
-              "owner": "claude",
-              "cases": [
-                "schema-only"
-              ]
-            },
-            "pr_hint": "touch AdsTile.tsx, backfill-ads-aggregations.ts, tests/unit/ads/*.spec.ts"
-          }
-        ]
-      }
-    ]
+  "updated": "2025-10-19T12:30:00Z",
+  "version": "production-focused",
+  "lanes": [
+    {
+      "agent": "engineer",
+      "issue": "#109",
+      "status": "working",
+      "tasks": 15,
+      "estimate_hours": 7,
+      "priority": "P0"
+    },
+    {
+      "agent": "pilot",
+      "issue": null,
+      "status": "working",
+      "tasks": 12,
+      "estimate_hours": 6,
+      "priority": "P0"
+    },
+    {
+      "agent": "qa",
+      "issue": "#114",
+      "status": "ready",
+      "tasks": 17,
+      "estimate_hours": 8,
+      "priority": "P0"
+    },
+    {
+      "agent": "devops",
+      "issue": "#108",
+      "status": "ready",
+      "tasks": 14,
+      "estimate_hours": 8,
+      "priority": "P0"
+    },
+    {
+      "agent": "data",
+      "issue": "#106",
+      "status": "ready",
+      "tasks": 12,
+      "estimate_hours": 7,
+      "priority": "P0"
+    },
+    {
+      "agent": "product",
+      "issue": "#113",
+      "status": "working",
+      "tasks": 12,
+      "estimate_hours": 6,
+      "priority": "P1"
+    },
+    {
+      "agent": "integrations",
+      "issue": "#110",
+      "status": "working",
+      "tasks": 12,
+      "estimate_hours": 6,
+      "priority": "P1"
+    },
+    {
+      "agent": "inventory",
+      "issue": "#111",
+      "status": "working",
+      "tasks": 13,
+      "estimate_hours": 7,
+      "priority": "P1"
+    },
+    {
+      "agent": "support",
+      "issue": "#116",
+      "status": "ready",
+      "tasks": 12,
+      "estimate_hours": 5.5,
+      "priority": "P1"
+    },
+    {
+      "agent": "analytics",
+      "issue": "#104",
+      "status": "ready",
+      "tasks": 11,
+      "estimate_hours": 6,
+      "priority": "P1"
+    },
+    {
+      "agent": "ads",
+      "issue": "#101",
+      "status": "ready",
+      "tasks": 11,
+      "estimate_hours": 5,
+      "priority": "P2"
+    },
+    {
+      "agent": "ai-customer",
+      "issue": "#102",
+      "status": "ready",
+      "tasks": 11,
+      "estimate_hours": 6,
+      "priority": "P2"
+    },
+    {
+      "agent": "seo",
+      "issue": "#115",
+      "status": "ready",
+      "tasks": 11,
+      "estimate_hours": 6,
+      "priority": "P2"
+    },
+    {
+      "agent": "ai-knowledge",
+      "issue": "#103",
+      "status": "idle-consolidate",
+      "tasks": 9,
+      "estimate_hours": 4,
+      "priority": "P2"
+    },
+    {
+      "agent": "content",
+      "issue": "#105",
+      "status": "idle-consolidate",
+      "tasks": 11,
+      "estimate_hours": 5.5,
+      "priority": "P2"
+    },
+    {
+      "agent": "designer",
+      "issue": "#107",
+      "status": "complete-consolidate",
+      "tasks": 4,
+      "estimate_hours": 2,
+      "priority": "P3"
+    }
+  ],
+  "totals": {
+    "agents": 16,
+    "total_tasks": 180,
+    "total_hours": 95.0,
+    "working": 6,
+    "ready": 7,
+    "idle": 3
   }
 }

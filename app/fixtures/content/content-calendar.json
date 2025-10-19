@@ -1,0 +1,145 @@
+[
+  {
+    "id": "cal-2025-d0-instagram-001",
+    "date": "2025-10-19",
+    "platform": "instagram",
+    "post_type": "wildcard",
+    "fixture_id": "wildcard-001",
+    "scheduled_time": "2025-10-19T14:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal instagram posting window",
+    "status": "scheduled"
+  },
+  {
+    "id": "cal-2025-d2-tiktok-001",
+    "date": "2025-10-21",
+    "platform": "tiktok",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-10-21T20:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal tiktok posting window",
+    "status": "scheduled"
+  },
+  {
+    "id": "cal-2025-d4-facebook-001",
+    "date": "2025-10-23",
+    "platform": "facebook",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-10-23T19:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal facebook posting window",
+    "status": "scheduled"
+  },
+  {
+    "id": "cal-2025-d7-facebook-001",
+    "date": "2025-10-26",
+    "platform": "facebook",
+    "post_type": "wildcard",
+    "fixture_id": "wildcard-001",
+    "scheduled_time": "2025-10-26T19:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal facebook posting window",
+    "status": "pending_approval"
+  },
+  {
+    "id": "cal-2025-d9-instagram-001",
+    "date": "2025-10-28",
+    "platform": "instagram",
+    "post_type": "launch",
+    "fixture_id": "launch-001",
+    "scheduled_time": "2025-10-28T14:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal instagram posting window",
+    "status": "pending_approval"
+  },
+  {
+    "id": "cal-2025-d11-tiktok-001",
+    "date": "2025-10-30",
+    "platform": "tiktok",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-10-30T20:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal tiktok posting window",
+    "status": "pending_approval"
+  },
+  {
+    "id": "cal-2025-d14-tiktok-001",
+    "date": "2025-11-02",
+    "platform": "tiktok",
+    "post_type": "wildcard",
+    "fixture_id": "wildcard-001",
+    "scheduled_time": "2025-11-02T20:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal tiktok posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d16-facebook-001",
+    "date": "2025-11-04",
+    "platform": "facebook",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-11-04T19:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal facebook posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d18-instagram-001",
+    "date": "2025-11-06",
+    "platform": "instagram",
+    "post_type": "launch",
+    "fixture_id": "launch-001",
+    "scheduled_time": "2025-11-06T14:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal instagram posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d21-instagram-001",
+    "date": "2025-11-09",
+    "platform": "instagram",
+    "post_type": "wildcard",
+    "fixture_id": "wildcard-001",
+    "scheduled_time": "2025-11-09T14:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal instagram posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d23-tiktok-001",
+    "date": "2025-11-11",
+    "platform": "tiktok",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-11-11T20:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal tiktok posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d25-facebook-001",
+    "date": "2025-11-13",
+    "platform": "facebook",
+    "post_type": "evergreen",
+    "fixture_id": "evergreen-001",
+    "scheduled_time": "2025-11-13T19:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal facebook posting window",
+    "status": "draft"
+  },
+  {
+    "id": "cal-2025-d28-facebook-001",
+    "date": "2025-11-16",
+    "platform": "facebook",
+    "post_type": "wildcard",
+    "fixture_id": "wildcard-001",
+    "scheduled_time": "2025-11-16T19:00:00.000Z",
+    "optimal_time": true,
+    "rationale": "Optimal facebook posting window",
+    "status": "draft"
+  }
+]

@@ -21,37 +21,28 @@ import {
 } from "../lib/analytics/schemas";
 import { isSamplingError } from "../lib/analytics/sampling-guard";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader(_: LoaderFunctionArgs) {
   try {
     const metrics = await getRevenueMetrics();
 
     const response: RevenueResponse = {
-      success: true,
-      data: metrics,
-      timestamp: new Date().toISOString(),
-      sampled: false, // getRevenueMetrics enforces unsampled data
+      revenue: metrics.totalRevenue,
+      period: `${metrics.period.start} to ${metrics.period.end}`,
+      change: metrics.trend.revenueChange,
+      currency: "USD",
+      previousPeriod: {
+        revenue: metrics.totalRevenue / (1 + metrics.trend.revenueChange / 100),
+        period: "previous 30 days",
+      },
     };
 
-    // Validate response with Zod
     const validated = RevenueResponseSchema.parse(response);
-
     return json(validated);
   } catch (error: any) {
     console.error("[API] Revenue metrics error:", error);
-
-    // Check if sampling error
-    const isSampled = isSamplingError(error);
-
-    const errorResponse: RevenueResponse = {
-      success: false,
-      error: error.message || "Failed to fetch revenue metrics",
-      timestamp: new Date().toISOString(),
-      sampled: isSampled,
-    };
-
-    // Validate error response
-    const validated = RevenueResponseSchema.parse(errorResponse);
-
-    return json(validated, { status: isSampled ? 503 : 500 });
+    return json(
+      { revenue: 0, period: "error", currency: "USD" },
+      { status: 500 },
+    );
   }
 }

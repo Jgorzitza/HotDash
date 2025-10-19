@@ -112,7 +112,7 @@
 - Quota tracking: Real-time usage meters (GA: 400 req/day, OpenAI: tier-based)
 - Recent issues list: Chronological with auto-dismiss
 - Visualization components: IntegrationStatusGrid, QuotaUsageMeter, ResponseTimeChart, RecentIssuesList
-- Data model: New dashboard_facts types (integration.health._, integration.quota._)
+- Data model: New dashboard*facts types (integration.health.*, integration.quota.\_)
 - Alert configuration: Critical (🚨), Warning (⚠️), Info (📊)
 - Auto-refresh: 30-second client-side polling or SSE
 

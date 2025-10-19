@@ -157,11 +157,11 @@ export class CollaborationCoordinator {
         };
         break;
 
-      case 'consensus':
+      case 'consensus': {
         // Select output with highest confidence
-        const bestResult = task.results.reduce((best, current) => {
-          return current.confidence > best.confidence ? current : best;
-        }, task.results[0]);
+        const bestResult = task.results.reduce((best, current) =>
+          current.confidence > best.confidence ? current : best,
+        task.results[0]);
         task.finalOutput = {
           type: 'consensus',
           selected: bestResult.agentName,
@@ -172,6 +172,7 @@ export class CollaborationCoordinator {
             .map(r => ({ agent: r.agentName, confidence: r.confidence })),
         };
         break;
+      }
     }
 
     const duration = task.endTime.getTime() - (task.startTime?.getTime() || 0);
@@ -279,4 +280,3 @@ setInterval(() => {
     console.log(`[Collaboration] Cleaned up ${removed} old tasks`);
   }
 }, 6 * 60 * 60 * 1000);
-

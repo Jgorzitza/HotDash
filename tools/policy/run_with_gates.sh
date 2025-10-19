@@ -1,27 +1,36 @@
 #!/usr/bin/env bash
+# Policy Gate Wrapper
+# Enforces branch naming, docs policy, AI config before execution
 set -euo pipefail
 
-if [ "$#" -lt 1 ]; then
-  echo "Usage: $0 \"<command>\"" >&2
-  exit 2
+echo "🚦 Running policy gates..."
+
+# Gate 1: Branch naming
+BRANCH=$(git branch --show-current 2>/dev/null || echo "main")
+if [[ ! $BRANCH =~ ^(agent|batch|hotfix)/.+ ]] && [[ $BRANCH != "main" ]]; then
+  echo "❌ Branch name must start with agent/, batch/, or hotfix/ (current: $BRANCH)"
+  exit 1
 fi
+echo "✅ Branch naming: $BRANCH"
 
-CMD="$1"
-
-# Preflight gates
-ROOT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-cd "$ROOT_DIR"
-
-if [ -x scripts/policy/check-branch.sh ]; then scripts/policy/check-branch.sh || true; fi
-if [ -x scripts/policy/check-diff-scope.sh ]; then scripts/policy/check-diff-scope.sh || true; fi
-if [ -x scripts/policy/block-env-keys.sh ]; then scripts/policy/block-env-keys.sh || true; fi
-if [ -x scripts/policy/check-docs.mjs ]; then node scripts/policy/check-docs.mjs || true; fi
-
-# Execute under heartbeat if available for foreground proof
-AGENT_NAME="content"
-if [ -x scripts/policy/with-heartbeat.sh ]; then
-  exec scripts/policy/with-heartbeat.sh "$AGENT_NAME" -- bash -lc "$CMD"
-else
-  exec bash -lc "$CMD"
+# Gate 2: Docs policy
+if ! node scripts/policy/check-docs.mjs >/dev/null 2>&1; then
+  echo "❌ Docs policy check failed"
+  node scripts/policy/check-docs.mjs
+  exit 1
 fi
+echo "✅ Docs policy"
 
+# Gate 3: AI config
+if ! node scripts/policy/check-ai-config.mjs >/dev/null 2>&1; then
+  echo "❌ AI config check failed"
+  node scripts/policy/check-ai-config.mjs
+  exit 1
+fi
+echo "✅ AI config"
+
+echo "🎯 All gates passed. Executing command..."
+echo ""
+
+# Execute wrapped command
+"$@"

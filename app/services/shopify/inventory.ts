@@ -244,7 +244,7 @@ export async function getBundlePackMetadata(
     }>;
   }>
 > {
-  const { shopDomain, admin } = ctx;
+  const { admin } = ctx;
   const limit = options.limit || 250;
 
   // Query for products with BUNDLE or PACK tags

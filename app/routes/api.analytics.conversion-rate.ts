@@ -19,35 +19,26 @@ import {
 } from "../lib/analytics/schemas";
 import { isSamplingError } from "../lib/analytics/sampling-guard";
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader(_: LoaderFunctionArgs) {
   try {
     const metrics = await getConversionMetrics();
 
     const response: ConversionResponse = {
-      success: true,
-      data: metrics,
-      timestamp: new Date().toISOString(),
-      sampled: false,
+      conversionRate: metrics.conversionRate,
+      period: `${metrics.period.start} to ${metrics.period.end}`,
+      change: metrics.trend.conversionRateChange,
+      previousPeriod: {
+        conversionRate:
+          metrics.conversionRate /
+          (1 + metrics.trend.conversionRateChange / 100),
+        period: "previous 30 days",
+      },
     };
 
-    // Validate response with Zod
     const validated = ConversionResponseSchema.parse(response);
-
     return json(validated);
   } catch (error: any) {
     console.error("[API] Conversion rate error:", error);
-
-    const isSampled = isSamplingError(error);
-
-    const errorResponse: ConversionResponse = {
-      success: false,
-      error: error.message || "Failed to fetch conversion rate",
-      timestamp: new Date().toISOString(),
-      sampled: isSampled,
-    };
-
-    const validated = ConversionResponseSchema.parse(errorResponse);
-
-    return json(validated, { status: isSampled ? 503 : 500 });
+    return json({ conversionRate: 0, period: "error" }, { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import shopify from "~/shopify.server";
+import { authenticate } from "~/shopify.server";
 import { schedulePost } from "../../../packages/integrations/publer.ts";
 
 type Payload = {
@@ -11,7 +11,7 @@ type Payload = {
 };
 
 export async function action({ request }: ActionFunctionArgs) {
-  const { session } = await shopify.authenticate.admin(request);
+  const { session } = await authenticate.admin(request);
 
   if (request.method.toUpperCase() !== "POST") {
     return json({ error: "Method Not Allowed" }, { status: 405 });

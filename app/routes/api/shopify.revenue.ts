@@ -150,11 +150,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       },
     });
   } catch (error) {
-    const duration = Date.now() - startTime;
+    const durationMs = Date.now() - startTime;
     if (error instanceof ServiceError) {
       logger.error("Revenue service error", {
         message: error.message,
         scope: error.scope,
+        durationMs,
       });
       const numericCode =
         error.code && /^\d+$/.test(error.code) ? Number(error.code) : undefined;
@@ -174,11 +175,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
         },
         {
           status: statusCode,
+          headers: {
+            "X-Response-Time": `${durationMs}ms`,
+          },
         },
       );
     }
     logger.error("Revenue unexpected error", {
       error: error instanceof Error ? error.message : String(error),
+      durationMs,
     });
     return Response.json(
       {
@@ -188,7 +193,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
           code: "INTERNAL_ERROR",
         },
       },
-      { status: 500 },
+      {
+        status: 500,
+        headers: {
+          "X-Response-Time": `${durationMs}ms`,
+        },
+      },
     );
   }
 }
