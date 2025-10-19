@@ -1,30 +1,27 @@
 # Inventory Direction
 
 - **Owner:** Inventory Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #111
 
-
-Launch the inventory intelligence system (status buckets, ROP calculations, picker payouts) with full test coverage and rollout plan.
+Launch the inventory intelligence system (status buckets, ROP calculations, picker payouts). Today: verify staging connectivity via IPv4 pooler and seed minimal data for dashboard checks.
 
 ## Tasks
 
-
-
-1. Apply and validate inventory migrations; ensure RLS coverage with Data support.
-2. Finalize ROP/payout calculations with unit tests and documentation.
-3. Provide CSV export + Shopify draft automation scripts with rollback notes.
-4. Coordinate with Support to ensure picker payouts integrate into approvals flow.
-5. Write feedback to `feedback/inventory/2025-10-17.md` and clean up stray md files.
+1. Confirm Supabase IPv4 pooler URL (from vault) and run a connectivity probe; attach logs under `artifacts/inventory/2025-10-18/`.
+2. Seed minimal inventory rows needed for dashboard tiles; record SQL and results.
+3. Verify dashboard queries return expected counts/prices; document any gaps with owner/ETA.
+4. Write feedback to `feedback/inventory/2025-10-18.md` and clean up stray md files.
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `psql`, `rg`, `jq`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/services/inventory/**`, `supabase/migrations/**`, `docs/specs/inventory_pipeline.md`, `feedback/inventory/2025-10-17.md`
+- **Touched Directories:** `app/services/inventory/**`, `supabase/migrations/**`, `supabase/seeds/**`, `docs/specs/inventory_pipeline.md`, `artifacts/inventory/2025-10-18/**`, `feedback/inventory/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** HITL approvals for all operational changes; maintain RLS tests.
 
@@ -38,6 +35,19 @@ Launch the inventory intelligence system (status buckets, ROP calculations, pick
 - [ ] Docs/runbooks updated with rollout steps
 - [ ] Feedback recorded with evidence
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, log blocker and move to next queued task. Do not idle.
+- Keep diffs within Allowed paths; attach evidence.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. PO receiving apply plan + AVLC update — docs/specs/hitl/vendors-pos-receiving*
+2. Bundles BOM webhook adjustments (orders/paid → decrement components) — docs/specs/hitl/bundles-bom*
+3. Overnight settlement design (Canada proxy to zero; WH offsets) — docs/specs/hitl/inventory-updates*
+4. Approvals reason codes alignment — docs/specs/hitl/agent-reason-codes.json
+5. Telemetry hooks for inventory tiles
 
 ## Contract Test
 
@@ -54,10 +64,11 @@ Launch the inventory intelligence system (status buckets, ROP calculations, pick
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/inventory/2025-10-17.md`
+- Feedback: `feedback/inventory/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/inventory_pipeline.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – IPv4 pooler + minimal seeds for dashboard checks
 - 2025-10-17: Version 2.0 – Production-ready rollout plan
 - 2025-10-15: Version 1.0 – Inventory schema/tasks

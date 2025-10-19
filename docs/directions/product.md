@@ -18,6 +18,19 @@ Define A/B harness (first‑party cookie + GA4 dimension) with one‑click promo
 4. Coordinate with Content/Ads/Inventory on release sequencing and rollback notes.
 5. Write feedback to `feedback/product/2025-10-18.md` and clean up stray md files.
 
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, document blocker and continue with next task in queue. Do not idle.
+- Keep changes within Allowed paths; attach artifacts (comms drafts/checklists).
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. A/B harness (issue #80) — docs/specs/hitl/ab-harness*
+2. Launch checklist maintenance — docs/specs/dashboard_launch_checklist.md
+3. Guided Selling UX spec — docs/specs/hitl/guided-selling*
+4. Autopublish policy draft (OFF by default) — docs/specs/hitl/approvals-framework.config.json
+5. Stakeholder comms template refresh — docs/specs/stakeholder_comms.md
+
 ## Upcoming (broad lanes — break into molecules)
 
 - Guided Selling/Kit Composer UX spec

@@ -1,30 +1,26 @@
 # AI-Knowledge Direction
 
 - **Owner:** AI-Knowledge Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #103
 
-
-Prepare the production knowledge backbone so AI agents retrieve accurate, HITL-approved content using OpenAI embeddings, Supabase governance, and audited learning loops.
+Prepare the production knowledge backbone. Today: rebuild index and run eval; attach logs and flag drift.
 
 ## Tasks
 
-
-
-1. Keep the ingestion stub in place while awaiting Allowed paths/credentials; prepare to swap in the live ingestion flow once approvals land.
-2. Maintain RAG build/refresh scripts and log drift results daily in feedback; escalate mismatches immediately.
-3. Coordinate with Support/Product to feed graded edits into `learning.ts`, ensuring Supabase audit tables capture every change.
-4. Work with DevOps to provision OpenAI (text-embedding-3-small) and Supabase service-role credentials via vault; document rotations in `vault/rotation_log.md`.
-5. Write feedback to `feedback/ai-knowledge/2025-10-17.md` and clean up stray md files.
+1. Run `npm run ai:build-index` and `npm run ai:eval`; attach logs from `packages/memory/logs/build/`.
+2. Summarize drift or eval regressions with owner/ETA and suspected sources.
+3. Write feedback to `feedback/ai-knowledge/2025-10-18.md` and clean up stray md files.
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/services/knowledge/**`, `scripts/ai/**`, `docs/specs/knowledge_pipeline.md`, `feedback/ai-knowledge/2025-10-17.md`
+- **Touched Directories:** `app/services/knowledge/**`, `scripts/ai/**`, `packages/memory/logs/build/**`, `docs/specs/knowledge_pipeline.md`, `feedback/ai-knowledge/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Do not ingest unapproved sources; respect Supabase RLS; never commit secrets.
 
@@ -37,6 +33,19 @@ Prepare the production knowledge backbone so AI agents retrieve accurate, HITL-a
 - [ ] Knowledge pipeline spec + runbooks updated
 - [ ] Feedback entry updated with logs and assumptions
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, document blocker and move to the next item. Do not idle.
+- Keep diffs in Allowed paths; attach logs/eval reports.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Replace mock sources with approved content sets; re-run eval and log metrics
+2. Improve index build pipeline resilience and evidence bundling
+3. Add search patterns for SEO/Guided Selling knowledge
+4. Prepare MCP tool transcripts for knowledge queries
+5. Document regression tracking for CEO briefings
 
 ## Contract Test
 
@@ -53,11 +62,12 @@ Prepare the production knowledge backbone so AI agents retrieve accurate, HITL-a
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/ai-knowledge/2025-10-17.md`
+- Feedback: `feedback/ai-knowledge/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/knowledge_pipeline.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Launch-day build/eval logs + drift summary
 - 2025-10-17: Version 2.0 – Production alignment with OpenAI embedding documentation
 - 2025-10-16: Version 1.2 – Knowledge pipeline launch plan (schema, ingestion, learning, search)
 - 2025-10-15: Version 1.0 – Initial placeholder direction

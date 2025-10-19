@@ -1,37 +1,35 @@
 # DevOps Direction
 
 - **Owner:** DevOps Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #108
 
-
-Restore full CI/CD health (GitHub Actions, staging deploys, secrets) and guarantee drift-free production releases for launch.
+Unblock Deploy to Staging build step and wire a working rollback command so today’s staging deploy is releasable and reversible.
 
 ## Tasks
 
-
-
-1. Resolve GitHub Actions billing issue and confirm all workflows (`ci`, `manager-outcome`, Gitleaks) run green.
-2. Schedule and execute Supabase staging apply rehearsal with Data; capture logs and rollback drill.
-3. Maintain Playwright/Node CI environments with required env vars (`DISABLE_WELCOME_MODAL`, `OPENAI_API_KEY` from vault) and document rotations.
-4. Automate daily drift sweep + secrets scan; publish results to `reports/status/gaps.md`.
-5. Write feedback to `feedback/devops/2025-10-17.md` and clean up stray md files.
+1. Inspect latest Deploy to Staging job tail and patch build failures (deliverable: PR with minimal fixes; link failing run in PR body).
+2. Replace rollback placeholder with correct Fly command in `.github/workflows/deploy-staging.yml` (deliverable: dry-run success proof in logs + doc update).
+3. Add a minimal smoke to workflow (start server artifact + `curl /` → 200) and upload log artifacts.
+4. Capture logs to `artifacts/devops/2025-10-18/` with `sha256_manifest.txt`.
+5. Write feedback to `feedback/devops/2025-10-18.md` and clean up stray md files.
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `gh`, `jq`, `rg`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `.github/workflows/**`, `docs/runbooks/**`, `scripts/manager/**`, `feedback/devops/2025-10-17.md`
+- **Touched Directories:** `.github/workflows/**`, `deploy/**`, `scripts/ci/**`, `docs/runbooks/**`, `feedback/devops/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No secret leakage; use GitHub environments; document all changes.
 
 ## Definition of Done
 
-- [ ] CI billing resolved and workflows green
-- [ ] Staging rehearsal completed with logs
+- [ ] Deploy to Staging build passes
+- [ ] Rollback command validated (dry-run)
 - [ ] `npm run fmt`
 - [ ] `npm run lint`
 - [ ] `npm run test:ci`
@@ -40,10 +38,23 @@ Restore full CI/CD health (GitHub Actions, staging deploys, secrets) and guarant
 - [ ] Feedback entry updated with evidence
 - [ ] Contract test passes
 
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, document blocker and proceed to next queued task. Do not idle.
+- Keep changes restricted to infra/config paths; attach logs.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. CI gates: ensure `ci` job runs fmt/lint/tests/scan; fix flakes
+2. Gitleaks SARIF upload and push protection audits
+3. Staging deploy rehearsal doc and rollback scripts
+4. Prometheus alert sanity for tiles; slow query analysis
+5. Runner capacity and cache optimization
+
 ## Contract Test
 
-- **Command:** `gh workflow run ci --ref production-smoke-test`
-- **Expectations:** Workflow completes successfully (or logs failure with remediation plan).
+- **Command:** Re-run Deploy to Staging; confirm `Build application`, `Smoke`, and `Rollback` steps succeed
+- **Expectations:** All steps succeed; artifacts uploaded and hashed
 
 ## Risk & Rollback
 

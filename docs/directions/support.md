@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #116
 
+Current Issue: #116
 
 Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge workflows) is production-hardened with tests and documentation.
 
 ## Tasks
-
-
 
 1. Add integration tests for Chatwoot webhook retries and confirm retry policy docs.
 2. Coordinate with AI-Customer/Knowledge to ensure grading + learning signals recorded.
@@ -37,6 +35,19 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 - [ ] Runbook updated
 - [ ] Feedback entry updated
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, post blocker and continue with next task. Do not idle.
+- Keep changes within Allowed paths; attach logs and screenshots.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Chatwoot webhook retry contract test + runbooks
+2. Health checks artifacts bundling for daily report
+3. Approvals integration for CX replies (HITL policy)
+4. Draft escalation playbooks updates
+5. Fixture updates for dev mode
 
 ## Contract Test
 

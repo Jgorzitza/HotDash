@@ -1,30 +1,27 @@
 # Ads Direction
 
 - **Owner:** Ads Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #101
 
-
-Deliver production-ready Ads intelligence that keeps the dashboard tiles live, routes every campaign change through HITL approvals, and proves ROAS/CTR lift with automated tests and evidence.
+Deliver production-ready Ads intelligence. Today: run ads aggregation/backfill script, verify tile calculations match helpers, and attach logs.
 
 ## Tasks
 
-
-
-1. Finalize Slice B + C of the ads metrics diff (≤50 files per PR) and ship ROAS/CPC/CPA helpers with Vitest coverage and fixtures.
-2. Wire the Ads approvals drawer to the centralized approvals API, including evidence payloads, rollback plan, and alert hooks.
-3. Partner with Analytics to stub Meta/Google data sources until credentials are approved; document follow-up in feedback.
-4. Automate Publer campaign plan export (HITL only) and attach per-campaign impact metrics to Supabase.
-5. Write feedback to `feedback/ads/2025-10-17.md` and clean up stray md files.
+1. Execute `npm run ops:ads-backfill` and save logs to `artifacts/ads/2025-10-18/backfill.log`.
+2. Run unit tests for ROAS/CPC helpers and attach results.
+3. Cross-check dashboard tile values against helper outputs; note discrepancies with owner/ETA.
+4. Write feedback to `feedback/ads/2025-10-18.md` and clean up stray md files.
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/lib/ads/**`, `app/routes/api.ads.*`, `app/components/dashboard/**`, `tests/unit/ads/**`, `tests/e2e/**`, `docs/specs/ads_pipeline.md`, `feedback/ads/2025-10-17.md`
+- **Touched Directories:** `app/lib/ads/**`, `app/components/dashboard/**`, `tests/unit/ads/**`, `artifacts/ads/2025-10-18/**`, `feedback/ads/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Respect Allowed paths; HITL-only publishing via Publer; no secrets committed; ensure CI green before merge; work must tie to the current Issue and Allowed paths listed there.
 
@@ -37,6 +34,19 @@ Deliver production-ready Ads intelligence that keeps the dashboard tiles live, r
 - [ ] Dashboard tiles and approvals docs updated
 - [ ] Feedback entry completed with test logs and follow-ups recorded
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, log blocker and pick the next task below. Do not idle.
+- Keep diffs in Allowed paths; attach evidence.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Slice‑B foundations — scripts/ops/backfill-ads-aggregations.ts
+2. Slice‑C scaffolding — tests/integration/api.ads.slice-c.spec.ts
+3. Approvals payload shaping — app/routes/api.ads.slice-*.ts
+4. Action Dock drilldowns (docs only)
+5. Parity checks vs dashboards
 
 ## Contract Test
 
@@ -53,11 +63,12 @@ Deliver production-ready Ads intelligence that keeps the dashboard tiles live, r
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/ads/2025-10-17.md`
+- Feedback: `feedback/ads/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/ads_pipeline.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Launch-day: backfill + helper parity
 - 2025-10-17: Version 2.0 – Production launch alignment with HITL workflow
 - 2025-10-17: Version 1.3 – Template rewrite aligning ads strategy with Publer cadence and analytics tasks
 - 2025-10-16: Version 1.2 – Ads intelligence launch plan (aggregates, approvals, anomalies)

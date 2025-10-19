@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #107
 
+Current Issue: #107
 
 Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and microcopy meet Polaris standards and HITL requirements.
 
 ## Tasks
-
-
 
 1. Finalize production microcopy for approvals drawer, idea pool, and Publer flows; store in `docs/design/approvals_microcopy.md`.
 2. Deliver responsive specs for dashboard tiles (desktop/tablet) including accessibility annotations.
@@ -38,6 +36,19 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 - [ ] Docs/runbooks updated
 - [ ] Feedback entry completed
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, document blocker and continue with next task. Do not idle.
+- Keep changes within Allowed paths; attach screenshots/wireframes.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Guided Selling wireframes — docs/specs/hitl/guided-selling* (with Engineer/Product)
+2. Approvals microcopy + states — docs/design/approvals_microcopy.md
+3. Dashboard tile visual QA checklist — docs/design/dashboard-tiles.md
+4. A/B harness UI hints — docs/specs/hitl/ab-harness.md
+5. Media pipeline UX notes (safe autopublish tiers)
 
 ## Contract Test
 

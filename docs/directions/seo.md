@@ -18,6 +18,19 @@ Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec s
 4. Run `npx eslint app/lib/seo/vitals.ts tests/unit/seo.web-vitals.spec.ts` and save log.
 5. Summarize findings and open issues if failures persist; post feedback.
 
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, open a blocker note and continue with the next queued task below. Do not idle.
+- Keep flags OFF; attach evidence bundles for each doc/update.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Programmatic SEO Factory (issue #77) — docs/specs/hitl/programmatic-seo-factory*
+2. Closed‑loop SEO Telemetry — docs/specs/hitl/seo-telemetry* (coord. with Analytics #79)
+3. Media Pipeline Tier‑0 planning — docs/specs/hitl/media-pipeline*
+4. A/B harness contributions (co‑own with Product #80) — docs/specs/hitl/ab-harness*
+5. Site Search synonyms/facets — docs/specs/hitl/site-search*
+
 ## Upcoming (broad lanes — break into molecules)
 
 - Programmatic SEO Factory

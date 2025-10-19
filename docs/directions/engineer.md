@@ -16,9 +16,22 @@ Current Issue: #78
 1. Review failing build tail; fix import/type errors in components/routes (deliverable: PR with only required changes).
 2. Add/adjust minimal unit tests for approvals drawer render states to stabilize imports.
 3. Run scoped lint: `npx eslint app/** tests/unit/**` and fix blockers.
-4. Coordinate with QA to ensure smoke passes after fixes.
+4. Coordinate with QA to ensure smoke passes after fixes. Address #81 (MissingAppProviderError on `/approvals`) in SSR tree.
 5. Write feedback to `feedback/engineer/2025-10-18.md` and clean up stray md files.
 6. Once green: draft Guided Selling/Kit Composer outline (rules graph + route skeleton) under `docs/specs/hitl/guided-selling*`.
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes (env/CI/review), post a brief blocker note in the Issue and switch to the next item in the fallback work queue below. Do not idle.
+- Always stay within Allowed paths and keep diffs minimal. Attach logs/evidence.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Guided Selling/Kit Composer planning (issue #78) — docs/specs/hitl/guided-selling*
+2. Approvals robustness — add SSR/provider coverage tests for Polaris routes
+3. Feature flags wiring (autopublish toggles surfaced, default OFF)
+4. Error boundaries and a11y checks for core tiles/routes
+5. Tech debt sweep for agent service and route loaders
 
 ## Upcoming (broad lanes — break into molecules)
 

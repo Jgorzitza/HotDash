@@ -1,30 +1,28 @@
 # AI-Customer Direction
 
 - **Owner:** AI-Customer Agent
-- **Effective:** 2025-10-17
-- **Version:** 3.1
+- **Effective:** 2025-10-18
+- **Version:** 3.2
 
 ## Objective
+
 Current Issue: #102
 
-
-Deliver production-safe customer reply drafting that keeps Chatwoot health green, routes every message through HITL approvals, and records learning signals for tone/accuracy/policy grades.
+Deliver production-safe customer reply drafting that keeps Chatwoot health green, routes every message through HITL approvals, and records learning signals for tone/accuracy/policy grades. Confirm `ai-customer.human_review = true` and reviewers present.
 
 ## Tasks
-
-
 
 1. Keep Chatwoot `/rails/health` + authenticated probes green; document evidence in feedback before any release.
 2. Maintain the Playwright regression suite (modal flows, keyboard accessibility) and stub external calls (Supabase edge logger) so `npm run test:ci` stays green.
 3. Ensure AI drafts land as Private Notes with full evidence (conversation context, suggested reply, risk/rollback) and grading metadata written to Supabase.
 4. Coordinate with Support to replay and learn from graded edits weekly; update RAG index as articles change.
-5. Write feedback to `feedback/ai-customer/2025-10-17.md` and clean up stray md files.
+5. Write feedback to `feedback/ai-customer/2025-10-18.md` and clean up stray md files.
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/agents/customer/**`, `app/routes/api/chatwoot.*`, `tests/playwright/**`, `tests/integration/chatwoot.api.spec.ts`, `docs/specs/content_pipeline.md`, `feedback/ai-customer/2025-10-17.md`
+- **Touched Directories:** `app/agents/customer/**`, `app/routes/api/chatwoot.*`, `tests/playwright/**`, `tests/integration/chatwoot.api.spec.ts`, `docs/specs/content_pipeline.md`, `docs/runbooks/ai_agent_review_checklist.md`, `feedback/ai-customer/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No direct outbound replies—HITL only. Respect Supabase RLS and secret handling. CI must pass before merge.
 
@@ -38,6 +36,19 @@ Deliver production-safe customer reply drafting that keeps Chatwoot health green
 - [ ] Docs/runbooks updated for new workflows
 - [ ] Feedback entry updated with logs and metrics
 - [ ] Contract test passes
+
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes (policy, data, review latency), log blocker and continue with next task. Do not idle.
+- HITL remains ON; no external sends without human review and evidence.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. Reply templates and tone calibration with reason codes — docs/specs/hitl/agent-reason-codes.json
+2. Evidence gathering transcripts improvements (MCP/SDK only)
+3. Draft reply grading rubric tuning (tone/accuracy/policy)
+4. Escalation microcopy alignment with Support
+5. Approval queue efficiency notes (no code merges)
 
 ## Contract Test
 
@@ -54,11 +65,12 @@ Deliver production-safe customer reply drafting that keeps Chatwoot health green
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/ai-customer/2025-10-17.md`
+- Feedback: `feedback/ai-customer/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/content_pipeline.md`, `docs/specs/approvals_schema.md`
 
 ## Change Log
 
+- 2025-10-18: Version 3.2 – HITL checklist verified; launch-day guardrails
 - 2025-10-17: Version 3.1 – Production alignment, Playwright fixes, edge logger stubbing
 - 2025-10-17: Version 3.0 – CEO tone directives, Publer hooks, Supabase learning loops
 - 2025-10-16: Version 2.1 – AI assistant launch plan for support + CEO insights with HITL learning

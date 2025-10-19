@@ -16,6 +16,19 @@ Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-te
 2. Run `npm run ops:check-analytics-parity` and save output to `artifacts/analytics/2025-10-18/parity.log`.
 3. Summarize mismatches (if any) with owner/ETA and potential root causes (cache, seed gaps, query drift); post feedback.
 
+## Autonomy Mode (Do Not Stop)
+
+- If blocked > 15 minutes, post blocker and continue with fallback work. Do not idle.
+- Keep changes to specs/scripts within Allowed paths; attach logs.
+
+## Fallback Work Queue (aligned to NORTH_STAR)
+
+1. CWV→$$ mapping (issue #79) — docs/specs/hitl/seo-telemetry*
+2. Dashboard tiles verification and latency checks
+3. Sampling guard proof runs — scripts/sampling-guard-proof.mjs
+4. GA4/GSC adapter docs alignment (no MCP) — integrations/**
+5. Parity test harness improvements and artifacts bundling
+
 ## Upcoming (broad lanes — break into molecules)
 
 - GSC Bulk Export → BigQuery dataset; GA4 joins
