@@ -1,18 +1,19 @@
 # Product Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (product — molecules). NO-ASK.
+
+
 - **Owner:** Product Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #113
 
+Current Issue: #113
 
 Align stakeholders on production launch readiness: approvals loop, idea pool pipeline, and risk/rollback messaging for CEO/partners.
 
 ## Tasks
-
-
 
 1. Maintain launch checklist (`docs/specs/dashboard_launch_checklist.md`) with current blockers/owners.
 2. Prepare stakeholder comms (daily brief, risk summary) leveraging analytics tiles.

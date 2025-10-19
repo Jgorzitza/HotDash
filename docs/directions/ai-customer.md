@@ -1,18 +1,18 @@
 # AI-Customer Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (ai-customer — molecules). NO-ASK.
+
 - **Owner:** AI-Customer Agent
 - **Effective:** 2025-10-17
 - **Version:** 3.1
 
 ## Objective
-Current Issue: #102
 
+Current Issue: #102
 
 Deliver production-safe customer reply drafting that keeps Chatwoot health green, routes every message through HITL approvals, and records learning signals for tone/accuracy/policy grades.
 
 ## Tasks
-
-
 
 1. Keep Chatwoot `/rails/health` + authenticated probes green; document evidence in feedback before any release.
 2. Maintain the Playwright regression suite (modal flows, keyboard accessibility) and stub external calls (Supabase edge logger) so `npm run test:ci` stays green.

@@ -1,0 +1,131 @@
+{
+  "date": "2025-10-19",
+  "lanes": {
+    "analytics": [
+      {
+        "id": "LANE-104-A",
+        "title": "Issue #104 — GA4/Shopify telemetry to tiles (staging)",
+        "spec_path": "docs/specs/hitl/seo-telemetry.md#staging-pipeline",
+        "molecules": [
+          {
+            "id": "M-104-01",
+            "desc": "Create GA4 adapter stub + nightly proof script (dev → staging)",
+            "status": "todo",
+            "allowed_paths": [
+              "integrations/ga4-cli.js",
+              "scripts/sampling-guard-proof.mjs",
+              "feedback/analytics/**",
+              "artifacts/analytics/**"
+            ],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": [],
+              "tests": ["tests/integration/idea-pool.api.spec.ts"],
+              "preview": [],
+              "logs": ["artifacts/analytics/{YYYY-MM-DD}/logs/*.txt"],
+              "rollback": "docs/runbooks/data_staging_apply.md#disable-telemetry"
+            },
+            "dod": [
+              "Script runs locally and in CI with sample output",
+              "Evidence JSON saved to artifacts/analytics/{date}/",
+              "Rollback documented"
+            ],
+            "qa": { "owner": "claude", "cases": ["happy", "no-data"] },
+            "pr_hint": "touch scripts/sampling-guard-proof.mjs; update integrations/ga4-cli.js"
+          },
+          {
+            "id": "M-104-02",
+            "desc": "Wire API endpoints for analytics tiles (traffic/conv/revenue) behind flags",
+            "status": "todo",
+            "allowed_paths": [
+              "app/routes/api.analytics.*.ts",
+              "app/lib/analytics/**",
+              "tests/integration/**",
+              "feedback/analytics/**"
+            ],
+            "mcp_required": true,
+            "evidence": {
+              "mcp": [],
+              "tests": ["tests/integration/idea-pool.api.spec.ts"],
+              "preview": ["/health"],
+              "logs": [],
+              "rollback": "Feature flag toggle documented"
+            },
+            "dod": [
+              "Unit + integration pass",
+              "Feature flag default OFF",
+              "Endpoints return sample payloads in staging"
+            ],
+            "qa": { "owner": "claude", "cases": ["happy", "flag-off"] },
+            "pr_hint": "update app/routes/api.analytics.*; add tests"
+          },
+          {
+            "id": "M-104-03",
+            "desc": "Produce nightly CSV export for Product (brand filter join) with header doc",
+            "status": "todo",
+            "allowed_paths": [
+              "scripts/ops/backfill-dashboard-analytics.ts",
+              "docs/specs/hitl/seo-telemetry.output.md",
+              "artifacts/analytics/**"
+            ],
+            "mcp_required": false,
+            "evidence": {
+              "mcp": [],
+              "tests": [],
+              "preview": ["artifacts/analytics/{date}/exports/*.csv"],
+              "logs": ["artifacts/analytics/{date}/logs/export.txt"],
+              "rollback": "Disable job via npm script/cron removal"
+            },
+            "dod": [
+              "CSV generated with documented headers",
+              "Artifacts saved under artifacts/analytics/{date}/exports/",
+              "Rollback steps listed"
+            ],
+            "qa": { "owner": "claude", "cases": ["schema-only"] },
+            "pr_hint": "update scripts/ops/backfill-dashboard-analytics.ts; add doc"
+          }
+        ]
+      }
+    ],
+    "engineer": [
+      {
+        "id": "LANE-ENG-001",
+        "title": "Approvals SSR + tests",
+        "spec_path": "docs/specs/hitl/main-dashboard.action-dock.md#approvals",
+        "molecules": [
+          {
+            "id": "M-ENG-01",
+            "desc": "Add integration test for /approvals SSR (no MissingAppProviderError)",
+            "status": "todo",
+            "allowed_paths": ["tests/integration/**", "app/root.tsx", "app/routes/approvals/**"],
+            "mcp_required": true,
+            "evidence": { "mcp": [], "tests": ["tests/integration/*.spec.ts"], "preview": [], "logs": [], "rollback": "" },
+            "dod": ["Test passes locally and CI", "No regressions on /approvals"],
+            "qa": { "owner": "claude", "cases": ["happy"] },
+            "pr_hint": "add tests/integration/approvals.ssr.spec.ts"
+          }
+        ]
+      }
+    ],
+    "manager": [
+      {
+        "id": "LANE-MGR-000",
+        "title": "Guardrails & Dispatch",
+        "spec_path": "docs/runbooks/manager_startup_checklist.md#1-repo--ci-guardrails-2–4-min",
+        "molecules": [
+          {
+            "id": "M-MGR-01",
+            "desc": "Compile feedback and dispatch kickoff (write kickoff.md per lane)",
+            "status": "todo",
+            "allowed_paths": ["reports/manager/**", "artifacts/*/*/kickoff.md"],
+            "mcp_required": false,
+            "evidence": { "mcp": [], "tests": [], "preview": [], "logs": ["reports/manager/run_state.json"], "rollback": "" },
+            "dod": ["compiled report present", "kickoff files written"],
+            "qa": { "owner": "claude", "cases": ["file-exists"] },
+            "pr_hint": "write reports/manager/feedback/compiled_*.md; artifacts/*/*/kickoff.md"
+          }
+        ]
+      }
+    ]
+  }
+}

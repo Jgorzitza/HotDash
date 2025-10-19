@@ -1,18 +1,18 @@
 # Ads Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (ads — molecules). NO-ASK.
+
 - **Owner:** Ads Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #101
 
+Current Issue: #101
 
 Deliver production-ready Ads intelligence that keeps the dashboard tiles live, routes every campaign change through HITL approvals, and proves ROAS/CTR lift with automated tests and evidence.
 
 ## Tasks
-
-
 
 1. Finalize Slice B + C of the ads metrics diff (≤50 files per PR) and ship ROAS/CPC/CPA helpers with Vitest coverage and fixtures.
 2. Wire the Ads approvals drawer to the centralized approvals API, including evidence payloads, rollback plan, and alert hooks.

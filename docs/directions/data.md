@@ -1,18 +1,19 @@
 # Data Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (data — molecules). NO-ASK.
+
+
 - **Owner:** Data Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #106
 
+Current Issue: #106
 
 Provide production-grade data pipelines (Supabase migrations, seeds, RLS tests) that power dashboard tiles, idea pool, and audit trails with rollback plans.
 
 ## Tasks
-
-
 
 1. Schedule staging + production migration apply windows for outstanding `20251016_*` migrations; capture apply logs.
 2. Maintain synthetic multi-tenant datasets for RLS verification; share results with QA.

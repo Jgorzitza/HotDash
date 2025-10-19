@@ -1,18 +1,19 @@
 # DevOps Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (devops — molecules). NO-ASK.
+
+
 - **Owner:** DevOps Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #108
 
+Current Issue: #108
 
 Restore full CI/CD health (GitHub Actions, staging deploys, secrets) and guarantee drift-free production releases for launch.
 
 ## Tasks
-
-
 
 1. Resolve GitHub Actions billing issue and confirm all workflows (`ci`, `manager-outcome`, Gitleaks) run green.
 2. Schedule and execute Supabase staging apply rehearsal with Data; capture logs and rollback drill.

@@ -1,18 +1,19 @@
 # Designer Direction
 
+> Direction: Follow reports/manager/lanes/latest.json (designer — molecules). NO-ASK.
+
+
 - **Owner:** Designer Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #107
 
+Current Issue: #107
 
 Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and microcopy meet Polaris standards and HITL requirements.
 
 ## Tasks
-
-
 
 1. Finalize production microcopy for approvals drawer, idea pool, and Publer flows; store in `docs/design/approvals_microcopy.md`.
 2. Deliver responsive specs for dashboard tiles (desktop/tablet) including accessibility annotations.

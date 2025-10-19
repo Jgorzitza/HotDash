@@ -32,9 +32,13 @@ jobs:
       - name: Fail if Remix referenced (RR7 only)
         if: steps.diff.outputs.code_change == 'true'
         run: |
-          BAD=$(grep -RInE "from ['\"]@remix-run|import .*remix" app/ src/ server/ packages/ 2>/dev/null || true)
+          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
+          BAD=""
+          if [ -n "$FILES" ]; then BAD=$(echo "$FILES" | xargs -r grep -nE "@remix-run|import .*remix" || true); fi
           if [ -n "$BAD" ]; then
-            echo "::error::Remix usage detected. Project uses React Router 7."; echo "$BAD"; exit 10;
+            echo "::error::Remix usage detected in changed files."
+            echo "$BAD"
+            exit 10
           fi
 
       - name: Extract MCP Evidence paths from PR body
