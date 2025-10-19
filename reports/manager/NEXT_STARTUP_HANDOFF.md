@@ -1,6 +1,15 @@
 # Manager Next Startup Handoff — 2025-10-19
 
-> **Critical**: Read this FIRST on next manager startup to avoid regression and rework
+> **Critical**: Read this AFTER standard startup process (North Star, Operating Model, Rules, manager_startup_checklist.md)
+> 
+> **Purpose**: Session-specific context to prevent regression and avoid redoing completed work
+>
+> **Reading Order**:
+> 1. docs/NORTH_STAR.md (vision alignment)
+> 2. docs/OPERATING_MODEL.md (process)
+> 3. docs/RULES.md (governance)
+> 4. docs/runbooks/manager_startup_checklist.md (standard startup tasks)
+> 5. **THIS DOCUMENT** (session-specific handoff - prevents regression)
 
 ---
 
