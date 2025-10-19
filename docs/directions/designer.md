@@ -22,7 +22,11 @@ Ensure production UI/UX is audit-ready: approvals flows, dashboard tiles, and mi
 
 - **Allowed Tools:** Design tools, `bash`, `npm`, `npx`, `node`, `codex exec`
 - **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `docs/design/**`, `app/components/**` (copy only), `feedback/designer/2025-10-17.md`
+- **Allowed Paths (explicit):**
+  - `docs/specs/hitl/main-dashboard*`
+  - `docs/design/**` (microcopy, specs, checklists)
+  - `feedback/designer/**`
+- **Touched Directories:** `docs/design/**`, `docs/specs/hitl/main-dashboard*`, `feedback/designer/**`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** Keep changes strictly to design docs/microcopy; no layout code without Engineer coordination.
 
