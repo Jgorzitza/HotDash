@@ -1,5 +1,7 @@
 Title: Lightweight A/B Harness
 
+Current Issue: #80 (Product)
+
 Goal
 
 - Minimal copy/layout testing powered by first‑party cookie + GA4 custom dimension; auto‑promote winners.
