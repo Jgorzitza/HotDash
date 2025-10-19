@@ -1,30 +1,45 @@
 # Engineer Direction
 
 - **Owner:** Engineer Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #109
 
-
-Ship production-ready UI/application code (dashboard tiles, approvals drawer, idea pool) with full HITL governance and test coverage.
+1) Unblock build by fixing top lint/type/test issues in `app/**` (minimal diffs to get staging green today).
+2) After green, begin Guided Selling/Kit Composer planning per manager plan (`programmatic lanes`), focusing on rules graph and route skeleton (no merges yet).
 
 ## Tasks
 
+1. Review failing build tail; fix import/type errors in components/routes (deliverable: PR with only required changes).
+2. Add/adjust minimal unit tests for approvals drawer render states to stabilize imports.
+3. Run scoped lint: `npx eslint app/** tests/unit/**` and fix blockers.
+4. Coordinate with QA to ensure smoke passes after fixes.
+5. Write feedback to `feedback/engineer/2025-10-18.md` and clean up stray md files.
+6. Once green: draft Guided Selling/Kit Composer outline (rules graph + route skeleton) under `docs/specs/hitl/guided-selling*`.
 
+## Upcoming (broad lanes — break into molecules)
 
-1. Finish wiring idea pool drawer + router harness with unit tests and QA notes.
-2. Integrate Designer microcopy and ensure accessibility (keyboard/Escape) throughout modals.
-3. Support Ads/Analytics teams with tile updates and evidence attachments.
-4. Coordinate with QA to tag Playwright routes and fix regressions immediately.
-5. Write feedback to `feedback/engineer/2025-10-17.md` and clean up stray md files.
+- Guided Selling + Kit Composer (fit‑finder, adapters, one‑click add)
+  - Allowed paths (planning): `docs/specs/hitl/guided-selling*`, `feedback/engineer/**`
+  - Deliverables: rules graph outline, route/UX skeleton proposal (no code merge yet)
+- Inventory Overnight Settlement (Canada proxy → zero; main WH offset)
+  - Allowed paths (planning/spec alignment): `docs/specs/hitl/inventory-updates*`, `feedback/engineer/**`
+  - Deliverables: job design doc (idempotency, retries), ledger schema draft
+- Bundles BOM webhook adjustments (orders/paid → decrement components)
+  - Allowed paths (planning/spec alignment): `docs/specs/hitl/bundles-bom*`, `feedback/engineer/**`
+  - Deliverables: resolution rules, webhook retry/backoff plan
+- Approvals: wire autopublish toggles (disabled by default) to settings
+  - Allowed paths (planning): `docs/specs/hitl/approvals-framework*`, `feedback/engineer/**`
+  - Deliverables: feature toggle design, rollback path
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/components/**`, `app/routes/**`, `tests/unit/**`, `tests/playwright/**`, `feedback/engineer/2025-10-17.md`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline). Shopify via MCP; GA4/GSC via internal adapters (no MCP). Log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/components/**`, `app/routes/**`, `tests/unit/**`, `tests/playwright/**`, `feedback/engineer/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No uncontrolled feature merges; follow Allowed paths; maintain CI.
 
@@ -40,8 +55,8 @@ Ship production-ready UI/application code (dashboard tiles, approvals drawer, id
 
 ## Contract Test
 
-- **Command:** `npx vitest run tests/unit/routes/ideas.drawer.spec.ts`
-- **Expectations:** Drawer open/close + event handling covered.
+- **Command:** `npx vitest run tests/unit/approvals.drawer.spec.ts`
+- **Expectations:** Drawer renders draft/pending/approved; imports resolve
 
 ## Risk & Rollback
 
@@ -53,10 +68,11 @@ Ship production-ready UI/application code (dashboard tiles, approvals drawer, id
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/engineer/2025-10-17.md`
+- Feedback: `feedback/engineer/2025-10-18.md`
 - Specs / Runbooks: `docs/tests/idea-pool-harness.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Build unblock focus for launch
 - 2025-10-17: Version 2.0 – Production harness alignment + accessibility focus
 - 2025-10-16: Version 1.0 – Router harness refactor + idea pool wiring

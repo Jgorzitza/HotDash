@@ -1,30 +1,38 @@
 # Analytics Direction
 
 - **Owner:** Analytics Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #104
 
-
-Launch production-grade analytics pipelines that feed the dashboard tiles, approvals evidence, and growth retros with trustworthy GA4/Shopify metrics under HITL control.
+Quantify CWV impact to dollars and verify dashboard tiles. Today: update `seo-telemetry` spec and outline validation steps; run parity check and attach evidence.
 
 ## Tasks
 
+1. Update `docs/specs/hitl/seo-telemetry.*` to include CWV→$$ mapping and validation plan.
+2. Run `npm run ops:check-analytics-parity` and save output to `artifacts/analytics/2025-10-18/parity.log`.
+3. Summarize mismatches (if any) with owner/ETA and potential root causes (cache, seed gaps, query drift); post feedback.
 
+## Upcoming (broad lanes — break into molecules)
 
-1. Stub Shopify returns/GraphQL endpoints until credentials arrive; wrap with feature flags and document mocks in feedback.
-2. Ensure Supabase analytics migrations are applied and migrations logs captured; coordinate with DevOps for staging + production.
-3. Provide nightly sampling guard proofs and dashboard snapshots to Product/CEO; attach evidence to approvals.
-4. Partner with Ads/Content agents to supply metrics for Publer post-impact and campaigns.
-5. Write feedback to `feedback/analytics/2025-10-17.md` and clean up stray md files.
+- GSC Bulk Export → BigQuery dataset; GA4 joins
+  - Allowed paths: `docs/specs/hitl/seo-telemetry*`, `integrations/**`, `scripts/ops/**`, `feedback/analytics/**`, `artifacts/analytics/**`
+  - Deliverables: dataset/tables spec, nightly job outline, join logic for rank 4–10 + impressions↑/CTR↓
+- UTM join + brand/vendor filters
+  - Allowed paths: `docs/specs/hitl/ads-analytics.config.json`, `docs/specs/hitl/brand-filters.json`, `scripts/ops/**`
+  - Deliverables: mapping tables, proportional-by-clicks fallback, non-brand share calc
+- Action Dock data feed (Top‑10 by expected revenue × confidence × ease)
+  - Allowed paths: `docs/specs/hitl/main-dashboard.config.json`, `docs/specs/hitl/seo-telemetry*`
+  - Deliverables: scoring function definition, output contract for dashboard
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`, `codex exec`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/lib/analytics/**`, `app/routes/api.analytics.*`, `scripts/sampling-guard-proof.mjs`, `docs/specs/analytics_pipeline.md`, `feedback/analytics/2025-10-17.md`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline). Shopify via MCP; GA4/GSC via internal adapters (no MCP). Log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/lib/analytics/**`, `scripts/ops/**`, `artifacts/analytics/2025-10-18/**`, `feedback/analytics/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** No live credential handling in repo; feature flag real data; tests must run green before merge.
 
@@ -54,10 +62,11 @@ Launch production-grade analytics pipelines that feed the dashboard tiles, appro
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/analytics/2025-10-17.md`
+- Feedback: `feedback/analytics/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/analytics_pipeline.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Launch-day parity check focus
 - 2025-10-17: Version 2.0 – Production alignment with stubs + rollout plan
 - 2025-10-15: Version 1.0 – Initial direction awaiting integration foundation

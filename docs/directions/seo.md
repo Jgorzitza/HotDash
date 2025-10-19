@@ -1,30 +1,46 @@
 # SEO Direction
 
 - **Owner:** SEO Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-18
+- **Version:** 2.1
 
 ## Objective
+
 Current Issue: #115
 
-
-Deliver production-ready SEO monitoring and HITL recommendations with clear evidence, anomaly triage, and rollback guidance.
+Kick off Programmatic SEO Factory planning behind flags. Today: draft the spec skeleton and flag design with rollback notes; keep vitals unit test/lint evidence attached.
 
 ## Tasks
 
+1. Create spec scaffold under `docs/specs/hitl/programmatic-seo-factory.*` (metaobjects, templates, source mapping, guardrails).
+2. Document flags (OFF by default) and one‑click rollback path.
+3. Run `npx vitest run tests/unit/seo.web-vitals.spec.ts` and save log to `artifacts/seo/2025-10-18/vitals-unit.log`.
+4. Run `npx eslint app/lib/seo/vitals.ts tests/unit/seo.web-vitals.spec.ts` and save log.
+5. Summarize findings and open issues if failures persist; post feedback.
 
+## Upcoming (broad lanes — break into molecules)
 
-1. Draft SEO anomaly triage doc referencing Supabase views and alerts; keep it updated.
-2. Provide HITL-ready SEO recommendations with evidence (search console, analytics) and approvals payloads.
-3. Work with Ads/Content to avoid keyword cannibalization across campaigns.
-4. Run web vitals adapter tests and log results.
-5. Write feedback to `feedback/seo/2025-10-17.md` and clean up stray md files.
+- Programmatic SEO Factory
+  - Allowed paths: `docs/specs/hitl/programmatic-seo-factory*`, `feedback/seo/**`, `artifacts/seo/**`
+  - Deliverables: spec review notes, initial metaobject definitions, page template outline
+- Closed-loop SEO Telemetry (GSC→BigQuery → GA4 join)
+  - Allowed paths: `docs/specs/hitl/seo-telemetry*`, `integrations/**`, `feedback/seo/**`, `artifacts/seo/**`
+  - Deliverables: query stubs, priority list algorithm, Action Dock data contract
+- A/B Harness (cookie + GA4 dimension)
+  - Allowed paths: `docs/specs/hitl/ab-harness*`, `feedback/seo/**`, `artifacts/seo/**`
+  - Deliverables: experiment registry plan, GA4 dim mapping (adapter-based)
+- Media Pipeline (Tier‑0 tasks staged, toggles OFF)
+  - Allowed paths: `docs/specs/hitl/media-pipeline*`, `feedback/seo/**`, `artifacts/seo/**`
+  - Deliverables: compression thresholds, alt‑text policy, rollback plan
+- Site Search (synonyms & facets)
+  - Allowed paths: `docs/specs/hitl/site-search*`, `feedback/seo/**`
+  - Deliverables: synonyms list, facet definitions aligning to builder mental models
 
 ## Constraints
 
 - **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `app/lib/seo/**`, `docs/specs/seo_pipeline.md`, `docs/specs/seo_anomaly_triage.md`, `feedback/seo/2025-10-17.md`
+- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline). Shopify via MCP; GA4/GSC via internal adapters (no MCP). Log daily feedback per docs/RULES.md.
+- **Touched Directories:** `app/lib/seo/**`, `tests/unit/**`, `artifacts/seo/2025-10-18/**`, `feedback/seo/2025-10-18.md`
 - **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
 - **Guardrails:** HITL approvals required for SEO changes; evidence mandatory.
 
@@ -54,10 +70,11 @@ Deliver production-ready SEO monitoring and HITL recommendations with clear evid
 
 - North Star: `docs/NORTH_STAR.md`
 - Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/seo/2025-10-17.md`
+- Feedback: `feedback/seo/2025-10-18.md`
 - Specs / Runbooks: `docs/specs/seo_pipeline.md`, `docs/specs/seo_anomaly_triage.md`
 
 ## Change Log
 
+- 2025-10-18: Version 2.1 – Launch-day unit + lint focus
 - 2025-10-17: Version 2.0 – Production triage + recommendation flow
 - 2025-10-16: Version 1.0 – Direction refreshed awaiting scope
