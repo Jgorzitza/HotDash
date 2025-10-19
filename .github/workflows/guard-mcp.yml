@@ -30,6 +30,7 @@ jobs:
           echo "code_change=$([ -n "$CODE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
 
       - name: Fail if Remix referenced (RR7 only)
+        if: steps.diff.outputs.code_change == 'true'
         run: |
           BAD=$(grep -RInE "from ['\"]@remix-run|import .*remix" app/ src/ server/ packages/ 2>/dev/null || true)
           if [ -n "$BAD" ]; then
@@ -88,4 +89,3 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
