@@ -7,7 +7,10 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 ## Outcomes
 
 - **Embedded Excellence:** Shopify-embedded admin app (Polaris). Tiles are real-time and open an **Approve/Reject** drawer with diffs, projected impact, logs, and rollback.
-- **Tool-First Intelligence:** Dev agents use **MCP** (GitHub Official, Context7, Supabase, Fly.io, Shopify, Google Analytics). Full documentation in `mcp/` directory. In-app agents created with **OpenAI Agents SDK (TypeScript)**. No freehand API guessing.
+- **Tool-First Intelligence:** 
+  - **Dev agents** (Cursor/Codex/Claude) use **MCP** (GitHub Official, Context7, Fly.io, Shopify Dev, Chrome DevTools). Full documentation in `mcp/` directory. Use Supabase CLI and built-in GA4 API for those integrations.
+  - **In-app agents** (customer/CEO-facing) created with **OpenAI Agents SDK (TypeScript)** with HITL enforced (`human_review: true` for ai-customer).
+  - **No freehand API guessing** - always validate with MCP tools or SDK contracts.
 - **Human-in-the-Loop by Default:** All customer-facing messages and social posts are **drafted → reviewed → sent**. Approvals capture a 1–5 grade for **tone/accuracy/policy** and store edits for learning.
 - **Always-On Idea Pool:** Maintain five live product suggestions (exactly one Wildcard) backed by Supabase `product_suggestions` tables, ensuring the manager can accept/reject with evidence and auto-create Shopify drafts.
 - **Operational Resilience:** Data jobs are observable (metrics + logs); any action has a rollback and audit trail. Publer + Chatwoot health artifacts live in `artifacts/ops/` and block launches if they fail.
@@ -47,8 +50,11 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **Frontend:** React Router 7 template; Polaris; Vite.
 - **Backend:** Node/TS app; Supabase (Postgres + RLS); workers/cron for jobs; SSE/webhooks.
 - **Agents:**
-  - **Dev:** Cursor/Codex/Claude with **MCP** (4 servers: GitHub Official, Context7, Fly.io, Shopify Dev). Full setup in `mcp/` directory. Use Supabase CLI and built-in GA4 API for those integrations. Constrained by runbooks/directions + CI.
-  - **In‑app:** OpenAI **Agents SDK** (TS) with **HITL**; call server tools (Shopify Admin GraphQL, Supabase RPC, Chatwoot API, Social adapter).
+  - **Dev:** Cursor/Codex/Claude with **MCP** (5 tools: GitHub Official, Context7, Fly.io, Shopify Dev, Chrome DevTools). Full setup in `mcp/` directory. Use Supabase CLI and built-in GA4 API for those integrations. Constrained by runbooks/directions + CI.
+  - **In‑app:** OpenAI **Agents SDK** (TS) with **HITL** for customer/CEO-facing agents only:
+    - `ai-customer`: Customer reply drafts with `human_review: true`
+    - Future: CEO query agent, knowledge assistant
+    - NOT for internal dev work (use MCP tools for that)
 - **Observability:** Prometheus/metrics endpoints; structured logs; approvals/audit tables.
 - **MCP Infrastructure:** Critical documentation in `mcp/` directory (protected by CI allow-list). See `mcp/README.md` for setup and `mcp/ALL_SYSTEMS_GO.md` for usage.
 
