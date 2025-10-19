@@ -1,18 +1,16 @@
 # Integrations Direction
 
 - **Owner:** Integrations Agent
-- **Effective:** 2025-10-17
-- **Version:** 2.0
+- **Effective:** 2025-10-19
+- **Version:** 3.0
 
 ## Objective
-Current Issue: #110
 
+Current Issue: #113 (COMPLETE - awaiting Manager PR)
 
 Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoot) with contract tests and feature flags for production.
 
 ## Tasks
-
-
 
 1. Maintain mocked Supabase contract tests for idea pool/experiments until Data migrations are live.
 2. Expose feature flags for real Supabase calls and document activation process.
