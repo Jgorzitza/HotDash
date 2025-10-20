@@ -43,6 +43,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   let selectedReply: string | undefined;
   let aiSuggestionUsed = false;
   let aiSuggestionMetadata: unknown;
+  let toneGrade: number | undefined;
+  let accuracyGrade: number | undefined;
+  let policyGrade: number | undefined;
 
   if (isFormData) {
     // Handle form submissions from modal
@@ -65,6 +68,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const customerValue = formData.get("customerName");
     customerName =
       typeof customerValue === "string" ? customerValue : undefined;
+    
+    // Extract grading data (1-5 scale)
+    const toneGradeRaw = formData.get("toneGrade");
+    const accuracyGradeRaw = formData.get("accuracyGrade");
+    const policyGradeRaw = formData.get("policyGrade");
+    toneGrade = toneGradeRaw ? Number(toneGradeRaw) : undefined;
+    accuracyGrade = accuracyGradeRaw ? Number(accuracyGradeRaw) : undefined;
+    policyGrade = policyGradeRaw ? Number(policyGradeRaw) : undefined;
   } else {
     // Handle JSON submissions (legacy API)
     const payload = await request.json();
@@ -123,6 +134,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
               note: note ?? null,
               aiSuggestionUsed: didUseAISuggestion,
               aiSuggestion: aiMetadata,
+              grades: {
+                tone: toneGrade ?? null,
+                accuracy: accuracyGrade ?? null,
+                policy: policyGrade ?? null,
+              },
             },
           });
           break;
