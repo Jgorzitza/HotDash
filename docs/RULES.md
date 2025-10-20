@@ -83,6 +83,74 @@ Before creating ANY new .md file:
 - **Gitleaks** runs on every PR & push; SARIF to Security tab.
 - No secrets in code or docs; store in GitHub Environments/Secrets, Local Vault, and Fly.io secrets (as needed).
 
+## Git Strategy: Daily Branch Model (MANDATORY - Effective 2025-10-20)
+
+**Manager owns ALL git operations. Agents commit to daily branch, Manager merges to main.**
+
+### Daily Branch Workflow
+
+**Morning (Manager)**:
+```bash
+# Manager creates/checks out daily branch
+git checkout -b daily/2025-10-20  # or use existing manager-reopen-YYYYMMDD
+git push origin daily/2025-10-20
+```
+
+**All Day (All Agents)**:
+```bash
+# Agents commit to same branch (no branching per agent)
+git add app/routes/my-work.ts
+git commit -m "feat(engineer): add modal component"
+git push origin daily/2025-10-20
+```
+
+**Evening (Manager)**:
+```bash
+# Manager reviews all commits
+git log daily/2025-10-20 --oneline
+# Manager creates PR: daily/2025-10-20 → main
+# Manager merges after review
+# Tomorrow: New daily branch from main
+```
+
+### File Ownership (Prevents Conflicts)
+
+**Each agent has exclusive directories** - if you need a file owned by another agent, report to Manager:
+
+| Agent | Owns These Directories/Files |
+|-------|------------------------------|
+| Data | `prisma/`, `supabase/migrations/` |
+| Engineer | `app/routes/`, `app/components/`, `app/lib/` (excluding specialist libs) |
+| Designer | `docs/design/`, design review comments |
+| DevOps | `fly.toml`, `Dockerfile`, `scripts/ops/`, deployment configs |
+| Content | `data/support/`, microcopy (coordinates with Engineer for components) |
+| Analytics | `app/lib/analytics/`, `scripts/analytics/` |
+| SEO | `app/lib/seo/` |
+| Ads | `app/lib/ads/` |
+| Integrations | `packages/integrations/`, `app/lib/integrations/` |
+| Support | `docs/support/` |
+| AI-Customer/AI-Knowledge | `packages/agents/`, `packages/memory/` |
+| Product | `docs/specs/`, feature flags |
+| Inventory | `app/lib/inventory/` |
+| QA | `tests/`, review comments |
+| Pilot | `tests/e2e/`, smoke tests |
+| Manager | `docs/directions/`, `feedback/`, git coordination |
+
+**If Conflict**: Report in feedback: "Need file X owned by Agent Y" → Manager coordinates
+
+### Commit Style (Conventional Commits)
+
+```bash
+feat(agent-name): add feature
+fix(agent-name): fix bug
+docs(agent-name): update docs
+test(agent-name): add tests
+```
+
+**Manager Reviews Before Merge**: Ensures no conflicts, all tests pass, follows rules
+
+---
+
 ## Database Safety (MANDATORY - Effective 2025-10-20)
 
 **CRITICAL: All deployment paths are READ-ONLY for database schema**
