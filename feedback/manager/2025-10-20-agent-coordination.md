@@ -176,3 +176,52 @@ I should have run this immediately after fixing package.json - not waited for us
 **Manager owns**: shopify app deploy (technical operations)
 
 **Resolution Time**: 30 seconds (command execution)
+
+## 2025-10-20T09:20:00Z — Manager: i18n Blocker Analysis
+
+### CEO Question
+
+**CEO**: "i18n being a part of the app has been reported as a blocker - who is responsible for this and why hasn't it been handled"
+
+### Investigation
+
+**The Blocker**:
+- Error: `MissingAppProviderError: No i18n was provided`
+- Impact: All interactive Polaris components crash
+- Reported by: Designer (08:40Z) and Pilot (14:45Z)
+- Status: Designer blocked on 11/15 tasks (73%), Pilot: NO-GO recommendation
+
+**Assigned To**: Engineer (ENG-001)
+
+### Critical Finding: NOT ACTUALLY FIXED
+
+**Engineer Claims** (08:50Z):
+- ✅ Status: COMPLETE
+- ✅ "Verified AppProvider setup (no crashes, properly configured)"
+
+**Reality** (Designer 08:40Z + Pilot 14:45Z):
+- ❌ Error STILL PRESENT
+- ❌ Both agents report same error persists
+
+**What Happened**: 
+- Engineer VERIFIED AppProvider exists (correct)
+- Engineer did NOT add missing i18n prop (incorrect)
+- Engineer marked COMPLETE without testing interactive components
+- Error persists
+
+**Actual Fix Needed**:
+```tsx
+// Add to app/routes/app.tsx:
+import enTranslations from '@shopify/polaris/locales/en.json';
+
+<AppProvider 
+  apiKey={config.apiKey}
+  i18n={enTranslations}  // ← ADD THIS
+>
+```
+
+### Action
+
+Updating Engineer direction to re-do ENG-001 with actual fix (not just verification).
+
+**ETA**: 15 minutes (5min fix + 5min test + 5min deploy)
