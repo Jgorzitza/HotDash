@@ -1,3 +1,4 @@
+import "@shopify/shopify-app-react-router/adapters/node";
 import { PassThrough } from "stream";
 import { renderToPipeableStream } from "react-dom/server";
 import { ServerRouter } from "react-router";

@@ -8,7 +8,7 @@
  */
 
 import { type ActionFunction } from "react-router";
-import { createHmac } from "crypto";
+import { createHmac } from "node:crypto";
 
 /**
  * Verify Chatwoot webhook signature
