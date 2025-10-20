@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
 import shopify from "~/shopify.server";
-import { schedulePost } from "../../../packages/integrations/publer.ts";
+import { schedulePost } from "~/../packages/integrations/publer.ts";
 
 type Payload = {
   text: string;

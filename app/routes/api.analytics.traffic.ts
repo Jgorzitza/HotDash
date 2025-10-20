@@ -14,12 +14,12 @@
 
 import { type LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { getTrafficMetrics } from "../lib/analytics/ga4";
+import { getTrafficMetrics } from "~/lib/analytics/ga4";
 import {
   TrafficResponseSchema,
   type TrafficResponse,
-} from "../lib/analytics/schemas";
-import { isSamplingError } from "../lib/analytics/sampling-guard";
+} from "~/lib/analytics/schemas";
+import { isSamplingError } from "~/lib/analytics/sampling-guard";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {

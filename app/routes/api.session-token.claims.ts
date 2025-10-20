@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import shopify, { authenticate } from "../shopify.server";
+import shopify, { authenticate } from "~/shopify.server";
 
 interface SessionTokenResponse {
   shopDomain: string;

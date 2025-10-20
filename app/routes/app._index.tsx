@@ -11,28 +11,28 @@ import {
   CXEscalationsTile,
   SEOContentTile,
   OpsMetricsTile,
-} from "../components/tiles";
-import type { TileState, TileFact } from "../components/tiles";
+} from "~/components/tiles";
+import type { TileState, TileFact } from "~/components/tiles";
 
-import type { EscalationConversation } from "../services/chatwoot/types";
-import { getEscalations } from "../services/chatwoot/escalations";
-import type { LandingPageAnomaly } from "../services/ga/ingest";
-import { getLandingPageAnomalies } from "../services/ga/ingest";
-import { getShopifyServiceContext } from "../services/shopify/client";
-import { getInventoryAlerts } from "../services/shopify/inventory";
-import type { InventoryAlert } from "../services/shopify/types";
-import type { FulfillmentIssue, OrderSummary } from "../services/shopify/types";
-import { recordDashboardSessionOpen } from "../services/dashboardSession.server";
+import type { EscalationConversation } from "~/services/chatwoot/types";
+import { getEscalations } from "~/services/chatwoot/escalations";
+import type { LandingPageAnomaly } from "~/services/ga/ingest";
+import { getLandingPageAnomalies } from "~/services/ga/ingest";
+import { getShopifyServiceContext } from "~/services/shopify/client";
+import { getInventoryAlerts } from "~/services/shopify/inventory";
+import type { InventoryAlert } from "~/services/shopify/types";
+import type { FulfillmentIssue, OrderSummary } from "~/services/shopify/types";
+import { recordDashboardSessionOpen } from "~/services/dashboardSession.server";
 import {
   getPendingFulfillments,
   getSalesPulseSummary,
-} from "../services/shopify/orders";
+} from "~/services/shopify/orders";
 import {
   getOpsAggregateMetrics,
   type OpsAggregateMetrics,
-} from "../services/metrics/aggregate";
-import type { ServiceResult } from "../services/types";
-import { ServiceError } from "../services/types";
+} from "~/services/metrics/aggregate";
+import type { ServiceResult } from "~/services/types";
+import { ServiceError } from "~/services/types";
 
 interface LoaderData {
   mode: "live" | "mock";

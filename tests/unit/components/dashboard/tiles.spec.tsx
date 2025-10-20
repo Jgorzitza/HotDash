@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "../../../utils/render";
+import { screen } from "@testing-library/react";
+import { renderWithPolaris as render } from "../../../helpers/test-utils";
 import { AOVTile } from "../../../../app/components/dashboard/AOVTile";
 import { ReturnsTile } from "../../../../app/components/dashboard/ReturnsTile";
 import { StockRiskTile } from "../../../../app/components/dashboard/StockRiskTile";

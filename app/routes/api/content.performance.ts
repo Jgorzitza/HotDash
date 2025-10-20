@@ -11,13 +11,13 @@
 
 import { type LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { authenticate } from "../../shopify.server";
+import { authenticate } from "~/shopify.server";
 import {
   getContentPerformance,
   getAggregatedPerformance,
   getTopPerformingPosts,
   type SocialPlatform,
-} from "../../lib/content/tracking";
+} from "~/lib/content/tracking";
 
 /**
  * GET /api/content/performance

@@ -1,62 +1,168 @@
 # QA Direction
 
 - **Owner:** QA Agent
-- **Effective:** 2025-10-17
+- **Effective:** 2025-10-19
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #114
 
+Current Issue: #110
 
-Guarantee production confidence by running targeted Playwright, accessibility, and regression suites with documented evidence and blocker tracking.
+**UNBLOCKED**: Production app accessible at `https://hotdash-staging.fly.dev`. Execute comprehensive production QA using Chrome DevTools MCP, retest all suites, provide final GO/NO-GO recommendation.
 
-## Tasks
+## Production App Access
 
+**URL**: `https://hotdash-staging.fly.dev`  
+**Version**: hot-dash-22 (deployed)  
+**Tool**: Chrome DevTools MCP for UI/UX testing  
+**Status**: Accessible ✅
 
+## Tasks (17 Molecules - Production QA)
 
-1. Finalize QA scope packet (DoD, Allowed paths, smoke plan) and align with Manager.
-2. Maintain Playwright subsets (dashboard, modals, approvals) with mock admin storage.
-3. Execute accessibility smoke (`npm run test:a11y`) and record results.
-4. Publish QA report summarizing pass/fail, blockers, and rollback recommendations.
-5. Write feedback to `feedback/qa/2025-10-17.md` and clean up stray md files.
+### Phase 1: Production Smoke Tests (4 molecules)
+
+1. **QA-001: Production Build Verification** (20 min)
+   - Verify latest build deployed to Fly.io
+   - Check build artifacts, version number
+   - Evidence: Build logs, version hot-dash-22 confirmed
+
+2. **QA-002: Health Endpoint Test** (15 min)
+   - Test `/health` endpoint (may be 404 until next deploy with Engineer's route)
+   - Verify response structure when available
+   - Evidence: `curl https://hotdash-staging.fly.dev/health` results
+
+3. **QA-003: Dashboard Load Test** (25 min)
+   - Use Chrome DevTools MCP: `new_page` to production URL
+   - Verify dashboard renders without errors
+   - Check `list_console_messages` for errors
+   - Evidence: Dashboard screenshot, console log clean
+
+4. **QA-004: All Tiles Rendering** (30 min)
+   - Use Chrome DevTools `take_snapshot` to list tiles
+   - Verify all 8 expected tiles present
+   - Check for data vs loading vs error states
+   - Evidence: Tile inventory, screenshots
+
+### Phase 2: Full Test Suite Execution (5 molecules)
+
+5. **QA-005: Unit Test Suite Rerun** (35 min)
+   - Run `npm run test:unit`
+   - Current: 234/270 passing (87%)
+   - Target: ≥95% passing
+   - Evidence: Test results, failure analysis
+
+6. **QA-006: Integration Test Suite** (40 min)
+   - Run `npm run test:integration`
+   - Verify contract tests passing (all 6 APIs)
+   - Evidence: Integration test results
+
+7. **QA-007: E2E Accessibility Tests** (50 min)
+   - Run `npm run test:e2e` (Playwright a11y suite)
+   - Fix port configuration (3000 → 5173 or use production URL)
+   - Evidence: A11y test results, WCAG AA compliance
+
+8. **QA-008: Security Scan Verification** (25 min)
+   - Run `npm run scan` (Gitleaks)
+   - Verify 0 secrets in codebase
+   - Evidence: Security scan clean report
+
+9. **QA-009: RLS Verification** (30 min)
+   - Verify Data agent's RLS fix applied to production
+   - Check 4 tables: ads_metrics_daily, agent_run, agent_qc, creds_meta
+   - Use Supabase CLI: `psql $DATABASE_URL -c "SELECT tablename, rowsecurity FROM pg_tables WHERE tablename IN ('ads_metrics_daily', 'agent_run', 'agent_qc', 'creds_meta');"`
+   - Evidence: All 4 tables show `rowsecurity = t`
+
+### Phase 3: Production UI/UX Testing (5 molecules)
+
+10. **QA-010: Critical User Flows** (60 min)
+    - Use Chrome DevTools MCP on production
+    - Test: Login → Dashboard → Tile interactions → Drawer workflows
+    - Use `click`, `fill_form`, `take_screenshot`
+    - Evidence: Flow completion screenshots, timing measurements
+
+11. **QA-011: Approvals HITL Workflow** (50 min)
+    - Test complete approval flow on production
+    - Draft → Review → Grade (1-5) → Approve/Reject → Apply
+    - Evidence: HITL workflow screenshots
+
+12. **QA-012: Mobile Responsiveness** (40 min)
+    - Use `resize_page`: 375px, 768px, 1024px
+    - Test touch targets, scrolling, drawer behavior
+    - Evidence: Mobile screenshots, responsiveness report
+
+13. **QA-013: Browser Compatibility** (45 min)
+    - Test on: Chrome, Firefox, Safari, Edge
+    - Verify: consistent rendering, no browser-specific bugs
+    - Evidence: Cross-browser screenshots
+
+14. **QA-014: Performance Testing** (50 min)
+    - Use `performance_start_trace` on production
+    - Measure: tile load times, P95 <3s verification, Core Web Vitals
+    - Evidence: Performance metrics, CWV scores
+
+### Phase 4: Production Sign-off (3 molecules)
+
+15. **QA-015: Final QA Packet** (40 min)
+    - Consolidate all test results
+    - Create GO/NO-GO recommendation
+    - List any remaining defects with severity/owner/ETA
+    - Evidence: Final QA Packet in `feedback/qa/2025-10-19.md`
+
+16. **QA-016: Production Checklist** (30 min)
+    - Verify all production requirements met:
+      - ✅ Tests ≥95% passing
+      - ✅ RLS enabled on critical tables
+      - ✅ 0 secrets in code
+      - ✅ Health checks configured
+      - ✅ Rollback procedures documented
+    - Evidence: Production readiness checklist
+
+17. **QA-017: WORK COMPLETE** (15 min)
+    - Final feedback entry
+    - Hand off to Product for go/no-go decision
+    - Evidence: Complete feedback file
 
 ## Constraints
 
-- **Allowed Tools:** `bash`, `npm`, `npx`, `node`, `rg`, `jq`
-- **Process:** Follow docs/OPERATING_MODEL.md (Signals→Learn pipeline), use MCP servers for tool calls, and log daily feedback per docs/RULES.md.
-- **Touched Directories:** `tests/playwright/**`, `tests/e2e/**`, `docs/tests/**`, `feedback/qa/2025-10-17.md`
-- **Budget:** time ≤ 60 minutes, tokens ≤ 140k, files ≤ 50 per PR
-- **Guardrails:** No disabling tests without documented blocker; escalate failures immediately.
+- **Allowed Tools:** `npm`, `npx`, `curl`, `psql`, Chrome DevTools MCP
+- **MCP Tools (Mandatory):**
+  - **mcp*Chrome_DevTools*\***: All UI/UX testing functions
+  - Production URL: `https://hotdash-staging.fly.dev`
+- **Allowed Paths:** `tests/**`, `docs/runbooks/qa_**`, `reports/qa/**`, `artifacts/qa/**`, `feedback/qa/2025-10-19.md`
+- **Budget:** ≤60 min per molecule
 
 ## Definition of Done
 
-- [ ] QA scope packet published
-- [ ] Playwright + accessibility suites executed with logs
-- [ ] `npm run fmt` and `npm run lint`
-- [ ] `npm run test:ci`
-- [ ] `npm run scan`
-- [ ] Feedback entry updated with outcomes
-- [ ] Contract test passes
+- [ ] All 17 molecules executed with evidence
+- [ ] Production smoke tests passing
+- [ ] Unit tests ≥95% passing
+- [ ] Integration tests 100% passing
+- [ ] RLS verified on 4 critical tables
+- [ ] Security scan clean (0 secrets)
+- [ ] Chrome DevTools production testing complete
+- [ ] Final QA Packet with GO/NO-GO decision
+- [ ] Feedback entry complete
 
 ## Contract Test
 
-- **Command:** `npm run test:a11y`
-- **Expectations:** Accessibility suite runs; failures documented with follow-up.
+- **Production Health:** `curl https://hotdash-staging.fly.dev` (200 OK)
+- **Test Suite:** `npm run test:ci` (≥95% passing)
+- **Evidence:** Final QA Packet with all test results
 
 ## Risk & Rollback
 
-- **Risk Level:** High — Undetected regressions ship to production.
-- **Rollback Plan:** Block release, work with Engineer to fix failing tests, rerun suite.
-- **Monitoring:** Playwright reports, QA packet updates, approvals backlog.
+- **Risk Level:** LOW (testing is read-only)
+- **Rollback Plan:** N/A (no code changes)
+- **Monitoring:** QA findings determine production readiness
 
 ## Links & References
 
-- North Star: `docs/NORTH_STAR.md`
-- Roadmap: `docs/roadmap.md`
-- Feedback: `feedback/qa/2025-10-17.md`
-- Specs / Runbooks: `docs/tests/qa_scope_packet.md`
+- Production App: https://hotdash-staging.fly.dev
+- Shopify Dashboard: https://dev.shopify.com/dashboard/185825868/apps/285941530625
+- Feedback: `feedback/qa/2025-10-19.md`
+- Previous QA Packet: `feedback/qa/2025-10-19.md` (NO-GO with 4 P0 blockers)
 
 ## Change Log
 
-- 2025-10-17: Version 2.0 – Production QA scope + reporting
-- 2025-10-16: Version 1.0 – Smoke/axe checklists
+- 2025-10-19: Version 2.0 – **UNBLOCKED** - Production app accessible, retest protocol with Chrome DevTools MCP
+- 2025-10-17: Version 1.0 – Initial QA direction

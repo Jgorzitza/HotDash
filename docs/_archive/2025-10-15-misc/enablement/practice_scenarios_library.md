@@ -315,7 +315,7 @@ Each scenario includes:
 **Confidence:** 88%  
 **KB Sources:** Shipping Policy v2.1, Delivery Issues Process v1.0
 
-**Decision?** ******\_\_\_******
+**Decision?** **\*\***\_\_\_**\*\***
 
 <details>
 <summary><b>Answer</b></summary>
@@ -339,7 +339,7 @@ Each scenario includes:
 **Confidence:** 71%  
 **KB Sources:** Damaged Product Process v1.0, Injury Protocol v1.0
 
-**Decision?** ******\_\_\_******
+**Decision?** **\*\***\_\_\_**\*\***
 
 <details>
 <summary><b>Answer</b></summary>
@@ -363,7 +363,7 @@ Each scenario includes:
 **Confidence:** 76%  
 **KB Sources:** Allergic Reaction Protocol v1.0, Product Safety Guidelines v1.0
 
-**Decision?** ******\_\_\_******
+**Decision?** **\*\***\_\_\_**\*\***
 
 <details>
 <summary><b>Answer</b></summary>
@@ -387,7 +387,7 @@ Each scenario includes:
 **Confidence:** 84%  
 **KB Sources:** Wholesale Policy v1.0
 
-**Decision?** ******\_\_\_******
+**Decision?** **\*\***\_\_\_**\*\***
 
 <details>
 <summary><b>Answer</b></summary>
@@ -411,7 +411,7 @@ Each scenario includes:
 **Confidence:** 96%  
 **KB Sources:** Gift Card System Integration v1.0
 
-**Decision?** ******\_\_\_******
+**Decision?** **\*\***\_\_\_**\*\***
 
 <details>
 <summary><b>Answer</b></summary>

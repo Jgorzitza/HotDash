@@ -1,11 +1,11 @@
 import type { ActionFunctionArgs } from "react-router";
 
-import { chatwootClient } from "../../../packages/integrations/chatwoot";
-import { getChatwootConfig } from "../../config/chatwoot.server";
-import { logDecision } from "../../services/decisions.server";
-import { findTemplate } from "../../services/chatwoot/templates";
-import { authenticate } from "../../shopify.server";
-import { isFeatureEnabled } from "../../config/featureFlags";
+import { chatwootClient } from "~/../packages/integrations/chatwoot";
+import { getChatwootConfig } from "~/config/chatwoot.server";
+import { logDecision } from "~/services/decisions.server";
+import { findTemplate } from "~/services/chatwoot/templates";
+import { authenticate } from "~/shopify.server";
+import { isFeatureEnabled } from "~/config/featureFlags";
 
 function renderTemplate(
   body: string,

@@ -160,7 +160,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 - No errors during indexing
 - Subsequent queries are fast
 
-**Actual Time:** ****\_\_**** minutes
+**Actual Time:** \***\*\_\_\*\*** minutes
 
 **Status:** [ ] Pass / [ ] Fail
 
@@ -176,7 +176,7 @@ grep -A 5 "AI Agent Support: Context7 MCP" README.md
 - Results are relevant
 - No timeout errors
 
-**Actual Time:** ****\_\_**** ms
+**Actual Time:** \***\*\_\_\*\*** ms
 
 **Status:** [ ] Pass / [ ] Fail
 
@@ -338,10 +338,10 @@ If any tests fail, check:
 
 ## Sign-Off
 
-**Tested By:** ******\_\_\_\_******  
-**Date:** ******\_\_\_\_******  
+**Tested By:** **\*\***\_\_\_\_**\*\***  
+**Date:** **\*\***\_\_\_\_**\*\***  
 **All Tests Pass:** [ ] Yes / [ ] No  
-**Issues Found:** ******\_\_\_\_******  
+**Issues Found:** **\*\***\_\_\_\_**\*\***  
 **Ready for Agent Use:** [ ] Yes / [ ] No
 
 ---

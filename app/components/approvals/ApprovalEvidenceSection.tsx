@@ -15,13 +15,17 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
 
   return (
     <BlockStack gap="300">
-      {(evidence.what_changes || evidence.why_now || evidence.impact_forecast) && (
+      {(evidence.what_changes ||
+        evidence.why_now ||
+        evidence.impact_forecast) && (
         <Card>
           <BlockStack gap="200">
             {evidence.what_changes && (
               <Text as="p">What changes: {evidence.what_changes}</Text>
             )}
-            {evidence.why_now && <Text as="p">Why now: {evidence.why_now}</Text>}
+            {evidence.why_now && (
+              <Text as="p">Why now: {evidence.why_now}</Text>
+            )}
             {evidence.impact_forecast && (
               <Text as="p">Impact forecast: {evidence.impact_forecast}</Text>
             )}
@@ -59,7 +63,9 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
                 <Text as="p" variant="bodySm">
                   {s.label}
                 </Text>
-                <pre style={{ fontSize: 12, overflow: "auto" }}>{s.content}</pre>
+                <pre style={{ fontSize: 12, overflow: "auto" }}>
+                  {s.content}
+                </pre>
               </BlockStack>
             ))}
           </BlockStack>
@@ -79,7 +85,9 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
                 </Text>
                 <pre style={{ fontSize: 12, overflow: "auto" }}>{q.query}</pre>
                 {q.result && (
-                  <pre style={{ fontSize: 12, overflow: "auto" }}>{q.result}</pre>
+                  <pre style={{ fontSize: 12, overflow: "auto" }}>
+                    {q.result}
+                  </pre>
                 )}
               </BlockStack>
             ))}
@@ -87,21 +95,21 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
         </Card>
       )}
 
-      {Array.isArray(evidence.screenshots) && evidence.screenshots.length > 0 && (
-        <Card>
-          <BlockStack gap="200">
-            <Text as="h3" variant="headingMd">
-              Screenshots
-            </Text>
-            {evidence.screenshots.map((s, i) => (
-              <Text as="p" key={i}>
-                {s.label}: {s.url}
+      {Array.isArray(evidence.screenshots) &&
+        evidence.screenshots.length > 0 && (
+          <Card>
+            <BlockStack gap="200">
+              <Text as="h3" variant="headingMd">
+                Screenshots
               </Text>
-            ))}
-          </BlockStack>
-        </Card>
-      )}
+              {evidence.screenshots.map((s, i) => (
+                <Text as="p" key={i}>
+                  {s.label}: {s.url}
+                </Text>
+              ))}
+            </BlockStack>
+          </Card>
+        )}
     </BlockStack>
   );
 }
-

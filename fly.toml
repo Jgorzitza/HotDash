@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for hotdash-staging on 2025-10-09T20:08:16-06:00
+# fly.toml app configuration file for HotDash Staging
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -6,21 +6,77 @@
 app = 'hotdash-staging'
 primary_region = 'ord'
 
+# Kill timeout - graceful shutdown period
+kill_signal = 'SIGINT'
+kill_timeout = '30s'
+
+[build]
+
 [env]
   HOST = '0.0.0.0'
   PORT = '3000'
-
-[build]
+  NODE_ENV = 'staging'
 
 [http_service]
   internal_port = 3000
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = 'stop'  # Auto-stop for cost savings in staging
   auto_start_machines = true
   min_machines_running = 1
   processes = ['app']
+  
+  # Connection limits
+  [http_service.concurrency]
+    type = 'connections'
+    hard_limit = 100
+    soft_limit = 80
 
+# VM configuration for staging
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+# Health check configuration
+[[services]]
+  protocol = 'tcp'
+  internal_port = 3000
+  processes = ['app']
+
+  # HTTP service ports
+  [[services.ports]]
+    port = 80
+    handlers = ['http']
+    force_https = true
+
+  [[services.ports]]
+    port = 443
+    handlers = ['tls', 'http']
+  
+  # Concurrency controls
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 100
+    soft_limit = 80
+
+  # TCP health check (basic connectivity)
+  [[services.tcp_checks]]
+    interval = '15s'
+    timeout = '2s'
+    grace_period = '20s'
+    restart_limit = 3
+
+  # HTTP health check (application-level)
+  [[services.http_checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '20s'
+    method = 'get'
+    path = '/health'
+    protocol = 'http'
+    restart_limit = 3
+
+# Deployment strategy
+[deploy]
+  strategy = 'rolling'
+  wait_timeout = '3m'

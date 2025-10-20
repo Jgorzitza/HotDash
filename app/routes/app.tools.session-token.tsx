@@ -5,8 +5,8 @@ import { boundary } from "@shopify/shopify-app-react-router/server";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { getSessionToken } from "@shopify/app-bridge/utilities";
 
-import { authenticate } from "../shopify.server";
-import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
+import { authenticate } from "~/shopify.server";
+import { useAuthenticatedFetch } from "~/hooks/useAuthenticatedFetch";
 
 interface SessionTokenClaims {
   shopDomain: string;

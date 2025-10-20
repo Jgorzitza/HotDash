@@ -17,7 +17,7 @@
 
 import { type LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { getLandingPageAnomalies } from "../services/ga/ingest";
+import { getLandingPageAnomalies } from "~/services/ga/ingest";
 import {
   detectTrafficAnomalies,
   detectRankingAnomalies,
@@ -27,9 +27,9 @@ import {
   type RankingAnomalyInput,
   type VitalsAnomalyInput,
   type CrawlErrorInput,
-} from "../lib/seo/anomalies";
-import { buildSeoAnomalyBundle, GaSamplingError } from "../lib/seo/pipeline";
-import { buildSeoDiagnostics } from "../lib/seo/diagnostics";
+} from "~/lib/seo/anomalies";
+import { buildSeoAnomalyBundle, GaSamplingError } from "~/lib/seo/pipeline";
+import { buildSeoDiagnostics } from "~/lib/seo/diagnostics";
 
 /**
  * Mock data generators for Search Console and Core Web Vitals
@@ -73,12 +73,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }));
 
     // Detect all anomaly types
-    const factMetadata = (gaResult.fact.metadata ?? {}) as Record<string, any>;
+    const metadata = gaResult.fact.metadata;
     const generatedAt =
-      typeof factMetadata?.generatedAt === "string"
-        ? factMetadata.generatedAt
+      metadata &&
+      typeof metadata === "object" &&
+      "generatedAt" in metadata &&
+      typeof (metadata as Record<string, unknown>).generatedAt === "string"
+        ? (metadata as Record<string, unknown>).generatedAt
         : undefined;
-    const isSampled = Boolean(factMetadata?.sampled);
+    const isSampled =
+      metadata && typeof metadata === "object" && "sampled" in metadata
+        ? Boolean((metadata as Record<string, unknown>).sampled)
+        : false;
 
     const bundle = buildSeoAnomalyBundle({
       shopDomain,
@@ -88,7 +94,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       crawl: detectCrawlAnomalies(getMockCrawlErrors()),
       generatedAt,
       sources: {
-        traffic: gaResult.source,
+        traffic: String((gaResult as any).source ?? "ga4"),
         ranking: "mock",
         vitals: "mock",
         crawl: "mock",
@@ -105,7 +111,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         diagnostics,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error instanceof GaSamplingError) {
       return json(
         {
@@ -119,10 +125,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     console.error("[API] SEO anomalies error:", error);
 
+    const message =
+      error instanceof Error ? error.message : "Failed to fetch SEO anomalies";
+
     return json(
       {
         success: false,
-        error: error.message || "Failed to fetch SEO anomalies",
+        error: message,
         timestamp: new Date().toISOString(),
       },
       { status: 500 },

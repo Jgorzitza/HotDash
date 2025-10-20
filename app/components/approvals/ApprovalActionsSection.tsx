@@ -8,7 +8,13 @@ export function ApprovalActionsSection({
   onRequestChanges,
   onApply,
 }: {
-  state: "draft" | "pending_review" | "approved" | "applied" | "audited" | "learned";
+  state:
+    | "draft"
+    | "pending_review"
+    | "approved"
+    | "applied"
+    | "audited"
+    | "learned";
   canApprove: boolean;
   onApprove: () => void;
   onReject: (reason: string) => void;
@@ -43,7 +49,11 @@ export function ApprovalActionsSection({
           Approve
         </Button>
         {onApply && (
-          <Button onClick={onApply} disabled={disableApply} accessibilityLabel="Apply">
+          <Button
+            onClick={onApply}
+            disabled={disableApply}
+            accessibilityLabel="Apply"
+          >
             Apply
           </Button>
         )}
@@ -51,4 +61,3 @@ export function ApprovalActionsSection({
     </InlineStack>
   );
 }
-

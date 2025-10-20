@@ -7,11 +7,11 @@
  */
 
 import type { LoaderFunctionArgs } from "react-router";
-import { getShopifyServiceContext } from "../../services/shopify/client";
-import { ServiceError } from "../../services/types";
-import { logger } from "../../utils/logger.server";
-import { recordDashboardFact } from "../../services/facts.server";
-import { toInputJson } from "../../services/json";
+import { getShopifyServiceContext } from "~/services/shopify/client";
+import { ServiceError } from "~/services/types";
+import { logger } from "~/utils/logger.server";
+import { recordDashboardFact } from "~/services/facts.server";
+import { toInputJson } from "~/services/json";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const REVENUE_WINDOW_DAYS = 30;

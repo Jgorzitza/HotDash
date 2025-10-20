@@ -21,11 +21,11 @@
 
 import type { LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { getShopifyServiceContext } from "../../services/shopify/client";
-import { ServiceError } from "../../services/types";
-import { logger } from "../../utils/logger.server";
-import { recordDashboardFact } from "../../services/facts.server";
-import { toInputJson } from "../../services/json";
+import { getShopifyServiceContext } from "~/services/shopify/client";
+import { ServiceError } from "~/services/types";
+import { logger } from "~/utils/logger.server";
+import { recordDashboardFact } from "~/services/facts.server";
+import { toInputJson } from "~/services/json";
 
 // Cache configuration
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes

@@ -1,8 +1,8 @@
 import type { ActionFunctionArgs } from "react-router";
 
-import { authenticate } from "../../shopify.server";
-import { logDecision } from "../../services/decisions.server";
-import { toInputJson } from "../../services/json";
+import { authenticate } from "~/shopify.server";
+import { logDecision } from "~/services/decisions.server";
+import { toInputJson } from "~/services/json";
 
 function jsonResponse(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), {

@@ -10,10 +10,10 @@ import {
   Badge,
   Button,
 } from "@shopify/polaris";
-import { ApprovalCard } from "../../components/ApprovalCard";
-import { ApprovalsDrawer } from "../../components/approvals/ApprovalsDrawer";
-import type { Approval } from "../../components/approvals/ApprovalsDrawer";
-import { getApprovals, getApprovalCounts } from "../../services/approvals";
+import { ApprovalCard } from "~/components/ApprovalCard";
+import { ApprovalsDrawer } from "~/components/approvals/ApprovalsDrawer";
+import type { Approval } from "~/components/approvals/ApprovalsDrawer";
+import { getApprovals, getApprovalCounts } from "~/services/approvals";
 
 /**
  * Loader: Fetch approvals from Supabase
