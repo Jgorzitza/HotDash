@@ -100,8 +100,8 @@ fly logs -a hotdash-staging --no-tail | grep -E "GET /app|error" | tail -10
 
 ### Fix 4: Supabase Password ✅
 **File**: `vault/occ/supabase/database_url_staging.env`  
-**Updated**: New password `Th3rm0caf3/67!`  
-**Why**: Old password causing connection failures
+**Updated**: Password synchronized from .env.local to vault  
+**Why**: Mismatched password causing connection failures
 
 ---
 
@@ -112,8 +112,9 @@ fly logs -a hotdash-staging --no-tail | grep -E "GET /app|error" | tail -10
 # Check current secrets
 fly secrets list -a hotdash-staging
 
-# Manual set if vault command fails
-fly secrets set DATABASE_URL="postgresql://postgres.mmbjiyhsvniqxibzgyvx:Th3rm0caf3%2F67%21@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require" -a hotdash-staging
+# Load from vault if automated command fails
+export $(cat vault/occ/supabase/database_url_staging.env | xargs)
+fly secrets set DATABASE_URL="$DATABASE_URL" -a hotdash-staging
 ```
 
 ### If Step 2 Fails (Deploy)

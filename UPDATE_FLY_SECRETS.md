@@ -8,9 +8,7 @@
 
 ## The Issue
 
-**Password was rotated** but Fly secrets still have old password:
-- **Old**: `Th3rm0caf3/50!` (in Fly secrets)
-- **New**: `Th3rm0caf3/67!` (in vault)
+**Password was updated** but Fly secrets need to be updated to match vault
 
 **Impact**: Database connection errors, authentication failures
 
@@ -27,13 +25,13 @@ cd ~/HotDash/hot-dash
 fly secrets set DATABASE_URL="$(cat vault/occ/supabase/database_url_staging.env | cut -d= -f2-)" -a hotdash-staging
 ```
 
-### Option 2: Direct
+### Option 2: From Vault File Directly
 
 ```bash
-fly secrets set DATABASE_URL="postgresql://postgres.mmbjiyhsvniqxibzgyvx:Th3rm0caf3%2F67%21@aws-1-us-east-1.pooler.supabase.com:5432/postgres?sslmode=require" -a hotdash-staging
+# Load from vault and update
+export $(cat vault/occ/supabase/database_url_staging.env | xargs)
+fly secrets set DATABASE_URL="$DATABASE_URL" -a hotdash-staging
 ```
-
-**Note**: The `%2F` is URL-encoded `/`, the `%21` is URL-encoded `!`
 
 ---
 
@@ -89,7 +87,7 @@ shopify app deploy
 ## Vault Updated
 
 **File**: `vault/occ/supabase/database_url_staging.env`  
-**Password**: `Th3rm0caf3/67!` (NEW)  
+**Status**: Synchronized with .env.local  
 **Rotation Log**: `vault/rotation_log.md` (documented)  
 **Date**: 2025-10-19
 
