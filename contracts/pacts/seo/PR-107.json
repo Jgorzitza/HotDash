@@ -1,0 +1,287 @@
+{
+  "provider": "Google Analytics 4 + Google Search Console (partial)",
+  "consumer": "Hot Dash Dashboard",
+  "prNumber": 107,
+  "dateCreated": "2025-10-20",
+  "status": "partial",
+  "version": "1.0.0",
+  "description": "SEO anomaly detection and diagnostics with multi-source data aggregation",
+  "interactions": [
+    {
+      "description": "Get SEO anomalies from multiple sources",
+      "providerState": "GA4 API accessible, Search Console integration pending",
+      "request": {
+        "method": "GET",
+        "path": "/api/seo/anomalies",
+        "queryParams": {
+          "shop": {
+            "type": "string",
+            "optional": true,
+            "default": "default-shop.myshopify.com",
+            "example": "hotrodan.myshopify.com"
+          }
+        }
+      },
+      "response": {
+        "statusCodes": [200, 500, 502],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "shopDomain": { "type": "string" },
+                "traffic": {
+                  "type": "array",
+                  "description": "Traffic drop anomalies from GA4",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "landingPage": { "type": "string" },
+                      "currentSessions": { "type": "number" },
+                      "previousSessions": { "type": "number" },
+                      "wowDelta": { "type": "number", "description": "Week-over-week delta" },
+                      "severity": { "enum": ["critical", "warning", "info"] }
+                    }
+                  }
+                },
+                "ranking": {
+                  "type": "array",
+                  "description": "Keyword ranking losses (STUB - Search Console pending)",
+                  "items": { "type": "object" }
+                },
+                "vitals": {
+                  "type": "array",
+                  "description": "Core Web Vitals failures (STUB - CrUX pending)",
+                  "items": { "type": "object" }
+                },
+                "crawl": {
+                  "type": "array",
+                  "description": "Crawl errors (STUB - Search Console pending)",
+                  "items": { "type": "object" }
+                },
+                "generatedAt": { "type": "string", "format": "date-time", "nullable": true },
+                "sources": {
+                  "type": "object",
+                  "properties": {
+                    "traffic": { "type": "string", "example": "ga4" },
+                    "ranking": { "type": "string", "example": "mock" },
+                    "vitals": { "type": "string", "example": "mock" },
+                    "crawl": { "type": "string", "example": "mock" }
+                  }
+                },
+                "isSampled": { "type": "boolean" },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": { "type": "string" },
+                      "severity": { "enum": ["info", "warning", "error"] },
+                      "message": { "type": "string" }
+                    }
+                  }
+                }
+              },
+              "nullable": true
+            },
+            "error": { "type": "string", "nullable": true },
+            "timestamp": { "type": "string", "format": "date-time" }
+          },
+          "required": ["success", "timestamp"]
+        },
+        "examples": {
+          "success": {
+            "success": true,
+            "data": {
+              "shopDomain": "hotrodan.myshopify.com",
+              "traffic": [
+                {
+                  "landingPage": "/products/hot-sauce-variety-pack",
+                  "currentSessions": 150,
+                  "previousSessions": 500,
+                  "wowDelta": -0.70,
+                  "severity": "critical"
+                }
+              ],
+              "ranking": [],
+              "vitals": [],
+              "crawl": [],
+              "generatedAt": "2025-10-20T12:00:00Z",
+              "sources": {
+                "traffic": "ga4",
+                "ranking": "mock",
+                "vitals": "mock",
+                "crawl": "mock"
+              },
+              "isSampled": false,
+              "diagnostics": []
+            },
+            "timestamp": "2025-10-20T12:00:00Z"
+          },
+          "error_sampling": {
+            "success": false,
+            "error": "GA4 data is sampled - unsampled data required",
+            "timestamp": "2025-10-20T12:00:00Z"
+          }
+        }
+      }
+    }
+  ],
+  "utilities": [
+    {
+      "name": "GaSamplingError",
+      "type": "class",
+      "location": "app/lib/seo/pipeline.ts:21-26",
+      "description": "Custom error class for GA4 sampling errors",
+      "usage": "Thrown when GA4 returns sampled data",
+      "catching": "instanceof check in routes",
+      "httpStatus": 502
+    },
+    {
+      "name": "buildSeoAnomalyBundle",
+      "type": "function",
+      "location": "app/lib/seo/pipeline.ts:31-36",
+      "status": "stub",
+      "description": "Aggregates anomalies from multiple sources into bundle",
+      "parameters": [
+        {
+          "name": "data",
+          "type": "any",
+          "expected": {
+            "shopDomain": "string",
+            "traffic": "TrafficAnomaly[]",
+            "ranking": "RankingAnomaly[]",
+            "vitals": "VitalsAnomaly[]",
+            "crawl": "CrawlError[]",
+            "generatedAt": "string",
+            "sources": "object",
+            "isSampled": "boolean"
+          }
+        }
+      ],
+      "returns": {
+        "type": "{ anomalies: any[]; summary: object }",
+        "currentImplementation": "{ anomalies: [], summary: {} }"
+      }
+    },
+    {
+      "name": "buildSeoDiagnostics",
+      "type": "function",
+      "location": "app/lib/seo/diagnostics.ts:17-19",
+      "status": "stub",
+      "description": "Builds diagnostic messages from anomaly bundle",
+      "parameters": [
+        { "name": "data", "type": "any" }
+      ],
+      "returns": {
+        "type": "SEODiagnostic[]",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string" },
+              "severity": { "enum": ["info", "warning", "error"] },
+              "message": { "type": "string" }
+            }
+          }
+        },
+        "currentImplementation": "[]"
+      }
+    },
+    {
+      "name": "createPipeline",
+      "type": "function",
+      "location": "app/lib/seo/pipeline.ts:12-16",
+      "status": "stub",
+      "description": "Creates SEO data processing pipeline",
+      "parameters": [
+        {
+          "name": "config",
+          "type": "SEOPipelineConfig",
+          "optional": true,
+          "properties": {
+            "threshold": { "type": "number", "description": "Anomaly detection threshold" },
+            "window": { "type": "string", "description": "Time window for analysis" }
+          }
+        }
+      ],
+      "returns": {
+        "type": "{ process: (data: any) => Promise<any> }",
+        "currentImplementation": "{ process: async (data) => data }"
+      }
+    }
+  ],
+  "metadata": {
+    "timeout": {
+      "ga4": "30-60s",
+      "searchConsole": "20-30s (future)",
+      "pageSpeed": "60-90s (future)"
+    },
+    "retry": "YES (5xx errors), NO (sampling errors)",
+    "aggregation": "Parallel fetching with Promise.allSettled (tolerates partial failures)",
+    "rateLimit": {
+      "ga4": "10 per second per project",
+      "searchConsole": "TBD",
+      "pageSpeed": "25 requests per day (free tier)"
+    },
+    "authentication": {
+      "ga4": "Service account credentials",
+      "searchConsole": "OAuth 2.0 (pending)",
+      "pageSpeed": "API key (pending)"
+    },
+    "errorHandling": "Custom GaSamplingError for sampling, generic errors for other failures"
+  },
+  "implementationStatus": {
+    "live": [
+      "GA4 traffic anomalies",
+      "GaSamplingError custom error class",
+      "Route integration (api.seo.anomalies.ts)"
+    ],
+    "stub": [
+      "Search Console ranking anomalies (getMockRankingData)",
+      "Core Web Vitals failures (getMockVitalsData)",
+      "Crawl errors (getMockCrawlErrors)",
+      "buildSeoAnomalyBundle (returns { anomalies: [], summary: {} })",
+      "buildSeoDiagnostics (returns [])",
+      "createPipeline (returns passthrough processor)"
+    ],
+    "blockers": [
+      "Google Search Console API integration not implemented",
+      "PageSpeed Insights / CrUX API integration not implemented",
+      "Anomaly aggregation logic not implemented",
+      "Diagnostics rules not defined"
+    ],
+    "nextSteps": [
+      "Implement Search Console API integration",
+      "Implement PageSpeed Insights API integration",
+      "Define diagnostic rules for each anomaly type",
+      "Implement buildSeoAnomalyBundle aggregation logic",
+      "Implement buildSeoDiagnostics with severity classification",
+      "Implement createPipeline with threshold-based detection",
+      "Add caching for multi-source queries",
+      "Add integration tests"
+    ]
+  },
+  "dataFlow": {
+    "description": "Multi-source anomaly aggregation pipeline",
+    "steps": [
+      "1. Receive shop domain from query params",
+      "2. Fetch traffic anomalies from GA4 (live)",
+      "3. Fetch ranking data from Search Console (stub)",
+      "4. Fetch vitals from PageSpeed/CrUX (stub)",
+      "5. Fetch crawl errors from Search Console (stub)",
+      "6. Detect anomalies for each source (detectTrafficAnomalies, etc.)",
+      "7. Aggregate into bundle (buildSeoAnomalyBundle - stub)",
+      "8. Generate diagnostics (buildSeoDiagnostics - stub)",
+      "9. Return combined response with source attribution"
+    ],
+    "partialFailureTolerance": "Uses Promise.allSettled pattern (planned for multi-source)",
+    "caching": "Not implemented (recommended for 5-minute cache)"
+  }
+}

@@ -25,9 +25,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const metrics = await getTrafficMetrics();
 
+    // Map TrafficMetrics to TrafficResponse.data format
     const response: TrafficResponse = {
       success: true,
-      data: metrics,
+      data: {
+        sessions: metrics.totalSessions,
+        users: 0, // Not tracked in current implementation
+        pageviews: 0, // Not tracked in current implementation
+      },
       timestamp: new Date().toISOString(),
       sampled: false,
     };

@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
 }
 
 model Session {
@@ -26,6 +27,8 @@ model Session {
   locale        String?
   collaborator  Boolean?  @default(false)
   emailVerified Boolean?  @default(false)
+
+  @@schema("public")
 }
 
 model DashboardFact {
@@ -41,6 +44,7 @@ model DashboardFact {
 
   @@index([shopDomain, factType])
   @@index([createdAt])
+  @@schema("public")
 }
 
 model DecisionLog {
@@ -56,4 +60,125 @@ model DecisionLog {
   createdAt   DateTime @default(now())
 
   @@index([scope, createdAt])
+  @@schema("public")
+}
+
+model SalesPulseAction {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  actionType      String   @map("action_type")
+  revenueVariance Decimal? @map("revenue_variance") @db.Decimal(12, 2)
+  selectedAction  String?  @map("selected_action")
+  notes           String?
+  operatorName    String   @map("operator_name")
+  metadata        Json     @default("{}")
+  project         String   @default("occ")
+
+  @@index([createdAt(sort: Desc)], map: "idx_sales_pulse_actions_created")
+  @@index([actionType], map: "idx_sales_pulse_actions_type")
+  @@index([project], map: "idx_sales_pulse_actions_project")
+  @@map("sales_pulse_actions")
+  @@schema("public")
+}
+
+model InventoryAction {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  actionType       String   @map("action_type")
+  variantId        String?  @map("variant_id")
+  sku              String?
+  reorderQuantity  Int?     @map("reorder_quantity")
+  vendorId         String?  @map("vendor_id") @db.Uuid
+  velocityAnalysis String?  @map("velocity_analysis")
+  operatorName     String   @map("operator_name")
+  notes            String?
+  metadata         Json     @default("{}")
+  project          String   @default("occ")
+
+  @@index([createdAt(sort: Desc)], map: "idx_inventory_actions_created")
+  @@index([actionType], map: "idx_inventory_actions_type")
+  @@index([variantId], map: "idx_inventory_actions_variant")
+  @@index([project], map: "idx_inventory_actions_project")
+  @@map("inventory_actions")
+  @@schema("public")
+}
+
+model Notification {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  priority    String
+  title       String
+  message     String
+  actionLabel String?   @map("action_label")
+  actionUrl   String?   @map("action_url")
+  readAt      DateTime? @map("read_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  project     String    @default("occ")
+
+  @@index([userId], map: "idx_notifications_user")
+  @@index([project], map: "idx_notifications_project")
+  @@index([createdAt(sort: Desc)], map: "idx_notifications_created")
+  @@map("notifications")
+  @@schema("public")
+}
+
+model NotificationPreference {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId               String   @map("user_id") @db.Uuid
+  browserNotifications Boolean  @default(false) @map("browser_notifications")
+  soundEnabled         Boolean  @default(false) @map("sound_enabled")
+  frequency            String   @default("realtime")
+  queueWarnings        Boolean  @default(true) @map("queue_warnings")
+  perfAlerts           Boolean  @default(true) @map("perf_alerts")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  project              String   @default("occ")
+
+  @@unique([userId, project])
+  @@index([userId], map: "idx_notification_prefs_user")
+  @@index([project], map: "idx_notification_prefs_project")
+  @@map("notification_preferences")
+  @@schema("public")
+}
+
+model UserPreference {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  tileOrder    String[] @default([]) @map("tile_order")
+  visibleTiles String[] @default([]) @map("visible_tiles")
+  defaultView  String   @default("grid") @map("default_view")
+  theme        String   @default("auto")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  project      String   @default("occ")
+
+  @@unique([userId, project])
+  @@index([userId], map: "idx_user_preferences_user")
+  @@index([project], map: "idx_user_preferences_project")
+  @@map("user_preferences")
+  @@schema("public")
+}
+
+model SocialPost {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain   String    @map("shop_domain")
+  platform     String
+  status       String
+  content      String
+  mediaUrls    String[]  @default([]) @map("media_urls")
+  scheduledAt  DateTime? @map("scheduled_at") @db.Timestamptz(6)
+  publishedAt  DateTime? @map("published_at") @db.Timestamptz(6)
+  publerPostId String?   @map("publer_post_id")
+  createdBy    String    @map("created_by")
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  metadata     Json      @default("{}")
+  project      String    @default("occ")
+
+  @@index([shopDomain, status, createdAt(sort: Desc)], map: "idx_social_posts_shop_status")
+  @@index([platform], map: "idx_social_posts_platform")
+  @@index([scheduledAt], map: "idx_social_posts_scheduled")
+  @@index([project], map: "idx_social_posts_project")
+  @@map("social_posts")
+  @@schema("public")
 }

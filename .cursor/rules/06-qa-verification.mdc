@@ -1,0 +1,111 @@
+---
+description: QA code verification protocol using MCP tools
+---
+# QA Code Verification Protocol
+
+**Effective**: 2025-10-20  
+**Applies to**: QA Helper agent
+
+## MANDATORY: Verify Code Using Tools (Not Just Reading)
+
+When reviewing ANY agent's code, QA MUST validate using tools.
+
+### Verification Requirements by Code Type
+
+**Prisma code** → Pull Prisma docs:
+```
+mcp_context7_get-library-docs("/prisma/docs", "topic-from-code")
+```
+- Verify schema patterns match official docs
+- Check multi-schema configuration if applicable
+- Confirm no unsafe migration commands
+
+**React Router 7 code** → Pull React Router docs:
+```
+mcp_context7_get-library-docs("/react-router/react-router", "topic-from-code")
+```
+- Verify routing patterns (NOT Remix patterns)
+- Check loader/action implementations
+- Confirm no `@remix-run/*` imports
+
+**Shopify integration** → Use Shopify Dev MCP:
+```
+mcp_shopify_validate_graphql_codeblocks
+mcp_shopify_validate_component_codeblocks
+```
+- Validate ALL GraphQL queries
+- Validate ALL Polaris components
+- Check for deprecated patterns
+
+**TypeScript code** → Pull TypeScript docs:
+```
+mcp_context7_get-library-docs("/microsoft/TypeScript", "topic-from-code")
+```
+- Verify type definitions
+- Check generic usage
+- Confirm best practices
+
+**API integrations** → Pull relevant library docs:
+- Google Analytics: `/websites/developers_google_analytics...`
+- Supabase: `/supabase/supabase`
+- OpenAI: `/openai/openai-node`
+- LlamaIndex: `/run-llama/LlamaIndexTS`
+
+### Evidence Format (Log in QA Feedback)
+
+```md
+## Code Review: [Feature/File]
+- Verified using: Context7 `/library/path` - topic: [what I checked]
+- Official docs say: [key requirement from docs]
+- Code matches: ✅ / ❌ [explain if mismatch]
+- Recommendation: [pass / request changes]
+```
+
+### Example QA Verification (Real)
+
+```md
+## Code Review: Prisma Schema Update
+
+- Verified using: Context7 `/prisma/docs` - topic: "multi-schema support"
+- Official docs say: "ALL models need @@schema when datasource has schemas array"
+- Code matches: ✅ All 3 models (Session, DashboardFact, DecisionLog) have @@schema("public")
+- Recommendation: PASS
+```
+
+## What QA Must Check
+
+**Database Safety**:
+- [ ] No `prisma migrate deploy` in [fly.toml](mdc:fly.toml)
+- [ ] No `prisma db push` in [package.json](mdc:package.json)
+- [ ] Schema changes have CEO approval
+- [ ] Impact analysis present for schema modifications
+
+**Tool-First Compliance**:
+- [ ] Engineer's feedback shows Context7/web_search calls BEFORE code changes
+- [ ] Specific docs quoted in feedback
+- [ ] Patterns match official library docs
+
+**Code Quality**:
+- [ ] Matches design specs (reference [docs/design/](mdc:docs/design/))
+- [ ] Tests present or justified
+- [ ] No deprecated patterns (check using Context7)
+
+## Enforcement
+
+**QA must NOT pass code without**:
+- Tool-based verification evidence
+- Official docs comparison
+- Logged verification in QA feedback
+
+**Manager will REJECT QA approval if**:
+- No tool verification evidence
+- Code doesn't match official docs
+- QA relied solely on reading code (not tools)
+
+## References
+
+- Full policy: [docs/RULES.md](mdc:docs/RULES.md) QA-Specific section
+- Agent checklist: [docs/runbooks/agent_startup_checklist.md](mdc:docs/runbooks/agent_startup_checklist.md) QA protocol
+- Database safety: [docs/RULES.md](mdc:docs/RULES.md) lines 86-141
+
+**Training data is outdated. QA must verify using tools, not LLM knowledge alone.**

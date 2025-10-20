@@ -4,12 +4,44 @@
 
 - [ ] Navigate to repo root ~/HotDash/hot-dash/ or /home/justin/HotDash/hot-dash/
 
-## 0) Align to the Star (1–2 min)
+## 0) MCP Tools Verification (MANDATORY FIRST STEP - 90 sec)
+
+**⚠️ CRITICAL: Manager follows same tool-first rules as agents. Training data is outdated.**
+
+- [ ] **Context7 MCP**: For EVERY library I'll work with today, pull official docs FIRST:
+  - About to review Prisma code? → `mcp_context7_get-library-docs("/prisma/docs", "topic")`
+  - About to make React Router 7 decisions? → `mcp_context7_get-library-docs("/react-router/react-router", "topic")`
+  - About to configure TypeScript? → `mcp_context7_get-library-docs("/microsoft/TypeScript", "topic")`
+  - About to work with Supabase? → `mcp_context7_get-library-docs("/supabase/supabase", "topic")`
+  - About to fix Google Analytics? → `mcp_context7_get-library-docs("/websites/developers_google_analytics...", "topic")`
+  - About to configure OpenAI SDK? → `mcp_context7_get-library-docs("/openai/openai-node", "topic")`
+  - About to work with LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "topic")`
+
+- [ ] **Log Tool Usage in Manager Feedback**:
+  ```md
+  ## HH:MM - Context7: [Library Name]
+  - Topic: [what I'm investigating/fixing]
+  - Key Learning: [specific requirement discovered]
+  - Applied to: [decision made / files changed]
+  ```
+
+- [ ] **Web Search for Current Info**: If Context7 doesn't have the library, use `web_search` for official docs
+  - Example: `web_search("Supabase direct connection vs pooler official docs")`
+
+**Why This Matters (Learned 2025-10-20)**: 
+- Manager's training data is 6-12 months old (same as agents)
+- Today's P0 fixes: 3 issues, 13 failed deploys, 39 minutes wasted by guessing
+- Tool-first approach: 3 issues, 3 deploys, 9 minutes total (30 min savings)
+- **Lead by example**: CEO audits Manager's tool usage same as Manager audits agents
+
+**Real Examples**: See RULES.md "Real-World Examples" section for today's Prisma/GA/Supabase P0 fixes
+
+## 1) Align to the Star (1–2 min)
 
 - [ ] Skim diffs in `docs/NORTH_STAR.md` and `docs/RULES.md` (if changed since yesterday).
 - [ ] Open `docs/OPERATING_MODEL.md` header; confirm the pipeline: **Signals → Suggestions → Approvals → Actions → Audit → Learn**.
 
-## 1) Repo & CI Guardrails (2–4 min)
+## 2) Repo & CI Guardrails (2–4 min)
 
 - [ ] **Status checks green on `main`**: _Docs Policy, Danger, Gitleaks, Validate AI Agent Config_.
 - [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis).
@@ -21,14 +53,14 @@
   ```
   _If any fail: stop, fix, commit before continuing._
 
-## 2) Tools & MCP Health (2–3 min)
+## 3) Tools & MCP Health (2–3 min)
 
 - [ ] `shopify version` OK; `supabase --version` OK.
 - [ ] Chatwoot API reachable (`npm run ops:check-chatwoot-health`).
 - [ ] **Agents SDK/HITL** config intact: `app/agents/config/agents.json` has `ai-customer.human_review: true` and reviewers.
 - [ ] (If social enabled) Publer environment secret present (never hard-coded).
 
-## 3) Manager-Controlled Git — Daily Flow (new)
+## 4) Manager-Controlled Git — Daily Flow (new)
 
 - [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
 - [ ] For each agent with a WORK COMPLETE block today:
@@ -37,15 +69,15 @@
   - Push and create PR (`gh pr create ...`)
 - [ ] Merge when CI green; update direction to next task
 
-## 3) Project status review and Agent direction (3–5 min)
+## 5) Project status review and Agent direction (3–5 min)
 
-### 3.1 At-a-glance (30–45 sec)
+### 5.1 At-a-glance (30–45 sec)
 
 - [ ] **Milestone** on track? (tasks ≤ 2-day molecules)
 - [ ] **CI** green on active PRs (Docs Policy, Danger, Gitleaks, AI Config)
 - [ ] **Main** releasable (build/smoke pass)
 
-### 3.2 Feedback sweep **first** (60–90 sec)
+### 5.2 Feedback sweep **first** (60–90 sec)
 
 For each active agent:
 
@@ -54,7 +86,7 @@ For each active agent:
 - [ ] Tag each blocker with **owner** and **ETA** (you or agent)
 - [ ] If a decision is needed, add a short **Issue comment** on the task (not in feedback)
 
-### 3.3 Issues & PRs (gate sanity) (60–90 sec)
+### 5.3 Issues & PRs (gate sanity) (60–90 sec)
 
 For each **Issue (label: task)** and its linked PR:
 
@@ -65,37 +97,37 @@ For each **Issue (label: task)** and its linked PR:
 - [ ] **Ship Gate (if merging today):** rollback noted; changelog if user-visible
 - [ ] Missing anything? Comment on the PR with the gap and reassign
 
-### 3.4 Prioritize blockers (30–45 sec)
+### 5.4 Prioritize blockers (30–45 sec)
 
 - [ ] Rank top 3 blockers (env/data/API/review)
 - [ ] Decide per blocker: **unblock now**, **de-scope**, or **timebox & escalate**
 - [ ] Record the decision in the **Issue comment** (link from feedback)
 
-### 3.5 Update agent direction (45–60 sec)
+### 5.5 Update agent direction (45–60 sec)
 
 For each active agent:
 
 - [ ] Open `docs/directions/<agent>.md` file must follow template `docs/directions/agenttemplate.md`
 - [ ] **Set today’s objective** (≤ 2-day molecule) and **constraints**
-- [ ] Reflect answers/decisions from step **3.2/3.4** into the direction file
-- [ ] **Archive/remove** completed items (leave “done” note + PR link)
+- [ ] Reflect answers/decisions from step **5.2/5.4** into the direction file
+- [ ] **Archive/remove** completed items (leave "done" note + PR link)
 - [ ] Confirm the **task → Issue → PR** chain is explicit
 
-### 3.6 Sandboxes & safety (quick pass)
+### 5.6 Sandboxes & safety (quick pass)
 
 - [ ] Diffs stay **within Allowed paths** (Danger enforces)
 - [ ] No new `.md` outside allow-list (Docs Policy enforces)
 - [ ] No secrets in code/logs; push protection **ON**
 - [ ] Dev mode: **no customer messaging, payments, or production Shopify mutations**
 
-### 3.7 Today plan (30 sec)
+### 5.7 Today plan (30 sec)
 
 - [ ] Assign/resize 10–15 molecules **per agent**; confirm DoD + Allowed paths
 - [ ] Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`
 
 > **Note:** Approvals/HITL is **out of scope in build/dev mode**. If the UI needs sample approvals to render, use **fixture entries** with `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.
 
-## 4 Drift Guard (2–4 min)
+## 6) Drift Guard (2–4 min)
 
 - [ ] Run docs policy again on your working branch:
   ```bash
@@ -108,7 +140,7 @@ For each active agent:
   ```
 - [ ] Glance for any stray `.md` or cross‑agent edits in repo and Bounce them.
 
-## 5 Quick Health Lights (Tiles should be green)
+## 7) Quick Health Lights (Tiles should be green)
 
 - [ ] Tile P95 < **3s** (prod).
 - [ ] Nightly rollup error rate < **0.5%** (last 24h).

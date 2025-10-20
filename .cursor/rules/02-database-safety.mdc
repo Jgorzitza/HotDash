@@ -1,0 +1,75 @@
+---
+alwaysApply: true
+---
+# Database Safety (MANDATORY)
+
+**Effective**: 2025-10-20  
+**CRITICAL**: All deployment paths are READ-ONLY for database schema
+
+## Verified Safe Configuration
+
+**[fly.toml](mdc:fly.toml)** (line 16):
+```toml
+release_command = "npx prisma generate"
+```
+- ✅ SAFE: Only generates Prisma client
+- ❌ NEVER add: migrations, db push, db pull
+
+**[package.json](mdc:package.json)** (line 16):
+```json
+"setup": "prisma generate"
+```
+- ✅ SAFE: Only generates Prisma client
+- ❌ NEVER add: migrations, db push, schema modifications
+
+**[docker-entrypoint.sh](mdc:docker-entrypoint.sh)**:
+- ✅ SAFE: Only handles Google Analytics credentials
+- ❌ NEVER add: database operations
+
+## What Deployments Will NOT Do
+
+- ❌ Modify tables (`prisma migrate deploy` - FORBIDDEN)
+- ❌ Push schema changes (`prisma db push` - FORBIDDEN)
+- ❌ Drop columns (`--accept-data-loss` - FORBIDDEN)
+- ❌ Delete data (no reset operations)
+
+## Agent Data PRESERVED on Every Deploy
+
+- ✅ Session records (Shopify OAuth sessions)
+- ✅ DashboardFact records (analytics, usage data)
+- ✅ DecisionLog records (audit trail)
+- ✅ ALL existing database records
+
+## Schema Changes Require CEO Approval
+
+**Process** (documented in [docs/RULES.md](mdc:docs/RULES.md)):
+1. Engineer creates migration file locally
+2. Documents changes in PR with impact analysis
+3. Manager reviews for safety
+4. **CEO approves** before merge
+5. Manager applies migration manually using SSH console
+6. Evidence logged in manager feedback
+
+## Forbidden Commands in Deployment Paths
+
+**NEVER add these to [fly.toml](mdc:fly.toml), [package.json](mdc:package.json), or [docker-entrypoint.sh](mdc:docker-entrypoint.sh)**:
+- ❌ `prisma migrate deploy`
+- ❌ `prisma migrate dev`
+- ❌ `prisma db push`
+- ❌ `prisma db pull`
+- ❌ `--accept-data-loss` flag
+- ❌ ANY automated schema modification
+
+## Enforcement
+
+**Manager will REJECT PRs that**:
+- Add migration commands to deployment paths
+- Add `db push` to fly.toml or package.json
+- Include `--accept-data-loss` flags
+- Attempt automated schema modifications
+
+**Reference**: [docs/RULES.md](mdc:docs/RULES.md) "Database Safety" section (lines 86-141)
+
+**Current schema**: [prisma/schema.prisma](mdc:prisma/schema.prisma) - Multi-schema support with `@@schema("public")` attributes
+
+**Database schema is FIXED. Deployments are READ-ONLY.**

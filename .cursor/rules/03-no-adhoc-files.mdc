@@ -1,0 +1,88 @@
+---
+alwaysApply: true
+---
+# No Ad-Hoc Documentation Files (STRICT)
+
+**Effective**: 2025-10-20  
+**Applies to**: ALL agents including Manager
+
+## The 3-Question Test (MANDATORY)
+
+Before creating ANY new .md file, ask:
+
+1. **Can this go in my feedback file?**
+   - YES → Use `feedback/{agent}/{YYYY-MM-DD}.md` and STOP
+   - NO → Continue to Q2
+
+2. **Is this in allowed list?** (See [docs/RULES.md](mdc:docs/RULES.md) lines 5-24)
+   - YES → Proceed (only if CEO approved)
+   - NO → Continue to Q3
+
+3. **Did CEO explicitly request this file?**
+   - YES → Get written approval first
+   - NO → **DO NOT CREATE** (use feedback file)
+
+## Forbidden Patterns
+
+**NEVER create**:
+- ❌ Status/incident: `STATUS_*.md`, `URGENT_*.md`, `FIX_*.md`, `P0_*.md`, `CRITICAL_*.md`
+- ❌ Checklists/plans: `*_CHECKLIST.md`, `DEPLOY_*.md`, `*_PLAN.md`
+- ❌ Analysis/reports: `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`, `*_REPORT.md`
+- ❌ Examples/implementation: `*_EXAMPLES.md`, `*_IMPLEMENTATION_*.md`, `*_LOCKED.md`
+- ❌ Coordination: `*_to_*_coordination.md`, `HANDOFF_*.md`
+
+## Allowed Documentation (CI-enforced)
+
+```
+README.md
+APPLY.md
+docs/NORTH_STAR.md
+docs/RULES.md
+docs/OPERATING_MODEL.md
+docs/ARCHIVE_INDEX.md
+docs/README.md
+docs/roadmap.md
+docs/runbooks/{manager_*,agent_*,ai_agent_review_checklist.md,drift_checklist.md}
+docs/directions/<agent|role>.md
+docs/manager/{PROJECT_PLAN.md,IMPLEMENTATION_PLAYBOOK.md}
+docs/planning/<agent>-<task>-<YYYYMMDD>.md  # TTL 2 days
+docs/specs/**
+docs/integrations/**
+feedback/<agent>/<YYYY-MM-DD>.md
+docs/_archive/**
+mcp/**
+```
+
+## Self-Correction Example (2025-10-20)
+
+**Manager initially created**:
+- ❌ `docs/TOOL_FIRST_EXAMPLES.md` (violation: examples/report)
+- ❌ `docs/TOOL_FIRST_IMPLEMENTATION_LOCKED.md` (violation: status/implementation)
+
+**Corrective action**:
+- ✅ Merged content into [docs/RULES.md](mdc:docs/RULES.md) (existing file)
+- ✅ Logged status in `feedback/manager/2025-10-20-agent-coordination.md`
+- ✅ Deleted both files
+
+## Where Content Should Go
+
+- **Progress/status**: Your feedback file (`feedback/{agent}/{YYYY-MM-DD}.md`)
+- **Examples**: Inline in [docs/RULES.md](mdc:docs/RULES.md) or relevant runbook
+- **Implementation notes**: Manager feedback file
+- **Analysis**: Manager feedback file or artifacts/{agent}/ directory
+
+## Enforcement
+
+**Manager audits daily**:
+- Root .md files (must be ≤ 6)
+- docs/ directory (only allowed patterns)
+- Violations → archive to docs/_archive/
+
+**Agents must**:
+- Use existing docs structure
+- Consolidate into feedback files
+- Reference [docs/RULES.md](mdc:docs/RULES.md) for allowed list
+
+**Reference**: [docs/RULES.md](mdc:docs/RULES.md) "No Ad-Hoc Files" section (lines 26-70)
+
+**When in doubt: Use your feedback file, not a new .md file.**
