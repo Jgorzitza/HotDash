@@ -27,6 +27,39 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 ---
 
+## P0 URGENT: Fix Chatwoot Gem Dependencies (START NOW)
+
+**Escalated From**: Data agent (2025-10-20T17:52Z)
+
+**Issue**: Chatwoot database migrations fail due to missing gem
+- Error: `NameError: uninitialized constant ActsAsTaggableOn::Taggable::Cache`
+- Impact: Cannot run `rails db:migrate`, 89 pending migrations blocked
+- Blocks: Support SUPPORT-001, AI-Customer testing
+
+**Root Cause**: Chatwoot Docker image missing `acts-as-taggable-on` gem
+
+**Your Task**: Fix Chatwoot application dependencies
+
+### Solution: Update Chatwoot Gemfile & Rebuild
+
+**NO CEO APPROVAL NEEDED** - This is a technical gem dependency fix
+
+**Steps**:
+1. Check Chatwoot Gemfile for acts-as-taggable-on gem
+2. If missing: Add to Gemfile and rebuild Docker image
+3. Redeploy hotdash-chatwoot app
+4. Test migrations: `fly ssh console -a hotdash-chatwoot -C "bundle exec rails db:migrate"`
+5. Verify: Check logs for "column settings does not exist" (should be gone)
+6. Confirm in manager feedback when complete
+
+**Time**: 30-45 minutes
+**Priority**: P0 - Blocks Support & AI-Customer
+**Chatwoot Repo**: Check if we have Chatwoot Dockerfile/config
+
+**After Fix**: Data agent can complete migrations, Support can proceed with testing
+
+---
+
 ## Immediate Tasks
 
 ### DEVOPS-001: Monitor Current Deployment Health (Ongoing)
