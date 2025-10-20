@@ -23,21 +23,23 @@
 **Blocker**: Infrastructure monitoring cannot verify app health
 
 **Implementation**:
+
 ```typescript
 export async function loader() {
   const checks = {
     db: await checkDatabase(), // Supabase ping
     shopify: await checkShopify(), // Test API call
   };
-  const allHealthy = Object.values(checks).every(c => c === "ok");
+  const allHealthy = Object.values(checks).every((c) => c === "ok");
   return Response.json(
     { status: allHealthy ? "ok" : "degraded", checks },
-    { status: allHealthy ? 200 : 503 }
+    { status: allHealthy ? 200 : 503 },
   );
 }
 ```
 
 **Requirements**:
+
 - Response time: <500ms
 - Test locally: `curl http://localhost:3000/health`
 - Deploy: `fly deploy`
@@ -54,12 +56,14 @@ export async function loader() {
 **Blocker**: Security compliance unknown
 
 **Tables to Verify**:
+
 1. `ads_metrics_daily`
 2. `agent_run`
 3. `agent_qc`
 4. `creds_meta`
 
 **Steps**:
+
 1. Connect to production Supabase database
 2. Run `supabase/rls_tests.sql` script
 3. Document pass/fail for each table in feedback
@@ -78,6 +82,7 @@ export async function loader() {
 **Manager Verification**: ✅ **IT IS CONFIGURED AND WORKING**
 
 **Evidence**:
+
 - Manager used Chrome DevTools MCP today
 - Tool calls successful: take_snapshot, list_console_messages, list_network_requests, take_screenshot
 - Inspected production app: https://admin.shopify.com/store/hotroddash/apps/hotdash
@@ -85,6 +90,7 @@ export async function loader() {
 **Note**: `mcp/ALL_SYSTEMS_GO.md` may be outdated. Chrome DevTools MCP is actively configured in Cursor settings.
 
 **Your Tasks**:
+
 1. **NOW**: Execute QA-003 through QA-014 (7 UI/UX molecules with Chrome DevTools MCP)
 2. **When Engineer completes**: Retest QA-002 (/health endpoint)
 3. **When Data completes**: Review RLS verification results
@@ -103,6 +109,7 @@ export async function loader() {
 **Tests**: `tests/unit/ads/metrics.spec.ts`
 
 **Fixes Needed**:
+
 1. `formatCentsToDollars()`:
    - Add thousands separator: `$2,500.00` not `$2500.00`
    - Fix negative sign: `-$500.00` not `$-500.00`
