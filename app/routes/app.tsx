@@ -2,6 +2,7 @@ import type { HeadersFunction, LoaderFunctionArgs } from "react-router";
 import { Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
+import enTranslations from "@shopify/polaris/locales/en.json";
 
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
@@ -38,7 +39,7 @@ export default function App() {
   const { apiKey, mockMode, pendingCount } = useLoaderData<typeof loader>();
 
   return (
-    <AppProvider embedded apiKey={apiKey}>
+    <AppProvider embedded apiKey={apiKey} i18n={enTranslations}>
       <s-app-nav>
         <s-link href="/app">Dashboard</s-link>
         <s-link href="/approvals">
