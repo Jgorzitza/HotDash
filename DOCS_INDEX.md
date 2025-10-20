@@ -47,28 +47,33 @@
 
 ---
 
-## Audit Process (Manager runs monthly)
+## Audit Process (Manager runs DAILY)
 
 ```bash
-# 1. Find root-level .md files older than 7 days
-find . -maxdepth 1 -name "*.md" ! -name "README.md" -mtime +7
+# Manager runs at end of each session:
+cd /home/justin/HotDash/hot-dash
 
-# 2. Find unused runbooks (no git access in 90 days)
-git log --since="90 days ago" --name-only --pretty=format: | grep "docs/runbooks" | sort -u
+# 1. Find root-level .md files (candidates for archive)
+find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "DOCS_INDEX.md" ! -name "SECURITY.md" ! -name "CONTRIBUTING.md"
 
-# 3. Archive candidates
-mkdir -p docs/archive/$(date +%Y-%m)
-# Move files listed above
+# 2. Read each file, decide: KEEP or ARCHIVE
+# 3. Archive to docs/archive/YYYY-MM-DD/
+mkdir -p docs/archive/$(date +%Y-%m-%d)
+# Move obsolete files
+
+# 4. Update "Current Status" section below
 ```
 
 ---
 
 ## Current Status (2025-10-20)
 
-**Total .md files**: TBD (run audit)  
+**Total .md files**: 2,602  
 **Required (Tier 1+2)**: ~107 (16 direction + 30 feedback + 57 design + 4 governance)  
-**Last audit**: Never  
-**Next audit due**: 2025-11-20
+**Root files**: 5 (README, SECURITY, CONTRIBUTING, AGENT_LAUNCH_PROMPT_OCT20, COMPLETE_VISION_OVERVIEW)  
+**Last audit**: 2025-10-20T09:05Z  
+**Archived**: 14 files to docs/archive/2025-10-20/ (incident reports, status updates, one-time configs)  
+**Next audit due**: DAILY (end of each Manager session)
 
 ---
 
