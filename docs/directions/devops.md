@@ -83,22 +83,48 @@ fly logs -a hotdash-chatwoot | grep -i "settings"
 
 **Note**: Gem (acts-as-taggable-on) is already installed - just need to run migrations
 
-### ✅ UPDATE: Manager Decision on Your Investigation
+### ✅ MANAGER DECISION: Proceed with Option 1 (Simplest)
 
 **Your Investigation**: ✅ EXCELLENT work identifying version incompatibility
 **Your Recommendation**: Option 2 (Older Chatwoot image)
-**Manager Decision**: ✅ APPROVED - Proceed with Option 2
+**Manager Decision**: ✅ APPROVED **Option 1 instead** (Simpler, faster)
 
-**Execute Option 2**:
-1. Find compatible Chatwoot image (pre-20231211 migration OR compatible with acts-as-taggable-on v12)
-2. Update fly.toml or deployment to use pinned image tag
-3. Redeploy hotdash-chatwoot
-4. Run migrations: `fly ssh console -a hotdash-chatwoot -C "bundle exec rails db:migrate"`
-5. Verify: Test admin login at https://hotdash-chatwoot.fly.dev
-6. Confirm in manager feedback when complete
+**Why Option 1 is Better**:
+- ✅ 15 minutes vs 45 minutes
+- ✅ Targeted fix (one line) vs full redeploy
+- ✅ Gets Chatwoot functional NOW
+- ✅ Label caching is performance optimization (can fix later if needed)
 
-**Timeline**: 45 minutes (as you estimated)
-**Approval**: ✅ MANAGER APPROVED (no CEO needed for technical decisions)
+**Execute Option 1**:
+```bash
+# Connect to Chatwoot app
+fly ssh console -a hotdash-chatwoot
+
+# Navigate to migrations directory
+cd /app/db/migrate
+
+# Edit the problematic migration
+vi 20231211010807_add_cached_labels_list.rb
+# OR
+nano 20231211010807_add_cached_labels_list.rb
+
+# Find line: ActsAsTaggableOn::Taggable::Cache.included(Conversation)
+# Delete or comment it out
+
+# Save and exit
+
+# Run migrations
+bundle exec rails db:migrate RAILS_ENV=production
+
+# Verify
+bundle exec rails runner "puts Account.column_names.include?('settings')"
+
+# Exit
+exit
+```
+
+**Timeline**: 15 minutes
+**Approval**: ✅ MANAGER APPROVED
 
 **After Complete**: Support resumes SUPPORT-001, AI-Customer can integrate
 
