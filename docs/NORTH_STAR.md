@@ -92,10 +92,63 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **M6: Growth v1 (read-only analytics + recs)**; evidence-first suggestions.
 - **M7: HITL Posting** (approve-to-post) + weekly growth report tile.
 
+## MCP-First Development (MANDATORY - Effective 2025-10-19)
+
+**All development agents MUST use MCP tools** - non-negotiable.
+
+### Required MCP Tools
+
+**1. Shopify Dev MCP** (MANDATORY for ALL Shopify code):
+- `learn_shopify_api` - Learn API structure FIRST
+- `search_docs_chunks` - Find documentation
+- `introspect_graphql_schema` - Explore schema
+- `validate_graphql_codeblocks` - VALIDATE before committing
+- **NO Shopify GraphQL without MCP validation**
+
+**2. Context7 MCP** (MANDATORY for ALL library usage):
+- `resolve-library-id` - Find correct library
+- `get-library-docs` - Get official patterns
+- **Required for**: React Router 7, Prisma, Polaris, all npm packages
+- **NO library code without MCP verification**
+
+**3. Chrome DevTools MCP** (for UI testing):
+- Required for: Designer, Pilot, QA agents
+- Production testing on live app
+
+### React Router 7 ONLY (NOT Remix)
+
+**FORBIDDEN** ❌:
+- `@remix-run/*` imports (any)
+- `json()` helper from Remix
+- Remix types/patterns
+
+**REQUIRED** ✅:
+- `import from "react-router"` only
+- `Response.json()` for all loaders
+- `Route.LoaderArgs` types
+- Context7 MCP verification
+
+**Enforcement**: `rg "@remix-run" app/` MUST return NO RESULTS
+
+**See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md`
+
+### Evidence Requirements
+
+**Every molecule touching Shopify/libraries MUST log**:
+```
+MCP Tools Used:
+- shopify-dev-mcp: Conversation ID xxx
+- context7: Verified React Router 7 pattern
+```
+
+**Manager will REJECT**: PRs without MCP evidence or with @remix-run imports
+
 ## Definition of Done (global)
 
 1. Acceptance criteria satisfied with tests/evidence; rollback documented.
 2. Calls are **MCP/SDK‑backed**; no speculative endpoints.
-3. HITL reviews/grades captured for customer‑facing work.
-4. Governance: Issue linkage, **Allowed paths**, CI checks green; no disallowed `.md`.
-5. Metrics updated if behavior changed; audit entry present.
+3. **MCP validation evidence logged** for all Shopify GraphQL and library usage.
+4. HITL reviews/grades captured for customer‑facing work.
+5. Governance: Issue linkage, **Allowed paths**, CI checks green; no disallowed `.md`.
+6. Metrics updated if behavior changed; audit entry present.
+7. **NO @remix-run imports** - React Router 7 only.

@@ -101,3 +101,31 @@ Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
 
+
+---
+
+## 🚨 P0 URGENT FIX — 2025-10-19T22:30:00Z
+
+**Issue**: CX Pulse tile showing "Unable to fetch Chatwoot conversations"
+
+**Root Cause**: Chatwoot integration error (likely credentials or API connection)
+
+**Your P0 Task** (BEFORE continuing other molecules):
+
+**SUP-P0**: Fix CX Pulse Tile Chatwoot Error (30 min)
+1. Check Chatwoot credentials in Fly secrets
+2. Test Chatwoot API connection
+3. Review error logs from getEscalations() function
+4. Fix connection/credential issue
+5. Verify tile loads data successfully
+
+**Test**: Reload https://admin.shopify.com/store/hotroddash/apps/hotdash
+- CX Pulse tile should show data (not error)
+
+**Evidence Required**: 
+- Error logs analyzed
+- Fix applied
+- Screenshot of working tile
+
+**Priority**: P0 - App is live, this tile is broken
+

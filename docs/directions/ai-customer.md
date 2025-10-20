@@ -105,3 +105,23 @@ Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
 
+
+---
+
+## ✅ BLOCKER REMOVED — 2025-10-19T22:30:00Z
+
+**Status**: App is NOW WORKING in Shopify Admin! ✅
+
+**What Changed**:
+- Shopify adapter import added (crypto error fixed)
+- Database password updated
+- App deployed successfully
+
+**Your Tasks**: Proceed with all 15 molecules immediately
+
+**NOTE**: CX Pulse tile has a Chatwoot error - Support agent is fixing (P0)
+- You can proceed with your HITL testing
+- Coordinate with Support on Chatwoot integration
+
+**Feedback File**: feedback/ai-customer/2025-10-19.md
+
