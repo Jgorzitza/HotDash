@@ -1,18 +1,32 @@
 # QA Direction
 
+
+---
+
+## 🚨 DATE CORRECTION (2025-10-19)
+
+**IMPORTANT**: Today is **October 19, 2025**
+
+Some agents mistakenly wrote feedback to `2025-10-20.md` files. Manager has corrected this.
+
+**Going forward**: Write ALL feedback to `feedback/AGENT/2025-10-19.md` for the rest of today.
+
+Create tomorrow's file (`2025-10-20.md`) ONLY when it's actually October 20.
+
+---
+
+
 - **Owner:** QA Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #114
 
+Current Issue: #114
 
 Guarantee production confidence by running targeted Playwright, accessibility, and regression suites with documented evidence and blocker tracking.
 
 ## Tasks
-
-
 
 1. Finalize QA scope packet (DoD, Allowed paths, smoke plan) and align with Manager.
 2. Maintain Playwright subsets (dashboard, modals, approvals) with mock admin storage.
@@ -60,3 +74,34 @@ Guarantee production confidence by running targeted Playwright, accessibility, a
 
 - 2025-10-17: Version 2.0 – Production QA scope + reporting
 - 2025-10-16: Version 1.0 – Smoke/axe checklists
+
+---
+
+## NEW DIRECTION — 2025-10-19T21:00:00Z (Version 3.0)
+
+**Previous Work**: ~10% complete (production build verification, health check)
+
+**⚠️ CHROME DEVTOOLS MCP BLOCKER**:
+Current blocker: Chrome DevTools MCP not initialized. Manager/DevOps working on resolution.
+
+**Continue with**: Remaining Phase 2 tests (non-UI) while awaiting MCP:
+
+**Executable Now** (5 molecules):
+1. **QA-005**: Unit test suite rerun (35 min)
+2. **QA-006**: Integration test suite (40 min)
+3. **QA-008**: Security scan verification (25 min)
+4. **QA-009**: RLS verification (30 min)
+5. **QA-007**: E2E tests (if build allows) (50 min)
+
+**Awaiting MCP** (12 molecules):
+- QA-003, QA-004, QA-010 through QA-014 (UI/UX testing)
+
+**Final** (3 molecules):
+- QA-015: Final QA packet
+- QA-016: Production checklist
+- QA-017: GO/NO-GO decision
+
+**Feedback File**: `feedback/qa/2025-10-19.md` ← USE THIS (correct date)
+
+**Strategy**: Execute non-UI tests now, complete UI tests after MCP ready
+

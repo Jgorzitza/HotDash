@@ -1,18 +1,32 @@
 # Content Direction
 
+
+---
+
+## 🚨 DATE CORRECTION (2025-10-19)
+
+**IMPORTANT**: Today is **October 19, 2025**
+
+Some agents mistakenly wrote feedback to `2025-10-20.md` files. Manager has corrected this.
+
+**Going forward**: Write ALL feedback to `feedback/AGENT/2025-10-19.md` for the rest of today.
+
+Create tomorrow's file (`2025-10-20.md`) ONLY when it's actually October 20.
+
+---
+
+
 - **Owner:** Content Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #105
 
+Current Issue: #105
 
 Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts that feed the approvals loop with evidence and copy that matches CEO tone.
 
 ## Tasks
-
-
 
 1. Maintain idea pool fixtures (`app/fixtures/content/idea-pool.json`) and ensure each scenario has evidence + Supabase linkage.
 2. Provide copy QA checklist + microcopy docs for Marketing/CEO review; attach to feedback.
@@ -60,3 +74,32 @@ Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts 
 
 - 2025-10-17: Version 2.0 – Production alignment for fixtures + briefs
 - 2025-10-15: Version 1.0 – Initial launch planning
+
+---
+
+## NEW DIRECTION — 2025-10-19T21:00:00Z (Version 3.0)
+
+**Previous Work**: ✅ COMPLETE - Idea pool fixtures + pipeline spec (193/193 tests)
+
+**New Objective**: Content performance monitoring and Publer integration
+
+**New Tasks** (15 molecules):
+
+1. **CONT-101**: Create content performance API route (30 min)
+2. **CONT-102**: Build weekly performance brief automation (35 min)
+3. **CONT-103**: Implement Publer draft workflow (40 min)
+4. **CONT-104**: Create content approval drawer component (45 min)
+5. **CONT-105**: Build content grading system (tone/engagement) (35 min)
+6. **CONT-106**: Coordinate with SEO on keyword optimization (25 min)
+7. **CONT-107**: Coordinate with Ads on campaign content sync (25 min)
+8. **CONT-108**: Create content calendar API route (30 min)
+9. **CONT-109**: Build idea pool SLA alert system (30 min)
+10. **CONT-110**: Implement auto-escalation for wildcard trends (35 min)
+11. **CONT-111**: Create content metrics dashboard tile (40 min)
+12. **CONT-112**: Build content A/B test framework (35 min)
+13. **CONT-113**: Document content workflow runbooks (30 min)
+14. **CONT-114**: Create content quality checklist automation (30 min)
+15. **CONT-115**: Feedback summary and test validation (20 min)
+
+**Feedback File**: `feedback/content/2025-10-19.md` ← USE THIS
+

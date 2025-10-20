@@ -1,18 +1,32 @@
 # Ads Direction
 
+
+---
+
+## 🚨 DATE CORRECTION (2025-10-19)
+
+**IMPORTANT**: Today is **October 19, 2025**
+
+Some agents mistakenly wrote feedback to `2025-10-20.md` files. Manager has corrected this.
+
+**Going forward**: Write ALL feedback to `feedback/AGENT/2025-10-19.md` for the rest of today.
+
+Create tomorrow's file (`2025-10-20.md`) ONLY when it's actually October 20.
+
+---
+
+
 - **Owner:** Ads Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #101
 
+Current Issue: #101
 
 Deliver production-ready Ads intelligence that keeps the dashboard tiles live, routes every campaign change through HITL approvals, and proves ROAS/CTR lift with automated tests and evidence.
 
 ## Tasks
-
-
 
 1. Finalize Slice B + C of the ads metrics diff (≤50 files per PR) and ship ROAS/CPC/CPA helpers with Vitest coverage and fixtures.
 2. Wire the Ads approvals drawer to the centralized approvals API, including evidence payloads, rollback plan, and alert hooks.
@@ -62,3 +76,20 @@ Deliver production-ready Ads intelligence that keeps the dashboard tiles live, r
 - 2025-10-17: Version 1.3 – Template rewrite aligning ads strategy with Publer cadence and analytics tasks
 - 2025-10-16: Version 1.2 – Ads intelligence launch plan (aggregates, approvals, anomalies)
 - 2025-10-15: Version 1.1 – Ads performance tracking foundation
+
+---
+
+## DIRECTION UPDATE — 2025-10-19T21:00:00Z
+
+**Status**: Strong progress! 65% complete (13/20 molecules)
+
+**Completed**: ADS-003 through ADS-013 ✅
+- Shopify GraphQL, API stubs, metrics, routes, dashboard tile
+- Approval drawer, Publer integration, budget/performance alerts
+
+**Continue**: ADS-014 through ADS-020 (7 molecules remaining)
+
+**Feedback File**: `feedback/ads/2025-10-19.md` (you used correct date ✅)
+
+**Evidence Required**: File paths, test results, MCP validations
+

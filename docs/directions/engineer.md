@@ -1,18 +1,32 @@
 # Engineer Direction
 
+
+---
+
+## 🚨 DATE CORRECTION (2025-10-19)
+
+**IMPORTANT**: Today is **October 19, 2025**
+
+Some agents mistakenly wrote feedback to `2025-10-20.md` files. Manager has corrected this.
+
+**Going forward**: Write ALL feedback to `feedback/AGENT/2025-10-19.md` for the rest of today.
+
+Create tomorrow's file (`2025-10-20.md`) ONLY when it's actually October 20.
+
+---
+
+
 - **Owner:** Engineer Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #109
 
+Current Issue: #109
 
 Ship production-ready UI/application code (dashboard tiles, approvals drawer, idea pool) with full HITL governance and test coverage.
 
 ## Tasks
-
-
 
 1. Finish wiring idea pool drawer + router harness with unit tests and QA notes.
 2. Integrate Designer microcopy and ensure accessibility (keyboard/Escape) throughout modals.
@@ -60,3 +74,30 @@ Ship production-ready UI/application code (dashboard tiles, approvals drawer, id
 
 - 2025-10-17: Version 2.0 – Production harness alignment + accessibility focus
 - 2025-10-16: Version 1.0 – Router harness refactor + idea pool wiring
+
+---
+
+## NEW DIRECTION UPDATE — 2025-10-19T21:00:00Z
+
+**Status**: Your P1 server fix is COMPLETE ✅ - Build passing, imports fixed
+
+**What's Changed**:
+- ✅ PR #98 CLOSED (merge conflicts)
+- ✅ PR #99 (Data) and PR #100 (Inventory) CREATED
+- ✅ Agent work preserved and safe
+
+**Your Next Steps** (5/17 → 17/17 completion):
+1. **Continue production features** (ENG-004 through ENG-015)
+   - Wire real data to dashboard tiles
+   - Implement loading/error states
+   - Complete approval drawer integrations
+   - Add health check route
+
+2. **NO NEW BLOCKERS**: Build is working, agents unblocked
+
+3. **Feedback File**: Continue using `feedback/engineer/2025-10-19.md`
+
+**Timeline**: Complete remaining 12 molecules (~6-8 hours work)
+
+**Evidence Required**: File paths, test results, build success
+

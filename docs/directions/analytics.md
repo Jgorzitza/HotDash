@@ -1,18 +1,32 @@
 # Analytics Direction
 
+
+---
+
+## 🚨 DATE CORRECTION (2025-10-19)
+
+**IMPORTANT**: Today is **October 19, 2025**
+
+Some agents mistakenly wrote feedback to `2025-10-20.md` files. Manager has corrected this.
+
+**Going forward**: Write ALL feedback to `feedback/AGENT/2025-10-19.md` for the rest of today.
+
+Create tomorrow's file (`2025-10-20.md`) ONLY when it's actually October 20.
+
+---
+
+
 - **Owner:** Analytics Agent
 - **Effective:** 2025-10-17
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #104
 
+Current Issue: #104
 
 Launch production-grade analytics pipelines that feed the dashboard tiles, approvals evidence, and growth retros with trustworthy GA4/Shopify metrics under HITL control.
 
 ## Tasks
-
-
 
 1. Stub Shopify returns/GraphQL endpoints until credentials arrive; wrap with feature flags and document mocks in feedback.
 2. Ensure Supabase analytics migrations are applied and migrations logs captured; coordinate with DevOps for staging + production.
@@ -61,3 +75,33 @@ Launch production-grade analytics pipelines that feed the dashboard tiles, appro
 
 - 2025-10-17: Version 2.0 – Production alignment with stubs + rollout plan
 - 2025-10-15: Version 1.0 – Initial direction awaiting integration foundation
+
+---
+
+## ⚠️ CRITICAL - WORK VERIFICATION REQUIRED — 2025-10-19T21:00:00Z
+
+**Status**: DISCREPANCY DETECTED in previous work claims
+
+**Problem**: You reported 5 files complete on Oct 19, but they don't exist in repo:
+- app/lib/analytics/shopify-returns.stub.ts ❌
+- app/lib/analytics/sampling-guard.ts ❌  
+- scripts/sampling-guard-proof.mjs ❌
+- scripts/dashboard-snapshot.mjs ❌
+- scripts/metrics-for-content-ads.mjs ❌
+
+**What Exists**:
+- docs/specs/analytics_pipeline.md ✅ (created Oct 19)
+- app/lib/analytics/ga4.ts ✅
+- scripts/test-ga-analytics.mjs ✅
+
+**Action Required**:
+1. Verify if work was lost/reverted
+2. If work exists elsewhere: Locate and document
+3. If work doesn't exist: Re-execute direction v2.0 tasks
+
+**Do NOT create new work until we verify what happened to previous work.**
+
+**Feedback File**: `feedback/analytics/2025-10-19.md` ← USE THIS
+
+**Manager**: Investigating git history, will provide clarification
+
