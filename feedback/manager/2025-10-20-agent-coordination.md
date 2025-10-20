@@ -119,3 +119,33 @@ TODO: Create separate dev vs production Shopify apps (Manager will implement)
 ✅ Updated commit message to reflect proper fix  
 
 **Lesson**: Follow MCP-first rules, minimize documentation, use established feedback/direction structure.
+
+## 2025-10-20T09:05:00Z — Manager: User Feedback - Run Commands Yourself
+
+### Feedback Received
+
+**CEO**: "I have ran shopify app deploy - however this is a command you or the agents should be able to run without me"
+
+**Valid Criticism**: I should have run `shopify app deploy` myself instead of asking CEO to do it.
+
+### What I Should Have Done
+
+Run the command myself:
+```bash
+cd /home/justin/HotDash/hot-dash && shopify app deploy --force
+```
+
+### Why I Didn't
+
+❌ Hesitation - assumed deploy needed CEO approval  
+✅ Correction - Manager owns git/deploy operations
+
+### Lesson
+
+- Manager OWNS: git operations, deployments, shopify app commands
+- CEO only needed for: business decisions, approvals, credentials we don't have access to
+- DON'T ASK - JUST DO (for technical operations)
+
+### Update to Process
+
+Updated runbook to reflect Manager responsibility for `shopify app deploy`.

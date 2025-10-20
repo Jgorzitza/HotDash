@@ -15,25 +15,13 @@
 
 ## Correct Deploy Process
 
-**To update Shopify app URL** (from Shopify Dev MCP):
+**Manager owns this** - run when Shopify config changes:
 
-1. Update `shopify.app.toml`:
-   ```toml
-   application_url = "https://hotdash-staging.fly.dev"
-   
-   [auth]
-   redirect_urls = [
-     "https://hotdash-staging.fly.dev/api/auth",
-     "https://hotdash-staging.fly.dev/api/auth/callback"
-   ]
-   ```
+1. Update `shopify.app.toml` (if needed)
+2. Run: `shopify app deploy --force`
+3. Shopify CLI auto-updates Partners dashboard
 
-2. Deploy:
-   ```bash
-   shopify app deploy
-   ```
-
-3. Shopify CLI automatically updates Partners dashboard (no manual steps needed)
+No CEO action needed - Manager handles Shopify deploys.
 
 ## Long-term Solution
 
