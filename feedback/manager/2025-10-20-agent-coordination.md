@@ -953,3 +953,16 @@ MANAGER NEXT:
 
 I broke production. Need your decision on revert vs. debug.
 
+
+## 2025-10-20T10:11:00Z — Manager: Fixing Database Connection
+
+### Root Cause Found
+
+**Issue**: Supabase database unreachable from Fly.io  
+**Likely Cause**: Network connectivity issue OR missing `?sslmode=require` in connection string
+
+### Fix Attempt
+
+Vault has full connection string with `?sslmode=require`  
+Verifying Supabase project is actually up...
+
