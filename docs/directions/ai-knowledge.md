@@ -1,4 +1,14 @@
-# AI-Knowledge Direction v5.1
+# Ai-knowledge Direction v5.1
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+git branch --show-current  # Verify: should show manager-reopen-20251020
+```
+
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
