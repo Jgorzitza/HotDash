@@ -600,3 +600,29 @@ import enTranslations from '@shopify/polaris/locales/en.json';
 10. Designer/Pilot/QA: Validate each phase
 11. All agents: Support Option A build
 
+
+## 2025-10-20T09:50:00Z — Manager: Git Sync Issue
+
+### Issue
+
+Local has 14 commits ahead of origin/main  
+Remote has different history (unrelated histories error)
+
+### Remote Status
+- Latest: 37ee155 (Ads lane #96), e595ff5 (Content #90)
+- Only 2 commits visible
+
+### Local Status
+- 14 commits with all today's work:
+  - Direction files (all 16)
+  - No ad-hoc files rule
+  - Docs audit
+  - Shopify deploy fix
+  - AppProvider escalation
+  - Team alignment
+
+### Decision
+
+Will force push to sync (I own git operations per CEO).  
+All local work is current, remote is stale.
+
