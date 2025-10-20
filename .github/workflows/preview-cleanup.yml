@@ -1,0 +1,87 @@
+name: Preview Cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  cleanup-preview:
+    name: Cleanup Preview App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Destroy preview app
+        id: cleanup
+        run: |
+          APP_NAME="hotdash-pr-${{ github.event.pull_request.number }}"
+          
+          # Check if app exists
+          if flyctl apps list | grep -q "$APP_NAME"; then
+            echo "Destroying preview app: $APP_NAME"
+            flyctl apps destroy "$APP_NAME" --yes
+            echo "status=destroyed" >> $GITHUB_OUTPUT
+            echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          else
+            echo "Preview app $APP_NAME does not exist, nothing to clean up"
+            echo "status=not_found" >> $GITHUB_OUTPUT
+            echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Comment on PR
+        if: steps.cleanup.outputs.status == 'destroyed'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const appName = '${{ steps.cleanup.outputs.app_name }}';
+            const mergeStatus = context.payload.pull_request.merged ? 'merged' : 'closed';
+            
+            const body = `## 🧹 Preview Cleanup
+            
+            Preview app \`${appName}\` has been destroyed.
+            
+            **Reason:** PR ${mergeStatus}
+            **Timestamp:** ${new Date().toISOString()}
+            
+            ---
+            *Cleanup completed automatically*
+            `;
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body,
+            });
+
+      - name: Record cleanup
+        if: steps.cleanup.outputs.status == 'destroyed'
+        run: |
+          mkdir -p artifacts/cleanups
+          cat <<MD > artifacts/cleanups/preview-cleanup-pr-${{ github.event.pull_request.number }}.md
+          # Preview Cleanup
+          - PR: #${{ github.event.pull_request.number }}
+          - App: ${{ steps.cleanup.outputs.app_name }}
+          - Reason: PR ${{ github.event.pull_request.merged && 'merged' || 'closed' }}
+          - Cleaned by: ${{ github.actor }}
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          MD
+
+      - name: Upload cleanup artifacts
+        if: steps.cleanup.outputs.status == 'destroyed'
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-cleanup-pr-${{ github.event.pull_request.number }}
+          path: artifacts/cleanups/
+          retention-days: 30
+
+

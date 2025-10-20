@@ -1,0 +1,268 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on semantic version tags (v1.0.0, v1.2.3, etc.)
+
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
+jobs:
+  validate-tag:
+    name: Validate release tag
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.parse.outputs.version }}
+      is_prerelease: ${{ steps.parse.outputs.is_prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse version from tag
+        id: parse
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Check if prerelease (contains -alpha, -beta, -rc)
+          if [[ "$VERSION" =~ -(alpha|beta|rc) ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Releasing version: $VERSION (prerelease: ${is_prerelease:-false})"
+
+      - name: Verify package.json version matches tag
+        run: |
+          PACKAGE_VERSION=$(cat package.json | jq -r '.version')
+          TAG_VERSION="${{ steps.parse.outputs.version }}"
+          
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "❌ Version mismatch:"
+            echo "  package.json: $PACKAGE_VERSION"
+            echo "  Git tag: $TAG_VERSION"
+            exit 1
+          fi
+          
+          echo "✅ Version matches: $PACKAGE_VERSION"
+
+  build-release:
+    name: Build release artifacts
+    runs-on: ubuntu-latest
+    needs: validate-tag
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:unit
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Create release tarball
+        run: |
+          mkdir -p release
+          tar -czf release/hotdash-${{ needs.validate-tag.outputs.version }}.tar.gz \
+            build/ \
+            package.json \
+            package-lock.json \
+            prisma/ \
+            Dockerfile \
+            fly.toml
+          
+          # Generate checksum
+          cd release
+          sha256sum hotdash-${{ needs.validate-tag.outputs.version }}.tar.gz > \
+            hotdash-${{ needs.validate-tag.outputs.version }}.tar.gz.sha256
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ needs.validate-tag.outputs.version }}
+          path: release/
+          retention-days: 90
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [validate-tag, build-release]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-${{ needs.validate-tag.outputs.version }}
+          path: release/
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            echo "First release, generating full changelog"
+            CHANGELOG=$(git log --oneline --pretty=format:"- %s (%h)" | head -20)
+          else
+            echo "Generating changelog from $PREV_TAG to ${GITHUB_REF#refs/tags/}"
+            CHANGELOG=$(git log --oneline --pretty=format:"- %s (%h)" $PREV_TAG..HEAD)
+          fi
+          
+          # Save to file for multiline output
+          {
+            echo "changelog<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const version = '${{ needs.validate-tag.outputs.version }}';
+            const isPrerelease = '${{ needs.validate-tag.outputs.is_prerelease }}' === 'true';
+            const changelog = `${{ steps.changelog.outputs.changelog }}`;
+            
+            // Create release
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${version}`,
+              name: `Release v${version}`,
+              body: `## HotDash v${version}
+
+            ${isPrerelease ? '⚠️ **This is a pre-release version**\n\n' : ''}### Changes
+
+            ${changelog}
+
+            ### Assets
+
+            - \`hotdash-${version}.tar.gz\` - Production build (includes build/, prisma/, Dockerfile)
+            - \`hotdash-${version}.tar.gz.sha256\` - Checksum for verification
+
+            ### Deployment
+
+            For Fly.io deployment:
+            \`\`\`bash
+            # Extract release
+            tar -xzf hotdash-${version}.tar.gz
+
+            # Verify checksum
+            sha256sum -c hotdash-${version}.tar.gz.sha256
+
+            # Deploy
+            flyctl deploy --app YOUR_APP_NAME
+            \`\`\`
+
+            ### Rollback
+
+            To rollback to this version:
+            \`\`\`bash
+            ./scripts/ops/rollback.sh v${version}
+            \`\`\`
+
+            ---
+            **Full Changelog**: https://github.com/${ context.repo.owner }/${ context.repo.repo }/compare/${context.payload.before}...v${version}
+            `,
+              prerelease: isPrerelease,
+              draft: false,
+            });
+            
+            console.log(\`Created release: \${release.data.html_url}\`);
+            
+            // Upload tarball
+            const tarballPath = 'release/hotdash-' + version + '.tar.gz';
+            const tarball = fs.readFileSync(tarballPath);
+            
+            await github.rest.repos.uploadReleaseAsset({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.data.id,
+              name: \`hotdash-\${version}.tar.gz\`,
+              data: tarball,
+            });
+            
+            // Upload checksum
+            const checksumPath = 'release/hotdash-' + version + '.tar.gz.sha256';
+            const checksum = fs.readFileSync(checksumPath, 'utf8');
+            
+            await github.rest.repos.uploadReleaseAsset({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.data.id,
+              name: \`hotdash-\${version}.tar.gz.sha256\`,
+              data: checksum,
+            });
+            
+            console.log('Uploaded release artifacts');
+
+      - name: Record release metadata
+        run: |
+          mkdir -p artifacts/releases
+          cat <<MD > artifacts/releases/release-${{ needs.validate-tag.outputs.version }}.md
+          # Release v${{ needs.validate-tag.outputs.version }}
+          - Version: ${{ needs.validate-tag.outputs.version }}
+          - Prerelease: ${{ needs.validate-tag.outputs.is_prerelease }}
+          - Tag: ${GITHUB_REF#refs/tags/}
+          - Commit: ${{ github.sha }}
+          - Released by: ${{ github.actor }}
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+          ## Artifacts
+          - hotdash-${{ needs.validate-tag.outputs.version }}.tar.gz
+          - hotdash-${{ needs.validate-tag.outputs.version }}.tar.gz.sha256
+          
+          ## Retention
+          - GitHub release: Permanent
+          - Workflow artifacts: 90 days
+          MD
+
+      - name: Upload release metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-metadata-${{ needs.validate-tag.outputs.version }}
+          path: artifacts/releases/
+          retention-days: 365  # Keep release metadata for 1 year
+
+  summary:
+    name: Release summary
+    runs-on: ubuntu-latest
+    needs: [validate-tag, build-release, create-release]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Release v${{ needs.validate-tag.outputs.version }}";
+            echo "";
+            echo "- **Version:** ${{ needs.validate-tag.outputs.version }}";
+            echo "- **Prerelease:** ${{ needs.validate-tag.outputs.is_prerelease }}";
+            echo "- **Tag:** ${GITHUB_REF#refs/tags/}";
+            echo "- **Commit:** ${{ github.sha }}";
+            echo "- **Build:** ${{ needs.build-release.result }}";
+            echo "- **Release:** ${{ needs.create-release.result }}";
+            echo "";
+            echo "**Release URL:** https://github.com/${{ github.repository }}/releases/tag/${GITHUB_REF#refs/tags/}";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+
