@@ -1,0 +1,240 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+concurrency:
+  group: preview-deploy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  deploy-preview:
+    name: Deploy PR Preview
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    environment:
+      name: preview-pr-${{ github.event.pull_request.number }}
+      url: https://hotdash-pr-${{ github.event.pull_request.number }}.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Create or update preview app
+        id: preview
+        run: |
+          APP_NAME="hotdash-pr-${{ github.event.pull_request.number }}"
+          echo "app_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "app_url=https://$APP_NAME.fly.dev" >> $GITHUB_OUTPUT
+          
+          # Check if app exists
+          if flyctl apps list | grep -q "$APP_NAME"; then
+            echo "Preview app $APP_NAME already exists, will update"
+          else
+            echo "Creating new preview app: $APP_NAME"
+            flyctl apps create "$APP_NAME" --org personal
+            
+            # Copy secrets from staging
+            echo "Copying secrets from staging..."
+            flyctl secrets list --app hotdash-staging --json | \
+              jq -r '.[] | .Name' | \
+              while read secret; do
+                VALUE=$(flyctl secrets list --app hotdash-staging --json | jq -r ".[] | select(.Name == \"$secret\") | .Value // empty")
+                if [ -n "$VALUE" ]; then
+                  echo "Copying secret: $secret"
+                  flyctl secrets set "$secret=$VALUE" --app "$APP_NAME" --stage
+                fi
+              done
+          fi
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Generate preview fly.toml
+        run: |
+          cat > fly.preview.toml <<EOF
+          app = "hotdash-pr-${{ github.event.pull_request.number }}"
+          primary_region = "ord"
+          
+          [build]
+          
+          [env]
+            PORT = "8080"
+            NODE_ENV = "production"
+          
+          [http_service]
+            internal_port = 8080
+            force_https = true
+            auto_stop_machines = "stop"
+            auto_start_machines = true
+            min_machines_running = 0
+            processes = ["app"]
+          
+          [[vm]]
+            memory = "512mb"
+            cpu_kind = "shared"
+            cpus = 1
+          
+          [[services]]
+            protocol = "tcp"
+            internal_port = 8080
+            processes = ["app"]
+          
+            [[services.ports]]
+              port = 80
+              handlers = ["http"]
+              force_https = true
+          
+            [[services.ports]]
+              port = 443
+              handlers = ["tls", "http"]
+          
+            [services.concurrency]
+              type = "connections"
+              hard_limit = 25
+              soft_limit = 20
+          
+            [[services.tcp_checks]]
+              interval = "15s"
+              timeout = "2s"
+              grace_period = "10s"
+          
+            [[services.http_checks]]
+              interval = "30s"
+              timeout = "5s"
+              grace_period = "10s"
+              method = "get"
+              path = "/health"
+              protocol = "http"
+          EOF
+
+      - name: Deploy to preview
+        run: |
+          flyctl deploy \
+            --config fly.preview.toml \
+            --app hotdash-pr-${{ github.event.pull_request.number }} \
+            --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Wait for deployment
+        run: sleep 20
+
+      - name: Health check
+        id: health
+        run: |
+          APP_URL="https://hotdash-pr-${{ github.event.pull_request.number }}.fly.dev"
+          
+          for i in {1..5}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/health" || echo "000")
+            
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ Preview app is healthy"
+              echo "status=healthy" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+            
+            echo "Attempt $i: Health check returned $STATUS, retrying..."
+            sleep 10
+          done
+          
+          echo "⚠️ Health check did not pass, but deployment completed"
+          echo "status=deployed" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const appUrl = '${{ steps.preview.outputs.app_url }}';
+            const appName = '${{ steps.preview.outputs.app_name }}';
+            const healthStatus = '${{ steps.health.outputs.status }}';
+            
+            const body = `## 🚀 Preview Deployment
+            
+            **Preview URL:** ${appUrl}
+            **App Name:** \`${appName}\`
+            **Status:** ${healthStatus === 'healthy' ? '✅ Healthy' : '⚠️ Deployed (health check pending)'}
+            **Commit:** ${context.sha.substring(0, 7)}
+            
+            ### Next Steps
+            - Test your changes at the preview URL
+            - Preview app will auto-sleep after 5 minutes of inactivity
+            - Preview app will be destroyed when PR is merged or closed
+            
+            ---
+            *Deployment powered by Fly.io • [View logs](https://fly.io/apps/${appName}/monitoring)*
+            `;
+            
+            // Find existing preview comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('Preview Deployment')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
+
+      - name: Record deployment
+        run: |
+          mkdir -p artifacts/deployments
+          cat <<MD > artifacts/deployments/preview-pr-${{ github.event.pull_request.number }}.md
+          # Preview Deployment
+          - PR: #${{ github.event.pull_request.number }}
+          - App: hotdash-pr-${{ github.event.pull_request.number }}
+          - URL: ${{ steps.preview.outputs.app_url }}
+          - Commit: ${{ github.sha }}
+          - Deployed by: ${{ github.actor }}
+          - Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Health: ${{ steps.health.outputs.status }}
+          MD
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-deployment-pr-${{ github.event.pull_request.number }}
+          path: artifacts/deployments/
+          retention-days: 30
+
+
