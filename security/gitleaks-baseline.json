@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "Description": "PostgreSQL URI",
+    "StartLine": 330,
+    "EndLine": 330,
+    "StartColumn": 1,
+    "EndColumn": 106,
+    "Match": "fly secrets set DATABASE_URL=postgres://postgres:***@hotdash-chatwoot-db.flycast:5432",
+    "Secret": "postgres://postgres:uUMwA6EnN2tcxZm@hotdash-chatwoot-db.flycast:5432",
+    "File": "feedback/support/2025-10-20.md",
+    "SymlinkFile": "",
+    "Commit": "6f48421",
+    "Entropy": 3.9444444,
+    "Author": "Justin Gorzitza",
+    "Email": "j.gorzitza@gmail.com",
+    "Date": "2025-10-20T15:44:55Z",
+    "Message": "manager: Agent WIP files + new reports committed",
+    "Tags": [],
+    "RuleID": "generic-api-key",
+    "Fingerprint": "6f48421:feedback/support/2025-10-20.md:generic-api-key:330"
+  },
+  {
+    "Description": "PostgreSQL URI",
+    "StartLine": 330,
+    "EndLine": 330,
+    "StartColumn": 1,
+    "EndColumn": 106,
+    "Match": "fly secrets set DATABASE_URL=postgres://postgres:***@hotdash-chatwoot-db.flycast:5432",
+    "Secret": "postgres://postgres:uUMwA6EnN2tcxZm@hotdash-chatwoot-db.flycast:5432",
+    "File": "feedback/support/2025-10-20.md",
+    "SymlinkFile": "",
+    "Commit": "2747b23",
+    "Entropy": 3.9444444,
+    "Author": "Justin Gorzitza",
+    "Email": "j.gorzitza@gmail.com",
+    "Date": "2025-10-20T14:51:31Z",
+    "Message": "manager(P0): Block npm run dev + correct Shopify deploy process",
+    "Tags": [],
+    "RuleID": "generic-api-key",
+    "Fingerprint": "2747b23:feedback/support/2025-10-20.md:generic-api-key:330"
+  }
+]
