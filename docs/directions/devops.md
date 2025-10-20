@@ -83,6 +83,25 @@ fly logs -a hotdash-chatwoot | grep -i "settings"
 
 **Note**: Gem (acts-as-taggable-on) is already installed - just need to run migrations
 
+### ✅ UPDATE: Manager Decision on Your Investigation
+
+**Your Investigation**: ✅ EXCELLENT work identifying version incompatibility
+**Your Recommendation**: Option 2 (Older Chatwoot image)
+**Manager Decision**: ✅ APPROVED - Proceed with Option 2
+
+**Execute Option 2**:
+1. Find compatible Chatwoot image (pre-20231211 migration OR compatible with acts-as-taggable-on v12)
+2. Update fly.toml or deployment to use pinned image tag
+3. Redeploy hotdash-chatwoot
+4. Run migrations: `fly ssh console -a hotdash-chatwoot -C "bundle exec rails db:migrate"`
+5. Verify: Test admin login at https://hotdash-chatwoot.fly.dev
+6. Confirm in manager feedback when complete
+
+**Timeline**: 45 minutes (as you estimated)
+**Approval**: ✅ MANAGER APPROVED (no CEO needed for technical decisions)
+
+**After Complete**: Support resumes SUPPORT-001, AI-Customer can integrate
+
 ---
 
 ## Immediate Tasks
