@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "build": "react-router build",
-    "dev": "shopify app dev",
+    "dev": "echo '\n⚠️  WARNING: npm run dev is DISABLED\n\nReason: shopify app dev overwrites production Shopify Partners config\n\nOptions:\n  npm run dev:vite     - Local dev (no Shopify CLI - SAFE)\n  npm run dev:shopify  - Full Shopify dev (OVERWRITES PRODUCTION)\n\nSee: docs/runbooks/SHOPIFY_DEV_VS_PROD_SEPARATION.md\n' && exit 1",
+    "dev:vite": "vite --port 3000",
+    "dev:shopify": "echo '\n🚨 You are about to run shopify app dev\n\nThis will OVERWRITE the production Shopify Partners dashboard config.\n\nIf you understand the risk, run: npx shopify app dev\n' && exit 1",
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
