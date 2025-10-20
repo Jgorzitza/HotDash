@@ -27,36 +27,61 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 ---
 
-## P0 URGENT: Fix Chatwoot Gem Dependencies (START NOW)
+## P0 URGENT: Run Chatwoot Database Migrations (START NOW)
 
-**Escalated From**: Data agent (2025-10-20T17:52Z)
+**Escalated From**: Support agent (2025-10-21T00:05Z) + CEO verification
 
-**Issue**: Chatwoot database migrations fail due to missing gem
-- Error: `NameError: uninitialized constant ActsAsTaggableOn::Taggable::Cache`
-- Impact: Cannot run `rails db:migrate`, 89 pending migrations blocked
-- Blocks: Support SUPPORT-001, AI-Customer testing
+**Issue**: Chatwoot database schema not initialized (fresh Supabase database)
+- Error: `PG::UndefinedColumn: ERROR: column "settings" does not exist`
+- Impact: Cannot login to admin, API returns 500 errors, 89 pending migrations
+- Blocks: Support SUPPORT-001 (testing), AI-Customer (CX automation)
 
-**Root Cause**: Chatwoot Docker image missing `acts-as-taggable-on` gem
+**Root Cause**: Fresh Chatwoot database created but Rails migrations NOT run
 
-**Your Task**: Fix Chatwoot application dependencies
+**Your Task**: Run Chatwoot database migrations
 
-### Solution: Update Chatwoot Gemfile & Rebuild
+### Solution: Run Rails Migrations via Fly SSH
 
-**NO CEO APPROVAL NEEDED** - This is a technical gem dependency fix
+**NO CEO APPROVAL NEEDED** - This is a standard Rails migration execution
 
 **Steps**:
-1. Check Chatwoot Gemfile for acts-as-taggable-on gem
-2. If missing: Add to Gemfile and rebuild Docker image
-3. Redeploy hotdash-chatwoot app
-4. Test migrations: `fly ssh console -a hotdash-chatwoot -C "bundle exec rails db:migrate"`
-5. Verify: Check logs for "column settings does not exist" (should be gone)
-6. Confirm in manager feedback when complete
+```bash
+# Connect to Chatwoot app
+fly ssh console -a hotdash-chatwoot
 
-**Time**: 30-45 minutes
-**Priority**: P0 - Blocks Support & AI-Customer
-**Chatwoot Repo**: Check if we have Chatwoot Dockerfile/config
+# Run database migrations
+bundle exec rails db:migrate RAILS_ENV=production
 
-**After Fix**: Data agent can complete migrations, Support can proceed with testing
+# Verify accounts table has settings column
+bundle exec rails runner "puts Account.column_names.include?('settings')"
+
+# Exit
+exit
+```
+
+**Verification**:
+```bash
+# Check logs - should see NO more "column settings does not exist"
+fly logs -a hotdash-chatwoot | grep -i "settings"
+
+# Test admin login
+# Navigate to https://hotdash-chatwoot.fly.dev
+# Login with: justin@hotrodan.com / SuperAdmin123!
+# Should succeed after migrations complete
+```
+
+**Time**: 5-10 minutes (migrations run fast)
+**Priority**: P0 - Blocks Support testing & AI-Customer
+**Database**: Supabase-hosted Chatwoot database (configured in Chatwoot app)
+
+**After Migrations Complete**:
+1. ✅ Admin login will work
+2. ✅ Can generate proper API token
+3. ✅ Support can test multi-channel (SUPPORT-001)
+4. ✅ AI-Customer can integrate
+5. ✅ Health checks will pass
+
+**Note**: Gem (acts-as-taggable-on) is already installed - just need to run migrations
 
 ---
 
