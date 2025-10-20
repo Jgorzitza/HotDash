@@ -1,4 +1,4 @@
-# Product Direction v5.0
+# Product Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -13,13 +13,13 @@
 
 **Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-**Timeline**: Day 2-4 (8h total) — START DAY 2 (Parallel with Engineer Phases 2-5)
+**Timeline**: Day 2-4 — START DAY 2 (Parallel with Engineer Phases 2-5)
 
 ---
 
 ## Day 2 Tasks (START DAY 2 - 4h)
 
-### PRODUCT-001: Feature Flags v2 UI (2h)
+### PRODUCT-001: Feature Flags v2 UI
 
 **Enhance existing feature flag system**:
 
@@ -44,7 +44,7 @@
 
 ---
 
-### PRODUCT-002: A/B Testing Infrastructure (2h)
+### PRODUCT-002: A/B Testing Infrastructure
 
 **Build experiment framework**:
 
@@ -74,9 +74,9 @@
 
 ---
 
-## Day 3-4 Tasks (4h)
+## Day 3-4 Tasks
 
-### PRODUCT-003: User Feedback Collection System (2h)
+### PRODUCT-003: User Feedback Collection System
 
 **Build feedback widget**:
 
@@ -94,7 +94,7 @@
 
 ---
 
-### PRODUCT-004: Product Analytics Dashboard (2h)
+### PRODUCT-004: Product Analytics Dashboard
 
 **Build analytics for product decisions**:
 
@@ -192,3 +192,49 @@ mcp_context7_get-library-docs("/react-router/react-router", "forms")
 ---
 
 **START WITH**: PRODUCT-001 (Feature flags v2 - DAY 2) — Coordinate with Engineer on settings page
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

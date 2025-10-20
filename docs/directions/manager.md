@@ -256,3 +256,49 @@
 ---
 
 **START WITH**: Apply Data migrations (unblock Engineer), provide credentials to SEO/Ads agents
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

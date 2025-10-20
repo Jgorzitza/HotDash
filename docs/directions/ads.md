@@ -1,4 +1,4 @@
-# Ads Direction v5.0
+# Ads Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -13,13 +13,13 @@
 
 **Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-**Timeline**: Day 1-3 (8h total) — START NOW (Parallel with other agents)
+**Timeline**: Day 1-3 — START NOW (Parallel with other agents)
 
 ---
 
 ## Day 1 Tasks (START NOW - 4h)
 
-### ADS-001: Google Ads API Integration (3h)
+### ADS-001: Google Ads API Integration
 
 **What to Build**:
 
@@ -77,7 +77,7 @@ mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ad
 
 ---
 
-### ADS-002: Campaign Templates for Social Ads (1h)
+### ADS-002: Campaign Templates for Social Ads
 
 **Create ad campaign templates** (for future agent use):
 
@@ -111,9 +111,9 @@ mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ad
 
 ---
 
-## Day 2 Tasks (4h)
+## Day 2 Tasks
 
-### ADS-003: Ad Spend Tracking & Alerts (2h)
+### ADS-003: Ad Spend Tracking & Alerts
 
 **Build alert system**:
 - Budget depletion alerts (>90% spent)
@@ -128,7 +128,7 @@ mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ad
 
 ---
 
-### ADS-004: Integration with Publer (Social Ads) (2h)
+### ADS-004: Integration with Publer (Social Ads)
 
 **Coordinate with Integrations agent**:
 - Publer supports social ads (Facebook/Instagram)
@@ -144,7 +144,7 @@ mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ad
 
 ## Day 3 Tasks (Optional)
 
-### ADS-005: Ads Performance Dashboard Data (2h)
+### ADS-005: Ads Performance Dashboard Data
 
 **Build data service for future Ads tile**:
 - Real-time campaign status
@@ -259,3 +259,49 @@ web_search("Google Ads API Node.js authentication 2025")
 ---
 
 **START WITH**: ADS-001 (Google Ads API integration NOW - 3h) — PARALLEL DAY 1
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

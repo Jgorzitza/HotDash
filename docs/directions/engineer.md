@@ -1,4 +1,4 @@
-# Engineer Direction v5.0
+# Engineer Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -27,7 +27,7 @@
 
 ---
 
-### 🔥 PHASE 2: Enhanced Modals + OpenAI SDK (8h) — ACTIVE
+### 🔥 PHASE 2: Enhanced Modals + OpenAI SDK — ACTIVE
 
 **Your Tasks**:
 
@@ -46,7 +46,7 @@
 - **Backend**: `app/routes/actions/chatwoot.escalate.ts` (already supports grades)
 - **CRITICAL**: Pull Context7 docs for Polaris Modal, RangeSlider components BEFORE coding
 
-**ENG-006**: Sales Pulse Modal (1h)
+**ENG-006**: Sales Pulse Modal
 - File: `app/components/modals/SalesPulseModal.tsx` (if exists, else create)
 - Add variance review UI (WoW comparison display)
 - Action dropdown: "Log follow-up" / "Escalate to ops" / "No action"
@@ -92,11 +92,11 @@
 
 ---
 
-### PHASE 3: Missing Dashboard Tiles (4h) — NEXT
+### PHASE 3: Missing Dashboard Tiles — NEXT
 
 **Your Tasks**:
 
-**ENG-008**: Idea Pool Tile (1h)
+**ENG-008**: Idea Pool Tile
 - Create: `app/components/tiles/IdeaPoolTile.tsx`
 - Display: 5/5 capacity indicator
 - Wildcard badge (EXACTLY 1 required)
@@ -130,11 +130,11 @@
 
 ---
 
-### PHASE 4: Notification System (6h) — QUEUED
+### PHASE 4: Notification System — QUEUED
 
 **Your Tasks**:
 
-**ENG-011**: Toast Infrastructure (1h)
+**ENG-011**: Toast Infrastructure
 - Integrate Shopify App Bridge toast
 - Success: "Action approved", "Settings saved"
 - Error: "Approval failed. Try again." (with retry)
@@ -147,7 +147,7 @@
 - System health banner (service down)
 - Connection status banner (offline/reconnecting)
 
-**ENG-013**: Browser Notifications (1h)
+**ENG-013**: Browser Notifications
 - Request permission on first visit
 - Desktop notifications for new approvals
 - Sound option (configurable in settings)
@@ -164,11 +164,11 @@
 
 ---
 
-### PHASE 5: Real-Time Features (5h) — QUEUED
+### PHASE 5: Real-Time Features — QUEUED
 
 **Your Tasks**:
 
-**ENG-023**: Live Update Indicators (1h)
+**ENG-023**: Live Update Indicators
 - Pulse animation on tile refresh
 - "Updated X seconds ago" timestamp
 - Auto-refresh progress bar
@@ -195,24 +195,24 @@
 
 ---
 
-### PHASE 6: Settings & Personalization (10h) — QUEUED
+### PHASE 6: Settings & Personalization — QUEUED
 
 **Your Tasks**:
 
-**ENG-014**: Drag & Drop Reordering (2h)
+**ENG-014**: Drag & Drop Reordering
 - Install @dnd-kit/core library ← **Pull Context7 docs FIRST**
 - Implement drag handles on tiles
 - Save order to user_preferences (Data creates table)
 - Restore order on page load
 - **Spec**: `docs/design/dashboard-features-1K-1P.md` Task 1K
 
-**ENG-015**: Tile Visibility Toggles (1h)
+**ENG-015**: Tile Visibility Toggles
 - Settings page checkboxes
 - Show/hide tiles
 - Persist to user_preferences
 - Update dashboard to respect visibility
 
-**ENG-018**: Settings Route (1h)
+**ENG-018**: Settings Route
 - Create: `app/routes/settings.tsx`
 - Tabbed layout (4 tabs: Dashboard, Appearance, Notifications, Integrations)
 - Form submission to user_preferences
@@ -249,21 +249,21 @@
 
 ---
 
-### PHASE 7-8: Data Visualization (8h) — QUEUED
+### PHASE 7-8: Data Visualization — QUEUED
 
 **Your Tasks**:
 
-**ENG-026**: Chart Library Integration (1h)
+**ENG-026**: Chart Library Integration
 - Install @shopify/polaris-viz ← **Pull Context7 docs FIRST**
 - Create chart components (Sparkline, Bar, Line, Donut)
 - Test with sample data
 
-**ENG-027**: Sales Charts (1h)
+**ENG-027**: Sales Charts
 - 7-day revenue sparkline in Sales Pulse tile
 - Revenue trend line chart in modal
 - Top SKUs bar chart
 
-**ENG-028**: Inventory & Analytics Charts (1h)
+**ENG-028**: Inventory & Analytics Charts
 - 14-day velocity line chart (Inventory tile/modal)
 - Stock level trends
 - Agent performance charts (approval rate, grades)
@@ -279,7 +279,7 @@
 
 ---
 
-### PHASE 10: Approval History (3h) — QUEUED
+### PHASE 10: Approval History — QUEUED
 
 **Your Tasks**:
 
@@ -290,7 +290,7 @@
 - Export to CSV
 - **Spec**: `docs/design/dashboard-features-1K-1P.md` Task 1P
 
-**ENG-033**: Timeline View (1h)
+**ENG-033**: Timeline View
 - Visual timeline of approvals
 - Grouped by date
 - Color-coded by action
@@ -310,11 +310,11 @@
 
 ---
 
-### PHASE 11: CEO Agent Integration (6h) — QUEUED
+### PHASE 11: CEO Agent Integration — QUEUED
 
 **Your Tasks**:
 
-**ENG-035**: CEO Agent UI (3h)
+**ENG-035**: CEO Agent UI
 - Add "CEO Agent" approval type to queue
 - Create CEO agent modal:
   - Query display
@@ -334,11 +334,11 @@
 
 ---
 
-### PHASE 12: Publer UI Integration (4h) — QUEUED
+### PHASE 12: Publer UI Integration — QUEUED
 
 **Your Tasks**:
 
-**ENG-036**: Social Post Modal (2h)
+**ENG-036**: Social Post Modal
 - Create: `app/components/modals/SocialPostModal.tsx`
 - Platform selector (Facebook, Instagram, Twitter, LinkedIn)
 - Post preview (text + image if applicable)
@@ -359,11 +359,11 @@
 
 ---
 
-### PHASE 13: Polish & Accessibility (3h) — QUEUED
+### PHASE 13: Polish & Accessibility — QUEUED
 
 **Your Tasks**:
 
-**ENG-037**: Loading & Error Polish (1h)
+**ENG-037**: Loading & Error Polish
 - Skeleton loaders for all tiles
 - Progress indicators
 - Smooth transitions
@@ -549,3 +549,49 @@ npm run scan             # No secrets
 ---
 
 **START WITH**: ENG-005 (CX Modal grading sliders - 15 min quickwin)
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

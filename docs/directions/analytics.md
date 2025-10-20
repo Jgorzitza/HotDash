@@ -1,4 +1,4 @@
-# Analytics Direction v5.0
+# Analytics Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -19,7 +19,7 @@
 
 **Strategy**: Build ALL data services NOW → Engineer integrates when ready
 
-### ANALYTICS-001: Sales Chart Data (2h) — DAY 1
+### ANALYTICS-001: Sales Chart Data — DAY 1
 
 **Your Tasks**:
 - Provide 7-day revenue data for sparkline
@@ -40,7 +40,7 @@
 
 ---
 
-### ANALYTICS-002: Inventory Chart Data (2h) — DAY 2
+### ANALYTICS-002: Inventory Chart Data — DAY 2
 
 **Your Tasks**:
 - Provide 14-day velocity data (units sold per day)
@@ -49,7 +49,7 @@
 
 ---
 
-### ANALYTICS-003: Agent Performance Data (2h) — DAY 3
+### ANALYTICS-003: Agent Performance Data — DAY 3
 
 **Your Tasks**:
 - Query decision_log for approval rates
@@ -67,7 +67,7 @@
 
 ---
 
-### ANALYTICS-004: Export Services (2h) — DAY 4
+### ANALYTICS-004: Export Services — DAY 4
 
 **Build CSV export data services**:
 - Approval history export data
@@ -97,3 +97,49 @@
 ---
 
 **START WITH**: Standby until Phase 7-8 begins
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

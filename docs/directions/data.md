@@ -1,9 +1,9 @@
-# Data Direction v6.0
+# Data Direction v6.1
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 6.0  
-**Status**: ACTIVE — Option A Database Support
+**Effective**: 2025-10-20T21:00Z  
+**Version**: 6.1  
+**Status**: ACTIVE — Option A Database Support (CEO applies migrations)
 
 ---
 
@@ -17,11 +17,11 @@
 
 ---
 
-## Day 1 Tasks (START NOW - 3h) — CREATE ALL TABLES UPFRONT
+## Day 1 Tasks (START NOW) — CREATE ALL TABLES UPFRONT
 
 **Strategy**: Build ALL 4 tables NOW (don't wait for phases) → Unblocks Engineer completely
 
-### DATA-001: Create Sales Pulse Actions Table (20 min)
+### DATA-001: Create Sales Pulse Actions Table
 
 **Create migration**: `supabase/migrations/YYYYMMDDHHMMSS_create_sales_pulse_actions.sql`
 
@@ -73,7 +73,7 @@ model SalesPulseAction {
 
 ---
 
-### DATA-002: Create Inventory Actions Table (20 min)
+### DATA-002: Create Inventory Actions Table
 
 **Create migration**: `supabase/migrations/YYYYMMDDHHMMSS_create_inventory_actions.sql`
 
@@ -133,30 +133,34 @@ model InventoryAction {
 
 ---
 
-### DATA-003: Apply Migrations to Staging (10 min)
+### DATA-003: Migrations Applied by CEO
 
-**After creating migrations**:
+**Your Job**: Create migration files + update Prisma schema → Report complete to Manager
 
-```bash
-# DO NOT add to fly.toml or package.json (database safety policy)
+**CEO's Job**: Apply migrations via Supabase console SQL editor
 
-# Manual application via psql:
-# (Manager will coordinate Supabase console access or provide connection)
+**Process**:
+1. You create all migration files (DATA-001, DATA-002, DATA-004, DATA-005, DATA-006)
+2. You update `prisma/schema.prisma` with all models
+3. You report in feedback: "✅ All 5 migrations ready for CEO to apply"
+4. CEO applies migrations via Supabase console (runs SQL directly)
+5. You verify tables exist in Supabase dashboard
 
-# Verify tables created:
-# SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name LIKE '%_actions';
-```
+**DO NOT**:
+- ❌ Try to apply migrations yourself (no psql access from WSL)
+- ❌ Add migration commands to deployment files
+- ❌ Wait for Manager to coordinate access (CEO owns this step)
 
-**Evidence Required**:
+**Evidence Required** (after CEO applies):
 - Screenshot of tables in Supabase dashboard
 - Row count (should be 0 initially)
 - RLS policies enabled
 
-**UNBLOCKS**: Engineer can proceed with ENG-006, ENG-007
+**UNBLOCKS**: Engineer can proceed with Phase 2 modals
 
 ---
 
-### DATA-004: Notifications Table (20 min) — DAY 1
+### DATA-004: Notifications Table — DAY 1
 
 **Create**: notifications table for notification system
 
@@ -180,7 +184,7 @@ CREATE INDEX idx_notifications_unread ON notifications(user_id, read_at) WHERE r
 
 ---
 
-### DATA-005: User Preferences Table (20 min) — DAY 1
+### DATA-005: User Preferences Table — DAY 1
 
 **Create**: user_preferences for personalization
 
@@ -198,7 +202,7 @@ CREATE TABLE IF NOT EXISTS user_preferences (
 
 ---
 
-### DATA-006: Social Posts Table (20 min) — DAY 1 [If Needed]
+### DATA-006: Social Posts Table — DAY 1 [If Needed]
 
 **Check if exists first**: May already be in schema
 
@@ -285,6 +289,50 @@ mcp_context7_get-library-docs("/supabase/supabase", "row-level-security")
 
 ---
 
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Supabase credentials: `vault/occ/supabase/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name, e.g., "Supabase service account key"]
+**For**: [what task/feature, e.g., "Applying migrations"]
+**Checked**: vault/occ/supabase/ (not found)
+**Status**: Paused, waiting for CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+
+---
+
 ## Reporting Requirements
 
 **Report every 2 hours** in `feedback/data/2025-10-20.md`:
@@ -355,17 +403,15 @@ mcp_context7_get-library-docs("/supabase/supabase", "row-level-security")
 
 ## Phase Schedule
 
-**Day 1** (3h) — START NOW:
-- DATA-001: sales_pulse_actions (20 min)
-- DATA-002: inventory_actions (20 min)
-- DATA-003: Apply migrations (10 min)
-- DATA-004: notifications (20 min)
-- DATA-005: user_preferences (20 min)
-- DATA-006: social_posts (20 min, if needed)
+**Day 1** — START NOW:
+- DATA-001: sales_pulse_actions
+- DATA-002: inventory_actions
+- DATA-003: CEO applies migrations via Supabase console
+- DATA-004: notifications
+- DATA-005: user_preferences
+- DATA-006: social_posts (if needed)
 
 **Result**: ALL tables ready upfront → Engineer NEVER blocked
-
-**Total**: 3 hours Day 1, then ongoing support
 
 ---
 

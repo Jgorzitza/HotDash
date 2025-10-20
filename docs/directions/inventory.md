@@ -1,4 +1,4 @@
-# Inventory Direction v5.0
+# Inventory Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -13,7 +13,7 @@
 
 **Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-**Timeline**: Day 2-3 (4h total) — START DAY 2 (Parallel with other agents)
+**Timeline**: Day 2-3 — START DAY 2 (Parallel with other agents)
 
 **Current Status**: Service code cherry-picked (commit 9d0baa4) - ROP, payout, CSV export ready
 
@@ -21,7 +21,7 @@
 
 ## Day 2-3 Tasks (START DAY 2 - 4h)
 
-### INVENTORY-001: Seasonal Demand Adjustments (2h)
+### INVENTORY-001: Seasonal Demand Adjustments
 
 **Enhance ROP calculation** in `app/lib/inventory/safety-stock.ts`:
 
@@ -50,7 +50,7 @@ function calculateSeasonalROP(sku: string): number {
 
 ---
 
-### INVENTORY-002: Demand Forecasting (ML-Based) (2h)
+### INVENTORY-002: Demand Forecasting (ML-Based)
 
 **Build forecasting service**:
 
@@ -89,7 +89,7 @@ function calculateSeasonalROP(sku: string): number {
 
 ## Optional Enhancements (If Time)
 
-### INVENTORY-003: Vendor Management (2h)
+### INVENTORY-003: Vendor Management
 
 **Track vendor performance**:
 - Lead time tracking (order to delivery)
@@ -101,7 +101,7 @@ function calculateSeasonalROP(sku: string): number {
 
 ---
 
-### INVENTORY-004: PO Tracking System (2h)
+### INVENTORY-004: PO Tracking System
 
 **Track purchase orders**:
 - PO status (ordered, shipped, received)
@@ -201,3 +201,49 @@ mcp_context7_get-library-docs("/simple-statistics/simple-statistics", "forecasti
 ---
 
 **START WITH**: INVENTORY-001 (seasonal ROP - DAY 2) — Enhance existing service
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

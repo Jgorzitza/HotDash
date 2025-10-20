@@ -1,4 +1,4 @@
-# SEO Direction v5.0
+# SEO Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -13,13 +13,13 @@
 
 **Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-**Timeline**: Day 1-3 (8h total) — START NOW (Parallel with other agents)
+**Timeline**: Day 1-3 — START NOW (Parallel with other agents)
 
 ---
 
 ## Day 1 Tasks (START NOW - 4h)
 
-### SEO-001: Google Search Console Integration (3h)
+### SEO-001: Google Search Console Integration
 
 **What to Build**:
 
@@ -73,7 +73,7 @@ mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "search-co
 
 ---
 
-### SEO-002: Search Console Credentials Setup (1h)
+### SEO-002: Search Console Credentials Setup
 
 **Process**:
 1. Request credentials from Manager
@@ -91,9 +91,9 @@ curl https://hotdash-staging.fly.dev/api/seo/search-console
 
 ---
 
-## Day 2 Tasks (4h)
+## Day 2 Tasks
 
-### SEO-003: Bing Webmaster Tools Integration (3h)
+### SEO-003: Bing Webmaster Tools Integration
 
 **What to Build**:
 
@@ -119,7 +119,7 @@ web_search("Bing Webmaster Tools API documentation 2025")
 
 ---
 
-### SEO-004: Enhanced SEO Tile Integration (1h)
+### SEO-004: Enhanced SEO Tile Integration
 
 **Update SEO & Content Watch tile**:
 
@@ -153,7 +153,7 @@ web_search("Bing Webmaster Tools API documentation 2025")
 
 ## Day 3 Tasks (Optional - If Time)
 
-### SEO-005: Sitemap Auto-Generation (2h)
+### SEO-005: Sitemap Auto-Generation
 
 **Generate sitemap.xml**:
 - Query Shopify for all products
@@ -165,7 +165,7 @@ web_search("Bing Webmaster Tools API documentation 2025")
 
 ---
 
-### SEO-006: Schema Markup Validation (1h)
+### SEO-006: Schema Markup Validation
 
 **Validate structured data**:
 - Product schema (schema.org/Product)
@@ -281,3 +281,49 @@ web_search("Bing Webmaster Tools API authentication 2025")
 ---
 
 **START WITH**: SEO-001 (Search Console integration NOW - 3h) — PARALLEL DAY 1
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

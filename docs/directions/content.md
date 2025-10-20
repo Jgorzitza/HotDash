@@ -1,4 +1,4 @@
-# Content Direction v5.0
+# Content Direction v5.1
 
 **Owner**: Manager  
 **Effective**: 2025-10-20T20:00Z  
@@ -37,7 +37,7 @@
 
 **Strategy**: Create ALL microcopy NOW → Engineer never waits for copy
 
-### CONTENT-001: Notification Message Templates (2h) — DAY 1
+### CONTENT-001: Notification Message Templates — DAY 1
 
 **Create**: `docs/specs/microcopy-notifications.md`
 
@@ -87,7 +87,7 @@ Critical Alert:
 
 ---
 
-### CONTENT-002: Settings Page Microcopy (1h) — DAY 1
+### CONTENT-002: Settings Page Microcopy — DAY 1
 
 **Create**: `docs/specs/microcopy-settings-page.md`
 
@@ -106,7 +106,7 @@ Critical Alert:
 
 ---
 
-### CONTENT-003: Social Post Templates (2h) — DAY 1
+### CONTENT-003: Social Post Templates — DAY 1
 
 **Create**: `app/fixtures/content/social-post-templates.json`
 
@@ -147,7 +147,7 @@ Critical Alert:
 
 ---
 
-### PHASE 12: Social Media Guidelines (1h) — QUEUED
+### PHASE 12: Social Media Guidelines — QUEUED
 
 **CONTENT-004**: Agent Social Media Guidelines
 
@@ -253,10 +253,10 @@ mcp_context7_get-library-docs("/websites/mailchimp_content_style_guide", "brand-
 
 ## Phase Schedule
 
-**Day 1** (5h) — START NOW:
-- CONTENT-001: Notification microcopy (2h)
-- CONTENT-002: Settings microcopy (1h)
-- CONTENT-003: Social templates (2h)
+**Day 1** — START NOW:
+- CONTENT-001: Notification microcopy
+- CONTENT-002: Settings microcopy
+- CONTENT-003: Social templates
 
 **Result**: ALL microcopy ready upfront → Engineer NEVER waits for copy
 
@@ -274,3 +274,49 @@ mcp_context7_get-library-docs("/websites/mailchimp_content_style_guide", "brand-
 ---
 
 **START WITH**: Standby mode, ready to provide notification microcopy for Phase 4
+
+---
+
+## Credential & Blocker Protocol
+
+### If You Need Credentials:
+
+**Step 1**: Check `vault/` directory first
+- Google credentials: `vault/occ/google/`
+- Bing credentials: `vault/occ/bing/`
+- Publer credentials: `vault/occ/publer/`
+- Other services: `vault/occ/<service-name>/`
+
+**Step 2**: If not in vault, report in feedback:
+```md
+## HH:MM - Credential Request
+**Need**: [specific credential name]
+**For**: [what task/feature]
+**Checked**: vault/occ/<path>/ (not found)
+**Status**: Moving to next task, awaiting CEO
+```
+
+**Step 3**: Move to next task immediately (don't wait idle)
+
+### If You Hit a True Blocker:
+
+**Before reporting blocker, verify you**:
+1. ✅ Checked vault for credentials
+2. ✅ Inspected codebase for existing patterns
+3. ✅ Pulled Context7 docs for the library
+4. ✅ Reviewed RULES.md and relevant direction sections
+
+**If still blocked**:
+```md
+## HH:MM - Blocker Report
+**Blocked On**: [specific issue]
+**What I Tried**: [list 3+ things you attempted]
+**Vault Checked**: [yes/no, paths checked]
+**Docs Pulled**: [Context7 libraries consulted]
+**Asking CEO**: [specific question or guidance needed]
+**Moving To**: [next task ID you're starting]
+```
+
+**Then immediately move to next task** - CEO will respond when available
+
+**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.

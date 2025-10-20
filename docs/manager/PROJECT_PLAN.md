@@ -2549,3 +2549,250 @@ These can be added AFTER Option A complete:
 **Effective**: 2025-10-20
 **Next Review**: After Phase 13 complete (Option A launch)
 
+
+---
+
+## Phase Completion Criteria (Definition of Done)
+
+### Phase 2: Enhanced Modals + OpenAI SDK
+
+**Engineer Deliverables**:
+- [ ] CX Modal: 3 grading sliders functional, conversation preview, internal notes, all actions working
+- [ ] Sales Modal: Variance display, action dropdown, notes textarea functional
+- [ ] Inventory Modal: Velocity chart, reorder workflow, PO generation functional
+- [ ] All modals: Focus trap, keyboard nav (Tab/Escape), ARIA labels
+- [ ] Tests: +10 tests minimum, all passing
+- [ ] Data storing: Grades in decision_log, actions in sales_pulse_actions/inventory_actions
+
+**Designer Sign-Off**:
+- [ ] Visual matches design specs exactly
+- [ ] Accessibility verified (keyboard-only navigation tested)
+- [ ] All states present (default, hover, loading, error, success)
+
+**QA Verification**:
+- [ ] Code review complete (Context7 docs verified)
+- [ ] Test coverage ≥80%
+- [ ] Security scan clean
+- [ ] No @remix-run imports
+
+**DevOps Confirmation**:
+- [ ] Deployed to staging
+- [ ] Health checks passing
+- [ ] No errors in logs
+
+**CEO Checkpoint 2 Ready**: All above complete → CEO reviews modals → Approve Phase 3
+
+---
+
+### Phase 3: Missing Dashboard Tiles
+
+**Engineer Deliverables**:
+- [ ] Idea Pool tile: 5/5 capacity, wildcard badge, counts display, button → /ideas
+- [ ] Approvals Queue tile: Pending count, oldest time, button → /approvals
+- [ ] Dashboard: All 8/8 tiles loading <3s
+- [ ] Tests: +5 tests, all passing
+
+**Designer Sign-Off**:
+- [ ] Tiles match design spec
+- [ ] Grid responsive (mobile/tablet/desktop)
+
+**QA Verification**:
+- [ ] Code quality verified
+- [ ] Performance: All tiles <3s load time
+
+**DevOps Confirmation**:
+- [ ] Deployed
+- [ ] Healthy
+
+**CEO Checkpoint 3 Ready**: Dashboard complete with 8/8 tiles
+
+---
+
+### Phase 4: Notification System
+
+**Engineer Deliverables**:
+- [ ] Toast notifications: success/error/info functional
+- [ ] Banner alerts: backlog/performance/health functional
+- [ ] Browser notifications: permission flow, desktop notifs working
+- [ ] Notification center: slide-out panel, mark read/unread
+- [ ] All notifications persist to database
+- [ ] Tests: +8 tests
+
+**Data Deliverables**:
+- [ ] notifications table created and RLS enabled
+
+**Designer Sign-Off**:
+- [ ] Notification UI matches design
+- [ ] Toast timing appropriate (5s auto-dismiss)
+
+**QA Verification**:
+- [ ] All notification types tested
+- [ ] Browser permission flow tested
+
+**DevOps Confirmation**:
+- [ ] Deployed
+- [ ] Notifications delivering
+
+**CEO Checkpoint 4 Ready**: All notification types working
+
+---
+
+### Phase 5: Real-Time Features
+
+**Engineer Deliverables**:
+- [ ] SSE connection stable
+- [ ] Live update indicators on tiles
+- [ ] Badge updates in real-time
+- [ ] "Updated X ago" timestamps
+- [ ] Connection loss handling + reconnection
+- [ ] Optimistic updates with revert on failure
+
+**DevOps Deliverables**:
+- [ ] SSE endpoint deployed
+- [ ] Connection monitoring active
+
+**Designer Sign-Off**:
+- [ ] Animations smooth
+- [ ] Connection status clear
+
+**QA Verification**:
+- [ ] Real-time updates <1s latency
+- [ ] Reconnection tested
+
+**CEO Checkpoint 5 Ready**: Real-time working
+
+---
+
+### Phase 6: Settings & Personalization
+
+**Engineer Deliverables**:
+- [ ] Drag & drop tile reordering functional
+- [ ] Tile visibility toggles working
+- [ ] Settings page: 4 tabs (Dashboard/Appearance/Notifications/Integrations)
+- [ ] Theme switcher: Light/Dark/Auto working
+- [ ] All preferences persist to database
+- [ ] Reset to defaults functional
+
+**Data Deliverables**:
+- [ ] user_preferences table created
+
+**Designer Sign-Off**:
+- [ ] Drag-drop smooth (no jank)
+- [ ] Settings page matches design
+
+**QA Verification**:
+- [ ] Persistence tested (logout/login preserves settings)
+- [ ] @dnd-kit usage verified with Context7
+
+**CEO Checkpoint 6 Ready**: Settings complete
+
+---
+
+### Phases 7-8: Data Visualization
+
+**Engineer Deliverables**:
+- [ ] Charts library integrated (@shopify/polaris-viz)
+- [ ] Sparklines in tiles
+- [ ] Charts in modals (revenue, velocity, performance)
+- [ ] Interactive tooltips
+- [ ] Print-friendly
+
+**Analytics Deliverables**:
+- [ ] All chart data services functional
+- [ ] Agent performance data ready
+
+**Designer Sign-Off**:
+- [ ] Charts match Polaris Viz patterns
+- [ ] Data visualization clear
+
+**CEO Checkpoint 7 Ready**: Charts working
+
+---
+
+### Phase 10: Approval History
+
+**Engineer Deliverables**:
+- [ ] History route: /approvals/history
+- [ ] Filterable table (status, date, agent, tool)
+- [ ] Search functional
+- [ ] CSV export working
+- [ ] Timeline visualization
+
+**Designer Sign-Off**:
+- [ ] Table design matches spec
+
+**CEO Checkpoint 8 Ready**: History functional
+
+---
+
+### Phase 11: CEO Agent
+
+**AI-Customer Deliverables**:
+- [ ] CEO agent backend: All 5 tools working
+- [ ] HITL workflow integrated
+- [ ] Test queries successful
+- [ ] Documentation complete
+
+**Engineer Deliverables**:
+- [ ] CEO agent modal UI
+- [ ] Approval queue shows CEO agent type
+- [ ] Integration tested end-to-end
+
+**AI-Knowledge Deliverables**:
+- [ ] Knowledge base operational
+- [ ] Query accuracy ≥90%
+
+**Designer Sign-Off**:
+- [ ] CEO modal matches design
+
+**CEO Checkpoint 9 Ready**: CEO agent functional (test with real queries)
+
+---
+
+### Phase 12: Publer UI
+
+**Engineer Deliverables**:
+- [ ] Social post modal functional
+- [ ] Platform selector working
+- [ ] Post preview + schedule working
+- [ ] Integration with Publer adapter
+
+**Integrations Deliverables**:
+- [ ] Publer approval integration complete
+- [ ] Receipt storage functional
+
+**Content Deliverables**:
+- [ ] Social templates complete
+
+**Designer Sign-Off**:
+- [ ] Social modal matches design
+
+**CEO Checkpoint 10 Ready**: Publer integrated (test post to sandbox)
+
+---
+
+### Phase 13: Polish & Accessibility
+
+**Engineer Deliverables**:
+- [ ] Skeleton loaders on all tiles
+- [ ] Error boundaries with retry
+- [ ] Mobile responsive (tested 3 breakpoints)
+- [ ] All animations smooth
+
+**QA Deliverables**:
+- [ ] WCAG 2.2 AA audit: 0 violations
+- [ ] Accessibility tests passing
+- [ ] Performance benchmarks met
+
+**Designer Deliverables**:
+- [ ] Final sign-off: All 57 design specs implemented
+- [ ] Dark mode verified
+- [ ] Mobile optimization verified
+
+**Pilot Deliverables**:
+- [ ] Full UAT complete
+- [ ] All test scenarios passing
+- [ ] Performance tests passing
+
+**CEO Checkpoint 11 (FINAL) Ready**: OPTION A COMPLETE → Production deploy decision
+
