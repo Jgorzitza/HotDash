@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #116
 
+Current Issue: #116
 
 Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge workflows) is production-hardened with tests and documentation.
 
 ## Tasks
-
-
 
 1. Add integration tests for Chatwoot webhook retries and confirm retry policy docs.
 2. Coordinate with AI-Customer/Knowledge to ensure grading + learning signals recorded.
@@ -68,17 +66,20 @@ Ensure the support pipeline (Chatwoot integrations, webhook retries, knowledge w
 ### React Router 7 ONLY (NOT Remix)
 
 **FORBIDDEN** ❌:
+
 - `import { json } from "@remix-run/node"` - NO
-- `import { useLoaderData } from "@remix-run/react"` - NO  
+- `import { useLoaderData } from "@remix-run/react"` - NO
 - `return json({ data })` - NO
 
 **REQUIRED** ✅:
+
 - `import { useLoaderData } from "react-router"` - YES
 - `import type { Route } from "./+types/route-name"` - YES
 - `return Response.json({ data })` - YES
 - Type with `Route.LoaderArgs` or `LoaderFunctionArgs` - YES
 
 **VERIFY BEFORE COMMIT**:
+
 ```bash
 rg "@remix-run" app/ --type ts --type tsx
 # Must return: NO RESULTS (if any found, fix immediately)
@@ -87,12 +88,14 @@ rg "@remix-run" app/ --type ts --type tsx
 ### MCP Tools STRICTLY ENFORCED
 
 **MANDATORY for ALL Shopify code**:
+
 1. `mcp_shopify_learn_shopify_api(api: "admin")` - Learn API
 2. `mcp_shopify_search_docs_chunks(...)` - Find what you need
 3. `mcp_shopify_introspect_graphql_schema(...)` - Explore schema
 4. `mcp_shopify_validate_graphql_codeblocks(...)` - VALIDATE before committing
 
 **MANDATORY for library patterns**:
+
 1. `mcp_context7_resolve-library-id(libraryName: "...")` - Find library
 2. `mcp_context7_get-library-docs(...)` - Get correct patterns
 
@@ -100,7 +103,6 @@ rg "@remix-run" app/ --type ts --type tsx
 Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
-
 
 ---
 
@@ -113,6 +115,7 @@ Every molecule using Shopify/libraries must log MCP conversation IDs.
 **Your P0 Task** (BEFORE continuing other molecules):
 
 **SUP-P0**: Fix CX Pulse Tile Chatwoot Error (30 min)
+
 1. Check Chatwoot credentials in Fly secrets
 2. Test Chatwoot API connection
 3. Review error logs from getEscalations() function
@@ -120,12 +123,13 @@ Every molecule using Shopify/libraries must log MCP conversation IDs.
 5. Verify tile loads data successfully
 
 **Test**: Reload https://admin.shopify.com/store/hotroddash/apps/hotdash
+
 - CX Pulse tile should show data (not error)
 
-**Evidence Required**: 
+**Evidence Required**:
+
 - Error logs analyzed
 - Fix applied
 - Screenshot of working tile
 
 **Priority**: P0 - App is live, this tile is broken
-

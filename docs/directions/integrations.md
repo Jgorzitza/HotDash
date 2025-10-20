@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #110
 
+Current Issue: #110
 
 Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoot) with contract tests and feature flags for production.
 
 ## Tasks
-
-
 
 1. Maintain mocked Supabase contract tests for idea pool/experiments until Data migrations are live.
 2. Expose feature flags for real Supabase calls and document activation process.
@@ -68,17 +66,20 @@ Deliver stable API integrations (Supabase dashboards, idea pool, Publer, Chatwoo
 ### React Router 7 ONLY (NOT Remix)
 
 **FORBIDDEN** ❌:
+
 - `import { json } from "@remix-run/node"` - NO
-- `import { useLoaderData } from "@remix-run/react"` - NO  
+- `import { useLoaderData } from "@remix-run/react"` - NO
 - `return json({ data })` - NO
 
 **REQUIRED** ✅:
+
 - `import { useLoaderData } from "react-router"` - YES
 - `import type { Route } from "./+types/route-name"` - YES
 - `return Response.json({ data })` - YES
 - Type with `Route.LoaderArgs` or `LoaderFunctionArgs` - YES
 
 **VERIFY BEFORE COMMIT**:
+
 ```bash
 rg "@remix-run" app/ --type ts --type tsx
 # Must return: NO RESULTS (if any found, fix immediately)
@@ -87,12 +88,14 @@ rg "@remix-run" app/ --type ts --type tsx
 ### MCP Tools STRICTLY ENFORCED
 
 **MANDATORY for ALL Shopify code**:
+
 1. `mcp_shopify_learn_shopify_api(api: "admin")` - Learn API
 2. `mcp_shopify_search_docs_chunks(...)` - Find what you need
 3. `mcp_shopify_introspect_graphql_schema(...)` - Explore schema
 4. `mcp_shopify_validate_graphql_codeblocks(...)` - VALIDATE before committing
 
 **MANDATORY for library patterns**:
+
 1. `mcp_context7_resolve-library-id(libraryName: "...")` - Find library
 2. `mcp_context7_get-library-docs(...)` - Get correct patterns
 
@@ -100,4 +103,3 @@ rg "@remix-run" app/ --type ts --type tsx
 Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
-

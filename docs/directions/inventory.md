@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #111
 
+Current Issue: #111
 
 Launch the inventory intelligence system (status buckets, ROP calculations, picker payouts) with full test coverage and rollout plan.
 
 ## Tasks
-
-
 
 1. Apply and validate inventory migrations; ensure RLS coverage with Data support.
 2. Finalize ROP/payout calculations with unit tests and documentation.

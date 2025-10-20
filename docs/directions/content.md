@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #105
 
+Current Issue: #105
 
 Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts that feed the approvals loop with evidence and copy that matches CEO tone.
 
 ## Tasks
-
-
 
 1. Maintain idea pool fixtures (`app/fixtures/content/idea-pool.json`) and ensure each scenario has evidence + Supabase linkage.
 2. Provide copy QA checklist + microcopy docs for Marketing/CEO review; attach to feedback.
@@ -68,17 +66,20 @@ Deliver production-ready content fixtures, idea briefs, and Publer-ready drafts 
 ### React Router 7 ONLY (NOT Remix)
 
 **FORBIDDEN** ❌:
+
 - `import { json } from "@remix-run/node"` - NO
-- `import { useLoaderData } from "@remix-run/react"` - NO  
+- `import { useLoaderData } from "@remix-run/react"` - NO
 - `return json({ data })` - NO
 
 **REQUIRED** ✅:
+
 - `import { useLoaderData } from "react-router"` - YES
 - `import type { Route } from "./+types/route-name"` - YES
 - `return Response.json({ data })` - YES
 - Type with `Route.LoaderArgs` or `LoaderFunctionArgs` - YES
 
 **VERIFY BEFORE COMMIT**:
+
 ```bash
 rg "@remix-run" app/ --type ts --type tsx
 # Must return: NO RESULTS (if any found, fix immediately)
@@ -87,12 +88,14 @@ rg "@remix-run" app/ --type ts --type tsx
 ### MCP Tools STRICTLY ENFORCED
 
 **MANDATORY for ALL Shopify code**:
+
 1. `mcp_shopify_learn_shopify_api(api: "admin")` - Learn API
 2. `mcp_shopify_search_docs_chunks(...)` - Find what you need
 3. `mcp_shopify_introspect_graphql_schema(...)` - Explore schema
 4. `mcp_shopify_validate_graphql_codeblocks(...)` - VALIDATE before committing
 
 **MANDATORY for library patterns**:
+
 1. `mcp_context7_resolve-library-id(libraryName: "...")` - Find library
 2. `mcp_context7_get-library-docs(...)` - Get correct patterns
 
@@ -100,4 +103,3 @@ rg "@remix-run" app/ --type ts --type tsx
 Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
-

@@ -5,14 +5,12 @@
 - **Version:** 2.0
 
 ## Objective
-Current Issue: #115
 
+Current Issue: #115
 
 Deliver production-ready SEO monitoring and HITL recommendations with clear evidence, anomaly triage, and rollback guidance.
 
 ## Tasks
-
-
 
 1. Draft SEO anomaly triage doc referencing Supabase views and alerts; keep it updated.
 2. Provide HITL-ready SEO recommendations with evidence (search console, analytics) and approvals payloads.
@@ -69,17 +67,20 @@ Deliver production-ready SEO monitoring and HITL recommendations with clear evid
 ### React Router 7 ONLY (NOT Remix)
 
 **FORBIDDEN** ❌:
+
 - `import { json } from "@remix-run/node"` - NO
-- `import { useLoaderData } from "@remix-run/react"` - NO  
+- `import { useLoaderData } from "@remix-run/react"` - NO
 - `return json({ data })` - NO
 
 **REQUIRED** ✅:
+
 - `import { useLoaderData } from "react-router"` - YES
 - `import type { Route } from "./+types/route-name"` - YES
 - `return Response.json({ data })` - YES
 - Type with `Route.LoaderArgs` or `LoaderFunctionArgs` - YES
 
 **VERIFY BEFORE COMMIT**:
+
 ```bash
 rg "@remix-run" app/ --type ts --type tsx
 # Must return: NO RESULTS (if any found, fix immediately)
@@ -88,12 +89,14 @@ rg "@remix-run" app/ --type ts --type tsx
 ### MCP Tools STRICTLY ENFORCED
 
 **MANDATORY for ALL Shopify code**:
+
 1. `mcp_shopify_learn_shopify_api(api: "admin")` - Learn API
 2. `mcp_shopify_search_docs_chunks(...)` - Find what you need
 3. `mcp_shopify_introspect_graphql_schema(...)` - Explore schema
 4. `mcp_shopify_validate_graphql_codeblocks(...)` - VALIDATE before committing
 
 **MANDATORY for library patterns**:
+
 1. `mcp_context7_resolve-library-id(libraryName: "...")` - Find library
 2. `mcp_context7_get-library-docs(...)` - Get correct patterns
 
@@ -101,4 +104,3 @@ rg "@remix-run" app/ --type ts --type tsx
 Every molecule using Shopify/libraries must log MCP conversation IDs.
 
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md` for complete rules
-
