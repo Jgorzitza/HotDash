@@ -78,6 +78,7 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 **NEVER AGAIN**: Oct 15 incident where 57 design files were archived, causing 4 days of wrong-spec development.
 
 **PROTECTED PATHS** (Never archive or delete):
+
 - `/docs/design/**` - ALL design files (approved unless marked `DRAFT-`)
 - `/docs/specs/**` - ALL specification files
 - `/docs/runbooks/**` - ALL operational runbooks
@@ -86,6 +87,7 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 - `/mcp/**` - ALL MCP tool documentation
 
 **ARCHIVAL RULES**:
+
 1. **CEO approval required** - Written confirmation before archiving ANY protected files
 2. **Monthly audit only** - 1st of month, present list to CEO, get explicit approval
 3. **Documentation required** - Update `docs/ARCHIVE_INDEX.md` with reason, date, approver
@@ -103,6 +105,7 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ## Implementation Standards (Updated 2025-10-20)
 
 **Design Spec Compliance**:
+
 - ALL features MUST match design specifications in `/docs/design/`
 - 57 design files define complete vision (not minimal version)
 - Minimal implementations (30% of designed features) are UNACCEPTABLE
@@ -111,6 +114,7 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 - QA MUST test against design specs
 
 **Design Spec References** (mandatory):
+
 - Approval queue: `docs/design/HANDOFF-approval-queue-ui.md`
 - Personalization: `docs/design/dashboard-features-1K-1P.md`
 - Notifications: `docs/design/notification-system-design.md`
@@ -119,8 +123,8 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 - Complete system: `docs/design/design-system-guide.md` (38KB, 1800+ lines)
 
 **Manager Enforcement**:
+
 - REJECTS PRs that don't follow design specs
 - REJECTS minimal implementations when full specs exist
 - REQUIRES design validation evidence from Designer
 - REQUIRES accessibility compliance evidence
-

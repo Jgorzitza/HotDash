@@ -154,6 +154,7 @@
 ### Complete Vision Documentation
 
 **Design Library**: `/docs/design/` (57 files, ~500KB)
+
 - Dashboard specifications (8 tiles + personalization)
 - Approval queue system (HITL workflow)
 - Notification system (toast, banner, browser)
@@ -170,9 +171,10 @@
 ### Protection Policy (MANDATORY)
 
 **NEVER ARCHIVE** without CEO approval:
+
 - `/docs/design/**`
 - `/docs/specs/**`
-- `/docs/runbooks/**`  
+- `/docs/runbooks/**`
 - `/docs/directions/**`
 
 **Incident**: Oct 15 - 57 design files archived as "drafts", agents built to wrong spec (30% vs. 100%).
@@ -186,6 +188,7 @@
 ### Implementation Standards
 
 **Design Spec Compliance**:
+
 - Features MUST match design specifications EXACTLY
 - 70% feature gaps are UNACCEPTABLE
 - Designer validates against all 57 design specs
@@ -193,8 +196,8 @@
 - Manager rejects minimal implementations
 
 **Evidence Required**:
+
 - Design spec reference for each feature
 - Designer sign-off (implementation matches specs)
 - Accessibility validation (WCAG 2.2 AA)
 - MCP conversation IDs (Context7 for libraries)
-

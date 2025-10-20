@@ -170,12 +170,14 @@ MCP Tools Used:
 **POLICY** (`docs/DESIGN_PROTECTION_POLICY.md` - MANDATORY):
 
 **PROTECTED DIRECTORIES** (Never archive or delete without CEO approval):
+
 - `/docs/design/**` - ALL design files
-- `/docs/specs/**` - ALL specification files  
+- `/docs/specs/**` - ALL specification files
 - `/docs/runbooks/**` - ALL operational runbooks
 - `/docs/directions/**` - ALL agent direction files
 
 **RULES**:
+
 1. Design files are **APPROVED** unless marked `DRAFT-`
 2. **NEVER archive** without CEO explicit written approval
 3. Monthly audit only (with CEO approval)
@@ -199,4 +201,3 @@ MCP Tools Used:
 8. Metrics updated if behavior changed; audit entry present.
 9. **NO @remix-run imports** - React Router 7 only.
 10. **Accessibility**: WCAG 2.2 AA compliance verified (keyboard nav, screen readers, color contrast).
-
