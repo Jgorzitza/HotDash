@@ -225,3 +225,49 @@ import enTranslations from '@shopify/polaris/locales/en.json';
 Updating Engineer direction to re-do ENG-001 with actual fix (not just verification).
 
 **ETA**: 15 minutes (5min fix + 5min test + 5min deploy)
+
+## 2025-10-20T09:28:00Z — Manager: No Ad-Hoc Files Rule Enforced
+
+### CEO Directive
+
+**CEO**: "Write this guard into place across all of our standard documentation and rules. We don't need agents adding files when not needed as well."
+
+### Implementation
+
+**Rule Added To**:
+✅ docs/NORTH_STAR.md (after Roadmap, before MCP)
+✅ docs/OPERATING_MODEL.md (Guardrails section)
+✅ docs/RULES.md (new section before Process)
+✅ DOCS_INDEX.md (STRICT RULE section)
+
+### The 3-Question Test (MANDATORY)
+
+Before creating ANY new .md file:
+1. Can this go in my feedback file? (YES → use that, STOP)
+2. Is this in DOCS_INDEX.md Tier 1-3? (NO → don't create)
+3. Did CEO explicitly request this? (NO → don't create)
+
+### Forbidden Patterns
+
+**NEVER create**:
+- STATUS_*, URGENT_*, FIX_*, P0_*, CRITICAL_*
+- *_CHECKLIST.md, DEPLOY_*, *_PLAN.md
+- *_ANALYSIS.md, *_GAP.md, *_FINDINGS.md
+- Any root .md beyond 6 allowed
+
+### Enforcement
+
+- Daily audit (Manager at session end)
+- Immediate archive if violated
+- 3 violations → CEO escalation
+- Root .md limit: 6 files maximum
+
+### Files Committed
+
+Commit: 8bcf202
+- docs/NORTH_STAR.md
+- docs/OPERATING_MODEL.md
+- docs/RULES.md
+- DOCS_INDEX.md
+
+**Result**: Guard in place across all governance - agents and Manager now have clear rule to follow.
