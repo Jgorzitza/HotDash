@@ -27,7 +27,52 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 ---
 
-## Day 1 Tasks (START NOW) — CREATE ALL TABLES UPFRONT
+## P0 URGENT: Chatwoot Database Migrations (START IMMEDIATELY)
+
+**Blocker**: Chatwoot service running but database schema incomplete - blocks Support testing & AI-Customer
+
+**Issue Identified**: `ERROR: column "settings" does not exist` in `accounts` table
+- Service: https://hotdash-chatwoot.fly.dev (HTTP 200 ✅)
+- Database: hotdash-chatwoot-db.flycast:5432/postgres
+- Problem: Fresh database created but Chatwoot migrations NOT run
+- Impact: API returns 401/404, blocks SUPPORT-001, SUPPORT-002, AI-Customer testing
+
+**Your Task**: Run Chatwoot database migrations to complete schema
+
+### Option A: Via Fly SSH (RECOMMENDED)
+```bash
+# Connect to Chatwoot app
+fly ssh console -a hotdash-chatwoot
+
+# Run Rails migrations
+bundle exec rails db:migrate
+
+# Verify accounts table has settings column
+bundle exec rails runner "puts Account.column_names.include?('settings')"
+
+# Exit
+exit
+```
+
+### Option B: If Rails unavailable, apply SQL manually
+```bash
+# Get Chatwoot schema SQL from official repo
+# Apply to database using credentials from vault/occ/chatwoot/database_production.env
+```
+
+**Verification**:
+1. Check logs: `fly logs -a hotdash-chatwoot | grep "ERROR.*settings"`
+2. Should see NO more "column settings does not exist" errors
+3. Test API: Support's health check should pass
+4. Confirm in manager feedback when complete
+
+**Time**: 15-30 minutes
+**Priority**: P0 - Blocks Support agent SUPPORT-001, AI-Customer testing
+**Credentials**: `vault/occ/chatwoot/database_production.env`
+
+---
+
+## Day 1 Tasks (AFTER CHATWOOT) — CREATE ALL TABLES UPFRONT
 
 **Strategy**: Build ALL 4 tables NOW (don't wait for phases) → Unblocks Engineer completely
 
