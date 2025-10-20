@@ -60,14 +60,43 @@
 - [ ] **Agents SDK/HITL** config intact: `app/agents/config/agents.json` has `ai-customer.human_review: true` and reviewers.
 - [ ] (If social enabled) Publer environment secret present (never hard-coded).
 
-## 4) Manager-Controlled Git — Daily Flow (new)
+## 4) Git Coordination — Daily Branch Model (MANDATORY)
 
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For each agent with a WORK COMPLETE block today:
-  - Create/checkout branch: `agent/<agent>/<YYYYMMDD>-<task>`
-  - Add only files in Allowed paths; commit with evidence reference
-  - Push and create PR (`gh pr create ...`)
-- [ ] Merge when CI green; update direction to next task
+**Manager owns ALL git operations. Daily branch = shared workspace for all 17 agents.**
+
+- [ ] **Create/Checkout Daily Branch**:
+  ```bash
+  git fetch origin
+  # Option A: Use existing branch (today)
+  git checkout manager-reopen-20251020
+  git pull origin manager-reopen-20251020
+  
+  # Option B: Create new daily branch (future days)
+  # git checkout main
+  # git pull origin main
+  # git checkout -b daily/2025-10-20
+  # git push origin daily/2025-10-20
+  ```
+
+- [ ] **Announce Branch in Feedback**:
+  ```md
+  ## HH:MM - Manager: Daily Branch Announced
+  **Branch**: daily/2025-10-20 (or manager-reopen-20251020)
+  **All agents**: Checkout this branch and commit directly
+  **File Ownership**: See RULES.md table
+  ```
+
+- [ ] **Monitor Commits Throughout Day**:
+  ```bash
+  # Check who's committing what
+  git log --oneline --all --graph -20
+  # Check for conflicts
+  git status
+  ```
+
+- [ ] **Coordinate File Conflicts**:
+  - If Agent A needs file owned by Agent B → Assign sequentially
+  - Log coordination in manager feedback: "Engineer waiting for Data to finish prisma/schema.prisma"
 
 ## 5) Project status review and Agent direction (3–5 min)
 

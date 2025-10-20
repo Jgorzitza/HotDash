@@ -4,7 +4,41 @@
 
 - [ ] Navigate to repo root ~/HotDash/hot-dash/ or /home/justin/HotDash/hot-dash/
 
-## 0) MCP Tools Verification (MANDATORY FIRST STEP - 90 sec)
+## 0) Git Setup (MANDATORY FIRST STEP - 60 sec)
+
+**⚠️ CRITICAL: All agents work on the SAME daily branch. Manager announces branch name.**
+
+- [ ] **Fetch Latest**:
+  ```bash
+  git fetch origin
+  ```
+
+- [ ] **Checkout Daily Branch** (Manager announces in feedback, e.g., `daily/2025-10-20` or `manager-reopen-20251020`):
+  ```bash
+  git checkout daily/2025-10-20  # Use exact branch name from Manager
+  git pull origin daily/2025-10-20
+  ```
+
+- [ ] **Verify Branch**:
+  ```bash
+  git branch --show-current  # Should match Manager's announced branch
+  ```
+
+- [ ] **Review File Ownership** (see `docs/RULES.md` "File Ownership" table):
+  - Check which directories you own
+  - If you need a file owned by another agent → Report to Manager in feedback
+  - **Example**: "Need `app/routes/dashboard.tsx` owned by Engineer - awaiting coordination"
+
+**Commit Style** (when you make changes):
+```bash
+git add your/files
+git commit -m "feat(your-agent-name): what you did"
+git push origin daily/2025-10-20
+```
+
+---
+
+## 1) MCP Tools Verification (MANDATORY - 90 sec)
 
 **⚠️ CRITICAL: Pull documentation BEFORE writing ANY code. Training data is outdated.**
 
