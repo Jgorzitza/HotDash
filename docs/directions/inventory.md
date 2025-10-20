@@ -1,68 +1,203 @@
-# Inventory Direction
+# Inventory Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 5.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Inventory Enhancements (PARALLEL DAY 2-3)
+
+---
 
 ## Objective
 
-**Issue**: #111  
-Post-merge verification - branch merging NOW
+**Enhance inventory ROP calculation and forecasting**
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-All work complete on branch ✅, Manager merging now
+**Timeline**: Day 2-3 (4h total) — START DAY 2 (Parallel with other agents)
 
-## Tasks
+**Current Status**: Service code cherry-picked (commit 9d0baa4) - ROP, payout, CSV export ready
 
-### AFTER MANAGER MERGES (10 min)
+---
 
-**INV-VERIFY-001**: Post-Merge Verification
-1. Verify migrations applied:
-   ```bash
-   ls -la supabase/migrations/20251020190500_inventory_tables.sql
-   ls -la supabase/migrations/20251020190600_inventory_rls.sql
-   ```
-2. Run contract test:
-   ```bash
-   npx vitest run tests/unit/services/inventory/payout.spec.ts
-   ```
-   Expected: 16/16 passing
-3. Verify RLS tests include inventory:
-   ```bash
-   grep -A 5 "INVENTORY TABLES" supabase/rls_tests.sql
-   ```
-4. Report: All verifications PASS/FAIL
+## Day 2-3 Tasks (START DAY 2 - 4h)
 
-### THEN - Standby
+### INVENTORY-001: Seasonal Demand Adjustments (2h)
 
-**INV-002**: Ready for Integration Support
-- Support Engineer with inventory modal integration
-- Provide ROP calculation help if needed
-- Answer schema questions
+**Enhance ROP calculation** in `app/lib/inventory/safety-stock.ts`:
 
-## Work Complete on Branch
+**Add Seasonality**:
+- Detect seasonal patterns (winter sports vs summer gear)
+- Adjust reorder point based on season
+- Historical sales by month
+- Peak season buffer (increase ROP 20-30%)
 
-✅ 8 inventory tables (products, variants, snapshots, vendors, product_vendors, purchase_orders, purchase_order_items, inventory_events)  
-✅ 32+ RLS policies (full multi-tenant isolation)  
-✅ ROP/payout calculations  
-✅ CSV export + PO scripts  
-✅ Unit tests passing
+**Algorithm**:
+```typescript
+// Current: ROP = (avg_daily_sales * lead_time) + safety_stock
+// Enhanced: ROP = (seasonal_adjusted_sales * lead_time) + dynamic_safety_stock
 
-## Constraints
+function calculateSeasonalROP(sku: string): number {
+  const baseROP = calculateROP(sku);
+  const seasonalityFactor = getSeasonalityFactor(sku, currentMonth);
+  const adjustedROP = baseROP * seasonalityFactor;
+  return Math.ceil(adjustedROP);
+}
+```
 
-**Tools**: npm, psql  
-**Budget**: ≤ 20 min  
-**Paths**: tests/**, feedback/inventory/**
+**Data Needed**:
+- 12 months sales history per SKU
+- Category seasonality patterns (e.g., "Snowboards" peak Nov-Feb)
 
-## Links
+---
 
-- Previous work: feedback/inventory/2025-10-20.md (waiting for merge)
-- Branch: inventory/oct19-rop-fix-payouts-csv
-- Migrations: supabase/migrations/2025102019*
+### INVENTORY-002: Demand Forecasting (ML-Based) (2h)
+
+**Build forecasting service**:
+
+**File**: `app/services/inventory/demand-forecast.ts`
+
+**Features**:
+- 30-day demand forecast per SKU
+- Confidence intervals (low/medium/high)
+- Trend detection (growing, stable, declining)
+- Anomaly detection (sudden spikes/drops)
+
+**Simple ML Approach** (or statistical):
+- Moving average with trend
+- Exponential smoothing
+- Seasonal decomposition
+
+**Alternative** (if complex ML not feasible):
+- 7-day rolling average
+- 30-day rolling average
+- Simple linear trend
+
+**Output**:
+```typescript
+{
+  sku: string,
+  forecast_30d: number,
+  confidence: 'high' | 'medium' | 'low',
+  trend: 'growing' | 'stable' | 'declining',
+  recommended_reorder_qty: number
+}
+```
+
+**Integration**: Use in Inventory Modal (Engineer displays forecast)
+
+---
+
+## Optional Enhancements (If Time)
+
+### INVENTORY-003: Vendor Management (2h)
+
+**Track vendor performance**:
+- Lead time tracking (order to delivery)
+- Reliability score (on-time delivery %)
+- Cost comparison
+- Preferred vendor per SKU
+
+**File**: `app/services/inventory/vendor-management.ts`
+
+---
+
+### INVENTORY-004: PO Tracking System (2h)
+
+**Track purchase orders**:
+- PO status (ordered, shipped, received)
+- Expected delivery dates
+- Actual delivery dates (calculate lead time accuracy)
+
+**Integration**: Display in Inventory Modal or future PO dashboard
+
+---
+
+## Work Protocol
+
+**1. MCP Tools**:
+```bash
+# TypeScript for algorithms:
+mcp_context7_get-library-docs("/microsoft/TypeScript", "type-guards")
+
+# Math/stats libraries (if using):
+mcp_context7_get-library-docs("/simple-statistics/simple-statistics", "forecasting")
+```
+
+**2. Coordinate**:
+- **Engineer**: Will display forecast in Inventory Modal
+- **Analytics**: May share forecasting patterns
+- **Data**: Provide sales history data
+
+**3. Reporting (Every 2 hours)**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — Inventory: Seasonal ROP Enhancement
+
+**Working On**: INVENTORY-001 (seasonal adjustments)
+**Progress**: Algorithm implemented, testing with real data
+
+**Evidence**:
+- Files: app/lib/inventory/safety-stock.ts (+85 lines)
+- Tests: 18/18 passing (+4 new tests for seasonality)
+- Context7: Not needed (statistical methods, no new libraries)
+- Test results: Snowboard ROP adjusted 1.25x for winter months ✅
+
+**Blockers**: None
+**Next**: Build demand forecasting service
+```
+
+---
 
 ## Definition of Done
 
-- [ ] Migrations verified on main
-- [ ] Contract tests passing
-- [ ] RLS verified
+**Seasonal ROP**:
+- [ ] Algorithm implemented
+- [ ] Tests passing (4+ new tests)
+- [ ] Verified with real SKU data
+- [ ] Documentation updated
+
+**Demand Forecasting**:
+- [ ] Forecast service functional
+- [ ] 30-day predictions accurate (within 20% on test data)
+- [ ] Confidence levels calculated
+- [ ] Integration ready for Engineer
+
+**Optional** (if time):
+- [ ] Vendor management functional
+- [ ] PO tracking implemented
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Test algorithms with real SKU data
+- ✅ Validate forecast accuracy
+- ✅ Coordinate with Engineer for UI integration
+- ✅ Keep existing ROP service working (don't break)
+
+**DO NOT**:
+- ❌ Break existing `app/lib/inventory/safety-stock.ts`
+- ❌ Deploy without testing calculations
+- ❌ Use overly complex ML (simple forecasting OK)
+
+---
+
+## Phase Schedule
+
+**Day 2**: INVENTORY-001 (seasonal ROP - 2h) — START DAY 2
+**Day 3**: INVENTORY-002 (forecasting - 2h)
+**Day 3-4**: INVENTORY-003, 004 (optional enhancements - 4h if time)
+
+**Total**: 4-8 hours across Days 2-4 (parallel with Engineer)
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md`
+**Current Code**: app/lib/inventory/safety-stock.ts, app/services/inventory/
+**Feedback**: `feedback/inventory/2025-10-20.md`
+
+---
+
+**START WITH**: INVENTORY-001 (seasonal ROP - DAY 2) — Enhance existing service

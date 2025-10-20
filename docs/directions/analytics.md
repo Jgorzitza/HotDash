@@ -1,76 +1,99 @@
-# Analytics Direction
+# Analytics Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 4.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Option A Analytics Support
+
+---
 
 ## Objective
 
-**Issue**: #104 ✅ COMPLETE  
-All tasks complete - ready to build analytics APIs
+**Provide data integration for charts and analytics features** (Phases 7-8)
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-All v3.0 tasks ✅, contract tests ✅ (6/6), ready for API work
+---
 
-## Tasks
+## Day 1-4 Tasks (START NOW - 8h) — ALL CHART SERVICES UPFRONT
 
-### SUPPORTIVE WORK (1-2h) - Analytics API Endpoints
+**Strategy**: Build ALL data services NOW → Engineer integrates when ready
 
-**ANALYTICS-API-001**: Agent Performance Metrics API (45 min)
-1. Create `app/routes/api.analytics.agent-metrics.ts`
-2. Return agent performance data:
-   - Approval rates by agent
-   - Response times
-   - Tool usage stats
-   - Queue health
-3. Reference: docs/design/agent-performance-metrics-ui.md
-4. Contract test: 8 tests minimum
-5. Use React Router 7 patterns
+### ANALYTICS-001: Sales Chart Data (2h) — DAY 1
 
-**ANALYTICS-API-002**: Real-Time Metrics Stream (30 min)
-1. Create `app/routes/api.analytics.stream.ts`
-2. Implement SSE (Server-Sent Events)
-3. Stream live updates: queue depth, metric changes
-4. Update every 5 seconds
-5. Reference design specs for real-time indicators
+**Your Tasks**:
+- Provide 7-day revenue data for sparkline
+- Provide WoW comparison data for Sales Modal
+- Provide top SKUs breakdown data
 
-**ANALYTICS-API-003**: Approvals Count Endpoint (15 min)
-1. Create quick endpoint: `/api/analytics/approvals/count`
-2. Return: pending, approved, rejected counts
-3. Used by navigation badge
-4. < 100ms response time
+**Format**:
+```typescript
+// Expected by Engineer for charts
+{
+  revenue_7d: Array<{date: string, amount: number}>,
+  revenue_wow: {current: number, previous: number, change_pct: number},
+  top_skus: Array<{sku: string, units: number, revenue: number}>
+}
+```
 
-### STANDBY - Ready When Engineer Requests
+**Integration**: Engineer calls your service, you return chart-ready data
 
-- Answer questions about analytics data
-- Provide sample queries
-- Support dashboard data visualization
-- Validate analytics accuracy
+---
 
-## Work Complete
+### ANALYTICS-002: Inventory Chart Data (2h) — DAY 2
 
-✅ Shopify returns stub (181 lines)  
-✅ Sampling guard proof (223 lines)  
-✅ Metrics for Ads/Content (183 lines)  
-✅ Analytics pipeline doc (343 lines)  
-✅ Contract tests 6/6 passing
+**Your Tasks**:
+- Provide 14-day velocity data (units sold per day)
+- Provide stock level trend data
+- Provide days-of-cover calculations
 
-## Constraints
+---
 
-**Tools**: npm, psql  
-**MCP REQUIRED**: Context7 for React Router 7 patterns  
-**Budget**: ≤ 2.5 hours  
-**Paths**: app/routes/api.analytics.**, tests/**, feedback/analytics/**
+### ANALYTICS-003: Agent Performance Data (2h) — DAY 3
 
-## Links
+**Your Tasks**:
+- Query decision_log for approval rates
+- Calculate average grades (tone/accuracy/policy)
+- Provide response time trends
+- Format for Polaris Viz charts
 
-- Previous work: feedback/analytics/2025-10-20.md (all complete)
-- Design specs: docs/design/agent-performance-metrics-ui.md
+---
 
-## Definition of Done
+## Work Protocol
 
-- [ ] 3 analytics API endpoints created
-- [ ] Contract tests passing
-- [ ] React Router 7 compliant
-- [ ] Ready for Engineer dashboard integration
+**Coordinate with Engineer**: They build UI, you provide data services
+
+**Reporting**: Every 2 hours in `feedback/analytics/2025-10-20.md`
+
+---
+
+### ANALYTICS-004: Export Services (2h) — DAY 4
+
+**Build CSV export data services**:
+- Approval history export data
+- Analytics export data
+- Custom report generation
+
+---
+
+## Phase Schedule
+
+**Day 1**: ANALYTICS-001 (sales charts - 2h) — START NOW
+**Day 2**: ANALYTICS-002 (inventory charts - 2h)
+**Day 3**: ANALYTICS-003 (agent performance - 2h)
+**Day 4**: ANALYTICS-004 (exports - 2h)
+
+**Result**: ALL data services ready → Engineer integrates charts/exports when ready
+
+**Total**: 8 hours across Days 1-4 (parallel with Engineer)
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md`
+**Feedback**: `feedback/analytics/2025-10-20.md`
+
+---
+
+**START WITH**: Standby until Phase 7-8 begins

@@ -1,79 +1,288 @@
-# QA Direction
+# QA Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 4.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Option A Quality Assurance
+
+---
 
 ## Objective
 
-**Issue**: #110  
-Execute comprehensive production QA + provide final GO/NO-GO
+**Verify code quality and accessibility** for all Option A phases before CEO checkpoints
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-P0 /health ✅ (deployed), Chatwoot ✅ (restored), AppProvider ❌ (Engineer fixing)
+**Your Role**: Final quality gate before CEO reviews
 
-## Tasks
+---
 
-### ✅ ENGINEER FIXED - STAGING IS LIVE - TEST NOW
+## Verification Tasks (Per Phase)
 
-**STAGING READY** (Deployed 2025-10-20T15:58Z):
-- Fly version: 48
-- Shopify version: hot-dash-29
-- AppProvider i18n: FIXED ✅
-- URL: https://hotdash-staging.fly.dev
+### Phase 2, 3, 4, 5, 6, 7-8, 10, 11, 12, 13: Code Review
 
-### IMMEDIATE (30 min) - TEST NOW
+**After Engineer completes, BEFORE Designer validates**:
 
-**QA-018**: Retest AppProvider Fix
-1. Open https://hotdash-staging.fly.dev
-2. Click "View breakdown" button on Sales Pulse tile
-3. Verify: Modal opens (NO crash)
-4. Test ALL interactive buttons
-5. Screenshot evidence: buttons working
-6. Report: PASS/FAIL
+**QA-001**: Code Quality Verification (30 min per phase)
 
-**QA-019**: Retest /health Endpoint
-1. `curl https://hotdash-staging.fly.dev/health`
-2. Expected: HTTP 200 with JSON status
-3. Report: PASS/FAIL
+**Process**:
+1. Engineer completes phase
+2. You verify code quality
+3. Designer validates visuals
+4. Manager presents to CEO
 
-### THEN (2-3h) - UI/UX Testing
+**Verification Checklist**:
 
-**QA-012 to QA-017**: Resume from Oct 19 direction
-- Mobile responsiveness
-- Browser compatibility  
-- Performance testing
-- Final QA packet
-- Production checklist
-- GO/NO-GO recommendation
+```md
+## Phase N Code Review
 
-### Final Decision
+**Files Changed**: [list with line counts]
 
-**GO** if:
-- ✅ /health endpoint working
-- ✅ AppProvider i18n fixed (buttons work)
-- ✅ Designer validates UI
-- ✅ Pilot validates HITL flow
+**Context7 Verification**:
+- [ ] Prisma patterns match Context7 docs (/prisma/docs)
+- [ ] React Router 7 patterns (no @remix-run imports)
+- [ ] Polaris components used correctly
+- [ ] TypeScript types proper
 
-**NO-GO** if:
-- ❌ AppProvider still crashes
-- ❌ Critical functionality broken
+**Code Quality**:
+- [ ] No console.log in production code
+- [ ] Error boundaries present
+- [ ] Loading states implemented
+- [ ] No hardcoded strings (use microcopy)
+- [ ] No secrets in code
 
-## Constraints
+**Testing**:
+- [ ] Unit tests added (+2 minimum per component)
+- [ ] Test coverage ≥80% for new code
+- [ ] All tests passing (npm run test:ci)
+- [ ] Playwright tests for modals (if applicable)
 
-**Tools**: Chrome DevTools MCP (available per Manager), npm, curl  
-**Budget**: ≤ 3 hours total  
-**Paths**: tests/**, reports/qa/**, feedback/qa/**
+**Accessibility** (Verify with Tools):
+- [ ] Keyboard nav (Tab through all controls)
+- [ ] Focus indicators (4.5:1 contrast)
+- [ ] ARIA labels on interactive elements
+- [ ] Semantic HTML (article, h2, ul/li)
+- [ ] Color contrast (text 4.5:1, interactive 3:1)
 
-## Links
+**Security**:
+- [ ] npm run scan passing (no secrets)
+- [ ] No SQL injection vectors
+- [ ] Input validation present
+- [ ] XSS protection (React default)
 
-- Previous QA: feedback/qa/2025-10-19.md (CONDITIONAL GO, B+ grade)
-- Chrome DevTools MCP: Verified working by Manager
+**Verdict**: ✅ PASS / ❌ FAIL (with specific issues)
+```
 
-## Definition of Done
+---
 
-- [ ] AppProvider fix verified (buttons don't crash)
-- [ ] /health endpoint tested
-- [ ] Final GO/NO-GO decision provided
-- [ ] Evidence logged in feedback/qa/2025-10-20.md
+## MCP Tool Requirements (MANDATORY)
+
+### Before ANY Code Review:
+
+**Pull Official Docs**:
+```bash
+# For Prisma code review:
+mcp_context7_get-library-docs("/prisma/docs", "schema-validation")
+
+# For React Router code review:
+mcp_context7_get-library-docs("/react-router/react-router", "loaders")
+
+# For Polaris code review:
+mcp_context7_get-library-docs("/shopify/polaris", "accessibility")
+
+# For TypeScript review:
+mcp_context7_get-library-docs("/microsoft/TypeScript", "strict-mode")
+```
+
+**Log Tool Usage**:
+```md
+## HH:MM - Context7: Prisma
+- Topic: @@schema attribute requirement
+- Verified: All models have @@schema("public") ✅
+- Found Issue: SalesPulseAction missing @@schema ❌
+- Reported to: Data agent for fix
+```
+
+**Minimum**: 4+ MCP tool calls per session (Context7, Shopify Dev MCP)
+
+---
+
+## Accessibility Testing Protocol
+
+### Tools to Use:
+
+**Automated**:
+- axe DevTools (browser extension)
+- Lighthouse accessibility audit
+- WAVE (WebAIM)
+
+**Manual**:
+- Keyboard-only navigation
+- Tab order logical
+- Focus visible
+- Escape key behavior
+
+**Screen Reader** (if accessible):
+- NVDA (Windows)
+- VoiceOver (Mac)
+- Verify announcements correct
+
+### Report Format:
+
+```md
+## Accessibility Audit: [Component]
+
+**Tool**: axe DevTools
+**Result**: 0 violations ✅ / 3 violations ❌
+
+**Issues Found**:
+1. Missing ARIA label on close button
+   - Severity: Critical
+   - Fix: Add aria-label="Close modal"
+   - Assigned to: Engineer
+
+**Manual Test**:
+- Keyboard nav: ✅ PASS (all controls reachable)
+- Focus trap: ✅ PASS (stays in modal)
+- Escape key: ✅ PASS (closes modal)
+
+**Verdict**: ❌ FAIL (3 critical issues) → Send back to Engineer
+```
+
+---
+
+## Ongoing Responsibilities
+
+### 1. PR Reviews:
+
+**When Engineer/Data/Designer create PRs**:
+- Review code quality (patterns, tests, accessibility)
+- Run security scan
+- Verify no secrets
+- Check test coverage
+- Approve OR request changes
+
+**Report**: `feedback/qa/2025-10-20.md` with PR number, verdict, issues
+
+---
+
+### 2. Test Suite Monitoring:
+
+**Daily**:
+```bash
+npm run test:ci
+# Report: X/Y passing, Z failures
+# If failures: Create issue, assign owner, due date
+```
+
+---
+
+### 3. Security Scanning:
+
+**Daily**:
+```bash
+npm run scan
+# Report: Clean / X secrets found
+# If secrets: IMMEDIATE escalation to Manager
+```
+
+---
+
+## Work Protocol
+
+**1. MCP Tools First** (Training data outdated):
+- Context7 for library verification
+- Shopify Dev MCP for Shopify patterns
+- Never rely on training data alone
+
+**2. Reporting Every 2 Hours**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — QA: Phase N Verification
+
+**Working On**: Code review for Phase N
+**Progress**: 2/3 components reviewed
+
+**Evidence**:
+- Context7: Pulled /prisma/docs → verified @@schema present
+- Accessibility: axe audit → 0 violations
+- Tests: 245/245 passing (+5 new tests)
+- Security: npm run scan → clean
+
+**Blockers**: None
+**Next**: Complete final component review
+```
+
+**3. Rejection Criteria**:
+- Test coverage < 80% → FAIL
+- Accessibility violations → FAIL
+- Secrets detected → IMMEDIATE FAIL (escalate)
+- Missing Context7 verification → FAIL (resend to agent)
+
+---
+
+## Definition of Done (Each Phase)
+
+**Code Quality**:
+- [ ] Context7 docs verified for all libraries used
+- [ ] React Router 7 patterns (grep for @remix-run → 0 results)
+- [ ] TypeScript strict mode passing
+- [ ] No console.log/debugger in production
+
+**Testing**:
+- [ ] Test coverage ≥80% for new code
+- [ ] All tests passing (npm run test:ci)
+- [ ] Playwright tests for modals/routes
+
+**Accessibility**:
+- [ ] axe DevTools: 0 violations
+- [ ] Keyboard nav verified
+- [ ] Focus management tested
+- [ ] Color contrast verified (4.5:1 minimum)
+
+**Security**:
+- [ ] npm run scan: clean
+- [ ] No hardcoded secrets
+- [ ] Input validation present
+- [ ] RLS policies verified (Data tables)
+
+**Evidence**:
+- [ ] Feedback updated with verification results
+- [ ] MCP tool usage logged (4+ calls minimum)
+- [ ] Issues documented with severity + owner
+
+---
+
+## Phase Schedule
+
+**Immediate**: Phase 2 code review (after Engineer completes)
+**Ongoing**: Review each phase before CEO checkpoint
+**Total**: ~11 reviews (30 min each = 5.5 hours)
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Use MCP tools before every review (Context7, Shopify Dev MCP)
+- ✅ Test accessibility with keyboard + tools
+- ✅ Verify test coverage ≥80%
+- ✅ Block PRs with secrets or accessibility violations
+
+**DO NOT**:
+- ❌ Approve code without Context7 verification
+- ❌ Skip accessibility testing
+- ❌ Allow secrets in codebase
+- ❌ Pass code with <80% test coverage
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
+**Rules**: `docs/RULES.md` (Tool-first, QA verification protocol)
+**Feedback**: `feedback/qa/2025-10-20.md`
+**Startup**: `docs/runbooks/agent_startup_checklist.md`
+
+---
+
+**START WITH**: Monitor Engineer progress on Phase 2, prepare for code review when complete

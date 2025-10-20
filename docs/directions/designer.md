@@ -1,75 +1,263 @@
-# Designer Direction
+# Designer Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 8.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Option A Validation Lead
+
+---
 
 ## Objective
 
-**Issue**: #118  
-Validate ALL 57 specs for Option A - Full build
+**Validate ALL implementations match design specs EXACTLY** across 13 phases
+
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
+
+**Your Role**: Quality gate between Engineer work and CEO checkpoints
+
+---
+
+## Validation Requirements
+
+### After EVERY Phase (11 Validations Total):
+
+**Process**:
+1. Engineer completes phase tasks
+2. You validate against design specs
+3. Pass → CEO checkpoint
+4. Fail → Engineer fixes → You re-validate
+
+**Validation Checklist** (use for each phase):
+```md
+## Phase N Validation
+
+**Spec**: [docs/design/file.md]
+**Implementation**: [app/components/file.tsx]
+
+**Visual QA**:
+- [ ] Layout matches wireframe exactly
+- [ ] Spacing matches design tokens (8px grid)
+- [ ] Colors match Hot Rodan palette (#E74C3C primary)
+- [ ] Typography matches scale (heading/body sizes)
+- [ ] States: default, hover, active, disabled, loading, error
+
+**Accessibility**:
+- [ ] Keyboard navigation (Tab through all controls)
+- [ ] Focus indicators visible (4.5:1 contrast)
+- [ ] Escape closes modals
+- [ ] Screen reader labels (ARIA)
+- [ ] Color contrast (4.5:1 text, 3:1 interactive)
+
+**Interaction**:
+- [ ] Buttons respond to click
+- [ ] Forms validate inputs
+- [ ] Loading states show during async
+- [ ] Error states display correctly
+- [ ] Success feedback (toast/banner)
+
+**Verdict**: ✅ PASS / ❌ FAIL (with specific issues listed)
+```
+
+---
+
+## Phase-by-Phase Validation Tasks
+
+### ✅ PHASE 1: VALIDATED
+
+**Status**: Passed CEO Checkpoint 1  
+**Date**: 2025-10-20  
+**Evidence**: Basic approval queue working
+
+---
+
+### 🔥 PHASE 2: Enhanced Modals + OpenAI SDK (45 min) — NEXT
+
+**DES-003**: Validate Enhanced Modals
+
+**Your Tasks**:
+
+**1. CX Modal Validation** (20 min):
+- **Spec**: `docs/design/modal-refresh-handoff.md`
+- Check: Grading sliders (tone/accuracy/policy 1-5)
+- Check: Conversation preview scrollable
+- Check: AI reply display prominent
+- Check: Internal notes textarea
+- Check: 5 action buttons (Approve/Edit/Escalate/Resolve/Cancel)
+- Check: Focus trap (Tab doesn't leave modal)
+- Check: Escape key closes modal
+- Check: Toast on success/error
+- **Tool Required**: Test with screen reader if possible
+
+**2. Sales Modal Validation** (10 min):
+- **Spec**: `docs/design/dashboard_wireframes.md` lines 126-181
+- Check: Variance display (WoW %)
+- Check: Action dropdown (3 options)
+- Check: Notes textarea
+- Check: Dynamic button text
+
+**3. Inventory Modal Validation** (15 min):
+- **Spec**: `docs/design/dashboard_wireframes.md` lines 183-240
+- Check: 14-day velocity chart
+- Check: Reorder workflow
+- Check: Quantity input
+- Check: Vendor dropdown
+- Check: "Approve Reorder" button
+
+**Evidence Format**:
+```md
+## Phase 2 Validation Complete
+
+**CX Modal**: ✅ PASS
+- Grading sliders functional (1-5 range)
+- Focus trap tested with keyboard
+- Toast notifications working
+- Matches spec lines 45-120
+
+**Sales Modal**: ✅ PASS
+- Variance display correct
+- Action dropdown matches spec
+
+**Inventory Modal**: ❌ FAIL
+- Issue: Quantity input not validated (allows negative numbers)
+- Issue: Vendor dropdown missing "Add new vendor" option per spec line 215
+- Assigned back to Engineer for fix
+
+**Verdict**: Phase 2 BLOCKED until Inventory fixes applied
+```
+
+**Breakpoint**: Your validation gates CEO Checkpoint 2
+
+---
+
+### PHASE 3: Missing Tiles Validation (30 min) — QUEUED
+
+**DES-005**: Validate New Tiles
+
+**Your Tasks**:
+
+**1. Idea Pool Tile** (15 min):
+- **Spec**: `docs/design/dashboard-tiles.md` lines 528-670
+- Check: 5/5 capacity indicator
+- Check: Wildcard badge present
+- Check: Count display (pending/accepted/rejected)
+- Check: "View Idea Pool" button working
+
+**2. Approvals Queue Tile** (15 min):
+- Check: Pending count prominent
+- Check: Oldest time display
+- Check: "Review queue" button → /approvals
+
+**3. Dashboard Integration**:
+- Check: 8/8 tiles in grid
+- Check: Grid responsive (3-4 col desktop, 2 col tablet, 1 col mobile)
+
+**Breakpoint**: Your validation gates CEO Checkpoint 3
+
+---
+
+### PHASE 6: Settings Validation (2h) — QUEUED
+
+**DES-007**: Dashboard Settings Tab
+**DES-009**: Appearance & Notification Tabs
+
+**Your Tasks**:
+- Validate drag & drop smooth (no jank)
+- Validate theme switcher matches design
+- Validate all settings persist correctly
+
+**Breakpoint**: Your validation gates CEO Checkpoint 6
+
+---
+
+### PHASE 7-8: Data Viz Validation (1h) — QUEUED
+
+**Your Tasks**:
+- Validate charts match Polaris Viz patterns
+- Validate interactive tooltips
+- Validate print-friendly rendering
+
+**Breakpoint**: Your validation gates CEO Checkpoint 7
+
+---
+
+### PHASE 13: Final Sign-Off (1h) — QUEUED
+
+**DES-014**: Design System Audit
+**DES-015**: Mobile & Dark Mode Verification
+
+**Your Tasks**:
+- Complete design system compliance check
+- Verify all 57 design specs implemented
+- Sign off on Option A completion
+- Document any deferred features
+
+**Breakpoint**: Your sign-off gates CEO Checkpoint 11 (FINAL)
+
+---
+
+## Validation Tools
+
+**Use These**:
+- Chrome DevTools (inspect spacing, colors)
+- Keyboard (Tab, Enter, Escape navigation)
+- Browser resize (responsive testing)
+- Color contrast checker (WebAIM)
+- Screen reader (if accessible)
+
+**Document Issues**:
+- Screenshot + annotation
+- Spec reference (file + line number)
+- Severity (P0 blocker / P1 important / P2 nice-to-have)
+
+---
+
+## Work Protocol
+
+**1. MCP Tools** (Use when needed):
+- Context7: Pull design system docs if clarification needed
+- Web search: WCAG 2.2 AA requirements
+
+**2. Reporting** (Every 2 hours):
+```md
+## YYYY-MM-DDTHH:MM:SSZ — Designer: Phase N Validation
+
+**Working On**: Validating Phase N implementations
+**Progress**: 2/3 components validated
+
+**Evidence**:
+- CX Modal: ✅ PASS (matches spec, accessible)
+- Sales Modal: ⏸️ IN PROGRESS
+- Inventory Modal: ❌ FAIL (2 issues found)
+
+**Blockers**: None
+**Next**: Complete Sales/Inventory validation
+```
+
+**3. Rejection Criteria**:
+- Implementation < 90% of spec → FAIL
+- Missing accessibility features → FAIL
+- Color/spacing off by >10% → FAIL (request fix)
+- Missing error/loading states → FAIL
+
+---
 
 ## Current Status
 
-5/15 prep complete ✅, 11/15 blocked by AppProvider (Engineer fixing)
+**Phase**: 2 (Validation pending)
+**Waiting For**: Engineer to complete ENG-005, ENG-006, ENG-007
+**Next Task**: DES-003 (validate enhanced modals - 45 min)
+**Total Validation Hours**: ~6 hours across all phases
 
-## Tasks
+---
 
-### ✅ UNBLOCKED - STAGING IS LIVE - TEST NOW
+## Quick Reference
 
-**STAGING READY** (Deployed 2025-10-20T15:58Z):
-- Fly version: 48
-- Shopify version: hot-dash-29  
-- AppProvider i18n: FIXED ✅
-- URL: https://hotdash-staging.fly.dev
+**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
+**Specs**: `docs/design/*.md` (57 files - YOUR specifications)
+**Vision**: `COMPLETE_VISION_OVERVIEW.md`
+**Feedback**: `feedback/designer/2025-10-20.md`
+**Startup**: `docs/runbooks/agent_startup_checklist.md`
 
-### RESUME IMMEDIATELY
+---
 
-**DES-002**: Visual QA on Approval Queue (30 min)
-- WAIT for Engineer to fix AppProvider i18n
-- THEN: Test approval queue interactivity
-- Use Chrome DevTools MCP
-- Reference: HANDOFF-approval-queue-ui.md
-- Verify: Buttons work, modals open, no crashes
-
-**DES-003**: Enhanced Modals QA (45 min)
-- Test CX, Sales, Inventory modals
-- Verify interactive elements work
-- Reference: modal-refresh-handoff.md
-
-### THEN - Continue Validation (Phases 2-11)
-
-**DES-004 to DES-015**: Per AGENT_LAUNCH_PROMPT_OCT20.md
-- Validate each phase Engineer completes
-- Match against 57 design specs EXACTLY
-- WCAG 2.2 AA compliance
-- Brand consistency
-- Mobile responsiveness
-- Final design sign-off
-
-## Preparation Work Complete
-
-✅ DES-001: Implementation checklist (25KB, 76 tasks)
-✅ DES-004: Dashboard wireframes (6/10 compliance)
-✅ DES-008: Accessibility audit (25KB, WCAG 2.2 AA)
-✅ DES-013: System QA (3/10 compliance - gaps documented)
-
-## Constraints
-
-**Tools**: Chrome DevTools MCP (available), npm  
-**MCP REQUIRED**: Chrome DevTools for all visual testing  
-**Budget**: ≤ 20 hours total validation  
-**Match design specs EXACTLY** - No minimal implementations
-
-## Links
-
-- All 57 specs: docs/design/
-- Launch prompt: AGENT_LAUNCH_PROMPT_OCT20.md
-- Previous work: feedback/designer/2025-10-20.md
-
-## Definition of Done
-
-- [ ] DES-002 complete (after AppProvider fix)
-- [ ] All phases validated against specs
-- [ ] WCAG 2.2 AA compliance verified
-- [ ] Final design sign-off provided
+**CRITICAL**: Your validation is the quality gate. If implementation doesn't match spec EXACTLY, send back to Engineer. "Never Again" policy requires your thoroughness.

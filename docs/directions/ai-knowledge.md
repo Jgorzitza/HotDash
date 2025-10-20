@@ -1,70 +1,245 @@
-# AI-Knowledge Direction
+# AI-Knowledge Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 4.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — LlamaIndex Knowledge Base for CEO Agent (PARALLEL DAY 1-2)
+
+---
 
 ## Objective
 
-**Issue**: #71 ✅ COMPLETE  
-RAG system operational - ready for KB expansion
+**Build knowledge base for CEO agent** using LlamaIndex
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-All v3.0 tasks ✅, RAG tested ✅ (6 docs, 17.7s), credentials ✅
+**Timeline**: Day 1-2 (8h total) — START NOW (Parallel with other agents)
 
-## Tasks
+**Purpose**: CEO agent queries knowledge base for product docs, policies, procedures
 
-### SUPPORTIVE WORK (1h) - KB Documentation & Expansion
+---
 
-**AI-KB-001**: Document RAG Build Process (30 min)
-1. Create `docs/runbooks/knowledge_base_rag_build.md`
-2. Document:
-   - How to run: `npx tsx scripts/rag/build-index.ts`
-   - Input: data/support/*.md files
-   - Embedding: OpenAI text-embedding-3-small
-   - Output: packages/memory/indexes/operator_knowledge/
-   - Credentials: vault/occ/openai/api_key_staging.env
-3. Include troubleshooting steps
-4. Save to docs/runbooks/
+## Day 1 Tasks (START NOW - 4h)
 
-**AI-KB-002**: Expand Support KB Content (30 min)
-1. Review existing: data/support/*.md (currently 6 docs)
-2. Add 2-3 new support docs:
-   - Chatwoot troubleshooting (based on Support's Oct 20 fix)
-   - Approval queue FAQ
-   - Common dashboard issues
-3. Run RAG build to index new docs
-4. Verify: Document count increases
+### AI-KNOWLEDGE-001: LlamaIndex Setup & Document Ingestion (2h)
 
-### STANDBY - Ready for KB Requests
+**Set up LlamaIndex**:
 
-- Support Engineer with knowledge integration
-- Answer questions about RAG system
-- Provide embeddings help
-- Expand KB as needed
+**Files to Create/Update**:
+- `scripts/rag/build-index.ts` (may exist - enhance it)
+- `app/services/rag/query-engine.ts` - Query interface
+- `docs/integrations/llamaindex-setup.md` - Documentation
 
-## Work Complete
+**Documents to Ingest**:
+1. **Product Documentation**:
+   - All product descriptions from Shopify
+   - Product specifications
+   - Usage instructions
+   - Care/maintenance guides
 
-✅ RAG system tested (6 docs indexed)  
-✅ OpenAI embeddings working (text-embedding-3-small)  
-✅ Supabase credentials verified  
-✅ KB harness spec created (350+ lines)
+2. **Company Policies**:
+   - Return policy
+   - Shipping policy
+   - Privacy policy
+   - Terms of service
 
-## Constraints
+3. **Operational Procedures**:
+   - Refund process
+   - Cancellation process
+   - Escalation procedures
+   - Quality standards
 
-**Tools**: npx, tsx  
-**Budget**: ≤ 1.5 hours  
-**Paths**: data/support/**, scripts/rag/**, docs/runbooks/**, feedback/ai-knowledge/**
+4. **FAQ Database**:
+   - Common customer questions
+   - Troubleshooting guides
+   - Size charts, compatibility info
 
-## Links
+**Process**:
+1. Collect documents (markdown, JSON, or scrape from Shopify)
+2. Chunk documents (512 token chunks)
+3. Generate embeddings (OpenAI or open source)
+4. Store in vector database (Supabase pgvector OR Pinecone)
+5. Build query engine
 
-- Previous work: feedback/ai-knowledge/2025-10-20.md (all complete)
-- RAG script: scripts/rag/build-index.ts
-- KB spec: docs/specs/hitl/ai-knowledge-base.md
+**CRITICAL - Pull Context7 FIRST**:
+```bash
+mcp_context7_get-library-docs("/llamaindex/llamaindex", "document-ingestion")
+mcp_context7_get-library-docs("/llamaindex/llamaindex", "query-engine")
+```
+
+---
+
+### AI-KNOWLEDGE-002: Query Engine for CEO Agent (2h)
+
+**Build query interface**:
+
+**Service**: `app/services/rag/ceo-knowledge-base.ts`
+
+**Functions**:
+```typescript
+async function queryKnowledgeBase(query: string): Promise<{
+  answer: string,
+  sources: Array<{document: string, relevance: number}>,
+  confidence: 'high' | 'medium' | 'low'
+}> {
+  // Use LlamaIndex query engine
+  // Return answer + sources for citation
+}
+```
+
+**Example Queries** (CEO agent will use):
+- "What's our return policy for damaged items?"
+- "How do I process a refund for order #12345?"
+- "What are the specs for Powder Board XL?"
+- "What's the escalation process for VIP customers?"
+
+**Integration**: CEO agent calls this service, gets answers with citations
+
+---
+
+## Day 2 Tasks (4h)
+
+### AI-KNOWLEDGE-003: Embedding Optimization & Testing (2h)
+
+**Optimize retrieval**:
+- Test different chunk sizes (256, 512, 1024 tokens)
+- Test embedding models (OpenAI vs open source)
+- Tune relevance threshold
+- Test query rephrasing for better retrieval
+
+**Benchmarks**:
+- Query response time: <2s
+- Relevance: Top 3 results should contain answer ≥80% of time
+- Accuracy: Answer correct ≥90% of time
+
+**Create Test Suite**:
+- 20 test queries with expected answers
+- Measure precision/recall
+- Document in feedback
+
+---
+
+### AI-KNOWLEDGE-004: Knowledge Base Maintenance System (2h)
+
+**Build update workflow**:
+- Detect when Shopify products change
+- Auto-update product docs in knowledge base
+- Manual update workflow (upload new policy docs)
+- Version tracking (know which policy version was active when)
+
+**File**: `app/services/rag/knowledge-base-sync.ts`
+- Webhook handler for Shopify product updates
+- Manual upload endpoint (for policy docs)
+- Incremental updates (don't rebuild entire index)
+
+---
+
+## Work Protocol
+
+**1. MCP Tools (MANDATORY)**:
+```bash
+# LlamaIndex:
+mcp_context7_get-library-docs("/llamaindex/llamaindex", "vector-store")
+mcp_context7_get-library-docs("/llamaindex/llamaindex", "embeddings")
+
+# OpenAI embeddings:
+mcp_context7_get-library-docs("/openai/openai-node", "embeddings")
+
+# Supabase pgvector (if using):
+mcp_context7_get-library-docs("/supabase/supabase", "vector")
+
+# Log:
+## HH:MM - Context7: LlamaIndex
+- Topic: document ingestion, query engine
+- Key Learning: Chunk size affects retrieval quality
+- Applied to: scripts/rag/build-index.ts (chunk size 512)
+```
+
+**2. Coordinate**:
+- **AI-Customer**: CEO agent will use your knowledge base
+- **Manager**: Provide policy documents to ingest
+- **DevOps**: May need to deploy LlamaIndex MCP server (if using)
+
+**3. Reporting (Every 2 hours)**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — AI-Knowledge: LlamaIndex Setup
+
+**Working On**: AI-KNOWLEDGE-001 (document ingestion)
+**Progress**: 150 documents ingested, embeddings generated
+
+**Evidence**:
+- Documents ingested: 150 (products: 80, policies: 15, FAQ: 55)
+- Embeddings: 1,245 chunks (512 tokens each)
+- Vector store: Supabase pgvector
+- Context7: Pulled LlamaIndex docs (ingestion patterns)
+- Test query: "return policy damaged items" → ✅ Correct answer retrieved
+
+**Blockers**: None
+**Next**: Build query engine interface for CEO agent
+```
+
+---
 
 ## Definition of Done
 
-- [ ] RAG build process documented
-- [ ] KB content expanded (8-10 docs minimum)
-- [ ] New docs indexed successfully
+**LlamaIndex Setup**:
+- [ ] Documents ingested (100+ documents minimum)
+- [ ] Embeddings generated
+- [ ] Vector store operational
+- [ ] Context7 docs pulled
+
+**Query Engine**:
+- [ ] Query interface functional
+- [ ] Returns answers + sources
+- [ ] Response time <2s
+- [ ] Accuracy ≥90% on test queries
+
+**Optimization**:
+- [ ] Chunk size tuned
+- [ ] Relevance threshold set
+- [ ] Test suite passing (≥16/20 correct)
+
+**Maintenance System**:
+- [ ] Auto-sync with Shopify
+- [ ] Manual upload workflow
+- [ ] Version tracking
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Pull Context7 docs for LlamaIndex before coding
+- ✅ Test query quality (accuracy matters for CEO agent)
+- ✅ Provide citations (CEO needs to verify sources)
+- ✅ Optimize for response time (<2s)
+
+**DO NOT**:
+- ❌ Skip Context7 tool pulls
+- ❌ Deploy without testing query accuracy
+- ❌ Ingest documents without chunking (too large)
+- ❌ Store embeddings without vector store (use pgvector or Pinecone)
+
+---
+
+## Phase Schedule
+
+**Day 1**: AI-KNOWLEDGE-001, 002 (Setup + query engine - 4h) — START NOW
+**Day 2**: AI-KNOWLEDGE-003, 004 (Optimization + maintenance - 4h)
+
+**Total**: 8 hours across Days 1-2 (parallel with other agents)
+
+**UNBLOCKS**: CEO agent (Phase 11) has knowledge base ready
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md`
+**Existing**: scripts/rag/ directory (may have starter code)
+**LlamaIndex MCP**: May be deployed (hotdash-llamaindex-mcp.fly.dev)
+**Feedback**: `feedback/ai-knowledge/2025-10-20.md`
+
+---
+
+**START WITH**: AI-KNOWLEDGE-001 (LlamaIndex setup NOW - 2h) — PARALLEL DAY 1

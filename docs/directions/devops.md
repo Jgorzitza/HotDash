@@ -1,69 +1,277 @@
-# DevOps Direction
+# DevOps Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 5.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Option A Deployment Support
+
+---
 
 ## Objective
 
-**Issue**: #107  
-Apply Data migrations + support Option A deployments
+**Support Option A deployments and infrastructure** (Phases 2-13)
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-Migration verification ✅ complete (5 migrations verified, 352 lines SQL)
+**Your Role**: Infrastructure, deployment, monitoring for each phase
 
-## Tasks
+---
 
-### MANAGER WILL HANDLE MIGRATIONS
+## Immediate Tasks
 
-Manager will apply migrations directly. Your task:
+### DEVOPS-001: Monitor Current Deployment Health (Ongoing)
 
-**DEVOPS-001**: Monitor Deployment Health (15 min)
-1. After Manager applies migrations:
-2. Verify Fly app health: `fly status -a hotdash-staging`
-3. Check logs: `fly logs -a hotdash-staging | grep -i error | tail -20`
-4. Verify /health endpoint: `curl https://hotdash-staging.fly.dev/health`
-5. Report: Any errors or all healthy
+**App**: hotdash-staging.fly.dev
 
-### THEN - Support Option A Deployments
+**Daily Health Checks**:
+```bash
+fly status -a hotdash-staging
+fly logs -a hotdash-staging | tail -100
+```
 
-**DEVOPS-002**: Monitor Builds as Engineer Completes Phases
-- Watch for build failures
-- Check deployment success
-- Verify health checks passing
-- Report issues immediately
+**Report**:
+- Machine status
+- Latest deployment version
+- Error rate
+- GA API health (should see success logs every minute)
 
-**DEVOPS-003**: Infrastructure Monitoring
-- Fly machine health
-- Postgres database health
-- Application logs
-- Performance metrics
+---
 
-## Migrations Ready
+### DEVOPS-002: Database Migration Coordination (Phase 2)
 
-Data created 5 migrations (all verified):
-- 20251020210000_user_preferences.sql (90 lines)
-- 20251020211500_notifications.sql (116 lines)
-- 20251020213000_approvals_history.sql (46 lines)
-- 20251020214500_sales_pulse_actions.sql (48 lines)
-- 20251020215000_inventory_actions.sql (52 lines)
+**When Data Agent Creates Migrations**:
 
-**Total**: 6 new tables, all with RLS
+**Process**:
+1. Data creates migration files
+2. **You verify** migration is safe (additive only)
+3. **Manager applies** via Supabase console or psql
+4. **You verify** tables exist in database
+5. **Confirm** to Engineer (unblock Phase 2 work)
 
-## Constraints
+**Verification Commands** (after Manager applies):
+```sql
+-- Check tables exist:
+SELECT table_name FROM information_schema.tables 
+WHERE table_schema = 'public' 
+AND table_name IN ('sales_pulse_actions', 'inventory_actions', 'notifications', 'user_preferences');
 
-**Tools**: fly cli, curl  
-**Budget**: ≤ 30 min  
-**Paths**: feedback/devops/**, reports/devops/**
+-- Verify RLS enabled:
+SELECT tablename, rowsecurity FROM pg_tables 
+WHERE schemaname = 'public' 
+AND tablename LIKE '%_actions';
+```
 
-## Links
+**CRITICAL**: Do NOT add migration commands to fly.toml or package.json (database safety policy)
 
-- Previous work: feedback/devops/2025-10-20.md (verification complete)
-- Data migrations: supabase/migrations/202510202*
+---
 
-## Definition of Done
+## Phase-Specific Tasks
 
-- [ ] Deployment health monitored after migrations
-- [ ] All checks passing
-- [ ] Issues reported immediately
+### PHASE 5: SSE Infrastructure (3h) — QUEUED
+
+**DEVOPS-003**: Server-Sent Events Setup
+
+**What to Build**:
+- SSE endpoint: `/api/realtime/approvals`
+- Heartbeat every 30 seconds
+- Send events when approval queue changes
+- Connection management (handle disconnects)
+- Redis pub/sub (if needed for multi-instance)
+
+**Coordinate with Engineer**:
+- They build client-side SSE consumer
+- You build server-side SSE producer
+- Test connection stability
+
+**Monitoring**:
+- Track connection count
+- Monitor event delivery latency
+- Alert if > 50% connections fail
+
+---
+
+### PHASE 11: CEO Agent Service Deployment — QUEUED
+
+**DEVOPS-004**: Deploy CEO Agent Service
+
+**If agent-service needs update**:
+- Build: `apps/agent-service/`
+- Deploy: `fly deploy -a hotdash-agent-service`
+- Verify: Health endpoint responding
+- Monitor: Check for errors in logs
+
+**Secrets** (if new):
+- OpenAI API key
+- Supabase connection
+- Chatwoot API token
+- Google Analytics credentials
+
+---
+
+### PHASE 13: Production Deployment Preparation — QUEUED
+
+**DEVOPS-005**: Production Readiness
+
+**Tasks**:
+- Create production Fly app (if not exists): hotdash-production
+- Set production secrets (coordinate with Manager for vault access)
+- Configure custom domain
+- SSL certificates
+- Health check monitoring
+- Backup verification
+
+---
+
+## Deployment Protocol (Each Phase)
+
+**After CEO Approves Phase**:
+
+1. **Verify Build**:
+   ```bash
+   npm run build
+   npm run test:ci
+   ```
+
+2. **Deploy to Staging**:
+   ```bash
+   fly deploy -a hotdash-staging --strategy immediate
+   ```
+
+3. **Verify Health**:
+   ```bash
+   fly status -a hotdash-staging
+   fly logs -a hotdash-staging | grep -E "error|Error|ERROR" | tail -20
+   ```
+
+4. **Smoke Test**:
+   - Visit https://hotdash-staging.fly.dev
+   - Check tiles loading
+   - Test new phase features
+   - Verify no console errors
+
+5. **Report**:
+   ```md
+   ## Phase N Deployment
+
+   **Version**: [deployment ID]
+   **Status**: ✅ HEALTHY / ❌ ISSUES
+   **Health**: [status from fly status]
+   **Errors**: [None OR error summary]
+   **Smoke Test**: [Pass/Fail with evidence]
+   ```
+
+---
+
+## Monitoring & Alerts
+
+**Daily**:
+- App uptime
+- Error rate
+- Response times
+- Database connection health
+- GA API health
+- Chatwoot service health
+
+**Alert Thresholds**:
+- Error rate > 5% → Escalate to Manager
+- Response time > 5s → Investigate
+- Database connection fails → IMMEDIATE escalation
+- Any service 500 errors → Immediate investigation
+
+---
+
+## Work Protocol
+
+**1. MCP Tools**:
+```bash
+# Fly.io operations - use Fly MCP tools
+mcp_fly_fly-status
+mcp_fly_fly-logs
+mcp_fly_fly-machine-status
+
+# Documentation when needed:
+mcp_context7_get-library-docs("/fly/flyctl", "deployment")
+```
+
+**2. Reporting (Every 2 hours)**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — DevOps: Infrastructure Status
+
+**Working On**: Phase N deployment support
+**Progress**: Deployed + verified healthy
+
+**Evidence**:
+- Deployment: Fly v[version] deployed successfully
+- Health: Machine d8dd9eea046d08 state=started, host_status=ok
+- Logs: No errors in last 100 lines
+- Smoke test: ✅ PASS (tiles loading, new features functional)
+
+**Blockers**: None
+**Next**: Monitor for 1 hour, prepare for next phase deployment
+```
+
+---
+
+## Definition of Done (Each Deployment)
+
+**Pre-Deployment**:
+- [ ] Build passing locally
+- [ ] All tests passing (npm run test:ci)
+- [ ] No secrets in code (npm run scan)
+
+**Deployment**:
+- [ ] Fly deploy successful
+- [ ] Release command passed (npx prisma generate only)
+- [ ] Machine status: started, host_status: ok
+
+**Post-Deployment**:
+- [ ] Health endpoint responding (200)
+- [ ] No errors in logs (first 100 lines)
+- [ ] Smoke test passed
+- [ ] All tiles loading < 3s
+- [ ] New phase features functional
+
+**Monitoring**:
+- [ ] Set up alerts for new endpoints (if applicable)
+- [ ] Verify metrics collecting
+- [ ] Error rate < 1%
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Use Fly MCP tools for deployments
+- ✅ Verify health after EVERY deployment
+- ✅ Monitor logs for 1 hour after deploy
+- ✅ Coordinate with Data for migration application
+
+**DO NOT**:
+- ❌ Deploy without running tests first
+- ❌ Add migration commands to deployment files
+- ❌ Skip smoke tests after deployment
+- ❌ Deploy during high-traffic periods (unless emergency)
+
+---
+
+## Phase Schedule
+
+**Immediate**: Monitor current deployment (Fly v70)
+**Phase 2-4**: Deploy after each CEO approval
+**Phase 5**: SSE infrastructure setup (3h)
+**Phase 11**: CEO agent service deployment
+**Phase 13**: Production deployment preparation
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
+**Current App**: hotdash-staging.fly.dev
+**Fly Dashboard**: https://fly.io/apps/hotdash-staging
+**Feedback**: `feedback/devops/2025-10-20.md`
+**Startup**: `docs/runbooks/agent_startup_checklist.md`
+
+---
+
+**START WITH**: Monitor current deployment health, standby for Phase 2 completion

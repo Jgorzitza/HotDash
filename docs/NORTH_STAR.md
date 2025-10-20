@@ -212,9 +212,12 @@ MCP Tools Used:
 **COMPLETE VISION**: See `COMPLETE_VISION_OVERVIEW.md` (root directory) for full 38-task feature manifest.
 - 57 design files in `/docs/design/` (500KB total)
 - Complete operator experience documented
-- 11 phases, 38 tasks, ~30 hours work
-- Current implementation: 30% (6/8 tiles, basic modals, no approval queue)
-- Target: 100% (all designed features built EXACTLY as specified)
+- **EXECUTION PLAN**: See `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan section) for 13-phase build plan
+  - 13 phases, 60 hours work, 11 CEO checkpoints
+  - Includes: OpenAI SDK (Customer + CEO agents), Publer integration, all UI features
+  - Status: ✅ LOCKED 2025-10-20 (approved by CEO, DO NOT MOVE OR REFACTOR)
+- Current implementation: 30% (6/8 tiles, basic modals, Phase 1 approval queue)
+- Target: 100% (all designed features + HITL automation built EXACTLY as specified)
 
 ---
 

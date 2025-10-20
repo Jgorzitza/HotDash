@@ -1,68 +1,283 @@
-# SEO Direction
+# SEO Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 4.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Search Console + Bing Setup (PARALLEL DAY 1-3)
+
+---
 
 ## Objective
 
-**Issue**: #115 ✅ COMPLETE  
-All tasks complete - ready for SEO integration support
+**Set up Google Search Console and Bing Webmaster** for enhanced SEO monitoring
 
-## Current Status
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
 
-All tasks ✅, 43/43 tests ✅, SEO triage doc ✅ (528 lines)
+**Timeline**: Day 1-3 (8h total) — START NOW (Parallel with other agents)
 
-## Tasks
+---
 
-### SUPPORTIVE WORK (30 min) - SEO Integration Planning
+## Day 1 Tasks (START NOW - 4h)
 
-**SEO-SUPPORT-001**: Dashboard SEO Tile Enhancement Plan (20 min)
-1. Review current SEO tile implementation
-2. Document enhancements for Option A:
-   - Real-time anomaly alerts
-   - Keyword ranking trends (visual)
-   - Web vitals dashboard
-   - Crawl error monitoring
-3. Create `docs/runbooks/seo_tile_enhancements.md`
-4. Include: Data requirements, UI components needed
-5. Save for Engineer reference
+### SEO-001: Google Search Console Integration (3h)
 
-**SEO-SUPPORT-002**: GA4 Integration Verification (10 min)
-1. Verify Google Analytics integration working
-2. Test SEO metrics API endpoint
-3. Document any gaps
-4. Report status
+**What to Build**:
 
-### STANDBY - Ready for SEO Work
+**API Client** - `app/services/seo/search-console.ts`:
+- Authenticate with service account (like GA)
+- Fetch search analytics (clicks, impressions, CTR, position)
+- Landing page performance tracking
+- Top queries analysis
+- Index status monitoring
 
-- Support Engineer with SEO tile enhancements
-- Answer questions about anomaly detection
-- Provide GA4 query examples
-- Validate SEO data accuracy
+**API Endpoint** - `app/routes/api.seo.search-console.ts`:
+```typescript
+// Returns:
+{
+  landing_pages: Array<{
+    url: string,
+    clicks: number,
+    impressions: number,
+    ctr: number,
+    position: number,
+    change_7d_pct: number
+  }>,
+  top_queries: Array<{
+    query: string,
+    clicks: number,
+    ctr: number
+  }>,
+  summary: {
+    total_clicks: number,
+    avg_position: number,
+    index_coverage_pct: number
+  }
+}
+```
 
-## Work Complete
+**Tests** - `tests/unit/services/seo/search-console.spec.ts`:
+- Auth flow
+- Data fetching
+- Error handling
+- Rate limiting
 
-✅ SEO anomaly triage doc (528 lines)  
-✅ HITL workflows (4 triage types)  
-✅ Keyword cannibalization prevention  
-✅ 43/43 tests passing  
-✅ All documentation complete
+**CRITICAL - Pull Context7 FIRST**:
+```bash
+mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "search-console")
+```
 
-## Constraints
+**Credentials** (coordinate with Manager):
+- Search Console property ID (from Manager)
+- Service account JSON (similar to GA setup)
+- Store in vault, set Fly secrets
 
-**Tools**: curl, npm  
-**Budget**: ≤ 45 min  
-**Paths**: docs/runbooks/**, feedback/seo/**
+---
 
-## Links
+### SEO-002: Search Console Credentials Setup (1h)
 
-- Previous work: feedback/seo/2025-10-20.md (all complete)
-- Triage doc: docs/specs/seo_anomaly_triage.md
-- Tests: tests/unit/seo.anomalies.spec.ts, seo.rankings.spec.ts
+**Process**:
+1. Request credentials from Manager
+2. Store in `vault/occ/google/search_console_property_id.env`
+3. Store service account in `vault/occ/google/search_console_credentials_base64.env`
+4. Test connection locally (if possible)
+5. Coordinate with DevOps for Fly secrets
+
+**Verification**:
+```bash
+# After DevOps sets secrets, test:
+curl https://hotdash-staging.fly.dev/api/seo/search-console
+# Expected: Landing page data with clicks/impressions
+```
+
+---
+
+## Day 2 Tasks (4h)
+
+### SEO-003: Bing Webmaster Tools Integration (3h)
+
+**What to Build**:
+
+**API Client** - `app/services/seo/bing-webmaster.ts`:
+- Bing Webmaster API authentication
+- Search analytics (clicks, impressions)
+- Crawl errors monitoring
+- Index status
+
+**API Endpoint** - `app/routes/api.seo.bing-webmaster.ts`:
+- Similar structure to Search Console
+- Returns landing page performance
+- Combined with Search Console for multi-engine view
+
+**CRITICAL - Use Web Search** (Context7 may not have Bing):
+```bash
+web_search("Bing Webmaster Tools API documentation 2025")
+```
+
+**Credentials**:
+- Bing API key (from Manager)
+- Site verification token
+
+---
+
+### SEO-004: Enhanced SEO Tile Integration (1h)
+
+**Update SEO & Content Watch tile**:
+
+**Add to existing `app/routes/api.seo.anomalies.ts`** OR create new endpoint:
+- Combine GA + Search Console + Bing data
+- Priority ranking (which pages need attention)
+- Traffic source breakdown (organic, direct, social)
+- Top declining pages (not just anomalies)
+
+**Data Format for Engineer**:
+```typescript
+{
+  overview: {
+    total_sessions: number,      // from GA
+    total_clicks: number,         // from Search Console
+    avg_position: number,         // from Search Console
+    organic_change_7d_pct: number // combined metric
+  },
+  landing_pages: Array<{
+    url: string,
+    ga_sessions: number,
+    gsc_clicks: number,
+    position: number,
+    change_pct: number,
+    priority: 'high' | 'medium' | 'low' // calculated
+  }>
+}
+```
+
+---
+
+## Day 3 Tasks (Optional - If Time)
+
+### SEO-005: Sitemap Auto-Generation (2h)
+
+**Generate sitemap.xml**:
+- Query Shopify for all products
+- Generate XML format
+- Update on product create/delete webhook
+- Submit to Search Console + Bing
+
+**File**: `app/routes/sitemap[.]xml.ts` (React Router 7 pattern)
+
+---
+
+### SEO-006: Schema Markup Validation (1h)
+
+**Validate structured data**:
+- Product schema (schema.org/Product)
+- Organization schema
+- Check all product pages have valid markup
+- Report errors for Engineer to fix
+
+---
+
+## Work Protocol
+
+**1. MCP Tools (MANDATORY)**:
+```bash
+# Google Search Console:
+mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "searchconsole")
+
+# Bing Webmaster:
+web_search("Bing Webmaster Tools API authentication 2025")
+
+# Log usage:
+## HH:MM - Context7: Google API Node Client
+- Topic: Search Console authentication with service account
+- Key Learning: Uses OAuth2 similar to Analytics
+- Applied to: app/services/seo/search-console.ts
+```
+
+**2. Coordinate**:
+- **Manager**: Get credentials (Search Console property, Bing API key)
+- **DevOps**: Set Fly secrets
+- **Engineer**: Will integrate data into SEO tile
+- **Analytics**: May share GA integration patterns
+
+**3. Reporting (Every 2 hours)**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — SEO: Search Console Setup
+
+**Working On**: SEO-001 (Search Console API integration)
+**Progress**: API client complete, testing connection
+
+**Evidence**:
+- Files: app/services/seo/search-console.ts (245 lines)
+- Tests: 10/10 passing
+- Context7: Pulled Google API client docs (OAuth2 patterns)
+- Connection: ⏸️ Waiting for Manager credentials
+
+**Blockers**: Need Search Console property ID from Manager
+**Next**: Complete Bing integration once Search Console verified
+```
+
+---
 
 ## Definition of Done
 
-- [ ] SEO tile enhancement plan created
-- [ ] GA4 integration verified
-- [ ] Ready for Engineer coordination
+**Search Console**:
+- [ ] API client functional
+- [ ] Endpoint returning real data
+- [ ] Tests passing (10+ tests)
+- [ ] Context7 docs pulled
+- [ ] Connection verified
+- [ ] Credentials in vault
+
+**Bing Webmaster**:
+- [ ] API client functional
+- [ ] Endpoint returning data
+- [ ] Tests passing
+- [ ] Connection verified
+
+**SEO Tile Enhancement**:
+- [ ] Combined data endpoint ready
+- [ ] Priority ranking implemented
+- [ ] Format matches Engineer's needs for tile integration
+
+**Optional** (if time):
+- [ ] Sitemap generation working
+- [ ] Schema validation tool created
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Pull Context7/web search BEFORE coding
+- ✅ Test with real credentials
+- ✅ Follow GA patterns (service account, base64 encoding)
+- ✅ Coordinate with Manager for credentials
+
+**DO NOT**:
+- ❌ Hardcode API keys
+- ❌ Skip Context7 tool pulls
+- ❌ Assume Bing API = Google API (different patterns)
+- ❌ Deploy without testing connection
+
+---
+
+## Phase Schedule
+
+**Day 1**: SEO-001, SEO-002 (Search Console - 4h) — START NOW
+**Day 2**: SEO-003, SEO-004 (Bing + tile enhancement - 4h)
+**Day 3**: SEO-005, SEO-006 (sitemap + schema - optional)
+
+**Total**: 8 hours across Days 1-3 (parallel with other agents)
+
+**UNBLOCKS**: Enhanced SEO tile for Engineer integration
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md`
+**Similar Pattern**: GA integration (see app/services/analytics/)
+**Feedback**: `feedback/seo/2025-10-20.md`
+
+---
+
+**START WITH**: SEO-001 (Search Console integration NOW - 3h) — PARALLEL DAY 1

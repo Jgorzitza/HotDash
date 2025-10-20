@@ -1,62 +1,551 @@
-# Engineer Direction
+# Engineer Direction v5.0
 
-- **Owner:** Manager Agent
-- **Effective:** 2025-10-20
-- **Version:** 6.0
+**Owner**: Manager  
+**Effective**: 2025-10-20T20:00Z  
+**Version**: 5.0  
+**Status**: ACTIVE — Option A Full Build
+
+---
 
 ## Objective
 
-**Issue**: #109  
-**CEO CONFIRMED**: Build FULL Option A vision
+**Execute Option A complete vision build** (13 phases, ~45 hours Engineer work)
 
-Execute all 38 tasks from AGENT_LAUNCH_PROMPT_OCT20.md - build COMPLETE Operator Control Center.
+**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan section — LOCKED, DO NOT MOVE)
+
+**Current Phase**: Phase 2 (Enhanced Modals + OpenAI SDK completion)
+
+---
+
+## Phase-by-Phase Assignments
+
+### ✅ PHASE 1: COMPLETE
+
+**Status**: Deployed Fly v70  
+**Tasks**: ENG-001 to ENG-004  
+**Evidence**: App live, i18n fix deployed, navigation badge working
+
+---
+
+### 🔥 PHASE 2: Enhanced Modals + OpenAI SDK (8h) — ACTIVE
+
+**Your Tasks**:
+
+**ENG-005**: CX Modal Enhancements (2.5h)
+- File: `app/components/modals/CXEscalationModal.tsx`
+- Add 3 grading sliders (tone/accuracy/policy 1-5 scale) ← **15 min**
+- Add conversation preview (scrollable history from Chatwoot)
+- Display AI suggested reply prominently
+- Add internal notes textarea
+- Multiple action buttons: Approve / Edit / Escalate / Resolve
+- Store grades in decision_log.payload.grades
+- Toast notifications for all actions
+- Error retry mechanisms
+- Accessibility: Focus trap, keyboard nav, ARIA labels
+- **Spec**: `docs/design/modal-refresh-handoff.md`
+- **Backend**: `app/routes/actions/chatwoot.escalate.ts` (already supports grades)
+- **CRITICAL**: Pull Context7 docs for Polaris Modal, RangeSlider components BEFORE coding
+
+**ENG-006**: Sales Pulse Modal (1h)
+- File: `app/components/modals/SalesPulseModal.tsx` (if exists, else create)
+- Add variance review UI (WoW comparison display)
+- Action dropdown: "Log follow-up" / "Escalate to ops" / "No action"
+- Notes textarea with audit trail
+- Dynamic CTA text (button label matches dropdown selection)
+- Store action in sales_pulse_actions table (Data will create)
+- **Spec**: `docs/design/dashboard_wireframes.md` lines 126-181
+- **CRITICAL**: Pull Context7 docs for Polaris Select, TextField before coding
+
+**ENG-007**: Inventory Modal (1.5h)
+- File: `app/components/modals/InventoryModal.tsx` (if exists, else create)
+- Add 14-day velocity analysis display (use service: `app/services/inventory/rop.ts`)
+- Reorder approval workflow UI
+- Quantity input for PO generation
+- Vendor selection dropdown
+- "Approve Reorder" action button
+- Store action in inventory_actions table (Data will create)
+- Integration: Connect to `app/services/inventory/payout.ts` and `csv-export.ts`
+- **Spec**: `docs/design/dashboard_wireframes.md` lines 183-240
+- **CRITICAL**: Pull Context7 docs for Polaris NumberField before coding
+
+**All Modals**:
+- Accessibility MANDATORY: Focus trap, Escape closes, ARIA labels, keyboard nav
+- Toast notifications on success/error
+- Error boundaries with retry button
+- Loading states (skeleton loaders)
+- **Test**: Add Playwright tests for each modal (keyboard nav, accessibility)
+
+**Dependencies**:
+- ⏸️ BLOCKER: Data must create sales_pulse_actions, inventory_actions tables FIRST
+- ✅ AI-Customer backend ready (grading system exists)
+- ✅ Content microcopy ready
+- ✅ Inventory service ready (cherry-picked commit 9d0baa4)
+
+**Quality Gate** (Before CEO Checkpoint 2):
+- [ ] All 3 modals functional with new features
+- [ ] Grading data storing correctly in decision_log
+- [ ] Accessibility verified (WCAG 2.2 AA)
+- [ ] Designer validates (DES-003: 45 min)
+- [ ] Tests passing (add +10 tests minimum)
+
+**Breakpoint**: PAUSE after Phase 2 complete → CEO reviews modals → Approve Phase 3
+
+---
+
+### PHASE 3: Missing Dashboard Tiles (4h) — NEXT
+
+**Your Tasks**:
+
+**ENG-008**: Idea Pool Tile (1h)
+- Create: `app/components/tiles/IdeaPoolTile.tsx`
+- Display: 5/5 capacity indicator
+- Wildcard badge (EXACTLY 1 required)
+- Counts: Pending / Accepted / Rejected
+- "View Idea Pool" button → /ideas route
+- Backend: Use `app/routes/api.analytics.idea-pool.ts` (Integrations completed)
+- Loading state, error boundary
+- **Spec**: `docs/design/dashboard-tiles.md` lines 528-670
+
+**ENG-009**: Approvals Queue Tile (30 min)
+- Create: `app/components/tiles/ApprovalsQueueTile.tsx`
+- Pending approval count (large number)
+- Oldest pending time ("Oldest: 45 min ago")
+- "Review queue" button → /approvals
+- Backend: Create `getApprovalsSummary()` in approvals service
+- Real-time updates (refresh every 5s)
+
+**ENG-010**: Dashboard Integration (30 min)
+- File: `app/routes/app._index.tsx`
+- Add both tiles to grid
+- Update LoaderData interface
+- Add to loader function (parallel data fetching)
+- Export from `app/components/tiles/index.ts`
+
+**Quality Gate**:
+- [ ] Dashboard shows 8/8 tiles
+- [ ] All tiles load < 3s
+- [ ] Designer validates (DES-005: 30 min)
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 3 → Approve Phase 4?
+
+---
+
+### PHASE 4: Notification System (6h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-011**: Toast Infrastructure (1h)
+- Integrate Shopify App Bridge toast
+- Success: "Action approved", "Settings saved"
+- Error: "Approval failed. Try again." (with retry)
+- Info: "3 new approvals arrived"
+- Auto-dismiss (5 sec) or persistent (errors)
+
+**ENG-012**: Banner Alerts (45 min)
+- Queue backlog banner (trigger: >10 pending)
+- Performance banner (trigger: <70% approval rate)
+- System health banner (service down)
+- Connection status banner (offline/reconnecting)
+
+**ENG-013**: Browser Notifications (1h)
+- Request permission on first visit
+- Desktop notifications for new approvals
+- Sound option (configurable in settings)
+- Works when tab hidden
+- Persistent until clicked
+
+**NOTE**: Data agent will create notifications table, coordinate with them
+
+**Quality Gate**:
+- [ ] All notification types working
+- [ ] Designer validates
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 4 → Approve Phase 5?
+
+---
+
+### PHASE 5: Real-Time Features (5h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-023**: Live Update Indicators (1h)
+- Pulse animation on tile refresh
+- "Updated X seconds ago" timestamp
+- Auto-refresh progress bar
+- Manual refresh button
+
+**ENG-024**: SSE Integration (1.5h)
+- Server-Sent Events for approval queue
+- Real-time tile updates
+- Live badge count updates
+- Connection status handling
+- Reconnection logic
+- **Coordinate with DevOps** for server-side SSE endpoint
+
+**ENG-025**: Optimistic Updates (30 min)
+- Instant approve/reject UI feedback
+- Revert on API failure
+- Smooth animations
+
+**Quality Gate**:
+- [ ] Real-time updates < 1s latency
+- [ ] Designer validates
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 5 → Approve Phase 6?
+
+---
+
+### PHASE 6: Settings & Personalization (10h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-014**: Drag & Drop Reordering (2h)
+- Install @dnd-kit/core library ← **Pull Context7 docs FIRST**
+- Implement drag handles on tiles
+- Save order to user_preferences (Data creates table)
+- Restore order on page load
+- **Spec**: `docs/design/dashboard-features-1K-1P.md` Task 1K
+
+**ENG-015**: Tile Visibility Toggles (1h)
+- Settings page checkboxes
+- Show/hide tiles
+- Persist to user_preferences
+- Update dashboard to respect visibility
+
+**ENG-018**: Settings Route (1h)
+- Create: `app/routes/settings.tsx`
+- Tabbed layout (4 tabs: Dashboard, Appearance, Notifications, Integrations)
+- Form submission to user_preferences
+
+**ENG-019**: Dashboard Tab (45 min)
+- Tile visibility checkboxes
+- Default view selector (grid/list)
+- Reset to default button
+
+**ENG-020**: Appearance Tab (30 min)
+- Theme selector (Light/Dark/Auto)
+- Apply theme to root element
+- Persist to user_preferences
+
+**ENG-021**: Notification Tab (45 min)
+- Desktop notifications toggle
+- Sound toggle
+- Queue backlog threshold
+- Performance alert threshold
+- Frequency selector
+
+**ENG-022**: Integrations Tab (30 min)
+- Shopify status (connected indicator)
+- Chatwoot health check display
+- Google Analytics status
+- API key management (masked)
+
+**Quality Gate**:
+- [ ] All settings persist
+- [ ] Drag-drop smooth
+- [ ] Designer validates (DES-007, DES-009: 2h)
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 6 → Approve Phase 7?
+
+---
+
+### PHASE 7-8: Data Visualization (8h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-026**: Chart Library Integration (1h)
+- Install @shopify/polaris-viz ← **Pull Context7 docs FIRST**
+- Create chart components (Sparkline, Bar, Line, Donut)
+- Test with sample data
+
+**ENG-027**: Sales Charts (1h)
+- 7-day revenue sparkline in Sales Pulse tile
+- Revenue trend line chart in modal
+- Top SKUs bar chart
+
+**ENG-028**: Inventory & Analytics Charts (1h)
+- 14-day velocity line chart (Inventory tile/modal)
+- Stock level trends
+- Agent performance charts (approval rate, grades)
+
+**NOTE**: Analytics agent provides chart data integration
+
+**Quality Gate**:
+- [ ] Charts interactive
+- [ ] Print-friendly
+- [ ] Designer validates
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 7 → Approve Phase 10?
+
+---
+
+### PHASE 10: Approval History (3h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-032**: History Route (1.5h)
+- Create: `app/routes/approvals.history.tsx`
+- Filterable DataTable (status, date, agent, tool)
+- Search functionality
+- Export to CSV
+- **Spec**: `docs/design/dashboard-features-1K-1P.md` Task 1P
+
+**ENG-033**: Timeline View (1h)
+- Visual timeline of approvals
+- Grouped by date
+- Color-coded by action
+- Click to view details
+
+**ENG-034**: Audit Filters (30 min)
+- Filter by status (all/approved/rejected)
+- Filter by date range (7/30/90 days)
+- Filter by agent
+- Filter by tool
+
+**Quality Gate**:
+- [ ] Export working
+- [ ] Designer validates
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 8 → Approve Phase 11?
+
+---
+
+### PHASE 11: CEO Agent Integration (6h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-035**: CEO Agent UI (3h)
+- Add "CEO Agent" approval type to queue
+- Create CEO agent modal:
+  - Query display
+  - Agent reasoning display
+  - Action preview (what will execute)
+  - Approve/Reject/Edit buttons
+- Integration with AI-Customer service (repurposed for CEO agent)
+- Decision log storage
+
+**NOTE**: AI-Customer agent will build CEO agent backend, you build UI
+
+**Quality Gate**:
+- [ ] CEO can test with sample queries
+- [ ] Actions execute correctly
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 9 → Approve Phase 12?
+
+---
+
+### PHASE 12: Publer UI Integration (4h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-036**: Social Post Modal (2h)
+- Create: `app/components/modals/SocialPostModal.tsx`
+- Platform selector (Facebook, Instagram, Twitter, LinkedIn)
+- Post preview (text + image if applicable)
+- Schedule selector (now / later with date/time picker)
+- Platform-specific options
+- Integration: Use `app/routes/api/social.post.ts` (Integrations built this)
+
+**Integration**: Add to approval queue as "Social Post" type
+
+**NOTE**: Integrations/Content agents coordinate backend
+
+**Quality Gate**:
+- [ ] Test post to sandbox account
+- [ ] Receipt storage working
+- [ ] Designer validates
+
+**Breakpoint**: PAUSE → CEO CHECKPOINT 10 → Approve Phase 13?
+
+---
+
+### PHASE 13: Polish & Accessibility (3h) — QUEUED
+
+**Your Tasks**:
+
+**ENG-037**: Loading & Error Polish (1h)
+- Skeleton loaders for all tiles
+- Progress indicators
+- Smooth transitions
+- Error boundaries with retry
+- User-friendly error messages
+
+**ENG-038**: Mobile Optimization (1.5h)
+- Responsive tile grid (1 col mobile, 2 col tablet, 3-4 col desktop)
+- Touch-friendly buttons (44x44px minimum)
+- Bottom nav on mobile
+- Swipe gestures
+- **Spec**: `docs/design/mobile-operator-experience.md`
+
+**Final Checks**:
+- All components accessible
+- All interactions smooth
+- All error states handled
+- Zero console errors/warnings
+
+**Quality Gate**:
+- [ ] Designer final sign-off (DES-014, DES-015: 1h)
+- [ ] QA accessibility verification (QA-001)
+- [ ] Zero WCAG violations
+
+**Breakpoint**: PAUSE → **CEO CHECKPOINT 11 (FINAL)** → OPTION A COMPLETE → Production deploy?
+
+---
+
+## Work Protocol
+
+### Before EVERY Coding Session:
+
+**1. Pull Context7 Docs** (MANDATORY):
+```bash
+# For Polaris components:
+mcp_context7_get-library-docs("/shopify/polaris", "Modal")
+mcp_context7_get-library-docs("/shopify/polaris", "RangeSlider")
+mcp_context7_get-library-docs("/shopify/polaris", "Select")
+
+# For React Router 7:
+mcp_context7_get-library-docs("/react-router/react-router", "loaders")
+
+# For @dnd-kit (Phase 6):
+mcp_context7_get-library-docs("/dnd-kit/core", "drag-and-drop")
+
+# For Polaris Viz (Phase 7-8):
+mcp_context7_get-library-docs("/shopify/polaris-viz", "charts")
+```
+
+**Log in feedback**:
+```md
+## HH:MM - Context7: Polaris Modal
+- Topic: accessibility, focus trap, keyboard navigation
+- Key Learning: [specific requirement discovered]
+- Applied to: app/components/modals/CXEscalationModal.tsx
+```
+
+**2. Check Design Specs**:
+- Read relevant spec from `docs/design/` BEFORE implementation
+- Match design EXACTLY (no minimal versions)
+
+**3. Coordinate Dependencies**:
+- Phase 2: Wait for Data to create sales_pulse_actions, inventory_actions tables
+- Phase 5: Coordinate with DevOps for SSE endpoint
+- Phase 11: Coordinate with AI-Customer for CEO agent backend
+- Phase 12: Coordinate with Integrations for Publer backend
+
+**4. Database Safety**:
+- NEVER add migration commands to deployment files
+- Schema changes require CEO approval + manual application
+- See `docs/RULES.md` Database Safety section
+
+**5. Quality Checks Per Task**:
+```bash
+npm run fmt              # Format code
+npm run lint             # 0 errors required
+npm run test:unit        # Add tests for new components
+npm run test:ci          # All tests must pass
+npm run scan             # No secrets
+```
+
+**6. Accessibility Verification**:
+- Test keyboard navigation (Tab, Enter, Escape)
+- Test with screen reader (if possible)
+- Verify focus trap in modals
+- Check color contrast (4.5:1 minimum)
+
+---
+
+## Reporting Requirements
+
+**Report every 2 hours** in `feedback/engineer/2025-10-20.md`:
+
+```md
+## YYYY-MM-DDTHH:MM:SSZ — Engineer: [Phase N Task X Status]
+
+**Working On**: Phase N - Task ENG-XXX (description)
+**Progress**: [% complete or milestone]
+
+**Evidence**:
+- Files: [list with line counts]
+- Tests: [X passing, Y added]
+- Context7 calls: [library pulled, topic]
+- Accessibility: [keyboard nav verified, focus trap tested]
+
+**Blockers**: [None OR specific blocker with owner]
+
+**Next**: [Next task or waiting for dependency]
+```
+
+---
+
+## Definition of Done (Each Task)
+
+**Code**:
+- [ ] Feature matches design spec EXACTLY
+- [ ] React Router 7 compliant (no @remix-run imports)
+- [ ] TypeScript types correct
+- [ ] Accessibility complete (WCAG 2.2 AA)
+- [ ] Error handling with retry
+- [ ] Loading states
+
+**Testing**:
+- [ ] Unit tests added (+2 minimum per component)
+- [ ] Playwright tests for modals
+- [ ] All tests passing (`npm run test:ci`)
+
+**Quality**:
+- [ ] `npm run fmt` passing
+- [ ] `npm run lint` passing (0 errors)
+- [ ] `npm run scan` passing (no secrets)
+- [ ] Context7 docs pulled for all libraries used
+
+**Documentation**:
+- [ ] Feedback updated with evidence
+- [ ] MCP tool usage logged
+- [ ] Accessibility verification logged
+
+**Designer**:
+- [ ] Designer validates implementation matches spec
+- [ ] Visual QA passed
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Pull Context7 docs BEFORE coding (not after, not during - BEFORE)
+- ✅ Match design specs EXACTLY (70% gaps unacceptable)
+- ✅ Pause at phase breakpoints for CEO approval
+- ✅ Coordinate with Data for table creation
+- ✅ Log all MCP tool usage in feedback
+
+**DO NOT**:
+- ❌ Skip Context7 tool pulls (training data is outdated)
+- ❌ Create minimal implementations ("we can add later")
+- ❌ Continue to next phase without CEO approval
+- ❌ Add migration commands to deployment files
+- ❌ Use @remix-run imports (React Router 7 only)
+
+---
 
 ## Current Status
 
-P0 /health ✅, Server fix ✅, Approvals route ✅, 228/254 tests ✅
+**Phase**: 2 (Enhanced Modals + OpenAI SDK)
+**Tasks Remaining This Phase**: 3 (ENG-005, ENG-006, ENG-007)
+**Estimated Time**: 5 hours (2.5h + 1h + 1.5h)
+**Blockers**: Waiting for Data to create 2 tables (sales_pulse_actions, inventory_actions)
 
-## Tasks
+**Total Option A Remaining**: ~45 hours Engineer work across Phases 2-13
 
-✅ ENG-001 COMPLETE & DEPLOYED:
+---
 
-**AppProvider i18n Fix** - DEPLOYED TO STAGING ✅
-- Staging version: 48 (Fly), hot-dash-29 (Shopify)
-- Deployed: 2025-10-20T15:58Z
-- URL: https://hotdash-staging.fly.dev
-- Status: Designer/Pilot/QA testing now
+## Quick Reference
 
-**Continue with Phase 1**
-- **Error**: `MissingAppProviderError: No i18n was provided`
-- **Status**: You verified setup but didn't add i18n prop
-- **Impact**: Designer blocked (11/15 tasks), Pilot NO-GO
-- **Fix Required**: Add i18n prop to AppProvider in app/routes/app.tsx
-  ```tsx
-  import enTranslations from '@shopify/polaris/locales/en.json';
-  
-  <AppProvider 
-    apiKey={config.apiKey}
-    i18n={enTranslations}  // ← ADD THIS LINE
-  >
-  ```
-- **Test**: Click "View breakdown" button - must NOT crash
-- **Evidence**: Screenshot showing button works
-- **Time**: 15 minutes total
+**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
+**Design Specs**: `docs/design/*.md` (57 files)
+**Vision**: `COMPLETE_VISION_OVERVIEW.md` (root)
+**Rules**: `docs/RULES.md` (tool-first, database safety)
+**Startup**: `docs/runbooks/agent_startup_checklist.md`
+**Feedback**: `feedback/engineer/2025-10-20.md`
 
-Then continue Phase 1:
-2. ENG-002: ApprovalCard component per HANDOFF-approval-queue-ui.md
-3. ENG-003: Approval actions (approve/reject with notes)
-4. ENG-004: Navigation badge (pending count)
+---
 
-Then Phases 2-11 (see AGENT_LAUNCH_PROMPT_OCT20.md for full 38 tasks)
-
-## Constraints
-
-MCP REQUIRED: shopify-dev-mcp, context7  
-React Router 7 ONLY: NO @remix-run imports  
-Match design specs EXACTLY
-
-## Links
-
-- AGENT_LAUNCH_PROMPT_OCT20.md (primary reference)
-- docs/design/ (ALL 57 specs)
-- feedback/engineer/2025-10-19.md (P0 complete)
+**START WITH**: ENG-005 (CX Modal grading sliders - 15 min quickwin)
