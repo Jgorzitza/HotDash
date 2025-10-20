@@ -1,0 +1,58 @@
+---
+alwaysApply: true
+---
+# Database Safety (MANDATORY)
+
+**CRITICAL: Deployments are READ-ONLY for database schema. NO automatic migrations.**
+
+## Safe Deployment Configuration
+
+**✅ fly.toml**:
+```toml
+[deploy]
+  release_command = "npx prisma generate"  # ONLY - no migrations
+```
+
+**✅ package.json**:
+```json
+"scripts": {
+  "setup": "prisma generate"  # ONLY - no db modifications
+}
+```
+
+## FORBIDDEN Commands in Deployment Files
+
+**NEVER add these to fly.toml or package.json**:
+- ❌ `prisma migrate deploy`
+- ❌ `prisma db push`
+- ❌ `prisma db push --accept-data-loss`
+- ❌ `psql` commands
+- ❌ Any command that modifies database schema
+
+## Schema Changes Require CEO Approval
+
+**Process**:
+1. **Data agent**: Creates migration files in `supabase/migrations/`
+2. **Data agent**: Updates [schema.prisma](mdc:prisma/schema.prisma)
+3. **Data agent**: Reports in feedback: "✅ Migrations ready - awaiting CEO approval"
+4. **CEO**: Reviews migrations
+5. **CEO**: Approves
+6. **Manager**: Applies migrations via `psql` (local IPv4 pooler)
+
+## Multi-Schema Support (Supabase)
+
+**When [schema.prisma](mdc:prisma/schema.prisma) has `schemas = ["public", "auth"]`**:
+
+ALL models MUST have `@@schema("public")`:
+
+```prisma
+model YourModel {
+  // ... fields ...
+  
+  @@schema("public")  // REQUIRED
+}
+```
+
+**Without this**: Prisma validation fails with P1012 error on deploy.
+
+**See**: [RULES.md](mdc:docs/RULES.md) Database Safety section for full policy

@@ -1,0 +1,58 @@
+---
+alwaysApply: true
+---
+# Agent Workflow: Direction vs Feedback
+
+**CRITICAL: Strict separation between assignments (direction) and progress (feedback).**
+
+## Direction Files (Manager Writes, Agents READ)
+- **Location**: `docs/directions/{agent}.md`
+- **Contains**: Tasks, priorities, assignments from Manager
+- **Agents**: READ ONLY - never write assignments to your own direction file
+
+## Feedback Files (Agents Write, Manager READS)
+- **Location**: `feedback/{agent}/2025-10-20.md` (dated files)
+- **Contains**: Progress updates, evidence, blockers
+- **Agents**: Write ONLY to your own feedback file
+- **Format**: Timestamped updates every 2 hours minimum
+
+## Required Feedback Format
+
+```md
+## YYYY-MM-DDTHH:MM:SSZ — {Agent}: [Status Update]
+
+**Working On**: [Task from direction file]
+**Progress**: [Milestone or % complete]
+**Evidence**: [File paths, commits, test results - SUMMARY ONLY, max 10 lines]
+**Blockers**: [None or detailed description]
+**Next**: [Next action]
+```
+
+## MUST DO
+1. ✅ Read tasks from `docs/directions/{your-agent}.md` ONLY
+2. ✅ Write progress to `feedback/{your-agent}/2025-10-20.md` ONLY
+3. ✅ Report every 2 hours minimum
+4. ✅ Log evidence as summaries (file paths, commits, test counts)
+5. ✅ Escalate blockers immediately with details
+
+## MUST NOT
+1. ❌ Write assignments in feedback (tasks come from direction file)
+2. ❌ Create ad-hoc .md files (archive to `feedback/archive/`)
+3. ❌ Write in other agents' feedback files
+4. ❌ Log verbose command outputs (use summaries only, max 10 lines)
+5. ❌ Self-assign tasks
+
+## Evidence Examples
+
+**✅ GOOD**:
+- File paths: `app/components/Modal.tsx`
+- Git commits: `abc123f "feat: add modal"`
+- Test results: `186/186 passing`
+- Command summaries: `npm install → 45 packages, 0 vulnerabilities`
+
+**❌ BAD**:
+- 100+ lines of npm install output
+- Verbatim command logs
+- Full stack traces
+
+**See**: [AGENT_RULES_REFERENCE.md](mdc:docs/AGENT_RULES_REFERENCE.md) for full workflow rules
