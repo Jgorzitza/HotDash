@@ -149,3 +149,30 @@ cd /home/justin/HotDash/hot-dash && shopify app deploy --force
 ### Update to Process
 
 Updated runbook to reflect Manager responsibility for `shopify app deploy`.
+
+## 2025-10-20T09:10:00Z — Manager: Shopify App Deploy Complete
+
+### Issue
+
+**CEO**: "The shopify app is still pointed at the cloudflare domain rhythm-closing-struck-signed.trycloudflare.com"
+
+**Root Cause**: I fixed the package.json to block `npm run dev` but didn't deploy the corrected config to Shopify Partners.
+
+### Fix
+
+**Ran**: `shopify app deploy --force --config shopify.app.hotdash.toml`
+
+**Result**: ✅ Version hot-dash-28 released
+- Application URL: https://hotdash-staging.fly.dev
+- Redirect URLs: https://hotdash-staging.fly.dev/api/auth (and 2 others)
+- Shopify Partners dashboard now updated
+
+**URL**: https://dev.shopify.com/dashboard/185825868/apps/285941530625/versions/76428269977
+
+### Lesson
+
+I should have run this immediately after fixing package.json - not waited for user to notice it wasn't deployed.
+
+**Manager owns**: shopify app deploy (technical operations)
+
+**Resolution Time**: 30 seconds (command execution)
