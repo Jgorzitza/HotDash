@@ -1,509 +1,292 @@
-# HotDash — Operator Control Center
+# HotDash — Hot Rod AN Operator Control Center
 
-HotDash delivers an operator-first control center for Shopify stores. Tiles surface real-time context across sales, fulfillment, inventory, CX escalations, and SEO anomalies, pairing every insight with an approval-ready workflow and audit trail.
+**Shopify-embedded admin app** providing real-time operational intelligence with Human-in-the-Loop (HITL) approval workflow.
 
-This repo contains the full web application, service layer integrations, agent direction docs, and tooling required to run telemetry jobs and nightly metrics rollups.
-
-## Core Capabilities (October 2025)
-
-- **Always-On Idea Pool** — Supabase-backed `product_suggestions` pipeline keeps five live ideas (one Wildcard) ready for acceptance, rejection, or expiry. Approvals spawn Shopify draft creation jobs automatically.
-- **Approvals Everywhere** — Drawer UI, Supabase schema, and API routes enforce HITL for CX replies, inventory actions, growth moves, and product ideas.
-- **Operations Spine** — Inventory ROP calculators, analytics anomaly detection, GA4 dashboards, Publer scheduling, Chatwoot CX integrations, and Prometheus metrics.
-- **Agent Enablement** — Manager task plans, direction docs, and MCP tooling (GitHub, Context7, Supabase, Shopify, Fly, GA) keep sub-agents coordinated; evidence-first workflows drive commit requirements.
+**Live App**: https://admin.shopify.com/store/hotroddash/apps/hotdash  
+**Status**: 6/8 tiles working (building to complete vision)
 
 ---
 
-## Quick Start
+## 🎯 Complete Vision (Option A)
 
-### Prerequisites
+**What We're Building** (from 57 design specifications):
 
-- **Node.js** ≥ 20.10
-- **npm** (ships with Node) or pnpm/yarn if you prefer
-- **Shopify CLI** (`npm install -g @shopify/cli@latest`)
-- **Supabase CLI** (`npm install -g supabase`)
-- **Shopify Partner account** + development store
-- **Supabase project** (remote) _and_ the local Supabase containers started via `supabase start`
+### Dashboard
+- **8 real-time tiles** (Ops, Sales, Fulfillment, Inventory, CX, SEO, Idea Pool, Approvals Queue)
+- **Drag & drop** tile reordering
+- **Tile visibility** toggles (show/hide)
+- **Personalization** (saved per user)
 
-### 1. Clone & Install
+### HITL Workflow
+- **Approval queue** (`/approvals`) with risk badges
+- **Enhanced modals** with grading sliders (tone/accuracy/policy 1-5)
+- **Multiple actions** (approve/edit/escalate/resolve)
+- **Approval history** with CSV export
+
+### Notifications
+- **Toast messages** (success/error/info)
+- **Banner alerts** (queue backlog, performance, health)
+- **Desktop notifications** (browser, sound option)
+- **Badge indicators** (nav items, real-time counts)
+
+### Settings & Personalization
+- **Settings page** (4 tabs: Dashboard, Appearance, Notifications, Integrations)
+- **Theme toggle** (Light/Dark/Auto)
+- **Notification preferences** (desktop, sound, frequency)
+- **Integration management**
+
+### Advanced Features
+- **Real-time updates** (SSE, live indicators, auto-refresh)
+- **Data visualization** (sparklines, charts in tiles/modals)
+- **Onboarding flow** (welcome modal, 4-step tour)
+- **Dark mode** (Hot Rodan red adjusted)
+- **Mobile optimized** (touch-friendly, responsive)
+- **WCAG 2.2 AA** accessibility (keyboard nav, screen readers)
+
+**Design Specs**: `/docs/design/` (57 files, ~500KB)  
+**Complete Vision**: `COMPLETE_VISION_OVERVIEW.md`
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/Jgorzitza/HotDash.git
-cd HotDash
+# Install dependencies
 npm install
+
+# Run dev server
+npm run dev
+
+# Access app
+# Visit: http://localhost:3000
+# Or: https://admin.shopify.com/store/hotroddash/apps/hotdash
 ```
-
-### 2. Configure Environment
-
-1. Start the Supabase containers (first run can take ~2 minutes):
-
-   ```bash
-   supabase start
-   ```
-
-   Local services expose:
-   - Postgres: `postgresql://postgres:postgres@127.0.0.1:54322/postgres`
-   - REST: `http://127.0.0.1:54321`
-   - Studio: `http://127.0.0.1:54323`
-
-   You can confirm any time with `supabase status`.
-
-2. Copy `.env.local.example` to `.env.local` and fill in the placeholders (Shopify keys, ngrok URL, optional OpenAI key). Add integration credentials so external services stay healthy:
-   - **Chatwoot:** `CHATWOOT_BASE_URL` (Fly-hosted URL) and either `CHATWOOT_TOKEN` or `CHATWOOT_TOKEN_FILE` for authenticated API checks. Optional overrides: `CHATWOOT_HEALTH_PATH`, `CHATWOOT_HEALTH_TIMEOUT_MS`.
-   - **Publer:** `PUBLER_API_KEY` + `PUBLER_WORKSPACE_ID` for live posting, plus environment-specific keys (`PUBLER_STAGING_API_KEY`, `PUBLER_PRODUCTION_API_KEY`) if you rely on the shell health scripts.
-   - **Idea Pool:** `IDEMPOTENCY_SALT` and related orchestrator keys as outlined in `integrations/new_feature_*/manager_agent_pack_v1/09-configuration/.env.example`.
-
-   Keep this file out of git — `.env*` is already ignored.
-
-3. Load the env file when working locally:
-
-   ```bash
-   export $(grep -v '^#' .env.local | xargs)
-   ```
-
-   > CI pulls secrets from GitHub environments; no manual export required in pipelines.
-
-### 3. Initialize the Project
-
-```bash
-npm run setup   # prisma generate + migrate deploy
-npm run dev     # starts Shopify dev tunnel + React Router 7 app
-```
-
-Press `p` in the CLI output to open the embedded admin URL and complete app installation in your development store.
-
-### 4. Verify Integrations
-
-- **Dashboard sanity:** Load the admin app and confirm tiles render in mock mode before switching to live data.
-- **Chatwoot health check (CI mirrors this):**
-
-  ```bash
-  CHATWOOT_BASE_URL=https://hotdash-chatwoot.fly.dev npm run ops:check-chatwoot-health
-  ./scripts/ops/check-chatwoot-health.sh staging   # writes artifacts/ops/chatwoot-health-*.json
-  ```
-
-  Capture the JSON artifacts in `artifacts/ops/` for launch verification.
-
-- **Publer API check (verifies `/account_info` + `/social_accounts`):**
-
-  ```bash
-  PUBLER_STAGING_API_KEY=... ./scripts/ops/check-publer-health.sh staging
-  PUBLER_PRODUCTION_API_KEY=... ./scripts/ops/check-publer-health.sh production
-  ```
-
-  A successful run logs `✅ Publer health check passed` and persists results to `artifacts/ops/publer-health-*.json`.
-
-- Add real Shopify, Chatwoot, GA, and Publer credentials only after the above checks pass.
-
-### 5. Tail Supabase logs (optional)
-
-```bash
-scripts/ops/tail-supabase-logs.sh
-```
-
-The helper uses the Supabase CLI to stream local events. Pass a project ref to target a remote instance: `scripts/ops/tail-supabase-logs.sh <project-ref>`.
 
 ---
 
-## Shopify Integration Guardrails
-
-- Always reference the Shopify developer MCP (`shopify-dev-mcp`) for APIs, schema, and CLI workflows—no guessing or undocumented endpoints.
-- React Router 7 powers our data loaders/actions; follow data-route conventions when wiring Shopify fetchers or mutations.
-- Log new findings or edge cases in `docs/integrations/shopify_readiness.md` so the whole team shares the context.
-
-## Social Posting Guardrails (Publer)
-
-- All social publishing routes proxy through the Publer REST API; no direct client calls with secrets.
-- Queue drafts behind the approvals drawer (`requireApproval: true`) before hitting Publer’s `/posts` or `/posts/schedule` endpoints.
-- Coordinate tokens and workspace IDs via GitHub environment secrets—never hard-code or store them in the repo.
-- HotDash currently exercises Publer’s `/account_info`, `/social_accounts`, `/posts`, and `/posts/schedule` endpoints from `packages/integrations/publer.ts`; verify both read and write flows with `scripts/ops/check-publer-health.sh` before enabling live posting.
-- See `docs/integrations/social_adapter.md` for the current workflow and Publer API references.
-
-## Chatwoot Health Monitoring
-
-- Run `npm run ops:check-chatwoot-health` (`scripts/ops/check-chatwoot-health.mjs`) locally or in CI to assert the base URL, `/rails/health`, and authenticated profile endpoints stay responsive.
-- The shell helper `scripts/ops/check-chatwoot-health.sh` records end-to-end health metrics (HTTP status, response times) to `artifacts/ops/chatwoot-health-*.json`; archive the latest artifact in launch evidence.
-- If either check fails, treat it as a release blocker—Chatwoot must be reachable before approving customer replies or social posts tied to CX events.
-
-## AI Agent Support: MCP Tools
-
-HotDash provides **6 MCP servers** to help AI agents work effectively:
-
-| Tool                 | Purpose                              | Status                |
-| -------------------- | ------------------------------------ | --------------------- |
-| **github-official**  | GitHub repo management               | ✅ Active             |
-| **context7**         | HotDash codebase + library search    | ✅ Active (port 3001) |
-| **supabase**         | Database & edge functions            | ✅ Active             |
-| **fly**              | Deployment & infrastructure          | ✅ Active (port 8080) |
-| **shopify**          | Shopify API docs, GraphQL validation | ✅ Active             |
-| **google-analytics** | GA data queries (dev tools only)     | ✅ Active             |
-| **llamaindex-rag**   | Knowledge base RAG queries           | 🚧 In development     |
-
-### 📚 MCP Documentation (Protected)
-
-**Complete documentation in `mcp/` directory:**
-
-- **[mcp/README.md](mcp/README.md)** - Overview and quick start
-- **[mcp/ALL_SYSTEMS_GO.md](mcp/ALL_SYSTEMS_GO.md)** - Ready-to-use examples
-- **[mcp/QUICK_REFERENCE.md](mcp/QUICK_REFERENCE.md)** - When to use each tool
-- **[mcp/USAGE_EXAMPLES.md](mcp/USAGE_EXAMPLES.md)** - Real-world patterns
-- **[mcp/SERVER_STATUS.md](mcp/SERVER_STATUS.md)** - Current server status
-
-**⚠️ CRITICAL: The `mcp/` directory is protected infrastructure.**
-
-- All `mcp/**/*.md` files are in the CI allow-list
-- DO NOT remove or modify without explicit approval
-- See `docs/RULES.md` for governance details
-
-**Quick Test:**
-
-```bash
-./mcp/test-mcp-tools.sh  # Verify all 6 servers are operational
-```
-
-### Quick Start by Tool
-
-<details>
-<summary><b>🖱️ Cursor IDE</b> (Click to expand)</summary>
-
-**Prerequisites:**
-
-- MCP configuration: `~/.cursor/mcp.json` (already configured)
-
-**Startup Steps:**
-
-1. **Start Context7** (required):
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   ./scripts/ops/start-context7.sh
-   ```
-
-2. **Verify Context7 is running**:
-
-   ```bash
-   docker ps | grep context7-mcp
-   ```
-
-3. **Open HotDash in Cursor**:
-
-   ```bash
-   cursor ~/HotDash/hot-dash
-   ```
-
-4. **Check MCP Status**:
-   - Settings → MCP
-   - Verify all 5 servers show green indicators
-
-5. **Start coding!** All MCP tools are now available.
-
-</details>
-
-<details>
-<summary><b>⌨️ Codex CLI</b> (Click to expand)</summary>
-
-**Prerequisites:**
-
-- MCP configuration: `~/.codex/config.toml` (already configured)
-
-**Startup Steps:**
-
-1. **Start Context7** (required):
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   ./scripts/ops/start-context7.sh
-   ```
-
-2. **Verify Context7 is running**:
-
-   ```bash
-   docker ps | grep context7-mcp
-   ```
-
-3. **Start Codex in HotDash directory**:
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   codex
-   ```
-
-4. **Verify MCP tools loaded**:
-
-   ```
-   codex> /tools
-   ```
-
-   Should show shopify, context7, github-official, supabase, fly
-
-5. **Start coding!** All MCP tools are now available.
-
-</details>
-
-<details>
-<summary><b>🤖 Claude CLI</b> (Click to expand)</summary>
-
-**Prerequisites:**
-
-- MCP configuration: `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
-- Or: `~/.config/Claude/claude_desktop_config.json` (Linux)
-
-**Setup (one-time):**
-
-```bash
-# Copy MCP config to Claude
-mkdir -p ~/Library/Application\ Support/Claude  # macOS
-# OR
-mkdir -p ~/.config/Claude  # Linux
-
-# Convert from JSON to Claude format (already done if using Claude Desktop)
-# See docs/directions/mcp-tools-reference.md for config format
-```
-
-**Startup Steps:**
-
-1. **Start Context7** (required):
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   ./scripts/ops/start-context7.sh
-   ```
-
-2. **Start Claude CLI**:
-
-   ```bash
-   claude
-   ```
-
-3. **Verify MCP tools**:
-
-   ```
-   > What MCP tools do you have access to?
-   ```
-
-4. **Start coding!** All MCP tools are now available.
-
-</details>
-
-<details>
-<summary><b>🚀 Warp Terminal</b> (Click to expand)</summary>
-
-**Prerequisites:**
-
-- Warp AI Drive integration
-- MCP support (check Warp version supports MCP)
-
-**Setup (one-time):**
-
-- Configure MCP in Warp settings
-- Import from `~/.cursor/mcp.json` or `~/.codex/config.toml`
-
-**Startup Steps:**
-
-1. **Start Context7** (required):
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   ./scripts/ops/start-context7.sh
-   ```
-
-2. **Open Warp** in HotDash directory:
-
-   ```bash
-   cd ~/HotDash/hot-dash
-   # Use Warp AI (Ctrl+`)
-   ```
-
-3. **Verify MCP tools available** in Warp AI panel
-
-4. **Start coding!** All MCP tools are now available.
-
-</details>
-
-### What's Available
-
-**MCP Tools Provide:**
-
-- 🏪 **Shopify**: API docs, GraphQL validation
-- 🔍 **Context7**: HotDash code search + React Router/Prisma/etc. docs
-- 🐙 **GitHub**: PR/issue management, code search
-- 🗄️ **Supabase**: Migrations, queries, edge functions
-- ✈️ **Fly.io**: Deployments, logs, secrets
-- 📊 **Google Analytics**: GA property queries (Cursor/dev tools)
-- 🧠 **LlamaIndex RAG**: Knowledge base queries, support insights
-
-**Example Agent Queries:**
-
-```
-"Show me the Sales Pulse tile implementation"  (context7)
-"Validate this Shopify GraphQL query"          (shopify)
-"Create a PR for this feature"                 (github-official)
-"Run migration for new dashboard_facts column" (supabase)
-"Deploy hot-dash to production"                (fly)
-"What are my GA properties?"                   (google-analytics, dev only)
-"Query support knowledge base"                 (llamaindex-rag, coming soon)
-```
-
-### What Context7 Indexes
-
-**Included:**
-
-- Source code (`app/`, `packages/`, `scripts/`)
-- Documentation (`docs/`)
-- Configuration (root configs, `prisma/`, `supabase/`)
-- Tests (`tests/`)
-
-**Excluded** (via `.context7ignore`):
-
-- Dependencies, build artifacts, test outputs
-- Environment files and secrets
-- Binary assets
-
-### Documentation
-
-- **Training Data Check**: `docs/directions/training-data-reliability-check.md` 🚨 **READ FIRST**
-- **MCP Tools Overview**: `docs/directions/mcp-tools-reference.md` (comprehensive guide)
-- **Efficiency Guide**: `docs/directions/mcp-usage-efficiency.md` ⭐ (avoid context overload)
-- **Context7 Usage**: `docs/context7-mcp-guide.md` (detailed Context7 guide)
-- **Quick Reference**: `docs/context7-quick-reference.md` (common queries)
-- **Setup Summary**: `docs/directions/context7-mcp-setup.md` (setup details)
-
-### ⚠️ Critical for AI Agents
-
-**Your training data is outdated for:**
-
-- React Router 7 (you have v6/Remix patterns)
-- Shopify APIs (you have 2023 or older)
-
-**Always verify with MCP tools before implementing RR7 or Shopify code.**  
-See `docs/directions/training-data-reliability-check.md` for decision matrix.
-
-### Troubleshooting
-
-**"Context7 not available":**
-
-```bash
-# Check if running
-docker ps | grep context7-mcp
-
-# If not, start it
-./scripts/ops/start-context7.sh
-
-# Reload your AI tool
-```
-
-**"Which tool do I have?":**
-
-- Check config file for your tool (see above)
-- All configs point to same MCP servers
-- Just ensure Context7 is running first!
-
-### AI Integration Notes
-
-- Retrieve the staging OpenAI API key from `vault/occ/openai/api_key_staging.env` before running AI tooling.
-- Set `OPENAI_API_KEY` in your shell (`source vault/occ/openai/api_key_staging.env`) so `npm run ai:build-index` and regression scripts can talk to OpenAI.
+## 📚 Documentation
+
+### Governance (MANDATORY Reading)
+- `docs/NORTH_STAR.md` - Vision, principles, scope
+- `docs/OPERATING_MODEL.md` - Pipeline, guardrails, roles
+- `docs/RULES.md` - Markdown policy, process, security, agents
+- `docs/REACT_ROUTER_7_ENFORCEMENT.md` - React Router 7 ONLY (no Remix)
+
+### Design Specifications (ALL 57 Files)
+- `/docs/design/` - **Complete design library** (protected, never archive)
+- `COMPLETE_VISION_OVERVIEW.md` - 38-task feature manifest
+- `docs/DESIGN_PROTECTION_POLICY.md` - Protection policy (mandatory)
+
+**KEY SPECS**:
+- `docs/design/HANDOFF-approval-queue-ui.md` - Approval queue
+- `docs/design/dashboard-features-1K-1P.md` - Personalization + notifications
+- `docs/design/notification-system-design.md` - Notification system
+- `docs/design/modal-refresh-handoff.md` - Enhanced modals
+- `docs/design/design-system-guide.md` - Design system (38KB, 1800+ lines)
+- `docs/design/dashboard_wireframes.md` - Complete wireframes
+
+### Agent Directions
+- `/docs/directions/` - 16 agent direction files
+- Updated: 2025-10-20 (all agents directed to build complete vision)
+
+### MCP Tools (MANDATORY)
+- `mcp/` - MCP tool documentation
+- Shopify Dev MCP - GraphQL validation (mandatory)
+- Context7 MCP - Library patterns (mandatory)
+- Chrome DevTools MCP - UI testing (Designer, QA, Pilot)
 
 ---
 
-## Daily Workflows
+## 🛡️ Design Files Protection
 
-| Task                      | Command                                                    | Notes                                                                                                                      |
-| ------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Start dev server          | `npm run dev`                                              | Spins up Shopify CLI + Vite dev server                                                                                     |
-| Run unit tests            | `npm run test:unit`                                        | Vitest test suite                                                                                                          |
-| Run Playwright smoke      | `npm run test:e2e`                                         | Browser tests with mock data (automatically logs into Admin using `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`)                     |
-| Shopify Admin embed smoke | `npx playwright test tests/playwright/admin-embed.spec.ts` | Uses the Shopify CLI tunnel and staging store credentials; LOGIN must be provided via `PLAYWRIGHT_SHOPIFY_EMAIL/PASSWORD`. |
-| Lint                      | `npm run lint`                                             | ESLint configured with project rules                                                                                       |
-| Type check                | `npm run typecheck`                                        | React Router typegen + `tsc --noEmit`                                                                                      |
-| Nightly metrics rollup    | `npm run ops:nightly-metrics`                              | Writes aggregate facts (`metrics.activation.rolling7d`, `metrics.sla_resolution.rolling7d`)                                |
-| Backfill Chatwoot facts   | `npm run ops:backfill-chatwoot`                            | One-time script to add breach timestamps                                                                                   |
-| Tail Supabase logs        | `scripts/ops/tail-supabase-logs.sh`                        | Streams local or remote Supabase logs via the CLI                                                                          |
+**NEVER ARCHIVE OR DELETE**:
+- `/docs/design/**`
+- `/docs/specs/**`
+- `/docs/runbooks/**`
+- `/docs/directions/**`
 
-GitHub Actions mirror the critical flows (`tests.yml`, `nightly-metrics.yml`). Ensure repository secrets include the environment variables listed above before enabling schedules.
+**Why**: Oct 15 incident - 57 design files archived, agents built to wrong spec (30% vs 100%)
+
+**Policy**: `docs/DESIGN_PROTECTION_POLICY.md`
+
+**Enforcement**: CI/CD blocks design file deletions, CEO approval required for any archival
 
 ---
 
-## Project Structure Highlights
+## 🏗️ Architecture
 
-```
-app/                    # React Router 7 app code
-  components/tiles/     # Dashboard tiles (Sales, Inventory, Ops Pulse, etc.)
-  services/             # Shopify, Chatwoot, GA clients & metrics aggregation
-  routes/               # React Router data routes and actions
-apps/                   # Microservices (agent-service, llamaindex-mcp-server)
-packages/               # Shared integrations + memory adapters
-docs/                   # Direction docs, strategy, design specs (537+ files)
-scripts/                # Automation scripts (AI, ops, deploy, qa, security)
-tests/                  # Vitest + Playwright suites
-archive/                # Historical status reports and deprecated docs
-artifacts/              # Build artifacts and evidence logs
-supabase/               # Database migrations, edge functions, SQL
-integrations/new_feature_*/manager_agent_pack_v1/  # Manager agent pack (idea pool, product creation artifacts)
-```
+- **Frontend**: React Router 7 + Shopify Polaris + Vite
+- **Backend**: Node/TypeScript + Supabase (PostgreSQL + RLS)
+- **Agents**: OpenAI Agents SDK (TypeScript) with HITL
+- **Dev Tools**: MCP servers (GitHub, Context7, Fly.io, Shopify, Chrome DevTools)
+- **Deployment**: Fly.io
+- **Database**: Supabase (managed PostgreSQL)
+- **Real-time**: Server-Sent Events (SSE) / WebSocket
 
-See `REPO_STATUS.md` for detailed repository organization and branch strategy.
+---
 
-Canonical workflow documentation lives in:
-
-- `docs/README.md` – documentation map + manager updates
-- `docs/NORTH_STAR.md` – vision, outcomes, success metrics
-- `docs/roadmap.md` – milestone plan & cross-agent dependencies
-- `docs/manager/PROJECT_PLAN.md` – daily execution sequencing
-- `docs/directions/*.md` – role-specific expectations (engineer, product, QA, etc.)
-
-### Supabase Edge Function — Observability
-
-We ship a lightweight edge function (`supabase/functions/occ-log`) that centralises structured logs in Supabase.
-
-Deploy locally:
+## 🧪 Testing
 
 ```bash
-supabase functions serve occ-log --env-file .env.local
+# Unit tests
+npm run test:unit
+
+# Integration tests  
+npm run test:integration
+
+# E2E tests (Playwright)
+npm run test:e2e
+
+# Accessibility tests
+npm run test:a11y
+
+# All tests
+npm run test:ci
+
+# Security scan (Gitleaks)
+npm run scan
 ```
-
-Deploy to a remote project:
-
-```bash
-supabase functions deploy occ-log --project-ref <your-project-ref>
-supabase secrets set --project-ref <your-project-ref> SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
-```
-
-After deployment, call it from the app or scripts:
-
-```bash
-curl -X POST "https://<project>.functions.supabase.co/occ-log" \
-  -H "Content-Type: application/json" \
-  -d '{"level":"INFO","message":"playwright smoke started","metadata":{"suite":"admin"}}'
-```
-
-> Run `psql` (or Supabase SQL editor) with `supabase/sql/observability_logs.sql` once per project to create the backing table.
 
 ---
 
-## Working With Shopify & Supabase
+## 📦 Database
 
-1. Start the Supabase containers locally (`supabase start`) and export `.env.local` so `DATABASE_URL` points at the local Postgres instance (`postgresql://postgres:postgres@127.0.0.1:54322/postgres`).
-2. Run `npm run dev` to start the Shopify CLI tunnel and obtain the install URL.
-3. Install the app in your development store (press `p` in the CLI prompt) and use the embedded admin experience.
-4. For staging/production, mirror secrets from vault to GitHub (`DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`) and update `shopify.app.toml`/`shopify.web.toml` according to Shopify’s deployment docs.
+**Supabase Tables**:
+- `decision_log` - HITL approvals with grading metadata
+- `user_preferences` - Dashboard personalization
+- `notifications` - Notification center
+- `sales_pulse_actions` - Sales modal actions
+- `inventory_actions` - Inventory reorder approvals
+- `product_suggestions` (idea_pool) - Always-on idea pipeline
+- Plus 20+ operational tables
 
----
-
-## Contribution Guidelines
-
-1. Follow `docs/git_protocol.md` (branch naming, evidence requirements, PR checklist).
-2. Keep direction docs read-only unless you are the manager; log questions in the relevant `feedback/*.md` file.
-3. Always attach evidence (tests, metrics) when shipping tile or service changes.
-4. Update `docs/directions/product_changelog.md` for any roadmap-impacting doc or process change.
-5. **Repository Cleanup**: Historical status reports are in `archive/` - don't create new status files in root directory.
-
-Need help? Check the feedback logs in `feedback/` or ping the manager noted in `docs/directions/manager.md`.
+**Migrations**: `supabase/migrations/`  
+**RLS Tests**: `supabase/rls_tests.sql`
 
 ---
 
-## Repository Status
+## 🎨 Design System
 
-For current repository health, branch inventory, and recent changes, see `REPO_STATUS.md`.
+**Design Guide**: `docs/design/design-system-guide.md` (38KB, 1800+ lines)
 
-**Last Cleanup**: 2025-10-12 (50+ files archived, 20 branches deleted)  
-**Branch Count**: 38 active branches (down from 58)  
-**Documentation**: 635+ markdown files across docs/, feedback/, and archive/
+**Components**:
+- 8 dashboard tiles (TileCard wrapper + tile-specific)
+- ApprovalCard
+- Enhanced modals (CX, Sales, Inventory)
+- Settings page (4 tabs)
+- Notification center
+- Onboarding tour
+
+**Tokens**:
+- Colors (Hot Rodan red #E74C3C, status colors)
+- Spacing (8px grid)
+- Typography (6-size scale)
+- Dark mode palette
+
+**Polaris**: Shopify Polaris components throughout
+
+---
+
+## 🔒 Security
+
+- Row Level Security (RLS) on all Supabase tables
+- Gitleaks secret scanning (pre-commit + CI)
+- GitHub Push Protection
+- No secrets in code
+- Passwords in vault only
+- MCP-validated GraphQL (no freehand queries)
+
+---
+
+## 🚦 CI/CD
+
+**Guardrails**:
+- Docs allow-list (no stray .md files)
+- Danger (issue linkage, DoD, allowed paths)
+- Gitleaks (secret protection)
+- Validate AI Agent Config
+- **Design file protection** (block deletions)
+
+**GitHub Actions**: `.github/workflows/`
+
+---
+
+## 📖 Key Concepts
+
+**HITL (Human-in-the-Loop)**:
+- AI agents draft actions
+- Human approves/rejects with grading (1-5 scale)
+- System learns from grades
+- Full audit trail
+
+**Grading System** (tone/accuracy/policy):
+- 1-5 scale on all customer-facing actions
+- Stored in decision_log
+- Used for fine-tuning/evals
+- Target: tone ≥4.5, accuracy ≥4.7, policy ≥4.8
+
+**Operator-First**:
+- No context switching
+- One control center for everything
+- Real-time data
+- Instant actions
+
+---
+
+## 🎯 Current Status
+
+**Implemented** (30%):
+- ✅ 6 dashboard tiles
+- ✅ Basic modals
+- ✅ Tile status system
+- ✅ Loading/error states
+
+**Building** (70% - Option A):
+- ⏳ Approval queue route
+- ⏳ Enhanced modals with grading
+- ⏳ 2 missing tiles (Idea Pool, Approvals Queue)
+- ⏳ Notification system
+- ⏳ Dashboard personalization
+- ⏳ Settings page
+- ⏳ Real-time features
+- ⏳ Onboarding flow
+- ⏳ Data visualization
+- ⏳ Approval history
+
+**Timeline**: 3-4 days (30 hours, 38 tasks)
+
+---
+
+## 🤝 Contributing
+
+**Agent Process**:
+1. Read direction file: `docs/directions/{agent}.md`
+2. Reference design specs: `docs/design/*.md`
+3. Use MCP tools (Shopify Dev + Context7) - log conversation IDs
+4. NO `@remix-run` imports - React Router 7 ONLY
+5. Follow design specs EXACTLY
+6. Write feedback: `feedback/{agent}/YYYY-MM-DD.md`
+
+**Manager Review**:
+- Validates against design specs
+- Requires Designer sign-off
+- Checks accessibility compliance
+- Verifies MCP evidence
+- Rejects minimal implementations
+
+---
+
+## 📄 License
+
+Proprietary - Hot Rodan LLC
+
+---
+
+## 📞 Contact
+
+**CEO**: Justin (Hot Rodan LLC)  
+**Support**: customer.support@hotrodan.com
+
+---
+
+**Building the complete vision - not the minimal version** ✅

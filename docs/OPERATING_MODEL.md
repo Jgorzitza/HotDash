@@ -146,3 +146,55 @@
 - Confirm “Allowed paths” appears in every PR body; Danger should block otherwise.
 - Verify `ai-customer` has `human_review: true` and named reviewers.
 - Ensure Approvals Drawer spec is present and referenced in Issues.
+
+---
+
+## Design Files & Specifications (Updated 2025-10-20)
+
+### Complete Vision Documentation
+
+**Design Library**: `/docs/design/` (57 files, ~500KB)
+- Dashboard specifications (8 tiles + personalization)
+- Approval queue system (HITL workflow)
+- Notification system (toast, banner, browser)
+- Enhanced modals (grading sliders, multiple actions)
+- Settings page (4 tabs)
+- Onboarding flow (welcome + 4-step tour)
+- Design system guide (38KB, 1800+ lines)
+- Accessibility requirements (WCAG 2.2 AA)
+- Mobile optimization
+- Branding (Hot Rodan)
+
+**Complete Vision**: `COMPLETE_VISION_OVERVIEW.md` (38-task feature manifest)
+
+### Protection Policy (MANDATORY)
+
+**NEVER ARCHIVE** without CEO approval:
+- `/docs/design/**`
+- `/docs/specs/**`
+- `/docs/runbooks/**`  
+- `/docs/directions/**`
+
+**Incident**: Oct 15 - 57 design files archived as "drafts", agents built to wrong spec (30% vs. 100%).
+
+**Recovery**: Oct 20 - All files restored, protection policy enforced.
+
+**Policy**: `docs/DESIGN_PROTECTION_POLICY.md`
+
+**Manager Commitment**: Never again.
+
+### Implementation Standards
+
+**Design Spec Compliance**:
+- Features MUST match design specifications EXACTLY
+- 70% feature gaps are UNACCEPTABLE
+- Designer validates against all 57 design specs
+- QA tests against design specs
+- Manager rejects minimal implementations
+
+**Evidence Required**:
+- Design spec reference for each feature
+- Designer sign-off (implementation matches specs)
+- Accessibility validation (WCAG 2.2 AA)
+- MCP conversation IDs (Context7 for libraries)
+

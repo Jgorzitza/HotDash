@@ -70,3 +70,57 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 **See**: `docs/REACT_ROUTER_7_ENFORCEMENT.md`
 
 **Verification**: `rg "@remix-run" app/` MUST return NO RESULTS
+
+---
+
+## Design Files Protection (MANDATORY - Effective 2025-10-20)
+
+**NEVER AGAIN**: Oct 15 incident where 57 design files were archived, causing 4 days of wrong-spec development.
+
+**PROTECTED PATHS** (Never archive or delete):
+- `/docs/design/**` - ALL design files (approved unless marked `DRAFT-`)
+- `/docs/specs/**` - ALL specification files
+- `/docs/runbooks/**` - ALL operational runbooks
+- `/docs/directions/**` - ALL agent direction files
+- `/docs/integrations/**` - ALL integration documentation
+- `/mcp/**` - ALL MCP tool documentation
+
+**ARCHIVAL RULES**:
+1. **CEO approval required** - Written confirmation before archiving ANY protected files
+2. **Monthly audit only** - 1st of month, present list to CEO, get explicit approval
+3. **Documentation required** - Update `docs/ARCHIVE_INDEX.md` with reason, date, approver
+4. **Git tag required** - Create `archive-YYYY-MM-DD` tag before archiving
+5. **CI/CD enforcement** - Block PRs that delete design/spec files
+
+**MANAGER COMMITMENT**: Never archive design/planning work without CEO approval.
+
+**POLICY DOCUMENT**: `docs/DESIGN_PROTECTION_POLICY.md` (mandatory reading)
+
+**COMPLETE VISION**: `COMPLETE_VISION_OVERVIEW.md` (38-task feature manifest from recovered specs)
+
+---
+
+## Implementation Standards (Updated 2025-10-20)
+
+**Design Spec Compliance**:
+- ALL features MUST match design specifications in `/docs/design/`
+- 57 design files define complete vision (not minimal version)
+- Minimal implementations (30% of designed features) are UNACCEPTABLE
+- Engineer MUST reference design specs for each task
+- Designer MUST validate implementation against specs
+- QA MUST test against design specs
+
+**Design Spec References** (mandatory):
+- Approval queue: `docs/design/HANDOFF-approval-queue-ui.md`
+- Personalization: `docs/design/dashboard-features-1K-1P.md`
+- Notifications: `docs/design/notification-system-design.md`
+- Modals: `docs/design/modal-refresh-handoff.md`
+- Accessibility: `docs/design/accessibility-approval-flow.md`
+- Complete system: `docs/design/design-system-guide.md` (38KB, 1800+ lines)
+
+**Manager Enforcement**:
+- REJECTS PRs that don't follow design specs
+- REJECTS minimal implementations when full specs exist
+- REQUIRES design validation evidence from Designer
+- REQUIRES accessibility compliance evidence
+

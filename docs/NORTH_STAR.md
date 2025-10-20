@@ -99,6 +99,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 ### Required MCP Tools
 
 **1. Shopify Dev MCP** (MANDATORY for ALL Shopify code):
+
 - `learn_shopify_api` - Learn API structure FIRST
 - `search_docs_chunks` - Find documentation
 - `introspect_graphql_schema` - Explore schema
@@ -106,23 +107,27 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **NO Shopify GraphQL without MCP validation**
 
 **2. Context7 MCP** (MANDATORY for ALL library usage):
+
 - `resolve-library-id` - Find correct library
 - `get-library-docs` - Get official patterns
 - **Required for**: React Router 7, Prisma, Polaris, all npm packages
 - **NO library code without MCP verification**
 
 **3. Chrome DevTools MCP** (for UI testing):
+
 - Required for: Designer, Pilot, QA agents
 - Production testing on live app
 
 ### React Router 7 ONLY (NOT Remix)
 
 **FORBIDDEN** ❌:
+
 - `@remix-run/*` imports (any)
 - `json()` helper from Remix
 - Remix types/patterns
 
 **REQUIRED** ✅:
+
 - `import from "react-router"` only
 - `Response.json()` for all loaders
 - `Route.LoaderArgs` types
@@ -135,6 +140,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 ### Evidence Requirements
 
 **Every molecule touching Shopify/libraries MUST log**:
+
 ```
 MCP Tools Used:
 - shopify-dev-mcp: Conversation ID xxx
@@ -152,3 +158,45 @@ MCP Tools Used:
 5. Governance: Issue linkage, **Allowed paths**, CI checks green; no disallowed `.md`.
 6. Metrics updated if behavior changed; audit entry present.
 7. **NO @remix-run imports** - React Router 7 only.
+
+---
+
+## Design Files Protection (MANDATORY - Effective 2025-10-20)
+
+**INCIDENT**: Oct 15, 2025 - Manager archived 57 design files as "design drafts". Result: Agents built to wrong spec (only 30% of designed features).
+
+**RECOVERY**: Oct 20, 2025 - All 57 files restored. Complete vision now documented.
+
+**POLICY** (`docs/DESIGN_PROTECTION_POLICY.md` - MANDATORY):
+
+**PROTECTED DIRECTORIES** (Never archive or delete without CEO approval):
+- `/docs/design/**` - ALL design files
+- `/docs/specs/**` - ALL specification files  
+- `/docs/runbooks/**` - ALL operational runbooks
+- `/docs/directions/**` - ALL agent direction files
+
+**RULES**:
+1. Design files are **APPROVED** unless marked `DRAFT-`
+2. **NEVER archive** without CEO explicit written approval
+3. Monthly audit only (with CEO approval)
+4. CI/CD blocks PRs that delete design files
+
+**ENFORCEMENT**: Manager accountability, immediate rollback if violated.
+
+**COMPLETE VISION**: See `COMPLETE_VISION_OVERVIEW.md` for full 38-task feature manifest.
+
+---
+
+## Updated Definition of Done (Effective 2025-10-20)
+
+1. Acceptance criteria satisfied with tests/evidence; rollback documented.
+2. Calls are **MCP/SDK‑backed**; no speculative endpoints.
+3. **MCP validation evidence logged** for all Shopify GraphQL and library usage.
+4. **Design specs followed EXACTLY** - implementation matches `docs/design/` (all 57 files).
+5. **HITL reviews/grades** captured (tone/accuracy/policy 1-5 sliders in modals).
+6. **Complete feature set** - not minimal version (must match design vision, 70% gaps unacceptable).
+7. Governance: Issue linkage, **Allowed paths**, CI checks green; no disallowed `.md`.
+8. Metrics updated if behavior changed; audit entry present.
+9. **NO @remix-run imports** - React Router 7 only.
+10. **Accessibility**: WCAG 2.2 AA compliance verified (keyboard nav, screen readers, color contrast).
+
