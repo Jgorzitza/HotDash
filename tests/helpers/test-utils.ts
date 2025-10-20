@@ -5,6 +5,21 @@
  */
 
 import { vi } from "vitest";
+import { render as rtlRender } from "@testing-library/react";
+import { AppProvider } from "@shopify/polaris";
+import enTranslations from "@shopify/polaris/locales/en.json";
+import { createElement, type ReactElement } from "react";
+
+/**
+ * Custom render with Polaris AppProvider wrapper
+ */
+export function renderWithPolaris(ui: ReactElement, options = {}) {
+  return rtlRender(ui, {
+    wrapper: ({ children }) =>
+      createElement(AppProvider, { i18n: enTranslations }, children),
+    ...options,
+  });
+}
 
 /**
  * Create mock fetch response
