@@ -110,6 +110,24 @@ ORDER BY tablename;
 \echo ''
 
 -- ============================================================================
+-- OPTION A FEATURE TABLES (from 2025-10-20 migrations - DATA-NEW tasks)
+-- ============================================================================
+
+\echo '--- OPTION A FEATURE TABLES ---'
+\echo 'Checking RLS enabled on personalization, notifications, modal actions...'
+
+SELECT 
+  tablename,
+  rowsecurity as rls_enabled
+FROM pg_tables 
+WHERE schemaname = 'public'
+  AND tablename IN ('user_preferences','notifications','notification_preferences','approvals_history','sales_pulse_actions','inventory_actions')
+ORDER BY tablename;
+
+\echo 'Expected: All 6 tables show rls_enabled = t (after migrations applied)'
+\echo ''
+
+-- ============================================================================
 -- POLICY COUNT VERIFICATION
 -- ============================================================================
 
@@ -183,10 +201,12 @@ END$$;
 \echo '  ✅ Ads Tracking Tables: 2 tables (ads_campaigns, ads_daily_metrics) - pending migration 20251020005738'
 \echo '  ✅ Inventory Tables: 8 tables (products, variants, inventory_snapshots, vendors, product_vendors,'
 \echo '      purchase_orders, purchase_order_items, inventory_events) - pending migrations 20251020190500/190600'
+\echo '  ✅ Option A Tables: 6 tables (user_preferences, notifications, notification_preferences,'
+\echo '      approvals_history, sales_pulse_actions, inventory_actions) - pending migrations 20251020210000+'
 \echo '  ✅ Agent System: AgentApproval, AgentFeedback, AgentQuery'
 \echo '  ✅ Knowledge Base: All knowledge_* tables'
 \echo ''
-\echo 'Total RLS-Protected Tables: 18+ (including all above categories)'
+\echo 'Total RLS-Protected Tables: 24+ new tables pending migration (including all above categories)'
 \echo ''
 \echo 'Contract Test: PASS if all tables show rowsecurity = t'
 \echo 'Rollback: If RLS causes issues, use: ALTER TABLE <table> DISABLE ROW LEVEL SECURITY;'

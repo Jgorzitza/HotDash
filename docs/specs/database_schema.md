@@ -750,3 +750,75 @@ ORDER BY tablename;
 **Maintained By**: Data Agent  
 **Reviewers**: Integrations Agent (API contracts), Analytics Agent (dashboard queries)  
 **Status**: Living Document
+
+---
+
+## 9. Option A Feature Tables (Personalization, Notifications, Modal Actions)
+
+### `sales_pulse_actions`
+
+**Purpose**: Sales Modal action audit trail (variance review, notes, SKU flagging)
+
+**Status**: Pending migration `20251020214500_sales_pulse_actions.sql`
+
+**Columns**:
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | `gen_random_uuid()` | Primary key |
+| `created_at` | TIMESTAMPTZ | NO | `NOW()` | Action timestamp |
+| `action_type` | TEXT | NO | - | variance_review, note_added, sku_flagged, other |
+| `revenue_variance` | NUMERIC(12,2) | YES | NULL | WoW variance amount |
+| `selected_action` | TEXT | YES | NULL | Dropdown action by operator |
+| `notes` | TEXT | YES | NULL | Operator notes |
+| `operator_name` | TEXT | NO | - | Operator who took action |
+| `metadata` | JSONB | NO | `'{}'` | Additional action data |
+| `project` | TEXT | NO | 'occ' | Project namespace |
+
+**Indexes**:
+- `idx_sales_pulse_actions_created` - Time-series DESC
+- `idx_sales_pulse_actions_type` - Action type filtering
+- `idx_sales_pulse_actions_project` - RLS project isolation
+
+**RLS Policies** (3):
+- `sales_pulse_actions_service_role_all` - Service role ALL
+- `sales_pulse_actions_read_by_project` - Authenticated SELECT by project
+- `sales_pulse_actions_insert_by_project` - Authenticated INSERT by project
+
+---
+
+### `inventory_actions`
+
+**Purpose**: Inventory Modal action audit trail (reorder approvals, vendor selection)
+
+**Status**: Pending migration `20251020215000_inventory_actions.sql`
+
+**Columns**:
+| Column | Type | Nullable | Default | Description |
+|--------|------|----------|---------|-------------|
+| `id` | UUID | NO | `gen_random_uuid()` | Primary key |
+| `created_at` | TIMESTAMPTZ | NO | `NOW()` | Action timestamp |
+| `action_type` | TEXT | NO | - | reorder_approved, reorder_rejected, vendor_selected, velocity_reviewed, other |
+| `variant_id` | TEXT | YES | NULL | Variant reference |
+| `sku` | TEXT | YES | NULL | Product SKU |
+| `reorder_quantity` | INTEGER | YES | NULL | Approved reorder qty |
+| `vendor_id` | UUID | YES | NULL | Selected vendor |
+| `velocity_analysis` | TEXT | YES | NULL | 14-day velocity summary |
+| `operator_name` | TEXT | NO | - | Operator who took action |
+| `notes` | TEXT | YES | NULL | Operator notes |
+| `metadata` | JSONB | NO | `'{}'` | Additional action data |
+| `project` | TEXT | NO | 'occ' | Project namespace |
+
+**Indexes**:
+- `idx_inventory_actions_created` - Time-series DESC
+- `idx_inventory_actions_type` - Action type filtering
+- `idx_inventory_actions_variant` - Variant lookups
+- `idx_inventory_actions_project` - RLS project isolation
+
+**RLS Policies** (3):
+- `inventory_actions_service_role_all` - Service role ALL
+- `inventory_actions_read_by_project` - Authenticated SELECT by project
+- `inventory_actions_insert_by_project` - Authenticated INSERT by project
+
+---
+
+**Last Updated**: 2025-10-20 (Option A tables added)

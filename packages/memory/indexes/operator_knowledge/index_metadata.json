@@ -1,0 +1,32 @@
+{
+  "buildTime": "2025-10-20T06:04:03.988Z",
+  "documentCount": 6,
+  "persistDir": "/home/justin/HotDash/hot-dash/packages/memory/indexes/operator_knowledge",
+  "useMock": false,
+  "sources": [
+    {
+      "fileName": "shipping-policy.md",
+      "size": 3786
+    },
+    {
+      "fileName": "refund-policy.md",
+      "size": 6520
+    },
+    {
+      "fileName": "product-troubleshooting.md",
+      "size": 10034
+    },
+    {
+      "fileName": "order-tracking.md",
+      "size": 9756
+    },
+    {
+      "fileName": "exchange-process.md",
+      "size": 10663
+    },
+    {
+      "fileName": "common-questions-faq.md",
+      "size": 12291
+    }
+  ]
+}

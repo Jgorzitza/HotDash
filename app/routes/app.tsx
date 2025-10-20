@@ -14,21 +14,39 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     await authenticate.admin(request);
   }
 
+  // Get pending approvals count for navigation badge
+  let pendingCount = 0;
+  try {
+    const { getApprovalCounts } = await import("../services/approvals");
+    const counts = await getApprovalCounts();
+    pendingCount =
+      (counts.pending_review || 0) + (counts.draft || 0) + (counts.approved || 0);
+  } catch (error) {
+    // Silently fail - don't block page load
+    console.error("Failed to load approval counts:", error);
+  }
+
   // Return API key for App Bridge initialization
   return {
     apiKey: process.env.SHOPIFY_API_KEY || "",
     mockMode: isTestMode,
+    pendingCount,
   };
 };
 
 export default function App() {
-  const { apiKey, mockMode } = useLoaderData<typeof loader>();
+  const { apiKey, mockMode, pendingCount } = useLoaderData<typeof loader>();
 
   return (
     <AppProvider embedded apiKey={apiKey}>
       <s-app-nav>
         <s-link href="/app">Dashboard</s-link>
-        <s-link href="/approvals">Approvals</s-link>
+        <s-link href="/approvals">
+          Approvals
+          {pendingCount > 0 && (
+            <s-badge tone="attention">{pendingCount}</s-badge>
+          )}
+        </s-link>
         <s-link href="/app/additional">Additional page</s-link>
         <s-link href="/app/tools/session-token">Session token tool</s-link>
         {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
