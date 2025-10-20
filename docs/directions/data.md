@@ -1,9 +1,9 @@
-# Data Direction v6.1
+# Data Direction v6.2
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T21:00Z  
-**Version**: 6.1  
-**Status**: ACTIVE — Option A Database Support (CEO applies migrations)
+**Effective**: 2025-10-20T22:00Z  
+**Version**: 6.2  
+**Status**: ACTIVE — Option A Database Support (Manager applies migrations after CEO approval)
 
 ---
 
@@ -133,30 +133,31 @@ model InventoryAction {
 
 ---
 
-### DATA-003: Migrations Applied by CEO
+### DATA-003: Notify for Migration Application
 
-**Your Job**: Create migration files + update Prisma schema → Report complete to Manager
+**Your Job**: Create migration files + update Prisma schema → Notify CEO when ready
 
-**CEO's Job**: Apply migrations via Supabase console SQL editor
+**Manager's Job**: Apply migrations via `psql` after CEO approval
 
 **Process**:
 1. You create all migration files (DATA-001, DATA-002, DATA-004, DATA-005, DATA-006)
 2. You update `prisma/schema.prisma` with all models
-3. You report in feedback: "✅ All 5 migrations ready for CEO to apply"
-4. CEO applies migrations via Supabase console (runs SQL directly)
-5. You verify tables exist in Supabase dashboard
+3. You report in feedback: "✅ All 5 migrations ready to apply - awaiting CEO approval"
+4. CEO reviews and approves
+5. Manager applies migrations: `psql "$DATABASE_URL" -f supabase/migrations/*.sql`
+6. You verify tables exist (Manager will confirm)
 
 **DO NOT**:
-- ❌ Try to apply migrations yourself (no psql access from WSL)
+- ❌ Try to apply migrations yourself (wait for CEO approval)
 - ❌ Add migration commands to deployment files
-- ❌ Wait for Manager to coordinate access (CEO owns this step)
+- ❌ Skip notification step (CEO must approve database changes)
 
-**Evidence Required** (after CEO applies):
-- Screenshot of tables in Supabase dashboard
-- Row count (should be 0 initially)
-- RLS policies enabled
+**Evidence Required** (after migrations applied):
+- Migration files created: `supabase/migrations/*.sql` (list files)
+- Prisma models updated: `prisma/schema.prisma` (list models)
+- Validation passed: `npx prisma validate` output
 
-**UNBLOCKS**: Engineer can proceed with Phase 2 modals
+**UNBLOCKS**: Engineer can proceed with Phase 2 modals (after migrations applied)
 
 ---
 
