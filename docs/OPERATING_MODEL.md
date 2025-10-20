@@ -34,6 +34,15 @@
 
 ## 3) Guardrails (non-negotiable)
 
+**No Ad-Hoc Files (NEW - Effective 2025-10-20)**
+
+- Agents write ONLY to: `feedback/{agent}.md`, `artifacts/{agent}/` (non-.md)
+- Manager writes ONLY to: `feedback/manager/*.md`, `docs/directions/*.md`, `reports/manager/*.md`
+- Root .md files: 6 maximum (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
+- Violations: Archive immediately to `docs/archive/YYYY-MM-DD/`
+- **3-Question Test**: Can this go in feedback? (YES → use that) | In DOCS_INDEX Tier 1-3? (NO → don't create) | CEO requested? (NO → don't create)
+- Daily audit required (Manager)
+
 - **Docs allow‑list** in CI (no stray `.md`), plus weekly (and now **daily startup/shutdown**) drift sweep. **Protected paths include `mcp/**` for MCP tools documentation.\*\*
 - **Danger**: Issue linkage, DoD present, Allowed paths enforced, HITL config enforced.
 - **Secret protection**: GitHub Push Protection + **Gitleaks** CI with SARIF upload.

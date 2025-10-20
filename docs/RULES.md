@@ -23,6 +23,53 @@ docs/_archive/**
 mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ```
 
+## No Ad-Hoc Files (STRICT - Effective 2025-10-20)
+
+**All agents and Manager: NEVER create new .md files without 3-Question Test**
+
+### The 3-Question Test (MANDATORY)
+
+Before creating ANY new .md file:
+
+1. **Can this go in my feedback file?**  
+   - YES → Use `feedback/{agent}.md` and STOP
+   - NO → Continue to Q2
+
+2. **Is this in DOCS_INDEX.md Tier 1-3?**  
+   - YES → Proceed (only if CEO approved)
+   - NO → Continue to Q3
+
+3. **Did CEO explicitly request this file?**  
+   - YES → Get written approval, update DOCS_INDEX.md first
+   - NO → **DO NOT CREATE** (use feedback file)
+
+### Forbidden Patterns
+
+**NEVER create**:
+- ❌ Status/incident: `STATUS_*.md`, `URGENT_*.md`, `FIX_*.md`, `P0_*.md`, `CRITICAL_*.md`
+- ❌ Checklists/plans: `*_CHECKLIST.md`, `DEPLOY_*.md`, `*_PLAN.md`
+- ❌ Analysis/reports: `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`, `*_REPORT.md`
+- ❌ Coordination: `*_to_*_coordination.md`, `HANDOFF_*.md`
+- ❌ Any root .md beyond 6 allowed
+
+### Enforcement
+
+- **Daily audit**: Manager finds root .md files (must be ≤ 6)
+- **Immediate archive**: Violations → `docs/archive/YYYY-MM-DD/`
+- **3 strikes**: Escalation to CEO
+
+### Root .md Files (6 Maximum)
+
+**Allowed**:
+1. README.md
+2. SECURITY.md
+3. CONTRIBUTING.md
+4. DOCS_INDEX.md
+5. AGENT_LAUNCH_PROMPT_OCT20.md (temp)
+6. COMPLETE_VISION_OVERVIEW.md (temp)
+
+---
+
 ## Process
 
 - **Single ledger**: GitHub Issues (Task form) with `Agent`, `Definition of Done`, `Acceptance checks`, and **Allowed paths**.

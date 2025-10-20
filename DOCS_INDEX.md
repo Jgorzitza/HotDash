@@ -77,17 +77,43 @@ mkdir -p docs/archive/$(date +%Y-%m-%d)
 
 ---
 
-## Adding New Required Docs
+## STRICT RULE: No Ad-Hoc Files
 
-**Before creating a new .md file, ask:**
-1. Is this in Tier 1-3? (If no → don't create)
-2. Can this go in existing feedback/direction? (If yes → use that)
-3. Will this be referenced in >1 session? (If no → don't create)
+**All agents and Manager: STOP before creating any new .md file**
 
-**If yes to all 3**, then:
-1. Create the file in appropriate directory
-2. Add to this index with purpose + owner
-3. Commit with reason
+### The 3-Question Test
+
+**Question 1**: Can this go in my feedback file?
+- YES → Use `feedback/{agent}.md` (STOP HERE)
+- NO → Continue to Q2
+
+**Question 2**: Is this documented in Tier 1-3 of this index?
+- YES → Proceed with creation
+- NO → Continue to Q3
+
+**Question 3**: Did CEO explicitly request this specific file?
+- YES → Proceed with creation
+- NO → **DO NOT CREATE** (use feedback file instead)
+
+### Adding New Required Docs (CEO Approval Required)
+
+**If CEO approves a new required doc**:
+1. Add to Tier 1-3 in this index first
+2. Document: purpose, owner, archive rule
+3. Create the file in appropriate directory
+4. Commit with reason + link to CEO approval
+
+### Forbidden Patterns
+
+**NEVER create**:
+- Status update files (`STATUS_*.md`, `REPORT_*.md`)
+- Incident files (`FIX_*.md`, `URGENT_*.md`, `P0_*.md`)
+- Checklists (`*_CHECKLIST.md`, `DEPLOY_*.md`)
+- Coordination files (`*_to_*_coordination.md`)
+- Analysis files (`*_ANALYSIS.md`, `*_GAP.md`)
+- Any root-level .md except the 6 allowed
+
+**Use instead**: Your feedback file (`feedback/{agent}.md`)
 
 ---
 
