@@ -7,6 +7,10 @@
         "POLARIS_UNIFIED": "true",
         "LIQUID": "true"
       }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
     }
   }
 }

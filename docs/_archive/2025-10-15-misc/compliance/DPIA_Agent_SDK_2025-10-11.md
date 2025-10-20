@@ -889,10 +889,10 @@ Store approved response (training data)
 
 **Reviewed By:**
 
-- [ ] **Privacy Officer** (Compliance) - ********\_******** Date: **\_\_\_**
-- [ ] **Security Officer** - ********\_******** Date: **\_\_\_**
-- [ ] **Legal Counsel** - ********\_******** Date: **\_\_\_**
-- [ ] **Manager** - ********\_******** Date: **\_\_\_**
+- [ ] **Privacy Officer** (Compliance) - **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
+- [ ] **Security Officer** - **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
+- [ ] **Legal Counsel** - **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
+- [ ] **Manager** - **\*\*\*\***\_**\*\*\*\*** Date: **\_\_\_**
 
 **Approval Status:** ✅ RECOMMENDED FOR APPROVAL
 

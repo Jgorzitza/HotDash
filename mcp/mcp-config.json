@@ -102,7 +102,7 @@
     "chrome-devtools": {
       "description": "Chrome DevTools MCP server",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"]
     }
   },
   "usage_guidelines": {

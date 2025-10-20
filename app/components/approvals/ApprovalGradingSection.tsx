@@ -1,4 +1,10 @@
-import { BlockStack, InlineStack, Text, RangeSlider, Card } from "@shopify/polaris";
+import {
+  BlockStack,
+  InlineStack,
+  Text,
+  RangeSlider,
+  Card,
+} from "@shopify/polaris";
 
 export function ApprovalGradingSection({
   kind,
@@ -70,4 +76,3 @@ export function ApprovalGradingSection({
     </Card>
   );
 }
-
