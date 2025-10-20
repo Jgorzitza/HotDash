@@ -51,6 +51,8 @@
   },
   "dependencies": {
     "@google-analytics/data": "^4.12.1",
+    "@googleapis/searchconsole": "^5.0.0",
+    "@llamaindex/openai": "^0.4.20",
     "@prisma/client": "^6.17.1",
     "@react-router/dev": "7.9.4",
     "@react-router/fs-routes": "7.9.4",
