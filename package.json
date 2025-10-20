@@ -13,7 +13,7 @@
     "env": "shopify app env",
     "start": "react-router-serve ./build/server/index.js",
     "docker-start": "npm run setup && npm run start",
-    "setup": "prisma generate && prisma migrate deploy",
+    "setup": "prisma generate",
     "seed": "tsx prisma/seeds/dashboard-facts.seed.ts",
     "ops:backfill-chatwoot": "npx -y tsx scripts/ops/backfill-chatwoot-breach.ts",
     "ops:check-chatwoot-health": "node scripts/ops/check-chatwoot-health.mjs",

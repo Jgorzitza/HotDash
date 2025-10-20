@@ -10,10 +10,11 @@
 
 | File | Purpose | Last Updated | Used By |
 |------|---------|--------------|---------|
-| `docs/NORTH_STAR.md` | Vision, philosophy, tech stack, MCP rules | 2025-10-19 | All agents (startup) |
-| `docs/OPERATING_MODEL.md` | How we work, pipeline, guardrails, roles | 2025-10-19 | All agents (startup) |
-| `docs/RULES.md` | Process, security, agent rules | 2025-10-19 | All agents (startup) |
-| `README.md` | Project overview, quick start | 2025-10-20 | New contributors |
+| `docs/NORTH_STAR.md` | Vision, philosophy, tech stack, MCP rules, complete vision reference | 2025-10-20 | All agents (startup) |
+| `docs/OPERATING_MODEL.md` | How we work, pipeline, guardrails, roles, development workflow | 2025-10-20 | All agents (startup) |
+| `docs/RULES.md` | Process, security, agent rules, MCP tools, database safety | 2025-10-20 | All agents (startup) |
+| `README.md` | Project overview, quick start, complete vision summary | 2025-10-20 | New contributors |
+| `COMPLETE_VISION_OVERVIEW.md` | 38-task feature manifest (57 design specs) | 2025-10-20 | All agents (vision guide) |
 
 ---
 
@@ -21,8 +22,8 @@
 
 | Directory | Purpose | Count | Owner | Archive Rule |
 |-----------|---------|-------|-------|--------------|
-| `docs/directions/*.md` | Agent task assignments | 16 | Manager | Never (active tasks) |
-| `feedback/*/*.md` | Agent progress logs | ~30 | Agents | Archive >30 days old to feedback/archive/ |
+| `docs/directions/*.md` | Agent task assignments | 17 | Manager | Never (active tasks) |
+| `feedback/*/*.md` | Agent progress logs | ~34 | Agents | Archive >30 days old to feedback/archive/ |
 | `docs/design/*.md` | Product design specs | 57 | Designer | NEVER ARCHIVE (per policy) |
 
 ---
@@ -31,7 +32,13 @@
 
 | File/Directory | Purpose | Archive Rule |
 |----------------|---------|--------------|
-| `docs/runbooks/*.md` | Operational procedures | Archive if unused >90 days |
+| `docs/runbooks/manager_startup_checklist.md` | Manager daily startup procedure | NEVER (required daily) |
+| `docs/runbooks/manager_shutdown_checklist.md` | Manager daily shutdown procedure | NEVER (required daily) |
+| `docs/runbooks/agent_startup_checklist.md` | Agent daily startup procedure | NEVER (required daily) |
+| `docs/runbooks/agent_shutdown_checklist.md` | Agent daily shutdown procedure | NEVER (required daily) |
+| `docs/runbooks/ai_agent_review_checklist.md` | AI work review protocol | NEVER (active process) |
+| `docs/runbooks/drift_checklist.md` | Drift detection/correction | NEVER (active process) |
+| `docs/runbooks/*.md` (other) | Operational procedures | Archive if unused >90 days |
 | `docs/specs/*.md` | Technical specifications | Archive if unused >90 days |
 | `.cursor/rules/*.mdc` | Agent workflow rules | NEVER (auto-applied) |
 
@@ -54,26 +61,32 @@
 cd /home/justin/HotDash/hot-dash
 
 # 1. Find root-level .md files (candidates for archive)
-find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "DOCS_INDEX.md" ! -name "SECURITY.md" ! -name "CONTRIBUTING.md"
+find . -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "DOCS_INDEX.md" ! -name "SECURITY.md" ! -name "COMPLETE_VISION_OVERVIEW.md"
 
 # 2. Read each file, decide: KEEP or ARCHIVE
-# 3. Archive to docs/archive/YYYY-MM-DD/
-mkdir -p docs/archive/$(date +%Y-%m-%d)
+# 3. Archive to docs/_archive/YYYY-MM-DD/
+mkdir -p docs/_archive/$(date +%Y-%m-%d)
 # Move obsolete files
 
-# 4. Update "Current Status" section below
+# 4. Update "Current Status" section in DOCS_INDEX.md (THIS FILE)
 ```
 
 ---
 
 ## Current Status (2025-10-20)
 
-**Total .md files**: 2,602  
-**Required (Tier 1+2)**: ~107 (16 direction + 30 feedback + 57 design + 4 governance)  
-**Root files**: 5 (README, SECURITY, CONTRIBUTING, AGENT_LAUNCH_PROMPT_OCT20, COMPLETE_VISION_OVERVIEW)  
-**Last audit**: 2025-10-20T09:05Z  
-**Archived**: 14 files to docs/archive/2025-10-20/ (incident reports, status updates, one-time configs)  
+**Total .md files**: ~2,600  
+**Required (Tier 1+2)**: ~113 (17 direction + 34 feedback + 57 design + 5 governance)  
+**Root files**: 4 (README, SECURITY, DOCS_INDEX, COMPLETE_VISION_OVERVIEW)  
+**Last audit**: 2025-10-20T18:40Z  
+**Archived today**: 2 files (CONTRIBUTING.md → merged into OPERATING_MODEL.md, AGENT_LAUNCH_PROMPT_OCT20.md → deleted)  
 **Next audit due**: DAILY (end of each Manager session)
+
+**Manager Accountability**: MUST update this file whenever:
+- New required doc added to Tier 1-3
+- Root .md file created/deleted
+- Agent count changes
+- Design file count changes
 
 ---
 

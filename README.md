@@ -86,7 +86,7 @@ npm run dev
 - `docs/design/dashboard_wireframes.md` - Complete wireframes
 
 ### Agent Directions
-- `/docs/directions/` - 16 agent direction files
+- `/docs/directions/` - 17 agent direction files
 - Updated: 2025-10-20 (all agents directed to build complete vision)
 
 ### MCP Tools (MANDATORY)

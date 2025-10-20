@@ -207,3 +207,50 @@
 - Accessibility validation (WCAG 2.2 AA)
 - MCP conversation IDs (Context7 for libraries)
 
+---
+
+## 13) Development Workflow
+
+### Getting Started
+
+1. Install dependencies: `npm install`
+2. Copy `.env.example` to `.env.local` and populate with vault-provided secrets
+3. Install repo pre-commit hook: `./scripts/policy/install-hooks.sh`
+
+### Branching Model
+
+- Branch names: `batch-<BATCH_ID>/<slug>` (example: `batch-20251017T033137Z/chatwoot-health`)
+- Guardrail work: `guardrails-<BATCH_ID>` (merged before feature work)
+- Never force-push to `main` - all merges via PR review
+
+### Commit Style
+
+- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `test:`
+- Scope optional but recommended (e.g. `feat(app): add idea pool tile`)
+- Squash commits in PR unless history is intentionally meaningful
+
+### Pull Request Checklist
+
+- [ ] Linked task ID with clear objective
+- [ ] Updated docs/runbooks/specs when behavior changes
+- [ ] Added or updated tests (unit, integration, or Playwright)
+- [ ] Ran `npm run fmt && npm run lint && npm run test:ci` locally
+- [ ] Ran `npm run scan` for secrets before pushing
+- [ ] Described risk level, rollback plan, deployment impact in PR template
+
+### Required Commands
+
+| Command | Purpose |
+| --- | --- |
+| `npm run fmt` | Apply project formatting rules (Prettier + ESLint fixes) |
+| `npm run lint` | Run linting on the codebase |
+| `npm run test:unit` | Execute unit tests via Vitest |
+| `npm run test:e2e` | Execute Playwright end-to-end tests (headless) |
+| `npm run test:ci` | CI smoke including unit + integration suites |
+| `npm run scan` | Run gitleaks secret scan |
+| `npm run ci` | Wrapper: `fmt`, `lint`, `test:ci`, and `scan` |
+
+### Reviews & Code Owners
+
+See `CODEOWNERS` for required reviewers. Areas touching `/app`, `/supabase`, `/scripts`, `/deploy`, `/fly-apps`, or workflows require explicit approval from listed leads.
+

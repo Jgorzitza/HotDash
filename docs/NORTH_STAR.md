@@ -209,7 +209,12 @@ MCP Tools Used:
 
 **ENFORCEMENT**: Manager accountability, immediate rollback if violated.
 
-**COMPLETE VISION**: See `COMPLETE_VISION_OVERVIEW.md` for full 38-task feature manifest.
+**COMPLETE VISION**: See `COMPLETE_VISION_OVERVIEW.md` (root directory) for full 38-task feature manifest.
+- 57 design files in `/docs/design/` (500KB total)
+- Complete operator experience documented
+- 11 phases, 38 tasks, ~30 hours work
+- Current implementation: 30% (6/8 tiles, basic modals, no approval queue)
+- Target: 100% (all designed features built EXACTLY as specified)
 
 ---
 

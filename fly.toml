@@ -13,7 +13,7 @@ primary_region = 'ord'
 [build]
 
 [deploy]
-  release_command = "npx prisma generate && npx prisma migrate deploy"
+  release_command = "npx prisma generate"
 
 [http_service]
   internal_port = 3000

@@ -1,0 +1,91 @@
+---
+globs: feedback/**/*.md
+---
+# Evidence Logging Requirements
+
+**Effective**: 2025-10-20  
+**Applies to**: ALL agents including Manager
+
+## Required Evidence Format
+
+### For Tool Usage (MANDATORY)
+
+```md
+## HH:MM - Context7: [Library Name]
+- Topic: [what I'm implementing/investigating]
+- Key Learning: [specific requirement from official docs]
+- Applied to: [files changed / decision made]
+```
+
+**Real example (2025-10-20 P0 fix)**:
+```md
+## 17:15 - Context7: Prisma
+- Topic: multi-schema support @@schema attribute
+- Key Learning: ALL models need @@schema("public") when datasource has schemas array
+- Applied to: prisma/schema.prisma (Session, DashboardFact, DecisionLog)
+```
+
+### For QA Code Reviews
+
+```md
+## Code Review: [Feature/File]
+- Verified using: Context7 `/library/path` - topic: [what I checked]
+- Official docs say: [key requirement]
+- Code matches: ✅ / ❌ [explain if mismatch]
+- Recommendation: [pass / request changes]
+```
+
+### For Work Progress (Every 2 Hours)
+
+```md
+## YYYY-MM-DDTHH:MM:SSZ — {Agent}: [Status]
+
+**Working On**: [Task from direction file]
+**Progress**: [Milestone or %]
+**Evidence**: [Files, commands (summary only), test results]
+**Blockers**: [None or details]
+**Next**: [Action]
+```
+
+## Evidence Must Include
+
+**File paths**: Always log which files were modified
+- ✅ Example: `app/routes/api.analytics.traffic.ts, prisma/schema.prisma`
+
+**Command results** (SUMMARY ONLY, max 10 lines):
+- ✅ Example: "fly deploy → completed successfully, release_command passed"
+- ❌ NOT: Full 300-line deployment output
+
+**Test results**: Pass/fail counts
+- ✅ Example: "186/186 tests passing"
+
+**Tool calls**: Timestamp + what docs were pulled
+- ✅ Example: "17:15 - Context7: Prisma - multi-schema support"
+
+**Deployments**: Success/failure + key metrics
+- ✅ Example: "Deploy #3 → success, app healthy, GA returning 4,207 sessions"
+
+## What NOT to Log
+
+- ❌ Verbatim npm install output (hundreds of lines)
+- ❌ Full command logs without summary
+- ❌ Verbose stack traces (use summary + error message)
+- ❌ Repetitive metrics (log once per session)
+
+## Feedback File Size Limit
+
+- **Maximum**: 5,000 lines per file
+- **If exceeded**: Start new file with continuation note
+- **Archive**: Move old content to feedback/archive/
+
+## Enforcement
+
+**Manager checks**:
+- Tool usage logged BEFORE code changes
+- Evidence is specific (file paths, test counts)
+- Evidence is summarized (not verbose)
+- Timestamps present for all work
+
+**Reference**: [docs/RULES.md](mdc:docs/RULES.md) MCP Tools section for evidence format examples
+
+**See also**: [docs/runbooks/agent_startup_checklist.md](mdc:docs/runbooks/agent_startup_checklist.md) Section 0 for tool-first workflow

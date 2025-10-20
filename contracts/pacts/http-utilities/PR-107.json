@@ -1,0 +1,274 @@
+{
+  "provider": "Hot Dash HTTP Server Utilities",
+  "consumer": "React Router 7 loaders and actions",
+  "prNumber": 107,
+  "dateCreated": "2025-10-20",
+  "status": "production",
+  "version": "1.0.0",
+  "description": "React Router 7 compliant HTTP response helpers",
+  "compliance": {
+    "framework": "React Router 7",
+    "requirements": [
+      "Uses Response.json() not json() helper from Remix",
+      "No @remix-run imports",
+      "Accepts ResponseInit for custom status codes"
+    ],
+    "verified": true
+  },
+  "interactions": [
+    {
+      "description": "Create JSON response with default status",
+      "functionName": "json",
+      "signature": "function json<T>(data: T, init?: ResponseInit): Response",
+      "parameters": [
+        {
+          "name": "data",
+          "type": "T (generic)",
+          "description": "Data to serialize as JSON",
+          "example": { "message": "Success" }
+        },
+        {
+          "name": "init",
+          "type": "ResponseInit",
+          "optional": true,
+          "description": "Response initialization options",
+          "properties": {
+            "status": { "type": "number", "default": 200 },
+            "statusText": { "type": "string", "optional": true },
+            "headers": { "type": "Headers | Record<string, string>", "optional": true }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Response",
+        "contentType": "application/json",
+        "statusCode": 200
+      },
+      "examples": [
+        {
+          "description": "Success response (default 200)",
+          "code": "json({ message: 'Success' })",
+          "response": {
+            "status": 200,
+            "headers": { "Content-Type": "application/json" },
+            "body": "{\"message\":\"Success\"}"
+          }
+        },
+        {
+          "description": "Error response with custom status",
+          "code": "json({ error: 'Not found' }, { status: 404 })",
+          "response": {
+            "status": 404,
+            "headers": { "Content-Type": "application/json" },
+            "body": "{\"error\":\"Not found\"}"
+          }
+        },
+        {
+          "description": "Response with custom headers",
+          "code": "json({ data: 'test' }, { headers: { 'X-Custom': 'value' } })",
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json",
+              "X-Custom": "value"
+            },
+            "body": "{\"data\":\"test\"}"
+          }
+        }
+      ],
+      "usageInRoutes": [
+        {
+          "file": "app/routes/api.analytics.revenue.ts",
+          "line": 38,
+          "pattern": "return json(validated);"
+        },
+        {
+          "file": "app/routes/api.analytics.revenue.ts",
+          "line": 55,
+          "pattern": "return json(validated, { status: isSampled ? 503 : 500 });"
+        },
+        {
+          "file": "app/routes/api.seo.anomalies.ts",
+          "line": 101,
+          "pattern": "return json({ success: true, data: { ...bundle, diagnostics } });"
+        }
+      ]
+    },
+    {
+      "description": "Create redirect response",
+      "functionName": "redirect",
+      "signature": "function redirect(url: string, status: number = 302): Response",
+      "parameters": [
+        {
+          "name": "url",
+          "type": "string",
+          "description": "URL to redirect to",
+          "example": "/dashboard"
+        },
+        {
+          "name": "status",
+          "type": "number",
+          "optional": true,
+          "default": 302,
+          "description": "HTTP redirect status code",
+          "validValues": [301, 302, 303, 307, 308]
+        }
+      ],
+      "returns": {
+        "type": "Response",
+        "headers": {
+          "Location": "URL provided"
+        },
+        "body": null
+      },
+      "examples": [
+        {
+          "description": "Temporary redirect (default 302)",
+          "code": "redirect('/dashboard')",
+          "response": {
+            "status": 302,
+            "headers": { "Location": "/dashboard" },
+            "body": null
+          }
+        },
+        {
+          "description": "Permanent redirect (301)",
+          "code": "redirect('/new-path', 301)",
+          "response": {
+            "status": 301,
+            "headers": { "Location": "/new-path" },
+            "body": null
+          }
+        },
+        {
+          "description": "See Other redirect (303)",
+          "code": "redirect('/success', 303)",
+          "response": {
+            "status": 303,
+            "headers": { "Location": "/success" },
+            "body": null
+          }
+        }
+      ],
+      "usageInRoutes": [
+        {
+          "note": "Not currently used in codebase",
+          "expectedUsage": "Actions after form submissions, authentication flows"
+        }
+      ]
+    }
+  ],
+  "implementation": {
+    "location": "app/utils/http.server.ts",
+    "lines": 38,
+    "dependencies": ["none (uses Web API Response)"],
+    "testing": {
+      "unit": "Not present (should add tests/contract/http.server.contract.test.ts)",
+      "integration": "Used in multiple route files"
+    }
+  },
+  "typeSafety": {
+    "json": {
+      "generic": true,
+      "parameterType": "T",
+      "returnType": "Response",
+      "typeInference": "TypeScript infers T from data parameter",
+      "example": "const response = json<{ id: string }>({ id: '123' })"
+    },
+    "redirect": {
+      "parameterTypes": ["string", "number"],
+      "returnType": "Response",
+      "noGenerics": true
+    }
+  },
+  "reactRouter7Compliance": {
+    "status": "COMPLIANT",
+    "evidence": [
+      {
+        "requirement": "Uses Response.json()",
+        "location": "app/utils/http.server.ts:15",
+        "code": "return Response.json(data, {...})",
+        "compliant": true
+      },
+      {
+        "requirement": "No @remix-run imports",
+        "verification": "Grepped all files - ZERO @remix-run imports",
+        "compliant": true
+      },
+      {
+        "requirement": "Accepts ResponseInit",
+        "location": "app/utils/http.server.ts:14",
+        "parameter": "init?: ResponseInit",
+        "compliant": true
+      }
+    ],
+    "migration": {
+      "from": "Remix json() helper",
+      "to": "Custom wrapper around Response.json()",
+      "breaking": false,
+      "reason": "Maintains same API surface as Remix helper"
+    }
+  },
+  "errorHandlingPatterns": {
+    "successResponse": {
+      "pattern": "json({ success: true, data: {...} })",
+      "statusCode": 200
+    },
+    "errorResponse": {
+      "pattern": "json({ success: false, error: 'message' }, { status: 500 })",
+      "statusCodes": [400, 404, 500, 502, 503]
+    },
+    "envelope": {
+      "description": "Consistent success/error envelope across all routes",
+      "fields": {
+        "success": "boolean (discriminates success/error)",
+        "data": "object (present when success=true)",
+        "error": "string (present when success=false)",
+        "timestamp": "string (ISO date-time)",
+        "sampled": "boolean (analytics-specific)"
+      }
+    }
+  },
+  "bestPractices": {
+    "headerMerging": {
+      "description": "Custom headers are merged with default Content-Type",
+      "location": "app/utils/http.server.ts:16-18",
+      "code": "headers: { 'Content-Type': 'application/json', ...init?.headers }"
+    },
+    "statusCodeConventions": {
+      "200": "Success",
+      "400": "Bad request / validation error",
+      "404": "Resource not found",
+      "500": "General server error",
+      "502": "Bad gateway / external service error",
+      "503": "Service unavailable / sampling error"
+    },
+    "redirectStatusCodes": {
+      "301": "Permanent redirect (moved permanently)",
+      "302": "Temporary redirect (default)",
+      "303": "See Other (after POST)",
+      "307": "Temporary redirect (preserve method)",
+      "308": "Permanent redirect (preserve method)"
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "LOW",
+      "type": "testing",
+      "description": "Add contract tests for json() and redirect() functions",
+      "file": "tests/contract/http.server.contract.test.ts"
+    },
+    {
+      "priority": "LOW",
+      "type": "documentation",
+      "description": "Add JSDoc comments with examples",
+      "location": "app/utils/http.server.ts"
+    },
+    {
+      "priority": "LOW",
+      "type": "enhancement",
+      "description": "Consider adding typed error helper",
+      "example": "function errorResponse(message: string, status: number = 500)"
+    }
+  ]
+}
