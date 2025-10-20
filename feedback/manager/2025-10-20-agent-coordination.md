@@ -676,3 +676,30 @@ MANAGER NEXT:
 **Agents Unblocked**: 16/16
 **No Idle Agents**: ✅
 
+
+## 2025-10-20T09:50:00Z — Manager: AppProvider Fix Deployment Status
+
+### Engineer's Fix Verified
+
+✅ **Fix is in code** (app/routes/app.tsx):
+- Line 5: `import enTranslations from "@shopify/polaris/locales/en.json";`
+- Line 42: `<AppProvider embedded apiKey={apiKey} i18n={enTranslations}>`
+- Build: ✅ PASSING (481ms)
+
+### Deployment Status
+
+**Attempted**: `fly deploy -a hotdash-staging`  
+**Result**: ❌ Docker build failure (npm ci issue)  
+**Error**: package-lock.json sync issue
+
+**Alternative**: Fix is already in working tree on branch
+- Designer/Pilot can test locally: `npm run dev:vite`
+- Or wait for deployment fix
+
+### Notifying Designer/Pilot
+
+**Designer**: Can test locally or wait for staging deploy  
+**Pilot**: Can test locally or wait for staging deploy
+
+**Manager Action**: Fix npm ci issue, then redeploy
+
