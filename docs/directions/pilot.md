@@ -15,7 +15,15 @@ PIL-002 complete ✅ (dashboard tiles), PIL-003 BLOCKED by AppProvider
 
 ## Tasks
 
-### BLOCKED - RESUME AFTER ENGINEER FIXES APPPROVIDER
+### ✅ UNBLOCKED - STAGING IS LIVE - TEST NOW
+
+**STAGING READY** (Deployed 2025-10-20T15:58Z):
+- Fly version: 48
+- Shopify version: hot-dash-29
+- AppProvider i18n: FIXED ✅
+- URL: https://hotdash-staging.fly.dev
+
+### RESUME IMMEDIATELY
 
 **PIL-003**: Approvals HITL Flow Validation (2h)
 - WAIT for Engineer to fix AppProvider i18n

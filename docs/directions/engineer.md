@@ -17,9 +17,15 @@ P0 /health ✅, Server fix ✅, Approvals route ✅, 228/254 tests ✅
 
 ## Tasks
 
-🚨 URGENT P0 - DO THIS NOW:
+✅ ENG-001 COMPLETE & DEPLOYED:
 
-**ENG-001 REDO**: AppProvider i18n Fix (NOT COMPLETE)
+**AppProvider i18n Fix** - DEPLOYED TO STAGING ✅
+- Staging version: 48 (Fly), hot-dash-29 (Shopify)
+- Deployed: 2025-10-20T15:58Z
+- URL: https://hotdash-staging.fly.dev
+- Status: Designer/Pilot/QA testing now
+
+**Continue with Phase 1**
 - **Error**: `MissingAppProviderError: No i18n was provided`
 - **Status**: You verified setup but didn't add i18n prop
 - **Impact**: Designer blocked (11/15 tasks), Pilot NO-GO

@@ -15,7 +15,15 @@ P0 /health ✅ (deployed), Chatwoot ✅ (restored), AppProvider ❌ (Engineer fi
 
 ## Tasks
 
-### IMMEDIATE (30 min) - After Engineer Fixes AppProvider
+### ✅ ENGINEER FIXED - STAGING IS LIVE - TEST NOW
+
+**STAGING READY** (Deployed 2025-10-20T15:58Z):
+- Fly version: 48
+- Shopify version: hot-dash-29
+- AppProvider i18n: FIXED ✅
+- URL: https://hotdash-staging.fly.dev
+
+### IMMEDIATE (30 min) - TEST NOW
 
 **QA-018**: Retest AppProvider Fix
 1. Open https://hotdash-staging.fly.dev

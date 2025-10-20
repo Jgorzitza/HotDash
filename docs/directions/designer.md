@@ -15,7 +15,15 @@ Validate ALL 57 specs for Option A - Full build
 
 ## Tasks
 
-### BLOCKED - RESUME IMMEDIATELY AFTER ENGINEER FIXES APPPROVIDER
+### ✅ UNBLOCKED - STAGING IS LIVE - TEST NOW
+
+**STAGING READY** (Deployed 2025-10-20T15:58Z):
+- Fly version: 48
+- Shopify version: hot-dash-29  
+- AppProvider i18n: FIXED ✅
+- URL: https://hotdash-staging.fly.dev
+
+### RESUME IMMEDIATELY
 
 **DES-002**: Visual QA on Approval Queue (30 min)
 - WAIT for Engineer to fix AppProvider i18n
