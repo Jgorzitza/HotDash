@@ -14,11 +14,12 @@ interface SalesPulseActionResponse {
   error?: string;
 }
 
-type SalesAction = "acknowledge" | "escalate";
+type SalesAction = "acknowledge" | "escalate" | "no_action";
 
 const ACTION_LABELS: Record<SalesAction, string> = {
   acknowledge: "Log follow-up",
   escalate: "Escalate to ops",
+  no_action: "No action",
 };
 
 export function SalesPulseModal({
@@ -120,6 +121,26 @@ export function SalesPulseModal({
         </div>
 
         <div className="occ-modal__body">
+          <section className="occ-modal__section">
+            <h3>Snapshot (Last 24h)</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <p style={{ margin: 0 }}>
+                <strong>Revenue:</strong> {summary.currency}{" "}
+                {summary.totalRevenue.toFixed(2)}
+                {/* TODO: Add WoW variance when Data service provides historical comparison */}
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Orders:</strong> {summary.orderCount}
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Avg order:</strong> {summary.currency}{" "}
+                {summary.orderCount > 0
+                  ? (summary.totalRevenue / summary.orderCount).toFixed(2)
+                  : "0.00"}
+              </p>
+            </div>
+          </section>
+
           <section className="occ-modal__section">
             <h3>Top SKUs</h3>
             <ul className="occ-modal__list">
