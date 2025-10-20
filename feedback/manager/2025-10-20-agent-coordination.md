@@ -271,3 +271,234 @@ Commit: 8bcf202
 - DOCS_INDEX.md
 
 **Result**: Guard in place across all governance - agents and Manager now have clear rule to follow.
+# Consolidated Agent Feedback — 2025-10-20
+
+**Date**: 2025-10-20T09:30:00Z  
+**Manager**: Complete review of all 16 agents  
+**Source**: feedback/{agent}/2025-10-20.md files
+
+---
+
+## P0 BLOCKERS
+
+### 1. AppProvider i18n Error (CRITICAL - Launch Blocker)
+
+**Error**: `MissingAppProviderError: No i18n was provided`  
+**Impact**: All interactive Polaris components crash  
+**Reported By**: Designer (08:40Z), Pilot (14:45Z)  
+**Assigned To**: Engineer (ENG-001 REDO)  
+**Status**: ❌ NOT FIXED (Engineer claimed complete but only verified, didn't fix)  
+**Blocks**: Designer (11/15 tasks), Pilot (all interactive testing), NO-GO for launch  
+**ETA**: 15 minutes (add i18n prop to AppProvider)
+
+**Fix Required**:
+```tsx
+import enTranslations from '@shopify/polaris/locales/en.json';
+<AppProvider apiKey={config.apiKey} i18n={enTranslations}>
+```
+
+---
+
+## COMPLETE AGENTS (Standby)
+
+### 1. Support (100% COMPLETE)
+**Status**: ✅ P0 Chatwoot fix COMPLETE  
+**Accomplished**: Created Fly Postgres, restored Chatwoot service (was down 11+ hours)  
+**Time**: 55 minutes  
+**Blockers**: None  
+**Next**: Standby
+
+### 2. Data (100% COMPLETE)
+**Status**: ✅ All v4.0 tasks COMPLETE  
+**Accomplished**:
+- P0 RLS verification (4/4 tables ✅)
+- 5 new migrations (6 tables: user_preferences, notifications x2, approvals_history, sales_pulse_actions, inventory_actions)
+- Total: 404 lines SQL + 277 lines docs
+**Blockers**: None  
+**Next**: Standby (DevOps can apply migrations)
+
+### 3. Ads (100% COMPLETE)
+**Status**: ✅ All work COMPLETE, 60/60 tests passing  
+**Accomplished**: P2 formatting fix  
+**Blockers**: None  
+**Next**: Standby for Option A support
+
+### 4. Content (100% COMPLETE)
+**Status**: ✅ All microcopy guides COMPLETE  
+**Accomplished**: 4 comprehensive guides (2,505 lines) for Option A phases  
+**Files**: microcopy-approval-queue, -enhanced-modals, -notifications, -settings-onboarding  
+**Blockers**: None  
+**Next**: Standby for copy QA requests
+
+### 5. SEO (100% COMPLETE)
+**Status**: ✅ All tasks COMPLETE, 43/43 tests passing  
+**Accomplished**: SEO anomaly triage doc (528 lines), HITL workflows  
+**Blockers**: None  
+**Next**: Standby for Option A support
+
+### 6. Analytics (100% COMPLETE)
+**Status**: ✅ All v3.0 tasks COMPLETE  
+**Accomplished**: All previous deliverables verified, standby mode active  
+**Blockers**: None  
+**Next**: Ready to implement analytics APIs when Engineer requests
+
+### 7. AI-Knowledge (100% COMPLETE)
+**Status**: ✅ All v3.0 tasks COMPLETE  
+**Accomplished**: RAG system tested (6 docs, 17.7s), credentials verified  
+**Blockers**: None  
+**Next**: Standby for KB expansion
+
+### 8. Integrations (100% COMPLETE)
+**Status**: ✅ Issue #113 COMPLETE (15/15 molecules, 5/5 score)  
+**Accomplished**: Idea pool API + contract tests (13/13 passing)  
+**Blockers**: None  
+**Next**: Standby for Option A integration support
+
+### 9. Product (100% COMPLETE)
+**Status**: ✅ All v3.0 tasks COMPLETE  
+**Accomplished**: Updated launch checklist + stakeholder comms  
+**Blockers**: None  
+**Next**: Standby, monitor Option A progress
+
+---
+
+## AGENTS WITH BACKEND COMPLETE (Awaiting Engineer UI)
+
+### 10. AI-Customer (Backend COMPLETE)
+**Status**: ✅ Backend integration COMPLETE, awaiting Engineer ENG-005  
+**Accomplished**: Grading metadata backend (extracts/stores grades from FormData)  
+**Blockers**: None (just waiting)  
+**Next**: Support Engineer on ENG-005 (grading UI sliders)  
+**ETA**: After Engineer completes Phase 2
+
+---
+
+## BLOCKED AGENTS (Waiting for P0 Fix)
+
+### 11. Designer (73% BLOCKED)
+**Status**: ⚠️ 11/15 tasks BLOCKED by AppProvider error  
+**Accomplished**: 5/15 prep tasks COMPLETE (checklists, wireframes, analysis)  
+**Blockers**: AppProvider i18n error (P0)  
+**Blocked Tasks**: DES-002, DES-003 (interactive testing), plus 9 more pending implementation  
+**Next**: Resume DES-002 immediately after Engineer fixes AppProvider  
+**Compliance**: 3/10 (critical gaps prevent launch)
+
+### 12. Pilot (100% BLOCKED)
+**Status**: ⚠️ ALL interactive testing BLOCKED by AppProvider  
+**Accomplished**: PIL-002 complete (dashboard tile testing)  
+**Blockers**: AppProvider i18n error (P0)  
+**Recommendation**: **NO-GO** for launch  
+**Next**: Retest after AppProvider fix, complete PIL-003 (Approvals HITL flow)
+
+---
+
+## AGENTS WAITING FOR MANAGER ACTION
+
+### 13. Inventory (WAITING)
+**Status**: ⏳ Waiting for Manager to merge inventory/oct19-rop-fix-payouts-csv branch  
+**Accomplished**: All work complete on branch (8 tables with RLS)  
+**Blockers**: Manager git merge  
+**Next**: Post-merge verification (10 min), then standby
+
+### 14. DevOps (COORDINATION NEEDED)
+**Status**: ⏳ Migration verification complete, migration application needs coordination  
+**Accomplished**: Verified all 5 Data migrations (352 lines SQL)  
+**Blockers**: Migration history complexity (needs Data/Manager coordination)  
+**Next**: Await Manager decision on migration application approach
+
+---
+
+## ACTIVE WORK IN PROGRESS
+
+### 15. Engineer (CLAIMS COMPLETE - ACTUALLY NOT)
+**Status**: ⚠️ Claims Phase 1 COMPLETE, but AppProvider i18n NOT actually fixed  
+**Accomplished**: 
+- ✅ P0 /health route (verified Oct 19)
+- ✅ Navigation badge (verified Oct 20)
+- ❌ ENG-001 AppProvider i18n (claimed ✅ but error persists)
+**Blockers**: None (self-created - didn't test interactive components)  
+**Next**: REDO ENG-001 - actually add i18n prop, test with button click  
+**Direction Updated**: ✅ 09:23Z with explicit fix
+
+---
+
+## AGENTS WITHOUT OCT 20 FEEDBACK
+
+### 16. QA (No Oct 20 feedback)
+**Latest**: feedback/qa/2025-10-19.md  
+**Status**: Unknown for Oct 20  
+**Last Known**: Comprehensive testing complete, waiting for P0 fixes  
+**Next**: Need direction update
+
+---
+
+## SUMMARY STATISTICS
+
+**Complete & Ready**: 9 agents (Support, Data, Ads, Content, SEO, Analytics, AI-Knowledge, Integrations, Product)  
+**Backend Complete**: 1 agent (AI-Customer - waiting for Engineer UI)  
+**Blocked**: 2 agents (Designer 73%, Pilot 100% - both by AppProvider)  
+**Waiting Manager**: 2 agents (Inventory merge, DevOps migration coordination)  
+**Active Work**: 1 agent (Engineer - needs to redo ENG-001)  
+**No Feedback**: 1 agent (QA)
+
+**P0 Blockers**: 1 (AppProvider i18n - blocks 3 agents)
+
+---
+
+## CRITICAL PATH TO PRODUCTION
+
+### Immediate (0-2 hours)
+1. **Engineer**: Fix AppProvider i18n (15 min) → Unblocks Designer + Pilot
+2. **Manager**: Merge inventory branch (10 min) → Unblocks Inventory
+3. **Manager**: Coordinate Data migrations (20 min) → Enables Option A features
+4. **QA**: Test /health + AppProvider fix (30 min) → GO/NO-GO decision
+
+### Short-term (2-8 hours)
+5. **Engineer**: Complete Phases 2-4 (Enhanced modals, Missing tiles, Notifications)
+6. **Designer**: Validate Phases 1-4 (DES-002 to DES-006)
+7. **Pilot**: Complete PIL-003 (Approvals HITL flow testing)
+
+### Medium-term (1-3 days)
+8. **Engineer**: Complete Phases 5-11 (Personalization through Polish)
+9. **Designer**: Final validation + sign-off
+10. **QA**: Final GO/NO-GO for production
+
+
+## 2025-10-20T09:35:00Z — Manager: P0 Blockers Identified
+
+### Critical P0: AppProvider i18n (Launch Blocker)
+
+**Error**: MissingAppProviderError: No i18n was provided  
+**Owner**: Engineer (ENG-001 REDO - URGENT)  
+**Impact**: Blocks 3 agents (Designer 11/15 tasks, Pilot all testing, NO-GO)  
+**Status**: Engineer claimed ✅ but only verified, didn't fix  
+**Fix**: Add i18n prop to AppProvider  
+**ETA**: 15 minutes  
+**Action Taken**: Updated docs/directions/engineer.md (09:23Z) with exact fix
+
+### Manager Actions Required:
+
+**Git Operations** (20 min):
+1. Merge inventory/oct19-rop-fix-payouts-csv branch → Unblocks Inventory  
+2. Push all local commits → Sync with remote
+
+**Migration Coordination** (15 min):
+3. Coordinate Data migrations (5 new tables ready)  
+4. Work with DevOps on migration application
+
+### QA Gap:
+
+**Agent**: QA  
+**Issue**: No Oct 20 feedback found  
+**Last Feedback**: Oct 19 (CONDITIONAL GO, waiting for P0 fixes)  
+**Action Needed**: Update QA direction to retest /health + AppProvider
+
+---
+
+## Manager Immediate Tasks
+
+1. ✅ Updated Engineer direction (ENG-001 REDO with exact fix)
+2. 🔲 Merge inventory branch
+3. 🔲 Apply Data migrations  
+4. 🔲 Update all 16 direction files with aligned tasks
+5. 🔲 Fan out supportive work for standby agents

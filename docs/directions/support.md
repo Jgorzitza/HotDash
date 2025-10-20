@@ -2,101 +2,68 @@
 
 - **Owner:** Manager Agent
 - **Effective:** 2025-10-20
-- **Version:** 4.1
+- **Version:** 5.0
 
 ## Objective
 
-**Issue**: #74
-
-**P0 URGENT**: Fix CX Pulse Chatwoot error
-
-## CLARIFICATION: Chatwoot vs HotDash Databases
-
-**HotDash Database**: Supabase (aws-1-us-east-1.pooler.supabase.com) ✅ Working
-**Chatwoot Database**: Chatwoot's own PostgreSQL (18.213.155.45 - their managed service) ❌ Auth failing
-
-**The error is with Chatwoot's database, NOT HotDash's.**
+**Issue**: #74 ✅ COMPLETE  
+Chatwoot service restored, now monitor health
 
 ## Current Status
 
-**Error**: Chatwoot service (hotdash-chatwoot.fly.dev) cannot connect to ITS database
-**Impact**: CX Pulse tile shows "Unable to fetch Chatwoot conversations"
-**Service Status**: HTTP 503 for 11+ hours
+✅ P0 Chatwoot fix COMPLETE (Oct 20 09:30Z)
+- Created Fly Postgres: hotdash-chatwoot-db
+- Service UP and healthy (was down 11+ hours)
+- API token created: hotdash-api-token-2025
+- Staging app secrets updated
 
 ## Tasks
 
-### P0 (30 min) - Fix Chatwoot Fly App
+### IMMEDIATE (20 min) - Document New Setup
 
-1. **Check Chatwoot Fly Secrets**:
-   ```bash
-   fly secrets list -a hotdash-chatwoot
-   ```
-   Look for: DATABASE_URL, POSTGRES_PASSWORD, POSTGRES_URL
+**SUP-001**: Document Chatwoot Postgres Setup
+1. Create `docs/runbooks/chatwoot_postgres_setup.md`
+2. Document:
+   - Fly Postgres cluster: hotdash-chatwoot-db
+   - DATABASE_URL format
+   - Account setup (SQL commands used)
+   - API token creation
+   - Health check procedures
+3. Save to docs/runbooks/
 
-2. **Check Vault for Chatwoot DB Credentials**:
-   ```bash
-   ls vault/occ/chatwoot/
-   # OR
-   ls vault/
-   ```
-   Find Chatwoot database credentials if they exist
+**SUP-002**: Update Vault Documentation
+1. Document new credentials in vault/occ/chatwoot/
+2. Update vault/rotation_log.md with Postgres creation date
+3. Note: Old AWS RDS abandoned (inaccessible)
 
-3. **If credentials found**: Update Fly secrets
-   ```bash
-   fly secrets set DATABASE_URL="$(cat vault/occ/chatwoot/database_url.env)" -a hotdash-chatwoot
-   ```
+### THEN (15 min) - Health Monitoring
 
-4. **If credentials NOT in vault**: 
-   - Check if Chatwoot was set up with managed database (their cloud service)
-   - Check Chatwoot dashboard/admin for database connection string
-   - Escalate to CEO if you cannot find credentials
+**SUP-003**: Monitor Chatwoot Health
+1. Run daily health check: `npm run ops:check-chatwoot-health`
+2. Verify: /rails/health → 200 OK
+3. Verify: API conversations → valid JSON
+4. Report status in feedback
 
-5. **Restart Chatwoot**:
-   ```bash
-   fly machine restart <machine-id> -a hotdash-chatwoot
-   ```
+### STANDBY - Ready for Issues
 
-6. **Verify Fixed**:
-   ```bash
-   curl https://hotdash-chatwoot.fly.dev/rails/health
-   # Expected: 200 OK
-   ```
-
-7. **Test CX Pulse**: Verify tile loads in production app
-
-8. Write feedback to `feedback/support/2025-10-20.md`
-
-## YOU CAN FIX THIS
-
-**You have**:
-- ✅ Fly CLI access (fly secrets, fly machine commands)
-- ✅ Vault access (vault/ directory)
-- ✅ Ability to restart Chatwoot service
-
-**You do NOT need**:
-- ❌ AWS console access (Chatwoot manages their own database)
-- ❌ Direct PostgreSQL access (fix via Fly secrets)
-
-**The fix is**: Update DATABASE_URL in Fly secrets for hotdash-chatwoot app, then restart.
+- Monitor CX Pulse tile for errors
+- Respond to Chatwoot connectivity issues
+- Support AI-Customer with Chatwoot integration questions
 
 ## Constraints
 
-- **Allowed Tools:** bash, fly cli, curl
-- **Touched Directories:** `vault/**`, `docs/runbooks/**`, `feedback/support/**`
-- **Budget:** ≤ 30 min
+**Tools**: fly cli, curl, psql  
+**Budget**: ≤ 40 min total  
+**Paths**: docs/runbooks/**, vault/**, feedback/support/**
 
 ## Definition of Done
 
-- [ ] Chatwoot service healthy (rails/health → 200 OK)
-- [ ] CX Pulse tile loads data
+- [ ] Postgres setup documented
+- [ ] Vault updated  
+- [ ] Daily health monitoring established
 - [ ] Feedback logged
 
 ## Links
 
-- Runbook: `docs/runbooks/support_chatwoot_health.md`
-- Feedback: `feedback/support/2025-10-19.md`
-
-## Change Log
-
-- 2025-10-20: Version 4.1 – Clarified Chatwoot vs HotDash databases
-- 2025-10-20: Version 4.0 – P0 Chatwoot fix
+- Previous work: feedback/support/2025-10-20.md (P0 fix complete)
+- Chatwoot service: https://hotdash-chatwoot.fly.dev

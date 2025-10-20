@@ -1,26 +1,69 @@
 # AI-Customer Direction
-- **Owner:** Manager
+
+- **Owner:** Manager Agent
 - **Effective:** 2025-10-20
-- **Version:** 4.0
+- **Version:** 5.0
+
 ## Objective
-**Issue**: #120 | Backend complete ✅
+
+**Issue**: #120  
+Backend complete ✅ - support Engineer ENG-005
+
+## Current Status
+
+Backend integration ✅ complete (grading metadata extracts/stores from FormData)
+
 ## Tasks
-Support Engineer ENG-005 (grading UI sliders), then standby
 
-## ENG-005 Handoff Details (For Engineer)
+### SUPPORTIVE WORK (30 min) - Engineer ENG-005 Support
 
-**Your backend is READY** ✅ - You completed this Oct 19:
-- File: `app/routes/actions/chatwoot.escalate.ts`
-- Lines: 46-48 (grade variables), 66-72 (FormData extraction), 137-146 (decision log payload)
-- Backend extracts: `toneGrade`, `accuracyGrade`, `policyGrade` from FormData
-- Backend stores: `payload.grades = { tone, accuracy, policy }` in decision_log table
+**AI-CUST-001**: Engineer ENG-005 Support - Grading UI Sliders
+1. Monitor Engineer progress on ENG-005 (Enhanced CX Modal)
+2. Answer questions about backend integration:
+   - FormData fields: toneGrade, accuracyGrade, policyGrade
+   - Expected values: Numbers 1-5 (as strings)
+   - Storage: decision_log.payload.grades
+3. Review Engineer's implementation
+4. Test end-to-end after UI complete:
+   ```bash
+   # After Engineer completes ENG-005:
+   # 1. Open CX modal
+   # 2. Adjust sliders
+   # 3. Approve reply
+   # 4. Query: SELECT payload FROM decision_log WHERE action = 'chatwoot.approve_send' ORDER BY created_at DESC LIMIT 1;
+   # Expected: { ..., "grades": { "tone": 4, "accuracy": 5, "policy": 5 } }
+   ```
 
-**Engineer's Task** (ENG-005 in Phase 2):
-- File: `app/components/modals/CXEscalationModal.tsx`
-- Add 3 sliders: Tone (1-5), Accuracy (1-5), Policy (1-5)
-- Default: 3 for each
-- Submit: Include grades in FormData before sending to your action
+### THEN - Health Monitoring
 
-**You do NOT need to do anything else** - just wait for Engineer to add the UI. Your backend integration is complete.
+**AI-CUST-002**: Chatwoot Health Monitoring (ongoing)
+1. Run daily: `npm run ops:check-chatwoot-health`
+2. Verify: /rails/health → 200 OK
+3. Verify: API connectivity working
+4. Report: Any issues immediately
 
-**Status**: Standby until ENG-005 complete, then test end-to-end grading flow.
+## Work Complete
+
+✅ Chatwoot health scripts (505 lines)  
+✅ Integration documentation (550+ lines)  
+✅ Grading backend (13 lines in chatwoot.escalate.ts)  
+✅ All tests properly structured
+
+## Constraints
+
+**Tools**: npm, curl, psql  
+**Budget**: ≤ 1 hour  
+**Paths**: feedback/ai-customer/**
+
+## Links
+
+- Previous work: feedback/ai-customer/2025-10-20.md (backend complete)
+- Backend code: app/routes/actions/chatwoot.escalate.ts
+- Integration doc: docs/integrations/chatwoot.md
+- Health script: scripts/ops/check-chatwoot-health.mjs
+
+## Definition of Done
+
+- [ ] Engineer ENG-005 supported
+- [ ] End-to-end grading tested
+- [ ] Health monitoring active
