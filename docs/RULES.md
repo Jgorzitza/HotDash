@@ -297,6 +297,81 @@ test(agent-name): add tests
 **MUST NOT**:
 - ❌ Guess library behavior from training data (it's 6-12 months old)
 - ❌ Deploy without verifying against docs
+
+---
+
+## Growth Engine Rules (MANDATORY - Effective 2025-10-21)
+
+### Agent Evidence & Heartbeat (CI Merge Blockers)
+
+**MCP Evidence JSONL** (required for ALL code changes):
+- **Location**: `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl`
+- **Format**: `{"tool":"storefront|context7|…","doc_ref":"<url>","request_id":"<id>","timestamp":"ISO","purpose":"<why>"}`
+- **PR Template**: Must include "MCP Evidence:" section listing JSONL paths
+- **OR State**: "No MCP usage - non-code change" (for docs-only PRs)
+
+**Heartbeat** (required for tasks >2 hours):
+- **Location**: `artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson`
+- **Format**: JSON lines appended every 15min max
+- **PR Template**: Confirm heartbeat present OR task <2h (single session)
+- **Staleness Check**: CI fails if last heartbeat >15min old during 'doing' status
+
+**CI Guards** (REQUIRED on main):
+- **guard-mcp**: Verify MCP evidence JSONL files exist and are valid
+- **idle-guard**: Verify heartbeat not stale (if task >2h)
+- **dev-mcp-ban**: FAIL build if Dev MCP imports found in `app/` (production safety)
+
+**Enforcement**:
+- ✅ PR cannot merge without MCP Evidence OR "non-code change" statement
+- ✅ PR cannot merge if heartbeat stale (>15min) for long-running tasks
+- ✅ Production builds MUST FAIL if Dev MCP detected in runtime bundles
+
+### Dev MCP Ban (Production Safety)
+
+**Rule**: Dev MCP servers (Shopify Dev, Context7, Chrome DevTools, etc.) are for **development & staging ONLY**
+
+**Forbidden in Production**:
+- ❌ `import { ... } from '@shopify/mcp-server-dev'`
+- ❌ `import { ... } from 'context7-mcp'`
+- ❌ Any Dev MCP imports in `app/` directory (runtime code)
+
+**CI Check**:
+```bash
+# Fail if Dev MCP found in production code
+if grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
+  echo "❌ Dev MCP imports detected in production code"
+  exit 1
+fi
+```
+
+**Allowed**:
+- ✅ Dev MCP in `scripts/`, `tests/`, `.cursor/` (non-runtime)
+- ✅ Production MCP (Supabase, Fly.io, GitHub) in `app/` (if needed)
+
+### Store Switch Safety
+
+**Rule**: Canonical Shopify domain after cutover is `fm8vte-ex.myshopify.com`
+
+**Requirements**:
+- ✅ ALL Shopify URLs parameterized via `process.env.SHOPIFY_SHOP_DOMAIN`
+- ✅ OAuth redirects use env var (no literals)
+- ✅ Telemetry IDs (GA4, Bing) parameterized via env
+- ❌ NO hardcoded `*.myshopify.com` domains in code
+
+**Enforcement**: CI fails if hardcoded Shopify domains found in `app/`
+
+### Telemetry Configuration
+
+**GA4 Property**: 339826228  
+**Bing Webmaster**: Verified domain  
+**Search Console**: Direct API (no BigQuery) - stored in Supabase for historical trends
+
+**Action Attribution**:
+- **Custom Dimension**: `hd_action_key` (event scope)
+- **Format**: `{type}-{target_slug}-{YYYY-MM-DD}` (e.g., `seo-fix-powder-board-2025-10-21`)
+- **Tracking**: Client emits `hd_action_key` on page_view, add_to_cart, begin_checkout, purchase
+- **ROI Windows**: 7d, 14d, 28d after action approval
+- **Re-ranking**: Actions with proven ROI ranked higher in future Action Queue
 - ❌ Use patterns from memory
 - ❌ Skip tool calls to "save time" (costs more time in failed deploys)
 

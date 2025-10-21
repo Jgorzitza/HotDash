@@ -69,6 +69,74 @@
 
 ---
 
+## 4.1) Growth Engine — Agent Orchestration (NEW - Effective 2025-10-21)
+
+**Agent Architecture** (Interactive-Only):
+
+- **Front-End Agents** (2):
+  - **Customer-Front Agent**: First-line CX triage → transfers to sub-agents
+  - **CEO-Front Agent**: Business intelligence queries → read-only Storefront MCP + Action Queue
+
+- **Sub-Agents** (2) — Owned Requests:
+  - **Accounts Sub-Agent**: Order lookups, refunds, exchanges (Customer Accounts API - write access)
+  - **Storefront Sub-Agent**: Inventory queries, product details, collection lookups (Storefront API - read-only)
+
+- **Specialist Agents** (on schedules/events):
+  - **Analytics**: Trend detection, anomaly alerts, performance reports
+  - **Inventory**: ROP calculations, stock alerts, PO generation
+  - **Content/SEO/Perf**: SEO recommendations, content optimization, performance fixes
+  - **Risk**: Fraud detection, compliance monitoring, security alerts
+
+- **NO Background Agents**: All agents are interactive (invoked by front-end agents or operator), no autonomous polling loops
+
+**Handoff Pattern** (Tool-Based, One Owner):
+
+```
+Customer → Customer-Front (triage using context)
+         → Decision: transfer_to_accounts OR transfer_to_storefront
+         → Sub-agent OWNS request (executes Shopify GraphQL queries)
+         → Returns structured JSON (order details, inventory status, etc.)
+         → Front agent composes reply (PII Broker enforces redaction)
+         → Operator reviews (PII Card shows full details, public reply redacted)
+         → HITL approval → sent via Chatwoot API
+```
+
+**CEO Agent Pattern**:
+
+```
+CEO → CEO-Front (business question)
+    → Queries Action Queue + Storefront MCP (read-only)
+    → Returns: Revenue insights, inventory status, top actions
+    → NO writes, NO Customer Accounts API (evidence-only policy)
+    → Operator reviews answer → approved → displayed
+```
+
+**Security Model**:
+
+- **PII Broker** (redaction enforced at composition):
+  - **Public Reply**: NO full email/phone/address (masked: `j***@d***.com`, `***-***-1234`)
+  - **PII Card** (operator-only): Full details (order ID, tracking, shipping address, payment method)
+  - **Enforcement**: Front agents MUST call PII Broker before returning reply to operator
+  
+- **ABAC** (Attribute-Based Access Control):
+  - **Roles**: operator (full access), ceo_agent (read-only + Action Queue), customer_agent (write via Accounts sub-agent), system (cron jobs)
+  - **Scopes**: Accounts sub-agent (orders, refunds) | Storefront sub-agent (products, inventory, collections)
+  - **CEO Agent**: ONLY read-only Storefront + Action Queue (NO Customer Accounts, NO writes)
+
+- **No-Ask Execution** (within approved boundaries):
+  - Simple queries (order lookup, inventory check) → sub-agent executes → returns result (no approval needed)
+  - Write operations (refund, inventory adjustment, post) → HITL approval required
+  - Specialist agent recommendations → Action Queue → operator approval → execution
+
+**Agent Evidence** (CI Merge Blockers):
+
+- **MCP Evidence JSONL**: `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl` (required for code changes)
+- **Heartbeat**: `artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson` (required for tasks >2h, 15min max staleness)
+- **CI Guards**: `guard-mcp` + `idle-guard` + `dev-mcp-ban` (REQUIRED on main)
+- **PR Template**: Must include "MCP Evidence:" section + "Heartbeat:" section + "Dev MCP Check"
+
+---
+
 ## 5) Cadence (tight rhythm)
 
 **Daily (AM) — Manager Startup**

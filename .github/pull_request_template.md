@@ -1,6 +1,20 @@
 ## Summary
 <!-- What changed and why -->
 
+## MCP Evidence (required for code changes)
+<!-- List artifacts/<agent>/<YYYY-MM-DD>/mcp/*.jsonl files created during development -->
+- artifacts/<agent>/<date>/mcp/<topic_or_tool>.jsonl
+- (or state "No MCP usage - non-code change")
+
+## Heartbeat (if task >2 hours)
+<!-- Confirm heartbeat files were updated during 'doing' status -->
+- [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson
+- [ ] OR task completed in single session (<2 hours, no heartbeat required)
+
+## Dev MCP Check (CRITICAL - Production Safety)
+- [ ] No Dev MCP imports in runtime bundles (prod code only)
+- [ ] Verified: No `mcp.*dev` or `dev.*mcp` imports in app/ (searched with grep)
+
 ## Evidence (required)
 - [ ] Vitest report link
 - [ ] Playwright trace/report link
