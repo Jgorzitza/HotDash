@@ -1,4 +1,4 @@
-# Support Direction v5.2
+# Support Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,116 +9,56 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:11Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Chatwoot Enhancements + CX Metrics
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Chatwoot Advanced Features
 
 ---
 
-## Objective
-
-**Multi-channel testing + Routing rules + CX metrics dashboard + Help docs**
-
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# Chatwoot API
-web_search("Chatwoot API official documentation conversation routing")
-
-# TypeScript for services
-mcp_context7_get-library-docs("/microsoft/TypeScript", "async API integration error handling")
-```
+## ✅ SUPPORT-001 COMPLETE (2/3 channels)
+- ✅ Email channel fully tested (85 conversations)
+- ✅ Live chat widget verified
+- ❌ SMS blocked on Twilio credentials
+**Files**: 3 docs (1,500+ lines), 7 screenshots
 
 ---
 
-## ACTIVE TASKS (9h total)
+## ACTIVE TASKS (10h total)
 
-### SUPPORT-002: Multi-Channel Testing (2h) - START NOW
+### SUPPORT-002: Deploy Live Chat Widget to Staging (1h) - START NOW
+Deploy Chatwoot widget to staging site
+- Add widget code to app/root.tsx
+- Configure widget appearance (Hot Rod AN branding)
+- Test real-time messaging
+- Measure latency (<2s target)
+**MCP**: None (deployment), but verify with Fly MCP
 
-**Requirements**:
-- Test Email inbox (IMAP integration)
-- Test Live Chat widget on staging
-- Test SMS via Twilio (if configured)
-- Verify all channels create conversations
+### SUPPORT-003: Chatwoot Automation Rules (2h)
+Create automation rules
+- Auto-assign based on keywords
+- Auto-tag conversations (CX, inventory, orders)
+- Auto-reply after hours
+- Programmatic automation (sentiment, question classification)
+**MCP**: Web search Chatwoot automation API
 
-**Deliverables**:
-- Multi-channel test report in feedback
-- Screenshot evidence of each channel
-- Issues list (if any)
+### SUPPORT-004: Conversation Analytics Service (2h)
+Analyze Chatwoot conversations
+- Response time, resolution time, CSAT
+- Common issues identification
+- Peak hours analysis
+**MCP**: Web search Chatwoot API, TypeScript analytics
 
-**Time**: 2 hours
+### SUPPORT-005: Chatwoot Webhook Integration (2h)
+Webhook endpoints for Chatwoot events
+- message_created, conversation_resolved, conversation_opened
+- Signature verification (HMAC-SHA256)
+- Trigger automations, notify AI-Customer
+**MCP**: Web search Chatwoot webhooks, TypeScript HMAC
 
----
+### SUPPORT-006: Support Reporting Automation (2h)
+Daily/weekly support reports
 
-### SUPPORT-003: Conversation Routing Rules (2h)
+### SUPPORT-007: Testing + Documentation (3h)
+85+ integration tests, comprehensive docs
 
-**Requirements**:
-- Auto-assign conversations based on rules
-- Priority routing (urgent keywords)
-- Round-robin assignment
-- Escalation triggers
-
-**MCP Required**: web_search for Chatwoot routing API
-
-**File**: `app/services/chatwoot/routing.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### SUPPORT-004: CX Metrics Dashboard (2h)
-
-**Requirements**:
-- Track FRT (First Response Time)
-- Track Resolution Time
-- SLA compliance monitoring
-- Agent performance dashboard
-
-**File**: `app/routes/api.support.metrics.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### SUPPORT-005: Help Documentation (3h)
-
-**Requirements**:
-- Internal runbooks for CX team
-- How to use approval workflow
-- Grading guidelines
-- Escalation procedures
-
-**File**: `docs/runbooks/cx-team-guide.md` (new)
-
-**Time**: 3 hours
-
----
-
-## Work Protocol
-
-**MCP Tools**: web_search for Chatwoot, Context7 for TypeScript
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Support: Multi-Channel Testing
-
-**Working On**: SUPPORT-002 (Testing all channels)
-**Progress**: 60% - Email + Live Chat verified, SMS pending
-
-**Evidence**:
-- Email: 3 test messages received in Chatwoot inbox
-- Live Chat: Widget working on staging, conversation created
-- Screenshots: email-inbox.png, live-chat-test.png
-- Twilio SMS: Configuration needed (escalating to Manager)
-
-**Blockers**: SMS credentials needed (vault/occ/twilio/)
-**Next**: Complete SMS testing or skip if credentials unavailable
-```
-
----
-
-**START WITH**: SUPPORT-002 (Multi-channel testing) - START NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Add widget code to app/root.tsx, deploy, test

@@ -1,4 +1,4 @@
-# Product Direction v5.2
+# Product Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,99 +9,59 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:06Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 9+ Feature Planning
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — A/B Testing + Feature Management
 
 ---
 
-## Objective
-
-**Spec Phase 9 onboarding + Plan Phases 10-13 + A/B test design**
-
----
-
-## ACTIVE TASKS (9h total)
-
-### PRODUCT-005: Onboarding Flow Spec (3h) - START NOW
-
-**Requirements**:
-- Spec 4-step onboarding tour for Phase 9
-- Welcome screen + 4 feature highlights
-- Skip/complete tracking
-- User preferences integration
-
-**Deliverables**:
-**File**: `docs/specs/onboarding-flow-spec.md` (new)
-- User stories
-- Step-by-step flow
-- Data requirements
-- Success metrics
-
-**Time**: 3 hours
+## ✅ PRODUCT-005 THROUGH 008 COMPLETE
+- ✅ Onboarding spec, feature prioritization, A/B test designs, feedback analysis
+**Files**: 4 specs (2,730+ lines)
+**Efficiency**: 4h 45min vs 9h estimated
+**Key Finding**: CEO Agent priority #1 (saves 10-15h/week)
 
 ---
 
-### PRODUCT-006: Advanced Features Prioritization (2h)
+## ACTIVE TASKS (12h total)
 
-**Requirements**:
-- Review Phases 10-13 in PROJECT_PLAN
-- Prioritize based on impact/effort
-- Create feature roadmap
+### PRODUCT-009: A/B Testing Service Implementation (4h) - START NOW
+Implement A/B testing based on PRODUCT-007 spec
+- Variant assignment (randomized, consistent per user)
+- Event tracking (views, clicks, conversions)
+- Results calculation (CTR, conversion rate)
+- Statistical significance (Chi-square test)
+- 3 API routes (assign, track, results)
+**MCP**: Prisma transactions, TypeScript Chi-square
 
-**File**: `docs/specs/advanced-features-roadmap.md` (new)
+### PRODUCT-010: Feature Flag Management Service (2h)
+Manage feature flags (enable/disable features)
+- isFeatureEnabled() check
+- Gradual rollout (% of users)
+- User targeting
+- 3 API routes
+**MCP**: Prisma feature flags, TypeScript hashing
 
-**Time**: 2 hours
+### PRODUCT-011: Product Analytics Service (3h)
+Track product feature usage
+- Event tracking
+- Feature usage metrics
+- Top features identification
+- Unused features detection
+**MCP**: Prisma groupBy aggregations
 
----
+### PRODUCT-012: User Segmentation Service (2h)
+Segment users by behavior
+- 4 segment types (power, casual, new, churned)
+- Engagement scoring
+- Segment-specific recommendations
+**MCP**: Prisma user activity queries
 
-### PRODUCT-007: A/B Test Campaign Design (2h)
+### PRODUCT-013: Product Metrics Dashboard (1h)
+Aggregate product metrics
+- DAU/MAU calculation
+- Product health score (0-100)
 
-**Requirements**:
-- Design A/B tests for Settings page features
-- Test variations: Tile order defaults, theme defaults
-- Success metrics definition
+### PRODUCT-014: Documentation (included)
 
-**File**: `docs/specs/ab-test-campaigns.md` (new)
-
-**Time**: 2 hours
-
----
-
-### PRODUCT-008: User Feedback Analysis (2h)
-
-**Requirements**:
-- Review CEO feedback patterns
-- Identify common requests
-- Prioritize feature requests
-
-**File**: `artifacts/product/user-feedback-analysis-2025-10-21.md` (new)
-
-**Time**: 2 hours
-
----
-
-## Work Protocol
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Product: Onboarding Spec
-
-**Working On**: PRODUCT-005 (Onboarding flow specification)
-**Progress**: 60% - User stories complete, flow diagram in progress
-
-**Evidence**:
-- File: docs/specs/onboarding-flow-spec.md (124 lines)
-- User stories: 4 complete (welcome, dashboard tour, approvals, settings)
-- Flow diagram: Mermaid diagram showing 4-step progression
-- Data requirements: onboarding_progress table schema defined
-
-**Blockers**: None
-**Next**: Define success metrics, complete acceptance criteria
-```
-
----
-
-**START WITH**: PRODUCT-005 (Onboarding spec) - START NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Pull Prisma + TypeScript docs, implement A/B testing service

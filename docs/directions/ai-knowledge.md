@@ -1,4 +1,4 @@
-# AI-Knowledge Direction v5.2
+# AI-Knowledge Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,144 +9,58 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:10Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Knowledge Base + CEO Agent Backend
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — KB Optimization + CEO Integration
 
 ---
 
-## Objective
-
-**Build knowledge base with vector search + CEO agent backend with OpenAI SDK**
-
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# LlamaIndex for knowledge base
-mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "vector embeddings search indexing")
-
-# OpenAI Agents SDK
-mcp_context7_get-library-docs("/openai/openai-node", "agents SDK assistants")
-
-# Supabase vector storage
-mcp_context7_get-library-docs("/supabase/supabase", "vector embeddings pgvector")
-```
+## ✅ DAY 1 COMPLETE + DAY 2 IN PROGRESS
+- ✅ LlamaIndex setup, query engine functional, 6 docs indexed
+- ⏸️ Day 2 optimization ongoing
 
 ---
 
 ## ACTIVE TASKS (10h total)
 
-### AI-KNOWLEDGE-001: Knowledge Base Schema (3h) - START NOW
+### AI-KNOWLEDGE-010: Complete Query Engine Optimization (2h) - START NOW
+Finish Day 2 optimization
+- Chunk size testing (256, 512, 1024 tokens)
+- Similarity threshold tuning (0.5-0.8)
+- Implement reranking
+- Apply optimal configuration
+**MCP**: LlamaIndex reranking, similarity tuning
 
-**Requirements**:
-- Vector embeddings table in Supabase
-- Document storage with metadata
-- Search index configuration
-- Similarity search setup
+### AI-KNOWLEDGE-011: Expand Knowledge Base (3h)
+Add 50+ documents
+- Product docs, policies, procedures, FAQs
+- Process and chunk (512 tokens, 10% overlap)
+- Generate embeddings, store in Supabase
+**MCP**: LlamaIndex document ingestion, Supabase pgvector
 
-**MCP Required**: LlamaIndex + Supabase vector docs
+### AI-KNOWLEDGE-012: CEO Agent Query Function (1h)
+Export query function for CEO Agent
+- Support doc_type filters
+- Return answer + sources + confidence
+- Track query performance
 
-**Implementation**:
-**File**: `supabase/migrations/20251021000002_knowledge_base.sql` (new)
-```sql
--- Enable pgvector extension
-CREATE EXTENSION IF NOT EXISTS vector;
+### AI-KNOWLEDGE-013: KB Management API (2h)
+API to manage knowledge base
+- Add, update, delete documents
+- Automatic processing and indexing
+- Admin-only access
+**MCP**: LlamaIndex ingestion, React Router 7 file uploads
 
--- Knowledge base table
-CREATE TABLE knowledge_base (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  content TEXT NOT NULL,
-  embedding vector(1536),
-  metadata JSONB,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+### AI-KNOWLEDGE-014: KB Quality Metrics (1h)
+Measure KB quality
+- Coverage, accuracy, retrieval speed
+- KB health score (0-100)
 
--- Vector index for similarity search
-CREATE INDEX idx_knowledge_embedding ON knowledge_base 
-USING ivfflat (embedding vector_cosine_ops);
-```
+### AI-KNOWLEDGE-015: KB Maintenance (2h)
+Maintenance procedures
+- Document versioning, deduplication
+- Refresh embeddings
 
-**File**: `prisma/schema.prisma` (update)
-- Add KnowledgeBase model with @@schema("public")
+### AI-KNOWLEDGE-016: Documentation (included)
 
-**Time**: 3 hours
-
----
-
-### AI-KNOWLEDGE-002: CEO Agent Backend (3h)
-
-**Requirements**:
-- OpenAI Agents SDK integration
-- Thread management
-- Tool definitions (business.summary, knowledge.search)
-- HITL approval workflow
-
-**MCP Required**: OpenAI SDK agents documentation
-
-**Implementation**:
-**File**: `app/agents/ceo-agent.ts` (new)
-```typescript
-// OpenAI SDK agent setup
-// Thread management
-// Tool definitions
-// HITL integration
-```
-
-**Time**: 3 hours
-
----
-
-### AI-KNOWLEDGE-003: Business Summary Service (2h)
-
-**Requirements**:
-- Daily business summary generation
-- Revenue, orders, CX, inventory highlights
-- CEO-focused insights
-
-**File**: `app/services/knowledge/business-summary.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### AI-KNOWLEDGE-004: Insight Generation (2h)
-
-**Requirements**:
-- Pattern detection across metrics
-- Anomaly identification
-- Trend analysis
-
-**File**: `app/services/knowledge/insights.ts` (new)
-
-**Time**: 2 hours
-
----
-
-## Work Protocol
-
-**MCP Tools**: LlamaIndex, OpenAI SDK, Supabase vector docs
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — AI-Knowledge: Knowledge Base
-
-**Working On**: AI-KNOWLEDGE-001 (Vector DB schema)
-**Progress**: 70% - Migration created, testing embeddings
-
-**Evidence**:
-- Migration: supabase/migrations/20251021000002_knowledge_base.sql (67 lines)
-- MCP: LlamaIndex vector embeddings docs + Supabase pgvector
-- Test: Created 5 test documents, embeddings stored
-- Search: Similarity search working (0.92 similarity for related docs)
-
-**Blockers**: None
-**Next**: Complete index optimization, update Prisma schema
-```
-
----
-
-**START WITH**: AI-KNOWLEDGE-001 (Knowledge base) - Pull LlamaIndex + Supabase docs NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Pull LlamaIndex + Supabase docs, complete query optimization

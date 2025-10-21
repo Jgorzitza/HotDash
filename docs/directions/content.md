@@ -1,4 +1,4 @@
-# Content Direction v5.2
+# Content Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,103 +9,57 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:05Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 7-8 Content Creation + Review
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Phase 7-8 Content + Templates
 
 ---
 
-## Objective
-
-**Create content templates, guidelines, and microcopy for growth features**
-
----
-
-## ACTIVE TASKS (8h total)
-
-### CONTENT-005: Social Post Templates (2h) - START NOW
-
-**Requirements**:
-- 10+ social post templates
-- Hot Rodan brand voice (automotive, enthusiastic)
-- Platform-specific: LinkedIn, Twitter, Instagram
-- Variables for product names, stats
-
-**Deliverables**:
-**File**: `docs/specs/social-post-templates.md` (new)
-- Templates with examples
-- Brand voice guidelines
-- Do's and don'ts
-
-**Time**: 2 hours
+## ✅ CONTENT-004 THROUGH 008 COMPLETE
+- ✅ Phase 2 review (PRODUCTION-READY, "Pit stop complete!" approved)
+- ✅ Social/SEO/ads templates (2,521 lines)
+- ✅ Phase 6+ review validated
+**Files**: 3 guides + 2 validations, commit ac16c41
 
 ---
 
-### CONTENT-006: SEO Content Guidelines (2h)
+## ACTIVE TASKS (10h total)
 
-**Requirements**:
-- Keyword integration best practices
-- Content structure recommendations
-- Meta description templates
-- Title tag formulas
+### CONTENT-009: Analytics UI Microcopy Spec (3h) - START NOW
+Create microcopy for 4 analytics tiles + 4 modals
+- Tile titles, labels, buttons, tooltips
+- Chart labels and tooltips (Chart.js accessibility)
+- Empty states, error messages
+- Hot Rodan brand voice (strategic, not overused)
+**MCP**: Polaris EmptyState, Chart.js tooltip patterns
 
-**File**: `docs/specs/seo-content-guidelines.md` (new)
+### CONTENT-010: Email Templates for Reports & Alerts (2h)
+Create email templates
+- Weekly analytics report
+- Critical inventory alert
+- Ad performance alert
+- SEO update (weekly)
+- HTML + plain text versions
 
-**Time**: 2 hours
+### CONTENT-011: Help Documentation & Tooltips (2h)
+User help docs for all features
+- 6 help topics (dashboard, approvals, notifications, analytics, inventory, settings)
+- Tooltips for complex metrics (ROAS, CTR, ROP)
+- FAQ section (10+ questions)
 
----
+### CONTENT-012: Error Messaging Standards (1h)
+Standardized error messages
+- 3 severity levels (critical, warning, info)
+- Clear, actionable messages
+- Recovery steps
 
-### CONTENT-007: Ad Copy Best Practices (2h)
+### CONTENT-013: Conversion-Focused CTAs Library (2h)
+Library of CTA phrases
+- 6 categories with variants
+- A/B testing recommendations
+- Data-driven best practices
 
-**Requirements**:
-- Google Ads copy guidelines
-- Conversion-focused messaging
-- A/B test variations
-- Hot Rodan brand compliance
+### CONTENT-014: Phase 7-8 Analytics Review (2h reactive)
+Review Engineer's analytics UI implementation
 
-**File**: `docs/specs/ad-copy-best-practices.md` (new)
-
-**Time**: 2 hours
-
----
-
-### CONTENT-008: Microcopy Phase 6+ Review (2h)
-
-**Requirements**:
-- Review Settings page microcopy
-- Review Onboarding flow copy
-- Ensure Hot Rodan brand voice
-- Accessibility: Clear, concise labels
-
-**Deliverables**:
-- Updated microcopy spec
-- Recommendations for Engineer
-
-**Time**: 2 hours
-
----
-
-## Work Protocol
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Content: Social Templates
-
-**Working On**: CONTENT-005 (Social post templates)
-**Progress**: 80% - 12 templates created, brand voice applied
-
-**Evidence**:
-- File: docs/specs/social-post-templates.md (287 lines)
-- Templates: LinkedIn (4), Twitter (4), Instagram (4)
-- Brand voice: Hot Rodan automotive theme throughout
-- Examples: "Rev up your inventory management! 🏁"
-
-**Blockers**: None
-**Next**: Finalize guidelines, add do's and don'ts section
-```
-
----
-
-**START WITH**: CONTENT-005 (Social templates) - START NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Pull Polaris + Chart.js docs, create analytics microcopy spec

@@ -1,4 +1,4 @@
-# Ads Direction v5.2
+# Ads Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,125 +9,55 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:04Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 8 Google Ads Integration + HITL
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Google Ads Testing + Automation
 
 ---
 
-## Objective
-
-**Build Google Ads integration with HITL approval workflow for ad copy changes**
-
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# Google Ads API
-web_search("Google Ads API official documentation authentication Node.js")
-
-# TypeScript async patterns
-mcp_context7_get-library-docs("/microsoft/TypeScript", "async error handling retry logic")
-
-# React Router 7 API routes
-mcp_context7_get-library-docs("/websites/reactrouter", "API routes actions")
-```
+## ✅ ADS-001 THROUGH 004 COMPLETE
+- ✅ Google Ads client, performance metrics, budget alerts, HITL copy approval
+**Files**: 8 created (1,753 lines)
+**❌ BLOCKER**: Google Ads credentials missing from vault
 
 ---
 
 ## ACTIVE TASKS (10h total)
 
-### ADS-001: Google Ads API Integration (3h) - START NOW
+### ADS-005: Google Ads Credentials Setup + Testing (2h) - START NOW
+Obtain Google Ads API credentials and test integration
+- Check vault/occ/google/ for credentials
+- If missing: Request from Manager, document setup procedure
+- Create testing script (test all 6 functions)
+- Test OAuth authentication
+- Verify rate limiting
+**MCP**: Web search Google Ads API v16 2025 docs
+**Required Credentials**: CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN, DEVELOPER_TOKEN, CUSTOMER_IDS
 
-**Requirements**:
-- Authenticate with Google Ads API
-- Fetch campaign data (impressions, clicks, cost, conversions)
-- Daily refresh
-- Store in ad_campaigns, ad_performance tables
+### ADS-006: Campaign Automation Service (3h)
+Automate campaign management
+- Auto-pause low performers (CTR <1%, ROAS <1.0)
+- Auto-increase budgets for high performers (ROAS >3.0)
+- HITL approval for all automated actions
+- Keyword optimization (pause low CTR keywords)
+**MCP**: Web search Google Ads campaign management API
 
-**MCP Required**: web_search for Google Ads API docs
+### ADS-007: Ad Creative A/B Testing Service (2h)
+Manage A/B tests for ad creatives
+- Create test with 2-3 variants
+- Track performance per variant
+- Determine winner (Chi-square statistical test)
+- HITL approval to implement winner
+**MCP**: TypeScript Chi-square test
 
-**Implementation**:
+### ADS-008: Facebook Ads Integration (3h)
+Integrate Facebook Ads API
+- Campaign creation and management
+- Performance tracking (reach, engagement, conversions)
+- Integrate with Ads ROAS calculator
+**MCP**: Web search Facebook Ads API v18.0
 
-**File**: `app/services/ads/google-ads-client.ts` (new)
-```typescript
-// OAuth authentication
-// Campaign data fetch
-// Performance metrics
-// Error handling
-```
+### ADS-009: Ads Reporting Automation (included)
+Weekly ad performance reports (Google + Facebook)
 
-**Credentials**: `vault/occ/google/ads_credentials.json` (check first)
-
-**Time**: 3 hours
-
----
-
-### ADS-002: Ad Performance Dashboard (2h)
-
-**Requirements**:
-- Dashboard showing ROAS, CTR, conversions by campaign
-- Week-over-week comparisons
-- Best/worst performing campaigns
-
-**File**: `app/routes/api.ads.performance.ts` (new)
-**File**: `app/services/ads/performance-metrics.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### ADS-003: Budget Alert System (2h)
-
-**Requirements**:
-- Alert when campaign spend > 80% of budget
-- Daily budget tracking
-- Automatic pause if overspend
-
-**File**: `app/services/ads/budget-alerts.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### ADS-004: HITL Ad Copy Approval (3h)
-
-**Requirements**:
-- Draft ad copy changes → Approval queue
-- CEO approves → Publish to Google Ads
-- Track approval history
-
-**File**: `app/services/ads/copy-approval.ts` (new)
-**File**: `app/routes/api.ads.approve-copy.ts` (new)
-
-**Time**: 3 hours
-
----
-
-## Work Protocol
-
-**MCP Tools**: web_search for API docs, Context7 for TypeScript
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Ads: Google Ads Integration
-
-**Working On**: ADS-001 (Google Ads API client)
-**Progress**: 70% - Auth working, fetching campaigns
-
-**Evidence**:
-- File: app/services/ads/google-ads-client.ts (178 lines)
-- MCP: web_search for Google Ads API (official docs)
-- Auth: OAuth successful with test account
-- Test: Fetched 3 campaigns, 42 ad groups
-
-**Blockers**: None
-**Next**: Store performance metrics, complete error handling
-```
-
----
-
-**START WITH**: ADS-001 (Google Ads integration) - web_search NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Check vault for Google Ads credentials, create test script

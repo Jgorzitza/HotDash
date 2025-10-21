@@ -1,4 +1,4 @@
-# Integrations Direction v5.2
+# Integrations Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,147 +9,62 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:01Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 12 Publer Integration + API Rate Limiting
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Publer Backend Enhancement
 
 ---
 
-## Objective
-
-**Build Publer integration for HITL social posting + Rate limiting for all APIs**
-
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# Publer API documentation
-mcp_context7_resolve-library-id("Publer API")
-# If not in Context7, use web_search:
-web_search("Publer API official documentation authentication")
-
-# TypeScript async patterns
-mcp_context7_get-library-docs("/microsoft/TypeScript", "async await promises error handling")
-
-# React Router 7 API routes
-mcp_context7_get-library-docs("/websites/reactrouter", "API routes actions loaders")
-```
+## ✅ INTEGRATIONS-001 THROUGH 004 COMPLETE
+- ✅ Publer API Client (OAuth, retry logic, error handling)
+- ✅ Publer Adapter (HITL workflow)
+- ✅ Social Post Queue (priority queue, auto-retry)
+- ✅ API Rate Limiting (token bucket for all APIs)
+**Files**: 6 created (1,134 lines), commit f5f41b9
 
 ---
 
-## ACTIVE TASKS (9h total)
+## ACTIVE TASKS (10h total)
 
-### INTEGRATIONS-001: Publer API Client (3h) - START NOW
+### INTEGRATIONS-005: Publer API Testing with Real Credentials (2h) - START NOW
+Test Publer API client with real API token
+- Check vault for credentials (api_token.env, workspace_id.env)
+- Create testing script (test all 6 functions)
+- Test in draft mode (don't publish)
+- Document API responses
+**MCP**: Web search for Publer API latest docs
 
-**Requirements**:
-- OAuth authentication with Publer
-- Post scheduling API
-- Account info fetch
-- Error handling + retry logic
+### INTEGRATIONS-006: Publer Integration Tests (3h)
+Create comprehensive integration test suite
+- 45 tests (client, adapter, queue, rate limiter)
+- Mock Publer API responses
+- Test error handling, retry logic
+**MCP**: TypeScript Vitest patterns
 
-**MCP Required**: Pull Publer API docs OR web_search if not in Context7
+### INTEGRATIONS-007: Publer Webhook Support (2h)
+Add webhook endpoint for job status updates
+- Signature verification (HMAC-SHA256)
+- Update approval status when post published
+- Store final post URLs
+**MCP**: Web search Publer webhooks, TypeScript HMAC
 
-**Implementation**:
+### INTEGRATIONS-008: Shopify Inventory Sync (2h)
+Create service to sync inventory from Shopify
+- Shopify GraphQL query for inventory levels
+- Store in dashboard_fact table
+- Handle Shopify webhooks
+**MCP**: Shopify Dev MCP (GraphQL validation - MANDATORY)
 
-**File**: `app/services/publer/client.ts` (new)
-```typescript
-// OAuth flow
-// Post scheduling
-// Account management
-// Rate limiting
-```
+### INTEGRATIONS-009: Integration Health Monitoring (1h)
+Create health check for all integrations (Publer, Shopify, Chatwoot)
+- Check connectivity, latency
+- Alert on failures
 
-**File**: `app/services/publer/types.ts` (new)
-- Type definitions for Publer API responses
+### INTEGRATIONS-010: API Contract Testing (included in 006)
 
-**Credentials**: `vault/occ/publer/api_token.env` (check first)
+### INTEGRATIONS-011: Documentation (1h)
+Document all integrations for other agents
+- Publer integration guide (500+ lines)
+- Shopify inventory sync guide (300+ lines)
 
-**Deliverables**:
-- Publer client service
-- OAuth flow working
-- Test with real account
-- Error handling comprehensive
-
-**Time**: 3 hours
-
----
-
-### INTEGRATIONS-002: Publer Adapter (2h)
-
-**Requirements**:
-- HITL approval integration
-- Draft → Pending → Approved → Published flow
-- Store Publer receipt in social_posts table
-
-**Implementation**:
-
-**File**: `app/services/publer/adapter.ts` (new)
-- Convert approval to Publer post format
-- Handle scheduling
-- Store receipt
-
-**File**: `app/routes/api.social.publish.ts` (new)
-- POST endpoint for publishing approved posts
-- Validate approval exists
-- Call Publer API
-- Update social_posts.status
-
-**Time**: 2 hours
-
----
-
-### INTEGRATIONS-003: Social Post Queue (2h)
-
-**Requirements**:
-- Queue management for pending posts
-- Retry failed posts
-- Status tracking
-
-**File**: `app/services/social/queue.ts` (new)
-
-**Time**: 2 hours
-
----
-
-### INTEGRATIONS-004: API Rate Limiting (2h)
-
-**Requirements**:
-- Rate limiting for Shopify, Publer, Chatwoot APIs
-- Exponential backoff on 429 responses
-- Queue requests if rate limited
-
-**File**: `app/lib/rate-limiter.ts` (new)
-
-**MCP Required**: TypeScript async patterns
-
-**Time**: 2 hours
-
----
-
-## Work Protocol
-
-**MCP Tools**: Context7 for TypeScript, web_search for Publer API
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Integrations: Publer Client
-
-**Working On**: INTEGRATIONS-001 (Publer API Client)
-**Progress**: 60% - OAuth working, post scheduling testing
-
-**Evidence**:
-- File: app/services/publer/client.ts (187 lines)
-- MCP: web_search for Publer API docs (official site)
-- OAuth: Successfully authenticated with test account
-- Test post: Scheduled successfully to draft queue
-
-**Blockers**: None
-**Next**: Error handling, retry logic, type definitions
-```
-
----
-
-**START WITH**: INTEGRATIONS-001 (Publer client) - Pull docs/web_search NOW
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Check vault for Publer credentials, create test script

@@ -1,4 +1,4 @@
-# Pilot Direction v5.2
+# Pilot Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,134 +9,56 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:08Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 6 Smoke Testing + Mobile + Production Readiness
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Phase 3-8 Comprehensive Testing
 
 ---
 
-## Objective
+## ✅ PILOT-002 COMPLETE (2/3 modals)
+- ✅ CX + Sales modals PASSED
+- ❌ Inventory modal NOT FOUND (Engineer needs to implement trigger)
+- 🎉 Previous blocker RESOLVED (React errors no longer block modals)
 
-**Smoke test Phase 6 features + Mobile compatibility + Production readiness checklist**
-
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# Chrome DevTools for production testing
-# Use MCP Chrome DevTools for all testing (take snapshots)
-mcp_Chrome_DevTools_navigate_page("https://hotdash-staging.fly.dev")
-mcp_Chrome_DevTools_take_snapshot()
-```
+**Issues**: P1 (inventory modal), P2 (Escape key), React errors (low priority)
 
 ---
 
-## ACTIVE TASKS (8h total)
+## ACTIVE TASKS (12h total)
 
-### PILOT-004: Phase 6 Settings Smoke Tests (2h) - START NOW
+### PILOT-003: Test Phase 3 Tiles (2h) - START NOW
+Test 3 new tiles (Idea Pool, CEO Agent, Unread Messages)
+- Verify data loads, modals open, responsive
+**MCP**: Chrome DevTools MCP (snapshots, clicks, screenshots - MANDATORY)
 
-**Wait For**: Engineer Phase 6 complete
+### PILOT-004: Test Phase 4 Notification System (2h)
+Test toast, banner, browser notifications, notification center
+**MCP**: Chrome DevTools MCP (minimum 15 snapshots)
 
-**Requirements**:
-- Test Settings page on staging
-- Drag/drop tile reorder
-- Theme switching (Light/Dark/Auto)
-- Visibility toggles
-- All 4 settings tabs
+### PILOT-005: Test Phase 5 Real-Time Features (2h)
+Test SSE, live badge, connection indicator, tile refresh indicators
+**MCP**: Chrome DevTools MCP, network emulation
 
-**MCP Required**: Chrome DevTools MCP for testing evidence
+### PILOT-006: Test Phase 6 Settings Page (2h)
+Test all 4 tabs, drag & drop, theme selector, preferences
+**MCP**: Chrome DevTools MCP (minimum 20 interactions)
 
-**Test Checklist**:
-- [ ] Settings page loads at /settings
-- [ ] All 4 tabs render
-- [ ] Drag/drop tile reorder working
-- [ ] Theme switches apply immediately
-- [ ] Tile visibility toggles work
-- [ ] Preferences persist after refresh
-- [ ] No console errors
-- [ ] No broken links
+### PILOT-007: Test Phase 7-8 Analytics UI (2h reactive)
+Test 4 analytics tiles + modals with charts
+**MCP**: Chrome DevTools MCP (when Engineer completes)
 
-**Deliverables**:
-- Smoke test report in feedback with snapshots
-- Issues list (if any)
-- GO/NO-GO decision for Phase 6
+### PILOT-008: Comprehensive Browser Testing (2h)
+Test on Chrome, Firefox, Safari, Edge
+- Browser compatibility report
 
-**Time**: 2 hours (after Engineer complete)
+### PILOT-009: Mobile Device Testing (2h)
+Test on iOS + Android devices
+- Touch interactions, responsive layouts
 
----
+### PILOT-010: Automated E2E Test Suite (2h)
+Create Playwright E2E tests (10+ critical flows)
+**MCP**: Context7 Playwright
 
-### PILOT-005: Mobile Testing Safari/Chrome (2h)
+### PILOT-011: Documentation (included)
 
-**Requirements**:
-- Test on iOS Safari (real device)
-- Test on Android Chrome (real device)
-- Document mobile-specific issues
-
-**Test Areas**:
-- Touch drag/drop
-- Modal interactions
-- Form inputs
-- Theme switching
-- Notification toasts
-
-**MCP Required**: Chrome DevTools mobile emulation
-
-**Time**: 2 hours
-
----
-
-### PILOT-006: Edge Case Testing (2h)
-
-**Requirements**:
-- Test unusual scenarios
-- Drag tile to invalid position
-- Rapid theme switching
-- All tiles hidden (edge case)
-- Network interruption during save
-
-**Time**: 2 hours
-
----
-
-### PILOT-007: Production Readiness Checklist (2h)
-
-**Requirements**:
-- Comprehensive go/no-go checklist for Phase 6
-- Performance benchmarks
-- Security checks
-- Accessibility verification
-
-**File**: `docs/runbooks/phase-6-production-readiness.md` (new)
-
-**Time**: 2 hours
-
----
-
-## Work Protocol
-
-**MCP Tools**: Chrome DevTools MCP MANDATORY
-
-**Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Pilot: Phase 6 Smoke Tests
-
-**Working On**: PILOT-004 (Settings smoke tests)
-**Progress**: 60% - 3/4 tabs tested, drag/drop verified
-
-**Evidence**:
-- MCP Chrome DevTools: 4 snapshots captured
-- Settings page: /settings loads successfully
-- Drag/drop: Tested 5 tile reorders, all persisted correctly
-- Theme switch: Light→Dark→Auto all working
-- Issues found: 1 minor (mobile drag handle too small)
-
-**Blockers**: None
-**Next**: Test remaining tab, mobile testing
-```
-
----
-
-**START WITH**: PILOT-007 (Production readiness checklist) - Can start now while waiting for Engineer
-
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**START NOW**: Use Chrome DevTools MCP to access staging, test Phase 3 tiles
