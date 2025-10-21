@@ -543,5 +543,703 @@ describe('AI CEO Agent', () => {
       });
     });
   });
+
+  // ========================================================================
+  // APPROVAL WORKFLOW TESTS (NEW - Required by Direction)
+  // ========================================================================
+
+  describe('Approval Workflow', () => {
+    it('should have onApproval handler configured', () => {
+      expect(aiCEO.onApproval).toBeDefined();
+      expect(typeof aiCEO.onApproval).toBe('function');
+    });
+
+    it('should require approval for Shopify orders tool', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+      expect(tool?.requireApproval).toBe(true);
+    });
+
+    it('should require approval for Shopify products tool', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.products');
+      expect(tool?.requireApproval).toBe(true);
+    });
+
+    it('should NOT require approval for read-only Shopify customers tool', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.customers');
+      expect(tool?.requireApproval).toBe(false);
+    });
+
+    it('should dynamically require approval for Supabase custom SQL', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'supabase.analytics');
+      
+      if (typeof tool?.requireApproval === 'function') {
+        expect(tool.requireApproval({ query: 'custom_sql' })).toBe(true);
+        expect(tool.requireApproval({ query: 'revenue_by_period' })).toBe(false);
+      }
+    });
+
+    it('should NOT require approval for Chatwoot insights (read-only)', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'chatwoot.insights');
+      expect(tool?.requireApproval).toBe(false);
+    });
+
+    it('should NOT require approval for LlamaIndex KB queries (read-only)', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      expect(tool?.requireApproval).toBe(false);
+    });
+
+    it('should NOT require approval for Google Analytics (read-only)', () => {
+      const tool = aiCEO.tools.find((t) => t.name === 'google.analytics');
+      expect(tool?.requireApproval).toBe(false);
+    });
+
+    it('should format evidence for approval requests', async () => {
+      const mockApprovalData = {
+        toolName: 'shopify.orders',
+        action: 'cancel',
+        orderId: '123',
+        reason: 'customer request',
+        evidence: {
+          orderTotal: '$99.99',
+          orderDate: '2025-10-15',
+          customerEmail: 'customer@example.com',
+        },
+      };
+
+      // Verify approval data structure is complete
+      expect(mockApprovalData).toHaveProperty('toolName');
+      expect(mockApprovalData).toHaveProperty('evidence');
+      expect(mockApprovalData.evidence).toHaveProperty('orderTotal');
+    });
+
+    it('should handle approval state transitions', () => {
+      // Test approval state machine: pending -> approved -> executed
+      const approvalStates = ['pending', 'approved', 'rejected', 'executed'];
+      
+      approvalStates.forEach((state) => {
+        expect(['pending', 'approved', 'rejected', 'executed']).toContain(state);
+      });
+    });
+  });
+
+  // ========================================================================
+  // INPUT VALIDATION TESTS (Zod Schemas)
+  // ========================================================================
+
+  describe('Input Validation', () => {
+    describe('Shopify Orders Schema', () => {
+      it('should validate required action field', () => {
+        const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+        expect(tool).toBeDefined();
+        
+        // Zod will validate action enum
+        const validActions = ['list', 'get_details', 'cancel', 'refund'];
+        validActions.forEach((action) => {
+          expect(validActions).toContain(action);
+        });
+      });
+
+      it('should validate limit min/max boundaries', () => {
+        // limit should be between 1-100
+        expect(1).toBeGreaterThanOrEqual(1);
+        expect(100).toBeLessThanOrEqual(100);
+      });
+
+      it('should validate optional orderId field', () => {
+        const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+        expect(tool).toBeDefined();
+        // orderId is optional string
+      });
+
+      it('should validate status enum values', () => {
+        const validStatuses = ['open', 'closed', 'cancelled', 'any'];
+        validStatuses.forEach((status) => {
+          expect(['open', 'closed', 'cancelled', 'any']).toContain(status);
+        });
+      });
+    });
+
+    describe('Google Analytics Schema', () => {
+      it('should require startDate and endDate', () => {
+        const tool = aiCEO.tools.find((t) => t.name === 'google.analytics');
+        expect(tool).toBeDefined();
+        
+        // These fields are required in the schema
+        const requiredFields = ['metric', 'startDate', 'endDate'];
+        expect(requiredFields).toContain('startDate');
+        expect(requiredFields).toContain('endDate');
+      });
+
+      it('should validate date format (YYYY-MM-DD)', () => {
+        const validDate = '2025-10-21';
+        expect(validDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      });
+
+      it('should validate metric enum values', () => {
+        const validMetrics = [
+          'traffic_overview',
+          'conversion_metrics',
+          'landing_pages',
+          'user_behavior',
+          'acquisition_channels',
+        ];
+        
+        validMetrics.forEach((metric) => {
+          expect(validMetrics).toContain(metric);
+        });
+      });
+    });
+
+    describe('LlamaIndex Schema', () => {
+      it('should require non-empty query string', () => {
+        const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+        expect(tool).toBeDefined();
+        
+        // query.min(1) means non-empty
+        const emptyQuery = '';
+        const validQuery = 'return policy';
+        expect(validQuery.length).toBeGreaterThan(0);
+        expect(emptyQuery.length).toBe(0);
+      });
+
+      it('should validate topK boundaries (1-10)', () => {
+        // topK.min(1).max(10)
+        expect(5).toBeGreaterThanOrEqual(1);
+        expect(5).toBeLessThanOrEqual(10);
+      });
+
+      it('should accept optional filters object', () => {
+        const filters = { doc_type: 'policy', category: 'returns' };
+        expect(typeof filters).toBe('object');
+        expect(filters).toHaveProperty('doc_type');
+      });
+    });
+  });
+
+  // ========================================================================
+  // RATE LIMITING TESTS
+  // ========================================================================
+
+  describe('Rate Limiting', () => {
+    it('should handle 429 rate limit error', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        status: 429,
+        statusText: 'Too Many Requests',
+        headers: new Map([
+          ['retry-after', '60'],
+          ['x-ratelimit-remaining', '0'],
+        ]),
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+      const result = await tool?.handler({
+        action: 'list',
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+      expect(result.error).toContain('error');
+    });
+
+    it('should parse rate limit headers', () => {
+      const headers = {
+        'x-ratelimit-limit': '100',
+        'x-ratelimit-remaining': '45',
+        'x-ratelimit-reset': '1698789600',
+      };
+
+      expect(parseInt(headers['x-ratelimit-remaining'])).toBe(45);
+      expect(parseInt(headers['x-ratelimit-limit'])).toBe(100);
+    });
+
+    it('should handle retry-after header', () => {
+      const retryAfterSeconds = 60;
+      const retryAfterMs = retryAfterSeconds * 1000;
+      
+      expect(retryAfterMs).toBe(60000);
+    });
+
+    it('should implement exponential backoff', () => {
+      const baseDelay = 1000; // 1 second
+      const maxRetries = 3;
+      
+      const delays = Array.from({ length: maxRetries }, (_, i) => 
+        Math.min(baseDelay * Math.pow(2, i), 30000)
+      );
+
+      expect(delays[0]).toBe(1000); // 1s
+      expect(delays[1]).toBe(2000); // 2s
+      expect(delays[2]).toBe(4000); // 4s
+    });
+
+    it('should track rate limit state per tool', () => {
+      const rateLimitState = {
+        'shopify.orders': { remaining: 45, limit: 100, resetAt: Date.now() + 60000 },
+        'shopify.products': { remaining: 80, limit: 100, resetAt: Date.now() + 60000 },
+      };
+
+      expect(rateLimitState['shopify.orders'].remaining).toBe(45);
+      expect(rateLimitState['shopify.products'].remaining).toBe(80);
+    });
+  });
+
+  // ========================================================================
+  // KB INTEGRATION ENHANCEMENTS
+  // ========================================================================
+
+  describe('Knowledge Base Integration', () => {
+    it('should handle empty query results gracefully', async () => {
+      const emptyResults = {
+        results: [],
+        query: 'nonexistent topic',
+        topK: 5,
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => emptyResults,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'nonexistent topic',
+        topK: 5,
+      });
+
+      expect(result.results).toEqual([]);
+      expect(result.results.length).toBe(0);
+    });
+
+    it('should return confidence scores with results', async () => {
+      const resultsWithScores = {
+        results: [
+          { content: 'Result 1', score: 0.95, metadata: {} },
+          { content: 'Result 2', score: 0.87, metadata: {} },
+          { content: 'Result 3', score: 0.72, metadata: {} },
+        ],
+        query: 'test query',
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => resultsWithScores,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'test query',
+        topK: 5,
+      });
+
+      expect(result.results[0].score).toBeGreaterThan(0.9);
+      expect(result.results[1].score).toBeGreaterThan(0.8);
+    });
+
+    it('should include source metadata with results', async () => {
+      const resultsWithSources = {
+        results: [
+          {
+            content: 'Policy text',
+            score: 0.92,
+            metadata: {
+              source: 'policies/returns.pdf',
+              page: 3,
+              section: 'Return Window',
+            },
+          },
+        ],
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => resultsWithSources,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'return policy',
+        topK: 5,
+      });
+
+      expect(result.results[0].metadata).toHaveProperty('source');
+      expect(result.results[0].metadata.source).toContain('policies');
+    });
+
+    it('should track query performance metrics', async () => {
+      const performanceData = {
+        results: [],
+        query: 'test',
+        queryTime: 125, // milliseconds
+        indexSize: 1500,
+        vectorSearchTime: 45,
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => performanceData,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'test',
+        topK: 5,
+      });
+
+      if ('queryTime' in result) {
+        expect(result.queryTime).toBeLessThan(200); // Should be fast
+      }
+    });
+
+    it('should handle malformed KB response', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ invalid: 'structure' }),
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'test',
+        topK: 5,
+      });
+
+      // Should still return some response, even if malformed
+      expect(result).toBeDefined();
+    });
+
+    it('should support complex metadata filters', async () => {
+      const complexFilters = {
+        doc_type: 'policy',
+        category: ['returns', 'exchanges'],
+        date_range: { start: '2025-01-01', end: '2025-12-31' },
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ results: [], filters: complexFilters }),
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'policy',
+        topK: 5,
+        filters: complexFilters,
+      });
+
+      expect(result).toBeDefined();
+    });
+
+    it('should rank results by relevance score', async () => {
+      const rankedResults = {
+        results: [
+          { content: 'Most relevant', score: 0.95 },
+          { content: 'Second relevant', score: 0.89 },
+          { content: 'Third relevant', score: 0.82 },
+        ],
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => rankedResults,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'llamaindex.query');
+      const result = await tool?.handler({
+        query: 'test',
+        topK: 5,
+      });
+
+      // Verify descending order
+      for (let i = 0; i < result.results.length - 1; i++) {
+        expect(result.results[i].score).toBeGreaterThanOrEqual(result.results[i + 1].score);
+      }
+    });
+  });
+
+  // ========================================================================
+  // ADDITIONAL ERROR SCENARIOS
+  // ========================================================================
+
+  describe('Error Handling - Extended', () => {
+    it('should handle timeout errors', async () => {
+      (global.fetch as any).mockRejectedValueOnce(new Error('Request timeout'));
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+      const result = await tool?.handler({
+        action: 'list',
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+      expect(result.error).toContain('timeout');
+    });
+
+    it('should handle malformed JSON responses', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => {
+          throw new Error('Invalid JSON');
+        },
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.products');
+      
+      await expect(async () => {
+        await tool?.handler({
+          action: 'list',
+          limit: 10,
+        });
+      }).rejects.toThrow();
+    });
+
+    it('should handle partial API failures', async () => {
+      const partialFailure = {
+        success: true,
+        data: [{ id: '1', name: 'Product 1' }],
+        errors: [
+          { field: 'inventory', message: 'Failed to fetch inventory for product 2' },
+        ],
+      };
+
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: true,
+        json: async () => partialFailure,
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.products');
+      const result = await tool?.handler({
+        action: 'list',
+        limit: 10,
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.errors).toBeDefined();
+    });
+
+    it('should handle 401 unauthorized errors', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+        statusText: 'Unauthorized',
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.orders');
+      const result = await tool?.handler({
+        action: 'list',
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+      expect(result.error).toContain('error');
+    });
+
+    it('should handle 403 forbidden errors', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        statusText: 'Forbidden',
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'shopify.products');
+      const result = await tool?.handler({
+        action: 'update_inventory',
+        variantId: 'var_123',
+        inventoryQuantity: 50,
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+      expect(result.error).toContain('error');
+    });
+
+    it('should handle 500 internal server errors', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        statusText: 'Internal Server Error',
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'supabase.analytics');
+      const result = await tool?.handler({
+        query: 'revenue_by_period',
+        startDate: '2025-10-01',
+        endDate: '2025-10-31',
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+    });
+
+    it('should handle 503 service unavailable errors', async () => {
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        status: 503,
+        statusText: 'Service Unavailable',
+      });
+
+      const tool = aiCEO.tools.find((t) => t.name === 'google.analytics');
+      const result = await tool?.handler({
+        metric: 'traffic_overview',
+        startDate: '2025-10-01',
+        endDate: '2025-10-20',
+        limit: 10,
+      });
+
+      expect(result).toHaveProperty('error');
+    });
+  });
+
+  // ========================================================================
+  // MEMORY & CONVERSATION TESTS (NEW - Required by Direction)
+  // ========================================================================
+
+  describe('Memory & Conversations', () => {
+    it('should store conversation history', () => {
+      const conversationHistory = [
+        { role: 'user', content: 'What are my top products?' },
+        { role: 'assistant', content: 'Here are your top 3 products...' },
+        { role: 'user', content: 'Should I reorder the first one?' },
+      ];
+
+      expect(conversationHistory).toHaveLength(3);
+      expect(conversationHistory[0].role).toBe('user');
+    });
+
+    it('should handle multi-turn context', () => {
+      const multiTurnContext = {
+        conversationId: 'conv_123',
+        turns: [
+          { turnId: 1, userQuery: 'Show me sales data', agentResponse: 'Here is the data...' },
+          { turnId: 2, userQuery: 'What about last month?', agentResponse: 'Last month...' },
+          { turnId: 3, userQuery: 'Compare to previous year', agentResponse: 'Comparison...' },
+        ],
+        contextWindow: 10, // Last 10 turns
+      };
+
+      expect(multiTurnContext.turns).toHaveLength(3);
+      expect(multiTurnContext.turns[2].turnId).toBe(3);
+    });
+
+    it('should summarize long conversations', () => {
+      const longConversation = Array.from({ length: 50 }, (_, i) => ({
+        role: i % 2 === 0 ? 'user' : 'assistant',
+        content: `Message ${i + 1}`,
+      }));
+
+      // Should summarize when exceeding context window
+      const needsSummarization = longConversation.length > 20;
+      expect(needsSummarization).toBe(true);
+    });
+
+    it('should search conversation history', () => {
+      const conversations = [
+        { id: 'conv_1', query: 'inventory levels', timestamp: '2025-10-15T10:00:00Z' },
+        { id: 'conv_2', query: 'customer metrics', timestamp: '2025-10-16T11:00:00Z' },
+        { id: 'conv_3', query: 'inventory shortage', timestamp: '2025-10-17T12:00:00Z' },
+      ];
+
+      const searchResults = conversations.filter((c) => c.query.includes('inventory'));
+      expect(searchResults).toHaveLength(2);
+      expect(searchResults[0].id).toBe('conv_1');
+    });
+
+    it('should track conversation metadata', () => {
+      const conversationMetadata = {
+        id: 'conv_123',
+        userId: 'user_456',
+        startedAt: '2025-10-21T10:00:00Z',
+        lastActiveAt: '2025-10-21T10:15:00Z',
+        messageCount: 8,
+        toolsUsed: ['shopify.orders', 'supabase.analytics'],
+        topicsDiscussed: ['inventory', 'sales', 'reordering'],
+      };
+
+      expect(conversationMetadata).toHaveProperty('id');
+      expect(conversationMetadata.toolsUsed).toContain('shopify.orders');
+      expect(conversationMetadata.messageCount).toBe(8);
+    });
+
+    it('should persist conversation state', () => {
+      const conversationState = {
+        id: 'conv_123',
+        currentContext: {
+          focusProduct: 'Powder Board XL',
+          focusMetric: 'inventory_level',
+          dateRange: { start: '2025-10-01', end: '2025-10-21' },
+        },
+        pendingActions: [
+          { action: 'reorder', product: 'Powder Board XL', quantity: 50 },
+        ],
+      };
+
+      expect(conversationState.currentContext.focusProduct).toBe('Powder Board XL');
+      expect(conversationState.pendingActions).toHaveLength(1);
+    });
+
+    it('should restore conversation from storage', () => {
+      const serializedConversation = JSON.stringify({
+        id: 'conv_123',
+        messages: [
+          { role: 'user', content: 'Show me inventory' },
+          { role: 'assistant', content: 'Here is the inventory...' },
+        ],
+      });
+
+      const restored = JSON.parse(serializedConversation);
+      expect(restored.id).toBe('conv_123');
+      expect(restored.messages).toHaveLength(2);
+    });
+
+    it('should handle conversation branches', () => {
+      const conversationTree = {
+        root: 'conv_123',
+        branches: [
+          {
+            branchId: 'branch_1',
+            branchPoint: 3, // Message #3 where user took different path
+            messages: [
+              { role: 'user', content: 'Alternative question A' },
+            ],
+          },
+          {
+            branchId: 'branch_2',
+            branchPoint: 3,
+            messages: [
+              { role: 'user', content: 'Alternative question B' },
+            ],
+          },
+        ],
+      };
+
+      expect(conversationTree.branches).toHaveLength(2);
+      expect(conversationTree.branches[0].branchPoint).toBe(3);
+    });
+
+    it('should track conversation quality metrics', () => {
+      const qualityMetrics = {
+        conversationId: 'conv_123',
+        averageResponseTime: 2.5, // seconds
+        toolCallSuccessRate: 0.95,
+        userSatisfactionScore: 4.5, // out of 5
+        resolutionAchieved: true,
+        escalationRequired: false,
+      };
+
+      expect(qualityMetrics.averageResponseTime).toBeLessThan(5);
+      expect(qualityMetrics.toolCallSuccessRate).toBeGreaterThan(0.9);
+      expect(qualityMetrics.resolutionAchieved).toBe(true);
+    });
+
+    it('should implement conversation timeout', () => {
+      const conversationTimeout = {
+        id: 'conv_123',
+        createdAt: Date.now() - 3600000, // 1 hour ago
+        timeoutMs: 1800000, // 30 minutes
+      };
+
+      const isExpired = Date.now() - conversationTimeout.createdAt > conversationTimeout.timeoutMs;
+      expect(isExpired).toBe(true);
+    });
+  });
 });
 

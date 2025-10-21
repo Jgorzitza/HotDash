@@ -591,3 +591,149 @@ model CeoBriefing {
   @@map("ceo_briefings")
   @@schema("public")
 }
+
+model Vendor {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  contactName       String?  @map("contact_name")
+  contactEmail      String?  @map("contact_email")
+  contactPhone      String?  @map("contact_phone")
+  paymentTerms      String?  @map("payment_terms")
+  leadTimeDays      Int      @default(14) @map("lead_time_days")
+  shipMethod        String?  @map("ship_method")
+  dropShip          Boolean  @default(false) @map("drop_ship")
+  currency          String   @default("USD")
+  reliabilityScore  Decimal? @map("reliability_score") @db.Decimal(5, 2)
+  totalOrders       Int?     @default(0) @map("total_orders")
+  onTimeDeliveries  Int?     @default(0) @map("on_time_deliveries")
+  lateDeliveries    Int?     @default(0) @map("late_deliveries")
+  isActive          Boolean  @default(true) @map("is_active")
+  notes             String?
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  productMappings VendorProductMapping[]
+
+  @@map("vendors")
+  @@schema("public")
+}
+
+model VendorProductMapping {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  vendorId           String   @map("vendor_id") @db.Uuid
+  productId          String   @map("product_id")
+  variantId          String   @map("variant_id")
+  vendorSku          String   @map("vendor_sku")
+  vendorProductName  String?  @map("vendor_product_name")
+  costPerUnit        Decimal  @map("cost_per_unit") @db.Decimal(10, 2)
+  minimumOrderQty    Int?     @default(1) @map("minimum_order_qty")
+  isPreferred        Boolean  @default(false) @map("is_preferred")
+  lastOrderedAt      DateTime? @map("last_ordered_at") @db.Timestamptz(6)
+  notes              String?
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, variantId])
+  @@map("vendor_product_mappings")
+  @@schema("public")
+}
+
+model PurchaseOrder {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  poNumber             String   @unique @map("po_number")
+  vendorId             String   @map("vendor_id") @db.Uuid
+  orderDate            DateTime @default(now()) @map("order_date") @db.Date
+  expectedDeliveryDate DateTime @map("expected_delivery_date") @db.Date
+  actualDeliveryDate   DateTime? @map("actual_delivery_date") @db.Date
+  status               String   @default("pending")
+  subtotal             Decimal? @db.Decimal(10, 2)
+  freightCost          Decimal? @map("freight_cost") @db.Decimal(10, 2)
+  dutyCost             Decimal? @map("duty_cost") @db.Decimal(10, 2)
+  totalCost            Decimal? @map("total_cost") @db.Decimal(10, 2)
+  onTime               Boolean? @map("on_time")
+  daysLate             Int?     @map("days_late")
+  notes                String?
+  createdBy            String?  @map("created_by")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  lineItems PurchaseOrderLineItem[]
+  receipts  PurchaseOrderReceipt[]
+
+  @@index([vendorId])
+  @@index([status])
+  @@index([orderDate(sort: Desc), expectedDeliveryDate(sort: Asc)])
+  @@map("purchase_orders")
+  @@schema("public")
+}
+
+model PurchaseOrderLineItem {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  poId          String   @map("po_id") @db.Uuid
+  variantId     String   @map("variant_id")
+  vendorSku     String   @map("vendor_sku")
+  productName   String   @map("product_name")
+  orderedQty    Int      @map("ordered_qty")
+  receivedQty   Int      @default(0) @map("received_qty")
+  costPerUnit   Decimal  @map("cost_per_unit") @db.Decimal(10, 2)
+  weightPerUnit Decimal? @map("weight_per_unit") @db.Decimal(10, 4)
+  lineTotal     Decimal? @map("line_total") @db.Decimal(10, 2)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  purchaseOrder PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  receipts      PurchaseOrderReceipt[]
+
+  @@index([poId])
+  @@index([variantId])
+  @@map("purchase_order_line_items")
+  @@schema("public")
+}
+
+model PurchaseOrderReceipt {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  poId                  String   @map("po_id") @db.Uuid
+  poLineItemId          String   @map("po_line_item_id") @db.Uuid
+  receiptDate           DateTime @default(now()) @map("receipt_date") @db.Date
+  qtyReceived           Int      @map("qty_received")
+  vendorInvoiceAmount   Decimal  @map("vendor_invoice_amount") @db.Decimal(10, 2)
+  allocatedFreight      Decimal  @default(0) @map("allocated_freight") @db.Decimal(10, 2)
+  allocatedDuty         Decimal  @default(0) @map("allocated_duty") @db.Decimal(10, 2)
+  totalReceiptCost      Decimal  @map("total_receipt_cost") @db.Decimal(10, 2)
+  costPerUnit           Decimal  @map("cost_per_unit") @db.Decimal(10, 2)
+  receivedBy            String?  @map("received_by")
+  notes                 String?
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  purchaseOrder PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+  lineItem      PurchaseOrderLineItem @relation(fields: [poLineItemId], references: [id], onDelete: Cascade)
+  costHistory   ProductCostHistory[]
+
+  @@index([poId])
+  @@index([poLineItemId])
+  @@index([receiptDate(sort: Desc)])
+  @@map("purchase_order_receipts")
+  @@schema("public")
+}
+
+model ProductCostHistory {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  variantId           String   @map("variant_id")
+  previousAlc         Decimal? @map("previous_alc") @db.Decimal(10, 2)
+  newAlc              Decimal  @map("new_alc") @db.Decimal(10, 2)
+  previousOnHand      Int?     @map("previous_on_hand")
+  newOnHand           Int      @map("new_on_hand")
+  receiptId           String?  @map("receipt_id") @db.Uuid
+  receiptQty          Int      @map("receipt_qty")
+  receiptCostPerUnit  Decimal  @map("receipt_cost_per_unit") @db.Decimal(10, 2)
+  recordedAt          DateTime @default(now()) @map("recorded_at") @db.Timestamptz(6)
+
+  receipt PurchaseOrderReceipt? @relation(fields: [receiptId], references: [id])
+
+  @@index([variantId, recordedAt(sort: Desc)])
+  @@index([receiptId])
+  @@map("product_cost_history")
+  @@schema("public")
+}
