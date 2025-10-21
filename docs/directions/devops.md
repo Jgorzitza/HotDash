@@ -1,4 +1,4 @@
-# DevOps Direction v5.2
+# DevOps Direction v5.3
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,72 +9,63 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:00Z  
-**Version**: 5.2  
-**Status**: ACTIVE — CI/CD Enhancements + Monitoring
+**Effective**: 2025-10-21T04:50Z  
+**Version**: 5.3  
+**Status**: ACTIVE — **P0 DEPLOY v73 NOW** (fix applied)
 
 ---
 
-## Objective
+## 🚨 P0 CRITICAL - DEPLOY v73 NOW (15 min)
 
-**Improve deployment automation, monitoring, and rollback procedures**
+### DEVOPS-001: Deploy v73 with Search Console Fix - **URGENT**
 
----
-
-## MANDATORY MCP USAGE
-
-```bash
-# Fly.io deployment patterns
-# Use mcp_fly MCP tools for all Fly operations
-
-# GitHub Actions workflow patterns
-mcp_context7_resolve-library-id("GitHub Actions")
-mcp_context7_get-library-docs("/actions/actions", "workflow deployment")
-```
-
----
-
-## ACTIVE TASKS (9h total)
-
-### DEVOPS-001: P0 DEPLOY PHASE 2-5 CODE TO STAGING (1h) - **URGENT START NOW**
-
-**BLOCKER**: Staging is on v71 (Oct 20 23:13 UTC) - Engineer's Phase 2-5 code NOT deployed
+**Context**: Manager fixed SEO import error (commit 2b3513a). v72 was crashing, v73 should work.
 
 **Requirements**:
-- Deploy latest code from manager-reopen-20251020 branch
-- Verify grading UI loads (CX Escalation Modal with sliders)
-- Verify Phases 3-5 features (tiles, notifications, real-time)
-- Run health checks post-deploy
-
-**MCP Required**: Use Fly MCP tools for deployment
+- Pull latest code with fix
+- Deploy v73 to staging
+- Verify app starts successfully (not crashing)
+- Test grading UI loads
 
 **Commands**:
 ```bash
 cd ~/HotDash/hot-dash
-git pull origin manager-reopen-20251020  # Get latest
+git pull origin manager-reopen-20251020  # Gets commit 2b3513a with fix
 fly deploy --app hotdash-staging --remote-only
-fly logs --app hotdash-staging (check for errors)
-curl https://hotdash-staging.fly.dev/health
+# Wait for deployment
+fly logs --app hotdash-staging  # Should NOT see SyntaxError anymore
+curl https://hotdash-staging.fly.dev/health  # Should return 200
+```
+
+**MCP Required**: Use Fly MCP tools
+
+```bash
+mcp_fly_fly-apps-releases("hotdash-staging")  # Verify v73 deployed
+mcp_fly_fly-status("hotdash-staging")  # Should show state: started
+mcp_fly_fly-logs("hotdash-staging")  # Should show app running, no crashes
 ```
 
 **Verification**:
-- Navigate to /approvals on staging
-- Open CX Escalation modal
-- Verify grading sliders present (Tone, Accuracy, Policy)
-- Test notifications (toast, banner, browser)
-- Verify all 8 tiles render
+- [ ] v73 deployed successfully
+- [ ] Machine state: started (not stopped/crashed)
+- [ ] No SyntaxError in logs
+- [ ] Health endpoint returns 200
+- [ ] /approvals page loads
+- [ ] CX modal opens with grading sliders
 
 **Deliverables**:
-- Deployment complete (new version number)
+- v73 deployed and stable
 - Health checks passing
-- Features verified working
-- Unblocks AI-Customer and Designer for testing
+- Evidence logged with MCP tool calls
+- Unblocks AI-Customer and Designer
 
-**Time**: 1 hour
+**Time**: 15 minutes
 
-**PRIORITY**: P0 - DO THIS FIRST before DEVOPS-002
+**PRIORITY**: P0 - DO THIS IMMEDIATELY
 
 ---
+
+## AFTER v73 DEPLOYMENT SUCCESS
 
 ### DEVOPS-002: Staging Deployment Automation (3h)
 
@@ -85,7 +76,7 @@ curl https://hotdash-staging.fly.dev/health
 
 **Implementation**:
 
-**File**: `.github/workflows/deploy-staging.yml` (new)
+**File**: `.github/workflows/deploy-staging.yml` (update existing)
 ```yaml
 name: Deploy to Staging
 on:
@@ -98,17 +89,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: flyctl deploy --app hotdash-staging --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - run: curl https://hotdash-staging.fly.dev/health
       - run: flyctl logs --app hotdash-staging -n 20
 ```
 
 **MCP Required**: Use Fly MCP tools for deployment testing
-
-**Deliverables**:
-- GitHub Actions workflow file
-- Health check validation
-- Rollback procedure documented
-- Test deployment logged
 
 **Time**: 3 hours
 
@@ -121,13 +108,6 @@ jobs:
 - Alert if tiles >5s
 - Dashboard for metrics
 
-**Implementation**:
-- Set up Fly.io metrics export
-- Configure alerts (email or Slack)
-- Create monitoring dashboard
-
-**MCP Required**: Use Fly MCP tools for metrics setup
-
 **Time**: 2 hours
 
 ---
@@ -137,7 +117,6 @@ jobs:
 **Requirements**:
 - Automated migration testing in CI
 - Dry-run migrations before production
-- Rollback migration generator
 
 **Time**: 2 hours
 
@@ -150,7 +129,7 @@ jobs:
 - Test rollback procedures
 - Create runbook
 
-**File**: `docs/runbooks/deployment-rollback.md` (new)
+**File**: `docs/runbooks/deployment-rollback.md` (you already created this ✅)
 
 **Time**: 2 hours
 
@@ -158,27 +137,45 @@ jobs:
 
 ## Work Protocol
 
-**MCP Tools**: Fly MCP for all operations
+**MCP Tools**: Fly MCP for ALL operations
 
 **Reporting (Every 2 hours)**:
 ```md
-## YYYY-MM-DDTHH:MM:SSZ — DevOps: Deployment Automation
+## YYYY-MM-DDTHH:MM:SSZ — DevOps: v73 Deployment
 
-**Working On**: DEVOPS-002 (staging auto-deploy)
-**Progress**: 70% - Workflow created, testing deployment
+**Working On**: DEVOPS-001 (Deploy v73 with fix)
+**Progress**: 100% - Deployed successfully, app running
 
 **Evidence**:
-- File: .github/workflows/deploy-staging.yml (42 lines)
-- MCP Fly: Used fly-apps-releases to verify deployment
-- Test deploy: Success, health check passed
-- Rollback tested: Successful revert to v70
+- Commit pulled: 2b3513a (Search Console import fix)
+- MCP Fly: fly-apps-releases → v73 deployed
+- MCP Fly: fly-status → state: started, healthy
+- MCP Fly: fly-logs → No SyntaxError, app running normally
+- Health check: curl /health → 200 OK
+- Grading UI: Verified on /approvals → sliders present
 
-**Blockers**: None
-**Next**: Add health check alerts, complete documentation
+**Blockers**: None (P0 RESOLVED)
+**Next**: DEVOPS-002 (auto-deploy automation)
 ```
 
 ---
 
-**START WITH**: DEVOPS-002 (Auto-deploy) - Use Fly MCP tools
+## Critical Reminders
 
-**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
+**DO**:
+- ✅ Pull latest code FIRST (has Manager's fix)
+- ✅ Use Fly MCP tools (not just flyctl)
+- ✅ Verify app actually starts (not just deploys)
+- ✅ Test /approvals page after deployment
+- ✅ Notify AI-Customer and Designer when stable
+
+**DO NOT**:
+- ❌ Deploy without pulling latest code
+- ❌ Skip verification steps
+- ❌ Move to DEVOPS-002 before v73 stable
+
+---
+
+**START WITH**: DEVOPS-001 (Deploy v73) - Pull code, deploy NOW
+
+**P0 BLOCKER FIX READY - DEPLOY IMMEDIATELY**
