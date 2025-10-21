@@ -68,23 +68,23 @@ describe("chatwoot escalate action", () => {
   });
 
   it("stores grading data in decision log payload", async () => {
-    const formData = new FormData();
-    formData.set("action", "approve_send");
-    formData.set("conversationId", "42");
-    formData.set("selectedReply", "Thank you for your patience");
-    formData.set("note", "Customer satisfied");
-    formData.set("customerName", "Alex");
-    formData.set("suggestedReply", "");
-    formData.set("aiSuggestionUsed", "false");
-    formData.set("aiSuggestionMetadata", "");
-    formData.set("toneGrade", "5");
-    formData.set("accuracyGrade", "4");
-    formData.set("policyGrade", "5");
+    const params = new URLSearchParams();
+    params.set("action", "approve_send");
+    params.set("conversationId", "42");
+    params.set("selectedReply", "Thank you for your patience");
+    params.set("note", "Customer satisfied");
+    params.set("customerName", "Alex");
+    params.set("suggestedReply", "");
+    params.set("aiSuggestionUsed", "false");
+    params.set("aiSuggestionMetadata", "");
+    params.set("toneGrade", "5");
+    params.set("accuracyGrade", "4");
+    params.set("policyGrade", "5");
 
     const request = new Request("http://localhost", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: formData,
+      body: params.toString(),
     });
 
     const response = await action({ request } as any);
@@ -105,20 +105,20 @@ describe("chatwoot escalate action", () => {
   });
 
   it("handles missing grades gracefully", async () => {
-    const formData = new FormData();
-    formData.set("action", "approve_send");
-    formData.set("conversationId", "42");
-    formData.set("selectedReply", "Thank you");
-    formData.set("customerName", "Alex");
-    formData.set("suggestedReply", "");
-    formData.set("aiSuggestionUsed", "false");
-    formData.set("aiSuggestionMetadata", "");
+    const params = new URLSearchParams();
+    params.set("action", "approve_send");
+    params.set("conversationId", "42");
+    params.set("selectedReply", "Thank you");
+    params.set("customerName", "Alex");
+    params.set("suggestedReply", "");
+    params.set("aiSuggestionUsed", "false");
+    params.set("aiSuggestionMetadata", "");
     // No grades provided
 
     const request = new Request("http://localhost", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: formData,
+      body: params.toString(),
     });
 
     const response = await action({ request } as any);
@@ -138,22 +138,22 @@ describe("chatwoot escalate action", () => {
   });
 
   it("validates grade range (1-5 scale)", async () => {
-    const formData = new FormData();
-    formData.set("action", "approve_send");
-    formData.set("conversationId", "42");
-    formData.set("selectedReply", "Thank you");
-    formData.set("customerName", "Alex");
-    formData.set("suggestedReply", "");
-    formData.set("aiSuggestionUsed", "false");
-    formData.set("aiSuggestionMetadata", "");
-    formData.set("toneGrade", "3");
-    formData.set("accuracyGrade", "3");
-    formData.set("policyGrade", "3");
+    const params = new URLSearchParams();
+    params.set("action", "approve_send");
+    params.set("conversationId", "42");
+    params.set("selectedReply", "Thank you");
+    params.set("customerName", "Alex");
+    params.set("suggestedReply", "");
+    params.set("aiSuggestionUsed", "false");
+    params.set("aiSuggestionMetadata", "");
+    params.set("toneGrade", "3");
+    params.set("accuracyGrade", "3");
+    params.set("policyGrade", "3");
 
     const request = new Request("http://localhost", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: formData,
+      body: params.toString(),
     });
 
     const response = await action({ request } as any);
