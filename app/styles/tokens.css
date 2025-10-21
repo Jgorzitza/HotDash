@@ -192,3 +192,53 @@
 .occ-text-secondary {
   color: var(--occ-text-secondary);
 }
+
+/* Toast Notification Colors (Phase 4 - ENG-011) */
+:root {
+  --occ-color-success: #008060;
+  --occ-color-error: #D72828;
+  --occ-color-warning: #FFBF47;
+  --occ-color-info: #0078D4;
+}
+
+/* Toast Animations (Phase 4 - ENG-011) */
+@keyframes occ-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes occ-toast-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Notification Center Animations (Phase 4 - ENG-013) */
+@keyframes occ-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes occ-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

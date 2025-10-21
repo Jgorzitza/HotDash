@@ -1,73 +1,100 @@
 /**
- * Toast Notification Hook
+ * Toast Notification Hook (Enhanced for Phase 4)
  * 
- * Simple toast notification system using Shopify App Bridge Toast API.
- * For embedded Shopify apps - falls back to console.log if App Bridge unavailable.
+ * Complete toast notification system with 4 types:
+ * - Success: Action approved, settings saved
+ * - Error: Approval failed, connection lost
+ * - Info: New approvals, queue refreshed
+ * - Warning: Queue backlog, performance degradation
  * 
- * Designer P0 requirement: Success feedback for all modal actions
+ * Features:
+ * - Auto-dismiss (5s default, 7s for errors)
+ * - Queue management (multiple toasts)
+ * - Dismissible toasts
+ * - Accessible (ARIA live regions)
  * 
- * @see https://shopify.dev/docs/api/app-bridge/previous-versions/actions/toast
+ * Phase 4 - ENG-011
  */
 
 import { useState, useCallback } from "react";
 
+export type ToastType = "success" | "error" | "info" | "warning";
+
+export interface Toast {
+  id: string;
+  message: string;
+  type: ToastType;
+  duration?: number;
+  dismissible?: boolean;
+}
+
 export interface ToastOptions {
   message: string;
+  type?: ToastType;
   duration?: number;
-  isError?: boolean;
+  dismissible?: boolean;
 }
 
 export function useToast() {
-  const [toasts, setToasts] = useState<ToastOptions[]>([]);
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = useCallback((options: ToastOptions) => {
-    const { message, duration = 5000, isError = false } = options;
+    const toast: Toast = {
+      id: `toast-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+      message: options.message,
+      type: options.type ?? "info",
+      duration: options.duration,
+      dismissible: options.dismissible ?? true,
+    };
 
-    // For now, use simple browser notification
-    // TODO: Integrate Shopify App Bridge Toast API in Phase 4 (ENG-011)
-    const toastElement = document.createElement("div");
-    toastElement.className = isError ? "occ-toast occ-toast--error" : "occ-toast occ-toast--success";
-    toastElement.setAttribute("role", "status");
-    toastElement.setAttribute("aria-live", "polite");
-    toastElement.textContent = message;
-    toastElement.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 1rem 1.5rem;
-      background: ${isError ? "#D72828" : "#008060"};
-      color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 10000;
-      font-size: 14px;
-      min-width: 200px;
-      max-width: 400px;
-      animation: slideIn 0.3s ease-out;
-    `;
-
-    document.body.appendChild(toastElement);
-
-    // Auto-dismiss after duration
-    setTimeout(() => {
-      toastElement.style.animation = "slideOut 0.3s ease-in";
-      setTimeout(() => {
-        document.body.removeChild(toastElement);
-      }, 300);
-    }, duration);
-
-    // Update state for React tracking
-    setToasts((prev) => [...prev, { message, duration, isError }]);
+    setToasts((prev) => [...prev, toast]);
   }, []);
 
-  const showSuccess = useCallback((message: string) => {
-    showToast({ message, isError: false });
-  }, [showToast]);
+  const dismissToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
 
-  const showError = useCallback((message: string) => {
-    showToast({ message, isError: true, duration: 7000 }); // Errors stay longer
-  }, [showToast]);
+  const showSuccess = useCallback(
+    (message: string, duration?: number) => {
+      showToast({ message, type: "success", duration });
+    },
+    [showToast],
+  );
 
-  return { showToast, showSuccess, showError, toasts };
+  const showError = useCallback(
+    (message: string, duration?: number) => {
+      showToast({ message, type: "error", duration: duration ?? 7000 });
+    },
+    [showToast],
+  );
+
+  const showInfo = useCallback(
+    (message: string, duration?: number) => {
+      showToast({ message, type: "info", duration });
+    },
+    [showToast],
+  );
+
+  const showWarning = useCallback(
+    (message: string, duration?: number) => {
+      showToast({ message, type: "warning", duration });
+    },
+    [showToast],
+  );
+
+  const clearAll = useCallback(() => {
+    setToasts([]);
+  }, []);
+
+  return {
+    toasts,
+    showToast,
+    showSuccess,
+    showError,
+    showInfo,
+    showWarning,
+    dismissToast,
+    clearAll,
+  };
 }
 

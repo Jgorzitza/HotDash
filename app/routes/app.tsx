@@ -6,6 +6,7 @@ import enTranslations from "@shopify/polaris/locales/en.json";
 
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
+import { ToastProvider } from "../contexts/ToastContext";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Bypass auth in test/mock mode for E2E testing
@@ -40,19 +41,21 @@ export default function App() {
 
   return (
     <AppProvider embedded apiKey={apiKey} i18n={enTranslations}>
-      <s-app-nav>
-        <s-link href="/app">Dashboard</s-link>
-        <s-link href="/approvals">
-          Approvals
-          {pendingCount > 0 && (
-            <s-badge tone="attention">{pendingCount}</s-badge>
-          )}
-        </s-link>
-        <s-link href="/app/additional">Additional page</s-link>
-        <s-link href="/app/tools/session-token">Session token tool</s-link>
-        {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
-      </s-app-nav>
-      <Outlet />
+      <ToastProvider>
+        <s-app-nav>
+          <s-link href="/app">Dashboard</s-link>
+          <s-link href="/approvals">
+            Approvals
+            {pendingCount > 0 && (
+              <s-badge tone="attention">{pendingCount}</s-badge>
+            )}
+          </s-link>
+          <s-link href="/app/additional">Additional page</s-link>
+          <s-link href="/app/tools/session-token">Session token tool</s-link>
+          {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
+        </s-app-nav>
+        <Outlet />
+      </ToastProvider>
     </AppProvider>
   );
 }

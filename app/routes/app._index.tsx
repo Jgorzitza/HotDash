@@ -16,6 +16,8 @@ import {
   UnreadMessagesTile,
 } from "../components/tiles";
 import type { TileState, TileFact } from "../components/tiles";
+import { BannerAlerts } from "../components/notifications/BannerAlerts";
+import { useBannerAlerts } from "../hooks/useBannerAlerts";
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -447,8 +449,20 @@ function buildMockDashboard(): LoaderData {
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
 
+  // Monitor system status for banner alerts (Phase 4 - ENG-012)
+  const systemStatus = {
+    queueDepth: 0, // TODO: Get from approval service
+    approvalRate: undefined, // TODO: Get from metrics service
+    serviceHealth: "healthy" as const,
+    connectionStatus: navigator.onLine ? ("online" as const) : ("offline" as const),
+  };
+  const bannerAlerts = useBannerAlerts(systemStatus);
+
   return (
     <s-page heading="Operator Control Center">
+      {/* Banner Alerts (Phase 4 - ENG-012) */}
+      {bannerAlerts.length > 0 && <BannerAlerts alerts={bannerAlerts} />}
+
       {data.mode === "mock" && (
         <div
           style={{
