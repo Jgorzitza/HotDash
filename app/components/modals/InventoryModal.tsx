@@ -3,6 +3,7 @@ import { useFetcher } from "react-router";
 
 import type { InventoryAlert } from "../../services/shopify/types";
 import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
+import { useToast } from "../../hooks/useToast";
 
 interface InventoryModalProps {
   alert: InventoryAlert;
@@ -38,6 +39,9 @@ export function InventoryModal({
   // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
   useModalFocusTrap(open, onClose);
 
+  // Toast notifications for user feedback (Designer P0 requirement)
+  const { showSuccess, showError } = useToast();
+
   useEffect(() => {
     if (open) {
       setSelectedAction("create_po");
@@ -51,9 +55,12 @@ export function InventoryModal({
     if (!open) return;
     if (fetcher.state !== "idle") return;
     if (fetcher.data?.ok) {
+      showSuccess("Inventory action complete! 📦");
       onClose();
+    } else if (fetcher.data?.error) {
+      showError(fetcher.data.error);
     }
-  }, [fetcher.state, fetcher.data, open, onClose]);
+  }, [fetcher.state, fetcher.data, open, onClose, showSuccess, showError]);
 
   const isSubmitting = fetcher.state !== "idle";
 

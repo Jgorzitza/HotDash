@@ -3,6 +3,7 @@ import { useFetcher } from "react-router";
 
 import type { EscalationConversation } from "../../services/chatwoot/types";
 import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
+import { useToast } from "../../hooks/useToast";
 
 interface CXEscalationModalProps {
   conversation: EscalationConversation;
@@ -32,6 +33,9 @@ export function CXEscalationModal({
   // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
   useModalFocusTrap(open, onClose);
 
+  // Toast notifications for user feedback (Designer P0 requirement)
+  const { showSuccess, showError } = useToast();
+
   const hasSuggestion = Boolean((conversation.suggestedReply ?? "").trim());
 
   useEffect(() => {
@@ -49,9 +53,12 @@ export function CXEscalationModal({
     if (!open) return;
     if (fetcher.state !== "idle") return;
     if (fetcher.data?.ok) {
+      showSuccess("Pit stop complete! 🏁");
       onClose();
+    } else if (fetcher.data?.error) {
+      showError(fetcher.data.error);
     }
-  }, [fetcher.state, fetcher.data, onClose, open]);
+  }, [fetcher.state, fetcher.data, onClose, open, showSuccess, showError]);
 
   const isSubmitting = fetcher.state !== "idle";
 
