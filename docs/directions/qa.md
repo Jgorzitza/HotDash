@@ -1,4 +1,4 @@
-# Qa Direction v5.1
+# QA Direction v6.0
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,347 +9,113 @@ git pull origin manager-reopen-20251020
 git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
-
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Quality Assurance
-
-## ✅ WORK STATUS UPDATE (2025-10-21T00:00Z)
-
-**Manager Consolidation Complete**: All feedback read, status verified
-
-**Your Completed Work**: See feedback/${agent}/2025-10-20.md for full details
-
-**Next Task**: See below for updated assignment
+**Effective**: 2025-10-21T01:25:00Z  
+**Version**: 6.0  
+**Status**: QA-001 - Code Review Phase 2 (1 hour)
 
 ---
 
+## START NOW: QA-001 - Code Review Phase 2 Engineer Commits (1 hour)
 
----
+**Context**: Engineer completed Phase 2 with 3 fix commits. Review code quality before CEO Checkpoint 2.
 
-## Objective
+**Commits to Review**:
+1. `761d30f` - "fix(engineer): core accessibility (focus trap + Escape key)"
+2. `7b1b73e` - "fix(engineer): toast notifications for all modals"
+3. `08a6c0f` - "fix(engineer): WoW variance + 14-day chart"
 
-**Verify code quality and accessibility** for all Option A phases before CEO checkpoints
+### Review Checklist
 
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
+**Code Quality** (20 min):
+- [ ] TypeScript: No `any` types, proper type safety
+- [ ] React Router 7: Correct patterns (no `@remix-run` imports)
+- [ ] Polaris: Proper component usage
+- [ ] Code duplication: Check for repeated logic (should use hooks)
+- [ ] File structure: Components in correct directories
+- [ ] Naming: Clear, descriptive variable/function names
 
-**Your Role**: Final quality gate before CEO reviews
+**Accessibility** (15 min):
+- [ ] WCAG 2.2 AA: Focus trap implemented correctly
+- [ ] Keyboard: Escape key handler present
+- [ ] ARIA: Proper labels on interactive elements
+- [ ] Focus management: Initial focus set correctly
+- [ ] Color contrast: Text meets 4.5:1, interactive 3:1
+- [ ] Screen reader: aria-live regions for dynamic content
 
----
+**Testing** (10 min):
+- [ ] Unit tests: Coverage for new hooks (useModalFocusTrap, useToast)
+- [ ] Tests passing: npm run test:ci
+- [ ] Edge cases: Null checks, error handling
 
-## Verification Tasks (Per Phase)
+**Security** (5 min):
+- [ ] No secrets: gitleaks scan passing
+- [ ] Input validation: User input sanitized
+- [ ] SQL injection: Using Prisma ORM only (no raw SQL)
+- [ ] XSS protection: React default escaping + validation
 
-### Phase 2, 3, 4, 5, 6, 7-8, 10, 11, 12, 13: Code Review
+**Database Safety** (5 min):
+- [ ] No migrations: No ALTER/CREATE TABLE in commits
+- [ ] Prisma: @@schema("public") on models
+- [ ] RLS: Project-scoped queries
 
-**After Engineer completes, BEFORE Designer validates**:
+**Performance** (5 min):
+- [ ] Bundle size: Check impact on server bundle
+- [ ] Re-renders: Proper memo/useCallback usage
+- [ ] Memory leaks: Cleanup in useEffect
 
-**QA-001**: Code Quality Verification (30 min per phase)
+### MCP Tools Required
 
-**Process**:
-1. Engineer completes phase
-2. You verify code quality
-3. Designer validates visuals
-4. Manager presents to CEO
+**Use Context7 MCP** (minimum 4 calls):
+1. React Router 7: Verify correct patterns
+2. Polaris: Check accessibility compliance
+3. TypeScript: Verify type safety
+4. React Hooks: Validate custom hooks implementation
 
-**Verification Checklist**:
-
+**Evidence Format**:
 ```md
-## Phase N Code Review
+## 01:30 - Context7: React Router 7
+- Topic: useFetcher patterns
+- Verified: ENG commits use useFetcher correctly ✅
+- Issue found: None
 
-**Files Changed**: [list with line counts]
-
-**Context7 Verification**:
-- [ ] Prisma patterns match Context7 docs (/prisma/docs)
-- [ ] React Router 7 patterns (no @remix-run imports)
-- [ ] Polaris components used correctly
-- [ ] TypeScript types proper
-
-**Code Quality**:
-- [ ] No console.log in production code
-- [ ] Error boundaries present
-- [ ] Loading states implemented
-- [ ] No hardcoded strings (use microcopy)
-- [ ] No secrets in code
-
-**Testing**:
-- [ ] Unit tests added (+2 minimum per component)
-- [ ] Test coverage ≥80% for new code
-- [ ] All tests passing (npm run test:ci)
-- [ ] Playwright tests for modals (if applicable)
-
-**Accessibility** (Verify with Tools):
-- [ ] Keyboard nav (Tab through all controls)
-- [ ] Focus indicators (4.5:1 contrast)
-- [ ] ARIA labels on interactive elements
-- [ ] Semantic HTML (article, h2, ul/li)
-- [ ] Color contrast (text 4.5:1, interactive 3:1)
-
-**Security**:
-- [ ] npm run scan passing (no secrets)
-- [ ] No SQL injection vectors
-- [ ] Input validation present
-- [ ] XSS protection (React default)
-
-**Verdict**: ✅ PASS / ❌ FAIL (with specific issues)
+## 01:35 - Context7: Polaris Accessibility
+- Topic: Modal focus management
+- Verified: useModalFocusTrap follows Polaris patterns ✅
+- Recommendation: PASS
 ```
 
----
+### Deliverables
 
-## MCP Tool Requirements (MANDATORY)
+**Code Review Report** (in feedback/qa/2025-10-20.md):
+1. Summary: PASS/FAIL for each commit
+2. Issues found: Severity (P0/P1/P2) + description
+3. Recommendations: Improvements for next phase
+4. MCP evidence: 4+ tool call logs
 
-### Before ANY Code Review:
-
-**Pull Official Docs**:
-```bash
-# For Prisma code review:
-mcp_context7_get-library-docs("/prisma/docs", "schema-validation")
-
-# For React Router code review:
-mcp_context7_get-library-docs("/react-router/react-router", "loaders")
-
-# For Polaris code review:
-mcp_context7_get-library-docs("/shopify/polaris", "accessibility")
-
-# For TypeScript review:
-mcp_context7_get-library-docs("/microsoft/TypeScript", "strict-mode")
-```
-
-**Log Tool Usage**:
+**Format**:
 ```md
-## HH:MM - Context7: Prisma
-- Topic: @@schema attribute requirement
-- Verified: All models have @@schema("public") ✅
-- Found Issue: SalesPulseAction missing @@schema ❌
-- Reported to: Data agent for fix
+## Code Review Results - Phase 2
+
+### Commit 761d30f (Core Accessibility)
+- Code Quality: ✅ PASS
+- Accessibility: ✅ PASS  
+- Testing: ✅ PASS
+- Security: ✅ PASS
+- Issues: None
+- Recommendation: APPROVE
+
+### Commit 7b1b73e (Toast Notifications)
+...
 ```
 
-**Minimum**: 4+ MCP tool calls per session (Context7, Shopify Dev MCP)
+**Time**: 60 minutes
+
+**After QA-001**: Report findings to Manager, prepare for Phase 3 code review
 
 ---
 
-## Accessibility Testing Protocol
+## MCP Tools Compliance
 
-### Tools to Use:
-
-**Automated**:
-- axe DevTools (browser extension)
-- Lighthouse accessibility audit
-- WAVE (WebAIM)
-
-**Manual**:
-- Keyboard-only navigation
-- Tab order logical
-- Focus visible
-- Escape key behavior
-
-**Screen Reader** (if accessible):
-- NVDA (Windows)
-- VoiceOver (Mac)
-- Verify announcements correct
-
-### Report Format:
-
-```md
-## Accessibility Audit: [Component]
-
-**Tool**: axe DevTools
-**Result**: 0 violations ✅ / 3 violations ❌
-
-**Issues Found**:
-1. Missing ARIA label on close button
-   - Severity: Critical
-   - Fix: Add aria-label="Close modal"
-   - Assigned to: Engineer
-
-**Manual Test**:
-- Keyboard nav: ✅ PASS (all controls reachable)
-- Focus trap: ✅ PASS (stays in modal)
-- Escape key: ✅ PASS (closes modal)
-
-**Verdict**: ❌ FAIL (3 critical issues) → Send back to Engineer
-```
-
----
-
-## Ongoing Responsibilities
-
-### 1. PR Reviews:
-
-**When Engineer/Data/Designer create PRs**:
-- Review code quality (patterns, tests, accessibility)
-- Run security scan
-- Verify no secrets
-- Check test coverage
-- Approve OR request changes
-
-**Report**: `feedback/qa/2025-10-20.md` with PR number, verdict, issues
-
----
-
-### 2. Test Suite Monitoring:
-
-**Daily**:
-```bash
-npm run test:ci
-# Report: X/Y passing, Z failures
-# If failures: Create issue, assign owner, due date
-```
-
----
-
-### 3. Security Scanning:
-
-**Daily**:
-```bash
-npm run scan
-# Report: Clean / X secrets found
-# If secrets: IMMEDIATE escalation to Manager
-```
-
----
-
-## Work Protocol
-
-**1. MCP Tools First** (Training data outdated):
-- Context7 for library verification
-- Shopify Dev MCP for Shopify patterns
-- Never rely on training data alone
-
-**2. Reporting Every 2 Hours**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — QA: Phase N Verification
-
-**Working On**: Code review for Phase N
-**Progress**: 2/3 components reviewed
-
-**Evidence**:
-- Context7: Pulled /prisma/docs → verified @@schema present
-- Accessibility: axe audit → 0 violations
-- Tests: 245/245 passing (+5 new tests)
-- Security: npm run scan → clean
-
-**Blockers**: None
-**Next**: Complete final component review
-```
-
-**3. Rejection Criteria**:
-- Test coverage < 80% → FAIL
-- Accessibility violations → FAIL
-- Secrets detected → IMMEDIATE FAIL (escalate)
-- Missing Context7 verification → FAIL (resend to agent)
-
----
-
-## Definition of Done (Each Phase)
-
-**Code Quality**:
-- [ ] Context7 docs verified for all libraries used
-- [ ] React Router 7 patterns (grep for @remix-run → 0 results)
-- [ ] TypeScript strict mode passing
-- [ ] No console.log/debugger in production
-
-**Testing**:
-- [ ] Test coverage ≥80% for new code
-- [ ] All tests passing (npm run test:ci)
-- [ ] Playwright tests for modals/routes
-
-**Accessibility**:
-- [ ] axe DevTools: 0 violations
-- [ ] Keyboard nav verified
-- [ ] Focus management tested
-- [ ] Color contrast verified (4.5:1 minimum)
-
-**Security**:
-- [ ] npm run scan: clean
-- [ ] No hardcoded secrets
-- [ ] Input validation present
-- [ ] RLS policies verified (Data tables)
-
-**Evidence**:
-- [ ] Feedback updated with verification results
-- [ ] MCP tool usage logged (4+ calls minimum)
-- [ ] Issues documented with severity + owner
-
----
-
-## Phase Schedule
-
-**Immediate**: Phase 2 code review (after Engineer completes)
-**Ongoing**: Review each phase before CEO checkpoint
-**Total**: ~11 reviews (30 min each = 5.5 hours)
-
----
-
-## Critical Reminders
-
-**DO**:
-- ✅ Use MCP tools before every review (Context7, Shopify Dev MCP)
-- ✅ Test accessibility with keyboard + tools
-- ✅ Verify test coverage ≥80%
-- ✅ Block PRs with secrets or accessibility violations
-
-**DO NOT**:
-- ❌ Approve code without Context7 verification
-- ❌ Skip accessibility testing
-- ❌ Allow secrets in codebase
-- ❌ Pass code with <80% test coverage
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
-**Rules**: `docs/RULES.md` (Tool-first, QA verification protocol)
-**Feedback**: `feedback/qa/2025-10-20.md`
-**Startup**: `docs/runbooks/agent_startup_checklist.md`
-
----
-
-**START WITH**: Monitor Engineer progress on Phase 2, prepare for code review when complete
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+**Minimum**: 4 Context7 calls per review session
+**Required Evidence**: Conversation IDs, topics, findings logged in feedback

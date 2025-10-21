@@ -158,6 +158,70 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 ## ✅ MANAGER UPDATE (2025-10-21T00:00Z)
 
+---
+
+## START NOW: ANALYTICS-005 - WoW Variance Service for Sales Modal (1 hour)
+
+**Context**: Sales Pulse Modal currently shows placeholder for Week-over-Week variance. Create backend service to calculate real variance.
+
+**Engineer Need**: Data service to calculate variance between this week's sales vs last week's sales
+
+**Your Task**: Create WoW variance calculation service
+
+### Implementation
+
+**File**: `app/services/analytics/wow-variance.ts`
+
+```typescript
+// Calculate Week-over-Week variance for sales metrics
+export async function getWoWVariance(
+  project: string,
+  metric: 'revenue' | 'orders' | 'conversion'
+): Promise<{
+  current: number;
+  previous: number;
+  variance: number; // Percentage change
+  trend: 'up' | 'down' | 'flat';
+}> {
+  // 1. Get current week's data (last 7 days)
+  // 2. Get previous week's data (8-14 days ago)
+  // 3. Calculate variance: ((current - previous) / previous) * 100
+  // 4. Determine trend: variance > 5% = up, < -5% = down, else flat
+  // 5. Return structured data
+}
+```
+
+**API Route**: `app/routes/api.analytics.wow-variance.ts`
+- Accepts: `project`, `metric` query params
+- Returns: JSON with current, previous, variance, trend
+- Uses Supabase to query historical sales data
+
+**Data Source**:
+- Table: `sales_pulse_actions` (created by Data agent)
+- Query: Aggregate actions by date range
+- Alternative: Mock data if historical data not yet available
+
+**Tests**:
+- Unit test for variance calculation logic
+- Test edge cases: zero division, negative values, no previous data
+- API route test
+
+**Deliverables**:
+1. ✅ Service file created
+2. ✅ API route created
+3. ✅ Tests passing
+4. ✅ Documentation for Engineer integration
+
+**Time**: 60 minutes
+
+**Engineer Integration**: Engineer will call `/api/analytics/wow-variance?project=X&metric=revenue` from Sales Modal
+
+---
+
+## After ANALYTICS-005
+
+**Next**: STANDBY for Phase 7-8 (Product Analytics Dashboard) or additional coordination requests
+
 **Status**: ALL TASKS COMPLETE ✅
 
 **Evidence**: See feedback/analytics/2025-10-20.md

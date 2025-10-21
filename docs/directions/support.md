@@ -320,3 +320,67 @@ mcp_context7_get-library-docs("/chatwoot/chatwoot", "channels")
 **Then immediately move to next task** - CEO will respond when available
 
 **Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+
+---
+
+## ✅ CHATWOOT FIXED - Resume SUPPORT-001 NOW (3 hours)
+
+**Manager Fix Complete** (2025-10-21T01:21Z):
+1. ✅ Chatwoot DATABASE_URL changed to Supabase pooler  
+2. ✅ Chatwoot migrations ran successfully on Supabase (89 migrations)
+3. ✅ `accounts` table has `settings` column ✅
+4. ✅ Admin login works (returns token, not 500 error)
+
+**Verification**:
+```bash
+# Test login
+curl -X POST https://hotdash-chatwoot.fly.dev/auth/sign_in \
+  -H "Content-Type: application/json" \
+  -d '{"email":"justin@hotrodan.com","password":"[from vault]"}'
+# Result: Returns token ✅
+```
+
+**Your Task**: Resume SUPPORT-001 (Multi-Channel Testing)
+
+### SUPPORT-001: Multi-Channel Testing (3 hours)
+
+**Objective**: Test email, SMS, live chat channels in Chatwoot
+
+**Steps**:
+1. **Login to Chatwoot Admin** (15 min)
+   - URL: https://hotdash-chatwoot.fly.dev
+   - Credentials: vault/occ/chatwoot/super_admin_staging.env
+   - Generate API token: Settings → Integrations → API
+   - Save token to vault/occ/chatwoot/api_token.env
+
+2. **Configure Channels** (45 min)
+   - Email: Connect inbox (use test email)
+   - SMS: Configure Twilio/MessageBird (if credentials available)
+   - Live Chat: Install widget code on staging
+   - Verify each channel receives messages
+
+3. **Test Message Flow** (60 min)
+   - Send test messages via each channel
+   - Verify messages appear in Chatwoot inbox
+   - Test conversation assignment to agents
+   - Test message replies
+   - Verify notifications work
+
+4. **Execute Test Scenarios** (60 min)
+   - Use docs/support/chatwoot-test-scenarios.md (20 scenarios)
+   - Test at least 10 critical scenarios:
+     - Multi-channel conversation threading
+     - Agent assignment and reassignment
+     - Canned responses
+     - Conversation search
+     - Customer info editing
+
+**Deliverables**:
+- ✅ API token generated and saved
+- ✅ 3 channels configured and tested
+- ✅ 10/20 test scenarios executed
+- ✅ Test results documented in feedback
+
+**Blockers**: NONE - Chatwoot fully functional
+
+**After SUPPORT-001**: Move to SUPPORT-002 (if time) or standby

@@ -262,6 +262,73 @@ mcp_context7_get-library-docs("/simple-statistics/simple-statistics", "forecasti
 
 ## ✅ MANAGER UPDATE (2025-10-21T00:00Z)
 
+---
+
+## INVENTORY-005: Coordinate 14-Day Chart Integration with Engineer (30 min)
+
+**Context**: Inventory Modal needs 14-day demand velocity chart. Engineer implementing ENG-007.
+
+**Your Service**: ✅ READY
+- File: `app/services/demand-forecast/velocity.ts`
+- Function: `getDemandVelocity(productId, days=14)` - returns daily sales data
+
+**Engineer Need**: Chart-ready data format
+
+**Your Task**: Create chart adapter for Engineer
+
+### Implementation
+
+**File**: `app/services/demand-forecast/chart-adapter.ts`
+
+```typescript
+export async function get14DayChartData(productId: string): Promise<{
+  labels: string[]; // Date labels ["Oct 7", "Oct 8", ...]
+  datasets: [{
+    label: string;
+    data: number[]; // Sales values [12, 15, 10, ...]
+    borderColor: string;
+    backgroundColor: string;
+  }];
+}> {
+  // 1. Call getDemandVelocity(productId, 14)
+  // 2. Format for chart library (Chart.js or similar)
+  // 3. Return structured chart data
+}
+```
+
+**Engineer Integration Doc**: Create `docs/integrations/inventory-chart-integration.md`
+- Usage example
+- Data format
+- API endpoint recommendation (or direct service call)
+
+**API Route (Optional)**: `app/routes/api.inventory.chart-data.ts`
+- Accepts: `productId` query param
+- Returns: Chart-ready JSON
+- Easier for Engineer to integrate
+
+**Deliverables**:
+1. ✅ Chart adapter created
+2. ✅ Integration doc written
+3. ✅ API route created (if going that route)
+4. ✅ Notify Engineer in feedback
+
+**Time**: 30 minutes
+
+**Coordination**: Message Engineer when ready with integration instructions
+
+---
+
+## After INVENTORY-005
+
+**Status**: ✅ ALL 5 TASKS COMPLETE
+- INVENTORY-001: Seasonal ROP ✅
+- INVENTORY-002: Demand forecasting ✅
+- INVENTORY-003: Vendor management ✅
+- INVENTORY-004: PO tracking ✅
+- INVENTORY-005: Chart integration ✅
+
+**Next**: STANDBY for Option A support or new assignments
+
 **Status**: ALL TASKS COMPLETE ✅
 
 **Evidence**: See feedback/inventory/2025-10-20.md

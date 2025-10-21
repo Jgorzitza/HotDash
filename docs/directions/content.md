@@ -335,6 +335,89 @@ mcp_context7_get-library-docs("/websites/mailchimp_content_style_guide", "brand-
 
 ## ✅ MANAGER UPDATE (2025-10-21T00:00Z)
 
+---
+
+## CONTENT-004: Review Implemented Microcopy in Phase 2 (1 hour)
+
+**Context**: Engineer implemented Phase 2 modals. Verify actual microcopy matches Content specs and Hot Rodan brand voice.
+
+**Your Deliverables Used**:
+- docs/content/modal-microcopy.md (CX, Sales, Inventory modal copy)
+- docs/content/toast-notifications.md (Success/error messages)
+
+**Your Task**: Production microcopy review
+
+### Review Checklist
+
+**1. CX Escalation Modal** (15 min)
+- [ ] File: `app/components/modals/CXEscalationModal.tsx`
+- [ ] Title matches spec: "Customer Experience Escalation"
+- [ ] Button copy: "Approve", "Edit", "Escalate", "Resolve", "Cancel"
+- [ ] Help text for grading sliders matches guidance
+- [ ] Toast message: "Pit stop complete!" (or similar)
+- [ ] Tone: Professional, action-oriented
+
+**2. Sales Pulse Modal** (15 min)
+- [ ] File: `app/components/modals/SalesPulseModal.tsx`
+- [ ] Title: "Sales Pulse Analysis"
+- [ ] WoW variance label: "Week-over-Week Change"
+- [ ] Button copy: "Approve", "Escalate", "Cancel"
+- [ ] Toast message on approval
+- [ ] Tone: Data-driven, confident
+
+**3. Inventory Modal** (15 min)
+- [ ] File: `app/components/modals/InventoryModal.tsx`
+- [ ] Title: "Inventory Alert"
+- [ ] Chart title: "14-Day Demand Velocity"
+- [ ] Button copy: "Reorder", "Dismiss"
+- [ ] Toast message on reorder
+- [ ] Tone: Urgent but calm
+
+**4. Cross-Modal Consistency** (15 min)
+- [ ] Button labeling consistent across all modals
+- [ ] Toast message format consistent
+- [ ] Help text tone uniform
+- [ ] Error messages match toast-notifications.md
+- [ ] Brand voice (Hot Rodan) maintained
+
+### Deliverables
+
+**Microcopy Review Report** (in feedback/content/2025-10-20.md):
+
+```md
+## Phase 2 Microcopy Review
+
+### CX Escalation Modal
+- Title: ✅ MATCHES spec
+- Buttons: ✅ MATCHES spec
+- Grading help text: ⚠️ SUGGESTION: Change "Rate impact" to "Rate customer impact"
+- Toast: ✅ MATCHES spec
+- Brand voice: ✅ Hot Rodan tone maintained
+
+### Sales Pulse Modal
+...
+
+### Recommendations
+1. P0: None (all critical copy correct)
+2. P1: [Optional improvements]
+3. P2: [Nice-to-haves]
+```
+
+**Time**: 60 minutes
+
+**After Review**: Create PR with microcopy improvements (if needed) or mark complete
+
+---
+
+## After CONTENT-004
+
+**Status**: ✅ ALL Content Tasks Complete
+- Microcopy guidance: ✅ (3 docs, 3,486 lines)
+- Social post templates: ✅
+- Phase 2 review: ✅
+
+**Next**: STANDBY for Phase 3+ microcopy requests or review iterations
+
 **Status**: ALL TASKS COMPLETE ✅
 
 **Evidence**: See feedback/content/2025-10-20.md

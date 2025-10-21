@@ -379,3 +379,73 @@ mcp_context7_get-library-docs("/llamaindex/llamaindex", "query-engine")
 **Then immediately move to next task** - CEO will respond when available
 
 **Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+
+---
+
+## AI-CUSTOMER-006: Verify Grading UI in Production (30 min)
+
+**Context**: Phase 2 complete - CX Escalation Modal now has 3 grading sliders. Verify backend integration works.
+
+**Engineer Implementation**: ✅ COMPLETE
+- Component: `app/components/modals/CXEscalationModal.tsx`
+- Sliders: Urgency, Impact, Effort (1-10 scale)
+- Action: Saves to `cx_escalations` table (your backend)
+
+**Your Task**: Production verification
+
+### Test Grading Flow
+
+**Steps**:
+1. **Access Staging** (5 min)
+   - URL: https://hotdash-staging.fly.dev
+   - Login with test account
+   - Navigate to dashboard
+
+2. **Open CX Modal** (5 min)
+   - Click "Pit Stop Required" on CX tile
+   - Verify modal opens with 3 grading sliders
+
+3. **Test Grading** (10 min)
+   - Move each slider (Urgency, Impact, Effort)
+   - Verify slider values update (1-10 range)
+   - Click "Approve" button
+   - Verify toast notification appears ("Pit stop complete!")
+
+4. **Verify Backend Storage** (10 min)
+   - Check Supabase `cx_escalations` table
+   - Verify new row created with grading values
+   - Fields: `urgency`, `impact`, `effort` (should match slider values)
+   - Verify `created_at`, `user_id`, `project` populated
+
+**Query Example**:
+```sql
+SELECT id, urgency, impact, effort, created_at 
+FROM cx_escalations 
+ORDER BY created_at DESC 
+LIMIT 5;
+```
+
+**Expected Results**:
+- ✅ Sliders functional and responsive
+- ✅ Grading values saved to database
+- ✅ Toast notification confirms action
+- ✅ Data structure matches backend expectations
+
+**Deliverables**:
+- Test results (PASS/FAIL)
+- Screenshot of modal with sliders
+- Database query results showing saved grading
+- Any issues/bugs documented
+
+**Time**: 30 minutes
+
+---
+
+## After AI-CUSTOMER-006
+
+**Status**: ✅ ALL CEO Agent Backend Work COMPLETE
+- CEO Agent service: ✅ (5 tools, HITL workflow)
+- Integration docs: ✅ (681 lines)
+- Grading UI verification: ✅
+
+**Next**: STANDBY for Phase 11 (CEO Agent UI) or additional testing requests
