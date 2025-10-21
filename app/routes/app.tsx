@@ -3,10 +3,14 @@ import { Outlet, useLoaderData, useRouteError } from "react-router";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import enTranslations from "@shopify/polaris/locales/en.json";
+import { useEffect, useState } from "react";
 
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
 import { ToastProvider } from "../contexts/ToastContext";
+import { useSSE } from "../hooks/useSSE";
+import { LiveBadge } from "../components/realtime/LiveBadge";
+import { ConnectionIndicator } from "../components/realtime/ConnectionIndicator";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Bypass auth in test/mock mode for E2E testing
@@ -37,7 +41,21 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function App() {
-  const { apiKey, mockMode, pendingCount } = useLoaderData<typeof loader>();
+  const { apiKey, mockMode, pendingCount: initialPendingCount } = useLoaderData<typeof loader>();
+
+  // Real-time SSE connection (Phase 5 - ENG-023, ENG-024)
+  const { status: sseStatus, lastMessage, lastHeartbeat } = useSSE("/api/sse/updates", true);
+  const [livePendingCount, setLivePendingCount] = useState(initialPendingCount);
+
+  // Update pending count from SSE approval-update events
+  useEffect(() => {
+    if (lastMessage?.type === "approval-update") {
+      const data = lastMessage.data as { pendingCount?: number };
+      if (data.pendingCount !== undefined) {
+        setLivePendingCount(data.pendingCount);
+      }
+    }
+  }, [lastMessage]);
 
   return (
     <AppProvider embedded apiKey={apiKey} i18n={enTranslations}>
@@ -46,13 +64,20 @@ export default function App() {
           <s-link href="/app">Dashboard</s-link>
           <s-link href="/approvals">
             Approvals
-            {pendingCount > 0 && (
-              <s-badge tone="attention">{pendingCount}</s-badge>
+            {/* Live Badge (Phase 5 - ENG-024) */}
+            {livePendingCount > 0 && (
+              <span style={{ marginLeft: "var(--occ-space-2)" }}>
+                <LiveBadge count={livePendingCount} showPulse={sseStatus === "connected"} />
+              </span>
             )}
           </s-link>
           <s-link href="/app/additional">Additional page</s-link>
           <s-link href="/app/tools/session-token">Session token tool</s-link>
           {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
+          {/* Connection indicator (Phase 5 - ENG-023) */}
+          <div slot="actions" style={{ marginLeft: "auto" }}>
+            <ConnectionIndicator status={sseStatus} lastHeartbeat={lastHeartbeat} />
+          </div>
         </s-app-nav>
         <Outlet />
       </ToastProvider>

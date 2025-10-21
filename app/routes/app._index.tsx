@@ -18,6 +18,8 @@ import {
 import type { TileState, TileFact } from "../components/tiles";
 import { BannerAlerts } from "../components/notifications/BannerAlerts";
 import { useBannerAlerts } from "../hooks/useBannerAlerts";
+import { useSSE } from "../hooks/useSSE";
+import { useState, useEffect, useCallback } from "react";
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -449,12 +451,48 @@ function buildMockDashboard(): LoaderData {
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
 
+  // Real-time SSE connection (Phase 5 - ENG-023)
+  const { status: sseStatus, lastMessage } = useSSE("/api/sse/updates", true);
+
+  // Track refreshing tiles (Phase 5 - ENG-025)
+  const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(new Set());
+
+  // Handle tile refresh events from SSE
+  useEffect(() => {
+    if (lastMessage?.type === "tile-refresh") {
+      const tileId = (lastMessage.data as { tileId?: string }).tileId;
+      if (tileId) {
+        setRefreshingTiles((prev) => new Set([...prev, tileId]));
+        setTimeout(() => {
+          setRefreshingTiles((prev) => {
+            const next = new Set(prev);
+            next.delete(tileId);
+            return next;
+          });
+        }, 2000);
+      }
+    }
+  }, [lastMessage]);
+
+  // Manual refresh handler
+  const handleRefreshTile = useCallback((tileId: string) => {
+    setRefreshingTiles((prev) => new Set([...prev, tileId]));
+    // TODO: Trigger actual data refresh
+    setTimeout(() => {
+      setRefreshingTiles((prev) => {
+        const next = new Set(prev);
+        next.delete(tileId);
+        return next;
+      });
+    }, 1000);
+  }, []);
+
   // Monitor system status for banner alerts (Phase 4 - ENG-012)
   const systemStatus = {
     queueDepth: 0, // TODO: Get from approval service
     approvalRate: undefined, // TODO: Get from metrics service
     serviceHealth: "healthy" as const,
-    connectionStatus: navigator.onLine ? ("online" as const) : ("offline" as const),
+    connectionStatus: sseStatus === "connected" ? ("online" as const) : sseStatus === "connecting" ? ("reconnecting" as const) : ("offline" as const),
   };
   const bannerAlerts = useBannerAlerts(systemStatus);
 
@@ -485,6 +523,10 @@ export default function OperatorDashboard() {
           tile={data.opsMetrics}
           render={(metrics) => <OpsMetricsTile metrics={metrics} />}
           testId="tile-ops-metrics"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("ops-metrics")}
+          onRefresh={() => handleRefreshTile("ops-metrics")}
+          autoRefreshInterval={300}
         />
 
         <TileCard
@@ -492,6 +534,10 @@ export default function OperatorDashboard() {
           tile={data.sales}
           render={(summary) => <SalesPulseTile summary={summary} enableModal />}
           testId="tile-sales-pulse"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("sales-pulse")}
+          onRefresh={() => handleRefreshTile("sales-pulse")}
+          autoRefreshInterval={60}
         />
 
         <TileCard
@@ -499,6 +545,10 @@ export default function OperatorDashboard() {
           tile={data.fulfillment}
           render={(issues) => <FulfillmentHealthTile issues={issues} />}
           testId="tile-fulfillment-health"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("fulfillment")}
+          onRefresh={() => handleRefreshTile("fulfillment")}
+          autoRefreshInterval={120}
         />
 
         <TileCard
@@ -506,6 +556,10 @@ export default function OperatorDashboard() {
           tile={data.inventory}
           render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
           testId="tile-inventory-heatmap"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("inventory")}
+          onRefresh={() => handleRefreshTile("inventory")}
+          autoRefreshInterval={300}
         />
 
         <TileCard
@@ -515,6 +569,10 @@ export default function OperatorDashboard() {
             <CXEscalationsTile conversations={conversations} enableModal />
           )}
           testId="tile-cx-escalations"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("cx-escalations")}
+          onRefresh={() => handleRefreshTile("cx-escalations")}
+          autoRefreshInterval={30}
         />
 
         <TileCard
@@ -522,6 +580,10 @@ export default function OperatorDashboard() {
           tile={data.seo}
           render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
           testId="tile-seo-content"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("seo-content")}
+          onRefresh={() => handleRefreshTile("seo-content")}
+          autoRefreshInterval={600}
         />
 
         <TileCard
@@ -529,6 +591,10 @@ export default function OperatorDashboard() {
           tile={data.ideaPool}
           render={(ideaPool) => <IdeaPoolTile ideaPool={ideaPool} />}
           testId="tile-idea-pool"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("idea-pool")}
+          onRefresh={() => handleRefreshTile("idea-pool")}
+          autoRefreshInterval={300}
         />
 
         <TileCard
@@ -536,6 +602,10 @@ export default function OperatorDashboard() {
           tile={data.ceoAgent}
           render={(stats) => <CEOAgentTile stats={stats} />}
           testId="tile-ceo-agent"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("ceo-agent")}
+          onRefresh={() => handleRefreshTile("ceo-agent")}
+          autoRefreshInterval={120}
         />
 
         <TileCard
@@ -543,6 +613,10 @@ export default function OperatorDashboard() {
           tile={data.unreadMessages}
           render={(unread) => <UnreadMessagesTile unread={unread} />}
           testId="tile-unread-messages"
+          showRefreshIndicator
+          isRefreshing={refreshingTiles.has("unread-messages")}
+          onRefresh={() => handleRefreshTile("unread-messages")}
+          autoRefreshInterval={60}
         />
       </div>
     </s-page>
