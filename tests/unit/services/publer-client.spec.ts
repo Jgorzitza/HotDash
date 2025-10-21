@@ -123,10 +123,11 @@ describe('PublerClient', () => {
       expect(global.fetch).toHaveBeenCalledTimes(2);
     });
 
-    it('should detect rate limit approaching', async () => {
+    it('should detect rate limit approaching when < 20% remaining', async () => {
       const headers = new Headers();
       headers.set('X-RateLimit-Limit', '100');
-      headers.set('X-RateLimit-Remaining', '10'); // 10% remaining
+      headers.set('X-RateLimit-Remaining', '15'); // 15% remaining
+      headers.set('X-RateLimit-Reset', '1234567890');
 
       (global.fetch as any).mockResolvedValueOnce({
         ok: true,
@@ -138,6 +139,10 @@ describe('PublerClient', () => {
       const client = new PublerClient({ apiKey: 'test', workspaceId: 'test' });
       await client.listWorkspaces();
 
+      const rateLimitInfo = client.getRateLimitInfo();
+      expect(rateLimitInfo).toBeDefined();
+      expect(rateLimitInfo?.remaining).toBe(15);
+      expect(rateLimitInfo?.limit).toBe(100);
       expect(client.isRateLimitApproaching()).toBe(true);
     });
   });
