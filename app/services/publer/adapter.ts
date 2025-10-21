@@ -78,7 +78,7 @@ export class PublerAdapter {
     if (approval.status !== 'approved') {
       return {
         success: false,
-        error: \`Cannot publish post with status: \${approval.status}. Must be 'approved'\`,
+        error: `Cannot publish post with status: ${approval.status}. Must be 'approved'`,
       };
     }
 

@@ -7,7 +7,9 @@
  * Stores in DashboardFact table with factType="seo_ranking"
  */
 
-import { db } from "~/db.server";
+import prisma from "~/db.server";
+
+const db = prisma; // Alias for compatibility
 
 export interface KeywordRanking {
   keyword: string;

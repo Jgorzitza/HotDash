@@ -6,7 +6,7 @@
  * Stores in DashboardFact table with factType="social_performance"
  */
 
-import { db } from "~/db.server";
+import prisma from "~/db.server";
 
 export interface SocialMetrics {
   impressions: number;
@@ -36,7 +36,7 @@ export async function trackSocialPostPerformance(
   // For now, use mock data structure to establish the pattern
   
   // Fetch post from database
-  const post = await db.socialPost.findUnique({
+  const post = await prisma.socialPost.findUnique({
     where: { id: postId },
   });
 
@@ -128,7 +128,7 @@ async function storeSocialMetrics(
   platform: string,
   metrics: SocialMetrics
 ): Promise<void> {
-  await db.dashboardFact.create({
+  await prisma.dashboardFact.create({
     data: {
       shopDomain,
       factType: "social_performance",
@@ -164,7 +164,7 @@ export async function getSocialPerformanceSummary(
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const facts = await db.dashboardFact.findMany({
+  const facts = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "social_performance",

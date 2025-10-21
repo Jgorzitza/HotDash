@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useFetcher } from "react-router";
 import type { LoaderFunction } from "react-router";
 
 import "../styles/tokens.css";
@@ -15,11 +15,29 @@ import {
   CEOAgentTile,
   UnreadMessagesTile,
 } from "../components/tiles";
+import { SortableTile } from "../components/tiles/SortableTile";
 import type { TileState, TileFact } from "../components/tiles";
 import { BannerAlerts } from "../components/notifications/BannerAlerts";
 import { useBannerAlerts } from "../hooks/useBannerAlerts";
 import { useSSE } from "../hooks/useSSE";
 import { useState, useEffect, useCallback } from "react";
+
+// @dnd-kit imports for drag & drop tile reordering (ENG-014)
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -448,11 +466,28 @@ function buildMockDashboard(): LoaderData {
   };
 }
 
+// Default tile order (ENG-014)
+const DEFAULT_TILE_ORDER = [
+  "ops-metrics",
+  "sales-pulse",
+  "fulfillment",
+  "inventory",
+  "cx-escalations",
+  "seo-content",
+  "idea-pool",
+  "ceo-agent",
+  "unread-messages",
+];
+
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
+  const tileOrderFetcher = useFetcher();
 
   // Real-time SSE connection (Phase 5 - ENG-023)
   const { status: sseStatus, lastMessage } = useSSE("/api/sse/updates", true);
+
+  // Drag & Drop: Tile order state (ENG-014)
+  const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
 
   // Track refreshing tiles (Phase 5 - ENG-025)
   const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(new Set());
@@ -487,6 +522,40 @@ export default function OperatorDashboard() {
     }, 1000);
   }, []);
 
+  // Configure sensors for drag & drop (ENG-014)
+  // Per Context7 @dnd-kit docs: PointerSensor for mouse/touch, KeyboardSensor for accessibility
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px movement to start drag (prevents accidental drags)
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end - reorder tiles and save to preferences (ENG-014)
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setTileOrder((items) => {
+        const oldIndex = items.indexOf(active.id as string);
+        const newIndex = items.indexOf(over.id as string);
+        const newOrder = arrayMove(items, oldIndex, newIndex);
+
+        // Save to user preferences via API
+        tileOrderFetcher.submit(
+          { tileOrder: JSON.stringify(newOrder) },
+          { method: "POST", action: "/api/preferences/tile-order" }
+        );
+
+        return newOrder;
+      });
+    }
+  }, [tileOrderFetcher]);
+
   // Monitor system status for banner alerts (Phase 4 - ENG-012)
   const systemStatus = {
     queueDepth: 0, // TODO: Get from approval service
@@ -495,6 +564,120 @@ export default function OperatorDashboard() {
     connectionStatus: sseStatus === "connected" ? ("online" as const) : sseStatus === "connecting" ? ("reconnecting" as const) : ("offline" as const),
   };
   const bannerAlerts = useBannerAlerts(systemStatus);
+
+  // Tile mapping for dynamic ordering (ENG-014)
+  const tileMap = {
+    "ops-metrics": (
+      <TileCard
+        title="Ops Pulse"
+        tile={data.opsMetrics}
+        render={(metrics) => <OpsMetricsTile metrics={metrics} />}
+        testId="tile-ops-metrics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ops-metrics")}
+        onRefresh={() => handleRefreshTile("ops-metrics")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "sales-pulse": (
+      <TileCard
+        title="Sales Pulse"
+        tile={data.sales}
+        render={(summary) => <SalesPulseTile summary={summary} enableModal />}
+        testId="tile-sales-pulse"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("sales-pulse")}
+        onRefresh={() => handleRefreshTile("sales-pulse")}
+        autoRefreshInterval={60}
+      />
+    ),
+    "fulfillment": (
+      <TileCard
+        title="Fulfillment Health"
+        tile={data.fulfillment}
+        render={(issues) => <FulfillmentHealthTile issues={issues} />}
+        testId="tile-fulfillment-health"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("fulfillment")}
+        onRefresh={() => handleRefreshTile("fulfillment")}
+        autoRefreshInterval={120}
+      />
+    ),
+    "inventory": (
+      <TileCard
+        title="Inventory Heatmap"
+        tile={data.inventory}
+        render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
+        testId="tile-inventory-heatmap"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("inventory")}
+        onRefresh={() => handleRefreshTile("inventory")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "cx-escalations": (
+      <TileCard
+        title="CX Escalations"
+        tile={data.escalations}
+        render={(conversations) => (
+          <CXEscalationsTile conversations={conversations} enableModal />
+        )}
+        testId="tile-cx-escalations"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("cx-escalations")}
+        onRefresh={() => handleRefreshTile("cx-escalations")}
+        autoRefreshInterval={30}
+      />
+    ),
+    "seo-content": (
+      <TileCard
+        title="SEO & Content Watch"
+        tile={data.seo}
+        render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
+        testId="tile-seo-content"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("seo-content")}
+        onRefresh={() => handleRefreshTile("seo-content")}
+        autoRefreshInterval={600}
+      />
+    ),
+    "idea-pool": (
+      <TileCard
+        title="Idea Pool"
+        tile={data.ideaPool}
+        render={(ideaPool) => <IdeaPoolTile ideaPool={ideaPool} />}
+        testId="tile-idea-pool"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("idea-pool")}
+        onRefresh={() => handleRefreshTile("idea-pool")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "ceo-agent": (
+      <TileCard
+        title="CEO Agent"
+        tile={data.ceoAgent}
+        render={(stats) => <CEOAgentTile stats={stats} />}
+        testId="tile-ceo-agent"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ceo-agent")}
+        onRefresh={() => handleRefreshTile("ceo-agent")}
+        autoRefreshInterval={120}
+      />
+    ),
+    "unread-messages": (
+      <TileCard
+        title="Unread Messages"
+        tile={data.unreadMessages}
+        render={(unread) => <UnreadMessagesTile unread={unread} />}
+        testId="tile-unread-messages"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("unread-messages")}
+        onRefresh={() => handleRefreshTile("unread-messages")}
+        autoRefreshInterval={60}
+      />
+    ),
+  };
 
   return (
     <s-page heading="Operator Control Center">
@@ -517,108 +700,23 @@ export default function OperatorDashboard() {
           </p>
         </div>
       )}
-      <div className="occ-tile-grid">
-        <TileCard
-          title="Ops Pulse"
-          tile={data.opsMetrics}
-          render={(metrics) => <OpsMetricsTile metrics={metrics} />}
-          testId="tile-ops-metrics"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("ops-metrics")}
-          onRefresh={() => handleRefreshTile("ops-metrics")}
-          autoRefreshInterval={300}
-        />
 
-        <TileCard
-          title="Sales Pulse"
-          tile={data.sales}
-          render={(summary) => <SalesPulseTile summary={summary} enableModal />}
-          testId="tile-sales-pulse"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("sales-pulse")}
-          onRefresh={() => handleRefreshTile("sales-pulse")}
-          autoRefreshInterval={60}
-        />
-
-        <TileCard
-          title="Fulfillment Health"
-          tile={data.fulfillment}
-          render={(issues) => <FulfillmentHealthTile issues={issues} />}
-          testId="tile-fulfillment-health"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("fulfillment")}
-          onRefresh={() => handleRefreshTile("fulfillment")}
-          autoRefreshInterval={120}
-        />
-
-        <TileCard
-          title="Inventory Heatmap"
-          tile={data.inventory}
-          render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
-          testId="tile-inventory-heatmap"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("inventory")}
-          onRefresh={() => handleRefreshTile("inventory")}
-          autoRefreshInterval={300}
-        />
-
-        <TileCard
-          title="CX Escalations"
-          tile={data.escalations}
-          render={(conversations) => (
-            <CXEscalationsTile conversations={conversations} enableModal />
-          )}
-          testId="tile-cx-escalations"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("cx-escalations")}
-          onRefresh={() => handleRefreshTile("cx-escalations")}
-          autoRefreshInterval={30}
-        />
-
-        <TileCard
-          title="SEO & Content Watch"
-          tile={data.seo}
-          render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
-          testId="tile-seo-content"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("seo-content")}
-          onRefresh={() => handleRefreshTile("seo-content")}
-          autoRefreshInterval={600}
-        />
-
-        <TileCard
-          title="Idea Pool"
-          tile={data.ideaPool}
-          render={(ideaPool) => <IdeaPoolTile ideaPool={ideaPool} />}
-          testId="tile-idea-pool"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("idea-pool")}
-          onRefresh={() => handleRefreshTile("idea-pool")}
-          autoRefreshInterval={300}
-        />
-
-        <TileCard
-          title="CEO Agent"
-          tile={data.ceoAgent}
-          render={(stats) => <CEOAgentTile stats={stats} />}
-          testId="tile-ceo-agent"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("ceo-agent")}
-          onRefresh={() => handleRefreshTile("ceo-agent")}
-          autoRefreshInterval={120}
-        />
-
-        <TileCard
-          title="Unread Messages"
-          tile={data.unreadMessages}
-          render={(unread) => <UnreadMessagesTile unread={unread} />}
-          testId="tile-unread-messages"
-          showRefreshIndicator
-          isRefreshing={refreshingTiles.has("unread-messages")}
-          onRefresh={() => handleRefreshTile("unread-messages")}
-          autoRefreshInterval={60}
-        />
-      </div>
+      {/* Drag & Drop enabled tile grid (ENG-014) */}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={tileOrder} strategy={verticalListSortingStrategy}>
+          <div className="occ-tile-grid">
+            {tileOrder.map((tileId) => (
+              <SortableTile key={tileId} id={tileId}>
+                {tileMap[tileId as keyof typeof tileMap]}
+              </SortableTile>
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
     </s-page>
   );
 }

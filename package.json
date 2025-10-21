@@ -50,6 +50,9 @@
     "node": ">=20.10"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@google-analytics/data": "^4.12.1",
     "@googleapis/searchconsole": "^5.0.0",
     "@llamaindex/openai": "^0.4.20",
