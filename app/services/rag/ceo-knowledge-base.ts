@@ -107,10 +107,11 @@ async function initializeQueryEngine() {
   const apiKey = await loadOpenAIKey();
 
   // Configure OpenAI LLM (required for query engine response synthesis)
+  // P4: Temperature set to 0 for fully deterministic responses
   Settings.llm = new OpenAI({
     apiKey,
     model: "gpt-3.5-turbo",
-    temperature: 0.1,
+    temperature: 0, // Fully deterministic (was 0.1)
   });
 
   // Configure OpenAI embeddings (same as build-index.ts)
@@ -135,8 +136,10 @@ async function initializeQueryEngine() {
   });
 
   // Create query engine with optimized settings
+  // P1: Increased similarityTopK from 3 to 5 for better context coverage
+  // P4: Temperature 0 (fully deterministic) for consistency
   const queryEngine = index.asQueryEngine({
-    similarityTopK: 3, // Top 3 most relevant chunks
+    similarityTopK: 5, // Increased from 3 to capture more relevant context
   });
 
   return { queryEngine, index };

@@ -20,7 +20,7 @@ let mockCreateCalled = false;
 let mockFindFirstResult: any = null;
 
 vi.mock("../../../../app/db.server", () => ({
-  db: {
+  default: {
     dashboardFact: {
       create: vi.fn((data) => {
         mockCreateCalled = true;

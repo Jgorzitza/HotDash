@@ -17,7 +17,7 @@ let mockDashboardFacts: any[] = [];
 let mockCreateCalled = false;
 
 vi.mock("../../../../app/db.server", () => ({
-  db: {
+  default: {
     socialPost: {
       findUnique: vi.fn(() => Promise.resolve(mockSocialPost)),
     },

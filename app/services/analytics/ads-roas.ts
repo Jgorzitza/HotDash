@@ -9,8 +9,6 @@
 
 import prisma from "~/db.server";
 
-const db = prisma; // Alias for compatibility
-
 export interface CampaignPerformance {
   campaignId: string;
   campaignName: string;
@@ -93,7 +91,7 @@ export async function calculateCampaignROAS(
   const recommendation = generateRecommendation(performance);
 
   // Store in DashboardFact
-  await db.dashboardFact.create({
+  await prisma.dashboardFact.create({
     data: {
       shopDomain,
       factType: "ads_roas",
@@ -173,7 +171,7 @@ export async function getROASSummary(
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const campaigns = await db.dashboardFact.findMany({
+  const campaigns = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "ads_roas",
@@ -285,7 +283,7 @@ export async function getCampaignPerformance(
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const history = await db.dashboardFact.findMany({
+  const history = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "ads_roas",
@@ -332,7 +330,7 @@ export async function compareCampaigns(
     rank: number;
   }>
 > {
-  const campaigns = await db.dashboardFact.findMany({
+  const campaigns = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "ads_roas",

@@ -9,8 +9,6 @@
 
 import prisma from "~/db.server";
 
-const db = prisma; // Alias for compatibility
-
 export interface KeywordRanking {
   keyword: string;
   position: number;
@@ -62,7 +60,7 @@ export async function trackKeywordRanking(
   const trend = determineTrend(change, previousPosition);
 
   // Store ranking in DashboardFact
-  await db.dashboardFact.create({
+  await prisma.dashboardFact.create({
     data: {
       shopDomain,
       factType: "seo_ranking",
@@ -101,7 +99,7 @@ async function getLatestKeywordRanking(
   keyword: string,
   shopDomain: string
 ): Promise<{ position: number; trackedAt: Date } | null> {
-  const latest = await db.dashboardFact.findFirst({
+  const latest = await prisma.dashboardFact.findFirst({
     where: {
       shopDomain,
       factType: "seo_ranking",
@@ -146,7 +144,7 @@ export async function getSEOImpactAnalysis(
   since.setDate(since.getDate() - days);
 
   // Get all ranking records in the period
-  const rankings = await db.dashboardFact.findMany({
+  const rankings = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "seo_ranking",
@@ -241,7 +239,7 @@ export async function correlateSEOWithContent(
   since.setDate(since.getDate() - days);
 
   // Get SEO rankings with changes
-  const rankings = await db.dashboardFact.findMany({
+  const rankings = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "seo_ranking",
@@ -255,7 +253,7 @@ export async function correlateSEOWithContent(
   });
 
   // Get content update events (stored as decision logs or dashboard facts)
-  const contentUpdates = await db.decisionLog.findMany({
+  const contentUpdates = await prisma.decisionLog.findMany({
     where: {
       shopDomain,
       scope: "content",
@@ -327,7 +325,7 @@ export async function getKeywordHistory(
   const since = new Date();
   since.setDate(since.getDate() - days);
 
-  const rankings = await db.dashboardFact.findMany({
+  const rankings = await prisma.dashboardFact.findMany({
     where: {
       shopDomain,
       factType: "seo_ranking",
