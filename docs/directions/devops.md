@@ -36,7 +36,47 @@ mcp_context7_get-library-docs("/actions/actions", "workflow deployment")
 
 ## ACTIVE TASKS (9h total)
 
-### DEVOPS-002: Staging Deployment Automation (3h) - START NOW
+### DEVOPS-001: P0 DEPLOY PHASE 2-5 CODE TO STAGING (1h) - **URGENT START NOW**
+
+**BLOCKER**: Staging is on v71 (Oct 20 23:13 UTC) - Engineer's Phase 2-5 code NOT deployed
+
+**Requirements**:
+- Deploy latest code from manager-reopen-20251020 branch
+- Verify grading UI loads (CX Escalation Modal with sliders)
+- Verify Phases 3-5 features (tiles, notifications, real-time)
+- Run health checks post-deploy
+
+**MCP Required**: Use Fly MCP tools for deployment
+
+**Commands**:
+```bash
+cd ~/HotDash/hot-dash
+git pull origin manager-reopen-20251020  # Get latest
+fly deploy --app hotdash-staging --remote-only
+fly logs --app hotdash-staging (check for errors)
+curl https://hotdash-staging.fly.dev/health
+```
+
+**Verification**:
+- Navigate to /approvals on staging
+- Open CX Escalation modal
+- Verify grading sliders present (Tone, Accuracy, Policy)
+- Test notifications (toast, banner, browser)
+- Verify all 8 tiles render
+
+**Deliverables**:
+- Deployment complete (new version number)
+- Health checks passing
+- Features verified working
+- Unblocks AI-Customer and Designer for testing
+
+**Time**: 1 hour
+
+**PRIORITY**: P0 - DO THIS FIRST before DEVOPS-002
+
+---
+
+### DEVOPS-002: Staging Deployment Automation (3h)
 
 **Requirements**:
 - Auto-deploy to staging on merge to manager-reopen-*
