@@ -30,8 +30,7 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 **You Can Now**:
 1. ✅ Login to admin: https://hotdash-chatwoot.fly.dev
-   - Email: justin@hotrodan.com
-   - Password: SuperAdmin123!
+   - Credentials: vault/occ/chatwoot/super_admin_staging.env
 2. ✅ Generate API token from Settings → Integrations → API
 3. ✅ Resume SUPPORT-001 (multi-channel testing)
 4. ✅ Execute SUPPORT-002 test scenarios
