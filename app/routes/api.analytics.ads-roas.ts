@@ -46,7 +46,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     distribution: [
       { platform: "Google Ads", spend: 2150, percentage: 50.6 },
       { platform: "Facebook Ads", spend: 1250, percentage: 29.4 },
-      { platform: "Instagram Ads", platform: 850, percentage: 20.0 },
+      { platform: "Instagram Ads", spend: 850, percentage: 20.0 },
     ],
   };
 
