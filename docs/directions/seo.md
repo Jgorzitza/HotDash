@@ -1,4 +1,4 @@
-# SEO Direction v6.0
+# SEO Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,58 +9,72 @@ git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T22:00Z  
-**Version**: 6.0  
-**Status**: ACTIVE — SEO Automation + Content Optimization
-
----
+**Effective**: 2025-10-21T17:18Z  
+**Version**: 7.0  
+**Status**: ACTIVE — Content Optimization + Core Web Vitals (Maintenance)
 
 ## ✅ SEO-007 THROUGH 010 COMPLETE
-- ✅ Automated SEO audits, cannibalization, schema validation, Search Console
-**Files**: 7 created (1,965 lines), commit 2067f2e
-**User Fix**: Search Console import (CommonJS/ESM compatibility)
+- ✅ Automated audits, cannibalization, schema, Search Console (1,965 lines)
+
+## 🔄 ACTIVE TASKS: Optimization Support (12h) — MAINTENANCE MODE
+
+### SEO-018: Automated Content Optimization (3h) — START NOW
+
+**Objective**: Content quality analysis and recommendations
+
+**Service**: `app/services/seo/content-optimizer.ts` (enhance existing)
+- Flesch reading ease score
+- Keyword density (target 1-3%)
+- Heading structure
+- Internal linking
+- Image alt text
+- SEO score 0-100
+
+**MCP Required**: Context7 → TypeScript text analysis
+
+**Acceptance**: ✅ Service implemented, ✅ Tests passing
 
 ---
 
-## ACTIVE TASKS (12h total)
+### SEO-019: Core Web Vitals Monitoring (3h)
 
-### SEO-011: Automated Content Optimization (3h) - START NOW
-Analyze content and provide optimization recommendations
-- Flesch reading ease score for readability
-- Keyword density calculation (target 1-3%)
-- Heading structure analysis
-- Internal linking analysis
-- Image alt text checking
-- Overall SEO score (0-100) with grade (A-F)
-**MCP**: TypeScript text analysis, Web search Flesch formula
+**Objective**: Track CWV using PageSpeed Insights API
 
-### SEO-012: Competitor Analysis Service (2h)
-Analyze competitor SEO strategies
-- Track competitor keyword rankings
-- Content metrics comparison
-- Identify competitive opportunities
-**MCP**: Web search competitor analysis methods
-
-### SEO-013: Core Web Vitals Monitoring (3h)
-Track Core Web Vitals using PageSpeed Insights API
+**Service**: `app/services/seo/core-web-vitals.ts` (NEW)
 - LCP, FID, CLS tracking
-- Performance optimization recommendations
-- Daily monitoring cron job
-**MCP**: Web search PageSpeed Insights API
+- Daily monitoring cron
+- Performance recommendations
 
-### SEO-014: Internal Linking Recommendations (2h)
-Analyze internal linking structure
-- Identify orphan pages (no incoming links)
-- Suggest relevant links based on content similarity
+**MCP Required**: Web search → PageSpeed Insights API
+
+**Acceptance**: ✅ CWV monitoring works, ✅ Cron scheduled
+
+---
+
+### SEO-020: Internal Linking Service (2h)
+
+**Objective**: Optimize internal link structure
+
+**Service**: `app/services/seo/internal-linking.ts` (NEW)
+- Identify orphan pages
+- Suggest relevant links (content similarity)
 - Page authority calculation
-**MCP**: TypeScript graph algorithms
 
-### SEO-015: Site Health Monitoring (included in 013)
+**MCP Required**: Context7 → TypeScript graph algorithms
 
-### SEO-016: SEO Reporting Automation (1h)
-Weekly SEO reports (rankings, CWV, health, opportunities)
+**Acceptance**: ✅ Linking service implemented, ✅ Tests passing
 
-### SEO-017: Testing + Documentation (2h)
-140+ integration tests, comprehensive docs
+---
 
-**START NOW**: Web search for Flesch formula + PageSpeed API, implement content optimizer
+### SEO-021: Testing + Documentation (4h)
+
+**Objective**: 60+ tests, comprehensive docs
+
+**Acceptance**: ✅ Tests passing, ✅ Docs complete
+
+**START NOW**: Pull Context7, implement content optimizer
+
+---
+
+## 🔧 MCP Tools: Context7 (first), Web search (PageSpeed API only)
+## 🚨 Evidence: JSONL + heartbeat required

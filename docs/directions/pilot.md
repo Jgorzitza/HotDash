@@ -1,4 +1,4 @@
-# Pilot Direction v6.0
+# Pilot Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,56 +9,67 @@ git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T22:00Z  
-**Version**: 6.0  
-**Status**: ACTIVE — Phase 3-8 Comprehensive Testing
+**Effective**: 2025-10-21T17:24Z  
+**Version**: 7.0  
+**Status**: ACTIVE — Phase 9-12 Smoke Testing (Reactive)
 
----
-
-## ✅ PILOT-002 COMPLETE (2/3 modals)
+## ✅ PILOT-002 COMPLETE
 - ✅ CX + Sales modals PASSED
-- ❌ Inventory modal NOT FOUND (Engineer needs to implement trigger)
-- 🎉 Previous blocker RESOLVED (React errors no longer block modals)
+- ⚠️ Inventory modal NOT FOUND
 
-**Issues**: P1 (inventory modal), P2 (Escape key), React errors (low priority)
+## 🔄 ACTIVE TASKS: Phase 9-12 Smoke Testing (12h) — REACTIVE
+
+### PILOT-012: Phase 9 PII Card Smoke Test (2h)
+
+**Prerequisites**: Engineer completes Phase 9
+
+**Test**: PII Card, CX modal split UI, redaction working
+
+**MCP Required**: Chrome DevTools MCP (snapshots, screenshots)
+
+**Acceptance**: ✅ Smoke test PASSED
 
 ---
 
-## ACTIVE TASKS (12h total)
+### PILOT-013: Phase 10 Vendor/ALC Smoke Test (2h)
 
-### PILOT-003: Test Phase 3 Tiles (2h) - START NOW
-Test 3 new tiles (Idea Pool, CEO Agent, Unread Messages)
-- Verify data loads, modals open, responsive
-**MCP**: Chrome DevTools MCP (snapshots, clicks, screenshots - MANDATORY)
+**Prerequisites**: Phase 10 complete
 
-### PILOT-004: Test Phase 4 Notification System (2h)
-Test toast, banner, browser notifications, notification center
-**MCP**: Chrome DevTools MCP (minimum 15 snapshots)
+**Test**: Vendor dropdown, receiving workflow, ALC calculation
 
-### PILOT-005: Test Phase 5 Real-Time Features (2h)
-Test SSE, live badge, connection indicator, tile refresh indicators
-**MCP**: Chrome DevTools MCP, network emulation
+**Acceptance**: ✅ Smoke test PASSED
 
-### PILOT-006: Test Phase 6 Settings Page (2h)
-Test all 4 tabs, drag & drop, theme selector, preferences
-**MCP**: Chrome DevTools MCP (minimum 20 interactions)
+---
 
-### PILOT-007: Test Phase 7-8 Analytics UI (2h reactive)
-Test 4 analytics tiles + modals with charts
-**MCP**: Chrome DevTools MCP (when Engineer completes)
+### PILOT-014: Phase 11 Attribution Smoke Test (2h)
 
-### PILOT-008: Comprehensive Browser Testing (2h)
-Test on Chrome, Firefox, Safari, Edge
-- Browser compatibility report
+**Prerequisites**: Phase 11 complete
 
-### PILOT-009: Mobile Device Testing (2h)
-Test on iOS + Android devices
-- Touch interactions, responsive layouts
+**Test**: Action links, GA4 tracking, attribution working
 
-### PILOT-010: Automated E2E Test Suite (2h)
-Create Playwright E2E tests (10+ critical flows)
-**MCP**: Context7 Playwright
+**Acceptance**: ✅ Smoke test PASSED
 
-### PILOT-011: Documentation (included)
+---
 
-**START NOW**: Use Chrome DevTools MCP to access staging, test Phase 3 tiles
+### PILOT-015: Phase 12 CX Loop Smoke Test (1h)
+
+**Prerequisites**: Phase 12 complete
+
+**Test**: Themes detected, Actions generated
+
+**Acceptance**: ✅ Smoke test PASSED
+
+---
+
+### PILOT-016: Browser/Mobile Testing (5h)
+
+**Objective**: Test on all browsers + devices
+
+**Acceptance**: ✅ Compatibility report complete
+
+**START NOW**: Monitor Engineer progress, prepare Chrome DevTools MCP
+
+---
+
+## 🔧 MCP Tools: Chrome DevTools MCP (MANDATORY for all testing)
+## 🚨 Evidence: Screenshots + snapshots required

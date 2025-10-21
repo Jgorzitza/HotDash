@@ -1,4 +1,4 @@
-# Support Direction v6.0
+# Support Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,56 +9,52 @@ git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T22:00Z  
-**Version**: 6.0  
-**Status**: ACTIVE — Chatwoot Advanced Features
+**Effective**: 2025-10-21T17:22Z  
+**Version**: 7.0  
+**Status**: ACTIVE — CX Workflow Documentation (Maintenance)
+
+## ✅ SUPPORT-001 COMPLETE
+- ✅ Email + Live Chat tested (85 conversations, 1,500+ lines docs)
+- ⚠️ SMS blocked on Twilio credentials
+
+## 🔄 ACTIVE TASKS: CX Workflow Docs (8h) — MAINTENANCE MODE
+
+### SUPPORT-008: Growth Engine CX Workflow Documentation (8h) — START NOW
+
+**Objective**: Document Growth Engine CX handoff patterns
+
+**Deliverables**:
+
+1. **Customer-Front Agent Workflow** (2h):
+   - Triage → transfer_to_accounts OR transfer_to_storefront
+   - Sub-agent execution
+   - PII Broker redaction
+   - HITL approval
+
+2. **PII Card Usage Guide** (2h):
+   - When to use PII Card vs public reply
+   - Security best practices
+   - Operator training materials
+
+3. **Grading Best Practices** (2h):
+   - How to grade (tone/accuracy/policy)
+   - Examples of 1-5 scores
+   - Impact of grading on AI learning
+
+4. **CX SLA Documentation** (2h):
+   - 15-minute review SLA (business hours)
+   - Escalation procedures
+   - Performance tracking
+
+**Location**: `docs/support/growth-engine-cx-workflows.md`
+
+**MCP Required**: None (documentation)
+
+**Acceptance**: ✅ 4 workflow docs created (2,000+ lines total)
+
+**START NOW**: Document Customer-Front Agent workflow
 
 ---
 
-## ✅ SUPPORT-001 COMPLETE (2/3 channels)
-- ✅ Email channel fully tested (85 conversations)
-- ✅ Live chat widget verified
-- ❌ SMS blocked on Twilio credentials
-**Files**: 3 docs (1,500+ lines), 7 screenshots
-
----
-
-## ACTIVE TASKS (10h total)
-
-### SUPPORT-002: Deploy Live Chat Widget to Staging (1h) - START NOW
-Deploy Chatwoot widget to staging site
-- Add widget code to app/root.tsx
-- Configure widget appearance (Hot Rod AN branding)
-- Test real-time messaging
-- Measure latency (<2s target)
-**MCP**: None (deployment), but verify with Fly MCP
-
-### SUPPORT-003: Chatwoot Automation Rules (2h)
-Create automation rules
-- Auto-assign based on keywords
-- Auto-tag conversations (CX, inventory, orders)
-- Auto-reply after hours
-- Programmatic automation (sentiment, question classification)
-**MCP**: Web search Chatwoot automation API
-
-### SUPPORT-004: Conversation Analytics Service (2h)
-Analyze Chatwoot conversations
-- Response time, resolution time, CSAT
-- Common issues identification
-- Peak hours analysis
-**MCP**: Web search Chatwoot API, TypeScript analytics
-
-### SUPPORT-005: Chatwoot Webhook Integration (2h)
-Webhook endpoints for Chatwoot events
-- message_created, conversation_resolved, conversation_opened
-- Signature verification (HMAC-SHA256)
-- Trigger automations, notify AI-Customer
-**MCP**: Web search Chatwoot webhooks, TypeScript HMAC
-
-### SUPPORT-006: Support Reporting Automation (2h)
-Daily/weekly support reports
-
-### SUPPORT-007: Testing + Documentation (3h)
-85+ integration tests, comprehensive docs
-
-**START NOW**: Add widget code to app/root.tsx, deploy, test
+## 🔧 MCP Tools: None for docs (pure documentation work)
+## 🚨 Evidence: Document paths logged in feedback

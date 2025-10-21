@@ -1,4 +1,4 @@
-# QA Direction v6.1 - P0 SECRET REMEDIATION
+# QA Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,287 +9,357 @@ git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T22:30Z  
-**Version**: 6.1 (EMERGENCY UPDATE)  
-**Status**: 🚨 P0 ACTIVE — Secret Exposure Remediation
+**Effective**: 2025-10-21T17:05Z  
+**Version**: 7.0  
+**Status**: ACTIVE — Phase 9-12 Testing (Growth Engine)
 
 ---
 
-## 🚨 P0 SECURITY INCIDENT - IMMEDIATE ACTION REQUIRED
+## ✅ QA-001 COMPLETE
 
-**GitGuardian Detected 3 Secrets in Commits**:
-1. Chatwoot Widget Token (commit 018383a) - exposed in commit message
-2. PostgreSQL URI (commit 6f5b563) - exposed in commit/files
-3. PostgreSQL URI (commit 6f5b563) - duplicate detection
-
-**Your Mission**: Remediate secret exposure, prevent future incidents
+**Completed** (from feedback/qa/2025-10-21.md):
+- ✅ QA-001: Code verification (React Router 7, Shopify GraphQL, security, TypeScript)
+- **Found**: 1 TypeScript error (`app/services/seo/content-optimizer.ts:549` - unterminated string)
+- **Pending**: Engineer fix required
 
 ---
 
-## ✅ QA-001 COMPLETE (from feedback)
-**Found Critical Issues**:
-- ⚠️ TypeScript error: `app/services/seo/content-optimizer.ts:549` (unterminated string)
-- ✅ React Router 7: Compliant
-- ✅ Shopify GraphQL: All queries valid
-- ✅ Security: 8.5/10 (2 warnings: CSP headers, Chatwoot script)
+## 🎯 NEW: Growth Engine Architecture (Effective 2025-10-21)
 
-**Continue QA-002 through QA-008 AFTER P0 remediation**
+**Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
+
+### Security & Evidence Requirements (CI Merge Blockers)
+1. **MCP Evidence JSONL** (code changes): `artifacts/qa/<date>/mcp/<tool>.jsonl`
+2. **Heartbeat NDJSON** (tasks >2h): `artifacts/qa/<date>/heartbeat.ndjson` (15min max staleness)
+3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
+4. **PR Template**: Must include MCP Evidence + Heartbeat + Dev MCP Check sections
+
+**See**: `.cursor/rules/10-growth-engine-pack.mdc` for full requirements
 
 ---
 
-## 🚨 P0 TASKS (4h) - START IMMEDIATELY
+## 🚀 ACTIVE TASKS: Phase 9-12 Testing (14 hours) — NO STANDBY
 
-### QA-INCIDENT-001: Comprehensive Secret Scan (1h) - START NOW
+**Objective**: Validate all Growth Engine features as agents complete implementation
 
-**Requirements**:
-- Scan ALL commits since 2025-10-20 for secrets
-- Check commit messages AND file contents
-- Identify all exposed secrets
-- Categorize by severity
+---
 
-**Implementation**:
-```bash
-# Scan last 100 commits with Gitleaks
-git log -100 --pretty=format:"%H" | while read commit; do
-  echo "Scanning commit: $commit"
-  git show $commit | gitleaks detect --no-git --verbose
-done > secret-scan-results.txt
+### QA-019: Phase 9 PII Card Testing (3h)
 
-# Scan commit messages specifically
-git log -100 --pretty=format:"%H %s %b" | grep -E "(token|key|password|secret|api_key|DATABASE_URL)" > commit-message-secrets.txt
+**Prerequisites**: Engineer completes ENG-029, 030, 031 + Designer validates DES-017
 
-# Check specific commits reported by GitGuardian
-git show 018383a | grep -i "token"
-git show 6f5b563 | grep -i "postgresql\|database_url"
-```
+**Test Areas**:
 
-**Deliverable**: `artifacts/qa/secret-exposure-scan-2025-10-21.md`
-- All secrets found (commit hash, location, type)
-- Severity classification (critical/high/medium/low)
-- Impact assessment
-- Affected services
+1. **PII Redaction Utility** (30min):
+   - Test email masking: `justin@hotrodan.com` → `j***@h***.com` ✅
+   - Test phone masking: `555-123-4567` → `***-***-4567` ✅
+   - Test address masking: City/region/country + postal prefix only ✅
+   - Test order ID masking: Last 4 only ✅
+   - Test tracking masking: Carrier + last event (no full URL) ✅
+   - Edge cases: Empty strings, null values, special characters
+
+2. **PII Card Component** (1h):
+   - Warning banner visible and prominent ✅
+   - Full customer details visible (not masked) ✅
+   - Copy buttons functional (email, phone, address) ✅
+   - Tracking URL opens in new tab ✅
+   - Line items table renders correctly ✅
+   - Accessibility: Keyboard nav, screen reader, ARIA labels ✅
+
+3. **CX Escalation Modal Split UI** (1h):
+   - Public reply shows redacted data only ✅
+   - PII Card shows full details ✅
+   - Validation catches unmasked PII in draft ✅
+   - Approve button disabled if PII detected ✅
+   - Modal accessible (focus management, Escape closes) ✅
+
+4. **Security** (30min):
+   - PII Card NOT sent to customer (verify API payloads) ✅
+   - Public reply contains NO full PII ✅
+   - Validation logic cannot be bypassed ✅
+
+**Deliverable**: `artifacts/qa/phase-9-pii-card-test-results.md`
+
+**MCP Required**: 
+- Shopify Dev MCP → Polaris component validation
+- Context7 → React testing patterns
 
 **Acceptance**:
-- [ ] All commits scanned (last 100)
-- [ ] Commit messages scanned separately
-- [ ] All secrets catalogued
-- [ ] Report created with remediation priorities
-
-**Time**: 1 hour
+- ✅ All test cases executed
+- ✅ No PII leaks found
+- ✅ All accessibility tests passing
+- ✅ Issues documented with severity
+- ✅ Test report comprehensive
 
 ---
 
-### QA-INCIDENT-002: Secret Exposure Report (1h)
+### QA-020: Phase 10 Vendor/ALC Testing (4h)
 
-**Requirements**:
-- Document all secret incidents found
-- Provide remediation steps for each secret
-- Create timeline of exposure
-- Estimate blast radius
+**Prerequisites**: Data (DATA-017, 018), Inventory (INVENTORY-016, 017, 018), Integrations (INTEGRATIONS-012) complete
 
-**Deliverable**: `artifacts/qa/secret-exposure-report-2025-10-21.md`
+**Test Areas**:
 
-**Content**:
-1. **Executive Summary**: Number of secrets, severity, impact
-2. **Incident Timeline**: When exposed, when detected, remediation status
-3. **Secret Inventory**:
-   - Chatwoot widget token: ieNpPnBaZXd9joxoeMts7qTA
-   - PostgreSQL URI: [details from commit 6f5b563]
-   - Any additional secrets found in scan
-4. **Impact Assessment**:
-   - Chatwoot: Medium risk (widget token, not API token)
-   - Database: CRITICAL risk (full database access if credentials exposed)
-5. **Remediation Steps** (for Manager):
-   - Revoke each secret
-   - Rotate credentials
-   - Update services
-   - Verify no unauthorized access
-6. **Prevention Recommendations**:
-   - Pre-commit hooks
-   - Commit message sanitization
-   - Agent training on commit security
-   - Regular secret scans
+1. **Vendor Master** (1h):
+   - Create vendor with all fields ✅
+   - Reliability score calculated correctly ✅
+   - Multi-SKU mapping works ✅
+   - Vendor dropdown shows reliability + lead time + cost ✅
+   - Soft delete works (is_active = FALSE) ✅
+
+2. **ALC Calculation** (1h):
+   - Test weighted average (includes previous inventory) ✅
+   - Test freight distribution BY WEIGHT ✅
+   - Test duty distribution BY WEIGHT ✅
+   - Test cost history snapshots (before/after) ✅
+   - Edge cases: First receipt (no previous), zero weight
+
+3. **Shopify Cost Sync** (1h):
+   - ALC pushed to Shopify `inventoryItem.unitCost` ✅
+   - Shopify admin shows correct cost ✅
+   - Batch updates work (multiple variants) ✅
+   - Rate limiting enforced (500ms between requests) ✅
+   - Error handling (userErrors, network failures) ✅
+
+4. **Receiving Workflow** (1h):
+   - PO receipt form submits correctly ✅
+   - Item cost prefilled from PO (editable) ✅
+   - Freight/duty inputs work ✅
+   - ALC calculated correctly ✅
+   - Vendor reliability updated ✅
+   - Decision logged ✅
+
+**Deliverable**: `artifacts/qa/phase-10-vendor-alc-test-results.md`
 
 **Acceptance**:
-- [ ] Report comprehensive (all secrets documented)
-- [ ] Remediation steps clear and actionable
-- [ ] Impact assessment realistic
-- [ ] Prevention measures specified
-
-**Time**: 1 hour
+- ✅ All test cases executed
+- ✅ ALC calculations verified accurate
+- ✅ Shopify sync verified
+- ✅ Test report comprehensive
 
 ---
 
-### QA-INCIDENT-003: Implement Commit Message Sanitization (1h)
+### QA-021: Phase 10 CI Guards Testing (2h)
 
-**Requirements**:
-- Create pre-commit hook to scan commit messages
-- Block commits with secrets in messages
-- Alert developer immediately
-- Document commit message security policy
+**Prerequisites**: DevOps completes DEVOPS-014
 
-**Implementation**:
+**Test Areas**:
 
-**File**: `.git/hooks/prepare-commit-msg` (new, executable)
-```bash
-#!/bin/bash
-# Scan commit message for secrets before committing
+1. **guard-mcp** (MCP Evidence Verification) (30min):
+   - Create PR with missing MCP evidence → CI fails ✅
+   - Create PR with invalid JSONL → CI fails ✅
+   - Create PR with valid MCP evidence → CI passes ✅
+   - Create PR with "non-code change" → CI passes ✅
+   - Error messages clear and actionable ✅
 
-COMMIT_MSG_FILE=$1
+2. **idle-guard** (Heartbeat Verification) (30min):
+   - Create PR with stale heartbeat (>15min) → CI fails ✅
+   - Create PR with fresh heartbeat → CI passes ✅
+   - Create PR with "<2h single session" → CI passes ✅
+   - Error messages clear ✅
 
-# Run gitleaks on commit message
-if gitleaks protect --commit-msg-file="$COMMIT_MSG_FILE" --verbose; then
-  echo "✅ Commit message clean (no secrets detected)"
-else
-  echo "❌ BLOCKED: Secrets detected in commit message!"
-  echo "Remove secrets from commit message and try again."
-  echo "Use environment variables or vault/ for credentials."
-  exit 1
-fi
-```
+3. **dev-mcp-ban** (Production Safety) (30min):
+   - Add Dev MCP import to `app/test.ts` → CI fails ✅
+   - Remove import → CI passes ✅
+   - Dev MCP in `scripts/` → CI passes (allowed) ✅
+   - Error message clear and actionable ✅
 
-**File**: `.git/hooks/commit-msg` (new, executable)
-```bash
-#!/bin/bash
-# Additional commit message validation
+4. **Integration** (30min):
+   - All 3 guards run in deploy-staging.yml ✅
+   - Guards run BEFORE deployment ✅
+   - Deployment blocked if any guard fails ✅
 
-COMMIT_MSG_FILE=$1
-
-# Check for common secret patterns
-if grep -qE "(token|password|api_key|secret|DATABASE_URL|postgresql://).*[A-Za-z0-9]{20,}" "$COMMIT_MSG_FILE"; then
-  echo "❌ BLOCKED: Potential secret detected in commit message"
-  echo "Patterns found: token, password, api_key, DATABASE_URL, etc."
-  echo "Remove credentials and use generic descriptions instead."
-  exit 1
-fi
-
-echo "✅ Commit message validated"
-```
-
-**Make executable**:
-```bash
-chmod +x .git/hooks/prepare-commit-msg
-chmod +x .git/hooks/commit-msg
-```
-
-**Documentation**: `docs/COMMIT_MESSAGE_SECURITY.md` (new)
-- What NOT to include in commit messages
-- How to reference credentials (use generic terms)
-- Examples of safe vs unsafe commit messages
+**Deliverable**: `artifacts/qa/phase-10-ci-guards-test-results.md`
 
 **Acceptance**:
-- [ ] Pre-commit hook created and executable
-- [ ] Commit message hook created
-- [ ] Hooks block commits with secrets
-- [ ] Documentation created
-- [ ] Tested with sample secret (should block)
-
-**Time**: 1 hour
+- ✅ All 3 guards tested
+- ✅ All test cases passing
+- ✅ Error messages verified
+- ✅ Integration with deploy workflow verified
 
 ---
 
-### QA-INCIDENT-004: Secret Scanning Runbook (1h)
+### QA-022: Phase 11 Bundles-BOM Testing (2h)
 
-**Requirements**:
-- Create runbook for responding to secret exposure incidents
-- Include: Detection, assessment, remediation, prevention
-- Document tools (Gitleaks, GitGuardian, BFG Repo Cleaner)
-- Create incident response checklist
+**Prerequisites**: Integrations completes INTEGRATIONS-013, 014
 
-**Deliverable**: `docs/runbooks/secret-exposure-incident-response.md`
+**Test Areas**:
 
-**Content**:
-1. **Incident Detection**: How secrets are detected (GitGuardian, Gitleaks, manual review)
-2. **Severity Classification**: Critical/High/Medium/Low based on secret type
-3. **Immediate Response** (< 1 hour):
-   - Revoke/rotate exposed secret
-   - Verify no unauthorized access
-   - Update services with new credentials
-4. **Git History Cleanup** (< 24 hours):
-   - Rewrite commit messages (BFG or git rebase)
-   - Force push (with approval)
-   - Notify team
-5. **Prevention Measures**:
-   - Pre-commit hooks
-   - Commit message sanitization
-   - Regular secret scans
-   - Agent training
-6. **Tools Reference**:
-   - Gitleaks usage
-   - GitGuardian setup
-   - BFG Repo Cleaner guide
-7. **Incident Response Checklist**: Step-by-step actions
+1. **Metafield Definitions** (30min):
+   - BOM components metafield created ✅
+   - is_component metafield created ✅
+   - JSON schema validation works ✅
+
+2. **Virtual Bundle Stock** (30min):
+   - Calculate stock from BOM components ✅
+   - Limiting component identified correctly ✅
+   - Stock updates when component sold ✅
+
+3. **Component Decrement** (30min):
+   - Bundle sold → components decremented ✅
+   - Correct variants decremented (parameterized) ✅
+   - Qty correct (component_qty × bundle_qty) ✅
+
+4. **Backward Compatibility** (30min):
+   - Bundles with tags still work (picker payouts) ✅
+   - Bundles with metafields work (inventory) ✅
+   - Dual system works (tags + metafields) ✅
+
+**Deliverable**: `artifacts/qa/phase-11-bundles-bom-test-results.md`
 
 **Acceptance**:
-- [ ] Runbook created (600+ lines)
-- [ ] All incident response steps documented
-- [ ] Tools usage documented
-- [ ] Checklist provided
-- [ ] Manager can execute remediation using runbook
-
-**Time**: 1 hour
+- ✅ All test cases executed
+- ✅ Virtual stock calculation verified
+- ✅ Component decrement verified
+- ✅ Backward compat verified
 
 ---
 
-## AFTER P0 REMEDIATION - Resume QA-002 Through QA-008
+### QA-023: Phase 11 Action Attribution Testing (2h)
 
-**Original Tasks** (10h) - RESUME after P0 complete:
-- QA-002: Phase 3-8 Feature Testing (3h)
-- QA-003: Performance Testing Suite (2h)
-- QA-004: Security & Vulnerability Testing (2h)
-- QA-005: API Contract Testing (2h)
-- QA-006: Accessibility Testing (2h)
-- QA-007: Test Automation Infrastructure
-- QA-008: QA Documentation
+**Prerequisites**: DevOps (DEVOPS-015), Engineer (ENG-032, 033), Analytics (ANALYTICS-017) complete
 
-**Total Work**: 4h P0 remediation + 10h original tasks = 14h
+**Test Areas**:
 
----
+1. **GA4 Custom Dimension** (30min):
+   - Dimension created in Property 339826228 ✅
+   - Event scope configured ✅
+   - Test event visible in DebugView ✅
 
-## Work Protocol
+2. **Client Tracking** (30min):
+   - Action link includes `hd_action` param ✅
+   - Session storage persists action_key ✅
+   - gtag emits `hd_action_key` on page_view ✅
+   - gtag emits on add_to_cart, begin_checkout, purchase ✅
 
-**1. P0 PRIORITY**: Secret remediation BEFORE all other tasks
+3. **Attribution Service** (30min):
+   - Query GA4 Data API for action_key ✅
+   - Returns sessions, revenue, conversions ✅
+   - Updates action record with realized ROI ✅
+   - Re-ranks Action Queue (realized ROI priority) ✅
 
-**2. MCP Tools** (MANDATORY):
-- Web Search: GitGuardian best practices, BFG Repo Cleaner, git security
-- Shopify Dev MCP: GraphQL validation (when resume QA-002)
-- Chrome DevTools MCP: UI testing (when resume)
+4. **End-to-End** (30min):
+   - Approve action → action_key generated ✅
+   - Click link → lands on page with param ✅
+   - Make purchase → tracked in GA4 ✅
+   - Nightly job updates attribution ✅
+   - Action Queue re-ranked ✅
 
-**3. Reporting (Every 1 hour during P0 in feedback/qa/2025-10-21.md)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — QA: P0 Secret Remediation Progress
+**Deliverable**: `artifacts/qa/phase-11-action-attribution-test-results.md`
 
-**Working On**: QA-INCIDENT-001 (Comprehensive Secret Scan)
-**Progress**: 100% - All 100 commits scanned, 3 secrets confirmed
-
-**Evidence**:
-- Scan results: artifacts/qa/secret-scan-results.txt
-- Secrets found: 3 (Chatwoot widget token, 2x PostgreSQL URI)
-- Commits affected: 018383a, 6f5b563
-- Report: artifacts/qa/secret-exposure-scan-2025-10-21.md (400 lines)
-- Additional secrets: None found beyond GitGuardian alerts
-
-**Blockers**: None
-**Next**: QA-INCIDENT-002 (Secret Exposure Report)
-```
+**Acceptance**:
+- ✅ All test cases executed
+- ✅ GA4 tracking verified in DebugView
+- ✅ Attribution calculation verified
+- ✅ End-to-end flow works
 
 ---
 
-## Critical Reminders
+### QA-024: Phase 12 CX → Product Loop Testing (1h)
 
-**DO**:
-- ✅ Treat as P0 CRITICAL (drop all other work)
-- ✅ Scan commits thoroughly
-- ✅ Document ALL findings
-- ✅ Provide clear remediation steps
-- ✅ Use Web Search for best practices
+**Prerequisites**: AI-Knowledge (AI-KNOWLEDGE-017, 018), Product (PRODUCT-015) complete
 
-**DO NOT**:
-- ❌ Delay remediation (time-sensitive)
-- ❌ Skip any commits in scan
-- ❌ Assume only 3 secrets (scan comprehensively)
-- ❌ Resume normal QA work until P0 resolved
+**Test Areas**:
+
+1. **PII Sanitization** (15min):
+   - Conversations sanitized (NO PII) ✅
+   - Embeddings contain NO PII ✅
+   - All 5 PII types removed (email, phone, address, postal, CC) ✅
+
+2. **Theme Detection** (15min):
+   - Recurring themes detected (min 3 occurrences) ✅
+   - Product mentions extracted ✅
+   - Similarity search works ✅
+
+3. **Action Generation** (15min):
+   - Themes converted to Action cards ✅
+   - Draft copy generated (templates correct) ✅
+   - Evidence included (customer queries) ✅
+
+4. **End-to-End** (15min):
+   - Nightly job runs ✅
+   - Actions added to queue ✅
+   - Operator can approve/reject ✅
+
+**Deliverable**: `artifacts/qa/phase-12-cx-product-loop-test-results.md`
+
+**Acceptance**:
+- ✅ All test cases executed
+- ✅ NO PII in embeddings verified
+- ✅ Theme detection working
+- ✅ Action generation working
 
 ---
 
-**START NOW**: Scan commits 018383a and 6f5b563, then scan all recent commits for additional secrets
+## 📋 Acceptance Criteria (All Tasks)
+
+### Phase 9-12 Testing (14h)
+- ✅ QA-019: Phase 9 PII Card testing (3h)
+- ✅ QA-020: Phase 10 Vendor/ALC testing (4h)
+- ✅ QA-021: Phase 10 CI Guards testing (2h)
+- ✅ QA-022: Phase 11 Bundles-BOM testing (2h)
+- ✅ QA-023: Phase 11 Action Attribution testing (2h)
+- ✅ QA-024: Phase 12 CX → Product Loop testing (1h)
+- ✅ All test reports comprehensive
+- ✅ All issues documented with severity
+- ✅ All test evidence saved to artifacts/
+
+---
+
+## 🔧 Tools & Resources
+
+### MCP Tools (MANDATORY)
+1. **Shopify Dev MCP**: For Polaris + Shopify testing
+   - Validate components
+   - Test GraphQL mutations
+
+2. **Context7 MCP**: For library patterns
+   - React testing patterns
+   - Prisma query testing
+
+3. **Chrome DevTools MCP**: For UI testing
+   - Screenshots
+   - Accessibility audit
+
+4. **Web Search**: LAST RESORT ONLY
+
+### Evidence Requirements (CI Merge Blockers)
+1. **MCP Evidence JSONL**: `artifacts/qa/<date>/mcp/phase-9-12-testing.jsonl`
+2. **Heartbeat NDJSON**: `artifacts/qa/<date>/heartbeat.ndjson` (append every 15min if >2h)
+3. **Test Reports**: Save all to `artifacts/qa/`
+4. **PR Template**: Fill out all sections
+
+---
+
+## 🎯 Execution Order
+
+**Reactive (Based on Agent Completion)**:
+
+1. **QA-019**: Phase 9 PII Card Testing (3h) → When Engineer + Designer complete
+2. **QA-020**: Phase 10 Vendor/ALC Testing (4h) → When Data + Inventory + Integrations complete
+3. **QA-021**: Phase 10 CI Guards Testing (2h) → When DevOps completes DEVOPS-014
+4. **QA-022**: Phase 11 Bundles-BOM Testing (2h) → When Integrations completes INTEGRATIONS-013, 014
+5. **QA-023**: Phase 11 Action Attribution Testing (2h) → When DevOps + Engineer + Analytics complete
+6. **QA-024**: Phase 12 CX Loop Testing (1h) → When AI-Knowledge + Product complete
+
+**Total**: 14 hours (spread across Phases 9-12)
+
+**Expected Output**:
+- 6 comprehensive test reports (~300-500 lines each)
+- 100+ test cases executed
+- All issues documented with severity
+- Evidence saved to artifacts/
+
+---
+
+## 🚨 Critical Reminders
+
+1. **NO IDLE**: Start testing immediately when prerequisites complete
+2. **MCP FIRST**: Pull docs BEFORE testing
+3. **Evidence**: Create `artifacts/qa/2025-10-21/` and save all test reports
+4. **Thorough**: Test ALL cases (happy path + edge cases + error handling)
+5. **Security Priority**: PII testing is CRITICAL (verify NO leaks)
+6. **Feedback**: Update `feedback/qa/2025-10-21.md` every 2 hours
+
+**Questions or blockers?** → Escalate immediately in feedback
+
+**Let's test! ✅**
