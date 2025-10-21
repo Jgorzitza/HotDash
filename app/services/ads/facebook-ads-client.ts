@@ -129,7 +129,7 @@ export class FacebookAdsClient {
 
         if (!response.ok) {
           console.error(`Failed to fetch insights for campaign ${campaignId}: ${response.statusText}`);
-          continue; // Skip this campaign and continue with others
+          continue;
         }
 
         const data = await response.json();
@@ -138,7 +138,7 @@ export class FacebookAdsClient {
           continue;
         }
 
-        const insight = data.data[0]; // First row is summary
+        const insight = data.data[0];
 
         // Extract conversions from actions array
         let conversions = 0;
@@ -158,7 +158,7 @@ export class FacebookAdsClient {
             (a: any) => a.action_type === "purchase" || a.action_type === "offsite_conversion"
           );
           if (purchaseValue) {
-            conversionValue = Math.round(parseFloat(purchaseValue.value) * 100); // Convert to cents
+            conversionValue = Math.round(parseFloat(purchaseValue.value) * 100);
           }
         }
 
@@ -182,7 +182,6 @@ export class FacebookAdsClient {
         });
       } catch (error) {
         console.error(`Error fetching insights for campaign ${campaignId}:`, error);
-        // Continue with other campaigns
       }
     }
 
@@ -199,8 +198,8 @@ export class FacebookAdsClient {
     name: string;
     objective: string;
     status: "ACTIVE" | "PAUSED";
-    dailyBudget?: number; // cents
-    lifetimeBudget?: number; // cents
+    dailyBudget?: number;
+    lifetimeBudget?: number;
   }): Promise<FacebookCampaign> {
     try {
       const url = `${this.baseUrl}/act_${this.config.accountId}/campaigns`;
@@ -213,7 +212,7 @@ export class FacebookAdsClient {
       };
 
       if (campaignData.dailyBudget) {
-        body.daily_budget = (campaignData.dailyBudget * 100).toString(); // Convert cents to Facebook's format
+        body.daily_budget = (campaignData.dailyBudget * 100).toString();
       }
 
       if (campaignData.lifetimeBudget) {
@@ -301,7 +300,7 @@ export class FacebookAdsClient {
 
       const body = {
         access_token: this.config.accessToken,
-        daily_budget: (dailyBudget * 100).toString(), // Convert cents to Facebook's format
+        daily_budget: (dailyBudget * 100).toString(),
       };
 
       const response = await fetch(url, {
@@ -347,4 +346,3 @@ export function createFacebookAdsClient(): FacebookAdsClient {
 
   return new FacebookAdsClient(config);
 }
-

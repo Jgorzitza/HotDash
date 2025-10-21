@@ -68,3 +68,4 @@ CREATE POLICY "Users can view experiment results for their experiments"
 -- Update statistics
 ANALYZE experiment_results;
 
+

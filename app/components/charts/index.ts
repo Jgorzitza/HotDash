@@ -10,3 +10,4 @@ export { DoughnutChart } from './DoughnutChart';
 export { getOCCChartOptions, OCC_CHART_COLORS, OCC_CHART_COLORS_TRANSPARENT } from './chartConfig';
 export type { ChartData, ChartOptions } from 'chart.js';
 
+

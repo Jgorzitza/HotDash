@@ -63,3 +63,4 @@ CREATE POLICY "System can insert SEO rankings"
 -- Update statistics
 ANALYZE seo_rankings;
 
+

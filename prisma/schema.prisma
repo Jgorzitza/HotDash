@@ -365,27 +365,27 @@ model SocialAnalytics {
 // ============================================================================
 
 model OnboardingProgress {
-  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId            String    @map("user_id") @db.Uuid
-  shopDomain        String    @map("shop_domain")
-  
-  stepKey           String    @map("step_key")
-  stepCategory      String    @map("step_category")
-  stepOrder         Int       @map("step_order")
-  
-  status            String    @default("not_started")
-  completedAt       DateTime? @map("completed_at") @db.Timestamptz(6)
-  skippedAt         DateTime? @map("skipped_at") @db.Timestamptz(6)
-  
-  attempts          Int       @default(0)
-  timeSpentSeconds  Int       @default(0) @map("time_spent_seconds")
-  
-  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
-  
-  metadata          Json      @default("{}")
-  project           String    @default("occ")
-  
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String @map("user_id") @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  stepKey      String @map("step_key")
+  stepCategory String @map("step_category")
+  stepOrder    Int    @map("step_order")
+
+  status      String    @default("not_started")
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+  skippedAt   DateTime? @map("skipped_at") @db.Timestamptz(6)
+
+  attempts         Int @default(0)
+  timeSpentSeconds Int @default(0) @map("time_spent_seconds")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
   @@unique([userId, shopDomain, stepKey])
   @@index([userId, shopDomain, stepOrder], map: "idx_onboarding_user_shop")
   @@index([status], map: "idx_onboarding_status")
@@ -396,36 +396,198 @@ model OnboardingProgress {
 }
 
 model FeatureTour {
-  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId            String    @map("user_id") @db.Uuid
-  
-  tourKey           String    @map("tour_key")
-  tourName          String    @map("tour_name")
-  tourDescription   String?   @map("tour_description")
-  
-  steps             Json
-  triggerCondition  String?   @map("trigger_condition")
-  
-  status            String    @default("pending")
-  startedAt         DateTime? @map("started_at") @db.Timestamptz(6)
-  completedAt       DateTime? @map("completed_at") @db.Timestamptz(6)
-  dismissedAt       DateTime? @map("dismissed_at") @db.Timestamptz(6)
-  currentStep       Int       @default(0) @map("current_step")
-  
-  timesShown        Int       @default(0) @map("times_shown")
-  interactions      Int       @default(0)
-  
-  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
-  
-  metadata          Json      @default("{}")
-  project           String    @default("occ")
-  
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+
+  tourKey         String  @map("tour_key")
+  tourName        String  @map("tour_name")
+  tourDescription String? @map("tour_description")
+
+  steps            Json
+  triggerCondition String? @map("trigger_condition")
+
+  status      String    @default("pending")
+  startedAt   DateTime? @map("started_at") @db.Timestamptz(6)
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+  dismissedAt DateTime? @map("dismissed_at") @db.Timestamptz(6)
+  currentStep Int       @default(0) @map("current_step")
+
+  timesShown   Int @default(0) @map("times_shown")
+  interactions Int @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
   @@unique([userId, tourKey])
   @@index([userId, status], map: "idx_feature_tours_user_status")
   @@index([tourKey], map: "idx_feature_tours_key")
   @@index([completedAt(sort: Desc)], map: "idx_feature_tours_completed")
   @@index([project], map: "idx_feature_tours_project")
   @@map("feature_tours")
+  @@schema("public")
+}
+
+// ============================================================================
+// PHASE 10-13: ADVANCED TABLES (Created 2025-10-21)
+// ============================================================================
+
+model Experiment {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  experimentKey  String  @map("experiment_key")
+  experimentName String  @map("experiment_name")
+  hypothesis     String?
+  description    String?
+
+  variants          Json
+  trafficAllocation Decimal @default(100.00) @map("traffic_allocation") @db.Decimal(5, 2)
+
+  status    String    @default("draft")
+  startedAt DateTime? @map("started_at") @db.Timestamptz(6)
+  endedAt   DateTime? @map("ended_at") @db.Timestamptz(6)
+
+  primaryMetric    String?  @map("primary_metric")
+  secondaryMetrics String[] @default([]) @map("secondary_metrics")
+
+  targetSampleSize  Int? @map("target_sample_size")
+  currentSampleSize Int  @default(0) @map("current_sample_size")
+
+  winningVariant  String?  @map("winning_variant")
+  confidenceLevel Decimal? @map("confidence_level") @db.Decimal(5, 2)
+
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  results ExperimentResult[]
+
+  @@unique([shopDomain, experimentKey])
+  @@index([shopDomain, status], map: "idx_experiments_shop_status")
+  @@index([experimentKey], map: "idx_experiments_key")
+  @@index([startedAt, endedAt], map: "idx_experiments_dates")
+  @@index([project], map: "idx_experiments_project")
+  @@map("experiments")
+  @@schema("public")
+}
+
+model ExperimentResult {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  experimentId String     @map("experiment_id") @db.Uuid
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  variantKey   String     @map("variant_key")
+
+  participants Int @default(0)
+  conversions  Int @default(0)
+
+  conversionRate Decimal? @map("conversion_rate") @db.Decimal(6, 3)
+  avgOrderValue  Decimal? @map("avg_order_value") @db.Decimal(12, 2)
+  totalRevenue   Decimal? @map("total_revenue") @db.Decimal(12, 2)
+  revenuePerUser Decimal? @map("revenue_per_user") @db.Decimal(12, 2)
+
+  avgTimeOnSite Decimal? @map("avg_time_on_site") @db.Decimal(10, 2)
+  bounceRate    Decimal? @map("bounce_rate") @db.Decimal(5, 2)
+  pagesPerVisit Decimal? @map("pages_per_visit") @db.Decimal(5, 2)
+
+  confidenceIntervalLower Decimal? @map("confidence_interval_lower") @db.Decimal(6, 3)
+  confidenceIntervalUpper Decimal? @map("confidence_interval_upper") @db.Decimal(6, 3)
+  pValue                  Decimal? @map("p_value") @db.Decimal(8, 6)
+
+  measuredAt DateTime @map("measured_at") @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@index([experimentId, variantKey], map: "idx_experiment_results_experiment")
+  @@index([conversionRate(sort: Desc)], map: "idx_experiment_results_conversion")
+  @@index([measuredAt(sort: Desc)], map: "idx_experiment_results_measured")
+  @@index([project], map: "idx_experiment_results_project")
+  @@map("experiment_results")
+  @@schema("public")
+}
+
+model KnowledgeBase {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  documentKey  String @map("document_key")
+  documentType String @map("document_type")
+  title        String
+  content      String
+
+  // Note: Prisma doesn't natively support pgvector, use Unsupported type
+  embedding Unsupported("vector(1536)")?
+
+  sourceUrl String?  @map("source_url")
+  tags      String[] @default([])
+  category  String?
+
+  version           Int             @default(1)
+  isCurrent         Boolean         @default(true) @map("is_current")
+  previousVersionId String?         @map("previous_version_id") @db.Uuid
+  previousVersion   KnowledgeBase?  @relation("KnowledgeBaseVersions", fields: [previousVersionId], references: [id])
+  nextVersions      KnowledgeBase[] @relation("KnowledgeBaseVersions")
+
+  createdBy     String    @map("created_by")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  lastIndexedAt DateTime? @map("last_indexed_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@unique([shopDomain, documentKey, version])
+  @@index([shopDomain, documentType], map: "idx_knowledge_base_shop_type")
+  @@index([isCurrent], map: "idx_knowledge_base_current")
+  @@index([project], map: "idx_knowledge_base_project")
+  @@map("knowledge_base")
+  @@schema("public")
+}
+
+model CeoBriefing {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  briefingType String   @map("briefing_type")
+  periodStart  DateTime @map("period_start") @db.Date
+  periodEnd    DateTime @map("period_end") @db.Date
+
+  title            String
+  executiveSummary String @map("executive_summary")
+  keyMetrics       Json   @map("key_metrics")
+  insights         Json
+  recommendations  Json?
+
+  status      String    @default("draft")
+  generatedAt DateTime? @map("generated_at") @db.Timestamptz(6)
+  reviewedAt  DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  reviewedBy  String?   @map("reviewed_by")
+
+  generationModel  String? @map("generation_model")
+  generationTokens Int?    @map("generation_tokens")
+  generationTimeMs Int?    @map("generation_time_ms")
+
+  rating        Int?
+  feedbackNotes String? @map("feedback_notes")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@index([shopDomain, briefingType, periodEnd(sort: Desc)], map: "idx_ceo_briefings_shop_type_period")
+  @@index([status], map: "idx_ceo_briefings_status")
+  @@index([generatedAt(sort: Desc)], map: "idx_ceo_briefings_generated")
+  @@index([rating(sort: Desc)], map: "idx_ceo_briefings_rating")
+  @@index([project], map: "idx_ceo_briefings_project")
+  @@map("ceo_briefings")
   @@schema("public")
 }

@@ -35,3 +35,4 @@ export function BarChart({ data, options, title, height = 300, horizontal = fals
   );
 }
 
+

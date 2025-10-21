@@ -30,3 +30,4 @@ export function DoughnutChart({ data, options, title, height = 300 }: DoughnutCh
   );
 }
 
+

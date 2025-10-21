@@ -124,3 +124,4 @@ export function GrowthMetricsModal({ data, onClose }: GrowthMetricsModalProps) {
   );
 }
 
+

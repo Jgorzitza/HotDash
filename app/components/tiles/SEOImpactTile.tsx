@@ -68,3 +68,4 @@ export function SEOImpactTile({ data, onOpenModal }: SEOImpactTileProps) {
   );
 }
 
+

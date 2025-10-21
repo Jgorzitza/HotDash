@@ -30,3 +30,4 @@ export function LineChart({ data, options, title, height = 300 }: LineChartProps
   );
 }
 
+

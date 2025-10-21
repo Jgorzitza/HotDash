@@ -60,3 +60,4 @@ CREATE POLICY "Users can manage their own onboarding progress"
 -- Update statistics
 ANALYZE onboarding_progress;
 
+

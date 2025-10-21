@@ -65,3 +65,4 @@ CREATE POLICY "System can insert ad performance"
 -- Update statistics
 ANALYZE ad_performance;
 
+

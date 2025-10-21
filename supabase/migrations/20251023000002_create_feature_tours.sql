@@ -64,3 +64,4 @@ CREATE POLICY "Users can manage their own feature tours"
 -- Update statistics
 ANALYZE feature_tours;
 
+

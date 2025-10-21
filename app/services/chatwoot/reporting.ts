@@ -526,3 +526,4 @@ export async function saveReport(report: SupportReport): Promise<void> {
   console.log("[Reporting] Save report:", report.report_type, report.period);
 }
 
+

@@ -71,3 +71,4 @@ CREATE POLICY "Users can manage their shop experiments"
 -- Update statistics
 ANALYZE experiments;
 
+

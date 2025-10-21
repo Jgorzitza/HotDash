@@ -63,3 +63,4 @@ export function GrowthMetricsTile({ data, onOpenModal }: GrowthMetricsTileProps)
   );
 }
 
+

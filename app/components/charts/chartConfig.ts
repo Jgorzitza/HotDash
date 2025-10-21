@@ -146,3 +146,4 @@ export const OCC_CHART_COLORS_TRANSPARENT = {
   pink: 'rgba(233, 30, 99, 0.2)',
 };
 
+

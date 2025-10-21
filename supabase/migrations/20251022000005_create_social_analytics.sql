@@ -72,3 +72,4 @@ CREATE POLICY "System can insert social analytics"
 -- Update statistics
 ANALYZE social_analytics;
 
+

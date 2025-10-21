@@ -75,3 +75,4 @@ CREATE POLICY "Users can manage their shop knowledge base"
 -- Update statistics
 ANALYZE knowledge_base;
 
+

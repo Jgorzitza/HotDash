@@ -62,3 +62,4 @@ CREATE POLICY "Users can manage their shop ad campaigns"
 -- Update statistics
 ANALYZE ad_campaigns;
 
+

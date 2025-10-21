@@ -69,3 +69,4 @@ CREATE POLICY "System can insert SEO audits"
 -- Update statistics
 ANALYZE seo_audits;
 
+
