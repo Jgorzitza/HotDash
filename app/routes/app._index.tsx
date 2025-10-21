@@ -11,6 +11,9 @@ import {
   CXEscalationsTile,
   SEOContentTile,
   OpsMetricsTile,
+  IdeaPoolTile,
+  CEOAgentTile,
+  UnreadMessagesTile,
 } from "../components/tiles";
 import type { TileState, TileFact } from "../components/tiles";
 
@@ -33,6 +36,9 @@ import {
 } from "../services/metrics/aggregate";
 import type { ServiceResult } from "../services/types";
 import { ServiceError } from "../services/types";
+import type { IdeaPoolResponse } from "./api.analytics.idea-pool";
+import type { CEOAgentStatsResponse } from "./api.ceo-agent.stats";
+import type { UnreadMessagesResponse } from "./api.chatwoot.unread";
 
 interface LoaderData {
   mode: "live" | "mock";
@@ -42,6 +48,9 @@ interface LoaderData {
   escalations: TileState<EscalationConversation[]>;
   seo: TileState<LandingPageAnomaly[]>;
   opsMetrics: TileState<OpsAggregateMetrics>;
+  ideaPool: TileState<IdeaPoolResponse["data"]>;
+  ceoAgent: TileState<CEOAgentStatsResponse["data"]>;
+  unreadMessages: TileState<UnreadMessagesResponse["data"]>;
 }
 
 export const loader: LoaderFunction = async ({
@@ -66,6 +75,11 @@ export const loader: LoaderFunction = async ({
   );
   const escalations = await resolveEscalations(context.shopDomain);
   const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  
+  // Phase 3 tiles - fetch from new API routes
+  const ideaPool = await resolveApiTile("/api/analytics/idea-pool");
+  const ceoAgent = await resolveApiTile("/api/ceo-agent/stats");
+  const unreadMessages = await resolveApiTile("/api/chatwoot/unread");
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
@@ -81,6 +95,9 @@ export const loader: LoaderFunction = async ({
     escalations,
     seo,
     opsMetrics,
+    ideaPool,
+    ceoAgent,
+    unreadMessages,
   });
 };
 
@@ -135,6 +152,38 @@ async function resolveEscalations(
     if (error instanceof ServiceError) {
       return { status: "error", error: error.message };
     }
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+async function resolveApiTile<T extends { data?: unknown; success: boolean }>(
+  apiPath: string,
+): Promise<TileState<T["data"]>> {
+  try {
+    const response = await fetch(`http://localhost:3000${apiPath}`);
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+    const json = (await response.json()) as T;
+    if (!json.success) {
+      return {
+        status: "error",
+        error: "API request failed",
+      };
+    }
+    return {
+      status: "ok",
+      data: json.data,
+      source: "api",
+      fact: {
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      },
+    };
+  } catch (error) {
     return {
       status: "error",
       error: error instanceof Error ? error.message : "Unknown error",
@@ -279,6 +328,63 @@ function buildMockDashboard(): LoaderData {
 
   const fact = (id: number): TileFact => ({ id, createdAt: now });
 
+  // Phase 3 mock data
+  const ideaPoolData: IdeaPoolResponse["data"] = {
+    ideas: [
+      {
+        id: "idea-1",
+        type: "wildcard",
+        title: "Limited Edition Snow Gear Drop",
+        description: "Launch exclusive winter collection with urgency",
+        target_platforms: ["instagram", "facebook"],
+        suggested_copy: "24-hour flash sale on premium snow gear",
+        suggested_hashtags: ["#WinterSale", "#SnowGear"],
+        evidence: { trending: true },
+        supabase_linkage: { table: "product_suggestions" },
+        projected_metrics: {
+          estimated_reach: 5000,
+          estimated_engagement_rate: 0.08,
+          estimated_clicks: 400,
+          estimated_conversions: 20,
+        },
+        cadence: "one-time",
+        status: "pending_review",
+        priority: "high",
+      },
+    ],
+    total_count: 5,
+    wildcard_count: 1,
+    source: "fixture",
+    feature_flag_enabled: false,
+  };
+
+  const ceoAgentData: CEOAgentStatsResponse["data"] = {
+    actions_today: 3,
+    pending_approvals: 2,
+    last_action: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+    recent_actions: [
+      {
+        id: "cea-mock-1",
+        type: "data_analysis",
+        description: "Analyzed customer trends for Q4",
+        status: "completed",
+        created_at: now,
+        completed_at: now,
+      },
+    ],
+    source: "mock",
+  };
+
+  const unreadMessagesData: UnreadMessagesResponse["data"] = {
+    unread_count: 3,
+    top_conversation: {
+      customer_name: "Mock Customer",
+      snippet: "I have a question about my recent order...",
+      created_at: now,
+    },
+    source: "mock",
+  };
+
   return {
     mode: "mock",
     sales: {
@@ -316,6 +422,24 @@ function buildMockDashboard(): LoaderData {
       data: opsMetricsData,
       source: "mock",
       fact: fact(6),
+    },
+    ideaPool: {
+      status: "ok",
+      data: ideaPoolData,
+      source: "mock",
+      fact: fact(7),
+    },
+    ceoAgent: {
+      status: "ok",
+      data: ceoAgentData,
+      source: "mock",
+      fact: fact(8),
+    },
+    unreadMessages: {
+      status: "ok",
+      data: unreadMessagesData,
+      source: "mock",
+      fact: fact(9),
     },
   };
 }
@@ -384,6 +508,27 @@ export default function OperatorDashboard() {
           tile={data.seo}
           render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
           testId="tile-seo-content"
+        />
+
+        <TileCard
+          title="Idea Pool"
+          tile={data.ideaPool}
+          render={(ideaPool) => <IdeaPoolTile ideaPool={ideaPool} />}
+          testId="tile-idea-pool"
+        />
+
+        <TileCard
+          title="CEO Agent"
+          tile={data.ceoAgent}
+          render={(stats) => <CEOAgentTile stats={stats} />}
+          testId="tile-ceo-agent"
+        />
+
+        <TileCard
+          title="Unread Messages"
+          tile={data.unreadMessages}
+          render={(unread) => <UnreadMessagesTile unread={unread} />}
+          testId="tile-unread-messages"
         />
       </div>
     </s-page>

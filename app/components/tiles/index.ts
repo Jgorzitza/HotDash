@@ -6,3 +6,6 @@ export { InventoryHeatmapTile } from "./InventoryHeatmapTile";
 export { CXEscalationsTile } from "./CXEscalationsTile";
 export { SEOContentTile } from "./SEOContentTile";
 export { OpsMetricsTile } from "./OpsMetricsTile";
+export { IdeaPoolTile } from "./IdeaPoolTile";
+export { CEOAgentTile } from "./CEOAgentTile";
+export { UnreadMessagesTile } from "./UnreadMessagesTile";
