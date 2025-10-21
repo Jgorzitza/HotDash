@@ -66,7 +66,7 @@ fly logs -a hotdash-chatwoot | grep -i "settings"
 
 # Test admin login
 # Navigate to https://hotdash-chatwoot.fly.dev
-# Login with: justin@hotrodan.com / SuperAdmin123!
+# Login credentials: vault/occ/chatwoot/super_admin_staging.env
 # Should succeed after migrations complete
 ```
 

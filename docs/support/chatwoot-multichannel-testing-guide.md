@@ -26,7 +26,7 @@ curl -X POST https://hotdash-chatwoot.fly.dev/auth/sign_in \
   -H "Content-Type: application/json" \
   -d '{
     "email":"justin@hotrodan.com",
-    "password":"SuperAdmin123!"
+    "password":"[from vault/occ/chatwoot/super_admin_staging.env]"
   }'
 ```
 
@@ -34,7 +34,7 @@ curl -X POST https://hotdash-chatwoot.fly.dev/auth/sign_in \
 ```json
 {
   "data": {
-    "access_token": "paT1zxiNjAfUSu13ezZCg5Nn",
+    "access_token": "[from vault/occ/chatwoot/api_token.env]",
     "account_id": 1,
     "email": "justin@hotrodan.com",
     "id": 3,
@@ -73,7 +73,7 @@ curl -X POST https://hotdash-chatwoot.fly.dev/auth/sign_in \
 ```bash
 # Create email inbox
 curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
-  -H "api_access_token: paT1zxiNjAfUSu13ezZCg5Nn" \
+  -H "api_access_token: [from vault]" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Support Email",
@@ -150,7 +150,7 @@ curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
 **API**:
 ```bash
 curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
-  -H "api_access_token: paT1zxiNjAfUSu13ezZCg5Nn" \
+  -H "api_access_token: [from vault]" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "SMS Support",
@@ -167,7 +167,7 @@ curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
 
 ```bash
 curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
-  -H "api_access_token: paT1zxiNjAfUSu13ezZCg5Nn" \
+  -H "api_access_token: [from vault]" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "SMS Support",
@@ -224,7 +224,7 @@ curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
 **API**:
 ```bash
 curl -X POST "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes" \
-  -H "api_access_token: paT1zxiNjAfUSu13ezZCg5Nn" \
+  -H "api_access_token: [from vault]" \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Live Chat Widget",

@@ -122,7 +122,7 @@
   s.parentNode.insertBefore(g,s); 
   g.onload=function(){ 
     window.chatwootSDK.run({ 
-      websiteToken: 'ieNpPnBaZXd9joxoeMts7qTA', 
+      websiteToken: '[from vault/occ/chatwoot/widget_token.env]', 
       baseUrl: BASE_URL 
     }) 
   } 
@@ -130,7 +130,7 @@
 </script>
 ```
 
-**Widget Token**: `ieNpPnBaZXd9joxoeMts7qTA`
+**Widget Token**: `[from vault/occ/chatwoot/widget_token.env]`
 
 ### Installation Instructions
 
@@ -296,7 +296,7 @@
 
 **Scenario 1: Widget Configuration** ✅
 - Tested: Viewed widget settings
-- Token: Retrieved (ieNpPnBaZXd9joxoeMts7qTA)
+- Token: Retrieved (from vault)
 - Result: PASS - Widget ready for installation
 - Evidence: Screenshot chatwoot-widget-configuration.png
 - **Next**: Install on staging site and test real-time messaging
@@ -400,7 +400,7 @@
   s.parentNode.insertBefore(g,s); 
   g.onload=function(){ 
     window.chatwootSDK.run({ 
-      websiteToken: 'ieNpPnBaZXd9joxoeMts7qTA', 
+      websiteToken: '[from vault/occ/chatwoot/widget_token.env]', 
       baseUrl: BASE_URL 
     }) 
   } 
@@ -435,7 +435,7 @@
 
 ### Authentication
 
-**Token**: `paT1zxiNjAfUSu13ezZCg5Nn`  
+**Token**: `[from vault/occ/chatwoot/api_token.env]`  
 **Account ID**: `1`  
 **Base URL**: `https://hotdash-chatwoot.fly.dev/api/v1`
 
@@ -561,8 +561,8 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 
 **Configuration Details**:
 - Email: Zoho Cloud (IMAP port 993, SMTP port 465)
-- Widget: Token ieNpPnBaZXd9joxoeMts7qTA
-- API: Token paT1zxiNjAfUSu13ezZCg5Nn
+- Widget: Token [from vault/occ/chatwoot/widget_token.env]
+- API: Token [from vault/occ/chatwoot/api_token.env]
 
 ---
 
