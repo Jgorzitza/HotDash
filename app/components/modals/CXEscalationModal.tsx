@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { EscalationConversation } from "../../services/chatwoot/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
 
 interface CXEscalationModalProps {
   conversation: EscalationConversation;
@@ -27,6 +28,9 @@ export function CXEscalationModal({
   const [toneGrade, setToneGrade] = useState(3);
   const [accuracyGrade, setAccuracyGrade] = useState(3);
   const [policyGrade, setPolicyGrade] = useState(3);
+
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
 
   const hasSuggestion = Boolean((conversation.suggestedReply ?? "").trim());
 
@@ -103,6 +107,12 @@ export function CXEscalationModal({
 
   const handleApprove = () => {
     submit("approve_send");
+  };
+
+  const handleEdit = () => {
+    // Edit action allows operator to modify the suggested reply before approval
+    // No submission - keeps modal open for editing
+    console.log("Edit mode - operator modifying suggested reply");
   };
 
   const handleEscalate = () => {
@@ -282,6 +292,15 @@ export function CXEscalationModal({
               disabled={!hasSuggestion || !reply.trim() || isSubmitting}
             >
               Approve &amp; send
+            </button>
+            <button
+              type="button"
+              className="occ-button occ-button--secondary"
+              onClick={handleEdit}
+              disabled={isSubmitting}
+              aria-label="Edit suggested reply before approval"
+            >
+              Edit
             </button>
             <button
               type="button"

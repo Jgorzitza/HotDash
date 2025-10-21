@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { OrderSummary } from "../../services/shopify/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
 
 interface SalesPulseModalProps {
   summary: OrderSummary;
@@ -31,6 +32,9 @@ export function SalesPulseModal({
   const [note, setNote] = useState("");
   const [selectedAction, setSelectedAction] =
     useState<SalesAction>("acknowledge");
+
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
 
   useEffect(() => {
     if (open) {
@@ -217,6 +221,8 @@ export function SalesPulseModal({
               className="occ-button occ-button--primary"
               onClick={() => submit(selectedAction)}
               disabled={isSubmitting}
+              aria-live="polite"
+              aria-atomic="true"
             >
               {ACTION_LABELS[selectedAction]}
             </button>

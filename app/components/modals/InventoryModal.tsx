@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { InventoryAlert } from "../../services/shopify/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
 
 interface InventoryModalProps {
   alert: InventoryAlert;
@@ -33,6 +34,9 @@ export function InventoryModal({
   const [reorderQuantity, setReorderQuantity] = useState(30);
   const [vendor, setVendor] = useState("acme_distribution");
   const [note, setNote] = useState("");
+
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
 
   useEffect(() => {
     if (open) {
