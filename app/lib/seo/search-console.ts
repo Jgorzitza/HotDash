@@ -10,7 +10,9 @@
  * Uses service account authentication (shared with GA integration).
  */
 
-import { searchconsole_v1, google } from "@googleapis/searchconsole";
+import pkg from "@googleapis/searchconsole";
+const { google } = pkg;
+import type { searchconsole_v1 } from "@googleapis/searchconsole";
 import { getSearchConsoleConfig } from "../../config/search-console.server";
 import { getCached, setCached } from "../../services/cache.server";
 import { appMetrics } from "../../utils/metrics.server";

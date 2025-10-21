@@ -11,8 +11,9 @@
  * @module services/seo/search-console-enhanced
  */
 
-import { searchconsole_v1 } from "@googleapis/searchconsole";
-import { google } from "googleapis";
+import pkg from "@googleapis/searchconsole";
+const { google } = pkg;
+import type { searchconsole_v1 } from "@googleapis/searchconsole";
 import { getCached, setCached } from "../cache.server";
 import { appMetrics } from "../../utils/metrics.server";
 import { getSearchConsoleConfig } from "../../config/search-console.server";
