@@ -73,6 +73,8 @@ interface LoaderData {
   ideaPool: TileState<IdeaPoolResponse["data"]>;
   ceoAgent: TileState<CEOAgentStatsResponse["data"]>;
   unreadMessages: TileState<UnreadMessagesResponse["data"]>;
+  // ENG-015: User preferences
+  visibleTiles: string[];
 }
 
 export const loader: LoaderFunction = async ({
@@ -109,6 +111,9 @@ export const loader: LoaderFunction = async ({
     requestId: request.headers.get("x-request-id"),
   });
 
+  // TODO (Phase 11): Load visibleTiles from Supabase user_preferences
+  const visibleTiles = DEFAULT_TILE_ORDER; // Default: all tiles visible
+
   return Response.json({
     mode: "live",
     sales,
@@ -120,6 +125,7 @@ export const loader: LoaderFunction = async ({
     ideaPool,
     ceoAgent,
     unreadMessages,
+    visibleTiles,
   });
 };
 
@@ -463,6 +469,7 @@ function buildMockDashboard(): LoaderData {
       source: "mock",
       fact: fact(9),
     },
+    visibleTiles: DEFAULT_TILE_ORDER, // ENG-015: All tiles visible by default
   };
 }
 
@@ -488,6 +495,11 @@ export default function OperatorDashboard() {
 
   // Drag & Drop: Tile order state (ENG-014)
   const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
+
+  // ENG-015: Filter tiles based on visibility preferences
+  const visibleTileIds = tileOrder.filter((tileId) => 
+    data.visibleTiles.includes(tileId)
+  );
 
   // Track refreshing tiles (Phase 5 - ENG-025)
   const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(new Set());
@@ -701,19 +713,29 @@ export default function OperatorDashboard() {
         </div>
       )}
 
-      {/* Drag & Drop enabled tile grid (ENG-014) */}
+      {/* Drag & Drop enabled tile grid (ENG-014 + ENG-015 visibility filtering) */}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={tileOrder} strategy={verticalListSortingStrategy}>
+        <SortableContext items={visibleTileIds} strategy={verticalListSortingStrategy}>
           <div className="occ-tile-grid">
-            {tileOrder.map((tileId) => (
-              <SortableTile key={tileId} id={tileId}>
-                {tileMap[tileId as keyof typeof tileMap]}
-              </SortableTile>
-            ))}
+            {visibleTileIds.length > 0 ? (
+              visibleTileIds.map((tileId) => (
+                <SortableTile key={tileId} id={tileId}>
+                  {tileMap[tileId as keyof typeof tileMap]}
+                </SortableTile>
+              ))
+            ) : (
+              <div style={{ 
+                padding: "var(--occ-space-6)", 
+                textAlign: "center",
+                color: "var(--occ-text-secondary)",
+              }}>
+                <p>No tiles visible. Visit <a href="/settings">Settings</a> to enable tiles.</p>
+              </div>
+            )}
           </div>
         </SortableContext>
       </DndContext>
