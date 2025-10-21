@@ -47,10 +47,13 @@
 - **Danger**: Issue linkage, DoD present, Allowed paths enforced, HITL config enforced.
 - **Secret protection**: GitHub Push Protection + **Gitleaks** CI with SARIF upload.
 - **MCP‑first in dev** (Cursor/Codex/Claude) with 5 active servers (GitHub Official, Context7, Fly.io, Shopify Dev, Chrome DevTools). Use Supabase CLI (NOT MCP) and built-in GA4 API (NOT MCP). Full documentation in `mcp/` directory. **Agents SDK in‑app** (TS) with HITL.
-- **MANDATORY MCP Usage** (Effective 2025-10-19):
-  - **Shopify Dev MCP**: ALL Shopify GraphQL MUST be validated with `validate_graphql_codeblocks` - NO EXCEPTIONS
-  - **Context7 MCP**: ALL library patterns MUST be verified (React Router 7, Prisma, Polaris) - NO EXCEPTIONS
-  - **Evidence**: Log MCP conversation IDs in feedback for every molecule using Shopify/libraries
+- **MANDATORY MCP Usage** (Updated 2025-10-21):
+  - **MCP TOOL PRIORITY**: 1) Shopify Dev MCP (Polaris + Shopify) → 2) Context7 (other libraries) → 3) Web Search (last resort)
+  - **Shopify Dev MCP**: ALL Polaris components + Shopify GraphQL MUST be validated - NO EXCEPTIONS
+    - Polaris: Use `validate_component_codeblocks` - REQUIRED
+    - GraphQL: Use `validate_graphql_codeblocks` - REQUIRED
+  - **Context7 MCP**: ALL non-Shopify library patterns MUST be verified (React Router 7, Prisma, TypeScript, etc.) - NO EXCEPTIONS
+  - **Evidence**: Log MCP conversation IDs in feedback for every molecule
   - **React Router 7 ONLY**: NO @remix-run imports - verify with `rg "@remix-run" app/` (must return 0 results)
   - **Enforcement**: Manager REJECTS PRs without MCP evidence or with Remix imports - NO WARNINGS, IMMEDIATE REJECTION
 - **No secrets in code**; use GitHub Environments/Secrets + server‑side adapters only.

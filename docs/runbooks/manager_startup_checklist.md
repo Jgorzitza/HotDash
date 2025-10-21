@@ -8,25 +8,40 @@
 
 **⚠️ CRITICAL: Manager follows same tool-first rules as agents. Training data is outdated.**
 
-- [ ] **Context7 MCP**: For EVERY library I'll work with today, pull official docs FIRST:
+**MCP TOOL PRIORITY** (Effective 2025-10-21):
+1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
+2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
+3. **Fly MCP** → For deployments and infrastructure
+4. **Web Search** → LAST RESORT ONLY
+
+- [ ] **Shopify Dev MCP** (FIRST for Polaris/Shopify):
+  - Reviewing Polaris components? → `mcp_shopify_learn_shopify_api(api: "polaris-app-home")` then `search_docs_chunks`
+  - Reviewing Shopify Admin GraphQL? → `mcp_shopify_learn_shopify_api(api: "admin")` then `validate_graphql_codeblocks`
+  - Validating Integrations PRs? → Use `validate_graphql_codeblocks` for ALL Shopify GraphQL
+
+- [ ] **Context7 MCP** (SECOND for non-Shopify libraries):
   - About to review Prisma code? → `mcp_context7_get-library-docs("/prisma/docs", "topic")`
   - About to make React Router 7 decisions? → `mcp_context7_get-library-docs("/react-router/react-router", "topic")`
   - About to configure TypeScript? → `mcp_context7_get-library-docs("/microsoft/TypeScript", "topic")`
-  - About to work with Supabase? → `mcp_context7_get-library-docs("/supabase/supabase", "topic")`
   - About to fix Google Analytics? → `mcp_context7_get-library-docs("/websites/developers_google_analytics...", "topic")`
   - About to configure OpenAI SDK? → `mcp_context7_get-library-docs("/openai/openai-node", "topic")`
   - About to work with LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "topic")`
 
+- [ ] **Fly MCP** (for deployments):
+  - Check app status: `mcp_fly_fly-status("hotdash-staging")`
+  - View logs: `mcp_fly_fly-logs("hotdash-staging")`
+  - Machine status: `mcp_fly_fly-machine-status("machine-id")`
+
 - [ ] **Log Tool Usage in Manager Feedback**:
   ```md
-  ## HH:MM - Context7: [Library Name]
+  ## HH:MM - Shopify Dev MCP: Polaris validation
   - Topic: [what I'm investigating/fixing]
   - Key Learning: [specific requirement discovered]
   - Applied to: [decision made / files changed]
   ```
 
-- [ ] **Web Search for Current Info**: If Context7 doesn't have the library, use `web_search` for official docs
-  - Example: `web_search("Supabase direct connection vs pooler official docs")`
+- [ ] **Web Search** (LAST RESORT ONLY): If no MCP has the info
+  - Example: `web_search("GA4 custom dimensions event scope official docs")`
 
 **Why This Matters (Learned 2025-10-20)**: 
 - Manager's training data is 6-12 months old (same as agents)
@@ -36,10 +51,19 @@
 
 **Real Examples**: See RULES.md "Real-World Examples" section for today's Prisma/GA/Supabase P0 fixes
 
-## 1) Align to the Star (1–2 min)
+## 1) Align to the Star (2-3 min)
 
-- [ ] Skim diffs in `docs/NORTH_STAR.md` and `docs/RULES.md` (if changed since yesterday).
-- [ ] Open `docs/OPERATING_MODEL.md` header; confirm the pipeline: **Signals → Suggestions → Approvals → Actions → Audit → Learn**.
+- [ ] **Read Core Docs** (skim diffs if changed since yesterday):
+  1. `docs/NORTH_STAR.md` — Vision, outcomes, Growth Engine section (agent orchestration, handoff patterns, security, Action Queue, telemetry)
+  2. `docs/OPERATING_MODEL.md` — Pipeline (Signals → Suggestions → Approvals → Actions → Audit → Learn), Growth Engine orchestration (front-end agents, sub-agents, specialist agents, PII Broker, ABAC)
+  3. `docs/RULES.md` — MCP tools (Shopify Dev first for Polaris), Growth Engine rules (MCP evidence JSONL, heartbeat, CI guards, telemetry config)
+  4. `.cursor/rules/10-growth-engine-pack.mdc` — CI merge blockers (guard-mcp, idle-guard, dev-mcp-ban)
+
+- [ ] **Growth Engine Checklist**:
+  - [ ] Understand agent handoff patterns (Customer-Front → Sub-agents → HITL)
+  - [ ] Understand security model (PII Broker, ABAC, no-ask execution boundaries)
+  - [ ] Understand evidence requirements (MCP JSONL, heartbeat, Dev MCP ban)
+  - [ ] Understand Phase assignments (9-12 dependencies mapped)
 
 ## 2) Repo & CI Guardrails (2–4 min)
 

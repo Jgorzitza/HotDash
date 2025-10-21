@@ -213,11 +213,54 @@ test(agent-name): add tests
 - **Dev agents** (Cursor/Codex/Claude): follow runbooks & directions; no Agent SDK.
 - **In‑app agents** (OpenAI Agents SDK): HITL enforced for `ai-customer` using built‑in interruptions.
 
-## MCP Tools (MANDATORY - Effective 2025-10-20)
+## MCP Tools (MANDATORY - Updated 2025-10-21)
 
-**ALL agents (including Manager) MUST use MCP tools BEFORE writing code** - non-negotiable:
+**ALL agents (including Manager) MUST use MCP tools BEFORE writing code** - non-negotiable
 
-### 1. Context7 MCP: PULL DOCS BEFORE CODE (STRICT)
+**MCP TOOL PRIORITY** (Effective 2025-10-21):
+1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
+2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
+3. **Web Search** → LAST RESORT ONLY
+
+---
+
+### 1. Shopify Dev MCP: FIRST FOR POLARIS + SHOPIFY (STRICT)
+
+**Rule**: MANDATORY for ALL Shopify/Polaris code - pull docs FIRST, validate ALWAYS
+
+**Required for**:
+- **Polaris components** (Card, Banner, Button, DataTable, Modal, Layout, etc.)
+- **Shopify Admin API** (GraphQL queries + mutations)
+- **Shopify Storefront API** (GraphQL queries)
+- **Shopify metafields** (metafieldDefinitionCreate, productUpdate)
+- **Shopify inventory** (inventoryItemUpdate, inventoryAdjustQuantities)
+
+**Process**:
+1. Learn API: `mcp_shopify_learn_shopify_api(api: "polaris-app-home")` or `api: "admin"`
+2. Search docs: `mcp_shopify_search_docs_chunks(conversationId, "your question")`
+3. **VALIDATE**: `validate_graphql_codeblocks` (GraphQL) or `validate_component_codeblocks` (Polaris)
+
+**Evidence Format**:
+```md
+## HH:MM - Shopify Dev MCP: Polaris Card
+- Topic: [what I'm implementing]
+- Key Learning: [specific requirement from docs]
+- Applied to: [files changed]
+- Validation: ✅ Passed validate_component_codeblocks
+```
+
+**Example**:
+```md
+## 14:30 - Shopify Dev MCP: Polaris Banner
+- Topic: Warning banner for PII Card
+- Key Learning: Use tone="warning" for alerts, role="alert" for accessibility
+- Applied to: app/components/PIICard.tsx
+- Validation: ✅ Passed validate_component_codeblocks
+```
+
+---
+
+### 2. Context7 MCP: FOR NON-SHOPIFY LIBRARIES (SECOND)
 
 **Rule**: NEVER write code without pulling official documentation first
 
@@ -225,11 +268,10 @@ test(agent-name): add tests
 - Prisma (`/prisma/docs`) - multi-schema, migrations, types
 - React Router 7 (`/react-router/react-router`) - routes, loaders, actions  
 - TypeScript (`/microsoft/TypeScript`) - types, generics, patterns
-- Supabase (`/supabase/supabase`) - auth, database, realtime
 - Google Analytics (`/websites/developers_google_analytics...`) - API, authentication
 - OpenAI SDK (`/openai/openai-node`) - agents, completions
 - LlamaIndex (`/run-llama/LlamaIndexTS`) - indexes, queries
-- **ANY npm package** you're modifying
+- **ANY npm package** you're modifying (NOT Shopify/Polaris)
 
 **Evidence Format**:
 ```md
@@ -247,19 +289,21 @@ test(agent-name): add tests
 - Applied to: prisma/schema.prisma (Session, DashboardFact, DecisionLog)
 ```
 
-### 2. Shopify Dev MCP: VALIDATE ALL GraphQL
+---
 
-**Rule**: MANDATORY for ALL Shopify GraphQL code
-- Validate ALL queries with `validate_graphql_codeblocks`
-- Validate ALL components with `validate_component_codeblocks`
-- Log conversation IDs in feedback
-- NO Shopify code without MCP validation
+### 3. Web Search: LAST RESORT ONLY
 
-### 3. Web Search: When Context7 Doesn't Have Library
+**Rule**: Use `web_search` for official docs if NEITHER MCP has the library
 
-**Rule**: Use `web_search` for official docs if library not in Context7
-- Example: `web_search("Supabase direct connection vs pooler official docs")`
-- Always include "official docs" or "documentation" in search
+**When to Use**:
+- Shopify Dev MCP doesn't have it (rare for Shopify/Polaris)
+- Context7 doesn't have it (less common libraries)
+- Need current 2025 info (API changes, new features)
+
+**Example**: `web_search("GA4 Data API custom dimensions query Node.js official docs")`
+
+**Always**:
+- Include "official docs" or "documentation" in search
 - Log search results in feedback
 
 ### 4. Chrome DevTools MCP: Required for UI Testing

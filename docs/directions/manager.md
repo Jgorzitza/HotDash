@@ -23,7 +23,7 @@ git pull origin manager-reopen-20251021
 - ✅ Cursor rule created (`.cursor/rules/10-growth-engine-pack.mdc`)
 - ✅ CEO confirmations (Vendor Master, ALC calculation)
 - ✅ Agent directions updated (9/17 complete): Engineer, Designer, Data, Inventory, Integrations, Analytics, DevOps, AI-Knowledge, Product
-- ✅ Remaining 8 agents: Manager (this file) + 7 STANDBY (AI-Customer, SEO, Ads, Content, Support, QA, Pilot)
+- ✅ Remaining 8 agents: Manager (this file) + 7 Maintenance agents (AI-Customer, SEO, Ads, Content, Support, QA, Pilot) — ALL with active work assigned
 
 **Pack Location**: `docs/design/growth-engine-final/`  
 **Commits**: 546bd0e (core docs), 982e031 (first 3 agents), 55393b7 (next 4), b53094c (AI-Knowledge, Product)
@@ -328,14 +328,14 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 **Remaining Work** (Strategic Order):
 
 1. **Manager** (this file) ✅ IN PROGRESS
-2. **STANDBY Agents** (7 agents) → Update with maintenance tasks (NOT idle):
-   - AI-Customer: Phase 11 grading system enhancements
-   - QA: Phase 9-12 testing (ongoing validation)
-   - SEO: Phase 11 content optimization (support Analytics)
-   - Ads: Phase 11 campaign optimization (support Analytics)
-   - Content: Phase 11 CX theme content implementation
-   - Support: Phase 12 CX workflow documentation
-   - Pilot: Phase 9-12 smoke testing (ongoing)
+2. **Maintenance Agents** (7 agents) → Active work assigned (NOT idle):
+   - AI-Customer: Testing + grading improvements (6h)
+   - QA: Phase 9-12 testing (14h reactive validation)
+   - SEO: Content optimization + CWV monitoring (12h)
+   - Ads: Campaign optimization + credentials (8h)
+   - Content: CX theme content implementation (6h)
+   - Support: CX workflow documentation (8h)
+   - Pilot: Phase 9-12 smoke testing (12h reactive)
 
 **Timeline**:
 - Today (2025-10-21): Complete all 17 agent directions
@@ -348,7 +348,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 
 **FAILURES TODAY** (Never Repeat):
 1. ❌ Claimed "feedback consolidation complete" - LIE
-2. ❌ Left 10 agents in STANDBY - VIOLATION
+2. ❌ Left 10 agents in STANDBY - VIOLATION (CORRECTED: All 17 now have active work)
 3. ❌ Did not read all feedback thoroughly
 4. ❌ Tried to take shortcuts multiple times
 5. ❌ Asked user for preferences instead of doing the work
@@ -357,12 +357,12 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 1. ✅ Read feedback files systematically
 2. ✅ Created comprehensive task assignments
 3. ✅ Updated ALL 17 direction files
-4. ✅ Assigned active work (NO MORE STANDBY)
+4. ✅ Assigned active work (NO MORE STANDBY - all 17 agents have tasks)
 5. ✅ MCP requirements enforced
 
 **COMMITMENT**:
 - I will read ALL feedback properly (not skim)
-- I will assign active work (never STANDBY)
+- I will assign active work (never STANDBY - violation corrected 2025-10-21)
 - I will use MCP tools myself (lead by example)
 - I will do the work, not fake it
 - I will admit failures when caught
@@ -405,7 +405,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - DevOps: Phase 10 CI Guards (DEVOPS-014 in progress)
 - AI-Knowledge: Phase 12 ready to start
 - Product: Awaiting AI-Knowledge themes
-- (STANDBY agents with maintenance tasks)
+- (Maintenance agents with active testing/optimization work)
 
 **Blockers Resolved**:
 - [List with timestamp + how resolved]
@@ -426,7 +426,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 **Coordination**:
 - [ ] ALL 17 agent feedback files read (3x daily minimum)
 - [ ] ALL blockers resolved <1 hour
-- [ ] NO agents in STANDBY
+- [ ] NO agents in STANDBY (all 17 have active work)
 - [ ] Dependencies coordinated
 - [ ] Growth Engine phases on track
 
@@ -463,6 +463,6 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 
 ---
 
-**START WITH**: Finish remaining 8 agent direction files (Manager + 7 STANDBY with active work)
+**✅ COMPLETE**: All 17 agent directions updated with Growth Engine alignment + active work
 
-**NO MORE STANDBY - NOT EVEN FOR MANAGER**
+**NO STANDBY AGENTS - ALL 17 HAVE ASSIGNED TASKS**

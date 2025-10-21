@@ -42,24 +42,33 @@ git push origin daily/2025-10-20
 
 **⚠️ CRITICAL: Pull documentation BEFORE writing ANY code. Training data is outdated.**
 
-- [ ] **Context7 MCP**: For EVERY library you'll touch today, pull official docs FIRST:
+**MCP TOOL PRIORITY** (Effective 2025-10-21):
+1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
+2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
+3. **Web Search** → LAST RESORT ONLY
+
+- [ ] **Shopify Dev MCP** (FIRST for Polaris/Shopify):
+  - About to use Polaris components? → `mcp_shopify_learn_shopify_api(api: "polaris-app-home")` then `search_docs_chunks`
+  - About to use Shopify Admin API? → `mcp_shopify_learn_shopify_api(api: "admin")` then `validate_graphql_codeblocks`
+  - About to use Storefront API? → `mcp_shopify_learn_shopify_api(api: "storefront-graphql")`
+
+- [ ] **Context7 MCP** (SECOND for non-Shopify libraries):
   - About to use Prisma? → `mcp_context7_get-library-docs("/prisma/docs", "your-topic")`
   - About to use React Router 7? → `mcp_context7_get-library-docs("/react-router/react-router", "your-topic")`
   - About to use TypeScript? → `mcp_context7_get-library-docs("/microsoft/TypeScript", "your-topic")`
-  - About to use Supabase? → `mcp_context7_get-library-docs("/supabase/supabase", "your-topic")`
   - About to use Google Analytics? → `mcp_context7_get-library-docs("/websites/developers_google_analytics_devguides...", "your-topic")`
   - About to use OpenAI SDK? → `mcp_context7_get-library-docs("/openai/openai-node", "your-topic")`
   - About to use LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "your-topic")`
 
 - [ ] **Log Tool Usage in Feedback**:
   ```md
-  ## HH:MM - Context7: [Library Name]
+  ## HH:MM - Shopify Dev MCP: Polaris Card component
   - Topic: [what I need to learn]
   - Key Learning: [specific pattern/requirement discovered]
   - Applied to: [files I'll change]
   ```
 
-- [ ] **Web Search for Current Info**: If Context7 doesn't have the library, use `web_search` for official docs
+- [ ] **Web Search** (LAST RESORT ONLY): If neither MCP has the library
   - Example: `web_search("Supabase direct connection vs pooler official docs")`
 
 **Why This Matters**: 
@@ -70,16 +79,45 @@ git push origin daily/2025-10-20
 
 ## 1) Align to the Star (60 sec)
 
-- [ ] Skim `docs/NORTH_STAR.md`, `docs/OPERATING_MODEL.md`, and `docs/RULES.md`.
-- [ ] If your direction conflicts with these, **pause** and post a short note in the Issue:
+- [ ] **Read Core Docs** (in order):
+  1. `docs/NORTH_STAR.md` — Vision, outcomes, Growth Engine architecture (agent orchestration, security model)
+  2. `docs/OPERATING_MODEL.md` — Pipeline, Growth Engine handoff patterns (Customer-Front → Sub-agents, PII Broker, ABAC)
+  3. `docs/RULES.md` — MCP tools (Shopify Dev first), Growth Engine rules (MCP evidence JSONL, heartbeat, CI guards)
+  4. `.cursor/rules/10-growth-engine-pack.mdc` — CI merge blockers (guard-mcp, idle-guard, dev-mcp-ban)
+
+- [ ] **Verify Alignment**: If your direction conflicts with these, **pause** and post in Issue:
       "Direction misaligned with North Star/Operating Model — please confirm or revise."
-      (Agents are expected to hold the manager accountable for alignment.)
+      (Agents hold Manager accountable for alignment.)
 
 ## 2) Direction & Issue (60 sec)
 
-- [ ] Read `docs/directions/<agent>.md` — note **today’s objective** and **constraints**.
+- [ ] Read `docs/directions/<agent>.md` — note **today's objective** and **constraints**.
 - [ ] Open your **Issue(s)**; copy the **DoD** and confirm **Allowed paths** (fnmatch).
-- [ ] Start today’s header in `feedback/<agent>/<YYYY-MM-DD>.md` with your plan.
+- [ ] Start today's header in `feedback/<agent>/<YYYY-MM-DD>.md` with your plan.
+
+## 2.1) Growth Engine Evidence Setup (NEW - Effective 2025-10-21) (30 sec)
+
+- [ ] **Create Evidence Directories**:
+  ```bash
+  mkdir -p artifacts/<your-agent>/2025-10-21/mcp
+  mkdir -p artifacts/<your-agent>/2025-10-21/screenshots  # if Designer/Pilot/QA
+  ```
+
+- [ ] **Prepare MCP Evidence JSONL**:
+  - Create file: `artifacts/<your-agent>/2025-10-21/mcp/<task-name>.jsonl`
+  - Append after EACH MCP tool call:
+    ```json
+    {"tool":"shopify-dev|context7|web-search","doc_ref":"<url>","request_id":"<id>","timestamp":"2025-10-21T14:30:00Z","purpose":"Learn Polaris Card component"}
+    ```
+
+- [ ] **Prepare Heartbeat** (if task will be >2 hours):
+  - Create file: `artifacts/<your-agent>/2025-10-21/heartbeat.ndjson`
+  - Append every 15 minutes:
+    ```json
+    {"timestamp":"2025-10-21T14:00:00Z","task":"ENG-029","status":"doing","progress":"40%","file":"app/components/PIICard.tsx"}
+    ```
+
+**Why**: CI guards (guard-mcp, idle-guard) are merge blockers - PRs fail without evidence
 
 ## 3) Tools & Env (60–90 sec)
 
