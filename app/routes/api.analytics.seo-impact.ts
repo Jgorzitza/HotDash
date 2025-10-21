@@ -9,7 +9,7 @@
  * - action: "summary" | "correlation" | "history" (default: "summary")
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import {
   getSEOImpactAnalysis,
   correlateSEOWithContent,
@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get keyword history
     if (action === "history" && keyword) {
       const history = await getKeywordHistory(keyword, project, days);
-      return json({
+      return Response.json({
         success: true,
         data: history,
         meta: { keyword, project, days },
@@ -38,7 +38,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get correlation analysis
     if (action === "correlation") {
       const correlation = await correlateSEOWithContent(project, days);
-      return json({
+      return Response.json({
         success: true,
         data: correlation,
         meta: { project, days },
@@ -47,14 +47,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Default: Get summary
     const summary = await getSEOImpactAnalysis(project, days);
-    return json({
+    return Response.json({
       success: true,
       data: summary,
       meta: { project, days },
     });
   } catch (error) {
     console.error("SEO impact API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
@@ -77,7 +77,7 @@ export async function action({ request }: { request: Request }) {
     const { keyword, position, url: pageUrl, searchVolume } = body;
 
     if (!keyword || position === undefined || !pageUrl) {
-      return json(
+      return Response.json(
         {
           success: false,
           error: "Missing required fields: keyword, position, url",
@@ -94,13 +94,13 @@ export async function action({ request }: { request: Request }) {
       searchVolume
     );
 
-    return json({
+    return Response.json({
       success: true,
       data: result,
     });
   } catch (error) {
     console.error("SEO tracking API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",

@@ -9,7 +9,7 @@
  * - postId: Get specific post metrics (optional)
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import {
   getSocialPerformanceSummary,
   trackSocialPostPerformance,
@@ -26,7 +26,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // If postId is provided, return specific post metrics
     if (postId) {
       const postMetrics = await trackSocialPostPerformance(postId, project);
-      return json({
+      return Response.json({
         success: true,
         data: postMetrics,
       });
@@ -34,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Otherwise return aggregated summary
     const summary = await getSocialPerformanceSummary(project, platform, days);
-    return json({
+    return Response.json({
       success: true,
       data: summary,
       meta: {
@@ -45,7 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("Social performance API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",

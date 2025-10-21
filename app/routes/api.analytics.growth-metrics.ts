@@ -9,7 +9,7 @@
  * - weeks: Number of weeks for weekly report (default: 4)
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import {
   getGrowthMetrics,
   getWeeklyGrowthReport,
@@ -28,7 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get complete dashboard metrics
     if (action === "dashboard") {
       const dashboard = await getDashboardMetrics(project);
-      return json({
+      return Response.json({
         success: true,
         data: dashboard,
         meta: { project },
@@ -38,7 +38,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get summary metrics only
     if (action === "summary") {
       const summary = await getGrowthMetrics(project, days);
-      return json({
+      return Response.json({
         success: true,
         data: summary,
         meta: { project, days },
@@ -48,7 +48,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get weekly growth report
     if (action === "weekly") {
       const weekly = await getWeeklyGrowthReport(project, weeks);
-      return json({
+      return Response.json({
         success: true,
         data: weekly,
         meta: { project, weeks },
@@ -58,7 +58,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get trend analysis
     if (action === "trends") {
       const trends = await getTrendAnalysis(project, days);
-      return json({
+      return Response.json({
         success: true,
         data: trends,
         meta: { project, days },
@@ -66,7 +66,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     // Invalid action
-    return json(
+    return Response.json(
       {
         success: false,
         error: `Invalid action: ${action}. Valid actions: dashboard, summary, weekly, trends`,
@@ -75,7 +75,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
   } catch (error) {
     console.error("Growth metrics API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",

@@ -10,7 +10,7 @@
  * - compare: Comma-separated campaign IDs to compare (optional)
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import {
   getROASSummary,
   getCampaignPerformance,
@@ -31,7 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     if (compare) {
       const campaignIds = compare.split(",");
       const comparison = await compareCampaigns(campaignIds, project);
-      return json({
+      return Response.json({
         success: true,
         data: comparison,
         meta: { project, campaigns: campaignIds },
@@ -41,7 +41,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get specific campaign history
     if (campaignId) {
       const history = await getCampaignPerformance(campaignId, project, days);
-      return json({
+      return Response.json({
         success: true,
         data: history,
         meta: { campaignId, project, days },
@@ -50,14 +50,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Get overall summary
     const summary = await getROASSummary(project, platform, days);
-    return json({
+    return Response.json({
       success: true,
       data: summary,
       meta: { project, platform: platform || "all", days },
     });
   } catch (error) {
     console.error("Ads ROAS API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
@@ -96,7 +96,7 @@ export async function action({ request }: { request: Request }) {
       spend === undefined ||
       revenue === undefined
     ) {
-      return json(
+      return Response.json(
         {
           success: false,
           error:
@@ -118,13 +118,13 @@ export async function action({ request }: { request: Request }) {
       project
     );
 
-    return json({
+    return Response.json({
       success: true,
       data: result,
     });
   } catch (error) {
     console.error("Ads ROAS tracking API error:", error);
-    return json(
+    return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
