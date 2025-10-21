@@ -329,3 +329,82 @@ export function getForecastSummary(forecasts: DemandForecast[]): {
   };
 }
 
+/**
+ * Get 30-day demand forecast for a product (API helper)
+ *
+ * INVENTORY-006: Used by API route to get forecast data
+ *
+ * @param productId - Product identifier
+ * @param options - Forecast options (avgDailySales, category)
+ * @returns Promise resolving to demand forecast
+ */
+export async function getDemandForecast(
+  productId: string,
+  options: {
+    avgDailySales?: number;
+    category?: string;
+  } = {},
+): Promise<DemandForecast> {
+  // In production: fetch real historical data from database
+  // For now: generate mock historical data based on avgDailySales
+  const avgDailySales = options.avgDailySales || 5;
+  const mockHistoricalData: HistoricalSalesData[] = [];
+
+  // Generate 60 days of mock historical data with slight variance
+  const today = new Date();
+  for (let i = 60; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+
+    // Add random variance (±30%)
+    const variance = 0.7 + Math.random() * 0.6; // 0.7 to 1.3
+    const quantity = Math.round(avgDailySales * variance);
+
+    mockHistoricalData.push({
+      date,
+      quantity,
+    });
+  }
+
+  // Generate forecast using historical data
+  const forecast = generateDemandForecast(productId, mockHistoricalData);
+
+  return forecast;
+}
+
+/**
+ * Get 14-day demand velocity data for charting (INVENTORY-006)
+ *
+ * Returns daily sales for the last 14 days in chart-ready format.
+ *
+ * @param productId - Product identifier
+ * @returns Promise resolving to array of daily sales data
+ */
+export async function get14DayDemandVelocity(
+  productId: string,
+): Promise<Array<{ date: string; quantity: number }>> {
+  // In production: fetch real sales data from database
+  // For now: generate mock 14-day data
+  const velocityData: Array<{ date: string; quantity: number }> = [];
+
+  const today = new Date();
+  const baselineDaily = 5; // Mock baseline sales
+
+  for (let i = 13; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+
+    // Add variance and slight upward trend
+    const trendFactor = 1 + (13 - i) * 0.02; // Slight upward trend
+    const variance = 0.7 + Math.random() * 0.6; // Random variance
+    const quantity = Math.round(baselineDaily * trendFactor * variance);
+
+    velocityData.push({
+      date: date.toISOString(),
+      quantity,
+    });
+  }
+
+  return velocityData;
+}
+

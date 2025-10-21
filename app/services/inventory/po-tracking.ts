@@ -483,3 +483,37 @@ export function exportPOsToCSV(pos: PurchaseOrder[]): string {
   return csvLines.join("\n");
 }
 
+/**
+ * Get purchase order tracking for a product (API helper for INVENTORY-006)
+ *
+ * In production: fetch from database by productId
+ * For now: returns mock PO data
+ *
+ * @param productId - Product identifier
+ * @returns Promise resolving to array of purchase orders
+ */
+export async function getPOTracking(productId: string): Promise<
+  Array<{
+    po_number: string;
+    status: POStatus;
+    quantity: number;
+    expected_delivery_date: string;
+    days_until_expected?: number;
+  }>
+> {
+  // Mock PO data (in production: query database)
+  const today = new Date();
+  const expectedDate = new Date(today);
+  expectedDate.setDate(expectedDate.getDate() + 5); // Expected in 5 days
+
+  return [
+    {
+      po_number: "PO-2025-001",
+      status: "shipped" as POStatus,
+      quantity: 100,
+      expected_delivery_date: expectedDate.toISOString(),
+      days_until_expected: 5,
+    },
+  ];
+}
+

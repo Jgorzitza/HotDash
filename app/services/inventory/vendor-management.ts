@@ -439,3 +439,31 @@ export function identifyVendorIssues(
   return issues;
 }
 
+/**
+ * Get vendor information for a product (API helper for INVENTORY-006)
+ *
+ * In production: fetch from database by productId
+ * For now: returns mock vendor data
+ *
+ * @param productId - Product identifier
+ * @returns Promise resolving to vendor information
+ */
+export async function getVendorInfo(productId: string): Promise<{
+  vendor_id: string;
+  vendor_name: string;
+  cost_per_unit: number;
+  lead_time_days: number;
+  reliability_score: number;
+  last_order_date: string;
+}> {
+  // Mock vendor data (in production: query database)
+  return {
+    vendor_id: "vendor_001",
+    vendor_name: "Premium Suppliers Inc.",
+    cost_per_unit: 24.99,
+    lead_time_days: 7,
+    reliability_score: 92,
+    last_order_date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
+  };
+}
+
