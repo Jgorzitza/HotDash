@@ -1,12 +1,13 @@
 {
-  "buildTime": "2025-10-21T03:48:33.799Z",
+  "buildTime": "2025-10-21T03:54:06.534Z",
   "documentCount": 6,
   "persistDir": "/home/justin/HotDash/hot-dash/packages/memory/indexes/operator_knowledge",
   "useMock": false,
   "chunkConfig": {
     "chunkSize": 512,
-    "chunkOverlap": 50,
-    "overlapPercentage": "10%"
+    "chunkOverlap": 0,
+    "overlapPercentage": "0%",
+    "note": "No overlap - improves faithfulness by reducing contradictions"
   },
   "sources": [
     {

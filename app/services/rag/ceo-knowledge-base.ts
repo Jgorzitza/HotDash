@@ -136,10 +136,11 @@ async function initializeQueryEngine() {
   });
 
   // Create query engine with optimized settings
-  // P1: Increased similarityTopK from 3 to 5 for better context coverage
+  // P1: similarityTopK=3 (optimal - more chunks adds noise/contradictions)
+  // P2: Chunk overlap (50 tokens) improves context without adding noise
   // P4: Temperature 0 (fully deterministic) for consistency
   const queryEngine = index.asQueryEngine({
-    similarityTopK: 5, // Increased from 3 to capture more relevant context
+    similarityTopK: 3, // Keep at 3 - chunk overlap provides better coverage
   });
 
   return { queryEngine, index };

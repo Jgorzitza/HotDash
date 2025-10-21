@@ -80,7 +80,7 @@ const GROUND_TRUTH_TESTS: GroundTruthTest[] = [
   },
   {
     query: "What is the restocking fee for returns?",
-    referenceAnswer: "The restocking fee is 15% of the purchase price for non-defective returns. There is no restocking fee for damaged or defective items.",
+    referenceAnswer: "The restocking fee is 15% of the purchase price for standard returns (non-defective items, items missing packaging, or returns without accessories). There is no restocking fee for defective items, wrong items sent (our error), or items damaged in shipping. Used or installed products cannot be refunded for safety reasons.",
     category: "returns",
     description: "Restocking fee policy",
   },

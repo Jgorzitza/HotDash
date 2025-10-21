@@ -240,15 +240,15 @@ async function buildIndex(options: BuildOptions = {}): Promise<BuildResult> {
       persistDir,
     });
 
-    // P2: Configure text splitter with chunk overlap for better context preservation
+    // P2: Configure text splitter (NO overlap - it degrades faithfulness)
     const textSplitter = new SentenceSplitter({
       chunkSize: 512,      // Token limit per chunk (optimal for policy/FAQ content)
-      chunkOverlap: 50,    // 10% overlap to preserve context across chunks
+      chunkOverlap: 0,     // No overlap - reduces contradictions and improves faithfulness
     });
 
     // Build index (automatically persists to persistDir)
     console.log("\n🔨 Building vector index...");
-    console.log(`  Chunk size: 512 tokens, Overlap: 50 tokens (10%)`);
+    console.log(`  Chunk size: 512 tokens, No overlap (cleaner chunks)`);
     const index = await VectorStoreIndex.fromDocuments(documents, {
       storageContext,
       transformations: [textSplitter], // Apply custom chunking
@@ -264,8 +264,9 @@ async function buildIndex(options: BuildOptions = {}): Promise<BuildResult> {
       useMock,
       chunkConfig: {
         chunkSize: 512,
-        chunkOverlap: 50,
-        overlapPercentage: "10%",
+        chunkOverlap: 0,
+        overlapPercentage: "0%",
+        note: "No overlap - improves faithfulness by reducing contradictions",
       },
       sources: documents.map((doc) => ({
         fileName: doc.metadata?.file_name || "unknown",
