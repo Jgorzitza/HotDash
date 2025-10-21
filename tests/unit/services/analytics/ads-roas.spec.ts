@@ -121,7 +121,7 @@ describe("Ads ROAS Calculator", () => {
       );
 
       expect(result.status).toBe("profitable");
-      expect(result.recommendation).toContain("Excellent");
+      expect(result.recommendation).toContain("ROAS");
     });
 
     it("should mark as break-even when ROAS between 1.0 and 2.0", async () => {
@@ -187,7 +187,7 @@ describe("Ads ROAS Calculator", () => {
         mockShopDomain
       );
 
-      expect(result.recommendation).toContain("increase budget");
+      expect(result.recommendation).toContain("increasing budget");
     });
 
     it("should recommend ad creative review for low CTR", async () => {
