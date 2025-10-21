@@ -4,8 +4,8 @@
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
-git checkout manager-reopen-20251020
-git pull origin manager-reopen-20251020
+git checkout manager-reopen-20251021
+git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  

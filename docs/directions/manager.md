@@ -4,8 +4,8 @@
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
-git checkout manager-reopen-20251020
-git pull origin manager-reopen-20251020
+git checkout manager-reopen-20251021
+git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager (me)  
@@ -129,7 +129,7 @@ mcp_fly_fly-status("--app", "hotdash-staging")
 
 **Commit Review**:
 ```bash
-git log --oneline manager-reopen-20251020 --since="1 day ago"
+git log --oneline manager-reopen-20251021 --since="1 day ago"
 ```
 - Check agent is following commit style
 - Verify file ownership respected
