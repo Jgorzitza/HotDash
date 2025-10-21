@@ -1,4 +1,4 @@
-# Analytics Direction v5.1
+# Analytics Direction v6.3
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -6,243 +6,127 @@ cd /home/justin/HotDash/hot-dash
 git fetch origin
 git checkout manager-reopen-20251020
 git pull origin manager-reopen-20251020
-git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
-
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Analytics Support
+**Effective**: 2025-10-21T04:02Z  
+**Version**: 6.3  
+**Status**: ACTIVE — Phase 7-8 Growth Analytics
 
 ---
 
 ## Objective
 
-**Provide data integration for charts and analytics features** (Phases 7-8)
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
+**Build analytics services for SEO, Ads, Social performance tracking**
 
 ---
 
-## Day 1-4 Tasks (START NOW - 8h) — ALL CHART SERVICES UPFRONT
+## MANDATORY MCP USAGE
 
-**Strategy**: Build ALL data services NOW → Engineer integrates when ready
+```bash
+# TypeScript patterns
+mcp_context7_get-library-docs("/microsoft/TypeScript", "async calculations aggregations")
 
-### ANALYTICS-001: Sales Chart Data — DAY 1
+# React Router 7 API routes
+mcp_context7_get-library-docs("/websites/reactrouter", "loaders API routes")
 
-**Your Tasks**:
-- Provide 7-day revenue data for sparkline
-- Provide WoW comparison data for Sales Modal
-- Provide top SKUs breakdown data
+# Google Analytics (if needed)
+web_search("Google Analytics 4 API official documentation")
+```
 
-**Format**:
+---
+
+## ACTIVE TASKS (8h total)
+
+### ANALYTICS-006: Social Post Performance Tracking (2h) - START NOW
+
+**Requirements**:
+- Track Publer post metrics (impressions, clicks, engagement)
+- Calculate CTR, engagement rate
+- Store in social_analytics table
+
+**MCP Required**: TypeScript async patterns
+
+**Implementation**:
+
+**File**: `app/services/analytics/social-performance.ts` (new)
 ```typescript
-// Expected by Engineer for charts
-{
-  revenue_7d: Array<{date: string, amount: number}>,
-  revenue_wow: {current: number, previous: number, change_pct: number},
-  top_skus: Array<{sku: string, units: number, revenue: number}>
+export async function trackSocialPostPerformance(postId: string) {
+  // Fetch from Publer API
+  // Calculate metrics
+  // Store in social_analytics
 }
 ```
 
-**Integration**: Engineer calls your service, you return chart-ready data
+**File**: `app/routes/api.analytics.social-performance.ts` (new)
+- GET endpoint for social metrics
+
+**Time**: 2 hours
 
 ---
 
-### ANALYTICS-002: Inventory Chart Data — DAY 2
+### ANALYTICS-007: SEO Impact Analysis Service (2h)
 
-**Your Tasks**:
-- Provide 14-day velocity data (units sold per day)
-- Provide stock level trend data
-- Provide days-of-cover calculations
+**Requirements**:
+- Track keyword rankings over time
+- Identify ranking improvements/declines
+- Correlate with content changes
+
+**File**: `app/services/analytics/seo-impact.ts` (new)
+
+**Time**: 2 hours
 
 ---
 
-### ANALYTICS-003: Agent Performance Data — DAY 3
+### ANALYTICS-008: Ads ROAS Calculator (2h)
 
-**Your Tasks**:
-- Query decision_log for approval rates
-- Calculate average grades (tone/accuracy/policy)
-- Provide response time trends
-- Format for Polaris Viz charts
+**Requirements**:
+- Calculate ROAS (Return on Ad Spend)
+- Track campaign performance
+- Identify best/worst performers
+
+**File**: `app/services/analytics/ads-roas.ts` (new)
+
+**Time**: 2 hours
+
+---
+
+### ANALYTICS-009: Growth Dashboard Metrics (2h)
+
+**Requirements**:
+- Aggregate metrics: CTR, impressions, conversions
+- Weekly growth report
+- Trend analysis
+
+**File**: `app/services/analytics/growth-metrics.ts` (new)
+
+**Time**: 2 hours
 
 ---
 
 ## Work Protocol
 
-**Coordinate with Engineer**: They build UI, you provide data services
+**MCP Tools**: Context7 for TypeScript, web_search for API docs
 
-**Reporting**: Every 2 hours in `feedback/analytics/2025-10-20.md`
-
----
-
-### ANALYTICS-004: Export Services — DAY 4
-
-**Build CSV export data services**:
-- Approval history export data
-- Analytics export data
-- Custom report generation
-
----
-
-## Phase Schedule
-
-**Day 1**: ANALYTICS-001 (sales charts - 2h) — START NOW
-**Day 2**: ANALYTICS-002 (inventory charts - 2h)
-**Day 3**: ANALYTICS-003 (agent performance - 2h)
-**Day 4**: ANALYTICS-004 (exports - 2h)
-
-**Result**: ALL data services ready → Engineer integrates charts/exports when ready
-
-**Total**: 8 hours across Days 1-4 (parallel with Engineer)
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md`
-**Feedback**: `feedback/analytics/2025-10-20.md`
-
----
-
-**START WITH**: Standby until Phase 7-8 begins
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
+**Reporting (Every 2 hours)**:
 ```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
+## YYYY-MM-DDTHH:MM:SSZ — Analytics: Social Performance
+
+**Working On**: ANALYTICS-006 (Social post tracking)
+**Progress**: 75% - Service implemented, testing metrics
+
+**Evidence**:
+- File: app/services/analytics/social-performance.ts (124 lines)
+- MCP: TypeScript async patterns verified
+- Test: CTR calculation working (324 impressions, 18 clicks = 5.56%)
+- API route: GET /api/analytics/social-performance tested
+
+**Blockers**: None
+**Next**: Store metrics in social_analytics table, complete API route
 ```
 
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
-
 ---
 
-## ✅ MANAGER UPDATE (2025-10-21T00:00Z)
+**START WITH**: ANALYTICS-006 (Social performance) - Pull TypeScript docs NOW
 
----
-
-## START NOW: ANALYTICS-005 - WoW Variance Service for Sales Modal (1 hour)
-
-**Context**: Sales Pulse Modal currently shows placeholder for Week-over-Week variance. Create backend service to calculate real variance.
-
-**Engineer Need**: Data service to calculate variance between this week's sales vs last week's sales
-
-**Your Task**: Create WoW variance calculation service
-
-### Implementation
-
-**File**: `app/services/analytics/wow-variance.ts`
-
-```typescript
-// Calculate Week-over-Week variance for sales metrics
-export async function getWoWVariance(
-  project: string,
-  metric: 'revenue' | 'orders' | 'conversion'
-): Promise<{
-  current: number;
-  previous: number;
-  variance: number; // Percentage change
-  trend: 'up' | 'down' | 'flat';
-}> {
-  // 1. Get current week's data (last 7 days)
-  // 2. Get previous week's data (8-14 days ago)
-  // 3. Calculate variance: ((current - previous) / previous) * 100
-  // 4. Determine trend: variance > 5% = up, < -5% = down, else flat
-  // 5. Return structured data
-}
-```
-
-**API Route**: `app/routes/api.analytics.wow-variance.ts`
-- Accepts: `project`, `metric` query params
-- Returns: JSON with current, previous, variance, trend
-- Uses Supabase to query historical sales data
-
-**Data Source**:
-- Table: `sales_pulse_actions` (created by Data agent)
-- Query: Aggregate actions by date range
-- Alternative: Mock data if historical data not yet available
-
-**Tests**:
-- Unit test for variance calculation logic
-- Test edge cases: zero division, negative values, no previous data
-- API route test
-
-**Deliverables**:
-1. ✅ Service file created
-2. ✅ API route created
-3. ✅ Tests passing
-4. ✅ Documentation for Engineer integration
-
-**Time**: 60 minutes
-
-**Engineer Integration**: Engineer will call `/api/analytics/wow-variance?project=X&metric=revenue` from Sales Modal
-
----
-
-## After ANALYTICS-005
-
-**Next**: STANDBY for Phase 7-8 (Product Analytics Dashboard) or additional coordination requests
-
-**Status**: ALL TASKS COMPLETE ✅
-
-**Evidence**: See feedback/analytics/2025-10-20.md
-
-**Your Work**:
-Work verified complete by Manager
-
-**Next Assignment**: STANDBY - Await Phase 3-13 coordination requests
-
-**No Action Required**: You are in standby mode until Manager assigns next phase work
-
-
----
-
-## 🔄 MANAGER UPDATE (2025-10-21T02:35Z)
-
-**Feedback Consolidated**: All 10/20 + 10/21 work reviewed
-
-**Status**: Standby - Monitor for coordination requests
-
-**Time Budget**: See above
-**Priority**: Execute until complete or blocked, then move to next task
-**Report**: Every 2 hours in feedback/analytics/2025-10-21.md
-
+**NO MORE STANDBY - ACTIVE WORK ASSIGNED**

@@ -1,4 +1,4 @@
-# Designer Direction v5.4
+# Designer Direction v5.2
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -10,116 +10,259 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T01:25:00Z  
-**Version**: 5.4  
-**Status**: ✅ Phase 2 PASSED - Awaiting Engineer Phase 3
+**Effective**: 2025-10-21T03:57Z  
+**Version**: 5.2  
+**Status**: ACTIVE — Phase 6 Validation + Phase 9 Prep + Audits
 
 ---
 
-## ✅ PHASE 2: COMPLETE & PASSED (3rd Validation)
+## Objective
 
-**Your Validation**: ✅ PASSED (18:05 UTC 2025-10-20)
-**Engineer Fixes**: ✅ ALL 10 P0 issues resolved
-**Evidence**: feedback/designer/2025-10-20.md (lines 820+)
-
-**Phase 2 Status**: ✅ READY FOR CEO CHECKPOINT 2
-
-**Issues Verified Fixed**:
-1. ✅ Focus trap (ALL 3 modals)
-2. ✅ Escape key (ALL 3 modals)  
-3. ✅ Edit button (CX modal)
-4. ✅ WoW variance (Sales modal)
-5. ✅ 14-day chart (Inventory modal)
-6. ✅ Toast notifications (ALL 3 modals)
-7. ✅ aria-live (Sales modal)
-8. ✅ Initial focus (ALL 3 modals)
+**Validate Phase 6 implementation + Prepare Phase 9 + Comprehensive audits**
 
 ---
 
-## NEXT: Phase 3 Validation (After Engineer Completes)
+## MANDATORY MCP USAGE
 
-**Engineer Status**: Starting Phase 3 - Missing Dashboard Tiles (4 hours)
+**Before any validation work, pull design system docs**:
 
-**Your Role**: Validate Phase 3 after Engineer completes ENG-008 to ENG-010
+```bash
+# Polaris design patterns
+mcp_context7_get-library-docs("/websites/polaris-react_shopify", "accessibility WCAG patterns")
 
-### Phase 3 Tasks to Validate:
+# Chrome DevTools for testing
+# Use mcp_Chrome_DevTools_take_snapshot for evidence
+```
 
-**DES-005: Idea Pool Tile** (30 min validation)
-- Component exists and renders correctly
-- Data from Integrations API displays properly
-- "Review Ideas" button navigates correctly
-- Polaris Card styling consistent with other tiles
-- Accessibility: WCAG 2.2 AA compliant
-
-**DES-006: CEO Agent Tile** (30 min validation)
-- Mock stats display correctly
-- Action button works
-- Tile layout matches design intent
-- Accessibility compliant
-
-**DES-007: Unread Messages Tile** (30 min validation)
-- Chatwoot unread count displays
-- "View Messages" button functional
-- Real-time or polling updates (if implemented)
-- Accessibility compliant
-
-**Validation Checklist** (use for each tile):
-- [ ] Component renders without errors
-- [ ] Data loads and displays correctly
-- [ ] Action buttons work (navigation)
-- [ ] Polaris Card styling consistent
-- [ ] Keyboard navigation works (Tab, Enter)
-- [ ] Focus indicators visible
-- [ ] ARIA labels present
-- [ ] Color contrast meets WCAG 2.2 AA
-- [ ] Responsive on mobile (if applicable)
-
-**Total Validation Time**: ~90 minutes for all 3 tiles
+**Log evidence in feedback with screenshots/snapshots**.
 
 ---
 
-## Standby Instructions
+## ACTIVE TASKS (10h total)
 
-**While Waiting for Engineer**:
-1. Review Phase 3 specs in PROJECT_PLAN.md
-2. Prepare validation checklist
-3. Monitor Engineer progress in feedback/engineer/*.md
-4. Ready to validate as soon as Engineer completes
+### DES-009: Settings Page Design Validation (2h)
 
-**Estimated Wait**: 4 hours (Engineer Phase 3 time)
+**Wait For**: Engineer ENG-014 to ENG-022 complete
+
+**Requirements**:
+- Validate Settings page matches design specs
+- Check all 4 tabs (Dashboard, Appearance, Notifications, Account)
+- Verify drag/drop animations smooth
+- Test theme switcher (Light/Dark/Auto)
+- Mobile responsive check
+
+**MCP Required**: Use Chrome DevTools MCP for snapshot evidence
+
+**Validation Checklist**:
+- [ ] Settings page layout matches `docs/design/settings-page-spec.md`
+- [ ] Drag/drop tile reorder animations smooth (no jank)
+- [ ] Theme selector working (Light/Dark/Auto with instant apply)
+- [ ] All toggles/checkboxes functional
+- [ ] Mobile responsive (320px to 1920px)
+- [ ] Focus trap working (Tab key navigation)
+- [ ] ARIA labels present on all interactive elements
+- [ ] Color contrast WCAG 2.2 AA compliant
+
+**Deliverables**:
+- Screenshot evidence of all 4 tabs
+- Issues list (if any) for Engineer to fix
+- Sign-off in feedback when passing
+
+**Time**: 2 hours (after Engineer Phase 6 complete)
 
 ---
 
-## Validation Process
+### DES-010: Onboarding Flow Wireframes (3h)
 
-**When Engineer Completes Phase 3**:
-1. Pull latest code from manager-reopen-20251020
-2. Run app locally: `npm run dev`
-3. Navigate to dashboard
-4. Validate each of the 3 new tiles
-5. Document findings in feedback/designer/2025-10-20.md
-6. Report PASS or FAIL with specific issues
+**Requirements**:
+- Design 4-step onboarding tour for Phase 9
+- Welcome screen + 4 feature highlights
+- Hot Rodan brand voice throughout
+- Mobile + desktop layouts
 
-**If PASS**: Phase 3 proceeds to CEO Checkpoint 3
-**If FAIL**: Engineer fixes issues, you re-validate
+**Wireframes Needed**:
+1. **Welcome Screen**: "Welcome to Hot Rod AN Control Center"
+2. **Step 1**: Dashboard overview (8 tiles explanation)
+3. **Step 2**: Approval queue workflow (HITL concept)
+4. **Step 3**: Notifications system (toast/banner/browser)
+5. **Step 4**: Settings personalization (theme, tiles)
+
+**Polaris Components**: Modal, Button, ProgressBar, Text, Icon
+
+**Deliverables**:
+- `docs/design/onboarding-flow-wireframes.md` (new file)
+- 5 wireframe sketches (welcome + 4 steps)
+- Microcopy for each screen
+- Accessibility notes
+
+**Time**: 3 hours
 
 ---
 
-## PRIMARY REFERENCE
+### DES-011: Mobile Optimization Review (2h)
 
-- `docs/manager/PROJECT_PLAN.md` - Option A execution plan
-- `docs/specs/modal-refresh-handoff.md` - Design specs
-- `.cursor/rules/04-agent-workflow.mdc` - Agent workflow rules
+**Requirements**:
+- Review ALL implemented features (Phases 1-6) on mobile
+- Test iOS Safari + Android Chrome
+- Document issues and recommendations
+
+**Test Devices**:
+- iOS Safari (iPhone 12+)
+- Android Chrome (Pixel 5+)
+- Responsive mode (Chrome DevTools 320px-428px)
+
+**Areas to Test**:
+- Dashboard tiles (touch interactions)
+- Modals (CX, Sales, Inventory)
+- Drag & drop tile reorder (touch events)
+- Notifications (toast, banner)
+- Settings page (all tabs)
+- Approval queue
+
+**MCP Required**: Use Chrome DevTools MCP for mobile snapshots
+
+**Deliverables**:
+- Mobile test report in `docs/design/mobile-optimization-report.md`
+- Screenshot evidence of issues
+- Recommendations for Engineer
+
+**Time**: 2 hours
 
 ---
 
-## 🔄 MANAGER UPDATE (2025-10-21T02:35Z)
+### DES-012: Accessibility Audit Phase 1-6 Features (3h)
 
-**Feedback Consolidated**: All 10/20 + 10/21 work reviewed
+**Requirements**:
+- Comprehensive WCAG 2.2 AA audit
+- Test all interactive elements with screen reader
+- Keyboard navigation testing
+- Color contrast validation
 
-**Status**: Standby - Monitor for coordination requests
+**Scope**: All Phases 1-6 features
+- Dashboard (8 tiles)
+- Approval queue
+- 3 modals (CX, Sales, Inventory)
+- Notification system
+- Settings page
 
-**Time Budget**: See above
-**Priority**: Execute until complete or blocked, then move to next task
-**Report**: Every 2 hours in feedback/designer/2025-10-21.md
+**Testing Tools**:
+- Screen reader: NVDA (Windows) or VoiceOver (Mac)
+- Keyboard only (no mouse)
+- Contrast checker: WebAIM Contrast Checker
+- axe DevTools browser extension
 
+**MCP Required**: Chrome DevTools MCP for accessibility tree inspection
+
+**Deliverables**:
+- Accessibility audit report: `docs/design/accessibility-audit-phase-1-6.md`
+- Issues categorized: Critical, High, Medium, Low
+- Remediation recommendations for Engineer
+- WCAG 2.2 AA compliance score
+
+**Time**: 3 hours
+
+---
+
+## Work Protocol
+
+**1. MCP Tools** (MANDATORY):
+```bash
+# Polaris design patterns
+mcp_context7_get-library-docs("/websites/polaris-react_shopify", "accessibility design system")
+
+# Chrome DevTools for testing
+mcp_Chrome_DevTools_take_snapshot()
+mcp_Chrome_DevTools_take_screenshot()
+```
+
+**2. Coordinate with**:
+- **Engineer**: Wait for Phase 6 completion before DES-009
+- **QA**: Share findings for test plan creation
+- **Manager**: Escalate critical issues immediately
+
+**3. Reporting (Every 2 hours)**:
+```md
+## YYYY-MM-DDTHH:MM:SSZ — Designer: Phase 6 Validation
+
+**Working On**: DES-009 (Settings Page Design Validation)
+**Progress**: 70% - 3/4 tabs validated, mobile testing remaining
+
+**Evidence**:
+- Screenshots: settings-dashboard-tab.png, settings-appearance-tab.png (stored in artifacts/designer/)
+- Issues found: 2 minor (color contrast on toggle labels, mobile drag handle size)
+- MCP: Chrome DevTools snapshots captured
+- Polaris patterns verified: All components match design system
+
+**Blockers**: None
+**Next**: Complete mobile testing, create issues list for Engineer
+```
+
+---
+
+## Definition of Done
+
+**DES-009**:
+- [ ] All 4 Settings tabs validated
+- [ ] Desktop + mobile tested
+- [ ] Screenshot evidence provided
+- [ ] Issues list created (if any)
+- [ ] Sign-off given or blockers reported
+
+**DES-010**:
+- [ ] 5 wireframes complete (welcome + 4 steps)
+- [ ] Microcopy written
+- [ ] Accessibility notes included
+- [ ] Ready for Engineer Phase 9 implementation
+
+**DES-011**:
+- [ ] Mobile test report complete
+- [ ] iOS + Android tested
+- [ ] Screenshot evidence attached
+- [ ] Recommendations provided
+
+**DES-012**:
+- [ ] Comprehensive accessibility audit complete
+- [ ] WCAG 2.2 AA compliance scored
+- [ ] Issues categorized and documented
+- [ ] Remediation recommendations clear
+
+---
+
+## Critical Reminders
+
+**DO**:
+- ✅ Use MCP Chrome DevTools for ALL testing evidence
+- ✅ Test on real devices (not just emulators)
+- ✅ Document issues clearly with reproduction steps
+- ✅ Provide screenshot evidence
+- ✅ Coordinate with Engineer on fixes
+
+**DO NOT**:
+- ❌ Validate without testing (must actually use the app)
+- ❌ Skip mobile testing
+- ❌ Approve work with accessibility violations
+- ❌ Create ad-hoc documentation (use specified file paths)
+
+---
+
+## Timeline
+
+**After Engineer Phase 6 Complete**: DES-009 (2h)  
+**Parallel**: DES-010 (3h - can start now), DES-011 (2h), DES-012 (3h)
+
+**Total**: 10 hours work
+
+---
+
+## Quick Reference
+
+**Plan**: `docs/manager/PROJECT_PLAN.md` (Phase 6 + 9)  
+**Task Assignments**: `feedback/manager/TASK_ASSIGNMENTS_2025-10-21.md`  
+**Feedback**: `feedback/designer/2025-10-21.md`  
+**Design Specs**: `docs/design/` (57 files)
+
+---
+
+**START WITH**: DES-010 (Onboarding wireframes - can start immediately while waiting for Engineer)
+
+**NO MORE STANDBY - ACTIVE WORK ASSIGNED**

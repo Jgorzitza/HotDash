@@ -1,4 +1,4 @@
-# QA Direction v6.0
+# QA Direction v5.2
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -6,129 +6,126 @@ cd /home/justin/HotDash/hot-dash
 git fetch origin
 git checkout manager-reopen-20251020
 git pull origin manager-reopen-20251020
-git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T01:25:00Z  
-**Version**: 6.0  
-**Status**: QA-001 - Code Review Phase 2 (1 hour)
+**Effective**: 2025-10-21T04:07Z  
+**Version**: 5.2  
+**Status**: ACTIVE — Phase 6 Testing + E2E Expansion
 
 ---
 
-## START NOW: QA-001 - Code Review Phase 2 Engineer Commits (1 hour)
+## Objective
 
-**Context**: Engineer completed Phase 2 with 3 fix commits. Review code quality before CEO Checkpoint 2.
+**Build comprehensive test suite for Phase 6 + Accessibility automation**
 
-**Commits to Review**:
-1. `761d30f` - "fix(engineer): core accessibility (focus trap + Escape key)"
-2. `7b1b73e` - "fix(engineer): toast notifications for all modals"
-3. `08a6c0f` - "fix(engineer): WoW variance + 14-day chart"
+---
 
-### Review Checklist
+## MANDATORY MCP USAGE
 
-**Code Quality** (20 min):
-- [ ] TypeScript: No `any` types, proper type safety
-- [ ] React Router 7: Correct patterns (no `@remix-run` imports)
-- [ ] Polaris: Proper component usage
-- [ ] Code duplication: Check for repeated logic (should use hooks)
-- [ ] File structure: Components in correct directories
-- [ ] Naming: Clear, descriptive variable/function names
+```bash
+# Playwright for E2E testing
+mcp_context7_get-library-docs("/microsoft/playwright", "testing drag drop accessibility")
 
-**Accessibility** (15 min):
-- [ ] WCAG 2.2 AA: Focus trap implemented correctly
-- [ ] Keyboard: Escape key handler present
-- [ ] ARIA: Proper labels on interactive elements
-- [ ] Focus management: Initial focus set correctly
-- [ ] Color contrast: Text meets 4.5:1, interactive 3:1
-- [ ] Screen reader: aria-live regions for dynamic content
+# Vitest for unit testing
+mcp_context7_get-library-docs("/vitest-dev/vitest", "async testing mocking")
 
-**Testing** (10 min):
-- [ ] Unit tests: Coverage for new hooks (useModalFocusTrap, useToast)
-- [ ] Tests passing: npm run test:ci
-- [ ] Edge cases: Null checks, error handling
-
-**Security** (5 min):
-- [ ] No secrets: gitleaks scan passing
-- [ ] Input validation: User input sanitized
-- [ ] SQL injection: Using Prisma ORM only (no raw SQL)
-- [ ] XSS protection: React default escaping + validation
-
-**Database Safety** (5 min):
-- [ ] No migrations: No ALTER/CREATE TABLE in commits
-- [ ] Prisma: @@schema("public") on models
-- [ ] RLS: Project-scoped queries
-
-**Performance** (5 min):
-- [ ] Bundle size: Check impact on server bundle
-- [ ] Re-renders: Proper memo/useCallback usage
-- [ ] Memory leaks: Cleanup in useEffect
-
-### MCP Tools Required
-
-**Use Context7 MCP** (minimum 4 calls):
-1. React Router 7: Verify correct patterns
-2. Polaris: Check accessibility compliance
-3. TypeScript: Verify type safety
-4. React Hooks: Validate custom hooks implementation
-
-**Evidence Format**:
-```md
-## 01:30 - Context7: React Router 7
-- Topic: useFetcher patterns
-- Verified: ENG commits use useFetcher correctly ✅
-- Issue found: None
-
-## 01:35 - Context7: Polaris Accessibility
-- Topic: Modal focus management
-- Verified: useModalFocusTrap follows Polaris patterns ✅
-- Recommendation: PASS
+# TypeScript test patterns
+mcp_context7_get-library-docs("/microsoft/TypeScript", "testing types mocking")
 ```
 
-### Deliverables
+---
 
-**Code Review Report** (in feedback/qa/2025-10-20.md):
-1. Summary: PASS/FAIL for each commit
-2. Issues found: Severity (P0/P1/P2) + description
-3. Recommendations: Improvements for next phase
-4. MCP evidence: 4+ tool call logs
+## ACTIVE TASKS (9h total)
 
-**Format**:
+### QA-002: Phase 6 Test Plan (2h) - START NOW
+
+**Requirements**:
+- Test scenarios for all Phase 6 features
+- Drag/drop tile reorder tests
+- Settings page form validation
+- Theme switching tests
+
+**MCP Required**: Pull Playwright docs for drag/drop testing
+
+**Deliverables**:
+**File**: `docs/specs/phase-6-test-plan.md` (new)
+- Test scenarios (30+)
+- Acceptance criteria
+- Edge cases
+
+**Time**: 2 hours
+
+---
+
+### QA-003: Accessibility Testing Suite (3h)
+
+**Requirements**:
+- Automated WCAG 2.2 AA testing
+- Screen reader compatibility tests
+- Keyboard navigation tests
+- Color contrast validation
+
+**MCP Required**: Playwright accessibility testing docs
+
+**Implementation**:
+**File**: `tests/e2e/accessibility/settings-page.spec.ts` (new)
+**File**: `tests/e2e/accessibility/dashboard.spec.ts` (new)
+
+**Time**: 3 hours
+
+---
+
+### QA-004: Performance Regression Tests (2h)
+
+**Requirements**:
+- Benchmark tile load times
+- Drag/drop performance tests
+- Settings save performance
+- Alert on regressions
+
+**File**: `tests/performance/tile-load-benchmarks.spec.ts` (new)
+
+**Time**: 2 hours
+
+---
+
+### QA-005: E2E Settings Flow (2h)
+
+**Requirements**:
+- Complete settings flow test
+- Drag tile, change theme, toggle visibility
+- Verify persistence across sessions
+
+**File**: `tests/e2e/settings-flow.spec.ts` (new)
+
+**Time**: 2 hours
+
+---
+
+## Work Protocol
+
+**MCP Tools**: Playwright, Vitest, TypeScript docs
+
+**Reporting (Every 2 hours)**:
 ```md
-## Code Review Results - Phase 2
+## YYYY-MM-DDTHH:MM:SSZ — QA: Phase 6 Test Plan
 
-### Commit 761d30f (Core Accessibility)
-- Code Quality: ✅ PASS
-- Accessibility: ✅ PASS  
-- Testing: ✅ PASS
-- Security: ✅ PASS
-- Issues: None
-- Recommendation: APPROVE
+**Working On**: QA-002 (Test plan creation)
+**Progress**: 80% - 28 scenarios documented, edge cases pending
 
-### Commit 7b1b73e (Toast Notifications)
-...
+**Evidence**:
+- File: docs/specs/phase-6-test-plan.md (234 lines)
+- Test scenarios: 28 (drag/drop: 8, settings: 12, theme: 5, misc: 3)
+- MCP: Playwright drag/drop testing patterns verified
+- Edge cases: Identified 12 edge cases for testing
+
+**Blockers**: None
+**Next**: Complete edge cases, begin QA-003 (accessibility suite)
 ```
 
-**Time**: 60 minutes
-
-**After QA-001**: Report findings to Manager, prepare for Phase 3 code review
-
 ---
 
-## MCP Tools Compliance
+**START WITH**: QA-002 (Test plan) - Pull Playwright docs NOW
 
-**Minimum**: 4 Context7 calls per review session
-**Required Evidence**: Conversation IDs, topics, findings logged in feedback
-
----
-
-## 🔄 MANAGER UPDATE (2025-10-21T02:35Z)
-
-**Feedback Consolidated**: All 10/20 + 10/21 work reviewed
-
-**Status**: Standby - Monitor for coordination requests
-
-**Time Budget**: See above
-**Priority**: Execute until complete or blocked, then move to next task
-**Report**: Every 2 hours in feedback/qa/2025-10-21.md
-
+**NO MORE STANDBY - ACTIVE WORK ASSIGNED**

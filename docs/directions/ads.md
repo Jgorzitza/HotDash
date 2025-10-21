@@ -1,4 +1,4 @@
-# Ads Direction v5.1
+# Ads Direction v5.2
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -6,361 +6,128 @@ cd /home/justin/HotDash/hot-dash
 git fetch origin
 git checkout manager-reopen-20251020
 git pull origin manager-reopen-20251020
-git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
-
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Google Ads Integration (PARALLEL DAY 1-3)
+**Effective**: 2025-10-21T04:04Z  
+**Version**: 5.2  
+**Status**: ACTIVE — Phase 8 Google Ads Integration + HITL
 
 ---
 
 ## Objective
 
-**Set up Google Ads API for ad performance monitoring** (future Ads tile)
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
-**Timeline**: Day 1-3 — START NOW (Parallel with other agents)
+**Build Google Ads integration with HITL approval workflow for ad copy changes**
 
 ---
 
-## Day 1 Tasks (START NOW - 4h)
+## MANDATORY MCP USAGE
 
-### ADS-001: Google Ads API Integration
-
-**What to Build**:
-
-**API Client** - `app/services/ads/google-ads.ts`:
-- Google Ads API authentication
-- Fetch campaign performance (impressions, clicks, spend, conversions)
-- Ad group performance
-- Keyword performance
-- Budget tracking
-
-**API Endpoint** - `app/routes/api.ads.performance.ts`:
-```typescript
-// Returns:
-{
-  campaigns: Array<{
-    id: string,
-    name: string,
-    status: 'active' | 'paused',
-    impressions: number,
-    clicks: number,
-    ctr: number,
-    cost: number,
-    conversions: number,
-    roas: number // return on ad spend
-  }>,
-  summary: {
-    total_spend: number,
-    total_conversions: number,
-    avg_cpc: number,
-    avg_roas: number
-  },
-  alerts: Array<{
-    campaign_id: string,
-    issue: string, // 'budget_depleted', 'low_ctr', 'high_cpc'
-    severity: 'high' | 'medium' | 'low'
-  }>
-}
-```
-
-**Tests** - `tests/unit/services/ads/google-ads.spec.ts`:
-- Auth flow
-- Campaign data fetching
-- Alert generation logic
-- Error handling
-
-**CRITICAL - Pull Context7 FIRST**:
 ```bash
-mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ads")
+# Google Ads API
+web_search("Google Ads API official documentation authentication Node.js")
+
+# TypeScript async patterns
+mcp_context7_get-library-docs("/microsoft/TypeScript", "async error handling retry logic")
+
+# React Router 7 API routes
+mcp_context7_get-library-docs("/websites/reactrouter", "API routes actions")
 ```
 
-**Credentials** (coordinate with Manager):
-- Google Ads customer ID
-- OAuth2 credentials OR service account
-- Developer token
-
 ---
 
-### ADS-002: Campaign Templates for Social Ads
+## ACTIVE TASKS (10h total)
 
-**Create ad campaign templates** (for future agent use):
+### ADS-001: Google Ads API Integration (3h) - START NOW
 
-**File**: `app/fixtures/ads/campaign-templates.json`
+**Requirements**:
+- Authenticate with Google Ads API
+- Fetch campaign data (impressions, clicks, cost, conversions)
+- Daily refresh
+- Store in ad_campaigns, ad_performance tables
 
-```json
-{
-  "product_launch": {
-    "platforms": ["google", "facebook", "instagram"],
-    "ad_copy": "New {product_name} - {selling_point}. Shop now!",
-    "budget_recommendation": "$50/day",
-    "targeting": {
-      "interests": ["{product_category}"],
-      "demographics": "25-45, all genders"
-    }
-  },
-  "sale_promotion": {
-    "platforms": ["google", "facebook"],
-    "ad_copy": "{discount_pct}% OFF {category} - Limited time!",
-    "budget_recommendation": "$100/day"
-  },
-  "retargeting": {
-    "platforms": ["google", "facebook", "instagram"],
-    "ad_copy": "Still thinking about {product_name}? Get {incentive} today!",
-    "budget_recommendation": "$30/day"
-  }
-}
+**MCP Required**: web_search for Google Ads API docs
+
+**Implementation**:
+
+**File**: `app/services/ads/google-ads-client.ts` (new)
+```typescript
+// OAuth authentication
+// Campaign data fetch
+// Performance metrics
+// Error handling
 ```
 
-**Purpose**: Templates for agents to create ad campaigns post-launch
+**Credentials**: `vault/occ/google/ads_credentials.json` (check first)
+
+**Time**: 3 hours
 
 ---
 
-## Day 2 Tasks
+### ADS-002: Ad Performance Dashboard (2h)
 
-### ADS-003: Ad Spend Tracking & Alerts
+**Requirements**:
+- Dashboard showing ROAS, CTR, conversions by campaign
+- Week-over-week comparisons
+- Best/worst performing campaigns
 
-**Build alert system**:
-- Budget depletion alerts (>90% spent)
-- Low CTR alerts (<1%)
-- High CPC alerts (above target)
-- Conversion drops (>20% decrease)
+**File**: `app/routes/api.ads.performance.ts` (new)
+**File**: `app/services/ads/performance-metrics.ts` (new)
 
-**Integration**:
-- Store alerts in notifications table (Data creates)
-- Display in future Ads tile
-- Trigger banner alerts if critical
+**Time**: 2 hours
 
 ---
 
-### ADS-004: Integration with Publer (Social Ads)
+### ADS-003: Budget Alert System (2h)
 
-**Coordinate with Integrations agent**:
-- Publer supports social ads (Facebook/Instagram)
-- Connect ad performance to social posts
-- Track: Post → Ad Campaign → Conversions → ROI
+**Requirements**:
+- Alert when campaign spend > 80% of budget
+- Daily budget tracking
+- Automatic pause if overspend
 
-**Create**: `app/services/ads/social-ads-integration.ts`
-- Link Publer posts to ad campaigns
-- Track performance per post
-- Calculate social ad ROI
+**File**: `app/services/ads/budget-alerts.ts` (new)
+
+**Time**: 2 hours
 
 ---
 
-## Day 3 Tasks (Optional)
+### ADS-004: HITL Ad Copy Approval (3h)
 
-### ADS-005: Ads Performance Dashboard Data
+**Requirements**:
+- Draft ad copy changes → Approval queue
+- CEO approves → Publish to Google Ads
+- Track approval history
 
-**Build data service for future Ads tile**:
-- Real-time campaign status
-- Budget burn rate
-- Top performing campaigns
-- Underperforming campaigns (actionable alerts)
+**File**: `app/services/ads/copy-approval.ts` (new)
+**File**: `app/routes/api.ads.approve-copy.ts` (new)
+
+**Time**: 3 hours
 
 ---
 
 ## Work Protocol
 
-**1. MCP Tools (MANDATORY)**:
-```bash
-# Google Ads API:
-mcp_context7_get-library-docs("/googleapis/google-api-nodejs-client", "google-ads")
+**MCP Tools**: web_search for API docs, Context7 for TypeScript
 
-# Or web search for latest:
-web_search("Google Ads API Node.js authentication 2025")
-
-# Log:
-## HH:MM - Context7: Google Ads API
-- Topic: authentication, campaign reporting
-- Key Learning: Requires developer token + customer ID
-- Applied to: app/services/ads/google-ads.ts
-```
-
-**2. Coordinate**:
-- **Manager**: Get Google Ads credentials
-- **Integrations**: Share Publer patterns
-- **DevOps**: Set Fly secrets
-- **Engineer**: Will build Ads tile when ready (post-Option A)
-
-**3. Reporting (Every 2 hours)**:
+**Reporting (Every 2 hours)**:
 ```md
 ## YYYY-MM-DDTHH:MM:SSZ — Ads: Google Ads Integration
 
 **Working On**: ADS-001 (Google Ads API client)
-**Progress**: API client 80% complete
+**Progress**: 70% - Auth working, fetching campaigns
 
 **Evidence**:
-- Files: app/services/ads/google-ads.ts (280 lines)
-- Tests: 12/15 passing (+12 new tests)
-- Context7: Pulled Google Ads API docs
-- Credentials: ⏸️ Waiting for Manager
+- File: app/services/ads/google-ads-client.ts (178 lines)
+- MCP: web_search for Google Ads API (official docs)
+- Auth: OAuth successful with test account
+- Test: Fetched 3 campaigns, 42 ad groups
 
-**Blockers**: Need Google Ads customer ID + developer token
-**Next**: Test with real credentials, build alert system
+**Blockers**: None
+**Next**: Store performance metrics, complete error handling
 ```
 
 ---
 
-## Definition of Done
+**START WITH**: ADS-001 (Google Ads integration) - web_search NOW
 
-**Google Ads Integration**:
-- [ ] API client functional
-- [ ] Endpoint returning campaign data
-- [ ] Tests passing (12+ tests)
-- [ ] Context7 docs pulled
-- [ ] Connection verified with real account
-- [ ] Credentials in vault
-
-**Campaign Templates**:
-- [ ] Templates created (3+ campaign types)
-- [ ] JSON format valid
-- [ ] Documented for future agent use
-
-**Ad Spend Tracking**:
-- [ ] Alerts generating correctly
-- [ ] Integration with notifications table
-- [ ] Budget tracking accurate
-
-**Social Ads Integration**:
-- [ ] Publer posts linked to ad campaigns
-- [ ] Performance tracking functional
-- [ ] ROI calculations correct
-
----
-
-## Critical Reminders
-
-**DO**:
-- ✅ Pull Context7/web search before coding
-- ✅ Test with real Google Ads account
-- ✅ Coordinate with Manager for credentials
-- ✅ Document all ad patterns for future agents
-
-**DO NOT**:
-- ❌ Hardcode API keys or developer tokens
-- ❌ Skip testing with real data
-- ❌ Deploy without credential verification
-
----
-
-## Phase Schedule
-
-**Day 1**: ADS-001, ADS-002 (Google Ads API + templates - 4h) — START NOW
-**Day 2**: ADS-003, ADS-004 (Alerts + social ads - 4h)
-**Day 3**: ADS-005 (Dashboard data - optional)
-
-**Total**: 8 hours across Days 1-3 (parallel with other agents)
-
-**PREPARES**: Future Ads tile (post-Option A), social ad automation
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md`
-**Similar Pattern**: GA integration (app/services/analytics/)
-**Feedback**: `feedback/ads/2025-10-20.md`
-
----
-
-**START WITH**: ADS-001 (Google Ads API integration NOW - 3h) — PARALLEL DAY 1
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
-
----
-
-## ✅ MANAGER UPDATE (2025-10-21T00:00Z)
-
----
-
-## ✅ ALL TASKS COMPLETE - STANDBY MODE
-
-**Manager Update** (2025-10-21T01:25Z): All feedback reviewed, work verified complete
-
-**Your Status**: ✅ STANDBY
-- All assigned tasks completed successfully
-- Evidence documented in feedback file
-- Ready for Phase 3+ coordination or new assignments
-
-**Current Focus**: Monitor feedback and await direction for:
-- Phase 4: Centralized approval queue integration
-- Campaign approval adapter for Engineer
-- Publer automation (after approval queue)
-
-**No Action Required**: Stay in standby until Manager assigns next task
-
-**If Contacted By Other Agents**: Respond to coordination requests and document in feedback
-
-**Status**: ALL TASKS COMPLETE ✅
-
-**Evidence**: See feedback/ads/2025-10-20.md
-
-**Your Work**:
-Work verified complete by Manager
-
-**Next Assignment**: STANDBY - Await Phase 3-13 coordination requests
-
-**No Action Required**: You are in standby mode until Manager assigns next phase work
-
-
----
-
-## 🔄 MANAGER UPDATE (2025-10-21T02:35Z)
-
-**Feedback Consolidated**: All 10/20 + 10/21 work reviewed
-
-**Status**: Standby - Monitor for coordination requests
-
-**Time Budget**: See above
-**Priority**: Execute until complete or blocked, then move to next task
-**Report**: Every 2 hours in feedback/ads/2025-10-21.md
-
+**NO MORE STANDBY - ACTIVE WORK ASSIGNED**

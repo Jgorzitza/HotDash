@@ -1,4 +1,4 @@
-# Pilot Direction v6.0
+# Pilot Direction v5.2
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -6,111 +6,137 @@ cd /home/justin/HotDash/hot-dash
 git fetch origin
 git checkout manager-reopen-20251020
 git pull origin manager-reopen-20251020
-git branch --show-current  # Verify: should show manager-reopen-20251020
 ```
 
-**Owner**: Manager
-**Effective**: 2025-10-21T01:25:00Z
-**Version**: 6.0
-**Status**: PILOT-002 - Test Phase 2 in Production (1 hour)
+**Owner**: Manager  
+**Effective**: 2025-10-21T04:08Z  
+**Version**: 5.2  
+**Status**: ACTIVE — Phase 6 Smoke Testing + Mobile + Production Readiness
 
 ---
 
-## ✅ PILOT-001: COMPLETE
+## Objective
 
-**Deliverable**: ✅ Test plan created (71 scenarios, 1332 lines)
-**File**: docs/specs/pilot-test-scenarios.md
-**Status**: Ready for use in testing
+**Smoke test Phase 6 features + Mobile compatibility + Production readiness checklist**
 
 ---
 
-## START NOW: PILOT-002 - Test Phase 2 Enhanced Modals (1 hour)
+## MANDATORY MCP USAGE
 
-**Context**: Phase 2 passed Designer validation (3rd attempt). Now test in production staging environment.
+```bash
+# Chrome DevTools for production testing
+# Use MCP Chrome DevTools for all testing (take snapshots)
+mcp_Chrome_DevTools_navigate_page("https://hotdash-staging.fly.dev")
+mcp_Chrome_DevTools_take_snapshot()
+```
 
-**What to Test**: 3 enhanced modals (CX Escalation, Sales Pulse, Inventory Modal)
+---
 
-### Test Objectives
+## ACTIVE TASKS (8h total)
 
-1. **Functional Testing** (30 min)
-   - All 3 modals open and close correctly
-   - Grading sliders work (CX modal)
-   - WoW variance displays (Sales modal - may show placeholder)
-   - 14-day chart renders (Inventory modal - may show placeholder)
-   - All action buttons functional
-   - Toast notifications appear on actions
+### PILOT-004: Phase 6 Settings Smoke Tests (2h) - START NOW
 
-2. **Accessibility Testing** (20 min)
-   - Keyboard navigation (Tab/Shift+Tab through controls)
-   - Focus trap works (focus stays in modal)
-   - Escape key closes modal
-   - Screen reader compatibility (if available)
-   - Focus indicators visible (4.5:1 contrast)
-   - Initial focus on close button
+**Wait For**: Engineer Phase 6 complete
 
-3. **Performance Testing** (10 min)
-   - Modal load time < 1s
-   - No janky animations
-   - Memory leaks check (open/close 10 times, check DevTools)
+**Requirements**:
+- Test Settings page on staging
+- Drag/drop tile reorder
+- Theme switching (Light/Dark/Auto)
+- Visibility toggles
+- All 4 settings tabs
 
-### Test Execution
+**MCP Required**: Chrome DevTools MCP for testing evidence
 
-**Environment**: https://hotdash-staging.fly.dev
-
-**Test Scenarios to Execute** (from pilot-test-scenarios.md):
-- Scenario 1: CX Modal (keyboard navigation)
-- Scenario 2: CX Modal (grading sliders)
-- Scenario 5: Sales Modal (variance display)
-- Scenario 8: Inventory Modal (chart rendering)
-- Scenario 12: Accessibility (focus trap)
-- Scenario 13: Accessibility (Escape key)
-- Scenario 15: Performance (load time)
+**Test Checklist**:
+- [ ] Settings page loads at /settings
+- [ ] All 4 tabs render
+- [ ] Drag/drop tile reorder working
+- [ ] Theme switches apply immediately
+- [ ] Tile visibility toggles work
+- [ ] Preferences persist after refresh
+- [ ] No console errors
+- [ ] No broken links
 
 **Deliverables**:
-- Test results (PASS/FAIL for each scenario)
-- Screenshots of any issues
-- Performance metrics (load times, memory usage)
-- Bug reports (if any) documented in feedback
+- Smoke test report in feedback with snapshots
+- Issues list (if any)
+- GO/NO-GO decision for Phase 6
 
-**Format** (in feedback file):
+**Time**: 2 hours (after Engineer complete)
+
+---
+
+### PILOT-005: Mobile Testing Safari/Chrome (2h)
+
+**Requirements**:
+- Test on iOS Safari (real device)
+- Test on Android Chrome (real device)
+- Document mobile-specific issues
+
+**Test Areas**:
+- Touch drag/drop
+- Modal interactions
+- Form inputs
+- Theme switching
+- Notification toasts
+
+**MCP Required**: Chrome DevTools mobile emulation
+
+**Time**: 2 hours
+
+---
+
+### PILOT-006: Edge Case Testing (2h)
+
+**Requirements**:
+- Test unusual scenarios
+- Drag tile to invalid position
+- Rapid theme switching
+- All tiles hidden (edge case)
+- Network interruption during save
+
+**Time**: 2 hours
+
+---
+
+### PILOT-007: Production Readiness Checklist (2h)
+
+**Requirements**:
+- Comprehensive go/no-go checklist for Phase 6
+- Performance benchmarks
+- Security checks
+- Accessibility verification
+
+**File**: `docs/runbooks/phase-6-production-readiness.md` (new)
+
+**Time**: 2 hours
+
+---
+
+## Work Protocol
+
+**MCP Tools**: Chrome DevTools MCP MANDATORY
+
+**Reporting (Every 2 hours)**:
 ```md
-## Test Results - Phase 2 Enhanced Modals
+## YYYY-MM-DDTHH:MM:SSZ — Pilot: Phase 6 Smoke Tests
 
-### CX Escalation Modal
-- ✅ Opens/closes: PASS
-- ✅ Grading sliders: PASS (functional)
-- ✅ Keyboard navigation: PASS
-- ✅ Focus trap: PASS
-- ✅ Escape key: PASS
-- ✅ Toast notification: PASS
-- Performance: 650ms load time ✅
+**Working On**: PILOT-004 (Settings smoke tests)
+**Progress**: 60% - 3/4 tabs tested, drag/drop verified
 
-### Sales Pulse Modal
-- ✅ Opens/closes: PASS
-- ⚠️ WoW variance: PLACEHOLDER (pending Analytics service)
-- ✅ Keyboard navigation: PASS
-...
+**Evidence**:
+- MCP Chrome DevTools: 4 snapshots captured
+- Settings page: /settings loads successfully
+- Drag/drop: Tested 5 tile reorders, all persisted correctly
+- Theme switch: Light→Dark→Auto all working
+- Issues found: 1 minor (mobile drag handle too small)
+
+**Blockers**: None
+**Next**: Test remaining tab, mobile testing
 ```
 
-**Time**: 60 minutes
-
-**After PILOT-002**: Report results to Manager, await Phase 3 testing assignment
-
 ---
 
-## Reminder: Test Plan Ready
+**START WITH**: PILOT-007 (Production readiness checklist) - Can start now while waiting for Engineer
 
-Use `docs/specs/pilot-test-scenarios.md` for detailed test scenarios across all 13 phases.
-
----
-
-## 🔄 MANAGER UPDATE (2025-10-21T02:35Z)
-
-**Feedback Consolidated**: All 10/20 + 10/21 work reviewed
-
-**Status**: Standby - Monitor for coordination requests
-
-**Time Budget**: See above
-**Priority**: Execute until complete or blocked, then move to next task
-**Report**: Every 2 hours in feedback/pilot/2025-10-21.md
-
+**NO MORE STANDBY - ACTIVE WORK ASSIGNED**
