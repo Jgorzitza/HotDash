@@ -8,36 +8,63 @@
 
 ## Incident Summary
 
-**3 Secrets Detected by GitGuardian**:
+**4 Secrets Detected by GitGuardian**:
 
-### Incident 1: Chatwoot Widget Token
+### Incident 1: Chatwoot Widget Token (commit 018383a)
 - **Commit**: 018383a (feat(support): deploy Chatwoot live chat widget)
 - **Secret Type**: Generic High Entropy Secret
 - **Exposure Location**: Commit message (line: "Token: ieNpPnBaZXd9joxoeMts7qTA")
 - **Impact**: Widget token exposed publicly
 - **Risk**: Medium (widget token less sensitive than API token, but still should be protected)
 
-### Incidents 2 & 3: PostgreSQL URI
+### Incident 2: PostgreSQL URI (commit 6f5b563)
 - **Commit**: 6f5b563 (feat(devops): complete direction v6.0 tasks)
 - **Secret Type**: PostgreSQL connection string (DATABASE_URL)
-- **Exposure Location**: TBD (checking files in commit)
+- **Exposure Location**: Commit message referencing postgresql://postgres:...@db.mmbjiyhsvniqxibzgyvx.supabase.co
 - **Impact**: Database credentials exposed publicly
-- **Risk**: CRITICAL (full database access if URI contains credentials)
+- **Risk**: CRITICAL (full database access)
+
+### Incident 3: PostgreSQL URI duplicate (commit 6f5b563)
+- **Same as Incident 2** (GitGuardian detected multiple references in same commit)
+
+### Incident 4: Chatwoot Widget Token REPEATED (commit a644ca6)
+- **Commit**: a644ca6 (feat(support): complete direction v6.0)
+- **Secret Type**: Generic High Entropy Secret  
+- **Exposure Location**: `docs/support/chatwoot-integration-guide.md` (line: "Token: ieNpPnBaZXd9joxoeMts7qTA")
+- **Impact**: SAME token as Incident 1, now in documentation file AND commit message
+- **Risk**: Medium (but repeated exposure - worse than single incident)
+- **Additional**: Test file has mock token `hCzzpYtFgiiy2aX4ybcV2ts2` (likely flagged too)
 
 ---
 
 ## Immediate Actions Required
 
 ### 1. Revoke Exposed Secrets ✅ URGENT
-- [ ] Revoke Chatwoot widget token (regenerate in Chatwoot dashboard)
-- [ ] Rotate Supabase DATABASE_URL (if exposed with credentials)
-- [ ] Update all environments with new credentials
-- [ ] Verify no unauthorized database access occurred
+- [ ] **Revoke Chatwoot widget token** (exposed in commits 018383a AND a644ca6)
+  - Regenerate in Chatwoot dashboard: Settings → Inboxes → Hot Rod AN Website → Regenerate Widget Token
+  - Update vault/occ/chatwoot/widget_token.env with new token
+  - Update app/root.tsx to use env var (not hardcoded)
+  - Redeploy staging with new token
+- [ ] **Rotate Supabase DATABASE_URL** (exposed in commit 6f5b563)
+  - Supabase Dashboard → Settings → Database → Reset Password
+  - Update Fly secrets: `fly secrets set DATABASE_URL=new_url --app hotdash-staging`
+  - Restart app: `fly apps restart hotdash-staging`
+- [ ] **Verify no unauthorized access**
+  - Check Chatwoot logs for unexpected widget sessions
+  - Check Supabase logs for unauthorized database connections
+  - Monitor for 24 hours post-rotation
 
 ### 2. Remove Secrets from Git History
-- [ ] Use BFG Repo Cleaner or git filter-branch to remove secrets
+- [ ] **Clean commit 018383a message** (Chatwoot token in message)
+- [ ] **Clean commit a644ca6** (Chatwoot token in docs/support/chatwoot-integration-guide.md + commit message)
+- [ ] **Clean commit 6f5b563 message** (PostgreSQL URI in message)
+- [ ] Use git filter-branch or BFG Repo Cleaner
 - [ ] Force push cleaned history (requires CEO approval)
 - [ ] Notify all team members to re-clone repository
+
+**Files to Clean**:
+- docs/support/chatwoot-integration-guide.md (remove line: "Token: ieNpPnBaZXd9joxoeMts7qTA")
+- Replace with: "Token: [FROM_ENV_VAR]" or "<WIDGET_TOKEN>"
 
 ### 3. Update Affected Services
 - [ ] Deploy new Chatwoot widget token to staging/production
