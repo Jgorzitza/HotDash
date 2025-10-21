@@ -297,41 +297,19 @@ export async function removeCXContent(
   requestContext: Request
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    // First, get the metafield ID
     const { admin } = await authenticate.admin(requestContext);
     const config = getMetafieldConfig(contentType);
     
-    const queryResponse = await admin.graphql(
+    // Delete the metafield using metafieldsDelete
+    const response = await admin.graphql(
       `#graphql
-      query GetMetafieldId($productId: ID!, $namespace: String!, $key: String!) {
-        product(id: $productId) {
-          metafield(namespace: $namespace, key: $key) {
-            id
+      mutation MetafieldsDelete($metafields: [MetafieldIdentifierInput!]!) {
+        metafieldsDelete(metafields: $metafields) {
+          deletedMetafields {
+            key
+            namespace
+            ownerId
           }
-        }
-      }`,
-      {
-        variables: {
-          productId,
-          namespace: CX_CONTENT_NAMESPACE,
-          key: config.key,
-        },
-      }
-    );
-
-    const queryData = await queryResponse.json();
-    const metafieldId = queryData.data?.product?.metafield?.id;
-    
-    if (!metafieldId) {
-      return { success: false, error: "Metafield not found" };
-    }
-    
-    // Delete the metafield
-    const deleteResponse = await admin.graphql(
-      `#graphql
-      mutation DeleteMetafield($input: MetafieldDeleteInput!) {
-        metafieldDelete(input: $input) {
-          deletedId
           userErrors {
             field
             message
@@ -340,21 +318,31 @@ export async function removeCXContent(
       }`,
       {
         variables: {
-          input: {
-            id: metafieldId,
-          },
+          metafields: [
+            {
+              ownerId: productId,
+              namespace: CX_CONTENT_NAMESPACE,
+              key: config.key,
+            },
+          ],
         },
       }
     );
 
-    const deleteData = await deleteResponse.json();
+    const data = await response.json();
     
-    if (deleteData.data?.metafieldDelete?.userErrors?.length > 0) {
-      const errors = deleteData.data.metafieldDelete.userErrors;
+    if (data.data?.metafieldsDelete?.userErrors?.length > 0) {
+      const errors = data.data.metafieldsDelete.userErrors;
       return {
         success: false,
         error: errors.map((e: any) => `${e.field}: ${e.message}`).join(", "),
       };
+    }
+    
+    // Check if metafield was actually deleted
+    const deletedMetafields = data.data?.metafieldsDelete?.deletedMetafields || [];
+    if (deletedMetafields.length === 0 || !deletedMetafields[0]) {
+      return { success: false, error: "Metafield not found or already deleted" };
     }
     
     console.log(`[CX Content] ✅ Removed ${contentType} from product ${productId}`);

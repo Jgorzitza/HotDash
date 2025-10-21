@@ -33,7 +33,7 @@ export interface LinkRecommendation {
   toPage: string;
   reason: string;
   priority: "high" | "medium" | "low";
-  anchor: TextSuggestion?;
+  anchorSuggestion: string | null;
 }
 
 export interface LinkingAnalysis {

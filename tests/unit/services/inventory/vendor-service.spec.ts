@@ -345,7 +345,7 @@ describe("Vendor Service - INVENTORY-016", () => {
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual({
         id: "vendor-1",
-        label: "Premium Suppliers (92% reliable, 7d lead, $24.99/unit)",
+        label: "Premium Suppliers (93% reliable, 7d lead, $24.99/unit)", // 92.5 rounds to 93
         name: "Premium Suppliers",
         reliabilityScore: 92.5,
         leadTimeDays: 7,
@@ -369,7 +369,6 @@ describe("Vendor Service - INVENTORY-016", () => {
           leadTimeDays: 5,
           reliabilityScore: 90.0,
           isActive: true,
-          productMappings: [],
         },
       ];
 
@@ -379,7 +378,6 @@ describe("Vendor Service - INVENTORY-016", () => {
 
       expect(prismaClient.vendor.findMany).toHaveBeenCalledWith({
         where: { isActive: true },
-        include: undefined,
       });
     });
 
@@ -391,7 +389,6 @@ describe("Vendor Service - INVENTORY-016", () => {
           leadTimeDays: 10,
           reliabilityScore: 0,
           isActive: true,
-          productMappings: [],
         },
       ];
 

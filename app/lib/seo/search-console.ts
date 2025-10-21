@@ -403,6 +403,16 @@ export async function getSearchConsoleSummary(): Promise<SearchConsoleSummary> {
     getLandingPages(10),
   ]);
 
+  // Store to Supabase (async, don't block response)
+  // Import dynamically to avoid circular dependency
+  import("../../services/seo/search-console-storage").then(({ storeSearchConsoleSummary }) => {
+    storeSearchConsoleSummary().catch(err => 
+      console.error("[Search Console] Storage failed:", err.message)
+    );
+  }).catch(() => {
+    // Silently fail if storage module not available
+  });
+
   return {
     totalClicks: analytics.clicks,
     totalImpressions: analytics.impressions,

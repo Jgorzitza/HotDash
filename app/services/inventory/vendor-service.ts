@@ -211,41 +211,61 @@ export async function getBestVendorForProduct(
  * @returns Array of vendor options for dropdown
  */
 export async function getVendorOptions(variantId?: string) {
-  // Build where clause
-  const where = variantId
-    ? { productMappings: { some: { variantId } } }
-    : { isActive: true };
+  // Build query based on whether variantId is provided
+  if (variantId) {
+    // Get vendors for specific variant
+    const vendors = await prisma.vendor.findMany({
+      where: {
+        productMappings: { some: { variantId } },
+      },
+      include: {
+        productMappings: {
+          where: { variantId },
+          take: 1,
+        },
+      },
+    });
 
-  // Get vendors with product mappings
-  const vendors = await prisma.vendor.findMany({
-    where,
-    include: {
-      productMappings: variantId
-        ? {
-            where: { variantId },
-            take: 1,
-          }
-        : undefined,
-    },
-  });
+    // Format for UI dropdown
+    return vendors.map((v) => {
+      const mapping = v.productMappings[0];
+      const reliabilityScore = Number(v.reliabilityScore || 0);
+      const costPerUnit = Number(mapping.costPerUnit);
 
-  // Format for UI dropdown
-  return vendors.map((v) => {
-    const mapping = v.productMappings[0];
-    const reliabilityScore = Number(v.reliabilityScore || 0);
-    const costPerUnit = mapping ? Number(mapping.costPerUnit) : 0;
+      const label = `${v.name} (${reliabilityScore.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${costPerUnit.toFixed(2)}/unit)`;
 
-    const label = `${v.name} (${reliabilityScore.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${costPerUnit.toFixed(2)}/unit)`;
+      return {
+        id: v.id,
+        label,
+        name: v.name,
+        reliabilityScore,
+        leadTimeDays: v.leadTimeDays,
+        costPerUnit,
+      };
+    });
+  } else {
+    // Get all active vendors (no product mappings needed)
+    const vendors = await prisma.vendor.findMany({
+      where: { isActive: true },
+    });
 
-    return {
-      id: v.id,
-      label,
-      name: v.name,
-      reliabilityScore,
-      leadTimeDays: v.leadTimeDays,
-      costPerUnit,
-    };
-  });
+    // Format for UI dropdown (no cost per unit available)
+    return vendors.map((v) => {
+      const reliabilityScore = Number(v.reliabilityScore || 0);
+      const costPerUnit = 0;
+
+      const label = `${v.name} (${reliabilityScore.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${costPerUnit.toFixed(2)}/unit)`;
+
+      return {
+        id: v.id,
+        label,
+        name: v.name,
+        reliabilityScore,
+        leadTimeDays: v.leadTimeDays,
+        costPerUnit,
+      };
+    });
+  }
 }
 
 /**

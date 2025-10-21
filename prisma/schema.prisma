@@ -737,3 +737,72 @@ model ProductCostHistory {
   @@map("product_cost_history")
   @@schema("public")
 }
+
+model SeoSearchConsoleMetrics {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  date                 DateTime  @db.Date
+  periodDays           Int       @default(30) @map("period_days")
+  clicks               Int       @default(0)
+  impressions          Int       @default(0)
+  ctr                  Decimal   @default(0) @db.Decimal(5, 4)
+  position             Decimal   @default(0) @db.Decimal(5, 2)
+  clicksChange7d       Decimal?  @map("clicks_change_7d") @db.Decimal(6, 2)
+  impressionsChange7d  Decimal?  @map("impressions_change_7d") @db.Decimal(6, 2)
+  ctrChange7d          Decimal?  @map("ctr_change_7d") @db.Decimal(6, 2)
+  positionChange7d     Decimal?  @map("position_change_7d") @db.Decimal(6, 2)
+  indexedPages         Int?      @map("indexed_pages")
+  totalPages           Int?      @map("total_pages")
+  coveragePct          Decimal?  @map("coverage_pct") @db.Decimal(5, 2)
+  fetchedAt            DateTime  @default(now()) @map("fetched_at") @db.Timestamptz(6)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([date, periodDays])
+  @@index([date(sort: Desc)])
+  @@index([periodDays, date(sort: Desc)])
+  @@map("seo_search_console_metrics")
+  @@schema("public")
+}
+
+model SeoSearchQuery {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  date        DateTime  @db.Date
+  periodDays  Int       @default(30) @map("period_days")
+  query       String
+  clicks      Int       @default(0)
+  impressions Int       @default(0)
+  ctr         Decimal   @default(0) @db.Decimal(5, 4)
+  position    Decimal   @default(0) @db.Decimal(5, 2)
+  rank        Int
+  fetchedAt   DateTime  @default(now()) @map("fetched_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([date, periodDays, query])
+  @@index([date(sort: Desc)])
+  @@index([periodDays, date(sort: Desc)])
+  @@index([date(sort: Desc), rank(sort: Asc)])
+  @@map("seo_search_queries")
+  @@schema("public")
+}
+
+model SeoLandingPage {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  date            DateTime  @db.Date
+  periodDays      Int       @default(30) @map("period_days")
+  url             String
+  clicks          Int       @default(0)
+  impressions     Int       @default(0)
+  ctr             Decimal   @default(0) @db.Decimal(5, 4)
+  position        Decimal   @default(0) @db.Decimal(5, 2)
+  clicksChange7d  Decimal?  @map("clicks_change_7d") @db.Decimal(6, 2)
+  rank            Int
+  fetchedAt       DateTime  @default(now()) @map("fetched_at") @db.Timestamptz(6)
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([date, periodDays, url])
+  @@index([date(sort: Desc)])
+  @@index([periodDays, date(sort: Desc)])
+  @@index([date(sort: Desc), rank(sort: Asc)])
+  @@index([url, date(sort: Desc)])
+  @@map("seo_landing_pages")
+  @@schema("public")
+}
