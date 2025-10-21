@@ -1,4 +1,4 @@
-# SEO Direction v5.2
+# SEO Direction v5.3
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
@@ -9,23 +9,62 @@ git pull origin manager-reopen-20251020
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T04:03Z  
-**Version**: 5.2  
-**Status**: ACTIVE — Phase 7 Automated SEO + Content Optimization
+**Effective**: 2025-10-21T04:42Z  
+**Version**: 5.3  
+**Status**: ACTIVE — **P0 FIX FIRST** then Phase 7 SEO
 
 ---
 
-## Objective
+## 🚨 P0 CRITICAL - FIX FIRST (15 min)
 
-**Build automated SEO audits, keyword cannibalization detection, schema validation**
+### SEO-P0: Fix Search Console Import Error - **DO NOW**
+
+**BLOCKER**: Staging crashed on v72 deployment - YOUR code has import error
+
+**Error**:
+```
+import { google } from "@googleapis/searchconsole";
+         ^^^^^^
+SyntaxError: Named export 'google' not found. CommonJS module.
+```
+
+**Files to Fix**:
+1. `app/lib/seo/search-console.ts`
+2. `app/services/seo/search-console-enhanced.ts`
+
+**Solution** (from error message):
+```typescript
+// OLD (BROKEN):
+import { google } from "@googleapis/searchconsole";
+
+// NEW (FIXED):
+import pkg from "@googleapis/searchconsole";
+const { google } = pkg;
+```
+
+**Steps**:
+1. Pull latest code: `git pull origin manager-reopen-20251020`
+2. Open both files above
+3. Change the import statement in BOTH files
+4. Test build locally: `npm run build`
+5. Verify no errors
+6. Commit: `fix(seo): change Search Console import to CommonJS-compatible format`
+7. Push
+8. Notify DevOps: "SEO import fix pushed, ready for v73 deployment"
+
+**Priority**: **P0 URGENT** - Staging is BROKEN, blocks AI-Customer and Designer
+
+**Time**: 15 minutes
+
+**After Fix**: DevOps will deploy v73, then you continue with SEO-007 below
 
 ---
 
-## MANDATORY MCP USAGE
+## MANDATORY MCP USAGE (After P0 Fix)
 
 ```bash
 # Google Search Console API
-web_search("Google Search Console API official documentation authentication")
+web_search("Google Search Console API official documentation authentication Node.js")
 
 # Bing Webmaster Tools API
 web_search("Bing Webmaster Tools API official documentation")
@@ -36,9 +75,9 @@ mcp_context7_get-library-docs("/microsoft/TypeScript", "async API calls error ha
 
 ---
 
-## ACTIVE TASKS (9h total)
+## ACTIVE TASKS (After P0 - 9h total)
 
-### SEO-007: Automated SEO Audits (3h) - START NOW
+### SEO-007: Automated SEO Audits (3h)
 
 **Requirements**:
 - Daily automated SEO crawl
@@ -102,7 +141,7 @@ export async function runDailyAudit() {
 - Daily refresh
 - Store in seo_rankings table
 
-**File**: `app/services/seo/search-console-enhanced.ts` (new)
+**File**: `app/services/seo/search-console-enhanced.ts` (UPDATE - fix import first in P0)
 
 **Time**: 2 hours
 
@@ -114,23 +153,38 @@ export async function runDailyAudit() {
 
 **Reporting (Every 2 hours)**:
 ```md
-## YYYY-MM-DDTHH:MM:SSZ — SEO: Automated Audits
+## YYYY-MM-DDTHH:MM:SSZ — SEO: P0 Import Fix
 
-**Working On**: SEO-007 (Daily SEO audit automation)
-**Progress**: 50% - Crawl working, checking SEO elements
+**Working On**: SEO-P0 (Search Console import error fix)
+**Progress**: 100% - Fixed both files, tested, deployed
 
 **Evidence**:
-- File: app/services/seo/automated-audit.ts (156 lines)
-- MCP: web_search for Search Console API (official docs found)
-- Test: Audited 12 pages, found 3 missing meta descriptions
-- API: Authenticated with Search Console successfully
+- Files fixed: search-console.ts, search-console-enhanced.ts (import statements corrected)
+- Build test: npm run build → SUCCESS (no errors)
+- Commit: abc123f "fix(seo): change Search Console import to CommonJS format"
+- DevOps notified: Ready for v73 deployment
 
-**Blockers**: None
-**Next**: Complete audit reporting, store in seo_audits table
+**Blockers**: None (P0 RESOLVED)
+**Next**: SEO-007 (Automated audits after staging deployment)
 ```
 
 ---
 
-**START WITH**: SEO-007 (Automated audits) - web_search for API docs NOW
+## Critical Reminders
+
+**DO**:
+- ✅ Fix P0 import error FIRST (15 min)
+- ✅ Test build locally before pushing
+- ✅ Notify DevOps when fixed
+- ✅ Then continue with SEO-007+
+
+**DO NOT**:
+- ❌ Skip P0 fix to work on other tasks
+- ❌ Deploy without testing build
+- ❌ Work on SEO-007 before P0 resolved
+
+---
+
+**START WITH**: SEO-P0 (Import fix) - **DO NOW** - Staging is broken and blocking 2 agents
 
 **NO MORE STANDBY - ACTIVE WORK ASSIGNED**
