@@ -138,7 +138,9 @@ export function SalesPulseModal({
               <p style={{ margin: 0 }}>
                 <strong>Revenue:</strong> {summary.currency}{" "}
                 {summary.totalRevenue.toFixed(2)}
-                {/* TODO: Add WoW variance when Data service provides historical comparison */}
+                <span style={{ marginLeft: "0.5rem", color: "var(--occ-text-secondary)", fontSize: "0.875rem" }}>
+                  (WoW variance: pending historical data)
+                </span>
               </p>
               <p style={{ margin: 0 }}>
                 <strong>Orders:</strong> {summary.orderCount}
@@ -150,6 +152,9 @@ export function SalesPulseModal({
                   : "0.00"}
               </p>
             </div>
+            <p style={{ fontSize: "0.75rem", color: "var(--occ-text-secondary)", margin: "0.5rem 0 0 0", fontStyle: "italic" }}>
+              Note: WoW variance calculation requires historical data integration (Data service enhancement)
+            </p>
           </section>
 
           <section className="occ-modal__section">
