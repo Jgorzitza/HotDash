@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { EscalationConversation } from "../../services/chatwoot/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
+import { useToast } from "../../hooks/useToast";
 
 interface CXEscalationModalProps {
   conversation: EscalationConversation;
@@ -22,6 +24,17 @@ export function CXEscalationModal({
   const fetcher = useFetcher<ActionResponse>();
   const [reply, setReply] = useState(conversation.suggestedReply ?? "");
   const [note, setNote] = useState("");
+  
+  // Grading sliders (1-5 scale)
+  const [toneGrade, setToneGrade] = useState(3);
+  const [accuracyGrade, setAccuracyGrade] = useState(3);
+  const [policyGrade, setPolicyGrade] = useState(3);
+
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
+
+  // Toast notifications for user feedback (Designer P0 requirement)
+  const { showSuccess, showError } = useToast();
 
   const hasSuggestion = Boolean((conversation.suggestedReply ?? "").trim());
 
@@ -29,6 +42,10 @@ export function CXEscalationModal({
     if (open) {
       setReply(conversation.suggestedReply ?? "");
       setNote("");
+      // Reset grades to default (3 = neutral)
+      setToneGrade(3);
+      setAccuracyGrade(3);
+      setPolicyGrade(3);
     }
   }, [open, conversation.suggestedReply]);
 
@@ -36,9 +53,12 @@ export function CXEscalationModal({
     if (!open) return;
     if (fetcher.state !== "idle") return;
     if (fetcher.data?.ok) {
+      showSuccess("Pit stop complete! 🏁");
       onClose();
+    } else if (fetcher.data?.error) {
+      showError(fetcher.data.error);
     }
-  }, [fetcher.state, fetcher.data, onClose, open]);
+  }, [fetcher.state, fetcher.data, onClose, open, showSuccess, showError]);
 
   const isSubmitting = fetcher.state !== "idle";
 
@@ -73,6 +93,12 @@ export function CXEscalationModal({
     if (note.trim()) {
       formData.set("note", note.trim());
     }
+    
+    // Add grading data (1-5 scale)
+    formData.set("toneGrade", String(toneGrade));
+    formData.set("accuracyGrade", String(accuracyGrade));
+    formData.set("policyGrade", String(policyGrade));
+    
     Object.entries(extra).forEach(([key, value]) => {
       if (value !== undefined) {
         formData.set(key, value);
@@ -88,6 +114,12 @@ export function CXEscalationModal({
 
   const handleApprove = () => {
     submit("approve_send");
+  };
+
+  const handleEdit = () => {
+    // Edit action allows operator to modify the suggested reply before approval
+    // No submission - keeps modal open for editing
+    console.log("Edit mode - operator modifying suggested reply");
   };
 
   const handleEscalate = () => {
@@ -189,6 +221,68 @@ export function CXEscalationModal({
             />
           </section>
 
+          <section className="occ-modal__section">
+            <h3>Grade AI Response (1-5 scale)</h3>
+            <div className="occ-modal__grading" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div className="occ-grade-control">
+                <label htmlFor={`tone-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                  <span>Tone</span>
+                  <span aria-live="polite">{toneGrade}/5</span>
+                </label>
+                <input
+                  type="range"
+                  id={`tone-grade-${conversation.id}`}
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={toneGrade}
+                  onChange={(e) => setToneGrade(Number(e.target.value))}
+                  aria-label="Grade response tone from 1 (poor) to 5 (excellent)"
+                  disabled={isSubmitting}
+                  style={{ width: "100%" }}
+                />
+              </div>
+              
+              <div className="occ-grade-control">
+                <label htmlFor={`accuracy-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                  <span>Accuracy</span>
+                  <span aria-live="polite">{accuracyGrade}/5</span>
+                </label>
+                <input
+                  type="range"
+                  id={`accuracy-grade-${conversation.id}`}
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={accuracyGrade}
+                  onChange={(e) => setAccuracyGrade(Number(e.target.value))}
+                  aria-label="Grade response accuracy from 1 (poor) to 5 (excellent)"
+                  disabled={isSubmitting}
+                  style={{ width: "100%" }}
+                />
+              </div>
+              
+              <div className="occ-grade-control">
+                <label htmlFor={`policy-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                  <span>Policy Compliance</span>
+                  <span aria-live="polite">{policyGrade}/5</span>
+                </label>
+                <input
+                  type="range"
+                  id={`policy-grade-${conversation.id}`}
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={policyGrade}
+                  onChange={(e) => setPolicyGrade(Number(e.target.value))}
+                  aria-label="Grade policy compliance from 1 (poor) to 5 (excellent)"
+                  disabled={isSubmitting}
+                  style={{ width: "100%" }}
+                />
+              </div>
+            </div>
+          </section>
+
           {fetcher.data?.error ? (
             <p className="occ-feedback occ-feedback--error" role="alert">
               {fetcher.data.error}
@@ -205,6 +299,15 @@ export function CXEscalationModal({
               disabled={!hasSuggestion || !reply.trim() || isSubmitting}
             >
               Approve &amp; send
+            </button>
+            <button
+              type="button"
+              className="occ-button occ-button--secondary"
+              onClick={handleEdit}
+              disabled={isSubmitting}
+              aria-label="Edit suggested reply before approval"
+            >
+              Edit
             </button>
             <button
               type="button"

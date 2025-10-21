@@ -5,6 +5,10 @@
  */
 
 import { vi } from "vitest";
+import { render } from "@testing-library/react";
+import { AppProvider } from "@shopify/polaris";
+import "@shopify/polaris/build/esm/styles.css";
+import React from "react";
 
 /**
  * Create mock fetch response
@@ -139,4 +143,13 @@ export function createMockDateRange(daysAgo: number = 7) {
     start: start.toISOString().slice(0, 10),
     end: end.toISOString().slice(0, 10),
   };
+}
+
+/**
+ * Render component wrapped in Polaris AppProvider for testing
+ */
+export function renderWithPolaris(ui: React.ReactElement) {
+  return render(
+    React.createElement(AppProvider, { i18n: {} }, ui)
+  );
 }

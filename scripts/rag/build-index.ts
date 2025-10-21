@@ -16,6 +16,7 @@ import {
   storageContextFromDefaults,
   Settings,
   BaseEmbedding,
+  SentenceSplitter,
 } from "llamaindex";
 import OpenAI from "openai";
 import fs from "node:fs/promises";
@@ -107,6 +108,39 @@ async function ensureCleanDir(dirPath: string): Promise<void> {
 }
 
 /**
+ * Determine document category from filename
+ * P5: Category-based metadata for targeted retrieval
+ */
+function getCategoryFromFilename(fileName: string): string {
+  const lower = fileName.toLowerCase();
+  if (lower.includes("refund") || lower.includes("return")) return "returns";
+  if (lower.includes("shipping")) return "shipping";
+  if (lower.includes("tracking") || lower.includes("order")) return "tracking";
+  if (lower.includes("exchange")) return "exchanges";
+  if (lower.includes("faq") || lower.includes("question")) return "faq";
+  if (lower.includes("troubleshoot") || lower.includes("product")) return "troubleshooting";
+  return "general";
+}
+
+/**
+ * Determine document priority from filename
+ * P5: Priority-based metadata for retrieval ranking
+ */
+function getPriorityFromFilename(fileName: string): string {
+  const lower = fileName.toLowerCase();
+  // High priority: policies, common questions
+  if (lower.includes("refund") || lower.includes("shipping") || lower.includes("faq")) {
+    return "high";
+  }
+  // Medium priority: processes, tracking
+  if (lower.includes("exchange") || lower.includes("tracking") || lower.includes("order")) {
+    return "medium";
+  }
+  // Low priority: troubleshooting, general
+  return "low";
+}
+
+/**
  * Load documents from support KB directory
  */
 async function loadSupportDocuments(sourcesDir: string): Promise<Document[]> {
@@ -123,17 +157,20 @@ async function loadSupportDocuments(sourcesDir: string): Promise<Document[]> {
     const content = await fs.readFile(filePath, "utf-8");
     const fileName = path.basename(filePath);
 
+    // P5: Enrich metadata with category and priority
     const doc = new Document({
       text: content,
       metadata: {
         file_name: fileName,
         file_path: filePath,
         source: "support_kb",
+        category: getCategoryFromFilename(fileName),
+        priority: getPriorityFromFilename(fileName),
       },
     });
 
     documents.push(doc);
-    console.log(`  ✓ ${fileName} (${content.length} chars)`);
+    console.log(`  ✓ ${fileName} (${content.length} chars) [${doc.metadata.category}/${doc.metadata.priority}]`);
   }
 
   console.log(`✅ Loaded ${documents.length} documents`);
@@ -203,10 +240,18 @@ async function buildIndex(options: BuildOptions = {}): Promise<BuildResult> {
       persistDir,
     });
 
+    // P2: Configure text splitter (NO overlap - it degrades faithfulness)
+    const textSplitter = new SentenceSplitter({
+      chunkSize: 512,      // Token limit per chunk (optimal for policy/FAQ content)
+      chunkOverlap: 0,     // No overlap - reduces contradictions and improves faithfulness
+    });
+
     // Build index (automatically persists to persistDir)
     console.log("\n🔨 Building vector index...");
+    console.log(`  Chunk size: 512 tokens, No overlap (cleaner chunks)`);
     const index = await VectorStoreIndex.fromDocuments(documents, {
       storageContext,
+      transformations: [textSplitter], // Apply custom chunking
     });
 
     console.log("💾 Index persisted to disk...");
@@ -217,6 +262,12 @@ async function buildIndex(options: BuildOptions = {}): Promise<BuildResult> {
       documentCount: documents.length,
       persistDir,
       useMock,
+      chunkConfig: {
+        chunkSize: 512,
+        chunkOverlap: 0,
+        overlapPercentage: "0%",
+        note: "No overlap - improves faithfulness by reducing contradictions",
+      },
       sources: documents.map((doc) => ({
         fileName: doc.metadata?.file_name || "unknown",
         size: doc.text.length,

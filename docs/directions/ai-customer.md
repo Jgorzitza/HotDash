@@ -1,360 +1,64 @@
-# AI-Customer Direction v5.1
+# AI-Customer Direction v6.0
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+```
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — OpenAI SDK Completion + CEO Agent
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Phase 11 CEO Agent Implementation
 
 ---
 
-## Objective
-
-**Complete AI-Customer agent (Phase 2) + Build CEO Agent (Phase 11)**
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
-**Current Status**: 80% complete (backend ready, UI needs grading sliders)
+## ✅ AI-CUSTOMER-006 COMPLETE + P0 RESOLVED
+- ✅ Grading UI verified (Tone/Accuracy/Policy sliders 1-5 scale)
+- 🚨 P0 Blocker found: v72 crashed → Manager fixed → v74 healthy
 
 ---
 
-## Day 1 Tasks (START NOW - 6h) — BUILD CEO AGENT
-
-**Strategy**: Build CEO agent NOW (don't wait for Phase 11) → Ready when Engineer builds UI
-
-### AI-CUSTOMER-001: Verify Grading UI Integration (15 min) — AFTER ENGINEER
-
-**What Engineer Will Do**:
-- Add 3 grading sliders to `app/components/modals/CXEscalationModal.tsx`
-- Sliders: tone, accuracy, policy (1-5 scale)
-- Submit to backend: `app/routes/actions/chatwoot.escalate.ts`
-
-**Your Task** (15 min):
-- **Verify** Engineer's implementation sends grades correctly
-- **Test** grading flow end-to-end:
-  1. Open CX modal
-  2. Move sliders to specific values (e.g., tone=4, accuracy=5, policy=5)
-  3. Click approve
-  4. **Verify** grades stored in Supabase decision_log.payload.grades
-- **Document** in feedback with screenshot/evidence
-
-**Query to Verify**:
-```sql
-SELECT payload->'grades' FROM decision_log 
-WHERE action = 'chatwoot.approve_send' 
-ORDER BY created_at DESC LIMIT 5;
-```
-
-**Expected**:
-```json
-{
-  "tone": 4,
-  "accuracy": 5,
-  "policy": 5
-}
-```
-
-**Evidence Required**:
-- Screenshot of Supabase decision_log with grades
-- Confirmation: "Grading flow functional, data storing correctly"
-
----
-
-## Current State (From OpenAI SDK Report)
-
-### ✅ What's Already Built:
-
-**Backend Infrastructure** (80% complete):
-- ✅ Chatwoot integration (email, live chat, SMS via Twilio)
-- ✅ Health check automation (`scripts/ops/check-chatwoot-health.mjs`)
-- ✅ Comprehensive documentation (`docs/integrations/chatwoot.md` - 550+ lines)
-- ✅ Backend grading system (tone/accuracy/policy extraction)
-- ✅ Decision log storage (Supabase)
-- ✅ Playwright test suite (modal flows, accessibility)
-- ✅ HITL workflow: Draft → Human approval → Public reply
-
-**Implementation Files**:
-- ✅ `app/routes/actions/chatwoot.escalate.ts` - Grading extraction/storage
-- ✅ `scripts/ops/check-chatwoot-health.mjs` - Health checks (260 lines)
-- ✅ `docs/integrations/chatwoot.md` - Integration guide
-
-**Total Code**: 1,068 lines
-
-### ⚠️ What's Missing:
-
-**UI Component** (20% remaining):
-- Add 3 grading sliders to CXEscalationModal
-- Engineer will implement (15 min work)
-- You verify it works
-
-**After Phase 2**: AI-Customer agent 100% complete
-
----
-
-### AI-CEO-001: CEO Assistant Agent Backend — DAY 1 START NOW
-
-**What to Build**:
-
-**CEO Agent** (OpenAI Agents SDK):
-- Framework: OpenAI Agents SDK (TypeScript)
-- Pattern: HITL (drafts → CEO approves → executes)
-- Location: `apps/agent-service/` OR `packages/agents/src/ai-ceo.ts`
-
-**Agent Tools** (Server-side):
-1. **Shopify Admin GraphQL**:
-   - Orders (list, get details, cancel, refund)
-   - Products (list, update inventory)
-   - Customers (list, search, get details)
-
-2. **Supabase RPC**:
-   - Analytics queries (revenue, top SKUs, trends)
-   - Data analysis (custom SQL via RPC)
-   - Decision log queries (past approvals, patterns)
-
-3. **Chatwoot API**:
-   - CX insights (SLA breaches, conversation summaries)
-   - Ticket trends
-   - Customer sentiment
-
-4. **LlamaIndex**:
-   - Knowledge base queries
-   - Product documentation search
-   - Policy lookups
-
-5. **Google Analytics API**:
-   - Traffic analysis
-   - Conversion metrics
-   - Landing page performance
-
-**Use Cases**:
-- "Should I reorder SKU-XYZ?" → Analyzes inventory, sales velocity, suggests action
-- "Show me top customers this month" → Queries Shopify, formats response
-- "Generate weekly performance summary" → Aggregates data, drafts report
-- "Analyze support ticket trends" → Queries Chatwoot, provides insights
-
-**HITL Workflow**:
-```
-CEO asks question
-    ↓
-Agent drafts response/action (using tools)
-    ↓
-Approval queue: Shows query, agent reasoning, proposed action
-    ↓
-CEO reviews in modal
-    ↓
-CEO approves/edits
-    ↓
-Action executes (or response delivered)
-    ↓
-Result logged to decision_log
-```
-
-**Implementation**:
-1. Create CEO agent class (similar to AI-Customer)
-2. Register tools (Shopify, Supabase, Chatwoot, LlamaIndex, Analytics)
-3. Implement approval workflow
-4. Integration with approval queue
-5. Decision log storage
-6. Testing + documentation
-
-**Files to Create/Modify**:
-- `packages/agents/src/ai-ceo.ts` (main agent)
-- `apps/agent-service/src/agents/ceo-agent.ts` (service wrapper)
-- `apps/agent-service/src/tools/analytics.ts` (GA tool)
-- `apps/agent-service/src/tools/llamaindex.ts` (if not exists)
-- `tests/unit/agents/ai-ceo.spec.ts` (tests)
-
-**Dependencies**:
-- ✅ OpenAI Agents SDK (already using for AI-Customer)
-- ✅ Shopify tools exist
-- ✅ Chatwoot tools exist
-- ⏸️ May need: LlamaIndex tool, Analytics tool
-
----
-
-### AI-CEO-002: CEO Agent Testing — DAY 2
-
-**After backend complete**:
-
-**Your Task**:
-- Test CEO agent backend with sample queries
-- Verify all 5 tools working
-- Test approval workflow integration
-- Document any issues
-
----
-
-### AI-CEO-003: Testing & Documentation
-
-**Testing**:
-- Unit tests for CEO agent tools
-- Integration tests for HITL workflow
-- Test with sample queries:
-  - "What are my top 3 products?"
-  - "Should I reorder Powder Board XL?"
-  - "Summarize support tickets this week"
-
-**Documentation**:
-- Update `docs/integrations/` with CEO agent guide
-- Document available tools
-- Example queries and responses
-- HITL approval flow diagram
-
----
-
-## Work Protocol
-
-### 1. MCP Tools (MANDATORY):
-
-**OpenAI Agents SDK**:
-```bash
-mcp_context7_get-library-docs("/openai/openai-node", "agents-sdk")
-```
-
-**LlamaIndex** (if needed):
-```bash
-mcp_context7_get-library-docs("/llamaindex/llamaindex", "query-engine")
-```
-
-**Log in feedback**:
-```md
-## HH:MM - Context7: OpenAI Agents SDK
-- Topic: tool registration, HITL workflow
-- Key Learning: Tools must return JSON-serializable values
-- Applied to: packages/agents/src/ai-ceo.ts (tool definitions)
-```
-
-### 2. Coordinate with Other Agents:
-
-**Phase 2** (immediate):
-- Engineer: They add sliders, you verify grading works
-
-**Phase 11**:
-- Engineer: They build UI, you build backend
-- DevOps: They deploy agent service
-- Integrations: They provide API integration patterns
-
-### 3. Reporting (Every 2 hours):
-
-```md
-## YYYY-MM-DDTHH:MM:SSZ — AI-Customer: Phase N Work
-
-**Working On**: AI-CEO-001 (CEO agent backend)
-**Progress**: 3/5 tools implemented
-
-**Evidence**:
-- Files: packages/agents/src/ai-ceo.ts (345 lines)
-- Tools: Shopify ✅, Supabase ✅, Chatwoot ✅, LlamaIndex ⏸️, Analytics ⏸️
-- Tests: 12/15 passing (+12 new tests)
-- Context7: Pulled OpenAI SDK docs (tool registration)
-
-**Blockers**: Need LlamaIndex MCP server endpoint (coordinate with AI-Knowledge)
-
-**Next**: Implement Analytics tool, complete testing
-```
-
----
-
-## Definition of Done
-
-### Phase 2 (AI-Customer Complete):
-- [ ] Grading sliders functional in CX modal
-- [ ] Grades storing in decision_log.payload.grades
-- [ ] End-to-end test passing (UI → backend → database)
-- [ ] Evidence: Screenshot of grades in Supabase
-
-### Phase 11 (CEO Agent):
-- [ ] CEO agent backend operational
-- [ ] 5 tools registered and functional
-- [ ] HITL workflow integrated with approval queue
-- [ ] Tests passing (15+ tests)
-- [ ] Documentation complete
-- [ ] Can handle sample queries successfully
-- [ ] Decision log storing CEO agent actions
-
----
-
-## Critical Reminders
-
-**DO**:
-- ✅ Pull Context7 docs for OpenAI SDK before coding
-- ✅ Test grading flow end-to-end (Phase 2)
-- ✅ Coordinate with Engineer for UI integration
-- ✅ Verify all tool outputs JSON-serializable
-
-**DO NOT**:
-- ❌ Skip Context7 tool pulls
-- ❌ Assume UI working without testing
-- ❌ Create agent without HITL approval workflow
-- ❌ Skip testing with real queries
-
----
-
-## Phase Schedule
-
-**Day 1**: AI-CEO-001 (CEO agent backend - 4h) — START NOW (Parallel)
-**Day 2**: AI-CEO-002 (Testing - 1h), AI-CEO-003 (Documentation - 1h)
-**Phase 2** (After Engineer): AI-CUSTOMER-001 (verify grading - 15 min)
-
-**Result**: CEO agent ready BEFORE Engineer builds UI (Phase 11) → Zero wait time
-
-**Total**: 6 hours across Days 1-2 (parallel work)
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
-**Current Status**: `reports/manager/OPENAI_SDK_STATUS_2025-10-19.md`
-**Chatwoot Docs**: `docs/integrations/chatwoot.md`
-**Feedback**: `feedback/ai-customer/2025-10-20.md`
-**Startup**: `docs/runbooks/agent_startup_checklist.md`
-
----
-
-**START WITH**: Standby for Phase 2 completion, prepare for grading verification test
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+## ACTIVE TASKS (12h total)
+
+### AI-CUSTOMER-007: CEO Agent Knowledge Base Integration (3h) - START NOW
+Integrate CEO Agent with AI-Knowledge RAG system
+- Register query_knowledge_base tool
+- CEO Agent can query KB for product docs, policies, procedures
+- Results include answer + sources + confidence
+**MCP**: OpenAI Agents SDK tool registration, LlamaIndex query engine
+
+### AI-CUSTOMER-008: CEO Agent Action Execution Service (3h)
+Execute approved CEO Agent actions
+- Support 5 tool types (CX, inventory, social, product, ads)
+- Track success/failure
+- Store receipts for audit trail
+**MCP**: OpenAI Agents SDK action patterns
+
+### AI-CUSTOMER-009: CEO Agent Memory Service (2h)
+Store and retrieve conversation history
+- Multi-turn conversations (context retention)
+- Summarize old conversations (context window management)
+- Conversation search
+**MCP**: OpenAI conversation patterns, Prisma queries
+
+### AI-CUSTOMER-010: CEO Agent Approval Adapter (2h)
+Convert CEO Agent actions into approval records
+- All actions require approval (HITL mandatory)
+- Evidence includes KB sources and reasoning
+- 5 approval types (CX, inventory, social, product, ads)
+**MCP**: Prisma approval creation
+
+### AI-CUSTOMER-011: CEO Agent Testing Suite (2h)
+75+ tests for CEO Agent
+- Tool calling, KB integration, approvals, action execution
+
+### AI-CUSTOMER-012: CEO Agent Monitoring (1h)
+Track performance (response times, tokens, errors)
+- Health status calculation
+
+### AI-CUSTOMER-013: Documentation (included)
+
+**START NOW**: Pull OpenAI Agents SDK + LlamaIndex docs, implement KB integration

@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "totalTests": 10,
+    "passed": 3,
+    "failed": 7,
+    "avgCorrectnessScore": 3.5,
+    "avgResponseTime": 1541.4,
+    "faithfulnessRate": 0.7,
+    "relevancyRate": 0.8,
+    "results": [
+      {
+        "query": "What is your return policy for damaged items?",
+        "category": "returns",
+        "actualAnswer": "For damaged items, Hot Rod AN LLC offers the following return policy:\n- Items damaged in shipping are eligible for a full refund with no restocking fee.\n- Customers must email support@hotrodan.com with photos of the damaged item, the order number, and a description of the damage.\n- A prepaid return label will be provided for damaged items.\n- Refunds for damaged items include the product price, original shipping cost (if the item was defective or an error on the company's part), and any applicable taxes.",
+        "referenceAnswer": "Items damaged during shipping can be returned for free within 30 days without a restocking fee. The return shipping is covered by us for damaged items.",
+        "correctnessScore": 4.5,
+        "correctnessPassing": true,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 2740
+      },
+      {
+        "query": "How long do I have to return an item?",
+        "category": "returns",
+        "actualAnswer": "You have 30 days from the delivery date to return unused items.",
+        "referenceAnswer": "You have 30 days from the delivery date to return items. Items must be unused, in original packaging, with tags attached, and include the original receipt or order confirmation.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1151
+      },
+      {
+        "query": "What is the restocking fee for returns?",
+        "category": "returns",
+        "actualAnswer": "The restocking fee for returns depends on the reason for the return:\n- No Restocking Fee for defective items, wrong items sent (our error), or items damaged in shipping.\n- 15% Restocking Fee for standard returns (non-defective), items missing original packaging, or returns without all accessories.",
+        "referenceAnswer": "The restocking fee is 15% of the purchase price for standard returns (non-defective items, items missing packaging, or returns without accessories). There is no restocking fee for defective items, wrong items sent (our error), or items damaged in shipping. Used or installed products cannot be refunded for safety reasons.",
+        "correctnessScore": 2.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": false,
+        "relevancyPassing": true,
+        "responseTime": 1591
+      },
+      {
+        "query": "How long does standard shipping take?",
+        "category": "shipping",
+        "actualAnswer": "Standard shipping within the United States typically takes 3-7 business days.",
+        "referenceAnswer": "Standard shipping (USPS/UPS Ground) takes 5-7 business days after order processing. Processing time is 1-2 business days.",
+        "correctnessScore": 4.5,
+        "correctnessPassing": true,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 848
+      },
+      {
+        "query": "Do you offer expedited shipping?",
+        "category": "shipping",
+        "actualAnswer": "Yes, Hot Rod AN LLC offers expedited shipping through UPS 2-Day and UPS Next Day Air.",
+        "referenceAnswer": "Yes, we offer expedited shipping via UPS 2-Day which delivers in 2-3 business days after processing. Processing time is 1 business day.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": false,
+        "relevancyPassing": true,
+        "responseTime": 848
+      },
+      {
+        "query": "What are your shipping costs?",
+        "category": "shipping",
+        "actualAnswer": "The shipping costs for domestic orders under $75 are $8.95 for standard shipping (USPS/UPS Ground), $18.95 for expedited shipping (UPS 2-Day), and $35.95 for express shipping (UPS Next Day Air). For international orders, the shipping cost to Canada is a flat rate of $24.95, while for all other countries, the cost is calculated at checkout based on weight and destination. Additional fees apply for shipping to Alaska, Hawaii, and U.S. territories.",
+        "referenceAnswer": "Standard shipping costs $8.95 for orders under $75. Orders $75 and over receive free standard shipping. Expedited shipping costs $18.95, and overnight shipping costs $35.95.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": false,
+        "responseTime": 1689
+      },
+      {
+        "query": "How can I track my order?",
+        "category": "tracking",
+        "actualAnswer": "You can track your order using the following methods:\n\n1. Tracking Email: Check your email for a \"Your Hot Rod AN Order Has Shipped\" email and click the tracking link.\n2. Hot Rod AN Website: Go to hotrodan.com/track-order and enter your order number or tracking number.\n3. Direct Carrier Tracking: For UPS, visit ups.com/tracking and enter your tracking number. For USPS, visit usps.com/go/TrackConfirmAction and enter your tracking number.\n4. Email Support: Send an email to support@hotrodan.com with your order number and they will reply with the current status within 24 hours.",
+        "referenceAnswer": "You will receive a tracking number via email once your order ships. You can use this tracking number on the carrier's website to monitor your shipment status.",
+        "correctnessScore": 3,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1664
+      },
+      {
+        "query": "Can I exchange an item for a different size?",
+        "category": "exchanges",
+        "actualAnswer": "Yes, you can exchange an item for a different size. Just follow the exchange process outlined in the support document and contact support@hotrodan.com with your request. They will provide you with the necessary steps and assistance to exchange the item for the correct size.",
+        "referenceAnswer": "Yes, exchanges are free within 30 days of delivery. Items must be unused, in original condition with tags attached. Contact customer support to initiate an exchange.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1441
+      },
+      {
+        "query": "What payment methods do you accept?",
+        "category": "faq",
+        "actualAnswer": "We accept the following payment methods:\n- Credit cards (Visa, Mastercard, Discover, American Express)\n- PayPal\n- Apple Pay\n- Google Pay\n- Amazon Pay\n\nAll transactions are secure and encrypted.",
+        "referenceAnswer": "We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and Apple Pay for online orders.",
+        "correctnessScore": 4,
+        "correctnessPassing": true,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1397
+      },
+      {
+        "query": "Can I cancel my order after placing it?",
+        "category": "faq",
+        "actualAnswer": "Based on the provided context information, there is no specific information regarding the cancellation of orders after they have been placed. It is recommended to reach out to Hot Rod AN LLC directly through their support channels (website, email, or phone) for assistance with canceling an order.",
+        "referenceAnswer": "Orders can be cancelled before they ship. Contact customer support immediately if you need to cancel. Once an order has shipped, you will need to follow the return process instead.",
+        "correctnessScore": 2.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": false,
+        "relevancyPassing": false,
+        "responseTime": 2045
+      }
+    ]
+  },
+  "timestamp": "2025-10-21T03:54:55.645Z"
+}

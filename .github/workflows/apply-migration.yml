@@ -1,0 +1,180 @@
+name: Apply Database Migration
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration_file:
+        description: 'Migration file path (e.g., supabase/migrations/20251021000001_add_performance_indexes.sql)'
+        required: true
+        type: string
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      reason:
+        description: 'Reason for applying migration'
+        required: true
+        type: string
+
+concurrency:
+  group: apply-migration-${{ inputs.environment }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    name: Validate migration
+    runs-on: ubuntu-latest
+    outputs:
+      migration_valid: ${{ steps.check.outputs.valid }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify migration file exists
+        id: check
+        run: |
+          if [ ! -f "${{ inputs.migration_file }}" ]; then
+            echo "::error::Migration file not found: ${{ inputs.migration_file }}"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+          echo "✅ Migration file found"
+          echo "valid=true" >> $GITHUB_OUTPUT
+
+      - name: Check for dangerous operations
+        run: |
+          if grep -iE "DROP TABLE|DROP COLUMN|ALTER.*DROP|TRUNCATE|DELETE FROM" "${{ inputs.migration_file }}"; then
+            echo "::error::Migration contains potentially dangerous operations"
+            echo "Migrations must be ADDITIVE ONLY in production"
+            exit 1
+          fi
+          echo "✅ No dangerous operations detected"
+
+      - name: Display migration content
+        run: |
+          echo "## Migration Content"
+          echo "\`\`\`sql"
+          cat "${{ inputs.migration_file }}"
+          echo "\`\`\`"
+
+  apply:
+    name: Apply migration (Manager approval required)
+    runs-on: ubuntu-latest
+    needs: validate
+    environment:
+      name: ${{ inputs.environment }}-migration
+      url: https://supabase.com/dashboard
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Display instructions
+        run: |
+          {
+            echo "## Migration Application Instructions";
+            echo "";
+            echo "**⚠️ CRITICAL**: Manual application required per database safety policy";
+            echo "";
+            echo "**File**: \`${{ inputs.migration_file }}\`";
+            echo "**Environment**: ${{ inputs.environment }}";
+            echo "**Reason**: ${{ inputs.reason }}";
+            echo "**Requested by**: ${{ github.actor }}";
+            echo "";
+            echo "### Steps for Manager:";
+            echo "";
+            if [ "${{ inputs.environment }}" = "staging" ]; then
+              echo "1. Navigate to: https://supabase.com/dashboard/project/mmbjiyhsvniqxibzgyvx/sql";
+            else
+              echo "1. Navigate to: https://supabase.com/dashboard/project/<production-project-id>/sql";
+            fi
+            echo "2. Copy SQL from \`${{ inputs.migration_file }}\`";
+            echo "3. Paste into SQL Editor";
+            echo "4. Review carefully";
+            echo "5. Execute migration";
+            echo "6. Run verification job in this workflow";
+            echo "";
+            echo "**After executing SQL**, approve the 'verify' job below.";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload migration file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-${{ github.run_number }}
+          path: ${{ inputs.migration_file }}
+          retention-days: 90
+
+  verify:
+    name: Verify migration (After Manager applies)
+    runs-on: ubuntu-latest
+    needs: apply
+    environment:
+      name: ${{ inputs.environment }}-verification
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record migration metadata
+        run: |
+          mkdir -p artifacts/migrations
+          cat <<MD > artifacts/migrations/migration-applied-${{ github.run_number }}.md
+          # Migration Applied
+          
+          - **File**: ${{ inputs.migration_file }}
+          - **Environment**: ${{ inputs.environment }}
+          - **Reason**: ${{ inputs.reason }}
+          - **Applied by**: ${{ github.actor }}
+          - **Applied at**: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - **Workflow run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          
+          ## Verification Steps for DevOps
+          
+          1. Check indexes exist (via Supabase Dashboard or SQL query)
+          2. Run EXPLAIN ANALYZE on key queries
+          3. Verify app health via Fly.io logs
+          4. Monitor for performance improvements
+          5. Update feedback file with verification results
+          MD
+
+      - name: Upload verification artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-verification-${{ github.run_number }}
+          path: artifacts/migrations/
+          retention-days: 90
+
+  summary:
+    name: Migration summary
+    runs-on: ubuntu-latest
+    needs: [validate, apply, verify]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Migration Application Summary";
+            echo "";
+            echo "- **Migration**: \`${{ inputs.migration_file }}\`";
+            echo "- **Environment**: ${{ inputs.environment }}";
+            echo "- **Reason**: ${{ inputs.reason }}";
+            echo "- **Requested by**: ${{ github.actor }}";
+            echo "- **Validation**: ${{ needs.validate.result }}";
+            echo "- **Application**: ${{ needs.apply.result }}";
+            echo "- **Verification**: ${{ needs.verify.result }}";
+            echo "";
+            if [ "${{ needs.verify.result }}" = "success" ]; then
+              echo "✅ **Migration applied and verified successfully**";
+              echo "";
+              echo "DevOps will verify indexes and performance in feedback file.";
+            else
+              echo "⚠️ **Migration workflow incomplete**";
+              echo "";
+              echo "Review workflow logs for details.";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+

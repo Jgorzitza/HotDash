@@ -1,249 +1,67 @@
-# Inventory Direction v5.1
+# Inventory Direction v6.0
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+```
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Inventory Enhancements (PARALLEL DAY 2-3)
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Advanced Inventory Features
 
 ---
 
-## Objective
-
-**Enhance inventory ROP calculation and forecasting**
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
-**Timeline**: Day 2-3 — START DAY 2 (Parallel with other agents)
-
-**Current Status**: Service code cherry-picked (commit 9d0baa4) - ROP, payout, CSV export ready
+## ✅ INVENTORY-006 THROUGH 008 COMPLETE
+- ✅ Modal backend integration (2 API routes, documentation)
+- ✅ Real-time tile data service (status buckets, risk products)
+- ✅ Kits & bundles support (component-based ROP)
+**Files**: 9 created (1,124 lines), commit bede314
 
 ---
 
-## Day 2-3 Tasks (START DAY 2 - 4h)
+## ACTIVE TASKS (12h total)
 
-### INVENTORY-001: Seasonal Demand Adjustments
+### INVENTORY-009: Automated Reorder Alerts (2h) - START NOW
+Generate reorder alerts based on ROP thresholds
+- Calculate days until stockout
+- Urgency levels (critical/high/medium/low)
+- Recommended order quantity (EOQ formula)
+- Vendor and cost information
+**MCP**: TypeScript EOQ calculation, Prisma inventory queries
 
-**Enhance ROP calculation** in `app/lib/inventory/safety-stock.ts`:
+### INVENTORY-010: Inventory Analytics Service (3h)
+Calculate inventory analytics
+- Turnover rate calculation
+- Aging analysis (fresh/aging/stale/dead)
+- ABC analysis (80/15/5 rule)
+- Optimization recommendations
+**MCP**: TypeScript algorithms, Prisma aggregations
 
-**Add Seasonality**:
-- Detect seasonal patterns (winter sports vs summer gear)
-- Adjust reorder point based on season
-- Historical sales by month
-- Peak season buffer (increase ROP 20-30%)
+### INVENTORY-011: Purchase Order Automation (3h)
+Auto-generate purchase orders
+- Group products by vendor
+- Calculate optimal order quantities
+- HITL approval for POs >$1000
+**MCP**: Prisma transactions
 
-**Algorithm**:
-```typescript
-// Current: ROP = (avg_daily_sales * lead_time) + safety_stock
-// Enhanced: ROP = (seasonal_adjusted_sales * lead_time) + dynamic_safety_stock
+### INVENTORY-012: Optimization Service (2h)
+Inventory optimization recommendations
+- Dead stock identification (0 sales in 90 days)
+- Overstock detection (>180 days supply)
+- ABC classification with strategies
 
-function calculateSeasonalROP(sku: string): number {
-  const baseROP = calculateROP(sku);
-  const seasonalityFactor = getSeasonalityFactor(sku, currentMonth);
-  const adjustedROP = baseROP * seasonalityFactor;
-  return Math.ceil(adjustedROP);
-}
-```
+### INVENTORY-013: Inventory Reporting (2h)
+Daily/weekly/monthly inventory reports
+- Stock levels, reorder alerts, turnover metrics
 
-**Data Needed**:
-- 12 months sales history per SKU
-- Category seasonality patterns (e.g., "Snowboards" peak Nov-Feb)
+### INVENTORY-014: Engineer Modal Support (1h reactive)
+Verify Engineer's inventory modal integration
 
----
+### INVENTORY-015: Testing + Documentation (2h)
+80+ integration tests, documentation
 
-### INVENTORY-002: Demand Forecasting (ML-Based)
-
-**Build forecasting service**:
-
-**File**: `app/services/inventory/demand-forecast.ts`
-
-**Features**:
-- 30-day demand forecast per SKU
-- Confidence intervals (low/medium/high)
-- Trend detection (growing, stable, declining)
-- Anomaly detection (sudden spikes/drops)
-
-**Simple ML Approach** (or statistical):
-- Moving average with trend
-- Exponential smoothing
-- Seasonal decomposition
-
-**Alternative** (if complex ML not feasible):
-- 7-day rolling average
-- 30-day rolling average
-- Simple linear trend
-
-**Output**:
-```typescript
-{
-  sku: string,
-  forecast_30d: number,
-  confidence: 'high' | 'medium' | 'low',
-  trend: 'growing' | 'stable' | 'declining',
-  recommended_reorder_qty: number
-}
-```
-
-**Integration**: Use in Inventory Modal (Engineer displays forecast)
-
----
-
-## Optional Enhancements (If Time)
-
-### INVENTORY-003: Vendor Management
-
-**Track vendor performance**:
-- Lead time tracking (order to delivery)
-- Reliability score (on-time delivery %)
-- Cost comparison
-- Preferred vendor per SKU
-
-**File**: `app/services/inventory/vendor-management.ts`
-
----
-
-### INVENTORY-004: PO Tracking System
-
-**Track purchase orders**:
-- PO status (ordered, shipped, received)
-- Expected delivery dates
-- Actual delivery dates (calculate lead time accuracy)
-
-**Integration**: Display in Inventory Modal or future PO dashboard
-
----
-
-## Work Protocol
-
-**1. MCP Tools**:
-```bash
-# TypeScript for algorithms:
-mcp_context7_get-library-docs("/microsoft/TypeScript", "type-guards")
-
-# Math/stats libraries (if using):
-mcp_context7_get-library-docs("/simple-statistics/simple-statistics", "forecasting")
-```
-
-**2. Coordinate**:
-- **Engineer**: Will display forecast in Inventory Modal
-- **Analytics**: May share forecasting patterns
-- **Data**: Provide sales history data
-
-**3. Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Inventory: Seasonal ROP Enhancement
-
-**Working On**: INVENTORY-001 (seasonal adjustments)
-**Progress**: Algorithm implemented, testing with real data
-
-**Evidence**:
-- Files: app/lib/inventory/safety-stock.ts (+85 lines)
-- Tests: 18/18 passing (+4 new tests for seasonality)
-- Context7: Not needed (statistical methods, no new libraries)
-- Test results: Snowboard ROP adjusted 1.25x for winter months ✅
-
-**Blockers**: None
-**Next**: Build demand forecasting service
-```
-
----
-
-## Definition of Done
-
-**Seasonal ROP**:
-- [ ] Algorithm implemented
-- [ ] Tests passing (4+ new tests)
-- [ ] Verified with real SKU data
-- [ ] Documentation updated
-
-**Demand Forecasting**:
-- [ ] Forecast service functional
-- [ ] 30-day predictions accurate (within 20% on test data)
-- [ ] Confidence levels calculated
-- [ ] Integration ready for Engineer
-
-**Optional** (if time):
-- [ ] Vendor management functional
-- [ ] PO tracking implemented
-
----
-
-## Critical Reminders
-
-**DO**:
-- ✅ Test algorithms with real SKU data
-- ✅ Validate forecast accuracy
-- ✅ Coordinate with Engineer for UI integration
-- ✅ Keep existing ROP service working (don't break)
-
-**DO NOT**:
-- ❌ Break existing `app/lib/inventory/safety-stock.ts`
-- ❌ Deploy without testing calculations
-- ❌ Use overly complex ML (simple forecasting OK)
-
----
-
-## Phase Schedule
-
-**Day 2**: INVENTORY-001 (seasonal ROP - 2h) — START DAY 2
-**Day 3**: INVENTORY-002 (forecasting - 2h)
-**Day 3-4**: INVENTORY-003, 004 (optional enhancements - 4h if time)
-
-**Total**: 4-8 hours across Days 2-4 (parallel with Engineer)
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md`
-**Current Code**: app/lib/inventory/safety-stock.ts, app/services/inventory/
-**Feedback**: `feedback/inventory/2025-10-20.md`
-
----
-
-**START WITH**: INVENTORY-001 (seasonal ROP - DAY 2) — Enhance existing service
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+**START NOW**: Pull TypeScript + Prisma docs, implement reorder alerts

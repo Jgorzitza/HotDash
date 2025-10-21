@@ -15,12 +15,56 @@
   - **Blockers** with **owner + ETA**
   - Links to any relevant logs/evidence (screenshots, test output)
 
-## 2a) Manager-Controlled Git  Close Out
+## 2a) Daily Branch Merge to Main (MANDATORY)
 
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For any agent with WORK COMPLETE but no PR yet, create branch/PR now
-- [ ] For open PRs, ensure evidence links to the feedback file
-- [ ] After merge, update directions to next task
+**Manager reviews all commits on daily branch, then merges to main.**
+
+- [ ] **Review All Commits on Daily Branch**:
+  ```bash
+  git log manager-reopen-20251020 --oneline --graph -30
+  # Verify: All commits follow feat(agent-name): format
+  # Verify: No file ownership conflicts between agents
+  # Verify: Each commit references work in feedback files
+  ```
+
+- [ ] **Test Merge to Main**:
+  ```bash
+  git checkout manager-reopen-20251020
+  git fetch origin main
+  git merge origin/main --no-commit --no-ff  # Test only
+  # If conflicts: resolve them, commit resolution
+  # If no conflicts: git merge --abort (will merge via PR)
+  ```
+
+- [ ] **Create PR (if main protected) OR Direct Merge**:
+  ```bash
+  # Option A: Main is protected (use PR)
+  git push origin manager-reopen-20251020
+  gh pr create --base main --head manager-reopen-20251020 \
+    --title "Daily Snapshot: $(date +%Y-%m-%d)" \
+    --body "Daily work from all 17 agents. Evidence in feedback/{agent}/$(date +%Y-%m-%d).md files."
+  # Then merge PR after CI passes
+  
+  # Option B: Main not protected (direct merge)
+  git checkout main
+  git merge manager-reopen-20251020 --no-ff -m "Daily snapshot: $(date +%Y-%m-%d)"
+  git push origin main
+  ```
+
+- [ ] **Verify Merge Success**:
+  ```bash
+  git checkout main
+  git pull origin main
+  git log --oneline -10  # Confirm all daily branch commits are in main
+  ```
+
+- [ ] **Tag Daily Snapshot** (for rollback capability):
+  ```bash
+  git tag daily-snapshot-$(date +%Y-%m-%d) main
+  git push origin daily-snapshot-$(date +%Y-%m-%d)
+  ```
+
+- [ ] **For Tomorrow**: Update branch name in all 17 direction files if creating new daily branch
 
 ---
 

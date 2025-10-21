@@ -1,145 +1,66 @@
-# Analytics Direction v5.1
+# Analytics Direction v7.0
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+```
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Analytics Support
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 7.0  
+**Status**: ACTIVE — Advanced Analytics
 
 ---
 
-## Objective
-
-**Provide data integration for charts and analytics features** (Phases 7-8)
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
----
-
-## Day 1-4 Tasks (START NOW - 8h) — ALL CHART SERVICES UPFRONT
-
-**Strategy**: Build ALL data services NOW → Engineer integrates when ready
-
-### ANALYTICS-001: Sales Chart Data — DAY 1
-
-**Your Tasks**:
-- Provide 7-day revenue data for sparkline
-- Provide WoW comparison data for Sales Modal
-- Provide top SKUs breakdown data
-
-**Format**:
-```typescript
-// Expected by Engineer for charts
-{
-  revenue_7d: Array<{date: string, amount: number}>,
-  revenue_wow: {current: number, previous: number, change_pct: number},
-  top_skus: Array<{sku: string, units: number, revenue: number}>
-}
-```
-
-**Integration**: Engineer calls your service, you return chart-ready data
+## ✅ ANALYTICS-006 THROUGH 009 COMPLETE
+- ✅ Social performance, SEO impact, Ads ROAS, Growth metrics
+- **Tests**: 94/94 passing, 2,800 lines
+- ⚠️ **React Router 7 Violation CORRECTED**: Used `json()` helper (97 instances) → Manager fixed commit 19c09b3
+- **Lesson**: Reference MCP docs DURING implementation, not just at start
 
 ---
 
-### ANALYTICS-002: Inventory Chart Data — DAY 2
+## ACTIVE TASKS (10h total)
 
-**Your Tasks**:
-- Provide 14-day velocity data (units sold per day)
-- Provide stock level trend data
-- Provide days-of-cover calculations
+### ANALYTICS-010: CSV/Excel Data Export (2h) - START NOW
+Create CSV export for all analytics data
+- Stream data for large exports
+- Support all 4 areas (social, SEO, ads, growth)
+- Date range filtering
+**MCP**: TypeScript async generators, React Router 7 Response streaming
+**CRITICAL**: Use Response.json() NOT json()
 
----
+### ANALYTICS-011: Multi-Project Analytics Aggregation (2h)
+Aggregate analytics across multiple projects
+- CEO/agency view (all shops combined)
+- Top/bottom performers
+- Project comparison
 
-### ANALYTICS-003: Agent Performance Data — DAY 3
+### ANALYTICS-012: Trend Forecasting Service (2h)
+Forecast future metrics using linear regression
+- Predict next 7/14/30 days
+- Confidence intervals
+- Trend direction (up/down/stable)
 
-**Your Tasks**:
-- Query decision_log for approval rates
-- Calculate average grades (tone/accuracy/policy)
-- Provide response time trends
-- Format for Polaris Viz charts
+### ANALYTICS-013: Alert & Anomaly Detection (2h)
+Detect unusual patterns using Z-score
+- Alert on revenue drops, CTR spikes
+- Statistical significance (Z-score >2.5)
+- Recommendations for anomalies
 
----
+### ANALYTICS-014: Scheduled Analytics Reports (1h)
+Generate daily/weekly/monthly reports
+- Email reports (Phase 11)
+- Report templates
 
-## Work Protocol
+### ANALYTICS-015: Data Validation Service (1h)
+Validate analytics data integrity
+- Detect missing data, outliers, inconsistencies
+- Data quality score (0-100)
 
-**Coordinate with Engineer**: They build UI, you provide data services
+### ANALYTICS-016: Documentation (included)
 
-**Reporting**: Every 2 hours in `feedback/analytics/2025-10-20.md`
-
----
-
-### ANALYTICS-004: Export Services — DAY 4
-
-**Build CSV export data services**:
-- Approval history export data
-- Analytics export data
-- Custom report generation
-
----
-
-## Phase Schedule
-
-**Day 1**: ANALYTICS-001 (sales charts - 2h) — START NOW
-**Day 2**: ANALYTICS-002 (inventory charts - 2h)
-**Day 3**: ANALYTICS-003 (agent performance - 2h)
-**Day 4**: ANALYTICS-004 (exports - 2h)
-
-**Result**: ALL data services ready → Engineer integrates charts/exports when ready
-
-**Total**: 8 hours across Days 1-4 (parallel with Engineer)
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md`
-**Feedback**: `feedback/analytics/2025-10-20.md`
-
----
-
-**START WITH**: Standby until Phase 7-8 begins
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+**START NOW**: Pull TypeScript + Prisma docs, implement CSV export

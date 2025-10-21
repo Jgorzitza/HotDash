@@ -1,0 +1,63 @@
+---
+alwaysApply: true
+---
+# Git Strategy: Daily Branch Model (Manager-Owned)
+
+**CRITICAL: Manager owns ALL git operations. All agents work on single daily branch.**
+
+## Current Branch
+**TODAY**: `manager-reopen-20251020`
+
+All agents MUST:
+1. Checkout this branch BEFORE any work
+2. Commit directly to this branch (no individual agent branches)
+3. Use conventional commits: `feat(agent-name): description`
+4. Push to same branch: `git push origin manager-reopen-20251020`
+
+## File Ownership (Prevents Conflicts)
+
+**Before modifying ANY file, verify you own it**:
+
+| Agent | Owns These Directories/Files |
+|-------|------------------------------|
+| Data | `prisma/`, `supabase/migrations/` |
+| Engineer | `app/routes/`, `app/components/`, `app/lib/` (excluding specialist libs) |
+| Designer | `docs/design/`, design review comments |
+| DevOps | `fly.toml`, `Dockerfile`, `scripts/ops/` |
+| Content | `data/support/`, microcopy in components |
+| Analytics | `app/lib/analytics/`, `scripts/analytics/` |
+| SEO | `app/lib/seo/` |
+| Ads | `app/lib/ads/` |
+| Integrations | `packages/integrations/`, `app/lib/integrations/` |
+| Support | `docs/support/` |
+| AI-Customer/AI-Knowledge | `packages/agents/`, `packages/memory/` |
+| Product | `docs/specs/`, feature flags |
+| Inventory | `app/lib/inventory/` |
+| QA | `tests/`, review comments |
+| Pilot | `tests/e2e/`, smoke tests |
+| Manager | `docs/directions/`, `feedback/`, git operations |
+
+**If you need a file owned by another agent**: Report in feedback, wait for Manager coordination.
+
+## Git Commands for Agents
+
+```bash
+# STARTUP (Section 0 of agent_startup_checklist.md)
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+git branch --show-current  # Verify correct branch
+
+# DURING WORK
+git add your/owned/files
+git commit -m "feat(your-agent): what you did"
+git push origin manager-reopen-20251020
+
+# DO NOT
+# - Create individual agent branches
+# - Checkout main
+# - Force push
+# - Modify files you don't own
+```
+
+**See**: [RULES.md](mdc:docs/RULES.md) for full git strategy

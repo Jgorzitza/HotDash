@@ -217,17 +217,24 @@
 2. Copy `.env.example` to `.env.local` and populate with vault-provided secrets
 3. Install repo pre-commit hook: `./scripts/policy/install-hooks.sh`
 
-### Branching Model
+### Branching Model (Manager-Owned Daily Branch)
 
-- Branch names: `batch-<BATCH_ID>/<slug>` (example: `batch-20251017T033137Z/chatwoot-health`)
-- Guardrail work: `guardrails-<BATCH_ID>` (merged before feature work)
-- Never force-push to `main` - all merges via PR review
+**Updated 2025-10-20**: All agents work on single daily branch, Manager coordinates.
+
+- **Daily Branch**: `daily/YYYY-MM-DD` (or `manager-reopen-YYYYMMDD`)
+- **All 17 agents**: Commit directly to same branch (no per-agent branches)
+- **Manager**: Creates daily branch at startup, merges to main at shutdown
+- **File Ownership**: Prevents conflicts (see RULES.md table)
+- **Never force-push to `main`** - all merges via PR review (or Manager direct merge if not protected)
+
+**Agents do NOT create branches** - Manager owns all git operations.
 
 ### Commit Style
 
-- Conventional commits: `feat:`, `fix:`, `chore:`, `docs:`, `test:`
-- Scope optional but recommended (e.g. `feat(app): add idea pool tile`)
-- Squash commits in PR unless history is intentionally meaningful
+- Conventional commits: `feat(agent-name):`, `fix(agent-name):`, `chore(agent-name):`, `docs(agent-name):`, `test(agent-name):`
+- **Agent name in scope is MANDATORY** (e.g. `feat(engineer): add modal component`, `fix(data): correct schema`)
+- Allows Manager to track which agent made which changes
+- DO NOT squash commits - each agent commit preserved for accountability
 
 ### Pull Request Checklist
 

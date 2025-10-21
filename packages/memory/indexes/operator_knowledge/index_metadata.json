@@ -1,8 +1,14 @@
 {
-  "buildTime": "2025-10-20T06:04:03.988Z",
+  "buildTime": "2025-10-21T03:54:06.534Z",
   "documentCount": 6,
   "persistDir": "/home/justin/HotDash/hot-dash/packages/memory/indexes/operator_knowledge",
   "useMock": false,
+  "chunkConfig": {
+    "chunkSize": 512,
+    "chunkOverlap": 0,
+    "overlapPercentage": "0%",
+    "note": "No overlap - improves faithfulness by reducing contradictions"
+  },
   "sources": [
     {
       "fileName": "shipping-policy.md",

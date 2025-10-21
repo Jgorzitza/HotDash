@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
+import { TileRefreshIndicator } from "../realtime/TileRefreshIndicator";
 
 export type TileStatus = "ok" | "error" | "unconfigured";
-export type TileSource = "fresh" | "cache" | "mock";
+export type TileSource = "fresh" | "cache" | "mock" | "api";
 
 export interface TileFact {
   id: number;
@@ -21,6 +22,10 @@ interface TileCardProps<T> {
   tile: TileState<T>;
   render: (data: T) => ReactNode;
   testId?: string;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
+  autoRefreshInterval?: number;
+  showRefreshIndicator?: boolean;
 }
 
 const STATUS_LABELS: Record<TileStatus, string> = {
@@ -36,7 +41,16 @@ function formatDateTime(value?: string): string | undefined {
   return date.toLocaleString();
 }
 
-export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
+export function TileCard<T>({
+  title,
+  tile,
+  render,
+  testId,
+  onRefresh,
+  isRefreshing = false,
+  autoRefreshInterval,
+  showRefreshIndicator = false,
+}: TileCardProps<T>) {
   const statusClass =
     tile.status === "ok"
       ? "occ-status-healthy"
@@ -81,12 +95,25 @@ export function TileCard<T>({ title, tile, render, testId }: TileCardProps<T>) {
         </h2>
         <span className={statusClass}>{STATUS_LABELS[tile.status]}</span>
       </div>
-      {tile.fact && (
+
+      {/* Real-time refresh indicator (Phase 5 - ENG-025) */}
+      {showRefreshIndicator && tile.fact && (
+        <TileRefreshIndicator
+          lastUpdated={tile.fact.createdAt}
+          isRefreshing={isRefreshing}
+          onRefresh={onRefresh}
+          autoRefreshInterval={autoRefreshInterval}
+        />
+      )}
+
+      {/* Fallback timestamp for tiles without refresh indicator */}
+      {!showRefreshIndicator && tile.fact && (
         <p className="occ-text-meta" style={{ margin: 0 }}>
           Last refreshed {formatDateTime(tile.fact.createdAt)}
           {tile.source ? ` • Source: ${tile.source}` : ""}
         </p>
       )}
+
       {content}
     </div>
   );

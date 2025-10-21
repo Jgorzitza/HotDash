@@ -1,334 +1,295 @@
-# QA Direction v5.1
+# QA Direction v6.1 - P0 SECRET REMEDIATION
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+```
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Quality Assurance
+**Effective**: 2025-10-21T22:30Z  
+**Version**: 6.1 (EMERGENCY UPDATE)  
+**Status**: 🚨 P0 ACTIVE — Secret Exposure Remediation
 
 ---
 
-## Objective
+## 🚨 P0 SECURITY INCIDENT - IMMEDIATE ACTION REQUIRED
 
-**Verify code quality and accessibility** for all Option A phases before CEO checkpoints
+**GitGuardian Detected 3 Secrets in Commits**:
+1. Chatwoot Widget Token (commit 018383a) - exposed in commit message
+2. PostgreSQL URI (commit 6f5b563) - exposed in commit/files
+3. PostgreSQL URI (commit 6f5b563) - duplicate detection
 
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
-**Your Role**: Final quality gate before CEO reviews
-
----
-
-## Verification Tasks (Per Phase)
-
-### Phase 2, 3, 4, 5, 6, 7-8, 10, 11, 12, 13: Code Review
-
-**After Engineer completes, BEFORE Designer validates**:
-
-**QA-001**: Code Quality Verification (30 min per phase)
-
-**Process**:
-1. Engineer completes phase
-2. You verify code quality
-3. Designer validates visuals
-4. Manager presents to CEO
-
-**Verification Checklist**:
-
-```md
-## Phase N Code Review
-
-**Files Changed**: [list with line counts]
-
-**Context7 Verification**:
-- [ ] Prisma patterns match Context7 docs (/prisma/docs)
-- [ ] React Router 7 patterns (no @remix-run imports)
-- [ ] Polaris components used correctly
-- [ ] TypeScript types proper
-
-**Code Quality**:
-- [ ] No console.log in production code
-- [ ] Error boundaries present
-- [ ] Loading states implemented
-- [ ] No hardcoded strings (use microcopy)
-- [ ] No secrets in code
-
-**Testing**:
-- [ ] Unit tests added (+2 minimum per component)
-- [ ] Test coverage ≥80% for new code
-- [ ] All tests passing (npm run test:ci)
-- [ ] Playwright tests for modals (if applicable)
-
-**Accessibility** (Verify with Tools):
-- [ ] Keyboard nav (Tab through all controls)
-- [ ] Focus indicators (4.5:1 contrast)
-- [ ] ARIA labels on interactive elements
-- [ ] Semantic HTML (article, h2, ul/li)
-- [ ] Color contrast (text 4.5:1, interactive 3:1)
-
-**Security**:
-- [ ] npm run scan passing (no secrets)
-- [ ] No SQL injection vectors
-- [ ] Input validation present
-- [ ] XSS protection (React default)
-
-**Verdict**: ✅ PASS / ❌ FAIL (with specific issues)
-```
+**Your Mission**: Remediate secret exposure, prevent future incidents
 
 ---
 
-## MCP Tool Requirements (MANDATORY)
+## ✅ QA-001 COMPLETE (from feedback)
+**Found Critical Issues**:
+- ⚠️ TypeScript error: `app/services/seo/content-optimizer.ts:549` (unterminated string)
+- ✅ React Router 7: Compliant
+- ✅ Shopify GraphQL: All queries valid
+- ✅ Security: 8.5/10 (2 warnings: CSP headers, Chatwoot script)
 
-### Before ANY Code Review:
+**Continue QA-002 through QA-008 AFTER P0 remediation**
 
-**Pull Official Docs**:
+---
+
+## 🚨 P0 TASKS (4h) - START IMMEDIATELY
+
+### QA-INCIDENT-001: Comprehensive Secret Scan (1h) - START NOW
+
+**Requirements**:
+- Scan ALL commits since 2025-10-20 for secrets
+- Check commit messages AND file contents
+- Identify all exposed secrets
+- Categorize by severity
+
+**Implementation**:
 ```bash
-# For Prisma code review:
-mcp_context7_get-library-docs("/prisma/docs", "schema-validation")
+# Scan last 100 commits with Gitleaks
+git log -100 --pretty=format:"%H" | while read commit; do
+  echo "Scanning commit: $commit"
+  git show $commit | gitleaks detect --no-git --verbose
+done > secret-scan-results.txt
 
-# For React Router code review:
-mcp_context7_get-library-docs("/react-router/react-router", "loaders")
+# Scan commit messages specifically
+git log -100 --pretty=format:"%H %s %b" | grep -E "(token|key|password|secret|api_key|DATABASE_URL)" > commit-message-secrets.txt
 
-# For Polaris code review:
-mcp_context7_get-library-docs("/shopify/polaris", "accessibility")
-
-# For TypeScript review:
-mcp_context7_get-library-docs("/microsoft/TypeScript", "strict-mode")
+# Check specific commits reported by GitGuardian
+git show 018383a | grep -i "token"
+git show 6f5b563 | grep -i "postgresql\|database_url"
 ```
 
-**Log Tool Usage**:
-```md
-## HH:MM - Context7: Prisma
-- Topic: @@schema attribute requirement
-- Verified: All models have @@schema("public") ✅
-- Found Issue: SalesPulseAction missing @@schema ❌
-- Reported to: Data agent for fix
-```
+**Deliverable**: `artifacts/qa/secret-exposure-scan-2025-10-21.md`
+- All secrets found (commit hash, location, type)
+- Severity classification (critical/high/medium/low)
+- Impact assessment
+- Affected services
 
-**Minimum**: 4+ MCP tool calls per session (Context7, Shopify Dev MCP)
+**Acceptance**:
+- [ ] All commits scanned (last 100)
+- [ ] Commit messages scanned separately
+- [ ] All secrets catalogued
+- [ ] Report created with remediation priorities
+
+**Time**: 1 hour
 
 ---
 
-## Accessibility Testing Protocol
+### QA-INCIDENT-002: Secret Exposure Report (1h)
 
-### Tools to Use:
+**Requirements**:
+- Document all secret incidents found
+- Provide remediation steps for each secret
+- Create timeline of exposure
+- Estimate blast radius
 
-**Automated**:
-- axe DevTools (browser extension)
-- Lighthouse accessibility audit
-- WAVE (WebAIM)
+**Deliverable**: `artifacts/qa/secret-exposure-report-2025-10-21.md`
 
-**Manual**:
-- Keyboard-only navigation
-- Tab order logical
-- Focus visible
-- Escape key behavior
+**Content**:
+1. **Executive Summary**: Number of secrets, severity, impact
+2. **Incident Timeline**: When exposed, when detected, remediation status
+3. **Secret Inventory**:
+   - Chatwoot widget token: ieNpPnBaZXd9joxoeMts7qTA
+   - PostgreSQL URI: [details from commit 6f5b563]
+   - Any additional secrets found in scan
+4. **Impact Assessment**:
+   - Chatwoot: Medium risk (widget token, not API token)
+   - Database: CRITICAL risk (full database access if credentials exposed)
+5. **Remediation Steps** (for Manager):
+   - Revoke each secret
+   - Rotate credentials
+   - Update services
+   - Verify no unauthorized access
+6. **Prevention Recommendations**:
+   - Pre-commit hooks
+   - Commit message sanitization
+   - Agent training on commit security
+   - Regular secret scans
 
-**Screen Reader** (if accessible):
-- NVDA (Windows)
-- VoiceOver (Mac)
-- Verify announcements correct
+**Acceptance**:
+- [ ] Report comprehensive (all secrets documented)
+- [ ] Remediation steps clear and actionable
+- [ ] Impact assessment realistic
+- [ ] Prevention measures specified
 
-### Report Format:
-
-```md
-## Accessibility Audit: [Component]
-
-**Tool**: axe DevTools
-**Result**: 0 violations ✅ / 3 violations ❌
-
-**Issues Found**:
-1. Missing ARIA label on close button
-   - Severity: Critical
-   - Fix: Add aria-label="Close modal"
-   - Assigned to: Engineer
-
-**Manual Test**:
-- Keyboard nav: ✅ PASS (all controls reachable)
-- Focus trap: ✅ PASS (stays in modal)
-- Escape key: ✅ PASS (closes modal)
-
-**Verdict**: ❌ FAIL (3 critical issues) → Send back to Engineer
-```
+**Time**: 1 hour
 
 ---
 
-## Ongoing Responsibilities
+### QA-INCIDENT-003: Implement Commit Message Sanitization (1h)
 
-### 1. PR Reviews:
+**Requirements**:
+- Create pre-commit hook to scan commit messages
+- Block commits with secrets in messages
+- Alert developer immediately
+- Document commit message security policy
 
-**When Engineer/Data/Designer create PRs**:
-- Review code quality (patterns, tests, accessibility)
-- Run security scan
-- Verify no secrets
-- Check test coverage
-- Approve OR request changes
+**Implementation**:
 
-**Report**: `feedback/qa/2025-10-20.md` with PR number, verdict, issues
-
----
-
-### 2. Test Suite Monitoring:
-
-**Daily**:
+**File**: `.git/hooks/prepare-commit-msg` (new, executable)
 ```bash
-npm run test:ci
-# Report: X/Y passing, Z failures
-# If failures: Create issue, assign owner, due date
+#!/bin/bash
+# Scan commit message for secrets before committing
+
+COMMIT_MSG_FILE=$1
+
+# Run gitleaks on commit message
+if gitleaks protect --commit-msg-file="$COMMIT_MSG_FILE" --verbose; then
+  echo "✅ Commit message clean (no secrets detected)"
+else
+  echo "❌ BLOCKED: Secrets detected in commit message!"
+  echo "Remove secrets from commit message and try again."
+  echo "Use environment variables or vault/ for credentials."
+  exit 1
+fi
 ```
+
+**File**: `.git/hooks/commit-msg` (new, executable)
+```bash
+#!/bin/bash
+# Additional commit message validation
+
+COMMIT_MSG_FILE=$1
+
+# Check for common secret patterns
+if grep -qE "(token|password|api_key|secret|DATABASE_URL|postgresql://).*[A-Za-z0-9]{20,}" "$COMMIT_MSG_FILE"; then
+  echo "❌ BLOCKED: Potential secret detected in commit message"
+  echo "Patterns found: token, password, api_key, DATABASE_URL, etc."
+  echo "Remove credentials and use generic descriptions instead."
+  exit 1
+fi
+
+echo "✅ Commit message validated"
+```
+
+**Make executable**:
+```bash
+chmod +x .git/hooks/prepare-commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+**Documentation**: `docs/COMMIT_MESSAGE_SECURITY.md` (new)
+- What NOT to include in commit messages
+- How to reference credentials (use generic terms)
+- Examples of safe vs unsafe commit messages
+
+**Acceptance**:
+- [ ] Pre-commit hook created and executable
+- [ ] Commit message hook created
+- [ ] Hooks block commits with secrets
+- [ ] Documentation created
+- [ ] Tested with sample secret (should block)
+
+**Time**: 1 hour
 
 ---
 
-### 3. Security Scanning:
+### QA-INCIDENT-004: Secret Scanning Runbook (1h)
 
-**Daily**:
-```bash
-npm run scan
-# Report: Clean / X secrets found
-# If secrets: IMMEDIATE escalation to Manager
-```
+**Requirements**:
+- Create runbook for responding to secret exposure incidents
+- Include: Detection, assessment, remediation, prevention
+- Document tools (Gitleaks, GitGuardian, BFG Repo Cleaner)
+- Create incident response checklist
+
+**Deliverable**: `docs/runbooks/secret-exposure-incident-response.md`
+
+**Content**:
+1. **Incident Detection**: How secrets are detected (GitGuardian, Gitleaks, manual review)
+2. **Severity Classification**: Critical/High/Medium/Low based on secret type
+3. **Immediate Response** (< 1 hour):
+   - Revoke/rotate exposed secret
+   - Verify no unauthorized access
+   - Update services with new credentials
+4. **Git History Cleanup** (< 24 hours):
+   - Rewrite commit messages (BFG or git rebase)
+   - Force push (with approval)
+   - Notify team
+5. **Prevention Measures**:
+   - Pre-commit hooks
+   - Commit message sanitization
+   - Regular secret scans
+   - Agent training
+6. **Tools Reference**:
+   - Gitleaks usage
+   - GitGuardian setup
+   - BFG Repo Cleaner guide
+7. **Incident Response Checklist**: Step-by-step actions
+
+**Acceptance**:
+- [ ] Runbook created (600+ lines)
+- [ ] All incident response steps documented
+- [ ] Tools usage documented
+- [ ] Checklist provided
+- [ ] Manager can execute remediation using runbook
+
+**Time**: 1 hour
+
+---
+
+## AFTER P0 REMEDIATION - Resume QA-002 Through QA-008
+
+**Original Tasks** (10h) - RESUME after P0 complete:
+- QA-002: Phase 3-8 Feature Testing (3h)
+- QA-003: Performance Testing Suite (2h)
+- QA-004: Security & Vulnerability Testing (2h)
+- QA-005: API Contract Testing (2h)
+- QA-006: Accessibility Testing (2h)
+- QA-007: Test Automation Infrastructure
+- QA-008: QA Documentation
+
+**Total Work**: 4h P0 remediation + 10h original tasks = 14h
 
 ---
 
 ## Work Protocol
 
-**1. MCP Tools First** (Training data outdated):
-- Context7 for library verification
-- Shopify Dev MCP for Shopify patterns
-- Never rely on training data alone
+**1. P0 PRIORITY**: Secret remediation BEFORE all other tasks
 
-**2. Reporting Every 2 Hours**:
+**2. MCP Tools** (MANDATORY):
+- Web Search: GitGuardian best practices, BFG Repo Cleaner, git security
+- Shopify Dev MCP: GraphQL validation (when resume QA-002)
+- Chrome DevTools MCP: UI testing (when resume)
+
+**3. Reporting (Every 1 hour during P0 in feedback/qa/2025-10-21.md)**:
 ```md
-## YYYY-MM-DDTHH:MM:SSZ — QA: Phase N Verification
+## YYYY-MM-DDTHH:MM:SSZ — QA: P0 Secret Remediation Progress
 
-**Working On**: Code review for Phase N
-**Progress**: 2/3 components reviewed
+**Working On**: QA-INCIDENT-001 (Comprehensive Secret Scan)
+**Progress**: 100% - All 100 commits scanned, 3 secrets confirmed
 
 **Evidence**:
-- Context7: Pulled /prisma/docs → verified @@schema present
-- Accessibility: axe audit → 0 violations
-- Tests: 245/245 passing (+5 new tests)
-- Security: npm run scan → clean
+- Scan results: artifacts/qa/secret-scan-results.txt
+- Secrets found: 3 (Chatwoot widget token, 2x PostgreSQL URI)
+- Commits affected: 018383a, 6f5b563
+- Report: artifacts/qa/secret-exposure-scan-2025-10-21.md (400 lines)
+- Additional secrets: None found beyond GitGuardian alerts
 
 **Blockers**: None
-**Next**: Complete final component review
+**Next**: QA-INCIDENT-002 (Secret Exposure Report)
 ```
-
-**3. Rejection Criteria**:
-- Test coverage < 80% → FAIL
-- Accessibility violations → FAIL
-- Secrets detected → IMMEDIATE FAIL (escalate)
-- Missing Context7 verification → FAIL (resend to agent)
-
----
-
-## Definition of Done (Each Phase)
-
-**Code Quality**:
-- [ ] Context7 docs verified for all libraries used
-- [ ] React Router 7 patterns (grep for @remix-run → 0 results)
-- [ ] TypeScript strict mode passing
-- [ ] No console.log/debugger in production
-
-**Testing**:
-- [ ] Test coverage ≥80% for new code
-- [ ] All tests passing (npm run test:ci)
-- [ ] Playwright tests for modals/routes
-
-**Accessibility**:
-- [ ] axe DevTools: 0 violations
-- [ ] Keyboard nav verified
-- [ ] Focus management tested
-- [ ] Color contrast verified (4.5:1 minimum)
-
-**Security**:
-- [ ] npm run scan: clean
-- [ ] No hardcoded secrets
-- [ ] Input validation present
-- [ ] RLS policies verified (Data tables)
-
-**Evidence**:
-- [ ] Feedback updated with verification results
-- [ ] MCP tool usage logged (4+ calls minimum)
-- [ ] Issues documented with severity + owner
-
----
-
-## Phase Schedule
-
-**Immediate**: Phase 2 code review (after Engineer completes)
-**Ongoing**: Review each phase before CEO checkpoint
-**Total**: ~11 reviews (30 min each = 5.5 hours)
 
 ---
 
 ## Critical Reminders
 
 **DO**:
-- ✅ Use MCP tools before every review (Context7, Shopify Dev MCP)
-- ✅ Test accessibility with keyboard + tools
-- ✅ Verify test coverage ≥80%
-- ✅ Block PRs with secrets or accessibility violations
+- ✅ Treat as P0 CRITICAL (drop all other work)
+- ✅ Scan commits thoroughly
+- ✅ Document ALL findings
+- ✅ Provide clear remediation steps
+- ✅ Use Web Search for best practices
 
 **DO NOT**:
-- ❌ Approve code without Context7 verification
-- ❌ Skip accessibility testing
-- ❌ Allow secrets in codebase
-- ❌ Pass code with <80% test coverage
+- ❌ Delay remediation (time-sensitive)
+- ❌ Skip any commits in scan
+- ❌ Assume only 3 secrets (scan comprehensively)
+- ❌ Resume normal QA work until P0 resolved
 
 ---
 
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
-**Rules**: `docs/RULES.md` (Tool-first, QA verification protocol)
-**Feedback**: `feedback/qa/2025-10-20.md`
-**Startup**: `docs/runbooks/agent_startup_checklist.md`
-
----
-
-**START WITH**: Monitor Engineer progress on Phase 2, prepare for code review when complete
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+**START NOW**: Scan commits 018383a and 6f5b563, then scan all recent commits for additional secrets

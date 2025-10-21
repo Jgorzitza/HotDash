@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { OrderSummary } from "../../services/shopify/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
+import { useToast } from "../../hooks/useToast";
 
 interface SalesPulseModalProps {
   summary: OrderSummary;
@@ -14,11 +16,12 @@ interface SalesPulseActionResponse {
   error?: string;
 }
 
-type SalesAction = "acknowledge" | "escalate";
+type SalesAction = "acknowledge" | "escalate" | "no_action";
 
 const ACTION_LABELS: Record<SalesAction, string> = {
   acknowledge: "Log follow-up",
   escalate: "Escalate to ops",
+  no_action: "No action",
 };
 
 export function SalesPulseModal({
@@ -31,6 +34,12 @@ export function SalesPulseModal({
   const [selectedAction, setSelectedAction] =
     useState<SalesAction>("acknowledge");
 
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
+
+  // Toast notifications for user feedback (Designer P0 requirement)
+  const { showSuccess, showError } = useToast();
+
   useEffect(() => {
     if (open) {
       setNote("");
@@ -42,9 +51,12 @@ export function SalesPulseModal({
     if (!open) return;
     if (fetcher.state !== "idle") return;
     if (fetcher.data?.ok) {
+      showSuccess("Action logged! 📊");
       onClose();
+    } else if (fetcher.data?.error) {
+      showError(fetcher.data.error);
     }
-  }, [fetcher.state, fetcher.data, open, onClose]);
+  }, [fetcher.state, fetcher.data, open, onClose, showSuccess, showError]);
 
   const isSubmitting = fetcher.state !== "idle";
 
@@ -121,6 +133,31 @@ export function SalesPulseModal({
 
         <div className="occ-modal__body">
           <section className="occ-modal__section">
+            <h3>Snapshot (Last 24h)</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <p style={{ margin: 0 }}>
+                <strong>Revenue:</strong> {summary.currency}{" "}
+                {summary.totalRevenue.toFixed(2)}
+                <span style={{ marginLeft: "0.5rem", color: "var(--occ-text-secondary)", fontSize: "0.875rem" }}>
+                  (WoW variance: pending historical data)
+                </span>
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Orders:</strong> {summary.orderCount}
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Avg order:</strong> {summary.currency}{" "}
+                {summary.orderCount > 0
+                  ? (summary.totalRevenue / summary.orderCount).toFixed(2)
+                  : "0.00"}
+              </p>
+            </div>
+            <p style={{ fontSize: "0.75rem", color: "var(--occ-text-secondary)", margin: "0.5rem 0 0 0", fontStyle: "italic" }}>
+              Note: WoW variance calculation requires historical data integration (Data service enhancement)
+            </p>
+          </section>
+
+          <section className="occ-modal__section">
             <h3>Top SKUs</h3>
             <ul className="occ-modal__list">
               {summary.topSkus.map((sku) => (
@@ -196,6 +233,8 @@ export function SalesPulseModal({
               className="occ-button occ-button--primary"
               onClick={() => submit(selectedAction)}
               disabled={isSubmitting}
+              aria-live="polite"
+              aria-atomic="true"
             >
               {ACTION_LABELS[selectedAction]}
             </button>

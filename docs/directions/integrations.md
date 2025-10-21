@@ -1,233 +1,70 @@
-# Integrations Direction v5.1
+# Integrations Direction v6.0
+
+📌 **FIRST ACTION: Git Setup**
+```bash
+cd /home/justin/HotDash/hot-dash
+git fetch origin
+git checkout manager-reopen-20251020
+git pull origin manager-reopen-20251020
+```
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Integration Support
+**Effective**: 2025-10-21T22:00Z  
+**Version**: 6.0  
+**Status**: ACTIVE — Publer Backend Enhancement
 
 ---
 
-## Objective
-
-**Support Idea Pool (Phase 3) and Publer Integration (Phase 12)**
-
-**Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan — LOCKED)
-
-**Current Status**: Idea Pool API complete (Issue #113, 15/15 molecules, Manager score 5/5)
-
----
-
-## Phase 3: Idea Pool Backend Support (COMPLETE ✅)
-
-### Current State:
-
-**Already Built**:
-- ✅ `app/routes/api.analytics.idea-pool.ts` (139 lines)
-- ✅ Contract test: 13/13 passing
-- ✅ Feature flag support
-- ✅ Fixture data (app/fixtures/content/idea-pool.json)
-- ✅ Documentation: `docs/runbooks/idea-pool-feature-flag-activation.md`
-
-**Status**: Ready for Engineer to integrate into Idea Pool Tile (ENG-008)
-
-**Your Task**: Standby for Engineer questions, verify API working when tile implemented
+## ✅ INTEGRATIONS-001 THROUGH 004 COMPLETE
+- ✅ Publer API Client (OAuth, retry logic, error handling)
+- ✅ Publer Adapter (HITL workflow)
+- ✅ Social Post Queue (priority queue, auto-retry)
+- ✅ API Rate Limiting (token bucket for all APIs)
+**Files**: 6 created (1,134 lines), commit f5f41b9
 
 ---
 
-## Phase 12: Publer UI Integration — QUEUED
+## ACTIVE TASKS (10h total)
 
-### INTEGRATIONS-001: Publer Backend Verification
+### INTEGRATIONS-005: Publer API Testing with Real Credentials (2h) - START NOW
+Test Publer API client with real API token
+- Check vault for credentials (api_token.env, workspace_id.env)
+- Create testing script (test all 6 functions)
+- Test in draft mode (don't publish)
+- Document API responses
+**MCP**: Web search for Publer API latest docs
 
-**Current State**:
-- ✅ Publer adapter: `packages/integrations/publer.ts`
-- ✅ API routes: `app/routes/api/social.post.ts`, `app/routes/api/social.status.$postId.ts`
-- ✅ Tests: 7/7 passing (`tests/integration/social.api.spec.ts`)
+### INTEGRATIONS-006: Publer Integration Tests (3h)
+Create comprehensive integration test suite
+- 45 tests (client, adapter, queue, rate limiter)
+- Mock Publer API responses
+- Test error handling, retry logic
+**MCP**: TypeScript Vitest patterns
 
-**Your Tasks**:
+### INTEGRATIONS-007: Publer Webhook Support (2h)
+Add webhook endpoint for job status updates
+- Signature verification (HMAC-SHA256)
+- Update approval status when post published
+- Store final post URLs
+**MCP**: Web search Publer webhooks, TypeScript HMAC
 
-**1. Verify Publer Adapter Ready** (20 min):
-```bash
-# Test adapter still functional:
-npx ts-node scripts/proof/test-publer-adapter.ts
+### INTEGRATIONS-008: Shopify Inventory Sync (2h)
+Create service to sync inventory from Shopify
+- Shopify GraphQL query for inventory levels
+- Store in dashboard_fact table
+- Handle Shopify webhooks
+**MCP**: Shopify Dev MCP (GraphQL validation - MANDATORY)
 
-# Expected: Health check passes, account info retrieved
-```
+### INTEGRATIONS-009: Integration Health Monitoring (1h)
+Create health check for all integrations (Publer, Shopify, Chatwoot)
+- Check connectivity, latency
+- Alert on failures
 
-**2. Add Social Post to Approval Queue** (40 min):
-- Create approval queue type: "social_post"
-- Schema: `{ platform, content, media_urls[], scheduled_at }`
-- Integration: Connect Publer adapter to approval workflow
-- When approved → POST to `/api/social/post` → Publer publishes
+### INTEGRATIONS-010: API Contract Testing (included in 006)
 
-**Files to Modify**:
-- `app/services/approvals.ts` - Add social_post type
-- `packages/integrations/publer.ts` - Add approval workflow integration
-- May need: `app/routes/api/social/approve.$id.ts`
+### INTEGRATIONS-011: Documentation (1h)
+Document all integrations for other agents
+- Publer integration guide (500+ lines)
+- Shopify inventory sync guide (300+ lines)
 
-**Coordinate with**:
-- **Engineer**: They build UI modal (ENG-036)
-- **Content**: They provide post templates/microcopy
-
----
-
-### INTEGRATIONS-002: Social Post Receipt Storage (30 min)
-
-**After Post Published**:
-
-**Store in Supabase** (social_posts table - Data creates):
-- Platform
-- Content
-- Publer post ID
-- Published timestamp
-- Performance metrics (if Publer provides)
-
-**Create**: `app/services/social/receipt-storage.ts`
-**Tests**: Add to social.api.spec.ts
-
----
-
-### INTEGRATIONS-003: Publer Health Monitoring (30 min)
-
-**Add Health Check**:
-- Endpoint: `/api/social/health`
-- Checks: Publer API reachable, account active
-- Display in Settings → Integrations tab (Engineer builds UI)
-
----
-
-## Ongoing: API Contract Maintenance
-
-**Maintain Fixtures**:
-- `app/fixtures/content/idea-pool.json` (keep updated)
-- `app/fixtures/content/social-posts.json` (if needed for Phase 12)
-
-**Contract Tests**:
-- Keep passing (13/13 idea pool tests)
-- Add social post contract tests (Phase 12)
-
----
-
-## Work Protocol
-
-**1. MCP Tools**:
-```bash
-# Publer documentation (if available):
-# Check Context7 or web search
-
-# TypeScript for integration patterns:
-mcp_context7_get-library-docs("/microsoft/TypeScript", "async-functions")
-```
-
-**2. Reporting (Every 2 hours)**:
-```md
-## YYYY-MM-DDTHH:MM:SSZ — Integrations: Phase N Work
-
-**Working On**: INTEGRATIONS-001 (Publer backend verification)
-**Progress**: Adapter tested, approval integration in progress
-
-**Evidence**:
-- Test: scripts/proof/test-publer-adapter.ts → ✅ PASS
-- Files: app/services/approvals.ts (+25 lines for social_post type)
-- Tests: 10/10 passing (+3 new tests)
-
-**Blockers**: None
-**Next**: Complete receipt storage integration
-```
-
----
-
-## Definition of Done
-
-### Phase 3 (Idea Pool):
-- [ ] API responding correctly when Engineer integrates
-- [ ] Contract tests still passing (13/13)
-- [ ] Support Engineer if issues arise
-
-### Phase 12 (Publer):
-- [ ] Social post type added to approval queue
-- [ ] Publer adapter integrated with approval workflow
-- [ ] Receipt storage functional
-- [ ] Health check endpoint operational
-- [ ] Tests passing (10+ tests)
-- [ ] Coordinate with Engineer/Content successful
-
----
-
-## Critical Reminders
-
-**DO**:
-- ✅ Test integrations end-to-end
-- ✅ Maintain contract tests (keep passing)
-- ✅ Coordinate with Engineer for UI integration
-- ✅ Document all API patterns
-
-**DO NOT**:
-- ❌ Break existing idea pool API (Engineer depends on it)
-- ❌ Skip testing Publer adapter before integration
-- ❌ Commit Publer API keys (use Fly secrets)
-
----
-
-## Phase Schedule
-
-**Immediate**: Standby for Phase 3 (Engineer integrating Idea Pool tile)
-**Day 5**: Phase 12 work (Publer UI integration - 4h)
-
----
-
-## Quick Reference
-
-**Plan**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan)
-**Current Work**: Issue #113 complete, standby for Option A
-**API Routes**: `app/routes/api/social/`, `app/routes/api.analytics.idea-pool.ts`
-**Feedback**: `feedback/integrations/2025-10-20.md`
-
----
-
-**START WITH**: Standby mode, monitor idea pool API health
-
----
-
-## Credential & Blocker Protocol
-
-### If You Need Credentials:
-
-**Step 1**: Check `vault/` directory first
-- Google credentials: `vault/occ/google/`
-- Bing credentials: `vault/occ/bing/`
-- Publer credentials: `vault/occ/publer/`
-- Other services: `vault/occ/<service-name>/`
-
-**Step 2**: If not in vault, report in feedback:
-```md
-## HH:MM - Credential Request
-**Need**: [specific credential name]
-**For**: [what task/feature]
-**Checked**: vault/occ/<path>/ (not found)
-**Status**: Moving to next task, awaiting CEO
-```
-
-**Step 3**: Move to next task immediately (don't wait idle)
-
-### If You Hit a True Blocker:
-
-**Before reporting blocker, verify you**:
-1. ✅ Checked vault for credentials
-2. ✅ Inspected codebase for existing patterns
-3. ✅ Pulled Context7 docs for the library
-4. ✅ Reviewed RULES.md and relevant direction sections
-
-**If still blocked**:
-```md
-## HH:MM - Blocker Report
-**Blocked On**: [specific issue]
-**What I Tried**: [list 3+ things you attempted]
-**Vault Checked**: [yes/no, paths checked]
-**Docs Pulled**: [Context7 libraries consulted]
-**Asking CEO**: [specific question or guidance needed]
-**Moving To**: [next task ID you're starting]
-```
-
-**Then immediately move to next task** - CEO will respond when available
-
-**Key Principle**: NEVER sit idle. If one task blocked → start next task right away.
+**START NOW**: Check vault for Publer credentials, create test script

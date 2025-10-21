@@ -160,25 +160,434 @@ model UserPreference {
 }
 
 model SocialPost {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  shopDomain   String    @map("shop_domain")
+  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain   String            @map("shop_domain")
   platform     String
   status       String
   content      String
-  mediaUrls    String[]  @default([]) @map("media_urls")
-  scheduledAt  DateTime? @map("scheduled_at") @db.Timestamptz(6)
-  publishedAt  DateTime? @map("published_at") @db.Timestamptz(6)
-  publerPostId String?   @map("publer_post_id")
-  createdBy    String    @map("created_by")
-  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
-  metadata     Json      @default("{}")
-  project      String    @default("occ")
+  mediaUrls    String[]          @default([]) @map("media_urls")
+  scheduledAt  DateTime?         @map("scheduled_at") @db.Timestamptz(6)
+  publishedAt  DateTime?         @map("published_at") @db.Timestamptz(6)
+  publerPostId String?           @map("publer_post_id")
+  createdBy    String            @map("created_by")
+  createdAt    DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  metadata     Json              @default("{}")
+  project      String            @default("occ")
+  analytics    SocialAnalytics[]
 
   @@index([shopDomain, status, createdAt(sort: Desc)], map: "idx_social_posts_shop_status")
   @@index([platform], map: "idx_social_posts_platform")
   @@index([scheduledAt], map: "idx_social_posts_scheduled")
   @@index([project], map: "idx_social_posts_project")
   @@map("social_posts")
+  @@schema("public")
+}
+
+// ============================================================================
+// PHASE 7-8: GROWTH TABLES (Created 2025-10-21)
+// ============================================================================
+
+model SeoAudit {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String   @map("shop_domain")
+  crawledAt  DateTime @map("crawled_at") @db.Timestamptz(6)
+
+  pagesCrawled    Int @map("pages_crawled")
+  pagesWithIssues Int @map("pages_with_issues")
+  totalIssues     Int @map("total_issues")
+
+  avgLcp Decimal? @map("avg_lcp") @db.Decimal(8, 2)
+  avgFid Decimal? @map("avg_fid") @db.Decimal(8, 2)
+  avgCls Decimal? @map("avg_cls") @db.Decimal(5, 3)
+
+  technicalScore   Int? @map("technical_score")
+  contentScore     Int? @map("content_score")
+  performanceScore Int? @map("performance_score")
+  mobileScore      Int? @map("mobile_score")
+
+  criticalIssues       Int @default(0) @map("critical_issues")
+  highPriorityIssues   Int @default(0) @map("high_priority_issues")
+  mediumPriorityIssues Int @default(0) @map("medium_priority_issues")
+  lowPriorityIssues    Int @default(0) @map("low_priority_issues")
+
+  auditProvider String? @map("audit_provider")
+  auditUrl      String? @map("audit_url")
+  metadata      Json    @default("{}")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  project   String   @default("occ")
+
+  @@index([shopDomain, crawledAt(sort: Desc)], map: "idx_seo_audits_shop_crawled")
+  @@index([project], map: "idx_seo_audits_project")
+  @@map("seo_audits")
+  @@schema("public")
+}
+
+model SeoRanking {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+  keyword    String
+
+  position         Int?
+  previousPosition Int? @map("previous_position")
+  positionChange   Int? @map("position_change")
+
+  searchVolume Int?    @map("search_volume")
+  searchEngine String  @default("google") @map("search_engine")
+  location     String?
+  device       String?
+
+  rankingUrl      String? @map("ranking_url")
+  featuredSnippet Boolean @default(false) @map("featured_snippet")
+
+  trackedAt DateTime @map("tracked_at") @db.Timestamptz(6)
+  metadata  Json     @default("{}")
+  project   String   @default("occ")
+
+  @@index([shopDomain, keyword, trackedAt(sort: Desc)], map: "idx_seo_rankings_shop_keyword_tracked")
+  @@index([keyword], map: "idx_seo_rankings_keyword")
+  @@index([position], map: "idx_seo_rankings_position")
+  @@index([project], map: "idx_seo_rankings_project")
+  @@map("seo_rankings")
+  @@schema("public")
+}
+
+model AdCampaign {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  platformCampaignId String @map("platform_campaign_id")
+  platform           String @default("google_ads")
+  campaignName       String @map("campaign_name")
+  campaignStatus     String @map("campaign_status")
+
+  dailyBudget Decimal? @map("daily_budget") @db.Decimal(12, 2)
+  totalBudget Decimal? @map("total_budget") @db.Decimal(12, 2)
+  bidStrategy String?  @map("bid_strategy")
+
+  startDate DateTime  @map("start_date") @db.Date
+  endDate   DateTime? @map("end_date") @db.Date
+
+  targetLocations String[] @default([]) @map("target_locations")
+  targetKeywords  String[] @default([]) @map("target_keywords")
+
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  performance AdPerformance[]
+
+  @@index([shopDomain, campaignStatus], map: "idx_ad_campaigns_shop_status")
+  @@index([platformCampaignId], map: "idx_ad_campaigns_platform_id")
+  @@index([startDate, endDate], map: "idx_ad_campaigns_dates")
+  @@index([project], map: "idx_ad_campaigns_project")
+  @@map("ad_campaigns")
+  @@schema("public")
+}
+
+model AdPerformance {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  campaignId String     @map("campaign_id") @db.Uuid
+  campaign   AdCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  shopDomain String     @map("shop_domain")
+  date       DateTime   @db.Date
+
+  impressions Int @default(0)
+  clicks      Int @default(0)
+  conversions Int @default(0)
+
+  cost    Decimal @default(0) @db.Decimal(12, 2)
+  revenue Decimal @default(0) @db.Decimal(12, 2)
+
+  ctr  Decimal? @db.Decimal(5, 2)
+  cpc  Decimal? @db.Decimal(10, 2)
+  cpa  Decimal? @db.Decimal(10, 2)
+  roas Decimal? @db.Decimal(8, 2)
+
+  avgPosition  Decimal? @map("avg_position") @db.Decimal(4, 2)
+  qualityScore Decimal? @map("quality_score") @db.Decimal(3, 1)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  project   String   @default("occ")
+
+  @@index([campaignId, date(sort: Desc)], map: "idx_ad_performance_campaign_date")
+  @@index([shopDomain, date(sort: Desc)], map: "idx_ad_performance_shop_date")
+  @@index([roas(sort: Desc)], map: "idx_ad_performance_roas")
+  @@index([project], map: "idx_ad_performance_project")
+  @@map("ad_performance")
+  @@schema("public")
+}
+
+model SocialAnalytics {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  socialPostId String     @map("social_post_id") @db.Uuid
+  socialPost   SocialPost @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
+  shopDomain   String     @map("shop_domain")
+  platform     String
+
+  views    Int @default(0)
+  likes    Int @default(0)
+  comments Int @default(0)
+  shares   Int @default(0)
+  saves    Int @default(0)
+
+  reach       Int @default(0)
+  impressions Int @default(0)
+
+  linkClicks    Int @default(0) @map("link_clicks")
+  profileVisits Int @default(0) @map("profile_visits")
+
+  engagementRate Decimal? @map("engagement_rate") @db.Decimal(5, 2)
+
+  videoViews   Int      @default(0) @map("video_views")
+  avgWatchTime Decimal? @map("avg_watch_time") @db.Decimal(8, 2)
+
+  measuredAt DateTime @map("measured_at") @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@index([socialPostId, measuredAt(sort: Desc)], map: "idx_social_analytics_post")
+  @@index([shopDomain, platform, measuredAt(sort: Desc)], map: "idx_social_analytics_shop_platform")
+  @@index([engagementRate(sort: Desc)], map: "idx_social_analytics_engagement")
+  @@index([project], map: "idx_social_analytics_project")
+  @@map("social_analytics")
+  @@schema("public")
+}
+
+// ============================================================================
+// PHASE 9: ONBOARDING TABLES (Created 2025-10-21)
+// ============================================================================
+
+model OnboardingProgress {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String @map("user_id") @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  stepKey      String @map("step_key")
+  stepCategory String @map("step_category")
+  stepOrder    Int    @map("step_order")
+
+  status      String    @default("not_started")
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+  skippedAt   DateTime? @map("skipped_at") @db.Timestamptz(6)
+
+  attempts         Int @default(0)
+  timeSpentSeconds Int @default(0) @map("time_spent_seconds")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@unique([userId, shopDomain, stepKey])
+  @@index([userId, shopDomain, stepOrder], map: "idx_onboarding_user_shop")
+  @@index([status], map: "idx_onboarding_status")
+  @@index([completedAt(sort: Desc)], map: "idx_onboarding_completed")
+  @@index([project], map: "idx_onboarding_project")
+  @@map("onboarding_progress")
+  @@schema("public")
+}
+
+model FeatureTour {
+  id     String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+
+  tourKey         String  @map("tour_key")
+  tourName        String  @map("tour_name")
+  tourDescription String? @map("tour_description")
+
+  steps            Json
+  triggerCondition String? @map("trigger_condition")
+
+  status      String    @default("pending")
+  startedAt   DateTime? @map("started_at") @db.Timestamptz(6)
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+  dismissedAt DateTime? @map("dismissed_at") @db.Timestamptz(6)
+  currentStep Int       @default(0) @map("current_step")
+
+  timesShown   Int @default(0) @map("times_shown")
+  interactions Int @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@unique([userId, tourKey])
+  @@index([userId, status], map: "idx_feature_tours_user_status")
+  @@index([tourKey], map: "idx_feature_tours_key")
+  @@index([completedAt(sort: Desc)], map: "idx_feature_tours_completed")
+  @@index([project], map: "idx_feature_tours_project")
+  @@map("feature_tours")
+  @@schema("public")
+}
+
+// ============================================================================
+// PHASE 10-13: ADVANCED TABLES (Created 2025-10-21)
+// ============================================================================
+
+model Experiment {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  experimentKey  String  @map("experiment_key")
+  experimentName String  @map("experiment_name")
+  hypothesis     String?
+  description    String?
+
+  variants          Json
+  trafficAllocation Decimal @default(100.00) @map("traffic_allocation") @db.Decimal(5, 2)
+
+  status    String    @default("draft")
+  startedAt DateTime? @map("started_at") @db.Timestamptz(6)
+  endedAt   DateTime? @map("ended_at") @db.Timestamptz(6)
+
+  primaryMetric    String?  @map("primary_metric")
+  secondaryMetrics String[] @default([]) @map("secondary_metrics")
+
+  targetSampleSize  Int? @map("target_sample_size")
+  currentSampleSize Int  @default(0) @map("current_sample_size")
+
+  winningVariant  String?  @map("winning_variant")
+  confidenceLevel Decimal? @map("confidence_level") @db.Decimal(5, 2)
+
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  results ExperimentResult[]
+
+  @@unique([shopDomain, experimentKey])
+  @@index([shopDomain, status], map: "idx_experiments_shop_status")
+  @@index([experimentKey], map: "idx_experiments_key")
+  @@index([startedAt, endedAt], map: "idx_experiments_dates")
+  @@index([project], map: "idx_experiments_project")
+  @@map("experiments")
+  @@schema("public")
+}
+
+model ExperimentResult {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  experimentId String     @map("experiment_id") @db.Uuid
+  experiment   Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  variantKey   String     @map("variant_key")
+
+  participants Int @default(0)
+  conversions  Int @default(0)
+
+  conversionRate Decimal? @map("conversion_rate") @db.Decimal(6, 3)
+  avgOrderValue  Decimal? @map("avg_order_value") @db.Decimal(12, 2)
+  totalRevenue   Decimal? @map("total_revenue") @db.Decimal(12, 2)
+  revenuePerUser Decimal? @map("revenue_per_user") @db.Decimal(12, 2)
+
+  avgTimeOnSite Decimal? @map("avg_time_on_site") @db.Decimal(10, 2)
+  bounceRate    Decimal? @map("bounce_rate") @db.Decimal(5, 2)
+  pagesPerVisit Decimal? @map("pages_per_visit") @db.Decimal(5, 2)
+
+  confidenceIntervalLower Decimal? @map("confidence_interval_lower") @db.Decimal(6, 3)
+  confidenceIntervalUpper Decimal? @map("confidence_interval_upper") @db.Decimal(6, 3)
+  pValue                  Decimal? @map("p_value") @db.Decimal(8, 6)
+
+  measuredAt DateTime @map("measured_at") @db.Timestamptz(6)
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@index([experimentId, variantKey], map: "idx_experiment_results_experiment")
+  @@index([conversionRate(sort: Desc)], map: "idx_experiment_results_conversion")
+  @@index([measuredAt(sort: Desc)], map: "idx_experiment_results_measured")
+  @@index([project], map: "idx_experiment_results_project")
+  @@map("experiment_results")
+  @@schema("public")
+}
+
+model KnowledgeBase {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  documentKey  String @map("document_key")
+  documentType String @map("document_type")
+  title        String
+  content      String
+
+  // Note: Prisma doesn't natively support pgvector, use Unsupported type
+  embedding Unsupported("vector(1536)")?
+
+  sourceUrl String?  @map("source_url")
+  tags      String[] @default([])
+  category  String?
+
+  version           Int             @default(1)
+  isCurrent         Boolean         @default(true) @map("is_current")
+  previousVersionId String?         @map("previous_version_id") @db.Uuid
+  previousVersion   KnowledgeBase?  @relation("KnowledgeBaseVersions", fields: [previousVersionId], references: [id])
+  nextVersions      KnowledgeBase[] @relation("KnowledgeBaseVersions")
+
+  createdBy     String    @map("created_by")
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  lastIndexedAt DateTime? @map("last_indexed_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@unique([shopDomain, documentKey, version])
+  @@index([shopDomain, documentType], map: "idx_knowledge_base_shop_type")
+  @@index([isCurrent], map: "idx_knowledge_base_current")
+  @@index([project], map: "idx_knowledge_base_project")
+  @@map("knowledge_base")
+  @@schema("public")
+}
+
+model CeoBriefing {
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain String @map("shop_domain")
+
+  briefingType String   @map("briefing_type")
+  periodStart  DateTime @map("period_start") @db.Date
+  periodEnd    DateTime @map("period_end") @db.Date
+
+  title            String
+  executiveSummary String @map("executive_summary")
+  keyMetrics       Json   @map("key_metrics")
+  insights         Json
+  recommendations  Json?
+
+  status      String    @default("draft")
+  generatedAt DateTime? @map("generated_at") @db.Timestamptz(6)
+  reviewedAt  DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  reviewedBy  String?   @map("reviewed_by")
+
+  generationModel  String? @map("generation_model")
+  generationTokens Int?    @map("generation_tokens")
+  generationTimeMs Int?    @map("generation_time_ms")
+
+  rating        Int?
+  feedbackNotes String? @map("feedback_notes")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  metadata Json   @default("{}")
+  project  String @default("occ")
+
+  @@index([shopDomain, briefingType, periodEnd(sort: Desc)], map: "idx_ceo_briefings_shop_type_period")
+  @@index([status], map: "idx_ceo_briefings_status")
+  @@index([generatedAt(sort: Desc)], map: "idx_ceo_briefings_generated")
+  @@index([rating(sort: Desc)], map: "idx_ceo_briefings_rating")
+  @@index([project], map: "idx_ceo_briefings_project")
+  @@map("ceo_briefings")
   @@schema("public")
 }

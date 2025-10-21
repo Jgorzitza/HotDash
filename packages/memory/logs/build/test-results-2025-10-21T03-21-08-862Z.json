@@ -1,0 +1,280 @@
+{
+  "summary": {
+    "totalTests": 20,
+    "passed": 16,
+    "failed": 4,
+    "accuracy": 80,
+    "avgResponseTime": 1436.7,
+    "answerRate": 100,
+    "avgKeywordMatch": 3.333333333333333,
+    "categoryCoverage": {
+      "returns": {
+        "passed": 3,
+        "total": 4
+      },
+      "shipping": {
+        "passed": 2,
+        "total": 4
+      },
+      "tracking": {
+        "passed": 3,
+        "total": 3
+      },
+      "exchanges": {
+        "passed": 3,
+        "total": 3
+      },
+      "troubleshooting": {
+        "passed": 2,
+        "total": 2
+      },
+      "faq": {
+        "passed": 3,
+        "total": 4
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "What is your return policy for damaged items?",
+      "category": "returns",
+      "passed": true,
+      "responseTime": 2428,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "For damaged items, Hot Rod AN LLC offers returns without any restocking fee. This includes items that are defective, items that were sent incorrectly (due to their error), and items that were damaged during shipping. Customers can return these damaged items for a full refund, including the original shipping cost if the item was defective or sent incorrectly, along with any applicable taxes."
+    },
+    {
+      "query": "How long do I have to return an item?",
+      "category": "returns",
+      "passed": true,
+      "responseTime": 1093,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "For standard returns, you have 30 days from the delivery date to return unused items. For defective items (manufacturer defects only), you have an extended return window of 60 days."
+    },
+    {
+      "query": "Do you charge a restocking fee for returns?",
+      "category": "returns",
+      "passed": true,
+      "responseTime": 1494,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 4,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "Yes, Hot Rod AN LLC does charge a restocking fee for certain types of returns. Standard returns that are non-defective, items missing original packaging, and returns without all accessories are subject to a 15% restocking fee. Defective items, wrong items sent (due to their error), and items damaged in shipping do not incur a restocking fee."
+    },
+    {
+      "query": "Can I get a refund without a receipt?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 1307,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 1,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "No, according to the refund policy provided, you cannot get a refund without a receipt. The policy states that all returns must include a copy of the invoice or packing slip, and returns without original documentation may not be accepted."
+    },
+    {
+      "query": "How long does standard shipping take?",
+      "category": "shipping",
+      "passed": true,
+      "responseTime": 786,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Standard shipping within the United States typically takes 3-7 business days."
+    },
+    {
+      "query": "Do you offer expedited shipping?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 1086,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 1,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Yes, we offer expedited shipping options. The Expedited Shipping method available is UPS 2-Day with a processing time of 1 business day and delivery time of 2 business days after shipment, costing $18.95."
+    },
+    {
+      "query": "What are your shipping costs?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 1559,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 1,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "The shipping costs for domestic orders under $75 are $8.95 for standard shipping (USPS/UPS Ground), $18.95 for expedited shipping (UPS 2-Day), and $35.95 for express shipping (UPS Next Day Air). For international orders, the shipping cost to Canada is $24.95 flat rate, while for all other countries, the cost is calculated at checkout based on weight and destination. Additional fees apply for shipping to Alaska, Hawaii, and U.S. territories."
+    },
+    {
+      "query": "Do you ship internationally?",
+      "category": "shipping",
+      "passed": true,
+      "responseTime": 1018,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Yes, Hot Rod AN LLC does offer international shipping."
+    },
+    {
+      "query": "How can I track my order?",
+      "category": "tracking",
+      "passed": true,
+      "responseTime": 1969,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "You can track your order using one of the following methods:\n1. Tracking Email: Check your email for a \"Your Hot Rod AN Order Has Shipped\" email and click the tracking link.\n2. Hot Rod AN Website: Go to hotrodan.com/track-order and enter your order number or tracking number.\n3. Direct Carrier Tracking: Visit the carrier's website (UPS or USPS) and enter your tracking number.\n4. Email Support: Send an email to support@hotrodan.com with your order number to receive the current status within 24 hours."
+    },
+    {
+      "query": "My tracking number doesn't work, what should I do?",
+      "category": "tracking",
+      "passed": true,
+      "responseTime": 1225,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 3,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "If your tracking number doesn't work, you can try the following solutions:\n- Wait 12-24 hours after receiving the tracking email\n- Try the carrier's website directly (UPS.com or USPS.com)\n- Copy and paste the tracking number from the email instead of typing it manually\n- If it still doesn't work after 24 hours, contact the support team for assistance."
+    },
+    {
+      "query": "How do I know when my order has shipped?",
+      "category": "tracking",
+      "passed": true,
+      "responseTime": 1462,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "You will receive an email titled \"Your Hot Rod AN Order Has Shipped\" with a tracking link. Click on the tracking link in the email to view real-time tracking on the carrier's website."
+    },
+    {
+      "query": "Can I exchange an item for a different size?",
+      "category": "exchanges",
+      "passed": true,
+      "responseTime": 1178,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "Yes, you can exchange an item for a different size. Just follow the exchange process outlined in the support document, including contacting support@hotrodan.com with your order number, the item you want to exchange, the size you want instead, and any other relevant information."
+    },
+    {
+      "query": "How do I start an exchange?",
+      "category": "exchanges",
+      "passed": true,
+      "responseTime": 1183,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 3,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "To start an exchange, you need to email support@hotrodan.com with the following information:\n- Order number\n- Item(s) you want to exchange\n- Item(s) you want instead\n- Reason for exchange (optional)\n\nOnce you send this email, the support team will respond within 24 hours with an Exchange Authorization (EA) number, price difference (if any), return shipping label (if applicable), and expected timeline. Remember not to ship anything without an exchange authorization number."
+    },
+    {
+      "query": "Is there a fee for exchanges?",
+      "category": "exchanges",
+      "passed": true,
+      "responseTime": 3107,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 3,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "For exchanges, there may be fees depending on the specific situation:\n\n1. Free Exchange Shipping: If you are exchanging for the same or a similar item, with the price within $10 of the original, and for domestic addresses, then there is no fee. This includes a prepaid return label, free shipping on the new item (ground), and no restocking fee.\n\n2. Paid Exchange Shipping: If you are exchanging for an item with a price difference of more than $10, upgrading to expedited shipping on the new item, or for international addresses, then there may be costs involved. This includes return shipping fees that vary by carrier (usually $8-15), standard rates for shipping the new item, or the option to use free shipping for orders over $75.\n\nAdditionally, there may be price adjustments depending on whether the new item costs more or less than the original item. If the new item costs more, your card will be charged for the difference. If the new item costs less, you will receive a refund, either to your original payment method or as store credit."
+    },
+    {
+      "query": "My product isn't working correctly, what should I do?",
+      "category": "troubleshooting",
+      "passed": true,
+      "responseTime": 2257,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Based on the context information provided, if your product isn't working correctly, you should first identify the specific issue you are experiencing. If it is related to fuel pump issues, such as the fuel pump not priming or low fuel pressure, you can follow the troubleshooting steps outlined in the \"Fuel Pump Issues\" section. If the issue is related to leaks, you can follow the steps outlined in the \"Leak Detection & Resolution\" section. If you are facing installation problems, such as fitting not sealing or stripped threads, you can refer to the \"Installation Problems\" section for solutions. If you are still having issues after trying the troubleshooting steps, you can contact technical support for further assistance."
+    },
+    {
+      "query": "How do I clean and maintain my product?",
+      "category": "troubleshooting",
+      "passed": true,
+      "responseTime": 1981,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "To clean and maintain your product, follow these steps:\n\n1. **Cleaning:**\n   - Wipe down the product with a clean, damp cloth to remove any dirt or debris.\n   - Use a mild soap or cleaning solution if necessary, but avoid harsh chemicals that may damage the product.\n   - Dry the product thoroughly after cleaning to prevent any water damage.\n\n2. **Maintenance:**\n   - Regularly inspect fittings and connections for any signs of wear or damage.\n   - Follow proper torque specifications when assembling or disassembling components.\n   - Replace O-rings if they are cut, pinched, or missing, and lubricate them with clean oil.\n   - Avoid over-tightening fittings and ensure they are fully engaged before torquing.\n   - Use anti-seize on aluminum threads to prevent seizing.\n   - Check fuel pump components for proper functioning and replace any faulty parts as needed.\n\nBy following these cleaning and maintenance guidelines, you can ensure the longevity and optimal performance of your product."
+    },
+    {
+      "query": "What payment methods do you accept?",
+      "category": "faq",
+      "passed": true,
+      "responseTime": 1035,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 3,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "We accept the following payment methods:\n- Credit cards (Visa, Mastercard, Discover, American Express)\n- PayPal\n- Apple Pay\n- Google Pay\n- Amazon Pay\n\nAll transactions are secure and encrypted."
+    },
+    {
+      "query": "Do you have a customer service phone number?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 731,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 1,
+      "keywordsTotal": 4,
+      "sources": 3,
+      "answer": "Yes, the customer service phone number is available Monday-Friday from 9AM-5PM EST."
+    },
+    {
+      "query": "Can I cancel my order?",
+      "category": "faq",
+      "passed": true,
+      "responseTime": 1034,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Based on the provided context information, there is no specific mention of the cancellation policy for orders. It is recommended to contact the support team at support@hotrodan.com or check the support_kb for more information on canceling orders."
+    },
+    {
+      "query": "How secure is my personal information?",
+      "category": "faq",
+      "passed": true,
+      "responseTime": 801,
+      "hasAnswer": true,
+      "confidence": "low",
+      "keywordsFound": 2,
+      "keywordsTotal": 3,
+      "sources": 3,
+      "answer": "Your personal information is secure when making transactions on the website. All transactions are encrypted and secure, ensuring the protection of your personal data."
+    }
+  ],
+  "timestamp": "2025-10-21T03:21:08.863Z"
+}

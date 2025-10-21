@@ -1,57 +1,91 @@
 /**
- * API Route: Analytics Export
- *
- * GET /api/analytics/export?type=revenue|traffic|products|utm
- *
- * Export analytics data to CSV format.
+ * Analytics Data Export API Route
+ * 
+ * GET /api/analytics/export
+ * Query params:
+ * - type: "social" | "seo" | "ads" | "growth" | "all" (required)
+ * - project: Shop domain (default: "occ")
+ * - startDate: ISO date string (optional)
+ * - endDate: ISO date string (optional)
+ * - format: "csv" | "json" (default: "csv")
+ * 
+ * Returns streaming CSV response with proper headers
+ * CRITICAL: Uses Response constructor with stream, NOT json() helper
  */
 
-export async function loader({ request }: any) {
+import type { LoaderFunctionArgs } from "react-router";
+import {
+  createCSVStream,
+  generateExportFilename,
+  type ExportType,
+} from "~/services/analytics/csv-export";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const type = (url.searchParams.get("type") || "all") as ExportType;
+  const project = url.searchParams.get("project") || "occ";
+  const startDateStr = url.searchParams.get("startDate");
+  const endDateStr = url.searchParams.get("endDate");
+  const format = url.searchParams.get("format") || "csv";
+
+  // Validate export type
+  const validTypes = ["social", "seo", "ads", "growth", "all"];
+  if (!validTypes.includes(type)) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: `Invalid type. Must be one of: ${validTypes.join(", ")}`,
+      }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
   try {
-    const url = new URL(request.url);
-    const type = url.searchParams.get("type") || "revenue";
+    // Parse date filters
+    const startDate = startDateStr ? new Date(startDateStr) : undefined;
+    const endDate = endDateStr ? new Date(endDateStr) : undefined;
 
-    const {
-      exportRevenueToCSV,
-      exportTrafficToCSV,
-      exportProductsToCSV,
-      exportUTMToCSV,
-      generateCSVFilename,
-    } = await import("../services/analytics/export.ts");
+    // Generate filename
+    const filename = generateExportFilename(type, format);
 
-    let csv: string;
-    let filename: string;
+    // Create streaming response
+    const stream = await createCSVStream({
+      type,
+      shopDomain: project,
+      startDate,
+      endDate,
+      format: format as "csv" | "json",
+    });
 
-    switch (type) {
-      case "revenue":
-        csv = await exportRevenueToCSV();
-        filename = generateCSVFilename("revenue");
-        break;
-      case "traffic":
-        csv = await exportTrafficToCSV();
-        filename = generateCSVFilename("traffic");
-        break;
-      case "products":
-        csv = await exportProductsToCSV();
-        filename = generateCSVFilename("products");
-        break;
-      case "utm":
-        csv = await exportUTMToCSV();
-        filename = generateCSVFilename("utm");
-        break;
-      default:
-        return new Response("Invalid export type", { status: 400 });
-    }
-
-    return new Response(csv, {
-      status: 200,
+    // Return Response with stream and proper headers
+    // Using Response constructor per React Router 7 pattern (NOT json() helper)
+    return new Response(stream, {
       headers: {
-        "Content-Type": "text/csv",
+        "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": `attachment; filename="${filename}"`,
+        "Cache-Control": "no-cache",
       },
     });
-  } catch (error: any) {
-    console.error("[API] Export error:", error);
-    return new Response(error.message, { status: 500 });
+  } catch (error) {
+    console.error("CSV export API error:", error);
+    
+    // Return error response using Response constructor
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: error instanceof Error ? error.message : "Unknown error",
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 }

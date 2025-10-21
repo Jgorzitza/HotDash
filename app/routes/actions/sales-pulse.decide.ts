@@ -1,8 +1,10 @@
 import type { ActionFunctionArgs } from "react-router";
+import { createClient } from "@supabase/supabase-js";
 
 import { authenticate } from "../../shopify.server";
 import { logDecision } from "../../services/decisions.server";
 import { toInputJson } from "../../services/json";
+import { getSupabaseConfig } from "../../config/supabase.server";
 
 function jsonResponse(body: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(body), {
@@ -15,6 +17,7 @@ function jsonResponse(body: unknown, init?: ResponseInit) {
 const ACTION_MAP: Record<string, { decisionAction: string }> = {
   acknowledge: { decisionAction: "sales_pulse.log_follow_up" },
   escalate: { decisionAction: "sales_pulse.escalate" },
+  no_action: { decisionAction: "sales_pulse.no_action" },
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -73,6 +76,27 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     shopDomain: session.shop,
     payload: toInputJson(payload),
   });
+
+  // Store to sales_pulse_actions table for analytics (per spec: docs/design/wireframes/dashboard_wireframes.md line 177)
+  const supabaseConfig = getSupabaseConfig();
+  if (supabaseConfig) {
+    const supabase = createClient(supabaseConfig.url, supabaseConfig.serviceKey);
+    
+    const { error: insertError } = await supabase.from("sales_pulse_actions").insert({
+      action_type: actionType,
+      revenue_variance: null, // TODO: Calculate WoW variance when Data service provides historical data
+      selected_action: actionType,
+      notes: typeof note === "string" && note.trim() ? note.trim() : null,
+      operator_name: actor,
+      metadata: toInputJson(payload),
+      project: "occ",
+    });
+
+    if (insertError) {
+      console.error("Failed to insert sales_pulse_action:", insertError);
+      // Don't fail the request - decision_log is primary, sales_pulse_actions is analytics
+    }
+  }
 
   return jsonResponse({ ok: true });
 };

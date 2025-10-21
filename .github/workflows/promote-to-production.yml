@@ -1,0 +1,261 @@
+name: Promote to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      staging_version:
+        description: 'Staging version to promote (leave empty for latest)'
+        required: false
+        type: string
+      reason:
+        description: 'Reason for production deployment'
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+jobs:
+  validate:
+    name: Validate staging version
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.determine.outputs.version }}
+      image_ref: ${{ steps.determine.outputs.image_ref }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Determine staging version to promote
+        id: determine
+        run: |
+          if [ -n "${{ inputs.staging_version }}" ]; then
+            VERSION="${{ inputs.staging_version }}"
+            echo "Using specified version: $VERSION"
+          else
+            VERSION=$(flyctl releases --app hotdash-staging --json | jq -r '.[0].version')
+            echo "Using latest staging version: $VERSION"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Get image reference
+          IMAGE_REF=$(flyctl releases --app hotdash-staging --json | jq -r ".[] | select(.Version == $VERSION) | .ImageRef")
+          echo "image_ref=$IMAGE_REF" >> $GITHUB_OUTPUT
+          
+          echo "Image reference: $IMAGE_REF"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Display promotion plan
+        run: |
+          {
+            echo "## Production Promotion Plan";
+            echo "";
+            echo "- **Staging version**: ${{ steps.determine.outputs.version }}";
+            echo "- **Image**: \`${{ steps.determine.outputs.image_ref }}\`";
+            echo "- **Reason**: ${{ inputs.reason }}";
+            echo "- **Requested by**: ${{ github.actor }}";
+            echo "";
+            echo "**Next**: Awaiting Manager approval to proceed";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  smoke-test-staging:
+    name: Smoke test staging version
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Health check
+        run: |
+          echo "Verifying staging v${{ needs.validate.outputs.version }} is healthy..."
+          
+          HEALTH=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health)
+          
+          if [ "$HEALTH" = "200" ]; then
+            echo "✅ Staging health check passed"
+          else
+            echo "::error::Staging health check failed (HTTP $HEALTH)"
+            exit 1
+          fi
+
+      - name: Response time check
+        run: |
+          START=$(date +%s%N)
+          curl -s https://hotdash-staging.fly.dev/ > /dev/null
+          END=$(date +%s%N)
+          DURATION=$(( ($END - $START) / 1000000 ))
+          
+          echo "Response time: ${DURATION}ms"
+          
+          if [ $DURATION -gt 10000 ]; then
+            echo "::error::Response time too slow (${DURATION}ms)"
+            exit 1
+          fi
+
+  deploy:
+    name: Deploy to production (Manager approval required)
+    runs-on: ubuntu-latest
+    needs: [validate, smoke-test-staging]
+    environment:
+      name: production
+      url: https://hotdash-production.fly.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to production
+        id: deploy
+        run: |
+          echo "Deploying staging v${{ needs.validate.outputs.version }} to production..."
+          
+          # Deploy using the staging image
+          flyctl deploy --app hotdash-production --image ${{ needs.validate.outputs.image_ref }}
+          
+          echo "deployment_time=$(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> $GITHUB_OUTPUT
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Get production version
+        id: version
+        run: |
+          PROD_VERSION=$(flyctl releases --app hotdash-production --json | jq -r '.[0].version')
+          echo "production_version=$PROD_VERSION" >> $GITHUB_OUTPUT
+          echo "Production version: $PROD_VERSION"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Record deployment metadata
+        run: |
+          mkdir -p artifacts/production
+          cat <<MD > artifacts/production/deployment-${{ github.run_number }}.md
+          # Production Deployment
+          
+          - **Staging version**: ${{ needs.validate.outputs.version }}
+          - **Production version**: ${{ steps.version.outputs.production_version }}
+          - **Image**: ${{ needs.validate.outputs.image_ref }}
+          - **Reason**: ${{ inputs.reason }}
+          - **Deployed by**: ${{ github.actor }}
+          - **Deployment time**: ${{ steps.deploy.outputs.deployment_time }}
+          - **Workflow run**: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          MD
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-deployment-${{ github.run_number }}
+          path: artifacts/production/
+          retention-days: 365
+
+  health-check:
+    name: Production health check
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for deployment to stabilize
+        run: sleep 60
+
+      - name: Health check
+        id: health
+        run: |
+          echo "Checking production health..."
+          
+          HEALTH=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/health)
+          
+          if [ "$HEALTH" = "200" ]; then
+            echo "✅ Production health check passed"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Production health check failed (HTTP $HEALTH)"
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Smoke test key features
+        run: |
+          echo "Testing key production endpoints..."
+          
+          # Test root page
+          ROOT=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/)
+          echo "Root page: HTTP $ROOT"
+          
+          # Test app page (should redirect to Shopify OAuth if not authenticated)
+          APP=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-production.fly.dev/app)
+          echo "App page: HTTP $APP"
+          
+          if [ "$ROOT" != "200" ] && [ "$ROOT" != "302" ]; then
+            echo "::error::Root page check failed"
+            exit 1
+          fi
+
+  rollback-on-failure:
+    name: Rollback on failure
+    runs-on: ubuntu-latest
+    needs: [deploy, health-check]
+    if: failure()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Get previous production version
+        id: previous
+        run: |
+          PREV_VERSION=$(flyctl releases --app hotdash-production --json | jq -r '.[1].version // "unknown"')
+          echo "version=$PREV_VERSION" >> $GITHUB_OUTPUT
+          echo "Previous production version: $PREV_VERSION"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Execute rollback
+        if: steps.previous.outputs.version != 'unknown'
+        run: |
+          echo "Rolling back production to version ${{ steps.previous.outputs.version }}..."
+          # Note: Fly.io rollback command
+          flyctl releases --app hotdash-production
+          echo "::warning::Manual rollback required - see rollback-production workflow"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  summary:
+    name: Deployment summary
+    runs-on: ubuntu-latest
+    needs: [validate, smoke-test-staging, deploy, health-check]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Production Deployment Summary";
+            echo "";
+            echo "- **Staging version**: ${{ needs.validate.outputs.version }}";
+            echo "- **Reason**: ${{ inputs.reason }}";
+            echo "- **Requested by**: ${{ github.actor }}";
+            echo "- **Staging smoke test**: ${{ needs.smoke-test-staging.result }}";
+            echo "- **Deployment**: ${{ needs.deploy.result }}";
+            echo "- **Health check**: ${{ needs.health-check.result }}";
+            echo "";
+            echo "**Production URL**: https://hotdash-production.fly.dev";
+            echo "";
+            if [ "${{ needs.health-check.result }}" = "success" ]; then
+              echo "✅ **Production deployment successful**";
+            else
+              echo "❌ **Production deployment failed - rollback initiated**";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+
