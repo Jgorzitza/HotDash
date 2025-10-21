@@ -36,6 +36,24 @@ web_search("Google Analytics 4 API official documentation")
 
 ---
 
+## 🚨 VIOLATION ACKNOWLEDGMENT
+
+**Analytics agent violated React Router 7 rules** (commit 8d72171, e1e9f14, b95a802, 9bc8511):
+- ❌ Used `import { json } from "react-router"` (FORBIDDEN - Remix pattern)
+- ❌ Did NOT pull Context7 React Router 7 docs before coding
+- ❌ No MCP evidence logged in feedback for those API routes
+
+**Manager fixed** (commit 19c09b3):
+- 5 files corrected (97 `json()` → `Response.json()`)
+- Build now works
+
+**Your requirement going forward**:
+- ✅ MUST pull Context7 `/websites/reactrouter` docs BEFORE any route work
+- ✅ MUST log MCP evidence in feedback
+- ✅ Future violations = immediate PR rejection
+
+---
+
 ## ACTIVE TASKS (8h total)
 
 ### ANALYTICS-006: Social Post Performance Tracking (2h) - START NOW
