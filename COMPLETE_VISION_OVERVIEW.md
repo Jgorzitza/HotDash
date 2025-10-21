@@ -22,6 +22,289 @@
 
 ---
 
+
+## 0. GROWTH ENGINE (Agent Orchestration)
+
+**Reference**: `docs/agent-design/` (read-only, canonical architecture)
+
+**Purpose**: Enable a single operator to 10× sales through intelligent agent orchestration
+
+### 0.1 Agent Architecture
+
+**Front-End Agents**:
+- **Customer-Front Agent** (Chatwoot intake):
+  - Detects intent from customer messages
+  - Hands off to exactly ONE specialist sub-agent
+  - Reassembles redacted reply + PII card
+  - Submits for HITL approval
+  - Pattern: Triage → Hand off → Wait → Reassemble → Approve
+  
+- **CEO-Front Agent** (Operator dashboard):
+  - Reads Action Queue (no write access)
+  - Surfaces Top-10 opportunities (Revenue × Confidence × Ease)
+  - Evidence-first (never invents data)
+  - Read-only Storefront MCP access
+
+**Specialist Sub-Agents**:
+- **Accounts Sub-Agent**:
+  - ONLY agent allowed to call Customer Accounts MCP
+  - OAuth 2.0 + PKCE per customer session
+  - ABAC policy: `(agent=accounts_sub) AND (session.customer_id matches) AND (tool in allowlist)`
+  - Returns structured, redacted data
+  - All calls audited (timestamp, agent, tool, MCP request_id)
+  
+- **Storefront Sub-Agent**:
+  - Storefront MCP for catalog/policies/cart
+  - Public shopping context (no PII)
+  - Availability, pricing, product fit queries
+
+**Specialist Agents (Scheduled & Event-Driven)**:
+- **Analytics Agent** (daily + events):
+  - GSC Bulk Export → BigQuery (daily)
+  - GA4 Data API (runReport)
+  - Opportunity rules: rank 4-10, CTR gaps, high-revenue poor CTR pages
+  - Emits Action cards with $$ impact
+  
+- **Inventory Agent** (hourly + webhooks):
+  - Stock-risk thresholds (velocity vs on-hand vs POs)
+  - Slow-mover and back-in-stock playbooks
+  - Reorder proposals with evidence + rollback
+  
+- **Content/SEO/Perf Agent** (daily + events):
+  - Programmatic page opportunities
+  - Internal link rules
+  - CWV tasks tied to $$ pages
+  - A/B harness specs
+  
+- **Risk Agent** (continuous + events):
+  - Order aging, carrier delays
+  - Refund anomalies
+  - Fraud detection
+
+### 0.2 Handoff Pattern (Strict)
+
+**Customer Request Flow**:
+1. Customer-Front Agent **triages** incoming message (Chatwoot webhook)
+2. **Hands off** to exactly ONE specialist sub-agent (Accounts or Storefront)
+3. Sub-agent **owns** the request until complete
+4. Returns structured result with MCP evidence (request IDs)
+5. Front agent **reassembles** redacted reply + PII card
+6. **Submits** for HITL approval
+7. Operator approves/rejects
+8. System executes (if approved) and logs to audit trail
+
+**No Fan-Out**: One sub-agent owns request at a time (prevents token burn, conflicting state)
+
+**Acceptance**:
+- Every request shows clear owner (which sub-agent handled it)
+- Every reply cites MCP request IDs and data sources
+- PII never in public text (redacted)
+- PII card present for operator review
+- Handoff log includes timing and evidence trail
+
+### 0.3 Security Architecture
+
+**MCP Separation**:
+- **Storefront MCP**: Public shopping context
+  - Used by: Customer-Front, CEO-Front, Specialist Agents
+  - Returns: Products, policies, cart data (no PII)
+  
+- **Customer Accounts MCP**: Authenticated customer context
+  - Used by: Accounts Sub-agent ONLY
+  - Requires: OAuth 2.0 + PKCE (token per session)
+  - Returns: Orders, returns, account details (PII)
+  
+- **Dev MCP**: Development/staging only
+  - NEVER in production flows
+  - Production bundles contain NO Dev MCP import
+
+**PII Broker**:
+- Fronts all Customer Accounts MCP calls
+- Functions:
+  - OAuth 2.0 + PKCE token management
+  - Token rotation and secure storage
+  - Field-level redaction (emails, addresses, payment info)
+  - Audit line per call: `{timestamp, agent, tool, purpose, mcp_request_id}`
+  - Logs separate from chat transcripts
+
+**ABAC Policy** (enforced before every Customer Accounts MCP call):
+```
+Allow IF:
+  (agent = accounts_sub)
+  AND
+  (session.customer_id matches request.customer_id)
+  AND
+  (tool in allowlist)
+```
+
+**Redaction Discipline**:
+- **Public Reply** (sent to customer):
+  - NO PII (no emails, addresses, payment info)
+  - Masked formats: `j***@example.com`, `Order #1234`
+  - General policy statements only
+  
+- **PII Card** (operator-only):
+  - Full details (email, address, order specifics)
+  - Not sent to customer
+  - Visible in approval drawer only
+
+**Acceptance**:
+- Red-team test: PII exfiltration via Customer-Front → BLOCKED or REDACTED
+- Operator approval required for any reply with account facts
+- End-to-end audit trace visible for order-status case
+- Tokens never logged
+- ABAC policy pass rate 100%
+
+### 0.4 Action Queue (Unified Interface)
+
+**Purpose**: Single interface for all specialist agent proposals
+
+**Standard Contract** (every specialist agent emits):
+```typescript
+{
+  type: string; // seo_fix, perf_task, inventory_risk, content_draft, etc.
+  target: string; // page/SKU/collection/customer-safe-id
+  draft: string; // what will change (human-readable)
+  evidence: {
+    mcp_request_ids: string[];
+    dataset_links: string[];
+    telemetry_refs: string[];
+  };
+  expected_impact: {
+    metric: string; // revenue, CTR, conversion, etc.
+    delta: number; // projected change
+    unit: string; // $, %, sessions
+  };
+  confidence: number; // 0.0-1.0
+  ease: 'simple' | 'medium' | 'hard';
+  risk_tier: 'policy' | 'safety' | 'perf' | 'none';
+  can_execute: boolean; // policy-gated
+  rollback_plan: string; // one-liner
+  freshness_label: string; // "GSC 48-72h lag", "Real-time", etc.
+}
+```
+
+**Ranking Algorithm**:
+- Primary: `Expected Revenue × Confidence × Ease`
+- Tie-breaker 1: Freshness (newer data ranks higher)
+- Tie-breaker 2: Risk tier (lower risk ranks higher)
+
+**Top-10 Dock**: Dashboard displays top 10 ranked actions
+
+**Operator Interface**:
+- Each Action tile shows:
+  - Draft action (human-readable)
+  - Evidence links (clickable to MCP sources or telemetry)
+  - Expected impact ($ or KPI delta)
+  - Confidence + ease + risk badges
+  - Single-click: Approve / Edit / Dismiss
+  
+- Evidence links open MCP sources (Storefront/Customer Accounts) or telemetry reports
+- No tile without evidence + rollback plan
+
+**Acceptance**:
+- 10+ high-value actions surfaced daily
+- 80% acceptance rate on top-ranked actions
+- 95% of Action cards include MCP evidence
+- Freshness labels accurate 100%
+
+### 0.5 Telemetry Pipeline (Data Flow)
+
+**GSC Bulk Export**:
+- Daily export to BigQuery (full fidelity: queries, pages, dimensions)
+- Dataset names and partitioning documented
+- Freshness label: "GSC 48-72h lag" (typical delay)
+
+**GA4 Data API**:
+- runReport for landing page metrics (revenue, CTR, attach)
+- Join to GSC keys (page + query dimension)
+- Near real-time for event data
+
+**Analytics Agent Transform**:
+- Daily: Join GSC + GA4 → Top Opportunities table
+- Apply rules: rank 4-10, CTR gap >10%, high-revenue poor CTR pages
+- Calculate expected impact ($$ lift per optimization)
+- Emit Action cards to Action Queue
+
+**Acceptance**:
+- Yesterday's GSC tables in BigQuery (expected row counts)
+- GA4 runReport specs documented (dimensions/metrics)
+- Joined outputs verified
+- Tiles display freshness badges (e.g., "GSC 48-72h lag")
+- No alerts on incomplete days
+
+### 0.6 Success Metrics (Growth Engine)
+
+**Agent Performance**:
+- **Customer-Front**: <5s triage → handoff; 100% handoff target accuracy
+- **Accounts Sub-Agent**: 0 unauthorized MCP calls; ABAC policy pass rate 100%
+- **Specialist Agents** (Analytics, Inventory, SEO/Perf, Risk): 95% of Action cards include MCP evidence; freshness labels accurate 100%
+- **Action Queue**: 10+ high-value actions surfaced daily; 80% acceptance rate on top-ranked
+
+**Security**:
+- 0 PII leaks (red-team tests pass)
+- 100% ABAC policy compliance
+- Audit trail complete (all Customer Accounts MCP calls logged)
+- Tokens never logged
+
+**Operator Efficiency**:
+- CEO ad-hoc tool time −50% vs baseline
+- Action Queue acceptance rate ≥80%
+- Specialist agent uptime ≥99.9%
+- Median time-to-approve ≤15 min (CX), same-day (inventory/growth)
+
+### 0.7 Implementation Status (Growth Engine)
+
+**Not Yet Built** (0%):
+- ❌ Customer-Front Agent (Chatwoot intake + handoffs)
+- ❌ CEO-Front Agent (Action Queue reader)
+- ❌ Accounts Sub-Agent (Customer Accounts MCP + OAuth + ABAC)
+- ❌ Storefront Sub-Agent (Storefront MCP)
+- ❌ Analytics Agent (GSC + GA4 → opportunities)
+- ❌ Inventory Agent (stock risk → reorder proposals)
+- ❌ Content/SEO/Perf Agent (page optimization → CWV tasks)
+- ❌ Risk Agent (fraud detection → alerts)
+- ❌ Action Queue UI (unified interface, Top-10 ranking)
+- ❌ PII Broker service (OAuth, redaction, audit)
+- ❌ ABAC policy enforcement
+- ❌ Telemetry pipeline (GSC Bulk Export → BigQuery)
+
+**Existing Foundation** (can leverage):
+- ✅ OpenAI Agents SDK installed (`packages/agents/src/ai-ceo.ts`, `ai-customer.ts`)
+- ✅ Chatwoot integration (routing, webhooks, API client)
+- ✅ Supabase tables (decision_log, approvals ready)
+- ✅ HITL workflow (approval queue from Phase 1)
+
+**Next Phase**: M8-M10 (Agent Orchestration + Action Queue + Specialist Agents)
+
+**Estimated Effort**: 20-30 hours (Phases 9-13)
+
+**Spec Files** (canonical reference):
+- `docs/agent-design/README-GrowthEngine.md` - Overview
+- `docs/agent-design/architecture/Agents_and_Handoffs.md` - Agent roles, handoffs, allowlists
+- `docs/agent-design/integrations/Shopify_MCP_Split.md` - MCP separation
+- `docs/agent-design/integrations/Chatwoot_Intake.md` - Customer intake
+- `docs/agent-design/security/PII_Broker_and_ABAC.md` - Security model
+- `docs/agent-design/dashboard/Action_Queue.md` - Action Queue contract
+- `docs/agent-design/data/Telemetry_Pipeline.md` - GSC + GA4 pipeline
+- `docs/agent-design/manager/Plan_Molecules.md` - Per-lane tasks with DoD
+- `docs/agent-design/ops/Background_Jobs.md` - Schedules, events, SLOs
+- `docs/agent-design/qa/Claude_QA_Gates.md` - QA requirements
+- `docs/agent-design/runbooks/Agent_Startup_Checklist.md` - No-ask execution
+
+**Molecules to Assign** (from Plan_Molecules.md):
+- CF-M1, CF-M2, CF-M3 (Customer-Front)
+- ACC-M1, ACC-M2, ACC-M3 (Accounts Sub-Agent)
+- SF-M1, SF-M2 (Storefront Sub-Agent)
+- CEO-M1, CEO-M2 (CEO-Front)
+- AN-M1, AN-M2, AN-M3 (Analytics)
+- INV-M1, INV-M2 (Inventory)
+- SEO-M1, SEO-M2, SEO-M3 (Content/SEO/Perf)
+- RISK-M1 (Risk)
+
+---
+
+
 ## 1. DASHBOARD (Main View)
 
 ### 1.1 Dashboard Tiles (8 Total)
