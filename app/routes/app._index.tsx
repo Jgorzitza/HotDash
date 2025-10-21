@@ -14,6 +14,11 @@ import {
   IdeaPoolTile,
   CEOAgentTile,
   UnreadMessagesTile,
+  // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+  SocialPerformanceTile,
+  SEOImpactTile,
+  AdsROASTile,
+  GrowthMetricsTile,
 } from "../components/tiles";
 import { SortableTile } from "../components/tiles/SortableTile";
 import type { TileState, TileFact } from "../components/tiles";
@@ -73,6 +78,11 @@ interface LoaderData {
   ideaPool: TileState<IdeaPoolResponse["data"]>;
   ceoAgent: TileState<CEOAgentStatsResponse["data"]>;
   unreadMessages: TileState<UnreadMessagesResponse["data"]>;
+  // Phase 7-8: Growth analytics (ENG-023 to ENG-026)
+  socialPerformance: TileState<any>;
+  seoImpact: TileState<any>;
+  adsRoas: TileState<any>;
+  growthMetrics: TileState<any>;
   // ENG-015: User preferences
   visibleTiles: string[];
 }
@@ -105,6 +115,12 @@ export const loader: LoaderFunction = async ({
   const ceoAgent = await resolveApiTile("/api/ceo-agent/stats");
   const unreadMessages = await resolveApiTile("/api/chatwoot/unread");
 
+  // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+  const socialPerformance = await resolveApiTile("/api/analytics/social-performance");
+  const seoImpact = await resolveApiTile("/api/analytics/seo-impact");
+  const adsRoas = await resolveApiTile("/api/analytics/ads-roas");
+  const growthMetrics = await resolveApiTile("/api/analytics/growth-metrics");
+
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
     operatorEmail: context.operatorEmail,
@@ -125,6 +141,10 @@ export const loader: LoaderFunction = async ({
     ideaPool,
     ceoAgent,
     unreadMessages,
+    socialPerformance,
+    seoImpact,
+    adsRoas,
+    growthMetrics,
     visibleTiles,
   });
 };
@@ -469,11 +489,35 @@ function buildMockDashboard(): LoaderData {
       source: "mock",
       fact: fact(9),
     },
+    socialPerformance: {
+      status: "ok",
+      data: { totalPosts: 24, avgEngagement: 342, topPost: { platform: "Instagram", content: "Winter collection drop", impressions: 5240, engagement: 892 } },
+      source: "mock",
+      fact: fact(10),
+    },
+    seoImpact: {
+      status: "ok",
+      data: { totalKeywords: 142, avgPosition: 12.4, topMover: { keyword: "snow boots", oldPosition: 24, newPosition: 8, change: -16 } },
+      source: "mock",
+      fact: fact(11),
+    },
+    adsRoas: {
+      status: "ok",
+      data: { totalSpend: 4250, totalRevenue: 18900, roas: 4.45, topCampaign: { name: "Winter Collection Launch", platform: "Google Ads", roas: 6.2, spend: 1200 } },
+      source: "mock",
+      fact: fact(12),
+    },
+    growthMetrics: {
+      status: "ok",
+      data: { weeklyGrowth: 18.5, totalReach: 45200, bestChannel: { name: "Social Media", growth: 24.3 } },
+      source: "mock",
+      fact: fact(13),
+    },
     visibleTiles: DEFAULT_TILE_ORDER, // ENG-015: All tiles visible by default
   };
 }
 
-// Default tile order (ENG-014)
+// Default tile order (ENG-014 + ENG-028)
 const DEFAULT_TILE_ORDER = [
   "ops-metrics",
   "sales-pulse",
@@ -484,6 +528,11 @@ const DEFAULT_TILE_ORDER = [
   "idea-pool",
   "ceo-agent",
   "unread-messages",
+  // Phase 7-8: Growth analytics (ENG-028)
+  "social-performance",
+  "seo-impact",
+  "ads-roas",
+  "growth-metrics",
 ];
 
 export default function OperatorDashboard() {
@@ -687,6 +736,55 @@ export default function OperatorDashboard() {
         isRefreshing={refreshingTiles.has("unread-messages")}
         onRefresh={() => handleRefreshTile("unread-messages")}
         autoRefreshInterval={60}
+      />
+    ),
+    // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+    "social-performance": (
+      <TileCard
+        title="Social Performance"
+        tile={data.socialPerformance}
+        render={(socialData) => <SocialPerformanceTile data={socialData} />}
+        testId="tile-social-performance"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("social-performance")}
+        onRefresh={() => handleRefreshTile("social-performance")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "seo-impact": (
+      <TileCard
+        title="SEO Impact"
+        tile={data.seoImpact}
+        render={(seoData) => <SEOImpactTile data={seoData} />}
+        testId="tile-seo-impact"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("seo-impact")}
+        onRefresh={() => handleRefreshTile("seo-impact")}
+        autoRefreshInterval={600}
+      />
+    ),
+    "ads-roas": (
+      <TileCard
+        title="Ads ROAS"
+        tile={data.adsRoas}
+        render={(adsData) => <AdsROASTile data={adsData} />}
+        testId="tile-ads-roas"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ads-roas")}
+        onRefresh={() => handleRefreshTile("ads-roas")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "growth-metrics": (
+      <TileCard
+        title="Growth Metrics"
+        tile={data.growthMetrics}
+        render={(growthData) => <GrowthMetricsTile data={growthData} />}
+        testId="tile-growth-metrics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("growth-metrics")}
+        onRefresh={() => handleRefreshTile("growth-metrics")}
+        autoRefreshInterval={600}
       />
     ),
   };

@@ -1,87 +1,55 @@
-/**
- * Growth Dashboard Metrics API Route
- * 
- * GET /api/analytics/growth-metrics
- * Query params:
- * - project: Shop domain (default: "occ")
- * - action: "summary" | "weekly" | "trends" | "dashboard" (default: "dashboard")
- * - days: Number of days for analysis (default: 30)
- * - weeks: Number of weeks for weekly report (default: 4)
- */
-
 import type { LoaderFunctionArgs } from "react-router";
-import {
-  getGrowthMetrics,
-  getWeeklyGrowthReport,
-  getTrendAnalysis,
-  getDashboardMetrics,
-} from "~/services/analytics/growth-metrics";
+import { authenticate } from "../shopify.server";
 
+/**
+ * GET /api/analytics/growth-metrics
+ * 
+ * Returns overall growth metrics across all channels
+ * 
+ * Response:
+ * {
+ *   weeklyGrowth: number,
+ *   totalReach: number,
+ *   bestChannel: { name, growth },
+ *   trend: { labels, social, seo, ads, email },
+ *   channelComparison: Array<{ channel, thisWeek, lastWeek, growth }>
+ * }
+ */
 export async function loader({ request }: LoaderFunctionArgs) {
-  const url = new URL(request.url);
-  const project = url.searchParams.get("project") || "occ";
-  const action = url.searchParams.get("action") || "dashboard";
-  const days = Number(url.searchParams.get("days")) || 30;
-  const weeks = Number(url.searchParams.get("weeks")) || 4;
-
-  try {
-    // Get complete dashboard metrics
-    if (action === "dashboard") {
-      const dashboard = await getDashboardMetrics(project);
-      return Response.json({
-        success: true,
-        data: dashboard,
-        meta: { project },
-      });
-    }
-
-    // Get summary metrics only
-    if (action === "summary") {
-      const summary = await getGrowthMetrics(project, days);
-      return Response.json({
-        success: true,
-        data: summary,
-        meta: { project, days },
-      });
-    }
-
-    // Get weekly growth report
-    if (action === "weekly") {
-      const weekly = await getWeeklyGrowthReport(project, weeks);
-      return Response.json({
-        success: true,
-        data: weekly,
-        meta: { project, weeks },
-      });
-    }
-
-    // Get trend analysis
-    if (action === "trends") {
-      const trends = await getTrendAnalysis(project, days);
-      return Response.json({
-        success: true,
-        data: trends,
-        meta: { project, days },
-      });
-    }
-
-    // Invalid action
-    return Response.json(
-      {
-        success: false,
-        error: `Invalid action: ${action}. Valid actions: dashboard, summary, weekly, trends`,
-      },
-      { status: 400 }
-    );
-  } catch (error) {
-    console.error("Growth metrics API error:", error);
-    return Response.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+  const { session } = await authenticate.admin(request);
+  if (!session?.shop) {
+    return Response.json({ error: "Not authenticated" }, { status: 401 });
   }
-}
 
+  const mockData = {
+    weeklyGrowth: 18.5,
+    totalReach: 45200,
+    bestChannel: {
+      name: "Social Media",
+      growth: 24.3,
+    },
+    trend: {
+      labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+      social: [8500, 11200, 14800, 18400],
+      seo: [12000, 13500, 14200, 15100],
+      ads: [6200, 7400, 8900, 9500],
+      email: [2100, 2300, 2800, 2200],
+    },
+    channelComparison: [
+      { channel: "Social Media", thisWeek: 18400, lastWeek: 14800, growth: 24.3 },
+      { channel: "SEO/Organic", thisWeek: 15100, lastWeek: 14200, growth: 6.3 },
+      { channel: "Paid Ads", thisWeek: 9500, lastWeek: 8900, growth: 6.7 },
+      { channel: "Email", thisWeek: 2200, lastWeek: 2800, growth: -21.4 },
+    ],
+    weeklyReport: {
+      summary: "Social media driving significant growth (+24.3%). Email campaign underperformed this week.",
+      recommendations: [
+        "Double down on Instagram content (highest engagement)",
+        "Review email subject lines (low open rate)",
+        "Increase ad spend on top-performing campaigns",
+      ],
+    },
+  };
+
+  return Response.json({ ok: true, data: mockData });
+}

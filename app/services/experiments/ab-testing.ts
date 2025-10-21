@@ -12,7 +12,9 @@
  */
 
 import { createHash } from "crypto";
-import { db } from "~/lib/db.server";
+import prisma from "~/db.server";
+
+const db = prisma; // Alias for compatibility
 
 // ============================================================================
 // Types & Interfaces

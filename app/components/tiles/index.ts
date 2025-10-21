@@ -9,3 +9,8 @@ export { OpsMetricsTile } from "./OpsMetricsTile";
 export { IdeaPoolTile } from "./IdeaPoolTile";
 export { CEOAgentTile } from "./CEOAgentTile";
 export { UnreadMessagesTile } from "./UnreadMessagesTile";
+// Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+export { SocialPerformanceTile } from "./SocialPerformanceTile";
+export { SEOImpactTile } from "./SEOImpactTile";
+export { AdsROASTile } from "./AdsROASTile";
+export { GrowthMetricsTile } from "./GrowthMetricsTile";

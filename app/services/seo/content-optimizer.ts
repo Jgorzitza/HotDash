@@ -546,7 +546,7 @@ function generateRecommendations(analysis: Omit<ContentAnalysis, "recommendation
   }
 
   if (analysis.images.altTextQuality === "poor") {
-    recommendations.push("Improve alt text quality. Use descriptive, keyword-rich alt text (10-125 characters).`);
+    recommendations.push("Improve alt text quality. Use descriptive, keyword-rich alt text (10-125 characters).");
   }
 
   // Overall score recommendations
