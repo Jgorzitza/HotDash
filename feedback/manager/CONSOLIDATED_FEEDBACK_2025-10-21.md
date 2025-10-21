@@ -114,9 +114,11 @@
 
 **Issue**: Support agent committed SMTP credentials in 8ab5b1c
 **Secrets Leaked**:
-- SuperAdmin123! password (5 locations)
-- Chatwoot API token: paT1zxiNjAfUSu13ezZCg5Nn (7 locations)
-- Widget token: ieNpPnBaZXd9joxoeMts7qTA (6 locations)
+- Chatwoot admin password (5 locations)
+- Chatwoot API token (7 locations)
+- Chatwoot widget token (6 locations)
+
+**NOTE**: Actual secret values NOT documented for security
 
 **Fixed**: Manager commit a2787af removed all secrets, replaced with vault references
 **Action Required**: Rotate these credentials immediately
