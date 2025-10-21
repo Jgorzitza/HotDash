@@ -56,3 +56,18 @@ alwaysApply: true
 - Full stack traces
 
 **See**: [AGENT_RULES_REFERENCE.md](mdc:docs/AGENT_RULES_REFERENCE.md) for full workflow rules
+
+---
+
+## NEW: Growth Engine Evidence (Effective 2025-10-21)
+
+**ADDITIVE to feedback markdown - BOTH required now**:
+
+1. **MCP Evidence JSONL** (code changes): `artifacts/<agent>/<date>/mcp/<tool>.jsonl`
+2. **Heartbeat NDJSON** (tasks >2h): `artifacts/<agent>/<date>/heartbeat.ndjson`
+3. **Dev MCP Ban**: NO Dev MCP imports in `app/` directory
+4. **PR Template**: Must include MCP Evidence + Heartbeat + Dev MCP Check sections
+
+**CI Merge Blockers**: PRs fail if evidence missing, heartbeat stale, or Dev MCP in prod
+
+**See**: [.cursor/rules/10-growth-engine-pack.mdc](mdc:.cursor/rules/10-growth-engine-pack.mdc) for full details

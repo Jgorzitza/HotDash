@@ -89,3 +89,25 @@ globs: feedback/**/*.md
 **Reference**: [docs/RULES.md](mdc:docs/RULES.md) MCP Tools section for evidence format examples
 
 **See also**: [docs/runbooks/agent_startup_checklist.md](mdc:docs/runbooks/agent_startup_checklist.md) Section 0 for tool-first workflow
+
+---
+
+## NEW: Growth Engine Pack Requirements (Effective 2025-10-21)
+
+**ADDITIVE to above markdown evidence - BOTH required now**:
+
+1. **MCP Evidence JSONL** (for code changes):
+   - Location: `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl`
+   - Format: `{"tool":"...","doc_ref":"...","request_id":"...","timestamp":"...","purpose":"..."}`
+   - PR requirement: Must list JSONL paths OR state "No MCP usage - non-code change"
+
+2. **Heartbeat NDJSON** (for tasks >2 hours):
+   - Location: `artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson`
+   - Format: Append JSON lines every 15min max
+   - PR requirement: Confirm present OR state "<2h single session"
+
+3. **Dev MCP Ban**:
+   - NO Dev MCP imports in `app/` (production code)
+   - PR requirement: Verify no `mcp.*dev` or `dev.*mcp` in app/
+
+**See**: [.cursor/rules/10-growth-engine-pack.mdc](mdc:.cursor/rules/10-growth-engine-pack.mdc) for full Growth Engine requirements
