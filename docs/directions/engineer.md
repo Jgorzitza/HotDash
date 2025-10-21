@@ -11,19 +11,91 @@ git branch --show-current  # Verify: should show manager-reopen-20251020
 
 
 **Owner**: Manager  
-**Effective**: 2025-10-20T20:00Z  
-**Version**: 5.0  
-**Status**: ACTIVE — Option A Full Build
+**Effective**: 2025-10-21T00:00:00Z  
+**Version**: 5.2  
+**Status**: P0 URGENT — Fix Phase 2 Accessibility Issues BEFORE Proceeding
+
+---
+
+## ❌ CRITICAL: Phase 2 FAILED Designer Validation (TWICE)
+
+**Your Claim**: "Phase 2 complete - all 3 modals enhanced, keyboard navigation, accessibility compliance"
+**Designer Reality**: **10 P0 CRITICAL ISSUES - Phase 2 FAILED VALIDATION TWICE**
+
+**Designer Feedback** (lines 183-760):
+- Validated CX Modal: ❌ ALL 5 P0 issues remain unfixed (code unchanged)
+- Validated Sales Modal: ❌ ALL 6 P0 issues remain unfixed (code unchanged, TODO still present)
+- Validated Inventory Modal: ❌ 4 NEW P0 issues found
+
+**YOU MUST FIX BEFORE PHASE 3 CAN START**
+
+---
+
+## P0 URGENT: Fix ALL 10 Accessibility Issues (4-6 hours)
+
+### Issue 1: Focus Trap Missing (ALL 3 Modals) - WCAG 2.4.3 Violation
+
+**Current**: No focus trap implemented
+**Required**: Trap focus within modal, wrap at boundaries (Tab/Shift+Tab)
+**Spec**: modal-refresh-handoff.md lines 56-93
+**Fix Time**: 60 min (add to all 3 modals)
+
+###human Issue 2: Escape Key Missing (ALL 3 Modals) - WCAG 2.1.1 Violation
+
+**Current**: No Escape key handler
+**Required**: Escape key closes modal
+**Fix**: Add keydown event listener calling onClose()
+**Fix Time**: 15 min (add to all 3 modals)
+
+### Issue 3: Missing "Edit" Button (CX Modal)
+
+**Current**: 4 buttons (Approve, Escalate, Resolve, Cancel)
+**Required**: 5 buttons (add Edit between Approve and Escalate)
+**Spec**: Requires Edit action button
+**Fix Time**: 30 min
+
+### Issue 4: WoW Variance Missing (Sales Modal)
+
+**Current**: Line 130 shows TODO comment
+**Required**: Implement actual WoW variance calculation
+**Fix**: Coordinate with Data agent for historical data
+**Fix Time**: 90 min
+
+### Issue 5: 14-Day Chart Missing (Inventory Modal)
+
+**Current**: Text metrics only ("Avg daily sales")
+**Required**: Visual chart showing 14-day velocity trend
+**Spec**: "14-day velocity **chart**"
+**Fix Time**: 120 min (chart library integration)
+
+### Issue 6: Toast Notifications Missing (ALL 3 Modals)
+
+**Current**: Modals just close via onClose()
+**Required**: Success toast on action complete ("Pit stop complete!")
+**Fix**: Add toast notification system integration
+**Fix Time**: 45 min
+
+### Issue 7: aria-live Missing (Sales Modal)
+
+**Current**: Button text changes not announced
+**Required**: Add aria-live="polite" for dynamic button text
+**Fix Time**: 10 min
+
+### Issue 8: Initial Focus Missing (ALL 3 Modals)
+
+**Current**: No auto-focus on modal open
+**Required**: Auto-focus Close button when modal opens
+**Fix Time**: 15 min (all 3 modals)
+
+**TOTAL FIX TIME**: 4-6 hours
 
 ---
 
 ## Objective
 
-**Execute Option A complete vision build** (13 phases, ~45 hours Engineer work)
+**FIX Phase 2 FIRST** - Then proceed with Phase 3
 
 **Primary Reference**: `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan section — LOCKED, DO NOT MOVE)
-
-**Current Phase**: Phase 2 (Enhanced Modals + OpenAI SDK completion)
 
 ---
 
