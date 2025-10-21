@@ -111,10 +111,10 @@ export class PublerClient {
         rateLimitInfo: this.rateLimitInfo,
       };
     } catch (error) {
-      if (error instanceof PublerError) {
+      if (error instanceof Error && 'code' in error) {
         return {
           success: false,
-          error: error as PublerError,
+          error: error as any as PublerError,
           rateLimitInfo: this.rateLimitInfo,
         };
       }
@@ -175,16 +175,15 @@ export class PublerClient {
   /**
    * Create standardized error object
    */
-  private createError(code: string, message: string, status: number, response?: Response): PublerError {
-    return {
-      code,
-      message,
-      status,
-      details: response ? {
-        url: response.url,
-        statusText: response.statusText,
-      } : undefined,
-    };
+  private createError(code: string, message: string, status: number, response?: Response): Error {
+    const error = new Error(message);
+    (error as any).code = code;
+    (error as any).status = status;
+    (error as any).details = response ? {
+      url: response.url,
+      statusText: response.statusText,
+    } : undefined;
+    return error;
   }
 
   /**

@@ -1,0 +1,55 @@
+/**
+ * API Route: Core Web Vitals Monitoring
+ *
+ * GET /api/seo/web-vitals?url=https://example.com
+ *
+ * Analyzes Core Web Vitals using PageSpeed Insights API:
+ * - LCP, FID, CLS metrics
+ * - Mobile and desktop analysis
+ * - Performance opportunities
+ * - Optimization recommendations
+ *
+ * @module routes/api/seo/web-vitals
+ */
+
+import { type LoaderFunctionArgs } from "react-router";
+import { json } from "~/utils/http.server";
+import { analyzeWebVitals } from "../services/seo/core-web-vitals";
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  try {
+    const url = new URL(request.url);
+    const targetUrl = url.searchParams.get("url");
+
+    if (!targetUrl) {
+      return json(
+        {
+          success: false,
+          error: "url parameter is required",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 },
+      );
+    }
+
+    const analysis = await analyzeWebVitals(targetUrl);
+
+    return json({
+      success: true,
+      data: analysis,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    console.error("[API] Web Vitals error:", error);
+
+    return json(
+      {
+        success: false,
+        error: error.message || "Failed to analyze Core Web Vitals",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 },
+    );
+  }
+}
+

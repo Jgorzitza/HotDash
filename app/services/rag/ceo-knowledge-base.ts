@@ -12,6 +12,7 @@ import {
   storageContextFromDefaults,
   Settings,
   BaseEmbedding,
+  SimilarityPostprocessor,
 } from "llamaindex";
 import { OpenAI } from "@llamaindex/openai";
 import OpenAIClient from "openai";
@@ -31,11 +32,26 @@ export interface QueryResult {
     snippet?: string;
   }>;
   confidence: "high" | "medium" | "low";
+  // AI-KNOWLEDGE-012: Performance metrics
+  metrics?: QueryMetrics;
 }
 
 export interface QueryOptions {
   similarityTopK?: number;
   includeSnippets?: boolean;
+  // AI-KNOWLEDGE-012: Category filtering support
+  category?: "returns" | "shipping" | "tracking" | "exchanges" | "faq" | "troubleshooting";
+  // AI-KNOWLEDGE-012: Priority filtering support
+  priority?: "high" | "medium" | "low";
+}
+
+// AI-KNOWLEDGE-012: Performance metrics tracking
+export interface QueryMetrics {
+  queryTime: number;
+  retrievalTime: number;
+  synthesisTime: number;
+  chunksRetrieved: number;
+  chunksAfterFilter: number;
 }
 
 /**
@@ -135,12 +151,19 @@ async function initializeQueryEngine() {
     storageContext,
   });
 
+  // AI-KNOWLEDGE-010: Create similarity postprocessor for filtering low-relevance nodes
+  // From Context7 docs: Filter nodes below similarity cutoff threshold
+  const similarityProcessor = new SimilarityPostprocessor({
+    similarityCutoff: 0.65, // Tested: 0.5, 0.65, 0.75 (0.65 = balanced)
+  });
+
   // Create query engine with optimized settings
   // P1: similarityTopK=3 (optimal - more chunks adds noise/contradictions)
-  // P2: Chunk overlap (50 tokens) improves context without adding noise
   // P4: Temperature 0 (fully deterministic) for consistency
+  // AI-KNOWLEDGE-010: Node postprocessor for relevance filtering
   const queryEngine = index.asQueryEngine({
-    similarityTopK: 3, // Keep at 3 - chunk overlap provides better coverage
+    similarityTopK: 3, // Retrieve 3 chunks, filter by similarity
+    nodePostprocessors: [similarityProcessor], // Filter low-relevance nodes
   });
 
   return { queryEngine, index };
@@ -158,7 +181,15 @@ export async function queryKnowledgeBase(
   query: string,
   options: QueryOptions = {},
 ): Promise<QueryResult> {
-  const { similarityTopK = 3, includeSnippets = true } = options;
+  const { 
+    similarityTopK = 3, 
+    includeSnippets = true,
+    category,
+    priority,
+  } = options;
+
+  // AI-KNOWLEDGE-012: Performance tracking
+  const startTime = Date.now();
 
   // Initialize or reuse cached query engine
   if (!queryEngineCache) {
@@ -166,17 +197,34 @@ export async function queryKnowledgeBase(
   }
 
   const { queryEngine } = queryEngineCache;
+  const retrievalStart = Date.now();
 
   // Execute query
+  // Note: Category/priority filtering would require dynamic query engine per filter
+  // Current implementation uses cached engine for performance
+  // TODO: Implement per-category engines for filtered queries
   const response = await queryEngine.query({
     query,
   });
 
+  const retrievalTime = Date.now() - retrievalStart;
+
   // Extract sources from response metadata
   const sources: QueryResult["sources"] = [];
+  let chunksBeforeFilter = 0;
 
   if (response.sourceNodes) {
+    chunksBeforeFilter = response.sourceNodes.length;
+    
     for (const node of response.sourceNodes) {
+      // AI-KNOWLEDGE-012: Optional filtering by category/priority
+      const nodeCategory = node.node.metadata?.category;
+      const nodePriority = node.node.metadata?.priority;
+
+      // Apply post-query filtering if specified
+      if (category && nodeCategory !== category) continue;
+      if (priority && nodePriority !== priority) continue;
+
       sources.push({
         document: node.node.metadata?.file_name || "unknown",
         relevance: node.score || 0,
@@ -200,10 +248,23 @@ export async function queryKnowledgeBase(
     confidence = "low";
   }
 
+  // AI-KNOWLEDGE-012: Calculate metrics
+  const totalTime = Date.now() - startTime;
+  const synthesisTime = totalTime - retrievalTime;
+
+  const metrics: QueryMetrics = {
+    queryTime: totalTime,
+    retrievalTime,
+    synthesisTime,
+    chunksRetrieved: chunksBeforeFilter,
+    chunksAfterFilter: sources.length,
+  };
+
   return {
     answer: response.response,
     sources,
     confidence,
+    metrics,
   };
 }
 

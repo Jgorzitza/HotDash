@@ -1,431 +1,502 @@
 /**
- * A/B Testing Infrastructure
+ * A/B Testing Service
  * 
- * Framework for running A/B experiments with variant assignment, metrics tracking,
- * and statistical significance calculation.
+ * Implements A/B testing infrastructure for feature experimentation
+ * Based on: docs/specs/ab-test-campaigns.md (PRODUCT-007)
  * 
- * @module app/services/experiments/ab-testing
- * @see docs/directions/product.md PRODUCT-002
+ * Features:
+ * - Deterministic variant assignment (consistent per user)
+ * - Event tracking (exposure, conversion, engagement)
+ * - Statistical significance calculation (Chi-square test)
+ * - Results aggregation and analysis
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createHash } from "crypto";
+import { db } from "~/lib/db.server";
 
-/**
- * Experiment status
- */
-export type ExperimentStatus = 'draft' | 'running' | 'paused' | 'completed';
+// ============================================================================
+// Types & Interfaces
+// ============================================================================
 
-/**
- * Variant configuration
- */
-export interface Variant {
-  id: string;
-  name: string;
-  weight: number; // 0-1, must sum to 1 across all variants
-  description?: string;
-}
-
-/**
- * Metric to track for the experiment
- */
-export interface Metric {
-  key: string;
-  name: string;
-  type: 'conversion' | 'numeric' | 'duration';
-  unit?: string; // e.g., 'ms', '%', 'count'
-}
-
-/**
- * Experiment definition
- */
 export interface Experiment {
-  id: string;
-  name: string;
-  description: string;
-  hypothesis: string;
-  variants: Variant[];
-  metrics: Metric[];
-  status: ExperimentStatus;
-  startDate?: Date;
+  id: string;                    // "tile_order_default_test_001"
+  name: string;                  // "Tile Order Default Test"
+  variants: ExperimentVariant[]; // Array of variants
+  metrics: string[];             // ["tile_engagement_rate", "time_to_first_click"]
+  status: "draft" | "running" | "paused" | "completed";
+  startDate: Date;
   endDate?: Date;
-  targetSampleSize?: number;
-  createdAt: Date;
-  updatedAt: Date;
+  targetSampleSize: number;      // Users per variant
+  minDetectableEffect: number;   // 0.10 = 10%
 }
 
-/**
- * User assignment to experiment variant
- */
-export interface VariantAssignment {
-  userId: string;
+export interface ExperimentVariant {
+  id: string;           // "control", "variant_a", "variant_b"
+  name: string;         // Display name
+  weight: number;       // 0-1, must sum to 1.0 across variants
+  config?: any;         // Variant-specific configuration
+}
+
+export interface ExperimentAssignment {
   experimentId: string;
   variantId: string;
+  userId: string;       // Shop domain
   assignedAt: Date;
 }
 
-/**
- * Metric event for tracking
- */
-export interface MetricEvent {
-  userId: string;
-  experimentId: string;
-  variantId: string;
-  metricKey: string;
-  value: number | boolean;
+export interface ABTestEvent {
+  test_id: string;           // "tile_order_default_test_001"
+  variant: string;           // "control" | "variant_a" | "variant_b"
+  user_id: string;           // Shop domain
+  event_type: string;        // "exposure" | "conversion" | "engagement"
+  event_name: string;        // "tile_reordered" | "settings_saved"
   timestamp: Date;
+  metadata: Record<string, any>; // Additional context
 }
 
-/**
- * Statistical test result
- */
-export interface SignificanceTest {
+export interface SignificanceResult {
+  isSignificant: boolean;
   pValue: number;
-  significant: boolean; // p < 0.05
-  confidenceLevel: number; // 0-1
-  effect: string; // 'positive', 'negative', 'none'
+  chiSquare: number;
+  sampleSizes: Record<string, number>;
+  conversionRates: Record<string, number>;
+  winner: string | null;
 }
 
-/**
- * Experiment results summary
- */
-export interface ExperimentResults {
-  experimentId: string;
-  variants: {
-    variantId: string;
-    sampleSize: number;
-    metrics: Record<string, number>; // metricKey -> average value
-  }[];
-  significance: Record<string, SignificanceTest>; // metricKey -> test result
-  winner?: string; // variantId of winning variant
+export interface ExperimentData {
+  variants: string[];
+  exposures: Record<string, number>;
+  conversions: Record<string, number>;
+  sampleSizes: Record<string, number>;
+  conversionRates: Record<string, number>;
+  bestVariant: string;
+  degreesOfFreedom: number;
 }
 
-/**
- * Example experiments for HotDash
- */
-export const EXAMPLE_EXPERIMENTS: Experiment[] = [
-  {
-    id: 'approval_cta_test',
-    name: 'Approval Button Text Test',
-    description: 'Test different CTA text for approval actions',
-    hypothesis: 'More explicit action text ("Approve & Send") will increase approval rate',
-    variants: [
-      { id: 'control', name: 'Approve', weight: 0.5, description: 'Current default text' },
-      { id: 'variant', name: 'Approve & Send', weight: 0.5, description: 'More explicit action' },
-    ],
-    metrics: [
-      { key: 'click_rate', name: 'Click Rate', type: 'conversion', unit: '%' },
-      { key: 'time_to_approve', name: 'Time to Approve', type: 'duration', unit: 'ms' },
-    ],
-    status: 'draft',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// ============================================================================
+// A/B Testing Service Class
+// ============================================================================
 
-/**
- * Hash function for consistent variant assignment
- * Uses simple hash of userId + experimentId to ensure consistency
- * 
- * @param userId - User identifier
- * @param experimentId - Experiment identifier
- * @returns Hash value 0-1
- */
-function hashUserExperiment(userId: string, experimentId: string): number {
-  const str = `${userId}:${experimentId}`;
-  let hash = 0;
-  
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  
-  // Normalize to 0-1
-  return Math.abs(hash) / 2147483647;
-}
-
-/**
- * Assign user to a variant based on experiment weights
- * Uses consistent hashing to ensure same user always gets same variant
- * 
- * @param userId - User identifier
- * @param experiment - Experiment definition
- * @returns Assigned variant ID
- */
-export function assignVariant(userId: string, experiment: Experiment): string {
-  // Validate weights sum to 1
-  const totalWeight = experiment.variants.reduce((sum, v) => sum + v.weight, 0);
-  if (Math.abs(totalWeight - 1.0) > 0.001) {
-    console.warn(`Experiment ${experiment.id} weights don't sum to 1 (${totalWeight})`);
-  }
-
-  const hash = hashUserExperiment(userId, experiment.id);
-  
-  // Find variant based on cumulative weight
-  let cumulative = 0;
-  for (const variant of experiment.variants) {
-    cumulative += variant.weight;
-    if (hash < cumulative) {
-      return variant.id;
-    }
-  }
-  
-  // Fallback to last variant (should never happen with valid weights)
-  return experiment.variants[experiment.variants.length - 1].id;
-}
-
-/**
- * Get or create user's variant assignment for an experiment
- * 
- * @param userId - User identifier
- * @param experiment - Experiment definition
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- * @returns Variant assignment
- */
-export async function getUserVariant(
-  userId: string,
-  experiment: Experiment,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<VariantAssignment> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  try {
-    // Check if user already has assignment
-    const { data: existing } = await supabase
-      .from('experiment_assignments')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('experiment_id', experiment.id)
-      .single();
-
-    if (existing) {
-      return {
-        userId,
-        experimentId: experiment.id,
-        variantId: existing.variant_id,
-        assignedAt: new Date(existing.assigned_at),
-      };
-    }
-
-    // Create new assignment
-    const variantId = assignVariant(userId, experiment);
-    
-    const { error } = await supabase
-      .from('experiment_assignments')
-      .insert({
-        user_id: userId,
-        experiment_id: experiment.id,
-        variant_id: variantId,
-        assigned_at: new Date().toISOString(),
-      });
-
-    if (error) {
-      console.error('Error creating variant assignment:', error);
-      // Return assignment without persisting (graceful degradation)
-    }
+export class ABTestingService {
+  /**
+   * Assign user to experiment variant (deterministic hashing)
+   * 
+   * Uses MD5 hash of userId + experimentId to ensure:
+   * - Consistent assignment across sessions
+   * - Even distribution across variants
+   * - No state storage required
+   * 
+   * @param userId - Shop domain or user identifier
+   * @param experiment - Experiment configuration
+   * @returns Assignment with variant details
+   */
+  assignVariant(
+    userId: string,
+    experiment: Experiment
+  ): ExperimentAssignment {
+    const hash = this.hashUserId(userId, experiment.id);
+    const variantIndex = this.weightedSelection(hash, experiment.variants);
+    const variant = experiment.variants[variantIndex];
 
     return {
-      userId,
       experimentId: experiment.id,
-      variantId,
-      assignedAt: new Date(),
-    };
-  } catch (err) {
-    console.error('Error in getUserVariant:', err);
-    
-    // Fallback: assign variant without persistence
-    return {
+      variantId: variant.id,
       userId,
-      experimentId: experiment.id,
-      variantId: assignVariant(userId, experiment),
-      assignedAt: new Date(),
+      assignedAt: new Date()
     };
   }
-}
 
-/**
- * Track a metric event for an experiment
- * 
- * @param event - Metric event to track
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- */
-export async function trackMetric(
-  event: MetricEvent,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  try {
-    const { error } = await supabase
-      .from('experiment_metrics')
-      .insert({
-        user_id: event.userId,
-        experiment_id: event.experimentId,
-        variant_id: event.variantId,
-        metric_key: event.metricKey,
-        value: event.value,
-        timestamp: event.timestamp.toISOString(),
-      });
-
-    if (error) {
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    console.error('Error tracking metric:', err);
-    return { success: false, error: message };
-  }
-}
-
-/**
- * Calculate chi-square test for significance
- * 
- * @param observed - Observed values [control, variant]
- * @param expected - Expected values [control, variant]
- * @returns p-value
- */
-function chiSquareTest(observed: number[], expected: number[]): number {
-  if (observed.length !== expected.length || observed.length !== 2) {
-    throw new Error('Chi-square test requires exactly 2 groups');
-  }
-
-  let chiSquare = 0;
-  for (let i = 0; i < observed.length; i++) {
-    if (expected[i] === 0) continue;
-    chiSquare += Math.pow(observed[i] - expected[i], 2) / expected[i];
-  }
-
-  // For df=1, approximate p-value from chi-square value
-  // This is a simplified calculation - production should use proper stats library
-  if (chiSquare < 0.004) return 0.95;  // p > 0.05
-  if (chiSquare < 1.642) return 0.20;  // p ≈ 0.20
-  if (chiSquare < 2.706) return 0.10;  // p ≈ 0.10
-  if (chiSquare < 3.841) return 0.07;  // p ≈ 0.07
-  if (chiSquare < 5.024) return 0.025; // p ≈ 0.025
-  if (chiSquare < 6.635) return 0.01;  // p ≈ 0.01
-  return 0.001; // p < 0.001
-}
-
-/**
- * Calculate statistical significance for experiment results
- * 
- * @param experimentId - Experiment ID
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- * @returns Experiment results with significance tests
- */
-export async function calculateSignificance(
-  experimentId: string,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<ExperimentResults | null> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  try {
-    // Get all metric events for this experiment
-    const { data: events } = await supabase
-      .from('experiment_metrics')
-      .select('*')
-      .eq('experiment_id', experimentId);
-
-    if (!events || events.length === 0) {
-      return null;
-    }
-
-    // Group by variant
-    const variantData: Record<string, { events: typeof events; metrics: Record<string, number[]> }> = {};
-    
-    for (const event of events) {
-      const variantId = event.variant_id;
-      
-      if (!variantData[variantId]) {
-        variantData[variantId] = {
-          events: [],
-          metrics: {},
-        };
-      }
-      
-      variantData[variantId].events.push(event);
-      
-      if (!variantData[variantId].metrics[event.metric_key]) {
-        variantData[variantId].metrics[event.metric_key] = [];
-      }
-      
-      variantData[variantId].metrics[event.metric_key].push(Number(event.value));
-    }
-
-    // Calculate averages and significance
-    const variants = Object.entries(variantData).map(([variantId, data]) => {
-      const metrics: Record<string, number> = {};
-      
-      for (const [metricKey, values] of Object.entries(data.metrics)) {
-        metrics[metricKey] = values.reduce((sum, v) => sum + v, 0) / values.length;
-      }
-      
-      return {
-        variantId,
-        sampleSize: data.events.length,
-        metrics,
-      };
+  /**
+   * Track experiment exposure (user saw variant)
+   * 
+   * Records that a user was exposed to a specific variant.
+   * This is the denominator for conversion rate calculations.
+   * 
+   * @param experimentId - Experiment identifier
+   * @param variantId - Variant identifier
+   * @param userId - User identifier
+   */
+  async trackExposure(
+    experimentId: string,
+    variantId: string,
+    userId: string
+  ): Promise<void> {
+    await this.trackEvent({
+      test_id: experimentId,
+      variant: variantId,
+      user_id: userId,
+      event_type: "exposure",
+      event_name: "variant_exposed",
+      timestamp: new Date(),
+      metadata: {}
     });
+  }
 
-    // Simple significance test (control vs first variant)
-    const significance: Record<string, SignificanceTest> = {};
+  /**
+   * Track conversion event
+   * 
+   * Records a successful conversion (user completed desired action).
+   * This is the numerator for conversion rate calculations.
+   * 
+   * @param experimentId - Experiment identifier
+   * @param variantId - Variant identifier
+   * @param userId - User identifier
+   * @param conversionName - Name of conversion event
+   * @param value - Optional numeric value (e.g., revenue)
+   */
+  async trackConversion(
+    experimentId: string,
+    variantId: string,
+    userId: string,
+    conversionName: string,
+    value?: number
+  ): Promise<void> {
+    await this.trackEvent({
+      test_id: experimentId,
+      variant: variantId,
+      user_id: userId,
+      event_type: "conversion",
+      event_name: conversionName,
+      timestamp: new Date(),
+      metadata: { value }
+    });
+  }
+
+  /**
+   * Track engagement event
+   * 
+   * Records user interaction with feature (clicks, time spent, etc.).
+   * Used for secondary metrics and behavior analysis.
+   * 
+   * @param experimentId - Experiment identifier
+   * @param variantId - Variant identifier
+   * @param userId - User identifier
+   * @param engagementName - Name of engagement event
+   * @param metadata - Additional event data
+   */
+  async trackEngagement(
+    experimentId: string,
+    variantId: string,
+    userId: string,
+    engagementName: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    await this.trackEvent({
+      test_id: experimentId,
+      variant: variantId,
+      user_id: userId,
+      event_type: "engagement",
+      event_name: engagementName,
+      timestamp: new Date(),
+      metadata: metadata || {}
+    });
+  }
+
+  /**
+   * Calculate statistical significance (chi-square test)
+   * 
+   * Determines if the difference in conversion rates between variants
+   * is statistically significant (not due to random chance).
+   * 
+   * Uses chi-square test for proportions:
+   * - H0: Conversion rates are equal across variants
+   * - H1: Conversion rates differ significantly
+   * - Significance level: α = 0.05 (95% confidence)
+   * 
+   * @param experimentId - Experiment identifier
+   * @returns Statistical significance results
+   */
+  async calculateSignificance(
+    experimentId: string
+  ): Promise<SignificanceResult> {
+    const data = await this.getExperimentData(experimentId);
     
-    if (variants.length === 2) {
-      const control = variants[0];
-      const variant = variants[1];
-      
-      for (const metricKey of Object.keys(control.metrics)) {
-        if (!variant.metrics[metricKey]) continue;
-        
-        const controlValue = control.metrics[metricKey];
-        const variantValue = variant.metrics[metricKey];
-        
-        // Calculate p-value (simplified - use proper stats in production)
-        const pValue = chiSquareTest(
-          [control.sampleSize, variant.sampleSize],
-          [control.sampleSize / 2, variant.sampleSize / 2]
-        );
-        
-        significance[metricKey] = {
-          pValue,
-          significant: pValue < 0.05,
-          confidenceLevel: 1 - pValue,
-          effect: variantValue > controlValue ? 'positive' : variantValue < controlValue ? 'negative' : 'none',
-        };
-      }
-    }
-
+    // Chi-square test for conversion rates
+    const chiSquare = this.chiSquareTest(data);
+    const pValue = this.calculatePValue(chiSquare, data.degreesOfFreedom);
+    
     return {
-      experimentId,
-      variants,
-      significance,
-      winner: undefined, // TODO: Determine winner based on significance
+      isSignificant: pValue < 0.05,
+      pValue,
+      chiSquare,
+      sampleSizes: data.sampleSizes,
+      conversionRates: data.conversionRates,
+      winner: pValue < 0.05 ? data.bestVariant : null
     };
-  } catch (err) {
-    console.error('Error calculating significance:', err);
+  }
+
+  /**
+   * Get experiment configuration for user
+   * 
+   * Returns the variant-specific configuration for the assigned variant.
+   * 
+   * @param userId - User identifier
+   * @param experimentId - Experiment identifier
+   * @returns Variant configuration object
+   */
+  getExperimentConfig(userId: string, experimentId: string): any {
+    const experiment = this.getExperiment(experimentId);
+    if (!experiment) return null;
+    
+    const assignment = this.assignVariant(userId, experiment);
+    const variant = experiment.variants.find(v => v.id === assignment.variantId);
+    return variant?.config || {};
+  }
+
+  /**
+   * Get all active experiments
+   * 
+   * Returns list of experiments with status "running".
+   * 
+   * @returns Array of active experiments
+   */
+  getActiveExperiments(): Experiment[] {
+    // TODO: Implement database query
+    // For now, return empty array
+    return [];
+  }
+
+  /**
+   * Get experiment by ID
+   * 
+   * @param experimentId - Experiment identifier
+   * @returns Experiment configuration or null
+   */
+  getExperiment(experimentId: string): Experiment | null {
+    // TODO: Implement database query
+    // For now, return null
     return null;
   }
+
+  // ==========================================================================
+  // Private Helper Methods
+  // ==========================================================================
+
+  /**
+   * Hash user ID with experiment ID for deterministic assignment
+   * 
+   * @param userId - User identifier
+   * @param experimentId - Experiment identifier
+   * @returns Numeric hash value
+   */
+  private hashUserId(userId: string, experimentId: string): number {
+    const hash = createHash("md5")
+      .update(userId + experimentId)
+      .digest("hex");
+    return parseInt(hash.substring(0, 8), 16);
+  }
+
+  /**
+   * Weighted random selection based on variant weights
+   * 
+   * Converts hash to 0-1 range and selects variant based on cumulative weights.
+   * 
+   * @param hash - Numeric hash from hashUserId
+   * @param variants - Array of variants with weights
+   * @returns Index of selected variant
+   */
+  private weightedSelection(hash: number, variants: ExperimentVariant[]): number {
+    const random = (hash % 10000) / 10000; // 0-1
+    let cumulative = 0;
+    for (let i = 0; i < variants.length; i++) {
+      cumulative += variants[i].weight;
+      if (random < cumulative) return i;
+    }
+    return variants.length - 1; // Fallback
+  }
+
+  /**
+   * Track event to database
+   * 
+   * Stores event in DashboardFact table with category "ab_test".
+   * 
+   * @param event - Event data to track
+   */
+  private async trackEvent(event: ABTestEvent): Promise<void> {
+    // Store in DashboardFact table
+    await db.dashboardFact.create({
+      data: {
+        shop: event.user_id,
+        category: "ab_test",
+        metric: event.event_name,
+        value: 1, // Count
+        metadata: JSON.stringify(event),
+        timestamp: event.timestamp
+      }
+    });
+  }
+
+  /**
+   * Get aggregated experiment data from database
+   * 
+   * Queries DashboardFact for all events related to experiment,
+   * calculates conversion rates per variant.
+   * 
+   * @param experimentId - Experiment identifier
+   * @returns Aggregated experiment data
+   */
+  private async getExperimentData(experimentId: string): Promise<ExperimentData> {
+    // Query DashboardFact for experiment events
+    const events = await db.dashboardFact.findMany({
+      where: {
+        category: "ab_test",
+        metadata: {
+          path: ["test_id"],
+          equals: experimentId
+        }
+      }
+    });
+
+    // Parse events and aggregate by variant
+    const exposures: Record<string, number> = {};
+    const conversions: Record<string, number> = {};
+    const variants: string[] = [];
+
+    for (const event of events) {
+      const metadata = JSON.parse(event.metadata as string);
+      const variant = metadata.variant;
+
+      if (!variants.includes(variant)) {
+        variants.push(variant);
+      }
+
+      if (metadata.event_type === "exposure") {
+        exposures[variant] = (exposures[variant] || 0) + 1;
+      } else if (metadata.event_type === "conversion") {
+        conversions[variant] = (conversions[variant] || 0) + 1;
+      }
+    }
+
+    // Calculate conversion rates
+    const sampleSizes: Record<string, number> = {};
+    const conversionRates: Record<string, number> = {};
+    let bestVariant = variants[0];
+    let bestRate = 0;
+
+    for (const variant of variants) {
+      const exposureCount = exposures[variant] || 0;
+      const conversionCount = conversions[variant] || 0;
+      sampleSizes[variant] = exposureCount;
+      conversionRates[variant] = exposureCount > 0 ? conversionCount / exposureCount : 0;
+
+      if (conversionRates[variant] > bestRate) {
+        bestRate = conversionRates[variant];
+        bestVariant = variant;
+      }
+    }
+
+    return {
+      variants,
+      exposures,
+      conversions,
+      sampleSizes,
+      conversionRates,
+      bestVariant,
+      degreesOfFreedom: variants.length - 1
+    };
+  }
+
+  /**
+   * Chi-square test for conversion rate differences
+   * 
+   * Formula: χ² = Σ[(Observed - Expected)² / Expected]
+   * 
+   * @param data - Aggregated experiment data
+   * @returns Chi-square statistic
+   */
+  private chiSquareTest(data: ExperimentData): number {
+    const { variants, exposures, conversions } = data;
+
+    // Calculate total exposures and conversions
+    const totalExposures = variants.reduce((sum, v) => sum + (exposures[v] || 0), 0);
+    const totalConversions = variants.reduce((sum, v) => sum + (conversions[v] || 0), 0);
+
+    // Overall conversion rate (expected)
+    const expectedRate = totalConversions / totalExposures;
+
+    // Calculate chi-square statistic
+    let chiSquare = 0;
+    for (const variant of variants) {
+      const observed = conversions[variant] || 0;
+      const expected = (exposures[variant] || 0) * expectedRate;
+      
+      if (expected > 0) {
+        chiSquare += Math.pow(observed - expected, 2) / expected;
+      }
+    }
+
+    return chiSquare;
+  }
+
+  /**
+   * Calculate p-value from chi-square statistic
+   * 
+   * Uses chi-square distribution approximation.
+   * For production, consider using a statistics library (e.g., jStat).
+   * 
+   * @param chiSquare - Chi-square statistic
+   * @param df - Degrees of freedom (variants - 1)
+   * @returns P-value (probability of observing this result by chance)
+   */
+  private calculatePValue(chiSquare: number, df: number): number {
+    // Simplified chi-square p-value calculation
+    // For more accurate results, use a statistics library
+    
+    // Critical values for chi-square distribution (df = 1 to 5)
+    const criticalValues: Record<number, number> = {
+      1: 3.841, // 95% confidence (α = 0.05)
+      2: 5.991,
+      3: 7.815,
+      4: 9.488,
+      5: 11.070
+    };
+
+    const critical = criticalValues[df] || criticalValues[5];
+
+    // Simple approximation: if chiSquare > critical, p < 0.05
+    if (chiSquare > critical) {
+      // Approximate p-value based on how far above critical
+      const ratio = chiSquare / critical;
+      return Math.max(0.001, 0.05 / ratio); // Approximate
+    }
+
+    // If below critical, p > 0.05
+    return 0.05 + (0.95 * (1 - chiSquare / critical));
+  }
+
+  /**
+   * Calculate sample size required for test
+   * 
+   * Uses power analysis to determine minimum sample size needed
+   * to detect a specified effect with given confidence and power.
+   * 
+   * @param baselineRate - Current conversion rate (0-1)
+   * @param minDetectableEffect - Minimum effect to detect (e.g., 0.05 = 5%)
+   * @param alpha - Significance level (default: 0.05)
+   * @param power - Statistical power (default: 0.80)
+   * @returns Required sample size per variant
+   */
+  calculateSampleSize(
+    baselineRate: number,
+    minDetectableEffect: number,
+    alpha: number = 0.05,
+    power: number = 0.80
+  ): number {
+    // Simplified formula (use proper stats library in production)
+    const zAlpha = 1.96; // 95% confidence
+    const zBeta = 0.84;  // 80% power
+    const p1 = baselineRate;
+    const p2 = baselineRate * (1 + minDetectableEffect);
+    const pBar = (p1 + p2) / 2;
+    
+    return Math.ceil(
+      2 * Math.pow(zAlpha + zBeta, 2) * pBar * (1 - pBar) / Math.pow(p2 - p1, 2)
+    );
+  }
 }
 
-/**
- * Get all experiments
- */
-export function getAllExperiments(): Experiment[] {
-  return EXAMPLE_EXPERIMENTS;
-}
+// ============================================================================
+// Export singleton instance
+// ============================================================================
 
-/**
- * Get experiment by ID
- */
-export function getExperiment(experimentId: string): Experiment | undefined {
-  return EXAMPLE_EXPERIMENTS.find(exp => exp.id === experimentId);
-}
-
+export const abTestingService = new ABTestingService();

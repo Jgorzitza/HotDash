@@ -1,0 +1,77 @@
+/**
+ * API Route: Content Optimization Analysis
+ *
+ * POST /api/seo/content-optimize
+ *
+ * Analyzes content and provides SEO optimization recommendations:
+ * - Flesch reading ease score
+ * - Keyword density analysis
+ * - Heading structure verification
+ * - Internal linking analysis
+ * - Image alt text checking
+ * - Overall SEO score (0-100) with grade
+ *
+ * @module routes/api/seo/content-optimize
+ */
+
+import { type ActionFunctionArgs } from "react-router";
+import { json } from "~/utils/http.server";
+import { analyzeContent, analyzeContentFromURL } from "../services/seo/content-optimizer";
+
+export async function action({ request }: ActionFunctionArgs) {
+  try {
+    const formData = await request.formData();
+    const url = formData.get("url") as string;
+    const html = formData.get("html") as string;
+    const targetKeyword = formData.get("targetKeyword") as string;
+
+    if (!targetKeyword) {
+      return json(
+        {
+          success: false,
+          error: "targetKeyword parameter is required",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 },
+      );
+    }
+
+    let analysis;
+
+    if (html) {
+      // Analyze provided HTML
+      const pageUrl = url || "https://example.com";
+      analysis = await analyzeContent(pageUrl, html, targetKeyword);
+    } else if (url) {
+      // Fetch and analyze URL
+      analysis = await analyzeContentFromURL(url, targetKeyword);
+    } else {
+      return json(
+        {
+          success: false,
+          error: "Either 'url' or 'html' parameter is required",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 },
+      );
+    }
+
+    return json({
+      success: true,
+      data: analysis,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    console.error("[API] Content optimization error:", error);
+
+    return json(
+      {
+        success: false,
+        error: error.message || "Failed to analyze content",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 },
+    );
+  }
+}
+

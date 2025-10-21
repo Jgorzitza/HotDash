@@ -1,296 +1,417 @@
 /**
- * Feature Flags Service
+ * Feature Flag Management Service
  * 
- * Manages feature flag state and user preferences for gradual feature rollout.
- * Integrates with user_preferences table (Data agent - pending migration).
+ * Manages feature flags for gradual rollout and user targeting.
+ * Enables/disables features dynamically without code deployments.
  * 
- * @module app/services/experiments/feature-flags
- * @see docs/directions/product.md PRODUCT-001
- * @see docs/manager/PROJECT_PLAN.md Phase 6 (Settings)
+ * Features:
+ * - Feature flag enable/disable
+ * - Gradual rollout (percentage-based)
+ * - User targeting (specific users or segments)
+ * - Environment-specific flags
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createHash } from "crypto";
+import { db } from "~/lib/db.server";
 
-/**
- * Available feature flags for HotDash Option A build
- */
-export type FeatureFlagKey =
-  | 'FEATURE_SUPABASE_IDEA_POOL' // Existing - Idea pool integration
-  | 'FEATURE_REALTIME_UPDATES'   // Phase 5 - SSE live updates
-  | 'FEATURE_DARK_MODE'           // Phase 6 - Theme switcher
-  | 'FEATURE_ADVANCED_CHARTS'     // Phase 7-8 - Data visualization
-  | 'FEATURE_CEO_AGENT';          // Phase 11 - CEO assistant agent
+// ============================================================================
+// Types & Interfaces
+// ============================================================================
 
-/**
- * Feature flag configuration
- */
 export interface FeatureFlag {
-  key: FeatureFlagKey;
-  name: string;
-  description: string;
-  defaultEnabled: boolean;
-  experimental: boolean; // Shows "Experimental" badge in UI
-  availableFrom: string; // Phase when feature becomes available
-}
-
-/**
- * All available feature flags with metadata
- */
-export const FEATURE_FLAGS: Record<FeatureFlagKey, FeatureFlag> = {
-  FEATURE_SUPABASE_IDEA_POOL: {
-    key: 'FEATURE_SUPABASE_IDEA_POOL',
-    name: 'Idea Pool',
-    description: 'Always-on product suggestion pipeline with 5 active ideas',
-    defaultEnabled: true, // Already implemented and stable
-    experimental: false,
-    availableFrom: 'Phase 1',
-  },
-  FEATURE_REALTIME_UPDATES: {
-    key: 'FEATURE_REALTIME_UPDATES',
-    name: 'Real-Time Updates',
-    description: 'Live dashboard updates via Server-Sent Events (SSE)',
-    defaultEnabled: false,
-    experimental: true,
-    availableFrom: 'Phase 5',
-  },
-  FEATURE_DARK_MODE: {
-    key: 'FEATURE_DARK_MODE',
-    name: 'Dark Mode',
-    description: 'Dark theme with WCAG AA contrast compliance',
-    defaultEnabled: false,
-    experimental: true,
-    availableFrom: 'Phase 6',
-  },
-  FEATURE_ADVANCED_CHARTS: {
-    key: 'FEATURE_ADVANCED_CHARTS',
-    name: 'Advanced Charts',
-    description: 'Interactive data visualizations with @shopify/polaris-viz',
-    defaultEnabled: false,
-    experimental: true,
-    availableFrom: 'Phase 7-8',
-  },
-  FEATURE_CEO_AGENT: {
-    key: 'FEATURE_CEO_AGENT',
-    name: 'CEO Assistant Agent',
-    description: 'AI-powered operations assistant (OpenAI Agents SDK)',
-    defaultEnabled: false,
-    experimental: true,
-    availableFrom: 'Phase 11',
-  },
-};
-
-/**
- * User's feature flag preferences
- */
-export interface UserFeatureFlags {
-  userId: string;
-  flags: Partial<Record<FeatureFlagKey, boolean>>;
+  id: string;                    // "FEATURE_DARK_MODE"
+  name: string;                  // "Dark Mode"
+  description: string;           // "Enable dark theme for users"
+  enabled: boolean;              // Master on/off switch
+  rolloutPercentage: number;     // 0-100 (% of users who see feature)
+  targetUsers?: string[];        // Specific users to enable for
+  targetSegments?: string[];     // User segments to enable for
+  environment?: "development" | "staging" | "production" | "all";
+  createdAt: Date;
   updatedAt: Date;
 }
 
-/**
- * Get all available feature flags
- */
-export function getAllFeatureFlags(): FeatureFlag[] {
-  return Object.values(FEATURE_FLAGS);
+export interface FeatureFlagCheck {
+  flagId: string;
+  userId: string;
+  isEnabled: boolean;
+  reason: string;               // Why enabled/disabled
+  checkedAt: Date;
 }
 
-/**
- * Check if a specific feature flag is enabled for a user
- * 
- * @param userId - Shopify shop owner ID
- * @param flagKey - Feature flag key to check
- * @param supabaseUrl - Supabase project URL (from env)
- * @param supabaseKey - Supabase anon key (from env)
- * @returns true if flag is enabled, false otherwise
- */
-export async function isFeatureEnabled(
-  userId: string,
-  flagKey: FeatureFlagKey,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<boolean> {
-  const flag = FEATURE_FLAGS[flagKey];
-  
-  if (!flag) {
-    console.warn(`Unknown feature flag: ${flagKey}`);
-    return false;
+// ============================================================================
+// Feature Flag Service Class
+// ============================================================================
+
+export class FeatureFlagService {
+  /**
+   * Check if feature is enabled for user
+   * 
+   * Decision logic (in order):
+   * 1. Check if flag exists and master switch is enabled
+   * 2. Check if user is in target users list
+   * 3. Check if user is in target segments
+   * 4. Check rollout percentage (deterministic hashing)
+   * 5. Check environment match
+   * 
+   * @param flagId - Feature flag identifier
+   * @param userId - User identifier (shop domain)
+   * @param userSegment - Optional user segment
+   * @returns Whether feature is enabled for this user
+   */
+  async isFeatureEnabled(
+    flagId: string,
+    userId: string,
+    userSegment?: string
+  ): Promise<boolean> {
+    const check = await this.checkFeature(flagId, userId, userSegment);
+    return check.isEnabled;
   }
 
-  try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
-    // Query user_preferences table for this user's flags
-    const { data, error } = await supabase
-      .from('user_preferences')
-      .select('feature_flags')
-      .eq('user_id', userId)
-      .single();
+  /**
+   * Check feature with detailed reasoning
+   * 
+   * Returns both the enabled status and the reason why.
+   * Useful for debugging and analytics.
+   * 
+   * @param flagId - Feature flag identifier
+   * @param userId - User identifier
+   * @param userSegment - Optional user segment
+   * @returns Feature flag check result with reason
+   */
+  async checkFeature(
+    flagId: string,
+    userId: string,
+    userSegment?: string
+  ): Promise<FeatureFlagCheck> {
+    const flag = await this.getFeatureFlag(flagId);
+    const checkedAt = new Date();
 
-    if (error) {
-      // User preferences don't exist yet, use default
-      console.debug(`No user preferences found for ${userId}, using default: ${flag.defaultEnabled}`);
-      return flag.defaultEnabled;
+    // Flag doesn't exist
+    if (!flag) {
+      return {
+        flagId,
+        userId,
+        isEnabled: false,
+        reason: "Flag not found",
+        checkedAt
+      };
     }
 
-    if (!data || !data.feature_flags) {
-      return flag.defaultEnabled;
+    // Master switch is off
+    if (!flag.enabled) {
+      return {
+        flagId,
+        userId,
+        isEnabled: false,
+        reason: "Flag disabled (master switch off)",
+        checkedAt
+      };
     }
 
-    // Check if user has explicitly set this flag
-    const userFlags = data.feature_flags as Record<string, boolean>;
-    return userFlags[flagKey] !== undefined ? userFlags[flagKey] : flag.defaultEnabled;
-  } catch (err) {
-    console.error(`Error checking feature flag ${flagKey}:`, err);
-    return flag.defaultEnabled; // Fail safe to default
-  }
-}
+    // Check environment
+    const currentEnv = this.getCurrentEnvironment();
+    if (flag.environment && flag.environment !== "all" && flag.environment !== currentEnv) {
+      return {
+        flagId,
+        userId,
+        isEnabled: false,
+        reason: `Environment mismatch (current: ${currentEnv}, required: ${flag.environment})`,
+        checkedAt
+      };
+    }
 
-/**
- * Get all feature flags for a user (merges defaults with user preferences)
- * 
- * @param userId - Shopify shop owner ID
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- * @returns User's feature flag state for all flags
- */
-export async function getUserFeatureFlags(
-  userId: string,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<UserFeatureFlags> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  try {
-    const { data } = await supabase
-      .from('user_preferences')
-      .select('feature_flags, updated_at')
-      .eq('user_id', userId)
-      .single();
-
-    const userFlags: Partial<Record<FeatureFlagKey, boolean>> = {};
-    
-    // Merge defaults with user preferences
-    for (const flagKey of Object.keys(FEATURE_FLAGS) as FeatureFlagKey[]) {
-      const flag = FEATURE_FLAGS[flagKey];
-      
-      if (data && data.feature_flags) {
-        const userPrefs = data.feature_flags as Record<string, boolean>;
-        userFlags[flagKey] = userPrefs[flagKey] !== undefined 
-          ? userPrefs[flagKey] 
-          : flag.defaultEnabled;
-      } else {
-        userFlags[flagKey] = flag.defaultEnabled;
+    // Check target users (explicit whitelist)
+    if (flag.targetUsers && flag.targetUsers.length > 0) {
+      if (flag.targetUsers.includes(userId)) {
+        return {
+          flagId,
+          userId,
+          isEnabled: true,
+          reason: "User in target users list",
+          checkedAt
+        };
       }
+      // If targetUsers is defined but user not in list, disabled
+      return {
+        flagId,
+        userId,
+        isEnabled: false,
+        reason: "User not in target users list",
+        checkedAt
+      };
     }
 
+    // Check target segments
+    if (flag.targetSegments && flag.targetSegments.length > 0 && userSegment) {
+      if (flag.targetSegments.includes(userSegment)) {
+        // Still need to check rollout percentage
+        const isInRollout = this.isUserInRollout(userId, flagId, flag.rolloutPercentage);
+        return {
+          flagId,
+          userId,
+          isEnabled: isInRollout,
+          reason: isInRollout
+            ? `User in target segment "${userSegment}" and rollout (${flag.rolloutPercentage}%)`
+            : `User in target segment "${userSegment}" but not in rollout`,
+          checkedAt
+        };
+      }
+      // Segment specified but user not in any target segment
+      return {
+        flagId,
+        userId,
+        isEnabled: false,
+        reason: `User segment "${userSegment}" not in target segments`,
+        checkedAt
+      };
+    }
+
+    // Check rollout percentage (deterministic)
+    const isInRollout = this.isUserInRollout(userId, flagId, flag.rolloutPercentage);
     return {
+      flagId,
       userId,
-      flags: userFlags,
-      updatedAt: data?.updated_at ? new Date(data.updated_at) : new Date(),
+      isEnabled: isInRollout,
+      reason: isInRollout
+        ? `User in rollout (${flag.rolloutPercentage}%)`
+        : `User not in rollout (${flag.rolloutPercentage}%)`,
+      checkedAt
     };
-  } catch (err) {
-    console.error('Error fetching user feature flags:', err);
-    
-    // Return defaults on error
-    const defaultFlags: Partial<Record<FeatureFlagKey, boolean>> = {};
-    for (const flagKey of Object.keys(FEATURE_FLAGS) as FeatureFlagKey[]) {
-      defaultFlags[flagKey] = FEATURE_FLAGS[flagKey].defaultEnabled;
-    }
-    
+  }
+
+  /**
+   * Get feature flag by ID
+   * 
+   * @param flagId - Feature flag identifier
+   * @returns Feature flag or null
+   */
+  async getFeatureFlag(flagId: string): Promise<FeatureFlag | null> {
+    // TODO: Query from database
+    // For now, return hardcoded flags for common features
+    const hardcodedFlags: Record<string, FeatureFlag> = {
+      FEATURE_DARK_MODE: {
+        id: "FEATURE_DARK_MODE",
+        name: "Dark Mode",
+        description: "Enable dark theme for users",
+        enabled: true,
+        rolloutPercentage: 100,
+        environment: "all",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      FEATURE_REALTIME_UPDATES: {
+        id: "FEATURE_REALTIME_UPDATES",
+        name: "Real-time Updates",
+        description: "Enable SSE for real-time dashboard updates",
+        enabled: true,
+        rolloutPercentage: 50, // 50% rollout
+        environment: "all",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      FEATURE_CEO_AGENT: {
+        id: "FEATURE_CEO_AGENT",
+        name: "CEO Agent",
+        description: "Enable CEO AI assistant",
+        enabled: false, // Not ready yet
+        rolloutPercentage: 0,
+        environment: "development",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      FEATURE_ADVANCED_CHARTS: {
+        id: "FEATURE_ADVANCED_CHARTS",
+        name: "Advanced Charts",
+        description: "Enable Polaris Viz charts",
+        enabled: true,
+        rolloutPercentage: 100,
+        environment: "all",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    };
+
+    return hardcodedFlags[flagId] || null;
+  }
+
+  /**
+   * Get all feature flags
+   * 
+   * @returns Array of all feature flags
+   */
+  async getAllFeatureFlags(): Promise<FeatureFlag[]> {
+    // TODO: Query from database
+    const flags = [
+      await this.getFeatureFlag("FEATURE_DARK_MODE"),
+      await this.getFeatureFlag("FEATURE_REALTIME_UPDATES"),
+      await this.getFeatureFlag("FEATURE_CEO_AGENT"),
+      await this.getFeatureFlag("FEATURE_ADVANCED_CHARTS")
+    ];
+    return flags.filter(Boolean) as FeatureFlag[];
+  }
+
+  /**
+   * Create or update feature flag
+   * 
+   * @param flag - Feature flag data
+   * @returns Created/updated feature flag
+   */
+  async upsertFeatureFlag(flag: Partial<FeatureFlag> & { id: string }): Promise<FeatureFlag> {
+    // TODO: Implement database upsert
+    // For now, return the input as-is
     return {
-      userId,
-      flags: defaultFlags,
-      updatedAt: new Date(),
-    };
+      ...flag,
+      name: flag.name || flag.id,
+      description: flag.description || "",
+      enabled: flag.enabled ?? true,
+      rolloutPercentage: flag.rolloutPercentage ?? 100,
+      environment: flag.environment || "all",
+      createdAt: flag.createdAt || new Date(),
+      updatedAt: new Date()
+    } as FeatureFlag;
   }
-}
 
-/**
- * Update user's feature flag preferences
- * 
- * @param userId - Shopify shop owner ID
- * @param flags - Flags to update (partial, only changed flags needed)
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- * @returns Success status
- */
-export async function updateUserFeatureFlags(
-  userId: string,
-  flags: Partial<Record<FeatureFlagKey, boolean>>,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-  
-  try {
-    // Check if user preferences exist
-    const { data: existing } = await supabase
-      .from('user_preferences')
-      .select('feature_flags')
-      .eq('user_id', userId)
-      .single();
+  /**
+   * Enable feature flag
+   * 
+   * Sets master switch to enabled (does not affect rollout percentage).
+   * 
+   * @param flagId - Feature flag identifier
+   */
+  async enableFeature(flagId: string): Promise<void> {
+    const flag = await this.getFeatureFlag(flagId);
+    if (flag) {
+      await this.upsertFeatureFlag({ ...flag, enabled: true });
+    }
+  }
 
-    const updatedFlags = {
-      ...(existing?.feature_flags || {}),
-      ...flags,
-    };
+  /**
+   * Disable feature flag
+   * 
+   * Sets master switch to disabled (overrides all other settings).
+   * 
+   * @param flagId - Feature flag identifier
+   */
+  async disableFeature(flagId: string): Promise<void> {
+    const flag = await this.getFeatureFlag(flagId);
+    if (flag) {
+      await this.upsertFeatureFlag({ ...flag, enabled: false });
+    }
+  }
 
-    if (existing) {
-      // Update existing preferences
-      const { error } = await supabase
-        .from('user_preferences')
-        .update({
-          feature_flags: updatedFlags,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('user_id', userId);
-
-      if (error) {
-        return { success: false, error: error.message };
-      }
-    } else {
-      // Create new preferences
-      const { error } = await supabase
-        .from('user_preferences')
-        .insert({
-          user_id: userId,
-          feature_flags: updatedFlags,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-
-      if (error) {
-        return { success: false, error: error.message };
-      }
+  /**
+   * Update rollout percentage
+   * 
+   * Gradually increase/decrease % of users who see the feature.
+   * 
+   * @param flagId - Feature flag identifier
+   * @param percentage - New rollout percentage (0-100)
+   */
+  async updateRolloutPercentage(flagId: string, percentage: number): Promise<void> {
+    if (percentage < 0 || percentage > 100) {
+      throw new Error("Rollout percentage must be between 0 and 100");
     }
 
-    return { success: true };
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    console.error('Error updating feature flags:', err);
-    return { success: false, error: message };
+    const flag = await this.getFeatureFlag(flagId);
+    if (flag) {
+      await this.upsertFeatureFlag({ ...flag, rolloutPercentage: percentage });
+    }
+  }
+
+  /**
+   * Add user to target users list
+   * 
+   * Explicitly enable feature for specific user.
+   * 
+   * @param flagId - Feature flag identifier
+   * @param userId - User identifier to add
+   */
+  async addTargetUser(flagId: string, userId: string): Promise<void> {
+    const flag = await this.getFeatureFlag(flagId);
+    if (flag) {
+      const targetUsers = flag.targetUsers || [];
+      if (!targetUsers.includes(userId)) {
+        targetUsers.push(userId);
+        await this.upsertFeatureFlag({ ...flag, targetUsers });
+      }
+    }
+  }
+
+  /**
+   * Remove user from target users list
+   * 
+   * @param flagId - Feature flag identifier
+   * @param userId - User identifier to remove
+   */
+  async removeTargetUser(flagId: string, userId: string): Promise<void> {
+    const flag = await this.getFeatureFlag(flagId);
+    if (flag && flag.targetUsers) {
+      const targetUsers = flag.targetUsers.filter(id => id !== userId);
+      await this.upsertFeatureFlag({ ...flag, targetUsers });
+    }
+  }
+
+  // ==========================================================================
+  // Private Helper Methods
+  // ==========================================================================
+
+  /**
+   * Check if user is in rollout percentage
+   * 
+   * Uses deterministic hashing to ensure consistent experience.
+   * Same user always gets same result for same flag.
+   * 
+   * @param userId - User identifier
+   * @param flagId - Feature flag identifier
+   * @param percentage - Rollout percentage (0-100)
+   * @returns Whether user is in rollout
+   */
+  private isUserInRollout(userId: string, flagId: string, percentage: number): boolean {
+    // 0% = nobody, 100% = everybody
+    if (percentage === 0) return false;
+    if (percentage === 100) return true;
+
+    // Hash user + flag to get deterministic value
+    const hash = this.hashUserFlag(userId, flagId);
+    const userPercentile = (hash % 10000) / 100; // 0-100
+    
+    return userPercentile < percentage;
+  }
+
+  /**
+   * Hash user ID with flag ID
+   * 
+   * Creates deterministic hash for consistent rollout.
+   * 
+   * @param userId - User identifier
+   * @param flagId - Feature flag identifier
+   * @returns Numeric hash value
+   */
+  private hashUserFlag(userId: string, flagId: string): number {
+    const hash = createHash("md5")
+      .update(userId + flagId)
+      .digest("hex");
+    return parseInt(hash.substring(0, 8), 16);
+  }
+
+  /**
+   * Get current environment
+   * 
+   * Determines environment from NODE_ENV or defaults to development.
+   * 
+   * @returns Current environment
+   */
+  private getCurrentEnvironment(): "development" | "staging" | "production" {
+    const env = process.env.NODE_ENV;
+    if (env === "production") return "production";
+    if (env === "staging") return "staging";
+    return "development";
   }
 }
 
-/**
- * Reset user's feature flags to defaults
- * 
- * @param userId - Shopify shop owner ID
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon key
- */
-export async function resetUserFeatureFlags(
-  userId: string,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<{ success: boolean; error?: string }> {
-  const defaultFlags: Partial<Record<FeatureFlagKey, boolean>> = {};
-  
-  for (const flagKey of Object.keys(FEATURE_FLAGS) as FeatureFlagKey[]) {
-    defaultFlags[flagKey] = FEATURE_FLAGS[flagKey].defaultEnabled;
-  }
-  
-  return updateUserFeatureFlags(userId, defaultFlags, supabaseUrl, supabaseKey);
-}
+// ============================================================================
+// Export singleton instance
+// ============================================================================
 
+export const featureFlagService = new FeatureFlagService();
