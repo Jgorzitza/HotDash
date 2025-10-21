@@ -222,8 +222,7 @@ interface PIICardProps {
 - ✅ No linter errors
 
 **MCP Required**: 
-- Context7 → Polaris Card, Banner, DataTable, Button components
-- Shopify Dev MCP → validate component usage with `validate_component_codeblocks`
+- Shopify Dev MCP → Polaris Card, Banner, DataTable, Button components + validate with `validate_component_codeblocks`
 
 ---
 
@@ -291,8 +290,8 @@ interface PIICardProps {
 - ✅ Designer validated UI/UX
 
 **MCP Required**: 
+- Shopify Dev MCP → Polaris Layout, Tabs components
 - Context7 → React Router 7 data loading patterns
-- Context7 → Polaris Layout, Tabs components
 
 ---
 
@@ -456,19 +455,19 @@ interface PIICardProps {
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
-1. **Context7 MCP**: Pull docs BEFORE coding
-   - React Router 7 data loading patterns
-   - Polaris components (Card, Banner, DataTable, Tabs, Layout)
-   - TypeScript best practices
-   - Google Analytics 4 API
-
-2. **Shopify Dev MCP**: Validate all Shopify code
-   - `validate_component_codeblocks` for Polaris components
+1. **Shopify Dev MCP**: FIRST for all Shopify/Polaris
+   - Polaris components (Card, Banner, DataTable, Tabs, Layout, Button, etc.)
+   - `validate_component_codeblocks` for Polaris components (REQUIRED)
    - `validate_graphql_codeblocks` if fetching customer data
 
-3. **Web Search**: Use for GA4 implementation details if Context7 doesn't have
-   - "GA4 custom dimensions event scope"
-   - "GA4 DebugView testing"
+2. **Context7 MCP**: For non-Shopify libraries
+   - React Router 7 data loading patterns
+   - TypeScript best practices
+   - Google Analytics 4 API
+   - Chart.js (if needed)
+
+3. **Web Search**: LAST RESORT ONLY if neither MCP has the info
+   - Example: "GA4 custom dimensions event scope" (if Context7 doesn't have)
 
 ### Evidence Requirements (CI Merge Blockers)
 1. **MCP Evidence JSONL**: `artifacts/engineer/<date>/mcp/pii-card.jsonl` and `mcp/ga4-attribution.jsonl`
