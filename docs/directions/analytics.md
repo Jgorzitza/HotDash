@@ -46,7 +46,53 @@ git pull origin manager-reopen-20251021
 
 ---
 
+## 🔄 IMMEDIATE CROSS-FUNCTIONAL WORK (2 hours) — START NOW
+
+**While waiting for BLOCKER-002 (migrations)**: Support Data and Integrations
+
+### ANALYTICS-019: Search Console Schema Review (1h) — P1
+
+**Objective**: Help Data (DATA-020) by reviewing Search Console metrics table schema
+
+**Owner**: Analytics (data modeling expert)  
+**Beneficiary**: Data
+
+**Deliverables**:
+- **Schema Review** (`artifacts/analytics/2025-10-21/search-console-schema-review.md`):
+  - Review DATA-020 tables (seo_search_console_metrics, seo_search_queries, seo_landing_pages)
+  - Validate columns match Search Console API response
+  - Recommend indexes for performance
+  - Suggest aggregation queries for dashboard
+
+**Dependencies**: None (can review migrations now)
+
+**Acceptance**: ✅ Review complete, ✅ Data can refine schema
+
+---
+
+### ANALYTICS-020: Telemetry Documentation (1h) — P2
+
+**Objective**: Help Integrations with telemetry implementation documentation
+
+**Owner**: Analytics  
+**Beneficiary**: Integrations + DevOps
+
+**Deliverables**:
+- **Telemetry Guide** (`docs/analytics/telemetry-implementation.md`):
+  - GA4 Property 339826228 setup
+  - Event tracking best practices
+  - Custom dimension guidelines
+  - Testing and validation
+
+**Dependencies**: None (can start immediately)
+
+**Acceptance**: ✅ Telemetry guide created (200+ lines)
+
+---
+
 ## 🚀 PHASE 11: Action Attribution + Search Console Persistence (8 hours) — P0 CRITICAL
+
+**⚠️ BLOCKED**: Waiting for BLOCKER-002 (migrations applied)
 
 ### Context
 

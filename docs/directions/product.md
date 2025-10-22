@@ -50,9 +50,96 @@ git pull origin manager-reopen-20251021
 
 ---
 
-## 🚀 PHASE 12: CX Theme Task Generation (2 hours) — P3 PRIORITY
+## ✅ PRODUCT-015 COMPLETE (2025-10-21)
 
-**Objective**: Convert CX conversation themes (from AI-Knowledge) into actionable Product tasks
+**Task**: CX Theme Action Generation
+
+**Completed**:
+- ✅ CX theme action generation framework implemented
+- ✅ Committed and pushed to manager-reopen-20251021
+
+**Evidence**: Feedback log with commit references
+
+**Completed**: 2025-10-21T22:35Z
+
+---
+
+## 🔄 CROSS-FUNCTIONAL SUPPORT WORK (4 hours) — START NOW
+
+**Strategic Deployment**: Support Inventory, Integrations, and Engineer with UI/UX planning
+
+### PRODUCT-016: Vendor Management UI Planning (2h) — P1
+
+**Objective**: Help Inventory (INVENTORY-016) + Engineer by defining vendor management UI requirements
+
+**Owner**: Product (UI planning expert)  
+**Beneficiary**: Inventory + Engineer
+
+**Deliverables**:
+1. **Vendor Management UI Spec** (`docs/product/vendor-management-ui-spec.md`):
+   - Vendor list view (table with reliability score, lead time, cost)
+   - Add/edit vendor modal (contact info, terms, logistics)
+   - Multi-SKU management UI (same product, multiple vendors)
+   - PO creation flow with vendor selection
+   - Filtering/sorting by reliability, lead time, cost
+
+2. **UI Wireframes** (text descriptions or ASCII):
+   - Main vendor table layout
+   - Add vendor modal
+   - Vendor detail view
+   - PO creation with vendor picker
+
+**Dependencies**: Inventory completes INVENTORY-016 (service logic)
+
+**Acceptance**: ✅ UI spec created (500+ lines), ✅ Engineer can implement UI
+
+---
+
+### PRODUCT-017: ALC Calculation UI Planning (1.5h) — P1
+
+**Objective**: Help Inventory (INVENTORY-017) + Engineer by defining Average Landed Cost UI
+
+**Owner**: Product  
+**Beneficiary**: Inventory + Integrations + Engineer
+
+**Deliverables**:
+1. **ALC UI Spec** (`docs/product/alc-calculation-ui-spec.md`):
+   - Receiving shipment form (PO ID, vendor, invoice cost)
+   - Freight allocation input (distributed by weight)
+   - Duty allocation input (per piece by weight)
+   - ALC calculation preview (before saving)
+   - Confirmation: "This will update Shopify cost to $X.XX"
+   - History view: ALC changes over time per product
+
+**Dependencies**: Inventory completes INVENTORY-017 (ALC service)
+
+**Acceptance**: ✅ UI spec created (300+ lines), ✅ Clear operator workflow
+
+---
+
+### PRODUCT-018: Action Attribution UX Flow (30min) — P1
+
+**Objective**: Help Analytics (ANALYTICS-017) by defining action attribution user experience
+
+**Owner**: Product  
+**Beneficiary**: Analytics
+
+**Deliverables**:
+- **Attribution UX Doc** (`docs/product/action-attribution-ux.md`):
+  - How operator sees action performance (7d/14d/28d ROI)
+  - Action ranking UI (expected vs realized revenue)
+  - Attribution data in action cards ("Last month: +$2.4K revenue")
+  - GA4 custom dimension visualization
+
+**Dependencies**: None (can start immediately)
+
+**Acceptance**: ✅ UX flow documented, ✅ Analytics can implement
+
+---
+
+**Total Assigned**: 4 hours supporting Inventory, Integrations, Analytics, Engineer  
+**Priority**: P1 (UI planning critical for Phase 10-11 features)  
+**Start**: PRODUCT-018 (immediate), PRODUCT-016/017 (when dependencies ready)
 
 ### Context
 

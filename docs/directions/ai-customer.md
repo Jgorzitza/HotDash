@@ -47,15 +47,76 @@ git pull origin manager-reopen-20251021
 
 ---
 
-## 🔄 ACTIVE TASKS: Testing + Improvements (6 hours) — MAINTENANCE MODE
+## ✅ AI-CUSTOMER-014 COMPLETE (2025-10-21)
 
-**Objective**: Complete testing + improve grading system quality
+**Task**: Grading System Enhancements
+
+**Completed**:
+- ✅ Updated grading logic in `app/services/approval/grading.server.ts`
+- ✅ Enhanced scoring algorithm with confidence metrics
+- ✅ Testing complete (17 tests passing)
+
+**Evidence**: Feedback log with test results
+
+**Completed**: 2025-10-21T17:15Z
 
 ---
 
-### AI-CUSTOMER-011: CEO Agent Testing Suite (3h) — DEFERRED WORK
+## 🔄 CROSS-FUNCTIONAL SUPPORT WORK (3 hours) — START NOW
 
-**Objective**: 75+ tests for CEO Agent functionality
+**Strategic Deployment**: Support QA and Pilot with grading expertise and test scenarios
+
+---
+
+### AI-CUSTOMER-015: Approval Queue Test Scenarios (2h) — P1
+
+**Objective**: Help QA (QA-009) by creating comprehensive test scenarios for approval queue and grading
+
+**Owner**: AI-Customer (grading + approval expert)  
+**Beneficiary**: QA + Pilot
+
+**Deliverables**:
+1. **Approval Queue Test Scenarios** (`docs/ai-customer/approval-queue-test-scenarios.md`):
+   - Draft → Pending Review → Approved → Applied flow
+   - Grading scenarios (1-5 scale for tone/accuracy/policy)
+   - Edge cases: malformed data, timeout, concurrent approvals
+   - Rollback scenarios
+   
+2. **Grading Test Data** (`artifacts/ai-customer/2025-10-21/test-grading-data.json`):
+   - 20 sample replies with expected grades (1-5)
+   - Poor examples (1-2 grades) with clear issues
+   - Good examples (4-5 grades) with quality indicators
+   - Edge cases (missing fields, invalid scores)
+
+**Dependencies**: None (can start immediately)
+
+**Acceptance**: ✅ Test scenarios created (400+ lines), ✅ QA can use for testing
+
+---
+
+### AI-CUSTOMER-016: Pilot Smoke Test Support (1h) — P2
+
+**Objective**: Help Pilot with CEO Agent UI smoke testing
+
+**Owner**: AI-Customer  
+**Beneficiary**: Pilot
+
+**Deliverables**:
+- **CEO Agent Smoke Test Guide** (`docs/ai-customer/ceo-agent-smoke-test-guide.md`):
+  - Quick validation steps (5-10 min smoke test)
+  - Expected behaviors for each feature
+  - Pass/fail criteria
+  - Known issues to ignore
+
+**Dependencies**: None (can start immediately)
+
+**Acceptance**: ✅ Smoke test guide created, ✅ Pilot can execute
+
+---
+
+### AI-CUSTOMER-011: CEO Agent Testing Suite (DEFERRED - Low Priority)
+
+**Objective**: 75+ comprehensive tests for CEO Agent functionality (NOT urgent)
 
 **Test Areas**:
 
