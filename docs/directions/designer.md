@@ -53,9 +53,13 @@ git pull origin manager-reopen-20251021
 
 ---
 
-## 🚀 ACTIVE TASKS (5 hours)
+## 🚀 ACTIVE TASKS (7 hours total)
 
-### DES-015: Phase 7-8 Analytics UI Validation (2h) — START NOW
+### IMMEDIATE WORK (2h) — START NOW (No Dependencies)
+
+#### DES-015: Phase 7-8 Analytics UI Validation (2h) — P1
+
+**Can start immediately** (Engineer completed Phase 7-8)
 
 **Prerequisites**: Engineer completed Phase 7-8 (commits: ffa0bc6, 61fe5b1) ✅
 
@@ -116,7 +120,51 @@ git pull origin manager-reopen-20251021
 
 ---
 
-### DES-017: Phase 9 PII Card Design QA (3h) — P0 PRIORITY
+### CROSS-FUNCTIONAL WORK (2h) — While Waiting for ENG-029
+
+#### DES-018: CI Guards UI Review (1h) — P2
+
+**Objective**: Help DevOps (DEVOPS-014) by reviewing CI guard error messages for clarity
+
+**Owner**: Designer (UX copy expert)  
+**Beneficiary**: DevOps + All agents
+
+**Deliverables**:
+- **Error Message Review** (`artifacts/designer/2025-10-21/ci-guards-ux-review.md`):
+  - Review error messages from verify-mcp-evidence.js, verify-heartbeat.js
+  - Suggest clearer wording (actionable, friendly, specific)
+  - Improve error formatting for CI logs
+  - Add "How to Fix" links to runbooks
+
+**Dependencies**: DevOps completes DEVOPS-014 scripts
+
+**Acceptance**: ✅ UX review complete, ✅ DevOps can improve messages
+
+---
+
+#### DES-019: Vendor Management UI Mockups (1h) — P2
+
+**Objective**: Help Product (PRODUCT-016) by creating quick UI mockups for vendor management
+
+**Owner**: Designer  
+**Beneficiary**: Product + Engineer
+
+**Deliverables**:
+- **ASCII Mockups** (`docs/designer/vendor-management-mockups.txt`):
+  - Vendor list table layout
+  - Add/edit vendor modal
+  - Vendor selection in PO flow
+  - Mobile-responsive considerations
+
+**Dependencies**: Product completes PRODUCT-016 UI spec
+
+**Acceptance**: ✅ Mockups created, ✅ Engineer can visualize UI
+
+---
+
+### WAITING ON ENGINEER (3h) — Blocked Until ENG-029 Complete
+
+#### DES-017: Phase 9 PII Card Design QA (3h) — P0 PRIORITY
 
 **Prerequisites**: Engineer implements ENG-029, ENG-030, ENG-031 (PII Card components)
 

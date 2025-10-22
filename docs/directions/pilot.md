@@ -17,9 +17,56 @@ git pull origin manager-reopen-20251021
 - ✅ CX + Sales modals PASSED
 - ⚠️ Inventory modal NOT FOUND
 
-## 🔄 ACTIVE TASKS: Phase 9-12 Smoke Testing (12h) — REACTIVE
+## 🔄 IMMEDIATE CROSS-FUNCTIONAL WORK (2 hours) — START NOW
 
-### PILOT-012: Phase 9 PII Card Smoke Test (2h)
+**While waiting for Engineer**: Support QA and DevOps with testing infrastructure
+
+### PILOT-017: QA Early Smoke Tests (1h) — P2
+
+**Objective**: Help QA by performing early smoke tests on Phase 7-8 features
+
+**Owner**: Pilot (smoke test expert)  
+**Beneficiary**: QA
+
+**Deliverables**:
+- **Phase 7-8 Smoke Test Report** (`artifacts/pilot/2025-10-21/phase-7-8-smoke-test.md`):
+  - Test analytics tiles (Social, SEO, Ads, Growth) - quick 5-min validation each
+  - Test analytics modals - open/close, data display
+  - Browser compatibility check (Chrome, Firefox, Safari)
+  - Mobile responsiveness check (viewport resize)
+  - Pass/fail with screenshots
+
+**Dependencies**: None (Phase 7-8 already deployed to staging)
+
+**Acceptance**: ✅ Smoke test report created, ✅ QA has early validation
+
+---
+
+### PILOT-018: DevOps CI Guards Testing (1h) — P1
+
+**Objective**: Help DevOps (DEVOPS-014) by testing CI guard scripts
+
+**Owner**: Pilot  
+**Beneficiary**: DevOps
+
+**Deliverables**:
+- **CI Guards Test Report** (`artifacts/pilot/2025-10-21/ci-guards-test-report.md`):
+  - Test verify-mcp-evidence.js (missing evidence, invalid JSONL, non-code change exemption)
+  - Test verify-heartbeat.js (stale heartbeat, no heartbeat for long task)
+  - Test dev-mcp-ban (Dev MCP in app/, Dev MCP in scripts/ - should pass)
+  - Document failure messages (are they clear and actionable?)
+
+**Dependencies**: DevOps completes DEVOPS-014 scripts
+
+**Acceptance**: ✅ Test report created, ✅ DevOps can fix issues
+
+---
+
+## 🔄 WAITING ON ENGINEER: Phase 9-12 Smoke Testing (12h) — REACTIVE
+
+**All blocked until Engineer completes Phase 9-12 work**
+
+### PILOT-012: Phase 9 PII Card Smoke Test (2h) — ⏸️ BLOCKED
 
 **Prerequisites**: Engineer completes Phase 9
 
