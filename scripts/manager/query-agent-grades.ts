@@ -7,6 +7,7 @@
 
 import 'dotenv/config';
 import prisma from '../../app/db.server';
+import { Prisma } from '@prisma/client';
 
 async function queryAgentGrades(agentName?: string) {
   console.log('📊 Querying Agent Self-Grades & Retrospectives\n');
