@@ -199,22 +199,72 @@ Test coverage:
 - ✅ Remove content
 - ✅ Handle not found scenarios
 
-### Workflow
+### Complete Workflow (Product Integration)
 
 ```
 Customer Questions (CX)
   ↓
-AI-Knowledge detects themes
+AI-Knowledge detects recurring themes
   ↓
-Product agent generates Action cards with draft content
+Product agent generates Action cards (with draft content templates)
   ↓
-Operator reviews & approves in Action Queue
+Stored in DashboardFact (factType: "product.cx_theme_action")
   ↓
-Content agent applies using this service
+Action Queue displays to operator
   ↓
-Shopify product updated with CX content (metafields)
+Operator approves action
+  ↓
+POST /api/cx-actions/apply (with action + productId)
+  ↓
+CX Action Applier maps implementationType → contentType
+  ↓
+Applies draft copy to Shopify product (via productUpdate + metafields)
+  ↓
+Shopify product updated with CX content (namespace: "cx_content")
   ↓
 Content visible on storefront
+```
+
+### Integration Services
+
+**Product → Content Bridge**: `app/services/content/cx-action-applier.ts`
+
+**Purpose**: Connects Product agent's CX theme actions to Content's implementation service
+
+**Key Functions**:
+- `mapImplementationTypeToContentType()` - Maps Product's types to Content's types
+- `applyCXThemeAction()` - Applies single approved action
+- `getApprovedCXThemeActions()` - Retrieves approved actions from DashboardFact
+
+**API Endpoint**: `POST /api/cx-actions/apply`
+
+**Request**:
+```json
+{
+  "productId": "gid://shopify/Product/123",
+  "action": {
+    "type": "content",
+    "title": "Add size chart to Powder Boards",
+    "draftCopy": "**Size Chart**\n\n| Size | Measurements |...",
+    "metadata": {
+      "implementationType": "add_size_chart",
+      "productHandle": "powder-boards",
+      "theme": "size chart",
+      "occurrences": 7
+    }
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "productId": "gid://shopify/Product/123",
+  "contentType": "size_chart",
+  "appliedAt": "2025-10-21T20:45:00Z",
+  "message": "Successfully applied size_chart to product"
+}
 ```
 
 ### Future Enhancements
