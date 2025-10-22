@@ -1,9 +1,0 @@
-{
-  "provider": "openai",
-  "llmModel": "gpt-4o-mini",
-  "embeddingModel": "text-embedding-3-small",
-  "envVars": [
-    "OPENAI_API_KEY"
-  ],
-  "createdAt": "2025-10-10T16:05:36.753Z"
-}

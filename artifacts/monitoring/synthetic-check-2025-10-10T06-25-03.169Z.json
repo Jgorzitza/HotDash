@@ -1,9 +1,0 @@
-{
-  "timestamp": "2025-10-10T06:25:03.169Z",
-  "target": "https://hotdash-staging.fly.dev/app?mock=1",
-  "budgetMs": 300,
-  "durationMs": 234.75,
-  "status": 200,
-  "ok": true,
-  "error": null
-}

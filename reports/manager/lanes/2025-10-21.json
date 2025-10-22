@@ -1,0 +1,28 @@
+{
+  "cycle_date": "2025-10-21",
+  "total_agents": 17,
+  "idle_agents": 0,
+  "blockers_pending": 3,
+  "immediate_start": 8,
+  "waiting_on_blockers": 5,
+  "waiting_on_dependencies": 3,
+  "lanes": {
+    "engineer": {"task": "ENG-029: PII Card component", "hours": 4, "priority": "P0", "dependencies": []},
+    "devops": {"task": "DEVOPS-014: CI guards implementation", "hours": 3, "priority": "P1", "dependencies": []},
+    "ai-knowledge": {"task": "AI-KNOWLEDGE-017: PII sanitization", "hours": 1, "priority": "P3", "dependencies": []},
+    "content": {"task": "CONTENT-015: CX theme content", "hours": 3, "priority": "P2", "dependencies": []},
+    "seo": {"task": "SEO-018: Content optimization", "hours": 2, "priority": "P2", "dependencies": []},
+    "support": {"task": "SUPPORT-008: CX workflow docs", "hours": 1.5, "priority": "P2", "dependencies": []},
+    "ai-customer": {"task": "AI-CUSTOMER-014: Grading enhancements", "hours": 2, "priority": "P2", "dependencies": []},
+    "product": {"task": "PRODUCT-015: CX theme actions", "hours": 1.5, "priority": "P3", "dependencies": []},
+    "ads": {"task": "ADS-011: Fix unit tests", "hours": 2, "priority": "P1", "dependencies": ["BLOCKER-001"]},
+    "data": {"task": "DATA-019: Dev memory RLS", "hours": 1, "priority": "P1", "dependencies": ["BLOCKER-002"]},
+    "analytics": {"task": "ANALYTICS-017: Action attribution", "hours": 4, "priority": "P1", "dependencies": ["BLOCKER-002"]},
+    "inventory": {"task": "INVENTORY-016: Vendor service", "hours": 3.5, "priority": "P1", "dependencies": ["BLOCKER-002"]},
+    "integrations": {"task": "INTEGRATIONS-012: Shopify cost sync", "hours": 2.5, "priority": "P1", "dependencies": ["BLOCKER-002"]},
+    "designer": {"task": "DES-017: PII Card QA", "hours": 1.5, "priority": "P1", "dependencies": ["ENG-029"]},
+    "qa": {"task": "QA-009: PII Card testing", "hours": 2, "priority": "P1", "dependencies": ["ENG-029"]},
+    "pilot": {"task": "PILOT-012: PII Card smoke test", "hours": 1, "priority": "P1", "dependencies": ["ENG-029"]},
+    "manager": {"task": "Clear BLOCKER-002 + coordination", "hours": 0.5, "priority": "P0", "dependencies": []}
+  }
+}

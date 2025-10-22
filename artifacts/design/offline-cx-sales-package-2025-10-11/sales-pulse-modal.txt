@@ -1,7 +1,0 @@
-# Sales Pulse Modal (Offline Description)
-
-- Initial focus: Close button (`button[aria-label="Close sales pulse modal"]`).
-- Tab order: close → action select (`Log follow-up` / `Escalate to ops`) → notes textarea → submit button → Cancel.
-- Helper copy: revenue snapshot section includes reminder that >15% variance notifies customer.support@hotrodan.com automatically.
-- Lists: Top SKUs and Open fulfillment remain semantic `ul` lists with descriptive `<li>` entries.
-- Toast expectation: submit button text matches selected action; success toast logs decision, error prompts retry.
