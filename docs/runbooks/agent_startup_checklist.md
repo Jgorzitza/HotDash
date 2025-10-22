@@ -255,7 +255,32 @@ await logDecision({
 - [ ] If UI needs sample "approvals," create **fixtures** only:
       `provenance.mode="dev:test"`, include a `feedback_ref`, and keep **Apply disabled**.
 
-## 9) Escalation
+## 9) START WORKING (MANDATORY - DO NOT STOP HERE)
+
+**⚠️ CRITICAL: After completing startup checklist, BEGIN WORKING IMMEDIATELY**
+
+- [ ] **Start your next task** (from step 2):
+  ```bash
+  npx tsx --env-file=.env scripts/agent/start-task.ts <TASK-ID>
+  ```
+
+- [ ] **Begin implementation** - Do not report "ready to start"
+- [ ] **Log progress immediately** as you work via `logDecision()`
+- [ ] **Complete the task** and move to the next one
+- [ ] **Continue working** until all tasks are done or you're blocked
+
+**DO NOT**: 
+- ❌ Stop and report "startup complete, ready to start"
+- ❌ Wait for manager approval to begin work
+- ❌ Ask "what should I work on next"
+
+**DO**:
+- ✅ Start working immediately after startup
+- ✅ Log progress as you work
+- ✅ Complete tasks and move to next ones
+- ✅ Only stop when truly blocked or all tasks complete
+
+## 10) Escalation
 
 - [ ] If blocked > 10 minutes after tool attempts, log the blocker with exact error/output
       in your feedback file and @mention the manager in the **Issue** with a proposed next step.
