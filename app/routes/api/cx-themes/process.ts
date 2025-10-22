@@ -6,7 +6,7 @@
  */
 
 import type { ActionFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import shopify from "~/shopify.server";
 import { processCXThemes, addCXActionsToQueue, type ConversationTheme } from "~/services/product/cx-theme-actions";
 
@@ -21,18 +21,18 @@ export async function action({ request }: ActionFunctionArgs) {
   const shopDomain = session.shop;
 
   if (request.method.toUpperCase() !== "POST") {
-    return json({ error: "Method Not Allowed" }, { status: 405 });
+    return Response.json({ error: "Method Not Allowed" }, { status: 405 });
   }
 
   let payload: ProcessPayload;
   try {
     payload = await request.json();
   } catch {
-    return json({ error: "Invalid JSON body" }, { status: 400 });
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   if (!Array.isArray(payload?.themes)) {
-    return json(
+    return Response.json(
       { error: "themes array is required" },
       { status: 400 }
     );
@@ -49,7 +49,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // 2. Add to Action Queue (via DashboardFact)
     const result = await addCXActionsToQueue(actions, shopDomain);
     
-    return json({
+    return Response.json({
       success: true,
       themesProcessed: payload.themes.length,
       actionsGenerated: actions.length,
@@ -59,7 +59,7 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     console.error("[CX Themes] Processing error:", error);
     
-    return json(
+    return Response.json(
       { 
         success: false, 
         error: error.message || "Failed to process CX themes" 

@@ -10,7 +10,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { generateAllReorderAlerts } from "~/services/inventory/reorder-alerts";
 import { autoGeneratePurchaseOrders } from "~/services/inventory/po-automation";
 
@@ -50,14 +50,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Auto-generate purchase orders
     const poSummary = await autoGeneratePurchaseOrders(alertSummary.alerts);
 
-    return json({
+    return Response.json({
       success: true,
       data: poSummary,
     });
   } catch (error: any) {
     console.error("[API] PO automation error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to auto-generate purchase orders",

@@ -7,13 +7,13 @@
  * Returns the assigned variant ID and configuration.
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.experiments.assign";
 import { abTestingService } from "~/services/experiments/ab-testing";
 
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -22,7 +22,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     // Validate inputs
     if (!userId || !experimentId) {
-      return json(
+      return Response.json(
         { error: "Missing required fields: userId, experimentId" },
         { status: 400 }
       );
@@ -31,7 +31,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Get experiment configuration
     const experiment = abTestingService.getExperiment(experimentId);
     if (!experiment) {
-      return json(
+      return Response.json(
         { error: `Experiment not found: ${experimentId}` },
         { status: 404 }
       );
@@ -39,7 +39,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     // Check if experiment is running
     if (experiment.status !== "running") {
-      return json(
+      return Response.json(
         { error: `Experiment is not running: ${experiment.status}` },
         { status: 400 }
       );
@@ -58,7 +58,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Get variant configuration
     const config = abTestingService.getExperimentConfig(userId, experimentId);
 
-    return json({
+    return Response.json({
       success: true,
       assignment: {
         experimentId: assignment.experimentId,
@@ -70,7 +70,7 @@ export async function action({ request }: Route.ActionArgs) {
     });
   } catch (error) {
     console.error("[API] Experiment assign error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

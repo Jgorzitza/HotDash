@@ -6,13 +6,13 @@
  * Updates feature flag settings (enable/disable, rollout %, targeting).
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.features.update";
 import { featureFlagService } from "~/services/experiments/feature-flags";
 
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -20,7 +20,7 @@ export async function action({ request }: Route.ActionArgs) {
     const { flagId, action: updateAction, value } = body;
 
     if (!flagId || !updateAction) {
-      return json(
+      return Response.json(
         { error: "Missing required fields: flagId, action" },
         { status: 400 }
       );
@@ -38,7 +38,7 @@ export async function action({ request }: Route.ActionArgs) {
 
       case "updateRollout":
         if (typeof value !== "number") {
-          return json(
+          return Response.json(
             { error: "Rollout percentage must be a number (0-100)" },
             { status: 400 }
           );
@@ -48,7 +48,7 @@ export async function action({ request }: Route.ActionArgs) {
 
       case "addTargetUser":
         if (typeof value !== "string") {
-          return json(
+          return Response.json(
             { error: "Target user must be a string" },
             { status: 400 }
           );
@@ -58,7 +58,7 @@ export async function action({ request }: Route.ActionArgs) {
 
       case "removeTargetUser":
         if (typeof value !== "string") {
-          return json(
+          return Response.json(
             { error: "Target user must be a string" },
             { status: 400 }
           );
@@ -67,7 +67,7 @@ export async function action({ request }: Route.ActionArgs) {
         break;
 
       default:
-        return json(
+        return Response.json(
           { error: `Invalid action: ${updateAction}` },
           { status: 400 }
         );
@@ -76,14 +76,14 @@ export async function action({ request }: Route.ActionArgs) {
     // Return updated flag
     const updatedFlag = await featureFlagService.getFeatureFlag(flagId);
 
-    return json({
+    return Response.json({
       success: true,
       flag: updatedFlag,
       message: `Feature flag ${flagId} updated successfully`
     });
   } catch (error) {
     console.error("[API] Feature update error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

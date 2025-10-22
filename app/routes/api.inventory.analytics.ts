@@ -15,7 +15,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { generateInventoryAnalytics } from "~/services/inventory/analytics";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -87,14 +87,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Generate analytics
     const analytics = await generateInventoryAnalytics(mockProducts);
 
-    return json({
+    return Response.json({
       success: true,
       data: analytics,
     });
   } catch (error: any) {
     console.error("[API] Inventory analytics error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to generate inventory analytics",

@@ -7,13 +7,13 @@
  * Used for collecting data to calculate experiment results.
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.experiments.track";
 import { abTestingService } from "~/services/experiments/ab-testing";
 
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -30,7 +30,7 @@ export async function action({ request }: Route.ActionArgs) {
 
     // Validate inputs
     if (!experimentId || !variantId || !userId || !eventType || !eventName) {
-      return json(
+      return Response.json(
         {
           error:
             "Missing required fields: experimentId, variantId, userId, eventType, eventName"
@@ -42,7 +42,7 @@ export async function action({ request }: Route.ActionArgs) {
     // Validate event type
     const validEventTypes = ["exposure", "conversion", "engagement"];
     if (!validEventTypes.includes(eventType)) {
-      return json(
+      return Response.json(
         {
           error: `Invalid eventType. Must be one of: ${validEventTypes.join(", ")}`
         },
@@ -77,7 +77,7 @@ export async function action({ request }: Route.ActionArgs) {
         break;
     }
 
-    return json({
+    return Response.json({
       success: true,
       tracked: {
         experimentId,
@@ -90,7 +90,7 @@ export async function action({ request }: Route.ActionArgs) {
     });
   } catch (error) {
     console.error("[API] Experiment track error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const targetUrl = url.searchParams.get("url");
 
     if (!targetUrl) {
-      return json(
+      return Response.json(
         {
           success: false,
           error: "url parameter is required",
@@ -34,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const analysis = await analyzeWebVitals(targetUrl);
 
-    return json({
+    return Response.json({
       success: true,
       data: analysis,
       timestamp: new Date().toISOString(),
@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Web Vitals error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to analyze Core Web Vitals",

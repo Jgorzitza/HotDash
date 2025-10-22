@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import shopify from "~/shopify.server";
 import { schedulePost } from "../../../packages/integrations/publer.ts";
 
@@ -14,14 +14,14 @@ export async function action({ request }: ActionFunctionArgs) {
   const { session } = await shopify.authenticate.admin(request);
 
   if (request.method.toUpperCase() !== "POST") {
-    return json({ error: "Method Not Allowed" }, { status: 405 });
+    return Response.json({ error: "Method Not Allowed" }, { status: 405 });
   }
 
   let payload: Payload;
   try {
     payload = await request.json();
   } catch {
-    return json({ error: "Invalid JSON body" }, { status: 400 });
+    return Response.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   if (
@@ -29,7 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
     !Array.isArray(payload?.accountIds) ||
     payload.accountIds.length === 0
   ) {
-    return json(
+    return Response.json(
       { error: "text and accountIds[] are required" },
       { status: 400 },
     );
@@ -42,9 +42,9 @@ export async function action({ request }: ActionFunctionArgs) {
       scheduledAt: payload.scheduledAt,
       workspaceId: payload.workspaceId,
     });
-    return json({ ok: true, jobId: job.job_id, shop: session.shop });
+    return Response.json({ ok: true, jobId: job.job_id, shop: session.shop });
   } catch (e) {
-    return json(
+    return Response.json(
       { ok: false, error: "Failed to schedule post" },
       { status: 502 },
     );

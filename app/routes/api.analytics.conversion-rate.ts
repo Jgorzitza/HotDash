@@ -11,7 +11,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { getConversionMetrics } from "../lib/analytics/ga4";
 import {
   ConversionResponseSchema,
@@ -33,7 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Validate response with Zod
     const validated = ConversionResponseSchema.parse(response);
 
-    return json(validated);
+    return Response.json(validated);
   } catch (error: any) {
     console.error("[API] Conversion rate error:", error);
 
@@ -48,6 +48,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const validated = ConversionResponseSchema.parse(errorResponse);
 
-    return json(validated, { status: isSampled ? 503 : 500 });
+    return Response.json(validated, { status: isSampled ? 503 : 500 });
   }
 }

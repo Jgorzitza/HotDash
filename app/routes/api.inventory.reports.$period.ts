@@ -4,14 +4,14 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { generateInventoryReport } from "~/services/inventory/reporting";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { period } = params;
 
   if (!period || !["daily", "weekly", "monthly"].includes(period)) {
-    return json(
+    return Response.json(
       {
         success: false,
         error: "Invalid period. Use: daily, weekly, or monthly",
@@ -25,12 +25,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
       period as "daily" | "weekly" | "monthly"
     );
 
-    return json({
+    return Response.json({
       success: true,
       data: report,
     });
   } catch (error: any) {
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to generate inventory report",

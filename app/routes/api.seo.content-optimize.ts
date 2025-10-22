@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const targetKeyword = formData.get("targetKeyword") as string;
 
     if (!targetKeyword) {
-      return json(
+      return Response.json(
         {
           success: false,
           error: "targetKeyword parameter is required",
@@ -46,7 +46,7 @@ export async function action({ request }: ActionFunctionArgs) {
       // Fetch and analyze URL
       analysis = await analyzeContentFromURL(url, targetKeyword);
     } else {
-      return json(
+      return Response.json(
         {
           success: false,
           error: "Either 'url' or 'html' parameter is required",
@@ -56,7 +56,7 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    return json({
+    return Response.json({
       success: true,
       data: analysis,
       timestamp: new Date().toISOString(),
@@ -64,7 +64,7 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Content optimization error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to analyze content",

@@ -10,7 +10,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { useLoaderData } from "react-router";
 import { authenticate } from "../shopify.server";
 import type { ContentPost, SocialPlatform } from "../lib/content/tracking";
@@ -56,7 +56,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   // Generate calendar structure
   const calendar = generateCalendar(parseInt(year), parseInt(month), posts);
 
-  return json({
+  return Response.json({
     calendar,
     month: parseInt(month),
     year: parseInt(year),

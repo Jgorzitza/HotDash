@@ -20,7 +20,7 @@
  */
 
 import type { LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { getShopifyServiceContext } from "../../services/shopify/client";
 import { ServiceError } from "../../services/types";
 import { logger } from "../../utils/logger.server";
@@ -110,7 +110,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         shopDomain,
         durationMs: Date.now() - startTime,
       });
-      return json(cached.data, {
+      return Response.json(cached.data, {
         headers: {
           "Cache-Control": "private, max-age=300",
           "X-Cache": "HIT",
@@ -211,7 +211,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       durationMs: duration,
     });
 
-    return json(stockRiskData, {
+    return Response.json(stockRiskData, {
       headers: {
         "Cache-Control": "private, max-age=300",
         "X-Response-Time": `${duration}ms`,
@@ -229,7 +229,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         durationMs: duration,
       });
 
-      return json(
+      return Response.json(
         {
           error: {
             message: error.message,
@@ -253,7 +253,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       durationMs: duration,
     });
 
-    return json(
+    return Response.json(
       {
         error: {
           message:

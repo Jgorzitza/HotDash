@@ -39,7 +39,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const type = url.searchParams.get("type");
 
   if (!type) {
-    return json({ error: "Missing required parameter: type" }, { status: 400 });
+    return Response.json({ error: "Missing required parameter: type" }, { status: 400 });
   }
 
   try {
@@ -49,14 +49,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
         const platform = url.searchParams.get("platform") as SocialPlatform;
 
         if (!postId || !platform) {
-          return json(
+          return Response.json(
             { error: "Missing required parameters: postId, platform" },
             { status: 400 },
           );
         }
 
         if (!["instagram", "facebook", "tiktok"].includes(platform)) {
-          return json(
+          return Response.json(
             {
               error:
                 "Invalid platform. Must be: instagram, facebook, or tiktok",
@@ -66,7 +66,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         }
 
         const performance = await getContentPerformance(postId, platform);
-        return json({ performance });
+        return Response.json({ performance });
       }
 
       case "aggregated": {
@@ -77,7 +77,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           | undefined;
 
         if (!startDate || !endDate) {
-          return json(
+          return Response.json(
             { error: "Missing required parameters: startDate, endDate" },
             { status: 400 },
           );
@@ -86,7 +86,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         // Validate date format (YYYY-MM-DD)
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
-          return json(
+          return Response.json(
             { error: "Invalid date format. Use YYYY-MM-DD" },
             { status: 400 },
           );
@@ -96,7 +96,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           platform &&
           !["instagram", "facebook", "tiktok"].includes(platform)
         ) {
-          return json(
+          return Response.json(
             {
               error:
                 "Invalid platform. Must be: instagram, facebook, or tiktok",
@@ -110,7 +110,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           endDate,
           platform,
         );
-        return json({ performance });
+        return Response.json({ performance });
       }
 
       case "top": {
@@ -125,7 +125,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           | null;
 
         if (!startDate || !endDate) {
-          return json(
+          return Response.json(
             { error: "Missing required parameters: startDate, endDate" },
             { status: 400 },
           );
@@ -134,7 +134,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         // Validate date format
         const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
         if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
-          return json(
+          return Response.json(
             { error: "Invalid date format. Use YYYY-MM-DD" },
             { status: 400 },
           );
@@ -142,7 +142,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
         const limit = limitParam ? parseInt(limitParam, 10) : 10;
         if (isNaN(limit) || limit < 1 || limit > 100) {
-          return json(
+          return Response.json(
             { error: "Invalid limit. Must be between 1 and 100" },
             { status: 400 },
           );
@@ -150,7 +150,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
         const validSortBy = ["engagement", "reach", "clicks", "conversions"];
         if (sortBy && !validSortBy.includes(sortBy)) {
-          return json(
+          return Response.json(
             {
               error:
                 "Invalid sortBy. Must be: engagement, reach, clicks, or conversions",
@@ -165,18 +165,18 @@ export async function loader({ request }: LoaderFunctionArgs) {
           limit,
           sortBy || "engagement",
         );
-        return json({ posts });
+        return Response.json({ posts });
       }
 
       default:
-        return json(
+        return Response.json(
           { error: "Invalid type. Must be: post, aggregated, or top" },
           { status: 400 },
         );
     }
   } catch (error) {
     console.error("Content performance API error:", error);
-    return json(
+    return Response.json(
       { error: "Failed to fetch content performance metrics" },
       { status: 500 },
     );

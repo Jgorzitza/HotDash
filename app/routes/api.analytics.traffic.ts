@@ -13,7 +13,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { getTrafficMetrics } from "../lib/analytics/ga4";
 import {
   TrafficResponseSchema,
@@ -40,7 +40,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Validate response with Zod
     const validated = TrafficResponseSchema.parse(response);
 
-    return json(validated);
+    return Response.json(validated);
   } catch (error: any) {
     console.error("[API] Traffic metrics error:", error);
 
@@ -55,6 +55,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const validated = TrafficResponseSchema.parse(errorResponse);
 
-    return json(validated, { status: isSampled ? 503 : 500 });
+    return Response.json(validated, { status: isSampled ? 503 : 500 });
   }
 }

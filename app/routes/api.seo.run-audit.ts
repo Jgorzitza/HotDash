@@ -29,7 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // Run audit
     const auditResult = await runDailyAudit(urls);
 
-    return json({
+    return Response.json({
       success: true,
       data: auditResult,
       timestamp: new Date().toISOString(),
@@ -37,7 +37,7 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     console.error("[API] SEO audit error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to run SEO audit",
@@ -60,7 +60,7 @@ export async function loader({ request }: ActionFunctionArgs) {
     const urls = await getURLsToAudit(shopDomain);
     const auditResult = await runDailyAudit(urls);
 
-    return json({
+    return Response.json({
       success: true,
       data: auditResult,
       timestamp: new Date().toISOString(),
@@ -68,7 +68,7 @@ export async function loader({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     console.error("[API] SEO audit error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to retrieve SEO audit results",

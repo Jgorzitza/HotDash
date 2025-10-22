@@ -10,7 +10,7 @@
  * - Winner declaration (if significant)
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.experiments.results";
 import { abTestingService } from "~/services/experiments/ab-testing";
 
@@ -19,7 +19,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     const { experimentId } = params;
 
     if (!experimentId) {
-      return json(
+      return Response.json(
         { error: "Missing experimentId parameter" },
         { status: 400 }
       );
@@ -28,7 +28,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     // Get experiment configuration
     const experiment = abTestingService.getExperiment(experimentId);
     if (!experiment) {
-      return json(
+      return Response.json(
         { error: `Experiment not found: ${experimentId}` },
         { status: 404 }
       );
@@ -80,13 +80,13 @@ export async function loader({ params }: Route.LoaderArgs) {
       metrics: experiment.metrics
     };
 
-    return json({
+    return Response.json({
       success: true,
       results
     });
   } catch (error) {
     console.error("[API] Experiment results error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

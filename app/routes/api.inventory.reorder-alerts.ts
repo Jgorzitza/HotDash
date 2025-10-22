@@ -13,7 +13,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { generateAllReorderAlerts } from "~/services/inventory/reorder-alerts";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -85,14 +85,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Generate reorder alerts
     const alertSummary = await generateAllReorderAlerts(mockProducts);
 
-    return json({
+    return Response.json({
       success: true,
       data: alertSummary,
     });
   } catch (error: any) {
     console.error("[API] Reorder alerts error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to generate reorder alerts",

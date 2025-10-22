@@ -8,7 +8,7 @@
  * Returns enabled status and reason.
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.features.check";
 import { featureFlagService } from "~/services/experiments/feature-flags";
 
@@ -20,7 +20,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     const userSegment = url.searchParams.get("userSegment") || undefined;
 
     if (!flagId || !userId) {
-      return json(
+      return Response.json(
         { error: "Missing required parameters: flagId, userId" },
         { status: 400 }
       );
@@ -32,7 +32,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       userSegment
     );
 
-    return json({
+    return Response.json({
       success: true,
       flagId: check.flagId,
       userId: check.userId,
@@ -42,7 +42,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     });
   } catch (error) {
     console.error("[API] Feature check error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );
@@ -51,7 +51,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
 
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, { status: 405 });
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -59,7 +59,7 @@ export async function action({ request }: Route.ActionArgs) {
     const { flagId, userId, userSegment } = body;
 
     if (!flagId || !userId) {
-      return json(
+      return Response.json(
         { error: "Missing required fields: flagId, userId" },
         { status: 400 }
       );
@@ -71,7 +71,7 @@ export async function action({ request }: Route.ActionArgs) {
       userSegment
     );
 
-    return json({
+    return Response.json({
       success: true,
       flagId: check.flagId,
       userId: check.userId,
@@ -81,7 +81,7 @@ export async function action({ request }: Route.ActionArgs) {
     });
   } catch (error) {
     console.error("[API] Feature check error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

@@ -27,7 +27,7 @@ export async function action({ request }: ActionFunctionArgs) {
     if (typeof urlsParam === "string") {
       urls = JSON.parse(urlsParam);
     } else {
-      return json(
+      return Response.json(
         {
           success: false,
           error: "URLs parameter is required (JSON array of URLs)",
@@ -40,7 +40,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // Validate schemas
     const report = await validateSchemaMarkup(urls);
 
-    return json({
+    return Response.json({
       success: true,
       data: report,
       timestamp: new Date().toISOString(),
@@ -48,7 +48,7 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Schema validation error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to validate schema markup",
@@ -73,7 +73,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Validate schemas
     const report = await validateSchemaMarkup(urls);
 
-    return json({
+    return Response.json({
       success: true,
       data: report,
       timestamp: new Date().toISOString(),
@@ -81,7 +81,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Schema validation error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to validate schema markup",

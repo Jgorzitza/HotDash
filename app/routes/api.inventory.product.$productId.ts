@@ -19,7 +19,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { calculateReorderPoint } from "~/services/inventory/rop";
 import { getDemandForecast } from "~/services/inventory/demand-forecast";
 import { getVendorInfo } from "~/services/inventory/vendor-management";
@@ -29,7 +29,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { productId } = params;
 
   if (!productId) {
-    return json(
+    return Response.json(
       {
         success: false,
         error: "Product ID is required",
@@ -70,7 +70,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     // Get purchase order tracking (INVENTORY-004)
     const purchaseOrders = await getPOTracking(productId);
 
-    return json({
+    return Response.json({
       success: true,
       data: {
         productId,
@@ -91,7 +91,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       error
     );
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to fetch inventory product data",

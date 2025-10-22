@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const summary = await getBingWebmasterSummary();
 
-    return json({
+    return Response.json({
       success: true,
       data: summary,
       timestamp: new Date().toISOString(),
@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Bing Webmaster error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to fetch Bing Webmaster data",

@@ -23,14 +23,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get real-time inventory tile data
     const data = await getInventoryTileData();
 
-    return json({
+    return Response.json({
       success: true,
       data,
     });
   } catch (error: any) {
     console.error("[API] Inventory tile data error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to fetch inventory tile data",

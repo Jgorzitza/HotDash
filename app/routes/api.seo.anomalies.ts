@@ -98,7 +98,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const diagnostics = buildSeoDiagnostics(bundle);
 
-    return json({
+    return Response.json({
       success: true,
       data: {
         ...bundle,
@@ -107,7 +107,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error: any) {
     if (error instanceof GaSamplingError) {
-      return json(
+      return Response.json(
         {
           success: false,
           error: error.message,
@@ -119,7 +119,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     console.error("[API] SEO anomalies error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to fetch SEO anomalies",

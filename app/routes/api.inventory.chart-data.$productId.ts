@@ -13,14 +13,14 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { get14DayDemandVelocity } from "~/services/inventory/demand-forecast";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { productId } = params;
 
   if (!productId) {
-    return json(
+    return Response.json(
       {
         success: false,
         error: "Product ID is required",
@@ -54,7 +54,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       ],
     };
 
-    return json({
+    return Response.json({
       success: true,
       data: chartData,
       productId,
@@ -69,7 +69,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error(`[API] Chart data error for ${productId}:`, error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to fetch chart data",

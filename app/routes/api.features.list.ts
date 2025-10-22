@@ -6,7 +6,7 @@
  * Returns all feature flags with their current status.
  */
 
-import { json } from "react-router";
+// React Router 7: Use Response.json() instead of json() helper
 import type { Route } from "./+types/api.features.list";
 import { featureFlagService } from "~/services/experiments/feature-flags";
 
@@ -33,7 +33,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       );
     }
 
-    return json({
+    return Response.json({
       success: true,
       flags: flagsWithStatus.map(flag => ({
         id: flag.id,
@@ -49,7 +49,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     });
   } catch (error) {
     console.error("[API] Feature list error:", error);
-    return json(
+    return Response.json(
       { error: "Internal server error" },
       { status: 500 }
     );

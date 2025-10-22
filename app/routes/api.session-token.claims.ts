@@ -63,7 +63,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       userId: decoded.sub ?? null,
     };
 
-    return json(response);
+    return Response.json(response);
   } catch (error) {
     console.error("Failed to decode Shopify session token", error);
     return unauthorized("Invalid or expired session token");

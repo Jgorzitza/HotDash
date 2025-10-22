@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       const details = await getKeywordCannibalizationDetails(shopDomain, keyword);
       
       if (!details) {
-        return json(
+        return Response.json(
           {
             success: false,
             error: `No cannibalization detected for keyword: ${keyword}`,
@@ -37,7 +37,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         );
       }
 
-      return json({
+      return Response.json({
         success: true,
         data: details,
         timestamp: new Date().toISOString(),
@@ -47,7 +47,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Otherwise return full report
     const report = await detectKeywordCannibalization(shopDomain);
 
-    return json({
+    return Response.json({
       success: true,
       data: report,
       timestamp: new Date().toISOString(),
@@ -55,7 +55,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error("[API] Cannibalization detection error:", error);
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to detect keyword cannibalization",

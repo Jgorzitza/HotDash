@@ -4,7 +4,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import { generateOptimizationReport } from "~/services/inventory/optimization";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -32,12 +32,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const optimization = await generateOptimizationReport(mockProducts);
 
-    return json({
+    return Response.json({
       success: true,
       data: optimization,
     });
   } catch (error: any) {
-    return json(
+    return Response.json(
       {
         success: false,
         error: error.message || "Failed to generate optimization report",

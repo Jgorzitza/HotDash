@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { json } from "~/utils/http.server";
+// React Router 7: Use Response.json() from "~/utils/http.server";
 import shopify from "~/shopify.server";
 import { getJobStatus } from "../../../packages/integrations/publer.ts";
 
@@ -8,14 +8,14 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
   const { postId } = params;
   if (!postId) {
-    return json({ error: "postId is required" }, { status: 400 });
+    return Response.json({ error: "postId is required" }, { status: 400 });
   }
 
   try {
     const status = await getJobStatus(postId);
-    return json({ ok: true, status });
+    return Response.json({ ok: true, status });
   } catch (error) {
-    return json(
+    return Response.json(
       {
         ok: false,
         error: "Failed to fetch job status",
