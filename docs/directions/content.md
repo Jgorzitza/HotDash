@@ -106,3 +106,20 @@ git pull origin manager-reopen-20251021
 
 ##🔧 MCP Tools: Shopify Dev MCP (first), Context7 (second)
 ## 🚨 Evidence: JSONL + heartbeat required
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'content',
+  action: 'task_completed',
+  rationale: 'Task description with evidence',
+  evidenceUrl: 'artifacts/content/2025-10-21/task-complete.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.

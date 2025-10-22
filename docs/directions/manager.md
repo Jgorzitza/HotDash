@@ -466,3 +466,27 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 **✅ COMPLETE**: All 17 agent directions updated with Growth Engine alignment + active work
 
 **NO STANDBY AGENTS - ALL 17 HAVE ASSIGNED TASKS**
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY (Manager)
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'manager',
+  action: 'blocker_cleared',
+  rationale: 'BLOCKER-002: Applied 8 migrations + 100% DB protection via triggers',
+  evidenceUrl: 'artifacts/manager/2025-10-21/blocker-002-cleared.md'
+});
+```
+
+**Manager Actions to Log**:
+- Blocker cleared
+- Direction update cycle complete
+- Critical fix applied (React Router 7 violations)
+- Migration applied
+- Strategic decision made
+
+Call at every significant manager action.
