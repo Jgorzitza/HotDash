@@ -32,7 +32,9 @@ function parseFeedbackFile(filePath: string, agentName: string): FeedbackEntry[]
   const fileName = path.basename(filePath);
   
   // Match patterns like: ## 2025-10-21T14:30:00Z — Engineer: TITLE
-  const entryRegex = new RegExp(`##\\s+(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z)\\s+—\\s+${agentName}:\\s+(.+?)$`, 'gim');
+  // Handle both lowercase and capitalized agent names
+  const capitalizedAgent = agentName.charAt(0).toUpperCase() + agentName.slice(1);
+  const entryRegex = new RegExp(`##\\s+(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z)\\s+—\\s+${capitalizedAgent}:\\s+(.+?)$`, 'gim');
   
   let match;
   while ((match = entryRegex.exec(content)) !== null) {
