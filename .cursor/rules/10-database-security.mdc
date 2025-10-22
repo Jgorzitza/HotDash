@@ -1,0 +1,75 @@
+# Database Security Rules - CRITICAL
+
+**RULE SOURCE**: Database disaster prevention (2025-10-22)
+
+## 🚨 CRITICAL DATABASE SECURITY RULES
+
+### ❌ ABSOLUTE PROHIBITIONS
+
+1. **NO CONCURRENT MIGRATIONS**: Only ONE migration at a time
+2. **NO UNAUTHORIZED AGENTS**: Only DATA agent can run `prisma migrate` or `prisma db push`
+3. **NO PRODUCTION CHANGES**: All schema changes require manager approval
+4. **NO FORCE RESETS**: Never use `--force-reset` or `--accept-data-loss` without CEO approval
+
+### ✅ MANDATORY SAFETY CHECKS
+
+**Before ANY database operation:**
+```bash
+# 1. Check migration lock
+npx tsx --env-file=.env scripts/data/migration-lock.ts check
+
+# 2. Acquire lock (DATA agent only)
+npx tsx --env-file=.env scripts/data/migration-lock.ts acquire data "operation description"
+
+# 3. Run operation
+# 4. Release lock
+npx tsx --env-file=.env scripts/data/migration-lock.ts release data
+```
+
+### 🔒 MIGRATION LOCK ENFORCEMENT
+
+**Lock File**: `.migration.lock` in project root
+**Timeout**: 30 minutes maximum
+**Violations**: Logged to DecisionLog, escalated to CEO
+
+### 🚫 BLOCKED COMMANDS
+
+**These commands are PROHIBITED without explicit manager approval:**
+- `prisma migrate dev`
+- `prisma db push --force-reset`
+- `prisma db push --accept-data-loss`
+- `prisma migrate reset`
+- Any schema modification
+
+### ✅ ALLOWED OPERATIONS
+
+**DATA Agent Only:**
+- `prisma db push` (with lock)
+- `prisma migrate deploy` (production only)
+- `prisma db pull` (read-only)
+
+**All Agents:**
+- `prisma studio` (read-only)
+- Database queries (read-only)
+
+### 🚨 EMERGENCY PROCEDURES
+
+**If database is corrupted:**
+1. **STOP ALL AGENTS** immediately
+2. **Notify CEO** via logDecision()
+3. **DO NOT attempt fixes** without approval
+4. **Document everything** before any recovery attempts
+
+### 📊 COMPLIANCE MONITORING
+
+**Daily checks:**
+- Migration lock violations
+- Unauthorized schema changes
+- Database operation logs
+- Agent compliance scores
+
+**Violations escalate to CEO immediately.**
+
+## ENFORCEMENT
+
+This rule is **ALWAYS APPLIED** to all agents. Violations result in immediate escalation to CEO and potential agent suspension.
