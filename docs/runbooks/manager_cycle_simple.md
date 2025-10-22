@@ -261,9 +261,9 @@ AGENT="engineer"  # Replace for each agent
 
 ---
 
-## 5) BLOCKERS FIRST (45 min)
+## 5) BLOCKERS FIRST (30 min)
 
-**Objective**: Verify each blocker (5/5 checks); convert to BLOCKER-CLEAR tasks with owners & ETAs
+**Objective**: Verify each blocker (5/5 checks); PRESENT to CEO for assignment
 
 **5-Point Blocker Verification**:
 
@@ -274,18 +274,18 @@ For each blocker, verify:
 4. ✅ **Workaround**: Can we proceed with alternative approach?
 5. ✅ **Repro**: Can blocker be reproduced with minimal steps?
 
-**Convert to Tasks**:
+**Document Blockers**:
 
 ```bash
 DATE=$(date +%Y-%m-%d)
 
-cat > artifacts/manager/$DATE/blockers_cleared.md << 'EOF'
-# Blockers Cleared — [DATE]
+cat > artifacts/manager/$DATE/blockers_for_ceo.md << 'EOF'
+# Blockers for CEO Assignment — [DATE]
 
 ## BLOCKER-001: [Title]
-**Owner**: [Agent name]  
-**ETA**: [Hours to clear]  
 **Type**: [Credentials | Network | Dependency | Technical]  
+**Impact**: [What's blocked]  
+**ETA**: [Estimated hours to clear]  
 **Verification** (5/5):
 - ✅ Access: [Yes/No - details]
 - ✅ Flags: [Yes/No - details]
@@ -293,13 +293,13 @@ cat > artifacts/manager/$DATE/blockers_cleared.md << 'EOF'
 - ✅ Workaround: [Yes/No - describe]
 - ✅ Repro: [Yes/No - steps]
 
-**Action**:
+**Recommended Actions**:
 - Step 1: [Specific action]
 - Step 2: [Specific action]
 - Evidence: [Where logged]
 
-**Assign To**: [Agent] + [Support agent if needed]  
-**Priority**: P0 (blocking other work)
+**Recommended Owner**: [Agent name]  
+**Priority**: P0/P1/P2
 
 ---
 
@@ -307,16 +307,19 @@ cat > artifacts/manager/$DATE/blockers_cleared.md << 'EOF'
 
 EOF
 
-echo "✅ Blockers documented: artifacts/manager/$DATE/blockers_cleared.md"
+echo "✅ Blockers documented: artifacts/manager/$DATE/blockers_for_ceo.md"
 ```
 
-**Manual Step**: For each blocker:
-1. Run 5-point verification
-2. Create BLOCKER-CLEAR task
-3. Assign to agent with ETA
-4. Put at TOP of their direction file (P0 priority)
+**Manual Step**: 
+1. Run 5-point verification for each blocker
+2. Document in `blockers_for_ceo.md`
+3. **PRESENT to CEO** (in conversation, not in direction files)
+4. CEO assigns blockers to team
+5. **PROCEED to Step 6** (assign remaining work AS IF blockers handled)
 
-**Acceptance**: All blockers have BLOCKER-CLEAR tasks with owners & ETAs
+**Key Change**: Manager does NOT assign blockers to agents. CEO assigns them separately. This enables parallel execution: team clears blockers while Manager assigns new direction.
+
+**Acceptance**: All blockers verified (5/5) and presented to CEO
 
 ---
 
