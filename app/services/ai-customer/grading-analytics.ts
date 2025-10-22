@@ -1,203 +1,282 @@
 /**
- * AI-Customer Grading Analytics Service
+ * Grading Analytics Service
  * 
- * Analyzes tone/accuracy/policy grades from HITL (Human-in-the-Loop) workflow
- * stored in decision_log table. Provides insights on AI response quality and
- * identifies patterns in high-performing responses.
+ * Analyzes AI response grading data from HITL workflow to identify trends,
+ * patterns, and opportunities for improvement.
  * 
- * @module app/services/ai-customer/grading-analytics
- * @see docs/directions/ai-customer.md AI-CUSTOMER-001
+ * @module services/ai-customer/grading-analytics
  */
 
-import { createClient } from '@supabase/supabase-js';
+import prisma from '~/db.server';
 
 /**
- * Individual grade statistics for a segment
+ * Grading statistics for a segment (template, time period, etc.)
  */
 export interface GradeStats {
   count: number;
   avgTone: number;
   avgAccuracy: number;
   avgPolicy: number;
-  minTone: number;
-  maxTone: number;
-  minAccuracy: number;
-  maxAccuracy: number;
-  minPolicy: number;
-  maxPolicy: number;
+  avgOverall: number;
+  minOverall: number;
+  maxOverall: number;
 }
 
 /**
- * Comprehensive grade analytics result
+ * Main grading analytics response
  */
 export interface GradeAnalytics {
-  /** Overall average grades across all responses */
   averages: {
     tone: number;
     accuracy: number;
     policy: number;
+    overall: number;
   };
-  /** Total number of graded responses analyzed */
-  totalResponses: number;
-  /** Statistics grouped by template (if available) */
-  byTemplate: Record<string, GradeStats>;
-  /** Statistics grouped by time period (day/week/month) */
-  byTimePeriod: Record<string, GradeStats>;
-  /** Generated insights based on grade patterns */
+  byTemplate: Map<string, GradeStats>;
+  byTimePeriod: Map<string, GradeStats>;
   insights: string[];
-  /** Time range analyzed */
-  timeRange: string;
+  totalGrades: number;
 }
 
 /**
- * Raw grade data from decision_log
+ * Internal grade record structure
  */
 interface GradeRecord {
-  id: number;
-  createdAt: string;
-  payload: {
-    grades?: {
-      tone: number;
-      accuracy: number;
-      policy: number;
-    };
-    template?: string;
-    conversationId?: number;
-  };
+  tone: number;
+  accuracy: number;
+  policy: number;
+  overall: number;
+  createdAt: Date;
+  template?: string;
 }
 
 /**
- * Analyze grades from HITL workflow over a specified time range
+ * Get grading trends over time
  * 
- * Strategy:
- * 1. Query decision_log for chatwoot.approve_send actions
- * 2. Extract grades from payload.grades (tone/accuracy/policy 1-5 scale)
- * 3. Calculate overall averages
- * 4. Group by template and time period
- * 5. Generate insights based on patterns
+ * Analyzes grading data from decision_log to calculate averages,
+ * identify trends by template and time period, and generate insights.
  * 
- * @param timeRange - Time range to analyze: '7d', '30d', '90d', 'all'
- * @param supabaseUrl - Supabase project URL
- * @param supabaseKey - Supabase anon/service key
- * @returns Comprehensive grade analytics
+ * @param days - Number of days to analyze (default: 30)
+ * @returns Comprehensive grading analytics
+ * 
+ * @example
+ * ```typescript
+ * const analytics = await getGradingTrends(30);
+ * console.log(`Average tone: ${analytics.averages.tone}`);
+ * console.log(`Insights: ${analytics.insights.join(', ')}`);
+ * ```
  */
-export async function analyzeGrades(
-  timeRange: string,
-  supabaseUrl: string,
-  supabaseKey: string
-): Promise<GradeAnalytics> {
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
+export async function getGradingTrends(days: number = 30): Promise<GradeAnalytics> {
   try {
-    // Calculate date range
-    const startDate = calculateStartDate(timeRange);
+    const since = new Date();
+    since.setDate(since.getDate() - days);
 
     // Query decision_log for graded responses
-    let query = supabase
-      .from('decision_log')
-      .select('id, created_at, payload')
-      .eq('action', 'chatwoot.approve_send')
-      .not('payload->grades', 'is', null)
-      .order('created_at', { ascending: false });
+    const records = await prisma.decisionLog.findMany({
+      where: {
+        action: 'chatwoot.approve_send',
+        createdAt: { gte: since },
+        payload: {
+          path: ['grades'],
+          not: prisma.DbNull,
+        },
+      },
+      select: {
+        payload: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
 
-    if (startDate) {
-      query = query.gte('created_at', startDate.toISOString());
+    // Extract and validate grade data
+    const grades: GradeRecord[] = [];
+    
+    for (const record of records) {
+      const payload = record.payload as any;
+      const gradeData = payload?.grades;
+      
+      if (gradeData && 
+          typeof gradeData.tone === 'number' &&
+          typeof gradeData.accuracy === 'number' &&
+          typeof gradeData.policy === 'number') {
+        
+        const overall = (gradeData.tone + gradeData.accuracy + gradeData.policy) / 3;
+        
+        grades.push({
+          tone: gradeData.tone,
+          accuracy: gradeData.accuracy,
+          policy: gradeData.policy,
+          overall,
+          createdAt: record.createdAt,
+          template: payload?.template || undefined,
+        });
+      }
     }
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error('[Grading Analytics] Query error:', error);
-      throw error;
-    }
-
-    // Handle no data case
-    if (!data || data.length === 0) {
-      return createEmptyAnalytics(timeRange);
-    }
-
-    // Parse records and extract grades
-    const records: GradeRecord[] = data.map(row => ({
-      id: row.id,
-      createdAt: row.created_at,
-      payload: row.payload as any,
-    }));
 
     // Calculate overall averages
-    const averages = calculateAverages(records);
+    const avgTone = calculateAverage(grades.map(g => g.tone));
+    const avgAccuracy = calculateAverage(grades.map(g => g.accuracy));
+    const avgPolicy = calculateAverage(grades.map(g => g.policy));
+    const avgOverall = (avgTone + avgAccuracy + avgPolicy) / 3;
 
     // Group by template
-    const byTemplate = groupByTemplate(records);
+    const byTemplate = groupByTemplate(grades);
 
     // Group by time period
-    const byTimePeriod = groupByTimePeriod(records, timeRange);
+    const byTimePeriod = groupByTimePeriod(grades, days);
 
     // Generate insights
-    const insights = generateInsights(records, averages, byTemplate);
+    const insights = generateInsights(grades, avgTone, avgAccuracy, avgPolicy, byTemplate);
 
     return {
-      averages,
-      totalResponses: records.length,
+      averages: {
+        tone: roundToTwo(avgTone),
+        accuracy: roundToTwo(avgAccuracy),
+        policy: roundToTwo(avgPolicy),
+        overall: roundToTwo(avgOverall),
+      },
       byTemplate,
       byTimePeriod,
       insights,
-      timeRange,
+      totalGrades: grades.length,
     };
+
   } catch (error) {
-    console.error('[Grading Analytics] Error analyzing grades:', error);
-    
+    console.error('[Grading Analytics] Error:', error);
     // Return empty analytics on error
-    return createEmptyAnalytics(timeRange);
+    return {
+      averages: { tone: 0, accuracy: 0, policy: 0, overall: 0 },
+      byTemplate: new Map(),
+      byTimePeriod: new Map(),
+      insights: ['Error analyzing grading data. Please check logs.'],
+      totalGrades: 0,
+    };
   }
 }
 
 /**
- * Calculate overall average grades
+ * Identify low-scoring patterns
+ * 
+ * Analyzes responses with low grades (< 3) to identify common patterns
+ * and areas for improvement.
+ * 
+ * @returns Patterns categorized by grade dimension
+ * 
+ * @example
+ * ```typescript
+ * const patterns = await identifyLowScoringPatterns();
+ * console.log(`${patterns.toneIssues.length} responses with tone issues`);
+ * ```
  */
-function calculateAverages(records: GradeRecord[]): { tone: number; accuracy: number; policy: number } {
-  if (records.length === 0) {
-    return { tone: 0, accuracy: 0, policy: 0 };
-  }
+export async function identifyLowScoringPatterns() {
+  try {
+    const records = await prisma.decisionLog.findMany({
+      where: {
+        action: 'chatwoot.approve_send',
+        payload: {
+          path: ['grades'],
+          not: prisma.DbNull,
+        },
+      },
+      select: {
+        payload: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 500, // Analyze recent 500 records
+    });
 
-  let toneSum = 0;
-  let accuracySum = 0;
-  let policySum = 0;
+    const lowScores: Array<{
+      draftText?: string;
+      finalText?: string;
+      tone: number;
+      accuracy: number;
+      policy: number;
+      editDistance?: number;
+      createdAt: Date;
+    }> = [];
 
-  for (const record of records) {
-    const grades = record.payload.grades;
-    if (grades) {
-      toneSum += grades.tone || 0;
-      accuracySum += grades.accuracy || 0;
-      policySum += grades.policy || 0;
+    for (const record of records) {
+      const payload = record.payload as any;
+      const grades = payload?.grades;
+      
+      if (grades) {
+        const hasLowScore = 
+          grades.tone < 3 ||
+          grades.accuracy < 3 ||
+          grades.policy < 3;
+        
+        if (hasLowScore) {
+          lowScores.push({
+            draftText: payload?.draftText,
+            finalText: payload?.finalText,
+            tone: grades.tone,
+            accuracy: grades.accuracy,
+            policy: grades.policy,
+            editDistance: payload?.editDistance,
+            createdAt: record.createdAt,
+          });
+        }
+      }
     }
-  }
 
-  return {
-    tone: Number((toneSum / records.length).toFixed(2)),
-    accuracy: Number((accuracySum / records.length).toFixed(2)),
-    policy: Number((policySum / records.length).toFixed(2)),
-  };
+    // Categorize by issue type
+    const patterns = {
+      toneIssues: lowScores.filter(s => s.tone < 3),
+      accuracyIssues: lowScores.filter(s => s.accuracy < 3),
+      policyIssues: lowScores.filter(s => s.policy < 3),
+    };
+
+    return patterns;
+
+  } catch (error) {
+    console.error('[Low Scoring Patterns] Error:', error);
+    return {
+      toneIssues: [],
+      accuracyIssues: [],
+      policyIssues: [],
+    };
+  }
+}
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Calculate average of numbers
+ */
+function calculateAverage(numbers: number[]): number {
+  if (numbers.length === 0) return 0;
+  const sum = numbers.reduce((acc, val) => acc + val, 0);
+  return sum / numbers.length;
 }
 
 /**
- * Group grades by template and calculate statistics
+ * Round to 2 decimal places
  */
-function groupByTemplate(records: GradeRecord[]): Record<string, GradeStats> {
-  const byTemplate: Record<string, GradeRecord[]> = {};
+function roundToTwo(num: number): number {
+  return Math.round(num * 100) / 100;
+}
 
-  // Group records by template
-  for (const record of records) {
-    const template = record.payload.template || 'unknown';
-    if (!byTemplate[template]) {
-      byTemplate[template] = [];
+/**
+ * Group grades by template
+ */
+function groupByTemplate(grades: GradeRecord[]): Map<string, GradeStats> {
+  const grouped = new Map<string, GradeRecord[]>();
+  
+  for (const grade of grades) {
+    const template = grade.template || 'unknown';
+    if (!grouped.has(template)) {
+      grouped.set(template, []);
     }
-    byTemplate[template].push(record);
+    grouped.get(template)!.push(grade);
   }
 
-  // Calculate stats for each template
-  const stats: Record<string, GradeStats> = {};
-  for (const [template, templateRecords] of Object.entries(byTemplate)) {
-    stats[template] = calculateStats(templateRecords);
+  const stats = new Map<string, GradeStats>();
+  
+  for (const [template, records] of grouped.entries()) {
+    stats.set(template, calculateStats(records));
   }
 
   return stats;
@@ -206,33 +285,40 @@ function groupByTemplate(records: GradeRecord[]): Record<string, GradeStats> {
 /**
  * Group grades by time period (daily for 7d/30d, weekly for 90d+)
  */
-function groupByTimePeriod(records: GradeRecord[], timeRange: string): Record<string, GradeStats> {
-  const byPeriod: Record<string, GradeRecord[]> = {};
-  const useDaily = timeRange === '7d' || timeRange === '30d';
-
-  for (const record of records) {
-    const date = new Date(record.createdAt);
-    const periodKey = useDaily
-      ? date.toISOString().split('T')[0] // YYYY-MM-DD
-      : getWeekKey(date); // YYYY-Www
-
-    if (!byPeriod[periodKey]) {
-      byPeriod[periodKey] = [];
+function groupByTimePeriod(grades: GradeRecord[], days: number): Map<string, GradeStats> {
+  const grouped = new Map<string, GradeRecord[]>();
+  
+  const useWeekly = days > 60;
+  
+  for (const grade of grades) {
+    let key: string;
+    
+    if (useWeekly) {
+      // Weekly grouping: YYYY-Www
+      const weekNumber = getWeekNumber(grade.createdAt);
+      key = `${grade.createdAt.getFullYear()}-W${weekNumber.toString().padStart(2, '0')}`;
+    } else {
+      // Daily grouping: YYYY-MM-DD
+      key = grade.createdAt.toISOString().split('T')[0];
     }
-    byPeriod[periodKey].push(record);
+    
+    if (!grouped.has(key)) {
+      grouped.set(key, []);
+    }
+    grouped.get(key)!.push(grade);
   }
 
-  // Calculate stats for each period
-  const stats: Record<string, GradeStats> = {};
-  for (const [period, periodRecords] of Object.entries(byPeriod)) {
-    stats[period] = calculateStats(periodRecords);
+  const stats = new Map<string, GradeStats>();
+  
+  for (const [period, records] of grouped.entries()) {
+    stats.set(period, calculateStats(records));
   }
 
   return stats;
 }
 
 /**
- * Calculate statistics for a group of records
+ * Calculate statistics for a set of grade records
  */
 function calculateStats(records: GradeRecord[]): GradeStats {
   if (records.length === 0) {
@@ -241,141 +327,102 @@ function calculateStats(records: GradeRecord[]): GradeStats {
       avgTone: 0,
       avgAccuracy: 0,
       avgPolicy: 0,
-      minTone: 0,
-      maxTone: 0,
-      minAccuracy: 0,
-      maxAccuracy: 0,
-      minPolicy: 0,
-      maxPolicy: 0,
+      avgOverall: 0,
+      minOverall: 0,
+      maxOverall: 0,
     };
   }
 
-  const tones: number[] = [];
-  const accuracies: number[] = [];
-  const policies: number[] = [];
-
-  for (const record of records) {
-    const grades = record.payload.grades;
-    if (grades) {
-      tones.push(grades.tone || 0);
-      accuracies.push(grades.accuracy || 0);
-      policies.push(grades.policy || 0);
-    }
-  }
+  const avgTone = calculateAverage(records.map(r => r.tone));
+  const avgAccuracy = calculateAverage(records.map(r => r.accuracy));
+  const avgPolicy = calculateAverage(records.map(r => r.policy));
+  const avgOverall = calculateAverage(records.map(r => r.overall));
+  const minOverall = Math.min(...records.map(r => r.overall));
+  const maxOverall = Math.max(...records.map(r => r.overall));
 
   return {
     count: records.length,
-    avgTone: Number((tones.reduce((a, b) => a + b, 0) / tones.length).toFixed(2)),
-    avgAccuracy: Number((accuracies.reduce((a, b) => a + b, 0) / accuracies.length).toFixed(2)),
-    avgPolicy: Number((policies.reduce((a, b) => a + b, 0) / policies.length).toFixed(2)),
-    minTone: Math.min(...tones),
-    maxTone: Math.max(...tones),
-    minAccuracy: Math.min(...accuracies),
-    maxAccuracy: Math.max(...accuracies),
-    minPolicy: Math.min(...policies),
-    maxPolicy: Math.max(...policies),
+    avgTone: roundToTwo(avgTone),
+    avgAccuracy: roundToTwo(avgAccuracy),
+    avgPolicy: roundToTwo(avgPolicy),
+    avgOverall: roundToTwo(avgOverall),
+    minOverall: roundToTwo(minOverall),
+    maxOverall: roundToTwo(maxOverall),
   };
 }
 
 /**
- * Generate insights based on grade patterns
+ * Get ISO week number
+ */
+function getWeekNumber(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNum = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  return weekNum;
+}
+
+/**
+ * Generate insights based on grading data
  */
 function generateInsights(
-  records: GradeRecord[],
-  averages: { tone: number; accuracy: number; policy: number },
-  byTemplate: Record<string, GradeStats>
+  grades: GradeRecord[],
+  avgTone: number,
+  avgAccuracy: number,
+  avgPolicy: number,
+  byTemplate: Map<string, GradeStats>
 ): string[] {
   const insights: string[] = [];
 
-  // Overall quality insight
-  const overallAvg = (averages.tone + averages.accuracy + averages.policy) / 3;
-  if (overallAvg >= 4.5) {
-    insights.push(`Excellent overall performance: ${overallAvg.toFixed(2)}/5.0 average across all dimensions`);
-  } else if (overallAvg >= 4.0) {
-    insights.push(`Good overall performance: ${overallAvg.toFixed(2)}/5.0 average across all dimensions`);
-  } else if (overallAvg >= 3.0) {
-    insights.push(`Moderate performance: ${overallAvg.toFixed(2)}/5.0 average - improvement opportunities exist`);
+  if (grades.length === 0) {
+    insights.push('No grading data available for the selected time period.');
+    return insights;
+  }
+
+  // Overall performance assessment
+  const avgOverall = (avgTone + avgAccuracy + avgPolicy) / 3;
+  if (avgOverall >= 4.0) {
+    insights.push(`Excellent overall performance with average grade of ${roundToTwo(avgOverall)}/5.0.`);
+  } else if (avgOverall >= 3.5) {
+    insights.push(`Good performance with average grade of ${roundToTwo(avgOverall)}/5.0.`);
+  } else if (avgOverall >= 3.0) {
+    insights.push(`Moderate performance with average grade of ${roundToTwo(avgOverall)}/5.0. Room for improvement.`);
   } else {
-    insights.push(`Performance needs attention: ${overallAvg.toFixed(2)}/5.0 average across all dimensions`);
+    insights.push(`Performance needs improvement. Average grade is ${roundToTwo(avgOverall)}/5.0.`);
   }
 
-  // Dimension-specific insights
+  // Identify strongest dimension
   const dimensions = [
-    { name: 'Tone', value: averages.tone },
-    { name: 'Accuracy', value: averages.accuracy },
-    { name: 'Policy', value: averages.policy },
-  ];
+    { name: 'tone', value: avgTone },
+    { name: 'accuracy', value: avgAccuracy },
+    { name: 'policy compliance', value: avgPolicy },
+  ].sort((a, b) => b.value - a.value);
 
-  const strongest = dimensions.reduce((prev, curr) => (curr.value > prev.value ? curr : prev));
-  const weakest = dimensions.reduce((prev, curr) => (curr.value < prev.value ? curr : prev));
+  insights.push(`Strongest dimension: ${dimensions[0].name} (${roundToTwo(dimensions[0].value)}/5.0)`);
+  insights.push(`Weakest dimension: ${dimensions[2].name} (${roundToTwo(dimensions[2].value)}/5.0)`);
 
-  insights.push(`Strongest dimension: ${strongest.name} (${strongest.value.toFixed(2)}/5.0)`);
-  if (weakest.value < 4.0) {
-    insights.push(`Focus area: ${weakest.name} (${weakest.value.toFixed(2)}/5.0) - consider additional training`);
+  // Template performance
+  if (byTemplate.size > 0) {
+    const templateStats = Array.from(byTemplate.entries())
+      .map(([template, stats]) => ({ template, stats }))
+      .sort((a, b) => b.stats.avgOverall - a.stats.avgOverall);
+
+    if (templateStats.length > 0) {
+      const best = templateStats[0];
+      insights.push(`Best performing template: "${best.template}" (${best.stats.avgOverall}/5.0, ${best.stats.count} samples)`);
+    }
   }
 
-  // Template insights
-  const templateEntries = Object.entries(byTemplate);
-  if (templateEntries.length > 1) {
-    const bestTemplate = templateEntries.reduce((prev, curr) => {
-      const prevAvg = (prev[1].avgTone + prev[1].avgAccuracy + prev[1].avgPolicy) / 3;
-      const currAvg = (curr[1].avgTone + curr[1].avgAccuracy + curr[1].avgPolicy) / 3;
-      return currAvg > prevAvg ? curr : prev;
-    });
+  // Volume metric
+  insights.push(`Total responses graded: ${grades.length}`);
 
-    const bestAvg = (bestTemplate[1].avgTone + bestTemplate[1].avgAccuracy + bestTemplate[1].avgPolicy) / 3;
-    insights.push(
-      `Best performing template: '${bestTemplate[0]}' (${bestAvg.toFixed(2)}/5.0 average, n=${bestTemplate[1].count})`
-    );
+  // Improvement opportunity
+  if (avgOverall < 4.0) {
+    if (dimensions[2].value < 3.5) {
+      insights.push(`Priority: Improve ${dimensions[2].name} (currently ${roundToTwo(dimensions[2].value)}/5.0)`);
+    }
   }
-
-  // Volume insight
-  insights.push(`Analyzed ${records.length} graded responses for quality assessment`);
 
   return insights;
 }
-
-/**
- * Calculate start date based on time range
- */
-function calculateStartDate(timeRange: string): Date | null {
-  if (timeRange === 'all') return null;
-
-  const now = new Date();
-  const days = parseInt(timeRange.replace('d', ''));
-
-  if (isNaN(days)) return null;
-
-  const startDate = new Date(now);
-  startDate.setDate(now.getDate() - days);
-  startDate.setHours(0, 0, 0, 0);
-
-  return startDate;
-}
-
-/**
- * Get week key in format YYYY-Www (e.g., 2024-W42)
- */
-function getWeekKey(date: Date): string {
-  const year = date.getFullYear();
-  const firstDayOfYear = new Date(year, 0, 1);
-  const dayOfYear = Math.floor((date.getTime() - firstDayOfYear.getTime()) / (24 * 60 * 60 * 1000));
-  const weekNumber = Math.ceil((dayOfYear + firstDayOfYear.getDay() + 1) / 7);
-
-  return `${year}-W${weekNumber.toString().padStart(2, '0')}`;
-}
-
-/**
- * Create empty analytics result for error/no-data cases
- */
-function createEmptyAnalytics(timeRange: string): GradeAnalytics {
-  return {
-    averages: { tone: 0, accuracy: 0, policy: 0 },
-    totalResponses: 0,
-    byTemplate: {},
-    byTimePeriod: {},
-    insights: ['No graded responses found for the specified time range'],
-    timeRange,
-  };
-}
-
