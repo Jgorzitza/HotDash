@@ -1,6 +1,6 @@
 /**
  * Ads ROAS (Return on Ad Spend) Calculator
- * 
+ *
  * Calculates ROAS for ad campaigns
  * Tracks campaign performance metrics
  * Identifies best and worst performing campaigns
@@ -63,7 +63,7 @@ export async function calculateCampaignROAS(
   impressions: number,
   clicks: number,
   conversions: number,
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<AdsROASData> {
   // Calculate metrics
   const roas = spend > 0 ? revenue / spend : 0;
@@ -122,7 +122,7 @@ export async function calculateCampaignROAS(
  * Determine campaign status based on ROAS
  */
 function determineStatus(
-  roas: number
+  roas: number,
 ): "profitable" | "break-even" | "unprofitable" {
   if (roas > 2.0) return "profitable"; // Making money
   if (roas >= 1.0) return "break-even"; // Recovering costs
@@ -166,7 +166,7 @@ function generateRecommendation(performance: CampaignPerformance): string {
 export async function getROASSummary(
   shopDomain: string = "occ",
   platform?: string,
-  days: number = 30
+  days: number = 30,
 ): Promise<ROASSummary> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -217,19 +217,18 @@ export async function getROASSummary(
       spend: acc.spend + (campaign.spend || 0),
       revenue: acc.revenue + (campaign.revenue || 0),
     }),
-    { spend: 0, revenue: 0 }
+    { spend: 0, revenue: 0 },
   );
 
-  const overallROAS = totals.spend > 0
-    ? Number((totals.revenue / totals.spend).toFixed(2))
-    : 0;
+  const overallROAS =
+    totals.spend > 0 ? Number((totals.revenue / totals.spend).toFixed(2)) : 0;
 
   const profitableCampaigns = latestCampaigns.filter(
-    (c) => c.status === "profitable"
+    (c) => c.status === "profitable",
   ).length;
 
   const unprofitableCampaigns = latestCampaigns.filter(
-    (c) => c.status === "unprofitable"
+    (c) => c.status === "unprofitable",
   ).length;
 
   // Get best performers (top 5 by ROAS)
@@ -272,14 +271,16 @@ export async function getROASSummary(
 export async function getCampaignPerformance(
   campaignId: string,
   shopDomain: string = "occ",
-  days: number = 90
-): Promise<Array<{
-  date: Date;
-  roas: number;
-  spend: number;
-  revenue: number;
-  status: string;
-}>> {
+  days: number = 90,
+): Promise<
+  Array<{
+    date: Date;
+    roas: number;
+    spend: number;
+    revenue: number;
+    status: string;
+  }>
+> {
   const since = new Date();
   since.setDate(since.getDate() - days);
 
@@ -318,7 +319,7 @@ export async function getCampaignPerformance(
  */
 export async function compareCampaigns(
   campaignIds: string[],
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<
   Array<{
     campaignId: string;
@@ -370,4 +371,3 @@ export async function compareCampaigns(
     rank: index + 1,
   }));
 }
-

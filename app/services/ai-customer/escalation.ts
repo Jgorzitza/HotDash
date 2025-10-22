@@ -1,38 +1,44 @@
 /**
  * AI-Customer Escalation Triggers Service
- * 
+ *
  * Automatically detects conversations that require CEO/human escalation
  * based on sentiment analysis, complexity indicators, policy violations,
  * and specific request types (refunds, returns, complaints).
- * 
+ *
  * @module app/services/ai-customer/escalation
  * @see docs/directions/ai-customer.md AI-CUSTOMER-003
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Escalation trigger types
  */
-export type EscalationTrigger = 
-  | 'negative_sentiment'
-  | 'refund_request'
-  | 'return_request'
-  | 'policy_violation'
-  | 'complex_issue'
-  | 'vip_customer'
-  | 'legal_threat'
-  | 'multiple_contacts';
+export type EscalationTrigger =
+  | "negative_sentiment"
+  | "refund_request"
+  | "return_request"
+  | "policy_violation"
+  | "complex_issue"
+  | "vip_customer"
+  | "legal_threat"
+  | "multiple_contacts";
 
 /**
  * Sentiment classification
  */
-export type Sentiment = 'angry' | 'frustrated' | 'disappointed' | 'neutral' | 'satisfied' | 'happy';
+export type Sentiment =
+  | "angry"
+  | "frustrated"
+  | "disappointed"
+  | "neutral"
+  | "satisfied"
+  | "happy";
 
 /**
  * Escalation severity level
  */
-export type EscalationSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type EscalationSeverity = "low" | "medium" | "high" | "critical";
 
 /**
  * Escalation case details
@@ -83,21 +89,21 @@ interface ConversationData {
   customerName: string;
   messages: string[];
   lastMessageAt: string;
-  status: 'open' | 'pending' | 'resolved';
+  status: "open" | "pending" | "resolved";
   tags: string[];
   metadata?: any;
 }
 
 /**
  * Detect conversations requiring escalation
- * 
+ *
  * Strategy:
  * 1. Query open/pending Chatwoot conversations
  * 2. Analyze message content for triggers
  * 3. Classify sentiment
  * 4. Determine escalation severity
  * 5. Generate recommendations
- * 
+ *
  * @param supabaseUrl - Supabase project URL
  * @param supabaseKey - Supabase anon/service key
  * @param chatwootUrl - Chatwoot API URL (optional for testing)
@@ -108,7 +114,7 @@ export async function detectEscalations(
   supabaseUrl: string,
   supabaseKey: string,
   chatwootUrl?: string,
-  chatwootKey?: string
+  chatwootKey?: string,
 ): Promise<EscalationDetectionResult> {
   try {
     // For now, return mock data as Chatwoot integration is separate
@@ -133,7 +139,8 @@ export async function detectEscalations(
         }
 
         // Count severity
-        severityCounts[escalationCase.severity] = (severityCounts[escalationCase.severity] || 0) + 1;
+        severityCounts[escalationCase.severity] =
+          (severityCounts[escalationCase.severity] || 0) + 1;
       }
     }
 
@@ -151,8 +158,8 @@ export async function detectEscalations(
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    console.error('[Escalation] Error detecting escalations:', error);
-    
+    console.error("[Escalation] Error detecting escalations:", error);
+
     return {
       escalations: [],
       summary: {
@@ -182,52 +189,54 @@ interface ConversationAnalysis {
 /**
  * Analyze conversation for escalation triggers
  */
-function analyzeConversation(conversation: ConversationData): ConversationAnalysis {
-  const allText = conversation.messages.join(' ').toLowerCase();
+function analyzeConversation(
+  conversation: ConversationData,
+): ConversationAnalysis {
+  const allText = conversation.messages.join(" ").toLowerCase();
   const triggers: EscalationTrigger[] = [];
   const keywords: string[] = [];
 
   // Detect refund requests
   if (detectRefundRequest(allText)) {
-    triggers.push('refund_request');
-    keywords.push('refund');
+    triggers.push("refund_request");
+    keywords.push("refund");
   }
 
   // Detect return requests
   if (detectReturnRequest(allText)) {
-    triggers.push('return_request');
-    keywords.push('return');
+    triggers.push("return_request");
+    keywords.push("return");
   }
 
   // Detect policy violations
   if (detectPolicyViolation(allText)) {
-    triggers.push('policy_violation');
-    keywords.push('policy');
+    triggers.push("policy_violation");
+    keywords.push("policy");
   }
 
   // Detect legal threats
   if (detectLegalThreat(allText)) {
-    triggers.push('legal_threat');
-    keywords.push('lawyer', 'legal');
+    triggers.push("legal_threat");
+    keywords.push("lawyer", "legal");
   }
 
   // Detect sentiment
   const sentiment = detectSentiment(allText);
-  if (['angry', 'frustrated'].includes(sentiment)) {
-    triggers.push('negative_sentiment');
-    keywords.push('complaint', 'upset');
+  if (["angry", "frustrated"].includes(sentiment)) {
+    triggers.push("negative_sentiment");
+    keywords.push("complaint", "upset");
   }
 
   // Detect complex issues
   if (conversation.messages.length > 5) {
-    triggers.push('complex_issue');
-    keywords.push('multiple exchanges');
+    triggers.push("complex_issue");
+    keywords.push("multiple exchanges");
   }
 
   // Detect multiple contacts
   if (conversation.metadata?.previousContactCount > 2) {
-    triggers.push('multiple_contacts');
-    keywords.push('repeat customer');
+    triggers.push("multiple_contacts");
+    keywords.push("repeat customer");
   }
 
   // Determine if escalation is needed
@@ -258,15 +267,15 @@ function analyzeConversation(conversation: ConversationData): ConversationAnalys
  */
 function detectRefundRequest(text: string): boolean {
   const refundKeywords = [
-    'refund',
-    'money back',
-    'want my money',
-    'charge back',
-    'chargeback',
-    'return payment',
+    "refund",
+    "money back",
+    "want my money",
+    "charge back",
+    "chargeback",
+    "return payment",
   ];
 
-  return refundKeywords.some(keyword => text.includes(keyword));
+  return refundKeywords.some((keyword) => text.includes(keyword));
 }
 
 /**
@@ -274,14 +283,14 @@ function detectRefundRequest(text: string): boolean {
  */
 function detectReturnRequest(text: string): boolean {
   const returnKeywords = [
-    'return',
-    'send back',
-    'return label',
-    'return policy',
-    'ship back',
+    "return",
+    "send back",
+    "return label",
+    "return policy",
+    "ship back",
   ];
 
-  return returnKeywords.some(keyword => text.includes(keyword));
+  return returnKeywords.some((keyword) => text.includes(keyword));
 }
 
 /**
@@ -289,16 +298,16 @@ function detectReturnRequest(text: string): boolean {
  */
 function detectPolicyViolation(text: string): boolean {
   const policyKeywords = [
-    'false advertising',
-    'misleading',
-    'scam',
-    'fraud',
-    'illegal',
-    'violation',
-    'breach of contract',
+    "false advertising",
+    "misleading",
+    "scam",
+    "fraud",
+    "illegal",
+    "violation",
+    "breach of contract",
   ];
 
-  return policyKeywords.some(keyword => text.includes(keyword));
+  return policyKeywords.some((keyword) => text.includes(keyword));
 }
 
 /**
@@ -306,18 +315,18 @@ function detectPolicyViolation(text: string): boolean {
  */
 function detectLegalThreat(text: string): boolean {
   const legalKeywords = [
-    'lawyer',
-    'attorney',
-    'sue',
-    'legal action',
-    'court',
-    'lawsuit',
-    'better business bureau',
-    'bbb',
-    'consumer protection',
+    "lawyer",
+    "attorney",
+    "sue",
+    "legal action",
+    "court",
+    "lawsuit",
+    "better business bureau",
+    "bbb",
+    "consumer protection",
   ];
 
-  return legalKeywords.some(keyword => text.includes(keyword));
+  return legalKeywords.some((keyword) => text.includes(keyword));
 }
 
 /**
@@ -325,36 +334,65 @@ function detectLegalThreat(text: string): boolean {
  */
 function detectSentiment(text: string): Sentiment {
   // Angry indicators
-  const angryKeywords = ['furious', 'outraged', 'unacceptable', 'disgusting', 'terrible', 'worst'];
-  if (angryKeywords.some(keyword => text.includes(keyword))) {
-    return 'angry';
+  const angryKeywords = [
+    "furious",
+    "outraged",
+    "unacceptable",
+    "disgusting",
+    "terrible",
+    "worst",
+  ];
+  if (angryKeywords.some((keyword) => text.includes(keyword))) {
+    return "angry";
   }
 
   // Frustrated indicators
-  const frustratedKeywords = ['frustrated', 'annoying', 'disappointed', 'upset', 'unhappy'];
-  if (frustratedKeywords.some(keyword => text.includes(keyword))) {
-    return 'frustrated';
+  const frustratedKeywords = [
+    "frustrated",
+    "annoying",
+    "disappointed",
+    "upset",
+    "unhappy",
+  ];
+  if (frustratedKeywords.some((keyword) => text.includes(keyword))) {
+    return "frustrated";
   }
 
   // Disappointed indicators
-  const disappointedKeywords = ['expected better', 'let down', 'not what i expected'];
-  if (disappointedKeywords.some(keyword => text.includes(keyword))) {
-    return 'disappointed';
+  const disappointedKeywords = [
+    "expected better",
+    "let down",
+    "not what i expected",
+  ];
+  if (disappointedKeywords.some((keyword) => text.includes(keyword))) {
+    return "disappointed";
   }
 
   // Satisfied indicators
-  const satisfiedKeywords = ['satisfied', 'good', 'thank', 'appreciate', 'great'];
-  if (satisfiedKeywords.some(keyword => text.includes(keyword))) {
-    return 'satisfied';
+  const satisfiedKeywords = [
+    "satisfied",
+    "good",
+    "thank",
+    "appreciate",
+    "great",
+  ];
+  if (satisfiedKeywords.some((keyword) => text.includes(keyword))) {
+    return "satisfied";
   }
 
   // Happy indicators
-  const happyKeywords = ['excellent', 'amazing', 'love', 'perfect', 'wonderful'];
-  if (happyKeywords.some(keyword => text.includes(keyword))) {
-    return 'happy';
+  const happyKeywords = [
+    "excellent",
+    "amazing",
+    "love",
+    "perfect",
+    "wonderful",
+  ];
+  if (happyKeywords.some((keyword) => text.includes(keyword))) {
+    return "happy";
   }
 
-  return 'neutral';
+  return "neutral";
 }
 
 /**
@@ -363,64 +401,76 @@ function detectSentiment(text: string): Sentiment {
 function determineSeverity(
   triggers: EscalationTrigger[],
   sentiment: Sentiment,
-  conversation: ConversationData
+  conversation: ConversationData,
 ): EscalationSeverity {
   // Critical: Legal threat or multiple high-priority triggers
-  if (triggers.includes('legal_threat') || 
-      (triggers.includes('policy_violation') && sentiment === 'angry')) {
-    return 'critical';
+  if (
+    triggers.includes("legal_threat") ||
+    (triggers.includes("policy_violation") && sentiment === "angry")
+  ) {
+    return "critical";
   }
 
   // High: Negative sentiment + refund/return, or VIP customer
-  if ((sentiment === 'angry' && (triggers.includes('refund_request') || triggers.includes('return_request'))) ||
-      triggers.includes('vip_customer')) {
-    return 'high';
+  if (
+    (sentiment === "angry" &&
+      (triggers.includes("refund_request") ||
+        triggers.includes("return_request"))) ||
+    triggers.includes("vip_customer")
+  ) {
+    return "high";
   }
 
   // Medium: Multiple triggers or frustrated sentiment
-  if (triggers.length >= 3 || sentiment === 'frustrated') {
-    return 'medium';
+  if (triggers.length >= 3 || sentiment === "frustrated") {
+    return "medium";
   }
 
   // Low: Single trigger, neutral sentiment
-  return 'low';
+  return "low";
 }
 
 /**
  * Generate human-readable escalation reason
  */
-function generateReason(triggers: EscalationTrigger[], sentiment: Sentiment): string {
+function generateReason(
+  triggers: EscalationTrigger[],
+  sentiment: Sentiment,
+): string {
   const reasons: string[] = [];
 
-  if (triggers.includes('legal_threat')) {
-    reasons.push('Customer mentioned legal action');
+  if (triggers.includes("legal_threat")) {
+    reasons.push("Customer mentioned legal action");
   }
-  if (triggers.includes('policy_violation')) {
-    reasons.push('Alleged policy violation or fraud claim');
+  if (triggers.includes("policy_violation")) {
+    reasons.push("Alleged policy violation or fraud claim");
   }
-  if (triggers.includes('refund_request')) {
-    reasons.push('Customer requesting refund');
+  if (triggers.includes("refund_request")) {
+    reasons.push("Customer requesting refund");
   }
-  if (triggers.includes('return_request')) {
-    reasons.push('Customer requesting return');
+  if (triggers.includes("return_request")) {
+    reasons.push("Customer requesting return");
   }
-  if (triggers.includes('negative_sentiment')) {
+  if (triggers.includes("negative_sentiment")) {
     reasons.push(`Customer sentiment: ${sentiment}`);
   }
-  if (triggers.includes('complex_issue')) {
-    reasons.push('Complex issue requiring multiple exchanges');
+  if (triggers.includes("complex_issue")) {
+    reasons.push("Complex issue requiring multiple exchanges");
   }
-  if (triggers.includes('multiple_contacts')) {
-    reasons.push('Customer has contacted support multiple times');
+  if (triggers.includes("multiple_contacts")) {
+    reasons.push("Customer has contacted support multiple times");
   }
 
-  return reasons.join('; ');
+  return reasons.join("; ");
 }
 
 /**
  * Calculate confidence score
  */
-function calculateConfidence(triggers: EscalationTrigger[], keywords: string[]): number {
+function calculateConfidence(
+  triggers: EscalationTrigger[],
+  keywords: string[],
+): number {
   // Base confidence on number of triggers and keywords
   const triggerScore = Math.min(triggers.length * 0.25, 0.75);
   const keywordScore = Math.min(keywords.length * 0.05, 0.25);
@@ -433,7 +483,7 @@ function calculateConfidence(triggers: EscalationTrigger[], keywords: string[]):
  */
 function createEscalationCase(
   conversation: ConversationData,
-  analysis: ConversationAnalysis
+  analysis: ConversationAnalysis,
 ): EscalationCase {
   return {
     conversationId: conversation.id,
@@ -443,7 +493,10 @@ function createEscalationCase(
     sentiment: analysis.sentiment,
     severity: analysis.severity,
     reason: analysis.reason,
-    recommendedAction: generateRecommendedAction(analysis.severity, analysis.triggers),
+    recommendedAction: generateRecommendedAction(
+      analysis.severity,
+      analysis.triggers,
+    ),
     context: {
       messageCount: conversation.messages.length,
       lastMessageAt: conversation.lastMessageAt,
@@ -462,24 +515,30 @@ function createEscalationCase(
 /**
  * Generate recommended action based on severity and triggers
  */
-function generateRecommendedAction(severity: EscalationSeverity, triggers: EscalationTrigger[]): string {
-  if (severity === 'critical') {
-    return 'Immediate CEO escalation required. Review legal implications before responding.';
+function generateRecommendedAction(
+  severity: EscalationSeverity,
+  triggers: EscalationTrigger[],
+): string {
+  if (severity === "critical") {
+    return "Immediate CEO escalation required. Review legal implications before responding.";
   }
 
-  if (severity === 'high') {
-    return 'Escalate to CEO within 1 hour. Prepare detailed context and proposed resolution.';
+  if (severity === "high") {
+    return "Escalate to CEO within 1 hour. Prepare detailed context and proposed resolution.";
   }
 
-  if (triggers.includes('refund_request') || triggers.includes('return_request')) {
-    return 'Review order details and process request per policy. Escalate if value exceeds threshold.';
+  if (
+    triggers.includes("refund_request") ||
+    triggers.includes("return_request")
+  ) {
+    return "Review order details and process request per policy. Escalate if value exceeds threshold.";
   }
 
-  if (severity === 'medium') {
-    return 'Senior support review recommended. Provide detailed response with evidence.';
+  if (severity === "medium") {
+    return "Senior support review recommended. Provide detailed response with evidence.";
   }
 
-  return 'Monitor conversation. Escalate if situation deteriorates or customer requests.';
+  return "Monitor conversation. Escalate if situation deteriorates or customer requests.";
 }
 
 /**
@@ -490,4 +549,3 @@ async function fetchMockConversations(): Promise<ConversationData[]> {
   // Return empty array - in production this would fetch from Chatwoot
   return [];
 }
-

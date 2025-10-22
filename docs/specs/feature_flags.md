@@ -19,14 +19,17 @@ Feature flags enable safe deployment of new features with the ability to enable/
 **Default**: `false` (uses mock data)
 
 **Values**:
+
 - `false`: Return mock campaign data with realistic metrics (default, safe for development)
 - `true`: Use real Meta Marketing API and Google Ads API (requires API credentials)
 
-**Location**: 
+**Location**:
+
 - `app/services/ads/meta-stub.ts`
 - `app/services/ads/google-stub.ts`
 
 **Usage**:
+
 ```typescript
 import { getMetaCampaigns } from "~/services/ads/meta-stub";
 
@@ -38,6 +41,7 @@ const campaigns = getMetaCampaigns({ useRealData: true });
 ```
 
 **Required Credentials** (when `true`):
+
 - **Meta**:
   - `META_ACCESS_TOKEN`: Meta Marketing API access token
   - `META_AD_ACCOUNT_ID`: Ad account ID
@@ -47,6 +51,7 @@ const campaigns = getMetaCampaigns({ useRealData: true });
   - `GOOGLE_ADS_REFRESH_TOKEN`: OAuth2 refresh token
 
 **Mock Data Characteristics** (when `false`):
+
 - CTR: 1.0-5.0% (varies by platform/campaign type)
 - ROAS: 2.0-4.0x (profitable campaigns)
 - Conversion Rate: 1.0-4.99%
@@ -55,6 +60,7 @@ const campaigns = getMetaCampaigns({ useRealData: true });
 - 6 Google campaigns (Search/Display/Shopping/Video/PMax)
 
 **Rollout Plan**:
+
 1. Development: `false` (mock data)
 2. Staging: `true` (test credentials)
 3. Production: `true` (production credentials)
@@ -68,13 +74,16 @@ const campaigns = getMetaCampaigns({ useRealData: true });
 **Default**: `false` (uses mock mode)
 
 **Values**:
+
 - `false`: Return mock scheduling responses with simulated delays (default, safe for development)
 - `true`: Use real Publer API for social media post scheduling (requires API credentials)
 
 **Location**:
+
 - `app/services/ads/publer-campaigns.ts`
 
 **Usage**:
+
 ```typescript
 import { schedulePublerPost } from "~/services/ads/publer-campaigns";
 
@@ -91,16 +100,19 @@ const result = await schedulePublerPost(post, { useLive: true });
 ```
 
 **Required Credentials** (when `true`):
+
 - `PUBLER_API_KEY`: Publer API key
 - `PUBLER_WORKSPACE_ID`: Workspace ID
 
 **Mock Mode Behavior** (when `false`):
+
 - Simulates 300-500ms API delay
 - Generates realistic post IDs (`publer_post_${timestamp}`)
 - Returns success responses
 - Mock analytics: 5000-15000 impressions, 100-600 clicks
 
 **Supported Platforms**:
+
 - Facebook
 - Instagram
 - Twitter
@@ -108,6 +120,7 @@ const result = await schedulePublerPost(post, { useLive: true });
 - Pinterest
 
 **Rollout Plan**:
+
 1. Development: `false` (mock mode)
 2. Staging: `true` (test workspace)
 3. Production: `true` (production workspace)
@@ -174,7 +187,9 @@ export function someFeature(options?: { useLive?: boolean }) {
   if (useLive) {
     // Real API implementation
     if (!process.env.REQUIRED_CREDENTIAL) {
-      throw new Error("REQUIRED_CREDENTIAL not configured. Set FEATURE_FLAG=false or provide credentials.");
+      throw new Error(
+        "REQUIRED_CREDENTIAL not configured. Set FEATURE_FLAG=false or provide credentials.",
+      );
     }
     // ... real API logic
   } else {
@@ -185,6 +200,7 @@ export function someFeature(options?: { useLive?: boolean }) {
 ```
 
 **Key Principles**:
+
 1. Default to `false` (safe mode)
 2. Check environment variable
 3. Allow override via function parameter (for testing)
@@ -196,6 +212,7 @@ export function someFeature(options?: { useLive?: boolean }) {
 ## Testing Feature Flags
 
 ### Unit Tests
+
 ```typescript
 // Test both flag states
 it("works with mock data (flag=false)", () => {
@@ -209,11 +226,15 @@ it("throws error without credentials (flag=true)", () => {
 ```
 
 ### Contract Tests
+
 Feature flag behavior is verified in contract tests:
+
 - `tests/contract/ads.metrics.contract.test.ts`
 
 ### Integration Tests
+
 Integration tests use mock mode by default:
+
 - `tests/integration/ads-workflow.spec.ts`
 
 ---
@@ -221,11 +242,13 @@ Integration tests use mock mode by default:
 ## Monitoring
 
 **Flag Usage Logs**:
+
 - Log when real APIs are called (flag=true)
 - Log API errors separately from mock mode
 - Track flag toggle frequency
 
 **Metrics to Monitor**:
+
 - API call success rate (when flag=true)
 - API latency vs. mock latency
 - Error rates by flag state
@@ -243,6 +266,7 @@ If real API integration fails:
 4. No code deployment needed
 
 **Rollback Command**:
+
 ```bash
 # Update environment variable
 fly secrets set ADS_REAL_DATA=false --app hotdash-production
@@ -258,11 +282,13 @@ fly apps restart hotdash-production
 ### Planned Flags
 
 #### `AI_CAMPAIGN_SUGGESTIONS`
+
 - Auto-generate campaign optimization suggestions
 - Default: `false`
 - Target: Q1 2026
 
 #### `AUTO_BUDGET_SCALING`
+
 - Automatically scale budgets for high-performing campaigns
 - Default: `false`
 - Target: Q2 2026
@@ -277,4 +303,3 @@ fly apps restart hotdash-production
 - Meta API Docs: https://developers.facebook.com/docs/marketing-apis
 - Google Ads API Docs: https://developers.google.com/google-ads/api
 - Publer API Docs: https://publer.io/api
-

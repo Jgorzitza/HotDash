@@ -13,10 +13,10 @@ This runbook documents rollback procedures for HotDash deployments across all en
 
 ## Quick Reference
 
-| Environment | Method | Trigger | Time to Rollback |
-|-------------|--------|---------|------------------|
-| **Staging** | Automatic or Manual | GitHub Actions | 2-3 minutes |
-| **Production** | Manual Only | GitHub Actions | 5-10 minutes |
+| Environment    | Method              | Trigger        | Time to Rollback |
+| -------------- | ------------------- | -------------- | ---------------- |
+| **Staging**    | Automatic or Manual | GitHub Actions | 2-3 minutes      |
+| **Production** | Manual Only         | GitHub Actions | 5-10 minutes     |
 
 ---
 
@@ -54,6 +54,7 @@ This runbook documents rollback procedures for HotDash deployments across all en
 ### Trigger Conditions
 
 The staging deployment workflow automatically triggers rollback if:
+
 - Health check endpoint returns non-200/302 status
 - Deployment fails during release
 - Machine status check fails
@@ -106,6 +107,7 @@ Before initiating rollback:
    - URL: https://github.com/Jgorzitza/HotDash/actions/workflows/rollback-staging.yml
 
 2. **Trigger Workflow**:
+
    ```
    Click "Run workflow" button
    ```
@@ -115,6 +117,7 @@ Before initiating rollback:
    - **Target Version**: Leave empty for previous version, or specify version number (e.g., "70")
 
 4. **Execute**:
+
    ```
    Click "Run workflow"
    ```
@@ -177,10 +180,11 @@ export FLY_API_TOKEN=<token-from-vault>
 #### Steps
 
 1. **List Available Versions**:
+
    ```bash
    flyctl releases --app hotdash-staging
    ```
-   
+
    Output shows:
    - Version number
    - Status (complete/failed)
@@ -188,50 +192,57 @@ export FLY_API_TOKEN=<token-from-vault>
    - User who deployed
 
 2. **Identify Target Version**:
+
    ```bash
    # Previous version is typically the one before current (v-1)
    # Note the version number from the list
    ```
 
 3. **Execute Rollback**:
+
    ```bash
    flyctl releases rollback <VERSION> --app hotdash-staging --yes
    ```
-   
+
    Example:
+
    ```bash
    flyctl releases rollback 70 --app hotdash-staging --yes
    ```
 
 4. **Wait for Rollback**:
+
    ```bash
    # Wait 30 seconds for machines to restart
    sleep 30
    ```
 
 5. **Verify Status**:
+
    ```bash
    # Check machine status
    flyctl status --app hotdash-staging
-   
+
    # Check logs
    flyctl logs --app hotdash-staging -n 50
    ```
 
 6. **Verify Health**:
+
    ```bash
    # Health endpoint
    curl -I https://hotdash-staging.fly.dev/health
-   
+
    # Root endpoint
    curl -I https://hotdash-staging.fly.dev/
    ```
 
 7. **Verify Version**:
+
    ```bash
    flyctl releases --app hotdash-staging | head -5
    ```
-   
+
    Confirm version number matches target.
 
 8. **Document**:
@@ -248,6 +259,7 @@ export FLY_API_TOKEN=<token-from-vault>
 **Workflow**: `.github/workflows/rollback-production.yml`
 
 ⚠️ **CRITICAL**: Production rollbacks require:
+
 - Manager approval (GitHub environment protection)
 - Documented reason in feedback file
 - Team notification before execution
@@ -265,6 +277,7 @@ export FLY_API_TOKEN=<token-from-vault>
    - URL: https://github.com/Jgorzitza/HotDash/actions/workflows/rollback-production.yml
 
 3. **Trigger Workflow**:
+
    ```
    Click "Run workflow" button
    ```
@@ -274,6 +287,7 @@ export FLY_API_TOKEN=<token-from-vault>
    - **Target Version**: Specify version or leave empty for previous
 
 5. **Execute**:
+
    ```
    Click "Run workflow"
    ```
@@ -302,6 +316,7 @@ export FLY_API_TOKEN=<token-from-vault>
 #### Workflow Stages
 
 Same as staging with addition of:
+
 - **Environment Protection**: Requires manager approval before rollback execution
 
 ---
@@ -344,6 +359,7 @@ All rollback workflows upload artifacts:
 **Location**: GitHub Actions → Workflow Run → Artifacts
 
 **Contents**:
+
 - Pre/post rollback status
 - Release history JSON
 - Rollback metadata (version, reason, timestamp, executor)
@@ -353,10 +369,12 @@ All rollback workflows upload artifacts:
 ### Feedback File
 
 All rollbacks documented in:
+
 - **Staging**: `feedback/devops/YYYY-MM-DD.md`
 - **Production**: `feedback/devops/YYYY-MM-DD.md` + incident report
 
 **Format**:
+
 ```md
 ## HH:MM - Rollback Executed
 
@@ -378,11 +396,13 @@ All rollbacks documented in:
 **Symptoms**: Workflow fails during rollback execution
 
 **Possible Causes**:
+
 1. Target version doesn't exist
 2. Fly.io API timeout
 3. FLY_API_TOKEN expired or invalid
 
 **Resolution**:
+
 ```bash
 # Verify token
 echo $FLY_API_TOKEN | flyctl auth whoami
@@ -401,11 +421,13 @@ flyctl releases rollback <VERSION> --app <app-name> --yes
 **Symptoms**: Rolled-back version also fails health checks
 
 **Possible Causes**:
+
 1. Issue affects multiple versions
 2. Database migration incompatibility
 3. External service dependency failure
 
 **Resolution**:
+
 1. Check logs: `flyctl logs --app <app-name> -n 100`
 2. Identify root cause (database, external service, code)
 3. If database: Coordinate with Data agent for migration rollback
@@ -419,11 +441,13 @@ flyctl releases rollback <VERSION> --app <app-name> --yes
 **Symptoms**: App returns 200 but functionality impaired
 
 **Possible Causes**:
+
 1. Database schema mismatch
 2. Feature flags misconfigured
 3. Cache issues
 
 **Resolution**:
+
 1. Check database schema version
 2. Review feature flags
 3. Clear application cache
@@ -438,6 +462,7 @@ flyctl releases rollback <VERSION> --app <app-name> --yes
 **Frequency**: Monthly
 
 **Steps**:
+
 1. Note current version: `flyctl releases --app hotdash-staging | head -1`
 2. Trigger manual rollback via GitHub Actions
 3. Verify rollback completes successfully
@@ -463,10 +488,12 @@ flyctl releases rollback <VERSION> --app <app-name> --yes
 ## Emergency Contacts
 
 ### Manager Approval (Production)
+
 - **Required For**: Production rollbacks
 - **Contact Method**: GitHub environment protection (automatic notification)
 
 ### DevOps Agent
+
 - **Responsible For**: Executing rollbacks, verification, documentation
 - **Feedback File**: `feedback/devops/YYYY-MM-DD.md`
 
@@ -474,11 +501,10 @@ flyctl releases rollback <VERSION> --app <app-name> --yes
 
 ## Revision History
 
-| Version | Date | Changes | Author |
-|---------|------|---------|--------|
-| 1.0 | 2025-10-21 | Initial runbook creation | DevOps |
+| Version | Date       | Changes                  | Author |
+| ------- | ---------- | ------------------------ | ------ |
+| 1.0     | 2025-10-21 | Initial runbook creation | DevOps |
 
 ---
 
 **📋 End of Runbook**
-

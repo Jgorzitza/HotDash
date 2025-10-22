@@ -1,9 +1,9 @@
 /**
  * API Route: Check Feature Flag
- * 
+ *
  * GET /api/features/check/:flagId
  * POST /api/features/check
- * 
+ *
  * Checks if a feature is enabled for a user.
  * Returns enabled status and reason.
  */
@@ -22,14 +22,14 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     if (!flagId || !userId) {
       return Response.json(
         { error: "Missing required parameters: flagId, userId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const check = await featureFlagService.checkFeature(
       flagId,
       userId,
-      userSegment
+      userSegment,
     );
 
     return Response.json({
@@ -38,14 +38,11 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       userId: check.userId,
       isEnabled: check.isEnabled,
       reason: check.reason,
-      checkedAt: check.checkedAt.toISOString()
+      checkedAt: check.checkedAt.toISOString(),
     });
   } catch (error) {
     console.error("[API] Feature check error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
@@ -61,14 +58,14 @@ export async function action({ request }: Route.ActionArgs) {
     if (!flagId || !userId) {
       return Response.json(
         { error: "Missing required fields: flagId, userId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const check = await featureFlagService.checkFeature(
       flagId,
       userId,
-      userSegment
+      userSegment,
     );
 
     return Response.json({
@@ -77,15 +74,10 @@ export async function action({ request }: Route.ActionArgs) {
       userId: check.userId,
       isEnabled: check.isEnabled,
       reason: check.reason,
-      checkedAt: check.checkedAt.toISOString()
+      checkedAt: check.checkedAt.toISOString(),
     });
   } catch (error) {
     console.error("[API] Feature check error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

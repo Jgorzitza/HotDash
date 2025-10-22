@@ -41,13 +41,13 @@ const experiment: Experiment = {
   name: "Tile Order Default Test",
   variants: [
     { id: "control", name: "Current Order", weight: 0.5 },
-    { id: "variant_a", name: "Value-Optimized", weight: 0.5 }
+    { id: "variant_a", name: "Value-Optimized", weight: 0.5 },
   ],
   metrics: ["tile_engagement_rate"],
   status: "running",
   startDate: new Date(),
   targetSampleSize: 200,
-  minDetectableEffect: 0.10
+  minDetectableEffect: 0.1,
 };
 
 // Assign variant to user
@@ -62,7 +62,7 @@ await abTestingService.trackConversion(
   variantId,
   userId,
   "tile_clicked",
-  1 // value
+  1, // value
 );
 
 // Calculate significance
@@ -73,6 +73,7 @@ console.log(`Winner: ${results.winner}, p-value: ${results.pValue}`);
 ### API Routes
 
 **POST `/api/experiments/assign`**
+
 ```json
 Request:
 { "userId": "shop.myshopify.com", "experimentId": "tile_order_test_001" }
@@ -91,6 +92,7 @@ Response:
 ```
 
 **POST `/api/experiments/track`**
+
 ```json
 Request:
 {
@@ -117,6 +119,7 @@ Response:
 ```
 
 **GET `/api/experiments/results/:experimentId`**
+
 ```json
 Response:
 {
@@ -139,14 +142,14 @@ Response:
 
 ### Methods
 
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `assignVariant(userId, experiment)` | Assign user to variant | `ExperimentAssignment` |
-| `trackExposure(experimentId, variantId, userId)` | Track exposure event | `Promise<void>` |
-| `trackConversion(experimentId, variantId, userId, name, value)` | Track conversion | `Promise<void>` |
-| `trackEngagement(experimentId, variantId, userId, name, metadata)` | Track engagement | `Promise<void>` |
-| `calculateSignificance(experimentId)` | Calculate statistical significance | `Promise<SignificanceResult>` |
-| `calculateSampleSize(baseline, effect, alpha, power)` | Calculate required sample size | `number` |
+| Method                                                             | Purpose                            | Returns                       |
+| ------------------------------------------------------------------ | ---------------------------------- | ----------------------------- |
+| `assignVariant(userId, experiment)`                                | Assign user to variant             | `ExperimentAssignment`        |
+| `trackExposure(experimentId, variantId, userId)`                   | Track exposure event               | `Promise<void>`               |
+| `trackConversion(experimentId, variantId, userId, name, value)`    | Track conversion                   | `Promise<void>`               |
+| `trackEngagement(experimentId, variantId, userId, name, metadata)` | Track engagement                   | `Promise<void>`               |
+| `calculateSignificance(experimentId)`                              | Calculate statistical significance | `Promise<SignificanceResult>` |
+| `calculateSampleSize(baseline, effect, alpha, power)`              | Calculate required sample size     | `number`                      |
 
 ---
 
@@ -172,27 +175,27 @@ import { featureFlagService } from "~/services/experiments/feature-flags";
 // Check if feature enabled for user
 const isEnabled = await featureFlagService.isFeatureEnabled(
   "FEATURE_DARK_MODE",
-  "shop.myshopify.com"
+  "shop.myshopify.com",
 );
 
 // Check with detailed reason
 const check = await featureFlagService.checkFeature(
   "FEATURE_DARK_MODE",
   "shop.myshopify.com",
-  "power" // optional user segment
+  "power", // optional user segment
 );
 console.log(`Enabled: ${check.isEnabled}, Reason: ${check.reason}`);
 
 // Update rollout percentage (gradual release)
 await featureFlagService.updateRolloutPercentage(
   "FEATURE_REALTIME_UPDATES",
-  50 // 50% of users
+  50, // 50% of users
 );
 
 // Target specific user
 await featureFlagService.addTargetUser(
   "FEATURE_CEO_AGENT",
-  "shop.myshopify.com"
+  "shop.myshopify.com",
 );
 ```
 
@@ -200,6 +203,7 @@ await featureFlagService.addTargetUser(
 
 **GET `/api/features/check/:flagId?userId=X`**
 **POST `/api/features/check`**
+
 ```json
 Request:
 { "flagId": "FEATURE_DARK_MODE", "userId": "shop.myshopify.com" }
@@ -216,6 +220,7 @@ Response:
 ```
 
 **GET `/api/features/list`**
+
 ```json
 Response:
 {
@@ -236,6 +241,7 @@ Response:
 ```
 
 **POST `/api/features/update`**
+
 ```json
 Request:
 {
@@ -254,27 +260,27 @@ Response:
 
 ### Methods
 
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `isFeatureEnabled(flagId, userId, segment?)` | Check if enabled | `Promise<boolean>` |
-| `checkFeature(flagId, userId, segment?)` | Check with reason | `Promise<FeatureFlagCheck>` |
-| `getFeatureFlag(flagId)` | Get flag config | `Promise<FeatureFlag \| null>` |
-| `getAllFeatureFlags()` | Get all flags | `Promise<FeatureFlag[]>` |
-| `enableFeature(flagId)` | Enable flag | `Promise<void>` |
-| `disableFeature(flagId)` | Disable flag | `Promise<void>` |
-| `updateRolloutPercentage(flagId, %)` | Update rollout | `Promise<void>` |
-| `addTargetUser(flagId, userId)` | Whitelist user | `Promise<void>` |
+| Method                                       | Purpose           | Returns                        |
+| -------------------------------------------- | ----------------- | ------------------------------ |
+| `isFeatureEnabled(flagId, userId, segment?)` | Check if enabled  | `Promise<boolean>`             |
+| `checkFeature(flagId, userId, segment?)`     | Check with reason | `Promise<FeatureFlagCheck>`    |
+| `getFeatureFlag(flagId)`                     | Get flag config   | `Promise<FeatureFlag \| null>` |
+| `getAllFeatureFlags()`                       | Get all flags     | `Promise<FeatureFlag[]>`       |
+| `enableFeature(flagId)`                      | Enable flag       | `Promise<void>`                |
+| `disableFeature(flagId)`                     | Disable flag      | `Promise<void>`                |
+| `updateRolloutPercentage(flagId, %)`         | Update rollout    | `Promise<void>`                |
+| `addTargetUser(flagId, userId)`              | Whitelist user    | `Promise<void>`                |
 
 ---
 
 ## Available Feature Flags
 
-| Flag ID | Name | Description | Default Rollout |
-|---------|------|-------------|-----------------|
-| `FEATURE_DARK_MODE` | Dark Mode | Dark theme for users | 100% |
-| `FEATURE_REALTIME_UPDATES` | Real-time Updates | SSE for dashboard | 50% |
-| `FEATURE_CEO_AGENT` | CEO Agent | AI assistant | 0% (dev only) |
-| `FEATURE_ADVANCED_CHARTS` | Advanced Charts | Polaris Viz charts | 100% |
+| Flag ID                    | Name              | Description          | Default Rollout |
+| -------------------------- | ----------------- | -------------------- | --------------- |
+| `FEATURE_DARK_MODE`        | Dark Mode         | Dark theme for users | 100%            |
+| `FEATURE_REALTIME_UPDATES` | Real-time Updates | SSE for dashboard    | 50%             |
+| `FEATURE_CEO_AGENT`        | CEO Agent         | AI assistant         | 0% (dev only)   |
+| `FEATURE_ADVANCED_CHARTS`  | Advanced Charts   | Polaris Viz charts   | 100%            |
 
 ---
 
@@ -332,11 +338,13 @@ Response:
 ## Testing
 
 **Unit Tests**: (To be created by QA)
+
 ```bash
 npm run test -- app/services/experiments
 ```
 
 **Integration Tests**:
+
 ```bash
 # Test API routes
 curl -X POST http://localhost:3000/api/experiments/assign \
@@ -356,5 +364,3 @@ curl -X POST http://localhost:3000/api/experiments/assign \
 
 **Last Updated**: 2025-10-21  
 **Questions**: Contact Product agent in `feedback/product/2025-10-21.md`
-
-

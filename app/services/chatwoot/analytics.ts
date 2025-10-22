@@ -10,7 +10,10 @@
  * SUPPORT-004
  */
 
-import { getChatwootConfig, type ChatwootConfig } from "../../config/chatwoot.server";
+import {
+  getChatwootConfig,
+  type ChatwootConfig,
+} from "../../config/chatwoot.server";
 
 // ============================================================================
 // TYPES
@@ -146,7 +149,7 @@ async function fetchConversations(
   try {
     const response = await fetch(url, {
       headers: {
-        "api_access_token": config.token,
+        api_access_token: config.token,
       },
     });
 
@@ -175,7 +178,9 @@ async function fetchConversations(
 // RESPONSE TIME ANALYSIS
 // ============================================================================
 
-function calculateResponseTime(conversations: Conversation[]): ResponseTimeMetrics {
+function calculateResponseTime(
+  conversations: Conversation[],
+): ResponseTimeMetrics {
   const responseTimes: number[] = [];
 
   for (const conv of conversations) {
@@ -185,8 +190,13 @@ function calculateResponseTime(conversations: Conversation[]): ResponseTimeMetri
     const customerMsg = messages.find((m) => m.message_type === 0);
     const agentMsg = messages.find((m) => m.message_type === 1);
 
-    if (customerMsg && agentMsg && agentMsg.created_at > customerMsg.created_at) {
-      const responseMinutes = (agentMsg.created_at - customerMsg.created_at) / 60;
+    if (
+      customerMsg &&
+      agentMsg &&
+      agentMsg.created_at > customerMsg.created_at
+    ) {
+      const responseMinutes =
+        (agentMsg.created_at - customerMsg.created_at) / 60;
       responseTimes.push(responseMinutes);
     }
   }
@@ -206,11 +216,21 @@ function calculateResponseTime(conversations: Conversation[]): ResponseTimeMetri
   responseTimes.sort((a, b) => a - b);
 
   return {
-    avg_minutes: Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length),
-    median_minutes: Math.round(responseTimes[Math.floor(responseTimes.length / 2)]),
-    p90_minutes: Math.round(responseTimes[Math.floor(responseTimes.length * 0.9)]),
-    p95_minutes: Math.round(responseTimes[Math.floor(responseTimes.length * 0.95)]),
-    p99_minutes: Math.round(responseTimes[Math.floor(responseTimes.length * 0.99)]),
+    avg_minutes: Math.round(
+      responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length,
+    ),
+    median_minutes: Math.round(
+      responseTimes[Math.floor(responseTimes.length / 2)],
+    ),
+    p90_minutes: Math.round(
+      responseTimes[Math.floor(responseTimes.length * 0.9)],
+    ),
+    p95_minutes: Math.round(
+      responseTimes[Math.floor(responseTimes.length * 0.95)],
+    ),
+    p99_minutes: Math.round(
+      responseTimes[Math.floor(responseTimes.length * 0.99)],
+    ),
     under_15min: responseTimes.filter((t) => t <= 15).length,
     over_1hour: responseTimes.filter((t) => t > 60).length,
   };
@@ -220,7 +240,9 @@ function calculateResponseTime(conversations: Conversation[]): ResponseTimeMetri
 // RESOLUTION TIME ANALYSIS
 // ============================================================================
 
-function calculateResolutionTime(conversations: Conversation[]): ResolutionTimeMetrics {
+function calculateResolutionTime(
+  conversations: Conversation[],
+): ResolutionTimeMetrics {
   const resolutionTimes: number[] = [];
 
   for (const conv of conversations) {
@@ -247,9 +269,18 @@ function calculateResolutionTime(conversations: Conversation[]): ResolutionTimeM
   resolutionTimes.sort((a, b) => a - b);
 
   return {
-    avg_hours: Math.round(resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length * 10) / 10,
-    median_hours: Math.round(resolutionTimes[Math.floor(resolutionTimes.length / 2)] * 10) / 10,
-    p90_hours: Math.round(resolutionTimes[Math.floor(resolutionTimes.length * 0.9)] * 10) / 10,
+    avg_hours:
+      Math.round(
+        (resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length) *
+          10,
+      ) / 10,
+    median_hours:
+      Math.round(resolutionTimes[Math.floor(resolutionTimes.length / 2)] * 10) /
+      10,
+    p90_hours:
+      Math.round(
+        resolutionTimes[Math.floor(resolutionTimes.length * 0.9)] * 10,
+      ) / 10,
     under_4hours: resolutionTimes.filter((t) => t <= 4).length,
     under_24hours: resolutionTimes.filter((t) => t <= 24).length,
     over_24hours: resolutionTimes.filter((t) => t > 24).length,
@@ -327,7 +358,10 @@ function identifyCommonIssues(conversations: Conversation[]): CommonIssue[] {
   // Count occurrences
   for (const conv of conversations) {
     const messages = conv.messages || [];
-    const allContent = messages.map((m) => m.content).join(" ").toLowerCase();
+    const allContent = messages
+      .map((m) => m.content)
+      .join(" ")
+      .toLowerCase();
 
     for (const [category, keywords] of Object.entries(ISSUE_KEYWORDS)) {
       if (keywords.some((kw) => allContent.includes(kw.toLowerCase()))) {
@@ -358,10 +392,20 @@ function identifyCommonIssues(conversations: Conversation[]): CommonIssue[] {
 // ============================================================================
 
 function analyzePeakHours(conversations: Conversation[]): PeakHoursAnalysis {
-  const hourCounts: Record<number, { count: number; responseTimes: number[] }> = {};
-  const dayCounts: Record<string, { count: number; responseTimes: number[] }> = {};
+  const hourCounts: Record<number, { count: number; responseTimes: number[] }> =
+    {};
+  const dayCounts: Record<string, { count: number; responseTimes: number[] }> =
+    {};
 
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   // Initialize
   for (let i = 0; i < 24; i++) {
@@ -385,8 +429,13 @@ function analyzePeakHours(conversations: Conversation[]): PeakHoursAnalysis {
     const customerMsg = messages.find((m) => m.message_type === 0);
     const agentMsg = messages.find((m) => m.message_type === 1);
 
-    if (customerMsg && agentMsg && agentMsg.created_at > customerMsg.created_at) {
-      const responseMinutes = (agentMsg.created_at - customerMsg.created_at) / 60;
+    if (
+      customerMsg &&
+      agentMsg &&
+      agentMsg.created_at > customerMsg.created_at
+    ) {
+      const responseMinutes =
+        (agentMsg.created_at - customerMsg.created_at) / 60;
       hourCounts[hour].responseTimes.push(responseMinutes);
       dayCounts[day].responseTimes.push(responseMinutes);
     }
@@ -398,7 +447,10 @@ function analyzePeakHours(conversations: Conversation[]): PeakHoursAnalysis {
     count: data.count,
     avg_response_time_minutes:
       data.responseTimes.length > 0
-        ? Math.round(data.responseTimes.reduce((a, b) => a + b, 0) / data.responseTimes.length)
+        ? Math.round(
+            data.responseTimes.reduce((a, b) => a + b, 0) /
+              data.responseTimes.length,
+          )
         : 0,
   }));
 
@@ -408,7 +460,10 @@ function analyzePeakHours(conversations: Conversation[]): PeakHoursAnalysis {
     count: data.count,
     avg_response_time_minutes:
       data.responseTimes.length > 0
-        ? Math.round(data.responseTimes.reduce((a, b) => a + b, 0) / data.responseTimes.length)
+        ? Math.round(
+            data.responseTimes.reduce((a, b) => a + b, 0) /
+              data.responseTimes.length,
+          )
         : 0,
   }));
 
@@ -461,5 +516,3 @@ function calculateVolume(conversations: Conversation[]): VolumeMetrics {
     avg_per_day: Math.round(total / days),
   };
 }
-
-

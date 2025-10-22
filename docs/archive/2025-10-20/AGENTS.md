@@ -4,12 +4,12 @@ This document lists the guardrails for any headless sub-agent launched by the ma
 
 ## Allowed Tooling
 
-| Tool | Purpose | Notes |
-| --- | --- | --- |
-| `bash` | Shell automation within repo | Must respect sandbox and guard scripts. |
-| `npm` / `npx` | Dependency tasks | Lockfile committed; no global installs. |
-| `node` scripts | Local automation | Must log output in JSON events. |
-| `codex exec` | Sub-agent launcher | Always pass `--json` to capture telemetry. |
+| Tool           | Purpose                      | Notes                                      |
+| -------------- | ---------------------------- | ------------------------------------------ |
+| `bash`         | Shell automation within repo | Must respect sandbox and guard scripts.    |
+| `npm` / `npx`  | Dependency tasks             | Lockfile committed; no global installs.    |
+| `node` scripts | Local automation             | Must log output in JSON events.            |
+| `codex exec`   | Sub-agent launcher           | Always pass `--json` to capture telemetry. |
 
 ## Budget Defaults
 

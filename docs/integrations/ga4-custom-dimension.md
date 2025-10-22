@@ -25,12 +25,12 @@ The `hd_action_key` custom dimension enables action attribution tracking in the 
 
 ### Custom Dimension Details
 
-| Setting | Value |
-|---------|-------|
-| **Dimension Name** | Action Key |
-| **Scope** | Event |
-| **Event Parameter** | `hd_action_key` |
-| **Description** | HotDash Action Queue attribution key (format: type-target-YYYY-MM-DD) |
+| Setting             | Value                                                                 |
+| ------------------- | --------------------------------------------------------------------- |
+| **Dimension Name**  | Action Key                                                            |
+| **Scope**           | Event                                                                 |
+| **Event Parameter** | `hd_action_key`                                                       |
+| **Description**     | HotDash Action Queue attribution key (format: type-target-YYYY-MM-DD) |
 
 ### Format Specification
 
@@ -41,12 +41,14 @@ The `hd_action_key` value follows this format:
 ```
 
 **Examples**:
+
 - `seo-fix-powder-board-2025-10-21`
 - `inventory-reorder-thermal-gloves-2025-10-22`
 - `content-update-home-page-2025-10-23`
 - `pricing-adjustment-winter-jacket-2025-10-24`
 
 **Components**:
+
 1. **action_type**: Type of action (seo, inventory, content, pricing, etc.)
 2. **target_slug**: Slugified target identifier (product SKU, page name, etc.)
 3. **date**: Date action was approved (YYYY-MM-DD format)
@@ -84,8 +86,8 @@ The `hd_action_key` value follows this format:
 1. In GA4, open **DebugView** (left sidebar under Reports)
 2. From dev environment, trigger a test event:
    ```javascript
-   gtag('event', 'page_view', {
-     hd_action_key: 'test-product-2025-10-21'
+   gtag("event", "page_view", {
+     hd_action_key: "test-product-2025-10-21",
    });
    ```
 3. In DebugView, select the event
@@ -112,7 +114,7 @@ const actionKey = `${actionType}-${targetSlug}-${date}`;
 // Store action_key in action record
 await prisma.action.update({
   where: { id: actionId },
-  data: { action_key: actionKey }
+  data: { action_key: actionKey },
 });
 ```
 
@@ -122,12 +124,12 @@ When user interacts with content affected by action:
 
 ```typescript
 // ENG-032: Client tracking integration
-import { track } from '~/lib/analytics';
+import { track } from "~/lib/analytics";
 
 // User views product affected by SEO action
-track('page_view', {
-  hd_action_key: 'seo-fix-powder-board-2025-10-21',
-  page_path: '/products/powder-board',
+track("page_view", {
+  hd_action_key: "seo-fix-powder-board-2025-10-21",
+  page_path: "/products/powder-board",
   // ... other event data
 });
 ```
@@ -138,29 +140,29 @@ Query GA4 Data API for action performance:
 
 ```typescript
 // ANALYTICS-017: Action attribution query
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
 
 const analyticsData = new BetaAnalyticsDataClient();
 
 // Query revenue attributed to action over 7-day window
 const [response] = await analyticsData.runReport({
   property: `properties/339826228`,
-  dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
-  dimensions: [{ name: 'customEvent:hd_action_key' }],
+  dateRanges: [{ startDate: "7daysAgo", endDate: "today" }],
+  dimensions: [{ name: "customEvent:hd_action_key" }],
   metrics: [
-    { name: 'totalRevenue' },
-    { name: 'transactions' },
-    { name: 'engagementRate' }
+    { name: "totalRevenue" },
+    { name: "transactions" },
+    { name: "engagementRate" },
   ],
   dimensionFilter: {
     filter: {
-      fieldName: 'customEvent:hd_action_key',
+      fieldName: "customEvent:hd_action_key",
       stringFilter: {
-        matchType: 'EXACT',
-        value: 'seo-fix-powder-board-2025-10-21'
-      }
-    }
-  }
+        matchType: "EXACT",
+        value: "seo-fix-powder-board-2025-10-21",
+      },
+    },
+  },
 });
 
 // Extract realized ROI
@@ -181,9 +183,9 @@ await prisma.action.update({
   data: {
     realized_roi: actionPerformance.totalRevenue,
     realized_conversions: actionPerformance.transactions,
-    attribution_window: '7d',
-    last_attribution_check: new Date()
-  }
+    attribution_window: "7d",
+    last_attribution_check: new Date(),
+  },
 });
 
 // Re-rank queue using realized ROI + predicted ROI
@@ -220,13 +222,14 @@ fly secrets set \
 
 The Growth Engine tracks action performance over multiple windows:
 
-| Window | Use Case |
-|--------|----------|
-| **7 days** | Fast-moving products, immediate impact actions (inventory, pricing) |
-| **14 days** | Standard purchase cycle, content updates, SEO fixes |
-| **28 days** | Long sales cycles, high-consideration products, brand awareness |
+| Window      | Use Case                                                            |
+| ----------- | ------------------------------------------------------------------- |
+| **7 days**  | Fast-moving products, immediate impact actions (inventory, pricing) |
+| **14 days** | Standard purchase cycle, content updates, SEO fixes                 |
+| **28 days** | Long sales cycles, high-consideration products, brand awareness     |
 
 Each window provides different insights:
+
 - **7d**: Immediate impact validation
 - **14d**: Standard attribution for most actions
 - **28d**: Full customer journey, especially for B2B or high-ticket items
@@ -238,13 +241,14 @@ Each window provides different insights:
 ### Development Environment
 
 1. **DebugView Testing** (Real-time):
+
    ```javascript
    // Enable debug mode
-   gtag('config', 'GA4_MEASUREMENT_ID', { debug_mode: true });
-   
+   gtag("config", "GA4_MEASUREMENT_ID", { debug_mode: true });
+
    // Emit test event
-   gtag('event', 'page_view', {
-     hd_action_key: 'test-product-2025-10-21'
+   gtag("event", "page_view", {
+     hd_action_key: "test-product-2025-10-21",
    });
    ```
 
@@ -256,10 +260,11 @@ Each window provides different insights:
 ### Staging Environment
 
 1. **Real-Time Reports** (5-minute delay):
+
    ```javascript
    // Normal tracking (debug mode off)
-   track('page_view', {
-     hd_action_key: 'staging-test-product-2025-10-21'
+   track("page_view", {
+     hd_action_key: "staging-test-product-2025-10-21",
    });
    ```
 
@@ -291,6 +296,7 @@ Each window provides different insights:
 **Issue**: Custom dimension doesn't show in GA4 reports
 
 **Solutions**:
+
 1. Wait 24-48 hours for dimension to populate in standard reports
 2. Check DebugView for immediate validation
 3. Verify dimension was created with correct event parameter name
@@ -301,6 +307,7 @@ Each window provides different insights:
 **Issue**: Dimension exists but shows no data
 
 **Solutions**:
+
 1. Verify client-side tracking is emitting `hd_action_key`
 2. Check browser console for gtag errors
 3. Use DebugView to confirm events are being sent
@@ -311,6 +318,7 @@ Each window provides different insights:
 **Issue**: Some actions show attribution data, others don't
 
 **Solutions**:
+
 1. Verify action_key format is consistent (type-target-YYYY-MM-DD)
 2. Check that client tracking is implemented for all affected pages
 3. Ensure attribution window is appropriate (7d may miss long sales cycles)
@@ -366,6 +374,7 @@ Each window provides different insights:
 **Current Status**: ⏳ **Pending manual GA4 setup**
 
 **Next Steps**:
+
 1. Manager/CEO performs manual GA4 setup (Steps 1-5 above)
 2. Manager notifies DevOps when dimension is created
 3. DevOps verifies dimension in GA4 console
@@ -381,4 +390,3 @@ Each window provides different insights:
 - Current usage: Verify in GA4 Admin → Custom definitions
 - Data retention: 14 months (GA4 standard retention)
 - Attribution data available in standard reports after 24-48 hours
-

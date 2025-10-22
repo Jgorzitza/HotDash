@@ -1,6 +1,6 @@
 /**
  * Tests for Ads ROAS Calculator
- * 
+ *
  * @see app/services/analytics/ads-roas.ts
  * @see docs/directions/analytics.md ANALYTICS-008
  */
@@ -51,7 +51,7 @@ describe("Ads ROAS Calculator", () => {
         10000, // impressions
         200, // clicks
         30, // conversions
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.roas).toBe(3.0); // 3000 / 1000
@@ -69,7 +69,7 @@ describe("Ads ROAS Calculator", () => {
         10000, // impressions
         200, // clicks
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.ctr).toBe(2.0); // (200 / 10000) * 100
@@ -85,7 +85,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200, // clicks
         20, // conversions
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.conversionRate).toBe(10.0); // (20 / 200) * 100
@@ -101,7 +101,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30, // conversions
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.costPerConversion).toBe(50.0); // 1500 / 30
@@ -117,7 +117,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("profitable");
@@ -134,7 +134,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("break-even");
@@ -150,7 +150,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("unprofitable");
@@ -167,7 +167,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.roas).toBe(0);
@@ -184,7 +184,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.recommendation).toContain("increasing budget");
@@ -200,7 +200,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         50, // Low clicks (CTR = 0.5%)
         10,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.recommendation).toContain("ad creative");
@@ -216,7 +216,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         127,
         19,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.performance.roas).toBe(2.33); // 777/333 = 2.333...
@@ -420,7 +420,11 @@ describe("Ads ROAS Calculator", () => {
         },
       ];
 
-      const result = await getCampaignPerformance(mockCampaignId, mockShopDomain, 90);
+      const result = await getCampaignPerformance(
+        mockCampaignId,
+        mockShopDomain,
+        90,
+      );
 
       expect(result).toHaveLength(2);
       expect(result[0].roas).toBe(2.0);
@@ -431,17 +435,31 @@ describe("Ads ROAS Calculator", () => {
       mockDashboardFacts = [
         {
           id: 1,
-          value: { campaignId: "campaign1", roas: 2.0, spend: 1000, revenue: 2000 },
+          value: {
+            campaignId: "campaign1",
+            roas: 2.0,
+            spend: 1000,
+            revenue: 2000,
+          },
           createdAt: new Date(),
         },
         {
           id: 2,
-          value: { campaignId: "campaign2", roas: 3.0, spend: 1000, revenue: 3000 },
+          value: {
+            campaignId: "campaign2",
+            roas: 3.0,
+            spend: 1000,
+            revenue: 3000,
+          },
           createdAt: new Date(),
         },
       ];
 
-      const result = await getCampaignPerformance("campaign1", mockShopDomain, 90);
+      const result = await getCampaignPerformance(
+        "campaign1",
+        mockShopDomain,
+        90,
+      );
 
       expect(result).toHaveLength(1);
       expect(result[0].roas).toBe(2.0);
@@ -450,7 +468,11 @@ describe("Ads ROAS Calculator", () => {
     it("should return empty array when campaign not found", async () => {
       mockDashboardFacts = [];
 
-      const result = await getCampaignPerformance(mockCampaignId, mockShopDomain, 90);
+      const result = await getCampaignPerformance(
+        mockCampaignId,
+        mockShopDomain,
+        90,
+      );
 
       expect(result).toEqual([]);
     });
@@ -514,17 +536,38 @@ describe("Ads ROAS Calculator", () => {
       mockDashboardFacts = [
         {
           id: 1,
-          value: { campaignId: "c1", campaignName: "C1", roas: 3.0, spend: 1000, revenue: 3000, conversions: 30 },
+          value: {
+            campaignId: "c1",
+            campaignName: "C1",
+            roas: 3.0,
+            spend: 1000,
+            revenue: 3000,
+            conversions: 30,
+          },
           createdAt: now,
         },
         {
           id: 2,
-          value: { campaignId: "c2", campaignName: "C2", roas: 5.0, spend: 1000, revenue: 5000, conversions: 50 },
+          value: {
+            campaignId: "c2",
+            campaignName: "C2",
+            roas: 5.0,
+            spend: 1000,
+            revenue: 5000,
+            conversions: 50,
+          },
           createdAt: now,
         },
         {
           id: 3,
-          value: { campaignId: "c3", campaignName: "C3", roas: 2.0, spend: 1000, revenue: 2000, conversions: 20 },
+          value: {
+            campaignId: "c3",
+            campaignName: "C3",
+            roas: 2.0,
+            spend: 1000,
+            revenue: 2000,
+            conversions: 20,
+          },
           createdAt: now,
         },
       ];
@@ -555,7 +598,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("profitable");
@@ -571,7 +614,7 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("break-even");
@@ -587,11 +630,10 @@ describe("Ads ROAS Calculator", () => {
         10000,
         200,
         30,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.status).toBe("unprofitable");
     });
   });
 });
-

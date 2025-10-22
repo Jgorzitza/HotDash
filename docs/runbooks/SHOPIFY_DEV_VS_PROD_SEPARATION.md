@@ -11,7 +11,7 @@
 ## Fix Implemented
 
 ✅ `npm run dev` → BLOCKED (shows warning, exits)  
-✅ `npm run dev:vite` → Safe local dev (no Shopify CLI)  
+✅ `npm run dev:vite` → Safe local dev (no Shopify CLI)
 
 ## Correct Deploy Process
 

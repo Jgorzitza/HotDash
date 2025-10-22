@@ -7,6 +7,7 @@
 ## Overview
 
 Chatwoot is Hot Rod AN's customer communication platform providing:
+
 - **Email Support** (primary channel)
 - **Website Live Chat** (embedded widget)
 - **Twilio SMS** (future integration)
@@ -91,6 +92,7 @@ npm run ops:check-chatwoot-health
 ```
 
 **Exit Codes:**
+
 - `0` - All checks pass (healthy)
 - `1` - Configuration missing (env vars not set)
 - `2` - Rails health endpoint failed
@@ -160,6 +162,7 @@ Health checks are part of the Manager Startup Checklist:
 ```
 
 Before approving any customer-facing work, verify:
+
 1. Health checks passing (exit code 0)
 2. Response times < 5 seconds
 3. Artifact saved successfully
@@ -167,10 +170,12 @@ Before approving any customer-facing work, verify:
 ### Monitoring & Alerting
 
 **Success Criteria (North Star):**
+
 - Chatwoot `/rails/health` + authenticated probes pass **100%** during launch week
 - Daily scripted health checks confirm availability before CX work
 
 **Failure Response:**
+
 1. Check artifact logs for error details
 2. Verify environment variables are set correctly
 3. Test Chatwoot instance directly in browser
@@ -180,6 +185,7 @@ Before approving any customer-facing work, verify:
 ## API Endpoints Used
 
 ### Profile Endpoint
+
 ```
 GET /api/v1/profile
 Headers:
@@ -196,6 +202,7 @@ Response (200):
 ```
 
 ### Conversations Endpoint
+
 ```
 GET /api/v1/accounts/{account_id}/conversations
 Headers:
@@ -211,6 +218,7 @@ Response (200):
 ```
 
 ### Messages Endpoint
+
 ```
 POST /api/v1/accounts/{account_id}/conversations/{conversation_id}/messages
 Headers:
@@ -226,6 +234,7 @@ Body:
 ```
 
 ### Private Notes
+
 ```
 POST /api/v1/accounts/{account_id}/conversations/{conversation_id}/messages
 Body:
@@ -241,6 +250,7 @@ Body:
 Webhooks are received at `/api/webhooks/chatwoot` with signature verification.
 
 ### Event Types
+
 - `conversation_created` - New conversation started
 - `message_created` - New message in conversation
 - `conversation_status_changed` - Status updated
@@ -265,11 +275,13 @@ if (signature !== expectedSignature) {
 ## HITL Approval Flow
 
 ### 1. Message Receipt
+
 - Webhook triggers on `message_created`
 - Forwarded to Agent SDK service
 - Agent analyzes conversation context
 
 ### 2. Draft Generation
+
 - AI generates suggested reply
 - Posted as **Private Note** (not visible to customer)
 - Includes metadata:
@@ -279,6 +291,7 @@ if (signature !== expectedSignature) {
   - Rollback plan
 
 ### 3. Human Review
+
 - CEO receives notification
 - Reviews draft in approvals drawer
 - Can edit, approve, or reject
@@ -288,11 +301,13 @@ if (signature !== expectedSignature) {
   - **Policy** (policy compliance)
 
 ### 4. Send or Reject
+
 - **Approve:** Private note content sent as public reply
 - **Reject:** Agent learns from feedback
 - All decisions logged to Supabase for training
 
 ### 5. Learning Loop
+
 - Graded reviews stored in `approvals` table
 - Human edits captured for supervised learning
 - Weekly coordination with Support agent
@@ -301,22 +316,26 @@ if (signature !== expectedSignature) {
 ## Testing
 
 ### Unit Tests
+
 ```bash
 npm run test:unit -- tests/unit/chatwoot.action.spec.ts
 npm run test:unit -- tests/unit/chatwoot.escalations.spec.ts
 ```
 
 ### Integration Tests
+
 ```bash
 npm run test:e2e -- tests/integration/chatwoot.api.spec.ts
 ```
 
 ### Playwright E2E Tests
+
 ```bash
 npm run test:e2e -- tests/playwright/modals.spec.ts
 ```
 
 Tests cover:
+
 - Modal flows (CX escalations)
 - Approve/reject flows
 - Keyboard accessibility
@@ -330,31 +349,34 @@ Tests cover:
 **Symptom:** `npm run ops:check-chatwoot-health` exits with non-zero code
 
 **Diagnosis:**
+
 1. Check artifact in `artifacts/ops/chatwoot-health/`
 2. Identify which check failed (rails_health or authenticated_api)
 3. Review error message and HTTP status
 
 **Common Issues:**
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| Exit code 1 | Missing env vars | Set CHATWOOT_BASE_URL and CHATWOOT_API_TOKEN |
-| Exit code 2 | Rails health failed | Check Chatwoot instance status, verify URL |
-| Exit code 3 | API auth failed | Verify API token is valid, check account access |
-| HTTP 401 | Invalid token | Regenerate token in Chatwoot admin |
-| HTTP 404 | Wrong URL | Verify CHATWOOT_BASE_URL includes protocol (https://) |
-| Timeout | Network/performance | Check network connectivity, increase timeout if needed |
+| Error       | Cause               | Solution                                               |
+| ----------- | ------------------- | ------------------------------------------------------ |
+| Exit code 1 | Missing env vars    | Set CHATWOOT_BASE_URL and CHATWOOT_API_TOKEN           |
+| Exit code 2 | Rails health failed | Check Chatwoot instance status, verify URL             |
+| Exit code 3 | API auth failed     | Verify API token is valid, check account access        |
+| HTTP 401    | Invalid token       | Regenerate token in Chatwoot admin                     |
+| HTTP 404    | Wrong URL           | Verify CHATWOOT_BASE_URL includes protocol (https://)  |
+| Timeout     | Network/performance | Check network connectivity, increase timeout if needed |
 
 ### Webhook Issues
 
 **Symptom:** Webhooks not received or rejected
 
 **Diagnosis:**
+
 1. Check webhook configuration in Chatwoot admin
 2. Verify `X-Chatwoot-Signature` header present
 3. Check logs for signature verification failures
 
 **Solutions:**
+
 - Ensure CHATWOOT_WEBHOOK_SECRET matches Chatwoot config
 - Verify webhook URL is accessible from Chatwoot instance
 - Check firewall/network rules allow Chatwoot IP
@@ -365,11 +387,13 @@ Tests cover:
 **Symptom:** Private notes not appearing
 
 **Diagnosis:**
+
 1. Check Agent SDK service is running: `https://hotdash-agent-service.fly.dev/health`
 2. Verify webhook forwarding to Agent SDK
 3. Check Agent SDK logs for errors
 
 **Solutions:**
+
 - Verify AGENT_SDK_URL environment variable
 - Ensure Agent SDK deployment is healthy
 - Check webhook payload structure matches expected format
@@ -400,16 +424,19 @@ Tests cover:
 ## Performance & SLA
 
 **Response Time Targets:**
+
 - Health check: < 5 seconds per check
 - Webhook processing: < 1 second
 - Private note creation: < 3 seconds
 - Approval action: < 2 seconds
 
 **Availability Targets (North Star):**
+
 - Health checks: 100% pass rate during launch week
 - Uptime: ≥ 99.9% (30-day rolling window)
 
 **Customer SLA:**
+
 - Business hours review: ≤ 15 minutes for CX
 - Same day response for inventory/growth
 - Median approval time: ≤ 15 minutes
@@ -429,4 +456,3 @@ Tests cover:
 - **2025-10-19:** Initial documentation with health check procedures
 - **2025-10-17:** Production alignment, health checks automated
 - **2025-10-15:** OpenAI Agents SDK integration
-

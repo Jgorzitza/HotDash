@@ -1,6 +1,6 @@
 /**
  * Tests for Data Validation Service
- * 
+ *
  * @see app/services/analytics/data-validation.ts
  * @see docs/directions/analytics.md ANALYTICS-015
  */
@@ -99,7 +99,9 @@ describe("Data Validation Service", () => {
 
       const result = await validateDataQuality(mockShopDomain, 30);
 
-      const hasInconsistency = result.issues.some((i) => i.type === "inconsistency");
+      const hasInconsistency = result.issues.some(
+        (i) => i.type === "inconsistency",
+      );
       expect(hasInconsistency).toBe(true);
       if (hasInconsistency) {
         expect(result.qualityScore).toBeLessThan(100);
@@ -184,10 +186,9 @@ describe("Data Validation Service", () => {
       const result = await validateDataQuality(mockShopDomain, 30);
 
       const hasInvalidCTR = result.issues.some(
-        (i) => i.type === "inconsistency" && i.metric === "ctr"
+        (i) => i.type === "inconsistency" && i.metric === "ctr",
       );
       expect(hasInvalidCTR).toBe(true);
     });
   });
 });
-

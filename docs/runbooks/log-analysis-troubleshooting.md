@@ -13,12 +13,12 @@ Guide for analyzing Fly.io logs, identifying performance issues, and troubleshoo
 
 ## Quick Reference
 
-| Issue | Log Pattern | Command | Solution |
-|-------|-------------|---------|----------|
-| App Crash | `exit code: 1` | `flyctl logs -n 200` | Check startup logs, rollback if needed |
-| Slow Response | `GET.*>5000 ms` | Performance analysis script | Database query optimization |
-| Database Error | `Prisma.*error\|database` | `flyctl logs \| grep -i prisma` | Check connection, verify schema |
-| External API Fail | `GA\|Shopify.*error` | `flyctl logs \| grep -i "ga\|shopify"` | Check API status, credentials |
+| Issue             | Log Pattern               | Command                                | Solution                               |
+| ----------------- | ------------------------- | -------------------------------------- | -------------------------------------- |
+| App Crash         | `exit code: 1`            | `flyctl logs -n 200`                   | Check startup logs, rollback if needed |
+| Slow Response     | `GET.*>5000 ms`           | Performance analysis script            | Database query optimization            |
+| Database Error    | `Prisma.*error\|database` | `flyctl logs \| grep -i prisma`        | Check connection, verify schema        |
+| External API Fail | `GA\|Shopify.*error`      | `flyctl logs \| grep -i "ga\|shopify"` | Check API status, credentials          |
 
 ---
 
@@ -34,6 +34,7 @@ flyctl logs --app hotdash-staging | grep -oE "GET.*[0-9]+\.[0-9]+ ms" | awk '{pr
 **Output**: List of response times (sorted)
 
 **Analyze**:
+
 ```bash
 # Calculate average, min, max, P95
 ./scripts/monitoring/analyze-performance-logs.sh
@@ -47,6 +48,7 @@ flyctl logs --app hotdash-staging | grep -E "GET.*[3-9][0-9]{3}\.[0-9]+ ms"
 ```
 
 **Example Output**:
+
 ```
 GET /api/analytics/revenue 200 - - 3542.8 ms
 GET /app/_index 200 - - 4123.1 ms
@@ -69,26 +71,33 @@ echo "Error rate: ${ERROR_RATE}%"
 ### Issue 1: App Won't Start
 
 **Symptoms**:
+
 - Machine shows "started" but app returns 502
 - Logs show `exit code: 1`
 - Restart count incrementing
 
 **Log Patterns to Check**:
+
 ```bash
 flyctl logs --app hotdash-staging | grep -E "exit code|Error|SyntaxError"
 ```
 
 **Common Causes**:
+
 1. **Module import error**:
+
    ```
    SyntaxError: Named export 'xyz' not found
    ```
+
    Solution: Fix import statement, redeploy
 
 2. **Missing environment variable**:
+
    ```
    Error: Environment variable XYZ is not defined
    ```
+
    Solution: Set secret via `flyctl secrets set`
 
 3. **Database connection failure**:
@@ -100,11 +109,13 @@ flyctl logs --app hotdash-staging | grep -E "exit code|Error|SyntaxError"
 ### Issue 2: Slow Performance
 
 **Symptoms**:
+
 - Response times >3s
 - Users report slowness
 - Metrics show degradation
 
 **Log Analysis**:
+
 ```bash
 # Find slow database queries
 flyctl logs --app hotdash-staging | grep -E "ActiveRecord.*[0-9]{3,}\.[0-9]+ms"
@@ -114,6 +125,7 @@ flyctl logs --app hotdash-staging | grep -E "fetch.*took [0-9]{4,}ms"
 ```
 
 **Solutions**:
+
 1. **Database slow**: Add indexes (coordinate with Data agent)
 2. **External API slow**: Implement caching, increase timeouts
 3. **Memory pressure**: Scale up machine
@@ -122,17 +134,20 @@ flyctl logs --app hotdash-staging | grep -E "fetch.*took [0-9]{4,}ms"
 ### Issue 3: Intermittent 502 Errors
 
 **Symptoms**:
+
 - Occasional 502 responses
 - App works most of the time
 - Logs show occasional crashes
 
 **Log Analysis**:
+
 ```bash
 # Check for crash patterns
 flyctl logs --app hotdash-staging | grep -B5 -A5 "exit code"
 ```
 
 **Common Causes**:
+
 1. **Memory leak**: App crashes when memory exhausted
    Solution: Investigate memory usage, fix leak, increase memory
 
@@ -145,17 +160,20 @@ flyctl logs --app hotdash-staging | grep -B5 -A5 "exit code"
 ### Issue 4: High CPU Usage
 
 **Symptoms**:
+
 - Machine CPU >80%
 - Slow response times
 - Fly dashboard shows red CPU metrics
 
 **Log Analysis**:
+
 ```bash
 # Check for CPU-intensive operations
 flyctl logs --app hotdash-staging | grep -E "Processing.*took.*ms" | sort -t: -k4 -n | tail -20
 ```
 
 **Solutions**:
+
 1. **Inefficient queries**: Optimize database queries
 2. **Large data processing**: Move to background jobs
 3. **Traffic spike**: Scale horizontally (add machines)
@@ -163,10 +181,12 @@ flyctl logs --app hotdash-staging | grep -E "Processing.*took.*ms" | sort -t: -k
 ### Issue 5: Database Connection Errors
 
 **Symptoms**:
+
 - Logs show Prisma connection errors
 - Intermittent failures
 
 **Log Patterns**:
+
 ```
 Prisma Client could not connect to database
 Connection timed out
@@ -174,11 +194,13 @@ too many connections
 ```
 
 **Log Analysis**:
+
 ```bash
 flyctl logs --app hotdash-staging | grep -i "prisma.*error\|database.*error"
 ```
 
 **Solutions**:
+
 1. **Connection limit reached**: Use pooler URL (`DIRECT_URL` vs `DATABASE_URL`)
 2. **Network issue**: Check Supabase status
 3. **Credentials expired**: Rotate database credentials
@@ -245,22 +267,22 @@ flyctl logs --app hotdash-staging | grep -E "/api/(analytics|seo|inventory|ads)"
 
 ### Expected Response Times (Staging v74)
 
-| Endpoint | P50 | P95 | P99 |
-|----------|-----|-----|-----|
-| Health check | <100ms | <200ms | <500ms |
-| Login page | <500ms | <1s | <2s |
-| Dashboard (/app) | <1s | <3s | <5s |
-| Tile API calls | <500ms | <2s | <3s |
-| SSE connection | <100ms | <200ms | <500ms |
+| Endpoint         | P50    | P95    | P99    |
+| ---------------- | ------ | ------ | ------ |
+| Health check     | <100ms | <200ms | <500ms |
+| Login page       | <500ms | <1s    | <2s    |
+| Dashboard (/app) | <1s    | <3s    | <5s    |
+| Tile API calls   | <500ms | <2s    | <3s    |
+| SSE connection   | <100ms | <200ms | <500ms |
 
 ### Database Query Benchmarks
 
-| Query Type | Expected Time | Warning | Critical |
-|------------|---------------|---------|----------|
-| Single row fetch | <10ms | >50ms | >100ms |
-| List query (20 rows) | <50ms | >200ms | >500ms |
-| Aggregation | <200ms | >1s | >3s |
-| Full-text search | <500ms | >2s | >5s |
+| Query Type           | Expected Time | Warning | Critical |
+| -------------------- | ------------- | ------- | -------- |
+| Single row fetch     | <10ms         | >50ms   | >100ms   |
+| List query (20 rows) | <50ms         | >200ms  | >500ms   |
+| Aggregation          | <200ms        | >1s     | >3s      |
+| Full-text search     | <500ms        | >2s     | >5s      |
 
 ---
 
@@ -396,5 +418,3 @@ cat logs/staging-*.log | grep -oE "[0-9]+\.[0-9]+ ms" | awk '{gsub(/ms/,""); pri
 ---
 
 **🔍 End of Runbook**
-
-

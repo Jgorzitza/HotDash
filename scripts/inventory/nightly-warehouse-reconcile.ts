@@ -1,6 +1,6 @@
 /**
  * Nightly Warehouse Reconciliation Cron Script
- * 
+ *
  * Run daily at 02:00 America/Los_Angeles
  * Resets Canada WH negative inventory and adjusts Main WH
  */
@@ -15,14 +15,14 @@ async function main() {
     // Create a mock request for authentication
     // In production, this would use a stored session or app authentication
     const mockRequest = new Request("https://internal-cron", {
-      headers: new Headers()
+      headers: new Headers(),
     });
 
     const context = await getShopifyServiceContext(mockRequest);
     const result = await runNightlyWarehouseReconciliation(context);
 
     console.log(
-      `[Cron] Complete: ${result.totalReconciled} reconciled, ${result.errors.length} errors`
+      `[Cron] Complete: ${result.totalReconciled} reconciled, ${result.errors.length} errors`,
     );
 
     if (result.errors.length > 0) {
@@ -38,4 +38,3 @@ async function main() {
 }
 
 main();
-

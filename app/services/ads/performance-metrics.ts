@@ -7,7 +7,12 @@
  * @module app/services/ads/performance-metrics
  */
 
-import type { CampaignPerformance, CampaignSummary, PerformanceSummary, BudgetAlert } from "./types";
+import type {
+  CampaignPerformance,
+  CampaignSummary,
+  PerformanceSummary,
+  BudgetAlert,
+} from "./types";
 import { calculateROAS } from "../../lib/ads/metrics";
 
 /**
@@ -19,11 +24,11 @@ import { calculateROAS } from "../../lib/ads/metrics";
 export function aggregatePerformanceData(
   performances: CampaignPerformance[],
   alerts: BudgetAlert[] = [],
-  dateRange: string = "LAST_7_DAYS"
+  dateRange: string = "LAST_7_DAYS",
 ): PerformanceSummary {
   const campaigns: CampaignSummary[] = performances.map((perf) => {
     const roas = calculateROAS(perf.revenueCents, perf.costCents);
-    
+
     return {
       id: perf.campaignId,
       name: perf.campaignName,
@@ -41,11 +46,15 @@ export function aggregatePerformanceData(
   const totalSpendCents = campaigns.reduce((sum, c) => sum + c.costCents, 0);
   const totalConversions = campaigns.reduce((sum, c) => sum + c.conversions, 0);
   const totalClicks = campaigns.reduce((sum, c) => sum + c.clicks, 0);
-  const avgCpcCents = totalClicks > 0 ? Math.round(totalSpendCents / totalClicks) : 0;
+  const avgCpcCents =
+    totalClicks > 0 ? Math.round(totalSpendCents / totalClicks) : 0;
 
   // Calculate average ROAS (weighted by spend)
   let avgRoas: number | null = null;
-  const totalRevenueCents = performances.reduce((sum, p) => sum + p.revenueCents, 0);
+  const totalRevenueCents = performances.reduce(
+    (sum, p) => sum + p.revenueCents,
+    0,
+  );
   if (totalSpendCents > 0) {
     avgRoas = calculateROAS(totalRevenueCents, totalSpendCents);
   }
@@ -72,7 +81,7 @@ export function aggregatePerformanceData(
  */
 export function calculateWoWComparison(
   currentWeek: CampaignPerformance[],
-  previousWeek: CampaignPerformance[]
+  previousWeek: CampaignPerformance[],
 ): {
   spendChange: number;
   conversionsChange: number;
@@ -81,31 +90,57 @@ export function calculateWoWComparison(
 } {
   const currentSpend = currentWeek.reduce((sum, c) => sum + c.costCents, 0);
   const previousSpend = previousWeek.reduce((sum, c) => sum + c.costCents, 0);
-  const spendChange = previousSpend > 0 ? ((currentSpend - previousSpend) / previousSpend) * 100 : 0;
+  const spendChange =
+    previousSpend > 0
+      ? ((currentSpend - previousSpend) / previousSpend) * 100
+      : 0;
 
-  const currentConversions = currentWeek.reduce((sum, c) => sum + c.conversions, 0);
-  const previousConversions = previousWeek.reduce((sum, c) => sum + c.conversions, 0);
-  const conversionsChange = previousConversions > 0
-    ? ((currentConversions - previousConversions) / previousConversions) * 100
-    : 0;
+  const currentConversions = currentWeek.reduce(
+    (sum, c) => sum + c.conversions,
+    0,
+  );
+  const previousConversions = previousWeek.reduce(
+    (sum, c) => sum + c.conversions,
+    0,
+  );
+  const conversionsChange =
+    previousConversions > 0
+      ? ((currentConversions - previousConversions) / previousConversions) * 100
+      : 0;
 
   // Calculate ROAS for both periods
-  const currentRevenue = currentWeek.reduce((sum, c) => sum + c.revenueCents, 0);
-  const previousRevenue = previousWeek.reduce((sum, c) => sum + c.revenueCents, 0);
+  const currentRevenue = currentWeek.reduce(
+    (sum, c) => sum + c.revenueCents,
+    0,
+  );
+  const previousRevenue = previousWeek.reduce(
+    (sum, c) => sum + c.revenueCents,
+    0,
+  );
   const currentRoas = calculateROAS(currentRevenue, currentSpend) || 0;
   const previousRoas = calculateROAS(previousRevenue, previousSpend) || 0;
-  const roasChange = previousRoas > 0 ? ((currentRoas - previousRoas) / previousRoas) * 100 : 0;
+  const roasChange =
+    previousRoas > 0 ? ((currentRoas - previousRoas) / previousRoas) * 100 : 0;
 
   // Calculate average CTR for both periods
   const currentClicks = currentWeek.reduce((sum, c) => sum + c.clicks, 0);
-  const currentImpressions = currentWeek.reduce((sum, c) => sum + c.impressions, 0);
-  const currentCtr = currentImpressions > 0 ? currentClicks / currentImpressions : 0;
+  const currentImpressions = currentWeek.reduce(
+    (sum, c) => sum + c.impressions,
+    0,
+  );
+  const currentCtr =
+    currentImpressions > 0 ? currentClicks / currentImpressions : 0;
 
   const previousClicks = previousWeek.reduce((sum, c) => sum + c.clicks, 0);
-  const previousImpressions = previousWeek.reduce((sum, c) => sum + c.impressions, 0);
-  const previousCtr = previousImpressions > 0 ? previousClicks / previousImpressions : 0;
+  const previousImpressions = previousWeek.reduce(
+    (sum, c) => sum + c.impressions,
+    0,
+  );
+  const previousCtr =
+    previousImpressions > 0 ? previousClicks / previousImpressions : 0;
 
-  const ctrChange = previousCtr > 0 ? ((currentCtr - previousCtr) / previousCtr) * 100 : 0;
+  const ctrChange =
+    previousCtr > 0 ? ((currentCtr - previousCtr) / previousCtr) * 100 : 0;
 
   return {
     spendChange: parseFloat(spendChange.toFixed(2)),
@@ -126,7 +161,7 @@ export function calculateWoWComparison(
 export function identifyBestAndWorst(
   campaigns: CampaignSummary[],
   metric: "roas" | "conversions" | "ctr" = "roas",
-  limit: number = 5
+  limit: number = 5,
 ): {
   best: CampaignSummary[];
   worst: CampaignSummary[];
@@ -169,22 +204,34 @@ export function identifyBestAndWorst(
  * @returns Trend analysis with moving averages
  */
 export function calculatePerformanceTrends(
-  dailyPerformances: Array<{ date: string; performances: CampaignPerformance[] }>
+  dailyPerformances: Array<{
+    date: string;
+    performances: CampaignPerformance[];
+  }>,
 ): {
   dates: string[];
   spendTrend: number[];
   conversionsTrend: number[];
   roasTrend: (number | null)[];
 } {
-  const dates = dailyPerformances.map(d => d.date);
+  const dates = dailyPerformances.map((d) => d.date);
   const spendTrend: number[] = [];
   const conversionsTrend: number[] = [];
   const roasTrend: (number | null)[] = [];
 
   for (const daily of dailyPerformances) {
-    const daySpend = daily.performances.reduce((sum, p) => sum + p.costCents, 0);
-    const dayConversions = daily.performances.reduce((sum, p) => sum + p.conversions, 0);
-    const dayRevenue = daily.performances.reduce((sum, p) => sum + p.revenueCents, 0);
+    const daySpend = daily.performances.reduce(
+      (sum, p) => sum + p.costCents,
+      0,
+    );
+    const dayConversions = daily.performances.reduce(
+      (sum, p) => sum + p.conversions,
+      0,
+    );
+    const dayRevenue = daily.performances.reduce(
+      (sum, p) => sum + p.revenueCents,
+      0,
+    );
     const dayRoas = calculateROAS(dayRevenue, daySpend);
 
     spendTrend.push(daySpend);
@@ -199,4 +246,3 @@ export function calculatePerformanceTrends(
     roasTrend,
   };
 }
-

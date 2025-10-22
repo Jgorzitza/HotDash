@@ -12,6 +12,7 @@ import {
   SEOContentTile,
   OpsMetricsTile,
   IdeaPoolTile,
+  ApprovalsQueueTile,
   CEOAgentTile,
   UnreadMessagesTile,
   // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
@@ -36,13 +37,13 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+} from "@dnd-kit/sortable";
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -76,6 +77,7 @@ interface LoaderData {
   seo: TileState<LandingPageAnomaly[]>;
   opsMetrics: TileState<OpsAggregateMetrics>;
   ideaPool: TileState<IdeaPoolResponse["data"]>;
+  approvalsQueue: TileState<any>;
   ceoAgent: TileState<CEOAgentStatsResponse["data"]>;
   unreadMessages: TileState<UnreadMessagesResponse["data"]>;
   // Phase 7-8: Growth analytics (ENG-023 to ENG-026)
@@ -109,14 +111,17 @@ export const loader: LoaderFunction = async ({
   );
   const escalations = await resolveEscalations(context.shopDomain);
   const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
-  
+
   // Phase 3 tiles - fetch from new API routes
   const ideaPool = await resolveApiTile("/api/analytics/idea-pool");
+  const approvalsQueue = await resolveApprovalsQueue();
   const ceoAgent = await resolveApiTile("/api/ceo-agent/stats");
   const unreadMessages = await resolveApiTile("/api/chatwoot/unread");
 
   // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
-  const socialPerformance = await resolveApiTile("/api/analytics/social-performance");
+  const socialPerformance = await resolveApiTile(
+    "/api/analytics/social-performance",
+  );
   const seoImpact = await resolveApiTile("/api/analytics/seo-impact");
   const adsRoas = await resolveApiTile("/api/analytics/ads-roas");
   const growthMetrics = await resolveApiTile("/api/analytics/growth-metrics");
@@ -139,6 +144,7 @@ export const loader: LoaderFunction = async ({
     seo,
     opsMetrics,
     ideaPool,
+    approvalsQueue,
     ceoAgent,
     unreadMessages,
     socialPerformance,
@@ -226,6 +232,62 @@ async function resolveApiTile<T extends { data?: unknown; success: boolean }>(
       status: "ok",
       data: json.data,
       source: "api",
+      fact: {
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      },
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+async function resolveApprovalsQueue(): Promise<TileState<any>> {
+  try {
+    const { getApprovalCounts, getPendingApprovals } = await import(
+      "~/services/approvals"
+    );
+
+    const [counts, pendingApprovals] = await Promise.all([
+      getApprovalCounts(),
+      getPendingApprovals(),
+    ]);
+
+    // Find oldest pending approval
+    let oldestPendingTime = "None";
+    if (pendingApprovals.length > 0) {
+      const oldest = pendingApprovals.reduce((oldest, current) => {
+        const oldestDate = new Date(oldest.created_at);
+        const currentDate = new Date(current.created_at);
+        return currentDate < oldestDate ? current : oldest;
+      });
+
+      const oldestDate = new Date(oldest.created_at);
+      const now = new Date();
+      const diffMs = now.getTime() - oldestDate.getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffDays > 0) {
+        oldestPendingTime = `${diffDays}d ago`;
+      } else if (diffHours > 0) {
+        oldestPendingTime = `${diffHours}h ago`;
+      } else {
+        oldestPendingTime = "Just now";
+      }
+    }
+
+    return {
+      status: "ok",
+      data: {
+        pendingCount: counts.pending_review || 0,
+        oldestPendingTime,
+        counts,
+      },
+      source: "database",
       fact: {
         id: Date.now(),
         createdAt: new Date().toISOString(),
@@ -477,41 +539,83 @@ function buildMockDashboard(): LoaderData {
       source: "mock",
       fact: fact(7),
     },
+    approvalsQueue: {
+      status: "ok",
+      data: {
+        pendingCount: 3,
+        oldestPendingTime: "2h ago",
+        counts: { pending_review: 3, completed: 12, in_progress: 1 },
+      },
+      source: "mock",
+      fact: fact(8),
+    },
     ceoAgent: {
       status: "ok",
       data: ceoAgentData,
       source: "mock",
-      fact: fact(8),
+      fact: fact(9),
     },
     unreadMessages: {
       status: "ok",
       data: unreadMessagesData,
       source: "mock",
-      fact: fact(9),
+      fact: fact(10),
     },
     socialPerformance: {
       status: "ok",
-      data: { totalPosts: 24, avgEngagement: 342, topPost: { platform: "Instagram", content: "Winter collection drop", impressions: 5240, engagement: 892 } },
-      source: "mock",
-      fact: fact(10),
-    },
-    seoImpact: {
-      status: "ok",
-      data: { totalKeywords: 142, avgPosition: 12.4, topMover: { keyword: "snow boots", oldPosition: 24, newPosition: 8, change: -16 } },
+      data: {
+        totalPosts: 24,
+        avgEngagement: 342,
+        topPost: {
+          platform: "Instagram",
+          content: "Winter collection drop",
+          impressions: 5240,
+          engagement: 892,
+        },
+      },
       source: "mock",
       fact: fact(11),
     },
-    adsRoas: {
+    seoImpact: {
       status: "ok",
-      data: { totalSpend: 4250, totalRevenue: 18900, roas: 4.45, topCampaign: { name: "Winter Collection Launch", platform: "Google Ads", roas: 6.2, spend: 1200 } },
+      data: {
+        totalKeywords: 142,
+        avgPosition: 12.4,
+        topMover: {
+          keyword: "snow boots",
+          oldPosition: 24,
+          newPosition: 8,
+          change: -16,
+        },
+      },
       source: "mock",
       fact: fact(12),
     },
-    growthMetrics: {
+    adsRoas: {
       status: "ok",
-      data: { weeklyGrowth: 18.5, totalReach: 45200, bestChannel: { name: "Social Media", growth: 24.3 } },
+      data: {
+        totalSpend: 4250,
+        totalRevenue: 18900,
+        roas: 4.45,
+        topCampaign: {
+          name: "Winter Collection Launch",
+          platform: "Google Ads",
+          roas: 6.2,
+          spend: 1200,
+        },
+      },
       source: "mock",
       fact: fact(13),
+    },
+    growthMetrics: {
+      status: "ok",
+      data: {
+        weeklyGrowth: 18.5,
+        totalReach: 45200,
+        bestChannel: { name: "Social Media", growth: 24.3 },
+      },
+      source: "mock",
+      fact: fact(14),
     },
     visibleTiles: DEFAULT_TILE_ORDER, // ENG-015: All tiles visible by default
   };
@@ -526,6 +630,7 @@ const DEFAULT_TILE_ORDER = [
   "cx-escalations",
   "seo-content",
   "idea-pool",
+  "approvals-queue",
   "ceo-agent",
   "unread-messages",
   // Phase 7-8: Growth analytics (ENG-028)
@@ -546,12 +651,14 @@ export default function OperatorDashboard() {
   const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
 
   // ENG-015: Filter tiles based on visibility preferences
-  const visibleTileIds = tileOrder.filter((tileId) => 
-    data.visibleTiles.includes(tileId)
+  const visibleTileIds = tileOrder.filter((tileId) =>
+    data.visibleTiles.includes(tileId),
   );
 
   // Track refreshing tiles (Phase 5 - ENG-025)
-  const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(new Set());
+  const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(
+    new Set(),
+  );
 
   // Handle tile refresh events from SSE
   useEffect(() => {
@@ -593,36 +700,44 @@ export default function OperatorDashboard() {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   // Handle drag end - reorder tiles and save to preferences (ENG-014)
-  const handleDragEnd = useCallback((event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
 
-    if (over && active.id !== over.id) {
-      setTileOrder((items) => {
-        const oldIndex = items.indexOf(active.id as string);
-        const newIndex = items.indexOf(over.id as string);
-        const newOrder = arrayMove(items, oldIndex, newIndex);
+      if (over && active.id !== over.id) {
+        setTileOrder((items) => {
+          const oldIndex = items.indexOf(active.id as string);
+          const newIndex = items.indexOf(over.id as string);
+          const newOrder = arrayMove(items, oldIndex, newIndex);
 
-        // Save to user preferences via API
-        tileOrderFetcher.submit(
-          { tileOrder: JSON.stringify(newOrder) },
-          { method: "POST", action: "/api/preferences/tile-order" }
-        );
+          // Save to user preferences via API
+          tileOrderFetcher.submit(
+            { tileOrder: JSON.stringify(newOrder) },
+            { method: "POST", action: "/api/preferences/tile-order" },
+          );
 
-        return newOrder;
-      });
-    }
-  }, [tileOrderFetcher]);
+          return newOrder;
+        });
+      }
+    },
+    [tileOrderFetcher],
+  );
 
   // Monitor system status for banner alerts (Phase 4 - ENG-012)
   const systemStatus = {
     queueDepth: 0, // TODO: Get from approval service
     approvalRate: undefined, // TODO: Get from metrics service
     serviceHealth: "healthy" as const,
-    connectionStatus: sseStatus === "connected" ? ("online" as const) : sseStatus === "connecting" ? ("reconnecting" as const) : ("offline" as const),
+    connectionStatus:
+      sseStatus === "connected"
+        ? ("online" as const)
+        : sseStatus === "connecting"
+          ? ("reconnecting" as const)
+          : ("offline" as const),
   };
   const bannerAlerts = useBannerAlerts(systemStatus);
 
@@ -652,7 +767,7 @@ export default function OperatorDashboard() {
         autoRefreshInterval={60}
       />
     ),
-    "fulfillment": (
+    fulfillment: (
       <TileCard
         title="Fulfillment Health"
         tile={data.fulfillment}
@@ -664,7 +779,7 @@ export default function OperatorDashboard() {
         autoRefreshInterval={120}
       />
     ),
-    "inventory": (
+    inventory: (
       <TileCard
         title="Inventory Heatmap"
         tile={data.inventory}
@@ -712,6 +827,18 @@ export default function OperatorDashboard() {
         isRefreshing={refreshingTiles.has("idea-pool")}
         onRefresh={() => handleRefreshTile("idea-pool")}
         autoRefreshInterval={300}
+      />
+    ),
+    "approvals-queue": (
+      <TileCard
+        title="Approvals Queue"
+        tile={data.approvalsQueue}
+        render={(approvalsData) => <ApprovalsQueueTile {...approvalsData} />}
+        testId="tile-approvals-queue"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("approvals-queue")}
+        onRefresh={() => handleRefreshTile("approvals-queue")}
+        autoRefreshInterval={60}
       />
     ),
     "ceo-agent": (
@@ -817,7 +944,10 @@ export default function OperatorDashboard() {
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <SortableContext items={visibleTileIds} strategy={verticalListSortingStrategy}>
+        <SortableContext
+          items={visibleTileIds}
+          strategy={verticalListSortingStrategy}
+        >
           <div className="occ-tile-grid">
             {visibleTileIds.length > 0 ? (
               visibleTileIds.map((tileId) => (
@@ -826,12 +956,17 @@ export default function OperatorDashboard() {
                 </SortableTile>
               ))
             ) : (
-              <div style={{ 
-                padding: "var(--occ-space-6)", 
-                textAlign: "center",
-                color: "var(--occ-text-secondary)",
-              }}>
-                <p>No tiles visible. Visit <a href="/settings">Settings</a> to enable tiles.</p>
+              <div
+                style={{
+                  padding: "var(--occ-space-6)",
+                  textAlign: "center",
+                  color: "var(--occ-text-secondary)",
+                }}
+              >
+                <p>
+                  No tiles visible. Visit <a href="/settings">Settings</a> to
+                  enable tiles.
+                </p>
               </div>
             )}
           </div>

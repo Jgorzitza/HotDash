@@ -10,7 +10,10 @@
  * SUPPORT-003
  */
 
-import { getChatwootConfig, type ChatwootConfig } from "../../config/chatwoot.server";
+import {
+  getChatwootConfig,
+  type ChatwootConfig,
+} from "../../config/chatwoot.server";
 
 // ============================================================================
 // TYPES
@@ -20,7 +23,10 @@ export interface AutomationRule {
   id: string;
   name: string;
   description: string;
-  event_name: "conversation_created" | "conversation_updated" | "message_created";
+  event_name:
+    | "conversation_created"
+    | "conversation_updated"
+    | "message_created";
   conditions: AutomationCondition[];
   actions: AutomationAction[];
   enabled: boolean;
@@ -28,13 +34,25 @@ export interface AutomationRule {
 
 export interface AutomationCondition {
   attribute_key: string;
-  filter_operator: "equal_to" | "not_equal_to" | "contains" | "does_not_contain" | "is_present" | "is_not_present";
+  filter_operator:
+    | "equal_to"
+    | "not_equal_to"
+    | "contains"
+    | "does_not_contain"
+    | "is_present"
+    | "is_not_present";
   values: string[];
   query_operator?: "and" | "or";
 }
 
 export interface AutomationAction {
-  action_name: "assign_agent" | "assign_team" | "add_label" | "send_message" | "send_email_to_team" | "mute_conversation";
+  action_name:
+    | "assign_agent"
+    | "assign_team"
+    | "add_label"
+    | "send_message"
+    | "send_email_to_team"
+    | "mute_conversation";
   action_params?: Record<string, unknown>;
 }
 
@@ -54,24 +72,60 @@ export interface ConversationContext {
 
 const KEYWORDS = {
   // Customer Support Categories
-  orders: ["order", "tracking", "shipment", "delivery", "package", "tracking number", "order status"],
-  inventory: ["in stock", "availability", "out of stock", "backorder", "when available", "restock"],
+  orders: [
+    "order",
+    "tracking",
+    "shipment",
+    "delivery",
+    "package",
+    "tracking number",
+    "order status",
+  ],
+  inventory: [
+    "in stock",
+    "availability",
+    "out of stock",
+    "backorder",
+    "when available",
+    "restock",
+  ],
   cx: ["help", "support", "question", "issue", "problem", "assistance"],
-  
+
   // Product Categories
   fittings: ["fitting", "an fitting", "hose end", "adapter", "fitting size"],
   fuel: ["fuel", "pump", "regulator", "filter", "fuel system"],
-  
+
   // Urgency
-  urgent: ["urgent", "asap", "emergency", "immediately", "critical", "help now"],
-  
+  urgent: [
+    "urgent",
+    "asap",
+    "emergency",
+    "immediately",
+    "critical",
+    "help now",
+  ],
+
   // Sentiment
   positive: ["thanks", "thank you", "great", "awesome", "perfect", "excellent"],
-  negative: ["disappointed", "terrible", "worst", "bad", "poor", "angry", "frustrated"],
-  
+  negative: [
+    "disappointed",
+    "terrible",
+    "worst",
+    "bad",
+    "poor",
+    "angry",
+    "frustrated",
+  ],
+
   // Intent
   question: ["how", "what", "when", "where", "why", "can you", "do you", "?"],
-  complaint: ["complaint", "disappointed", "never again", "terrible service", "worst"],
+  complaint: [
+    "complaint",
+    "disappointed",
+    "never again",
+    "terrible service",
+    "worst",
+  ],
   praise: ["great job", "excellent", "love it", "perfect", "highly recommend"],
 };
 
@@ -94,7 +148,9 @@ Hot Rod AN Support Team
 /**
  * Apply automation rules to a conversation
  */
-export async function applyAutomations(conversation: ConversationContext): Promise<void> {
+export async function applyAutomations(
+  conversation: ConversationContext,
+): Promise<void> {
   const rules = getAutomationRules();
 
   for (const rule of rules) {
@@ -104,7 +160,9 @@ export async function applyAutomations(conversation: ConversationContext): Promi
 
     if (shouldApply) {
       await executeActions(conversation, rule.actions);
-      console.log(`[Automation] Applied rule: ${rule.name} to conversation ${conversation.id}`);
+      console.log(
+        `[Automation] Applied rule: ${rule.name} to conversation ${conversation.id}`,
+      );
     }
   }
 }
@@ -118,7 +176,9 @@ function evaluateConditions(
 ): boolean {
   if (conditions.length === 0) return true;
 
-  return conditions.every((condition) => evaluateCondition(conversation, condition));
+  return conditions.every((condition) =>
+    evaluateCondition(conversation, condition),
+  );
 }
 
 /**
@@ -141,7 +201,9 @@ function evaluateCondition(
       attributeValue = String(conversation.inbox_id);
       break;
     case "assignee_id":
-      attributeValue = conversation.assignee_id ? String(conversation.assignee_id) : undefined;
+      attributeValue = conversation.assignee_id
+        ? String(conversation.assignee_id)
+        : undefined;
       break;
     case "labels":
       attributeValue = conversation.labels || [];
@@ -159,34 +221,38 @@ function evaluateCondition(
   switch (filter_operator) {
     case "equal_to":
       return values.some((v) => attributeValue === v);
-    
+
     case "not_equal_to":
       return !values.some((v) => attributeValue === v);
-    
+
     case "contains":
       if (Array.isArray(attributeValue)) {
         return values.some((v) => attributeValue.includes(v));
       }
       if (typeof attributeValue === "string") {
-        return values.some((v) => attributeValue.toLowerCase().includes(v.toLowerCase()));
+        return values.some((v) =>
+          attributeValue.toLowerCase().includes(v.toLowerCase()),
+        );
       }
       return false;
-    
+
     case "does_not_contain":
       if (Array.isArray(attributeValue)) {
         return !values.some((v) => attributeValue.includes(v));
       }
       if (typeof attributeValue === "string") {
-        return !values.some((v) => attributeValue.toLowerCase().includes(v.toLowerCase()));
+        return !values.some((v) =>
+          attributeValue.toLowerCase().includes(v.toLowerCase()),
+        );
       }
       return true;
-    
+
     case "is_present":
       return attributeValue !== undefined && attributeValue !== null;
-    
+
     case "is_not_present":
       return attributeValue === undefined || attributeValue === null;
-    
+
     default:
       return false;
   }
@@ -205,7 +271,10 @@ async function executeActions(
     try {
       await executeAction(config, conversation, action);
     } catch (error) {
-      console.error(`[Automation] Failed to execute action: ${action.action_name}`, error);
+      console.error(
+        `[Automation] Failed to execute action: ${action.action_name}`,
+        error,
+      );
     }
   }
 }
@@ -270,7 +339,7 @@ async function assignConversation(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
     body: JSON.stringify({ assignee_id: agentId }),
   });
@@ -291,7 +360,7 @@ async function addLabels(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
     body: JSON.stringify({ labels }),
   });
@@ -312,7 +381,7 @@ async function sendPrivateNote(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
     body: JSON.stringify({
       content: message,
@@ -336,7 +405,7 @@ async function muteConversation(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
   });
 
@@ -359,12 +428,24 @@ export function analyzeConversation(conversation: ConversationContext): {
   isUrgent: boolean;
 } {
   const messages = conversation.messages || [];
-  const allContent = messages.map((m) => m.content).join(" ").toLowerCase();
+  const allContent = messages
+    .map((m) => m.content)
+    .join(" ")
+    .toLowerCase();
 
   // Detect categories
   const categories: string[] = [];
   for (const [category, keywords] of Object.entries(KEYWORDS)) {
-    if (["positive", "negative", "urgent", "question", "complaint", "praise"].includes(category)) {
+    if (
+      [
+        "positive",
+        "negative",
+        "urgent",
+        "question",
+        "complaint",
+        "praise",
+      ].includes(category)
+    ) {
       continue; // Skip sentiment/intent keywords
     }
 
@@ -375,8 +456,12 @@ export function analyzeConversation(conversation: ConversationContext): {
 
   // Detect sentiment
   let sentiment: "positive" | "negative" | "neutral" = "neutral";
-  const hasPositive = KEYWORDS.positive.some((kw) => allContent.includes(kw.toLowerCase()));
-  const hasNegative = KEYWORDS.negative.some((kw) => allContent.includes(kw.toLowerCase()));
+  const hasPositive = KEYWORDS.positive.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
+  const hasNegative = KEYWORDS.negative.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
 
   if (hasNegative && !hasPositive) {
     sentiment = "negative";
@@ -386,9 +471,15 @@ export function analyzeConversation(conversation: ConversationContext): {
 
   // Detect intent
   let intent: "question" | "complaint" | "praise" | "general" = "general";
-  const hasQuestion = KEYWORDS.question.some((kw) => allContent.includes(kw.toLowerCase()));
-  const hasComplaint = KEYWORDS.complaint.some((kw) => allContent.includes(kw.toLowerCase()));
-  const hasPraise = KEYWORDS.praise.some((kw) => allContent.includes(kw.toLowerCase()));
+  const hasQuestion = KEYWORDS.question.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
+  const hasComplaint = KEYWORDS.complaint.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
+  const hasPraise = KEYWORDS.praise.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
 
   if (hasComplaint) {
     intent = "complaint";
@@ -399,7 +490,9 @@ export function analyzeConversation(conversation: ConversationContext): {
   }
 
   // Detect urgency
-  const isUrgent = KEYWORDS.urgent.some((kw) => allContent.includes(kw.toLowerCase()));
+  const isUrgent = KEYWORDS.urgent.some((kw) =>
+    allContent.includes(kw.toLowerCase()),
+  );
 
   return { categories, sentiment, intent, isUrgent };
 }
@@ -414,7 +507,8 @@ export function getAutomationRules(): AutomationRule[] {
     {
       id: "auto-tag-orders",
       name: "Auto-tag Order Conversations",
-      description: "Automatically tag conversations containing order-related keywords",
+      description:
+        "Automatically tag conversations containing order-related keywords",
       event_name: "message_created",
       enabled: true,
       conditions: [
@@ -543,7 +637,9 @@ export function isAfterHours(): boolean {
 /**
  * Send after-hours auto-reply
  */
-export async function sendAfterHoursReply(conversationId: number): Promise<void> {
+export async function sendAfterHoursReply(
+  conversationId: number,
+): Promise<void> {
   if (!isAfterHours()) {
     return; // Not after hours, skip
   }
@@ -552,10 +648,10 @@ export async function sendAfterHoursReply(conversationId: number): Promise<void>
 
   try {
     await sendPrivateNote(config, conversationId, AFTER_HOURS_MESSAGE);
-    console.log(`[Automation] Sent after-hours reply to conversation ${conversationId}`);
+    console.log(
+      `[Automation] Sent after-hours reply to conversation ${conversationId}`,
+    );
   } catch (error) {
     console.error(`[Automation] Failed to send after-hours reply:`, error);
   }
 }
-
-

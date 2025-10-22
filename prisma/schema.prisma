@@ -91,3 +91,72 @@ model TaskAssignment {
   @@index([phase, status])
   @@schema("public")
 }
+
+model SeoAudit {
+  id          Int      @id @default(autoincrement())
+  shopDomain  String
+  auditType   String   // 'daily', 'manual', 'scheduled'
+  status      String   // 'running', 'completed', 'failed'
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+  totalPages  Int      @default(0)
+  totalIssues Int      @default(0)
+  criticalIssues Int   @default(0)
+  warningIssues  Int    @default(0)
+  infoIssues    Int    @default(0)
+  pagesWithIssues Int  @default(0)
+  durationMs  Int?     // Duration in milliseconds
+  errorMessage String? // If status is 'failed'
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  pages SeoAuditPage[]
+  
+  @@index([shopDomain, createdAt])
+  @@index([status, startedAt])
+  @@schema("public")
+}
+
+model SeoAuditPage {
+  id          Int      @id @default(autoincrement())
+  auditId     Int
+  url         String
+  title       String?
+  titleLength Int      @default(0)
+  metaDescription String?
+  metaLength  Int      @default(0)
+  h1Count     Int      @default(0)
+  h1Text      String[] // Array of H1 text content
+  imageCount  Int      @default(0)
+  imagesWithoutAlt Int @default(0)
+  issuesCount Int      @default(0)
+  auditedAt   DateTime @default(now())
+  
+  // Relations
+  audit SeoAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  issues SeoAuditIssue[]
+  
+  @@index([auditId, url])
+  @@index([issuesCount])
+  @@schema("public")
+}
+
+model SeoAuditIssue {
+  id          Int      @id @default(autoincrement())
+  pageId      Int
+  type        String   // 'missing_title', 'title_too_long', etc.
+  severity    String   // 'critical', 'warning', 'info'
+  element     String?  // 'title', 'meta description', 'h1', etc.
+  currentValue String? // Current value if applicable
+  recommendedValue String? // Recommended fix
+  description String
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  page SeoAuditPage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  
+  @@index([pageId, severity])
+  @@index([type, severity])
+  @@schema("public")
+}

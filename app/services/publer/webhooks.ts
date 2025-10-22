@@ -1,17 +1,17 @@
 /**
  * Publer Webhook Handler
- * 
+ *
  * Handles webhooks from Publer for job status updates
  * Verifies HMAC-SHA256 signatures
  * Updates approval status and stores post URLs
  */
 
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHmac, timingSafeEqual } from "crypto";
 
 export interface PublerWebhookPayload {
-  event: 'job.completed' | 'job.failed' | 'job.started' | 'job.progress';
+  event: "job.completed" | "job.failed" | "job.started" | "job.progress";
   job_id: string;
-  status: 'pending' | 'processing' | 'complete' | 'failed';
+  status: "pending" | "processing" | "complete" | "failed";
   progress?: number;
   posts?: Array<{
     post_id: string;
@@ -39,7 +39,7 @@ export interface WebhookProcessingResult {
 
 /**
  * Verify Publer webhook signature using HMAC-SHA256
- * 
+ *
  * @param payload - Raw webhook payload body
  * @param signature - Signature from X-Publer-Signature header
  * @param secret - Webhook secret (from environment)
@@ -52,23 +52,23 @@ export function verifyWebhookSignature(
 ): WebhookVerificationResult {
   try {
     // Remove "sha256=" prefix if present
-    const signatureValue = signature.startsWith('sha256=') 
-      ? signature.substring(7) 
+    const signatureValue = signature.startsWith("sha256=")
+      ? signature.substring(7)
       : signature;
 
     // Calculate expected signature
-    const hmac = createHmac('sha256', secret);
+    const hmac = createHmac("sha256", secret);
     hmac.update(payload);
-    const expectedSignature = hmac.digest('hex');
+    const expectedSignature = hmac.digest("hex");
 
     // Timing-safe comparison to prevent timing attacks
-    const signatureBuffer = Buffer.from(signatureValue, 'hex');
-    const expectedBuffer = Buffer.from(expectedSignature, 'hex');
+    const signatureBuffer = Buffer.from(signatureValue, "hex");
+    const expectedBuffer = Buffer.from(expectedSignature, "hex");
 
     if (signatureBuffer.length !== expectedBuffer.length) {
       return {
         valid: false,
-        error: 'Signature length mismatch',
+        error: "Signature length mismatch",
       };
     }
 
@@ -76,19 +76,19 @@ export function verifyWebhookSignature(
 
     return {
       valid: isValid,
-      error: isValid ? undefined : 'Invalid signature',
+      error: isValid ? undefined : "Invalid signature",
     };
   } catch (error) {
     return {
       valid: false,
-      error: error instanceof Error ? error.message : 'Verification error',
+      error: error instanceof Error ? error.message : "Verification error",
     };
   }
 }
 
 /**
  * Process Publer webhook event
- * 
+ *
  * @param payload - Parsed webhook payload
  * @returns Processing result
  */
@@ -98,12 +98,13 @@ export async function processWebhookEvent(
   try {
     const { event, job_id, status, posts } = payload;
 
-    console.log(`[Publer Webhook] Event: ${event}, Job: ${job_id}, Status: ${status}`);
+    console.log(
+      `[Publer Webhook] Event: ${event}, Job: ${job_id}, Status: ${status}`,
+    );
 
     // Extract post URLs if available
-    const postUrls = posts
-      ?.filter(post => post.url)
-      .map(post => post.url as string) || [];
+    const postUrls =
+      posts?.filter((post) => post.url).map((post) => post.url as string) || [];
 
     // TODO: Update approval status in database
     // const { data, error } = await supabase
@@ -131,7 +132,7 @@ export async function processWebhookEvent(
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -139,22 +140,24 @@ export async function processWebhookEvent(
 /**
  * Validate webhook payload structure
  */
-export function validateWebhookPayload(payload: unknown): payload is PublerWebhookPayload {
-  if (typeof payload !== 'object' || payload === null) {
+export function validateWebhookPayload(
+  payload: unknown,
+): payload is PublerWebhookPayload {
+  if (typeof payload !== "object" || payload === null) {
     return false;
   }
 
   const p = payload as any;
 
-  if (typeof p.event !== 'string') {
+  if (typeof p.event !== "string") {
     return false;
   }
 
-  if (typeof p.job_id !== 'string') {
+  if (typeof p.job_id !== "string") {
     return false;
   }
 
-  if (typeof p.status !== 'string') {
+  if (typeof p.status !== "string") {
     return false;
   }
 

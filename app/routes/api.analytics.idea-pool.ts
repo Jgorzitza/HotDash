@@ -88,7 +88,7 @@ export async function loader(_args: LoaderFunctionArgs) {
 
       // For now, fall back to fixtures even when flag is enabled
       console.warn(
-        "[API] FEATURE_SUPABASE_IDEA_POOL enabled but Supabase integration not yet implemented. Falling back to fixtures."
+        "[API] FEATURE_SUPABASE_IDEA_POOL enabled but Supabase integration not yet implemented. Falling back to fixtures.",
       );
     }
 

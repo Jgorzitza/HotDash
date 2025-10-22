@@ -1,8 +1,8 @@
 /**
  * API Route: List Feature Flags
- * 
+ *
  * GET /api/features/list
- * 
+ *
  * Returns all feature flags with their current status.
  */
 
@@ -27,15 +27,15 @@ export async function loader({ request }: Route.LoaderArgs) {
           return {
             ...flag,
             isEnabledForUser: check.isEnabled,
-            reason: check.reason
+            reason: check.reason,
           };
-        })
+        }),
       );
     }
 
     return Response.json({
       success: true,
-      flags: flagsWithStatus.map(flag => ({
+      flags: flagsWithStatus.map((flag) => ({
         id: flag.id,
         name: flag.name,
         description: flag.description,
@@ -43,17 +43,12 @@ export async function loader({ request }: Route.LoaderArgs) {
         rolloutPercentage: flag.rolloutPercentage,
         environment: flag.environment,
         isEnabledForUser: (flag as any).isEnabledForUser,
-        reason: (flag as any).reason
+        reason: (flag as any).reason,
       })),
-      count: flagsWithStatus.length
+      count: flagsWithStatus.length,
     });
   } catch (error) {
     console.error("[API] Feature list error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

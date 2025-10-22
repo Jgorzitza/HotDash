@@ -20,7 +20,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "Where is my order? I need the tracking number", message_type: 0 },
+          {
+            content: "Where is my order? I need the tracking number",
+            message_type: 0,
+          },
         ],
       };
 
@@ -36,7 +39,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "Is this product in stock? When will it be available?", message_type: 0 },
+          {
+            content: "Is this product in stock? When will it be available?",
+            message_type: 0,
+          },
         ],
       };
 
@@ -52,7 +58,11 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "This is terrible service! I'm very disappointed and frustrated!", message_type: 0 },
+          {
+            content:
+              "This is terrible service! I'm very disappointed and frustrated!",
+            message_type: 0,
+          },
         ],
       };
 
@@ -68,7 +78,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "Thank you so much! This is awesome, great job!", message_type: 0 },
+          {
+            content: "Thank you so much! This is awesome, great job!",
+            message_type: 0,
+          },
         ],
       };
 
@@ -84,7 +97,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "URGENT: I need help immediately! This is an emergency!", message_type: 0 },
+          {
+            content: "URGENT: I need help immediately! This is an emergency!",
+            message_type: 0,
+          },
         ],
       };
 
@@ -99,7 +115,11 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "I ordered AN fittings but they're out of stock. Where's my order?", message_type: 0 },
+          {
+            content:
+              "I ordered AN fittings but they're out of stock. Where's my order?",
+            message_type: 0,
+          },
         ],
       };
 
@@ -116,7 +136,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "What are the specifications of this fuel pump?", message_type: 0 },
+          {
+            content: "What are the specifications of this fuel pump?",
+            message_type: 0,
+          },
         ],
       };
 
@@ -131,7 +154,10 @@ describe("Chatwoot Automation Service", () => {
         inbox_id: 1,
         status: "open",
         messages: [
-          { content: "How do I install this fitting? What size do I need?", message_type: 0 },
+          {
+            content: "How do I install this fitting? What size do I need?",
+            message_type: 0,
+          },
         ],
       };
 
@@ -185,12 +211,12 @@ describe("Chatwoot Automation Service", () => {
 
     it("should have negative sentiment rule", () => {
       const rules = getAutomationRules();
-      const sentimentRule = rules.find((r) => r.id === "flag-negative-sentiment");
+      const sentimentRule = rules.find(
+        (r) => r.id === "flag-negative-sentiment",
+      );
 
       expect(sentimentRule).toBeDefined();
       expect(sentimentRule?.enabled).toBe(true);
     });
   });
 });
-
-

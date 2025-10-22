@@ -12,23 +12,27 @@
 ### Primary Build Agents (Start Immediately)
 
 **Engineer** (docs/directions/engineer.md v6.0):
+
 - **START**: ENG-001 (Fix AppProvider P0 + enhance approvals route)
 - **Then**: 37 more tasks across 10 phases
 - **Timeline**: 3-4 days (30 hours)
 - **Reference**: AGENT_LAUNCH_PROMPT_OCT20.md + docs/design/ (57 specs)
 
 **Data** (docs/directions/data.md v4.0):
+
 - **START**: P0 RLS verification (4 critical tables)
 - **Then**: 5 new tables (user_preferences, notifications, actions tables)
 - **Timeline**: 3 hours
 - **Blocker**: Inventory RLS after Manager merges branch
 
 **Designer** (docs/directions/designer.md v7.0):
+
 - **START**: DES-002 (after Engineer fixes AppProvider)
 - **Then**: Validate all Option A phases against 57 specs
 - **Timeline**: 15-20 hours (validation work)
 
 **QA** (docs/directions/qa.md v3.0):
+
 - **START**: Retest /health endpoint (now deployed)
 - **Then**: QA-012 to QA-017 (final testing + GO/NO-GO)
 - **Timeline**: 4-5 hours
@@ -69,6 +73,7 @@
 ## WHAT CHANGED (Manager Accountability)
 
 ### ✅ DID RIGHT:
+
 - Read ALL 16 agent feedback files completely
 - Consolidated actual status (not aspirations)
 - **Asked CEO for decisions** (no "pending confirmation")
@@ -78,6 +83,7 @@
 - Verified work claims (found/fixed Analytics discrepancy)
 
 ### ❌ FIXED:
+
 - Closed PR #108 (had fictional work)
 - Stopped rushing
 - Used complete consolidation before writing direction
@@ -89,4 +95,3 @@
 All 16 agents: Your direction file is updated at `docs/directions/{agent}.md`
 
 **START NOW** - No more waiting.
-

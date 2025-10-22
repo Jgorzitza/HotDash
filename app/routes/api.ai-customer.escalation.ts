@@ -12,7 +12,10 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { detectEscalations, type EscalationDetectionResult } from "../services/ai-customer/escalation";
+import {
+  detectEscalations,
+  type EscalationDetectionResult,
+} from "../services/ai-customer/escalation";
 
 /**
  * API Response structure
@@ -31,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Get Chatwoot credentials (optional for testing)
@@ -43,7 +46,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       supabaseUrl,
       supabaseKey,
       chatwootUrl,
-      chatwootKey
+      chatwootKey,
     );
 
     const response: EscalationResponse = {
@@ -54,15 +57,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] Escalation detection error:', error);
+    console.error("[API] Escalation detection error:", error);
 
     const errorResponse: EscalationResponse = {
       success: false,
-      error: error.message || 'Failed to detect escalations',
+      error: error.message || "Failed to detect escalations",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

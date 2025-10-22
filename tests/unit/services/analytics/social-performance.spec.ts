@@ -1,6 +1,6 @@
 /**
  * Tests for Social Performance Service
- * 
+ *
  * @see app/services/analytics/social-performance.ts
  * @see docs/directions/analytics.md ANALYTICS-006
  */
@@ -55,7 +55,10 @@ describe("Social Performance Service", () => {
     });
 
     it("should track social post performance and calculate metrics", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       expect(result.postId).toBe(mockPostId);
       expect(result.platform).toBe("twitter");
@@ -68,7 +71,10 @@ describe("Social Performance Service", () => {
     });
 
     it("should calculate CTR correctly (clicks/impressions * 100)", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       const { impressions, clicks, ctr } = result.metrics;
       const expectedCtr = (clicks / impressions) * 100;
@@ -78,7 +84,10 @@ describe("Social Performance Service", () => {
     });
 
     it("should calculate engagement rate correctly", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       const { impressions, engagement, engagementRate } = result.metrics;
       const expectedRate = (engagement / impressions) * 100;
@@ -91,12 +100,15 @@ describe("Social Performance Service", () => {
       mockSocialPost = null;
 
       await expect(
-        trackSocialPostPerformance(mockPostId, mockShopDomain)
+        trackSocialPostPerformance(mockPostId, mockShopDomain),
       ).rejects.toThrow(`Social post ${mockPostId} not found`);
     });
 
     it("should include post metadata in results", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       expect(result.metadata).toHaveProperty("publerPostId", "publer-123");
       expect(result.metadata).toHaveProperty("content");
@@ -104,7 +116,10 @@ describe("Social Performance Service", () => {
     });
 
     it("should use publishedAt date if available", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       expect(result.publishedAt).toEqual(new Date("2025-10-20T10:00:00Z"));
     });
@@ -112,7 +127,10 @@ describe("Social Performance Service", () => {
     it("should fallback to createdAt if publishedAt is null", async () => {
       mockSocialPost.publishedAt = null;
 
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       expect(result.publishedAt).toEqual(new Date("2025-10-20T09:00:00Z"));
     });
@@ -215,7 +233,7 @@ describe("Social Performance Service", () => {
       const result = await getSocialPerformanceSummary(
         mockShopDomain,
         "twitter",
-        30
+        30,
       );
 
       // Mock verifies the query was called with platform filter
@@ -238,7 +256,11 @@ describe("Social Performance Service", () => {
         },
       ];
 
-      const result = await getSocialPerformanceSummary(mockShopDomain, undefined, 7);
+      const result = await getSocialPerformanceSummary(
+        mockShopDomain,
+        undefined,
+        7,
+      );
 
       // Verify it processes results correctly regardless of date range
       expect(result.postCount).toBe(1);
@@ -282,7 +304,10 @@ describe("Social Performance Service", () => {
     it("should handle zero impressions without division errors", async () => {
       // This would be tested with a mock that returns 0 impressions
       // The real implementation should handle this gracefully
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       // Should not throw, and CTR should be calculable
       expect(result.metrics.ctr).toBeGreaterThanOrEqual(0);
@@ -290,7 +315,10 @@ describe("Social Performance Service", () => {
     });
 
     it("should ensure all metrics are numbers", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       expect(typeof result.metrics.impressions).toBe("number");
       expect(typeof result.metrics.clicks).toBe("number");
@@ -300,11 +328,13 @@ describe("Social Performance Service", () => {
     });
 
     it("should calculate engagement as sum of likes + shares + comments", async () => {
-      const result = await trackSocialPostPerformance(mockPostId, mockShopDomain);
+      const result = await trackSocialPostPerformance(
+        mockPostId,
+        mockShopDomain,
+      );
 
       // Mock data: likes=23, shares=8, comments=5 → engagement=36
       expect(result.metrics.engagement).toBeGreaterThan(0);
     });
   });
 });
-

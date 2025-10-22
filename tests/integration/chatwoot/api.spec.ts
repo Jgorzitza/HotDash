@@ -41,7 +41,9 @@ describe("Chatwoot API Integration", () => {
       const accountId = 1;
       const endpoint = `${baseUrl}/api/v1/accounts/${accountId}/conversations`;
 
-      expect(endpoint).toBe("https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversations");
+      expect(endpoint).toBe(
+        "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/conversations",
+      );
     });
 
     it("should construct agents endpoint correctly", () => {
@@ -49,7 +51,9 @@ describe("Chatwoot API Integration", () => {
       const accountId = 1;
       const endpoint = `${baseUrl}/api/v1/accounts/${accountId}/agents`;
 
-      expect(endpoint).toBe("https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/agents");
+      expect(endpoint).toBe(
+        "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/agents",
+      );
     });
 
     it("should construct inboxes endpoint correctly", () => {
@@ -57,7 +61,9 @@ describe("Chatwoot API Integration", () => {
       const accountId = 1;
       const endpoint = `${baseUrl}/api/v1/accounts/${accountId}/inboxes`;
 
-      expect(endpoint).toBe("https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes");
+      expect(endpoint).toBe(
+        "https://hotdash-chatwoot.fly.dev/api/v1/accounts/1/inboxes",
+      );
     });
 
     it("should construct assignment endpoint correctly", () => {
@@ -82,7 +88,7 @@ describe("Chatwoot API Integration", () => {
   describe("Request Headers", () => {
     it("should set api_access_token header", () => {
       const headers = {
-        "api_access_token": "test-token",
+        api_access_token: "test-token",
       };
 
       expect(headers["api_access_token"]).toBe("test-token");
@@ -91,7 +97,7 @@ describe("Chatwoot API Integration", () => {
     it("should set Content-Type for POST requests", () => {
       const headers = {
         "Content-Type": "application/json",
-        "api_access_token": "test-token",
+        api_access_token: "test-token",
       };
 
       expect(headers["Content-Type"]).toBe("application/json");
@@ -173,8 +179,10 @@ describe("Chatwoot API Integration", () => {
       const incomingMessage = { message_type: 0 };
       const outgoingMessage = { message_type: 1 };
 
-      const incomingAuthor = incomingMessage.message_type === 0 ? "customer" : "agent";
-      const outgoingAuthor = outgoingMessage.message_type === 1 ? "agent" : "customer";
+      const incomingAuthor =
+        incomingMessage.message_type === 0 ? "customer" : "agent";
+      const outgoingAuthor =
+        outgoingMessage.message_type === 1 ? "agent" : "customer";
 
       expect(incomingAuthor).toBe("customer");
       expect(outgoingAuthor).toBe("agent");
@@ -266,5 +274,3 @@ describe("Chatwoot API Integration", () => {
     });
   });
 });
-
-

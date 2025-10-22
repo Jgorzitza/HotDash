@@ -117,5 +117,3 @@ describe("Reorder Alerts - Full Alert Generation", () => {
     expect(alert).toBeNull();
   });
 });
-
-

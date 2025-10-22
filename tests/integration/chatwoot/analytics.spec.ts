@@ -10,7 +10,8 @@ describe("Chatwoot Analytics Service", () => {
   describe("Response Time Calculations", () => {
     it("should calculate average response time correctly", () => {
       const responseTimes = [5, 10, 15, 20, 25];
-      const avg = responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
+      const avg =
+        responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length;
 
       expect(avg).toBe(15);
     });
@@ -31,9 +32,10 @@ describe("Chatwoot Analytics Service", () => {
 
     it("should handle empty response times", () => {
       const responseTimes: number[] = [];
-      const avg = responseTimes.length > 0
-        ? responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length
-        : 0;
+      const avg =
+        responseTimes.length > 0
+          ? responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length
+          : 0;
 
       expect(avg).toBe(0);
     });
@@ -57,7 +59,8 @@ describe("Chatwoot Analytics Service", () => {
     it("should calculate average resolution hours", () => {
       const resolutionMinutes = [120, 240, 360]; // 2h, 4h, 6h
       const resolutionHours = resolutionMinutes.map((m) => m / 60);
-      const avg = resolutionHours.reduce((a, b) => a + b, 0) / resolutionHours.length;
+      const avg =
+        resolutionHours.reduce((a, b) => a + b, 0) / resolutionHours.length;
 
       expect(avg).toBe(4);
     });
@@ -90,7 +93,7 @@ describe("Chatwoot Analytics Service", () => {
       const positive = scores.filter((s) => s >= 4).length;
       const percentage = (positive / scores.length) * 100;
 
-      expect(percentage).toBe(4 / 6 * 100);
+      expect(percentage).toBe((4 / 6) * 100);
     });
 
     it("should calculate negative percentage (1-2 stars)", () => {
@@ -98,14 +101,15 @@ describe("Chatwoot Analytics Service", () => {
       const negative = scores.filter((s) => s <= 2).length;
       const percentage = (negative / scores.length) * 100;
 
-      expect(percentage).toBe(2 / 5 * 100);
+      expect(percentage).toBe((2 / 5) * 100);
     });
 
     it("should handle no CSAT responses", () => {
       const scores: number[] = [];
-      const avg = scores.length > 0
-        ? scores.reduce((a, b) => a + b, 0) / scores.length
-        : 0;
+      const avg =
+        scores.length > 0
+          ? scores.reduce((a, b) => a + b, 0) / scores.length
+          : 0;
 
       expect(avg).toBe(0);
     });
@@ -127,8 +131,9 @@ describe("Chatwoot Analytics Service", () => {
 
     it("should find peak hour", () => {
       const hourCounts = { 9: 5, 10: 12, 11: 8, 14: 3 };
-      const peakHour = Object.entries(hourCounts).reduce((max, [hour, count]) =>
-        count > max.count ? { hour: Number(hour), count } : max,
+      const peakHour = Object.entries(hourCounts).reduce(
+        (max, [hour, count]) =>
+          count > max.count ? { hour: Number(hour), count } : max,
         { hour: 0, count: 0 },
       );
 
@@ -159,8 +164,10 @@ describe("Chatwoot Analytics Service", () => {
 
       const categories = {
         order: messages.filter((m) => m.toLowerCase().includes("order")).length,
-        inventory: messages.filter((m) => m.toLowerCase().includes("stock")).length,
-        billing: messages.filter((m) => m.toLowerCase().includes("payment")).length,
+        inventory: messages.filter((m) => m.toLowerCase().includes("stock"))
+          .length,
+        billing: messages.filter((m) => m.toLowerCase().includes("payment"))
+          .length,
       };
 
       expect(categories.order).toBe(1);
@@ -242,5 +249,3 @@ describe("Chatwoot Analytics Service", () => {
     });
   });
 });
-
-

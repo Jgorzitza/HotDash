@@ -110,7 +110,7 @@ export interface OpportunitiesSection {
 function calculateOverallScore(
   rankings: RankingsSection,
   webVitals: WebVitalsSection,
-  siteHealth: SiteHealthSection
+  siteHealth: SiteHealthSection,
 ): { score: number; grade: "A" | "B" | "C" | "D" | "F" } {
   // Weight different factors
   const rankingsScore = Math.max(0, 100 - rankings.avgPosition * 2); // Lower position = higher score
@@ -119,9 +119,7 @@ function calculateOverallScore(
 
   // Weighted average
   const score = Math.round(
-    rankingsScore * 0.4 +
-    vitalsScore * 0.3 +
-    healthScore * 0.3
+    rankingsScore * 0.4 + vitalsScore * 0.3 + healthScore * 0.3,
   );
 
   let grade: "A" | "B" | "C" | "D" | "F";
@@ -140,15 +138,19 @@ function calculateOverallScore(
 function identifyKeyChanges(
   rankings: RankingsSection,
   webVitals: WebVitalsSection,
-  siteHealth: SiteHealthSection
+  siteHealth: SiteHealthSection,
 ): string[] {
   const changes: string[] = [];
 
   // Ranking changes
   if (rankings.positionChange < -2) {
-    changes.push(`Average ranking improved by ${Math.abs(rankings.positionChange).toFixed(1)} positions`);
+    changes.push(
+      `Average ranking improved by ${Math.abs(rankings.positionChange).toFixed(1)} positions`,
+    );
   } else if (rankings.positionChange > 2) {
-    changes.push(`Average ranking declined by ${rankings.positionChange.toFixed(1)} positions`);
+    changes.push(
+      `Average ranking declined by ${rankings.positionChange.toFixed(1)} positions`,
+    );
   }
 
   // Web Vitals changes
@@ -164,7 +166,9 @@ function identifyKeyChanges(
   }
 
   if (siteHealth.cannibalizationIssues > 0) {
-    changes.push(`${siteHealth.cannibalizationIssues} keyword cannibalization issue(s)`);
+    changes.push(
+      `${siteHealth.cannibalizationIssues} keyword cannibalization issue(s)`,
+    );
   }
 
   return changes.slice(0, 5);
@@ -175,14 +179,19 @@ function identifyKeyChanges(
  */
 function identifyWinsAndIssues(rankings: RankingsSection) {
   const topWins = rankings.topMovers
-    .filter(m => m.change < 0) // Negative change = improved position
+    .filter((m) => m.change < 0) // Negative change = improved position
     .slice(0, 3)
-    .map(m => `"${m.keyword}" moved from #${m.oldPosition} to #${m.newPosition}`);
+    .map(
+      (m) => `"${m.keyword}" moved from #${m.oldPosition} to #${m.newPosition}`,
+    );
 
   const topIssues = rankings.topMovers
-    .filter(m => m.change > 5) // Dropped 5+ positions
+    .filter((m) => m.change > 5) // Dropped 5+ positions
     .slice(0, 3)
-    .map(m => `"${m.keyword}" dropped from #${m.oldPosition} to #${m.newPosition}`);
+    .map(
+      (m) =>
+        `"${m.keyword}" dropped from #${m.oldPosition} to #${m.newPosition}`,
+    );
 
   return { topWins, topIssues };
 }
@@ -194,32 +203,45 @@ function generateRecommendations(
   rankings: RankingsSection,
   webVitals: WebVitalsSection,
   siteHealth: SiteHealthSection,
-  opportunities: OpportunitiesSection
+  opportunities: OpportunitiesSection,
 ): string[] {
   const recommendations: string[] = [];
 
   // Rankings recommendations
   if (rankings.avgPosition > 15) {
-    recommendations.push("Focus on improving keyword rankings - currently averaging position " + Math.round(rankings.avgPosition));
+    recommendations.push(
+      "Focus on improving keyword rankings - currently averaging position " +
+        Math.round(rankings.avgPosition),
+    );
   }
 
   // Web Vitals recommendations
   if (webVitals.mobile.lcp > 2500) {
-    recommendations.push("Optimize mobile LCP (currently " + webVitals.mobile.lcp + "ms, target <2500ms)");
+    recommendations.push(
+      "Optimize mobile LCP (currently " +
+        webVitals.mobile.lcp +
+        "ms, target <2500ms)",
+    );
   }
 
   // Site health recommendations
   if (siteHealth.orphanPages > 0) {
-    recommendations.push(`Fix ${siteHealth.orphanPages} orphan page(s) by adding internal links`);
+    recommendations.push(
+      `Fix ${siteHealth.orphanPages} orphan page(s) by adding internal links`,
+    );
   }
 
   if (siteHealth.cannibalizationIssues > 0) {
-    recommendations.push(`Resolve ${siteHealth.cannibalizationIssues} keyword cannibalization issue(s)`);
+    recommendations.push(
+      `Resolve ${siteHealth.cannibalizationIssues} keyword cannibalization issue(s)`,
+    );
   }
 
   // Opportunity recommendations
-  opportunities.quickWins.slice(0, 2).forEach(win => {
-    recommendations.push(`Quick win: ${win.title} (${win.impact} impact, ${win.effort} effort)`);
+  opportunities.quickWins.slice(0, 2).forEach((win) => {
+    recommendations.push(
+      `Quick win: ${win.title} (${win.impact} impact, ${win.effort} effort)`,
+    );
   });
 
   return recommendations.slice(0, 10);
@@ -237,7 +259,7 @@ export async function generateWeeklyReport(
   options?: {
     competitors?: string[];
     previousData?: any;
-  }
+  },
 ): Promise<SEOWeeklyReport> {
   const startTime = Date.now();
 
@@ -256,12 +278,13 @@ export async function generateWeeklyReport(
     start.setDate(end.getDate() - 7);
 
     // Gather data from various sources
-    const [searchConsole, webVitals, cannibalization, linking] = await Promise.all([
-      getSearchConsoleSummary().catch(() => null),
-      analyzeWebVitals(`https://${domain}`).catch(() => null),
-      detectKeywordCannibalization(domain).catch(() => null),
-      analyzeInternalLinking([]).catch(() => null), // Would need actual page data
-    ]);
+    const [searchConsole, webVitals, cannibalization, linking] =
+      await Promise.all([
+        getSearchConsoleSummary().catch(() => null),
+        analyzeWebVitals(`https://${domain}`).catch(() => null),
+        detectKeywordCannibalization(domain).catch(() => null),
+        analyzeInternalLinking([]).catch(() => null), // Would need actual page data
+      ]);
 
     // Build rankings section
     const rankings: RankingsSection = {
@@ -297,40 +320,62 @@ export async function generateWeeklyReport(
     const siteHealth: SiteHealthSection = {
       totalPages: linking?.summary.totalPages || 0,
       orphanPages: linking?.summary.orphanPages || 0,
-      indexedPages: searchConsole?.indexCoveragePct ? Math.round(searchConsole.indexCoveragePct * 100) : 0,
+      indexedPages: searchConsole?.indexCoveragePct
+        ? Math.round(searchConsole.indexCoveragePct * 100)
+        : 0,
       crawlErrors: 0,
-      cannibalizationIssues: cannibalization?.summary.keywordsWithCannibalization || 0,
+      cannibalizationIssues:
+        cannibalization?.summary.keywordsWithCannibalization || 0,
       healthScore: 85, // Calculated based on various factors
     };
 
     // Build opportunities section
     const opportunities: OpportunitiesSection = {
-      quickWins: cannibalization?.issues
-        .filter(i => i.severity === "warning")
-        .slice(0, 3)
-        .map(i => ({
-          title: `Resolve cannibalization for "${i.keyword}"`,
-          impact: "medium",
-          effort: "low",
-        })) || [],
+      quickWins:
+        cannibalization?.issues
+          .filter((i) => i.severity === "warning")
+          .slice(0, 3)
+          .map((i) => ({
+            title: `Resolve cannibalization for "${i.keyword}"`,
+            impact: "medium",
+            effort: "low",
+          })) || [],
       competitiveGaps: [],
       contentIdeas: [],
     };
 
     // Add competitor analysis if requested
     if (options?.competitors && options.competitors.length > 0) {
-      const compAnalysis = await analyzeCompetitors(domain, options.competitors);
-      opportunities.competitiveGaps = compAnalysis.keywordGaps.slice(0, 5).map(kg => kg.keyword);
+      const compAnalysis = await analyzeCompetitors(
+        domain,
+        options.competitors,
+      );
+      opportunities.competitiveGaps = compAnalysis.keywordGaps
+        .slice(0, 5)
+        .map((kg) => kg.keyword);
       opportunities.contentGaps = compAnalysis.contentGaps;
     }
 
     // Calculate overall score
-    const { score, grade } = calculateOverallScore(rankings, webVitalsSection, siteHealth);
+    const { score, grade } = calculateOverallScore(
+      rankings,
+      webVitalsSection,
+      siteHealth,
+    );
 
     // Generate summary
-    const keyChanges = identifyKeyChanges(rankings, webVitalsSection, siteHealth);
+    const keyChanges = identifyKeyChanges(
+      rankings,
+      webVitalsSection,
+      siteHealth,
+    );
     const { topWins, topIssues } = identifyWinsAndIssues(rankings);
-    const recommendations = generateRecommendations(rankings, webVitalsSection, siteHealth, opportunities);
+    const recommendations = generateRecommendations(
+      rankings,
+      webVitalsSection,
+      siteHealth,
+      opportunities,
+    );
 
     const report: SEOWeeklyReport = {
       period: {
@@ -373,4 +418,3 @@ export async function getReportSummary(domain: string): Promise<ReportSummary> {
   const report = await generateWeeklyReport(domain);
   return report.summary;
 }
-

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -13,45 +13,59 @@ type AgentReport = {
     cancelled: number;
   };
   percentComplete: number; // 0-100
-  topTasks: { taskId: string; title: string; priority: string; status: string; dependencies: string[] | null }[];
+  topTasks: {
+    taskId: string;
+    title: string;
+    priority: string;
+    status: string;
+    dependencies: string[] | null;
+  }[];
 };
 
 async function main() {
   const agents = await prisma.taskAssignment.findMany({
     select: { assignedTo: true },
-    distinct: ['assignedTo'],
+    distinct: ["assignedTo"],
   });
 
   const reports: AgentReport[] = [];
   for (const a of agents) {
     const agent = a.assignedTo;
-    const tasks = await prisma.taskAssignment.findMany({ where: { assignedTo: agent } });
+    const tasks = await prisma.taskAssignment.findMany({
+      where: { assignedTo: agent },
+    });
     const totals = {
       total: tasks.length,
-      assigned: tasks.filter(t => t.status === 'assigned').length,
-      in_progress: tasks.filter(t => t.status === 'in_progress').length,
-      blocked: tasks.filter(t => t.status === 'blocked').length,
-      completed: tasks.filter(t => t.status === 'completed').length,
-      cancelled: tasks.filter(t => t.status === 'cancelled').length,
+      assigned: tasks.filter((t) => t.status === "assigned").length,
+      in_progress: tasks.filter((t) => t.status === "in_progress").length,
+      blocked: tasks.filter((t) => t.status === "blocked").length,
+      completed: tasks.filter((t) => t.status === "completed").length,
+      cancelled: tasks.filter((t) => t.status === "cancelled").length,
     };
     const denom = Math.max(1, totals.total - totals.cancelled);
     const percentComplete = Math.round((totals.completed / denom) * 100);
 
     const top = await prisma.taskAssignment.findMany({
-      where: { assignedTo: agent, status: { in: ['assigned', 'in_progress', 'blocked'] } },
-      orderBy: [
-        { priority: 'asc' },
-        { createdAt: 'asc' },
-      ],
+      where: {
+        assignedTo: agent,
+        status: { in: ["assigned", "in_progress", "blocked"] },
+      },
+      orderBy: [{ priority: "asc" }, { createdAt: "asc" }],
       take: 10,
-      select: { taskId: true, title: true, priority: true, status: true, dependencies: true },
+      select: {
+        taskId: true,
+        title: true,
+        priority: true,
+        status: true,
+        dependencies: true,
+      },
     });
 
     reports.push({
       agent,
       totals,
       percentComplete,
-      topTasks: top.map(t => ({
+      topTasks: top.map((t) => ({
         taskId: t.taskId,
         title: t.title,
         priority: t.priority,
@@ -72,5 +86,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-

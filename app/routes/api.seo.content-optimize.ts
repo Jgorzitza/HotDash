@@ -16,7 +16,10 @@
 
 import { type ActionFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { analyzeContent, analyzeContentFromURL } from "../services/seo/content-optimizer";
+import {
+  analyzeContent,
+  analyzeContentFromURL,
+} from "../services/seo/content-optimizer";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
@@ -74,4 +77,3 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 }
-

@@ -1,6 +1,6 @@
 /**
  * Tests for SEO Impact Analysis Service
- * 
+ *
  * @see app/services/analytics/seo-impact.ts
  * @see docs/directions/analytics.md ANALYTICS-007
  */
@@ -57,7 +57,7 @@ describe("SEO Impact Analysis Service", () => {
         5,
         mockUrl,
         mockShopDomain,
-        1000
+        1000,
       );
 
       expect(result.keyword).toBe(mockKeyword);
@@ -80,7 +80,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         5,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.currentPosition).toBe(5);
@@ -99,7 +99,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         8,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.currentPosition).toBe(8);
@@ -118,7 +118,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         7,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.currentPosition).toBe(7);
@@ -224,12 +224,22 @@ describe("SEO Impact Analysis Service", () => {
       mockDashboardFacts = [
         {
           id: 1,
-          value: { keyword: "keyword1", position: 20, change: -10, trend: "down" },
+          value: {
+            keyword: "keyword1",
+            position: 20,
+            change: -10,
+            trend: "down",
+          },
           createdAt: now,
         },
         {
           id: 2,
-          value: { keyword: "keyword2", position: 15, change: -3, trend: "down" },
+          value: {
+            keyword: "keyword2",
+            position: 15,
+            change: -3,
+            trend: "down",
+          },
           createdAt: now,
         },
       ];
@@ -312,7 +322,12 @@ describe("SEO Impact Analysis Service", () => {
       mockDashboardFacts = [
         {
           id: 1,
-          value: { keyword: "keyword1", position: 15, change: -5, trend: "down" },
+          value: {
+            keyword: "keyword1",
+            position: 15,
+            change: -5,
+            trend: "down",
+          },
           createdAt: now,
         },
       ];
@@ -432,7 +447,12 @@ describe("SEO Impact Analysis Service", () => {
         },
         {
           id: 2,
-          value: { keyword: mockKeyword, position: 10, change: 0, trend: "new" },
+          value: {
+            keyword: mockKeyword,
+            position: 10,
+            change: 0,
+            trend: "new",
+          },
           createdAt: new Date("2025-10-01"),
         },
       ];
@@ -453,7 +473,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         5,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.trend).toBe("new");
@@ -469,7 +489,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         5,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.trend).toBe("up");
@@ -485,7 +505,7 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         8,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.trend).toBe("down");
@@ -501,11 +521,10 @@ describe("SEO Impact Analysis Service", () => {
         mockKeyword,
         7,
         mockUrl,
-        mockShopDomain
+        mockShopDomain,
       );
 
       expect(result.trend).toBe("stable");
     });
   });
 });
-

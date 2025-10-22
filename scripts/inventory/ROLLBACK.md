@@ -180,5 +180,3 @@ If you need help with rollback:
 2. Review `feedback/inventory/YYYY-MM-DD.md` for context
 3. Escalate to Manager with evidence (SQL queries, error logs)
 4. Document resolution for future reference
-
-

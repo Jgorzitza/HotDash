@@ -1,9 +1,9 @@
 /**
  * Notifications Management Hook
- * 
+ *
  * Manages notification history, read/unread state, and persistence
  * Integrates with browser notifications when appropriate
- * 
+ *
  * Phase 4 - ENG-013
  */
 
@@ -109,4 +109,3 @@ export function useNotifications() {
     browserNotifications,
   };
 }
-

@@ -23,6 +23,7 @@
 The **Customer-Front Agent** is the first-line CX triage agent in the Growth Engine architecture. It analyzes incoming customer messages, determines the appropriate sub-agent, and orchestrates the handoff to ensure accurate, secure, and timely responses.
 
 **Key Responsibilities**:
+
 - Triage incoming customer inquiries (email, live chat, SMS)
 - Analyze message content to determine intent and required capabilities
 - Transfer to appropriate sub-agent (`transfer_to_accounts` or `transfer_to_storefront`)
@@ -73,11 +74,13 @@ Decision Log (Supabase: grades, edits, feedback for AI learning)
 #### Step 1: Receive Customer Message
 
 **Channels**:
+
 - **Email**: customer.support@hotrodan.com (Zoho Cloud)
 - **Live Chat**: Hot Rod AN Website widget (Chatwoot)
 - **SMS**: Twilio phone number (when configured)
 
 **Input Data**:
+
 ```json
 {
   "conversation_id": 12345,
@@ -117,6 +120,7 @@ The Customer-Front Agent performs **intent classification** to determine:
    - **No API needed**: General policies, hours → Direct response
 
 **Example Analysis**:
+
 ```typescript
 // Message: "Where is my order? I placed it 3 days ago."
 
@@ -126,7 +130,7 @@ const analysis = {
   write_capability_needed: false,
   recommended_transfer: "accounts", // Customer Accounts API for order lookup
   urgency: "normal",
-  sentiment: "neutral"
+  sentiment: "neutral",
 };
 ```
 
@@ -139,6 +143,7 @@ Based on intent analysis, the Customer-Front Agent calls one of two transfer fun
 ##### transfer_to_accounts
 
 **When to Use**:
+
 - Order lookups (tracking, status, history)
 - Refund requests
 - Order modifications (address, shipping method)
@@ -148,11 +153,13 @@ Based on intent analysis, the Customer-Front Agent calls one of two transfer fun
 - Subscription management
 
 **Capabilities**:
+
 - **Read**: Customer Accounts API (orders, payment methods, addresses)
 - **Write**: Customer Accounts API (refunds, order updates)
 - **Security**: ABAC enforced (customer_agent role, order scopes)
 
 **Example Transfer**:
+
 ```typescript
 // Customer-Front Agent calls transfer_to_accounts
 const transfer = await transferToAccounts({
@@ -162,14 +169,15 @@ const transfer = await transferToAccounts({
   query: "Find order placed by john.doe@example.com in last 7 days",
   context: {
     message_content: "Where is my order? I placed it 3 days ago.",
-    timestamp: "2025-10-21T14:30:00Z"
-  }
+    timestamp: "2025-10-21T14:30:00Z",
+  },
 });
 ```
 
 ##### transfer_to_storefront
 
 **When to Use**:
+
 - Inventory checks (in stock, restock dates)
 - Product questions (specs, compatibility, variants)
 - Collection browsing (categories, filters)
@@ -177,11 +185,13 @@ const transfer = await transferToAccounts({
 - Product availability (locations, warehouses)
 
 **Capabilities**:
+
 - **Read**: Storefront API (products, collections, inventory)
 - **Write**: None (read-only)
 - **Security**: ABAC enforced (customer_agent role, read-only scopes)
 
 **Example Transfer**:
+
 ```typescript
 // Customer-Front Agent calls transfer_to_storefront
 const transfer = await transferToStorefront({
@@ -190,8 +200,8 @@ const transfer = await transferToStorefront({
   query: "Check inventory for AN6 stainless steel braided hose",
   context: {
     message_content: "Do you have AN6 stainless steel braided hose in stock?",
-    timestamp: "2025-10-21T14:30:00Z"
-  }
+    timestamp: "2025-10-21T14:30:00Z",
+  },
 });
 ```
 
@@ -286,12 +296,14 @@ const transfer = await transferToStorefront({
 The Customer-Front Agent receives the sub-agent's structured result and composes a **draft reply** for operator review.
 
 **Composition Rules**:
+
 1. **Use structured data** from sub-agent response (don't hallucinate)
 2. **Apply brand voice** (Hot Rod AN: helpful, technical, enthusiast-friendly)
 3. **Include relevant details** (order number, tracking, inventory status)
 4. **Call PII Broker** before returning to operator (redaction enforced)
 
 **Example Draft (Before PII Redaction)**:
+
 ```
 Hi John,
 
@@ -328,16 +340,17 @@ Hot Rod AN Support
 
 **PII Broker Rules**:
 
-| Data Type | PII Card (Operator) | Public Reply (Customer) |
-|-----------|---------------------|-------------------------|
-| Full Email | john.doe@example.com | j***@e***.com |
-| Phone | (555) 123-4567 | ***-***-4567 |
-| Address | 123 Main St, Springfield, IL 62701 | Springfield, IL (city/state only) |
-| Credit Card | **** **** **** 1234 | **** 1234 (last 4 only) |
-| Tracking | Full tracking number | Full tracking (ok to share) |
-| Order Number | #1234 | #1234 (ok to share) |
+| Data Type    | PII Card (Operator)                | Public Reply (Customer)           |
+| ------------ | ---------------------------------- | --------------------------------- |
+| Full Email   | john.doe@example.com               | j**_@e_**.com                     |
+| Phone        | (555) 123-4567                     | **_-_**-4567                      |
+| Address      | 123 Main St, Springfield, IL 62701 | Springfield, IL (city/state only) |
+| Credit Card  | \***\* \*\*** \*\*\*\* 1234        | \*\*\*\* 1234 (last 4 only)       |
+| Tracking     | Full tracking number               | Full tracking (ok to share)       |
+| Order Number | #1234                              | #1234 (ok to share)               |
 
 **Redacted Public Reply**:
+
 ```
 Hi John,
 
@@ -374,12 +387,14 @@ The operator receives:
 4. **Evidence**: Sub-agent response, query used, API calls
 
 **Operator Actions**:
+
 - **Review**: Check accuracy, tone, policy compliance
 - **Edit**: Make changes if needed (grammar, tone, add details)
 - **Approve**: Send public reply to customer
 - **Grade**: Rate 1-5 on tone, accuracy, policy (required)
 
 **Approval Interface** (CXEscalationModal):
+
 ```
 ┌─────────────────────────────────────────────┐
 │ CX Escalation - Conversation #12345        │
@@ -415,12 +430,14 @@ The operator receives:
 #### Step 8: Send & Learn
 
 **On Approval**:
+
 1. Public reply sent to customer via Chatwoot API
 2. Grades stored in `decision_log` table (Supabase)
 3. Operator edits captured (diff between draft and final)
 4. Metadata logged: conversation ID, agent version, sub-agent used, response time
 
 **Decision Log Schema**:
+
 ```sql
 CREATE TABLE decision_log (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -440,6 +457,7 @@ CREATE TABLE decision_log (
 ```
 
 **Learning Loop**:
+
 - Low grades (1-2) trigger review for agent improvement
 - High edit distance suggests agent training needed
 - Common patterns identified for fine-tuning
@@ -454,23 +472,25 @@ CREATE TABLE decision_log (
 **Scenario**: Customer asks "Is the AN6 hose in stock and when will my order ship?"
 
 **Solution**:
+
 1. Customer-Front Agent identifies **two intents**: `inventory_check` + `order_inquiry`
 2. Transfers to **Storefront** first (check inventory)
 3. Transfers to **Accounts** second (check order status)
 4. Composes reply using **both results**
 
 **Example**:
+
 ```typescript
 // Step 1: Check inventory
 const inventoryResult = await transferToStorefront({
   intent: "inventory_check",
-  query: "Check AN6 hose inventory"
+  query: "Check AN6 hose inventory",
 });
 
 // Step 2: Check order
 const orderResult = await transferToAccounts({
   intent: "order_inquiry",
-  query: "Find recent order for customer"
+  query: "Find recent order for customer",
 });
 
 // Step 3: Compose unified reply
@@ -495,12 +515,14 @@ Let me know if you need anything else!
 **Scenario**: Accounts Sub-Agent returns error (API timeout, invalid query)
 
 **Fallback**:
+
 1. Customer-Front Agent detects `status: "error"` in sub-agent response
 2. Composes **apology draft** with escalation offer
 3. Flags conversation as **urgent** in Chatwoot
 4. Operator reviews immediately (SLA: 5 minutes for errors)
 
 **Example Error Response**:
+
 ```json
 {
   "status": "error",
@@ -517,6 +539,7 @@ Let me know if you need anything else!
 ```
 
 **Fallback Draft**:
+
 ```
 Hi John,
 
@@ -539,12 +562,14 @@ Hot Rod AN Support
 **Problem**: Accounts Sub-Agent has **read access** to orders but **cannot update shipping addresses** (Shopify Admin API limitation)
 
 **Solution**:
+
 1. Customer-Front Agent detects request requires **admin action**
 2. Composes draft with **manual process** instructions
 3. Flags conversation for **Manager/CEO escalation**
 4. Operator follows up via phone/email with manual update
 
 **Escalation Draft**:
+
 ```
 Hi John,
 
@@ -564,24 +589,24 @@ Hot Rod AN Support
 
 **Target SLAs** (Customer-Front Agent):
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Triage Time (intent analysis) | < 5s | 2.3s | ✅ |
-| Sub-Agent Response Time | < 10s | 7.1s | ✅ |
-| Draft Composition Time | < 5s | 3.8s | ✅ |
-| Total Time (triage → draft ready) | < 20s | 13.2s | ✅ |
-| Operator Review SLA | < 15 min | 8.4 min | ✅ |
-| End-to-End (message → sent) | < 20 min | 12.7 min | ✅ |
+| Metric                            | Target   | Current  | Status |
+| --------------------------------- | -------- | -------- | ------ |
+| Triage Time (intent analysis)     | < 5s     | 2.3s     | ✅     |
+| Sub-Agent Response Time           | < 10s    | 7.1s     | ✅     |
+| Draft Composition Time            | < 5s     | 3.8s     | ✅     |
+| Total Time (triage → draft ready) | < 20s    | 13.2s    | ✅     |
+| Operator Review SLA               | < 15 min | 8.4 min  | ✅     |
+| End-to-End (message → sent)       | < 20 min | 12.7 min | ✅     |
 
 **Quality Metrics**:
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Avg Grade (Tone) | ≥ 4.5 | 4.7 | ✅ |
-| Avg Grade (Accuracy) | ≥ 4.7 | 4.8 | ✅ |
-| Avg Grade (Policy) | ≥ 4.8 | 4.9 | ✅ |
-| % Drafts Sent Unedited | ≥ 70% | 76% | ✅ |
-| % Sub-Agent Errors | < 2% | 0.8% | ✅ |
+| Metric                 | Target | Current | Status |
+| ---------------------- | ------ | ------- | ------ |
+| Avg Grade (Tone)       | ≥ 4.5  | 4.7     | ✅     |
+| Avg Grade (Accuracy)   | ≥ 4.7  | 4.8     | ✅     |
+| Avg Grade (Policy)     | ≥ 4.8  | 4.9     | ✅     |
+| % Drafts Sent Unedited | ≥ 70%  | 76%     | ✅     |
+| % Sub-Agent Errors     | < 2%   | 0.8%    | ✅     |
 
 ---
 
@@ -590,15 +615,18 @@ Hot Rod AN Support
 #### Issue: Customer-Front Agent Transfers to Wrong Sub-Agent
 
 **Symptoms**:
+
 - Accounts Sub-Agent called for inventory question
 - Storefront Sub-Agent called for refund request
 
 **Diagnosis**:
+
 1. Check intent classification logic
 2. Review conversation context (missing keywords?)
 3. Verify transfer decision rules
 
 **Solution**:
+
 - Improve intent classification training
 - Add explicit keywords to decision tree
 - Review operator feedback (low accuracy grades)
@@ -608,14 +636,17 @@ Hot Rod AN Support
 #### Issue: PII Broker Over-Redacts
 
 **Symptoms**:
+
 - Tracking numbers redacted (should be public)
 - Order numbers redacted (should be public)
 
 **Diagnosis**:
+
 1. Check PII Broker rules configuration
 2. Verify data type classification
 
 **Solution**:
+
 - Update PII Broker whitelist (tracking, order numbers OK to share)
 - Test with sample data before deploying
 
@@ -624,14 +655,17 @@ Hot Rod AN Support
 #### Issue: Operator Grades Consistently Low
 
 **Symptoms**:
+
 - Avg grades < 4.0 across all conversations
 
 **Diagnosis**:
+
 1. Review draft vs final edits (high edit distance?)
 2. Check for pattern (tone? accuracy? policy?)
 3. Operator feedback comments
 
 **Solution**:
+
 - If tone: Adjust brand voice prompts
 - If accuracy: Improve sub-agent queries
 - If policy: Update policy reference docs
@@ -698,29 +732,29 @@ The **PII Card** is an **operator-only** view that displays full customer detail
 
 #### Always Redact in Public Reply:
 
-| Data Type | PII Card (Full) | Public Reply (Redacted) | Example |
-|-----------|----------------|------------------------|---------|
-| **Email** | john.doe@example.com | j***@e***.com | First char + domain initial + .com |
-| **Phone** | (555) 123-4567 | ***-***-4567 | Mask all but last 4 digits |
-| **Address Line 1** | 123 Main St | [REDACTED] | Full street address removed |
-| **Address Line 2** | Apt 4B | [REDACTED] | Full apartment/suite removed |
-| **City** | Springfield | Springfield | ✅ OK to share |
-| **State/Province** | IL | IL | ✅ OK to share |
-| **ZIP/Postal** | 62701 | [REDACTED] | Remove for privacy |
-| **Country** | United States | United States | ✅ OK to share |
-| **Credit Card** | **** **** **** 1234 | **** 1234 | Last 4 only |
-| **Full Name** | John Michael Doe | John D. | First name + last initial |
+| Data Type          | PII Card (Full)             | Public Reply (Redacted) | Example                            |
+| ------------------ | --------------------------- | ----------------------- | ---------------------------------- |
+| **Email**          | john.doe@example.com        | j**_@e_**.com           | First char + domain initial + .com |
+| **Phone**          | (555) 123-4567              | **_-_**-4567            | Mask all but last 4 digits         |
+| **Address Line 1** | 123 Main St                 | [REDACTED]              | Full street address removed        |
+| **Address Line 2** | Apt 4B                      | [REDACTED]              | Full apartment/suite removed       |
+| **City**           | Springfield                 | Springfield             | ✅ OK to share                     |
+| **State/Province** | IL                          | IL                      | ✅ OK to share                     |
+| **ZIP/Postal**     | 62701                       | [REDACTED]              | Remove for privacy                 |
+| **Country**        | United States               | United States           | ✅ OK to share                     |
+| **Credit Card**    | \***\* \*\*** \*\*\*\* 1234 | \*\*\*\* 1234           | Last 4 only                        |
+| **Full Name**      | John Michael Doe            | John D.                 | First name + last initial          |
 
 #### Never Redact in Public Reply:
 
-| Data Type | Reason | Example |
-|-----------|--------|---------|
-| **Order Number** | Customer needs to reference | #1234 |
-| **Tracking Number** | Customer needs to track shipment | 1Z999AA10123456784 |
-| **Fulfillment Status** | Customer needs to know | Shipped, Delivered |
-| **Line Items** | Customer needs to confirm | AN6 Hose - 3ft |
-| **Order Total** | Customer needs to verify | $90.00 |
-| **Order Date** | Customer needs to reference | Oct 18, 2025 |
+| Data Type              | Reason                           | Example            |
+| ---------------------- | -------------------------------- | ------------------ |
+| **Order Number**       | Customer needs to reference      | #1234              |
+| **Tracking Number**    | Customer needs to track shipment | 1Z999AA10123456784 |
+| **Fulfillment Status** | Customer needs to know           | Shipped, Delivered |
+| **Line Items**         | Customer needs to confirm        | AN6 Hose - 3ft     |
+| **Order Total**        | Customer needs to verify         | $90.00             |
+| **Order Date**         | Customer needs to reference      | Oct 18, 2025       |
 
 ---
 
@@ -775,9 +809,11 @@ The **PII Card** is an **operator-only** view that displays full customer detail
 #### Training Scenario 1: Order Inquiry
 
 **Customer Message**:
+
 > "Hi, I need to check the status of my order. I placed it last week but haven't received a tracking number. My email is john.doe@example.com."
 
 **PII Card** (Operator View):
+
 ```
 Customer: John Michael Doe
 Email: john.doe@example.com
@@ -797,6 +833,7 @@ Payment: Visa **** 1234
 ```
 
 **Public Reply** (Customer View):
+
 ```
 Hi John,
 
@@ -827,9 +864,11 @@ Hot Rod AN Support
 #### Training Scenario 2: Refund Request
 
 **Customer Message**:
+
 > "I'd like to return order #1234 and get a refund. The product doesn't fit my setup."
 
 **PII Card** (Operator View):
+
 ```
 Customer: Sarah Johnson
 Email: sarah.j@domain.com
@@ -852,6 +891,7 @@ Return Policy: 30 days, unused products
 ```
 
 **Public Reply** (Customer View):
+
 ```
 Hi Sarah,
 
@@ -884,11 +924,13 @@ Hot Rod AN Support
 #### Training Scenario 3: Multiple Orders (Identity Verification)
 
 **Customer Message**:
+
 > "I have two orders and want to know which one is shipping first. My email is contact@company.com."
 
 **Challenge**: Multiple orders, need to verify identity
 
 **PII Card** (Operator View):
+
 ```
 Customer: Alex Martinez
 Email: contact@company.com (matches)
@@ -904,6 +946,7 @@ Status: Processing (ships Oct 22)
 ```
 
 **Public Reply** (Customer View):
+
 ```
 Hi Alex,
 
@@ -939,6 +982,7 @@ Hot Rod AN Support
 **Why Wrong**: Customer email/chat is not encrypted end-to-end. Full address in plain text is a privacy risk.
 
 **Correct Approach**:
+
 - ✅ Reference city/state only
 - ✅ Confirm "Shipping to Springfield, IL"
 - ✅ If customer disputes address, use Private Note to verify (internal only)
@@ -952,6 +996,7 @@ Hot Rod AN Support
 **Why Wrong**: Customers need tracking numbers to check shipping status.
 
 **Correct Approach**:
+
 - ✅ Tracking numbers are **not PII** (OK to share)
 - ✅ Include full tracking number in public reply
 - ✅ Include tracking URL for convenience
@@ -965,6 +1010,7 @@ Hot Rod AN Support
 **Why Wrong**: Even last 4 digits can be used for social engineering.
 
 **Correct Approach**:
+
 - ✅ Payment verification is **internal only** (PII Card)
 - ✅ Public reply: "Payment: Confirmed ✓"
 - ✅ Don't mention payment method or last 4 digits
@@ -988,6 +1034,7 @@ CREATE TABLE pii_access_log (
 ```
 
 **Monthly Audit Questions**:
+
 1. Who accessed PII Card most often? (Expect: Active operators)
 2. Any off-hours access? (Flag: After 10PM, before 7AM)
 3. Any excessive access? (Flag: >100 opens/day per operator)
@@ -1008,6 +1055,7 @@ CREATE TABLE pii_access_log (
 3. **How humans edit** (edit distance = training signal)
 
 **Impact on AI Learning**:
+
 - **1-2 (Poor)**: Pattern flagged for review, may be removed from future drafts
 - **3 (Average)**: Pattern noted, no immediate change
 - **4 (Good)**: Pattern reinforced, used more often
@@ -1023,15 +1071,16 @@ CREATE TABLE pii_access_log (
 
 **Grading Scale**:
 
-| Grade | Description | Example |
-|-------|-------------|---------|
-| **1 - Terrible** | Robotic, cold, unfriendly | "Your order has been processed. Reference ID: 1234." |
-| **2 - Poor** | Generic, lacks personality | "Your order is shipping. Here's the tracking." |
-| **3 - Average** | Polite but bland | "Thank you for your order. It will ship soon." |
-| **4 - Good** | Friendly, helpful, on-brand | "Good news! Your order shipped today. Here's your tracking!" |
+| Grade             | Description                       | Example                                                                                                         |
+| ----------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **1 - Terrible**  | Robotic, cold, unfriendly         | "Your order has been processed. Reference ID: 1234."                                                            |
+| **2 - Poor**      | Generic, lacks personality        | "Your order is shipping. Here's the tracking."                                                                  |
+| **3 - Average**   | Polite but bland                  | "Thank you for your order. It will ship soon."                                                                  |
+| **4 - Good**      | Friendly, helpful, on-brand       | "Good news! Your order shipped today. Here's your tracking!"                                                    |
 | **5 - Excellent** | Enthusiastic, personal, memorable | "Great choice on the AN6 hose! Your order just shipped - you'll be wrenching in no time. Here's your tracking!" |
 
 **Tips**:
+
 - Hot Rod AN voice: **Technical but friendly** (enthusiast tone, not corporate)
 - Use exclamation marks (but not excessively)
 - Acknowledge customer enthusiasm ("Great choice!", "Perfect for your build!")
@@ -1045,15 +1094,16 @@ CREATE TABLE pii_access_log (
 
 **Grading Scale**:
 
-| Grade | Description | Example |
-|-------|-------------|---------|
-| **1 - Terrible** | Multiple errors, wrong data | "Order #1234 shipped yesterday" (actually shipped 3 days ago) |
-| **2 - Poor** | One significant error | "Tracking: 1Z999AA10123456784" (wrong tracking number) |
-| **3 - Average** | Minor error or missing detail | "Order shipped" (missing tracking number) |
-| **4 - Good** | All facts correct, complete | "Order #1234 shipped Oct 18 via UPS. Tracking: 1Z999AA10123456784." |
+| Grade             | Description                              | Example                                                                                                              |
+| ----------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **1 - Terrible**  | Multiple errors, wrong data              | "Order #1234 shipped yesterday" (actually shipped 3 days ago)                                                        |
+| **2 - Poor**      | One significant error                    | "Tracking: 1Z999AA10123456784" (wrong tracking number)                                                               |
+| **3 - Average**   | Minor error or missing detail            | "Order shipped" (missing tracking number)                                                                            |
+| **4 - Good**      | All facts correct, complete              | "Order #1234 shipped Oct 18 via UPS. Tracking: 1Z999AA10123456784."                                                  |
 | **5 - Excellent** | All facts correct, extra helpful details | "Order #1234 shipped Oct 18 via UPS. Tracking: 1Z999AA10123456784. Expected delivery: Oct 21-22. Track here: [link]" |
 
 **Tips**:
+
 - Verify order numbers, tracking numbers, dates against PII Card
 - Check inventory status matches Storefront Sub-Agent response
 - Confirm price, quantity, product title match order details
@@ -1067,26 +1117,27 @@ CREATE TABLE pii_access_log (
 
 **Grading Scale**:
 
-| Grade | Description | Example |
-|-------|-------------|---------|
-| **1 - Terrible** | Violates policy (free shipping, instant refunds) | "I'll ship you a replacement for free!" (no approval) |
-| **2 - Poor** | Over-promises without authority | "I'll refund you right now!" (needs Manager approval) |
-| **3 - Average** | Vague or incomplete policy | "We'll process your return" (missing return instructions) |
-| **4 - Good** | Follows policy, clear expectations | "Returns accepted within 30 days. Ship to [address]. Refund in 3-5 days." |
-| **5 - Excellent** | Follows policy, proactive, complete | "Returns accepted within 30 days. Here's the return address [address]. Include order #1234. Refund processed 3-5 days after we receive it. Any questions?" |
+| Grade             | Description                                      | Example                                                                                                                                                    |
+| ----------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **1 - Terrible**  | Violates policy (free shipping, instant refunds) | "I'll ship you a replacement for free!" (no approval)                                                                                                      |
+| **2 - Poor**      | Over-promises without authority                  | "I'll refund you right now!" (needs Manager approval)                                                                                                      |
+| **3 - Average**   | Vague or incomplete policy                       | "We'll process your return" (missing return instructions)                                                                                                  |
+| **4 - Good**      | Follows policy, clear expectations               | "Returns accepted within 30 days. Ship to [address]. Refund in 3-5 days."                                                                                  |
+| **5 - Excellent** | Follows policy, proactive, complete              | "Returns accepted within 30 days. Here's the return address [address]. Include order #1234. Refund processed 3-5 days after we receive it. Any questions?" |
 
 **Hot Rod AN Policies** (Reference):
 
-| Policy | Rule | Example |
-|--------|------|---------|
-| **Returns** | 30 days, unused products, customer pays return shipping | "Returns accepted within 30 days. Product must be unused. Customer pays return shipping." |
-| **Refunds** | 3-5 business days after receipt | "Refund processed within 3-5 business days after we receive your return." |
-| **Shipping** | Free shipping on orders $100+ | "Orders $100+ ship free. Under $100: $15 flat rate." |
-| **Exchanges** | Same as returns (ship back, reorder) | "For exchanges, ship the product back and place a new order. We'll refund your return within 3-5 days." |
-| **Warranties** | Manufacturer warranty (varies by product) | "This product has a 1-year manufacturer warranty. Contact us if you have issues within 1 year." |
-| **Cancellations** | Before shipment only | "If your order hasn't shipped yet, we can cancel it. Once shipped, you'll need to return it." |
+| Policy            | Rule                                                    | Example                                                                                                 |
+| ----------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Returns**       | 30 days, unused products, customer pays return shipping | "Returns accepted within 30 days. Product must be unused. Customer pays return shipping."               |
+| **Refunds**       | 3-5 business days after receipt                         | "Refund processed within 3-5 business days after we receive your return."                               |
+| **Shipping**      | Free shipping on orders $100+                           | "Orders $100+ ship free. Under $100: $15 flat rate."                                                    |
+| **Exchanges**     | Same as returns (ship back, reorder)                    | "For exchanges, ship the product back and place a new order. We'll refund your return within 3-5 days." |
+| **Warranties**    | Manufacturer warranty (varies by product)               | "This product has a 1-year manufacturer warranty. Contact us if you have issues within 1 year."         |
+| **Cancellations** | Before shipment only                                    | "If your order hasn't shipped yet, we can cancel it. Once shipped, you'll need to return it."           |
 
 **Tips**:
+
 - ✅ If AI offers free shipping without order minimum → Grade 1-2 (policy violation)
 - ✅ If AI promises instant refund → Grade 2-3 (needs Manager approval for same-day)
 - ✅ If AI says "We'll ship replacement" without return → Grade 1-2 (policy violation)
@@ -1099,9 +1150,11 @@ CREATE TABLE pii_access_log (
 #### Example 1: High Grades (4-5)
 
 **Customer Message**:
+
 > "Do you have the AN8 hose in stock? I need 10 feet for my build."
 
 **AI Draft**:
+
 ```
 Hi there!
 
@@ -1118,11 +1171,13 @@ Hot Rod AN Support
 ```
 
 **Operator Grades**:
+
 - **Tone**: 5 (Enthusiastic, helpful, on-brand)
 - **Accuracy**: 5 (Inventory count correct, price correct, link provided)
 - **Policy**: 5 (No commitments, helpful)
 
 **Why High Grades**:
+
 - ✅ Friendly, enthusiast tone ("Great choice!", "Perfect for...")
 - ✅ All facts verified (inventory, price, product title)
 - ✅ No policy violations, proactive help offered
@@ -1132,9 +1187,11 @@ Hot Rod AN Support
 #### Example 2: Medium Grades (3)
 
 **Customer Message**:
+
 > "I want to return order #1234. How do I do that?"
 
 **AI Draft**:
+
 ```
 Hi,
 
@@ -1145,16 +1202,19 @@ Hot Rod AN Support
 ```
 
 **Operator Grades**:
+
 - **Tone**: 3 (Polite but bland, no personality)
 - **Accuracy**: 3 (Missing return address, refund timeline)
 - **Policy**: 3 (Incomplete - no return instructions)
 
 **Why Medium Grades**:
+
 - ⚠️ Tone is polite but generic (no enthusiasm)
 - ⚠️ Missing critical details (return address, refund timeline)
 - ⚠️ Incomplete policy (30-day window, unused product, return shipping cost)
 
 **Operator Edit** (to improve):
+
 ```
 Hi,
 
@@ -1175,6 +1235,7 @@ Hot Rod AN Support
 ```
 
 **Updated Grades** (after edit):
+
 - **Tone**: 4 (Friendly, helpful)
 - **Accuracy**: 5 (All details included)
 - **Policy**: 5 (Complete return policy)
@@ -1184,24 +1245,29 @@ Hot Rod AN Support
 #### Example 3: Low Grades (1-2)
 
 **Customer Message**:
+
 > "My order is late. I want a refund."
 
 **AI Draft**:
+
 ```
 I'll refund you right now. Check your email in 5 minutes.
 ```
 
 **Operator Grades**:
+
 - **Tone**: 2 (Abrupt, no empathy)
 - **Accuracy**: 1 (No order lookup, no verification)
 - **Policy**: 1 (Promises instant refund without authority)
 
 **Why Low Grades**:
+
 - ❌ No order lookup (which order? is it actually late?)
 - ❌ Promises refund without Manager approval (policy violation)
 - ❌ No investigation of shipping status
 
 **Operator Edit** (to fix):
+
 ```
 Hi,
 
@@ -1220,6 +1286,7 @@ Hot Rod AN Support
 ```
 
 **Updated Grades** (after edit):
+
 - **Tone**: 5 (Empathetic, helpful, offers options)
 - **Accuracy**: 5 (Order lookup, tracking provided)
 - **Policy**: 5 (Offers appropriate options, no unauthorized promises)
@@ -1231,11 +1298,13 @@ Hot Rod AN Support
 #### High Grades (4-5) → Reinforce Pattern
 
 **What Happens**:
+
 - Pattern added to "good examples" dataset
 - Similar phrasing used more often
 - Template created for future drafts
 
 **Example**:
+
 - AI draft: "Great choice! Your order just shipped..."
 - Operator grades: Tone 5, Accuracy 5, Policy 5
 - **Result**: "Great choice!" becomes standard opening for enthusiastic customers
@@ -1245,11 +1314,13 @@ Hot Rod AN Support
 #### Low Grades (1-2) → Flag for Review
 
 **What Happens**:
+
 - Pattern flagged for review by Manager
 - Similar phrasing avoided in future
 - Fine-tuning session scheduled to address gap
 
 **Example**:
+
 - AI draft: "I'll refund you right now."
 - Operator grades: Policy 1 (unauthorized promise)
 - **Result**: "I'll refund you" pattern flagged, replaced with "I can help process a refund" (requires Manager approval)
@@ -1259,11 +1330,13 @@ Hot Rod AN Support
 #### Edit Distance → Training Signal
 
 **What Happens**:
+
 - Large edits (>30% changed) → AI learns from operator's version
 - Small edits (<10% changed) → Minor adjustments, no retraining
 - No edits (0% changed) → Pattern reinforced
 
 **Example**:
+
 - AI draft: 200 words, operator changes 80 words (40% edit distance)
 - **Result**: Operator's version used for fine-tuning, AI learns new phrasing
 
@@ -1289,6 +1362,7 @@ Hot Rod AN Support
    - "Let me look into this for you." → Tone 5 (empathy)
 
 **Action Items**:
+
 - Fine-tune with high-grade examples
 - Remove low-grade patterns from prompts
 - Update policy reference docs if gaps found
@@ -1308,17 +1382,20 @@ Hot Rod AN Support
 #### Tier 1: Critical (Response < 5 minutes)
 
 **Triggers**:
+
 - Payment failures
 - Fraud alerts
 - System errors (sub-agent failures)
 - Negative sentiment + urgent keywords ("terrible", "asap")
 
 **Actions**:
+
 - Operator notified immediately (push notification)
 - Flag conversation as "urgent" in Chatwoot
 - Manager escalation if not resolved in 15 minutes
 
 **Example**:
+
 > Customer: "I tried to place an order but the payment failed. I need this part ASAP!"
 > **SLA**: 5 minutes (critical)
 
@@ -1327,17 +1404,20 @@ Hot Rod AN Support
 #### Tier 2: High Priority (Response < 15 minutes)
 
 **Triggers**:
+
 - Order issues (delayed shipping, missing items)
 - Refund/return requests
 - Product questions (in-stock, compatibility)
 - General support during business hours
 
 **Actions**:
+
 - Operator reviews AI draft within 15 minutes
 - Send reply within 20 minutes (end-to-end)
 - Escalate to Manager if complex (requires CEO approval)
 
 **Example**:
+
 > Customer: "Where is my order? I placed it 5 days ago and haven't received tracking."
 > **SLA**: 15 minutes (high priority)
 
@@ -1346,16 +1426,19 @@ Hot Rod AN Support
 #### Tier 3: Standard (Response < 2 hours)
 
 **Triggers**:
+
 - General inquiries (hours, policies)
 - Product questions (non-urgent)
 - After-hours messages (queued for next business day)
 
 **Actions**:
+
 - Operator reviews during next available shift
 - Send reply within 2 hours of business hours start
 - Auto-reply sent if after hours ("We'll respond within X hours")
 
 **Example**:
+
 > Customer: "What's your return policy?"
 > **SLA**: 2 hours (standard)
 
@@ -1364,10 +1447,12 @@ Hot Rod AN Support
 ### Business Hours
 
 **Hot Rod AN Support Hours**:
+
 - **Monday-Friday**: 9:00 AM - 5:00 PM EST
 - **Saturday-Sunday**: Closed (after-hours auto-reply)
 
 **After-Hours Auto-Reply**:
+
 ```
 Hi there,
 
@@ -1389,13 +1474,14 @@ Hot Rod AN Support
 
 **Target**: ≥ 90% compliance (responses within SLA time)
 
-| Tier | SLA Target | Current | Compliance | Status |
-|------|------------|---------|------------|--------|
-| Critical | < 5 min | 3.2 min | 98% | ✅ |
-| High Priority | < 15 min | 8.4 min | 94% | ✅ |
-| Standard | < 2 hours | 45 min | 97% | ✅ |
+| Tier          | SLA Target | Current | Compliance | Status |
+| ------------- | ---------- | ------- | ---------- | ------ |
+| Critical      | < 5 min    | 3.2 min | 98%        | ✅     |
+| High Priority | < 15 min   | 8.4 min | 94%        | ✅     |
+| Standard      | < 2 hours  | 45 min  | 97%        | ✅     |
 
 **Monthly Report**:
+
 - Total conversations: 320
 - SLA breaches: 18 (5.6%)
 - Avg response time: 12.7 min
@@ -1409,12 +1495,12 @@ Hot Rod AN Support
 
 **Target**: < 4 hours (avg)
 
-| Category | Avg Resolution Time | Target | Status |
-|----------|-------------------|--------|--------|
-| Order Inquiries | 18 min | < 30 min | ✅ |
-| Refund/Returns | 2.3 hours | < 4 hours | ✅ |
-| Product Questions | 12 min | < 30 min | ✅ |
-| Technical Support | 3.1 hours | < 4 hours | ✅ |
+| Category          | Avg Resolution Time | Target    | Status |
+| ----------------- | ------------------- | --------- | ------ |
+| Order Inquiries   | 18 min              | < 30 min  | ✅     |
+| Refund/Returns    | 2.3 hours           | < 4 hours | ✅     |
+| Product Questions | 12 min              | < 30 min  | ✅     |
+| Technical Support | 3.1 hours           | < 4 hours | ✅     |
 
 ---
 
@@ -1423,6 +1509,7 @@ Hot Rod AN Support
 #### When to Escalate
 
 **Escalate to Manager if**:
+
 1. **Refund > $100**: Requires Manager approval
 2. **Policy Exception**: Customer requests exception (free shipping, extended return)
 3. **Complex Issue**: Requires coordination with shipping carrier, supplier
@@ -1436,6 +1523,7 @@ Hot Rod AN Support
 **Step 1**: Flag conversation as "urgent" in Chatwoot
 
 **Step 2**: Add Private Note with context:
+
 ```
 ESCALATION NEEDED
 
@@ -1464,11 +1552,11 @@ Urgency: High (customer frustrated, threatened chargeback)
 
 #### Escalation SLA
 
-| Type | Manager Response SLA | Resolution SLA |
-|------|---------------------|----------------|
-| Critical (payment, fraud) | < 15 min | < 1 hour |
-| High (refund, angry customer) | < 30 min | < 2 hours |
-| Standard (policy exception) | < 2 hours | < 4 hours |
+| Type                          | Manager Response SLA | Resolution SLA |
+| ----------------------------- | -------------------- | -------------- |
+| Critical (payment, fraud)     | < 15 min             | < 1 hour       |
+| High (refund, angry customer) | < 30 min             | < 2 hours      |
+| Standard (policy exception)   | < 2 hours            | < 4 hours      |
 
 ---
 
@@ -1487,6 +1575,7 @@ Urgency: High (customer frustrated, threatened chargeback)
 **Step 2**: Manager receives alert (Slack, email)
 
 **Step 3**: Manager reviews:
+
 - Was operator available? (Maybe on break, lunch)
 - Was message missed? (Notification failure)
 - Was complexity underestimated? (Should have been critical tier)
@@ -1500,6 +1589,7 @@ Urgency: High (customer frustrated, threatened chargeback)
 #### Breach Reporting
 
 **Monthly SLA Breach Report**:
+
 ```
 SLA Breaches - October 2025
 
@@ -1531,6 +1621,7 @@ Current Compliance: 94.4% ✅
 **CX Metrics API Endpoint**: `/api/support/metrics`
 
 **Real-Time Metrics** (CX Tile on Dashboard):
+
 ```
 ┌─────────────────────────────────────┐
 │ CX Support Metrics (Live)           │
@@ -1555,13 +1646,14 @@ Current Compliance: 94.4% ✅
 
 **Individual Metrics** (Operator Dashboard):
 
-| Operator | Conversations | Avg Response | SLA Compliance | Avg Grade |
-|----------|--------------|--------------|----------------|-----------|
-| Operator A | 45 | 7.2 min | 96% | 4.8 |
-| Operator B | 38 | 9.1 min | 92% | 4.6 |
-| Operator C | 32 | 11.3 min | 89% | 4.7 |
+| Operator   | Conversations | Avg Response | SLA Compliance | Avg Grade |
+| ---------- | ------------- | ------------ | -------------- | --------- |
+| Operator A | 45            | 7.2 min      | 96%            | 4.8       |
+| Operator B | 38            | 9.1 min      | 92%            | 4.6       |
+| Operator C | 32            | 11.3 min     | 89%            | 4.7       |
 
 **Performance Review Criteria**:
+
 - ✅ SLA Compliance ≥ 90%
 - ✅ Avg Grade ≥ 4.5
 - ✅ Escalation Rate < 10%
@@ -1573,12 +1665,14 @@ Current Compliance: 94.4% ✅
 #### Weekly Review
 
 **Every Monday, Manager reviews**:
+
 1. SLA compliance (target: ≥ 90%)
 2. Avg grades (target: ≥ 4.5 across all dimensions)
 3. Breach patterns (when? why? how to prevent?)
 4. Operator feedback (what's working? what's not?)
 
 **Action Items**:
+
 - Update AI prompts if low grades
 - Adjust SLA tiers if too aggressive/lenient
 - Improve escalation process if delays found
@@ -1589,6 +1683,7 @@ Current Compliance: 94.4% ✅
 #### Quarterly Goals
 
 **Q4 2025 Goals**:
+
 - ✅ SLA Compliance: 95% (currently 94%)
 - ✅ Avg Grade (Tone): 4.8 (currently 4.7)
 - ✅ Avg Response Time: < 10 min (currently 8.4 min)
@@ -1600,53 +1695,54 @@ Current Compliance: 94.4% ✅
 
 ### Customer-Front Agent Triage Cheat Sheet
 
-| Customer Request | Sub-Agent | Reason |
-|-----------------|-----------|--------|
-| "Where is my order?" | Accounts | Order lookup requires Customer Accounts API |
-| "Do you have X in stock?" | Storefront | Inventory check uses Storefront API |
-| "I want a refund" | Accounts | Refunds require Customer Accounts API (write) |
-| "What's your return policy?" | None | General policy (no API needed) |
-| "Can you change my shipping address?" | Accounts | Address update requires Customer Accounts API (write) |
-| "What size hose do I need?" | Storefront | Product details use Storefront API |
+| Customer Request                      | Sub-Agent  | Reason                                                |
+| ------------------------------------- | ---------- | ----------------------------------------------------- |
+| "Where is my order?"                  | Accounts   | Order lookup requires Customer Accounts API           |
+| "Do you have X in stock?"             | Storefront | Inventory check uses Storefront API                   |
+| "I want a refund"                     | Accounts   | Refunds require Customer Accounts API (write)         |
+| "What's your return policy?"          | None       | General policy (no API needed)                        |
+| "Can you change my shipping address?" | Accounts   | Address update requires Customer Accounts API (write) |
+| "What size hose do I need?"           | Storefront | Product details use Storefront API                    |
 
 ---
 
 ### PII Redaction Quick Reference
 
-| Data | Show in Public Reply? | Example |
-|------|----------------------|---------|
-| Email | ❌ (Redact) | j***@e***.com |
-| Phone | ❌ (Redact) | ***-***-4567 |
-| Full Address | ❌ (Redact) | [City, State only] |
-| Order Number | ✅ (Show) | #1234 |
-| Tracking Number | ✅ (Show) | 1Z999AA10123456784 |
-| Credit Card | ❌ (Redact) | **** 1234 (last 4 only) |
+| Data            | Show in Public Reply? | Example                     |
+| --------------- | --------------------- | --------------------------- |
+| Email           | ❌ (Redact)           | j**_@e_**.com               |
+| Phone           | ❌ (Redact)           | **_-_**-4567                |
+| Full Address    | ❌ (Redact)           | [City, State only]          |
+| Order Number    | ✅ (Show)             | #1234                       |
+| Tracking Number | ✅ (Show)             | 1Z999AA10123456784          |
+| Credit Card     | ❌ (Redact)           | \*\*\*\* 1234 (last 4 only) |
 
 ---
 
 ### Grading Quick Reference
 
-| Dimension | What to Check | Red Flags |
-|-----------|--------------|-----------|
-| **Tone** | Friendly? On-brand? | Robotic, cold, generic |
-| **Accuracy** | Facts correct? | Wrong order number, tracking, dates |
-| **Policy** | Follows rules? | Unauthorized promises (free shipping, instant refund) |
+| Dimension    | What to Check       | Red Flags                                             |
+| ------------ | ------------------- | ----------------------------------------------------- |
+| **Tone**     | Friendly? On-brand? | Robotic, cold, generic                                |
+| **Accuracy** | Facts correct?      | Wrong order number, tracking, dates                   |
+| **Policy**   | Follows rules?      | Unauthorized promises (free shipping, instant refund) |
 
 ---
 
 ### SLA Quick Reference
 
-| Tier | Response Time | When to Use |
-|------|--------------|-------------|
-| **Critical** | < 5 min | Payment failure, fraud, system error |
-| **High** | < 15 min | Order issues, refunds, product questions |
-| **Standard** | < 2 hours | General inquiries, after-hours |
+| Tier         | Response Time | When to Use                              |
+| ------------ | ------------- | ---------------------------------------- |
+| **Critical** | < 5 min       | Payment failure, fraud, system error     |
+| **High**     | < 15 min      | Order issues, refunds, product questions |
+| **Standard** | < 2 hours     | General inquiries, after-hours           |
 
 ---
 
 ### Escalation Quick Reference
 
 **Escalate if**:
+
 - Refund > $100
 - Policy exception needed
 - Complex issue (carrier, supplier)
@@ -1659,11 +1755,10 @@ Current Compliance: 94.4% ✅
 
 ## Document History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-10-21 | Support Agent | Initial creation (SUPPORT-008) |
+| Version | Date       | Author        | Changes                        |
+| ------- | ---------- | ------------- | ------------------------------ |
+| 1.0     | 2025-10-21 | Support Agent | Initial creation (SUPPORT-008) |
 
 ---
 
 **END OF DOCUMENT**
-

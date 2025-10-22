@@ -30,7 +30,7 @@ Safe database migration workflow for HotDash, ensuring additive-only changes, au
 
 3. **Migrations must be ADDITIVE ONLY** ✅
    - Add new tables: ✅ ALLOWED
-   - Add new columns: ✅ ALLOWED  
+   - Add new columns: ✅ ALLOWED
    - Remove tables/columns: ❌ FORBIDDEN in production
    - Modify column types: ⚠️ Requires special approval
 
@@ -41,16 +41,19 @@ Safe database migration workflow for HotDash, ensuring additive-only changes, au
 ### Phase 1: Creation (Data Agent)
 
 **Data agent creates**:
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 npx prisma migrate dev --name add_social_posts_table
 ```
 
 **Output**:
+
 - `prisma/migrations/YYYYMMDDHHMMSS_add_social_posts_table/migration.sql`
 - Updated `prisma/schema.prisma`
 
 **Commits**:
+
 ```bash
 git add prisma/
 git commit -m "feat(data): add social posts migration - DATA-XXX"
@@ -66,6 +69,7 @@ git push origin manager-reopen-YYYYMMDD
 **GitHub Actions**: `.github/workflows/migration-test.yml`
 
 **Steps**:
+
 1. **Validate Schema**: Check Prisma schema is valid
 2. **Check Breaking Changes**: Detect removed models/fields (fails if found)
 3. **Dry-Run**: Apply migration to test Postgres database
@@ -79,6 +83,7 @@ git push origin manager-reopen-YYYYMMDD
 ### Phase 3: Review (Manager)
 
 **Manager checks**:
+
 1. ✅ CI passed (green checkmark on PR)
 2. ✅ Migration is additive-only (no deletions)
 3. ✅ Rollback guide generated
@@ -135,15 +140,15 @@ psql "$SUPABASE_URL"
 
 ```sql
 -- Check tables exist
-SELECT table_name 
-FROM information_schema.tables 
-WHERE table_schema = 'public' 
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
 AND table_name IN ('social_posts', 'new_table_name');
 
 -- Verify Row Level Security (RLS) enabled
-SELECT tablename, rowsecurity 
-FROM pg_tables 
-WHERE schemaname = 'public' 
+SELECT tablename, rowsecurity
+FROM pg_tables
+WHERE schemaname = 'public'
 AND tablename = 'social_posts';
 
 -- Check columns
@@ -154,6 +159,7 @@ ORDER BY ordinal_position;
 ```
 
 **Report in feedback**:
+
 ```md
 ## HH:MM - Migration Verified
 
@@ -172,6 +178,7 @@ ORDER BY ordinal_position;
 **Action**: Simply don't apply the migration
 
 **Cleanup**:
+
 ```bash
 # Remove migration files
 git rm -r prisma/migrations/<timestamp>_<name>/
@@ -186,12 +193,14 @@ git commit -m "revert(data): remove problematic migration"
 **⚠️ CRITICAL**: Coordinate with Manager and CEO before executing
 
 **Step 1**: Identify changes made
+
 ```sql
 -- View table structure
 \d+ <table_name>
 ```
 
 **Step 2**: Create rollback SQL
+
 ```sql
 -- If added table:
 DROP TABLE IF EXISTS <table_name>;
@@ -204,6 +213,7 @@ DROP INDEX IF EXISTS <index_name>;
 ```
 
 **Step 3**: Test in dev database first
+
 ```bash
 # Use local Postgres or test Supabase project
 psql "postgresql://localhost/hotdash_dev"
@@ -212,12 +222,14 @@ psql "postgresql://localhost/hotdash_dev"
 ```
 
 **Step 4**: Apply to production (Manager only)
+
 ```bash
 # Manager executes via Supabase console
 # DevOps verifies with queries
 ```
 
 **Step 5**: Update Prisma schema
+
 ```bash
 # Revert schema.prisma to match database
 # Create new migration if needed
@@ -262,6 +274,7 @@ npx prisma db pull  # Generate schema from database
 **Cause**: Syntax error or invalid constraint
 
 **Resolution**:
+
 1. Check error message in GitHub Actions logs
 2. Fix SQL in migration file
 3. Test locally: `npx prisma migrate dev`
@@ -274,6 +287,7 @@ npx prisma db pull  # Generate schema from database
 **Cause**: Prisma schema doesn't match database
 
 **Resolution**:
+
 ```bash
 # Pull current database schema
 npx prisma db pull
@@ -292,6 +306,7 @@ npx prisma generate
 **Cause**: Migration caused production issues
 
 **Resolution**:
+
 1. **IMMEDIATE**: Pause new deployments
 2. **ASSESS**: Identify specific issue
 3. **COORDINATE**: Manager + Data + DevOps + Engineer
@@ -310,16 +325,19 @@ npx prisma generate
 **File**: `.github/workflows/migration-test.yml`
 
 **Triggers**:
+
 - PR with changes to `prisma/migrations/**`
 - PR with changes to `prisma/schema.prisma`
 - Manual dispatch
 
 **Jobs**:
+
 1. **validate**: Check schema validity, detect breaking changes
 2. **dry-run**: Apply to test Postgres, verify success
 3. **summary**: Generate result summary with rollback guide
 
 **Artifacts**:
+
 - Migration rollback guide (retained 30 days)
 - Test database schema dump
 - Migration status report
@@ -328,13 +346,13 @@ npx prisma generate
 
 ## Migration Coordination Matrix
 
-| Agent | Responsibility | File Location | Verification |
-|-------|---------------|---------------|--------------|
-| **Data** | Create migrations | `prisma/migrations/` | CI passes |
-| **DevOps** | Verify safety | CI workflow | Green checkmark |
-| **Manager** | Review & apply | Supabase console | SQL execution |
-| **DevOps** | Verify applied | SQL queries | Tables exist |
-| **Engineer** | Use new schema | App code | No errors |
+| Agent        | Responsibility    | File Location        | Verification    |
+| ------------ | ----------------- | -------------------- | --------------- |
+| **Data**     | Create migrations | `prisma/migrations/` | CI passes       |
+| **DevOps**   | Verify safety     | CI workflow          | Green checkmark |
+| **Manager**  | Review & apply    | Supabase console     | SQL execution   |
+| **DevOps**   | Verify applied    | SQL queries          | Tables exist    |
+| **Engineer** | Use new schema    | App code             | No errors       |
 
 ---
 
@@ -377,4 +395,3 @@ npx prisma generate
 ---
 
 **🗄️ End of Runbook**
-

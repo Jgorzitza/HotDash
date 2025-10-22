@@ -24,18 +24,21 @@ PrismaClientKnownRequestError:
 ### Option 1: Redeploy App with Migration Command (RECOMMENDED)
 
 **Updated**: `fly.toml` now includes:
+
 ```toml
 [deploy]
   release_command = "npx prisma migrate deploy"
 ```
 
 **Action**:
+
 ```bash
 cd ~/HotDash/hot-dash
 shopify app deploy
 ```
 
 This will:
+
 1. Build app
 2. Run `npx prisma migrate deploy` (creates Session table)
 3. Deploy to Fly.io
@@ -46,6 +49,7 @@ This will:
 ### Option 2: Manually Run Migrations (QUICK FIX)
 
 **If you need immediate fix**:
+
 ```bash
 # Connect to production and run migrations
 fly ssh console -a hotdash-staging
@@ -65,15 +69,19 @@ fly apps restart hotdash-staging
 After fix:
 
 1. **Check app loads in Shopify**:
+
    ```
    https://admin.shopify.com/store/hotroddash/apps/hotdash
    ```
+
    Should show dashboard (not "Application Error")
 
 2. **Check logs are clean**:
+
    ```bash
    fly logs -a hotdash-staging --no-tail | grep -i error | tail -20
    ```
+
    Should not show Prisma Session errors
 
 3. **Test dashboard tiles**:
@@ -95,11 +103,13 @@ After fix:
 Created `docs/REACT_ROUTER_7_ENFORCEMENT.md` with MANDATORY rules:
 
 **FORBIDDEN**:
+
 - ❌ `@remix-run` imports
 - ❌ `json()` helper from Remix
 - ❌ Remix LoaderFunction types
 
 **REQUIRED**:
+
 - ✅ `react-router` imports only
 - ✅ `Response.json()` for all loaders
 - ✅ `Route.LoaderArgs` or `LoaderFunctionArgs` types
@@ -107,6 +117,7 @@ Created `docs/REACT_ROUTER_7_ENFORCEMENT.md` with MANDATORY rules:
 - ✅ Context7 MCP for ALL library patterns
 
 **Verification**:
+
 ```bash
 # Must return NO RESULTS
 rg "@remix-run" app/ --type ts --type tsx
@@ -117,6 +128,7 @@ rg "@remix-run" app/ --type ts --type tsx
 ## Next Steps
 
 1. **CEO/Manager**: Deploy app with migrations
+
    ```bash
    cd ~/HotDash/hot-dash
    shopify app deploy
@@ -131,5 +143,3 @@ rg "@remix-run" app/ --type ts --type tsx
 ---
 
 **Status**: ✅ FIX READY - Deploy with migrations to resolve
-
-

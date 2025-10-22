@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
 
 import type { OrderSummary } from "../../services/shopify/types";
+import type { WoWVariance } from "../../services/analytics/wow-variance";
 import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
 import { useToast } from "../../hooks/useToast";
 
@@ -33,6 +34,11 @@ export function SalesPulseModal({
   const [note, setNote] = useState("");
   const [selectedAction, setSelectedAction] =
     useState<SalesAction>("acknowledge");
+  
+  // WoW variance state
+  const [revenueVariance, setRevenueVariance] = useState<WoWVariance | null>(null);
+  const [ordersVariance, setOrdersVariance] = useState<WoWVariance | null>(null);
+  const [varianceLoading, setVarianceLoading] = useState(false);
 
   // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
   useModalFocusTrap(open, onClose);
@@ -44,8 +50,41 @@ export function SalesPulseModal({
     if (open) {
       setNote("");
       setSelectedAction("acknowledge");
+      fetchWoWVariance();
     }
   }, [open]);
+
+  // Fetch WoW variance data when modal opens
+  const fetchWoWVariance = async () => {
+    setVarianceLoading(true);
+    try {
+      // Extract shop domain from summary (assuming it's available)
+      const shopDomain = summary.shopDomain || "demo-shop.myshopify.com";
+      
+      const [revenueResponse, ordersResponse] = await Promise.all([
+        fetch(`/api/analytics/wow-variance?project=${shopDomain}&metric=revenue`),
+        fetch(`/api/analytics/wow-variance?project=${shopDomain}&metric=orders`)
+      ]);
+
+      if (revenueResponse.ok) {
+        const revenueData = await revenueResponse.json();
+        if (revenueData.success) {
+          setRevenueVariance(revenueData.data);
+        }
+      }
+
+      if (ordersResponse.ok) {
+        const ordersData = await ordersResponse.json();
+        if (ordersData.success) {
+          setOrdersVariance(ordersData.data);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching WoW variance:", error);
+    } finally {
+      setVarianceLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -91,6 +130,19 @@ export function SalesPulseModal({
     formData.set("currency", summary.currency);
     formData.set("totalRevenue", String(summary.totalRevenue));
     formData.set("orderCount", String(summary.orderCount));
+    
+    // Add WoW variance data for audit trail
+    if (revenueVariance) {
+      formData.set("revenueVariance", JSON.stringify(revenueVariance));
+    }
+    if (ordersVariance) {
+      formData.set("ordersVariance", JSON.stringify(ordersVariance));
+    }
+    
+    // Add timestamp and action metadata
+    formData.set("timestamp", new Date().toISOString());
+    formData.set("actionType", "sales_pulse_review");
+    formData.set("operator", "system"); // TODO: Get from auth context
 
     fetcher.submit(formData, {
       method: "post",
@@ -134,16 +186,67 @@ export function SalesPulseModal({
         <div className="occ-modal__body">
           <section className="occ-modal__section">
             <h3>Snapshot (Last 24h)</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               <p style={{ margin: 0 }}>
                 <strong>Revenue:</strong> {summary.currency}{" "}
                 {summary.totalRevenue.toFixed(2)}
-                <span style={{ marginLeft: "0.5rem", color: "var(--occ-text-secondary)", fontSize: "0.875rem" }}>
-                  (WoW variance: pending historical data)
-                </span>
+                {revenueVariance ? (
+                  <span
+                    style={{
+                      marginLeft: "0.5rem",
+                      color: revenueVariance.trend === "up" ? "var(--occ-color-success)" : 
+                             revenueVariance.trend === "down" ? "var(--occ-color-error)" : 
+                             "var(--occ-text-secondary)",
+                      fontSize: "0.875rem",
+                      fontWeight: "500",
+                    }}
+                  >
+                    (WoW: {revenueVariance.variance > 0 ? "+" : ""}{revenueVariance.variance}% {revenueVariance.trend === "up" ? "↗" : revenueVariance.trend === "down" ? "↘" : "→"})
+                  </span>
+                ) : varianceLoading ? (
+                  <span
+                    style={{
+                      marginLeft: "0.5rem",
+                      color: "var(--occ-text-secondary)",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    (Loading variance...)
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      marginLeft: "0.5rem",
+                      color: "var(--occ-text-secondary)",
+                      fontSize: "0.875rem",
+                    }}
+                  >
+                    (WoW variance: unavailable)
+                  </span>
+                )}
               </p>
               <p style={{ margin: 0 }}>
                 <strong>Orders:</strong> {summary.orderCount}
+                {ordersVariance ? (
+                  <span
+                    style={{
+                      marginLeft: "0.5rem",
+                      color: ordersVariance.trend === "up" ? "var(--occ-color-success)" : 
+                             ordersVariance.trend === "down" ? "var(--occ-color-error)" : 
+                             "var(--occ-text-secondary)",
+                      fontSize: "0.875rem",
+                      fontWeight: "500",
+                    }}
+                  >
+                    (WoW: {ordersVariance.variance > 0 ? "+" : ""}{ordersVariance.variance}% {ordersVariance.trend === "up" ? "↗" : ordersVariance.trend === "down" ? "↘" : "→"})
+                  </span>
+                ) : null}
               </p>
               <p style={{ margin: 0 }}>
                 <strong>Avg order:</strong> {summary.currency}{" "}
@@ -152,9 +255,18 @@ export function SalesPulseModal({
                   : "0.00"}
               </p>
             </div>
-            <p style={{ fontSize: "0.75rem", color: "var(--occ-text-secondary)", margin: "0.5rem 0 0 0", fontStyle: "italic" }}>
-              Note: WoW variance calculation requires historical data integration (Data service enhancement)
-            </p>
+            {revenueVariance && (
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--occ-text-secondary)",
+                  margin: "0.5rem 0 0 0",
+                  fontStyle: "italic",
+                }}
+              >
+                WoW variance: Current week vs previous week comparison
+              </p>
+            )}
           </section>
 
           <section className="occ-modal__section">

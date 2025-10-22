@@ -45,13 +45,13 @@ The scripts verify two critical endpoints:
 
 ### Exit Codes
 
-| Code | Meaning | Action |
-|------|---------|--------|
-| 0 | All checks passed | No action needed |
-| 1 | Configuration missing | Check environment variables |
-| 2 | Rails health check failed | Check Chatwoot service status |
-| 3 | Authenticated API failed | Verify API token and permissions |
-| 4 | All checks failed | Escalate to on-call immediately |
+| Code | Meaning                   | Action                           |
+| ---- | ------------------------- | -------------------------------- |
+| 0    | All checks passed         | No action needed                 |
+| 1    | Configuration missing     | Check environment variables      |
+| 2    | Rails health check failed | Check Chatwoot service status    |
+| 3    | Authenticated API failed  | Verify API token and permissions |
+| 4    | All checks failed         | Escalate to on-call immediately  |
 
 ### Timeout Configuration
 
@@ -99,18 +99,19 @@ npm run ops:check-chatwoot-health
 ### SLA Breach Detection
 
 Conversations are flagged as SLA breach when:
+
 - First response time exceeds `CHATWOOT_SLA_MINUTES`
 - Conversation is still in "open" status
 - Customer has sent at least one message
 
 ### SLA Warning Levels
 
-| Time Remaining | Priority | Action |
-|---------------|----------|--------|
-| > 15 minutes | Normal | Monitor in queue |
-| 5-15 minutes | Warning | Prepare response |
-| < 5 minutes | Urgent | Immediate attention |
-| Past SLA | Breach | Escalate + respond ASAP |
+| Time Remaining | Priority | Action                  |
+| -------------- | -------- | ----------------------- |
+| > 15 minutes   | Normal   | Monitor in queue        |
+| 5-15 minutes   | Warning  | Prepare response        |
+| < 5 minutes    | Urgent   | Immediate attention     |
+| Past SLA       | Breach   | Escalate + respond ASAP |
 
 ## Webhook System
 
@@ -123,10 +124,12 @@ Conversations are flagged as SLA breach when:
 ### Webhook Event Types
 
 Processed events:
+
 - `message_created` (customer messages only)
 - `conversation_status_changed` (open → resolved)
 
 Ignored events:
+
 - Agent messages
 - Private notes
 - Conversation assignments
@@ -138,6 +141,7 @@ Ignored events:
 **Current Status**: ALL 24 tests marked as `.todo` (not implemented)
 
 **Test Coverage Needed**:
+
 1. Webhook signature verification (3 tests)
 2. Event filtering (4 tests)
 3. LlamaIndex knowledge retrieval (4 tests)
@@ -155,6 +159,7 @@ Ignored events:
 Location: `artifacts/ops/chatwoot-health/`
 
 Files generated:
+
 - `health-check-{timestamp}.json` - Detailed health check results
 - Includes: HTTP status, response times, error details, timestamps
 
@@ -163,6 +168,7 @@ Files generated:
 Location: `artifacts/support/YYYY-MM-DD/`
 
 Required evidence:
+
 - `chatwoot-health.log` - Daily health check outputs
 - Test results for webhook reliability
 - SLA breach reports
@@ -174,6 +180,7 @@ Required evidence:
 **Symptoms**: Single endpoint failing, other endpoint healthy
 
 **Actions**:
+
 1. Re-run health check to confirm: `npm run ops:check-chatwoot-health`
 2. Check Chatwoot service status page
 3. Verify network connectivity
@@ -187,6 +194,7 @@ Required evidence:
 **Symptoms**: Both endpoints failing, all health checks return errors
 
 **Actions**:
+
 1. **Immediate**: Post in `#incidents` Slack channel
 2. Run diagnostics:
    ```bash
@@ -205,6 +213,7 @@ Required evidence:
 **Symptoms**: Webhooks timing out, approval queue not updating
 
 **Actions**:
+
 1. Check webhook endpoint health: `/api/webhooks/chatwoot`
 2. Review LlamaIndex middleware status
 3. Check Agent SDK service connectivity
@@ -216,12 +225,12 @@ Required evidence:
 
 ## Escalation Contacts
 
-| Role | Contact | Escalation Trigger |
-|------|---------|-------------------|
-| Support Lead | Morgan Patel | SLA breaches, policy questions |
-| Operations Manager | Riley Chen | Cross-functional blockers, fulfillment issues |
-| Reliability On-Call | Slack #incidents | Service outages, critical errors |
-| Support Desk | customer.support@hotrodan.com | Access issues, credential problems |
+| Role                | Contact                       | Escalation Trigger                            |
+| ------------------- | ----------------------------- | --------------------------------------------- |
+| Support Lead        | Morgan Patel                  | SLA breaches, policy questions                |
+| Operations Manager  | Riley Chen                    | Cross-functional blockers, fulfillment issues |
+| Reliability On-Call | Slack #incidents              | Service outages, critical errors              |
+| Support Desk        | customer.support@hotrodan.com | Access issues, credential problems            |
 
 ### Escalation Template
 
@@ -278,6 +287,7 @@ Required evidence:
 ### Key Metrics
 
 Monitor these in dashboard:
+
 - Health check success rate (target: 99.9%)
 - Average response time per endpoint (target: < 500ms)
 - Webhook processing latency (target: < 3s)
@@ -337,4 +347,3 @@ npx vitest run tests/integration/agent-sdk-webhook.spec.ts
   - Added SLA configuration and monitoring guidelines
   - Defined outage response levels and escalation paths
   - Noted webhook test implementation gap
-

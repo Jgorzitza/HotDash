@@ -18,6 +18,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 ## Error Message Principles
 
 ### Core Requirements
+
 1. **Clarity Over Jargon**: Plain language, no technical codes
 2. **Actionable Guidance**: Tell users what to do next
 3. **Appropriate Urgency**: Match severity to actual risk
@@ -25,6 +26,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 5. **Recovery Focus**: How to fix, not just what's wrong
 
 ### Voice Guidelines
+
 - ✅ **Professional**: Serious tone for errors
 - ✅ **Helpful**: Provide solutions, not just problems
 - ✅ **Honest**: Don't hide or minimize issues
@@ -41,12 +43,14 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 **Definition:** Blocks core functionality, immediate action required, data loss risk
 
 **Visual Treatment:**
+
 - Color: Red (#CC0000)
 - Icon: ⚠ or 🚨
 - Banner: Full-width persistent
 - Sound: Alert tone (if enabled)
 
 **Use For:**
+
 - Data loss or corruption
 - Security breaches
 - Integration failures (Shopify disconnect)
@@ -54,6 +58,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 - Critical system outages
 
 **Don't Use For:**
+
 - Validation errors (use Warning)
 - Network timeouts (use Warning)
 - Missing optional data (use Info)
@@ -63,6 +68,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 **Definition:** Impacts functionality but not blocking, attention needed soon, workarounds available
 
 **Visual Treatment:**
+
 - Color: Orange/Yellow (#FFA500)
 - Icon: ⚠
 - Banner: Top of section
@@ -70,6 +76,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 - Sound: Optional notification
 
 **Use For:**
+
 - Integration degraded (partial data)
 - API rate limits approaching
 - Validation errors
@@ -77,6 +84,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 - Non-critical failures
 
 **Don't Use For:**
+
 - Total failures (use Critical)
 - Informational messages (use Info)
 - Success states (use Success toast)
@@ -86,6 +94,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 **Definition:** Informational message, no action required or low priority, helpful context
 
 **Visual Treatment:**
+
 - Color: Blue (#0066CC)
 - Icon: ℹ
 - Banner: Subtle, dismissible
@@ -93,6 +102,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 - Sound: None
 
 **Use For:**
+
 - Feature unavailable (not connected)
 - Data limitations (historical not available)
 - Suggestions and tips
@@ -100,6 +110,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 - New feature announcements
 
 **Don't Use For:**
+
 - Errors requiring action (use Warning/Critical)
 - Success messages (use Success toast)
 
@@ -110,6 +121,7 @@ Comprehensive error messaging framework for HotDash. Defines 3 severity levels (
 ### Critical Errors
 
 **1. Database Connection Lost**
+
 ```
 ⚠ Connection lost
 
@@ -124,6 +136,7 @@ What to do:
 ```
 
 **2. Shopify Integration Failed**
+
 ```
 🚨 Shopify connection lost
 
@@ -139,6 +152,7 @@ What to do:
 ```
 
 **3. Action Execution Failed**
+
 ```
 ⚠ Action failed
 
@@ -156,6 +170,7 @@ What to do:
 ```
 
 **4. Data Corruption Detected**
+
 ```
 🚨 Data integrity issue
 
@@ -179,6 +194,7 @@ What you should do:
 ### Warning Errors
 
 **1. Integration Degraded**
+
 ```
 ⚠ {Service} connection degraded
 
@@ -197,6 +213,7 @@ What to do:
 ```
 
 **2. API Rate Limit Approaching**
+
 ```
 ⚠ API quota: {percentage}% used
 
@@ -215,6 +232,7 @@ What to do:
 ```
 
 **3. Validation Error**
+
 ```
 ⚠ Invalid {field_name}
 
@@ -228,6 +246,7 @@ Examples of valid input:
 ```
 
 **4. Permission Denied**
+
 ```
 ⚠ Permission required
 
@@ -243,6 +262,7 @@ What to do:
 ```
 
 **5. Configuration Missing**
+
 ```
 ⚠ {Feature} not configured
 
@@ -260,6 +280,7 @@ What's needed:
 ### Info Messages
 
 **1. Feature Unavailable (Not Connected)**
+
 ```
 ℹ {Feature} not connected
 
@@ -273,6 +294,7 @@ Benefits:
 ```
 
 **2. Historical Data Not Available**
+
 ```
 ℹ Historical data unavailable
 
@@ -284,6 +306,7 @@ Full analytics available after {date}.
 ```
 
 **3. Beta Feature Notice**
+
 ```
 ℹ Beta feature
 
@@ -298,6 +321,7 @@ What this means:
 ```
 
 **4. Data Sync Delay**
+
 ```
 ℹ Data syncing
 
@@ -317,28 +341,33 @@ Refresh in {time} for updated data.
 ### Form Validation
 
 **Required Field:**
+
 ```
 {Field_name} is required.
 ```
 
 **Invalid Format:**
+
 ```
 {Field_name} must be {format}.
 Example: {example_value}
 ```
 
 **Out of Range:**
+
 ```
 {Field_name} must be between {min} and {max}.
 ```
 
 **Too Short/Long:**
+
 ```
 {Field_name} must be {min}-{max} characters.
 Current: {current_length} characters.
 ```
 
 **Already Exists:**
+
 ```
 {Field_name} "{value}" already exists.
 Choose a different {field_name}.
@@ -347,6 +376,7 @@ Choose a different {field_name}.
 ### Validation Examples
 
 **Email:**
+
 ```
 ⚠ Invalid email address
 
@@ -356,6 +386,7 @@ Email must be in format: name@example.com
 ```
 
 **Number:**
+
 ```
 ⚠ Invalid quantity
 
@@ -366,6 +397,7 @@ Minimum: 1 unit
 ```
 
 **Date:**
+
 ```
 ⚠ Invalid date range
 
@@ -378,6 +410,7 @@ End: {end_date}
 ```
 
 **File Upload:**
+
 ```
 ⚠ File too large
 
@@ -396,6 +429,7 @@ Compress the file or upload a smaller version.
 ### Network Errors
 
 **1. Connection Timeout**
+
 ```
 ⚠ Request timed out
 
@@ -410,6 +444,7 @@ What to do:
 ```
 
 **2. Offline Mode**
+
 ```
 ⚠ No internet connection
 
@@ -423,6 +458,7 @@ What you can still do:
 ```
 
 **3. Server Error (500)**
+
 ```
 ⚠ Server error
 
@@ -439,6 +475,7 @@ What to do:
 ```
 
 **4. Not Found (404)**
+
 ```
 ⚠ Page not found
 
@@ -457,6 +494,7 @@ What to do:
 ## Authentication & Authorization Errors
 
 **1. Session Expired**
+
 ```
 ℹ Session expired
 
@@ -466,6 +504,7 @@ For security, we've logged you out after {time} of inactivity.
 ```
 
 **2. Unauthorized**
+
 ```
 ⚠ Permission denied
 
@@ -477,6 +516,7 @@ Contact your Shopify account owner to request access.
 ```
 
 **3. Invalid Token**
+
 ```
 ⚠ Authentication error
 
@@ -495,6 +535,7 @@ What to do:
 ## Integration-Specific Errors
 
 **Shopify:**
+
 ```
 ⚠ Shopify API error
 
@@ -512,6 +553,7 @@ What to do:
 ```
 
 **Google Analytics:**
+
 ```
 ⚠ Analytics data unavailable
 
@@ -531,6 +573,7 @@ What to do:
 ```
 
 **Chatwoot:**
+
 ```
 ⚠ Chatwoot connection lost
 
@@ -568,6 +611,7 @@ What to do:
 ### Examples
 
 **Good Example ✅:**
+
 ```
 ⚠ Unable to save settings
 
@@ -582,6 +626,7 @@ What to do:
 ```
 
 **Bad Example ❌:**
+
 ```
 Error: ERR_SAVE_FAILED_500
 
@@ -593,6 +638,7 @@ Please try again later or contact administrator.
 ```
 
 **Why Bad:**
+
 - Technical error code (ERR_SAVE_FAILED_500)
 - Jargon ("configuration module")
 - No specific guidance ("try again later" is vague)
@@ -605,18 +651,21 @@ Please try again later or contact administrator.
 ### When to Show Technical Details
 
 **Show to Users:**
+
 - Error ID (for support reference)
 - Affected feature/data
 - Timeframe (when issue started)
 - Recovery steps
 
 **Hide from Users:**
+
 - Stack traces
 - Database queries
 - API response codes (except 404, 500 as context)
 - Internal system paths
 
 **Example:**
+
 ```
 ✅ Good:
 Unable to load sales data. Error ID: ERR-2025-1021-042
@@ -628,20 +677,24 @@ Uncaught TypeError: Cannot read property 'revenue' of undefined at SalesPulse.ts
 ### Error IDs
 
 **Format:**
+
 ```
 ERR-{YYYY}-{MMDD}-{sequential}
 ```
 
 **Examples:**
+
 - ERR-2025-1021-001
 - ERR-2025-1021-042
 
 **Purpose:**
+
 - Helps support diagnose issues
 - Links to server logs
 - Tracks error frequency
 
 **User-Facing:**
+
 ```
 If this problem continues, contact support with error ID: ERR-2025-1021-042
 ```
@@ -653,6 +706,7 @@ If this problem continues, contact support with error ID: ERR-2025-1021-042
 ### Primary Actions (Buttons)
 
 **Retry:**
+
 ```
 When to use: Temporary failures (network, timeout)
 Label: "Retry" or "Try Again"
@@ -660,6 +714,7 @@ Behavior: Repeat the failed action
 ```
 
 **Go to Settings:**
+
 ```
 When to use: Configuration or connection issues
 Label: "Go to Settings" or "Check Settings"
@@ -667,6 +722,7 @@ Behavior: Navigate to relevant settings tab
 ```
 
 **Contact Support:**
+
 ```
 When to use: Unrecoverable errors, bugs, persistent issues
 Label: "Contact Support"
@@ -674,6 +730,7 @@ Behavior: Open support email or chat with error context pre-filled
 ```
 
 **Dismiss:**
+
 ```
 When to use: User acknowledged, no immediate action needed
 Label: "Dismiss" or "OK" or "Got it"
@@ -681,6 +738,7 @@ Behavior: Close error message
 ```
 
 **Refresh Page:**
+
 ```
 When to use: Stale state, session issues
 Label: "Refresh Page"
@@ -701,6 +759,7 @@ Behavior: window.location.reload()
 ### 1. Network Errors
 
 **Connection Failed:**
+
 ```
 ⚠ Connection failed
 
@@ -710,6 +769,7 @@ Unable to reach the server. Check your internet connection.
 ```
 
 **Request Timeout:**
+
 ```
 ⚠ Request timed out
 
@@ -719,6 +779,7 @@ The server didn't respond in time. This may be due to slow internet or high serv
 ```
 
 **Offline:**
+
 ```
 ⚠ You're offline
 
@@ -732,6 +793,7 @@ HotDash requires an internet connection. Connect to wifi or cellular data to con
 ### 2. Authentication Errors
 
 **Login Failed:**
+
 ```
 ⚠ Login failed
 
@@ -743,6 +805,7 @@ Forgot your password? [Reset it here]
 ```
 
 **Session Expired:**
+
 ```
 ℹ Session expired
 
@@ -752,6 +815,7 @@ For security, you've been logged out after {minutes} minutes of inactivity.
 ```
 
 **Account Locked:**
+
 ```
 ⚠ Account temporarily locked
 
@@ -767,6 +831,7 @@ For immediate access, reset your password.
 ### 3. Integration Errors
 
 **Shopify Not Connected:**
+
 ```
 ⚠ Shopify connection required
 
@@ -776,6 +841,7 @@ HotDash needs access to your Shopify store to display dashboard data.
 ```
 
 **API Key Invalid:**
+
 ```
 ⚠ Invalid API credentials
 
@@ -790,6 +856,7 @@ What to do:
 ```
 
 **Service Unavailable:**
+
 ```
 ⚠ {Service} temporarily unavailable
 
@@ -808,6 +875,7 @@ What to do:
 ### 4. Data Errors
 
 **No Data Available:**
+
 ```
 ℹ No data yet
 
@@ -819,6 +887,7 @@ What to do:
 ```
 
 **Data Load Failed:**
+
 ```
 ⚠ Unable to load {data_type}
 
@@ -830,6 +899,7 @@ Last successful load: {timestamp}
 ```
 
 **Invalid Data Format:**
+
 ```
 ⚠ Data format error
 
@@ -848,6 +918,7 @@ What to do:
 ### 5. User Action Errors
 
 **Required Field Missing:**
+
 ```
 ⚠ Required field
 
@@ -857,6 +928,7 @@ What to do:
 ```
 
 **Invalid Input:**
+
 ```
 ⚠ Invalid {field_name}
 
@@ -868,6 +940,7 @@ Example: {valid_example}
 ```
 
 **Unsaved Changes:**
+
 ```
 ⚠ Unsaved changes
 
@@ -877,6 +950,7 @@ You have unsaved changes. Leave without saving?
 ```
 
 **Duplicate Entry:**
+
 ```
 ⚠ Already exists
 
@@ -895,6 +969,7 @@ What to do:
 ### 6. File Upload Errors
 
 **File Too Large:**
+
 ```
 ⚠ File too large
 
@@ -907,6 +982,7 @@ Compress the file or choose a smaller one.
 ```
 
 **Invalid File Type:**
+
 ```
 ⚠ Unsupported file type
 
@@ -917,6 +993,7 @@ Your file: {actual_type}
 ```
 
 **Upload Failed:**
+
 ```
 ⚠ Upload failed
 
@@ -930,6 +1007,7 @@ File upload unsuccessful. This may be due to slow connection or server issue.
 ### 7. Payment & Billing Errors
 
 **Payment Failed:**
+
 ```
 ⚠ Payment declined
 
@@ -945,6 +1023,7 @@ What to do:
 ```
 
 **Subscription Expired:**
+
 ```
 ⚠ Subscription expired
 
@@ -966,6 +1045,7 @@ Renew now to restore:
 ### Proactive Messaging
 
 **Before Quota Exceeded:**
+
 ```
 ℹ API quota: 80% used
 
@@ -975,6 +1055,7 @@ You've used 80% of your daily {service} quota. Reduce auto-refresh to avoid hitt
 ```
 
 **Before Session Expires:**
+
 ```
 ℹ Session expiring soon
 
@@ -984,6 +1065,7 @@ You'll be logged out in 5 minutes due to inactivity. Stay logged in?
 ```
 
 **Before Data Loss:**
+
 ```
 ⚠ Unsaved changes
 
@@ -999,11 +1081,13 @@ You have unsaved changes in {form/feature}. Save before leaving?
 ### Example: Shopify Connection Lost
 
 **Step 1: Detect**
+
 ```
 Dashboard can't load → Display error immediately
 ```
 
 **Step 2: Alert User**
+
 ```
 🚨 Shopify connection lost
 
@@ -1011,6 +1095,7 @@ HotDash cannot access your store. Data will not update until reconnected.
 ```
 
 **Step 3: Guide Recovery**
+
 ```
 What to do:
 1. Go to Settings → Integrations
@@ -1022,6 +1107,7 @@ What to do:
 ```
 
 **Step 4: Confirm Success**
+
 ```
 ✓ Shopify reconnected!
 
@@ -1035,6 +1121,7 @@ Your dashboard is loading fresh data now.
 ## Error Message Checklist
 
 **Every Error Message Must Have:**
+
 - [ ] Clear severity (Critical/Warning/Info)
 - [ ] Simple description (what happened)
 - [ ] User impact (why it matters)
@@ -1044,6 +1131,7 @@ Your dashboard is loading fresh data now.
 - [ ] Timestamp (when it occurred, if helpful)
 
 **Every Error Message Should Avoid:**
+
 - [ ] Technical jargon or error codes (except Error ID for support)
 - [ ] Blaming the user ("You entered..." → "{Field} must be...")
 - [ ] Vague guidance ("Try again later" without specifics)
@@ -1058,34 +1146,33 @@ Your dashboard is loading fresh data now.
 ### Screen Reader Announcements
 
 **Critical Errors:**
+
 ```html
-<div role="alert" aria-live="assertive">
-  {Critical error message}
-</div>
+<div role="alert" aria-live="assertive">{Critical error message}</div>
 ```
 
 **Warnings:**
+
 ```html
-<div role="status" aria-live="polite">
-  {Warning message}
-</div>
+<div role="status" aria-live="polite">{Warning message}</div>
 ```
 
 **Info:**
+
 ```html
-<div role="status" aria-live="polite">
-  {Info message}
-</div>
+<div role="status" aria-live="polite">{Info message}</div>
 ```
 
 ### Focus Management
 
 **After Error Displays:**
+
 ```
 Move focus to error message (for keyboard users)
 ```
 
 **After Dismissal:**
+
 ```
 Return focus to triggering element
 ```
@@ -1093,6 +1180,7 @@ Return focus to triggering element
 ### Color Independence
 
 **Don't Rely on Color Alone:**
+
 ```
 ✅ Good: Icon + Color + Text label
 Red triangle + "Error" text
@@ -1108,6 +1196,7 @@ Red background with no icon or label
 ### What to Log (Not User-Facing)
 
 **Log Entry Should Include:**
+
 - Timestamp (UTC)
 - User ID
 - Session ID
@@ -1119,6 +1208,7 @@ Red background with no icon or label
 - Browser/device info
 
 **Example Log Entry:**
+
 ```json
 {
   "timestamp": "2025-10-21T07:45:23Z",
@@ -1145,7 +1235,7 @@ Red background with no icon or label
 Can user continue working?
   NO → CRITICAL
   YES → Continue...
-  
+
 Does it affect data accuracy or functionality?
   YES → WARNING
   NO → INFO
@@ -1160,12 +1250,14 @@ Does it affect data accuracy or functionality?
 ### Action Button Priority
 
 **Primary (Bold, Colored):**
+
 - Retry
 - Fix Now
 - Go to Settings
 - Contact Support
 
 **Secondary (Plain, Gray):**
+
 - Dismiss
 - Cancel
 - Learn More
@@ -1176,6 +1268,7 @@ Does it affect data accuracy or functionality?
 **END OF DOCUMENT**
 
 **Implementation Notes:**
+
 1. Use consistent error patterns across application
 2. Log all errors server-side for monitoring
 3. Track error frequency to prioritize fixes
@@ -1183,4 +1276,3 @@ Does it affect data accuracy or functionality?
 5. Update error messages based on support ticket patterns
 
 **Questions?** Contact Content team for error message reviews or additions.
-

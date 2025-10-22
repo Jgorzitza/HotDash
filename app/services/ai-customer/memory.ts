@@ -1,20 +1,20 @@
 /**
  * AI-Customer CEO Agent Memory Service
- * 
+ *
  * Stores and retrieves conversation history for CEO Agent.
  * Supports multi-turn conversations with context retention,
  * conversation summarization, and search capabilities.
- * 
+ *
  * @module app/services/ai-customer/memory
  * @see docs/directions/ai-customer.md AI-CUSTOMER-009
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Message role types
  */
-export type MessageRole = 'user' | 'assistant' | 'system' | 'tool';
+export type MessageRole = "user" | "assistant" | "system" | "tool";
 
 /**
  * Conversation message
@@ -67,14 +67,14 @@ export interface ConversationSearchResult {
 
 /**
  * Create or append to conversation
- * 
+ *
  * Strategy:
  * 1. Check if conversation exists
  * 2. If new: create conversation record
  * 3. If existing: append message
  * 4. Auto-summarize old messages if > 20 messages (context window management)
  * 5. Store in decision_log with scope='ceo_conversation'
- * 
+ *
  * @param conversationId - Unique conversation identifier
  * @param message - New message to add
  * @param userId - CEO user ID
@@ -87,18 +87,18 @@ export async function addMessage(
   message: ConversationMessage,
   userId: string,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<Conversation> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     // Check if conversation exists
     const { data: existing, error: fetchError } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('scope', 'ceo_conversation')
-      .eq('external_ref', conversationId)
-      .order('created_at', { ascending: false })
+      .from("decision_log")
+      .select("*")
+      .eq("scope", "ceo_conversation")
+      .eq("external_ref", conversationId)
+      .order("created_at", { ascending: false })
       .limit(1)
       .single();
 
@@ -117,10 +117,10 @@ export async function addMessage(
         },
       };
 
-      await supabase.from('decision_log').insert({
-        scope: 'ceo_conversation',
+      await supabase.from("decision_log").insert({
+        scope: "ceo_conversation",
         actor: userId,
-        action: 'conversation.create',
+        action: "conversation.create",
         external_ref: conversationId,
         payload: newConversation,
       });
@@ -143,24 +143,24 @@ export async function addMessage(
     }
 
     // Update conversation
-    await supabase.from('decision_log').insert({
-      scope: 'ceo_conversation',
+    await supabase.from("decision_log").insert({
+      scope: "ceo_conversation",
       actor: userId,
-      action: 'conversation.update',
+      action: "conversation.update",
       external_ref: conversationId,
       payload: conversation,
     });
 
     return conversation;
   } catch (error) {
-    console.error('[Memory] Error adding message:', error);
+    console.error("[Memory] Error adding message:", error);
     throw error;
   }
 }
 
 /**
  * Get conversation history
- * 
+ *
  * @param conversationId - Conversation identifier
  * @param supabaseUrl - Supabase project URL
  * @param supabaseKey - Supabase service key
@@ -171,17 +171,17 @@ export async function getConversation(
   conversationId: string,
   supabaseUrl: string,
   supabaseKey: string,
-  includeFullHistory = true
+  includeFullHistory = true,
 ): Promise<Conversation | null> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     const { data, error } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('scope', 'ceo_conversation')
-      .eq('external_ref', conversationId)
-      .order('created_at', { ascending: false })
+      .from("decision_log")
+      .select("*")
+      .eq("scope", "ceo_conversation")
+      .eq("external_ref", conversationId)
+      .order("created_at", { ascending: false })
       .limit(1)
       .single();
 
@@ -196,20 +196,20 @@ export async function getConversation(
       return {
         ...conversation,
         messages: conversation.messages.slice(-10), // Last 10 messages
-        summary: conversation.summary || 'Earlier messages summarized',
+        summary: conversation.summary || "Earlier messages summarized",
       };
     }
 
     return conversation;
   } catch (error) {
-    console.error('[Memory] Error fetching conversation:', error);
+    console.error("[Memory] Error fetching conversation:", error);
     return null;
   }
 }
 
 /**
  * Search conversations by content or metadata
- * 
+ *
  * @param userId - CEO user ID
  * @param searchQuery - Search term
  * @param limit - Max results to return
@@ -222,18 +222,18 @@ export async function searchConversations(
   searchQuery: string,
   limit: number,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<ConversationSearchResult[]> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     // Query conversations for this user
     const { data, error } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('scope', 'ceo_conversation')
-      .eq('actor', userId)
-      .order('created_at', { ascending: false })
+      .from("decision_log")
+      .select("*")
+      .eq("scope", "ceo_conversation")
+      .eq("actor", userId)
+      .order("created_at", { ascending: false })
       .limit(limit * 2); // Fetch extra for filtering
 
     if (error || !data) {
@@ -246,16 +246,20 @@ export async function searchConversations(
 
     for (const record of data) {
       const conversation = record.payload as Conversation;
-      
+
       // Check if title matches
-      const titleMatch = conversation.title?.toLowerCase().includes(searchLower);
-      
+      const titleMatch = conversation.title
+        ?.toLowerCase()
+        .includes(searchLower);
+
       // Check if summary matches
-      const summaryMatch = conversation.summary?.toLowerCase().includes(searchLower);
-      
+      const summaryMatch = conversation.summary
+        ?.toLowerCase()
+        .includes(searchLower);
+
       // Check if any message content matches
-      const messageMatch = conversation.messages.some(m =>
-        m.content.toLowerCase().includes(searchLower)
+      const messageMatch = conversation.messages.some((m) =>
+        m.content.toLowerCase().includes(searchLower),
       );
 
       if (titleMatch || summaryMatch || messageMatch) {
@@ -266,8 +270,8 @@ export async function searchConversations(
         if (messageMatch) relevance += 0.2;
 
         // Find matched content snippet
-        const matchedMessage = conversation.messages.find(m =>
-          m.content.toLowerCase().includes(searchLower)
+        const matchedMessage = conversation.messages.find((m) =>
+          m.content.toLowerCase().includes(searchLower),
         );
 
         results.push({
@@ -288,40 +292,42 @@ export async function searchConversations(
     // Sort by relevance
     return results.sort((a, b) => (b.relevance || 0) - (a.relevance || 0));
   } catch (error) {
-    console.error('[Memory] Error searching conversations:', error);
+    console.error("[Memory] Error searching conversations:", error);
     return [];
   }
 }
 
 /**
  * Summarize old conversation messages for context window management
- * 
+ *
  * Uses first 10 messages to create concise summary
- * 
+ *
  * @param conversation - Conversation to summarize
  * @returns Summary text
  */
-async function summarizeConversation(conversation: Conversation): Promise<string> {
+async function summarizeConversation(
+  conversation: Conversation,
+): Promise<string> {
   // Extract first 10 messages for summary
   const messagesToSummarize = conversation.messages.slice(0, 10);
 
   // Simple extraction of key topics
   const userQueries = messagesToSummarize
-    .filter(m => m.role === 'user')
-    .map(m => m.content);
+    .filter((m) => m.role === "user")
+    .map((m) => m.content);
 
   const assistantResponses = messagesToSummarize
-    .filter(m => m.role === 'assistant')
-    .map(m => m.content.slice(0, 100));
+    .filter((m) => m.role === "assistant")
+    .map((m) => m.content.slice(0, 100));
 
-  const summary = `Conversation about: ${userQueries.join(', ')}. Key responses: ${assistantResponses.join(' | ')}`;
+  const summary = `Conversation about: ${userQueries.join(", ")}. Key responses: ${assistantResponses.join(" | ")}`;
 
   return summary.slice(0, 500); // Limit summary length
 }
 
 /**
  * Delete conversation
- * 
+ *
  * @param conversationId - Conversation to delete
  * @param userId - User ID (for ownership verification)
  * @param supabaseUrl - Supabase project URL
@@ -332,26 +338,23 @@ export async function deleteConversation(
   conversationId: string,
   userId: string,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<boolean> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     // Soft delete: mark as deleted in metadata
-    const { error } = await supabase
-      .from('decision_log')
-      .insert({
-        scope: 'ceo_conversation',
-        actor: userId,
-        action: 'conversation.delete',
-        external_ref: conversationId,
-        payload: { deleted: true, deletedAt: new Date().toISOString() },
-      });
+    const { error } = await supabase.from("decision_log").insert({
+      scope: "ceo_conversation",
+      actor: userId,
+      action: "conversation.delete",
+      external_ref: conversationId,
+      payload: { deleted: true, deletedAt: new Date().toISOString() },
+    });
 
     return !error;
   } catch (error) {
-    console.error('[Memory] Error deleting conversation:', error);
+    console.error("[Memory] Error deleting conversation:", error);
     return false;
   }
 }
-

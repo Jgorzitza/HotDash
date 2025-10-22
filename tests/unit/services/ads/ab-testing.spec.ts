@@ -32,7 +32,10 @@ import type { AdCopy } from "~/services/ads/types";
 function createMockAdCopy(overrides: Partial<AdCopy> = {}): AdCopy {
   return {
     headlines: ["Test Headline 1", "Test Headline 2", "Test Headline 3"],
-    descriptions: ["Test description 1 with compelling copy", "Test description 2 with more details"],
+    descriptions: [
+      "Test description 1 with compelling copy",
+      "Test description 2 with more details",
+    ],
     finalUrl: "https://example.com/product",
     ...overrides,
   };
@@ -40,8 +43,14 @@ function createMockAdCopy(overrides: Partial<AdCopy> = {}): AdCopy {
 
 describe("createABTest", () => {
   it("should create A/B test with 2 variants", () => {
-    const variant1 = { name: "Variant A", copy: createMockAdCopy({ headlines: ["Variant A Headline"] }) };
-    const variant2 = { name: "Variant B", copy: createMockAdCopy({ headlines: ["Variant B Headline"] }) };
+    const variant1 = {
+      name: "Variant A",
+      copy: createMockAdCopy({ headlines: ["Variant A Headline"] }),
+    };
+    const variant2 = {
+      name: "Variant B",
+      copy: createMockAdCopy({ headlines: ["Variant B Headline"] }),
+    };
 
     const test = createABTest(
       "campaign_123",
@@ -49,7 +58,7 @@ describe("createABTest", () => {
       "Headline Test",
       "Testing different headlines",
       [variant1, variant2],
-      "test_user"
+      "test_user",
     );
 
     expect(test.campaignId).toBe("campaign_123");
@@ -65,9 +74,18 @@ describe("createABTest", () => {
 
   it("should create A/B test with 3 variants", () => {
     const variants = [
-      { name: "Variant A", copy: createMockAdCopy({ headlines: ["Variant A"] }) },
-      { name: "Variant B", copy: createMockAdCopy({ headlines: ["Variant B"] }) },
-      { name: "Variant C", copy: createMockAdCopy({ headlines: ["Variant C"] }) },
+      {
+        name: "Variant A",
+        copy: createMockAdCopy({ headlines: ["Variant A"] }),
+      },
+      {
+        name: "Variant B",
+        copy: createMockAdCopy({ headlines: ["Variant B"] }),
+      },
+      {
+        name: "Variant C",
+        copy: createMockAdCopy({ headlines: ["Variant C"] }),
+      },
     ];
 
     const test = createABTest(
@@ -76,7 +94,7 @@ describe("createABTest", () => {
       "Three Way Test",
       "Testing three variants",
       variants,
-      "test_user"
+      "test_user",
     );
 
     expect(test.variants).toHaveLength(3);
@@ -95,7 +113,7 @@ describe("createABTest", () => {
         "Invalid Test",
         "Only one variant",
         [variant1],
-        "test_user"
+        "test_user",
       );
     }).toThrow("A/B test must have 2-3 variants");
   });
@@ -115,7 +133,7 @@ describe("createABTest", () => {
         "Invalid Test",
         "Too many variants",
         variants,
-        "test_user"
+        "test_user",
       );
     }).toThrow("A/B test must have 2-3 variants");
   });
@@ -123,7 +141,7 @@ describe("createABTest", () => {
   it("should initialize variants with zero metrics", () => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
 
     const test = createABTest(
@@ -132,7 +150,7 @@ describe("createABTest", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
 
     test.variants.forEach((variant) => {
@@ -147,7 +165,7 @@ describe("createABTest", () => {
   it("should store test in memory and retrieve it", () => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
 
     const test = createABTest(
@@ -156,7 +174,7 @@ describe("createABTest", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
 
     const retrieved = getTest(test.id);
@@ -174,7 +192,7 @@ describe("updateVariantPerformance", () => {
   beforeEach(() => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
     const test = createABTest(
       "campaign_123",
@@ -182,7 +200,7 @@ describe("updateVariantPerformance", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
     testId = test.id;
     variantId = test.variants[0].id;
@@ -397,7 +415,7 @@ describe("determineWinner", () => {
   beforeEach(() => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
     const test = createABTest(
       "campaign_123",
@@ -405,7 +423,7 @@ describe("determineWinner", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
     testId = test.id;
 
@@ -447,7 +465,7 @@ describe("determineWinner", () => {
   it("should indicate non-significant result when variants are similar", () => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
     const test = createABTest(
       "campaign_123",
@@ -455,7 +473,7 @@ describe("determineWinner", () => {
       "Similar Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
 
     // Update both variants with identical performance
@@ -510,7 +528,7 @@ describe("completeTest", () => {
   beforeEach(() => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
     const test = createABTest(
       "campaign_123",
@@ -518,7 +536,7 @@ describe("completeTest", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
     testId = test.id;
 
@@ -564,7 +582,9 @@ describe("completeTest", () => {
     const completed = completeTest(testId);
     const test = getTest(testId);
 
-    const winningVariant = test?.variants.find((v) => v.id === completed.test.winnerId);
+    const winningVariant = test?.variants.find(
+      (v) => v.id === completed.test.winnerId,
+    );
 
     expect(winningVariant?.conversions).toBe(150); // Higher conversion variant
   });
@@ -573,7 +593,9 @@ describe("completeTest", () => {
     const completed = completeTest(testId);
 
     expect(completed.test.completedAt).toBeDefined();
-    expect(new Date(completed.test.completedAt!).getTime()).toBeLessThanOrEqual(Date.now());
+    expect(new Date(completed.test.completedAt!).getTime()).toBeLessThanOrEqual(
+      Date.now(),
+    );
   });
 });
 
@@ -583,7 +605,7 @@ describe("cancelTest", () => {
   beforeEach(() => {
     const variants = [
       { name: "Variant A", copy: createMockAdCopy() },
-      { name: "Variant B", copy: createMockAdCopy() }
+      { name: "Variant B", copy: createMockAdCopy() },
     ];
     const test = createABTest(
       "campaign_123",
@@ -591,7 +613,7 @@ describe("cancelTest", () => {
       "Test",
       "Description",
       variants,
-      "test_user"
+      "test_user",
     );
     testId = test.id;
   });
@@ -611,4 +633,3 @@ describe("cancelTest", () => {
 });
 
 // getAllTests is not exported - removed tests for internal function
-

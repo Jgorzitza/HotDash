@@ -2,7 +2,7 @@
 
 **Version**: 1.0  
 **Last Updated**: 2025-10-21  
-**Owner**: Support Agent  
+**Owner**: Support Agent
 
 ---
 
@@ -28,22 +28,27 @@ Customer Message → Chatwoot → Webhook → Agent SDK → AI Draft (Private No
 ## Approval Workflow (HITL)
 
 ### Step 1: AI Drafts Response
+
 - AI analyzes conversation context
 - AI drafts response as Chatwoot Private Note
 - Private Note appears with gray background
 
 ### Step 2: Human Reviews
+
 View AI draft in Chatwoot conversation thread
 
 ### Step 3: Human Decision
+
 - **Approve (80%)**: Copy draft, minor edits, send
 - **Edit (15%)**: Copy draft, substantial edits, send
 - **Reject (5%)**: Write completely new response
 
 ### Step 4: Grade AI Response (MANDATORY)
+
 Navigate to Hot Dash App → Settings → Integrations → Chatwoot
 
 Grade on 3 dimensions (1-5 scale):
+
 - **Tone**: Empathy, professionalism, appropriate for situation
 - **Accuracy**: Facts correct, complete answer, no misinformation
 - **Policy**: Follows return/refund/warranty policies correctly
@@ -53,24 +58,29 @@ Grade on 3 dimensions (1-5 scale):
 ## Grading Guidelines
 
 ### 5/5 = Perfect
+
 - **Tone 5**: Matches customer emotion, empathetic, professional
 - **Accuracy 5**: All facts correct, complete answer
 - **Policy 5**: Follows all policies perfectly
 
 ### 1/5 = Unusable
+
 - **Tone 1**: Robotic, dismissive, inappropriate
 - **Accuracy 1**: Wrong information, misunderstood problem
 - **Policy 1**: Violated policy, unauthorized promise
 
 ### Example High Grade (5/5/5)
+
 Customer: "My oil filter leaked and damaged my engine!"
 
 AI Draft apologizes, offers full refund, replacement, and engine repair assessment. Empathetic, accurate about warranty, follows defect policy.
 
 ### Example Low Grade (2/2/1)
+
 Customer: "My order is 3 days late!"
 
 AI Draft: "Please be patient. Shipping takes time."
+
 - No tracking info, dismissive tone, violates service standards
 
 ---
@@ -78,6 +88,7 @@ AI Draft: "Please be patient. Shipping takes time."
 ## Escalation Procedures
 
 ### Automatic Escalation Triggers
+
 1. Legal keywords (chargeback, lawyer, sue, fraud)
 2. SLA breach >30 minutes
 3. VIP customer (bulk order, dealer)
@@ -86,8 +97,9 @@ AI Draft: "Please be patient. Shipping takes time."
 6. Abusive/threatening language
 
 ### How to Escalate
+
 1. **Tag in Chatwoot**: Add tags `escalated`, `needs_ceo`, `urgent`
-2. **Create Private Note**: 
+2. **Create Private Note**:
    ```
    ESCALATION REQUIRED
    Customer: [Name]
@@ -104,6 +116,7 @@ AI Draft: "Please be patient. Shipping takes time."
 ## Response Templates
 
 ### Order Status
+
 ```
 Hi [Customer],
 
@@ -120,6 +133,7 @@ Best regards,
 ```
 
 ### Refund Request
+
 ```
 Hi [Customer],
 
@@ -132,6 +146,7 @@ Thanks for your understanding!
 ```
 
 ### Apology
+
 ```
 Hi [Customer],
 
@@ -150,12 +165,14 @@ Again, my apologies.
 ## SLA Compliance
 
 ### Targets
+
 - **Email**: <2 hours (business hours)
 - **Live Chat**: <5 minutes
 - **Resolution**: <4 hours (simple), <48 hours (complex)
 - **Compliance Rate**: >95%
 
 ### SLA Breach Protocol
+
 1. Acknowledge immediately
 2. Investigate why it breached
 3. Respond with full solution
@@ -167,16 +184,19 @@ Again, my apologies.
 ## Channel Management
 
 **Email (customer.support@hotrodan.com)**:
+
 - Response time: 2-4 hours
 - Use full signatures, professional formatting
 - Include order numbers, attach files
 
 **Live Chat (Website Widget)**:
-- Response time: <5 minutes  
+
+- Response time: <5 minutes
 - Quick acknowledgment, shorter sentences
 - Use emojis sparingly, keep friendly
 
 **SMS (Future)**:
+
 - Response time: <10 minutes
 - Ultra-brief, use short URLs
 - Consider 160 character limits
@@ -186,6 +206,7 @@ Again, my apologies.
 ## Common Scenarios
 
 ### Wrong Item Shipped
+
 1. Apologize
 2. Verify order vs shipped
 3. Ship correct item (expedited)
@@ -193,6 +214,7 @@ Again, my apologies.
 5. 15-20% refund for inconvenience
 
 ### Delayed Shipment
+
 1. Empathize
 2. Check tracking
 3. Contact carrier if needed
@@ -200,6 +222,7 @@ Again, my apologies.
 5. Follow up until delivered
 
 ### Angry Customer
+
 1. Don't take personally
 2. Acknowledge emotion: "I can hear how frustrated you are"
 3. Don't argue or say "calm down"
@@ -207,6 +230,7 @@ Again, my apologies.
 5. Expedite, compensate, escalate if needed
 
 ### VIP/Bulk Order
+
 1. Recognize business customer
 2. Gather info (business name, volume)
 3. Tag as "vip" and "bulk_order"
@@ -218,18 +242,21 @@ Again, my apologies.
 ## Daily Workflow
 
 ### Morning (15 min)
+
 - Login to Chatwoot
 - Check unread count (target: <10)
 - Review SLA breaches
 - Set status to "Available"
 
 ### During Day (Every 30 min)
+
 - Monitor Chatwoot for new conversations
 - Review AI-drafted Private Notes
 - Approve/edit/reject responses
 - Grade all AI suggestions
 
 ### Evening (10 min)
+
 - Close resolved conversations
 - Document open issues
 - Update feedback file
@@ -240,17 +267,20 @@ Again, my apologies.
 ## Troubleshooting
 
 ### AI Draft Not Appearing
+
 - Check Agent SDK status
 - Manually respond (don't wait)
 - Report in feedback
 
 ### Chatwoot Login Failed
+
 - Verify credentials: vault/occ/chatwoot/super_admin_staging.env
 - Clear browser cache
 - Try incognito mode
 - Escalate to Manager
 
 ### SLA Already Breached
+
 - Respond immediately (even if late)
 - Acknowledge: "Thanks for your patience..."
 - Provide full solution
@@ -268,6 +298,7 @@ Again, my apologies.
 **Response Times**: Email <2h, Chat <5min, Compliance >95%
 
 **Resources**:
+
 - Chatwoot: https://hotdash-chatwoot.fly.dev
 - Credentials: vault/occ/chatwoot/
 - Feedback: feedback/support/YYYY-MM-DD.md

@@ -55,6 +55,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 ## Growth Engine — Agent Orchestration & Security
 
 **Agent Model** (Interactive-Only):
+
 - **Customer-Front Agent**: First-line CX triage → `transfer_to_accounts` or `transfer_to_storefront` sub-agents
 - **CEO-Front Agent**: Business intelligence queries → read-only Storefront MCP + Action Queue (no writes, no Customer Accounts MCP)
 - **Sub-Agents**: Accounts (order lookups, refunds) + Storefront (inventory, products, collections) — **own** the request, return structured result
@@ -62,6 +63,7 @@ Deliver a **trustworthy, operator‑first control center embedded in Shopify Adm
 - **NO autonomous loops**: All dev agents are interactive (invoked by operator), no background polling
 
 **Handoff Pattern** (Tool-based, One Owner):
+
 ```
 Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_storefront
          → Sub-agent executes (Shopify Admin GraphQL, queries only)
@@ -71,12 +73,14 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 ```
 
 **Security Model**:
+
 - **PII Broker** (redaction layer): Public reply = NO full email/phone/address; PII Card = operator-only (full details)
 - **ABAC** (Attribute-Based Access Control): Roles (operator, ceo_agent, customer_agent, system) with scoped permissions
 - **Store Switch Safety**: `fm8vte-ex.myshopify.com` (canonical) parameterized via env (no literals)
 - **Dev MCP Ban**: Dev MCP servers (Shopify Dev, Context7, etc.) ONLY in development/staging — **production builds MUST FAIL** if Dev MCP imports detected in runtime bundles
 
 **Evidence & Heartbeat** (Merge Blockers):
+
 - **MCP Evidence JSONL** (mandatory for code changes): `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl`
   - Format: `{"tool":"storefront|context7|…","doc_ref":"<url>","request_id":"<id>","timestamp":"ISO","purpose":"<why>"}`
 - **PR Template**: Must include "MCP Evidence:" section listing JSONL paths
@@ -84,18 +88,21 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 - **CI Guards**: `guard-mcp` (evidence present) + `idle-guard` (heartbeat fresh) + `dev-mcp-ban` (no Dev MCP in prod) — **REQUIRED on main**
 
 **Action Queue Contract**:
+
 - **Input**: Agent populates `action_queue` with: type, evidence_url, expected_revenue, confidence, ease, affected_entities
 - **Ranking**: `score = expected_revenue × confidence × ease` (top 10 displayed)
 - **Approval**: Operator reviews → approve/reject → action_id stored with grade (1-5) + edits
 - **Attribution**: GA4 custom dimension `hd_action_key` tracks ROI (7d/14d/28d windows) → re-ranks future actions based on realized impact
 
 **Telemetry**:
+
 - **GA4 Property**: 339826228 (event tracking, custom dimensions, conversions)
 - **Search Console API**: Direct queries (no BigQuery cost) via `app/lib/seo/search-console.ts` — stored in Supabase (`seo_search_console_metrics`, `seo_search_queries`, `seo_landing_pages`) for historical trends
 - **Bing Webmaster**: Verified domain
 - **Action Attribution**: `hd_action_key` in GA4 (event scope) links actions → revenue
 
 **Agent Metrics**:
+
 - **Customer Agent**: Draft → HITL approval rate, avg grades (tone/accuracy/policy), response time
 - **CEO Agent**: Query success rate, Action Queue ranking accuracy (predicted vs realized ROI)
 - **Specialist Agents**: Task completion time, evidence quality score, escalation rate
@@ -151,25 +158,29 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 3. **Did CEO explicitly request this?** → NO → Don't create
 
 ### Forbidden Patterns
+
 - ❌ `STATUS_*.md`, `URGENT_*.md`, `FIX_*.md`, `P0_*.md`
-- ❌ `*_CHECKLIST.md`, `DEPLOY_*.md`, `*_PLAN.md`  
+- ❌ `*_CHECKLIST.md`, `DEPLOY_*.md`, `*_PLAN.md`
 - ❌ `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`
 - ❌ Any root .md except 6 allowed (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 
 ### Use Database for Feedback + Direction (2025-10-22)
 
 **Feedback** (Progress/Status):
+
 - Report → `logDecision()` with `status`, `progressPct`, `taskId`
 - IMMEDIATE on status changes (completion, blocked, unblocked)
 - Manager queries in < 10 seconds (vs 30-60 min reading markdown)
 
 **Direction** (Task Assignments):
+
 - Assign → `assignTask()` with taskId, agent, acceptance criteria, allowed paths, dependencies
 - Query → `getMyTasks(agent)` - instant visibility, no git pull
 - Update → 10+ times/day when blockers clear (instant, no commits needed)
 - Agents query next available task in real-time, switch when blocked
 
 **Why Database for Both**:
+
 - Manager updates direction **hourly** when blockers clear
 - Markdown + git = bottleneck (1-4 hours/update = agents idle)
 - Database = instant (< 1 min/update, agents see immediately)
@@ -256,12 +267,14 @@ MCP Tools Used:
 **POLICY** (`docs/DESIGN_PROTECTION_POLICY.md` - MANDATORY):
 
 **PROTECTED DIRECTORIES** (Never archive or delete without CEO approval):
+
 - `/docs/design/**` - ALL design files
-- `/docs/specs/**` - ALL specification files  
+- `/docs/specs/**` - ALL specification files
 - `/docs/runbooks/**` - ALL operational runbooks
 - `/docs/directions/**` - ALL agent direction files
 
 **RULES**:
+
 1. Design files are **APPROVED** unless marked `DRAFT-`
 2. **NEVER archive** without CEO explicit written approval
 3. Monthly audit only (with CEO approval)
@@ -270,6 +283,7 @@ MCP Tools Used:
 **ENFORCEMENT**: Manager accountability, immediate rollback if violated.
 
 **COMPLETE VISION**: See `COMPLETE_VISION_OVERVIEW.md` (root directory) for full 38-task feature manifest.
+
 - 57 design files in `/docs/design/` (500KB total)
 - Complete operator experience documented
 - **EXECUTION PLAN**: See `docs/manager/PROJECT_PLAN.md` (Option A Execution Plan section) for 13-phase build plan
@@ -293,4 +307,3 @@ MCP Tools Used:
 8. Metrics updated if behavior changed; audit entry present.
 9. **NO @remix-run imports** - React Router 7 only.
 10. **Accessibility**: WCAG 2.2 AA compliance verified (keyboard nav, screen readers, color contrast).
-

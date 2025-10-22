@@ -22,7 +22,13 @@ import { appMetrics } from "../../utils/metrics.server";
 // Types
 // ============================================================================
 
-export type SchemaType = "Product" | "Organization" | "WebSite" | "BreadcrumbList" | "FAQPage" | "Unknown";
+export type SchemaType =
+  | "Product"
+  | "Organization"
+  | "WebSite"
+  | "BreadcrumbList"
+  | "FAQPage"
+  | "Unknown";
 
 export interface SchemaValidationIssue {
   type: "error" | "warning" | "info";
@@ -94,16 +100,17 @@ const SCHEMA_REQUIREMENTS = {
  */
 function extractJSONLD(html: string): any[] {
   const schemas: any[] = [];
-  
+
   // Find all script tags with type="application/ld+json"
-  const scriptRegex = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  const scriptRegex =
+    /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
   let match;
 
   while ((match = scriptRegex.exec(html)) !== null) {
     try {
       const jsonContent = match[1].trim();
       const parsed = JSON.parse(jsonContent);
-      
+
       // Handle @graph arrays
       if (parsed["@graph"] && Array.isArray(parsed["@graph"])) {
         schemas.push(...parsed["@graph"]);
@@ -145,18 +152,21 @@ function identifySchemaType(schema: any): SchemaType {
  */
 function checkRequiredFields(
   schema: any,
-  schemaType: SchemaType
+  schemaType: SchemaType,
 ): SchemaValidationIssue[] {
   const issues: SchemaValidationIssue[] = [];
-  
+
   if (schemaType === "Unknown") return issues;
 
   const requirements = SCHEMA_REQUIREMENTS[schemaType];
   if (!requirements) return issues;
 
   // Check required fields
-  requirements.required.forEach(field => {
-    if (!schema[field] || (typeof schema[field] === "string" && schema[field].trim() === "")) {
+  requirements.required.forEach((field) => {
+    if (
+      !schema[field] ||
+      (typeof schema[field] === "string" && schema[field].trim() === "")
+    ) {
       issues.push({
         type: "error",
         field,
@@ -167,7 +177,7 @@ function checkRequiredFields(
   });
 
   // Check recommended fields
-  requirements.recommended.forEach(field => {
+  requirements.recommended.forEach((field) => {
     if (!schema[field]) {
       issues.push({
         type: "warning",
@@ -189,11 +199,13 @@ function validateProductSchema(schema: any): SchemaValidationIssue[] {
 
   // Check offers
   if (schema.offers) {
-    const offers = Array.isArray(schema.offers) ? schema.offers : [schema.offers];
+    const offers = Array.isArray(schema.offers)
+      ? schema.offers
+      : [schema.offers];
     const offerRequired = SCHEMA_REQUIREMENTS.Product.offerRequired;
 
     offers.forEach((offer, index) => {
-      offerRequired.forEach(field => {
+      offerRequired.forEach((field) => {
         if (!offer[field]) {
           issues.push({
             type: "error",
@@ -224,14 +236,15 @@ function validateProductSchema(schema: any): SchemaValidationIssue[] {
           "https://schema.org/Discontinued",
           "https://schema.org/LimitedAvailability",
         ];
-        
+
         if (!validAvailability.includes(offer.availability)) {
           issues.push({
             type: "warning",
             field: `offers[${index}].availability`,
             message: "Availability should use schema.org URL format",
             currentValue: offer.availability,
-            recommendation: "Use https://schema.org/InStock or other valid schema.org availability values",
+            recommendation:
+              "Use https://schema.org/InStock or other valid schema.org availability values",
           });
         }
       }
@@ -262,7 +275,8 @@ function validateProductSchema(schema: any): SchemaValidationIssue[] {
         type: "error",
         field: "aggregateRating",
         message: "aggregateRating must include ratingValue and reviewCount",
-        recommendation: "Add both ratingValue and reviewCount to aggregateRating",
+        recommendation:
+          "Add both ratingValue and reviewCount to aggregateRating",
       });
     }
 
@@ -301,7 +315,11 @@ function validateOrganizationSchema(schema: any): SchemaValidationIssue[] {
   }
 
   // Check logo format
-  if (schema.logo && typeof schema.logo === "string" && !schema.logo.startsWith("http")) {
+  if (
+    schema.logo &&
+    typeof schema.logo === "string" &&
+    !schema.logo.startsWith("http")
+  ) {
     issues.push({
       type: "warning",
       field: "logo",
@@ -342,10 +360,11 @@ function validateSchema(schema: any, url: string): SchemaValidationResult {
     issues.push(...validateOrganizationSchema(schema));
   }
 
-  const hasErrors = issues.some(i => i.type === "error");
-  const hasRequiredFields = issues.filter(i => 
-    i.type === "error" && i.message.includes("Required field")
-  ).length === 0;
+  const hasErrors = issues.some((i) => i.type === "error");
+  const hasRequiredFields =
+    issues.filter(
+      (i) => i.type === "error" && i.message.includes("Required field"),
+    ).length === 0;
 
   return {
     url,
@@ -365,7 +384,9 @@ function validateSchema(schema: any, url: string): SchemaValidationResult {
 /**
  * Validate schema markup on a single page
  */
-async function validatePageSchema(url: string): Promise<SchemaValidationResult[]> {
+async function validatePageSchema(
+  url: string,
+): Promise<SchemaValidationResult[]> {
   try {
     const response = await fetch(url, {
       headers: {
@@ -382,44 +403,55 @@ async function validatePageSchema(url: string): Promise<SchemaValidationResult[]
     const schemas = extractJSONLD(html);
 
     if (schemas.length === 0) {
-      return [{
+      return [
+        {
+          url,
+          schemaType: "Unknown",
+          isValid: false,
+          hasRequiredFields: false,
+          issues: [
+            {
+              type: "warning",
+              field: "schema",
+              message: "No JSON-LD schema found on page",
+              recommendation:
+                "Add structured data markup to improve search visibility",
+            },
+          ],
+          schema: null,
+          validatedAt: new Date().toISOString(),
+        },
+      ];
+    }
+
+    return schemas.map((schema) => validateSchema(schema, url));
+  } catch (error: any) {
+    return [
+      {
         url,
         schemaType: "Unknown",
         isValid: false,
         hasRequiredFields: false,
-        issues: [{
-          type: "warning",
-          field: "schema",
-          message: "No JSON-LD schema found on page",
-          recommendation: "Add structured data markup to improve search visibility",
-        }],
+        issues: [
+          {
+            type: "error",
+            field: "page",
+            message: `Failed to validate schema: ${error.message}`,
+          },
+        ],
         schema: null,
         validatedAt: new Date().toISOString(),
-      }];
-    }
-
-    return schemas.map(schema => validateSchema(schema, url));
-  } catch (error: any) {
-    return [{
-      url,
-      schemaType: "Unknown",
-      isValid: false,
-      hasRequiredFields: false,
-      issues: [{
-        type: "error",
-        field: "page",
-        message: `Failed to validate schema: ${error.message}`,
-      }],
-      schema: null,
-      validatedAt: new Date().toISOString(),
-    }];
+      },
+    ];
   }
 }
 
 /**
  * Validate schema markup across multiple pages
  */
-export async function validateSchemaMarkup(urls: string[]): Promise<SchemaValidationReport> {
+export async function validateSchemaMarkup(
+  urls: string[],
+): Promise<SchemaValidationReport> {
   const startTime = Date.now();
 
   const cacheKey = `seo:schema:${urls.length}:${urls[0]}`;
@@ -438,19 +470,21 @@ export async function validateSchemaMarkup(urls: string[]): Promise<SchemaValida
     for (let i = 0; i < urls.length; i += batchSize) {
       const batch = urls.slice(i, i + batchSize);
       const batchResults = await Promise.all(
-        batch.map(url => validatePageSchema(url))
+        batch.map((url) => validatePageSchema(url)),
       );
       allResults.push(...batchResults.flat());
     }
 
     // Generate summary
-    const pagesWithSchema = allResults.filter(r => r.schemaType !== "Unknown").length;
-    const pagesWithValidSchema = allResults.filter(r => r.isValid).length;
-    const pagesWithErrors = allResults.filter(r => 
-      r.issues.some(i => i.type === "error")
+    const pagesWithSchema = allResults.filter(
+      (r) => r.schemaType !== "Unknown",
     ).length;
-    const pagesWithWarnings = allResults.filter(r =>
-      r.issues.some(i => i.type === "warning")
+    const pagesWithValidSchema = allResults.filter((r) => r.isValid).length;
+    const pagesWithErrors = allResults.filter((r) =>
+      r.issues.some((i) => i.type === "error"),
+    ).length;
+    const pagesWithWarnings = allResults.filter((r) =>
+      r.issues.some((i) => i.type === "warning"),
     ).length;
 
     const schemaTypeDistribution: Record<SchemaType, number> = {
@@ -462,14 +496,17 @@ export async function validateSchemaMarkup(urls: string[]): Promise<SchemaValida
       Unknown: 0,
     };
 
-    allResults.forEach(result => {
+    allResults.forEach((result) => {
       schemaTypeDistribution[result.schemaType]++;
     });
 
     // Get top issues (most common)
-    const issueMap = new Map<string, { issue: SchemaValidationIssue; count: number }>();
-    allResults.forEach(result => {
-      result.issues.forEach(issue => {
+    const issueMap = new Map<
+      string,
+      { issue: SchemaValidationIssue; count: number }
+    >();
+    allResults.forEach((result) => {
+      result.issues.forEach((issue) => {
         const key = `${issue.type}:${issue.field}:${issue.message}`;
         if (issueMap.has(key)) {
           issueMap.get(key)!.count++;
@@ -482,7 +519,7 @@ export async function validateSchemaMarkup(urls: string[]): Promise<SchemaValida
     const topIssues = Array.from(issueMap.values())
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
-      .map(item => item.issue);
+      .map((item) => item.issue);
 
     const report: SchemaValidationReport = {
       summary: {
@@ -511,4 +548,3 @@ export async function validateSchemaMarkup(urls: string[]): Promise<SchemaValida
     throw error;
   }
 }
-

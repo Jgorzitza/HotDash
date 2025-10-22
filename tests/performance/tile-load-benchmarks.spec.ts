@@ -106,7 +106,9 @@ async function getCoreWebVitals(page: any) {
  * Dashboard Load Performance Tests
  */
 test.describe("Dashboard Load Performance", () => {
-  test("should load dashboard within 3 seconds (P95 target)", async ({ page }) => {
+  test("should load dashboard within 3 seconds (P95 target)", async ({
+    page,
+  }) => {
     const loadTime = await measurePageLoad(page, `${DASHBOARD_PATH}?mock=1`);
 
     console.log(`\n📊 Dashboard load time: ${loadTime}ms`);
@@ -165,7 +167,10 @@ test.describe("Settings Page Load Performance", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Wait for first tab content to be visible
-    await page.locator('[role="tabpanel"]').first().waitFor({ state: "visible" });
+    await page
+      .locator('[role="tabpanel"]')
+      .first()
+      .waitFor({ state: "visible" });
 
     const renderTime = Date.now() - startTime;
 
@@ -183,7 +188,9 @@ test.describe("Tile Reorder Performance", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Dashboard tab
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     // Measure drag start response time
@@ -194,9 +201,11 @@ test.describe("Tile Reorder Performance", () => {
 
     // Simulate drag operation (if drag/drop is implemented)
     // For now, we'll measure the Edit Tile Order button response
-    const editButton = page.locator("button", { hasText: /edit.*order|reorder/i });
+    const editButton = page.locator("button", {
+      hasText: /edit.*order|reorder/i,
+    });
 
-    if (await editButton.count() > 0) {
+    if ((await editButton.count()) > 0) {
       await editButton.click();
 
       const responseTime = await page.evaluate(() => {
@@ -217,19 +226,23 @@ test.describe("Tile Reorder Performance", () => {
   test("should handle rapid tile reordering without lag", async ({ page }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     // Open tile reorder modal
-    const editButton = page.locator("button", { hasText: /edit.*order|reorder/i });
+    const editButton = page.locator("button", {
+      hasText: /edit.*order|reorder/i,
+    });
 
-    if (await editButton.count() > 0) {
+    if ((await editButton.count()) > 0) {
       await editButton.click();
 
       // Measure rapid button clicks (up/down arrows)
       const upButton = page.locator("button", { hasText: /up|↑/i }).first();
 
-      if (await upButton.count() > 0) {
+      if ((await upButton.count()) > 0) {
         const times: number[] = [];
 
         // Click 10 times rapidly
@@ -263,14 +276,16 @@ test.describe("Theme Switch Performance", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Appearance tab
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
     // Find theme radio buttons
     const lightTheme = page.locator('[type="radio"]', { hasText: /light/i });
     const darkTheme = page.locator('[type="radio"]', { hasText: /dark/i });
 
-    if (await lightTheme.count() > 0) {
+    if ((await lightTheme.count()) > 0) {
       // Measure theme switch time
       const switchTime = await page.evaluate(async () => {
         performance.mark("theme-switch-start");
@@ -279,7 +294,11 @@ test.describe("Theme Switch Performance", () => {
         await new Promise((resolve) => setTimeout(resolve, 10));
 
         performance.mark("theme-switch-end");
-        performance.measure("theme-switch", "theme-switch-start", "theme-switch-end");
+        performance.measure(
+          "theme-switch",
+          "theme-switch-start",
+          "theme-switch-end",
+        );
 
         const measure = performance.getEntriesByName("theme-switch")[0];
         return measure.duration;
@@ -293,16 +312,20 @@ test.describe("Theme Switch Performance", () => {
     }
   });
 
-  test("should handle rapid theme switching without degradation", async ({ page }) => {
+  test("should handle rapid theme switching without degradation", async ({
+    page,
+  }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
     const lightTheme = page.locator('[type="radio"]', { hasText: /light/i });
     const darkTheme = page.locator('[type="radio"]', { hasText: /dark/i });
 
-    if (await lightTheme.count() > 0 && await darkTheme.count() > 0) {
+    if ((await lightTheme.count()) > 0 && (await darkTheme.count()) > 0) {
       const times: number[] = [];
 
       // Switch themes 10 times rapidly
@@ -326,10 +349,14 @@ test.describe("Theme Switch Performance", () => {
     }
   });
 
-  test("should not cause layout shift during theme change (CLS < 0.1)", async ({ page }) => {
+  test("should not cause layout shift during theme change (CLS < 0.1)", async ({
+    page,
+  }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
     // Measure CLS before and after theme change
@@ -349,7 +376,7 @@ test.describe("Theme Switch Performance", () => {
 
     // Switch theme
     const darkTheme = page.locator('[type="radio"]', { hasText: /dark/i });
-    if (await darkTheme.count() > 0) {
+    if ((await darkTheme.count()) > 0) {
       await darkTheme.check();
       await page.waitForTimeout(500);
 
@@ -382,16 +409,18 @@ test.describe("Preference Save Performance", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Make a change
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     const toggle = page.locator('[role="switch"]').first();
-    if (await toggle.count() > 0) {
+    if ((await toggle.count()) > 0) {
       await toggle.click();
 
       // Measure save time
       const saveButton = page.locator("button", { hasText: /save/i }).first();
-      if (await saveButton.count() > 0) {
+      if ((await saveButton.count()) > 0) {
         const startTime = Date.now();
         await saveButton.click();
 
@@ -441,7 +470,9 @@ test.describe("Modal Open Performance", () => {
  * Memory Leak Detection Tests
  */
 test.describe("Memory Leak Prevention", () => {
-  test("should not leak memory on repeated settings page visits", async ({ page }) => {
+  test("should not leak memory on repeated settings page visits", async ({
+    page,
+  }) => {
     // Visit settings page 20 times
     for (let i = 0; i < 20; i++) {
       await page.goto(`${SETTINGS_PATH}?mock=1`);
@@ -464,7 +495,9 @@ test.describe("Memory Leak Prevention", () => {
       return (performance as any).memory?.usedJSHeapSize || 0;
     });
 
-    console.log(`\n📊 JS Heap Size after 20 visits: ${(heapSize / 1024 / 1024).toFixed(2)} MB`);
+    console.log(
+      `\n📊 JS Heap Size after 20 visits: ${(heapSize / 1024 / 1024).toFixed(2)} MB`,
+    );
 
     // Heap should be reasonable (< 100MB for this test)
     expect(heapSize).toBeLessThan(100 * 1024 * 1024);
@@ -482,7 +515,10 @@ test.describe("Performance Regression Baseline", () => {
     const metrics: any = {};
 
     // Dashboard load
-    const dashboardLoad = await measurePageLoad(page, `${DASHBOARD_PATH}?mock=1`);
+    const dashboardLoad = await measurePageLoad(
+      page,
+      `${DASHBOARD_PATH}?mock=1`,
+    );
     metrics.dashboardLoad = dashboardLoad;
 
     // Settings load
@@ -506,8 +542,12 @@ test.describe("Performance Regression Baseline", () => {
     console.log(`   CLS: ${metrics.CLS}`);
 
     // Verify all metrics meet targets
-    expect(metrics.dashboardLoad).toBeLessThan(PERFORMANCE_TARGETS.DASHBOARD_LOAD);
-    expect(metrics.settingsLoad).toBeLessThan(PERFORMANCE_TARGETS.SETTINGS_LOAD);
+    expect(metrics.dashboardLoad).toBeLessThan(
+      PERFORMANCE_TARGETS.DASHBOARD_LOAD,
+    );
+    expect(metrics.settingsLoad).toBeLessThan(
+      PERFORMANCE_TARGETS.SETTINGS_LOAD,
+    );
     expect(metrics.LCP).toBeLessThan(2500);
     expect(metrics.CLS).toBeLessThan(0.1);
   });

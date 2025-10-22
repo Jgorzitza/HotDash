@@ -9,11 +9,13 @@
 ## Problem
 
 Shopify app currently points to **dead Cloudflare tunnel**:
+
 ```
 https://physiology-spoken-magnificent-much.trycloudflare.com/
 ```
 
 **Should point to**:
+
 ```
 https://hotdash-staging.fly.dev
 ```
@@ -30,11 +32,13 @@ https://hotdash-staging.fly.dev
 4. **Update** these fields:
 
    **App URL**:
+
    ```
    https://hotdash-staging.fly.dev
    ```
 
    **Allowed redirection URLs** (add all):
+
    ```
    https://hotdash-staging.fly.dev/auth/callback
    https://hotdash-staging.fly.dev/auth/shopify/callback
@@ -61,15 +65,19 @@ shopify app config push --config hotdash
 After configuration update:
 
 1. **Test App URL**:
+
    ```bash
    curl -I https://hotdash-staging.fly.dev
    ```
+
    Should return: HTTP 200 ✅
 
 2. **Open in Shopify Admin**:
+
    ```
    https://admin.shopify.com/store/hotroddash/apps/hotdash
    ```
+
    Should load dashboard without DNS error ✅
 
 3. **Verify OAuth**:
@@ -87,6 +95,7 @@ After configuration update:
 ## Files Created
 
 **Configuration File**: `shopify.app.hotdash.toml`
+
 - Application URL: https://hotdash-staging.fly.dev ✅
 - Redirect URLs: All 3 callback patterns ✅
 - Client ID: 4f72376ea61be956c860dd020552124d ✅
@@ -99,7 +108,7 @@ After configuration update:
 ## After Fix Complete
 
 1. **Notify Pilot Agent**: Configuration fixed, proceed with dashboard testing
-2. **Notify QA Agent**: App functional, proceed with UX validation  
+2. **Notify QA Agent**: App functional, proceed with UX validation
 3. **Notify Designer Agent**: App accessible, proceed with visual review
 4. **Update Launch Status**: Remove P0 blocker from launch checklist
 
@@ -126,5 +135,3 @@ After configuration update:
 ---
 
 **Status**: ✅ Configuration file ready for CEO to push to Shopify Partners Dashboard
-
-

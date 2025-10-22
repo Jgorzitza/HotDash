@@ -11,16 +11,16 @@
 - [ ] Log final status via `logDecision()`:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: '<your-agent>',
-    taskId: '{TASK-ID}',
-    status: 'completed',  // or 'in_progress', 'blocked'
-    progressPct: 100,     // or current %
-    action: 'shutdown',
-    rationale: 'Shutdown - {TASK-ID} {status}, {evidence summary}',
-    evidenceUrl: 'artifacts/<agent>/2025-10-22/final-status.md',
+    scope: "build",
+    actor: "<your-agent>",
+    taskId: "{TASK-ID}",
+    status: "completed", // or 'in_progress', 'blocked'
+    progressPct: 100, // or current %
+    action: "shutdown",
+    rationale: "Shutdown - {TASK-ID} {status}, {evidence summary}",
+    evidenceUrl: "artifacts/<agent>/2025-10-22/final-status.md",
     durationActual: 4.5,
-    nextAction: 'Resume testing tomorrow' // or 'Task complete'
+    nextAction: "Resume testing tomorrow", // or 'Task complete'
   });
   ```
 - [ ] (Optional) Ensure markdown feedback file has final notes if needed
@@ -45,21 +45,22 @@
 **PRIMARY: Log shutdown status via `logDecision()`**:
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 await logDecision({
-  scope: 'build',
-  actor: '<your-agent>',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',        // or 'completed' if done
-  progressPct: 75,              // Current progress
-  action: 'shutdown',
-  rationale: 'Shutdown - {TASK-ID} at 75%, tests passing, ready to resume tomorrow',
-  evidenceUrl: 'artifacts/<agent>/2025-10-22/shutdown-status.md',
-  durationActual: 6.5,          // Total hours today
-  nextAction: 'Resume integration testing tomorrow morning',
-  blockerDetails: 'None',       // or describe blockers
-  blockedBy: null               // or dependency task ID
+  scope: "build",
+  actor: "<your-agent>",
+  taskId: "{TASK-ID}",
+  status: "in_progress", // or 'completed' if done
+  progressPct: 75, // Current progress
+  action: "shutdown",
+  rationale:
+    "Shutdown - {TASK-ID} at 75%, tests passing, ready to resume tomorrow",
+  evidenceUrl: "artifacts/<agent>/2025-10-22/shutdown-status.md",
+  durationActual: 6.5, // Total hours today
+  nextAction: "Resume integration testing tomorrow morning",
+  blockerDetails: "None", // or describe blockers
+  blockedBy: null, // or dependency task ID
 });
 ```
 
@@ -67,7 +68,8 @@ await logDecision({
 
 Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append shutdown notes if desired.
 
-**Manager Visibility**: 
+**Manager Visibility**:
+
 - Manager runs `query-agent-status.ts` to see your shutdown status instantly
 - Manager runs `query-blocked-tasks.ts` to see if you're blocked
 - No need to read your entire markdown file

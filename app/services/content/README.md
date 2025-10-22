@@ -13,6 +13,7 @@ Implements CX theme content (size charts, installation guides, dimensions, warra
 The Product agent's CX theme action generator (`app/services/product/cx-theme-actions.ts`) creates Action cards with draft content templates based on customer conversation themes detected by AI-Knowledge agent.
 
 **Product Agent Output** (from Action Queue):
+
 ```typescript
 {
   type: "content",
@@ -28,6 +29,7 @@ The Product agent's CX theme action generator (`app/services/product/cx-theme-ac
 ```
 
 **Content Agent Implementation** (using this service):
+
 ```typescript
 import { applyCXContent } from "~/services/content/cx-content-implementation";
 
@@ -36,20 +38,20 @@ await applyCXContent(
   {
     productId: "gid://shopify/Product/123",
     contentType: "size_chart", // maps from metadata.implementationType
-    content: action.draftCopy // uses Product agent's generated content
+    content: action.draftCopy, // uses Product agent's generated content
   },
-  request
+  request,
 );
 ```
 
 ### Supported Content Types
 
-| Content Type | Metafield Key | Description |
-|--------------|---------------|-------------|
-| `size_chart` | `size_chart` | Size charts with measurements |
-| `dimensions` | `dimensions` | Product dimensions and specifications |
+| Content Type         | Metafield Key        | Description                            |
+| -------------------- | -------------------- | -------------------------------------- |
+| `size_chart`         | `size_chart`         | Size charts with measurements          |
+| `dimensions`         | `dimensions`         | Product dimensions and specifications  |
 | `installation_guide` | `installation_guide` | Step-by-step installation instructions |
-| `warranty` | `warranty` | Warranty terms and coverage details |
+| `warranty`           | `warranty`           | Warranty terms and coverage details    |
 
 ### Metafield Configuration
 
@@ -65,6 +67,7 @@ await applyCXContent(
 Applies CX content to a product.
 
 **Request Body**:
+
 ```json
 {
   "productId": "gid://shopify/Product/123",
@@ -82,6 +85,7 @@ Applies CX content to a product.
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -110,7 +114,7 @@ const result = await applyCXContent(
     contentType: "size_chart",
     content: "**Size Chart**\n\n| Size | Measurements |...",
   },
-  request
+  request,
 );
 
 if (result.success) {
@@ -130,10 +134,10 @@ const results = await applyMultipleCXContents(
     { contentType: "dimensions", content: "Dimensions content" },
     { contentType: "warranty", content: "Warranty content" },
   ],
-  request
+  request,
 );
 
-const successCount = results.filter(r => r.success).length;
+const successCount = results.filter((r) => r.success).length;
 console.log(`Applied ${successCount} of ${results.length} items`);
 ```
 
@@ -146,14 +150,14 @@ import { getCXContent } from "~/services/content/cx-content-implementation";
 const sizeChart = await getCXContent(
   "gid://shopify/Product/123",
   "size_chart",
-  request
+  request,
 );
 
 // Get all CX content for product
 const allContent = await getCXContent(
   "gid://shopify/Product/123",
   null,
-  request
+  request,
 );
 ```
 
@@ -165,7 +169,7 @@ import { removeCXContent } from "~/services/content/cx-content-implementation";
 const result = await removeCXContent(
   "gid://shopify/Product/123",
   "size_chart",
-  request
+  request,
 );
 
 if (result.success) {
@@ -179,7 +183,7 @@ All GraphQL operations are validated using **Shopify Dev MCP**:
 
 ✅ `productUpdate` mutation with metafields  
 ✅ Query operations for retrieving content  
-✅ `metafieldsDelete` mutation for removing content  
+✅ `metafieldsDelete` mutation for removing content
 
 **Validation Evidence**: `artifacts/content/2025-10-21/mcp/cx-content-implementation.jsonl`
 
@@ -188,11 +192,13 @@ All GraphQL operations are validated using **Shopify Dev MCP**:
 **Test File**: `tests/unit/services/content/cx-content-implementation.spec.ts`
 
 Run tests:
+
 ```bash
 npm run test:unit -- cx-content-implementation
 ```
 
 Test coverage:
+
 - ✅ Apply content (all 4 types)
 - ✅ Handle Shopify errors
 - ✅ Retrieve single/multiple content types
@@ -232,6 +238,7 @@ Content visible on storefront
 **Purpose**: Connects Product agent's CX theme actions to Content's implementation service
 
 **Key Functions**:
+
 - `mapImplementationTypeToContentType()` - Maps Product's types to Content's types
 - `applyCXThemeAction()` - Applies single approved action
 - `getApprovedCXThemeActions()` - Retrieves approved actions from DashboardFact
@@ -239,6 +246,7 @@ Content visible on storefront
 **API Endpoint**: `POST /api/cx-actions/apply`
 
 **Request**:
+
 ```json
 {
   "productId": "gid://shopify/Product/123",
@@ -257,6 +265,7 @@ Content visible on storefront
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -281,4 +290,3 @@ Content visible on storefront
 - Product agent spec: `docs/directions/product.md` (PRODUCT-015: CX Theme Action Generator)
 - Shopify metafields docs: https://shopify.dev/docs/apps/build/custom-data/metafields
 - MCP validation evidence: `artifacts/content/2025-10-21/mcp/cx-content-implementation.jsonl`
-

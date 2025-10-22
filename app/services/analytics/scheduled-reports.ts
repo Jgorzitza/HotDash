@@ -1,6 +1,6 @@
 /**
  * Scheduled Analytics Reports Service
- * 
+ *
  * Generates daily/weekly/monthly reports
  * Email-ready templates for Phase 11 integration
  * Report templates with key metrics and insights
@@ -48,7 +48,7 @@ export interface ScheduledReport {
  * Generate daily analytics report
  */
 export async function generateDailyReport(
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<ScheduledReport> {
   const today = new Date();
   const yesterday = new Date(today);
@@ -88,7 +88,7 @@ export async function generateDailyReport(
       shopDomain,
       metrics,
       highlights,
-      anomalies.anomalies.length
+      anomalies.anomalies.length,
     ),
   };
 }
@@ -97,7 +97,7 @@ export async function generateDailyReport(
  * Generate weekly analytics report
  */
 export async function generateWeeklyReport(
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<ScheduledReport> {
   const today = new Date();
   const weekAgo = new Date(today);
@@ -137,7 +137,7 @@ export async function generateWeeklyReport(
       shopDomain,
       metrics,
       highlights,
-      anomalies.anomalies.length
+      anomalies.anomalies.length,
     ),
   };
 }
@@ -146,7 +146,7 @@ export async function generateWeeklyReport(
  * Generate monthly analytics report
  */
 export async function generateMonthlyReport(
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<ScheduledReport> {
   const today = new Date();
   const monthAgo = new Date(today);
@@ -186,7 +186,7 @@ export async function generateMonthlyReport(
       shopDomain,
       metrics,
       highlights,
-      anomalies.anomalies.length
+      anomalies.anomalies.length,
     ),
   };
 }
@@ -218,7 +218,9 @@ function generateDailyHighlights(metrics: any, anomalies: any): string[] {
 function generateWeeklyHighlights(metrics: any, anomalies: any): string[] {
   const highlights: string[] = [];
 
-  highlights.push(`Total impressions: ${metrics.totalImpressions.toLocaleString()}`);
+  highlights.push(
+    `Total impressions: ${metrics.totalImpressions.toLocaleString()}`,
+  );
   highlights.push(`Total clicks: ${metrics.totalClicks.toLocaleString()}`);
 
   if (metrics.totalConversions > 0) {
@@ -244,7 +246,7 @@ function generateMonthlyHighlights(metrics: any, anomalies: any): string[] {
   if (metrics.overallROAS > 0) {
     const profit = metrics.totalRevenue - metrics.totalSpend;
     highlights.push(
-      `Net profit: $${profit.toFixed(2)} (ROAS: ${metrics.overallROAS}x)`
+      `Net profit: $${profit.toFixed(2)} (ROAS: ${metrics.overallROAS}x)`,
     );
   }
 
@@ -258,7 +260,7 @@ function generateDailyEmailTemplate(
   shopDomain: string,
   metrics: any,
   highlights: string[],
-  anomalyCount: number
+  anomalyCount: number,
 ): { subject: string; body: string; html: string } {
   const subject = `Daily Analytics Report - ${shopDomain}`;
 
@@ -307,7 +309,7 @@ function generateWeeklyEmailTemplate(
   shopDomain: string,
   metrics: any,
   highlights: string[],
-  anomalyCount: number
+  anomalyCount: number,
 ): { subject: string; body: string; html: string } {
   const subject = `Weekly Analytics Report - ${shopDomain}`;
 
@@ -324,7 +326,7 @@ function generateMonthlyEmailTemplate(
   shopDomain: string,
   metrics: any,
   highlights: string[],
-  anomalyCount: number
+  anomalyCount: number,
 ): { subject: string; body: string; html: string } {
   const subject = `Monthly Analytics Report - ${shopDomain}`;
 
@@ -333,5 +335,3 @@ function generateMonthlyEmailTemplate(
 
   return { subject, body, html };
 }
-
-

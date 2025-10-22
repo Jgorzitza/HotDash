@@ -1,6 +1,6 @@
 /**
  * SEO Impact Analysis Service
- * 
+ *
  * Tracks keyword rankings over time
  * Identifies ranking improvements and declines
  * Correlates with content changes
@@ -50,7 +50,7 @@ export async function trackKeywordRanking(
   position: number,
   url: string,
   shopDomain: string = "occ",
-  searchVolume?: number
+  searchVolume?: number,
 ): Promise<SEORankingData> {
   // Get previous ranking from last record
   const previousRanking = await getLatestKeywordRanking(keyword, shopDomain);
@@ -97,7 +97,7 @@ export async function trackKeywordRanking(
  */
 async function getLatestKeywordRanking(
   keyword: string,
-  shopDomain: string
+  shopDomain: string,
 ): Promise<{ position: number; trackedAt: Date } | null> {
   const latest = await prisma.dashboardFact.findFirst({
     where: {
@@ -124,7 +124,7 @@ async function getLatestKeywordRanking(
  */
 function determineTrend(
   change: number,
-  previousPosition: number | null
+  previousPosition: number | null,
 ): "up" | "down" | "stable" | "new" {
   if (previousPosition === null) return "new";
   if (change > 0) return "up"; // Lower position number = better ranking
@@ -138,7 +138,7 @@ function determineTrend(
  */
 export async function getSEOImpactAnalysis(
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<SEOImpactSummary> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -176,7 +176,7 @@ export async function getSEOImpactAnalysis(
   for (const ranking of rankings) {
     const value = ranking.value as any;
     const keyword = value.keyword;
-    
+
     // Only add if not already in map (first occurrence = latest due to desc sort)
     if (!keywordMap.has(keyword)) {
       keywordMap.set(keyword, value);
@@ -186,29 +186,30 @@ export async function getSEOImpactAnalysis(
   const latestRankings = Array.from(keywordMap.values());
 
   // Calculate metrics
-  const improved = latestRankings.filter(r => r.trend === "up").length;
-  const declined = latestRankings.filter(r => r.trend === "down").length;
-  const stable = latestRankings.filter(r => r.trend === "stable").length;
-  const newKeywords = latestRankings.filter(r => r.trend === "new").length;
+  const improved = latestRankings.filter((r) => r.trend === "up").length;
+  const declined = latestRankings.filter((r) => r.trend === "down").length;
+  const stable = latestRankings.filter((r) => r.trend === "stable").length;
+  const newKeywords = latestRankings.filter((r) => r.trend === "new").length;
 
   const totalPositions = latestRankings.reduce((sum, r) => sum + r.position, 0);
-  const avgPosition = latestRankings.length > 0
-    ? Number((totalPositions / latestRankings.length).toFixed(1))
-    : 0;
+  const avgPosition =
+    latestRankings.length > 0
+      ? Number((totalPositions / latestRankings.length).toFixed(1))
+      : 0;
 
   // Get top movers (biggest improvements)
   const topMovers = latestRankings
-    .filter(r => r.change > 0)
+    .filter((r) => r.change > 0)
     .sort((a, b) => b.change - a.change)
     .slice(0, 5)
-    .map(r => ({ keyword: r.keyword, change: r.change }));
+    .map((r) => ({ keyword: r.keyword, change: r.change }));
 
   // Get top decliners (biggest drops)
   const topDecliners = latestRankings
-    .filter(r => r.change < 0)
+    .filter((r) => r.change < 0)
     .sort((a, b) => a.change - b.change)
     .slice(0, 5)
-    .map(r => ({ keyword: r.keyword, change: r.change }));
+    .map((r) => ({ keyword: r.keyword, change: r.change }));
 
   return {
     totalKeywords: latestRankings.length,
@@ -228,13 +229,15 @@ export async function getSEOImpactAnalysis(
  */
 export async function correlateSEOWithContent(
   shopDomain: string = "occ",
-  days: number = 30
-): Promise<Array<{
-  keyword: string;
-  rankingChange: number;
-  contentUpdates: number;
-  correlation: "positive" | "negative" | "neutral";
-}>> {
+  days: number = 30,
+): Promise<
+  Array<{
+    keyword: string;
+    rankingChange: number;
+    contentUpdates: number;
+    correlation: "positive" | "negative" | "neutral";
+  }>
+> {
   const since = new Date();
   since.setDate(since.getDate() - days);
 
@@ -277,9 +280,9 @@ export async function correlateSEOWithContent(
     if (!keywordMap.has(keyword)) {
       // Count content updates around the same time (±7 days)
       const rankingDate = ranking.createdAt;
-      const updates = contentUpdates.filter(update => {
+      const updates = contentUpdates.filter((update) => {
         const diff = Math.abs(
-          rankingDate.getTime() - update.createdAt.getTime()
+          rankingDate.getTime() - update.createdAt.getTime(),
         );
         return diff <= 7 * 24 * 60 * 60 * 1000; // 7 days in ms
       }).length;
@@ -301,7 +304,7 @@ export async function correlateSEOWithContent(
  */
 function determineCorrelation(
   change: number,
-  updates: number
+  updates: number,
 ): "positive" | "negative" | "neutral" {
   if (updates === 0) return "neutral";
   if (change > 0 && updates > 0) return "positive"; // Improved with updates
@@ -315,13 +318,15 @@ function determineCorrelation(
 export async function getKeywordHistory(
   keyword: string,
   shopDomain: string = "occ",
-  days: number = 90
-): Promise<Array<{
-  position: number;
-  date: Date;
-  change: number;
-  trend: string;
-}>> {
+  days: number = 90,
+): Promise<
+  Array<{
+    position: number;
+    date: Date;
+    change: number;
+    trend: string;
+  }>
+> {
   const since = new Date();
   since.setDate(since.getDate() - days);
 
@@ -339,7 +344,7 @@ export async function getKeywordHistory(
     },
   });
 
-  return rankings.map(ranking => {
+  return rankings.map((ranking) => {
     const value = ranking.value as any;
     return {
       position: value.position,
@@ -349,4 +354,3 @@ export async function getKeywordHistory(
     };
   });
 }
-

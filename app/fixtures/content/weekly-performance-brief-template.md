@@ -8,14 +8,14 @@
 
 ## Summary Metrics
 
-| Metric | Value | vs. Previous Week |
-|--------|-------|-------------------|
-| Total posts published | `X` | `+/-X%` |
-| Total reach | `X` | `+/-X%` |
-| Total engagement | `X` | `+/-X%` |
-| Average engagement rate | `X%` | `+/-X%` |
-| Total clicks | `X` | `+/-X%` |
-| Total conversions | `X` | `+/-X%` |
+| Metric                  | Value | vs. Previous Week |
+| ----------------------- | ----- | ----------------- |
+| Total posts published   | `X`   | `+/-X%`           |
+| Total reach             | `X`   | `+/-X%`           |
+| Total engagement        | `X`   | `+/-X%`           |
+| Average engagement rate | `X%`  | `+/-X%`           |
+| Total clicks            | `X`   | `+/-X%`           |
+| Total conversions       | `X`   | `+/-X%`           |
 
 **Key Insight:** `[One-sentence summary of the week's performance]`
 
@@ -109,11 +109,11 @@
 
 ## Content Type Performance
 
-| Type | Posts | Avg. Engagement | Best Performer |
-|------|-------|-----------------|----------------|
-| Launch | `X` | `X%` | `[Title]` |
-| Evergreen | `X` | `X%` | `[Title]` |
-| Wildcard | `X` | `X%` | `[Title]` |
+| Type      | Posts | Avg. Engagement | Best Performer |
+| --------- | ----- | --------------- | -------------- |
+| Launch    | `X`   | `X%`            | `[Title]`      |
+| Evergreen | `X`   | `X%`            | `[Title]`      |
+| Wildcard  | `X`   | `X%`            | `[Title]`      |
 
 ---
 
@@ -245,4 +245,3 @@
 - All metrics should be compared to previous week for trend analysis
 - Recommendations must be actionable and data-driven
 - CEO should review and sign off before next week's content planning
-

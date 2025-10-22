@@ -62,6 +62,7 @@ The Ads Intelligence system provides comprehensive campaign performance tracking
 ### 1. Campaign Data Sources
 
 #### Meta Ads (Facebook/Instagram)
+
 - **Location**: `app/services/ads/meta-stub.ts`
 - **Feature Flag**: `ADS_REAL_DATA` (default: false)
 - **Mock Campaigns**: 4 campaigns (Feed, Stories, Reels, Retargeting)
@@ -69,6 +70,7 @@ The Ads Intelligence system provides comprehensive campaign performance tracking
 - **Metrics**: spend, impressions, clicks, conversions, revenue
 
 #### Google Ads
+
 - **Location**: `app/services/ads/google-stub.ts`
 - **Feature Flag**: `ADS_REAL_DATA` (default: false)
 - **Mock Campaigns**: 6 campaigns (Search, Display, Shopping, Video, PMax, Brand)
@@ -80,6 +82,7 @@ The Ads Intelligence system provides comprehensive campaign performance tracking
 **Location**: `app/lib/ads/metrics.ts`
 
 **Core Functions**:
+
 - `calculateROAS(revenue, spend)` → ROAS as decimal (e.g., 3.5 = 3.5x)
 - `calculateCPC(spend, clicks)` → CPC in cents
 - `calculateCPA(spend, conversions)` → CPA in cents
@@ -89,6 +92,7 @@ The Ads Intelligence system provides comprehensive campaign performance tracking
 **Zero-Guards**: All functions return `null` for division by zero (never Infinity or NaN)
 
 **Formulas**:
+
 ```
 ROAS = Revenue / Spend
 CPC = Spend / Clicks
@@ -98,6 +102,7 @@ Conversion Rate = Conversions / Clicks
 ```
 
 **Precision**:
+
 - Monetary values: cents (no floating-point errors)
 - ROAS: 2 decimal places
 - CPC/CPA: rounded to nearest cent
@@ -112,6 +117,7 @@ Conversion Rate = Conversions / Clicks
 **Key Function**: `getPlatformBreakdown(campaigns)`
 
 **Returns**:
+
 ```typescript
 {
   platform: string;
@@ -127,7 +133,8 @@ Conversion Rate = Conversions / Clicks
   cpa: number;
   ctr: number;
   conversionRate: number;
-}[]
+}
+[];
 ```
 
 **Sorting**: By total spend (highest first)
@@ -141,6 +148,7 @@ Conversion Rate = Conversions / Clicks
 **Database Table**: `ads_daily_metrics`
 
 **Key Functions**:
+
 - `storeDailyMetrics(metrics[], request)` → Upserts to Supabase
 - `getDailyMetrics(campaignId, startDate, endDate, request)` → Historical data
 - `aggregateDailyMetrics(campaignIds[], startDate, endDate, request)` → Multi-campaign aggregation
@@ -154,10 +162,12 @@ Conversion Rate = Conversions / Clicks
 **Purpose**: Monitor campaign spend vs budget
 
 **Alert Thresholds**:
+
 - **Warning**: 90-109% of budget
 - **Critical**: ≥110% of budget (overspend)
 
 **Key Functions**:
+
 - `checkCampaignBudget(campaign, threshold?)` → Budget check result
 - `storeBudgetAlert(alert, request)` → Save to Supabase
 - `getUnacknowledgedAlerts(request)` → Active alerts
@@ -165,15 +175,16 @@ Conversion Rate = Conversions / Clicks
 **Database Table**: `budget_alerts`
 
 **Alert Structure**:
+
 ```typescript
 {
   campaign_id: string;
-  alert_type: 'budget_warning' | 'budget_critical';
+  alert_type: "budget_warning" | "budget_critical";
   budget_cents: number;
   spend_cents: number;
   overspend_cents: number;
   overspend_percentage: number;
-  severity: 'warning' | 'critical';
+  severity: "warning" | "critical";
   message: string;
 }
 ```
@@ -185,18 +196,21 @@ Conversion Rate = Conversions / Clicks
 **Purpose**: Monitor campaign performance metrics
 
 **Alert Types**:
+
 1. **low_roas**: ROAS < 1.5x (warning), < 1.0x (critical)
 2. **no_conversions**: 0 conversions AND spend > $50
 3. **high_cpa**: CPA > threshold (configurable)
 4. **low_ctr**: CTR < 1% AND impressions > 1000
 
 **Recommendations**:
+
 - **PAUSE**: ROAS < 1.0x (unprofitable)
 - **OPTIMIZE**: ROAS 1.0-1.5x, or low CTR
 - **MONITOR**: No conversions but low spend
 - **SCALE_DOWN**: High CPA
 
 **Key Functions**:
+
 - `checkCampaignPerformance(campaign, thresholds?)` → Performance check
 - `storePerformanceAlert(alert, request)` → Save to Supabase
 - `getPerformanceAlerts(request, severity?)` → Filtered alerts
@@ -210,12 +224,14 @@ Conversion Rate = Conversions / Clicks
 **Purpose**: Link Shopify orders to ad campaigns via UTM parameters
 
 **Attribution Models**:
+
 1. **First-Touch**: Credits first campaign that brought customer
 2. **Last-Touch**: Credits final campaign before purchase
 
 **Data Source**: Shopify Admin API → `customerJourneySummary`
 
 **Key Functions**:
+
 - `parseOrderAttribution(order, model)` → Attribution result
 - `groupByCampaign(attributions)` → Orders by campaign
 - `buildCampaignSummary(attributions, campaignName, spend?)` → Campaign summary with ROAS
@@ -229,10 +245,12 @@ Conversion Rate = Conversions / Clicks
 **Endpoint**: `GET /api/ads/campaigns`
 
 **Query Parameters**:
+
 - `?platform=meta` - Filter by platform
 - `?status=active` - Filter by status
 
 **Response**:
+
 ```json
 {
   "campaigns": [...],
@@ -250,9 +268,11 @@ Conversion Rate = Conversions / Clicks
 ### 9. UI Components
 
 #### Ads Dashboard Tile
+
 **Location**: `app/components/dashboard/AdsTile.tsx`
 
 **Displays**:
+
 - Total Spend (formatted with $ and commas)
 - ROAS (color-coded: green ≥2x, yellow ≥1x, red <1x)
 - Total Clicks
@@ -264,20 +284,24 @@ Conversion Rate = Conversions / Clicks
 **Data Loading**: React Router 7 `useFetcher()` from `/api/ads/campaigns`
 
 #### Campaign Approval Drawer
+
 **Location**: `app/components/ads/CampaignApprovalDrawer.tsx`
 
 **HITL Workflow**:
+
 1. **Draft** → AI agent proposes campaign change
 2. **Review** → Operator views proposal with full evidence
 3. **Approve/Reject** → Operator makes final decision
 
 **Proposal Structure**:
+
 - Campaign details (type, platform, budget)
 - Evidence (projected spend, target ROAS, estimated metrics)
 - Risk assessment (level, factors, mitigation)
 - Rollback plan (availability, steps)
 
 **Actions**:
+
 - Approve (with optional notes)
 - Reject (reason required)
 
@@ -290,6 +314,7 @@ Conversion Rate = Conversions / Clicks
 **Feature Flag**: `PUBLER_LIVE` (default: false)
 
 **Platforms Supported**:
+
 - Facebook
 - Instagram
 - Twitter
@@ -297,6 +322,7 @@ Conversion Rate = Conversions / Clicks
 - Pinterest
 
 **Key Functions**:
+
 - `schedulePublerPost(post, options?)` → Schedule single post
 - `schedulePublerCampaign(campaign, options?)` → Schedule campaign with multiple posts
 - `getPublerPosts(campaignId, options?)` → Fetch scheduled posts
@@ -305,6 +331,7 @@ Conversion Rate = Conversions / Clicks
 ## Database Schema
 
 ### ads_campaigns
+
 ```sql
 campaign_id TEXT PRIMARY KEY
 name TEXT NOT NULL
@@ -320,6 +347,7 @@ created_at TIMESTAMPTZ DEFAULT NOW()
 ```
 
 ### ads_daily_metrics
+
 ```sql
 id UUID PRIMARY KEY DEFAULT gen_random_uuid()
 campaign_id TEXT NOT NULL
@@ -340,6 +368,7 @@ UNIQUE(campaign_id, metric_date)
 ```
 
 ### budget_alerts
+
 ```sql
 id UUID PRIMARY KEY DEFAULT gen_random_uuid()
 campaign_id TEXT NOT NULL
@@ -360,6 +389,7 @@ acknowledged_by TEXT
 ```
 
 ### performance_alerts
+
 ```sql
 id UUID PRIMARY KEY DEFAULT gen_random_uuid()
 campaign_id TEXT NOT NULL
@@ -437,16 +467,19 @@ acknowledged_by TEXT
 ## Testing
 
 ### Contract Tests
+
 **Location**: `tests/contract/ads.metrics.contract.test.ts`
 **Coverage**: API response shapes, 6 fixtures, 1 wildcard
 **Status**: ✅ 6/6 passing
 
 ### Unit Tests
+
 **Location**: `tests/unit/ads/metrics.spec.ts`
 **Coverage**: Calculations, zero-guards, formatting, edge cases
 **Status**: ✅ 60/60 passing
 
 ### Integration Tests
+
 **Location**: `tests/integration/ads-workflow.spec.ts`
 **Coverage**: Full workflow end-to-end
 **Status**: ⚠️ 2/7 passing (requires mock environment setup)
@@ -456,12 +489,14 @@ acknowledged_by TEXT
 See `docs/specs/feature_flags.md` for detailed configuration.
 
 **Active Flags**:
+
 - `ADS_REAL_DATA` (default: false) → Use real APIs vs stubs
 - `PUBLER_LIVE` (default: false) → Use real Publer API vs mock
 
 ## Monitoring & Alerting
 
 **Key Metrics**:
+
 - Campaign ROAS (target: >1.5x)
 - Budget utilization (alert: >90%)
 - CPC trends
@@ -470,6 +505,7 @@ See `docs/specs/feature_flags.md` for detailed configuration.
 - API error rates
 
 **Logs**:
+
 - Campaign fetches
 - Metrics calculations
 - Alert generation
@@ -501,4 +537,3 @@ See `docs/specs/feature_flags.md` for detailed configuration.
 - Meta API Docs: https://developers.facebook.com/docs/marketing-apis
 - Google Ads API: https://developers.google.com/google-ads/api
 - Publer API: https://publer.io/api
-

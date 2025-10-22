@@ -1,6 +1,7 @@
 # Manager Direction v6.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ GROWTH ENGINE INTEGRATION COMPLETE (v6.0)
 
 **Completed (2025-10-21)**:
+
 - ✅ Core docs updated (NORTH_STAR, RULES, OPERATING_MODEL)
 - ✅ PR template updated (MCP Evidence, Heartbeat, Dev MCP Check)
 - ✅ Cursor rule created (`.cursor/rules/10-growth-engine-pack.mdc`)
@@ -37,17 +39,20 @@ git pull origin manager-reopen-20251021
 ### My Responsibilities as Manager
 
 **Agent Orchestration Oversight**:
+
 - **Front-End Agents** (Customer-Front, CEO-Front): Coordinate with AI-Customer agent for production implementation
 - **Sub-Agents** (Accounts, Storefront): Ensure proper handoff patterns built by Integrations
 - **Specialist Agents** (Analytics, Inventory, Content/SEO, Risk): Ensure background jobs scheduled correctly by DevOps
 
 **Security & Evidence Enforcement**:
+
 - **MCP Evidence JSONL**: Verify ALL PRs include JSONL paths or "non-code change"
 - **Heartbeat NDJSON**: Verify tasks >2h have heartbeat files (15min max staleness)
 - **Dev MCP Ban**: REJECT PRs with Dev MCP imports in `app/`
 - **CI Guards**: Ensure DevOps implements guard-mcp, idle-guard, dev-mcp-ban (Phase 10)
 
 **Phase Management**:
+
 - **Phase 9**: PII Card (Engineer, Designer) — 4h
 - **Phase 10**: Vendor/ALC + CI Guards (Data, Inventory, Integrations, DevOps) — 27h total
 - **Phase 11**: Bundles-BOM + Attribution + Emergency Sourcing (Integrations, Analytics, Inventory) — 29h total
@@ -57,7 +62,6 @@ git pull origin manager-reopen-20251021
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -65,48 +69,48 @@ git pull origin manager-reopen-20251021
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/manager.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "manager",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/manager.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/manager/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "manager",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/manager/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "manager",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/manager/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/manager/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -116,66 +120,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "manager",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/manager/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/manager/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "manager",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -184,11 +188,13 @@ await logDecision({
 You can still write to `feedback/manager/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🚀 ACTIVE RESPONSIBILITIES (Continuous)
 
 ### 1. Agent Coordination (Daily - 6h/day)
 
 **Query agent status 3x daily** (< 10 seconds per cycle):
+
 ```bash
 # Morning (9am): Unblock overnight issues
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
@@ -206,17 +212,20 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 **Deep dive**: Only read markdown feedback files for blocked tasks
 
 **Unblock agents <1 hour**:
+
 - Credential requests: Pull from vault, provide immediately
 - Technical questions: Use MCP tools to find answers
 - Dependency conflicts: Coordinate sequential work
 - Never let agent wait idle
 
 **Track Progress**:
+
 - Maintain progress table in feedback/manager/2025-10-21.md
 - Update after each feedback review
 - Identify lagging agents immediately
 
 **Growth Engine Coordination** (NEW):
+
 - **Phase Dependencies**: Ensure Data completes tables BEFORE Inventory/Integrations start services
 - **DevOps First**: Ensure DevOps creates GA4 custom dimension BEFORE Analytics starts attribution
 - **Engineer + Designer**: Coordinate PII Card implementation + validation (Phase 9)
@@ -227,6 +236,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ### 2. CEO Checkpoint Management (After Each Phase)
 
 **After Phase 9 Complete** (PII Card):
+
 1. Engineer finishes ENG-029, 030, 031
 2. Designer validates DES-017
 3. Present to CEO:
@@ -238,6 +248,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 5. CEO rejects → Direct fixes, retest
 
 **After Phase 10 Complete** (Vendor/ALC):
+
 1. Data finishes DATA-017, 018, 019, 021
 2. Inventory finishes INVENTORY-016, 017, 018
 3. Integrations finishes INTEGRATIONS-012
@@ -256,6 +267,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ### 3. Database Migration Application (As Needed)
 
 **When Data creates migrations**:
+
 1. Review SQL (no DROP, no data loss)
 2. Verify RLS policies included
 3. Apply via Supabase console or pooler connection
@@ -264,6 +276,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 6. Unblock dependent agents
 
 **Growth Engine Migrations Pending**:
+
 - DATA-017: Vendor Master tables (Phase 10) → Apply ASAP
 - DATA-018: PO & Receipt tables (Phase 10) → Apply ASAP
 - DATA-019: Dev Memory Protection RLS (Phase 10) → Apply ASAP
@@ -276,6 +289,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ### 4. Git Operations (Continuous)
 
 **Merge Strategy**:
+
 - Review PRs from agents
 - Verify CI green (Docs Policy, Gitleaks, Danger, AI config, **CI Guards**)
 - Verify PR includes MCP Evidence + Heartbeat + Dev MCP Check sections (NEW)
@@ -284,6 +298,7 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 - Never force-push to main
 
 **Growth Engine PR Checklist** (NEW):
+
 - ✅ MCP Evidence section present (JSONL paths OR "non-code change")
 - ✅ Heartbeat section present (file path OR "<2h single session")
 - ✅ Dev MCP Check section checked (no Dev MCP in app/)
@@ -294,21 +309,25 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ### 5. Tool-First Enforcement (Daily Audits)
 
 **Verify Agents Using MCP Tools**:
+
 ```bash
 # Check each agent's feedback for MCP evidence
 grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ```
 
-**Expected**: 
+**Expected**:
+
 - 4+ MCP calls per agent per day (existing standard)
 - MCP Evidence JSONL files in artifacts/ (NEW Growth Engine requirement)
 
 **If agent not using tools**:
+
 1. Flag in their direction file
 2. Remind of MCP-first policy
 3. **REJECT PR** if no MCP evidence (NEW - merge blocker)
 
 **My own compliance**:
+
 - Use Context7 when making technical decisions
 - Use Shopify Dev MCP for any Shopify GraphQL I write
 - Use Fly MCP for all deployments
@@ -321,6 +340,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ### 6. Credential Management (Ongoing)
 
 **When agent requests credentials**:
+
 1. Check vault/occ/{service}/ immediately
 2. If present: Provide to agent within 15 minutes
 3. If missing: Escalate to CEO, tell agent to move to next task
@@ -335,6 +355,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ### MANAGER-010: Growth Engine Phase Coordination (Continuous)
 
 **Phase 9 Coordination** (4h total):
+
 - **Engineer**: ENG-029, 030, 031 (PII Card components)
 - **Designer**: DES-017 (PII Card validation)
 - **Coordination**: Ensure Engineer completes BEFORE Designer validates
@@ -342,6 +363,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - **Checkpoint**: After Designer validation passes
 
 **Phase 10 Coordination** (27h total):
+
 - **Data**: DATA-017, 018, 019, 021 (9 new tables) — **START FIRST**
 - **Inventory**: INVENTORY-016, 017, 018 (Vendor/ALC services) — **AFTER Data tables**
 - **Integrations**: INTEGRATIONS-012 (Shopify cost sync) — **AFTER Inventory ALC service**
@@ -351,6 +373,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - **Checkpoint**: After all 4 agents complete
 
 **Phase 11 Coordination** (29h total):
+
 - **Integrations**: INTEGRATIONS-013, 014, 015, 016 (Bundles-BOM + Warehouse Reconcile) — 11h
 - **Analytics**: ANALYTICS-017, 018 (Action Attribution + SC Persistence) — 8h
 - **Inventory**: INVENTORY-019 (Emergency Sourcing) — 5h
@@ -361,6 +384,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - **Checkpoint**: After all agents complete
 
 **Phase 12 Coordination** (6h total):
+
 - **AI-Knowledge**: AI-KNOWLEDGE-017, 018 (CX conversation mining) — 4h
 - **Product**: PRODUCT-015 (CX theme task generation) — 2h
 - **Dependencies**: AI-Knowledge → Product (sequential)
@@ -368,6 +392,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - **Checkpoint**: After both agents complete
 
 **Acceptance**:
+
 - ✅ All phase dependencies coordinated
 - ✅ No agent blocked waiting for another
 - ✅ Phase checkpoints presented to CEO with evidence
@@ -398,6 +423,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
    - Verify CI passes
 
 **Acceptance**:
+
 - ✅ All 3 CI guards functional
 - ✅ Error messages clear and actionable
 - ✅ Guards enforce on ALL PRs to main
@@ -408,11 +434,13 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ### MANAGER-012: Growth Engine Documentation Maintenance (Ongoing)
 
 **Keep Updated**:
+
 - `GROWTH_ENGINE_EXECUTION_SUMMARY.md` — Phase progress, agent assignments
 - `DESIGN_CONFLICT_REPORT_2025-10-21.md` — Archive when all conflicts resolved
 - Core docs (NORTH_STAR, RULES, OPERATING_MODEL) — Update as architecture evolves
 
 **Archive When Done**:
+
 - `INTEGRATION_PLAN_APPROVED.md` → `docs/archive/2025-10-21/`
 - `GROWTH_ENGINE_EXECUTION_SUMMARY.md` → `docs/archive/2025-10-21/` (after Phases 9-12 complete)
 
@@ -421,6 +449,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## 📋 Acceptance Criteria (Ongoing)
 
 ### Daily Coordination
+
 - ✅ ALL 17 agent feedback files read 3x daily
 - ✅ ALL blockers resolved <1 hour
 - ✅ NO agents in STANDBY (violation)
@@ -429,6 +458,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - ✅ Progress tracked (updated PROJECT_PLAN or feedback table)
 
 ### Growth Engine Phases
+
 - ✅ Phase 9 coordinated and checkpointed (PII Card)
 - ✅ Phase 10 coordinated and checkpointed (Vendor/ALC + CI Guards)
 - ✅ Phase 11 coordinated and checkpointed (Bundles-BOM + Attribution)
@@ -441,6 +471,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY - I AM NOT EXEMPT)
+
 1. **Context7 MCP**: For technical decisions
    - React Router 7, Prisma, TypeScript when advising agents
    - GitHub Actions when reviewing workflows
@@ -454,6 +485,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 4. **Web Search**: For current info, latest docs
 
 ### Evidence Requirements (I MUST FOLLOW TOO)
+
 1. **MCP Evidence JSONL**: If I write code (rare), I create JSONL too
 2. **Feedback Logging**: Log ALL MCP tool usage in feedback/manager/2025-10-21.md
 3. **Lead by Example**: Agents follow my compliance
@@ -477,6 +509,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
    - Pilot: Phase 9-12 smoke testing (12h reactive)
 
 **Timeline**:
+
 - Today (2025-10-21): Complete all 17 agent directions
 - Tomorrow onwards: Agents execute Phases 9-12
 - Estimated completion: 2-3 weeks (62-79 hours total new work)
@@ -486,6 +519,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## 🚨 Critical Reminders (Lessons Learned 2025-10-21)
 
 **FAILURES TODAY** (Never Repeat):
+
 1. ❌ Claimed "feedback consolidation complete" - LIE
 2. ❌ Left 10 agents in STANDBY - VIOLATION (CORRECTED: All 17 now have active work)
 3. ❌ Did not read all feedback thoroughly
@@ -493,6 +527,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 5. ❌ Asked user for preferences instead of doing the work
 
 **CORRECTIVE ACTIONS TAKEN**:
+
 1. ✅ Read feedback files systematically
 2. ✅ Created comprehensive task assignments
 3. ✅ Updated ALL 17 direction files
@@ -500,6 +535,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 5. ✅ MCP requirements enforced
 
 **COMMITMENT**:
+
 - I will read ALL feedback properly (not skim)
 - I will assign active work (never STANDBY - violation corrected 2025-10-21)
 - I will use MCP tools myself (lead by example)
@@ -511,30 +547,35 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## Work Protocol (Daily Routine)
 
 **Morning (9am)**:
+
 - Read ALL 17 agent feedback files (every line, not skim)
 - List all blockers in feedback
 - Unblock within 1 hour (credentials, technical questions, dependencies)
 - Update progress table
 
 **Midday (1pm)**:
+
 - Check progress on all active Growth Engine tasks
 - Answer questions (use MCP tools for technical answers)
 - Coordinate dependencies (Data → Inventory → Integrations sequencing)
 - Verify no idle agents
 
 **Evening (6pm)**:
+
 - Read ALL feedback again
 - Prepare CEO checkpoint (if phase complete)
 - Update direction files (if priorities shift)
 - Plan tomorrow's work
 
 **Reporting (Every 2 hours)**:
+
 ```md
 ## YYYY-MM-DDTHH:MM:SSZ — Manager: Phase X Coordination
 
 **Working On**: Coordinating 17 agents through Phase X
 
 **Agent Status** (Growth Engine Phases 9-12):
+
 - Engineer: Phase 9 PII Card (ENG-029 complete, ENG-030 in progress)
 - Designer: Awaiting Engineer completion for DES-017
 - Data: Phase 10 tables (DATA-017 in progress)
@@ -547,12 +588,15 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - (Maintenance agents with active testing/optimization work)
 
 **Blockers Resolved**:
+
 - [List with timestamp + how resolved]
 
 **Blockers Active**:
+
 - [List with escalation plan]
 
 **MCP Tools Used**:
+
 - [Timestamp + tool + purpose]
 
 **Next**: [Next action]
@@ -563,6 +607,7 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## Definition of Done (Each Day)
 
 **Coordination**:
+
 - [ ] ALL 17 agent feedback files read (3x daily minimum)
 - [ ] ALL blockers resolved <1 hour
 - [ ] NO agents in STANDBY (all 17 have active work)
@@ -570,17 +615,20 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 - [ ] Growth Engine phases on track
 
 **CEO Checkpoints**:
+
 - [ ] Presented with evidence (screenshots, demos, tests)
 - [ ] CEO decision documented
 - [ ] Next phase work assigned
 
 **Git Operations**:
+
 - [ ] PRs reviewed and merged
 - [ ] CI green before merge (including NEW CI Guards)
 - [ ] MCP Evidence + Heartbeat + Dev MCP Check verified
 - [ ] Main branch stable
 
 **Tool-First Compliance**:
+
 - [ ] ALL agents using MCP tools (audit complete)
 - [ ] My own tool usage logged
 - [ ] No PRs merged without MCP evidence
@@ -611,17 +659,19 @@ grep -E "Context7|Shopify Dev MCP|MCP|web_search" feedback/*/2025-10-21.md
 ## 🔧 MANDATORY: DEV MEMORY (Manager)
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'manager',
-  action: 'blocker_cleared',
-  rationale: 'BLOCKER-002: Applied 8 migrations + 100% DB protection via triggers',
-  evidenceUrl: 'artifacts/manager/2025-10-21/blocker-002-cleared.md'
+  scope: "build",
+  actor: "manager",
+  action: "blocker_cleared",
+  rationale:
+    "BLOCKER-002: Applied 8 migrations + 100% DB protection via triggers",
+  evidenceUrl: "artifacts/manager/2025-10-21/blocker-002-cleared.md",
 });
 ```
 
 **Manager Actions to Log**:
+
 - Blocker cleared
 - Direction update cycle complete
 - Critical fix applied (React Router 7 violations)

@@ -1,9 +1,9 @@
 /**
  * User Segmentation Service
- * 
+ *
  * Segments users by behavior patterns into categories.
  * Enables targeted recommendations and personalization.
- * 
+ *
  * Segment Types:
  * - Power Users: High engagement, daily usage
  * - Casual Users: Moderate engagement, weekly usage
@@ -20,33 +20,33 @@ import { db } from "~/lib/db.server";
 export type UserSegment = "power" | "casual" | "new" | "churned";
 
 export interface UserSegmentData {
-  userId: string;              // Shop domain
+  userId: string; // Shop domain
   segment: UserSegment;
-  engagementScore: number;     // 0-100
+  engagementScore: number; // 0-100
   lastActiveDate: Date;
   signupDate: Date | null;
   totalSessions: number;
-  avgSessionDuration: number;  // Seconds
-  featuresUsed: number;        // Count of unique features
-  approvalCount: number;       // Total approvals made
+  avgSessionDuration: number; // Seconds
+  featuresUsed: number; // Count of unique features
+  approvalCount: number; // Total approvals made
   tileClicksPerSession: number;
 }
 
 export interface SegmentAnalytics {
   segment: UserSegment;
   userCount: number;
-  percentage: number;          // % of total users
+  percentage: number; // % of total users
   avgEngagementScore: number;
   avgSessionsPerUser: number;
-  characteristics: string[];   // Key characteristics of this segment
-  recommendations: string[];   // Recommended actions for this segment
+  characteristics: string[]; // Key characteristics of this segment
+  recommendations: string[]; // Recommended actions for this segment
 }
 
 export interface EngagementScoreFactors {
-  recency: number;             // Days since last active (0-30)
-  frequency: number;           // Sessions per week
-  depth: number;               // Features used per session
-  value: number;               // Approvals made (business value)
+  recency: number; // Days since last active (0-30)
+  frequency: number; // Sessions per week
+  depth: number; // Features used per session
+  value: number; // Approvals made (business value)
 }
 
 // ============================================================================
@@ -56,20 +56,20 @@ export interface EngagementScoreFactors {
 export class UserSegmentationService {
   /**
    * Calculate user engagement score (0-100)
-   * 
+   *
    * Uses RFM-inspired model:
    * - Recency: How recently user was active (30%)
    * - Frequency: How often user visits (30%)
    * - Depth: How many features user uses (20%)
    * - Value: How many approvals user makes (20%)
-   * 
+   *
    * @param userId - User identifier
    * @param lookbackDays - Days to analyze (default: 30)
    * @returns Engagement score (0-100)
    */
   async calculateEngagementScore(
     userId: string,
-    lookbackDays: number = 30
+    lookbackDays: number = 30,
   ): Promise<number> {
     const startDate = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000);
     const factors = await this.getEngagementFactors(userId, startDate);
@@ -91,31 +91,31 @@ export class UserSegmentationService {
 
   /**
    * Get engagement score factors
-   * 
+   *
    * @param userId - User identifier
    * @param startDate - Start of analysis period
    * @returns Engagement score factors
    */
   async getEngagementFactors(
     userId: string,
-    startDate: Date
+    startDate: Date,
   ): Promise<EngagementScoreFactors> {
     // Get user activity data
     const facts = await db.dashboardFact.findMany({
       where: {
         shop: userId,
         timestamp: {
-          gte: startDate
-        }
+          gte: startDate,
+        },
       },
       select: {
         timestamp: true,
         category: true,
-        metric: true
+        metric: true,
       },
       orderBy: {
-        timestamp: "desc"
-      }
+        timestamp: "desc",
+      },
     });
 
     if (facts.length === 0) {
@@ -123,29 +123,32 @@ export class UserSegmentationService {
         recency: 30, // No activity = 30 days
         frequency: 0,
         depth: 0,
-        value: 0
+        value: 0,
       };
     }
 
     // Recency: Days since last activity
     const lastActive = facts[0].timestamp;
     const daysSinceActive = Math.floor(
-      (Date.now() - lastActive.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - lastActive.getTime()) / (1000 * 60 * 60 * 24),
     );
     const recency = Math.min(30, daysSinceActive);
 
     // Frequency: Sessions per week
-    const uniqueDays = new Set(facts.map(f => f.timestamp.toISOString().split('T')[0]));
+    const uniqueDays = new Set(
+      facts.map((f) => f.timestamp.toISOString().split("T")[0]),
+    );
     const daysActive = uniqueDays.size;
-    const weeksInPeriod = (Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7);
+    const weeksInPeriod =
+      (Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 7);
     const frequency = daysActive / weeksInPeriod;
 
     // Depth: Unique features used
     const uniqueFeatures = new Set(
       facts
-        .filter(f => f.category === "product_analytics")
-        .map(f => f.metric.match(/^feature_([^_]+)_/)?.[1])
-        .filter(Boolean)
+        .filter((f) => f.category === "product_analytics")
+        .map((f) => f.metric.match(/^feature_([^_]+)_/)?.[1])
+        .filter(Boolean),
     );
     const depth = uniqueFeatures.size / Math.max(1, daysActive); // Features per session
 
@@ -154,9 +157,9 @@ export class UserSegmentationService {
       where: {
         shop: userId,
         timestamp: {
-          gte: startDate
-        }
-      }
+          gte: startDate,
+        },
+      },
     });
     const value = approvals;
 
@@ -165,13 +168,13 @@ export class UserSegmentationService {
 
   /**
    * Segment user based on engagement
-   * 
+   *
    * Segmentation logic:
    * - Power: Score >= 70, active in last 7 days
    * - Casual: Score 40-69, active in last 14 days
    * - New: Signup date < 7 days ago
    * - Churned: No activity in 30+ days
-   * 
+   *
    * @param userId - User identifier
    * @returns User segment
    */
@@ -179,7 +182,7 @@ export class UserSegmentationService {
     const engagementScore = await this.calculateEngagementScore(userId);
     const factors = await this.getEngagementFactors(
       userId,
-      new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     );
 
     // Check for churned (no activity in 30+ days)
@@ -190,9 +193,11 @@ export class UserSegmentationService {
     // Check for new user (< 7 days since first activity)
     const firstActivity = await this.getUserFirstActivity(userId);
     const daysSinceFirst = firstActivity
-      ? Math.floor((Date.now() - firstActivity.getTime()) / (1000 * 60 * 60 * 24))
+      ? Math.floor(
+          (Date.now() - firstActivity.getTime()) / (1000 * 60 * 60 * 24),
+        )
       : 999;
-    
+
     if (daysSinceFirst < 7) {
       return "new";
     }
@@ -209,7 +214,7 @@ export class UserSegmentationService {
 
   /**
    * Get user segment data with details
-   * 
+   *
    * @param userId - User identifier
    * @returns Complete user segment data
    */
@@ -223,7 +228,7 @@ export class UserSegmentationService {
     const lastFact = await db.dashboardFact.findFirst({
       where: { shop: userId },
       orderBy: { timestamp: "desc" },
-      select: { timestamp: true }
+      select: { timestamp: true },
     });
 
     // Get signup date (first activity)
@@ -233,11 +238,13 @@ export class UserSegmentationService {
     const facts = await db.dashboardFact.findMany({
       where: {
         shop: userId,
-        timestamp: { gte: startDate }
+        timestamp: { gte: startDate },
       },
-      select: { timestamp: true }
+      select: { timestamp: true },
     });
-    const uniqueDays = new Set(facts.map(f => f.timestamp.toISOString().split('T')[0]));
+    const uniqueDays = new Set(
+      facts.map((f) => f.timestamp.toISOString().split("T")[0]),
+    );
     const totalSessions = uniqueDays.size;
 
     // Get unique features used
@@ -245,20 +252,22 @@ export class UserSegmentationService {
       where: {
         shop: userId,
         category: "product_analytics",
-        timestamp: { gte: startDate }
+        timestamp: { gte: startDate },
       },
-      select: { metric: true }
+      select: { metric: true },
     });
     const uniqueFeatures = new Set(
-      featureFacts.map(f => f.metric.match(/^feature_([^_]+)_/)?.[1]).filter(Boolean)
+      featureFacts
+        .map((f) => f.metric.match(/^feature_([^_]+)_/)?.[1])
+        .filter(Boolean),
     );
 
     // Get approval count
     const approvalCount = await db.decisionLog.count({
       where: {
         shop: userId,
-        timestamp: { gte: startDate }
-      }
+        timestamp: { gte: startDate },
+      },
     });
 
     // Calculate avg tile clicks per session
@@ -267,10 +276,11 @@ export class UserSegmentationService {
         shop: userId,
         category: "tile_analytics",
         metric: { endsWith: "_clicked" },
-        timestamp: { gte: startDate }
-      }
+        timestamp: { gte: startDate },
+      },
     });
-    const tileClicksPerSession = totalSessions > 0 ? tileClicks / totalSessions : 0;
+    const tileClicksPerSession =
+      totalSessions > 0 ? tileClicks / totalSessions : 0;
 
     return {
       userId,
@@ -282,22 +292,22 @@ export class UserSegmentationService {
       avgSessionDuration: 0, // TODO: Calculate from session tracking
       featuresUsed: uniqueFeatures.size,
       approvalCount,
-      tileClicksPerSession
+      tileClicksPerSession,
     };
   }
 
   /**
    * Get segment analytics
-   * 
+   *
    * Aggregates analytics for each user segment.
-   * 
+   *
    * @returns Array of segment analytics
    */
   async getSegmentAnalytics(): Promise<SegmentAnalytics[]> {
     // Get all unique users
     const users = await db.dashboardFact.findMany({
       select: { shop: true },
-      distinct: ["shop"]
+      distinct: ["shop"],
     });
     const totalUsers = users.length;
 
@@ -311,7 +321,7 @@ export class UserSegmentationService {
       const segment = segmentData.segment;
 
       segmentCounts.set(segment, (segmentCounts.get(segment) || 0) + 1);
-      
+
       if (!segmentScores.has(segment)) {
         segmentScores.set(segment, []);
         segmentSessions.set(segment, []);
@@ -329,13 +339,15 @@ export class UserSegmentationService {
       const scores = segmentScores.get(segment) || [];
       const sessions = segmentSessions.get(segment) || [];
 
-      const avgEngagementScore = scores.length > 0
-        ? scores.reduce((sum, s) => sum + s, 0) / scores.length
-        : 0;
+      const avgEngagementScore =
+        scores.length > 0
+          ? scores.reduce((sum, s) => sum + s, 0) / scores.length
+          : 0;
 
-      const avgSessionsPerUser = sessions.length > 0
-        ? sessions.reduce((sum, s) => sum + s, 0) / sessions.length
-        : 0;
+      const avgSessionsPerUser =
+        sessions.length > 0
+          ? sessions.reduce((sum, s) => sum + s, 0) / sessions.length
+          : 0;
 
       analytics.push({
         segment,
@@ -344,7 +356,7 @@ export class UserSegmentationService {
         avgEngagementScore,
         avgSessionsPerUser,
         characteristics: this.getSegmentCharacteristics(segment),
-        recommendations: this.getSegmentRecommendations(segment)
+        recommendations: this.getSegmentRecommendations(segment),
       });
     }
 
@@ -353,7 +365,7 @@ export class UserSegmentationService {
 
   /**
    * Get segment characteristics
-   * 
+   *
    * @param segment - User segment
    * @returns Array of characteristics
    */
@@ -363,26 +375,26 @@ export class UserSegmentationService {
         "Daily active users",
         "High feature adoption (>70%)",
         "Frequent approvals (>10/month)",
-        "Short time to click (<5s)"
+        "Short time to click (<5s)",
       ],
       casual: [
         "Weekly active users",
         "Moderate feature adoption (40-70%)",
         "Occasional approvals (3-10/month)",
-        "Standard usage patterns"
+        "Standard usage patterns",
       ],
       new: [
         "Recently signed up (<7 days)",
         "Exploring features",
         "Learning dashboard",
-        "Lower engagement initially"
+        "Lower engagement initially",
       ],
       churned: [
         "No activity in 30+ days",
         "Low engagement score (<40)",
         "At risk of not returning",
-        "May need re-engagement"
-      ]
+        "May need re-engagement",
+      ],
     };
 
     return characteristics[segment];
@@ -390,7 +402,7 @@ export class UserSegmentationService {
 
   /**
    * Get segment-specific recommendations
-   * 
+   *
    * @param segment - User segment
    * @returns Array of recommendations
    */
@@ -400,26 +412,26 @@ export class UserSegmentationService {
         "Enable beta features early",
         "Request feedback on new features",
         "Offer advanced personalization",
-        "Consider as product champion"
+        "Consider as product champion",
       ],
       casual: [
         "Highlight unused features",
         "Send weekly usage summary",
         "Offer quick wins and time-savers",
-        "Encourage daily usage"
+        "Encourage daily usage",
       ],
       new: [
         "Show onboarding tour",
         "Highlight key features",
         "Provide success examples",
-        "Reduce friction in workflows"
+        "Reduce friction in workflows",
       ],
       churned: [
         "Send re-engagement email",
         "Offer support/training",
         "Survey for feedback",
-        "Highlight new features added"
-      ]
+        "Highlight new features added",
+      ],
     };
 
     return recommendations[segment];
@@ -427,7 +439,7 @@ export class UserSegmentationService {
 
   /**
    * Get user first activity date
-   * 
+   *
    * @param userId - User identifier
    * @returns First activity date or null
    */
@@ -435,7 +447,7 @@ export class UserSegmentationService {
     const firstFact = await db.dashboardFact.findFirst({
       where: { shop: userId },
       orderBy: { timestamp: "asc" },
-      select: { timestamp: true }
+      select: { timestamp: true },
     });
 
     return firstFact?.timestamp || null;
@@ -447,5 +459,3 @@ export class UserSegmentationService {
 // ============================================================================
 
 export const userSegmentationService = new UserSegmentationService();
-
-

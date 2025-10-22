@@ -88,7 +88,7 @@ export interface InventoryAnalyticsSummary {
  */
 export function calculateTurnoverRate(
   averageInventory: number,
-  costOfGoodsSold: number
+  costOfGoodsSold: number,
 ): {
   turnoverRate: number;
   daysInventoryOutstanding: number;
@@ -168,7 +168,7 @@ export function performABCAnalysis(
     productId: string;
     productName: string;
     annualRevenue: number;
-  }>
+  }>,
 ): ABCAnalysisItem[] {
   if (products.length === 0) {
     return [];
@@ -176,13 +176,13 @@ export function performABCAnalysis(
 
   // Sort by revenue (descending)
   const sortedProducts = [...products].sort(
-    (a, b) => b.annualRevenue - a.annualRevenue
+    (a, b) => b.annualRevenue - a.annualRevenue,
   );
 
   // Calculate total revenue
   const totalRevenue = sortedProducts.reduce(
     (sum, p) => sum + p.annualRevenue,
-    0
+    0,
   );
 
   // Calculate cumulative percentages and classify
@@ -214,8 +214,7 @@ export function performABCAnalysis(
       productId: product.productId,
       productName: product.productName,
       annualRevenue: product.annualRevenue,
-      percentageOfTotalRevenue:
-        Math.round(percentageOfTotal * 100) / 100,
+      percentageOfTotalRevenue: Math.round(percentageOfTotal * 100) / 100,
       cumulativePercentage: Math.round(cumulativePercentage * 100) / 100,
       abcClass,
       recommendedStrategy,
@@ -243,7 +242,7 @@ export async function generateInventoryAnalytics(
     annualCOGS: number; // Annual cost of goods sold
     annualRevenue: number;
     lastSaleDate: Date | null;
-  }>
+  }>,
 ): Promise<InventoryAnalyticsSummary> {
   // Turnover Analysis
   const turnoverProducts: InventoryTurnoverMetrics[] = products.map((p) => {
@@ -261,15 +260,18 @@ export async function generateInventoryAnalytics(
   });
 
   // Overall turnover metrics
-  const totalAvgInventory = products.reduce((sum, p) => sum + p.avgInventory, 0);
+  const totalAvgInventory = products.reduce(
+    (sum, p) => sum + p.avgInventory,
+    0,
+  );
   const totalCOGS = products.reduce((sum, p) => sum + p.annualCOGS, 0);
   const overallTurnover = calculateTurnoverRate(totalAvgInventory, totalCOGS);
 
   const fastMoversCount = turnoverProducts.filter(
-    (p) => p.classification === "fast"
+    (p) => p.classification === "fast",
   ).length;
   const slowMoversCount = turnoverProducts.filter(
-    (p) => p.classification === "slow" || p.classification === "very_slow"
+    (p) => p.classification === "slow" || p.classification === "very_slow",
   ).length;
 
   // Aging Analysis
@@ -277,7 +279,7 @@ export async function generateInventoryAnalytics(
   const agingProducts: AgingAnalysis[] = products.map((p) => {
     const daysSinceLastSale = p.lastSaleDate
       ? Math.floor(
-          (today.getTime() - p.lastSaleDate.getTime()) / (1000 * 60 * 60 * 24)
+          (today.getTime() - p.lastSaleDate.getTime()) / (1000 * 60 * 60 * 24),
         )
       : null;
 
@@ -295,16 +297,23 @@ export async function generateInventoryAnalytics(
     };
   });
 
-  const freshCount = agingProducts.filter((p) => p.ageClassification === "fresh")
-    .length;
-  const agingCount = agingProducts.filter((p) => p.ageClassification === "aging")
-    .length;
-  const staleCount = agingProducts.filter((p) => p.ageClassification === "stale")
-    .length;
-  const deadCount = agingProducts.filter((p) => p.ageClassification === "dead")
-    .length;
+  const freshCount = agingProducts.filter(
+    (p) => p.ageClassification === "fresh",
+  ).length;
+  const agingCount = agingProducts.filter(
+    (p) => p.ageClassification === "aging",
+  ).length;
+  const staleCount = agingProducts.filter(
+    (p) => p.ageClassification === "stale",
+  ).length;
+  const deadCount = agingProducts.filter(
+    (p) => p.ageClassification === "dead",
+  ).length;
 
-  const totalValue = agingProducts.reduce((sum, p) => sum + p.estimatedValue, 0);
+  const totalValue = agingProducts.reduce(
+    (sum, p) => sum + p.estimatedValue,
+    0,
+  );
   const deadStockValue = agingProducts
     .filter((p) => p.ageClassification === "dead")
     .reduce((sum, p) => sum + p.estimatedValue, 0);
@@ -315,7 +324,7 @@ export async function generateInventoryAnalytics(
       productId: p.productId,
       productName: p.productName,
       annualRevenue: p.annualRevenue,
-    }))
+    })),
   );
 
   const classACount = abcProducts.filter((p) => p.abcClass === "A").length;
@@ -348,5 +357,3 @@ export async function generateInventoryAnalytics(
     generatedAt: new Date().toISOString(),
   };
 }
-
-

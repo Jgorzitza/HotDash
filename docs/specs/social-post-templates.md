@@ -18,18 +18,21 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 ## Brand Voice Guidelines
 
 ### Hot Rodan Brand Identity
+
 - **Theme:** Automotive performance, speed, precision
 - **Tone:** Enthusiastic, confident, knowledgeable
 - **Language:** Action-oriented, direct, empowering
 - **Vocabulary:** "Rev up", "Pit stop", "Full throttle", "Tuned", "Performance", "Garage"
 
 ### Voice Principles
+
 1. **Enthusiastic but Professional**: Excited about products/services, not gimmicky
 2. **Automotive Metaphors**: Use sparingly (1-2 per post max), don't force
 3. **Operator-First**: Speak to makers, builders, operators
 4. **Authentic**: Real stories, real results, real community
 
 ### Emoji Usage
+
 - **Frequency**: 1-2 per post maximum
 - **Relevant Only**: 🔥 🏁 🚗 ⚙️ 🔧 💪 ✨ 📊 🎯
 - **Avoid**: Overuse, irrelevant emojis, emoji-only communication
@@ -39,6 +42,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 ## Platform-Specific Guidelines
 
 ### LinkedIn
+
 - **Character Limit**: 3,000 (ideal: 150-300)
 - **Tone**: Professional, insightful, thought-leadership
 - **Format**: Longer-form storytelling, data-driven insights
@@ -47,6 +51,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 - **Content Types**: Company updates, thought leadership, behind-the-scenes, case studies
 
 ### Twitter/X
+
 - **Character Limit**: 280
 - **Tone**: Punchy, timely, conversational
 - **Format**: Short, quotable, engaging
@@ -55,6 +60,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 - **Content Types**: Quick updates, tips, engagement questions, trending topics
 
 ### Instagram
+
 - **Caption Limit**: 2,200 (ideal: 138-150)
 - **Tone**: Visual-first, lifestyle, inspirational
 - **Format**: Story-driven captions, line breaks for readability
@@ -63,6 +69,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 - **Content Types**: Product showcases, customer spotlights, tutorials, behind-the-scenes
 
 ### Facebook
+
 - **Character Limit**: 63,206 (ideal: 40-80)
 - **Tone**: Community-focused, conversational, inclusive
 - **Format**: Questions, storytelling, discussions
@@ -71,6 +78,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 - **Content Types**: Community stories, events, longer updates, video content
 
 ### TikTok
+
 - **Caption Limit**: 2,200 (ideal: 100-150)
 - **Tone**: Authentic, entertaining, educational
 - **Format**: Hook-first, concise, CTA at end
@@ -87,6 +95,7 @@ Comprehensive social media post templates for Hot Rodan brand across LinkedIn, T
 **Platforms:** LinkedIn, Twitter, Instagram, Facebook
 
 **Base Template:**
+
 ```
 🔥 NEW: {product_name} is here!
 
@@ -103,10 +112,11 @@ Shop now: {shop_url}
 **Variations:**
 
 **LinkedIn (Professional):**
+
 ```
 Introducing {product_name}: The Next Evolution in {category}
 
-After {development_time} of development, we're proud to launch {product_name}. 
+After {development_time} of development, we're proud to launch {product_name}.
 
 Key features:
 • {feature_1}
@@ -121,6 +131,7 @@ Learn more: {shop_url}
 ```
 
 **Twitter (Punchy):**
+
 ```
 Ready for this? {product_name} just dropped.
 
@@ -132,6 +143,7 @@ Get yours: {shop_url} 🏁
 ```
 
 **Instagram (Visual Storytelling):**
+
 ```
 Rev up! {product_name} has arrived. 🏁
 
@@ -149,10 +161,11 @@ Swipe to see it in action. Link in bio to shop!
 ```
 
 **Example:**
+
 ```
 🔥 NEW: TurboCharge Pro Battery is here!
 
-Triple the power, half the charge time. 
+Triple the power, half the charge time.
 
 ✅ 72-hour runtime
 ✅ Fast-charge compatible
@@ -170,6 +183,7 @@ Shop now: hotrodan.com/turbocharge 🏁
 **Platforms:** All platforms
 
 **Base Template:**
+
 ```
 💥 SALE: {discount_pct}% off {category}!
 
@@ -184,6 +198,7 @@ Shop: {shop_url}
 **Variations:**
 
 **Urgency-Focused:**
+
 ```
 Pit stop sale 🏁
 
@@ -198,8 +213,9 @@ Don't miss out: {shop_url}
 ```
 
 **Value-Focused:**
+
 ```
-Full throttle savings! 
+Full throttle savings!
 
 Save {discount_amount} on {product_category}
 
@@ -213,6 +229,7 @@ Code {promo_code} - Valid through {end_date}
 ```
 
 **Example:**
+
 ```
 💥 FLASH SALE: 30% off all maintenance kits!
 
@@ -236,6 +253,7 @@ Shop now: hotrodan.com/sale 🏁
 **Platforms:** Instagram, Twitter, Facebook
 
 **Base Template:**
+
 ```
 ✨ BACK IN STOCK: {product_name}!
 
@@ -249,6 +267,7 @@ Get yours before they're gone again.
 **Variations:**
 
 **Community-Focused:**
+
 ```
 You asked, we restocked!
 
@@ -262,6 +281,7 @@ Grab yours: {shop_url}
 ```
 
 **Urgency-Focused:**
+
 ```
 🚨 RESTOCK ALERT 🚨
 
@@ -275,6 +295,7 @@ Don't wait: {shop_url}
 ```
 
 **Example:**
+
 ```
 They're back in the garage! 🔧
 
@@ -294,8 +315,9 @@ Shop now: hotrodan.com/powergrip
 **Platforms:** Facebook, Instagram, LinkedIn
 
 **Base Template:**
+
 ```
-Customer Spotlight: {customer_name} from {location}! 
+Customer Spotlight: {customer_name} from {location}!
 
 {their_story_summary}
 
@@ -309,6 +331,7 @@ Want to be featured? Tag us with #HotRodanBuild!
 **Variations:**
 
 **Build Story:**
+
 ```
 Meet {customer_name}! 🔥
 
@@ -327,6 +350,7 @@ Tag us to share YOUR build story!
 ```
 
 **Testimonial Format:**
+
 ```
 "{testimonial_quote}" - {customer_name}
 
@@ -340,6 +364,7 @@ Share your story: [email]
 ```
 
 **Example:**
+
 ```
 Customer Spotlight: Mike Chen from Portland! 🏁
 
@@ -361,6 +386,7 @@ Want to be featured? Tag us! 📸
 **Platforms:** Instagram, TikTok, Facebook
 
 **Base Template:**
+
 ```
 Behind the scenes: {activity_description}
 
@@ -374,10 +400,11 @@ This is how we {process_name}. ⚙️✨
 **Variations:**
 
 **Educational:**
+
 ```
 Ever wondered how we {process_name}?
 
-Here's the inside look: 
+Here's the inside look:
 
 1. {step_1}
 2. {step_2}
@@ -389,6 +416,7 @@ Quality control at every stage. 🔧
 ```
 
 **Team Spotlight:**
+
 ```
 Workshop Wednesday: Meet {team_member_name}
 
@@ -402,6 +430,7 @@ Craftsmanship you can trust. 💪
 ```
 
 **Example:**
+
 ```
 From the garage: Precision machining in action 🔧
 
@@ -421,8 +450,9 @@ Watch the full process → [video]
 **Platforms:** All platforms
 
 **Base Template:**
+
 ```
-{season} is here! 
+{season} is here!
 
 {seasonal_hook}
 
@@ -438,6 +468,7 @@ Shop: {shop_url}
 **Variations:**
 
 **Weather-Focused:**
+
 ```
 Gear up for {season}!
 
@@ -455,6 +486,7 @@ Get your {product_category} ready:
 ```
 
 **Performance-Focused:**
+
 ```
 {season} performance: Your ride deserves the best.
 
@@ -470,6 +502,7 @@ Keep your vehicle in top shape. 🏁
 ```
 
 **Example:**
+
 ```
 Winter is coming! ❄️
 
@@ -493,6 +526,7 @@ Stay ready: hotrodan.com/winter
 **Platforms:** Instagram, TikTok, Facebook, LinkedIn
 
 **Base Template:**
+
 ```
 Quick tip: {tip_title}
 
@@ -506,6 +540,7 @@ Save this for later! 💡
 **Variations:**
 
 **How-To Format:**
+
 ```
 How to {task}:
 
@@ -521,6 +556,7 @@ Full tutorial: {link}
 ```
 
 **Maintenance Monday:**
+
 ```
 Maintenance Monday: {topic}
 
@@ -536,6 +572,7 @@ Takes {time}, saves you ${money}.
 ```
 
 **Example:**
+
 ```
 Did you know? 💡
 
@@ -558,6 +595,7 @@ Full guide: hotrodan.com/torque-guide
 **Platforms:** Instagram, Facebook, Twitter
 
 **Base Template:**
+
 ```
 📸 Repost from @{customer_handle}
 
@@ -571,6 +609,7 @@ Amazing work! Tag us to be featured.
 **Variations:**
 
 **Build Feature:**
+
 ```
 Check out this build from @{customer_handle}! 🔥
 
@@ -586,6 +625,7 @@ Tag us with your builds! #HotRodanBuild
 ```
 
 **Action Shot:**
+
 ```
 Repost: @{customer_handle}'s {vehicle/project} in action!
 
@@ -599,6 +639,7 @@ Share your builds - tag #HotRodanInAction
 ```
 
 **Example:**
+
 ```
 📸 Repost from @GarageGoals23
 
@@ -618,6 +659,7 @@ Tag us to be featured next!
 **Platforms:** All platforms
 
 **Base Template:**
+
 ```
 📅 Event: {event_name} on {date}!
 
@@ -631,6 +673,7 @@ RSVP: {link}
 **Variations:**
 
 **Car Show/Meet:**
+
 ```
 Mark your calendars! 🗓️
 
@@ -650,6 +693,7 @@ Register: {link}
 ```
 
 **Webinar/Workshop:**
+
 ```
 Learn from the pros: {workshop_title}
 
@@ -665,6 +709,7 @@ Limited spots available.
 ```
 
 **Example:**
+
 ```
 📅 Annual Hot Rodan Garage Meet - Oct 28th!
 
@@ -689,6 +734,7 @@ Register: hotrodan.com/meet2025
 **Platforms:** All platforms
 
 **Base Template:**
+
 ```
 🎉 Milestone alert!
 
@@ -702,6 +748,7 @@ Thanks to our amazing community! {gratitude_message}
 **Variations:**
 
 **Community Growth:**
+
 ```
 We did it! 🙏
 
@@ -718,6 +765,7 @@ Thank you for being part of the journey.
 ```
 
 **Anniversary:**
+
 ```
 Celebrating {years} years of Hot Rodan! 🎂
 
@@ -731,6 +779,7 @@ Thank you for {years} years of support. Here's to many more! 🏁
 ```
 
 **Example:**
+
 ```
 🎉 1 MILLION orders shipped!
 
@@ -748,6 +797,7 @@ This is just the beginning. Full throttle ahead! 🏁
 ## DO'S ✅
 
 ### Content
+
 - ✅ **Use automotive metaphors sparingly** - 1-2 per post maximum
 - ✅ **Lead with value** - What's in it for the reader?
 - ✅ **Include clear CTAs** - Shop now, Learn more, RSVP, Tag us
@@ -758,18 +808,21 @@ This is just the beginning. Full throttle ahead! 🏁
 - ✅ **Use high-quality visuals** - Professional photos, clean graphics
 
 ### Timing
+
 - ✅ **Post consistently** - 3-5 times per week minimum
 - ✅ **Use best times** - Reference platform guidelines above
 - ✅ **Plan ahead** - Seasonal content 2-4 weeks in advance
 - ✅ **React quickly** - Trending topics within 24 hours if relevant
 
 ### Engagement
+
 - ✅ **Ask questions** - Drive comments and conversations
 - ✅ **Tag relevant accounts** - Partners, customers (with permission)
 - ✅ **Use polls/surveys** - Interactive content performs well
 - ✅ **Respond within 2 hours** - During business hours
 
 ### Brand Voice
+
 - ✅ **Stay authentic** - Real Hot Rodan personality
 - ✅ **Be enthusiastic** - Passion for quality and performance
 - ✅ **Show confidence** - Expertise without arrogance
@@ -780,6 +833,7 @@ This is just the beginning. Full throttle ahead! 🏁
 ## DON'TS ❌
 
 ### Content
+
 - ❌ **Overuse brand terms** - Not every post needs "Hot Rodan" 5 times
 - ❌ **Force automotive metaphors** - If it doesn't fit naturally, skip it
 - ❌ **Use corporate speak** - "Leverage" → "Use", "Utilize" → "Use"
@@ -790,18 +844,21 @@ This is just the beginning. Full throttle ahead! 🏁
 - ❌ **Post and ghost** - Engagement requires presence
 
 ### Timing
+
 - ❌ **Post off-schedule** - Consistency builds audience expectations
 - ❌ **Spam followers** - More than 2 posts/day risks unfollows
 - ❌ **Ignore analytics** - Review what works, adjust strategy
 - ❌ **Schedule without review** - Final check before posting
 
 ### Engagement
+
 - ❌ **Buy followers/engagement** - Authentic growth only
 - ❌ **Engage in arguments** - Professional responses always
 - ❌ **Delete negative feedback** - Address it professionally
 - ❌ **Ignore mentions** - Monitor and respond to tags
 
 ### Brand Voice
+
 - ❌ **Be aggressive or pushy** - Confidence ≠ arrogance
 - ❌ **Use ALL CAPS** - Except for short exclamations (SALE, NEW)
 - ❌ **Overuse emojis** - 1-2 per post maximum
@@ -812,6 +869,7 @@ This is just the beginning. Full throttle ahead! 🏁
 ## Hashtag Strategy
 
 ### Branded Hashtags (Always Include 1-2)
+
 - `#HotRodan` - Primary brand tag
 - `#HotRodanCommunity` - Community content
 - `#HotRodanBuild` - Customer builds
@@ -819,16 +877,19 @@ This is just the beginning. Full throttle ahead! 🏁
 - `#HotRodanFamily` - Community celebrations
 
 ### Category Hashtags (2-3 per post)
+
 - `#CarCare` `#Automotive` `#Performance`
 - `#DIY` `#Tools` `#Garage`
 - `#CustomBuild` `#Restoration` `#Modification`
 
 ### Discovery Hashtags (2-3 per post)
+
 - Platform-specific trending tags
 - Industry-relevant tags
 - Location tags (for events/stores)
 
 ### Hashtag Rules
+
 - **LinkedIn:** 3-5 hashtags
 - **Twitter:** 1-2 hashtags
 - **Instagram:** 5-10 hashtags
@@ -842,30 +903,37 @@ This is just the beginning. Full throttle ahead! 🏁
 ### Weekly Posting Schedule
 
 **Monday:**
+
 - Maintenance Monday tip/tutorial
 - LinkedIn thought leadership
 
 **Tuesday:**
+
 - Product highlight
 - Instagram story series
 
 **Wednesday:**
+
 - Behind-the-scenes content
 - Customer spotlight
 
 **Thursday:**
+
 - Educational content
 - Community engagement post
 
 **Friday:**
+
 - Weekend project idea
 - Event announcement (if applicable)
 
 **Saturday:**
+
 - User-generated content repost
 - Casual community content
 
 **Sunday:**
+
 - Inspiration/motivation
 - Week ahead preview
 
@@ -874,6 +942,7 @@ This is just the beginning. Full throttle ahead! 🏁
 ## Performance Metrics
 
 ### Track These KPIs
+
 - **Engagement Rate:** Likes + Comments + Shares / Followers × 100
 - **Click-Through Rate:** Link Clicks / Impressions × 100
 - **Conversion Rate:** Purchases / Clicks × 100
@@ -882,6 +951,7 @@ This is just the beginning. Full throttle ahead! 🏁
 - **Share/Save Rate:** Shares + Saves / Impressions × 100
 
 ### Goals by Platform
+
 - **LinkedIn:** 2-5% engagement rate
 - **Twitter:** 0.5-1% engagement rate
 - **Instagram:** 3-6% engagement rate
@@ -893,6 +963,7 @@ This is just the beginning. Full throttle ahead! 🏁
 ## A/B Testing Framework
 
 ### Test Variables
+
 1. **Post Time:** Morning vs. afternoon vs. evening
 2. **CTA Placement:** Beginning vs. middle vs. end
 3. **Image Style:** Product shot vs. lifestyle vs. infographic
@@ -901,6 +972,7 @@ This is just the beginning. Full throttle ahead! 🏁
 6. **Hashtag Count:** Minimal (1-3) vs. moderate (5-7) vs. maximum (10+)
 
 ### Testing Protocol
+
 1. Change ONE variable at a time
 2. Run for minimum 2 weeks
 3. Analyze engagement metrics
@@ -914,16 +986,19 @@ This is just the beginning. Full throttle ahead! 🏁
 ### IF Negative Feedback or Crisis
 
 **Step 1: Acknowledge (Within 2 hours)**
+
 ```
 We hear you and take this seriously. Our team is investigating. We'll follow up within [timeframe] with more information.
 ```
 
 **Step 2: Investigate**
+
 - Gather facts from internal teams
 - Verify accuracy of complaints
 - Determine root cause
 
 **Step 3: Respond (Within 24 hours)**
+
 ```
 Update: [Situation summary]
 
@@ -936,11 +1011,13 @@ We're committed to making this right. Contact us directly: [support email/phone]
 ```
 
 **Step 4: Follow Up**
+
 - Public update when resolved
 - Thank community for patience
 - Document learnings for prevention
 
 ### Never
+
 - ❌ Delete criticism (unless spam/abusive)
 - ❌ Argue with customers publicly
 - ❌ Make promises you can't keep
@@ -951,18 +1028,21 @@ We're committed to making this right. Contact us directly: [support email/phone]
 ## Legal & Compliance
 
 ### Always Include
+
 - ✅ Proper disclosures for ads/partnerships (#ad #sponsored)
 - ✅ Permission for customer photos/testimonials
 - ✅ Copyright compliance for music/images
 - ✅ Accurate product claims (no false advertising)
 
 ### Get Permission Before
+
 - ✅ Reposting user content
 - ✅ Tagging customers in posts
 - ✅ Sharing customer testimonials
 - ✅ Using customer images
 
 ### FTC Guidelines
+
 - Disclose material connections (#ad #partner #sponsored)
 - Clear and conspicuous disclosures
 - Honest and truthful claims
@@ -973,17 +1053,20 @@ We're committed to making this right. Contact us directly: [support email/phone]
 ## Tools & Resources
 
 ### Content Creation
+
 - **Canva:** Graphics and visual design
 - **Later/Buffer:** Scheduling and planning
 - **Grammarly:** Copy editing and proofreading
 - **Unsplash/Pexels:** Stock photography (when needed)
 
 ### Analytics
+
 - **Platform native analytics:** Primary source
 - **Google Analytics:** Website traffic from social
 - **Sprout Social/Hootsuite:** Cross-platform reporting
 
 ### Community Management
+
 - **Mention/Brand24:** Social listening
 - **Platform native tools:** Direct messages and comments
 
@@ -992,6 +1075,7 @@ We're committed to making this right. Contact us directly: [support email/phone]
 ## Approval Process
 
 ### Before Publishing
+
 1. ✅ Proofread copy (no typos)
 2. ✅ Verify links work
 3. ✅ Check image quality (high-res, on-brand)
@@ -1001,6 +1085,7 @@ We're committed to making this right. Contact us directly: [support email/phone]
 7. ✅ Get manager approval (for major announcements)
 
 ### Post-Publishing
+
 1. Monitor comments (first 2 hours)
 2. Engage with early responders
 3. Fix any errors immediately
@@ -1012,6 +1097,7 @@ We're committed to making this right. Contact us directly: [support email/phone]
 ## Quick Reference Checklist
 
 **Every Post Should Have:**
+
 - [ ] Clear value proposition
 - [ ] Hot Rodan brand voice (not forced)
 - [ ] Call-to-action
@@ -1023,6 +1109,7 @@ We're committed to making this right. Contact us directly: [support email/phone]
 - [ ] Tagged relevant accounts (with permission)
 
 **Never Post Without:**
+
 - [ ] Proofreading
 - [ ] Checking links
 - [ ] Verifying image quality
@@ -1034,6 +1121,7 @@ We're committed to making this right. Contact us directly: [support email/phone]
 **END OF DOCUMENT**
 
 **Next Steps:**
+
 1. Review templates with team
 2. Customize variables for your campaign
 3. Schedule posts using content calendar
@@ -1041,4 +1129,3 @@ We're committed to making this right. Contact us directly: [support email/phone]
 5. Document successes for future reference
 
 **Questions?** Contact Content team or refer to `app/fixtures/content/social-post-templates.json` for JSON data format.
-

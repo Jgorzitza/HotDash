@@ -54,9 +54,7 @@ export async function getVendorWithMetrics(vendorId: string) {
 
   // Get last order date
   const lastOrderDate =
-    recentPurchaseOrders.length > 0
-      ? recentPurchaseOrders[0].orderDate
-      : null;
+    recentPurchaseOrders.length > 0 ? recentPurchaseOrders[0].orderDate : null;
 
   return {
     ...vendor,
@@ -79,12 +77,15 @@ function calculateAvgLeadTime(
     actualDeliveryDate: Date | null;
   }>,
 ): number {
-  const ordersWithDelivery = purchaseOrders.filter((po) => po.actualDeliveryDate);
+  const ordersWithDelivery = purchaseOrders.filter(
+    (po) => po.actualDeliveryDate,
+  );
 
   if (ordersWithDelivery.length === 0) return 0;
 
   const totalLeadTime = ordersWithDelivery.reduce((sum, po) => {
-    const leadTimeMs = po.actualDeliveryDate!.getTime() - po.orderDate.getTime();
+    const leadTimeMs =
+      po.actualDeliveryDate!.getTime() - po.orderDate.getTime();
     const leadTimeDays = leadTimeMs / (1000 * 60 * 60 * 24);
     return sum + leadTimeDays;
   }, 0);
@@ -303,4 +304,3 @@ export async function getVendorReliabilityTiers() {
 
   return tiers;
 }
-

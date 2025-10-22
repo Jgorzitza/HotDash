@@ -1,8 +1,8 @@
 /**
  * API Route: Track Experiment Event
- * 
+ *
  * POST /api/experiments/track
- * 
+ *
  * Tracks experiment events (exposure, conversion, engagement).
  * Used for collecting data to calculate experiment results.
  */
@@ -25,7 +25,7 @@ export async function action({ request }: Route.ActionArgs) {
       eventType,
       eventName,
       value,
-      metadata
+      metadata,
     } = body;
 
     // Validate inputs
@@ -33,9 +33,9 @@ export async function action({ request }: Route.ActionArgs) {
       return Response.json(
         {
           error:
-            "Missing required fields: experimentId, variantId, userId, eventType, eventName"
+            "Missing required fields: experimentId, variantId, userId, eventType, eventName",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -44,9 +44,9 @@ export async function action({ request }: Route.ActionArgs) {
     if (!validEventTypes.includes(eventType)) {
       return Response.json(
         {
-          error: `Invalid eventType. Must be one of: ${validEventTypes.join(", ")}`
+          error: `Invalid eventType. Must be one of: ${validEventTypes.join(", ")}`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -62,7 +62,7 @@ export async function action({ request }: Route.ActionArgs) {
           variantId,
           userId,
           eventName,
-          value
+          value,
         );
         break;
 
@@ -72,7 +72,7 @@ export async function action({ request }: Route.ActionArgs) {
           variantId,
           userId,
           eventName,
-          metadata
+          metadata,
         );
         break;
     }
@@ -85,16 +85,11 @@ export async function action({ request }: Route.ActionArgs) {
         userId,
         eventType,
         eventName,
-        timestamp: new Date().toISOString()
-      }
+        timestamp: new Date().toISOString(),
+      },
     });
   } catch (error) {
     console.error("[API] Experiment track error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

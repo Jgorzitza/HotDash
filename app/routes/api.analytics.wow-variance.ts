@@ -14,7 +14,10 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { getWoWVariance, type WoWVariance } from "../services/analytics/wow-variance";
+import {
+  getWoWVariance,
+  type WoWVariance,
+} from "../services/analytics/wow-variance";
 
 /**
  * API Response structure
@@ -29,23 +32,24 @@ interface WoWVarianceResponse {
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const project = url.searchParams.get('project');
-    const metric = url.searchParams.get('metric');
+    const project = url.searchParams.get("project");
+    const metric = url.searchParams.get("metric");
 
     // Validate required parameters
     if (!project) {
       const errorResponse: WoWVarianceResponse = {
         success: false,
-        error: 'Missing required parameter: project',
+        error: "Missing required parameter: project",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
     }
 
-    if (!metric || !['revenue', 'orders', 'conversion'].includes(metric)) {
+    if (!metric || !["revenue", "orders", "conversion"].includes(metric)) {
       const errorResponse: WoWVarianceResponse = {
         success: false,
-        error: 'Invalid or missing metric parameter. Must be: revenue, orders, or conversion',
+        error:
+          "Invalid or missing metric parameter. Must be: revenue, orders, or conversion",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -56,15 +60,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Calculate WoW variance
     const variance = await getWoWVariance(
       project,
-      metric as 'revenue' | 'orders' | 'conversion',
+      metric as "revenue" | "orders" | "conversion",
       supabaseUrl,
-      supabaseKey
+      supabaseKey,
     );
 
     const response: WoWVarianceResponse = {
@@ -75,15 +79,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] WoW variance error:', error);
+    console.error("[API] WoW variance error:", error);
 
     const errorResponse: WoWVarianceResponse = {
       success: false,
-      error: error.message || 'Failed to calculate WoW variance',
+      error: error.message || "Failed to calculate WoW variance",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

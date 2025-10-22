@@ -62,7 +62,7 @@ describe("Seasonal ROP - Basic Calculation", () => {
         leadTimeDays: 10,
         maxDailySales: 8,
         maxLeadDays: 15,
-      })
+      }),
     ).toThrow();
   });
 });
@@ -110,5 +110,3 @@ describe("Seasonal ROP - Seasonality Factors", () => {
     expect(offSeasonResult.reorderPoint).toBeLessThan(baseResult.reorderPoint);
   });
 });
-
-

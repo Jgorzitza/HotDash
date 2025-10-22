@@ -191,7 +191,12 @@ async function fetchSearchAnalyticsData(
   siteUrl: string,
   startDate: string,
   endDate: string,
-): Promise<{ clicks: number; impressions: number; ctr: number; position: number }> {
+): Promise<{
+  clicks: number;
+  impressions: number;
+  ctr: number;
+  position: number;
+}> {
   const response = await client.searchanalytics.query({
     siteUrl,
     requestBody: {
@@ -405,13 +410,15 @@ export async function getSearchConsoleSummary(): Promise<SearchConsoleSummary> {
 
   // Store to Supabase (async, don't block response)
   // Import dynamically to avoid circular dependency
-  import("../../services/seo/search-console-storage").then(({ storeSearchConsoleSummary }) => {
-    storeSearchConsoleSummary().catch(err => 
-      console.error("[Search Console] Storage failed:", err.message)
-    );
-  }).catch(() => {
-    // Silently fail if storage module not available
-  });
+  import("../../services/seo/search-console-storage")
+    .then(({ storeSearchConsoleSummary }) => {
+      storeSearchConsoleSummary().catch((err) =>
+        console.error("[Search Console] Storage failed:", err.message),
+      );
+    })
+    .catch(() => {
+      // Silently fail if storage module not available
+    });
 
   return {
     totalClicks: analytics.clicks,
@@ -430,4 +437,3 @@ function calculatePercentageChange(current: number, previous: number): number {
   }
   return ((current - previous) / previous) * 100;
 }
-

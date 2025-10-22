@@ -65,6 +65,7 @@ Approved Reply → Customer
 **Purpose**: Intelligent conversation routing
 
 **Features**:
+
 - Auto-assign based on rules
 - Priority routing (urgent, VIP)
 - Round-robin load balancing
@@ -72,6 +73,7 @@ Approved Reply → Customer
 - Legal/fraud escalation
 
 **5 Default Rules**:
+
 1. Escalate legal threats (priority 100)
 2. Prioritize urgent (priority 90)
 3. Prioritize VIP (priority 85)
@@ -79,6 +81,7 @@ Approved Reply → Customer
 5. Tag after-hours (priority 40)
 
 **Usage**:
+
 ```typescript
 import { routeConversation, checkSLABreach } from "~/services/chatwoot/routing";
 
@@ -93,12 +96,14 @@ const result = await routeConversation(conversation, agents);
 **Purpose**: Automate tagging and responses
 
 **Features**:
+
 - Keyword-based auto-tagging
 - Sentiment analysis
 - Intent classification
 - After-hours auto-reply
 
 **Keyword Categories**:
+
 - Orders: tracking, shipment, delivery
 - Inventory: stock, availability, backorder
 - CX: help, support, question
@@ -106,8 +111,12 @@ const result = await routeConversation(conversation, agents);
 - Sentiment: positive vs negative
 
 **Usage**:
+
 ```typescript
-import { analyzeConversation, applyAutomations } from "~/services/chatwoot/automation";
+import {
+  analyzeConversation,
+  applyAutomations,
+} from "~/services/chatwoot/automation";
 
 const analysis = analyzeConversation(conversation);
 // Returns: { categories, sentiment, intent, isUrgent }
@@ -123,6 +132,7 @@ await applyAutomations(conversation);
 **Purpose**: Generate performance analytics
 
 **Features**:
+
 - Response time tracking (avg, median, P90, P95, P99)
 - Resolution time analysis
 - CSAT calculation
@@ -130,6 +140,7 @@ await applyAutomations(conversation);
 - Peak hours detection
 
 **Usage**:
+
 ```typescript
 import { generateAnalyticsReport } from "~/services/chatwoot/analytics";
 
@@ -144,6 +155,7 @@ const report = await generateAnalyticsReport(startDate, endDate);
 **Purpose**: Automated daily/weekly reports
 
 **Features**:
+
 - Daily report generation
 - Weekly summaries
 - Smart recommendations
@@ -151,8 +163,12 @@ const report = await generateAnalyticsReport(startDate, endDate);
 - Email distribution
 
 **Usage**:
+
 ```typescript
-import { generateDailyReport, formatReportAsMarkdown } from "~/services/chatwoot/reporting";
+import {
+  generateDailyReport,
+  formatReportAsMarkdown,
+} from "~/services/chatwoot/reporting";
 
 const report = await generateDailyReport();
 const markdown = formatReportAsMarkdown(report);
@@ -167,6 +183,7 @@ const markdown = formatReportAsMarkdown(report);
 Returns CX metrics dashboard data
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -201,13 +218,13 @@ Receives Chatwoot webhooks
 
 Rules are evaluated in priority order (highest first):
 
-| Priority | Rule | Action |
-|----------|------|--------|
-| 100 | Legal threat detection | Escalate |
-| 90 | Urgent keywords | Prioritize + tag |
-| 85 | VIP keywords | Prioritize + tag |
-| 50 | Business hours | Auto-assign |
-| 40 | After hours | Tag |
+| Priority | Rule                   | Action           |
+| -------- | ---------------------- | ---------------- |
+| 100      | Legal threat detection | Escalate         |
+| 90       | Urgent keywords        | Prioritize + tag |
+| 85       | VIP keywords           | Prioritize + tag |
+| 50       | Business hours         | Auto-assign      |
+| 40       | After hours            | Tag              |
 
 ### Custom Rules
 
@@ -242,6 +259,7 @@ Add custom rules in `app/services/chatwoot/routing.ts`:
 **Location**: tests/integration/chatwoot/
 
 **Files**:
+
 - routing.spec.ts (12 tests)
 - automation.spec.ts (18 tests)
 - analytics.spec.ts (15 tests)
@@ -281,6 +299,7 @@ CHATWOOT_WEBHOOK_SECRET=<webhook_secret>
 ### Widget Deployment
 
 Widget is automatically included in app/root.tsx:
+
 - Loads on all pages
 - Token: ieNpPnBaZXd9joxoeMts7qTA
 - Color: #D32F2F (Hot Rod AN red)
@@ -300,11 +319,13 @@ npm run ops:check-chatwoot-health
 ### Issue: Widget Not Appearing
 
 **Causes**:
+
 1. Script blocked by CSP
 2. Token invalid
 3. Chatwoot service down
 
 **Solution**:
+
 1. Check browser console for errors
 2. Verify widget token
 3. Test https://hotdash-chatwoot.fly.dev/health
@@ -314,11 +335,13 @@ npm run ops:check-chatwoot-health
 ### Issue: Webhook Not Firing
 
 **Causes**:
+
 1. Webhook URL not configured in Chatwoot
 2. Signature verification failing
 3. Network issues
 
 **Solution**:
+
 1. Configure webhook in Chatwoot Settings → Webhooks
 2. Verify CHATWOOT_WEBHOOK_SECRET matches
 3. Check logs for signature errors
@@ -328,11 +351,13 @@ npm run ops:check-chatwoot-health
 ### Issue: API Returns 401
 
 **Causes**:
+
 1. Invalid API token
 2. Token expired
 3. Permissions issue
 
 **Solution**:
+
 1. Regenerate token in Chatwoot → Settings → Integrations → API
 2. Update CHATWOOT_TOKEN env var
 3. Restart Hot Dash app
@@ -350,5 +375,3 @@ npm run ops:check-chatwoot-health
 ---
 
 **For questions or issues, contact Support Agent or Manager**
-
-

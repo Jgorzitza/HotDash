@@ -1,6 +1,6 @@
 /**
  * Internal Linking Service Tests
- * 
+ *
  * Tests for internal linking analysis including:
  * - Orphan page detection
  * - Content similarity analysis
@@ -10,13 +10,20 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { analyzeInternalLinking, getPageLinkingRecommendations } from "../../../../app/services/seo/internal-linking";
+import {
+  analyzeInternalLinking,
+  getPageLinkingRecommendations,
+} from "../../../../app/services/seo/internal-linking";
 
 describe("Internal Linking Service", () => {
   describe("analyzeInternalLinking", () => {
     it("should analyze internal linking and return comprehensive analysis", async () => {
       const pages = [
-        { url: "/page1", links: ["/page2", "/page3"], content: "Content for page 1" },
+        {
+          url: "/page1",
+          links: ["/page2", "/page3"],
+          content: "Content for page 1",
+        },
         { url: "/page2", links: ["/page1"], content: "Content for page 2" },
         { url: "/page3", links: [], content: "Content for page 3" },
       ];
@@ -58,11 +65,11 @@ describe("Internal Linking Service", () => {
       const result = await analyzeInternalLinking(pages);
 
       // orphan should have no incoming links
-      const orphan = result.pages.find(p => p.url === "/orphan");
+      const orphan = result.pages.find((p) => p.url === "/orphan");
       expect(orphan).toBeDefined();
       expect(orphan!.incomingLinks).toBe(0);
       expect(orphan!.isOrphan).toBe(true);
-      
+
       expect(result.summary.orphanPages).toBeGreaterThanOrEqual(1);
       expect(result.orphans.length).toBeGreaterThanOrEqual(1);
     });
@@ -75,7 +82,7 @@ describe("Internal Linking Service", () => {
 
       const result = await analyzeInternalLinking(pages);
 
-      const page2 = result.pages.find(p => p.url === "/page2");
+      const page2 = result.pages.find((p) => p.url === "/page2");
       expect(page2).toBeDefined();
       expect(page2!.incomingLinks).toBeGreaterThan(0);
       expect(page2!.isOrphan).toBe(false);
@@ -85,12 +92,16 @@ describe("Internal Linking Service", () => {
       const manyLinks = Array.from({ length: 60 }, (_, i) => `/page${i}`);
       const pages = [
         { url: "/hub", links: manyLinks, content: "Hub page content" },
-        ...manyLinks.map(url => ({ url, links: [], content: "Page content" })),
+        ...manyLinks.map((url) => ({
+          url,
+          links: [],
+          content: "Page content",
+        })),
       ];
 
       const result = await analyzeInternalLinking(pages);
 
-      const hubPage = result.pages.find(p => p.url === "/hub");
+      const hubPage = result.pages.find((p) => p.url === "/hub");
       expect(hubPage).toBeDefined();
       expect(hubPage!.isOverLinked).toBe(true);
       expect(result.summary.overLinkedPages).toBeGreaterThan(0);
@@ -105,7 +116,7 @@ describe("Internal Linking Service", () => {
 
       const result = await analyzeInternalLinking(pages);
 
-      result.pages.forEach(page => {
+      result.pages.forEach((page) => {
         expect(page).toHaveProperty("pageAuthority");
         expect(page.pageAuthority).toBeGreaterThanOrEqual(0);
         expect(page.pageAuthority).toBeLessThanOrEqual(100);
@@ -123,12 +134,14 @@ describe("Internal Linking Service", () => {
 
       const result = await analyzeInternalLinking(pages);
 
-      const popularPage = result.pages.find(p => p.url === "/popular");
-      const unpopularPage = result.pages.find(p => p.url === "/unpopular");
+      const popularPage = result.pages.find((p) => p.url === "/popular");
+      const unpopularPage = result.pages.find((p) => p.url === "/unpopular");
 
       expect(popularPage).toBeDefined();
       expect(unpopularPage).toBeDefined();
-      expect(popularPage!.pageAuthority).toBeGreaterThan(unpopularPage!.pageAuthority);
+      expect(popularPage!.pageAuthority).toBeGreaterThan(
+        unpopularPage!.pageAuthority,
+      );
     });
 
     it("should count incoming and outgoing links correctly", async () => {
@@ -140,9 +153,9 @@ describe("Internal Linking Service", () => {
 
       const result = await analyzeInternalLinking(pages);
 
-      const page1 = result.pages.find(p => p.url === "/page1");
-      const page2 = result.pages.find(p => p.url === "/page2");
-      const page3 = result.pages.find(p => p.url === "/page3");
+      const page1 = result.pages.find((p) => p.url === "/page1");
+      const page2 = result.pages.find((p) => p.url === "/page2");
+      const page3 = result.pages.find((p) => p.url === "/page3");
 
       expect(page1!.outgoingLinks).toBe(2);
       expect(page1!.incomingLinks).toBe(1); // from page2
@@ -163,7 +176,7 @@ describe("Internal Linking Service", () => {
 
       const result = await analyzeInternalLinking(pages);
 
-      result.pages.forEach(page => {
+      result.pages.forEach((page) => {
         expect(page).toHaveProperty("recommendations");
         expect(Array.isArray(page.recommendations)).toBe(true);
       });
@@ -171,20 +184,32 @@ describe("Internal Linking Service", () => {
 
     it("should recommend links for orphan pages", async () => {
       const pages = [
-        { url: "/page1", links: ["/page2", "/page3"], content: "skateboard decks and wheels with great quality" },
+        {
+          url: "/page1",
+          links: ["/page2", "/page3"],
+          content: "skateboard decks and wheels with great quality",
+        },
         { url: "/page2", links: ["/page1"], content: "other content here" },
-        { url: "/page3", links: ["/page1"], content: "skateboard accessories and related products" },
-        { url: "/orphan-page", links: [], content: "completely isolated orphan content" },
+        {
+          url: "/page3",
+          links: ["/page1"],
+          content: "skateboard accessories and related products",
+        },
+        {
+          url: "/orphan-page",
+          links: [],
+          content: "completely isolated orphan content",
+        },
       ];
 
       const result = await analyzeInternalLinking(pages);
 
       // Find pages with no incoming links
-      const orphanPages = result.pages.filter(p => p.isOrphan);
-      
+      const orphanPages = result.pages.filter((p) => p.isOrphan);
+
       // Should identify at least one orphan
       expect(orphanPages.length).toBeGreaterThanOrEqual(1);
-      
+
       // Orphan pages should have recommendations
       if (orphanPages.length > 0) {
         expect(Array.isArray(orphanPages[0].recommendations)).toBe(true);
@@ -195,48 +220,54 @@ describe("Internal Linking Service", () => {
       const manyLinks = Array.from({ length: 60 }, (_, i) => `/page${i}`);
       const pages = [
         { url: "/hub", links: manyLinks, content: "Hub page" },
-        ...manyLinks.slice(0, 10).map(url => ({ url, links: [], content: "Content" })),
+        ...manyLinks
+          .slice(0, 10)
+          .map((url) => ({ url, links: [], content: "Content" })),
       ];
 
       const result = await analyzeInternalLinking(pages);
 
-      const hubPage = result.pages.find(p => p.url === "/hub");
+      const hubPage = result.pages.find((p) => p.url === "/hub");
       expect(hubPage).toBeDefined();
-      
-      const hasReduceLinksRecommendation = hubPage!.recommendations.some(r => 
-        r.type === "remove-excessive-links"
+
+      const hasReduceLinksRecommendation = hubPage!.recommendations.some(
+        (r) => r.type === "remove-excessive-links",
       );
       expect(hasReduceLinksRecommendation).toBe(true);
     });
 
     it("should suggest contextual links based on content similarity", async () => {
       const pages = [
-        { 
-          url: "/skateboard-decks", 
-          links: [], 
-          content: "skateboard decks made from maple wood with great quality" 
+        {
+          url: "/skateboard-decks",
+          links: [],
+          content: "skateboard decks made from maple wood with great quality",
         },
-        { 
-          url: "/skateboard-wheels", 
-          links: [], 
-          content: "skateboard wheels for smooth riding and tricks" 
+        {
+          url: "/skateboard-wheels",
+          links: [],
+          content: "skateboard wheels for smooth riding and tricks",
         },
-        { 
-          url: "/unrelated", 
-          links: [], 
-          content: "completely different topic about cooking" 
+        {
+          url: "/unrelated",
+          links: [],
+          content: "completely different topic about cooking",
         },
       ];
 
       const result = await analyzeInternalLinking(pages);
 
       // Pages with similar content about skateboards should have recommendations to link to each other
-      const skateboardDeckPage = result.pages.find(p => p.url === "/skateboard-decks");
-      
+      const skateboardDeckPage = result.pages.find(
+        (p) => p.url === "/skateboard-decks",
+      );
+
       if (skateboardDeckPage && skateboardDeckPage.recommendations.length > 0) {
-        const hasSimilarContentRecommendation = skateboardDeckPage.recommendations.some(r => 
-          r.type === "add-internal-link" && r.toPage.includes("skateboard")
-        );
+        const hasSimilarContentRecommendation =
+          skateboardDeckPage.recommendations.some(
+            (r) =>
+              r.type === "add-internal-link" && r.toPage.includes("skateboard"),
+          );
         // This may or may not have recommendations depending on similarity threshold
         expect(hasSimilarContentRecommendation).toBeDefined();
       }
@@ -251,10 +282,10 @@ describe("Internal Linking Service", () => {
       const result = await analyzeInternalLinking(pages);
 
       expect(Array.isArray(result.topRecommendations)).toBe(true);
-      
+
       if (result.topRecommendations.length > 1) {
         const priorityOrder = { high: 0, medium: 1, low: 2 };
-        
+
         for (let i = 0; i < result.topRecommendations.length - 1; i++) {
           const current = priorityOrder[result.topRecommendations[i].priority];
           const next = priorityOrder[result.topRecommendations[i + 1].priority];
@@ -285,7 +316,7 @@ describe("Internal Linking Service", () => {
 
       if (result.topRecommendations.length > 0) {
         const recommendation = result.topRecommendations[0];
-        
+
         expect(recommendation).toHaveProperty("type");
         expect(recommendation).toHaveProperty("fromPage");
         expect(recommendation).toHaveProperty("toPage");
@@ -306,17 +337,15 @@ describe("Internal Linking Service", () => {
 
       // Total outgoing: 2 + 1 + 0 = 3, avg = 1
       expect(result.summary.avgOutgoingLinks).toBe(1);
-      
+
       // Total incoming: 1 + 1 + 1 = 3, avg = 1
       expect(result.summary.avgIncomingLinks).toBe(1);
-      
+
       expect(result.summary.totalInternalLinks).toBe(3);
     });
 
     it("should include timestamp in analyzedAt field", async () => {
-      const pages = [
-        { url: "/page1", links: [], content: "Content 1" },
-      ];
+      const pages = [{ url: "/page1", links: [], content: "Content 1" }];
 
       const result = await analyzeInternalLinking(pages);
 
@@ -337,7 +366,8 @@ describe("Internal Linking Service", () => {
     });
 
     it("should handle empty page list gracefully", async () => {
-      const pages: Array<{ url: string; links: string[]; content?: string }> = [];
+      const pages: Array<{ url: string; links: string[]; content?: string }> =
+        [];
 
       const result = await analyzeInternalLinking(pages);
 
@@ -354,17 +384,21 @@ describe("Internal Linking Service", () => {
         { url: "/page2", links: [], content: "Content 2" },
       ];
 
-      const recommendations = await getPageLinkingRecommendations("/page1", pages);
+      const recommendations = await getPageLinkingRecommendations(
+        "/page1",
+        pages,
+      );
 
       expect(Array.isArray(recommendations)).toBe(true);
     });
 
     it("should return empty array for non-existent page", async () => {
-      const pages = [
-        { url: "/page1", links: [], content: "Content 1" },
-      ];
+      const pages = [{ url: "/page1", links: [], content: "Content 1" }];
 
-      const recommendations = await getPageLinkingRecommendations("/non-existent", pages);
+      const recommendations = await getPageLinkingRecommendations(
+        "/non-existent",
+        pages,
+      );
 
       expect(recommendations).toEqual([]);
     });
@@ -375,15 +409,17 @@ describe("Internal Linking Service", () => {
         { url: "/orphan", links: [], content: "skateboard accessories" },
       ];
 
-      const recommendations = await getPageLinkingRecommendations("/orphan", pages);
+      const recommendations = await getPageLinkingRecommendations(
+        "/orphan",
+        pages,
+      );
 
       if (recommendations.length > 0) {
-        const hasRelevantRecommendation = recommendations.some(r => 
-          r.type === "add-internal-link"
+        const hasRelevantRecommendation = recommendations.some(
+          (r) => r.type === "add-internal-link",
         );
         expect(hasRelevantRecommendation).toBe(true);
       }
     });
   });
 });
-

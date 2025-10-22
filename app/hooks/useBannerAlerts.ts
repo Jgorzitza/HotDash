@@ -1,12 +1,12 @@
 /**
  * Banner Alerts Hook
- * 
+ *
  * Monitors system state and generates banner alerts for:
  * - Queue backlog (>10 pending approvals)
  * - Performance degradation (<70% approval rate)
  * - System health (service down/degraded)
  * - Connection status (offline/reconnecting)
- * 
+ *
  * Phase 4 - ENG-012
  */
 
@@ -60,7 +60,8 @@ export function useBannerAlerts(status: SystemStatus): BannerAlert[] {
         id: "service-degraded",
         tone: "warning",
         title: "Agent Service Degraded",
-        message: "Response times are higher than normal. Monitoring the situation.",
+        message:
+          "Response times are higher than normal. Monitoring the situation.",
         dismissible: true,
       });
     }
@@ -70,7 +71,8 @@ export function useBannerAlerts(status: SystemStatus): BannerAlert[] {
         id: "service-down",
         tone: "critical",
         title: "Agent Service Unavailable",
-        message: "Agent service is currently unavailable. Manual support required.",
+        message:
+          "Agent service is currently unavailable. Manual support required.",
         action: {
           label: "Contact Support",
           url: "mailto:customer.support@hotrodan.com",
@@ -85,7 +87,8 @@ export function useBannerAlerts(status: SystemStatus): BannerAlert[] {
         id: "connection-offline",
         tone: "critical",
         title: "Connection Lost",
-        message: "Check your internet connection. The app will automatically reconnect when online.",
+        message:
+          "Check your internet connection. The app will automatically reconnect when online.",
         dismissible: false,
       });
     }
@@ -103,4 +106,3 @@ export function useBannerAlerts(status: SystemStatus): BannerAlert[] {
     return alerts;
   }, [status]);
 }
-

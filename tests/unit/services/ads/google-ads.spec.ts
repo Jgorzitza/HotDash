@@ -56,8 +56,10 @@ describe("createGoogleAdsClient", () => {
     delete process.env.GOOGLE_ADS_DEVELOPER_TOKEN;
     delete process.env.GOOGLE_ADS_CUSTOMER_ID;
 
-    expect(() => createGoogleAdsClient()).toThrow("Missing required Google Ads credentials");
-    
+    expect(() => createGoogleAdsClient()).toThrow(
+      "Missing required Google Ads credentials",
+    );
+
     Object.assign(process.env, oldEnv);
   });
 });

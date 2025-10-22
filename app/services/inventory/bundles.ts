@@ -41,7 +41,7 @@ export interface BundleInfo {
  * @returns Array of bundle components
  */
 export function parseBundleMetafield(
-  metafieldValue: string
+  metafieldValue: string,
 ): BundleComponent[] {
   if (!metafieldValue || !metafieldValue.includes("BUNDLE:TRUE")) {
     return [];
@@ -83,7 +83,7 @@ export function parseBundleMetafield(
  * @returns Promise resolving to array of components (empty if not a bundle)
  */
 export async function getBundleComponents(
-  bundleProductId: string
+  bundleProductId: string,
 ): Promise<BundleComponent[]> {
   // In production: fetch from Shopify API
   // const product = await getProduct(context, bundleProductId);
@@ -149,7 +149,7 @@ export async function calculateBundleROP(
     maxLeadDays: number;
     category?: ProductCategory;
     currentMonth?: number;
-  }
+  },
 ): Promise<{
   reorderPoint: number;
   isBundle: boolean;
@@ -182,7 +182,7 @@ export async function calculateBundleROP(
         stock: componentStock,
         availableBundles,
       };
-    })
+    }),
   );
 
   // Find the limiting component (lowest available bundles)
@@ -228,14 +228,14 @@ export async function getBundleInfo(productId: string): Promise<BundleInfo> {
         component: c,
         availableBundles: Math.floor(stock / c.quantity),
       };
-    })
+    }),
   );
 
   const minAvailable = Math.min(
-    ...componentCapacities.map((cc) => cc.availableBundles)
+    ...componentCapacities.map((cc) => cc.availableBundles),
   );
   const limitingComponent = componentCapacities.find(
-    (cc) => cc.availableBundles === minAvailable
+    (cc) => cc.availableBundles === minAvailable,
   );
 
   return {
@@ -247,4 +247,3 @@ export async function getBundleInfo(productId: string): Promise<BundleInfo> {
     limitingComponent: limitingComponent?.component.componentProductId,
   };
 }
-

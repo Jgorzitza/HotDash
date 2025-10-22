@@ -44,15 +44,14 @@ export interface PickerPayoutCSVRow {
 
 /**
  * Convert array of objects to CSV string
- * 
+ *
  * @param data - Array of data objects
  * @param headers - Column headers (object keys to include)
  * @returns CSV formatted string
  */
-function arrayToCSV<T extends Record<string, string | number | boolean | null | undefined>>(
-  data: T[],
-  headers: Array<keyof T>,
-): string {
+function arrayToCSV<
+  T extends Record<string, string | number | boolean | null | undefined>,
+>(data: T[], headers: Array<keyof T>): string {
   if (data.length === 0) {
     return headers.join(",") + "\n";
   }

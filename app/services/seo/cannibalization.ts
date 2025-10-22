@@ -73,12 +73,12 @@ const CANNIBALIZATION_THRESHOLDS = {
   // Number of URLs competing for the same keyword
   urlCount: {
     critical: 3, // 3+ URLs = critical
-    warning: 2,  // 2 URLs = warning
+    warning: 2, // 2 URLs = warning
   },
   // Position difference threshold
   positionSpread: {
     critical: 10, // Positions spread by 10+ = critical
-    warning: 5,   // Positions spread by 5-10 = warning
+    warning: 5, // Positions spread by 5-10 = warning
   },
   // Minimum clicks to consider
   minClicks: 10,
@@ -91,10 +91,12 @@ const CANNIBALIZATION_THRESHOLDS = {
 /**
  * Group rankings by keyword to detect cannibalization
  */
-function groupRankingsByKeyword(rankings: KeywordRanking[]): Map<string, KeywordRanking[]> {
+function groupRankingsByKeyword(
+  rankings: KeywordRanking[],
+): Map<string, KeywordRanking[]> {
   const keywordMap = new Map<string, KeywordRanking[]>();
 
-  rankings.forEach(ranking => {
+  rankings.forEach((ranking) => {
     const existing = keywordMap.get(ranking.keyword) || [];
     existing.push(ranking);
     keywordMap.set(ranking.keyword, existing);
@@ -109,13 +111,13 @@ function groupRankingsByKeyword(rankings: KeywordRanking[]): Map<string, Keyword
 function calculateSeverity(
   urlCount: number,
   positionSpread: number,
-  totalClicks: number
+  totalClicks: number,
 ): "critical" | "warning" | "info" {
   // Critical: 3+ URLs OR large position spread with significant traffic
   if (
     urlCount >= CANNIBALIZATION_THRESHOLDS.urlCount.critical ||
-    (positionSpread >= CANNIBALIZATION_THRESHOLDS.positionSpread.critical && 
-     totalClicks >= CANNIBALIZATION_THRESHOLDS.minClicks)
+    (positionSpread >= CANNIBALIZATION_THRESHOLDS.positionSpread.critical &&
+      totalClicks >= CANNIBALIZATION_THRESHOLDS.minClicks)
   ) {
     return "critical";
   }
@@ -146,7 +148,7 @@ function estimateClicksLost(rankings: KeywordRanking[]): number {
   // from improved position (assumption: consolidated page would rank better)
   const potentialClicks = otherPages.reduce((sum, page) => {
     // Conservative estimate: 50% of secondary page clicks could go to primary
-    return sum + (page.clicks * 0.5);
+    return sum + page.clicks * 0.5;
   }, 0);
 
   return Math.round(potentialClicks);
@@ -157,7 +159,7 @@ function estimateClicksLost(rankings: KeywordRanking[]): number {
  */
 function generateRecommendation(
   keyword: string,
-  rankings: KeywordRanking[]
+  rankings: KeywordRanking[],
 ): CannibalizationIssue["recommendation"] {
   // Sort by performance (clicks first, then position)
   const sorted = [...rankings].sort((a, b) => {
@@ -166,7 +168,7 @@ function generateRecommendation(
   });
 
   const primaryUrl = sorted[0].url;
-  const secondaryUrls = sorted.slice(1).map(r => r.url);
+  const secondaryUrls = sorted.slice(1).map((r) => r.url);
 
   // Determine action based on keyword intent and page similarity
   let action: "consolidate" | "differentiate" | "canonical" | "redirect";
@@ -194,7 +196,9 @@ function generateRecommendation(
 /**
  * Analyze keyword rankings for cannibalization
  */
-function analyzeCannibalization(keywordRankings: KeywordRanking[]): CannibalizationIssue[] {
+function analyzeCannibalization(
+  keywordRankings: KeywordRanking[],
+): CannibalizationIssue[] {
   const groupedByKeyword = groupRankingsByKeyword(keywordRankings);
   const issues: CannibalizationIssue[] = [];
 
@@ -203,25 +207,32 @@ function analyzeCannibalization(keywordRankings: KeywordRanking[]): Cannibalizat
     if (rankings.length < 2) return;
 
     // Calculate metrics
-    const positions = rankings.map(r => r.position);
+    const positions = rankings.map((r) => r.position);
     const minPosition = Math.min(...positions);
     const maxPosition = Math.max(...positions);
     const positionSpread = maxPosition - minPosition;
 
     const totalClicks = rankings.reduce((sum, r) => sum + r.clicks, 0);
-    const totalImpressions = rankings.reduce((sum, r) => sum + r.impressions, 0);
+    const totalImpressions = rankings.reduce(
+      (sum, r) => sum + r.impressions,
+      0,
+    );
 
     // Skip low-traffic keywords (less than threshold clicks)
     if (totalClicks < CANNIBALIZATION_THRESHOLDS.minClicks) return;
 
-    const severity = calculateSeverity(rankings.length, positionSpread, totalClicks);
+    const severity = calculateSeverity(
+      rankings.length,
+      positionSpread,
+      totalClicks,
+    );
     const potentialClicksLost = estimateClicksLost(rankings);
     const recommendation = generateRecommendation(keyword, rankings);
 
     issues.push({
       keyword,
       severity,
-      affectedUrls: rankings.map(r => ({
+      affectedUrls: rankings.map((r) => ({
         url: r.url,
         position: r.position,
         clicks: r.clicks,
@@ -256,7 +267,7 @@ function analyzeCannibalization(keywordRankings: KeywordRanking[]): Cannibalizat
  * Detect keyword cannibalization issues from Search Console data
  */
 export async function detectKeywordCannibalization(
-  shopDomain: string
+  shopDomain: string,
 ): Promise<CannibalizationReport> {
   const startTime = Date.now();
 
@@ -277,14 +288,19 @@ export async function detectKeywordCannibalization(
     const issues = analyzeCannibalization(keywordRankings);
 
     // Generate summary
-    const criticalIssues = issues.filter(i => i.severity === "critical").length;
-    const warningIssues = issues.filter(i => i.severity === "warning").length;
-    const infoIssues = issues.filter(i => i.severity === "info").length;
-    const estimatedClicksLost = issues.reduce((sum, i) => sum + i.potentialClicksLost, 0);
+    const criticalIssues = issues.filter(
+      (i) => i.severity === "critical",
+    ).length;
+    const warningIssues = issues.filter((i) => i.severity === "warning").length;
+    const infoIssues = issues.filter((i) => i.severity === "info").length;
+    const estimatedClicksLost = issues.reduce(
+      (sum, i) => sum + i.potentialClicksLost,
+      0,
+    );
 
     const report: CannibalizationReport = {
       summary: {
-        totalKeywords: new Set(keywordRankings.map(r => r.keyword)).size,
+        totalKeywords: new Set(keywordRankings.map((r) => r.keyword)).size,
         keywordsWithCannibalization: issues.length,
         criticalIssues,
         warningIssues,
@@ -314,7 +330,9 @@ export async function detectKeywordCannibalization(
  * Fetch keyword rankings from Search Console
  * In production, this would call the Search Console API
  */
-async function fetchKeywordRankings(shopDomain: string): Promise<KeywordRanking[]> {
+async function fetchKeywordRankings(
+  shopDomain: string,
+): Promise<KeywordRanking[]> {
   // Sample data for development
   // In production, replace with actual Search Console API calls
   return [
@@ -358,9 +376,8 @@ async function fetchKeywordRankings(shopDomain: string): Promise<KeywordRanking[
  */
 export async function getKeywordCannibalizationDetails(
   shopDomain: string,
-  keyword: string
+  keyword: string,
 ): Promise<CannibalizationIssue | null> {
   const report = await detectKeywordCannibalization(shopDomain);
-  return report.issues.find(issue => issue.keyword === keyword) || null;
+  return report.issues.find((issue) => issue.keyword === keyword) || null;
 }
-

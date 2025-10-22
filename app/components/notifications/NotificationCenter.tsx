@@ -1,13 +1,13 @@
 /**
  * Notification Center Component
- * 
+ *
  * Slide-out panel showing notification history:
  * - Grouped by date (Today, Yesterday, Earlier)
  * - Mark as read/unread
  * - "Mark all as read" action
  * - Links to relevant pages
  * - Accessible (keyboard navigation, ARIA)
- * 
+ *
  * Phase 4 - ENG-013
  */
 
@@ -288,7 +288,13 @@ function NotificationGroup({
       >
         {title}
       </h3>
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--occ-space-2)" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--occ-space-2)",
+        }}
+      >
         {notifications.map((notif) => (
           <NotificationItem
             key={notif.id}
@@ -310,7 +316,12 @@ interface NotificationItemProps {
   timeAgo: string;
 }
 
-function NotificationItem({ notification, onMarkAsRead, icon, timeAgo }: NotificationItemProps) {
+function NotificationItem({
+  notification,
+  onMarkAsRead,
+  icon,
+  timeAgo,
+}: NotificationItemProps) {
   const handleClick = () => {
     if (!notification.read) {
       onMarkAsRead(notification.id);
@@ -325,14 +336,22 @@ function NotificationItem({ notification, onMarkAsRead, icon, timeAgo }: Notific
       onClick={handleClick}
       style={{
         padding: "var(--occ-space-3)",
-        background: notification.read ? "transparent" : "var(--occ-bg-secondary)",
+        background: notification.read
+          ? "transparent"
+          : "var(--occ-bg-secondary)",
         border: "1px solid var(--occ-border-default)",
         borderRadius: "var(--occ-radius-md)",
         cursor: notification.url ? "pointer" : "default",
         transition: "background 0.2s ease",
       }}
     >
-      <div style={{ display: "flex", gap: "var(--occ-space-3)", alignItems: "flex-start" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "var(--occ-space-3)",
+          alignItems: "flex-start",
+        }}
+      >
         <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>{icon}</span>
         <div style={{ flex: 1 }}>
           <p
@@ -385,4 +404,3 @@ function NotificationItem({ notification, onMarkAsRead, icon, timeAgo }: Notific
     </div>
   );
 }
-

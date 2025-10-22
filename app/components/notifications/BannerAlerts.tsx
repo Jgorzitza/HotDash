@@ -1,12 +1,12 @@
 /**
  * Banner Alerts Component
- * 
+ *
  * Displays persistent page-level alerts for:
  * - Queue backlog (>10 pending approvals)
  * - Performance degradation (<70% approval rate)
  * - System health (service down/degraded)
  * - Connection status (offline/reconnecting)
- * 
+ *
  * Phase 4 - ENG-012
  */
 
@@ -187,4 +187,3 @@ function Banner({ alert, onDismiss }: BannerProps) {
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 /**
  * Social Post Performance Tracking Service
- * 
+ *
  * Tracks Publer post metrics: impressions, clicks, engagement
  * Calculates CTR and engagement rate
  * Stores in DashboardFact table with factType="social_performance"
@@ -30,11 +30,11 @@ export interface SocialPerformanceData {
  */
 export async function trackSocialPostPerformance(
   postId: string,
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<SocialPerformanceData> {
   // TODO: Integrate with actual Publer API when credentials are available
   // For now, use mock data structure to establish the pattern
-  
+
   // Fetch post from database
   const post = await prisma.socialPost.findUnique({
     where: { id: postId },
@@ -103,12 +103,9 @@ function calculateMetrics(raw: {
   comments: number;
 }): SocialMetrics {
   const engagement = raw.likes + raw.shares + raw.comments;
-  const ctr = raw.impressions > 0 
-    ? (raw.clicks / raw.impressions) * 100 
-    : 0;
-  const engagementRate = raw.impressions > 0
-    ? (engagement / raw.impressions) * 100
-    : 0;
+  const ctr = raw.impressions > 0 ? (raw.clicks / raw.impressions) * 100 : 0;
+  const engagementRate =
+    raw.impressions > 0 ? (engagement / raw.impressions) * 100 : 0;
 
   return {
     impressions: raw.impressions,
@@ -126,7 +123,7 @@ async function storeSocialMetrics(
   shopDomain: string,
   postId: string,
   platform: string,
-  metrics: SocialMetrics
+  metrics: SocialMetrics,
 ): Promise<void> {
   await prisma.dashboardFact.create({
     data: {
@@ -152,7 +149,7 @@ async function storeSocialMetrics(
 export async function getSocialPerformanceSummary(
   shopDomain: string = "occ",
   platform?: string,
-  days: number = 30
+  days: number = 30,
 ): Promise<{
   totalImpressions: number;
   totalClicks: number;
@@ -201,7 +198,7 @@ export async function getSocialPerformanceSummary(
         engagementRate: acc.engagementRate + (value.engagementRate || 0),
       };
     },
-    { impressions: 0, clicks: 0, engagement: 0, ctr: 0, engagementRate: 0 }
+    { impressions: 0, clicks: 0, engagement: 0, ctr: 0, engagementRate: 0 },
   );
 
   return {
@@ -209,8 +206,9 @@ export async function getSocialPerformanceSummary(
     totalClicks: totals.clicks,
     totalEngagement: totals.engagement,
     avgCtr: Number((totals.ctr / facts.length).toFixed(2)),
-    avgEngagementRate: Number((totals.engagementRate / facts.length).toFixed(2)),
+    avgEngagementRate: Number(
+      (totals.engagementRate / facts.length).toFixed(2),
+    ),
     postCount: facts.length,
   };
 }
-

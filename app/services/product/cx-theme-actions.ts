@@ -19,7 +19,7 @@ export interface ConversationTheme {
  * Represents an actionable task generated from a CX theme
  */
 export interface CXThemeAction {
-  type: 'content' | 'seo' | 'product_update';
+  type: "content" | "seo" | "product_update";
   title: string;
   description: string;
   expectedRevenue: number;
@@ -42,25 +42,51 @@ export interface CXThemeAction {
  * Returns the action type and specific implementation approach
  */
 export function mapThemeToImplementationType(theme: string): {
-  type: 'content' | 'seo' | 'product_update';
+  type: "content" | "seo" | "product_update";
   implementationType: string;
 } {
-  const themeMap: Record<string, { type: 'content' | 'seo' | 'product_update'; implementationType: string }> = {
+  const themeMap: Record<
+    string,
+    { type: "content" | "seo" | "product_update"; implementationType: string }
+  > = {
     "size chart": { type: "content", implementationType: "add_size_chart" },
     "sizing guide": { type: "content", implementationType: "add_size_chart" },
-    "product dimensions": { type: "content", implementationType: "add_dimensions" },
-    "how to install": { type: "content", implementationType: "add_installation_guide" },
-    "warranty information": { type: "content", implementationType: "add_warranty_section" },
-    "return policy": { type: "seo", implementationType: "add_return_policy_link" },
-    "shipping time": { type: "seo", implementationType: "add_shipping_estimate" },
-    "in stock": { type: "product_update", implementationType: "add_stock_indicator" },
-    "when restock": { type: "product_update", implementationType: "add_restock_notification" }
+    "product dimensions": {
+      type: "content",
+      implementationType: "add_dimensions",
+    },
+    "how to install": {
+      type: "content",
+      implementationType: "add_installation_guide",
+    },
+    "warranty information": {
+      type: "content",
+      implementationType: "add_warranty_section",
+    },
+    "return policy": {
+      type: "seo",
+      implementationType: "add_return_policy_link",
+    },
+    "shipping time": {
+      type: "seo",
+      implementationType: "add_shipping_estimate",
+    },
+    "in stock": {
+      type: "product_update",
+      implementationType: "add_stock_indicator",
+    },
+    "when restock": {
+      type: "product_update",
+      implementationType: "add_restock_notification",
+    },
   };
-  
-  return themeMap[theme.toLowerCase()] || {
-    type: "content",
-    implementationType: "general_update"
-  };
+
+  return (
+    themeMap[theme.toLowerCase()] || {
+      type: "content",
+      implementationType: "general_update",
+    }
+  );
 }
 
 /**
@@ -70,12 +96,12 @@ export function mapThemeToImplementationType(theme: string): {
 export function generateDraftCopy(
   theme: string,
   productTitle: string,
-  occurrences: number
+  occurrences: number,
 ): string {
   const implType = mapThemeToImplementationType(theme);
-  
+
   const templates: Record<string, string> = {
-    "add_size_chart": `
+    add_size_chart: `
 **Size Chart for ${productTitle}**
 
 Based on ${occurrences} customer inquiries in the last 7 days, customers need sizing guidance. Recommended size chart:
@@ -89,8 +115,8 @@ Based on ${occurrences} customer inquiries in the last 7 days, customers need si
 
 **Fit Notes**: True to size. For between sizes, size up for comfort.
     `.trim(),
-    
-    "add_dimensions": `
+
+    add_dimensions: `
 **Product Dimensions for ${productTitle}**
 
 Customers are asking about exact dimensions (${occurrences} inquiries). Add to product description:
@@ -105,8 +131,8 @@ Customers are asking about exact dimensions (${occurrences} inquiries). Add to p
 - Box size: [FILL IN]
 - Shipping weight: [FILL IN]
     `.trim(),
-    
-    "add_installation_guide": `
+
+    add_installation_guide: `
 **Installation Guide for ${productTitle}**
 
 ${occurrences} customers asked for installation help. Suggested guide:
@@ -121,8 +147,8 @@ ${occurrences} customers asked for installation help. Suggested guide:
 
 **Video Tutorial**: [LINK TO VIDEO if available]
     `.trim(),
-    
-    "add_warranty_section": `
+
+    add_warranty_section: `
 **Warranty Information for ${productTitle}**
 
 Customers are asking about warranty coverage (${occurrences} inquiries). Add to product page:
@@ -131,12 +157,15 @@ Customers are asking about warranty coverage (${occurrences} inquiries). Add to 
 **Covers**: Manufacturing defects, material failures
 **Does Not Cover**: Normal wear and tear, misuse, improper installation
 **Claim Process**: Email support@hotrodan.com with order number and photos
-    `.trim()
+    `.trim(),
   };
-  
-  return templates[implType.implementationType] || `
+
+  return (
+    templates[implType.implementationType] ||
+    `
 Update ${productTitle} to address customer questions about "${theme}" (${occurrences} inquiries in last 7 days).
-  `.trim();
+  `.trim()
+  );
 }
 
 /**
@@ -152,8 +181,11 @@ async function getShopifyProductByHandle(handle: string): Promise<{
   // For now, return mock data to allow service testing
   return {
     id: `gid://shopify/Product/mock-${handle}`,
-    title: handle.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-    handle
+    title: handle
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" "),
+    handle,
   };
 }
 
@@ -163,24 +195,28 @@ async function getShopifyProductByHandle(handle: string): Promise<{
  */
 export async function generateCXThemeAction(
   theme: ConversationTheme,
-  shopDomain: string
+  shopDomain: string,
 ): Promise<CXThemeAction | null> {
   // Get product details
   const product = await getShopifyProductByHandle(theme.productHandle);
-  
+
   if (!product) {
     console.warn(`[Product] Product not found: ${theme.productHandle}`);
     return null;
   }
-  
+
   const implMapping = mapThemeToImplementationType(theme.theme);
-  const draftCopy = generateDraftCopy(theme.theme, product.title, theme.occurrences);
-  
+  const draftCopy = generateDraftCopy(
+    theme.theme,
+    product.title,
+    theme.occurrences,
+  );
+
   // Calculate expected impact
   const expectedRevenue = theme.occurrences * 50; // Estimate: $50 saved support time per inquiry
   const confidence = theme.occurrences >= 5 ? 0.9 : 0.7; // Higher confidence with more data
   const ease = implMapping.implementationType === "add_size_chart" ? 0.8 : 0.6;
-  
+
   return {
     type: implMapping.type,
     title: `Add ${theme.theme} to ${product.title}`,
@@ -196,8 +232,8 @@ export async function generateCXThemeAction(
       occurrences: theme.occurrences,
       productHandle: theme.productHandle,
       exampleQueries: theme.exampleQueries,
-      implementationType: implMapping.implementationType
-    }
+      implementationType: implMapping.implementationType,
+    },
   };
 }
 
@@ -207,18 +243,18 @@ export async function generateCXThemeAction(
  */
 export async function processCXThemes(
   themes: ConversationTheme[],
-  shopDomain: string
+  shopDomain: string,
 ): Promise<CXThemeAction[]> {
   const actions: CXThemeAction[] = [];
-  
+
   for (const theme of themes) {
     const action = await generateCXThemeAction(theme, shopDomain);
-    
+
     if (action) {
       actions.push(action);
     }
   }
-  
+
   return actions;
 }
 
@@ -228,10 +264,10 @@ export async function processCXThemes(
  */
 export async function addCXActionsToQueue(
   actions: CXThemeAction[],
-  shopDomain: string
+  shopDomain: string,
 ): Promise<{ added: number; facts: DashboardFact[] }> {
   const facts: DashboardFact[] = [];
-  
+
   for (const action of actions) {
     const fact = await recordDashboardFact({
       shopDomain,
@@ -242,20 +278,19 @@ export async function addCXActionsToQueue(
         theme: action.metadata.theme,
         occurrences: action.metadata.occurrences,
         productHandle: action.metadata.productHandle,
-        createdBy: 'ai-knowledge',
-        status: 'pending'
+        createdBy: "ai-knowledge",
+        status: "pending",
       }),
-      evidenceUrl: action.evidenceUrl
+      evidenceUrl: action.evidenceUrl,
     });
-    
+
     facts.push(fact);
   }
-  
+
   console.log(`[Product] ✅ Added ${actions.length} CX theme actions to queue`);
-  
+
   return {
     added: actions.length,
-    facts
+    facts,
   };
 }
-

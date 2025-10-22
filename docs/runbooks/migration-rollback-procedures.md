@@ -1,4 +1,5 @@
 # Migration Rollback Procedures
+
 **Created**: 2025-10-21  
 **Task**: DATA-014  
 **Version**: 1.0
@@ -16,6 +17,7 @@ Safe procedures for rolling back database migrations in case of issues.
 ### Decision Tree
 
 **Migration issue detected** →
+
 - Single table issue? → **Selective rollback** (drop specific table)
 - Multiple tables? → **Phase rollback** (drop phase tables)
 - Complete failure? → **Full rollback** (all Phase 7-13)
@@ -29,6 +31,7 @@ Safe procedures for rolling back database migrations in case of issues.
 **Use Case**: Complete rollback of all new tables
 
 **Command**:
+
 ```bash
 psql "$DATABASE_URL" -f supabase/migrations/rollback_all_phase_7_13.sql
 ```
@@ -36,14 +39,16 @@ psql "$DATABASE_URL" -f supabase/migrations/rollback_all_phase_7_13.sql
 **Time**: ~2-3 minutes
 
 **What's Dropped**:
+
 - 11 tables (seo_audits, seo_rankings, ad_campaigns, ad_performance, social_analytics, onboarding_progress, feature_tours, experiments, experiment_results, knowledge_base, ceo_briefings)
 - 9 performance indexes (DATA-006)
 - pgvector extension (optional)
 
 **Verification**:
+
 ```sql
-SELECT COUNT(*) FROM pg_tables 
-WHERE schemaname = 'public' 
+SELECT COUNT(*) FROM pg_tables
+WHERE schemaname = 'public'
   AND tablename IN ('seo_audits', 'ceo_briefings');
 -- Should return 0
 ```
@@ -53,6 +58,7 @@ WHERE schemaname = 'public'
 ### Method 2: Phase-Specific Rollback
 
 **Phase 10-13 (Advanced) Only**:
+
 ```sql
 DROP TABLE IF EXISTS ceo_briefings CASCADE;
 DROP TABLE IF EXISTS knowledge_base CASCADE;
@@ -61,12 +67,14 @@ DROP TABLE IF EXISTS experiments CASCADE;
 ```
 
 **Phase 9 (Onboarding) Only**:
+
 ```sql
 DROP TABLE IF EXISTS feature_tours CASCADE;
 DROP TABLE IF EXISTS onboarding_progress CASCADE;
 ```
 
 **Phase 7-8 (Growth) Only**:
+
 ```sql
 DROP TABLE IF EXISTS social_analytics CASCADE;
 DROP TABLE IF EXISTS ad_performance CASCADE;
@@ -80,9 +88,10 @@ DROP TABLE IF EXISTS seo_audits CASCADE;
 ### Method 3: Selective Table Rollback
 
 **Single Table**:
+
 ```sql
 -- Check dependencies first
-SELECT 
+SELECT
   conname,
   conrelid::regclass AS table_name,
   confrelid::regclass AS references_table
@@ -98,6 +107,7 @@ DROP TABLE IF EXISTS table_name CASCADE;
 ## Safety Checklist
 
 **Before Rollback**:
+
 - [ ] Backup database (pg_dump)
 - [ ] Get Manager/CEO approval (production)
 - [ ] Test in staging first
@@ -105,11 +115,13 @@ DROP TABLE IF EXISTS table_name CASCADE;
 - [ ] Notify stakeholders
 
 **During Rollback**:
+
 - [ ] Use transaction (BEGIN ... COMMIT)
 - [ ] Monitor for errors
 - [ ] Verify CASCADE won't drop unintended tables
 
 **After Rollback**:
+
 - [ ] Verify tables dropped
 - [ ] Update Prisma schema (remove models)
 - [ ] Run `npx prisma generate`
@@ -128,6 +140,7 @@ DROP TABLE IF EXISTS table_name CASCADE;
    - Delete Phase 10-13 models (Experiment, ExperimentResult, KnowledgeBase, CeoBriefing)
 
 2. **Regenerate Prisma Client**:
+
    ```bash
    npx prisma generate
    ```
@@ -142,6 +155,7 @@ DROP TABLE IF EXISTS table_name CASCADE;
 ## Testing Rollback (Staging)
 
 **Test Procedure**:
+
 1. Apply forward migrations to staging
 2. Insert test data
 3. Run rollback script
@@ -170,5 +184,3 @@ DROP TABLE IF EXISTS table_name CASCADE;
 **Status**: ✅ READY  
 **Owner**: Data + DevOps  
 **Review**: Quarterly
-
-

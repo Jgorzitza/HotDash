@@ -1,6 +1,6 @@
 /**
  * Data Validation Service
- * 
+ *
  * Validates analytics data integrity
  * Detects missing data, outliers, and inconsistencies
  * Calculates data quality score (0-100)
@@ -38,7 +38,7 @@ export interface DataQualityReport {
  */
 export async function validateDataQuality(
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<DataQualityReport> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -75,14 +75,12 @@ export async function validateDataQuality(
   issues.push(...staleDataIssues);
 
   // Calculate quality score
-  const qualityScore = calculateQualityScore(
-    allFacts.length,
-    issues,
-    days
-  );
+  const qualityScore = calculateQualityScore(allFacts.length, issues, days);
 
   // Count valid records (those without issues)
-  const validRecords = allFacts.length - issues.reduce((sum, i) => sum + i.affectedDates.length, 0);
+  const validRecords =
+    allFacts.length -
+    issues.reduce((sum, i) => sum + i.affectedDates.length, 0);
 
   return {
     shopDomain,
@@ -93,7 +91,10 @@ export async function validateDataQuality(
     summary: {
       totalRecords: allFacts.length,
       validRecords: Math.max(0, validRecords),
-      missingDataDays: missingDataIssues.reduce((sum, i) => sum + i.affectedDates.length, 0),
+      missingDataDays: missingDataIssues.reduce(
+        (sum, i) => sum + i.affectedDates.length,
+        0,
+      ),
       outlierCount: outlierIssues.length,
       inconsistencyCount: inconsistencyIssues.length,
     },
@@ -107,13 +108,13 @@ export async function validateDataQuality(
 function detectMissingData(
   facts: any[],
   since: Date,
-  expectedDays: number
+  expectedDays: number,
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
   // Get unique dates from facts
   const recordedDates = new Set(
-    facts.map((f) => f.createdAt.toISOString().split("T")[0])
+    facts.map((f) => f.createdAt.toISOString().split("T")[0]),
   );
 
   // Check for gaps
@@ -185,7 +186,7 @@ function detectOutliers(facts: any[]): ValidationIssue[] {
 function findOutliersIQR(
   values: number[],
   facts: any[],
-  metricKey: string
+  metricKey: string,
 ): Date[] {
   const sorted = [...values].sort((a, b) => a - b);
   const q1 = sorted[Math.floor(sorted.length * 0.25)];
@@ -226,7 +227,8 @@ function detectInconsistencies(facts: any[]): ValidationIssue[] {
       type: "inconsistency",
       severity: "critical",
       metric: "all",
-      description: "Negative values detected in metrics that should be positive",
+      description:
+        "Negative values detected in metrics that should be positive",
       affectedDates: negativeValues.map((f) => f.createdAt),
       impact: 8,
     });
@@ -273,7 +275,7 @@ function detectStaleData(facts: any[]): ValidationIssue[] {
   // Check if most recent data is older than 2 days
   const mostRecent = facts[facts.length - 1];
   const daysSinceUpdate = Math.floor(
-    (Date.now() - mostRecent.createdAt.getTime()) / (24 * 60 * 60 * 1000)
+    (Date.now() - mostRecent.createdAt.getTime()) / (24 * 60 * 60 * 1000),
   );
 
   if (daysSinceUpdate > 2) {
@@ -296,7 +298,7 @@ function detectStaleData(facts: any[]): ValidationIssue[] {
 function calculateQualityScore(
   totalRecords: number,
   issues: ValidationIssue[],
-  expectedDays: number
+  expectedDays: number,
 ): number {
   let score = 100;
 
@@ -329,42 +331,42 @@ function getQualityGrade(score: number): "A" | "B" | "C" | "D" | "F" {
  */
 function generateRecommendations(
   issues: ValidationIssue[],
-  qualityScore: number
+  qualityScore: number,
 ): string[] {
   const recommendations: string[] = [];
 
   const criticalIssues = issues.filter((i) => i.severity === "critical");
   if (criticalIssues.length > 0) {
     recommendations.push(
-      "URGENT: Address critical data issues immediately to ensure accurate analytics."
+      "URGENT: Address critical data issues immediately to ensure accurate analytics.",
     );
   }
 
   const missingDataIssue = issues.find((i) => i.type === "missing_data");
   if (missingDataIssue) {
     recommendations.push(
-      "Implement automated data collection to prevent gaps in analytics tracking."
+      "Implement automated data collection to prevent gaps in analytics tracking.",
     );
   }
 
   const outlierIssues = issues.filter((i) => i.type === "outlier");
   if (outlierIssues.length > 3) {
     recommendations.push(
-      "High number of outliers detected. Review data collection process for accuracy."
+      "High number of outliers detected. Review data collection process for accuracy.",
     );
   }
 
   if (qualityScore < 70) {
     recommendations.push(
-      "Data quality below acceptable threshold. Prioritize data integrity improvements."
+      "Data quality below acceptable threshold. Prioritize data integrity improvements.",
     );
   }
 
   if (recommendations.length === 0) {
-    recommendations.push("Data quality is good. Continue current monitoring practices.");
+    recommendations.push(
+      "Data quality is good. Continue current monitoring practices.",
+    );
   }
 
   return recommendations;
 }
-
-

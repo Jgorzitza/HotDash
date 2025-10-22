@@ -8,8 +8,13 @@ interface InventoryHeatmapTileProps {
   enableModal?: boolean;
 }
 
-export function InventoryHeatmapTile({ alerts, enableModal = false }: InventoryHeatmapTileProps) {
-  const [selectedAlert, setSelectedAlert] = useState<InventoryAlert | null>(null);
+export function InventoryHeatmapTile({
+  alerts,
+  enableModal = false,
+}: InventoryHeatmapTileProps) {
+  const [selectedAlert, setSelectedAlert] = useState<InventoryAlert | null>(
+    null,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = (alert: InventoryAlert) => {

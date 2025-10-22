@@ -35,8 +35,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         success: false,
         error: error.message || "Failed to fetch inventory tile data",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

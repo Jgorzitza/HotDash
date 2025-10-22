@@ -62,4 +62,3 @@ export function getFeatureFlagsWithOverrides(
       searchParams.get("feature_beta") === "1" || baseFlags.betaFeatures,
   };
 }
-

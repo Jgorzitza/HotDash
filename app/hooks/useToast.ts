@@ -1,18 +1,18 @@
 /**
  * Toast Notification Hook (Enhanced for Phase 4)
- * 
+ *
  * Complete toast notification system with 4 types:
  * - Success: Action approved, settings saved
  * - Error: Approval failed, connection lost
  * - Info: New approvals, queue refreshed
  * - Warning: Queue backlog, performance degradation
- * 
+ *
  * Features:
  * - Auto-dismiss (5s default, 7s for errors)
  * - Queue management (multiple toasts)
  * - Dismissible toasts
  * - Accessible (ARIA live regions)
- * 
+ *
  * Phase 4 - ENG-011
  */
 
@@ -97,4 +97,3 @@ export function useToast() {
     clearAll,
   };
 }
-

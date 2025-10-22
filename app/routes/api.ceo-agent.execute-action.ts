@@ -17,10 +17,10 @@
  */
 
 import { type ActionFunctionArgs } from "react-router";
-import { 
-  executeAction, 
-  type ActionExecutionRequest, 
-  type ActionExecutionResult 
+import {
+  executeAction,
+  type ActionExecutionRequest,
+  type ActionExecutionResult,
 } from "../services/ai-customer/action-execution";
 
 /**
@@ -39,37 +39,43 @@ export async function action({ request }: ActionFunctionArgs) {
     const { actionId, actionType, approvalId, payload, ceoContext } = body;
 
     // Validate required parameters
-    if (!actionId || typeof actionId !== 'string') {
+    if (!actionId || typeof actionId !== "string") {
       const errorResponse: ExecuteActionResponse = {
         success: false,
-        error: 'Missing or invalid required parameter: actionId',
+        error: "Missing or invalid required parameter: actionId",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
     }
 
-    if (!actionType || !['cx', 'inventory', 'social', 'product', 'ads'].includes(actionType)) {
+    if (
+      !actionType ||
+      !["cx", "inventory", "social", "product", "ads"].includes(actionType)
+    ) {
       const errorResponse: ExecuteActionResponse = {
         success: false,
-        error: 'Invalid actionType. Must be one of: cx, inventory, social, product, ads',
+        error:
+          "Invalid actionType. Must be one of: cx, inventory, social, product, ads",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
     }
 
-    if (!approvalId || typeof approvalId !== 'number') {
+    if (!approvalId || typeof approvalId !== "number") {
       const errorResponse: ExecuteActionResponse = {
         success: false,
-        error: 'Missing or invalid required parameter: approvalId (must be number)',
+        error:
+          "Missing or invalid required parameter: approvalId (must be number)",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
     }
 
-    if (!payload || typeof payload !== 'object') {
+    if (!payload || typeof payload !== "object") {
       const errorResponse: ExecuteActionResponse = {
         success: false,
-        error: 'Missing or invalid required parameter: payload (must be object)',
+        error:
+          "Missing or invalid required parameter: payload (must be object)",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -80,7 +86,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY; // Need service role for decision_log writes
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Execute action
@@ -95,26 +101,25 @@ export async function action({ request }: ActionFunctionArgs) {
     const result = await executeAction(
       executionRequest,
       supabaseUrl,
-      supabaseKey
+      supabaseKey,
     );
 
     const response: ExecuteActionResponse = {
-      success: result.status === 'success',
+      success: result.status === "success",
       data: result,
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] CEO Agent action execution error:', error);
+    console.error("[API] CEO Agent action execution error:", error);
 
     const errorResponse: ExecuteActionResponse = {
       success: false,
-      error: error.message || 'Failed to execute action',
+      error: error.message || "Failed to execute action",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

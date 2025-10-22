@@ -24,7 +24,7 @@ export function CXEscalationModal({
   const fetcher = useFetcher<ActionResponse>();
   const [reply, setReply] = useState(conversation.suggestedReply ?? "");
   const [note, setNote] = useState("");
-  
+
   // Grading sliders (1-5 scale)
   const [toneGrade, setToneGrade] = useState(3);
   const [accuracyGrade, setAccuracyGrade] = useState(3);
@@ -93,12 +93,12 @@ export function CXEscalationModal({
     if (note.trim()) {
       formData.set("note", note.trim());
     }
-    
+
     // Add grading data (1-5 scale)
     formData.set("toneGrade", String(toneGrade));
     formData.set("accuracyGrade", String(accuracyGrade));
     formData.set("policyGrade", String(policyGrade));
-    
+
     Object.entries(extra).forEach(([key, value]) => {
       if (value !== undefined) {
         formData.set(key, value);
@@ -223,9 +223,19 @@ export function CXEscalationModal({
 
           <section className="occ-modal__section">
             <h3>Grade AI Response (1-5 scale)</h3>
-            <div className="occ-modal__grading" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div
+              className="occ-modal__grading"
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
               <div className="occ-grade-control">
-                <label htmlFor={`tone-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <label
+                  htmlFor={`tone-grade-${conversation.id}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   <span>Tone</span>
                   <span aria-live="polite">{toneGrade}/5</span>
                 </label>
@@ -242,9 +252,16 @@ export function CXEscalationModal({
                   style={{ width: "100%" }}
                 />
               </div>
-              
+
               <div className="occ-grade-control">
-                <label htmlFor={`accuracy-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <label
+                  htmlFor={`accuracy-grade-${conversation.id}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   <span>Accuracy</span>
                   <span aria-live="polite">{accuracyGrade}/5</span>
                 </label>
@@ -261,9 +278,16 @@ export function CXEscalationModal({
                   style={{ width: "100%" }}
                 />
               </div>
-              
+
               <div className="occ-grade-control">
-                <label htmlFor={`policy-grade-${conversation.id}`} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
+                <label
+                  htmlFor={`policy-grade-${conversation.id}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   <span>Policy Compliance</span>
                   <span aria-live="polite">{policyGrade}/5</span>
                 </label>

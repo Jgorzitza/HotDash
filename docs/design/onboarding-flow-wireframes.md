@@ -73,7 +73,7 @@ Guide new operators through Hot Rod AN Control Center with a 4-step interactive 
 
 **Title**: "Welcome to Your Pit Crew Command Center"
 
-**Body**: 
+**Body**:
 "Hot Rod AN helps you run your shop at full speed. Let's take a quick tour of your new dashboard."
 
 **Primary Button**: "Take the Tour"
@@ -91,12 +91,12 @@ Guide new operators through Hot Rod AN Control Center with a 4-step interactive 
   title="Welcome to Your Pit Crew Command Center"
   size="large"
   primaryAction={{
-    content: 'Take the Tour',
+    content: "Take the Tour",
     onAction: handleStartTour,
   }}
   secondaryActions={[
     {
-      content: 'Skip Tour',
+      content: "Skip Tour",
       onAction: handleSkipTour,
     },
   ]}
@@ -104,16 +104,16 @@ Guide new operators through Hot Rod AN Control Center with a 4-step interactive 
   <Modal.Section>
     <BlockStack gap="400" align="center">
       <Icon source={FlagIcon} tone="info" />
-      
+
       <Text variant="headingLg" as="h2" alignment="center">
         Welcome to Your Pit Crew Command Center
       </Text>
-      
+
       <Text variant="bodyLg" as="p" alignment="center">
-        Hot Rod AN helps you run your shop at full speed. 
-        Let's take a quick tour of your new dashboard.
+        Hot Rod AN helps you run your shop at full speed. Let's take a quick
+        tour of your new dashboard.
       </Text>
-      
+
       <Text variant="bodySm" as="p" tone="subdued" alignment="center">
         Takes 2 minutes
       </Text>
@@ -197,16 +197,16 @@ All tiles update in real-time so you're always in sync."
   title="Your Dashboard Command Center"
   size="large"
   primaryAction={{
-    content: 'Next: Approvals',
+    content: "Next: Approvals",
     onAction: () => setCurrentStep(2),
   }}
   secondaryActions={[
     {
-      content: 'Back',
+      content: "Back",
       onAction: () => setCurrentStep(0),
     },
     {
-      content: 'Skip Tour',
+      content: "Skip Tour",
       onAction: handleSkipTour,
       plain: true,
     },
@@ -215,32 +215,72 @@ All tiles update in real-time so you're always in sync."
   <Modal.Section>
     <BlockStack gap="300">
       <ProgressBar progress={25} tone="primary" />
-      
+
       <Text variant="bodySm" as="p" tone="subdued">
         Step 1 of 4
       </Text>
-      
+
       <Icon source={DashboardIcon} tone="info" />
-      
+
       <Text variant="headingMd" as="h3">
         Your Dashboard Command Center
       </Text>
-      
+
       <Text variant="bodyMd" as="p">
         Your dashboard shows 8 live tiles with key metrics:
       </Text>
-      
+
       <List type="bullet">
-        <List.Item><Text as="span" fontWeight="semibold">Revenue & Sales</Text> (track pit stop performance)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">CX Queue</Text> (customer messages waiting)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">Inventory Alerts</Text> (stock running low)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">Approval Queue</Text> (actions needing your review)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">SEO Status</Text> (search engine health)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">Idea Pool</Text> (product suggestions from AI)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">CEO Agent Activity</Text> (what the AI is doing)</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">Unread Messages</Text> (Chatwoot notifications)</List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Revenue & Sales
+          </Text>{" "}
+          (track pit stop performance)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            CX Queue
+          </Text>{" "}
+          (customer messages waiting)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Inventory Alerts
+          </Text>{" "}
+          (stock running low)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Approval Queue
+          </Text>{" "}
+          (actions needing your review)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            SEO Status
+          </Text>{" "}
+          (search engine health)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Idea Pool
+          </Text>{" "}
+          (product suggestions from AI)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            CEO Agent Activity
+          </Text>{" "}
+          (what the AI is doing)
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Unread Messages
+          </Text>{" "}
+          (Chatwoot notifications)
+        </List.Item>
       </List>
-      
+
       <Text variant="bodyMd" as="p" tone="success">
         All tiles update in real-time so you're always in sync.
       </Text>
@@ -322,16 +362,16 @@ All tiles update in real-time so you're always in sync."
   title="You're In Control: HITL Approvals"
   size="large"
   primaryAction={{
-    content: 'Next: Notifications',
+    content: "Next: Notifications",
     onAction: () => setCurrentStep(3),
   }}
   secondaryActions={[
     {
-      content: 'Back',
+      content: "Back",
       onAction: () => setCurrentStep(1),
     },
     {
-      content: 'Skip Tour',
+      content: "Skip Tour",
       onAction: handleSkipTour,
       plain: true,
     },
@@ -340,32 +380,65 @@ All tiles update in real-time so you're always in sync."
   <Modal.Section>
     <BlockStack gap="300">
       <ProgressBar progress={50} tone="primary" />
-      
+
       <Text variant="bodySm" as="p" tone="subdued">
         Step 2 of 4
       </Text>
-      
+
       <Icon source={CheckCircleIcon} tone="success" />
-      
+
       <Text variant="headingMd" as="h3">
         You're In Control: HITL Approvals
       </Text>
-      
+
       <Text variant="bodyMd" as="p">
-        Hot Rod AN's AI agents draft actions for you, but <Text as="span" fontWeight="bold">YOU</Text> make the final call. Here's how it works:
+        Hot Rod AN's AI agents draft actions for you, but{" "}
+        <Text as="span" fontWeight="bold">
+          YOU
+        </Text>{" "}
+        make the final call. Here's how it works:
       </Text>
-      
+
       <List type="number">
-        <List.Item><Text as="span" fontWeight="semibold">AI drafts</Text> a customer reply or inventory order</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">Action appears</Text> in your Approval Queue</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">You review</Text>: See the draft, evidence, and impact</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">You decide</Text>: Approve, Edit, or Reject</List.Item>
-        <List.Item><Text as="span" fontWeight="semibold">If approved</Text>: Action executes automatically</List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            AI drafts
+          </Text>{" "}
+          a customer reply or inventory order
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            Action appears
+          </Text>{" "}
+          in your Approval Queue
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            You review
+          </Text>
+          : See the draft, evidence, and impact
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            You decide
+          </Text>
+          : Approve, Edit, or Reject
+        </List.Item>
+        <List.Item>
+          <Text as="span" fontWeight="semibold">
+            If approved
+          </Text>
+          : Action executes automatically
+        </List.Item>
       </List>
-      
+
       <Banner tone="info">
         <Text variant="bodyMd" as="p">
-          <Text as="span" fontWeight="bold">Think of it like a pit crew chief</Text>: Your team (AI) does the prep work, you give the green light for execution.
+          <Text as="span" fontWeight="bold">
+            Think of it like a pit crew chief
+          </Text>
+          : Your team (AI) does the prep work, you give the green light for
+          execution.
         </Text>
       </Banner>
     </BlockStack>
@@ -475,21 +548,21 @@ Customize which notifications you want to receive in **Settings > Notifications*
   <Modal.Section>
     <BlockStack gap="400">
       <ProgressBar progress={75} tone="primary" />
-      
+
       <Text variant="bodySm" as="p" tone="subdued">
         Step 3 of 4
       </Text>
-      
+
       <Icon source={BellIcon} tone="info" />
-      
+
       <Text variant="headingMd" as="h3">
         Stay Updated: Notification System
       </Text>
-      
+
       <Text variant="bodyMd" as="p">
         Never miss a beat with our 3-layer notification system:
       </Text>
-      
+
       <BlockStack gap="300">
         <Card>
           <BlockStack gap="200">
@@ -504,7 +577,7 @@ Customize which notifications you want to receive in **Settings > Notifications*
             </Text>
           </BlockStack>
         </Card>
-        
+
         <Card>
           <BlockStack gap="200">
             <InlineStack gap="200" blockAlign="center">
@@ -518,7 +591,7 @@ Customize which notifications you want to receive in **Settings > Notifications*
             </Text>
           </BlockStack>
         </Card>
-        
+
         <Card>
           <BlockStack gap="200">
             <InlineStack gap="200" blockAlign="center">
@@ -533,7 +606,7 @@ Customize which notifications you want to receive in **Settings > Notifications*
           </BlockStack>
         </Card>
       </BlockStack>
-      
+
       <Text variant="bodyMd" as="p">
         Customize which notifications you want to receive in <Text as="span" fontWeight="semibold">Settings > Notifications</Text>.
       </Text>
@@ -630,13 +703,13 @@ Access all settings from the **⚙️ icon** in the top bar."
   title="Make It Yours: Personalization & Settings"
   size="large"
   primaryAction={{
-    content: 'Finish Tour',
+    content: "Finish Tour",
     onAction: handleFinishTour,
-    tone: 'success',
+    tone: "success",
   }}
   secondaryActions={[
     {
-      content: 'Back',
+      content: "Back",
       onAction: () => setCurrentStep(3),
     },
   ]}
@@ -644,21 +717,21 @@ Access all settings from the **⚙️ icon** in the top bar."
   <Modal.Section>
     <BlockStack gap="400">
       <ProgressBar progress={100} tone="success" />
-      
+
       <Text variant="bodySm" as="p" tone="subdued">
         Step 4 of 4 — Almost done!
       </Text>
-      
+
       <Icon source={SettingsIcon} tone="success" />
-      
+
       <Text variant="headingMd" as="h3">
         Make It Yours: Personalization & Settings
       </Text>
-      
+
       <Text variant="bodyMd" as="p">
         Customize your dashboard to match your workflow:
       </Text>
-      
+
       <BlockStack gap="300">
         <Card>
           <BlockStack gap="200">
@@ -666,42 +739,51 @@ Access all settings from the **⚙️ icon** in the top bar."
               🎨 Theme Switcher
             </Text>
             <Text variant="bodySm" as="p">
-              Choose Light, Dark, or Auto mode<br />
+              Choose Light, Dark, or Auto mode
+              <br />
               Instant apply, no page reload
             </Text>
           </BlockStack>
         </Card>
-        
+
         <Card>
           <BlockStack gap="200">
             <Text variant="headingSm" as="h4" fontWeight="bold">
               📊 Tile Customization
             </Text>
             <Text variant="bodySm" as="p">
-              Drag & drop tiles to reorder<br />
-              Show/hide tiles you don't need<br />
+              Drag & drop tiles to reorder
+              <br />
+              Show/hide tiles you don't need
+              <br />
               Your layout saves automatically
             </Text>
           </BlockStack>
         </Card>
-        
+
         <Card>
           <BlockStack gap="200">
             <Text variant="headingSm" as="h4" fontWeight="bold">
               🔔 Notification Preferences
             </Text>
             <Text variant="bodySm" as="p">
-              Choose which alerts you want<br />
-              Enable/disable browser notifications<br />
+              Choose which alerts you want
+              <br />
+              Enable/disable browser notifications
+              <br />
               Set quiet hours (optional)
             </Text>
           </BlockStack>
         </Card>
       </BlockStack>
-      
+
       <Banner tone="success">
         <Text variant="bodyMd" as="p">
-          Access all settings from the <Text as="span" fontWeight="semibold">⚙️ icon</Text> in the top bar.
+          Access all settings from the{" "}
+          <Text as="span" fontWeight="semibold">
+            ⚙️ icon
+          </Text>{" "}
+          in the top bar.
         </Text>
       </Banner>
     </BlockStack>
@@ -742,40 +824,43 @@ const [onboarding, setOnboarding] = useState<OnboardingState>({
 
 // Check localStorage on mount
 useEffect(() => {
-  const hasCompleted = localStorage.getItem('onboarding_completed') === 'true';
+  const hasCompleted = localStorage.getItem("onboarding_completed") === "true";
   if (hasCompleted) {
-    setOnboarding(prev => ({ ...prev, hasSeenTour: true }));
+    setOnboarding((prev) => ({ ...prev, hasSeenTour: true }));
   }
 }, []);
 
 // Handle tour completion
 const handleFinishTour = () => {
-  localStorage.setItem('onboarding_completed', 'true');
+  localStorage.setItem("onboarding_completed", "true");
   setOnboarding({ currentStep: 0, hasSeenTour: true, isSkipped: false });
-  showToast('Welcome to Hot Rod AN! 🏁');
+  showToast("Welcome to Hot Rod AN! 🏁");
 };
 
 // Handle tour skip
 const handleSkipTour = () => {
-  localStorage.setItem('onboarding_skipped', 'true');
-  setOnboarding(prev => ({ ...prev, isSkipped: true }));
-  showToast('Tour skipped. Access it anytime from Settings.');
+  localStorage.setItem("onboarding_skipped", "true");
+  setOnboarding((prev) => ({ ...prev, isSkipped: true }));
+  showToast("Tour skipped. Access it anytime from Settings.");
 };
 ```
 
 ### Trigger Conditions
 
 **Show tour when**:
+
 - First-time user (no `onboarding_completed` in localStorage)
 - User hasn't skipped tour (no `onboarding_skipped` in localStorage)
 - Dashboard route loads
 
 **Do NOT show tour when**:
+
 - `onboarding_completed === 'true'`
 - `onboarding_skipped === 'true'`
 - User is on mobile (< 768px) — offer mobile-optimized version or skip
 
 **Restart tour**:
+
 - Settings > Account > "Restart Onboarding Tour" button
 - Clears localStorage flags and shows welcome screen
 
@@ -786,6 +871,7 @@ const handleSkipTour = () => {
 ### Mobile Adaptations (< 768px)
 
 **Changes for Mobile**:
+
 1. **Modal Size**: Use `size="small"` instead of `size="large"`
 2. **Font Sizes**: Reduce heading sizes slightly (headingLg → headingMd)
 3. **Card Stacking**: Cards stack vertically (already default with BlockStack)
@@ -833,24 +919,28 @@ const handleSkipTour = () => {
 ### ✅ Compliance Checklist
 
 **Perceivable**:
+
 - [x] Text alternatives for icons (accessibilityLabel props)
 - [x] Color contrast 4.5:1 minimum (Polaris tokens ensure compliance)
 - [x] Text resizable to 200% without loss of function
 - [x] No information conveyed by color alone
 
 **Operable**:
+
 - [x] All functionality keyboard accessible (Tab, Enter, Escape)
 - [x] No keyboard traps (focus managed within modal)
 - [x] Focus indicators visible (Polaris default styles)
 - [x] Skip links not needed (modal is single focus context)
 
 **Understandable**:
+
 - [x] Clear, consistent language (Hot Rodan brand voice)
 - [x] Predictable navigation (numbered steps, progress bar)
 - [x] Input assistance (buttons clearly labeled)
 - [x] Error identification (not applicable - no form inputs)
 
 **Robust**:
+
 - [x] Valid HTML markup (Polaris components ensure validity)
 - [x] ARIA roles and properties (Modal has role="dialog")
 - [x] Name, role, value for all interactive elements
@@ -859,6 +949,7 @@ const handleSkipTour = () => {
 ### Screen Reader Testing
 
 **NVDA (Windows)**:
+
 - "Dialog, Welcome to Your Pit Crew Command Center. Welcome modal."
 - "Button, Take the Tour, primary action"
 - "Button, Skip Tour, secondary action"
@@ -866,6 +957,7 @@ const handleSkipTour = () => {
 - "List with 8 items. Revenue & Sales, track pit stop performance..."
 
 **VoiceOver (Mac)**:
+
 - "Welcome to Your Pit Crew Command Center, dialog"
 - "Take the Tour, button, primary"
 - "Skip Tour, button, secondary"
@@ -873,6 +965,7 @@ const handleSkipTour = () => {
 - "List, 8 items. Revenue & Sales, track pit stop performance..."
 
 **JAWS (Windows)**:
+
 - "Dialog, Welcome to Your Pit Crew Command Center"
 - "Take the Tour button"
 - "Skip Tour button"
@@ -881,14 +974,14 @@ const handleSkipTour = () => {
 
 ### Keyboard Navigation
 
-| Key | Action |
-|-----|--------|
-| Tab | Move focus forward through interactive elements |
-| Shift+Tab | Move focus backward |
-| Enter | Activate focused button |
-| Space | Activate focused button |
-| Escape | Close modal (skip tour) |
-| Arrow Keys | Not used (no custom focus management needed) |
+| Key        | Action                                          |
+| ---------- | ----------------------------------------------- |
+| Tab        | Move focus forward through interactive elements |
+| Shift+Tab  | Move focus backward                             |
+| Enter      | Activate focused button                         |
+| Space      | Activate focused button                         |
+| Escape     | Close modal (skip tour)                         |
+| Arrow Keys | Not used (no custom focus management needed)    |
 
 ---
 
@@ -925,18 +1018,21 @@ const handleSkipTour = () => {
 ### Phase 9 Tasks
 
 **ENG-026**: Onboarding Tour Foundation (2h)
+
 - Create `OnboardingTourProvider` context
 - Implement state management (currentStep, hasSeenTour, isSkipped)
 - Add localStorage persistence
 - Create `OnboardingModal` component wrapper
 
 **ENG-027**: Tour Steps Implementation (3h)
+
 - Implement 5 modal steps (welcome + 4 steps)
 - Add ProgressBar component
 - Wire up navigation (Back/Next buttons)
 - Add skip functionality
 
 **ENG-028**: Accessibility & Polish (1h)
+
 - Focus management (trap focus within modal)
 - Keyboard navigation (Tab, Enter, Escape)
 - Screen reader testing (ARIA labels, announcements)
@@ -945,6 +1041,7 @@ const handleSkipTour = () => {
 ### MCP Tools Required
 
 **Before implementation**:
+
 ```bash
 # Polaris Modal patterns
 mcp_context7_get-library-docs("/shopify/polaris", "Modal ProgressBar Button accessibility focus trap")
@@ -985,4 +1082,3 @@ app/
 ---
 
 **EOF — Onboarding Flow Wireframes Complete** 🏁
-

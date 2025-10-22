@@ -91,7 +91,9 @@ test.describe("Settings Page Keyboard Navigation", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Tab to first tab button
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.focus();
 
     // Press Enter to activate tab
@@ -103,7 +105,9 @@ test.describe("Settings Page Keyboard Navigation", () => {
 
     // Navigate to next tab with Arrow keys (if supported)
     // Or Tab to next tab button
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.focus();
     await page.keyboard.press("Enter");
 
@@ -115,7 +119,9 @@ test.describe("Settings Page Keyboard Navigation", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Dashboard tab
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     // Find tile visibility toggle
@@ -187,7 +193,9 @@ test.describe("Tile Reordering Keyboard Accessibility", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Dashboard tab
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     // Look for "Edit Tile Order" button (keyboard alternative)
@@ -204,8 +212,12 @@ test.describe("Tile Reordering Keyboard Accessibility", () => {
     await expect(modal).toBeVisible();
 
     // Modal should have up/down arrow buttons
-    const upButton = modal.locator("button", { hasText: /up|↑|chevron.*up/i }).first();
-    const downButton = modal.locator("button", { hasText: /down|↓|chevron.*down/i }).first();
+    const upButton = modal
+      .locator("button", { hasText: /up|↑|chevron.*up/i })
+      .first();
+    const downButton = modal
+      .locator("button", { hasText: /down|↓|chevron.*down/i })
+      .first();
 
     await expect(upButton).toBeVisible();
     await expect(downButton).toBeVisible();
@@ -215,11 +227,15 @@ test.describe("Tile Reordering Keyboard Accessibility", () => {
     expect(upLabel).toMatch(/move.*up/i);
   });
 
-  test("should announce current position to screen readers", async ({ page }) => {
+  test("should announce current position to screen readers", async ({
+    page,
+  }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Open tile reorder modal (keyboard alternative)
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     const editOrderButton = page.locator("button", {
@@ -248,10 +264,14 @@ test.describe("Settings Page Color Contrast", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Set light theme
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
-    const lightThemeRadio = page.locator('[type="radio"]', { hasText: /light/i });
+    const lightThemeRadio = page.locator('[type="radio"]', {
+      hasText: /light/i,
+    });
     await lightThemeRadio.check();
 
     // Run contrast check
@@ -283,7 +303,9 @@ test.describe("Settings Page Color Contrast", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Set dark theme
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
     const darkThemeRadio = page.locator('[type="radio"]', { hasText: /dark/i });
@@ -373,7 +395,9 @@ test.describe("Settings Page Screen Reader Compatibility", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Appearance tab
-    const appearanceTab = page.locator('[role="tab"]', { hasText: /appearance/i });
+    const appearanceTab = page.locator('[role="tab"]', {
+      hasText: /appearance/i,
+    });
     await appearanceTab.click();
 
     // Check for ARIA live region
@@ -418,7 +442,7 @@ test.describe("Settings Page Screen Reader Compatibility", () => {
 
       // Input must have either: associated label, aria-label, or aria-labelledby
       const hasLabel = id
-        ? await page.locator(`label[for="${id}"]`).count() > 0
+        ? (await page.locator(`label[for="${id}"]`).count()) > 0
         : false;
 
       expect(
@@ -473,7 +497,9 @@ test.describe("Settings Page ARIA Implementation", () => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Dashboard tab
-    const dashboardTab = page.locator('[role="tab"]', { hasText: /dashboard/i });
+    const dashboardTab = page.locator('[role="tab"]', {
+      hasText: /dashboard/i,
+    });
     await dashboardTab.click();
 
     // Find toggle switches
@@ -526,12 +552,10 @@ test.describe("Settings Page Focus Management", () => {
         const focused = page.locator(":focus");
 
         // Verify focus is still within modal
-        const isInsideModal = await focused.evaluate(
-          (el) => {
-            const modalEl = document.querySelector('[role="dialog"]');
-            return modalEl?.contains(el) ?? false;
-          },
-        );
+        const isInsideModal = await focused.evaluate((el) => {
+          const modalEl = document.querySelector('[role="dialog"]');
+          return modalEl?.contains(el) ?? false;
+        });
 
         expect(isInsideModal).toBe(true);
       }
@@ -579,7 +603,9 @@ test.describe("Settings Page Focus Management", () => {
  * WCAG 3.3.3 (Error Suggestion - Level AA)
  */
 test.describe("Settings Error Handling Accessibility", () => {
-  test("should announce validation errors to screen readers", async ({ page }) => {
+  test("should announce validation errors to screen readers", async ({
+    page,
+  }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Navigate to Notifications tab
@@ -598,14 +624,17 @@ test.describe("Settings Error Handling Accessibility", () => {
       await saveButton.click();
 
       // Check for error message with role="alert" or aria-live="assertive"
-      const errorMessage = page.locator('[role="alert"], [aria-live="assertive"]');
+      const errorMessage = page.locator(
+        '[role="alert"], [aria-live="assertive"]',
+      );
       await expect(errorMessage).toBeVisible();
 
       // Check for aria-invalid on input
       await expect(thresholdInput).toHaveAttribute("aria-invalid", "true");
 
       // Check for aria-describedby linking to error
-      const ariaDescribedby = await thresholdInput.getAttribute("aria-describedby");
+      const ariaDescribedby =
+        await thresholdInput.getAttribute("aria-describedby");
       expect(ariaDescribedby).toBeTruthy();
     }
   });
@@ -616,7 +645,9 @@ test.describe("Settings Error Handling Accessibility", () => {
  * (Use Lighthouse CLI for full scoring)
  */
 test.describe("Lighthouse Accessibility Baseline", () => {
-  test("should meet minimum Lighthouse accessibility score", async ({ page }) => {
+  test("should meet minimum Lighthouse accessibility score", async ({
+    page,
+  }) => {
     await page.goto(`${SETTINGS_PATH}?mock=1`);
 
     // Run comprehensive axe scan
@@ -626,8 +657,12 @@ test.describe("Lighthouse Accessibility Baseline", () => {
 
     // Calculate approximate score
     const violations = accessibilityScanResults.violations;
-    const criticalCount = violations.filter((v) => v.impact === "critical").length;
-    const seriousCount = violations.filter((v) => v.impact === "serious").length;
+    const criticalCount = violations.filter(
+      (v) => v.impact === "critical",
+    ).length;
+    const seriousCount = violations.filter(
+      (v) => v.impact === "serious",
+    ).length;
 
     // Log summary
     console.log(`\nAccessibility Summary:`);

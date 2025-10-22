@@ -21,8 +21,7 @@ export interface SearchConsoleConfig {
  * @returns {SearchConsoleConfig} Configuration object
  */
 export function getSearchConsoleConfig(): SearchConsoleConfig {
-  const siteUrl =
-    process.env.SEARCH_CONSOLE_SITE_URL ?? "https://hotrodan.com";
+  const siteUrl = process.env.SEARCH_CONSOLE_SITE_URL ?? "https://hotrodan.com";
   const propertyId = process.env.SEARCH_CONSOLE_PROPERTY_ID;
 
   return {
@@ -30,4 +29,3 @@ export function getSearchConsoleConfig(): SearchConsoleConfig {
     propertyId,
   };
 }
-

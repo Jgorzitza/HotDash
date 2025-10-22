@@ -6,18 +6,18 @@ import prisma from "../db.server";
 // ============================================================================
 
 export interface AssignTaskInput {
-  assignedBy: string;           // 'manager'
-  assignedTo: string;           // 'engineer', 'data', etc.
-  taskId: string;               // 'ENG-029', 'DATA-017', etc.
+  assignedBy: string; // 'manager'
+  assignedTo: string; // 'engineer', 'data', etc.
+  taskId: string; // 'ENG-029', 'DATA-017', etc.
   title: string;
   description: string;
   acceptanceCriteria: string[]; // Array of criteria
-  allowedPaths: string[];       // Array of path patterns
-  priority: 'P0' | 'P1' | 'P2' | 'P3';
-  phase?: string;               // 'Phase 9', 'Phase 10', etc.
+  allowedPaths: string[]; // Array of path patterns
+  priority: "P0" | "P1" | "P2" | "P3";
+  phase?: string; // 'Phase 9', 'Phase 10', etc.
   estimatedHours?: number;
-  dependencies?: string[];      // TaskIds this depends on
-  blocks?: string[];            // TaskIds blocked by this
+  dependencies?: string[]; // TaskIds this depends on
+  blocks?: string[]; // TaskIds blocked by this
   evidenceUrl?: string;
   issueUrl?: string;
   payload?: Prisma.InputJsonValue;
@@ -25,11 +25,11 @@ export interface AssignTaskInput {
 
 export interface UpdateTaskInput {
   taskId: string;
-  status?: 'assigned' | 'in_progress' | 'completed' | 'blocked' | 'cancelled';
+  status?: "assigned" | "in_progress" | "completed" | "blocked" | "cancelled";
   startedAt?: Date;
   completedAt?: Date;
   cancelledAt?: Date;
-  completionNotes?: string;     // CRITICAL: Preserve context when completing
+  completionNotes?: string; // CRITICAL: Preserve context when completing
   cancellationReason?: string;
   prUrl?: string;
   payload?: Prisma.InputJsonValue;
@@ -54,7 +54,7 @@ export async function assignTask(input: AssignTaskInput) {
       estimatedHours: input.estimatedHours,
       dependencies: input.dependencies || [],
       blocks: input.blocks || [],
-      status: 'assigned',
+      status: "assigned",
       evidenceUrl: input.evidenceUrl,
       issueUrl: input.issueUrl,
       payload: input.payload ?? Prisma.JsonNull,
@@ -77,7 +77,9 @@ export async function updateTask(taskId: string, input: UpdateTaskInput) {
       ...(input.completedAt && { completedAt: input.completedAt }),
       ...(input.cancelledAt && { cancelledAt: input.cancelledAt }),
       ...(input.completionNotes && { completionNotes: input.completionNotes }),
-      ...(input.cancellationReason && { cancellationReason: input.cancellationReason }),
+      ...(input.cancellationReason && {
+        cancellationReason: input.cancellationReason,
+      }),
       ...(input.prUrl && { prUrl: input.prUrl }),
       ...(input.payload && { payload: input.payload }),
       updatedAt: new Date(),
@@ -95,12 +97,12 @@ export async function getMyTasks(agent: string) {
   return await prisma.taskAssignment.findMany({
     where: {
       assignedTo: agent,
-      status: { in: ['assigned', 'in_progress', 'blocked'] }
+      status: { in: ["assigned", "in_progress", "blocked"] },
     },
     orderBy: [
-      { priority: 'asc' },    // P0 first
-      { assignedAt: 'asc' }   // Oldest first
-    ]
+      { priority: "asc" }, // P0 first
+      { assignedAt: "asc" }, // Oldest first
+    ],
   });
 }
 
@@ -109,44 +111,41 @@ export async function getMyNextTask(agent: string) {
   const tasks = await prisma.taskAssignment.findMany({
     where: {
       assignedTo: agent,
-      status: 'assigned'
+      status: "assigned",
     },
-    orderBy: [
-      { priority: 'asc' },
-      { assignedAt: 'asc' }
-    ],
-    take: 10
+    orderBy: [{ priority: "asc" }, { assignedAt: "asc" }],
+    take: 10,
   });
 
   // Filter out tasks with unmet dependencies
   for (const task of tasks) {
     const deps = (task.dependencies as string[]) || [];
-    
+
     if (deps.length === 0) {
       return task; // No dependencies, can start
     }
-    
+
     // Check if all dependencies are completed
     const depStatus = await prisma.taskAssignment.findMany({
       where: {
-        taskId: { in: deps }
+        taskId: { in: deps },
       },
-      select: { taskId: true, status: true }
+      select: { taskId: true, status: true },
     });
-    
-    const allComplete = depStatus.every(d => d.status === 'completed');
-    
+
+    const allComplete = depStatus.every((d) => d.status === "completed");
+
     if (allComplete) {
       return task; // Dependencies met
     }
   }
-  
+
   return null; // All tasks have unmet dependencies
 }
 
 export async function getTaskDetails(taskId: string) {
   return await prisma.taskAssignment.findUnique({
-    where: { taskId }
+    where: { taskId },
   });
 }
 
@@ -157,31 +156,28 @@ export async function getTaskDetails(taskId: string) {
 export async function getAllAgentTasks() {
   return await prisma.taskAssignment.findMany({
     where: {
-      status: { in: ['assigned', 'in_progress', 'blocked'] }
+      status: { in: ["assigned", "in_progress", "blocked"] },
     },
-    orderBy: [
-      { assignedTo: 'asc' },
-      { priority: 'asc' }
-    ]
+    orderBy: [{ assignedTo: "asc" }, { priority: "asc" }],
   });
 }
 
 export async function getBlockedTasks() {
   return await prisma.taskAssignment.findMany({
-    where: { status: 'blocked' },
-    orderBy: { assignedAt: 'asc' }
+    where: { status: "blocked" },
+    orderBy: { assignedAt: "asc" },
   });
 }
 
 export async function getCompletedTasks(since?: Date) {
   const sinceDate = since || new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // Last 7 days
-  
+
   return await prisma.taskAssignment.findMany({
     where: {
-      status: 'completed',
-      completedAt: { gte: sinceDate }
+      status: "completed",
+      completedAt: { gte: sinceDate },
     },
-    orderBy: { completedAt: 'desc' }
+    orderBy: { completedAt: "desc" },
   });
 }
 
@@ -191,36 +187,35 @@ export async function getCompletedTasks(since?: Date) {
 
 export async function assignMultipleTasks(tasks: AssignTaskInput[]) {
   const results = [];
-  
+
   for (const task of tasks) {
     try {
       const created = await assignTask(task);
       results.push({ success: true, taskId: created.taskId });
     } catch (error) {
-      results.push({ 
-        success: false, 
-        taskId: task.taskId, 
-        error: error instanceof Error ? error.message : String(error)
+      results.push({
+        success: false,
+        taskId: task.taskId,
+        error: error instanceof Error ? error.message : String(error),
       });
     }
   }
-  
+
   return results;
 }
 
 export async function completeTask(taskId: string, completionNotes: string) {
   return await updateTask(taskId, {
-    status: 'completed',
+    status: "completed",
     completedAt: new Date(),
-    completionNotes
+    completionNotes,
   });
 }
 
 export async function cancelTask(taskId: string, cancellationReason: string) {
   return await updateTask(taskId, {
-    status: 'cancelled',
+    status: "cancelled",
     cancelledAt: new Date(),
-    cancellationReason
+    cancellationReason,
   });
 }
-

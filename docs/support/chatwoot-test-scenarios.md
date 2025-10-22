@@ -18,6 +18,7 @@
 **Order ID**: #HRA-1001
 
 **Customer Message**:
+
 ```
 Subject: Quick question about my order
 
@@ -30,6 +31,7 @@ Sarah
 ```
 
 **Context**:
+
 - Order placed 5 days ago
 - Standard shipping (7-10 business days)
 - Order is in transit
@@ -37,6 +39,7 @@ Sarah
 
 **Expected Response Type**: Informative, friendly
 **Key Points to Address**:
+
 - Confirm order number
 - Provide current order status
 - Share tracking link
@@ -46,6 +49,7 @@ Sarah
 **Tone Guidance**: Match customer's friendly tone, enthusiastic about product
 
 **Grading Criteria**:
+
 - Tone: 5/5 (warm, professional, maintains enthusiasm)
 - Accuracy: 5/5 (correct order status, valid tracking link)
 - Policy: 5/5 (follows standard shipping timelines)
@@ -60,11 +64,13 @@ Sarah
 **Order ID**: #HRA-1002
 
 **Customer Message**:
+
 ```
 It's been 12 days since I ordered and still nothing. This is unacceptable. Where is my order??
 ```
 
 **Context**:
+
 - Order placed 12 days ago (outside 7-10 day window)
 - Tracking shows "delayed" due to carrier issue
 - Order still in transit, not lost
@@ -72,6 +78,7 @@ It's been 12 days since I ordered and still nothing. This is unacceptable. Where
 
 **Expected Response Type**: Apologetic, solution-focused
 **Key Points to Address**:
+
 - Acknowledge frustration and apologize
 - Explain delay (carrier issue, not Hot Rod AN fault)
 - Provide updated tracking info
@@ -81,6 +88,7 @@ It's been 12 days since I ordered and still nothing. This is unacceptable. Where
 **Tone Guidance**: Professional, empathetic, take ownership
 
 **Grading Criteria**:
+
 - Tone: 4/5 (empathetic but not over-apologetic)
 - Accuracy: 5/5 (real tracking data, realistic timeline)
 - Policy: 5/5 (follows escalation protocol, offers compensation)
@@ -95,11 +103,13 @@ It's been 12 days since I ordered and still nothing. This is unacceptable. Where
 **Order ID**: #HRA-1003
 
 **Customer Message**:
+
 ```
 Hi, I received my order today but it's the wrong item. I ordered the 5W-30 synthetic oil but got 10W-40 conventional. Can we fix this?
 ```
 
 **Context**:
+
 - Order confirmed: 5W-30 synthetic oil
 - Received: 10W-40 conventional oil (warehouse error)
 - Customer has photos of received item
@@ -107,6 +117,7 @@ Hi, I received my order today but it's the wrong item. I ordered the 5W-30 synth
 
 **Expected Response Type**: Apologetic, solution-oriented
 **Key Points to Address**:
+
 - Apologize for warehouse error
 - Confirm correct item customer ordered
 - Offer immediate solutions:
@@ -118,6 +129,7 @@ Hi, I received my order today but it's the wrong item. I ordered the 5W-30 synth
 **Tone Guidance**: Professional, solution-focused, efficient
 
 **Grading Criteria**:
+
 - Tone: 5/5 (professional, no excuses)
 - Accuracy: 5/5 (correct order data, valid policy)
 - Policy: 5/5 (follows "customer keeps wrong item" policy for errors <$50)
@@ -132,6 +144,7 @@ Hi, I received my order today but it's the wrong item. I ordered the 5W-30 synth
 **Order ID**: #HRA-1004
 
 **Customer Message**:
+
 ```
 Subject: URGENT - Need to cancel order
 
@@ -142,6 +155,7 @@ David
 ```
 
 **Context**:
+
 - Order placed 2 hours ago
 - Order status: "Processing" (not shipped yet)
 - Payment captured but not settled
@@ -149,6 +163,7 @@ David
 
 **Expected Response Type**: Quick, action-oriented
 **Key Points to Address**:
+
 - Confirm cancellation is possible (order not shipped)
 - Cancel order immediately
 - Confirm refund timeline (3-5 business days)
@@ -158,6 +173,7 @@ David
 **Tone Guidance**: Efficient, helpful, no friction
 
 **Grading Criteria**:
+
 - Tone: 5/5 (fast response, no barriers)
 - Accuracy: 5/5 (correct cancellation window, refund timeline)
 - Policy: 5/5 (follows 4-hour cancellation policy)
@@ -172,11 +188,13 @@ David
 **Order ID**: #HRA-1005
 
 **Customer Message**:
+
 ```
 Oh no, I just realized I entered the wrong shipping address! I'm moving this week and the old address won't work. Can you change it to my new address?? Please??
 ```
 
 **Context**:
+
 - Order placed 1 day ago
 - Order status: "Processing" (not shipped)
 - New address provided: Same city, different street
@@ -184,6 +202,7 @@ Oh no, I just realized I entered the wrong shipping address! I'm moving this wee
 
 **Expected Response Type**: Reassuring, helpful
 **Key Points to Address**:
+
 - Reassure customer the change is possible
 - Confirm new address for accuracy
 - Update shipping address in system
@@ -193,6 +212,7 @@ Oh no, I just realized I entered the wrong shipping address! I'm moving this wee
 **Tone Guidance**: Calm, reassuring, detail-oriented
 
 **Grading Criteria**:
+
 - Tone: 5/5 (reduces anxiety, professional)
 - Accuracy: 5/5 (confirms both addresses correctly)
 - Policy: 5/5 (follows address change policy within processing window)
@@ -209,17 +229,20 @@ Oh no, I just realized I entered the wrong shipping address! I'm moving this wee
 **Product**: Hot Rod AN Performance Motor Oil 5W-30
 
 **Customer Message**:
+
 ```
 Hi! Is the 5W-30 performance oil in stock? I need 6 quarts for my classic Mustang. Thanks!
 ```
 
 **Context**:
+
 - Product: In stock (24 units available)
 - Customer needs: 6 quarts
 - Sufficient inventory to fulfill
 
 **Expected Response Type**: Informative, helpful
 **Key Points to Address**:
+
 - Confirm product is in stock
 - Confirm 6 quarts available
 - Mention shipping timeline (2-3 days processing + 5-7 days shipping)
@@ -229,6 +252,7 @@ Hi! Is the 5W-30 performance oil in stock? I need 6 quarts for my classic Mustan
 **Tone Guidance**: Enthusiastic about classic cars, helpful
 
 **Grading Criteria**:
+
 - Tone: 5/5 (matches enthusiasm, professional)
 - Accuracy: 5/5 (correct stock status, shipping timeline)
 - Policy: 5/5 (provides standard info)
@@ -243,6 +267,7 @@ Hi! Is the 5W-30 performance oil in stock? I need 6 quarts for my classic Mustan
 **Products**: 5W-30 Synthetic vs 10W-40 Conventional
 
 **Customer Message**:
+
 ```
 Subject: Which oil should I choose?
 
@@ -257,12 +282,14 @@ Rachel
 ```
 
 **Context**:
+
 - Vehicle: 2015 Honda Civic (manufacturer recommends 5W-30)
 - Climate: Moderate (30-90°F)
 - Customer preference: Not specified
 
 **Expected Response Type**: Educational, recommendation
 **Key Points to Address**:
+
 - Explain difference between synthetic and conventional
 - Note viscosity differences (5W-30 flows better in cold, 10W-40 thicker)
 - Recommend 5W-30 synthetic (matches Honda spec, better for moderate temps)
@@ -272,6 +299,7 @@ Rachel
 **Tone Guidance**: Educational, technical but accessible
 
 **Grading Criteria**:
+
 - Tone: 5/5 (matches analytical tone, not pushy)
 - Accuracy: 5/5 (correct technical info, valid recommendation)
 - Policy: 5/5 (recommends what's best for customer, not highest price)
@@ -282,9 +310,10 @@ Rachel
 
 **Channel**: Email  
 **Customer Tone**: Direct, to-the-point  
-**Customer Name**: Mark Wilson  
+**Customer Name**: Mark Wilson
 
 **Customer Message**:
+
 ```
 Subject: Ship to Canada?
 
@@ -294,12 +323,14 @@ Mark
 ```
 
 **Context**:
+
 - Current policy: US shipping only
 - Canada shipping: Planned for Q1 2026
 - Alternative: Suggest authorized Canadian retailers (if any)
 
 **Expected Response Type**: Direct, informative
 **Key Points to Address**:
+
 - Current policy: US only
 - Apologize for inconvenience
 - Share timeline for Canada shipping (Q1 2026)
@@ -309,6 +340,7 @@ Mark
 **Tone Guidance**: Direct, professional, brief
 
 **Grading Criteria**:
+
 - Tone: 5/5 (matches direct style, not overly wordy)
 - Accuracy: 5/5 (correct policy, realistic timeline)
 - Policy: 5/5 (offers alternatives, future notification)
@@ -319,20 +351,23 @@ Mark
 
 **Channel**: Live Chat  
 **Customer Tone**: Cautious, risk-averse  
-**Customer Name**: Emily Scott  
+**Customer Name**: Emily Scott
 
 **Customer Message**:
+
 ```
 What's your return policy? I want to try your oil but I'm not sure if it'll work for my engine. Can I return it if it doesn't?
 ```
 
 **Context**:
+
 - Return policy: 30 days, unopened products only
 - Oil products: Cannot be returned if opened (safety/contamination)
 - Alternative: Satisfaction guarantee covers defects
 
 **Expected Response Type**: Clear, reassuring
 **Key Points to Address**:
+
 - 30-day return window for unopened products
 - Cannot accept opened oil (safety reasons)
 - Explain why: contamination risk, safety regulations
@@ -343,6 +378,7 @@ What's your return policy? I want to try your oil but I'm not sure if it'll work
 **Tone Guidance**: Understanding, clear about limitations, helpful alternatives
 
 **Grading Criteria**:
+
 - Tone: 4/5 (honest about limitations but helpful)
 - Accuracy: 5/5 (correct policy, valid reasoning)
 - Policy: 5/5 (follows safety regulations, offers alternative)
@@ -357,6 +393,7 @@ What's your return policy? I want to try your oil but I'm not sure if it'll work
 **Order ID**: #HRA-1006
 
 **Customer Message**:
+
 ```
 Subject: Issue with oil I received
 
@@ -370,6 +407,7 @@ Carlos
 ```
 
 **Context**:
+
 - Order shipped 3 days ago
 - Batch: Normal batch, no other complaints
 - Possible causes: Customer expectation mismatch OR actual defect
@@ -377,6 +415,7 @@ Carlos
 
 **Expected Response Type**: Concerned, investigative
 **Key Points to Address**:
+
 - Thank customer for reporting
 - Take concern seriously (engine safety is priority)
 - DO NOT use product if concerned
@@ -388,6 +427,7 @@ Carlos
 **Tone Guidance**: Serious, safety-focused, appreciative of report
 
 **Grading Criteria**:
+
 - Tone: 5/5 (takes safety seriously, not defensive)
 - Accuracy: 5/5 (correct safety protocol, valid next steps)
 - Policy: 5/5 (follows quality assurance protocol, protects customer)
@@ -400,14 +440,16 @@ Carlos
 
 **Channel**: Live Chat  
 **Customer Tone**: Frustrated, impatient  
-**Customer Name**: Brian Lee  
+**Customer Name**: Brian Lee
 
 **Customer Message**:
+
 ```
 I can't log in. I forgot my password and the reset link isn't working. This is so frustrating!!
 ```
 
 **Context**:
+
 - Customer has account
 - Password reset link expires in 1 hour
 - Link may be in spam folder
@@ -415,6 +457,7 @@ I can't log in. I forgot my password and the reset link isn't working. This is s
 
 **Expected Response Type**: Solution-focused, patient
 **Key Points to Address**:
+
 - Acknowledge frustration
 - Check spam folder first
 - Verify email address on account
@@ -426,6 +469,7 @@ I can't log in. I forgot my password and the reset link isn't working. This is s
 **Tone Guidance**: Patient, step-by-step, empathetic
 
 **Grading Criteria**:
+
 - Tone: 5/5 (patient despite customer frustration)
 - Accuracy: 5/5 (correct troubleshooting steps)
 - Policy: 5/5 (follows account security protocol)
@@ -436,9 +480,10 @@ I can't log in. I forgot my password and the reset link isn't working. This is s
 
 **Channel**: Email  
 **Customer Tone**: Professional, straightforward  
-**Customer Name**: Susan Martinez  
+**Customer Name**: Susan Martinez
 
 **Customer Message**:
+
 ```
 Subject: Update email on account
 
@@ -451,12 +496,14 @@ Susan Martinez
 ```
 
 **Context**:
+
 - Account exists under susan.old@email.com
 - Verification required for security
 - Process: Verify current email, then update
 
 **Expected Response Type**: Professional, security-conscious
 **Key Points to Address**:
+
 - Confirm account found (last 4 digits of order, or address)
 - Security verification (order number, billing address, or phone)
 - Update email address
@@ -467,6 +514,7 @@ Susan Martinez
 **Tone Guidance**: Professional, security-focused
 
 **Grading Criteria**:
+
 - Tone: 5/5 (professional, matches customer)
 - Accuracy: 5/5 (correct verification process)
 - Policy: 5/5 (follows security protocol, dual confirmation)
@@ -477,9 +525,10 @@ Susan Martinez
 
 **Channel**: Email  
 **Customer Tone**: Formal, legal-aware  
-**Customer Name**: Robert Chen  
+**Customer Name**: Robert Chen
 
 **Customer Message**:
+
 ```
 Subject: GDPR Data Deletion Request
 
@@ -493,6 +542,7 @@ Robert Chen
 ```
 
 **Context**:
+
 - GDPR applies (customer in EU or California CCPA)
 - Legal requirement: 30 days to complete
 - Process: Verify identity, document request, delete data
@@ -500,6 +550,7 @@ Robert Chen
 
 **Expected Response Type**: Formal, compliant
 **Key Points to Address**:
+
 - Acknowledge GDPR request
 - Confirm receipt (required by law)
 - Timeline: 30 days maximum
@@ -511,6 +562,7 @@ Robert Chen
 **Tone Guidance**: Formal, legally compliant, respectful
 
 **Grading Criteria**:
+
 - Tone: 5/5 (matches formal tone, legally appropriate)
 - Accuracy: 5/5 (correct GDPR timeline and requirements)
 - Policy: 5/5 (follows GDPR/CCPA compliance protocol)
@@ -527,11 +579,13 @@ Robert Chen
 **Charge Amount**: $47.99
 
 **Customer Message**:
+
 ```
 I see a charge from Hot Rod AN on my card for $47.99 but I don't remember ordering anything recently. Can you check what this is for?
 ```
 
 **Context**:
+
 - Charge: Order #HRA-1007 placed 2 days ago
 - Items: 2 quarts motor oil @ $19.99 each + $8.01 shipping
 - Card ending: 4532
@@ -539,6 +593,7 @@ I see a charge from Hot Rod AN on my card for $47.99 but I don't remember orderi
 
 **Expected Response Type**: Investigative, reassuring
 **Key Points to Address**:
+
 - Look up charge by card number (last 4 digits) and amount
 - Confirm order details (date, items, shipping address)
 - Ask if address is familiar or if family member may have ordered
@@ -551,6 +606,7 @@ I see a charge from Hot Rod AN on my card for $47.99 but I don't remember orderi
 **Tone Guidance**: Helpful, investigative, not accusatory
 
 **Grading Criteria**:
+
 - Tone: 5/5 (reassuring, takes concern seriously)
 - Accuracy: 5/5 (correct order lookup, charge breakdown)
 - Policy: 5/5 (follows fraud protocol if unrecognized)
@@ -565,11 +621,13 @@ I see a charge from Hot Rod AN on my card for $47.99 but I don't remember orderi
 **Order ID**: #HRA-1008
 
 **Customer Message**:
+
 ```
 I returned my order 2 weeks ago. Where's my refund?
 ```
 
 **Context**:
+
 - Return received: 12 days ago
 - Refund processed: 5 days ago
 - Refund method: Original payment method (credit card)
@@ -577,6 +635,7 @@ I returned my order 2 weeks ago. Where's my refund?
 
 **Expected Response Type**: Informative, timeline-focused
 **Key Points to Address**:
+
 - Confirm return received (12 days ago)
 - Confirm refund processed (5 days ago)
 - Explain timeline: 5-10 business days for credit card
@@ -587,6 +646,7 @@ I returned my order 2 weeks ago. Where's my refund?
 **Tone Guidance**: Direct, factual, sets clear expectations
 
 **Grading Criteria**:
+
 - Tone: 4/5 (direct, not overly wordy given customer impatience)
 - Accuracy: 5/5 (correct timeline, refund status)
 - Policy: 5/5 (follows standard refund timeline)
@@ -597,9 +657,10 @@ I returned my order 2 weeks ago. Where's my refund?
 
 **Channel**: Email  
 **Customer Tone**: Anxious, frustrated  
-**Customer Name**: Nicole Brown  
+**Customer Name**: Nicole Brown
 
 **Customer Message**:
+
 ```
 Subject: Can't complete checkout - payment keeps failing!
 
@@ -613,6 +674,7 @@ Nicole
 ```
 
 **Context**:
+
 - Payment attempts: 3 failed attempts
 - Possible causes: AVS mismatch, fraud prevention, card issuer block
 - Customer card: Valid, not Hot Rod AN's issue
@@ -620,6 +682,7 @@ Nicole
 
 **Expected Response Type**: Empathetic, troubleshooting
 **Key Points to Address**:
+
 - Apologize for frustration
 - Explain: Not a Hot Rod AN issue (funds are fine)
 - Common causes:
@@ -635,6 +698,7 @@ Nicole
 **Tone Guidance**: Empathetic, solution-oriented, not defensive
 
 **Grading Criteria**:
+
 - Tone: 5/5 (empathetic, doesn't blame customer or card)
 - Accuracy: 5/5 (correct causes, valid solutions)
 - Policy: 5/5 (offers alternatives, doesn't lose sale)
@@ -651,11 +715,13 @@ Nicole
 **Order ID**: #HRA-1009
 
 **Customer Message**:
+
 ```
 This is RIDICULOUS!! I've been waiting 3 WEEKS for my order and NOBODY has responded to my emails!! This is the WORST customer service I've ever experienced!! I want my money back NOW!!!
 ```
 
 **Context**:
+
 - Order placed 21 days ago (way past SLA)
 - Tracking: Lost by carrier
 - Previous emails: 2 emails sent, no response (support failure)
@@ -663,6 +729,7 @@ This is RIDICULOUS!! I've been waiting 3 WEEKS for my order and NOBODY has respo
 
 **Expected Response Type**: Apologetic, ownership, solution
 **Key Points to Address**:
+
 - **DO NOT** get defensive or match anger
 - Acknowledge failure ("You're absolutely right to be frustrated")
 - Take full ownership ("This is unacceptable, I'm sorry")
@@ -677,11 +744,13 @@ This is RIDICULOUS!! I've been waiting 3 WEEKS for my order and NOBODY has respo
 **Tone Guidance**: Calm, apologetic, solution-focused, no excuses
 
 **Grading Criteria**:
+
 - Tone: 5/5 (de-escalates, takes ownership, doesn't defend)
 - Accuracy: 5/5 (acknowledges failures, realistic timeline)
 - Policy: 5/5 (follows escalation protocol, appropriate compensation)
 
 **RED FLAGS TO AVOID**:
+
 - ❌ "I understand your frustration, BUT..." (never use "but")
 - ❌ Blaming carrier, system, or team member
 - ❌ Asking customer to "calm down"
@@ -698,6 +767,7 @@ This is RIDICULOUS!! I've been waiting 3 WEEKS for my order and NOBODY has respo
 **Orders**: #HRA-1010, #HRA-1011, #HRA-1012
 
 **Customer Message**:
+
 ```
 Subject: Third failed order - giving up
 
@@ -715,6 +785,7 @@ Patricia
 ```
 
 **Context**:
+
 - All 3 orders: Real failures (not customer error)
 - Order 1: Warehouse error (rare, 0.5% rate)
 - Order 2: Carrier damage (insurance claim filed)
@@ -723,6 +794,7 @@ Patricia
 
 **Expected Response Type**: Deep apology, VIP treatment
 **Key Points to Address**:
+
 - Acknowledge pattern of failures
 - Apologize deeply and sincerely
 - Take full accountability (even for carrier issues)
@@ -740,6 +812,7 @@ Patricia
 **Tone Guidance**: Sincere apology, VIP treatment, restore trust
 
 **Grading Criteria**:
+
 - Tone: 5/5 (deep empathy, sincere, not transactional)
 - Accuracy: 5/5 (addresses all 3 orders specifically)
 - Policy: 4/5 (goes beyond standard, appropriate for pattern failure)
@@ -755,6 +828,7 @@ Patricia
 **Amount**: $89.99
 
 **Customer Message**:
+
 ```
 Subject: Final notice before chargeback
 
@@ -764,6 +838,7 @@ Richard
 ```
 
 **Context**:
+
 - Order placed 18 days ago
 - Tracking: Delivered (signature required, signed "R. Turner")
 - Customer claims non-receipt (possible porch theft, or legitimate dispute)
@@ -772,6 +847,7 @@ Richard
 
 **Expected Response Type**: Urgent, solution-focused, avoid chargeback
 **Key Points to Address**:
+
 - Apologize for lack of response (support failure acknowledged)
 - Show tracking: Delivered with signature on [date]
 - Ask: Was signature yours? If not, possible theft
@@ -786,11 +862,13 @@ Richard
 **Tone Guidance**: Urgent, apologetic, solution-focused, not combative
 
 **Grading Criteria**:
+
 - Tone: 4/5 (appropriately urgent, not panicked or aggressive)
 - Accuracy: 5/5 (correct tracking info, valid options)
 - Policy: 5/5 (follows chargeback prevention protocol, offers solutions)
 
 **CRITICAL**:
+
 - DO NOT be combative ("tracking shows delivery")
 - DO offer immediate solutions to avoid chargeback
 - DO escalate to manager immediately
@@ -807,6 +885,7 @@ Richard
 **Order ID**: #HRA-1014
 
 **Customer Message**:
+
 ```
 Subject: Urgent - Need 50 quarts by Friday
 
@@ -822,6 +901,7 @@ Classic Motors Dealership
 ```
 
 **Context**:
+
 - Customer: VIP tier (20+ previous orders, $12K spent)
 - Request: 50 quarts (large order)
 - Timeline: 3 days (tight but possible)
@@ -830,6 +910,7 @@ Classic Motors Dealership
 
 **Expected Response Type**: White glove service, immediate action
 **Key Points to Address**:
+
 - Thank customer for VIP business
 - Confirm we can fulfill (54 quarts available)
 - Timeline commitment: Ship today, arrive Thursday (1 day buffer)
@@ -842,11 +923,13 @@ Classic Motors Dealership
 **Tone Guidance**: VIP treatment, proactive, white glove service
 
 **Grading Criteria**:
+
 - Tone: 5/5 (VIP treatment, proactive, anticipates needs)
 - Accuracy: 5/5 (correct inventory, realistic timeline)
 - Policy: 5/5 (follows VIP protocol, goes above and beyond)
 
 **VIP PROTOCOL**:
+
 - ✅ Respond within 30 minutes
 - ✅ Assign dedicated support person
 - ✅ Proactive updates (shipping confirm, tracking, delivery confirm)
@@ -886,14 +969,14 @@ Classic Motors Dealership
 
 ## Scenario Summary Table
 
-| Category | Scenarios | Tones | Channels | Edge Cases |
-|----------|-----------|-------|----------|------------|
-| Order Status | 5 | Friendly, Frustrated, Neutral, Urgent, Anxious | Email (3), SMS (1), Chat (1) | Late orders, wrong items, cancellations |
-| Product Questions | 5 | Friendly, Analytical, Direct, Cautious, Concerned | Email (3), Chat (2) | Comparisons, defects, returns |
-| Account Issues | 3 | Frustrated, Professional, Formal | Email (2), Chat (1) | Password, profile, GDPR |
-| Billing | 3 | Confused, Impatient, Anxious | Email (2), Chat (1), SMS (1) | Unrecognized charges, refunds, payment failures |
-| Escalations | 4 | Angry, Exhausted, Threatening, Professional/VIP | Email (3), Chat (1) | Multiple failures, chargebacks, VIP |
-| **TOTAL** | **20** | **13 unique tones** | **Email (11), Chat (6), SMS (3)** | **10+ edge cases** |
+| Category          | Scenarios | Tones                                             | Channels                          | Edge Cases                                      |
+| ----------------- | --------- | ------------------------------------------------- | --------------------------------- | ----------------------------------------------- |
+| Order Status      | 5         | Friendly, Frustrated, Neutral, Urgent, Anxious    | Email (3), SMS (1), Chat (1)      | Late orders, wrong items, cancellations         |
+| Product Questions | 5         | Friendly, Analytical, Direct, Cautious, Concerned | Email (3), Chat (2)               | Comparisons, defects, returns                   |
+| Account Issues    | 3         | Frustrated, Professional, Formal                  | Email (2), Chat (1)               | Password, profile, GDPR                         |
+| Billing           | 3         | Confused, Impatient, Anxious                      | Email (2), Chat (1), SMS (1)      | Unrecognized charges, refunds, payment failures |
+| Escalations       | 4         | Angry, Exhausted, Threatening, Professional/VIP   | Email (3), Chat (1)               | Multiple failures, chargebacks, VIP             |
+| **TOTAL**         | **20**    | **13 unique tones**                               | **Email (11), Chat (6), SMS (3)** | **10+ edge cases**                              |
 
 ---
 
@@ -909,5 +992,3 @@ Classic Motors Dealership
 **Status**: ✅ Ready for AI-Customer Agent Training  
 **Next Step**: Load into Chatwoot once API access restored  
 **Owner**: Support Agent → AI-Customer Agent (for training)
-
-

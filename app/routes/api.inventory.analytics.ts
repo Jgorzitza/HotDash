@@ -99,9 +99,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         success: false,
         error: error.message || "Failed to generate inventory analytics",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

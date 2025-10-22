@@ -510,6 +510,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### APP LANE (Engineer, Designer, Pilot)
 
 **Engineer (#109)**:
+
 - ✅ Phase 1 (ENG-001 to ENG-004) COMPLETE
 - ✅ P0 i18n fix: AppProvider now has i18n prop (fixed MissingAppProviderError)
 - ✅ Tests improved: 236 → 241 passing (+5 tests)
@@ -519,6 +520,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: Production-ready for Phase 1. Unblocked Designer/Pilot.
 
 **Designer (#118)**:
+
 - ✅ Preparation: 5/15 tasks complete (DES-001, DES-004, DES-005, DES-008, DES-013)
 - ✅ Documentation: 70KB design docs (checklists, wireframes, accessibility, microcopy)
 - ❌ Blocked: 10/15 tasks (67%) pending Engineer implementation
@@ -527,6 +529,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: All available work complete, blocked by missing implementation.
 
 **Pilot (#119)**:
+
 - ✅ PIL-002: Dashboard tiles verified (6/6 working)
 - ❌ PIL-003: Approvals testing blocked (AppProvider error fixed by Engineer, needs retest)
 - ❌ Navigation bug: Approvals page inaccessible
@@ -534,6 +537,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: Needs retest after Engineer's i18n fix.
 
 **APP LANE SUMMARY**:
+
 - **Status**: Phase 1 complete, Designer/Pilot blocked by missing implementations
 - **P0 Resolved**: i18n fix unblocked interactive testing
 - **Gap**: Option A compliance 3/10 → 33 Engineer tasks remain (Phases 2-11)
@@ -544,6 +548,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### DATA LANE (Data, Inventory, Analytics)
 
 **Data (#106)**:
+
 - ✅ P0 RLS verification: 4/4 critical tables verified (PASS)
 - ✅ Option A tables: 5 migrations created (6 tables total)
   - user_preferences, notifications (2), approvals_history, sales_pulse_actions, inventory_actions
@@ -553,12 +558,14 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: All tasks complete, migrations ready for staging apply.
 
 **Inventory (#111)**:
+
 - ✅ Work complete on branch: `inventory/oct19-rop-fix-payouts-csv`
 - ⚠️ Git sync issue: 8 tables exist in commit 9d0baa4, only 1 on disk (inventory_actions)
 - ✅ Post-merge verification plan ready
 - **Verdict**: STANDBY - awaiting Manager git sync resolution.
 
 **Analytics (#104)**:
+
 - ✅ All v3.0 tasks complete (standby mode)
 - ✅ v2.0 deliverables: shopify-returns.stub.ts, sampling-guard-proof.mjs, metrics-for-content-ads.mjs
 - ✅ Tests: 218/229 passing (95.2%)
@@ -566,6 +573,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: Standby for Option A analytics API requests.
 
 **DATA LANE SUMMARY**:
+
 - **Status**: All tasks complete, migrations ready
 - **P0 Resolved**: RLS verification complete (4/4 PASS)
 - **Pending**: Data migration apply (8 migrations), Inventory git sync resolution
@@ -576,6 +584,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### QA/SECURITY/DOCS LANE (QA, DevOps, Support)
 
 **QA**:
+
 - ✅ QA Dispatcher: 3 P1 PRs analyzed (#104, #106, #107)
 - ✅ Reports: 15 files, 52KB documentation
 - ❌ PR #104: 5 BLOCKERS (forbidden .md files, missing issue linkage)
@@ -585,12 +594,14 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: 2 PRs clear, 1 blocked with fix instructions.
 
 **DevOps (#108)**:
+
 - ✅ Migration verification: 5/5 Data migrations verified (352 lines SQL)
 - ⚠️ Migration apply blocked: Supabase migration history mismatch
 - ✅ Infrastructure: All CI/CD, health checks, monitoring operational
 - **Verdict**: Migrations verified, awaiting Data/Manager coordination for apply.
 
 **Support (#74)**:
+
 - ✅ P0 Chatwoot fix: COMPLETE
 - ✅ Created Fly Postgres cluster: hotdash-chatwoot-db
 - ✅ Service restored: 503 → 200, health checks PASSING
@@ -600,6 +611,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: Service operational, data loss noted (fresh start).
 
 **QA/SECURITY/DOCS LANE SUMMARY**:
+
 - **Status**: QA complete (2 PRs clear), DevOps/Support infrastructure restored
 - **P0 Resolved**: Chatwoot service UP (11+ hour outage fixed)
 - **Pending**: PR #104 fixes (~10 min), migration apply coordination
@@ -610,6 +622,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### CONTENT/COMMS LANE (Content, SEO, Ads, AI-Customer)
 
 **Content (#105)**:
+
 - ✅ All tasks complete: 7 files, 3,361 lines
 - ✅ Microcopy guidance: 4 comprehensive docs for all Option A phases
   - Approval queue, enhanced modals, notifications, settings/onboarding
@@ -617,6 +630,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: All Option A microcopy ready for Engineer implementation.
 
 **SEO (#115)**:
+
 - ✅ All tasks complete: seo_anomaly_triage.md (527 lines)
 - ✅ Tests: 43/43 passing (100%)
 - ✅ HITL workflows: 4 triage workflows with JSON templates
@@ -624,6 +638,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: STANDBY for Option A support.
 
 **Ads (#101)**:
+
 - ✅ All tasks complete: 20/20 molecules
 - ✅ Tests: 60/60 passing (100%)
 - ✅ P2 formatting fix: Verified complete
@@ -631,6 +646,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: STANDBY for Option A support.
 
 **AI-Customer (#120)**:
+
 - ✅ Backend integration complete: Grading metadata extraction/storage
 - ✅ Chatwoot health checks: 2 scripts created
 - ✅ Documentation: docs/integrations/chatwoot.md (550+ lines)
@@ -638,6 +654,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: Backend ready, UI pending Engineer.
 
 **CONTENT/COMMS LANE SUMMARY**:
+
 - **Status**: All documentation/specs complete, ready for implementation
 - **P0 Resolved**: N/A (no P0 tasks in this lane)
 - **Pending**: Engineer implementation of microcopy/features
@@ -648,6 +665,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### INTEGRATIONS/AI LANE (Integrations, AI-Knowledge)
 
 **Integrations (#113)**:
+
 - ✅ All tasks complete: 15/15 molecules, Manager score 5/5
 - ✅ Idea pool API: app/routes/api.analytics.idea-pool.ts (139 lines)
 - ✅ Contract test: 13/13 passing
@@ -655,6 +673,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: STANDBY for Option A integration support.
 
 **AI-Knowledge (#71)**:
+
 - ✅ Direction v3.0: STANDBY mode (Issue #71 complete)
 - ✅ RAG system: Functional (6 docs indexed, 17.7s)
 - ✅ Credentials: OpenAI + Supabase verified functional
@@ -663,6 +682,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Verdict**: STANDBY for Option A knowledge base expansion.
 
 **INTEGRATIONS/AI LANE SUMMARY**:
+
 - **Status**: All tasks complete, systems operational
 - **P0 Resolved**: N/A
 - **Pending**: Option A expansion tasks (none assigned yet)
@@ -673,6 +693,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 #### PRODUCT/STRATEGY LANE (Product, Pilot)
 
 **Product (#117)**:
+
 - ✅ All v3.0 tasks complete: Monitoring, launch checklist updated, stakeholder comms updated
 - ✅ Launch checklist: P0s marked complete, Option A timeline (3-4 days) documented
 - ✅ Stakeholder comms: Updated with current status
@@ -681,6 +702,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 **(Pilot already covered in APP LANE)**
 
 **PRODUCT/STRATEGY LANE SUMMARY**:
+
 - **Status**: Launch docs current, Option A progress tracked
 - **Timeline**: 3-4 days documented for complete Option A
 - **Compliance**: Option A at 3/10 per Designer assessment
@@ -690,30 +712,35 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Contradictions → Resolved Decisions
 
 **1. Feedback Date Confusion (Oct 19 vs Oct 20)**:
+
 - **Issue**: Some agents wrote to Oct 20 files when work was late Oct 19
 - **Resolution**: Manager consolidated Oct 20 → Oct 19 for Oct 19 work
 - **Current**: All agents correctly using 2025-10-20.md for today's shutdown
 - **Decision**: Date policy clarified, no further action needed
 
 **2. Direction Version Drift**:
+
 - **Issue**: Some agents had stale direction files (v2.0 from Oct 17)
 - **Resolution**: Manager updated all direction files to v3.0-v7.0 (effective 2025-10-20)
 - **Current**: All agents have current direction (verified in feedback)
 - **Decision**: Direction refresh complete, no conflicts
 
 **3. Inventory Git Sync Issue**:
+
 - **Issue**: 8 inventory tables in git commit, only 1 on disk
 - **Resolution**: Manager noted git sync issue being resolved
 - **Current**: Inventory agent in STANDBY awaiting resolution
 - **Decision**: Manager to resolve git sync, then Inventory post-merge verification
 
 **4. Chatwoot Data Loss**:
+
 - **Issue**: Support created fresh Postgres cluster (lost previous data)
 - **Resolution**: Service restored (11+ hour outage fixed), fresh account created
 - **Impact**: CX Pulse tile now functional but no historical conversation data
 - **Decision**: ACCEPT data loss (service uptime > historical data), document in runbook
 
 **5. Missing Tiles (Designer Feedback)**:
+
 - **Issue**: Designer reports only 6/8 tiles (missing Idea Pool, Approvals Queue)
 - **Contradiction**: Engineer feedback says Idea Pool complete, Approvals route exists
 - **Resolution**: Need reconciliation - Engineer may have implemented but Designer testing blocked
@@ -723,16 +750,17 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 
 ### Ranked Risks (Impact × Likelihood)
 
-| Risk | Impact (1-5) | Likelihood (1-5) | Score | Owner | Deadline | Mitigation |
-|------|--------------|------------------|-------|-------|----------|------------|
-| Option A timeline slip (3-4 days → 1 week+) | 5 (launch delay) | 4 (33 tasks remain) | 20 | Manager | 2025-10-23 | Daily progress tracking, phased approach |
-| Data migration failure (8 pending migrations) | 5 (data loss) | 2 (tested locally) | 10 | Data + DevOps | 2025-10-21 | Supabase migration repair, rollback plan |
-| Chatwoot data loss impact on CX testing | 3 (no historical data) | 5 (already happened) | 15 | Support + Manager | 2025-10-21 | Seed test conversations, document limitation |
-| Git sync resolution complexity | 3 (agent blocked) | 3 (inventory 8 tables) | 9 | Manager | 2025-10-21 | Cherry-pick or rebase inventory branch |
-| Designer blocked (10/15 tasks pending) | 4 (validation gap) | 4 (missing features) | 16 | Engineer + Manager | 2025-10-22 | Prioritize missing tiles, phased validation |
-| Test failures (32 failing, 241/273 passing) | 3 (quality risk) | 3 (pre-existing) | 9 | Engineer + QA | 2025-10-22 | Triage failures, fix regressions |
+| Risk                                          | Impact (1-5)           | Likelihood (1-5)       | Score | Owner              | Deadline   | Mitigation                                   |
+| --------------------------------------------- | ---------------------- | ---------------------- | ----- | ------------------ | ---------- | -------------------------------------------- |
+| Option A timeline slip (3-4 days → 1 week+)   | 5 (launch delay)       | 4 (33 tasks remain)    | 20    | Manager            | 2025-10-23 | Daily progress tracking, phased approach     |
+| Data migration failure (8 pending migrations) | 5 (data loss)          | 2 (tested locally)     | 10    | Data + DevOps      | 2025-10-21 | Supabase migration repair, rollback plan     |
+| Chatwoot data loss impact on CX testing       | 3 (no historical data) | 5 (already happened)   | 15    | Support + Manager  | 2025-10-21 | Seed test conversations, document limitation |
+| Git sync resolution complexity                | 3 (agent blocked)      | 3 (inventory 8 tables) | 9     | Manager            | 2025-10-21 | Cherry-pick or rebase inventory branch       |
+| Designer blocked (10/15 tasks pending)        | 4 (validation gap)     | 4 (missing features)   | 16    | Engineer + Manager | 2025-10-22 | Prioritize missing tiles, phased validation  |
+| Test failures (32 failing, 241/273 passing)   | 3 (quality risk)       | 3 (pre-existing)       | 9     | Engineer + QA      | 2025-10-22 | Triage failures, fix regressions             |
 
 **Top 3 Risks** (by score):
+
 1. **Option A timeline slip (20)** - 33 Engineer tasks remain, 3-4 day estimate aggressive
 2. **Designer validation gap (16)** - 10/15 tasks blocked, cannot sign off on quality
 3. **Chatwoot data loss (15)** - Fresh database, no historical CX data for testing
@@ -742,6 +770,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Decisions Needed + Recommended Options
 
 **DECISION 1: Migration Apply Strategy**
+
 - **Context**: 8 Data migrations ready (3 integrated + 5 created), DevOps reports Supabase migration history mismatch
 - **Options**:
   - **A**: Data agent applies manually via psql (FASTEST - 10 min)
@@ -752,6 +781,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Risk**: None if using Data agent's tested migrations
 
 **DECISION 2: Inventory Git Sync Resolution**
+
 - **Context**: 8 inventory tables in commit 9d0baa4, only inventory_actions (1 table) on disk
 - **Options**:
   - **A**: Cherry-pick commit 9d0baa4 to main (FASTEST - 5 min)
@@ -762,6 +792,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Risk**: Low (migrations additive, RLS enabled)
 
 **DECISION 3: Option A Execution Approach**
+
 - **Context**: 33 Engineer tasks remain (ENG-005 to ENG-038), 3-4 day estimate, Option A compliance 3/10
 - **Options**:
   - **A**: Full build (all 38 tasks in one push) - 3-4 days
@@ -772,6 +803,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Risk**: Option A = timeline slip, Option B = slower but validated, Option C = partial delivery
 
 **DECISION 4: Chatwoot Data Loss Handling**
+
 - **Context**: Fresh Postgres cluster created (service restored), all previous conversation data lost
 - **Options**:
   - **A**: Accept data loss, seed test conversations for CX testing
@@ -782,6 +814,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - **Risk**: No historical CX data for testing/analytics
 
 **DECISION 5: Missing Tiles Reconciliation**
+
 - **Context**: Designer reports 6/8 tiles (missing Idea Pool, Approvals Queue), Engineer reports both complete
 - **Options**:
   - **A**: Pilot retests after i18n fix to confirm actual tile count
@@ -827,6 +860,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Current State Summary (2025-10-20 End-of-Day) — VERIFIED CURRENT
 
 **✅ P0 FIXES ALL DEPLOYED AND WORKING** (Verified 2025-10-20T19:15Z):
+
 - ✅ **i18n Fix**: AppProvider has i18n prop (Engineer complete, tests +5 passing)
 - ✅ **Chatwoot Restored**: Service 503 → 200, health checks PASSING (Support complete)
 - ✅ **GA API Working**: SEO & Content Watch tile GREEN (Manager + Context7 fix complete)
@@ -835,6 +869,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ **App Healthy**: Fly version 70, machine started, logs show GA API succeeding every minute
 
 **Completed Today (Agent Work)**:
+
 - ✅ Engineer: Phase 1 complete (ENG-001 to ENG-004), i18n fix DEPLOYED, tests 241/273 (88.3%)
 - ✅ Data: 5 new migrations created, P0 RLS verified (4/4 PASS), 8 total migrations ready
 - ✅ Support: Chatwoot service restored (11+ hour outage fixed), Fly Postgres created
@@ -846,6 +881,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ All Agents: Direction files updated to v3.0-v8.0
 
 **Outstanding Work (Next Session)**:
+
 - ⏸️ 33 Engineer tasks (ENG-005 to ENG-038) for complete Option A
 - ⏸️ 8 Data migrations apply to staging (CEO approval required)
 - ⏸️ 10 Designer validation tasks (retesting after i18n fix)
@@ -854,6 +890,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ Pilot retest (after i18n fix verification)
 
 **Production Status — CURRENT (Not Old Blockers)**:
+
 - ✅ App deployed: hotdash-staging.fly.dev (Fly v70, healthy)
 - ✅ Health endpoint: Working
 - ✅ Database: Supabase direct connection (port 5432), Chatwoot Postgres operational
@@ -864,6 +901,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ Security: 0 secrets leaked (Gitleaks green, 624 commits)
 
 **Option A Progress**:
+
 - **Overall**: 5/38 Engineer tasks complete (13%)
 - **Dashboard Tiles**: 6-7/8 implemented (need recount after i18n fix)
 - **Approval Queue**: Phase 1 complete (route, card, actions, badge)
@@ -875,7 +913,6 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 
 ---
 
-
 ## Alignment Check (NORTH STAR / OPS / RULES) — 2025-10-20
 
 **Alignment Status**: ✅ NO CONFLICTS DETECTED
@@ -883,11 +920,13 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### NORTH_STAR.md Alignment
 
 **Vision**: "Trustworthy, operator-first control center embedded in Shopify Admin"
+
 - ✅ **Engineer**: Building embedded Shopify app (React Router 7, Polaris)
 - ✅ **Designer**: Validating against 57 design specs for complete vision
 - ✅ **All Agents**: HITL workflow enforced (approval queue implementation)
 
 **Outcomes Validation**:
+
 - ✅ **Embedded Excellence**: Shopify-embedded admin app with tiles ✓
 - ✅ **Tool-First Intelligence**: MCP mandatory (6 Cursor Rules enforcing Context7, Shopify Dev MCP)
 - ✅ **HITL by Default**: AI-Customer grading backend implemented, approval queue Phase 1 complete
@@ -896,6 +935,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ **Governed Delivery**: Docs allow-list active, Danger configured, Gitleaks green
 
 **Success Metrics**:
+
 - ✅ P95 tile load < 3s: Build optimized (516ms)
 - ✅ Tests passing: 241/273 (88.3%)
 - ✅ Chatwoot health: Restored (was critical 11+ hours)
@@ -904,6 +944,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ Idea pool 5 suggestions: API ready, tile pending (ENG-008)
 
 **Scope Validation (vs COMPLETE_VISION_OVERVIEW.md)**:
+
 - ✅ 8 dashboard tiles: 6/8 implemented (75%)
 - ✅ Inventory system: ROP calculations complete, 8 tables ready, picker payouts documented
 - ✅ CX (Chatwoot): Service restored, grading backend ready, health checks automated
@@ -919,24 +960,28 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### OPERATING_MODEL.md Alignment
 
 **Pipeline (Molecule → Issue → Branch → PR → Ship)**:
+
 - ✅ All agents following molecule-sized tasks (≤ 2 days)
 - ✅ Issues created for all work (#101-#120)
 - ✅ Manager owns git operations (no agent commits)
 - ✅ Direction → Feedback separation enforced
 
 **Guardrails**:
+
 - ✅ Docs allow-list: Active (no ad-hoc .md files created Oct 20)
 - ✅ Secret scanning: Green (0 leaks)
 - ✅ Danger: Configured (PR #104 found 5 blockers)
 - ✅ Drift checklist: Manager executing daily
 
 **Development Workflow (Section 13 - Added Oct 20)**:
+
 - ✅ Branching model: batch-<BATCH_ID>/<slug> documented
 - ✅ Commit style: Conventional commits enforced
 - ✅ PR checklist: Risk level, rollback plan required
 - ✅ Required commands: npm run fmt/lint/test:ci/scan (all agents executing)
 
 **Implementation Standards**:
+
 - ❌ **CONFLICT DETECTED**: Design spec compliance "70% gaps UNACCEPTABLE"
   - **Reality**: Designer reports Option A compliance 3/10 (70% gap)
   - **Issue**: Current implementation does NOT meet stated standards
@@ -949,6 +994,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### RULES.md Alignment
 
 **MCP Tools Enforcement (Effective 2025-10-20)**:
+
 - ✅ Context7 MCP: Required before coding (enforced in 6 Cursor Rules)
 - ✅ Shopify Dev MCP: Used by Engineer (conversation ID logged)
 - ✅ Chrome DevTools MCP: Used by Designer, Pilot for testing
@@ -956,18 +1002,21 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ QA verification: QA Dispatcher used tools to analyze PRs
 
 **Database Safety (Effective 2025-10-20)**:
+
 - ✅ fly.toml: release_command = "npx prisma generate" ONLY
 - ✅ package.json: setup = "prisma generate" ONLY
 - ✅ No destructive commands in deployment paths
 - ✅ CEO-gated schema changes: Policy documented and enforced
 
 **No Ad-Hoc Files (Effective 2025-10-20)**:
+
 - ✅ All agents writing to feedback/{agent}/2025-10-20.md (correct)
 - ✅ 0 new ad-hoc .md files created Oct 20
 - ✅ QA found 3 forbidden .md files in PR #104 (blocked merge)
 - ✅ Self-correction: Deleted CONTRIBUTING.md, AGENT_LAUNCH_PROMPT after consolidation
 
 **React Router 7 Enforcement**:
+
 - ✅ Engineer verified: 0 @remix-run imports
 - ✅ Analytics verified: Compliance check green
 - ✅ All agents using React Router 7 patterns
@@ -979,17 +1028,20 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### AGENT_RULES_REFERENCE.md Alignment
 
 **Direction vs Feedback Separation**:
+
 - ✅ All agents reading from docs/directions/{agent}.md
 - ✅ All agents writing to feedback/{agent}/2025-10-20.md
 - ✅ 0 self-assigned tasks in feedback files
 - ✅ 0 ad-hoc documents created
 
 **Report Frequency (Every 2 Hours)**:
+
 - ✅ All agents reported multiple times Oct 20 with ISO 8601 timestamps
 - ✅ Evidence logged as summaries (max 10 lines per command)
 - ✅ 0 verbose outputs (file sizes within limits)
 
 **Escalation Protocol**:
+
 - ✅ Designer escalated P0 blockers (AppProvider, missing tiles)
 - ✅ AI-Knowledge escalated direction drift (non-existent infrastructure)
 - ✅ DevOps escalated migration history complexity
@@ -1002,6 +1054,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Doctrine Conflicts → Resolutions Required
 
 **CONFLICT 1: Implementation Gap vs "Never Again" Policy**
+
 - **Source**: OPERATING_MODEL.md lines 160-169 (Implementation Standards)
 - **Policy**: "70% feature gaps are UNACCEPTABLE", "Manager Commitment: Never again."
 - **Reality**: Designer reports Option A compliance 3/10 (70% gap)
@@ -1021,13 +1074,13 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 **No mandatory revisions required.**
 
 **Optional Enhancement**:
+
 - **File**: OPERATING_MODEL.md Section 13 (Development Workflow)
 - **Proposed**: Add "Option A Phased Delivery" subsection documenting phased approach
 - **Reason**: Current text assumes single-shot delivery, Option A is 11 phases over 3-4 days
 - **Owner**: Manager (if CEO approves phased approach)
 
 ---
-
 
 ## Definition of Final State — Option A Complete (Updated 2025-10-20)
 
@@ -1038,6 +1091,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Build & Environments
 
 **Production App** (hotdash-staging.fly.dev):
+
 - ✅ React Router 7 (no @remix-run imports)
 - ✅ Polaris UI components with i18n configured
 - ✅ Shopify App Bridge for embedded admin
@@ -1051,6 +1105,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ Onboarding flow (welcome modal, 3-step setup wizard, 4-step dashboard tour)
 
 **Database** (Supabase + Chatwoot Postgres):
+
 - ⏸️ All 8 Data migrations applied (user_preferences, notifications, approvals_history, etc.)
 - ⏸️ All 8 Inventory migrations applied (products, variants, purchase_orders, etc.)
 - ✅ RLS enabled on all tables (4/4 P0 tables verified, pending tables tested locally)
@@ -1059,13 +1114,15 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ Chatwoot Postgres operational (hotdash-chatwoot-db.flycast:5432)
 
 **Secrets Management**:
+
 - ✅ DATABASE_URL: Configured and functional
 - ✅ SHOPIFY_API_KEY/SECRET: Configured
 - ✅ GA_PROPERTY_ID + GOOGLE_APPLICATION_CREDENTIALS_BASE64: Working (SEO tile green)
 - ✅ CHATWOOT_TOKEN: Updated with new API token (hotdash-api-token-2025)
-- ⏸️ PUBLER_* secrets: Pending growth integration
+- ⏸️ PUBLER\_\* secrets: Pending growth integration
 
 **Environment Configuration**:
+
 - ✅ docker-entrypoint.sh: Decodes GA credentials on startup
 - ✅ Dockerfile: Entrypoint configured, Node 20.18.1
 - ✅ fly.toml: release_command safe (prisma generate only), no destructive DB operations
@@ -1075,6 +1132,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Secrets
 
 **Vault Structure** (vault/occ/):
+
 - ✅ supabase/database_url_staging.env (port 5432 direct connection)
 - ✅ google/ga_property_id.env (339826228)
 - ✅ google/application_credentials.json (base64 encoded in Fly secrets)
@@ -1084,6 +1142,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ rotation_log.md: Exists, needs update for Chatwoot Postgres
 
 **Fly Secrets** (hotdash-staging):
+
 - ✅ All secrets deployed (not staged)
 - ✅ No sensitive data in code or .md files
 - ✅ Gitleaks: 0 leaks (624 commits scanned)
@@ -1093,6 +1152,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Migrations
 
 **Database Schema Changes**:
+
 - ✅ 3 integrated migrations: ads_tracking, inventory_tables, inventory_rls (in git history)
 - ⏸️ 5 Option A migrations: user_preferences, notifications, approvals_history, sales_pulse_actions, inventory_actions (created, not applied)
 - ⏸️ CEO approval: Required before applying any migrations to staging/production
@@ -1100,6 +1160,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ RLS enabled: All new tables have multi-tenant RLS policies
 
 **Migration Safety**:
+
 - ✅ NO auto-migrations in deployment (fly.toml, package.json both safe)
 - ✅ Manual apply only (Data agent or Manager)
 - ✅ Tested locally: All migrations lint-clean, RLS verified
@@ -1110,12 +1171,14 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### CI/CD Green
 
 **Required Checks**:
+
 - ✅ Docs Policy: Active (QA found 3 violations in PR #104)
 - ✅ Gitleaks: Passing (0 secrets detected)
 - ⏸️ Danger: Configured, needs PR testing
 - ⏸️ AI Config Validation: Configured, needs PR testing
 
 **Test Status**:
+
 - ✅ Unit tests: 241/273 passing (88.3%)
 - ❌ Failing tests: 32 failures (12% fail rate)
   - 6 dashboard tiles tests
@@ -1125,6 +1188,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ E2E tests: Pilot blocked, needs retest after i18n fix
 
 **Code Quality**:
+
 - ✅ npm run fmt: Passing (formatting clean)
 - ⚠️ npm run lint: 552 errors, 10 warnings (pre-existing, not blocking deployment)
 - ✅ npm run scan: Passing (0 secrets)
@@ -1137,6 +1201,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Release Notes + Rollback
 
 **Release Notes Outline** (to be created in STEP 7):
+
 - ⏸️ Pending - will document Phase 1 completion + Option A roadmap
 - ⏸️ Breaking changes: None (additive migrations only)
 - ⏸️ New features: Approval queue Phase 1, i18n support, 5 Option A tables
@@ -1144,6 +1209,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ⏸️ Known issues: 32 test failures, Designer validation gap
 
 **Rollback Procedures**:
+
 - ✅ Database: All migrations have rollback SQL in data_change_log.md
 - ✅ Deployment: Fly.io supports instant rollback to previous release
 - ✅ Secrets: Vault contains all previous values (rotation_log.md)
@@ -1154,6 +1220,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Runbook & SLA
 
 **Runbooks Complete**:
+
 - ✅ manager_startup_checklist.md (updated Oct 20 with MCP tools section)
 - ✅ manager_shutdown_checklist.md (exists, verified)
 - ✅ agent_startup_checklist.md (updated Oct 20 with MCP tools + database safety)
@@ -1164,6 +1231,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 - ✅ Integrations: idea-pool-feature-flag-activation.md
 
 **SLA Targets** (from NORTH_STAR):
+
 - ✅ CX review: 15 minutes (business hours) - Backend ready, UI pending
 - ✅ Inventory/Growth: Same day - Approval queue Phase 1 complete
 - ⏸️ Idea pool: 5 suggestions always - API ready, tile pending
@@ -1174,17 +1242,20 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Monitoring/Telemetry + Alerts
 
 **Health Checks**:
+
 - ✅ App: /health endpoint operational (Engineer complete)
 - ✅ Chatwoot: 2 health check scripts (Node.js + Shell)
 - ✅ Fly.io: Health checks passing for hotdash-staging, hotdash-chatwoot, hotdash-chatwoot-db
 
 **Metrics Endpoints**:
+
 - ✅ /api/analytics/traffic: Working (GA API integrated)
 - ✅ /api/seo/anomalies: Working (SEO tile green)
 - ⏸️ /api/agent-metrics: Pending (Analytics standby)
 - ⏸️ /api/approvals/count: Pending (Analytics standby)
 
 **Logging**:
+
 - ✅ Structured logs: app/utils/logger.server.ts (console fallback)
 - ✅ Artifacts: artifacts/ops/chatwoot-health/, artifacts/support/, artifacts/pilot/
 - ✅ Decision log: Supabase decision_log table (AI-Customer grading backend ready)
@@ -1196,6 +1267,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Acceptance Criteria (Option A Complete)
 
 **Must Have** (Blocks Launch):
+
 1. ⏸️ All 8 dashboard tiles implemented and functional
 2. ⏸️ Approval queue fully operational (route + history + notifications)
 3. ⏸️ Enhanced modals with accessibility (WCAG 2.2 AA)
@@ -1205,21 +1277,13 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 7. ⏸️ Designer sign-off (DES-015) - Currently 3/10 compliance
 8. ⏸️ QA GO decision - Currently NO-GO (Pilot blocked)
 
-**Should Have** (Launch with Caveats):
-9. ⏸️ Notification system implemented (toast, banner, browser)
-10. ⏸️ Settings page complete (4 tabs)
-11. ⏸️ Personalization features (drag-drop, theme, visibility toggles)
-12. ⏸️ Onboarding flow (welcome modal, setup wizard, dashboard tour)
+**Should Have** (Launch with Caveats): 9. ⏸️ Notification system implemented (toast, banner, browser) 10. ⏸️ Settings page complete (4 tabs) 11. ⏸️ Personalization features (drag-drop, theme, visibility toggles) 12. ⏸️ Onboarding flow (welcome modal, setup wizard, dashboard tour)
 
-**Could Have** (Post-Launch):
-13. Real-time features (SSE for live updates)
-14. Advanced data visualizations
-15. Growth HITL posting (Publer integration)
+**Could Have** (Post-Launch): 13. Real-time features (SSE for live updates) 14. Advanced data visualizations 15. Growth HITL posting (Publer integration)
 
 **Final State Status**: ⏸️ 30% COMPLETE (5/38 tasks, Phase 1 of 11 done)
 
 ---
-
 
 ---
 
@@ -1236,6 +1300,7 @@ _This plan is intentionally mechanical. Boring guardrails win. Use it to move fa
 ### Phase Structure (CEO-Gated)
 
 Each phase follows:
+
 1. **Tasks Assigned** → Agents execute with full direction
 2. **Tasks Complete** → Agent reports to feedback
 3. **Designer Validation** → Visual QA, accessibility, spec compliance
@@ -1243,6 +1308,7 @@ Each phase follows:
 5. **CEO Approval** → Proceed to next phase
 
 **CEO Can**:
+
 - Approve continuation (proceed to Phase N+1)
 - Request changes (iterate on Phase N)
 - Pause build (assess timeline/priorities)
@@ -1255,20 +1321,23 @@ Each phase follows:
 **Status**: ✅ DEPLOYED (Fly v70, 2025-10-20T18:03Z)
 
 **Tasks Complete**:
+
 - ENG-001: AppProvider i18n fix (MissingAppProviderError resolved)
 - ENG-002: ApprovalCard component verified
 - ENG-003: Approval actions (approve/reject/request-changes)
 - ENG-004: Navigation badge (pending count)
 
 **Agent Work**:
+
 - ✅ Engineer: 4 tasks, 35 min, tests +5 passing
 - ✅ Data: 5 migrations created (user_preferences, notifications, approvals_history, sales_pulse_actions, inventory_actions)
 - ✅ Content: Microcopy guide for approval queue (487 lines)
 
 **Evidence**:
+
 - Build: 516ms passing
 - Tests: 241/273 (88.3%)
-- Files: app/routes/app.tsx, app/routes/approvals/**
+- Files: app/routes/app.tsx, app/routes/approvals/\*\*
 - Migrations: 5/5 created (pending apply)
 
 **Designer Validation**: ⏸️ PENDING (needs retest after i18n fix)
@@ -1282,13 +1351,13 @@ Each phase follows:
 **Timeline**: 8 hours total work
 
 **Tasks**:
+
 - **ENG-005**: CX Escalation Modal grading sliders (2h)
   - Add 3 state variables (toneGrade, accuracyGrade, policyGrade)
   - Add UI section with 3 range sliders (1-5 scale)
   - Update submit function to include grades in FormData
   - Dependencies: AI-Customer backend ready ✅
   - Acceptance: Grades stored in decision_log.payload.grades
-  
 - **ENG-006**: Sales Pulse Modal variance actions (3h)
   - Add action dropdown (adjust_price, investigate, accept_variance, escalate)
   - Add notes field with audit trail
@@ -1304,6 +1373,7 @@ Each phase follows:
   - Acceptance: PO CSV generated, stored in inventory_actions
 
 **Agent Dependencies**:
+
 - ✅ AI-Customer: Grading backend complete (ENG-005 ready)
 - ✅ Content: Microcopy guide complete (615 lines)
 - ⏸️ Data: Apply migrations first (USER_APPROVED: "Yes do it")
@@ -1312,6 +1382,7 @@ Each phase follows:
 **Design Spec**: docs/design/modal-refresh-handoff.md
 
 **Acceptance Criteria**:
+
 - All 3 modals have accessibility (focus trap, keyboard nav, ARIA labels)
 - Grading sliders functional (ENG-005)
 - Action dropdowns working (ENG-006, ENG-007)
@@ -1319,9 +1390,11 @@ Each phase follows:
 - Designer validates: Spec compliance, accessibility, UX
 
 **Blockers to Resolve FIRST**:
+
 - ⏸️ Data migrations must be applied (5 tables needed)
 
 **Designer Validation** (after Engineer complete):
+
 - DES-003: Enhanced Modals QA (45 min)
 - Verify focus trap, keyboard navigation
 - Test grading sliders (1-5 range)
@@ -1337,6 +1410,7 @@ Each phase follows:
 **Timeline**: 4 hours total work
 
 **Tasks**:
+
 - **ENG-008**: Idea Pool Tile (2h)
   - Display: 5/5 pool capacity, wildcard badge, pending/accepted counts
   - "View Idea Pool" button → /ideas route (already exists)
@@ -1357,12 +1431,14 @@ Each phase follows:
   - Acceptance: All tiles production-ready
 
 **Agent Dependencies**:
+
 - ✅ Integrations: Idea pool API ready (13/13 tests passing)
 - ✅ Engineer: Approvals route and service exist
 
 **Design Spec**: docs/design/dashboard-features-1K-1P.md
 
 **Acceptance Criteria**:
+
 - Dashboard shows 8/8 tiles
 - All tiles load within 3s (P95)
 - Loading/error states implemented
@@ -1370,6 +1446,7 @@ Each phase follows:
 - Designer validates: All 8 tiles present, layout correct
 
 **Designer Validation** (after Engineer complete):
+
 - DES-005: Missing Tiles QA (final validation - 30 min)
 - Confirm 8/8 tiles visible
 - Verify layout matches wireframes
@@ -1384,6 +1461,7 @@ Each phase follows:
 **Timeline**: 6 hours total work
 
 **Tasks**:
+
 - **ENG-011**: Toast Notifications (2h)
   - Success: "Pit stop complete!" (Hot Rodan brand)
   - Error, Info, Warning toasts
@@ -1409,12 +1487,14 @@ Each phase follows:
   - Acceptance: Browser notifications working, center accessible
 
 **Agent Dependencies**:
+
 - ✅ Data: notifications, notification_preferences tables created
 - ✅ Content: Microcopy guide complete (566 lines)
 
 **Design Spec**: docs/design/notification-system-design.md
 
 **Acceptance Criteria**:
+
 - Toast notifications working (4 types)
 - Banner alerts functional
 - Browser notifications with permissions
@@ -1423,6 +1503,7 @@ Each phase follows:
 - Designer validates: Matches spec, accessible
 
 **Designer Validation** (after Engineer complete):
+
 - DES-006: Notification System QA (1h)
 - Test all toast types
 - Verify banner triggers
@@ -1438,6 +1519,7 @@ Each phase follows:
 **Timeline**: 5 hours (can be skipped/deferred)
 
 **Tasks**:
+
 - **ENG-023**: SSE Connection for Live Updates (2h)
 - **ENG-024**: Live Approval Count Badge (1h)
 - **ENG-025**: Tile Auto-Refresh Indicators (2h)
@@ -1453,6 +1535,7 @@ Each phase follows:
 **Timeline**: 10 hours total work
 
 **Tasks**:
+
 - **ENG-014**: Drag & Drop Tile Reorder (3h)
   - @dnd-kit/core library integration
   - Save order to user_preferences.tile_order
@@ -1480,12 +1563,14 @@ Each phase follows:
   - Integrations tab: Shopify, Chatwoot, GA, Publer status
 
 **Agent Dependencies**:
+
 - ✅ Data: user_preferences table created
 - ✅ Content: Settings microcopy (837 lines)
 
 **Design Spec**: docs/design/dashboard-features-1K-1P.md (personalization section)
 
 **Acceptance Criteria**:
+
 - Drag & drop working (tiles reorder)
 - Settings page functional (4 tabs)
 - Theme switcher working
@@ -1493,6 +1578,7 @@ Each phase follows:
 - Designer validates: UX smooth, settings intuitive
 
 **Designer Validation** (after Engineer complete):
+
 - DES-007: Personalization QA (1h)
 - Test drag & drop UX
 - Verify settings page (4 tabs)
@@ -1508,6 +1594,7 @@ Each phase follows:
 **Timeline**: 8 hours (can be deferred post-launch)
 
 **Tasks**:
+
 - **ENG-026 to ENG-028**: Agent performance charts, training data viz
 - Agent metrics API (Analytics agent ready ✅)
 - Chart library integration (Context7 required)
@@ -1521,6 +1608,7 @@ Each phase follows:
 **Timeline**: 4 hours total work
 
 **Tasks**:
+
 - **ENG-029**: Welcome Modal (1h)
   - "Rev up your operations!" (Hot Rodan theme)
   - 3-step setup wizard (Shopify, Chatwoot, Analytics)
@@ -1538,11 +1626,13 @@ Each phase follows:
   - Link to help docs
 
 **Agent Dependencies**:
+
 - ✅ Content: Onboarding microcopy complete (in settings guide)
 
 **Design Spec**: docs/design/dashboard-onboarding-flow.md
 
 **Acceptance Criteria**:
+
 - Welcome modal on first login
 - Dashboard tour functional
 - Can skip/dismiss
@@ -1550,6 +1640,7 @@ Each phase follows:
 - Designer validates: UX delightful, not annoying
 
 **Designer Validation**:
+
 - DES-012: Onboarding Flow QA (45 min)
 
 **→ CEO CHECKPOINT 6**: Onboarding complete. Continue to Phase 10 (History) OR declare MVP complete?
@@ -1561,6 +1652,7 @@ Each phase follows:
 **Timeline**: 3 hours total work
 
 **Tasks**:
+
 - **ENG-032**: Approval History Page (2h)
   - Table view of approvals_history
   - Filters: date range, action type, operator
@@ -1575,17 +1667,20 @@ Each phase follows:
   - Link to original conversation/item
 
 **Agent Dependencies**:
+
 - ✅ Data: approvals_history table created
 
 **Design Spec**: docs/design/approval-history-ui.md
 
 **Acceptance Criteria**:
+
 - History page accessible
 - Filters working
 - CSV export functional
 - Designer validates: Table usable, export works
 
 **Designer Validation**:
+
 - DES-011: Approval History QA (30 min)
 
 **→ CEO CHECKPOINT 7**: History complete. Final polish (Phase 11)?
@@ -1597,6 +1692,7 @@ Each phase follows:
 **Timeline**: 3 hours total work
 
 **Tasks**:
+
 - **ENG-035**: Loading State Polish (1h)
   - Skeleton loaders for all tiles
   - Smooth transitions
@@ -1621,12 +1717,14 @@ Each phase follows:
 **Design Spec**: Accessibility standards (WCAG 2.2 AA)
 
 **Acceptance Criteria**:
+
 - P95 tile load < 3s ✅ (already meeting)
 - Zero accessibility violations
 - Error states helpful
 - Loading states smooth
 
 **Designer Validation**:
+
 - DES-014: Accessibility Final Audit (1h)
 - DES-015: Design Sign-Off (final approval)
 
@@ -1636,35 +1734,38 @@ Each phase follows:
 
 ### Agent Responsibilities by Phase
 
-| Phase | Engineer | Designer | Data | Content | Other |
-|-------|----------|----------|------|---------|-------|
-| 1 ✅ | ENG-001-004 | Retest | Migrations | Microcopy | AI-Customer, Integrations |
-| 2 | ENG-005-007 | DES-003 | Apply migrations | Review | AI-Customer (grading) |
-| 3 | ENG-008-010 | DES-005 | - | - | Integrations (idea pool) |
-| 4 | ENG-011-013 | DES-006 | - | Review | - |
-| 5 | ENG-023-025 | - | - | - | Analytics (SSE endpoint) |
-| 6 | ENG-014-022 | DES-007, DES-009 | - | Review | - |
-| 7-8 | ENG-026-028 | DES-010, DES-011 | - | - | Analytics (metrics API) |
-| 9 | ENG-029-031 | DES-012 | - | Review | - |
-| 10 | ENG-032-034 | DES-011 | - | - | - |
-| 11 | ENG-035-038 | DES-014, DES-015 | - | - | QA (final tests) |
+| Phase | Engineer    | Designer         | Data             | Content   | Other                     |
+| ----- | ----------- | ---------------- | ---------------- | --------- | ------------------------- |
+| 1 ✅  | ENG-001-004 | Retest           | Migrations       | Microcopy | AI-Customer, Integrations |
+| 2     | ENG-005-007 | DES-003          | Apply migrations | Review    | AI-Customer (grading)     |
+| 3     | ENG-008-010 | DES-005          | -                | -         | Integrations (idea pool)  |
+| 4     | ENG-011-013 | DES-006          | -                | Review    | -                         |
+| 5     | ENG-023-025 | -                | -                | -         | Analytics (SSE endpoint)  |
+| 6     | ENG-014-022 | DES-007, DES-009 | -                | Review    | -                         |
+| 7-8   | ENG-026-028 | DES-010, DES-011 | -                | -         | Analytics (metrics API)   |
+| 9     | ENG-029-031 | DES-012          | -                | Review    | -                         |
+| 10    | ENG-032-034 | DES-011          | -                | -         | -                         |
+| 11    | ENG-035-038 | DES-014, DES-015 | -                | -         | QA (final tests)          |
 
 ---
 
 ### Critical Path Dependencies
 
 **Phase 2 Blockers**:
+
 - ⏸️ **URGENT**: Data migrations must be applied BEFORE Phase 2 starts
 - Reason: ENG-006, ENG-007 need sales_pulse_actions, inventory_actions tables
 - Time: 10 minutes
 - **Action**: Data agent applies migrations (CEO approved: "Yes do it")
 
 **Phase 3 Ready**:
+
 - ✅ Integrations: Idea pool API ready
 - ✅ Engineer: Approvals route ready
 - ✅ No blockers
 
 **Phases 4-11 Ready**:
+
 - ✅ Data: All tables created
 - ✅ Content: All microcopy ready
 - ✅ No blockers (sequential execution)
@@ -1674,12 +1775,14 @@ Each phase follows:
 ### Timeline & Milestones
 
 **Day 1** (Today - Oct 20):
+
 - ✅ Phase 1 complete
 - ⏸️ Data migrations apply
 - ⏸️ Designer retests Phase 1
 - → CEO CHECKPOINT 1
 
 **Day 2** (Oct 21):
+
 - Phase 2: Enhanced modals (8h)
 - Designer validation (1h)
 - → CEO CHECKPOINT 2
@@ -1688,12 +1791,14 @@ Each phase follows:
 - → CEO CHECKPOINT 3
 
 **Day 3** (Oct 22):
+
 - Phase 4: Notifications (6h)
 - Phase 6: Settings (start - 6h)
 - Designer validation (2h)
 - → CEO CHECKPOINT 4+5
 
 **Day 4** (Oct 23):
+
 - Phase 6: Settings (finish - 4h)
 - Phase 9: Onboarding (4h)
 - Phase 10: History (3h)
@@ -1707,19 +1812,20 @@ Each phase follows:
 
 ### Risk Register (Option A Execution)
 
-| Risk | Impact | Likelihood | Mitigation | Owner |
-|------|--------|------------|------------|-------|
-| Timeline slip (3-4 days → 5-6 days) | HIGH | MED | CEO checkpoints allow pause/adjust | Manager |
-| Designer finds spec violations | MED | LOW | Each phase validated before next | Designer |
-| Data migration failure | HIGH | LOW | Rollback plan documented, tested locally | Data |
-| Engineer blocked (dependencies) | MED | LOW | Dependencies resolved Phase 2 start | Manager |
-| Test failures increase | MED | MED | Fix regressions immediately, don't accumulate | Engineer + QA |
+| Risk                                | Impact | Likelihood | Mitigation                                    | Owner         |
+| ----------------------------------- | ------ | ---------- | --------------------------------------------- | ------------- |
+| Timeline slip (3-4 days → 5-6 days) | HIGH   | MED        | CEO checkpoints allow pause/adjust            | Manager       |
+| Designer finds spec violations      | MED    | LOW        | Each phase validated before next              | Designer      |
+| Data migration failure              | HIGH   | LOW        | Rollback plan documented, tested locally      | Data          |
+| Engineer blocked (dependencies)     | MED    | LOW        | Dependencies resolved Phase 2 start           | Manager       |
+| Test failures increase              | MED    | MED        | Fix regressions immediately, don't accumulate | Engineer + QA |
 
 ---
 
 ### Quality Gates (Each Phase)
 
 **Engineer Complete**:
+
 - [ ] All phase tasks implemented
 - [ ] Tests passing (no regressions)
 - [ ] Build successful
@@ -1727,6 +1833,7 @@ Each phase follows:
 - [ ] Feedback updated with evidence
 
 **Designer Validation**:
+
 - [ ] Visual QA complete (matches specs)
 - [ ] Accessibility verified (WCAG 2.2 AA)
 - [ ] Responsive tested (3 breakpoints)
@@ -1734,12 +1841,14 @@ Each phase follows:
 - [ ] Sign-off provided in feedback
 
 **Data/Support** (if applicable):
+
 - [ ] Database changes applied
 - [ ] RLS verified
 - [ ] Rollback tested
 - [ ] No data loss
 
 **CEO Checkpoint**:
+
 - [ ] Review phase progress
 - [ ] Review Designer validation
 - [ ] Approve next phase OR request changes OR pause
@@ -1749,11 +1858,13 @@ Each phase follows:
 ### Phase Skipping / Deferral Options
 
 **Can Skip** (Post-Launch Features):
+
 - Phase 5: Real-time (SSE) - Nice to have
 - Phase 7-8: Data visualization - Advanced features
 - Phase 10: History - Audit feature
 
 **Cannot Skip** (Core UX):
+
 - Phase 2: Enhanced modals (grading is HITL core)
 - Phase 3: Missing tiles (dashboard incomplete without)
 - Phase 4: Notifications (operator awareness)
@@ -1764,7 +1875,6 @@ Each phase follows:
 **CEO Can Defer**: Any "Can Skip" phase to post-launch (reduces timeline to 2-3 days)
 
 ---
-
 
 ---
 
@@ -1781,12 +1891,14 @@ Each phase follows:
 ### Phase Structure (CEO-Gated)
 
 Each phase:
+
 1. Tasks Assigned → Agents execute
 2. Tasks Complete → Designer validates
 3. **→ CEO CHECKPOINT** → Review + approve OR adjust
 4. CEO Approval → Proceed to next phase
 
 **CEO can at any checkpoint**:
+
 - Approve (proceed to Phase N+1)
 - Request changes (iterate on Phase N)
 - Pause build (assess priorities)
@@ -1799,6 +1911,7 @@ Each phase:
 **Status**: DEPLOYED (Fly v70, 2025-10-20)
 
 **What Was Built**:
+
 - Approval queue route (/approvals)
 - ApprovalCard component
 - Navigation badge (pending count)
@@ -1818,6 +1931,7 @@ Each phase:
 **What Gets Built**:
 
 **CX Modal Enhancements**:
+
 - Add 3 grading sliders (tone/accuracy/policy 1-5) ← **15 min work**
 - Conversation preview (scrollable history)
 - AI suggested reply display
@@ -1826,6 +1940,7 @@ Each phase:
 - Store grades in decision_log.payload.grades
 
 **Sales Pulse Modal**:
+
 - Variance review UI (WoW comparison)
 - Action dropdown (Log follow-up / Escalate to ops)
 - Notes textarea with audit trail
@@ -1833,6 +1948,7 @@ Each phase:
 - Store in sales_pulse_actions table
 
 **Inventory Modal**:
+
 - 14-day velocity analysis display
 - Reorder approval workflow
 - Quantity input for PO
@@ -1840,17 +1956,20 @@ Each phase:
 - Store in inventory_actions table
 
 **OpenAI SDK - AI-Customer Agent**:
+
 - ✅ Backend 80% complete (grading system, Chatwoot integration)
 - ✅ Chatwoot multi-channel working (email, SMS, live chat)
 - ⚠️ Add 3 grading sliders to CXEscalationModal.tsx ← **15 min**
 - Integration: Modal → backend grading → decision_log
 
 **All Modals**:
+
 - Accessibility (focus trap, keyboard nav, ARIA)
 - Toast notifications
 - Error retry mechanisms
 
 **Dependencies**:
+
 - ✅ Chatwoot operational (email/SMS/chat)
 - ✅ AI-Customer backend ready
 - ✅ Content microcopy ready
@@ -1861,6 +1980,7 @@ Each phase:
 **Time**: 8 hours
 
 **Quality Gate**:
+
 - Designer validates (DES-003: 45 min)
 - Accessibility verified (WCAG 2.2 AA)
 - All 3 modals functional with grading
@@ -1873,6 +1993,7 @@ Each phase:
 **What Gets Built**:
 
 **Idea Pool Tile**:
+
 - 5/5 capacity indicator
 - Wildcard badge (EXACTLY 1)
 - Pending/accepted/rejected counts
@@ -1880,6 +2001,7 @@ Each phase:
 - Backend: getIdeaPoolSummary() (already built by Integrations)
 
 **Approvals Queue Tile**:
+
 - Pending approval count
 - Oldest pending time
 - Risk level summary
@@ -1887,7 +2009,8 @@ Each phase:
 - Backend: getApprovalsSummary()
 
 **Integration**:
-- Add to app/routes/app._index.tsx
+
+- Add to app/routes/app.\_index.tsx
 - Update loader function
 - Real-time count updates
 
@@ -1896,6 +2019,7 @@ Each phase:
 **Time**: 4 hours
 
 **Quality Gate**:
+
 - Designer validates (DES-005: 30 min)
 - Dashboard shows 8/8 tiles
 - All tiles load < 3s
@@ -1908,18 +2032,21 @@ Each phase:
 **What Gets Built**:
 
 **Toast Notifications**:
+
 - Success (action approved, settings saved)
 - Error (with retry button)
 - Info (new approvals arrived)
 - Auto-dismiss (5 sec) or persistent
 
 **Banner Alerts**:
+
 - Queue backlog (>10 pending)
 - Performance degradation (<70% approval rate)
 - System health (service down)
 - Connection status (offline/reconnecting)
 
 **Browser Notifications**:
+
 - Request notification permission
 - Desktop notifications for new approvals
 - Sound option (configurable)
@@ -1927,6 +2054,7 @@ Each phase:
 - Persistent until clicked
 
 **Notification Center** (slide-out panel):
+
 - Badge count in navigation
 - Notification cards grouped by date
 - Mark as read/unread
@@ -1934,6 +2062,7 @@ Each phase:
 - Links to approval queue
 
 **Data**:
+
 - Create notifications table (Supabase)
 - Store notification history
 - RLS policies
@@ -1943,6 +2072,7 @@ Each phase:
 **Time**: 6 hours
 
 **Quality Gate**:
+
 - Designer validates
 - All notification types working
 - **→ CEO CHECKPOINT 4**: Notifications complete, approve Phase 5?
@@ -1954,12 +2084,14 @@ Each phase:
 **What Gets Built**:
 
 **Live Update Indicators**:
+
 - Pulse animation on tile refresh
 - "Updated X seconds ago" timestamp
 - Auto-refresh progress bar
 - Manual refresh button
 
 **Server-Sent Events (SSE)**:
+
 - SSE connection for approval queue
 - Real-time tile updates
 - Live badge count updates
@@ -1967,6 +2099,7 @@ Each phase:
 - Reconnection logic
 
 **Optimistic Updates**:
+
 - Instant approve/reject feedback
 - Revert on API failure
 - Smooth animations
@@ -1976,6 +2109,7 @@ Each phase:
 **Time**: 5 hours
 
 **Quality Gate**:
+
 - Designer validates
 - Real-time updates < 1s latency
 - **→ CEO CHECKPOINT 5**: Real-time working, approve Phase 6?
@@ -1987,6 +2121,7 @@ Each phase:
 **What Gets Built**:
 
 **Drag & Drop Reordering**:
+
 - Install @dnd-kit/core library
 - Drag handles on tiles
 - Save order to user_preferences
@@ -1995,16 +2130,19 @@ Each phase:
 **Settings Page** (/settings) with 4 tabs:
 
 **Dashboard Tab**:
+
 - Tile visibility checkboxes (show/hide each)
 - Default view selector (grid/list)
 - Reset to default layout button
 
 **Appearance Tab**:
+
 - Theme selector (Light/Dark/Auto)
 - Apply to root element
 - Persist to database
 
 **Notification Tab**:
+
 - Desktop notifications toggle
 - Sound toggle
 - Queue backlog threshold
@@ -2012,12 +2150,14 @@ Each phase:
 - Frequency selector (realtime/5min/hourly)
 
 **Integrations Tab**:
+
 - Shopify status (connected)
 - Chatwoot health check
 - Google Analytics status
 - API key management (masked)
 
 **Data**:
+
 - Create user_preferences table
 - Fields: tile_order, visible_tiles, theme, notification_prefs
 - RLS policies
@@ -2028,6 +2168,7 @@ Each phase:
 **Time**: 10 hours
 
 **Quality Gate**:
+
 - Designer validates (DES-007, DES-009: 2h)
 - All settings persist
 - Drag-drop smooth
@@ -2040,6 +2181,7 @@ Each phase:
 **What Gets Built**:
 
 **Chart Library Integration**:
+
 - Install @shopify/polaris-viz
 - Sparkline component
 - Bar chart component
@@ -2047,18 +2189,21 @@ Each phase:
 - Donut chart component
 
 **Sales Charts**:
+
 - 7-day revenue sparkline in Sales Pulse tile
 - Revenue trend in modal
 - Top SKUs bar chart
 - WoW comparison visualization
 
 **Inventory Charts**:
+
 - 14-day velocity line chart
 - Stock level trends
 - Reorder timing visual
 - Days of cover graph
 
 **Agent Performance Charts**:
+
 - Approval rate over time
 - Average grades by agent
 - Response time trends
@@ -2069,6 +2214,7 @@ Each phase:
 **Time**: 8 hours
 
 **Quality Gate**:
+
 - Designer validates
 - Charts interactive
 - Print-friendly
@@ -2088,24 +2234,28 @@ Each phase:
 **What Gets Built**:
 
 **History Route** (/approvals/history):
+
 - Filterable DataTable
 - Search functionality (conversation ID, tool name)
 - Export to CSV
 - Timeline visualization
 
 **Filters**:
+
 - Status: All / Approved / Rejected
 - Date range: Last 7/30/90 days
 - Agent: Filter by agent name
 - Tool: Filter by tool name
 
 **Timeline View**:
+
 - Visual timeline of approvals
 - Grouped by date
 - Color-coded by action
 - Click to view details
 
 **CSV Export**:
+
 - All visible columns
 - Filename: approval-history-YYYY-MM-DD.csv
 
@@ -2114,6 +2264,7 @@ Each phase:
 **Time**: 3 hours
 
 **Quality Gate**:
+
 - Designer validates
 - Export working
 - **→ CEO CHECKPOINT 8**: History complete, approve Phase 11?
@@ -2125,10 +2276,12 @@ Each phase:
 **What Gets Built**:
 
 **CEO Assistant Agent** (OpenAI Agents SDK):
+
 - Framework: OpenAI Agents SDK (TypeScript)
 - Pattern: HITL (drafts → CEO approves → executes)
 
 **Agent Tools**:
+
 - Shopify Admin GraphQL (orders, products, customers)
 - Supabase RPC (analytics queries, data analysis)
 - Chatwoot API (CX insights)
@@ -2136,18 +2289,21 @@ Each phase:
 - Google Analytics API (traffic analysis)
 
 **Use Cases**:
+
 - Operations decisions ("Should I reorder SKU-123?")
 - Data analysis ("Show me top customers this month")
 - Reporting ("Generate weekly performance summary")
 - CX escalations ("Analyze support ticket trends")
 
 **HITL Workflow**:
+
 - CEO asks question → Agent drafts response/action
 - CEO reviews in modal
 - CEO approves/edits → Action executes
 - Result logged to decision_log
 
 **Integration**:
+
 - Add "CEO Agent" approval type to queue
 - CEO agent modal (query display, action preview, approve/reject)
 - Backend service: apps/agent-service/ (may already exist)
@@ -2158,6 +2314,7 @@ Each phase:
 **Time**: 6 hours
 
 **Quality Gate**:
+
 - Designer validates
 - CEO can test with sample queries
 - Actions execute correctly
@@ -2170,6 +2327,7 @@ Each phase:
 **What Gets Built**:
 
 **Social Post Approval**:
+
 - Add "Social Post" approval type to queue
 - Social post modal:
   - Platform selector (Facebook, Instagram, Twitter, LinkedIn)
@@ -2178,6 +2336,7 @@ Each phase:
   - Platform-specific options
 
 **Integration with Existing Publer Adapter**:
+
 - ✅ Backend ready: packages/integrations/publer.ts
 - ✅ API routes ready: app/routes/api/social.post.ts
 - ✅ Tests passing: 7/7 (tests/integration/social.api.spec.ts)
@@ -2185,12 +2344,14 @@ Each phase:
 - Store post receipts in Supabase
 
 **HITL Workflow**:
+
 - Content agent drafts post → Approval queue
 - CEO reviews in modal (preview, platform, schedule)
 - CEO approves/edits → Publishes to social
 - Receipt stored (post ID, platform, timestamp, performance)
 
 **Data**:
+
 - social_posts table (if not exists)
 - Store: draft, approved, published, performance metrics
 
@@ -2199,6 +2360,7 @@ Each phase:
 **Time**: 4 hours
 
 **Quality Gate**:
+
 - Designer validates
 - Test post to sandbox account
 - Receipt storage working
@@ -2211,34 +2373,40 @@ Each phase:
 **What Gets Built**:
 
 **Design System Completion**:
+
 - Complete design tokens in CSS
 - Component library documentation
 - Usage guidelines
 
 **Dark Mode**:
+
 - Dark color palette
 - Theme toggle in settings (already in Phase 6)
 - Persist preference
 - WCAG AA contrast verification
 
 **Mobile Optimization**:
+
 - Responsive tile grid
 - Touch-friendly buttons (44x44px)
 - Bottom nav on mobile
 - Swipe gestures
 
 **Loading State Polish**:
+
 - Skeleton loaders for tiles
 - Progress indicators
 - Smooth transitions
 
 **Error Handling Polish**:
+
 - Graceful degradation
 - Error boundaries
 - Retry mechanisms
 - User-friendly messages
 
 **Final Accessibility Audit**:
+
 - WCAG 2.2 AA compliance check
 - Screen reader testing (NVDA/VoiceOver)
 - Keyboard navigation verification
@@ -2250,6 +2418,7 @@ Each phase:
 **Time**: 3 hours
 
 **Quality Gate**:
+
 - Designer final sign-off
 - QA accessibility verification
 - Zero WCAG violations
@@ -2260,11 +2429,13 @@ Each phase:
 ## AGENT ASSIGNMENTS (By Phase)
 
 ### Critical Path (Every Phase):
+
 - **Engineer**: Primary builder (all UI/backend tasks)
 - **Designer**: Validation after each phase
 - **QA**: Verification before CEO checkpoints
 
 ### Phase-Specific:
+
 - **Phase 2**: Data (new tables), AI-Customer (grading UI)
 - **Phase 3**: Integrations (idea pool backend already done)
 - **Phase 4**: Data (notifications table)
@@ -2274,6 +2445,7 @@ Each phase:
 - **Phase 12**: Integrations, Content (social post workflows)
 
 ### Support (As Needed):
+
 - **DevOps**: Deployment, SSE setup, monitoring
 - **Data**: Migration application, schema changes
 - **Content**: Microcopy, social posts
@@ -2284,30 +2456,36 @@ Each phase:
 ## TIMELINE WITH CEO CHECKPOINTS
 
 **Day 1** (2025-10-21):
+
 - Phase 2: Enhanced modals + OpenAI SDK (8h)
 - Phase 3: Missing tiles (4h)
 - **→ CEO CHECKPOINT 2 & 3** (end of day)
 
 **Day 2** (2025-10-22):
+
 - Phase 4: Notifications (6h)
 - Phase 5: Real-time (5h)
 - **→ CEO CHECKPOINT 4 & 5** (end of day)
 
 **Day 3** (2025-10-23):
+
 - Phase 6: Settings & Personalization (10h)
 - **→ CEO CHECKPOINT 6** (end of day)
 
 **Day 4** (2025-10-24):
+
 - Phase 7-8: Data visualization (8h)
 - Phase 10: History (3h)
 - **→ CEO CHECKPOINT 7 & 8** (end of day)
 
 **Day 5** (2025-10-25):
+
 - Phase 11: CEO Agent (6h)
 - Phase 12: Publer UI (4h)
 - **→ CEO CHECKPOINT 9 & 10** (end of day)
 
 **Day 6** (2025-10-26):
+
 - Phase 13: Polish & Accessibility (3h)
 - **→ CEO CHECKPOINT 11 (FINAL)** (midday)
 - Production deployment preparation
@@ -2317,42 +2495,49 @@ Each phase:
 ## WHAT YOU GET (Complete Platform)
 
 ### Dashboard (Operator Control Center):
+
 - ✅ 8/8 tiles (all data sources)
 - ✅ Drag-drop personalization
 - ✅ Theme support (Light/Dark/Auto)
 - ✅ Real-time updates
 
 ### HITL Automation (Core Value):
+
 - ✅ **Customer Agent**: Drafts replies (email/SMS/chat) → You approve/grade
 - ✅ **CEO Agent**: Assists with operations → You approve actions
 - ✅ **Social Agent**: Drafts posts → You approve/schedule
 - ✅ All actions logged with grading for learning loop
 
 ### Multi-Channel CX (Already Working):
+
 - ✅ Email
 - ✅ Live chat
 - ✅ SMS via Twilio
 - ✅ All route through approval queue
 
 ### Approval Workflow:
+
 - ✅ Centralized queue (/approvals)
 - ✅ Risk levels (HIGH/MEDIUM/LOW)
 - ✅ One-click approve/reject
 - ✅ Full audit trail (/approvals/history)
 
 ### Notifications:
+
 - ✅ Toast messages
 - ✅ Browser notifications
 - ✅ Banner alerts
 - ✅ Notification center
 
 ### Settings & Preferences:
+
 - ✅ Personalize dashboard
 - ✅ Configure notifications
 - ✅ Manage integrations
 - ✅ Theme selection
 
 ### Analytics & Insights:
+
 - ✅ Performance charts
 - ✅ Agent learning trends
 - ✅ Training data visualization
@@ -2363,6 +2548,7 @@ Each phase:
 ## ACCEPTANCE CRITERIA (Option A Complete)
 
 ### ✅ Dashboard:
+
 - [ ] 8/8 tiles functional and loading < 3s
 - [ ] Drag & drop tile reordering working
 - [ ] Tile visibility toggles persist
@@ -2370,18 +2556,21 @@ Each phase:
 - [ ] All tiles show real-time data
 
 ### ✅ HITL Workflow:
+
 - [ ] Customer agent drafts replies, CEO grades (tone/accuracy/policy)
 - [ ] CEO agent assists with operations decisions
 - [ ] Social posts drafted and approved through queue
 - [ ] All approvals logged with evidence
 
 ### ✅ Multi-Channel CX:
+
 - [ ] Email working via Chatwoot
 - [ ] Live chat working via Chatwoot
 - [ ] SMS working via Twilio + Chatwoot
 - [ ] All channels route through approval queue
 
 ### ✅ Approval Queue:
+
 - [ ] Centralized queue at /approvals
 - [ ] Real-time updates (SSE)
 - [ ] Risk level badges (HIGH/MEDIUM/LOW)
@@ -2389,45 +2578,53 @@ Each phase:
 - [ ] Navigation badge shows pending count
 
 ### ✅ Enhanced Modals:
+
 - [ ] CX: Grading sliders, conversation preview, internal notes
 - [ ] Sales: Variance review, action dropdown, notes
 - [ ] Inventory: Velocity analysis, reorder approval
 - [ ] Social: Platform selector, post preview, schedule
 
 ### ✅ Notifications:
+
 - [ ] Toast notifications (success/error/info)
 - [ ] Banner alerts (backlog/performance/health)
 - [ ] Browser notifications working
 - [ ] Notification center with history
 
 ### ✅ Settings:
+
 - [ ] 4-tab settings page functional
 - [ ] All preferences persist
 - [ ] Integration health checks working
 
 ### ✅ Real-Time:
+
 - [ ] Live update indicators on tiles
 - [ ] SSE connection stable
 - [ ] Badge updates in real-time
 
 ### ✅ Data Visualization:
+
 - [ ] Charts in tiles (sparklines)
 - [ ] Charts in modals (trend analysis)
 - [ ] Agent performance dashboard
 - [ ] Interactive tooltips
 
 ### ✅ Approval History:
+
 - [ ] Filterable history table
 - [ ] CSV export working
 - [ ] Timeline visualization
 
 ### ✅ Accessibility:
+
 - [ ] WCAG 2.2 AA compliant
 - [ ] Keyboard navigation complete
 - [ ] Screen reader compatible
 - [ ] Focus management in modals
 
 ### ✅ Polish:
+
 - [ ] Skeleton loaders on all tiles
 - [ ] Error boundaries with retry
 - [ ] Smooth animations
@@ -2439,26 +2636,31 @@ Each phase:
 ## RISKS & MITIGATIONS
 
 ### Risk 1: Timeline Slip (Phase 11-12 new scope)
+
 **Likelihood**: Medium
 **Impact**: High (adds 10 hours)
 **Mitigation**: CEO can defer Phase 11-12 if timeline critical
 
 ### Risk 2: Designer Validation Gap
+
 **Likelihood**: Medium (identified in feedback)
 **Impact**: Medium (delays CEO checkpoints)
 **Mitigation**: Designer validates after EACH phase, not at end
 
 ### Risk 3: Database Migration Issues
+
 **Likelihood**: Low (tables are additive)
 **Impact**: High (could break app)
 **Mitigation**: All migrations read-only deploy, manual application, rollback plan
 
 ### Risk 4: Chatwoot Service Interruption
+
 **Likelihood**: Low (currently stable)
 **Impact**: High (blocks CX automation)
 **Mitigation**: Health checks, fallback mode, separate database (deferred consolidation)
 
 ### Risk 5: Real-Time (SSE) Complexity
+
 **Likelihood**: Medium
 **Impact**: Medium (could slip timeline)
 **Mitigation**: CEO can skip Phase 5, implement post-launch
@@ -2468,21 +2670,25 @@ Each phase:
 ## DEPLOYMENT STRATEGY
 
 ### Per-Phase Deployments:
+
 - Deploy after each CEO checkpoint approval
 - Incremental risk (small changes)
 - Rollback = previous checkpoint state
 
 ### Database Changes:
+
 - All migrations additive (no data loss)
 - Applied manually via Manager
 - Verified in staging before production
 
 ### Feature Flags:
+
 - Use existing feature flag system
 - Enable features per phase
 - Quick rollback if issues
 
 ### Monitoring:
+
 - Health checks per phase
 - Performance tracking
 - Error rate monitoring
@@ -2519,17 +2725,20 @@ These can be added AFTER Option A complete:
 ## REFERENCE DOCUMENTS
 
 ### Primary:
+
 - **COMPLETE_VISION_OVERVIEW.md**: Full 38-task feature manifest (root directory)
 - **docs/design/**: 57 design specification files (~500KB)
 - **NORTH_STAR.md**: Vision, outcomes, technical standards
 - **OPERATING_MODEL.md**: Workflow, process, team structure
 
 ### Technical:
+
 - **reports/manager/OPENAI_SDK_STATUS_2025-10-19.md**: AI-Customer agent status
 - **feedback/integrations/2025-10-20.md**: Publer integration status
 - **docs/RULES.md**: Tool-first enforcement, database safety
 
 ### Migration Status:
+
 - **Data agent feedback**: 5 migrations ready (user_preferences, notifications, approvals_history, sales_pulse_actions, inventory_actions)
 - **Current schema**: Session, DashboardFact, DecisionLog, IdeaPool (existing)
 
@@ -2538,6 +2747,7 @@ These can be added AFTER Option A complete:
 ## VERSION HISTORY
 
 **v1.0** (2025-10-20T20:00Z): Initial comprehensive plan approved by CEO
+
 - 13 phases (Phase 9 removed per CEO)
 - CEO checkpoints after each phase
 - OpenAI SDK + Publer integration included
@@ -2549,7 +2759,6 @@ These can be added AFTER Option A complete:
 **Effective**: 2025-10-20
 **Next Review**: After Phase 13 complete (Option A launch)
 
-
 ---
 
 ## Phase Completion Criteria (Definition of Done)
@@ -2557,6 +2766,7 @@ These can be added AFTER Option A complete:
 ### Phase 2: Enhanced Modals + OpenAI SDK
 
 **Engineer Deliverables**:
+
 - [ ] CX Modal: 3 grading sliders functional, conversation preview, internal notes, all actions working
 - [ ] Sales Modal: Variance display, action dropdown, notes textarea functional
 - [ ] Inventory Modal: Velocity chart, reorder workflow, PO generation functional
@@ -2565,17 +2775,20 @@ These can be added AFTER Option A complete:
 - [ ] Data storing: Grades in decision_log, actions in sales_pulse_actions/inventory_actions
 
 **Designer Sign-Off**:
+
 - [ ] Visual matches design specs exactly
 - [ ] Accessibility verified (keyboard-only navigation tested)
 - [ ] All states present (default, hover, loading, error, success)
 
 **QA Verification**:
+
 - [ ] Code review complete (Context7 docs verified)
 - [ ] Test coverage ≥80%
 - [ ] Security scan clean
 - [ ] No @remix-run imports
 
 **DevOps Confirmation**:
+
 - [ ] Deployed to staging
 - [ ] Health checks passing
 - [ ] No errors in logs
@@ -2587,20 +2800,24 @@ These can be added AFTER Option A complete:
 ### Phase 3: Missing Dashboard Tiles
 
 **Engineer Deliverables**:
+
 - [ ] Idea Pool tile: 5/5 capacity, wildcard badge, counts display, button → /ideas
 - [ ] Approvals Queue tile: Pending count, oldest time, button → /approvals
 - [ ] Dashboard: All 8/8 tiles loading <3s
 - [ ] Tests: +5 tests, all passing
 
 **Designer Sign-Off**:
+
 - [ ] Tiles match design spec
 - [ ] Grid responsive (mobile/tablet/desktop)
 
 **QA Verification**:
+
 - [ ] Code quality verified
 - [ ] Performance: All tiles <3s load time
 
 **DevOps Confirmation**:
+
 - [ ] Deployed
 - [ ] Healthy
 
@@ -2611,6 +2828,7 @@ These can be added AFTER Option A complete:
 ### Phase 4: Notification System
 
 **Engineer Deliverables**:
+
 - [ ] Toast notifications: success/error/info functional
 - [ ] Banner alerts: backlog/performance/health functional
 - [ ] Browser notifications: permission flow, desktop notifs working
@@ -2619,17 +2837,21 @@ These can be added AFTER Option A complete:
 - [ ] Tests: +8 tests
 
 **Data Deliverables**:
+
 - [ ] notifications table created and RLS enabled
 
 **Designer Sign-Off**:
+
 - [ ] Notification UI matches design
 - [ ] Toast timing appropriate (5s auto-dismiss)
 
 **QA Verification**:
+
 - [ ] All notification types tested
 - [ ] Browser permission flow tested
 
 **DevOps Confirmation**:
+
 - [ ] Deployed
 - [ ] Notifications delivering
 
@@ -2640,6 +2862,7 @@ These can be added AFTER Option A complete:
 ### Phase 5: Real-Time Features
 
 **Engineer Deliverables**:
+
 - [ ] SSE connection stable
 - [ ] Live update indicators on tiles
 - [ ] Badge updates in real-time
@@ -2648,14 +2871,17 @@ These can be added AFTER Option A complete:
 - [ ] Optimistic updates with revert on failure
 
 **DevOps Deliverables**:
+
 - [ ] SSE endpoint deployed
 - [ ] Connection monitoring active
 
 **Designer Sign-Off**:
+
 - [ ] Animations smooth
 - [ ] Connection status clear
 
 **QA Verification**:
+
 - [ ] Real-time updates <1s latency
 - [ ] Reconnection tested
 
@@ -2666,6 +2892,7 @@ These can be added AFTER Option A complete:
 ### Phase 6: Settings & Personalization
 
 **Engineer Deliverables**:
+
 - [ ] Drag & drop tile reordering functional
 - [ ] Tile visibility toggles working
 - [ ] Settings page: 4 tabs (Dashboard/Appearance/Notifications/Integrations)
@@ -2674,13 +2901,16 @@ These can be added AFTER Option A complete:
 - [ ] Reset to defaults functional
 
 **Data Deliverables**:
+
 - [ ] user_preferences table created
 
 **Designer Sign-Off**:
+
 - [ ] Drag-drop smooth (no jank)
 - [ ] Settings page matches design
 
 **QA Verification**:
+
 - [ ] Persistence tested (logout/login preserves settings)
 - [ ] @dnd-kit usage verified with Context7
 
@@ -2691,6 +2921,7 @@ These can be added AFTER Option A complete:
 ### Phases 7-8: Data Visualization
 
 **Engineer Deliverables**:
+
 - [ ] Charts library integrated (@shopify/polaris-viz)
 - [ ] Sparklines in tiles
 - [ ] Charts in modals (revenue, velocity, performance)
@@ -2698,10 +2929,12 @@ These can be added AFTER Option A complete:
 - [ ] Print-friendly
 
 **Analytics Deliverables**:
+
 - [ ] All chart data services functional
 - [ ] Agent performance data ready
 
 **Designer Sign-Off**:
+
 - [ ] Charts match Polaris Viz patterns
 - [ ] Data visualization clear
 
@@ -2712,6 +2945,7 @@ These can be added AFTER Option A complete:
 ### Phase 10: Approval History
 
 **Engineer Deliverables**:
+
 - [ ] History route: /approvals/history
 - [ ] Filterable table (status, date, agent, tool)
 - [ ] Search functional
@@ -2719,6 +2953,7 @@ These can be added AFTER Option A complete:
 - [ ] Timeline visualization
 
 **Designer Sign-Off**:
+
 - [ ] Table design matches spec
 
 **CEO Checkpoint 8 Ready**: History functional
@@ -2728,21 +2963,25 @@ These can be added AFTER Option A complete:
 ### Phase 11: CEO Agent
 
 **AI-Customer Deliverables**:
+
 - [ ] CEO agent backend: All 5 tools working
 - [ ] HITL workflow integrated
 - [ ] Test queries successful
 - [ ] Documentation complete
 
 **Engineer Deliverables**:
+
 - [ ] CEO agent modal UI
 - [ ] Approval queue shows CEO agent type
 - [ ] Integration tested end-to-end
 
 **AI-Knowledge Deliverables**:
+
 - [ ] Knowledge base operational
 - [ ] Query accuracy ≥90%
 
 **Designer Sign-Off**:
+
 - [ ] CEO modal matches design
 
 **CEO Checkpoint 9 Ready**: CEO agent functional (test with real queries)
@@ -2752,19 +2991,23 @@ These can be added AFTER Option A complete:
 ### Phase 12: Publer UI
 
 **Engineer Deliverables**:
+
 - [ ] Social post modal functional
 - [ ] Platform selector working
 - [ ] Post preview + schedule working
 - [ ] Integration with Publer adapter
 
 **Integrations Deliverables**:
+
 - [ ] Publer approval integration complete
 - [ ] Receipt storage functional
 
 **Content Deliverables**:
+
 - [ ] Social templates complete
 
 **Designer Sign-Off**:
+
 - [ ] Social modal matches design
 
 **CEO Checkpoint 10 Ready**: Publer integrated (test post to sandbox)
@@ -2774,25 +3017,28 @@ These can be added AFTER Option A complete:
 ### Phase 13: Polish & Accessibility
 
 **Engineer Deliverables**:
+
 - [ ] Skeleton loaders on all tiles
 - [ ] Error boundaries with retry
 - [ ] Mobile responsive (tested 3 breakpoints)
 - [ ] All animations smooth
 
 **QA Deliverables**:
+
 - [ ] WCAG 2.2 AA audit: 0 violations
 - [ ] Accessibility tests passing
 - [ ] Performance benchmarks met
 
 **Designer Deliverables**:
+
 - [ ] Final sign-off: All 57 design specs implemented
 - [ ] Dark mode verified
 - [ ] Mobile optimization verified
 
 **Pilot Deliverables**:
+
 - [ ] Full UAT complete
 - [ ] All test scenarios passing
 - [ ] Performance tests passing
 
 **CEO Checkpoint 11 (FINAL) Ready**: OPTION A COMPLETE → Production deploy decision
-

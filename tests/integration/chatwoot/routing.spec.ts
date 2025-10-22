@@ -28,7 +28,13 @@ describe("Chatwoot Routing Service", () => {
       };
 
       const agents: Agent[] = [
-        { id: 5, name: "Agent 1", email: "agent1@test.com", availability_status: "online", assignedCount: 0 },
+        {
+          id: 5,
+          name: "Agent 1",
+          email: "agent1@test.com",
+          availability_status: "online",
+          assignedCount: 0,
+        },
       ];
 
       const result = await routeConversation(conversation, agents);
@@ -45,15 +51,28 @@ describe("Chatwoot Routing Service", () => {
         status: "open",
         created_at: Date.now() / 1000,
         messages: [
-          { content: "I'm going to sue you and file a chargeback!", message_type: 0 },
+          {
+            content: "I'm going to sue you and file a chargeback!",
+            message_type: 0,
+          },
         ],
       };
 
       const agents: Agent[] = [
-        { id: 1, name: "Agent 1", email: "agent1@test.com", availability_status: "online", assignedCount: 0 },
+        {
+          id: 1,
+          name: "Agent 1",
+          email: "agent1@test.com",
+          availability_status: "online",
+          assignedCount: 0,
+        },
       ];
 
-      const result = await routeConversation(conversation, agents, DEFAULT_RULES);
+      const result = await routeConversation(
+        conversation,
+        agents,
+        DEFAULT_RULES,
+      );
 
       expect(result.action).toBe("escalated");
       expect(result.tags).toContain("escalated");
@@ -66,15 +85,28 @@ describe("Chatwoot Routing Service", () => {
         status: "open",
         created_at: Date.now() / 1000,
         messages: [
-          { content: "URGENT: My order is broken and I need help immediately!", message_type: 0 },
+          {
+            content: "URGENT: My order is broken and I need help immediately!",
+            message_type: 0,
+          },
         ],
       };
 
       const agents: Agent[] = [
-        { id: 1, name: "Agent 1", email: "agent1@test.com", availability_status: "online", assignedCount: 0 },
+        {
+          id: 1,
+          name: "Agent 1",
+          email: "agent1@test.com",
+          availability_status: "online",
+          assignedCount: 0,
+        },
       ];
 
-      const result = await routeConversation(conversation, agents, DEFAULT_RULES);
+      const result = await routeConversation(
+        conversation,
+        agents,
+        DEFAULT_RULES,
+      );
 
       expect(result.action).toBe("tagged");
       expect(result.tags).toContain("urgent");
@@ -87,15 +119,28 @@ describe("Chatwoot Routing Service", () => {
         status: "open",
         created_at: Date.now() / 1000,
         messages: [
-          { content: "I want to place a bulk order for my wholesale business", message_type: 0 },
+          {
+            content: "I want to place a bulk order for my wholesale business",
+            message_type: 0,
+          },
         ],
       };
 
       const agents: Agent[] = [
-        { id: 1, name: "Agent 1", email: "agent1@test.com", availability_status: "online", assignedCount: 0 },
+        {
+          id: 1,
+          name: "Agent 1",
+          email: "agent1@test.com",
+          availability_status: "online",
+          assignedCount: 0,
+        },
       ];
 
-      const result = await routeConversation(conversation, agents, DEFAULT_RULES);
+      const result = await routeConversation(
+        conversation,
+        agents,
+        DEFAULT_RULES,
+      );
 
       expect(result.action).toBe("tagged");
       expect(result.tags).toContain("vip");
@@ -110,7 +155,13 @@ describe("Chatwoot Routing Service", () => {
       };
 
       const agents: Agent[] = [
-        { id: 1, name: "Agent 1", email: "agent1@test.com", availability_status: "offline", assignedCount: 0 },
+        {
+          id: 1,
+          name: "Agent 1",
+          email: "agent1@test.com",
+          availability_status: "offline",
+          assignedCount: 0,
+        },
       ];
 
       const result = await routeConversation(conversation, agents);
@@ -187,5 +238,3 @@ describe("Chatwoot Routing Service", () => {
     });
   });
 });
-
-

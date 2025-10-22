@@ -1,6 +1,6 @@
 /**
  * Multi-Project Analytics Aggregation Service
- * 
+ *
  * Aggregates analytics across multiple projects/shops
  * CEO/agency view of all shops combined
  * Identifies top and bottom performers
@@ -61,7 +61,7 @@ export interface ProjectComparison {
  */
 export async function getProjectMetrics(
   shopDomain: string,
-  days: number = 30
+  days: number = 30,
 ): Promise<ProjectMetrics> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -91,7 +91,7 @@ export async function getProjectMetrics(
         spend: acc.spend + (value.spend || 0),
       };
     },
-    { impressions: 0, clicks: 0, conversions: 0, revenue: 0, spend: 0 }
+    { impressions: 0, clicks: 0, conversions: 0, revenue: 0, spend: 0 },
   );
 
   const avgCTR =
@@ -118,7 +118,7 @@ export async function getProjectMetrics(
  * CEO/agency view
  */
 export async function getMultiProjectSummary(
-  days: number = 30
+  days: number = 30,
 ): Promise<MultiProjectSummary> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -140,7 +140,7 @@ export async function getMultiProjectSummary(
 
   // Get metrics for each project
   const projectMetrics = await Promise.all(
-    uniqueShops.map((shop) => getProjectMetrics(shop, days))
+    uniqueShops.map((shop) => getProjectMetrics(shop, days)),
   );
 
   // Sort by ROAS (descending)
@@ -169,29 +169,37 @@ export async function getMultiProjectSummary(
       avgCTR: 0,
       avgConversionRate: 0,
       overallROAS: 0,
-    }
+    },
   );
 
   // Calculate aggregate rates
   aggregateMetrics.avgCTR =
     aggregateMetrics.totalImpressions > 0
       ? Number(
-          ((aggregateMetrics.totalClicks / aggregateMetrics.totalImpressions) *
-            100).toFixed(2)
+          (
+            (aggregateMetrics.totalClicks / aggregateMetrics.totalImpressions) *
+            100
+          ).toFixed(2),
         )
       : 0;
 
   aggregateMetrics.avgConversionRate =
     aggregateMetrics.totalClicks > 0
       ? Number(
-          ((aggregateMetrics.totalConversions / aggregateMetrics.totalClicks) *
-            100).toFixed(2)
+          (
+            (aggregateMetrics.totalConversions / aggregateMetrics.totalClicks) *
+            100
+          ).toFixed(2),
         )
       : 0;
 
   aggregateMetrics.overallROAS =
     aggregateMetrics.totalSpend > 0
-      ? Number((aggregateMetrics.totalRevenue / aggregateMetrics.totalSpend).toFixed(2))
+      ? Number(
+          (aggregateMetrics.totalRevenue / aggregateMetrics.totalSpend).toFixed(
+            2,
+          ),
+        )
       : 0;
 
   return {
@@ -209,7 +217,7 @@ export async function getMultiProjectSummary(
 export async function compareProjects(
   project1: string,
   project2: string,
-  days: number = 30
+  days: number = 30,
 ): Promise<ProjectComparison> {
   const [metrics1, metrics2] = await Promise.all([
     getProjectMetrics(project1, days),
@@ -224,7 +232,8 @@ export async function compareProjects(
   const roasDiff = metrics1.overallROAS - metrics2.overallROAS;
 
   // Determine winner based on ROAS
-  const winner = metrics1.overallROAS > metrics2.overallROAS ? project1 : project2;
+  const winner =
+    metrics1.overallROAS > metrics2.overallROAS ? project1 : project2;
 
   return {
     project1,
@@ -250,7 +259,7 @@ export async function compareProjects(
 export async function getTopProjectsByMetric(
   metric: "impressions" | "clicks" | "conversions" | "revenue" | "roas",
   limit: number = 10,
-  days: number = 30
+  days: number = 30,
 ): Promise<ProjectMetrics[]> {
   const summary = await getMultiProjectSummary(days);
 
@@ -277,15 +286,15 @@ export async function getTopProjectsByMetric(
 /**
  * Get project performance rankings
  */
-export async function getProjectRankings(
-  days: number = 30
-): Promise<Array<{
-  rank: number;
-  project: string;
-  overallROAS: number;
-  totalRevenue: number;
-  grade: "A" | "B" | "C" | "D" | "F";
-}>> {
+export async function getProjectRankings(days: number = 30): Promise<
+  Array<{
+    rank: number;
+    project: string;
+    overallROAS: number;
+    totalRevenue: number;
+    grade: "A" | "B" | "C" | "D" | "F";
+  }>
+> {
   const summary = await getMultiProjectSummary(days);
 
   return summary.projectBreakdown.map((project, index) => ({
@@ -307,5 +316,3 @@ function getPerformanceGrade(roas: number): "A" | "B" | "C" | "D" | "F" {
   if (roas >= 1.0) return "D";
   return "F";
 }
-
-

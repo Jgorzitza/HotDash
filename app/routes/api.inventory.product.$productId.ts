@@ -34,7 +34,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         success: false,
         error: "Product ID is required",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -88,7 +88,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   } catch (error: any) {
     console.error(
       `[API] Inventory product data error for ${productId}:`,
-      error
+      error,
     );
 
     return Response.json(
@@ -97,8 +97,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         error: error.message || "Failed to fetch inventory product data",
         productId,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

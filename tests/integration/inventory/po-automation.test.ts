@@ -92,5 +92,3 @@ describe("PO Automation - HITL Approval Logic", () => {
     expect(requiresHITLApproval(800, items)).toBe(true);
   });
 });
-
-

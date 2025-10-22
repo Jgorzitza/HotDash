@@ -118,7 +118,8 @@ function getCategoryFromFilename(fileName: string): string {
   if (lower.includes("tracking") || lower.includes("order")) return "tracking";
   if (lower.includes("exchange")) return "exchanges";
   if (lower.includes("faq") || lower.includes("question")) return "faq";
-  if (lower.includes("troubleshoot") || lower.includes("product")) return "troubleshooting";
+  if (lower.includes("troubleshoot") || lower.includes("product"))
+    return "troubleshooting";
   return "general";
 }
 
@@ -129,11 +130,19 @@ function getCategoryFromFilename(fileName: string): string {
 function getPriorityFromFilename(fileName: string): string {
   const lower = fileName.toLowerCase();
   // High priority: policies, common questions
-  if (lower.includes("refund") || lower.includes("shipping") || lower.includes("faq")) {
+  if (
+    lower.includes("refund") ||
+    lower.includes("shipping") ||
+    lower.includes("faq")
+  ) {
     return "high";
   }
   // Medium priority: processes, tracking
-  if (lower.includes("exchange") || lower.includes("tracking") || lower.includes("order")) {
+  if (
+    lower.includes("exchange") ||
+    lower.includes("tracking") ||
+    lower.includes("order")
+  ) {
     return "medium";
   }
   // Low priority: troubleshooting, general
@@ -170,7 +179,9 @@ async function loadSupportDocuments(sourcesDir: string): Promise<Document[]> {
     });
 
     documents.push(doc);
-    console.log(`  ✓ ${fileName} (${content.length} chars) [${doc.metadata.category}/${doc.metadata.priority}]`);
+    console.log(
+      `  ✓ ${fileName} (${content.length} chars) [${doc.metadata.category}/${doc.metadata.priority}]`,
+    );
   }
 
   console.log(`✅ Loaded ${documents.length} documents`);
@@ -242,8 +253,8 @@ async function buildIndex(options: BuildOptions = {}): Promise<BuildResult> {
 
     // P2: Configure text splitter (NO overlap - it degrades faithfulness)
     const textSplitter = new SentenceSplitter({
-      chunkSize: 512,      // Token limit per chunk (optimal for policy/FAQ content)
-      chunkOverlap: 0,     // No overlap - reduces contradictions and improves faithfulness
+      chunkSize: 512, // Token limit per chunk (optimal for policy/FAQ content)
+      chunkOverlap: 0, // No overlap - reduces contradictions and improves faithfulness
     });
 
     // Build index (automatically persists to persistDir)

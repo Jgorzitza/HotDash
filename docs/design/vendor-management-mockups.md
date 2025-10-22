@@ -12,6 +12,7 @@
 ## Purpose
 
 This document provides **Engineer-ready design specifications** for implementing the Vendor Management UI. It includes:
+
 - Component structure (what to build)
 - Design tokens (colors, spacing, typography)
 - State management (loading, empty, error)
@@ -27,62 +28,43 @@ This document provides **Engineer-ready design specifications** for implementing
 All vendor management UI should use existing OCC design tokens for consistency:
 
 ### Colors
+
 ```css
 /* Backgrounds */
---occ-bg-primary: #FFFFFF
---occ-bg-secondary: #F9FAFB  /* for summary cards */
---occ-bg-tertiary: #F3F4F6   /* for hover states */
-
-/* Text */
---occ-text-primary: #111827
---occ-text-secondary: #6B7280
---occ-text-tertiary: #9CA3AF
-
-/* Borders */
---occ-border-primary: #E5E7EB
---occ-border-secondary: #D1D5DB
-
-/* Status Colors */
---occ-green-600: #059669   /* Excellent reliability */
---occ-green-500: #10B981   /* Good reliability */
---occ-amber-500: #F59E0B   /* Fair reliability */
---occ-red-500: #EF4444     /* Poor reliability */
---occ-blue-500: #3B82F6    /* Primary actions */
-
-/* Interactive */
---occ-hover-bg: rgba(0, 0, 0, 0.05)
---occ-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3)
+--occ-bg-primary: #ffffff --occ-bg-secondary: #f9fafb /* for summary cards */
+  --occ-bg-tertiary: #f3f4f6 /* for hover states */ /* Text */
+  --occ-text-primary: #111827 --occ-text-secondary: #6b7280
+  --occ-text-tertiary: #9ca3af /* Borders */ --occ-border-primary: #e5e7eb
+  --occ-border-secondary: #d1d5db /* Status Colors */ --occ-green-600: #059669
+  /* Excellent reliability */ --occ-green-500: #10b981 /* Good reliability */
+  --occ-amber-500: #f59e0b /* Fair reliability */ --occ-red-500: #ef4444
+  /* Poor reliability */ --occ-blue-500: #3b82f6 /* Primary actions */
+  /* Interactive */ --occ-hover-bg: rgba(0, 0, 0, 0.05) --occ-focus-ring: 0 0 0
+  3px rgba(59, 130, 246, 0.3);
 ```
 
 ### Spacing
+
 ```css
---occ-space-1: 4px
---occ-space-2: 8px
---occ-space-3: 12px
---occ-space-4: 16px
---occ-space-6: 24px
---occ-space-8: 32px
+--occ-space-1: 4px --occ-space-2: 8px --occ-space-3: 12px --occ-space-4: 16px
+  --occ-space-6: 24px --occ-space-8: 32px;
 ```
 
 ### Typography
-```css
---occ-font-size-xs: 12px    /* Helper text */
---occ-font-size-sm: 14px    /* Body, table cells */
---occ-font-size-base: 16px  /* Form inputs */
---occ-font-size-lg: 18px    /* Section headings */
---occ-font-size-xl: 20px    /* Page titles */
 
---occ-font-weight-normal: 400
---occ-font-weight-medium: 500
---occ-font-weight-semibold: 600
---occ-font-weight-bold: 700
+```css
+--occ-font-size-xs: 12px /* Helper text */ --occ-font-size-sm: 14px
+  /* Body, table cells */ --occ-font-size-base: 16px /* Form inputs */
+  --occ-font-size-lg: 18px /* Section headings */ --occ-font-size-xl: 20px
+  /* Page titles */ --occ-font-weight-normal: 400 --occ-font-weight-medium: 500
+  --occ-font-weight-semibold: 600 --occ-font-weight-bold: 700;
 ```
 
 ### Border Radius
+
 ```css
---occ-radius-sm: 4px   /* Inputs, tags */
---occ-radius-md: 8px   /* Cards, modals */
---occ-radius-lg: 12px  /* Large containers */
+--occ-radius-sm: 4px /* Inputs, tags */ --occ-radius-md: 8px /* Cards, modals */
+  --occ-radius-lg: 12px /* Large containers */;
 ```
 
 ---
@@ -98,19 +80,20 @@ All vendor management UI should use existing OCC design tokens for consistency:
 ```tsx
 // Suggested component hierarchy
 <VendorList>
-  <VendorListHeader />        // Title + Add button
-  <VendorListFilters />       // Search, filters, sort
-  <VendorListSummary />       // Metrics summary card
-  <VendorListTable />         // Main table
-    <VendorListRow />         // Each vendor row
-      <VendorListRowActions />  // Edit/Details/PO buttons
-  <VendorListPagination />    // Page controls
+  <VendorListHeader /> // Title + Add button
+  <VendorListFilters /> // Search, filters, sort
+  <VendorListSummary /> // Metrics summary card
+  <VendorListTable /> // Main table
+  <VendorListRow /> // Each vendor row
+  <VendorListRowActions /> // Edit/Details/PO buttons
+  <VendorListPagination /> // Page controls
 </VendorList>
 ```
 
 ### Design Specifications
 
 #### Header
+
 ```
 Layout: Flexbox (justify-between, align-center)
 Padding: var(--occ-space-6) var(--occ-space-8)
@@ -134,6 +117,7 @@ Add Vendor Button:
 ```
 
 #### Filters Bar
+
 ```
 Layout: Flexbox (gap: var(--occ-space-3))
 Padding: var(--occ-space-4) var(--occ-space-8)
@@ -161,6 +145,7 @@ Filter Dropdowns:
 ```
 
 #### Summary Card
+
 ```
 Layout: Grid (4 columns on desktop, 2 on tablet, 1 on mobile)
 Padding: var(--occ-space-4)
@@ -170,13 +155,13 @@ Border-radius: var(--occ-radius-md)
 
 Metric Item:
   Padding: var(--occ-space-3)
-  
+
   Label:
     Font-size: var(--occ-font-size-xs)
     Color: var(--occ-text-secondary)
     Text-transform: uppercase
     Letter-spacing: 0.05em
-  
+
   Value:
     Font-size: var(--occ-font-size-lg)
     Font-weight: var(--occ-font-weight-semibold)
@@ -185,7 +170,7 @@ Metric Item:
 
 Reliability Breakdown:
   Display: Flex (gap: var(--occ-space-3))
-  
+
   Badge:
     Display: inline-flex
     Align-items: center
@@ -194,7 +179,7 @@ Reliability Breakdown:
     Border-radius: var(--occ-radius-sm)
     Font-size: var(--occ-font-size-xs)
     Font-weight: var(--occ-font-weight-medium)
-    
+
     Excellent (🏆): Background: rgba(5, 150, 105, 0.1), Color: var(--occ-green-600)
     Good (✓): Background: rgba(16, 185, 129, 0.1), Color: var(--occ-green-500)
     Fair (⚠️): Background: rgba(245, 158, 11, 0.1), Color: var(--occ-amber-500)
@@ -202,6 +187,7 @@ Reliability Breakdown:
 ```
 
 #### Table
+
 ```
 Width: 100%
 Margin: 0 var(--occ-space-8) var(--occ-space-8)
@@ -222,11 +208,11 @@ Table Header:
 Table Row:
   Border-bottom: 1px solid var(--occ-border-primary)
   Transition: background 0.15s ease
-  
+
   Hover:
     Background: var(--occ-hover-bg)
     Cursor: pointer (on name column)
-  
+
   Cell Padding: var(--occ-space-4)
   Font-size: var(--occ-font-size-sm)
 
@@ -235,13 +221,13 @@ Reliability Tier Icons:
   ✓ Good: Color: var(--occ-green-500), Font-size: 16px
   ⚠️ Fair: Color: var(--occ-amber-500), Font-size: 16px
   ❌ Poor: Color: var(--occ-red-500), Font-size: 16px
-  
+
   Inline with name, margin-right: var(--occ-space-2)
 
 Reliability Score:
   Font-weight: var(--occ-font-weight-medium)
   Color: Matches tier color
-  
+
   Ratio (e.g., "19/20"):
     Font-size: var(--occ-font-size-xs)
     Color: var(--occ-text-tertiary)
@@ -250,7 +236,7 @@ Reliability Score:
 Action Buttons:
   Display: inline-flex
   Gap: var(--occ-space-2)
-  
+
   Button:
     Padding: var(--occ-space-1) var(--occ-space-3)
     Font-size: var(--occ-font-size-xs)
@@ -260,15 +246,16 @@ Action Buttons:
     Background: white
     Color: var(--occ-text-primary)
     Cursor: pointer
-    
+
     Hover:
       Background: var(--occ-bg-tertiary)
-    
+
     Focus:
       Outline: --occ-focus-ring
 ```
 
 #### Expandable Row Details
+
 ```
 Trigger: Click vendor name or "Details" button
 Animation: Smooth expand (max-height transition, 0.3s ease)
@@ -277,7 +264,7 @@ Expanded Content:
   Padding: var(--occ-space-4)
   Background: var(--occ-bg-secondary)
   Border-top: 1px solid var(--occ-border-primary)
-  
+
   Layout: Grid (3 columns on desktop, 1 on mobile)
   Gap: var(--occ-space-4)
 
@@ -289,11 +276,11 @@ Detail Group:
     Text-transform: uppercase
     Letter-spacing: 0.05em
     Margin-bottom: var(--occ-space-1)
-  
+
   Value:
     Font-size: var(--occ-font-size-sm)
     Color: var(--occ-text-primary)
-    
+
   Link (email):
     Color: var(--occ-blue-500)
     Text-decoration: underline
@@ -303,6 +290,7 @@ Detail Group:
 ### States
 
 #### Loading State
+
 ```
 Show skeleton loaders:
 - Header: Full width bar (40px height)
@@ -314,6 +302,7 @@ Background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)
 ```
 
 #### Empty State
+
 ```
 Display when no vendors:
 
@@ -341,6 +330,7 @@ CTA Button:
 ```
 
 #### Error State
+
 ```
 Display when API call fails:
 
@@ -350,14 +340,14 @@ Alert Banner:
   Border-radius: var(--occ-radius-md)
   Padding: var(--occ-space-4)
   Margin: var(--occ-space-4) var(--occ-space-8)
-  
+
   Icon: ⚠️ (20px, color: var(--occ-red-500))
-  
+
   Message:
     Font-size: var(--occ-font-size-sm)
     Color: var(--occ-text-primary)
     Text: "Failed to load vendors. [Retry]"
-  
+
   Retry Button:
     Color: var(--occ-red-500)
     Text-decoration: underline
@@ -374,6 +364,7 @@ Alert Banner:
 ### Design Specifications
 
 #### Modal Container
+
 ```
 Display: Fixed overlay (centered)
 Z-index: 1000
@@ -381,7 +372,7 @@ Z-index: 1000
 Backdrop:
   Background: rgba(0, 0, 0, 0.5)
   Backdrop-filter: blur(2px)
-  
+
 Modal:
   Max-width: 600px
   Width: 90vw
@@ -389,11 +380,12 @@ Modal:
   Background: white
   Border-radius: var(--occ-radius-lg)
   Box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)
-  
+
   Animation: Fade in + slide up (0.2s ease-out)
 ```
 
 #### Modal Header
+
 ```
 Padding: var(--occ-space-6)
 Border-bottom: 1px solid var(--occ-border-primary)
@@ -414,18 +406,19 @@ Close Button:
   Border: none
   Color: var(--occ-text-tertiary)
   Cursor: pointer
-  
+
   Icon: "×" (24px)
-  
+
   Hover:
     Background: var(--occ-hover-bg)
     Color: var(--occ-text-primary)
-  
+
   Focus:
     Outline: --occ-focus-ring
 ```
 
 #### Modal Body
+
 ```
 Padding: var(--occ-space-6)
 Max-height: calc(90vh - 200px)  /* Account for header + footer */
@@ -433,7 +426,7 @@ Overflow-y: auto
 
 Form Sections:
   Margin-bottom: var(--occ-space-6)
-  
+
   Section Heading:
     Font-size: var(--occ-font-size-sm)
     Font-weight: var(--occ-font-weight-semibold)
@@ -444,18 +437,18 @@ Form Sections:
 
 Form Fields:
   Margin-bottom: var(--occ-space-4)
-  
+
   Label:
     Display: block
     Font-size: var(--occ-font-size-sm)
     Font-weight: var(--occ-font-weight-medium)
     Color: var(--occ-text-primary)
     Margin-bottom: var(--occ-space-2)
-    
+
     Required indicator (*):
       Color: var(--occ-red-500)
       Margin-left: var(--occ-space-1)
-  
+
   Input/Textarea:
     Width: 100%
     Padding: var(--occ-space-2) var(--occ-space-3)
@@ -465,39 +458,39 @@ Form Fields:
     Border: 1px solid var(--occ-border-primary)
     Border-radius: var(--occ-radius-md)
     Transition: border-color 0.15s ease
-    
+
     Placeholder:
       Color: var(--occ-text-tertiary)
-    
+
     Focus:
       Border-color: var(--occ-blue-500)
       Outline: --occ-focus-ring
-    
+
     Error:
       Border-color: var(--occ-red-500)
-    
+
     Disabled:
       Background: var(--occ-bg-secondary)
       Color: var(--occ-text-tertiary)
       Cursor: not-allowed
-  
+
   Select Dropdown:
     Same as input, plus:
     Appearance: none (custom arrow)
     Background-image: Chevron down icon (right side)
     Padding-right: var(--occ-space-8)
-  
+
   Checkbox:
     Width: 20px
     Height: 20px
     Border: 2px solid var(--occ-border-primary)
     Border-radius: var(--occ-radius-sm)
-    
+
     Checked:
       Background: var(--occ-blue-500)
       Border-color: var(--occ-blue-500)
       Checkmark: white
-    
+
     Focus:
       Outline: --occ-focus-ring
 
@@ -514,6 +507,7 @@ Error Message:
 ```
 
 #### Modal Footer
+
 ```
 Padding: var(--occ-space-6)
 Border-top: 1px solid var(--occ-border-primary)
@@ -530,10 +524,10 @@ Cancel Button:
   Border: 1px solid var(--occ-border-primary)
   Border-radius: var(--occ-radius-md)
   Cursor: pointer
-  
+
   Hover:
     Background: var(--occ-bg-tertiary)
-  
+
   Focus:
     Outline: --occ-focus-ring
 
@@ -546,17 +540,17 @@ Save Button:
   Border: none
   Border-radius: var(--occ-radius-md)
   Cursor: pointer
-  
+
   Hover:
     Background: #2563EB  /* Slightly darker blue */
-  
+
   Focus:
     Outline: --occ-focus-ring
-  
+
   Disabled:
     Background: var(--occ-border-secondary)
     Cursor: not-allowed
-  
+
   Loading State:
     Opacity: 0.7
     Spinner icon (16px, white, rotating)
@@ -565,6 +559,7 @@ Save Button:
 ### Field Layout Examples
 
 #### Two-Column Layout (Desktop)
+
 ```
 Lead Time + Ship Method:
 
@@ -576,6 +571,7 @@ Gap: var(--occ-space-4)
 ```
 
 #### Checkbox + Label
+
 ```
 Display: Flex (align-items: center, gap: var(--occ-space-2))
 
@@ -587,6 +583,7 @@ Label:
 ### Validation UI
 
 #### Real-time Validation
+
 ```
 Trigger: On blur (when field loses focus)
 
@@ -601,6 +598,7 @@ Error:
 ```
 
 #### Form-level Validation
+
 ```
 On Save attempt with errors:
 
@@ -611,18 +609,18 @@ Error Summary Banner:
   Border-radius: var(--occ-radius-md)
   Padding: var(--occ-space-3)
   Margin-bottom: var(--occ-space-4)
-  
+
   Heading:
     Font-size: var(--occ-font-size-sm)
     Font-weight: var(--occ-font-weight-semibold)
     Color: var(--occ-red-500)
     Text: "Please fix the following errors:"
-  
+
   Error List:
     Margin-top: var(--occ-space-2)
     Font-size: var(--occ-font-size-xs)
     Color: var(--occ-text-primary)
-    
+
     Each item:
       Margin-bottom: var(--occ-space-1)
       Bullet: "•"
@@ -631,6 +629,7 @@ Error Summary Banner:
 ### Success/Error Notifications
 
 #### Toast Notification (Success)
+
 ```
 Position: Top-right corner (fixed)
 Z-index: 2000
@@ -644,20 +643,20 @@ Toast:
   Box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
   Min-width: 320px
   Max-width: 480px
-  
+
   Layout: Flex (align-items: center, gap: var(--occ-space-3))
-  
+
   Icon: "✅" (20px)
-  
+
   Message:
     Font-size: var(--occ-font-size-sm)
     Font-weight: var(--occ-font-weight-medium)
-  
+
   Close Button:
     Margin-left: auto
     Color: white
     Opacity: 0.8
-    
+
     Hover: opacity 1
 
 Auto-dismiss: 4 seconds
@@ -673,6 +672,7 @@ Auto-dismiss: 4 seconds
 ### Design Specifications
 
 #### Vendor Selection Card
+
 ```
 Display: Each vendor as a selectable card
 Layout: Grid (2 columns on desktop, 1 on tablet/mobile)
@@ -685,36 +685,36 @@ Card:
   Border-radius: var(--occ-radius-md)
   Cursor: pointer
   Transition: all 0.15s ease
-  
+
   Hover:
     Border-color: var(--occ-blue-500)
     Box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
-  
+
   Selected:
     Border-color: var(--occ-blue-500)
     Background: rgba(59, 130, 246, 0.05)
     Box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1)
-  
+
   Focus (keyboard):
     Outline: --occ-focus-ring
 
 Card Header:
   Display: Flex (justify-between, align-items: center)
   Margin-bottom: var(--occ-space-3)
-  
+
   Vendor Name:
     Font-size: var(--occ-font-size-base)
     Font-weight: var(--occ-font-weight-semibold)
     Color: var(--occ-text-primary)
-    
+
     Reliability Icon: Inline (16px, margin-right: var(--occ-space-2))
-  
+
   Radio Button:
     Width: 20px
     Height: 20px
     Border: 2px solid var(--occ-border-primary)
     Border-radius: 50%
-    
+
     Selected:
       Border-color: var(--occ-blue-500)
       Background: white
@@ -723,13 +723,13 @@ Card Header:
 Card Body:
   Display: Grid (grid-template-columns: repeat(3, 1fr))
   Gap: var(--occ-space-3)
-  
+
   Metric:
     Label:
       Font-size: var(--occ-font-size-xs)
       Color: var(--occ-text-secondary)
       Text-transform: uppercase
-    
+
     Value:
       Font-size: var(--occ-font-size-sm)
       Font-weight: var(--occ-font-weight-medium)
@@ -740,13 +740,14 @@ Card Footer (if has notes):
   Margin-top: var(--occ-space-3)
   Padding-top: var(--occ-space-3)
   Border-top: 1px solid var(--occ-border-primary)
-  
+
   Font-size: var(--occ-font-size-xs)
   Color: var(--occ-text-secondary)
   Italic: true
 ```
 
 #### "No Vendor" Option
+
 ```
 Display: As first card in grid
 
@@ -774,6 +775,7 @@ Helper Text:
 ## 4. Mobile Responsive Design
 
 ### Breakpoints
+
 ```css
 /* Mobile */
 @media (max-width: 640px) {
@@ -794,6 +796,7 @@ Helper Text:
 ### Mobile Adaptations
 
 #### Vendor List (Mobile)
+
 ```
 Hide table, show card layout:
 
@@ -807,11 +810,11 @@ Each vendor as a card:
 Card Header:
   Display: Flex (justify-between)
   Margin-bottom: var(--occ-space-3)
-  
+
   Vendor Name:
     Font-size: var(--occ-font-size-base)
     Font-weight: var(--occ-font-weight-semibold)
-  
+
   Reliability Icon: 20px
 
 Card Body:
@@ -821,11 +824,12 @@ Card Body:
 Card Actions:
   Margin-top: var(--occ-space-3)
   Display: Flex (gap: var(--occ-space-2))
-  
+
   Buttons: Full width, stacked if >3 buttons
 ```
 
 #### Modal (Mobile)
+
 ```
 Width: 100vw
 Height: 100vh
@@ -839,6 +843,7 @@ Form Fields:
 ```
 
 #### Filters (Mobile)
+
 ```
 Stack vertically:
   Each filter: Full width
@@ -852,6 +857,7 @@ Search input: Full width
 ## 5. Accessibility (WCAG 2.2 AA)
 
 ### Keyboard Navigation
+
 ```
 Tab Order:
 1. Header → "Add Vendor" button
@@ -876,6 +882,7 @@ Focus Indicators:
 ```
 
 ### ARIA Labels
+
 ```
 Vendor List Table:
 <table role="table" aria-label="Vendor list">
@@ -909,8 +916,8 @@ Close Button:
 
 Form Fields:
 <label for="vendor-name">Vendor Name *</label>
-<input 
-  id="vendor-name" 
+<input
+  id="vendor-name"
   aria-required="true"
   aria-invalid="false"  /* true if validation error */
   aria-describedby="vendor-name-error"  /* if error present */
@@ -921,6 +928,7 @@ Form Fields:
 ```
 
 ### Screen Reader Support
+
 ```
 Live Regions:
 - Success/error toasts: role="alert"
@@ -943,6 +951,7 @@ Hidden Labels:
 ```
 
 ### Color Contrast
+
 ```
 All text meets WCAG AA:
 - Normal text: 4.5:1 minimum
@@ -968,6 +977,7 @@ Status colors already meet AA:
 ### Engineer Tasks
 
 **Phase 1: Vendor List View (4h)**
+
 - [ ] Create `<VendorList />` component
 - [ ] Implement search + filters (client-side)
 - [ ] Build table with expandable rows
@@ -977,6 +987,7 @@ Status colors already meet AA:
 - [ ] Test accessibility with screen reader
 
 **Phase 2: Add/Edit Modal (3h)**
+
 - [ ] Create `<VendorModal />` component
 - [ ] Build form with all fields
 - [ ] Implement real-time validation
@@ -986,6 +997,7 @@ Status colors already meet AA:
 - [ ] Test form accessibility
 
 **Phase 3: Vendor Selection (2h)**
+
 - [ ] Create `<VendorSelector />` component
 - [ ] Implement card-based selection UI
 - [ ] Add "No vendor" option
@@ -993,12 +1005,14 @@ Status colors already meet AA:
 - [ ] Test mobile responsive layout
 
 **Phase 4: Mobile Responsive (2h)**
+
 - [ ] Convert table to cards on mobile
 - [ ] Stack filters vertically
 - [ ] Full-screen modal on mobile
 - [ ] Test on iOS Safari + Android Chrome
 
 **Phase 5: Accessibility Polish (1h)**
+
 - [ ] Audit with Lighthouse (target: 95+)
 - [ ] Test keyboard navigation
 - [ ] Add all ARIA labels
@@ -1012,6 +1026,7 @@ Status colors already meet AA:
 ## 7. Testing Requirements
 
 ### Unit Tests
+
 ```typescript
 // Vendor List
 - ✅ Renders with mock vendors
@@ -1039,6 +1054,7 @@ Status colors already meet AA:
 ```
 
 ### Integration Tests
+
 ```typescript
 // E2E with Playwright
 - ✅ User can add new vendor
@@ -1050,6 +1066,7 @@ Status colors already meet AA:
 ```
 
 ### Accessibility Tests
+
 ```typescript
 // Automated (axe-core)
 - ✅ No critical violations
@@ -1071,6 +1088,7 @@ Status colors already meet AA:
 **All OCC tokens are defined in**: `app/styles/tokens.css`
 
 **Usage in React**:
+
 ```tsx
 // Inline styles (for dynamic values)
 <div style={{
@@ -1088,6 +1106,7 @@ Status colors already meet AA:
 ```
 
 **Never hardcode values**:
+
 ```tsx
 // ❌ DON'T
 <div style={{ padding: '16px', color: '#111827' }}>
@@ -1103,6 +1122,7 @@ Status colors already meet AA:
 **Engineer: Reference `docs/product/vendor-management-ui-spec.md` Section 6 for API endpoints**
 
 Key endpoints:
+
 - `GET /api/vendors` - Fetch vendor list
 - `POST /api/vendors` - Create vendor
 - `PATCH /api/vendors/:id` - Update vendor
@@ -1111,6 +1131,7 @@ Key endpoints:
 - `POST /api/vendors/:id/products` - Add product to vendor
 
 Error handling:
+
 - 400: Show validation errors in form
 - 404: Show "Vendor not found" toast
 - 500: Show "Something went wrong" toast + retry button
@@ -1135,7 +1156,7 @@ Error handling:
 **Word Count**: ~5,800 words  
 **Design Specs**: 6 major components  
 **Implementation Estimate**: 12 hours  
-**Accessibility**: WCAG 2.2 AA compliant  
+**Accessibility**: WCAG 2.2 AA compliant
 
 **Created By**: Designer (DES-019)  
 **For**: Engineer (UI Implementation)  
@@ -1145,4 +1166,3 @@ Error handling:
 ---
 
 **Questions?** → Ping Designer in feedback/designer/2025-10-21.md 🎨
-

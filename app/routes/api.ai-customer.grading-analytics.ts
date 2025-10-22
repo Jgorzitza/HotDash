@@ -13,7 +13,10 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { analyzeGrades, type GradeAnalytics } from "../services/ai-customer/grading-analytics";
+import {
+  analyzeGrades,
+  type GradeAnalytics,
+} from "../services/ai-customer/grading-analytics";
 
 /**
  * API Response structure
@@ -28,14 +31,14 @@ interface GradingAnalyticsResponse {
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const timeRange = url.searchParams.get('timeRange') || '30d';
+    const timeRange = url.searchParams.get("timeRange") || "30d";
 
     // Validate timeRange parameter
-    const validTimeRanges = ['7d', '30d', '90d', 'all'];
+    const validTimeRanges = ["7d", "30d", "90d", "all"];
     if (!validTimeRanges.includes(timeRange)) {
       const errorResponse: GradingAnalyticsResponse = {
         success: false,
-        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(', ')}`,
+        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(", ")}`,
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -46,15 +49,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Analyze grades
-    const analytics = await analyzeGrades(
-      timeRange,
-      supabaseUrl,
-      supabaseKey
-    );
+    const analytics = await analyzeGrades(timeRange, supabaseUrl, supabaseKey);
 
     const response: GradingAnalyticsResponse = {
       success: true,
@@ -64,15 +63,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] Grading analytics error:', error);
+    console.error("[API] Grading analytics error:", error);
 
     const errorResponse: GradingAnalyticsResponse = {
       success: false,
-      error: error.message || 'Failed to analyze grades',
+      error: error.message || "Failed to analyze grades",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

@@ -24,16 +24,19 @@ Microcopy guidance for the notification system including toast messages, banner 
 **Icon:** Checkmark
 
 **Approval Actions:**
+
 ```
 Pit stop complete! Action approved and executed.
 ```
 
 **Rejection Actions:**
+
 ```
 Action rejected. Agent will not proceed.
 ```
 
 **General Success:**
+
 ```
 Settings saved successfully.
 ```
@@ -53,23 +56,27 @@ Feedback submitted. Thanks!
 **Icon:** Alert triangle
 
 **Network Errors:**
+
 ```
 Connection lost. Check your internet and try again.
 [Retry]
 ```
 
 **Server Errors:**
+
 ```
 Something went wrong. Please try again.
 [Retry]
 ```
 
 **Validation Errors:**
+
 ```
 Required fields missing. Please complete the form.
 ```
 
 **Permission Errors:**
+
 ```
 You don't have permission for this action.
 ```
@@ -81,22 +88,26 @@ You don't have permission for this action.
 **Icon:** Info circle
 
 **Queue Updates:**
+
 ```
 3 new approvals need review.
 [View Queue]
 ```
 
 **Refresh Notifications:**
+
 ```
 Queue refreshed. All up to date.
 ```
 
 **Auto-save:**
+
 ```
 Draft saved automatically.
 ```
 
 **Sync Status:**
+
 ```
 Syncing with Shopify...
 ```
@@ -108,18 +119,21 @@ Syncing with Shopify...
 **Icon:** Warning triangle
 
 **Approaching Limits:**
+
 ```
 Queue approaching capacity (8/10).
 [Review Queue]
 ```
 
 **Performance Warnings:**
+
 ```
 Approval rate below target (65%).
 [View Metrics]
 ```
 
 **Unsaved Changes:**
+
 ```
 You have unsaved changes.
 [Save] [Discard]
@@ -136,6 +150,7 @@ You have unsaved changes.
 **Dismissible:** Yes
 
 **Content:**
+
 ```
 Queue backlog detected
 You have 12 pending approvals. Review queue to prevent delays.
@@ -152,6 +167,7 @@ You have 12 pending approvals. Review queue to prevent delays.
 **Dismissible:** No (until resolved)
 
 **Content:**
+
 ```
 Approval rate below target
 Current rate: 65% (target: ≥90%). Review pending approvals.
@@ -168,6 +184,7 @@ Current rate: 65% (target: ≥90%). Review pending approvals.
 **Dismissible:** No
 
 **Degraded Service:**
+
 ```
 System running slowly
 We're experiencing delays. Your work is still being saved.
@@ -175,6 +192,7 @@ We're experiencing delays. Your work is still being saved.
 ```
 
 **Service Down:**
+
 ```
 Service temporarily unavailable
 We're working to restore service. Try again in a few minutes.
@@ -191,6 +209,7 @@ We're working to restore service. Try again in a few minutes.
 **Dismissible:** Yes
 
 **Content:**
+
 ```
 Scheduled maintenance
 System will be unavailable Oct 21, 2:00-3:00 AM PST.
@@ -207,18 +226,21 @@ System will be unavailable Oct 21, 2:00-3:00 AM PST.
 **Dismissible:** No (until reconnected)
 
 **Offline:**
+
 ```
 You're offline
 Check your internet connection. Changes will sync when reconnected.
 ```
 
 **Reconnecting:**
+
 ```
 Reconnecting...
 Attempting to restore connection.
 ```
 
 **Reconnected:**
+
 ```
 Back online
 All changes synced successfully.
@@ -235,11 +257,13 @@ All changes synced successfully.
 ### 3.1 Permission Request
 
 **Title:**
+
 ```
 Enable notifications?
 ```
 
 **Body:**
+
 ```
 Get alerts for new approvals, even when HotDash isn't open.
 [Enable] [Not Now]
@@ -248,16 +272,19 @@ Get alerts for new approvals, even when HotDash isn't open.
 ### 3.2 New Approval Notification
 
 **Title:**
+
 ```
 New approval needed
 ```
 
 **Body:**
+
 ```
 ai-customer wants to send an email to Jamie Lee.
 ```
 
 **Action Buttons:**
+
 ```
 [Review] [Dismiss]
 ```
@@ -268,16 +295,19 @@ ai-customer wants to send an email to Jamie Lee.
 ### 3.3 SLA Breach Notification
 
 **Title:**
+
 ```
 SLA breached
 ```
 
 **Body:**
+
 ```
 Customer waiting 2h 15m. Response needed urgently.
 ```
 
 **Action Buttons:**
+
 ```
 [Respond Now] [Dismiss]
 ```
@@ -287,16 +317,19 @@ Customer waiting 2h 15m. Response needed urgently.
 ### 3.4 Queue Backlog Notification
 
 **Title:**
+
 ```
 Queue backlog
 ```
 
 **Body:**
+
 ```
 12 approvals pending. Review queue to prevent delays.
 ```
 
 **Action Buttons:**
+
 ```
 [View Queue] [Dismiss]
 ```
@@ -306,11 +339,13 @@ Queue backlog
 ### 3.5 Action Completed Notification
 
 **Title:**
+
 ```
 Action approved
 ```
 
 **Body:**
+
 ```
 Email sent to Jamie Lee. Conversation #123 updated.
 ```
@@ -325,16 +360,19 @@ Email sent to Jamie Lee. Conversation #123 updated.
 ### 4.1 Panel Header
 
 **Title:**
+
 ```
 Notifications
 ```
 
 **Badge Count:**
+
 ```
 [X] unread
 ```
 
 **Actions:**
+
 ```
 [Mark all as read] [Settings]
 ```
@@ -342,11 +380,13 @@ Notifications
 ### 4.2 Empty State
 
 **Heading:**
+
 ```
 All caught up!
 ```
 
 **Body:**
+
 ```
 No new notifications.
 You'll see important updates here.
@@ -359,6 +399,7 @@ You'll see important updates here.
 **Grouping:** By date
 
 **Headers:**
+
 ```
 Today
 Yesterday
@@ -369,6 +410,7 @@ Older
 ### 4.4 Notification Card
 
 **Pattern:**
+
 ```
 [Icon] [Title]
 [Body]
@@ -377,6 +419,7 @@ Older
 ```
 
 **Example - Approval:**
+
 ```
 🔔 New approval needed
 ai-customer wants to send an email
@@ -385,6 +428,7 @@ ai-customer wants to send an email
 ```
 
 **Example - Alert:**
+
 ```
 ⚠️ Queue backlog
 12 approvals pending
@@ -393,6 +437,7 @@ ai-customer wants to send an email
 ```
 
 **Example - System:**
+
 ```
 ℹ️ Maintenance scheduled
 Oct 21, 2:00 AM PST
@@ -405,16 +450,19 @@ Oct 21, 2:00 AM PST
 **Unread Indicator:** Blue dot or bold text
 
 **Mark Read Action:**
+
 ```
 [Mark as read]
 ```
 
 **Batch Action:**
+
 ```
 [Mark all as read]
 ```
 
 **Confirmation Toast:**
+
 ```
 All notifications marked as read.
 ```
@@ -446,18 +494,21 @@ All notifications marked as read.
 ## 7. CEO Tone Alignment
 
 ✅ **Voice Attributes:**
+
 - Clear and urgent (when needed): "SLA breached"
 - Positive framing: "All caught up!" not "No notifications"
 - Action-oriented: "Review Queue" not "Click here"
 - Brand theme: "Pit stop complete!" (success)
 
 ✅ **Language Style:**
+
 - Concise: "3 new approvals need review" (short, scannable)
 - Active voice: "Review queue" not "Queue should be reviewed"
 - Helpful: "Changes will sync when reconnected" (reassuring)
 - Numbers: Use digits for counts (12 not twelve)
 
 ❌ **Avoid:**
+
 - Alarm language: "URGENT! IMMEDIATE ACTION REQUIRED!"
 - Passive voice: "Approval has been requested"
 - Redundancy: "Please review the queue as soon as possible"
@@ -468,6 +519,7 @@ All notifications marked as read.
 ## 8. Hot Rodan Brand Theme
 
 **Success Messages:**
+
 - "Pit stop complete!" ✅
 - "All caught up!" ✅
 - "Back online" (simple, direct)
@@ -475,6 +527,7 @@ All notifications marked as read.
 **Keep It Subtle:** Don't overuse racing metaphors in every notification
 
 **Primary Color:** Hot Rodan Red (#E74C3C)
+
 - Use sparingly for critical alerts
 - Not for every notification (would lose impact)
 
@@ -483,6 +536,7 @@ All notifications marked as read.
 ## 9. Accessibility
 
 **Toast Announcements:**
+
 ```
 role="status"
 aria-live="polite" (info, success)
@@ -490,23 +544,27 @@ aria-live="assertive" (error, warning)
 ```
 
 **Banner Alerts:**
+
 ```
 role="alert"
 aria-live="assertive"
 ```
 
 **Notification Center:**
+
 ```
 role="region"
 aria-label="Notifications"
 ```
 
 **Unread Count:**
+
 ```
 aria-label="[X] unread notifications"
 ```
 
 **Focus Management:**
+
 - Focus first interactive element when banner appears
 - Return focus when notification center closes
 - Keyboard shortcuts: `N` to open notifications
@@ -523,21 +581,18 @@ aria-label="[X] unread notifications"
   - [ ] Info toasts with action links
   - [ ] Warning toasts (dismissible)
   - [ ] Auto-dismiss timers
-  
 - [ ] Banner alerts
   - [ ] Queue backlog banner (>10 pending)
   - [ ] Performance banner (<70% rate)
   - [ ] System health banner
   - [ ] Connection status banner
   - [ ] Maintenance banner
-  
 - [ ] Browser notifications
   - [ ] Permission request
   - [ ] New approval notifications
   - [ ] SLA breach notifications
   - [ ] Action completion notifications
   - [ ] Sound preferences
-  
 - [ ] Notification center (Optional P2)
   - [ ] Slide-out panel
   - [ ] Grouped by date
@@ -563,4 +618,3 @@ aria-label="[X] unread notifications"
 ## Version History
 
 - **1.0** (2025-10-20): Initial microcopy guidance for Phase 4 notification system
-

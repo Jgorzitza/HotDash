@@ -17,7 +17,10 @@
  */
 
 import { type ActionFunctionArgs } from "react-router";
-import { queryKnowledgeBase, type QueryResult } from "../services/rag/ceo-knowledge-base";
+import {
+  queryKnowledgeBase,
+  type QueryResult,
+} from "../services/rag/ceo-knowledge-base";
 
 /**
  * API Response structure
@@ -35,20 +38,24 @@ export async function action({ request }: ActionFunctionArgs) {
     const { query, topK, filters } = body;
 
     // Validate required parameters
-    if (!query || typeof query !== 'string' || query.trim().length === 0) {
+    if (!query || typeof query !== "string" || query.trim().length === 0) {
       const errorResponse: KnowledgeBaseResponse = {
         success: false,
-        error: 'Missing or invalid required parameter: query (must be non-empty string)',
+        error:
+          "Missing or invalid required parameter: query (must be non-empty string)",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
     }
 
     // Validate topK if provided
-    if (topK !== undefined && (typeof topK !== 'number' || topK < 1 || topK > 10)) {
+    if (
+      topK !== undefined &&
+      (typeof topK !== "number" || topK < 1 || topK > 10)
+    ) {
       const errorResponse: KnowledgeBaseResponse = {
         success: false,
-        error: 'Invalid topK parameter. Must be a number between 1 and 10',
+        error: "Invalid topK parameter. Must be a number between 1 and 10",
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -68,15 +75,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] CEO Agent LlamaIndex query error:', error);
+    console.error("[API] CEO Agent LlamaIndex query error:", error);
 
     const errorResponse: KnowledgeBaseResponse = {
       success: false,
-      error: error.message || 'Failed to query knowledge base',
+      error: error.message || "Failed to query knowledge base",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

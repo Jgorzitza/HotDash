@@ -1,6 +1,6 @@
 /**
  * Publer API Type Definitions
- * 
+ *
  * Official API Docs: https://publer.com/docs
  * Authentication: Bearer-API token + Workspace-ID header
  */
@@ -22,7 +22,14 @@ export interface PublerAccount {
   id: string;
   name: string;
   username?: string;
-  platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'pinterest' | 'tiktok' | 'youtube';
+  platform:
+    | "facebook"
+    | "twitter"
+    | "instagram"
+    | "linkedin"
+    | "pinterest"
+    | "tiktok"
+    | "youtube";
   avatar_url?: string;
   is_active: boolean;
 }
@@ -36,19 +43,19 @@ export interface PublerPost {
 
 export interface PublerMedia {
   url: string;
-  type: 'image' | 'video';
+  type: "image" | "video";
   alt_text?: string;
 }
 
 export interface PublerJobResponse {
   job_id: string;
-  status: 'pending' | 'processing' | 'complete' | 'failed';
+  status: "pending" | "processing" | "complete" | "failed";
   created_at: string;
 }
 
 export interface PublerJobStatus {
   job_id: string;
-  status: 'pending' | 'processing' | 'complete' | 'failed';
+  status: "pending" | "processing" | "complete" | "failed";
   progress: number; // 0-100
   error?: string;
   posts?: PublerPostResult[];
@@ -89,4 +96,3 @@ export interface PublerAPIResponse<T> {
   error?: PublerError;
   rateLimitInfo?: PublerRateLimitInfo;
 }
-

@@ -9,11 +9,13 @@
 ## The Problem
 
 **"Application Error"** shows in Shopify Admin because:
+
 1. Prisma migrations never ran on production
 2. `Session` table doesn't exist in database
 3. App crashes when trying to authenticate users
 
 **Error from logs**:
+
 ```
 PrismaClientKnownRequestError at PrismaSessionStorage.loadSession
 GET /app?embedded=1&... 500 - - 653.424 ms
@@ -26,6 +28,7 @@ GET /app?embedded=1&... 500 - - 653.424 ms
 ### ✅ COMMITTED TO MAIN:
 
 1. **fly.toml** - Added release command:
+
 ```toml
 [deploy]
   release_command = "npx prisma migrate deploy"
@@ -45,6 +48,7 @@ shopify app deploy
 ```
 
 This will:
+
 1. ✅ Build app with React Router 7
 2. ✅ Run `npx prisma migrate deploy` (creates Session table + all others)
 3. ✅ Deploy to hotdash-staging.fly.dev
@@ -57,16 +61,20 @@ This will:
 ## Verification After Deploy
 
 1. **Reload Shopify App**:
+
    ```
    https://admin.shopify.com/store/hotroddash/apps/hotdash
    ```
+
    Should show dashboard (not "Application Error")
 
 2. **Check Database Tables**:
+
    ```bash
    fly ssh console -a hotdash-staging
    > npx prisma studio
    ```
+
    Should see: Session, DashboardFact, DecisionLog tables
 
 3. **Test All 6 Tiles**:
@@ -82,6 +90,7 @@ This will:
 ## What's Enforced Now
 
 **ALL agents MUST**:
+
 - ✅ Use React Router 7 (NOT Remix)
 - ✅ Use Shopify Dev MCP for ALL GraphQL
 - ✅ Use Context7 MCP for ALL library patterns
@@ -102,5 +111,3 @@ This will:
 ---
 
 **🚀 Run `shopify app deploy` to fix the Application Error!**
-
-

@@ -99,5 +99,3 @@ describe("Inventory Analytics - ABC Analysis", () => {
     expect(result[2].cumulativePercentage).toBe(100);
   });
 });
-
-

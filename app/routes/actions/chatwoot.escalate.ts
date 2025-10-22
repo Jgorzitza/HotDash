@@ -68,7 +68,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const customerValue = formData.get("customerName");
     customerName =
       typeof customerValue === "string" ? customerValue : undefined;
-    
+
     // Extract grading data (1-5 scale)
     const toneGradeRaw = formData.get("toneGrade");
     const accuracyGradeRaw = formData.get("accuracyGrade");

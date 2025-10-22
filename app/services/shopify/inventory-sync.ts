@@ -1,6 +1,6 @@
 /**
  * Shopify Inventory Sync Service
- * 
+ *
  * Fetches inventory levels from Shopify GraphQL API
  * Stores in dashboard_fact table
  * Handles Shopify inventory webhooks
@@ -76,11 +76,12 @@ export function parseInventoryResponse(response: any): InventoryLevelData[] {
   const variants = response?.data?.productVariants?.edges || [];
 
   for (const { node: variant } of variants) {
-    const inventoryLevels = variant?.inventoryItem?.inventoryLevels?.edges || [];
+    const inventoryLevels =
+      variant?.inventoryItem?.inventoryLevels?.edges || [];
 
     for (const { node: level } of inventoryLevels) {
       const quantities = level.quantities || [];
-      
+
       const quantityMap: Record<string, number> = {};
       for (const q of quantities) {
         quantityMap[q.name] = q.quantity;
@@ -89,14 +90,14 @@ export function parseInventoryResponse(response: any): InventoryLevelData[] {
       levels.push({
         variantId: variant.id,
         sku: variant.sku,
-        productTitle: variant.product?.title || 'Unknown',
+        productTitle: variant.product?.title || "Unknown",
         variantTitle: variant.title,
         locationId: level.location.id,
         locationName: level.location.name,
-        available: quantityMap['available'] || 0,
-        onHand: quantityMap['on_hand'] || 0,
-        committed: quantityMap['committed'] || 0,
-        reserved: quantityMap['reserved'] || 0,
+        available: quantityMap["available"] || 0,
+        onHand: quantityMap["on_hand"] || 0,
+        committed: quantityMap["committed"] || 0,
+        reserved: quantityMap["reserved"] || 0,
       });
     }
   }
@@ -154,7 +155,9 @@ export async function syncInventoryFromShopify(
     //   { onConflict: 'variant_id,location_id' }
     // );
 
-    console.log(`[Inventory Sync] Processed ${allLevels.length} inventory levels`);
+    console.log(
+      `[Inventory Sync] Processed ${allLevels.length} inventory levels`,
+    );
 
     return {
       success: true,
@@ -162,12 +165,12 @@ export async function syncInventoryFromShopify(
       itemsStored: allLevels.length,
     };
   } catch (error) {
-    console.error('[Inventory Sync] Error:', error);
+    console.error("[Inventory Sync] Error:", error);
     return {
       success: false,
       itemsProcessed: 0,
       itemsStored: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }
@@ -201,13 +204,15 @@ export async function handleInventoryWebhook(
     //     location_id: `gid://shopify/Location/${payload.location_id}`,
     //   });
 
-    console.log(`[Inventory Webhook] Updated inventory for item ${payload.inventory_item_id} at location ${payload.location_id}`);
+    console.log(
+      `[Inventory Webhook] Updated inventory for item ${payload.inventory_item_id} at location ${payload.location_id}`,
+    );
 
     return { success: true };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
     };
   }
 }

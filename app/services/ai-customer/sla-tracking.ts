@@ -1,25 +1,28 @@
 /**
  * AI-Customer SLA Tracking Service
- * 
+ *
  * Tracks Service Level Agreement (SLA) metrics for customer support,
  * including First Response Time (FRT), Resolution Time, and alerts on
  * SLA breaches. Provides performance dashboards for CX team.
- * 
+ *
  * @module app/services/ai-customer/sla-tracking
  * @see docs/directions/ai-customer.md AI-CUSTOMER-004
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * SLA metric types
  */
-export type SLAMetric = 'first_response_time' | 'resolution_time' | 'response_time';
+export type SLAMetric =
+  | "first_response_time"
+  | "resolution_time"
+  | "response_time";
 
 /**
  * SLA status
  */
-export type SLAStatus = 'within_sla' | 'at_risk' | 'breached';
+export type SLAStatus = "within_sla" | "at_risk" | "breached";
 
 /**
  * SLA thresholds (in minutes)
@@ -36,7 +39,7 @@ export interface SLAThresholds {
 export interface ConversationSLA {
   conversationId: number;
   customerName: string;
-  status: 'open' | 'pending' | 'resolved';
+  status: "open" | "pending" | "resolved";
   createdAt: string;
   firstResponseAt?: string | null;
   resolvedAt?: string | null;
@@ -91,8 +94,12 @@ export interface SLATrackingResult {
 export interface SLAAlert {
   conversationId: number;
   customerName: string;
-  alertType: 'first_response_breach' | 'resolution_breach' | 'first_response_at_risk' | 'resolution_at_risk';
-  severity: 'warning' | 'critical';
+  alertType:
+    | "first_response_breach"
+    | "resolution_breach"
+    | "first_response_at_risk"
+    | "resolution_at_risk";
+  severity: "warning" | "critical";
   message: string;
   minutesOverdue?: number;
   createdAt: string;
@@ -104,16 +111,16 @@ export interface SLAAlert {
 interface ConversationRecord {
   id: number;
   customerName: string;
-  status: 'open' | 'pending' | 'resolved';
+  status: "open" | "pending" | "resolved";
   createdAt: string;
   firstResponseAt?: string | null;
   resolvedAt?: string | null;
-  priority: 'high' | 'medium' | 'low';
+  priority: "high" | "medium" | "low";
 }
 
 /**
  * Track SLA performance and generate alerts
- * 
+ *
  * Strategy:
  * 1. Query conversations from decision_log or Chatwoot
  * 2. Calculate FRT and resolution time for each
@@ -121,7 +128,7 @@ interface ConversationRecord {
  * 4. Identify at-risk and breached conversations
  * 5. Generate alerts for breaches
  * 6. Calculate summary metrics
- * 
+ *
  * @param timeRange - Time range to analyze: '24h', '7d', '30d'
  * @param thresholds - Custom SLA thresholds (optional)
  * @param supabaseUrl - Supabase project URL
@@ -132,7 +139,7 @@ export async function trackSLA(
   timeRange: string,
   thresholds: Partial<SLAThresholds>,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<SLATrackingResult> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -140,7 +147,10 @@ export async function trackSLA(
   const slaThresholds: SLAThresholds = {
     firstResponseTime: thresholds.firstResponseTime || 60, // 1 hour
     resolutionTime: thresholds.resolutionTime || 1440, // 24 hours
-    businessHoursOnly: thresholds.businessHoursOnly !== undefined ? thresholds.businessHoursOnly : true,
+    businessHoursOnly:
+      thresholds.businessHoursOnly !== undefined
+        ? thresholds.businessHoursOnly
+        : true,
   };
 
   try {
@@ -149,19 +159,19 @@ export async function trackSLA(
 
     // Query decision_log for customer support conversations
     let query = supabase
-      .from('decision_log')
-      .select('id, created_at, payload')
-      .eq('scope', 'customer_support')
-      .order('created_at', { ascending: false });
+      .from("decision_log")
+      .select("id, created_at, payload")
+      .eq("scope", "customer_support")
+      .order("created_at", { ascending: false });
 
     if (startDate) {
-      query = query.gte('created_at', startDate.toISOString());
+      query = query.gte("created_at", startDate.toISOString());
     }
 
     const { data, error } = await query;
 
     if (error) {
-      console.error('[SLA Tracking] Query error:', error);
+      console.error("[SLA Tracking] Query error:", error);
       throw error;
     }
 
@@ -171,23 +181,22 @@ export async function trackSLA(
     }
 
     // Parse records
-    const records: ConversationRecord[] = data
-      .map(row => {
-        const payload = row.payload as any;
-        return {
-          id: row.id,
-          customerName: payload.customerName || 'Unknown',
-          status: payload.status || 'open',
-          createdAt: row.created_at,
-          firstResponseAt: payload.firstResponseAt,
-          resolvedAt: payload.resolvedAt,
-          priority: payload.priority || 'medium',
-        };
-      });
+    const records: ConversationRecord[] = data.map((row) => {
+      const payload = row.payload as any;
+      return {
+        id: row.id,
+        customerName: payload.customerName || "Unknown",
+        status: payload.status || "open",
+        createdAt: row.created_at,
+        firstResponseAt: payload.firstResponseAt,
+        resolvedAt: payload.resolvedAt,
+        priority: payload.priority || "medium",
+      };
+    });
 
     // Calculate SLA for each conversation
-    const conversations = records.map(record => 
-      calculateConversationSLA(record, slaThresholds)
+    const conversations = records.map((record) =>
+      calculateConversationSLA(record, slaThresholds),
     );
 
     // Generate alerts
@@ -207,7 +216,7 @@ export async function trackSLA(
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    console.error('[SLA Tracking] Error tracking SLA:', error);
+    console.error("[SLA Tracking] Error tracking SLA:", error);
     return createEmptySLAResult(slaThresholds);
   }
 }
@@ -217,7 +226,7 @@ export async function trackSLA(
  */
 function calculateConversationSLA(
   record: ConversationRecord,
-  thresholds: SLAThresholds
+  thresholds: SLAThresholds,
 ): ConversationSLA {
   const createdAt = new Date(record.createdAt);
   const now = new Date();
@@ -229,11 +238,19 @@ function calculateConversationSLA(
 
   if (record.firstResponseAt) {
     const firstResponseAt = new Date(record.firstResponseAt);
-    firstResponseTime = calculateMinutes(createdAt, firstResponseAt, thresholds.businessHoursOnly);
+    firstResponseTime = calculateMinutes(
+      createdAt,
+      firstResponseAt,
+      thresholds.businessHoursOnly,
+    );
     firstResponseBreached = firstResponseTime > thresholds.firstResponseTime;
   } else {
     // No response yet
-    const elapsedTime = calculateMinutes(createdAt, now, thresholds.businessHoursOnly);
+    const elapsedTime = calculateMinutes(
+      createdAt,
+      now,
+      thresholds.businessHoursOnly,
+    );
     firstResponseRemaining = thresholds.firstResponseTime - elapsedTime;
     firstResponseBreached = elapsedTime > thresholds.firstResponseTime;
   }
@@ -245,11 +262,19 @@ function calculateConversationSLA(
 
   if (record.resolvedAt) {
     const resolvedAt = new Date(record.resolvedAt);
-    resolutionTime = calculateMinutes(createdAt, resolvedAt, thresholds.businessHoursOnly);
+    resolutionTime = calculateMinutes(
+      createdAt,
+      resolvedAt,
+      thresholds.businessHoursOnly,
+    );
     resolutionBreached = resolutionTime > thresholds.resolutionTime;
-  } else if (record.status !== 'resolved') {
+  } else if (record.status !== "resolved") {
     // Still open/pending
-    const elapsedTime = calculateMinutes(createdAt, now, thresholds.businessHoursOnly);
+    const elapsedTime = calculateMinutes(
+      createdAt,
+      now,
+      thresholds.businessHoursOnly,
+    );
     resolutionRemaining = thresholds.resolutionTime - elapsedTime;
     resolutionBreached = elapsedTime > thresholds.resolutionTime;
   }
@@ -257,14 +282,14 @@ function calculateConversationSLA(
   // Determine overall SLA status
   let slaStatus: SLAStatus;
   if (firstResponseBreached || resolutionBreached) {
-    slaStatus = 'breached';
+    slaStatus = "breached";
   } else if (
     (firstResponseRemaining !== undefined && firstResponseRemaining < 15) ||
     (resolutionRemaining !== undefined && resolutionRemaining < 120)
   ) {
-    slaStatus = 'at_risk';
+    slaStatus = "at_risk";
   } else {
-    slaStatus = 'within_sla';
+    slaStatus = "within_sla";
   }
 
   return {
@@ -291,7 +316,11 @@ function calculateConversationSLA(
 /**
  * Calculate minutes between two dates (business hours or calendar)
  */
-function calculateMinutes(start: Date, end: Date, businessHoursOnly: boolean): number {
+function calculateMinutes(
+  start: Date,
+  end: Date,
+  businessHoursOnly: boolean,
+): number {
   if (!businessHoursOnly) {
     return Math.floor((end.getTime() - start.getTime()) / (1000 * 60));
   }
@@ -320,19 +349,20 @@ function calculateMinutes(start: Date, end: Date, businessHoursOnly: boolean): n
  */
 function generateAlerts(
   conversations: ConversationSLA[],
-  thresholds: SLAThresholds
+  thresholds: SLAThresholds,
 ): SLAAlert[] {
   const alerts: SLAAlert[] = [];
 
   for (const conversation of conversations) {
     // First response breach
     if (conversation.breaches.firstResponse) {
-      const overdue = conversation.firstResponseTime! - thresholds.firstResponseTime;
+      const overdue =
+        conversation.firstResponseTime! - thresholds.firstResponseTime;
       alerts.push({
         conversationId: conversation.conversationId,
         customerName: conversation.customerName,
-        alertType: 'first_response_breach',
-        severity: 'critical',
+        alertType: "first_response_breach",
+        severity: "critical",
         message: `First response SLA breached by ${overdue.toFixed(0)} minutes`,
         minutesOverdue: overdue,
         createdAt: new Date().toISOString(),
@@ -347,8 +377,8 @@ function generateAlerts(
       alerts.push({
         conversationId: conversation.conversationId,
         customerName: conversation.customerName,
-        alertType: 'first_response_at_risk',
-        severity: 'warning',
+        alertType: "first_response_at_risk",
+        severity: "warning",
         message: `First response SLA at risk: ${conversation.remainingTime.firstResponse.toFixed(0)} minutes remaining`,
         createdAt: new Date().toISOString(),
       });
@@ -360,8 +390,8 @@ function generateAlerts(
       alerts.push({
         conversationId: conversation.conversationId,
         customerName: conversation.customerName,
-        alertType: 'resolution_breach',
-        severity: 'critical',
+        alertType: "resolution_breach",
+        severity: "critical",
         message: `Resolution SLA breached by ${(overdue / 60).toFixed(1)} hours`,
         minutesOverdue: overdue,
         createdAt: new Date().toISOString(),
@@ -376,8 +406,8 @@ function generateAlerts(
       alerts.push({
         conversationId: conversation.conversationId,
         customerName: conversation.customerName,
-        alertType: 'resolution_at_risk',
-        severity: 'warning',
+        alertType: "resolution_at_risk",
+        severity: "warning",
         message: `Resolution SLA at risk: ${(conversation.remainingTime.resolution / 60).toFixed(1)} hours remaining`,
         createdAt: new Date().toISOString(),
       });
@@ -393,31 +423,51 @@ function generateAlerts(
 /**
  * Calculate summary metrics
  */
-function calculateSummary(conversations: ConversationSLA[]): SLAPerformanceSummary {
+function calculateSummary(
+  conversations: ConversationSLA[],
+): SLAPerformanceSummary {
   const totalConversations = conversations.length;
-  const withinSLA = conversations.filter(c => c.slaStatus === 'within_sla').length;
-  const atRisk = conversations.filter(c => c.slaStatus === 'at_risk').length;
-  const breached = conversations.filter(c => c.slaStatus === 'breached').length;
+  const withinSLA = conversations.filter(
+    (c) => c.slaStatus === "within_sla",
+  ).length;
+  const atRisk = conversations.filter((c) => c.slaStatus === "at_risk").length;
+  const breached = conversations.filter(
+    (c) => c.slaStatus === "breached",
+  ).length;
 
   // Calculate average times
-  const withFirstResponse = conversations.filter(c => c.firstResponseTime !== undefined);
-  const avgFirstResponseTime = withFirstResponse.length > 0
-    ? withFirstResponse.reduce((sum, c) => sum + c.firstResponseTime!, 0) / withFirstResponse.length
-    : 0;
+  const withFirstResponse = conversations.filter(
+    (c) => c.firstResponseTime !== undefined,
+  );
+  const avgFirstResponseTime =
+    withFirstResponse.length > 0
+      ? withFirstResponse.reduce((sum, c) => sum + c.firstResponseTime!, 0) /
+        withFirstResponse.length
+      : 0;
 
-  const withResolution = conversations.filter(c => c.resolutionTime !== undefined);
-  const avgResolutionTime = withResolution.length > 0
-    ? withResolution.reduce((sum, c) => sum + c.resolutionTime!, 0) / withResolution.length
-    : 0;
+  const withResolution = conversations.filter(
+    (c) => c.resolutionTime !== undefined,
+  );
+  const avgResolutionTime =
+    withResolution.length > 0
+      ? withResolution.reduce((sum, c) => sum + c.resolutionTime!, 0) /
+        withResolution.length
+      : 0;
 
   // Calculate SLA rates
-  const firstResponseSLARate = withFirstResponse.length > 0
-    ? (withFirstResponse.filter(c => !c.breaches.firstResponse).length / withFirstResponse.length) * 100
-    : 100;
+  const firstResponseSLARate =
+    withFirstResponse.length > 0
+      ? (withFirstResponse.filter((c) => !c.breaches.firstResponse).length /
+          withFirstResponse.length) *
+        100
+      : 100;
 
-  const resolutionSLARate = withResolution.length > 0
-    ? (withResolution.filter(c => !c.breaches.resolution).length / withResolution.length) * 100
-    : 100;
+  const resolutionSLARate =
+    withResolution.length > 0
+      ? (withResolution.filter((c) => !c.breaches.resolution).length /
+          withResolution.length) *
+        100
+      : 100;
 
   return {
     totalConversations,
@@ -444,19 +494,19 @@ function calculateSummary(conversations: ConversationSLA[]): SLAPerformanceSumma
 function calculateStartDate(timeRange: string): Date | null {
   const now = new Date();
 
-  if (timeRange === '24h') {
+  if (timeRange === "24h") {
     const startDate = new Date(now);
     startDate.setHours(now.getHours() - 24);
     return startDate;
   }
 
-  if (timeRange === '7d') {
+  if (timeRange === "7d") {
     const startDate = new Date(now);
     startDate.setDate(now.getDate() - 7);
     return startDate;
   }
 
-  if (timeRange === '30d') {
+  if (timeRange === "30d") {
     const startDate = new Date(now);
     startDate.setDate(now.getDate() - 30);
     return startDate;
@@ -493,4 +543,3 @@ function createEmptySLAResult(thresholds: SLAThresholds): SLATrackingResult {
     timestamp: new Date().toISOString(),
   };
 }
-

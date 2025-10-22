@@ -3,17 +3,17 @@ import { authenticate } from "../shopify.server";
 
 /**
  * POST /api/preferences/theme
- * 
+ *
  * Saves user's theme preference (ENG-016)
- * 
+ *
  * Request body:
  * - theme: "light" | "dark" | "auto"
- * 
+ *
  * Response:
  * - 200: { ok: true }
  * - 400: { error: string } if validation fails
  * - 401: { error: string } if not authenticated
- * 
+ *
  * Future: Save to Supabase user_preferences.theme
  * For now: Returns success (Phase 11 will wire Supabase)
  */
@@ -34,7 +34,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!validThemes.includes(theme)) {
     return Response.json(
       { error: `theme must be one of: ${validThemes.join(", ")}` },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -51,4 +51,3 @@ export async function action({ request }: ActionFunctionArgs) {
 
   return Response.json({ ok: true });
 }
-

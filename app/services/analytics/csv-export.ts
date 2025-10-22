@@ -1,6 +1,6 @@
 /**
  * CSV/Excel Data Export Service
- * 
+ *
  * Streams analytics data to CSV format
  * Supports all 4 analytics areas: social, SEO, ads, growth
  * Date range filtering
@@ -24,7 +24,7 @@ export interface ExportOptions {
  * Uses async generator for streaming large datasets
  */
 export async function* generateCSVStream(
-  options: ExportOptions
+  options: ExportOptions,
 ): AsyncGenerator<string> {
   const { type, shopDomain, startDate, endDate } = options;
 
@@ -72,7 +72,7 @@ function generateCSVHeader(type: ExportType): string {
 async function* streamSocialData(
   shopDomain: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
 ): AsyncGenerator<string> {
   const where: any = {
     shopDomain,
@@ -130,7 +130,7 @@ async function* streamSocialData(
 async function* streamSEOData(
   shopDomain: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
 ): AsyncGenerator<string> {
   const where: any = {
     shopDomain,
@@ -187,7 +187,7 @@ async function* streamSEOData(
 async function* streamAdsData(
   shopDomain: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
 ): AsyncGenerator<string> {
   const where: any = {
     shopDomain,
@@ -248,7 +248,7 @@ async function* streamAdsData(
 async function* streamGrowthData(
   shopDomain: string,
   startDate?: Date,
-  endDate?: Date
+  endDate?: Date,
 ): AsyncGenerator<string> {
   // For growth metrics, we aggregate from all sources
   const where: any = {
@@ -321,7 +321,7 @@ function escapeCSV(value: string): string {
  * Convert async generator to ReadableStream for Response
  */
 export async function createCSVStream(
-  options: ExportOptions
+  options: ExportOptions,
 ): Promise<ReadableStream<Uint8Array>> {
   const encoder = new TextEncoder();
   const generator = generateCSVStream(options);
@@ -343,9 +343,10 @@ export async function createCSVStream(
 /**
  * Generate filename for export
  */
-export function generateExportFilename(type: ExportType, format: string = "csv"): string {
+export function generateExportFilename(
+  type: ExportType,
+  format: string = "csv",
+): string {
   const timestamp = new Date().toISOString().split("T")[0];
   return `analytics-${type}-${timestamp}.${format}`;
 }
-
-

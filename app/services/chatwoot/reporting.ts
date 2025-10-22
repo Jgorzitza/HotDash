@@ -85,7 +85,7 @@ export async function generateDailyReport(): Promise<SupportReport> {
 export async function generateWeeklyReport(): Promise<SupportReport> {
   const now = new Date();
   const end = new Date(now);
-  
+
   const start = new Date(now);
   start.setDate(start.getDate() - 7); // 7 days ago
   start.setUTCHours(0, 0, 0, 0);
@@ -102,7 +102,7 @@ async function generateReport(
   endDate: Date,
 ): Promise<SupportReport> {
   const config = getChatwootConfig();
-  
+
   // Fetch data
   const [conversations, agents] = await Promise.all([
     fetchConversations(config, startDate, endDate),
@@ -112,9 +112,17 @@ async function generateReport(
   // Calculate metrics
   const summary = calculateSummary(conversations);
   const performance = calculatePerformance(conversations, config.slaMinutes);
-  const agentSummaries = calculateAgentPerformance(conversations, agents, config.slaMinutes);
+  const agentSummaries = calculateAgentPerformance(
+    conversations,
+    agents,
+    config.slaMinutes,
+  );
   const topIssues = identifyTopIssues(conversations);
-  const recommendations = generateRecommendations(summary, performance, topIssues);
+  const recommendations = generateRecommendations(
+    summary,
+    performance,
+    topIssues,
+  );
 
   return {
     report_type: reportType,
@@ -152,7 +160,7 @@ async function fetchConversations(
   try {
     const response = await fetch(url, {
       headers: {
-        "api_access_token": config.token,
+        api_access_token: config.token,
       },
     });
 
@@ -168,7 +176,8 @@ async function fetchConversations(
     const endTimestamp = endDate.getTime() / 1000;
 
     return allConversations.filter(
-      (c: any) => c.created_at >= startTimestamp && c.created_at <= endTimestamp,
+      (c: any) =>
+        c.created_at >= startTimestamp && c.created_at <= endTimestamp,
     );
   } catch (error) {
     console.error("[Reporting] Failed to fetch conversations:", error);
@@ -182,7 +191,7 @@ async function fetchAgents(config: ChatwootConfig): Promise<any[]> {
   try {
     const response = await fetch(url, {
       headers: {
-        "api_access_token": config.token,
+        api_access_token: config.token,
       },
     });
 
@@ -233,7 +242,10 @@ function calculateSummary(conversations: any[]): ReportSummary {
   };
 }
 
-function calculatePerformance(conversations: any[], slaMinutes: number): PerformanceMetrics {
+function calculatePerformance(
+  conversations: any[],
+  slaMinutes: number,
+): PerformanceMetrics {
   const responseTimes: number[] = [];
   const resolutionTimes: number[] = [];
   let slaBreaches = 0;
@@ -246,8 +258,13 @@ function calculatePerformance(conversations: any[], slaMinutes: number): Perform
     const customerMsg = messages.find((m: any) => m.message_type === 0);
     const agentMsg = messages.find((m: any) => m.message_type === 1);
 
-    if (customerMsg && agentMsg && agentMsg.created_at > customerMsg.created_at) {
-      const responseMinutes = (agentMsg.created_at - customerMsg.created_at) / 60;
+    if (
+      customerMsg &&
+      agentMsg &&
+      agentMsg.created_at > customerMsg.created_at
+    ) {
+      const responseMinutes =
+        (agentMsg.created_at - customerMsg.created_at) / 60;
       responseTimes.push(responseMinutes);
 
       if (responseMinutes > slaMinutes) {
@@ -270,22 +287,32 @@ function calculatePerformance(conversations: any[], slaMinutes: number): Perform
 
   const avgResponseTime =
     responseTimes.length > 0
-      ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+      ? Math.round(
+          responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length,
+        )
       : 0;
 
   const avgResolutionTime =
     resolutionTimes.length > 0
-      ? Math.round((resolutionTimes.reduce((a, b) => a + b, 0) / resolutionTimes.length) * 10) / 10
+      ? Math.round(
+          (resolutionTimes.reduce((a, b) => a + b, 0) /
+            resolutionTimes.length) *
+            10,
+        ) / 10
       : 0;
 
   const slaComplianceRate =
     responseTimes.length > 0
-      ? Math.round(((responseTimes.length - slaBreaches) / responseTimes.length) * 100)
+      ? Math.round(
+          ((responseTimes.length - slaBreaches) / responseTimes.length) * 100,
+        )
       : 100;
 
   const avgCSAT =
     csatScores.length > 0
-      ? Math.round((csatScores.reduce((a, b) => a + b, 0) / csatScores.length) * 10) / 10
+      ? Math.round(
+          (csatScores.reduce((a, b) => a + b, 0) / csatScores.length) * 10,
+        ) / 10
       : 0;
 
   return {
@@ -298,9 +325,15 @@ function calculatePerformance(conversations: any[], slaMinutes: number): Perform
   };
 }
 
-function calculateAgentPerformance(conversations: any[], agents: any[], slaMinutes: number): AgentSummary[] {
+function calculateAgentPerformance(
+  conversations: any[],
+  agents: any[],
+  slaMinutes: number,
+): AgentSummary[] {
   return agents.map((agent) => {
-    const agentConversations = conversations.filter((c) => c.assignee?.id === agent.id);
+    const agentConversations = conversations.filter(
+      (c) => c.assignee?.id === agent.id,
+    );
     const resolved = agentConversations.filter((c) => c.status === "resolved");
 
     const responseTimes: number[] = [];
@@ -311,8 +344,13 @@ function calculateAgentPerformance(conversations: any[], agents: any[], slaMinut
       const customerMsg = messages.find((m: any) => m.message_type === 0);
       const agentMsg = messages.find((m: any) => m.message_type === 1);
 
-      if (customerMsg && agentMsg && agentMsg.created_at > customerMsg.created_at) {
-        const responseMinutes = (agentMsg.created_at - customerMsg.created_at) / 60;
+      if (
+        customerMsg &&
+        agentMsg &&
+        agentMsg.created_at > customerMsg.created_at
+      ) {
+        const responseMinutes =
+          (agentMsg.created_at - customerMsg.created_at) / 60;
         responseTimes.push(responseMinutes);
 
         if (responseMinutes > slaMinutes) {
@@ -323,12 +361,16 @@ function calculateAgentPerformance(conversations: any[], agents: any[], slaMinut
 
     const avgResponseTime =
       responseTimes.length > 0
-        ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+        ? Math.round(
+            responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length,
+          )
         : 0;
 
     const slaComplianceRate =
       responseTimes.length > 0
-        ? Math.round(((responseTimes.length - slaBreaches) / responseTimes.length) * 100)
+        ? Math.round(
+            ((responseTimes.length - slaBreaches) / responseTimes.length) * 100,
+          )
         : 100;
 
     return {
@@ -360,7 +402,10 @@ function identifyTopIssues(conversations: any[]): IssueSummary[] {
 
   for (const conv of conversations) {
     const messages = conv.messages || [];
-    const allContent = messages.map((m: any) => m.content).join(" ").toLowerCase();
+    const allContent = messages
+      .map((m: any) => m.content)
+      .join(" ")
+      .toLowerCase();
 
     for (const [category, keywords] of Object.entries(ISSUE_CATEGORIES)) {
       if (keywords.some((kw) => allContent.includes(kw))) {
@@ -432,7 +477,9 @@ function generateRecommendations(
 
   // Positive feedback
   if (recommendations.length === 0) {
-    recommendations.push("✅ All metrics within targets - Keep up the great work!");
+    recommendations.push(
+      "✅ All metrics within targets - Keep up the great work!",
+    );
   }
 
   return recommendations;
@@ -446,9 +493,18 @@ function generateRecommendations(
  * Format report as markdown for easy distribution
  */
 export function formatReportAsMarkdown(report: SupportReport): string {
-  const { report_type, period, summary, performance, agents, top_issues, recommendations } = report;
+  const {
+    report_type,
+    period,
+    summary,
+    performance,
+    agents,
+    top_issues,
+    recommendations,
+  } = report;
 
-  const title = report_type === "daily" ? "Daily Support Report" : "Weekly Support Report";
+  const title =
+    report_type === "daily" ? "Daily Support Report" : "Weekly Support Report";
 
   return `
 # ${title}
@@ -492,7 +548,13 @@ ${agents.map((a) => `| ${a.agent_name} | ${a.conversations_handled} | ${a.resolv
 
 ## Top Issues
 
-${top_issues.slice(0, 5).map((issue, idx) => `${idx + 1}. **${issue.category}**: ${issue.count} conversations (${issue.percentage}%)`).join("\n")}
+${top_issues
+  .slice(0, 5)
+  .map(
+    (issue, idx) =>
+      `${idx + 1}. **${issue.category}**: ${issue.count} conversations (${issue.percentage}%)`,
+  )
+  .join("\n")}
 
 ---
 
@@ -509,7 +571,10 @@ ${recommendations.map((rec) => `- ${rec}`).join("\n")}
 /**
  * Email report to team
  */
-export async function emailReport(report: SupportReport, recipients: string[]): Promise<void> {
+export async function emailReport(
+  report: SupportReport,
+  recipients: string[],
+): Promise<void> {
   // Placeholder for email integration
   // Would integrate with SendGrid, Postmark, or similar
   console.log("[Reporting] Email report to:", recipients);
@@ -525,5 +590,3 @@ export async function saveReport(report: SupportReport): Promise<void> {
   // Would save to Supabase for historical tracking
   console.log("[Reporting] Save report:", report.report_type, report.period);
 }
-
-

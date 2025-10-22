@@ -80,7 +80,7 @@ export function generateWeeklyReport(
   googlePerformances: CampaignPerformance[],
   facebookPerformances: FacebookCampaignPerformance[],
   weekStarting: string,
-  weekEnding: string
+  weekEnding: string,
 ): WeeklyReport {
   // Calculate Google Ads platform report
   const googleReport = calculatePlatformReport(
@@ -90,7 +90,7 @@ export function generateWeeklyReport(
       impressions: p.impressions,
       clicks: p.clicks,
       revenue: p.revenueCents,
-    }))
+    })),
   );
 
   // Calculate Facebook Ads platform report
@@ -101,28 +101,44 @@ export function generateWeeklyReport(
       impressions: p.impressions,
       clicks: p.clicks,
       revenue: p.conversionValue,
-    }))
+    })),
   );
 
   // Calculate combined metrics
   const totalSpend = googleReport.totalSpend + facebookReport.totalSpend;
-  const totalConversions = googleReport.totalConversions + facebookReport.totalConversions;
-  const totalImpressions = googleReport.totalImpressions + facebookReport.totalImpressions;
+  const totalConversions =
+    googleReport.totalConversions + facebookReport.totalConversions;
+  const totalImpressions =
+    googleReport.totalImpressions + facebookReport.totalImpressions;
   const totalClicks = googleReport.totalClicks + facebookReport.totalClicks;
 
-  const googleRevenue = googlePerformances.reduce((sum, p) => sum + p.revenueCents, 0);
-  const facebookRevenue = facebookPerformances.reduce((sum, p) => sum + p.conversionValue, 0);
+  const googleRevenue = googlePerformances.reduce(
+    (sum, p) => sum + p.revenueCents,
+    0,
+  );
+  const facebookRevenue = facebookPerformances.reduce(
+    (sum, p) => sum + p.conversionValue,
+    0,
+  );
   const totalRevenue = googleRevenue + facebookRevenue;
 
   const overallRoas = calculateROAS(totalRevenue, totalSpend);
   const avgCtr = totalImpressions > 0 ? totalClicks / totalImpressions : 0;
-  const costPerConversion = totalConversions > 0 ? totalSpend / totalConversions : 0;
+  const costPerConversion =
+    totalConversions > 0 ? totalSpend / totalConversions : 0;
 
   // Identify top performers
-  const topPerformers = identifyTopPerformers(googlePerformances, facebookPerformances);
+  const topPerformers = identifyTopPerformers(
+    googlePerformances,
+    facebookPerformances,
+  );
 
   // Generate recommendations
-  const recommendations = generateRecommendations(googleReport, facebookReport, topPerformers);
+  const recommendations = generateRecommendations(
+    googleReport,
+    facebookReport,
+    topPerformers,
+  );
 
   return {
     weekStarting,
@@ -157,7 +173,7 @@ function calculatePlatformReport(
     impressions: number;
     clicks: number;
     revenue: number;
-  }>
+  }>,
 ): PlatformReport {
   const totalSpend = campaigns.reduce((sum, c) => sum + c.spend, 0);
   const totalConversions = campaigns.reduce((sum, c) => sum + c.conversions, 0);
@@ -186,7 +202,7 @@ function calculatePlatformReport(
  */
 function identifyTopPerformers(
   googlePerformances: CampaignPerformance[],
-  facebookPerformances: FacebookCampaignPerformance[]
+  facebookPerformances: FacebookCampaignPerformance[],
 ): CampaignHighlight[] {
   const highlights: CampaignHighlight[] = [];
 
@@ -263,7 +279,7 @@ function identifyTopPerformers(
 function generateRecommendations(
   googleReport: PlatformReport,
   facebookReport: PlatformReport,
-  topPerformers: CampaignHighlight[]
+  topPerformers: CampaignHighlight[],
 ): string[] {
   const recommendations: string[] = [];
 
@@ -271,11 +287,11 @@ function generateRecommendations(
   if (googleReport.avgRoas !== null && facebookReport.avgRoas !== null) {
     if (googleReport.avgRoas > facebookReport.avgRoas * 1.5) {
       recommendations.push(
-        `Google Ads ROAS (${googleReport.avgRoas.toFixed(2)}x) significantly outperforms Facebook (${facebookReport.avgRoas.toFixed(2)}x). Consider shifting budget to Google Ads.`
+        `Google Ads ROAS (${googleReport.avgRoas.toFixed(2)}x) significantly outperforms Facebook (${facebookReport.avgRoas.toFixed(2)}x). Consider shifting budget to Google Ads.`,
       );
     } else if (facebookReport.avgRoas > googleReport.avgRoas * 1.5) {
       recommendations.push(
-        `Facebook Ads ROAS (${facebookReport.avgRoas.toFixed(2)}x) significantly outperforms Google (${googleReport.avgRoas.toFixed(2)}x). Consider shifting budget to Facebook Ads.`
+        `Facebook Ads ROAS (${facebookReport.avgRoas.toFixed(2)}x) significantly outperforms Google (${googleReport.avgRoas.toFixed(2)}x). Consider shifting budget to Facebook Ads.`,
       );
     }
   }
@@ -286,13 +302,13 @@ function generateRecommendations(
 
   if (googleCtrPercent < 1.0) {
     recommendations.push(
-      `Google Ads CTR (${googleCtrPercent.toFixed(2)}%) is below industry average. Review ad copy and targeting.`
+      `Google Ads CTR (${googleCtrPercent.toFixed(2)}%) is below industry average. Review ad copy and targeting.`,
     );
   }
 
   if (facebookCtrPercent < 1.0) {
     recommendations.push(
-      `Facebook Ads CTR (${facebookCtrPercent.toFixed(2)}%) is low. Consider refreshing ad creatives.`
+      `Facebook Ads CTR (${facebookCtrPercent.toFixed(2)}%) is low. Consider refreshing ad creatives.`,
     );
   }
 
@@ -304,11 +320,11 @@ function generateRecommendations(
 
     if (googleSpendPercent > 70) {
       recommendations.push(
-        `${googleSpendPercent.toFixed(0)}% of budget on Google Ads. Consider diversifying to Facebook for broader reach.`
+        `${googleSpendPercent.toFixed(0)}% of budget on Google Ads. Consider diversifying to Facebook for broader reach.`,
       );
     } else if (facebookSpendPercent > 70) {
       recommendations.push(
-        `${facebookSpendPercent.toFixed(0)}% of budget on Facebook Ads. Consider Google Ads for intent-based targeting.`
+        `${facebookSpendPercent.toFixed(0)}% of budget on Facebook Ads. Consider Google Ads for intent-based targeting.`,
       );
     }
   }
@@ -318,27 +334,29 @@ function generateRecommendations(
     const topRoasPerformer = topPerformers.find((p) => p.metric === "roas");
     if (topRoasPerformer && topRoasPerformer.value > 3.0) {
       recommendations.push(
-        `"${topRoasPerformer.campaignName}" (${topRoasPerformer.platform}) has exceptional ROAS (${topRoasPerformer.value.toFixed(2)}x). Scale up budget.`
+        `"${topRoasPerformer.campaignName}" (${topRoasPerformer.platform}) has exceptional ROAS (${topRoasPerformer.value.toFixed(2)}x). Scale up budget.`,
       );
     }
   }
 
   // Conversion efficiency
-  const googleCostPerConversion = googleReport.totalConversions > 0
-    ? googleReport.totalSpend / googleReport.totalConversions
-    : 0;
-  const facebookCostPerConversion = facebookReport.totalConversions > 0
-    ? facebookReport.totalSpend / facebookReport.totalConversions
-    : 0;
+  const googleCostPerConversion =
+    googleReport.totalConversions > 0
+      ? googleReport.totalSpend / googleReport.totalConversions
+      : 0;
+  const facebookCostPerConversion =
+    facebookReport.totalConversions > 0
+      ? facebookReport.totalSpend / facebookReport.totalConversions
+      : 0;
 
   if (googleCostPerConversion > 0 && facebookCostPerConversion > 0) {
     if (googleCostPerConversion < facebookCostPerConversion * 0.7) {
       recommendations.push(
-        `Google Ads cost per conversion ($${(googleCostPerConversion / 100).toFixed(2)}) is more efficient than Facebook ($${(facebookCostPerConversion / 100).toFixed(2)}). Prioritize Google for conversions.`
+        `Google Ads cost per conversion ($${(googleCostPerConversion / 100).toFixed(2)}) is more efficient than Facebook ($${(facebookCostPerConversion / 100).toFixed(2)}). Prioritize Google for conversions.`,
       );
     } else if (facebookCostPerConversion < googleCostPerConversion * 0.7) {
       recommendations.push(
-        `Facebook Ads cost per conversion ($${(facebookCostPerConversion / 100).toFixed(2)}) is more efficient than Google ($${(googleCostPerConversion / 100).toFixed(2)}). Prioritize Facebook for conversions.`
+        `Facebook Ads cost per conversion ($${(facebookCostPerConversion / 100).toFixed(2)}) is more efficient than Google ($${(googleCostPerConversion / 100).toFixed(2)}). Prioritize Facebook for conversions.`,
       );
     }
   }
@@ -357,17 +375,27 @@ export function formatReportAsMarkdown(report: WeeklyReport): string {
 
   lines.push(`# Weekly Ad Performance Report`);
   lines.push(`**Week**: ${report.weekStarting} to ${report.weekEnding}`);
-  lines.push(`**Generated**: ${new Date(report.generatedAt).toLocaleDateString()}`);
+  lines.push(
+    `**Generated**: ${new Date(report.generatedAt).toLocaleDateString()}`,
+  );
   lines.push(``);
 
   // Combined summary
   lines.push(`## 📊 Summary`);
   lines.push(``);
-  lines.push(`- **Total Spend**: $${(report.combined.totalSpend / 100).toFixed(2)}`);
+  lines.push(
+    `- **Total Spend**: $${(report.combined.totalSpend / 100).toFixed(2)}`,
+  );
   lines.push(`- **Total Conversions**: ${report.combined.totalConversions}`);
-  lines.push(`- **Total Revenue**: $${(report.combined.totalRevenue / 100).toFixed(2)}`);
-  lines.push(`- **Overall ROAS**: ${report.combined.overallRoas !== null ? report.combined.overallRoas.toFixed(2) + "x" : "N/A"}`);
-  lines.push(`- **Cost Per Conversion**: $${(report.combined.costPerConversion / 100).toFixed(2)}`);
+  lines.push(
+    `- **Total Revenue**: $${(report.combined.totalRevenue / 100).toFixed(2)}`,
+  );
+  lines.push(
+    `- **Overall ROAS**: ${report.combined.overallRoas !== null ? report.combined.overallRoas.toFixed(2) + "x" : "N/A"}`,
+  );
+  lines.push(
+    `- **Cost Per Conversion**: $${(report.combined.costPerConversion / 100).toFixed(2)}`,
+  );
   lines.push(``);
 
   // Platform comparison
@@ -375,12 +403,24 @@ export function formatReportAsMarkdown(report: WeeklyReport): string {
   lines.push(``);
   lines.push(`| Metric | Google Ads | Facebook Ads |`);
   lines.push(`|--------|------------|--------------|`);
-  lines.push(`| Spend | $${(report.platforms.google.totalSpend / 100).toFixed(2)} | $${(report.platforms.facebook.totalSpend / 100).toFixed(2)} |`);
-  lines.push(`| Conversions | ${report.platforms.google.totalConversions} | ${report.platforms.facebook.totalConversions} |`);
-  lines.push(`| ROAS | ${report.platforms.google.avgRoas !== null ? report.platforms.google.avgRoas.toFixed(2) + "x" : "N/A"} | ${report.platforms.facebook.avgRoas !== null ? report.platforms.facebook.avgRoas.toFixed(2) + "x" : "N/A"} |`);
-  lines.push(`| CTR | ${(report.platforms.google.avgCtr * 100).toFixed(2)}% | ${(report.platforms.facebook.avgCtr * 100).toFixed(2)}% |`);
-  lines.push(`| Avg CPC | $${(report.platforms.google.avgCpc / 100).toFixed(2)} | $${(report.platforms.facebook.avgCpc / 100).toFixed(2)} |`);
-  lines.push(`| Campaigns | ${report.platforms.google.campaignCount} | ${report.platforms.facebook.campaignCount} |`);
+  lines.push(
+    `| Spend | $${(report.platforms.google.totalSpend / 100).toFixed(2)} | $${(report.platforms.facebook.totalSpend / 100).toFixed(2)} |`,
+  );
+  lines.push(
+    `| Conversions | ${report.platforms.google.totalConversions} | ${report.platforms.facebook.totalConversions} |`,
+  );
+  lines.push(
+    `| ROAS | ${report.platforms.google.avgRoas !== null ? report.platforms.google.avgRoas.toFixed(2) + "x" : "N/A"} | ${report.platforms.facebook.avgRoas !== null ? report.platforms.facebook.avgRoas.toFixed(2) + "x" : "N/A"} |`,
+  );
+  lines.push(
+    `| CTR | ${(report.platforms.google.avgCtr * 100).toFixed(2)}% | ${(report.platforms.facebook.avgCtr * 100).toFixed(2)}% |`,
+  );
+  lines.push(
+    `| Avg CPC | $${(report.platforms.google.avgCpc / 100).toFixed(2)} | $${(report.platforms.facebook.avgCpc / 100).toFixed(2)} |`,
+  );
+  lines.push(
+    `| Campaigns | ${report.platforms.google.campaignCount} | ${report.platforms.facebook.campaignCount} |`,
+  );
   lines.push(``);
 
   // Top performers
@@ -388,7 +428,8 @@ export function formatReportAsMarkdown(report: WeeklyReport): string {
     lines.push(`## 🏆 Top Performers`);
     lines.push(``);
     for (const performer of report.topPerformers) {
-      const platform = performer.platform === "google" ? "🔍 Google" : "📘 Facebook";
+      const platform =
+        performer.platform === "google" ? "🔍 Google" : "📘 Facebook";
       const metric = performer.metric.toUpperCase();
       let value = "";
 
@@ -434,5 +475,3 @@ export function formatReportAsJson(report: WeeklyReport): string {
  * Export functions for external use
  */
 export { generateWeeklyReport as default };
-
-

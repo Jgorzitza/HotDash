@@ -1,11 +1,11 @@
 /**
  * Data Validation API Route
- * 
+ *
  * GET /api/analytics/validation
  * Query params:
  * - project: Shop domain (default: "occ")
  * - days: Period to validate (default: 30)
- * 
+ *
  * Returns data quality report with score and issues
  * Uses Response.json() per React Router 7 pattern
  */
@@ -33,9 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

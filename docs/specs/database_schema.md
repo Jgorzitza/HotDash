@@ -775,11 +775,13 @@ ORDER BY tablename;
 | `project` | TEXT | NO | 'occ' | Project namespace |
 
 **Indexes**:
+
 - `idx_sales_pulse_actions_created` - Time-series DESC
 - `idx_sales_pulse_actions_type` - Action type filtering
 - `idx_sales_pulse_actions_project` - RLS project isolation
 
 **RLS Policies** (3):
+
 - `sales_pulse_actions_service_role_all` - Service role ALL
 - `sales_pulse_actions_read_by_project` - Authenticated SELECT by project
 - `sales_pulse_actions_insert_by_project` - Authenticated INSERT by project
@@ -809,12 +811,14 @@ ORDER BY tablename;
 | `project` | TEXT | NO | 'occ' | Project namespace |
 
 **Indexes**:
+
 - `idx_inventory_actions_created` - Time-series DESC
 - `idx_inventory_actions_type` - Action type filtering
 - `idx_inventory_actions_variant` - Variant lookups
 - `idx_inventory_actions_project` - RLS project isolation
 
 **RLS Policies** (3):
+
 - `inventory_actions_service_role_all` - Service role ALL
 - `inventory_actions_read_by_project` - Authenticated SELECT by project
 - `inventory_actions_insert_by_project` - Authenticated INSERT by project

@@ -39,7 +39,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const type = url.searchParams.get("type");
 
   if (!type) {
-    return Response.json({ error: "Missing required parameter: type" }, { status: 400 });
+    return Response.json(
+      { error: "Missing required parameter: type" },
+      { status: 400 },
+    );
   }
 
   try {

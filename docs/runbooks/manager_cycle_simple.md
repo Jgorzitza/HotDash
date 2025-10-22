@@ -34,7 +34,7 @@ DATE=$(date +%Y-%m-%d)
 echo "Querying blocked tasks..."
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts > artifacts/manager/$DATE/blocked-tasks.txt
 
-# Query 2: Agent status (< 1 sec)  
+# Query 2: Agent status (< 1 sec)
 echo "Querying agent status..."
 npx tsx --env-file=.env scripts/manager/query-agent-status.ts > artifacts/manager/$DATE/agent-status.txt
 
@@ -53,7 +53,8 @@ echo "   Completed: artifacts/manager/$DATE/completed.txt"
 
 **Time**: < 10 seconds (vs 30 minutes reading markdown files)
 
-**Acceptance**: 
+**Acceptance**:
+
 - All 3 queries run successfully
 - Blocked tasks identified
 - Agent status shows current work
@@ -66,6 +67,7 @@ echo "   Completed: artifacts/manager/$DATE/completed.txt"
 **Objective**: Review query results and identify actions (replaces 45min manual consolidation)
 
 **Lanes**:
+
 - customer-front, accounts, storefront
 - inventory, analytics, seo-perf, risk, content
 - devops, integrations, data, designer, product, support, ads, ai-knowledge, qa
@@ -79,8 +81,8 @@ DATE=$(date +%Y-%m-%d)
 cat > artifacts/manager/$DATE/status-summary.md << 'EOF'
 # Agent Status Summary — [DATE]
 
-**Generated**: Database queries (< 10 seconds)  
-**Method**: query-blocked-tasks.ts, query-agent-status.ts, query-completed-today.ts  
+**Generated**: Database queries (< 10 seconds)
+**Method**: query-blocked-tasks.ts, query-agent-status.ts, query-completed-today.ts
 **Agents**: 17
 
 ---
@@ -170,9 +172,9 @@ cat > artifacts/manager/$DATE/design_conflicts.md << 'EOF'
 
 ## CONFLICT 1: [Title]
 
-**Where**: [File/feature]  
-**Issue**: [What conflicts with North Star or pack]  
-**Impact**: [P0/P1/P2]  
+**Where**: [File/feature]
+**Issue**: [What conflicts with North Star or pack]
+**Impact**: [P0/P1/P2]
 **Options**:
 - A) [Option 1]
 - B) [Option 2]
@@ -231,6 +233,7 @@ AGENT="engineer"  # Replace for each agent
 ```
 
 **Manual Step**: For each agent:
+
 1. Read their completed work from `feedback_consolidated.md`
 2. Update their direction file:
    - ✅ Mark completed tasks
@@ -249,6 +252,7 @@ AGENT="engineer"  # Replace for each agent
 **5-Point Blocker Verification**:
 
 For each blocker, verify:
+
 1. ✅ **Access**: Do we have credentials/permissions? (Check vault, env vars)
 2. ✅ **Flags**: Are feature flags/env vars set correctly?
 3. ✅ **Runbook**: Is there a runbook for this operation?
@@ -264,9 +268,9 @@ cat > artifacts/manager/$DATE/blockers_for_ceo.md << 'EOF'
 # Blockers for CEO Assignment — [DATE]
 
 ## BLOCKER-001: [Title]
-**Type**: [Credentials | Network | Dependency | Technical]  
-**Impact**: [What's blocked]  
-**ETA**: [Estimated hours to clear]  
+**Type**: [Credentials | Network | Dependency | Technical]
+**Impact**: [What's blocked]
+**ETA**: [Estimated hours to clear]
 **Verification** (5/5):
 - ✅ Access: [Yes/No - details]
 - ✅ Flags: [Yes/No - details]
@@ -279,7 +283,7 @@ cat > artifacts/manager/$DATE/blockers_for_ceo.md << 'EOF'
 - Step 2: [Specific action]
 - Evidence: [Where logged]
 
-**Recommended Owner**: [Agent name]  
+**Recommended Owner**: [Agent name]
 **Priority**: P0/P1/P2
 
 ---
@@ -291,7 +295,8 @@ EOF
 echo "✅ Blockers documented: artifacts/manager/$DATE/blockers_for_ceo.md"
 ```
 
-**Manual Step**: 
+**Manual Step**:
+
 1. Run 5-point verification for each blocker
 2. Document in `blockers_for_ceo.md`
 3. **PRESENT to CEO** (in conversation, not in direction files)
@@ -309,6 +314,7 @@ echo "✅ Blockers documented: artifacts/manager/$DATE/blockers_for_ceo.md"
 **Objective**: Reprioritize by Revenue × Confidence × Ease; ensure every lane has tasks
 
 **Ranking Formula**:
+
 ```
 Score = Expected_Revenue × Confidence × Ease
 ```
@@ -357,6 +363,7 @@ echo "✅ Lane assignments: reports/manager/lanes/$DATE.json"
 ```
 
 **Manual Step**: For each agent:
+
 1. Review their current work from `feedback_consolidated.md`
 2. Assign next tasks (prioritized by score)
 3. Ensure NO IDLE (even maintenance work counts)
@@ -386,7 +393,7 @@ DATE=$(date +%Y-%m-%d)
 cat > reports/manager/$DATE-cycle-summary.md << 'EOF'
 # Manager Cycle Summary — [DATE]
 
-**Cycle**: [NUMBER]  
+**Cycle**: [NUMBER]
 **Duration**: [START] → [END]
 
 ---
@@ -455,6 +462,7 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 ## OUTPUTS (Per Cycle)
 
 **Required Files**:
+
 1. `artifacts/manager/<DATE>/feedback_raw.md` (all agent feedback)
 2. `artifacts/manager/<DATE>/feedback_consolidated.md` (one-page summary)
 3. `artifacts/manager/<DATE>/design_conflicts.md` (ONLY if conflicts found)
@@ -463,6 +471,7 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 6. `reports/manager/<DATE>-cycle-summary.md` (final summary)
 
 **Updated Files**:
+
 - `docs/directions/<agent>.md` (all 17 agents) — updated with next tasks, marked completed work
 - `feedback/manager/<DATE>.md` — cycle summary appended
 
@@ -471,6 +480,7 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 ## STOP RULES
 
 **STOP and present to CEO if**:
+
 1. ⚠️ Design conflicts found (Step 3)
 2. ⚠️ Critical blocker cannot be cleared within 24 hours (Step 5)
 3. ⚠️ >3 agents have same blocker (systemic issue)
@@ -482,15 +492,15 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 
 ## TIME BUDGET
 
-| Step | Duration | Cumulative |
-|------|----------|------------|
-| 1. Collect | 30 min | 30 min |
-| 2. Consolidate | 45 min | 1h 15min |
-| 3. Conflict Check | 15 min | 1h 30min |
-| 4. Mark Done | 30 min | 2h |
-| 5. Blockers | 45 min | 2h 45min |
-| 6. Assign Work | 60 min | 3h 45min |
-| 7. Summary | 15 min | 4h |
+| Step              | Duration | Cumulative |
+| ----------------- | -------- | ---------- |
+| 1. Collect        | 30 min   | 30 min     |
+| 2. Consolidate    | 45 min   | 1h 15min   |
+| 3. Conflict Check | 15 min   | 1h 30min   |
+| 4. Mark Done      | 30 min   | 2h         |
+| 5. Blockers       | 45 min   | 2h 45min   |
+| 6. Assign Work    | 60 min   | 3h 45min   |
+| 7. Summary        | 15 min   | 4h         |
 
 **Total**: ~4 hours per cycle (can parallelize Step 4 & 5 to save 30 min)
 
@@ -503,6 +513,7 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 **Blocker**: "DATA-006 indexes cannot be applied (network issue)"
 
 **Verification**:
+
 1. ✅ **Access**: Supabase credentials in vault/occ/supabase/ ✅ YES
 2. ✅ **Flags**: DATABASE_URL env var set ✅ YES (but IPv6 unreachable in WSL2)
 3. ✅ **Runbook**: Migration application runbook exists ✅ YES (docs/runbooks/database-migration-application.md)
@@ -535,4 +546,3 @@ echo "✅ Cycle summary: reports/manager/$DATE-cycle-summary.md"
 ---
 
 **Next**: Execute this cycle, then repeat daily or when CEO requests direction update.
-

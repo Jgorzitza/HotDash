@@ -21,6 +21,7 @@ Backend API endpoints for Inventory Modal (ENG-007) integration. Provides real-t
 **Description**: Comprehensive inventory data for a specific product
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -69,6 +70,7 @@ Backend API endpoints for Inventory Modal (ENG-007) integration. Provides real-t
 ```
 
 **Error Response**:
+
 ```json
 {
   "success": false,
@@ -86,11 +88,27 @@ Backend API endpoints for Inventory Modal (ENG-007) integration. Provides real-t
 **Description**: 14-day historical demand data formatted for chart display
 
 **Response**:
+
 ```json
 {
   "success": true,
   "data": {
-    "labels": ["Oct 7", "Oct 8", "Oct 9", "Oct 10", "Oct 11", "Oct 12", "Oct 13", "Oct 14", "Oct 15", "Oct 16", "Oct 17", "Oct 18", "Oct 19", "Oct 20"],
+    "labels": [
+      "Oct 7",
+      "Oct 8",
+      "Oct 9",
+      "Oct 10",
+      "Oct 11",
+      "Oct 12",
+      "Oct 13",
+      "Oct 14",
+      "Oct 15",
+      "Oct 16",
+      "Oct 17",
+      "Oct 18",
+      "Oct 19",
+      "Oct 20"
+    ],
     "datasets": [
       {
         "label": "Daily Sales",
@@ -122,6 +140,7 @@ Backend API endpoints for Inventory Modal (ENG-007) integration. Provides real-t
 **Description**: Real-time inventory status summary for dashboard tile
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -165,12 +184,12 @@ Backend API endpoints for Inventory Modal (ENG-007) integration. Provides real-t
 async function fetchProductInventory(productId: string) {
   const response = await fetch(`/api/inventory/product/${productId}`);
   const data = await response.json();
-  
+
   if (!data.success) {
-    console.error('Failed to fetch inventory:', data.error);
+    console.error("Failed to fetch inventory:", data.error);
     return null;
   }
-  
+
   return data.data;
 }
 ```
@@ -181,12 +200,12 @@ async function fetchProductInventory(productId: string) {
 async function fetchChartData(productId: string) {
   const response = await fetch(`/api/inventory/chart-data/${productId}`);
   const data = await response.json();
-  
+
   if (!data.success) {
-    console.error('Failed to fetch chart data:', data.error);
+    console.error("Failed to fetch chart data:", data.error);
     return null;
   }
-  
+
   return data.data; // Ready for Chart.js
 }
 ```
@@ -204,11 +223,11 @@ useEffect(() => {
       fetchProductInventory(productId),
       fetchChartData(productId)
     ]);
-    
+
     setInventoryData(inventory);
     setChartData(chart);
   }
-  
+
   loadData();
 }, [productId]);
 
@@ -221,26 +240,31 @@ useEffect(() => {
 ## Data Features
 
 ### Seasonal Adjustments (INVENTORY-001)
+
 - `seasonalFactor`: Multiplier applied for current season (1.0 = no adjustment)
 - `adjustedDailySales`: Sales rate adjusted for seasonality
 - Used in reorder point calculations automatically
 
 ### Demand Forecasting (INVENTORY-002)
+
 - `forecast30d`: 30-day demand prediction with confidence levels
 - `trend`: Growing, stable, or declining demand
 - `confidence`: High, medium, or low confidence in forecast
 
 ### Vendor Management (INVENTORY-003)
+
 - `vendor`: Current supplier information
 - `reliability_score`: On-time delivery percentage (0-100)
 - `lead_time_days`: Expected delivery time
 
 ### Purchase Order Tracking (INVENTORY-004)
+
 - `purchaseOrders`: Array of active POs
 - `days_until_expected`: Days until expected delivery
 - `status`: Current PO status (ordered, shipped, received)
 
 ### Bundle Support (INVENTORY-008)
+
 - Bundle products handled transparently
 - ROP calculated based on component availability
 - Limiting component identification
@@ -254,7 +278,7 @@ All endpoints return `success: false` with error message on failure:
 ```typescript
 if (!response.ok || !data.success) {
   // Handle error
-  showErrorToast(data.error || 'Failed to load inventory data');
+  showErrorToast(data.error || "Failed to load inventory data");
   // Fallback to mock data or cached data
 }
 ```
@@ -277,7 +301,7 @@ if (!response.ok || !data.success) {
 # Test product endpoint
 curl http://localhost:5173/api/inventory/product/prod_001
 
-# Test chart endpoint  
+# Test chart endpoint
 curl http://localhost:5173/api/inventory/chart-data/prod_001
 
 # Test tile endpoint
@@ -308,4 +332,3 @@ curl http://localhost:5173/api/inventory/tile-data
 **Inventory Agent**: Ready to support integration issues  
 **Feedback**: `feedback/inventory/2025-10-21.md`  
 **Code**: `app/services/inventory/`, `app/routes/api.inventory.*`
-

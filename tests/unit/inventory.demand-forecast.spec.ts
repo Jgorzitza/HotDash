@@ -17,7 +17,9 @@ import {
 function createHistoricalData(quantities: number[]): HistoricalSalesData[] {
   const today = new Date();
   return quantities.map((qty, index) => ({
-    date: new Date(today.getTime() - (quantities.length - index - 1) * 86400000), // Days ago
+    date: new Date(
+      today.getTime() - (quantities.length - index - 1) * 86400000,
+    ), // Days ago
     quantity: qty,
   }));
 }
@@ -152,8 +154,36 @@ describe("Demand Forecasting Service (INVENTORY-002)", () => {
     it("should weight recent data more heavily", () => {
       // Old data: low sales, recent data: high sales
       const historicalData = createHistoricalData([
-        2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, // Old: ~2.5 avg
-        20, 22, 21, 23, 22, 21, 20, 22, 21, 23, 22, 21, 20, 22, // Recent: ~21.5 avg
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3,
+        2,
+        3, // Old: ~2.5 avg
+        20,
+        22,
+        21,
+        23,
+        22,
+        21,
+        20,
+        22,
+        21,
+        23,
+        22,
+        21,
+        20,
+        22, // Recent: ~21.5 avg
       ]);
 
       const forecast = generateDemandForecast("SKU-010", historicalData);
@@ -180,7 +210,16 @@ describe("Demand Forecasting Service (INVENTORY-002)", () => {
   describe("detectAnomalies", () => {
     it("should detect sudden spikes in demand", () => {
       const historicalData = createHistoricalData([
-        10, 10, 10, 10, 10, 50, 10, 10, 10, 10, // Spike of 50
+        10,
+        10,
+        10,
+        10,
+        10,
+        50,
+        10,
+        10,
+        10,
+        10, // Spike of 50
       ]);
 
       const anomalies = detectAnomalies(historicalData);
@@ -191,7 +230,16 @@ describe("Demand Forecasting Service (INVENTORY-002)", () => {
 
     it("should detect sudden drops in demand", () => {
       const historicalData = createHistoricalData([
-        50, 50, 50, 50, 50, 2, 50, 50, 50, 50, // Drop to 2
+        50,
+        50,
+        50,
+        50,
+        50,
+        2,
+        50,
+        50,
+        50,
+        50, // Drop to 2
       ]);
 
       const anomalies = detectAnomalies(historicalData);
@@ -316,7 +364,10 @@ describe("Demand Forecasting Service (INVENTORY-002)", () => {
         10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
       ]);
 
-      const forecast = generateDemandForecast("SKU-SNOWBOARD-1", historicalData);
+      const forecast = generateDemandForecast(
+        "SKU-SNOWBOARD-1",
+        historicalData,
+      );
 
       // Forecast should show growing trend
       expect(forecast.trend).toBe("growing");
@@ -333,4 +384,3 @@ describe("Demand Forecasting Service (INVENTORY-002)", () => {
     });
   });
 });
-

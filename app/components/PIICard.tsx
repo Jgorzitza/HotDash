@@ -1,14 +1,14 @@
 /**
  * PII Card Component
- * 
+ *
  * Displays full customer PII for operator-only viewing.
  * NOT sent to customer - for internal reference only.
- * 
+ *
  * Part of Growth Engine architecture - Customer-Front Agent pattern
  */
 
-import { useState } from 'react';
-import type { CustomerInfo } from '../utils/pii-redaction';
+import { useState } from "react";
+import type { CustomerInfo } from "../utils/pii-redaction";
 
 export interface PIICardProps {
   orderId: string;
@@ -60,7 +60,7 @@ export function PIICard(props: PIICardProps) {
       setCopiedField(fieldName);
       setTimeout(() => setCopiedField(null), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -71,7 +71,7 @@ export function PIICard(props: PIICardProps) {
       `${addr.city}, ${addr.province} ${addr.zip}`,
       addr.country,
     ].filter(Boolean);
-    return parts.join('\n');
+    return parts.join("\n");
   };
 
   return (
@@ -111,7 +111,9 @@ export function PIICard(props: PIICardProps) {
           <div className="pii-card__detail-row">
             <dt>Status</dt>
             <dd>
-              <span className={`pii-card__status pii-card__status--${orderStatus}`}>
+              <span
+                className={`pii-card__status pii-card__status--${orderStatus}`}
+              >
                 {orderStatus}
               </span>
             </dd>
@@ -119,7 +121,9 @@ export function PIICard(props: PIICardProps) {
           <div className="pii-card__detail-row">
             <dt>Fulfillment</dt>
             <dd>
-              <span className={`pii-card__status pii-card__status--${fulfillmentStatus}`}>
+              <span
+                className={`pii-card__status pii-card__status--${fulfillmentStatus}`}
+              >
                 {fulfillmentStatus}
               </span>
             </dd>
@@ -137,11 +141,11 @@ export function PIICard(props: PIICardProps) {
               <span>{email}</span>
               <button
                 type="button"
-                onClick={() => copyToClipboard(email, 'email')}
+                onClick={() => copyToClipboard(email, "email")}
                 className="pii-card__copy-button"
                 aria-label="Copy email"
               >
-                {copiedField === 'email' ? '✓ Copied' : 'Copy'}
+                {copiedField === "email" ? "✓ Copied" : "Copy"}
               </button>
             </dd>
           </div>
@@ -152,11 +156,11 @@ export function PIICard(props: PIICardProps) {
                 <span>{phone}</span>
                 <button
                   type="button"
-                  onClick={() => copyToClipboard(phone, 'phone')}
+                  onClick={() => copyToClipboard(phone, "phone")}
                   className="pii-card__copy-button"
                   aria-label="Copy phone"
                 >
-                  {copiedField === 'phone' ? '✓ Copied' : 'Copy'}
+                  {copiedField === "phone" ? "✓ Copied" : "Copy"}
                 </button>
               </dd>
             </div>
@@ -179,17 +183,20 @@ export function PIICard(props: PIICardProps) {
                 <br />
               </>
             )}
-            {shippingAddress.city}, {shippingAddress.province} {shippingAddress.zip}
+            {shippingAddress.city}, {shippingAddress.province}{" "}
+            {shippingAddress.zip}
             <br />
             {shippingAddress.country}
           </p>
           <button
             type="button"
-            onClick={() => copyToClipboard(formatAddress(shippingAddress), 'address')}
+            onClick={() =>
+              copyToClipboard(formatAddress(shippingAddress), "address")
+            }
             className="pii-card__copy-button"
             aria-label="Copy address"
           >
-            {copiedField === 'address' ? '✓ Copied' : 'Copy'}
+            {copiedField === "address" ? "✓ Copied" : "Copy"}
           </button>
         </div>
       </div>
@@ -209,22 +216,22 @@ export function PIICard(props: PIICardProps) {
                 <span>{tracking.number}</span>
                 <button
                   type="button"
-                  onClick={() => copyToClipboard(tracking.number, 'tracking')}
+                  onClick={() => copyToClipboard(tracking.number, "tracking")}
                   className="pii-card__copy-button"
                   aria-label="Copy tracking number"
                 >
-                  {copiedField === 'tracking' ? '✓ Copied' : 'Copy'}
+                  {copiedField === "tracking" ? "✓ Copied" : "Copy"}
                 </button>
               </dd>
             </div>
             <div className="pii-card__detail-row">
               <dt>Status</dt>
               <dd>
-                {tracking.lastEvent} •{' '}
-                {new Date(tracking.lastEventDate).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
+                {tracking.lastEvent} •{" "}
+                {new Date(tracking.lastEventDate).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
                 })}
               </dd>
             </div>
@@ -443,4 +450,3 @@ export function PIICard(props: PIICardProps) {
     </div>
   );
 }
-

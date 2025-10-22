@@ -46,5 +46,3 @@ describe("Optimization - Overstock Detection", () => {
     expect(result.overstock.items[0].daysOfSupply).toBeGreaterThan(180);
   });
 });
-
-

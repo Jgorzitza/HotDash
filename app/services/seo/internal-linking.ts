@@ -28,7 +28,11 @@ export interface PageLinkProfile {
 }
 
 export interface LinkRecommendation {
-  type: "add-internal-link" | "remove-excessive-links" | "fix-broken-link" | "add-contextual-link";
+  type:
+    | "add-internal-link"
+    | "remove-excessive-links"
+    | "fix-broken-link"
+    | "add-contextual-link";
   fromPage: string;
   toPage: string;
   reason: string;
@@ -74,19 +78,21 @@ const SIMILARITY_THRESHOLD = 0.3; // 30% similarity for link suggestions
 /**
  * Build link graph from crawled pages
  */
-function buildLinkGraph(pages: Array<{ url: string; links: string[] }>): Map<string, Set<string>> {
+function buildLinkGraph(
+  pages: Array<{ url: string; links: string[] }>,
+): Map<string, Set<string>> {
   const graph = new Map<string, Set<string>>();
 
   // Initialize graph
-  pages.forEach(page => {
+  pages.forEach((page) => {
     if (!graph.has(page.url)) {
       graph.set(page.url, new Set());
     }
   });
 
   // Add edges
-  pages.forEach(page => {
-    page.links.forEach(link => {
+  pages.forEach((page) => {
+    page.links.forEach((link) => {
       if (graph.has(link)) {
         graph.get(link)!.add(page.url);
       }
@@ -104,7 +110,7 @@ function calculatePageAuthority(
   url: string,
   incomingLinks: Set<string>,
   allPages: Map<string, Set<string>>,
-  iterations: number = 5
+  iterations: number = 5,
 ): number {
   if (incomingLinks.size === 0) return MIN_PAGE_AUTHORITY;
 
@@ -114,17 +120,17 @@ function calculatePageAuthority(
   // Iterative calculation (simplified PageRank)
   for (let i = 0; i < iterations; i++) {
     let newAuthority = 0;
-    
-    incomingLinks.forEach(incomingUrl => {
+
+    incomingLinks.forEach((incomingUrl) => {
       const incomingPageLinks = allPages.get(incomingUrl);
       const outgoingCount = incomingPageLinks ? incomingPageLinks.size : 1;
-      
+
       // Each link contributes proportionally
       newAuthority += 100 / Math.max(outgoingCount, 1);
     });
 
     // Damping factor (0.85)
-    authority = (0.85 * newAuthority) + (0.15 * 50);
+    authority = 0.85 * newAuthority + 0.15 * 50;
   }
 
   // Normalize to 0-100
@@ -140,14 +146,14 @@ function calculatePageAuthority(
  */
 function calculateContentSimilarity(
   content1: string,
-  content2: string
+  content2: string,
 ): PageContentSimilarity {
   const keywords1 = extractKeywords(content1);
   const keywords2 = extractKeywords(content2);
 
   // Find common keywords
-  const commonKeywords = keywords1.filter(kw => keywords2.includes(kw));
-  
+  const commonKeywords = keywords1.filter((kw) => keywords2.includes(kw));
+
   // Jaccard similarity: intersection / union
   const union = new Set([...keywords1, ...keywords2]);
   const similarity = commonKeywords.length / union.size;
@@ -166,17 +172,28 @@ function calculateContentSimilarity(
 function extractKeywords(content: string): string[] {
   // Remove HTML and normalize
   const cleanContent = content.replace(/<[^>]*>/g, " ").toLowerCase();
-  
+
   // Extract words
   const words = cleanContent.match(/\b\w{4,}\b/g) || [];
-  
+
   // Remove common stopwords
-  const stopwords = new Set(["this", "that", "with", "from", "have", "been", "will", "would", "could", "should"]);
-  const filtered = words.filter(w => !stopwords.has(w));
+  const stopwords = new Set([
+    "this",
+    "that",
+    "with",
+    "from",
+    "have",
+    "been",
+    "will",
+    "would",
+    "could",
+    "should",
+  ]);
+  const filtered = words.filter((w) => !stopwords.has(w));
 
   // Count frequencies
   const freq = new Map<string, number>();
-  filtered.forEach(word => {
+  filtered.forEach((word) => {
     freq.set(word, (freq.get(word) || 0) + 1);
   });
 
@@ -197,7 +214,7 @@ function extractKeywords(content: string): string[] {
 function generateLinkingRecommendations(
   page: PageLinkProfile,
   allPages: PageLinkProfile[],
-  contentMap: Map<string, string>
+  contentMap: Map<string, string>,
 ): LinkRecommendation[] {
   const recommendations: LinkRecommendation[] = [];
 
@@ -205,13 +222,16 @@ function generateLinkingRecommendations(
   if (page.isOrphan) {
     // Find similar pages that could link to this orphan
     const pageContent = contentMap.get(page.url) || "";
-    
+
     allPages
-      .filter(p => !p.isOrphan && p.url !== page.url)
-      .forEach(potentialLinker => {
+      .filter((p) => !p.isOrphan && p.url !== page.url)
+      .forEach((potentialLinker) => {
         const linkerContent = contentMap.get(potentialLinker.url) || "";
-        const similarity = calculateContentSimilarity(pageContent, linkerContent);
-        
+        const similarity = calculateContentSimilarity(
+          pageContent,
+          linkerContent,
+        );
+
         if (similarity.similarity >= SIMILARITY_THRESHOLD) {
           recommendations.push({
             type: "add-internal-link",
@@ -240,10 +260,10 @@ function generateLinkingRecommendations(
   // Low authority page recommendations
   if (page.pageAuthority < 30 && !page.isOrphan) {
     const highAuthorityPages = allPages
-      .filter(p => p.pageAuthority >= 60 && p.url !== page.url)
+      .filter((p) => p.pageAuthority >= 60 && p.url !== page.url)
       .slice(0, 3);
 
-    highAuthorityPages.forEach(authorityPage => {
+    highAuthorityPages.forEach((authorityPage) => {
       recommendations.push({
         type: "add-contextual-link",
         fromPage: authorityPage.url,
@@ -266,7 +286,7 @@ function generateLinkingRecommendations(
  * Analyze internal linking structure across all pages
  */
 export async function analyzeInternalLinking(
-  pages: Array<{ url: string; links: string[]; content?: string }>
+  pages: Array<{ url: string; links: string[]; content?: string }>,
 ): Promise<LinkingAnalysis> {
   const startTime = Date.now();
 
@@ -281,20 +301,24 @@ export async function analyzeInternalLinking(
   try {
     // Build link graph
     const linkGraph = buildLinkGraph(pages);
-    
+
     // Build content map
     const contentMap = new Map<string, string>();
-    pages.forEach(page => {
+    pages.forEach((page) => {
       if (page.content) {
         contentMap.set(page.url, page.content);
       }
     });
 
     // Analyze each page
-    const pageProfiles: PageLinkProfile[] = pages.map(page => {
+    const pageProfiles: PageLinkProfile[] = pages.map((page) => {
       const incomingLinks = linkGraph.get(page.url) || new Set();
       const outgoingLinks = page.links.length;
-      const pageAuthority = calculatePageAuthority(page.url, incomingLinks, linkGraph);
+      const pageAuthority = calculatePageAuthority(
+        page.url,
+        incomingLinks,
+        linkGraph,
+      );
       const isOrphan = incomingLinks.size === ORPHAN_THRESHOLD;
       const isOverLinked = outgoingLinks > OVER_LINKED_THRESHOLD;
 
@@ -310,23 +334,28 @@ export async function analyzeInternalLinking(
     });
 
     // Generate recommendations for each page
-    pageProfiles.forEach(profile => {
+    pageProfiles.forEach((profile) => {
       profile.recommendations = generateLinkingRecommendations(
         profile,
         pageProfiles,
-        contentMap
+        contentMap,
       );
     });
 
     // Calculate summary
-    const totalInternalLinks = pageProfiles.reduce((sum, p) => sum + p.outgoingLinks, 0);
-    const avgIncomingLinks = pageProfiles.reduce((sum, p) => sum + p.incomingLinks, 0) / pageProfiles.length;
+    const totalInternalLinks = pageProfiles.reduce(
+      (sum, p) => sum + p.outgoingLinks,
+      0,
+    );
+    const avgIncomingLinks =
+      pageProfiles.reduce((sum, p) => sum + p.incomingLinks, 0) /
+      pageProfiles.length;
     const avgOutgoingLinks = totalInternalLinks / pageProfiles.length;
-    const orphanPages = pageProfiles.filter(p => p.isOrphan).length;
-    const overLinkedPages = pageProfiles.filter(p => p.isOverLinked).length;
+    const orphanPages = pageProfiles.filter((p) => p.isOrphan).length;
+    const overLinkedPages = pageProfiles.filter((p) => p.isOverLinked).length;
 
     // Get top recommendations (highest priority)
-    const allRecommendations = pageProfiles.flatMap(p => p.recommendations);
+    const allRecommendations = pageProfiles.flatMap((p) => p.recommendations);
     const topRecommendations = allRecommendations
       .sort((a, b) => {
         const priorityOrder = { high: 0, medium: 1, low: 2 };
@@ -344,7 +373,7 @@ export async function analyzeInternalLinking(
         totalInternalLinks,
       },
       pages: pageProfiles,
-      orphans: pageProfiles.filter(p => p.isOrphan),
+      orphans: pageProfiles.filter((p) => p.isOrphan),
       topRecommendations,
       analyzedAt: new Date().toISOString(),
     };
@@ -368,11 +397,10 @@ export async function analyzeInternalLinking(
  */
 export async function getPageLinkingRecommendations(
   url: string,
-  allPages: Array<{ url: string; links: string[]; content?: string }>
+  allPages: Array<{ url: string; links: string[]; content?: string }>,
 ): Promise<LinkRecommendation[]> {
   const analysis = await analyzeInternalLinking(allPages);
-  const pageProfile = analysis.pages.find(p => p.url === url);
-  
+  const pageProfile = analysis.pages.find((p) => p.url === url);
+
   return pageProfile?.recommendations || [];
 }
-

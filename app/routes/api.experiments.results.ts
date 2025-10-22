@@ -1,8 +1,8 @@
 /**
  * API Route: Get Experiment Results
- * 
+ *
  * GET /api/experiments/results/:experimentId
- * 
+ *
  * Returns experiment results including:
  * - Sample sizes per variant
  * - Conversion rates per variant
@@ -21,7 +21,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     if (!experimentId) {
       return Response.json(
         { error: "Missing experimentId parameter" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -30,14 +30,13 @@ export async function loader({ params }: Route.LoaderArgs) {
     if (!experiment) {
       return Response.json(
         { error: `Experiment not found: ${experimentId}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
     // Calculate statistical significance
-    const significance = await abTestingService.calculateSignificance(
-      experimentId
-    );
+    const significance =
+      await abTestingService.calculateSignificance(experimentId);
 
     // Prepare results response
     const results = {
@@ -46,51 +45,47 @@ export async function loader({ params }: Route.LoaderArgs) {
       status: experiment.status,
       startDate: experiment.startDate.toISOString(),
       endDate: experiment.endDate?.toISOString() || null,
-      
+
       // Sample sizes
       sampleSizes: significance.sampleSizes,
-      
+
       // Conversion rates (as percentages)
       conversionRates: Object.fromEntries(
         Object.entries(significance.conversionRates).map(([variant, rate]) => [
           variant,
-          (rate * 100).toFixed(2) + "%"
-        ])
+          (rate * 100).toFixed(2) + "%",
+        ]),
       ),
-      
+
       // Statistical significance
       statistical: {
         chiSquare: significance.chiSquare.toFixed(4),
         pValue: significance.pValue.toFixed(4),
         isSignificant: significance.isSignificant,
-        confidenceLevel: "95%"
+        confidenceLevel: "95%",
       },
-      
+
       // Winner (if significant)
       winner: significance.winner,
-      
+
       // Recommendation
       recommendation: significance.isSignificant
         ? `Variant "${significance.winner}" is statistically significant winner (p < 0.05)`
         : "No significant difference detected. Continue test or end experiment.",
-      
+
       // Metadata
       targetSampleSize: experiment.targetSampleSize,
-      minDetectableEffect: (experiment.minDetectableEffect * 100).toFixed(0) + "%",
-      metrics: experiment.metrics
+      minDetectableEffect:
+        (experiment.minDetectableEffect * 100).toFixed(0) + "%",
+      metrics: experiment.metrics,
     };
 
     return Response.json({
       success: true,
-      results
+      results,
     });
   } catch (error) {
     console.error("[API] Experiment results error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

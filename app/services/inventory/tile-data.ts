@@ -191,4 +191,3 @@ export async function getInventoryTileData(): Promise<InventoryTileData> {
     lastUpdated: new Date().toISOString(),
   };
 }
-

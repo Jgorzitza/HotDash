@@ -19,6 +19,7 @@ This document defines the user experience for **Action Attribution** - how opera
 ## User Persona
 
 **Operator (CEO/Manager)**:
+
 - Reviews Action Queue daily
 - Approves 3-5 actions per week
 - Wants to see: "Did this action actually increase revenue?"
@@ -40,7 +41,8 @@ This document defines the user experience for **Action Attribution** - how opera
 
 **Location**: Action Queue list view (inline with each action)
 
-**When Shown**: 
+**When Shown**:
+
 - After action is approved AND 7 days have passed
 - Updates daily with latest attribution data
 
@@ -65,24 +67,28 @@ This document defines the user experience for **Action Attribution** - how opera
 ### Badge States
 
 **1. Outperforming (Green)**
+
 - Realized > 110% of Expected
 - Icon: ✅
 - Color: Green badge
 - Example: "Last 7 Days: +$420 (120% of expected)"
 
 **2. Meeting Expectations (Yellow)**
+
 - Realized 90-110% of Expected
 - Icon: ✓
 - Color: Yellow/amber badge
 - Example: "Last 7 Days: +$330 (94% of expected)"
 
 **3. Underperforming (Red)**
+
 - Realized < 90% of Expected
 - Icon: ⚠️
 - Color: Red badge
 - Example: "Last 7 Days: +$210 (60% of expected)"
 
 **4. Too Early (Gray)**
+
 - Less than 7 days since approval
 - Icon: ⏳
 - Color: Gray badge
@@ -145,12 +151,14 @@ This document defines the user experience for **Action Attribution** - how opera
 ### Filters & Sorting
 
 **Time Windows**:
+
 - 7 Days (default for content actions)
 - 14 Days (for SEO actions - longer attribution window)
 - 28 Days (for product update actions)
 - All Time (historical view)
 
 **Performance Filter**:
+
 - All (default)
 - Outperforming (>110%)
 - Meeting expectations (90-110%)
@@ -158,12 +166,14 @@ This document defines the user experience for **Action Attribution** - how opera
 - Too early (no data yet)
 
 **Action Type Filter**:
+
 - All
 - Content
 - SEO
 - Product Update
 
 **Sort Options**:
+
 - ROI % (highest first) - default
 - Realized revenue (highest first)
 - Approval date (newest first)
@@ -254,19 +264,23 @@ This document defines the user experience for **Action Attribution** - how opera
 ### Ranking Logic
 
 **High-Performing Action Types** (shown at top):
+
 - Action types with >120% average ROI across past actions
 - Example: "Content - Size Chart" has 4 past actions, avg 135% ROI
 - Badge: 🏆 "High Performer"
 
 **Medium-Performing Action Types**:
+
 - 90-120% average ROI
 - Badge: ✓ "Proven"
 
 **Low-Performing Action Types**:
+
 - <90% average ROI
 - Badge: ⚠️ "Needs Review"
 
 **Unproven Action Types**:
+
 - No historical data (new action type)
 - Badge: 🆕 "New"
 
@@ -312,8 +326,8 @@ This document defines the user experience for **Action Attribution** - how opera
 2. **Content Implemented**: Content agent adds size chart with tracking
 3. **Page Tag Updated**: Product page includes:
    ```javascript
-   gtag('event', 'page_view', {
-     'action_approved_id': '123'
+   gtag("event", "page_view", {
+     action_approved_id: "123",
    });
    ```
 4. **Conversions Tracked**: All events (pageview, add_to_cart, purchase) on that page include `action_approved_id: 123`
@@ -323,6 +337,7 @@ This document defines the user experience for **Action Attribution** - how opera
 ### Operator-Facing Visualization
 
 **In Attribution View**:
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Attribution Method: GA4 Custom Dimension                        │
@@ -341,6 +356,7 @@ This document defines the user experience for **Action Attribution** - how opera
 ```
 
 **Data Freshness Indicator**:
+
 ```
 Last Updated: Oct 21, 2025 at 11:45 PM (GA4 sync)
 Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
@@ -405,21 +421,20 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 
 1. `GET /api/actions/:id/attribution`
    - Returns: realized revenue, expected revenue, performance %, time period
-   
 2. `GET /api/actions/performance-summary`
    - Returns: aggregate stats for all actions (by time period)
-   
 3. `GET /api/actions/ranked`
    - Returns: actions sorted by performance (for ranking UI)
-   
 4. `POST /api/actions/:id/refresh-attribution`
    - Triggers immediate GA4 data refresh for action
 
 **Data Freshness**:
+
 - Attribution data refreshes: Daily at midnight (via nightly job)
 - On-demand refresh: Available via "Refresh Now" button (rate limited to 1/hour)
 
 **GA4 Integration**:
+
 - Custom dimension: `action_approved_id` (dimension index: to be configured)
 - Query frequency: Daily batch job + on-demand
 - Data retention: 90 days (GA4 default)
@@ -429,6 +444,7 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ## 9. Edge Cases & Error States
 
 **No Attribution Data Yet**:
+
 ```
 ┌─────────────────────────────────────────┐
 │ ⏳ Attribution data not available yet   │
@@ -441,6 +457,7 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ```
 
 **GA4 Connection Error**:
+
 ```
 ┌─────────────────────────────────────────┐
 │ ⚠️ Unable to fetch attribution data     │
@@ -453,6 +470,7 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ```
 
 **No Conversions Tracked**:
+
 ```
 ┌─────────────────────────────────────────┐
 │ 📊 Last 7 Days: $0 revenue (0%)        │
@@ -472,11 +490,13 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ## 10. Success Metrics (for Product)
 
 **UX Quality Metrics**:
+
 - Operator uses attribution data to make approval decisions (measured by clicks on "View Full Attribution")
 - Operator confidence in approving actions increases (survey)
 - Operator can answer "Did this work?" in <30 seconds
 
 **Business Metrics** (Analytics team):
+
 - Attribution tracking accuracy: >95% of approved actions have GA4 data
 - Data freshness: <24 hours from event to dashboard
 - Performance insights lead to 20% increase in high-ROI action approvals
@@ -486,37 +506,35 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ## 11. Implementation Priority
 
 **Phase 1 (MVP)** - Week 1:
+
 1. Action Card Attribution Badge (basic)
 2. 7-day attribution data only
 3. Simple performance summary
 
-**Phase 2** - Week 2:
-4. Performance Dashboard
-5. 14-day and 28-day windows
-6. Ranking UI
+**Phase 2** - Week 2: 4. Performance Dashboard 5. 14-day and 28-day windows 6. Ranking UI
 
-**Phase 3** - Week 3:
-7. Detailed attribution view
-8. GA4 data export
-9. Mobile optimization
+**Phase 3** - Week 3: 7. Detailed attribution view 8. GA4 data export 9. Mobile optimization
 
 ---
 
 ## Analytics Agent Implementation Notes
 
 **What Analytics Needs to Build**:
+
 1. GA4 custom dimension setup (coordinate with DevOps for GA4 property)
 2. Nightly attribution job (query GA4, update DashboardFact)
 3. API endpoints for attribution data
 4. Attribution calculation logic (realized vs expected)
 
 **What Engineer Needs to Build**:
+
 1. UI components for attribution badges
 2. Performance dashboard page
 3. Detailed attribution modal
 4. Filters and sorting
 
 **What Content Needs to Do**:
+
 1. Add GA4 tracking code to content updates (include `action_approved_id`)
 2. Verify tracking is working after content implementation
 
@@ -525,6 +543,7 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 ## Change Log
 
 **v1.0 - 2025-10-21**:
+
 - Initial UX specification
 - Defined all major views (Action Card, Dashboard, Detail)
 - Specified GA4 custom dimension visualization
@@ -534,4 +553,3 @@ Next Update: Oct 22, 2025 at 12:00 AM (daily refresh)
 
 **Status**: Ready for Analytics Agent implementation  
 **Next Step**: Analytics agent implements API endpoints and GA4 integration
-

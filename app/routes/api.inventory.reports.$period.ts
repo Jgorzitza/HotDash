@@ -16,13 +16,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
         success: false,
         error: "Invalid period. Use: daily, weekly, or monthly",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   try {
     const report = await generateInventoryReport(
-      period as "daily" | "weekly" | "monthly"
+      period as "daily" | "weekly" | "monthly",
     );
 
     return Response.json({
@@ -35,9 +35,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         success: false,
         error: error.message || "Failed to generate inventory report",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

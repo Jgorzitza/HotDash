@@ -1,6 +1,6 @@
 /**
  * Alert & Anomaly Detection Service
- * 
+ *
  * Detects unusual patterns using Z-score analysis
  * Alerts on revenue drops, CTR spikes, conversion anomalies
  * Statistical significance threshold: Z-score > 2.5
@@ -29,7 +29,12 @@ export interface AnomalyAlert {
   actionRequired: boolean;
 }
 
-export type AnomalyMetric = "revenue" | "ctr" | "conversions" | "impressions" | "clicks";
+export type AnomalyMetric =
+  | "revenue"
+  | "ctr"
+  | "conversions"
+  | "impressions"
+  | "clicks";
 
 /**
  * Detect anomalies in metric using Z-score analysis
@@ -38,7 +43,7 @@ export type AnomalyMetric = "revenue" | "ctr" | "conversions" | "impressions" | 
 export async function detectAnomalies(
   metric: AnomalyMetric,
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<Anomaly[]> {
   // Get historical data
   const historicalData = await getMetricHistory(metric, shopDomain, days);
@@ -74,7 +79,7 @@ export async function detectAnomalies(
         recommendation: generateAnomalyRecommendation(
           metric,
           zScore > 0 ? "spike" : "drop",
-          absZScore
+          absZScore,
         ),
         severity: calculateSeverity(absZScore),
       };
@@ -91,9 +96,15 @@ export async function detectAnomalies(
  */
 export async function detectAllAnomalies(
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<AnomalyAlert> {
-  const metrics: AnomalyMetric[] = ["revenue", "ctr", "conversions", "impressions", "clicks"];
+  const metrics: AnomalyMetric[] = [
+    "revenue",
+    "ctr",
+    "conversions",
+    "impressions",
+    "clicks",
+  ];
 
   const allAnomalies: Anomaly[] = [];
 
@@ -106,7 +117,7 @@ export async function detectAllAnomalies(
   allAnomalies.sort((a, b) => b.severity - a.severity);
 
   const criticalCount = allAnomalies.filter(
-    (a) => a.significance === "critical"
+    (a) => a.significance === "critical",
   ).length;
 
   return {
@@ -124,7 +135,7 @@ export async function detectAllAnomalies(
 async function getMetricHistory(
   metric: AnomalyMetric,
   shopDomain: string,
-  days: number
+  days: number,
 ): Promise<Array<{ date: Date; value: number }>> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -202,7 +213,7 @@ function calculateStdDev(values: number[], mean: number): number {
  * Classify anomaly significance based on Z-score
  */
 function classifySignificance(
-  absZScore: number
+  absZScore: number,
 ): "critical" | "moderate" | "low" {
   if (absZScore > 4.0) return "critical";
   if (absZScore > 3.0) return "moderate";
@@ -225,29 +236,29 @@ function calculateSeverity(absZScore: number): number {
 function generateAnomalyRecommendation(
   metric: string,
   type: "spike" | "drop",
-  zScore: number
+  zScore: number,
 ): string {
   if (metric === "revenue" && type === "drop") {
     return `CRITICAL: Revenue drop detected (${zScore.toFixed(
-      1
+      1,
     )}σ below normal). Immediate investigation required. Check for order cancellations or payment issues.`;
   }
 
   if (metric === "ctr" && type === "spike") {
     return `Positive: CTR spike detected (${zScore.toFixed(
-      1
+      1,
     )}σ above normal). Analyze what drove this increase and replicate the strategy.`;
   }
 
   if (metric === "ctr" && type === "drop") {
     return `Warning: CTR drop detected (${zScore.toFixed(
-      1
+      1,
     )}σ below normal). Review ad creative, targeting, and bidding strategy.`;
   }
 
   if (metric === "conversions" && type === "drop") {
     return `Alert: Conversion drop detected (${zScore.toFixed(
-      1
+      1,
     )}σ below normal). Check checkout flow, pricing, and landing pages.`;
   }
 
@@ -257,12 +268,12 @@ function generateAnomalyRecommendation(
 
   if (type === "spike") {
     return `${metric} spike detected (${zScore.toFixed(
-      1
+      1,
     )}σ above normal). Monitor to ensure data accuracy and identify drivers.`;
   }
 
   return `${metric} drop detected (${zScore.toFixed(
-    1
+    1,
   )}σ below normal). Investigate root cause and implement corrective actions.`;
 }
 
@@ -287,5 +298,3 @@ function generateAlertSummary(anomalies: Anomaly[]): string {
 
   return `${anomalies.length} minor anomalies detected. Monitor trends.`;
 }
-
-

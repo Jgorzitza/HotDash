@@ -17,7 +17,11 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { trackSLA, type SLATrackingResult, type SLAThresholds } from "../services/ai-customer/sla-tracking";
+import {
+  trackSLA,
+  type SLATrackingResult,
+  type SLAThresholds,
+} from "../services/ai-customer/sla-tracking";
 
 /**
  * API Response structure
@@ -32,12 +36,12 @@ interface SLATrackingResponse {
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const timeRange = url.searchParams.get('timeRange') || '24h';
-    
+    const timeRange = url.searchParams.get("timeRange") || "24h";
+
     // Parse threshold parameters
-    const firstResponseTimeParam = url.searchParams.get('firstResponseTime');
-    const resolutionTimeParam = url.searchParams.get('resolutionTime');
-    const businessHoursOnlyParam = url.searchParams.get('businessHoursOnly');
+    const firstResponseTimeParam = url.searchParams.get("firstResponseTime");
+    const resolutionTimeParam = url.searchParams.get("resolutionTime");
+    const businessHoursOnlyParam = url.searchParams.get("businessHoursOnly");
 
     const thresholds: Partial<SLAThresholds> = {};
 
@@ -46,7 +50,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (isNaN(value) || value <= 0) {
         const errorResponse: SLATrackingResponse = {
           success: false,
-          error: 'Invalid firstResponseTime parameter. Must be a positive number.',
+          error:
+            "Invalid firstResponseTime parameter. Must be a positive number.",
           timestamp: new Date().toISOString(),
         };
         return Response.json(errorResponse, { status: 400 });
@@ -59,7 +64,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (isNaN(value) || value <= 0) {
         const errorResponse: SLATrackingResponse = {
           success: false,
-          error: 'Invalid resolutionTime parameter. Must be a positive number.',
+          error: "Invalid resolutionTime parameter. Must be a positive number.",
           timestamp: new Date().toISOString(),
         };
         return Response.json(errorResponse, { status: 400 });
@@ -68,15 +73,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     if (businessHoursOnlyParam) {
-      thresholds.businessHoursOnly = businessHoursOnlyParam === 'true';
+      thresholds.businessHoursOnly = businessHoursOnlyParam === "true";
     }
 
     // Validate timeRange parameter
-    const validTimeRanges = ['24h', '7d', '30d'];
+    const validTimeRanges = ["24h", "7d", "30d"];
     if (!validTimeRanges.includes(timeRange)) {
       const errorResponse: SLATrackingResponse = {
         success: false,
-        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(', ')}`,
+        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(", ")}`,
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -87,7 +92,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Track SLA
@@ -95,7 +100,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       timeRange,
       thresholds,
       supabaseUrl,
-      supabaseKey
+      supabaseKey,
     );
 
     const response: SLATrackingResponse = {
@@ -106,15 +111,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] SLA tracking error:', error);
+    console.error("[API] SLA tracking error:", error);
 
     const errorResponse: SLATrackingResponse = {
       success: false,
-      error: error.message || 'Failed to track SLA',
+      error: error.message || "Failed to track SLA",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

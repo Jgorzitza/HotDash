@@ -13,13 +13,13 @@ Comprehensive monitoring for all HotDash infrastructure components across stagin
 
 ## Applications Monitored
 
-| App | Environment | URL | Critical | Monitoring |
-|-----|-------------|-----|----------|------------|
-| **hotdash-staging** | Staging | hotdash-staging.fly.dev | Yes | Full |
-| **hotdash-production** | Production | hotdash-production.fly.dev | Yes | Full |
-| **hotdash-chatwoot** | Shared | hotdash-chatwoot.fly.dev | Yes | Full |
-| **hotdash-agent-service** | Shared | hotdash-agent-service.fly.dev | Medium | Basic |
-| **hotdash-llamaindex-mcp** | Shared | hotdash-llamaindex-mcp.fly.dev | Medium | Basic |
+| App                        | Environment | URL                            | Critical | Monitoring |
+| -------------------------- | ----------- | ------------------------------ | -------- | ---------- |
+| **hotdash-staging**        | Staging     | hotdash-staging.fly.dev        | Yes      | Full       |
+| **hotdash-production**     | Production  | hotdash-production.fly.dev     | Yes      | Full       |
+| **hotdash-chatwoot**       | Shared      | hotdash-chatwoot.fly.dev       | Yes      | Full       |
+| **hotdash-agent-service**  | Shared      | hotdash-agent-service.fly.dev  | Medium   | Basic      |
+| **hotdash-llamaindex-mcp** | Shared      | hotdash-llamaindex-mcp.fly.dev | Medium   | Basic      |
 
 ---
 
@@ -28,24 +28,29 @@ Comprehensive monitoring for all HotDash infrastructure components across stagin
 ### Critical Alerts (Immediate Action)
 
 **1. App Down**
+
 - **Trigger**: Health check fails for >2 minutes
 - **Action**: Page on-call, immediate investigation
 - **Escalation**: Manager + CEO if >15 minutes
 
 **2. High Error Rate**
+
 - **Trigger**: >5% of requests return 5xx errors
 - **Duration**: 5 minutes sustained
 - **Action**: Review logs, identify cause, consider rollback
 
 **3. Database Connection Failure**
+
 - **Trigger**: Connection errors in logs
 - **Action**: Check Supabase status, verify credentials, restart if needed
 
 **4. Memory Exhaustion**
+
 - **Trigger**: Memory >90% for >5 minutes
 - **Action**: Scale up machine or investigate memory leak
 
 **5. Response Time Degradation**
+
 - **Trigger**: P95 response time >10s
 - **Duration**: 10 minutes sustained
 - **Action**: Check database slow queries, external API latency
@@ -53,28 +58,34 @@ Comprehensive monitoring for all HotDash infrastructure components across stagin
 ### Warning Alerts (Monitor Closely)
 
 **1. Elevated Error Rate**
+
 - **Trigger**: >1% error rate
 - **Action**: Monitor, create bug ticket if persistent
 
 **2. Slow Response Times**
+
 - **Trigger**: P95 >5s
 - **Action**: Review performance, consider optimization
 
 **3. CPU Usage High**
+
 - **Trigger**: >80% CPU for >15 minutes
 - **Action**: Monitor, consider scaling if persistent
 
 **4. Disk Space**
+
 - **Trigger**: >80% disk usage
 - **Action**: Clean logs, investigate storage growth
 
 ### Info Alerts (Track Trends)
 
 **1. Traffic Spikes**
+
 - **Trigger**: Request rate 3x normal
 - **Action**: Monitor, ensure auto-scaling working
 
 **2. Cache Miss Rate**
+
 - **Trigger**: >50% cache misses
 - **Action**: Review caching strategy
 
@@ -89,6 +100,7 @@ Comprehensive monitoring for all HotDash infrastructure components across stagin
 **Chatwoot**: https://fly.io/apps/hotdash-chatwoot/monitoring
 
 **Metrics Available**:
+
 - Request rate (req/s)
 - Response times (P50, P95, P99)
 - Error rates (5xx%)
@@ -102,15 +114,19 @@ Comprehensive monitoring for all HotDash infrastructure components across stagin
 **Location**: `scripts/monitoring/`
 
 **1. Health Check** (`check-staging-health.sh`):
+
 ```bash
 ./scripts/monitoring/check-staging-health.sh
 ```
+
 Checks: Health endpoint, response time, machine status, recent errors
 
 **2. Performance Analysis** (`analyze-performance-logs.sh`):
+
 ```bash
 ./scripts/monitoring/analyze-performance-logs.sh
 ```
+
 Analyzes: Response time distribution (avg, min, max, P95), error counts, common issues
 
 ---
@@ -126,6 +142,7 @@ Analyzes: Response time distribution (avg, min, max, P95), error counts, common 
 - [ ] Review performance metrics (response times, error rates)
 
 **Commands**:
+
 ```bash
 # Quick health check all apps
 flyctl status --app hotdash-staging
@@ -151,24 +168,28 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ### App Down
 
 **Immediate Actions** (within 2 minutes):
+
 1. Check Fly machine status: `flyctl status --app <app-name>`
 2. Check logs for crash reason: `flyctl logs --app <app-name> -n 100`
 3. Restart machine if crashed: `flyctl machine start <machine-id>`
 4. If restart fails: Rollback to previous version
 
 **Investigation** (within 15 minutes):
+
 1. Identify root cause (code, database, external service)
 2. Document in feedback file
 3. Create hotfix if needed
 4. Deploy fix or rollback
 
 **Escalation** (if >15 minutes):
+
 1. Notify Manager in feedback
 2. CEO notification if critical customer impact
 
 ### High Error Rate
 
 **Actions**:
+
 1. Identify error pattern: `flyctl logs | grep -E "500|502|503"`
 2. Check database connections
 3. Check external API status (Shopify, GA, Search Console)
@@ -178,6 +199,7 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ### Performance Degradation
 
 **Actions**:
+
 1. Check database slow queries
 2. Check external API latency
 3. Review recent code changes
@@ -192,16 +214,19 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ### Application Metrics
 
 **Response Times**:
+
 - Target: <1s P50, <3s P95
 - Warning: >3s P95
 - Critical: >5s P95
 
 **Error Rates**:
+
 - Target: <0.1%
 - Warning: >1%
 - Critical: >5%
 
 **Availability**:
+
 - Target: 99.9% (SLO)
 - Warning: <99.5%
 - Critical: <99%
@@ -209,16 +234,19 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ### Infrastructure Metrics
 
 **CPU Usage**:
+
 - Normal: <50%
 - Warning: >80%
 - Critical: >90%
 
 **Memory Usage**:
+
 - Normal: <70%
 - Warning: >80%
 - Critical: >90%
 
 **Disk Usage**:
+
 - Normal: <60%
 - Warning: >80%
 - Critical: >90%
@@ -226,11 +254,13 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ### Database Metrics
 
 **Connection Pool**:
+
 - Normal: <80% utilized
 - Warning: >80%
 - Critical: >95%
 
 **Query Performance**:
+
 - Target: <100ms P95
 - Warning: >500ms P95
 - Critical: >1s P95
@@ -244,6 +274,7 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 **Supabase Logs**: Per plan limits
 
 **Export Strategy**:
+
 - Critical incidents: Export logs to artifacts
 - Performance analysis: Weekly log dumps
 - Security events: Immediate export + retain
@@ -276,5 +307,3 @@ flyctl logs --app hotdash-production | grep -iE "error|fail" | tail -10
 ---
 
 **📊 End of Runbook**
-
-

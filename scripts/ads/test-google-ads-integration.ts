@@ -34,7 +34,7 @@ const results: TestResult[] = [];
  */
 async function runTest(
   name: string,
-  testFn: () => Promise<any>
+  testFn: () => Promise<any>,
 ): Promise<void> {
   const start = Date.now();
   try {
@@ -56,7 +56,7 @@ async function runTest(
  */
 async function runTests() {
   console.log("🚀 Google Ads Integration Test Suite");
-  console.log("=" .repeat(50));
+  console.log("=".repeat(50));
 
   // Check environment variables
   console.log("\n📋 Checking credentials...");
@@ -69,7 +69,7 @@ async function runTests() {
   ];
 
   const missingVars = requiredVars.filter((v) => !process.env[v]);
-  
+
   if (missingVars.length > 0) {
     console.log(`❌ Missing environment variables: ${missingVars.join(", ")}`);
     console.log("\nPlease set the following in your .env file:");
@@ -89,7 +89,9 @@ async function runTests() {
     process.exit(1);
   }
 
-  const customerIds = process.env.GOOGLE_ADS_CUSTOMER_IDS!.split(",").filter(Boolean);
+  const customerIds = process.env
+    .GOOGLE_ADS_CUSTOMER_IDS!.split(",")
+    .filter(Boolean);
   console.log(`📊 Testing with ${customerIds.length} customer ID(s)`);
 
   // Test 1: Authentication
@@ -112,9 +114,14 @@ async function runTests() {
 
   // Test 3: Campaign performance (last 7 days)
   await runTest("Campaign Performance (LAST_7_DAYS)", async () => {
-    const performances = await client.getCampaignPerformance(customerIds, "LAST_7_DAYS");
-    console.log(`  Found performance data for ${performances.length} campaigns`);
-    
+    const performances = await client.getCampaignPerformance(
+      customerIds,
+      "LAST_7_DAYS",
+    );
+    console.log(
+      `  Found performance data for ${performances.length} campaigns`,
+    );
+
     if (performances.length > 0) {
       const sample = performances[0];
       console.log(`  Sample: ${sample.campaignName}`);
@@ -123,37 +130,48 @@ async function runTests() {
       console.log(`    Cost: $${(sample.costCents / 100).toFixed(2)}`);
       console.log(`    Conversions: ${sample.conversions}`);
     }
-    
-    return { count: performances.length, performances: performances.slice(0, 3) };
+
+    return {
+      count: performances.length,
+      performances: performances.slice(0, 3),
+    };
   });
 
   // Test 4: Ad group performance
   await runTest("Ad Group Performance", async () => {
-    const performances = await client.getAdGroupPerformance(customerIds, undefined, "LAST_7_DAYS");
+    const performances = await client.getAdGroupPerformance(
+      customerIds,
+      undefined,
+      "LAST_7_DAYS",
+    );
     console.log(`  Found ${performances.length} ad groups`);
-    
+
     if (performances.length > 0) {
       const sample = performances[0];
       console.log(`  Sample: ${sample.adGroupName} (${sample.status})`);
       console.log(`    Impressions: ${sample.impressions}`);
       console.log(`    Clicks: ${sample.clicks}`);
     }
-    
+
     return { count: performances.length };
   });
 
   // Test 5: Keyword performance
   await runTest("Keyword Performance", async () => {
-    const performances = await client.getKeywordPerformance(customerIds, undefined, "LAST_7_DAYS");
+    const performances = await client.getKeywordPerformance(
+      customerIds,
+      undefined,
+      "LAST_7_DAYS",
+    );
     console.log(`  Found ${performances.length} keywords`);
-    
+
     if (performances.length > 0) {
       const sample = performances[0];
       console.log(`  Sample: "${sample.keyword}" (${sample.matchType})`);
       console.log(`    Clicks: ${sample.clicks}`);
       console.log(`    Cost: $${(sample.costCents / 100).toFixed(2)}`);
     }
-    
+
     return { count: performances.length };
   });
 
@@ -161,17 +179,17 @@ async function runTests() {
   await runTest("Rate Limiting Test", async () => {
     const start = Date.now();
     const requests = [];
-    
+
     for (let i = 0; i < 5; i++) {
       requests.push(client.getCampaigns(customerIds));
     }
-    
+
     await Promise.all(requests);
     const duration = Date.now() - start;
-    
+
     console.log(`  Completed 5 parallel requests in ${duration}ms`);
     console.log(`  Average: ${(duration / 5).toFixed(0)}ms per request`);
-    
+
     return { requests: 5, totalDuration: duration, avgDuration: duration / 5 };
   });
 
@@ -207,5 +225,3 @@ runTests().catch((error) => {
   console.error("❌ Test suite failed:", error);
   process.exit(1);
 });
-
-

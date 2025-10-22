@@ -1,6 +1,6 @@
 /**
  * Tests for Scheduled Analytics Reports
- * 
+ *
  * @see app/services/analytics/scheduled-reports.ts
  * @see docs/directions/analytics.md ANALYTICS-014
  */
@@ -24,7 +24,7 @@ vi.mock("../../../../app/db.server", () => ({
 
         if (query?.where?.factType?.in) {
           results = results.filter((f) =>
-            query.where.factType.in.includes(f.factType)
+            query.where.factType.in.includes(f.factType),
           );
         }
 
@@ -154,7 +154,7 @@ describe("Scheduled Analytics Reports", () => {
 
       const periodDays = Math.round(
         (result.period.end.getTime() - result.period.start.getTime()) /
-          (24 * 60 * 60 * 1000)
+          (24 * 60 * 60 * 1000),
       );
 
       expect(periodDays).toBe(7);
@@ -195,7 +195,7 @@ describe("Scheduled Analytics Reports", () => {
 
       const periodDays = Math.round(
         (result.period.end.getTime() - result.period.start.getTime()) /
-          (24 * 60 * 60 * 1000)
+          (24 * 60 * 60 * 1000),
       );
 
       expect(periodDays).toBe(30);
@@ -209,7 +209,13 @@ describe("Scheduled Analytics Reports", () => {
           id: 1,
           shopDomain: mockShopDomain,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
       ];
@@ -232,5 +238,3 @@ describe("Scheduled Analytics Reports", () => {
     });
   });
 });
-
-

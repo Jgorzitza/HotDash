@@ -3,17 +3,17 @@ import { authenticate } from "../shopify.server";
 
 /**
  * POST /api/preferences/tile-order
- * 
+ *
  * Saves user's tile order preference for dashboard
- * 
+ *
  * Request body:
  * - tileOrder: JSON string array of tile IDs in desired order
- * 
+ *
  * Response:
  * - 200: { ok: true }
  * - 400: { error: string } if validation fails
  * - 401: { error: string } if not authenticated
- * 
+ *
  * Future: Save to Supabase user_preferences table
  * For now: Returns success (Phase 11 will wire Supabase)
  */
@@ -21,10 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
   // Authenticate user
   const { session } = await authenticate.admin(request);
   if (!session?.shop) {
-    return Response.json(
-      { error: "Not authenticated" },
-      { status: 401 }
-    );
+    return Response.json({ error: "Not authenticated" }, { status: 401 });
   }
 
   // Parse request body
@@ -32,10 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const tileOrderRaw = formData.get("tileOrder");
 
   if (!tileOrderRaw || typeof tileOrderRaw !== "string") {
-    return Response.json(
-      { error: "tileOrder is required" },
-      { status: 400 }
-    );
+    return Response.json({ error: "tileOrder is required" }, { status: 400 });
   }
 
   let tileOrder: string[];
@@ -44,14 +38,14 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error) {
     return Response.json(
       { error: "tileOrder must be valid JSON array" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (!Array.isArray(tileOrder)) {
     return Response.json(
       { error: "tileOrder must be an array" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -59,7 +53,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (!tileOrder.every((id) => typeof id === "string")) {
     return Response.json(
       { error: "All tile IDs must be strings" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -76,4 +70,3 @@ export async function action({ request }: ActionFunctionArgs) {
 
   return Response.json({ ok: true });
 }
-

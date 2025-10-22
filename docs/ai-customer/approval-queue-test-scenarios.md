@@ -10,6 +10,7 @@
 ## Purpose
 
 Comprehensive test scenarios for the HITL (Human-In-The-Loop) approval queue and grading system. These scenarios cover:
+
 - CX approval workflow (Customer Agent responses)
 - CEO approval workflow (CEO Agent actions)
 - Grading system (tone, accuracy, policy 1-5 scale)
@@ -21,16 +22,19 @@ Comprehensive test scenarios for the HITL (Human-In-The-Loop) approval queue and
 ## Architecture Overview
 
 ### Customer Agent Approval Flow
+
 ```
 Customer Query → AI Draft → Pending Review → Operator Grades → Operator Edits (optional) → Approve/Reject → Send to Customer → Log Decision
 ```
 
 ### CEO Agent Approval Flow
+
 ```
 CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approval Queue → CEO Reviews → Approve/Modify/Reject → Execute (if approved) → Log Decision
 ```
 
 ### Data Storage
+
 - **Table**: `decision_log` (Supabase)
 - **Customer Agent**: `action = 'chatwoot.approve_send'`
 - **CEO Agent**: `scope = 'ceo_approval'`
@@ -43,20 +47,24 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 ### Category 1: Customer Agent - Happy Path Scenarios
 
 #### SC-001: Approve AI Suggestion Without Edits (Grade 5)
+
 **Objective**: Test perfect AI response approval with excellent grades
 
 **Pre-conditions**:
+
 - Chatwoot conversation ID: 12345
 - AI suggestion generated
 - Operator reviews response
 
 **Test Steps**:
+
 1. Open CX Escalation modal for conversation 12345
 2. Review AI suggested reply: "Thank you for contacting us! Your order #1234 will ship within 24 hours."
 3. Set grades: Tone=5, Accuracy=5, Policy=5
 4. Click "Approve & Send"
 
 **Expected Results**:
+
 - ✅ Reply sent to Chatwoot conversation 12345
 - ✅ Decision logged: `action='chatwoot.approve_send'`
 - ✅ Payload contains:
@@ -77,14 +85,17 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 ---
 
 #### SC-002: Approve AI Suggestion With Minor Edits (Grade 4)
+
 **Objective**: Test edited AI response with good grades
 
 **Pre-conditions**:
+
 - Chatwoot conversation ID: 12346
 - AI suggestion: "We'll process your refund soon."
 - Operator edits to: "We'll process your refund within 3-5 business days."
 
 **Test Steps**:
+
 1. Open modal, review AI suggestion
 2. Edit reply to be more specific
 3. Set grades: Tone=4, Accuracy=4, Policy=5
@@ -92,6 +103,7 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 5. Click "Approve & Send"
 
 **Expected Results**:
+
 - ✅ Edited reply sent (not AI version)
 - ✅ `aiSuggestionUsed = true` (draft originated from AI)
 - ✅ Grades saved: {tone: 4, accuracy: 4, policy: 5}
@@ -104,13 +116,16 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 ---
 
 #### SC-003: Reject AI Suggestion (Grade 2)
+
 **Objective**: Test poor AI response rejection with low grades
 
 **Pre-conditions**:
+
 - AI suggestion contains hallucination or policy violation
 - Operator writes manual reply
 
 **Test Steps**:
+
 1. Open modal, review AI suggestion: "We can ship to Mars!"
 2. Set grades: Tone=3, Accuracy=1, Policy=2
 3. Add note: "AI hallucinated shipping capability"
@@ -118,6 +133,7 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 5. Click "Approve & Send"
 
 **Expected Results**:
+
 - ✅ Manual reply sent (not AI suggestion)
 - ✅ `aiSuggestionUsed = false`
 - ✅ Low grades saved: {tone: 3, accuracy: 1, policy: 2}
@@ -131,9 +147,11 @@ CEO Query → AI Analysis → Proposed Action → Evidence/Reasoning → Approva
 ### Category 2: Customer Agent - Grading Scenarios
 
 #### SC-004: Excellent Response - All 5s
+
 **Test Case**: AI generates perfect response
 
 **Example Reply**:
+
 ```
 Hi [Customer Name],
 
@@ -148,11 +166,13 @@ HotDash Support
 ```
 
 **Expected Grades**:
+
 - Tone: 5 (Friendly, professional, warm)
 - Accuracy: 5 (Correct order info, real tracking number)
 - Policy: 5 (Follows communication guidelines, includes tracking)
 
 **Indicators of Excellent Response**:
+
 - Personalized greeting
 - Specific order details
 - Actionable information (tracking number)
@@ -163,19 +183,23 @@ HotDash Support
 ---
 
 #### SC-005: Poor Tone - Grade 2
+
 **Test Case**: Correct information but wrong tone
 
 **Example Reply**:
+
 ```
 Your order shipped. Track it yourself: 1234567890
 ```
 
 **Expected Grades**:
+
 - Tone: 2 (Curt, unfriendly, no warmth)
 - Accuracy: 5 (Information is correct)
 - Policy: 3 (Missing greeting/sign-off)
 
 **Issues**:
+
 - No greeting
 - Imperative tone ("Track it yourself")
 - No empathy or customer service language
@@ -186,9 +210,11 @@ Your order shipped. Track it yourself: 1234567890
 ---
 
 #### SC-006: Inaccurate Information - Grade 1
+
 **Test Case**: Friendly tone but wrong facts
 
 **Example Reply**:
+
 ```
 Hi there!
 
@@ -198,11 +224,13 @@ Let me know if you have questions!
 ```
 
 **Expected Grades**:
+
 - Tone: 5 (Friendly, enthusiastic)
 - Accuracy: 1 (Wrong ship date, wrong carrier, wrong service level)
 - Policy: 3 (Format okay, but promises we can't keep)
 
 **Issues**:
+
 - Hallucinated ship date
 - Wrong carrier
 - False promise (overnight shipping not offered)
@@ -212,19 +240,23 @@ Let me know if you have questions!
 ---
 
 #### SC-007: Policy Violation - Grade 1
+
 **Test Case**: Violates company policy
 
 **Example Reply**:
+
 ```
 I can issue you a full refund right now! I'll also send you a replacement for free and give you 50% off your next order.
 ```
 
 **Expected Grades**:
+
 - Tone: 5 (Very friendly, over-eager)
 - Accuracy: 3 (Technically possible but not approved)
 - Policy: 1 (Major policy violations - unauthorized discounts/refunds)
 
 **Issues**:
+
 - Unauthorized refund
 - Unauthorized free replacement
 - Unauthorized discount
@@ -235,9 +267,11 @@ I can issue you a full refund right now! I'll also send you a replacement for fr
 ---
 
 #### SC-008: Middle Ground - Grade 3
+
 **Test Case**: Acceptable but needs improvement
 
 **Example Reply**:
+
 ```
 Hello,
 
@@ -247,11 +281,13 @@ Thank you.
 ```
 
 **Expected Grades**:
+
 - Tone: 3 (Professional but cold)
 - Accuracy: 4 (Accurate but vague - "soon" not specific)
 - Policy: 4 (Follows format, but could be better)
 
 **Issues**:
+
 - No personalization
 - Vague timeline ("soon")
 - Could be warmer
@@ -264,11 +300,13 @@ Thank you.
 ### Category 3: CEO Agent - Approval Scenarios
 
 #### SC-009: CEO Action Approval - Inventory Reorder
+
 **Objective**: Test CEO approving inventory action with evidence
 
 **CEO Query**: "Should I reorder Powder Board XL?"
 
 **AI Analysis**:
+
 ```json
 {
   "actionId": "action_001",
@@ -294,6 +332,7 @@ Thank you.
 ```
 
 **Test Steps**:
+
 1. CEO Agent generates recommendation
 2. Approval record created in decision_log (scope='ceo_approval', status='pending')
 3. CEO reviews in approval drawer
@@ -303,6 +342,7 @@ Thank you.
 7. Result logged in decision_log
 
 **Expected Results**:
+
 - ✅ Approval URL generated: `/app/approvals?id=123&type=inventory`
 - ✅ Evidence displayed to CEO
 - ✅ Approval logged with CEO user ID
@@ -314,6 +354,7 @@ Thank you.
 ---
 
 #### SC-010: CEO Action Rejection
+
 **Objective**: Test CEO rejecting action
 
 **CEO Query**: "Cancel all open orders"
@@ -321,6 +362,7 @@ Thank you.
 **AI Analysis**: Proposes bulk cancellation
 
 **Test Steps**:
+
 1. AI generates dangerous action (cancel all orders)
 2. Approval queue entry created
 3. CEO reviews and sees risks
@@ -329,6 +371,7 @@ Thank you.
 6. Action NOT executed
 
 **Expected Results**:
+
 - ✅ Status = 'rejected'
 - ✅ Action never executes
 - ✅ Rejection reason logged
@@ -339,12 +382,14 @@ Thank you.
 ---
 
 #### SC-011: CEO Action Modification
+
 **Objective**: Test CEO modifying AI proposal before approval
 
 **AI Proposes**: Reorder 100 units  
 **CEO Modifies**: Reorder 30 units (more conservative)
 
 **Test Steps**:
+
 1. AI suggests 100 units
 2. CEO changes quantity to 30
 3. CEO clicks "Approve Modified"
@@ -352,6 +397,7 @@ Thank you.
 5. Both original and modified logged
 
 **Expected Results**:
+
 - ✅ Original proposal: 100 units
 - ✅ Modified payload: 30 units
 - ✅ Execution uses modified version
@@ -364,20 +410,24 @@ Thank you.
 ### Category 4: Edge Cases & Error Scenarios
 
 #### SC-012: Malformed Grading Data
+
 **Objective**: Test handling of invalid grade values
 
 **Test Cases**:
+
 1. Grade < 1: toneGrade = 0 ❌
 2. Grade > 5: accuracyGrade = 6 ❌
 3. Non-numeric: policyGrade = "five" ❌
 4. Null/undefined grades (allowed - optional)
 
 **Expected Behavior**:
+
 - Invalid values (0, 6, "five"): Reject with validation error OR clamp to 1-5
 - Null/undefined: Store as null (grading not provided)
 - Frontend validation: Prevent submission of invalid values
 
 **Test Steps**:
+
 1. Attempt to submit grade = 0
 2. Verify validation error OR value clamped to 1
 3. Attempt to submit grade = 6
@@ -388,20 +438,24 @@ Thank you.
 ---
 
 #### SC-013: Missing Required Fields
+
 **Objective**: Test validation for required fields
 
 **Missing Fields**:
+
 - conversationId ❌ (required)
 - replyBody ❌ (required for approve_send)
 - actionType ❌ (required for form submissions)
 
 **Test Steps**:
+
 1. Submit form without conversationId
 2. Verify 400 error: "conversationId is required"
 3. Submit approve_send without reply text
 4. Verify 400 error: "Reply text is required"
 
 **Expected Results**:
+
 - ✅ 400 status code
 - ✅ Clear error message
 - ✅ No database write
@@ -412,17 +466,20 @@ Thank you.
 ---
 
 #### SC-014: Concurrent Approval Attempts
+
 **Objective**: Test race condition handling
 
 **Scenario**: Two operators try to approve same conversation simultaneously
 
 **Test Steps**:
+
 1. Operator A opens modal for conversation 12345
 2. Operator B opens modal for same conversation 12345
 3. Operator A submits approval (succeeds)
 4. Operator B submits approval (should handle gracefully)
 
 **Expected Behavior** (Options):
+
 - **Option A**: Second approval fails with "Already approved" error
 - **Option B**: Second approval succeeds but logs duplicate attempt
 - **Option C**: Optimistic locking prevents second submission
@@ -432,16 +489,19 @@ Thank you.
 ---
 
 #### SC-015: Timeout During API Call
+
 **Objective**: Test Chatwoot API timeout
 
 **Scenario**: Chatwoot API slow to respond or times out
 
 **Test Steps**:
+
 1. Mock Chatwoot API delay >30 seconds
 2. Submit approval
 3. Verify timeout handling
 
 **Expected Behavior**:
+
 - ✅ Timeout after 30 seconds
 - ✅ Error message to user
 - ✅ Decision log status = 'timeout' or 'failed'
@@ -453,16 +513,19 @@ Thank you.
 ---
 
 #### SC-016: Rollback After Send Failure
+
 **Objective**: Test rollback when Chatwoot send fails
 
 **Scenario**: Reply approved but Chatwoot API returns 500 error
 
 **Test Steps**:
+
 1. Approve reply with grades
 2. Chatwoot API fails after decision logged
 3. Verify rollback or compensation
 
 **Expected Behavior**:
+
 - ✅ Decision log saved (action attempted)
 - ✅ Error status in payload
 - ✅ Operator notified of failure
@@ -476,11 +539,13 @@ Thank you.
 ### Category 5: Grading System Edge Cases
 
 #### SC-017: Partial Grading (Some Fields Null)
+
 **Objective**: Test optional grading fields
 
 **Scenario**: Operator grades only tone and accuracy, skips policy
 
 **Test Data**:
+
 ```json
 {
   "toneGrade": 4,
@@ -490,6 +555,7 @@ Thank you.
 ```
 
 **Expected Results**:
+
 - ✅ Grades saved: {tone: 4, accuracy: 5, policy: null}
 - ✅ Analytics ignore null policy grade
 - ✅ No validation error (grading is optional)
@@ -499,9 +565,11 @@ Thank you.
 ---
 
 #### SC-018: All Grades Null (No Grading)
+
 **Objective**: Test skipping grading entirely
 
 **Test Data**:
+
 ```json
 {
   "toneGrade": null,
@@ -511,6 +579,7 @@ Thank you.
 ```
 
 **Expected Results**:
+
 - ✅ Reply still sent
 - ✅ Grades saved as all null
 - ✅ Decision log complete without grades
@@ -521,15 +590,18 @@ Thank you.
 ---
 
 #### SC-019: Grading Edit After Initial Submit
+
 **Objective**: Test re-grading a response
 
 **Scenario**: Operator realizes grade was too harsh, wants to update
 
 **Expected Behavior**:
+
 - **Option A**: Grades immutable (cannot edit after submit)
 - **Option B**: Edit allowed with audit trail
 
 **Test Steps** (if editable):
+
 1. Submit approval with grades: {tone: 2, accuracy: 3, policy: 3}
 2. Find record in decision_log
 3. Update grades to: {tone: 4, accuracy: 3, policy: 3}
@@ -542,9 +614,11 @@ Thank you.
 ### Category 6: State Transition Tests
 
 #### SC-020: Draft → Pending Review → Approved → Sent
+
 **Objective**: Test complete happy path state machine
 
 **States**:
+
 1. **draft**: AI generates suggestion
 2. **pending_review**: Awaiting operator
 3. **approved**: Operator approved with grades
@@ -552,6 +626,7 @@ Thank you.
 5. **logged**: Decision saved to database
 
 **Test Each Transition**:
+
 - draft → pending_review: AI suggestion appears in modal
 - pending_review → approved: Operator clicks approve
 - approved → sent: Chatwoot API call succeeds
@@ -562,11 +637,13 @@ Thank you.
 ---
 
 #### SC-021: Pending → Escalated → Manager Approval
+
 **Objective**: Test escalation flow
 
 **Scenario**: Operator escalates to manager instead of approving
 
 **Test Steps**:
+
 1. Open modal
 2. Click "Escalate" instead of "Approve"
 3. Verify conversation tagged with "escalation" label
@@ -574,6 +651,7 @@ Thank you.
 5. Manager approves or rejects
 
 **Expected Results**:
+
 - ✅ Action logged: 'chatwoot.escalate'
 - ✅ Label added to conversation
 - ✅ Manager notified
@@ -586,11 +664,13 @@ Thank you.
 ### Category 7: CEO Agent Approval Queue
 
 #### SC-022: Multiple Pending Approvals
+
 **Objective**: Test approval queue with multiple items
 
 **Scenario**: CEO Agent generates 5 actions, all pending approval
 
 **Test Data**:
+
 ```json
 [
   { "actionId": "001", "actionType": "inventory", "status": "pending" },
@@ -602,6 +682,7 @@ Thank you.
 ```
 
 **Test Steps**:
+
 1. Query pending approvals: `getPendingApprovals()`
 2. Verify all 5 returned
 3. Sort by priority or timestamp
@@ -609,6 +690,7 @@ Thank you.
 5. Verify queue now shows 4 items
 
 **Expected Results**:
+
 - ✅ All pending approvals visible
 - ✅ Sorted by timestamp (oldest first)
 - ✅ Each has approval URL
@@ -619,17 +701,20 @@ Thank you.
 ---
 
 #### SC-023: Approval Timeout - Auto-Expire
+
 **Objective**: Test approval expiration after time limit
 
 **Scenario**: Approval pending for >24 hours
 
 **Test Steps**:
+
 1. Create approval at 2025-10-20T10:00:00Z
 2. Current time: 2025-10-22T10:00:00Z (48 hours later)
 3. Query pending approvals
 4. Verify expired approvals marked
 
 **Expected Behavior** (Options):
+
 - **Option A**: Auto-expire after 24h, status = 'expired'
 - **Option B**: Flag as "stale" but keep pending
 - **Option C**: No timeout (manual review required)
@@ -641,11 +726,13 @@ Thank you.
 ### Category 8: Evidence & Audit Trail
 
 #### SC-024: Full Audit Trail for Approved Action
+
 **Objective**: Verify complete audit trail
 
 **Action**: Reorder inventory (approved)
 
 **Required Audit Fields**:
+
 ```json
 {
   "approvalId": 123,
@@ -669,6 +756,7 @@ Thank you.
 ```
 
 **Verification Steps**:
+
 1. Query decision_log by approvalId=123
 2. Verify all fields populated
 3. Verify timestamps logical (queued < reviewed < executed)
@@ -680,11 +768,13 @@ Thank you.
 ---
 
 #### SC-025: Evidence Linking - KB Sources
+
 **Objective**: Verify KB sources linked to approval
 
 **Scenario**: CEO Agent uses knowledge base to make recommendation
 
 **Test Steps**:
+
 1. CEO asks: "What's our return policy?"
 2. AI queries LlamaIndex KB
 3. KB returns: "policies/returns.pdf, page 3"
@@ -692,6 +782,7 @@ Thank you.
 5. Approval shows KB source
 
 **Expected Results**:
+
 - ✅ `evidence.sources` contains KB document path
 - ✅ Operator can click to view source
 - ✅ Source attribution in decision log
@@ -704,11 +795,13 @@ Thank you.
 ### Category 9: Performance & Scale
 
 #### SC-026: High Volume Approval Queue
+
 **Objective**: Test performance with 100+ pending approvals
 
 **Test Data**: 100 pending CEO approvals
 
 **Test Steps**:
+
 1. Create 100 approval records
 2. Query `getPendingApprovals()`
 3. Measure response time
@@ -717,6 +810,7 @@ Thank you.
 6. Verify queue updates
 
 **Expected Performance**:
+
 - ✅ Query < 500ms for 100 records
 - ✅ Pagination works (no memory issues)
 - ✅ Bulk approve option available
@@ -727,11 +821,13 @@ Thank you.
 ---
 
 #### SC-027: Grading Analytics Performance
+
 **Objective**: Test analytics on 1000+ graded responses
 
 **Test Data**: 1000 decision_log records with grades
 
 **Test Steps**:
+
 1. Call `getGradingTrends(30)`
 2. Measure query time
 3. Verify aggregations correct
@@ -739,6 +835,7 @@ Thank you.
 5. Verify pattern detection
 
 **Expected Performance**:
+
 - ✅ Query < 1 second for 1000 records
 - ✅ Aggregations accurate
 - ✅ Patterns identified correctly
@@ -751,9 +848,11 @@ Thank you.
 ### Category 10: Integration Tests
 
 #### SC-028: End-to-End Customer Agent Flow
+
 **Objective**: Test complete customer agent approval workflow
 
 **Flow**:
+
 1. Customer sends message to Chatwoot
 2. Webhook triggers AI draft generation
 3. Draft appears in operator queue
@@ -765,6 +864,7 @@ Thank you.
 9. Analytics updated
 
 **Verification Points**:
+
 - Webhook received ✅
 - AI draft generated ✅
 - Modal displays correctly ✅
@@ -778,9 +878,11 @@ Thank you.
 ---
 
 #### SC-029: End-to-End CEO Agent Flow
+
 **Objective**: Test complete CEO agent approval workflow
 
 **Flow**:
+
 1. CEO asks: "Should I run 20% off sale?"
 2. AI analyzes revenue data (Shopify + GA + Supabase)
 3. AI queries KB for discount policy
@@ -793,6 +895,7 @@ Thank you.
 10. Performance metrics updated
 
 **Verification Points**:
+
 - Tool calls executed (Shopify, GA, Supabase, KB) ✅
 - Evidence complete ✅
 - Approval URL generated ✅
@@ -808,9 +911,11 @@ Thank you.
 ### Category 11: Data Integrity
 
 #### SC-030: Grade Data Persistence
+
 **Objective**: Verify grades survive database round-trip
 
 **Test Steps**:
+
 1. Submit approval with grades: {tone: 4, accuracy: 3, policy: 5}
 2. Insert into decision_log
 3. Query decision_log
@@ -818,6 +923,7 @@ Thank you.
 5. Verify exact match
 
 **Expected Results**:
+
 ```json
 {
   "tone": 4,
@@ -831,6 +937,7 @@ Thank you.
 ---
 
 #### SC-031: Edit Distance Calculation
+
 **Objective**: Test Levenshtein distance calculation
 
 **Test Cases**:
@@ -842,6 +949,7 @@ Thank you.
 | "Quick brown fox" | "The quick brown fox" | 4 |
 
 **Test Steps**:
+
 1. Submit each test case
 2. Verify edit distance calculated
 3. Verify stored in payload
@@ -853,9 +961,11 @@ Thank you.
 ### Category 12: UI Integration Scenarios
 
 #### SC-032: Modal Grading Sliders
+
 **Objective**: Test grading slider UI functionality
 
 **Test Steps**:
+
 1. Open CX Escalation modal
 2. Verify 3 sliders visible (Tone, Accuracy, Policy)
 3. Slide Tone to 5
@@ -866,6 +976,7 @@ Thank you.
 8. Verify correct values in FormData
 
 **Expected Results**:
+
 - ✅ Sliders range 1-5
 - ✅ Default value: 3 (middle)
 - ✅ Values update on slide
@@ -877,9 +988,11 @@ Thank you.
 ---
 
 #### SC-033: Approval Drawer UI
+
 **Objective**: Test CEO approval drawer display
 
 **Test Steps**:
+
 1. Create approval with evidence
 2. Navigate to `/app/approvals?id=123&type=inventory`
 3. Verify all fields displayed:
@@ -892,6 +1005,7 @@ Thank you.
    - Approve/Reject buttons
 
 **Expected Results**:
+
 - ✅ All evidence visible
 - ✅ Sources formatted and clickable
 - ✅ Metrics displayed clearly
@@ -905,6 +1019,7 @@ Thank you.
 ## Summary Statistics
 
 **Total Scenarios**: 33
+
 - Happy path: 6 scenarios
 - Grading specific: 5 scenarios
 - CEO Agent: 4 scenarios
@@ -917,6 +1032,7 @@ Thank you.
 - Audit: 1 scenario
 
 **Priority Breakdown**:
+
 - P0 (Critical): 10 scenarios (happy path, validation)
 - P1 (High): 15 scenarios (edge cases, state transitions)
 - P2 (Medium): 8 scenarios (performance, UI details)
@@ -928,6 +1044,7 @@ Thank you.
 ## Test Data Requirements
 
 See `artifacts/ai-customer/2025-10-21/test-grading-data.json` for:
+
 - 20 sample replies with expected grades
 - Edge case test data
 - Validation test cases
@@ -937,12 +1054,14 @@ See `artifacts/ai-customer/2025-10-21/test-grading-data.json` for:
 ## Testing Tools
 
 **Recommended**:
+
 1. **Unit Tests**: Vitest for service logic
 2. **Integration Tests**: Playwright for E2E flows
 3. **API Tests**: Direct POST to `/actions/chatwoot/escalate`
 4. **Manual Tests**: Operator walkthroughs in staging
 
 **Mock Data**:
+
 - Use `?mock=1` parameter for staging
 - Chatwoot conversation fixtures
 - Sample AI suggestions
@@ -952,6 +1071,7 @@ See `artifacts/ai-customer/2025-10-21/test-grading-data.json` for:
 ## Known Issues
 
 **Current Blockers**:
+
 1. Grading UI not yet deployed to staging (as of 2025-10-21)
    - Code exists in codebase
    - Needs deployment
@@ -977,12 +1097,14 @@ See `artifacts/ai-customer/2025-10-21/test-grading-data.json` for:
 ## References
 
 **Implementation Files**:
+
 - Customer Agent: `app/routes/actions/chatwoot.escalate.ts`
 - CEO Agent: `app/services/ai-customer/approval-adapter.ts`
 - Grading UI: `app/components/modals/CXEscalationModal.tsx`
 - Analytics: `app/services/ai-customer/grading-analytics.ts`
 
 **Database**:
+
 - Table: `decision_log`
 - Grading: `payload.grades.{tone, accuracy, policy}`
 - Customer actions: `action='chatwoot.approve_send'`
@@ -996,5 +1118,4 @@ See `artifacts/ai-customer/2025-10-21/test-grading-data.json` for:
 **For**: QA Agent (QA-009)  
 **Lines**: 500+
 
-*Test scenarios comprehensive and ready for QA execution*
-
+_Test scenarios comprehensive and ready for QA execution_

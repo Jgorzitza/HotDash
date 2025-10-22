@@ -18,6 +18,7 @@ Comprehensive library of conversion-optimized CTAs (Call-to-Actions) organized b
 ## CTA Writing Principles
 
 ### Core Rules
+
 1. **Action-Oriented**: Start with verb (Shop, Get, Start, Discover)
 2. **Specific**: Describe what happens ("Download Guide" not "Click Here")
 3. **Value-Focused**: Emphasize benefit or outcome
@@ -25,8 +26,9 @@ Comprehensive library of conversion-optimized CTAs (Call-to-Actions) organized b
 5. **Clear Expectations**: User knows exactly what will happen
 
 ### Voice Guidelines
+
 - ✅ **Active Voice**: "Get Your Free Guide" not "Free Guide Available"
-- ✅ **Second Person**: "Start Your" not "Start My"  
+- ✅ **Second Person**: "Start Your" not "Start My"
 - ✅ **Benefit-Forward**: Lead with value, not features
 - ✅ **Concise**: 2-5 words ideal, max 8 words
 - ❌ **Generic**: "Click Here", "Learn More", "Submit"
@@ -40,6 +42,7 @@ Comprehensive library of conversion-optimized CTAs (Call-to-Actions) organized b
 ### 1. E-commerce (Buy Now)
 
 **Primary Purchase CTAs:**
+
 ```
 Shop Now
 Add to Cart
@@ -53,6 +56,7 @@ Pre-Order
 **Variations by Context:**
 
 **Product Page:**
+
 ```
 Add to Cart
 Buy It Now
@@ -61,6 +65,7 @@ Order {Product Name}
 ```
 
 **Collection Page:**
+
 ```
 Shop {Category}
 Browse All {Category}
@@ -68,6 +73,7 @@ Explore {Collection}
 ```
 
 **Sale/Promo:**
+
 ```
 Shop the Sale
 Grab This Deal
@@ -77,6 +83,7 @@ Claim Offer
 ```
 
 **Out of Stock:**
+
 ```
 Join Waitlist
 Notify Me When Back
@@ -85,6 +92,7 @@ Get Restock Alert
 ```
 
 **High-Ticket Items:**
+
 ```
 Request Quote
 Schedule Consultation
@@ -93,6 +101,7 @@ Learn More (then secondary CTA to buy)
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Shop Now" vs "Add to Cart"
 Test 2: "Get Yours" vs "Order Today"
@@ -107,6 +116,7 @@ Hypothesis: Product-specific CTAs ("Get TurboCharge Pro") outperform generic ("S
 ### 2. Lead Generation (Free Offers)
 
 **Download Content:**
+
 ```
 Download Free Guide
 Get Your Free Guide
@@ -116,6 +126,7 @@ Claim Free {Resource}
 ```
 
 **Email Signup:**
+
 ```
 Get Updates
 Join Email List
@@ -125,6 +136,7 @@ Get Insider Tips
 ```
 
 **Newsletter:**
+
 ```
 Subscribe to Newsletter
 Get Weekly Tips
@@ -133,6 +145,7 @@ Sign Up for Updates
 ```
 
 **Resource Access:**
+
 ```
 Access Free Tools
 Get Free Template
@@ -141,6 +154,7 @@ Unlock Resources
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Download Free Guide" vs "Get Your Free Guide"
 Test 2: "Join Email List" vs "Get Weekly Tips"
@@ -155,6 +169,7 @@ Hypothesis: Benefit-focused CTAs ("Get Weekly Tips") outperform generic ("Subscr
 ### 3. Social Engagement
 
 **Follow/Connect:**
+
 ```
 Follow Us
 Join Community
@@ -163,6 +178,7 @@ Follow on {Platform}
 ```
 
 **Share:**
+
 ```
 Share This
 Tell Your Friends
@@ -171,6 +187,7 @@ Share Your Build
 ```
 
 **Participate:**
+
 ```
 Join Conversation
 Leave Comment
@@ -179,6 +196,7 @@ Tag Us
 ```
 
 **User-Generated Content:**
+
 ```
 Show Us Your Build
 Tag #HotRodan
@@ -187,6 +205,7 @@ Share Your Project
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Follow Us" vs "Join Community"
 Test 2: "Share This" vs "Tell Your Friends"
@@ -200,6 +219,7 @@ Hypothesis: Community language ("Join", "Tag Us") outperforms corporate ("Follow
 ### 4. Navigation & Discovery
 
 **Browse/Explore:**
+
 ```
 Browse Catalog
 Explore Products
@@ -209,6 +229,7 @@ Discover More
 ```
 
 **Learn More:**
+
 ```
 Learn More
 See Details
@@ -218,6 +239,7 @@ Get Details
 ```
 
 **Continue:**
+
 ```
 Continue Shopping
 Keep Browsing
@@ -226,6 +248,7 @@ Explore Similar Items
 ```
 
 **Filter/Sort:**
+
 ```
 Filter Results
 Sort By {Criteria}
@@ -234,6 +257,7 @@ Show Only {Filter}
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Browse Catalog" vs "Explore Products"
 Test 2: "Learn More" vs "See Details"
@@ -247,6 +271,7 @@ Hypothesis: "Explore" and "Discover" (active exploration) outperform "View" and 
 ### 5. Account & Settings
 
 **Sign Up:**
+
 ```
 Create Account
 Get Started
@@ -256,6 +281,7 @@ Join Now
 ```
 
 **Login:**
+
 ```
 Log In
 Sign In
@@ -264,6 +290,7 @@ Enter Dashboard
 ```
 
 **Save/Update:**
+
 ```
 Save Changes
 Update Settings
@@ -272,6 +299,7 @@ Confirm
 ```
 
 **Delete/Cancel:**
+
 ```
 Delete {Item}
 Cancel Subscription
@@ -280,6 +308,7 @@ Discard Changes
 ```
 
 **Edit:**
+
 ```
 Edit {Item}
 Update {Item}
@@ -288,6 +317,7 @@ Customize
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Create Account" vs "Get Started"
 Test 2: "Save Changes" vs "Update Settings"
@@ -301,6 +331,7 @@ Hypothesis: Benefit-oriented ("Get Started") outperforms action-only ("Create Ac
 ### 6. Support & Help
 
 **Get Help:**
+
 ```
 Contact Support
 Get Help
@@ -310,6 +341,7 @@ Chat with Support
 ```
 
 **Learn:**
+
 ```
 View Tutorial
 Watch Demo
@@ -319,6 +351,7 @@ Get Started Guide
 ```
 
 **Report:**
+
 ```
 Report Issue
 Submit Feedback
@@ -327,6 +360,7 @@ Report Bug
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: "Contact Support" vs "Get Help"
 Test 2: "View Tutorial" vs "Learn How"
@@ -340,17 +374,20 @@ Hypothesis: Conversational CTAs ("Talk to Us") outperform formal ("Contact Suppo
 ## CTA Placement Best Practices
 
 ### Above the Fold
+
 - ✅ **Primary CTA visible** without scrolling
 - ✅ **High contrast** button color
 - ✅ **Large touch target** (44px minimum height)
 - ✅ **Single primary action** (one main CTA)
 
 ### In Content
+
 - ✅ **Natural placement** after value proposition
 - ✅ **Contextual** (matches surrounding content)
 - ✅ **Repeated** for long content (every 2-3 sections)
 
 ### Footer/End
+
 - ✅ **Secondary CTA** (reinforcement)
 - ✅ **Alternative action** if primary not relevant
 - ✅ **Next steps** if multi-step process
@@ -360,23 +397,27 @@ Hypothesis: Conversational CTAs ("Talk to Us") outperform formal ("Contact Suppo
 ## CTA Button Design Standards
 
 ### Size & Spacing
+
 - **Height**: 44px minimum (mobile touch target)
 - **Width**: Auto with 20px horizontal padding minimum
 - **Margin**: 20px vertical, 10px horizontal from other elements
 
 ### Color Guidelines
+
 - **Primary CTA**: Hot Rodan Red (#E74C3C)
 - **Secondary CTA**: Gray (#666666)
 - **Destructive CTA**: Dark Red (#CC0000)
 - **Success CTA**: Green (#00AA44)
 
 ### Typography
+
 - **Font Size**: 16px (readable)
 - **Font Weight**: 600 (bold/semibold)
 - **Text Transform**: None (sentence case preferred)
 - **Letter Spacing**: 0.5px (readability)
 
 ### States
+
 - **Default**: Full color, solid
 - **Hover**: 10% darker, subtle lift shadow
 - **Active**: 20% darker, no shadow
@@ -390,6 +431,7 @@ Hypothesis: Conversational CTAs ("Talk to Us") outperform formal ("Contact Suppo
 ### Time-Limited Offers
 
 **Countdown Active:**
+
 ```
 Shop Sale — {hours}h {minutes}m Left
 Order Now — Ends in {time}
@@ -398,6 +440,7 @@ Flash Sale — {time} Remaining
 ```
 
 **Expiration Soon:**
+
 ```
 Last Chance — Sale Ends Tonight
 Final Hours — {Discount}% Off
@@ -405,6 +448,7 @@ Ending Soon — Don't Miss Out
 ```
 
 **Urgency Without Countdown:**
+
 ```
 Limited Time Offer
 Shop Before It's Gone
@@ -415,6 +459,7 @@ Don't Miss This Deal
 ### Quantity-Limited
 
 **Stock Status:**
+
 ```
 Order Now — Only {quantity} Left
 Get Yours — Low Stock
@@ -423,6 +468,7 @@ Pre-Order — Selling Fast
 ```
 
 **Exclusivity:**
+
 ```
 Members Only — Join Now
 VIP Access — Sign Up
@@ -431,6 +477,7 @@ Early Access — Reserve Your Spot
 ```
 
 **A/B Test Recommendations:**
+
 ```
 Test 1: With countdown vs without
 Test 2: Specific quantity ("Only 3 Left") vs vague ("Low Stock")
@@ -448,6 +495,7 @@ Hypothesis: Specific urgency (countdown, quantity) outperforms vague urgency
 **Goal**: Capture attention, provide value
 
 **CTAs:**
+
 ```
 Learn More
 Download Free Guide
@@ -457,6 +505,7 @@ Explore Solutions
 ```
 
 **Examples:**
+
 ```
 Discover How It Works
 Get Free Automotive Maintenance Guide
@@ -471,6 +520,7 @@ See What Builders Are Saying
 **Goal**: Build trust, showcase value
 
 **CTAs:**
+
 ```
 See Pricing
 Compare Options
@@ -480,6 +530,7 @@ Talk to Expert
 ```
 
 **Examples:**
+
 ```
 Compare Hot Rodan vs Competitors
 Start 14-Day Free Trial
@@ -495,6 +546,7 @@ See How Much You'll Save
 **Goal**: Convert, remove friction
 
 **CTAs:**
+
 ```
 Add to Cart
 Buy Now
@@ -504,6 +556,7 @@ Order Risk-Free
 ```
 
 **Examples:**
+
 ```
 Add to Cart — Free Shipping
 Buy Now — Save {Discount}%
@@ -517,12 +570,14 @@ Get Started in 5 Minutes
 ## Mobile-Specific CTAs
 
 ### Tap vs Click
+
 ```
 Desktop: "Click to Shop"
 Mobile: "Tap to Shop" or just "Shop Now"
 ```
 
 ### Call-to-Action (Phone)
+
 ```
 Call Now
 Tap to Call
@@ -531,6 +586,7 @@ Speak to Expert
 ```
 
 ### Location-Based
+
 ```
 Find Nearest Store
 Get Directions
@@ -539,6 +595,7 @@ Visit Us
 ```
 
 ### Mobile Checkout
+
 ```
 Buy with Apple Pay
 Checkout with Google Pay
@@ -553,6 +610,7 @@ Express Checkout
 ### Dynamic Content
 
 **First-Time Visitor:**
+
 ```
 Get Started
 Create Free Account
@@ -560,6 +618,7 @@ Try It Free
 ```
 
 **Returning Visitor (Not Customer):**
+
 ```
 Welcome Back — Continue Shopping
 Pick Up Where You Left Off
@@ -567,6 +626,7 @@ Complete Your Order
 ```
 
 **Existing Customer:**
+
 ```
 Reorder
 Buy Again
@@ -575,6 +635,7 @@ Refer a Friend
 ```
 
 **Cart Abandoner:**
+
 ```
 Complete Your Order
 Your Cart is Waiting
@@ -588,11 +649,13 @@ Finish Checkout — Get {Discount}%
 ### Testing Methodology
 
 **1. Hypothesis:**
+
 ```
 "Benefit-focused CTAs will increase click-through rate by 15% compared to action-only CTAs"
 ```
 
 **2. Variants:**
+
 ```
 Control: "Shop Now"
 Variant A: "Shop Performance Parts"
@@ -601,12 +664,14 @@ Variant C: "Get Professional Quality"
 ```
 
 **3. Success Metrics:**
+
 ```
 Primary: Click-through rate (CTR)
 Secondary: Conversion rate, revenue per visitor
 ```
 
 **4. Sample Size:**
+
 ```
 Minimum: 1,000 impressions per variant
 Ideal: 5,000+ impressions per variant
@@ -614,6 +679,7 @@ Duration: 2-4 weeks
 ```
 
 **5. Statistical Significance:**
+
 ```
 Target: 95% confidence level
 Minimum improvement: 10% to declare winner
@@ -622,6 +688,7 @@ Minimum improvement: 10% to declare winner
 ### High-Impact Tests to Run
 
 **Test Priority 1: Value Proposition**
+
 ```
 Control: "Shop Now"
 Variant: "Get Professional Tools"
@@ -630,6 +697,7 @@ Expected lift: 15-25%
 ```
 
 **Test Priority 2: Urgency Level**
+
 ```
 Control: "Order Today"
 Variant: "Order Now — Limited Stock"
@@ -638,6 +706,7 @@ Expected lift: 10-20%
 ```
 
 **Test Priority 3: Personalization**
+
 ```
 Control: "Shop Catalog"
 Variant: "Shop {Category} for {Vehicle_Type}"
@@ -646,6 +715,7 @@ Expected lift: 20-30%
 ```
 
 **Test Priority 4: Length**
+
 ```
 Control: "Shop Performance Parts Now"
 Variant: "Shop Now"
@@ -654,6 +724,7 @@ Expected lift: Variable (shorter usually wins on mobile)
 ```
 
 **Test Priority 5: Hot Rodan Theme**
+
 ```
 Control: "Order Now"
 Variant: "Rev Up Your Garage"
@@ -668,6 +739,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 1: Product Purchase
 
 **Standard:**
+
 - Shop Now
 - Add to Cart
 - Buy Now
@@ -675,6 +747,7 @@ Expected lift: 5-15% (brand differentiation)
 - Get Yours
 
 **Benefit-Focused:**
+
 - Get Professional Quality
 - Upgrade Your Ride
 - Build Your Dream Garage
@@ -682,6 +755,7 @@ Expected lift: 5-15% (brand differentiation)
 - Shop Premium Tools
 
 **Urgency:**
+
 - Order Before Stock Runs Out
 - Shop Sale — Ends Tonight
 - Get {Discount}% Off Today
@@ -689,6 +763,7 @@ Expected lift: 5-15% (brand differentiation)
 - Pre-Order — Ships {Date}
 
 **Hot Rodan Themed:**
+
 - Rev Up Your Garage
 - Tune Your Ride
 - Get Race-Ready
@@ -696,6 +771,7 @@ Expected lift: 5-15% (brand differentiation)
 - Full Throttle to Checkout
 
 **A/B Test Pairs:**
+
 ```
 1. "Shop Now" vs "Shop Performance Parts"
 2. "Add to Cart" vs "Get {Product Name}"
@@ -708,6 +784,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 2: Free Resources
 
 **Downloads:**
+
 - Download Free Guide
 - Get Your Free Guide
 - Download Now
@@ -715,6 +792,7 @@ Expected lift: 5-15% (brand differentiation)
 - Access Free {Resource}
 
 **Value-Emphasized:**
+
 - Get Free Maintenance Checklist
 - Download Expert Tips
 - Access Pro Secrets
@@ -722,12 +800,14 @@ Expected lift: 5-15% (brand differentiation)
 - Unlock Free Resources
 
 **Urgency:**
+
 - Download Now — Limited Time
 - Get Free Guide Before It's Gone
 - Access Today Only
 - Last Chance — Free Guide
 
 **A/B Test Pairs:**
+
 ```
 1. "Download Free Guide" vs "Get Your Free Guide"
 2. "Download Now" vs "Get Expert Tips"
@@ -740,6 +820,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 3: Sign Up & Registration
 
 **Account Creation:**
+
 - Create Free Account
 - Sign Up Free
 - Get Started
@@ -747,6 +828,7 @@ Expected lift: 5-15% (brand differentiation)
 - Start Free Trial
 
 **Email Capture:**
+
 - Get Updates
 - Join Email List
 - Subscribe for Tips
@@ -754,6 +836,7 @@ Expected lift: 5-15% (brand differentiation)
 - Stay Informed
 
 **No Commitment:**
+
 - Try Free for 14 Days
 - No Credit Card Required
 - Free Forever Plan
@@ -761,6 +844,7 @@ Expected lift: 5-15% (brand differentiation)
 - Test Drive Free
 
 **A/B Test Pairs:**
+
 ```
 1. "Create Account" vs "Get Started"
 2. "Sign Up Free" vs "Join Now"
@@ -773,6 +857,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 4: Social & Engagement
 
 **Follow:**
+
 - Follow Us on {Platform}
 - Join Our Community
 - Connect with Us
@@ -780,6 +865,7 @@ Expected lift: 5-15% (brand differentiation)
 - Follow for Updates
 
 **Share:**
+
 - Share Your Build
 - Tag Us
 - Show Us Your Ride
@@ -787,6 +873,7 @@ Expected lift: 5-15% (brand differentiation)
 - Tell Your Friends
 
 **Engage:**
+
 - Join Conversation
 - Leave a Comment
 - Share Your Story
@@ -794,6 +881,7 @@ Expected lift: 5-15% (brand differentiation)
 - Enter Contest
 
 **A/B Test Pairs:**
+
 ```
 1. "Follow Us" vs "Join Community"
 2. "Share This" vs "Tag Us"
@@ -806,6 +894,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 5: Support & Help
 
 **Contact:**
+
 - Contact Support
 - Get Help
 - Talk to Us
@@ -813,6 +902,7 @@ Expected lift: 5-15% (brand differentiation)
 - Ask a Question
 
 **Self-Service:**
+
 - Find Answers
 - Search Help Center
 - View Tutorials
@@ -820,6 +910,7 @@ Expected lift: 5-15% (brand differentiation)
 - Watch How-To
 
 **Report:**
+
 - Report Issue
 - Submit Feedback
 - Request Feature
@@ -827,6 +918,7 @@ Expected lift: 5-15% (brand differentiation)
 - Give Feedback
 
 **A/B Test Pairs:**
+
 ```
 1. "Contact Support" vs "Get Help"
 2. "Chat Now" vs "Talk to Us"
@@ -839,6 +931,7 @@ Expected lift: 5-15% (brand differentiation)
 ### Category 6: Dashboard Actions (HotDash-Specific)
 
 **Approvals:**
+
 - Approve & Send
 - Approve Action
 - Review & Approve
@@ -846,6 +939,7 @@ Expected lift: 5-15% (brand differentiation)
 - Execute Action
 
 **Reviews:**
+
 - Review Details
 - See Full Details
 - View Analysis
@@ -853,6 +947,7 @@ Expected lift: 5-15% (brand differentiation)
 - Inspect Suggestion
 
 **Edits:**
+
 - Edit Before Sending
 - Modify & Approve
 - Customize Response
@@ -860,6 +955,7 @@ Expected lift: 5-15% (brand differentiation)
 - Revise Suggestion
 
 **Rejections:**
+
 - Reject Suggestion
 - Decline Action
 - Not Now
@@ -867,6 +963,7 @@ Expected lift: 5-15% (brand differentiation)
 - Dismiss
 
 **Creation:**
+
 - Create Draft PO
 - Generate Report
 - Export Data
@@ -874,6 +971,7 @@ Expected lift: 5-15% (brand differentiation)
 - Draft Email
 
 **A/B Test Pairs:**
+
 ```
 1. "Approve & Send" vs "Approve Now"
 2. "Review Details" vs "See Full Details"
@@ -886,6 +984,7 @@ Expected lift: 5-15% (brand differentiation)
 ## CTA Formulas
 
 ### Formula 1: Verb + Value
+
 ```
 {Action Verb} + {Specific Benefit}
 
@@ -897,6 +996,7 @@ Examples:
 ```
 
 ### Formula 2: Verb + Urgency
+
 ```
 {Action Verb} + {Urgency Indicator}
 
@@ -908,6 +1008,7 @@ Examples:
 ```
 
 ### Formula 3: Benefit + Action
+
 ```
 {Benefit/Outcome} + {Action Verb}
 
@@ -919,6 +1020,7 @@ Examples:
 ```
 
 ### Formula 4: Question + Action
+
 ```
 {Question Hook} + {Action Verb}
 
@@ -930,6 +1032,7 @@ Examples:
 ```
 
 ### Formula 5: Number + Benefit + Action
+
 ```
 {Number} + {Benefit} + {Action}
 
@@ -947,36 +1050,42 @@ Examples:
 ### DO ✅
 
 **Be Specific:**
+
 ```
 ✅ "Download Free Maintenance Guide"
 ❌ "Get It Now"
 ```
 
 **Use Action Verbs:**
+
 ```
 ✅ "Shop Performance Parts"
 ❌ "Performance Parts"
 ```
 
 **Emphasize Benefits:**
+
 ```
 ✅ "Save 30% — Order Today"
 ❌ "Order"
 ```
 
 **Create Appropriate Urgency:**
+
 ```
 ✅ "Sale Ends Tonight"
 ❌ "BUY NOW!!!!"
 ```
 
 **Make It Scannable:**
+
 ```
 ✅ "Start Free Trial"
 ❌ "Click here to begin your complimentary trial period"
 ```
 
 **Test Everything:**
+
 ```
 ✅ A/B test variations regularly
 ❌ Assume one CTA works forever
@@ -985,6 +1094,7 @@ Examples:
 ### DON'T ❌
 
 **Be Generic:**
+
 ```
 ❌ "Click Here"
 ❌ "Learn More"
@@ -992,18 +1102,21 @@ Examples:
 ```
 
 **Use Passive Voice:**
+
 ```
 ❌ "More Information Available"
 ❌ "Can Be Downloaded"
 ```
 
 **Create False Urgency:**
+
 ```
 ❌ "Act Now!!!" (when no real deadline)
 ❌ "Only 2 Left!" (when unlimited stock)
 ```
 
 **Be Vague:**
+
 ```
 ❌ "Continue"
 ❌ "Next"
@@ -1011,12 +1124,14 @@ Examples:
 ```
 
 **Use ALL CAPS:**
+
 ```
 ❌ "SHOP NOW"
 ❌ "BUY TODAY"
 ```
 
 **Overload with CTAs:**
+
 ```
 ❌ 5 buttons competing on same screen
 ❌ "Shop Now | Add to Cart | Buy It | Get Yours | Order Today"
@@ -1029,18 +1144,21 @@ Examples:
 ### Click-Through Rates by CTA Type
 
 **E-commerce Product CTAs:**
+
 - "Add to Cart": 2-5% (industry avg)
 - "Shop Now": 1.5-4%
 - "Buy Now": 3-6% (higher intent)
 - Product-specific ("Get {Product}"): 4-7%
 
 **Lead Generation CTAs:**
+
 - "Download Guide": 5-15%
 - "Get Free {Resource}": 8-18%
 - "Sign Up": 2-5%
 - "Try Free": 6-12%
 
 **Social CTAs:**
+
 - "Follow Us": 0.5-2%
 - "Share This": 1-5%
 - "Join Community": 3-8%
@@ -1059,11 +1177,13 @@ Examples:
 ### Metrics to Monitor
 
 **Primary:**
+
 - **CTR (Click-Through Rate)**: Clicks ÷ Impressions × 100
 - **Conversion Rate**: Conversions ÷ Clicks × 100
 - **Revenue Per Click**: Total Revenue ÷ Total Clicks
 
 **Secondary:**
+
 - **Hover Rate**: Hovers ÷ Impressions
 - **Time to Click**: Avg seconds before click
 - **Scroll Depth**: % of page viewed before click
@@ -1071,6 +1191,7 @@ Examples:
 ### Analysis Questions
 
 **For Each CTA:**
+
 1. What's the click-through rate?
 2. How does it compare to benchmark?
 3. Which variant performs best?
@@ -1078,6 +1199,7 @@ Examples:
 5. Does placement affect performance?
 
 **Optimization:**
+
 ```
 If CTR < benchmark:
 • Test more specific language
@@ -1099,6 +1221,7 @@ If CTR > benchmark but low conversion:
 ### CTA Selection Guide
 
 **User Intent → CTA Type**
+
 ```
 Browse → "Shop {Category}"
 Compare → "See Pricing"
@@ -1109,6 +1232,7 @@ Contact → "Get Help"
 ```
 
 **Urgency Level → CTA Modifier**
+
 ```
 None → "Shop Now"
 Low → "Shop Sale"
@@ -1117,6 +1241,7 @@ High → "Shop Now — Only 3 Left"
 ```
 
 **Funnel Stage → CTA Style**
+
 ```
 Awareness → "Learn More", "Download Guide"
 Consideration → "Compare Options", "See Pricing"
@@ -1130,12 +1255,14 @@ Decision → "Buy Now", "Add to Cart"
 ### When to Use Automotive Theme
 
 **✅ DO Use:**
+
 - Homepage hero ("Rev Up Your Operations")
 - Sale announcements ("Full Throttle Savings")
 - Success messages ("Pit Stop Complete!")
 - Community content ("Join the Garage")
 
 **❌ DON'T Use:**
+
 - Error messages (clarity needed)
 - Form buttons (standard expected)
 - Every single CTA (brand fatigue)
@@ -1144,6 +1271,7 @@ Decision → "Buy Now", "Add to Cart"
 ### Hot Rodan CTA Examples
 
 **Homepage:**
+
 ```
 Rev Up Your Garage
 Get Race-Ready Tools
@@ -1151,6 +1279,7 @@ Tune Your Ride
 ```
 
 **Product:**
+
 ```
 Add to Garage
 Get Pro Performance
@@ -1158,6 +1287,7 @@ Build Your Dream Ride
 ```
 
 **Sale:**
+
 ```
 Pit Stop Pricing — Save 30%
 Full Throttle Savings
@@ -1165,6 +1295,7 @@ Rev Up for Less
 ```
 
 **Success:**
+
 ```
 Order Placed — Full Speed Ahead!
 Added to Garage ✓
@@ -1176,6 +1307,7 @@ You're All Tuned Up!
 **END OF DOCUMENT**
 
 **Implementation Notes:**
+
 1. Use CTA library for consistent messaging
 2. A/B test new variations against these benchmarks
 3. Track performance by category and placement
@@ -1183,4 +1315,3 @@ You're All Tuned Up!
 5. Apply Hot Rodan theme strategically (not every CTA)
 
 **Questions?** Contact Content team for CTA optimization or new variants.
-

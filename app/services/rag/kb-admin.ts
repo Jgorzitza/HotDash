@@ -43,7 +43,7 @@ export interface UpdateDocumentResult {
 export async function listDocuments(): Promise<DocumentMetadata[]> {
   try {
     const files = await fs.readdir(SUPPORT_DIR);
-    const mdFiles = files.filter(f => f.endsWith(".md"));
+    const mdFiles = files.filter((f) => f.endsWith(".md"));
 
     const documents: DocumentMetadata[] = [];
 
@@ -65,7 +65,9 @@ export async function listDocuments(): Promise<DocumentMetadata[]> {
       });
     }
 
-    return documents.sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime());
+    return documents.sort(
+      (a, b) => b.lastModified.getTime() - a.lastModified.getTime(),
+    );
   } catch (error) {
     console.error("Error listing documents:", error);
     return [];
@@ -212,7 +214,8 @@ function getCategoryFromFilename(fileName: string): string {
   if (lower.includes("tracking") || lower.includes("order")) return "tracking";
   if (lower.includes("exchange")) return "exchanges";
   if (lower.includes("faq") || lower.includes("question")) return "faq";
-  if (lower.includes("troubleshoot") || lower.includes("product")) return "troubleshooting";
+  if (lower.includes("troubleshoot") || lower.includes("product"))
+    return "troubleshooting";
   return "general";
 }
 
@@ -221,13 +224,19 @@ function getCategoryFromFilename(fileName: string): string {
  */
 function getPriorityFromFilename(fileName: string): string {
   const lower = fileName.toLowerCase();
-  if (lower.includes("refund") || lower.includes("shipping") || lower.includes("faq")) {
+  if (
+    lower.includes("refund") ||
+    lower.includes("shipping") ||
+    lower.includes("faq")
+  ) {
     return "high";
   }
-  if (lower.includes("exchange") || lower.includes("tracking") || lower.includes("order")) {
+  if (
+    lower.includes("exchange") ||
+    lower.includes("tracking") ||
+    lower.includes("order")
+  ) {
     return "medium";
   }
   return "low";
 }
-
-

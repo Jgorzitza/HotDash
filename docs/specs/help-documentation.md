@@ -18,6 +18,7 @@ Comprehensive help documentation for all HotDash features with inline tooltips f
 ## Help Topics Overview
 
 **6 Main Topics:**
+
 1. Dashboard & Tiles
 2. Approvals Queue
 3. Notifications & Alerts
@@ -32,11 +33,13 @@ Comprehensive help documentation for all HotDash features with inline tooltips f
 ### 1.1 Overview
 
 **Title:**
+
 ```
 Dashboard Overview
 ```
 
 **Content:**
+
 ```
 Your HotDash dashboard displays live operational metrics in tiles. Each tile shows real-time data from your integrated services (Shopify, Chatwoot, Google Analytics).
 
@@ -50,6 +53,7 @@ Tiles update automatically based on your refresh settings (default: every 30 sec
 ```
 
 **Related Topics:**
+
 - Customizing Your Dashboard
 - Understanding Tile Status Indicators
 - Auto-Refresh Settings
@@ -57,41 +61,49 @@ Tiles update automatically based on your refresh settings (default: every 30 sec
 ### 1.2 Tile Types Explained
 
 **Ops Pulse:**
+
 ```
 Shows overall operational health across sales, fulfillment, and customer service. Click for detailed breakdown.
 ```
 
 **Sales Pulse:**
+
 ```
 Displays today's revenue, order count, and avg order value. Click to see top SKUs and fulfillment issues.
 ```
 
 **Fulfillment Health:**
+
 ```
 Monitors order fulfillment status and potential delays. Click to see pending orders and bottlenecks.
 ```
 
 **Inventory Heatmap:**
+
 ```
 Shows stock status across all SKUs: in stock (green), low stock (yellow), out of stock (red), urgent reorder (red with alert).
 ```
 
 **CX Escalations:**
+
 ```
 Lists customer conversations needing attention, sorted by SLA urgency. Click to review and respond.
 ```
 
 **Approvals Queue:**
+
 ```
 AI-suggested actions waiting for your approval: customer replies, inventory orders, social posts.
 ```
 
 **SEO & Content Watch:**
+
 ```
 Monitors organic traffic, keyword rankings, and content performance. Click for detailed SEO metrics.
 ```
 
 **Idea Pool:**
+
 ```
 Product suggestions from AI based on market trends, customer demand, and inventory analysis.
 ```
@@ -103,11 +115,13 @@ Product suggestions from AI based on market trends, customer demand, and invento
 ### 2.1 How Approvals Work
 
 **Title:**
+
 ```
 Understanding Approvals
 ```
 
 **Content:**
+
 ```
 HotDash AI agents suggest actions (like sending customer emails or creating social posts), but YOU always have final approval.
 
@@ -123,6 +137,7 @@ This ensures human oversight on all customer-facing and business-critical action
 ```
 
 **Related Topics:**
+
 - Risk Levels Explained
 - How Grading Works
 - Editing AI Suggestions
@@ -130,6 +145,7 @@ This ensures human oversight on all customer-facing and business-critical action
 ### 2.2 Risk Levels
 
 **HIGH Risk (Red Badge):**
+
 ```
 Customer-facing communication or financial transactions. Requires careful review.
 
@@ -140,6 +156,7 @@ Examples:
 ```
 
 **MEDIUM Risk (Yellow Badge):**
+
 ```
 Internal operations or draft content. Lower impact if incorrect.
 
@@ -150,6 +167,7 @@ Examples:
 ```
 
 **LOW Risk (Green Badge):**
+
 ```
 Read-only analysis or recommendations. No direct action taken.
 
@@ -162,6 +180,7 @@ Examples:
 ### 2.3 Grading AI Suggestions
 
 **Why Grade?:**
+
 ```
 When you approve an AI suggestion, you can grade it on three factors (1-5 scale):
 
@@ -173,6 +192,7 @@ Your grades help the AI learn your preferences and improve future suggestions.
 ```
 
 **Grading Tips:**
+
 ```
 • Grade honestly — AI learns from your feedback
 • 3 = acceptable, no changes needed
@@ -188,11 +208,13 @@ Your grades help the AI learn your preferences and improve future suggestions.
 ### 3.1 Notification Types
 
 **Title:**
+
 ```
 Notification Types
 ```
 
 **Content:**
+
 ```
 HotDash sends notifications for time-sensitive events:
 
@@ -208,21 +230,25 @@ Control which notifications you receive in Settings → Notifications.
 ### 3.2 Notification Channels
 
 **Desktop (Browser):**
+
 ```
 Pop-up notifications even when HotDash isn't the active tab. Enable in Settings. Requires browser permission.
 ```
 
 **In-App (Toast):**
+
 ```
 Brief messages that appear in HotDash after actions complete. Always enabled.
 ```
 
 **In-App (Banner):**
+
 ```
 Persistent alerts at top of dashboard for important ongoing issues. Dismiss to hide.
 ```
 
 **Email:**
+
 ```
 Email notifications for critical alerts and weekly reports. Configure frequency in Settings.
 ```
@@ -230,6 +256,7 @@ Email notifications for critical alerts and weekly reports. Configure frequency 
 ### 3.3 Managing Notification Overload
 
 **Tips:**
+
 ```
 Too many notifications? Try these:
 
@@ -247,11 +274,13 @@ Too many notifications? Try these:
 ### 4.1 Understanding Analytics
 
 **Title:**
+
 ```
 Analytics Dashboard Guide
 ```
 
 **Content:**
+
 ```
 HotDash tracks performance across 4 key areas:
 
@@ -266,6 +295,7 @@ Each analytics tile shows a summary with mini chart. Click for detailed modal wi
 ### 4.2 Key Metrics Glossary
 
 **ROAS (Return on Ad Spend):**
+
 ```
 Revenue generated per dollar spent on ads.
 
@@ -277,6 +307,7 @@ If ROAS < 3:1, you're spending more than you're making from ads. Review targetin
 ```
 
 **CTR (Click-Through Rate):**
+
 ```
 Percentage of people who clicked after seeing your content.
 
@@ -290,6 +321,7 @@ Higher CTR = more engaging headlines and descriptions.
 ```
 
 **CPA (Cost Per Acquisition):**
+
 ```
 Average cost to acquire one customer.
 
@@ -300,6 +332,7 @@ Target CPA depends on customer lifetime value (LTV). Profitable if CPA < 50% of 
 ```
 
 **Bounce Rate:**
+
 ```
 Percentage of visitors who leave after viewing only one page.
 
@@ -312,6 +345,7 @@ High bounce rate (> 70%) may indicate:
 ```
 
 **Organic Sessions:**
+
 ```
 Visitors who found your site through search engines (Google, Bing) without clicking ads.
 
@@ -319,6 +353,7 @@ These are "free" visits from SEO efforts. Track this to measure content and SEO 
 ```
 
 **Conversion Rate:**
+
 ```
 Percentage of visitors who completed a desired action (purchase, signup, etc.).
 
@@ -335,11 +370,13 @@ Improving conversion rate increases revenue without increasing traffic.
 ### 5.1 Inventory Overview
 
 **Title:**
+
 ```
 Managing Inventory in HotDash
 ```
 
 **Content:**
+
 ```
 HotDash monitors your Shopify inventory in real-time and alerts you to reorder opportunities.
 
@@ -355,6 +392,7 @@ Click any inventory alert to see demand velocity analysis and create a draft pur
 ### 5.2 Key Inventory Metrics
 
 **ROP (Reorder Point):**
+
 ```
 The inventory level that triggers a reorder alert.
 
@@ -365,6 +403,7 @@ When stock drops below ROP, you'll get an alert to reorder.
 ```
 
 **WOS (Weeks of Supply):**
+
 ```
 How many weeks your current stock will last at current sales velocity.
 
@@ -375,6 +414,7 @@ Target: 4-8 WOS for most products.
 ```
 
 **Safety Stock:**
+
 ```
 Extra inventory buffer to prevent stockouts from unexpected demand spikes or supply delays.
 
@@ -383,6 +423,7 @@ High-demand products: 2-4 weeks
 ```
 
 **Days of Cover:**
+
 ```
 How many days until stockout at current sales velocity.
 
@@ -393,6 +434,7 @@ If < 7 days, consider reordering soon.
 ```
 
 **Demand Velocity:**
+
 ```
 How fast a product is selling over a period (usually 14 days).
 
@@ -405,6 +447,7 @@ Visualized as trend chart showing daily sales pattern. Helps identify:
 ### 5.3 Creating Purchase Orders
 
 **Process:**
+
 ```
 1. Click inventory alert tile or notification
 2. Review demand velocity chart (14-day trend)
@@ -425,11 +468,13 @@ HotDash doesn't send POs automatically — you always review first.
 ### 6.1 Connecting Services
 
 **Title:**
+
 ```
 Connecting Integrations
 ```
 
 **Content:**
+
 ```
 HotDash requires connections to your operational tools:
 
@@ -455,6 +500,7 @@ All credentials are stored securely. HotDash never stores your passwords.
 ### 6.2 Testing Connections
 
 **Why Test?:**
+
 ```
 Integration health affects data accuracy. Test connections weekly or when data looks incorrect.
 
@@ -469,6 +515,7 @@ If test fails, try reconnecting or check service status page.
 ### 6.3 Notification Preferences
 
 **Desktop Notifications:**
+
 ```
 Enable browser notifications to get alerts even when HotDash isn't open.
 
@@ -478,6 +525,7 @@ Quiet Hours: Set to avoid notifications during off-hours (default: 10pm-7am)
 ```
 
 **Sound Alerts:**
+
 ```
 Play sound when notifications arrive. Useful for high-priority alerts.
 
@@ -491,23 +539,20 @@ Adjust volume or disable in Settings → Notifications → Sound.
 ### 7.1 Tooltip Design Pattern
 
 **HTML Structure:**
+
 ```html
 <span class="metric-with-help">
   {Metric Name}
-  <button 
+  <button
     class="tooltip-trigger"
     aria-label="Learn more about {metric_name}"
     aria-describedby="tooltip-{metric-id}"
   >
-    <Icon source={QuestionIcon} />
+    <Icon source="{QuestionIcon}" />
   </button>
 </span>
 
-<div 
-  id="tooltip-{metric-id}"
-  role="tooltip"
-  class="tooltip-content"
->
+<div id="tooltip-{metric-id}" role="tooltip" class="tooltip-content">
   <strong>{Metric Name}</strong>
   <p>{Definition}</p>
   <p><em>Example: {concrete_example}</em></p>
@@ -517,6 +562,7 @@ Adjust volume or disable in Settings → Notifications → Sound.
 ### 7.2 Metric Tooltip Content
 
 **ROAS:**
+
 ```
 ROAS (Return on Ad Spend)
 
@@ -528,6 +574,7 @@ Target: 3:1 minimum (profitable)
 ```
 
 **CTR:**
+
 ```
 CTR (Click-Through Rate)
 
@@ -539,6 +586,7 @@ Benchmark: 2-5% for search ads
 ```
 
 **CPA:**
+
 ```
 CPA (Cost Per Acquisition)
 
@@ -550,6 +598,7 @@ Goal: CPA should be less than 50% of customer lifetime value
 ```
 
 **Bounce Rate:**
+
 ```
 Bounce Rate
 
@@ -561,6 +610,7 @@ Target: < 50% (lower is better)
 ```
 
 **Conversion Rate:**
+
 ```
 Conversion Rate
 
@@ -572,6 +622,7 @@ E-commerce average: 2-5%
 ```
 
 **WOS (Weeks of Supply):**
+
 ```
 WOS (Weeks of Supply)
 
@@ -583,6 +634,7 @@ Target: 4-8 weeks for most products
 ```
 
 **ROP (Reorder Point):**
+
 ```
 ROP (Reorder Point)
 
@@ -594,6 +646,7 @@ Reorder when stock hits this number
 ```
 
 **AOV (Average Order Value):**
+
 ```
 AOV (Average Order Value)
 
@@ -611,11 +664,13 @@ Increase AOV with bundles, upsells, free shipping thresholds
 ### 8.1 Getting Started
 
 **Q: What is HotDash?**
+
 ```
 A: HotDash is your operations control center for e-commerce. It centralizes sales data, inventory management, customer support, and growth analytics in one Shopify-embedded dashboard. AI agents suggest actions; you approve them.
 ```
 
 **Q: How do I set up HotDash?**
+
 ```
 A: First-time setup takes 3 steps:
 1. Connect your Shopify store (required)
@@ -626,6 +681,7 @@ The welcome wizard will guide you through setup. You can add more integrations l
 ```
 
 **Q: Is my data secure?**
+
 ```
 A: Yes. HotDash uses industry-standard encryption:
 • All connections use HTTPS/TLS
@@ -642,6 +698,7 @@ We never share your data with third parties.
 ### 8.2 Approvals & AI
 
 **Q: Do I have to approve every AI suggestion?**
+
 ```
 A: Yes. HotDash requires human approval for all actions. This ensures quality control and keeps you in command of your business operations.
 
@@ -649,16 +706,19 @@ You can approve quickly for straightforward suggestions or take time to review c
 ```
 
 **Q: What happens if I reject a suggestion?**
+
 ```
 A: The suggested action is discarded and logged for learning. The AI adjusts future recommendations based on your rejections. Patterns in rejections help the AI understand your preferences and business policies better.
 ```
 
 **Q: Can I edit AI suggestions before approving?**
+
 ```
 A: Absolutely! For customer replies and content, you can edit the AI's draft before approval. Your edits are captured so the AI learns your writing style and preferences. This improves future suggestions.
 ```
 
 **Q: How does grading work?**
+
 ```
 A: After approving an action, you grade it on 1-5 scale:
 • Tone: Was the language appropriate?
@@ -673,6 +733,7 @@ Higher grades mean the AI should suggest similar content. Lower grades indicate 
 ### 8.3 Inventory
 
 **Q: When should I reorder products?**
+
 ```
 A: HotDash alerts you when products hit the Reorder Point (ROP). This is calculated based on:
 • Average daily sales
@@ -683,6 +744,7 @@ Generally, reorder when stock drops below 2 weeks of cover (adjustable in Settin
 ```
 
 **Q: What is demand velocity?**
+
 ```
 A: Demand velocity shows how fast a product is selling over time (usually 14 days). The velocity chart helps you:
 • Identify trending products (velocity increasing)
@@ -693,6 +755,7 @@ Higher velocity = reorder more frequently, larger quantities.
 ```
 
 **Q: Can HotDash automatically reorder for me?**
+
 ```
 A: No. HotDash creates DRAFT purchase orders for your review. You always approve before sending to vendors. This ensures you control spending and can verify quantities, vendors, and pricing before committing.
 ```
@@ -702,6 +765,7 @@ A: No. HotDash creates DRAFT purchase orders for your review. You always approve
 ### 8.4 Analytics
 
 **Q: Why is my social/ad/SEO data not showing?**
+
 ```
 A: Analytics tiles require service connections:
 • Social: Connect Publer in Settings → Integrations
@@ -712,6 +776,7 @@ Empty state messages in each tile will guide you to the right settings.
 ```
 
 **Q: How often does analytics data update?**
+
 ```
 A: Update frequency depends on the source:
 • Shopify data: Real-time (sales, orders, inventory)
@@ -723,6 +788,7 @@ Refresh manually by clicking the refresh icon on any analytics tile.
 ```
 
 **Q: What's a good ROAS target?**
+
 ```
 A: Minimum 3:1 ROAS (making $3 for every $1 spent).
 
@@ -739,6 +805,7 @@ Your specific target depends on profit margins and customer lifetime value.
 ### 8.5 Customer Support
 
 **Q: How do AI-suggested customer replies work?**
+
 ```
 A: When a customer message arrives in Chatwoot:
 1. AI drafts a reply based on conversation history and Hot Rodan policies
@@ -752,6 +819,7 @@ You're always in control. AI speeds up drafting, you ensure quality.
 ```
 
 **Q: What if the AI suggestion is completely wrong?**
+
 ```
 A: Reject it and write your own reply. Grade it 1/5 on all factors so the AI learns. If you see repeated issues:
 1. Check conversation history (AI may lack context)
@@ -766,6 +834,7 @@ The AI improves with your feedback.
 ### 8.6 Technical
 
 **Q: Which browsers are supported?**
+
 ```
 A: HotDash works best on:
 • Chrome/Edge (recommended)
@@ -777,6 +846,7 @@ Mobile responsive design works on all modern smartphones.
 ```
 
 **Q: Can I use HotDash on mobile?**
+
 ```
 A: Yes! HotDash is fully responsive. Key features work on mobile:
 • View dashboard tiles
@@ -788,6 +858,7 @@ Complex analytics and detailed charts are optimized for desktop viewing.
 ```
 
 **Q: What if an integration stops working?**
+
 ```
 A: Check Settings → Integrations for connection status. If degraded or disconnected:
 1. Click "Test Connection" to diagnose
@@ -803,6 +874,7 @@ HotDash monitors integration health automatically and sends alerts if services d
 ### 8.7 Billing & Account
 
 **Q: How much does HotDash cost?**
+
 ```
 A: HotDash pricing is based on your Shopify plan and feature usage. Check the Shopify App Store listing for current pricing tiers.
 
@@ -810,11 +882,13 @@ All core features (dashboard, approvals, inventory) are included. Premium featur
 ```
 
 **Q: Can I cancel anytime?**
+
 ```
 A: Yes. Uninstall from Shopify Admin → Apps. Your data is retained for 30 days in case you want to reinstall. After 30 days, all data is permanently deleted per our privacy policy.
 ```
 
 **Q: Can multiple team members use HotDash?**
+
 ```
 A: Yes. HotDash uses Shopify's built-in staff account system. Any staff member with Shopify admin access can use HotDash. Permissions follow Shopify's role-based access control.
 ```
@@ -826,6 +900,7 @@ A: Yes. HotDash uses Shopify's built-in staff account system. Any staff member w
 ### 9.1 Common Issues
 
 **Dashboard Not Loading:**
+
 ```
 Problem: Dashboard shows loading indefinitely
 
@@ -840,6 +915,7 @@ If issue persists: Contact support with browser console errors.
 ```
 
 **Tiles Showing Old Data:**
+
 ```
 Problem: Metrics not updating
 
@@ -853,6 +929,7 @@ HotDash shows "Last updated: {time}" on each tile.
 ```
 
 **Approval Actions Not Working:**
+
 ```
 Problem: Click "Approve" but nothing happens
 
@@ -867,6 +944,7 @@ Action history is logged even if UI doesn't update immediately.
 ```
 
 **Charts Not Displaying:**
+
 ```
 Problem: Analytics charts blank or broken
 
@@ -887,6 +965,7 @@ Empty state message should explain if no data available.
 ### 10.1 Global Shortcuts
 
 **Navigation:**
+
 ```
 G then D = Go to Dashboard
 G then A = Go to Approvals
@@ -895,6 +974,7 @@ G then S = Go to Settings
 ```
 
 **Actions:**
+
 ```
 ? = Show keyboard shortcuts help
 / = Focus search
@@ -928,6 +1008,7 @@ Esc = Close modal
 ### 11.1 Daily Workflow
 
 **Morning Routine (15 min):**
+
 ```
 1. Check Dashboard for overnight alerts
 2. Review Approvals Queue (HIGH risk first)
@@ -936,6 +1017,7 @@ Esc = Close modal
 ```
 
 **Throughout Day:**
+
 ```
 • Respond to desktop notifications within 15 minutes
 • Check dashboard hourly for new approvals
@@ -943,6 +1025,7 @@ Esc = Close modal
 ```
 
 **End of Day (10 min):**
+
 ```
 1. Clear remaining approvals queue
 2. Review daily sales performance
@@ -953,6 +1036,7 @@ Esc = Close modal
 ### 11.2 Optimization Tips
 
 **Improve AI Suggestions:**
+
 ```
 • Grade every approval honestly (1-5 scale)
 • Edit drafts to show your preferences
@@ -963,6 +1047,7 @@ Better grading = better future suggestions.
 ```
 
 **Reduce False Alerts:**
+
 ```
 • Adjust inventory thresholds for seasonal products
 • Set quiet hours for non-urgent notifications
@@ -971,6 +1056,7 @@ Better grading = better future suggestions.
 ```
 
 **Faster Approvals:**
+
 ```
 • Use keyboard shortcuts (J/K to navigate, A to approve)
 • Review evidence quickly with checklist mindset
@@ -985,6 +1071,7 @@ Better grading = better future suggestions.
 ### 12.1 Getting Help
 
 **In-App Help:**
+
 ```
 Click ? icon in top navigation for:
 • Searchable help articles
@@ -993,6 +1080,7 @@ Click ? icon in top navigation for:
 ```
 
 **Email Support:**
+
 ```
 support@hotrodan.com
 Response time: Within 24 hours (business days)
@@ -1005,6 +1093,7 @@ Include:
 ```
 
 **Community Forum:**
+
 ```
 forum.hotrodan.com
 
@@ -1014,6 +1103,7 @@ Ask questions, share tips, connect with other operators.
 ### 12.2 Feature Requests
 
 **How to Request:**
+
 ```
 Settings → Feedback → "Request a Feature"
 
@@ -1030,56 +1120,67 @@ We review all requests and prioritize based on user demand and business impact.
 ## 13. Glossary of Terms
 
 **AI Agent:**
+
 ```
 Software that analyzes data and suggests actions. All suggestions require human approval in HotDash.
 ```
 
 **Approval:**
+
 ```
 Your explicit permission for AI to execute a suggested action. You review, approve/reject, and grade.
 ```
 
 **Dashboard Tile:**
+
 ```
 Individual widget showing live operational data. Click to see details. Drag to reorder.
 ```
 
 **Empty State:**
+
 ```
 Placeholder shown when no data available. Usually includes guidance on how to connect data source.
 ```
 
 **Escalation:**
+
 ```
 Customer conversation flagged as urgent (SLA breach, VIP customer, complaint).
 ```
 
 **HITL (Human-in-the-Loop):**
+
 ```
 Process where AI suggests, human approves. Ensures quality control on all actions.
 ```
 
 **Integration:**
+
 ```
 Connection to external service (Shopify, Analytics, Chatwoot). Required for data flow.
 ```
 
 **Modal:**
+
 ```
 Overlay window with detailed information or actions. Opens when you click a tile.
 ```
 
 **SLA (Service Level Agreement):**
+
 ```
 Target response time for customer inquiries. HotDash alerts when SLA breached.
 ```
 
 **Toast Notification:**
+
 ```
 Brief message that appears after action completes. Auto-dismisses after few seconds.
 ```
 
 **Tooltip:**
+
 ```
 Help text that appears when hovering over ? icon. Explains complex metrics or features.
 ```
@@ -1089,6 +1190,7 @@ Help text that appears when hovering over ? icon. Explains complex metrics or fe
 ## Quick Reference Card
 
 **Most Common Actions:**
+
 ```
 ✓ Review approvals: Dashboard → Approvals Queue tile
 ✓ Respond to customer: CX Escalations tile → Click conversation
@@ -1099,6 +1201,7 @@ Help text that appears when hovering over ? icon. Explains complex metrics or fe
 ```
 
 **When Things Go Wrong:**
+
 ```
 ✗ Data not loading: Test connection in Settings
 ✗ Tile not updating: Click refresh icon, check auto-refresh
@@ -1107,6 +1210,7 @@ Help text that appears when hovering over ? icon. Explains complex metrics or fe
 ```
 
 **Getting Help:**
+
 ```
 ? icon → Search help
 support@hotrodan.com → Email support
@@ -1118,6 +1222,7 @@ forum.hotrodan.com → Community help
 **END OF DOCUMENT**
 
 **Implementation Notes:**
+
 1. Help content accessible via ? icon in navigation
 2. Tooltips appear on hover/click for metric labels
 3. FAQ searchable and categorized
@@ -1125,4 +1230,3 @@ forum.hotrodan.com → Community help
 5. Keep help docs updated with each feature release
 
 **Questions?** Contact Content team for help documentation updates or additions.
-

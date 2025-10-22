@@ -70,7 +70,8 @@ export class FacebookAdsClient {
       const url = `${this.baseUrl}/act_${this.config.accountId}/campaigns`;
       const params = new URLSearchParams({
         access_token: this.config.accessToken,
-        fields: "id,name,status,objective,daily_budget,lifetime_budget,start_time,stop_time",
+        fields:
+          "id,name,status,objective,daily_budget,lifetime_budget,start_time,stop_time",
       });
 
       const response = await fetch(`${url}?${params}`);
@@ -90,15 +91,19 @@ export class FacebookAdsClient {
         name: campaign.name,
         status: campaign.status,
         objective: campaign.objective,
-        dailyBudget: campaign.daily_budget ? parseInt(campaign.daily_budget) / 100 : 0,
-        lifetimeBudget: campaign.lifetime_budget ? parseInt(campaign.lifetime_budget) / 100 : 0,
+        dailyBudget: campaign.daily_budget
+          ? parseInt(campaign.daily_budget) / 100
+          : 0,
+        lifetimeBudget: campaign.lifetime_budget
+          ? parseInt(campaign.lifetime_budget) / 100
+          : 0,
         startTime: campaign.start_time,
         stopTime: campaign.stop_time,
       }));
     } catch (error) {
       console.error("Error fetching Facebook campaigns:", error);
       throw new Error(
-        `Failed to fetch Facebook campaigns: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to fetch Facebook campaigns: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
   }
@@ -112,7 +117,7 @@ export class FacebookAdsClient {
    */
   async getCampaignInsights(
     campaignIds: string[],
-    datePreset: string = "last_7d"
+    datePreset: string = "last_7d",
   ): Promise<FacebookCampaignPerformance[]> {
     const performances: FacebookCampaignPerformance[] = [];
 
@@ -122,13 +127,16 @@ export class FacebookAdsClient {
         const params = new URLSearchParams({
           access_token: this.config.accessToken,
           date_preset: datePreset,
-          fields: "campaign_id,campaign_name,impressions,reach,clicks,spend,actions,action_values,ctr,cpc",
+          fields:
+            "campaign_id,campaign_name,impressions,reach,clicks,spend,actions,action_values,ctr,cpc",
         });
 
         const response = await fetch(`${url}?${params}`);
 
         if (!response.ok) {
-          console.error(`Failed to fetch insights for campaign ${campaignId}: ${response.statusText}`);
+          console.error(
+            `Failed to fetch insights for campaign ${campaignId}: ${response.statusText}`,
+          );
           continue;
         }
 
@@ -146,7 +154,9 @@ export class FacebookAdsClient {
 
         if (insight.actions) {
           const purchaseAction = insight.actions.find(
-            (a: any) => a.action_type === "purchase" || a.action_type === "offsite_conversion"
+            (a: any) =>
+              a.action_type === "purchase" ||
+              a.action_type === "offsite_conversion",
           );
           if (purchaseAction) {
             conversions = parseInt(purchaseAction.value) || 0;
@@ -155,7 +165,9 @@ export class FacebookAdsClient {
 
         if (insight.action_values) {
           const purchaseValue = insight.action_values.find(
-            (a: any) => a.action_type === "purchase" || a.action_type === "offsite_conversion"
+            (a: any) =>
+              a.action_type === "purchase" ||
+              a.action_type === "offsite_conversion",
           );
           if (purchaseValue) {
             conversionValue = Math.round(parseFloat(purchaseValue.value) * 100);
@@ -164,7 +176,8 @@ export class FacebookAdsClient {
 
         const spendCents = Math.round(parseFloat(insight.spend || "0") * 100);
         const cpcCents = Math.round(parseFloat(insight.cpc || "0") * 100);
-        const costPerConversion = conversions > 0 ? spendCents / conversions : 0;
+        const costPerConversion =
+          conversions > 0 ? spendCents / conversions : 0;
 
         performances.push({
           campaignId: insight.campaign_id,
@@ -181,7 +194,10 @@ export class FacebookAdsClient {
           dateRange: datePreset,
         });
       } catch (error) {
-        console.error(`Error fetching insights for campaign ${campaignId}:`, error);
+        console.error(
+          `Error fetching insights for campaign ${campaignId}:`,
+          error,
+        );
       }
     }
 
@@ -245,7 +261,7 @@ export class FacebookAdsClient {
     } catch (error) {
       console.error("Error creating Facebook campaign:", error);
       throw new Error(
-        `Failed to create Facebook campaign: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to create Facebook campaign: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
   }
@@ -257,7 +273,10 @@ export class FacebookAdsClient {
    * @param status - New status
    * @returns Promise<boolean>
    */
-  async updateCampaignStatus(campaignId: string, status: "ACTIVE" | "PAUSED"): Promise<boolean> {
+  async updateCampaignStatus(
+    campaignId: string,
+    status: "ACTIVE" | "PAUSED",
+  ): Promise<boolean> {
     try {
       const url = `${this.baseUrl}/${campaignId}`;
 
@@ -275,14 +294,16 @@ export class FacebookAdsClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to update campaign status: ${response.statusText}`);
+        throw new Error(
+          `Failed to update campaign status: ${response.statusText}`,
+        );
       }
 
       return true;
     } catch (error) {
       console.error(`Error updating campaign ${campaignId} status:`, error);
       throw new Error(
-        `Failed to update campaign status: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to update campaign status: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
   }
@@ -294,7 +315,10 @@ export class FacebookAdsClient {
    * @param dailyBudget - New daily budget in cents
    * @returns Promise<boolean>
    */
-  async updateCampaignBudget(campaignId: string, dailyBudget: number): Promise<boolean> {
+  async updateCampaignBudget(
+    campaignId: string,
+    dailyBudget: number,
+  ): Promise<boolean> {
     try {
       const url = `${this.baseUrl}/${campaignId}`;
 
@@ -312,14 +336,16 @@ export class FacebookAdsClient {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to update campaign budget: ${response.statusText}`);
+        throw new Error(
+          `Failed to update campaign budget: ${response.statusText}`,
+        );
       }
 
       return true;
     } catch (error) {
       console.error(`Error updating campaign ${campaignId} budget:`, error);
       throw new Error(
-        `Failed to update campaign budget: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Failed to update campaign budget: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
     }
   }
@@ -340,8 +366,15 @@ export function createFacebookAdsClient(): FacebookAdsClient {
   };
 
   // Validate required configuration
-  if (!config.accessToken || !config.appId || !config.appSecret || !config.accountId) {
-    throw new Error("Missing required Facebook Ads API credentials. Check environment variables.");
+  if (
+    !config.accessToken ||
+    !config.appId ||
+    !config.appSecret ||
+    !config.accountId
+  ) {
+    throw new Error(
+      "Missing required Facebook Ads API credentials. Check environment variables.",
+    );
   }
 
   return new FacebookAdsClient(config);

@@ -20,6 +20,7 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 ## User Persona
 
 **Inventory Manager/Operator**:
+
 - Manages 10-20 vendor relationships
 - Creates 2-5 purchase orders per week
 - Wants to see: "Which vendor is most reliable for this product?"
@@ -75,6 +76,7 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 ### Table Columns
 
 **Required Columns**:
+
 1. **Name** - Vendor name with reliability tier icon
 2. **Reliability** - Score % with on-time/total ratio (e.g., "95% (19/20)")
 3. **Lead Time** - Average lead time in days
@@ -82,6 +84,7 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 5. **Actions** - Edit, Details, Create PO buttons
 
 **Expandable Row Details** (click name or Details):
+
 - Contact name, email, phone
 - Product count (number of mapped products)
 - Payment terms
@@ -169,11 +172,13 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 
 ### Field Validation
 
-**Required Fields** (*):
+**Required Fields** (\*):
+
 - Vendor Name (min 2 chars)
 - Lead Time (positive integer)
 
 **Optional Fields**:
+
 - Contact details (all optional but recommended)
 - Ship method (text field)
 - Drop ship flag (boolean)
@@ -184,12 +189,14 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 ### Save Behavior
 
 **New Vendor**:
+
 - Creates vendor record with isActive: true
 - Initial reliability metrics: totalOrders=0, reliabilityScore=0
 - Success message: "✅ Vendor 'Premium Suppliers' added successfully"
 - Action: Close modal, refresh vendor list
 
 **Edit Vendor**:
+
 - Updates vendor record (preserves reliability metrics)
 - Success message: "✅ Vendor 'Premium Suppliers' updated"
 - Action: Close modal, refresh vendor list
@@ -271,16 +278,19 @@ This document defines the complete UI/UX for **Vendor Management** - allowing op
 ### Visual Indicators
 
 **Reliability Badges**:
+
 - 🏆 **Excellent** (>=95%): Dark green badge
-- ✓ **Good** (85-94%): Green badge  
+- ✓ **Good** (85-94%): Green badge
 - ⚠️ **Fair** (70-84%): Yellow badge
 - ❌ **Poor** (<70%): Red badge + "Consider replacing" warning
 
 **On-Time Indicators**:
+
 - ✅ **On Time**: Green checkmark
 - ❌ **Late**: Red X with days late in tooltip
 
 **Preferred Vendor**:
+
 - ⭐ Star icon for preferred vendors (in product mappings)
 
 ---
@@ -544,6 +554,7 @@ Selected: 🏆 Excellent (4 vendors)    [Clear Filter]
    - Response: {excellent, good, fair, poor} counts
 
 **UI Components Needed**:
+
 1. VendorTable component (sortable, filterable)
 2. VendorDetailModal component
 3. AddEditVendorModal component
@@ -648,11 +659,13 @@ Selected: 🏆 Excellent (4 vendors)    [Clear Filter]
 ## 11. Success Metrics
 
 **UX Quality Metrics**:
+
 - Operator can find best vendor for product in <10 seconds
 - Vendor selection confidence increases (survey)
 - PO creation time decreases by 30%
 
 **Business Metrics**:
+
 - Operator uses reliability data for vendor decisions (measured by clicks on "Best Vendor")
 - Preferred vendors have >90% reliability on average
 - Late deliveries decrease by 20% through better vendor selection
@@ -662,30 +675,27 @@ Selected: 🏆 Excellent (4 vendors)    [Clear Filter]
 ## 12. Implementation Priority
 
 **Phase 1 (MVP)** - Week 1:
+
 1. Vendor list view (basic table)
 2. Add/edit vendor modal
 3. Reliability badge display
 
-**Phase 2** - Week 2:
-4. Vendor detail view with metrics
-5. Product mapping management
-6. Filtering and sorting
+**Phase 2** - Week 2: 4. Vendor detail view with metrics 5. Product mapping management 6. Filtering and sorting
 
-**Phase 3** - Week 3:
-7. PO creation with vendor selection
-8. Multi-vendor comparison
-9. Mobile optimization
+**Phase 3** - Week 3: 7. PO creation with vendor selection 8. Multi-vendor comparison 9. Mobile optimization
 
 ---
 
 ## Engineer Implementation Notes
 
 **Data Sources**:
+
 - Backend service: `app/services/inventory/vendor-service.ts`
 - API wrapper needed for UI state management
 - Real-time reliability updates via websocket (optional Phase 3)
 
 **Component Structure**:
+
 ```
 app/routes/dashboard/vendors/
   index.tsx           # Vendor list view
@@ -702,6 +712,7 @@ app/components/vendors/
 ```
 
 **State Management**:
+
 - Vendor list state (for filtering/sorting)
 - Active vendor detail (for modal)
 - PO creation state (selected vendor, products)
@@ -711,6 +722,7 @@ app/components/vendors/
 ## Change Log
 
 **v1.0 - 2025-10-22**:
+
 - Initial UI specification
 - Defined all major views (List, Detail, Add/Edit, Multi-SKU)
 - Specified vendor selection for PO creation
@@ -721,4 +733,3 @@ app/components/vendors/
 **Status**: Ready for Engineer implementation  
 **Dependencies**: INVENTORY-016 complete ✅  
 **Next Step**: Engineer implements UI components and routes
-

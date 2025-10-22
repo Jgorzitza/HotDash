@@ -1,23 +1,23 @@
 /**
  * Publer HITL (Human-In-The-Loop) Adapter
- * 
+ *
  * Handles the flow: Draft → Pending Review → Approved → Published
  * Integrates with approval system for social posts
  * Stores receipts in database after publishing
  */
 
-import { createPublerClient } from './client';
-import type { PublerPost, PublerJobResponse, PublerJobStatus } from './types';
+import { createPublerClient } from "./client";
+import type { PublerPost, PublerJobResponse, PublerJobStatus } from "./types";
 
 export interface SocialPostApproval {
   id: string;
-  type: 'social_post';
-  status: 'draft' | 'pending_review' | 'approved' | 'rejected';
+  type: "social_post";
+  status: "draft" | "pending_review" | "approved" | "rejected";
   content: {
     text: string;
     accountIds: string[];
     scheduledAt?: string;
-    media?: Array<{ url: string; type: 'image' | 'video'; alt_text?: string }>;
+    media?: Array<{ url: string; type: "image" | "video"; alt_text?: string }>;
   };
   metadata: {
     platform?: string;
@@ -43,7 +43,7 @@ export interface SocialPostReceipt {
   platform: string;
   content: string;
   published_at: string;
-  status: 'pending' | 'processing' | 'complete' | 'failed';
+  status: "pending" | "processing" | "complete" | "failed";
   post_url?: string;
   performance_metrics?: {
     reach?: number;
@@ -75,7 +75,7 @@ export class PublerAdapter {
    * Publish an approved social post
    */
   async publishApproval(approval: SocialPostApproval): Promise<PublishResult> {
-    if (approval.status !== 'approved') {
+    if (approval.status !== "approved") {
       return {
         success: false,
         error: `Cannot publish post with status: ${approval.status}. Must be 'approved'`,
@@ -86,14 +86,14 @@ export class PublerAdapter {
     const isScheduled = !!post.scheduledAt;
 
     try {
-      const response = isScheduled 
+      const response = isScheduled
         ? await this.client.schedulePost(post)
         : await this.client.publishPost(post);
 
       if (!response.success || !response.data) {
         return {
           success: false,
-          error: response.error?.message || 'Failed to publish post',
+          error: response.error?.message || "Failed to publish post",
         };
       }
 
@@ -101,10 +101,10 @@ export class PublerAdapter {
         id: crypto.randomUUID(),
         approval_id: approval.id,
         publer_job_id: response.data.job_id,
-        platform: approval.metadata.platform || 'unknown',
+        platform: approval.metadata.platform || "unknown",
         content: post.text,
         published_at: new Date().toISOString(),
-        status: 'pending',
+        status: "pending",
       };
 
       return {
@@ -115,7 +115,10 @@ export class PublerAdapter {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error during publishing',
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown error during publishing",
       };
     }
   }
@@ -125,7 +128,7 @@ export class PublerAdapter {
       const response = await this.client.getJobStatus(jobId);
       return response.success && response.data ? response.data : null;
     } catch (error) {
-      console.error('[PublerAdapter] Error checking status:', error);
+      console.error("[PublerAdapter] Error checking status:", error);
       return null;
     }
   }

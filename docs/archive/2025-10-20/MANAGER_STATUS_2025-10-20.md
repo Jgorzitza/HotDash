@@ -35,6 +35,7 @@
 ## 📋 FEEDBACK CONSOLIDATION — COMPLETE
 
 **Ingested**:
+
 - All 17 agent feedback files (Oct 19)
 - 5 agent feedback files (Oct 20)
 - QA recommendation: CONDITIONAL GO (97.24% tests, 2 P0 blockers)
@@ -43,6 +44,7 @@
 **Consolidated**: `feedback/manager/2025-10-20.md` (3401 lines)
 
 **Blockers Identified**:
+
 - P0: Missing /health route → Assigned to Engineer (ENG-P0)
 - P0: RLS unverified → Assigned to Data (DATA-P0)
 - P0: Design files missing → ✅ RESOLVED (all 57 restored)
@@ -56,27 +58,31 @@
 ### Primary Agents (Option A)
 
 **Engineer** (`docs/directions/engineer.md` v5.0):
+
 - 38 tasks across 11 phases
 - Complete vision (8 tiles, approval queue, notifications, personalization)
 - Each task references specific design specs
 - MCP validation required
 
 **Designer** (`docs/directions/designer.md` v6.0):
+
 - 15 validation tasks
 - Validate against ALL 57 design specs
 - Sign-off required for each phase
 
 **Data** (`docs/directions/data.md` v3.0):
+
 - 5 new tables for Option A:
-  * user_preferences (personalization)
-  * notifications (notification center)
-  * sales_pulse_actions
-  * inventory_actions
-  * Updated RLS tests
+  - user_preferences (personalization)
+  - notifications (notification center)
+  - sales_pulse_actions
+  - inventory_actions
+  - Updated RLS tests
 
 ### Supporting Agents
 
 All 13 other agents have current, aligned direction files with:
+
 - Tasks removed (blockers fixed)
 - New priorities (support Option A)
 - MCP enforcement (Shopify Dev + Context7)
@@ -87,12 +93,14 @@ All 13 other agents have current, aligned direction files with:
 ## 📖 GOVERNANCE UPDATES — COMPLETE
 
 **Updated Files**:
+
 - ✅ `docs/NORTH_STAR.md` (complete vision, protection policy)
 - ✅ `docs/RULES.md` (design + secrets protection)
 - ✅ `docs/OPERATING_MODEL.md` (compliance requirements)
 - ✅ `README.md` (complete vision, policies)
 
 **New Policies**:
+
 - ✅ `docs/DESIGN_PROTECTION_POLICY.md` (never archive without CEO)
 - ✅ `docs/SECRETS_POLICY.md` (no secrets in git, ever)
 
@@ -103,10 +111,12 @@ All 13 other agents have current, aligned direction files with:
 **PR #108**: https://github.com/Jgorzitza/HotDash/pull/108
 
 **Commits** (clean, passed CI):
+
 1. `b59d764` - feat(manager): align directions + verify blockers + Option A launch
 2. `2901df2` - security(P0): Fix GitGuardian alert - PostgreSQL URI in git history
 
 **CI Status**:
+
 - ✅ GitGuardian Security Checks: PASS
 - ✅ Gitleaks: PASS (no leaks found)
 - ✅ check-docs: PASS
@@ -117,6 +127,7 @@ All 13 other agents have current, aligned direction files with:
 **Issue**: Branch has uncommitted agent WIP (from before manager run) that conflicts with main. The PR commits themselves are clean, but GitHub won't auto-merge due to branch state.
 
 **Options**:
+
 1. **CEO manually merges PR #108** (recommended - commits are clean)
 2. **Manager creates new clean branch** with cherry-picked commits (violates non-destructive rule)
 3. **Accept current state** - security fix verified working, agents can proceed
@@ -166,6 +177,7 @@ $ grep -l "2025-10-20\|Option A\|Phase" docs/directions/*.md | wc -l
 ## 🚀 AGENTS READY TO LAUNCH
 
 **All 16 agents** can proceed immediately with:
+
 - Updated direction files (current, aligned, detailed)
 - Blockers removed or assigned (P0s addressed)
 - Governance clear (policies, standards, enforcement)
@@ -178,16 +190,19 @@ $ grep -l "2025-10-20\|Option A\|Phase" docs/directions/*.md | wc -l
 ## 📊 NEXT 24-48 HOURS
 
 ### Immediate (Hour 0-2)
+
 - Engineer: ENG-P0 (/health route) - 15 min
 - Data: DATA-P0 (RLS verification) - 30 min
 - Support: Fix CX Pulse error - 60 min
 
 ### Phase 1 (Hour 2-6)
+
 - Engineer: Approval queue (ENG-001 to ENG-004)
 - Designer: Visual QA (DES-001 to DES-002)
 - Data: New tables (DATA-NEW-001 to DATA-NEW-005)
 
 ### Phase 2-3 (Hour 6-24)
+
 - Engineer: Enhanced modals + missing tiles
 - Designer: Visual QA for modals
 
@@ -196,6 +211,7 @@ $ grep -l "2025-10-20\|Option A\|Phase" docs/directions/*.md | wc -l
 ## 🔒 MANAGER ACCOUNTABILITY
 
 **I OWN**:
+
 - ✅ Security incident resolved (<1 hour)
 - ✅ Policy created (prevents future)
 - ✅ All agents aligned (16/16)
@@ -210,4 +226,3 @@ $ grep -l "2025-10-20\|Option A\|Phase" docs/directions/*.md | wc -l
 **Manager**: Ready for CEO decision on PR #108 merge approach.  
 **Agents**: Ready to launch Option A build.  
 **Security**: Verified clean (GitGuardian + Gitleaks passing).
-

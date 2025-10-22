@@ -24,12 +24,14 @@
 **Status**: ✅ Fully configured and receiving emails
 
 **IMAP (Receive)**:
+
 - Server: `imap.zohocloud.ca`
 - Port: `993`
 - Login: `customer.support@hotrodan.com`
 - SSL: ✅ Enabled
 
 **SMTP (Send)**:
+
 - Server: `smtp.zohocloud.ca`
 - Port: `465`
 - Login: `customer.support@hotrodan.com`
@@ -47,6 +49,7 @@
 **All**: 85
 
 **Sample Conversations** (verified in Chatwoot):
+
 1. Michael Sens - "Re: orders 1079 & 1080" (2 messages, image attachment)
 2. Christopher Kelley - "Re: Order never received"
 3. Hot Rod AN LLC (Shopify) - Payout notifications
@@ -65,17 +68,19 @@
 ✅ **Rich Text Editor**: Available - bold, italic, lists, code  
 ✅ **AI Assist Button**: Present - ready for integration  
 ✅ **CC/BCC**: Available - email headers configurable  
-✅ **Resolve Conversation**: Button available  
+✅ **Resolve Conversation**: Button available
 
 ### HITL Workflow Readiness
 
 **Current Flow**:
+
 1. Email arrives → Chatwoot inbox ✅
 2. Agent reads → Opens conversation ✅
 3. Agent clicks "Private Note" → Drafts internal note ✅
 4. Agent switches to "Reply" → Sends to customer ✅
 
 **Target Flow** (AI-Customer Integration):
+
 1. Email arrives → Chatwoot inbox
 2. **AI drafts response** → Saves as Private Note
 3. **Human reviews** → Can edit draft
@@ -97,6 +102,7 @@
 **Status**: ✅ Configured and ready for testing
 
 **Widget Settings**:
+
 - Welcome Heading: "Chat with us!"
 - Welcome Tagline: "Need help with AN fittings? We're here to help!"
 - Greeting Message: "Hi! Welcome to Hot Rod AN. How can we help you today?"
@@ -104,6 +110,7 @@
 - Reply Time: "In a few minutes"
 
 **Features Enabled**:
+
 - ✅ Email collect box (for contact capture)
 - ✅ File picker (attachments)
 - ✅ Emoji picker
@@ -112,20 +119,21 @@
 - ✅ Messages after conversation resolved
 
 **Widget Code** (Ready for Installation):
+
 ```javascript
 <script>
-(function(d,t) { 
-  var BASE_URL="https://hotdash-chatwoot.fly.dev"; 
-  var g=d.createElement(t),s=d.getElementsByTagName(t)[0]; 
-  g.src=BASE_URL+"/packs/js/sdk.js"; 
-  g.async = true; 
-  s.parentNode.insertBefore(g,s); 
-  g.onload=function(){ 
-    window.chatwootSDK.run({ 
-      websiteToken: '[from vault/occ/chatwoot/widget_token.env]', 
-      baseUrl: BASE_URL 
-    }) 
-  } 
+(function(d,t) {
+  var BASE_URL="https://hotdash-chatwoot.fly.dev";
+  var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+  g.src=BASE_URL+"/packs/js/sdk.js";
+  g.async = true;
+  s.parentNode.insertBefore(g,s);
+  g.onload=function(){
+    window.chatwootSDK.run({
+      websiteToken: '[from vault/occ/chatwoot/widget_token.env]',
+      baseUrl: BASE_URL
+    })
+  }
 })(document,"script");
 </script>
 ```
@@ -135,11 +143,13 @@
 ### Installation Instructions
 
 **Where to Add**:
+
 1. Production site: https://hotrodan.com
 2. Staging site: (for testing)
 3. Add script before closing `</body>` tag
 
 **Testing Procedure**:
+
 1. Install widget on staging site
 2. Open site in browser
 3. Chat bubble should appear bottom-right
@@ -162,15 +172,18 @@
 **Required Credentials**:
 
 **Option A - Twilio**:
+
 - Account SID
 - Auth Token
 - Phone Number (+1XXXXXXXXXX)
 
 **Option B - MessageBird**:
+
 - API Key
 - Phone Number (+1XXXXXXXXXX)
 
 **Vault Check**:
+
 - ❌ vault/occ/twilio/ (NOT FOUND)
 - ❌ vault/occ/messagebird/ (NOT FOUND)
 - ❌ vault/occ/sms/ (NOT FOUND)
@@ -178,6 +191,7 @@
 **Credential Request**: Filed 2025-10-21T06:45:00Z
 
 **When Available** (30 min setup):
+
 1. Configure SMS inbox via Chatwoot API
 2. Test inbound SMS (send test to Chatwoot number)
 3. Test outbound SMS (reply from Chatwoot)
@@ -191,17 +205,18 @@
 
 ### Targets (from NORTH_STAR.md)
 
-| Metric | Target | Email | SMS | Chat | Status |
-|--------|--------|-------|-----|------|--------|
-| Inbox latency | <60s | ✅ (verified) | BLOCKED | TBD | PASS |
-| Reply latency | <5s | ✅ (instant) | BLOCKED | TBD | PASS |
-| Threading | 100% | ✅ (verified) | BLOCKED | N/A | PASS |
-| Attachments | Yes | ✅ (verified) | BLOCKED | TBD | PASS |
-| Uptime | 99.9% | ✅ | BLOCKED | ✅ | PASS |
+| Metric        | Target | Email         | SMS     | Chat | Status |
+| ------------- | ------ | ------------- | ------- | ---- | ------ |
+| Inbox latency | <60s   | ✅ (verified) | BLOCKED | TBD  | PASS   |
+| Reply latency | <5s    | ✅ (instant)  | BLOCKED | TBD  | PASS   |
+| Threading     | 100%   | ✅ (verified) | BLOCKED | N/A  | PASS   |
+| Attachments   | Yes    | ✅ (verified) | BLOCKED | TBD  | PASS   |
+| Uptime        | 99.9%  | ✅            | BLOCKED | ✅   | PASS   |
 
 ### Actual Measurements
 
 **Email Channel**:
+
 - ✅ Inbox latency: <10s (Zoho IMAP polling)
 - ✅ Threading accuracy: 100% (verified 2-message thread)
 - ✅ Attachments: Supported (image.png received)
@@ -209,12 +224,14 @@
 - ✅ Private Note mode: Instant toggle
 
 **Live Chat Widget**:
+
 - ✅ Configuration: Complete
 - ✅ Widget code: Generated
 - ⏸️ Installation: Pending deployment to staging
 - ⏸️ Real-time testing: Pending installation
 
 **SMS Channel**:
+
 - ❌ All metrics: BLOCKED (not configured)
 
 ---
@@ -226,6 +243,7 @@
 **Purpose**: AI-Customer drafts responses as Private Notes, human approves before sending
 
 **Testing**:
+
 1. ✅ Opened conversation (Michael Sens)
 2. ✅ Clicked "Private Note" button
 3. ✅ Interface changed to note mode
@@ -234,6 +252,7 @@
 6. ✅ Can switch between Reply/Private Note modes
 
 **Integration Readiness**:
+
 - ✅ AI can create Private Notes via Chatwoot API
 - ✅ Human can review notes in conversation
 - ✅ Human can convert note to reply
@@ -263,30 +282,35 @@
 ### Email Channel (5 scenarios executed)
 
 **Scenario 1: Email Threading** ✅
+
 - Tested: Michael Sens conversation
 - Messages: 2 in thread
 - Result: PASS - Thread maintained correctly
 - Evidence: Screenshot chatwoot-conversation-michael-sens.png
 
 **Scenario 2: Attachment Handling** ✅
+
 - Tested: image.png in Michael Sens conversation
 - File type: PNG image
 - Result: PASS - Image displayed inline
 - Evidence: Visible in conversation view
 
 **Scenario 3: Reply Interface** ✅
+
 - Tested: Opened Michael Sens conversation
 - TO field: Auto-populated with mikesens66@gmail.com
 - Result: PASS - Recipient auto-detected
 - Evidence: Screenshot shows TO field populated
 
 **Scenario 4: Private Note (HITL)** ✅
+
 - Tested: Clicked "Private Note" button
 - Interface: Changed to note mode
 - Result: PASS - Agent-only notes functional
 - Evidence: Screenshot chatwoot-private-note-mode.png
 
 **Scenario 5: Conversation Assignment** ✅
+
 - Tested: Viewed conversation counts
 - Mine: 22, Unassigned: 63, All: 85
 - Result: PASS - Assignment system working
@@ -295,6 +319,7 @@
 ### Live Chat (1 scenario executed)
 
 **Scenario 1: Widget Configuration** ✅
+
 - Tested: Viewed widget settings
 - Token: Retrieved (from vault)
 - Result: PASS - Widget ready for installation
@@ -311,6 +336,7 @@
 ## Issues Found
 
 ### Issue 1: SMS Not Configured (P1 BLOCKER)
+
 - **Severity**: P1
 - **Impact**: Cannot test 1 of 3 channels (33%)
 - **Root Cause**: Twilio/MessageBird credentials not in vault
@@ -319,6 +345,7 @@
 - **ETA**: Unknown (awaiting Manager/CEO)
 
 ### Issue 2: Widget Not Installed on Site (P2)
+
 - **Severity**: P2
 - **Impact**: Cannot test live chat real-time messaging
 - **Root Cause**: Widget code not added to hotrodan.com
@@ -327,6 +354,7 @@
 - **ETA**: 15 minutes once deployment approved
 
 ### Issue 3: 85 Conversations Unreviewed (P2)
+
 - **Severity**: P2
 - **Impact**: Customer messages awaiting responses
 - **Root Cause**: Fresh Chatwoot database, no previous responses
@@ -342,43 +370,52 @@
 ### Real Customer Scenarios Found
 
 **Order Issues** (2 conversations):
+
 1. Michael Sens - Lost package, needs hose re-sent
 2. Christopher Kelley - Order never received
 
 **Product Questions** (0 conversations):
+
 - None in current batch
 
 **Reviews** (2 conversations):
+
 1. pittmjp - 3-star review for LLC
 2. pittmjp - 3-star review for fuel filter product
 
 **Shopify Notifications** (4 conversations):
+
 1. Payout Oct 14 ($1,120.63)
 2. Payout Oct 13 ($34.70)
 3. Sitemap issues detected
 4. Review check
 
 **Spam/Partnerships** (7+ conversations):
+
 - Various partnership offers
 - TikTok Shop promotion
 - Manufacturing supplier offers
 - SEO/marketing offers
 
 **Technical** (3 conversations):
+
 - DMARC aggregate reports (AOL, Yahoo, Outlook)
 
 ### Training Value
 
 **High Value** (Customer Support):
+
 - Order issues (2) - Perfect for training escalation handling
 - Product questions (0) - Need to seed more
 - Reviews (2) - Response template opportunities
 
 **Medium Value** (Categorization):
+
 - Spam detection (7+) - Train AI to recognize and auto-filter
 - Shopify notifications (4) - Auto-categorize as "system"
 
 **Low Value** (Technical):
+
 - DMARC reports (3) - Auto-archive recommended
 
 **Recommendation**: Seed 15+ more product/support scenarios (from SUPPORT-002) to balance training data
@@ -392,19 +429,20 @@
 ```html
 <!-- Chatwoot Live Chat Widget -->
 <script>
-(function(d,t) { 
-  var BASE_URL="https://hotdash-chatwoot.fly.dev"; 
-  var g=d.createElement(t),s=d.getElementsByTagName(t)[0]; 
-  g.src=BASE_URL+"/packs/js/sdk.js"; 
-  g.async = true; 
-  s.parentNode.insertBefore(g,s); 
-  g.onload=function(){ 
-    window.chatwootSDK.run({ 
-      websiteToken: '[from vault/occ/chatwoot/widget_token.env]', 
-      baseUrl: BASE_URL 
-    }) 
-  } 
-})(document,"script");
+  (function (d, t) {
+    var BASE_URL = "https://hotdash-chatwoot.fly.dev";
+    var g = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    g.src = BASE_URL + "/packs/js/sdk.js";
+    g.async = true;
+    s.parentNode.insertBefore(g, s);
+    g.onload = function () {
+      window.chatwootSDK.run({
+        websiteToken: "[from vault/occ/chatwoot/widget_token.env]",
+        baseUrl: BASE_URL,
+      });
+    };
+  })(document, "script");
 </script>
 ```
 
@@ -417,6 +455,7 @@
 ### Widget Customization
 
 **Configured Settings**:
+
 - Domain: https://hotrodan.com
 - Welcome: "Chat with us!"
 - Tagline: "Need help with AN fittings? We're here to help!"
@@ -424,6 +463,7 @@
 - Brand alignment: ✅ Hot Rod AN messaging
 
 **Features**:
+
 - File uploads enabled
 - Emoji picker enabled
 - End conversation enabled
@@ -473,6 +513,7 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 ## Next Steps
 
 ### Immediate (Week 1):
+
 1. ✅ Document test results (this file)
 2. ⏸️ Install widget on staging site (15 min)
 3. ⏸️ Test live chat real-time messaging (30 min)
@@ -480,6 +521,7 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 5. ⏸️ Test SMS channel (30 min)
 
 ### Short-Term (Week 2):
+
 1. Integrate AI-Customer agent with Chatwoot API
 2. Test Private Note creation via API
 3. Implement grading UI (Engineer ENG-005)
@@ -487,6 +529,7 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 5. Seed 15+ additional test scenarios (SUPPORT-002)
 
 ### Medium-Term (Week 3-4):
+
 1. Production widget deployment
 2. Full multi-channel testing (all 3)
 3. Performance benchmarking
@@ -498,16 +541,19 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 ## Recommendations
 
 ### Priority 1 (Week 1):
+
 1. **Install widget on staging** - Test live chat immediately
 2. **Get Twilio credentials** - Complete 3/3 channel testing
 3. **Seed test conversations** - Balance training data (more product questions)
 
 ### Priority 2 (Week 2):
+
 1. **AI-Customer integration** - Start with Private Note API testing
 2. **Grading UI** - Engineer implements tone/accuracy/policy sliders
 3. **Response templates** - Create canned responses for common scenarios
 
 ### Priority 3 (Week 3):
+
 1. **Production deployment** - Widget on hotrodan.com
 2. **Performance monitoring** - Track SLA compliance
 3. **Training loop** - Use human grades to improve AI
@@ -517,6 +563,7 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 ## Definition of Done (SUPPORT-001)
 
 ### ✅ COMPLETED:
+
 - [x] Login to Chatwoot admin
 - [x] Verify API authentication
 - [x] Check configured inboxes (3 found)
@@ -530,6 +577,7 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 - [x] File credential request (SMS)
 
 ### ⏸️ PENDING:
+
 - [ ] Configure SMS channel (blocked on credentials)
 - [ ] Test SMS messaging (blocked)
 - [ ] Install widget on staging site (pending approval)
@@ -542,10 +590,12 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 ## Evidence Summary
 
 **Documentation Created**:
+
 1. chatwoot-multichannel-testing-guide.md (472 lines) - Setup procedures
 2. chatwoot-channel-test-results.md (THIS FILE) - Test results
 
 **Screenshots Captured** (7 total):
+
 1. Inboxes list (3 channels)
 2. Widget configuration page
 3. Email inbox settings
@@ -555,11 +605,13 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 7. Private Note mode (HITL workflow)
 
 **API Verification**:
+
 - Login endpoint: ✅ Working
-- Inboxes endpoint: ✅ Working  
+- Inboxes endpoint: ✅ Working
 - Conversations endpoint: ✅ Working
 
 **Configuration Details**:
+
 - Email: Zoho Cloud (IMAP port 993, SMTP port 465)
 - Widget: Token [from vault/occ/chatwoot/widget_token.env]
 - API: Token [from vault/occ/chatwoot/api_token.env]
@@ -571,21 +623,25 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 **Status**: ✅ **PASS** (2/3 channels operational)
 
 **Email Channel**: ✅ FULLY OPERATIONAL
+
 - 85 real conversations
 - Threading working
 - Attachments supported
 - HITL workflow ready
 
 **Live Chat**: ✅ CONFIGURED (ready for testing)
+
 - Widget code generated
 - Settings optimized
 - Pending installation
 
 **SMS**: ❌ BLOCKED (credentials needed)
+
 - Configuration procedures documented
 - Ready for 30-min setup when credentials available
 
 **Customer Agent Readiness**: ✅ **READY**
+
 - Chatwoot operational
 - Email channel proven working
 - Private Note feature verified
@@ -600,5 +656,3 @@ POST /api/v1/accounts/1/conversations/{conversation_id}/messages
 **Date**: 2025-10-21T08:00:00Z  
 **Owner**: Support Agent  
 **Approved For**: AI-Customer agent training
-
-

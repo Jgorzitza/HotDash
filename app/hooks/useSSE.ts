@@ -1,23 +1,27 @@
 /**
  * Server-Sent Events (SSE) Hook
- * 
+ *
  * Manages real-time connection to server for live updates:
  * - Approval queue count updates
  * - Tile refresh notifications
  * - System status changes
- * 
+ *
  * Features:
  * - Auto-reconnection with exponential backoff
  * - Connection status tracking
  * - Event type filtering
  * - Cleanup on unmount
- * 
+ *
  * Phase 5 - ENG-023
  */
 
 import { useState, useEffect, useCallback, useRef } from "react";
 
-export type SSEEventType = "approval-update" | "tile-refresh" | "system-status" | "heartbeat";
+export type SSEEventType =
+  | "approval-update"
+  | "tile-refresh"
+  | "system-status"
+  | "heartbeat";
 
 export interface SSEMessage<T = Record<string, unknown>> {
   type: SSEEventType;
@@ -25,7 +29,11 @@ export interface SSEMessage<T = Record<string, unknown>> {
   timestamp: string;
 }
 
-export type ConnectionStatus = "connecting" | "connected" | "disconnected" | "error";
+export type ConnectionStatus =
+  | "connecting"
+  | "connected"
+  | "disconnected"
+  | "error";
 
 export function useSSE(url: string, enabled = true) {
   const [status, setStatus] = useState<ConnectionStatus>("disconnected");
@@ -55,7 +63,10 @@ export function useSSE(url: string, enabled = true) {
         setStatus("error");
 
         // Auto-reconnect with exponential backoff
-        const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 30000);
+        const delay = Math.min(
+          1000 * Math.pow(2, reconnectAttemptsRef.current),
+          30000,
+        );
         reconnectAttemptsRef.current += 1;
 
         if (reconnectTimeoutRef.current) {
@@ -63,7 +74,9 @@ export function useSSE(url: string, enabled = true) {
         }
 
         reconnectTimeoutRef.current = setTimeout(() => {
-          console.log(`[SSE] Reconnecting... (attempt ${reconnectAttemptsRef.current})`);
+          console.log(
+            `[SSE] Reconnecting... (attempt ${reconnectAttemptsRef.current})`,
+          );
           eventSource.close();
           connect();
         }, delay);
@@ -178,4 +191,3 @@ export function useSSE(url: string, enabled = true) {
     disconnect,
   };
 }
-

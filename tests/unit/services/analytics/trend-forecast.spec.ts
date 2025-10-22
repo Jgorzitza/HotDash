@@ -1,6 +1,6 @@
 /**
  * Tests for Trend Forecasting Service
- * 
+ *
  * @see app/services/analytics/trend-forecast.ts
  * @see docs/directions/analytics.md ANALYTICS-012
  */
@@ -99,7 +99,12 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 10 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 100 + i * 10, clicks: 50, conversions: 5, revenue: 500 },
+        value: {
+          impressions: 100 + i * 10,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500,
+        },
         createdAt: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000),
       }));
 
@@ -109,10 +114,10 @@ describe("Trend Forecasting Service", () => {
         expect(prediction.confidenceInterval).toHaveProperty("lower");
         expect(prediction.confidenceInterval).toHaveProperty("upper");
         expect(prediction.confidenceInterval.lower).toBeLessThanOrEqual(
-          prediction.predictedValue
+          prediction.predictedValue,
         );
         expect(prediction.confidenceInterval.upper).toBeGreaterThanOrEqual(
-          prediction.predictedValue
+          prediction.predictedValue,
         );
       });
     });
@@ -121,13 +126,33 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 10 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 100 + i * 10, clicks: 50, conversions: 5, revenue: 500 },
+        value: {
+          impressions: 100 + i * 10,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500,
+        },
         createdAt: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000),
       }));
 
-      const forecast7 = await forecastMetric("impressions", mockShopDomain, 7, 90);
-      const forecast14 = await forecastMetric("impressions", mockShopDomain, 14, 90);
-      const forecast30 = await forecastMetric("impressions", mockShopDomain, 30, 90);
+      const forecast7 = await forecastMetric(
+        "impressions",
+        mockShopDomain,
+        7,
+        90,
+      );
+      const forecast14 = await forecastMetric(
+        "impressions",
+        mockShopDomain,
+        14,
+        90,
+      );
+      const forecast30 = await forecastMetric(
+        "impressions",
+        mockShopDomain,
+        30,
+        90,
+      );
 
       expect(forecast7.predictions).toHaveLength(7);
       expect(forecast14.predictions).toHaveLength(14);
@@ -155,7 +180,12 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 10 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 100 + i * 10, clicks: 50, conversions: 5, revenue: 500 },
+        value: {
+          impressions: 100 + i * 10,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500,
+        },
         createdAt: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000),
       }));
 
@@ -169,7 +199,12 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 10 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 100 + i * 10, clicks: 50, conversions: 5, revenue: 500 },
+        value: {
+          impressions: 100 + i * 10,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500,
+        },
         createdAt: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000),
       }));
 
@@ -184,7 +219,12 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 10 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500 + i * 50 },
+        value: {
+          impressions: 1000,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500 + i * 50,
+        },
         createdAt: new Date(Date.now() - (9 - i) * 24 * 60 * 60 * 1000),
       }));
 
@@ -199,7 +239,12 @@ describe("Trend Forecasting Service", () => {
       mockDashboardFacts = Array.from({ length: 5 }, (_, i) => ({
         id: i,
         factType: "ads_roas",
-        value: { impressions: 100 - i * 50, clicks: 50, conversions: 5, revenue: 500 },
+        value: {
+          impressions: 100 - i * 50,
+          clicks: 50,
+          conversions: 5,
+          revenue: 500,
+        },
         createdAt: new Date(Date.now() - (4 - i) * 24 * 60 * 60 * 1000),
       }));
 
@@ -263,4 +308,3 @@ describe("Trend Forecasting Service", () => {
     });
   });
 });
-

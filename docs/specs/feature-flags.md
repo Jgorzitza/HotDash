@@ -53,17 +53,18 @@ For testing/preview, enable features via query parameters:
 
 ## Available Features
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| `ideaPool` | Product idea pool drawer | Stub implemented |
-| `socialPosting` | Social media posting | Planned |
-| `advancedAnalytics` | Enhanced analytics dashboard | Planned |
-| `aiSuggestions` | AI-powered suggestions | Partial |
-| `betaFeatures` | All beta features | Flag for testing |
+| Feature             | Description                  | Status           |
+| ------------------- | ---------------------------- | ---------------- |
+| `ideaPool`          | Product idea pool drawer     | Stub implemented |
+| `socialPosting`     | Social media posting         | Planned          |
+| `advancedAnalytics` | Enhanced analytics dashboard | Planned          |
+| `aiSuggestions`     | AI-powered suggestions       | Partial          |
+| `betaFeatures`      | All beta features            | Flag for testing |
 
 ## Implementation
 
 Feature flags are checked at:
+
 1. **Server-side**: In route loaders
 2. **Client-side**: In component rendering
 3. **Build-time**: Via environment variables
@@ -81,4 +82,3 @@ Feature flags are checked at:
 - Feature flags should not be used for security
 - Always implement proper authorization checks
 - Feature flags are for UI visibility, not access control
-

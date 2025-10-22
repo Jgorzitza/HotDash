@@ -94,5 +94,3 @@ shopify app deploy
 ---
 
 **🔐 Update Fly secrets, then deploy app!**
-
-

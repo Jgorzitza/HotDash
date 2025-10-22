@@ -10,7 +10,10 @@
  * SUPPORT-003
  */
 
-import { getChatwootConfig, type ChatwootConfig } from "../../config/chatwoot.server";
+import {
+  getChatwootConfig,
+  type ChatwootConfig,
+} from "../../config/chatwoot.server";
 
 // ============================================================================
 // TYPES
@@ -86,7 +89,13 @@ const URGENT_KEYWORDS = [
   "worst",
 ];
 
-const VIP_KEYWORDS = ["bulk order", "corporate", "wholesale", "distributor", "dealer"];
+const VIP_KEYWORDS = [
+  "bulk order",
+  "corporate",
+  "wholesale",
+  "distributor",
+  "dealer",
+];
 
 const ESCALATION_KEYWORDS = [
   "chargeback",
@@ -147,7 +156,9 @@ function evaluateConditions(
   conditions: RoutingCondition[],
   agents: Agent[],
 ): boolean {
-  return conditions.every((condition) => evaluateCondition(conversation, condition, agents));
+  return conditions.every((condition) =>
+    evaluateCondition(conversation, condition, agents),
+  );
 }
 
 /**
@@ -159,7 +170,10 @@ function evaluateCondition(
   agents: Agent[],
 ): boolean {
   const messages = conversation.messages || [];
-  const allContent = messages.map((m) => m.content).join(" ").toLowerCase();
+  const allContent = messages
+    .map((m) => m.content)
+    .join(" ")
+    .toLowerCase();
 
   switch (condition.type) {
     case "keyword": {
@@ -200,7 +214,9 @@ function evaluateCondition(
     }
 
     case "agent_availability": {
-      const onlineAgents = agents.filter((a) => a.availability_status === "online");
+      const onlineAgents = agents.filter(
+        (a) => a.availability_status === "online",
+      );
       if (condition.operator === "exists") {
         return onlineAgents.length > 0;
       }
@@ -246,7 +262,7 @@ async function executeAction(
     }
 
     case "prioritize": {
-      const tags = ["priority", ...(action.metadata?.tags as string[] || [])];
+      const tags = ["priority", ...((action.metadata?.tags as string[]) || [])];
       return {
         conversationId: conversation.id,
         action: "tagged",
@@ -259,7 +275,9 @@ async function executeAction(
       return {
         conversationId: conversation.id,
         action: "escalated",
-        reason: action.metadata?.reason as string || "Auto-escalated by routing rule",
+        reason:
+          (action.metadata?.reason as string) ||
+          "Auto-escalated by routing rule",
         tags: ["escalated", "needs_attention"],
       };
     }
@@ -276,7 +294,10 @@ async function executeAction(
 /**
  * Assign conversation to specific agent
  */
-async function assignToAgent(conversation: Conversation, agentId: number): Promise<RoutingResult> {
+async function assignToAgent(
+  conversation: Conversation,
+  agentId: number,
+): Promise<RoutingResult> {
   const config = getChatwootConfig();
 
   try {
@@ -289,7 +310,10 @@ async function assignToAgent(conversation: Conversation, agentId: number): Promi
       reason: "Assigned by routing rule",
     };
   } catch (error) {
-    console.error(`[Routing] Failed to assign conversation ${conversation.id}:`, error);
+    console.error(
+      `[Routing] Failed to assign conversation ${conversation.id}:`,
+      error,
+    );
     return {
       conversationId: conversation.id,
       action: "no_action",
@@ -301,9 +325,14 @@ async function assignToAgent(conversation: Conversation, agentId: number): Promi
 /**
  * Assign using round-robin algorithm
  */
-async function assignRoundRobin(conversation: Conversation, agents: Agent[]): Promise<RoutingResult> {
+async function assignRoundRobin(
+  conversation: Conversation,
+  agents: Agent[],
+): Promise<RoutingResult> {
   // Filter to online agents only
-  const availableAgents = agents.filter((a) => a.availability_status === "online");
+  const availableAgents = agents.filter(
+    (a) => a.availability_status === "online",
+  );
 
   if (availableAgents.length === 0) {
     return {
@@ -339,7 +368,7 @@ async function assignConversationAPI(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
     body: JSON.stringify({
       assignee_id: agentId,
@@ -355,7 +384,10 @@ async function assignConversationAPI(
 /**
  * Add tags to conversation
  */
-export async function addConversationTags(conversationId: number, tags: string[]): Promise<void> {
+export async function addConversationTags(
+  conversationId: number,
+  tags: string[],
+): Promise<void> {
   const config = getChatwootConfig();
   const url = `${config.baseUrl}/api/v1/accounts/${config.accountId}/conversations/${conversationId}/labels`;
 
@@ -363,7 +395,7 @@ export async function addConversationTags(conversationId: number, tags: string[]
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "api_access_token": config.token,
+      api_access_token: config.token,
     },
     body: JSON.stringify({
       labels: tags,
@@ -385,7 +417,7 @@ export async function getAvailableAgents(): Promise<Agent[]> {
   try {
     const response = await fetch(url, {
       headers: {
-        "api_access_token": config.token,
+        api_access_token: config.token,
       },
     });
 
@@ -525,12 +557,19 @@ export const DEFAULT_RULES: RoutingRule[] = [
 /**
  * Check if conversation needs escalation based on SLA
  */
-export function checkSLABreach(conversation: Conversation, slaMinutes: number): boolean {
+export function checkSLABreach(
+  conversation: Conversation,
+  slaMinutes: number,
+): boolean {
   const createdAt = conversation.created_at * 1000; // Convert to ms
   const now = Date.now();
   const ageMinutes = (now - createdAt) / (1000 * 60);
 
-  return ageMinutes > slaMinutes && conversation.status === "open" && !conversation.assignee_id;
+  return (
+    ageMinutes > slaMinutes &&
+    conversation.status === "open" &&
+    !conversation.assignee_id
+  );
 }
 
 /**
@@ -546,7 +585,7 @@ export async function routeUnassignedConversations(): Promise<RoutingResult[]> {
   try {
     const response = await fetch(url, {
       headers: {
-        "api_access_token": config.token,
+        api_access_token: config.token,
       },
     });
 
@@ -571,4 +610,3 @@ export async function routeUnassignedConversations(): Promise<RoutingResult[]> {
     return [];
   }
 }
-

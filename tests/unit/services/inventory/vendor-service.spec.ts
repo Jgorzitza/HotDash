@@ -301,9 +301,12 @@ describe("Vendor Service - INVENTORY-016", () => {
     });
 
     it("should return null when no vendors found", async () => {
-      vi.mocked(prismaClient.vendorProductMapping.findMany).mockResolvedValue([]);
+      vi.mocked(prismaClient.vendorProductMapping.findMany).mockResolvedValue(
+        [],
+      );
 
-      const result = await vendorService.getBestVendorForProduct("invalid-variant");
+      const result =
+        await vendorService.getBestVendorForProduct("invalid-variant");
 
       expect(result).toBeNull();
     });
@@ -397,7 +400,9 @@ describe("Vendor Service - INVENTORY-016", () => {
       const result = await vendorService.getVendorOptions();
 
       expect(result[0].costPerUnit).toBe(0);
-      expect(result[0].label).toBe("New Vendor (0% reliable, 10d lead, $0.00/unit)");
+      expect(result[0].label).toBe(
+        "New Vendor (0% reliable, 10d lead, $0.00/unit)",
+      );
     });
   });
 
@@ -426,4 +431,3 @@ describe("Vendor Service - INVENTORY-016", () => {
     });
   });
 });
-

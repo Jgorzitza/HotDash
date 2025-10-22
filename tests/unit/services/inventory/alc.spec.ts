@@ -340,31 +340,31 @@ describe("ALC Calculation Service - INVENTORY-017", () => {
     });
 
     it("should process multiple items in single receipt", async () => {
-      vi.mocked(
-        prismaClient.productCostHistory.findFirst,
-      ).mockResolvedValueOnce({
-        id: "history-1",
-        variantId: "variant-1",
-        receiptId: "receipt-old",
-        previousAlc: 10.0,
-        newAlc: 12.0,
-        previousOnHand: 30,
-        newOnHand: 50,
-        receiptQty: 20,
-        receiptCostPerUnit: 15.0,
-        recordedAt: new Date(),
-      }).mockResolvedValueOnce({
-        id: "history-2",
-        variantId: "variant-2",
-        receiptId: "receipt-old",
-        previousAlc: 20.0,
-        newAlc: 22.0,
-        previousOnHand: 40,
-        newOnHand: 60,
-        receiptQty: 20,
-        receiptCostPerUnit: 25.0,
-        recordedAt: new Date(),
-      });
+      vi.mocked(prismaClient.productCostHistory.findFirst)
+        .mockResolvedValueOnce({
+          id: "history-1",
+          variantId: "variant-1",
+          receiptId: "receipt-old",
+          previousAlc: 10.0,
+          newAlc: 12.0,
+          previousOnHand: 30,
+          newOnHand: 50,
+          receiptQty: 20,
+          receiptCostPerUnit: 15.0,
+          recordedAt: new Date(),
+        })
+        .mockResolvedValueOnce({
+          id: "history-2",
+          variantId: "variant-2",
+          receiptId: "receipt-old",
+          previousAlc: 20.0,
+          newAlc: 22.0,
+          previousOnHand: 40,
+          newOnHand: 60,
+          receiptQty: 20,
+          receiptCostPerUnit: 25.0,
+          recordedAt: new Date(),
+        });
 
       vi.mocked(prismaClient.productCostHistory.create)
         .mockResolvedValueOnce({
@@ -418,4 +418,3 @@ describe("ALC Calculation Service - INVENTORY-017", () => {
     });
   });
 });
-

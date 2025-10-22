@@ -68,61 +68,71 @@ interface SemanticBenchmark {
 const GROUND_TRUTH_TESTS: GroundTruthTest[] = [
   {
     query: "What is your return policy for damaged items?",
-    referenceAnswer: "Items damaged during shipping can be returned for free within 30 days without a restocking fee. The return shipping is covered by us for damaged items.",
+    referenceAnswer:
+      "Items damaged during shipping can be returned for free within 30 days without a restocking fee. The return shipping is covered by us for damaged items.",
     category: "returns",
     description: "Damaged item return policy",
   },
   {
     query: "How long do I have to return an item?",
-    referenceAnswer: "You have 30 days from the delivery date to return items. Items must be unused, in original packaging, with tags attached, and include the original receipt or order confirmation.",
+    referenceAnswer:
+      "You have 30 days from the delivery date to return items. Items must be unused, in original packaging, with tags attached, and include the original receipt or order confirmation.",
     category: "returns",
     description: "Return time window",
   },
   {
     query: "What is the restocking fee for returns?",
-    referenceAnswer: "The restocking fee is 15% of the purchase price for standard returns (non-defective items, items missing packaging, or returns without accessories). There is no restocking fee for defective items, wrong items sent (our error), or items damaged in shipping. Used or installed products cannot be refunded for safety reasons.",
+    referenceAnswer:
+      "The restocking fee is 15% of the purchase price for standard returns (non-defective items, items missing packaging, or returns without accessories). There is no restocking fee for defective items, wrong items sent (our error), or items damaged in shipping. Used or installed products cannot be refunded for safety reasons.",
     category: "returns",
     description: "Restocking fee policy",
   },
   {
     query: "How long does standard shipping take?",
-    referenceAnswer: "Standard shipping (USPS/UPS Ground) takes 5-7 business days after order processing. Processing time is 1-2 business days.",
+    referenceAnswer:
+      "Standard shipping (USPS/UPS Ground) takes 5-7 business days after order processing. Processing time is 1-2 business days.",
     category: "shipping",
     description: "Standard shipping timeline",
   },
   {
     query: "Do you offer expedited shipping?",
-    referenceAnswer: "Yes, we offer expedited shipping via UPS 2-Day which delivers in 2-3 business days after processing. Processing time is 1 business day.",
+    referenceAnswer:
+      "Yes, we offer expedited shipping via UPS 2-Day which delivers in 2-3 business days after processing. Processing time is 1 business day.",
     category: "shipping",
     description: "Expedited shipping availability",
   },
   {
     query: "What are your shipping costs?",
-    referenceAnswer: "Standard shipping costs $8.95 for orders under $75. Orders $75 and over receive free standard shipping. Expedited shipping costs $18.95, and overnight shipping costs $35.95.",
+    referenceAnswer:
+      "Standard shipping costs $8.95 for orders under $75. Orders $75 and over receive free standard shipping. Expedited shipping costs $18.95, and overnight shipping costs $35.95.",
     category: "shipping",
     description: "Shipping cost structure",
   },
   {
     query: "How can I track my order?",
-    referenceAnswer: "You will receive a tracking number via email once your order ships. You can use this tracking number on the carrier's website to monitor your shipment status.",
+    referenceAnswer:
+      "You will receive a tracking number via email once your order ships. You can use this tracking number on the carrier's website to monitor your shipment status.",
     category: "tracking",
     description: "Order tracking process",
   },
   {
     query: "Can I exchange an item for a different size?",
-    referenceAnswer: "Yes, exchanges are free within 30 days of delivery. Items must be unused, in original condition with tags attached. Contact customer support to initiate an exchange.",
+    referenceAnswer:
+      "Yes, exchanges are free within 30 days of delivery. Items must be unused, in original condition with tags attached. Contact customer support to initiate an exchange.",
     category: "exchanges",
     description: "Exchange eligibility",
   },
   {
     query: "What payment methods do you accept?",
-    referenceAnswer: "We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and Apple Pay for online orders.",
+    referenceAnswer:
+      "We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and Apple Pay for online orders.",
     category: "faq",
     description: "Accepted payment methods",
   },
   {
     query: "Can I cancel my order after placing it?",
-    referenceAnswer: "Orders can be cancelled before they ship. Contact customer support immediately if you need to cancel. Once an order has shipped, you will need to follow the return process instead.",
+    referenceAnswer:
+      "Orders can be cancelled before they ship. Contact customer support immediately if you need to cancel. Once an order has shipped, you will need to follow the return process instead.",
     category: "faq",
     description: "Order cancellation policy",
   },
@@ -218,8 +228,12 @@ async function runSemanticTest(
     });
 
     if (verbose) {
-      console.log(`   Correctness Score: ${(correctnessResult.score * 100).toFixed(1)}%`);
-      console.log(`   Correctness: ${correctnessResult.passing ? "✅ PASS" : "❌ FAIL"}`);
+      console.log(
+        `   Correctness Score: ${(correctnessResult.score * 100).toFixed(1)}%`,
+      );
+      console.log(
+        `   Correctness: ${correctnessResult.passing ? "✅ PASS" : "❌ FAIL"}`,
+      );
     }
 
     // Evaluate faithfulness (does response match retrieved context?)
@@ -229,7 +243,9 @@ async function runSemanticTest(
     });
 
     if (verbose) {
-      console.log(`   Faithfulness: ${faithfulnessResult.passing ? "✅ PASS" : "❌ FAIL"}`);
+      console.log(
+        `   Faithfulness: ${faithfulnessResult.passing ? "✅ PASS" : "❌ FAIL"}`,
+      );
     }
 
     // Evaluate relevancy
@@ -239,7 +255,9 @@ async function runSemanticTest(
     });
 
     if (verbose) {
-      console.log(`   Relevancy: ${relevancyResult.passing ? "✅ PASS" : "❌ FAIL"}`);
+      console.log(
+        `   Relevancy: ${relevancyResult.passing ? "✅ PASS" : "❌ FAIL"}`,
+      );
       console.log(`   Response Time: ${responseTime}ms`);
       console.log(`   Actual: ${actualAnswer.slice(0, 150)}...`);
       console.log(`   Reference: ${test.referenceAnswer.slice(0, 150)}...`);
@@ -275,9 +293,11 @@ async function runSemanticTest(
 /**
  * Generate semantic benchmark summary
  */
-function generateSemanticSummary(results: SemanticTestResult[]): SemanticBenchmark {
+function generateSemanticSummary(
+  results: SemanticTestResult[],
+): SemanticBenchmark {
   const passed = results.filter(
-    (r) => r.correctnessPassing && r.faithfulnessPassing && r.relevancyPassing
+    (r) => r.correctnessPassing && r.faithfulnessPassing && r.relevancyPassing,
   ).length;
 
   const avgCorrectnessScore =
@@ -313,7 +333,9 @@ async function main() {
 
   console.log("🧪 Semantic Evaluation Suite (LlamaIndex Evaluators)\n");
   console.log(`Total Ground-Truth Tests: ${GROUND_TRUTH_TESTS.length}`);
-  console.log(`Categories: ${new Set(GROUND_TRUTH_TESTS.map((t) => t.category)).size}`);
+  console.log(
+    `Categories: ${new Set(GROUND_TRUTH_TESTS.map((t) => t.category)).size}`,
+  );
   console.log(`Verbose Mode: ${verbose ? "ON" : "OFF"}`);
   console.log("\nEvaluators:");
   console.log("  - CorrectnessEvaluator: Validates against ground-truth");
@@ -322,7 +344,7 @@ async function main() {
 
   // Load API key and configure Settings
   const apiKey = await loadOpenAIKey();
-  
+
   // Configure LLM for evaluators (using GPT-3.5-turbo for speed)
   // Context7 docs recommend GPT-4 but 3.5-turbo is faster and sufficient
   Settings.llm = new OpenAI({
@@ -354,7 +376,9 @@ async function main() {
   for (let i = 0; i < GROUND_TRUTH_TESTS.length; i++) {
     const test = GROUND_TRUTH_TESTS[i];
     if (!verbose) {
-      process.stdout.write(`  [${i + 1}/${GROUND_TRUTH_TESTS.length}] ${test.category}...`);
+      process.stdout.write(
+        `  [${i + 1}/${GROUND_TRUTH_TESTS.length}] ${test.category}...`,
+      );
     }
 
     const result = await runSemanticTest(
@@ -384,11 +408,17 @@ async function main() {
   const summary = generateSemanticSummary(results);
 
   console.log(`Total Tests: ${summary.totalTests}`);
-  console.log(`Fully Passed: ${summary.passed} (${((summary.passed / summary.totalTests) * 100).toFixed(1)}%)`);
+  console.log(
+    `Fully Passed: ${summary.passed} (${((summary.passed / summary.totalTests) * 100).toFixed(1)}%)`,
+  );
   console.log(`Failed: ${summary.failed}`);
   console.log(`\nSemantic Metrics:`);
-  console.log(`  Avg Correctness Score: ${(summary.avgCorrectnessScore * 100).toFixed(1)}%`);
-  console.log(`  Faithfulness Rate: ${(summary.faithfulnessRate * 100).toFixed(1)}%`);
+  console.log(
+    `  Avg Correctness Score: ${(summary.avgCorrectnessScore * 100).toFixed(1)}%`,
+  );
+  console.log(
+    `  Faithfulness Rate: ${(summary.faithfulnessRate * 100).toFixed(1)}%`,
+  );
   console.log(`  Relevancy Rate: ${(summary.relevancyRate * 100).toFixed(1)}%`);
   console.log(`  Avg Response Time: ${summary.avgResponseTime.toFixed(0)}ms`);
 
@@ -442,11 +472,7 @@ async function main() {
   await fs.mkdir(path.dirname(resultsPath), { recursive: true });
   await fs.writeFile(
     resultsPath,
-    JSON.stringify(
-      { summary, timestamp: new Date().toISOString() },
-      null,
-      2,
-    ),
+    JSON.stringify({ summary, timestamp: new Date().toISOString() }, null, 2),
   );
 
   console.log(`\n💾 Results saved to: ${resultsPath}`);
@@ -470,4 +496,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export { runSemanticTest, generateSemanticSummary, GROUND_TRUTH_TESTS };
-

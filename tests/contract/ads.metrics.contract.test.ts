@@ -328,8 +328,7 @@ describe("Ads Metrics API Contract", () => {
       overspend_cents: 60000,
       overspend_percentage: 12.0,
       severity: "critical",
-      message:
-        'Campaign "Spring Sale" has exceeded budget by $600.00 (12.0%)',
+      message: 'Campaign "Spring Sale" has exceeded budget by $600.00 (12.0%)',
       triggered_at: "2025-10-19T20:00:00Z",
       acknowledged: false,
     };
@@ -342,14 +341,10 @@ describe("Ads Metrics API Contract", () => {
     expect(mockBudgetAlert).toHaveProperty("acknowledged");
 
     // Validate enums
-    expect([
-      "budget_exceeded",
-      "budget_warning",
-      "budget_critical",
-    ]).toContain(mockBudgetAlert.alert_type);
-    expect(["info", "warning", "critical"]).toContain(
-      mockBudgetAlert.severity,
+    expect(["budget_exceeded", "budget_warning", "budget_critical"]).toContain(
+      mockBudgetAlert.alert_type,
     );
+    expect(["info", "warning", "critical"]).toContain(mockBudgetAlert.severity);
   });
 
   it("performance alert response shape contract", () => {
@@ -387,4 +382,3 @@ describe("Ads Metrics API Contract", () => {
     );
   });
 });
-

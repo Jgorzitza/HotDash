@@ -1,12 +1,12 @@
 /**
  * Unit Tests: CX Action Applier Service
- * 
+ *
  * Tests integration between Product agent's CX theme actions
  * and Content agent's implementation service
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { 
+import {
   mapImplementationTypeToContentType,
   applyCXThemeAction,
 } from "~/services/content/cx-action-applier";
@@ -30,7 +30,9 @@ describe("CX Action Applier Service", () => {
     });
 
     it("should map add_installation_guide to installation_guide", () => {
-      const result = mapImplementationTypeToContentType("add_installation_guide");
+      const result = mapImplementationTypeToContentType(
+        "add_installation_guide",
+      );
       expect(result).toBe("installation_guide");
     });
 
@@ -45,15 +47,19 @@ describe("CX Action Applier Service", () => {
     });
 
     it("should return null for SEO implementation types", () => {
-      const result = mapImplementationTypeToContentType("add_return_policy_link");
+      const result = mapImplementationTypeToContentType(
+        "add_return_policy_link",
+      );
       expect(result).toBeNull();
     });
   });
 
   describe("applyCXThemeAction", () => {
     it("should apply content-type action successfully", async () => {
-      const { applyCXContent } = await import("~/services/content/cx-content-implementation");
-      
+      const { applyCXContent } = await import(
+        "~/services/content/cx-content-implementation"
+      );
+
       (applyCXContent as any).mockResolvedValue({
         success: true,
         productId: "gid://shopify/Product/123",
@@ -81,11 +87,11 @@ describe("CX Action Applier Service", () => {
       };
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXThemeAction(
         mockAction,
         "gid://shopify/Product/123",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(true);
@@ -99,7 +105,7 @@ describe("CX Action Applier Service", () => {
           content: "**Size Chart**\n\n| Size | Measurements |\n...",
           productHandle: "powder-boards",
         },
-        mockRequest
+        mockRequest,
       );
     });
 
@@ -124,11 +130,11 @@ describe("CX Action Applier Service", () => {
       };
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXThemeAction(
         mockAction,
         "gid://shopify/Product/123",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -156,11 +162,11 @@ describe("CX Action Applier Service", () => {
       };
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXThemeAction(
         mockAction,
         "gid://shopify/Product/123",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -188,11 +194,11 @@ describe("CX Action Applier Service", () => {
       };
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXThemeAction(
         mockAction,
         "gid://shopify/Product/123",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -200,8 +206,10 @@ describe("CX Action Applier Service", () => {
     });
 
     it("should handle applyCXContent failures", async () => {
-      const { applyCXContent } = await import("~/services/content/cx-content-implementation");
-      
+      const { applyCXContent } = await import(
+        "~/services/content/cx-content-implementation"
+      );
+
       (applyCXContent as any).mockResolvedValue({
         success: false,
         productId: "gid://shopify/Product/123",
@@ -229,11 +237,11 @@ describe("CX Action Applier Service", () => {
       };
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXThemeAction(
         mockAction,
         "gid://shopify/Product/123",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -241,4 +249,3 @@ describe("CX Action Applier Service", () => {
     });
   });
 });
-

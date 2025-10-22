@@ -1,4 +1,5 @@
 import type { IdeaPoolResponse } from "~/routes/api.analytics.idea-pool";
+import { Link } from "react-router";
 
 interface IdeaPoolTileProps {
   ideaPool: IdeaPoolResponse["data"];
@@ -19,7 +20,9 @@ export function IdeaPoolTile({ ideaPool }: IdeaPoolTileProps) {
   }
 
   const { ideas, total_count, wildcard_count } = ideaPool;
-  const pendingCount = ideas.filter((i) => i.status === "pending_review").length;
+  const pendingCount = ideas.filter(
+    (i) => i.status === "pending_review",
+  ).length;
   const approvedCount = ideas.filter((i) => i.status === "approved").length;
 
   const metricStyle = {
@@ -108,7 +111,11 @@ export function IdeaPoolTile({ ideaPool }: IdeaPoolTileProps) {
               fontSize: "var(--occ-font-size-lg)",
             }}
           >
-            {ideas.filter((i) => i.priority === "high" || i.priority === "urgent").length}
+            {
+              ideas.filter(
+                (i) => i.priority === "high" || i.priority === "urgent",
+              ).length
+            }
           </p>
           <p style={metaStyle}>High Priority</p>
         </div>
@@ -151,7 +158,28 @@ export function IdeaPoolTile({ ideaPool }: IdeaPoolTileProps) {
           </ul>
         </section>
       )}
+
+      {/* CTA Button to navigate to /ideas */}
+      <section style={{ marginTop: "auto" }}>
+        <Link
+          to="/ideas"
+          style={{
+            display: "inline-block",
+            padding: "var(--occ-space-2) var(--occ-space-3)",
+            background: "var(--occ-bg-primary)",
+            color: "var(--occ-text-on-primary)",
+            textDecoration: "none",
+            borderRadius: "var(--occ-radius-md)",
+            fontSize: "var(--occ-font-size-sm)",
+            fontWeight: "var(--occ-font-weight-medium)",
+            textAlign: "center",
+            width: "100%",
+            boxSizing: "border-box",
+          }}
+        >
+          View All Ideas
+        </Link>
+      </section>
     </div>
   );
 }
-

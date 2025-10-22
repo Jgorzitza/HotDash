@@ -11,11 +11,13 @@ All scripts use the enhanced `DecisionLog` schema with structured fields for eff
 ### Core 3 Queries (< 10 seconds total)
 
 #### 1. Check Blocked Tasks 🚨
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ```
 
 **Shows**:
+
 - Which agents are blocked
 - What they're blocked on (dependency task ID)
 - Blocker details and current progress
@@ -26,11 +28,13 @@ npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ---
 
 ### 2. Agent Status Dashboard 👥
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-agent-status.ts
 ```
 
 **Shows**:
+
 - Current task for each of 17 agents
 - Status (in_progress, completed, blocked, pending)
 - Progress percentage
@@ -42,11 +46,13 @@ npx tsx --env-file=.env scripts/manager/query-agent-status.ts
 ---
 
 #### 3. Completed Today ✅
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-completed-today.ts
 ```
 
 **Shows**:
+
 - All tasks completed today grouped by agent
 - Duration (actual hours spent)
 - Evidence links
@@ -59,11 +65,13 @@ npx tsx --env-file=.env scripts/manager/query-completed-today.ts
 ### Additional Queries (As Needed)
 
 #### 4. Questions Waiting for Manager ❓ [NEW]
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-questions.ts
 ```
 
 **Shows**:
+
 - Tasks blocked waiting for manager decisions
 - Question details from payload (options, tradeoffs, recommendations)
 - When question was asked
@@ -74,11 +82,13 @@ npx tsx --env-file=.env scripts/manager/query-questions.ts
 ---
 
 #### 5. Agent Self-Grades & Retrospectives 📊 [NEW]
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-agent-grades.ts [agent-name]
 ```
 
 **Shows**:
+
 - Daily shutdown self-grades (5 dimensions, avg score)
 - Retrospectives (did well, to change, to stop)
 - Hours worked per day
@@ -90,11 +100,13 @@ npx tsx --env-file=.env scripts/manager/query-agent-grades.ts [agent-name]
 ---
 
 #### 6. Task Detail History 🔍 [NEW]
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-task-details.ts ENG-029
 ```
 
 **Shows**:
+
 - Complete timeline of a specific task
 - All progress updates with timestamps
 - Payload metadata (commits, files, tests, MCP evidence)
@@ -108,11 +120,13 @@ npx tsx --env-file=.env scripts/manager/query-task-details.ts ENG-029
 ## Testing & Verification Scripts
 
 ### 4. Test Enhanced Logging 🧪
+
 ```bash
 npx tsx --env-file=.env scripts/manager/test-enhanced-logging.ts
 ```
 
 **Tests**:
+
 - Task completed with full details
 - Task in progress
 - Task blocked with dependencies
@@ -123,11 +137,13 @@ npx tsx --env-file=.env scripts/manager/test-enhanced-logging.ts
 ---
 
 ### 5. Query All Decisions 📊
+
 ```bash
 npx tsx --env-file=.env scripts/manager/query-decisions.ts
 ```
 
 **Shows**:
+
 - Last 10 manager decisions
 - Full details including payload JSON
 - All fields (taskId, status, progress, etc.)
@@ -137,11 +153,13 @@ npx tsx --env-file=.env scripts/manager/query-decisions.ts
 ---
 
 ### 6. Upload Feedback File 📁
+
 ```bash
 npx tsx --env-file=.env scripts/manager/upload-feedback.ts feedback/manager/2025-10-19.md
 ```
 
 **Purpose**:
+
 - Parse feedback markdown files
 - Extract manager updates
 - Upload to decision_log for querying
@@ -151,6 +169,7 @@ npx tsx --env-file=.env scripts/manager/upload-feedback.ts feedback/manager/2025
 ---
 
 ### 7. Simple Log Test ⚡
+
 ```bash
 npx tsx --env-file=.env scripts/manager/test-simple-log.ts
 ```
@@ -160,6 +179,7 @@ npx tsx --env-file=.env scripts/manager/test-simple-log.ts
 ---
 
 ### 8. Log Manager Work 📝
+
 ```bash
 npx tsx --env-file=.env scripts/manager/log-manager-work.ts
 ```
@@ -171,6 +191,7 @@ npx tsx --env-file=.env scripts/manager/log-manager-work.ts
 ## Migration Scripts (One-Time Use)
 
 ### 9. Apply Schema Enhancement
+
 ```bash
 npx tsx --env-file=.env scripts/manager/apply-enhance-decision-log.ts
 ```
@@ -185,6 +206,7 @@ npx tsx --env-file=.env scripts/manager/apply-enhance-decision-log.ts
 Agents should include rich metadata in the `payload` field for better analytics:
 
 ### Task Completion Payload
+
 ```typescript
 payload: {
   commits: ['abc123f', 'def456g'],
@@ -196,6 +218,7 @@ payload: {
 ```
 
 ### Shutdown Payload (with Self-Grading)
+
 ```typescript
 payload: {
   selfGrade: { progress: 5, evidence: 4, alignment: 5, toolDiscipline: 5, communication: 4, average: 4.6 },
@@ -216,44 +239,47 @@ payload: {
 ## Enhanced LogDecision Usage
 
 ### Basic Usage (Minimal - Works But Not Recommended)
+
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  action: 'task_completed',
-  rationale: 'Finished the thing'
+  scope: "build",
+  actor: "engineer",
+  action: "task_completed",
+  rationale: "Finished the thing",
 });
 ```
 
 ### Enhanced Usage (NEW - Queryable!)
+
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  taskId: 'ENG-029',           // ENABLES: query by task
-  status: 'completed',         // ENABLES: filter by status
-  progressPct: 100,            // ENABLES: track velocity
-  action: 'task_completed',
-  rationale: 'Implemented PII Card component with redaction',
-  evidenceUrl: 'artifacts/engineer/2025-10-22/eng-029.md',
-  durationActual: 3.5,         // ENABLES: time tracking
-  durationEstimate: 4.0,       // ENABLES: compare estimate vs actual
-  nextAction: 'Starting ENG-030'  // ENABLES: planning visibility
+  scope: "build",
+  actor: "engineer",
+  taskId: "ENG-029", // ENABLES: query by task
+  status: "completed", // ENABLES: filter by status
+  progressPct: 100, // ENABLES: track velocity
+  action: "task_completed",
+  rationale: "Implemented PII Card component with redaction",
+  evidenceUrl: "artifacts/engineer/2025-10-22/eng-029.md",
+  durationActual: 3.5, // ENABLES: time tracking
+  durationEstimate: 4.0, // ENABLES: compare estimate vs actual
+  nextAction: "Starting ENG-030", // ENABLES: planning visibility
 });
 ```
 
 ### Blocked Task Example
+
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  taskId: 'INTEGRATIONS-013',
-  status: 'blocked',            // Shows in blocked tasks query
+  scope: "build",
+  actor: "integrations",
+  taskId: "INTEGRATIONS-013",
+  status: "blocked", // Shows in blocked tasks query
   progressPct: 40,
-  blockerDetails: 'Waiting for DATA-017 vendor_master table migration',
-  blockedBy: 'DATA-017',        // Track dependency
-  rationale: 'Cannot sync Shopify cost data without vendor table',
-  evidenceUrl: 'feedback/integrations/2025-10-22.md'
+  blockerDetails: "Waiting for DATA-017 vendor_master table migration",
+  blockedBy: "DATA-017", // Track dependency
+  rationale: "Cannot sync Shopify cost data without vendor table",
+  evidenceUrl: "feedback/integrations/2025-10-22.md",
 });
 ```
 
@@ -274,12 +300,14 @@ Use these standard values for the `status` field:
 ## Time Savings
 
 ### Old Workflow ❌
+
 - Open 17 feedback files
 - Search for status/blockers manually
 - Parse text for progress
 - **Time**: 30-60 minutes per consolidation
 
 ### New Workflow ✅
+
 - Run 3 scripts (blocked, status, completed)
 - Only read feedback for blocked tasks
 - **Time**: 5-10 minutes per consolidation
@@ -291,6 +319,7 @@ Use these standard values for the `status` field:
 ## Troubleshooting
 
 ### "Column does not exist" Error
+
 ```bash
 # Regenerate Prisma client
 cd ~/HotDash/hot-dash
@@ -298,12 +327,14 @@ npx prisma generate
 ```
 
 ### Schema Out of Sync
+
 ```bash
 # Check what columns exist
 npx tsx --env-file=.env -e "import prisma from './app/db.server'; (async () => { const cols = await prisma.\$queryRaw\`SELECT column_name FROM information_schema.columns WHERE table_name = 'DecisionLog'\`; console.log(cols); await prisma.\$disconnect(); })();"
 ```
 
 ### Migration Failed
+
 - Check `supabase/migrations/20251022000001_enhance_decision_log.sql`
 - Verify database connection with `npm run verify:db`
 - Try running migration manually from Supabase console
@@ -322,4 +353,3 @@ npx tsx --env-file=.env -e "import prisma from './app/db.server'; (async () => {
 **Last Updated**: 2025-10-22  
 **Status**: ✅ All systems operational  
 **Maintained By**: Manager + Data Agent
-

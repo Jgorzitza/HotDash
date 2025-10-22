@@ -10,7 +10,7 @@ import { parseBundleMetafield } from "~/services/inventory/bundles";
 describe("Bundle Support - Metafield Parsing", () => {
   it("should parse BUNDLE:TRUE format", () => {
     const components = parseBundleMetafield(
-      "BUNDLE:TRUE,COMPONENTS:SKU1:2,SKU2:3"
+      "BUNDLE:TRUE,COMPONENTS:SKU1:2,SKU2:3",
     );
 
     expect(components).toHaveLength(2);
@@ -35,8 +35,8 @@ describe("Bundle Support - Metafield Parsing", () => {
   });
 
   it("should throw error for invalid component format", () => {
-    expect(() => parseBundleMetafield("BUNDLE:TRUE,COMPONENTS:INVALID")).toThrow();
+    expect(() =>
+      parseBundleMetafield("BUNDLE:TRUE,COMPONENTS:INVALID"),
+    ).toThrow();
   });
 });
-
-

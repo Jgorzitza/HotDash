@@ -136,15 +136,18 @@ describe("Chatwoot Reporting Service", () => {
     });
 
     it("should have top issues sorted", () => {
-      expect(mockReport.top_issues[0].count).toBeGreaterThanOrEqual(mockReport.top_issues[1].count);
+      expect(mockReport.top_issues[0].count).toBeGreaterThanOrEqual(
+        mockReport.top_issues[1].count,
+      );
     });
 
     it("should calculate percentages correctly", () => {
-      const totalPercentage = mockReport.top_issues.reduce((sum, issue) => sum + issue.percentage, 0);
+      const totalPercentage = mockReport.top_issues.reduce(
+        (sum, issue) => sum + issue.percentage,
+        0,
+      );
 
       expect(totalPercentage).toBeGreaterThan(0);
     });
   });
 });
-
-

@@ -144,7 +144,8 @@ export async function getEnhancedSEOData(): Promise<EnhancedSEOData> {
 
     landingPages.sort((a, b) => {
       const priorityOrder = { high: 0, medium: 1, low: 2 };
-      const priorityDiff = priorityOrder[a.priority] - priorityOrder[b.priority];
+      const priorityDiff =
+        priorityOrder[a.priority] - priorityOrder[b.priority];
       if (priorityDiff !== 0) return priorityDiff;
       return b.clicks - a.clicks;
     });
@@ -218,4 +219,3 @@ function calculatePagePriority(page: {
 
   return "low";
 }
-

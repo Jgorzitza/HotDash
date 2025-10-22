@@ -1,16 +1,16 @@
 /**
  * AI-Customer Template Optimization Service
- * 
+ *
  * Identifies high-performing response templates based on HITL grades,
  * extracts common patterns, and provides recommendations for template
  * improvements. Supports A/B testing preparation by tracking template
  * performance over time.
- * 
+ *
  * @module app/services/ai-customer/template-optimizer
  * @see docs/directions/ai-customer.md AI-CUSTOMER-002
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Template performance metrics
@@ -26,14 +26,14 @@ export interface TemplatePerformance {
   successRate: number; // Percentage of responses with avg grade >= 4.0
   firstUsed: string;
   lastUsed: string;
-  trend: 'improving' | 'declining' | 'stable';
+  trend: "improving" | "declining" | "stable";
 }
 
 /**
  * Common pattern identified across high-performing templates
  */
 export interface TemplatePattern {
-  patternType: 'opening' | 'closing' | 'structure' | 'tone' | 'keyword';
+  patternType: "opening" | "closing" | "structure" | "tone" | "keyword";
   description: string;
   frequency: number; // How many high-performing templates use this
   exampleTemplates: string[];
@@ -72,7 +72,7 @@ export interface ABTestCandidate {
   proposedTemplate: string;
   proposedChanges: string[];
   expectedImprovement: number; // Estimated grade improvement
-  confidenceLevel: 'high' | 'medium' | 'low';
+  confidenceLevel: "high" | "medium" | "low";
 }
 
 /**
@@ -93,7 +93,7 @@ interface TemplateRecord {
 
 /**
  * Analyze templates and provide optimization recommendations
- * 
+ *
  * Strategy:
  * 1. Query decision_log for all graded responses with template info
  * 2. Calculate performance metrics for each template
@@ -101,7 +101,7 @@ interface TemplateRecord {
  * 4. Extract common patterns from high performers
  * 5. Generate recommendations based on patterns
  * 6. Prepare A/B test candidates
- * 
+ *
  * @param timeRange - Time range to analyze: '7d', '30d', '90d', 'all'
  * @param supabaseUrl - Supabase project URL
  * @param supabaseKey - Supabase anon/service key
@@ -110,7 +110,7 @@ interface TemplateRecord {
 export async function optimizeTemplates(
   timeRange: string,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<TemplateOptimization> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -120,21 +120,21 @@ export async function optimizeTemplates(
 
     // Query decision_log for graded responses with template info
     let query = supabase
-      .from('decision_log')
-      .select('id, created_at, payload')
-      .eq('action', 'chatwoot.approve_send')
-      .not('payload->grades', 'is', null)
-      .not('payload->template', 'is', null)
-      .order('created_at', { ascending: false });
+      .from("decision_log")
+      .select("id, created_at, payload")
+      .eq("action", "chatwoot.approve_send")
+      .not("payload->grades", "is", null)
+      .not("payload->template", "is", null)
+      .order("created_at", { ascending: false });
 
     if (startDate) {
-      query = query.gte('created_at', startDate.toISOString());
+      query = query.gte("created_at", startDate.toISOString());
     }
 
     const { data, error } = await query;
 
     if (error) {
-      console.error('[Template Optimizer] Query error:', error);
+      console.error("[Template Optimizer] Query error:", error);
       throw error;
     }
 
@@ -145,7 +145,7 @@ export async function optimizeTemplates(
 
     // Parse records and extract template data
     const records: TemplateRecord[] = data
-      .map(row => {
+      .map((row) => {
         const payload = row.payload as any;
         if (!payload.grades || !payload.template) return null;
 
@@ -165,12 +165,12 @@ export async function optimizeTemplates(
 
     // Identify top and low performing templates
     const topTemplates = templatePerformances
-      .filter(t => t.averageGrade >= 4.5)
+      .filter((t) => t.averageGrade >= 4.5)
       .sort((a, b) => b.averageGrade - a.averageGrade)
       .slice(0, 10);
 
     const lowPerformingTemplates = templatePerformances
-      .filter(t => t.averageGrade < 3.5)
+      .filter((t) => t.averageGrade < 3.5)
       .sort((a, b) => a.averageGrade - b.averageGrade)
       .slice(0, 10);
 
@@ -182,14 +182,14 @@ export async function optimizeTemplates(
       templatePerformances,
       patterns,
       topTemplates,
-      lowPerformingTemplates
+      lowPerformingTemplates,
     );
 
     // Prepare A/B test candidates
     const abTestCandidates = prepareABTests(
       lowPerformingTemplates,
       topTemplates,
-      patterns
+      patterns,
     );
 
     return {
@@ -206,7 +206,7 @@ export async function optimizeTemplates(
       },
     };
   } catch (error) {
-    console.error('[Template Optimizer] Error optimizing templates:', error);
+    console.error("[Template Optimizer] Error optimizing templates:", error);
     return createEmptyOptimization(timeRange);
   }
 }
@@ -214,7 +214,9 @@ export async function optimizeTemplates(
 /**
  * Calculate performance metrics for each template
  */
-function calculateTemplatePerformances(records: TemplateRecord[]): TemplatePerformance[] {
+function calculateTemplatePerformances(
+  records: TemplateRecord[],
+): TemplatePerformance[] {
   // Group records by template
   const byTemplate: Record<string, TemplateRecord[]> = {};
 
@@ -229,14 +231,16 @@ function calculateTemplatePerformances(records: TemplateRecord[]): TemplatePerfo
   const performances: TemplatePerformance[] = [];
 
   for (const [templateId, templateRecords] of Object.entries(byTemplate)) {
-    const grades = templateRecords.map(r => r.grades);
-    
+    const grades = templateRecords.map((r) => r.grades);
+
     const toneAvg = grades.reduce((sum, g) => sum + g.tone, 0) / grades.length;
-    const accuracyAvg = grades.reduce((sum, g) => sum + g.accuracy, 0) / grades.length;
-    const policyAvg = grades.reduce((sum, g) => sum + g.policy, 0) / grades.length;
+    const accuracyAvg =
+      grades.reduce((sum, g) => sum + g.accuracy, 0) / grades.length;
+    const policyAvg =
+      grades.reduce((sum, g) => sum + g.policy, 0) / grades.length;
     const averageGrade = (toneAvg + accuracyAvg + policyAvg) / 3;
 
-    const successCount = grades.filter(g => {
+    const successCount = grades.filter((g) => {
       const avg = (g.tone + g.accuracy + g.policy) / 3;
       return avg >= 4.0;
     }).length;
@@ -251,10 +255,12 @@ function calculateTemplatePerformances(records: TemplateRecord[]): TemplatePerfo
       const firstAvg = calculateAvgGrade(firstHalf);
       const secondAvg = calculateAvgGrade(secondHalf);
 
-      const trend = 
-        secondAvg > firstAvg + 0.2 ? 'improving' :
-        secondAvg < firstAvg - 0.2 ? 'declining' :
-        'stable';
+      const trend =
+        secondAvg > firstAvg + 0.2
+          ? "improving"
+          : secondAvg < firstAvg - 0.2
+            ? "declining"
+            : "stable";
 
       performances.push({
         templateId,
@@ -282,7 +288,7 @@ function calculateTemplatePerformances(records: TemplateRecord[]): TemplatePerfo
         successRate: Number(successRate.toFixed(1)),
         firstUsed: templateRecords[0].createdAt,
         lastUsed: templateRecords[0].createdAt,
-        trend: 'stable',
+        trend: "stable",
       });
     }
   }
@@ -308,10 +314,10 @@ function calculateAvgGrade(records: TemplateRecord[]): number {
  */
 function extractPatterns(
   records: TemplateRecord[],
-  performances: TemplatePerformance[]
+  performances: TemplatePerformance[],
 ): TemplatePattern[] {
-  const highPerformers = performances.filter(p => p.averageGrade >= 4.5);
-  
+  const highPerformers = performances.filter((p) => p.averageGrade >= 4.5);
+
   if (highPerformers.length === 0) {
     return [];
   }
@@ -320,24 +326,24 @@ function extractPatterns(
   // In production, this would analyze actual template content
   const patterns: TemplatePattern[] = [
     {
-      patternType: 'opening',
-      description: 'Empathetic acknowledgment of customer issue',
+      patternType: "opening",
+      description: "Empathetic acknowledgment of customer issue",
       frequency: Math.floor(highPerformers.length * 0.85),
-      exampleTemplates: highPerformers.slice(0, 3).map(p => p.templateName),
+      exampleTemplates: highPerformers.slice(0, 3).map((p) => p.templateName),
       avgGradeImprovement: 0.3,
     },
     {
-      patternType: 'structure',
-      description: 'Clear problem-solution-action format',
+      patternType: "structure",
+      description: "Clear problem-solution-action format",
       frequency: Math.floor(highPerformers.length * 0.75),
-      exampleTemplates: highPerformers.slice(0, 3).map(p => p.templateName),
+      exampleTemplates: highPerformers.slice(0, 3).map((p) => p.templateName),
       avgGradeImprovement: 0.25,
     },
     {
-      patternType: 'tone',
-      description: 'Professional yet friendly language',
+      patternType: "tone",
+      description: "Professional yet friendly language",
       frequency: Math.floor(highPerformers.length * 0.9),
-      exampleTemplates: highPerformers.slice(0, 3).map(p => p.templateName),
+      exampleTemplates: highPerformers.slice(0, 3).map((p) => p.templateName),
       avgGradeImprovement: 0.35,
     },
   ];
@@ -352,14 +358,14 @@ function generateRecommendations(
   performances: TemplatePerformance[],
   patterns: TemplatePattern[],
   topTemplates: TemplatePerformance[],
-  lowPerformingTemplates: TemplatePerformance[]
+  lowPerformingTemplates: TemplatePerformance[],
 ): string[] {
   const recommendations: string[] = [];
 
   // Top template recommendation
   if (topTemplates.length > 0) {
     recommendations.push(
-      `Prioritize using "${topTemplates[0].templateName}" template (${topTemplates[0].averageGrade}/5.0 avg grade, ${topTemplates[0].usageCount} uses)`
+      `Prioritize using "${topTemplates[0].templateName}" template (${topTemplates[0].averageGrade}/5.0 avg grade, ${topTemplates[0].usageCount} uses)`,
     );
   }
 
@@ -367,29 +373,33 @@ function generateRecommendations(
   if (patterns.length > 0) {
     const topPattern = patterns[0];
     recommendations.push(
-      `High performers use ${topPattern.description.toLowerCase()} (${topPattern.frequency}/${topTemplates.length} templates, +${topPattern.avgGradeImprovement} grade improvement)`
+      `High performers use ${topPattern.description.toLowerCase()} (${topPattern.frequency}/${topTemplates.length} templates, +${topPattern.avgGradeImprovement} grade improvement)`,
     );
   }
 
   // Low performer recommendations
   if (lowPerformingTemplates.length > 0) {
     recommendations.push(
-      `Review and improve "${lowPerformingTemplates[0].templateName}" template (${lowPerformingTemplates[0].averageGrade}/5.0 avg grade)`
+      `Review and improve "${lowPerformingTemplates[0].templateName}" template (${lowPerformingTemplates[0].averageGrade}/5.0 avg grade)`,
     );
   }
 
   // Trend-based recommendations
-  const improvingTemplates = performances.filter(p => p.trend === 'improving');
+  const improvingTemplates = performances.filter(
+    (p) => p.trend === "improving",
+  );
   if (improvingTemplates.length > 0) {
     recommendations.push(
-      `${improvingTemplates.length} template(s) showing improvement - monitor and document successful changes`
+      `${improvingTemplates.length} template(s) showing improvement - monitor and document successful changes`,
     );
   }
 
-  const decliningTemplates = performances.filter(p => p.trend === 'declining');
+  const decliningTemplates = performances.filter(
+    (p) => p.trend === "declining",
+  );
   if (decliningTemplates.length > 0) {
     recommendations.push(
-      `${decliningTemplates.length} template(s) declining in quality - immediate review recommended`
+      `${decliningTemplates.length} template(s) declining in quality - immediate review recommended`,
     );
   }
 
@@ -400,7 +410,7 @@ function generateRecommendations(
 
   if (topUsagePercent < 50) {
     recommendations.push(
-      `High-performing templates account for only ${topUsagePercent.toFixed(0)}% of usage - increase their utilization`
+      `High-performing templates account for only ${topUsagePercent.toFixed(0)}% of usage - increase their utilization`,
     );
   }
 
@@ -413,14 +423,14 @@ function generateRecommendations(
 function prepareABTests(
   lowPerformers: TemplatePerformance[],
   topPerformers: TemplatePerformance[],
-  patterns: TemplatePattern[]
+  patterns: TemplatePattern[],
 ): ABTestCandidate[] {
   const candidates: ABTestCandidate[] = [];
 
   // Create A/B tests for low performers
   for (let i = 0; i < Math.min(lowPerformers.length, 3); i++) {
     const lowPerformer = lowPerformers[i];
-    
+
     // Suggest improvements based on patterns
     const proposedChanges: string[] = [];
     let expectedImprovement = 0;
@@ -436,7 +446,12 @@ function prepareABTests(
       proposedTemplate: `${lowPerformer.templateName}_v2`,
       proposedChanges,
       expectedImprovement: Number(expectedImprovement.toFixed(2)),
-      confidenceLevel: expectedImprovement > 0.5 ? 'high' : expectedImprovement > 0.3 ? 'medium' : 'low',
+      confidenceLevel:
+        expectedImprovement > 0.5
+          ? "high"
+          : expectedImprovement > 0.3
+            ? "medium"
+            : "low",
     });
   }
 
@@ -447,10 +462,10 @@ function prepareABTests(
  * Calculate start date based on time range
  */
 function calculateStartDate(timeRange: string): Date | null {
-  if (timeRange === 'all') return null;
+  if (timeRange === "all") return null;
 
   const now = new Date();
-  const days = parseInt(timeRange.replace('d', ''));
+  const days = parseInt(timeRange.replace("d", ""));
 
   if (isNaN(days)) return null;
 
@@ -469,7 +484,9 @@ function createEmptyOptimization(timeRange: string): TemplateOptimization {
     topTemplates: [],
     lowPerformingTemplates: [],
     patterns: [],
-    recommendations: ['No template data available for the specified time range'],
+    recommendations: [
+      "No template data available for the specified time range",
+    ],
     abTestCandidates: [],
     metadata: {
       totalTemplates: 0,
@@ -479,4 +496,3 @@ function createEmptyOptimization(timeRange: string): TemplateOptimization {
     },
   };
 }
-

@@ -5,7 +5,10 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { calculateReorderPoint, getInventoryStatus } from "~/services/inventory/rop";
+import {
+  calculateReorderPoint,
+  getInventoryStatus,
+} from "~/services/inventory/rop";
 import { getDemandForecast } from "~/services/inventory/demand-forecast";
 import { generateReorderAlert } from "~/services/inventory/reorder-alerts";
 
@@ -90,4 +93,3 @@ describe("Integration - Edge Cases", () => {
     expect(status).toBe("out_of_stock");
   });
 });
-

@@ -195,5 +195,3 @@ describe("getInventoryStatus", () => {
     expect(getInventoryStatus(500, rop)).toBe("in_stock");
   });
 });
-
-

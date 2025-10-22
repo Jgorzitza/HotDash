@@ -187,5 +187,3 @@ export function calculateAggregatePickerPayout(
     orders: orderPayouts,
   };
 }
-
-

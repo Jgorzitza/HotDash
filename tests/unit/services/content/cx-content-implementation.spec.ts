@@ -1,12 +1,16 @@
 /**
  * Unit Tests: CX Content Implementation Service
- * 
+ *
  * Tests for applying, retrieving, and removing CX theme content
  * using Shopify productUpdate mutations and metafields.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { applyCXContent, getCXContent, removeCXContent } from "~/services/content/cx-content-implementation";
+import {
+  applyCXContent,
+  getCXContent,
+  removeCXContent,
+} from "~/services/content/cx-content-implementation";
 
 // Mock Shopify authentication
 vi.mock("~/shopify.server", () => ({
@@ -50,14 +54,14 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXContent(
         {
           productId: "gid://shopify/Product/123",
           contentType: "size_chart",
           content: "Size chart content",
         },
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(true);
@@ -90,14 +94,14 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await applyCXContent(
         {
           productId: "gid://shopify/Product/999",
           contentType: "dimensions",
           content: "Dimensions content",
         },
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -105,12 +109,9 @@ describe("CX Content Implementation Service", () => {
     });
 
     it("should support all 4 content types", async () => {
-      const contentTypes: Array<"size_chart" | "dimensions" | "installation_guide" | "warranty"> = [
-        "size_chart",
-        "dimensions",
-        "installation_guide",
-        "warranty",
-      ];
+      const contentTypes: Array<
+        "size_chart" | "dimensions" | "installation_guide" | "warranty"
+      > = ["size_chart", "dimensions", "installation_guide", "warranty"];
 
       for (const contentType of contentTypes) {
         const mockAdmin = {
@@ -145,14 +146,14 @@ describe("CX Content Implementation Service", () => {
         (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
         const mockRequest = new Request("http://localhost");
-        
+
         const result = await applyCXContent(
           {
             productId: "gid://shopify/Product/123",
             contentType,
             content: `${contentType} content`,
           },
-          mockRequest
+          mockRequest,
         );
 
         expect(result.success).toBe(true);
@@ -182,11 +183,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await getCXContent(
         "gid://shopify/Product/123",
         "size_chart",
-        mockRequest
+        mockRequest,
       );
 
       expect(result).toEqual({ size_chart: "Size chart content" });
@@ -201,8 +202,12 @@ describe("CX Content Implementation Service", () => {
                 id: "gid://shopify/Product/123",
                 metafields: {
                   edges: [
-                    { node: { key: "size_chart", value: "Size chart content" } },
-                    { node: { key: "dimensions", value: "Dimensions content" } },
+                    {
+                      node: { key: "size_chart", value: "Size chart content" },
+                    },
+                    {
+                      node: { key: "dimensions", value: "Dimensions content" },
+                    },
                   ],
                 },
               },
@@ -215,11 +220,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await getCXContent(
         "gid://shopify/Product/123",
         null,
-        mockRequest
+        mockRequest,
       );
 
       expect(result).toEqual({
@@ -246,11 +251,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await getCXContent(
         "gid://shopify/Product/123",
         "size_chart",
-        mockRequest
+        mockRequest,
       );
 
       expect(result).toBeNull();
@@ -282,11 +287,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await removeCXContent(
         "gid://shopify/Product/123",
         "size_chart",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(true);
@@ -311,11 +316,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await removeCXContent(
         "gid://shopify/Product/999",
         "size_chart",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -345,11 +350,11 @@ describe("CX Content Implementation Service", () => {
       (authenticate.admin as any).mockResolvedValue({ admin: mockAdmin });
 
       const mockRequest = new Request("http://localhost");
-      
+
       const result = await removeCXContent(
         "gid://shopify/Product/invalid",
         "size_chart",
-        mockRequest
+        mockRequest,
       );
 
       expect(result.success).toBe(false);
@@ -370,4 +375,3 @@ describe("CX Content Implementation Service", () => {
     });
   });
 });
-

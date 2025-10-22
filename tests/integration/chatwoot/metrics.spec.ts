@@ -85,8 +85,12 @@ describe("Chatwoot Metrics Calculations", () => {
       const responseTimes = [3, 8, 12, 18, 25, 35, 45];
 
       const under5 = responseTimes.filter((t) => t <= 5).length;
-      const between5and15 = responseTimes.filter((t) => t > 5 && t <= 15).length;
-      const between15and30 = responseTimes.filter((t) => t > 15 && t <= 30).length;
+      const between5and15 = responseTimes.filter(
+        (t) => t > 5 && t <= 15,
+      ).length;
+      const between15and30 = responseTimes.filter(
+        (t) => t > 15 && t <= 30,
+      ).length;
       const over30 = responseTimes.filter((t) => t > 30).length;
 
       expect(under5).toBe(1); // [3]
@@ -99,7 +103,9 @@ describe("Chatwoot Metrics Calculations", () => {
       const resolutionHours = [0.5, 2, 5, 10, 30];
 
       const under4h = resolutionHours.filter((h) => h <= 4).length;
-      const between4and24h = resolutionHours.filter((h) => h > 4 && h <= 24).length;
+      const between4and24h = resolutionHours.filter(
+        (h) => h > 4 && h <= 24,
+      ).length;
       const over24h = resolutionHours.filter((h) => h > 24).length;
 
       expect(under4h).toBe(2); // [0.5, 2]
@@ -142,7 +148,9 @@ describe("Chatwoot Metrics Calculations", () => {
         { assignee: { id: 2 } },
       ];
 
-      const agent1Count = conversations.filter((c) => c.assignee?.id === 1).length;
+      const agent1Count = conversations.filter(
+        (c) => c.assignee?.id === 1,
+      ).length;
 
       expect(agent1Count).toBe(2);
     });
@@ -163,8 +171,11 @@ describe("Chatwoot Metrics Calculations", () => {
         { id: 3, assignedCount: 8 },
       ];
 
-      const avgWorkload = agents.reduce((sum, a) => sum + a.assignedCount, 0) / agents.length;
-      const overloaded = agents.filter((a) => a.assignedCount > avgWorkload * 1.5);
+      const avgWorkload =
+        agents.reduce((sum, a) => sum + a.assignedCount, 0) / agents.length;
+      const overloaded = agents.filter(
+        (a) => a.assignedCount > avgWorkload * 1.5,
+      );
 
       expect(overloaded).toHaveLength(1);
       expect(overloaded[0].id).toBe(1);
@@ -223,7 +234,8 @@ describe("Chatwoot Metrics Calculations", () => {
     it("should detect trend direction", () => {
       const thisWeek = 50;
       const lastWeek = 40;
-      const trend = thisWeek > lastWeek ? "up" : thisWeek < lastWeek ? "down" : "stable";
+      const trend =
+        thisWeek > lastWeek ? "up" : thisWeek < lastWeek ? "down" : "stable";
 
       expect(trend).toBe("up");
     });
@@ -264,5 +276,3 @@ describe("Chatwoot Metrics Calculations", () => {
     });
   });
 });
-
-

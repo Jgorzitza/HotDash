@@ -7,7 +7,12 @@
  * @module app/services/ads/copy-approval
  */
 
-import type { AdCopy, AdCopyApproval, AdCopyApprovalRequest, ApprovalStatus } from "./types";
+import type {
+  AdCopy,
+  AdCopyApproval,
+  AdCopyApprovalRequest,
+  ApprovalStatus,
+} from "./types";
 
 /**
  * In-memory store for ad copy approvals (should be replaced with database)
@@ -27,7 +32,9 @@ function generateApprovalId(): string {
  * @param request - Ad copy approval request data
  * @returns AdCopyApproval object with pending status
  */
-export function createApprovalRequest(request: AdCopyApprovalRequest): AdCopyApproval {
+export function createApprovalRequest(
+  request: AdCopyApprovalRequest,
+): AdCopyApproval {
   const approval: AdCopyApproval = {
     id: generateApprovalId(),
     request,
@@ -55,7 +62,7 @@ export function getApproval(id: string): AdCopyApproval | undefined {
  * @returns Array of pending approvals
  */
 export function getPendingApprovals(): AdCopyApproval[] {
-  return Array.from(approvals.values()).filter(a => a.status === "pending");
+  return Array.from(approvals.values()).filter((a) => a.status === "pending");
 }
 
 /**
@@ -66,7 +73,7 @@ export function getPendingApprovals(): AdCopyApproval[] {
  */
 export function getCampaignApprovals(campaignId: string): AdCopyApproval[] {
   return Array.from(approvals.values()).filter(
-    a => a.request.campaignId === campaignId
+    (a) => a.request.campaignId === campaignId,
   );
 }
 
@@ -82,7 +89,7 @@ export function getCampaignApprovals(campaignId: string): AdCopyApproval[] {
 export function approveAdCopy(
   id: string,
   reviewedBy: string,
-  reviewNotes?: string
+  reviewNotes?: string,
 ): AdCopyApproval {
   const approval = approvals.get(id);
 
@@ -91,7 +98,9 @@ export function approveAdCopy(
   }
 
   if (approval.status !== "pending") {
-    throw new Error(`Approval already processed: ${id} (status: ${approval.status})`);
+    throw new Error(
+      `Approval already processed: ${id} (status: ${approval.status})`,
+    );
   }
 
   approval.status = "approved";
@@ -116,7 +125,7 @@ export function approveAdCopy(
 export function rejectAdCopy(
   id: string,
   reviewedBy: string,
-  reviewNotes: string
+  reviewNotes: string,
 ): AdCopyApproval {
   const approval = approvals.get(id);
 
@@ -125,7 +134,9 @@ export function rejectAdCopy(
   }
 
   if (approval.status !== "pending") {
-    throw new Error(`Approval already processed: ${id} (status: ${approval.status})`);
+    throw new Error(
+      `Approval already processed: ${id} (status: ${approval.status})`,
+    );
   }
 
   approval.status = "rejected";
@@ -153,7 +164,9 @@ export function markAsApplied(id: string): AdCopyApproval {
   }
 
   if (approval.status !== "approved") {
-    throw new Error(`Approval must be approved before applying: ${id} (status: ${approval.status})`);
+    throw new Error(
+      `Approval must be approved before applying: ${id} (status: ${approval.status})`,
+    );
   }
 
   approval.status = "applied";
@@ -200,7 +213,9 @@ export function validateAdCopy(copy: AdCopy): string[] {
   for (let i = 0; i < copy.descriptions.length; i++) {
     const description = copy.descriptions[i];
     if (description.length > 90) {
-      errors.push(`Description ${i + 1} exceeds 90 characters: "${description}"`);
+      errors.push(
+        `Description ${i + 1} exceeds 90 characters: "${description}"`,
+      );
     }
     if (description.trim().length === 0) {
       errors.push(`Description ${i + 1} is empty`);
@@ -240,12 +255,20 @@ export function generateCopyDiff(current: AdCopy, proposed: AdCopy): string[] {
   const diffs: string[] = [];
 
   // Compare headlines
-  if (JSON.stringify(current.headlines) !== JSON.stringify(proposed.headlines)) {
-    diffs.push(`Headlines: ${current.headlines.length} → ${proposed.headlines.length}`);
-    
-    const added = proposed.headlines.filter(h => !current.headlines.includes(h));
-    const removed = current.headlines.filter(h => !proposed.headlines.includes(h));
-    
+  if (
+    JSON.stringify(current.headlines) !== JSON.stringify(proposed.headlines)
+  ) {
+    diffs.push(
+      `Headlines: ${current.headlines.length} → ${proposed.headlines.length}`,
+    );
+
+    const added = proposed.headlines.filter(
+      (h) => !current.headlines.includes(h),
+    );
+    const removed = current.headlines.filter(
+      (h) => !proposed.headlines.includes(h),
+    );
+
     if (added.length > 0) {
       diffs.push(`  Added: ${added.join(", ")}`);
     }
@@ -255,12 +278,21 @@ export function generateCopyDiff(current: AdCopy, proposed: AdCopy): string[] {
   }
 
   // Compare descriptions
-  if (JSON.stringify(current.descriptions) !== JSON.stringify(proposed.descriptions)) {
-    diffs.push(`Descriptions: ${current.descriptions.length} → ${proposed.descriptions.length}`);
-    
-    const added = proposed.descriptions.filter(d => !current.descriptions.includes(d));
-    const removed = current.descriptions.filter(d => !proposed.descriptions.includes(d));
-    
+  if (
+    JSON.stringify(current.descriptions) !==
+    JSON.stringify(proposed.descriptions)
+  ) {
+    diffs.push(
+      `Descriptions: ${current.descriptions.length} → ${proposed.descriptions.length}`,
+    );
+
+    const added = proposed.descriptions.filter(
+      (d) => !current.descriptions.includes(d),
+    );
+    const removed = current.descriptions.filter(
+      (d) => !proposed.descriptions.includes(d),
+    );
+
     if (added.length > 0) {
       diffs.push(`  Added: ${added.join(", ")}`);
     }
@@ -276,10 +308,14 @@ export function generateCopyDiff(current: AdCopy, proposed: AdCopy): string[] {
 
   // Compare display paths
   if (current.displayPath1 !== proposed.displayPath1) {
-    diffs.push(`Display Path 1: ${current.displayPath1 || "(none)"} → ${proposed.displayPath1 || "(none)"}`);
+    diffs.push(
+      `Display Path 1: ${current.displayPath1 || "(none)"} → ${proposed.displayPath1 || "(none)"}`,
+    );
   }
   if (current.displayPath2 !== proposed.displayPath2) {
-    diffs.push(`Display Path 2: ${current.displayPath2 || "(none)"} → ${proposed.displayPath2 || "(none)"}`);
+    diffs.push(
+      `Display Path 2: ${current.displayPath2 || "(none)"} → ${proposed.displayPath2 || "(none)"}`,
+    );
   }
 
   return diffs;
@@ -299,11 +335,11 @@ export function getApprovalStats(): {
   approvalRate: number;
 } {
   const allApprovals = Array.from(approvals.values());
-  const pending = allApprovals.filter(a => a.status === "pending").length;
-  const approved = allApprovals.filter(a => a.status === "approved").length;
-  const rejected = allApprovals.filter(a => a.status === "rejected").length;
-  const applied = allApprovals.filter(a => a.status === "applied").length;
-  
+  const pending = allApprovals.filter((a) => a.status === "pending").length;
+  const approved = allApprovals.filter((a) => a.status === "approved").length;
+  const rejected = allApprovals.filter((a) => a.status === "rejected").length;
+  const applied = allApprovals.filter((a) => a.status === "applied").length;
+
   const processed = approved + rejected;
   const approvalRate = processed > 0 ? (approved / processed) * 100 : 0;
 
@@ -316,4 +352,3 @@ export function getApprovalStats(): {
     approvalRate: parseFloat(approvalRate.toFixed(2)),
   };
 }
-

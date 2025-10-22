@@ -36,5 +36,3 @@ describe("Inventory Reporting - Monthly Reports", () => {
     expect(daysDiff).toBeGreaterThan(25); // Approximately 30 days
   });
 });
-
-

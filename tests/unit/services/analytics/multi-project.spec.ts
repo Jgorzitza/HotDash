@@ -1,6 +1,6 @@
 /**
  * Tests for Multi-Project Analytics Aggregation
- * 
+ *
  * @see app/services/analytics/multi-project.ts
  * @see docs/directions/analytics.md ANALYTICS-011
  */
@@ -31,12 +31,14 @@ vi.mock("../../../../app/db.server", () => ({
         let results = mockDashboardFacts;
 
         if (query?.where?.shopDomain) {
-          results = results.filter((f) => f.shopDomain === query.where.shopDomain);
+          results = results.filter(
+            (f) => f.shopDomain === query.where.shopDomain,
+          );
         }
 
         if (query?.where?.factType?.in) {
           results = results.filter((f) =>
-            query.where.factType.in.includes(f.factType)
+            query.where.factType.in.includes(f.factType),
           );
         }
 
@@ -182,21 +184,39 @@ describe("Multi-Project Analytics", () => {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 }, // ROAS 5.0
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          }, // ROAS 5.0
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 300, spend: 100 }, // ROAS 3.0
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 300,
+            spend: 100,
+          }, // ROAS 3.0
           createdAt: new Date(),
         },
         {
           id: 3,
           shopDomain: "shop3",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 150, spend: 100 }, // ROAS 1.5
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 150,
+            spend: 100,
+          }, // ROAS 1.5
           createdAt: new Date(),
         },
       ];
@@ -209,24 +229,33 @@ describe("Multi-Project Analytics", () => {
     });
 
     it("should identify bottom performers", async () => {
-      mockDistinctShops = [
-        { shopDomain: "shop1" },
-        { shopDomain: "shop2" },
-      ];
+      mockDistinctShops = [{ shopDomain: "shop1" }, { shopDomain: "shop2" }];
 
       mockDashboardFacts = [
         {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 100, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 100,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
       ];
@@ -238,24 +267,33 @@ describe("Multi-Project Analytics", () => {
     });
 
     it("should return complete project breakdown", async () => {
-      mockDistinctShops = [
-        { shopDomain: "shop1" },
-        { shopDomain: "shop2" },
-      ];
+      mockDistinctShops = [{ shopDomain: "shop1" }, { shopDomain: "shop2" }];
 
       mockDashboardFacts = [
         {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 2000, clicks: 100, conversions: 10, revenue: 1000, spend: 200 },
+          value: {
+            impressions: 2000,
+            clicks: 100,
+            conversions: 10,
+            revenue: 1000,
+            spend: 200,
+          },
           createdAt: new Date(),
         },
       ];
@@ -314,14 +352,26 @@ describe("Multi-Project Analytics", () => {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 }, // ROAS 5.0
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          }, // ROAS 5.0
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 300, spend: 100 }, // ROAS 3.0
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 300,
+            spend: 100,
+          }, // ROAS 3.0
           createdAt: new Date(),
         },
       ];
@@ -346,21 +396,39 @@ describe("Multi-Project Analytics", () => {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 5000, clicks: 250, conversions: 50, revenue: 5000, spend: 1000 },
+          value: {
+            impressions: 5000,
+            clicks: 250,
+            conversions: 50,
+            revenue: 5000,
+            spend: 1000,
+          },
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 3000, clicks: 150, conversions: 30, revenue: 3000, spend: 1000 },
+          value: {
+            impressions: 3000,
+            clicks: 150,
+            conversions: 30,
+            revenue: 3000,
+            spend: 1000,
+          },
           createdAt: new Date(),
         },
         {
           id: 3,
           shopDomain: "shop3",
           factType: "ads_roas",
-          value: { impressions: 10000, clicks: 500, conversions: 100, revenue: 10000, spend: 2000 },
+          value: {
+            impressions: 10000,
+            clicks: 500,
+            conversions: 100,
+            revenue: 10000,
+            spend: 2000,
+          },
           createdAt: new Date(),
         },
       ];
@@ -399,24 +467,33 @@ describe("Multi-Project Analytics", () => {
 
   describe("getProjectRankings", () => {
     it("should return ranked projects with grades", async () => {
-      mockDistinctShops = [
-        { shopDomain: "shop1" },
-        { shopDomain: "shop2" },
-      ];
+      mockDistinctShops = [{ shopDomain: "shop1" }, { shopDomain: "shop2" }];
 
       mockDashboardFacts = [
         {
           id: 1,
           shopDomain: "shop1",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 }, // ROAS 5.0
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          }, // ROAS 5.0
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "shop2",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 150, spend: 100 }, // ROAS 1.5
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 150,
+            spend: 100,
+          }, // ROAS 1.5
           createdAt: new Date(),
         },
       ];
@@ -445,35 +522,65 @@ describe("Multi-Project Analytics", () => {
           id: 1,
           shopDomain: "gradeA",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 450, spend: 100 }, // ROAS 4.5
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 450,
+            spend: 100,
+          }, // ROAS 4.5
           createdAt: new Date(),
         },
         {
           id: 2,
           shopDomain: "gradeB",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 320, spend: 100 }, // ROAS 3.2
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 320,
+            spend: 100,
+          }, // ROAS 3.2
           createdAt: new Date(),
         },
         {
           id: 3,
           shopDomain: "gradeC",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 220, spend: 100 }, // ROAS 2.2
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 220,
+            spend: 100,
+          }, // ROAS 2.2
           createdAt: new Date(),
         },
         {
           id: 4,
           shopDomain: "gradeD",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 120, spend: 100 }, // ROAS 1.2
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 120,
+            spend: 100,
+          }, // ROAS 1.2
           createdAt: new Date(),
         },
         {
           id: 5,
           shopDomain: "gradeF",
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 50, spend: 100 }, // ROAS 0.5
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 50,
+            spend: 100,
+          }, // ROAS 0.5
           createdAt: new Date(),
         },
       ];
@@ -488,5 +595,3 @@ describe("Multi-Project Analytics", () => {
     });
   });
 });
-
-

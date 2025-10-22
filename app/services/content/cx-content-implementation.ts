@@ -1,9 +1,9 @@
 /**
  * CX Content Implementation Service
- * 
+ *
  * Implements CX theme content (size charts, installation guides, dimensions, warranty)
  * to Shopify products using metafields via productUpdate mutation.
- * 
+ *
  * Based on Product agent's CX theme action generator templates.
  */
 
@@ -12,10 +12,10 @@ import { authenticate } from "~/shopify.server";
 /**
  * Content types supported by this service
  */
-export type CXContentType = 
-  | "size_chart" 
-  | "dimensions" 
-  | "installation_guide" 
+export type CXContentType =
+  | "size_chart"
+  | "dimensions"
+  | "installation_guide"
   | "warranty";
 
 /**
@@ -80,22 +80,22 @@ function getMetafieldConfig(contentType: CXContentType): {
 
 /**
  * Applies CX theme content to a Shopify product using productUpdate mutation
- * 
+ *
  * @param request - Content implementation request
  * @param requestContext - Request context for Shopify authentication
  * @returns Result of the content implementation
  */
 export async function applyCXContent(
   request: CXContentRequest,
-  requestContext: Request
+  requestContext: Request,
 ): Promise<CXContentResult> {
   try {
     // Authenticate with Shopify
     const { admin } = await authenticate.admin(requestContext);
-    
+
     // Get metafield configuration
     const metafieldConfig = getMetafieldConfig(request.contentType);
-    
+
     // Execute productUpdate mutation
     const response = await admin.graphql(
       `#graphql
@@ -135,16 +135,16 @@ export async function applyCXContent(
             ],
           },
         },
-      }
+      },
     );
 
     const data = await response.json();
-    
+
     // Check for user errors
     if (data.data?.productUpdate?.userErrors?.length > 0) {
       const errors = data.data.productUpdate.userErrors;
       console.error("[CX Content] productUpdate user errors:", errors);
-      
+
       return {
         success: false,
         productId: request.productId,
@@ -154,23 +154,28 @@ export async function applyCXContent(
     }
 
     // Extract metafield ID from response
-    const metafields = data.data?.productUpdate?.product?.metafields?.edges || [];
+    const metafields =
+      data.data?.productUpdate?.product?.metafields?.edges || [];
     const appliedMetafield = metafields.find(
-      (edge: any) => edge.node.key === metafieldConfig.key
+      (edge: any) => edge.node.key === metafieldConfig.key,
     );
-    
-    console.log(`[CX Content] ✅ Applied ${request.contentType} to product ${request.productId}`);
-    
+
+    console.log(
+      `[CX Content] ✅ Applied ${request.contentType} to product ${request.productId}`,
+    );
+
     return {
       success: true,
       productId: request.productId,
       contentType: request.contentType,
       metafieldId: appliedMetafield?.node?.id,
     };
-    
   } catch (error: any) {
-    console.error(`[CX Content] Error applying content to ${request.productId}:`, error);
-    
+    console.error(
+      `[CX Content] Error applying content to ${request.productId}:`,
+      error,
+    );
+
     return {
       success: false,
       productId: request.productId,
@@ -182,7 +187,7 @@ export async function applyCXContent(
 
 /**
  * Applies multiple CX content items to a single product
- * 
+ *
  * @param productId - Shopify product GID
  * @param contentItems - Array of content type and content pairs
  * @param requestContext - Request context for Shopify authentication
@@ -191,10 +196,10 @@ export async function applyCXContent(
 export async function applyMultipleCXContents(
   productId: string,
   contentItems: Array<{ contentType: CXContentType; content: string }>,
-  requestContext: Request
+  requestContext: Request,
 ): Promise<CXContentResult[]> {
   const results: CXContentResult[] = [];
-  
+
   for (const item of contentItems) {
     const result = await applyCXContent(
       {
@@ -202,18 +207,18 @@ export async function applyMultipleCXContents(
         contentType: item.contentType,
         content: item.content,
       },
-      requestContext
+      requestContext,
     );
-    
+
     results.push(result);
   }
-  
+
   return results;
 }
 
 /**
  * Retrieves CX content for a product
- * 
+ *
  * @param productId - Shopify product GID
  * @param contentType - Type of content to retrieve (optional, returns all if not specified)
  * @param requestContext - Request context for Shopify authentication
@@ -222,11 +227,11 @@ export async function applyMultipleCXContents(
 export async function getCXContent(
   productId: string,
   contentType: CXContentType | null,
-  requestContext: Request
+  requestContext: Request,
 ): Promise<Record<string, string> | null> {
   try {
     const { admin } = await authenticate.admin(requestContext);
-    
+
     let queryFragment = "";
     if (contentType) {
       const config = getMetafieldConfig(contentType);
@@ -243,7 +248,7 @@ export async function getCXContent(
         }
       }`;
     }
-    
+
     const response = await admin.graphql(
       `#graphql
       query GetProductCXContent($productId: ID!) {
@@ -256,11 +261,11 @@ export async function getCXContent(
         variables: {
           productId,
         },
-      }
+      },
     );
 
     const data = await response.json();
-    
+
     if (contentType) {
       // Single content type requested
       const value = data.data?.product?.metafield?.value;
@@ -269,24 +274,26 @@ export async function getCXContent(
       // All content types requested
       const metafields = data.data?.product?.metafields?.edges || [];
       const contents: Record<string, string> = {};
-      
+
       metafields.forEach((edge: any) => {
         contents[edge.node.key] = edge.node.value;
       });
-      
+
       return Object.keys(contents).length > 0 ? contents : null;
     }
-    
   } catch (error: any) {
-    console.error(`[CX Content] Error retrieving content for ${productId}:`, error);
+    console.error(
+      `[CX Content] Error retrieving content for ${productId}:`,
+      error,
+    );
     return null;
   }
 }
 
 /**
  * Removes CX content from a product
- * 
- * @param productId - Shopify product GID  
+ *
+ * @param productId - Shopify product GID
  * @param contentType - Type of content to remove
  * @param requestContext - Request context for Shopify authentication
  * @returns Success status
@@ -294,12 +301,12 @@ export async function getCXContent(
 export async function removeCXContent(
   productId: string,
   contentType: CXContentType,
-  requestContext: Request
+  requestContext: Request,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const { admin } = await authenticate.admin(requestContext);
     const config = getMetafieldConfig(contentType);
-    
+
     // Delete the metafield using metafieldsDelete
     const response = await admin.graphql(
       `#graphql
@@ -326,11 +333,11 @@ export async function removeCXContent(
             },
           ],
         },
-      }
+      },
     );
 
     const data = await response.json();
-    
+
     if (data.data?.metafieldsDelete?.userErrors?.length > 0) {
       const errors = data.data.metafieldsDelete.userErrors;
       return {
@@ -338,23 +345,30 @@ export async function removeCXContent(
         error: errors.map((e: any) => `${e.field}: ${e.message}`).join(", "),
       };
     }
-    
+
     // Check if metafield was actually deleted
-    const deletedMetafields = data.data?.metafieldsDelete?.deletedMetafields || [];
+    const deletedMetafields =
+      data.data?.metafieldsDelete?.deletedMetafields || [];
     if (deletedMetafields.length === 0 || !deletedMetafields[0]) {
-      return { success: false, error: "Metafield not found or already deleted" };
+      return {
+        success: false,
+        error: "Metafield not found or already deleted",
+      };
     }
-    
-    console.log(`[CX Content] ✅ Removed ${contentType} from product ${productId}`);
-    
+
+    console.log(
+      `[CX Content] ✅ Removed ${contentType} from product ${productId}`,
+    );
+
     return { success: true };
-    
   } catch (error: any) {
-    console.error(`[CX Content] Error removing content from ${productId}:`, error);
+    console.error(
+      `[CX Content] Error removing content from ${productId}:`,
+      error,
+    );
     return {
       success: false,
       error: error.message || "Unknown error occurred",
     };
   }
 }
-

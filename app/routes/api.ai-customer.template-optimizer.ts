@@ -13,7 +13,10 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import { optimizeTemplates, type TemplateOptimization } from "../services/ai-customer/template-optimizer";
+import {
+  optimizeTemplates,
+  type TemplateOptimization,
+} from "../services/ai-customer/template-optimizer";
 
 /**
  * API Response structure
@@ -28,14 +31,14 @@ interface TemplateOptimizerResponse {
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const timeRange = url.searchParams.get('timeRange') || '30d';
+    const timeRange = url.searchParams.get("timeRange") || "30d";
 
     // Validate timeRange parameter
-    const validTimeRanges = ['7d', '30d', '90d', 'all'];
+    const validTimeRanges = ["7d", "30d", "90d", "all"];
     if (!validTimeRanges.includes(timeRange)) {
       const errorResponse: TemplateOptimizerResponse = {
         success: false,
-        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(', ')}`,
+        error: `Invalid timeRange parameter. Must be one of: ${validTimeRanges.join(", ")}`,
         timestamp: new Date().toISOString(),
       };
       return Response.json(errorResponse, { status: 400 });
@@ -46,14 +49,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Missing Supabase configuration');
+      throw new Error("Missing Supabase configuration");
     }
 
     // Optimize templates
     const optimization = await optimizeTemplates(
       timeRange,
       supabaseUrl,
-      supabaseKey
+      supabaseKey,
     );
 
     const response: TemplateOptimizerResponse = {
@@ -64,15 +67,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: any) {
-    console.error('[API] Template optimizer error:', error);
+    console.error("[API] Template optimizer error:", error);
 
     const errorResponse: TemplateOptimizerResponse = {
       success: false,
-      error: error.message || 'Failed to optimize templates',
+      error: error.message || "Failed to optimize templates",
       timestamp: new Date().toISOString(),
     };
 
     return Response.json(errorResponse, { status: 500 });
   }
 }
-

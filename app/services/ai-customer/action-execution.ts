@@ -1,25 +1,30 @@
 /**
  * AI-Customer CEO Agent Action Execution Service
- * 
+ *
  * Executes approved actions from CEO Agent after HITL approval.
  * Supports 5 action types: CX, inventory, social, product, ads.
  * Tracks success/failure and stores audit receipts.
- * 
+ *
  * @module app/services/ai-customer/action-execution
  * @see docs/directions/ai-customer.md AI-CUSTOMER-008
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Action types supported by CEO Agent
  */
-export type ActionType = 'cx' | 'inventory' | 'social' | 'product' | 'ads';
+export type ActionType = "cx" | "inventory" | "social" | "product" | "ads";
 
 /**
  * Action execution status
  */
-export type ExecutionStatus = 'pending' | 'in_progress' | 'success' | 'failed' | 'cancelled';
+export type ExecutionStatus =
+  | "pending"
+  | "in_progress"
+  | "success"
+  | "failed"
+  | "cancelled";
 
 /**
  * Action execution request
@@ -54,7 +59,7 @@ export interface ActionExecutionResult {
  */
 export interface ExecutionReceipt {
   executedAt: string;
-  executedBy: 'ceo_agent';
+  executedBy: "ceo_agent";
   actionType: ActionType;
   approvalId: number;
   payload: Record<string, any>;
@@ -72,7 +77,7 @@ export interface ExecutionReceipt {
 
 /**
  * Execute approved CEO Agent action
- * 
+ *
  * Strategy:
  * 1. Validate approval exists and is approved
  * 2. Route to appropriate service (CX, inventory, social, product, ads)
@@ -80,7 +85,7 @@ export interface ExecutionReceipt {
  * 4. Track API calls and timing
  * 5. Store result and receipt in decision_log
  * 6. Return execution result
- * 
+ *
  * @param request - Action execution request with approval context
  * @param supabaseUrl - Supabase project URL
  * @param supabaseKey - Supabase service key
@@ -89,7 +94,7 @@ export interface ExecutionReceipt {
 export async function executeAction(
   request: ActionExecutionRequest,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<ActionExecutionResult> {
   const supabase = createClient(supabaseUrl, supabaseKey);
   const startTime = Date.now();
@@ -98,9 +103,9 @@ export async function executeAction(
   try {
     // Verify approval exists
     const { data: approval, error: approvalError } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('id', request.approvalId)
+      .from("decision_log")
+      .select("*")
+      .eq("id", request.approvalId)
       .single();
 
     if (approvalError || !approval) {
@@ -109,34 +114,36 @@ export async function executeAction(
 
     // Check approval status
     const approvalStatus = (approval.payload as any)?.approvalStatus;
-    if (approvalStatus !== 'approved') {
-      throw new Error(`Approval ${request.approvalId} not approved (status: ${approvalStatus})`);
+    if (approvalStatus !== "approved") {
+      throw new Error(
+        `Approval ${request.approvalId} not approved (status: ${approvalStatus})`,
+      );
     }
 
     // Track API calls
-    const apiCalls: ExecutionReceipt['apiCalls'] = [];
+    const apiCalls: ExecutionReceipt["apiCalls"] = [];
 
     // Route to appropriate service
     let result: Record<string, any>;
 
     switch (request.actionType) {
-      case 'cx':
+      case "cx":
         result = await executeCXAction(request, apiCalls);
         break;
 
-      case 'inventory':
+      case "inventory":
         result = await executeInventoryAction(request, apiCalls);
         break;
 
-      case 'social':
+      case "social":
         result = await executeSocialAction(request, apiCalls);
         break;
 
-      case 'product':
+      case "product":
         result = await executeProductAction(request, apiCalls);
         break;
 
-      case 'ads':
+      case "ads":
         result = await executeAdsAction(request, apiCalls);
         break;
 
@@ -149,7 +156,7 @@ export async function executeAction(
     // Create receipt
     const receipt: ExecutionReceipt = {
       executedAt: new Date().toISOString(),
-      executedBy: 'ceo_agent',
+      executedBy: "ceo_agent",
       actionType: request.actionType,
       approvalId: request.approvalId,
       payload: request.payload,
@@ -159,9 +166,9 @@ export async function executeAction(
     };
 
     // Store in decision_log
-    await supabase.from('decision_log').insert({
-      scope: 'ceo_agent',
-      actor: request.ceoContext?.userId || 'ceo_agent',
+    await supabase.from("decision_log").insert({
+      scope: "ceo_agent",
+      actor: request.ceoContext?.userId || "ceo_agent",
       action: `${request.actionType}.${request.actionId}`,
       rationale: `CEO Agent action execution via approval ${request.approvalId}`,
       payload: {
@@ -175,19 +182,20 @@ export async function executeAction(
     return {
       executionId,
       actionId: request.actionId,
-      status: 'success',
+      status: "success",
       result,
       receipt,
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
     const duration = Date.now() - startTime;
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
 
     // Create error receipt
     const receipt: ExecutionReceipt = {
       executedAt: new Date().toISOString(),
-      executedBy: 'ceo_agent',
+      executedBy: "ceo_agent",
       actionType: request.actionType,
       approvalId: request.approvalId,
       payload: request.payload,
@@ -197,9 +205,9 @@ export async function executeAction(
     };
 
     // Log error to decision_log
-    await supabase.from('decision_log').insert({
-      scope: 'ceo_agent',
-      actor: request.ceoContext?.userId || 'ceo_agent',
+    await supabase.from("decision_log").insert({
+      scope: "ceo_agent",
+      actor: request.ceoContext?.userId || "ceo_agent",
       action: `${request.actionType}.${request.actionId}.error`,
       rationale: `CEO Agent action execution failed: ${errorMessage}`,
       payload: {
@@ -213,7 +221,7 @@ export async function executeAction(
     return {
       executionId,
       actionId: request.actionId,
-      status: 'failed',
+      status: "failed",
       error: errorMessage,
       receipt,
       timestamp: new Date().toISOString(),
@@ -226,22 +234,22 @@ export async function executeAction(
  */
 async function executeCXAction(
   request: ActionExecutionRequest,
-  apiCalls: ExecutionReceipt['apiCalls']
+  apiCalls: ExecutionReceipt["apiCalls"],
 ): Promise<Record<string, any>> {
   const { payload } = request;
   const callStart = Date.now();
 
   // Call Chatwoot API to send reply, update status, etc.
-  const response = await fetch('/api/chatwoot/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/chatwoot/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   apiCalls.push({
-    service: 'chatwoot',
-    endpoint: '/api/chatwoot/action',
-    method: 'POST',
+    service: "chatwoot",
+    endpoint: "/api/chatwoot/action",
+    method: "POST",
     status: response.status,
     duration: Date.now() - callStart,
   });
@@ -258,22 +266,22 @@ async function executeCXAction(
  */
 async function executeInventoryAction(
   request: ActionExecutionRequest,
-  apiCalls: ExecutionReceipt['apiCalls']
+  apiCalls: ExecutionReceipt["apiCalls"],
 ): Promise<Record<string, any>> {
   const { payload } = request;
   const callStart = Date.now();
 
   // Call inventory management API to reorder, update ROP, etc.
-  const response = await fetch('/api/inventory/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/inventory/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   apiCalls.push({
-    service: 'inventory',
-    endpoint: '/api/inventory/action',
-    method: 'POST',
+    service: "inventory",
+    endpoint: "/api/inventory/action",
+    method: "POST",
     status: response.status,
     duration: Date.now() - callStart,
   });
@@ -290,22 +298,22 @@ async function executeInventoryAction(
  */
 async function executeSocialAction(
   request: ActionExecutionRequest,
-  apiCalls: ExecutionReceipt['apiCalls']
+  apiCalls: ExecutionReceipt["apiCalls"],
 ): Promise<Record<string, any>> {
   const { payload } = request;
   const callStart = Date.now();
 
   // Call Publer/social API to schedule post, update content, etc.
-  const response = await fetch('/api/social/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/social/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   apiCalls.push({
-    service: 'social',
-    endpoint: '/api/social/action',
-    method: 'POST',
+    service: "social",
+    endpoint: "/api/social/action",
+    method: "POST",
     status: response.status,
     duration: Date.now() - callStart,
   });
@@ -322,22 +330,22 @@ async function executeSocialAction(
  */
 async function executeProductAction(
   request: ActionExecutionRequest,
-  apiCalls: ExecutionReceipt['apiCalls']
+  apiCalls: ExecutionReceipt["apiCalls"],
 ): Promise<Record<string, any>> {
   const { payload } = request;
   const callStart = Date.now();
 
   // Call Shopify product API to create draft, update details, etc.
-  const response = await fetch('/api/product/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/product/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   apiCalls.push({
-    service: 'product',
-    endpoint: '/api/product/action',
-    method: 'POST',
+    service: "product",
+    endpoint: "/api/product/action",
+    method: "POST",
     status: response.status,
     duration: Date.now() - callStart,
   });
@@ -354,22 +362,22 @@ async function executeProductAction(
  */
 async function executeAdsAction(
   request: ActionExecutionRequest,
-  apiCalls: ExecutionReceipt['apiCalls']
+  apiCalls: ExecutionReceipt["apiCalls"],
 ): Promise<Record<string, any>> {
   const { payload } = request;
   const callStart = Date.now();
 
   // Call Google Ads API to update campaigns, budgets, etc.
-  const response = await fetch('/api/ads/action', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const response = await fetch("/api/ads/action", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
   apiCalls.push({
-    service: 'ads',
-    endpoint: '/api/ads/action',
-    method: 'POST',
+    service: "ads",
+    endpoint: "/api/ads/action",
+    method: "POST",
     status: response.status,
     duration: Date.now() - callStart,
   });
@@ -380,4 +388,3 @@ async function executeAdsAction(
 
   return await response.json();
 }
-

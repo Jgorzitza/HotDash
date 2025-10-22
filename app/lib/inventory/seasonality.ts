@@ -31,53 +31,51 @@ export interface SeasonalityPattern {
  * - Winter sports peak: Nov-Feb (months 10, 11, 0, 1)
  * - Summer sports peak: May-Aug (months 4, 5, 6, 7)
  */
-export const SEASONALITY_PATTERNS: Record<
-  ProductCategory,
-  SeasonalityPattern
-> = {
-  snowboards: {
-    category: "snowboards",
-    peakMonths: [10, 11, 0, 1], // Nov, Dec, Jan, Feb
-    peakFactor: 1.3, // 30% increase during peak
-    offSeasonFactor: 0.7, // 30% decrease off-season
-  },
-  skis: {
-    category: "skis",
-    peakMonths: [10, 11, 0, 1], // Nov, Dec, Jan, Feb
-    peakFactor: 1.3,
-    offSeasonFactor: 0.7,
-  },
-  "winter-sports": {
-    category: "winter-sports",
-    peakMonths: [10, 11, 0, 1],
-    peakFactor: 1.25, // 25% increase
-    offSeasonFactor: 0.75,
-  },
-  "summer-sports": {
-    category: "summer-sports",
-    peakMonths: [4, 5, 6, 7], // May, Jun, Jul, Aug
-    peakFactor: 1.25,
-    offSeasonFactor: 0.75,
-  },
-  "apparel-winter": {
-    category: "apparel-winter",
-    peakMonths: [9, 10, 11, 0, 1, 2], // Sep-Mar (longer season)
-    peakFactor: 1.2, // 20% increase
-    offSeasonFactor: 0.8,
-  },
-  "apparel-summer": {
-    category: "apparel-summer",
-    peakMonths: [3, 4, 5, 6, 7, 8], // Apr-Sep
-    peakFactor: 1.2,
-    offSeasonFactor: 0.8,
-  },
-  general: {
-    category: "general",
-    peakMonths: [], // No seasonality
-    peakFactor: 1.0,
-    offSeasonFactor: 1.0,
-  },
-};
+export const SEASONALITY_PATTERNS: Record<ProductCategory, SeasonalityPattern> =
+  {
+    snowboards: {
+      category: "snowboards",
+      peakMonths: [10, 11, 0, 1], // Nov, Dec, Jan, Feb
+      peakFactor: 1.3, // 30% increase during peak
+      offSeasonFactor: 0.7, // 30% decrease off-season
+    },
+    skis: {
+      category: "skis",
+      peakMonths: [10, 11, 0, 1], // Nov, Dec, Jan, Feb
+      peakFactor: 1.3,
+      offSeasonFactor: 0.7,
+    },
+    "winter-sports": {
+      category: "winter-sports",
+      peakMonths: [10, 11, 0, 1],
+      peakFactor: 1.25, // 25% increase
+      offSeasonFactor: 0.75,
+    },
+    "summer-sports": {
+      category: "summer-sports",
+      peakMonths: [4, 5, 6, 7], // May, Jun, Jul, Aug
+      peakFactor: 1.25,
+      offSeasonFactor: 0.75,
+    },
+    "apparel-winter": {
+      category: "apparel-winter",
+      peakMonths: [9, 10, 11, 0, 1, 2], // Sep-Mar (longer season)
+      peakFactor: 1.2, // 20% increase
+      offSeasonFactor: 0.8,
+    },
+    "apparel-summer": {
+      category: "apparel-summer",
+      peakMonths: [3, 4, 5, 6, 7, 8], // Apr-Sep
+      peakFactor: 1.2,
+      offSeasonFactor: 0.8,
+    },
+    general: {
+      category: "general",
+      peakMonths: [], // No seasonality
+      peakFactor: 1.0,
+      offSeasonFactor: 1.0,
+    },
+  };
 
 /**
  * Get current season from month
@@ -240,4 +238,3 @@ export function getMonthsUntilPeak(
 
   return monthsUntil;
 }
-

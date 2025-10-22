@@ -24,6 +24,7 @@ expires: 2025-11-21
 **Assessment**: Strong design foundation with consistent use of OCC tokens and Polaris patterns throughout all phases.
 
 **Key Strengths**:
+
 - ✅ OCC design tokens used 100% consistently
 - ✅ Typography scale consistent across all components
 - ✅ Color palette adheres to OCC system
@@ -31,6 +32,7 @@ expires: 2025-11-21
 - ✅ Component patterns reusable (TileCard, Modal, notifications)
 
 **Areas for Improvement**:
+
 - ⚠️ Minor spacing inconsistencies in modals (8 instances)
 - ⚠️ Icon usage could be more consistent (6 instances)
 - ⚠️ Button sizing varies slightly (3 instances)
@@ -44,12 +46,14 @@ expires: 2025-11-21
 ### Standards Applied
 
 **OCC Design System**:
-- Color tokens: --occ-color-*, --occ-text-*, --occ-bg-*
+
+- Color tokens: --occ-color-_, --occ-text-_, --occ-bg-\*
 - Spacing tokens: --occ-space-1 through --occ-space-8
-- Typography tokens: --occ-font-size-*, --occ-font-weight-*
+- Typography tokens: --occ-font-size-_, --occ-font-weight-_
 - Radius tokens: --occ-radius-sm, --occ-radius-md, --occ-radius-lg
 
 **Hot Rodan Brand**:
+
 - Voice: Automotive, performance, pit crew metaphors
 - Tone: Professional but approachable
 - Imagery: Minimal, focus on data
@@ -58,11 +62,13 @@ expires: 2025-11-21
 ### Testing Approach
 
 **Visual Inspection**:
+
 - Side-by-side comparison of all implemented features
 - Token usage verification (grep for hardcoded values)
 - Pattern consistency check (spacing, colors, typography)
 
 **Code Review**:
+
 - Search for hardcoded colors: `grep -r "#[0-9A-F]\{6\}" app/`
 - Search for hardcoded spacing: `grep -r "px\|rem" app/`
 - Verify token usage: `grep -r "var(--occ-" app/`
@@ -74,6 +80,7 @@ expires: 2025-11-21
 ### Phase 1: Approval Queue Foundation
 
 **Implemented Components**:
+
 - Dashboard route with tile grid
 - TileCard wrapper component
 - Approval queue tile
@@ -81,12 +88,14 @@ expires: 2025-11-21
 **Consistency Score**: ✅ **98%** (Excellent)
 
 **Strengths**:
+
 - ✅ TileCard pattern established (reused in all phases)
 - ✅ Grid layout uses OCC spacing tokens
 - ✅ Typography scale proper (headings, body, captions)
 - ✅ Color contrast meets WCAG AA
 
 **Issues**:
+
 - **M1**: Grid gap varies between 16px and 24px in different views
   - **Current**: `gap: var(--occ-space-4)` (16px) in dashboard
   - **Inconsistent**: Some places use `gap: var(--occ-space-6)` (24px)
@@ -94,6 +103,7 @@ expires: 2025-11-21
   - **Priority**: Medium
 
 **Recommendations**:
+
 - Audit all grid gaps and standardize
 - Document standard: "All tile grids use --occ-space-4"
 
@@ -102,6 +112,7 @@ expires: 2025-11-21
 ### Phase 2: Enhanced Modals (CX, Sales, Inventory)
 
 **Implemented Components**:
+
 - CXModal (customer support queue)
 - SalesModal (sales performance details)
 - InventoryModal (stock alerts and heatmap)
@@ -109,12 +120,14 @@ expires: 2025-11-21
 **Consistency Score**: ✅ **96%** (Excellent)
 
 **Strengths**:
+
 - ✅ All modals use consistent header pattern
 - ✅ Modal section spacing consistent (--occ-space-5 padding)
 - ✅ Button groups aligned (primary right, secondary left)
 - ✅ Typography hierarchy consistent
 
 **Issues**:
+
 - **M2**: Modal section padding varies (16px vs 20px)
   - **Current**: Most use `padding: var(--occ-space-5)` (20px)
   - **Inconsistent**: Some sections use `padding: var(--occ-space-4)` (16px)
@@ -132,6 +145,7 @@ expires: 2025-11-21
   - **Priority**: Low
 
 **Recommendations**:
+
 - Create modal section spacing standard
 - Document button text patterns (arrow for navigation, no arrow for actions)
 
@@ -140,6 +154,7 @@ expires: 2025-11-21
 ### Phase 3: Missing Dashboard Tiles
 
 **Implemented Components**:
+
 - IdeaPoolTile
 - CEOAgentTile
 - UnreadMessagesTile
@@ -147,12 +162,14 @@ expires: 2025-11-21
 **Consistency Score**: ✅ **97%** (Excellent)
 
 **Strengths**:
+
 - ✅ All tiles follow TileCard pattern
 - ✅ Consistent list item styling (border-left indicators)
 - ✅ Badge usage consistent (wildcard badge, status badges)
 - ✅ formatTimeAgo utility reused across tiles
 
 **Issues**:
+
 - **L2**: Border-left indicator width varies (2px vs 3px)
   - **Current**: IdeaPoolTile uses 3px, CEOAgentTile uses 2px
   - **Fix**: Standardize on 3px for all status indicators
@@ -164,6 +181,7 @@ expires: 2025-11-21
   - **Priority**: Low
 
 **Recommendations**:
+
 - Create shared StatusIndicator component
 - Document standard border-left width (3px)
 
@@ -172,6 +190,7 @@ expires: 2025-11-21
 ### Phase 4: Notification System
 
 **Implemented Components**:
+
 - ToastContainer
 - BannerAlerts
 - NotificationCenter
@@ -179,12 +198,14 @@ expires: 2025-11-21
 **Consistency Score**: ✅ **95%** (Excellent)
 
 **Strengths**:
+
 - ✅ Toast colors consistent with OCC tokens
 - ✅ Banner tones map correctly (info, success, warning, critical)
 - ✅ Icon usage consistent (✓, ✕, ⚠, ℹ)
 - ✅ Animation durations consistent (300ms, 500ms)
 
 **Issues**:
+
 - **H1**: Toast z-index inconsistent with modal/drawer
   - **Current**: Toast z-index: 10000, Modal z-index: 9999
   - **Issue**: Toast may appear above modal (incorrect layering)
@@ -203,6 +224,7 @@ expires: 2025-11-21
   - **Priority**: Medium
 
 **Recommendations**:
+
 - Create z-index scale document
 - Standardize all border-radius usage
 
@@ -211,6 +233,7 @@ expires: 2025-11-21
 ### Phase 5: Real-Time Features
 
 **Implemented Components**:
+
 - ConnectionIndicator
 - LiveBadge
 - TileRefreshIndicator
@@ -218,12 +241,14 @@ expires: 2025-11-21
 **Consistency Score**: ✅ **93%** (Good)
 
 **Strengths**:
+
 - ✅ Connection status colors consistent
 - ✅ Pulse animations use same keyframe
 - ✅ Badge pill shape consistent across all badges
 - ✅ Timestamp formatting consistent (formatTimeAgo utility)
 
 **Issues**:
+
 - **H2**: Pulse animation duration varies (1s vs 2s)
   - **Current**: LiveBadge uses 1s, ConnectionIndicator uses 2s
   - **Fix**: Standardize on 2s for all pulse animations
@@ -240,6 +265,7 @@ expires: 2025-11-21
   - **Priority**: Low
 
 **Recommendations**:
+
 - Create animation duration standards document
 - Standardize all badge padding
 
@@ -248,18 +274,21 @@ expires: 2025-11-21
 ### Phase 6: Settings & Personalization
 
 **Implemented Components**:
+
 - Settings page (4 tabs)
 - SortableTile (drag & drop wrapper)
 
 **Consistency Score**: ✅ **95%** (Excellent)
 
 **Strengths**:
+
 - ✅ Tab pattern consistent with Polaris standards
 - ✅ Form input styling consistent (checkboxes, radios)
 - ✅ Section headings consistent (h2 with helper text)
 - ✅ Logout button uses proper critical styling
 
 **Issues**:
+
 - **M7**: Form input spacing inconsistent with modal forms (when Phase 11 adds forms)
   - **Current**: Settings uses flexbox column with space-3 gap
   - **Future**: Approval modals may use FormLayout with different spacing
@@ -272,6 +301,7 @@ expires: 2025-11-21
   - **Priority**: Low
 
 **Recommendations**:
+
 - Create form field spacing standards
 - Specify custom checkbox/radio styles for consistency
 
@@ -280,18 +310,21 @@ expires: 2025-11-21
 ### Phase 7-8: Analytics (Design Specs Only)
 
 **Designed Components**:
+
 - 4 analytics tiles (Traffic, Funnel, Products, Segments)
 - 4 analytics modals (detailed views)
 
 **Consistency Score**: ✅ **96%** (Excellent - design specs)
 
 **Strengths**:
+
 - ✅ Chart.js configurations consistent across all specs
 - ✅ Chart colors map to OCC tokens
 - ✅ Table styling consistent
 - ✅ Filter patterns standardized
 
 **Issues**:
+
 - **M8**: Chart height varies by type (200px, 300px, 400px)
   - **Current**: Different heights for different chart types
   - **Fix**: Document height standards:
@@ -306,6 +339,7 @@ expires: 2025-11-21
   - **Priority**: Low
 
 **Recommendations**:
+
 - Create chart sizing standards guide
 - Document legend positioning rules
 
@@ -318,24 +352,28 @@ expires: 2025-11-21
 **OCC Tokens Audit**: ✅ **100% Compliant**
 
 **Success Colors** (Green #008060):
+
 - ✅ Revenue metrics (positive)
 - ✅ "Approve" buttons
 - ✅ Success toasts/banners
 - ✅ Champions segment
 
 **Critical Colors** (Red #D82C0D):
+
 - ✅ Error toasts/banners
 - ✅ "Reject" buttons
 - ✅ Logout button
 - ✅ Critical metrics
 
 **Info Colors** (Blue #0078D4):
+
 - ✅ Info toasts/banners
 - ✅ Interactive links
 - ✅ Connection status
 - ✅ Default badges
 
 **Warning Colors** (Yellow #FFBF47):
+
 - ✅ Warning toasts/banners
 - ✅ "At Risk" indicators
 - ✅ Queue backlog alerts
@@ -349,6 +387,7 @@ expires: 2025-11-21
 **OCC Font Sizes**: ✅ **Consistent Usage**
 
 **Usage Patterns**:
+
 - **2xl (28px)**: Primary metrics in tiles
 - **xl (24px)**: Modal headings
 - **lg (20px)**: Page headings
@@ -357,6 +396,7 @@ expires: 2025-11-21
 - **xs (12px)**: Captions, helper text
 
 **Font Weights**:
+
 - **bold (700)**: Primary metrics, key numbers
 - **semibold (600)**: Headings, labels
 - **medium (500)**: Buttons, links
@@ -371,6 +411,7 @@ expires: 2025-11-21
 **OCC Spacing Tokens**: ✅ **99% Compliant**
 
 **Usage Patterns**:
+
 - **space-1 (4px)**: Tight gaps (icon + text)
 - **space-2 (8px)**: Small gaps (list items, chips)
 - **space-3 (12px)**: Medium gaps (form fields, cards)
@@ -380,10 +421,12 @@ expires: 2025-11-21
 - **space-8 (32px)**: Page-level spacing
 
 **Issues**:
+
 - **M1**: Grid gaps vary (see Phase 1)
 - **M2**: Modal section padding varies (see Phase 2)
 
-**Recommendations**: 
+**Recommendations**:
+
 - Create spacing decision tree
 - Document when to use each spacing level
 
@@ -394,6 +437,7 @@ expires: 2025-11-21
 **TileCard Pattern**: ✅ **100% Reused**
 
 **Usage**:
+
 - All 9 dashboard tiles use TileCard wrapper
 - Consistent props: title, testId, showRefreshIndicator
 - Consistent structure: metric → chart → data → button
@@ -405,6 +449,7 @@ expires: 2025-11-21
 **Modal Pattern**: ✅ **95% Consistent**
 
 **Structure**:
+
 ```tsx
 <Modal
   open={isOpen}
@@ -421,6 +466,7 @@ expires: 2025-11-21
 ```
 
 **Issues**:
+
 - **L1**: Some modals use size="large", others use default
 - **M3**: Button text varies (see Phase 2)
 
@@ -431,20 +477,24 @@ expires: 2025-11-21
 **Button Pattern**: ✅ **92% Consistent**
 
 **Primary Actions**:
+
 - Text: "Approve", "Save", "Submit", "Finish Tour"
 - Style: `variant="primary"` or `tone="success"`
 - Position: Right side of button group
 
 **Secondary Actions**:
+
 - Text: "Cancel", "Close", "Back"
 - Style: Default or `variant="plain"`
 - Position: Left side of button group
 
 **Navigation Buttons**:
+
 - Text: "[Action] →" (with arrow)
 - Example: "View Details →", "Next: Approvals"
 
 **Issues**:
+
 - **M3**: Arrow usage inconsistent (some buttons have →, others don't)
 
 **Result**: ✅ Mostly consistent
@@ -456,12 +506,14 @@ expires: 2025-11-21
 **Icon Consistency**: ⚠️ **85%** (Needs Improvement)
 
 **Standard Icons**:
+
 - ✅ Checkmark (✓) for success/approval
 - ✅ X (✕) for error/rejection
 - ✅ Warning (⚠) for warnings
 - ✅ Info (ℹ) for info messages
 
 **Issues**:
+
 - **H3**: Mix of Unicode characters and Polaris icons
   - **Example**: Some use ✓ character, others use CheckCircleIcon
   - **Fix**: Standardize on Polaris icons for all
@@ -475,6 +527,7 @@ expires: 2025-11-21
   - **Priority**: Medium
 
 **Recommendations**:
+
 - Replace all Unicode icons with Polaris icons
 - Create icon size standards guide
 
@@ -541,6 +594,7 @@ None - all critical issues fixed during implementation
 **Immediate Improvements**:
 
 1. **Fix Toast Z-Index** (H1) - 15 minutes
+
 ```tsx
 // app/components/notifications/ToastContainer.tsx
 - zIndex: 10000,
@@ -548,6 +602,7 @@ None - all critical issues fixed during implementation
 ```
 
 2. **Fix Pulse Animation** (H2) - 15 minutes
+
 ```tsx
 // app/components/realtime/LiveBadge.tsx
 - animation: isPulsing || showPulse ? "occ-pulse 1s ease-in-out" : undefined,
@@ -555,6 +610,7 @@ None - all critical issues fixed during implementation
 ```
 
 3. **Standardize Button Arrows** (M3) - 30 minutes
+
 ```tsx
 // All navigation buttons
 <Button onClick={() => navigate('/details')}>
@@ -568,6 +624,7 @@ None - all critical issues fixed during implementation
 ```
 
 4. **Standardize Grid Gap** (M1) - 30 minutes
+
 ```tsx
 // All dashboard grids
 <div style={{
@@ -578,10 +635,13 @@ None - all critical issues fixed during implementation
 ```
 
 5. **Standardize Modal Section Padding** (M2) - 30 minutes
+
 ```tsx
 // All modal sections
 <Modal.Section>
-  <div style={{padding: 'var(--occ-space-5)'}}> {/* Always 20px */}
+  <div style={{ padding: "var(--occ-space-5)" }}>
+    {" "}
+    {/* Always 20px */}
     {/* Content */}
   </div>
 </Modal.Section>
@@ -596,17 +656,18 @@ None - all critical issues fixed during implementation
 ### 1. Z-Index Scale
 
 **Recommended Layers**:
+
 ```css
 /* Z-Index Scale (OCC Standard) */
---occ-z-base: 0;           /* Normal flow */
---occ-z-dropdown: 1000;    /* Dropdowns, popovers */
---occ-z-sticky: 1010;      /* Sticky headers */
---occ-z-fixed: 1020;       /* Fixed elements */
---occ-z-drawer: 9000;      /* Side drawers */
+--occ-z-base: 0; /* Normal flow */
+--occ-z-dropdown: 1000; /* Dropdowns, popovers */
+--occ-z-sticky: 1010; /* Sticky headers */
+--occ-z-fixed: 1020; /* Fixed elements */
+--occ-z-drawer: 9000; /* Side drawers */
 --occ-z-modal-backdrop: 9998; /* Modal backdrops */
---occ-z-modal: 9999;       /* Modals */
---occ-z-toast: 9997;       /* Toast notifications (below modals) */
---occ-z-tooltip: 10000;    /* Tooltips (above everything) */
+--occ-z-modal: 9999; /* Modals */
+--occ-z-toast: 9997; /* Toast notifications (below modals) */
+--occ-z-tooltip: 10000; /* Tooltips (above everything) */
 ```
 
 **Document**: `docs/design/z-index-scale.md`
@@ -614,13 +675,14 @@ None - all critical issues fixed during implementation
 ### 2. Animation Durations
 
 **Recommended Standards**:
+
 ```css
 /* Animation Durations (OCC Standard) */
---occ-duration-instant: 0ms;       /* Reduced motion or instant changes */
---occ-duration-fast: 150ms;        /* Quick transitions (hover states) */
---occ-duration-normal: 300ms;      /* Standard transitions (modal open/close) */
---occ-duration-slow: 500ms;        /* Deliberate animations (charts) */
---occ-duration-pulse: 2000ms;      /* Pulse/breathing animations */
+--occ-duration-instant: 0ms; /* Reduced motion or instant changes */
+--occ-duration-fast: 150ms; /* Quick transitions (hover states) */
+--occ-duration-normal: 300ms; /* Standard transitions (modal open/close) */
+--occ-duration-slow: 500ms; /* Deliberate animations (charts) */
+--occ-duration-pulse: 2000ms; /* Pulse/breathing animations */
 ```
 
 **Document**: `docs/design/animation-standards.md`
@@ -628,6 +690,7 @@ None - all critical issues fixed during implementation
 ### 3. Spacing Patterns
 
 **When to Use Each Level**:
+
 - **space-1 (4px)**: Icon + adjacent text, tight badge padding
 - **space-2 (8px)**: List item gap, chip spacing, small card padding
 - **space-3 (12px)**: Form field gaps, medium card padding
@@ -641,12 +704,14 @@ None - all critical issues fixed during implementation
 ### 4. Icon Standards
 
 **Icon Sizes**:
+
 - **Small (16px)**: Inline with text, form field icons
 - **Medium (20px)**: Buttons, badges, tile headers
 - **Large (24px)**: Modal headers, prominent features
 - **XL (32px)**: Empty states, welcome screens
 
 **Icon Sources**:
+
 - **Preferred**: Polaris icons from `@shopify/polaris-icons`
 - **Avoid**: Unicode characters (inconsistent rendering)
 
@@ -655,11 +720,13 @@ None - all critical issues fixed during implementation
 ### 5. Button Patterns
 
 **Text Patterns**:
+
 - **Actions**: "Approve", "Save", "Submit", "Delete" (no arrow)
 - **Navigation**: "View Details →", "Next: [Page] →" (with arrow)
 - **Cancel**: "Cancel", "Close", "Back" (no arrow)
 
 **Sizing**:
+
 - **Default**: Polaris "medium" size (height 36px)
 - **Large**: Polaris "large" size (height 44px, touch-friendly)
 - **Small**: Polaris "small" size (height 28px, compact layouts)
@@ -673,6 +740,7 @@ None - all critical issues fixed during implementation
 ### Immediate (Complete This Sprint)
 
 **Quick Wins** (2 hours total):
+
 1. Fix toast z-index (H1) - 15 min
 2. Fix pulse animation (H2) - 15 min
 3. Standardize button arrows (M3) - 30 min
@@ -686,11 +754,13 @@ None - all critical issues fixed during implementation
 ### Short-Term (Next 2 Weeks)
 
 **Icon Standardization** (H3) - 2 hours:
+
 - Replace all Unicode icons with Polaris icons
 - Apply consistent icon sizes
 - Update all tile and modal components
 
 **Spacing Standardization** (M4-M8) - 4 hours:
+
 - Audit and fix all spacing inconsistencies
 - Create spacing decision tree document
 - Apply standards across all components
@@ -702,6 +772,7 @@ None - all critical issues fixed during implementation
 ### Long-Term (Next Month)
 
 **Documentation** (L1-L6) - 4 hours:
+
 - Create Z-index scale guide
 - Create animation standards guide
 - Create spacing decision tree
@@ -716,6 +787,7 @@ None - all critical issues fixed during implementation
 ## Design System Health Score
 
 **By Category**:
+
 - **Color**: 100% (excellent - all OCC tokens)
 - **Typography**: 100% (excellent - consistent scale)
 - **Spacing**: 95% (very good - minor inconsistencies)
@@ -734,11 +806,13 @@ None - all critical issues fixed during implementation
 **Design Consistency Assessment**: ✅ **READY**
 
 **Pre-Launch Requirements**:
+
 - ✅ Complete quick wins (2 hours) - P1/P2 fixes
 - ✅ Document design standards (Z-index, animations, spacing)
 - ✅ Icon standardization (H3) if time permits
 
 **Post-Launch**:
+
 - Complete all P2 items (6 hours total)
 - Complete all P3 items (4 hours total)
 - Create comprehensive design system documentation
@@ -752,6 +826,7 @@ None - all critical issues fixed during implementation
 ### Immediate Actions
 
 **1. Z-Index Fix** (H1):
+
 ```tsx
 // Toast container
 <div style={{
@@ -763,12 +838,14 @@ None - all critical issues fixed during implementation
 ```
 
 **2. Animation Standardization** (H2):
+
 ```tsx
 // All pulse animations
-animation: "occ-pulse 2s ease-in-out infinite"
+animation: "occ-pulse 2s ease-in-out infinite";
 ```
 
 **3. Button Text Pattern** (M3):
+
 ```tsx
 // Navigation buttons (with arrow)
 <Button>View Details →</Button>
@@ -782,6 +859,7 @@ animation: "occ-pulse 2s ease-in-out infinite"
 ### Phase 7-8 Implementation
 
 **Follow New Specs**:
+
 - ✅ Use `docs/design/analytics-tiles-specs.md`
 - ✅ Use `docs/design/analytics-modals-specs.md`
 - ✅ Chart heights standardized (150px, 200px, 300px)
@@ -795,6 +873,7 @@ animation: "occ-pulse 2s ease-in-out infinite"
 **Total Debt**: 17 items
 
 **By Priority**:
+
 - P0 (Critical): 0 items ✅
 - P1 (High): 3 items (3.75 hours)
 - P2 (Medium): 8 items (6 hours)
@@ -803,6 +882,7 @@ animation: "occ-pulse 2s ease-in-out infinite"
 **Total Effort to Clear**: 13.75 hours
 
 **Recommended Timeline**:
+
 - Sprint 1 (this week): P1 items (3.75 hours)
 - Sprint 2 (next week): P2 items (6 hours)
 - Sprint 3 (following): P3 items + documentation (4 hours)
@@ -816,6 +896,7 @@ animation: "occ-pulse 2s ease-in-out infinite"
 Hot Rod AN Control Center demonstrates strong design consistency across all implemented phases:
 
 **Strengths**:
+
 - OCC design tokens used consistently (100%)
 - Typography scale consistent (100%)
 - Component patterns reusable (TileCard, Modal)
@@ -823,6 +904,7 @@ Hot Rod AN Control Center demonstrates strong design consistency across all impl
 - Spacing mostly consistent (95%)
 
 **Design Debt**:
+
 - 17 items identified (mostly minor)
 - 0 critical issues (launch-ready)
 - 3 high priority items (3.75 hours to fix)
@@ -842,5 +924,3 @@ Design inconsistencies are minor and do not impact user experience. Complete qui
 ---
 
 **EOF — Phase 1-8 Design Audit Complete**
-
-

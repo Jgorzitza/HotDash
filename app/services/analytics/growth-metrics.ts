@@ -1,6 +1,6 @@
 /**
  * Growth Dashboard Metrics Service
- * 
+ *
  * Aggregates metrics across social, SEO, and ads channels
  * Provides weekly growth reports and trend analysis
  * Consolidates CTR, impressions, conversions data
@@ -65,7 +65,7 @@ export interface DashboardMetrics {
  */
 export async function getGrowthMetrics(
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<GrowthMetrics> {
   const since = new Date();
   since.setDate(since.getDate() - days);
@@ -98,17 +98,13 @@ export async function getGrowthMetrics(
   const totalRevenue = ads.revenue;
   const totalSpend = ads.spend;
 
-  const avgCTR = totalImpressions > 0
-    ? (totalClicks / totalImpressions) * 100
-    : 0;
+  const avgCTR =
+    totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
 
-  const avgConversionRate = totalClicks > 0
-    ? (totalConversions / totalClicks) * 100
-    : 0;
+  const avgConversionRate =
+    totalClicks > 0 ? (totalConversions / totalClicks) * 100 : 0;
 
-  const overallROAS = totalSpend > 0
-    ? totalRevenue / totalSpend
-    : 0;
+  const overallROAS = totalSpend > 0 ? totalRevenue / totalSpend : 0;
 
   return {
     totalImpressions,
@@ -127,7 +123,7 @@ export async function getGrowthMetrics(
  */
 export async function getWeeklyGrowthReport(
   shopDomain: string = "occ",
-  weeks: number = 4
+  weeks: number = 4,
 ): Promise<WeeklyGrowthReport[]> {
   const reports: WeeklyGrowthReport[] = [];
   const today = new Date();
@@ -141,7 +137,7 @@ export async function getWeeklyGrowthReport(
     const weekMetrics = await getMetricsForPeriod(
       shopDomain,
       weekStart,
-      weekEnd
+      weekEnd,
     );
 
     const prevWeekStart = new Date(weekStart);
@@ -152,26 +148,26 @@ export async function getWeeklyGrowthReport(
     const prevWeekMetrics = await getMetricsForPeriod(
       shopDomain,
       prevWeekStart,
-      prevWeekEnd
+      prevWeekEnd,
     );
 
     // Calculate week-over-week growth
     const growth = {
       impressions: calculateGrowth(
         weekMetrics.totalImpressions,
-        prevWeekMetrics.totalImpressions
+        prevWeekMetrics.totalImpressions,
       ),
       clicks: calculateGrowth(
         weekMetrics.totalClicks,
-        prevWeekMetrics.totalClicks
+        prevWeekMetrics.totalClicks,
       ),
       conversions: calculateGrowth(
         weekMetrics.totalConversions,
-        prevWeekMetrics.totalConversions
+        prevWeekMetrics.totalConversions,
       ),
       revenue: calculateGrowth(
         weekMetrics.totalRevenue,
-        prevWeekMetrics.totalRevenue
+        prevWeekMetrics.totalRevenue,
       ),
     };
 
@@ -197,7 +193,7 @@ export async function getWeeklyGrowthReport(
  */
 export async function getTrendAnalysis(
   shopDomain: string = "occ",
-  days: number = 30
+  days: number = 30,
 ): Promise<TrendAnalysis[]> {
   const trends: TrendAnalysis[] = [];
 
@@ -217,21 +213,37 @@ export async function getTrendAnalysis(
   const currentMetrics = await getMetricsForPeriod(
     shopDomain,
     currentStart,
-    currentEnd
+    currentEnd,
   );
 
   const previousMetrics = await getMetricsForPeriod(
     shopDomain,
     previousStart,
-    previousEnd
+    previousEnd,
   );
 
   // Analyze trends for key metrics
   const metrics = [
-    { key: "impressions", current: currentMetrics.totalImpressions, previous: previousMetrics.totalImpressions },
-    { key: "clicks", current: currentMetrics.totalClicks, previous: previousMetrics.totalClicks },
-    { key: "conversions", current: currentMetrics.totalConversions, previous: previousMetrics.totalConversions },
-    { key: "revenue", current: currentMetrics.totalRevenue, previous: previousMetrics.totalRevenue },
+    {
+      key: "impressions",
+      current: currentMetrics.totalImpressions,
+      previous: previousMetrics.totalImpressions,
+    },
+    {
+      key: "clicks",
+      current: currentMetrics.totalClicks,
+      previous: previousMetrics.totalClicks,
+    },
+    {
+      key: "conversions",
+      current: currentMetrics.totalConversions,
+      previous: previousMetrics.totalConversions,
+    },
+    {
+      key: "revenue",
+      current: currentMetrics.totalRevenue,
+      previous: previousMetrics.totalRevenue,
+    },
   ];
 
   for (const metric of metrics) {
@@ -253,7 +265,7 @@ export async function getTrendAnalysis(
  * Get complete dashboard metrics
  */
 export async function getDashboardMetrics(
-  shopDomain: string = "occ"
+  shopDomain: string = "occ",
 ): Promise<DashboardMetrics> {
   const currentMetrics = await getGrowthMetrics(shopDomain, 30);
   const previousMetrics = await getGrowthMetrics(shopDomain, 60); // 30-60 days ago range needs adjustment
@@ -279,7 +291,7 @@ export async function getDashboardMetrics(
 async function getMetricsForPeriod(
   shopDomain: string,
   start: Date,
-  end: Date
+  end: Date,
 ): Promise<GrowthMetrics> {
   const socialMetrics = await prisma.dashboardFact.findMany({
     where: {
@@ -308,7 +320,8 @@ async function getMetricsForPeriod(
     totalClicks,
     totalConversions: ads.conversions,
     avgCTR: totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0,
-    avgConversionRate: totalClicks > 0 ? (ads.conversions / totalClicks) * 100 : 0,
+    avgConversionRate:
+      totalClicks > 0 ? (ads.conversions / totalClicks) * 100 : 0,
     totalRevenue: ads.revenue,
     totalSpend: ads.spend,
     overallROAS: ads.spend > 0 ? ads.revenue / ads.spend : 0,
@@ -330,7 +343,7 @@ function aggregateSocialMetrics(metrics: any[]): {
         clicks: acc.clicks + (value.clicks || 0),
       };
     },
-    { impressions: 0, clicks: 0 }
+    { impressions: 0, clicks: 0 },
   );
 }
 
@@ -355,7 +368,7 @@ function aggregateAdsMetrics(metrics: any[]): {
         spend: acc.spend + (value.spend || 0),
       };
     },
-    { impressions: 0, clicks: 0, conversions: 0, revenue: 0, spend: 0 }
+    { impressions: 0, clicks: 0, conversions: 0, revenue: 0, spend: 0 },
   );
 }
 
@@ -390,7 +403,9 @@ function getISOWeek(date: Date): string {
  */
 function getWeekNumber(date: Date): number {
   const firstDay = new Date(date.getFullYear(), 0, 1);
-  const days = Math.floor((date.getTime() - firstDay.getTime()) / (24 * 60 * 60 * 1000));
+  const days = Math.floor(
+    (date.getTime() - firstDay.getTime()) / (24 * 60 * 60 * 1000),
+  );
   return Math.ceil((days + firstDay.getDay() + 1) / 7);
 }
 
@@ -414,4 +429,3 @@ function identifyTopPerformers(trends: TrendAnalysis[]): Array<{
       change: t.changePercent,
     }));
 }
-

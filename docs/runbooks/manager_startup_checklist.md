@@ -9,6 +9,7 @@
 **⚠️ CRITICAL: Manager follows same tool-first rules as agents. Training data is outdated.**
 
 **MCP TOOL PRIORITY** (Effective 2025-10-21):
+
 1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
 2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
 3. **Fly MCP** → For deployments and infrastructure
@@ -33,8 +34,10 @@
   - Machine status: `mcp_fly_fly-machine-status("machine-id")`
 
 - [ ] **Log Tool Usage in Manager Feedback**:
+
   ```md
   ## HH:MM - Shopify Dev MCP: Polaris validation
+
   - Topic: [what I'm investigating/fixing]
   - Key Learning: [specific requirement discovered]
   - Applied to: [decision made / files changed]
@@ -43,7 +46,8 @@
 - [ ] **Web Search** (LAST RESORT ONLY): If no MCP has the info
   - Example: `web_search("GA4 custom dimensions event scope official docs")`
 
-**Why This Matters (Learned 2025-10-20)**: 
+**Why This Matters (Learned 2025-10-20)**:
+
 - Manager's training data is 6-12 months old (same as agents)
 - Today's P0 fixes: 3 issues, 13 failed deploys, 39 minutes wasted by guessing
 - Tool-first approach: 3 issues, 3 deploys, 9 minutes total (30 min savings)
@@ -89,12 +93,13 @@
 **Manager owns ALL git operations. Daily branch = shared workspace for all 17 agents.**
 
 - [ ] **Create/Checkout Daily Branch**:
+
   ```bash
   git fetch origin
   # Option A: Use existing branch (today)
   git checkout manager-reopen-20251020
   git pull origin manager-reopen-20251020
-  
+
   # Option B: Create new daily branch (future days)
   # git checkout main
   # git pull origin main
@@ -103,17 +108,20 @@
   ```
 
 - [ ] **Announce Branch** (database + optional markdown):
+
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: 'manager',
-    action: 'branch_announced',
-    rationale: 'Daily branch: manager-reopen-20251020 - all agents should checkout and commit',
-    evidenceUrl: 'docs/RULES.md'
+    scope: "build",
+    actor: "manager",
+    action: "branch_announced",
+    rationale:
+      "Daily branch: manager-reopen-20251020 - all agents should checkout and commit",
+    evidenceUrl: "docs/RULES.md",
   });
   ```
 
 - [ ] **Monitor Commits Throughout Day**:
+
   ```bash
   # Check who's committing what
   git log --oneline --all --graph -20
@@ -126,11 +134,11 @@
   - Log coordination via `logDecision()`:
     ```typescript
     await logDecision({
-      scope: 'build',
-      actor: 'manager',
-      action: 'coordination',
-      rationale: 'Engineer waiting for Data to finish prisma/schema.prisma',
-      evidenceUrl: 'prisma/schema.prisma'
+      scope: "build",
+      actor: "manager",
+      action: "coordination",
+      rationale: "Engineer waiting for Data to finish prisma/schema.prisma",
+      evidenceUrl: "prisma/schema.prisma",
     });
     ```
 
@@ -158,7 +166,7 @@ npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting 
 ```
 
 - [ ] Review blocked tasks output - note `blockedBy` dependencies
-- [ ] Tag each blocker with **owner** and **ETA** 
+- [ ] Tag each blocker with **owner** and **ETA**
 - [ ] Use `query-task-details.ts <TASK-ID>` for full context on specific blockers
 - [ ] If a decision is needed, add a short **Issue comment** on the task
 
@@ -186,11 +194,11 @@ From `query-blocked-tasks.ts` output:
 - [ ] Log resolution via `logDecision()` when unblocked:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: 'manager',
-    action: 'blocker_cleared',
-    rationale: 'BLOCKER-XXX: Applied DATA-017 migration',
-    evidenceUrl: 'feedback/manager/2025-10-22.md'
+    scope: "build",
+    actor: "manager",
+    action: "blocker_cleared",
+    rationale: "BLOCKER-XXX: Applied DATA-017 migration",
+    evidenceUrl: "feedback/manager/2025-10-22.md",
   });
   ```
 
@@ -209,6 +217,7 @@ npx tsx --env-file=.env scripts/manager/bulk-assign-tasks.ts
 ```
 
 For each active agent:
+
 - [ ] Query their current status (`query-agent-status.ts`)
 - [ ] Assign next task via database (instant, no commit needed)
 - [ ] Set priority (P0 for blockers, P1 for active work)
@@ -230,11 +239,12 @@ For each active agent:
 - [ ] Log day start via `logDecision()`:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: 'manager',
-    action: 'day_started',
-    rationale: '17 agents active, 3 blockers identified, priority: clear DATA-017',
-    evidenceUrl: 'docs/directions/manager.md'
+    scope: "build",
+    actor: "manager",
+    action: "day_started",
+    rationale:
+      "17 agents active, 3 blockers identified, priority: clear DATA-017",
+    evidenceUrl: "docs/directions/manager.md",
   });
   ```
 
@@ -294,13 +304,14 @@ For each active agent:
 - [ ] Log day start via `logDecision()`:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: 'manager',
-    taskId: 'MANAGER-STARTUP',
-    status: 'completed',
-    action: 'startup_complete',
-    rationale: 'Manager startup checklist complete, all 17 agents have direction',
-    evidenceUrl: 'docs/runbooks/manager_startup_checklist.md'
+    scope: "build",
+    actor: "manager",
+    taskId: "MANAGER-STARTUP",
+    status: "completed",
+    action: "startup_complete",
+    rationale:
+      "Manager startup checklist complete, all 17 agents have direction",
+    evidenceUrl: "docs/runbooks/manager_startup_checklist.md",
   });
   ```
 - [ ] Dev mode only: if UI needs sample approvals, use **fixtures** with

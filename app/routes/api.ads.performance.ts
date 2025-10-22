@@ -9,7 +9,11 @@
 
 import { type LoaderFunctionArgs } from "react-router";
 import { createGoogleAdsClient } from "../services/ads/google-ads-client";
-import { aggregatePerformanceData, calculateWoWComparison, identifyBestAndWorst } from "../services/ads/performance-metrics";
+import {
+  aggregatePerformanceData,
+  calculateWoWComparison,
+  identifyBestAndWorst,
+} from "../services/ads/performance-metrics";
 import { generateAllAlerts } from "../services/ads/budget-alerts";
 import type { PerformanceSummary } from "../services/ads/types";
 
@@ -27,7 +31,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
     const dateRange = url.searchParams.get("dateRange") || "LAST_7_DAYS";
-    const includeComparison = url.searchParams.get("includeComparison") === "true";
+    const includeComparison =
+      url.searchParams.get("includeComparison") === "true";
 
     // Create Google Ads client
     const adsClient = createGoogleAdsClient();
@@ -36,7 +41,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     await adsClient.authenticate();
 
     // Get customer IDs from config
-    const customerIds = process.env.GOOGLE_ADS_CUSTOMER_IDS?.split(",").filter(Boolean) || [];
+    const customerIds =
+      process.env.GOOGLE_ADS_CUSTOMER_IDS?.split(",").filter(Boolean) || [];
 
     if (customerIds.length === 0) {
       return Response.json(
@@ -44,7 +50,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           error: "No Google Ads customer IDs configured",
           code: "MISSING_CUSTOMER_IDS",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -61,11 +67,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const performanceData: PerformanceSummary = aggregatePerformanceData(
       currentPerformances,
       alerts,
-      dateRange
+      dateRange,
     );
 
     // Add best/worst performers
-    const { best, worst } = identifyBestAndWorst(performanceData.campaigns, "roas", 3);
+    const { best, worst } = identifyBestAndWorst(
+      performanceData.campaigns,
+      "roas",
+      3,
+    );
 
     // Prepare response
     const response: any = {
@@ -79,9 +89,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       try {
         const previousPerformances = await adsClient.getCampaignPerformance(
           customerIds,
-          "PREVIOUS_7_DAYS"
+          "PREVIOUS_7_DAYS",
         );
-        const comparison = calculateWoWComparison(currentPerformances, previousPerformances);
+        const comparison = calculateWoWComparison(
+          currentPerformances,
+          previousPerformances,
+        );
         response.weekOverWeek = comparison;
       } catch (error) {
         console.error("Error calculating WoW comparison:", error);
@@ -94,7 +107,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
         "Cache-Control": "private, max-age=300", // Cache for 5 minutes
       },
     });
-
   } catch (error) {
     console.error("Error fetching ad performance:", error);
 
@@ -106,7 +118,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           code: "AUTH_ERROR",
           details: error.message,
         },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -118,7 +130,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           code: "MISSING_CREDENTIALS",
           details: error.message,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -129,8 +141,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         code: "FETCH_ERROR",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

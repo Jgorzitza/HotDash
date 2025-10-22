@@ -1,6 +1,7 @@
 # Integrations Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ ALL PREVIOUS INTEGRATIONS TASKS COMPLETE
 
 **Completed** (from feedback/integrations/2025-10-21.md):
+
 - ✅ INTEGRATIONS-001: Publer API Client (OAuth, retry, error handling)
 - ✅ INTEGRATIONS-002: Publer Adapter (HITL workflow)
 - ✅ INTEGRATIONS-003: Social Post Queue (priority, auto-retry)
@@ -39,6 +41,7 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/integrations/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/integrations/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -54,6 +57,7 @@ git pull origin manager-reopen-20251021
 **Evidence**: 6 files created (990 lines), 13 GraphQL validated, 5/5 tests passing, 9 MCP calls
 
 **Completed Tasks**:
+
 1. ✅ INTEGRATIONS-012: Shopify Cost Sync Service (inventoryItemUpdate mutation)
 2. ✅ INTEGRATIONS-013: Metafield Definitions (BOM components)
 3. ✅ INTEGRATIONS-014: Bundle Inventory Service (virtual stock calculations)
@@ -69,6 +73,7 @@ git pull origin manager-reopen-20251021
 **Objective**: Sync Average Landed Cost (ALC) to Shopify `inventoryItem.unitCost` after every receipt
 
 **Delivered** (2025-10-21T16:58Z):
+
 - File: `app/services/shopify/inventory-cost-sync.ts` (177 lines)
 - Tests: `tests/unit/services/shopify/inventory-cost-sync.spec.ts` (5/5 passing ✅)
 - GraphQL: 2/2 validated (inventoryItemUpdate, productVariant)
@@ -90,7 +95,6 @@ git pull origin manager-reopen-20251021
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -98,48 +102,48 @@ git pull origin manager-reopen-20251021
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/integrations.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "integrations",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/integrations.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/integrations/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "integrations",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/integrations/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "integrations",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/integrations/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/integrations/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -149,66 +153,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "integrations",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/integrations/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/integrations/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "integrations",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -217,19 +221,22 @@ await logDecision({
 You can still write to `feedback/integrations/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY SYSTEM (Effective Immediately)
 
 **ALL INTEGRATIONS WORK MUST**: Call `logDecision()` at task completion
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 await logDecision({
-  scope: 'build',
-  actor: 'integrations',
-  action: 'task_completed',
-  rationale: 'INTEGRATIONS-012: Shopify cost sync service with 5/5 tests passing',
-  evidenceUrl: 'artifacts/integrations/2025-10-21/shopify-cost-sync-complete.md'
+  scope: "build",
+  actor: "integrations",
+  action: "task_completed",
+  rationale:
+    "INTEGRATIONS-012: Shopify cost sync service with 5/5 tests passing",
+  evidenceUrl:
+    "artifacts/integrations/2025-10-21/shopify-cost-sync-complete.md",
 });
 ```
 
@@ -249,6 +256,7 @@ await logDecision({
 **Beneficiary**: Analytics
 
 **Work**:
+
 - Review Analytics' GA4 Data API implementation
 - Help with authentication (service account from vault/occ/google/)
 - Assist with dimension filtering (`hd_action_key` custom dimension)
@@ -269,6 +277,7 @@ await logDecision({
 **Beneficiary**: Inventory
 
 **Work**:
+
 - Provide patterns for external vendor API calls
 - Help with rate limiting implementation
 - Assist with error handling and retries
@@ -289,6 +298,7 @@ await logDecision({
 ### Original Objective
 
 ### Prerequisites
+
 - ✅ Inventory agent completes INVENTORY-017 (ALC calculation service) — DEPENDENCY
 
 ### Context
@@ -296,6 +306,7 @@ await logDecision({
 **CEO Requirement**: "Ensure Shopify current cost is updated during this process"
 
 **Flow**:
+
 ```
 1. PO received → Inventory calculates new ALC
 2. Inventory calls Integrations.syncInventoryCostToShopify(variantId, newALC)
@@ -350,7 +361,7 @@ interface CostSyncResult {
 
 // Get inventory item ID from variant ID
 async function getInventoryItemIdFromVariant(
-  variantGid: string
+  variantGid: string,
 ): Promise<string | null> {
   const query = `
     query getInventoryItemId($id: ID!) {
@@ -361,32 +372,32 @@ async function getInventoryItemIdFromVariant(
       }
     }
   `;
-  
+
   const response = await shopifyAdmin.graphql(query, {
-    variables: { id: variantGid }
+    variables: { id: variantGid },
   });
-  
+
   return response.data?.productVariant?.inventoryItem?.id || null;
 }
 
 // Update inventory item cost
 export async function syncInventoryCostToShopify(
   variantId: string,
-  newCost: number
+  newCost: number,
 ): Promise<CostSyncResult> {
   try {
     // 1. Get inventory item ID
     const inventoryItemId = await getInventoryItemIdFromVariant(variantId);
-    
+
     if (!inventoryItemId) {
       return {
         success: false,
         variantId,
         newCost,
-        error: "Inventory item not found for variant"
+        error: "Inventory item not found for variant",
       };
     }
-    
+
     // 2. Get current cost (for logging)
     const currentCostQuery = `
       query getCurrentCost($id: ID!) {
@@ -397,15 +408,15 @@ export async function syncInventoryCostToShopify(
         }
       }
     `;
-    
+
     const currentCostResponse = await shopifyAdmin.graphql(currentCostQuery, {
-      variables: { id: inventoryItemId }
+      variables: { id: inventoryItemId },
     });
-    
+
     const previousCost = parseFloat(
-      currentCostResponse.data?.inventoryItem?.unitCost?.amount || "0"
+      currentCostResponse.data?.inventoryItem?.unitCost?.amount || "0",
     );
-    
+
     // 3. Update cost
     const mutation = `
       mutation inventoryItemUpdate($id: ID!, $input: InventoryItemInput!) {
@@ -425,66 +436,70 @@ export async function syncInventoryCostToShopify(
         }
       }
     `;
-    
+
     const updateResponse = await shopifyAdmin.graphql(mutation, {
       variables: {
         id: inventoryItemId,
         input: {
-          cost: newCost.toFixed(2) // Shopify expects string with 2 decimals
-        }
-      }
+          cost: newCost.toFixed(2), // Shopify expects string with 2 decimals
+        },
+      },
     });
-    
+
     // 4. Check for errors
-    const userErrors = updateResponse.data?.inventoryItemUpdate?.userErrors || [];
-    
+    const userErrors =
+      updateResponse.data?.inventoryItemUpdate?.userErrors || [];
+
     if (userErrors.length > 0) {
       return {
         success: false,
         variantId,
         newCost,
         shopifyInventoryItemId: inventoryItemId,
-        error: userErrors.map((e: any) => e.message).join(", ")
+        error: userErrors.map((e: any) => e.message).join(", "),
       };
     }
-    
+
     // 5. Success
     const updatedItem = updateResponse.data?.inventoryItemUpdate?.inventoryItem;
-    
+
     return {
       success: true,
       variantId,
       previousCost,
       newCost,
       shopifyInventoryItemId: inventoryItemId,
-      updatedAt: updatedItem?.updatedAt
+      updatedAt: updatedItem?.updatedAt,
     };
   } catch (error: any) {
     console.error("[Shopify] Cost sync error:", error);
-    
+
     return {
       success: false,
       variantId,
       newCost,
-      error: error.message || "Unknown error"
+      error: error.message || "Unknown error",
     };
   }
 }
 
 // Batch update for multiple variants (from single PO receipt)
 export async function syncMultipleInventoryCosts(
-  updates: Array<{ variantId: string; newCost: number }>
+  updates: Array<{ variantId: string; newCost: number }>,
 ): Promise<CostSyncResult[]> {
   const results: CostSyncResult[] = [];
-  
+
   for (const update of updates) {
-    const result = await syncInventoryCostToShopify(update.variantId, update.newCost);
+    const result = await syncInventoryCostToShopify(
+      update.variantId,
+      update.newCost,
+    );
     results.push(result);
-    
+
     // Rate limit: 2 requests/second (Shopify limit)
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  
+
   return results;
 }
 ```
@@ -492,6 +507,7 @@ export async function syncMultipleInventoryCosts(
 **Integration Point**: Called from Inventory receiving workflow (INVENTORY-018)
 
 **Tests**: `tests/unit/services/shopify/inventory-cost-sync.spec.ts`
+
 - Test get inventory item ID from variant
 - Test cost update success
 - Test cost update with userErrors
@@ -500,6 +516,7 @@ export async function syncMultipleInventoryCosts(
 - Mock Shopify GraphQL responses
 
 **Acceptance**:
+
 - ✅ Cost sync service implemented
 - ✅ GraphQL mutation correct
 - ✅ Get inventory item ID from variant ID
@@ -509,7 +526,8 @@ export async function syncMultipleInventoryCosts(
 - ✅ Unit tests passing (100% coverage)
 - ✅ Shopify Dev MCP validation passed
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → inventoryItem, inventoryItemUpdate mutation + VALIDATE with `validate_graphql_codeblocks`
 
 ---
@@ -519,11 +537,13 @@ export async function syncMultipleInventoryCosts(
 ### Context
 
 **Bundles-BOM** (CEO clarification):
+
 - Keep `PACK:X` tags for picker payouts (simpler)
 - Add metafields for inventory tracking (actual component variants)
 - **Dual System**: Tags for payouts, metafields for inventory management
 
 **Warehouse Reconciliation** (CEO clarification):
+
 - Not critical (app not live), build into dev process
 - Main WH = primary inventory
 - Canada WH = used for label printing, goes negative
@@ -587,7 +607,8 @@ export async function createBOMMetafieldDefinitions() {
       key: "bom_components",
       ownerType: "PRODUCT",
       type: "json",
-      description: "Bill of Materials: Component variants and quantities for bundle products"
+      description:
+        "Bill of Materials: Component variants and quantities for bundle products",
     },
     {
       name: "Is Component",
@@ -595,10 +616,10 @@ export async function createBOMMetafieldDefinitions() {
       key: "bom_is_component",
       ownerType: "PRODUCT",
       type: "boolean",
-      description: "Marks product as a component (not sold standalone)"
-    }
+      description: "Marks product as a component (not sold standalone)",
+    },
   ];
-  
+
   for (const def of definitions) {
     const mutation = `
       mutation createMetafieldDefinition($definition: MetafieldDefinitionInput!) {
@@ -614,9 +635,9 @@ export async function createBOMMetafieldDefinitions() {
         }
       }
     `;
-    
+
     await shopifyAdmin.graphql(mutation, {
-      variables: { definition: def }
+      variables: { definition: def },
     });
   }
 }
@@ -629,17 +650,17 @@ export async function setBOMComponents(
     variantMap: Record<string, string>;
     qty: number;
   }>,
-  parameters: string[]
+  parameters: string[],
 ) {
   const bomData = {
-    components: components.map(c => ({
+    components: components.map((c) => ({
       handle: c.handle,
       variant_map: c.variantMap,
-      qty: c.qty
+      qty: c.qty,
     })),
-    parameters
+    parameters,
   };
-  
+
   const mutation = `
     mutation productUpdate($input: ProductInput!) {
       productUpdate(input: $input) {
@@ -656,7 +677,7 @@ export async function setBOMComponents(
       }
     }
   `;
-  
+
   return await shopifyAdmin.graphql(mutation, {
     variables: {
       input: {
@@ -666,11 +687,11 @@ export async function setBOMComponents(
             namespace: "hotdash",
             key: "bom_components",
             type: "json",
-            value: JSON.stringify(bomData)
-          }
-        ]
-      }
-    }
+            value: JSON.stringify(bomData),
+          },
+        ],
+      },
+    },
   });
 }
 
@@ -685,20 +706,21 @@ export async function getBOMComponents(productId: string) {
       }
     }
   `;
-  
+
   const response = await shopifyAdmin.graphql(query, {
-    variables: { id: productId }
+    variables: { id: productId },
   });
-  
+
   const metafield = response.data?.product?.metafield;
-  
+
   if (!metafield) return null;
-  
+
   return JSON.parse(metafield.value);
 }
 ```
 
 **Tests**: `tests/unit/services/shopify/metafield-definitions.spec.ts`
+
 - Test metafield definition creation
 - Test BOM components set
 - Test BOM components get
@@ -706,6 +728,7 @@ export async function getBOMComponents(productId: string) {
 - Mock Shopify GraphQL responses
 
 **Acceptance**:
+
 - ✅ Metafield definitions service implemented
 - ✅ Create definitions function (run once)
 - ✅ Set BOM components function
@@ -714,7 +737,8 @@ export async function getBOMComponents(productId: string) {
 - ✅ Unit tests passing
 - ✅ Shopify Dev MCP validation passed
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → metafieldDefinitionCreate, productUpdate + VALIDATE with `validate_graphql_codeblocks`
 
 ---
@@ -732,90 +756,96 @@ export async function getBOMComponents(productId: string) {
 export async function calculateBundleStock(productId: string) {
   // 1. Get BOM components
   const bom = await getBOMComponents(productId);
-  
+
   if (!bom) {
     // Fallback to tags for simple bundles
     return await calculateBundleStockFromTags(productId);
   }
-  
+
   // 2. For each component, get available qty
-  const componentAvailability: Array<{ handle: string; available: number; required: number }> = [];
-  
+  const componentAvailability: Array<{
+    handle: string;
+    available: number;
+    required: number;
+  }> = [];
+
   for (const component of bom.components) {
     // Get all variants in component (parameterized)
     const variants = Object.values(component.variant_map);
-    
+
     // Sum available across all variants
     let totalAvailable = 0;
     for (const variantId of variants) {
       const inventory = await fetchShopifyInventory(variantId as string);
       totalAvailable += inventory.available || 0;
     }
-    
+
     componentAvailability.push({
       handle: component.handle,
       available: totalAvailable,
-      required: component.qty
+      required: component.qty,
     });
   }
-  
+
   // 3. Calculate virtual stock (min available / required)
-  const possibleBundles = componentAvailability.map(c => 
-    Math.floor(c.available / c.required)
+  const possibleBundles = componentAvailability.map((c) =>
+    Math.floor(c.available / c.required),
   );
-  
+
   const virtualStock = Math.min(...possibleBundles);
-  
+
   return {
     virtualStock,
     componentAvailability,
     limitingComponent: componentAvailability.find(
-      c => Math.floor(c.available / c.required) === virtualStock
-    )
+      (c) => Math.floor(c.available / c.required) === virtualStock,
+    ),
   };
 }
 
 // Decrement component inventory when bundle sold
 export async function decrementBundleComponents(
   productId: string,
-  qtySold: number
+  qtySold: number,
 ) {
   const bom = await getBOMComponents(productId);
-  
+
   if (!bom) return;
-  
+
   const adjustments = [];
-  
+
   for (const component of bom.components) {
     const qtyToDecrement = component.qty * qtySold;
-    
+
     // Decrement from first available variant in variant_map
     for (const variantId of Object.values(component.variant_map)) {
       const inventory = await fetchShopifyInventory(variantId as string);
-      
+
       if (inventory.available >= qtyToDecrement) {
         // Adjust this variant
         adjustments.push({
           variantId: variantId as string,
           qtyChange: -qtyToDecrement,
-          reason: `Bundle sold: ${productId} (${qtySold} units)`
+          reason: `Bundle sold: ${productId} (${qtySold} units)`,
         });
         break;
       }
     }
   }
-  
+
   // Apply all adjustments via inventoryAdjustQuantities mutation
   return await adjustInventoryQuantities(adjustments);
 }
 ```
 
 **Integration Points**:
+
 - Dashboard tile: Show virtual bundle stock
 - Reorder alerts: Use virtual stock for ROP calculation
 - Order processing: Decrement components when bundle sold
 
 **Tests**: `tests/unit/services/shopify/bundle-inventory.spec.ts`
+
 - Test virtual stock calculation (2 components)
 - Test virtual stock with limiting component
 - Test component decrement (bundle sold)
@@ -823,6 +853,7 @@ export async function decrementBundleComponents(
 - Mock Shopify inventory queries
 
 **Acceptance**:
+
 - ✅ Bundle inventory service implemented
 - ✅ Virtual stock calculation correct
 - ✅ Component decrement logic correct
@@ -830,7 +861,8 @@ export async function decrementBundleComponents(
 - ✅ Unit tests passing
 - ✅ Shopify Dev MCP validation passed
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → inventoryAdjustQuantities mutation + VALIDATE
 
 ---
@@ -842,6 +874,7 @@ export async function decrementBundleComponents(
 **Purpose**: Nightly sync to reset Canada WH negative inventory and adjust Main WH
 
 **Context**:
+
 - Main WH (`gid://shopify/Location/XXX`): Primary inventory
 - Canada WH (`gid://shopify/Location/YYY`): Label printing only
 - **Problem**: Canada WH goes negative when labels printed
@@ -886,43 +919,52 @@ async function getProductsWithNegativeCanadaInventory(): Promise<string[]> {
       }
     }
   `;
-  
+
   // Fetch all pages (if >250 products)
   let hasNext = true;
   let cursor = null;
   const negativeVariants: Array<{ variantId: string; available: number }> = [];
-  
+
   while (hasNext) {
     const response = await shopifyAdmin.graphql(query, {
       variables: {
         locationId: CANADA_WH_ID,
-        after: cursor
-      }
+        after: cursor,
+      },
     });
-    
+
     const edges = response.data?.location?.inventoryLevels?.edges || [];
-    negativeVariants.push(...edges.map((e: any) => ({
-      variantId: e.node.item.variant.id,
-      available: e.node.available
-    })));
-    
-    hasNext = response.data?.location?.inventoryLevels?.pageInfo?.hasNextPage || false;
+    negativeVariants.push(
+      ...edges.map((e: any) => ({
+        variantId: e.node.item.variant.id,
+        available: e.node.available,
+      })),
+    );
+
+    hasNext =
+      response.data?.location?.inventoryLevels?.pageInfo?.hasNextPage || false;
     cursor = response.data?.location?.inventoryLevels?.pageInfo?.endCursor;
   }
-  
+
   return negativeVariants;
 }
 
 // Reconcile single variant
-async function reconcileVariant(variantId: string, canadaNegativeQty: number): Promise<ReconciliationResult> {
+async function reconcileVariant(
+  variantId: string,
+  canadaNegativeQty: number,
+): Promise<ReconciliationResult> {
   // 1. Get current Main WH inventory
-  const mainInventory = await fetchShopifyInventoryByLocation(variantId, MAIN_WH_ID);
+  const mainInventory = await fetchShopifyInventoryByLocation(
+    variantId,
+    MAIN_WH_ID,
+  );
   const mainPreviousQty = mainInventory.available || 0;
-  
+
   // 2. Calculate adjustments
   const canadaAdjustment = -canadaNegativeQty; // Reset to 0
   const mainAdjustment = canadaNegativeQty; // Reduce by negative amount
-  
+
   // 3. Apply adjustments via inventoryAdjustQuantities mutation
   const mutation = `
     mutation inventoryAdjustQuantities($input: InventoryAdjustQuantitiesInput!) {
@@ -941,7 +983,7 @@ async function reconcileVariant(variantId: string, canadaNegativeQty: number): P
       }
     }
   `;
-  
+
   const response = await shopifyAdmin.graphql(mutation, {
     variables: {
       input: {
@@ -951,27 +993,27 @@ async function reconcileVariant(variantId: string, canadaNegativeQty: number): P
           {
             inventoryItemId: await getInventoryItemId(variantId),
             locationId: CANADA_WH_ID,
-            delta: canadaAdjustment
+            delta: canadaAdjustment,
           },
           {
             inventoryItemId: await getInventoryItemId(variantId),
             locationId: MAIN_WH_ID,
-            delta: mainAdjustment
-          }
-        ]
-      }
-    }
+            delta: mainAdjustment,
+          },
+        ],
+      },
+    },
   });
-  
+
   const userErrors = response.data?.inventoryAdjustQuantities?.userErrors || [];
-  
+
   return {
     variantId,
     canadaNegativeQty,
     mainPreviousQty,
     canadaNewQty: 0,
     mainNewQty: mainPreviousQty + mainAdjustment,
-    adjusted: userErrors.length === 0
+    adjusted: userErrors.length === 0,
   };
 }
 
@@ -982,44 +1024,51 @@ export async function runNightlyWarehouseReconciliation(): Promise<{
   errors: string[];
 }> {
   console.log("[Warehouse Reconcile] Starting nightly reconciliation");
-  
+
   // 1. Get all products with negative Canada inventory
   const negativeProducts = await getProductsWithNegativeCanadaInventory();
-  
-  console.log(`[Warehouse Reconcile] Found ${negativeProducts.length} products to reconcile`);
-  
+
+  console.log(
+    `[Warehouse Reconcile] Found ${negativeProducts.length} products to reconcile`,
+  );
+
   // 2. Reconcile each
   const results: ReconciliationResult[] = [];
   const errors: string[] = [];
-  
+
   for (const product of negativeProducts) {
     try {
-      const result = await reconcileVariant(product.variantId, product.available);
+      const result = await reconcileVariant(
+        product.variantId,
+        product.available,
+      );
       results.push(result);
-      
+
       // Rate limit: 2 requests/second
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     } catch (error: any) {
       errors.push(`${product.variantId}: ${error.message}`);
     }
   }
-  
-  console.log(`[Warehouse Reconcile] Reconciled ${results.filter(r => r.adjusted).length}/${results.length} products`);
-  
+
+  console.log(
+    `[Warehouse Reconcile] Reconciled ${results.filter((r) => r.adjusted).length}/${results.length} products`,
+  );
+
   // 3. Log results to decision_log
   await logDecision({
-    scope: 'ops',
-    who: 'system',
-    what: 'warehouse_reconciliation',
+    scope: "ops",
+    who: "system",
+    what: "warehouse_reconciliation",
     why: `Nightly sync: ${results.length} products reconciled`,
     evidenceUrl: `/api/warehouse-reconcile/results`,
-    createdAt: new Date()
+    createdAt: new Date(),
   });
-  
+
   return {
-    totalReconciled: results.filter(r => r.adjusted).length,
+    totalReconciled: results.filter((r) => r.adjusted).length,
     results,
-    errors
+    errors,
   };
 }
 ```
@@ -1032,11 +1081,13 @@ import { runNightlyWarehouseReconciliation } from "~/services/shopify/warehouse-
 
 async function main() {
   console.log("[Cron] Starting nightly warehouse reconciliation");
-  
+
   const result = await runNightlyWarehouseReconciliation();
-  
-  console.log(`[Cron] Complete: ${result.totalReconciled} reconciled, ${result.errors.length} errors`);
-  
+
+  console.log(
+    `[Cron] Complete: ${result.totalReconciled} reconciled, ${result.errors.length} errors`,
+  );
+
   if (result.errors.length > 0) {
     console.error("[Cron] Errors:", result.errors);
   }
@@ -1048,6 +1099,7 @@ main().catch(console.error);
 **DevOps Setup**: GitHub Actions or Fly.io cron (scheduled task)
 
 **Tests**: `tests/unit/services/shopify/warehouse-reconcile.spec.ts`
+
 - Test get negative Canada inventory
 - Test reconcile single variant
 - Test batch reconciliation
@@ -1055,6 +1107,7 @@ main().catch(console.error);
 - Mock Shopify GraphQL responses
 
 **Acceptance**:
+
 - ✅ Warehouse reconcile service implemented
 - ✅ Get negative Canada inventory function
 - ✅ Reconcile variant function (adjust both warehouses)
@@ -1063,7 +1116,8 @@ main().catch(console.error);
 - ✅ Unit tests passing
 - ✅ Shopify Dev MCP validation passed
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → inventoryAdjustQuantities mutation, location queries + VALIDATE
 
 ---
@@ -1082,27 +1136,29 @@ export async function action({ request }: ActionFunctionArgs) {
   const productId = formData.get("productId") as string;
   const components = JSON.parse(formData.get("components") as string);
   const parameters = JSON.parse(formData.get("parameters") as string);
-  
+
   try {
     await setBOMComponents(productId, components, parameters);
-    
+
     return Response.json({ success: true });
   } catch (error: any) {
     return Response.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 ```
 
 **Acceptance**:
+
 - ✅ API route implemented
 - ✅ Integrates with BOM metafield service
 - ✅ Error handling
 - ✅ React Router 7 action pattern
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → React Router 7 action patterns
 
 ---
@@ -1110,6 +1166,7 @@ export async function action({ request }: ActionFunctionArgs) {
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 10: Shopify Cost Sync (2h)
+
 - ✅ INTEGRATIONS-012: Shopify cost sync service (inventoryItemUpdate mutation)
 - ✅ Batch updates supported
 - ✅ Rate limiting enforced (500ms between requests)
@@ -1117,6 +1174,7 @@ export async function action({ request }: ActionFunctionArgs) {
 - ✅ Shopify Dev MCP validation passed
 
 ### Phase 11: Bundles-BOM + Warehouse Reconcile (11h)
+
 - ✅ INTEGRATIONS-013: Metafield definitions (BOM components, is_component)
 - ✅ INTEGRATIONS-014: Bundle inventory service (virtual stock, component decrement)
 - ✅ INTEGRATIONS-015: Warehouse reconciliation service (nightly sync)
@@ -1129,6 +1187,7 @@ export async function action({ request }: ActionFunctionArgs) {
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Shopify Dev MCP**: FIRST for all Shopify GraphQL
    - inventoryItemUpdate, metafieldDefinitionCreate, productUpdate
    - inventoryAdjustQuantities, location queries
@@ -1141,12 +1200,14 @@ export async function action({ request }: ActionFunctionArgs) {
 3. **Web Search**: LAST RESORT ONLY
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/integrations/<date>/mcp/shopify-cost-sync.jsonl`, `mcp/bundles-bom.jsonl`, `mcp/warehouse-reconcile.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/integrations/<date>/heartbeat.ndjson` (append every 15min)
 3. **Dev MCP Check**: Verify NO Dev MCP imports in `app/`
 4. **PR Template**: Fill out all sections
 
 ### Testing
+
 - Unit tests for ALL GraphQL mutations
 - Mock Shopify Admin API responses
 - Test rate limiting (500ms delays)
@@ -1194,6 +1255,7 @@ export async function action({ request }: ActionFunctionArgs) {
 **Total**: 13 hours (Phase 10: 2h, Phase 11: 11h)
 
 **Expected Output**:
+
 - 4 new services (~1,000-1,200 lines)
 - 1 API route
 - 1 cron script

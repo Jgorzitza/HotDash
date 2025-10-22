@@ -29,7 +29,7 @@ describe("Tile Data - Status Buckets", () => {
     if (data.topRisks.length > 1) {
       for (let i = 0; i < data.topRisks.length - 1; i++) {
         expect(data.topRisks[i].daysUntilStockout).toBeLessThanOrEqual(
-          data.topRisks[i + 1].daysUntilStockout
+          data.topRisks[i + 1].daysUntilStockout,
         );
       }
     }
@@ -41,5 +41,3 @@ describe("Tile Data - Status Buckets", () => {
     expect(new Date(data.lastUpdated).getTime()).toBeGreaterThan(0);
   });
 });
-
-

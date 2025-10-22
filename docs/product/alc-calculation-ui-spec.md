@@ -20,6 +20,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ## User Persona
 
 **Inventory Manager/Operator**:
+
 - Receives 2-5 shipments per week
 - Needs to allocate freight/duty costs across products
 - Must update Shopify with correct costs for margin calculations
@@ -117,6 +118,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Variance Handling
 
 **If received ≠ ordered**:
+
 - Show yellow highlight on row
 - Warning: "⚠️ Variance detected: Received 4 units but ordered 5"
 - Options: [Accept Partial] [Enter Explanation] [Cancel Receipt]
@@ -174,12 +176,14 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Real-Time Calculation
 
 **As operator types freight/duty amounts**:
+
 - Breakdown table updates instantly
 - Weight percentages shown for transparency
 - Allocated costs highlighted when freight/duty > $0
 - Total row updates
 
 **Validation**:
+
 - Freight and duty must be >= 0
 - If total costs seem unusually high, show warning:
   - "⚠️ Total cost increased by 35% - please verify amounts"
@@ -231,13 +235,15 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Visual Indicators
 
 **Cost Change Direction**:
+
 - ↑ **Increase**: Red arrow with percentage (e.g., "↑ 3%")
 - ↓ **Decrease**: Green arrow with percentage (e.g., "↓ 2%")
 - → **No Change**: Gray dash (e.g., "→ 0%")
 
 **Change Magnitude Warnings**:
-- >10% change: Yellow warning "Large cost increase"
-- >25% change: Red warning "Very large cost increase - verify data"
+
+- > 10% change: Yellow warning "Large cost increase"
+- > 25% change: Red warning "Very large cost increase - verify data"
 
 ---
 
@@ -295,6 +301,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Expandable Row Details
 
 **Click to expand any history row**:
+
 - Shows full calculation breakdown
 - Previous inventory (qty × ALC)
 - New receipt breakdown (vendor + freight + duty)
@@ -469,6 +476,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
    - Used by: ALC calculation (needs current inventory)
 
 **UI Components Needed**:
+
 1. ReceiveShipmentWizard component (multi-step form)
 2. POSelector component
 3. LineItemTable component (with quantity inputs)
@@ -489,21 +497,22 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ↓  
 **Step 2**: Verify quantities received (vs ordered)  
 ↓  
-**Step 3**: Enter freight and duty costs  
-  - See real-time allocation by weight  
-  - Preview cost breakdown  
-↓  
-**Step 4**: Review ALC preview  
-  - See old vs new ALC for each product  
-  - See Shopify update confirmation  
-↓  
-**Confirm**: Click "Confirm & Update Shopify Costs"  
-↓  
-**Processing**: Receipt saved, cost history recorded, Shopify updated  
-↓  
-**Success**: Confirmation screen with receipt ID  
-↓  
-**End** → Close modal, PO status updated to "Received"
+**Step 3**: Enter freight and duty costs
+
+- See real-time allocation by weight
+- Preview cost breakdown  
+  ↓  
+  **Step 4**: Review ALC preview
+- See old vs new ALC for each product
+- See Shopify update confirmation  
+  ↓  
+  **Confirm**: Click "Confirm & Update Shopify Costs"  
+  ↓  
+  **Processing**: Receipt saved, cost history recorded, Shopify updated  
+  ↓  
+  **Success**: Confirmation screen with receipt ID  
+  ↓  
+  **End** → Close modal, PO status updated to "Received"
 
 **Total Time**: 3-5 minutes for typical 3-product receipt
 
@@ -514,6 +523,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Batch Receipt Processing
 
 **For high-volume operations**:
+
 - Upload CSV with receipt data
 - Bulk allocate freight/duty
 - Preview all ALC changes before confirming
@@ -522,6 +532,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Smart Allocation Suggestions
 
 **Based on historical data**:
+
 - "Similar shipments had freight around $150 for this weight"
 - "Last PO from this vendor: $85 duty for 3 products"
 - Auto-populate freight/duty based on similar receipts
@@ -529,6 +540,7 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ### Cost Variance Alerts
 
 **Email notifications**:
+
 - If ALC increases >15%: "Large cost increase detected for Powder Board 162"
 - If costs diverge from budget: "3 products now over target margin"
 
@@ -537,11 +549,13 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ## 12. Success Metrics
 
 **UX Quality Metrics**:
+
 - Operator completes receiving in <5 minutes (avg)
 - Cost entry errors <5% (proper validation)
 - Operator confidence in ALC calculations (survey)
 
 **Business Metrics**:
+
 - 100% of receipts have freight/duty allocated (no skipped costs)
 - Shopify costs updated within 24 hours of receipt (faster margin calculations)
 - Cost history provides audit trail (compliance requirement)
@@ -551,25 +565,21 @@ This document defines the complete UI/UX for **Average Landed Cost (ALC) Calcula
 ## 13. Implementation Priority
 
 **Phase 1 (MVP)** - Week 1:
+
 1. Receive shipment form (Steps 1-3)
 2. Basic ALC preview
 3. Shopify cost update
 
-**Phase 2** - Week 2:
-4. Cost history view
-5. Cost trend chart
-6. Mobile optimization
+**Phase 2** - Week 2: 4. Cost history view 5. Cost trend chart 6. Mobile optimization
 
-**Phase 3** - Week 3:
-7. Batch receipt processing
-8. Smart allocation suggestions
-9. Cost variance alerts
+**Phase 3** - Week 3: 7. Batch receipt processing 8. Smart allocation suggestions 9. Cost variance alerts
 
 ---
 
 ## Engineer Implementation Notes
 
 **Data Flow**:
+
 ```
 Operator Input (Form)
   ↓
@@ -585,11 +595,13 @@ Success Confirmation
 ```
 
 **State Management**:
+
 - Receipt wizard state (3 steps)
 - Real-time preview calculations (client-side for performance)
 - Final submission (server-side for accuracy)
 
 **Integrations Agent Coordination**:
+
 - Shopify cost update API wrapper needed
 - Shopify inventory query needed (for on-hand qty)
 - Error handling for Shopify API failures
@@ -599,6 +611,7 @@ Success Confirmation
 ## Change Log
 
 **v1.0 - 2025-10-22**:
+
 - Initial UI specification
 - Defined 3-step receiving workflow
 - Specified freight/duty allocation UI with real-time preview
@@ -611,4 +624,3 @@ Success Confirmation
 **Status**: Ready for Engineer + Integrations implementation  
 **Dependencies**: INVENTORY-017 complete ✅  
 **Next Step**: Engineer implements receiving wizard, Integrations adds Shopify cost update API
-

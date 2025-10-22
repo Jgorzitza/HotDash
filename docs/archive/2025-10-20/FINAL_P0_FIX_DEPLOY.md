@@ -9,6 +9,7 @@
 ## Root Cause Analysis
 
 ### The Problem
+
 **"Application Error"** in Shopify Admin iframe caused by:
 
 1. **Missing Shopify Adapter Import** (PRIMARY ISSUE)
@@ -17,12 +18,13 @@
    - Root Cause: `app/entry.server.tsx` was missing the adapter import
    - Impact: Shopify's crypto functions couldn't initialize
 
-2. **Prisma Query Failing**  
+2. **Prisma Query Failing**
    - Error: `PrismaClientKnownRequestError` at `PrismaSessionStorage.loadSession`
    - Caused by: crypto error prevented proper initialization
    - Secondary to adapter issue
 
 ### From Logs
+
 ```
 ReferenceError: crypto is not defined
     at createSHA256HMAC (/app/node_modules/runtime/crypto/utils.ts:11:5)
@@ -49,6 +51,7 @@ GET /app?embedded=1&... 500 - - 380.613 ms
 **File**: `app/entry.server.tsx`
 
 **Change**:
+
 ```typescript
 // ✅ ADDED - Line 1
 import "@shopify/shopify-app-react-router/adapters/node";
@@ -58,6 +61,7 @@ import "@shopify/shopify-app-react-router/adapters/node";
 ```
 
 **Why This Works**:
+
 - The adapter import initializes Node.js crypto polyfills
 - Makes `crypto` global available for Shopify's HMAC functions
 - Must be imported in entry.server.tsx (server entry point)
@@ -67,6 +71,7 @@ import "@shopify/shopify-app-react-router/adapters/node";
 **File**: `app/routes/api.webhooks.chatwoot.tsx`
 
 **Change**:
+
 ```typescript
 // Before: import { createHmac } from "crypto";
 // After:  import { createHmac } from "node:crypto";
@@ -77,6 +82,7 @@ import "@shopify/shopify-app-react-router/adapters/node";
 **File**: `fly.toml`
 
 **Change**:
+
 ```toml
 [deploy]
   release_command = "npx prisma generate && npx prisma migrate deploy"
@@ -94,6 +100,7 @@ shopify app deploy
 ```
 
 ### What This Does:
+
 1. ✅ Builds app with adapter import (crypto initialized)
 2. ✅ Runs `npx prisma generate` (generates Prisma client)
 3. ✅ Runs `npx prisma migrate deploy` (creates Session table)
@@ -110,7 +117,8 @@ shopify app deploy
 
 **URL**: https://admin.shopify.com/store/hotroddash/apps/hotdash
 
-**Expected**: 
+**Expected**:
+
 - ✅ Dashboard loads with 6 tiles
 - ✅ No "Application Error" message
 - ✅ Tiles show data (or loading states)
@@ -122,6 +130,7 @@ fly logs -a hotdash-staging --no-tail | grep -i error | tail -10
 ```
 
 **Expected**:
+
 - ✅ No crypto errors
 - ✅ No Prisma Session errors
 - ✅ GET /app returns 200 (not 500)
@@ -139,11 +148,13 @@ fly logs -a hotdash-staging --no-tail | grep -i error | tail -10
 **Commit**: `8089bea` - fix(P0): Application Error
 
 **Files Modified**:
+
 1. `app/entry.server.tsx` - Added Shopify adapter import (LINE 1)
 2. `app/routes/api.webhooks.chatwoot.tsx` - Fixed crypto import
 3. `fly.toml` - Updated release_command
 
-**Evidence**: 
+**Evidence**:
+
 - Network logs showed crypto undefined error
 - Shopify adapter import initializes crypto global
 - This is the standard Shopify app setup pattern
@@ -155,6 +166,7 @@ fly logs -a hotdash-staging --no-tail | grep -i error | tail -10
 **Created**: `docs/REACT_ROUTER_7_ENFORCEMENT.md`
 
 **All agents MUST**:
+
 - ✅ Use React Router 7 (NOT Remix)
 - ✅ Use `Response.json()` (NOT `json()`)
 - ✅ Validate GraphQL with Shopify Dev MCP
@@ -162,6 +174,7 @@ fly logs -a hotdash-staging --no-tail | grep -i error | tail -10
 - ✅ Log MCP conversation IDs
 
 **Verification**:
+
 ```bash
 rg "@remix-run" app/ --type ts --type tsx
 # Must return: NO RESULTS
@@ -172,6 +185,7 @@ rg "@remix-run" app/ --type ts --type tsx
 ## After Deploy Success
 
 **Notify These Agents** (can proceed with dashboard testing):
+
 - Designer: Visual review (15 molecules)
 - Pilot: Dashboard testing (11 molecules remaining)
 - QA: UI/UX validation (12 molecules remaining)
@@ -184,14 +198,17 @@ rg "@remix-run" app/ --type ts --type tsx
 ## Timeline After Fix
 
 **Immediate** (after deploy):
+
 - App functional in Shopify Admin ✅
 - 15 agents can work
 
 **24-48 hours**:
+
 - Agents execute 240+ molecules
 - Dashboard testing complete
 
 **48-96 hours**:
+
 - QA GO/NO-GO
 - Production launch
 
@@ -200,5 +217,3 @@ rg "@remix-run" app/ --type ts --type tsx
 **🚀 DEPLOY NOW: `shopify app deploy`**
 
 **After deploy, the app will work correctly in Shopify Admin!**
-
-

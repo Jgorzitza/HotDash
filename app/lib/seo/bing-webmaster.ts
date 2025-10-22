@@ -205,16 +205,13 @@ export async function getBingTopKeywords(
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall("getBingTopKeywords", true, duration);
 
-    const keywords: BingTopKeyword[] = rows
-      .slice(0, limit)
-      .map((row: any) => ({
-        keyword: row.Query || row.query || "",
-        clicks: row.Clicks || row.clicks || 0,
-        impressions: row.Impressions || row.impressions || 0,
-        ctr:
-          row.Ctr || row.ctr || (row.Clicks || 0) / (row.Impressions || 1),
-        avgPosition: row.AvgImpressions || row.avgImpressions || 0,
-      }));
+    const keywords: BingTopKeyword[] = rows.slice(0, limit).map((row: any) => ({
+      keyword: row.Query || row.query || "",
+      clicks: row.Clicks || row.clicks || 0,
+      impressions: row.Impressions || row.impressions || 0,
+      ctr: row.Ctr || row.ctr || (row.Clicks || 0) / (row.Impressions || 1),
+      avgPosition: row.AvgImpressions || row.avgImpressions || 0,
+    }));
 
     setCached(cacheKey, keywords, 300000);
     return keywords;
@@ -335,4 +332,3 @@ export async function getBingWebmasterSummary(): Promise<BingWebmasterSummary> {
     topPages,
   };
 }
-

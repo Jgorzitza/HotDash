@@ -1,14 +1,14 @@
 /**
  * Social Performance Modal Component
- * 
+ *
  * ENG-023: Detailed view of social media performance
  * - Line chart showing engagement trends (Chart.js)
  * - DataTable with top posts (impressions, CTR, engagement rate)
  * - Date range filter (future enhancement)
  */
 
-import { LineChart, OCC_CHART_COLORS } from '../charts';
-import type { ChartData } from 'chart.js';
+import { LineChart, OCC_CHART_COLORS } from "../charts";
+import type { ChartData } from "chart.js";
 
 interface SocialPost {
   postId: string;
@@ -35,24 +35,27 @@ interface SocialPerformanceModalProps {
   onClose: () => void;
 }
 
-export function SocialPerformanceModal({ data, onClose }: SocialPerformanceModalProps) {
+export function SocialPerformanceModal({
+  data,
+  onClose,
+}: SocialPerformanceModalProps) {
   // Prepare chart data per Context7 Chart.js docs
-  const chartData: ChartData<'line'> = {
+  const chartData: ChartData<"line"> = {
     labels: data.trend.labels,
     datasets: [
       {
-        label: 'Impressions',
+        label: "Impressions",
         data: data.trend.impressions,
         borderColor: OCC_CHART_COLORS.primary,
-        backgroundColor: 'rgba(0, 91, 211, 0.1)',
+        backgroundColor: "rgba(0, 91, 211, 0.1)",
         fill: true,
         tension: 0.4, // Smooth curves
       },
       {
-        label: 'Engagement',
+        label: "Engagement",
         data: data.trend.engagement,
         borderColor: OCC_CHART_COLORS.success,
-        backgroundColor: 'rgba(0, 128, 96, 0.1)',
+        backgroundColor: "rgba(0, 128, 96, 0.1)",
         fill: true,
         tension: 0.4,
       },
@@ -158,19 +161,47 @@ export function SocialPerformanceModal({ data, onClose }: SocialPerformanceModal
                   textAlign: "left",
                 }}
               >
-                <th style={{ padding: "var(--occ-space-3)", color: "var(--occ-text-secondary)" }}>
+                <th
+                  style={{
+                    padding: "var(--occ-space-3)",
+                    color: "var(--occ-text-secondary)",
+                  }}
+                >
                   Platform
                 </th>
-                <th style={{ padding: "var(--occ-space-3)", color: "var(--occ-text-secondary)" }}>
+                <th
+                  style={{
+                    padding: "var(--occ-space-3)",
+                    color: "var(--occ-text-secondary)",
+                  }}
+                >
                   Content
                 </th>
-                <th style={{ padding: "var(--occ-space-3)", color: "var(--occ-text-secondary)", textAlign: "right" }}>
+                <th
+                  style={{
+                    padding: "var(--occ-space-3)",
+                    color: "var(--occ-text-secondary)",
+                    textAlign: "right",
+                  }}
+                >
                   Impressions
                 </th>
-                <th style={{ padding: "var(--occ-space-3)", color: "var(--occ-text-secondary)", textAlign: "right" }}>
+                <th
+                  style={{
+                    padding: "var(--occ-space-3)",
+                    color: "var(--occ-text-secondary)",
+                    textAlign: "right",
+                  }}
+                >
                   CTR
                 </th>
-                <th style={{ padding: "var(--occ-space-3)", color: "var(--occ-text-secondary)", textAlign: "right" }}>
+                <th
+                  style={{
+                    padding: "var(--occ-space-3)",
+                    color: "var(--occ-text-secondary)",
+                    textAlign: "right",
+                  }}
+                >
                   Engagement
                 </th>
               </tr>
@@ -207,13 +238,29 @@ export function SocialPerformanceModal({ data, onClose }: SocialPerformanceModal
                   >
                     {post.content}
                   </td>
-                  <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+                  <td
+                    style={{
+                      padding: "var(--occ-space-3)",
+                      textAlign: "right",
+                    }}
+                  >
                     {post.metrics.impressions.toLocaleString()}
                   </td>
-                  <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+                  <td
+                    style={{
+                      padding: "var(--occ-space-3)",
+                      textAlign: "right",
+                    }}
+                  >
                     {post.metrics.ctr.toFixed(1)}%
                   </td>
-                  <td style={{ padding: "var(--occ-space-3)", textAlign: "right", fontWeight: "600" }}>
+                  <td
+                    style={{
+                      padding: "var(--occ-space-3)",
+                      textAlign: "right",
+                      fontWeight: "600",
+                    }}
+                  >
                     {post.metrics.engagementRate.toFixed(1)}%
                   </td>
                 </tr>
@@ -225,5 +272,3 @@ export function SocialPerformanceModal({ data, onClose }: SocialPerformanceModal
     </div>
   );
 }
-
-

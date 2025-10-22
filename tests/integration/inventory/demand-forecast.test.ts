@@ -23,9 +23,7 @@ describe("Demand Forecasting - Forecast Generation", () => {
   });
 
   it("should handle insufficient data", () => {
-    const historicalData = [
-      { date: new Date(), quantity: 5 },
-    ];
+    const historicalData = [{ date: new Date(), quantity: 5 }];
 
     const forecast = generateDemandForecast("test_sku", historicalData);
 
@@ -68,5 +66,3 @@ describe("Demand Forecasting - Forecast Generation", () => {
     expect(forecast.confidence).toBe("high");
   });
 });
-
-

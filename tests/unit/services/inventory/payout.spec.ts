@@ -336,5 +336,3 @@ describe("Payout Contract Test - Expected Brackets", () => {
     expect(boundary11.bracket).toBe("11+");
   });
 });
-
-

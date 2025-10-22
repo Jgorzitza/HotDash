@@ -128,10 +128,7 @@ describe("Chatwoot Webhook Integration", () => {
     it("should handle arrays in payload", () => {
       const payload = JSON.stringify({
         conversation: {
-          messages: [
-            { content: "Message 1" },
-            { content: "Message 2" },
-          ],
+          messages: [{ content: "Message 1" }, { content: "Message 2" }],
         },
       });
 
@@ -187,5 +184,3 @@ describe("Chatwoot Webhook Integration", () => {
     });
   });
 });
-
-

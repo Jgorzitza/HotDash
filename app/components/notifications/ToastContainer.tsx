@@ -1,10 +1,10 @@
 /**
  * Toast Container Component
- * 
+ *
  * Manages and displays toast notifications with proper queueing and animations.
  * Supports 4 types: Success, Error, Info, Warning
  * Auto-dismiss after configurable duration (default 5s, errors 7s)
- * 
+ *
  * Phase 4 - ENG-011
  */
 
@@ -149,4 +149,3 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
     </div>
   );
 }
-

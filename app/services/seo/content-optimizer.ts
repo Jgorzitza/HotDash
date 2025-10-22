@@ -126,7 +126,7 @@ const IDEAL_ALT_TEXT_LENGTH = 125;
 function calculateFleschScore(text: string): ReadabilityScore {
   // Remove HTML tags
   const cleanText = text.replace(/<[^>]*>/g, " ");
-  
+
   // Count sentences (. ! ?)
   const sentences = cleanText.match(/[.!?]+/g) || [];
   const sentenceCount = Math.max(sentences.length, 1);
@@ -137,7 +137,7 @@ function calculateFleschScore(text: string): ReadabilityScore {
 
   // Count syllables
   let syllableCount = 0;
-  words.forEach(word => {
+  words.forEach((word) => {
     syllableCount += countSyllables(word);
   });
 
@@ -147,7 +147,7 @@ function calculateFleschScore(text: string): ReadabilityScore {
 
   // Flesch Reading Ease Formula
   const fleschScore = Math.round(
-    206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord)
+    206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord,
   );
 
   // Clamp to 0-100
@@ -177,7 +177,8 @@ function calculateFleschScore(text: string): ReadabilityScore {
     interpretation = "Difficult to read. Best understood by college graduates.";
   } else {
     grade = "College graduate";
-    interpretation = "Very difficult to read. Best understood by university graduates.";
+    interpretation =
+      "Very difficult to read. Best understood by university graduates.";
   }
 
   return {
@@ -201,11 +202,11 @@ function countSyllables(word: string): number {
 
   // Remove final 'e', 'es', 'ed' if preceded by consonant
   word = word.replace(/(?:[^laeiouy]es?|ed)$/i, "");
-  
+
   // Count vowel groups
   const vowelGroups = word.match(/[aeiouy]{1,2}/g);
   let count = vowelGroups ? vowelGroups.length : 1;
-  
+
   // Minimum of 1 syllable
   return Math.max(count, 1);
 }
@@ -230,14 +231,15 @@ function analyzeKeywords(text: string, targetKeyword: string): KeywordAnalysis {
   const density = totalWords > 0 ? (frequency / totalWords) * 100 : 0;
 
   // Check if optimal (1-3%)
-  const isOptimal = density >= OPTIMAL_KEYWORD_DENSITY.min && 
-                     density <= OPTIMAL_KEYWORD_DENSITY.max;
+  const isOptimal =
+    density >= OPTIMAL_KEYWORD_DENSITY.min &&
+    density <= OPTIMAL_KEYWORD_DENSITY.max;
 
   // Find top keywords (2-3 word phrases)
   const phrases = extractPhrases(cleanText, 2, 3);
   const phraseCounts = new Map<string, number>();
-  
-  phrases.forEach(phrase => {
+
+  phrases.forEach((phrase) => {
     phraseCounts.set(phrase, (phraseCounts.get(phrase) || 0) + 1);
   });
 
@@ -262,7 +264,11 @@ function analyzeKeywords(text: string, targetKeyword: string): KeywordAnalysis {
 /**
  * Extract n-gram phrases from text
  */
-function extractPhrases(text: string, minLength: number, maxLength: number): string[] {
+function extractPhrases(
+  text: string,
+  minLength: number,
+  maxLength: number,
+): string[] {
   const words = text.match(/\b\w+\b/g) || [];
   const phrases: string[] = [];
 
@@ -283,7 +289,10 @@ function extractPhrases(text: string, minLength: number, maxLength: number): str
 /**
  * Analyze heading structure (H1-H6)
  */
-function analyzeHeadings(html: string, targetKeyword: string): HeadingStructure {
+function analyzeHeadings(
+  html: string,
+  targetKeyword: string,
+): HeadingStructure {
   const headingMatches = {
     h1: html.match(/<h1[^>]*>(.*?)<\/h1>/gi) || [],
     h2: html.match(/<h2[^>]*>(.*?)<\/h2>/gi) || [],
@@ -294,12 +303,14 @@ function analyzeHeadings(html: string, targetKeyword: string): HeadingStructure 
   };
 
   const headings: HeadingStructure["headings"] = [];
-  
+
   Object.entries(headingMatches).forEach(([level, matches]) => {
     const levelNum = parseInt(level.substring(1));
-    matches.forEach(match => {
+    matches.forEach((match) => {
       const text = match.replace(/<[^>]+>/g, "").trim();
-      const hasKeyword = text.toLowerCase().includes(targetKeyword.toLowerCase());
+      const hasKeyword = text
+        .toLowerCase()
+        .includes(targetKeyword.toLowerCase());
       headings.push({ level: levelNum, text, hasKeyword });
     });
   });
@@ -330,19 +341,23 @@ function analyzeHeadings(html: string, targetKeyword: string): HeadingStructure 
 /**
  * Analyze internal and external links
  */
-function analyzeLinks(html: string, baseUrl: string, wordCount: number): LinkAnalysis {
+function analyzeLinks(
+  html: string,
+  baseUrl: string,
+  wordCount: number,
+): LinkAnalysis {
   const linkMatches = html.match(/<a[^>]*href=["']([^"']*)["'][^>]*>/gi) || [];
-  
+
   let internalLinks = 0;
   let externalLinks = 0;
-  
+
   const baseDomain = new URL(baseUrl).hostname;
 
-  linkMatches.forEach(link => {
+  linkMatches.forEach((link) => {
     const hrefMatch = link.match(/href=["']([^"']*)["']/i);
     if (hrefMatch) {
       const href = hrefMatch[1];
-      
+
       if (href.startsWith("http")) {
         const linkDomain = new URL(href).hostname;
         if (linkDomain === baseDomain) {
@@ -359,11 +374,12 @@ function analyzeLinks(html: string, baseUrl: string, wordCount: number): LinkAna
 
   const totalLinks = internalLinks + externalLinks;
   const linkDensity = wordCount > 0 ? (totalLinks / wordCount) * 100 : 0;
-  
+
   // Optimal: 2-5 internal links per 100 words
   const optimalInternal = wordCount > 0 ? (internalLinks / wordCount) * 100 : 0;
-  const hasProperLinking = optimalInternal >= OPTIMAL_LINK_DENSITY.min && 
-                           optimalInternal <= OPTIMAL_LINK_DENSITY.max;
+  const hasProperLinking =
+    optimalInternal >= OPTIMAL_LINK_DENSITY.min &&
+    optimalInternal <= OPTIMAL_LINK_DENSITY.max;
 
   return {
     totalLinks,
@@ -385,11 +401,11 @@ function analyzeLinks(html: string, baseUrl: string, wordCount: number): LinkAna
 function analyzeImages(html: string): ImageAnalysis {
   const imageMatches = html.match(/<img[^>]*>/gi) || [];
   const totalImages = imageMatches.length;
-  
+
   let imagesWithAlt = 0;
   let totalAltLength = 0;
 
-  imageMatches.forEach(img => {
+  imageMatches.forEach((img) => {
     const altMatch = img.match(/alt=["']([^"']*)["']/i);
     if (altMatch && altMatch[1].trim().length > 0) {
       imagesWithAlt++;
@@ -398,10 +414,15 @@ function analyzeImages(html: string): ImageAnalysis {
   });
 
   const imagesWithoutAlt = totalImages - imagesWithAlt;
-  const avgAltLength = imagesWithAlt > 0 ? Math.round(totalAltLength / imagesWithAlt) : 0;
+  const avgAltLength =
+    imagesWithAlt > 0 ? Math.round(totalAltLength / imagesWithAlt) : 0;
 
   let altTextQuality: "good" | "fair" | "poor";
-  if (imagesWithAlt === totalImages && avgAltLength >= MIN_ALT_TEXT_LENGTH && avgAltLength <= IDEAL_ALT_TEXT_LENGTH) {
+  if (
+    imagesWithAlt === totalImages &&
+    avgAltLength >= MIN_ALT_TEXT_LENGTH &&
+    avgAltLength <= IDEAL_ALT_TEXT_LENGTH
+  ) {
     altTextQuality = "good";
   } else if (imagesWithAlt >= totalImages * 0.7) {
     altTextQuality = "fair";
@@ -430,7 +451,7 @@ function calculateSEOScore(
   keywords: KeywordAnalysis,
   headings: HeadingStructure,
   links: LinkAnalysis,
-  images: ImageAnalysis
+  images: ImageAnalysis,
 ): SEOScore {
   // Readability (0-20): Based on Flesch score
   const readabilityScore = Math.round((readability.fleschScore / 100) * 20);
@@ -439,8 +460,10 @@ function calculateSEOScore(
   let keywordsScore = 0;
   if (keywords.isOptimal) keywordsScore += 15;
   else if (keywords.density > 0) keywordsScore += 8;
-  
-  const headingsWithKeyword = headings.headings.filter(h => h.hasKeyword).length;
+
+  const headingsWithKeyword = headings.headings.filter(
+    (h) => h.hasKeyword,
+  ).length;
   if (headingsWithKeyword > 0) keywordsScore += 5;
 
   // Headings (0-20): Proper structure + count
@@ -459,10 +482,12 @@ function calculateSEOScore(
   let imagesScore = 0;
   if (images.altTextQuality === "good") imagesScore = 20;
   else if (images.altTextQuality === "fair") imagesScore = 12;
-  else if (images.totalImages === 0) imagesScore = 15; // No images is acceptable
+  else if (images.totalImages === 0)
+    imagesScore = 15; // No images is acceptable
   else imagesScore = 5;
 
-  const totalScore = readabilityScore + keywordsScore + headingsScore + linksScore + imagesScore;
+  const totalScore =
+    readabilityScore + keywordsScore + headingsScore + linksScore + imagesScore;
 
   let grade: "A" | "B" | "C" | "D" | "F";
   if (totalScore >= 90) grade = "A";
@@ -491,29 +516,41 @@ function calculateSEOScore(
 /**
  * Generate SEO recommendations based on analysis
  */
-function generateRecommendations(analysis: Omit<ContentAnalysis, "recommendations" | "analyzedAt">): string[] {
+function generateRecommendations(
+  analysis: Omit<ContentAnalysis, "recommendations" | "analyzedAt">,
+): string[] {
   const recommendations: string[] = [];
 
   // Readability recommendations
   if (analysis.readability.fleschScore < 60) {
-    recommendations.push(`Improve readability (current: ${analysis.readability.fleschScore}/100). Use shorter sentences and simpler words.`);
+    recommendations.push(
+      `Improve readability (current: ${analysis.readability.fleschScore}/100). Use shorter sentences and simpler words.`,
+    );
   }
 
   // Keyword recommendations
   if (!analysis.keywords.isOptimal) {
     if (analysis.keywords.density < OPTIMAL_KEYWORD_DENSITY.min) {
-      recommendations.push(`Increase keyword density for "${analysis.keywords.targetKeyword}" (current: ${analysis.keywords.density}%, target: 1-3%).`);
+      recommendations.push(
+        `Increase keyword density for "${analysis.keywords.targetKeyword}" (current: ${analysis.keywords.density}%, target: 1-3%).`,
+      );
     } else if (analysis.keywords.density > OPTIMAL_KEYWORD_DENSITY.max) {
-      recommendations.push(`Reduce keyword density for "${analysis.keywords.targetKeyword}" (current: ${analysis.keywords.density}%, target: 1-3%). Avoid keyword stuffing.`);
+      recommendations.push(
+        `Reduce keyword density for "${analysis.keywords.targetKeyword}" (current: ${analysis.keywords.density}%, target: 1-3%). Avoid keyword stuffing.`,
+      );
     }
   }
 
   // Heading recommendations
   if (!analysis.headings.hasProperStructure) {
     if (analysis.headings.h1Count === 0) {
-      recommendations.push("Add a single H1 heading that describes the page content.");
+      recommendations.push(
+        "Add a single H1 heading that describes the page content.",
+      );
     } else if (analysis.headings.h1Count > 1) {
-      recommendations.push(`Use only one H1 heading (current: ${analysis.headings.h1Count}). Use H2-H6 for subheadings.`);
+      recommendations.push(
+        `Use only one H1 heading (current: ${analysis.headings.h1Count}). Use H2-H6 for subheadings.`,
+      );
     }
   }
 
@@ -521,37 +558,53 @@ function generateRecommendations(analysis: Omit<ContentAnalysis, "recommendation
     recommendations.push("Add H2 headings to break up content into sections.");
   }
 
-  const headingsWithKeyword = analysis.headings.headings.filter(h => h.hasKeyword).length;
+  const headingsWithKeyword = analysis.headings.headings.filter(
+    (h) => h.hasKeyword,
+  ).length;
   if (headingsWithKeyword === 0) {
-    recommendations.push(`Include your target keyword "${analysis.keywords.targetKeyword}" in at least one heading.`);
+    recommendations.push(
+      `Include your target keyword "${analysis.keywords.targetKeyword}" in at least one heading.`,
+    );
   }
 
   // Link recommendations
   if (!analysis.links.hasProperLinking) {
     if (analysis.links.internalLinks === 0) {
-      recommendations.push("Add internal links to related pages (target: 2-5 links per 100 words).");
+      recommendations.push(
+        "Add internal links to related pages (target: 2-5 links per 100 words).",
+      );
     } else {
       const optimalRange = `${Math.round((analysis.readability.wordCount / 100) * 2)}-${Math.round((analysis.readability.wordCount / 100) * 5)}`;
-      recommendations.push(`Adjust internal linking (current: ${analysis.links.internalLinks}, optimal: ${optimalRange} for ${analysis.readability.wordCount} words).`);
+      recommendations.push(
+        `Adjust internal linking (current: ${analysis.links.internalLinks}, optimal: ${optimalRange} for ${analysis.readability.wordCount} words).`,
+      );
     }
   }
 
   if (analysis.links.externalLinks === 0) {
-    recommendations.push("Consider adding 1-2 external links to authoritative sources.");
+    recommendations.push(
+      "Consider adding 1-2 external links to authoritative sources.",
+    );
   }
 
   // Image recommendations
   if (analysis.images.imagesWithoutAlt > 0) {
-    recommendations.push(`Add alt text to ${analysis.images.imagesWithoutAlt} image(s) for better accessibility and SEO.`);
+    recommendations.push(
+      `Add alt text to ${analysis.images.imagesWithoutAlt} image(s) for better accessibility and SEO.`,
+    );
   }
 
   if (analysis.images.altTextQuality === "poor") {
-    recommendations.push("Improve alt text quality. Use descriptive, keyword-rich alt text (10-125 characters).");
+    recommendations.push(
+      "Improve alt text quality. Use descriptive, keyword-rich alt text (10-125 characters).",
+    );
   }
 
   // Overall score recommendations
   if (analysis.overallScore.score < 70) {
-    recommendations.push(`Overall SEO score is ${analysis.overallScore.grade} (${analysis.overallScore.score}/100). Focus on improving weak areas.`);
+    recommendations.push(
+      `Overall SEO score is ${analysis.overallScore.grade} (${analysis.overallScore.score}/100). Focus on improving weak areas.`,
+    );
   }
 
   return recommendations;
@@ -567,7 +620,7 @@ function generateRecommendations(analysis: Omit<ContentAnalysis, "recommendation
 export async function analyzeContent(
   url: string,
   html: string,
-  targetKeyword: string
+  targetKeyword: string,
 ): Promise<ContentAnalysis> {
   const startTime = Date.now();
 
@@ -586,7 +639,13 @@ export async function analyzeContent(
     const headings = analyzeHeadings(html, targetKeyword);
     const links = analyzeLinks(html, url, readability.wordCount);
     const images = analyzeImages(html);
-    const overallScore = calculateSEOScore(readability, keywords, headings, links, images);
+    const overallScore = calculateSEOScore(
+      readability,
+      keywords,
+      headings,
+      links,
+      images,
+    );
 
     const partialAnalysis = {
       url,
@@ -625,7 +684,7 @@ export async function analyzeContent(
  */
 export async function analyzeContentFromURL(
   url: string,
-  targetKeyword: string
+  targetKeyword: string,
 ): Promise<ContentAnalysis> {
   try {
     const response = await fetch(url, {
@@ -642,8 +701,10 @@ export async function analyzeContentFromURL(
     const html = await response.text();
     return await analyzeContent(url, html, targetKeyword);
   } catch (error: any) {
-    console.error(`[Content Optimizer] Failed to analyze ${url}:`, error.message);
+    console.error(
+      `[Content Optimizer] Failed to analyze ${url}:`,
+      error.message,
+    );
     throw error;
   }
 }
-

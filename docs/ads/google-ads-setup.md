@@ -56,6 +56,7 @@ node scripts/ads/generate-refresh-token.js
 ```
 
 This will:
+
 1. Open browser for Google OAuth consent
 2. Authorize the application
 3. Display refresh token
@@ -81,6 +82,7 @@ npx tsx scripts/ads/test-google-ads-integration.ts
 ```
 
 This tests:
+
 - ✅ OAuth authentication
 - ✅ Campaign fetching
 - ✅ Performance metrics (last 7 days)
@@ -89,6 +91,7 @@ This tests:
 - ✅ Rate limiting (5 parallel requests)
 
 Expected output:
+
 ```
 🚀 Google Ads Integration Test Suite
 ==================================================
@@ -118,11 +121,13 @@ Total Tests: 6
 ## Rate Limits
 
 Google Ads API v16 rate limits:
+
 - **Basic tier**: 15,000 operations/day
 - **Standard tier**: 250,000 operations/day
 - **Per request**: 500 ms minimum between requests (recommended)
 
 Our implementation:
+
 - ✅ Token caching (reduces auth requests)
 - ✅ Parallel requests for multiple customers
 - ✅ 5-minute response caching
@@ -160,18 +165,22 @@ Our implementation:
 ## Troubleshooting
 
 ### "Invalid developer token"
+
 - Token not approved yet (wait 1-2 business days)
 - Using test account (need approved token for production)
 
 ### "Invalid refresh token"
+
 - Regenerate token using OAuth flow
 - Check token hasn't expired (lasts indefinitely but can be revoked)
 
 ### "Customer not found"
+
 - Verify customer ID is correct (10 digits, no dashes)
 - Ensure OAuth account has access to customer account
 
 ### Rate limit errors
+
 - Reduce parallel requests
 - Increase cache duration
 - Implement exponential backoff
@@ -185,5 +194,3 @@ Our implementation:
 **Testing**: ⏸️ Awaiting credentials
 
 Once configured, run test script to verify integration.
-
-

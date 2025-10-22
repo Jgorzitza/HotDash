@@ -26,7 +26,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { getApprovalCounts } = await import("../services/approvals");
     const counts = await getApprovalCounts();
     pendingCount =
-      (counts.pending_review || 0) + (counts.draft || 0) + (counts.approved || 0);
+      (counts.pending_review || 0) +
+      (counts.draft || 0) +
+      (counts.approved || 0);
   } catch (error) {
     // Silently fail - don't block page load
     console.error("Failed to load approval counts:", error);
@@ -41,10 +43,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function App() {
-  const { apiKey, mockMode, pendingCount: initialPendingCount } = useLoaderData<typeof loader>();
+  const {
+    apiKey,
+    mockMode,
+    pendingCount: initialPendingCount,
+  } = useLoaderData<typeof loader>();
 
   // Real-time SSE connection (Phase 5 - ENG-023, ENG-024)
-  const { status: sseStatus, lastMessage, lastHeartbeat } = useSSE("/api/sse/updates", true);
+  const {
+    status: sseStatus,
+    lastMessage,
+    lastHeartbeat,
+  } = useSSE("/api/sse/updates", true);
   const [livePendingCount, setLivePendingCount] = useState(initialPendingCount);
 
   // Update pending count from SSE approval-update events
@@ -67,7 +77,10 @@ export default function App() {
             {/* Live Badge (Phase 5 - ENG-024) */}
             {livePendingCount > 0 && (
               <span style={{ marginLeft: "var(--occ-space-2)" }}>
-                <LiveBadge count={livePendingCount} showPulse={sseStatus === "connected"} />
+                <LiveBadge
+                  count={livePendingCount}
+                  showPulse={sseStatus === "connected"}
+                />
               </span>
             )}
           </s-link>
@@ -76,7 +89,10 @@ export default function App() {
           {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
           {/* Connection indicator (Phase 5 - ENG-023) */}
           <div slot="actions" style={{ marginLeft: "auto" }}>
-            <ConnectionIndicator status={sseStatus} lastHeartbeat={lastHeartbeat} />
+            <ConnectionIndicator
+              status={sseStatus}
+              lastHeartbeat={lastHeartbeat}
+            />
           </div>
         </s-app-nav>
         <Outlet />

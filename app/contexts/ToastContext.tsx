@@ -1,9 +1,9 @@
 /**
  * Toast Context Provider
- * 
+ *
  * Global toast notification management with React Context
  * Provides toast functions to all components in the app
- * 
+ *
  * Phase 4 - ENG-011
  */
 
@@ -22,8 +22,15 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
-  const { toasts, showSuccess, showError, showInfo, showWarning, dismissToast, clearAll } =
-    useToast();
+  const {
+    toasts,
+    showSuccess,
+    showError,
+    showInfo,
+    showWarning,
+    dismissToast,
+    clearAll,
+  } = useToast();
 
   return (
     <ToastContext.Provider
@@ -48,4 +55,3 @@ export function useToastContext(): ToastContextValue {
   }
   return context;
 }
-

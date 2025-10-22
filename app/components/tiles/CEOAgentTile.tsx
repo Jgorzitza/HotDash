@@ -18,7 +18,8 @@ export function CEOAgentTile({ stats }: CEOAgentTileProps) {
     );
   }
 
-  const { actions_today, pending_approvals, last_action, recent_actions } = stats;
+  const { actions_today, pending_approvals, last_action, recent_actions } =
+    stats;
 
   const metricStyle = {
     fontSize: "var(--occ-font-size-metric)",
@@ -133,7 +134,7 @@ export function CEOAgentTile({ stats }: CEOAgentTileProps) {
                     fontSize: "var(--occ-font-size-xs)",
                   }}
                 >
-                  {action.type.replace(/_/g, " ")} • {" "}
+                  {action.type.replace(/_/g, " ")} •{" "}
                   <span
                     style={{
                       color:
@@ -155,4 +156,3 @@ export function CEOAgentTile({ stats }: CEOAgentTileProps) {
     </div>
   );
 }
-

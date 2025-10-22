@@ -69,10 +69,7 @@ export interface VendorOrder {
  * @param deliveryDate - Date order was delivered
  * @returns Lead time in days
  */
-export function calculateLeadTime(
-  orderDate: Date,
-  deliveryDate: Date,
-): number {
+export function calculateLeadTime(orderDate: Date, deliveryDate: Date): number {
   const diffMs = deliveryDate.getTime() - orderDate.getTime();
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
   return Math.round(diffDays * 10) / 10; // Round to 1 decimal
@@ -129,9 +126,7 @@ export function calculateVendorPerformance(
   // Calculate lead times for completed orders
   const leadTimes = completedOrders
     .filter((o) => o.actual_delivery_date)
-    .map((o) =>
-      calculateLeadTime(o.order_date, o.actual_delivery_date!),
-    );
+    .map((o) => calculateLeadTime(o.order_date, o.actual_delivery_date!));
 
   const averageLeadTime =
     leadTimes.reduce((sum, lt) => sum + lt, 0) / leadTimes.length;
@@ -179,8 +174,7 @@ export function calculateVendorPerformance(
   // Calculate average cost per unit
   const totalCost = completedOrders.reduce((sum, o) => sum + o.total_cost, 0);
   const totalQuantity = completedOrders.reduce((sum, o) => sum + o.quantity, 0);
-  const averageCostPerUnit =
-    totalQuantity > 0 ? totalCost / totalQuantity : 0;
+  const averageCostPerUnit = totalQuantity > 0 ? totalCost / totalQuantity : 0;
 
   // Get last order and delivery dates
   const sortedOrders = [...orders].sort(
@@ -384,9 +378,7 @@ export function rankVendors(
  * @param metrics - Vendor performance metrics
  * @returns Array of performance issues
  */
-export function identifyVendorIssues(
-  metrics: VendorPerformanceMetrics,
-): Array<{
+export function identifyVendorIssues(metrics: VendorPerformanceMetrics): Array<{
   issue_type: "low_reliability" | "high_variance" | "inactive";
   severity: "high" | "medium" | "low";
   description: string;
@@ -463,7 +455,8 @@ export async function getVendorInfo(productId: string): Promise<{
     cost_per_unit: 24.99,
     lead_time_days: 7,
     reliability_score: 92,
-    last_order_date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(), // 15 days ago
+    last_order_date: new Date(
+      Date.now() - 15 * 24 * 60 * 60 * 1000,
+    ).toISOString(), // 15 days ago
   };
 }
-

@@ -105,8 +105,11 @@ async function createSearchConsoleClient(): Promise<searchconsole_v1.Searchconso
 export async function fetchEnhancedMetrics(
   startDate: string,
   endDate: string,
-  dimensions: Array<"query" | "page" | "device" | "country"> = ["query", "page"],
-  limit: number = 1000
+  dimensions: Array<"query" | "page" | "device" | "country"> = [
+    "query",
+    "page",
+  ],
+  limit: number = 1000,
 ): Promise<EnhancedSearchMetrics[]> {
   const startTime = Date.now();
 
@@ -128,25 +131,28 @@ export async function fetchEnhancedMetrics(
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall("fetchEnhancedMetrics", true, duration);
 
-    const metrics: EnhancedSearchMetrics[] = (response.data.rows || []).map(row => {
-      const keys = row.keys || [];
-      const result: EnhancedSearchMetrics = {
-        date: startDate,
-        clicks: row.clicks || 0,
-        impressions: row.impressions || 0,
-        ctr: row.ctr || 0,
-        position: row.position || 0,
-      };
+    const metrics: EnhancedSearchMetrics[] = (response.data.rows || []).map(
+      (row) => {
+        const keys = row.keys || [];
+        const result: EnhancedSearchMetrics = {
+          date: startDate,
+          clicks: row.clicks || 0,
+          impressions: row.impressions || 0,
+          ctr: row.ctr || 0,
+          position: row.position || 0,
+        };
 
-      dimensions.forEach((dim, index) => {
-        if (dim === "query") result.query = keys[index];
-        else if (dim === "page") result.page = keys[index];
-        else if (dim === "device") result.device = keys[index] as "MOBILE" | "DESKTOP" | "TABLET";
-        else if (dim === "country") result.country = keys[index];
-      });
+        dimensions.forEach((dim, index) => {
+          if (dim === "query") result.query = keys[index];
+          else if (dim === "page") result.page = keys[index];
+          else if (dim === "device")
+            result.device = keys[index] as "MOBILE" | "DESKTOP" | "TABLET";
+          else if (dim === "country") result.country = keys[index];
+        });
 
-      return result;
-    });
+        return result;
+      },
+    );
 
     return metrics;
   } catch (error: any) {
@@ -159,7 +165,9 @@ export async function fetchEnhancedMetrics(
 /**
  * Fetch daily snapshot of search performance
  */
-export async function fetchDailySnapshot(date: string): Promise<DailyMetricsSnapshot> {
+export async function fetchDailySnapshot(
+  date: string,
+): Promise<DailyMetricsSnapshot> {
   const startTime = Date.now();
 
   const cacheKey = `seo:snapshot:${date}`;
@@ -175,49 +183,50 @@ export async function fetchDailySnapshot(date: string): Promise<DailyMetricsSnap
     const client = await createSearchConsoleClient();
 
     // Fetch overall metrics
-    const [overallResponse, queryResponse, pageResponse, deviceResponse] = await Promise.all([
-      client.searchanalytics.query({
-        siteUrl: config.siteUrl,
-        requestBody: {
-          startDate: date,
-          endDate: date,
-          dimensions: [],
-          aggregationType: "auto",
-        },
-      }),
-      client.searchanalytics.query({
-        siteUrl: config.siteUrl,
-        requestBody: {
-          startDate: date,
-          endDate: date,
-          dimensions: ["query"],
-          rowLimit: 10,
-          aggregationType: "auto",
-        },
-      }),
-      client.searchanalytics.query({
-        siteUrl: config.siteUrl,
-        requestBody: {
-          startDate: date,
-          endDate: date,
-          dimensions: ["page"],
-          rowLimit: 10,
-          aggregationType: "auto",
-        },
-      }),
-      client.searchanalytics.query({
-        siteUrl: config.siteUrl,
-        requestBody: {
-          startDate: date,
-          endDate: date,
-          dimensions: ["device"],
-          aggregationType: "auto",
-        },
-      }),
-    ]);
+    const [overallResponse, queryResponse, pageResponse, deviceResponse] =
+      await Promise.all([
+        client.searchanalytics.query({
+          siteUrl: config.siteUrl,
+          requestBody: {
+            startDate: date,
+            endDate: date,
+            dimensions: [],
+            aggregationType: "auto",
+          },
+        }),
+        client.searchanalytics.query({
+          siteUrl: config.siteUrl,
+          requestBody: {
+            startDate: date,
+            endDate: date,
+            dimensions: ["query"],
+            rowLimit: 10,
+            aggregationType: "auto",
+          },
+        }),
+        client.searchanalytics.query({
+          siteUrl: config.siteUrl,
+          requestBody: {
+            startDate: date,
+            endDate: date,
+            dimensions: ["page"],
+            rowLimit: 10,
+            aggregationType: "auto",
+          },
+        }),
+        client.searchanalytics.query({
+          siteUrl: config.siteUrl,
+          requestBody: {
+            startDate: date,
+            endDate: date,
+            dimensions: ["device"],
+            aggregationType: "auto",
+          },
+        }),
+      ]);
 
     const overallRow = overallResponse.data.rows?.[0];
-    const topQueries = (queryResponse.data.rows || []).map(row => ({
+    const topQueries = (queryResponse.data.rows || []).map((row) => ({
       query: row.keys?.[0] || "",
       clicks: row.clicks || 0,
       impressions: row.impressions || 0,
@@ -225,7 +234,7 @@ export async function fetchDailySnapshot(date: string): Promise<DailyMetricsSnap
       position: row.position || 0,
     }));
 
-    const topPages = (pageResponse.data.rows || []).map(row => ({
+    const topPages = (pageResponse.data.rows || []).map((row) => ({
       page: row.keys?.[0] || "",
       clicks: row.clicks || 0,
       impressions: row.impressions || 0,
@@ -239,7 +248,7 @@ export async function fetchDailySnapshot(date: string): Promise<DailyMetricsSnap
       tablet: { clicks: 0, impressions: 0 },
     };
 
-    (deviceResponse.data.rows || []).forEach(row => {
+    (deviceResponse.data.rows || []).forEach((row) => {
       const device = row.keys?.[0]?.toLowerCase();
       if (device === "mobile") {
         deviceBreakdown.mobile = {
@@ -291,7 +300,7 @@ export async function fetchHistoricalTrend(
   query: string,
   page: string,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<HistoricalTrend> {
   const startTime = Date.now();
 
@@ -313,18 +322,20 @@ export async function fetchHistoricalTrend(
         startDate,
         endDate,
         dimensions: ["date"],
-        dimensionFilterGroups: [{
-          filters: [
-            {
-              dimension: "query",
-              expression: query,
-            },
-            {
-              dimension: "page",
-              expression: page,
-            },
-          ],
-        }],
+        dimensionFilterGroups: [
+          {
+            filters: [
+              {
+                dimension: "query",
+                expression: query,
+              },
+              {
+                dimension: "page",
+                expression: page,
+              },
+            ],
+          },
+        ],
         aggregationType: "auto",
       },
     });
@@ -333,7 +344,7 @@ export async function fetchHistoricalTrend(
     const history = rows
       .map((row, index) => {
         const prevRow = index > 0 ? rows[index - 1] : null;
-        
+
         return {
           date: row.keys?.[0] || "",
           clicks: row.clicks || 0,
@@ -341,8 +352,12 @@ export async function fetchHistoricalTrend(
           position: row.position || 0,
           change: {
             clicks: prevRow ? (row.clicks || 0) - (prevRow.clicks || 0) : 0,
-            impressions: prevRow ? (row.impressions || 0) - (prevRow.impressions || 0) : 0,
-            position: prevRow ? (row.position || 0) - (prevRow.position || 0) : 0,
+            impressions: prevRow
+              ? (row.impressions || 0) - (prevRow.impressions || 0)
+              : 0,
+            position: prevRow
+              ? (row.position || 0) - (prevRow.position || 0)
+              : 0,
           },
         };
       })
@@ -413,7 +428,7 @@ export async function compareTimeRanges(
   currentStart: string,
   currentEnd: string,
   previousStart: string,
-  previousEnd: string
+  previousEnd: string,
 ): Promise<{
   current: DailyMetricsSnapshot;
   previous: DailyMetricsSnapshot;
@@ -435,10 +450,10 @@ export async function compareTimeRanges(
     previous: previousSnapshot,
     changes: {
       clicks: currentSnapshot.totalClicks - previousSnapshot.totalClicks,
-      impressions: currentSnapshot.totalImpressions - previousSnapshot.totalImpressions,
+      impressions:
+        currentSnapshot.totalImpressions - previousSnapshot.totalImpressions,
       ctr: currentSnapshot.avgCtr - previousSnapshot.avgCtr,
       position: currentSnapshot.avgPosition - previousSnapshot.avgPosition,
     },
   };
 }
-

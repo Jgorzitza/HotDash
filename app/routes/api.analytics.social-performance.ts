@@ -3,9 +3,9 @@ import { authenticate } from "../shopify.server";
 
 /**
  * GET /api/analytics/social-performance
- * 
+ *
  * Returns social media performance metrics for dashboard tile and modal
- * 
+ *
  * Response:
  * {
  *   totalPosts: number,
@@ -14,17 +14,14 @@ import { authenticate } from "../shopify.server";
  *   trend: { labels: string[], impressions: number[], engagement: number[] },
  *   topPosts: Array<{ postId, platform, content, metrics }>
  * }
- * 
+ *
  * Future: Use app/services/analytics/social-performance.ts
  * For now: Returns mock data (Phase 11 will wire Publer API)
  */
 export async function loader({ request }: LoaderFunctionArgs) {
   const { session } = await authenticate.admin(request);
   if (!session?.shop) {
-    return Response.json(
-      { error: "Not authenticated" },
-      { status: 401 }
-    );
+    return Response.json({ error: "Not authenticated" }, { status: 401 });
   }
 
   // Mock data for social performance

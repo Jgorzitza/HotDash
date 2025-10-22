@@ -1,6 +1,6 @@
 /**
  * Shopify Bundle Inventory Service
- * 
+ *
  * Calculate virtual bundle stock based on BOM component availability
  * Decrement component inventory when bundle is sold
  */
@@ -72,18 +72,16 @@ export interface BundleStockResult {
  */
 async function fetchVariantInventory(
   context: ShopifyServiceContext,
-  variantGid: string
+  variantGid: string,
 ): Promise<number> {
   try {
-    const response = await context.admin.graphql(
-      GET_VARIANT_INVENTORY_QUERY,
-      {
-        variables: { id: variantGid }
-      }
-    );
+    const response = await context.admin.graphql(GET_VARIANT_INVENTORY_QUERY, {
+      variables: { id: variantGid },
+    });
 
     const json = await response.json();
-    const inventoryLevels = json.data?.productVariant?.inventoryItem?.inventoryLevels?.edges || [];
+    const inventoryLevels =
+      json.data?.productVariant?.inventoryItem?.inventoryLevels?.edges || [];
 
     let totalAvailable = 0;
     for (const { node: level } of inventoryLevels) {
@@ -103,14 +101,14 @@ async function fetchVariantInventory(
 
 /**
  * Calculate virtual bundle stock based on BOM components
- * 
+ *
  * @param context Shopify service context
  * @param productId Bundle product GID
  * @returns BundleStockResult with virtual stock and component availability
  */
 export async function calculateBundleStock(
   context: ShopifyServiceContext,
-  productId: string
+  productId: string,
 ): Promise<BundleStockResult> {
   // 1. Get BOM components
   const bom = await getBOMComponents(context, productId);
@@ -118,7 +116,7 @@ export async function calculateBundleStock(
   if (!bom || !bom.components || bom.components.length === 0) {
     return {
       virtualStock: 0,
-      componentAvailability: []
+      componentAvailability: [],
     };
   }
 
@@ -141,28 +139,30 @@ export async function calculateBundleStock(
       handle: component.handle,
       available: totalAvailable,
       required: component.qty,
-      possibleBundles
+      possibleBundles,
     });
   }
 
   // 3. Calculate virtual stock (minimum possible bundles)
-  const virtualStock = Math.min(...componentAvailability.map(c => c.possibleBundles));
+  const virtualStock = Math.min(
+    ...componentAvailability.map((c) => c.possibleBundles),
+  );
 
   // 4. Find limiting component
   const limitingComponent = componentAvailability.find(
-    c => c.possibleBundles === virtualStock
+    (c) => c.possibleBundles === virtualStock,
   );
 
   return {
     virtualStock,
     componentAvailability,
-    limitingComponent
+    limitingComponent,
   };
 }
 
 /**
  * Decrement component inventory when bundle is sold
- * 
+ *
  * @param context Shopify service context
  * @param productId Bundle product GID
  * @param qtySold Quantity of bundles sold
@@ -171,7 +171,7 @@ export async function calculateBundleStock(
 export async function decrementBundleComponents(
   context: ShopifyServiceContext,
   productId: string,
-  qtySold: number
+  qtySold: number,
 ): Promise<{ success: boolean; adjustments: number; errors: string[] }> {
   const errors: string[] = [];
   let adjustments = 0;
@@ -183,7 +183,7 @@ export async function decrementBundleComponents(
     return {
       success: false,
       adjustments: 0,
-      errors: ["No BOM components found for bundle"]
+      errors: ["No BOM components found for bundle"],
     };
   }
 
@@ -208,13 +208,15 @@ export async function decrementBundleComponents(
           const response = await context.admin.graphql(
             GET_VARIANT_INVENTORY_QUERY,
             {
-              variables: { id: variantGid }
-            }
+              variables: { id: variantGid },
+            },
           );
 
           const json = await response.json();
           const inventoryItemId = json.data?.productVariant?.inventoryItem?.id;
-          const inventoryLevels = json.data?.productVariant?.inventoryItem?.inventoryLevels?.edges || [];
+          const inventoryLevels =
+            json.data?.productVariant?.inventoryItem?.inventoryLevels?.edges ||
+            [];
 
           if (!inventoryItemId || inventoryLevels.length === 0) {
             errors.push(`No inventory item for ${variantGid}`);
@@ -241,19 +243,22 @@ export async function decrementBundleComponents(
                     {
                       inventoryItemId,
                       locationId: firstLocation,
-                      delta: -toDecrement
-                    }
-                  ]
-                }
-              }
-            }
+                      delta: -toDecrement,
+                    },
+                  ],
+                },
+              },
+            },
           );
 
           const adjustJson = await adjustResponse.json();
-          const userErrors = adjustJson.data?.inventoryAdjustQuantities?.userErrors || [];
+          const userErrors =
+            adjustJson.data?.inventoryAdjustQuantities?.userErrors || [];
 
           if (userErrors.length > 0) {
-            errors.push(`Adjust ${variantGid}: ${userErrors.map((e: any) => e.message).join(", ")}`);
+            errors.push(
+              `Adjust ${variantGid}: ${userErrors.map((e: any) => e.message).join(", ")}`,
+            );
           } else {
             adjustments++;
             remaining -= toDecrement;
@@ -265,14 +270,16 @@ export async function decrementBundleComponents(
     }
 
     if (remaining > 0) {
-      errors.push(`Could not fully decrement ${component.handle}: ${remaining} units remaining`);
+      errors.push(
+        `Could not fully decrement ${component.handle}: ${remaining} units remaining`,
+      );
     }
   }
 
   return {
     success: errors.length === 0,
     adjustments,
-    errors
+    errors,
   };
 }
 
@@ -282,12 +289,13 @@ export async function decrementBundleComponents(
  */
 export async function calculateBundleStockFromTags(
   context: ShopifyServiceContext,
-  productId: string
+  productId: string,
 ): Promise<number> {
   // This is a simplified fallback - in practice, would parse PACK:X tags
   // and calculate based on component availability
   // For now, return 0 to indicate metafields should be used
-  console.warn("[Bundle] Fallback to tags not fully implemented - use BOM metafields");
+  console.warn(
+    "[Bundle] Fallback to tags not fully implemented - use BOM metafields",
+  );
   return 0;
 }
-

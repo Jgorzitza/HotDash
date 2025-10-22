@@ -12,7 +12,12 @@
 
 import { calculateLeadTime } from "./vendor-management";
 
-export type POStatus = "draft" | "ordered" | "shipped" | "received" | "cancelled";
+export type POStatus =
+  | "draft"
+  | "ordered"
+  | "shipped"
+  | "received"
+  | "cancelled";
 
 export interface PurchaseOrder {
   po_number: string;
@@ -516,4 +521,3 @@ export async function getPOTracking(productId: string): Promise<
     },
   ];
 }
-

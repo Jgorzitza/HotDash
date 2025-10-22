@@ -1,14 +1,14 @@
 /**
  * Live Badge Component
- * 
+ *
  * Real-time updating badge for approval queue count
  * Updates via SSE without page reload
- * 
+ *
  * Features:
  * - Pulse animation on update
  * - Color-coded by urgency (gray/blue/yellow/red)
  * - Accessible count announcement
- * 
+ *
  * Phase 5 - ENG-024
  */
 
@@ -20,7 +20,11 @@ interface LiveBadgeProps {
   showPulse?: boolean;
 }
 
-export function LiveBadge({ count, label = "Pending", showPulse = false }: LiveBadgeProps) {
+export function LiveBadge({
+  count,
+  label = "Pending",
+  showPulse = false,
+}: LiveBadgeProps) {
   const [isPulsing, setIsPulsing] = useState(false);
   const [prevCount, setPrevCount] = useState(count);
 
@@ -102,7 +106,8 @@ export function LiveBadge({ count, label = "Pending", showPulse = false }: LiveB
         fontSize: "var(--occ-font-size-sm)",
         fontWeight: "var(--occ-font-weight-semibold)",
         position: "relative",
-        animation: isPulsing || showPulse ? "occ-pulse 1s ease-in-out" : undefined,
+        animation:
+          isPulsing || showPulse ? "occ-pulse 1s ease-in-out" : undefined,
       }}
     >
       {count > 0 && (
@@ -122,4 +127,3 @@ export function LiveBadge({ count, label = "Pending", showPulse = false }: LiveB
     </div>
   );
 }
-

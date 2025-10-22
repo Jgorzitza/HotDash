@@ -42,7 +42,7 @@ await productAnalyticsService.trackFeatureUsage({
   userId: "shop.myshopify.com",
   featureName: "dark_mode",
   action: "enabled",
-  timestamp: new Date()
+  timestamp: new Date(),
 });
 
 // Get feature adoption metrics (last 30 days)
@@ -50,25 +50,31 @@ const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 const endDate = new Date();
 const adoption = await productAnalyticsService.getFeatureAdoptionMetrics(
   startDate,
-  endDate
+  endDate,
 );
 
 console.log(`Dark Mode adoption: ${adoption[0].adoptionRate * 100}%`);
 
 // Get top features
 const topFeatures = await productAnalyticsService.getTopFeatures(5);
-console.log("Top 5 features:", topFeatures.map(f => f.featureName));
+console.log(
+  "Top 5 features:",
+  topFeatures.map((f) => f.featureName),
+);
 
 // Get unused features
-const unused = await productAnalyticsService.getUnusedFeatures(0.10);
-console.log("Low adoption features:", unused.map(f => f.featureName));
+const unused = await productAnalyticsService.getUnusedFeatures(0.1);
+console.log(
+  "Low adoption features:",
+  unused.map((f) => f.featureName),
+);
 
 // Generate insights
 const insights = await productAnalyticsService.generateInsights(
   startDate,
-  endDate
+  endDate,
 );
-insights.forEach(i => {
+insights.forEach((i) => {
   console.log(`[${i.type}] ${i.message}`);
   console.log(`Recommendation: ${i.recommendation}`);
 });
@@ -76,16 +82,16 @@ insights.forEach(i => {
 
 ### Methods
 
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `trackFeatureUsage(event)` | Record feature usage | `Promise<void>` |
-| `getFeatureAdoptionMetrics(start, end)` | Feature adoption rates | `Promise<FeatureAdoptionMetrics[]>` |
-| `getTileEngagementMetrics(start, end)` | Tile click/view rates | `Promise<TileEngagementMetrics[]>` |
-| `getModalActionMetrics(start, end)` | Approve/reject rates | `Promise<ModalActionMetrics[]>` |
-| `getSettingsChangeMetrics(start, end)` | Settings change frequency | `Promise<SettingsChangeMetrics[]>` |
-| `getTopFeatures(limit, start, end)` | Most-used features | `Promise<FeatureAdoptionMetrics[]>` |
-| `getUnusedFeatures(threshold, start, end)` | Low-adoption features | `Promise<FeatureAdoptionMetrics[]>` |
-| `generateInsights(start, end)` | Automated recommendations | `Promise<Insight[]>` |
+| Method                                     | Purpose                   | Returns                             |
+| ------------------------------------------ | ------------------------- | ----------------------------------- |
+| `trackFeatureUsage(event)`                 | Record feature usage      | `Promise<void>`                     |
+| `getFeatureAdoptionMetrics(start, end)`    | Feature adoption rates    | `Promise<FeatureAdoptionMetrics[]>` |
+| `getTileEngagementMetrics(start, end)`     | Tile click/view rates     | `Promise<TileEngagementMetrics[]>`  |
+| `getModalActionMetrics(start, end)`        | Approve/reject rates      | `Promise<ModalActionMetrics[]>`     |
+| `getSettingsChangeMetrics(start, end)`     | Settings change frequency | `Promise<SettingsChangeMetrics[]>`  |
+| `getTopFeatures(limit, start, end)`        | Most-used features        | `Promise<FeatureAdoptionMetrics[]>` |
+| `getUnusedFeatures(threshold, start, end)` | Low-adoption features     | `Promise<FeatureAdoptionMetrics[]>` |
+| `generateInsights(start, end)`             | Automated recommendations | `Promise<Insight[]>`                |
 
 ---
 
@@ -97,12 +103,12 @@ insights.forEach(i => {
 
 ### Segment Types
 
-| Segment | Criteria | Engagement Score | Characteristics |
-|---------|----------|------------------|-----------------|
-| **Power** | Daily usage, score ≥70 | 70-100 | High feature adoption, frequent approvals |
-| **Casual** | Weekly usage, score 40-69 | 40-69 | Moderate usage, standard patterns |
-| **New** | Signup <7 days ago | Varies | Exploring features, learning |
-| **Churned** | No activity 30+ days, score <40 | 0-39 | At risk, needs re-engagement |
+| Segment     | Criteria                        | Engagement Score | Characteristics                           |
+| ----------- | ------------------------------- | ---------------- | ----------------------------------------- |
+| **Power**   | Daily usage, score ≥70          | 70-100           | High feature adoption, frequent approvals |
+| **Casual**  | Weekly usage, score 40-69       | 40-69            | Moderate usage, standard patterns         |
+| **New**     | Signup <7 days ago              | Varies           | Exploring features, learning              |
+| **Churned** | No activity 30+ days, score <40 | 0-39             | At risk, needs re-engagement              |
 
 ### Engagement Scoring Model
 
@@ -121,31 +127,28 @@ import { userSegmentationService } from "~/services/analytics/user-segmentation"
 // Calculate engagement score
 const score = await userSegmentationService.calculateEngagementScore(
   "shop.myshopify.com",
-  30 // lookback days
+  30, // lookback days
 );
 console.log(`Engagement score: ${score}/100`);
 
 // Segment user
-const segment = await userSegmentationService.segmentUser(
-  "shop.myshopify.com"
-);
+const segment = await userSegmentationService.segmentUser("shop.myshopify.com");
 console.log(`User segment: ${segment}`);
 
 // Get detailed segment data
-const segmentData = await userSegmentationService.getUserSegmentData(
-  "shop.myshopify.com"
-);
+const segmentData =
+  await userSegmentationService.getUserSegmentData("shop.myshopify.com");
 console.log({
   segment: segmentData.segment,
   engagementScore: segmentData.engagementScore,
   totalSessions: segmentData.totalSessions,
   featuresUsed: segmentData.featuresUsed,
-  approvalCount: segmentData.approvalCount
+  approvalCount: segmentData.approvalCount,
 });
 
 // Get all segment analytics
 const analytics = await userSegmentationService.getSegmentAnalytics();
-analytics.forEach(s => {
+analytics.forEach((s) => {
   console.log(`${s.segment}: ${s.userCount} users (${s.percentage * 100}%)`);
   console.log(`  Avg score: ${s.avgEngagementScore}`);
   console.log(`  Recommendations:`, s.recommendations);
@@ -154,12 +157,12 @@ analytics.forEach(s => {
 
 ### Methods
 
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `calculateEngagementScore(userId, days)` | Calculate 0-100 score | `Promise<number>` |
-| `segmentUser(userId)` | Determine segment | `Promise<UserSegment>` |
-| `getUserSegmentData(userId)` | Complete segment data | `Promise<UserSegmentData>` |
-| `getSegmentAnalytics()` | Aggregate by segment | `Promise<SegmentAnalytics[]>` |
+| Method                                   | Purpose               | Returns                       |
+| ---------------------------------------- | --------------------- | ----------------------------- |
+| `calculateEngagementScore(userId, days)` | Calculate 0-100 score | `Promise<number>`             |
+| `segmentUser(userId)`                    | Determine segment     | `Promise<UserSegment>`        |
+| `getUserSegmentData(userId)`             | Complete segment data | `Promise<UserSegmentData>`    |
+| `getSegmentAnalytics()`                  | Aggregate by segment  | `Promise<SegmentAnalytics[]>` |
 
 ---
 
@@ -186,6 +189,7 @@ analytics.forEach(s => {
 4. **Approval Quality** (20 points): Approval rate
 
 **Interpretation**:
+
 - 80-100: Excellent (green) - Product thriving
 - 60-79: Good (blue) - Product performing well
 - 40-59: Fair (yellow) - Product needs attention
@@ -202,36 +206,39 @@ console.log({
   dau: metrics.dau,
   mau: metrics.mau,
   dauMauRatio: metrics.dauMauRatio,
-  healthScore: metrics.productHealthScore
+  healthScore: metrics.productHealthScore,
 });
 
 // Get specific metrics
 const dau = await productMetricsService.calculateDAU();
 const mau = await productMetricsService.calculateMAU();
-console.log(`DAU: ${dau}, MAU: ${mau}, Stickiness: ${(dau/mau * 100).toFixed(0)}%`);
+console.log(
+  `DAU: ${dau}, MAU: ${mau}, Stickiness: ${((dau / mau) * 100).toFixed(0)}%`,
+);
 
 // Get health score
-const { score, factors } = await productMetricsService.calculateProductHealthScore();
+const { score, factors } =
+  await productMetricsService.calculateProductHealthScore();
 const interpretation = productMetricsService.getHealthInterpretation(score);
 console.log(`Health: ${score}/100 (${interpretation.status})`);
 console.log(`Message: ${interpretation.message}`);
 
 // Get DAU trend (last 30 days)
 const trend = await productMetricsService.getDAUTrend(30);
-trend.forEach(d => console.log(`${d.date}: ${d.value} users`));
+trend.forEach((d) => console.log(`${d.date}: ${d.value} users`));
 ```
 
 ### Methods
 
-| Method | Purpose | Returns |
-|--------|---------|---------|
-| `calculateDAU(date)` | Daily active users | `Promise<number>` |
-| `calculateWAU(endDate)` | Weekly active users | `Promise<number>` |
-| `calculateMAU(endDate)` | Monthly active users | `Promise<number>` |
-| `calculateProductHealthScore()` | 0-100 health score | `Promise<{score, factors}>` |
-| `getProductMetrics()` | All metrics | `Promise<ProductMetrics>` |
-| `getDAUTrend(days)` | DAU over time | `Promise<TrendData[]>` |
-| `getHealthInterpretation(score)` | Status message | `{status, message, color}` |
+| Method                           | Purpose              | Returns                     |
+| -------------------------------- | -------------------- | --------------------------- |
+| `calculateDAU(date)`             | Daily active users   | `Promise<number>`           |
+| `calculateWAU(endDate)`          | Weekly active users  | `Promise<number>`           |
+| `calculateMAU(endDate)`          | Monthly active users | `Promise<number>`           |
+| `calculateProductHealthScore()`  | 0-100 health score   | `Promise<{score, factors}>` |
+| `getProductMetrics()`            | All metrics          | `Promise<ProductMetrics>`   |
+| `getDAUTrend(days)`              | DAU over time        | `Promise<TrendData[]>`      |
+| `getHealthInterpretation(score)` | Status message       | `{status, message, color}`  |
 
 ---
 
@@ -261,14 +268,14 @@ import { productMetricsService } from "~/services/analytics/product-metrics";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const metrics = await productMetricsService.getProductMetrics();
-  
+
   return {
     productHealth: {
       score: metrics.productHealthScore,
       dau: metrics.dau,
       mau: metrics.mau,
-      stickiness: metrics.dauMauRatio
-    }
+      stickiness: metrics.dauMauRatio,
+    },
   };
 }
 ```
@@ -282,12 +289,12 @@ import { featureFlagService } from "~/services/experiments/feature-flags";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const shop = await getShop(request);
-  
+
   const darkModeEnabled = await featureFlagService.isFeatureEnabled(
     "FEATURE_DARK_MODE",
-    shop
+    shop,
   );
-  
+
   return { darkModeEnabled };
 }
 ```
@@ -301,16 +308,16 @@ import { abTestingService } from "~/services/experiments/ab-testing";
 
 export function Dashboard({ experiment }: { experiment: Experiment }) {
   const shop = useShop();
-  
+
   // Assign variant on mount
   useEffect(() => {
     const assignment = abTestingService.assignVariant(shop, experiment);
     setVariant(assignment.variantId);
-    
+
     // Track exposure
     abTestingService.trackExposure(experiment.id, assignment.variantId, shop);
   }, []);
-  
+
   // Track conversion on click
   const handleTileClick = async () => {
     await abTestingService.trackConversion(
@@ -321,7 +328,7 @@ export function Dashboard({ experiment }: { experiment: Experiment }) {
       1
     );
   };
-  
+
   // Render based on variant
   return variant === "control" ? <ControlLayout /> : <VariantLayout />;
 }
@@ -350,5 +357,3 @@ export function Dashboard({ experiment }: { experiment: Experiment }) {
 
 **Last Updated**: 2025-10-21  
 **Questions**: Contact Product agent in `feedback/product/2025-10-21.md`
-
-

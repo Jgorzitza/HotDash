@@ -20,6 +20,7 @@
 **Manager reviews all commits on daily branch, then merges to main.**
 
 - [ ] **Review All Commits on Daily Branch**:
+
   ```bash
   git log manager-reopen-20251020 --oneline --graph -30
   # Verify: All commits follow feat(agent-name): format
@@ -28,6 +29,7 @@
   ```
 
 - [ ] **Test Merge to Main**:
+
   ```bash
   git checkout manager-reopen-20251020
   git fetch origin main
@@ -37,6 +39,7 @@
   ```
 
 - [ ] **Create PR (if main protected) OR Direct Merge**:
+
   ```bash
   # Option A: Main is protected (use PR)
   git push origin manager-reopen-20251020
@@ -44,7 +47,7 @@
     --title "Daily Snapshot: $(date +%Y-%m-%d)" \
     --body "Daily work from all 17 agents. Evidence in feedback/{agent}/$(date +%Y-%m-%d).md files."
   # Then merge PR after CI passes
-  
+
   # Option B: Main not protected (direct merge)
   git checkout main
   git merge manager-reopen-20251020 --no-ff -m "Daily snapshot: $(date +%Y-%m-%d)"
@@ -52,6 +55,7 @@
   ```
 
 - [ ] **Verify Merge Success**:
+
   ```bash
   git checkout main
   git pull origin main
@@ -59,6 +63,7 @@
   ```
 
 - [ ] **Tag Daily Snapshot** (for rollback capability):
+
   ```bash
   git tag daily-snapshot-$(date +%Y-%m-%d) main
   git push origin daily-snapshot-$(date +%Y-%m-%d)

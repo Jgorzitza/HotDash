@@ -1,27 +1,27 @@
 /**
  * Action Queue Card Component
- * 
+ *
  * Displays action recommendations with GA4 attribution tracking.
  * Part of Growth Engine - Action ROI measurement and queue re-ranking.
- * 
+ *
  * ENG-032: Action Link Click Handler with hd_action_key attribution
  */
 
-import { useState } from 'react';
-import { setActionKey } from '../utils/analytics';
+import { useState } from "react";
+import { setActionKey } from "../utils/analytics";
 
 export interface ActionQueueItem {
   id: string;
   actionKey: string; // Format: "seo-fix-powder-board-2025-10-21"
-  actionType: 'seo' | 'inventory' | 'content' | 'pricing' | 'ads';
+  actionType: "seo" | "inventory" | "content" | "pricing" | "ads";
   title: string;
   description: string;
   targetUrl: string; // Product/page URL this action affects
   expectedRevenue: number;
-  priority: 'high' | 'medium' | 'low';
-  status: 'pending' | 'approved' | 'applied';
+  priority: "high" | "medium" | "low";
+  status: "pending" | "approved" | "applied";
   createdAt: string;
-  
+
   // Attribution data (populated after action applied)
   realizedRevenue7d?: number;
   realizedRevenue14d?: number;
@@ -46,12 +46,12 @@ export function ActionQueueCard({
 
   /**
    * ENG-032: Handle action link click with attribution tracking
-   * 
+   *
    * When user clicks the action link:
    * 1. Add hd_action URL parameter
    * 2. Store action_key in sessionStorage
    * 3. Navigate to target URL
-   * 
+   *
    * GA4 will then track all subsequent events (page_view, add_to_cart, purchase)
    * with the hd_action_key custom dimension for ROI attribution.
    */
@@ -60,7 +60,7 @@ export function ActionQueueCard({
 
     // Build target URL with hd_action parameter
     const actionUrl = new URL(action.targetUrl, window.location.origin);
-    actionUrl.searchParams.set('hd_action', action.actionKey);
+    actionUrl.searchParams.set("hd_action", action.actionKey);
 
     // Store action_key in sessionStorage (24h TTL)
     setActionKey(action.actionKey);
@@ -75,48 +75,59 @@ export function ActionQueueCard({
     // Note: Navigation happens, so state reset doesn't matter
   };
 
-  const getActionTypeColor = (type: ActionQueueItem['actionType']) => {
+  const getActionTypeColor = (type: ActionQueueItem["actionType"]) => {
     const colors = {
-      seo: 'var(--occ-color-bg-info, #e3f2fd)',
-      inventory: 'var(--occ-color-bg-warning, #fff3cd)',
-      content: 'var(--occ-color-bg-success, #d4edda)',
-      pricing: 'var(--occ-color-bg-critical, #f8d7da)',
-      ads: 'var(--occ-color-bg-neutral, #f6f6f7)',
+      seo: "var(--occ-color-bg-info, #e3f2fd)",
+      inventory: "var(--occ-color-bg-warning, #fff3cd)",
+      content: "var(--occ-color-bg-success, #d4edda)",
+      pricing: "var(--occ-color-bg-critical, #f8d7da)",
+      ads: "var(--occ-color-bg-neutral, #f6f6f7)",
     };
     return colors[type];
   };
 
-  const getPriorityBadge = (priority: ActionQueueItem['priority']) => {
+  const getPriorityBadge = (priority: ActionQueueItem["priority"]) => {
     const badges = {
-      high: { label: 'High Priority', color: 'var(--occ-color-text-critical, #d32f2f)' },
-      medium: { label: 'Medium', color: 'var(--occ-color-text-warning, #f57c00)' },
-      low: { label: 'Low', color: 'var(--occ-color-text-subdued, #6d7175)' },
+      high: {
+        label: "High Priority",
+        color: "var(--occ-color-text-critical, #d32f2f)",
+      },
+      medium: {
+        label: "Medium",
+        color: "var(--occ-color-text-warning, #f57c00)",
+      },
+      low: { label: "Low", color: "var(--occ-color-text-subdued, #6d7175)" },
     };
     return badges[priority];
   };
 
   const hasAttribution = Boolean(
-    action.realizedRevenue7d || action.realizedRevenue14d || action.realizedRevenue28d
+    action.realizedRevenue7d ||
+      action.realizedRevenue14d ||
+      action.realizedRevenue28d,
   );
 
   const priorityBadge = getPriorityBadge(action.priority);
 
   return (
-    <div className="action-queue-card" style={{ background: getActionTypeColor(action.actionType) }}>
+    <div
+      className="action-queue-card"
+      style={{ background: getActionTypeColor(action.actionType) }}
+    >
       {/* Header */}
       <div className="action-queue-card__header">
         <div className="action-queue-card__title-row">
           <h3 className="action-queue-card__title">{action.title}</h3>
           <div className="action-queue-card__badges">
             {/* ENG-032: Tracked badge for actions with attribution enabled */}
-            <span 
+            <span
               className="action-queue-card__badge action-queue-card__badge--tracked"
               title="ROI tracked via GA4 for 28 days"
               aria-label="This action is tracked for ROI measurement"
             >
               📊 Tracked
             </span>
-            <span 
+            <span
               className="action-queue-card__badge action-queue-card__badge--priority"
               style={{ color: priorityBadge.color }}
             >
@@ -135,16 +146,23 @@ export function ActionQueueCard({
       {/* Expected Revenue */}
       <div className="action-queue-card__metrics">
         <div className="action-queue-card__metric">
-          <span className="action-queue-card__metric-label">Expected Revenue</span>
+          <span className="action-queue-card__metric-label">
+            Expected Revenue
+          </span>
           <span className="action-queue-card__metric-value">
-            ${action.expectedRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+            $
+            {action.expectedRevenue.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
           </span>
         </div>
 
         {/* Attribution Results (if available) */}
         {hasAttribution && (
           <div className="action-queue-card__attribution">
-            <span className="action-queue-card__metric-label">Realized Revenue</span>
+            <span className="action-queue-card__metric-label">
+              Realized Revenue
+            </span>
             <div className="action-queue-card__attribution-windows">
               {action.realizedRevenue7d !== undefined && (
                 <span className="action-queue-card__metric-value action-queue-card__metric-value--small">
@@ -187,7 +205,7 @@ export function ActionQueueCard({
           </button>
         )}
 
-        {action.status === 'pending' && (
+        {action.status === "pending" && (
           <div className="action-queue-card__approval-actions">
             {onApprove && (
               <button
@@ -423,4 +441,3 @@ export function ActionQueueCard({
     </div>
   );
 }
-

@@ -1,6 +1,6 @@
 /**
  * Analytics Data Export API Route
- * 
+ *
  * GET /api/analytics/export
  * Query params:
  * - type: "social" | "seo" | "ads" | "growth" | "all" (required)
@@ -8,7 +8,7 @@
  * - startDate: ISO date string (optional)
  * - endDate: ISO date string (optional)
  * - format: "csv" | "json" (default: "csv")
- * 
+ *
  * Returns streaming CSV response with proper headers
  * CRITICAL: Uses Response constructor with stream, NOT json() helper
  */
@@ -41,7 +41,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 
@@ -73,7 +73,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("CSV export API error:", error);
-    
+
     // Return error response using Response constructor
     return new Response(
       JSON.stringify({
@@ -85,7 +85,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   }
 }

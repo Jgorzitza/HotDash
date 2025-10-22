@@ -16,7 +16,11 @@ interface InventoryActionResponse {
   error?: string;
 }
 
-type InventoryAction = "create_po" | "adjust_quantity" | "mark_intentional" | "snooze";
+type InventoryAction =
+  | "create_po"
+  | "adjust_quantity"
+  | "mark_intentional"
+  | "snooze";
 
 const ACTION_LABELS: Record<InventoryAction, string> = {
   create_po: "Create Draft PO",
@@ -25,13 +29,10 @@ const ACTION_LABELS: Record<InventoryAction, string> = {
   snooze: "Snooze Alert",
 };
 
-export function InventoryModal({
-  alert,
-  open,
-  onClose,
-}: InventoryModalProps) {
+export function InventoryModal({ alert, open, onClose }: InventoryModalProps) {
   const fetcher = useFetcher<InventoryActionResponse>();
-  const [selectedAction, setSelectedAction] = useState<InventoryAction>("create_po");
+  const [selectedAction, setSelectedAction] =
+    useState<InventoryAction>("create_po");
   const [reorderQuantity, setReorderQuantity] = useState(30);
   const [vendor, setVendor] = useState("acme_distribution");
   const [note, setNote] = useState("");
@@ -77,7 +78,9 @@ export function InventoryModal({
 
     // Add velocity analysis data
     const velocityAnalysis = {
-      avgDailySales: alert.daysOfCover ? alert.quantityAvailable / alert.daysOfCover : 0,
+      avgDailySales: alert.daysOfCover
+        ? alert.quantityAvailable / alert.daysOfCover
+        : 0,
       currentStock: alert.quantityAvailable,
       threshold: alert.threshold,
       daysOfCover: alert.daysOfCover ?? 0,
@@ -96,9 +99,10 @@ export function InventoryModal({
   }
 
   // Calculate simple velocity metrics from available data
-  const avgDailySales = alert.daysOfCover && alert.daysOfCover > 0
-    ? (alert.quantityAvailable / alert.daysOfCover).toFixed(1)
-    : "N/A";
+  const avgDailySales =
+    alert.daysOfCover && alert.daysOfCover > 0
+      ? (alert.quantityAvailable / alert.daysOfCover).toFixed(1)
+      : "N/A";
 
   return (
     <div className="occ-modal-backdrop" role="presentation">
@@ -132,7 +136,13 @@ export function InventoryModal({
         <div className="occ-modal__body">
           <section className="occ-modal__section">
             <h3>Current Status</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               <p style={{ margin: 0 }}>
                 <strong>Current Stock:</strong> {alert.quantityAvailable} units
               </p>
@@ -141,7 +151,8 @@ export function InventoryModal({
               </p>
               {alert.daysOfCover != null && (
                 <p style={{ margin: 0 }}>
-                  <strong>Days of Cover:</strong> {alert.daysOfCover.toFixed(1)} days
+                  <strong>Days of Cover:</strong> {alert.daysOfCover.toFixed(1)}{" "}
+                  days
                 </p>
               )}
             </div>
@@ -159,15 +170,43 @@ export function InventoryModal({
               <p style={{ margin: "0 0 1rem 0" }}>
                 <strong>Avg daily sales:</strong> {avgDailySales} units
               </p>
-              
+
               {/* Visual chart: Simple bar representation of 14-day trend */}
               <div style={{ marginBottom: "1rem" }}>
-                <p style={{ fontSize: "0.75rem", color: "var(--occ-text-secondary)", margin: "0 0 0.5rem 0" }}>
+                <p
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "var(--occ-text-secondary)",
+                    margin: "0 0 0.5rem 0",
+                  }}
+                >
                   14-Day Trend (simplified visual - full charts in Phase 7-8)
                 </p>
-                <div style={{ display: "flex", gap: "2px", alignItems: "flex-end", height: "60px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "2px",
+                    alignItems: "flex-end",
+                    height: "60px",
+                  }}
+                >
                   {/* Generate simple bars for last 14 days - placeholder data */}
-                  {[3, 2, 4, 2, 5, 3, 2, 4, 3, 5, 4, 2, 3, Number(avgDailySales) || 2].map((value, index) => {
+                  {[
+                    3,
+                    2,
+                    4,
+                    2,
+                    5,
+                    3,
+                    2,
+                    4,
+                    3,
+                    5,
+                    4,
+                    2,
+                    3,
+                    Number(avgDailySales) || 2,
+                  ].map((value, index) => {
                     const height = (value / 5) * 100; // Scale to percentage
                     return (
                       <div
@@ -186,21 +225,39 @@ export function InventoryModal({
                     );
                   })}
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.625rem", color: "var(--occ-text-secondary)", marginTop: "0.25rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    fontSize: "0.625rem",
+                    color: "var(--occ-text-secondary)",
+                    marginTop: "0.25rem",
+                  }}
+                >
                   <span>14 days ago</span>
                   <span>Today</span>
                 </div>
               </div>
 
-              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "0.75rem", fontStyle: "italic" }}>
-                Note: Simplified visualization. Full interactive charts with demand-forecast integration coming in Phase 7-8 (polaris-viz)
+              <p
+                style={{
+                  margin: 0,
+                  color: "var(--occ-text-secondary)",
+                  fontSize: "0.75rem",
+                  fontStyle: "italic",
+                }}
+              >
+                Note: Simplified visualization. Full interactive charts with
+                demand-forecast integration coming in Phase 7-8 (polaris-viz)
               </p>
             </div>
           </section>
 
           <section className="occ-modal__section">
             <h3>Reorder Recommendation</h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+            >
               <label className="occ-field">
                 <span className="occ-field__label">Reorder Quantity</span>
                 <input
@@ -230,7 +287,13 @@ export function InventoryModal({
                 </select>
               </label>
 
-              <p style={{ margin: 0, fontSize: "0.875rem", color: "var(--occ-text-secondary)" }}>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "0.875rem",
+                  color: "var(--occ-text-secondary)",
+                }}
+              >
                 Lead Time: 7 days (estimated)
               </p>
             </div>
@@ -243,7 +306,9 @@ export function InventoryModal({
               <select
                 className="occ-select"
                 value={selectedAction}
-                onChange={(e) => setSelectedAction(e.target.value as InventoryAction)}
+                onChange={(e) =>
+                  setSelectedAction(e.target.value as InventoryAction)
+                }
                 disabled={isSubmitting}
                 aria-label="Select inventory action"
               >
@@ -300,4 +365,3 @@ export function InventoryModal({
     </div>
   );
 }
-

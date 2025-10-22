@@ -7,6 +7,7 @@ export { CXEscalationsTile } from "./CXEscalationsTile";
 export { SEOContentTile } from "./SEOContentTile";
 export { OpsMetricsTile } from "./OpsMetricsTile";
 export { IdeaPoolTile } from "./IdeaPoolTile";
+export { ApprovalsQueueTile } from "./ApprovalsQueueTile";
 export { CEOAgentTile } from "./CEOAgentTile";
 export { UnreadMessagesTile } from "./UnreadMessagesTile";
 // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)

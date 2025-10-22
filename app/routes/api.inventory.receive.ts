@@ -19,6 +19,7 @@
 import { type ActionFunctionArgs } from "react-router";
 import { processReceipt, type ReceiptInput } from "~/services/inventory/alc";
 import { updateVendorReliability } from "~/services/inventory/vendor-service";
+import { getCurrentShopDomain } from "~/config/shopify.server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -66,16 +67,28 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (!lineItems || lineItems.length === 0) {
     return Response.json(
-      { success: false, error: "Missing required field: lineItems (must be non-empty array)" },
+      {
+        success: false,
+        error: "Missing required field: lineItems (must be non-empty array)",
+      },
       { status: 400 },
     );
   }
 
   // Validate each line item
   for (const item of lineItems) {
-    if (!item.variantId || !item.qtyReceived || !item.vendorInvoiceAmount || item.weight === undefined) {
+    if (
+      !item.variantId ||
+      !item.qtyReceived ||
+      !item.vendorInvoiceAmount ||
+      item.weight === undefined
+    ) {
       return Response.json(
-        { success: false, error: "Invalid line item: missing required fields (variantId, qtyReceived, vendorInvoiceAmount, weight)" },
+        {
+          success: false,
+          error:
+            "Invalid line item: missing required fields (variantId, qtyReceived, vendorInvoiceAmount, weight)",
+        },
         { status: 400 },
       );
     }
@@ -133,7 +146,7 @@ export async function action({ request }: ActionFunctionArgs) {
         action: "receive_purchase_order",
         rationale: `PO ${po.poNumber} received: ${lineItems.length} items, freight $${totalFreight}, duty $${totalDuty}`,
         evidenceUrl: `/api/purchase-orders/${poId}`,
-        shopDomain: "fm8vte-ex.myshopify.com", // TODO: Get from session/context
+        shopDomain: getCurrentShopDomain(),
         externalRef: po.poNumber,
         payload: {
           poId,
@@ -174,4 +187,3 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 }
-

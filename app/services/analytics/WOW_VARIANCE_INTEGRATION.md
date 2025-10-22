@@ -21,10 +21,12 @@ This service calculates Week-over-Week (WoW) variance for sales metrics to power
 ### GET /api/analytics/wow-variance
 
 **Query Parameters**:
+
 - `project` (required): Shop domain (e.g., "shop.myshopify.com")
 - `metric` (required): One of: `revenue`, `orders`, `conversion`
 
 **Response Format**:
+
 ```json
 {
   "success": true,
@@ -39,6 +41,7 @@ This service calculates Week-over-Week (WoW) variance for sales metrics to power
 ```
 
 **Trend Values**:
+
 - `"up"`: Variance > +5%
 - `"down"`: Variance < -5%
 - `"flat"`: Variance between -5% and +5%
@@ -50,13 +53,13 @@ import { useFetcher } from "react-router";
 
 export function SalesModal() {
   const fetcher = useFetcher();
-  
+
   useEffect(() => {
     fetcher.load(`/api/analytics/wow-variance?project=${shop}&metric=revenue`);
   }, [shop]);
-  
+
   const variance = fetcher.data?.data;
-  
+
   return (
     <div>
       <h2>Revenue Trend</h2>
@@ -97,6 +100,7 @@ variance = ((current - previous) / previous) * 100
 ```
 
 **Edge Cases**:
+
 - If `previous = 0` and `current > 0`: Returns `100` (100% increase)
 - If both are `0`: Returns `0` with trend `'flat'`
 - If data unavailable: Returns fallback `{current: 0, previous: 0, variance: 0, trend: 'flat'}`
@@ -107,18 +111,29 @@ The service handles multiple JSON value formats from `dashboard_fact.value`:
 
 ```typescript
 // Direct number
-{ value: 1000 }
+{
+  value: 1000;
+}
 
 // Amount object
-{ value: { amount: 1000 } }
+{
+  value: {
+    amount: 1000;
+  }
+}
 
 // Nested value
-{ value: { value: 1000 } }
+{
+  value: {
+    value: 1000;
+  }
+}
 ```
 
 ## Tests
 
 11 comprehensive tests covering:
+
 - ✅ Positive variance calculation
 - ✅ Negative variance calculation
 - ✅ Flat trend detection
@@ -128,6 +143,7 @@ The service handles multiple JSON value formats from `dashboard_fact.value`:
 - ✅ Aggregation logic (sum for revenue/orders, average for conversion)
 
 **Run tests**:
+
 ```bash
 npx vitest run tests/unit/services/analytics/wow-variance.spec.ts
 ```
@@ -159,4 +175,3 @@ SUPABASE_ANON_KEY=your-anon-key
 
 Contact: Analytics Agent  
 Reference: `docs/directions/analytics.md` ANALYTICS-005
-

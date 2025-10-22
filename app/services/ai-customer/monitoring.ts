@@ -1,20 +1,20 @@
 /**
  * AI-Customer CEO Agent Monitoring Service
- * 
+ *
  * Tracks CEO Agent performance metrics including response times,
  * token usage, error rates, and tool utilization patterns.
  * Provides health status and performance dashboards.
- * 
+ *
  * @module app/services/ai-customer/monitoring
  * @see docs/directions/ai-customer.md AI-CUSTOMER-012
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Health status
  */
-export type HealthStatus = 'healthy' | 'degraded' | 'unhealthy' | 'offline';
+export type HealthStatus = "healthy" | "degraded" | "unhealthy" | "offline";
 
 /**
  * Performance metrics
@@ -60,18 +60,18 @@ export interface HealthCheckResult {
 /**
  * Monitoring time range
  */
-export type TimeRange = '1h' | '24h' | '7d' | '30d';
+export type TimeRange = "1h" | "24h" | "7d" | "30d";
 
 /**
  * Perform health check on CEO Agent
- * 
+ *
  * Strategy:
  * 1. Query decision_log for recent CEO agent activity
  * 2. Calculate performance metrics (response time, tokens, errors)
  * 3. Analyze tool usage patterns
  * 4. Determine health status based on thresholds
  * 5. Generate recommendations if issues detected
- * 
+ *
  * @param timeRange - Time range to analyze
  * @param supabaseUrl - Supabase project URL
  * @param supabaseKey - Supabase service key
@@ -80,7 +80,7 @@ export type TimeRange = '1h' | '24h' | '7d' | '30d';
 export async function checkHealth(
   timeRange: TimeRange,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<HealthCheckResult> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -90,11 +90,11 @@ export async function checkHealth(
 
     // Query recent CEO agent activity
     const { data, error } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('scope', 'ceo_agent')
-      .gte('created_at', startDate.toISOString())
-      .order('created_at', { ascending: false });
+      .from("decision_log")
+      .select("*")
+      .eq("scope", "ceo_agent")
+      .gte("created_at", startDate.toISOString())
+      .order("created_at", { ascending: false });
 
     if (error) {
       throw new Error(`Query error: ${error.message}`);
@@ -127,15 +127,18 @@ export async function checkHealth(
       recommendations,
     };
   } catch (error) {
-    console.error('[Monitoring] Error checking health:', error);
-    
+    console.error("[Monitoring] Error checking health:", error);
+
     return {
-      status: 'offline',
+      status: "offline",
       timestamp: new Date().toISOString(),
       uptime: 0,
       metrics: createEmptyMetrics(),
-      issues: ['Failed to fetch monitoring data'],
-      recommendations: ['Check database connectivity', 'Verify Supabase credentials'],
+      issues: ["Failed to fetch monitoring data"],
+      recommendations: [
+        "Check database connectivity",
+        "Verify Supabase credentials",
+      ],
     };
   }
 }
@@ -171,9 +174,9 @@ function calculateMetrics(data: any[]): PerformanceMetrics {
     }
 
     // Errors
-    if (record.action.includes('.error') || payload?.error) {
+    if (record.action.includes(".error") || payload?.error) {
       totalErrors++;
-      const errorType = payload?.errorType || 'unknown';
+      const errorType = payload?.errorType || "unknown";
       errorsByType[errorType] = (errorsByType[errorType] || 0) + 1;
     }
 
@@ -194,16 +197,19 @@ function calculateMetrics(data: any[]): PerformanceMetrics {
   const p50 = percentile(responseTimes, 50);
   const p95 = percentile(responseTimes, 95);
   const p99 = percentile(responseTimes, 99);
-  const avg = responseTimes.length > 0
-    ? responseTimes.reduce((sum, t) => sum + t, 0) / responseTimes.length
-    : 0;
+  const avg =
+    responseTimes.length > 0
+      ? responseTimes.reduce((sum, t) => sum + t, 0) / responseTimes.length
+      : 0;
 
   // Calculate token averages
   const totalTokens = tokenCounts.reduce((sum, t) => sum + t, 0);
-  const avgPerQuery = tokenCounts.length > 0 ? totalTokens / tokenCounts.length : 0;
+  const avgPerQuery =
+    tokenCounts.length > 0 ? totalTokens / tokenCounts.length : 0;
 
   // Calculate error rate
-  const errorPercentage = data.length > 0 ? (totalErrors / data.length) * 100 : 0;
+  const errorPercentage =
+    data.length > 0 ? (totalErrors / data.length) * 100 : 0;
 
   // Calculate avg tools per query
   const avgToolsPerQuery = data.length > 0 ? totalToolCalls / data.length : 0;
@@ -240,39 +246,53 @@ function calculateMetrics(data: any[]): PerformanceMetrics {
  */
 function determineHealthStatus(
   metrics: PerformanceMetrics,
-  totalRequests: number
+  totalRequests: number,
 ): { status: HealthStatus; issues: string[] } {
   const issues: string[] = [];
 
   // Check error rate (> 10% = degraded, > 25% = unhealthy)
   if (metrics.errorRate.percentage > 25) {
-    issues.push(`Critical error rate: ${metrics.errorRate.percentage}% (threshold: 25%)`);
+    issues.push(
+      `Critical error rate: ${metrics.errorRate.percentage}% (threshold: 25%)`,
+    );
   } else if (metrics.errorRate.percentage > 10) {
-    issues.push(`Elevated error rate: ${metrics.errorRate.percentage}% (threshold: 10%)`);
+    issues.push(
+      `Elevated error rate: ${metrics.errorRate.percentage}% (threshold: 10%)`,
+    );
   }
 
   // Check response time (p95 > 5000ms = degraded, p95 > 10000ms = unhealthy)
   if (metrics.responseTime.p95 > 10000) {
-    issues.push(`Critical response time: p95 ${metrics.responseTime.p95}ms (threshold: 10s)`);
+    issues.push(
+      `Critical response time: p95 ${metrics.responseTime.p95}ms (threshold: 10s)`,
+    );
   } else if (metrics.responseTime.p95 > 5000) {
-    issues.push(`Elevated response time: p95 ${metrics.responseTime.p95}ms (threshold: 5s)`);
+    issues.push(
+      `Elevated response time: p95 ${metrics.responseTime.p95}ms (threshold: 5s)`,
+    );
   }
 
   // Check if agent is active (> 0 requests in time range)
   if (totalRequests === 0) {
-    issues.push('No recent activity detected');
+    issues.push("No recent activity detected");
   }
 
   // Determine overall status
   let status: HealthStatus;
   if (totalRequests === 0) {
-    status = 'offline';
-  } else if (metrics.errorRate.percentage > 25 || metrics.responseTime.p95 > 10000) {
-    status = 'unhealthy';
-  } else if (metrics.errorRate.percentage > 10 || metrics.responseTime.p95 > 5000) {
-    status = 'degraded';
+    status = "offline";
+  } else if (
+    metrics.errorRate.percentage > 25 ||
+    metrics.responseTime.p95 > 10000
+  ) {
+    status = "unhealthy";
+  } else if (
+    metrics.errorRate.percentage > 10 ||
+    metrics.responseTime.p95 > 5000
+  ) {
+    status = "degraded";
   } else {
-    status = 'healthy';
+    status = "healthy";
   }
 
   return { status, issues };
@@ -281,39 +301,55 @@ function determineHealthStatus(
 /**
  * Generate recommendations based on detected issues
  */
-function generateRecommendations(metrics: PerformanceMetrics, issues: string[]): string[] {
+function generateRecommendations(
+  metrics: PerformanceMetrics,
+  issues: string[],
+): string[] {
   const recommendations: string[] = [];
 
   // Error rate recommendations
   if (metrics.errorRate.percentage > 10) {
-    recommendations.push('Review error logs and implement error handling improvements');
-    
-    const topErrorType = Object.entries(metrics.errorRate.byType)
-      .sort(([, a], [, b]) => b - a)[0];
-    
+    recommendations.push(
+      "Review error logs and implement error handling improvements",
+    );
+
+    const topErrorType = Object.entries(metrics.errorRate.byType).sort(
+      ([, a], [, b]) => b - a,
+    )[0];
+
     if (topErrorType) {
-      recommendations.push(`Address most common error type: ${topErrorType[0]} (${topErrorType[1]} occurrences)`);
+      recommendations.push(
+        `Address most common error type: ${topErrorType[0]} (${topErrorType[1]} occurrences)`,
+      );
     }
   }
 
   // Response time recommendations
   if (metrics.responseTime.p95 > 5000) {
-    recommendations.push('Optimize query performance - consider caching frequently accessed data');
+    recommendations.push(
+      "Optimize query performance - consider caching frequently accessed data",
+    );
   }
 
   // Token usage recommendations
   if (metrics.tokenUsage.avgPerQuery > 10000) {
-    recommendations.push('High token usage detected - review context window management and summarization');
+    recommendations.push(
+      "High token usage detected - review context window management and summarization",
+    );
   }
 
   // Tool usage recommendations
   if (metrics.toolUsage.avgToolsPerQuery > 5) {
-    recommendations.push('High tool call volume - consider consolidating related queries');
+    recommendations.push(
+      "High tool call volume - consider consolidating related queries",
+    );
   }
 
   // If no issues, provide optimization suggestions
   if (issues.length === 0) {
-    recommendations.push('System operating normally - continue monitoring for anomalies');
+    recommendations.push(
+      "System operating normally - continue monitoring for anomalies",
+    );
   }
 
   return recommendations;
@@ -336,13 +372,13 @@ function calculateStartDate(timeRange: TimeRange): Date {
   const now = new Date();
 
   switch (timeRange) {
-    case '1h':
+    case "1h":
       return new Date(now.getTime() - 60 * 60 * 1000);
-    case '24h':
+    case "24h":
       return new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    case '7d':
+    case "7d":
       return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    case '30d':
+    case "30d":
       return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
   }
 }
@@ -362,14 +398,18 @@ function createEmptyMetrics(): PerformanceMetrics {
 /**
  * Create healthy status for no-activity case
  */
-function createHealthyStatus(timeRange: TimeRange, uptime: number): HealthCheckResult {
+function createHealthyStatus(
+  timeRange: TimeRange,
+  uptime: number,
+): HealthCheckResult {
   return {
-    status: 'healthy',
+    status: "healthy",
     timestamp: new Date().toISOString(),
     uptime,
     metrics: createEmptyMetrics(),
     issues: [],
-    recommendations: [`No activity in last ${timeRange} - system idle but healthy`],
+    recommendations: [
+      `No activity in last ${timeRange} - system idle but healthy`,
+    ],
   };
 }
-

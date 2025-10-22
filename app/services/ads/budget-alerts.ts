@@ -7,16 +7,22 @@
  * @module app/services/ads/budget-alerts
  */
 
-import type { CampaignPerformance, BudgetAlert, AlertType, AlertSeverity, Campaign } from "./types";
+import type {
+  CampaignPerformance,
+  BudgetAlert,
+  AlertType,
+  AlertSeverity,
+  Campaign,
+} from "./types";
 
 /**
  * Budget Alert Thresholds
  */
 export interface AlertThresholds {
-  budgetDepletionPercent: number;  // Alert when spent > X% of budget (default: 80)
-  lowCtrPercent: number;  // Alert when CTR < X% (default: 1.0)
-  highCpcMultiplier: number;  // Alert when CPC > X times target (default: 1.5)
-  conversionDropPercent: number;  // Alert when conversions drop > X% (default: 20)
+  budgetDepletionPercent: number; // Alert when spent > X% of budget (default: 80)
+  lowCtrPercent: number; // Alert when CTR < X% (default: 1.0)
+  highCpcMultiplier: number; // Alert when CPC > X times target (default: 1.5)
+  conversionDropPercent: number; // Alert when conversions drop > X% (default: 20)
 }
 
 /**
@@ -40,12 +46,12 @@ export const DEFAULT_THRESHOLDS: AlertThresholds = {
 export function checkBudgetDepletion(
   campaigns: Campaign[],
   performances: CampaignPerformance[],
-  thresholds: AlertThresholds = DEFAULT_THRESHOLDS
+  thresholds: AlertThresholds = DEFAULT_THRESHOLDS,
 ): BudgetAlert[] {
   const alerts: BudgetAlert[] = [];
 
   for (const campaign of campaigns) {
-    const perf = performances.find(p => p.campaignId === campaign.id);
+    const perf = performances.find((p) => p.campaignId === campaign.id);
     if (!perf) continue;
 
     const budgetCents = Math.round(campaign.budgetMicros / 10000);
@@ -83,7 +89,7 @@ export function checkBudgetDepletion(
  */
 export function checkLowCtr(
   performances: CampaignPerformance[],
-  thresholds: AlertThresholds = DEFAULT_THRESHOLDS
+  thresholds: AlertThresholds = DEFAULT_THRESHOLDS,
 ): BudgetAlert[] {
   const alerts: BudgetAlert[] = [];
 
@@ -125,7 +131,7 @@ export function checkLowCtr(
 export function checkHighCpc(
   performances: CampaignPerformance[],
   targetCpcCents: Record<string, number>,
-  thresholds: AlertThresholds = DEFAULT_THRESHOLDS
+  thresholds: AlertThresholds = DEFAULT_THRESHOLDS,
 ): BudgetAlert[] {
   const alerts: BudgetAlert[] = [];
 
@@ -170,18 +176,22 @@ export function checkHighCpc(
 export function checkConversionDrops(
   currentPeriod: CampaignPerformance[],
   previousPeriod: CampaignPerformance[],
-  thresholds: AlertThresholds = DEFAULT_THRESHOLDS
+  thresholds: AlertThresholds = DEFAULT_THRESHOLDS,
 ): BudgetAlert[] {
   const alerts: BudgetAlert[] = [];
 
   for (const current of currentPeriod) {
-    const previous = previousPeriod.find(p => p.campaignId === current.campaignId);
+    const previous = previousPeriod.find(
+      (p) => p.campaignId === current.campaignId,
+    );
     if (!previous) continue;
 
     // Only alert if previous period had meaningful conversions
     if (previous.conversions < 5) continue;
 
-    const dropPercent = ((previous.conversions - current.conversions) / previous.conversions) * 100;
+    const dropPercent =
+      ((previous.conversions - current.conversions) / previous.conversions) *
+      100;
 
     if (dropPercent >= thresholds.conversionDropPercent) {
       let severity: AlertSeverity = "medium";
@@ -196,7 +206,8 @@ export function checkConversionDrops(
         severity,
         message: `Conversions dropped ${dropPercent.toFixed(1)}% (${previous.conversions} → ${current.conversions})`,
         currentValue: current.conversions,
-        thresholdValue: previous.conversions * (1 - thresholds.conversionDropPercent / 100),
+        thresholdValue:
+          previous.conversions * (1 - thresholds.conversionDropPercent / 100),
         timestamp: new Date().toISOString(),
       });
     }
@@ -220,24 +231,34 @@ export function generateAllAlerts(
   currentPerformances: CampaignPerformance[],
   previousPerformances?: CampaignPerformance[],
   targetCpcCents?: Record<string, number>,
-  thresholds: AlertThresholds = DEFAULT_THRESHOLDS
+  thresholds: AlertThresholds = DEFAULT_THRESHOLDS,
 ): BudgetAlert[] {
   const alerts: BudgetAlert[] = [];
 
   // Budget depletion alerts
-  alerts.push(...checkBudgetDepletion(campaigns, currentPerformances, thresholds));
+  alerts.push(
+    ...checkBudgetDepletion(campaigns, currentPerformances, thresholds),
+  );
 
   // Low CTR alerts
   alerts.push(...checkLowCtr(currentPerformances, thresholds));
 
   // High CPC alerts (if target CPCs provided)
   if (targetCpcCents) {
-    alerts.push(...checkHighCpc(currentPerformances, targetCpcCents, thresholds));
+    alerts.push(
+      ...checkHighCpc(currentPerformances, targetCpcCents, thresholds),
+    );
   }
 
   // Conversion drop alerts (if previous period provided)
   if (previousPerformances) {
-    alerts.push(...checkConversionDrops(currentPerformances, previousPerformances, thresholds));
+    alerts.push(
+      ...checkConversionDrops(
+        currentPerformances,
+        previousPerformances,
+        thresholds,
+      ),
+    );
   }
 
   // Sort by severity (high -> medium -> low)
@@ -259,12 +280,22 @@ export function shouldAutoPause(alerts: BudgetAlert[]): boolean {
   // - Multiple high severity alerts (2+)
   // - High CPC + conversion drop combination
 
-  const highSeverityCount = alerts.filter(a => a.severity === "high").length;
-  const hasBudgetExceeded = alerts.some(a => a.alertType === "budget_exceeded");
-  const hasHighCpc = alerts.some(a => a.alertType === "high_cpc" && a.severity === "high");
-  const hasConversionDrop = alerts.some(a => a.alertType === "conversion_drop");
+  const highSeverityCount = alerts.filter((a) => a.severity === "high").length;
+  const hasBudgetExceeded = alerts.some(
+    (a) => a.alertType === "budget_exceeded",
+  );
+  const hasHighCpc = alerts.some(
+    (a) => a.alertType === "high_cpc" && a.severity === "high",
+  );
+  const hasConversionDrop = alerts.some(
+    (a) => a.alertType === "conversion_drop",
+  );
 
-  return hasBudgetExceeded || highSeverityCount >= 2 || (hasHighCpc && hasConversionDrop);
+  return (
+    hasBudgetExceeded ||
+    highSeverityCount >= 2 ||
+    (hasHighCpc && hasConversionDrop)
+  );
 }
 
 /**
@@ -280,10 +311,9 @@ export function getAlertSummary(alerts: BudgetAlert[]): {
   total: number;
 } {
   return {
-    high: alerts.filter(a => a.severity === "high").length,
-    medium: alerts.filter(a => a.severity === "medium").length,
-    low: alerts.filter(a => a.severity === "low").length,
+    high: alerts.filter((a) => a.severity === "high").length,
+    medium: alerts.filter((a) => a.severity === "medium").length,
+    low: alerts.filter((a) => a.severity === "low").length,
     total: alerts.length,
   };
 }
-

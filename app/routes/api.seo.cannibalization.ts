@@ -14,18 +14,25 @@
 
 import { type LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
-import { detectKeywordCannibalization, getKeywordCannibalizationDetails } from "../services/seo/cannibalization";
+import {
+  detectKeywordCannibalization,
+  getKeywordCannibalizationDetails,
+} from "../services/seo/cannibalization";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const shopDomain = url.searchParams.get("shop") || "default-shop.myshopify.com";
+    const shopDomain =
+      url.searchParams.get("shop") || "default-shop.myshopify.com";
     const keyword = url.searchParams.get("keyword");
 
     // If keyword specified, return details for that keyword
     if (keyword) {
-      const details = await getKeywordCannibalizationDetails(shopDomain, keyword);
-      
+      const details = await getKeywordCannibalizationDetails(
+        shopDomain,
+        keyword,
+      );
+
       if (!details) {
         return Response.json(
           {
@@ -65,4 +72,3 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
   }
 }
-

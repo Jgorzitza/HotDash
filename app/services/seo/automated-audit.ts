@@ -21,9 +21,17 @@ import { appMetrics } from "../../utils/metrics.server";
 // ============================================================================
 
 export interface SEOAuditIssue {
-  type: "missing_title" | "title_too_long" | "title_too_short" | 
-        "missing_meta" | "meta_too_long" | "meta_too_short" |
-        "missing_h1" | "multiple_h1" | "missing_alt" | "duplicate_content";
+  type:
+    | "missing_title"
+    | "title_too_long"
+    | "title_too_short"
+    | "missing_meta"
+    | "meta_too_long"
+    | "meta_too_short"
+    | "missing_h1"
+    | "multiple_h1"
+    | "missing_alt"
+    | "duplicate_content";
   severity: "critical" | "warning" | "info";
   url: string;
   element?: string;
@@ -113,22 +121,25 @@ async function fetchPageHTML(url: string): Promise<string> {
 /**
  * Extract SEO elements from HTML content
  */
-function extractSEOElements(html: string, url: string): Omit<PageAuditResult, "issues" | "auditedAt"> {
+function extractSEOElements(
+  html: string,
+  url: string,
+): Omit<PageAuditResult, "issues" | "auditedAt"> {
   // Simple regex-based extraction (in production, use proper HTML parser like jsdom)
   const titleMatch = html.match(/<title[^>]*>(.*?)<\/title>/i);
-  const metaDescMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i);
+  const metaDescMatch = html.match(
+    /<meta[^>]*name=["']description["'][^>]*content=["']([^"']*)["']/i,
+  );
   const h1Matches = html.match(/<h1[^>]*>(.*?)<\/h1>/gi) || [];
   const imgMatches = html.match(/<img[^>]*>/gi) || [];
 
   const title = titleMatch ? titleMatch[1].trim() : null;
   const metaDescription = metaDescMatch ? metaDescMatch[1].trim() : null;
-  
-  const h1Text = h1Matches.map(h1 => 
-    h1.replace(/<[^>]+>/g, "").trim()
-  );
 
-  const imagesWithoutAlt = imgMatches.filter(img => 
-    !img.match(/alt=["'][^"']+["']/i)
+  const h1Text = h1Matches.map((h1) => h1.replace(/<[^>]+>/g, "").trim());
+
+  const imagesWithoutAlt = imgMatches.filter(
+    (img) => !img.match(/alt=["'][^"']+["']/i),
   ).length;
 
   return {
@@ -147,7 +158,9 @@ function extractSEOElements(html: string, url: string): Omit<PageAuditResult, "i
 /**
  * Analyze SEO elements and generate issues
  */
-function analyzeSEOElements(elements: Omit<PageAuditResult, "issues" | "auditedAt">): SEOAuditIssue[] {
+function analyzeSEOElements(
+  elements: Omit<PageAuditResult, "issues" | "auditedAt">,
+): SEOAuditIssue[] {
   const issues: SEOAuditIssue[] = [];
 
   // Title checks
@@ -226,7 +239,8 @@ function analyzeSEOElements(elements: Omit<PageAuditResult, "issues" | "auditedA
       url: elements.url,
       element: "h1",
       description: "Page is missing an H1 heading",
-      recommendedValue: "Add a single H1 heading that describes the page content",
+      recommendedValue:
+        "Add a single H1 heading that describes the page content",
     });
   } else if (elements.h1Count > 1) {
     issues.push({
@@ -282,12 +296,14 @@ async function auditPage(url: string): Promise<PageAuditResult> {
       h1Text: [],
       imageCount: 0,
       imagesWithoutAlt: 0,
-      issues: [{
-        type: "missing_title",
-        severity: "critical",
-        url,
-        description: `Failed to audit page: ${error.message}`,
-      }],
+      issues: [
+        {
+          type: "missing_title",
+          severity: "critical",
+          url,
+          description: `Failed to audit page: ${error.message}`,
+        },
+      ],
       auditedAt: new Date().toISOString(),
     };
   }
@@ -320,23 +336,27 @@ export async function runDailyAudit(urls: string[]): Promise<AuditResult> {
     for (let i = 0; i < urls.length; i += batchSize) {
       const batch = urls.slice(i, i + batchSize);
       const batchResults = await Promise.all(
-        batch.map(url => auditPage(url))
+        batch.map((url) => auditPage(url)),
       );
       pages.push(...batchResults);
     }
 
     // Generate summary
-    const allIssues = pages.flatMap(page => page.issues);
+    const allIssues = pages.flatMap((page) => page.issues);
     const issuesByType: Record<string, number> = {};
-    
-    allIssues.forEach(issue => {
+
+    allIssues.forEach((issue) => {
       issuesByType[issue.type] = (issuesByType[issue.type] || 0) + 1;
     });
 
-    const criticalIssues = allIssues.filter(i => i.severity === "critical").length;
-    const warningIssues = allIssues.filter(i => i.severity === "warning").length;
-    const infoIssues = allIssues.filter(i => i.severity === "info").length;
-    const pagesWithIssues = pages.filter(p => p.issues.length > 0).length;
+    const criticalIssues = allIssues.filter(
+      (i) => i.severity === "critical",
+    ).length;
+    const warningIssues = allIssues.filter(
+      (i) => i.severity === "warning",
+    ).length;
+    const infoIssues = allIssues.filter((i) => i.severity === "info").length;
+    const pagesWithIssues = pages.filter((p) => p.issues.length > 0).length;
 
     const auditCompletedAt = new Date().toISOString();
     const durationMs = Date.now() - startTime;
@@ -368,9 +388,9 @@ export async function runDailyAudit(urls: string[]): Promise<AuditResult> {
 
     // Cache for 1 hour
     setCached(cacheKey, result, 3600000);
-    
+
     appMetrics.gaApiCall("runDailyAudit", true, durationMs);
-    
+
     return result;
   } catch (error: any) {
     const durationMs = Date.now() - startTime;
@@ -388,7 +408,7 @@ export async function getURLsToAudit(shopDomain: string): Promise<string[]> {
   // 2. Query Shopify for all product URLs
   // 3. Query for all collection URLs
   // For now, return sample URLs
-  
+
   return [
     `https://${shopDomain}`,
     `https://${shopDomain}/products`,
@@ -397,4 +417,3 @@ export async function getURLsToAudit(shopDomain: string): Promise<string[]> {
     `https://${shopDomain}/pages/contact`,
   ];
 }
-

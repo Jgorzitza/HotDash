@@ -3,14 +3,27 @@
  * Add payload examples to all agent direction files
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 const AGENTS = [
-  'engineer', 'designer', 'data', 'devops', 'integrations',
-  'analytics', 'inventory', 'seo', 'ads', 'content',
-  'product', 'qa', 'pilot', 'ai-customer', 'ai-knowledge',
-  'support', 'manager'
+  "engineer",
+  "designer",
+  "data",
+  "devops",
+  "integrations",
+  "analytics",
+  "inventory",
+  "seo",
+  "ads",
+  "content",
+  "product",
+  "qa",
+  "pilot",
+  "ai-customer",
+  "ai-knowledge",
+  "support",
+  "manager",
 ];
 
 const SHUTDOWN_SECTION = (agentName: string) => `
@@ -57,46 +70,45 @@ await logDecision({
 `;
 
 function updateDirectionFile(agentName: string): boolean {
-  const filePath = path.join('docs/directions', `${agentName}.md`);
-  
+  const filePath = path.join("docs/directions", `${agentName}.md`);
+
   if (!fs.existsSync(filePath)) {
     console.log(`❌ ${agentName}: File not found`);
     return false;
   }
-  
-  let content = fs.readFileSync(filePath, 'utf-8');
-  
+
+  let content = fs.readFileSync(filePath, "utf-8");
+
   // Check if already has shutdown section
-  if (content.includes('Daily Shutdown (with Self-Grading)')) {
+  if (content.includes("Daily Shutdown (with Self-Grading)")) {
     console.log(`⏭️  ${agentName}: Already has shutdown section`);
     return true;
   }
-  
+
   // Find insertion point (before "Markdown Backup")
-  const insertPoint = content.indexOf('### Markdown Backup (Optional)');
-  
+  const insertPoint = content.indexOf("### Markdown Backup (Optional)");
+
   if (insertPoint === -1) {
     console.log(`⚠️  ${agentName}: Could not find insertion point`);
     return false;
   }
-  
+
   const before = content.substring(0, insertPoint);
   const after = content.substring(insertPoint);
   const newContent = before + SHUTDOWN_SECTION(agentName) + after;
-  
+
   fs.writeFileSync(filePath, newContent);
   console.log(`✅ ${agentName}: Added shutdown section`);
   return true;
 }
 
-console.log('🔄 Adding Shutdown + Self-Grading to All Agent Directions\n');
-console.log('='.repeat(80));
+console.log("🔄 Adding Shutdown + Self-Grading to All Agent Directions\n");
+console.log("=".repeat(80));
 
 let successCount = 0;
 for (const agent of AGENTS) {
   if (updateDirectionFile(agent)) successCount++;
 }
 
-console.log('\n' + '='.repeat(80));
+console.log("\n" + "=".repeat(80));
 console.log(`\n✅ Updated: ${successCount}/${AGENTS.length} files`);
-

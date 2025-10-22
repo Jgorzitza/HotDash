@@ -1,6 +1,6 @@
 /**
  * Content Optimizer Service Tests
- * 
+ *
  * Tests for automated content optimization service including:
  * - Flesch Reading Ease score calculation
  * - Keyword density analysis
@@ -104,7 +104,8 @@ describe("Content Optimizer Service", () => {
 
     it("should analyze heading structure correctly", async () => {
       const url = "https://example.com/article";
-      const html = "<h1>Main Title with Skateboard</h1><h2>Section 1</h2><h3>Subsection 1.1</h3><h2>Section 2</h2><h4>Deep subsection</h4>";
+      const html =
+        "<h1>Main Title with Skateboard</h1><h2>Section 1</h2><h3>Subsection 1.1</h3><h2>Section 2</h2><h4>Deep subsection</h4>";
       const targetKeyword = "skateboard";
 
       const result = await analyzeContent(url, html, targetKeyword);
@@ -114,10 +115,13 @@ describe("Content Optimizer Service", () => {
       expect(result.headings).toHaveProperty("h3Count");
       expect(result.headings).toHaveProperty("hasProperStructure");
       expect(Array.isArray(result.headings.headings)).toBe(true);
-      
+
       // Verify it counts headings
-      const totalHeadings = result.headings.h1Count + result.headings.h2Count + 
-                            result.headings.h3Count + result.headings.h4Count;
+      const totalHeadings =
+        result.headings.h1Count +
+        result.headings.h2Count +
+        result.headings.h3Count +
+        result.headings.h4Count;
       expect(totalHeadings).toBeGreaterThanOrEqual(0);
     });
 
@@ -134,16 +138,21 @@ describe("Content Optimizer Service", () => {
 
     it("should detect keyword in headings", async () => {
       const url = "https://example.com/article";
-      const html = "<h1>Skateboard Products</h1><h2>Skateboard Decks</h2><h3>Other Products</h3>";
+      const html =
+        "<h1>Skateboard Products</h1><h2>Skateboard Decks</h2><h3>Other Products</h3>";
       const targetKeyword = "skateboard";
 
       const result = await analyzeContent(url, html, targetKeyword);
 
       expect(result.headings).toHaveProperty("headings");
       expect(Array.isArray(result.headings.headings)).toBe(true);
-      
+
       // Verify the service processes headings
-      expect(result.headings.h1Count + result.headings.h2Count + result.headings.h3Count).toBeGreaterThanOrEqual(0);
+      expect(
+        result.headings.h1Count +
+          result.headings.h2Count +
+          result.headings.h3Count,
+      ).toBeGreaterThanOrEqual(0);
     });
 
     it("should analyze internal and external links", async () => {
@@ -186,14 +195,17 @@ describe("Content Optimizer Service", () => {
       expect(result.images).toHaveProperty("imagesWithoutAlt");
       expect(result.images).toHaveProperty("altTextQuality");
       expect(["good", "fair", "poor"]).toContain(result.images.altTextQuality);
-      
+
       // Verify counts add up
-      expect(result.images.imagesWithAlt + result.images.imagesWithoutAlt).toBe(result.images.totalImages);
+      expect(result.images.imagesWithAlt + result.images.imagesWithoutAlt).toBe(
+        result.images.totalImages,
+      );
     });
 
     it("should detect good alt text quality", async () => {
       const url = "https://example.com/article";
-      const html = '<img src="/img1.jpg" alt="High quality descriptive alt text for image"><img src="/img2.jpg" alt="Another good alt text description">';
+      const html =
+        '<img src="/img1.jpg" alt="High quality descriptive alt text for image"><img src="/img2.jpg" alt="Another good alt text description">';
       const targetKeyword = "article";
 
       const result = await analyzeContent(url, html, targetKeyword);
@@ -202,7 +214,7 @@ describe("Content Optimizer Service", () => {
       expect(result.images).toHaveProperty("imagesWithAlt");
       expect(result.images).toHaveProperty("altTextQuality");
       expect(["good", "fair", "poor"]).toContain(result.images.altTextQuality);
-      
+
       // If images are detected, verify the counts
       if (result.images.totalImages > 0) {
         expect(result.images.imagesWithAlt).toBeGreaterThanOrEqual(0);
@@ -243,9 +255,9 @@ describe("Content Optimizer Service", () => {
       expect(result.overallScore.breakdown).toHaveProperty("headings");
       expect(result.overallScore.breakdown).toHaveProperty("links");
       expect(result.overallScore.breakdown).toHaveProperty("images");
-      
+
       // Each category should be 0-20
-      Object.values(result.overallScore.breakdown).forEach(score => {
+      Object.values(result.overallScore.breakdown).forEach((score) => {
         expect(score).toBeGreaterThanOrEqual(0);
         expect(score).toBeLessThanOrEqual(20);
       });
@@ -260,23 +272,27 @@ describe("Content Optimizer Service", () => {
 
       expect(Array.isArray(result.recommendations)).toBe(true);
       expect(result.recommendations.length).toBeGreaterThan(0);
-      
+
       // Should recommend adding H1
-      const hasH1Recommendation = result.recommendations.some(r => 
-        r.toLowerCase().includes("h1") || r.toLowerCase().includes("heading")
+      const hasH1Recommendation = result.recommendations.some(
+        (r) =>
+          r.toLowerCase().includes("h1") || r.toLowerCase().includes("heading"),
       );
       expect(hasH1Recommendation).toBe(true);
     });
 
     it("should recommend keyword optimization when density is low", async () => {
       const url = "https://example.com/test";
-      const html = "<h1>Title</h1><p>Content without the target keyword anywhere.</p>";
+      const html =
+        "<h1>Title</h1><p>Content without the target keyword anywhere.</p>";
       const targetKeyword = "skateboard";
 
       const result = await analyzeContent(url, html, targetKeyword);
 
-      const hasKeywordRecommendation = result.recommendations.some(r => 
-        r.toLowerCase().includes("keyword") && r.toLowerCase().includes("density")
+      const hasKeywordRecommendation = result.recommendations.some(
+        (r) =>
+          r.toLowerCase().includes("keyword") &&
+          r.toLowerCase().includes("density"),
       );
       expect(hasKeywordRecommendation).toBe(true);
     });
@@ -290,9 +306,14 @@ describe("Content Optimizer Service", () => {
       const result = await analyzeContent(url, html, targetKeyword);
 
       // With 100+ words and 0 links, should recommend internal linking
-      if (result.links.internalLinks === 0 && result.readability.wordCount > 50) {
-        const hasLinkRecommendation = result.recommendations.some(r => 
-          r.toLowerCase().includes("internal") && r.toLowerCase().includes("link")
+      if (
+        result.links.internalLinks === 0 &&
+        result.readability.wordCount > 50
+      ) {
+        const hasLinkRecommendation = result.recommendations.some(
+          (r) =>
+            r.toLowerCase().includes("internal") &&
+            r.toLowerCase().includes("link"),
         );
         expect(hasLinkRecommendation).toBe(true);
       }
@@ -307,8 +328,8 @@ describe("Content Optimizer Service", () => {
 
       // If images exist without alt, should recommend
       if (result.images.imagesWithoutAlt > 0) {
-        const hasAltRecommendation = result.recommendations.some(r => 
-          r.toLowerCase().includes("alt")
+        const hasAltRecommendation = result.recommendations.some((r) =>
+          r.toLowerCase().includes("alt"),
         );
         expect(hasAltRecommendation).toBe(true);
       }
@@ -338,4 +359,3 @@ describe("Content Optimizer Service", () => {
     });
   });
 });
-

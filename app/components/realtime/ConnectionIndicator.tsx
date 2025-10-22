@@ -1,15 +1,15 @@
 /**
  * Connection Status Indicator
- * 
+ *
  * Visual indicator for SSE connection status
  * Shows in top-right of dashboard
- * 
+ *
  * States:
  * - Connected: Green dot with pulse
  * - Connecting: Yellow dot
  * - Disconnected: Gray dot
  * - Error: Red dot
- * 
+ *
  * Phase 5 - ENG-023
  */
 
@@ -20,7 +20,10 @@ interface ConnectionIndicatorProps {
   lastHeartbeat: Date | null;
 }
 
-export function ConnectionIndicator({ status, lastHeartbeat }: ConnectionIndicatorProps) {
+export function ConnectionIndicator({
+  status,
+  lastHeartbeat,
+}: ConnectionIndicatorProps) {
   const getStatusColor = () => {
     switch (status) {
       case "connected":
@@ -61,7 +64,11 @@ export function ConnectionIndicator({ status, lastHeartbeat }: ConnectionIndicat
         borderRadius: "var(--occ-radius-sm)",
         fontSize: "var(--occ-font-size-xs)",
       }}
-      title={lastHeartbeat ? `Last heartbeat: ${lastHeartbeat.toLocaleTimeString()}` : undefined}
+      title={
+        lastHeartbeat
+          ? `Last heartbeat: ${lastHeartbeat.toLocaleTimeString()}`
+          : undefined
+      }
     >
       <span
         style={{
@@ -69,11 +76,13 @@ export function ConnectionIndicator({ status, lastHeartbeat }: ConnectionIndicat
           height: "8px",
           borderRadius: "50%",
           background: getStatusColor(),
-          animation: status === "connected" ? "occ-pulse 2s infinite" : undefined,
+          animation:
+            status === "connected" ? "occ-pulse 2s infinite" : undefined,
         }}
       />
-      <span style={{ color: "var(--occ-text-secondary)" }}>{getStatusText()}</span>
+      <span style={{ color: "var(--occ-text-secondary)" }}>
+        {getStatusText()}
+      </span>
     </div>
   );
 }
-

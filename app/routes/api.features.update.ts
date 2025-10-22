@@ -1,8 +1,8 @@
 /**
  * API Route: Update Feature Flag
- * 
+ *
  * POST /api/features/update
- * 
+ *
  * Updates feature flag settings (enable/disable, rollout %, targeting).
  */
 
@@ -22,7 +22,7 @@ export async function action({ request }: Route.ActionArgs) {
     if (!flagId || !updateAction) {
       return Response.json(
         { error: "Missing required fields: flagId, action" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,7 +40,7 @@ export async function action({ request }: Route.ActionArgs) {
         if (typeof value !== "number") {
           return Response.json(
             { error: "Rollout percentage must be a number (0-100)" },
-            { status: 400 }
+            { status: 400 },
           );
         }
         await featureFlagService.updateRolloutPercentage(flagId, value);
@@ -50,7 +50,7 @@ export async function action({ request }: Route.ActionArgs) {
         if (typeof value !== "string") {
           return Response.json(
             { error: "Target user must be a string" },
-            { status: 400 }
+            { status: 400 },
           );
         }
         await featureFlagService.addTargetUser(flagId, value);
@@ -60,7 +60,7 @@ export async function action({ request }: Route.ActionArgs) {
         if (typeof value !== "string") {
           return Response.json(
             { error: "Target user must be a string" },
-            { status: 400 }
+            { status: 400 },
           );
         }
         await featureFlagService.removeTargetUser(flagId, value);
@@ -69,7 +69,7 @@ export async function action({ request }: Route.ActionArgs) {
       default:
         return Response.json(
           { error: `Invalid action: ${updateAction}` },
-          { status: 400 }
+          { status: 400 },
         );
     }
 
@@ -79,15 +79,10 @@ export async function action({ request }: Route.ActionArgs) {
     return Response.json({
       success: true,
       flag: updatedFlag,
-      message: `Feature flag ${flagId} updated successfully`
+      message: `Feature flag ${flagId} updated successfully`,
     });
   } catch (error) {
     console.error("[API] Feature update error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

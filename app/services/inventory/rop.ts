@@ -126,4 +126,3 @@ export function getInventoryStatus(
 
   return "in_stock";
 }
-

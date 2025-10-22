@@ -1,9 +1,9 @@
 /**
  * Feature Flag Management Service
- * 
+ *
  * Manages feature flags for gradual rollout and user targeting.
  * Enables/disables features dynamically without code deployments.
- * 
+ *
  * Features:
  * - Feature flag enable/disable
  * - Gradual rollout (percentage-based)
@@ -19,13 +19,13 @@ import { db } from "~/lib/db.server";
 // ============================================================================
 
 export interface FeatureFlag {
-  id: string;                    // "FEATURE_DARK_MODE"
-  name: string;                  // "Dark Mode"
-  description: string;           // "Enable dark theme for users"
-  enabled: boolean;              // Master on/off switch
-  rolloutPercentage: number;     // 0-100 (% of users who see feature)
-  targetUsers?: string[];        // Specific users to enable for
-  targetSegments?: string[];     // User segments to enable for
+  id: string; // "FEATURE_DARK_MODE"
+  name: string; // "Dark Mode"
+  description: string; // "Enable dark theme for users"
+  enabled: boolean; // Master on/off switch
+  rolloutPercentage: number; // 0-100 (% of users who see feature)
+  targetUsers?: string[]; // Specific users to enable for
+  targetSegments?: string[]; // User segments to enable for
   environment?: "development" | "staging" | "production" | "all";
   createdAt: Date;
   updatedAt: Date;
@@ -35,7 +35,7 @@ export interface FeatureFlagCheck {
   flagId: string;
   userId: string;
   isEnabled: boolean;
-  reason: string;               // Why enabled/disabled
+  reason: string; // Why enabled/disabled
   checkedAt: Date;
 }
 
@@ -46,14 +46,14 @@ export interface FeatureFlagCheck {
 export class FeatureFlagService {
   /**
    * Check if feature is enabled for user
-   * 
+   *
    * Decision logic (in order):
    * 1. Check if flag exists and master switch is enabled
    * 2. Check if user is in target users list
    * 3. Check if user is in target segments
    * 4. Check rollout percentage (deterministic hashing)
    * 5. Check environment match
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @param userId - User identifier (shop domain)
    * @param userSegment - Optional user segment
@@ -62,7 +62,7 @@ export class FeatureFlagService {
   async isFeatureEnabled(
     flagId: string,
     userId: string,
-    userSegment?: string
+    userSegment?: string,
   ): Promise<boolean> {
     const check = await this.checkFeature(flagId, userId, userSegment);
     return check.isEnabled;
@@ -70,10 +70,10 @@ export class FeatureFlagService {
 
   /**
    * Check feature with detailed reasoning
-   * 
+   *
    * Returns both the enabled status and the reason why.
    * Useful for debugging and analytics.
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @param userId - User identifier
    * @param userSegment - Optional user segment
@@ -82,7 +82,7 @@ export class FeatureFlagService {
   async checkFeature(
     flagId: string,
     userId: string,
-    userSegment?: string
+    userSegment?: string,
   ): Promise<FeatureFlagCheck> {
     const flag = await this.getFeatureFlag(flagId);
     const checkedAt = new Date();
@@ -94,7 +94,7 @@ export class FeatureFlagService {
         userId,
         isEnabled: false,
         reason: "Flag not found",
-        checkedAt
+        checkedAt,
       };
     }
 
@@ -105,19 +105,23 @@ export class FeatureFlagService {
         userId,
         isEnabled: false,
         reason: "Flag disabled (master switch off)",
-        checkedAt
+        checkedAt,
       };
     }
 
     // Check environment
     const currentEnv = this.getCurrentEnvironment();
-    if (flag.environment && flag.environment !== "all" && flag.environment !== currentEnv) {
+    if (
+      flag.environment &&
+      flag.environment !== "all" &&
+      flag.environment !== currentEnv
+    ) {
       return {
         flagId,
         userId,
         isEnabled: false,
         reason: `Environment mismatch (current: ${currentEnv}, required: ${flag.environment})`,
-        checkedAt
+        checkedAt,
       };
     }
 
@@ -129,7 +133,7 @@ export class FeatureFlagService {
           userId,
           isEnabled: true,
           reason: "User in target users list",
-          checkedAt
+          checkedAt,
         };
       }
       // If targetUsers is defined but user not in list, disabled
@@ -138,7 +142,7 @@ export class FeatureFlagService {
         userId,
         isEnabled: false,
         reason: "User not in target users list",
-        checkedAt
+        checkedAt,
       };
     }
 
@@ -146,7 +150,11 @@ export class FeatureFlagService {
     if (flag.targetSegments && flag.targetSegments.length > 0 && userSegment) {
       if (flag.targetSegments.includes(userSegment)) {
         // Still need to check rollout percentage
-        const isInRollout = this.isUserInRollout(userId, flagId, flag.rolloutPercentage);
+        const isInRollout = this.isUserInRollout(
+          userId,
+          flagId,
+          flag.rolloutPercentage,
+        );
         return {
           flagId,
           userId,
@@ -154,7 +162,7 @@ export class FeatureFlagService {
           reason: isInRollout
             ? `User in target segment "${userSegment}" and rollout (${flag.rolloutPercentage}%)`
             : `User in target segment "${userSegment}" but not in rollout`,
-          checkedAt
+          checkedAt,
         };
       }
       // Segment specified but user not in any target segment
@@ -163,12 +171,16 @@ export class FeatureFlagService {
         userId,
         isEnabled: false,
         reason: `User segment "${userSegment}" not in target segments`,
-        checkedAt
+        checkedAt,
       };
     }
 
     // Check rollout percentage (deterministic)
-    const isInRollout = this.isUserInRollout(userId, flagId, flag.rolloutPercentage);
+    const isInRollout = this.isUserInRollout(
+      userId,
+      flagId,
+      flag.rolloutPercentage,
+    );
     return {
       flagId,
       userId,
@@ -176,13 +188,13 @@ export class FeatureFlagService {
       reason: isInRollout
         ? `User in rollout (${flag.rolloutPercentage}%)`
         : `User not in rollout (${flag.rolloutPercentage}%)`,
-      checkedAt
+      checkedAt,
     };
   }
 
   /**
    * Get feature flag by ID
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @returns Feature flag or null
    */
@@ -198,7 +210,7 @@ export class FeatureFlagService {
         rolloutPercentage: 100,
         environment: "all",
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       FEATURE_REALTIME_UPDATES: {
         id: "FEATURE_REALTIME_UPDATES",
@@ -208,7 +220,7 @@ export class FeatureFlagService {
         rolloutPercentage: 50, // 50% rollout
         environment: "all",
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       FEATURE_CEO_AGENT: {
         id: "FEATURE_CEO_AGENT",
@@ -218,7 +230,7 @@ export class FeatureFlagService {
         rolloutPercentage: 0,
         environment: "development",
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       FEATURE_ADVANCED_CHARTS: {
         id: "FEATURE_ADVANCED_CHARTS",
@@ -228,8 +240,8 @@ export class FeatureFlagService {
         rolloutPercentage: 100,
         environment: "all",
         createdAt: new Date(),
-        updatedAt: new Date()
-      }
+        updatedAt: new Date(),
+      },
     };
 
     return hardcodedFlags[flagId] || null;
@@ -237,7 +249,7 @@ export class FeatureFlagService {
 
   /**
    * Get all feature flags
-   * 
+   *
    * @returns Array of all feature flags
    */
   async getAllFeatureFlags(): Promise<FeatureFlag[]> {
@@ -246,18 +258,20 @@ export class FeatureFlagService {
       await this.getFeatureFlag("FEATURE_DARK_MODE"),
       await this.getFeatureFlag("FEATURE_REALTIME_UPDATES"),
       await this.getFeatureFlag("FEATURE_CEO_AGENT"),
-      await this.getFeatureFlag("FEATURE_ADVANCED_CHARTS")
+      await this.getFeatureFlag("FEATURE_ADVANCED_CHARTS"),
     ];
     return flags.filter(Boolean) as FeatureFlag[];
   }
 
   /**
    * Create or update feature flag
-   * 
+   *
    * @param flag - Feature flag data
    * @returns Created/updated feature flag
    */
-  async upsertFeatureFlag(flag: Partial<FeatureFlag> & { id: string }): Promise<FeatureFlag> {
+  async upsertFeatureFlag(
+    flag: Partial<FeatureFlag> & { id: string },
+  ): Promise<FeatureFlag> {
     // TODO: Implement database upsert
     // For now, return the input as-is
     return {
@@ -268,15 +282,15 @@ export class FeatureFlagService {
       rolloutPercentage: flag.rolloutPercentage ?? 100,
       environment: flag.environment || "all",
       createdAt: flag.createdAt || new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     } as FeatureFlag;
   }
 
   /**
    * Enable feature flag
-   * 
+   *
    * Sets master switch to enabled (does not affect rollout percentage).
-   * 
+   *
    * @param flagId - Feature flag identifier
    */
   async enableFeature(flagId: string): Promise<void> {
@@ -288,9 +302,9 @@ export class FeatureFlagService {
 
   /**
    * Disable feature flag
-   * 
+   *
    * Sets master switch to disabled (overrides all other settings).
-   * 
+   *
    * @param flagId - Feature flag identifier
    */
   async disableFeature(flagId: string): Promise<void> {
@@ -302,13 +316,16 @@ export class FeatureFlagService {
 
   /**
    * Update rollout percentage
-   * 
+   *
    * Gradually increase/decrease % of users who see the feature.
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @param percentage - New rollout percentage (0-100)
    */
-  async updateRolloutPercentage(flagId: string, percentage: number): Promise<void> {
+  async updateRolloutPercentage(
+    flagId: string,
+    percentage: number,
+  ): Promise<void> {
     if (percentage < 0 || percentage > 100) {
       throw new Error("Rollout percentage must be between 0 and 100");
     }
@@ -321,9 +338,9 @@ export class FeatureFlagService {
 
   /**
    * Add user to target users list
-   * 
+   *
    * Explicitly enable feature for specific user.
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @param userId - User identifier to add
    */
@@ -340,14 +357,14 @@ export class FeatureFlagService {
 
   /**
    * Remove user from target users list
-   * 
+   *
    * @param flagId - Feature flag identifier
    * @param userId - User identifier to remove
    */
   async removeTargetUser(flagId: string, userId: string): Promise<void> {
     const flag = await this.getFeatureFlag(flagId);
     if (flag && flag.targetUsers) {
-      const targetUsers = flag.targetUsers.filter(id => id !== userId);
+      const targetUsers = flag.targetUsers.filter((id) => id !== userId);
       await this.upsertFeatureFlag({ ...flag, targetUsers });
     }
   }
@@ -358,16 +375,20 @@ export class FeatureFlagService {
 
   /**
    * Check if user is in rollout percentage
-   * 
+   *
    * Uses deterministic hashing to ensure consistent experience.
    * Same user always gets same result for same flag.
-   * 
+   *
    * @param userId - User identifier
    * @param flagId - Feature flag identifier
    * @param percentage - Rollout percentage (0-100)
    * @returns Whether user is in rollout
    */
-  private isUserInRollout(userId: string, flagId: string, percentage: number): boolean {
+  private isUserInRollout(
+    userId: string,
+    flagId: string,
+    percentage: number,
+  ): boolean {
     // 0% = nobody, 100% = everybody
     if (percentage === 0) return false;
     if (percentage === 100) return true;
@@ -375,15 +396,15 @@ export class FeatureFlagService {
     // Hash user + flag to get deterministic value
     const hash = this.hashUserFlag(userId, flagId);
     const userPercentile = (hash % 10000) / 100; // 0-100
-    
+
     return userPercentile < percentage;
   }
 
   /**
    * Hash user ID with flag ID
-   * 
+   *
    * Creates deterministic hash for consistent rollout.
-   * 
+   *
    * @param userId - User identifier
    * @param flagId - Feature flag identifier
    * @returns Numeric hash value
@@ -397,9 +418,9 @@ export class FeatureFlagService {
 
   /**
    * Get current environment
-   * 
+   *
    * Determines environment from NODE_ENV or defaults to development.
-   * 
+   *
    * @returns Current environment
    */
   private getCurrentEnvironment(): "development" | "staging" | "production" {

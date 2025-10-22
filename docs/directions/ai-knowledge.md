@@ -1,6 +1,7 @@
 # AI-Knowledge Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ ALL PREVIOUS AI-KNOWLEDGE TASKS COMPLETE
 
 **Completed** (from feedback/ai-knowledge/2025-10-21.md):
+
 - ✅ AI-KNOWLEDGE-010: Query engine optimization (similarityTopK=3, overlap=0, cutoff=0.65)
 - ✅ AI-KNOWLEDGE-011: Expanded KB (6 docs indexed)
 - ✅ AI-KNOWLEDGE-012: CEO Agent query function (exported)
@@ -36,11 +38,13 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Production Agent Model
+
 - **Specialist Agents**: Run in background to keep data fresh (pre-generate insights)
 - **CX → Product Loop**: Mine conversations → detect themes → propose product improvements
 - **Pre-Generation + HITL**: Agent works ahead → idle until operator approval
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/ai-knowledge/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/ai-knowledge/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -57,6 +61,7 @@ git pull origin manager-reopen-20251021
 ### Context
 
 **CX → Product Loop** (from Growth Engine pack):
+
 ```
 1. Extract Chatwoot conversations (last 30 days)
 2. Sanitize (remove PII: names, emails, phones, addresses)
@@ -88,67 +93,69 @@ interface SanitizationResult {
 export function sanitizePII(text: string): SanitizationResult {
   let sanitized = text;
   const piiTypes: string[] = [];
-  
+
   // Remove emails
   const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
   if (emailRegex.test(sanitized)) {
     piiTypes.push("email");
     sanitized = sanitized.replace(emailRegex, "[EMAIL_REDACTED]");
   }
-  
+
   // Remove phone numbers (multiple formats)
   const phoneRegex = /(\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
   if (phoneRegex.test(sanitized)) {
     piiTypes.push("phone");
     sanitized = sanitized.replace(phoneRegex, "[PHONE_REDACTED]");
   }
-  
+
   // Remove addresses (street numbers + common patterns)
-  const addressRegex = /\b\d+\s+[A-Z][a-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct)\b/gi;
+  const addressRegex =
+    /\b\d+\s+[A-Z][a-z]+\s+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct)\b/gi;
   if (addressRegex.test(sanitized)) {
     piiTypes.push("address");
     sanitized = sanitized.replace(addressRegex, "[ADDRESS_REDACTED]");
   }
-  
+
   // Remove postal codes (US and Canada)
   const postalRegex = /\b\d{5}(?:-\d{4})?\b|\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b/gi;
   if (postalRegex.test(sanitized)) {
     piiTypes.push("postal_code");
     sanitized = sanitized.replace(postalRegex, "[POSTAL_REDACTED]");
   }
-  
+
   // Remove credit card numbers
   const ccRegex = /\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/g;
   if (ccRegex.test(sanitized)) {
     piiTypes.push("credit_card");
     sanitized = sanitized.replace(ccRegex, "[CC_REDACTED]");
   }
-  
+
   return {
     sanitizedText: sanitized,
     piiDetected: piiTypes.length > 0,
-    piiTypes
+    piiTypes,
   };
 }
 
 // Sanitize Chatwoot conversation
 export function sanitizeConversation(
-  messages: Array<{ content: string; messageType: string }>
+  messages: Array<{ content: string; messageType: string }>,
 ) {
-  return messages.map(msg => {
+  return messages.map((msg) => {
     const result = sanitizePII(msg.content);
-    
+
     return {
       content: result.sanitizedText,
       messageType: msg.messageType,
       piiDetected: result.piiDetected,
-      piiTypes: result.piiTypes
+      piiTypes: result.piiTypes,
     };
   });
 }
 ```
 
 **Tests**: `tests/unit/services/ai-knowledge/pii-sanitizer.spec.ts`
+
 - Test email redaction (multiple formats)
 - Test phone redaction (US, Canada)
 - Test address redaction
@@ -158,13 +165,15 @@ export function sanitizeConversation(
 - Verify NO PII in output
 
 **Acceptance**:
+
 - ✅ PII sanitizer implemented
 - ✅ All 5 PII types handled (email, phone, address, postal, CC)
 - ✅ Regex patterns accurate
 - ✅ Unit tests passing (100% PII removal verified)
 - ✅ No false positives (regular text preserved)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → TypeScript regex patterns
 
 ---
@@ -184,7 +193,7 @@ import { sanitizeConversation } from "./pii-sanitizer";
 
 const embedding = new OpenAIEmbedding({
   model: "text-embedding-3-small",
-  dimensions: 1536
+  dimensions: 1536,
 });
 
 interface ConversationTheme {
@@ -201,50 +210,50 @@ interface ConversationTheme {
 async function extractChatwootConversations(days: number = 30) {
   const since = new Date();
   since.setDate(since.getDate() - days);
-  
+
   // Query Chatwoot API
   const conversations = await prisma.chatwootConversation.findMany({
     where: {
-      createdAt: { gte: since }
+      createdAt: { gte: since },
     },
     include: {
-      messages: true
-    }
+      messages: true,
+    },
   });
-  
+
   return conversations;
 }
 
 // Embed sanitized conversations
 export async function embedConversations() {
   console.log("[CX Mining] Extracting conversations");
-  
+
   // 1. Extract last 30 days
   const conversations = await extractChatwootConversations(30);
-  
+
   console.log(`[CX Mining] Found ${conversations.length} conversations`);
-  
+
   // 2. Sanitize each conversation
-  const sanitized = conversations.map(conv => {
+  const sanitized = conversations.map((conv) => {
     const messages = sanitizeConversation(conv.messages);
-    
+
     // Combine messages into single text
     const text = messages
-      .map(m => `${m.messageType}: ${m.content}`)
-      .join('\n');
-    
+      .map((m) => `${m.messageType}: ${m.content}`)
+      .join("\n");
+
     return {
       conversationId: conv.id,
       text,
       productMentions: extractProductMentions(text), // Extract product handles
-      createdAt: conv.createdAt
+      createdAt: conv.createdAt,
     };
   });
-  
+
   // 3. Embed into pgvector (cx_embeddings table)
   for (const conv of sanitized) {
     const embeddingVector = await embedding.getTextEmbedding(conv.text);
-    
+
     await prisma.$executeRaw`
       INSERT INTO cx_embeddings (
         conversation_id, text, embedding, product_handles, created_at
@@ -259,23 +268,23 @@ export async function embedConversations() {
         product_handles = EXCLUDED.product_handles
     `;
   }
-  
+
   console.log(`[CX Mining] ✅ Embedded ${sanitized.length} conversations`);
-  
+
   return sanitized.length;
 }
 
 // Detect recurring themes
 export async function detectRecurringThemes(
   minOccurrences: number = 3,
-  days: number = 7
+  days: number = 7,
 ): Promise<ConversationTheme[]> {
   const since = new Date();
   since.setDate(since.getDate() - days);
-  
+
   // Query for common patterns (using pgvector similarity)
   const themes: ConversationTheme[] = [];
-  
+
   // Common query patterns to search for
   const queryPatterns = [
     "size chart",
@@ -286,12 +295,12 @@ export async function detectRecurringThemes(
     "return policy",
     "shipping time",
     "in stock",
-    "when restock"
+    "when restock",
   ];
-  
+
   for (const pattern of queryPatterns) {
     const patternEmbedding = await embedding.getTextEmbedding(pattern);
-    
+
     // Find similar conversations (last 7 days)
     const similar = await prisma.$queryRaw`
       SELECT conversation_id, text, product_handles, created_at,
@@ -302,51 +311,58 @@ export async function detectRecurringThemes(
       ORDER BY distance ASC
       LIMIT 50
     `;
-    
+
     if (similar.length >= minOccurrences) {
       // Extract product mentions
       const productCounts = new Map<string, number>();
       similar.forEach((s: any) => {
-        const products = JSON.parse(s.product_handles || '[]');
+        const products = JSON.parse(s.product_handles || "[]");
         products.forEach((p: string) => {
           productCounts.set(p, (productCounts.get(p) || 0) + 1);
         });
       });
-      
+
       // Top product for this theme
-      const topProduct = Array.from(productCounts.entries())
-        .sort((a, b) => b[1] - a[1])[0];
-      
+      const topProduct = Array.from(productCounts.entries()).sort(
+        (a, b) => b[1] - a[1],
+      )[0];
+
       if (topProduct) {
         themes.push({
           theme: pattern,
           productHandle: topProduct[0],
           occurrences: similar.length,
-          exampleQueries: similar.slice(0, 3).map((s: any) => s.text.substring(0, 100)),
-          firstSeen: new Date(Math.min(...similar.map((s: any) => s.created_at.getTime()))),
-          lastSeen: new Date(Math.max(...similar.map((s: any) => s.created_at.getTime())))
+          exampleQueries: similar
+            .slice(0, 3)
+            .map((s: any) => s.text.substring(0, 100)),
+          firstSeen: new Date(
+            Math.min(...similar.map((s: any) => s.created_at.getTime())),
+          ),
+          lastSeen: new Date(
+            Math.max(...similar.map((s: any) => s.created_at.getTime())),
+          ),
         });
       }
     }
   }
-  
+
   return themes.sort((a, b) => b.occurrences - a.occurrences);
 }
 
 // Generate Action cards from themes
 export async function generateCXProductActions() {
   const themes = await detectRecurringThemes(3, 7);
-  
+
   const actions = [];
-  
+
   for (const theme of themes.slice(0, 5)) {
     // Get product details
     const product = await getShopifyProductByHandle(theme.productHandle);
-    
+
     if (!product) continue;
-    
+
     actions.push({
-      type: 'content',
+      type: "content",
       title: `Add ${theme.theme} to ${product.title}`,
       description: `${theme.occurrences} customers asked about "${theme.theme}" in the last 7 days. Adding this to the product page may reduce support volume and increase conversions.`,
       expectedRevenue: theme.occurrences * 50, // Estimate: $50/customer saved time
@@ -357,36 +373,37 @@ export async function generateCXProductActions() {
       metadata: {
         theme: theme.theme,
         occurrences: theme.occurrences,
-        exampleQueries: theme.exampleQueries
-      }
+        exampleQueries: theme.exampleQueries,
+      },
     });
   }
-  
+
   return actions;
 }
 
 // Nightly job
 export async function runNightlyCXMining() {
   console.log("[CX Mining] Starting nightly conversation analysis");
-  
+
   // 1. Embed new conversations
   const embedded = await embedConversations();
-  
+
   // 2. Detect themes
   const themes = await detectRecurringThemes(3, 7);
-  
+
   console.log(`[CX Mining] Found ${themes.length} recurring themes`);
-  
+
   // 3. Generate actions (handed off to Product agent)
   const actions = await generateCXProductActions();
-  
+
   console.log(`[CX Mining] Generated ${actions.length} Action cards`);
-  
+
   return { embedded, themes: themes.length, actions: actions.length };
 }
 ```
 
 **Tests**: `tests/unit/services/ai-knowledge/cx-conversation-mining.spec.ts`
+
 - Test extract conversations
 - Test sanitize + embed
 - Test detect themes (with similarity search)
@@ -394,6 +411,7 @@ export async function runNightlyCXMining() {
 - Mock Chatwoot API, OpenAI embeddings, Prisma pgvector queries
 
 **Acceptance**:
+
 - ✅ PII sanitizer implemented
 - ✅ Conversation embedding service (sanitize + embed)
 - ✅ Theme detection (pgvector similarity search)
@@ -402,7 +420,8 @@ export async function runNightlyCXMining() {
 - ✅ Unit tests passing
 - ✅ NO PII in embeddings (verified in tests)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → LlamaIndex embeddings, OpenAI API
 - Context7 → Prisma pgvector queries (similarity search)
 
@@ -411,6 +430,7 @@ export async function runNightlyCXMining() {
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 12: CX → Product Loop (4h)
+
 - ✅ AI-KNOWLEDGE-017: PII sanitization service (regex patterns, conversation sanitizer)
 - ✅ AI-KNOWLEDGE-018: CX conversation mining (embed, theme detection, Action generation, nightly job)
 - ✅ All unit tests passing
@@ -422,6 +442,7 @@ export async function runNightlyCXMining() {
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Context7 MCP**: For all service development
    - LlamaIndex embeddings, pgvector
    - OpenAI API (text-embedding-3-small)
@@ -431,12 +452,14 @@ export async function runNightlyCXMining() {
 2. **Web Search**: LAST RESORT ONLY
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/ai-knowledge/<date>/mcp/cx-conversation-mining.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/ai-knowledge/<date>/heartbeat.ndjson` (append every 15min if >2h)
 3. **Dev MCP Check**: Verify NO Dev MCP imports in `app/`
 4. **PR Template**: Fill out all sections
 
 ### Testing
+
 - Unit tests for PII sanitization (verify NO PII in output)
 - Mock Chatwoot API, OpenAI embeddings
 - Test pgvector similarity queries
@@ -465,6 +488,7 @@ export async function runNightlyCXMining() {
 **Total**: 4 hours
 
 **Expected Output**:
+
 - 2 new services (~500-600 lines)
 - 1 nightly job script
 - 30+ unit tests
@@ -489,7 +513,6 @@ export async function runNightlyCXMining() {
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -497,48 +520,48 @@ export async function runNightlyCXMining() {
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/ai-knowledge.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "ai-knowledge",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/ai-knowledge.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/ai-knowledge/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "ai-knowledge",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/ai-knowledge/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "ai-knowledge",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/ai-knowledge/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/ai-knowledge/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -548,66 +571,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "ai-knowledge",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/ai-knowledge/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/ai-knowledge/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "ai-knowledge",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -616,16 +639,17 @@ await logDecision({
 You can still write to `feedback/ai-knowledge/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'ai-knowledge',
-  action: 'task_completed',
-  rationale: 'Task description with test results',
-  evidenceUrl: 'artifacts/ai-knowledge/2025-10-21/task-complete.md'
+  scope: "build",
+  actor: "ai-knowledge",
+  action: "task_completed",
+  rationale: "Task description with test results",
+  evidenceUrl: "artifacts/ai-knowledge/2025-10-21/task-complete.md",
 });
 ```
 

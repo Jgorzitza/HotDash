@@ -3,9 +3,9 @@ import { authenticate } from "../shopify.server";
 
 /**
  * GET /api/analytics/growth-metrics
- * 
+ *
  * Returns overall growth metrics across all channels
- * 
+ *
  * Response:
  * {
  *   weeklyGrowth: number,
@@ -36,13 +36,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
       email: [2100, 2300, 2800, 2200],
     },
     channelComparison: [
-      { channel: "Social Media", thisWeek: 18400, lastWeek: 14800, growth: 24.3 },
+      {
+        channel: "Social Media",
+        thisWeek: 18400,
+        lastWeek: 14800,
+        growth: 24.3,
+      },
       { channel: "SEO/Organic", thisWeek: 15100, lastWeek: 14200, growth: 6.3 },
       { channel: "Paid Ads", thisWeek: 9500, lastWeek: 8900, growth: 6.7 },
       { channel: "Email", thisWeek: 2200, lastWeek: 2800, growth: -21.4 },
     ],
     weeklyReport: {
-      summary: "Social media driving significant growth (+24.3%). Email campaign underperformed this week.",
+      summary:
+        "Social media driving significant growth (+24.3%). Email campaign underperformed this week.",
       recommendations: [
         "Double down on Instagram content (highest engagement)",
         "Review email subject lines (low open rate)",

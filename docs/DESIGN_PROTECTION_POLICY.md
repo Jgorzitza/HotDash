@@ -20,6 +20,7 @@
 ## PROTECTED DIRECTORIES (Never Archive)
 
 **NEVER ARCHIVE OR DELETE**:
+
 1. `/docs/design/**` - ALL design files (approved or draft)
 2. `/docs/specs/**` - ALL specification files
 3. `/docs/runbooks/**` - ALL operational runbooks
@@ -28,6 +29,7 @@
 6. `/mcp/**` - ALL MCP tool documentation
 
 **ALLOWED TO ARCHIVE** (with CEO approval only):
+
 - `/docs/_archive/**` - Already archived content
 - `/artifacts/**` (after 90 days)
 - `/feedback/**` (after 30 days, with backup)
@@ -41,6 +43,7 @@
 **ALL files in `/docs/design/` are considered APPROVED unless explicitly marked "DRAFT"**
 
 **Marking as Draft**:
+
 - Filename must start with `DRAFT-`
 - Example: `DRAFT-experimental-feature.md`
 - Header must include: `status: draft`
@@ -60,6 +63,7 @@
 5. ✅ Update ARCHIVE_INDEX.md with what was moved and why
 
 **NEVER EVER**:
+
 - ❌ Archive design files as "cleanup"
 - ❌ Delete specs because they seem old
 - ❌ Remove files that "don't look used"
@@ -72,18 +76,20 @@
 **If archiving with CEO approval**:
 
 Create entry in `docs/ARCHIVE_INDEX.md`:
+
 ```markdown
 ## 2025-XX-XX: [Description]
 
 **Archived By**: Manager
 **Approved By**: CEO (date, context)
 **Reason**: [Why these files were archived]
-**Recovery**: Files remain at docs/_archive/YYYY-MM-DD-[name]/
+**Recovery**: Files remain at docs/\_archive/YYYY-MM-DD-[name]/
 
 **Files Archived** (X files):
+
 - file1.md
 - file2.md
-...
+  ...
 
 **Impact**: None (verified unused) / Requires agent direction update / Other
 ```
@@ -110,6 +116,7 @@ Create entry in `docs/ARCHIVE_INDEX.md`:
 ## CONSEQUENCE OF VIOLATION
 
 **If this policy is violated**:
+
 - Immediate rollback of changes
 - Full audit of what was lost
 - Recovery procedure executed
@@ -124,6 +131,7 @@ Create entry in `docs/ARCHIVE_INDEX.md`:
 ## MONTHLY AUDIT
 
 **Every month** (1st of month):
+
 1. Review `/docs/design/` for outdated files
 2. Identify candidates for archival
 3. Present list to CEO with justification
@@ -163,4 +171,3 @@ jobs:
 **Manager Commitment**: I will NEVER archive design/planning work without explicit CEO approval.
 
 **Effective**: Immediately (2025-10-20)
-

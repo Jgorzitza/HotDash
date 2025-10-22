@@ -1,6 +1,6 @@
 /**
  * Tests for Growth Dashboard Metrics
- * 
+ *
  * @see app/services/analytics/growth-metrics.ts
  * @see docs/directions/analytics.md ANALYTICS-009
  */
@@ -23,7 +23,7 @@ vi.mock("../../../../app/db.server", () => ({
         // Filter by factType if specified
         if (query?.where?.factType) {
           const filtered = mockDashboardFacts.filter(
-            (f) => f.factType === query.where.factType
+            (f) => f.factType === query.where.factType,
           );
           return Promise.resolve(filtered);
         }
@@ -229,7 +229,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
       ];
@@ -302,7 +308,12 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+          },
           createdAt: new Date(),
         },
       ];
@@ -319,7 +330,12 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+          },
           createdAt: new Date(),
         },
       ];
@@ -364,7 +380,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
       ];
@@ -382,7 +404,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
       ];
@@ -398,7 +426,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 2000, clicks: 100, conversions: 10, revenue: 1000, spend: 200 },
+          value: {
+            impressions: 2000,
+            clicks: 100,
+            conversions: 10,
+            revenue: 1000,
+            spend: 200,
+          },
           createdAt: new Date(),
         },
       ];
@@ -427,7 +461,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 2,
           factType: "ads_roas",
-          value: { impressions: 10000, clicks: 200, conversions: 20, revenue: 2000, spend: 1000 },
+          value: {
+            impressions: 10000,
+            clicks: 200,
+            conversions: 20,
+            revenue: 2000,
+            spend: 1000,
+          },
           createdAt: new Date(),
         },
       ];
@@ -449,7 +489,13 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 2,
           factType: "ads_roas",
-          value: { impressions: 10000, clicks: 200, conversions: 30, revenue: 3000, spend: 1000 },
+          value: {
+            impressions: 10000,
+            clicks: 200,
+            conversions: 30,
+            revenue: 3000,
+            spend: 1000,
+          },
           createdAt: new Date(),
         },
       ];
@@ -464,13 +510,25 @@ describe("Growth Dashboard Metrics", () => {
         {
           id: 1,
           factType: "ads_roas",
-          value: { impressions: 1000, clicks: 50, conversions: 5, revenue: 500, spend: 100 },
+          value: {
+            impressions: 1000,
+            clicks: 50,
+            conversions: 5,
+            revenue: 500,
+            spend: 100,
+          },
           createdAt: new Date(),
         },
         {
           id: 2,
           factType: "ads_roas",
-          value: { impressions: 2000, clicks: 100, conversions: 10, revenue: 1000, spend: 200 },
+          value: {
+            impressions: 2000,
+            clicks: 100,
+            conversions: 10,
+            revenue: 1000,
+            spend: 200,
+          },
           createdAt: new Date(),
         },
       ];
@@ -485,4 +543,3 @@ describe("Growth Dashboard Metrics", () => {
     });
   });
 });
-

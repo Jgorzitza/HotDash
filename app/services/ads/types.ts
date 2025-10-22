@@ -105,7 +105,7 @@ export type AlertSeverity = "high" | "medium" | "low";
 /**
  * Budget Alert Type
  */
-export type AlertType = 
+export type AlertType =
   | "budget_depleted"
   | "low_ctr"
   | "high_cpc"
@@ -199,4 +199,3 @@ export interface AdCopyApproval {
   reviewNotes?: string;
   appliedAt?: string;
 }
-

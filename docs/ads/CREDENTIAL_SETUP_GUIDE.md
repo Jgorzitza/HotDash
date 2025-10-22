@@ -10,10 +10,12 @@
 ## 🎯 Overview
 
 This guide walks through obtaining API credentials for:
+
 1. **Google Ads API** (campaign automation, budget optimization, A/B testing)
 2. **Facebook Ads API** (cross-platform campaigns, social ads management)
 
-**Current Status**: 
+**Current Status**:
+
 - ✅ Code complete (11 files, 3,968 lines)
 - ✅ Unit tests created (66 tests)
 - ❌ **BLOCKED**: Missing API credentials
@@ -278,6 +280,7 @@ npx tsx scripts/ads/test-google-ads-integration.ts
 ```
 
 **Expected Output**:
+
 ```
 ✅ OAuth authentication successful
 ✅ Fetched 5 campaigns
@@ -299,6 +302,7 @@ npx tsx scripts/ads/test-facebook-ads-integration.ts
 ```
 
 **Expected Output**:
+
 ```
 ✅ Authentication successful
 ✅ Fetched 3 campaigns
@@ -315,6 +319,7 @@ All tests passed! (4/4)
 ## 📊 Current Status Summary
 
 ### Google Ads API
+
 - [ ] **Step 1**: Apply for Developer Token (⏸️ Not started - **START HERE**)
 - [ ] **Step 2**: Create OAuth credentials (⏸️ Waiting for Step 1)
 - [ ] **Step 3**: Generate Refresh Token (⏸️ Waiting for Step 2)
@@ -325,6 +330,7 @@ All tests passed! (4/4)
 **Estimated Time**: 1 hour active work + 1-3 days Developer Token approval
 
 ### Facebook Ads API
+
 - [ ] **Step 1**: Create Facebook App (⏸️ Not started)
 - [ ] **Step 2**: Add Marketing API (⏸️ Waiting for Step 1)
 - [ ] **Step 3**: Generate Access Token (⏸️ Waiting for Step 2)
@@ -339,11 +345,13 @@ All tests passed! (4/4)
 ## 🚨 Blockers & Dependencies
 
 ### Current Blockers
+
 1. **CEO Action Required**: All credential setup requires Justin's admin access
 2. **Developer Token Approval**: Google Ads Developer Token takes 1-3 business days
 3. **Integration Testing**: Cannot verify ads automation until credentials obtained
 
 ### What's Ready
+
 - ✅ Code complete (11 files, 3,968 lines)
 - ✅ Unit tests created (66 tests)
 - ✅ Test scripts ready (`scripts/ads/test-google-ads-integration.ts`)
@@ -351,6 +359,7 @@ All tests passed! (4/4)
 - ✅ OAuth flow implemented
 
 ### What's Blocked
+
 - ❌ OAuth authentication testing
 - ❌ Campaign data fetching verification
 - ❌ Automation recommendations testing
@@ -362,6 +371,7 @@ All tests passed! (4/4)
 ## 📞 Next Steps
 
 **Immediate Action (CEO)**:
+
 1. Start Google Ads Developer Token application (Step 1) - **15 minutes**
 2. While waiting for approval, set up Facebook Ads credentials (Steps 1-5) - **45 minutes**
 3. Once Google Developer Token approved, complete Google Ads setup (Steps 2-5) - **45 minutes**
@@ -369,13 +379,15 @@ All tests passed! (4/4)
 5. Deploy credentials to Fly.io for production - **5 minutes**
 
 **Ads Agent Next Actions**:
+
 1. ✅ Fix unit test expectations (30 minutes) - **IN PROGRESS**
 2. ⏸️ Wait for credentials
 3. Run integration tests once credentials available
 4. Mark BLOCKER-001 as resolved
 5. Mark ADS-010 & ADS-011 as complete
 
-**Total Time to Unblock**: 
+**Total Time to Unblock**:
+
 - **Active work**: ~2 hours (CEO)
 - **Waiting time**: 1-3 business days (Google Developer Token approval)
 - **Testing & verification**: 30 minutes (Ads Agent)
@@ -395,4 +407,3 @@ All tests passed! (4/4)
 **Document Status**: ✅ Complete  
 **Last Updated**: 2025-10-21T18:00Z  
 **Next Review**: When credentials obtained
-

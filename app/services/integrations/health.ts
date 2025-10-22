@@ -1,13 +1,13 @@
 /**
  * Integration Health Monitoring
- * 
+ *
  * Monitors health of all external integrations:
  * - Publer API
  * - Shopify Admin API
  * - Chatwoot API
  */
 
-import { createPublerClient } from '~/services/publer/client';
+import { createPublerClient } from "~/services/publer/client";
 
 export interface HealthCheckResult {
   service: string;
@@ -19,7 +19,7 @@ export interface HealthCheckResult {
 }
 
 export interface AllHealthChecksResult {
-  overall: 'healthy' | 'degraded' | 'unhealthy';
+  overall: "healthy" | "degraded" | "unhealthy";
   checks: HealthCheckResult[];
   summary: {
     total: number;
@@ -33,9 +33,9 @@ export async function checkPublerHealth(): Promise<HealthCheckResult> {
   try {
     if (!process.env.PUBLER_API_KEY || !process.env.PUBLER_WORKSPACE_ID) {
       return {
-        service: 'publer',
+        service: "publer",
         healthy: false,
-        error: 'Credentials not configured',
+        error: "Credentials not configured",
         timestamp: new Date().toISOString(),
       };
     }
@@ -44,15 +44,15 @@ export async function checkPublerHealth(): Promise<HealthCheckResult> {
     const latency = Date.now() - startTime;
     if (!result.success) {
       return {
-        service: 'publer',
+        service: "publer",
         healthy: false,
         latencyMs: latency,
-        error: result.error?.message || 'API request failed',
+        error: result.error?.message || "API request failed",
         timestamp: new Date().toISOString(),
       };
     }
     return {
-      service: 'publer',
+      service: "publer",
       healthy: true,
       latencyMs: latency,
       details: {
@@ -63,23 +63,25 @@ export async function checkPublerHealth(): Promise<HealthCheckResult> {
     };
   } catch (error) {
     return {
-      service: 'publer',
+      service: "publer",
       healthy: false,
       latencyMs: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
     };
   }
 }
 
-export async function checkShopifyHealth(adminGraphqlClient?: any): Promise<HealthCheckResult> {
+export async function checkShopifyHealth(
+  adminGraphqlClient?: any,
+): Promise<HealthCheckResult> {
   const startTime = Date.now();
   try {
     if (!adminGraphqlClient) {
       return {
-        service: 'shopify',
+        service: "shopify",
         healthy: false,
-        error: 'Shopify client not available',
+        error: "Shopify client not available",
         timestamp: new Date().toISOString(),
       };
     }
@@ -90,15 +92,15 @@ export async function checkShopifyHealth(adminGraphqlClient?: any): Promise<Heal
     const latency = Date.now() - startTime;
     if (json.errors) {
       return {
-        service: 'shopify',
+        service: "shopify",
         healthy: false,
         latencyMs: latency,
-        error: json.errors[0]?.message || 'GraphQL error',
+        error: json.errors[0]?.message || "GraphQL error",
         timestamp: new Date().toISOString(),
       };
     }
     return {
-      service: 'shopify',
+      service: "shopify",
       healthy: true,
       latencyMs: latency,
       details: { shop: json.data?.shop?.name },
@@ -106,10 +108,10 @@ export async function checkShopifyHealth(adminGraphqlClient?: any): Promise<Heal
     };
   } catch (error) {
     return {
-      service: 'shopify',
+      service: "shopify",
       healthy: false,
       latencyMs: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
     };
   }
@@ -120,35 +122,38 @@ export async function checkChatwootHealth(): Promise<HealthCheckResult> {
   try {
     const accountId = process.env.CHATWOOT_ACCOUNT_ID;
     const apiToken = process.env.CHATWOOT_API_TOKEN;
-    const baseUrl = process.env.CHATWOOT_BASE_URL || 'https://app.chatwoot.com';
+    const baseUrl = process.env.CHATWOOT_BASE_URL || "https://app.chatwoot.com";
     if (!accountId || !apiToken) {
       return {
-        service: 'chatwoot',
+        service: "chatwoot",
         healthy: false,
-        error: 'Credentials not configured',
+        error: "Credentials not configured",
         timestamp: new Date().toISOString(),
       };
     }
     const healthResponse = await fetch(`${baseUrl}/rails/health`);
     if (!healthResponse.ok) {
       return {
-        service: 'chatwoot',
+        service: "chatwoot",
         healthy: false,
         latencyMs: Date.now() - startTime,
         error: `Health check failed: ${healthResponse.status}`,
         timestamp: new Date().toISOString(),
       };
     }
-    const apiResponse = await fetch(`${baseUrl}/api/v1/accounts/${accountId}/conversations`, {
-      headers: {
-        'api_access_token': apiToken,
-        'Content-Type': 'application/json',
+    const apiResponse = await fetch(
+      `${baseUrl}/api/v1/accounts/${accountId}/conversations`,
+      {
+        headers: {
+          api_access_token: apiToken,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
     const latency = Date.now() - startTime;
     if (!apiResponse.ok) {
       return {
-        service: 'chatwoot',
+        service: "chatwoot",
         healthy: false,
         latencyMs: latency,
         error: `API request failed: ${apiResponse.status}`,
@@ -157,7 +162,7 @@ export async function checkChatwootHealth(): Promise<HealthCheckResult> {
     }
     const data = await apiResponse.json();
     return {
-      service: 'chatwoot',
+      service: "chatwoot",
       healthy: true,
       latencyMs: latency,
       details: { conversationCount: data.data?.meta?.count || 0 },
@@ -165,30 +170,32 @@ export async function checkChatwootHealth(): Promise<HealthCheckResult> {
     };
   } catch (error) {
     return {
-      service: 'chatwoot',
+      service: "chatwoot",
       healthy: false,
       latencyMs: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : "Unknown error",
       timestamp: new Date().toISOString(),
     };
   }
 }
 
-export async function checkAllIntegrations(adminGraphqlClient?: any): Promise<AllHealthChecksResult> {
+export async function checkAllIntegrations(
+  adminGraphqlClient?: any,
+): Promise<AllHealthChecksResult> {
   const checks = await Promise.all([
     checkPublerHealth(),
     checkShopifyHealth(adminGraphqlClient),
     checkChatwootHealth(),
   ]);
-  const healthyCount = checks.filter(c => c.healthy).length;
-  const unhealthyCount = checks.filter(c => !c.healthy).length;
-  let overall: 'healthy' | 'degraded' | 'unhealthy';
+  const healthyCount = checks.filter((c) => c.healthy).length;
+  const unhealthyCount = checks.filter((c) => !c.healthy).length;
+  let overall: "healthy" | "degraded" | "unhealthy";
   if (unhealthyCount === 0) {
-    overall = 'healthy';
+    overall = "healthy";
   } else if (healthyCount > 0) {
-    overall = 'degraded';
+    overall = "degraded";
   } else {
-    overall = 'unhealthy';
+    overall = "unhealthy";
   }
   return {
     overall,

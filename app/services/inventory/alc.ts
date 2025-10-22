@@ -365,4 +365,3 @@ async function getMockInventory(variantId: string): Promise<{
     available: 50, // Mock: 50 units on hand
   };
 }
-

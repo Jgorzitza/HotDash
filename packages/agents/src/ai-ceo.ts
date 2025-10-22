@@ -4,10 +4,10 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 
 /**
  * CEO Assistant Agent
- * 
+ *
  * Framework: OpenAI Agents SDK (TypeScript)
  * Pattern: HITL (drafts → CEO approves → executes)
- * 
+ *
  * Use Cases:
  * - Operations decisions ("Should I reorder SKU-123?")
  * - Data analysis ("Show me top customers this month")
@@ -20,42 +20,46 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 // ============================================================================
 
 const ShopifyOrdersSchema = z.object({
-  action: z.enum(['list', 'get_details', 'cancel', 'refund']),
+  action: z.enum(["list", "get_details", "cancel", "refund"]),
   orderId: z.string().optional(),
   limit: z.number().min(1).max(100).default(10),
-  status: z.enum(['open', 'closed', 'cancelled', 'any']).optional(),
+  status: z.enum(["open", "closed", "cancelled", "any"]).optional(),
 });
 
 const shopifyOrders = tool({
   name: "shopify.orders",
-  description: "Query Shopify orders - list, get details, cancel, or refund orders",
-  inputSchema: zodToJsonSchema(ShopifyOrdersSchema, "ShopifyOrdersSchema") as any,
+  description:
+    "Query Shopify orders - list, get details, cancel, or refund orders",
+  inputSchema: zodToJsonSchema(
+    ShopifyOrdersSchema,
+    "ShopifyOrdersSchema",
+  ) as any,
   async handler({ action, orderId, limit, status }) {
     // Call backend API route: /api/ceo-agent/shopify/orders
     // Backend will use Shopify Admin GraphQL with server-side API key
-    
+
     const params = new URLSearchParams({
       action,
       ...(orderId && { orderId }),
       limit: limit.toString(),
       ...(status && { status }),
     });
-    
+
     try {
       const response = await fetch(`/api/ceo-agent/shopify/orders?${params}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       });
-      
+
       if (!response.ok) {
         throw new Error(`Shopify API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         action,
       };
     }
@@ -64,7 +68,7 @@ const shopifyOrders = tool({
 });
 
 const ShopifyProductsSchema = z.object({
-  action: z.enum(['list', 'get_details', 'update_inventory']),
+  action: z.enum(["list", "get_details", "update_inventory"]),
   productId: z.string().optional(),
   variantId: z.string().optional(),
   inventoryQuantity: z.number().optional(),
@@ -73,8 +77,12 @@ const ShopifyProductsSchema = z.object({
 
 const shopifyProducts = tool({
   name: "shopify.products",
-  description: "Query Shopify products and inventory - list products, get details, update inventory levels",
-  inputSchema: zodToJsonSchema(ShopifyProductsSchema, "ShopifyProductsSchema") as any,
+  description:
+    "Query Shopify products and inventory - list products, get details, update inventory levels",
+  inputSchema: zodToJsonSchema(
+    ShopifyProductsSchema,
+    "ShopifyProductsSchema",
+  ) as any,
   async handler({ action, productId, variantId, inventoryQuantity, limit }) {
     const body = {
       action,
@@ -83,23 +91,23 @@ const shopifyProducts = tool({
       inventoryQuantity,
       limit,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/shopify/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/shopify/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Shopify Products API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         action,
       };
     }
@@ -108,7 +116,7 @@ const shopifyProducts = tool({
 });
 
 const ShopifyCustomersSchema = z.object({
-  action: z.enum(['list', 'search', 'get_details']),
+  action: z.enum(["list", "search", "get_details"]),
   customerId: z.string().optional(),
   query: z.string().optional(),
   limit: z.number().min(1).max(100).default(10),
@@ -116,8 +124,12 @@ const ShopifyCustomersSchema = z.object({
 
 const shopifyCustomers = tool({
   name: "shopify.customers",
-  description: "Query Shopify customers - list, search, or get customer details and order history",
-  inputSchema: zodToJsonSchema(ShopifyCustomersSchema, "ShopifyCustomersSchema") as any,
+  description:
+    "Query Shopify customers - list, search, or get customer details and order history",
+  inputSchema: zodToJsonSchema(
+    ShopifyCustomersSchema,
+    "ShopifyCustomersSchema",
+  ) as any,
   async handler({ action, customerId, query, limit }) {
     const body = {
       action,
@@ -125,23 +137,23 @@ const shopifyCustomers = tool({
       query,
       limit,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/shopify/customers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/shopify/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Shopify Customers API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         action,
       };
     }
@@ -155,13 +167,13 @@ const shopifyCustomers = tool({
 
 const SupabaseAnalyticsSchema = z.object({
   query: z.enum([
-    'revenue_by_period',
-    'top_products',
-    'customer_lifetime_value',
-    'conversion_metrics',
-    'decision_log_summary',
-    'approval_patterns',
-    'custom_sql',
+    "revenue_by_period",
+    "top_products",
+    "customer_lifetime_value",
+    "conversion_metrics",
+    "decision_log_summary",
+    "approval_patterns",
+    "custom_sql",
   ]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
@@ -171,8 +183,12 @@ const SupabaseAnalyticsSchema = z.object({
 
 const supabaseAnalytics = tool({
   name: "supabase.analytics",
-  description: "Run analytics queries on Supabase - revenue analysis, top products, customer metrics, decision logs",
-  inputSchema: zodToJsonSchema(SupabaseAnalyticsSchema, "SupabaseAnalyticsSchema") as any,
+  description:
+    "Run analytics queries on Supabase - revenue analysis, top products, customer metrics, decision logs",
+  inputSchema: zodToJsonSchema(
+    SupabaseAnalyticsSchema,
+    "SupabaseAnalyticsSchema",
+  ) as any,
   async handler({ query, startDate, endDate, limit, customSql }) {
     const body = {
       query,
@@ -181,28 +197,28 @@ const supabaseAnalytics = tool({
       limit,
       customSql,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/supabase/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/supabase/analytics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Supabase Analytics API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         query,
       };
     }
   },
-  requireApproval: (args) => args.query === 'custom_sql', // Custom SQL requires approval, predefined queries don't
+  requireApproval: (args) => args.query === "custom_sql", // Custom SQL requires approval, predefined queries don't
 });
 
 // ============================================================================
@@ -211,22 +227,26 @@ const supabaseAnalytics = tool({
 
 const ChatwootInsightsSchema = z.object({
   action: z.enum([
-    'sla_breaches',
-    'conversation_summaries',
-    'ticket_trends',
-    'response_times',
-    'customer_sentiment',
+    "sla_breaches",
+    "conversation_summaries",
+    "ticket_trends",
+    "response_times",
+    "customer_sentiment",
   ]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   limit: z.number().min(1).max(100).default(10),
-  status: z.enum(['open', 'resolved', 'pending', 'all']).optional(),
+  status: z.enum(["open", "resolved", "pending", "all"]).optional(),
 });
 
 const chatwootInsights = tool({
   name: "chatwoot.insights",
-  description: "Analyze customer support data - SLA breaches, conversation summaries, ticket trends, response times",
-  inputSchema: zodToJsonSchema(ChatwootInsightsSchema, "ChatwootInsightsSchema") as any,
+  description:
+    "Analyze customer support data - SLA breaches, conversation summaries, ticket trends, response times",
+  inputSchema: zodToJsonSchema(
+    ChatwootInsightsSchema,
+    "ChatwootInsightsSchema",
+  ) as any,
   async handler({ action, startDate, endDate, limit, status }) {
     const body = {
       action,
@@ -235,23 +255,23 @@ const chatwootInsights = tool({
       limit,
       status,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/chatwoot/insights', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/chatwoot/insights", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Chatwoot Insights API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         action,
       };
     }
@@ -271,7 +291,8 @@ const LlamaIndexSchema = z.object({
 
 const llamaIndexQuery = tool({
   name: "llamaindex.query",
-  description: "Search knowledge base using LlamaIndex - query indexed documents, product documentation, policies",
+  description:
+    "Search knowledge base using LlamaIndex - query indexed documents, product documentation, policies",
   inputSchema: zodToJsonSchema(LlamaIndexSchema, "LlamaIndexSchema") as any,
   async handler({ query, topK, filters }) {
     const body = {
@@ -279,23 +300,23 @@ const llamaIndexQuery = tool({
       topK,
       filters,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/llamaindex/query', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/llamaindex/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`LlamaIndex API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         query,
       };
     }
@@ -309,11 +330,11 @@ const llamaIndexQuery = tool({
 
 const GoogleAnalyticsSchema = z.object({
   metric: z.enum([
-    'traffic_overview',
-    'conversion_metrics',
-    'landing_pages',
-    'user_behavior',
-    'acquisition_channels',
+    "traffic_overview",
+    "conversion_metrics",
+    "landing_pages",
+    "user_behavior",
+    "acquisition_channels",
   ]),
   startDate: z.string(), // Format: YYYY-MM-DD
   endDate: z.string(), // Format: YYYY-MM-DD
@@ -323,8 +344,12 @@ const GoogleAnalyticsSchema = z.object({
 
 const googleAnalytics = tool({
   name: "google.analytics",
-  description: "Analyze website traffic and conversion data - traffic overview, landing pages, user behavior, acquisition",
-  inputSchema: zodToJsonSchema(GoogleAnalyticsSchema, "GoogleAnalyticsSchema") as any,
+  description:
+    "Analyze website traffic and conversion data - traffic overview, landing pages, user behavior, acquisition",
+  inputSchema: zodToJsonSchema(
+    GoogleAnalyticsSchema,
+    "GoogleAnalyticsSchema",
+  ) as any,
   async handler({ metric, startDate, endDate, dimensions, limit }) {
     const body = {
       metric,
@@ -333,23 +358,23 @@ const googleAnalytics = tool({
       dimensions,
       limit,
     };
-    
+
     try {
-      const response = await fetch('/api/ceo-agent/google-analytics/metrics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/ceo-agent/google-analytics/metrics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Google Analytics API error: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
       return {
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
         metric,
       };
     }
@@ -395,7 +420,7 @@ Your role is to help the CEO make informed operational decisions by analyzing da
 - Analysis (data-backed insights)
 - Recommendation (specific action with justification)
 - Risks/Considerations (what could go wrong)`,
-  
+
   tools: [
     // Shopify tools
     shopifyOrders,
@@ -408,17 +433,17 @@ Your role is to help the CEO make informed operational decisions by analyzing da
     // Knowledge base
     llamaIndexQuery,
   ],
-  
+
   onApproval: async (item, approve) => {
     // Store approval request in Supabase approval_queue table
     // Present to CEO in approval drawer UI
     // When CEO approves/rejects, call approve(true/false) with optional modifications
-    
+
     // Backend route will handle:
     // 1. Store in approvals_history table
     // 2. Store in decision_log with CEO agent context
     // 3. Return result to agent for execution
-    
+
     // Default: require explicit CEO approval
     await approve(false);
   },
@@ -426,10 +451,10 @@ Your role is to help the CEO make informed operational decisions by analyzing da
 
 /**
  * Handle CEO query
- * 
+ *
  * @param userQuery - Natural language question from CEO
  * @returns Agent response with data and recommendations
- * 
+ *
  * @example
  * const result = await handleCEOQuery("Should I reorder SKU-XYZ?");
  * console.log(result.response); // Agent's analysis and recommendation
@@ -439,13 +464,13 @@ export async function handleCEOQuery(userQuery: string) {
     agent: aiCEO,
     input: userQuery,
   });
-  
+
   return result;
 }
 
 /**
  * Sample queries for testing:
- * 
+ *
  * 1. "What are my top 3 products this month?"
  * 2. "Should I reorder Powder Board XL?"
  * 3. "Show me customers with lifetime value > $1000"
@@ -455,4 +480,3 @@ export async function handleCEOQuery(userQuery: string) {
  * 7. "Analyze inventory levels for all products"
  * 8. "Generate weekly performance summary"
  */
-

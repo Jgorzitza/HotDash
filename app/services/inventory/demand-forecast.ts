@@ -125,7 +125,8 @@ function calculateVariabilityCoefficient(values: number[]): number {
 
   // Calculate standard deviation
   const squaredDiffs = values.map((val) => (val - mean) ** 2);
-  const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
+  const variance =
+    squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length;
   const stdDev = Math.sqrt(variance);
 
   // Coefficient of variation = std dev / mean
@@ -276,9 +277,11 @@ export function detectAnomalies(
   const quantities = historicalData.map((d) => d.quantity);
 
   // Calculate mean and standard deviation
-  const mean = quantities.reduce((sum, qty) => sum + qty, 0) / quantities.length;
+  const mean =
+    quantities.reduce((sum, qty) => sum + qty, 0) / quantities.length;
   const squaredDiffs = quantities.map((qty) => (qty - mean) ** 2);
-  const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / quantities.length;
+  const variance =
+    squaredDiffs.reduce((sum, val) => sum + val, 0) / quantities.length;
   const stdDev = Math.sqrt(variance);
 
   // Identify anomalies (values beyond threshold standard deviations)
@@ -317,9 +320,8 @@ export function getForecastSummary(forecasts: DemandForecast[]): {
     ),
     high_confidence_count: forecasts.filter((f) => f.confidence === "high")
       .length,
-    medium_confidence_count: forecasts.filter(
-      (f) => f.confidence === "medium",
-    ).length,
+    medium_confidence_count: forecasts.filter((f) => f.confidence === "medium")
+      .length,
     low_confidence_count: forecasts.filter((f) => f.confidence === "low")
       .length,
     growing_trend_count: forecasts.filter((f) => f.trend === "growing").length,
@@ -407,4 +409,3 @@ export async function get14DayDemandVelocity(
 
   return velocityData;
 }
-

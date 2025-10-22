@@ -14,6 +14,7 @@
 ✅ **SETUP COMPLETE**: CEO created `hd_action_key` as an **Event-Scoped Custom Dimension** in GA4 Property 339826228.
 
 **Confirmed in GA4**:
+
 - **Dimension name**: Action Key
 - **Description**: HotDash action attribution key for ROI tracking
 - **Scope**: Event
@@ -25,6 +26,7 @@ This guide documents how to USE the custom dimension for action attribution and 
 ### What is Action Attribution?
 
 When the operator approves an action (SEO fix, inventory adjustment, content change), we assign it a unique action identifier like:
+
 - `seo-fix-powder-board-2025-10-21`
 - `inventory-reorder-wheels-2025-10-21`
 - `content-update-homepage-2025-10-21`
@@ -42,8 +44,9 @@ This identifier is tracked in GA4 for 7-28 days to measure which actions drive r
 ### Verified Configuration
 
 Confirmed in GA4 Custom definitions:
+
 - ✅ **Dimension name**: Action Key
-- ✅ **Description**: HotDash action attribution key for ROI tracking  
+- ✅ **Description**: HotDash action attribution key for ROI tracking
 - ✅ **Scope**: Event
 - ✅ **Parameter**: hd_action_key
 - ✅ **Status**: Active
@@ -65,26 +68,31 @@ Confirmed in GA4 Custom definitions:
 
 **Event scope** is correct for action attribution because:
 
-✅ **Multiple actions can be tested simultaneously**  
+✅ **Multiple actions can be tested simultaneously**
+
 - Customer A sees action `seo-fix-1` results
 - Customer B sees action `content-update-2` results
 - Both tracked independently in same session
 
-✅ **Time-bound attribution windows**  
+✅ **Time-bound attribution windows**
+
 - Action ROI measured for 7d, 14d, 28d windows
 - Event scope allows precise date filtering
 
-✅ **Shopify native GA4 already sends events**  
+✅ **Shopify native GA4 already sends events**
+
 - `page_view`, `add_to_cart`, `begin_checkout`, `purchase`
 - We piggyback on existing events with custom parameter
 
-❌ **User scope would overwrite previous action**  
+❌ **User scope would overwrite previous action**
+
 - Only one action key per user at a time
 - Can't test multiple actions in parallel
 
 ### Custom Dimension Limits
 
 GA4 has limits per property:
+
 - **Event-scoped**: 50 custom dimensions (we use 1)
 - **User-scoped**: 25 custom dimensions
 - **Item-scoped**: 10 custom dimensions
@@ -112,49 +120,56 @@ These events are sent via **Shopify Web Pixels** (customer privacy compliant).
 **Location**: Shopify Admin → Settings → Customer events → Custom pixels
 
 **Code** (Production-ready):
+
 ```javascript
 // HotDash Action Attribution Web Pixel
 // Adds hd_action_key custom dimension to all GA4 events
 
-(function() {
+(function () {
   // Get action key from localStorage (set by Action Queue UI)
-  const actionKey = localStorage.getItem('hd_action_key');
-  const actionExpiry = localStorage.getItem('hd_action_expiry');
-  
+  const actionKey = localStorage.getItem("hd_action_key");
+  const actionExpiry = localStorage.getItem("hd_action_expiry");
+
   // Check if action key is valid and not expired
   if (!actionKey || !actionExpiry) return;
   if (new Date() > new Date(actionExpiry)) {
-    localStorage.removeItem('hd_action_key');
-    localStorage.removeItem('hd_action_expiry');
+    localStorage.removeItem("hd_action_key");
+    localStorage.removeItem("hd_action_expiry");
     return;
   }
 
   // Method 1: Enhance all GA4 events (Recommended)
   if (window.gtag) {
     const originalGtag = window.gtag;
-    window.gtag = function() {
+    window.gtag = function () {
       const args = Array.from(arguments);
-      
+
       // Add hd_action_key to all event parameters
-      if (args[0] === 'event' && args.length >= 2) {
+      if (args[0] === "event" && args.length >= 2) {
         args[2] = args[2] || {};
         args[2].hd_action_key = actionKey; // ← Custom dimension parameter
       }
-      
+
       return originalGtag.apply(this, args);
     };
   }
 
   // Method 2: Subscribe to specific Shopify analytics events
   // (Use if Method 1 doesn't work with your Shopify setup)
-  ['page_viewed', 'product_viewed', 'product_added_to_cart', 'checkout_started', 'checkout_completed'].forEach(eventName => {
+  [
+    "page_viewed",
+    "product_viewed",
+    "product_added_to_cart",
+    "checkout_started",
+    "checkout_completed",
+  ].forEach((eventName) => {
     analytics.subscribe(eventName, (event) => {
       if (window.gtag) {
         // Shopify events are already sent to GA4
         // This ensures hd_action_key is included
-        gtag('event', eventName.replace(/_/g, ''), {
+        gtag("event", eventName.replace(/_/g, ""), {
           hd_action_key: actionKey,
-          ...event.data
+          ...event.data,
         });
       }
     });
@@ -167,25 +182,26 @@ These events are sent via **Shopify Web Pixels** (customer privacy compliant).
 **Location**: Shopify Admin → Settings → Customer events → Custom pixels
 
 **Code**:
+
 ```javascript
 // HotDash Action Attribution Web Pixel
 // Adds hd_action_key to all GA4 events
 
-(function() {
+(function () {
   // Get action key from localStorage (set by Action Queue UI)
-  const actionKey = localStorage.getItem('hd_action_key');
-  const actionExpiry = localStorage.getItem('hd_action_expiry');
-  
+  const actionKey = localStorage.getItem("hd_action_key");
+  const actionExpiry = localStorage.getItem("hd_action_expiry");
+
   // Check if action key is valid and not expired
   if (!actionKey || !actionExpiry) return;
   if (new Date() > new Date(actionExpiry)) {
-    localStorage.removeItem('hd_action_key');
-    localStorage.removeItem('hd_action_expiry');
+    localStorage.removeItem("hd_action_key");
+    localStorage.removeItem("hd_action_expiry");
     return;
   }
 
   // Subscribe to all analytics events
-  analytics.subscribe('all_events', (event) => {
+  analytics.subscribe("all_events", (event) => {
     // Only enhance GA4 events
     if (event.name && event.data) {
       // Add custom parameter to event data
@@ -197,15 +213,15 @@ These events are sent via **Shopify Web Pixels** (customer privacy compliant).
   // Alternative: Directly enhance GA4 events
   if (window.gtag) {
     const originalGtag = window.gtag;
-    window.gtag = function() {
+    window.gtag = function () {
       const args = Array.from(arguments);
-      
+
       // Add hd_action_key to event parameters
-      if (args[0] === 'event' && args.length >= 3) {
+      if (args[0] === "event" && args.length >= 3) {
         args[2] = args[2] || {};
         args[2].hd_action_key = actionKey;
       }
-      
+
       return originalGtag.apply(this, args);
     };
   }
@@ -225,6 +241,7 @@ If using GTM instead of native Shopify GA4:
    - Name: `HotDash Action Key from Storage`
    - Variable Type: Custom JavaScript
    - Code:
+
    ```javascript
    function() {
      return localStorage.getItem('hd_action_key') || 'none';
@@ -245,22 +262,23 @@ If using GTM instead of native Shopify GA4:
 **Location**: `app/components/ActionQueueDrawer.tsx` (or equivalent)
 
 **Code**:
+
 ```typescript
 // When action is approved and applied
 function onActionApplied(action: Action) {
   // Generate action key
   const actionKey = `${action.type}-${action.targetSlug}-${action.date}`;
-  
+
   // Set in localStorage with 28-day expiry
   const expiryDate = new Date();
   expiryDate.setDate(expiryDate.getDate() + 28);
-  
-  localStorage.setItem('hd_action_key', actionKey);
-  localStorage.setItem('hd_action_expiry', expiryDate.toISOString());
-  
+
+  localStorage.setItem("hd_action_key", actionKey);
+  localStorage.setItem("hd_action_expiry", expiryDate.toISOString());
+
   // Also send to GA4 immediately as custom event
   if (window.gtag) {
-    window.gtag('event', 'action_applied', {
+    window.gtag("event", "action_applied", {
       hd_action_key: actionKey,
       action_type: action.type,
       action_target: action.targetSlug,
@@ -275,12 +293,14 @@ function onActionApplied(action: Action) {
 **Pattern**: `{type}-{target}-{date}`
 
 **Examples**:
+
 - `seo-fix-powder-board-2025-10-21`
 - `inventory-reorder-wheels-2025-10-21`
 - `content-update-homepage-2025-10-21`
 - `ads-campaign-fall-sale-2025-10-21`
 
 **Rules**:
+
 - Lowercase
 - Hyphen-separated
 - Max 50 characters (GA4 limit)
@@ -299,7 +319,7 @@ function onActionApplied(action: Action) {
    - Purchase revenue
    - Add to carts
    - Sessions
-4. **Filters**: 
+4. **Filters**:
    - Date range: Last 28 days
    - Action Key: contains `seo-` (or specific action)
 
@@ -310,6 +330,7 @@ function onActionApplied(action: Action) {
 **Endpoint**: `https://analyticsdata.googleapis.com/v1beta/properties/339826228:runReport`
 
 **Example Request** (Find purchases with specific action key):
+
 ```json
 {
   "dateRanges": [
@@ -347,8 +368,9 @@ function onActionApplied(action: Action) {
 ```
 
 **Node.js Example**:
+
 ```typescript
-import { BetaAnalyticsDataClient } from '@google-analytics/data';
+import { BetaAnalyticsDataClient } from "@google-analytics/data";
 
 const analyticsDataClient = new BetaAnalyticsDataClient({
   keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
@@ -359,26 +381,26 @@ async function getActionAttribution(actionKey: string) {
     property: `properties/339826228`,
     dateRanges: [
       {
-        startDate: '28daysAgo',
-        endDate: 'today',
+        startDate: "28daysAgo",
+        endDate: "today",
       },
     ],
     dimensions: [
       {
-        name: 'customEvent:hd_action_key',
+        name: "customEvent:hd_action_key",
       },
     ],
     metrics: [
       {
-        name: 'conversions',
+        name: "conversions",
       },
       {
-        name: 'totalRevenue',
+        name: "totalRevenue",
       },
     ],
     dimensionFilter: {
       filter: {
-        fieldName: 'customEvent:hd_action_key',
+        fieldName: "customEvent:hd_action_key",
         stringFilter: {
           value: actionKey,
         },
@@ -397,27 +419,32 @@ async function getActionAttribution(actionKey: string) {
 ### Step 1: Test Action Key Storage
 
 **Browser Console**:
+
 ```javascript
 // Set test action
-localStorage.setItem('hd_action_key', 'test-action-2025-10-21');
-localStorage.setItem('hd_action_expiry', new Date(Date.now() + 28*24*60*60*1000).toISOString());
+localStorage.setItem("hd_action_key", "test-action-2025-10-21");
+localStorage.setItem(
+  "hd_action_expiry",
+  new Date(Date.now() + 28 * 24 * 60 * 60 * 1000).toISOString(),
+);
 
 // Verify
-console.log(localStorage.getItem('hd_action_key'));
+console.log(localStorage.getItem("hd_action_key"));
 // Expected: "test-action-2025-10-21"
 ```
 
 ### Step 2: Test GA4 Event Sending
 
 **Browser Console** (with GA4 Debug Mode):
+
 ```javascript
 // Enable debug mode
-localStorage.setItem('ga_debug', '1');
+localStorage.setItem("ga_debug", "1");
 
 // Trigger test event
 if (window.gtag) {
-  gtag('event', 'test_event', {
-    hd_action_key: 'test-action-2025-10-21',
+  gtag("event", "test_event", {
+    hd_action_key: "test-action-2025-10-21",
   });
 }
 
@@ -450,20 +477,24 @@ if (window.gtag) {
 ### Attribution Logic
 
 **7-Day Window**:
+
 - Revenue from purchases where `hd_action_key` was set within 7 days of action approval
 - Good for immediate impact actions (homepage content, urgent SEO fixes)
 
 **14-Day Window**:
+
 - Revenue from purchases within 14 days
 - Good for marketing campaigns, product page updates
 
 **28-Day Window**:
+
 - Revenue from purchases within 28 days
 - Good for structural SEO changes, long-tail content
 
 ### Implementation
 
 **Database**: Store in `action_queue` table:
+
 ```sql
 ALTER TABLE action_queue ADD COLUMN action_key VARCHAR(50);
 ALTER TABLE action_queue ADD COLUMN approved_at TIMESTAMP;
@@ -473,9 +504,10 @@ ALTER TABLE action_queue ADD COLUMN revenue_28d DECIMAL(10,2);
 ```
 
 **Cron Job**: Daily at 3am, update revenue attribution:
+
 ```typescript
 // scripts/cron/update-action-attribution.ts
-import { getActionAttribution } from '../lib/analytics/ga4-data-api';
+import { getActionAttribution } from "../lib/analytics/ga4-data-api";
 
 async function updateActionAttribution() {
   const actions = await db.query(`
@@ -487,8 +519,9 @@ async function updateActionAttribution() {
 
   for (const action of actions) {
     const revenue = await getActionAttribution(action.action_key);
-    
-    await db.query(`
+
+    await db.query(
+      `
       UPDATE action_queue
       SET 
         revenue_7d = $1,
@@ -496,12 +529,14 @@ async function updateActionAttribution() {
         revenue_28d = $3,
         updated_at = NOW()
       WHERE action_key = $4
-    `, [
-      revenue.revenue_7d,
-      revenue.revenue_14d,
-      revenue.revenue_28d,
-      action.action_key,
-    ]);
+    `,
+      [
+        revenue.revenue_7d,
+        revenue.revenue_14d,
+        revenue.revenue_28d,
+        action.action_key,
+      ],
+    );
   }
 }
 ```
@@ -513,31 +548,35 @@ async function updateActionAttribution() {
 ### Re-Rank Based on Proven ROI
 
 **Algorithm**:
+
 ```typescript
 // Calculate ROI score for ranking
 function calculateROIScore(action: Action, historicalData: ActionHistory[]) {
   // Base score from prediction
   let score = action.expected_revenue * action.confidence * action.ease;
-  
+
   // Boost from historical similar actions
-  const similarActions = historicalData.filter(h => 
-    h.type === action.type && h.revenue_14d > 0
+  const similarActions = historicalData.filter(
+    (h) => h.type === action.type && h.revenue_14d > 0,
   );
-  
+
   if (similarActions.length > 0) {
-    const avgROI = similarActions.reduce((sum, a) => 
-      sum + (a.revenue_14d / a.expected_revenue), 0
-    ) / similarActions.length;
-    
+    const avgROI =
+      similarActions.reduce(
+        (sum, a) => sum + a.revenue_14d / a.expected_revenue,
+        0,
+      ) / similarActions.length;
+
     // Boost score by proven ROI multiplier
     score *= Math.max(avgROI, 0.5); // Floor at 50% to avoid over-penalizing
   }
-  
+
   return score;
 }
 ```
 
 **Example**:
+
 - Action: `seo-fix-powder-board-2025-10-21`
 - Expected revenue: $500
 - Actual revenue (14d): $750
@@ -549,6 +588,7 @@ function calculateROIScore(action: Action, historicalData: ActionHistory[]) {
 ## Summary Checklist
 
 ### Setup (One-time):
+
 - [ ] Create `hd_action_key` custom dimension in GA4 (event-scoped)
 - [ ] Deploy Custom Web Pixel to Shopify
 - [ ] Add action key setter to Action Queue UI
@@ -556,6 +596,7 @@ function calculateROIScore(action: Action, historicalData: ActionHistory[]) {
 - [ ] Set up daily cron job for attribution updates
 
 ### Per Action (Automated):
+
 - [ ] Generate unique action key on approval
 - [ ] Store in localStorage with 28-day expiry
 - [ ] Send to GA4 with all events
@@ -564,6 +605,7 @@ function calculateROIScore(action: Action, historicalData: ActionHistory[]) {
 - [ ] Re-rank future actions based on proven ROI
 
 ### Validation:
+
 - [ ] Test in DebugView (real-time)
 - [ ] Verify in Realtime Report (1-5 min)
 - [ ] Confirm in Exploration Report (24-48h)
@@ -575,4 +617,3 @@ function calculateROIScore(action: Action, historicalData: ActionHistory[]) {
 **Last Updated**: 2025-10-21  
 **Maintained By**: SEO Agent  
 **Questions**: See Analytics agent or DevOps for implementation
-

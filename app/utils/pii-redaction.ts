@@ -1,9 +1,9 @@
 /**
  * PII Redaction Utility
- * 
+ *
  * Provides functions to mask personally identifiable information (PII)
  * for public-facing replies while preserving full details for operators.
- * 
+ *
  * Part of Growth Engine architecture - PII Broker pattern
  */
 
@@ -12,18 +12,21 @@
  * Shows first character of local part and domain, masks the rest
  */
 export function maskEmail(email: string): string {
-  if (!email || !email.includes('@')) {
-    return '***';
+  if (!email || !email.includes("@")) {
+    return "***";
   }
 
-  const [localPart, domain] = email.split('@');
-  
+  const [localPart, domain] = email.split("@");
+
   if (localPart.length === 0 || domain.length === 0) {
-    return '***';
+    return "***";
   }
 
-  const maskedLocal = localPart[0] + '***';
-  const maskedDomain = domain[0] + '***' + (domain.includes('.') ? domain.substring(domain.lastIndexOf('.')) : '.com');
+  const maskedLocal = localPart[0] + "***";
+  const maskedDomain =
+    domain[0] +
+    "***" +
+    (domain.includes(".") ? domain.substring(domain.lastIndexOf(".")) : ".com");
 
   return `${maskedLocal}@${maskedDomain}`;
 }
@@ -34,14 +37,14 @@ export function maskEmail(email: string): string {
  */
 export function maskPhone(phone: string): string {
   if (!phone) {
-    return '***';
+    return "***";
   }
 
   // Remove all non-digit characters to get clean number
-  const digits = phone.replace(/\D/g, '');
-  
+  const digits = phone.replace(/\D/g, "");
+
   if (digits.length < 4) {
-    return '***';
+    return "***";
   }
 
   // Keep last 4 digits, mask the rest
@@ -64,7 +67,7 @@ export function maskAddress(address: {
   const { city, province, zip, country } = address;
 
   // Keep first 3 characters of postal code, mask the rest
-  const maskedZip = zip && zip.length >= 3 ? zip.substring(0, 3) + '**' : '***';
+  const maskedZip = zip && zip.length >= 3 ? zip.substring(0, 3) + "**" : "***";
 
   return `${city}, ${province} ${maskedZip}, ${country}`;
 }
@@ -75,14 +78,14 @@ export function maskAddress(address: {
  */
 export function maskOrderId(orderId: string): string {
   if (!orderId) {
-    return '#***';
+    return "#***";
   }
 
   // Remove # prefix if present for processing
-  const cleanId = orderId.startsWith('#') ? orderId.substring(1) : orderId;
+  const cleanId = orderId.startsWith("#") ? orderId.substring(1) : orderId;
 
   if (cleanId.length < 4) {
-    return '#***';
+    return "#***";
   }
 
   const lastFour = cleanId.slice(-4);
@@ -103,15 +106,18 @@ export function maskTracking(tracking: {
   const { carrier, lastEvent, lastEventDate } = tracking;
 
   if (!carrier || !lastEvent) {
-    return 'Tracking information available';
+    return "Tracking information available";
   }
 
   // Format date if provided (just the date part, not time)
-  const dateStr = lastEventDate 
-    ? new Date(lastEventDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    : '';
+  const dateStr = lastEventDate
+    ? new Date(lastEventDate).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      })
+    : "";
 
-  return `${carrier}: ${lastEvent}${dateStr ? ` ${dateStr}` : ''}`;
+  return `${carrier}: ${lastEvent}${dateStr ? ` ${dateStr}` : ""}`;
 }
 
 /**
@@ -167,7 +173,9 @@ export interface RedactedCustomerInfo {
  * Masks all sensitive information while preserving enough context
  * for customer to recognize their order
  */
-export function redactCustomerInfo(fullInfo: CustomerInfo): RedactedCustomerInfo {
+export function redactCustomerInfo(
+  fullInfo: CustomerInfo,
+): RedactedCustomerInfo {
   return {
     orderId: maskOrderId(fullInfo.orderId),
     email: maskEmail(fullInfo.email),
@@ -175,9 +183,8 @@ export function redactCustomerInfo(fullInfo: CustomerInfo): RedactedCustomerInfo
     shippingCity: fullInfo.shippingAddress.city,
     shippingRegion: fullInfo.shippingAddress.province,
     shippingCountry: fullInfo.shippingAddress.country,
-    shippingZipPrefix: fullInfo.shippingAddress.zip.substring(0, 3) + '**',
+    shippingZipPrefix: fullInfo.shippingAddress.zip.substring(0, 3) + "**",
     trackingCarrier: fullInfo.tracking?.carrier,
     trackingLastEvent: fullInfo.tracking?.lastEvent,
   };
 }
-

@@ -53,5 +53,3 @@ export function calculateSafetyStock(params: SafetyStockParams): number {
   // Round up to ensure adequate buffer
   return Math.ceil(safetyStock);
 }
-
-

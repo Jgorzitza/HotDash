@@ -28,5 +28,3 @@ describe("Vendor Management - Lead Time", () => {
     expect(leadTime).toBe(0.5);
   });
 });
-
-

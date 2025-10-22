@@ -253,5 +253,3 @@ CREATE TABLE payout_approvals (
 - **Inventory Agent**: feedback/inventory/2025-10-20.md
 - **Support Agent**: feedback/support/YYYY-MM-DD.md
 - **Manager**: feedback/manager/YYYY-MM-DD.md
-
-

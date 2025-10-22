@@ -46,24 +46,22 @@ Provide deep-dive analytics views when operators click "View Details" on dashboa
   title="Analytics: [Title]"
   size="large"
   primaryAction={{
-    content: 'Export CSV',
+    content: "Export CSV",
     onAction: handleExport,
   }}
-  secondaryActions={[
-    { content: 'Close', onAction: onClose }
-  ]}
+  secondaryActions={[{ content: "Close", onAction: onClose }]}
 >
   <Modal.Section>
     {/* Filter Controls */}
     <DateRangePicker />
     <SegmentFilter />
   </Modal.Section>
-  
+
   <Modal.Section>
     {/* Primary Chart (large) */}
     <canvas id="main-chart" />
   </Modal.Section>
-  
+
   <Modal.Section>
     {/* Secondary Charts (2-3 smaller) */}
     <InlineGrid columns={2}>
@@ -71,7 +69,7 @@ Provide deep-dive analytics views when operators click "View Details" on dashboa
       <canvas id="chart-3" />
     </InlineGrid>
   </Modal.Section>
-  
+
   <Modal.Section>
     {/* Data Table */}
     <DataTable />
@@ -138,28 +136,29 @@ Provide deep-dive analytics views when operators click "View Details" on dashboa
 ### Section 1: Filters
 
 **Components**:
+
 ```tsx
 <InlineStack gap="300">
   <Select
     label="Date Range"
     options={[
-      { label: 'Last 7 days', value: '7d' },
-      { label: 'Last 30 days', value: '30d' },
-      { label: 'Last 90 days', value: '90d' },
-      { label: 'Custom range', value: 'custom' },
+      { label: "Last 7 days", value: "7d" },
+      { label: "Last 30 days", value: "30d" },
+      { label: "Last 90 days", value: "90d" },
+      { label: "Custom range", value: "custom" },
     ]}
     value={dateRange}
     onChange={setDateRange}
   />
-  
+
   <Select
     label="Channel Filter"
     options={[
-      { label: 'All channels', value: 'all' },
-      { label: 'Organic only', value: 'organic' },
-      { label: 'Paid only', value: 'paid' },
-      { label: 'Social only', value: 'social' },
-      { label: 'Direct only', value: 'direct' },
+      { label: "All channels", value: "all" },
+      { label: "Organic only", value: "organic" },
+      { label: "Paid only", value: "paid" },
+      { label: "Social only", value: "social" },
+      { label: "Direct only", value: "direct" },
     ]}
     value={channelFilter}
     onChange={setChannelFilter}
@@ -171,96 +170,99 @@ Provide deep-dive analytics views when operators click "View Details" on dashboa
 
 **Chart Type**: Multi-Line Chart (Chart.js)
 
-**Dimensions**: 
+**Dimensions**:
+
 - Width: 100% (modal width)
 - Height: 300px
 
 **Data Structure**:
+
 ```tsx
 const trafficTrendData = {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], // 7 days
+  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], // 7 days
   datasets: [
     {
-      label: 'Organic',
+      label: "Organic",
       data: [420, 450, 480, 520, 510, 490, 530],
-      borderColor: 'var(--occ-color-success)',
-      backgroundColor: 'transparent',
+      borderColor: "var(--occ-color-success)",
+      backgroundColor: "transparent",
       tension: 0.4, // Smooth curves
       borderWidth: 2,
       pointRadius: 4,
       pointHoverRadius: 6,
     },
     {
-      label: 'Paid',
+      label: "Paid",
       data: [310, 320, 315, 330, 340, 320, 310],
-      borderColor: 'var(--occ-color-warning)',
-      backgroundColor: 'transparent',
+      borderColor: "var(--occ-color-warning)",
+      backgroundColor: "transparent",
       tension: 0.4,
       borderWidth: 2,
       pointRadius: 4,
       pointHoverRadius: 6,
     },
     {
-      label: 'Social',
+      label: "Social",
       data: [230, 240, 235, 245, 250, 240, 235],
-      borderColor: 'var(--occ-color-info)',
-      backgroundColor: 'transparent',
+      borderColor: "var(--occ-color-info)",
+      backgroundColor: "transparent",
       tension: 0.4,
       borderWidth: 2,
       pointRadius: 4,
       pointHoverRadius: 6,
     },
     {
-      label: 'Direct',
+      label: "Direct",
       data: [170, 180, 175, 185, 190, 180, 175],
-      borderColor: 'var(--occ-text-secondary)',
-      backgroundColor: 'transparent',
+      borderColor: "var(--occ-text-secondary)",
+      backgroundColor: "transparent",
       tension: 0.4,
       borderWidth: 2,
       pointRadius: 4,
       pointHoverRadius: 6,
-    }
-  ]
+    },
+  ],
 };
 ```
 
 **Chart.js Configuration**:
+
 ```tsx
 const config = {
-  type: 'line',
+  type: "line",
   data: trafficTrendData,
   options: {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
-      mode: 'index',
+      mode: "index",
       intersect: false,
     },
     plugins: {
       legend: {
-        position: 'top',
-        align: 'end',
+        position: "top",
+        align: "end",
         labels: {
           usePointStyle: true,
-          pointStyle: 'circle',
+          pointStyle: "circle",
           font: {
-            family: 'var(--occ-font-family)',
+            family: "var(--occ-font-family)",
             size: 12,
           },
-          color: 'var(--occ-text-primary)',
-        }
+          color: "var(--occ-text-primary)",
+        },
       },
       tooltip: {
-        mode: 'index',
+        mode: "index",
         intersect: false,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: 'var(--occ-border-default)',
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "var(--occ-border-default)",
         borderWidth: 1,
         padding: 12,
         displayColors: true,
-      }
+      },
     },
     scales: {
       x: {
@@ -270,28 +272,28 @@ const config = {
         ticks: {
           font: {
             size: 12,
-            family: 'var(--occ-font-family)',
+            family: "var(--occ-font-family)",
           },
-          color: 'var(--occ-text-secondary)',
-        }
+          color: "var(--occ-text-secondary)",
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'var(--occ-border-subdued)',
+          color: "var(--occ-border-subdued)",
           borderDash: [2, 2],
         },
         ticks: {
           font: {
             size: 12,
-            family: 'var(--occ-font-family)',
+            family: "var(--occ-font-family)",
           },
-          color: 'var(--occ-text-secondary)',
+          color: "var(--occ-text-secondary)",
           callback: (value) => value.toLocaleString(),
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 ```
 
@@ -303,31 +305,34 @@ const config = {
 **Chart 2**: Top Pages (Horizontal Bar Chart)
 
 **Top Pages Chart**:
+
 ```tsx
 const topPagesData = {
-  labels: ['/product-a', '/product-b', '/product-c', '/landing', '/home'],
-  datasets: [{
-    label: 'Page Views',
-    data: [1250, 980, 840, 720, 650],
-    backgroundColor: 'var(--occ-color-info)',
-    barThickness: 20,
-  }]
+  labels: ["/product-a", "/product-b", "/product-c", "/landing", "/home"],
+  datasets: [
+    {
+      label: "Page Views",
+      data: [1250, 980, 840, 720, 650],
+      backgroundColor: "var(--occ-color-info)",
+      barThickness: 20,
+    },
+  ],
 };
 
 const topPagesConfig = {
-  type: 'bar',
+  type: "bar",
   data: topPagesData,
   options: {
-    indexAxis: 'y',
+    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (context) => `Views: ${context.parsed.x.toLocaleString()}`
-        }
-      }
+          label: (context) => `Views: ${context.parsed.x.toLocaleString()}`,
+        },
+      },
     },
     scales: {
       x: {
@@ -338,11 +343,11 @@ const topPagesConfig = {
         grid: { display: false },
         ticks: {
           font: { size: 11 },
-          color: 'var(--occ-text-primary)',
-        }
-      }
-    }
-  }
+          color: "var(--occ-text-primary)",
+        },
+      },
+    },
+  },
 };
 ```
 
@@ -351,6 +356,7 @@ const topPagesConfig = {
 **Table Component**: Polaris DataTable or custom styled table
 
 **Columns**:
+
 1. Source (Organic, Paid, Social, Direct)
 2. Sessions (count)
 3. % Total (percentage)
@@ -358,68 +364,100 @@ const topPagesConfig = {
 5. Avg. Duration (time)
 
 **Table Implementation**:
+
 ```tsx
-<table style={{
-  width: '100%',
-  borderCollapse: 'collapse',
-  fontSize: 'var(--occ-font-size-sm)',
-}}>
-  <thead style={{
-    background: 'var(--occ-bg-secondary)',
-    borderBottom: '2px solid var(--occ-border-default)',
-  }}>
+<table
+  style={{
+    width: "100%",
+    borderCollapse: "collapse",
+    fontSize: "var(--occ-font-size-sm)",
+  }}
+>
+  <thead
+    style={{
+      background: "var(--occ-bg-secondary)",
+      borderBottom: "2px solid var(--occ-border-default)",
+    }}
+  >
     <tr>
-      <th style={{padding: 'var(--occ-space-3)', textAlign: 'left'}}>Source</th>
-      <th style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>Sessions</th>
-      <th style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>% Total</th>
-      <th style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>Bounce Rate</th>
-      <th style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>Avg. Duration</th>
+      <th style={{ padding: "var(--occ-space-3)", textAlign: "left" }}>
+        Source
+      </th>
+      <th style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        Sessions
+      </th>
+      <th style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        % Total
+      </th>
+      <th style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        Bounce Rate
+      </th>
+      <th style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        Avg. Duration
+      </th>
     </tr>
   </thead>
   <tbody>
     {trafficData.map((row, index) => (
-      <tr key={row.source} style={{
-        borderBottom: '1px solid var(--occ-border-subdued)',
-      }}>
-        <td style={{padding: 'var(--occ-space-3)'}}>
-          <span style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 'var(--occ-space-2)',
-          }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: row.color,
-            }} />
+      <tr
+        key={row.source}
+        style={{
+          borderBottom: "1px solid var(--occ-border-subdued)",
+        }}
+      >
+        <td style={{ padding: "var(--occ-space-3)" }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "var(--occ-space-2)",
+            }}
+          >
+            <span
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: row.color,
+              }}
+            />
             {row.source}
           </span>
         </td>
-        <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>
+        <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
           {row.sessions.toLocaleString()}
         </td>
-        <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>
+        <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
           {row.percentage}%
         </td>
-        <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>
+        <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
           {row.bounceRate}%
         </td>
-        <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>
+        <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
           {row.avgDuration}
         </td>
       </tr>
     ))}
     {/* Totals Row */}
-    <tr style={{
-      background: 'var(--occ-bg-secondary)',
-      fontWeight: 'var(--occ-font-weight-semibold)',
-    }}>
-      <td style={{padding: 'var(--occ-space-3)'}}>Total</td>
-      <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>8,247</td>
-      <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>100%</td>
-      <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>49.2%</td>
-      <td style={{padding: 'var(--occ-space-3)', textAlign: 'right'}}>2m 15s</td>
+    <tr
+      style={{
+        background: "var(--occ-bg-secondary)",
+        fontWeight: "var(--occ-font-weight-semibold)",
+      }}
+    >
+      <td style={{ padding: "var(--occ-space-3)" }}>Total</td>
+      <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        8,247
+      </td>
+      <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        100%
+      </td>
+      <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        49.2%
+      </td>
+      <td style={{ padding: "var(--occ-space-3)", textAlign: "right" }}>
+        2m 15s
+      </td>
     </tr>
   </tbody>
 </table>
@@ -494,23 +532,26 @@ const topPagesConfig = {
 **Chart Type**: Vertical Bar Chart with Annotations
 
 **Chart.js Configuration**:
+
 ```tsx
 const funnelConfig = {
-  type: 'bar',
+  type: "bar",
   data: {
-    labels: ['Product Views', 'Add to Cart', 'Checkout', 'Order Complete'],
-    datasets: [{
-      label: 'Conversions',
-      data: [8247, 6433, 5113, 3958],
-      backgroundColor: [
-        'var(--occ-color-info)',      // Stage 1
-        'var(--occ-color-success)',   // Stage 2
-        'var(--occ-color-warning)',   // Stage 3
-        'var(--occ-color-critical)',  // Stage 4 (final conversion)
-      ],
-      borderWidth: 0,
-      barThickness: 80,
-    }]
+    labels: ["Product Views", "Add to Cart", "Checkout", "Order Complete"],
+    datasets: [
+      {
+        label: "Conversions",
+        data: [8247, 6433, 5113, 3958],
+        backgroundColor: [
+          "var(--occ-color-info)", // Stage 1
+          "var(--occ-color-success)", // Stage 2
+          "var(--occ-color-warning)", // Stage 3
+          "var(--occ-color-critical)", // Stage 4 (final conversion)
+        ],
+        borderWidth: 0,
+        barThickness: 80,
+      },
+    ],
   },
   options: {
     responsive: true,
@@ -526,32 +567,32 @@ const funnelConfig = {
               `Count: ${count.toLocaleString()}`,
               `${percentage}% of total`,
             ];
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         grid: { display: false },
         ticks: {
           font: { size: 12 },
-          color: 'var(--occ-text-primary)',
-        }
+          color: "var(--occ-text-primary)",
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'var(--occ-border-subdued)',
+          color: "var(--occ-border-subdued)",
           borderDash: [2, 2],
         },
         ticks: {
           font: { size: 12 },
-          color: 'var(--occ-text-secondary)',
+          color: "var(--occ-text-secondary)",
           callback: (value) => value.toLocaleString(),
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 };
 ```
 
@@ -561,13 +602,15 @@ const funnelConfig = {
 
 ```tsx
 // Custom plugin or text below chart
-<div style={{
-  display: 'flex',
-  justifyContent: 'space-around',
-  marginTop: 'var(--occ-space-2)',
-  fontSize: 'var(--occ-font-size-xs)',
-  color: 'var(--occ-text-critical)',
-}}>
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-around",
+    marginTop: "var(--occ-space-2)",
+    fontSize: "var(--occ-font-size-xs)",
+    color: "var(--occ-text-critical)",
+  }}
+>
   <span>—</span>
   <span>↓ 22%</span>
   <span>↓ 16%</span>
@@ -578,6 +621,7 @@ const funnelConfig = {
 ### Section 4: Data Table
 
 **Columns**:
+
 1. Stage
 2. Count
 3. % of Total
@@ -585,6 +629,7 @@ const funnelConfig = {
 5. Drop-off %
 
 **Calculations**:
+
 - % of Total: `(stageCount / totalViews) * 100`
 - % of Prior: `(stageCount / priorStageCount) * 100`
 - Drop-off %: `100 - (stageCount / priorStageCount) * 100`
@@ -656,22 +701,35 @@ const funnelConfig = {
 **Dimensions**: 100% width × 400px height (10 products)
 
 **Chart.js Configuration**:
+
 ```tsx
 const topProductsConfig = {
-  type: 'bar',
+  type: "bar",
   data: {
-    labels: ['Product A', 'Product B', 'Product C', 'Product D', 'Product E', 
-             'Product F', 'Product G', 'Product H', 'Product I', 'Product J'],
-    datasets: [{
-      label: 'Revenue',
-      data: [45230, 32108, 24567, 15420, 8980, 7550, 5230, 4890, 3120, 2450],
-      backgroundColor: 'var(--occ-color-success)',
-      borderWidth: 0,
-      barThickness: 32,
-    }]
+    labels: [
+      "Product A",
+      "Product B",
+      "Product C",
+      "Product D",
+      "Product E",
+      "Product F",
+      "Product G",
+      "Product H",
+      "Product I",
+      "Product J",
+    ],
+    datasets: [
+      {
+        label: "Revenue",
+        data: [45230, 32108, 24567, 15420, 8980, 7550, 5230, 4890, 3120, 2450],
+        backgroundColor: "var(--occ-color-success)",
+        borderWidth: 0,
+        barThickness: 32,
+      },
+    ],
   },
   options: {
-    indexAxis: 'y',
+    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -681,57 +739,60 @@ const topProductsConfig = {
           label: (context) => {
             const revenue = context.parsed.x;
             return `Revenue: $${revenue.toLocaleString()}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         display: true,
         beginAtZero: true,
         ticks: {
-          callback: (value) => '$' + (value / 1000).toFixed(0) + 'K',
+          callback: (value) => "$" + (value / 1000).toFixed(0) + "K",
           font: { size: 11 },
-          color: 'var(--occ-text-secondary)',
+          color: "var(--occ-text-secondary)",
         },
         grid: {
-          color: 'var(--occ-border-subdued)',
+          color: "var(--occ-border-subdued)",
           borderDash: [2, 2],
-        }
+        },
       },
       y: {
         grid: { display: false },
         ticks: {
           font: { size: 12 },
-          color: 'var(--occ-text-primary)',
+          color: "var(--occ-text-primary)",
           callback: (value, index) => {
             const label = this.getLabelForValue(value);
-            return label.length > 20 ? label.substring(0, 17) + '...' : label;
-          }
-        }
-      }
-    }
-  }
+            return label.length > 20 ? label.substring(0, 17) + "..." : label;
+          },
+        },
+      },
+    },
+  },
 };
 ```
 
 ### Secondary Charts
 
 **Chart 1: Units Sold Trend** (Line Chart):
+
 ```tsx
 const unitsSoldConfig = {
-  type: 'line',
+  type: "line",
   data: {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [{
-      label: 'Units Sold',
-      data: [2340, 2520, 2680, 2790],
-      borderColor: 'var(--occ-color-info)',
-      backgroundColor: 'transparent',
-      tension: 0.4,
-      borderWidth: 2,
-      pointRadius: 4,
-    }]
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        label: "Units Sold",
+        data: [2340, 2520, 2680, 2790],
+        borderColor: "var(--occ-color-info)",
+        backgroundColor: "transparent",
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 4,
+      },
+    ],
   },
   options: {
     responsive: true,
@@ -740,42 +801,45 @@ const unitsSoldConfig = {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Units Sold Trend',
-        font: { size: 14, weight: 'semibold' },
-        color: 'var(--occ-text-primary)',
-      }
+        text: "Units Sold Trend",
+        font: { size: 14, weight: "semibold" },
+        color: "var(--occ-text-primary)",
+      },
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { size: 10 }, color: 'var(--occ-text-secondary)' }
+        ticks: { font: { size: 10 }, color: "var(--occ-text-secondary)" },
       },
       y: {
         beginAtZero: true,
-        grid: { color: 'var(--occ-border-subdued)', borderDash: [2, 2] },
-        ticks: { font: { size: 10 }, color: 'var(--occ-text-secondary)' }
-      }
-    }
-  }
+        grid: { color: "var(--occ-border-subdued)", borderDash: [2, 2] },
+        ticks: { font: { size: 10 }, color: "var(--occ-text-secondary)" },
+      },
+    },
+  },
 };
 ```
 
 **Chart 2: Revenue Trend** (Area Chart):
+
 ```tsx
 const revenueTrendConfig = {
-  type: 'line',
+  type: "line",
   data: {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [{
-      label: 'Revenue',
-      data: [98400, 105200, 112300, 118500],
-      borderColor: 'var(--occ-color-success)',
-      backgroundColor: 'rgba(0, 128, 96, 0.1)', // Transparent success color
-      fill: true, // Area chart
-      tension: 0.4,
-      borderWidth: 2,
-      pointRadius: 4,
-    }]
+    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        label: "Revenue",
+        data: [98400, 105200, 112300, 118500],
+        borderColor: "var(--occ-color-success)",
+        backgroundColor: "rgba(0, 128, 96, 0.1)", // Transparent success color
+        fill: true, // Area chart
+        tension: 0.4,
+        borderWidth: 2,
+        pointRadius: 4,
+      },
+    ],
   },
   options: {
     responsive: true,
@@ -784,33 +848,34 @@ const revenueTrendConfig = {
       legend: { display: false },
       title: {
         display: true,
-        text: 'Revenue Trend',
-        font: { size: 14, weight: 'semibold' },
-        color: 'var(--occ-text-primary)',
-      }
+        text: "Revenue Trend",
+        font: { size: 14, weight: "semibold" },
+        color: "var(--occ-text-primary)",
+      },
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { size: 10 }, color: 'var(--occ-text-secondary)' }
+        ticks: { font: { size: 10 }, color: "var(--occ-text-secondary)" },
       },
       y: {
         beginAtZero: true,
         ticks: {
           font: { size: 10 },
-          color: 'var(--occ-text-secondary)',
-          callback: (value) => '$' + (value / 1000).toFixed(0) + 'K',
+          color: "var(--occ-text-secondary)",
+          callback: (value) => "$" + (value / 1000).toFixed(0) + "K",
         },
-        grid: { color: 'var(--occ-border-subdued)', borderDash: [2, 2] }
-      }
-    }
-  }
+        grid: { color: "var(--occ-border-subdued)", borderDash: [2, 2] },
+      },
+    },
+  },
 };
 ```
 
 ### Data Table
 
 **Columns**:
+
 1. Product Name (truncated if long)
 2. SKU
 3. Revenue (formatted currency)
@@ -886,51 +951,52 @@ const revenueTrendConfig = {
 **Chart Type**: Horizontal Stacked Bar (100% width)
 
 **Chart.js Configuration**:
+
 ```tsx
 const segmentDistConfig = {
-  type: 'bar',
+  type: "bar",
   data: {
-    labels: ['Customer Base'],
+    labels: ["Customer Base"],
     datasets: [
       {
-        label: 'Champions',
+        label: "Champions",
         data: [35],
-        backgroundColor: 'var(--occ-color-success)',
+        backgroundColor: "var(--occ-color-success)",
       },
       {
-        label: 'Loyal',
+        label: "Loyal",
         data: [22],
-        backgroundColor: 'var(--occ-color-info)',
+        backgroundColor: "var(--occ-color-info)",
       },
       {
-        label: 'Potential',
+        label: "Potential",
         data: [18],
-        backgroundColor: 'var(--occ-color-warning)',
+        backgroundColor: "var(--occ-color-warning)",
       },
       {
-        label: 'At Risk',
+        label: "At Risk",
         data: [15],
-        backgroundColor: '#FF8C42',
+        backgroundColor: "#FF8C42",
       },
       {
-        label: 'Hibernating',
+        label: "Hibernating",
         data: [10],
-        backgroundColor: 'var(--occ-text-secondary)',
-      }
-    ]
+        backgroundColor: "var(--occ-text-secondary)",
+      },
+    ],
   },
   options: {
-    indexAxis: 'y',
+    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right',
+        position: "right",
         labels: {
           usePointStyle: true,
           font: { size: 12 },
-          color: 'var(--occ-text-primary)',
-        }
+          color: "var(--occ-text-primary)",
+        },
       },
       tooltip: {
         callbacks: {
@@ -939,26 +1005,26 @@ const segmentDistConfig = {
             const percentage = context.parsed.x;
             const count = Math.round((percentage / 100) * 1847);
             return `${label}: ${count} customers (${percentage}%)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         stacked: true,
         max: 100,
         ticks: {
-          callback: (value) => value + '%',
+          callback: (value) => value + "%",
           font: { size: 12 },
-          color: 'var(--occ-text-secondary)',
-        }
+          color: "var(--occ-text-secondary)",
+        },
       },
       y: {
         stacked: true,
         display: false,
-      }
-    }
-  }
+      },
+    },
+  },
 };
 ```
 
@@ -968,34 +1034,37 @@ const segmentDistConfig = {
 **Chart 2: Segment Value** (Doughnut showing revenue distribution)
 
 **Segment Value Chart**:
+
 ```tsx
 const segmentValueConfig = {
-  type: 'doughnut',
+  type: "doughnut",
   data: {
-    labels: ['Champions', 'Loyal', 'Potential', 'At Risk', 'Hibernating'],
-    datasets: [{
-      data: [98450, 54320, 28560, 18720, 8950], // Revenue per segment
-      backgroundColor: [
-        'var(--occ-color-success)',
-        'var(--occ-color-info)',
-        'var(--occ-color-warning)',
-        '#FF8C42',
-        'var(--occ-text-secondary)',
-      ],
-      borderWidth: 0,
-    }]
+    labels: ["Champions", "Loyal", "Potential", "At Risk", "Hibernating"],
+    datasets: [
+      {
+        data: [98450, 54320, 28560, 18720, 8950], // Revenue per segment
+        backgroundColor: [
+          "var(--occ-color-success)",
+          "var(--occ-color-info)",
+          "var(--occ-color-warning)",
+          "#FF8C42",
+          "var(--occ-text-secondary)",
+        ],
+        borderWidth: 0,
+      },
+    ],
   },
   options: {
     responsive: true,
     maintainAspectRatio: true,
-    cutout: '50%',
+    cutout: "50%",
     plugins: {
       legend: {
-        position: 'bottom',
+        position: "bottom",
         labels: {
           font: { size: 11 },
-          color: 'var(--occ-text-primary)',
-        }
+          color: "var(--occ-text-primary)",
+        },
       },
       tooltip: {
         callbacks: {
@@ -1004,17 +1073,18 @@ const segmentValueConfig = {
             const value = context.parsed;
             const percentage = ((value / 209000) * 100).toFixed(1);
             return `${label}: $${value.toLocaleString()} (${percentage}%)`;
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
 };
 ```
 
 ### Data Table
 
 **Columns**:
+
 1. Segment Name
 2. Customer Count
 3. % of Total
@@ -1023,6 +1093,7 @@ const segmentValueConfig = {
 6. Lifetime Value (LTV)
 
 **Metrics**:
+
 - **AOV**: Total Revenue / Orders
 - **LTV**: Estimated lifetime value per customer
 - **% of Total**: Customer count percentage
@@ -1041,15 +1112,16 @@ const segmentValueConfig = {
 ### Filter Controls
 
 **Date Range Picker**:
+
 ```tsx
 <Select
   label="Date Range"
   options={[
-    { label: 'Last 7 days', value: '7d' },
-    { label: 'Last 30 days', value: '30d' },
-    { label: 'Last 90 days', value: '90d' },
-    { label: 'Year to date', value: 'ytd' },
-    { label: 'Custom range', value: 'custom' },
+    { label: "Last 7 days", value: "7d" },
+    { label: "Last 30 days", value: "30d" },
+    { label: "Last 90 days", value: "90d" },
+    { label: "Year to date", value: "ytd" },
+    { label: "Custom range", value: "custom" },
   ]}
   value={dateRange}
   onChange={handleDateRangeChange}
@@ -1057,44 +1129,46 @@ const segmentValueConfig = {
 ```
 
 **Custom Date Range** (if selected):
+
 ```tsx
-{dateRange === 'custom' && (
-  <InlineStack gap="200">
-    <TextField
-      label="Start Date"
-      type="date"
-      value={startDate}
-      onChange={setStartDate}
-    />
-    <TextField
-      label="End Date"
-      type="date"
-      value={endDate}
-      onChange={setEndDate}
-    />
-  </InlineStack>
-)}
+{
+  dateRange === "custom" && (
+    <InlineStack gap="200">
+      <TextField
+        label="Start Date"
+        type="date"
+        value={startDate}
+        onChange={setStartDate}
+      />
+      <TextField
+        label="End Date"
+        type="date"
+        value={endDate}
+        onChange={setEndDate}
+      />
+    </InlineStack>
+  );
+}
 ```
 
 ### Export to CSV
 
 **Button Implementation**:
+
 ```tsx
-<Button
-  variant="primary"
-  onClick={handleExportCSV}
->
+<Button variant="primary" onClick={handleExportCSV}>
   Export CSV
 </Button>
 ```
 
 **Export Function**:
+
 ```tsx
 const handleExportCSV = () => {
   const csv = convertToCSV(tableData);
-  const blob = new Blob([csv], { type: 'text/csv' });
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
   link.download = `analytics-${modalType}-${dateRange}.csv`;
   link.click();
@@ -1105,39 +1179,43 @@ const handleExportCSV = () => {
 ### Loading States
 
 **Skeleton Chart** (while loading):
+
 ```tsx
-{isLoading && (
-  <div style={{
-    width: '100%',
-    height: '300px',
-    background: 'var(--occ-bg-secondary)',
-    borderRadius: 'var(--occ-radius-md)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}>
-    <Spinner size="large" />
-    <Text variant="bodySm" tone="subdued">
-      Loading analytics data...
-    </Text>
-  </div>
-)}
+{
+  isLoading && (
+    <div
+      style={{
+        width: "100%",
+        height: "300px",
+        background: "var(--occ-bg-secondary)",
+        borderRadius: "var(--occ-radius-md)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Spinner size="large" />
+      <Text variant="bodySm" tone="subdued">
+        Loading analytics data...
+      </Text>
+    </div>
+  );
+}
 ```
 
 ### Error States
 
 **Error Message**:
+
 ```tsx
-{error && (
-  <Banner tone="critical" title="Failed to load analytics">
-    <Text variant="bodyMd">
-      {error.message}
-    </Text>
-    <Button onClick={handleRetry}>
-      Retry
-    </Button>
-  </Banner>
-)}
+{
+  error && (
+    <Banner tone="critical" title="Failed to load analytics">
+      <Text variant="bodyMd">{error.message}</Text>
+      <Button onClick={handleRetry}>Retry</Button>
+    </Banner>
+  );
+}
 ```
 
 ---
@@ -1147,113 +1225,116 @@ const handleExportCSV = () => {
 ### Comparison Charts (Before/After)
 
 **Dual Y-Axis Line Chart**:
+
 ```tsx
 const comparisonConfig = {
-  type: 'line',
+  type: "line",
   data: {
     labels: days,
     datasets: [
       {
-        label: 'Current Period',
+        label: "Current Period",
         data: currentData,
-        borderColor: 'var(--occ-color-success)',
-        yAxisID: 'y',
+        borderColor: "var(--occ-color-success)",
+        yAxisID: "y",
       },
       {
-        label: 'Previous Period',
+        label: "Previous Period",
         data: previousData,
-        borderColor: 'var(--occ-text-secondary)',
+        borderColor: "var(--occ-text-secondary)",
         borderDash: [5, 5], // Dashed line for comparison
-        yAxisID: 'y',
-      }
-    ]
+        yAxisID: "y",
+      },
+    ],
   },
   options: {
     scales: {
       y: {
-        type: 'linear',
-        position: 'left',
+        type: "linear",
+        position: "left",
         title: {
           display: true,
-          text: 'Sessions',
-        }
-      }
-    }
-  }
+          text: "Sessions",
+        },
+      },
+    },
+  },
 };
 ```
 
 ### Stacked Area Charts
 
 **Revenue by Channel Over Time**:
+
 ```tsx
 const stackedAreaConfig = {
-  type: 'line',
+  type: "line",
   data: {
     labels: weeks,
     datasets: [
       {
-        label: 'Organic',
+        label: "Organic",
         data: organicData,
         fill: true,
-        backgroundColor: 'rgba(0, 128, 96, 0.5)',
-        borderColor: 'var(--occ-color-success)',
+        backgroundColor: "rgba(0, 128, 96, 0.5)",
+        borderColor: "var(--occ-color-success)",
         borderWidth: 1,
       },
       {
-        label: 'Paid',
+        label: "Paid",
         data: paidData,
         fill: true,
-        backgroundColor: 'rgba(255, 191, 71, 0.5)',
-        borderColor: 'var(--occ-color-warning)',
+        backgroundColor: "rgba(255, 191, 71, 0.5)",
+        borderColor: "var(--occ-color-warning)",
         borderWidth: 1,
       },
       // ... other channels
-    ]
+    ],
   },
   options: {
     scales: {
       y: {
         stacked: true, // Stack areas
-      }
-    }
-  }
+      },
+    },
+  },
 };
 ```
 
 ### Mixed Chart Types
 
 **Bar + Line Overlay** (Target vs Actual):
+
 ```tsx
 const mixedConfig = {
-  type: 'bar',
+  type: "bar",
   data: {
     labels: months,
     datasets: [
       {
-        type: 'bar',
-        label: 'Actual Revenue',
+        type: "bar",
+        label: "Actual Revenue",
         data: actualRevenue,
-        backgroundColor: 'var(--occ-color-success)',
+        backgroundColor: "var(--occ-color-success)",
       },
       {
-        type: 'line',
-        label: 'Target Revenue',
+        type: "line",
+        label: "Target Revenue",
         data: targetRevenue,
-        borderColor: 'var(--occ-text-secondary)',
+        borderColor: "var(--occ-text-secondary)",
         borderDash: [5, 5],
         borderWidth: 2,
         fill: false,
-      }
-    ]
+      },
+    ],
   },
   options: {
     responsive: true,
     plugins: {
-      legend: { position: 'top' },
-      tooltip: { mode: 'index', intersect: false }
-    }
-  }
+      legend: { position: "top" },
+      tooltip: { mode: "index", intersect: false },
+    },
+  },
 };
 ```
 
@@ -1264,27 +1345,21 @@ const mixedConfig = {
 ### Polaris DataTable
 
 **Basic Usage**:
+
 ```tsx
-import { DataTable } from '@shopify/polaris';
+import { DataTable } from "@shopify/polaris";
 
 <DataTable
   columnContentTypes={[
-    'text',      // Product
-    'text',      // SKU
-    'numeric',   // Revenue
-    'numeric',   // Units
-    'numeric',   // AOV
-    'numeric',   // % of Revenue
+    "text", // Product
+    "text", // SKU
+    "numeric", // Revenue
+    "numeric", // Units
+    "numeric", // AOV
+    "numeric", // % of Revenue
   ]}
-  headings={[
-    'Product',
-    'SKU',
-    'Revenue',
-    'Units Sold',
-    'AOV',
-    '% of Revenue',
-  ]}
-  rows={productRows.map(row => [
+  headings={["Product", "SKU", "Revenue", "Units Sold", "AOV", "% of Revenue"]}
+  rows={productRows.map((row) => [
     row.product,
     row.sku,
     `$${row.revenue.toLocaleString()}`,
@@ -1293,54 +1368,59 @@ import { DataTable } from '@shopify/polaris';
     `${row.percentage.toFixed(1)}%`,
   ])}
   totals={[
-    'Total',
-    '—',
+    "Total",
+    "—",
     `$${totalRevenue.toLocaleString()}`,
     totalUnits.toLocaleString(),
     `$${avgAOV.toFixed(2)}`,
-    '100%',
+    "100%",
   ]}
   showTotalsInFooter
   sortable={[true, true, true, true, true, true]}
   defaultSortDirection="descending"
   initialSortColumnIndex={2} // Sort by revenue by default
   onSort={handleSort}
-/>
+/>;
 ```
 
 ### Custom Styled Table (if Polaris DataTable insufficient)
 
 **Structure**:
+
 ```tsx
-<div style={{overflowX: 'auto'}}>
-  <table style={{
-    width: '100%',
-    borderCollapse: 'collapse',
-    fontSize: 'var(--occ-font-size-sm)',
-  }}>
+<div style={{ overflowX: "auto" }}>
+  <table
+    style={{
+      width: "100%",
+      borderCollapse: "collapse",
+      fontSize: "var(--occ-font-size-sm)",
+    }}
+  >
     <thead>
       <tr>
-        {columns.map(col => (
+        {columns.map((col) => (
           <th
             key={col.key}
             onClick={() => handleSort(col.key)}
             style={{
-              padding: 'var(--occ-space-3)',
-              textAlign: col.align || 'left',
-              background: 'var(--occ-bg-secondary)',
-              borderBottom: '2px solid var(--occ-border-default)',
-              cursor: col.sortable ? 'pointer' : 'default',
-              fontWeight: 'var(--occ-font-weight-semibold)',
+              padding: "var(--occ-space-3)",
+              textAlign: col.align || "left",
+              background: "var(--occ-bg-secondary)",
+              borderBottom: "2px solid var(--occ-border-default)",
+              cursor: col.sortable ? "pointer" : "default",
+              fontWeight: "var(--occ-font-weight-semibold)",
             }}
           >
-            <span style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 'var(--occ-space-1)',
-            }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "var(--occ-space-1)",
+              }}
+            >
               {col.label}
               {col.sortable && sortColumn === col.key && (
-                <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                <span>{sortDirection === "asc" ? "↑" : "↓"}</span>
               )}
             </span>
           </th>
@@ -1352,16 +1432,16 @@ import { DataTable } from '@shopify/polaris';
         <tr
           key={index}
           style={{
-            borderBottom: '1px solid var(--occ-border-subdued)',
-            ':hover': { background: 'var(--occ-bg-hover)' }
+            borderBottom: "1px solid var(--occ-border-subdued)",
+            ":hover": { background: "var(--occ-bg-hover)" },
           }}
         >
-          {columns.map(col => (
+          {columns.map((col) => (
             <td
               key={col.key}
               style={{
-                padding: 'var(--occ-space-3)',
-                textAlign: col.align || 'left',
+                padding: "var(--occ-space-3)",
+                textAlign: col.align || "left",
               }}
             >
               {row[col.key]}
@@ -1370,18 +1450,20 @@ import { DataTable } from '@shopify/polaris';
         </tr>
       ))}
     </tbody>
-    <tfoot style={{
-      background: 'var(--occ-bg-secondary)',
-      fontWeight: 'var(--occ-font-weight-semibold)',
-    }}>
+    <tfoot
+      style={{
+        background: "var(--occ-bg-secondary)",
+        fontWeight: "var(--occ-font-weight-semibold)",
+      }}
+    >
       <tr>
         {totals.map((total, index) => (
           <td
             key={index}
             style={{
-              padding: 'var(--occ-space-3)',
-              textAlign: columns[index].align || 'left',
-              borderTop: '2px solid var(--occ-border-default)',
+              padding: "var(--occ-space-3)",
+              textAlign: columns[index].align || "left",
+              borderTop: "2px solid var(--occ-border-default)",
             }}
           >
             {total}
@@ -1409,6 +1491,7 @@ import { DataTable } from '@shopify/polaris';
 ### Modal Adaptations (< 768px)
 
 **Changes for Mobile**:
+
 1. **Modal Size**: Full-screen on mobile (Polaris default)
 2. **Charts**: Reduce height for mobile
    - Desktop: 300px
@@ -1418,6 +1501,7 @@ import { DataTable } from '@shopify/polaris';
 5. **Secondary Charts**: Stack vertically (1 column instead of 2)
 
 **Media Query Implementation**:
+
 ```tsx
 const { smUp } = useBreakpoints(); // Polaris hook
 
@@ -1428,7 +1512,7 @@ const chartHeight = smUp ? 300 : 200;
 const columnsConfig = smUp ? 2 : 1;
 
 return (
-  <Modal size={smUp ? 'large' : 'small'}>
+  <Modal size={smUp ? "large" : "small"}>
     {/* Filter controls */}
     <BlockStack gap="300">
       {/* Stack on mobile, inline on desktop */}
@@ -1444,12 +1528,12 @@ return (
         </BlockStack>
       )}
     </BlockStack>
-    
+
     {/* Charts */}
-    <div style={{height: chartHeight}}>
+    <div style={{ height: chartHeight }}>
       <canvas id="main-chart" />
     </div>
-    
+
     {/* Secondary charts */}
     <InlineGrid columns={columnsConfig} gap="400">
       <canvas id="chart-2" />
@@ -1466,18 +1550,21 @@ return (
 ### Modal Accessibility
 
 **Focus Management**:
+
 - ✅ Focus trapped within modal when open
 - ✅ Escape key closes modal
 - ✅ Focus returns to trigger button on close
 - ✅ Initial focus on first interactive element (filter or close button)
 
 **Keyboard Navigation**:
+
 - ✅ Tab through filters, charts (if interactive), table cells
 - ✅ Arrow keys navigate table rows/columns (optional enhancement)
 - ✅ Enter/Space activates buttons and selects
 - ✅ Escape closes modal
 
 **ARIA Attributes**:
+
 ```tsx
 <Modal
   open={isOpen}
@@ -1497,16 +1584,20 @@ return (
 ### Chart Accessibility
 
 **Each Chart**:
+
 ```tsx
-<div style={{position: 'relative'}}>
+<div style={{ position: "relative" }}>
   <canvas
     id="traffic-trend-chart"
     aria-label="Traffic trend line chart showing organic, paid, social, and direct channels over 7 days"
     role="img"
   />
-  
+
   {/* Accessible data table (visually hidden) */}
-  <table style={{position: 'absolute', left: '-9999px'}} aria-label="Traffic trend data">
+  <table
+    style={{ position: "absolute", left: "-9999px" }}
+    aria-label="Traffic trend data"
+  >
     <caption>Traffic sources by day</caption>
     <thead>
       <tr>
@@ -1535,39 +1626,39 @@ return (
 ### Table Accessibility
 
 **Sortable Headers**:
+
 ```tsx
 <th
   scope="col"
-  onClick={() => handleSort('revenue')}
-  aria-sort={sortColumn === 'revenue' ? sortDirection : 'none'}
+  onClick={() => handleSort("revenue")}
+  aria-sort={sortColumn === "revenue" ? sortDirection : "none"}
   tabIndex={0}
   onKeyPress={(e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      handleSort('revenue');
+    if (e.key === "Enter" || e.key === " ") {
+      handleSort("revenue");
     }
   }}
-  style={{cursor: 'pointer'}}
+  style={{ cursor: "pointer" }}
 >
   Revenue
-  {sortColumn === 'revenue' && (
-    <span aria-hidden="true">
-      {sortDirection === 'asc' ? ' ↑' : ' ↓'}
-    </span>
+  {sortColumn === "revenue" && (
+    <span aria-hidden="true">{sortDirection === "asc" ? " ↑" : " ↓"}</span>
   )}
 </th>
 ```
 
 **Screen Reader Announcements**:
+
 ```tsx
 // Announce sort changes
 const handleSort = (column: string) => {
-  const newDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+  const newDirection = sortDirection === "asc" ? "desc" : "asc";
   setSortColumn(column);
   setSortDirection(newDirection);
-  
+
   // Announce to screen reader
   announceToScreenReader(
-    `Table sorted by ${column}, ${newDirection === 'asc' ? 'ascending' : 'descending'}`
+    `Table sorted by ${column}, ${newDirection === "asc" ? "ascending" : "descending"}`,
   );
 };
 ```
@@ -1579,13 +1670,14 @@ const handleSort = (column: string) => {
 ### Chart Lazy Loading
 
 **Intersection Observer** (only render visible charts):
+
 ```tsx
 const chartRef = useRef<HTMLCanvasElement>(null);
 const [isVisible, setIsVisible] = useState(false);
 
 useEffect(() => {
   if (!chartRef.current) return;
-  
+
   const observer = new IntersectionObserver(
     ([entry]) => {
       if (entry.isIntersecting) {
@@ -1593,21 +1685,24 @@ useEffect(() => {
         observer.disconnect();
       }
     },
-    { threshold: 0.1 }
+    { threshold: 0.1 },
   );
-  
+
   observer.observe(chartRef.current);
-  
+
   return () => observer.disconnect();
 }, []);
 
 // Only render chart when visible
-{isVisible && <Chart data={data} config={config} />}
+{
+  isVisible && <Chart data={data} config={config} />;
+}
 ```
 
 ### Data Pagination
 
 **Large Tables** (> 50 rows):
+
 ```tsx
 const [currentPage, setCurrentPage] = useState(1);
 const rowsPerPage = 20;
@@ -1619,36 +1714,39 @@ const paginatedRows = useMemo(() => {
 }, [currentPage, allRows]);
 
 // Pagination controls
-<div style={{
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: 'var(--occ-space-4)',
-}}>
+<div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: "var(--occ-space-4)",
+  }}
+>
   <Text variant="bodySm" tone="subdued">
     Showing {start + 1}-{Math.min(end, total)} of {total} rows
   </Text>
-  
+
   <ButtonGroup>
     <Button
       disabled={currentPage === 1}
-      onClick={() => setCurrentPage(p => p - 1)}
+      onClick={() => setCurrentPage((p) => p - 1)}
     >
       Previous
     </Button>
     <Button
       disabled={currentPage === totalPages}
-      onClick={() => setCurrentPage(p => p + 1)}
+      onClick={() => setCurrentPage((p) => p + 1)}
     >
       Next
     </Button>
   </ButtonGroup>
-</div>
+</div>;
 ```
 
 ### Memoization
 
 **Expensive Calculations**:
+
 ```tsx
 const chartData = useMemo(() => {
   return processAnalyticsData(rawData, dateRange);
@@ -1706,11 +1804,12 @@ const tableRows = useMemo(() => {
 ### Data API Contracts
 
 **Analytics API Response**:
+
 ```tsx
 interface AnalyticsResponse {
   dateRange: {
     start: string; // ISO date
-    end: string;   // ISO date
+    end: string; // ISO date
   };
   summary: {
     totalSessions: number;
@@ -1729,27 +1828,31 @@ interface AnalyticsResponse {
 ### State Management
 
 **Modal State**:
+
 ```tsx
 const [isOpen, setIsOpen] = useState(false);
-const [dateRange, setDateRange] = useState('7d');
-const [channelFilter, setChannelFilter] = useState('all');
-const [sortColumn, setSortColumn] = useState('revenue');
-const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+const [dateRange, setDateRange] = useState("7d");
+const [channelFilter, setChannelFilter] = useState("all");
+const [sortColumn, setSortColumn] = useState("revenue");
+const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 const [currentPage, setCurrentPage] = useState(1);
 ```
 
 **Fetcher for Data Loading**:
+
 ```tsx
 const fetcher = useFetcher<AnalyticsResponse>();
 
 useEffect(() => {
   if (isOpen) {
-    fetcher.load(`/api/analytics/traffic?range=${dateRange}&channel=${channelFilter}`);
+    fetcher.load(
+      `/api/analytics/traffic?range=${dateRange}&channel=${channelFilter}`,
+    );
   }
 }, [isOpen, dateRange, channelFilter]);
 
 const data = fetcher.data;
-const isLoading = fetcher.state === 'loading';
+const isLoading = fetcher.state === "loading";
 ```
 
 ---
@@ -1759,15 +1862,16 @@ const isLoading = fetcher.state === 'loading';
 ### Theme Integration
 
 **Dark Mode Support**:
+
 ```tsx
 // Detect theme
 const theme = document.documentElement.dataset.theme; // 'light' | 'dark'
 
 // Chart colors adapt
 const getChartColors = (theme: string) => ({
-  text: theme === 'dark' ? '#E3E3E3' : '#202223',
-  grid: theme === 'dark' ? '#404040' : '#E1E3E5',
-  background: theme === 'dark' ? '#1A1A1A' : '#FFFFFF',
+  text: theme === "dark" ? "#E3E3E3" : "#202223",
+  grid: theme === "dark" ? "#404040" : "#E1E3E5",
+  background: theme === "dark" ? "#1A1A1A" : "#FFFFFF",
 });
 
 // Apply to chart
@@ -1778,12 +1882,13 @@ Chart.defaults.color = colors.text;
 ### Responsive Breakpoints
 
 **Chart Height Adjustments**:
+
 ```tsx
 const getChartHeight = (breakpoint: string, chartType: string) => {
-  if (chartType === 'primary') {
-    return breakpoint === 'sm' ? 200 : 300; // Mobile: 200px, Desktop: 300px
+  if (chartType === "primary") {
+    return breakpoint === "sm" ? 200 : 300; // Mobile: 200px, Desktop: 300px
   }
-  return breakpoint === 'sm' ? 150 : 200; // Secondary charts smaller
+  return breakpoint === "sm" ? 150 : 200; // Secondary charts smaller
 };
 ```
 
@@ -1829,5 +1934,3 @@ app/
 ---
 
 **EOF — Analytics Modals Design Specifications Complete**
-
-

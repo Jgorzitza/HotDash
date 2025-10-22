@@ -1,12 +1,12 @@
 /**
  * Anomaly Detection API Route
- * 
+ *
  * GET /api/analytics/anomalies
  * Query params:
  * - project: Shop domain (default: "occ")
  * - metric: Specific metric to check | "all" (default: "all")
  * - days: Historical period for baseline (default: 30)
- * 
+ *
  * Returns detected anomalies with Z-score analysis
  * Uses Response.json() per React Router 7 pattern
  */
@@ -49,10 +49,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         {
           success: false,
           error: `Invalid metric. Must be one of: ${validMetrics.join(
-            ", "
+            ", ",
           )}, or "all"`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -60,7 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const anomalies = await detectAnomalies(
       metric as AnomalyMetric,
       project,
-      days
+      days,
     );
 
     return Response.json({
@@ -80,9 +80,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

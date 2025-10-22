@@ -1,20 +1,20 @@
 /**
  * Feedback Submission API
- * 
+ *
  * Handles user feedback submissions from the feedback widget.
  * Stores feedback in Supabase feedback table.
- * 
+ *
  * @module app/routes/api.feedback.submit
  * @see docs/directions/product.md PRODUCT-003
  */
 
-import type { ActionFunctionArgs } from 'react-router';
-import { createClient } from '@supabase/supabase-js';
+import type { ActionFunctionArgs } from "react-router";
+import { createClient } from "@supabase/supabase-js";
 
 /**
  * Feedback category types
  */
-export type FeedbackCategory = 'bug' | 'feature_request' | 'ux_issue' | 'other';
+export type FeedbackCategory = "bug" | "feature_request" | "ux_issue" | "other";
 
 /**
  * Feedback submission data
@@ -30,9 +30,9 @@ export interface FeedbackSubmission {
 
 /**
  * POST /api/feedback/submit
- * 
+ *
  * Submit user feedback
- * 
+ *
  * Body:
  * {
  *   userId: string;
@@ -41,7 +41,7 @@ export interface FeedbackSubmission {
  *   category: 'bug' | 'feature_request' | 'ux_issue' | 'other';
  *   url?: string;
  * }
- * 
+ *
  * Returns:
  * {
  *   success: boolean;
@@ -50,8 +50,8 @@ export interface FeedbackSubmission {
  * }
  */
 export async function action({ request }: ActionFunctionArgs) {
-  if (request.method !== 'POST') {
-    return Response.json({ error: 'Method not allowed' }, { status: 405 });
+  if (request.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -61,25 +61,44 @@ export async function action({ request }: ActionFunctionArgs) {
       feedbackText: body.feedbackText,
       rating: body.rating,
       category: body.category,
-      userAgent: request.headers.get('user-agent') || undefined,
+      userAgent: request.headers.get("user-agent") || undefined,
       url: body.url || undefined,
     };
 
     // Validate input
     if (!submission.userId) {
-      return Response.json({ success: false, error: 'User ID is required' }, { status: 400 });
+      return Response.json(
+        { success: false, error: "User ID is required" },
+        { status: 400 },
+      );
     }
 
-    if (!submission.feedbackText || submission.feedbackText.trim().length === 0) {
-      return Response.json({ success: false, error: 'Feedback text is required' }, { status: 400 });
+    if (
+      !submission.feedbackText ||
+      submission.feedbackText.trim().length === 0
+    ) {
+      return Response.json(
+        { success: false, error: "Feedback text is required" },
+        { status: 400 },
+      );
     }
 
     if (!submission.rating || submission.rating < 1 || submission.rating > 5) {
-      return Response.json({ success: false, error: 'Rating must be between 1 and 5' }, { status: 400 });
+      return Response.json(
+        { success: false, error: "Rating must be between 1 and 5" },
+        { status: 400 },
+      );
     }
 
-    if (!['bug', 'feature_request', 'ux_issue', 'other'].includes(submission.category)) {
-      return Response.json({ success: false, error: 'Invalid category' }, { status: 400 });
+    if (
+      !["bug", "feature_request", "ux_issue", "other"].includes(
+        submission.category,
+      )
+    ) {
+      return Response.json(
+        { success: false, error: "Invalid category" },
+        { status: 400 },
+      );
     }
 
     // Get Supabase credentials from environment
@@ -87,15 +106,18 @@ export async function action({ request }: ActionFunctionArgs) {
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      console.error('Supabase credentials not configured');
-      return Response.json({ success: false, error: 'Service temporarily unavailable' }, { status: 500 });
+      console.error("Supabase credentials not configured");
+      return Response.json(
+        { success: false, error: "Service temporarily unavailable" },
+        { status: 500 },
+      );
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Insert feedback into Supabase
     const { data, error } = await supabase
-      .from('user_feedback')
+      .from("user_feedback")
       .insert({
         user_id: submission.userId,
         feedback_text: submission.feedbackText,
@@ -109,21 +131,25 @@ export async function action({ request }: ActionFunctionArgs) {
       .single();
 
     if (error) {
-      console.error('Error inserting feedback:', error);
-      return Response.json({ success: false, error: 'Failed to save feedback' }, { status: 500 });
+      console.error("Error inserting feedback:", error);
+      return Response.json(
+        { success: false, error: "Failed to save feedback" },
+        { status: 500 },
+      );
     }
 
     // Log submission for monitoring
-    console.log(`Feedback submitted: ${data.id} - ${submission.category} - Rating: ${submission.rating}/5`);
+    console.log(
+      `Feedback submitted: ${data.id} - ${submission.category} - Rating: ${submission.rating}/5`,
+    );
 
     return Response.json({
       success: true,
       feedbackId: data.id,
     });
   } catch (err) {
-    console.error('Error processing feedback:', err);
-    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error("Error processing feedback:", err);
+    const message = err instanceof Error ? err.message : "Unknown error";
     return Response.json({ success: false, error: message }, { status: 500 });
   }
 }
-

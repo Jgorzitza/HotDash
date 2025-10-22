@@ -7,7 +7,13 @@
  * @module app/services/ads/google-ads-client
  */
 
-import type { GoogleAdsConfig, Campaign, CampaignPerformance, AdGroupPerformance, KeywordPerformance } from "./types";
+import type {
+  GoogleAdsConfig,
+  Campaign,
+  CampaignPerformance,
+  AdGroupPerformance,
+  KeywordPerformance,
+} from "./types";
 
 /**
  * Google Ads API Client
@@ -47,17 +53,21 @@ export class GoogleAdsClient {
       });
 
       if (!tokenResponse.ok) {
-        throw new Error(`OAuth authentication failed: ${tokenResponse.statusText}`);
+        throw new Error(
+          `OAuth authentication failed: ${tokenResponse.statusText}`,
+        );
       }
 
       const tokenData = await tokenResponse.json();
       this.accessToken = tokenData.access_token;
-      this.tokenExpiry = Date.now() + (tokenData.expires_in * 1000);
+      this.tokenExpiry = Date.now() + tokenData.expires_in * 1000;
 
       return true;
     } catch (error) {
       console.error("Google Ads authentication error:", error);
-      throw new Error(`Failed to authenticate with Google Ads API: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `Failed to authenticate with Google Ads API: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   }
 
@@ -65,7 +75,11 @@ export class GoogleAdsClient {
    * Check if access token is expired and refresh if needed
    */
   private async ensureValidToken(): Promise<void> {
-    if (!this.accessToken || !this.tokenExpiry || Date.now() >= this.tokenExpiry - 60000) {
+    if (
+      !this.accessToken ||
+      !this.tokenExpiry ||
+      Date.now() >= this.tokenExpiry - 60000
+    ) {
       await this.authenticate();
     }
   }
@@ -88,7 +102,7 @@ export class GoogleAdsClient {
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${this.accessToken}`,
+              Authorization: `Bearer ${this.accessToken}`,
               "Content-Type": "application/json",
               "developer-token": this.config.developerToken,
             },
@@ -106,7 +120,7 @@ export class GoogleAdsClient {
                 ORDER BY campaign.name
               `,
             }),
-          }
+          },
         );
 
         if (!response.ok) {
@@ -114,7 +128,7 @@ export class GoogleAdsClient {
         }
 
         const data = await response.json();
-        
+
         if (data && data.results) {
           for (const result of data.results) {
             campaigns.push({
@@ -129,7 +143,10 @@ export class GoogleAdsClient {
           }
         }
       } catch (error) {
-        console.error(`Error fetching campaigns for customer ${customerId}:`, error);
+        console.error(
+          `Error fetching campaigns for customer ${customerId}:`,
+          error,
+        );
         // Continue with other customers even if one fails
       }
     }
@@ -146,7 +163,7 @@ export class GoogleAdsClient {
    */
   async getCampaignPerformance(
     customerIds: string[],
-    dateRange: string = "LAST_7_DAYS"
+    dateRange: string = "LAST_7_DAYS",
   ): Promise<CampaignPerformance[]> {
     await this.ensureValidToken();
 
@@ -159,7 +176,7 @@ export class GoogleAdsClient {
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${this.accessToken}`,
+              Authorization: `Bearer ${this.accessToken}`,
               "Content-Type": "application/json",
               "developer-token": this.config.developerToken,
             },
@@ -181,20 +198,26 @@ export class GoogleAdsClient {
                 ORDER BY metrics.impressions DESC
               `,
             }),
-          }
+          },
         );
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch campaign performance: ${response.statusText}`);
+          throw new Error(
+            `Failed to fetch campaign performance: ${response.statusText}`,
+          );
         }
 
         const data = await response.json();
 
         if (data && data.results) {
           for (const result of data.results) {
-            const costCents = Math.round((result.metrics.costMicros || 0) / 10000);
-            const revenueCents = Math.round((result.metrics.conversionsValue || 0) / 10000);
-            
+            const costCents = Math.round(
+              (result.metrics.costMicros || 0) / 10000,
+            );
+            const revenueCents = Math.round(
+              (result.metrics.conversionsValue || 0) / 10000,
+            );
+
             performances.push({
               campaignId: result.campaign.id,
               campaignName: result.campaign.name,
@@ -211,7 +234,10 @@ export class GoogleAdsClient {
           }
         }
       } catch (error) {
-        console.error(`Error fetching performance for customer ${customerId}:`, error);
+        console.error(
+          `Error fetching performance for customer ${customerId}:`,
+          error,
+        );
       }
     }
 
@@ -229,7 +255,7 @@ export class GoogleAdsClient {
   async getAdGroupPerformance(
     customerIds: string[],
     campaignId?: string,
-    dateRange: string = "LAST_7_DAYS"
+    dateRange: string = "LAST_7_DAYS",
   ): Promise<AdGroupPerformance[]> {
     await this.ensureValidToken();
 
@@ -264,16 +290,18 @@ export class GoogleAdsClient {
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${this.accessToken}`,
+              Authorization: `Bearer ${this.accessToken}`,
               "Content-Type": "application/json",
               "developer-token": this.config.developerToken,
             },
             body: JSON.stringify({ query }),
-          }
+          },
         );
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch ad group performance: ${response.statusText}`);
+          throw new Error(
+            `Failed to fetch ad group performance: ${response.statusText}`,
+          );
         }
 
         const data = await response.json();
@@ -296,7 +324,10 @@ export class GoogleAdsClient {
           }
         }
       } catch (error) {
-        console.error(`Error fetching ad group performance for customer ${customerId}:`, error);
+        console.error(
+          `Error fetching ad group performance for customer ${customerId}:`,
+          error,
+        );
       }
     }
 
@@ -314,7 +345,7 @@ export class GoogleAdsClient {
   async getKeywordPerformance(
     customerIds: string[],
     campaignId?: string,
-    dateRange: string = "LAST_7_DAYS"
+    dateRange: string = "LAST_7_DAYS",
   ): Promise<KeywordPerformance[]> {
     await this.ensureValidToken();
 
@@ -350,16 +381,18 @@ export class GoogleAdsClient {
           {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${this.accessToken}`,
+              Authorization: `Bearer ${this.accessToken}`,
               "Content-Type": "application/json",
               "developer-token": this.config.developerToken,
             },
             body: JSON.stringify({ query }),
-          }
+          },
         );
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch keyword performance: ${response.statusText}`);
+          throw new Error(
+            `Failed to fetch keyword performance: ${response.statusText}`,
+          );
         }
 
         const data = await response.json();
@@ -383,7 +416,10 @@ export class GoogleAdsClient {
           }
         }
       } catch (error) {
-        console.error(`Error fetching keyword performance for customer ${customerId}:`, error);
+        console.error(
+          `Error fetching keyword performance for customer ${customerId}:`,
+          error,
+        );
       }
     }
 
@@ -394,7 +430,9 @@ export class GoogleAdsClient {
    * Check if client is authenticated
    */
   isAuthenticated(): boolean {
-    return Boolean(this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry);
+    return Boolean(
+      this.accessToken && this.tokenExpiry && Date.now() < this.tokenExpiry,
+    );
   }
 }
 
@@ -410,18 +448,28 @@ export function createGoogleAdsClient(): GoogleAdsClient {
     clientSecret: process.env.GOOGLE_ADS_CLIENT_SECRET || "",
     refreshToken: process.env.GOOGLE_ADS_REFRESH_TOKEN || "",
     developerToken: process.env.GOOGLE_ADS_DEVELOPER_TOKEN || "",
-    customerIds: (process.env.GOOGLE_ADS_CUSTOMER_IDS || "").split(",").filter(Boolean),
+    customerIds: (process.env.GOOGLE_ADS_CUSTOMER_IDS || "")
+      .split(",")
+      .filter(Boolean),
   };
 
   // Validate required configuration
-  if (!config.clientId || !config.clientSecret || !config.refreshToken || !config.developerToken) {
-    throw new Error("Missing required Google Ads API credentials. Check environment variables.");
+  if (
+    !config.clientId ||
+    !config.clientSecret ||
+    !config.refreshToken ||
+    !config.developerToken
+  ) {
+    throw new Error(
+      "Missing required Google Ads API credentials. Check environment variables.",
+    );
   }
 
   if (config.customerIds.length === 0) {
-    throw new Error("No Google Ads customer IDs configured. Set GOOGLE_ADS_CUSTOMER_IDS environment variable.");
+    throw new Error(
+      "No Google Ads customer IDs configured. Set GOOGLE_ADS_CUSTOMER_IDS environment variable.",
+    );
   }
 
   return new GoogleAdsClient(config);
 }
-

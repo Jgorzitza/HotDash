@@ -1,6 +1,7 @@
 # DevOps Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ PREVIOUS WORK COMPLETE
 
 **Completed** (from feedback/devops/2025-10-21.md):
+
 - ✅ DEVOPS-001: P0 deployment v74 (healthy after v72/v73 crashes)
 - ✅ DEVOPS-002-005: CI/CD, monitoring, migrations, rollback
 - ✅ DEVOPS-007-012: Analytics tables, APM, workflows, monitoring, log aggregation
@@ -34,6 +36,7 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/devops/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/devops/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -50,6 +53,7 @@ git pull origin manager-reopen-20251021
 ### Context
 
 **Growth Engine Pack Requirements**:
+
 - **guard-mcp**: Verify MCP evidence JSONL files exist and valid
 - **idle-guard**: Verify heartbeat not stale (>15min) for long tasks
 - **dev-mcp-ban**: FAIL if Dev MCP imports in `app/` (production safety)
@@ -70,8 +74,8 @@ git pull origin manager-reopen-20251021
 // Verify files exist
 // Validate JSONL format
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 function parsePRBody(prBody) {
   // Extract MCP Evidence section
@@ -79,23 +83,25 @@ function parsePRBody(prBody) {
   if (!match) {
     throw new Error("MCP Evidence section missing from PR body");
   }
-  
+
   const section = match[1];
-  
+
   // Check for "non-code change" exemption
   if (section.includes("No MCP usage - non-code change")) {
     console.log("✅ Non-code change - MCP evidence not required");
     return null;
   }
-  
+
   // Extract file paths (artifacts/<agent>/<date>/mcp/*.jsonl)
-  const pathMatches = section.matchAll(/artifacts\/([^\/]+)\/([^\/]+)\/mcp\/([^\s]+\.jsonl)/g);
-  const paths = Array.from(pathMatches).map(m => m[0]);
-  
+  const pathMatches = section.matchAll(
+    /artifacts\/([^\/]+)\/([^\/]+)\/mcp\/([^\s]+\.jsonl)/g,
+  );
+  const paths = Array.from(pathMatches).map((m) => m[0]);
+
   if (paths.length === 0) {
     throw new Error("No MCP evidence JSONL paths found in PR body");
   }
-  
+
   return paths;
 }
 
@@ -103,52 +109,56 @@ function validateJSONL(filePath) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`MCP evidence file not found: ${filePath}`);
   }
-  
-  const content = fs.readFileSync(filePath, 'utf8');
-  const lines = content.trim().split('\n');
-  
+
+  const content = fs.readFileSync(filePath, "utf8");
+  const lines = content.trim().split("\n");
+
   if (lines.length === 0) {
     throw new Error(`MCP evidence file is empty: ${filePath}`);
   }
-  
+
   // Validate each line is valid JSON
   lines.forEach((line, idx) => {
     try {
       const obj = JSON.parse(line);
-      
+
       // Verify required fields
       if (!obj.tool || !obj.timestamp) {
-        throw new Error(`Line ${idx + 1}: Missing required fields (tool, timestamp)`);
+        throw new Error(
+          `Line ${idx + 1}: Missing required fields (tool, timestamp)`,
+        );
       }
     } catch (error) {
       throw new Error(`Line ${idx + 1} is not valid JSON: ${error.message}`);
     }
   });
-  
+
   console.log(`✅ Valid JSONL: ${filePath} (${lines.length} entries)`);
 }
 
 async function main() {
   const prBody = process.env.PR_BODY;
-  
+
   if (!prBody) {
     throw new Error("PR_BODY environment variable not set");
   }
-  
+
   const paths = parsePRBody(prBody);
-  
+
   if (paths === null) {
     // Non-code change exemption
     process.exit(0);
   }
-  
+
   // Validate all files
   paths.forEach(validateJSONL);
-  
-  console.log(`\n✅ MCP Evidence Check PASSED: ${paths.length} file(s) validated`);
+
+  console.log(
+    `\n✅ MCP Evidence Check PASSED: ${paths.length} file(s) validated`,
+  );
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error(`\n❌ MCP Evidence Check FAILED: ${error.message}`);
   process.exit(1);
 });
@@ -159,28 +169,30 @@ main().catch(error => {
 **Purpose**: Verify heartbeat not stale for long-running tasks
 
 ```javascript
-const fs = require('fs');
+const fs = require("fs");
 
 function parseHeartbeatSection(prBody) {
   const match = prBody.match(/## Heartbeat.*?\n([\s\S]*?)\n##/);
   if (!match) {
     throw new Error("Heartbeat section missing from PR body");
   }
-  
+
   const section = match[1];
-  
+
   // Check for "<2h single session" exemption
   if (section.includes("<2h single session") || section.includes("<2 hours")) {
     console.log("✅ Single session (<2h) - heartbeat not required");
     return null;
   }
-  
+
   // Extract heartbeat file path
-  const pathMatch = section.match(/artifacts\/([^\/]+)\/([^\/]+)\/heartbeat\.ndjson/);
+  const pathMatch = section.match(
+    /artifacts\/([^\/]+)\/([^\/]+)\/heartbeat\.ndjson/,
+  );
   if (!pathMatch) {
     throw new Error("No heartbeat file path found in PR body");
   }
-  
+
   return pathMatch[0];
 }
 
@@ -188,58 +200,62 @@ function verifyHeartbeat(filePath) {
   if (!fs.existsSync(filePath)) {
     throw new Error(`Heartbeat file not found: ${filePath}`);
   }
-  
-  const content = fs.readFileSync(filePath, 'utf8');
-  const lines = content.trim().split('\n');
-  
+
+  const content = fs.readFileSync(filePath, "utf8");
+  const lines = content.trim().split("\n");
+
   if (lines.length === 0) {
     throw new Error(`Heartbeat file is empty: ${filePath}`);
   }
-  
+
   // Parse last heartbeat
   const lastLine = lines[lines.length - 1];
   const lastHeartbeat = JSON.parse(lastLine);
-  
+
   if (!lastHeartbeat.timestamp) {
     throw new Error("Last heartbeat missing timestamp");
   }
-  
+
   // Check staleness (should be within 15 minutes of task completion)
   const lastTimestamp = new Date(lastHeartbeat.timestamp);
   const now = new Date();
   const minutesAgo = (now - lastTimestamp) / 1000 / 60;
-  
-  console.log(`Last heartbeat: ${lastHeartbeat.timestamp} (${minutesAgo.toFixed(1)} minutes ago)`);
-  
+
+  console.log(
+    `Last heartbeat: ${lastHeartbeat.timestamp} (${minutesAgo.toFixed(1)} minutes ago)`,
+  );
+
   // Only fail if task is "doing" and stale >15min
   // If task is "done", we don't enforce staleness
-  if (lastHeartbeat.status === 'doing' && minutesAgo > 15) {
-    throw new Error(`Heartbeat stale: Last update ${minutesAgo.toFixed(1)} minutes ago (>15min threshold)`);
+  if (lastHeartbeat.status === "doing" && minutesAgo > 15) {
+    throw new Error(
+      `Heartbeat stale: Last update ${minutesAgo.toFixed(1)} minutes ago (>15min threshold)`,
+    );
   }
-  
+
   console.log(`✅ Heartbeat OK: ${lines.length} entries`);
 }
 
 async function main() {
   const prBody = process.env.PR_BODY;
-  
+
   if (!prBody) {
     throw new Error("PR_BODY environment variable not set");
   }
-  
+
   const path = parseHeartbeatSection(prBody);
-  
+
   if (path === null) {
     // Single session exemption
     process.exit(0);
   }
-  
+
   verifyHeartbeat(path);
-  
+
   console.log(`\n✅ Heartbeat Check PASSED`);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error(`\n❌ Heartbeat Check FAILED: ${error.message}`);
   process.exit(1);
 });
@@ -265,12 +281,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-      
+          node-version: "20"
+
       - name: Get PR Body
         if: github.event_name == 'pull_request'
         id: pr
@@ -283,30 +299,30 @@ jobs:
               pull_number: context.issue.number
             });
             core.setOutput('body', pr.data.body);
-      
+
       - name: Verify MCP Evidence
         if: github.event_name == 'pull_request'
         env:
           PR_BODY: ${{ steps.pr.outputs.body }}
         run: node scripts/ci/verify-mcp-evidence.js
-      
+
       - name: Verify Heartbeat
         if: github.event_name == 'pull_request'
         env:
           PR_BODY: ${{ steps.pr.outputs.body }}
         run: node scripts/ci/verify-heartbeat.js
-      
+
       - name: Dev MCP Ban Check
         run: |
           echo "Checking for Dev MCP imports in production code..."
-          
+
           # Fail if Dev MCP found in app/
           if grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
             echo "❌ Dev MCP imports detected in production code (app/ directory)"
             echo "Dev MCP is for development/staging ONLY"
             exit 1
           fi
-          
+
           echo "✅ No Dev MCP imports found in production code"
 
   deploy:
@@ -317,6 +333,7 @@ jobs:
 ```
 
 **Acceptance**:
+
 - ✅ MCP evidence verification script (parse PR, validate JSONL)
 - ✅ Heartbeat verification script (parse PR, check staleness)
 - ✅ Dev MCP ban check (grep app/ for Dev MCP imports)
@@ -325,7 +342,8 @@ jobs:
 - ✅ Exemptions handled (non-code change, <2h tasks)
 - ✅ Clear error messages
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → GitHub Actions workflow syntax
 
 ---
@@ -341,6 +359,7 @@ jobs:
 **Purpose**: Track which approved action led to revenue (7d/14d/28d windows)
 
 **Flow**:
+
 ```
 1. Action approved → action_key generated: "seo-fix-powder-board-2025-10-21"
 2. User clicks → Engineer's client emits gtag event with hd_action_key
@@ -375,34 +394,38 @@ jobs:
    - Open DebugView in GA4
    - Trigger test event from dev environment:
      ```javascript
-     gtag('event', 'page_view', {
-       hd_action_key: 'test-product-2025-10-21'
+     gtag("event", "page_view", {
+       hd_action_key: "test-product-2025-10-21",
      });
      ```
    - Verify custom dimension appears in DebugView
 
 5. **Document Configuration**:
    - Create `docs/integrations/ga4-custom-dimension.md`:
+
      ```markdown
      # GA4 Custom Dimension: hd_action_key
-     
+
      **Property**: 339826228
      **Dimension Name**: Action Key
      **Scope**: Event
      **Event Parameter**: hd_action_key
      **Format**: `{type}-{target_slug}-{YYYY-MM-DD}`
-     
+
      **Examples**:
+
      - `seo-fix-powder-board-2025-10-21`
      - `inventory-reorder-thermal-gloves-2025-10-22`
      - `content-update-home-page-2025-10-23`
-     
+
      **Usage**:
+
      - Engineer emits in client tracking (ENG-032, 033)
      - Analytics queries via GA4 Data API (ANALYTICS-017)
      - Tracks revenue attribution over 7d/14d/28d windows
-     
+
      **Testing**:
+
      - Dev environment: Use DebugView to verify
      - Staging: Check real-time reports
      - Production: Verify in Realtime + Standard reports
@@ -420,6 +443,7 @@ jobs:
      ```
 
 **Acceptance**:
+
 - ✅ Custom dimension `hd_action_key` created in GA4
 - ✅ Scope = Event
 - ✅ Event parameter = `hd_action_key`
@@ -427,7 +451,8 @@ jobs:
 - ✅ Documentation created
 - ✅ Environment variables updated (local + Fly.io)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → Google Analytics 4 admin setup (if available)
 - Web search → "GA4 custom dimensions create event scope" (if needed)
 
@@ -436,12 +461,14 @@ jobs:
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 10: CI Guards Enhancement (4h)
+
 - ✅ DEVOPS-014: CI guards implementation (MCP evidence, heartbeat, dev-mcp-ban scripts + workflow update)
 - ✅ All 3 checks functional
 - ✅ Exemptions handled correctly
 - ✅ Clear error messages
 
 ### Phase 11: GA4 Custom Dimension (1h)
+
 - ✅ DEVOPS-015: GA4 custom dimension created and tested
 - ✅ Documentation created
 - ✅ Environment variables updated
@@ -451,6 +478,7 @@ jobs:
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Context7 MCP**: For workflow development
    - GitHub Actions syntax, workflow patterns
 
@@ -461,12 +489,14 @@ jobs:
    - "GA4 custom dimensions create event scope"
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/devops/<date>/mcp/ci-guards.jsonl`, `mcp/ga4-config.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/devops/<date>/heartbeat.ndjson` (append every 15min if >2h)
 3. **Dev MCP Check**: Verify NO Dev MCP imports in `app/`
 4. **PR Template**: Fill out all sections
 
 ### Testing
+
 - Test MCP evidence verification script (valid/invalid JSONL)
 - Test heartbeat verification script (recent/stale)
 - Test Dev MCP ban check (should find test imports)
@@ -496,6 +526,7 @@ jobs:
 **Total**: 5 hours (Phase 10: 4h, Phase 11: 1h)
 
 **Expected Output**:
+
 - 2 CI verification scripts (~300-400 lines)
 - 1 updated GitHub Actions workflow
 - 1 GA4 custom dimension configured
@@ -527,7 +558,6 @@ DEVOPS-001-013 complete. v74 deployed and healthy. DEVOPS-014 (CI Guards) active
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -535,48 +565,48 @@ DEVOPS-001-013 complete. v74 deployed and healthy. DEVOPS-014 (CI Guards) active
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/devops.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "devops",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/devops.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/devops/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "devops",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/devops/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "devops",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/devops/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/devops/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -586,66 +616,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "devops",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/devops/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/devops/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "devops",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -654,16 +684,17 @@ await logDecision({
 You can still write to `feedback/devops/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'devops',
-  action: 'deployment_complete',
-  rationale: 'DEVOPS-014: CI guards implemented and tested',
-  evidenceUrl: 'artifacts/devops/2025-10-21/ci-guards-complete.md'
+  scope: "build",
+  actor: "devops",
+  action: "deployment_complete",
+  rationale: "DEVOPS-014: CI guards implemented and tested",
+  evidenceUrl: "artifacts/devops/2025-10-21/ci-guards-complete.md",
 });
 ```
 

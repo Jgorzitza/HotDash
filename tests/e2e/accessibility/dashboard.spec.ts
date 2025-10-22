@@ -81,7 +81,9 @@ test.describe("Dashboard Keyboard Navigation", () => {
 
       // Check if focused element is within a tile
       const isInTile = await focused.evaluate((el) => {
-        return el.closest("[data-testid*='tile'], .tile, [role='article']") !== null;
+        return (
+          el.closest("[data-testid*='tile'], .tile, [role='article']") !== null
+        );
       });
 
       if (isInTile) {
@@ -124,10 +126,12 @@ test.describe("Dashboard Keyboard Navigation", () => {
     // First Tab should focus skip link
     await page.keyboard.press("Tab");
 
-    const skipLink = page.locator("a", { hasText: /skip.*main.*content/i }).first();
+    const skipLink = page
+      .locator("a", { hasText: /skip.*main.*content/i })
+      .first();
 
     // Skip link should exist (may be visually hidden until focused)
-    if (await skipLink.count() > 0) {
+    if ((await skipLink.count()) > 0) {
       await expect(skipLink).toBeFocused();
 
       // Pressing Enter should move focus to main content
@@ -152,7 +156,9 @@ test.describe("Dashboard Keyboard Navigation", () => {
  * WCAG 1.4.3 (Contrast Minimum - Level AA)
  */
 test.describe("Dashboard Color Contrast", () => {
-  test("should meet 4.5:1 contrast ratio for all tile text", async ({ page }) => {
+  test("should meet 4.5:1 contrast ratio for all tile text", async ({
+    page,
+  }) => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     const accessibilityScanResults = await new AxeBuilder({ page })
@@ -208,7 +214,9 @@ test.describe("Dashboard Screen Reader Compatibility", () => {
     expect(headingViolations).toEqual([]);
   });
 
-  test("should announce live tile updates to screen readers", async ({ page }) => {
+  test("should announce live tile updates to screen readers", async ({
+    page,
+  }) => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     // Check for aria-live regions on tiles
@@ -296,7 +304,9 @@ test.describe("Dashboard ARIA Implementation", () => {
  * Modal Accessibility Tests
  */
 test.describe("Dashboard Modal Accessibility", () => {
-  test("should trap focus within modal when opened from tile", async ({ page }) => {
+  test("should trap focus within modal when opened from tile", async ({
+    page,
+  }) => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     // Click a tile to open modal
@@ -408,7 +418,9 @@ test.describe("Dashboard Real-Time Updates Accessibility", () => {
  * Notification Accessibility
  */
 test.describe("Dashboard Notification Accessibility", () => {
-  test("should announce toast notifications to screen readers", async ({ page }) => {
+  test("should announce toast notifications to screen readers", async ({
+    page,
+  }) => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     // Look for toast container with proper role
@@ -426,9 +438,9 @@ test.describe("Dashboard Notification Accessibility", () => {
 
       expect(
         role === "status" ||
-        role === "alert" ||
-        ariaLive === "polite" ||
-        ariaLive === "assertive",
+          role === "alert" ||
+          ariaLive === "polite" ||
+          ariaLive === "assertive",
       ).toBeTruthy();
     }
   });
@@ -443,7 +455,9 @@ test.describe("Dashboard Touch Target Sizes", () => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     // Find all interactive elements
-    const interactiveElements = page.locator("button, a, input, [role='button']");
+    const interactiveElements = page.locator(
+      "button, a, input, [role='button']",
+    );
     const count = await interactiveElements.count();
 
     let undersizedCount = 0;
@@ -474,7 +488,9 @@ test.describe("Dashboard Touch Target Sizes", () => {
  * Lighthouse Accessibility Score Target
  */
 test.describe("Dashboard Lighthouse Baseline", () => {
-  test("should meet Lighthouse accessibility score target", async ({ page }) => {
+  test("should meet Lighthouse accessibility score target", async ({
+    page,
+  }) => {
     await page.goto(`${DASHBOARD_PATH}?mock=1`);
 
     // Run comprehensive axe scan
@@ -483,8 +499,12 @@ test.describe("Dashboard Lighthouse Baseline", () => {
       .analyze();
 
     const violations = accessibilityScanResults.violations;
-    const criticalCount = violations.filter((v) => v.impact === "critical").length;
-    const seriousCount = violations.filter((v) => v.impact === "serious").length;
+    const criticalCount = violations.filter(
+      (v) => v.impact === "critical",
+    ).length;
+    const seriousCount = violations.filter(
+      (v) => v.impact === "serious",
+    ).length;
 
     console.log(`\nDashboard Accessibility Summary:`);
     console.log(`  Critical violations: ${criticalCount}`);

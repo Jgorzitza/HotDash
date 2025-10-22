@@ -1,6 +1,6 @@
 /**
  * Tests for Anomaly Detection Service
- * 
+ *
  * @see app/services/analytics/anomaly-detection.ts
  * @see docs/directions/analytics.md ANALYTICS-013
  */
@@ -37,13 +37,23 @@ describe("Anomaly Detection Service", () => {
         ...Array.from({ length: 10 }, (_, i) => ({
           id: i,
           factType: "ads_roas",
-          value: { revenue: 1000, impressions: 10000, clicks: 200, conversions: 20 },
+          value: {
+            revenue: 1000,
+            impressions: 10000,
+            clicks: 200,
+            conversions: 20,
+          },
           createdAt: new Date(Date.now() - (12 - i) * 24 * 60 * 60 * 1000),
         })),
         {
           id: 10,
           factType: "ads_roas",
-          value: { revenue: 200, impressions: 10000, clicks: 200, conversions: 20 }, // Drop
+          value: {
+            revenue: 200,
+            impressions: 10000,
+            clicks: 200,
+            conversions: 20,
+          }, // Drop
           createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         },
       ];
@@ -130,7 +140,9 @@ describe("Anomaly Detection Service", () => {
       const result = await detectAnomalies("revenue", mockShopDomain, 30);
 
       if (result.length > 0) {
-        expect(["critical", "moderate", "low"]).toContain(result[0].significance);
+        expect(["critical", "moderate", "low"]).toContain(
+          result[0].significance,
+        );
       }
     });
 
@@ -228,13 +240,25 @@ describe("Anomaly Detection Service", () => {
         ...Array.from({ length: 10 }, (_, i) => ({
           id: i,
           factType: "ads_roas",
-          value: { revenue: 1000, ctr: 2.0, conversions: 20, impressions: 10000, clicks: 200 },
+          value: {
+            revenue: 1000,
+            ctr: 2.0,
+            conversions: 20,
+            impressions: 10000,
+            clicks: 200,
+          },
           createdAt: new Date(Date.now() - (12 - i) * 24 * 60 * 60 * 1000),
         })),
         {
           id: 10,
           factType: "ads_roas",
-          value: { revenue: 100, ctr: 10.0, conversions: 5, impressions: 10000, clicks: 200 },
+          value: {
+            revenue: 100,
+            ctr: 10.0,
+            conversions: 5,
+            impressions: 10000,
+            clicks: 200,
+          },
           createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         },
       ];
@@ -244,7 +268,7 @@ describe("Anomaly Detection Service", () => {
       if (result.anomalies.length > 1) {
         // Should be sorted by severity descending
         expect(result.anomalies[0].severity).toBeGreaterThanOrEqual(
-          result.anomalies[1].severity
+          result.anomalies[1].severity,
         );
       }
     });
@@ -255,13 +279,23 @@ describe("Anomaly Detection Service", () => {
         ...Array.from({ length: 10 }, (_, i) => ({
           id: i,
           factType: "ads_roas",
-          value: { revenue: 5000, impressions: 10000, clicks: 200, conversions: 20 },
+          value: {
+            revenue: 5000,
+            impressions: 10000,
+            clicks: 200,
+            conversions: 20,
+          },
           createdAt: new Date(Date.now() - (12 - i) * 24 * 60 * 60 * 1000),
         })),
         {
           id: 10,
           factType: "ads_roas",
-          value: { revenue: 100, impressions: 10000, clicks: 200, conversions: 20 },
+          value: {
+            revenue: 100,
+            impressions: 10000,
+            clicks: 200,
+            conversions: 20,
+          },
           createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
         },
       ];
@@ -271,7 +305,7 @@ describe("Anomaly Detection Service", () => {
       // Should have anomalies and action required
       if (result.anomalies.length > 0) {
         const hasCritical = result.anomalies.some(
-          (a) => a.significance === "critical"
+          (a) => a.significance === "critical",
         );
         if (hasCritical) {
           expect(result.actionRequired).toBe(true);
@@ -296,5 +330,3 @@ describe("Anomaly Detection Service", () => {
     });
   });
 });
-
-

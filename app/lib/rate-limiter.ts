@@ -1,6 +1,6 @@
 /**
  * API Rate Limiter
- * 
+ *
  * Provides rate limiting for external APIs:
  * - Shopify Admin API
  * - Publer API
@@ -78,7 +78,9 @@ export class RateLimiter {
   private refillTokens(): void {
     const now = Date.now();
     const elapsed = now - this.lastRefill;
-    const tokensToAdd = Math.floor((elapsed / 1000) * this.config.maxRequestsPerSecond);
+    const tokensToAdd = Math.floor(
+      (elapsed / 1000) * this.config.maxRequestsPerSecond,
+    );
     if (tokensToAdd > 0) {
       this.tokens = Math.min(this.tokens + tokensToAdd, this.config.burstSize);
       this.lastRefill = now;
@@ -101,7 +103,9 @@ export class RateLimiter {
         const result = await this.executeWithRetry(item);
         item.resolve(result);
       } catch (error) {
-        item.reject(error instanceof Error ? error : new Error('Unknown error'));
+        item.reject(
+          error instanceof Error ? error : new Error("Unknown error"),
+        );
       }
     }
     this.processing = false;
@@ -111,13 +115,20 @@ export class RateLimiter {
     try {
       return await item.execute();
     } catch (error) {
-      if (this.isRateLimitError(error) && this.config.retryOn429 && item.retryCount < this.config.maxRetries) {
+      if (
+        this.isRateLimitError(error) &&
+        this.config.retryOn429 &&
+        item.retryCount < this.config.maxRetries
+      ) {
         const backoff = this.calculateBackoff(item.retryCount);
         await this.sleep(backoff);
         item.retryCount += 1;
         return this.executeWithRetry(item);
       }
-      if (this.isServerError(error) && item.retryCount < this.config.maxRetries) {
+      if (
+        this.isServerError(error) &&
+        item.retryCount < this.config.maxRetries
+      ) {
         const backoff = this.calculateBackoff(item.retryCount);
         await this.sleep(backoff);
         item.retryCount += 1;
@@ -129,7 +140,10 @@ export class RateLimiter {
 
   private isRateLimitError(error: unknown): boolean {
     if (error instanceof Error) {
-      return error.message.toLowerCase().includes('429') || error.message.toLowerCase().includes('rate limit');
+      return (
+        error.message.toLowerCase().includes("429") ||
+        error.message.toLowerCase().includes("rate limit")
+      );
     }
     return false;
   }
@@ -143,12 +157,14 @@ export class RateLimiter {
   }
 
   private calculateBackoff(retryCount: number): number {
-    const delay = this.config.initialBackoffMs * Math.pow(this.config.backoffMultiplier, retryCount);
+    const delay =
+      this.config.initialBackoffMs *
+      Math.pow(this.config.backoffMultiplier, retryCount);
     return Math.min(delay, this.config.maxBackoffMs);
   }
 
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   updateRateLimitInfo(info: Partial<RateLimitInfo>): void {
@@ -193,7 +209,7 @@ class RateLimiterRegistry {
     return this.limiters.get(api)!;
   }
   getAllStats() {
-    const stats: Record<string, ReturnType<RateLimiter['getQueueStats']>> = {};
+    const stats: Record<string, ReturnType<RateLimiter["getQueueStats"]>> = {};
     for (const [api, limiter] of this.limiters.entries()) {
       stats[api] = limiter.getQueueStats();
     }
@@ -208,31 +224,40 @@ class RateLimiterRegistry {
 
 const registry = new RateLimiterRegistry();
 
-export function getShopifyRateLimiter(config?: Partial<RateLimitConfig>): RateLimiter {
-  return registry.get('shopify', {
+export function getShopifyRateLimiter(
+  config?: Partial<RateLimitConfig>,
+): RateLimiter {
+  return registry.get("shopify", {
     maxRequestsPerSecond: 2,
     burstSize: 10,
     ...config,
   });
 }
 
-export function getPublerRateLimiter(config?: Partial<RateLimitConfig>): RateLimiter {
-  return registry.get('publer', {
+export function getPublerRateLimiter(
+  config?: Partial<RateLimitConfig>,
+): RateLimiter {
+  return registry.get("publer", {
     maxRequestsPerSecond: 5,
     burstSize: 15,
     ...config,
   });
 }
 
-export function getChatwootRateLimiter(config?: Partial<RateLimitConfig>): RateLimiter {
-  return registry.get('chatwoot', {
+export function getChatwootRateLimiter(
+  config?: Partial<RateLimitConfig>,
+): RateLimiter {
+  return registry.get("chatwoot", {
     maxRequestsPerSecond: 10,
     burstSize: 30,
     ...config,
   });
 }
 
-export function getRateLimiter(api: string, config?: Partial<RateLimitConfig>): RateLimiter {
+export function getRateLimiter(
+  api: string,
+  config?: Partial<RateLimitConfig>,
+): RateLimiter {
   return registry.get(api, config);
 }
 

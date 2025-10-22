@@ -149,7 +149,5 @@ export function createMockDateRange(daysAgo: number = 7) {
  * Render component wrapped in Polaris AppProvider for testing
  */
 export function renderWithPolaris(ui: React.ReactElement) {
-  return render(
-    React.createElement(AppProvider, { i18n: {} }, ui)
-  );
+  return render(React.createElement(AppProvider, { i18n: {} }, ui));
 }

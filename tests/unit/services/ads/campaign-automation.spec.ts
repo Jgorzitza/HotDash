@@ -27,7 +27,9 @@ import type { CampaignSummary, KeywordPerformance } from "~/services/ads/types";
 /**
  * Test Helper: Create mock campaign
  */
-function createMockCampaign(overrides: Partial<CampaignSummary> = {}): CampaignSummary {
+function createMockCampaign(
+  overrides: Partial<CampaignSummary> = {},
+): CampaignSummary {
   return {
     id: "campaign_123",
     name: "Test Campaign",
@@ -45,7 +47,9 @@ function createMockCampaign(overrides: Partial<CampaignSummary> = {}): CampaignS
 /**
  * Test Helper: Create mock keyword
  */
-function createMockKeyword(overrides: Partial<KeywordPerformance> = {}): KeywordPerformance {
+function createMockKeyword(
+  overrides: Partial<KeywordPerformance> = {},
+): KeywordPerformance {
   return {
     keywordId: "keyword_123",
     keyword: "test keyword",
@@ -56,7 +60,7 @@ function createMockKeyword(overrides: Partial<KeywordPerformance> = {}): Keyword
     costCents: 1000, // $10
     conversions: 5,
     ctr: 0.05, // 5%
-    cpc: 0.20, // $0.20
+    cpc: 0.2, // $0.20
     ...overrides,
   };
 }
@@ -202,7 +206,9 @@ describe("identifyPauseCandidates", () => {
     expect(actions[0].rollback).toBeDefined();
     expect(actions[0].rollback.description).toContain("Resume campaign");
     expect(actions[0].rollback.actions).toHaveLength(1);
-    expect(actions[0].rollback.actions[0].tool).toBe("google-ads.campaign.resume");
+    expect(actions[0].rollback.actions[0].tool).toBe(
+      "google-ads.campaign.resume",
+    );
   });
 
   it("should classify severity correctly", () => {
@@ -325,7 +331,9 @@ describe("identifyBudgetIncreaseCandidates", () => {
 
     expect(actions[0].rollback).toBeDefined();
     expect(actions[0].rollback.description).toContain("Revert budget");
-    expect(actions[0].rollback.actions[0].tool).toBe("google-ads.campaign.updateBudget");
+    expect(actions[0].rollback.actions[0].tool).toBe(
+      "google-ads.campaign.updateBudget",
+    );
   });
 
   it("should respect custom thresholds", () => {
@@ -342,7 +350,10 @@ describe("identifyBudgetIncreaseCandidates", () => {
       increaseBudgetRoas: 2.0, // Lower threshold
     };
 
-    const actions = identifyBudgetIncreaseCandidates(campaigns, customThresholds);
+    const actions = identifyBudgetIncreaseCandidates(
+      campaigns,
+      customThresholds,
+    );
 
     expect(actions).toHaveLength(1); // Should trigger with custom threshold
   });
@@ -422,8 +433,12 @@ describe("identifyBudgetDecreaseCandidates", () => {
     const actions = identifyBudgetDecreaseCandidates(campaigns);
 
     expect(actions[0].rollback).toBeDefined();
-    expect(actions[0].rollback.description).toContain("Restore original budget");
-    expect(actions[0].rollback.actions[0].tool).toBe("google-ads.campaign.updateBudget");
+    expect(actions[0].rollback.description).toContain(
+      "Restore original budget",
+    );
+    expect(actions[0].rollback.actions[0].tool).toBe(
+      "google-ads.campaign.updateBudget",
+    );
   });
 });
 
@@ -487,7 +502,9 @@ describe("identifyKeywordPauseCandidates", () => {
 
     const actions = identifyKeywordPauseCandidates(keywords);
 
-    expect(actions[0].evidence.currentMetrics.keyword).toBe("test keyword phrase");
+    expect(actions[0].evidence.currentMetrics.keyword).toBe(
+      "test keyword phrase",
+    );
     // CTR is calculated from impressions/clicks in implementation
     expect(actions[0].evidence.currentMetrics.ctr).toBeCloseTo(0.3, 1); // 30/10000 * 100 = 0.3%
     expect(actions[0].evidence.currentMetrics.impressions).toBe(10000);
@@ -509,7 +526,9 @@ describe("identifyKeywordPauseCandidates", () => {
 
     expect(actions[0].rollback).toBeDefined();
     expect(actions[0].rollback.description).toContain("Resume keyword");
-    expect(actions[0].rollback.actions[0].tool).toBe("google-ads.keyword.resume");
+    expect(actions[0].rollback.actions[0].tool).toBe(
+      "google-ads.keyword.resume",
+    );
   });
 });
 
@@ -549,7 +568,10 @@ describe("generateAutomationRecommendations", () => {
       }),
     ];
 
-    const recommendations = generateAutomationRecommendations(campaigns, keywords);
+    const recommendations = generateAutomationRecommendations(
+      campaigns,
+      keywords,
+    );
 
     // Result is a flat array of all actions, sorted by severity
     expect(recommendations).toBeInstanceOf(Array);
@@ -589,7 +611,7 @@ describe("generateAutomationRecommendations", () => {
     const recommendations = generateAutomationRecommendations(
       campaigns,
       [],
-      customThresholds
+      customThresholds,
     );
 
     // Should have at least 2 actions (pause + increase budget)
@@ -691,7 +713,11 @@ describe("formatForApprovalQueue", () => {
       actions: [
         {
           tool: "google-ads.keyword.pause",
-          args: { adGroupId: "adgroup_123", keyword: "test keyword", matchType: "EXACT" },
+          args: {
+            adGroupId: "adgroup_123",
+            keyword: "test keyword",
+            matchType: "EXACT",
+          },
         },
       ],
       rollback: {
@@ -699,7 +725,11 @@ describe("formatForApprovalQueue", () => {
         actions: [
           {
             tool: "google-ads.keyword.resume",
-            args: { adGroupId: "adgroup_123", keyword: "test keyword", matchType: "EXACT" },
+            args: {
+              adGroupId: "adgroup_123",
+              keyword: "test keyword",
+              matchType: "EXACT",
+            },
           },
         ],
       },
@@ -714,4 +744,3 @@ describe("formatForApprovalQueue", () => {
     expect(approval.summary).toContain("Pause low-performing keyword");
   });
 });
-

@@ -65,7 +65,7 @@ export async function generateOptimizationReport(
     lastSaleDate: Date | null;
     costPerUnit: number;
     abcClass?: ABCClass;
-  }>
+  }>,
 ): Promise<OptimizationSummary> {
   const today = new Date();
 
@@ -75,7 +75,7 @@ export async function generateOptimizationReport(
       const daysSinceLastSale = p.lastSaleDate
         ? Math.floor(
             (today.getTime() - p.lastSaleDate.getTime()) /
-              (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24),
           )
         : 999;
       return daysSinceLastSale >= 90;
@@ -87,7 +87,7 @@ export async function generateOptimizationReport(
       daysSinceLastSale: p.lastSaleDate
         ? Math.floor(
             (today.getTime() - p.lastSaleDate.getTime()) /
-              (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24),
           )
         : 999,
       estimatedValue: p.currentStock * p.costPerUnit,
@@ -97,7 +97,7 @@ export async function generateOptimizationReport(
 
   const deadStockValue = deadStockItems.reduce(
     (sum, item) => sum + item.estimatedValue,
-    0
+    0,
   );
 
   // Overstock detection
@@ -125,7 +125,7 @@ export async function generateOptimizationReport(
 
   const tiedUpCapital = overstockItems.reduce(
     (sum, item) => sum + item.tiedUpCapital,
-    0
+    0,
   );
 
   // Recommendations
@@ -159,5 +159,3 @@ export async function generateOptimizationReport(
     generatedAt: new Date().toISOString(),
   };
 }
-
-

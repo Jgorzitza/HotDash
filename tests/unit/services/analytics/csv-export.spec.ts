@@ -1,6 +1,6 @@
 /**
  * Tests for CSV/Excel Data Export Service
- * 
+ *
  * @see app/services/analytics/csv-export.ts
  * @see docs/directions/analytics.md ANALYTICS-010
  */
@@ -17,11 +17,11 @@ import {
 if (typeof ReadableStream === "undefined") {
   global.ReadableStream = class ReadableStream {
     private _source: any;
-    
+
     constructor(source: any) {
       this._source = source;
     }
-    
+
     getReader() {
       return {
         read: async () => {
@@ -31,7 +31,7 @@ if (typeof ReadableStream === "undefined") {
               enqueue: (chunk: any) => chunks.push(chunk),
               close: () => {},
             };
-            
+
             try {
               await this._source.pull(controller);
               if (chunks.length > 0) {
@@ -60,10 +60,12 @@ vi.mock("../../../../app/db.server", () => ({
 
         if (query?.where?.factType) {
           if (typeof query.where.factType === "string") {
-            results = results.filter((f) => f.factType === query.where.factType);
+            results = results.filter(
+              (f) => f.factType === query.where.factType,
+            );
           } else if (query.where.factType.in) {
             results = results.filter((f) =>
-              query.where.factType.in.includes(f.factType)
+              query.where.factType.in.includes(f.factType),
             );
           }
         }
@@ -392,4 +394,3 @@ describe("CSV Export Service", () => {
     });
   });
 });
-

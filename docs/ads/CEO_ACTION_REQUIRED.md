@@ -34,6 +34,7 @@
 Full step-by-step guide: `docs/ads/CREDENTIAL_SETUP_GUIDE.md` (Part 2)
 
 **Quick Summary**:
+
 1. Create Facebook App (10 min): https://developers.facebook.com/apps
 2. Add Marketing API (5 min)
 3. Generate long-lived Access Token (15 min): https://developers.facebook.com/tools/explorer/
@@ -51,6 +52,7 @@ Full step-by-step guide: `docs/ads/CREDENTIAL_SETUP_GUIDE.md` (Part 2)
 Full step-by-step guide: `docs/ads/CREDENTIAL_SETUP_GUIDE.md` (Part 1, Steps 2-5)
 
 **Quick Summary**:
+
 1. Create OAuth credentials (15 min): https://console.cloud.google.com
 2. Generate refresh token (15 min): https://developers.google.com/oauthplayground/
 3. Get Customer IDs (5 min): Copy from Google Ads dashboard
@@ -76,6 +78,7 @@ Full step-by-step guide: `docs/ads/CREDENTIAL_SETUP_GUIDE.md` (Part 1, Steps 2-5
 ## 📋 Credentials Needed
 
 ### Google Ads API (5 variables)
+
 ```bash
 GOOGLE_ADS_CLIENT_ID          # From Google Cloud Console
 GOOGLE_ADS_CLIENT_SECRET      # From Google Cloud Console
@@ -85,6 +88,7 @@ GOOGLE_ADS_CUSTOMER_IDS       # From Google Ads dashboard
 ```
 
 ### Facebook Ads API (4 variables)
+
 ```bash
 FACEBOOK_ADS_ACCESS_TOKEN     # From Access Token Tool (60-day validity)
 FACEBOOK_ADS_APP_ID           # From Facebook App dashboard
@@ -117,13 +121,13 @@ FACEBOOK_ADS_ACCOUNT_ID       # From Business Manager (format: act_XXXXXXXXX)
 
 ## ⏱️ Timeline
 
-| Step | Time | Wait | Status |
-|------|------|------|--------|
-| Apply for Google Dev Token | 15 min | 1-3 days | ⚠️ **START HERE** |
-| Facebook Ads setup | 45 min | None | Can do while waiting |
-| Complete Google setup | 45 min | After approval | After step 1 approval |
-| Ads Agent testing | 30 min | None | After credentials ready |
-| Production deployment | 5 min | None | After testing passes |
+| Step                       | Time   | Wait           | Status                  |
+| -------------------------- | ------ | -------------- | ----------------------- |
+| Apply for Google Dev Token | 15 min | 1-3 days       | ⚠️ **START HERE**       |
+| Facebook Ads setup         | 45 min | None           | Can do while waiting    |
+| Complete Google setup      | 45 min | After approval | After step 1 approval   |
+| Ads Agent testing          | 30 min | None           | After credentials ready |
+| Production deployment      | 5 min  | None           | After testing passes    |
 
 **Total CEO Time**: 2 hours active work  
 **Total Calendar Time**: 1-3 business days (approval wait)
@@ -133,6 +137,7 @@ FACEBOOK_ADS_ACCOUNT_ID       # From Business Manager (format: act_XXXXXXXXX)
 ## 🚀 What Happens Next
 
 **When You Complete This**:
+
 1. ✅ Ads automation can be tested with real campaigns
 2. ✅ Campaign pause/resume automation goes live
 3. ✅ Budget optimization deploys to production
@@ -142,6 +147,7 @@ FACEBOOK_ADS_ACCOUNT_ID       # From Business Manager (format: act_XXXXXXXXX)
 7. ✅ ADS-010 & ADS-011 marked COMPLETE
 
 **Current State**:
+
 - ✅ All code complete (11 files, 3,968 lines)
 - ✅ All tests written (66 tests)
 - ✅ Integration test scripts ready
@@ -160,4 +166,3 @@ FACEBOOK_ADS_ACCOUNT_ID       # From Business Manager (format: act_XXXXXXXXX)
 ---
 
 **Action Required**: ⚠️ Apply for Google Ads Developer Token (15 min) → **START NOW**
-

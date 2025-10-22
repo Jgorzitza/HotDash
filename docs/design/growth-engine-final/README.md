@@ -1,4 +1,5 @@
 # Growth Engine — Final Manager Pack
+
 **Date:** 2025-10-21
 
 This bundle is the **authoritative** set of instructions for finishing the Growth Engine with zero ambiguity.
@@ -13,6 +14,7 @@ It encodes the latest CEO decisions:
 - **PII Card policy**: Operator‑only fields → city/region/country, postal prefix, masked email/phone, last‑4 order ID, tracking last event, line items. No street address in public text.
 
 ### What’s inside (docs only, no code)
+
 - Store switch runbook, GA4-only telemetry guide, Bing webmaster checklist
 - Agents & handoffs addenda (interactive dev, tool‑based handoffs, one owner)
 - HITL policy (100% until proven), memory system wiring (dev + prod)

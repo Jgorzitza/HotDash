@@ -1,6 +1,7 @@
 # Designer Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ PREVIOUS WORK COMPLETE
 
 **All Delivered** (from feedback/designer/2025-10-21.md):
+
 - ✅ DES-005, 006, 007: Phases 3-5 QA (ALL PASSED)
 - ✅ DES-009: Phase 6 Settings Validation (PASSED)
 - ✅ DES-010: Onboarding Wireframes (1,100+ lines)
@@ -38,12 +40,14 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Production Agent Model
+
 - **Front-End Agents**: Customer-Front (CX), CEO-Front (business intelligence)
 - **Specialist Agents**: Run in background to keep data fresh (pre-generate content)
 - **Pre-Generation + HITL**: Agents work ahead → idle until operator approval
 - **Example**: Customer inquiry → reply pre-generated → operator reviews PII Card + redacted reply → approves
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/designer/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/designer/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -96,6 +100,7 @@ git pull origin manager-reopen-20251021
    - ✅ Accessibility: ARIA labels
 
 **Modal Validation** (all 4 modals):
+
 - ✅ Chart.js charts render correctly
 - ✅ Chart colors match OCC design tokens
 - ✅ DataTables formatted properly
@@ -105,12 +110,14 @@ git pull origin manager-reopen-20251021
 
 **Deliverable**: `docs/design/phase-7-8-analytics-validation.md` (findings, issues, approval status)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → Polaris DataTable patterns + accessibility
 - Context7 → Chart.js accessibility best practices
 - Chrome DevTools MCP → Take screenshots for documentation
 
 **Acceptance**:
+
 - ✅ All 4 tiles validated
 - ✅ All 4 modals validated
 - ✅ Issues documented with severity (P0/P1/P2)
@@ -130,6 +137,7 @@ git pull origin manager-reopen-20251021
 **Beneficiary**: DevOps + All agents
 
 **Deliverables**:
+
 - **Error Message Review** (`artifacts/designer/2025-10-21/ci-guards-ux-review.md`):
   - Review error messages from verify-mcp-evidence.js, verify-heartbeat.js
   - Suggest clearer wording (actionable, friendly, specific)
@@ -150,6 +158,7 @@ git pull origin manager-reopen-20251021
 **Beneficiary**: Product + Engineer
 
 **Deliverables**:
+
 - **ASCII Mockups** (`docs/designer/vendor-management-mockups.txt`):
   - Vendor list table layout
   - Add/edit vendor modal
@@ -171,6 +180,7 @@ git pull origin manager-reopen-20251021
 **Objective**: Validate PII Card component + CX Escalation Modal split UI
 
 **Context**: Growth Engine introduces PII Broker pattern:
+
 - **Public Reply** (sent to customer): Redacted (no full email/phone/address)
 - **PII Card** (operator-only): Full customer details (NOT sent)
 
@@ -190,35 +200,29 @@ git pull origin manager-reopen-20251021
      - ✅ Text: "⚠️ OPERATOR ONLY — NOT SENT TO CUSTOMER"
      - ✅ ARIA role="alert" present
      - ✅ High contrast (WCAG AA)
-   
    - **Order Details Section**:
      - ✅ Full order ID visible (not masked)
      - ✅ Order status + fulfillment status clear
      - ✅ Typography: Polaris Text variants
-   
    - **Customer Contact Section**:
      - ✅ Full email visible with copy button
      - ✅ Full phone visible with copy button
      - ✅ Copy buttons functional
      - ✅ Copy buttons have descriptive ARIA labels
-   
    - **Shipping Address Section**:
      - ✅ Full address visible (all fields)
      - ✅ Copy button for full address
      - ✅ Formatted clearly (line breaks, proper hierarchy)
-   
    - **Tracking Section**:
      - ✅ Carrier, tracking number, full URL visible
      - ✅ URL opens in new tab with `rel="noopener noreferrer"`
      - ✅ Last event + date visible
      - ✅ Visual hierarchy clear
-   
    - **Line Items Table**:
      - ✅ Polaris DataTable used
      - ✅ Columns: Title, SKU, Qty, Price
      - ✅ Data formatted correctly
      - ✅ Table responsive (mobile)
-   
    - **Accessibility**:
      - ✅ aria-label="Customer PII - Operator Only" on container
      - ✅ Keyboard navigation works (Tab order logical)
@@ -232,24 +236,20 @@ git pull origin manager-reopen-20251021
      - ✅ Visual separation clear (border, spacing)
      - ✅ Hierarchy: Public Reply on left/top, PII Card on right/bottom
      - ✅ Mobile: Stacks vertically (PII Card below public reply)
-   
    - **Public Reply Section**:
      - ✅ Draft reply text area present
      - ✅ Redacted data only (masked email, phone, address)
      - ✅ Preview shows what customer will see
      - ✅ Approve/Reject buttons prominent
-   
    - **PII Card Section**:
      - ✅ PIICard component rendered
      - ✅ Warning banner visible
      - ✅ All full customer details visible
      - ✅ Clear label: "Full Customer Details (Not Sent)"
-   
    - **Validation Logic**:
      - ✅ Warning if full PII detected in public reply
      - ✅ Approve button disabled if validation fails
      - ✅ Error message clear and actionable
-   
    - **Accessibility**:
      - ✅ Focus management (modal opens → first input focused)
      - ✅ Escape key closes modal
@@ -267,12 +267,14 @@ git pull origin manager-reopen-20251021
 
 **Deliverable**: `docs/design/phase-9-pii-card-validation.md` (findings, issues, approval status)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → Polaris Card, Banner, Button, DataTable patterns
 - Context7 → WCAG 2.2 AA requirements for warning banners
 - Chrome DevTools MCP → Take screenshots of PII Card + modal split UI
 
 **Acceptance**:
+
 - ✅ PII redaction utility validated
 - ✅ PII Card component validated (all sections)
 - ✅ CX Escalation Modal split UI validated
@@ -287,6 +289,7 @@ git pull origin manager-reopen-20251021
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 7-8 Analytics Validation (2h)
+
 - ✅ All 4 tiles validated (Social, SEO, Ads, Growth)
 - ✅ All 4 modals validated (charts, tables, filters)
 - ✅ Accessibility score ≥90%
@@ -295,6 +298,7 @@ git pull origin manager-reopen-20251021
 - ✅ Approval status provided (PASS/CONDITIONAL PASS/FAIL)
 
 ### Phase 9 PII Card Design QA (3h)
+
 - ✅ PII redaction utility validated (all masking functions)
 - ✅ PII Card component validated (warning banner, all sections, accessibility)
 - ✅ CX Escalation Modal split UI validated (public reply + PII Card)
@@ -309,6 +313,7 @@ git pull origin manager-reopen-20251021
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Shopify Dev MCP**: FIRST for all Polaris
    - Polaris components (Card, Banner, Button, DataTable, Modal)
    - Polaris accessibility patterns
@@ -327,12 +332,14 @@ git pull origin manager-reopen-20251021
 4. **Web Search**: LAST RESORT ONLY if no MCP has the info
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/designer/<date>/mcp/phase-7-8-validation.jsonl` and `mcp/pii-card-qa.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/designer/<date>/heartbeat.ndjson` (append every 15min if >2h)
 3. **Screenshots**: Save to `artifacts/designer/2025-10-21/screenshots/`
 4. **PR Template**: Fill out all sections (MCP Evidence + Heartbeat + Dev MCP Check)
 
 ### Testing Environments
+
 - **Staging**: Access via staging URL (provided by DevOps)
 - **Chrome DevTools**: Use for responsive testing, accessibility audit
 - **Screen Reader**: Test with VoiceOver (Mac) or NVDA (Windows)
@@ -361,6 +368,7 @@ git pull origin manager-reopen-20251021
 **Total**: 5 hours
 
 **Expected Output**:
+
 - 2 validation documents (~1,500-2,000 lines total)
 - 20-30 screenshots (organized by feature)
 - Issues documented with severity + recommendations
@@ -390,7 +398,6 @@ Engineer completed Phase 9 → DES-017 (PII Card QA) NOW UNBLOCKED
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -398,48 +405,48 @@ Engineer completed Phase 9 → DES-017 (PII Card QA) NOW UNBLOCKED
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/designer.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "designer",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/designer.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/designer/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "designer",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/designer/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "designer",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/designer/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/designer/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -449,66 +456,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "designer",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/designer/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/designer/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "designer",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -517,16 +524,17 @@ await logDecision({
 You can still write to `feedback/designer/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'designer',
-  action: 'validation_complete',
-  rationale: 'DES-017: PII Card design QA passed with recommendations',
-  evidenceUrl: 'artifacts/designer/2025-10-21/pii-card-qa.md'
+  scope: "build",
+  actor: "designer",
+  action: "validation_complete",
+  rationale: "DES-017: PII Card design QA passed with recommendations",
+  evidenceUrl: "artifacts/designer/2025-10-21/pii-card-qa.md",
 });
 ```
 

@@ -3,9 +3,9 @@ import { authenticate } from "../shopify.server";
 
 /**
  * GET /api/analytics/ads-roas
- * 
+ *
  * Returns advertising campaign ROAS metrics
- * 
+ *
  * Response:
  * {
  *   totalSpend: number,
@@ -38,10 +38,34 @@ export async function loader({ request }: LoaderFunctionArgs) {
       spend: [550, 620, 580, 610, 720, 650, 520],
     },
     campaigns: [
-      { name: "Winter Collection Launch", platform: "Google", spend: 1200, revenue: 7440, roas: 6.2 },
-      { name: "Retargeting - Cart Abandon", platform: "Facebook", spend: 850, revenue: 3825, roas: 4.5 },
-      { name: "Snow Gear - Search", platform: "Google", spend: 950, revenue: 3800, roas: 4.0 },
-      { name: "Brand Awareness", platform: "Instagram", spend: 750, revenue: 2250, roas: 3.0 },
+      {
+        name: "Winter Collection Launch",
+        platform: "Google",
+        spend: 1200,
+        revenue: 7440,
+        roas: 6.2,
+      },
+      {
+        name: "Retargeting - Cart Abandon",
+        platform: "Facebook",
+        spend: 850,
+        revenue: 3825,
+        roas: 4.5,
+      },
+      {
+        name: "Snow Gear - Search",
+        platform: "Google",
+        spend: 950,
+        revenue: 3800,
+        roas: 4.0,
+      },
+      {
+        name: "Brand Awareness",
+        platform: "Instagram",
+        spend: 750,
+        revenue: 2250,
+        roas: 3.0,
+      },
     ],
     distribution: [
       { platform: "Google Ads", spend: 2150, percentage: 50.6 },

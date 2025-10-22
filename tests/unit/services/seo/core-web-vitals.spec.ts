@@ -1,6 +1,6 @@
 /**
  * Core Web Vitals Monitoring Service Tests
- * 
+ *
  * Tests for Core Web Vitals monitoring including:
  * - LCP (Largest Contentful Paint)
  * - FID (First Input Delay)
@@ -153,7 +153,7 @@ describe("Core Web Vitals Service", () => {
 
       expect(Array.isArray(result.mobile.recommendations)).toBe(true);
       expect(Array.isArray(result.desktop.recommendations)).toBe(true);
-      
+
       // Should have at least some recommendations or confirmation message
       expect(result.mobile.recommendations.length).toBeGreaterThan(0);
     });
@@ -164,7 +164,7 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       expect(Array.isArray(result.opportunities)).toBe(true);
-      
+
       if (result.opportunities.length > 0) {
         const opportunity = result.opportunities[0];
         expect(opportunity).toHaveProperty("title");
@@ -181,7 +181,7 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       expect(Array.isArray(result.diagnostics)).toBe(true);
-      
+
       if (result.diagnostics.length > 0) {
         const diagnostic = result.diagnostics[0];
         expect(diagnostic).toHaveProperty("title");
@@ -198,7 +198,7 @@ describe("Core Web Vitals Service", () => {
 
       if (result.opportunities.length > 1) {
         const impactOrder = { high: 0, medium: 1, low: 2 };
-        
+
         for (let i = 0; i < result.opportunities.length - 1; i++) {
           const current = impactOrder[result.opportunities[i].impact];
           const next = impactOrder[result.opportunities[i + 1].impact];
@@ -222,7 +222,9 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       expect(result.mobile.measuredAt).toBeTruthy();
-      expect(new Date(result.mobile.measuredAt).toString()).not.toBe("Invalid Date");
+      expect(new Date(result.mobile.measuredAt).toString()).not.toBe(
+        "Invalid Date",
+      );
     });
 
     it("should include measuredAt timestamp for desktop metrics", async () => {
@@ -231,7 +233,9 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       expect(result.desktop.measuredAt).toBeTruthy();
-      expect(new Date(result.desktop.measuredAt).toString()).not.toBe("Invalid Date");
+      expect(new Date(result.desktop.measuredAt).toString()).not.toBe(
+        "Invalid Date",
+      );
     });
 
     it("should recommend LCP improvements for poor scores", async () => {
@@ -240,8 +244,10 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       if (result.mobile.lcp.rating !== "good") {
-        const hasLCPRecommendation = result.mobile.recommendations.some(r => 
-          r.toLowerCase().includes("lcp") || r.toLowerCase().includes("largest contentful paint")
+        const hasLCPRecommendation = result.mobile.recommendations.some(
+          (r) =>
+            r.toLowerCase().includes("lcp") ||
+            r.toLowerCase().includes("largest contentful paint"),
         );
         expect(hasLCPRecommendation).toBe(true);
       }
@@ -253,8 +259,10 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       if (result.mobile.fid.rating !== "good") {
-        const hasFIDRecommendation = result.mobile.recommendations.some(r => 
-          r.toLowerCase().includes("fid") || r.toLowerCase().includes("first input delay")
+        const hasFIDRecommendation = result.mobile.recommendations.some(
+          (r) =>
+            r.toLowerCase().includes("fid") ||
+            r.toLowerCase().includes("first input delay"),
         );
         expect(hasFIDRecommendation).toBe(true);
       }
@@ -266,8 +274,10 @@ describe("Core Web Vitals Service", () => {
       const result = await analyzeWebVitals(url);
 
       if (result.mobile.cls.rating !== "good") {
-        const hasCLSRecommendation = result.mobile.recommendations.some(r => 
-          r.toLowerCase().includes("cls") || r.toLowerCase().includes("cumulative layout shift")
+        const hasCLSRecommendation = result.mobile.recommendations.some(
+          (r) =>
+            r.toLowerCase().includes("cls") ||
+            r.toLowerCase().includes("cumulative layout shift"),
         );
         expect(hasCLSRecommendation).toBe(true);
       }
@@ -278,14 +288,16 @@ describe("Core Web Vitals Service", () => {
 
       const result = await analyzeWebVitals(url);
 
-      const allGood = 
-        result.desktop.lcp.rating === "good" && 
-        result.desktop.fid.rating === "good" && 
+      const allGood =
+        result.desktop.lcp.rating === "good" &&
+        result.desktop.fid.rating === "good" &&
         result.desktop.cls.rating === "good";
 
       if (allGood) {
-        const hasPositiveMessage = result.desktop.recommendations.some(r => 
-          r.toLowerCase().includes("good") || r.toLowerCase().includes("keep")
+        const hasPositiveMessage = result.desktop.recommendations.some(
+          (r) =>
+            r.toLowerCase().includes("good") ||
+            r.toLowerCase().includes("keep"),
         );
         expect(hasPositiveMessage).toBe(true);
       }
@@ -310,9 +322,12 @@ describe("Core Web Vitals Service", () => {
 
       // Typically mobile has worse performance
       // This is expected in mock data
-      expect(result.mobile.lcp.value).toBeGreaterThanOrEqual(result.desktop.lcp.value);
-      expect(result.mobile.overallScore).toBeLessThanOrEqual(result.desktop.overallScore);
+      expect(result.mobile.lcp.value).toBeGreaterThanOrEqual(
+        result.desktop.lcp.value,
+      );
+      expect(result.mobile.overallScore).toBeLessThanOrEqual(
+        result.desktop.overallScore,
+      );
     });
   });
 });
-

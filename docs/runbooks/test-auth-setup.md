@@ -10,6 +10,7 @@
 ## 🎯 Overview
 
 HotDash supports **mock mode** authentication bypass for:
+
 - **Smoke testing** (Pilot Agent UI validation)
 - **Local development** (without Shopify OAuth)
 - **E2E testing** (Playwright automated tests)
@@ -22,6 +23,7 @@ HotDash supports **mock mode** authentication bypass for:
 ## 🚀 Quick Start (TL;DR)
 
 ### Smoke Test Any Page
+
 ```bash
 # Settings page
 http://localhost:3000/settings?mock=1
@@ -68,6 +70,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 ```
 
 **Authentication Flow**:
+
 1. Request arrives: `http://localhost:3000/settings?mock=1`
 2. `isMockMode()` checks URL for `mock=1` parameter
 3. Returns `true` → authentication is **bypassed**
@@ -81,11 +84,13 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 ### For Settings Page (PILOT-006)
 
 **Test URL**:
+
 ```
 http://localhost:3000/settings?mock=1
 ```
 
 **Expected Behavior**:
+
 - ✅ Page loads without authentication
 - ✅ All 4 tabs visible (Dashboard, Appearance, Notifications, Account)
 - ✅ Forms render correctly
@@ -93,6 +98,7 @@ http://localhost:3000/settings?mock=1
 - ✅ No credentials required
 
 **Verification Steps**:
+
 1. Start local dev server: `npm run dev:vite`
 2. Open browser to `http://localhost:3000/settings?mock=1`
 3. Verify page loads (no auth redirect)
@@ -103,11 +109,13 @@ http://localhost:3000/settings?mock=1
 ### For Dashboard (Any Tile)
 
 **Test URL**:
+
 ```
 http://localhost:3000/app?mock=1
 ```
 
 **Features Available**:
+
 - ✅ All 13 dashboard tiles render
 - ✅ Mock data displayed
 - ✅ Modal interactions work
@@ -116,11 +124,13 @@ http://localhost:3000/app?mock=1
 ### For Any Route
 
 **Pattern**:
+
 ```
 http://localhost:3000/YOUR_ROUTE?mock=1
 ```
 
 **Examples**:
+
 - Approvals: `http://localhost:3000/approvals?mock=1`
 - Profile: `http://localhost:3000/profile?mock=1`
 - Analytics: `http://localhost:3000/analytics/growth?mock=1`
@@ -134,18 +144,21 @@ http://localhost:3000/YOUR_ROUTE?mock=1
 **Usage**: Append `?mock=1` to any URL
 
 **Advantages**:
+
 - No environment variable needed
 - Works immediately
 - Easy to toggle on/off
 - Perfect for manual testing
 
 **Disadvantages**:
+
 - Must add to every URL
 - Query param visible in URL
 
 ### Option B: Environment Variable (For CI/CD)
 
 **Setup**:
+
 ```bash
 # In .env.local
 NODE_ENV=test
@@ -154,11 +167,13 @@ NODE_ENV=test
 **Usage**: All routes automatically bypass auth
 
 **Advantages**:
+
 - No URL modification needed
 - Consistent across all routes
 - Good for automated testing
 
 **Disadvantages**:
+
 - Affects entire application
 - Must restart server to toggle
 
@@ -169,16 +184,19 @@ NODE_ENV=test
 When `mock=1` is active:
 
 ### Dashboard Tiles
+
 - All tiles show **mock data**
 - Refresh intervals still work
 - No real API calls to Shopify/Supabase/etc.
 
 ### Settings Page
+
 - Forms render with default values
 - Changes are not persisted
 - API calls return success (but don't save)
 
 ### Approvals
+
 - Mock approvals displayed
 - Actions don't execute
 - Safe for testing UI/UX
@@ -208,8 +226,8 @@ if (useMockData) {
 
 ```typescript
 // Example from tests/e2e/dashboard.spec.ts
-test('dashboard loads with mock data', async ({ page }) => {
-  await page.goto('http://localhost:3000/app?mock=1');
+test("dashboard loads with mock data", async ({ page }) => {
+  await page.goto("http://localhost:3000/app?mock=1");
   await expect(page).toHaveTitle(/HotDash/);
 });
 ```
@@ -235,6 +253,7 @@ For production use (not smoke tests), Shopify OAuth is required:
 9. User redirected to `/app` (authenticated)
 
 **Required Environment Variables**:
+
 ```bash
 SHOPIFY_API_KEY=<from Shopify Partners dashboard>
 SHOPIFY_API_SECRET=<from Shopify Partners dashboard>
@@ -254,6 +273,7 @@ DATABASE_URL=<Supabase Postgres connection string>
 **Goal**: Verify settings page UI renders correctly
 
 **Steps**:
+
 1. Start dev server: `npm run dev:vite`
 2. Open: `http://localhost:3000/settings?mock=1`
 3. Verify: All tabs render
@@ -269,6 +289,7 @@ DATABASE_URL=<Supabase Postgres connection string>
 **Goal**: Verify all 13 tiles render
 
 **Steps**:
+
 1. Start dev server: `npm run dev:vite`
 2. Open: `http://localhost:3000/app?mock=1`
 3. Verify: All tiles visible
@@ -284,6 +305,7 @@ DATABASE_URL=<Supabase Postgres connection string>
 **Goal**: Test approval actions
 
 **Steps**:
+
 1. Start dev server: `npm run dev:vite`
 2. Open: `http://localhost:3000/approvals?mock=1`
 3. Verify: Mock approvals display
@@ -325,7 +347,7 @@ DATABASE_URL=file:./dev.db
 // Correct pattern (from app/routes/app.tsx)
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const isTestMode = isMockMode(request);
-  
+
   if (!isTestMode) {
     await authenticate.admin(request);
   }
@@ -339,7 +361,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 **Cause**: Route file doesn't exist or build failed
 
-**Solution**: 
+**Solution**:
+
 1. Verify file exists: `ls -la app/routes/settings.tsx`
 2. Check build: `npm run build`
 3. Restart dev server: `npm run dev:vite`
@@ -349,18 +372,21 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 ## 📝 Test Credentials Summary
 
 ### For Smoke Testing
+
 - **Username**: Not required
 - **Password**: Not required
 - **API Keys**: Dummy values OK (see `.env.local` example above)
 - **Method**: Use `?mock=1` URL parameter
 
 ### For E2E Testing (Playwright)
+
 - **Config**: `tests/playwright.config.ts`
 - **Base URL**: `http://localhost:3000`
 - **Auth**: Automatically bypassed with `NODE_ENV=test`
 - **Mock Data**: Automatically injected
 
 ### For Production
+
 - **Method**: Shopify OAuth (via Partners dashboard)
 - **Setup**: See `docs/runbooks/production_deployment.md`
 - **Not needed for smoke tests**
@@ -388,6 +414,7 @@ Use this checklist to verify test auth setup is working:
 **Unblocked**: This runbook resolves BLOCKER-003
 
 **Steps to Execute**:
+
 1. Ensure dev server running: `npm run dev:vite`
 2. Navigate to: `http://localhost:3000/settings?mock=1`
 3. Take screenshot of each tab (4 total)
@@ -415,12 +442,14 @@ Use this checklist to verify test auth setup is working:
 ## 🔄 Updates & Maintenance
 
 ### When to Update This Doc
+
 - New test scenarios added
 - Auth bypass pattern changes
 - Mock mode behavior changes
 - Troubleshooting steps discovered
 
 ### Change Log
+
 - **2025-10-21**: Initial creation (resolves BLOCKER-003)
 
 ---
@@ -428,4 +457,3 @@ Use this checklist to verify test auth setup is working:
 **Document Status**: ✅ Complete  
 **Blocks**: None  
 **Unblocks**: BLOCKER-003 (Pilot Agent Settings Page Auth Required)
-

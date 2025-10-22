@@ -76,7 +76,7 @@ export function calculateEOQ(
   annualDemand: number,
   costPerUnit: number,
   setupCost: number = 50,
-  holdingCostRate: number = 0.25
+  holdingCostRate: number = 0.25,
 ): number {
   // Validate inputs
   if (annualDemand <= 0 || costPerUnit <= 0) {
@@ -108,7 +108,7 @@ export function calculateEOQ(
  */
 export function calculateDaysUntilStockout(
   currentStock: number,
-  avgDailySales: number
+  avgDailySales: number,
 ): number {
   if (currentStock <= 0) {
     return 0;
@@ -138,7 +138,7 @@ export function calculateDaysUntilStockout(
 export function determineAlertUrgency(
   currentStock: number,
   rop: number,
-  daysUntilStockout: number
+  daysUntilStockout: number,
 ): AlertUrgency {
   // Critical: Out of stock or critical shortage
   if (currentStock === 0 || daysUntilStockout < 3) {
@@ -176,7 +176,7 @@ export function calculateRecommendedOrderQty(
   currentStock: number,
   rop: number,
   safetyStock: number,
-  eoq: number
+  eoq: number,
 ): number {
   // Calculate quantity needed to reach ROP + safety buffer
   const targetStock = rop + safetyStock;
@@ -244,14 +244,14 @@ export async function generateReorderAlert(product: {
   // Calculate days until stockout
   const daysUntilStockout = calculateDaysUntilStockout(
     currentStock,
-    forecast.daily_forecast
+    forecast.daily_forecast,
   );
 
   // Determine urgency level
   const urgency = determineAlertUrgency(
     currentStock,
     ropResult.reorderPoint,
-    daysUntilStockout
+    daysUntilStockout,
   );
 
   // Calculate EOQ (assume 365-day demand)
@@ -263,7 +263,7 @@ export async function generateReorderAlert(product: {
     currentStock,
     ropResult.reorderPoint,
     ropResult.safetyStock,
-    eoqQty
+    eoqQty,
   );
 
   // Get vendor information (INVENTORY-003)
@@ -320,7 +320,7 @@ export async function generateAllReorderAlerts(
     maxLeadDays: number;
     category?: ProductCategory;
     costPerUnit?: number;
-  }>
+  }>,
 ): Promise<ReorderAlertSummary> {
   // Generate alerts for all products (filter out nulls)
   const alertPromises = products.map((p) => generateReorderAlert(p));
@@ -336,7 +336,7 @@ export async function generateAllReorderAlerts(
   // Calculate total estimated cost
   const totalEstimatedCost = alerts.reduce(
     (sum, a) => sum + a.estimatedCost,
-    0
+    0,
   );
 
   // Sort by urgency (critical first) then by days until stockout
@@ -365,5 +365,3 @@ export async function generateAllReorderAlerts(
     generatedAt: new Date().toISOString(),
   };
 }
-
-

@@ -1,6 +1,6 @@
 /**
  * Multi-Project Analytics API Route
- * 
+ *
  * GET /api/analytics/multi-project
  * Query params:
  * - action: "summary" | "compare" | "rankings" | "top" (default: "summary")
@@ -9,7 +9,7 @@
  * - project2: Second project for comparison (required for compare action)
  * - metric: Metric for top performers (impressions|clicks|conversions|revenue|roas)
  * - limit: Number of results for top performers (default: 10)
- * 
+ *
  * Returns aggregated analytics across all projects
  * Uses Response.json() per React Router 7 pattern
  */
@@ -38,9 +38,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         return Response.json(
           {
             success: false,
-            error: "Both project1 and project2 parameters are required for comparison",
+            error:
+              "Both project1 and project2 parameters are required for comparison",
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -64,21 +65,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Get top performers by metric
     if (action === "top") {
-      const validMetrics = ["impressions", "clicks", "conversions", "revenue", "roas"];
+      const validMetrics = [
+        "impressions",
+        "clicks",
+        "conversions",
+        "revenue",
+        "roas",
+      ];
       if (!validMetrics.includes(metric)) {
         return Response.json(
           {
             success: false,
             error: `Invalid metric. Must be one of: ${validMetrics.join(", ")}`,
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       const topProjects = await getTopProjectsByMetric(
         metric as any,
         limit,
-        days
+        days,
       );
       return Response.json({
         success: true,
@@ -101,9 +108,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-
-

@@ -9,7 +9,7 @@
  * HITL enforced: "Approve" disabled until evidence + rollback + /validate OK
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   Tabs,
@@ -109,6 +109,21 @@ export function ApprovalsDrawer({
 
   if (!approval) return null;
 
+  // Keyboard shortcut: Cmd+Enter to approve
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter' && canApprove) {
+        event.preventDefault();
+        handleApprove();
+      }
+    };
+
+    if (open) {
+      document.addEventListener('keydown', handleKeyDown);
+      return () => document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [open, canApprove]);
+
   // Validate approval
   const validateApproval = async () => {
     setValidating(true);
@@ -184,6 +199,7 @@ export function ApprovalsDrawer({
     { id: "evidence", content: "Evidence", panelID: "evidence-panel" },
     { id: "impact", content: "Impact & Risks", panelID: "impact-panel" },
     { id: "actions", content: "Actions", panelID: "actions-panel" },
+    { id: "audit", content: "Audit", panelID: "audit-panel" },
   ];
 
   return (
@@ -279,18 +295,54 @@ export function ApprovalsDrawer({
               <Card>
                 <BlockStack gap="300">
                   <Text as="h3" variant="headingMd">
-                    Actions to Execute
+                    Tool Calls Preview
                   </Text>
                   {approval.actions.map((action, idx) => (
                     <BlockStack key={idx} gap="200">
                       <Text as="p" variant="bodyMd" fontWeight="semibold">
                         {action.endpoint}
                       </Text>
-                      <pre style={{ fontSize: "12px", overflow: "auto" }}>
+                      <Text as="p" variant="bodySm" tone="subdued">
+                        Dry-run status: {action.dry_run_status || "Not tested"}
+                      </Text>
+                      <pre style={{ fontSize: "12px", overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
                         {JSON.stringify(action.payload, null, 2)}
                       </pre>
                     </BlockStack>
                   ))}
+                </BlockStack>
+              </Card>
+            )}
+
+            {selectedTab === 3 && (
+              <Card>
+                <BlockStack gap="300">
+                  <Text as="h3" variant="headingMd">
+                    Audit Trail
+                  </Text>
+                  {approval.receipts && approval.receipts.length > 0 ? (
+                    approval.receipts.map((receipt, idx) => (
+                      <BlockStack key={idx} gap="200">
+                        <InlineStack align="space-between" blockAlign="center">
+                          <Text as="p" variant="bodyMd" fontWeight="semibold">
+                            Receipt #{receipt.id}
+                          </Text>
+                          <Text as="p" variant="bodySm" tone="subdued">
+                            {new Date(receipt.timestamp).toLocaleString()}
+                          </Text>
+                        </InlineStack>
+                        {receipt.metrics && (
+                          <pre style={{ fontSize: "12px", overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
+                            {JSON.stringify(receipt.metrics, null, 2)}
+                          </pre>
+                        )}
+                      </BlockStack>
+                    ))
+                  ) : (
+                    <Text as="p" tone="subdued">
+                      No audit records yet. Audit trail will appear after actions are applied.
+                    </Text>
+                  )}
                 </BlockStack>
               </Card>
             )}

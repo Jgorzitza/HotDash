@@ -34,4 +34,3 @@ export function getBingWebmasterConfig(): BingWebmasterConfig {
     siteUrl,
   };
 }
-

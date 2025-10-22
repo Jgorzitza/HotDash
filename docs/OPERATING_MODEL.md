@@ -125,7 +125,6 @@ CEO → CEO-Front (business question)
   - **Public Reply**: NO full email/phone/address (masked: `j***@d***.com`, `***-***-1234`)
   - **PII Card** (operator-only): Full details (order ID, tracking, shipping address, payment method)
   - **Enforcement**: Front agents MUST call PII Broker before returning reply to operator
-  
 - **ABAC** (Attribute-Based Access Control):
   - **Roles**: operator (full access), ceo_agent (read-only + Action Queue), customer_agent (write via Accounts sub-agent), system (cron jobs)
   - **Scopes**: Accounts sub-agent (orders, refunds) | Storefront sub-agent (products, inventory, collections)
@@ -239,6 +238,7 @@ CEO → CEO-Front (business question)
 ### Complete Vision Documentation
 
 **Design Library**: `/docs/design/` (57 files, ~500KB)
+
 - Dashboard specifications (8 tiles + personalization)
 - Approval queue system (HITL workflow)
 - Notification system (toast, banner, browser)
@@ -255,9 +255,10 @@ CEO → CEO-Front (business question)
 ### Protection Policy (MANDATORY)
 
 **NEVER ARCHIVE** without CEO approval:
+
 - `/docs/design/**`
 - `/docs/specs/**`
-- `/docs/runbooks/**`  
+- `/docs/runbooks/**`
 - `/docs/directions/**`
 
 **Incident**: Oct 15 - 57 design files archived as "drafts", agents built to wrong spec (30% vs. 100%).
@@ -271,6 +272,7 @@ CEO → CEO-Front (business question)
 ### Implementation Standards
 
 **Design Spec Compliance**:
+
 - Features MUST match design specifications EXACTLY
 - 70% feature gaps are UNACCEPTABLE
 - Designer validates against all 57 design specs
@@ -278,6 +280,7 @@ CEO → CEO-Front (business question)
 - Manager rejects minimal implementations
 
 **Evidence Required**:
+
 - Design spec reference for each feature
 - Designer sign-off (implementation matches specs)
 - Accessibility validation (WCAG 2.2 AA)
@@ -323,17 +326,16 @@ CEO → CEO-Front (business question)
 
 ### Required Commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run fmt` | Apply project formatting rules (Prettier + ESLint fixes) |
-| `npm run lint` | Run linting on the codebase |
-| `npm run test:unit` | Execute unit tests via Vitest |
-| `npm run test:e2e` | Execute Playwright end-to-end tests (headless) |
-| `npm run test:ci` | CI smoke including unit + integration suites |
-| `npm run scan` | Run gitleaks secret scan |
-| `npm run ci` | Wrapper: `fmt`, `lint`, `test:ci`, and `scan` |
+| Command             | Purpose                                                  |
+| ------------------- | -------------------------------------------------------- |
+| `npm run fmt`       | Apply project formatting rules (Prettier + ESLint fixes) |
+| `npm run lint`      | Run linting on the codebase                              |
+| `npm run test:unit` | Execute unit tests via Vitest                            |
+| `npm run test:e2e`  | Execute Playwright end-to-end tests (headless)           |
+| `npm run test:ci`   | CI smoke including unit + integration suites             |
+| `npm run scan`      | Run gitleaks secret scan                                 |
+| `npm run ci`        | Wrapper: `fmt`, `lint`, `test:ci`, and `scan`            |
 
 ### Reviews & Code Owners
 
 See `CODEOWNERS` for required reviewers. Areas touching `/app`, `/supabase`, `/scripts`, `/deploy`, `/fly-apps`, or workflows require explicit approval from listed leads.
-

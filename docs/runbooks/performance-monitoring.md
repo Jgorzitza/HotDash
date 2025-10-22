@@ -14,16 +14,19 @@ Performance monitoring for HotDash staging and production environments, tracking
 ## Metrics Tracked
 
 ### P95 Tile Load Times
+
 - **Target**: <3 seconds
 - **Warning**: >3s <5s
 - **Critical**: >5s
 
 ### Response Times
+
 - **Target**: <1s
 - **Warning**: >1s <5s
 - **Critical**: >5s
 
 ### Error Rates
+
 - **Target**: <1%
 - **Warning**: >1% <5%
 - **Critical**: >5%
@@ -64,6 +67,7 @@ HotDash tracks tile load times in the browser using Performance API:
 **Location**: `app/hooks/useTilePerformance.ts` (to be created by Engineer)
 
 **Metrics Collected**:
+
 - Tile mount time
 - API fetch duration
 - Render completion time
@@ -76,6 +80,7 @@ HotDash tracks tile load times in the browser using Performance API:
 **Location**: `app/utils/metrics.server.ts`
 
 Current metrics logged every 60 seconds:
+
 ```typescript
 {
   "counters": {},  // Request counts
@@ -92,11 +97,13 @@ Current metrics logged every 60 seconds:
 ### Method 1: Fly.io Email Alerts (Recommended)
 
 **Setup**:
+
 1. Navigate to https://fly.io/apps/hotdash-staging/monitoring
 2. Click "Alerts" tab
 3. Add alert rules:
 
 **Alert 1: High Error Rate**
+
 ```yaml
 Metric: HTTP 5xx Error Rate
 Condition: > 5%
@@ -105,6 +112,7 @@ Action: Email to jgorzitza@outlook.com
 ```
 
 **Alert 2: Slow Response Times**
+
 ```yaml
 Metric: P95 Response Time
 Condition: > 5000ms
@@ -113,6 +121,7 @@ Action: Email to jgorzitza@outlook.com
 ```
 
 **Alert 3: Machine Down**
+
 ```yaml
 Metric: Machine Health
 Condition: Not healthy
@@ -129,7 +138,7 @@ name: Performance Monitoring
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 minutes
+    - cron: "*/15 * * * *" # Every 15 minutes
   workflow_dispatch:
 
 jobs:
@@ -143,16 +152,16 @@ jobs:
             echo "::error::Staging health check failed: HTTP $HEALTH"
             exit 1
           fi
-      
+
       - name: Check response time
         run: |
           START=$(date +%s%N)
           curl -s https://hotdash-staging.fly.dev/ > /dev/null
           END=$(date +%s%N)
           DURATION=$(( ($END - $START) / 1000000 ))  # Convert to ms
-          
+
           echo "Response time: ${DURATION}ms"
-          
+
           if [ $DURATION -gt 5000 ]; then
             echo "::warning::Slow response time: ${DURATION}ms (>5s threshold)"
           fi
@@ -167,6 +176,7 @@ jobs:
 **URL**: https://fly.io/apps/hotdash-staging/monitoring
 
 **Metrics Available**:
+
 - Real-time machine status
 - Request rate (req/s)
 - Response times (P50, P95, P99)
@@ -177,11 +187,13 @@ jobs:
 ### Custom Dashboard (Future)
 
 **Option 1: Grafana + Prometheus**
+
 - Export Fly metrics to Prometheus
 - Visualize in Grafana dashboard
 - Custom alerts and SLOs
 
 **Option 2: Application Metrics**
+
 - Store tile load times in Supabase
 - Build custom dashboard in HotDash `/admin/metrics`
 - Track user-facing performance
@@ -210,6 +222,7 @@ curl -w "@curl-format.txt" https://hotdash-staging.fly.dev/api/seo/enhanced
 ```
 
 **Format file** (`curl-format.txt`):
+
 ```
 time_namelookup:  %{time_namelookup}\n
 time_connect:  %{time_connect}\n
@@ -320,4 +333,3 @@ time_total:  %{time_total}\n
 ---
 
 **📊 End of Runbook**
-

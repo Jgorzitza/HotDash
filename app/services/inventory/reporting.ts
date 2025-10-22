@@ -34,7 +34,7 @@ export interface InventoryReport {
 }
 
 export async function generateInventoryReport(
-  period: ReportPeriod
+  period: ReportPeriod,
 ): Promise<InventoryReport> {
   const endDate = new Date();
   const startDate = new Date();
@@ -76,5 +76,3 @@ export async function generateInventoryReport(
     generatedAt: new Date().toISOString(),
   };
 }
-
-

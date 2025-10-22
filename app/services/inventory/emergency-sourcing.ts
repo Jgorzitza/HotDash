@@ -124,14 +124,17 @@ export async function analyzeEmergencySourcing(
   // Edge case: If primary and local are the same (same lead time and highest reliability),
   // pick the next fastest vendor that's different
   if (localVendor.vendorId === primaryVendor.vendorId && vendors.length > 1) {
-    const otherVendors = vendors.filter((v) => v.vendorId !== primaryVendor.vendorId);
+    const otherVendors = vendors.filter(
+      (v) => v.vendorId !== primaryVendor.vendorId,
+    );
     localVendor = otherVendors.reduce((fastest, v) =>
       v.vendor.leadTimeDays < fastest.vendor.leadTimeDays ? v : fastest,
     );
   }
 
   // 4. Calculate opportunity cost (Expected Lost Profit)
-  const daysSaved = primaryVendor.vendor.leadTimeDays - localVendor.vendor.leadTimeDays;
+  const daysSaved =
+    primaryVendor.vendor.leadTimeDays - localVendor.vendor.leadTimeDays;
 
   // Feasible sales = avg sales/day × days saved
   const feasibleSales = input.avgBundleSalesPerDay * daysSaved;
@@ -266,4 +269,3 @@ async function getMockDemandForecast(bundleProductId: string): Promise<{
     avgDailyDemand: 5.0, // 5 bundles/day
   };
 }
-

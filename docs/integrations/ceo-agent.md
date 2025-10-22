@@ -36,6 +36,7 @@ The CEO Agent is an AI assistant that helps the CEO make informed operational de
 - **Google Analytics**: Traffic analysis, conversions, user behavior
 
 **Key Features**:
+
 - Multi-source data synthesis
 - Data-driven recommendations with justifications
 - HITL approval for all write operations
@@ -73,6 +74,7 @@ Action Execution + Decision Log
 **Agent Name**: `ai-ceo`
 
 **Instructions**: Comprehensive CEO assistant persona with guidelines for:
+
 - Data-driven recommendations
 - Multi-source synthesis
 - Structured response format
@@ -80,6 +82,7 @@ Action Execution + Decision Log
 - Risk considerations
 
 **Export Functions**:
+
 - `aiCEO`: Agent instance for direct use
 - `handleCEOQuery(query: string)`: Convenience function for simple queries
 
@@ -94,12 +97,14 @@ Action Execution + Decision Log
 **Purpose**: Query and manage Shopify orders
 
 **Actions**:
+
 - `list`: List recent orders (requires approval: ❌ read-only)
 - `get_details`: Get order details by ID (requires approval: ❌ read-only)
 - `cancel`: Cancel an order (requires approval: ✅ write operation)
 - `refund`: Refund an order (requires approval: ✅ write operation)
 
 **Schema**:
+
 ```typescript
 {
   action: 'list' | 'get_details' | 'cancel' | 'refund',
@@ -118,11 +123,13 @@ Action Execution + Decision Log
 **Purpose**: Query products and manage inventory levels
 
 **Actions**:
+
 - `list`: List products (requires approval: ❌ read-only)
 - `get_details`: Get product details (requires approval: ❌ read-only)
 - `update_inventory`: Update inventory quantity (requires approval: ✅ write operation)
 
 **Schema**:
+
 ```typescript
 {
   action: 'list' | 'get_details' | 'update_inventory',
@@ -142,11 +149,13 @@ Action Execution + Decision Log
 **Purpose**: Query and search customer data
 
 **Actions**:
+
 - `list`: List customers (requires approval: ❌ read-only)
 - `search`: Search customers by query (requires approval: ❌ read-only)
 - `get_details`: Get customer details and order history (requires approval: ❌ read-only)
 
 **Schema**:
+
 ```typescript
 {
   action: 'list' | 'search' | 'get_details',
@@ -167,6 +176,7 @@ Action Execution + Decision Log
 **Purpose**: Run analytics queries on Supabase database
 
 **Query Types**:
+
 - `revenue_by_period`: Revenue breakdown by time period (requires approval: ❌)
 - `top_products`: Top-selling products by revenue/units (requires approval: ❌)
 - `customer_lifetime_value`: CLV analysis (requires approval: ❌)
@@ -176,6 +186,7 @@ Action Execution + Decision Log
 - `custom_sql`: Custom SQL query (requires approval: ✅ security risk)
 
 **Schema**:
+
 ```typescript
 {
   query: 'revenue_by_period' | 'top_products' | ... | 'custom_sql',
@@ -189,8 +200,9 @@ Action Execution + Decision Log
 **Backend Route**: `POST /api/ceo-agent/supabase/analytics`
 
 **Dynamic Approval Logic**:
+
 ```typescript
-requireApproval: (args) => args.query === 'custom_sql'
+requireApproval: (args) => args.query === "custom_sql";
 ```
 
 **Example Query**: "What's our revenue for October 2025?"
@@ -202,6 +214,7 @@ requireApproval: (args) => args.query === 'custom_sql'
 **Purpose**: Analyze customer support data
 
 **Actions**:
+
 - `sla_breaches`: Find SLA violations (requires approval: ❌)
 - `conversation_summaries`: Summarize recent conversations (requires approval: ❌)
 - `ticket_trends`: Analyze ticket volume trends (requires approval: ❌)
@@ -209,6 +222,7 @@ requireApproval: (args) => args.query === 'custom_sql'
 - `customer_sentiment`: Analyze customer sentiment (requires approval: ❌)
 
 **Schema**:
+
 ```typescript
 {
   action: 'sla_breaches' | 'conversation_summaries' | ...,
@@ -230,12 +244,14 @@ requireApproval: (args) => args.query === 'custom_sql'
 **Purpose**: Search indexed documents and policies
 
 **Features**:
+
 - Natural language queries
 - Metadata filters for targeted search
 - Configurable top-K results (1-10)
 - Semantic search with relevance scores
 
 **Schema**:
+
 ```typescript
 {
   query: string (min 1 char),
@@ -249,6 +265,7 @@ requireApproval: (args) => args.query === 'custom_sql'
 **Example Query**: "Find policy documentation for returns"
 
 **Metadata Filter Example**:
+
 ```json
 {
   "query": "warranty policy",
@@ -267,6 +284,7 @@ requireApproval: (args) => args.query === 'custom_sql'
 **Purpose**: Analyze website traffic and conversions
 
 **Metrics**:
+
 - `traffic_overview`: Sessions, users, pageviews, bounce rate (requires approval: ❌)
 - `conversion_metrics`: Conversion rate, transactions, revenue, AOV (requires approval: ❌)
 - `landing_pages`: Top landing pages by traffic/conversions (requires approval: ❌)
@@ -274,6 +292,7 @@ requireApproval: (args) => args.query === 'custom_sql'
 - `acquisition_channels`: Traffic source analysis (requires approval: ❌)
 
 **Schema**:
+
 ```typescript
 {
   metric: 'traffic_overview' | 'conversion_metrics' | ...,
@@ -295,11 +314,13 @@ requireApproval: (args) => args.query === 'custom_sql'
 ### Approval Logic
 
 **Write Operations** (require CEO approval):
+
 - `shopify.orders`: cancel, refund
 - `shopify.products`: update_inventory
 - `supabase.analytics`: custom_sql
 
 **Read Operations** (execute immediately):
+
 - All list/search/get_details actions
 - Predefined analytics queries
 - Knowledge base searches
@@ -339,10 +360,10 @@ onApproval: async (item, approve) => {
   // Backend route stores in approval queue
   // CEO reviews in UI
   // When decision made, call approve(true/false)
-  
+
   // Default: await explicit approval
   await approve(false);
-}
+};
 ```
 
 ---
@@ -350,6 +371,7 @@ onApproval: async (item, approve) => {
 ## Backend API Routes
 
 All backend routes required for CEO agent tools. Routes should:
+
 - Authenticate CEO session
 - Use server-side credentials from vault
 - Validate input with Zod schemas
@@ -362,6 +384,7 @@ All backend routes required for CEO agent tools. Routes should:
 #### 1. Shopify Routes
 
 **File**: `app/routes/api/ceo-agent/shopify/orders.ts`
+
 ```typescript
 export async function loader({ request }: Route.LoaderArgs) {
   // GET /api/ceo-agent/shopify/orders?action=list&limit=10
@@ -370,6 +393,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 ```
 
 **File**: `app/routes/api/ceo-agent/shopify/products.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/shopify/products
@@ -378,6 +402,7 @@ export async function action({ request }: Route.ActionArgs) {
 ```
 
 **File**: `app/routes/api/ceo-agent/shopify/customers.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/shopify/customers
@@ -388,6 +413,7 @@ export async function action({ request }: Route.ActionArgs) {
 #### 2. Supabase Route
 
 **File**: `app/routes/api/ceo-agent/supabase/analytics.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/supabase/analytics
@@ -399,6 +425,7 @@ export async function action({ request }: Route.ActionArgs) {
 #### 3. Chatwoot Route
 
 **File**: `app/routes/api/ceo-agent/chatwoot/insights.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/chatwoot/insights
@@ -410,6 +437,7 @@ export async function action({ request }: Route.ActionArgs) {
 #### 4. LlamaIndex Route
 
 **File**: `app/routes/api/ceo-agent/llamaindex/query.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/llamaindex/query
@@ -421,6 +449,7 @@ export async function action({ request }: Route.ActionArgs) {
 #### 5. Google Analytics Route
 
 **File**: `app/routes/api/ceo-agent/google-analytics/metrics.ts`
+
 ```typescript
 export async function action({ request }: Route.ActionArgs) {
   // POST /api/ceo-agent/google-analytics/metrics
@@ -438,6 +467,7 @@ export async function action({ request }: Route.ActionArgs) {
 **Query**: "Should I reorder Powder Board XL?"
 
 **Agent Process**:
+
 1. Query Shopify for current inventory (`shopify.products`)
 2. Query Supabase for 14-day sales velocity (`supabase.analytics`)
 3. Calculate ROP (Reorder Point) and days of cover
@@ -445,6 +475,7 @@ export async function action({ request }: Route.ActionArgs) {
 5. Generate recommendation with evidence
 
 **Response Format**:
+
 ```
 Summary: Powder Board XL is at 8 units with 2.1 days of cover remaining.
 
@@ -472,6 +503,7 @@ Mitigation: Review sales trend from last October for seasonal adjustment
 **Query**: "Show me customers with lifetime value > $1000"
 
 **Agent Process**:
+
 1. Query Shopify customers with order history (`shopify.customers`)
 2. Query Supabase for CLV calculations (`supabase.analytics`)
 3. Synthesize top customers with key metrics
@@ -482,6 +514,7 @@ Mitigation: Review sales trend from last October for seasonal adjustment
 **Query**: "Summarize support tickets this week"
 
 **Agent Process**:
+
 1. Query Chatwoot for ticket data (`chatwoot.insights`)
 2. Analyze SLA breaches (`chatwoot.insights`)
 3. Check sentiment trends (`chatwoot.insights`)
@@ -493,6 +526,7 @@ Mitigation: Review sales trend from last October for seasonal adjustment
 **Query**: "Generate weekly performance summary"
 
 **Agent Process**:
+
 1. Query Supabase for revenue metrics (`supabase.analytics`)
 2. Query Google Analytics for traffic and conversions (`google.analytics`)
 3. Query Shopify for top products (`shopify.products`)
@@ -546,6 +580,7 @@ Mitigation: Review sales trend from last October for seasonal adjustment
 **File**: `tests/unit/agents/ai-ceo.spec.ts` (558 lines)
 
 **Coverage**:
+
 - Agent configuration (name, instructions, tools, onApproval)
 - All 7 tool handlers (Shopify x3, Supabase, Chatwoot, LlamaIndex, GA)
 - Approval logic (write vs read operations)
@@ -553,6 +588,7 @@ Mitigation: Review sales trend from last October for seasonal adjustment
 - Dynamic approval function for Supabase custom SQL
 
 **Test Execution**:
+
 ```bash
 npm run test:unit -- tests/unit/agents/ai-ceo.spec.ts
 ```
@@ -562,6 +598,7 @@ npm run test:unit -- tests/unit/agents/ai-ceo.spec.ts
 ### Integration Testing (TODO)
 
 **Required**:
+
 1. Mock OpenAI Agents SDK `run()` function
 2. Create backend API route stubs
 3. Test full query → tools → approval → execution flow
@@ -587,11 +624,13 @@ Once backend routes are implemented:
 ### Prerequisites
 
 **1. Backend API Routes**:
+
 - All 7 routes implemented (Shopify x3, Supabase, Chatwoot, LlamaIndex, GA)
 - Routes use server-side credentials from vault
 - Routes validate input and handle errors
 
 **2. Credentials** (already in vault):
+
 - `vault/occ/shopify/api_key_staging.env`
 - `vault/occ/shopify/api_secret_staging.env`
 - `vault/occ/supabase/database_url_staging.env`
@@ -601,11 +640,13 @@ Once backend routes are implemented:
 - `vault/occ/google/application_credentials.json`
 
 **3. Database Tables** (already exist or pending):
+
 - `approvals_history` (Option A migrations)
 - `decision_log` (already exists)
 - `user_preferences` (Option A migrations)
 
 **4. UI Integration** (Engineer - Phase 11):
+
 - CEO agent modal in approval queue
 - Query input field
 - Tool call display (which tools were used)
@@ -615,12 +656,14 @@ Once backend routes are implemented:
 ### Deployment Steps
 
 **Step 1**: Engineer implements backend API routes
+
 - Create 7 route files in `app/routes/api/ceo-agent/`
 - Use vault credentials (server-side only)
 - Validate input with Zod schemas
 - Return JSON responses
 
 **Step 2**: DevOps deploys backend
+
 - Verify all environment variables set
 - Test backend routes with curl/Postman
 - Verify Shopify Admin GraphQL access
@@ -629,17 +672,20 @@ Once backend routes are implemented:
 - Verify Google Analytics API access
 
 **Step 3**: Engineer builds UI (Phase 11)
+
 - CEO agent modal component
 - Integration with approval queue
 - Decision log display
 
 **Step 4**: Test end-to-end
+
 - CEO queries agent with sample questions
 - Verify tools execute correctly
 - Verify approval workflow
 - Verify decision_log storage
 
 **Step 5**: Production deploy
+
 - Manager approval for production deployment
 - Monitor logs for errors
 - Track CEO agent usage metrics
@@ -651,6 +697,7 @@ Once backend routes are implemented:
 ### Credential Management
 
 **All credentials in vault** (`vault/occ/`):
+
 - ✅ Never in code or .md files
 - ✅ Server-side only (backend routes)
 - ✅ Not exposed to client-side JavaScript
@@ -659,6 +706,7 @@ Once backend routes are implemented:
 ### API Security
 
 **Backend routes must**:
+
 - ✅ Authenticate CEO session (only CEO can use agent)
 - ✅ Validate input with Zod schemas
 - ✅ Rate limit requests (prevent abuse)
@@ -669,11 +717,13 @@ Once backend routes are implemented:
 ### HITL Enforcement
 
 **Write operations require approval**:
+
 - ✅ Cancel/refund orders (financial impact)
 - ✅ Update inventory (operational impact)
 - ✅ Custom SQL queries (security risk)
 
 **Read operations execute immediately**:
+
 - ✅ No data modification
 - ✅ Logged to decision_log for audit
 - ✅ Rate limited to prevent abuse
@@ -681,12 +731,14 @@ Once backend routes are implemented:
 ### Secrets in Code
 
 **❌ NEVER**:
+
 - Commit API keys to git
 - Log credentials in feedback files
 - Expose credentials in error messages
 - Pass credentials via URL parameters
 
 **✅ ALWAYS**:
+
 - Use vault for all credentials
 - Use environment variables in backend
 - Sanitize error messages (no credential exposure)
@@ -709,6 +761,7 @@ Once backend routes are implemented:
 **Cause**: Route not implemented yet.
 
 **Solution**: Engineer must create route files:
+
 - `app/routes/api/ceo-agent/shopify/orders.ts`
 - `app/routes/api/ceo-agent/shopify/products.ts`
 - `app/routes/api/ceo-agent/shopify/customers.ts`
@@ -722,6 +775,7 @@ Once backend routes are implemented:
 **Cause**: Missing or invalid Shopify API credentials.
 
 **Solution**:
+
 1. Check vault: `vault/occ/shopify/api_key_staging.env`
 2. Verify credentials are set in Fly.io secrets
 3. Test Shopify Admin GraphQL with curl:
@@ -737,6 +791,7 @@ Once backend routes are implemented:
 **Cause**: RPC functions not created in Supabase.
 
 **Solution**:
+
 1. Create Supabase RPC functions for analytics queries
 2. Grant execute permissions to app role
 3. Test RPC function with Supabase SQL editor
@@ -746,6 +801,7 @@ Once backend routes are implemented:
 **Cause**: Chatwoot service down or database connection issue.
 
 **Solution**:
+
 1. Check Chatwoot health: `npm run ops:check-chatwoot-health`
 2. Verify Chatwoot Postgres database (hotdash-chatwoot-db.fly.dev)
 3. Restart Chatwoot service if needed
@@ -756,6 +812,7 @@ Once backend routes are implemented:
 **Cause**: Documents not indexed or index not initialized.
 
 **Solution**:
+
 1. Create LlamaIndex vector store index
 2. Index documents from `data/` directory
 3. Verify embeddings generated (OpenAI embeddings)
@@ -766,6 +823,7 @@ Once backend routes are implemented:
 **Cause**: Service account lacks GA Data API access.
 
 **Solution**:
+
 1. Check `vault/occ/google/application_credentials.json`
 2. Verify service account has Viewer role in GA property
 3. Verify GA_PROPERTY_ID matches (339826228)
@@ -778,6 +836,7 @@ Once backend routes are implemented:
 ### For Engineer (Phase 11 - ENG-035 to ENG-038)
 
 **Backend API Routes** (6-8 hours):
+
 1. Create 7 route files in `app/routes/api/ceo-agent/`
 2. Implement Shopify Admin GraphQL queries (orders, products, customers)
 3. Implement Supabase RPC analytics queries
@@ -788,6 +847,7 @@ Once backend routes are implemented:
 8. Test routes with curl/Postman
 
 **UI Components** (4-6 hours):
+
 1. CEO agent modal in approval queue
 2. Query input with natural language placeholder
 3. Tool call display (show which tools were used)
@@ -798,6 +858,7 @@ Once backend routes are implemented:
 ### For DevOps
 
 **Deployment** (2 hours):
+
 1. Verify all environment variables set in Fly.io
 2. Test backend routes in staging
 3. Monitor logs for errors
@@ -807,12 +868,14 @@ Once backend routes are implemented:
 ### For AI-Customer (Next Session)
 
 **Integration Testing** (2 hours):
+
 1. Create integration tests with backend route mocks
 2. Test full query → tools → approval → execution flow
 3. Test decision_log storage format
 4. Test approval queue integration
 
 **Documentation Updates** (30 min):
+
 1. Update this doc with backend route implementation details
 2. Document any API changes
 3. Add production deployment checklist
@@ -836,4 +899,3 @@ Once backend routes are implemented:
 **Status**: Backend Complete, API Routes Pending, UI Pending  
 **Phase**: Phase 11 (Option A Execution Plan)  
 **Evidence**: MCP tools used (Context7: OpenAI SDK + LlamaIndex)
-

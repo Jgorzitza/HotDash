@@ -3,7 +3,7 @@
  *
  * Tracks Core Web Vitals using PageSpeed Insights API:
  * - LCP (Largest Contentful Paint) - Loading performance
- * - FID (First Input Delay) - Interactivity  
+ * - FID (First Input Delay) - Interactivity
  * - CLS (Cumulative Layout Shift) - Visual stability
  *
  * Provides performance optimization recommendations and daily monitoring.
@@ -91,15 +91,20 @@ const CORE_WEB_VITALS_THRESHOLDS = {
  * Fetch PageSpeed Insights data for a URL
  * Requires PAGESPEED_INSIGHTS_API_KEY environment variable
  */
-async function fetchPageSpeedData(url: string, strategy: "mobile" | "desktop"): Promise<any> {
+async function fetchPageSpeedData(
+  url: string,
+  strategy: "mobile" | "desktop",
+): Promise<any> {
   const apiKey = process.env.PAGESPEED_INSIGHTS_API_KEY;
-  
+
   if (!apiKey) {
     // Return mock data for development
     return generateMockPageSpeedData(url, strategy);
   }
 
-  const apiUrl = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
+  const apiUrl = new URL(
+    "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+  );
   apiUrl.searchParams.set("url", url);
   apiUrl.searchParams.set("strategy", strategy);
   apiUrl.searchParams.set("key", apiKey);
@@ -125,9 +130,12 @@ async function fetchPageSpeedData(url: string, strategy: "mobile" | "desktop"): 
 /**
  * Generate mock PageSpeed data for development/testing
  */
-function generateMockPageSpeedData(url: string, strategy: "mobile" | "desktop"): any {
+function generateMockPageSpeedData(
+  url: string,
+  strategy: "mobile" | "desktop",
+): any {
   const isMobile = strategy === "mobile";
-  
+
   return {
     lighthouseResult: {
       audits: {
@@ -189,10 +197,10 @@ function generateMockPageSpeedData(url: string, strategy: "mobile" | "desktop"):
  */
 function extractVitalMetric(
   value: number,
-  metricType: "lcp" | "fid" | "cls"
+  metricType: "lcp" | "fid" | "cls",
 ): VitalMetric {
   const threshold = CORE_WEB_VITALS_THRESHOLDS[metricType];
-  
+
   let rating: "good" | "needs-improvement" | "poor";
   if (value <= threshold.good) {
     rating = "good";
@@ -220,13 +228,16 @@ function extractVitalMetric(
 function parsePageSpeedResponse(
   data: any,
   url: string,
-  device: "mobile" | "desktop"
+  device: "mobile" | "desktop",
 ): CoreWebVitalsMetrics {
   const audits = data.lighthouseResult?.audits || {};
-  
+
   // Extract Core Web Vitals
   const lcpValue = audits["largest-contentful-paint"]?.numericValue || 0;
-  const fidValue = audits["first-input-delay"]?.numericValue || audits["max-potential-fid"]?.numericValue || 0;
+  const fidValue =
+    audits["first-input-delay"]?.numericValue ||
+    audits["max-potential-fid"]?.numericValue ||
+    0;
   const clsValue = audits["cumulative-layout-shift"]?.numericValue || 0;
 
   const lcp = extractVitalMetric(lcpValue, "lcp");
@@ -234,7 +245,8 @@ function parsePageSpeedResponse(
   const cls = extractVitalMetric(clsValue, "cls");
 
   // Calculate overall score (0-100)
-  const performanceScore = data.lighthouseResult?.categories?.performance?.score || 0;
+  const performanceScore =
+    data.lighthouseResult?.categories?.performance?.score || 0;
   const overallScore = Math.round(performanceScore * 100);
 
   // Generate recommendations
@@ -259,14 +271,16 @@ function generateRecommendations(
   lcp: VitalMetric,
   fid: VitalMetric,
   cls: VitalMetric,
-  audits: any
+  audits: any,
 ): string[] {
   const recommendations: string[] = [];
 
   // LCP recommendations
   if (lcp.rating !== "good") {
-    recommendations.push(`Improve Largest Contentful Paint (LCP): ${lcp.value}${lcp.unit} (target: <${lcp.threshold.good}${lcp.unit})`);
-    
+    recommendations.push(
+      `Improve Largest Contentful Paint (LCP): ${lcp.value}${lcp.unit} (target: <${lcp.threshold.good}${lcp.unit})`,
+    );
+
     if (audits["render-blocking-resources"]) {
       recommendations.push("  → Eliminate render-blocking resources (CSS, JS)");
     }
@@ -280,8 +294,10 @@ function generateRecommendations(
 
   // FID recommendations
   if (fid.rating !== "good") {
-    recommendations.push(`Improve First Input Delay (FID): ${fid.value}${fid.unit} (target: <${fid.threshold.good}${fid.unit})`);
-    
+    recommendations.push(
+      `Improve First Input Delay (FID): ${fid.value}${fid.unit} (target: <${fid.threshold.good}${fid.unit})`,
+    );
+
     if (audits["unused-javascript"]) {
       recommendations.push("  → Reduce unused JavaScript");
     }
@@ -292,7 +308,9 @@ function generateRecommendations(
 
   // CLS recommendations
   if (cls.rating !== "good") {
-    recommendations.push(`Improve Cumulative Layout Shift (CLS): ${cls.value} (target: <${cls.threshold.good})`);
+    recommendations.push(
+      `Improve Cumulative Layout Shift (CLS): ${cls.value} (target: <${cls.threshold.good})`,
+    );
     recommendations.push("  → Set explicit width/height on images and ads");
     recommendations.push("  → Reserve space for dynamic content");
     recommendations.push("  → Avoid inserting content above existing content");
@@ -300,7 +318,9 @@ function generateRecommendations(
 
   // General recommendations
   if (recommendations.length === 0) {
-    recommendations.push("All Core Web Vitals are in good range! Keep monitoring and maintain performance.");
+    recommendations.push(
+      "All Core Web Vitals are in good range! Keep monitoring and maintain performance.",
+    );
   }
 
   return recommendations;
@@ -313,7 +333,9 @@ function generateRecommendations(
 /**
  * Analyze Core Web Vitals for a URL (both mobile and desktop)
  */
-export async function analyzeWebVitals(url: string): Promise<PageSpeedAnalysis> {
+export async function analyzeWebVitals(
+  url: string,
+): Promise<PageSpeedAnalysis> {
   const startTime = Date.now();
 
   const cacheKey = `seo:cwv:${url}`;
@@ -368,7 +390,10 @@ function extractOpportunities(data: any): PerformanceOpportunity[] {
   const opportunities: PerformanceOpportunity[] = [];
 
   const opportunityAudits = [
-    { key: "render-blocking-resources", title: "Eliminate render-blocking resources" },
+    {
+      key: "render-blocking-resources",
+      title: "Eliminate render-blocking resources",
+    },
     { key: "unused-css-rules", title: "Remove unused CSS" },
     { key: "unused-javascript", title: "Remove unused JavaScript" },
     { key: "modern-image-formats", title: "Serve images in modern formats" },
@@ -381,7 +406,7 @@ function extractOpportunities(data: any): PerformanceOpportunity[] {
     const audit = audits[key];
     if (audit && audit.details) {
       const savings = audit.details.overallSavingsMs || audit.numericValue || 0;
-      
+
       if (savings > 0) {
         let impact: "high" | "medium" | "low";
         if (savings > 500) impact = "high";
@@ -416,26 +441,38 @@ function extractDiagnostics(data: any): PerformanceDiagnostic[] {
   const diagnostics: PerformanceDiagnostic[] = [];
 
   // Check for common issues
-  if (audits["uses-long-cache-ttl"] && audits["uses-long-cache-ttl"].score < 0.9) {
+  if (
+    audits["uses-long-cache-ttl"] &&
+    audits["uses-long-cache-ttl"].score < 0.9
+  ) {
     diagnostics.push({
       title: "Serve static assets with efficient cache policy",
-      description: "A long cache lifetime can speed up repeat visits to your page.",
+      description:
+        "A long cache lifetime can speed up repeat visits to your page.",
       severity: "warning",
     });
   }
 
-  if (audits["uses-text-compression"] && audits["uses-text-compression"].score < 1) {
+  if (
+    audits["uses-text-compression"] &&
+    audits["uses-text-compression"].score < 1
+  ) {
     diagnostics.push({
       title: "Enable text compression",
-      description: "Text-based resources should be served with compression (gzip, deflate, or brotli).",
+      description:
+        "Text-based resources should be served with compression (gzip, deflate, or brotli).",
       severity: "warning",
     });
   }
 
-  if (audits["uses-responsive-images"] && audits["uses-responsive-images"].score < 0.9) {
+  if (
+    audits["uses-responsive-images"] &&
+    audits["uses-responsive-images"].score < 0.9
+  ) {
     diagnostics.push({
       title: "Properly size images",
-      description: "Serve images that are appropriately-sized to save cellular data and improve load time.",
+      description:
+        "Serve images that are appropriately-sized to save cellular data and improve load time.",
       severity: "warning",
     });
   }
@@ -446,7 +483,9 @@ function extractDiagnostics(data: any): PerformanceDiagnostic[] {
 /**
  * Daily monitoring function (to be called by cron job)
  */
-export async function runDailyWebVitalsMonitoring(urls: string[]): Promise<Map<string, PageSpeedAnalysis>> {
+export async function runDailyWebVitalsMonitoring(
+  urls: string[],
+): Promise<Map<string, PageSpeedAnalysis>> {
   const results = new Map<string, PageSpeedAnalysis>();
 
   // Analyze URLs sequentially to avoid rate limiting
@@ -454,14 +493,16 @@ export async function runDailyWebVitalsMonitoring(urls: string[]): Promise<Map<s
     try {
       const analysis = await analyzeWebVitals(url);
       results.set(url, analysis);
-      
+
       // Wait 2 seconds between requests to respect rate limits
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     } catch (error: any) {
-      console.error(`[Core Web Vitals] Failed to analyze ${url}:`, error.message);
+      console.error(
+        `[Core Web Vitals] Failed to analyze ${url}:`,
+        error.message,
+      );
     }
   }
 
   return results;
 }
-

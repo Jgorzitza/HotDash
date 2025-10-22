@@ -495,6 +495,7 @@ WHERE tablename IN ('ads_metrics_daily', 'agent_run', 'agent_qc', 'creds_meta');
 ### Impact
 
 Enables Sales Modal audit trail with:
+
 - Variance review logging (WoW revenue changes)
 - Action dropdown selections recorded
 - Operator notes captured
@@ -529,6 +530,7 @@ DROP TABLE IF EXISTS public.sales_pulse_actions CASCADE;
 ### Impact
 
 Enables Inventory Modal audit trail with:
+
 - Reorder approvals/rejections logged
 - Vendor selection decisions recorded
 - 14-day velocity analysis captured
@@ -543,4 +545,3 @@ DROP TABLE IF EXISTS public.inventory_actions CASCADE;
 ---
 
 **Total Option A Tables**: 6 (user_preferences, notifications, notification_preferences, approvals_history, sales_pulse_actions, inventory_actions)
-

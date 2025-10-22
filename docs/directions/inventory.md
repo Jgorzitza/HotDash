@@ -1,6 +1,7 @@
 # Inventory Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ ALL PREVIOUS INVENTORY TASKS COMPLETE
 
 **Completed** (from feedback/inventory/2025-10-21.md):
+
 1. ✅ INVENTORY-001: Seasonal Demand Adjustments (seasonality.ts - 243 lines)
 2. ✅ INVENTORY-002: Demand Forecasting (demand-forecast.ts - 331 lines)
 3. ✅ INVENTORY-003: Vendor Management (vendor-management.ts - 441 lines)
@@ -42,6 +44,7 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/inventory/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/inventory/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -56,17 +59,20 @@ git pull origin manager-reopen-20251021
 **Objective**: Build services for Vendor Management and Average Landed Cost calculation with Shopify sync
 
 ### Prerequisites
+
 - ✅ Data agent completes DATA-017, DATA-018 (Vendor + PO tables) — DEPENDENCY
 
 ### Context
 
 **Vendor Management** (CEO-confirmed):
+
 - Centralized vendor database with reliability tracking
 - **Reliability Score**: 0-100% = `(on_time_deliveries / total_deliveries) × 100`
 - Multi-SKU support (same product, multiple vendors)
 - Operator sees: "Premium Suppliers (92% reliable, 7d lead, $24.99/unit)"
 
 **Average Landed Cost** (CEO-confirmed with clarifications):
+
 ```typescript
 // ALC includes existing inventory
 New_ALC = ((Previous_ALC × On_Hand_Qty) + New_Receipt_Total) / (On_Hand_Qty + New_Receipt_Qty)
@@ -96,24 +102,25 @@ export async function getVendorWithMetrics(vendorId: string) {
       productMappings: true,
       purchaseOrders: {
         where: { actualDeliveryDate: { not: null } },
-        orderBy: { actualDeliveryDate: 'desc' },
-        take: 10
-      }
-    }
+        orderBy: { actualDeliveryDate: "desc" },
+        take: 10,
+      },
+    },
   });
-  
+
   if (!vendor) return null;
-  
+
   // Calculate current reliability score
-  const onTimeRate = vendor.totalOrders > 0 
-    ? (vendor.onTimeDeliveries / vendor.totalOrders) * 100 
-    : 0;
-  
+  const onTimeRate =
+    vendor.totalOrders > 0
+      ? (vendor.onTimeDeliveries / vendor.totalOrders) * 100
+      : 0;
+
   return {
     ...vendor,
     reliabilityScore: onTimeRate,
     avgLeadTimeDays: calculateAvgLeadTime(vendor.purchaseOrders),
-    lastOrderDate: vendor.purchaseOrders[0]?.orderDate
+    lastOrderDate: vendor.purchaseOrders[0]?.orderDate,
   };
 }
 
@@ -121,10 +128,10 @@ export async function getVendorWithMetrics(vendorId: string) {
 export async function updateVendorReliability(
   vendorId: string,
   expectedDate: Date,
-  actualDate: Date
+  actualDate: Date,
 ) {
   const onTime = actualDate <= expectedDate;
-  
+
   await prisma.vendor.update({
     where: { id: vendorId },
     data: {
@@ -133,77 +140,84 @@ export async function updateVendorReliability(
       lateDeliveries: !onTime ? { increment: 1 } : undefined,
       reliabilityScore: {
         // Recalculate: (onTimeDeliveries / totalOrders) * 100
-      }
-    }
+      },
+    },
   });
 }
 
 // Get best vendor for product (by reliability, lead time, cost)
 export async function getBestVendorForProduct(
   variantId: string,
-  criteria: 'cost' | 'speed' | 'reliability' = 'reliability'
+  criteria: "cost" | "speed" | "reliability" = "reliability",
 ) {
   const mappings = await prisma.vendorProductMapping.findMany({
     where: { variantId },
     include: {
-      vendor: true
-    }
+      vendor: true,
+    },
   });
-  
+
   // Sort by criteria
   const sorted = mappings.sort((a, b) => {
-    if (criteria === 'cost') return a.costPerUnit - b.costPerUnit;
-    if (criteria === 'speed') return a.vendor.leadTimeDays - b.vendor.leadTimeDays;
+    if (criteria === "cost") return a.costPerUnit - b.costPerUnit;
+    if (criteria === "speed")
+      return a.vendor.leadTimeDays - b.vendor.leadTimeDays;
     return (b.vendor.reliabilityScore || 0) - (a.vendor.reliabilityScore || 0);
   });
-  
+
   return sorted[0];
 }
 
 // Get vendor dropdown options (for UI)
 export async function getVendorOptions(variantId?: string) {
-  const where = variantId 
+  const where = variantId
     ? { productMappings: { some: { variantId } } }
     : { isActive: true };
-  
+
   const vendors = await prisma.vendor.findMany({
     where,
     include: {
-      productMappings: variantId ? {
-        where: { variantId }
-      } : undefined
-    }
+      productMappings: variantId
+        ? {
+            where: { variantId },
+          }
+        : undefined,
+    },
   });
-  
-  return vendors.map(v => ({
+
+  return vendors.map((v) => ({
     id: v.id,
     label: `${v.name} (${v.reliabilityScore?.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${v.productMappings[0]?.costPerUnit || 0}/unit)`,
     reliabilityScore: v.reliabilityScore,
     leadTimeDays: v.leadTimeDays,
-    costPerUnit: v.productMappings[0]?.costPerUnit
+    costPerUnit: v.productMappings[0]?.costPerUnit,
   }));
 }
 ```
 
 **Integration Points**:
+
 - Update existing `vendor-management.ts` (enhance, don't replace)
 - Call `updateVendorReliability()` from receiving workflow (INVENTORY-017)
 - Use `getVendorOptions()` in Engineer's PO creation UI
 
 **Tests**: `tests/unit/services/inventory/vendor-service.spec.ts`
+
 - Test reliability score calculation
 - Test best vendor selection (all 3 criteria)
 - Test vendor options formatting
 - Test score update on PO receipt
 
 **Acceptance**:
+
 - ✅ Vendor service enhanced with 4 new functions
 - ✅ Reliability scoring implemented (0-100%)
 - ✅ Best vendor selection logic (cost/speed/reliability)
 - ✅ Unit tests passing (100% coverage for new functions)
 - ✅ No linter errors
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → Prisma aggregations, relations
 
 ---
@@ -237,37 +251,43 @@ interface ReceiptCostBreakdown {
 // Calculate freight distribution by weight
 function distributeFreightByWeight(
   receipts: ReceiptInput[],
-  totalFreight: number
+  totalFreight: number,
 ): Map<string, number> {
-  const totalWeight = receipts.reduce((sum, r) => sum + (r.weight * r.qtyReceived), 0);
-  
+  const totalWeight = receipts.reduce(
+    (sum, r) => sum + r.weight * r.qtyReceived,
+    0,
+  );
+
   const distribution = new Map<string, number>();
-  receipts.forEach(receipt => {
+  receipts.forEach((receipt) => {
     const itemTotalWeight = receipt.weight * receipt.qtyReceived;
     const weightRatio = itemTotalWeight / totalWeight;
     const allocatedFreight = totalFreight * weightRatio;
     distribution.set(receipt.variantId, allocatedFreight);
   });
-  
+
   return distribution;
 }
 
 // Calculate duty distribution by weight
 function distributeDutyByWeight(
   receipts: ReceiptInput[],
-  totalDuty: number
+  totalDuty: number,
 ): Map<string, number> {
   // Same logic as freight
-  const totalWeight = receipts.reduce((sum, r) => sum + (r.weight * r.qtyReceived), 0);
-  
+  const totalWeight = receipts.reduce(
+    (sum, r) => sum + r.weight * r.qtyReceived,
+    0,
+  );
+
   const distribution = new Map<string, number>();
-  receipts.forEach(receipt => {
+  receipts.forEach((receipt) => {
     const itemTotalWeight = receipt.weight * receipt.qtyReceived;
     const weightRatio = itemTotalWeight / totalWeight;
     const allocatedDuty = totalDuty * weightRatio;
     distribution.set(receipt.variantId, allocatedDuty);
   });
-  
+
   return distribution;
 }
 
@@ -275,19 +295,19 @@ function distributeDutyByWeight(
 export function calculateReceiptCosts(
   receipts: ReceiptInput[],
   totalFreight: number,
-  totalDuty: number
+  totalDuty: number,
 ): ReceiptCostBreakdown[] {
   const freightDistribution = distributeFreightByWeight(receipts, totalFreight);
   const dutyDistribution = distributeDutyByWeight(receipts, totalDuty);
-  
-  return receipts.map(receipt => {
+
+  return receipts.map((receipt) => {
     const allocatedFreight = freightDistribution.get(receipt.variantId) || 0;
     const allocatedDuty = dutyDistribution.get(receipt.variantId) || 0;
-    const totalReceiptCost = 
-      (receipt.vendorInvoiceAmount * receipt.qtyReceived) + 
-      allocatedFreight + 
+    const totalReceiptCost =
+      receipt.vendorInvoiceAmount * receipt.qtyReceived +
+      allocatedFreight +
       allocatedDuty;
-    
+
     return {
       variantId: receipt.variantId,
       qtyReceived: receipt.qtyReceived,
@@ -295,7 +315,7 @@ export function calculateReceiptCosts(
       allocatedFreight,
       allocatedDuty,
       totalReceiptCost,
-      costPerUnit: totalReceiptCost / receipt.qtyReceived
+      costPerUnit: totalReceiptCost / receipt.qtyReceived,
     };
   });
 }
@@ -304,28 +324,35 @@ export function calculateReceiptCosts(
 export async function calculateNewALC(
   variantId: string,
   receiptCostPerUnit: number,
-  receiptQty: number
-): Promise<{ previousALC: number; newALC: number; previousOnHand: number; newOnHand: number }> {
+  receiptQty: number,
+): Promise<{
+  previousALC: number;
+  newALC: number;
+  previousOnHand: number;
+  newOnHand: number;
+}> {
   // Get current on-hand qty from Shopify
   const inventory = await fetchShopifyInventory(variantId);
   const previousOnHand = inventory.available || 0;
-  
+
   // Get previous ALC from cost history
   const lastCostRecord = await prisma.productCostHistory.findFirst({
     where: { variantId },
-    orderBy: { recordedAt: 'desc' }
+    orderBy: { recordedAt: "desc" },
   });
   const previousALC = lastCostRecord?.newAlc || receiptCostPerUnit;
-  
+
   // Calculate new ALC (weighted average)
-  const newALC = ((previousALC * previousOnHand) + (receiptCostPerUnit * receiptQty)) / (previousOnHand + receiptQty);
+  const newALC =
+    (previousALC * previousOnHand + receiptCostPerUnit * receiptQty) /
+    (previousOnHand + receiptQty);
   const newOnHand = previousOnHand + receiptQty;
-  
+
   return {
     previousALC,
     newALC,
     previousOnHand,
-    newOnHand
+    newOnHand,
   };
 }
 
@@ -338,7 +365,7 @@ export async function recordCostHistory(
   previousOnHand: number,
   newOnHand: number,
   receiptQty: number,
-  receiptCostPerUnit: number
+  receiptCostPerUnit: number,
 ) {
   await prisma.productCostHistory.create({
     data: {
@@ -350,8 +377,8 @@ export async function recordCostHistory(
       newOnHand,
       receiptQty,
       receiptCostPerUnit,
-      recordedAt: new Date()
-    }
+      recordedAt: new Date(),
+    },
   });
 }
 
@@ -360,23 +387,27 @@ export async function processReceipt(
   poId: string,
   receipts: ReceiptInput[],
   totalFreight: number,
-  totalDuty: number
+  totalDuty: number,
 ): Promise<{
   receiptBreakdowns: ReceiptCostBreakdown[];
   alcUpdates: Array<{ variantId: string; previousALC: number; newALC: number }>;
 }> {
   // 1. Calculate receipt costs (with freight/duty distribution)
-  const receiptBreakdowns = calculateReceiptCosts(receipts, totalFreight, totalDuty);
-  
+  const receiptBreakdowns = calculateReceiptCosts(
+    receipts,
+    totalFreight,
+    totalDuty,
+  );
+
   // 2. Calculate new ALC for each variant
   const alcUpdates = [];
   for (const breakdown of receiptBreakdowns) {
     const alc = await calculateNewALC(
       breakdown.variantId,
       breakdown.costPerUnit,
-      breakdown.qtyReceived
+      breakdown.qtyReceived,
     );
-    
+
     // 3. Record cost history snapshot
     await recordCostHistory(
       breakdown.variantId,
@@ -386,25 +417,27 @@ export async function processReceipt(
       alc.previousOnHand,
       alc.newOnHand,
       breakdown.qtyReceived,
-      breakdown.costPerUnit
+      breakdown.costPerUnit,
     );
-    
+
     alcUpdates.push({
       variantId: breakdown.variantId,
       previousALC: alc.previousALC,
-      newALC: alc.newALC
+      newALC: alc.newALC,
     });
   }
-  
+
   return { receiptBreakdowns, alcUpdates };
 }
 ```
 
 **Integration Points**:
+
 - Called from receiving workflow UI (Engineer builds)
 - Integrations agent syncs ALC to Shopify (INTEGRATIONS-XXX)
 
 **Tests**: `tests/unit/services/inventory/alc.spec.ts`
+
 - Test freight distribution by weight (3 items, different weights)
 - Test duty distribution by weight
 - Test ALC calculation (with existing inventory)
@@ -413,6 +446,7 @@ export async function processReceipt(
 - Test cost history snapshot
 
 **Acceptance**:
+
 - ✅ ALC service implemented with all functions
 - ✅ Freight/duty distribution BY WEIGHT correct
 - ✅ ALC calculation includes previous inventory
@@ -420,7 +454,8 @@ export async function processReceipt(
 - ✅ Unit tests passing (100% coverage)
 - ✅ No linter errors
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → TypeScript algorithms, decimal precision
 - Context7 → Prisma transactions
 
@@ -446,80 +481,81 @@ export async function action({ request }: ActionFunctionArgs) {
   const poId = formData.get("poId") as string;
   const totalFreight = parseFloat(formData.get("totalFreight") as string) || 0;
   const totalDuty = parseFloat(formData.get("totalDuty") as string) || 0;
-  
+
   // Parse line items (JSON array)
   const lineItems = JSON.parse(formData.get("lineItems") as string);
-  
+
   // Validate inputs
   if (!poId || !lineItems || lineItems.length === 0) {
     return Response.json(
       { success: false, error: "Missing required fields" },
-      { status: 400 }
+      { status: 400 },
     );
   }
-  
+
   try {
     // 1. Process receipt (calculate ALC, record history)
     const { receiptBreakdowns, alcUpdates } = await processReceipt(
       poId,
       lineItems,
       totalFreight,
-      totalDuty
+      totalDuty,
     );
-    
+
     // 2. Sync ALC to Shopify for each variant
     for (const update of alcUpdates) {
       await syncInventoryCostToShopify(update.variantId, update.newALC);
     }
-    
+
     // 3. Update PO status
     const po = await prisma.purchaseOrder.update({
       where: { id: poId },
       data: {
-        status: 'received',
-        actualDeliveryDate: new Date()
+        status: "received",
+        actualDeliveryDate: new Date(),
       },
-      include: { vendor: true }
+      include: { vendor: true },
     });
-    
+
     // 4. Update vendor reliability score
     if (po.expectedDeliveryDate && po.actualDeliveryDate) {
       await updateVendorReliability(
         po.vendorId,
         po.expectedDeliveryDate,
-        po.actualDeliveryDate
+        po.actualDeliveryDate,
       );
     }
-    
+
     // 5. Log decision
     await logDecision({
-      scope: 'ops',
-      who: 'operator',
-      what: 'receive_purchase_order',
+      scope: "ops",
+      who: "operator",
+      what: "receive_purchase_order",
       why: `PO ${po.poNumber} received: ${lineItems.length} items, freight $${totalFreight}, duty $${totalDuty}`,
       evidenceUrl: `/api/purchase-orders/${poId}`,
-      createdAt: new Date()
+      createdAt: new Date(),
     });
-    
+
     return Response.json({
       success: true,
       data: {
         receiptBreakdowns,
         alcUpdates,
-        vendorReliabilityUpdated: true
-      }
+        vendorReliabilityUpdated: true,
+      },
     });
   } catch (error: any) {
     console.error("[Inventory] Receipt processing error:", error);
     return Response.json(
       { success: false, error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 ```
 
 **Acceptance**:
+
 - ✅ API route implemented
 - ✅ Validates inputs (PO ID, line items, freight, duty)
 - ✅ Calls ALC service
@@ -529,7 +565,8 @@ export async function action({ request }: ActionFunctionArgs) {
 - ✅ Returns receipt breakdown + ALC updates
 - ✅ Error handling
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → React Router 7 action patterns
 
 ---
@@ -541,6 +578,7 @@ export async function action({ request }: ActionFunctionArgs) {
 ### Context
 
 **Emergency Sourcing Logic** (from Growth Engine pack):
+
 ```
 For OOS component blocking profitable bundle:
 
@@ -552,6 +590,7 @@ Recommend local vendor if:
 ```
 
 **Example**:
+
 - Bundle sells 5/day, margin $15/unit
 - Primary vendor: 14 days lead time, $10/unit cost
 - Local vendor: 3 days lead time, $13/unit cost
@@ -605,52 +644,57 @@ interface EmergencySourcingRecommendation {
 }
 
 export async function analyzeEmergencySourcing(
-  input: EmergencySourcingInput
+  input: EmergencySourcingInput,
 ): Promise<EmergencySourcingRecommendation> {
   // 1. Get vendor options
   const vendors = await prisma.vendorProductMapping.findMany({
     where: { variantId: input.variantId },
-    include: { vendor: true }
+    include: { vendor: true },
   });
-  
+
   if (vendors.length < 2) {
     throw new Error("Need at least 2 vendors for comparison");
   }
-  
+
   // 2. Identify primary (best reliability) and local fast (shortest lead time)
-  const primaryVendor = vendors.reduce((best, v) => 
-    (v.vendor.reliabilityScore || 0) > (best.vendor.reliabilityScore || 0) ? v : best
+  const primaryVendor = vendors.reduce((best, v) =>
+    (v.vendor.reliabilityScore || 0) > (best.vendor.reliabilityScore || 0)
+      ? v
+      : best,
   );
-  
-  const localVendor = vendors.reduce((fastest, v) => 
-    v.vendor.leadTimeDays < fastest.vendor.leadTimeDays ? v : fastest
+
+  const localVendor = vendors.reduce((fastest, v) =>
+    v.vendor.leadTimeDays < fastest.vendor.leadTimeDays ? v : fastest,
   );
-  
+
   // 3. Calculate opportunity cost
-  const daysSaved = primaryVendor.vendor.leadTimeDays - localVendor.vendor.leadTimeDays;
+  const daysSaved =
+    primaryVendor.vendor.leadTimeDays - localVendor.vendor.leadTimeDays;
   const feasibleSales = input.avgBundleSalesPerDay * daysSaved;
   const expectedLostProfit = feasibleSales * input.bundleMargin;
-  
+
   // 4. Calculate incremental cost
-  const incrementalCost = (localVendor.costPerUnit - primaryVendor.costPerUnit) * input.qtyNeeded;
-  
+  const incrementalCost =
+    (localVendor.costPerUnit - primaryVendor.costPerUnit) * input.qtyNeeded;
+
   // 5. Calculate net benefit
   const netBenefit = expectedLostProfit - incrementalCost;
-  
+
   // 6. Calculate resulting bundle margin (after paying more for component)
-  const componentCostIncrease = localVendor.costPerUnit - primaryVendor.costPerUnit;
+  const componentCostIncrease =
+    localVendor.costPerUnit - primaryVendor.costPerUnit;
   const resultingBundleMargin = input.bundleMargin - componentCostIncrease;
   const resultingMarginPct = resultingBundleMargin / input.bundleMargin;
-  
+
   // 7. Make recommendation
-  const shouldUseFast = netBenefit > 0 && resultingMarginPct >= 0.20;
-  
+  const shouldUseFast = netBenefit > 0 && resultingMarginPct >= 0.2;
+
   const reason = shouldUseFast
     ? `Net benefit of $${netBenefit.toFixed(2)} by saving ${daysSaved} days. Bundle margin remains ${(resultingMarginPct * 100).toFixed(1)}%.`
     : netBenefit <= 0
       ? `Incremental cost ($${incrementalCost.toFixed(2)}) exceeds expected lost profit ($${expectedLostProfit.toFixed(2)}).`
       : `Bundle margin would drop to ${(resultingMarginPct * 100).toFixed(1)}% (below 20% threshold).`;
-  
+
   return {
     shouldUseFastVendor: shouldUseFast,
     primaryVendor: {
@@ -659,7 +703,7 @@ export async function analyzeEmergencySourcing(
       leadTimeDays: primaryVendor.vendor.leadTimeDays,
       costPerUnit: primaryVendor.costPerUnit,
       totalCost: primaryVendor.costPerUnit * input.qtyNeeded,
-      reliabilityScore: primaryVendor.vendor.reliabilityScore || 0
+      reliabilityScore: primaryVendor.vendor.reliabilityScore || 0,
     },
     localVendor: {
       vendorId: localVendor.vendorId,
@@ -667,7 +711,7 @@ export async function analyzeEmergencySourcing(
       leadTimeDays: localVendor.vendor.leadTimeDays,
       costPerUnit: localVendor.costPerUnit,
       totalCost: localVendor.costPerUnit * input.qtyNeeded,
-      reliabilityScore: localVendor.vendor.reliabilityScore || 0
+      reliabilityScore: localVendor.vendor.reliabilityScore || 0,
     },
     analysis: {
       daysSaved,
@@ -675,37 +719,37 @@ export async function analyzeEmergencySourcing(
       expectedLostProfit,
       incrementalCost,
       netBenefit,
-      resultingBundleMargin: resultingMarginPct
+      resultingBundleMargin: resultingMarginPct,
     },
-    reason
+    reason,
   };
 }
 
 // Generate Action Queue card for emergency sourcing
 export async function generateEmergencySourcingAction(
   variantId: string,
-  bundleProductId: string
+  bundleProductId: string,
 ): Promise<ActionQueueCard | null> {
   // Get bundle demand forecast
   const forecast = await getDemandForecast(bundleProductId);
   const bundleMetrics = await getProductMetrics(bundleProductId);
-  
+
   // Analyze emergency sourcing
   const recommendation = await analyzeEmergencySourcing({
     variantId,
     bundleProductId,
     bundleMargin: bundleMetrics.margin,
     avgBundleSalesPerDay: forecast.avgDailyDemand,
-    qtyNeeded: 100 // Or calculate based on forecast
+    qtyNeeded: 100, // Or calculate based on forecast
   });
-  
+
   if (!recommendation.shouldUseFastVendor) {
     return null; // Don't create action if not recommended
   }
-  
+
   // Create Action card
   return {
-    type: 'inventory',
+    type: "inventory",
     title: `Emergency Sourcing: ${bundleMetrics.title}`,
     description: recommendation.reason,
     expectedRevenue: recommendation.analysis.netBenefit,
@@ -716,13 +760,14 @@ export async function generateEmergencySourcingAction(
       netBenefit: recommendation.analysis.netBenefit,
       incrementalCost: recommendation.analysis.incrementalCost,
       primaryVendor: recommendation.primaryVendor,
-      localVendor: recommendation.localVendor
-    }
+      localVendor: recommendation.localVendor,
+    },
   };
 }
 ```
 
 **Tests**: `tests/unit/services/inventory/emergency-sourcing.spec.ts`
+
 - Test ELP calculation (positive case)
 - Test IC calculation (positive case)
 - Test net benefit > 0 (recommend fast vendor)
@@ -731,6 +776,7 @@ export async function generateEmergencySourcingAction(
 - Test Action card generation
 
 **Acceptance**:
+
 - ✅ Emergency sourcing service implemented
 - ✅ ELP and IC calculations correct
 - ✅ Net benefit logic correct
@@ -739,7 +785,8 @@ export async function generateEmergencySourcingAction(
 - ✅ Unit tests passing (100% coverage)
 - ✅ No linter errors
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → TypeScript algorithms, business logic
 
 ---
@@ -747,6 +794,7 @@ export async function generateEmergencySourcingAction(
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 10: Vendor/ALC Services (9h)
+
 - ✅ INVENTORY-016: Vendor service enhancement (reliability scoring, best vendor selection)
 - ✅ INVENTORY-017: ALC calculation service (freight/duty by weight, history snapshots)
 - ✅ INVENTORY-018: Receiving workflow backend (API route, Shopify sync, vendor updates)
@@ -755,6 +803,7 @@ export async function generateEmergencySourcingAction(
 - ✅ TypeScript clean, no linter errors
 
 ### Phase 11: Emergency Sourcing (5h)
+
 - ✅ INVENTORY-019: Emergency sourcing service (ELP/IC calculation, 20% margin threshold)
 - ✅ Action Queue card generation
 - ✅ All unit tests passing
@@ -765,6 +814,7 @@ export async function generateEmergencySourcingAction(
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Context7 MCP**: For all service development
    - TypeScript algorithms (weighted averages, business logic)
    - Prisma relations, transactions, aggregations
@@ -774,12 +824,14 @@ export async function generateEmergencySourcingAction(
 2. **Web Search**: LAST RESORT ONLY
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/inventory/<date>/mcp/vendor-alc.jsonl` and `mcp/emergency-sourcing.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/inventory/<date>/heartbeat.ndjson` (append every 15min)
 3. **Dev MCP Check**: Verify NO Dev MCP imports in `app/`
 4. **PR Template**: Fill out all sections
 
 ### Testing
+
 - Unit tests for ALL new functions
 - Test edge cases (division by zero, no vendors, negative margins)
 - Test decimal precision (currency calculations)
@@ -820,6 +872,7 @@ export async function generateEmergencySourcingAction(
 **Total**: 14 hours (Phase 10: 9h, Phase 11: 5h)
 
 **Expected Output**:
+
 - 3 new services (~800-1,000 lines total)
 - 1 API route
 - 80+ unit tests
@@ -855,7 +908,6 @@ export async function generateEmergencySourcingAction(
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -863,48 +915,48 @@ export async function generateEmergencySourcingAction(
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/inventory.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "inventory",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/inventory.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/inventory/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "inventory",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/inventory/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "inventory",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/inventory/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/inventory/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -914,66 +966,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "inventory",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/inventory/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/inventory/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "inventory",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -982,16 +1034,17 @@ await logDecision({
 You can still write to `feedback/inventory/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'inventory',
-  action: 'task_completed',
-  rationale: 'INVENTORY-019: Emergency sourcing logic implemented',
-  evidenceUrl: 'artifacts/inventory/2025-10-21/emergency-sourcing.md'
+  scope: "build",
+  actor: "inventory",
+  action: "task_completed",
+  rationale: "INVENTORY-019: Emergency sourcing logic implemented",
+  evidenceUrl: "artifacts/inventory/2025-10-21/emergency-sourcing.md",
 });
 ```
 

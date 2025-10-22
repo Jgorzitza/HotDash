@@ -1,6 +1,7 @@
 # QA Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -18,6 +19,7 @@ git pull origin manager-reopen-20251021
 ## ✅ QA-001 COMPLETE
 
 **Completed** (from feedback/qa/2025-10-21.md):
+
 - ✅ QA-001: Code verification (React Router 7, Shopify GraphQL, security, TypeScript)
 - **Found**: 1 TypeScript error (`app/services/seo/content-optimizer.ts:549` - unterminated string)
 - **Pending**: Engineer fix required
@@ -29,6 +31,7 @@ git pull origin manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/qa/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/qa/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -80,11 +83,13 @@ git pull origin manager-reopen-20251021
 
 **Deliverable**: `artifacts/qa/phase-9-pii-card-test-results.md`
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → Polaris component validation
 - Context7 → React testing patterns
 
 **Acceptance**:
+
 - ✅ All test cases executed
 - ✅ No PII leaks found
 - ✅ All accessibility tests passing
@@ -131,6 +136,7 @@ git pull origin manager-reopen-20251021
 **Deliverable**: `artifacts/qa/phase-10-vendor-alc-test-results.md`
 
 **Acceptance**:
+
 - ✅ All test cases executed
 - ✅ ALC calculations verified accurate
 - ✅ Shopify sync verified
@@ -171,6 +177,7 @@ git pull origin manager-reopen-20251021
 **Deliverable**: `artifacts/qa/phase-10-ci-guards-test-results.md`
 
 **Acceptance**:
+
 - ✅ All 3 guards tested
 - ✅ All test cases passing
 - ✅ Error messages verified
@@ -207,6 +214,7 @@ git pull origin manager-reopen-20251021
 **Deliverable**: `artifacts/qa/phase-11-bundles-bom-test-results.md`
 
 **Acceptance**:
+
 - ✅ All test cases executed
 - ✅ Virtual stock calculation verified
 - ✅ Component decrement verified
@@ -247,6 +255,7 @@ git pull origin manager-reopen-20251021
 **Deliverable**: `artifacts/qa/phase-11-action-attribution-test-results.md`
 
 **Acceptance**:
+
 - ✅ All test cases executed
 - ✅ GA4 tracking verified in DebugView
 - ✅ Attribution calculation verified
@@ -283,6 +292,7 @@ git pull origin manager-reopen-20251021
 **Deliverable**: `artifacts/qa/phase-12-cx-product-loop-test-results.md`
 
 **Acceptance**:
+
 - ✅ All test cases executed
 - ✅ NO PII in embeddings verified
 - ✅ Theme detection working
@@ -293,6 +303,7 @@ git pull origin manager-reopen-20251021
 ## 📋 Acceptance Criteria (All Tasks)
 
 ### Phase 9-12 Testing (14h)
+
 - ✅ QA-019: Phase 9 PII Card testing (3h)
 - ✅ QA-020: Phase 10 Vendor/ALC testing (4h)
 - ✅ QA-021: Phase 10 CI Guards testing (2h)
@@ -308,6 +319,7 @@ git pull origin manager-reopen-20251021
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Shopify Dev MCP**: For Polaris + Shopify testing
    - Validate components
    - Test GraphQL mutations
@@ -323,6 +335,7 @@ git pull origin manager-reopen-20251021
 4. **Web Search**: LAST RESORT ONLY
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/qa/<date>/mcp/phase-9-12-testing.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/qa/<date>/heartbeat.ndjson` (append every 15min if >2h)
 3. **Test Reports**: Save all to `artifacts/qa/`
@@ -344,6 +357,7 @@ git pull origin manager-reopen-20251021
 **Total**: 14 hours (spread across Phases 9-12)
 
 **Expected Output**:
+
 - 6 comprehensive test reports (~300-500 lines each)
 - 100+ test cases executed
 - All issues documented with severity
@@ -366,7 +380,6 @@ git pull origin manager-reopen-20251021
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -374,48 +387,48 @@ git pull origin manager-reopen-20251021
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/qa.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "qa",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/qa.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/qa/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "qa",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/qa/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "qa",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/qa/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/qa/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -425,66 +438,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "qa",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/qa/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/qa/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "qa",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -493,16 +506,17 @@ await logDecision({
 You can still write to `feedback/qa/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'qa',
-  action: 'task_completed',
-  rationale: 'Task description with test results',
-  evidenceUrl: 'artifacts/qa/2025-10-21/task-complete.md'
+  scope: "build",
+  actor: "qa",
+  action: "task_completed",
+  rationale: "Task description with test results",
+  evidenceUrl: "artifacts/qa/2025-10-21/task-complete.md",
 });
 ```
 

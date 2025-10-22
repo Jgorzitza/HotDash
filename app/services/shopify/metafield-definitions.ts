@@ -1,6 +1,6 @@
 /**
  * Shopify Metafield Definitions Service
- * 
+ *
  * Create and manage metafield definitions for BOM (Bill of Materials) components
  * Used for bundle products that consist of multiple component variants
  */
@@ -79,7 +79,7 @@ export interface BOMData {
  * 2. hotdash.bom_is_component (boolean) - Marks products as components
  */
 export async function createBOMMetafieldDefinitions(
-  context: ShopifyServiceContext
+  context: ShopifyServiceContext,
 ): Promise<{ success: boolean; errors: string[] }> {
   const errors: string[] = [];
 
@@ -88,9 +88,10 @@ export async function createBOMMetafieldDefinitions(
       name: "BOM Components",
       namespace: "hotdash",
       key: "bom_components",
-      description: "Bill of Materials: Component variants and quantities for bundle products",
+      description:
+        "Bill of Materials: Component variants and quantities for bundle products",
       type: "json",
-      ownerType: "PRODUCT"
+      ownerType: "PRODUCT",
     },
     {
       name: "Is Component",
@@ -98,8 +99,8 @@ export async function createBOMMetafieldDefinitions(
       key: "bom_is_component",
       description: "Marks product as a component (not sold standalone)",
       type: "boolean",
-      ownerType: "PRODUCT"
-    }
+      ownerType: "PRODUCT",
+    },
   ];
 
   for (const def of definitions) {
@@ -107,8 +108,8 @@ export async function createBOMMetafieldDefinitions(
       const response = await context.admin.graphql(
         CREATE_METAFIELD_DEFINITION_MUTATION,
         {
-          variables: { definition: def }
-        }
+          variables: { definition: def },
+        },
       );
 
       const json = await response.json();
@@ -116,7 +117,7 @@ export async function createBOMMetafieldDefinitions(
 
       if (userErrors.length > 0) {
         errors.push(
-          `${def.key}: ${userErrors.map((e: any) => e.message).join(", ")}`
+          `${def.key}: ${userErrors.map((e: any) => e.message).join(", ")}`,
         );
       }
     } catch (error: any) {
@@ -126,13 +127,13 @@ export async function createBOMMetafieldDefinitions(
 
   return {
     success: errors.length === 0,
-    errors
+    errors,
   };
 }
 
 /**
  * Set BOM components on a bundle product
- * 
+ *
  * @param context Shopify service context
  * @param productId Product GID (e.g., "gid://shopify/Product/123")
  * @param components Array of components with handle, variant map, and quantity
@@ -142,36 +143,33 @@ export async function setBOMComponents(
   context: ShopifyServiceContext,
   productId: string,
   components: BOMComponent[],
-  parameters: string[]
+  parameters: string[],
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const bomData: BOMData = {
-      components: components.map(c => ({
+      components: components.map((c) => ({
         handle: c.handle,
         variantMap: c.variantMap,
-        qty: c.qty
+        qty: c.qty,
       })),
-      parameters
+      parameters,
     };
 
-    const response = await context.admin.graphql(
-      PRODUCT_UPDATE_MUTATION,
-      {
-        variables: {
-          input: {
-            id: productId,
-            metafields: [
-              {
-                namespace: "hotdash",
-                key: "bom_components",
-                type: "json",
-                value: JSON.stringify(bomData)
-              }
-            ]
-          }
-        }
-      }
-    );
+    const response = await context.admin.graphql(PRODUCT_UPDATE_MUTATION, {
+      variables: {
+        input: {
+          id: productId,
+          metafields: [
+            {
+              namespace: "hotdash",
+              key: "bom_components",
+              type: "json",
+              value: JSON.stringify(bomData),
+            },
+          ],
+        },
+      },
+    });
 
     const json = await response.json();
     const userErrors = json.data?.productUpdate?.userErrors || [];
@@ -179,7 +177,7 @@ export async function setBOMComponents(
     if (userErrors.length > 0) {
       return {
         success: false,
-        error: userErrors.map((e: any) => e.message).join(", ")
+        error: userErrors.map((e: any) => e.message).join(", "),
       };
     }
 
@@ -187,33 +185,30 @@ export async function setBOMComponents(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || "Unknown error"
+      error: error.message || "Unknown error",
     };
   }
 }
 
 /**
  * Get BOM components for a bundle product
- * 
+ *
  * @param context Shopify service context
  * @param productId Product GID
  * @returns BOMData or null if not found
  */
 export async function getBOMComponents(
   context: ShopifyServiceContext,
-  productId: string
+  productId: string,
 ): Promise<BOMData | null> {
   try {
-    const response = await context.admin.graphql(
-      GET_PRODUCT_METAFIELD_QUERY,
-      {
-        variables: {
-          id: productId,
-          namespace: "hotdash",
-          key: "bom_components"
-        }
-      }
-    );
+    const response = await context.admin.graphql(GET_PRODUCT_METAFIELD_QUERY, {
+      variables: {
+        id: productId,
+        namespace: "hotdash",
+        key: "bom_components",
+      },
+    });
 
     const json = await response.json();
     const metafield = json.data?.product?.metafield;
@@ -231,33 +226,30 @@ export async function getBOMComponents(
 
 /**
  * Mark a product as a component (not sold standalone)
- * 
+ *
  * @param context Shopify service context
  * @param productId Product GID
  */
 export async function markAsComponent(
   context: ShopifyServiceContext,
-  productId: string
+  productId: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const response = await context.admin.graphql(
-      PRODUCT_UPDATE_MUTATION,
-      {
-        variables: {
-          input: {
-            id: productId,
-            metafields: [
-              {
-                namespace: "hotdash",
-                key: "bom_is_component",
-                type: "boolean",
-                value: "true"
-              }
-            ]
-          }
-        }
-      }
-    );
+    const response = await context.admin.graphql(PRODUCT_UPDATE_MUTATION, {
+      variables: {
+        input: {
+          id: productId,
+          metafields: [
+            {
+              namespace: "hotdash",
+              key: "bom_is_component",
+              type: "boolean",
+              value: "true",
+            },
+          ],
+        },
+      },
+    });
 
     const json = await response.json();
     const userErrors = json.data?.productUpdate?.userErrors || [];
@@ -265,7 +257,7 @@ export async function markAsComponent(
     if (userErrors.length > 0) {
       return {
         success: false,
-        error: userErrors.map((e: any) => e.message).join(", ")
+        error: userErrors.map((e: any) => e.message).join(", "),
       };
     }
 
@@ -273,7 +265,7 @@ export async function markAsComponent(
   } catch (error: any) {
     return {
       success: false,
-      error: error.message || "Unknown error"
+      error: error.message || "Unknown error",
     };
   }
 }

@@ -1,16 +1,16 @@
 /**
  * Server-Sent Events (SSE) API Route
- * 
+ *
  * Provides real-time updates for:
  * - Approval queue count
  * - Tile refresh events
  * - System status changes
- * 
+ *
  * Features:
  * - Heartbeat every 30s (keep-alive)
  * - Auto-reconnection on client
  * - Event types: approval-update, tile-refresh, system-status
- * 
+ *
  * Phase 5 - ENG-023
  */
 
@@ -93,4 +93,3 @@ export async function loader({ request }: LoaderFunctionArgs) {
     },
   });
 }
-

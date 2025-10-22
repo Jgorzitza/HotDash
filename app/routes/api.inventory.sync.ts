@@ -1,22 +1,19 @@
 /**
  * API Route: Inventory Sync
- * 
+ *
  * POST /api/inventory/sync
- * 
+ *
  * Triggers manual inventory sync from Shopify
  * Stores inventory levels in dashboard_fact table
  */
 
-import type { ActionFunctionArgs } from 'react-router';
-import shopify from '~/shopify.server';
-import { syncInventoryFromShopify } from '~/services/shopify/inventory-sync';
+import type { ActionFunctionArgs } from "react-router";
+import shopify from "~/shopify.server";
+import { syncInventoryFromShopify } from "~/services/shopify/inventory-sync";
 
 export async function action({ request }: ActionFunctionArgs) {
-  if (request.method !== 'POST') {
-    return Response.json(
-      { error: 'Method not allowed' },
-      { status: 405 }
-    );
+  if (request.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
@@ -28,11 +25,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (!result.success) {
       return Response.json(
-        { 
-          success: false, 
-          error: result.error || 'Sync failed' 
+        {
+          success: false,
+          error: result.error || "Sync failed",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -42,20 +39,20 @@ export async function action({ request }: ActionFunctionArgs) {
       itemsStored: result.itemsStored,
     });
   } catch (error) {
-    console.error('[Inventory Sync] Error:', error);
+    console.error("[Inventory Sync] Error:", error);
     return Response.json(
-      { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Internal server error' 
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Internal server error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function loader() {
   return Response.json(
-    { error: 'Method not allowed. Use POST to trigger sync.' },
-    { status: 405 }
+    { error: "Method not allowed. Use POST to trigger sync." },
+    { status: 405 },
   );
 }

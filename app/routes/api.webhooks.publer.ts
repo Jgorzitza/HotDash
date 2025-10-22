@@ -1,45 +1,42 @@
 /**
  * API Route: Publer Webhooks
- * 
+ *
  * POST /api/webhooks/publer
- * 
+ *
  * Receives webhook events from Publer
  * Verifies HMAC-SHA256 signature
  * Updates approval and post status
  */
 
-import type { ActionFunctionArgs } from 'react-router';
+import type { ActionFunctionArgs } from "react-router";
 import {
   verifyWebhookSignature,
   processWebhookEvent,
   validateWebhookPayload,
-} from '~/services/publer/webhooks';
+} from "~/services/publer/webhooks";
 
 export async function action({ request }: ActionFunctionArgs) {
-  if (request.method !== 'POST') {
-    return Response.json(
-      { error: 'Method not allowed' },
-      { status: 405 }
-    );
+  if (request.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
     // Get signature from header
-    const signature = request.headers.get('X-Publer-Signature');
+    const signature = request.headers.get("X-Publer-Signature");
     if (!signature) {
       return Response.json(
-        { error: 'Missing X-Publer-Signature header' },
-        { status: 401 }
+        { error: "Missing X-Publer-Signature header" },
+        { status: 401 },
       );
     }
 
     // Get webhook secret from environment
     const webhookSecret = process.env.PUBLER_WEBHOOK_SECRET;
     if (!webhookSecret) {
-      console.error('[Publer Webhook] PUBLER_WEBHOOK_SECRET not configured');
+      console.error("[Publer Webhook] PUBLER_WEBHOOK_SECRET not configured");
       return Response.json(
-        { error: 'Webhook not configured' },
-        { status: 500 }
+        { error: "Webhook not configured" },
+        { status: 500 },
       );
     }
 
@@ -50,15 +47,15 @@ export async function action({ request }: ActionFunctionArgs) {
     const verificationResult = verifyWebhookSignature(
       rawBody,
       signature,
-      webhookSecret
+      webhookSecret,
     );
 
     if (!verificationResult.valid) {
-      console.warn('[Publer Webhook] Invalid signature:', verificationResult.error);
-      return Response.json(
-        { error: 'Invalid signature' },
-        { status: 401 }
+      console.warn(
+        "[Publer Webhook] Invalid signature:",
+        verificationResult.error,
       );
+      return Response.json({ error: "Invalid signature" }, { status: 401 });
     }
 
     // Parse payload
@@ -66,17 +63,14 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
       payload = JSON.parse(rawBody);
     } catch (error) {
-      return Response.json(
-        { error: 'Invalid JSON payload' },
-        { status: 400 }
-      );
+      return Response.json({ error: "Invalid JSON payload" }, { status: 400 });
     }
 
     // Validate payload structure
     if (!validateWebhookPayload(payload)) {
       return Response.json(
-        { error: 'Invalid payload structure' },
-        { status: 400 }
+        { error: "Invalid payload structure" },
+        { status: 400 },
       );
     }
 
@@ -85,8 +79,8 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (!result.success) {
       return Response.json(
-        { error: result.error || 'Processing failed' },
-        { status: 500 }
+        { error: result.error || "Processing failed" },
+        { status: 500 },
       );
     }
 
@@ -97,17 +91,14 @@ export async function action({ request }: ActionFunctionArgs) {
       postUrls: result.postUrls,
     });
   } catch (error) {
-    console.error('[Publer Webhook] Error:', error);
-    return Response.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    console.error("[Publer Webhook] Error:", error);
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
 export async function loader() {
   return Response.json(
-    { error: 'Method not allowed. Use POST for webhooks.' },
-    { status: 405 }
+    { error: "Method not allowed. Use POST for webhooks." },
+    { status: 405 },
   );
 }

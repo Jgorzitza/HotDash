@@ -45,7 +45,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const decisionInfo = ACTION_MAP[actionType];
 
   let velocityAnalysis: unknown = null;
-  if (typeof velocityAnalysisRaw === "string" && velocityAnalysisRaw.trim() !== "") {
+  if (
+    typeof velocityAnalysisRaw === "string" &&
+    velocityAnalysisRaw.trim() !== ""
+  ) {
     try {
       velocityAnalysis = JSON.parse(velocityAnalysisRaw);
     } catch (error) {
@@ -78,24 +81,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   // Store to inventory_actions table for analytics (per spec: docs/design/wireframes/dashboard_wireframes.md line 184-220)
   const supabaseConfig = getSupabaseConfig();
   if (supabaseConfig) {
-    const supabase = createClient(supabaseConfig.url, supabaseConfig.serviceKey);
+    const supabase = createClient(
+      supabaseConfig.url,
+      supabaseConfig.serviceKey,
+    );
 
-    const { error: insertError } = await supabase.from("inventory_actions").insert({
-      action_type: actionType,
-      variant_id: typeof variantId === "string" ? variantId : null,
-      sku: typeof sku === "string" ? sku : null,
-      reorder_quantity:
-        typeof reorderQuantity === "string"
-          ? Number.parseInt(reorderQuantity, 10)
-          : null,
-      vendor_id: typeof vendor === "string" ? vendor : null, // Note: This is vendor name, not UUID - needs enhancement
-      velocity_analysis:
-        typeof velocityAnalysisRaw === "string" ? velocityAnalysisRaw : null,
-      operator_name: actor,
-      notes: typeof note === "string" && note.trim() ? note.trim() : null,
-      metadata: toInputJson(payload),
-      project: "occ",
-    });
+    const { error: insertError } = await supabase
+      .from("inventory_actions")
+      .insert({
+        action_type: actionType,
+        variant_id: typeof variantId === "string" ? variantId : null,
+        sku: typeof sku === "string" ? sku : null,
+        reorder_quantity:
+          typeof reorderQuantity === "string"
+            ? Number.parseInt(reorderQuantity, 10)
+            : null,
+        vendor_id: typeof vendor === "string" ? vendor : null, // Note: This is vendor name, not UUID - needs enhancement
+        velocity_analysis:
+          typeof velocityAnalysisRaw === "string" ? velocityAnalysisRaw : null,
+        operator_name: actor,
+        notes: typeof note === "string" && note.trim() ? note.trim() : null,
+        metadata: toInputJson(payload),
+        project: "occ",
+      });
 
     if (insertError) {
       console.error("Failed to insert inventory_action:", insertError);
@@ -107,4 +115,3 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default action;
-

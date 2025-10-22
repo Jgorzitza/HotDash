@@ -89,7 +89,7 @@ describe("chatwoot escalate action", () => {
 
     const response = await action({ request } as any);
     expect(response.status).toBe(200);
-    
+
     expect(vi.mocked(logDecision)).toHaveBeenCalledWith(
       expect.objectContaining({
         action: "chatwoot.approve_send",
@@ -123,7 +123,7 @@ describe("chatwoot escalate action", () => {
 
     const response = await action({ request } as any);
     expect(response.status).toBe(200);
-    
+
     expect(vi.mocked(logDecision)).toHaveBeenCalledWith(
       expect.objectContaining({
         payload: expect.objectContaining({
@@ -158,7 +158,7 @@ describe("chatwoot escalate action", () => {
 
     const response = await action({ request } as any);
     expect(response.status).toBe(200);
-    
+
     const logCall = vi.mocked(logDecision).mock.calls[0][0];
     expect(logCall.payload.grades.tone).toBeGreaterThanOrEqual(1);
     expect(logCall.payload.grades.tone).toBeLessThanOrEqual(5);

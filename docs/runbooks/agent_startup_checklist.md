@@ -9,17 +9,20 @@
 **⚠️ CRITICAL: All agents work on the SAME daily branch. Manager announces branch name.**
 
 - [ ] **Fetch Latest**:
+
   ```bash
   git fetch origin
   ```
 
 - [ ] **Checkout Today's Branch** (Current: `agent-launch-20251022`):
+
   ```bash
   git checkout agent-launch-20251022
   git pull origin agent-launch-20251022
   ```
 
 - [ ] **Verify Branch**:
+
   ```bash
   git branch --show-current  # Should show: agent-launch-20251022
   ```
@@ -30,6 +33,7 @@
   - **Example**: "Need `app/routes/dashboard.tsx` owned by Engineer - awaiting coordination"
 
 **Commit Style** (when you make changes):
+
 ```bash
 git add your/files
 git commit -m "feat(your-agent-name): what you did"
@@ -43,6 +47,7 @@ git push origin agent-launch-20251022
 **⚠️ CRITICAL: Pull documentation BEFORE writing ANY code. Training data is outdated.**
 
 **MCP TOOL PRIORITY** (Effective 2025-10-21):
+
 1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
 2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
 3. **Web Search** → LAST RESORT ONLY
@@ -61,8 +66,10 @@ git push origin agent-launch-20251022
   - About to use LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "your-topic")`
 
 - [ ] **Log Tool Usage in Feedback**:
+
   ```md
   ## HH:MM - Shopify Dev MCP: Polaris Card component
+
   - Topic: [what I need to learn]
   - Key Learning: [specific pattern/requirement discovered]
   - Applied to: [files I'll change]
@@ -71,7 +78,8 @@ git push origin agent-launch-20251022
 - [ ] **Web Search** (LAST RESORT ONLY): If neither MCP has the library
   - Example: `web_search("Supabase direct connection vs pooler official docs")`
 
-**Why This Matters**: 
+**Why This Matters**:
+
 - Training data is 6-12 months old
 - Libraries change constantly (Prisma multi-schema rules, React Router 7 patterns)
 - 1 tool call saves 3-5 failed deployments (~15 minutes)
@@ -104,11 +112,11 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
 - [ ] Log startup via `logDecision()`:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: '<your-agent>',
-    action: 'startup_complete',
-    rationale: 'Agent startup complete, found X active tasks, starting TASK-ID',
-    evidenceUrl: 'scripts/agent/get-my-tasks.ts'
+    scope: "build",
+    actor: "<your-agent>",
+    action: "startup_complete",
+    rationale: "Agent startup complete, found X active tasks, starting TASK-ID",
+    evidenceUrl: "scripts/agent/get-my-tasks.ts",
   });
   ```
 
@@ -117,6 +125,7 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
 ## 2.1) Growth Engine Evidence Setup (NEW - Effective 2025-10-21) (30 sec)
 
 - [ ] **Create Evidence Directories**:
+
   ```bash
   mkdir -p artifacts/<your-agent>/2025-10-21/mcp
   mkdir -p artifacts/<your-agent>/2025-10-21/screenshots  # if Designer/Pilot/QA
@@ -126,14 +135,26 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
   - Create file: `artifacts/<your-agent>/2025-10-21/mcp/<task-name>.jsonl`
   - Append after EACH MCP tool call:
     ```json
-    {"tool":"shopify-dev|context7|web-search","doc_ref":"<url>","request_id":"<id>","timestamp":"2025-10-21T14:30:00Z","purpose":"Learn Polaris Card component"}
+    {
+      "tool": "shopify-dev|context7|web-search",
+      "doc_ref": "<url>",
+      "request_id": "<id>",
+      "timestamp": "2025-10-21T14:30:00Z",
+      "purpose": "Learn Polaris Card component"
+    }
     ```
 
 - [ ] **Prepare Heartbeat** (if task will be >2 hours):
   - Create file: `artifacts/<your-agent>/2025-10-21/heartbeat.ndjson`
   - Append every 15 minutes:
     ```json
-    {"timestamp":"2025-10-21T14:00:00Z","task":"ENG-029","status":"doing","progress":"40%","file":"app/components/PIICard.tsx"}
+    {
+      "timestamp": "2025-10-21T14:00:00Z",
+      "task": "ENG-029",
+      "status": "doing",
+      "progress": "40%",
+      "file": "app/components/PIICard.tsx"
+    }
     ```
 
 **Why**: CI guards (guard-mcp, idle-guard) are merge blockers - PRs fail without evidence
@@ -153,6 +174,7 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
 **ONLY METHOD**: Call `logDecision()` - IMMEDIATE on status changes, every 2 hours if in-progress
 
 **When to log** (don't wait for 2-hour interval):
+
 - ✅ Task started (status: 'in_progress')
 - ✅ Task completed (status: 'completed') - IMMEDIATE
 - ✅ Task blocked (status: 'blocked') - IMMEDIATE
@@ -162,24 +184,25 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
 **Why immediate logging matters**: Manager and other agents can see blockers cleared in real-time without waiting for next direction update
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 await logDecision({
-  scope: 'build',
-  actor: '<your-agent>',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',            // or 'completed', 'blocked'
-  progressPct: 50,                  // 0-100
-  action: 'task_progress',
-  rationale: 'What you did + evidence',
-  evidenceUrl: 'artifacts/<agent>/2025-10-22/task.md',
+  scope: "build",
+  actor: "<your-agent>",
+  taskId: "{TASK-ID}",
+  status: "in_progress", // or 'completed', 'blocked'
+  progressPct: 50, // 0-100
+  action: "task_progress",
+  rationale: "What you did + evidence",
+  evidenceUrl: "artifacts/<agent>/2025-10-22/task.md",
   durationActual: 2.0,
-  nextAction: 'What you\'re doing next',
-  payload: {                        // Rich metadata
-    commits: ['abc123f'],
-    files: [{ path: 'app/routes/dashboard.tsx', lines: 45, type: 'modified' }],
-    tests: { overall: '22/22 passing' }
-  }
+  nextAction: "What you're doing next",
+  payload: {
+    // Rich metadata
+    commits: ["abc123f"],
+    files: [{ path: "app/routes/dashboard.tsx", lines: 45, type: "modified" }],
+    tests: { overall: "22/22 passing" },
+  },
 });
 ```
 
@@ -205,23 +228,23 @@ await logDecision({
 - [ ] Log completion via `logDecision()`:
   ```typescript
   await logDecision({
-    scope: 'build',
-    actor: '<your-agent>',
-    taskId: '{TASK-ID}',
-    status: 'completed',
+    scope: "build",
+    actor: "<your-agent>",
+    taskId: "{TASK-ID}",
+    status: "completed",
     progressPct: 100,
-    action: 'task_completed',
-    rationale: 'Summary: what you built',
-    evidenceUrl: 'artifacts/<agent>/evidence.md',
+    action: "task_completed",
+    rationale: "Summary: what you built",
+    evidenceUrl: "artifacts/<agent>/evidence.md",
     durationActual: 3.5,
     payload: {
-      commits: ['abc123f', 'def456g'],
+      commits: ["abc123f", "def456g"],
       files: [
-        { path: 'app/routes/dashboard.tsx', lines: 245, type: 'modified' },
-        { path: 'app/components/Card.tsx', lines: 120, type: 'created' }
+        { path: "app/routes/dashboard.tsx", lines: 245, type: "modified" },
+        { path: "app/components/Card.tsx", lines: 120, type: "created" },
       ],
-      tests: { unit: { passing: 10, total: 10 }, overall: '10/10 passing' }
-    }
+      tests: { unit: { passing: 10, total: 10 }, overall: "10/10 passing" },
+    },
   });
   ```
 - [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in payload.
@@ -250,8 +273,10 @@ await logDecision({
 - [ ] **API integrations?** → Pull relevant library docs and verify implementation
 
 **Evidence Format in QA Feedback**:
+
 ```md
 ## Code Review: [Feature/File]
+
 - Verified using: Context7 `/library/path` - topic: [what I checked]
 - Official docs say: [key requirement from docs]
 - Code matches: ✅ / ❌ [explain if mismatch]

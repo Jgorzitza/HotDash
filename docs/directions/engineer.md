@@ -1,6 +1,7 @@
 # Engineer Direction v7.0 — Growth Engine Integration
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -19,6 +20,7 @@ git branch --show-current  # Verify: should show manager-reopen-20251021
 ## ✅ PHASES 1-8 COMPLETE - VERIFIED
 
 **All Previous Work Complete** (from feedback/engineer/2025-10-21.md):
+
 - ✅ Phase 1: Approval Queue Foundation
 - ✅ Phase 2: P0 Fixes (10 issues resolved)
 - ✅ Phase 3: Missing Dashboard Tiles (Idea Pool, CEO Agent, Unread Messages)
@@ -38,12 +40,14 @@ git branch --show-current  # Verify: should show manager-reopen-20251021
 **Context**: Growth Engine Final Pack integrated into project (commit: 546bd0e)
 
 ### Agent Orchestration Model
+
 - **Front-End Agents**: Customer-Front (CX triage), CEO-Front (business intelligence)
 - **Sub-Agents**: Accounts (orders, refunds), Storefront (inventory, products)
 - **Specialist Agents**: Analytics, Inventory, Content/SEO, Risk (run in background to keep data fresh)
 - **Pre-Generation + HITL**: Agents work in background (pre-generate replies, suggestions, insights) → idle until operator approval
 
 ### Security & Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL** (code changes): `artifacts/engineer/<date>/mcp/<tool>.jsonl`
 2. **Heartbeat NDJSON** (tasks >2h): `artifacts/engineer/<date>/heartbeat.ndjson` (15min max staleness)
 3. **Dev MCP Ban**: NO Dev MCP imports in `app/` (production code only)
@@ -63,24 +67,29 @@ git branch --show-current  # Verify: should show manager-reopen-20251021
 ### Completed Work
 
 **1. ENG-029: PII Redaction Utility** ✅ COMPLETE
+
 - File: `app/utils/pii-redaction.ts` (178 lines)
 - Tests: `tests/unit/pii-redaction.spec.ts` (167 lines, 13/13 passing ✅)
 - Functions: maskEmail, maskPhone, maskAddress, maskOrderId, maskTracking, redactCustomerInfo
 - Evidence: Commit d585824
 
 **2. ENG-030: PII Card Component** ✅ COMPLETE
+
 - File: `app/components/PIICard.tsx` (462 lines)
 - Tests: `tests/unit/PIICard.spec.ts` (266 lines, 22/22 passing ✅)
 - Features: Warning banner, operator-only display, copy-to-clipboard, ARIA compliant
 - Evidence: Commit d585824
 
 **3. ENG-031: CX Escalation Modal Integration** ⏭️ DEFERRED
+
 - Reason: Architecture mismatch (order-based PII vs multi-context Chatwoot conversations)
 - Decision: CEO approved deferral to Phase 11-12
 - Evidence: Commit dad6ae4
 
 ### Context (Original)
+
 **Growth Engine Handoff Pattern**:
+
 ```
 Customer → Customer-Front (triage)
          → Sub-agent executes (Accounts/Storefront)
@@ -106,6 +115,7 @@ Customer → Customer-Front (triage)
 ### Completed Work
 
 **4. ENG-033: GA4 Event Emission** ✅ COMPLETE
+
 - File: `app/utils/analytics.ts` (286 lines)
 - Tests: `tests/unit/analytics.spec.ts` (123 lines, 10/10 passing ✅)
 - Functions: trackEvent, trackPageView, trackAddToCart, trackBeginCheckout, trackPurchase
@@ -113,6 +123,7 @@ Customer → Customer-Front (triage)
 - Evidence: Commit 3b39b60
 
 **5. ENG-032: Action Queue Card** ✅ COMPLETE
+
 - File: `app/components/ActionQueueCard.tsx` (295 lines)
 - Tests: `tests/unit/ActionQueueCard.spec.tsx` (135 lines, 16/16 passing ✅)
 - Features: Attribution tracking, sessionStorage, "📊 Tracked" badge, ROI display
@@ -124,6 +135,7 @@ Customer → Customer-Front (triage)
 ## ✅ BLOCKER-003: Test Auth Setup — COMPLETE (2025-10-21)
 
 **6. Test Auth Documentation** ✅ COMPLETE
+
 - File: `docs/runbooks/test-auth-setup.md` (280 lines)
 - Fixed: `app/routes/settings.tsx` (mock mode bypass with `?mock=1`)
 - Unblocked: PILOT-006 (Settings page smoke test)
@@ -134,6 +146,7 @@ Customer → Customer-Front (triage)
 ## ✅ P0 CRITICAL FIX: Settings Tab Navigation (2025-10-21)
 
 **7. Settings Tabs Fix** ✅ COMPLETE (30 min)
+
 - Issue: `<s-tabs>` web component broke navigation (stringifies objects)
 - Fix: Replaced with accessible button-based tabs
 - File: `app/routes/settings.tsx` (accessible navigation with ARIA)
@@ -145,6 +158,7 @@ Customer → Customer-Front (triage)
 ## 📊 TOTAL SESSION OUTPUT (2025-10-21, 6 hours)
 
 **Files Created/Updated**: 10
+
 - 4 source files (pii-redaction.ts, PIICard.tsx, analytics.ts, ActionQueueCard.tsx)
 - 4 test files (61 tests total, 100% passing)
 - 1 documentation (test-auth-setup.md)
@@ -157,7 +171,6 @@ Customer → Customer-Front (triage)
 
 ---
 
-
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
 **Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
@@ -165,48 +178,48 @@ Customer → Customer-Front (triage)
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/engineer.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "engineer",
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/engineer.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/engineer/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "engineer",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/engineer/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "engineer",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
-  evidenceUrl: 'artifacts/engineer/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale: "{Task name} complete, {X}/{X} tests passing",
+  evidenceUrl: "artifacts/engineer/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
 });
 ```
 
@@ -216,66 +229,66 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "engineer",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/engineer/2025-10-22.md'
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/engineer/2025-10-22.md",
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work instantly:
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
-- `query-agent-status.ts` - Shows your current task and progress  
+- `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
-
 
 ### Daily Shutdown (with Self-Grading)
 
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "engineer",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    dailySummary: "{TASK-A} complete, {TASK-B} at 75%",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
-      didWell: ['Used MCP first', 'Good test coverage'],
-      toChange: ['Ask questions earlier'],
-      toStop: 'Making assumptions'
+      didWell: ["Used MCP first", "Good test coverage"],
+      toChange: ["Ask questions earlier"],
+      toStop: "Making assumptions",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -284,21 +297,24 @@ await logDecision({
 You can still write to `feedback/engineer/2025-10-22.md` for detailed notes, but database is the primary method.
 
 ---
+
 ## 🔧 MANDATORY: DEV MEMORY SYSTEM (Effective Immediately)
 
 **ALL ENGINEERS MUST**: Call `logDecision()` at task completion
 
 **Usage**:
+
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // At end of every task:
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  action: 'task_completed',
-  rationale: 'ENG-029: PII redaction utility implemented with 13/13 tests passing',
-  evidenceUrl: 'artifacts/engineer/2025-10-21/pii-card-complete.md'
+  scope: "build",
+  actor: "engineer",
+  action: "task_completed",
+  rationale:
+    "ENG-029: PII redaction utility implemented with 13/13 tests passing",
+  evidenceUrl: "artifacts/engineer/2025-10-21/pii-card-complete.md",
 });
 ```
 
@@ -307,6 +323,7 @@ await logDecision({
 **Protection**: decision_log has 100% database protection (triggers prevent delete/update, even for Prisma)
 
 **When to Call**:
+
 - ✅ Task completion
 - ✅ Blocker discovery
 - ✅ Critical fix applied
@@ -365,15 +382,19 @@ export interface RedactedCustomerInfo {
   trackingLastEvent?: string; // last event only
 }
 
-export function redactCustomerInfo(fullInfo: CustomerInfo): RedactedCustomerInfo;
+export function redactCustomerInfo(
+  fullInfo: CustomerInfo,
+): RedactedCustomerInfo;
 ```
 
 **Tests**: `app/utils/pii-redaction.test.ts`
+
 - Test each masking function with edge cases
 - Test full redaction with complete customer object
 - Verify NO full PII in redacted output
 
 **Acceptance**:
+
 - ✅ All masking functions implemented
 - ✅ Unit tests passing (100% coverage for redaction logic)
 - ✅ TypeScript types defined
@@ -396,11 +417,11 @@ interface PIICardProps {
   orderId: string; // Full: "#1234567890"
   orderStatus: string; // e.g., "fulfilled"
   fulfillmentStatus: string; // e.g., "shipped"
-  
+
   // Customer Details
   email: string; // Full: justin@hotrodan.com
   phone?: string; // Full: 555-123-4567
-  
+
   // Shipping Address (Full)
   shippingAddress: {
     name: string;
@@ -411,7 +432,7 @@ interface PIICardProps {
     country: string;
     zip: string;
   };
-  
+
   // Tracking (Full)
   tracking?: {
     carrier: string;
@@ -420,7 +441,7 @@ interface PIICardProps {
     lastEvent: string;
     lastEventDate: string;
   };
-  
+
   // Line Items
   lineItems: Array<{
     title: string;
@@ -432,6 +453,7 @@ interface PIICardProps {
 ```
 
 **Design Requirements**:
+
 - **Polaris Card** with warning banner: "⚠️ OPERATOR ONLY — NOT SENT TO CUSTOMER"
 - **Color**: Yellow banner (`tone="warning"`)
 - **Sections**:
@@ -442,14 +464,17 @@ interface PIICardProps {
   5. Line Items (DataTable with title, SKU, qty, price)
 
 **Polaris Components**:
+
 - `Card`, `Banner`, `Text`, `InlineStack`, `BlockStack`, `Button` (copy), `Link`, `DataTable`
 
 **Accessibility**:
+
 - ARIA label: `aria-label="Customer PII - Operator Only"`
 - Warning banner with `role="alert"`
 - Copy buttons with descriptive labels: "Copy email", "Copy phone", "Copy address"
 
 **Tests**: `app/components/PIICard.test.tsx`
+
 - Renders all customer details correctly
 - Warning banner present
 - Copy buttons functional
@@ -457,13 +482,15 @@ interface PIICardProps {
 - Line items table renders correctly
 
 **Acceptance**:
+
 - ✅ PIICard component implemented with all fields
 - ✅ Warning banner prominent and accessible
 - ✅ Copy functionality working for email/phone/address
 - ✅ Unit tests passing (component rendering + interactions)
 - ✅ No linter errors
 
-**MCP Required**: 
+**MCP Required**:
+
 - Shopify Dev MCP → Polaris Card, Banner, DataTable, Button components + validate with `validate_component_codeblocks`
 
 ---
@@ -475,6 +502,7 @@ interface PIICardProps {
 **Why Deferred**: Architecture mismatch between order-based PII Card and Chatwoot's multi-context conversations
 
 **The Problem**:
+
 - PII Card designed for order inquiries (requires: orderId, shipping address, tracking, line items)
 - Chatwoot conversations span multiple contexts:
   - **Order-based CX** (30-40%): "Where's my order #1234?" → ✅ Has orderId, can use PII Card
@@ -482,19 +510,23 @@ interface PIICardProps {
 - Current CX Escalation Modal design assumes all conversations have order context (they don't)
 
 **Architectural Options** (decision deferred to Phase 11-12):
+
 - **Option A**: Conditional display (show PII Card only if order context exists)
 - **Option B**: Separate modals (CX Escalation for general, Order Inquiry for order-based)
 - **Option C**: Generic Customer Context (redesign PII Card to handle both order and non-order scenarios)
 
 **When to Resolve**: Phase 11-12 (Customer-Front Agent implementation)
+
 - Will clarify conversation handoff patterns (transfer_to_accounts vs transfer_to_storefront)
 - Can make informed architectural decision with full context understanding
 
 **What's Already Built** (still valuable):
+
 - ✅ ENG-029: PII redaction utility (works for both scenarios)
 - ✅ ENG-030: PII Card component (can be integrated once architecture resolved)
 
 **Next Steps** (Phase 11-12):
+
 1. Build Customer-Front Agent and understand conversation patterns
 2. Choose Option A, B, or C based on actual usage patterns
 3. Implement CX Escalation Modal integration with chosen architecture
@@ -509,7 +541,9 @@ interface PIICardProps {
 **Priority**: P0 (CEO stated this is CRITICAL, not nice-to-have)
 
 ### Context
+
 **Action Queue → GA4 Attribution Flow**:
+
 ```
 1. Action approved → action_key generated: "seo-fix-powder-board-2025-10-21"
 2. CEO clicks link from approved action → lands on product page
@@ -532,17 +566,19 @@ interface PIICardProps {
 **Required Changes**:
 
 1. **Add action_key to URL params** when user clicks action link:
+
    ```typescript
    // When action card clicked:
    const actionUrl = new URL(action.target_url);
-   actionUrl.searchParams.set('hd_action', action.action_key);
+   actionUrl.searchParams.set("hd_action", action.action_key);
    // Result: /products/powder-boards?hd_action=seo-fix-powder-board-2025-10-21
    ```
 
 2. **Store action_key in session**:
+
    ```typescript
    // On link click:
-   sessionStorage.setItem('hd_current_action', action.action_key);
+   sessionStorage.setItem("hd_current_action", action.action_key);
    // Expires: 24 hours or session end
    ```
 
@@ -551,11 +587,13 @@ interface PIICardProps {
    - Tooltip: "ROI tracked via GA4 for 28 days"
 
 **Tests**: `app/components/ActionQueueCard.test.tsx` (UPDATE)
+
 - Action link includes `hd_action` param
 - Session storage set on click
 - Badge renders for tracked actions
 
 **Acceptance**:
+
 - ✅ Action links include `hd_action` URL param
 - ✅ Session storage persists action_key
 - ✅ Visual indicator present
@@ -574,21 +612,22 @@ interface PIICardProps {
 **Required Changes**:
 
 1. **Extend gtag wrapper** to include `hd_action_key`:
+
    ```typescript
    export function trackEvent(
-     eventName: 'page_view' | 'add_to_cart' | 'begin_checkout' | 'purchase',
-     params?: Record<string, any>
+     eventName: "page_view" | "add_to_cart" | "begin_checkout" | "purchase",
+     params?: Record<string, any>,
    ) {
      // Check for active action
-     const actionKey = sessionStorage.getItem('hd_current_action');
-     
+     const actionKey = sessionStorage.getItem("hd_current_action");
+
      if (actionKey) {
-       gtag('event', eventName, {
+       gtag("event", eventName, {
          ...params,
          hd_action_key: actionKey, // Custom dimension
        });
      } else {
-       gtag('event', eventName, params);
+       gtag("event", eventName, params);
      }
    }
    ```
@@ -600,38 +639,43 @@ interface PIICardProps {
    - **purchase**: Order completed
 
 3. **Clear action_key** after 24 hours or purchase:
+
    ```typescript
    // After purchase event:
-   sessionStorage.removeItem('hd_current_action');
+   sessionStorage.removeItem("hd_current_action");
    ```
 
 4. **Debug mode** (dev only):
    ```typescript
-   if (process.env.NODE_ENV === 'development') {
-     console.log('[GA4] Event:', eventName, 'Action Key:', actionKey);
+   if (process.env.NODE_ENV === "development") {
+     console.log("[GA4] Event:", eventName, "Action Key:", actionKey);
    }
    ```
 
 **Integration Points**:
+
 - `app/routes/_app.dashboard.tsx` - page_view
 - `app/routes/_app.products.$handle.tsx` - add_to_cart
 - `app/routes/_app.cart.tsx` - begin_checkout
 - `app/routes/_app.checkout.thank-you.tsx` - purchase
 
 **Tests**: `app/utils/analytics.test.ts` (UPDATE)
+
 - trackEvent includes `hd_action_key` when session storage set
 - trackEvent excludes `hd_action_key` when not set
 - Action key cleared after purchase
 - Debug logs in dev mode only
 
 **Acceptance**:
+
 - ✅ GA4 events include `hd_action_key` custom dimension
 - ✅ All 4 conversion events instrumented
 - ✅ Session storage cleared after purchase
 - ✅ Tests passing
 - ✅ Verified in GA4 DebugView (dev environment)
 
-**MCP Required**: 
+**MCP Required**:
+
 - Context7 → Google Analytics 4 event tracking API
 - Web search → "GA4 custom dimensions event scope implementation" (if needed)
 
@@ -640,6 +684,7 @@ interface PIICardProps {
 ## 📋 Acceptance Criteria (Phase 9 + 11)
 
 ### Phase 9: PII Card (4h)
+
 - ✅ `app/utils/pii-redaction.ts` implemented with all masking functions
 - ✅ `app/components/PIICard.tsx` implemented with warning banner
 - ✅ `CXEscalationModal.tsx` updated with split UI (public reply + PII Card)
@@ -649,6 +694,7 @@ interface PIICardProps {
 - ✅ TypeScript clean, no linter errors
 
 ### Phase 11: Action Attribution (2h)
+
 - ✅ Action links include `hd_action` URL param
 - ✅ Session storage persists action_key (24h TTL)
 - ✅ GA4 events emit `hd_action_key` custom dimension (page_view, add_to_cart, begin_checkout, purchase)
@@ -662,6 +708,7 @@ interface PIICardProps {
 ## 🔧 Tools & Resources
 
 ### MCP Tools (MANDATORY)
+
 1. **Shopify Dev MCP**: FIRST for all Shopify/Polaris
    - Polaris components (Card, Banner, DataTable, Tabs, Layout, Button, etc.)
    - `validate_component_codeblocks` for Polaris components (REQUIRED)
@@ -677,17 +724,20 @@ interface PIICardProps {
    - Example: "GA4 custom dimensions event scope" (if Context7 doesn't have)
 
 ### Evidence Requirements (CI Merge Blockers)
+
 1. **MCP Evidence JSONL**: `artifacts/engineer/<date>/mcp/pii-card.jsonl` and `mcp/ga4-attribution.jsonl`
 2. **Heartbeat NDJSON**: `artifacts/engineer/<date>/heartbeat.ndjson` (append every 15min if >2h)
 3. **Dev MCP Check**: Verify NO Dev MCP imports in `app/` before PR
 4. **PR Template**: Fill out all sections (MCP Evidence + Heartbeat + Dev MCP Check)
 
 ### React Router 7 Enforcement
+
 - ✅ Use `Response.json()` NOT `json()` (Manager fixed violation in commit 19c09b3)
 - ✅ NO `@remix-run` imports (verify with `rg "@remix-run" app/`)
 - ✅ Loaders return `Response` objects
 
 ### Testing
+
 - Run `npm run test` after each task
 - Fix any test failures immediately
 - Ensure 100% pass rate before PR
@@ -731,6 +781,7 @@ interface PIICardProps {
 **Total**: 6 hours (Phase 9: 4h, Phase 11: 2h)
 
 **Expected Output**:
+
 - 5 files modified (3 new, 2 updated)
 - ~800-1,000 lines added
 - All tests passing
@@ -765,8 +816,9 @@ interface PIICardProps {
 **Objective**: Support Designer (DES-017) with PII Card QA validation
 
 **Work**:
+
 - Provide walkthrough of PIICard component implementation
-- Answer questions on copy-to-clipboard functionality  
+- Answer questions on copy-to-clipboard functionality
 - Clarify ARIA implementation for accessibility review
 - Assist with any UI refinements Designer identifies
 
@@ -781,6 +833,7 @@ interface PIICardProps {
 **Objective**: Support QA (QA-009) and Pilot (PILOT-012) with PII Card testing
 
 **Work**:
+
 - Clarify PII redaction test scenarios
 - Provide test data examples
 - Debug any test failures
@@ -799,13 +852,14 @@ interface PIICardProps {
 ## 🔐 DEV MEMORY: MANDATORY
 
 Call `logDecision({ scope: 'build' })` at EVERY task completion:
+
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 await logDecision({
-  scope: 'build',
-  actor: 'engineer',
-  action: 'task_completed',
-  rationale: 'ENG-034: Supported Designer PII Card validation',
-  evidenceUrl: 'artifacts/engineer/2025-10-21/designer-support.md'
+  scope: "build",
+  actor: "engineer",
+  action: "task_completed",
+  rationale: "ENG-034: Supported Designer PII Card validation",
+  evidenceUrl: "artifacts/engineer/2025-10-21/designer-support.md",
 });
 ```

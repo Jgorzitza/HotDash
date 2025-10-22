@@ -1,13 +1,13 @@
 /**
  * Publer API Client
- * 
+ *
  * Features:
  * - OAuth authentication with Bearer-API token
  * - Comprehensive error handling
  * - Exponential backoff retry logic
  * - Rate limiting handling
  * - Type-safe API responses
- * 
+ *
  * Official API Docs: https://publer.com/docs
  */
 
@@ -22,9 +22,9 @@ import type {
   PublerRetryConfig,
   PublerRateLimitInfo,
   PublerAPIResponse,
-} from './types';
+} from "./types";
 
-const DEFAULT_BASE_URL = 'https://app.publer.com/api/v1';
+const DEFAULT_BASE_URL = "https://app.publer.com/api/v1";
 
 const DEFAULT_RETRY_CONFIG: PublerRetryConfig = {
   maxRetries: 3,
@@ -59,9 +59,9 @@ export class PublerClient {
   ): Promise<PublerAPIResponse<T>> {
     const url = `${this.config.baseUrl}/${path}`;
     const headers = {
-      'Authorization': `Bearer-API ${this.config.apiKey}`,
-      'Publer-Workspace-Id': this.config.workspaceId,
-      'Content-Type': 'application/json',
+      Authorization: `Bearer-API ${this.config.apiKey}`,
+      "Publer-Workspace-Id": this.config.workspaceId,
+      "Content-Type": "application/json",
       ...options.headers,
     };
 
@@ -78,40 +78,59 @@ export class PublerClient {
       if (response.status === 429) {
         if (retryCount < this.retryConfig.maxRetries) {
           const delay = this.calculateBackoffDelay(retryCount);
-          console.warn(`[Publer] Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`);
+          console.warn(
+            `[Publer] Rate limited. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`,
+          );
           await this.sleep(delay);
           return this.request<T>(path, options, retryCount + 1);
         }
-        throw this.createError('RATE_LIMIT_EXCEEDED', 'Rate limit exceeded', 429, response);
+        throw this.createError(
+          "RATE_LIMIT_EXCEEDED",
+          "Rate limit exceeded",
+          429,
+          response,
+        );
       }
 
       // Handle server errors (500-599) with retry
       if (response.status >= 500 && response.status < 600) {
         if (retryCount < this.retryConfig.maxRetries) {
           const delay = this.calculateBackoffDelay(retryCount);
-          console.warn(`[Publer] Server error ${response.status}. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`);
+          console.warn(
+            `[Publer] Server error ${response.status}. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`,
+          );
           await this.sleep(delay);
           return this.request<T>(path, options, retryCount + 1);
         }
         const errorText = await response.text();
-        throw this.createError('SERVER_ERROR', `Server error: ${errorText}`, response.status, response);
+        throw this.createError(
+          "SERVER_ERROR",
+          `Server error: ${errorText}`,
+          response.status,
+          response,
+        );
       }
 
       // Handle client errors (400-499)
       if (response.status >= 400 && response.status < 500) {
         const errorText = await response.text();
-        throw this.createError('CLIENT_ERROR', errorText || 'Client error', response.status, response);
+        throw this.createError(
+          "CLIENT_ERROR",
+          errorText || "Client error",
+          response.status,
+          response,
+        );
       }
 
       // Success response
-      const data = await response.json() as T;
+      const data = (await response.json()) as T;
       return {
         success: true,
         data,
         rateLimitInfo: this.rateLimitInfo,
       };
     } catch (error) {
-      if (error instanceof Error && 'code' in error) {
+      if (error instanceof Error && "code" in error) {
         return {
           success: false,
           error: error as any as PublerError,
@@ -122,14 +141,18 @@ export class PublerClient {
       // Network error or unexpected error - retry
       if (retryCount < this.retryConfig.maxRetries) {
         const delay = this.calculateBackoffDelay(retryCount);
-        console.warn(`[Publer] Network error. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`, error);
+        console.warn(
+          `[Publer] Network error. Retrying in ${delay}ms (attempt ${retryCount + 1}/${this.retryConfig.maxRetries})`,
+          error,
+        );
         await this.sleep(delay);
         return this.request<T>(path, options, retryCount + 1);
       }
 
       const networkError: PublerError = {
-        code: 'NETWORK_ERROR',
-        message: error instanceof Error ? error.message : 'Unknown network error',
+        code: "NETWORK_ERROR",
+        message:
+          error instanceof Error ? error.message : "Unknown network error",
         status: 0,
         details: error,
       };
@@ -144,9 +167,9 @@ export class PublerClient {
    * Extract rate limit information from response headers
    */
   private extractRateLimitInfo(headers: Headers): void {
-    const limit = headers.get('X-RateLimit-Limit');
-    const remaining = headers.get('X-RateLimit-Remaining');
-    const reset = headers.get('X-RateLimit-Reset');
+    const limit = headers.get("X-RateLimit-Limit");
+    const remaining = headers.get("X-RateLimit-Remaining");
+    const reset = headers.get("X-RateLimit-Reset");
 
     if (limit && remaining && reset) {
       this.rateLimitInfo = {
@@ -161,7 +184,9 @@ export class PublerClient {
    * Calculate exponential backoff delay
    */
   private calculateBackoffDelay(retryCount: number): number {
-    const delay = this.retryConfig.initialDelay * Math.pow(this.retryConfig.backoffMultiplier, retryCount);
+    const delay =
+      this.retryConfig.initialDelay *
+      Math.pow(this.retryConfig.backoffMultiplier, retryCount);
     return Math.min(delay, this.retryConfig.maxDelay);
   }
 
@@ -169,20 +194,27 @@ export class PublerClient {
    * Sleep utility for retry delays
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
    * Create standardized error object
    */
-  private createError(code: string, message: string, status: number, response?: Response): Error {
+  private createError(
+    code: string,
+    message: string,
+    status: number,
+    response?: Response,
+  ): Error {
     const error = new Error(message);
     (error as any).code = code;
     (error as any).status = status;
-    (error as any).details = response ? {
-      url: response.url,
-      statusText: response.statusText,
-    } : undefined;
+    (error as any).details = response
+      ? {
+          url: response.url,
+          statusText: response.statusText,
+        }
+      : undefined;
     return error;
   }
 
@@ -190,8 +222,8 @@ export class PublerClient {
    * List workspaces accessible to the authenticated user
    */
   async listWorkspaces(): Promise<PublerAPIResponse<PublerWorkspace[]>> {
-    return this.request<PublerWorkspace[]>('workspaces', {
-      method: 'GET',
+    return this.request<PublerWorkspace[]>("workspaces", {
+      method: "GET",
     });
   }
 
@@ -199,27 +231,34 @@ export class PublerClient {
    * List social media accounts in the workspace
    */
   async listAccounts(): Promise<PublerAPIResponse<PublerAccount[]>> {
-    return this.request<PublerAccount[]>('accounts', {
-      method: 'GET',
+    return this.request<PublerAccount[]>("accounts", {
+      method: "GET",
     });
   }
 
   /**
    * Get account info by ID
    */
-  async getAccount(accountId: string): Promise<PublerAPIResponse<PublerAccount>> {
-    return this.request<PublerAccount>(`accounts/${encodeURIComponent(accountId)}`, {
-      method: 'GET',
-    });
+  async getAccount(
+    accountId: string,
+  ): Promise<PublerAPIResponse<PublerAccount>> {
+    return this.request<PublerAccount>(
+      `accounts/${encodeURIComponent(accountId)}`,
+      {
+        method: "GET",
+      },
+    );
   }
 
   /**
    * Schedule a post to be published
    */
-  async schedulePost(post: PublerPost): Promise<PublerAPIResponse<PublerJobResponse>> {
+  async schedulePost(
+    post: PublerPost,
+  ): Promise<PublerAPIResponse<PublerJobResponse>> {
     const body = {
       bulk: {
-        state: 'scheduled',
+        state: "scheduled",
         posts: [
           {
             networks: {},
@@ -234,8 +273,8 @@ export class PublerClient {
       },
     };
 
-    return this.request<PublerJobResponse>('posts/schedule', {
-      method: 'POST',
+    return this.request<PublerJobResponse>("posts/schedule", {
+      method: "POST",
       body: JSON.stringify(body),
     });
   }
@@ -243,19 +282,26 @@ export class PublerClient {
   /**
    * Get job status by job ID
    */
-  async getJobStatus(jobId: string): Promise<PublerAPIResponse<PublerJobStatus>> {
-    return this.request<PublerJobStatus>(`job_status/${encodeURIComponent(jobId)}`, {
-      method: 'GET',
-    });
+  async getJobStatus(
+    jobId: string,
+  ): Promise<PublerAPIResponse<PublerJobStatus>> {
+    return this.request<PublerJobStatus>(
+      `job_status/${encodeURIComponent(jobId)}`,
+      {
+        method: "GET",
+      },
+    );
   }
 
   /**
    * Publish a post immediately (no scheduling)
    */
-  async publishPost(post: PublerPost): Promise<PublerAPIResponse<PublerJobResponse>> {
+  async publishPost(
+    post: PublerPost,
+  ): Promise<PublerAPIResponse<PublerJobResponse>> {
     const body = {
       bulk: {
-        state: 'published',
+        state: "published",
         posts: [
           {
             networks: {},
@@ -267,8 +313,8 @@ export class PublerClient {
       },
     };
 
-    return this.request<PublerJobResponse>('posts/publish', {
-      method: 'POST',
+    return this.request<PublerJobResponse>("posts/publish", {
+      method: "POST",
       body: JSON.stringify(body),
     });
   }
@@ -302,11 +348,11 @@ export function createPublerClient(
   const workspaceId = config?.workspaceId || process.env.PUBLER_WORKSPACE_ID;
 
   if (!apiKey) {
-    throw new Error('PUBLER_API_KEY is required');
+    throw new Error("PUBLER_API_KEY is required");
   }
 
   if (!workspaceId) {
-    throw new Error('PUBLER_WORKSPACE_ID is required');
+    throw new Error("PUBLER_WORKSPACE_ID is required");
   }
 
   return new PublerClient(

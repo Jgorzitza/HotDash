@@ -10,7 +10,10 @@
  *   npx tsx scripts/rag/test-and-optimize.ts --verbose
  */
 
-import { queryKnowledgeBase, type QueryResult } from "../../app/services/rag/ceo-knowledge-base";
+import {
+  queryKnowledgeBase,
+  type QueryResult,
+} from "../../app/services/rag/ceo-knowledge-base";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -187,18 +190,20 @@ const TEST_QUERIES: TestQuery[] = [
   },
 ];
 
-
 /**
  * Check if answer contains expected keywords
  */
-function checkKeywords(answer: string, keywords: string[]): {
+function checkKeywords(
+  answer: string,
+  keywords: string[],
+): {
   found: number;
   total: number;
   percentage: number;
 } {
   const lowerAnswer = answer.toLowerCase();
   const found = keywords.filter((keyword) =>
-    lowerAnswer.includes(keyword.toLowerCase())
+    lowerAnswer.includes(keyword.toLowerCase()),
   ).length;
 
   return {
@@ -226,7 +231,10 @@ async function runTest(
     const hasAnswer = result.answer.length > 20; // At least 20 characters
 
     // Check keyword matches
-    const keywordCheck = checkKeywords(result.answer, testQuery.expectedKeywords);
+    const keywordCheck = checkKeywords(
+      result.answer,
+      testQuery.expectedKeywords,
+    );
 
     // Determine if test passed
     // Pass criteria: has answer AND at least 50% of keywords found
@@ -284,15 +292,15 @@ function generateSummary(results: TestResult[]): BenchmarkSummary {
   const avgResponseTime =
     results.reduce((sum, r) => sum + r.responseTime, 0) / results.length;
 
-  const answerRate =
-    results.filter((r) => r.hasAnswer).length / results.length;
+  const answerRate = results.filter((r) => r.hasAnswer).length / results.length;
 
   const avgKeywordMatch =
     results.reduce((sum, r) => (r.keywordsFound / r.keywordsTotal) * 100, 0) /
     results.length;
 
   // Category breakdown
-  const categoryCoverage: Record<string, { passed: number; total: number }> = {};
+  const categoryCoverage: Record<string, { passed: number; total: number }> =
+    {};
   for (const result of results) {
     if (!categoryCoverage[result.category]) {
       categoryCoverage[result.category] = { passed: 0, total: 0 };
@@ -324,7 +332,9 @@ async function main() {
 
   console.log("🧪 RAG Knowledge Base Test Suite\n");
   console.log(`Total Test Queries: ${TEST_QUERIES.length}`);
-  console.log(`Categories: ${new Set(TEST_QUERIES.map((t) => t.category)).size}`);
+  console.log(
+    `Categories: ${new Set(TEST_QUERIES.map((t) => t.category)).size}`,
+  );
   console.log(`Verbose Mode: ${verbose ? "ON" : "OFF"}\n`);
 
   console.log("⏱️  Running tests...\n");
@@ -334,7 +344,9 @@ async function main() {
   for (let i = 0; i < TEST_QUERIES.length; i++) {
     const testQuery = TEST_QUERIES[i];
     if (!verbose) {
-      process.stdout.write(`  [${i + 1}/${TEST_QUERIES.length}] ${testQuery.category}...`);
+      process.stdout.write(
+        `  [${i + 1}/${TEST_QUERIES.length}] ${testQuery.category}...`,
+      );
     }
 
     const result = await runTest(testQuery, verbose);
@@ -370,8 +382,12 @@ async function main() {
 
   // Evaluation against benchmarks (from direction file)
   console.log(`\n📋 Benchmark Targets (from direction):`);
-  console.log(`  Response Time: <2000ms (${summary.avgResponseTime < 2000 ? "✅ PASS" : "❌ FAIL"})`);
-  console.log(`  Accuracy: ≥90% (${summary.accuracy >= 90 ? "✅ PASS" : "❌ FAIL"})`);
+  console.log(
+    `  Response Time: <2000ms (${summary.avgResponseTime < 2000 ? "✅ PASS" : "❌ FAIL"})`,
+  );
+  console.log(
+    `  Accuracy: ≥90% (${summary.accuracy >= 90 ? "✅ PASS" : "❌ FAIL"})`,
+  );
   console.log(
     `  Answer Rate: ≥90% (${summary.answerRate >= 90 ? "✅ PASS" : "❌ FAIL"})`,
   );
@@ -387,7 +403,11 @@ async function main() {
   await fs.mkdir(path.dirname(resultsPath), { recursive: true });
   await fs.writeFile(
     resultsPath,
-    JSON.stringify({ summary, results, timestamp: new Date().toISOString() }, null, 2),
+    JSON.stringify(
+      { summary, results, timestamp: new Date().toISOString() },
+      null,
+      2,
+    ),
   );
 
   console.log(`\n💾 Full results saved to: ${resultsPath}`);
@@ -406,5 +426,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   });
 }
 
-export { runTest, generateSummary, TEST_QUERIES, type TestResult, type BenchmarkSummary };
-
+export {
+  runTest,
+  generateSummary,
+  TEST_QUERIES,
+  type TestResult,
+  type BenchmarkSummary,
+};

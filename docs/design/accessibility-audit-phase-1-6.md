@@ -25,6 +25,7 @@ expires: 2025-11-21
 **Assessment**: ✅ **EXCELLENT** - Strong accessibility foundation, minor improvements needed
 
 **Key Strengths**:
+
 - ✅ Semantic HTML throughout (Polaris components ensure validity)
 - ✅ ARIA labels and roles properly implemented
 - ✅ Color contrast meets WCAG AA (4.5:1 minimum)
@@ -32,6 +33,7 @@ expires: 2025-11-21
 - ✅ Focus management in modals and drawers
 
 **Areas for Improvement**:
+
 - ⚠️ Some dynamic content needs aria-live regions
 - ⚠️ Screen reader testing recommended (not performed in this audit)
 - ⚠️ Form error handling needs validation (Phase 6 settings)
@@ -48,6 +50,7 @@ expires: 2025-11-21
 ### Standards Applied
 
 **WCAG 2.2 Level AA** (W3C Recommendation):
+
 - **Perceivable**: Content available to all senses
 - **Operable**: Interface components operable by all users
 - **Understandable**: Information and operation understandable
@@ -56,23 +59,27 @@ expires: 2025-11-21
 ### Testing Approach
 
 **Automated Testing** (Recommended):
+
 - axe DevTools browser extension
 - Lighthouse accessibility audit
 - WAVE (Web Accessibility Evaluation Tool)
 
 **Manual Testing** (Performed):
+
 - Code review for ARIA attributes
 - Semantic HTML structure analysis
 - Color contrast calculations
 - Keyboard navigation simulation
 
 **Screen Reader Testing** (Recommended but NOT performed):
+
 - NVDA (Windows)
 - JAWS (Windows)
 - VoiceOver (Mac/iOS)
 - TalkBack (Android)
 
 **Keyboard Testing**:
+
 - Tab order verification
 - Focus indicator visibility
 - Escape key functionality
@@ -87,9 +94,11 @@ expires: 2025-11-21
 #### 1.1 Text Alternatives
 
 **Success Criteria**:
+
 - 1.1.1 Non-text Content (Level A)
 
 **Audit Results**:
+
 - ✅ Icons have `accessibilityLabel` props
 - ✅ Images (if any) have alt text
 - ✅ Decorative icons use `accessibilityLabel=""` (announced as empty)
@@ -97,6 +106,7 @@ expires: 2025-11-21
 **Issues**: None
 
 **Evidence**:
+
 ```tsx
 <Icon source={PlusCircleIcon} accessibilityLabel="Add item" />
 <Icon source={DecorativeIcon} accessibilityLabel="" /> {/* Decorative */}
@@ -109,12 +119,14 @@ expires: 2025-11-21
 #### 1.3 Adaptable
 
 **Success Criteria**:
+
 - 1.3.1 Info and Relationships (Level A)
 - 1.3.2 Meaningful Sequence (Level A)
 - 1.3.4 Orientation (Level AA)
 - 1.3.5 Identify Input Purpose (Level AA)
 
 **Audit Results**:
+
 - ✅ Semantic HTML: `<nav>`, `<main>`, `<section>`, `<article>`
 - ✅ Headings hierarchy: h1 → h2 → h3 (proper nesting)
 - ✅ Lists use `<ul><li>` structure (not divs styled as lists)
@@ -125,6 +137,7 @@ expires: 2025-11-21
 **Issues**: None
 
 **Evidence**:
+
 ```tsx
 <List type="bullet">
   <List.Item>Revenue & Sales</List.Item>
@@ -139,6 +152,7 @@ expires: 2025-11-21
 #### 1.4 Distinguishable
 
 **Success Criteria**:
+
 - 1.4.3 Contrast (Minimum) (Level AA) - 4.5:1 for normal text, 3:1 for large text
 - 1.4.10 Reflow (Level AA) - No 2D scrolling at 400% zoom
 - 1.4.11 Non-text Contrast (Level AA) - 3:1 for UI components
@@ -146,6 +160,7 @@ expires: 2025-11-21
 - 1.4.13 Content on Hover or Focus (Level AA) - Dismissible, hoverable, persistent
 
 **Audit Results**:
+
 - ✅ OCC design tokens ensure WCAG AA color contrast
 - ✅ Text colors: --occ-text-primary (black #202223 on white #FFFFFF) = 16.3:1
 - ✅ Secondary text: --occ-text-secondary (#637381 on white) = 7.2:1
@@ -157,15 +172,17 @@ expires: 2025-11-21
 - ✅ Text spacing: Polaris handles line-height and letter-spacing
 
 **Issues**:
+
 - ⚠️ **Medium**: Toast notifications may disappear while user is reading (5s auto-dismiss)
   - **Fix**: Increase dismiss time to 7s for non-critical toasts
   - **Alternative**: Pause on hover/focus
 
 **Evidence**:
+
 ```css
 --occ-text-primary: #202223; /* 16.3:1 on white background */
 --occ-text-secondary: #637381; /* 7.2:1 on white background */
---occ-text-interactive: #0078D4; /* 4.6:1 on white background */
+--occ-text-interactive: #0078d4; /* 4.6:1 on white background */
 ```
 
 **Compliance**: ✅ PASS (with recommendations)
@@ -177,11 +194,13 @@ expires: 2025-11-21
 #### 2.1 Keyboard Accessible
 
 **Success Criteria**:
+
 - 2.1.1 Keyboard (Level A) - All functionality available via keyboard
 - 2.1.2 No Keyboard Trap (Level A) - Focus can always move away
 - 2.1.4 Character Key Shortcuts (Level A) - Can be turned off or remapped
 
 **Audit Results**:
+
 - ✅ All buttons keyboard accessible (Tab + Enter/Space)
 - ✅ Modals have focus trap (Tab cycles within modal)
 - ✅ Escape key closes modals (no trap, can exit)
@@ -191,6 +210,7 @@ expires: 2025-11-21
 **Issues**: None
 
 **Evidence**:
+
 ```tsx
 <Modal
   open={active}
@@ -208,10 +228,12 @@ expires: 2025-11-21
 #### 2.2 Enough Time
 
 **Success Criteria**:
+
 - 2.2.1 Timing Adjustable (Level A) - User can extend, adjust, or disable time limits
 - 2.2.2 Pause, Stop, Hide (Level A) - Moving, blinking, scrolling content can be paused
 
 **Audit Results**:
+
 - ⚠️ **High**: Toast notifications auto-dismiss after 5s (no pause/extend option)
   - **Fix**: Pause toast auto-dismiss on hover/focus
   - **Alternative**: "Pause notifications" button in toast container
@@ -220,9 +242,11 @@ expires: 2025-11-21
 - ✅ SSE connection is background (not user-facing countdown)
 
 **Issues**:
+
 - **H1**: Toast auto-dismiss without pause option
 
 **Evidence**:
+
 ```tsx
 // Current implementation
 useEffect(() => {
@@ -234,6 +258,7 @@ useEffect(() => {
 ```
 
 **Recommended Fix**:
+
 ```tsx
 const [isPaused, setIsPaused] = useState(false);
 
@@ -253,7 +278,7 @@ useEffect(() => {
   onBlur={() => setIsPaused(false)}
 >
   {/* Toast content */}
-</div>
+</div>;
 ```
 
 **Compliance**: ⚠️ PARTIAL (needs improvement)
@@ -263,6 +288,7 @@ useEffect(() => {
 #### 2.4 Navigable
 
 **Success Criteria**:
+
 - 2.4.1 Bypass Blocks (Level A) - Skip navigation links
 - 2.4.3 Focus Order (Level A) - Logical focus order
 - 2.4.4 Link Purpose (In Context) (Level A) - Link purpose clear from text or context
@@ -270,6 +296,7 @@ useEffect(() => {
 - 2.4.7 Focus Visible (Level AA) - Keyboard focus indicator visible
 
 **Audit Results**:
+
 - ⚠️ **Medium**: No "Skip to main content" link (Shopify admin may provide this)
   - **Fix**: Add skip link if not provided by Shopify frame
 - ✅ Focus order logical (top to bottom, left to right)
@@ -279,9 +306,11 @@ useEffect(() => {
 - ✅ Focus indicators visible (Polaris default blue outline)
 
 **Issues**:
+
 - **M1**: Missing skip navigation link
 
 **Evidence**:
+
 ```tsx
 // Recommended addition to app root
 <a href="#main-content" className="skip-link">
@@ -300,6 +329,7 @@ useEffect(() => {
 #### 2.5 Input Modalities
 
 **Success Criteria**:
+
 - 2.5.1 Pointer Gestures (Level A) - No multipoint or path-based gestures required
 - 2.5.2 Pointer Cancellation (Level A) - Down-event doesn't execute action
 - 2.5.3 Label in Name (Level A) - Accessible name contains visible label
@@ -308,6 +338,7 @@ useEffect(() => {
 - 2.5.8 Target Size (Minimum) (Level AA) - 24x24px minimum (WCAG 2.2 new)
 
 **Audit Results**:
+
 - ✅ No multipoint gestures (no pinch, multi-finger swipe)
 - ✅ Click events on mouseup/touchend (not mousedown)
 - ✅ Button labels match accessible names
@@ -317,9 +348,11 @@ useEffect(() => {
 - ✅ Most touch targets 44x44px (exceeds WCAG 2.2 minimum of 24x24px)
 
 **Issues**:
+
 - **H2**: Drag & drop without single-pointer alternative (Phase 6 pending)
 
 **Evidence**:
+
 ```tsx
 // Phase 6 recommendation: Alternative to drag & drop
 <Button onClick={() => setShowReorderModal(true)}>
@@ -358,10 +391,12 @@ useEffect(() => {
 #### 3.1 Readable
 
 **Success Criteria**:
+
 - 3.1.1 Language of Page (Level A) - lang attribute set
 - 3.1.2 Language of Parts (Level AA) - lang attribute for foreign languages
 
 **Audit Results**:
+
 - ✅ `<html lang="en">` attribute present (assumed, verify in app shell)
 - ✅ All content in English (no mixed languages)
 
@@ -374,6 +409,7 @@ useEffect(() => {
 #### 3.2 Predictable
 
 **Success Criteria**:
+
 - 3.2.1 On Focus (Level A) - Focus doesn't trigger context change
 - 3.2.2 On Input (Level A) - Input doesn't trigger context change
 - 3.2.3 Consistent Navigation (Level AA) - Navigation consistent across pages
@@ -381,6 +417,7 @@ useEffect(() => {
 - 3.2.6 Consistent Help (Level A, WCAG 2.2) - Help in consistent location
 
 **Audit Results**:
+
 - ✅ Focus doesn't open modals or navigate away
 - ✅ Text input doesn't trigger form submission (explicit button required)
 - ✅ Navigation consistent (Shopify admin chrome provides this)
@@ -389,6 +426,7 @@ useEffect(() => {
   - **Recommendation**: Add "?" icon in header for help/onboarding
 
 **Issues**:
+
 - **L1**: No help mechanism (not critical, Phase 9 onboarding addresses this)
 
 **Compliance**: ✅ PASS
@@ -398,6 +436,7 @@ useEffect(() => {
 #### 3.3 Input Assistance
 
 **Success Criteria**:
+
 - 3.3.1 Error Identification (Level A) - Errors identified and described
 - 3.3.2 Labels or Instructions (Level A) - Labels provided for inputs
 - 3.3.3 Error Suggestion (Level AA) - Suggestions for fixing errors
@@ -406,15 +445,18 @@ useEffect(() => {
 - 3.3.8 Accessible Authentication (Minimum) (Level AA, WCAG 2.2) - No cognitive function test
 
 **Audit Results**:
+
 - ⏸️ **Pending**: Settings form validation (Phase 6 not complete)
 - ✅ Approval queue: Approve/Reject are reversible (can undo)
 - ✅ No authentication in app (Shopify handles this)
 - ✅ No forms request redundant information
 
 **Issues**:
+
 - **M2**: Settings form error handling pending verification (Phase 6)
 
 **Recommendation for Phase 6**:
+
 ```tsx
 <TextField
   label="Email address"
@@ -423,11 +465,11 @@ useEffect(() => {
   onChange={setEmail}
   error={emailError} // Show inline error
   helpText="We'll never share your email"
-/>
+/>;
 
-{emailError && (
-  <InlineError message={emailError} fieldID="email" />
-)}
+{
+  emailError && <InlineError message={emailError} fieldID="email" />;
+}
 ```
 
 **Compliance**: ⏸️ PENDING (Phase 6)
@@ -439,10 +481,12 @@ useEffect(() => {
 #### 4.1 Compatible
 
 **Success Criteria**:
+
 - 4.1.2 Name, Role, Value (Level A) - For all UI components
 - 4.1.3 Status Messages (Level AA) - Status messages programmatically determined
 
 **Audit Results**:
+
 - ✅ Polaris components have proper ARIA roles
 - ✅ Buttons have role="button", links have role="link"
 - ✅ Modal has role="dialog"
@@ -454,10 +498,12 @@ useEffect(() => {
   - **Fix**: Add aria-live="polite" to tile content that updates
 
 **Issues**:
+
 - **M3**: Tile updates not announced to screen readers
 - **M4**: Toast aria-atomic and aria-relevant not set
 
 **Recommended Fixes**:
+
 ```tsx
 // Toast container
 <div
@@ -489,6 +535,7 @@ useEffect(() => {
 **Compliance**: ✅ **95%** (Excellent)
 
 **Strengths**:
+
 - ✅ Semantic HTML: Each tile uses `<section>` with implicit ARIA
 - ✅ Headings: Each tile has clear heading (Revenue & Sales, CX Queue, etc.)
 - ✅ Color contrast: All text meets WCAG AA (4.5:1 minimum)
@@ -496,6 +543,7 @@ useEffect(() => {
 - ✅ Focus indicators: Visible blue outline on focus
 
 **Issues Found**:
+
 - **M3**: Tile updates (real-time) not announced to screen readers
   - **Severity**: Medium
   - **Impact**: Screen reader users won't know when data updates
@@ -508,10 +556,12 @@ useEffect(() => {
     ```
 
 **Recommendations**:
+
 - Add landmark roles: `<main role="main">`, `<nav role="navigation">`
 - Add "Skip to main content" link before dashboard
 
 **Evidence**: Tiles use TileCard component (Polaris Card) which ensures:
+
 - Proper semantic HTML
 - Keyboard accessibility
 - Focus management
@@ -523,6 +573,7 @@ useEffect(() => {
 **Compliance**: ✅ **98%** (Excellent)
 
 **Strengths**:
+
 - ✅ Focus management: Focus trapped within modal
 - ✅ Escape key: Closes modal (no keyboard trap)
 - ✅ ARIA: role="dialog", aria-labelledby="modal-title"
@@ -534,23 +585,23 @@ useEffect(() => {
 **Issues Found**: None critical
 
 **Recommendations**:
+
 - **L2**: Add aria-describedby for modal description (links title + body text)
 - **L3**: Consider aria-modal="true" attribute (Polaris may handle this)
 
 **Evidence**:
+
 ```tsx
 <Modal
   open={active}
   onClose={handleClose}
   title="CX Queue Modal" // aria-labelledby
   primaryAction={{
-    content: 'Approve',
+    content: "Approve",
     onAction: handleApprove,
   }}
 >
-  <Modal.Section>
-    {/* Content */}
-  </Modal.Section>
+  <Modal.Section>{/* Content */}</Modal.Section>
 </Modal>
 ```
 
@@ -561,6 +612,7 @@ useEffect(() => {
 **Compliance**: ✅ **94%** (Excellent)
 
 **Strengths**:
+
 - ✅ All tiles follow same accessible pattern as Phase 1
 - ✅ IdeaPoolTile: Wildcard badge has proper text (not icon-only)
 - ✅ CEOAgentTile: Status colors not sole indicator (text labels present)
@@ -568,12 +620,14 @@ useEffect(() => {
 - ✅ Lists use semantic `<ul><li>` structure
 
 **Issues Found**:
+
 - **L4**: Wildcard badge could have more context
   - **Current**: "Wildcard 🃏"
   - **Better**: "Wildcard idea (high-risk, high-reward)"
   - **Fix**: Add aria-label with full description
 
 **Recommendations**:
+
 - Add aria-label to badge: `<Badge aria-label="Wildcard idea: high-risk, high-reward">Wildcard</Badge>`
 
 **Evidence**: Components use proper semantic HTML and Polaris design patterns.
@@ -585,6 +639,7 @@ useEffect(() => {
 **Compliance**: ✅ **90%** (Good, improvements needed)
 
 **Strengths**:
+
 - ✅ Toast: Uses role="status" and aria-live="polite"
 - ✅ Banner: Uses role="alert" for critical issues
 - ✅ Notification center: role="dialog" with proper focus management
@@ -592,11 +647,13 @@ useEffect(() => {
 - ✅ Dismiss buttons: Clear labels "Dismiss notification"
 
 **Issues Found**:
+
 - **H1**: Toast auto-dismiss without pause option (see 2.2.2 above)
 - **M4**: Toast aria-atomic and aria-relevant not explicitly set
 - **M5**: Banner alert dismissal not announced to screen readers
 
 **Recommended Fixes**:
+
 ```tsx
 // Toast with pause on hover
 <div
@@ -609,12 +666,12 @@ useEffect(() => {
   onBlur={() => resumeAutoDismiss()}
 >
   {toast.message}
-</div>
+</div>;
 
 // Banner dismissal announcement
 const handleDismiss = (id: string) => {
   onDismiss(id);
-  announceToScreenReader('Alert dismissed');
+  announceToScreenReader("Alert dismissed");
 };
 ```
 
@@ -627,18 +684,21 @@ const handleDismiss = (id: string) => {
 **Compliance**: ✅ **93%** (Excellent)
 
 **Strengths**:
+
 - ✅ Connection indicator: Text status ("Live", "Offline") not color-only
 - ✅ Live badge: aria-live="polite" announces count changes
 - ✅ Tile refresh indicator: Button has aria-label="Refresh tile"
 - ✅ Pulse animations: Not essential (status also conveyed via text)
 
 **Issues Found**:
+
 - **L5**: Connection indicator could announce status changes
   - **Current**: Visual indication only
   - **Better**: Announce "Connection restored" when reconnecting
   - **Fix**: Add aria-live="polite" to connection status text
 
 **Recommendations**:
+
 ```tsx
 <div className="connection-indicator" aria-live="polite">
   <span>Status: {statusText}</span> {/* Announces when changes */}
@@ -654,6 +714,7 @@ const handleDismiss = (id: string) => {
 **Compliance**: ⏸️ **PENDING** (Phase 6 in progress)
 
 **Expected Issues**:
+
 - Drag & drop needs single-pointer alternative (H2 above)
 - Form validation errors need proper announcement (M2 above)
 - Theme selector should announce when theme changes
@@ -661,14 +722,14 @@ const handleDismiss = (id: string) => {
 **Recommendations for Engineer** (Phase 6):
 
 **1. Drag & Drop Alternative**:
+
 ```tsx
 // Provide button-based reordering
-<Button onClick={() => setShowReorderModal(true)}>
-  Edit Tile Order
-</Button>
+<Button onClick={() => setShowReorderModal(true)}>Edit Tile Order</Button>
 ```
 
 **2. Form Error Handling**:
+
 ```tsx
 <TextField
   label="Setting name"
@@ -680,6 +741,7 @@ const handleDismiss = (id: string) => {
 ```
 
 **3. Theme Change Announcement**:
+
 ```tsx
 const handleThemeChange = (newTheme: string) => {
   setTheme(newTheme);
@@ -694,6 +756,7 @@ const handleThemeChange = (newTheme: string) => {
 ## Summary of Issues
 
 ### Critical (P0): 0 issues
+
 None
 
 ### High Priority (P1): 2 issues
@@ -727,7 +790,7 @@ None
 3. **M3**: Tile updates not announced to screen readers
    - **WCAG**: 4.1.3 Status Messages (Level AA)
    - **Fix**: Add aria-live="polite" to tiles
-   - **Files**: app/components/tiles/*.tsx
+   - **Files**: app/components/tiles/\*.tsx
    - **Effort**: 1 hour
 
 4. **M4**: Toast aria-atomic not explicitly set
@@ -793,11 +856,13 @@ None
 **Expected Score**: 95-100 (based on code review)
 
 **Recommended Tests**:
+
 ```bash
 lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="--headless"
 ```
 
 **Expected Issues**:
+
 - ⚠️ aria-live regions may need explicit labels
 - ⚠️ Form validation may need improvement (Phase 6)
 
@@ -806,12 +871,14 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### axe DevTools
 
 **Recommended Tests**:
+
 1. Run axe DevTools on dashboard page
 2. Run axe DevTools on each modal
 3. Run axe DevTools on notification center
 4. Run axe DevTools on settings page (Phase 6)
 
 **Expected Results**:
+
 - 0-2 critical violations
 - 2-5 moderate violations (likely aria-live related)
 - 5-10 minor violations (best practices)
@@ -821,11 +888,13 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### WAVE (Web Accessibility Evaluation Tool)
 
 **Recommended Tests**:
+
 1. Test dashboard with WAVE browser extension
 2. Test modals with WAVE
 3. Test notification system with WAVE
 
 **Expected Errors**:
+
 - 0-1 errors (likely missing labels)
 - 2-5 alerts (contrast warnings, best practices)
 
@@ -836,6 +905,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### NVDA (Windows) Test Script
 
 **Dashboard**:
+
 1. Navigate to dashboard
 2. Press H key (cycle through headings) - should announce tile names
 3. Tab through tiles - should announce tile content and actions
@@ -844,12 +914,14 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 6. Press Escape - should announce modal closed
 
 **Notifications**:
+
 1. Wait for toast - NVDA should announce message automatically
 2. Tab to banner alert - should announce alert type and message
 3. Open notification center - should announce "Dialog, Notifications"
 4. Tab through notifications - should announce each notification
 
 **Real-Time Updates**:
+
 1. Wait for live tile update - NVDA should announce new data (if aria-live present)
 2. Tab to connection indicator - should announce connection status
 
@@ -858,12 +930,14 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### VoiceOver (Mac) Test Script
 
 **Dashboard**:
+
 1. VO + A (read all) - should read all tile names and content
 2. VO + Command + H (headings menu) - should list all tile headings
 3. VO + Space on tile - should open modal
 4. VO + Right Arrow (navigate elements) - should read all modal content
 
 **Notifications**:
+
 1. Toast appears - VoiceOver should announce automatically
 2. VO + Space on banner - should read full alert message
 3. Open notification center - should announce "Dialog, Notifications"
@@ -873,12 +947,14 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### TalkBack (Android) Test Script
 
 **Dashboard**:
+
 1. Swipe right through tiles - should announce each tile
 2. Double-tap to activate - should open modal
 3. Swipe right through modal - should announce all content
 4. Back button - should close modal
 
 **Notifications**:
+
 1. Toast appears - TalkBack should announce
 2. Swipe to banner - should announce alert
 3. Open notification center - should announce dialog opened
@@ -890,6 +966,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### Dashboard
 
 **Tab Order**:
+
 1. Skip link (if present)
 2. Shopify admin navigation
 3. Dashboard tile 1 (Revenue)
@@ -904,6 +981,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 12. Settings icon (top-right)
 
 **Expected Behavior**:
+
 - ✅ Tab moves forward through elements
 - ✅ Shift+Tab moves backward
 - ✅ Enter activates tile (opens modal or navigates)
@@ -916,6 +994,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### Modals
 
 **Focus Management**:
+
 1. Modal opens
 2. Focus moves to first interactive element (primary button or close button)
 3. Tab cycles through modal elements only (focus trapped)
@@ -924,6 +1003,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 6. Focus returns to activator button
 
 **Expected Behavior**:
+
 - ✅ Focus trapped within modal (can't Tab outside)
 - ✅ Escape closes modal
 - ✅ Enter activates focused button
@@ -936,6 +1016,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### Notification Center
 
 **Focus Management**:
+
 1. Notification icon clicked (or keyboard activated)
 2. Notification center slides in from right
 3. Focus moves to first notification
@@ -944,6 +1025,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 6. Focus returns to notification icon
 
 **Expected Behavior**:
+
 - ✅ Focus trapped within notification center
 - ✅ Escape closes panel
 - ✅ Enter activates notification (navigates to URL if present)
@@ -958,31 +1040,37 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### OCC Design Tokens
 
 **Primary Text** (--occ-text-primary):
+
 - Color: #202223 (near black)
 - Background: #FFFFFF (white)
 - Contrast Ratio: **16.3:1** ✅ (exceeds WCAG AAA 7:1)
 
 **Secondary Text** (--occ-text-secondary):
+
 - Color: #637381 (medium gray)
 - Background: #FFFFFF (white)
 - Contrast Ratio: **7.2:1** ✅ (exceeds WCAG AAA 7:1)
 
 **Interactive Text** (--occ-text-interactive):
+
 - Color: #0078D4 (blue)
 - Background: #FFFFFF (white)
 - Contrast Ratio: **4.6:1** ✅ (meets WCAG AA 4.5:1)
 
 **Success Text** (--occ-text-success):
+
 - Color: #1A7F37 (green)
 - Background: #E3F9E5 (light green)
 - Contrast Ratio: **7.1:1** ✅ (exceeds WCAG AAA 7:1)
 
 **Error Text** (--occ-text-critical):
+
 - Color: #D82C0D (red)
 - Background: #FFF4F4 (light red)
 - Contrast Ratio: **6.4:1** ✅ (exceeds WCAG AAA 7:1)
 
 **Warning Text** (--occ-text-warning):
+
 - Color: #916A00 (dark yellow)
 - Background: #FFFAF0 (light yellow)
 - Contrast Ratio: **8.2:1** ✅ (exceeds WCAG AAA 7:1)
@@ -990,17 +1078,20 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 ### UI Components
 
 **Buttons** (Polaris default):
+
 - Primary button: Blue background (#0078D4), white text (#FFFFFF) = 4.6:1 ✅
 - Secondary button: Gray border, black text = 16.3:1 ✅
 - Tertiary button: Blue text on white = 4.6:1 ✅
 
 **Form Inputs** (Polaris default):
+
 - Input border: #C4CDD5 on white = 2.7:1 (UI component, needs 3:1) ⚠️
   - **Issue**: Border may not meet WCAG 2.2 AA UI contrast
   - **Check**: Verify Polaris input borders meet 3:1 contrast
   - **Fix**: If needed, darken border to #8C9196 (3:1 contrast)
 
 **Focus Indicators**:
+
 - Blue outline: #0078D4 on white = 4.6:1 ✅
 - Width: 2px (meets WCAG 2.2 AA minimum)
 
@@ -1040,7 +1131,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
    - **Effort**: 30 minutes
 
 2. **Tile aria-live** (M3):
-   - **Files**: app/components/tiles/*.tsx
+   - **Files**: app/components/tiles/\*.tsx
    - **Change**: Add aria-live="polite" to tile content
    - **Effort**: 1 hour
 
@@ -1078,6 +1169,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 **WCAG 2.2 Level AA Compliance**: 92%
 
 **By Priority**:
+
 - **Perceivable**: 95% (color contrast excellent, aria-live needs improvement)
 - **Operable**: 88% (keyboard access excellent, timing adjustments needed)
 - **Understandable**: 97% (clear language, consistent UI)
@@ -1134,6 +1226,7 @@ lighthouse https://your-app.com --only-categories=accessibility --chrome-flags="
 Hot Rod AN Control Center demonstrates strong accessibility fundamentals:
 
 **Strengths**:
+
 - Semantic HTML throughout
 - ARIA roles and labels properly implemented
 - Color contrast exceeds WCAG AA requirements
@@ -1142,6 +1235,7 @@ Hot Rod AN Control Center demonstrates strong accessibility fundamentals:
 - Polaris components ensure accessibility
 
 **Areas for Improvement**:
+
 - Toast auto-dismiss timing (H1)
 - Drag & drop alternative needed (H2)
 - Live region announcements (M3, M4, M5)
@@ -1150,6 +1244,7 @@ Hot Rod AN Control Center demonstrates strong accessibility fundamentals:
 **With P1 and P2 fixes, app will achieve 98% WCAG 2.2 Level AA compliance.**
 
 **Recommended Timeline**:
+
 - P1 fixes: Before launch (3 hours)
 - P2 fixes: Within 2 weeks post-launch (3.25 hours)
 - P3 fixes: Ongoing (4-6 hours)
@@ -1168,4 +1263,3 @@ Hot Rod AN Control Center demonstrates strong accessibility fundamentals:
 ---
 
 **EOF — Accessibility Audit Report Complete**
-

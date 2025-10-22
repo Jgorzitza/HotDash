@@ -3,11 +3,13 @@
 ⚠️ **NOTE (2025-10-22)**: This template is ARCHIVED. Task assignments now managed via database.
 
 **Agents query tasks via:**
+
 ```bash
 npx tsx --env-file=.env scripts/agent/get-my-tasks.ts {agent-name}
 ```
 
 **Manager assigns tasks via:**
+
 ```bash
 npx tsx --env-file=.env scripts/manager/assign-task.ts
 # or
@@ -21,6 +23,7 @@ import { assignTask } from '~/services/tasks.server';
 # {Agent Name} Direction v{X.X} — {Current Focus} [ARCHIVED TEMPLATE]
 
 📌 **FIRST ACTION: Git Setup**
+
 ```bash
 cd /home/justin/HotDash/hot-dash
 git fetch origin
@@ -40,6 +43,7 @@ git pull origin manager-reopen-20251021
 **Report progress via `logDecision()` - IMMEDIATE on status changes, every 2 hours if in-progress**
 
 **When to log** (enables real-time coordination):
+
 - ✅ Task started → IMMEDIATE
 - ✅ Task completed → IMMEDIATE (don't wait for 2-hour interval!)
 - ✅ Task blocked → IMMEDIATE (manager sees blockers instantly)
@@ -49,69 +53,77 @@ git pull origin manager-reopen-20251021
 ### Basic Usage
 
 ```typescript
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from "~/services/decisions.server";
 
 // When starting a task
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',            // YOUR agent name (lowercase)
-  taskId: '{TASK-ID}',              // Task ID from this direction file
-  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
-  progressPct: 0,                   // 0-100 percentage
-  action: 'task_started',
-  rationale: 'Starting {task description}',
-  evidenceUrl: 'docs/directions/{agent-name}.md',
-  durationEstimate: 4.0             // Estimated hours
+  scope: "build",
+  actor: "{agent-name}", // YOUR agent name (lowercase)
+  taskId: "{TASK-ID}", // Task ID from this direction file
+  status: "in_progress", // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0, // 0-100 percentage
+  action: "task_started",
+  rationale: "Starting {task description}",
+  evidenceUrl: "docs/directions/{agent-name}.md",
+  durationEstimate: 4.0, // Estimated hours
 });
 
 // Progress update (every 2 hours)
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',
-  taskId: '{TASK-ID}',
-  status: 'in_progress',
-  progressPct: 50,                  // Update progress
-  action: 'task_progress',
-  rationale: 'Component implemented, writing tests',
-  evidenceUrl: 'artifacts/{agent}/2025-10-22/{task}.md',
-  durationActual: 2.0,              // Hours spent so far
-  nextAction: 'Complete integration tests'
+  scope: "build",
+  actor: "{agent-name}",
+  taskId: "{TASK-ID}",
+  status: "in_progress",
+  progressPct: 50, // Update progress
+  action: "task_progress",
+  rationale: "Component implemented, writing tests",
+  evidenceUrl: "artifacts/{agent}/2025-10-22/{task}.md",
+  durationActual: 2.0, // Hours spent so far
+  nextAction: "Complete integration tests",
 });
 
 // When completed (with rich metadata)
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',
-  taskId: '{TASK-ID}',
-  status: 'completed',              // CRITICAL for manager queries
+  scope: "build",
+  actor: "{agent-name}",
+  taskId: "{TASK-ID}",
+  status: "completed", // CRITICAL for manager queries
   progressPct: 100,
-  action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing, {Y} files, {Z} lines',
-  evidenceUrl: 'artifacts/{agent}/2025-10-22/{task}-complete.md',
+  action: "task_completed",
+  rationale:
+    "{Task name} complete, {X}/{X} tests passing, {Y} files, {Z} lines",
+  evidenceUrl: "artifacts/{agent}/2025-10-22/{task}-complete.md",
   durationEstimate: 4.0,
-  durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}',
-  
+  durationActual: 3.5, // Compare estimate vs actual
+  nextAction: "Starting {NEXT-TASK-ID}",
+
   // RECOMMENDED: Rich metadata in payload for analytics
   payload: {
-    commits: ['abc123f', 'def456g', 'ghi789h'],  // Git commits
-    files: [                                      // Files changed
-      { path: 'app/components/Component.tsx', lines: 245, type: 'created' },
-      { path: 'app/components/Component.test.tsx', lines: 180, type: 'created' }
+    commits: ["abc123f", "def456g", "ghi789h"], // Git commits
+    files: [
+      // Files changed
+      { path: "app/components/Component.tsx", lines: 245, type: "created" },
+      {
+        path: "app/components/Component.test.tsx",
+        lines: 180,
+        type: "created",
+      },
     ],
-    tests: {                                      // Test details
+    tests: {
+      // Test details
       unit: { passing: 13, total: 13 },
       integration: { passing: 9, total: 9 },
-      overall: '22/22 passing'
+      overall: "22/22 passing",
     },
-    mcpEvidence: {                                // MCP usage
+    mcpEvidence: {
+      // MCP usage
       calls: 3,
-      tools: ['context7-react-router', 'shopify-dev-polaris'],
-      conversationIds: ['abc-123', 'def-456'],
-      evidenceFile: 'artifacts/{agent}/2025-10-22/mcp/task.jsonl'
+      tools: ["context7-react-router", "shopify-dev-polaris"],
+      conversationIds: ["abc-123", "def-456"],
+      evidenceFile: "artifacts/{agent}/2025-10-22/mcp/task.jsonl",
     },
-    linesChanged: { added: 425, deleted: 15 }
-  }
+    linesChanged: { added: 425, deleted: 15 },
+  },
 });
 ```
 
@@ -121,27 +133,27 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',
-  taskId: '{TASK-ID}',
-  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  scope: "build",
+  actor: "{agent-name}",
+  taskId: "{TASK-ID}",
+  status: "blocked", // Manager sees this in query-blocked-tasks.ts
   progressPct: 40,
-  blockerDetails: 'Waiting for {dependency} to complete',
-  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
-  action: 'task_blocked',
-  rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/{agent}/2025-10-22.md',
-  
+  blockerDetails: "Waiting for {dependency} to complete",
+  blockedBy: "{DEPENDENCY-TASK-ID}", // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: "task_blocked",
+  rationale: "Cannot proceed because {reason}",
+  evidenceUrl: "feedback/{agent}/2025-10-22.md",
+
   // RECOMMENDED: Include blocker context
   payload: {
-    blockerType: 'dependency',      // or 'credentials', 'decision', 'technical'
+    blockerType: "dependency", // or 'credentials', 'decision', 'technical'
     attemptedSolutions: [
-      'Tried workaround X - failed because Y',
-      'Checked if could proceed without - too risky'
+      "Tried workaround X - failed because Y",
+      "Checked if could proceed without - too risky",
     ],
-    impact: 'Blocks TASK-XYZ and TASK-ABC downstream',
-    urgency: 'high'                 // low | medium | high | critical
-  }
+    impact: "Blocks TASK-XYZ and TASK-ABC downstream",
+    urgency: "high", // low | medium | high | critical
+  },
 });
 ```
 
@@ -149,27 +161,28 @@ await logDecision({
 
 ```typescript
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',
-  taskId: '{TASK-ID}',
-  status: 'blocked',
-  blockerDetails: 'Need manager decision on architectural choice',
-  blockedBy: 'manager-decision',  // Special value for decision needed
-  action: 'awaiting_decision',
-  rationale: 'Need choice: Polaris Card vs custom component for PII display',
+  scope: "build",
+  actor: "{agent-name}",
+  taskId: "{TASK-ID}",
+  status: "blocked",
+  blockerDetails: "Need manager decision on architectural choice",
+  blockedBy: "manager-decision", // Special value for decision needed
+  action: "awaiting_decision",
+  rationale: "Need choice: Polaris Card vs custom component for PII display",
   payload: {
-    questionType: 'architectural',
-    options: ['Polaris Card (standard)', 'Custom Component (flexible)'],
-    tradeoffs: 'Polaris: faster but less control, Custom: slower but exact UX',
-    impact: 'Affects all future card components',
-    recommendation: 'Polaris Card (faster, consistent UX)'
-  }
+    questionType: "architectural",
+    options: ["Polaris Card (standard)", "Custom Component (flexible)"],
+    tradeoffs: "Polaris: faster but less control, Custom: slower but exact UX",
+    impact: "Affects all future card components",
+    recommendation: "Polaris Card (faster, consistent UX)",
+  },
 });
 ```
 
 ### Manager Visibility
 
 Manager runs these scripts to see your work (< 1 second):
+
 - `query-blocked-tasks.ts` - Shows if you're blocked and why
 - `query-agent-status.ts` - Shows your current task and progress
 - `query-completed-today.ts` - Shows your completed work
@@ -181,41 +194,42 @@ Manager runs these scripts to see your work (< 1 second):
 **At end of day, log shutdown with self-assessment**:
 
 ```typescript
-import { calculateSelfGradeAverage } from '~/services/decisions.server';
+import { calculateSelfGradeAverage } from "~/services/decisions.server";
 
 const grades = {
-  progress: 5,        // 1-5: Progress vs DoD
-  evidence: 4,        // 1-5: Evidence quality  
-  alignment: 5,       // 1-5: Followed North Star/Rules
-  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
-  communication: 4    // 1-5: Clear updates, timely blockers
+  progress: 5, // 1-5: Progress vs DoD
+  evidence: 4, // 1-5: Evidence quality
+  alignment: 5, // 1-5: Followed North Star/Rules
+  toolDiscipline: 5, // 1-5: MCP-first, no guessing
+  communication: 4, // 1-5: Clear updates, timely blockers
 };
 
 await logDecision({
-  scope: 'build',
-  actor: '{agent-name}',
-  action: 'shutdown',
-  status: 'in_progress',  // or 'completed' if all tasks done
-  progressPct: 75,        // Overall daily progress
-  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
-  durationActual: 6.5,    // Total hours today
+  scope: "build",
+  actor: "{agent-name}",
+  action: "shutdown",
+  status: "in_progress", // or 'completed' if all tasks done
+  progressPct: 75, // Overall daily progress
+  rationale: "Daily shutdown - {X} tasks completed, {Y} in progress",
+  durationActual: 6.5, // Total hours today
   payload: {
-    dailySummary: '{TASK-A} complete, {TASK-B} at 75%, starting {TASK-C} tomorrow',
+    dailySummary:
+      "{TASK-A} complete, {TASK-B} at 75%, starting {TASK-C} tomorrow",
     selfGrade: {
       ...grades,
-      average: calculateSelfGradeAverage(grades)
+      average: calculateSelfGradeAverage(grades),
     },
     retrospective: {
       didWell: [
-        'Used MCP tools before writing code',
-        'Comprehensive test coverage (22/22)'
+        "Used MCP tools before writing code",
+        "Comprehensive test coverage (22/22)",
       ],
-      toChange: ['Ask questions earlier when blocked'],
-      toStop: 'Assuming library behavior without checking docs'
+      toChange: ["Ask questions earlier when blocked"],
+      toStop: "Assuming library behavior without checking docs",
     },
-    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
-    hoursWorked: 6.5
-  }
+    tasksCompleted: ["{TASK-ID-A}", "{TASK-ID-B}"],
+    hoursWorked: 6.5,
+  },
 });
 ```
 
@@ -230,22 +244,26 @@ await logDecision({
 **Objective**: {What needs to be done}
 
 **Acceptance Criteria**:
+
 - [ ] {Criterion 1}
 - [ ] {Criterion 2}
 - [ ] {Criterion 3}
 
 **Allowed Paths**:
+
 - `app/components/{specific-file}.tsx`
 - `app/routes/{specific-route}.tsx`
 
 **Dependencies**: {None or list of tasks}
 
 **Evidence Requirements**:
+
 - MCP Evidence JSONL: `artifacts/{agent}/2025-10-22/mcp/{tool}.jsonl`
 - Tests: Unit + integration tests
 - `logDecision()` calls: At start, 50%, 100%, or when blocked
 
 **Reporting Example**:
+
 ```typescript
 // When complete
 await logDecision({
@@ -266,6 +284,7 @@ await logDecision({
 ## 🔧 MANDATORY: DEV MEMORY SYSTEM
 
 Call `logDecision()` at EVERY task milestone:
+
 - Task started (progressPct: 0)
 - Progress updates (progressPct: 25, 50, 75)
 - Task blocked (status: 'blocked', with blockerDetails)
@@ -288,7 +307,7 @@ Call `logDecision()` at EVERY task milestone:
 ---
 
 **See Also**:
+
 - Database feedback guide: `DATABASE_FEEDBACK_MIGRATION_GUIDE.md`
 - Manager query scripts: `scripts/manager/README.md`
 - Agent workflow rules: `.cursor/rules/09-agent-workflow.mdc`
-

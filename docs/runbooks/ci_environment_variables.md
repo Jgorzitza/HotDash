@@ -12,26 +12,26 @@ This runbook documents all required environment variables for GitHub Actions CI/
 
 ### GitHub Repository Secrets
 
-| Secret Name | Required By | Purpose | Rotation | Source |
-|------------|-------------|---------|----------|---------|
-| `FLY_API_TOKEN` | Deploy workflows | Fly.io deployment authentication | 90 days | Fly.io Dashboard → Access Tokens |
-| `OPENAI_API_KEY_STAGING` | Test workflows | OpenAI API for test fixtures | 180 days | OpenAI Dashboard → API Keys |
-| `SUPABASE_SERVICE_KEY` | Test workflows, Deploy | Supabase admin access | Never (service role) | Supabase Dashboard → Settings → API |
-| `SUPABASE_URL` | Test workflows, Deploy | Supabase project endpoint | Never (static) | Supabase Dashboard → Settings → API |
+| Secret Name              | Required By            | Purpose                          | Rotation             | Source                              |
+| ------------------------ | ---------------------- | -------------------------------- | -------------------- | ----------------------------------- |
+| `FLY_API_TOKEN`          | Deploy workflows       | Fly.io deployment authentication | 90 days              | Fly.io Dashboard → Access Tokens    |
+| `OPENAI_API_KEY_STAGING` | Test workflows         | OpenAI API for test fixtures     | 180 days             | OpenAI Dashboard → API Keys         |
+| `SUPABASE_SERVICE_KEY`   | Test workflows, Deploy | Supabase admin access            | Never (service role) | Supabase Dashboard → Settings → API |
+| `SUPABASE_URL`           | Test workflows, Deploy | Supabase project endpoint        | Never (static)       | Supabase Dashboard → Settings → API |
 
 ### Playwright Environment Variables
 
-| Variable | Default | Purpose | Set By |
-|----------|---------|---------|--------|
-| `DISABLE_WELCOME_MODAL` | `true` | Skip welcome modal in E2E tests | `.env.example` |
-| `CI` | `true` | Detect CI environment | GitHub Actions (auto-set) |
-| `PLAYWRIGHT_BROWSERS_PATH` | `~/.cache/ms-playwright` | Browser cache location | Playwright (auto-set) |
+| Variable                   | Default                  | Purpose                         | Set By                    |
+| -------------------------- | ------------------------ | ------------------------------- | ------------------------- |
+| `DISABLE_WELCOME_MODAL`    | `true`                   | Skip welcome modal in E2E tests | `.env.example`            |
+| `CI`                       | `true`                   | Detect CI environment           | GitHub Actions (auto-set) |
+| `PLAYWRIGHT_BROWSERS_PATH` | `~/.cache/ms-playwright` | Browser cache location          | Playwright (auto-set)     |
 
 ### Node.js Environment Variables
 
-| Variable | Default | Purpose | Set By |
-|----------|---------|---------|--------|
-| `NODE_ENV` | `test` | Test environment flag | `package.json` scripts |
+| Variable       | Default                     | Purpose                       | Set By                     |
+| -------------- | --------------------------- | ----------------------------- | -------------------------- |
+| `NODE_ENV`     | `test`                      | Test environment flag         | `package.json` scripts     |
 | `NODE_OPTIONS` | `--max-old-space-size=4096` | Increase heap size for builds | `.github/workflows/ci.yml` |
 
 ## Workflow-Specific Requirements

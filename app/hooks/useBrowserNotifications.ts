@@ -1,24 +1,25 @@
 /**
  * Browser Notifications Hook
- * 
+ *
  * Manages desktop notifications for:
  * - New approvals requiring action
  * - Critical system alerts
  * - Important updates
- * 
+ *
  * Features:
  * - Permission request handling
  * - Desktop notifications (when tab hidden)
  * - Sound support (configurable)
  * - Persistent until clicked
- * 
+ *
  * Phase 4 - ENG-013
  */
 
 import { useState, useEffect, useCallback } from "react";
 
 export function useBrowserNotifications() {
-  const [permission, setPermission] = useState<NotificationPermission>("default");
+  const [permission, setPermission] =
+    useState<NotificationPermission>("default");
   const [isSupported, setIsSupported] = useState(false);
 
   useEffect(() => {
@@ -100,4 +101,3 @@ export function useBrowserNotifications() {
     showApprovalNotification,
   };
 }
-

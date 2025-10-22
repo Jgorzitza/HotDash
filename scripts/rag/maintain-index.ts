@@ -70,7 +70,9 @@ async function getStatus(): Promise<void> {
 
   if (!exists) {
     console.log("❌ Index not found at:", INDEX_DIR);
-    console.log("\n💡 Run 'npx tsx scripts/rag/maintain-index.ts rebuild' to create index");
+    console.log(
+      "\n💡 Run 'npx tsx scripts/rag/maintain-index.ts rebuild' to create index",
+    );
     return;
   }
 
@@ -85,7 +87,9 @@ async function getStatus(): Promise<void> {
   console.log("\n📋 Index Details:");
   console.log(`  Built: ${new Date(metadata.buildTime).toLocaleString()}`);
   console.log(`  Documents: ${metadata.documentCount}`);
-  console.log(`  Embedding Mode: ${metadata.useMock ? "Mock (Local)" : "OpenAI"}`);
+  console.log(
+    `  Embedding Mode: ${metadata.useMock ? "Mock (Local)" : "OpenAI"}`,
+  );
 
   console.log(`\n📄 Source Documents (${metadata.sources.length}):`);
   for (const source of metadata.sources) {
@@ -94,7 +98,11 @@ async function getStatus(): Promise<void> {
   }
 
   // Check index files
-  const indexFiles = ["doc_store.json", "index_store.json", "vector_store.json"];
+  const indexFiles = [
+    "doc_store.json",
+    "index_store.json",
+    "vector_store.json",
+  ];
   console.log("\n🗂️  Index Files:");
   for (const file of indexFiles) {
     try {
@@ -132,7 +140,9 @@ async function rebuildIndex(): Promise<void> {
     const metadata = await loadMetadata();
     if (metadata) {
       console.log(`  Current index: ${metadata.documentCount} documents`);
-      console.log(`  Last built: ${new Date(metadata.buildTime).toLocaleString()}\n`);
+      console.log(
+        `  Last built: ${new Date(metadata.buildTime).toLocaleString()}\n`,
+      );
     }
   }
 
@@ -203,7 +213,9 @@ async function verifyIndex(): Promise<void> {
       console.log("\n✅ Vector store has data");
     }
   } catch (error) {
-    console.log(`\n❌ Could not verify vector store: ${(error as Error).message}`);
+    console.log(
+      `\n❌ Could not verify vector store: ${(error as Error).message}`,
+    );
     allFilesExist = false;
   }
 
@@ -211,7 +223,9 @@ async function verifyIndex(): Promise<void> {
     console.log("\n✅ Index integrity check passed");
   } else {
     console.log("\n❌ Index integrity check failed");
-    console.log("💡 Run 'npx tsx scripts/rag/maintain-index.ts rebuild' to fix");
+    console.log(
+      "💡 Run 'npx tsx scripts/rag/maintain-index.ts rebuild' to fix",
+    );
     process.exit(1);
   }
 }
@@ -238,9 +252,15 @@ async function main() {
     default:
       console.log("📚 RAG Knowledge Base Maintenance\n");
       console.log("Usage:");
-      console.log("  npx tsx scripts/rag/maintain-index.ts status     # Check index status");
-      console.log("  npx tsx scripts/rag/maintain-index.ts rebuild    # Rebuild index");
-      console.log("  npx tsx scripts/rag/maintain-index.ts verify     # Verify integrity");
+      console.log(
+        "  npx tsx scripts/rag/maintain-index.ts status     # Check index status",
+      );
+      console.log(
+        "  npx tsx scripts/rag/maintain-index.ts rebuild    # Rebuild index",
+      );
+      console.log(
+        "  npx tsx scripts/rag/maintain-index.ts verify     # Verify integrity",
+      );
       process.exit(1);
   }
 }
@@ -254,4 +274,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export { getStatus, rebuildIndex, verifyIndex };
-

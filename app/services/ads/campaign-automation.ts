@@ -10,7 +10,11 @@
  * @module app/services/ads/campaign-automation
  */
 
-import type { CampaignPerformance, CampaignSummary, KeywordPerformance } from "./types";
+import type {
+  CampaignPerformance,
+  CampaignSummary,
+  KeywordPerformance,
+} from "./types";
 
 /**
  * Automation Action Type
@@ -56,12 +60,12 @@ export interface AutomationAction {
  * Automation Thresholds
  */
 export interface AutomationThresholds {
-  pauseLowCtr: number;  // Pause if CTR < X% (default: 1.0)
-  pauseLowRoas: number;  // Pause if ROAS < X (default: 1.0)
-  increaseBudgetRoas: number;  // Increase budget if ROAS > X (default: 3.0)
-  decreaseBudgetRoas: number;  // Decrease budget if ROAS < X (default: 1.5)
-  pauseKeywordCtr: number;  // Pause keyword if CTR < X% (default: 0.5)
-  minSpendForAction: number;  // Minimum spend (cents) before taking action (default: 5000)
+  pauseLowCtr: number; // Pause if CTR < X% (default: 1.0)
+  pauseLowRoas: number; // Pause if ROAS < X (default: 1.0)
+  increaseBudgetRoas: number; // Increase budget if ROAS > X (default: 3.0)
+  decreaseBudgetRoas: number; // Decrease budget if ROAS < X (default: 1.5)
+  pauseKeywordCtr: number; // Pause keyword if CTR < X% (default: 0.5)
+  minSpendForAction: number; // Minimum spend (cents) before taking action (default: 5000)
 }
 
 /**
@@ -85,7 +89,7 @@ export const DEFAULT_AUTOMATION_THRESHOLDS: AutomationThresholds = {
  */
 export function identifyPauseCandidates(
   campaigns: CampaignSummary[],
-  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS
+  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS,
 ): AutomationAction[] {
   const actions: AutomationAction[] = [];
 
@@ -97,7 +101,8 @@ export function identifyPauseCandidates(
 
     const ctrPercent = campaign.ctr * 100;
     const shouldPauseLowCtr = ctrPercent < thresholds.pauseLowCtr;
-    const shouldPauseLowRoas = campaign.roas !== null && campaign.roas < thresholds.pauseLowRoas;
+    const shouldPauseLowRoas =
+      campaign.roas !== null && campaign.roas < thresholds.pauseLowRoas;
 
     if (shouldPauseLowCtr || shouldPauseLowRoas) {
       let reason = "";
@@ -169,7 +174,7 @@ export function identifyPauseCandidates(
  */
 export function identifyBudgetIncreaseCandidates(
   campaigns: CampaignSummary[],
-  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS
+  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS,
 ): AutomationAction[] {
   const actions: AutomationAction[] = [];
 
@@ -180,7 +185,10 @@ export function identifyBudgetIncreaseCandidates(
     }
 
     // Increase budget if ROAS is high
-    if (campaign.roas !== null && campaign.roas >= thresholds.increaseBudgetRoas) {
+    if (
+      campaign.roas !== null &&
+      campaign.roas >= thresholds.increaseBudgetRoas
+    ) {
       const currentBudget = campaign.costCents; // Simplified (actual would come from Campaign object)
       const proposedIncrease = Math.round(currentBudget * 0.2); // 20% increase
       const newBudget = currentBudget + proposedIncrease;
@@ -242,7 +250,7 @@ export function identifyBudgetIncreaseCandidates(
  */
 export function identifyBudgetDecreaseCandidates(
   campaigns: CampaignSummary[],
-  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS
+  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS,
 ): AutomationAction[] {
   const actions: AutomationAction[] = [];
 
@@ -317,7 +325,7 @@ export function identifyBudgetDecreaseCandidates(
  */
 export function identifyKeywordPauseCandidates(
   keywords: KeywordPerformance[],
-  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS
+  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS,
 ): AutomationAction[] {
   const actions: AutomationAction[] = [];
 
@@ -327,7 +335,10 @@ export function identifyKeywordPauseCandidates(
       continue;
     }
 
-    const ctr = keyword.impressions > 0 ? (keyword.clicks / keyword.impressions) * 100 : 0;
+    const ctr =
+      keyword.impressions > 0
+        ? (keyword.clicks / keyword.impressions) * 100
+        : 0;
 
     if (ctr < thresholds.pauseKeywordCtr) {
       actions.push({
@@ -392,7 +403,7 @@ export function identifyKeywordPauseCandidates(
 export function generateAutomationRecommendations(
   campaigns: CampaignSummary[],
   keywords: KeywordPerformance[],
-  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS
+  thresholds: AutomationThresholds = DEFAULT_AUTOMATION_THRESHOLDS,
 ): AutomationAction[] {
   const actions: AutomationAction[] = [];
 
@@ -504,11 +515,16 @@ export function getAutomationStats(actions: AutomationAction[]): {
 
     // Estimate impact
     if (action.type === "pause_campaign" || action.type === "pause_keyword") {
-      const currentCost = action.evidence.currentMetrics.cost || action.evidence.currentMetrics.currentBudget || 0;
+      const currentCost =
+        action.evidence.currentMetrics.cost ||
+        action.evidence.currentMetrics.currentBudget ||
+        0;
       estimatedSavings += currentCost;
     } else if (action.type === "increase_budget") {
       // Parse projected impact string
-      const match = action.evidence.projectedImpact.match(/\+\$([0-9.]+)\/day revenue/);
+      const match = action.evidence.projectedImpact.match(
+        /\+\$([0-9.]+)\/day revenue/,
+      );
       if (match) {
         estimatedRevenue += parseFloat(match[1]) * 100; // Convert to cents
       }
@@ -523,5 +539,3 @@ export function getAutomationStats(actions: AutomationAction[]): {
     estimatedRevenue,
   };
 }
-
-

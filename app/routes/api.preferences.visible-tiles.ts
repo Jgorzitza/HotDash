@@ -3,17 +3,17 @@ import { authenticate } from "../shopify.server";
 
 /**
  * POST /api/preferences/visible-tiles
- * 
+ *
  * Saves user's visible tiles preference
- * 
+ *
  * Request body (form data):
  * - visibleTiles: JSON string array of tile IDs to show
- * 
+ *
  * Response:
  * - 200: { ok: true }
  * - 400: { error: string } if validation fails
  * - 401: { error: string } if not authenticated
- * 
+ *
  * Future: Save to Supabase user_preferences.visible_tiles
  * For now: Returns success (Phase 11 will wire Supabase)
  */
@@ -27,7 +27,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const visibleTilesRaw = formData.get("visibleTiles");
 
   if (!visibleTilesRaw || typeof visibleTilesRaw !== "string") {
-    return Response.json({ error: "visibleTiles is required" }, { status: 400 });
+    return Response.json(
+      { error: "visibleTiles is required" },
+      { status: 400 },
+    );
   }
 
   let visibleTiles: string[];
@@ -36,14 +39,14 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error) {
     return Response.json(
       { error: "visibleTiles must be valid JSON array" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   if (!Array.isArray(visibleTiles)) {
     return Response.json(
       { error: "visibleTiles must be an array" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -56,8 +59,10 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-  console.log(`[Preferences] Visible tiles saved for ${session.shop}:`, visibleTiles);
+  console.log(
+    `[Preferences] Visible tiles saved for ${session.shop}:`,
+    visibleTiles,
+  );
 
   return Response.json({ ok: true });
 }
-

@@ -48,7 +48,8 @@ export async function loader(_args: LoaderFunctionArgs) {
 
     return Response.json(response);
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     console.error("[API] Chatwoot unread error:", error);
 
     // Graceful degradation - return 0 unread on error
@@ -66,4 +67,3 @@ export async function loader(_args: LoaderFunctionArgs) {
     return Response.json(fallbackResponse);
   }
 }
-

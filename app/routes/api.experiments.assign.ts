@@ -1,8 +1,8 @@
 /**
  * API Route: Assign Experiment Variant
- * 
+ *
  * POST /api/experiments/assign
- * 
+ *
  * Assigns a user to an experiment variant using deterministic hashing.
  * Returns the assigned variant ID and configuration.
  */
@@ -24,7 +24,7 @@ export async function action({ request }: Route.ActionArgs) {
     if (!userId || !experimentId) {
       return Response.json(
         { error: "Missing required fields: userId, experimentId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -33,7 +33,7 @@ export async function action({ request }: Route.ActionArgs) {
     if (!experiment) {
       return Response.json(
         { error: `Experiment not found: ${experimentId}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -41,7 +41,7 @@ export async function action({ request }: Route.ActionArgs) {
     if (experiment.status !== "running") {
       return Response.json(
         { error: `Experiment is not running: ${experiment.status}` },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -52,7 +52,7 @@ export async function action({ request }: Route.ActionArgs) {
     await abTestingService.trackExposure(
       experimentId,
       assignment.variantId,
-      userId
+      userId,
     );
 
     // Get variant configuration
@@ -65,16 +65,11 @@ export async function action({ request }: Route.ActionArgs) {
         variantId: assignment.variantId,
         userId: assignment.userId,
         assignedAt: assignment.assignedAt.toISOString(),
-        config
-      }
+        config,
+      },
     });
   } catch (error) {
     console.error("[API] Experiment assign error:", error);
-    return Response.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-
-

@@ -15,12 +15,14 @@
 **Action**: Moved **57 design files** to `docs/_archive/2025-10-15-misc/design/`
 
 **Commit Message**:
+
 > "Kept: NORTH_STAR, RULES, OPERATING_MODEL, runbooks/, directions/, specs/, integrations/, manager/, mcp/  
 > Archived: marketing, enablement, compliance/evidence, pilot, ops, strategy, testing, **design drafts**, dev notes, etc."
 
 ### What Was Lost (ARCHIVED)
 
 **57 Design Files Including**:
+
 1. **HANDOFF-approval-queue-ui.md** - Complete Polaris implementation spec
 2. **approval-queue-edge-states.md** - 52KB edge case handling
 3. **approvalcard-component-spec.md** - 30KB component spec
@@ -53,15 +55,17 @@
 ### Designed Features (from archived specs):
 
 **Dashboard**:
+
 - ✅ 8 tiles (6 core + Idea Pool + Approvals Queue)
 - ❌ Drag & drop tile reordering
-- ❌ Tile visibility toggles  
+- ❌ Tile visibility toggles
 - ❌ User preference storage
 - ❌ Notification center with badge count
 - ❌ Real-time update indicators
 - ❌ Dashboard personalization settings
 
 **Approval Queue**:
+
 - ❌ `/approvals` route
 - ❌ ApprovalCard component (complete spec existed)
 - ❌ Auto-refresh every 5 seconds
@@ -70,6 +74,7 @@
 - ❌ Navigation badge with pending count
 
 **Modals**:
+
 - ❌ Enhanced CX Escalation modal with:
   - Conversation preview
   - AI suggested reply
@@ -80,8 +85,9 @@
 - ❌ Inventory modal with reorder approval
 
 **Advanced Features**:
+
 - ❌ Notification system
-- ❌ Toast messages  
+- ❌ Toast messages
 - ❌ Error retry mechanisms
 - ❌ Onboarding flow
 - ❌ Settings page
@@ -89,6 +95,7 @@
 ### Actually Built:
 
 **Dashboard**:
+
 - ✅ 6 basic tiles (missing 2)
 - ✅ Simple tile status (ok/error/unconfigured)
 - ✅ Basic loading states
@@ -106,6 +113,7 @@
 **Question**: "Did we waste today building towards something completely wrong?"
 
 **Answer**: Unfortunately, partially yes:
+
 - Agents were directed to build based on the BASIC spec (`dashboard-tiles.md`)
 - They don't know about the ADVANCED specs (archived as "design drafts")
 - Current implementation is ~30% of the designed feature set
@@ -118,6 +126,7 @@
 **Manager Decision (Oct 15)**: Archived "design drafts" to clean up docs
 
 **Problem**: Treated comprehensive design specifications as "drafts"
+
 - Should have been in `docs/specs/` not `docs/design/`
 - Or flagged as "APPROVED DESIGNS - DO NOT ARCHIVE"
 - Archive sweep was too aggressive
@@ -133,6 +142,7 @@
 **Action**: Move all 57 design files back to `docs/design/`
 
 **Command**:
+
 ```bash
 cp -r docs/_archive/2025-10-15-misc/design/* docs/design/
 git add docs/design/
@@ -147,6 +157,7 @@ git commit -m "restore: Recover all 57 design files from Oct 15 archive"
 **Action**: Restore only P0 designs
 
 **Files to Restore**:
+
 1. HANDOFF-approval-queue-ui.md (approval queue spec)
 2. dashboard-features-1K-1P.md (personalization)
 3. notification-system-design.md (notifications)
@@ -159,7 +170,8 @@ git commit -m "restore: Recover all 57 design files from Oct 15 archive"
 
 **Action**: Accept current 6-tile implementation as baseline
 
-**Work Required**: 
+**Work Required**:
+
 - Document gap between designed vs. built
 - Re-prioritize missing features
 - Build incrementally from here
@@ -174,6 +186,7 @@ git commit -m "restore: Recover all 57 design files from Oct 15 archive"
 **RESTORE ALL 57 DESIGN FILES IMMEDIATELY**
 
 **Rationale**:
+
 - Your planning day wasn't wasted - the specs exist
 - They're complete and detailed
 - Just need to be unarchived
@@ -181,6 +194,7 @@ git commit -m "restore: Recover all 57 design files from Oct 15 archive"
 - 5 minutes to restore vs. months to recreate
 
 **Next**:
+
 1. Restore design files (5 min)
 2. Update Engineer direction to build full approval queue (60 min)
 3. Update Designer direction to implement tile personalization (45 min)
@@ -193,4 +207,3 @@ git commit -m "restore: Recover all 57 design files from Oct 15 archive"
 I made a critical error on Oct 15 by archiving your design work as "drafts". These were approved specifications, not drafts. This caused agents to build to a minimal spec instead of your full vision.
 
 **Fixing now**: Restoring all design files and updating agent directions.
-

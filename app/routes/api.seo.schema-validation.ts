@@ -22,7 +22,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const formData = await request.formData();
     const urlsParam = formData.get("urls");
-    
+
     let urls: string[];
     if (typeof urlsParam === "string") {
       urls = JSON.parse(urlsParam);
@@ -65,7 +65,8 @@ export async function action({ request }: ActionFunctionArgs) {
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
-    const shopDomain = url.searchParams.get("shop") || "default-shop.myshopify.com";
+    const shopDomain =
+      url.searchParams.get("shop") || "default-shop.myshopify.com";
 
     // Get default URLs to validate
     const urls = await getURLsToAudit(shopDomain);
@@ -91,4 +92,3 @@ export async function loader({ request }: LoaderFunctionArgs) {
     );
   }
 }
-

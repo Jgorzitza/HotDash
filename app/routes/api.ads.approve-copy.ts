@@ -49,7 +49,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
             error: "Approval not found",
             code: "NOT_FOUND",
           },
-          { status: 404 }
+          { status: 404 },
         );
       }
       return Response.json({ approval });
@@ -78,12 +78,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // If no specific query, return summary
     const approvals = getPendingApprovals();
     const stats = getApprovalStats();
-    
+
     return Response.json({
       approvals,
       stats,
     });
-
   } catch (error) {
     console.error("Error fetching ad copy approvals:", error);
     return Response.json(
@@ -92,7 +91,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         code: "FETCH_ERROR",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -120,7 +119,7 @@ export async function action({ request }: ActionFunctionArgs) {
           error: "Action is required",
           code: "MISSING_ACTION",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -134,7 +133,7 @@ export async function action({ request }: ActionFunctionArgs) {
               error: "Request data is required",
               code: "MISSING_DATA",
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
@@ -149,21 +148,27 @@ export async function action({ request }: ActionFunctionArgs) {
               code: "VALIDATION_ERROR",
               details: validationErrors,
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
         // Generate diff for review
-        const diff = generateCopyDiff(approvalRequest.currentCopy, approvalRequest.proposedCopy);
+        const diff = generateCopyDiff(
+          approvalRequest.currentCopy,
+          approvalRequest.proposedCopy,
+        );
 
         // Create approval request
         const approval = createApprovalRequest(approvalRequest);
 
-        return Response.json({
-          approval,
-          diff,
-          message: "Approval request created successfully",
-        }, { status: 201 });
+        return Response.json(
+          {
+            approval,
+            diff,
+            message: "Approval request created successfully",
+          },
+          { status: 201 },
+        );
       }
 
       case "approve": {
@@ -177,7 +182,7 @@ export async function action({ request }: ActionFunctionArgs) {
               error: "Approval ID and reviewer are required",
               code: "MISSING_PARAMS",
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
@@ -200,7 +205,7 @@ export async function action({ request }: ActionFunctionArgs) {
               error: "Approval ID, reviewer, and rejection reason are required",
               code: "MISSING_PARAMS",
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
@@ -221,7 +226,7 @@ export async function action({ request }: ActionFunctionArgs) {
               error: "Approval ID is required",
               code: "MISSING_PARAMS",
             },
-            { status: 400 }
+            { status: 400 },
           );
         }
 
@@ -239,11 +244,10 @@ export async function action({ request }: ActionFunctionArgs) {
             error: `Unknown action: ${action}`,
             code: "UNKNOWN_ACTION",
           },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
-
   } catch (error) {
     console.error("Error processing ad copy approval:", error);
 
@@ -255,7 +259,7 @@ export async function action({ request }: ActionFunctionArgs) {
           code: "NOT_FOUND",
           details: error.message,
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -266,7 +270,7 @@ export async function action({ request }: ActionFunctionArgs) {
           code: "ALREADY_PROCESSED",
           details: error.message,
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -276,8 +280,7 @@ export async function action({ request }: ActionFunctionArgs) {
         code: "ACTION_ERROR",
         details: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

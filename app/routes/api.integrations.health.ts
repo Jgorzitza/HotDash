@@ -1,14 +1,14 @@
 /**
  * API Route: Integration Health Checks
- * 
+ *
  * GET /api/integrations/health
- * 
+ *
  * Returns health status of all integrations
  */
 
-import type { LoaderFunctionArgs } from 'react-router';
-import shopify from '~/shopify.server';
-import { checkAllIntegrations } from '~/services/integrations/health';
+import type { LoaderFunctionArgs } from "react-router";
+import shopify from "~/shopify.server";
+import { checkAllIntegrations } from "~/services/integrations/health";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -19,7 +19,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       adminGraphqlClient = admin.graphql;
     } catch (error) {
       // Shopify auth might fail if not in embedded context
-      console.warn('[Health Check] Shopify auth unavailable, checking other services');
+      console.warn(
+        "[Health Check] Shopify auth unavailable, checking other services",
+      );
     }
 
     // Run all health checks
@@ -27,13 +29,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return Response.json(results);
   } catch (error) {
-    console.error('[Health Check] Error:', error);
+    console.error("[Health Check] Error:", error);
     return Response.json(
-      { 
-        overall: 'unhealthy' as const,
-        error: error instanceof Error ? error.message : 'Unknown error',
+      {
+        overall: "unhealthy" as const,
+        error: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

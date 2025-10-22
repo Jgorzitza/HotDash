@@ -1,26 +1,26 @@
 /**
  * AI-Customer CEO Agent Approval Adapter
- * 
+ *
  * Converts CEO Agent actions into approval records for HITL workflow.
  * All CEO Agent actions require approval before execution.
  * Creates approval queue entries with evidence, reasoning, and risk assessment.
- * 
+ *
  * @module app/services/ai-customer/approval-adapter
  * @see docs/directions/ai-customer.md AI-CUSTOMER-010
  */
 
-import { createClient } from '@supabase/supabase-js';
-import type { ActionType } from './action-execution';
+import { createClient } from "@supabase/supabase-js";
+import type { ActionType } from "./action-execution";
 
 /**
  * Approval status
  */
-export type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'modified';
+export type ApprovalStatus = "pending" | "approved" | "rejected" | "modified";
 
 /**
  * Approval type (maps to action types)
  */
-export type ApprovalType = 'cx' | 'inventory' | 'social' | 'product' | 'ads';
+export type ApprovalType = "cx" | "inventory" | "social" | "product" | "ads";
 
 /**
  * CEO Agent action to convert into approval
@@ -54,20 +54,20 @@ export interface ApprovalRecord {
   actionType: ApprovalType;
   status: ApprovalStatus;
   queuedAt: string;
-  evidence: CEOActionRequest['evidence'];
+  evidence: CEOActionRequest["evidence"];
   reasoning: string;
   approvalUrl?: string; // Deep link to approval drawer
 }
 
 /**
  * Create approval record for CEO Agent action
- * 
+ *
  * Strategy:
  * 1. Validate action request has required fields
  * 2. Store in decision_log with scope='ceo_approval'
  * 3. Create approval queue entry for UI display
  * 4. Return approval ID and URL for CEO to review
- * 
+ *
  * @param action - CEO Agent action requiring approval
  * @param userId - CEO user ID
  * @param supabaseUrl - Supabase project URL
@@ -78,7 +78,7 @@ export async function createApproval(
   action: CEOActionRequest,
   userId: string,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<ApprovalRecord> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -90,9 +90,9 @@ export async function createApproval(
 
     // Create approval record in decision_log
     const { data, error } = await supabase
-      .from('decision_log')
+      .from("decision_log")
       .insert({
-        scope: 'ceo_approval',
+        scope: "ceo_approval",
         actor: userId,
         action: `${action.actionType}.${action.actionId}`,
         rationale: action.reasoning,
@@ -106,11 +106,11 @@ export async function createApproval(
           projectedImpact: action.projectedImpact,
           risks: action.risks,
           rollback: action.rollback,
-          approvalStatus: 'pending',
+          approvalStatus: "pending",
           queuedAt: now,
         },
       })
-      .select('id')
+      .select("id")
       .single();
 
     if (error) {
@@ -126,21 +126,21 @@ export async function createApproval(
       approvalId,
       actionId: action.actionId,
       actionType: action.actionType,
-      status: 'pending',
+      status: "pending",
       queuedAt: now,
       evidence: action.evidence,
       reasoning: action.reasoning,
       approvalUrl,
     };
   } catch (error) {
-    console.error('[Approval Adapter] Error creating approval:', error);
+    console.error("[Approval Adapter] Error creating approval:", error);
     throw error;
   }
 }
 
 /**
  * Update approval status (approved/rejected/modified)
- * 
+ *
  * @param approvalId - Approval record ID
  * @param status - New status
  * @param userId - CEO user ID
@@ -155,16 +155,16 @@ export async function updateApprovalStatus(
   userId: string,
   modifications: Record<string, any> | undefined,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<boolean> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     // Get existing approval
     const { data: existing, error: fetchError } = await supabase
-      .from('decision_log')
-      .select('*')
-      .eq('id', approvalId)
+      .from("decision_log")
+      .select("*")
+      .eq("id", approvalId)
       .single();
 
     if (fetchError || !existing) {
@@ -185,8 +185,8 @@ export async function updateApprovalStatus(
     }
 
     // Update approval
-    await supabase.from('decision_log').insert({
-      scope: 'ceo_approval',
+    await supabase.from("decision_log").insert({
+      scope: "ceo_approval",
       actor: userId,
       action: `${payload.actionType}.${payload.actionId}.${status}`,
       rationale: `Approval ${status} by CEO`,
@@ -196,14 +196,14 @@ export async function updateApprovalStatus(
 
     return true;
   } catch (error) {
-    console.error('[Approval Adapter] Error updating approval:', error);
+    console.error("[Approval Adapter] Error updating approval:", error);
     return false;
   }
 }
 
 /**
  * Get pending approvals for CEO
- * 
+ *
  * @param userId - CEO user ID
  * @param actionType - Filter by action type (optional)
  * @param limit - Max results
@@ -216,17 +216,17 @@ export async function getPendingApprovals(
   actionType: ApprovalType | undefined,
   limit: number,
   supabaseUrl: string,
-  supabaseKey: string
+  supabaseKey: string,
 ): Promise<ApprovalRecord[]> {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
     let query = supabase
-      .from('decision_log')
-      .select('*')
-      .eq('scope', 'ceo_approval')
-      .eq('actor', userId)
-      .order('created_at', { ascending: false })
+      .from("decision_log")
+      .select("*")
+      .eq("scope", "ceo_approval")
+      .eq("actor", userId)
+      .order("created_at", { ascending: false })
       .limit(limit);
 
     const { data, error } = await query;
@@ -242,7 +242,7 @@ export async function getPendingApprovals(
       const payload = record.payload as any;
 
       // Skip non-pending approvals
-      if (payload.approvalStatus !== 'pending') continue;
+      if (payload.approvalStatus !== "pending") continue;
 
       // Filter by action type if specified
       if (actionType && payload.actionType !== actionType) continue;
@@ -254,14 +254,17 @@ export async function getPendingApprovals(
         status: payload.approvalStatus,
         queuedAt: payload.queuedAt,
         evidence: payload.evidence,
-        reasoning: record.rationale || '',
+        reasoning: record.rationale || "",
         approvalUrl: `/app/approvals?id=${record.id}&type=${payload.actionType}`,
       });
     }
 
     return approvals;
   } catch (error) {
-    console.error('[Approval Adapter] Error fetching pending approvals:', error);
+    console.error(
+      "[Approval Adapter] Error fetching pending approvals:",
+      error,
+    );
     return [];
   }
 }
@@ -271,22 +274,25 @@ export async function getPendingApprovals(
  */
 function validateActionRequest(action: CEOActionRequest): void {
   if (!action.actionId) {
-    throw new Error('actionId is required');
+    throw new Error("actionId is required");
   }
   if (!action.actionType) {
-    throw new Error('actionType is required');
+    throw new Error("actionType is required");
   }
   if (!action.description) {
-    throw new Error('description is required');
+    throw new Error("description is required");
   }
-  if (!action.payload || typeof action.payload !== 'object') {
-    throw new Error('payload must be a non-empty object');
+  if (!action.payload || typeof action.payload !== "object") {
+    throw new Error("payload must be a non-empty object");
   }
   if (!action.reasoning) {
-    throw new Error('reasoning is required');
+    throw new Error("reasoning is required");
   }
-  if (!action.evidence || !action.evidence.sources || action.evidence.sources.length === 0) {
-    throw new Error('evidence.sources must contain at least one source');
+  if (
+    !action.evidence ||
+    !action.evidence.sources ||
+    action.evidence.sources.length === 0
+  ) {
+    throw new Error("evidence.sources must contain at least one source");
   }
 }
-

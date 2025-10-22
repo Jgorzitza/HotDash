@@ -53,24 +53,29 @@ Use this template for all feature testing documentation.
 **Objective**: [What are you testing?]
 
 **Preconditions**:
+
 - [Condition 1]
 - [Condition 2]
 
 **Test Steps**:
+
 1. [Step 1]
 2. [Step 2]
 3. [Step 3]
 
 **Expected Result**:
+
 - [Expected outcome 1]
 - [Expected outcome 2]
 
 **Actual Result**:
+
 - [What actually happened]
 
 **Status**: ✅ PASS / ❌ FAIL / ⏸️ BLOCKED
 
 **Evidence**:
+
 - Screenshot: [path/to/screenshot.png]
 - Log: [relevant log excerpt]
 - Commit: [git commit reference]
@@ -115,12 +120,12 @@ List edge cases explicitly tested:
 
 **Measured**: [Date/Time]
 
-| Metric | Target | Actual | Status |
-|--------|--------|--------|--------|
-| Load Time | < 3s | [X]s | ✅/❌ |
-| API Response | < 500ms | [X]ms | ✅/❌ |
-| Memory Usage | < 100MB | [X]MB | ✅/❌ |
-| CPU Usage | < 50% | [X]% | ✅/❌ |
+| Metric       | Target  | Actual | Status |
+| ------------ | ------- | ------ | ------ |
+| Load Time    | < 3s    | [X]s   | ✅/❌  |
+| API Response | < 500ms | [X]ms  | ✅/❌  |
+| Memory Usage | < 100MB | [X]MB  | ✅/❌  |
+| CPU Usage    | < 50%   | [X]%   | ✅/❌  |
 
 ---
 
@@ -137,9 +142,11 @@ List edge cases explicitly tested:
 
 **Screen Reader Test Log**:
 ```
+
 [Timestamp] [Action] [Screen Reader Output]
-14:30:00    Tab to button    "Approve, button"
-14:30:05    Press Enter      "Submitting request..."
+14:30:00 Tab to button "Approve, button"
+14:30:05 Press Enter "Submitting request..."
+
 ```
 
 ---
@@ -190,9 +197,9 @@ See [Bug Report Template](#bug-report-template) for detailed bug reports.
 
 ## Sign-Off
 
-**Tested By**: [Agent Name]  
-**Date**: YYYY-MM-DD  
-**Status**: ✅ Approved / ❌ Rejected / ⏸️ Needs Rework  
+**Tested By**: [Agent Name]
+**Date**: YYYY-MM-DD
+**Status**: ✅ Approved / ❌ Rejected / ⏸️ Needs Rework
 **Next Steps**: [What needs to happen]
 
 ```
@@ -248,10 +255,11 @@ See [Bug Report Template](#bug-report-template) for detailed bug reports.
 **Test**: PII Card displays redacted email
 
 **Evidence**:
+
 - Screenshot: artifacts/qa/2025-10-21/pii-card/redacted-email.png
 - Input: john.doe@example.com
-- Expected: j***@e***.com
-- Actual: j***@e***.com ✅
+- Expected: j**_@e_**.com
+- Actual: j**_@e_**.com ✅
 - Code: app/components/PIICard.tsx:89-102
 - Commit: bdc9541
 - Performance: Redaction took 2.3ms ✅
@@ -263,6 +271,7 @@ See [Bug Report Template](#bug-report-template) for detailed bug reports.
 **Test**: PII Card works
 
 **Evidence**:
+
 - Tested it
 - Looks good
 ```
@@ -276,6 +285,7 @@ See [Bug Report Template](#bug-report-template) for detailed bug reports.
 **Location**: `artifacts/qa/[YYYY-MM-DD]/[feature-name]/`
 
 **Structure**:
+
 ```
 artifacts/qa/
 └── 2025-10-21/
@@ -300,6 +310,7 @@ artifacts/qa/
 
 ```markdown
 **Evidence**:
+
 - Files tested: 3 (Modal.tsx, PIICard.tsx, CXEscalationModal.tsx)
 - Test cases passed: 12/15 (80%)
 - Screenshots: 8 saved to artifacts/qa/2025-10-21/
@@ -371,10 +382,12 @@ Use this template for all bugs found during testing.
 ## Reproduction Steps
 
 **Preconditions**:
+
 - [Setup requirement 1]
 - [Setup requirement 2]
 
 **Steps to Reproduce**:
+
 1. [Step 1]
 2. [Step 2]
 3. [Step 3]
@@ -388,6 +401,7 @@ Use this template for all bugs found during testing.
 [What should happen]
 
 Example:
+
 - PII Card should display redacted email as `j***@e***.com`
 - Public Reply should not contain full email address
 
@@ -398,6 +412,7 @@ Example:
 [What actually happens]
 
 Example:
+
 - PII Card displays full email `john.doe@example.com` (not redacted)
 - Public Reply also contains full email (security risk)
 
@@ -406,22 +421,27 @@ Example:
 ## Evidence
 
 **Screenshots**:
+
 - Before: [path/to/before.png]
 - After: [path/to/after.png]
 - Error: [path/to/error.png]
 
 **Logs**:
 ```
+
 [Relevant log excerpt - max 20 lines]
 Error: Cannot read property 'email' of undefined
-  at PIIBroker.redact (app/services/pii-broker.ts:45)
-  at CustomerFrontAgent.composeReply (app/agents/customer-front.ts:123)
+at PIIBroker.redact (app/services/pii-broker.ts:45)
+at CustomerFrontAgent.composeReply (app/agents/customer-front.ts:123)
+
 ```
 
 **Console Output**:
 ```
+
 [Relevant console output - max 20 lines]
 TypeError: email is not a function
+
 ```
 
 **Code Reference**:
@@ -450,7 +470,7 @@ TypeError: email is not a function
 
 **Affected Users**: All/Operators Only/Specific Scenario
 
-**Workaround Available**: Yes/No  
+**Workaround Available**: Yes/No
 **Workaround**: [If yes, describe workaround]
 
 ---
@@ -496,8 +516,8 @@ Example:
 
 ## Related Issues
 
-**Related Bugs**: BUG-XXX, BUG-YYY  
-**Related Features**: FEATURE-XXX  
+**Related Bugs**: BUG-XXX, BUG-YYY
+**Related Features**: FEATURE-XXX
 **Related PRs**: PR-XXX (if fix already attempted)
 
 ---
@@ -523,8 +543,8 @@ Example:
 
 ## Assignee
 
-**Assigned To**: [Agent Name]  
-**Target Fix Date**: YYYY-MM-DD  
+**Assigned To**: [Agent Name]
+**Target Fix Date**: YYYY-MM-DD
 **Actual Fix Date**: YYYY-MM-DD (when fixed)
 
 ---
@@ -559,30 +579,31 @@ Example:
 
 ### Priority Definitions
 
-| Priority | Description | Response Time | Example |
-|----------|-------------|---------------|---------|
-| **P0 (Critical)** | System down, security risk, data loss | < 4 hours | PII exposed, auth broken, payments failing |
-| **P1 (High)** | Major feature broken, many users affected | < 48 hours | Modal won't open, API 500 errors, widget missing |
-| **P2 (Medium)** | Minor feature broken, some users affected | < 1 week | Sorting broken, filter not working, styling off |
-| **P3 (Low)** | Cosmetic issue, few users affected | Next release | Color slightly off, tooltip wording unclear |
+| Priority          | Description                               | Response Time | Example                                          |
+| ----------------- | ----------------------------------------- | ------------- | ------------------------------------------------ |
+| **P0 (Critical)** | System down, security risk, data loss     | < 4 hours     | PII exposed, auth broken, payments failing       |
+| **P1 (High)**     | Major feature broken, many users affected | < 48 hours    | Modal won't open, API 500 errors, widget missing |
+| **P2 (Medium)**   | Minor feature broken, some users affected | < 1 week      | Sorting broken, filter not working, styling off  |
+| **P3 (Low)**      | Cosmetic issue, few users affected        | Next release  | Color slightly off, tooltip wording unclear      |
 
 ---
 
 ### Test Status Definitions
 
-| Status | Symbol | Meaning |
-|--------|--------|---------|
-| **PASS** | ✅ | Test passed, feature works as expected |
-| **FAIL** | ❌ | Test failed, bug found, needs fix |
-| **BLOCKED** | ⏸️ | Test cannot proceed due to dependency or environment issue |
-| **SKIP** | ⏭️ | Test intentionally skipped (not applicable, deprecated) |
-| **PENDING** | 🔄 | Test started but not completed yet |
+| Status      | Symbol | Meaning                                                    |
+| ----------- | ------ | ---------------------------------------------------------- |
+| **PASS**    | ✅     | Test passed, feature works as expected                     |
+| **FAIL**    | ❌     | Test failed, bug found, needs fix                          |
+| **BLOCKED** | ⏸️     | Test cannot proceed due to dependency or environment issue |
+| **SKIP**    | ⏭️     | Test intentionally skipped (not applicable, deprecated)    |
+| **PENDING** | 🔄     | Test started but not completed yet                         |
 
 ---
 
 ### Evidence Checklist (Quick)
 
 Every test needs:
+
 - [ ] Screenshot/recording
 - [ ] Log excerpt (max 20 lines)
 - [ ] Code reference (file + line + commit)
@@ -594,6 +615,7 @@ Every test needs:
 ### Bug Report Checklist (Quick)
 
 Every bug report needs:
+
 - [ ] Clear title
 - [ ] Reproduction steps (3+ steps)
 - [ ] Expected vs actual behavior
@@ -613,6 +635,7 @@ Every bug report needs:
 **Type**: Functional
 
 **Steps**:
+
 1. Navigate to `/dashboard`
 2. Click "Approve" button
 3. Verify modal appears
@@ -633,6 +656,7 @@ Every bug report needs:
 **Type**: Edge Case
 
 **Steps**:
+
 1. Send conversation with no customer email
 2. Open PII Card
 3. Check email field
@@ -640,6 +664,7 @@ Every bug report needs:
 **Expected**: Display "Email: Not provided"  
 **Actual**: Error: "Cannot read property 'email' of undefined" ❌  
 **Evidence**:
+
 - Screenshot: `artifacts/qa/2025-10-21/pii-card/null-email-error.png`
 - Console log: `TypeError at PIICard.tsx:89`
 - Commit: bdc9541
@@ -657,6 +682,7 @@ Every bug report needs:
 **Type**: Performance
 
 **Steps**:
+
 1. Navigate to `/dashboard`
 2. Measure time to "tiles visible"
 3. Record performance metrics
@@ -664,6 +690,7 @@ Every bug report needs:
 **Expected**: < 3s load time  
 **Actual**: 2.1s ✅  
 **Evidence**:
+
 - Chrome DevTools Performance tab
 - Metrics: LCP 1.8s, FCP 0.9s, TTI 2.1s
 - Screenshot: `artifacts/qa/2025-10-21/performance/dashboard-metrics.png`
@@ -686,11 +713,10 @@ Every bug report needs:
 
 ## Document History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-10-21 | Support Agent | Initial creation (SUPPORT-011) |
+| Version | Date       | Author        | Changes                        |
+| ------- | ---------- | ------------- | ------------------------------ |
+| 1.0     | 2025-10-21 | Support Agent | Initial creation (SUPPORT-011) |
 
 ---
 
 **END OF DOCUMENT**
-

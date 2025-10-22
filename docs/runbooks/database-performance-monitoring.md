@@ -1,4 +1,5 @@
 # Database Performance Monitoring
+
 **Created**: 2025-10-21  
 **Task**: DATA-016  
 **Version**: 1.0
@@ -20,7 +21,7 @@ This runbook provides SQL queries and procedures for monitoring HotDash database
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 -- Find slowest queries by mean execution time
-SELECT 
+SELECT
   calls,
   mean_exec_time AS avg_ms,
   max_exec_time AS max_ms,
@@ -39,14 +40,14 @@ LIMIT 20;
 
 ```sql
 -- Check which indexes are being used
-SELECT 
+SELECT
   schemaname,
   tablename,
   indexname,
   idx_scan AS index_scans,
   idx_tup_read AS tuples_read,
   idx_tup_fetch AS tuples_fetched,
-  CASE 
+  CASE
     WHEN idx_scan = 0 THEN '⚠️ UNUSED'
     WHEN idx_scan < 100 THEN '⚠️ LOW USAGE'
     ELSE '✅ ACTIVE'
@@ -84,7 +85,7 @@ ORDER BY seq_scan DESC;
 
 ```sql
 -- Check database cache effectiveness (should be >90%)
-SELECT 
+SELECT
   'index hit rate' AS metric,
   (sum(idx_blks_hit)) / NULLIF(sum(idx_blks_hit + idx_blks_read), 0) AS ratio,
   CASE
@@ -96,7 +97,7 @@ FROM pg_statio_user_indexes
 
 UNION ALL
 
-SELECT 
+SELECT
   'table hit rate' AS metric,
   sum(heap_blks_hit) / NULLIF(sum(heap_blks_hit) + sum(heap_blks_read), 0) AS ratio,
   CASE
@@ -113,7 +114,7 @@ FROM pg_statio_user_tables;
 
 ```sql
 -- Identify tables with potential bloat
-SELECT 
+SELECT
   schemaname,
   tablename,
   n_live_tup AS live_rows,
@@ -137,7 +138,7 @@ ORDER BY dead_ratio_pct DESC NULLS LAST;
 
 ```sql
 -- Monitor active connections
-SELECT 
+SELECT
   state,
   COUNT(*) AS connection_count,
   MAX(NOW() - state_change) AS max_age
@@ -156,10 +157,10 @@ ORDER BY connection_count DESC;
 ```sql
 -- Check notification query performance
 EXPLAIN ANALYZE
-SELECT * FROM notifications 
-WHERE user_id = 'test-user-uuid'::uuid 
-  AND read_at IS NULL 
-ORDER BY created_at DESC 
+SELECT * FROM notifications
+WHERE user_id = 'test-user-uuid'::uuid
+  AND read_at IS NULL
+ORDER BY created_at DESC
 LIMIT 20;
 
 -- Expected: Index Scan using idx_notifications_user_unread_created
@@ -173,9 +174,9 @@ LIMIT 20;
 ```sql
 -- Check inventory action query performance
 EXPLAIN ANALYZE
-SELECT * FROM inventory_actions 
-WHERE variant_id = 'test-variant-uuid'::uuid 
-ORDER BY created_at DESC 
+SELECT * FROM inventory_actions
+WHERE variant_id = 'test-variant-uuid'::uuid
+ORDER BY created_at DESC
 LIMIT 50;
 
 -- Expected: Index Scan using idx_inventory_actions_variant_created
@@ -189,10 +190,10 @@ LIMIT 50;
 ```sql
 -- Check dashboard fact query performance
 EXPLAIN ANALYZE
-SELECT * FROM dashboard_fact 
-WHERE shop_domain = 'hotrodan.myshopify.com' 
-  AND fact_type = 'revenue' 
-ORDER BY created_at DESC 
+SELECT * FROM dashboard_fact
+WHERE shop_domain = 'hotrodan.myshopify.com'
+  AND fact_type = 'revenue'
+ORDER BY created_at DESC
 LIMIT 5;
 
 -- Expected: Index Scan using idx_dashboard_fact_shop_type_created
@@ -203,13 +204,13 @@ LIMIT 5;
 
 ## Performance Baselines (After DATA-006 + DATA-015)
 
-| Query Type | Before Optimization | After Optimization | Target |
-|------------|-------------------|-------------------|--------|
-| Notification unread | 50-100ms | 3-7ms | <10ms ✅ |
-| Inventory by variant | 20-40ms | 2-5ms | <10ms ✅ |
-| Dashboard facts | 15-30ms | 3-6ms | <10ms ✅ |
-| Decision log | 25-50ms | 3-6ms | <10ms ✅ |
-| RLS-filtered queries | 100-200ms | 30-70ms | <100ms ✅ |
+| Query Type           | Before Optimization | After Optimization | Target    |
+| -------------------- | ------------------- | ------------------ | --------- |
+| Notification unread  | 50-100ms            | 3-7ms              | <10ms ✅  |
+| Inventory by variant | 20-40ms             | 2-5ms              | <10ms ✅  |
+| Dashboard facts      | 15-30ms             | 3-6ms              | <10ms ✅  |
+| Decision log         | 25-50ms             | 3-6ms              | <10ms ✅  |
+| RLS-filtered queries | 100-200ms           | 30-70ms            | <100ms ✅ |
 
 ---
 
@@ -220,7 +221,7 @@ LIMIT 5;
 ```sql
 -- Run daily to track performance trends
 WITH slow_queries AS (
-  SELECT 
+  SELECT
     calls,
     mean_exec_time,
     query
@@ -231,7 +232,7 @@ WITH slow_queries AS (
   LIMIT 10
 ),
 table_stats AS (
-  SELECT 
+  SELECT
     tablename,
     n_live_tup,
     n_dead_tup,
@@ -284,18 +285,21 @@ echo "=== Health Check Complete ==="
 ## Alert Thresholds
 
 ### Critical (Immediate Action)
+
 - Cache hit rate < 80%
 - Query mean time > 1000ms (1 second)
 - Table bloat > 50%
 - Connection pool > 80% capacity
 
 ### Warning (Monitor Closely)
+
 - Cache hit rate < 90%
 - Query mean time > 100ms
 - Table bloat > 20%
 - Unused indexes > 10
 
 ### Healthy
+
 - Cache hit rate > 95%
 - Query mean time < 50ms
 - Table bloat < 10%
@@ -308,6 +312,7 @@ echo "=== Health Check Complete ==="
 ### Issue: Slow Queries After Migration
 
 **Diagnosis**:
+
 ```sql
 -- Check if indexes are being used
 EXPLAIN ANALYZE <your_slow_query>;
@@ -320,11 +325,13 @@ EXPLAIN ANALYZE <your_slow_query>;
 ### Issue: High Table Bloat
 
 **Diagnosis**:
+
 ```sql
 SELECT * FROM pg_stat_user_tables WHERE n_dead_tup > n_live_tup * 0.2;
 ```
 
 **Solution**:
+
 ```sql
 VACUUM ANALYZE table_name;
 ```
@@ -344,34 +351,34 @@ VACUUM ANALYZE table_name;
 ### Performance Summary (Single Query)
 
 ```sql
-SELECT 
+SELECT
   'Slow Queries' AS metric,
   COUNT(*) AS value,
   '>50ms avg' AS threshold
-FROM pg_stat_statements 
+FROM pg_stat_statements
 WHERE mean_exec_time > 50 AND calls > 10
 
 UNION ALL
 
-SELECT 
+SELECT
   'Unused Indexes',
   COUNT(*),
   '0 scans'
-FROM pg_stat_user_indexes 
+FROM pg_stat_user_indexes
 WHERE idx_scan = 0 AND schemaname = 'public'
 
 UNION ALL
 
-SELECT 
+SELECT
   'Tables Needing Vacuum',
   COUNT(*),
   '>20% dead rows'
-FROM pg_stat_user_tables 
+FROM pg_stat_user_tables
 WHERE n_dead_tup > n_live_tup * 0.2 AND schemaname = 'public'
 
 UNION ALL
 
-SELECT 
+SELECT
   'Active Connections',
   COUNT(*),
   'current'
@@ -387,16 +394,17 @@ WHERE datname = current_database() AND state = 'active';
 
 ```typescript
 // app/lib/db-monitor.ts
-import { prisma } from '~/lib/db.server';
+import { prisma } from "~/lib/db.server";
 
 export async function logSlowQuery(query: string, duration: number) {
-  if (duration > 50) {  // Log if >50ms
+  if (duration > 50) {
+    // Log if >50ms
     console.warn(`[SLOW QUERY] ${duration}ms`, {
       query: query.substring(0, 200),
       duration,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-    
+
     // Optionally store in monitoring table
     await prisma.$executeRaw`
       INSERT INTO observability_logs (
@@ -419,5 +427,3 @@ export async function logSlowQuery(query: string, duration: number) {
 **Created**: 2025-10-21  
 **Owner**: Data + DevOps  
 **Review**: Monthly
-
-

@@ -66,7 +66,8 @@ export async function loader(_args: LoaderFunctionArgs) {
       },
     });
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     console.error("[API] CX Metrics error:", error);
 
     const fallbackResponse: CXMetricsResponse = {

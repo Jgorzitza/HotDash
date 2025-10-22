@@ -1,6 +1,6 @@
 /**
  * Social Performance Tile Component
- * 
+ *
  * ENG-023: Displays social media post performance metrics
  * - Total posts count
  * - Average engagement
@@ -24,7 +24,10 @@ interface SocialPerformanceTileProps {
   onOpenModal?: () => void;
 }
 
-export function SocialPerformanceTile({ data, onOpenModal }: SocialPerformanceTileProps) {
+export function SocialPerformanceTile({
+  data,
+  onOpenModal,
+}: SocialPerformanceTileProps) {
   return (
     <div
       style={{
@@ -152,5 +155,3 @@ export function SocialPerformanceTile({ data, onOpenModal }: SocialPerformanceTi
     </div>
   );
 }
-
-

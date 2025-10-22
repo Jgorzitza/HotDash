@@ -99,7 +99,7 @@ export function createABTest(
   name: string,
   description: string,
   variants: Array<{ name: string; copy: AdCopy }>,
-  createdBy: string
+  createdBy: string,
 ): ABTest {
   if (variants.length < 2 || variants.length > 3) {
     throw new Error("A/B test must have 2-3 variants");
@@ -172,7 +172,7 @@ export function updateVariantPerformance(
     conversions?: number;
     costCents?: number;
     revenueCents?: number;
-  }
+  },
 ): ABTest {
   const test = tests.get(testId);
   if (!test) {
@@ -234,17 +234,22 @@ export function calculateChiSquare(variants: ABTestVariant[]): {
 
   for (const variant of variants) {
     const expectedConversions = variant.impressions * expectedConversionRate;
-    const expectedNonConversions = variant.impressions * (1 - expectedConversionRate);
+    const expectedNonConversions =
+      variant.impressions * (1 - expectedConversionRate);
 
     const actualConversions = variant.conversions;
     const actualNonConversions = variant.impressions - variant.conversions;
 
     // Chi-square = Σ((observed - expected)² / expected)
     if (expectedConversions > 0) {
-      chiSquare += Math.pow(actualConversions - expectedConversions, 2) / expectedConversions;
+      chiSquare +=
+        Math.pow(actualConversions - expectedConversions, 2) /
+        expectedConversions;
     }
     if (expectedNonConversions > 0) {
-      chiSquare += Math.pow(actualNonConversions - expectedNonConversions, 2) / expectedNonConversions;
+      chiSquare +=
+        Math.pow(actualNonConversions - expectedNonConversions, 2) /
+        expectedNonConversions;
     }
   }
 
@@ -269,9 +274,9 @@ function chiSquareToPValue(chiSquare: number, df: number): number {
   // For df=1 (2 variants):
   if (df === 1) {
     if (chiSquare >= 10.83) return 0.001; // 99.9% confidence
-    if (chiSquare >= 6.63) return 0.01;   // 99% confidence
-    if (chiSquare >= 3.84) return 0.05;   // 95% confidence
-    if (chiSquare >= 2.71) return 0.10;   // 90% confidence
+    if (chiSquare >= 6.63) return 0.01; // 99% confidence
+    if (chiSquare >= 3.84) return 0.05; // 95% confidence
+    if (chiSquare >= 2.71) return 0.1; // 90% confidence
     return 0.5; // Not significant
   }
 
@@ -280,7 +285,7 @@ function chiSquareToPValue(chiSquare: number, df: number): number {
     if (chiSquare >= 13.82) return 0.001;
     if (chiSquare >= 9.21) return 0.01;
     if (chiSquare >= 5.99) return 0.05;
-    if (chiSquare >= 4.61) return 0.10;
+    if (chiSquare >= 4.61) return 0.1;
     return 0.5;
   }
 
@@ -295,7 +300,9 @@ function chiSquareToPValue(chiSquare: number, df: number): number {
  * @returns Statistical result with winner and confidence
  */
 export function determineWinner(test: ABTest): StatisticalResult {
-  const { chiSquare, pValue, degreesOfFreedom } = calculateChiSquare(test.variants);
+  const { chiSquare, pValue, degreesOfFreedom } = calculateChiSquare(
+    test.variants,
+  );
 
   // Statistical significance threshold (p < 0.05 for 95% confidence)
   const isSignificant = pValue < 0.05;
@@ -305,7 +312,8 @@ export function determineWinner(test: ABTest): StatisticalResult {
   let bestConversionRate = 0;
 
   for (const variant of test.variants) {
-    const conversionRate = variant.impressions > 0 ? variant.conversions / variant.impressions : 0;
+    const conversionRate =
+      variant.impressions > 0 ? variant.conversions / variant.impressions : 0;
     if (conversionRate > bestConversionRate) {
       bestConversionRate = conversionRate;
       bestVariant = variant;
@@ -316,7 +324,8 @@ export function determineWinner(test: ABTest): StatisticalResult {
 
   let recommendation = "";
   if (!isSignificant) {
-    recommendation = "Continue test - not enough data for statistical significance";
+    recommendation =
+      "Continue test - not enough data for statistical significance";
   } else if (bestVariant) {
     recommendation = `Implement ${bestVariant.name} - statistically significant winner at ${confidence.toFixed(1)}% confidence`;
   } else {
@@ -398,5 +407,3 @@ export function cancelTest(testId: string, reason: string): ABTest {
 
   return test;
 }
-
-

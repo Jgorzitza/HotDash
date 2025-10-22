@@ -40,7 +40,13 @@ export interface QueryOptions {
   similarityTopK?: number;
   includeSnippets?: boolean;
   // AI-KNOWLEDGE-012: Category filtering support
-  category?: "returns" | "shipping" | "tracking" | "exchanges" | "faq" | "troubleshooting";
+  category?:
+    | "returns"
+    | "shipping"
+    | "tracking"
+    | "exchanges"
+    | "faq"
+    | "troubleshooting";
   // AI-KNOWLEDGE-012: Priority filtering support
   priority?: "high" | "medium" | "low";
 }
@@ -181,8 +187,8 @@ export async function queryKnowledgeBase(
   query: string,
   options: QueryOptions = {},
 ): Promise<QueryResult> {
-  const { 
-    similarityTopK = 3, 
+  const {
+    similarityTopK = 3,
     includeSnippets = true,
     category,
     priority,
@@ -215,7 +221,7 @@ export async function queryKnowledgeBase(
 
   if (response.sourceNodes) {
     chunksBeforeFilter = response.sourceNodes.length;
-    
+
     for (const node of response.sourceNodes) {
       // AI-KNOWLEDGE-012: Optional filtering by category/priority
       const nodeCategory = node.node.metadata?.category;
@@ -228,7 +234,9 @@ export async function queryKnowledgeBase(
       sources.push({
         document: node.node.metadata?.file_name || "unknown",
         relevance: node.score || 0,
-        snippet: includeSnippets ? node.node.getContent().slice(0, 200) : undefined,
+        snippet: includeSnippets
+          ? node.node.getContent().slice(0, 200)
+          : undefined,
       });
     }
   }
@@ -312,4 +320,3 @@ async function testQueries() {
 if (import.meta.url === `file://${process.argv[1]}`) {
   testQueries().catch(console.error);
 }
-

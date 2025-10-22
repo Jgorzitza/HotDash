@@ -1,4 +1,5 @@
 # Database Recovery Runbook
+
 **Created**: 2025-10-21  
 **Agent**: Data  
 **Task**: DATA-009  
@@ -9,19 +10,21 @@
 ## Overview
 
 ### Purpose
+
 Step-by-step procedures for backing up and recovering the HotDash Supabase database.
 
 ### Key Metrics
+
 - **RTO (Recovery Time Objective)**: 30 minutes
 - **RPO (Recovery Point Objective)**: <1 minute
 
 ### Backup Types
 
-| Type | Frequency | Retention | Speed | Use Case |
-|------|-----------|-----------|-------|----------|
-| **PITR (WAL)** | Continuous | 7 days | 15-20min | Recent recovery |
-| **Daily Snapshots** | Daily 00:00 UTC | 30 days | 15-20min | Daily restore |
-| **Manual** | On-demand | Indefinite | 30-45min | Pre-migration |
+| Type                | Frequency       | Retention  | Speed    | Use Case        |
+| ------------------- | --------------- | ---------- | -------- | --------------- |
+| **PITR (WAL)**      | Continuous      | 7 days     | 15-20min | Recent recovery |
+| **Daily Snapshots** | Daily 00:00 UTC | 30 days    | 15-20min | Daily restore   |
+| **Manual**          | On-demand       | Indefinite | 30-45min | Pre-migration   |
 
 ---
 
@@ -30,6 +33,7 @@ Step-by-step procedures for backing up and recovering the HotDash Supabase datab
 ### Decision Tree
 
 **Data loss detected** →
+
 - Recent (<7 days)? → **Use PITR** (Option 1 - fastest)
 - Older (<30 days)? → **Use Daily Snapshot** (Option 2)
 - Specific tables? → **Selective Restore** (Option 3)
@@ -44,18 +48,21 @@ Step-by-step procedures for backing up and recovering the HotDash Supabase datab
 **Time**: 15-20 minutes
 
 **Prerequisites**:
+
 - Supabase Management API access token
 - Specific recovery timestamp
 
 **Steps**:
 
 1. **Convert timestamp to Unix**:
+
 ```bash
 date -u -d "2025-10-21 08:00:00" +%s
 # Output: 1735689600
 ```
 
 2. **Initiate PITR**:
+
 ```bash
 curl -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/backups/restore-pitr" \
   -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
@@ -64,12 +71,14 @@ curl -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/database/backups
 ```
 
 3. **Monitor progress** (check every 30 seconds):
+
 ```bash
 curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
   "https://api.supabase.com/v1/projects/$PROJECT_REF/database/backups"
 ```
 
 4. **Verify restore**:
+
 ```sql
 -- Check table counts
 SELECT tablename, n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC;
@@ -80,6 +89,7 @@ SELECT MAX(created_at) FROM notifications;
 ```
 
 5. **Test RLS**:
+
 ```sql
 SET LOCAL ROLE authenticated;
 SELECT COUNT(*) FROM notifications;  -- Should work
@@ -94,6 +104,7 @@ SELECT COUNT(*) FROM notifications;  -- Should work
 **Time**: 15-20 minutes
 
 **Steps via Dashboard**:
+
 1. Login: https://supabase.com/dashboard
 2. Select project
 3. Navigate: Database → Backups
@@ -114,6 +125,7 @@ SELECT COUNT(*) FROM notifications;  -- Should work
 **Prerequisites**: pg_dump backup of table
 
 **Steps**:
+
 ```bash
 # 1. Backup current state
 pg_dump "$DATABASE_URL" --table="public.corrupted_table" > pre-recovery-backup.sql
@@ -140,6 +152,7 @@ psql "$DATABASE_URL" -c "ANALYZE public.corrupted_table;"
 **Time**: 30-45 minutes
 
 **Steps**:
+
 ```bash
 # 1. Extract backup (if compressed)
 gunzip backup.sql.gz
@@ -156,6 +169,7 @@ psql "$DATABASE_URL" -c "SELECT COUNT(*) FROM pg_tables WHERE schemaname='public
 ## Manual Backup Procedures
 
 ### Via Dashboard (Recommended)
+
 1. Dashboard → Database → Backups
 2. Click: **Create Backup**
 3. Name: `manual-backup-YYYY-MM-DD-HH-MM`
@@ -163,6 +177,7 @@ psql "$DATABASE_URL" -c "SELECT COUNT(*) FROM pg_tables WHERE schemaname='public
 5. Verify: Status = "Completed"
 
 ### Via pg_dump
+
 ```bash
 # Full backup
 pg_dump "$DATABASE_URL" --no-owner --no-privileges --clean > backup.sql
@@ -187,6 +202,7 @@ pg_dump "$DATABASE_URL" \
 **Frequency**: Every 3 months
 
 **Steps**:
+
 1. Insert test record with timestamp
 2. Wait 5 minutes (WAL archive)
 3. Delete test record
@@ -195,6 +211,7 @@ pg_dump "$DATABASE_URL" \
 6. Document: Recovery time, success/failure
 
 **Expected Results**:
+
 - Test record restored ✅
 - All other data intact ✅
 - RLS policies functional ✅
@@ -205,26 +222,34 @@ pg_dump "$DATABASE_URL" \
 ## Troubleshooting
 
 ### Issue 1: "No base backup found"
+
 **Resolution**: Use daily snapshot instead of PITR
 
 ### Issue 2: Restored data is old
+
 **Resolution**: Check WAL lag, accept data loss if lag was high
 
 ### Issue 3: RLS not working
-**Resolution**: 
+
+**Resolution**:
+
 ```sql
 ALTER TABLE table_name ENABLE ROW LEVEL SECURITY;
 ```
 
 ### Issue 4: Indexes missing
+
 **Resolution**:
+
 ```sql
 REINDEX SCHEMA public;
 ANALYZE;
 ```
 
 ### Issue 5: Connection pool exhausted
+
 **Resolution**:
+
 ```sql
 SELECT pg_terminate_backend(pid)
 FROM pg_stat_activity
@@ -236,12 +261,14 @@ WHERE state = 'idle' AND pid <> pg_backend_pid();
 ## Command Reference
 
 **List backups**:
+
 ```bash
 curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
   "https://api.supabase.com/v1/projects/$PROJECT_REF/database/backups"
 ```
 
 **PITR restore**:
+
 ```bash
 curl -X POST ".../database/backups/restore-pitr" \
   -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
@@ -249,11 +276,13 @@ curl -X POST ".../database/backups/restore-pitr" \
 ```
 
 **Manual backup**:
+
 ```bash
 pg_dump "$DATABASE_URL" --no-owner --no-privileges > backup.sql
 ```
 
 **Check table counts**:
+
 ```sql
 SELECT tablename, n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC;
 ```
@@ -262,14 +291,14 @@ SELECT tablename, n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC;
 
 ## Recovery Timeline
 
-| Phase | Time | Activities |
-|-------|------|-----------|
-| Detection | 0-5min | Alert, confirm incident |
-| Assessment | 5-10min | Identify recovery point, get approvals |
-| Initiation | 10-12min | Start recovery process |
-| Recovery | 12-27min | Database restore |
-| Verification | 27-30min | Verify data, test functionality |
-| **Total** | **30min** | **RTO target** |
+| Phase        | Time      | Activities                             |
+| ------------ | --------- | -------------------------------------- |
+| Detection    | 0-5min    | Alert, confirm incident                |
+| Assessment   | 5-10min   | Identify recovery point, get approvals |
+| Initiation   | 10-12min  | Start recovery process                 |
+| Recovery     | 12-27min  | Database restore                       |
+| Verification | 27-30min  | Verify data, test functionality        |
+| **Total**    | **30min** | **RTO target**                         |
 
 ---
 
@@ -294,8 +323,8 @@ SELECT tablename, n_live_tup FROM pg_stat_user_tables ORDER BY n_live_tup DESC;
 
 ## Testing Checklist
 
-- [ ] Quarterly staging PITR test (Next: _____)
-- [ ] Recovery metrics validated (RTO: ___, RPO: ___)
+- [ ] Quarterly staging PITR test (Next: **\_**)
+- [ ] Recovery metrics validated (RTO: **_, RPO: _**)
 - [ ] Team trained on procedures
 - [ ] Runbook updated with actuals
 
