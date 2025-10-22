@@ -59,7 +59,7 @@ ALTER TABLE feature_tours ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can manage their own feature tours"
   ON feature_tours
   TO authenticated
-  USING ((SELECT auth.uid())::text = user_id);
+  USING (auth.uid() = user_id);
 
 -- Update statistics
 ANALYZE feature_tours;

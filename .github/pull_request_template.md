@@ -1,59 +1,101 @@
-## Summary
-<!-- What changed and why -->
+# Pull Request
 
-## MCP Evidence (required for code changes)
-<!-- List artifacts/<agent>/<YYYY-MM-DD>/mcp/*.jsonl files created during development -->
-- artifacts/<agent>/<date>/mcp/<topic_or_tool>.jsonl
-- (or state "No MCP usage - non-code change")
+## Description
+Brief description of changes made.
 
-## Heartbeat (if task >2 hours)
-<!-- Confirm heartbeat files were updated during 'doing' status -->
-- [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Performance improvement
+- [ ] Code refactoring
+
+## Testing
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Manual testing completed
+- [ ] Performance testing completed (if applicable)
+
+## Growth Engine Compliance
+
+### MCP Evidence (required for code changes)
+<!-- 
+REQUIRED: List MCP evidence files OR state "No MCP usage - non-code change"
+Format: - artifacts/<agent>/<date>/mcp/<topic>.jsonl
+Example:
+- artifacts/support/2025-10-22/mcp/shopify-dev.jsonl
+- artifacts/support/2025-10-22/mcp/context7.jsonl
+OR
+- No MCP usage - non-code change
+-->
+- [ ] MCP evidence files listed above
+- [ ] OR "No MCP usage - non-code change" stated
+
+### Heartbeat (if task >2 hours)
+<!-- 
+REQUIRED: List heartbeat files OR state "Task completed in single session"
+Format: - artifacts/<agent>/<date>/heartbeat.ndjson
+Example:
+- artifacts/support/2025-10-22/heartbeat.ndjson
+OR
+- Task completed in single session (<2 hours, no heartbeat required)
+-->
+- [ ] Heartbeat files present: `artifacts/<agent>/<date>/heartbeat.ndjson`
 - [ ] OR task completed in single session (<2 hours, no heartbeat required)
 
-## Dev MCP Check (CRITICAL - Production Safety)
+### Dev MCP Check (CRITICAL - Production Safety)
+<!-- 
+REQUIRED: Verify no Dev MCP imports in production code
+Must include verification statement
+-->
 - [ ] No Dev MCP imports in runtime bundles (prod code only)
 - [ ] Verified: No `mcp.*dev` or `dev.*mcp` imports in app/ (searched with grep)
 
-## Evidence (required)
-- [ ] Vitest report link
-- [ ] Playwright trace/report link
-- [ ] Lighthouse CI report link
-- [ ] /metrics curl link
-- [ ] (If streaming) SSE soak logs link
+## Code Quality
+- [ ] Code follows project style guidelines
+- [ ] Self-review completed
+- [ ] Comments added for complex code
+- [ ] No console.log statements in production code
+- [ ] Error handling implemented appropriately
 
-## Scope
-- Molecule: <!-- agent/<agent>/<molecule> -->
-- Affected routes:
+## Security
+- [ ] No sensitive data exposed
+- [ ] Input validation implemented
+- [ ] Authentication/authorization checks in place
+- [ ] No hardcoded secrets or credentials
 
-## Stack Guardrails Compliance (CRITICAL - All Required)
-**Changes must comply with canonical toolkit per docs/directions/README.md#canonical-toolkit--secrets**
+## Performance
+- [ ] No performance regressions introduced
+- [ ] Database queries optimized (if applicable)
+- [ ] Large files handled appropriately
+- [ ] Memory usage considered
 
-### Database & Backend
-- [ ] ✅ **Supabase-only backend:** No non-Supabase database clients (MySQL, MongoDB, Redis, DynamoDB, Firebase)
-- [ ] ✅ **Chatwoot on Supabase:** CX integration uses Supabase for persistence only
-- [ ] ✅ **Secrets handling:** All credentials use process.env or vault references (no hardcoded values)
+## Documentation
+- [ ] README updated (if applicable)
+- [ ] API documentation updated (if applicable)
+- [ ] Code comments added for complex logic
+- [ ] Changelog updated (if applicable)
 
-### Frontend & AI Stack  
-- [ ] ✅ **React Router 7 only:** No Remix, Next.js, Gatsby, or incompatible routing frameworks
-- [ ] ✅ **OpenAI + LlamaIndex only:** No Anthropic, Claude, Cohere, HuggingFace, LangChain, or unauthorized AI services
-- [ ] ✅ **External services:** No AWS SDK, Azure, Google Cloud, Firebase Admin (Shopify/Chatwoot/OpenAI/Supabase only)
-
-### Special Approval Required (Check if applicable)
-- [ ] **Stack guardrail modification:** Requires Product Agent + Engineering Lead approval
-- [ ] **Security/compliance changes:** Requires security review + manager approval
-- [ ] **Database schema changes:** Requires Data + Reliability team approval
-
-## Risk & Rollback
-- Rollback plan:
-- Feature flags:
-- DEPLOY-147 impact: <!-- Does this contribute to evidence bundle completion? -->
+## Deployment
+- [ ] Environment variables documented
+- [ ] Database migrations included (if applicable)
+- [ ] Backward compatibility maintained
+- [ ] Rollback plan documented (if applicable)
 
 ## Checklist
-- [ ] Self-tested locally with evidence
-- [ ] Stack guardrails CI passes
-- [ ] Performance: No sub-300ms latency degradation
-- [ ] Docs updated (if user-facing changes)
-- [ ] Feedback updated (linked entry in feedback/<agent>.md with timestamp + command + output path)
-- [ ] No secrets committed
-- [ ] If PR touches docs/directions/**, authored by Manager or labeled 'approved-by-manager'
+- [ ] All CI checks pass
+- [ ] Code review completed
+- [ ] Tests pass locally
+- [ ] No merge conflicts
+- [ ] Branch is up to date with main
+- [ ] Commit messages follow conventional format
+
+## Additional Notes
+<!-- Any additional information, context, or notes for reviewers -->
+
+## Screenshots (if applicable)
+<!-- Add screenshots to help explain your changes -->
+
+## Related Issues
+<!-- Link to related issues using "Fixes #123" or "Closes #123" -->

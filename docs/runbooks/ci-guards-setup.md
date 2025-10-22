@@ -131,66 +131,144 @@ No MCP usage - non-code change (docs/config only)
 
 ## Required Checks on Main Branch
 
-To make these guards merge blockers, configure the following as required checks:
+**Configuration Required:** These guards must be enabled as "required checks" on the main branch to become merge blockers.
 
+**Required Checks to Enable:**
 1. **Guard MCP** - `guard-mcp`
 2. **Idle Guard** - `idle-guard`  
 3. **Dev MCP Ban** - `dev-mcp-ban`
 4. **All Guards** - `all-guards`
 
+**How to Enable:**
+1. Go to repository Settings → Branches
+2. Select main branch protection rules
+3. Enable "Require status checks to pass before merging"
+4. Add the four guard names above
+5. Save changes
+
+**Result:** Pull requests cannot be merged until all guards pass ✅
+
 ## PR Template Requirements
 
-All PRs must include these sections:
+**All pull requests must include these sections in the PR description:**
 
+### MCP Evidence Section
 ```markdown
 ## MCP Evidence (required for code changes)
 - artifacts/<agent>/<date>/mcp/<tool>.jsonl
 - (or state "No MCP usage - non-code change")
+```
 
+### Heartbeat Section  
+```markdown
 ## Heartbeat (if task >2 hours)
 - [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson
 - [ ] OR task completed in single session (<2 hours, no heartbeat required)
+```
 
+### Dev MCP Check Section
+```markdown
 ## Dev MCP Check (CRITICAL - Production Safety)
 - [ ] No Dev MCP imports in runtime bundles (prod code only)
 - [ ] Verified: No `mcp.*dev` or `dev.*mcp` imports in app/ (searched with grep)
 ```
 
+**Why These Sections Matter:**
+- **MCP Evidence**: Proves tool-first development approach
+- **Heartbeat**: Shows active work on long tasks
+- **Dev MCP Check**: Prevents production deployment failures
+
 ## Evidence File Formats
 
 ### MCP Evidence JSONL Format
+**File Location:** `artifacts/<agent>/<date>/mcp/<tool>.jsonl`
+
+**Required Fields:**
 ```json
-{"tool":"shopify-dev|context7|web-search","doc_ref":"<url>","request_id":"<id>","timestamp":"2025-10-21T14:30:00Z","purpose":"Learn Polaris Card component"}
+{
+  "tool": "shopify-dev|context7|web-search",
+  "doc_ref": "<url>",
+  "request_id": "<id>",
+  "timestamp": "2025-10-21T14:30:00Z",
+  "purpose": "Learn Polaris Card component"
+}
 ```
 
+**Example Files:**
+- `artifacts/content/2025-10-22/mcp/shopify-dev.jsonl`
+- `artifacts/content/2025-10-22/mcp/context7.jsonl`
+
 ### Heartbeat NDJSON Format
+**File Location:** `artifacts/<agent>/<date>/heartbeat.ndjson`
+
+**Required Fields:**
 ```json
 {"timestamp":"2025-10-21T14:00:00Z","task":"ENG-042","status":"doing","progress":"40%","file":"app/components/Modal.tsx"}
 {"timestamp":"2025-10-21T14:15:00Z","task":"ENG-042","status":"doing","progress":"65%","file":"app/routes/modal.test.ts"}
 {"timestamp":"2025-10-21T14:30:00Z","task":"ENG-042","status":"done","progress":"100%","file":"tests passing"}
 ```
 
+**Status Values:**
+- `doing` - Task in progress
+- `done` - Task completed
+- `blocked` - Task blocked by dependency
+
 ## Troubleshooting
 
-### Common Issues
+### Common Issues & Solutions
 
-1. **MCP Evidence Missing**
-   - Ensure JSONL files are committed to repository
-   - Check file paths match PR body exactly
-   - Validate JSON format in files
+#### 1. MCP Evidence Missing ❌
+**Error:** "MCP Evidence section missing or files not found"
 
-2. **Heartbeat Stale**
-   - Update heartbeat every 15 minutes for long tasks
-   - Set status to "done" when task completes
-   - Use single session exemption for <2h tasks
+**Solutions:**
+- Ensure JSONL files are committed to repository
+- Check file paths match PR body exactly  
+- Validate JSON format in files
+- Use exemption for non-code changes
 
-3. **Dev MCP Import Detected**
-   - Remove Dev MCP imports from `app/` directory
-   - Move to `scripts/`, `tests/`, or `.cursor/`
-   - Use production MCP servers in runtime code
+**Quick Fix:**
+```bash
+# Check if files exist
+ls -la artifacts/<agent>/<date>/mcp/
+
+# Validate JSON format
+cat artifacts/<agent>/<date>/mcp/shopify-dev.jsonl | jq .
+```
+
+#### 2. Heartbeat Stale ❌
+**Error:** "Last heartbeat >15 minutes old for 'doing' status"
+
+**Solutions:**
+- Update heartbeat every 15 minutes for long tasks
+- Set status to "done" when task completes
+- Use single session exemption for <2h tasks
+
+**Quick Fix:**
+```bash
+# Add fresh heartbeat entry
+echo '{"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","task":"TASK-ID","status":"doing","progress":"75%","file":"current-file.ts"}' >> artifacts/<agent>/<date>/heartbeat.ndjson
+```
+
+#### 3. Dev MCP Import Detected ❌
+**Error:** "Dev MCP imports detected in production code"
+
+**Solutions:**
+- Remove Dev MCP imports from `app/` directory
+- Move to `scripts/`, `tests/`, or `.cursor/`
+- Use production MCP servers in runtime code
+
+**Quick Fix:**
+```bash
+# Find Dev MCP imports
+grep -r "mcp.*dev\|dev.*mcp" app/
+
+# Remove or move to allowed locations
+mv app/some-file.ts scripts/some-file.ts
+```
 
 ### Debug Commands
 
+**Test Individual Guards:**
 ```bash
 # Test MCP evidence validation
 node scripts/ci/verify-mcp-evidence.js
@@ -200,23 +278,61 @@ node scripts/ci/verify-heartbeat.js
 
 # Test Dev MCP ban
 node scripts/ci/verify-dev-mcp-ban.js
+```
 
-# Run all guards locally
+**Run All Guards Locally:**
+```bash
+# Test all guards at once
 npm run ci:guards
+
+# Or run individually
+npm run ci:guard-mcp
+npm run ci:idle-guard  
+npm run ci:dev-mcp-ban
+```
+
+**Check Guard Status:**
+```bash
+# View GitHub Actions status
+gh run list --workflow=ci-guards.yml
+
+# View specific run details
+gh run view <run-id>
 ```
 
 ## Enforcement
 
+**What Happens When Guards Fail:**
 - **Merge Blocked**: PRs cannot merge without passing all guards
 - **Production Safety**: Dev MCP ban prevents production deployment issues
 - **Evidence Required**: MCP evidence ensures tool-first development
 - **Activity Tracking**: Heartbeat prevents idle agent issues
 
+**Guard Failure Impact:**
+- ❌ **Immediate**: Merge button disabled
+- ❌ **Automatic**: GitHub Actions status shows "failed"
+- ❌ **Required**: All guards must pass before merge
+- ❌ **Persistent**: Guards re-run on every push
+
 ## Success Criteria
 
+**Implementation Checklist:**
 - [ ] All three CI guard scripts implemented
 - [ ] GitHub Actions workflow configured
 - [ ] Required checks enabled on main branch
 - [ ] PR template updated with guard sections
 - [ ] Documentation complete for agents
 - [ ] Local testing commands working
+
+**Verification Steps:**
+1. Create test PR with missing evidence → Should fail
+2. Create test PR with Dev MCP import → Should fail  
+3. Create test PR with stale heartbeat → Should fail
+4. Create test PR with all requirements → Should pass
+5. Verify merge is blocked until all guards pass
+
+---
+
+**Status**: Ready for Support team implementation  
+**Dependencies**: CI guard scripts must be implemented first  
+**Next Steps**: Support team enables required checks on main branch

@@ -731,7 +731,9 @@ export default function OperatorDashboard() {
 
   // Monitor system status for banner alerts (Phase 4 - ENG-012)
   const systemStatus = {
-    queueDepth: 0, // TODO: Get from approval service
+    queueDepth: data.approvalsQueue.status === "ok" && data.approvalsQueue.data 
+      ? data.approvalsQueue.data.pendingCount || 0 
+      : 0,
     approvalRate: undefined, // TODO: Get from metrics service
     serviceHealth: "healthy" as const,
     connectionStatus:

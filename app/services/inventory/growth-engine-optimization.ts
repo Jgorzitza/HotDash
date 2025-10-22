@@ -125,11 +125,12 @@ export async function calculateAdvancedROP(
     maxDailySales: params.maxDailySales,
     maxLeadDays: params.maxLeadDays,
     category: params.category as any,
-    currentMonth: params.currentMonth || new Date().getMonth() + 1,
+    currentMonth: params.currentMonth || new Date().getMonth(), // Keep 0-based for seasonality
   });
 
   // Apply seasonal adjustments
-  const seasonalFactor = params.seasonalFactors?.[params.currentMonth || new Date().getMonth() + 1] || 1.0;
+  const currentMonth1Based = (params.currentMonth || new Date().getMonth()) + 1;
+  const seasonalFactor = params.seasonalFactors?.[currentMonth1Based] || 1.0;
   const seasonalAdjustment = seasonalFactor - 1.0;
   
   // Optimize safety stock based on demand volatility
@@ -149,10 +150,10 @@ export async function calculateAdvancedROP(
   );
   
   // Calculate confidence score based on data quality and volatility
-  const confidenceScore = Math.max(0, Math.min(1, 
-    1 - (params.demandVolatility || 0.5) * 0.3 + 
-    (forecast.confidence || 0.7) * 0.7
-  ));
+  const volatilityPenalty = (params.demandVolatility || 0.5) * 0.3;
+  const forecastConfidence = forecast?.confidence || 0.7;
+  const baseConfidence = 1 - volatilityPenalty + (forecastConfidence * 0.7);
+  const confidenceScore = isNaN(baseConfidence) ? 0.7 : Math.max(0, Math.min(1, baseConfidence));
 
   return {
     productId,

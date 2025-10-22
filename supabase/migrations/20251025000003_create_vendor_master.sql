@@ -43,6 +43,15 @@ CREATE INDEX idx_vendors_active ON vendors(is_active) WHERE is_active = TRUE;
 CREATE INDEX idx_vendors_reliability ON vendors(reliability_score DESC) WHERE is_active = TRUE;
 CREATE INDEX idx_vendors_lead_time ON vendors(lead_time_days ASC) WHERE is_active = TRUE;
 
+-- Create the update_updated_at function if it doesn't exist
+CREATE OR REPLACE FUNCTION update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Trigger to update updated_at
 CREATE TRIGGER set_vendors_updated_at
   BEFORE UPDATE ON vendors

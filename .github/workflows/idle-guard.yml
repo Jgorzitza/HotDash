@@ -1,0 +1,113 @@
+name: Idle Guard - Heartbeat Validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  idle-guard:
+    name: Validate Agent Heartbeat
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for Heartbeat in PR
+        run: |
+          echo "🔍 Checking for Heartbeat in PR..."
+          
+          # Check if PR body contains Heartbeat section
+          if ! grep -q "## Heartbeat" <<< "${{ github.event.pull_request.body }}"; then
+            echo "❌ PR body missing '## Heartbeat' section"
+            echo "Required format:"
+            echo "## Heartbeat (if task >2 hours)"
+            echo "- [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson"
+            echo "OR"
+            echo "- [ ] Task completed in single session (<2 hours, no heartbeat required)"
+            exit 1
+          fi
+          
+          # Check if heartbeat files exist (if not "single session")
+          if ! grep -q "Task completed in single session" <<< "${{ github.event.pull_request.body }}"; then
+            echo "🔍 Checking for heartbeat files..."
+            
+            # Extract file paths from PR body
+            HEARTBEAT_PATHS=$(grep -A 5 "## Heartbeat" <<< "${{ github.event.pull_request.body }}" | grep "artifacts/" | sed 's/.*artifacts\///' | sed 's/.*: //')
+            
+            if [ -z "$HEARTBEAT_PATHS" ]; then
+              echo "❌ No heartbeat file paths found in PR body"
+              exit 1
+            fi
+            
+            # Check if files exist
+            MISSING_FILES=()
+            while IFS= read -r path; do
+              if [ ! -f "artifacts/$path" ]; then
+                MISSING_FILES+=("artifacts/$path")
+              fi
+            done <<< "$HEARTBEAT_PATHS"
+            
+            if [ ${#MISSING_FILES[@]} -gt 0 ]; then
+              echo "❌ Missing heartbeat files:"
+              printf '%s\n' "${MISSING_FILES[@]}"
+              exit 1
+            fi
+            
+            # Validate NDJSON format and check for stale heartbeats
+            while IFS= read -r path; do
+              if [ -f "artifacts/$path" ]; then
+                echo "🔍 Validating heartbeat format for artifacts/$path..."
+                
+                # Check NDJSON format
+                while IFS= read -r line; do
+                  if [ -n "$line" ]; then
+                    if ! echo "$line" | jq . > /dev/null 2>&1; then
+                      echo "❌ Invalid JSON in artifacts/$path: $line"
+                      exit 1
+                    fi
+                  fi
+                done < "artifacts/$path"
+                
+                # Check for stale heartbeats (>15 minutes old)
+                echo "🔍 Checking for stale heartbeats..."
+                CURRENT_TIME=$(date +%s)
+                FIFTEEN_MINUTES_AGO=$((CURRENT_TIME - 900)) # 15 minutes in seconds
+                
+                while IFS= read -r line; do
+                  if [ -n "$line" ]; then
+                    TIMESTAMP=$(echo "$line" | jq -r '.timestamp // empty')
+                    if [ -n "$TIMESTAMP" ]; then
+                      # Convert ISO timestamp to Unix timestamp
+                      HEARTBEAT_TIME=$(date -d "$TIMESTAMP" +%s 2>/dev/null || echo "0")
+                      if [ "$HEARTBEAT_TIME" -lt "$FIFTEEN_MINUTES_AGO" ]; then
+                        echo "❌ Stale heartbeat found in artifacts/$path: $TIMESTAMP"
+                        echo "Heartbeat is older than 15 minutes"
+                        exit 1
+                      fi
+                    fi
+                  fi
+                done < "artifacts/$path"
+              fi
+            done <<< "$HEARTBEAT_PATHS"
+          fi
+          
+          echo "✅ Heartbeat validation passed"
+      
+      - name: Report results
+        run: |
+          echo "✅ Heartbeat validation completed successfully"
+          echo "All heartbeat files are present and not stale"

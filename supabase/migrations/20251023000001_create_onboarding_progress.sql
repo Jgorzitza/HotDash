@@ -55,7 +55,7 @@ ALTER TABLE onboarding_progress ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can manage their own onboarding progress"
   ON onboarding_progress
   TO authenticated
-  USING ((SELECT auth.uid())::text = user_id);
+  USING (auth.uid() = user_id);
 
 -- Update statistics
 ANALYZE onboarding_progress;
