@@ -1,335 +1,226 @@
 # Performance Monitoring Setup
 
-**Version**: 1.0  
-**Last Updated**: 2025-10-21  
-**Owner**: DevOps  
-**Status**: ACTIVE
-
----
-
 ## Overview
+This runbook documents the performance monitoring setup for HotDash, focusing on Tile P95 tracking and overall application performance metrics.
 
-Performance monitoring for HotDash staging and production environments, tracking tile load times, response times, and alerting on performance degradation.
+## Performance Metrics
 
-## Metrics Tracked
+### Core Web Vitals (CWV)
+- **Largest Contentful Paint (LCP)**: < 2.5s (Good), < 4.0s (Needs Improvement)
+- **First Input Delay (FID)**: < 100ms (Good), < 300ms (Needs Improvement)
+- **Cumulative Layout Shift (CLS)**: < 0.1 (Good), < 0.25 (Needs Improvement)
 
-### P95 Tile Load Times
+### Tile Performance Metrics
+- **P95 Load Time**: 95th percentile tile load time
+- **P99 Load Time**: 99th percentile tile load time
+- **Average Load Time**: Mean tile load time
+- **Error Rate**: Percentage of failed tile loads
 
-- **Target**: <3 seconds
-- **Warning**: >3s <5s
-- **Critical**: >5s
+### Application Performance
+- **Page Load Time**: Overall page load performance
+- **API Response Time**: Backend API performance
+- **Database Query Time**: Database performance metrics
+- **Memory Usage**: Application memory consumption
 
-### Response Times
+## Monitoring Implementation
 
-- **Target**: <1s
-- **Warning**: >1s <5s
-- **Critical**: >5s
+### 1. Google Analytics 4 Integration
+- **Property ID**: 339826228
+- **Custom Dimensions**: Performance metrics tracking
+- **Event Tracking**: Performance-related events
+- **Real-time Monitoring**: Live performance data
 
-### Error Rates
+### 2. Fly.io Monitoring
+- **Machine Metrics**: CPU, memory, network usage
+- **Application Logs**: Performance-related log analysis
+- **Health Checks**: Automated health monitoring
+- **Alerting**: Performance threshold alerts
 
-- **Target**: <1%
-- **Warning**: >1% <5%
-- **Critical**: >5%
+### 3. Custom Performance Tracking
+- **Tile Load Times**: Individual tile performance
+- **API Latency**: Backend service performance
+- **Database Performance**: Query execution times
+- **User Experience**: Real user monitoring (RUM)
 
----
+## Performance Monitoring Setup
 
-## Fly.io Built-in Monitoring
-
-Fly.io provides built-in metrics via the platform:
-
-### View Metrics
-
-```bash
-# View app metrics dashboard
-flyctl dashboard --app hotdash-staging
-
-# View metrics in web UI
-# https://fly.io/apps/hotdash-staging/monitoring
-```
-
-### Available Metrics
-
-- **Response time** (P50, P95, P99)
-- **Request rate** (requests per second)
-- **Error rate** (5xx errors)
-- **CPU usage**
-- **Memory usage**
-- **Network I/O**
-
----
-
-## Application-Level Metrics
-
-### Client-Side Performance Tracking
-
-HotDash tracks tile load times in the browser using Performance API:
-
-**Location**: `app/hooks/useTilePerformance.ts` (to be created by Engineer)
-
-**Metrics Collected**:
-
-- Tile mount time
-- API fetch duration
-- Render completion time
-- Total tile load time
-
-**Storage**: Client-side metrics sent to `/api/metrics/tile-performance`
-
-### Server-Side Logging
-
-**Location**: `app/utils/metrics.server.ts`
-
-Current metrics logged every 60 seconds:
-
+### 1. GA4 Performance Tracking
 ```typescript
-{
-  "counters": {},  // Request counts
-  "gauges": {},    // Current values (connections, memory)
-  "histograms": {}, // Distribution (response times)
-  "timers": {}     // Duration tracking
+// Performance tracking implementation
+export function trackPerformance(metric: string, value: number, tile?: string) {
+  gtag('event', 'performance_metric', {
+    metric_name: metric,
+    metric_value: value,
+    tile_name: tile,
+    custom_parameter_1: 'performance_monitoring'
+  });
 }
 ```
 
----
-
-## Alerting Setup
-
-### Method 1: Fly.io Email Alerts (Recommended)
-
-**Setup**:
-
-1. Navigate to https://fly.io/apps/hotdash-staging/monitoring
-2. Click "Alerts" tab
-3. Add alert rules:
-
-**Alert 1: High Error Rate**
-
-```yaml
-Metric: HTTP 5xx Error Rate
-Condition: > 5%
-Duration: 5 minutes
-Action: Email to jgorzitza@outlook.com
+### 2. Tile Performance Monitoring
+```typescript
+// Tile load time tracking
+export function trackTilePerformance(tileName: string, loadTime: number) {
+  const performanceData = {
+    tile: tileName,
+    loadTime: loadTime,
+    timestamp: new Date().toISOString(),
+    p95Threshold: 2000, // 2 seconds
+    p99Threshold: 5000  // 5 seconds
+  };
+  
+  // Track in GA4
+  trackPerformance('tile_load_time', loadTime, tileName);
+  
+  // Log to console for debugging
+  console.log(`Tile Performance: ${tileName} loaded in ${loadTime}ms`);
+}
 ```
 
-**Alert 2: Slow Response Times**
-
-```yaml
-Metric: P95 Response Time
-Condition: > 5000ms
-Duration: 5 minutes
-Action: Email to jgorzitza@outlook.com
+### 3. API Performance Monitoring
+```typescript
+// API response time tracking
+export async function trackAPIPerformance<T>(
+  apiCall: () => Promise<T>,
+  endpoint: string
+): Promise<T> {
+  const startTime = performance.now();
+  
+  try {
+    const result = await apiCall();
+    const duration = performance.now() - startTime;
+    
+    trackPerformance('api_response_time', duration, endpoint);
+    
+    return result;
+  } catch (error) {
+    const duration = performance.now() - startTime;
+    trackPerformance('api_error_time', duration, endpoint);
+    throw error;
+  }
+}
 ```
 
-**Alert 3: Machine Down**
+## Performance Thresholds
 
-```yaml
-Metric: Machine Health
-Condition: Not healthy
-Duration: 2 minutes
-Action: Email to jgorzitza@outlook.com
-```
+### Tile Performance Targets
+- **P95 Load Time**: < 2 seconds
+- **P99 Load Time**: < 5 seconds
+- **Error Rate**: < 1%
+- **Availability**: > 99.9%
 
-### Method 2: GitHub Actions Monitoring (Automated)
+### API Performance Targets
+- **P95 Response Time**: < 500ms
+- **P99 Response Time**: < 1s
+- **Error Rate**: < 0.1%
+- **Availability**: > 99.95%
 
-**Workflow**: `.github/workflows/monitor-performance.yml` (to be created)
+### Database Performance Targets
+- **P95 Query Time**: < 100ms
+- **P99 Query Time**: < 500ms
+- **Connection Pool**: < 80% utilization
+- **Query Success Rate**: > 99.9%
 
-```yaml
-name: Performance Monitoring
+## Monitoring Dashboard
 
-on:
-  schedule:
-    - cron: "*/15 * * * *" # Every 15 minutes
-  workflow_dispatch:
+### 1. Real-time Performance Dashboard
+- **Live Metrics**: Current performance indicators
+- **Tile Status**: Individual tile performance
+- **API Health**: Backend service status
+- **Database Status**: Database performance metrics
 
-jobs:
-  monitor:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check staging health
-        run: |
-          HEALTH=$(curl -s -w "%{http_code}" https://hotdash-staging.fly.dev/health -o /dev/null)
-          if [ "$HEALTH" != "200" ]; then
-            echo "::error::Staging health check failed: HTTP $HEALTH"
-            exit 1
-          fi
+### 2. Historical Performance Analysis
+- **Trend Analysis**: Performance over time
+- **Anomaly Detection**: Performance deviations
+- **Capacity Planning**: Resource utilization trends
+- **Performance Reports**: Regular performance summaries
 
-      - name: Check response time
-        run: |
-          START=$(date +%s%N)
-          curl -s https://hotdash-staging.fly.dev/ > /dev/null
-          END=$(date +%s%N)
-          DURATION=$(( ($END - $START) / 1000000 ))  # Convert to ms
+### 3. Alerting Configuration
+- **Performance Alerts**: Threshold-based notifications
+- **Error Rate Alerts**: High error rate notifications
+- **Availability Alerts**: Service availability issues
+- **Capacity Alerts**: Resource utilization warnings
 
-          echo "Response time: ${DURATION}ms"
+## Performance Optimization
 
-          if [ $DURATION -gt 5000 ]; then
-            echo "::warning::Slow response time: ${DURATION}ms (>5s threshold)"
-          fi
-```
+### 1. Tile Optimization
+- **Lazy Loading**: Load tiles on demand
+- **Caching**: Cache tile data appropriately
+- **Compression**: Optimize data transfer
+- **Parallel Loading**: Load multiple tiles simultaneously
 
----
+### 2. API Optimization
+- **Response Caching**: Cache API responses
+- **Database Optimization**: Optimize database queries
+- **Connection Pooling**: Efficient database connections
+- **Rate Limiting**: Prevent API abuse
 
-## Performance Dashboard
-
-### Fly.io Dashboard
-
-**URL**: https://fly.io/apps/hotdash-staging/monitoring
-
-**Metrics Available**:
-
-- Real-time machine status
-- Request rate (req/s)
-- Response times (P50, P95, P99)
-- Error rates
-- CPU and memory usage
-- Network throughput
-
-### Custom Dashboard (Future)
-
-**Option 1: Grafana + Prometheus**
-
-- Export Fly metrics to Prometheus
-- Visualize in Grafana dashboard
-- Custom alerts and SLOs
-
-**Option 2: Application Metrics**
-
-- Store tile load times in Supabase
-- Build custom dashboard in HotDash `/admin/metrics`
-- Track user-facing performance
-
----
+### 3. Frontend Optimization
+- **Code Splitting**: Load code on demand
+- **Image Optimization**: Optimize image assets
+- **Bundle Optimization**: Minimize JavaScript bundles
+- **CDN Usage**: Use content delivery networks
 
 ## Performance Testing
 
-### Load Testing
+### 1. Load Testing
+- **Concurrent Users**: Test with multiple users
+- **Peak Load**: Test under high load conditions
+- **Stress Testing**: Test system limits
+- **Endurance Testing**: Test over extended periods
 
-```bash
-# Simple load test with curl
-for i in {1..100}; do
-  curl -s -w "%{time_total}\n" -o /dev/null https://hotdash-staging.fly.dev/
-done | awk '{sum+=$1; count++} END {print "Avg:", sum/count, "s"}'
-```
+### 2. Performance Benchmarks
+- **Baseline Metrics**: Establish performance baselines
+- **Regression Testing**: Detect performance regressions
+- **Comparative Analysis**: Compare performance improvements
+- **Goal Setting**: Set performance improvement targets
 
-### Tile Performance Test
+## Monitoring Tools
 
-```bash
-# Test each tile API endpoint
-curl -w "@curl-format.txt" https://hotdash-staging.fly.dev/api/analytics/revenue
-curl -w "@curl-format.txt" https://hotdash-staging.fly.dev/api/analytics/traffic
-curl -w "@curl-format.txt" https://hotdash-staging.fly.dev/api/seo/enhanced
-# ... etc for all 8 tiles
-```
+### 1. Google Analytics 4
+- **Real-time Reports**: Live performance data
+- **Custom Reports**: Performance-specific reports
+- **Audience Insights**: User behavior analysis
+- **Conversion Tracking**: Performance impact on conversions
 
-**Format file** (`curl-format.txt`):
+### 2. Fly.io Monitoring
+- **Machine Metrics**: Infrastructure performance
+- **Application Logs**: Application performance logs
+- **Health Checks**: Automated health monitoring
+- **Alerting**: Performance threshold alerts
 
-```
-time_namelookup:  %{time_namelookup}\n
-time_connect:  %{time_connect}\n
-time_appconnect:  %{time_appconnect}\n
-time_pretransfer:  %{time_pretransfer}\n
-time_redirect:  %{time_redirect}\n
-time_starttransfer:  %{time_starttransfer}\n
-----------\n
-time_total:  %{time_total}\n
-```
+### 3. Custom Monitoring
+- **Performance APIs**: Custom performance endpoints
+- **Monitoring Scripts**: Automated performance checks
+- **Dashboard Integration**: Custom performance dashboards
+- **Reporting Tools**: Performance report generation
 
----
+## Success Criteria
 
-## Monitoring Schedule
+- [ ] P95 tile load time < 2 seconds
+- [ ] P99 tile load time < 5 seconds
+- [ ] API response time < 500ms (P95)
+- [ ] Database query time < 100ms (P95)
+- [ ] Error rate < 1%
+- [ ] Availability > 99.9%
+- [ ] Performance monitoring dashboard operational
+- [ ] Automated alerting configured
+- [ ] Performance optimization implemented
+- [ ] Performance testing procedures established
 
-### Daily
+## Configuration Files
 
-- [x] Check Fly.io dashboard for anomalies
-- [x] Review error logs (flyctl logs)
-- [x] Verify health endpoints (200 status)
+### Performance Tracking
+- `app/lib/performance.ts`: Performance tracking utilities
+- `app/lib/analytics.ts`: GA4 integration
+- `app/routes/api.performance.ts`: Performance API endpoints
 
-### Weekly
+### Monitoring Configuration
+- `docs/runbooks/performance-monitoring.md`: This runbook
+- `scripts/monitoring/performance-check.ts`: Performance monitoring scripts
+- `tests/performance/`: Performance test suites
 
-- [ ] Review P95 response times
-- [ ] Analyze error patterns
-- [ ] Check database connection health
-- [ ] Review GA API health (should see success logs every minute)
-
-### Monthly
-
-- [ ] Performance trend analysis
-- [ ] Capacity planning review
-- [ ] Alert threshold tuning
-
----
-
-## Alert Response Procedures
-
-### High Error Rate Alert
-
-1. Check Fly.io logs: `flyctl logs --app hotdash-staging -n 100`
-2. Identify error pattern (database, external API, code)
-3. If critical: Rollback to previous version
-4. If non-critical: Create bug ticket, schedule fix
-5. Update feedback file with incident details
-
-### Slow Response Time Alert
-
-1. Check machine resources: `flyctl status --app hotdash-staging`
-2. Check for database slow queries
-3. Check external API latency (GA, Search Console, Shopify)
-4. If machine resources exhausted: Scale up (increase CPU/memory)
-5. If external API slow: Implement caching or timeouts
-6. Document findings in feedback file
-
-### Machine Down Alert
-
-1. Check machine status: `flyctl status --app hotdash-staging`
-2. Check logs for crash reason: `flyctl logs --app hotdash-staging`
-3. Restart machine: `flyctl machine start <machine-id>`
-4. If repeated crashes: Rollback to stable version
-5. Escalate to Manager with logs and crash reason
-
----
-
-## Current Monitoring Status
-
-### Staging
-
-- **App**: hotdash-staging.fly.dev
-- **Version**: 74
-- **Health**: ✅ HEALTHY (as of 2025-10-21T06:06:47Z)
-- **Alerts**: Manual monitoring (Fly dashboard)
-- **Performance**: Baseline being established
-
-### Production
-
-- **App**: Not yet deployed
-- **Alerts**: TBD upon production deployment
-
----
-
-## Next Steps
-
-### Short Term (Phase 2-5)
-
-- [x] Monitor v74 deployment health
-- [ ] Establish baseline P95 tile load times
-- [ ] Set up Fly.io email alerts
-- [ ] Document tile load time benchmarks
-
-### Long Term (Phase 11+)
-
-- [ ] Custom metrics dashboard in HotDash
-- [ ] Automated performance regression testing
-- [ ] SLO tracking (99.9% uptime, <3s tile loads)
-- [ ] Production monitoring setup
-
----
-
-## Related Documentation
-
-- **Fly.io Monitoring**: https://fly.io/docs/metrics-and-logs/
-- **Deployment Workflow**: `.github/workflows/deploy-staging.yml`
-- **Rollback Procedures**: `docs/runbooks/deployment-rollback.md`
-- **Agent Directions**: `docs/directions/devops.md`
-
----
-
-**📊 End of Runbook**
+### Dashboard Configuration
+- `app/routes/app.performance.tsx`: Performance dashboard
+- `app/components/PerformanceTile.tsx`: Performance tile component
+- `app/lib/performance-dashboard.ts`: Dashboard utilities

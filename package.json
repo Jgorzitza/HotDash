@@ -72,6 +72,7 @@
     "@supabase/supabase-js": "^2.48.0",
     "ai": "^5.0.72",
     "chart.js": "^4.5.1",
+    "google-ads-api": "^21.0.1",
     "isbot": "^5.1.0",
     "llamaindex": "^0.12.0",
     "openai": "^6.3.0",

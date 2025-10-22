@@ -14,6 +14,7 @@ import { ApprovalCard } from "../../components/ApprovalCard";
 import { ApprovalsDrawer } from "../../components/approvals/ApprovalsDrawer";
 import type { Approval } from "../../components/approvals/ApprovalsDrawer";
 import { getApprovals, getApprovalCounts } from "../../services/approvals";
+import { useNotifications } from "../../hooks/useNotifications";
 
 /**
  * Loader: Fetch approvals from Supabase
@@ -63,10 +64,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function ApprovalsRoute() {
   const { approvals, total, counts, error } = useLoaderData<typeof loader>();
   const revalidator = useRevalidator();
+  const notifications = useNotifications();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [selected, setSelected] = useState<Approval | null>(null);
   const [suppressedIds, setSuppressedIds] = useState<Set<string>>(new Set());
+  const [previousApprovalCount, setPreviousApprovalCount] = useState(approvals.length);
 
   const stateFilter = searchParams.get("state") || undefined;
   const kindFilter = searchParams.get("kind") || undefined;
@@ -173,6 +176,31 @@ export default function ApprovalsRoute() {
     }, 5000);
     return () => clearInterval(interval);
   }, [revalidator]);
+
+  // Detect new approvals and show notifications
+  useEffect(() => {
+    const currentCount = approvals.length;
+    const newCount = currentCount - previousApprovalCount;
+    
+    if (newCount > 0 && previousApprovalCount > 0) {
+      // New approvals detected
+      notifications.addNotification({
+        type: "approval",
+        title: "New Approvals",
+        message: `${newCount} new approval${newCount > 1 ? 's' : ''} need your review`,
+        url: "/approvals",
+      });
+      
+      // Show browser notification if permission granted
+      if (notifications.browserNotifications.permission === "granted") {
+        // Check if sound is enabled (from settings or localStorage)
+        const soundEnabled = localStorage.getItem('notification-sound-enabled') === 'true';
+        notifications.browserNotifications.showApprovalNotification(newCount, soundEnabled);
+      }
+    }
+    
+    setPreviousApprovalCount(currentCount);
+  }, [approvals.length, previousApprovalCount, notifications]);
 
   return (
     <Page

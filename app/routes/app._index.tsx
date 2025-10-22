@@ -26,6 +26,7 @@ import type { TileState, TileFact } from "../components/tiles";
 import { BannerAlerts } from "../components/notifications/BannerAlerts";
 import { useBannerAlerts } from "../hooks/useBannerAlerts";
 import { useSSE } from "../hooks/useSSE";
+import { useNotifications } from "../hooks/useNotifications";
 import { useState, useEffect, useCallback } from "react";
 
 // @dnd-kit imports for drag & drop tile reordering (ENG-014)
@@ -643,6 +644,7 @@ const DEFAULT_TILE_ORDER = [
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
   const tileOrderFetcher = useFetcher();
+  const notifications = useNotifications();
 
   // Real-time SSE connection (Phase 5 - ENG-023)
   const { status: sseStatus, lastMessage } = useSSE("/api/sse/updates", true);
@@ -740,6 +742,32 @@ export default function OperatorDashboard() {
           : ("offline" as const),
   };
   const bannerAlerts = useBannerAlerts(systemStatus);
+
+  // Monitor approvals queue for notifications
+  useEffect(() => {
+    const approvalsData = data.approvalsQueue;
+    if (approvalsData.status === "ok" && approvalsData.data) {
+      const pendingCount = approvalsData.data.pendingCount || 0;
+      
+      // Show notification if there are pending approvals and we haven't shown one recently
+      if (pendingCount > 0) {
+        const lastNotification = localStorage.getItem('last-approval-notification');
+        const now = Date.now();
+        const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+        
+        if (!lastNotification || (now - parseInt(lastNotification)) > oneHour) {
+          notifications.addNotification({
+            type: "approval",
+            title: "Pending Approvals",
+            message: `${pendingCount} approval${pendingCount > 1 ? 's' : ''} need your review`,
+            url: "/approvals",
+          });
+          
+          localStorage.setItem('last-approval-notification', now.toString());
+        }
+      }
+    }
+  }, [data.approvalsQueue, notifications]);
 
   // Tile mapping for dynamic ordering (ENG-014)
   const tileMap = {

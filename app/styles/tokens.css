@@ -272,3 +272,100 @@
     transform: rotate(360deg);
   }
 }
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+  /* Colors - Status (Dark Mode) */
+  --occ-status-healthy-text: var(--p-color-text-success-on-dark, #4ade80);
+  --occ-status-healthy-bg: var(--p-color-bg-success-subdued-on-dark, #1a2e1a);
+  --occ-status-healthy-border: var(--p-color-border-success-on-dark, #22c55e);
+
+  --occ-status-attention-text: var(--p-color-text-critical-on-dark, #f87171);
+  --occ-status-attention-bg: var(--p-color-bg-critical-subdued-on-dark, #2e1a1a);
+  --occ-status-attention-border: var(--p-color-border-critical-on-dark, #ef4444);
+
+  --occ-status-unconfigured-text: var(--p-color-text-subdued-on-dark, #9ca3af);
+  --occ-status-unconfigured-bg: var(--p-color-bg-surface-subdued-on-dark, #1f2937);
+  --occ-status-unconfigured-border: var(--p-color-border-subdued-on-dark, #374151);
+
+  /* Background & Surface (Dark Mode) */
+  --occ-bg-primary: var(--p-color-bg-surface-on-dark, #111827);
+  --occ-bg-secondary: var(--p-color-bg-surface-subdued-on-dark, #1f2937);
+  --occ-bg-hover: var(--p-color-bg-surface-hover-on-dark, #374151);
+
+  /* Border Colors (Dark Mode) */
+  --occ-border-default: var(--p-color-border-subdued-on-dark, #374151);
+  --occ-border-interactive: var(--p-color-border-interactive-on-dark, #3b82f6);
+  --occ-border-focus: var(--p-color-border-focus-on-dark, #3b82f6);
+
+  /* Text Colors (Dark Mode) */
+  --occ-text-primary: var(--p-color-text-on-dark, #f9fafb);
+  --occ-text-secondary: var(--p-color-text-subdued-on-dark, #9ca3af);
+  --occ-text-interactive: var(--p-color-text-interactive-on-dark, #60a5fa);
+  --occ-text-success: var(--p-color-text-success-on-dark, #4ade80);
+  --occ-text-critical: var(--p-color-text-critical-on-dark, #f87171);
+  --occ-text-warning: var(--p-color-text-warning-on-dark, #fbbf24);
+
+  /* Component Tokens - Tile (Dark Mode) */
+  --occ-tile-bg: var(--p-color-bg-surface-on-dark, #111827);
+  --occ-tile-border: var(--p-color-border-subdued-on-dark, #374151);
+
+  /* Component Tokens - Button (Dark Mode) */
+  --occ-button-primary-bg: var(--p-color-bg-interactive-on-dark, #3b82f6);
+  --occ-button-primary-text: var(--p-color-text-on-interactive-on-dark, #ffffff);
+  --occ-button-secondary-bg: transparent;
+  --occ-button-secondary-text: var(--p-color-text-interactive-on-dark, #60a5fa);
+  --occ-button-secondary-border: var(--p-color-border-interactive-on-dark, #3b82f6);
+
+  /* Component Tokens - Modal (Dark Mode) */
+  --occ-modal-bg: var(--p-color-bg-surface-on-dark, #111827);
+
+  /* Component Tokens - Toast (Dark Mode) */
+  --occ-toast-success-bg: var(--p-color-bg-success-subdued-on-dark, #1a2e1a);
+  --occ-toast-success-text: var(--p-color-text-success-on-dark, #4ade80);
+  --occ-toast-success-border: var(--p-color-border-success-on-dark, #22c55e);
+
+  --occ-toast-error-bg: var(--p-color-bg-critical-subdued-on-dark, #2e1a1a);
+  --occ-toast-error-text: var(--p-color-text-critical-on-dark, #f87171);
+  --occ-toast-error-border: var(--p-color-border-critical-on-dark, #ef4444);
+
+  --occ-toast-info-bg: var(--p-color-bg-info-subdued-on-dark, #1a2e37);
+  --occ-toast-info-text: var(--p-color-text-info-on-dark, #60a5fa);
+  --occ-toast-info-border: var(--p-color-border-info-on-dark, #3b82f6);
+
+  /* Dark Mode Toast Colors */
+  --occ-color-success: #4ade80;
+  --occ-color-error: #f87171;
+  --occ-color-warning: #fbbf24;
+  --occ-color-info: #60a5fa;
+}
+
+/* Dark Mode Utility Classes */
+[data-theme="dark"] .occ-tile {
+  background-color: var(--occ-tile-bg);
+  border-color: var(--occ-tile-border);
+}
+
+[data-theme="dark"] .occ-status-healthy {
+  color: var(--occ-status-healthy-text);
+}
+
+[data-theme="dark"] .occ-status-attention {
+  color: var(--occ-status-attention-text);
+}
+
+[data-theme="dark"] .occ-status-unconfigured {
+  color: var(--occ-status-unconfigured-text);
+}
+
+[data-theme="dark"] .occ-text-primary {
+  color: var(--occ-text-primary);
+}
+
+[data-theme="dark"] .occ-text-secondary {
+  color: var(--occ-text-secondary);
+}
+
+[data-theme="dark"] .occ-text-meta {
+  color: var(--occ-text-secondary);
+}

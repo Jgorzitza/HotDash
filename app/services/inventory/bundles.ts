@@ -48,7 +48,7 @@ export function parseBundleMetafield(
   }
 
   // Extract COMPONENTS section
-  const componentsMatch = metafieldValue.match(/COMPONENTS:([^,\s]+)/);
+  const componentsMatch = metafieldValue.match(/COMPONENTS:([^,]+(?:,[^,]+)*)/);
   if (!componentsMatch || !componentsMatch[1]) {
     return [];
   }

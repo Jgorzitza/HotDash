@@ -20,6 +20,8 @@ import {
   BlockStack,
   InlineStack,
   Divider,
+  TextField,
+  Button,
 } from "@shopify/polaris";
 import { ApprovalEvidenceSection } from "./ApprovalEvidenceSection";
 import { ApprovalGradingSection } from "./ApprovalGradingSection";
@@ -106,6 +108,10 @@ export function ApprovalsDrawer({
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
   const [validating, setValidating] = useState(false);
+  const [editingImpact, setEditingImpact] = useState(false);
+  const [editingRollback, setEditingRollback] = useState(false);
+  const [editedImpact, setEditedImpact] = useState(approval?.impact || {});
+  const [editedRollback, setEditedRollback] = useState(approval?.rollback || {});
 
   if (!approval) return null;
 
@@ -260,32 +266,82 @@ export function ApprovalsDrawer({
               <BlockStack gap="400">
                 <Card>
                   <BlockStack gap="300">
-                    <Text as="h3" variant="headingMd">
-                      Projected Impact
-                    </Text>
-                    {approval.impact.expected_outcome && (
-                      <Text as="p">{approval.impact.expected_outcome}</Text>
+                    <InlineStack align="space-between" blockAlign="center">
+                      <Text as="h3" variant="headingMd">
+                        Projected Impact
+                      </Text>
+                      <Button
+                        size="micro"
+                        onClick={() => setEditingImpact(!editingImpact)}
+                      >
+                        {editingImpact ? "Done" : "Edit"}
+                      </Button>
+                    </InlineStack>
+                    {editingImpact ? (
+                      <TextField
+                        label="Expected Outcome"
+                        value={editedImpact.expected_outcome || ""}
+                        onChange={(value) =>
+                          setEditedImpact({ ...editedImpact, expected_outcome: value })
+                        }
+                        multiline={3}
+                      />
+                    ) : (
+                      editedImpact.expected_outcome && (
+                        <Text as="p">{editedImpact.expected_outcome}</Text>
+                      )
                     )}
                   </BlockStack>
                 </Card>
                 <Card>
                   <BlockStack gap="300">
-                    <Text as="h3" variant="headingMd">
-                      Risks & Rollback
-                    </Text>
-                    {approval.risk.what_could_go_wrong && (
-                      <Text as="p">{approval.risk.what_could_go_wrong}</Text>
+                    <InlineStack align="space-between" blockAlign="center">
+                      <Text as="h3" variant="headingMd">
+                        Risks & Rollback
+                      </Text>
+                      <Button
+                        size="micro"
+                        onClick={() => setEditingRollback(!editingRollback)}
+                      >
+                        {editingRollback ? "Done" : "Edit"}
+                      </Button>
+                    </InlineStack>
+                    {editingRollback ? (
+                      <BlockStack gap="300">
+                        <TextField
+                          label="What could go wrong?"
+                          value={approval.risk.what_could_go_wrong || ""}
+                          onChange={(value) => {
+                            // Note: This would need to be connected to a state update function
+                          }}
+                          multiline={3}
+                        />
+                        <TextField
+                          label="Rollback Steps (one per line)"
+                          value={approval.rollback.steps?.join('\n') || ""}
+                          onChange={(value) => {
+                            // Note: This would need to be connected to a state update function
+                          }}
+                          multiline={5}
+                        />
+                      </BlockStack>
+                    ) : (
+                      <BlockStack gap="200">
+                        {approval.risk.what_could_go_wrong && (
+                          <Text as="p">{approval.risk.what_could_go_wrong}</Text>
+                        )}
+                        {approval.rollback.steps &&
+                          approval.rollback.steps.length > 0 && (
+                            <BlockStack gap="100">
+                              {approval.rollback.steps.map((step, idx) => (
+                                <Text as="p" key={idx}>
+                                  {idx + 1}. {step}
+                                </Text>
+                              ))}
+                            </BlockStack>
+                          )}
+                      </BlockStack>
                     )}
-                    {approval.rollback.steps &&
-                      approval.rollback.steps.length > 0 && (
-                        <BlockStack gap="100">
-                          {approval.rollback.steps.map((step, idx) => (
-                            <Text as="p" key={idx}>
-                              {idx + 1}. {step}
-                            </Text>
-                          ))}
-                        </BlockStack>
-                      )}
                   </BlockStack>
                 </Card>
               </BlockStack>

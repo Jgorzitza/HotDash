@@ -1,0 +1,96 @@
+name: CI Guards (MCP Evidence + Heartbeat + Dev MCP Ban)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+jobs:
+  guard-mcp:
+    name: Guard MCP (Evidence Validation)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify MCP Evidence
+        run: node scripts/ci/verify-mcp-evidence.js
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+  idle-guard:
+    name: Idle Guard (Heartbeat Validation)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Heartbeat
+        run: node scripts/ci/verify-heartbeat.js
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+  dev-mcp-ban:
+    name: Dev MCP Ban (Production Safety)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify Dev MCP Ban
+        run: node scripts/ci/verify-dev-mcp-ban.cjs
+
+  all-guards:
+    name: All CI Guards
+    runs-on: ubuntu-latest
+    needs: [guard-mcp, idle-guard, dev-mcp-ban]
+    if: always()
+    steps:
+      - name: Check Guard Results
+        run: |
+          echo "Guard MCP: ${{ needs.guard-mcp.result }}"
+          echo "Idle Guard: ${{ needs.idle-guard.result }}"
+          echo "Dev MCP Ban: ${{ needs.dev-mcp-ban.result }}"
+          
+          if [[ "${{ needs.guard-mcp.result }}" != "success" || "${{ needs.idle-guard.result }}" != "success" || "${{ needs.dev-mcp-ban.result }}" != "success" ]]; then
+            echo "❌ One or more CI guards failed"
+            exit 1
+          fi
+          
+          echo "✅ All CI guards passed"

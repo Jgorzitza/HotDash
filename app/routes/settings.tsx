@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router";
 import { useState } from "react";
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
+import { useBrowserNotifications } from "../hooks/useBrowserNotifications";
 
 /**
  * Settings Page
@@ -75,6 +76,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function SettingsPage() {
   const data = useLoaderData<LoaderData>();
   const [selectedTab, setSelectedTab] = useState(0);
+  const browserNotifications = useBrowserNotifications();
 
   const tabs = [
     { id: "dashboard", content: "Dashboard", label: "Dashboard settings" },
@@ -301,47 +303,121 @@ export default function SettingsPage() {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "var(--occ-space-3)",
+              gap: "var(--occ-space-4)",
             }}
           >
-            <label
+            {/* Desktop Notifications Permission */}
+            <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--occ-space-2)",
+                padding: "var(--occ-space-4)",
+                border: "1px solid var(--occ-border-default)",
+                borderRadius: "var(--occ-radius-md)",
+                backgroundColor: "var(--occ-bg-secondary)",
               }}
             >
-              <input
-                type="checkbox"
-                defaultChecked
-                name="desktop-notifications"
-              />
-              <span>Enable desktop notifications</span>
-            </label>
-            <label
+              <h3 style={{ margin: 0, marginBottom: "var(--occ-space-2)" }}>
+                Desktop Notifications
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  marginBottom: "var(--occ-space-3)",
+                  color: "var(--occ-text-secondary)",
+                  fontSize: "var(--occ-font-size-sm)",
+                }}
+              >
+                Current status: <strong>{browserNotifications.permission}</strong>
+                {browserNotifications.permission === "granted" && " ✅"}
+                {browserNotifications.permission === "denied" && " ❌"}
+                {browserNotifications.permission === "default" && " ⚠️"}
+              </p>
+              
+              {browserNotifications.permission === "default" && (
+                <button
+                  onClick={browserNotifications.requestPermission}
+                  style={{
+                    padding: "var(--occ-space-2) var(--occ-space-3)",
+                    background: "var(--occ-bg-primary)",
+                    color: "var(--occ-text-on-primary)",
+                    border: "none",
+                    borderRadius: "var(--occ-radius-md)",
+                    cursor: "pointer",
+                    fontSize: "var(--occ-font-size-sm)",
+                    fontWeight: "var(--occ-font-weight-medium)",
+                  }}
+                >
+                  Request Permission
+                </button>
+              )}
+              
+              {browserNotifications.permission === "denied" && (
+                <p
+                  style={{
+                    margin: 0,
+                    color: "var(--occ-color-warning)",
+                    fontSize: "var(--occ-font-size-sm)",
+                  }}
+                >
+                  Desktop notifications are blocked. Please enable them in your browser settings.
+                </p>
+              )}
+            </div>
+
+            {/* Notification Preferences */}
+            <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                gap: "var(--occ-space-2)",
+                flexDirection: "column",
+                gap: "var(--occ-space-3)",
               }}
             >
-              <input type="checkbox" defaultChecked name="sound-enabled" />
-              <span>Play sound for notifications</span>
-            </label>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--occ-space-2)",
-              }}
-            >
-              <input
-                type="checkbox"
-                defaultChecked
-                name="toast-notifications"
-              />
-              <span>Show toast notifications</span>
-            </label>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--occ-space-2)",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  name="desktop-notifications"
+                  disabled={browserNotifications.permission !== "granted"}
+                />
+                <span>Enable desktop notifications</span>
+              </label>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--occ-space-2)",
+                }}
+              >
+                <input 
+                  type="checkbox" 
+                  defaultChecked 
+                  name="sound-enabled"
+                  onChange={(e) => {
+                    localStorage.setItem('notification-sound-enabled', e.target.checked.toString());
+                  }}
+                />
+                <span>Play sound for notifications</span>
+              </label>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--occ-space-2)",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  defaultChecked
+                  name="toast-notifications"
+                />
+                <span>Show toast notifications</span>
+              </label>
+            </div>
           </div>
         </div>
       )}

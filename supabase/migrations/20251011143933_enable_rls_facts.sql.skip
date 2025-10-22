@@ -4,8 +4,8 @@
 -- Date: 2025-10-11
 -- Ref: feedback/data.md section 4 (RLS Security Gap)
 
--- Enable Row Level Security on facts table
-ALTER TABLE public.facts ENABLE ROW LEVEL SECURITY;
+-- Enable Row Level Security on DashboardFact table
+ALTER TABLE public."DashboardFact" ENABLE ROW LEVEL SECURITY;
 
 -- Create read-only role for AI/analytics if not exists
 DO $$
@@ -20,7 +20,7 @@ END$$;
 
 -- Policy 1: Service role has full access (system operations)
 CREATE POLICY facts_service_role_all
-  ON public.facts
+  ON public."DashboardFact"
   FOR ALL
   TO service_role
   USING (true)
@@ -29,7 +29,7 @@ CREATE POLICY facts_service_role_all
 -- Policy 2: Authenticated users can read facts for their project
 -- Uses JWT claim 'app.current_project' or falls back to service_role
 CREATE POLICY facts_read_by_project
-  ON public.facts
+  ON public."DashboardFact"
   FOR SELECT
   TO authenticated, anon
   USING (
@@ -42,14 +42,14 @@ CREATE POLICY facts_read_by_project
 
 -- Policy 3: AI readonly role can read all facts (for cross-project analysis)
 CREATE POLICY facts_read_ai_readonly
-  ON public.facts
+  ON public."DashboardFact"
   FOR SELECT
   TO ai_readonly, analytics_reader
   USING (true);
 
 -- Policy 4: Authenticated users can insert facts for their project
 CREATE POLICY facts_insert_by_project
-  ON public.facts
+  ON public."DashboardFact"
   FOR INSERT
   TO authenticated
   WITH CHECK (
@@ -63,7 +63,7 @@ CREATE POLICY facts_insert_by_project
 -- Policy 5: Prevent updates (facts are immutable audit records)
 -- Only service_role can update for corrections
 CREATE POLICY facts_no_update
-  ON public.facts
+  ON public."DashboardFact"
   FOR UPDATE
   TO authenticated
   USING (false)
@@ -72,19 +72,19 @@ CREATE POLICY facts_no_update
 -- Policy 6: Prevent deletes (facts are immutable audit records)
 -- Only service_role can delete for retention/cleanup
 CREATE POLICY facts_no_delete
-  ON public.facts
+  ON public."DashboardFact"
   FOR DELETE
   TO authenticated
   USING (false);
 
 -- Add helpful comments
-COMMENT ON TABLE public.facts IS 'Analytics facts with RLS enabled (project isolation). Immutable audit records.';
-COMMENT ON COLUMN public.facts.project IS 'Project namespace for RLS isolation (e.g., occ, chatwoot).';
+COMMENT ON TABLE public."DashboardFact" IS 'Analytics facts with RLS enabled (project isolation). Immutable audit records.';
+COMMENT ON COLUMN public."DashboardFact".project IS 'Project namespace for RLS isolation (e.g., occ, chatwoot).';
 
 -- Grant necessary permissions
-GRANT SELECT ON public.facts TO authenticated;
-GRANT SELECT ON public.facts TO ai_readonly;
-GRANT SELECT ON public.facts TO analytics_reader;
-GRANT INSERT ON public.facts TO authenticated;
-GRANT ALL ON public.facts TO service_role;
+GRANT SELECT ON public."DashboardFact" TO authenticated;
+GRANT SELECT ON public."DashboardFact" TO ai_readonly;
+GRANT SELECT ON public."DashboardFact" TO analytics_reader;
+GRANT INSERT ON public."DashboardFact" TO authenticated;
+GRANT ALL ON public."DashboardFact" TO service_role;
 

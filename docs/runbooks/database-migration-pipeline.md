@@ -1,397 +1,264 @@
 # Database Migration Pipeline
 
-**Version**: 1.0  
-**Last Updated**: 2025-10-21  
-**Owner**: DevOps  
-**Status**: ACTIVE
-
----
-
 ## Overview
+This runbook documents the automated database migration testing pipeline for HotDash, ensuring safe and reliable database schema changes.
 
-Safe database migration workflow for HotDash, ensuring additive-only changes, automated testing, and rollback capabilities.
+## Migration Pipeline Architecture
 
-## Critical Rules
+### 1. Migration Testing Environment
+- **Test Database**: Isolated test environment for migration validation
+- **Schema Validation**: Automated schema change validation
+- **Data Integrity**: Data consistency checks
+- **Rollback Testing**: Automated rollback validation
 
-### 🚨 MANDATORY DATABASE SAFETY POLICY
+### 2. Migration Process
+- **Pre-Migration Checks**: Schema validation and dependency checks
+- **Migration Execution**: Automated migration application
+- **Post-Migration Validation**: Data integrity and performance checks
+- **Rollback Preparation**: Rollback plan validation
 
-**From**: `docs/RULES.md` "Database Safety" section
+### 3. Safety Measures
+- **Backup Creation**: Automatic backup before migration
+- **Validation Gates**: Multiple validation checkpoints
+- **Rollback Capability**: Immediate rollback if issues detected
+- **Monitoring**: Real-time migration monitoring
 
-1. **NO automated migrations in deployment** ❌
-   - fly.toml release_command = `npx prisma generate` ONLY
-   - package.json setup = `npx prisma generate` ONLY
-   - NO `prisma migrate deploy` in automation
+## Migration Pipeline Implementation
 
-2. **Schema changes require CEO approval** ✅
-   - Data agent creates migration files
-   - DevOps verifies migration safety (dry-run in CI)
-   - Manager reviews and applies via Supabase console
-   - DevOps verifies tables exist in database
-
-3. **Migrations must be ADDITIVE ONLY** ✅
-   - Add new tables: ✅ ALLOWED
-   - Add new columns: ✅ ALLOWED
-   - Remove tables/columns: ❌ FORBIDDEN in production
-   - Modify column types: ⚠️ Requires special approval
-
----
-
-## Migration Workflow
-
-### Phase 1: Creation (Data Agent)
-
-**Data agent creates**:
-
-```bash
-cd /home/justin/HotDash/hot-dash
-npx prisma migrate dev --name add_social_posts_table
+### 1. Pre-Migration Validation
+```typescript
+// Migration validation script
+export async function validateMigration(migrationFile: string) {
+  const validation = {
+    schemaValid: false,
+    dependenciesMet: false,
+    dataIntegrity: false,
+    rollbackSafe: false
+  };
+  
+  // Schema validation
+  validation.schemaValid = await validateSchema(migrationFile);
+  
+  // Dependency checks
+  validation.dependenciesMet = await checkDependencies(migrationFile);
+  
+  // Data integrity checks
+  validation.dataIntegrity = await checkDataIntegrity();
+  
+  // Rollback safety
+  validation.rollbackSafe = await validateRollback(migrationFile);
+  
+  return validation;
+}
 ```
 
-**Output**:
-
-- `prisma/migrations/YYYYMMDDHHMMSS_add_social_posts_table/migration.sql`
-- Updated `prisma/schema.prisma`
-
-**Commits**:
-
-```bash
-git add prisma/
-git commit -m "feat(data): add social posts migration - DATA-XXX"
-git push origin manager-reopen-YYYYMMDD
+### 2. Migration Execution
+```typescript
+// Migration execution with safety checks
+export async function executeMigration(migrationFile: string) {
+  try {
+    // Create backup
+    await createBackup();
+    
+    // Execute migration
+    await runMigration(migrationFile);
+    
+    // Validate results
+    await validateMigrationResults();
+    
+    // Update migration log
+    await logMigrationSuccess(migrationFile);
+    
+  } catch (error) {
+    // Automatic rollback on failure
+    await rollbackMigration();
+    throw error;
+  }
+}
 ```
 
----
-
-### Phase 2: Validation (DevOps - Automated)
-
-**Trigger**: Pull request with migration files
-
-**GitHub Actions**: `.github/workflows/migration-test.yml`
-
-**Steps**:
-
-1. **Validate Schema**: Check Prisma schema is valid
-2. **Check Breaking Changes**: Detect removed models/fields (fails if found)
-3. **Dry-Run**: Apply migration to test Postgres database
-4. **Verify**: Confirm schema matches expected state
-5. **Generate Rollback Guide**: Document how to undo migration
-
-**Output**: GitHub Actions artifact with rollback instructions
-
----
-
-### Phase 3: Review (Manager)
-
-**Manager checks**:
-
-1. ✅ CI passed (green checkmark on PR)
-2. ✅ Migration is additive-only (no deletions)
-3. ✅ Rollback guide generated
-4. ✅ Aligned with project requirements
-
-**Manager approves**: Comments "LGTM" or merges PR
-
----
-
-### Phase 4: Application (Manager - Manual)
-
-**⚠️ CRITICAL**: Manual execution only, never automated
-
-**Method 1: Supabase Console (Recommended)**
-
-1. Navigate to https://supabase.com/dashboard/project/<project-id>/sql
-2. Copy SQL from `prisma/migrations/<timestamp>_<name>/migration.sql`
-3. Paste into SQL editor
-4. Review carefully
-5. Execute
-6. Verify: Check tables in Database → Tables view
-
-**Method 2: psql (Alternative)**
-
-```bash
-# Get database URL from vault/occ/supabase/
-SUPABASE_URL="postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres"
-
-# Connect
-psql "$SUPABASE_URL"
-
-# Apply migration SQL
-\i prisma/migrations/<timestamp>_<name>/migration.sql
-
-# Verify
-\dt+ <table_name>
-
-# Exit
-\q
+### 3. Post-Migration Validation
+```typescript
+// Post-migration validation
+export async function validateMigrationResults() {
+  const validations = [
+    await validateSchemaIntegrity(),
+    await validateDataConsistency(),
+    await validatePerformance(),
+    await validateIndexes(),
+    await validateConstraints()
+  ];
+  
+  const allValid = validations.every(v => v === true);
+  
+  if (!allValid) {
+    throw new Error('Migration validation failed');
+  }
+  
+  return true;
+}
 ```
 
----
+## Migration Testing Process
 
-### Phase 5: Verification (DevOps)
+### 1. Automated Testing
+- **Schema Tests**: Validate schema changes
+- **Data Tests**: Ensure data integrity
+- **Performance Tests**: Check performance impact
+- **Rollback Tests**: Validate rollback capability
 
-**After Manager applies migration**:
+### 2. Integration Testing
+- **Application Tests**: Test application with new schema
+- **API Tests**: Validate API functionality
+- **Database Tests**: Test database operations
+- **End-to-End Tests**: Full application testing
 
-```bash
-# Method 1: Via Supabase console
-# Dashboard → Database → Tables → Verify new tables exist
+### 3. Performance Testing
+- **Query Performance**: Test query performance
+- **Index Performance**: Validate index effectiveness
+- **Connection Performance**: Test connection handling
+- **Load Testing**: Test under load conditions
 
-# Method 2: Via SQL query
+## Migration Safety Measures
+
+### 1. Backup Strategy
+- **Automatic Backups**: Before each migration
+- **Incremental Backups**: Regular incremental backups
+- **Point-in-Time Recovery**: Ability to restore to specific points
+- **Cross-Region Backups**: Geographic backup distribution
+
+### 2. Validation Gates
+- **Schema Validation**: Ensure schema changes are valid
+- **Dependency Checks**: Verify all dependencies are met
+- **Data Integrity**: Ensure data consistency
+- **Performance Validation**: Check performance impact
+
+### 3. Rollback Capability
+- **Automatic Rollback**: Immediate rollback on failure
+- **Manual Rollback**: Manual rollback capability
+- **Rollback Testing**: Validate rollback procedures
+- **Rollback Monitoring**: Monitor rollback execution
+
+## Migration Monitoring
+
+### 1. Real-time Monitoring
+- **Migration Progress**: Track migration execution
+- **Performance Metrics**: Monitor performance during migration
+- **Error Detection**: Detect and alert on errors
+- **Status Updates**: Real-time status updates
+
+### 2. Logging and Auditing
+- **Migration Logs**: Detailed migration logs
+- **Audit Trail**: Complete audit trail
+- **Error Logging**: Comprehensive error logging
+- **Performance Logging**: Performance metrics logging
+
+### 3. Alerting
+- **Migration Alerts**: Migration status alerts
+- **Error Alerts**: Error condition alerts
+- **Performance Alerts**: Performance threshold alerts
+- **Rollback Alerts**: Rollback execution alerts
+
+## Migration Pipeline Configuration
+
+### 1. Environment Configuration
+```yaml
+# Migration pipeline configuration
+migration:
+  test_database: "hotdash_test"
+  production_database: "hotdash_production"
+  backup_retention: "30d"
+  validation_timeout: "300s"
+  rollback_timeout: "600s"
 ```
 
-```sql
--- Check tables exist
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-AND table_name IN ('social_posts', 'new_table_name');
-
--- Verify Row Level Security (RLS) enabled
-SELECT tablename, rowsecurity
-FROM pg_tables
-WHERE schemaname = 'public'
-AND tablename = 'social_posts';
-
--- Check columns
-SELECT column_name, data_type, is_nullable
-FROM information_schema.columns
-WHERE table_name = 'social_posts'
-ORDER BY ordinal_position;
+### 2. Validation Rules
+```yaml
+# Migration validation rules
+validation:
+  schema_changes: true
+  data_integrity: true
+  performance_impact: true
+  rollback_safety: true
+  dependency_checks: true
 ```
 
-**Report in feedback**:
-
-```md
-## HH:MM - Migration Verified
-
-**Migration**: <name>
-**Tables**: social_posts (verified exists)
-**RLS**: Enabled ✓
-**Engineer Status**: Unblocked for Phase N implementation
+### 3. Safety Thresholds
+```yaml
+# Migration safety thresholds
+safety:
+  max_migration_time: "600s"
+  max_rollback_time: "300s"
+  performance_degradation: "10%"
+  data_loss_tolerance: "0%"
 ```
 
----
-
-## Rollback Procedures
-
-### Scenario 1: Migration Not Yet Applied
-
-**Action**: Simply don't apply the migration
-
-**Cleanup**:
-
-```bash
-# Remove migration files
-git rm -r prisma/migrations/<timestamp>_<name>/
-git restore prisma/schema.prisma  # Revert schema changes
-git commit -m "revert(data): remove problematic migration"
-```
-
----
-
-### Scenario 2: Migration Applied, Need to Revert
-
-**⚠️ CRITICAL**: Coordinate with Manager and CEO before executing
-
-**Step 1**: Identify changes made
-
-```sql
--- View table structure
-\d+ <table_name>
-```
-
-**Step 2**: Create rollback SQL
-
-```sql
--- If added table:
-DROP TABLE IF EXISTS <table_name>;
-
--- If added column:
-ALTER TABLE <table_name> DROP COLUMN IF EXISTS <column_name>;
-
--- If added index:
-DROP INDEX IF EXISTS <index_name>;
-```
-
-**Step 3**: Test in dev database first
-
-```bash
-# Use local Postgres or test Supabase project
-psql "postgresql://localhost/hotdash_dev"
-# Run rollback SQL
-# Verify app still works
-```
-
-**Step 4**: Apply to production (Manager only)
-
-```bash
-# Manager executes via Supabase console
-# DevOps verifies with queries
-```
-
-**Step 5**: Update Prisma schema
-
-```bash
-# Revert schema.prisma to match database
-# Create new migration if needed
-npx prisma db pull  # Generate schema from database
-```
-
----
-
-## Migration Safety Checklist
-
-### Before Creating Migration
-
-- [ ] Migration is additive-only (no deletions)
-- [ ] Column names follow naming conventions (snake_case)
-- [ ] Foreign keys properly defined
-- [ ] Indexes on frequently queried columns
-- [ ] RLS policies defined (if applicable)
-- [ ] Default values for new columns (if applicable)
-
-### Before Applying Migration
-
-- [ ] CI tests passed (green checkmark)
-- [ ] Dry-run successful in test database
-- [ ] Rollback plan documented
-- [ ] Manager approval obtained
-- [ ] Backup verified (Supabase auto-backup enabled)
-
-### After Applying Migration
-
-- [ ] Tables exist (verified via SQL)
-- [ ] RLS enabled (verified via SQL)
-- [ ] App deployments working (no schema mismatch errors)
-- [ ] Engineer unblocked for feature work
-- [ ] Migration documented in feedback file
-
----
-
-## Common Issues
-
-### Issue: Migration Fails in CI
-
-**Cause**: Syntax error or invalid constraint
-
-**Resolution**:
-
-1. Check error message in GitHub Actions logs
-2. Fix SQL in migration file
-3. Test locally: `npx prisma migrate dev`
-4. Push fix, re-run CI
-
----
-
-### Issue: Schema Mismatch After Migration
-
-**Cause**: Prisma schema doesn't match database
-
-**Resolution**:
-
-```bash
-# Pull current database schema
-npx prisma db pull
-
-# Compare with prisma/schema.prisma
-git diff prisma/schema.prisma
-
-# If different, regenerate client
-npx prisma generate
-```
-
----
-
-### Issue: Need to Rollback Migration
-
-**Cause**: Migration caused production issues
-
-**Resolution**:
-
-1. **IMMEDIATE**: Pause new deployments
-2. **ASSESS**: Identify specific issue
-3. **COORDINATE**: Manager + Data + DevOps + Engineer
-4. **PLAN**: Create rollback SQL (see Rollback Procedures above)
-5. **TEST**: Rollback in dev/staging first
-6. **EXECUTE**: Manager applies to production
-7. **VERIFY**: All apps working
-8. **POST-MORTEM**: Document what went wrong
-
----
-
-## Automated Migration Testing
-
-### GitHub Actions Workflow
-
-**File**: `.github/workflows/migration-test.yml`
-
-**Triggers**:
-
-- PR with changes to `prisma/migrations/**`
-- PR with changes to `prisma/schema.prisma`
-- Manual dispatch
-
-**Jobs**:
-
-1. **validate**: Check schema validity, detect breaking changes
-2. **dry-run**: Apply to test Postgres, verify success
-3. **summary**: Generate result summary with rollback guide
-
-**Artifacts**:
-
-- Migration rollback guide (retained 30 days)
-- Test database schema dump
-- Migration status report
-
----
-
-## Migration Coordination Matrix
-
-| Agent        | Responsibility    | File Location        | Verification    |
-| ------------ | ----------------- | -------------------- | --------------- |
-| **Data**     | Create migrations | `prisma/migrations/` | CI passes       |
-| **DevOps**   | Verify safety     | CI workflow          | Green checkmark |
-| **Manager**  | Review & apply    | Supabase console     | SQL execution   |
-| **DevOps**   | Verify applied    | SQL queries          | Tables exist    |
-| **Engineer** | Use new schema    | App code             | No errors       |
-
----
-
-## Production Migration Checklist
-
-### Pre-Migration (24h before)
-
-- [ ] Migration tested in staging
-- [ ] Rollback plan documented
-- [ ] Team notified of maintenance window
-- [ ] Database backup verified
-- [ ] Manager approval obtained
-
-### During Migration (Manager executes)
-
-- [ ] Maintenance mode enabled (if needed)
-- [ ] Migration SQL reviewed one final time
-- [ ] Execute via Supabase console
-- [ ] Verify tables created
-- [ ] Test app functionality
-- [ ] Maintenance mode disabled
-
-### Post-Migration (DevOps verifies)
-
-- [ ] Tables verified via SQL queries
-- [ ] App deployments successful
-- [ ] No error spikes in logs
-- [ ] Performance metrics normal
-- [ ] Team notified of completion
-
----
-
-## Related Documentation
-
-- **Database Safety Policy**: `docs/RULES.md` (Database Safety section)
-- **Migration Test Workflow**: `.github/workflows/migration-test.yml`
-- **DevOps Directions**: `docs/directions/devops.md` (DEVOPS-002)
-- **Prisma Documentation**: https://www.prisma.io/docs/guides/migrate
-
----
-
-**🗄️ End of Runbook**
+## Migration Testing Procedures
+
+### 1. Pre-Migration Testing
+- **Schema Validation**: Validate schema changes
+- **Dependency Testing**: Test all dependencies
+- **Data Testing**: Test data integrity
+- **Performance Testing**: Test performance impact
+
+### 2. Migration Testing
+- **Migration Execution**: Test migration execution
+- **Error Handling**: Test error handling
+- **Rollback Testing**: Test rollback procedures
+- **Recovery Testing**: Test recovery procedures
+
+### 3. Post-Migration Testing
+- **Application Testing**: Test application functionality
+- **API Testing**: Test API functionality
+- **Database Testing**: Test database operations
+- **Performance Testing**: Test performance impact
+
+## Migration Pipeline Automation
+
+### 1. GitHub Actions Integration
+- **Migration Triggers**: Automatic migration triggers
+- **Validation Gates**: Automated validation gates
+- **Testing Integration**: Automated testing integration
+- **Deployment Integration**: Automated deployment integration
+
+### 2. CI/CD Integration
+- **Continuous Integration**: Automated migration testing
+- **Continuous Deployment**: Automated migration deployment
+- **Quality Gates**: Automated quality gates
+- **Rollback Automation**: Automated rollback procedures
+
+### 3. Monitoring Integration
+- **Real-time Monitoring**: Real-time migration monitoring
+- **Alerting Integration**: Automated alerting
+- **Logging Integration**: Comprehensive logging
+- **Reporting Integration**: Automated reporting
+
+## Success Criteria
+
+- [ ] Automated migration testing pipeline operational
+- [ ] Pre-migration validation implemented
+- [ ] Post-migration validation implemented
+- [ ] Rollback capability tested and verified
+- [ ] Performance impact monitoring
+- [ ] Data integrity validation
+- [ ] Migration logging and auditing
+- [ ] Automated alerting configured
+- [ ] CI/CD integration complete
+- [ ] Documentation complete
+
+## Configuration Files
+
+### Migration Pipeline
+- `scripts/migration/validate-migration.ts`: Migration validation
+- `scripts/migration/execute-migration.ts`: Migration execution
+- `scripts/migration/rollback-migration.ts`: Rollback procedures
+
+### Testing Configuration
+- `tests/migration/`: Migration test suites
+- `tests/database/`: Database test suites
+- `tests/integration/`: Integration test suites
+
+### Documentation
+- `docs/runbooks/database-migration-pipeline.md`: This runbook
+- `docs/runbooks/database-recovery.md`: Database recovery procedures
+- `docs/runbooks/migration-rollback-procedures.md`: Rollback procedures

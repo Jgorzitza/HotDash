@@ -155,16 +155,16 @@ ORDER BY segment_revenue DESC;
 -- Seasonal pattern detection
 CREATE OR REPLACE VIEW v_seasonal_patterns AS
 SELECT 
-  EXTRACT(MONTH FROM created_at) as month_num,
-  TO_CHAR(created_at, 'Month') as month_name,
+  EXTRACT(MONTH FROM month_date) as month_num,
+  TO_CHAR(month_date, 'Month') as month_name,
   CASE 
-    WHEN EXTRACT(MONTH FROM created_at) BETWEEN 3 AND 9 THEN 'racing_season'
+    WHEN EXTRACT(MONTH FROM month_date) BETWEEN 3 AND 9 THEN 'racing_season'
     ELSE 'off_season'
   END as season,
   category_l1,
   COUNT(*) as record_count
 FROM product_categories pc
-CROSS JOIN generate_series(NOW() - INTERVAL '2 years', NOW(), INTERVAL '1 month') as created_at
+CROSS JOIN generate_series(NOW() - INTERVAL '2 years', NOW(), INTERVAL '1 month') as month_date
 GROUP BY 1, 2, 3, pc.category_l1
 ORDER BY month_num, category_l1;
 
