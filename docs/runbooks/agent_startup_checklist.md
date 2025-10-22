@@ -13,15 +13,15 @@
   git fetch origin
   ```
 
-- [ ] **Checkout Daily Branch** (Manager announces in feedback, e.g., `daily/2025-10-20` or `manager-reopen-20251020`):
+- [ ] **Checkout Today's Branch** (Current: `agent-launch-20251022`):
   ```bash
-  git checkout daily/2025-10-20  # Use exact branch name from Manager
-  git pull origin daily/2025-10-20
+  git checkout agent-launch-20251022
+  git pull origin agent-launch-20251022
   ```
 
 - [ ] **Verify Branch**:
   ```bash
-  git branch --show-current  # Should match Manager's announced branch
+  git branch --show-current  # Should show: agent-launch-20251022
   ```
 
 - [ ] **Review File Ownership** (see `docs/RULES.md` "File Ownership" table):
@@ -33,7 +33,7 @@
 ```bash
 git add your/files
 git commit -m "feat(your-agent-name): what you did"
-git push origin daily/2025-10-20
+git push origin agent-launch-20251022
 ```
 
 ---
