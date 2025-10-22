@@ -89,20 +89,30 @@ git push origin daily/2025-10-20
       "Direction misaligned with North Star/Operating Model — please confirm or revise."
       (Agents hold Manager accountable for alignment.)
 
-## 2) Direction & Issue (60 sec)
+## 2) Tasks & Direction (30 sec) [DATABASE-DRIVEN]
 
-- [ ] Read `docs/directions/<agent>.md` — note **today's objective** and **constraints**.
-- [ ] Open your **Issue(s)**; copy the **DoD** and confirm **Allowed paths** (fnmatch).
+**NEW (2025-10-22)**: Query database for your tasks instead of reading markdown files
+
+```bash
+# Get all your tasks (shows next unblocked task automatically)
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
+```
+
+- [ ] Query your tasks from database
+- [ ] Note **next task** to start (highest priority, no unmet dependencies)
+- [ ] Review acceptance criteria and allowed paths
 - [ ] Log startup via `logDecision()`:
   ```typescript
   await logDecision({
     scope: 'build',
     actor: '<your-agent>',
     action: 'startup_complete',
-    rationale: 'Agent startup checklist complete, ready to work on {TASK-ID}',
-    evidenceUrl: 'docs/runbooks/agent_startup_checklist.md'
+    rationale: 'Agent startup complete, found X active tasks, starting TASK-ID',
+    evidenceUrl: 'scripts/agent/get-my-tasks.ts'
   });
   ```
+
+**Time Savings**: No git pull for direction updates, instant task visibility
 
 ## 2.1) Growth Engine Evidence Setup (NEW - Effective 2025-10-21) (30 sec)
 

@@ -194,15 +194,28 @@ From `query-blocked-tasks.ts` output:
   });
   ```
 
-### 5.5 Update agent direction (45–60 sec)
+### 5.5 Update agent direction (10–30 sec) [DATABASE-DRIVEN]
+
+**NEW (2025-10-22)**: Assign tasks via database instead of updating 17 markdown files
+
+```bash
+# Quick assign for single task
+AGENT=engineer TASK_ID=ENG-040 TITLE="New feature" DESC="Build X" \
+  CRITERIA="Working|Tests pass" PATHS="app/components/**" PRIORITY=P1 HOURS=3 \
+  npx tsx --env-file=.env scripts/manager/assign-task.ts
+
+# Or use task service directly for bulk assignments
+npx tsx --env-file=.env scripts/manager/bulk-assign-tasks.ts
+```
 
 For each active agent:
+- [ ] Query their current status (`query-agent-status.ts`)
+- [ ] Assign next task via database (instant, no commit needed)
+- [ ] Set priority (P0 for blockers, P1 for active work)
+- [ ] Set dependencies if task is blocked by another
+- [ ] Agents see new tasks IMMEDIATELY (no git pull needed)
 
-- [ ] Open `docs/directions/<agent>.md` file must follow template `docs/directions/agenttemplate.md`
-- [ ] **Set today’s objective** (≤ 2-day molecule) and **constraints**
-- [ ] Reflect answers/decisions from step **5.2/5.4** into the direction file
-- [ ] **Archive/remove** completed items (leave "done" note + PR link)
-- [ ] Confirm the **task → Issue → PR** chain is explicit
+**Time Savings**: 45-60 sec → 10-30 sec per agent update
 
 ### 5.6 Sandboxes & safety (quick pass)
 

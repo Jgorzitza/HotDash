@@ -70,12 +70,13 @@ Before creating ANY new .md file:
 
 ---
 
-## Process
+## Process [DATABASE-DRIVEN]
 
-- **Single ledger**: GitHub Issues (Task form) with `Agent`, `Definition of Done`, `Acceptance checks`, and **Allowed paths**.
-- PR must state `Fixes #<issue>`, satisfy DoD, and pass checks. Danger enforces.
-- Agents report progress via `logDecision()` (database) and optionally to feedback markdown files.
-- Manager owns NORTH_STAR, RULES, Operating Model, directions, and PROJECT_PLAN.
+- **Task Management**: Manager assigns via `assignTask()` database (instant, 10+ times/day). Agents query via `getMyTasks()` (real-time, no git pull).
+- **Feedback**: Agents report via `logDecision()` (database, IMMEDIATE on status changes).
+- **GitHub Issues**: Still used for detailed context and PR tracking. PR must state `Fixes #<issue>`, satisfy DoD, and pass checks. Danger enforces.
+- Manager owns NORTH_STAR, RULES, Operating Model, and PROJECT_PLAN.
+- **Direction files archived** (2025-10-22) - markdown too slow for hourly updates.
 
 ## Security
 

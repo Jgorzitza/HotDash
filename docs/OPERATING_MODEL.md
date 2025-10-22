@@ -21,14 +21,18 @@
 
 ---
 
-## 2) Task Ledger (single source of truth)
+## 2) Task Ledger (single source of truth) [DATABASE-DRIVEN]
 
-- Use **GitHub Issues (Task form)** with required fields: **Agent**, **Definition of Done**, **Acceptance checks**, **Allowed paths**.
+**NEW (2025-10-22)**: Tasks assigned via database `TaskAssignment` table (instant, queryable, real-time)
+
+- **Manager assigns** via `assignTask()` with: **TaskId**, **Agent**, **Title**, **Description**, **Acceptance Criteria**, **Allowed Paths**, **Priority**, **Dependencies**
+- **Agents query** via `getMyTasks(agent)` - instant visibility, no git pull needed
+- **Agents start/complete** via `updateTask()` + `logDecision()` - real-time status updates
 - Every PR must:
-  - Include `Fixes #<issue>` in the body.
-  - Include a line `Allowed paths: <patterns>` that matches the Issue.
-  - Stay inside those paths (Danger enforces).
-- Direction lives in `docs/directions/<agent>.md` and follows template `docs/directions/agenttemplate.md`. Feedback is logged via `logDecision()` to database (primary) and optionally to `feedback/<agent>/<YYYY-MM-DD>.md` (backup).
+  - Reference taskId in commit message
+  - Stay inside allowed paths (from TaskAssignment record, Danger enforces)
+- **Feedback** logged via `logDecision()` to database (instant queries, no markdown files)
+- **Direction** (markdown files) archived - all task management now in database for 10+ updates/day efficiency
 
 ---
 

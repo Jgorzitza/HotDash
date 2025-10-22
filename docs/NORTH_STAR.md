@@ -156,16 +156,25 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 - ❌ `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`
 - ❌ Any root .md except 6 allowed (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 
-### Use Database Feedback (Primary) + Markdown (Backup)
-- Progress → `logDecision()` with `status`, `progressPct`, `taskId`
-- Blockers → `logDecision()` with `status: 'blocked'`, `blockerDetails`, `blockedBy`
-- Status → `logDecision()` with structured fields (manager can query)
-- Detailed notes → `feedback/{agent}.md` (optional backup)
-- Always the right choice ✅
+### Use Database for Feedback + Direction (2025-10-22)
 
-**Why Database**: Manager queries all agents in < 10 seconds (vs 30-60 min reading files)
+**Feedback** (Progress/Status):
+- Report → `logDecision()` with `status`, `progressPct`, `taskId`
+- IMMEDIATE on status changes (completion, blocked, unblocked)
+- Manager queries in < 10 seconds (vs 30-60 min reading markdown)
 
-**Enforcement**: Daily audit, immediate archive if violated
+**Direction** (Task Assignments):
+- Assign → `assignTask()` with taskId, agent, acceptance criteria, allowed paths, dependencies
+- Query → `getMyTasks(agent)` - instant visibility, no git pull
+- Update → 10+ times/day when blockers clear (instant, no commits needed)
+- Agents query next available task in real-time, switch when blocked
+
+**Why Database for Both**:
+- Manager updates direction **hourly** when blockers clear
+- Markdown + git = bottleneck (1-4 hours/update = agents idle)
+- Database = instant (< 1 min/update, agents see immediately)
+
+**Enforcement**: Daily audit, markdown direction files archived to feedback/archive/
 
 ---
 

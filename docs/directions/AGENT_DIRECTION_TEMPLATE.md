@@ -1,4 +1,24 @@
-# {Agent Name} Direction v{X.X} — {Current Focus}
+# {Agent Name} Direction Template
+
+⚠️ **NOTE (2025-10-22)**: This template is ARCHIVED. Task assignments now managed via database.
+
+**Agents query tasks via:**
+```bash
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts {agent-name}
+```
+
+**Manager assigns tasks via:**
+```bash
+npx tsx --env-file=.env scripts/manager/assign-task.ts
+# or
+import { assignTask } from '~/services/tasks.server';
+```
+
+**Below template preserved for reference only:**
+
+---
+
+# {Agent Name} Direction v{X.X} — {Current Focus} [ARCHIVED TEMPLATE]
 
 📌 **FIRST ACTION: Git Setup**
 ```bash
