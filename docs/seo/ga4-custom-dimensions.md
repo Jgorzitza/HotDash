@@ -2,21 +2,25 @@
 
 **Purpose**: Track HotDash action attribution using GA4  
 **Property ID**: 339826228  
-**Implementation**: `hd_action_key` (Event OR Custom Dimension)  
+**Implementation**: `hd_action_key` Event-Scoped Custom Dimension  
 **Owner**: SEO + Analytics + DevOps  
 **Effective**: 2025-10-21  
-**Status**: CEO created `hd_action_key` as Event (2025-10-21)
+**Status**: ✅ **ACTIVE** - Custom Dimension created (2025-10-21)
 
 ---
 
 ## Overview
 
-This guide documents TWO approaches to track which approved actions from the HotDash Action Queue drive revenue:
+✅ **SETUP COMPLETE**: CEO created `hd_action_key` as an **Event-Scoped Custom Dimension** in GA4 Property 339826228.
 
-1. **Approach A: Event-Based** (✅ Currently Implemented by CEO)
-2. **Approach B: Custom Dimension** (Alternative/Upgrade)
+**Confirmed in GA4**:
+- **Dimension name**: Action Key
+- **Description**: HotDash action attribution key for ROI tracking
+- **Scope**: Event
+- **Parameter**: hd_action_key
+- **Status**: Active (Created Oct 21, 2025)
 
-**Current Status**: CEO created `hd_action_key` as an Event in GA4. This guide now covers both approaches.
+This guide documents how to USE the custom dimension for action attribution and ROI tracking.
 
 ### What is Action Attribution?
 
@@ -29,226 +33,29 @@ This identifier is tracked in GA4 for 7-28 days to measure which actions drive r
 
 ---
 
-## APPROACH A: Event-Based (✅ Current Setup)
+## ✅ CUSTOM DIMENSION CREATED - Ready to Use!
 
-**Status**: CEO created `hd_action_key` as Event in GA4 (2025-10-21)  
-**Works**: Yes, with proper implementation  
-**Complexity**: Medium (requires user correlation)
+**Status**: ✅ **ACTIVE** in GA4 Property 339826228  
+**Created**: Oct 21, 2025 (via Admin API)  
+**Method**: Programmatic creation (GUI unavailable as of Oct 2025)
 
-### How It Works
+### Verified Configuration
 
-1. **Action Applied** → Send `hd_action_key` event with user identifier
-2. **User Browses** → Track their session
-3. **User Purchases** → Correlate purchase with users who received action
-4. **Query** → Find purchases from users who triggered `hd_action_key` event
+Confirmed in GA4 Custom definitions:
+- ✅ **Dimension name**: Action Key
+- ✅ **Description**: HotDash action attribution key for ROI tracking  
+- ✅ **Scope**: Event
+- ✅ **Parameter**: hd_action_key
+- ✅ **Status**: Active
 
-### Implementation Code
+### How It Works (Simple, Direct Attribution)
 
-**When Action is Approved**:
-```javascript
-// Set in localStorage for tracking
-const actionKey = 'seo-fix-powder-board-2025-10-21';
-const expiryDate = new Date();
-expiryDate.setDate(expiryDate.getDate() + 28);
+1. **Action Applied** → Set `hd_action_key` in localStorage
+2. **Customer browses** → Custom dimension automatically attached to all events
+3. **Customer purchases** → Purchase event includes `hd_action_key` parameter
+4. **Query** → Single query to find purchases with specific action key ✅
 
-localStorage.setItem('hd_action_key', actionKey);
-localStorage.setItem('hd_action_expiry', expiryDate.toISOString());
-
-// Send hd_action_key event (triggers your GA4 event)
-if (window.gtag) {
-  gtag('event', 'hd_action_key', {
-    action_id: actionKey,
-    action_type: 'seo',
-    action_target: 'powder-board',
-    expected_revenue: 500
-  });
-}
-```
-
-**Querying Attribution** (GA4 Data API):
-```typescript
-// Step 1: Get users who received the action
-const actionUsers = await analyticsDataClient.runReport({
-  property: 'properties/339826228',
-  dateRanges: [{ startDate: '2025-10-21', endDate: '2025-11-18' }],
-  dimensions: [{ name: 'userId' }],
-  metrics: [{ name: 'eventCount' }],
-  dimensionFilter: {
-    andGroup: {
-      expressions: [
-        {
-          filter: {
-            fieldName: 'eventName',
-            stringFilter: { value: 'hd_action_key' }
-          }
-        },
-        {
-          filter: {
-            fieldName: 'customEvent:action_id',
-            stringFilter: { value: 'seo-fix-powder-board-2025-10-21' }
-          }
-        }
-      ]
-    }
-  }
-});
-
-// Step 2: Get purchases from those users
-const userIds = actionUsers.rows.map(row => row.dimensionValues[0].value);
-
-const purchases = await analyticsDataClient.runReport({
-  property: 'properties/339826228',
-  dateRanges: [{ startDate: '2025-10-21', endDate: '2025-11-18' }],
-  dimensions: [{ name: 'userId' }],
-  metrics: [{ name: 'totalRevenue' }],
-  dimensionFilter: {
-    andGroup: {
-      expressions: [
-        {
-          filter: {
-            fieldName: 'eventName',
-            stringFilter: { value: 'purchase' }
-          }
-        },
-        {
-          inListFilter: {
-            fieldName: 'userId',
-            values: userIds
-          }
-        }
-      ]
-    }
-  }
-});
-```
-
-### Pros & Cons
-
-**Pros**:
-- ✅ Already configured (no additional setup)
-- ✅ Visible in Events list
-- ✅ Can track when action was applied
-
-**Cons**:
-- ❌ Two-step query (find users, then find purchases)
-- ❌ Requires User-ID tracking (may need to enable)
-- ❌ Counts toward event quota
-- ❌ More complex attribution logic
-
----
-
-## APPROACH B: Custom Dimension (Recommended Upgrade)
-
-**Status**: Not yet created (GUI unavailable as of Oct 2025)  
-**Works**: Yes, via Admin API  
-**Complexity**: Medium (API required, but automated)
-
-### Create Custom Dimension via GA4 Admin API
-
-**Note**: As of October 2025, GA4 GUI no longer allows creating custom dimensions. Must use Admin API.
-
-### Prerequisites
-
-1. **Service Account** with GA4 edit permissions
-2. **OAuth Scope**: `https://www.googleapis.com/auth/analytics.edit`
-3. **Property ID**: 339826228
-
-### Node.js Implementation
-
-**Install SDK**:
-```bash
-npm install @google-analytics/admin
-```
-
-**Create Custom Dimension**:
-```typescript
-import { AnalyticsAdminServiceClient } from '@google-analytics/admin';
-
-async function createCustomDimension() {
-  const analyticsAdmin = new AnalyticsAdminServiceClient({
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  });
-
-  const [customDimension] = await analyticsAdmin.createCustomDimension({
-    parent: 'properties/339826228',
-    customDimension: {
-      parameterName: 'hd_action_key',
-      displayName: 'Action Key',
-      description: 'HotDash action attribution key for ROI tracking',
-      scope: 'EVENT', // Event-scoped dimension
-    },
-  });
-
-  console.log('Custom dimension created:', customDimension.name);
-  console.log('Parameter:', customDimension.parameterName);
-  console.log('Scope:', customDimension.scope);
-  
-  return customDimension;
-}
-```
-
-**API Endpoint** (REST):
-```bash
-POST https://analyticsadmin.googleapis.com/v1alpha/properties/339826228/customDimensions
-
-# Request Body:
-{
-  "parameterName": "hd_action_key",
-  "displayName": "Action Key",
-  "description": "HotDash action attribution key for ROI tracking",
-  "scope": "EVENT"
-}
-
-# Headers:
-Authorization: Bearer YOUR_ACCESS_TOKEN
-Content-Type: application/json
-```
-
-### Verify Creation
-
-**List Custom Dimensions**:
-```typescript
-const [customDimensions] = await analyticsAdmin.listCustomDimensions({
-  parent: 'properties/339826228',
-});
-
-customDimensions.forEach(dimension => {
-  console.log(`${dimension.displayName}: ${dimension.parameterName} (${dimension.scope})`);
-});
-```
-
-**Expected Output**:
-```
-Action Key: hd_action_key (EVENT)
-```
-
----
-
-### When to Use Custom Dimension
-
-**Upgrade to Custom Dimension when**:
-- ✅ You want simpler queries (single query instead of two-step)
-- ✅ You have GA4 service account credentials
-- ✅ You want action key attached to every purchase event
-- ✅ You need better reporting in GA4 Explore
-
-**Script**: `scripts/analytics/create-ga4-custom-dimension.ts` (create when ready to upgrade)
-
----
-
-## Recommendation for Your Current Setup
-
-**For now, use the Event approach (Approach A)**:
-1. You already created the `hd_action_key` event ✅
-2. It will work for attribution (with proper code)
-3. Upgrade to Custom Dimension later when needed
-
-**Implementation priority**:
-1. ✅ Event created (done by CEO)
-2. → Add code to trigger event when action is applied
-3. → Add User-ID tracking to correlate users → purchases
-4. → Query GA4 for attribution
-5. → (Later) Upgrade to Custom Dimension via API
+**Advantage**: Direct attribution (no user correlation needed)
 
 ---
 
@@ -286,7 +93,7 @@ We're well within limits.
 
 ---
 
-## Part 3: Implementation Code (Both Approaches)
+## Part 3: Implementation - Using the Custom Dimension
 
 ### How Shopify Native GA4 Works
 
@@ -300,13 +107,15 @@ Shopify has **built-in GA4 integration** that automatically sends:
 
 These events are sent via **Shopify Web Pixels** (customer privacy compliant).
 
-### Implementation for Current Event Approach
+### Shopify Web Pixel - Add Custom Dimension to All Events
 
 **Location**: Shopify Admin → Settings → Customer events → Custom pixels
 
-**Code for Event Approach** (works with your current setup):
+**Code** (Production-ready):
 ```javascript
-// HotDash Action Attribution Web Pixel (Event Approach)
+// HotDash Action Attribution Web Pixel
+// Adds hd_action_key custom dimension to all GA4 events
+
 (function() {
   // Get action key from localStorage (set by Action Queue UI)
   const actionKey = localStorage.getItem('hd_action_key');
@@ -320,28 +129,40 @@ These events are sent via **Shopify Web Pixels** (customer privacy compliant).
     return;
   }
 
-  // Send hd_action_key event on page load (triggers your GA4 event)
+  // Method 1: Enhance all GA4 events (Recommended)
   if (window.gtag) {
-    gtag('event', 'hd_action_key', {
-      action_id: actionKey,
-      action_timestamp: new Date().toISOString()
-    });
+    const originalGtag = window.gtag;
+    window.gtag = function() {
+      const args = Array.from(arguments);
+      
+      // Add hd_action_key to all event parameters
+      if (args[0] === 'event' && args.length >= 2) {
+        args[2] = args[2] || {};
+        args[2].hd_action_key = actionKey; // ← Custom dimension parameter
+      }
+      
+      return originalGtag.apply(this, args);
+    };
   }
 
-  // Also track with purchase events for easier correlation
-  analytics.subscribe('checkout_completed', (event) => {
-    if (window.gtag) {
-      gtag('event', 'action_attributed_purchase', {
-        action_id: actionKey,
-        transaction_id: event.data.checkout.order.id,
-        value: event.data.checkout.totalPrice.amount
-      });
-    }
+  // Method 2: Subscribe to specific Shopify analytics events
+  // (Use if Method 1 doesn't work with your Shopify setup)
+  ['page_viewed', 'product_viewed', 'product_added_to_cart', 'checkout_started', 'checkout_completed'].forEach(eventName => {
+    analytics.subscribe(eventName, (event) => {
+      if (window.gtag) {
+        // Shopify events are already sent to GA4
+        // This ensures hd_action_key is included
+        gtag('event', eventName.replace(/_/g, ''), {
+          hd_action_key: actionKey,
+          ...event.data
+        });
+      }
+    });
   });
 })();
 ```
 
-### Implementation for Custom Dimension Approach (Future)
+**Result**: All GA4 events (purchase, add_to_cart, etc.) now include `hd_action_key` parameter automatically!
 
 **Location**: Shopify Admin → Settings → Customer events → Custom pixels
 
@@ -467,12 +288,12 @@ function onActionApplied(action: Action) {
 
 ---
 
-## Part 5: Querying Custom Dimension in GA4
+## Part 5: Querying the Custom Dimension in GA4
 
 ### Using GA4 Exploration Reports
 
 1. Go to **Explore** → **Create new exploration**
-2. **Dimensions**: Add `Action Key` (your custom dimension)
+2. **Dimensions**: Add `Action Key` (your custom dimension - already created!)
 3. **Metrics**: Add:
    - Conversions
    - Purchase revenue
@@ -482,11 +303,13 @@ function onActionApplied(action: Action) {
    - Date range: Last 28 days
    - Action Key: contains `seo-` (or specific action)
 
-### Using GA4 Data API
+**Example Query**: "Show me all purchases in the last 28 days where Action Key = 'seo-fix-powder-board-2025-10-21'"
+
+### Using GA4 Data API (Simple Single Query)
 
 **Endpoint**: `https://analyticsdata.googleapis.com/v1beta/properties/339826228:runReport`
 
-**Example Request**:
+**Example Request** (Find purchases with specific action key):
 ```json
 {
   "dateRanges": [
