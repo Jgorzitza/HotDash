@@ -31,8 +31,8 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 
 Before creating ANY new .md file:
 
-1. **Can this go in my feedback file?**  
-   - YES → Use `feedback/{agent}.md` and STOP
+1. **Can this go in my feedback/database?**  
+   - YES → Use `logDecision()` or `feedback/{agent}.md` and STOP
    - NO → Continue to Q2
 
 2. **Is this in DOCS_INDEX.md Tier 1-3?**  
@@ -74,7 +74,7 @@ Before creating ANY new .md file:
 
 - **Single ledger**: GitHub Issues (Task form) with `Agent`, `Definition of Done`, `Acceptance checks`, and **Allowed paths**.
 - PR must state `Fixes #<issue>`, satisfy DoD, and pass checks. Danger enforces.
-- Agents write **only** to their daily feedback file and code paths.
+- Agents report progress via `logDecision()` (database) and optionally to feedback markdown files.
 - Manager owns NORTH_STAR, RULES, Operating Model, directions, and PROJECT_PLAN.
 
 ## Security
@@ -136,7 +136,7 @@ git log daily/2025-10-20 --oneline
 | Pilot | `tests/e2e/`, smoke tests |
 | Manager | `docs/directions/`, `feedback/`, git coordination |
 
-**If Conflict**: Report in feedback: "Need file X owned by Agent Y" → Manager coordinates
+**If Conflict**: Report via `logDecision()` with `status: 'blocked'` and `blockedBy: 'Agent Y'` → Manager sees instantly
 
 ### Commit Style (Conventional Commits)
 
@@ -198,7 +198,7 @@ test(agent-name): add tests
 3. Manager reviews for safety
 4. **CEO approves** before merge
 5. Manager applies migration manually using SSH console
-6. Evidence logged in manager feedback
+6. Evidence logged via `logDecision()` and in manager feedback (optional)
 
 **NEVER**:
 - ❌ Add `prisma migrate deploy` to fly.toml
@@ -304,13 +304,13 @@ test(agent-name): add tests
 
 **Always**:
 - Include "official docs" or "documentation" in search
-- Log search results in feedback
+- Log search results via `logDecision()` or in feedback markdown
 
 ### 4. Chrome DevTools MCP: Required for UI Testing
 
 **Rule**: Designer, Pilot, QA agents MUST use for production testing
 - Take snapshots before claiming "tested"
-- Log screenshot/snapshot evidence in feedback
+- Log screenshot/snapshot evidence in artifacts/ (referenced in logDecision evidenceUrl)
 
 ### QA-Specific: Code Verification Protocol
 
@@ -334,7 +334,7 @@ test(agent-name): add tests
 
 **MUST DO**:
 - ✅ Pull docs BEFORE writing code (not after)
-- ✅ Log tool usage with timestamp in feedback
+- ✅ Log tool usage via MCP Evidence JSONL (artifacts/) or in feedback markdown
 - ✅ Quote specific requirement from docs
 - ✅ Apply official patterns (not training data)
 
@@ -420,8 +420,8 @@ fi
 - ❌ Skip tool calls to "save time" (costs more time in failed deploys)
 
 **Manager Actions**:
-- REJECTS PRs without MCP evidence in feedback
-- AUDITS feedback for tool-first compliance
+- REJECTS PRs without MCP evidence (JSONL files or logDecision entries)
+- AUDITS decision_log database for tool-first compliance
 - ESCALATES violations (3+ failed deploys = tool skipping)
 
 **Real Impact** (2025-10-20): Tool-first saved 30 minutes across 3 P0 issues.

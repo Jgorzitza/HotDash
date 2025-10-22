@@ -1,7 +1,8 @@
 # Manager Cycle — Simple Task List (End-to-End)
 
 **Purpose**: Execute one complete manager coordination cycle  
-**Duration**: 2-3 hours per cycle  
+**Duration**: 30-60 minutes per cycle (was 2-3 hours with markdown reading)  
+**Time Savings**: 1.5-2.5 hours via database queries  
 **Frequency**: Daily (or when CEO requests direction update)
 
 ---
@@ -16,9 +17,9 @@
 
 ---
 
-## 1) COLLECT (30 min)
+## 1) QUERY STATUS (< 1 min) [DATABASE-DRIVEN - NEW]
 
-**Objective**: Pull ALL agent feedback since last cycle (no sampling)
+**Objective**: Get instant snapshot of all 17 agents (replaces 30min feedback reading)
 
 **Steps**:
 
@@ -27,35 +28,42 @@ cd ~/HotDash/hot-dash
 
 # Create output directory
 mkdir -p artifacts/manager/$(date +%Y-%m-%d)
-
-# Collect all agent feedback (last 24 hours)
 DATE=$(date +%Y-%m-%d)
 
-for agent in ads ai-customer ai-knowledge analytics content data designer devops engineer integrations inventory manager pilot product qa seo support; do
-  echo "=== $agent ===" >> artifacts/manager/$DATE/feedback_raw.md
-  
-  if [ -f "feedback/$agent/$DATE.md" ]; then
-    cat "feedback/$agent/$DATE.md" >> artifacts/manager/$DATE/feedback_raw.md
-  else
-    echo "No feedback for $DATE" >> artifacts/manager/$DATE/feedback_raw.md
-  fi
-  
-  echo "" >> artifacts/manager/$DATE/feedback_raw.md
-done
+# Query 1: Blocked tasks (< 1 sec)
+echo "Querying blocked tasks..."
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts > artifacts/manager/$DATE/blocked-tasks.txt
 
-echo "✅ Feedback collected: artifacts/manager/$DATE/feedback_raw.md"
-wc -l artifacts/manager/$DATE/feedback_raw.md
+# Query 2: Agent status (< 1 sec)  
+echo "Querying agent status..."
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts > artifacts/manager/$DATE/agent-status.txt
+
+# Query 3: Completed today (< 1 sec)
+echo "Querying completed work..."
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts > artifacts/manager/$DATE/completed.txt
+
+echo "✅ Status queries complete (< 10 seconds total)"
+echo "📊 Results:"
+echo "   Blocked: artifacts/manager/$DATE/blocked-tasks.txt"
+echo "   Status: artifacts/manager/$DATE/agent-status.txt"
+echo "   Completed: artifacts/manager/$DATE/completed.txt"
 ```
 
-**Output**: `artifacts/manager/<DATE>/feedback_raw.md` (all agent feedback, unprocessed)
+**Output**: 3 query result files (instant status of all agents)
 
-**Acceptance**: File exists, contains feedback from all 17 agents
+**Time**: < 10 seconds (vs 30 minutes reading markdown files)
+
+**Acceptance**: 
+- All 3 queries run successfully
+- Blocked tasks identified
+- Agent status shows current work
+- Completed tasks listed with metrics
 
 ---
 
-## 2) CONSOLIDATE (45 min)
+## 2) CONSOLIDATE (10 min) [DATABASE-DRIVEN - NEW]
 
-**Objective**: Merge into ONE short report; remove duplicates; tag by lane
+**Objective**: Review query results and identify actions (replaces 45min manual consolidation)
 
 **Lanes**:
 - customer-front, accounts, storefront
@@ -67,97 +75,70 @@ wc -l artifacts/manager/$DATE/feedback_raw.md
 ```bash
 DATE=$(date +%Y-%m-%d)
 
-# Create consolidated report header
-cat > artifacts/manager/$DATE/feedback_consolidated.md << 'EOF'
-# Feedback Consolidated — [DATE]
+# Review query outputs and create summary
+cat > artifacts/manager/$DATE/status-summary.md << 'EOF'
+# Agent Status Summary — [DATE]
 
-**Cycle**: [YYYY-MM-DD cycle number]  
-**Agents**: 17  
-**Status**: [X] complete, [Y] in progress, [Z] blocked
-
----
-
-## COMPLETED THIS CYCLE
-
-**Lane: Customer-Front + CX**
-- [List completed tasks with evidence]
-
-**Lane: Inventory**
-- [List completed tasks with evidence]
-
-**Lane: Analytics**
-- [List completed tasks with evidence]
-
-**Lane: SEO/Performance**
-- [List completed tasks with evidence]
-
-**Lane: Content**
-- [List completed tasks with evidence]
-
-**Lane: DevOps**
-- [List completed tasks with evidence]
-
-**Lane: Integrations**
-- [List completed tasks with evidence]
-
-**Lane: Data**
-- [List completed tasks with evidence]
-
-**Lane: Designer**
-- [List completed tasks with evidence]
-
-**Lane: Product**
-- [List completed tasks with evidence]
-
-**Lane: Support**
-- [List completed tasks with evidence]
-
-**Lane: Ads**
-- [List completed tasks with evidence]
-
-**Lane: AI-Knowledge**
-- [List completed tasks with evidence]
-
-**Lane: QA**
-- [List completed tasks with evidence]
+**Generated**: Database queries (< 10 seconds)  
+**Method**: query-blocked-tasks.ts, query-agent-status.ts, query-completed-today.ts  
+**Agents**: 17
 
 ---
 
-## IN PROGRESS
+## BLOCKERS (Auto-Generated)
 
-[List by lane with % complete and ETAs]
-
----
-
-## BLOCKERS
-
-[List by lane with blocker type, owner, ETA]
+[Paste output from blocked-tasks.txt]
 
 ---
 
-## NEXT TASKS (Top 10)
+## COMPLETED TODAY (Auto-Generated)
 
-[Ranked by Revenue × Confidence × Ease]
+[Paste output from completed.txt]
+
+---
+
+## IN PROGRESS (Auto-Generated)
+
+[Extract from agent-status.txt - look for 🔵 in_progress status]
+
+---
+
+## ACTION ITEMS
+
+From query results:
+- Unblock: [List dependencies from blockedBy field]
+- Review: [Agents with progress <50% and >4h stale]
+- Coordinate: [Task dependencies]
+
+---
+
+## NEXT TASKS (From Direction Files)
+
+[Manager determines from current progress and priorities]
 
 EOF
 
 # Replace [DATE] with actual date
-sed -i "s/\[DATE\]/$DATE/g" artifacts/manager/$DATE/feedback_consolidated.md
+sed -i "s/\[DATE\]/$DATE/g" artifacts/manager/$DATE/status-summary.md
 
-echo "✅ Template created: artifacts/manager/$DATE/feedback_consolidated.md"
-echo "📝 NOW: Read feedback_raw.md and fill in consolidated report"
-echo "    - Extract COMPLETED tasks with evidence"
-echo "    - Extract IN PROGRESS with % and ETA"
-echo "    - Extract BLOCKERS with owner"
-echo "    - Remove duplicates"
-echo "    - Tag by lane"
+# Paste query results into summary
+sed -i "/\[Paste output from blocked-tasks.txt\]/r artifacts/manager/$DATE/blocked-tasks.txt" artifacts/manager/$DATE/status-summary.md
+sed -i "/\[Paste output from completed.txt\]/r artifacts/manager/$DATE/completed.txt" artifacts/manager/$DATE/status-summary.md
+
+echo "✅ Summary created: artifacts/manager/$DATE/status-summary.md"
+echo "⏱️  Time: < 1 minute (vs 45 minutes before)"
+echo ""
+echo "📝 Review the summary and:"
+echo "    - Identify blockers to unblock"
+echo "    - Check agents with stale progress (>4h)"
+echo "    - Only read markdown files for blocked agents (deep dive)"
 ```
 
-**Manual Step**: Read `feedback_raw.md` and populate the consolidated template
+**Output**: `artifacts/manager/<DATE>/status-summary.md` (auto-generated from database)
 
-**Output**: `artifacts/manager/<DATE>/feedback_consolidated.md` (one-page summary, no duplicates)
+**Time**: < 1 minute (vs 45 minutes manual consolidation)
 
-**Acceptance**: ≤5 pages, all lanes covered, duplicates removed
+**Acceptance**: All blockers identified, completed work summarized, in-progress tracked
 
 ---
 

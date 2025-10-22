@@ -328,7 +328,7 @@ npm run scan
 6. Follow design specs EXACTLY
 7. Document agent handoffs (if applicable)
 8. Verify Action Queue format (if applicable)
-9. Write feedback: `feedback/{agent}/YYYY-MM-DD.md`
+9. Report progress: `logDecision()` with taskId, status, progressPct (database - primary) + optional `feedback/{agent}/YYYY-MM-DD.md` (backup)
 
 **Manager Review**:
 - Validates against design specs

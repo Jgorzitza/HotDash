@@ -96,18 +96,27 @@ _Missing any artifact? Comment on the PR with the gap and reassign._
 
 ---
 
-## 4) Direction & Feedback Closure
+## 4) Direction & Feedback Closure [DATABASE-DRIVEN]
+
+**Query database for agent status** (< 10 seconds):
+
+```bash
+# Check final status
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+```
 
 For each **active agent**:
 
-- [ ] Read today’s `feedback/<agent>/<YYYY‑MM‑DD>.md` → extract answers, blockers, decisions.
-- [ ] Update `docs/directions/<agent>.md` with **tomorrow’s objective**, **constraints**, and links
+- [ ] Review query results → extract blockers and status
+- [ ] Only read markdown `feedback/<agent>/<YYYY‑MM‑DD>.md` for blocked tasks (deep context)
+- [ ] Update `docs/directions/<agent>.md` with **tomorrow's objective**, **constraints**, and links
       to the **Issue** (and PR if open).
-- [ ] **Archive/remove** completed items and feedback that has been actioned from directions and feedback files
-- [ ] Ensure the last entry in the agent’s feedback states: **status → next intent**.
+- [ ] **Archive/remove** completed items from directions
+- [ ] Verify agents logged final status via `logDecision()` (check query output)
 
-_Notes:_ Dev agents write only to their feedback log and code under Allowed paths.
-Do **not** create or edit other docs.
+_Notes:_ Agents report via `logDecision()` (database) with structured fields (taskId, status, progressPct).
 
 ---
 
@@ -130,7 +139,7 @@ Do **not** create or edit other docs.
 
 ---
 
-## 7) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
+## 7) CEO Summary (log via `logDecision()` and/or paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
 
 **Today’s Outcomes**
 
@@ -143,17 +152,19 @@ Do **not** create or edit other docs.
 - Primary objective: …
 - Success criteria (from North Star): …
 
-**Agent Performance (quick grading)**
+**Agent Performance (from database queries)**
 
-- <agent> — **Score (1–5)**
+From `query-completed-today.ts` and `query-agent-status.ts` output:
+
+- <agent> — **Score (1–5)** (based on taskId completion rate, duration accuracy)
   - 2–3 things done well:
-    1. …
-    2. …
+    1. Used structured logDecision() with all fields
+    2. Completed X tasks on time
   - 1–2 things to change:
-    1. …
+    1. Missing progressPct updates in some entries
   - **One thing to stop entirely:** …
 
-(Repeat per active agent; tie feedback to DoD / Allowed paths / feedback discipline.)
+(Use database queries for metrics; only read markdown for context)
 
 ### 8) Run Drift Checklist (Manager-only, required)
 

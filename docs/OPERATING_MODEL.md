@@ -28,7 +28,7 @@
   - Include `Fixes #<issue>` in the body.
   - Include a line `Allowed paths: <patterns>` that matches the Issue.
   - Stay inside those paths (Danger enforces).
-- Direction lives in `docs/directions/<agent>.md` and follows template `docs/directions/agenttemplate.md`. Feedback logs go to `feedback/<agent>/<YYYY-MM-DD>.md`.
+- Direction lives in `docs/directions/<agent>.md` and follows template `docs/directions/agenttemplate.md`. Feedback is logged via `logDecision()` to database (primary) and optionally to `feedback/<agent>/<YYYY-MM-DD>.md` (backup).
 
 ---
 
@@ -36,11 +36,12 @@
 
 **No Ad-Hoc Files (NEW - Effective 2025-10-20)**
 
-- Agents write ONLY to: `feedback/{agent}.md`, `artifacts/{agent}/` (non-.md)
-- Manager writes ONLY to: `feedback/manager/*.md`, `docs/directions/*.md`, `reports/manager/*.md`
+- Agents report ONLY via: `logDecision()` (database - PRIMARY), `feedback/{agent}.md` (optional backup), `artifacts/{agent}/` (evidence files)
+- Manager queries via: `scripts/manager/query-*.ts` (< 10 sec), optionally reads `feedback/manager/*.md`
+- Manager writes to: `docs/directions/*.md`, decision_log database
 - Root .md files: 6 maximum (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 - Violations: Archive immediately to `docs/archive/YYYY-MM-DD/`
-- **3-Question Test**: Can this go in feedback? (YES → use that) | In DOCS_INDEX Tier 1-3? (NO → don't create) | CEO requested? (NO → don't create)
+- **3-Question Test**: Can this go in logDecision() or feedback? (YES → use that) | In DOCS_INDEX Tier 1-3? (NO → don't create) | CEO requested? (NO → don't create)
 - Daily audit required (Manager)
 
 - **Docs allow‑list** in CI (no stray `.md`), plus weekly (and now **daily startup/shutdown**) drift sweep. **Protected paths include `mcp/**` for MCP tools documentation.\*\*
@@ -53,7 +54,7 @@
     - Polaris: Use `validate_component_codeblocks` - REQUIRED
     - GraphQL: Use `validate_graphql_codeblocks` - REQUIRED
   - **Context7 MCP**: ALL non-Shopify library patterns MUST be verified (React Router 7, Prisma, TypeScript, etc.) - NO EXCEPTIONS
-  - **Evidence**: Log MCP conversation IDs in feedback for every molecule
+  - **Evidence**: Log MCP conversation IDs in MCP Evidence JSONL files (artifacts/) and via logDecision()
   - **React Router 7 ONLY**: NO @remix-run imports - verify with `rg "@remix-run" app/` (must return 0 results)
   - **Enforcement**: Manager REJECTS PRs without MCP evidence or with Remix imports - NO WARNINGS, IMMEDIATE REJECTION
 - **No secrets in code**; use GitHub Environments/Secrets + server‑side adapters only.
@@ -68,7 +69,7 @@
 - **GTM:** seo, ads, content
 - **Ops:** support, designer
 
-> Each has a single direction file and writes only to their own feedback log. Manager owns NORTH_STAR, RULES, directions, and approvals policy.
+> Each has a single direction file and reports progress via `logDecision()` (database). Manager owns NORTH_STAR, RULES, directions, and queries agent status via database scripts.
 
 ---
 
@@ -148,7 +149,7 @@ CEO → CEO-Front (business question)
 - Tools health: `shopify version`, `supabase --version`; CI must be green.
 - Review Issues → assign/resize, define DoD & **Allowed paths**.
 - Update `docs/directions/<agent>.md`.
-- Skim previous day `feedback/<agent>/<YYYY-MM-DD>.md` and unblock in directions.
+- Query database via `scripts/manager/query-blocked-tasks.ts` (< 1 sec) and unblock in directions.
 - Run docs policy locally; sweep planning TTL if needed.
 
 **Daily (PM) — Manager Shutdown**
@@ -156,7 +157,7 @@ CEO → CEO-Front (business question)
 - Verify all active PRs have Issue linkage, DoD checked, Allowed paths present.
 - Merge or request changes with explicit next steps.
 - Roll learnings into RULES/directions; ensure push protection still on.
-- log `feedback/manager/<YYYY-MM-DD>.md` summary.
+- log summary via `logDecision()` (database) and optionally to `feedback/manager/<YYYY-MM-DD>.md`.
 
 **Daily (During shutdown) — Drift & Evidence**
 
@@ -207,7 +208,7 @@ CEO → CEO-Front (business question)
 - Rules: `docs/RULES.md`.
 - Directions: `docs/directions/<agent>.md`.
 - Runbooks: `docs/runbooks/*.md`.
-- Feedback logs: `feedback/<agent>/<YYYY-MM-DD>.md`.
+- Progress reporting: `logDecision()` database (primary), `feedback/<agent>/<YYYY-MM-DD>.md` (optional backup).
 
 ---
 
