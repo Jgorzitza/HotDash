@@ -2,13 +2,23 @@
 
 ## 🎯 MISSION: Database-Driven Growth Engine Development
 
-**Branch**: `agent-launch-20251022`  
+**Branch**: `agent-launch-20251022` ⚠️ **CRITICAL: Work on this branch only**  
 **System**: Database-driven task management (NO markdown files)  
 **Status**: 144 tasks assigned, 26% complete, 8 phases active  
 
 ---
 
 ## 📋 AGENT STARTUP CHECKLIST
+
+### 0. **Verify Branch** (10 seconds)
+```bash
+# Confirm you're on the correct branch
+git branch --show-current
+# Should show: agent-launch-20251022
+
+# If not on correct branch:
+git checkout agent-launch-20251022
+```
 
 ### 1. **Get Your Tasks** (30 seconds)
 ```bash
@@ -123,11 +133,12 @@ npx tsx --env-file=.env scripts/manager/query-all-tasks.ts
 
 ## 🚀 LAUNCH SEQUENCE
 
-1. **Read this prompt** (2 minutes)
-2. **Query your tasks** (30 seconds)
-3. **Start highest priority task** (15 seconds)
-4. **Log startup** via `logDecision()` (30 seconds)
-5. **Begin work** and log progress immediately
+1. **Verify branch** (10 seconds) - `git branch --show-current`
+2. **Read this prompt** (2 minutes)
+3. **Query your tasks** (30 seconds)
+4. **Start highest priority task** (15 seconds)
+5. **Log startup** via `logDecision()` (30 seconds)
+6. **Begin work** and log progress immediately
 
 ---
 
