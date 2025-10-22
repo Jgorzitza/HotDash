@@ -88,16 +88,32 @@ export default function SettingsPage() {
 
   return (
     <s-page heading="Settings" backAction={{ content: "Dashboard", url: "/" }}>
-      <s-tabs
-        tabs={tabs.map((tab, index) => ({
-          id: tab.id,
-          content: tab.content,
-          accessibilityLabel: tab.label,
-          panelID: `${tab.id}-content`,
-        }))}
-        selected={selectedTab}
-        onSelect={setSelectedTab}
-      >
+      {/* Tab Navigation - Fixed: Use clickable buttons instead of s-tabs web component */}
+      <div style={{ borderBottom: "1px solid var(--occ-color-border-base, #e3e3e3)", marginBottom: "var(--occ-space-5)" }}>
+        <div style={{ display: "flex", gap: "var(--occ-space-2)" }} role="tablist">
+          {tabs.map((tab, index) => (
+            <button
+              key={tab.id}
+              role="tab"
+              aria-selected={selectedTab === index}
+              aria-label={tab.label}
+              onClick={() => setSelectedTab(index)}
+              style={{
+                padding: "var(--occ-space-3) var(--occ-space-4)",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                fontWeight: selectedTab === index ? "600" : "400",
+                color: selectedTab === index ? "var(--occ-color-text-base, #202223)" : "var(--occ-color-text-subdued, #6d7175)",
+                borderBottom: selectedTab === index ? "2px solid var(--occ-color-border-interactive, #0066cc)" : "2px solid transparent",
+                transition: "all 0.2s ease"
+              }}
+            >
+              {tab.content}
+            </button>
+          ))}
+        </div>
+      </div>
         {/* Dashboard Tab */}
         {selectedTab === 0 && (
           <div id="dashboard-content" style={{ padding: "var(--occ-space-5)" }}>
@@ -252,7 +268,6 @@ export default function SettingsPage() {
             </div>
           </div>
         )}
-      </s-tabs>
     </s-page>
   );
 }
