@@ -10,8 +10,8 @@ git pull origin manager-reopen-20251021
 
 **Owner**: Manager  
 **Effective**: 2025-10-21T16:05Z  
-**Version**: 8.0  
-**Status**: ACTIVE — Phase 10 Vendor Master + ALC + Phase 11 Search Console (Growth Engine)
+**Version**: 9.0  
+**Status**: ✅ ALL v8.0 COMPLETE + BLOCKER-002 CLEARED — DATA-019 Ready
 
 ---
 
@@ -919,3 +919,30 @@ model SeoLandingPage {
 **Questions or blockers?** → Escalate immediately in feedback with details
 
 **Let's build! 🗄️**
+
+---
+
+## ✅ ALL v8.0 TASKS COMPLETE + BLOCKER-002 CLEARED (2025-10-21)
+
+**Completed**: DATA-006-016 (all schema, indexes, RLS work)  
+**Evidence**: 7 migrations created, all applied by Manager via pooler  
+**Latest**: 2025-10-21T17:35Z
+
+**BLOCKER-002**: ✅ CLEARED by Manager (all 8 migrations applied + 100% DB protection added)
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'data',
+  action: 'migration_applied',
+  rationale: 'DATA-019: Dev memory RLS protection verified via testing',
+  evidenceUrl: 'artifacts/data/2025-10-21/rls-protection-tests.md'
+});
+```
+
+**Protection**: decision_log now has RLS + triggers (100% append-only). Call logDecision at every task completion.

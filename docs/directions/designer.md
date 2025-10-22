@@ -381,3 +381,26 @@ git pull origin manager-reopen-20251021
 **Questions or blockers?** → Escalate immediately in feedback with details
 
 **Let's validate! 🎨**
+
+---
+
+## ✅ PHASE 7-8 COMPLETE + UNBLOCKED (2025-10-21)
+
+Engineer completed Phase 9 → DES-017 (PII Card QA) NOW UNBLOCKED
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'designer',
+  action: 'validation_complete',
+  rationale: 'DES-017: PII Card design QA passed with recommendations',
+  evidenceUrl: 'artifacts/designer/2025-10-21/pii-card-qa.md'
+});
+```
+
+Call at EVERY validation completion.

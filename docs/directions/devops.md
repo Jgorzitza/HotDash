@@ -518,3 +518,26 @@ jobs:
 **Questions or blockers?** → Escalate immediately in feedback
 
 **Let's build! 🚀**
+
+---
+
+## ✅ v7.0 Complete + P0 Blockers Cleared (2025-10-21T17:20Z)
+
+DEVOPS-001-013 complete. v74 deployed and healthy. DEVOPS-014 (CI Guards) active.
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'devops',
+  action: 'deployment_complete',
+  rationale: 'DEVOPS-014: CI guards implemented and tested',
+  evidenceUrl: 'artifacts/devops/2025-10-21/ci-guards-complete.md'
+});
+```
+
+Call at EVERY deployment/infrastructure task.

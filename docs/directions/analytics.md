@@ -714,3 +714,26 @@ main().catch(console.error);
 **Questions or blockers?** → Escalate immediately in feedback
 
 **Let's build! 📊**
+
+---
+
+## ✅ v8.0 COMPLETE (2025-10-21T17:27Z)
+
+Phase 7-8 Growth Analytics complete. Phase 11 assigned (cross-functional work active).
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'analytics',
+  action: 'task_completed',
+  rationale: 'ANALYTICS-019: Search Console schema review complete',
+  evidenceUrl: 'artifacts/analytics/2025-10-21/schema-review.md'
+});
+```
+
+Call at EVERY task completion.
