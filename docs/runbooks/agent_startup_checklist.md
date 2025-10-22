@@ -138,9 +138,18 @@ git push origin daily/2025-10-20
 - [ ] Work only inside the Issue’s **Allowed paths** (Danger will fail out-of-scope diffs).
 - [ ] Do NOT create branches; Manager controls all git operations.
 
-## 5) Progress Reporting (throughout) [DATABASE-DRIVEN]
+## 5) Progress Reporting (throughout) [DATABASE ONLY]
 
-**PRIMARY METHOD**: Call `logDecision()` every 2 hours or at task milestones
+**ONLY METHOD**: Call `logDecision()` - IMMEDIATE on status changes, every 2 hours if in-progress
+
+**When to log** (don't wait for 2-hour interval):
+- ✅ Task started (status: 'in_progress')
+- ✅ Task completed (status: 'completed') - IMMEDIATE
+- ✅ Task blocked (status: 'blocked') - IMMEDIATE
+- ✅ Blocker cleared (status: 'in_progress') - IMMEDIATE
+- ✅ Every 2 hours if still working on same task
+
+**Why immediate logging matters**: Manager and other agents can see blockers cleared in real-time without waiting for next direction update
 
 ```typescript
 import { logDecision } from '~/services/decisions.server';
@@ -155,15 +164,18 @@ await logDecision({
   rationale: 'What you did + evidence',
   evidenceUrl: 'artifacts/<agent>/2025-10-22/task.md',
   durationActual: 2.0,
-  nextAction: 'What you\'re doing next'
+  nextAction: 'What you\'re doing next',
+  payload: {                        // Rich metadata
+    commits: ['abc123f'],
+    files: [{ path: 'app/routes/dashboard.tsx', lines: 45, type: 'modified' }],
+    tests: { overall: '22/22 passing' }
+  }
 });
 ```
 
-**BACKUP METHOD** (optional): Markdown file `feedback/<agent>/<YYYY-MM-DD>.md`
+**NO MARKDOWN FILES**: All progress goes to database via `logDecision()`
 
-- [ ] Do **not** create new `.md` beyond allow-list; don't edit other agents' files.
-
-**See**: Your direction file has complete `logDecision()` examples
+**See**: Your direction file has complete `logDecision()` examples with payload patterns
 
 ## 6) Work Protocol
 
@@ -180,16 +192,29 @@ await logDecision({
 ## 7) Completion Protocol (when you finish a slice)
 
 - [ ] Do NOT open a PR yourself; Manager will.
-- [ ] Append the completion block to `feedback/<agent>/<YYYY-MM-DD>.md`:
-  ```md
-  ## WORK COMPLETE - READY FOR PR
-
-  Summary: <what you built>
-  Files: <list>
-  Tests: <summary>
-  Evidence: <links/notes>
+- [ ] Log completion via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: '<your-agent>',
+    taskId: '{TASK-ID}',
+    status: 'completed',
+    progressPct: 100,
+    action: 'task_completed',
+    rationale: 'Summary: what you built',
+    evidenceUrl: 'artifacts/<agent>/evidence.md',
+    durationActual: 3.5,
+    payload: {
+      commits: ['abc123f', 'def456g'],
+      files: [
+        { path: 'app/routes/dashboard.tsx', lines: 245, type: 'modified' },
+        { path: 'app/components/Card.tsx', lines: 120, type: 'created' }
+      ],
+      tests: { unit: { passing: 10, total: 10 }, overall: '10/10 passing' }
+    }
+  });
   ```
-- [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in your feedback.
+- [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in payload.
 
 ## 8) Build/Dev Mode Safety
 

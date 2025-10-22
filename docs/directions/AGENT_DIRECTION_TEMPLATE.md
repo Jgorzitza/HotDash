@@ -17,7 +17,14 @@ git pull origin manager-reopen-20251021
 
 ## 📊 MANDATORY: Progress Reporting (Database Feedback)
 
-**Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
+**Report progress via `logDecision()` - IMMEDIATE on status changes, every 2 hours if in-progress**
+
+**When to log** (enables real-time coordination):
+- ✅ Task started → IMMEDIATE
+- ✅ Task completed → IMMEDIATE (don't wait for 2-hour interval!)
+- ✅ Task blocked → IMMEDIATE (manager sees blockers instantly)
+- ✅ Blocker cleared → IMMEDIATE (dependent agents can resume)
+- ✅ Every 2 hours if still working on same task
 
 ### Basic Usage
 
@@ -193,10 +200,6 @@ await logDecision({
 ```
 
 **Manager Value**: Track agent performance trends, identify coaching opportunities
-
-### Markdown Backup (Optional)
-
-You can still write to `feedback/{agent}/2025-10-22.md` for detailed notes, but database is now the primary method.
 
 ---
 

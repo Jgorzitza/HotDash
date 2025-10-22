@@ -32,13 +32,25 @@ function parseFeedbackFile(filePath: string, agentName: string): FeedbackEntry[]
   const fileName = path.basename(filePath);
   
   // Match patterns like: ## 2025-10-21T14:30:00Z — Engineer: TITLE
-  // Handle both lowercase and capitalized agent names
+  // Handle variations:
+  //   - Short timestamps: T14:30Z or full: T14:30:00Z
+  //   - Agent names: Engineer, ENGINEER, AI-Knowledge, AI-KNOWLEDGE, etc.
   const capitalizedAgent = agentName.charAt(0).toUpperCase() + agentName.slice(1);
-  const entryRegex = new RegExp(`##\\s+(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z)\\s+—\\s+${capitalizedAgent}:\\s+(.+?)$`, 'gim');
+  const upperAgent = agentName.toUpperCase();
+  const agentPattern = `(?:${capitalizedAgent}|${upperAgent})`;
+  const entryRegex = new RegExp(`##\\s+(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(?::\\d{2})?Z)\\s+—\\s+${agentPattern}:\\s+(.+?)$`, 'gim');
   
   let match;
   while ((match = entryRegex.exec(content)) !== null) {
-    const timestamp = match[1];
+    // Normalize timestamp: if short format (T14:30Z), convert to full (T14:30:00Z)
+    let timestamp = match[1];
+    // Check if it's short format by testing if it matches the pattern without seconds
+    // Short format: 2025-10-21T14:30Z (regex: ends with \d{2}:\d{2}Z)
+    // Full format:  2025-10-21T14:30:00Z (regex: ends with \d{2}:\d{2}:\d{2}Z)
+    if (/T\d{2}:\d{2}Z$/.test(timestamp)) {
+      // Short format - add seconds before Z
+      timestamp = timestamp.replace(/Z$/, ':00Z');
+    }
     const title = match[2].trim();
     
     // Extract section content
@@ -155,6 +167,7 @@ async function uploadAgentFeedback(agentName: string) {
           action: entry.action,
           rationale: entry.rationale,
           evidenceUrl: entry.evidenceUrl,
+          createdAt: new Date(entry.timestamp),  // Preserve historical timestamp
           payload: {
             timestamp: entry.timestamp,
             title: entry.title,
@@ -165,6 +178,8 @@ async function uploadAgentFeedback(agentName: string) {
         successCount++;
       } catch (error) {
         console.error(`   ❌ Failed: ${entry.title.substring(0, 50)}...`);
+        console.error(`      Timestamp: ${entry.timestamp}`);
+        console.error(`      Error:`, error);
         errorCount++;
       }
     }

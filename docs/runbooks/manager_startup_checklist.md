@@ -159,7 +159,7 @@ npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting 
 
 - [ ] Review blocked tasks output - note `blockedBy` dependencies
 - [ ] Tag each blocker with **owner** and **ETA** 
-- [ ] Only open markdown feedback files for blocked tasks (deep dive)
+- [ ] Use `query-task-details.ts <TASK-ID>` for full context on specific blockers
 - [ ] If a decision is needed, add a short **Issue comment** on the task
 
 **Time Savings**: 60-90 sec → 10-30 sec (80% reduction)
@@ -214,9 +214,35 @@ For each active agent:
 ### 5.7 Today plan (30 sec)
 
 - [ ] Assign/resize 10–15 molecules **per agent**; confirm DoD + Allowed paths
-- [ ] Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`
+- [ ] Log day start via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: 'manager',
+    action: 'day_started',
+    rationale: '17 agents active, 3 blockers identified, priority: clear DATA-017',
+    evidenceUrl: 'docs/directions/manager.md'
+  });
+  ```
 
 > **Note:** Approvals/HITL is **out of scope in build/dev mode**. If the UI needs sample approvals to render, use **fixture entries** with `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.
+
+### 5.8 Real-Time Monitoring (throughout day)
+
+**Agents log IMMEDIATELY when tasks complete or blockers clear - check database proactively!**
+
+- [ ] **Every 1-2 hours**: Run quick status check
+  ```bash
+  npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+  npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+  ```
+- [ ] **When notified of completion**: Check specific task details
+  ```bash
+  npx tsx --env-file=.env scripts/manager/query-task-details.ts TASK-ID
+  ```
+- [ ] **If blocker cleared**: Update dependent agents' direction files immediately
+
+**Why this matters**: Agents log in real-time, manager can unblock dependencies without waiting for next direction cycle
 
 ## 6) Drift Guard (2–4 min)
 

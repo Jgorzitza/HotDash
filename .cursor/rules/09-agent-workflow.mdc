@@ -11,10 +11,12 @@ alwaysApply: true
 - **Agents**: READ ONLY - never write assignments to your own direction file
 
 ## Feedback (Agents Report Progress, Manager QUERIES)
-- **Primary Method**: Database via `logDecision()` (MANDATORY)
-- **Backup**: Optional markdown in `feedback/{agent}/2025-10-22.md`
-- **Manager Access**: Query scripts (instant filtered results)
-- **Frequency**: Every 2 hours minimum OR at task milestones
+- **ONLY Method**: Database via `logDecision()` (MANDATORY - no markdown backup)
+- **Manager Access**: Query scripts (instant filtered results, real-time visibility)
+- **Frequency**: 
+  - IMMEDIATE on task completion/blocked/unblocked (don't wait!)
+  - Every 2 hours if still in progress on same task
+  - Enables real-time coordination (manager sees blockers cleared instantly)
 
 ## Required Feedback Format (Database)
 

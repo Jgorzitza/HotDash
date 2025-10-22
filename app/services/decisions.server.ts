@@ -76,6 +76,9 @@ export interface LogDecisionInput {
   durationEstimate?: number;    // Estimated duration in hours
   durationActual?: number;      // Actual duration in hours
   nextAction?: string;          // Agent's stated next action
+  
+  // For historical data imports (optional)
+  createdAt?: Date;             // Override default timestamp for historical uploads
 }
 
 export async function logDecision(input: LogDecisionInput) {
@@ -99,6 +102,9 @@ export async function logDecision(input: LogDecisionInput) {
       durationEstimate: input.durationEstimate,
       durationActual: input.durationActual,
       nextAction: input.nextAction,
+      
+      // Override timestamp for historical imports
+      ...(input.createdAt && { createdAt: input.createdAt }),
     },
   });
 
