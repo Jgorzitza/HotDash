@@ -348,3 +348,20 @@ export async function getAgentPerformance(
 4. **Feedback**: Update every 2 hours
 
 **Let's build! 🤖**
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'ai-customer',
+  action: 'task_completed',
+  rationale: 'Task description with test results',
+  evidenceUrl: 'artifacts/ai-customer/2025-10-21/task-complete.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.

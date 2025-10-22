@@ -363,3 +363,20 @@ git pull origin manager-reopen-20251021
 **Questions or blockers?** → Escalate immediately in feedback
 
 **Let's test! ✅**
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'qa',
+  action: 'task_completed',
+  rationale: 'Task description with test results',
+  evidenceUrl: 'artifacts/qa/2025-10-21/task-complete.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.

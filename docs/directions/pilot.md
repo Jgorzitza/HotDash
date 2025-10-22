@@ -120,3 +120,20 @@ git pull origin manager-reopen-20251021
 
 ## 🔧 MCP Tools: Chrome DevTools MCP (MANDATORY for all testing)
 ## 🚨 Evidence: Screenshots + snapshots required
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'pilot',
+  action: 'task_completed',
+  rationale: 'Task description with test results',
+  evidenceUrl: 'artifacts/pilot/2025-10-21/task-complete.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.

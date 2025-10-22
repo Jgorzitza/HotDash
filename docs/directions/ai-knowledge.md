@@ -486,3 +486,20 @@ export async function runNightlyCXMining() {
 **Questions or blockers?** → Escalate immediately in feedback
 
 **Let's build! 🧠**
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'ai-knowledge',
+  action: 'task_completed',
+  rationale: 'Task description with test results',
+  evidenceUrl: 'artifacts/ai-knowledge/2025-10-21/task-complete.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.
