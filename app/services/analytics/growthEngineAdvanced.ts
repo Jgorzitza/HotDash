@@ -1,14 +1,9 @@
 /**
  * Growth Engine Advanced Analytics Service
  *
- * ANALYTICS-023: Implement growth engine advanced analytics for Growth Engine phases 9-12
- *
- * Features:
- * - Advanced attribution modeling
- * - Multi-touch attribution analysis
- * - Growth engine performance optimization
- * - Predictive analytics for growth actions
- * - ROI optimization recommendations
+ * Provides sophisticated attribution modeling, performance optimization,
+ * and predictive insights for growth actions across all channels.
+ * Supports Growth Engine phases 9-12 with advanced analytics.
  */
 
 export interface GrowthAction {
@@ -22,6 +17,15 @@ export interface GrowthAction {
   status: 'approved' | 'executed' | 'completed' | 'failed';
   budget?: number;
   expectedROI?: number;
+}
+
+export interface AttributionMetrics {
+  revenue: number;
+  conversions: number;
+  sessions: number;
+  cost: number;
+  roi: number;
+  efficiency: number;
 }
 
 export interface AttributionData {
@@ -41,18 +45,6 @@ export interface AttributionData {
   };
 }
 
-export interface AttributionMetrics {
-  conversions: number;
-  revenue: number;
-  sessions: number;
-  users: number;
-  ctr: number;
-  conversionRate: number;
-  roas: number;
-  costPerConversion: number;
-  revenuePerDollar: number;
-}
-
 export interface GrowthEngineAnalytics {
   period: {
     start: string;
@@ -63,431 +55,371 @@ export interface GrowthEngineAnalytics {
     totalRevenue: number;
     totalConversions: number;
     averageROI: number;
-    topPerformingAction: GrowthAction | null;
     overallEfficiency: number;
   };
   attributionAnalysis: AttributionData[];
   performanceInsights: {
-    bestPerformingType: string;
-    worstPerformingType: string;
+    topPerformingActions: GrowthAction[];
     optimizationOpportunities: string[];
-    predictiveInsights: string[];
+    budgetRecommendations: {
+      recommendedAllocation: Record<string, number>;
+      expectedImpact: number;
+    };
   };
   recommendations: {
-    scaleActions: string[];
-    optimizeActions: string[];
-    pauseActions: string[];
-    budgetRecommendations: Array<{
-      actionId: string;
-      currentBudget: number;
-      recommendedBudget: number;
-      expectedROI: number;
-    }>;
+    scalingActions: GrowthAction[];
+    optimizationActions: string[];
+    budgetAdjustments: {
+      increase: string[];
+      decrease: string[];
+    };
   };
 }
 
 /**
  * Calculate advanced attribution for growth actions
- *
- * ANALYTICS-023: Multi-touch attribution analysis for growth engine actions
- *
- * @param actions - Array of growth actions
- * @param attributionData - Raw attribution data from GA4
- * @returns Attribution analysis
  */
-export function calculateAdvancedAttribution(
+export async function calculateAdvancedAttribution(
   actions: GrowthAction[],
-  attributionData: any[]
-): AttributionData[] {
-  return actions.map(action => {
-    // Get attribution data for this action
-    const actionData = attributionData.filter(data => 
-      data.hd_action_key?.includes(action.actionId)
-    );
-
-    // Calculate metrics for each attribution window
-    const windows = {
-      '7d': calculateAttributionMetrics(actionData, 7),
-      '14d': calculateAttributionMetrics(actionData, 14),
-      '28d': calculateAttributionMetrics(actionData, 28),
-    };
-
-    // Calculate total attribution
-    const totalAttribution = calculateAttributionMetrics(actionData, 28);
+  attributionData: AttributionData[]
+): Promise<AttributionData[]> {
+  // Process each action's attribution data
+  const processedAttribution = attributionData.map((data) => {
+    const action = actions.find(a => a.actionId === data.actionId);
+    if (!action) return data;
 
     // Calculate efficiency metrics
-    const costPerConversion = action.budget && totalAttribution.conversions > 0 
-      ? action.budget / totalAttribution.conversions 
-      : 0;
-    const revenuePerDollar = action.budget && action.budget > 0 
-      ? totalAttribution.revenue / action.budget 
-      : 0;
+    const totalCost = data.totalAttribution.cost;
+    const totalRevenue = data.totalAttribution.revenue;
+    const totalConversions = data.totalAttribution.conversions;
 
-    // Calculate efficiency score (0-100)
-    const efficiencyScore = calculateEfficiencyScore({
-      roas: totalAttribution.roas,
-      conversionRate: totalAttribution.conversionRate,
-      costPerConversion,
-      revenuePerDollar,
-    });
+    const costPerConversion = totalConversions > 0 ? totalCost / totalConversions : 0;
+    const revenuePerDollar = totalCost > 0 ? totalRevenue / totalCost : 0;
+    const efficiencyScore = Math.min(100, Math.max(0, (revenuePerDollar - 1) * 50 + 50));
 
     return {
-      actionId: action.actionId,
-      actionType: action.actionType,
-      targetSlug: action.targetSlug,
-      attributionWindows: windows,
-      totalAttribution,
+      ...data,
       efficiency: {
-        costPerConversion: Math.round(costPerConversion * 100) / 100,
-        revenuePerDollar: Math.round(revenuePerDollar * 100) / 100,
+        costPerConversion,
+        revenuePerDollar,
         efficiencyScore,
       },
     };
   });
+
+  return processedAttribution;
 }
 
 /**
- * Calculate attribution metrics for a specific time window
+ * Generate comprehensive Growth Engine analytics
  */
-function calculateAttributionMetrics(data: any[], days: number): AttributionMetrics {
-  const cutoffDate = new Date();
-  cutoffDate.setDate(cutoffDate.getDate() - days);
-  
-  const filteredData = data.filter(item => 
-    new Date(item.timestamp) >= cutoffDate
-  );
-
-  const conversions = filteredData.reduce((sum, item) => sum + (item.conversions || 0), 0);
-  const revenue = filteredData.reduce((sum, item) => sum + (item.revenue || 0), 0);
-  const sessions = filteredData.reduce((sum, item) => sum + (item.sessions || 0), 0);
-  const users = filteredData.reduce((sum, item) => sum + (item.users || 0), 0);
-  const clicks = filteredData.reduce((sum, item) => sum + (item.clicks || 0), 0);
-  const impressions = filteredData.reduce((sum, item) => sum + (item.impressions || 0), 0);
-
-  const ctr = impressions > 0 ? (clicks / impressions) * 100 : 0;
-  const conversionRate = sessions > 0 ? (conversions / sessions) * 100 : 0;
-  const roas = revenue > 0 && sessions > 0 ? revenue / sessions : 0;
-
-  return {
-    conversions,
-    revenue,
-    sessions,
-    users,
-    ctr: Math.round(ctr * 100) / 100,
-    conversionRate: Math.round(conversionRate * 100) / 100,
-    roas: Math.round(roas * 100) / 100,
-    costPerConversion: 0, // Will be calculated at action level
-    revenuePerDollar: 0, // Will be calculated at action level
-  };
-}
-
-/**
- * Calculate efficiency score for growth actions
- */
-function calculateEfficiencyScore(metrics: {
-  roas: number;
-  conversionRate: number;
-  costPerConversion: number;
-  revenuePerDollar: number;
-}): number {
-  let score = 0;
-
-  // ROAS score (0-40 points)
-  if (metrics.roas >= 5) score += 40;
-  else if (metrics.roas >= 3) score += 30;
-  else if (metrics.roas >= 2) score += 20;
-  else if (metrics.roas >= 1) score += 10;
-
-  // Conversion rate score (0-30 points)
-  if (metrics.conversionRate >= 5) score += 30;
-  else if (metrics.conversionRate >= 3) score += 20;
-  else if (metrics.conversionRate >= 2) score += 10;
-
-  // Revenue per dollar score (0-30 points)
-  if (metrics.revenuePerDollar >= 3) score += 30;
-  else if (metrics.revenuePerDollar >= 2) score += 20;
-  else if (metrics.revenuePerDollar >= 1) score += 10;
-
-  return Math.min(100, Math.max(0, score));
-}
-
-/**
- * Generate growth engine analytics report
- *
- * ANALYTICS-023: Comprehensive growth engine performance analysis
- *
- * @param actions - Growth actions
- * @param attributionData - Attribution analysis
- * @param startDate - Analysis start date
- * @param endDate - Analysis end date
- * @returns Growth engine analytics
- */
-export function generateGrowthEngineAnalytics(
+export async function generateGrowthEngineAnalytics(
   actions: GrowthAction[],
   attributionData: AttributionData[],
   startDate: string,
   endDate: string
-): GrowthEngineAnalytics {
+): Promise<GrowthEngineAnalytics> {
   // Calculate summary metrics
   const totalActions = actions.length;
   const totalRevenue = attributionData.reduce((sum, data) => sum + data.totalAttribution.revenue, 0);
   const totalConversions = attributionData.reduce((sum, data) => sum + data.totalAttribution.conversions, 0);
-  const averageROI = totalActions > 0 ? totalRevenue / totalActions : 0;
-
-  // Find top performing action
-  const topPerformingAction = attributionData.reduce((top, current) => 
-    current.totalAttribution.revenue > (top?.totalAttribution.revenue || 0) 
-      ? actions.find(a => a.actionId === current.actionId) || top
-      : top
-  , null as GrowthAction | null);
-
-  // Calculate overall efficiency
+  const averageROI = attributionData.length > 0 
+    ? attributionData.reduce((sum, data) => sum + data.totalAttribution.roi, 0) / attributionData.length 
+    : 0;
   const overallEfficiency = attributionData.length > 0
     ? attributionData.reduce((sum, data) => sum + data.efficiency.efficiencyScore, 0) / attributionData.length
     : 0;
 
-  // Analyze performance by type
-  const performanceByType = actions.reduce((acc, action) => {
-    const attribution = attributionData.find(data => data.actionId === action.actionId);
-    if (!attribution) return acc;
+  // Find top performing actions
+  const topPerformingActions = actions
+    .filter(action => action.status === 'completed')
+    .sort((a, b) => {
+      const aData = attributionData.find(d => d.actionId === a.actionId);
+      const bData = attributionData.find(d => d.actionId === b.actionId);
+      const aROI = aData?.totalAttribution.roi || 0;
+      const bROI = bData?.totalAttribution.roi || 0;
+      return bROI - aROI;
+    })
+    .slice(0, 5);
 
-    if (!acc[action.actionType]) {
-      acc[action.actionType] = {
-        count: 0,
-        totalRevenue: 0,
-        totalEfficiency: 0,
-      };
+  // Identify optimization opportunities
+  const optimizationOpportunities = attributionData
+    .filter(data => data.efficiency.efficiencyScore < 60)
+    .map(data => {
+      const action = actions.find(a => a.actionId === data.actionId);
+      return `Optimize ${action?.title || data.actionId}: Efficiency score ${data.efficiency.efficiencyScore.toFixed(1)}%`;
+    });
+
+  // Generate budget recommendations
+  const totalBudget = actions.reduce((sum, action) => sum + (action.budget || 0), 0);
+  const budgetRecommendations = {
+    recommendedAllocation: {} as Record<string, number>,
+    expectedImpact: 0,
+  };
+
+  // Allocate budget based on efficiency scores
+  const efficientActions = attributionData
+    .filter(data => data.efficiency.efficiencyScore > 70)
+    .sort((a, b) => b.efficiency.efficiencyScore - a.efficiency.efficiencyScore);
+
+  efficientActions.forEach((data, index) => {
+    const action = actions.find(a => a.actionId === data.actionId);
+    if (action) {
+      const allocation = (totalBudget * 0.8) / efficientActions.length;
+      budgetRecommendations.recommendedAllocation[action.actionType] = 
+        (budgetRecommendations.recommendedAllocation[action.actionType] || 0) + allocation;
     }
+  });
 
-    acc[action.actionType].count++;
-    acc[action.actionType].totalRevenue += attribution.totalAttribution.revenue;
-    acc[action.actionType].totalEfficiency += attribution.efficiency.efficiencyScore;
+  budgetRecommendations.expectedImpact = efficientActions.reduce(
+    (sum, data) => sum + data.efficiency.efficiencyScore, 0
+  ) / Math.max(efficientActions.length, 1);
 
-    return acc;
-  }, {} as Record<string, { count: number; totalRevenue: number; totalEfficiency: number }>);
+  // Generate scaling and optimization recommendations
+  const scalingActions = actions
+    .filter(action => action.status === 'completed')
+    .filter(action => {
+      const data = attributionData.find(d => d.actionId === action.actionId);
+      return data && data.efficiency.efficiencyScore > 80;
+    });
 
-  // Find best and worst performing types
-  const typePerformance = Object.entries(performanceByType).map(([type, data]) => ({
-    type,
-    averageRevenue: data.totalRevenue / data.count,
-    averageEfficiency: data.totalEfficiency / data.count,
-  }));
+  const optimizationActions = attributionData
+    .filter(data => data.efficiency.efficiencyScore < 50)
+    .map(data => {
+      const action = actions.find(a => a.actionId === data.actionId);
+      return `Review and optimize ${action?.title || data.actionId}`;
+    });
 
-  const bestPerformingType = typePerformance.reduce((best, current) => 
-    current.averageEfficiency > best.averageEfficiency ? current : best
-  ).type;
-
-  const worstPerformingType = typePerformance.reduce((worst, current) => 
-    current.averageEfficiency < worst.averageEfficiency ? current : worst
-  ).type;
-
-  // Generate optimization opportunities
-  const optimizationOpportunities = generateOptimizationOpportunities(attributionData, actions);
-
-  // Generate predictive insights
-  const predictiveInsights = generatePredictiveInsights(attributionData, actions);
-
-  // Generate recommendations
-  const recommendations = generateGrowthRecommendations(attributionData, actions);
+  const budgetAdjustments = {
+    increase: efficientActions
+      .slice(0, 3)
+      .map(data => {
+        const action = actions.find(a => a.actionId === data.actionId);
+        return action?.title || data.actionId;
+      }),
+    decrease: attributionData
+      .filter(data => data.efficiency.efficiencyScore < 40)
+      .map(data => {
+        const action = actions.find(a => a.actionId === data.actionId);
+        return action?.title || data.actionId;
+      }),
+  };
 
   return {
     period: { start: startDate, end: endDate },
     summary: {
       totalActions,
-      totalRevenue: Math.round(totalRevenue * 100) / 100,
+      totalRevenue,
       totalConversions,
-      averageROI: Math.round(averageROI * 100) / 100,
-      topPerformingAction,
-      overallEfficiency: Math.round(overallEfficiency * 100) / 100,
+      averageROI,
+      overallEfficiency,
     },
     attributionAnalysis: attributionData,
     performanceInsights: {
-      bestPerformingType,
-      worstPerformingType,
+      topPerformingActions,
       optimizationOpportunities,
-      predictiveInsights,
+      budgetRecommendations,
     },
-    recommendations,
+    recommendations: {
+      scalingActions,
+      optimizationActions,
+      budgetAdjustments,
+    },
   };
 }
 
 /**
- * Generate optimization opportunities
- */
-function generateOptimizationOpportunities(
-  attributionData: AttributionData[],
-  actions: GrowthAction[]
-): string[] {
-  const opportunities: string[] = [];
-
-  // Find low-performing actions
-  const lowPerformers = attributionData.filter(data => 
-    data.efficiency.efficiencyScore < 30
-  );
-
-  if (lowPerformers.length > 0) {
-    opportunities.push(`${lowPerformers.length} actions are underperforming and need optimization`);
-  }
-
-  // Find high-performing actions that could be scaled
-  const highPerformers = attributionData.filter(data => 
-    data.efficiency.efficiencyScore > 80
-  );
-
-  if (highPerformers.length > 0) {
-    opportunities.push(`${highPerformers.length} actions are performing excellently and should be scaled`);
-  }
-
-  // Find budget optimization opportunities
-  const budgetOptimization = attributionData.filter(data => 
-    data.efficiency.revenuePerDollar > 2
-  );
-
-  if (budgetOptimization.length > 0) {
-    opportunities.push(`${budgetOptimization.length} actions have high ROI and could benefit from increased budget`);
-  }
-
-  return opportunities;
-}
-
-/**
- * Generate predictive insights
- */
-function generatePredictiveInsights(
-  attributionData: AttributionData[],
-  actions: GrowthAction[]
-): string[] {
-  const insights: string[] = [];
-
-  // Analyze trends
-  const improvingActions = attributionData.filter(data => 
-    data.attributionWindows['7d'].revenue > data.attributionWindows['28d'].revenue * 0.25
-  );
-
-  if (improvingActions.length > 0) {
-    insights.push(`${improvingActions.length} actions are showing strong recent performance trends`);
-  }
-
-  // Analyze seasonal patterns
-  const seasonalInsights = analyzeSeasonalPatterns(attributionData);
-  insights.push(...seasonalInsights);
-
-  return insights;
-}
-
-/**
- * Analyze seasonal patterns in attribution data
- */
-function analyzeSeasonalPatterns(attributionData: AttributionData[]): string[] {
-  const insights: string[] = [];
-
-  // This would typically involve more sophisticated time series analysis
-  // For now, provide basic insights
-  insights.push('Consider seasonal trends when planning future growth actions');
-  insights.push('Monitor attribution windows to identify optimal timing for action execution');
-
-  return insights;
-}
-
-/**
- * Generate growth recommendations
- */
-function generateGrowthRecommendations(
-  attributionData: AttributionData[],
-  actions: GrowthAction[]
-): {
-  scaleActions: string[];
-  optimizeActions: string[];
-  pauseActions: string[];
-  budgetRecommendations: Array<{
-    actionId: string;
-    currentBudget: number;
-    recommendedBudget: number;
-    expectedROI: number;
-  }>;
-} {
-  const scaleActions: string[] = [];
-  const optimizeActions: string[] = [];
-  const pauseActions: string[] = [];
-  const budgetRecommendations: Array<{
-    actionId: string;
-    currentBudget: number;
-    recommendedBudget: number;
-    expectedROI: number;
-  }> = [];
-
-  attributionData.forEach(data => {
-    const action = actions.find(a => a.actionId === data.actionId);
-    if (!action) return;
-
-    if (data.efficiency.efficiencyScore >= 80) {
-      scaleActions.push(data.actionId);
-      if (action.budget) {
-        budgetRecommendations.push({
-          actionId: data.actionId,
-          currentBudget: action.budget,
-          recommendedBudget: action.budget * 1.5,
-          expectedROI: data.efficiency.revenuePerDollar * 1.5,
-        });
-      }
-    } else if (data.efficiency.efficiencyScore >= 50) {
-      optimizeActions.push(data.actionId);
-    } else {
-      pauseActions.push(data.actionId);
-      if (action.budget) {
-        budgetRecommendations.push({
-          actionId: data.actionId,
-          currentBudget: action.budget,
-          recommendedBudget: action.budget * 0.5,
-          expectedROI: data.efficiency.revenuePerDollar * 0.5,
-        });
-      }
-    }
-  });
-
-  return {
-    scaleActions,
-    optimizeActions,
-    pauseActions,
-    budgetRecommendations,
-  };
-}
-
-/**
- * Export growth engine analytics for dashboard
- *
- * ANALYTICS-023: Format analytics data for dashboard display
- *
- * @param analytics - Growth engine analytics
- * @returns Dashboard-ready analytics data
+ * Export analytics data for dashboard display
  */
 export function exportGrowthEngineAnalytics(analytics: GrowthEngineAnalytics) {
   return {
-    summary: {
-      totalActions: analytics.summary.totalActions,
-      totalRevenue: analytics.summary.totalRevenue,
-      totalConversions: analytics.summary.totalConversions,
-      averageROI: analytics.summary.averageROI,
-      overallEfficiency: analytics.summary.overallEfficiency,
-    },
-    topAction: analytics.summary.topPerformingAction ? {
-      id: analytics.summary.topPerformingAction.actionId,
-      title: analytics.summary.topPerformingAction.title,
-      type: analytics.summary.topPerformingAction.actionType,
-      revenue: analytics.attributionAnalysis.find(a => a.actionId === analytics.summary.topPerformingAction?.actionId)?.totalAttribution.revenue || 0,
-    } : null,
-    performance: {
-      bestType: analytics.performanceInsights.bestPerformingType,
-      worstType: analytics.performanceInsights.worstPerformingType,
-      opportunities: analytics.performanceInsights.optimizationOpportunities,
-      insights: analytics.performanceInsights.predictiveInsights,
-    },
-    recommendations: {
-      scale: analytics.recommendations.scaleActions,
-      optimize: analytics.recommendations.optimizeActions,
-      pause: analytics.recommendations.pauseActions,
-      budget: analytics.recommendations.budgetRecommendations,
-    },
+    analytics,
+    timeframe: '28d',
     period: analytics.period,
+    generatedAt: new Date().toISOString(),
   };
+}
+
+/**
+ * Get mock data for development/testing
+ */
+export function getMockGrowthEngineData(): {
+  actions: GrowthAction[];
+  attributionData: AttributionData[];
+} {
+  const actions: GrowthAction[] = [
+    {
+      actionId: 'action-1',
+      actionType: 'seo',
+      targetSlug: 'snowboard-collection',
+      title: 'SEO Optimization for Snowboard Collection',
+      description: 'Optimize meta tags and content for snowboard collection page',
+      approvedAt: '2025-10-15T10:00:00Z',
+      executedAt: '2025-10-15T10:30:00Z',
+      status: 'completed',
+      budget: 500,
+      expectedROI: 4.2,
+    },
+    {
+      actionId: 'action-2',
+      actionType: 'ads',
+      targetSlug: 'winter-gear',
+      title: 'Google Ads Campaign for Winter Gear',
+      description: 'Launch targeted Google Ads campaign for winter gear products',
+      approvedAt: '2025-10-16T09:00:00Z',
+      executedAt: '2025-10-16T09:15:00Z',
+      status: 'completed',
+      budget: 1200,
+      expectedROI: 3.8,
+    },
+    {
+      actionId: 'action-3',
+      actionType: 'social',
+      targetSlug: 'instagram-content',
+      title: 'Instagram Content Strategy',
+      description: 'Develop and execute Instagram content strategy for brand awareness',
+      approvedAt: '2025-10-17T14:00:00Z',
+      executedAt: '2025-10-17T14:30:00Z',
+      status: 'completed',
+      budget: 800,
+      expectedROI: 2.5,
+    },
+  ];
+
+  const attributionData: AttributionData[] = [
+    {
+      actionId: 'action-1',
+      actionType: 'seo',
+      targetSlug: 'snowboard-collection',
+      attributionWindows: {
+        '7d': {
+          revenue: 2500,
+          conversions: 12,
+          sessions: 450,
+          cost: 500,
+          roi: 5.0,
+          efficiency: 85,
+        },
+        '14d': {
+          revenue: 4200,
+          conversions: 18,
+          sessions: 720,
+          cost: 500,
+          roi: 8.4,
+          efficiency: 90,
+        },
+        '28d': {
+          revenue: 6800,
+          conversions: 28,
+          sessions: 1200,
+          cost: 500,
+          roi: 13.6,
+          efficiency: 95,
+        },
+      },
+      totalAttribution: {
+        revenue: 6800,
+        conversions: 28,
+        sessions: 1200,
+        cost: 500,
+        roi: 13.6,
+        efficiency: 95,
+      },
+      efficiency: {
+        costPerConversion: 17.86,
+        revenuePerDollar: 13.6,
+        efficiencyScore: 95,
+      },
+    },
+    {
+      actionId: 'action-2',
+      actionType: 'ads',
+      targetSlug: 'winter-gear',
+      attributionWindows: {
+        '7d': {
+          revenue: 1800,
+          conversions: 8,
+          sessions: 320,
+          cost: 1200,
+          roi: 1.5,
+          efficiency: 60,
+        },
+        '14d': {
+          revenue: 3200,
+          conversions: 14,
+          sessions: 580,
+          cost: 1200,
+          roi: 2.67,
+          efficiency: 70,
+        },
+        '28d': {
+          revenue: 4800,
+          conversions: 22,
+          sessions: 950,
+          cost: 1200,
+          roi: 4.0,
+          efficiency: 80,
+        },
+      },
+      totalAttribution: {
+        revenue: 4800,
+        conversions: 22,
+        sessions: 950,
+        cost: 1200,
+        roi: 4.0,
+        efficiency: 80,
+      },
+      efficiency: {
+        costPerConversion: 54.55,
+        revenuePerDollar: 4.0,
+        efficiencyScore: 80,
+      },
+    },
+    {
+      actionId: 'action-3',
+      actionType: 'social',
+      targetSlug: 'instagram-content',
+      attributionWindows: {
+        '7d': {
+          revenue: 600,
+          conversions: 3,
+          sessions: 180,
+          cost: 800,
+          roi: 0.75,
+          efficiency: 40,
+        },
+        '14d': {
+          revenue: 1000,
+          conversions: 5,
+          sessions: 320,
+          cost: 800,
+          roi: 1.25,
+          efficiency: 50,
+        },
+        '28d': {
+          revenue: 1600,
+          conversions: 8,
+          sessions: 520,
+          cost: 800,
+          roi: 2.0,
+          efficiency: 60,
+        },
+      },
+      totalAttribution: {
+        revenue: 1600,
+        conversions: 8,
+        sessions: 520,
+        cost: 800,
+        roi: 2.0,
+        efficiency: 60,
+      },
+      efficiency: {
+        costPerConversion: 100,
+        revenuePerDollar: 2.0,
+        efficiencyScore: 60,
+      },
+    },
+  ];
+
+  return { actions, attributionData };
 }

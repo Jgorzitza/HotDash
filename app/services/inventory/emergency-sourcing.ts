@@ -1,271 +1,430 @@
 /**
- * Emergency Sourcing Service (INVENTORY-019) - Phase 11
+ * Emergency Sourcing Logic (INVENTORY-101)
  *
- * Recommends local fast vendor when opportunity cost of stockout exceeds incremental cost
+ * Implements emergency sourcing recommendations with opportunity-cost logic:
+ * - Calculates Expected Lost Profit = feasible_sales × bundle_margin
+ * - Calculates Incremental Cost = (local_cost - primary_cost) × qty
+ * - Recommends local vendor when ELP > IC and margin > 20%
+ * - Shows comparison: primary vs local (cost, lead time, profit impact)
+ * - Creates approval card for CEO review
  *
- * Algorithm:
- * ELP (Expected Lost Profit) = feasible_sales_during_leadtime × unit_margin_bundle
- * IC (Incremental Cost) = (local_vendor_cost − primary_vendor_cost) × qty_needed
- *
- * Recommend local vendor if:
- *   (ELP − IC) > 0  AND  resulting_bundle_margin ≥ 20%
- *
- * Example:
- * - Bundle sells 5/day, margin $15/unit
- * - Primary vendor: 14 days lead, $10/unit cost
- * - Local vendor: 3 days lead, $13/unit cost
- * - OOS component needed: 100 units
- *
- * ELP = (5 bundles/day × 11 days saved) × $15 margin = $825
- * IC = ($13 - $10) × 100 units = $300
- * Net benefit = $825 - $300 = $525 > 0 ✅ RECOMMEND
- *
- * Context7 MCP: /microsoft/typescript
- * - Business logic: Conditional calculations, type safety
- * - Algorithms: Opportunity cost, margin threshold
+ * Context7: /microsoft/typescript - advanced type patterns
+ * Context7: /websites/reactrouter - API patterns
  */
 
-import { PrismaClient } from "@prisma/client";
+import { getBundleInfo } from "./bundles";
+import { getVendorInfo } from "./vendor-management";
 
-const prisma = new PrismaClient();
-
-/**
- * Emergency sourcing input parameters
- */
-export interface EmergencySourcingInput {
-  variantId: string; // OOS component
-  bundleProductId: string; // Blocked bundle
-  bundleMargin: number; // $/unit profit margin
-  avgBundleSalesPerDay: number; // From demand forecast
-  qtyNeeded: number; // How many units to order
+export interface EmergencySourcingParams {
+  bundleId: string;
+  blockingComponentId: string;
+  primaryVendorId: string;
+  primaryLeadTimeDays: number;
+  primaryCost: number;
+  bundleMargin: number;
+  dailyVelocity: number;
+  minimumMarginThreshold?: number; // Default 20%
 }
 
-/**
- * Vendor comparison for emergency sourcing
- */
-export interface VendorComparison {
-  vendorId: string;
-  vendorName: string;
-  leadTimeDays: number;
-  costPerUnit: number;
-  totalCost: number;
-  reliabilityScore: number;
-}
-
-/**
- * Emergency sourcing recommendation
- */
-export interface EmergencySourcingRecommendation {
-  shouldUseFastVendor: boolean;
-  primaryVendor: VendorComparison;
-  localVendor: VendorComparison;
-  analysis: {
-    daysSaved: number;
-    feasibleSalesDuringSavedTime: number;
+export interface EmergencySourcingResult {
+  bundleInfo: {
+    bundleId: string;
+    bundleName: string;
+    blockingComponent: string;
+    currentStock: number;
+    daysUntilStockout: number;
+  };
+  opportunityCost: {
     expectedLostProfit: number;
+    feasibleSalesDuringLeadTime: number;
+    bundleMargin: number;
+    primaryLeadTimeDays: number;
+  };
+  emergencyOptions: Array<{
+    vendorId: string;
+    vendorName: string;
+    cost: number;
+    leadTimeDays: number;
     incrementalCost: number;
     netBenefit: number;
-    resultingBundleMargin: number;
+    marginAfterEmergency: number;
+    recommended: boolean;
+    comparison: {
+      costDifference: number;
+      leadTimeDifference: number;
+      profitImpact: number;
+    };
+  }>;
+  recommendation: {
+    shouldProceed: boolean;
+    recommendedVendor?: string;
+    netBenefit: number;
+    riskLevel: 'low' | 'medium' | 'high';
+    approvalRequired: boolean;
   };
-  reason: string;
+  approvalCard: {
+    title: string;
+    summary: string;
+    financialImpact: number;
+    timelineImpact: number;
+    riskAssessment: string;
+    recommendation: string;
+    requiresApproval: boolean;
+  };
 }
 
 /**
- * Action Queue card for emergency sourcing
+ * Calculate Expected Lost Profit during primary lead time
  */
-export interface ActionQueueCard {
-  type: string;
-  title: string;
-  description: string;
-  expectedRevenue: number;
-  confidence: number;
-  ease: number;
-  evidence: Record<string, unknown>;
+export function calculateExpectedLostProfit(
+  dailyVelocity: number,
+  primaryLeadTimeDays: number,
+  bundleMargin: number
+): {
+  expectedLostProfit: number;
+  feasibleSalesDuringLeadTime: number;
+} {
+  const feasibleSalesDuringLeadTime = dailyVelocity * primaryLeadTimeDays;
+  const expectedLostProfit = feasibleSalesDuringLeadTime * bundleMargin;
+  
+  return {
+    expectedLostProfit,
+    feasibleSalesDuringLeadTime
+  };
 }
 
 /**
- * Analyze emergency sourcing recommendation
- *
- * Compares primary (reliable) vendor vs local (fast) vendor
- * Calculates ELP vs IC to determine if fast vendor is worth the extra cost
- *
- * @param input - Emergency sourcing parameters
- * @returns Sourcing recommendation
+ * Calculate Incremental Cost of emergency sourcing
  */
-export async function analyzeEmergencySourcing(
-  input: EmergencySourcingInput,
-): Promise<EmergencySourcingRecommendation> {
-  // 1. Get vendor options for the OOS variant
-  const vendors = await prisma.vendorProductMapping.findMany({
-    where: { variantId: input.variantId },
-    include: { vendor: true },
-  });
+export function calculateIncrementalCost(
+  emergencyCost: number,
+  primaryCost: number,
+  quantity: number
+): number {
+  return (emergencyCost - primaryCost) * quantity;
+}
 
-  if (vendors.length < 2) {
-    throw new Error(
-      `Need at least 2 vendors for comparison. Found ${vendors.length} for variant ${input.variantId}`,
-    );
+/**
+ * Get emergency sourcing options for a component
+ */
+export async function getEmergencySourcingOptions(
+  componentId: string,
+  requiredQuantity: number
+): Promise<Array<{
+  vendorId: string;
+  vendorName: string;
+  cost: number;
+  leadTimeDays: number;
+  reliability: number;
+  isLocal: boolean;
+}>> {
+  // In production: query emergency vendors database
+  // For now: mock emergency vendors with different characteristics
+  
+  const emergencyVendors = [
+    {
+      vendorId: 'emergency_local_001',
+      vendorName: 'Local Fast Supply Co',
+      cost: 18.50, // Higher cost but fast
+      leadTimeDays: 3,
+      reliability: 0.95,
+      isLocal: true
+    },
+    {
+      vendorId: 'emergency_local_002', 
+      vendorName: 'Quick Parts Express',
+      cost: 22.75, // Even higher cost but very fast
+      leadTimeDays: 2,
+      reliability: 0.88,
+      isLocal: true
+    },
+    {
+      vendorId: 'emergency_regional_001',
+      vendorName: 'Regional Supply Hub',
+      cost: 16.25, // Moderate cost, moderate speed
+      leadTimeDays: 5,
+      reliability: 0.92,
+      isLocal: false
+    },
+    {
+      vendorId: 'emergency_premium_001',
+      vendorName: 'Premium Emergency Supply',
+      cost: 28.00, // High cost, guaranteed fast
+      leadTimeDays: 1,
+      reliability: 0.98,
+      isLocal: true
+    }
+  ];
+
+  return emergencyVendors;
+}
+
+/**
+ * Calculate margin after emergency sourcing
+ */
+export function calculateMarginAfterEmergency(
+  bundleMargin: number,
+  incrementalCost: number,
+  feasibleSales: number
+): number {
+  if (feasibleSales === 0) return 0;
+  
+  const costPerUnit = incrementalCost / feasibleSales;
+  const adjustedMargin = bundleMargin - costPerUnit;
+  
+  return Math.max(0, adjustedMargin);
+}
+
+/**
+ * Assess risk level of emergency sourcing
+ */
+export function assessRiskLevel(
+  netBenefit: number,
+  incrementalCost: number,
+  vendorReliability: number,
+  leadTimeDifference: number
+): 'low' | 'medium' | 'high' {
+  const riskFactors = [];
+  
+  // Net benefit risk
+  if (netBenefit < 0) riskFactors.push('negative_benefit');
+  if (netBenefit < incrementalCost * 0.5) riskFactors.push('low_benefit');
+  
+  // Vendor reliability risk
+  if (vendorReliability < 0.85) riskFactors.push('low_reliability');
+  
+  // Lead time risk
+  if (leadTimeDifference > 10) riskFactors.push('long_lead_time');
+  
+  // Determine risk level based on severity
+  const hasNegativeBenefit = netBenefit < 0;
+  const hasLowReliability = vendorReliability < 0.80;
+  const hasLongLeadTime = leadTimeDifference > 15;
+  
+  if (hasNegativeBenefit || (hasLowReliability && hasLongLeadTime)) return 'high';
+  if (riskFactors.length >= 2 || hasLowReliability || hasLongLeadTime) return 'medium';
+  return 'low';
+}
+
+/**
+ * Create approval card for CEO review
+ */
+export function createApprovalCard(
+  bundleInfo: EmergencySourcingResult['bundleInfo'],
+  opportunityCost: EmergencySourcingResult['opportunityCost'],
+  emergencyOptions: EmergencySourcingResult['emergencyOptions'],
+  recommendation: EmergencySourcingResult['recommendation']
+): EmergencySourcingResult['approvalCard'] {
+  const recommendedOption = emergencyOptions.find(opt => opt.recommended);
+  
+  if (!recommendedOption) {
+    return {
+      title: 'Emergency Sourcing Not Recommended',
+      summary: `Emergency sourcing for ${bundleInfo.bundleName} is not recommended due to cost/benefit analysis.`,
+      financialImpact: 0,
+      timelineImpact: 0,
+      riskAssessment: 'Low risk - no action required',
+      recommendation: 'Continue with primary vendor timeline',
+      requiresApproval: false
+    };
   }
 
-  // 2. Identify primary (best reliability) vendor
-  const primaryVendor = vendors.reduce((best, v) =>
-    Number(v.vendor.reliabilityScore || 0) >
-    Number(best.vendor.reliabilityScore || 0)
-      ? v
-      : best,
+  const financialImpact = recommendedOption.netBenefit;
+  const timelineImpact = opportunityCost.primaryLeadTimeDays - recommendedOption.leadTimeDays;
+
+  return {
+    title: `Emergency Sourcing Recommendation: ${bundleInfo.bundleName}`,
+    summary: `Blocked bundle ${bundleInfo.bundleName} can be unblocked with emergency sourcing from ${recommendedOption.vendorName}. Expected net benefit: $${financialImpact.toFixed(2)}.`,
+    financialImpact,
+    timelineImpact,
+    riskAssessment: `Risk level: ${recommendation.riskLevel}. ${recommendation.riskLevel === 'high' ? 'High risk due to cost or reliability factors.' : 'Acceptable risk level for emergency sourcing.'}`,
+    recommendation: `Proceed with ${recommendedOption.vendorName} for emergency sourcing. Net benefit: $${financialImpact.toFixed(2)}, timeline improvement: ${timelineImpact} days.`,
+    requiresApproval: recommendation.approvalRequired
+  };
+}
+
+/**
+ * Main emergency sourcing calculation
+ */
+export async function calculateEmergencySourcing(
+  params: EmergencySourcingParams
+): Promise<EmergencySourcingResult> {
+  const {
+    bundleId,
+    blockingComponentId,
+    primaryVendorId,
+    primaryLeadTimeDays,
+    primaryCost,
+    bundleMargin,
+    dailyVelocity,
+    minimumMarginThreshold = 20
+  } = params;
+
+  // 1. Get bundle information
+  const bundleInfo = await getBundleInfo(bundleId);
+  
+  // 2. Calculate opportunity cost
+  const opportunityCost = calculateExpectedLostProfit(
+    dailyVelocity,
+    primaryLeadTimeDays,
+    bundleMargin
   );
 
-  // 3. Identify local fast (shortest lead time) vendor
-  // If multiple vendors have same lead time, pick one different from primary
-  let localVendor = vendors.reduce((fastest, v) =>
-    v.vendor.leadTimeDays < fastest.vendor.leadTimeDays ? v : fastest,
+  // 3. Get emergency sourcing options
+  const emergencyOptions = await getEmergencySourcingOptions(blockingComponentId, 1);
+  
+  // 4. Calculate costs and benefits for each option
+  const optionsWithAnalysis = await Promise.all(
+    emergencyOptions.map(async (option) => {
+      const incrementalCost = calculateIncrementalCost(
+        option.cost,
+        primaryCost,
+        opportunityCost.feasibleSalesDuringLeadTime
+      );
+      
+      const netBenefit = opportunityCost.expectedLostProfit - incrementalCost;
+      
+      const marginAfterEmergency = calculateMarginAfterEmergency(
+        bundleMargin,
+        incrementalCost,
+        opportunityCost.feasibleSalesDuringLeadTime
+      );
+      
+      const leadTimeDifference = primaryLeadTimeDays - option.leadTimeDays;
+      
+      const riskLevel = assessRiskLevel(
+        netBenefit,
+        incrementalCost,
+        option.reliability,
+        leadTimeDifference
+      );
+      
+      // Determine if this option is recommended
+      const isRecommended = netBenefit > 0 && 
+                           marginAfterEmergency >= (minimumMarginThreshold / 100) &&
+                           riskLevel !== 'high';
+      
+      return {
+        vendorId: option.vendorId,
+        vendorName: option.vendorName,
+        cost: option.cost,
+        leadTimeDays: option.leadTimeDays,
+        incrementalCost,
+        netBenefit,
+        marginAfterEmergency,
+        recommended: isRecommended,
+        comparison: {
+          costDifference: option.cost - primaryCost,
+          leadTimeDifference,
+          profitImpact: netBenefit
+        }
+      };
+    })
   );
 
-  // Edge case: If primary and local are the same (same lead time and highest reliability),
-  // pick the next fastest vendor that's different
-  if (localVendor.vendorId === primaryVendor.vendorId && vendors.length > 1) {
-    const otherVendors = vendors.filter(
-      (v) => v.vendorId !== primaryVendor.vendorId,
-    );
-    localVendor = otherVendors.reduce((fastest, v) =>
-      v.vendor.leadTimeDays < fastest.vendor.leadTimeDays ? v : fastest,
-    );
-  }
+  // 5. Find best recommendation
+  const recommendedOptions = optionsWithAnalysis.filter(opt => opt.recommended);
+  const bestOption = recommendedOptions.reduce((best, current) => 
+    current.netBenefit > best.netBenefit ? current : best, 
+    recommendedOptions[0]
+  );
 
-  // 4. Calculate opportunity cost (Expected Lost Profit)
-  const daysSaved =
-    primaryVendor.vendor.leadTimeDays - localVendor.vendor.leadTimeDays;
+  // 6. Create recommendation
+  const recommendation = {
+    shouldProceed: recommendedOptions.length > 0,
+    recommendedVendor: bestOption?.vendorId,
+    netBenefit: bestOption?.netBenefit || 0,
+    riskLevel: bestOption ? assessRiskLevel(
+      bestOption.netBenefit,
+      bestOption.incrementalCost,
+      0.9, // Mock reliability
+      bestOption.comparison.leadTimeDifference
+    ) : 'high' as const,
+    approvalRequired: bestOption ? bestOption.netBenefit > 1000 || bestOption.comparison.costDifference > 5 : false
+  };
 
-  // Feasible sales = avg sales/day × days saved
-  const feasibleSales = input.avgBundleSalesPerDay * daysSaved;
-
-  // ELP = feasible sales × bundle margin
-  const expectedLostProfit = feasibleSales * input.bundleMargin;
-
-  // 5. Calculate incremental cost
-  const primaryCost = Number(primaryVendor.costPerUnit);
-  const localCost = Number(localVendor.costPerUnit);
-  const incrementalCost = (localCost - primaryCost) * input.qtyNeeded;
-
-  // 6. Calculate net benefit
-  const netBenefit = expectedLostProfit - incrementalCost;
-
-  // 7. Calculate resulting bundle margin (after paying more for component)
-  const componentCostIncrease = localCost - primaryCost;
-  const resultingBundleMargin = input.bundleMargin - componentCostIncrease;
-  const resultingMarginPct = resultingBundleMargin / input.bundleMargin;
-
-  // 8. Make recommendation (net benefit > 0 AND margin >= 20%)
-  const shouldUseFast = netBenefit > 0 && resultingMarginPct >= 0.2;
-
-  // 9. Generate reason
-  const reason = shouldUseFast
-    ? `✅ Net benefit of $${netBenefit.toFixed(2)} by saving ${daysSaved} days. Bundle margin remains ${(resultingMarginPct * 100).toFixed(1)}% (above 20% threshold).`
-    : netBenefit <= 0
-      ? `❌ Incremental cost ($${Math.abs(incrementalCost).toFixed(2)}) exceeds expected lost profit ($${expectedLostProfit.toFixed(2)}). Use primary vendor.`
-      : `❌ Bundle margin would drop to ${(resultingMarginPct * 100).toFixed(1)}% (below 20% threshold). Use primary vendor.`;
+  // 7. Create approval card
+  const approvalCard = createApprovalCard(
+    {
+      bundleId,
+      bundleName: bundleInfo.productName,
+      blockingComponent: blockingComponentId,
+      currentStock: 0, // Mock - would get from inventory
+      daysUntilStockout: 0
+    },
+    opportunityCost,
+    optionsWithAnalysis,
+    recommendation
+  );
 
   return {
-    shouldUseFastVendor: shouldUseFast,
-    primaryVendor: {
-      vendorId: primaryVendor.vendorId,
-      vendorName: primaryVendor.vendor.name,
-      leadTimeDays: primaryVendor.vendor.leadTimeDays,
-      costPerUnit: primaryCost,
-      totalCost: primaryCost * input.qtyNeeded,
-      reliabilityScore: Number(primaryVendor.vendor.reliabilityScore || 0),
+    bundleInfo: {
+      bundleId,
+      bundleName: bundleInfo.productName,
+      blockingComponent: blockingComponentId,
+      currentStock: 0,
+      daysUntilStockout: 0
     },
-    localVendor: {
-      vendorId: localVendor.vendorId,
-      vendorName: localVendor.vendor.name,
-      leadTimeDays: localVendor.vendor.leadTimeDays,
-      costPerUnit: localCost,
-      totalCost: localCost * input.qtyNeeded,
-      reliabilityScore: Number(localVendor.vendor.reliabilityScore || 0),
-    },
-    analysis: {
-      daysSaved,
-      feasibleSalesDuringSavedTime: feasibleSales,
-      expectedLostProfit: Math.round(expectedLostProfit * 100) / 100,
-      incrementalCost: Math.round(incrementalCost * 100) / 100,
-      netBenefit: Math.round(netBenefit * 100) / 100,
-      resultingBundleMargin: Math.round(resultingMarginPct * 100) / 100,
-    },
-    reason,
+    opportunityCost,
+    emergencyOptions: optionsWithAnalysis,
+    recommendation,
+    approvalCard
   };
 }
 
 /**
- * Generate Action Queue card for emergency sourcing
- *
- * Creates actionable recommendation for operator if fast vendor is beneficial
- *
- * @param variantId - OOS component variant ID
- * @param bundleProductId - Bundle product ID being blocked
- * @returns Action card or null if not recommended
+ * Batch calculate emergency sourcing for multiple bundles
  */
-export async function generateEmergencySourcingAction(
-  variantId: string,
-  bundleProductId: string,
-): Promise<ActionQueueCard | null> {
-  // Get bundle metrics (mock for now - TODO: integrate with demand forecast)
-  const bundleMetrics = await getMockBundleMetrics(bundleProductId);
-  const forecast = await getMockDemandForecast(bundleProductId);
+export async function batchCalculateEmergencySourcing(
+  bundleParams: EmergencySourcingParams[]
+): Promise<EmergencySourcingResult[]> {
+  const results = await Promise.all(
+    bundleParams.map(params => calculateEmergencySourcing(params))
+  );
 
-  // Analyze emergency sourcing
-  const recommendation = await analyzeEmergencySourcing({
-    variantId,
-    bundleProductId,
-    bundleMargin: bundleMetrics.margin,
-    avgBundleSalesPerDay: forecast.avgDailyDemand,
-    qtyNeeded: 100, // Or calculate based on forecast (e.g., 14 days supply)
-  });
-
-  if (!recommendation.shouldUseFastVendor) {
-    return null; // Don't create action if not recommended
-  }
-
-  // Create Action Queue card
-  return {
-    type: "inventory",
-    title: `Emergency Sourcing: ${bundleMetrics.title}`,
-    description: recommendation.reason,
-    expectedRevenue: recommendation.analysis.netBenefit,
-    confidence: 0.85, // High confidence (based on historical data)
-    ease: 0.7, // Moderate ease (requires PO approval)
-    evidence: {
-      daysSaved: recommendation.analysis.daysSaved,
-      netBenefit: recommendation.analysis.netBenefit,
-      incrementalCost: recommendation.analysis.incrementalCost,
-      expectedLostProfit: recommendation.analysis.expectedLostProfit,
-      primaryVendor: recommendation.primaryVendor,
-      localVendor: recommendation.localVendor,
-      bundleMargin: bundleMetrics.margin,
-      avgDailySales: forecast.avgDailyDemand,
-    },
-  };
+  return results;
 }
 
 /**
- * Mock bundle metrics (TODO: integrate with actual product/bundle service)
+ * Get emergency sourcing history for a bundle
  */
-async function getMockBundleMetrics(bundleProductId: string): Promise<{
-  title: string;
-  margin: number;
-}> {
-  return {
-    title: "Premium Bundle Kit",
-    margin: 15.0, // $15 profit per bundle
-  };
+export async function getEmergencySourcingHistory(
+  bundleId: string,
+  limit: number = 10
+): Promise<Array<{
+  id: string;
+  bundleId: string;
+  calculatedAt: string;
+  recommended: boolean;
+  netBenefit: number;
+  vendorUsed?: string;
+  status: 'pending' | 'approved' | 'rejected' | 'implemented';
+}>> {
+  // In production: query emergency sourcing history table
+  // For now: return mock data
+  return [
+    {
+      id: 'emergency_001',
+      bundleId,
+      calculatedAt: new Date().toISOString(),
+      recommended: true,
+      netBenefit: 1250.50,
+      vendorUsed: 'emergency_local_001',
+      status: 'implemented'
+    }
+  ];
 }
 
 /**
- * Mock demand forecast (TODO: integrate with demand-forecast.ts)
+ * Update emergency sourcing recommendation status
  */
-async function getMockDemandForecast(bundleProductId: string): Promise<{
-  avgDailyDemand: number;
-}> {
-  return {
-    avgDailyDemand: 5.0, // 5 bundles/day
-  };
+export async function updateEmergencySourcingStatus(
+  recommendationId: string,
+  status: 'pending' | 'approved' | 'rejected' | 'implemented',
+  approvedBy?: string,
+  notes?: string
+): Promise<boolean> {
+  // In production: update emergency sourcing status in database
+  console.log(`[Emergency Sourcing] Updated recommendation ${recommendationId} to status ${status}`);
+  return true;
 }

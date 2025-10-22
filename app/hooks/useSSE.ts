@@ -21,7 +21,11 @@ export type SSEEventType =
   | "approval-update"
   | "tile-refresh"
   | "system-status"
-  | "heartbeat";
+  | "heartbeat"
+  | "growth-engine-update"
+  | "analytics-refresh"
+  | "performance-alert"
+  | "budget-alert";
 
 export interface SSEMessage<T = Record<string, unknown>> {
   type: SSEEventType;
@@ -131,6 +135,62 @@ export function useSSE(url: string, enabled = true) {
           setLastHeartbeat(new Date(data.timestamp));
         } catch (error) {
           console.error("[SSE] Failed to parse heartbeat:", error);
+        }
+      });
+
+      // Listen for Growth Engine updates (Phase 9-12)
+      eventSource.addEventListener("growth-engine-update", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setLastMessage({
+            type: "growth-engine-update",
+            data,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error("[SSE] Failed to parse growth-engine-update:", error);
+        }
+      });
+
+      // Listen for analytics refresh events
+      eventSource.addEventListener("analytics-refresh", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setLastMessage({
+            type: "analytics-refresh",
+            data,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error("[SSE] Failed to parse analytics-refresh:", error);
+        }
+      });
+
+      // Listen for performance alerts
+      eventSource.addEventListener("performance-alert", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setLastMessage({
+            type: "performance-alert",
+            data,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error("[SSE] Failed to parse performance-alert:", error);
+        }
+      });
+
+      // Listen for budget alerts
+      eventSource.addEventListener("budget-alert", (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          setLastMessage({
+            type: "budget-alert",
+            data,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          console.error("[SSE] Failed to parse budget-alert:", error);
         }
       });
     } catch (error) {

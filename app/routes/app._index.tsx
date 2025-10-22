@@ -21,6 +21,7 @@ import {
   AdsROASTile,
   GrowthMetricsTile,
 } from "../components/tiles";
+import { GrowthEngineAnalyticsTile } from "../components/tiles/GrowthEngineAnalyticsTile";
 import { SortableTile } from "../components/tiles/SortableTile";
 import type { TileState, TileFact } from "../components/tiles";
 import { BannerAlerts } from "../components/notifications/BannerAlerts";
@@ -86,6 +87,8 @@ interface LoaderData {
   seoImpact: TileState<any>;
   adsRoas: TileState<any>;
   growthMetrics: TileState<any>;
+  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+  growthEngineAnalytics: TileState<any>;
   // ENG-015: User preferences
   visibleTiles: string[];
 }
@@ -126,6 +129,9 @@ export const loader: LoaderFunction = async ({
   const seoImpact = await resolveApiTile("/api/analytics/seo-impact");
   const adsRoas = await resolveApiTile("/api/analytics/ads-roas");
   const growthMetrics = await resolveApiTile("/api/analytics/growth-metrics");
+  
+  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+  const growthEngineAnalytics = await resolveApiTile("/api/analytics/growth-engine");
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
@@ -152,6 +158,7 @@ export const loader: LoaderFunction = async ({
     seoImpact,
     adsRoas,
     growthMetrics,
+    growthEngineAnalytics,
     visibleTiles,
   });
 };
@@ -639,6 +646,8 @@ const DEFAULT_TILE_ORDER = [
   "seo-impact",
   "ads-roas",
   "growth-metrics",
+  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+  "growth-engine-analytics",
 ];
 
 export default function OperatorDashboard() {
@@ -942,6 +951,26 @@ export default function OperatorDashboard() {
         isRefreshing={refreshingTiles.has("growth-metrics")}
         onRefresh={() => handleRefreshTile("growth-metrics")}
         autoRefreshInterval={600}
+      />
+    ),
+    // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+    "growth-engine-analytics": (
+      <TileCard
+        title="Growth Engine Analytics"
+        tile={data.growthEngineAnalytics}
+        render={(analyticsData) => (
+          <GrowthEngineAnalyticsTile
+            analytics={analyticsData.analytics}
+            timeframe={analyticsData.timeframe}
+            period={analyticsData.period}
+            generatedAt={analyticsData.generatedAt}
+          />
+        )}
+        testId="tile-growth-engine-analytics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("growth-engine-analytics")}
+        onRefresh={() => handleRefreshTile("growth-engine-analytics")}
+        autoRefreshInterval={300}
       />
     ),
   };

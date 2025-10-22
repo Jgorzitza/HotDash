@@ -1,418 +1,428 @@
 /**
- * Growth Engine Advanced Analytics Dashboard Component
+ * Growth Engine Advanced Analytics Component
  *
- * ANALYTICS-023: Display growth engine advanced analytics for Growth Engine phases 9-12
- *
- * Features:
- * - Advanced attribution visualization
- * - Performance insights dashboard
- * - Optimization recommendations
- * - Budget allocation guidance
+ * Displays comprehensive analytics for Growth Engine phases 9-12
+ * including attribution modeling, performance insights, and recommendations.
  */
 
-import React, { useState, useEffect } from 'react';
-import { 
-  GrowthEngineAnalytics, 
-  AttributionData, 
-  GrowthAction,
-  exportGrowthEngineAnalytics 
-} from '~/services/analytics/growthEngineAdvanced';
+import { useState, useEffect } from "react";
+import type { GrowthEngineAnalytics } from "~/services/analytics/growthEngineAdvanced";
 
 interface GrowthEngineAnalyticsProps {
-  analytics?: GrowthEngineAnalytics;
-  loading?: boolean;
-  error?: string;
+  analytics: GrowthEngineAnalytics;
+  timeframe: string;
+  period: {
+    start: string;
+    end: string;
+  };
+  generatedAt: string;
 }
 
-export function GrowthEngineAnalyticsComponent({ 
-  analytics, 
-  loading = false, 
-  error 
+type ViewMode = "overview" | "attribution" | "recommendations";
+
+export function GrowthEngineAnalyticsComponent({
+  analytics,
+  timeframe,
+  period,
+  generatedAt,
 }: GrowthEngineAnalyticsProps) {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<'7d' | '14d' | '28d'>('28d');
-  const [selectedView, setSelectedView] = useState<'overview' | 'attribution' | 'recommendations'>('overview');
+  const [viewMode, setViewMode] = useState<ViewMode>("overview");
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-        <span className="ml-2 text-gray-600">Loading growth engine analytics...</span>
-      </div>
-    );
-  }
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
 
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <div className="flex items-center">
-          <div className="text-red-600">⚠️</div>
-          <div className="ml-2">
-            <h3 className="text-red-800 font-medium">Error loading analytics</h3>
-            <p className="text-red-600 text-sm">{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const formatPercentage = (value: number) => {
+    return `${value.toFixed(1)}%`;
+  };
 
-  if (!analytics) {
-    return (
-      <div className="text-center p-8 text-gray-500">
-        No growth engine analytics data available
-      </div>
-    );
-  }
+  const getEfficiencyColor = (score: number) => {
+    if (score >= 80) return "var(--occ-color-success)";
+    if (score >= 60) return "var(--occ-color-warning)";
+    return "var(--occ-color-error)";
+  };
 
-  const dashboardData = exportGrowthEngineAnalytics(analytics);
+  const getROIColor = (roi: number) => {
+    if (roi >= 4) return "var(--occ-color-success)";
+    if (roi >= 2) return "var(--occ-color-warning)";
+    return "var(--occ-color-error)";
+  };
 
   return (
-    <div className="space-y-6">
+    <div style={{ padding: "var(--occ-space-4)" }}>
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div style={{ marginBottom: "var(--occ-space-4)" }}>
+        <h2 style={{ margin: 0, marginBottom: "var(--occ-space-2)" }}>
+          Growth Engine Advanced Analytics
+        </h2>
+        <p style={{ 
+          margin: 0, 
+          color: "var(--occ-text-secondary)",
+          fontSize: "var(--occ-font-size-sm)"
+        }}>
+          Period: {new Date(period.start).toLocaleDateString()} - {new Date(period.end).toLocaleDateString()} • 
+          Timeframe: {timeframe} • 
+          Generated: {new Date(generatedAt).toLocaleTimeString()}
+        </p>
+      </div>
+
+      {/* View Mode Tabs */}
+      <div style={{ 
+        display: "flex", 
+        gap: "var(--occ-space-2)", 
+        marginBottom: "var(--occ-space-4)",
+        borderBottom: "1px solid var(--occ-border-default)"
+      }}>
+        {[
+          { key: "overview", label: "Overview" },
+          { key: "attribution", label: "Attribution" },
+          { key: "recommendations", label: "Recommendations" },
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            onClick={() => setViewMode(key as ViewMode)}
+            style={{
+              padding: "var(--occ-space-2) var(--occ-space-3)",
+              border: "none",
+              background: viewMode === key ? "var(--occ-bg-primary)" : "transparent",
+              color: viewMode === key ? "var(--occ-text-on-primary)" : "var(--occ-text-primary)",
+              cursor: "pointer",
+              borderRadius: "var(--occ-radius-sm) var(--occ-radius-sm) 0 0",
+              fontSize: "var(--occ-font-size-sm)",
+              fontWeight: "var(--occ-font-weight-medium)",
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Overview View */}
+      {viewMode === "overview" && (
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Growth Engine Analytics</h2>
-          <p className="text-gray-600">
-            Advanced analytics for Growth Engine phases 9-12
-          </p>
-        </div>
-        <div className="flex space-x-2">
-          <select
-            value={selectedTimeframe}
-            onChange={(e) => setSelectedTimeframe(e.target.value as '7d' | '14d' | '28d')}
-            className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-          >
-            <option value="7d">7 Days</option>
-            <option value="14d">14 Days</option>
-            <option value="28d">28 Days</option>
-          </select>
-          <select
-            value={selectedView}
-            onChange={(e) => setSelectedView(e.target.value as 'overview' | 'attribution' | 'recommendations')}
-            className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-          >
-            <option value="overview">Overview</option>
-            <option value="attribution">Attribution</option>
-            <option value="recommendations">Recommendations</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SummaryCard
-          title="Total Actions"
-          value={dashboardData.summary.totalActions}
-          icon="📊"
-        />
-        <SummaryCard
-          title="Total Revenue"
-          value={`$${dashboardData.summary.totalRevenue.toLocaleString()}`}
-          icon="💰"
-        />
-        <SummaryCard
-          title="Total Conversions"
-          value={dashboardData.summary.totalConversions.toLocaleString()}
-          icon="🎯"
-        />
-        <SummaryCard
-          title="Average ROI"
-          value={`${dashboardData.summary.averageROI.toFixed(2)}x`}
-          icon="📈"
-        />
-      </div>
-
-      {/* Main Content */}
-      {selectedView === 'overview' && (
-        <OverviewView 
-          analytics={analytics} 
-          timeframe={selectedTimeframe}
-          dashboardData={dashboardData}
-        />
-      )}
-
-      {selectedView === 'attribution' && (
-        <AttributionView 
-          attributionData={analytics.attributionAnalysis}
-          timeframe={selectedTimeframe}
-        />
-      )}
-
-      {selectedView === 'recommendations' && (
-        <RecommendationsView 
-          recommendations={analytics.recommendations}
-          performanceInsights={analytics.performanceInsights}
-        />
-      )}
-    </div>
-  );
-}
-
-function SummaryCard({ title, value, icon }: { title: string; value: string | number; icon: string }) {
-  return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex items-center">
-        <div className="text-2xl">{icon}</div>
-        <div className="ml-4">
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function OverviewView({ 
-  analytics, 
-  timeframe, 
-  dashboardData 
-}: { 
-  analytics: GrowthEngineAnalytics; 
-  timeframe: string;
-  dashboardData: any;
-}) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Top Performing Action */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Performing Action</h3>
-        {dashboardData.topAction ? (
-          <div className="space-y-3">
-            <div className="flex justify-between items-start">
-              <div>
-                <h4 className="font-medium text-gray-900">{dashboardData.topAction.title}</h4>
-                <p className="text-sm text-gray-600 capitalize">{dashboardData.topAction.type}</p>
-              </div>
-              <span className="text-lg font-bold text-green-600">
-                ${dashboardData.topAction.revenue.toLocaleString()}
-              </span>
+          {/* Summary Metrics */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "var(--occ-space-3)",
+            marginBottom: "var(--occ-space-4)"
+          }}>
+            <div style={{
+              padding: "var(--occ-space-3)",
+              border: "1px solid var(--occ-border-default)",
+              borderRadius: "var(--occ-radius-md)",
+              backgroundColor: "var(--occ-bg-surface)"
+            }}>
+              <h3 style={{ margin: 0, fontSize: "var(--occ-font-size-lg)", marginBottom: "var(--occ-space-1)" }}>
+                {analytics.summary.totalActions}
+              </h3>
+              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "var(--occ-font-size-sm)" }}>
+                Total Actions
+              </p>
             </div>
-            <div className="text-sm text-gray-600">
-              Action ID: {dashboardData.topAction.id}
+            <div style={{
+              padding: "var(--occ-space-3)",
+              border: "1px solid var(--occ-border-default)",
+              borderRadius: "var(--occ-radius-md)",
+              backgroundColor: "var(--occ-bg-surface)"
+            }}>
+              <h3 style={{ margin: 0, fontSize: "var(--occ-font-size-lg)", marginBottom: "var(--occ-space-1)" }}>
+                {formatCurrency(analytics.summary.totalRevenue)}
+              </h3>
+              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "var(--occ-font-size-sm)" }}>
+                Total Revenue
+              </p>
+            </div>
+            <div style={{
+              padding: "var(--occ-space-3)",
+              border: "1px solid var(--occ-border-default)",
+              borderRadius: "var(--occ-radius-md)",
+              backgroundColor: "var(--occ-bg-surface)"
+            }}>
+              <h3 style={{ margin: 0, fontSize: "var(--occ-font-size-lg)", marginBottom: "var(--occ-space-1)" }}>
+                {analytics.summary.totalConversions}
+              </h3>
+              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "var(--occ-font-size-sm)" }}>
+                Total Conversions
+              </p>
+            </div>
+            <div style={{
+              padding: "var(--occ-space-3)",
+              border: "1px solid var(--occ-border-default)",
+              borderRadius: "var(--occ-radius-md)",
+              backgroundColor: "var(--occ-bg-surface)"
+            }}>
+              <h3 style={{ 
+                margin: 0, 
+                fontSize: "var(--occ-font-size-lg)", 
+                marginBottom: "var(--occ-space-1)",
+                color: getROIColor(analytics.summary.averageROI)
+              }}>
+                {analytics.summary.averageROI.toFixed(1)}x
+              </h3>
+              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "var(--occ-font-size-sm)" }}>
+                Average ROI
+              </p>
+            </div>
+            <div style={{
+              padding: "var(--occ-space-3)",
+              border: "1px solid var(--occ-border-default)",
+              borderRadius: "var(--occ-radius-md)",
+              backgroundColor: "var(--occ-bg-surface)"
+            }}>
+              <h3 style={{ 
+                margin: 0, 
+                fontSize: "var(--occ-font-size-lg)", 
+                marginBottom: "var(--occ-space-1)",
+                color: getEfficiencyColor(analytics.summary.overallEfficiency)
+              }}>
+                {formatPercentage(analytics.summary.overallEfficiency)}
+              </h3>
+              <p style={{ margin: 0, color: "var(--occ-text-secondary)", fontSize: "var(--occ-font-size-sm)" }}>
+                Overall Efficiency
+              </p>
             </div>
           </div>
-        ) : (
-          <p className="text-gray-500">No top performing action data available</p>
-        )}
-      </div>
 
-      {/* Performance Insights */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Insights</h3>
-        <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-sm text-gray-600">Best Performing Type:</span>
-            <span className="text-sm font-medium capitalize">{dashboardData.performance.bestType}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-gray-600">Worst Performing Type:</span>
-            <span className="text-sm font-medium capitalize">{dashboardData.performance.worstType}</span>
-          </div>
-          <div className="pt-2">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Optimization Opportunities:</h4>
-            <ul className="text-sm text-gray-600 space-y-1">
-              {dashboardData.performance.opportunities.map((opportunity: string, index: number) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
-                  {opportunity}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Predictive Insights */}
-      <div className="bg-white rounded-lg shadow p-6 lg:col-span-2">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Predictive Insights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {dashboardData.performance.insights.map((insight: string, index: number) => (
-            <div key={index} className="flex items-start p-3 bg-blue-50 rounded-lg">
-              <span className="text-blue-500 mr-2">💡</span>
-              <span className="text-sm text-blue-800">{insight}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function AttributionView({ 
-  attributionData, 
-  timeframe 
-}: { 
-  attributionData: AttributionData[]; 
-  timeframe: string;
-}) {
-  return (
-    <div className="bg-white rounded-lg shadow">
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">Attribution Analysis</h3>
-        <p className="text-sm text-gray-600">Performance metrics for {timeframe} attribution window</p>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Action
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Type
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Conversions
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Revenue
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                ROAS
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Efficiency
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {attributionData.map((data) => {
-              const windowData = data.attributionWindows[timeframe];
-              return (
-                <tr key={data.actionId}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {data.actionId}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                    {data.actionType}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {windowData.conversions}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${windowData.revenue.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {windowData.roas.toFixed(2)}x
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ width: `${data.efficiency.efficiencyScore}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm text-gray-900">{data.efficiency.efficiencyScore}%</span>
+          {/* Top Performing Actions */}
+          <div style={{ marginBottom: "var(--occ-space-4)" }}>
+            <h3 style={{ margin: 0, marginBottom: "var(--occ-space-3)" }}>Top Performing Actions</h3>
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "var(--occ-space-2)"
+            }}>
+              {analytics.performanceInsights.topPerformingActions.map((action, index) => (
+                <div key={action.actionId} style={{
+                  padding: "var(--occ-space-3)",
+                  border: "1px solid var(--occ-border-default)",
+                  borderRadius: "var(--occ-radius-md)",
+                  backgroundColor: "var(--occ-bg-surface)"
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: "var(--occ-font-size-base)" }}>
+                        {action.title}
+                      </h4>
+                      <p style={{ 
+                        margin: 0, 
+                        color: "var(--occ-text-secondary)", 
+                        fontSize: "var(--occ-font-size-sm)" 
+                      }}>
+                        {action.actionType.toUpperCase()} • {action.targetSlug}
+                      </p>
                     </div>
-                  </td>
+                    <div style={{ textAlign: "right" }}>
+                      <p style={{ 
+                        margin: 0, 
+                        fontSize: "var(--occ-font-size-sm)",
+                        color: "var(--occ-text-secondary)"
+                      }}>
+                        Expected ROI: {action.expectedROI?.toFixed(1)}x
+                      </p>
+                      <p style={{ 
+                        margin: 0, 
+                        fontSize: "var(--occ-font-size-sm)",
+                        color: "var(--occ-text-secondary)"
+                      }}>
+                        Budget: {formatCurrency(action.budget || 0)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Optimization Opportunities */}
+          {analytics.performanceInsights.optimizationOpportunities.length > 0 && (
+            <div>
+              <h3 style={{ margin: 0, marginBottom: "var(--occ-space-3)" }}>Optimization Opportunities</h3>
+              <div style={{
+                padding: "var(--occ-space-3)",
+                border: "1px solid var(--occ-border-warning)",
+                borderRadius: "var(--occ-radius-md)",
+                backgroundColor: "var(--occ-bg-warning-subdued)"
+              }}>
+                <ul style={{ margin: 0, paddingLeft: "var(--occ-space-4)" }}>
+                  {analytics.performanceInsights.optimizationOpportunities.map((opportunity, index) => (
+                    <li key={index} style={{ marginBottom: "var(--occ-space-1)" }}>
+                      {opportunity}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Attribution View */}
+      {viewMode === "attribution" && (
+        <div>
+          <h3 style={{ margin: 0, marginBottom: "var(--occ-space-3)" }}>Attribution Analysis</h3>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              fontSize: "var(--occ-font-size-sm)"
+            }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid var(--occ-border-default)" }}>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "left" }}>Action</th>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>Revenue</th>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>Conversions</th>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>Cost</th>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>ROI</th>
+                  <th style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>Efficiency</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {analytics.attributionAnalysis.map((data) => (
+                  <tr key={data.actionId} style={{ borderBottom: "1px solid var(--occ-border-subdued)" }}>
+                    <td style={{ padding: "var(--occ-space-2)" }}>
+                      <div>
+                        <div style={{ fontWeight: "var(--occ-font-weight-medium)" }}>
+                          {data.actionType.toUpperCase()}
+                        </div>
+                        <div style={{ 
+                          fontSize: "var(--occ-font-size-xs)", 
+                          color: "var(--occ-text-secondary)" 
+                        }}>
+                          {data.targetSlug}
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>
+                      {formatCurrency(data.totalAttribution.revenue)}
+                    </td>
+                    <td style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>
+                      {data.totalAttribution.conversions}
+                    </td>
+                    <td style={{ padding: "var(--occ-space-2)", textAlign: "right" }}>
+                      {formatCurrency(data.totalAttribution.cost)}
+                    </td>
+                    <td style={{ 
+                      padding: "var(--occ-space-2)", 
+                      textAlign: "right",
+                      color: getROIColor(data.totalAttribution.roi)
+                    }}>
+                      {data.totalAttribution.roi.toFixed(1)}x
+                    </td>
+                    <td style={{ 
+                      padding: "var(--occ-space-2)", 
+                      textAlign: "right",
+                      color: getEfficiencyColor(data.efficiency.efficiencyScore)
+                    }}>
+                      {formatPercentage(data.efficiency.efficiencyScore)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Recommendations View */}
+      {viewMode === "recommendations" && (
+        <div>
+          <h3 style={{ margin: 0, marginBottom: "var(--occ-space-3)" }}>Recommendations</h3>
+          
+          {/* Scaling Actions */}
+          {analytics.recommendations.scalingActions.length > 0 && (
+            <div style={{ marginBottom: "var(--occ-space-4)" }}>
+              <h4 style={{ margin: 0, marginBottom: "var(--occ-space-2)" }}>Scale These Actions</h4>
+              <div style={{
+                padding: "var(--occ-space-3)",
+                border: "1px solid var(--occ-border-success)",
+                borderRadius: "var(--occ-radius-md)",
+                backgroundColor: "var(--occ-bg-success-subdued)"
+              }}>
+                <ul style={{ margin: 0, paddingLeft: "var(--occ-space-4)" }}>
+                  {analytics.recommendations.scalingActions.map((action) => (
+                    <li key={action.actionId} style={{ marginBottom: "var(--occ-space-1)" }}>
+                      {action.title} ({action.actionType.toUpperCase()})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* Optimization Actions */}
+          {analytics.recommendations.optimizationActions.length > 0 && (
+            <div style={{ marginBottom: "var(--occ-space-4)" }}>
+              <h4 style={{ margin: 0, marginBottom: "var(--occ-space-2)" }}>Optimize These Actions</h4>
+              <div style={{
+                padding: "var(--occ-space-3)",
+                border: "1px solid var(--occ-border-warning)",
+                borderRadius: "var(--occ-radius-md)",
+                backgroundColor: "var(--occ-bg-warning-subdued)"
+              }}>
+                <ul style={{ margin: 0, paddingLeft: "var(--occ-space-4)" }}>
+                  {analytics.recommendations.optimizationActions.map((action, index) => (
+                    <li key={index} style={{ marginBottom: "var(--occ-space-1)" }}>
+                      {action}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* Budget Adjustments */}
+          <div>
+            <h4 style={{ margin: 0, marginBottom: "var(--occ-space-2)" }}>Budget Adjustments</h4>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--occ-space-3)" }}>
+              {analytics.recommendations.budgetAdjustments.increase.length > 0 && (
+                <div style={{
+                  padding: "var(--occ-space-3)",
+                  border: "1px solid var(--occ-border-success)",
+                  borderRadius: "var(--occ-radius-md)",
+                  backgroundColor: "var(--occ-bg-success-subdued)"
+                }}>
+                  <h5 style={{ margin: 0, marginBottom: "var(--occ-space-2)", color: "var(--occ-color-success)" }}>
+                    Increase Budget
+                  </h5>
+                  <ul style={{ margin: 0, paddingLeft: "var(--occ-space-4)" }}>
+                    {analytics.recommendations.budgetAdjustments.increase.map((action, index) => (
+                      <li key={index} style={{ marginBottom: "var(--occ-space-1)" }}>
+                        {action}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {analytics.recommendations.budgetAdjustments.decrease.length > 0 && (
+                <div style={{
+                  padding: "var(--occ-space-3)",
+                  border: "1px solid var(--occ-border-error)",
+                  borderRadius: "var(--occ-radius-md)",
+                  backgroundColor: "var(--occ-bg-error-subdued)"
+                }}>
+                  <h5 style={{ margin: 0, marginBottom: "var(--occ-space-2)", color: "var(--occ-color-error)" }}>
+                    Decrease Budget
+                  </h5>
+                  <ul style={{ margin: 0, paddingLeft: "var(--occ-space-4)" }}>
+                    {analytics.recommendations.budgetAdjustments.decrease.map((action, index) => (
+                      <li key={index} style={{ marginBottom: "var(--occ-space-1)" }}>
+                        {action}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
-function RecommendationsView({ 
-  recommendations, 
-  performanceInsights 
-}: { 
-  recommendations: any; 
-  performanceInsights: any;
-}) {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Scale Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <span className="text-green-500 mr-2">📈</span>
-          Scale Actions ({recommendations.scale.length})
-        </h3>
-        {recommendations.scale.length > 0 ? (
-          <div className="space-y-2">
-            {recommendations.scale.map((actionId: string) => (
-              <div key={actionId} className="flex items-center justify-between p-2 bg-green-50 rounded">
-                <span className="text-sm font-medium text-green-800">{actionId}</span>
-                <span className="text-xs text-green-600">High Performance</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm">No actions ready for scaling</p>
-        )}
-      </div>
-
-      {/* Optimize Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <span className="text-yellow-500 mr-2">⚡</span>
-          Optimize Actions ({recommendations.optimize.length})
-        </h3>
-        {recommendations.optimize.length > 0 ? (
-          <div className="space-y-2">
-            {recommendations.optimize.map((actionId: string) => (
-              <div key={actionId} className="flex items-center justify-between p-2 bg-yellow-50 rounded">
-                <span className="text-sm font-medium text-yellow-800">{actionId}</span>
-                <span className="text-xs text-yellow-600">Needs Optimization</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm">No actions need optimization</p>
-        )}
-      </div>
-
-      {/* Pause Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <span className="text-red-500 mr-2">⏸️</span>
-          Pause Actions ({recommendations.pause.length})
-        </h3>
-        {recommendations.pause.length > 0 ? (
-          <div className="space-y-2">
-            {recommendations.pause.map((actionId: string) => (
-              <div key={actionId} className="flex items-center justify-between p-2 bg-red-50 rounded">
-                <span className="text-sm font-medium text-red-800">{actionId}</span>
-                <span className="text-xs text-red-600">Low Performance</span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm">No actions need to be paused</p>
-        )}
-      </div>
-
-      {/* Budget Recommendations */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-          <span className="text-blue-500 mr-2">💰</span>
-          Budget Recommendations ({recommendations.budget.length})
-        </h3>
-        {recommendations.budget.length > 0 ? (
-          <div className="space-y-3">
-            {recommendations.budget.map((rec: any, index: number) => (
-              <div key={index} className="p-3 bg-blue-50 rounded">
-                <div className="flex justify-between items-start mb-2">
-                  <span className="text-sm font-medium text-blue-900">{rec.actionId}</span>
-                  <span className="text-xs text-blue-600">
-                    Expected ROI: {rec.expectedROI.toFixed(2)}x
-                  </span>
-                </div>
-                <div className="text-xs text-blue-700">
-                  Current: ${rec.currentBudget.toLocaleString()} → 
-                  Recommended: ${rec.recommendedBudget.toLocaleString()}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-sm">No budget recommendations available</p>
-        )}
-      </div>
-    </div>
-  );
-}
-
-export default GrowthEngineAnalyticsComponent;

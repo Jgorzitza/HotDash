@@ -15,3 +15,5 @@ export { SocialPerformanceTile } from "./SocialPerformanceTile";
 export { SEOImpactTile } from "./SEOImpactTile";
 export { AdsROASTile } from "./AdsROASTile";
 export { GrowthMetricsTile } from "./GrowthMetricsTile";
+// Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+export { GrowthEngineAnalyticsTile } from "./GrowthEngineAnalyticsTile";
