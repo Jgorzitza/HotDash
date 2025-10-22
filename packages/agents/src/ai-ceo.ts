@@ -1,5 +1,6 @@
 import { Agent, tool, run } from "@openai/agents";
 import { z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 /**
  * CEO Assistant Agent
@@ -28,7 +29,7 @@ const ShopifyOrdersSchema = z.object({
 const shopifyOrders = tool({
   name: "shopify.orders",
   description: "Query Shopify orders - list, get details, cancel, or refund orders",
-  inputSchema: ShopifyOrdersSchema,
+  inputSchema: zodToJsonSchema(ShopifyOrdersSchema, "ShopifyOrdersSchema") as any,
   async handler({ action, orderId, limit, status }) {
     // Call backend API route: /api/ceo-agent/shopify/orders
     // Backend will use Shopify Admin GraphQL with server-side API key
@@ -73,7 +74,7 @@ const ShopifyProductsSchema = z.object({
 const shopifyProducts = tool({
   name: "shopify.products",
   description: "Query Shopify products and inventory - list products, get details, update inventory levels",
-  inputSchema: ShopifyProductsSchema,
+  inputSchema: zodToJsonSchema(ShopifyProductsSchema, "ShopifyProductsSchema") as any,
   async handler({ action, productId, variantId, inventoryQuantity, limit }) {
     const body = {
       action,
@@ -116,7 +117,7 @@ const ShopifyCustomersSchema = z.object({
 const shopifyCustomers = tool({
   name: "shopify.customers",
   description: "Query Shopify customers - list, search, or get customer details and order history",
-  inputSchema: ShopifyCustomersSchema,
+  inputSchema: zodToJsonSchema(ShopifyCustomersSchema, "ShopifyCustomersSchema") as any,
   async handler({ action, customerId, query, limit }) {
     const body = {
       action,
@@ -171,7 +172,7 @@ const SupabaseAnalyticsSchema = z.object({
 const supabaseAnalytics = tool({
   name: "supabase.analytics",
   description: "Run analytics queries on Supabase - revenue analysis, top products, customer metrics, decision logs",
-  inputSchema: SupabaseAnalyticsSchema,
+  inputSchema: zodToJsonSchema(SupabaseAnalyticsSchema, "SupabaseAnalyticsSchema") as any,
   async handler({ query, startDate, endDate, limit, customSql }) {
     const body = {
       query,
@@ -225,7 +226,7 @@ const ChatwootInsightsSchema = z.object({
 const chatwootInsights = tool({
   name: "chatwoot.insights",
   description: "Analyze customer support data - SLA breaches, conversation summaries, ticket trends, response times",
-  inputSchema: ChatwootInsightsSchema,
+  inputSchema: zodToJsonSchema(ChatwootInsightsSchema, "ChatwootInsightsSchema") as any,
   async handler({ action, startDate, endDate, limit, status }) {
     const body = {
       action,
@@ -271,7 +272,7 @@ const LlamaIndexSchema = z.object({
 const llamaIndexQuery = tool({
   name: "llamaindex.query",
   description: "Search knowledge base using LlamaIndex - query indexed documents, product documentation, policies",
-  inputSchema: LlamaIndexSchema,
+  inputSchema: zodToJsonSchema(LlamaIndexSchema, "LlamaIndexSchema") as any,
   async handler({ query, topK, filters }) {
     const body = {
       query,
@@ -323,7 +324,7 @@ const GoogleAnalyticsSchema = z.object({
 const googleAnalytics = tool({
   name: "google.analytics",
   description: "Analyze website traffic and conversion data - traffic overview, landing pages, user behavior, acquisition",
-  inputSchema: GoogleAnalyticsSchema,
+  inputSchema: zodToJsonSchema(GoogleAnalyticsSchema, "GoogleAnalyticsSchema") as any,
   async handler({ metric, startDate, endDate, dimensions, limit }) {
     const body = {
       metric,
