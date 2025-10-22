@@ -1,9 +1,10 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
+import { useLoaderData, useFetcher } from "react-router";
 import { useState } from "react";
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
 import { useBrowserNotifications } from "../hooks/useBrowserNotifications";
+import { getUserPreferences, getDefaultPreferences, saveUserPreferences } from "../services/userPreferences";
 
 /**
  * Settings Page
@@ -46,23 +47,35 @@ export async function loader({ request }: LoaderFunctionArgs) {
     operatorEmail = session.shop; // In production, fetch from user table
   }
 
-  // TODO (Phase 11): Load from Supabase user_preferences
-  // For now, return defaults
-  const preferences = {
-    visibleTiles: [
-      "ops-metrics",
-      "sales-pulse",
-      "fulfillment",
-      "inventory",
-      "cx-escalations",
-      "seo-content",
-      "idea-pool",
-      "ceo-agent",
-      "unread-messages",
-    ],
-    theme: "auto" as const,
-    defaultView: "grid" as const,
-  };
+  // Load user preferences from database
+  let preferences;
+  try {
+    const userPrefs = await getUserPreferences(shopDomain, operatorEmail);
+    if (userPrefs) {
+      preferences = {
+        visibleTiles: userPrefs.visible_tiles,
+        theme: userPrefs.theme,
+        defaultView: userPrefs.default_view,
+      };
+    } else {
+      // Use defaults if no preferences found
+      const defaults = getDefaultPreferences();
+      preferences = {
+        visibleTiles: defaults.visible_tiles,
+        theme: defaults.theme,
+        defaultView: defaults.default_view,
+      };
+    }
+  } catch (error) {
+    console.error("Error loading user preferences:", error);
+    // Fallback to defaults
+    const defaults = getDefaultPreferences();
+    preferences = {
+      visibleTiles: defaults.visible_tiles,
+      theme: defaults.theme,
+      defaultView: defaults.default_view,
+    };
+  }
 
   const data: LoaderData = {
     shopDomain,
@@ -73,10 +86,88 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return Response.json(data);
 }
 
+export async function action({ request }: ActionFunctionArgs) {
+  const isTestMode = isMockMode(request);
+  
+  let shopDomain = "test-shop.myshopify.com";
+  let operatorEmail = "test@example.com";
+
+  if (!isTestMode) {
+    const { session } = await authenticate.admin(request);
+    if (!session?.shop) {
+      return Response.json({ error: "Not authenticated" }, { status: 401 });
+    }
+    shopDomain = session.shop;
+    operatorEmail = session.shop;
+  }
+
+  const formData = await request.formData();
+  const action = formData.get("action") as string;
+
+  try {
+    if (action === "save-preferences") {
+      const visibleTiles = JSON.parse(formData.get("visible_tiles") as string || "[]");
+      const theme = formData.get("theme") as "light" | "dark" | "auto";
+      const defaultView = formData.get("default_view") as "grid" | "list";
+      const autoRefresh = formData.get("auto_refresh") === "true";
+      const refreshInterval = parseInt(formData.get("refresh_interval") as string || "60");
+      const desktopNotifications = formData.get("desktop_notifications") === "true";
+      const notificationSound = formData.get("notification_sound") === "true";
+      const toastNotifications = formData.get("toast_notifications") === "true";
+
+      const result = await saveUserPreferences(shopDomain, operatorEmail, {
+        visible_tiles: visibleTiles,
+        theme,
+        default_view: defaultView,
+        auto_refresh: autoRefresh,
+        refresh_interval: refreshInterval,
+        desktop_notifications: desktopNotifications,
+        notification_sound: notificationSound,
+        toast_notifications: toastNotifications,
+      });
+
+      if (result.success) {
+        return Response.json({ success: true });
+      } else {
+        return Response.json({ error: result.error }, { status: 500 });
+      }
+    }
+
+    return Response.json({ error: "Invalid action" }, { status: 400 });
+  } catch (error) {
+    console.error("Error in settings action:", error);
+    return Response.json(
+      { error: error instanceof Error ? error.message : "Unknown error" },
+      { status: 500 }
+    );
+  }
+}
+
 export default function SettingsPage() {
   const data = useLoaderData<LoaderData>();
   const [selectedTab, setSelectedTab] = useState(0);
   const browserNotifications = useBrowserNotifications();
+  const fetcher = useFetcher();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSavePreferences = async () => {
+    setIsSubmitting(true);
+    
+    const formData = new FormData();
+    formData.append("action", "save-preferences");
+    formData.append("visible_tiles", JSON.stringify(data.preferences.visibleTiles));
+    formData.append("theme", data.preferences.theme);
+    formData.append("default_view", data.preferences.defaultView);
+    formData.append("auto_refresh", "true");
+    formData.append("refresh_interval", "60");
+    formData.append("desktop_notifications", "true");
+    formData.append("notification_sound", "true");
+    formData.append("toast_notifications", "true");
+
+    fetcher.submit(formData, { method: "post" });
+    
+    setTimeout(() => setIsSubmitting(false), 1000);
+  };
 
   const tabs = [
     { id: "dashboard", content: "Dashboard", label: "Dashboard settings" },
@@ -455,6 +546,32 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
+
+      {/* Save Button */}
+      <div style={{
+        position: "fixed",
+        bottom: "var(--occ-space-4)",
+        right: "var(--occ-space-4)",
+        zIndex: 1000,
+      }}>
+        <button
+          onClick={handleSavePreferences}
+          disabled={isSubmitting}
+          style={{
+            padding: "var(--occ-space-3) var(--occ-space-4)",
+            background: isSubmitting ? "var(--occ-bg-disabled)" : "var(--occ-bg-primary)",
+            color: isSubmitting ? "var(--occ-text-disabled)" : "var(--occ-text-on-primary)",
+            border: "none",
+            borderRadius: "var(--occ-radius-md)",
+            cursor: isSubmitting ? "not-allowed" : "pointer",
+            fontSize: "var(--occ-font-size-sm)",
+            fontWeight: "var(--occ-font-weight-medium)",
+            boxShadow: "var(--occ-shadow-lg)",
+          }}
+        >
+          {isSubmitting ? "Saving..." : "Save Settings"}
+        </button>
+      </div>
     </s-page>
   );
 }

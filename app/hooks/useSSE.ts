@@ -43,9 +43,12 @@ export function useSSE(url: string, enabled = true) {
   const [status, setStatus] = useState<ConnectionStatus>("disconnected");
   const [lastMessage, setLastMessage] = useState<SSEMessage | null>(null);
   const [lastHeartbeat, setLastHeartbeat] = useState<Date | null>(null);
+  const [connectionQuality, setConnectionQuality] = useState<"excellent" | "good" | "poor" | "disconnected">("disconnected");
   const eventSourceRef = useRef<EventSource | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttemptsRef = useRef(0);
+  const heartbeatIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastMessageTimeRef = useRef<Date | null>(null);
 
   const connect = useCallback(() => {
     if (!enabled || typeof window === "undefined") return;
@@ -59,7 +62,30 @@ export function useSSE(url: string, enabled = true) {
       eventSource.onopen = () => {
         console.log("[SSE] Connection established");
         setStatus("connected");
+        setConnectionQuality("excellent");
         reconnectAttemptsRef.current = 0;
+        lastMessageTimeRef.current = new Date();
+        
+        // Start heartbeat monitoring
+        if (heartbeatIntervalRef.current) {
+          clearInterval(heartbeatIntervalRef.current);
+        }
+        heartbeatIntervalRef.current = setInterval(() => {
+          const now = new Date();
+          const lastMessage = lastMessageTimeRef.current;
+          
+          if (lastMessage) {
+            const timeSinceLastMessage = now.getTime() - lastMessage.getTime();
+            
+            if (timeSinceLastMessage > 30000) { // 30 seconds
+              setConnectionQuality("poor");
+            } else if (timeSinceLastMessage > 10000) { // 10 seconds
+              setConnectionQuality("good");
+            } else {
+              setConnectionQuality("excellent");
+            }
+          }
+        }, 5000);
       };
 
       eventSource.onerror = () => {
@@ -90,10 +116,12 @@ export function useSSE(url: string, enabled = true) {
       eventSource.addEventListener("approval-update", (event) => {
         try {
           const data = JSON.parse(event.data);
+          const now = new Date();
+          lastMessageTimeRef.current = now;
           setLastMessage({
             type: "approval-update",
             data,
-            timestamp: new Date().toISOString(),
+            timestamp: now.toISOString(),
           });
         } catch (error) {
           console.error("[SSE] Failed to parse approval-update:", error);
@@ -104,10 +132,12 @@ export function useSSE(url: string, enabled = true) {
       eventSource.addEventListener("tile-refresh", (event) => {
         try {
           const data = JSON.parse(event.data);
+          const now = new Date();
+          lastMessageTimeRef.current = now;
           setLastMessage({
             type: "tile-refresh",
             data,
-            timestamp: new Date().toISOString(),
+            timestamp: now.toISOString(),
           });
         } catch (error) {
           console.error("[SSE] Failed to parse tile-refresh:", error);
@@ -209,7 +239,12 @@ export function useSSE(url: string, enabled = true) {
       clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = null;
     }
+    if (heartbeatIntervalRef.current) {
+      clearInterval(heartbeatIntervalRef.current);
+      heartbeatIntervalRef.current = null;
+    }
     setStatus("disconnected");
+    setConnectionQuality("disconnected");
   }, []);
 
   // Connect on mount, disconnect on unmount
@@ -246,6 +281,7 @@ export function useSSE(url: string, enabled = true) {
     status,
     lastMessage,
     lastHeartbeat,
+    connectionQuality,
     isConnected: status === "connected",
     connect,
     disconnect,

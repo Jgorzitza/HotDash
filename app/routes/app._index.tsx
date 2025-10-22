@@ -28,6 +28,7 @@ import { BannerAlerts } from "../components/notifications/BannerAlerts";
 import { useBannerAlerts } from "../hooks/useBannerAlerts";
 import { useSSE } from "../hooks/useSSE";
 import { useNotifications } from "../hooks/useNotifications";
+import { ConnectionStatusIndicator } from "../components/indicators/ConnectionStatusIndicator";
 import { useState, useEffect, useCallback } from "react";
 
 // @dnd-kit imports for drag & drop tile reordering (ENG-014)
@@ -656,7 +657,7 @@ export default function OperatorDashboard() {
   const notifications = useNotifications();
 
   // Real-time SSE connection (Phase 5 - ENG-023)
-  const { status: sseStatus, lastMessage } = useSSE("/api/sse/updates", true);
+  const { status: sseStatus, lastMessage, connectionQuality } = useSSE("/api/sse/updates", true);
 
   // Drag & Drop: Tile order state (ENG-014)
   const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
@@ -979,6 +980,13 @@ export default function OperatorDashboard() {
     <s-page heading="Operator Control Center">
       {/* Banner Alerts (Phase 4 - ENG-012) */}
       {bannerAlerts.length > 0 && <BannerAlerts alerts={bannerAlerts} />}
+      
+      {/* Connection Status Indicator (ENG-020) */}
+      <ConnectionStatusIndicator 
+        status={sseStatus} 
+        quality={connectionQuality}
+        lastMessage={lastMessage}
+      />
 
       {data.mode === "mock" && (
         <div
