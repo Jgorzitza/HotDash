@@ -55,9 +55,11 @@ git branch --show-current  # Verify: should show manager-reopen-20251021
 
 ---
 
-## 🚀 PHASE 9: Customer-Front Agent + PII Card (4 hours) — P0 PRIORITY
+## 🚀 PHASE 9: PII Card Component (3 hours) — P0 PRIORITY
 
-**Objective**: Build PII Card component to enable redacted public replies with operator-only full customer details
+**Objective**: Build PII redaction utility and PII Card component for operator-only customer details
+
+**Scope Reduced**: ENG-031 (CX Escalation Modal Integration) DEFERRED to Phase 11-12 due to architecture mismatch
 
 ### Context
 **Growth Engine Handoff Pattern**:
@@ -226,72 +228,37 @@ interface PIICardProps {
 
 ---
 
-### ENG-031: CX Escalation Modal Integration (1h)
+### ENG-031: CX Escalation Modal Integration — ⏸️ DEFERRED TO PHASE 11-12
 
-**File**: `app/components/modals/CXEscalationModal.tsx` (existing file - UPDATE)
+**Status**: DEFERRED (Architecture Decision Required)
 
-**Current State**: Single modal with draft reply only
+**Why Deferred**: Architecture mismatch between order-based PII Card and Chatwoot's multi-context conversations
 
-**Required Changes**:
+**The Problem**:
+- PII Card designed for order inquiries (requires: orderId, shipping address, tracking, line items)
+- Chatwoot conversations span multiple contexts:
+  - **Order-based CX** (30-40%): "Where's my order #1234?" → ✅ Has orderId, can use PII Card
+  - **Non-order CX** (60-70%): "Do you ship to Canada?", "Is this in stock?" → ❌ No orderId, PII Card would crash
+- Current CX Escalation Modal design assumes all conversations have order context (they don't)
 
-1. **Split UI into 2 sections** (side-by-side or tabs):
-   - **Left/Top**: Public Reply (redacted) — sent to customer
-   - **Right/Bottom**: PII Card (full details) — operator-only reference
+**Architectural Options** (decision deferred to Phase 11-12):
+- **Option A**: Conditional display (show PII Card only if order context exists)
+- **Option B**: Separate modals (CX Escalation for general, Order Inquiry for order-based)
+- **Option C**: Generic Customer Context (redesign PII Card to handle both order and non-order scenarios)
 
-2. **Update data flow**:
-   ```typescript
-   // Fetch full customer data from Shopify
-   const fullCustomerData = await fetchCustomerDetails(orderId);
-   
-   // Generate redacted version for public reply
-   const redactedData = redactCustomerInfo(fullCustomerData);
-   
-   // Display both:
-   // - Draft reply uses redactedData (masked)
-   // - PII Card uses fullCustomerData (full details)
-   ```
+**When to Resolve**: Phase 11-12 (Customer-Front Agent implementation)
+- Will clarify conversation handoff patterns (transfer_to_accounts vs transfer_to_storefront)
+- Can make informed architectural decision with full context understanding
 
-3. **Layout**:
-   - **Option A** (Side-by-side):
-     ```
-     |--------------------------|--------------------------|
-     | Public Reply (Redacted)  | PII Card (Full Details) |
-     | [Draft text area]        | [PIICard component]      |
-     | [Preview with masked]    | [Warning banner]         |
-     | [Approve/Reject buttons] | [All customer PII]       |
-     |--------------------------|--------------------------|
-     ```
-   
-   - **Option B** (Tabs):
-     ```
-     [Public Reply] [PII Card (Operator Only)]
-     |------------------------------------------------|
-     | [Active tab content]                          |
-     |------------------------------------------------|
-     ```
+**What's Already Built** (still valuable):
+- ✅ ENG-029: PII redaction utility (works for both scenarios)
+- ✅ ENG-030: PII Card component (can be integrated once architecture resolved)
 
-4. **Validation**:
-   - Before sending, verify NO full PII in public reply text
-   - Check: No unmasked email/phone/address in draft
-   - Warning if PII detected: "⚠️ Full PII detected in public reply. Use masked version."
-
-**Tests**: `app/components/modals/CXEscalationModal.test.tsx` (UPDATE)
-- Public reply shows redacted data only
-- PII Card shows full details
-- Validation catches unmasked PII in draft
-- Approve button sends redacted reply only
-- PII Card NOT included in outbound message
-
-**Acceptance**:
-- ✅ Modal split into public reply + PII Card sections
-- ✅ Redaction utility integrated
-- ✅ Validation prevents full PII in public reply
-- ✅ Tests updated and passing
-- ✅ Designer validated UI/UX
-
-**MCP Required**: 
-- Shopify Dev MCP → Polaris Layout, Tabs components
-- Context7 → React Router 7 data loading patterns
+**Next Steps** (Phase 11-12):
+1. Build Customer-Front Agent and understand conversation patterns
+2. Choose Option A, B, or C based on actual usage patterns
+3. Implement CX Escalation Modal integration with chosen architecture
+4. Test with both order-based and non-order conversations
 
 ---
 
