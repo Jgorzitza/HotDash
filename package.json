@@ -15,6 +15,7 @@
     "docker-start": "npm run setup && npm run start",
     "setup": "prisma generate",
     "seed": "tsx prisma/seeds/dashboard-facts.seed.ts",
+    "verify:db": "npx tsx --env-file=.env scripts/verify-prisma-connection.ts",
     "ops:backfill-chatwoot": "npx -y tsx scripts/ops/backfill-chatwoot-breach.ts",
     "ops:check-chatwoot-health": "node scripts/ops/check-chatwoot-health.mjs",
     "ops:nightly-metrics": "npx -y tsx scripts/ops/run-nightly-metrics.ts",

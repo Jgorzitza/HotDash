@@ -102,12 +102,15 @@
   # git push origin daily/2025-10-20
   ```
 
-- [ ] **Announce Branch in Feedback**:
-  ```md
-  ## HH:MM - Manager: Daily Branch Announced
-  **Branch**: daily/2025-10-20 (or manager-reopen-20251020)
-  **All agents**: Checkout this branch and commit directly
-  **File Ownership**: See RULES.md table
+- [ ] **Announce Branch** (database + optional markdown):
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: 'manager',
+    action: 'branch_announced',
+    rationale: 'Daily branch: manager-reopen-20251020 - all agents should checkout and commit',
+    evidenceUrl: 'docs/RULES.md'
+  });
   ```
 
 - [ ] **Monitor Commits Throughout Day**:
@@ -120,7 +123,16 @@
 
 - [ ] **Coordinate File Conflicts**:
   - If Agent A needs file owned by Agent B → Assign sequentially
-  - Log coordination in manager feedback: "Engineer waiting for Data to finish prisma/schema.prisma"
+  - Log coordination via `logDecision()`:
+    ```typescript
+    await logDecision({
+      scope: 'build',
+      actor: 'manager',
+      action: 'coordination',
+      rationale: 'Engineer waiting for Data to finish prisma/schema.prisma',
+      evidenceUrl: 'prisma/schema.prisma'
+    });
+    ```
 
 ## 5) Project status review and Agent direction (3–5 min)
 
@@ -130,14 +142,27 @@
 - [ ] **CI** green on active PRs (Docs Policy, Danger, Gitleaks, AI Config)
 - [ ] **Main** releasable (build/smoke pass)
 
-### 5.2 Feedback sweep **first** (60–90 sec)
+### 5.2 Feedback sweep **first** (10–30 sec) [DATABASE-DRIVEN]
 
-For each active agent:
+**NEW (2025-10-22)**: Query database instead of reading 17 markdown files
 
-- [ ] Open `feedback/<agent>/<YYYY-MM-DD>.md`
-- [ ] Extract **blockers**, unanswered questions, unexpected findings
-- [ ] Tag each blocker with **owner** and **ETA** (you or agent)
-- [ ] If a decision is needed, add a short **Issue comment** on the task (not in feedback)
+```bash
+# 1. Check blocked tasks (< 1 sec)
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+
+# 2. Check all agent status (< 1 sec)
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+
+# 3. Check completed work today (< 1 sec)
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+```
+
+- [ ] Review blocked tasks output - note `blockedBy` dependencies
+- [ ] Tag each blocker with **owner** and **ETA** 
+- [ ] Only open markdown feedback files for blocked tasks (deep dive)
+- [ ] If a decision is needed, add a short **Issue comment** on the task
+
+**Time Savings**: 60-90 sec → 10-30 sec (80% reduction)
 
 ### 5.3 Issues & PRs (gate sanity) (60–90 sec)
 
@@ -150,11 +175,24 @@ For each **Issue (label: task)** and its linked PR:
 - [ ] **Ship Gate (if merging today):** rollback noted; changelog if user-visible
 - [ ] Missing anything? Comment on the PR with the gap and reassign
 
-### 5.4 Prioritize blockers (30–45 sec)
+### 5.4 Prioritize blockers (30–45 sec) [DATABASE-DRIVEN]
 
+From `query-blocked-tasks.ts` output:
+
+- [ ] Review blocker summary (groups agents by what they're blocked on)
 - [ ] Rank top 3 blockers (env/data/API/review)
 - [ ] Decide per blocker: **unblock now**, **de-scope**, or **timebox & escalate**
-- [ ] Record the decision in the **Issue comment** (link from feedback)
+- [ ] Record the decision in the **Issue comment**
+- [ ] Log resolution via `logDecision()` when unblocked:
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: 'manager',
+    action: 'blocker_cleared',
+    rationale: 'BLOCKER-XXX: Applied DATA-017 migration',
+    evidenceUrl: 'feedback/manager/2025-10-22.md'
+  });
+  ```
 
 ### 5.5 Update agent direction (45–60 sec)
 
@@ -210,10 +248,21 @@ For each active agent:
 
 - [ ] Create/resize **Tasks** (≤ 2-day molecules) and set in the Issue:
       **owner**, **DoD**, and **Allowed paths** (fnmatch).
-- [ ] Update `docs/directions/<agent>.md` with **today’s objective** + **constraints**,
+- [ ] Update `docs/directions/<agent>.md` with **today's objective** + **constraints**,
       and link the **Issue** (and PR if open).
-- [ ] Move any blockers from yesterday’s `feedback/<agent>/<YYYY-MM-DD>.md`
+- [ ] Move any blockers from `query-blocked-tasks.ts` output
       into the **Issue** as a comment with **resolver + ETA**.
-- [ ] (Optional) Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`.
+- [ ] Log day start via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: 'manager',
+    taskId: 'MANAGER-STARTUP',
+    status: 'completed',
+    action: 'startup_complete',
+    rationale: 'Manager startup checklist complete, all 17 agents have direction',
+    evidenceUrl: 'docs/runbooks/manager_startup_checklist.md'
+  });
+  ```
 - [ ] Dev mode only: if UI needs sample approvals, use **fixtures** with
       `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.

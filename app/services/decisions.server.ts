@@ -13,6 +13,16 @@ export interface LogDecisionInput {
   shopDomain?: string;
   externalRef?: string;
   payload?: Prisma.InputJsonValue;
+  
+  // Enhanced fields for feedback tracking (added 2025-10-22)
+  taskId?: string;              // Task ID from direction file (e.g., 'ENG-029')
+  status?: 'pending' | 'in_progress' | 'completed' | 'blocked' | 'cancelled';
+  progressPct?: number;         // Progress percentage 0-100
+  blockerDetails?: string;      // Description of blocker if status is 'blocked'
+  blockedBy?: string;           // Task ID or resource blocking this task
+  durationEstimate?: number;    // Estimated duration in hours
+  durationActual?: number;      // Actual duration in hours
+  nextAction?: string;          // Agent's stated next action
 }
 
 export async function logDecision(input: LogDecisionInput) {
@@ -26,6 +36,16 @@ export async function logDecision(input: LogDecisionInput) {
       shopDomain: input.shopDomain,
       externalRef: input.externalRef,
       payload: input.payload ?? Prisma.JsonNull,
+      
+      // Enhanced feedback tracking fields
+      taskId: input.taskId,
+      status: input.status,
+      progressPct: input.progressPct,
+      blockerDetails: input.blockerDetails,
+      blockedBy: input.blockedBy,
+      durationEstimate: input.durationEstimate,
+      durationActual: input.durationActual,
+      nextAction: input.nextAction,
     },
   });
 

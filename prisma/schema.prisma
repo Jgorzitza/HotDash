@@ -59,7 +59,20 @@ model DecisionLog {
   payload     Json?
   createdAt   DateTime @default(now())
 
+  // Enhanced feedback tracking fields (added 2025-10-22)
+  taskId              String?  @map("taskId")
+  status              String?  @map("status")
+  progressPct         Int?     @map("progressPct")
+  blockerDetails      String?  @map("blockerDetails")
+  blockedBy           String?  @map("blockedBy")
+  durationEstimate    Decimal? @map("durationEstimate") @db.Decimal(5, 2)
+  durationActual      Decimal? @map("durationActual") @db.Decimal(5, 2)
+  nextAction          String?  @map("nextAction")
+
   @@index([scope, createdAt])
+  @@index([actor, status, createdAt])
+  @@index([taskId])
+  @@index([status, createdAt])
   @@schema("public")
 }
 

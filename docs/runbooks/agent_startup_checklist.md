@@ -93,7 +93,16 @@ git push origin daily/2025-10-20
 
 - [ ] Read `docs/directions/<agent>.md` — note **today's objective** and **constraints**.
 - [ ] Open your **Issue(s)**; copy the **DoD** and confirm **Allowed paths** (fnmatch).
-- [ ] Start today's header in `feedback/<agent>/<YYYY-MM-DD>.md` with your plan.
+- [ ] Log startup via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: 'build',
+    actor: '<your-agent>',
+    action: 'startup_complete',
+    rationale: 'Agent startup checklist complete, ready to work on {TASK-ID}',
+    evidenceUrl: 'docs/runbooks/agent_startup_checklist.md'
+  });
+  ```
 
 ## 2.1) Growth Engine Evidence Setup (NEW - Effective 2025-10-21) (30 sec)
 
@@ -129,11 +138,32 @@ git push origin daily/2025-10-20
 - [ ] Work only inside the Issue’s **Allowed paths** (Danger will fail out-of-scope diffs).
 - [ ] Do NOT create branches; Manager controls all git operations.
 
-## 5) Feedback Discipline (throughout)
+## 5) Progress Reporting (throughout) [DATABASE-DRIVEN]
 
-- [ ] Append-only entries to `feedback/<agent>/<YYYY-MM-DD>.md`:
-      commands + results, blockers (minimal repro), next intent.
+**PRIMARY METHOD**: Call `logDecision()` every 2 hours or at task milestones
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+
+await logDecision({
+  scope: 'build',
+  actor: '<your-agent>',
+  taskId: '{TASK-ID}',
+  status: 'in_progress',            // or 'completed', 'blocked'
+  progressPct: 50,                  // 0-100
+  action: 'task_progress',
+  rationale: 'What you did + evidence',
+  evidenceUrl: 'artifacts/<agent>/2025-10-22/task.md',
+  durationActual: 2.0,
+  nextAction: 'What you\'re doing next'
+});
+```
+
+**BACKUP METHOD** (optional): Markdown file `feedback/<agent>/<YYYY-MM-DD>.md`
+
 - [ ] Do **not** create new `.md` beyond allow-list; don't edit other agents' files.
+
+**See**: Your direction file has complete `logDecision()` examples
 
 ## 6) Work Protocol
 

@@ -57,14 +57,112 @@ git pull origin manager-reopen-20251021
 
 ---
 
+
+## 📊 MANDATORY: Progress Reporting (Database Feedback)
+
+**Report progress via `logDecision()` every 2 hours minimum OR at task milestones.**
+
+### Basic Usage
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+
+// When starting a task
+await logDecision({
+  scope: 'build',
+  actor: 'manager',
+  taskId: '{TASK-ID}',              // Task ID from this direction file
+  status: 'in_progress',            // pending | in_progress | completed | blocked | cancelled
+  progressPct: 0,                   // 0-100 percentage
+  action: 'task_started',
+  rationale: 'Starting {task description}',
+  evidenceUrl: 'docs/directions/manager.md',
+  durationEstimate: 4.0             // Estimated hours
+});
+
+// Progress update (every 2 hours)
+await logDecision({
+  scope: 'build',
+  actor: 'manager',
+  taskId: '{TASK-ID}',
+  status: 'in_progress',
+  progressPct: 50,                  // Update progress
+  action: 'task_progress',
+  rationale: 'Component implemented, writing tests',
+  evidenceUrl: 'artifacts/manager/2025-10-22/{task}.md',
+  durationActual: 2.0,              // Hours spent so far
+  nextAction: 'Complete integration tests'
+});
+
+// When completed
+await logDecision({
+  scope: 'build',
+  actor: 'manager',
+  taskId: '{TASK-ID}',
+  status: 'completed',              // CRITICAL for manager queries
+  progressPct: 100,
+  action: 'task_completed',
+  rationale: '{Task name} complete, {X}/{X} tests passing',
+  evidenceUrl: 'artifacts/manager/2025-10-22/{task}-complete.md',
+  durationEstimate: 4.0,
+  durationActual: 3.5,              // Compare estimate vs actual
+  nextAction: 'Starting {NEXT-TASK-ID}'
+});
+```
+
+### When Blocked (CRITICAL)
+
+**Manager queries blocked tasks FIRST during consolidation**:
+
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: 'manager',
+  taskId: '{TASK-ID}',
+  status: 'blocked',                // Manager sees this in query-blocked-tasks.ts
+  progressPct: 40,
+  blockerDetails: 'Waiting for {dependency} to complete',
+  blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
+  action: 'task_blocked',
+  rationale: 'Cannot proceed because {reason}',
+  evidenceUrl: 'feedback/manager/2025-10-22.md'
+});
+```
+
+### Manager Visibility
+
+Manager runs these scripts to see your work instantly:
+- `query-blocked-tasks.ts` - Shows if you're blocked and why
+- `query-agent-status.ts` - Shows your current task and progress  
+- `query-completed-today.ts` - Shows your completed work
+
+**This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
+
+### Markdown Backup (Optional)
+
+You can still write to `feedback/manager/2025-10-22.md` for detailed notes, but database is the primary method.
+
+---
 ## 🚀 ACTIVE RESPONSIBILITIES (Continuous)
 
 ### 1. Agent Coordination (Daily - 6h/day)
 
-**Read ALL feedback 3x daily**:
-- Morning (9am): Unblock overnight issues
-- Midday (1pm): Check progress, answer questions
-- Evening (6pm): Review day's work, plan tomorrow
+**Query agent status 3x daily** (< 10 seconds per cycle):
+```bash
+# Morning (9am): Unblock overnight issues
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+
+# Midday (1pm): Check progress
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+
+# Evening (6pm): Review day's work
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+```
+
+**Deep dive**: Only read markdown feedback files for blocked tasks
 
 **Unblock agents <1 hour**:
 - Credential requests: Pull from vault, provide immediately

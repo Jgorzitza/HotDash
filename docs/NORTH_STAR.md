@@ -146,7 +146,7 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 
 ### The 3-Question Test (Before ANY New File)
 
-1. **Can this go in my feedback file?** → YES → Use `feedback/{agent}.md` (STOP)
+1. **Can this go in my feedback/database?** → YES → Use `logDecision()` or `feedback/{agent}.md` (STOP)
 2. **Is this in DOCS_INDEX.md Tier 1-3?** → NO → Don't create
 3. **Did CEO explicitly request this?** → NO → Don't create
 
@@ -156,11 +156,14 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 - ❌ `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`
 - ❌ Any root .md except 6 allowed (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 
-### Use Feedback Files
-- Progress → `feedback/{agent}.md`
-- Status → `feedback/{agent}.md`
-- Findings → `feedback/{agent}.md`
+### Use Database Feedback (Primary) + Markdown (Backup)
+- Progress → `logDecision()` with `status`, `progressPct`, `taskId`
+- Blockers → `logDecision()` with `status: 'blocked'`, `blockerDetails`, `blockedBy`
+- Status → `logDecision()` with structured fields (manager can query)
+- Detailed notes → `feedback/{agent}.md` (optional backup)
 - Always the right choice ✅
+
+**Why Database**: Manager queries all agents in < 10 seconds (vs 30-60 min reading files)
 
 **Enforcement**: Daily audit, immediate archive if violated
 

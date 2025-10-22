@@ -10,52 +10,101 @@ alwaysApply: true
 - **Contains**: Tasks, priorities, assignments from Manager
 - **Agents**: READ ONLY - never write assignments to your own direction file
 
-## Feedback Files (Agents Write, Manager READS)
-- **Location**: `feedback/{agent}/2025-10-20.md` (dated files)
-- **Contains**: Progress updates, evidence, blockers
-- **Agents**: Write ONLY to your own feedback file
-- **Format**: Timestamped updates every 2 hours minimum
+## Feedback (Agents Report Progress, Manager QUERIES)
+- **Primary Method**: Database via `logDecision()` (MANDATORY)
+- **Backup**: Optional markdown in `feedback/{agent}/2025-10-22.md`
+- **Manager Access**: Query scripts (instant filtered results)
+- **Frequency**: Every 2 hours minimum OR at task milestones
 
-## Required Feedback Format
+## Required Feedback Format (Database)
 
-```md
-## YYYY-MM-DDTHH:MM:SSZ — {Agent}: [Status Update]
+**Use `logDecision()` from `~/services/decisions.server`**:
 
-**Working On**: [Task from direction file]
-**Progress**: [Milestone or % complete]
-**Evidence**: [File paths, commits, test results - SUMMARY ONLY, max 10 lines]
-**Blockers**: [None or detailed description]
-**Next**: [Next action]
+```typescript
+import { logDecision } from '~/services/decisions.server';
+
+await logDecision({
+  scope: 'build',
+  actor: 'engineer',                    // Your agent name
+  taskId: 'ENG-029',                    // Task from direction file
+  status: 'in_progress',                // pending | in_progress | completed | blocked | cancelled
+  progressPct: 75,                      // 0-100 percentage
+  action: 'task_progress',              // What happened
+  rationale: 'Implementing PII Card component, tests passing',
+  evidenceUrl: 'artifacts/engineer/2025-10-22/eng-029.md',
+  durationActual: 3.0,                  // Hours spent (optional)
+  nextAction: 'Writing integration tests'  // What's next (optional)
+});
+```
+
+**When Blocked**:
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: 'integrations',
+  taskId: 'INTEGRATIONS-013',
+  status: 'blocked',                    // IMPORTANT: Use 'blocked' status
+  progressPct: 40,
+  blockerDetails: 'Waiting for DATA-017 vendor_master table migration',
+  blockedBy: 'DATA-017',                // What's blocking (task ID or resource)
+  action: 'task_blocked',
+  rationale: 'Cannot proceed without vendor_master table',
+  evidenceUrl: 'feedback/integrations/2025-10-22.md'
+});
 ```
 
 ## MUST DO
 1. ✅ Read tasks from `docs/directions/{your-agent}.md` ONLY
-2. ✅ Write progress to `feedback/{your-agent}/2025-10-20.md` ONLY
-3. ✅ Report every 2 hours minimum
-4. ✅ Log evidence as summaries (file paths, commits, test counts)
-5. ✅ Escalate blockers immediately with details
+2. ✅ Log progress via `logDecision()` every 2 hours minimum
+3. ✅ Include `taskId`, `status`, `progressPct` in EVERY log
+4. ✅ Use `status: 'blocked'` + `blockerDetails` when blocked
+5. ✅ Escalate blockers immediately with `blockedBy` field
 
 ## MUST NOT
 1. ❌ Write assignments in feedback (tasks come from direction file)
-2. ❌ Create ad-hoc .md files (archive to `feedback/archive/`)
-3. ❌ Write in other agents' feedback files
-4. ❌ Log verbose command outputs (use summaries only, max 10 lines)
+2. ❌ Skip `logDecision()` calls (database logging MANDATORY)
+3. ❌ Use vague status values (use the 5 standard statuses only)
+4. ❌ Forget `taskId` field (required for manager queries)
 5. ❌ Self-assign tasks
+
+## Manager Queries (How Manager Sees Your Progress)
+
+Manager uses these scripts to view your work (< 1 second):
+
+```bash
+# See all blocked tasks
+scripts/manager/query-blocked-tasks.ts
+
+# See your current status
+scripts/manager/query-agent-status.ts  
+
+# See completed work today
+scripts/manager/query-completed-today.ts
+```
+
+**This is why structured logging is CRITICAL** - Manager can instantly see:
+- Who's blocked and on what
+- Current progress across all agents
+- What got done today
 
 ## Evidence Examples
 
-**✅ GOOD**:
-- File paths: `app/components/Modal.tsx`
-- Git commits: `abc123f "feat: add modal"`
-- Test results: `186/186 passing`
-- Command summaries: `npm install → 45 packages, 0 vulnerabilities`
+**✅ GOOD `evidenceUrl` values**:
+- `artifacts/engineer/2025-10-22/eng-029-pii-card.md`
+- `feedback/data/2025-10-22.md`
+- `supabase/migrations/20251022000001_enhance_decision_log.sql`
+
+**✅ GOOD `rationale` values**:
+- "Implemented PII Card component with redaction logic, 15/15 tests passing"
+- "Created vendor_master migration with RLS policies, ready for review"
+- "Fixed React Router 7 violations across 3 files (json → Response.json)"
 
 **❌ BAD**:
-- 100+ lines of npm install output
-- Verbatim command logs
-- Full stack traces
+- Empty or missing `taskId`
+- Status "working" (use 'in_progress')
+- No evidence URL
 
-**See**: [AGENT_RULES_REFERENCE.md](mdc:docs/AGENT_RULES_REFERENCE.md) for full workflow rules
+**See**: `scripts/manager/README.md` for query examples
 
 ---
 
