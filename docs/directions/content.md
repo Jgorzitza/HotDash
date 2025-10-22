@@ -190,6 +190,47 @@ Manager runs these scripts to see your work instantly:
 
 **This is why structured logging is MANDATORY** - Manager can see status across all 17 agents in <10 seconds.
 
+
+### Daily Shutdown (with Self-Grading)
+
+**At end of day, log shutdown with self-assessment**:
+
+```typescript
+import { calculateSelfGradeAverage } from '~/services/decisions.server';
+
+const grades = {
+  progress: 5,        // 1-5: Progress vs DoD
+  evidence: 4,        // 1-5: Evidence quality
+  alignment: 5,       // 1-5: Followed North Star/Rules
+  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
+  communication: 4    // 1-5: Clear updates, timely blockers
+};
+
+await logDecision({
+  scope: 'build',
+  actor: 'content',
+  action: 'shutdown',
+  status: 'in_progress',  // or 'completed' if all tasks done
+  progressPct: 75,        // Overall daily progress
+  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
+  durationActual: 6.5,    // Total hours today
+  payload: {
+    dailySummary: '{TASK-A} complete, {TASK-B} at 75%',
+    selfGrade: {
+      ...grades,
+      average: calculateSelfGradeAverage(grades)
+    },
+    retrospective: {
+      didWell: ['Used MCP first', 'Good test coverage'],
+      toChange: ['Ask questions earlier'],
+      toStop: 'Making assumptions'
+    },
+    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
+    hoursWorked: 6.5
+  }
+});
+```
+
 ### Markdown Backup (Optional)
 
 You can still write to `feedback/content/2025-10-22.md` for detailed notes, but database is the primary method.

@@ -8,7 +8,9 @@ All scripts use the enhanced `DecisionLog` schema with structured fields for eff
 
 ## Daily Workflow Scripts (Use These Every Day!)
 
-### 1. Check Blocked Tasks 🚨
+### Core 3 Queries (< 10 seconds total)
+
+#### 1. Check Blocked Tasks 🚨
 ```bash
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
 ```
@@ -39,7 +41,7 @@ npx tsx --env-file=.env scripts/manager/query-agent-status.ts
 
 ---
 
-### 3. Completed Today ✅
+#### 3. Completed Today ✅
 ```bash
 npx tsx --env-file=.env scripts/manager/query-completed-today.ts
 ```
@@ -51,6 +53,55 @@ npx tsx --env-file=.env scripts/manager/query-completed-today.ts
 - Summary stats (total hours, agents active, avg time per task)
 
 **Use Case**: Track daily progress and agent velocity
+
+---
+
+### Additional Queries (As Needed)
+
+#### 4. Questions Waiting for Manager ❓ [NEW]
+```bash
+npx tsx --env-file=.env scripts/manager/query-questions.ts
+```
+
+**Shows**:
+- Tasks blocked waiting for manager decisions
+- Question details from payload (options, tradeoffs, recommendations)
+- When question was asked
+- Agent's recommended answer
+
+**Use Case**: Find all questions that need your decision (blockedBy='manager-decision')
+
+---
+
+#### 5. Agent Self-Grades & Retrospectives 📊 [NEW]
+```bash
+npx tsx --env-file=.env scripts/manager/query-agent-grades.ts [agent-name]
+```
+
+**Shows**:
+- Daily shutdown self-grades (5 dimensions, avg score)
+- Retrospectives (did well, to change, to stop)
+- Hours worked per day
+- Tasks completed per day
+- Performance trends
+
+**Use Case**: Track agent performance, identify coaching opportunities
+
+---
+
+#### 6. Task Detail History 🔍 [NEW]
+```bash
+npx tsx --env-file=.env scripts/manager/query-task-details.ts ENG-029
+```
+
+**Shows**:
+- Complete timeline of a specific task
+- All progress updates with timestamps
+- Payload metadata (commits, files, tests, MCP evidence)
+- Duration tracking
+- Status changes over time
+
+**Use Case**: Deep dive into how a specific task progressed
 
 ---
 
@@ -129,9 +180,42 @@ npx tsx --env-file=.env scripts/manager/apply-enhance-decision-log.ts
 
 ---
 
+## Payload Metadata Standards [NEW]
+
+Agents should include rich metadata in the `payload` field for better analytics:
+
+### Task Completion Payload
+```typescript
+payload: {
+  commits: ['abc123f', 'def456g'],
+  files: [{ path: 'app/components/X.tsx', lines: 245, type: 'created' }],
+  tests: { overall: '22/22 passing' },
+  mcpEvidence: { calls: 3, tools: ['context7', 'shopify-dev'] },
+  linesChanged: { added: 425, deleted: 15 }
+}
+```
+
+### Shutdown Payload (with Self-Grading)
+```typescript
+payload: {
+  selfGrade: { progress: 5, evidence: 4, alignment: 5, toolDiscipline: 5, communication: 4, average: 4.6 },
+  retrospective: {
+    didWell: ['MCP first', 'Good tests'],
+    toChange: ['Ask sooner'],
+    toStop: 'Guessing'
+  },
+  tasksCompleted: ['ENG-029'],
+  hoursWorked: 6.5
+}
+```
+
+**Manager Benefit**: Query analytics on test coverage, MCP usage, agent performance
+
+---
+
 ## Enhanced LogDecision Usage
 
-### Basic Usage (Old - Still Works)
+### Basic Usage (Minimal - Works But Not Recommended)
 ```typescript
 await logDecision({
   scope: 'build',

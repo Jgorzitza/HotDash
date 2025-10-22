@@ -147,14 +147,14 @@
 **NEW (2025-10-22)**: Query database instead of reading 17 markdown files
 
 ```bash
-# 1. Check blocked tasks (< 1 sec)
+# Core 3 queries (< 10 sec total)
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
-
-# 2. Check all agent status (< 1 sec)
 npx tsx --env-file=.env scripts/manager/query-agent-status.ts
-
-# 3. Check completed work today (< 1 sec)
 npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+
+# Additional queries (as needed)
+npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting for answers
+# npx tsx --env-file=.env scripts/manager/query-agent-grades.ts  # Self-grades & retrospectives
 ```
 
 - [ ] Review blocked tasks output - note `blockedBy` dependencies

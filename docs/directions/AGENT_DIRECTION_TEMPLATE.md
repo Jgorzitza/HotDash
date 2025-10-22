@@ -51,7 +51,7 @@ await logDecision({
   nextAction: 'Complete integration tests'
 });
 
-// When completed
+// When completed (with rich metadata)
 await logDecision({
   scope: 'build',
   actor: '{agent-name}',
@@ -59,11 +59,32 @@ await logDecision({
   status: 'completed',              // CRITICAL for manager queries
   progressPct: 100,
   action: 'task_completed',
-  rationale: '{Task name} complete, {X}/{X} tests passing',
+  rationale: '{Task name} complete, {X}/{X} tests passing, {Y} files, {Z} lines',
   evidenceUrl: 'artifacts/{agent}/2025-10-22/{task}-complete.md',
   durationEstimate: 4.0,
   durationActual: 3.5,              // Compare estimate vs actual
-  nextAction: 'Starting {NEXT-TASK-ID}'
+  nextAction: 'Starting {NEXT-TASK-ID}',
+  
+  // RECOMMENDED: Rich metadata in payload for analytics
+  payload: {
+    commits: ['abc123f', 'def456g', 'ghi789h'],  // Git commits
+    files: [                                      // Files changed
+      { path: 'app/components/Component.tsx', lines: 245, type: 'created' },
+      { path: 'app/components/Component.test.tsx', lines: 180, type: 'created' }
+    ],
+    tests: {                                      // Test details
+      unit: { passing: 13, total: 13 },
+      integration: { passing: 9, total: 9 },
+      overall: '22/22 passing'
+    },
+    mcpEvidence: {                                // MCP usage
+      calls: 3,
+      tools: ['context7-react-router', 'shopify-dev-polaris'],
+      conversationIds: ['abc-123', 'def-456'],
+      evidenceFile: 'artifacts/{agent}/2025-10-22/mcp/task.jsonl'
+    },
+    linesChanged: { added: 425, deleted: 15 }
+  }
 });
 ```
 
@@ -82,7 +103,40 @@ await logDecision({
   blockedBy: '{DEPENDENCY-TASK-ID}',  // e.g., 'DATA-017', 'CREDENTIALS-GOOGLE-ADS'
   action: 'task_blocked',
   rationale: 'Cannot proceed because {reason}',
-  evidenceUrl: 'feedback/{agent}/2025-10-22.md'
+  evidenceUrl: 'feedback/{agent}/2025-10-22.md',
+  
+  // RECOMMENDED: Include blocker context
+  payload: {
+    blockerType: 'dependency',      // or 'credentials', 'decision', 'technical'
+    attemptedSolutions: [
+      'Tried workaround X - failed because Y',
+      'Checked if could proceed without - too risky'
+    ],
+    impact: 'Blocks TASK-XYZ and TASK-ABC downstream',
+    urgency: 'high'                 // low | medium | high | critical
+  }
+});
+```
+
+### When You Have Questions for Manager
+
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: '{agent-name}',
+  taskId: '{TASK-ID}',
+  status: 'blocked',
+  blockerDetails: 'Need manager decision on architectural choice',
+  blockedBy: 'manager-decision',  // Special value for decision needed
+  action: 'awaiting_decision',
+  rationale: 'Need choice: Polaris Card vs custom component for PII display',
+  payload: {
+    questionType: 'architectural',
+    options: ['Polaris Card (standard)', 'Custom Component (flexible)'],
+    tradeoffs: 'Polaris: faster but less control, Custom: slower but exact UX',
+    impact: 'Affects all future card components',
+    recommendation: 'Polaris Card (faster, consistent UX)'
+  }
 });
 ```
 
@@ -94,6 +148,51 @@ Manager runs these scripts to see your work (< 1 second):
 - `query-completed-today.ts` - Shows your completed work
 
 **This is why structured logging is MANDATORY** - Manager can instantly see status across all 17 agents.
+
+### Daily Shutdown (with Self-Grading)
+
+**At end of day, log shutdown with self-assessment**:
+
+```typescript
+import { calculateSelfGradeAverage } from '~/services/decisions.server';
+
+const grades = {
+  progress: 5,        // 1-5: Progress vs DoD
+  evidence: 4,        // 1-5: Evidence quality  
+  alignment: 5,       // 1-5: Followed North Star/Rules
+  toolDiscipline: 5,  // 1-5: MCP-first, no guessing
+  communication: 4    // 1-5: Clear updates, timely blockers
+};
+
+await logDecision({
+  scope: 'build',
+  actor: '{agent-name}',
+  action: 'shutdown',
+  status: 'in_progress',  // or 'completed' if all tasks done
+  progressPct: 75,        // Overall daily progress
+  rationale: 'Daily shutdown - {X} tasks completed, {Y} in progress',
+  durationActual: 6.5,    // Total hours today
+  payload: {
+    dailySummary: '{TASK-A} complete, {TASK-B} at 75%, starting {TASK-C} tomorrow',
+    selfGrade: {
+      ...grades,
+      average: calculateSelfGradeAverage(grades)
+    },
+    retrospective: {
+      didWell: [
+        'Used MCP tools before writing code',
+        'Comprehensive test coverage (22/22)'
+      ],
+      toChange: ['Ask questions earlier when blocked'],
+      toStop: 'Assuming library behavior without checking docs'
+    },
+    tasksCompleted: ['{TASK-ID-A}', '{TASK-ID-B}'],
+    hoursWorked: 6.5
+  }
+});
+```
+
+**Manager Value**: Track agent performance trends, identify coaching opportunities
 
 ### Markdown Backup (Optional)
 

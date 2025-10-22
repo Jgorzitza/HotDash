@@ -37,7 +37,7 @@ await logDecision({
 });
 ```
 
-**When Blocked**:
+**When Blocked** (include blocker context in payload):
 ```typescript
 await logDecision({
   scope: 'build',
@@ -49,7 +49,33 @@ await logDecision({
   blockedBy: 'DATA-017',                // What's blocking (task ID or resource)
   action: 'task_blocked',
   rationale: 'Cannot proceed without vendor_master table',
-  evidenceUrl: 'feedback/integrations/2025-10-22.md'
+  evidenceUrl: 'feedback/integrations/2025-10-22.md',
+  payload: {
+    blockerType: 'dependency',
+    attemptedSolutions: ['Checked if could mock table - too complex'],
+    impact: 'Blocks INTEGRATIONS-014 and INTEGRATIONS-015',
+    urgency: 'high'
+  }
+});
+```
+
+**When Asking Manager a Question**:
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: 'engineer',
+  taskId: 'ENG-029',
+  status: 'blocked',
+  blockerDetails: 'Need manager decision on technical approach',
+  blockedBy: 'manager-decision',
+  action: 'awaiting_decision',
+  rationale: 'Should we use Polaris Card or custom component?',
+  payload: {
+    questionType: 'architectural',
+    options: ['Polaris Card', 'Custom Component'],
+    tradeoffs: 'Polaris: faster, Custom: more flexible',
+    recommendation: 'Polaris Card'
+  }
 });
 ```
 
@@ -59,6 +85,8 @@ await logDecision({
 3. ✅ Include `taskId`, `status`, `progressPct` in EVERY log
 4. ✅ Use `status: 'blocked'` + `blockerDetails` when blocked
 5. ✅ Escalate blockers immediately with `blockedBy` field
+6. ✅ Include rich metadata in `payload` (commits, files, tests, MCP evidence)
+7. ✅ Self-grade at shutdown (payload.selfGrade + payload.retrospective)
 
 ## MUST NOT
 1. ❌ Write assignments in feedback (tasks come from direction file)
