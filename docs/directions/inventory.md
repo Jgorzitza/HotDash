@@ -9,9 +9,9 @@ git pull origin manager-reopen-20251021
 ```
 
 **Owner**: Manager  
-**Effective**: 2025-10-21T16:15Z  
-**Version**: 7.0  
-**Status**: ACTIVE — Phase 10 Vendor/ALC Services + Phase 11 Emergency Sourcing (Growth Engine)
+**Effective**: 2025-10-21T20:30Z  
+**Version**: 8.0  
+**Status**: ✅ 3/4 TASKS COMPLETE (2025-10-21T17:35Z) — INVENTORY-019 Active
 
 ---
 
@@ -842,3 +842,30 @@ export async function generateEmergencySourcingAction(
 **Questions or blockers?** → Escalate immediately in feedback with details
 
 **Let's build! 📦**
+
+---
+
+## ✅ COMPLETED (2025-10-21)
+
+**INVENTORY-016**: Vendor Service ✅ (270 lines, 14/14 tests, reliability scoring)  
+**INVENTORY-017**: ALC Calculation ✅ (380 lines, 11/11 tests, weighted avg)  
+**INVENTORY-018**: Receiving Workflow ✅ (API route, integrated with vendor + ALC)
+
+**Evidence**: Commits + Context7 MCP (Prisma, TypeScript algorithms)
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'inventory',
+  action: 'task_completed',
+  rationale: 'INVENTORY-019: Emergency sourcing logic implemented',
+  evidenceUrl: 'artifacts/inventory/2025-10-21/emergency-sourcing.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.

@@ -531,3 +531,20 @@ main().catch(console.error);
 **Questions or blockers?** → Escalate immediately in feedback
 
 **Let's build! 📱**
+
+---
+
+## 🔧 MANDATORY: DEV MEMORY
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+await logDecision({
+  scope: 'build',
+  actor: 'product',
+  action: 'task_completed',
+  rationale: 'PRODUCT-016: Vendor UI spec created with wireframes',
+  evidenceUrl: 'artifacts/product/2025-10-21/vendor-ui-spec.md'
+});
+```
+
+Call at EVERY task completion. 100% DB protection active.
