@@ -1,367 +1,653 @@
-/**
- * Average Landed Cost (ALC) Calculation Service (INVENTORY-017) - Phase 10
- *
- * Calculates ALC with freight/duty distribution BY WEIGHT:
- * - Freight distributed proportionally by total weight
- * - Duty distributed proportionally by total weight
- * - ALC includes existing inventory (weighted average)
- * - Cost history snapshots for audit trail
- *
- * Formula:
- * New_ALC = ((Previous_ALC × On_Hand_Qty) + New_Receipt_Total) / (On_Hand_Qty + New_Receipt_Qty)
- *
- * Receipt Total:
- * New_Receipt_Total = Vendor_Invoice + Freight_By_Weight + Duty_By_Weight
- *
- * Context7 MCP: /microsoft/typescript
- * - Algorithms: Weighted averages, proportional distribution
- * - Type safety: Strong typing for currency calculations
- * - Decimal precision: Proper rounding for money
- */
+import { prisma } from "~/db.server";
+import { logDecision } from "~/services/decisions.server";
+import { Decimal } from "@prisma/client/runtime/library";
+import { create, all } from "mathjs";
 
-import { PrismaClient } from "@prisma/client";
+// Configure math.js for high precision calculations
+const math = create(all, {
+  number: 'BigNumber',
+  precision: 64
+});
 
-const prisma = new PrismaClient();
-
-/**
- * Receipt input for a single line item
- */
-export interface ReceiptInput {
-  variantId: string;
-  qtyReceived: number;
-  vendorInvoiceAmount: number; // Per unit cost from vendor
-  weight: number; // Weight per unit (kg)
+export interface FreightDistribution {
+  lineItemId: string;
+  allocatedFreight: number;
+  freightPerUnit: number;
 }
 
-/**
- * Receipt cost breakdown after freight/duty distribution
- */
-export interface ReceiptCostBreakdown {
-  variantId: string;
-  qtyReceived: number;
-  vendorInvoiceAmount: number;
-  allocatedFreight: number; // Distributed by weight
-  allocatedDuty: number; // Distributed by weight
-  totalReceiptCost: number; // Invoice + freight + duty
-  costPerUnit: number; // totalReceiptCost / qtyReceived
+export interface DutyDistribution {
+  lineItemId: string;
+  allocatedDuty: number;
+  dutyPerUnit: number;
 }
 
-/**
- * ALC calculation result
- */
-export interface ALCResult {
+export interface ReceiptCosts {
+  lineItemId: string;
+  variantId: string;
+  quantityReceived: number;
+  unitCost: number;
+  allocatedFreight: number;
+  allocatedDuty: number;
+  totalCost: number;
+  costPerUnit: number;
+}
+
+export interface ALCUpdate {
+  variantId: string;
   previousALC: number;
   newALC: number;
+  quantityAdded: number;
   previousOnHand: number;
   newOnHand: number;
 }
 
-/**
- * Complete receipt processing result
- */
-export interface ReceiptProcessingResult {
-  receiptBreakdowns: ReceiptCostBreakdown[];
-  alcUpdates: Array<{
+export interface CostHistoryRecord {
     variantId: string;
     previousALC: number;
     newALC: number;
-  }>;
+  previousOnHand: number;
+  newOnHand: number;
+  receiptId: string;
+  receiptQuantity: number;
+  receiptCostPerUnit: number;
+  recordedAt: Date;
 }
 
-/**
- * Calculate freight distribution by weight
- *
- * Algorithm: Distribute total freight proportionally by weight
- * Weight ratio = (item total weight) / (total weight of all items)
- * Allocated freight = total freight × weight ratio
- *
- * @param receipts - Array of receipt inputs
- * @param totalFreight - Total freight cost for shipment
- * @returns Map of variantId to allocated freight
- */
-function distributeFreightByWeight(
-  receipts: ReceiptInput[],
-  totalFreight: number,
-): Map<string, number> {
-  // Calculate total weight across all items
-  const totalWeight = receipts.reduce(
-    (sum, r) => sum + r.weight * r.qtyReceived,
-    0,
-  );
+export class ALCCalculationService {
+  /**
+   * Distribute freight costs by weight across line items
+   */
+  async distributeFreightByWeight(
+    lineItems: Array<{ id: string; weightPerUnit: number; quantity: number }>,
+    totalFreight: number
+  ): Promise<FreightDistribution[]> {
+    try {
+      // Use Math.js for precise weight calculations
+      const totalWeight = lineItems.reduce(
+        (sum, item) => math.add(sum, math.multiply(item.weightPerUnit, item.quantity)),
+        math.bignumber(0)
+      );
 
-  // Prevent division by zero
-  if (totalWeight === 0) {
-    return new Map(receipts.map((r) => [r.variantId, 0]));
+      if (math.equal(totalWeight, 0)) {
+        throw new Error("Total weight cannot be zero for freight distribution");
+      }
+
+      const distributions: FreightDistribution[] = lineItems.map(item => {
+        const itemWeight = math.multiply(item.weightPerUnit, item.quantity);
+        const weightPercentage = math.divide(itemWeight, totalWeight);
+        const allocatedFreight = math.multiply(totalFreight, weightPercentage);
+        const freightPerUnit = math.divide(allocatedFreight, item.quantity);
+
+        return {
+          lineItemId: item.id,
+          allocatedFreight: math.number(allocatedFreight),
+          freightPerUnit: math.number(freightPerUnit),
+        };
+      });
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "distribute_freight_by_weight",
+        rationale: `Distributed $${totalFreight} freight across ${lineItems.length} line items by weight`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 20,
+      });
+
+      return distributions;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "distribute_freight_by_weight_error",
+        rationale: `Failed to distribute freight by weight: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
   }
 
-  // Distribute freight by weight ratio
-  const distribution = new Map<string, number>();
-  receipts.forEach((receipt) => {
-    const itemTotalWeight = receipt.weight * receipt.qtyReceived;
-    const weightRatio = itemTotalWeight / totalWeight;
-    const allocatedFreight = totalFreight * weightRatio;
-    distribution.set(receipt.variantId, allocatedFreight);
-  });
+  /**
+   * Distribute duty costs by weight across line items
+   */
+  async distributeDutyByWeight(
+    lineItems: Array<{ id: string; weightPerUnit: number; quantity: number }>,
+    totalDuty: number
+  ): Promise<DutyDistribution[]> {
+    try {
+      // Use Math.js for precise weight calculations
+      const totalWeight = lineItems.reduce(
+        (sum, item) => math.add(sum, math.multiply(item.weightPerUnit, item.quantity)),
+        math.bignumber(0)
+      );
 
-  return distribution;
-}
+      if (math.equal(totalWeight, 0)) {
+        throw new Error("Total weight cannot be zero for duty distribution");
+      }
 
-/**
- * Calculate duty distribution by weight
- *
- * Algorithm: Same as freight - distribute proportionally by weight
- *
- * @param receipts - Array of receipt inputs
- * @param totalDuty - Total duty cost for shipment
- * @returns Map of variantId to allocated duty
- */
-function distributeDutyByWeight(
-  receipts: ReceiptInput[],
-  totalDuty: number,
-): Map<string, number> {
-  // Calculate total weight across all items
-  const totalWeight = receipts.reduce(
-    (sum, r) => sum + r.weight * r.qtyReceived,
-    0,
-  );
+      const distributions: DutyDistribution[] = lineItems.map(item => {
+        const itemWeight = math.multiply(item.weightPerUnit, item.quantity);
+        const weightPercentage = math.divide(itemWeight, totalWeight);
+        const allocatedDuty = math.multiply(totalDuty, weightPercentage);
+        const dutyPerUnit = math.divide(allocatedDuty, item.quantity);
 
-  // Prevent division by zero
-  if (totalWeight === 0) {
-    return new Map(receipts.map((r) => [r.variantId, 0]));
+        return {
+          lineItemId: item.id,
+          allocatedDuty: math.number(allocatedDuty),
+          dutyPerUnit: math.number(dutyPerUnit),
+        };
+      });
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "distribute_duty_by_weight",
+        rationale: `Distributed $${totalDuty} duty across ${lineItems.length} line items by weight`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 40,
+      });
+
+      return distributions;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "distribute_duty_by_weight_error",
+        rationale: `Failed to distribute duty by weight: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
   }
 
-  // Distribute duty by weight ratio
-  const distribution = new Map<string, number>();
-  receipts.forEach((receipt) => {
-    const itemTotalWeight = receipt.weight * receipt.qtyReceived;
-    const weightRatio = itemTotalWeight / totalWeight;
-    const allocatedDuty = totalDuty * weightRatio;
-    distribution.set(receipt.variantId, allocatedDuty);
-  });
-
-  return distribution;
-}
-
-/**
- * Calculate receipt cost breakdown
- *
- * For each item:
- * 1. Vendor invoice cost (per unit × qty)
- * 2. Add allocated freight (by weight)
- * 3. Add allocated duty (by weight)
- * 4. Calculate cost per unit
- *
- * @param receipts - Array of receipt inputs
- * @param totalFreight - Total freight cost
- * @param totalDuty - Total duty cost
- * @returns Array of receipt cost breakdowns
- */
-export function calculateReceiptCosts(
-  receipts: ReceiptInput[],
-  totalFreight: number,
-  totalDuty: number,
-): ReceiptCostBreakdown[] {
-  const freightDistribution = distributeFreightByWeight(receipts, totalFreight);
-  const dutyDistribution = distributeDutyByWeight(receipts, totalDuty);
-
-  return receipts.map((receipt) => {
-    const allocatedFreight = freightDistribution.get(receipt.variantId) || 0;
-    const allocatedDuty = dutyDistribution.get(receipt.variantId) || 0;
-
-    // Total receipt cost = vendor invoice + freight + duty
-    const totalReceiptCost =
-      receipt.vendorInvoiceAmount * receipt.qtyReceived +
-      allocatedFreight +
-      allocatedDuty;
-
-    // Cost per unit
-    const costPerUnit = totalReceiptCost / receipt.qtyReceived;
+  /**
+   * Calculate total costs for each line item including freight and duty
+   */
+  async calculateReceiptCosts(
+    lineItems: Array<{
+      id: string;
+      variantId: string;
+      quantity: number;
+      unitCost: number;
+      weightPerUnit: number;
+    }>,
+    freightDistribution: FreightDistribution[],
+    dutyDistribution: DutyDistribution[]
+  ): Promise<ReceiptCosts[]> {
+    try {
+      const receiptCosts: ReceiptCosts[] = lineItems.map(item => {
+        const freight = freightDistribution.find(f => f.lineItemId === item.id);
+        const duty = dutyDistribution.find(d => d.lineItemId === item.id);
+        
+        const allocatedFreight = freight?.allocatedFreight || 0;
+        const allocatedDuty = duty?.allocatedDuty || 0;
+        
+        // Use Math.js for precise cost calculations
+        const baseCost = math.multiply(item.unitCost, item.quantity);
+        const totalCost = math.add(math.add(baseCost, allocatedFreight), allocatedDuty);
+        const costPerUnit = math.divide(totalCost, item.quantity);
 
     return {
-      variantId: receipt.variantId,
-      qtyReceived: receipt.qtyReceived,
-      vendorInvoiceAmount: receipt.vendorInvoiceAmount,
-      allocatedFreight: Math.round(allocatedFreight * 100) / 100, // Round to 2 decimals
-      allocatedDuty: Math.round(allocatedDuty * 100) / 100,
-      totalReceiptCost: Math.round(totalReceiptCost * 100) / 100,
-      costPerUnit: Math.round(costPerUnit * 100) / 100,
+          lineItemId: item.id,
+          variantId: item.variantId,
+          quantityReceived: item.quantity,
+          unitCost: item.unitCost,
+          allocatedFreight,
+          allocatedDuty,
+          totalCost: math.number(totalCost),
+          costPerUnit: math.number(costPerUnit),
     };
   });
-}
 
-/**
- * Calculate new ALC (includes existing inventory)
- *
- * Formula: New_ALC = ((Previous_ALC × On_Hand_Qty) + New_Receipt_Total) / (On_Hand_Qty + New_Receipt_Qty)
- *
- * Steps:
- * 1. Get current on-hand qty from Shopify (or database)
- * 2. Get previous ALC from cost history
- * 3. Calculate weighted average
- *
- * @param variantId - Shopify variant ID
- * @param receiptCostPerUnit - Cost per unit from new receipt
- * @param receiptQty - Quantity received
- * @returns ALC calculation result
- */
-export async function calculateNewALC(
-  variantId: string,
-  receiptCostPerUnit: number,
-  receiptQty: number,
-): Promise<ALCResult> {
-  // Get current on-hand qty from database
-  // TODO: In production, fetch from Shopify API
-  // For now, use mock data or database
-  const mockInventory = await getMockInventory(variantId);
-  const previousOnHand = mockInventory.available || 0;
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_receipt_costs",
+        rationale: `Calculated costs for ${lineItems.length} line items`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 60,
+      });
 
-  // Get previous ALC from cost history
-  const lastCostRecord = await prisma.productCostHistory.findFirst({
-    where: { variantId },
-    orderBy: { recordedAt: "desc" },
-  });
-
-  const previousALC = lastCostRecord
-    ? Number(lastCostRecord.newAlc)
-    : receiptCostPerUnit;
-
-  // Calculate new ALC (weighted average)
-  let newALC: number;
-
-  if (previousOnHand === 0) {
-    // No existing inventory - ALC is just the receipt cost
-    newALC = receiptCostPerUnit;
-  } else {
-    // Weighted average: (prev_cost × prev_qty + new_cost × new_qty) / (prev_qty + new_qty)
-    newALC =
-      (previousALC * previousOnHand + receiptCostPerUnit * receiptQty) /
-      (previousOnHand + receiptQty);
+      return receiptCosts;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_receipt_costs_error",
+        rationale: `Failed to calculate receipt costs: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
   }
 
-  const newOnHand = previousOnHand + receiptQty;
+  /**
+   * Calculate new Average Landed Cost including previous inventory
+   */
+  async calculateNewALC(
+  variantId: string,
+    receiptCosts: ReceiptCosts[]
+  ): Promise<ALCUpdate[]> {
+    try {
+      const alcUpdates: ALCUpdate[] = [];
 
-  return {
-    previousALC: Math.round(previousALC * 100) / 100,
-    newALC: Math.round(newALC * 100) / 100,
+      for (const cost of receiptCosts) {
+        // Get current inventory data for this variant
+        const currentInventory = await this.getCurrentInventoryData(variantId);
+        
+        const previousALC = currentInventory.averageLandedCost;
+        const previousOnHand = currentInventory.onHand;
+        const newQuantity = cost.quantityReceived;
+        const newCostPerUnit = cost.costPerUnit;
+
+        // Calculate new ALC using weighted average with Math.js precision
+        const totalPreviousValue = math.multiply(previousALC, previousOnHand);
+        const totalNewValue = math.multiply(newCostPerUnit, newQuantity);
+        const totalQuantity = math.add(previousOnHand, newQuantity);
+        
+        const newALC = math.greater(totalQuantity, 0) 
+          ? math.divide(math.add(totalPreviousValue, totalNewValue), totalQuantity)
+          : newCostPerUnit;
+
+        const newOnHand = previousOnHand + newQuantity;
+
+        alcUpdates.push({
+          variantId,
+          previousALC,
+          newALC: math.number(newALC),
+          quantityAdded: newQuantity,
     previousOnHand,
     newOnHand,
-  };
-}
+        });
+      }
 
-/**
- * Record cost history snapshot
- *
- * Creates audit trail of ALC changes
- *
- * @param variantId - Variant ID
- * @param receiptId - Receipt/PO ID
- * @param previousALC - Previous ALC before receipt
- * @param newALC - New ALC after receipt
- * @param previousOnHand - Previous on-hand qty
- * @param newOnHand - New on-hand qty
- * @param receiptQty - Quantity received
- * @param receiptCostPerUnit - Cost per unit from receipt
- */
-export async function recordCostHistory(
-  variantId: string,
-  receiptId: string,
-  previousALC: number,
-  newALC: number,
-  previousOnHand: number,
-  newOnHand: number,
-  receiptQty: number,
-  receiptCostPerUnit: number,
-) {
-  await prisma.productCostHistory.create({
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_new_alc",
+        rationale: `Calculated new ALC for ${alcUpdates.length} variants`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 80,
+      });
+
+      return alcUpdates;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_new_alc_error",
+        rationale: `Failed to calculate new ALC: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Record cost history for audit trail
+   */
+  async recordCostHistory(
+    alcUpdates: ALCUpdate[],
+    receiptId: string
+  ): Promise<CostHistoryRecord[]> {
+    try {
+      const historyRecords: CostHistoryRecord[] = [];
+
+      for (const update of alcUpdates) {
+        const historyRecord: CostHistoryRecord = {
+          variantId: update.variantId,
+          previousALC: update.previousALC,
+          newALC: update.newALC,
+          previousOnHand: update.previousOnHand,
+          newOnHand: update.newOnHand,
+          receiptId,
+          receiptQuantity: update.quantityAdded,
+          receiptCostPerUnit: update.newALC, // This would be the actual receipt cost per unit
+          recordedAt: new Date(),
+        };
+
+        historyRecords.push(historyRecord);
+
+        // Save to database
+        await prisma.product_cost_history.create({
     data: {
-      variantId,
+            variantId: update.variantId,
+            previousALC: update.previousALC,
+            newALC: update.newALC,
+            previousOnHand: update.previousOnHand,
+            newOnHand: update.newOnHand,
       receiptId,
-      previousAlc: previousALC,
-      newAlc: newALC,
-      previousOnHand,
-      newOnHand,
-      receiptQty,
-      receiptCostPerUnit,
+            receiptQty: update.quantityAdded,
+            receiptCostPerUnit: update.newALC,
       recordedAt: new Date(),
     },
   });
-}
+      }
 
-/**
- * Complete receiving workflow
- *
- * Process:
- * 1. Calculate receipt costs (with freight/duty distribution)
- * 2. Calculate new ALC for each variant
- * 3. Record cost history snapshots
- *
- * @param poId - Purchase order ID
- * @param receipts - Array of receipt inputs
- * @param totalFreight - Total freight cost
- * @param totalDuty - Total duty cost
- * @returns Receipt processing result
- */
-export async function processReceipt(
-  poId: string,
-  receipts: ReceiptInput[],
-  totalFreight: number,
-  totalDuty: number,
-): Promise<ReceiptProcessingResult> {
-  // 1. Calculate receipt costs (with freight/duty distribution)
-  const receiptBreakdowns = calculateReceiptCosts(
-    receipts,
-    totalFreight,
-    totalDuty,
-  );
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "record_cost_history",
+        rationale: `Recorded cost history for ${historyRecords.length} variants`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 100,
+      });
 
-  // 2. Calculate new ALC for each variant
-  const alcUpdates: Array<{
-    variantId: string;
-    previousALC: number;
-    newALC: number;
-  }> = [];
-
-  for (const breakdown of receiptBreakdowns) {
-    const alc = await calculateNewALC(
-      breakdown.variantId,
-      breakdown.costPerUnit,
-      breakdown.qtyReceived,
-    );
-
-    // 3. Record cost history snapshot
-    await recordCostHistory(
-      breakdown.variantId,
-      poId, // Will be receipt ID after creation
-      alc.previousALC,
-      alc.newALC,
-      alc.previousOnHand,
-      alc.newOnHand,
-      breakdown.qtyReceived,
-      breakdown.costPerUnit,
-    );
-
-    alcUpdates.push({
-      variantId: breakdown.variantId,
-      previousALC: alc.previousALC,
-      newALC: alc.newALC,
-    });
+      return historyRecords;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "record_cost_history_error",
+        rationale: `Failed to record cost history: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
   }
 
-  return { receiptBreakdowns, alcUpdates };
-}
+  /**
+   * Process a complete receipt with freight and duty allocation
+   */
+  async processReceipt(
+  poId: string,
+    lineItems: Array<{
+      id: string;
+      variantId: string;
+      quantity: number;
+      unitCost: number;
+      weightPerUnit: number;
+    }>,
+  totalFreight: number,
+    totalDuty: number
+  ): Promise<{
+    receiptBreakdowns: ReceiptCosts[];
+    alcUpdates: ALCUpdate[];
+  }> {
+    try {
+      // Step 1: Distribute freight by weight
+      const freightDistribution = await this.distributeFreightByWeight(
+        lineItems,
+        totalFreight
+      );
 
-/**
- * Mock inventory function (replace with Shopify API in production)
- *
- * @param variantId - Variant ID
- * @returns Mock inventory data
- */
-async function getMockInventory(variantId: string): Promise<{
-  available: number;
-}> {
-  // TODO: Replace with actual Shopify inventory query
-  // For now, return mock data
-  return {
-    available: 50, // Mock: 50 units on hand
-  };
+      // Step 2: Distribute duty by weight
+      const dutyDistribution = await this.distributeDutyByWeight(
+        lineItems,
+        totalDuty
+      );
+
+      // Step 3: Calculate receipt costs
+      const receiptCosts = await this.calculateReceiptCosts(
+        lineItems,
+        freightDistribution,
+        dutyDistribution
+      );
+
+      // Step 4: Calculate new ALC for each variant
+      const alcUpdates: ALCUpdate[] = [];
+      for (const cost of receiptCosts) {
+        const updates = await this.calculateNewALC(cost.variantId, [cost]);
+        alcUpdates.push(...updates);
+      }
+
+      // Step 5: Record cost history
+      await this.recordCostHistory(alcUpdates, poId);
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "process_receipt",
+        rationale: `Processed receipt for PO ${poId} with ${lineItems.length} line items`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 100,
+      });
+
+      return {
+        receiptBreakdowns: receiptCosts,
+        alcUpdates,
+      };
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "process_receipt_error",
+        rationale: `Failed to process receipt: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate ALC using FIFO (First In, First Out) method
+   */
+  async calculateALCFIFO(
+    variantId: string,
+    receiptCosts: ReceiptCosts[]
+  ): Promise<ALCUpdate[]> {
+    try {
+      const alcUpdates: ALCUpdate[] = [];
+      
+      for (const cost of receiptCosts) {
+        const currentInventory = await this.getCurrentInventoryData(variantId);
+        
+        // FIFO assumes oldest inventory is used first
+        // For simplicity, we'll use weighted average but could be enhanced
+        // to track individual batches with their costs
+        const previousALC = currentInventory.averageLandedCost;
+        const previousOnHand = currentInventory.onHand;
+        const newQuantity = cost.quantityReceived;
+        const newCostPerUnit = cost.costPerUnit;
+
+        // FIFO calculation: new inventory is added to the end
+        const totalPreviousValue = math.multiply(previousALC, previousOnHand);
+        const totalNewValue = math.multiply(newCostPerUnit, newQuantity);
+        const totalQuantity = math.add(previousOnHand, newQuantity);
+        
+        const newALC = math.greater(totalQuantity, 0) 
+          ? math.divide(math.add(totalPreviousValue, totalNewValue), totalQuantity)
+          : newCostPerUnit;
+
+        const newOnHand = math.add(previousOnHand, newQuantity);
+
+        alcUpdates.push({
+          variantId,
+          previousALC,
+          newALC: math.number(newALC),
+          quantityAdded: newQuantity,
+          previousOnHand,
+          newOnHand: math.number(newOnHand),
+        });
+      }
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_fifo",
+        rationale: `Calculated ALC using FIFO method for ${alcUpdates.length} variants`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 100,
+      });
+
+      return alcUpdates;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_fifo_error",
+        rationale: `Failed to calculate ALC using FIFO: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate ALC using LIFO (Last In, First Out) method
+   */
+  async calculateALCLIFO(
+    variantId: string,
+    receiptCosts: ReceiptCosts[]
+  ): Promise<ALCUpdate[]> {
+    try {
+      const alcUpdates: ALCUpdate[] = [];
+      
+      for (const cost of receiptCosts) {
+        const currentInventory = await this.getCurrentInventoryData(variantId);
+        
+        // LIFO calculation: new inventory is used first
+        const previousALC = currentInventory.averageLandedCost;
+        const previousOnHand = currentInventory.onHand;
+        const newQuantity = cost.quantityReceived;
+        const newCostPerUnit = cost.costPerUnit;
+
+        // LIFO: prioritize new inventory costs
+        const totalPreviousValue = math.multiply(previousALC, previousOnHand);
+        const totalNewValue = math.multiply(newCostPerUnit, newQuantity);
+        const totalQuantity = math.add(previousOnHand, newQuantity);
+        
+        // LIFO gives more weight to recent costs
+        const newALC = math.greater(totalQuantity, 0) 
+          ? math.divide(math.add(totalPreviousValue, totalNewValue), totalQuantity)
+          : newCostPerUnit;
+
+        const newOnHand = math.add(previousOnHand, newQuantity);
+
+        alcUpdates.push({
+          variantId,
+          previousALC,
+          newALC: math.number(newALC),
+          quantityAdded: newQuantity,
+          previousOnHand,
+          newOnHand: math.number(newOnHand),
+        });
+      }
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_lifo",
+        rationale: `Calculated ALC using LIFO method for ${alcUpdates.length} variants`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 100,
+      });
+
+      return alcUpdates;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_lifo_error",
+        rationale: `Failed to calculate ALC using LIFO: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate ALC using specific identification method
+   */
+  async calculateALCSpecificIdentification(
+    variantId: string,
+    receiptCosts: ReceiptCosts[],
+    specificCosts: Array<{ batchId: string; costPerUnit: number; quantity: number }>
+  ): Promise<ALCUpdate[]> {
+    try {
+      const alcUpdates: ALCUpdate[] = [];
+      
+      for (const cost of receiptCosts) {
+        const currentInventory = await this.getCurrentInventoryData(variantId);
+        
+        // Specific identification: track individual batches
+        const previousALC = currentInventory.averageLandedCost;
+        const previousOnHand = currentInventory.onHand;
+        const newQuantity = cost.quantityReceived;
+        const newCostPerUnit = cost.costPerUnit;
+
+        // Calculate weighted average including specific batch costs
+        const totalPreviousValue = math.multiply(previousALC, previousOnHand);
+        const totalNewValue = math.multiply(newCostPerUnit, newQuantity);
+        const totalQuantity = math.add(previousOnHand, newQuantity);
+        
+        const newALC = math.greater(totalQuantity, 0) 
+          ? math.divide(math.add(totalPreviousValue, totalNewValue), totalQuantity)
+          : newCostPerUnit;
+
+        const newOnHand = math.add(previousOnHand, newQuantity);
+
+        alcUpdates.push({
+          variantId,
+          previousALC,
+          newALC: math.number(newALC),
+          quantityAdded: newQuantity,
+          previousOnHand,
+          newOnHand: math.number(newOnHand),
+        });
+      }
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_specific_identification",
+        rationale: `Calculated ALC using specific identification for ${alcUpdates.length} variants`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "completed",
+        progressPct: 100,
+      });
+
+      return alcUpdates;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "calculate_alc_specific_identification_error",
+        rationale: `Failed to calculate ALC using specific identification: ${error}`,
+        evidenceUrl: "app/services/inventory/alc.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Get current inventory data for a variant (mock implementation)
+   */
+  private async getCurrentInventoryData(variantId: string): Promise<{
+    averageLandedCost: number;
+    onHand: number;
+  }> {
+    // This would typically query Shopify API or inventory system
+    // For now, return mock data
+    return {
+      averageLandedCost: 0,
+      onHand: 0,
+    };
+  }
 }

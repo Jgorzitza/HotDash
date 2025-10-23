@@ -1,306 +1,391 @@
-/**
- * Vendor Service Enhancement (INVENTORY-016) - Phase 10
- *
- * Provides database-integrated vendor operations with reliability tracking:
- * - Vendor metrics with recent PO history
- * - Reliability score updates on PO receipt
- * - Best vendor selection (cost/speed/reliability)
- * - UI dropdown options with formatted display
- *
- * Context7 MCP: /prisma/docs
- * - Relations: include, select with nested queries
- * - Aggregations: _count for relationship counts
- * - Transactions: $transaction for atomic updates
- */
+import { prisma } from "~/db.server";
+import { logDecision } from "~/services/decisions.server";
 
-import { PrismaClient } from "@prisma/client";
+export interface VendorWithMetrics {
+  id: string;
+  name: string;
+  contactName: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  paymentTerms: string | null;
+  leadTimeDays: number;
+  shipMethod: string | null;
+  dropShip: boolean;
+  currency: string;
+  reliabilityScore: number;
+  totalOrders: number;
+  onTimeDeliveries: number;
+  lateDeliveries: number;
+  onTimePercentage: number;
+  averageLeadTime: number;
+  isActive: boolean;
+  notes: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const prisma = new PrismaClient();
+export interface VendorOption {
+  id: string;
+  name: string;
+  reliabilityScore: number;
+  averageLeadTime: number;
+  costPerUnit: number;
+  minimumOrderQuantity: number;
+  isPreferred: boolean;
+  lastOrderDate: Date | null;
+}
 
-/**
- * Get vendor with reliability metrics and recent PO history
- *
- * @param vendorId - Vendor UUID
- * @returns Vendor with calculated metrics and recent orders
- */
-export async function getVendorWithMetrics(vendorId: string) {
-  const vendor = await prisma.vendor.findUnique({
+export interface VendorReliabilityUpdate {
+  vendorId: string;
+  onTimeDelivery: boolean;
+  actualLeadTime: number;
+  expectedLeadTime: number;
+  newReliabilityScore: number;
+}
+
+export class VendorService {
+  /**
+   * Get vendor with comprehensive metrics
+   */
+  async getVendorWithMetrics(vendorId: string): Promise<VendorWithMetrics | null> {
+    try {
+      const vendor = await prisma.vendors.findUnique({
     where: { id: vendorId },
-    include: {
-      productMappings: true,
-    },
-  });
+      });
 
-  if (!vendor) return null;
+      if (!vendor) {
+        return null;
+      }
 
-  // Fetch recent purchase orders separately (no direct relation in schema)
-  const recentPurchaseOrders = await prisma.purchaseOrder.findMany({
-    where: {
-      vendorId,
-      actualDeliveryDate: { not: null },
-    },
-    orderBy: { actualDeliveryDate: "desc" },
-    take: 10,
-  });
+      const onTimePercentage = vendor.totalOrders && vendor.totalOrders > 0 
+        ? (vendor.onTimeDeliveries / vendor.totalOrders) * 100 
+        : 0;
 
-  // Calculate current reliability score from counters
-  const onTimeRate =
-    vendor.totalOrders && vendor.totalOrders > 0
-      ? ((vendor.onTimeDeliveries || 0) / vendor.totalOrders) * 100
-      : 0;
+      const vendorWithMetrics: VendorWithMetrics = {
+        id: vendor.id,
+        name: vendor.name,
+        contactName: vendor.contactName,
+        contactEmail: vendor.contactEmail,
+        contactPhone: vendor.contactPhone,
+        paymentTerms: vendor.paymentTerms,
+        leadTimeDays: vendor.leadTimeDays,
+        shipMethod: vendor.shipMethod,
+        dropShip: vendor.dropShip,
+        currency: vendor.currency,
+        reliabilityScore: vendor.reliabilityScore || 0,
+        totalOrders: vendor.totalOrders || 0,
+        onTimeDeliveries: vendor.onTimeDeliveries || 0,
+        lateDeliveries: vendor.lateDeliveries || 0,
+        onTimePercentage,
+        averageLeadTime: vendor.leadTimeDays,
+        isActive: vendor.isActive,
+        notes: vendor.notes,
+        createdAt: vendor.createdAt,
+        updatedAt: vendor.updatedAt,
+      };
 
-  // Calculate average lead time from recent orders
-  const avgLeadTimeDays = calculateAvgLeadTime(recentPurchaseOrders);
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_vendor_with_metrics",
+        rationale: `Retrieved metrics for vendor ${vendor.name}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "completed",
+        progressPct: 25,
+      });
 
-  // Get last order date
-  const lastOrderDate =
-    recentPurchaseOrders.length > 0 ? recentPurchaseOrders[0].orderDate : null;
+      return vendorWithMetrics;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_vendor_with_metrics_error",
+        rationale: `Failed to get vendor metrics: ${error}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
 
-  return {
-    ...vendor,
-    purchaseOrders: recentPurchaseOrders,
-    reliabilityScore: Math.round(onTimeRate * 100) / 100,
-    avgLeadTimeDays,
-    lastOrderDate,
-  };
-}
-
-/**
- * Calculate average lead time from purchase orders
- *
- * @param purchaseOrders - Array of purchase orders with delivery dates
- * @returns Average lead time in days
- */
-function calculateAvgLeadTime(
-  purchaseOrders: Array<{
-    orderDate: Date;
-    actualDeliveryDate: Date | null;
-  }>,
-): number {
-  const ordersWithDelivery = purchaseOrders.filter(
-    (po) => po.actualDeliveryDate,
-  );
-
-  if (ordersWithDelivery.length === 0) return 0;
-
-  const totalLeadTime = ordersWithDelivery.reduce((sum, po) => {
-    const leadTimeMs =
-      po.actualDeliveryDate!.getTime() - po.orderDate.getTime();
-    const leadTimeDays = leadTimeMs / (1000 * 60 * 60 * 24);
-    return sum + leadTimeDays;
-  }, 0);
-
-  return Math.round((totalLeadTime / ordersWithDelivery.length) * 10) / 10;
-}
-
-/**
- * Update vendor reliability score when PO received
- *
- * Algorithm: Compare actual delivery date to expected date
- * - On time: increment onTimeDeliveries
- * - Late: increment lateDeliveries
- * - Always increment totalOrders
- * - Recalculate reliabilityScore: (onTimeDeliveries / totalOrders) * 100
- *
- * @param vendorId - Vendor UUID
- * @param expectedDate - Expected delivery date from PO
- * @param actualDate - Actual delivery date (when received)
- */
-export async function updateVendorReliability(
+  /**
+   * Update vendor reliability based on delivery performance
+   */
+  async updateVendorReliability(
   vendorId: string,
-  expectedDate: Date,
-  actualDate: Date,
-) {
-  // Determine if on time (1 day grace period)
-  const gracePeriodMs = 1 * 24 * 60 * 60 * 1000;
-  const expectedWithGrace = new Date(expectedDate.getTime() + gracePeriodMs);
-  const onTime = actualDate <= expectedWithGrace;
-
-  // Get current vendor to calculate new reliability score
-  const vendor = await prisma.vendor.findUnique({
+    expectedDeliveryDate: Date,
+    actualDeliveryDate: Date
+  ): Promise<VendorReliabilityUpdate> {
+    try {
+      const vendor = await prisma.vendors.findUnique({
     where: { id: vendorId },
-    select: {
-      totalOrders: true,
-      onTimeDeliveries: true,
-      lateDeliveries: true,
-    },
   });
 
   if (!vendor) {
-    throw new Error(`Vendor not found: ${vendorId}`);
-  }
+        throw new Error(`Vendor ${vendorId} not found`);
+      }
 
-  // Calculate new counts
-  const newTotalOrders = (vendor.totalOrders || 0) + 1;
-  const newOnTimeDeliveries = (vendor.onTimeDeliveries || 0) + (onTime ? 1 : 0);
-  const newLateDeliveries = (vendor.lateDeliveries || 0) + (onTime ? 0 : 1);
+      const actualLeadTime = Math.ceil(
+        (actualDeliveryDate.getTime() - expectedDeliveryDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      const expectedLeadTime = vendor.leadTimeDays;
+      const onTimeDelivery = actualLeadTime <= expectedLeadTime;
 
   // Calculate new reliability score
+      const currentScore = vendor.reliabilityScore || 0;
+      const totalOrders = vendor.totalOrders || 0;
+      const onTimeDeliveries = vendor.onTimeDeliveries || 0;
+      const lateDeliveries = vendor.lateDeliveries || 0;
+
+      let newOnTimeDeliveries = onTimeDeliveries;
+      let newLateDeliveries = lateDeliveries;
+      let newTotalOrders = totalOrders + 1;
+
+      if (onTimeDelivery) {
+        newOnTimeDeliveries += 1;
+      } else {
+        newLateDeliveries += 1;
+      }
+
+      // Calculate new reliability score (weighted average)
   const newReliabilityScore = (newOnTimeDeliveries / newTotalOrders) * 100;
 
-  // Update vendor with new counts and score
-  await prisma.vendor.update({
+      // Update vendor in database
+      await prisma.vendors.update({
     where: { id: vendorId },
     data: {
+          reliabilityScore: newReliabilityScore,
       totalOrders: newTotalOrders,
       onTimeDeliveries: newOnTimeDeliveries,
       lateDeliveries: newLateDeliveries,
-      reliabilityScore: Math.round(newReliabilityScore * 100) / 100, // Round to 2 decimals
+          updatedAt: new Date(),
     },
   });
 
-  return {
-    onTime,
-    reliabilityScore: Math.round(newReliabilityScore * 100) / 100,
-    totalOrders: newTotalOrders,
-    onTimeDeliveries: newOnTimeDeliveries,
-  };
-}
+      const update: VendorReliabilityUpdate = {
+        vendorId,
+        onTimeDelivery,
+        actualLeadTime,
+        expectedLeadTime,
+        newReliabilityScore,
+      };
 
-/**
- * Get best vendor for product by selection criteria
- *
- * Criteria:
- * - 'cost': Lowest cost per unit
- * - 'speed': Shortest lead time
- * - 'reliability': Highest reliability score (default)
- *
- * @param variantId - Shopify variant ID
- * @param criteria - Selection criteria (cost/speed/reliability)
- * @returns Best vendor mapping or null
- */
-export async function getBestVendorForProduct(
-  variantId: string,
-  criteria: "cost" | "speed" | "reliability" = "reliability",
-) {
-  // Get all vendor mappings for this variant
-  const mappings = await prisma.vendorProductMapping.findMany({
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "update_vendor_reliability",
+        rationale: `Updated reliability for vendor ${vendor.name}: ${newReliabilityScore.toFixed(2)}% (${onTimeDelivery ? 'on-time' : 'late'})`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "completed",
+        progressPct: 50,
+      });
+
+      return update;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "update_vendor_reliability_error",
+        rationale: `Failed to update vendor reliability: ${error}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Find the best vendor for a specific product
+   */
+  async getBestVendorForProduct(variantId: string): Promise<VendorOption | null> {
+    try {
+      // Get vendor product mappings for this variant
+      const vendorMappings = await prisma.vendor_product_mappings.findMany({
     where: { variantId },
     include: {
-      vendor: true,
-    },
-  });
-
-  if (mappings.length === 0) return null;
-
-  // Sort by criteria
-  const sorted = [...mappings].sort((a, b) => {
-    if (criteria === "cost") {
-      // Lower cost is better
-      return Number(a.costPerUnit) - Number(b.costPerUnit);
-    }
-    if (criteria === "speed") {
-      // Shorter lead time is better
-      return a.vendor.leadTimeDays - b.vendor.leadTimeDays;
-    }
-    // 'reliability' - higher score is better
-    return (
-      Number(b.vendor.reliabilityScore || 0) -
-      Number(a.vendor.reliabilityScore || 0)
-    );
-  });
-
-  return sorted[0];
-}
-
-/**
- * Get vendor dropdown options for UI (Engineer integration)
- *
- * Format: "Vendor Name (92% reliable, 7d lead, $24.99/unit)"
- *
- * @param variantId - Optional: filter to vendors for specific variant
- * @returns Array of vendor options for dropdown
- */
-export async function getVendorOptions(variantId?: string) {
-  // Build query based on whether variantId is provided
-  if (variantId) {
-    // Get vendors for specific variant
-    const vendors = await prisma.vendor.findMany({
-      where: {
-        productMappings: { some: { variantId } },
-      },
-      include: {
-        productMappings: {
-          where: { variantId },
-          take: 1,
+          vendors: true,
         },
+        orderBy: [
+          { isPreferred: 'desc' },
+          { costPerUnit: 'asc' },
+        ],
+      });
+
+      if (vendorMappings.length === 0) {
+        return null;
+      }
+
+      // Find the best vendor based on reliability and cost
+      let bestVendor: VendorOption | null = null;
+      let bestScore = -1;
+
+      for (const mapping of vendorMappings) {
+        const vendor = mapping.vendors;
+        if (!vendor.isActive) continue;
+
+        // Calculate composite score (reliability + cost factor)
+        const reliabilityScore = vendor.reliabilityScore || 0;
+        const costScore = 100 - (mapping.costPerUnit / 100); // Normalize cost (lower is better)
+        const compositeScore = (reliabilityScore * 0.7) + (costScore * 0.3);
+
+        if (compositeScore > bestScore) {
+          bestScore = compositeScore;
+          bestVendor = {
+            id: vendor.id,
+            name: vendor.name,
+            reliabilityScore: vendor.reliabilityScore || 0,
+            averageLeadTime: vendor.leadTimeDays,
+            costPerUnit: mapping.costPerUnit,
+            minimumOrderQuantity: mapping.minimumOrderQty || 1,
+            isPreferred: mapping.isPreferred,
+            lastOrderDate: mapping.lastOrderedAt,
+          };
+        }
+      }
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_best_vendor_for_product",
+        rationale: `Found best vendor for variant ${variantId}: ${bestVendor?.name || 'none'}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "completed",
+        progressPct: 75,
+      });
+
+      return bestVendor;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_best_vendor_for_product_error",
+        rationale: `Failed to find best vendor for product: ${error}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Get all vendor options for a product with rankings
+   */
+  async getVendorOptions(variantId: string): Promise<VendorOption[]> {
+    try {
+      const vendorMappings = await prisma.vendor_product_mappings.findMany({
+        where: { variantId },
+      include: {
+          vendors: true,
       },
     });
 
-    // Format for UI dropdown
-    return vendors.map((v) => {
-      const mapping = v.productMappings[0];
-      const reliabilityScore = Number(v.reliabilityScore || 0);
-      const costPerUnit = Number(mapping.costPerUnit);
+      const vendorOptions: VendorOption[] = vendorMappings
+        .filter(mapping => mapping.vendors.isActive)
+        .map(mapping => ({
+          id: mapping.vendors.id,
+          name: mapping.vendors.name,
+          reliabilityScore: mapping.vendors.reliabilityScore || 0,
+          averageLeadTime: mapping.vendors.leadTimeDays,
+          costPerUnit: mapping.costPerUnit,
+          minimumOrderQuantity: mapping.minimumOrderQty || 1,
+          isPreferred: mapping.isPreferred,
+          lastOrderDate: mapping.lastOrderedAt,
+        }))
+        .sort((a, b) => {
+          // Sort by preferred first, then by reliability score
+          if (a.isPreferred && !b.isPreferred) return -1;
+          if (!a.isPreferred && b.isPreferred) return 1;
+          return b.reliabilityScore - a.reliabilityScore;
+        });
 
-      const label = `${v.name} (${reliabilityScore.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${costPerUnit.toFixed(2)}/unit)`;
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_vendor_options",
+        rationale: `Retrieved ${vendorOptions.length} vendor options for variant ${variantId}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "completed",
+        progressPct: 100,
+      });
 
-      return {
-        id: v.id,
-        label,
-        name: v.name,
-        reliabilityScore,
-        leadTimeDays: v.leadTimeDays,
-        costPerUnit,
-      };
-    });
-  } else {
-    // Get all active vendors (no product mappings needed)
-    const vendors = await prisma.vendor.findMany({
-      where: { isActive: true },
-    });
-
-    // Format for UI dropdown (no cost per unit available)
-    return vendors.map((v) => {
-      const reliabilityScore = Number(v.reliabilityScore || 0);
-      const costPerUnit = 0;
-
-      const label = `${v.name} (${reliabilityScore.toFixed(0)}% reliable, ${v.leadTimeDays}d lead, $${costPerUnit.toFixed(2)}/unit)`;
-
-      return {
-        id: v.id,
-        label,
-        name: v.name,
-        reliabilityScore,
-        leadTimeDays: v.leadTimeDays,
-        costPerUnit,
-      };
-    });
+      return vendorOptions;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_vendor_options_error",
+        rationale: `Failed to get vendor options: ${error}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
   }
 }
 
 /**
- * Get vendor count by reliability tier
- *
- * Tiers:
- * - Excellent: >= 95%
- * - Good: 85-94%
- * - Fair: 70-84%
- * - Poor: < 70%
- *
- * @returns Count by tier
- */
-export async function getVendorReliabilityTiers() {
-  const vendors = await prisma.vendor.findMany({
-    select: {
-      reliabilityScore: true,
-    },
-  });
+   * Get all vendors with their metrics
+   */
+  async getAllVendorsWithMetrics(): Promise<VendorWithMetrics[]> {
+    try {
+      const vendors = await prisma.vendors.findMany({
+        orderBy: { name: 'asc' },
+      });
 
-  const tiers = {
-    excellent: 0,
-    good: 0,
-    fair: 0,
-    poor: 0,
-  };
+      const vendorsWithMetrics: VendorWithMetrics[] = vendors.map(vendor => {
+        const onTimePercentage = vendor.totalOrders && vendor.totalOrders > 0 
+          ? (vendor.onTimeDeliveries / vendor.totalOrders) * 100 
+          : 0;
 
-  vendors.forEach((v) => {
-    const score = Number(v.reliabilityScore || 0);
-    if (score >= 95) tiers.excellent++;
-    else if (score >= 85) tiers.good++;
-    else if (score >= 70) tiers.fair++;
-    else tiers.poor++;
-  });
+        return {
+          id: vendor.id,
+          name: vendor.name,
+          contactName: vendor.contactName,
+          contactEmail: vendor.contactEmail,
+          contactPhone: vendor.contactPhone,
+          paymentTerms: vendor.paymentTerms,
+          leadTimeDays: vendor.leadTimeDays,
+          shipMethod: vendor.shipMethod,
+          dropShip: vendor.dropShip,
+          currency: vendor.currency,
+          reliabilityScore: vendor.reliabilityScore || 0,
+          totalOrders: vendor.totalOrders || 0,
+          onTimeDeliveries: vendor.onTimeDeliveries || 0,
+          lateDeliveries: vendor.lateDeliveries || 0,
+          onTimePercentage,
+          averageLeadTime: vendor.leadTimeDays,
+          isActive: vendor.isActive,
+          notes: vendor.notes,
+          createdAt: vendor.createdAt,
+          updatedAt: vendor.updatedAt,
+        };
+      });
 
-  return tiers;
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_all_vendors_with_metrics",
+        rationale: `Retrieved metrics for ${vendorsWithMetrics.length} vendors`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "completed",
+        progressPct: 100,
+      });
+
+      return vendorsWithMetrics;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "get_all_vendors_with_metrics_error",
+        rationale: `Failed to get all vendors with metrics: ${error}`,
+        evidenceUrl: "app/services/inventory/vendor-service.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
+    }
+  }
 }

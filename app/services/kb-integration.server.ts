@@ -165,7 +165,14 @@ function generateSearchQueries(
   // 2. Agent-specific search
   queries.push(`What are the best practices for ${assignedAgent} agent when working on ${taskTitle}?`);
   
-  // 3. Technical implementation search
+  // 3. Growth Engine specific search
+  if (taskTitle.toLowerCase().includes('growth engine') || taskTitle.toLowerCase().includes('growth-engine')) {
+    queries.push('Growth Engine implementation patterns and best practices');
+    queries.push('Growth Engine troubleshooting and common issues');
+    queries.push('Growth Engine integration with existing systems');
+  }
+  
+  // 4. Technical implementation search
   if (taskTitle.toLowerCase().includes('api')) {
     queries.push('API implementation patterns and best practices');
   }
@@ -176,10 +183,10 @@ function generateSearchQueries(
     queries.push('Database implementation patterns and security considerations');
   }
   
-  // 4. Problem-solving search
+  // 5. Problem-solving search
   queries.push(`Common issues and solutions when implementing ${taskTitle}`);
   
-  // 5. Integration search
+  // 6. Integration search
   queries.push(`How does ${taskTitle} integrate with the Growth Engine architecture?`);
   
   return queries;

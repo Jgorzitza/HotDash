@@ -96,15 +96,15 @@
 
   ```bash
   git fetch origin
-  # Option A: Use existing branch (today)
-  git checkout manager-reopen-20251020
-  git pull origin manager-reopen-20251020
+  # Current branch: agent-launch-20251023
+  git checkout agent-launch-20251023
+  git pull origin agent-launch-20251023
 
-  # Option B: Create new daily branch (future days)
+  # For future days, create new daily branch:
   # git checkout main
   # git pull origin main
-  # git checkout -b daily/2025-10-20
-  # git push origin daily/2025-10-20
+  # git checkout -b agent-launch-YYYYMMDD
+  # git push origin agent-launch-YYYYMMDD
   ```
 
 - [ ] **Announce Branch** (database + optional markdown):
@@ -115,7 +115,7 @@
     actor: "manager",
     action: "branch_announced",
     rationale:
-      "Daily branch: manager-reopen-20251020 - all agents should checkout and commit",
+      "Daily branch: agent-launch-20251023 - all agents should checkout and commit",
     evidenceUrl: "docs/RULES.md",
   });
   ```
@@ -195,7 +195,7 @@
 
 ### 5.2 Feedback sweep **first** (10–30 sec) [DATABASE-DRIVEN]
 
-**NEW (2025-10-22)**: Query database instead of reading 17 markdown files
+**CRITICAL (2025-10-23)**: Query database instead of reading 17 markdown files
 
 ```bash
 # Core 3 queries (< 10 sec total)

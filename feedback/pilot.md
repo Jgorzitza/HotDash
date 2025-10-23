@@ -1,37 +1,54 @@
-## 2025-10-22T14:45:00Z — Pilot: Startup Complete
+# PILOT Agent Feedback
 
-**Working On**: PILOT-018 DevOps CI Guards Testing
-**Progress**: Startup checklist completed successfully
-**Evidence**: 
-- Git setup: agent-launch-20251022 branch checked out
-- MCP tools verified: Playwright 1.55.1, Vitest 2.1.9, Node 24.9.0
-- Evidence directories created: artifacts/pilot/2025-10-22/mcp/, artifacts/pilot/2025-10-22/screenshots/
-- Task started: PILOT-018 in progress
-- CI guard tests found: tests/ci/guard-mcp.spec.js, tests/ci/dev-mcp-ban.spec.js, tests/ci/idle-guard.spec.js
-**Blockers**: None
-**Next**: Begin testing CI guard scripts as per PILOT-018 requirements
-## 2025-10-22T16:35:00Z — Pilot: All Available Tasks Complete
+## Database-Driven Feedback Process
 
-**Working On**: All available pilot tasks completed
-**Progress**: 3 out of 4 tasks completed successfully
-**Evidence**: 
-- PILOT-004: Settings smoke test analysis complete, comprehensive test framework validated
-- PILOT-005: Mobile browser testing analysis complete, browser compatibility matrix established  
-- PILOT-018: CI guards testing complete, all 3 scripts validated and working correctly
-- PILOT-100: Blocked by dependencies (AI-CUSTOMER-100, INVENTORY-100, INTEGRATIONS-101, ANALYTICS-100)
-**Blockers**: PILOT-100 waiting for other agents to complete their tasks
-**Next**: Monitor for dependency completion to proceed with PILOT-100 UAT scenarios
-## 2025-10-22T18:35:00Z — Pilot: All Available Tasks Complete
+**CRITICAL**: This file is for reference only. All actual feedback goes to the database via `logDecision()`.
 
-**Working On**: All available pilot tasks completed
-**Progress**: 5 out of 6 tasks completed successfully
-**Evidence**: 
-- PILOT-004: Settings smoke test analysis complete, comprehensive test framework validated
-- PILOT-005: Mobile browser testing analysis complete, browser compatibility matrix established  
-- PILOT-018: CI guards testing complete, all 3 scripts validated and working correctly
-- PILOT-021: Growth Engine Testing Framework documentation complete, comprehensive framework documented
-- PILOT-023: Growth Engine Testing Framework implementation complete, comprehensive testing framework created
-- PILOT-100: Blocked by dependencies (AI-CUSTOMER-100, INVENTORY-100, INTEGRATIONS-101, ANALYTICS-100)
-**Blockers**: PILOT-100 waiting for other agents to complete their tasks
-**Next**: Monitor for dependency completion to proceed with PILOT-100 UAT scenarios
-**Database Feedback**: All progress logged via proper database-driven feedback system using start-task.ts and complete-task.ts scripts
+### How to Log Progress
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+
+await logDecision({
+  scope: 'build',
+  actor: 'pilot',
+  taskId: 'TASK-ID',
+  status: 'in_progress', // pending | in_progress | completed | blocked | cancelled
+  progressPct: 50,
+  action: 'task_progress',
+  rationale: 'What you did + evidence',
+  evidenceUrl: 'artifacts/pilot/2025-10-23/task.md',
+  payload: {
+    commits: ['abc123f'],
+    files: [{ path: 'app/routes/dashboard.tsx', lines: 45, type: 'modified' }],
+    tests: { overall: '22/22 passing' }
+  }
+});
+```
+
+### When to Log
+
+- ✅ Task started (status: 'in_progress')
+- ✅ Task completed (status: 'completed') - IMMEDIATE
+- ✅ Task blocked (status: 'blocked') - IMMEDIATE
+- ✅ Blocker cleared (status: 'in_progress') - IMMEDIATE
+- ✅ Every 2 hours if still working on same task
+
+### Manager Queries
+
+Manager can see your progress via:
+- `scripts/manager/query-blocked-tasks.ts`
+- `scripts/manager/query-agent-status.ts`
+- `scripts/manager/query-completed-today.ts`
+
+---
+
+## Feedback Log
+
+*This section is for reference only. Actual progress is logged to the database.*
+
+### 2025-10-23
+
+**Status**: Ready to work
+**Next Task**: Use `npx tsx --env-file=.env scripts/agent/get-my-tasks.ts pilot` to get your tasks
+**Database Status**: All feedback goes to database via `logDecision()`

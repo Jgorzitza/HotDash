@@ -1,85 +1,56 @@
-# Growth Engine Troubleshooting Guide
+# Growth Engine Troubleshooting Procedures
 
 ## Overview
 
-This guide provides comprehensive troubleshooting procedures for Growth Engine phases 9-12, with step-by-step solutions for common issues and advanced diagnostic techniques.
+This document provides comprehensive troubleshooting procedures for the Growth Engine system, covering all phases (9-12) and common issues that may arise during operations.
+
+## Troubleshooting Framework
+
+### 1. Problem Identification
+### 2. Diagnosis Process
+### 3. Resolution Steps
+### 4. Prevention Strategies
+### 5. Documentation and Learning
+
+---
 
 ## Phase 9: MCP Evidence System Troubleshooting
 
-### Issue: Missing Evidence Files
+### 9.1 MCP Evidence Files Not Found
+
+#### Problem Description
+CI fails with error: "MCP Evidence files not found" or "Missing evidence for code changes"
 
 #### Symptoms
-- CI fails with "MCP Evidence files not found"
-- PR template shows "No MCP usage - non-code change" when evidence should exist
-- Evidence directory structure missing
+- CI build failures
+- Missing evidence files
+- Invalid JSONL format
+- Evidence not logged properly
 
 #### Diagnosis Steps
-1. **Check Directory Structure**:
+
+1. **Check Evidence Directory Structure**
    ```bash
+   # Verify directory structure
    ls -la artifacts/
    ls -la artifacts/<agent>/
    ls -la artifacts/<agent>/<YYYY-MM-DD>/
    ls -la artifacts/<agent>/<YYYY-MM-DD>/mcp/
    ```
 
-2. **Verify Agent Configuration**:
+2. **Validate JSONL Format**
    ```bash
-   echo $AGENT_NAME
-   echo $CURRENT_DATE
-   ```
-
-3. **Check File Permissions**:
-   ```bash
-   ls -la artifacts/<agent>/<YYYY-MM-DD>/mcp/
-   ```
-
-#### Resolution
-1. **Create Missing Directories**:
-   ```bash
-   mkdir -p artifacts/<agent>/<YYYY-MM-DD>/mcp/
-   chmod 755 artifacts/<agent>/<YYYY-MM-DD>/mcp/
-   ```
-
-2. **Initialize Evidence File**:
-   ```bash
-   touch artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
-   chmod 644 artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
-   ```
-
-3. **Verify Creation**:
-   ```bash
-   ls -la artifacts/<agent>/<YYYY-MM-DD>/mcp/
-   ```
-
-### Issue: Invalid JSONL Format
-
-#### Symptoms
-- CI fails with "Invalid JSON in evidence file"
-- JSONL file contains malformed JSON
-- Evidence entries not properly formatted
-
-#### Diagnosis Steps
-1. **Check JSONL Format**:
-   ```bash
+   # Check JSONL file format
    cat artifacts/<agent>/<YYYY-MM-DD>/mcp/*.jsonl | jq .
    ```
 
-2. **Validate Each Line**:
+3. **Check File Permissions**
    ```bash
-   while IFS= read -r line; do
-     echo "$line" | jq . > /dev/null || echo "Invalid JSON: $line"
-   done < artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   # Verify file permissions
+   ls -la artifacts/<agent>/<YYYY-MM-DD>/mcp/
    ```
 
-#### Resolution
-1. **Fix Malformed JSON**:
-   ```bash
-   # Remove invalid lines
-   grep -v "Invalid JSON" artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl > temp.jsonl
-   mv temp.jsonl artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
-   ```
-
-2. **Validate Required Fields**:
+4. **Validate Required Fields**
    ```bash
    # Check each entry has required fields
    while IFS= read -r line; do
@@ -87,179 +58,406 @@ This guide provides comprehensive troubleshooting procedures for Growth Engine p
    done < artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
    ```
 
-### Issue: Evidence Not Logged
+#### Resolution Steps
 
-#### Symptoms
-- MCP tool calls not recorded in evidence files
-- Evidence service not working
-- Missing evidence entries for MCP usage
-
-#### Diagnosis Steps
-1. **Check Evidence Service**:
+1. **Create Missing Directories**
    ```bash
-   node -e "const { mcpEvidenceService } = require('./app/services/mcp-evidence.server.ts'); console.log('Service loaded');"
+   # Create evidence directory structure
+   mkdir -p artifacts/<agent>/<YYYY-MM-DD>/mcp/
+   chmod 755 artifacts/<agent>/<YYYY-MM-DD>/mcp/
    ```
 
-2. **Verify MCP Tool Calls**:
+2. **Fix Malformed JSON**
    ```bash
-   # Check if MCP tools are being called
-   grep -r "mcpEvidenceService" app/ --include="*.ts" --include="*.tsx"
+   # Remove invalid lines
+   grep -v "Invalid JSON" artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl > temp.jsonl
+   mv temp.jsonl artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
    ```
 
-#### Resolution
-1. **Initialize Evidence Service**:
-   ```typescript
-   import { mcpEvidenceService } from '~/services/mcp-evidence.server';
-   
-   // Initialize evidence file
-   await mcpEvidenceService.initializeEvidenceFile(agent, date, topic);
+3. **Validate Required Fields**
+   ```bash
+   # Check each entry has required fields
+   while IFS= read -r line; do
+     echo "$line" | jq -r '.tool, .doc_ref, .request_id, .timestamp, .purpose' | wc -l
+   done < artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
    ```
 
-2. **Log MCP Usage**:
+4. **Log Evidence Properly**
    ```typescript
+   // Log MCP tool usage
    await mcpEvidenceService.appendEvidence(agent, date, topic, {
      tool: 'shopify-dev',
      doc_ref: 'https://shopify.dev/docs/api/admin-rest',
      request_id: 'req_123',
      timestamp: new Date().toISOString(),
-     purpose: 'Get product data'
+     purpose: 'Get product data for component'
    });
    ```
 
-## Phase 10: Heartbeat Monitoring Troubleshooting
+#### Prevention Strategies
+- Automated directory creation
+- Format validation scripts
+- Clear documentation
+- Regular training
+- Monitoring and alerting
 
-### Issue: Stale Heartbeats
+### 9.2 Invalid JSONL Format
+
+#### Problem Description
+Evidence files contain invalid JSON format causing CI failures
 
 #### Symptoms
-- CI fails with "Heartbeat is stale"
-- Last heartbeat entry older than 15 minutes
+- JSON parsing errors
+- CI build failures
+- Evidence not processed
+- Invalid data format
+
+#### Diagnosis Steps
+
+1. **Check JSONL File Format**
+   ```bash
+   # Validate JSONL format
+   cat artifacts/<agent>/<YYYY-MM-DD>/mcp/*.jsonl | jq .
+   ```
+
+2. **Identify Invalid Lines**
+   ```bash
+   # Find invalid JSON lines
+   while IFS= read -r line; do
+     echo "$line" | jq . > /dev/null 2>&1 || echo "Invalid: $line"
+   done < artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+3. **Check File Encoding**
+   ```bash
+   # Check file encoding
+   file artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+#### Resolution Steps
+
+1. **Fix Invalid JSON**
+   ```bash
+   # Remove invalid lines
+   grep -v "Invalid JSON" artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl > temp.jsonl
+   mv temp.jsonl artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+2. **Validate JSON Format**
+   ```bash
+   # Validate each line
+   while IFS= read -r line; do
+     echo "$line" | jq . > /dev/null 2>&1 || echo "Invalid: $line"
+   done < artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+3. **Recreate Evidence File**
+   ```bash
+   # Backup and recreate
+   cp artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl.backup
+   rm artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   touch artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+#### Prevention Strategies
+- Automated format validation
+- Clear documentation
+- Regular training
+- Monitoring and alerting
+
+### 9.3 Evidence Not Logged
+
+#### Problem Description
+MCP tool usage not being logged to evidence files
+
+#### Symptoms
+- Missing evidence entries
+- CI failures
+- Evidence not tracked
+- Tool usage not recorded
+
+#### Diagnosis Steps
+
+1. **Check Evidence File**
+   ```bash
+   # Check if evidence file exists
+   ls -la artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+2. **Check File Content**
+   ```bash
+   # Check file content
+   cat artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+3. **Check Logging Service**
+   ```bash
+   # Check if logging service is working
+   npx tsx scripts/test-evidence-logging.ts
+   ```
+
+#### Resolution Steps
+
+1. **Initialize Evidence File**
+   ```bash
+   # Create evidence file
+   touch artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   chmod 644 artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
+   ```
+
+2. **Test Logging Service**
+   ```bash
+   # Test logging service
+   npx tsx scripts/test-evidence-logging.ts
+   ```
+
+3. **Log Evidence Manually**
+   ```typescript
+   // Log evidence manually
+   await mcpEvidenceService.appendEvidence(agent, date, topic, {
+     tool: 'shopify-dev',
+     doc_ref: 'https://shopify.dev/docs/api/admin-rest',
+     request_id: 'req_123',
+     timestamp: new Date().toISOString(),
+     purpose: 'Get product data for component'
+   });
+   ```
+
+#### Prevention Strategies
+- Automated evidence tracking
+- Regular monitoring
+- Clear documentation
+- Training and education
+
+---
+
+## Phase 10: Heartbeat Monitoring Troubleshooting
+
+### 10.1 Stale Heartbeat Detected
+
+#### Problem Description
+CI fails with error: "Heartbeat is stale" or "Agent appears idle"
+
+#### Symptoms
+- CI build failures
+- Missing heartbeat files
+- Stale heartbeat timestamps
 - Agent appears idle
 
 #### Diagnosis Steps
-1. **Check Last Heartbeat**:
+
+1. **Check Last Heartbeat**
    ```bash
+   # Check last heartbeat timestamp
    tail -1 artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson | jq .
    ```
 
-2. **Calculate Time Difference**:
+2. **Calculate Time Difference**
    ```bash
+   # Calculate time difference
    last_heartbeat=$(tail -1 artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson | jq -r '.timestamp')
    current_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)
    echo "Last heartbeat: $last_heartbeat"
    echo "Current time: $current_time"
    ```
 
-#### Resolution
-1. **Update Heartbeat**:
+3. **Check Heartbeat File**
    ```bash
+   # Check heartbeat file
+   ls -la artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
+   ```
+
+#### Resolution Steps
+
+1. **Update Heartbeat**
+   ```bash
+   # Update heartbeat
    echo '{"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","task":"'$TASK_ID'","status":"doing","progress":"50%"}' >> artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
-2. **Start Heartbeat Monitoring**:
+2. **Start Heartbeat Monitoring**
    ```typescript
-   import { heartbeatService } from '~/services/heartbeat.server';
-   
-   // Start monitoring
+   // Start heartbeat monitoring
    const interval = await heartbeatService.startHeartbeatMonitoring(
      agent, date, task, 15 // 15 minutes
    );
    ```
 
-### Issue: Missing Heartbeat Files
+3. **Validate Heartbeat**
+   ```bash
+   # Validate heartbeat format
+   cat artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson | jq .
+   ```
+
+#### Prevention Strategies
+- Automated heartbeat updates
+- Regular monitoring
+- Clear procedures
+- Training and education
+
+### 10.2 Missing Heartbeat Files
+
+#### Problem Description
+Heartbeat files are missing or not created
 
 #### Symptoms
-- CI fails with "Heartbeat files not found"
-- No heartbeat tracking for long-running tasks
-- Heartbeat directory missing
+- Missing heartbeat files
+- CI failures
+- Agent appears idle
+- No heartbeat tracking
 
 #### Diagnosis Steps
-1. **Check Heartbeat Directory**:
+
+1. **Check Heartbeat Directory**
    ```bash
+   # Check heartbeat directory
    ls -la artifacts/<agent>/<YYYY-MM-DD>/
    ```
 
-2. **Verify Task Duration**:
+2. **Check File Creation**
    ```bash
-   # Check if task is >2 hours
-   echo "Task estimated hours: $ESTIMATED_HOURS"
+   # Check if file creation is working
+   npx tsx scripts/test-heartbeat-creation.ts
    ```
 
-#### Resolution
-1. **Create Heartbeat File**:
+3. **Check Permissions**
    ```bash
+   # Check directory permissions
+   ls -la artifacts/<agent>/<YYYY-MM-DD>/
+   ```
+
+#### Resolution Steps
+
+1. **Create Heartbeat File**
+   ```bash
+   # Create heartbeat file
    mkdir -p artifacts/<agent>/<YYYY-MM-DD>/
    touch artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    chmod 644 artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
-2. **Initialize Heartbeat Service**:
-   ```typescript
-   import { heartbeatService } from '~/services/heartbeat.server';
-   
-   // Initialize heartbeat file
-   await heartbeatService.initializeHeartbeatFile(agent, date);
+2. **Initialize Heartbeat**
+   ```bash
+   # Initialize heartbeat
+   echo '{"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","task":"'$TASK_ID'","status":"doing","progress":"0%"}' > artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
-### Issue: Invalid NDJSON Format
+3. **Test Heartbeat Creation**
+   ```bash
+   # Test heartbeat creation
+   npx tsx scripts/test-heartbeat-creation.ts
+   ```
+
+#### Prevention Strategies
+- Automated heartbeat creation
+- Regular monitoring
+- Clear procedures
+- Training and education
+
+### 10.3 Invalid NDJSON Format
+
+#### Problem Description
+Heartbeat files contain invalid NDJSON format
 
 #### Symptoms
-- CI fails with "Invalid JSON in heartbeat file"
-- NDJSON file contains malformed JSON
-- Heartbeat entries not properly formatted
+- JSON parsing errors
+- CI failures
+- Heartbeat not processed
+- Invalid data format
 
 #### Diagnosis Steps
-1. **Check NDJSON Format**:
+
+1. **Check NDJSON Format**
    ```bash
+   # Validate NDJSON format
    cat artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson | jq .
    ```
 
-2. **Validate Each Line**:
+2. **Identify Invalid Lines**
    ```bash
+   # Find invalid JSON lines
    while IFS= read -r line; do
-     echo "$line" | jq . > /dev/null || echo "Invalid JSON: $line"
+     echo "$line" | jq . > /dev/null 2>&1 || echo "Invalid: $line"
    done < artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
-#### Resolution
-1. **Fix Malformed JSON**:
+3. **Check File Encoding**
+   ```bash
+   # Check file encoding
+   file artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
+   ```
+
+#### Resolution Steps
+
+1. **Fix Invalid JSON**
    ```bash
    # Remove invalid lines
    grep -v "Invalid JSON" artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson > temp.ndjson
    mv temp.ndjson artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
-2. **Validate Required Fields**:
+2. **Validate NDJSON Format**
    ```bash
-   # Check each entry has required fields
+   # Validate each line
    while IFS= read -r line; do
-     echo "$line" | jq -r '.timestamp, .task, .status' | wc -l
+     echo "$line" | jq . > /dev/null 2>&1 || echo "Invalid: $line"
    done < artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
    ```
 
+3. **Recreate Heartbeat File**
+   ```bash
+   # Backup and recreate
+   cp artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson.backup
+   rm artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
+   touch artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
+   ```
+
+#### Prevention Strategies
+- Automated format validation
+- Clear documentation
+- Regular training
+- Monitoring and alerting
+
+---
+
 ## Phase 11: Dev MCP Ban Troubleshooting
 
-### Issue: Dev MCP Imports in Production
+### 11.1 Dev MCP Imports Detected
+
+#### Problem Description
+CI fails with error: "Dev MCP imports detected" or "Banned imports found"
 
 #### Symptoms
-- CI fails with "Dev MCP imports detected in production code"
-- Build fails due to Dev MCP violations
-- Production code contains banned imports
+- CI build failures
+- Banned imports detected
+- Production safety violations
+- Build process blocked
 
 #### Diagnosis Steps
-1. **Scan for Dev MCP Imports**:
+
+1. **Scan for Dev MCP Imports**
    ```bash
+   # Check for Dev MCP imports
    grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i -n
    ```
 
-2. **Check Specific Files**:
+2. **Check Specific Files**
    ```bash
+   # Check specific banned imports
    grep -r "@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx"
    grep -r "context7-mcp" app/ --include="*.ts" --include="*.tsx"
    grep -r "chrome-devtools-mcp" app/ --include="*.ts" --include="*.tsx"
    ```
 
-#### Resolution
-1. **Remove Dev MCP Imports**:
+3. **Verify Import Context**
+   ```bash
+   # Check import context
+   grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i -A 2 -B 2
+   ```
+
+#### Resolution Steps
+
+1. **Remove Dev MCP Imports**
    ```bash
    # Remove banned imports from app directory
    find app/ -name "*.ts" -o -name "*.tsx" | xargs sed -i '/@shopify\/mcp-server-dev/d'
@@ -267,301 +465,512 @@ This guide provides comprehensive troubleshooting procedures for Growth Engine p
    find app/ -name "*.ts" -o -name "*.tsx" | xargs sed -i '/chrome-devtools-mcp/d'
    ```
 
-2. **Move to Allowed Directories**:
+2. **Move to Allowed Directories**
    ```bash
    # Move Dev MCP code to allowed directories
    mv app/dev-mcp-code/ scripts/
    mv app/test-mcp-code/ tests/
    ```
 
-### Issue: False Positive Violations
-
-#### Symptoms
-- Legitimate imports flagged as Dev MCP violations
-- CI fails for non-Dev MCP imports
-- False positive detection
-
-#### Diagnosis Steps
-1. **Check Import Context**:
-   ```bash
-   grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i -A 2 -B 2
-   ```
-
-2. **Verify Import Purpose**:
-   ```bash
-   # Check if imports are actually Dev MCP
-   grep -r "import.*mcp" app/ --include="*.ts" --include="*.tsx"
-   ```
-
-#### Resolution
-1. **Update CI Configuration**:
+3. **Update CI Configuration**
    ```yaml
    # Update .github/workflows/dev-mcp-ban.yml
    - name: Check for Dev MCP imports in production code
      run: |
-       # More specific pattern matching
        if grep -r "import.*@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx"; then
          echo "❌ Dev MCP imports detected"
          exit 1
        fi
    ```
 
-2. **Whitelist Legitimate Imports**:
-   ```bash
-   # Add legitimate imports to whitelist
-   echo "legitimate-mcp-import" >> .dev-mcp-whitelist
-   ```
+#### Prevention Strategies
+- Code review processes
+- Automated scanning
+- Clear documentation
+- Regular training
 
-### Issue: Missing CI Checks
+### 11.2 False Positive Detections
+
+#### Problem Description
+CI incorrectly flags legitimate code as Dev MCP violations
 
 #### Symptoms
-- Dev MCP Ban checks not running
-- CI workflow not executing
-- No validation of Dev MCP imports
+- False positive CI failures
+- Legitimate code blocked
+- Incorrect ban detection
+- Build process blocked
 
 #### Diagnosis Steps
-1. **Check Workflow Configuration**:
+
+1. **Check Detection Logic**
    ```bash
+   # Check CI detection logic
    cat .github/workflows/dev-mcp-ban.yml
    ```
 
-2. **Verify Workflow Triggers**:
+2. **Verify Code Context**
    ```bash
-   gh workflow list
-   gh workflow view dev-mcp-ban.yml
+   # Check code context
+   grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i -A 5 -B 5
    ```
 
-#### Resolution
-1. **Enable Workflow**:
+3. **Test Detection Rules**
    ```bash
-   # Ensure workflow is enabled
-   gh workflow enable dev-mcp-ban.yml
+   # Test detection rules
+   npx tsx scripts/test-dev-mcp-detection.ts
    ```
 
-2. **Fix Workflow Configuration**:
+#### Resolution Steps
+
+1. **Update Detection Rules**
    ```yaml
-   name: Dev MCP Ban - Production Safety
-   on:
-     pull_request:
-       branches: [main]
-     push:
-       branches: [main]
+   # Update CI detection rules
+   - name: Check for Dev MCP imports in production code
+     run: |
+       if grep -r "import.*@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx"; then
+         echo "❌ Dev MCP imports detected"
+         exit 1
+       fi
    ```
 
-## Phase 12: CI Guards Troubleshooting
-
-### Issue: Guard MCP Failures
-
-#### Symptoms
-- CI fails with "MCP Evidence validation failed"
-- PR body missing MCP Evidence section
-- Evidence files not found
-
-#### Diagnosis Steps
-1. **Check PR Body**:
+2. **Whitelist Legitimate Code**
    ```bash
-   gh pr view <pr-number> --json body
+   # Add whitelist for legitimate code
+   echo "legitimate-mcp-code" >> .dev-mcp-whitelist.txt
    ```
 
-2. **Verify Evidence Files**:
-   ```bash
-   find artifacts -name "*.jsonl" -type f
-   ```
-
-#### Resolution
-1. **Add MCP Evidence Section**:
-   ```markdown
-   ## MCP Evidence (required for code changes)
-   - artifacts/<agent>/<date>/mcp/<topic>.jsonl
-   ```
-
-2. **Create Missing Evidence Files**:
-   ```bash
-   mkdir -p artifacts/<agent>/<YYYY-MM-DD>/mcp/
-   touch artifacts/<agent>/<YYYY-MM-DD>/mcp/general.jsonl
-   ```
-
-### Issue: Idle Guard Failures
-
-#### Symptoms
-- CI fails with "Heartbeat validation failed"
-- Heartbeat files missing or stale
-- PR body missing Heartbeat section
-
-#### Diagnosis Steps
-1. **Check Heartbeat Files**:
-   ```bash
-   find artifacts -name "heartbeat.ndjson" -type f
-   ```
-
-2. **Verify Heartbeat Status**:
-   ```bash
-   cat artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson | tail -1 | jq .
-   ```
-
-#### Resolution
-1. **Add Heartbeat Section**:
-   ```markdown
-   ## Heartbeat (if task >2 hours)
-   - [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson
-   ```
-
-2. **Update Heartbeat**:
-   ```bash
-   echo '{"timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","task":"'$TASK_ID'","status":"doing"}' >> artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson
-   ```
-
-### Issue: Workflow Not Running
-
-#### Symptoms
-- CI Guards not executing
-- Workflow not triggered
-- No CI checks running
-
-#### Diagnosis Steps
-1. **Check Workflow Status**:
-   ```bash
-   gh run list --workflow=guard-mcp.yml
-   gh run list --workflow=idle-guard.yml
-   gh run list --workflow=dev-mcp-ban.yml
-   ```
-
-2. **Verify Workflow Configuration**:
-   ```bash
-   ls -la .github/workflows/
-   ```
-
-#### Resolution
-1. **Enable Workflows**:
-   ```bash
-   gh workflow enable guard-mcp.yml
-   gh workflow enable idle-guard.yml
-   gh workflow enable dev-mcp-ban.yml
-   ```
-
-2. **Fix Workflow Triggers**:
+3. **Update CI Configuration**
    ```yaml
-   on:
-     pull_request:
-       branches: [main]
-     push:
-       branches: [main]
+   # Update CI configuration
+   - name: Check for Dev MCP imports in production code
+     run: |
+       if grep -r "import.*@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx" | grep -v -f .dev-mcp-whitelist.txt; then
+         echo "❌ Dev MCP imports detected"
+         exit 1
+       fi
    ```
 
-## Advanced Diagnostic Techniques
+#### Prevention Strategies
+- Regular rule review
+- Clear documentation
+- Regular training
+- Monitoring and alerting
 
-### System Health Check
-```bash
-#!/bin/bash
-# Growth Engine Health Check Script
+### 11.3 CI Guard Failures
 
-echo "=== Growth Engine Health Check ==="
+#### Problem Description
+CI guards fail to detect Dev MCP violations
 
-# Check MCP Evidence
-echo "1. Checking MCP Evidence..."
-find artifacts -name "*.jsonl" -type f | wc -l
+#### Symptoms
+- CI guards not working
+- Violations not detected
+- Production safety compromised
+- Build process bypassed
 
-# Check Heartbeat
-echo "2. Checking Heartbeat..."
-find artifacts -name "heartbeat.ndjson" -type f | wc -l
+#### Diagnosis Steps
 
-# Check Dev MCP Ban
-echo "3. Checking Dev MCP Ban..."
-grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i | wc -l
+1. **Check CI Guard Status**
+   ```bash
+   # Check CI guard status
+   npx tsx scripts/check-ci-guard-status.ts
+   ```
 
-# Check CI Workflows
-echo "4. Checking CI Workflows..."
-ls -la .github/workflows/ | grep -E "(guard-mcp|idle-guard|dev-mcp-ban)"
+2. **Test Detection**
+   ```bash
+   # Test detection
+   npx tsx scripts/test-dev-mcp-detection.ts
+   ```
 
-echo "=== Health Check Complete ==="
-```
+3. **Check CI Configuration**
+   ```bash
+   # Check CI configuration
+   cat .github/workflows/dev-mcp-ban.yml
+   ```
 
-### Performance Monitoring
-```bash
-#!/bin/bash
-# Growth Engine Performance Monitor
+#### Resolution Steps
 
-echo "=== Growth Engine Performance Monitor ==="
+1. **Fix CI Guard Configuration**
+   ```yaml
+   # Fix CI guard configuration
+   - name: Check for Dev MCP imports in production code
+     run: |
+       if grep -r "import.*@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx"; then
+         echo "❌ Dev MCP imports detected"
+         exit 1
+       fi
+   ```
 
-# Monitor evidence file growth
-echo "Evidence file sizes:"
-find artifacts -name "*.jsonl" -type f -exec ls -lh {} \;
+2. **Test CI Guards**
+   ```bash
+   # Test CI guards
+   npx tsx scripts/test-ci-guards.ts
+   ```
 
-# Monitor heartbeat frequency
-echo "Heartbeat frequency:"
-for file in artifacts/*/2025-10-22/heartbeat.ndjson; do
-  if [ -f "$file" ]; then
-    echo "File: $file"
-    wc -l "$file"
-  fi
-done
+3. **Update Monitoring**
+   ```bash
+   # Update monitoring
+   npx tsx scripts/update-ci-guard-monitoring.ts
+   ```
 
-# Monitor CI performance
-echo "CI performance:"
-gh run list --limit 10 --json status,conclusion,createdAt
-
-echo "=== Performance Monitor Complete ==="
-```
-
-### Automated Testing
-```bash
-#!/bin/bash
-# Growth Engine Automated Tests
-
-echo "=== Growth Engine Automated Tests ==="
-
-# Test MCP Evidence
-echo "Testing MCP Evidence..."
-node -e "
-const { mcpEvidenceService } = require('./app/services/mcp-evidence.server.ts');
-console.log('MCP Evidence Service: OK');
-"
-
-# Test Heartbeat
-echo "Testing Heartbeat..."
-node -e "
-const { heartbeatService } = require('./app/services/heartbeat.server.ts');
-console.log('Heartbeat Service: OK');
-"
-
-# Test Dev MCP Ban
-echo "Testing Dev MCP Ban..."
-node -e "
-const { devMCPBanService } = require('./app/services/dev-mcp-ban.server.ts');
-console.log('Dev MCP Ban Service: OK');
-"
-
-echo "=== Automated Tests Complete ==="
-```
-
-## Emergency Procedures
-
-### Critical System Failure
-1. **Immediate Assessment**: Evaluate impact and severity
-2. **Team Activation**: Activate emergency response team
-3. **Communication**: Notify stakeholders and management
-4. **Resolution**: Execute emergency procedures
-5. **Recovery**: Restore normal operations
-6. **Review**: Conduct post-incident review
-
-### Data Recovery
-1. **Backup Verification**: Check backup integrity
-2. **Recovery Planning**: Plan recovery procedures
-3. **Data Restoration**: Restore from backups
-4. **Validation**: Verify data integrity
-5. **Monitoring**: Monitor system stability
-
-### Security Incident
-1. **Incident Assessment**: Evaluate security impact
-2. **Containment**: Isolate affected systems
-3. **Investigation**: Conduct security investigation
-4. **Remediation**: Implement security fixes
-5. **Recovery**: Restore secure operations
-6. **Documentation**: Document incident and lessons learned
+#### Prevention Strategies
+- Regular CI guard testing
+- Clear documentation
+- Regular training
+- Monitoring and alerting
 
 ---
 
-**Last Updated**: 2025-10-22  
-**Next Review**: 2025-11-22  
-**Owner**: Support Team  
+## Phase 12: CI Guards Troubleshooting
+
+### 12.1 Guard-MCP Failures
+
+#### Problem Description
+Guard-MCP fails to enforce MCP Evidence requirements
+
+#### Symptoms
+- CI failures
+- Missing evidence not detected
+- Guard not working
+- Build process bypassed
+
+#### Diagnosis Steps
+
+1. **Check Guard-MCP Status**
+   ```bash
+   # Check guard-MCP status
+   npx tsx scripts/check-guard-mcp-status.ts
+   ```
+
+2. **Test Evidence Detection**
+   ```bash
+   # Test evidence detection
+   npx tsx scripts/test-evidence-detection.ts
+   ```
+
+3. **Check CI Configuration**
+   ```bash
+   # Check CI configuration
+   cat .github/workflows/guard-mcp.yml
+   ```
+
+#### Resolution Steps
+
+1. **Fix Guard-MCP Configuration**
+   ```yaml
+   # Fix guard-MCP configuration
+   - name: Check for MCP Evidence files
+     run: |
+       if [ ! -f "artifacts/${{ github.actor }}/$(date +%Y-%m-%d)/mcp/general.jsonl" ]; then
+         echo "❌ MCP Evidence files not found"
+         exit 1
+       fi
+   ```
+
+2. **Test Guard-MCP**
+   ```bash
+   # Test guard-MCP
+   npx tsx scripts/test-guard-mcp.ts
+   ```
+
+3. **Update Monitoring**
+   ```bash
+   # Update monitoring
+   npx tsx scripts/update-guard-mcp-monitoring.ts
+   ```
+
+#### Prevention Strategies
+- Regular guard-MCP testing
+- Clear documentation
+- Regular training
+- Monitoring and alerting
+
+### 12.2 Idle-Guard Failures
+
+#### Problem Description
+Idle-Guard fails to detect idle agents
+
+#### Symptoms
+- CI failures
+- Idle agents not detected
+- Guard not working
+- Build process bypassed
+
+#### Diagnosis Steps
+
+1. **Check Idle-Guard Status**
+   ```bash
+   # Check idle-guard status
+   npx tsx scripts/check-idle-guard-status.ts
+   ```
+
+2. **Test Idle Detection**
+   ```bash
+   # Test idle detection
+   npx tsx scripts/test-idle-detection.ts
+   ```
+
+3. **Check CI Configuration**
+   ```bash
+   # Check CI configuration
+   cat .github/workflows/idle-guard.yml
+   ```
+
+#### Resolution Steps
+
+1. **Fix Idle-Guard Configuration**
+   ```yaml
+   # Fix idle-guard configuration
+   - name: Check for stale heartbeats
+     run: |
+       if [ -f "artifacts/${{ github.actor }}/$(date +%Y-%m-%d)/heartbeat.ndjson" ]; then
+         last_heartbeat=$(tail -1 "artifacts/${{ github.actor }}/$(date +%Y-%m-%d)/heartbeat.ndjson" | jq -r '.timestamp')
+         current_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+         if [ "$last_heartbeat" != "$current_time" ]; then
+           echo "❌ Heartbeat is stale"
+           exit 1
+         fi
+       fi
+   ```
+
+2. **Test Idle-Guard**
+   ```bash
+   # Test idle-guard
+   npx tsx scripts/test-idle-guard.ts
+   ```
+
+3. **Update Monitoring**
+   ```bash
+   # Update monitoring
+   npx tsx scripts/update-idle-guard-monitoring.ts
+   ```
+
+#### Prevention Strategies
+- Regular idle-guard testing
+- Clear documentation
+- Regular training
+- Monitoring and alerting
+
+### 12.3 Dev-MCP-Ban Failures
+
+#### Problem Description
+Dev-MCP-Ban fails to detect banned imports
+
+#### Symptoms
+- CI failures
+- Banned imports not detected
+- Guard not working
+- Build process bypassed
+
+#### Diagnosis Steps
+
+1. **Check Dev-MCP-Ban Status**
+   ```bash
+   # Check dev-MCP-ban status
+   npx tsx scripts/check-dev-mcp-ban-status.ts
+   ```
+
+2. **Test Ban Detection**
+   ```bash
+   # Test ban detection
+   npx tsx scripts/test-ban-detection.ts
+   ```
+
+3. **Check CI Configuration**
+   ```bash
+   # Check CI configuration
+   cat .github/workflows/dev-mcp-ban.yml
+   ```
+
+#### Resolution Steps
+
+1. **Fix Dev-MCP-Ban Configuration**
+   ```yaml
+   # Fix dev-MCP-ban configuration
+   - name: Check for Dev MCP imports in production code
+     run: |
+       if grep -r "import.*@shopify/mcp-server-dev" app/ --include="*.ts" --include="*.tsx"; then
+         echo "❌ Dev MCP imports detected"
+         exit 1
+       fi
+   ```
+
+2. **Test Dev-MCP-Ban**
+   ```bash
+   # Test dev-MCP-ban
+   npx tsx scripts/test-dev-mcp-ban.ts
+   ```
+
+3. **Update Monitoring**
+   ```bash
+   # Update monitoring
+   npx tsx scripts/update-dev-mcp-ban-monitoring.ts
+   ```
+
+#### Prevention Strategies
+- Regular dev-MCP-ban testing
+- Clear documentation
+- Regular training
+- Monitoring and alerting
+
+---
+
+## General Troubleshooting Procedures
+
+### 1. System Health Checks
+
+#### Daily Health Check
+```bash
+# Check system health
+npx tsx scripts/check-system-health.ts
+
+# Check MCP Evidence
+find artifacts -name "*.jsonl" -type f | wc -l
+
+# Check Heartbeat
+find artifacts -name "heartbeat.ndjson" -type f | wc -l
+
+# Check Dev MCP Ban
+grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i | wc -l
+```
+
+#### Weekly Health Check
+```bash
+# Check system performance
+npx tsx scripts/check-system-performance.ts
+
+# Check CI performance
+gh run list --limit 10 --json status,conclusion,createdAt
+
+# Check error rates
+grep -r "ERROR" logs/ --include="*.log" | wc -l
+```
+
+### 2. Performance Monitoring
+
+#### Response Time Monitoring
+```bash
+# Check response times
+npx tsx scripts/check-response-times.ts
+
+# Check resource usage
+npx tsx scripts/check-resource-usage.ts
+
+# Check error rates
+npx tsx scripts/check-error-rates.ts
+```
+
+#### Resource Usage Monitoring
+```bash
+# Check CPU usage
+top -n 1
+
+# Check memory usage
+free -h
+
+# Check disk usage
+df -h
+```
+
+### 3. Error Analysis
+
+#### Log Analysis
+```bash
+# Check system logs
+tail -100 logs/system.log
+
+# Check error logs
+tail -100 logs/error.log
+
+# Check CI logs
+gh run view <run-id> --log
+```
+
+#### Pattern Analysis
+```bash
+# Analyze error patterns
+grep -r "ERROR" logs/ --include="*.log" | head -20
+
+# Analyze performance patterns
+npx tsx scripts/analyze-performance-patterns.ts
+```
+
+### 4. Recovery Procedures
+
+#### System Recovery
+```bash
+# Restore from backups
+npx tsx scripts/restore-from-backup.ts
+
+# Validate system integrity
+npx tsx scripts/validate-system-integrity.ts
+
+# Test system functionality
+npx tsx scripts/test-system-functionality.ts
+```
+
+#### Data Recovery
+```bash
+# Check backup integrity
+npx tsx scripts/check-backup-integrity.ts
+
+# Restore data
+npx tsx scripts/restore-data.ts
+
+# Validate restored data
+npx tsx scripts/validate-restored-data.ts
+```
+
+## Best Practices
+
+### 1. Prevention Strategies
+
+#### Proactive Monitoring
+- Regular system health checks
+- Automated monitoring and alerting
+- Performance trend analysis
+- Capacity planning
+
+#### Process Improvement
+- Regular process review
+- Continuous improvement
+- Best practice adoption
+- Knowledge sharing
+
+### 2. Documentation Standards
+
+#### Troubleshooting Documentation
+- Clear problem descriptions
+- Step-by-step diagnosis
+- Detailed resolution steps
+- Prevention strategies
+
+#### Process Documentation
+- Comprehensive procedures
+- Clear instructions
+- Practical examples
+- Regular updates
+
+### 3. Training and Education
+
+#### Team Training
+- Regular training sessions
+- Process education
+- Tool training
+- Best practice sharing
+
+#### Knowledge Management
+- Documentation maintenance
+- Knowledge sharing
+- Experience capture
+- Lesson learned documentation
+
+## Conclusion
+
+This troubleshooting guide provides comprehensive procedures for resolving common Growth Engine issues across all phases. Regular review, testing, and improvement of these procedures are essential for maintaining optimal system performance and reliability.
+
+---
+
+**Last Updated**: 2025-10-23  
+**Next Review**: 2025-11-23  
+**Owner**: Pilot Team  
 **Version**: 1.0.0

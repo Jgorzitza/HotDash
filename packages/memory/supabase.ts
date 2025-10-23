@@ -30,7 +30,7 @@ const RETRYABLE_MESSAGE_TOKENS = [
 ];
 
 const DECISION_TABLE_PRIMARY = "DecisionLog";
-const DECISION_TABLE_LEGACY = "decision_log";
+const DECISION_TABLE_LEGACY = "DecisionLog"; // Fixed: use same table name as primary
 const FACTS_TABLE = "facts";
 
 const MAX_RETRIES = 2;
@@ -57,9 +57,9 @@ function buildDecisionInsertPayload(
       actor: decision.who,
       action: decision.what,
       rationale: decision.why,
-      evidenceUrl: decision.evidenceUrl,
+      evidence_url: decision.evidenceUrl, // Fixed: use snake_case to match database schema
       externalRef: decision.sha,
-      createdAt: decision.createdAt,
+      created_at: decision.createdAt, // Fixed: use snake_case to match database schema
     });
   }
 
@@ -89,8 +89,8 @@ function mapDecisionRows(
         what: String(row?.action ?? ""),
         why: String(row?.rationale ?? ""),
         sha: row?.externalRef ? String(row.externalRef) : undefined,
-        evidenceUrl: row?.evidenceUrl ? String(row.evidenceUrl) : undefined,
-        createdAt: String(row?.createdAt ?? ""),
+        evidenceUrl: row?.evidence_url ? String(row.evidence_url) : undefined, // Fixed: use snake_case to match database schema
+        createdAt: String(row?.created_at ?? ""), // Fixed: use snake_case to match database schema
       };
     }
 
@@ -296,17 +296,17 @@ export function supabaseMemory(url: string, key: string): Memory {
     async listDecisions(scope) {
       try {
         const result = await executeWithRetry(async () => {
-          let query = sb
-            .from(DECISION_TABLE_PRIMARY)
-            .select(
-              "id,scope,actor,action,rationale,evidenceUrl,externalRef,createdAt",
-            );
+        let query = sb
+          .from(DECISION_TABLE_PRIMARY)
+          .select(
+            "id,scope,actor,action,rationale,evidence_url,externalRef,created_at", // Fixed: use snake_case
+          );
 
           if (scope) {
             query = query.eq("scope", scope);
           }
 
-          return await query.order("createdAt", { ascending: false });
+          return await query.order("created_at", { ascending: false }); // Fixed: use snake_case
         });
 
         const { data, error } = result as SupabaseResponse<

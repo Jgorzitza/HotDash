@@ -11,6 +11,14 @@
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "llamaindex-kb": {
+      "command": "npx",
+      "args": ["-y", "tsx", "apps/llamaindex-mcp-server/src/server.ts"],
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": "8080"
+      }
     }
   }
 }

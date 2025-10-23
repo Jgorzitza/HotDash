@@ -1,38 +1,54 @@
-## 2025-10-22T17:47:00Z — Data: DATA-101 Complete
+# DATA Agent Feedback
 
-**Working On**: DATA-101 - Vendor Master Tables & RLS
-**Progress**: 100% Complete
-**Evidence**: 
-- vendors table with reliability_score calculation
-- vendor_skus mapping table (up to 3 SKUs per product per vendor)
-- RLS policies prevent cross-project access
-- Auto-updating reliability score triggers
-- Test data loaded for 5 vendors
-- Task marked complete in database
-**Blockers**: None
-**Next**: Await next task assignment from manager
+## Database-Driven Feedback Process
 
-## 2025-10-22T16:50:00Z — Data: Startup Complete
+**CRITICAL**: This file is for reference only. All actual feedback goes to the database via `logDecision()`.
 
-**Working On**: DATA-100 - Apply All Phase 7-13 Migrations (33 tables)
-**Progress**: 100% Complete
-**Evidence**: 
-- 33 migrations applied successfully
-- 151 tables created in database
-- 6 migration issues fixed (ambiguous columns, missing tables, type mismatches)
-- Database schema complete for Phase 7-13
-- Task marked complete in database
-**Blockers**: None
-**Next**: Await next task assignment from manager
+### How to Log Progress
 
-## 2025-10-22T14:00:00Z — Data: Startup Complete
+```typescript
+import { logDecision } from '~/services/decisions.server';
 
-Agent startup checklist executed successfully.
-- Git setup complete.
-- MCP tools verified (Shopify Dev, Context7, Web Search).
-- Core documentation reviewed (NORTH_STAR.md, OPERATING_MODEL.md, RULES.md, 10-growth-engine-pack.mdc).
-- Database queried for tasks, next task DATA-100 identified and started.
-- Evidence directories and logging initialized for DATA-100.
-- Tools and environment verified (Supabase CLI, Prisma, Node.js, npm).
+await logDecision({
+  scope: 'build',
+  actor: 'data',
+  taskId: 'TASK-ID',
+  status: 'in_progress', // pending | in_progress | completed | blocked | cancelled
+  progressPct: 50,
+  action: 'task_progress',
+  rationale: 'What you did + evidence',
+  evidenceUrl: 'artifacts/data/2025-10-23/task.md',
+  payload: {
+    commits: ['abc123f'],
+    files: [{ path: 'app/routes/dashboard.tsx', lines: 45, type: 'modified' }],
+    tests: { overall: '22/22 passing' }
+  }
+});
+```
 
-Ready to proceed with task DATA-100: "Apply All Phase 7-13 Migrations (33 tables)".
+### When to Log
+
+- ✅ Task started (status: 'in_progress')
+- ✅ Task completed (status: 'completed') - IMMEDIATE
+- ✅ Task blocked (status: 'blocked') - IMMEDIATE
+- ✅ Blocker cleared (status: 'in_progress') - IMMEDIATE
+- ✅ Every 2 hours if still working on same task
+
+### Manager Queries
+
+Manager can see your progress via:
+- `scripts/manager/query-blocked-tasks.ts`
+- `scripts/manager/query-agent-status.ts`
+- `scripts/manager/query-completed-today.ts`
+
+---
+
+## Feedback Log
+
+*This section is for reference only. Actual progress is logged to the database.*
+
+### 2025-10-23
+
+**Status**: Ready to work
+**Next Task**: Use `npx tsx --env-file=.env scripts/agent/get-my-tasks.ts data` to get your tasks
+**Database Status**: All feedback goes to database via `logDecision()`

@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 import { Client } from "pg";
 import OpenAI from "openai";
 import { SentenceSplitter } from "llamaindex";
-import { glob } from "glob";
+import { globIterate } from "glob";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,7 +48,9 @@ const GLOB_IGNORE = [
 
 const MAX_CHARS_PER_EMBED = 8000;
 const LOG_EVERY_FILES = 50;
+const LOG_FIRST_FILES = 5;
 const LOG_EVERY_CHUNKS = 250;
+const EMBEDDING_BATCH_SIZE = 25;
 
 type IngestChunk = {
   documentKey: string;
@@ -108,13 +110,32 @@ function buildMetadata(
 }
 
 async function collectSourceFiles(): Promise<string[]> {
-  const matches = await glob(GLOB_PATTERN, {
+  console.log("🔍 Scanning repository for markdown files...");
+  const files: string[] = [];
+  let count = 0;
+
+  for await (const file of globIterate(GLOB_PATTERN, {
     cwd: PROJECT_ROOT,
     nodir: true,
     absolute: true,
     ignore: GLOB_IGNORE,
-  });
-  return matches;
+  })) {
+    const absolutePath = path.resolve(PROJECT_ROOT, String(file));
+    files.push(absolutePath);
+    count += 1;
+
+    const shouldLog =
+      count <= LOG_FIRST_FILES || count % LOG_EVERY_FILES === 0;
+    if (shouldLog) {
+      console.log(`   • Discovered ${count} files so far (latest: ${absolutePath})`);
+    }
+  }
+
+  if (count === 0) {
+    console.warn("⚠️  No markdown files found during scan.");
+  }
+
+  return files;
 }
 
 async function readAndChunkFile(
@@ -169,25 +190,6 @@ function deriveTitle(
   return `${base} — Section ${index + 1}`;
 }
 
-async function generateEmbedding(
-  client: OpenAI,
-  text: string,
-): Promise<number[]> {
-  const normalized =
-    text.length > MAX_CHARS_PER_EMBED
-      ? text.slice(0, MAX_CHARS_PER_EMBED)
-      : text;
-  const response = await client.embeddings.create({
-    model: "text-embedding-3-small",
-    input: normalized,
-  });
-  const vector = response.data?.[0]?.embedding;
-  if (!vector) {
-    throw new Error("OpenAI embedding response missing vector data.");
-  }
-  return vector;
-}
-
 async function upsertChunks(
   pgClient: Client,
   chunks: IngestChunk[],
@@ -199,81 +201,120 @@ async function upsertChunks(
   ]);
 
   console.log(`📚 Inserting ${chunks.length} chunk(s) into knowledge_base`);
-  let processed = 0;
-  for (const chunk of chunks) {
-    const embedding = await generateEmbedding(openAi, chunk.content);
-    const embeddingLiteral = `[${embedding.join(",")}]`;
+  console.time("⏱️  Embedding + insert duration");
 
-    const id = crypto.randomUUID();
-    await pgClient.query(
-      `
-        INSERT INTO knowledge_base (
-          id,
-          shop_domain,
-          document_key,
-          document_type,
-          title,
-          content,
-          embedding,
-          source_url,
-          tags,
-          category,
-          version,
-          is_current,
-          previous_version_id,
-          created_by,
-          created_at,
-          updated_at,
-          metadata,
-          project
-        )
-        VALUES (
-          $1,
-          $2,
-          $3,
-          $4,
-          $5,
-          $6,
-          $7::vector,
-          $8,
-          $9,
-          $10,
-          $11,
-          $12,
-          NULL,
-          $13,
-          NOW(),
-          NOW(),
-          $14::jsonb,
-          'dev_kb'
-        )
-      `,
-      [
-        id,
-        SHOP_DOMAIN,
-        chunk.documentKey,
-        chunk.documentType,
-        chunk.title,
-        chunk.content,
-        embeddingLiteral,
-        chunk.sourcePath,
-        chunk.tags,
-        chunk.category,
-        DEFAULT_VERSION,
-        true,
-        CREATED_BY,
-        JSON.stringify({
-          source_path: chunk.sourcePath,
-          section_index: chunk.sectionIndex,
-        }),
-      ],
-    );
+  await pgClient.query("BEGIN");
+  try {
+    for (let i = 0; i < chunks.length; i += EMBEDDING_BATCH_SIZE) {
+      const batch = chunks.slice(i, i + EMBEDDING_BATCH_SIZE);
+      const inputs = batch.map((chunk) =>
+        chunk.content.length > MAX_CHARS_PER_EMBED
+          ? chunk.content.slice(0, MAX_CHARS_PER_EMBED)
+          : chunk.content,
+      );
+      const response = await openAi.embeddings.create({
+        model: "text-embedding-3-small",
+        input: inputs,
+      });
 
-    processed += 1;
-    if (processed % LOG_EVERY_CHUNKS === 0) {
-      console.log(`   … ${processed}/${chunks.length} chunks processed`);
+      const embeddings = response.data.map((item) => {
+        if (!item.embedding) {
+          throw new Error("OpenAI embedding response missing vector data.");
+        }
+        return item.embedding;
+      });
+
+      for (let j = 0; j < batch.length; j++) {
+        const chunk = batch[j];
+        const embedding = embeddings[j];
+        const embeddingLiteral = `[${embedding.join(",")}]`;
+
+        const id = crypto.randomUUID();
+        await pgClient.query(
+          `
+            INSERT INTO knowledge_base (
+              id,
+              shop_domain,
+              document_key,
+              document_type,
+              title,
+              content,
+              embedding,
+              source_url,
+              tags,
+              category,
+              version,
+              is_current,
+              previous_version_id,
+              created_by,
+              created_at,
+              updated_at,
+              metadata,
+              project
+            )
+            VALUES (
+              $1,
+              $2,
+              $3,
+              $4,
+              $5,
+              $6,
+              $7::vector,
+              $8,
+              $9,
+              $10,
+              $11,
+              $12,
+              NULL,
+              $13,
+              NOW(),
+              NOW(),
+              $14::jsonb,
+              'dev_kb'
+            )
+          `,
+          [
+            id,
+            SHOP_DOMAIN,
+            chunk.documentKey,
+            chunk.documentType,
+            chunk.title,
+            chunk.content,
+            embeddingLiteral,
+            chunk.sourcePath,
+            chunk.tags,
+            chunk.category,
+            DEFAULT_VERSION,
+            true,
+            CREATED_BY,
+            JSON.stringify({
+              source_path: chunk.sourcePath,
+              section_index: chunk.sectionIndex,
+            }),
+          ],
+        );
+      }
+
+      const processed = Math.min(i + EMBEDDING_BATCH_SIZE, chunks.length);
+      if (
+        processed === chunks.length ||
+        processed % LOG_EVERY_CHUNKS === 0 ||
+        processed <= EMBEDDING_BATCH_SIZE
+      ) {
+        const percent = ((processed / chunks.length) * 100).toFixed(1);
+        console.log(
+          `   • Embedding progress ${percent}% (${processed}/${chunks.length} chunks)`,
+        );
+      }
     }
+
+    await pgClient.query("COMMIT");
+  } catch (error) {
+    await pgClient.query("ROLLBACK");
+    throw error;
   }
+
+  console.timeEnd("⏱️  Embedding + insert duration");
 }
 
 async function main() {
@@ -291,16 +332,26 @@ async function main() {
     return;
   }
 
-  console.log(`📄 Found ${files.length} markdown file(s)`);
+  console.log(`📄 Found ${files.length} markdown file(s) (scanning…)`);
 
   const allChunks: IngestChunk[] = [];
+  let cumulativeChunks = 0;
   let processedFiles = 0;
   for (const filePath of files) {
     const result = await readAndChunkFile(filePath);
     processedFiles += 1;
 
-    if (processedFiles % LOG_EVERY_FILES === 0) {
-      console.log(`   … scanned ${processedFiles}/${files.length} files`);
+    const shouldLogFile =
+      processedFiles <= LOG_FIRST_FILES ||
+      processedFiles % LOG_EVERY_FILES === 0 ||
+      processedFiles === files.length;
+
+    if (shouldLogFile) {
+      const percent = ((processedFiles / files.length) * 100).toFixed(1);
+      console.log(
+        `   • Progress ${percent}% (${processedFiles}/${files.length} files)` +
+          (result ? "" : " — skipped"),
+      );
     }
 
     if (!result) {
@@ -321,6 +372,7 @@ async function main() {
     }
 
     allChunks.push(...chunks);
+    cumulativeChunks += chunks.length;
 
     const topLevel = relativePath.split("/")[0] ?? "root";
     const stat = fileStats.get(topLevel) ?? { files: 0, chunks: 0 };
@@ -330,6 +382,12 @@ async function main() {
       stat.example = relativePath;
     }
     fileStats.set(topLevel, stat);
+
+    if (shouldLogFile) {
+      console.log(
+        `     ↳ ${relativePath} → ${chunks.length} chunk(s) | total chunks: ${cumulativeChunks}`,
+      );
+    }
   }
 
   if (allChunks.length === 0) {

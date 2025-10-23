@@ -47,7 +47,12 @@
     "fmt": "npx prettier --write \"{app,packages,tests,scripts,docs}/**/*.{ts,tsx,js,jsx,json,md}\"",
     "scan": "./scripts/security/scan-secrets.sh",
     "ci": "npm run fmt && npm run lint && npm run test:ci && npm run scan",
-    "test": "npm run test:ci"
+    "test": "npm run test:ci",
+    "deploy:production": "flyctl deploy --config fly.production.toml --app hotdash-production",
+    "deploy:staging": "flyctl deploy --app hotdash-staging",
+    "deploy:status": "flyctl status --app hotdash-production",
+    "deploy:logs": "flyctl logs --app hotdash-production",
+    "deploy:rollback": "flyctl releases --app hotdash-production"
   },
   "type": "module",
   "engines": {

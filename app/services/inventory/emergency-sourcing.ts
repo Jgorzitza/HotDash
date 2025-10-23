@@ -1,430 +1,328 @@
-/**
- * Emergency Sourcing Logic (INVENTORY-101)
- *
- * Implements emergency sourcing recommendations with opportunity-cost logic:
- * - Calculates Expected Lost Profit = feasible_sales × bundle_margin
- * - Calculates Incremental Cost = (local_cost - primary_cost) × qty
- * - Recommends local vendor when ELP > IC and margin > 20%
- * - Shows comparison: primary vs local (cost, lead time, profit impact)
- * - Creates approval card for CEO review
- *
- * Context7: /microsoft/typescript - advanced type patterns
- * Context7: /websites/reactrouter - API patterns
- */
+import { logDecision } from "~/services/decisions.server";
 
-import { getBundleInfo } from "./bundles";
-import { getVendorInfo } from "./vendor-management";
-
-export interface EmergencySourcingParams {
-  bundleId: string;
-  blockingComponentId: string;
-  primaryVendorId: string;
-  primaryLeadTimeDays: number;
-  primaryCost: number;
-  bundleMargin: number;
-  dailyVelocity: number;
-  minimumMarginThreshold?: number; // Default 20%
+export interface EmergencySourcingAnalysis {
+  variantId: string;
+  sku: string;
+  productName: string;
+  currentStock: number;
+  demandForecast: number;
+  stockoutRisk: number;
+  opportunityCost: number;
+  incrementalCost: number;
+  netBenefit: number;
+  recommendedAction: 'source_emergency' | 'wait' | 'discontinue';
+  urgency: 'low' | 'medium' | 'high' | 'critical';
+  estimatedLeadTime: number;
+  localVendorOptions: LocalVendorOption[];
 }
 
-export interface EmergencySourcingResult {
-  bundleInfo: {
-    bundleId: string;
-    bundleName: string;
-    blockingComponent: string;
-    currentStock: number;
-    daysUntilStockout: number;
-  };
-  opportunityCost: {
-    expectedLostProfit: number;
-    feasibleSalesDuringLeadTime: number;
-    bundleMargin: number;
-    primaryLeadTimeDays: number;
-  };
-  emergencyOptions: Array<{
-    vendorId: string;
-    vendorName: string;
-    cost: number;
-    leadTimeDays: number;
-    incrementalCost: number;
-    netBenefit: number;
-    marginAfterEmergency: number;
-    recommended: boolean;
-    comparison: {
-      costDifference: number;
-      leadTimeDifference: number;
-      profitImpact: number;
-    };
-  }>;
-  recommendation: {
-    shouldProceed: boolean;
-    recommendedVendor?: string;
-    netBenefit: number;
-    riskLevel: 'low' | 'medium' | 'high';
-    approvalRequired: boolean;
-  };
-  approvalCard: {
-    title: string;
-    summary: string;
-    financialImpact: number;
-    timelineImpact: number;
-    riskAssessment: string;
-    recommendation: string;
-    requiresApproval: boolean;
-  };
-}
-
-/**
- * Calculate Expected Lost Profit during primary lead time
- */
-export function calculateExpectedLostProfit(
-  dailyVelocity: number,
-  primaryLeadTimeDays: number,
-  bundleMargin: number
-): {
-  expectedLostProfit: number;
-  feasibleSalesDuringLeadTime: number;
-} {
-  const feasibleSalesDuringLeadTime = dailyVelocity * primaryLeadTimeDays;
-  const expectedLostProfit = feasibleSalesDuringLeadTime * bundleMargin;
-  
-  return {
-    expectedLostProfit,
-    feasibleSalesDuringLeadTime
-  };
-}
-
-/**
- * Calculate Incremental Cost of emergency sourcing
- */
-export function calculateIncrementalCost(
-  emergencyCost: number,
-  primaryCost: number,
-  quantity: number
-): number {
-  return (emergencyCost - primaryCost) * quantity;
-}
-
-/**
- * Get emergency sourcing options for a component
- */
-export async function getEmergencySourcingOptions(
-  componentId: string,
-  requiredQuantity: number
-): Promise<Array<{
+export interface LocalVendorOption {
   vendorId: string;
   vendorName: string;
-  cost: number;
+  costPerUnit: number;
   leadTimeDays: number;
-  reliability: number;
-  isLocal: boolean;
-}>> {
-  // In production: query emergency vendors database
-  // For now: mock emergency vendors with different characteristics
-  
-  const emergencyVendors = [
-    {
-      vendorId: 'emergency_local_001',
-      vendorName: 'Local Fast Supply Co',
-      cost: 18.50, // Higher cost but fast
-      leadTimeDays: 3,
-      reliability: 0.95,
-      isLocal: true
-    },
-    {
-      vendorId: 'emergency_local_002', 
-      vendorName: 'Quick Parts Express',
-      cost: 22.75, // Even higher cost but very fast
-      leadTimeDays: 2,
-      reliability: 0.88,
-      isLocal: true
-    },
-    {
-      vendorId: 'emergency_regional_001',
-      vendorName: 'Regional Supply Hub',
-      cost: 16.25, // Moderate cost, moderate speed
-      leadTimeDays: 5,
-      reliability: 0.92,
-      isLocal: false
-    },
-    {
-      vendorId: 'emergency_premium_001',
-      vendorName: 'Premium Emergency Supply',
-      cost: 28.00, // High cost, guaranteed fast
-      leadTimeDays: 1,
-      reliability: 0.98,
-      isLocal: true
+  minimumOrderQuantity: number;
+  reliabilityScore: number;
+  totalCost: number;
+  netBenefit: number;
+}
+
+export interface EmergencySourcingAction {
+  id: string;
+  type: 'emergency_sourcing_recommendation';
+  title: string;
+  description: string;
+  urgency: 'low' | 'medium' | 'high' | 'critical';
+  variantId: string;
+  sku: string;
+  productName: string;
+  currentStock: number;
+  recommendedQuantity: number;
+  bestVendor: LocalVendorOption | null;
+  estimatedCost: number;
+  estimatedBenefit: number;
+  netBenefit: number;
+  confidence: number;
+  createdAt: Date;
+}
+
+export class EmergencySourcingService {
+  /**
+   * Analyze emergency sourcing opportunity for a product
+   */
+  async analyzeEmergencySourcing(
+    variantId: string,
+    sku: string,
+    productName: string,
+    currentStock: number,
+    demandForecast: number,
+    averageLandedCost: number
+  ): Promise<EmergencySourcingAnalysis> {
+    try {
+      // Calculate stockout risk (probability of running out of stock)
+      const stockoutRisk = this.calculateStockoutRisk(currentStock, demandForecast);
+      
+      // Calculate opportunity cost (lost revenue if stockout occurs)
+      const opportunityCost = this.calculateOpportunityCost(
+        stockoutRisk,
+        demandForecast,
+        averageLandedCost
+      );
+
+      // Get local vendor options for emergency sourcing
+      const localVendorOptions = await this.getLocalVendorOptions(variantId);
+      
+      // Find best emergency vendor
+      const bestVendor = this.findBestEmergencyVendor(localVendorOptions);
+      
+      // Calculate incremental cost for emergency sourcing
+      const incrementalCost = bestVendor 
+        ? this.calculateIncrementalCost(bestVendor, averageLandedCost, demandForecast)
+        : 0;
+
+      // Calculate net benefit
+      const netBenefit = opportunityCost - incrementalCost;
+
+      // Determine recommended action
+      const recommendedAction = this.determineRecommendedAction(
+        netBenefit,
+        stockoutRisk,
+        currentStock
+      );
+
+      // Calculate urgency
+      const urgency = this.calculateUrgency(stockoutRisk, currentStock, demandForecast);
+
+      const analysis: EmergencySourcingAnalysis = {
+        variantId,
+        sku,
+        productName,
+        currentStock,
+        demandForecast,
+        stockoutRisk,
+        opportunityCost,
+        incrementalCost,
+        netBenefit,
+        recommendedAction,
+        urgency,
+        estimatedLeadTime: bestVendor?.leadTimeDays || 0,
+        localVendorOptions,
+      };
+
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "analyze_emergency_sourcing",
+        rationale: `Analyzed emergency sourcing for ${sku}: net benefit $${netBenefit.toFixed(2)}`,
+        evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+        status: "completed",
+        progressPct: 50,
+      });
+
+      return analysis;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "analyze_emergency_sourcing_error",
+        rationale: `Failed to analyze emergency sourcing: ${error}`,
+        evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
     }
-  ];
-
-  return emergencyVendors;
-}
-
-/**
- * Calculate margin after emergency sourcing
- */
-export function calculateMarginAfterEmergency(
-  bundleMargin: number,
-  incrementalCost: number,
-  feasibleSales: number
-): number {
-  if (feasibleSales === 0) return 0;
-  
-  const costPerUnit = incrementalCost / feasibleSales;
-  const adjustedMargin = bundleMargin - costPerUnit;
-  
-  return Math.max(0, adjustedMargin);
-}
-
-/**
- * Assess risk level of emergency sourcing
- */
-export function assessRiskLevel(
-  netBenefit: number,
-  incrementalCost: number,
-  vendorReliability: number,
-  leadTimeDifference: number
-): 'low' | 'medium' | 'high' {
-  const riskFactors = [];
-  
-  // Net benefit risk
-  if (netBenefit < 0) riskFactors.push('negative_benefit');
-  if (netBenefit < incrementalCost * 0.5) riskFactors.push('low_benefit');
-  
-  // Vendor reliability risk
-  if (vendorReliability < 0.85) riskFactors.push('low_reliability');
-  
-  // Lead time risk
-  if (leadTimeDifference > 10) riskFactors.push('long_lead_time');
-  
-  // Determine risk level based on severity
-  const hasNegativeBenefit = netBenefit < 0;
-  const hasLowReliability = vendorReliability < 0.80;
-  const hasLongLeadTime = leadTimeDifference > 15;
-  
-  if (hasNegativeBenefit || (hasLowReliability && hasLongLeadTime)) return 'high';
-  if (riskFactors.length >= 2 || hasLowReliability || hasLongLeadTime) return 'medium';
-  return 'low';
-}
-
-/**
- * Create approval card for CEO review
- */
-export function createApprovalCard(
-  bundleInfo: EmergencySourcingResult['bundleInfo'],
-  opportunityCost: EmergencySourcingResult['opportunityCost'],
-  emergencyOptions: EmergencySourcingResult['emergencyOptions'],
-  recommendation: EmergencySourcingResult['recommendation']
-): EmergencySourcingResult['approvalCard'] {
-  const recommendedOption = emergencyOptions.find(opt => opt.recommended);
-  
-  if (!recommendedOption) {
-    return {
-      title: 'Emergency Sourcing Not Recommended',
-      summary: `Emergency sourcing for ${bundleInfo.bundleName} is not recommended due to cost/benefit analysis.`,
-      financialImpact: 0,
-      timelineImpact: 0,
-      riskAssessment: 'Low risk - no action required',
-      recommendation: 'Continue with primary vendor timeline',
-      requiresApproval: false
-    };
   }
 
-  const financialImpact = recommendedOption.netBenefit;
-  const timelineImpact = opportunityCost.primaryLeadTimeDays - recommendedOption.leadTimeDays;
+  /**
+   * Generate emergency sourcing action card
+   */
+  async generateEmergencySourcingAction(
+    analysis: EmergencySourcingAnalysis
+  ): Promise<EmergencySourcingAction | null> {
+    try {
+      // Only generate action if net benefit is positive and above threshold
+      const minimumBenefitThreshold = 100; // $100 minimum benefit
+      const marginThreshold = 0.2; // 20% margin threshold
 
-  return {
-    title: `Emergency Sourcing Recommendation: ${bundleInfo.bundleName}`,
-    summary: `Blocked bundle ${bundleInfo.bundleName} can be unblocked with emergency sourcing from ${recommendedOption.vendorName}. Expected net benefit: $${financialImpact.toFixed(2)}.`,
-    financialImpact,
-    timelineImpact,
-    riskAssessment: `Risk level: ${recommendation.riskLevel}. ${recommendation.riskLevel === 'high' ? 'High risk due to cost or reliability factors.' : 'Acceptable risk level for emergency sourcing.'}`,
-    recommendation: `Proceed with ${recommendedOption.vendorName} for emergency sourcing. Net benefit: $${financialImpact.toFixed(2)}, timeline improvement: ${timelineImpact} days.`,
-    requiresApproval: recommendation.approvalRequired
-  };
-}
+      if (analysis.netBenefit < minimumBenefitThreshold) {
+        return null;
+      }
 
-/**
- * Main emergency sourcing calculation
- */
-export async function calculateEmergencySourcing(
-  params: EmergencySourcingParams
-): Promise<EmergencySourcingResult> {
-  const {
-    bundleId,
-    blockingComponentId,
-    primaryVendorId,
-    primaryLeadTimeDays,
-    primaryCost,
-    bundleMargin,
-    dailyVelocity,
-    minimumMarginThreshold = 20
-  } = params;
-
-  // 1. Get bundle information
-  const bundleInfo = await getBundleInfo(bundleId);
-  
-  // 2. Calculate opportunity cost
-  const opportunityCost = calculateExpectedLostProfit(
-    dailyVelocity,
-    primaryLeadTimeDays,
-    bundleMargin
-  );
-
-  // 3. Get emergency sourcing options
-  const emergencyOptions = await getEmergencySourcingOptions(blockingComponentId, 1);
-  
-  // 4. Calculate costs and benefits for each option
-  const optionsWithAnalysis = await Promise.all(
-    emergencyOptions.map(async (option) => {
-      const incrementalCost = calculateIncrementalCost(
-        option.cost,
-        primaryCost,
-        opportunityCost.feasibleSalesDuringLeadTime
-      );
+      const bestVendor = analysis.localVendorOptions[0]; // Already sorted by net benefit
+      const recommendedQuantity = Math.ceil(analysis.demandForecast * 0.3); // 30% of forecast
       
-      const netBenefit = opportunityCost.expectedLostProfit - incrementalCost;
-      
-      const marginAfterEmergency = calculateMarginAfterEmergency(
-        bundleMargin,
-        incrementalCost,
-        opportunityCost.feasibleSalesDuringLeadTime
-      );
-      
-      const leadTimeDifference = primaryLeadTimeDays - option.leadTimeDays;
-      
-      const riskLevel = assessRiskLevel(
-        netBenefit,
-        incrementalCost,
-        option.reliability,
-        leadTimeDifference
-      );
-      
-      // Determine if this option is recommended
-      const isRecommended = netBenefit > 0 && 
-                           marginAfterEmergency >= (minimumMarginThreshold / 100) &&
-                           riskLevel !== 'high';
-      
-      return {
-        vendorId: option.vendorId,
-        vendorName: option.vendorName,
-        cost: option.cost,
-        leadTimeDays: option.leadTimeDays,
-        incrementalCost,
-        netBenefit,
-        marginAfterEmergency,
-        recommended: isRecommended,
-        comparison: {
-          costDifference: option.cost - primaryCost,
-          leadTimeDifference,
-          profitImpact: netBenefit
-        }
+      const action: EmergencySourcingAction = {
+        id: `emergency-${analysis.variantId}-${Date.now()}`,
+        type: 'emergency_sourcing_recommendation',
+        title: `Emergency Sourcing: ${analysis.productName}`,
+        description: `Stockout risk: ${(analysis.stockoutRisk * 100).toFixed(1)}%. Emergency sourcing recommended with ${analysis.localVendorOptions.length} vendor options.`,
+        urgency: analysis.urgency,
+        variantId: analysis.variantId,
+        sku: analysis.sku,
+        productName: analysis.productName,
+        currentStock: analysis.currentStock,
+        recommendedQuantity,
+        bestVendor,
+        estimatedCost: bestVendor?.totalCost || 0,
+        estimatedBenefit: analysis.opportunityCost,
+        netBenefit: analysis.netBenefit,
+        confidence: this.calculateConfidence(analysis),
+        createdAt: new Date(),
       };
-    })
-  );
 
-  // 5. Find best recommendation
-  const recommendedOptions = optionsWithAnalysis.filter(opt => opt.recommended);
-  const bestOption = recommendedOptions.reduce((best, current) => 
-    current.netBenefit > best.netBenefit ? current : best, 
-    recommendedOptions[0]
-  );
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "generate_emergency_sourcing_action",
+        rationale: `Generated emergency sourcing action for ${analysis.sku} with $${analysis.netBenefit.toFixed(2)} net benefit`,
+        evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+        status: "completed",
+        progressPct: 100,
+      });
 
-  // 6. Create recommendation
-  const recommendation = {
-    shouldProceed: recommendedOptions.length > 0,
-    recommendedVendor: bestOption?.vendorId,
-    netBenefit: bestOption?.netBenefit || 0,
-    riskLevel: bestOption ? assessRiskLevel(
-      bestOption.netBenefit,
-      bestOption.incrementalCost,
-      0.9, // Mock reliability
-      bestOption.comparison.leadTimeDifference
-    ) : 'high' as const,
-    approvalRequired: bestOption ? bestOption.netBenefit > 1000 || bestOption.comparison.costDifference > 5 : false
-  };
-
-  // 7. Create approval card
-  const approvalCard = createApprovalCard(
-    {
-      bundleId,
-      bundleName: bundleInfo.productName,
-      blockingComponent: blockingComponentId,
-      currentStock: 0, // Mock - would get from inventory
-      daysUntilStockout: 0
-    },
-    opportunityCost,
-    optionsWithAnalysis,
-    recommendation
-  );
-
-  return {
-    bundleInfo: {
-      bundleId,
-      bundleName: bundleInfo.productName,
-      blockingComponent: blockingComponentId,
-      currentStock: 0,
-      daysUntilStockout: 0
-    },
-    opportunityCost,
-    emergencyOptions: optionsWithAnalysis,
-    recommendation,
-    approvalCard
-  };
-}
-
-/**
- * Batch calculate emergency sourcing for multiple bundles
- */
-export async function batchCalculateEmergencySourcing(
-  bundleParams: EmergencySourcingParams[]
-): Promise<EmergencySourcingResult[]> {
-  const results = await Promise.all(
-    bundleParams.map(params => calculateEmergencySourcing(params))
-  );
-
-  return results;
-}
-
-/**
- * Get emergency sourcing history for a bundle
- */
-export async function getEmergencySourcingHistory(
-  bundleId: string,
-  limit: number = 10
-): Promise<Array<{
-  id: string;
-  bundleId: string;
-  calculatedAt: string;
-  recommended: boolean;
-  netBenefit: number;
-  vendorUsed?: string;
-  status: 'pending' | 'approved' | 'rejected' | 'implemented';
-}>> {
-  // In production: query emergency sourcing history table
-  // For now: return mock data
-  return [
-    {
-      id: 'emergency_001',
-      bundleId,
-      calculatedAt: new Date().toISOString(),
-      recommended: true,
-      netBenefit: 1250.50,
-      vendorUsed: 'emergency_local_001',
-      status: 'implemented'
+      return action;
+    } catch (error) {
+      await logDecision({
+        scope: "build",
+        actor: "inventory",
+        action: "generate_emergency_sourcing_action_error",
+        rationale: `Failed to generate emergency sourcing action: ${error}`,
+        evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+        status: "failed",
+        progressPct: 0,
+      });
+      throw error;
     }
-  ];
-}
+  }
 
-/**
- * Update emergency sourcing recommendation status
- */
-export async function updateEmergencySourcingStatus(
-  recommendationId: string,
-  status: 'pending' | 'approved' | 'rejected' | 'implemented',
-  approvedBy?: string,
-  notes?: string
-): Promise<boolean> {
-  // In production: update emergency sourcing status in database
-  console.log(`[Emergency Sourcing] Updated recommendation ${recommendationId} to status ${status}`);
-  return true;
+  /**
+   * Calculate stockout risk based on current stock and demand forecast
+   */
+  private calculateStockoutRisk(currentStock: number, demandForecast: number): number {
+    if (currentStock <= 0) return 1.0; // 100% risk if out of stock
+    if (demandForecast <= 0) return 0.0; // No risk if no demand
+    
+    // Simple probability calculation (can be enhanced with more sophisticated models)
+    const stockoutRisk = Math.max(0, Math.min(1, (demandForecast - currentStock) / demandForecast));
+    return stockoutRisk;
+  }
+
+  /**
+   * Calculate opportunity cost of stockout
+   */
+  private calculateOpportunityCost(
+    stockoutRisk: number,
+    demandForecast: number,
+    averageLandedCost: number
+  ): number {
+    // Opportunity cost = stockout risk × demand forecast × average landed cost × margin factor
+    const marginFactor = 0.3; // Assume 30% margin
+    return stockoutRisk * demandForecast * averageLandedCost * marginFactor;
+  }
+
+  /**
+   * Get local vendor options for emergency sourcing
+   */
+  private async getLocalVendorOptions(variantId: string): Promise<LocalVendorOption[]> {
+    // This would typically query the vendor service
+    // For now, return mock data
+    return [
+      {
+        vendorId: "vendor-1",
+        vendorName: "Local Fast Vendor",
+        costPerUnit: 15.50,
+        leadTimeDays: 3,
+        minimumOrderQuantity: 10,
+        reliabilityScore: 85,
+        totalCost: 0, // Will be calculated
+        netBenefit: 0, // Will be calculated
+      },
+      {
+        vendorId: "vendor-2",
+        vendorName: "Express Supplier",
+        costPerUnit: 18.75,
+        leadTimeDays: 2,
+        minimumOrderQuantity: 5,
+        reliabilityScore: 90,
+        totalCost: 0, // Will be calculated
+        netBenefit: 0, // Will be calculated
+      },
+    ];
+  }
+
+  /**
+   * Find the best emergency vendor based on cost, lead time, and reliability
+   */
+  private findBestEmergencyVendor(vendors: LocalVendorOption[]): LocalVendorOption | null {
+    if (vendors.length === 0) return null;
+
+    // Sort by composite score (lower cost, faster delivery, higher reliability)
+    return vendors.sort((a, b) => {
+      const scoreA = (a.costPerUnit * 0.4) + (a.leadTimeDays * 0.3) + ((100 - a.reliabilityScore) * 0.3);
+      const scoreB = (b.costPerUnit * 0.4) + (b.leadTimeDays * 0.3) + ((100 - b.reliabilityScore) * 0.3);
+      return scoreA - scoreB;
+    })[0];
+  }
+
+  /**
+   * Calculate incremental cost for emergency sourcing
+   */
+  private calculateIncrementalCost(
+    vendor: LocalVendorOption,
+    averageLandedCost: number,
+    demandForecast: number
+  ): number {
+    const quantity = Math.ceil(demandForecast * 0.3); // 30% of forecast
+    const emergencyCost = vendor.costPerUnit * quantity;
+    const regularCost = averageLandedCost * quantity;
+    return emergencyCost - regularCost;
+  }
+
+  /**
+   * Determine recommended action based on analysis
+   */
+  private determineRecommendedAction(
+    netBenefit: number,
+    stockoutRisk: number,
+    currentStock: number
+  ): 'source_emergency' | 'wait' | 'discontinue' {
+    if (currentStock <= 0 && stockoutRisk > 0.8) {
+      return 'source_emergency';
+    } else if (netBenefit > 0 && stockoutRisk > 0.5) {
+      return 'source_emergency';
+    } else if (stockoutRisk < 0.2) {
+      return 'wait';
+    } else {
+      return 'discontinue';
+    }
+  }
+
+  /**
+   * Calculate urgency level
+   */
+  private calculateUrgency(
+    stockoutRisk: number,
+    currentStock: number,
+    demandForecast: number
+  ): 'low' | 'medium' | 'high' | 'critical' {
+    if (currentStock <= 0) return 'critical';
+    if (stockoutRisk > 0.8) return 'high';
+    if (stockoutRisk > 0.5) return 'medium';
+    return 'low';
+  }
+
+  /**
+   * Calculate confidence in the recommendation
+   */
+  private calculateConfidence(analysis: EmergencySourcingAnalysis): number {
+    let confidence = 0.5; // Base confidence
+
+    // Increase confidence based on data quality
+    if (analysis.demandForecast > 0) confidence += 0.2;
+    if (analysis.localVendorOptions.length > 0) confidence += 0.2;
+    if (analysis.netBenefit > 0) confidence += 0.1;
+
+    return Math.min(1.0, confidence);
+  }
 }

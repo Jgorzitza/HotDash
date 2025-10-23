@@ -10,7 +10,7 @@
  * - Generate growth performance insights
  */
 
-export interface GrowthMetrics {
+export interface GrowthMetricsV2 {
   period: {
     start: string;
     end: string;
@@ -78,8 +78,8 @@ export function calculateGrowthMetrics(
   }>,
   startDate: string,
   endDate: string,
-  previousMetrics?: GrowthMetrics
-): GrowthMetrics {
+  previousMetrics?: GrowthMetricsV2
+): GrowthMetricsV2 {
   // Calculate totals
   const totalImpressions = channelData.reduce((sum, c) => sum + c.impressions, 0);
   const totalClicks = channelData.reduce((sum, c) => sum + c.clicks, 0);
@@ -153,7 +153,7 @@ export function calculateGrowthMetrics(
  * @param metrics - Growth metrics
  * @returns Growth insights and recommendations
  */
-export function generateGrowthInsights(metrics: GrowthMetrics): GrowthInsights {
+export function generateGrowthInsights(metrics: GrowthMetricsV2): GrowthInsights {
   const insights: string[] = [];
   const recommendations: string[] = [];
   const opportunities: Array<{ channel: string; potential: number; reason: string }> = [];
@@ -249,7 +249,7 @@ function calculatePercentageChange(current: number, previous: number): number {
  * @param insights - Growth insights
  * @returns Dashboard-ready growth data
  */
-export function exportGrowthMetrics(metrics: GrowthMetrics, insights: GrowthInsights) {
+export function exportGrowthMetrics(metrics: GrowthMetricsV2, insights: GrowthInsights) {
   return {
     summary: {
       impressions: metrics.traffic.totalImpressions,
@@ -291,7 +291,7 @@ export function exportGrowthMetrics(metrics: GrowthMetrics, insights: GrowthInsi
  * @param metrics - Growth metrics
  * @returns Efficiency score (0-100)
  */
-export function calculateGrowthEfficiencyScore(metrics: GrowthMetrics): number {
+export function calculateGrowthEfficiencyScore(metrics: GrowthMetricsV2): number {
   let score = 0;
 
   // CTR score (0-40 points)

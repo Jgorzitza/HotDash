@@ -67,7 +67,7 @@ export interface SocialPerformanceSummary {
  * @param metrics - Raw metrics from Publer
  * @returns SocialPostMetrics
  */
-export function trackSocialPostPerformance(
+export function trackSocialPostPerformanceV2(
   postId: string,
   platform: SocialPostMetrics['platform'],
   content: string,
