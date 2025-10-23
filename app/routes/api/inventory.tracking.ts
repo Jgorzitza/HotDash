@@ -146,6 +146,44 @@ export async function action({ request }: ActionFunctionArgs) {
         const acknowledgedBy = formData.get("acknowledgedBy") as string;
 
         if (!alertId || !acknowledgedBy) {
+          return json({ error: "Missing required fields: alertId and acknowledgedBy" }, { status: 400 });
+        }
+
+        try {
+          const updatedAlert = await prisma.inventory_alert.update({
+            where: { id: alertId },
+            data: {
+              acknowledged: true,
+              acknowledgedBy,
+              acknowledgedAt: new Date(),
+            },
+          });
+
+          await logDecision({
+            scope: "build",
+            actor: "inventory",
+            action: "acknowledge_alert",
+            rationale: `Alert ${alertId} acknowledged by ${acknowledgedBy}`,
+            evidenceUrl: "app/routes/api/inventory.tracking.ts",
+            status: "completed",
+            progressPct: 100,
+          });
+
+          return json({
+            success: true,
+            message: "Alert acknowledged successfully",
+            alert: updatedAlert,
+          });
+        } catch (error) {
+          console.error("Failed to acknowledge alert:", error);
+          return json({ error: "Failed to acknowledge alert" }, { status: 500 });
+        }
+
+      case "acknowledge-alert":
+        const alertId = formData.get("alertId") as string;
+        const acknowledgedBy = formData.get("acknowledgedBy") as string;
+
+        if (!alertId || !acknowledgedBy) {
           return json({ error: "alertId and acknowledgedBy are required" }, { status: 400 });
         }
 

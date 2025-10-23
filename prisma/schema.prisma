@@ -1042,6 +1042,90 @@ model seo_rankings {
   @@schema("public")
 }
 
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model SeoRanking {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  keyword     String
+  position    Int
+  url         String
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  ctr         Decimal  @default(0) @db.Decimal(5, 4)
+  checkedAt   DateTime @default(now()) @map("checked_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([keyword, checkedAt(sort: Desc)])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model SeoAlert {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  alertId          String   @unique @map("alert_id")
+  keyword          String
+  severity         String
+  currentPosition  Int      @map("current_position")
+  previousPosition Int      @map("previous_position")
+  positionChange   Int      @map("position_change")
+  url              String
+  detectedAt       DateTime @map("detected_at") @db.Timestamptz(6)
+  slaDeadline      DateTime @map("sla_deadline") @db.Timestamptz(6)
+  status           String   @default("open")
+  resolvedAt       DateTime? @map("resolved_at") @db.Timestamptz(6)
+  resolution       String?
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([status, slaDeadline])
+  @@index([severity, detectedAt(sort: Desc)])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model SeoResolutionWorkflow {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workflowId       String    @unique @map("workflow_id")
+  alertId          String    @map("alert_id")
+  status           String    @default("pending")
+  issueType        String    @map("issue_type")
+  diagnosis        String
+  suggestedActions String[]  @map("suggested_actions")
+  automatedFix     Boolean   @map("automated_fix") @default(false)
+  estimatedImpact  String    @map("estimated_impact")
+  rollbackPlan     String    @map("rollback_plan")
+  approvedBy       String?   @map("approved_by")
+  approvedAt       DateTime? @map("approved_at") @db.Timestamptz(6)
+  appliedAt        DateTime? @map("applied_at") @db.Timestamptz(6)
+  result           String?
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([alertId])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model SeoAudit {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain        String    @map("shop_domain")
+  auditType         String    @map("audit_type") @default("daily")
+  status            String    @default("pending")
+  startedAt         DateTime  @default(now()) @map("started_at") @db.Timestamptz(6)
+  completedAt       DateTime? @map("completed_at") @db.Timestamptz(6)
+  totalPages        Int?      @map("total_pages")
+  totalIssues       Int?      @map("total_issues")
+  criticalIssues    Int?      @map("critical_issues")
+  warningIssues     Int?      @map("warning_issues")
+  infoIssues        Int?      @map("info_issues")
+  pagesWithIssues   Int?      @map("pages_with_issues")
+  durationMs        Int?      @map("duration_ms")
+  metadata          Json?     @default("{}")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([shopDomain, completedAt(sort: Desc)])
+  @@index([status, startedAt])
+  @@schema("public")
+}
+
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model seo_search_console_metrics {

@@ -1,33 +1,28 @@
 /**
  * Content Calendar Route
  *
- * Schedule and track social media posts across platforms.
+ * Production-ready content calendar with scheduling and publishing.
  * Features:
- * - Calendar view of scheduled posts
- * - Drag-and-drop scheduling
- * - Multi-platform publishing
- * - Status tracking (draft, scheduled, published, failed)
+ * - Calendar view of scheduled content
+ * - Schedule content for future publishing
+ * - Multi-platform support
+ * - Status tracking (scheduled, publishing, published, failed)
+ * - Approval workflow integration
  */
 
-import { type LoaderFunctionArgs } from "react-router";
-// React Router 7: Use Response.json() from "~/utils/http.server";
-import { useLoaderData } from "react-router";
+import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
+import { useLoaderData, useActionData, useSubmit, useNavigation } from "@react-router/react";
+import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, Modal, TextField, Select } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
-import type { ContentPost, SocialPlatform } from "../lib/content/tracking";
+import { SchedulingService } from "~/services/content/scheduling.service";
 
 // ============================================================================
 // Types
 // ============================================================================
 
-interface CalendarPost extends ContentPost {
-  scheduledFor?: string;
-  approvedBy?: string;
-  approvedAt?: string;
-}
-
 interface CalendarDay {
   date: string;
-  posts: CalendarPost[];
+  items: any[];
   isToday: boolean;
   isPast: boolean;
 }
@@ -45,28 +40,100 @@ export async function loader({ request }: LoaderFunctionArgs) {
   await authenticate.admin(request);
 
   const url = new URL(request.url);
-  const month =
-    url.searchParams.get("month") || new Date().getMonth().toString();
-  const year =
-    url.searchParams.get("year") || new Date().getFullYear().toString();
+  const month = url.searchParams.get("month") || new Date().getMonth().toString();
+  const year = url.searchParams.get("year") || new Date().getFullYear().toString();
 
-  // TODO: Fetch scheduled posts from Supabase
-  const posts: CalendarPost[] = [];
+  try {
+    // Get first and last day of month
+    const firstDay = new Date(parseInt(year), parseInt(month), 1);
+    const lastDay = new Date(parseInt(year), parseInt(month) + 1, 0);
 
-  // Generate calendar structure
-  const calendar = generateCalendar(parseInt(year), parseInt(month), posts);
+    // Fetch scheduled content for the month
+    const { items } = await SchedulingService.getContentForDateRange(
+      firstDay.toISOString(),
+      lastDay.toISOString()
+    );
 
-  return Response.json({
-    calendar,
-    month: parseInt(month),
-    year: parseInt(year),
-    stats: {
-      totalScheduled: posts.filter((p) => p.status === "scheduled").length,
-      totalDrafts: posts.filter((p) => p.status === "draft").length,
-      totalPublished: posts.filter((p) => p.status === "published").length,
-      totalFailed: posts.filter((p) => p.status === "failed").length,
-    },
-  });
+    // Get scheduling stats
+    const stats = await SchedulingService.getSchedulingStats();
+
+    // Generate calendar structure
+    const calendar = generateCalendar(parseInt(year), parseInt(month), items);
+
+    return json({
+      calendar,
+      month: parseInt(month),
+      year: parseInt(year),
+      stats,
+      scheduledItems: items
+    });
+  } catch (error: any) {
+    console.error("Error loading content calendar:", error);
+    return json({
+      calendar: [],
+      month: parseInt(month),
+      year: parseInt(year),
+      stats: {
+        total_scheduled: 0,
+        scheduled_today: 0,
+        scheduled_this_week: 0,
+        published_today: 0,
+        failed_today: 0,
+        by_platform: {},
+        by_status: {}
+      },
+      scheduledItems: [],
+      error: error.message || "Failed to load calendar"
+    }, { status: 500 });
+  }
+}
+
+// ============================================================================
+// Action
+// ============================================================================
+
+export async function action({ request }: ActionFunctionArgs) {
+  await authenticate.admin(request);
+
+  const formData = await request.formData();
+  const actionType = formData.get("_action") as string;
+
+  try {
+    switch (actionType) {
+      case "schedule":
+        const scheduleData = {
+          content_type: formData.get("content_type") as any,
+          platform: formData.get("platform") as string,
+          title: formData.get("title") as string,
+          content: formData.get("content") as string,
+          scheduled_for: formData.get("scheduled_for") as string,
+          created_by: "content-agent",
+          metadata: JSON.parse(formData.get("metadata") as string || "{}")
+        };
+
+        const scheduled = await SchedulingService.scheduleContent(scheduleData);
+        return json({ success: true, message: "Content scheduled successfully!", data: scheduled });
+
+      case "cancel":
+        const cancelId = formData.get("id") as string;
+        await SchedulingService.cancelScheduledContent(cancelId);
+        return json({ success: true, message: "Scheduled content cancelled" });
+
+      case "reschedule":
+        const rescheduleId = formData.get("id") as string;
+        const newTime = formData.get("scheduled_for") as string;
+        await SchedulingService.updateScheduledContent(rescheduleId, {
+          scheduled_for: newTime
+        });
+        return json({ success: true, message: "Content rescheduled successfully!" });
+
+      default:
+        return json({ success: false, error: "Invalid action" }, { status: 400 });
+    }
+  } catch (error: any) {
+    console.error(`Error performing ${actionType} action:`, error);
+    return json({ success: false, error: error.message || `Failed to ${actionType}` }, { status: 400 });
+  }
 }
 
 // ============================================================================

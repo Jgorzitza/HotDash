@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img">
+  <title>HotDash Workflow Diagram</title>
+  <desc>Visual diagram showing the HotDash approval workflow from signal to action</desc>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#637381" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" 
+        font-family="Inter, sans-serif" 
+        font-size="24" 
+        font-weight="700" 
+        fill="#202223" 
+        text-anchor="middle">HotDash Approval Workflow</text>
+  
+  <!-- Step 1: Signals -->
+  <g id="step1" transform="translate(50, 80)">
+    <rect width="140" height="80" rx="8" fill="#E3F9E5" stroke="#1A7F37" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#1A7F37" 
+          text-anchor="middle">1. SIGNALS</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Shopify Orders</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Customer Messages</text>
+  </g>
+  
+  <!-- Arrow 1 -->
+  <line x1="190" y1="120" x2="240" y2="120" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 2: AI Analysis -->
+  <g id="step2" transform="translate(240, 80)">
+    <rect width="140" height="80" rx="8" fill="#FFF4F4" stroke="#D72C0D" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#D72C0D" 
+          text-anchor="middle">2. AI ANALYSIS</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Generate Reply</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Calculate ROP</text>
+  </g>
+  
+  <!-- Arrow 2 -->
+  <line x1="380" y1="120" x2="430" y2="120" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 3: Suggestions -->
+  <g id="step3" transform="translate(430, 80)">
+    <rect width="140" height="80" rx="8" fill="#FEF3F2" stroke="#D82C0D" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#D82C0D" 
+          text-anchor="middle">3. SUGGESTIONS</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Draft Reply</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">PO Recommendation</text>
+  </g>
+  
+  <!-- Arrow 3 -->
+  <line x1="570" y1="120" x2="620" y2="120" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 4: Approval Queue -->
+  <g id="step4" transform="translate(620, 80)">
+    <rect width="140" height="80" rx="8" fill="#FFC453" stroke="#947100" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#947100" 
+          text-anchor="middle">4. APPROVAL</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Human Review</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Grade & Edit</text>
+  </g>
+  
+  <!-- Arrow 4 (down) -->
+  <line x1="690" y1="160" x2="690" y2="210" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 5: Actions -->
+  <g id="step5" transform="translate(620, 210)">
+    <rect width="140" height="80" rx="8" fill="#E3F9E5" stroke="#1A7F37" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#1A7F37" 
+          text-anchor="middle">5. ACTIONS</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Send Reply</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Create PO</text>
+  </g>
+  
+  <!-- Arrow 5 (left) -->
+  <line x1="620" y1="250" x2="570" y2="250" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 6: Audit -->
+  <g id="step6" transform="translate(430, 210)">
+    <rect width="140" height="80" rx="8" fill="#F6F6F7" stroke="#8C9196" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#637381" 
+          text-anchor="middle">6. AUDIT</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Log Decision</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Store Evidence</text>
+  </g>
+  
+  <!-- Arrow 6 (left) -->
+  <line x1="430" y1="250" x2="380" y2="250" stroke="#637381" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Step 7: Learn -->
+  <g id="step7" transform="translate(240, 210)">
+    <rect width="140" height="80" rx="8" fill="#E3F9E5" stroke="#1A7F37" stroke-width="2"/>
+    <text x="70" y="30" 
+          font-family="Inter, sans-serif" 
+          font-size="14" 
+          font-weight="600" 
+          fill="#1A7F37" 
+          text-anchor="middle">7. LEARN</text>
+    <text x="70" y="50" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Capture Edits</text>
+    <text x="70" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="11" 
+          fill="#202223" 
+          text-anchor="middle">Improve AI</text>
+  </g>
+  
+  <!-- Feedback loop arrow -->
+  <path d="M 240 250 Q 120 250 120 120 Q 120 80 190 80" 
+        fill="none" 
+        stroke="#1A7F37" 
+        stroke-width="2" 
+        stroke-dasharray="5,5" 
+        marker-end="url(#arrowhead)"/>
+  
+  <!-- Legend -->
+  <g id="legend" transform="translate(50, 350)">
+    <text x="0" y="0" 
+          font-family="Inter, sans-serif" 
+          font-size="16" 
+          font-weight="600" 
+          fill="#202223">Key Principles</text>
+    
+    <!-- Principle 1 -->
+    <circle cx="10" cy="30" r="6" fill="#D72C0D"/>
+    <text x="25" y="35" 
+          font-family="Inter, sans-serif" 
+          font-size="13" 
+          fill="#202223">Agents propose actions</text>
+    
+    <!-- Principle 2 -->
+    <circle cx="10" cy="60" r="6" fill="#FFC453"/>
+    <text x="25" y="65" 
+          font-family="Inter, sans-serif" 
+          font-size="13" 
+          fill="#202223">Humans approve or correct</text>
+    
+    <!-- Principle 3 -->
+    <circle cx="10" cy="90" r="6" fill="#1A7F37"/>
+    <text x="25" y="95" 
+          font-family="Inter, sans-serif" 
+          font-size="13" 
+          fill="#202223">System learns and improves</text>
+    
+    <!-- Principle 4 -->
+    <circle cx="10" cy="120" r="6" fill="#8C9196"/>
+    <text x="25" y="125" 
+          font-family="Inter, sans-serif" 
+          font-size="13" 
+          fill="#202223">All actions audited and reversible</text>
+  </g>
+  
+  <!-- HITL Badge -->
+  <g id="hitl-badge" transform="translate(550, 400)">
+    <rect width="200" height="60" rx="8" fill="#FEF3F2" stroke="#D72C0D" stroke-width="2"/>
+    <text x="100" y="25" 
+          font-family="Inter, sans-serif" 
+          font-size="12" 
+          font-weight="600" 
+          fill="#D72C0D" 
+          text-anchor="middle">HUMAN-IN-THE-LOOP</text>
+    <text x="100" y="45" 
+          font-family="Inter, sans-serif" 
+          font-size="10" 
+          fill="#637381" 
+          text-anchor="middle">Every action requires approval</text>
+  </g>
+  
+  <!-- Footer -->
+  <text x="400" y="580" 
+        font-family="Inter, sans-serif" 
+        font-size="11" 
+        fill="#8C9196" 
+        text-anchor="middle">HotDash Operator Control Center • hotdash.fly.dev</text>
+</svg>
+
