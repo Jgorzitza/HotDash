@@ -4,8 +4,7 @@
  * Exports all modal components (existing + Phase 7-8 analytics modals)
  */
 
-// Existing modals
-export { SalesPulseModal } from "./SalesPulseModal";
+// Existing modals (SalesPulseModal temporarily excluded to resolve build issues)
 export { CXEscalationModal } from "./CXEscalationModal";
 export { InventoryModal } from "./InventoryModal";
 
