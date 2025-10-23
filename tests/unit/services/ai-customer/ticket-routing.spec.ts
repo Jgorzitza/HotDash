@@ -26,7 +26,13 @@ vi.mock('@supabase/supabase-js', () => ({
               isAvailable: true
             },
             error: null
-          })
+          }),
+          order: vi.fn(() => ({
+            limit: vi.fn().mockResolvedValue({
+              data: [],
+              error: null
+            })
+          }))
         })),
         order: vi.fn(() => ({
           limit: vi.fn().mockResolvedValue({
@@ -65,6 +71,19 @@ vi.mock('@supabase/supabase-js', () => ({
             },
             error: null
           })
+        }))
+      })),
+      update: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn().mockResolvedValue({
+              data: {
+                id: 'agent_123',
+                currentLoad: 6
+              },
+              error: null
+            })
+          }))
         }))
       }))
     }))

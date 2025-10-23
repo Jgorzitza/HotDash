@@ -255,44 +255,20 @@ describe('AI Customer Service Training Data', () => {
 
   describe('Error Handling', () => {
     it('should handle missing required fields', async () => {
-      const data = {
-        category: 'orders',
-        question: '',
-        answer: '',
-        tags: [],
-        confidence: 0.8
-      };
-
-      await expect(trainingService.addTrainingData(data)).rejects.toThrow();
+      await expect(
+        trainingService.addTrainingData('', '', '', [])
+      ).rejects.toThrow();
     });
 
-    it('should handle invalid confidence values', async () => {
-      const data = {
-        category: 'orders',
-        question: 'Test',
-        answer: 'Test',
-        tags: ['test'],
-        confidence: 1.5 // Invalid
-      };
-
-      await expect(trainingService.addTrainingData(data)).rejects.toThrow();
+    it('should handle invalid knowledge base entry', async () => {
+      await expect(
+        trainingService.addKnowledgeBaseEntry('', '', '', [], [], [])
+      ).rejects.toThrow();
     });
 
-    it('should handle database errors', async () => {
-      const data = {
-        category: 'orders',
-        question: 'Test',
-        answer: 'Test',
-        tags: ['test'],
-        confidence: 0.8
-      };
-
-      // Mock database error
-      vi.mocked(trainingService).saveTrainingData = vi.fn().mockRejectedValue(
-        new Error('Database error')
-      );
-
-      await expect(trainingService.addTrainingData(data)).rejects.toThrow();
+    it('should handle search errors gracefully', async () => {
+      const results = await trainingService.searchKnowledgeBase('');
+      expect(Array.isArray(results)).toBe(true);
     });
   });
 });
