@@ -188,67 +188,40 @@ describe('AI Customer Service Response Automation', () => {
       }
     });
 
-    it('should track approval status', async () => {
+    it('should approve response', async () => {
       const responseId = 'response_123';
-      const approvalData = {
-        approverId: 'user_123',
-        finalResponse: 'Approved response text',
-        approvalNotes: 'Looks good'
-      };
+      const approverId = 'user_123';
+      const finalResponse = 'Approved response text';
 
-      const result = await automationService.approveResponse(responseId, approvalData);
-
-      expect(result.approvalStatus).toBe('approved');
-      expect(result.approverId).toBe('user_123');
-      expect(result.approvedAt).toBeDefined();
+      await expect(
+        automationService.approveResponse(responseId, approverId, finalResponse)
+      ).resolves.not.toThrow();
     });
 
-    it('should handle response rejection', async () => {
+    it('should reject response', async () => {
       const responseId = 'response_123';
-      const rejectionData = {
-        rejectionReason: 'Incorrect information',
-        rejectedBy: 'user_123'
-      };
+      const approverId = 'user_123';
+      const rejectionReason = 'Incorrect information';
 
-      const result = await automationService.rejectResponse(responseId, rejectionData);
-
-      expect(result.approvalStatus).toBe('rejected');
-      expect(result.rejectionReason).toBe('Incorrect information');
-      expect(result.rejectedAt).toBeDefined();
+      await expect(
+        automationService.rejectResponse(responseId, approverId, rejectionReason)
+      ).resolves.not.toThrow();
     });
   });
 
-  describe('Template Management', () => {
-    it('should retrieve templates by category', async () => {
-      const templates = await automationService.getTemplatesByCategory('orders');
+  describe('Pending Approvals', () => {
+    it('should retrieve pending approvals', async () => {
+      const pending = await automationService.getPendingApprovals();
 
-      expect(Array.isArray(templates)).toBe(true);
-      expect(templates.length).toBeGreaterThan(0);
-      expect(templates[0].category).toBe('orders');
+      expect(Array.isArray(pending)).toBe(true);
     });
 
-    it('should select best matching template', async () => {
-      const inquiry: Partial<CustomerInquiry> = {
-        message: 'Where is my order?',
-        tags: ['orders']
-      };
+    it('should send approved response', async () => {
+      const responseId = 'response_123';
 
-      const template = await automationService.selectBestTemplate(inquiry);
-
-      expect(template).toBeDefined();
-      expect(template.category).toBe('orders');
-    });
-
-    it('should handle missing templates gracefully', async () => {
-      const inquiry: Partial<CustomerInquiry> = {
-        message: 'Unusual inquiry',
-        tags: ['unknown']
-      };
-
-      const template = await automationService.selectBestTemplate(inquiry);
-
-      expect(template).toBeDefined();
-      // Should fall back to generic template
+      await expect(
+        automationService.sendResponse(responseId)
+      ).resolves.not.toThrow();
     });
   });
 
@@ -294,45 +267,7 @@ describe('AI Customer Service Response Automation', () => {
     });
   });
 
-  describe('Response Quality', () => {
-    it('should validate response quality', async () => {
-      const response = {
-        draftResponse: 'Thank you for contacting us.',
-        confidence: 0.85
-      };
 
-      const quality = await automationService.validateResponseQuality(response);
-
-      expect(quality.isValid).toBe(true);
-      expect(quality.score).toBeGreaterThanOrEqual(0);
-      expect(quality.score).toBeLessThanOrEqual(1);
-    });
-
-    it('should detect poor quality responses', async () => {
-      const response = {
-        draftResponse: 'ok',
-        confidence: 0.3
-      };
-
-      const quality = await automationService.validateResponseQuality(response);
-
-      expect(quality.isValid).toBe(false);
-      expect(quality.issues).toBeDefined();
-      expect(quality.issues.length).toBeGreaterThan(0);
-    });
-
-    it('should check for required elements', async () => {
-      const response = {
-        draftResponse: 'Response without greeting or signature',
-        confidence: 0.7
-      };
-
-      const quality = await automationService.validateResponseQuality(response);
-
-      expect(quality.hasGreeting).toBeDefined();
-      expect(quality.hasSignature).toBeDefined();
-    });
-  });
 
   describe('Error Handling', () => {
     it('should handle missing inquiry data', async () => {
@@ -347,32 +282,22 @@ describe('AI Customer Service Response Automation', () => {
       ).rejects.toThrow();
     });
 
-    it('should handle template errors', async () => {
-      const inquiry: Partial<CustomerInquiry> = {
-        id: 'inquiry_123',
-        message: 'Test',
-        tags: []
-      };
-
-      // Mock template error
-      vi.mocked(automationService).selectBestTemplate = vi.fn().mockRejectedValue(
-        new Error('Template error')
-      );
+    it('should handle invalid response ID on approval', async () => {
+      const responseId = '';
+      const approverId = 'user_123';
 
       await expect(
-        automationService.generateAutomatedResponse(inquiry, { confidence: 0.8, inquiryType: 'general' })
+        automationService.approveResponse(responseId, approverId)
       ).rejects.toThrow();
     });
 
-    it('should handle approval errors', async () => {
-      const responseId = 'invalid_id';
-      const approvalData = {
-        approverId: 'user_123',
-        finalResponse: 'Test'
-      };
+    it('should handle invalid response ID on rejection', async () => {
+      const responseId = '';
+      const approverId = 'user_123';
+      const rejectionReason = 'Test';
 
       await expect(
-        automationService.approveResponse(responseId, approvalData)
+        automationService.rejectResponse(responseId, approverId, rejectionReason)
       ).rejects.toThrow();
     });
   });

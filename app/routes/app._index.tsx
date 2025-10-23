@@ -30,6 +30,7 @@ import { useSSE } from "../hooks/useSSE";
 import { useNotifications } from "../hooks/useNotifications";
 import { ConnectionStatusIndicator } from "../components/indicators/ConnectionStatusIndicator";
 import { useState, useEffect, useCallback } from "react";
+import { appMetrics } from "~/utils/metrics.server";
 
 // @dnd-kit imports for drag & drop tile reordering (ENG-014)
 import {
@@ -97,42 +98,58 @@ interface LoaderData {
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const t0 = performance.now();
   const url = new URL(request.url);
   const useMock =
     url.searchParams.get("mock") === "1" ||
     process.env.DASHBOARD_USE_MOCK === "1";
 
   if (useMock) {
-    return Response.json(buildMockDashboard());
+    const res = Response.json(buildMockDashboard());
+    const t1 = performance.now();
+    try {
+      appMetrics.httpRequest("GET", url.pathname || "/app", 200, t1 - t0);
+    } catch {}
+    return res;
   }
 
   const context = await getShopifyServiceContext(request);
 
-  const sales = await resolveTile(() => getSalesPulseSummary(context));
-  const fulfillment = await resolveTile(() => getPendingFulfillments(context));
-  const inventory = await resolveTile(() => getInventoryAlerts(context));
-  const seo = await resolveTile(() =>
-    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
-  );
-  const escalations = await resolveEscalations(context.shopDomain);
-  const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  // Fetch core service tiles in parallel
+  const [sales, fulfillment, inventory, seo, escalations, opsMetrics] =
+    await Promise.all([
+      resolveTile(() => getSalesPulseSummary(context)),
+      resolveTile(() => getPendingFulfillments(context)),
+      resolveTile(() => getInventoryAlerts(context)),
+      resolveTile(() =>
+        getLandingPageAnomalies({ shopDomain: context.shopDomain }),
+      ),
+      resolveEscalations(context.shopDomain),
+      resolveTile(() => getOpsAggregateMetrics()),
+    ]);
 
-  // Phase 3 tiles - fetch from new API routes
-  const ideaPool = await resolveApiTile("/api/analytics/idea-pool");
-  const approvalsQueue = await resolveApprovalsQueue();
-  const ceoAgent = await resolveApiTile("/api/ceo-agent/stats");
-  const unreadMessages = await resolveApiTile("/api/chatwoot/unread");
-
-  // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
-  const socialPerformance = await resolveApiTile(
-    "/api/analytics/social-performance",
-  );
-  const seoImpact = await resolveApiTile("/api/analytics/seo-impact");
-  const adsRoas = await resolveApiTile("/api/analytics/ads-roas");
-  const growthMetrics = await resolveApiTile("/api/analytics/growth-metrics");
-  
-  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
-  const growthEngineAnalytics = await resolveApiTile("/api/analytics/growth-engine");
+  // Fetch API tiles in parallel
+  const [
+    ideaPool,
+    approvalsQueue,
+    ceoAgent,
+    unreadMessages,
+    socialPerformance,
+    seoImpact,
+    adsRoas,
+    growthMetrics,
+    growthEngineAnalytics,
+  ] = await Promise.all([
+    resolveApiTile("/api/analytics/idea-pool"),
+    resolveApprovalsQueue(),
+    resolveApiTile("/api/ceo-agent/stats"),
+    resolveApiTile("/api/chatwoot/unread"),
+    resolveApiTile("/api/analytics/social-performance"),
+    resolveApiTile("/api/analytics/seo-impact"),
+    resolveApiTile("/api/analytics/ads-roas"),
+    resolveApiTile("/api/analytics/growth-metrics"),
+    resolveApiTile("/api/analytics/growth-engine"),
+  ]);
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
@@ -143,7 +160,7 @@ export const loader: LoaderFunction = async ({
   // TODO (Phase 11): Load visibleTiles from Supabase user_preferences
   const visibleTiles = DEFAULT_TILE_ORDER; // Default: all tiles visible
 
-  return Response.json({
+  const payload = {
     mode: "live",
     sales,
     fulfillment,
@@ -161,7 +178,13 @@ export const loader: LoaderFunction = async ({
     growthMetrics,
     growthEngineAnalytics,
     visibleTiles,
-  });
+  } as const;
+  const res = Response.json(payload);
+  const t1 = performance.now();
+  try {
+    appMetrics.httpRequest("GET", url.pathname || "/app", 200, t1 - t0);
+  } catch {}
+  return res;
 };
 
 async function resolveTile<T>(
