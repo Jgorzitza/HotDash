@@ -5,7 +5,7 @@
  * Integrates automation, performance, security, testing, monitoring, cost optimization, and disaster recovery
  */
 
-import { GrowthEngineSupportFramework } from '../services/growth-engine-support.server';
+import { GrowthEngineSupportFramework } from '~/services/growth-engine-support.server';
 import { DevOpsGrowthEngine, DevOpsAutomationConfig } from './devops-automation';
 import { PerformanceOptimizationEngine } from './performance-optimization';
 import { SecurityMonitoringEngine } from './security-monitoring';
