@@ -1,16 +1,25 @@
-import { PrismaClient } from "@prisma/client";
+/**
+ * SECURE PRISMA CLIENT CONFIGURATION
+ * 
+ * This file creates Prisma clients with agent-specific permissions.
+ */
 
-declare global {
-  // eslint-disable-next-line no-var
-  var prismaGlobal: PrismaClient;
-}
+import { PrismaClient } from '@prisma/client';
+import { getDatabaseUrl, getAgentTypeFromContext } from './config/database';
 
-if (process.env.NODE_ENV !== "production") {
-  if (!global.prismaGlobal) {
-    global.prismaGlobal = new PrismaClient();
-  }
-}
+// Create Prisma client with agent-specific permissions
+const agentType = getAgentTypeFromContext();
+const databaseUrl = getDatabaseUrl(agentType);
 
-const prisma = global.prismaGlobal ?? new PrismaClient();
+console.log(`🔒 Database client initialized for agent type: ${agentType}`);
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: databaseUrl,
+    },
+  },
+  log: agentType === 'data' ? ['query', 'info', 'warn', 'error'] : ['warn', 'error'],
+});
 
 export default prisma;
