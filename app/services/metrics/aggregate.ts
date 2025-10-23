@@ -28,11 +28,13 @@ export async function getOpsAggregateMetrics(): Promise<
   const activationFact = await prisma.dashboardFact.findFirst({
     where: { factType: "metrics.activation.rolling7d" },
     orderBy: { createdAt: "desc" },
+    select: { id: true, createdAt: true, factType: true, value: true },
   });
 
   const slaFact = await prisma.dashboardFact.findFirst({
     where: { factType: "metrics.sla_resolution.rolling7d" },
     orderBy: { createdAt: "desc" },
+    select: { id: true, createdAt: true, factType: true, value: true },
   });
 
   if (!activationFact && !slaFact) {

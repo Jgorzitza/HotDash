@@ -4,10 +4,8 @@
  * Business logic for approval workflows
  */
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "~/db.server";
 import type { Approval } from "~/components/approvals/ApprovalsDrawer";
-
-const prisma = new PrismaClient();
 
 /**
  * Get all pending approvals
@@ -21,6 +19,17 @@ export async function getPendingApprovals(): Promise<Approval[]> {
       },
       orderBy: {
         priority: "asc",
+      },
+      select: {
+        taskId: true,
+        title: true,
+        description: true,
+        assignedBy: true,
+        priority: true,
+        phase: true,
+        assignedAt: true,
+        updatedAt: true,
+        status: true,
       },
     });
 
@@ -75,6 +84,18 @@ export async function getApprovalById(id: string): Promise<Approval | null> {
   try {
     const task = await prisma.taskAssignment.findUnique({
       where: { taskId: id },
+      select: {
+        taskId: true,
+        title: true,
+        description: true,
+        assignedBy: true,
+        assignedTo: true,
+        priority: true,
+        phase: true,
+        status: true,
+        assignedAt: true,
+        updatedAt: true,
+      },
     });
 
     if (!task) return null;
@@ -219,6 +240,18 @@ export async function getApprovals(filters?: {
         take: filters?.limit || 50,
         skip: filters?.offset || 0,
         orderBy: { assignedAt: "desc" },
+        select: {
+          taskId: true,
+          title: true,
+          description: true,
+          assignedBy: true,
+          assignedTo: true,
+          priority: true,
+          phase: true,
+          status: true,
+          assignedAt: true,
+          updatedAt: true,
+        },
       }),
       prisma.taskAssignment.count({ where }),
     ]);

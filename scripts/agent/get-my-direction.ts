@@ -3,7 +3,7 @@
  * Get agent direction from database
  */
 
-import { prisma } from "../../app/config/database.server";
+import prisma from "../../app/db.server";
 
 async function main() {
   const agent = process.argv[2];

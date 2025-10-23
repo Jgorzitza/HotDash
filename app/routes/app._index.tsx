@@ -249,11 +249,16 @@ async function resolveApiTile<T extends { data?: unknown; success: boolean }>(
   apiPath: string,
 ): Promise<TileState<T["data"]>> {
   try {
+    const t0 = performance.now();
     const response = await fetch(`http://localhost:3000${apiPath}`);
     if (!response.ok) {
       throw new Error(`API returned ${response.status}`);
     }
     const json = (await response.json()) as T;
+    const t1 = performance.now();
+    try {
+      appMetrics.httpRequest("GET", apiPath, response.status, t1 - t0);
+    } catch {}
     if (!json.success) {
       return {
         status: "error",
