@@ -1,9 +1,22 @@
 /**
  * Growth Engine Telemetry Pipeline Infrastructure
- * 
- * Implements the data flow from GSC Bulk Export and GA4 Data API to Action Queue
+ *
+ * Task: DATA-TELEMETRY-001
+ *
+ * Implements the data flow from GSC API and GA4 Data API to Action Queue
  * Provides the foundation for Analytics Agent to identify opportunities
+ *
+ * Updated to use REAL production data from:
+ * - Google Search Console API (app/lib/seo/search-console.ts)
+ * - GA4 Data API (app/services/ga/directClient.ts)
+ * - Prisma database for Action Queue storage
  */
+
+import { getTopQueries, getLandingPages } from "~/lib/seo/search-console";
+import { createDirectGaClient } from "~/services/ga/directClient";
+import { getGaConfig } from "~/config/ga.server";
+import prisma from "~/db.server";
+import { logDecision } from "~/services/decisions.server";
 
 export interface TelemetryData {
   source: 'gsc' | 'ga4' | 'shopify' | 'chatwoot';
@@ -45,37 +58,57 @@ export interface OpportunityData {
 }
 
 // ============================================================================
-// GSC Bulk Export Integration
+// GSC API Integration (REAL DATA)
 // ============================================================================
 
 export class GSCBulkExport {
-  private bigQueryDataset: string;
-  private projectId: string;
-  
-  constructor(projectId: string, dataset: string) {
-    this.projectId = projectId;
-    this.bigQueryDataset = dataset;
-  }
-  
   /**
-   * Get GSC data from BigQuery
+   * Get GSC data from Search Console API
+   * Uses real production data from Google Search Console
    */
   async getGSCData(startDate: string, endDate: string): Promise<GSCData[]> {
-    // This would query BigQuery for GSC data
-    // For now, return mock data structure
-    return [
-      {
-        query: 'powder board',
-        page: '/products/powder-board-xl',
-        clicks: 45,
-        impressions: 1200,
-        ctr: 3.75,
-        position: 4.2,
-        date: startDate
+    console.log(`[Telemetry Pipeline] Fetching GSC data from ${startDate} to ${endDate}`);
+
+    try {
+      // Fetch top queries and landing pages from Search Console API
+      const [queries, pages] = await Promise.all([
+        getTopQueries(100), // Get top 100 queries
+        getLandingPages(100) // Get top 100 pages
+      ]);
+
+      console.log(`[Telemetry Pipeline] Fetched ${queries.length} queries, ${pages.length} pages from GSC`);
+
+      // Transform to GSCData format
+      // Combine query and page data by matching pages
+      const gscData: GSCData[] = [];
+
+      for (const query of queries) {
+        // Find matching page for this query (simplified - in production would need more sophisticated matching)
+        const matchingPage = pages.find(p => p.url.includes(query.query.toLowerCase().replace(/\s+/g, '-')));
+
+        if (matchingPage) {
+          gscData.push({
+            query: query.query,
+            page: matchingPage.url,
+            clicks: query.clicks,
+            impressions: query.impressions,
+            ctr: query.ctr * 100, // Convert to percentage
+            position: query.position,
+            date: startDate
+          });
+        }
       }
-    ];
+
+      console.log(`[Telemetry Pipeline] Matched ${gscData.length} query-page pairs`);
+
+      return gscData;
+    } catch (error: any) {
+      console.error('[Telemetry Pipeline] GSC fetch error:', error.message);
+      // Return empty array on error to allow pipeline to continue
+      return [];
+    }
   }
-  
+
   /**
    * Get freshness label for GSC data
    */

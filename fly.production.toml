@@ -24,8 +24,12 @@ primary_region = 'ord'
 [deploy]
   # Safe database operations - only generate client, no migrations
   release_command = "npx prisma generate"
-  # IPv6 networking for database connections
+  # Zero-downtime deployment strategy
   strategy = "rolling"
+  # Wait for health checks before continuing rollout
+  wait_timeout = "5m"
+  # Maximum number of machines to update simultaneously
+  max_unavailable = 0.25
 
 [http_service]
   internal_port = 3000
@@ -41,14 +45,30 @@ primary_region = 'ord'
     hard_limit = 1000
     soft_limit = 800
 
-  # Health checks
+  # Health checks for zero-downtime deployments
   [[http_service.checks]]
     grace_period = "10s"
-    interval = "30s"
+    interval = "15s"
     method = "GET"
     path = "/health"
     timeout = "5s"
     tls_skip_verify = false
+    # Restart unhealthy machines
+    [http_service.checks.restart]
+      policy = "on-failure"
+      max_retries = 3
+
+  [[http_service.checks]]
+    grace_period = "15s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/monitoring/health"
+    timeout = "10s"
+    tls_skip_verify = false
+    # Monitor comprehensive health
+    [http_service.checks.restart]
+      policy = "on-failure"
+      max_retries = 2
 
 [[vm]]
   memory = '2gb'  # Increased for production

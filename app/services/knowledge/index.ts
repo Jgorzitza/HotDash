@@ -99,6 +99,25 @@ export {
   mergeContexts,
 } from "./rag";
 
+// Export learning functions
+export {
+  extractLearning,
+  detectRecurringIssues,
+  archiveStaleArticles,
+  calculateConfidenceScore,
+} from "./learning";
+
+// Export recommendation functions
+export {
+  getRecommendedArticles,
+  identifyKnowledgeGaps,
+  recommendArticlesForUpdate,
+  recommendArticlesForArchival,
+  getTrendingTopics,
+  getRecommendationsDashboard,
+  type Recommendation,
+} from "./recommendations";
+
 /**
  * Knowledge Base Service Health Check
  * 
