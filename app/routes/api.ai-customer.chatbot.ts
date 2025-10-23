@@ -6,7 +6,7 @@
  * @route /api/ai-customer/chatbot
  */
 
-import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
+import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router';
 import { aiChatbot } from '~/services/ai-customer/chatbot.service.js';
 import { ticketRoutingService } from '~/services/ai-customer/ticket-routing.service.js';
 import { responseAutomationService } from '~/services/ai-customer/response-automation.service.js';

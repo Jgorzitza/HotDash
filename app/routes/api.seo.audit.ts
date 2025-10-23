@@ -1,5 +1,4 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
 import { seoAuditor, type SEOAuditResult } from "~/lib/seo/seo-audit";
 import { seoOptimizer, type PageSEOData } from "~/lib/seo/seo-optimization";
 
@@ -12,7 +11,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const pageKeywords = url.searchParams.get('keywords')?.split(',') || [];
     
     if (!pageUrl) {
-      return json({ error: 'URL parameter is required' }, { status: 400 });
+      return Response.json({ error: 'URL parameter is required' }, { status: 400 });
     }
 
     // Fetch page content (simplified - in production would need proper HTML fetching)
@@ -33,7 +32,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       pageUrl
     );
 
-    return json({
+    return Response.json({
       success: true,
       data: auditResult,
       timestamp: new Date().toISOString()
@@ -41,7 +40,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   } catch (error) {
     console.error('SEO audit error:', error);
-    return json(
+    return Response.json(
       { 
         error: 'Failed to perform SEO audit',
         details: error instanceof Error ? error.message : 'Unknown error'

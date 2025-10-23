@@ -4,7 +4,7 @@
  * ANALYTICS-003: API endpoints for predictive analytics
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from 'react-router';
 import { 
   generatePredictiveInsights,
   predictCustomerBehavior,

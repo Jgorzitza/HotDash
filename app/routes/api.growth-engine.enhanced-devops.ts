@@ -5,8 +5,8 @@
  * Provides automation, performance, security, testing, monitoring, cost optimization, and disaster recovery
  */
 
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
+import { json } from "react-router";
 import { createEnhancedDevOpsOrchestrator, EnhancedDevOpsConfig } from "~/lib/growth-engine/enhanced-devops-orchestrator";
 
 export async function loader({ request }: LoaderFunctionArgs) {

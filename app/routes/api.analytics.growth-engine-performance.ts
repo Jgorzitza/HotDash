@@ -5,9 +5,9 @@
  * Provides real-time performance metrics, insights, and optimization recommendations
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from 'react-router';
 import { GrowthEnginePerformanceAnalysisService } from '~/services/analytics/growth-engine-performance-analysis';
-import { logDecision } from '~/services/decisions.server';
+import { logDecision } from '~/services/tasks.server';
 
 // Singleton instance for continuous monitoring
 let performanceService: GrowthEnginePerformanceAnalysisService | null = null;

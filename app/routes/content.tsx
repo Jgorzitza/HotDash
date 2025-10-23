@@ -4,7 +4,7 @@
  * Provides interface for content creation, editing, and management
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { useLoaderData, useActionData, useNavigation } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, Spinner, Banner } from "@shopify/polaris";
 import { ContentService } from "~/services/content";
@@ -23,7 +23,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const contentTypes = await ContentService.getContentTypes();
     const stats = await ContentService.getContentStats();
 
-    return json({ 
+    return Response.json({ 
       entries: entries.entries,
       contentTypes,
       stats,
@@ -31,7 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error: any) {
     console.error("Error loading content management:", error);
-    return json({ 
+    return Response.json({ 
       entries: [], 
       contentTypes: [],
       stats: { total_entries: 0, published_entries: 0, draft_entries: 0, archived_entries: 0, total_content_types: 0 },
@@ -61,10 +61,10 @@ export async function action({ request }: ActionFunctionArgs) {
       default:
         throw new Error("Invalid action type");
     }
-    return json({ success: true, message: `Content ${actionType}d successfully!`, data: result });
+    return Response.json({ success: true, message: `Content ${actionType}d successfully!`, data: result });
   } catch (error: any) {
     console.error(`Error performing ${actionType} action:`, error);
-    return json({ success: false, error: error.message || `Failed to ${actionType} content` }, { status: 400 });
+    return Response.json({ success: false, error: error.message || `Failed to ${actionType} content` }, { status: 400 });
   }
 }
 

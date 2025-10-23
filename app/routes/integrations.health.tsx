@@ -14,7 +14,7 @@
  * - Incident tracking
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
 import { useLoaderData, useRevalidator } from 'react-router';
 import { Page, Layout, Card, Badge, Text, BlockStack, InlineStack, Banner, ProgressBar, Button, Box, DataTable } from '@shopify/polaris';
 import { useEffect } from 'react';
@@ -161,7 +161,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     });
 
-    return json({
+    return Response.json({
       healthChecks,
       metrics,
       circuitBreakers,
@@ -171,7 +171,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error('[Health Dashboard] Error:', error);
-    return json({
+    return Response.json({
       healthChecks: {
         overall: 'unhealthy' as const,
         checks: [],
@@ -483,4 +483,3 @@ export default function IntegrationHealthDashboard() {
     </Page>
   );
 }
-

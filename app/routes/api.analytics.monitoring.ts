@@ -4,7 +4,7 @@
  * ANALYTICS-004: API endpoints for production monitoring
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from 'react-router';
 import { ProductionMonitoringService } from '~/services/analytics/production-monitoring';
 import { logDecision } from '~/services/decisions.server';
 

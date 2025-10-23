@@ -4,7 +4,7 @@
  * Applies an approved request (moves from approved to applied state).
  */
 
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type ActionFunctionArgs } from "react-router";
 import { getApprovalById } from "~/services/approvals";
 import { PrismaClient } from "@prisma/client";
 

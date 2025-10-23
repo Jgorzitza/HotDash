@@ -4,7 +4,7 @@
  * Displays the Action Queue interface for operators to review and approve actions
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { useLoaderData, useActionData, useNavigation } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, Spinner, Banner } from "@shopify/polaris";
 import { ActionQueueService } from "~/services/action-queue";
@@ -21,7 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ActionQueueService.getStats()
     ]);
     
-    return json({
+    return Response.json({
       actions,
       stats,
       filters: {
@@ -31,7 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error('Error loading action queue:', error);
-    return json({
+    return Response.json({
       actions: [],
       stats: { total: 0, pending: 0, approved: 0, executed: 0, rejected: 0 },
       filters: { limit: 10, status: 'pending' },
@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
   
   try {
@@ -54,19 +54,19 @@ export async function action({ request }: ActionFunctionArgs) {
     switch (action) {
       case 'approve':
         await ActionQueueService.approveAction(actionId, operatorId);
-        return json({ success: true, message: 'Action approved successfully' });
+        return Response.json({ success: true, message: 'Action approved successfully' });
       case 'reject':
         await ActionQueueService.rejectAction(actionId, operatorId);
-        return json({ success: true, message: 'Action rejected successfully' });
+        return Response.json({ success: true, message: 'Action rejected successfully' });
       case 'execute':
         await ActionQueueService.executeAction(actionId, operatorId);
-        return json({ success: true, message: 'Action executed successfully' });
+        return Response.json({ success: true, message: 'Action executed successfully' });
       default:
-        return json({ error: 'Invalid action' }, { status: 400 });
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error processing action:', error);
-    return json({
+    return Response.json({
       error: error instanceof Error ? error.message : 'Failed to process action'
     }, { status: 500 });
   }

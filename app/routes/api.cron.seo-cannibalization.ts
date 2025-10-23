@@ -9,7 +9,7 @@
  * @module routes/api/cron/seo-cannibalization
  */
 
-import { type ActionFunctionArgs } from "@remix-run/node";
+import { type ActionFunctionArgs } from "react-router";
 import { detectKeywordCannibalization } from "~/services/seo/cannibalization";
 import { logDecision } from "~/services/tasks.server";
 

@@ -4,7 +4,7 @@
  * Requests changes to an approval request.
  */
 
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type ActionFunctionArgs } from "react-router";
 import { getApprovalById } from "~/services/approvals";
 import { PrismaClient } from "@prisma/client";
 

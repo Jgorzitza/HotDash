@@ -4,7 +4,7 @@
  * Provides endpoints for managing the Action Queue system
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { ActionQueueService } from "~/services/action-queue";
 
 // ============================================================================
@@ -28,14 +28,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
       risk_tier: risk_tier || undefined
     });
     
-    return json({
+    return Response.json({
       success: true,
       data: actions,
       count: actions.length
     });
   } catch (error) {
     console.error('Error fetching action queue:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to fetch action queue'
     }, { status: 500 });
@@ -48,7 +48,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
   
   try {
@@ -58,46 +58,45 @@ export async function action({ request }: ActionFunctionArgs) {
     switch (action) {
       case 'approve':
         return await ActionQueueService.approveAction(actionId, operatorId)
-          .then(result => json({
+          .then(result => Response.json({
             success: true,
             data: result,
             message: 'Action approved successfully'
           }))
-          .catch(error => json({
+          .catch(error => Response.json({
             success: false,
             error: error.message
           }, { status: 400 }));
       case 'reject':
         return await ActionQueueService.rejectAction(actionId, operatorId)
-          .then(result => json({
+          .then(result => Response.json({
             success: true,
             data: result,
             message: 'Action rejected successfully'
           }))
-          .catch(error => json({
+          .catch(error => Response.json({
             success: false,
             error: error.message
           }, { status: 400 }));
       case 'execute':
         return await ActionQueueService.executeAction(actionId, operatorId)
-          .then(result => json({
+          .then(result => Response.json({
             success: true,
             data: result,
             message: 'Action executed successfully'
           }))
-          .catch(error => json({
+          .catch(error => Response.json({
             success: false,
             error: error.message
           }, { status: 400 }));
       default:
-        return json({ error: 'Invalid action' }, { status: 400 });
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error processing action queue request:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to process request'
     }, { status: 500 });
   }
 }
-

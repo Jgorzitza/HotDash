@@ -10,7 +10,7 @@
  * @see docs/metrics/dashboard-specification.md
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 import {
   Page,
@@ -22,17 +22,13 @@ import {
   Badge,
   Icon,
 } from "@shopify/polaris";
-import {
-  TrendingUpIcon,
-  TrendingDownIcon,
-  MinusIcon,
-} from "@shopify/polaris-icons";
+import { ArrowUpIcon, ArrowDownIcon, MinusIcon } from "@shopify/polaris-icons";
 import { getLaunchMetrics } from "~/services/metrics/launch-metrics";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const metrics = await getLaunchMetrics();
   
-  return json({
+  return Response.json({
     metrics,
     lastUpdated: new Date().toISOString()
   });
@@ -288,9 +284,9 @@ interface MetricCardProps {
 function MetricCard({ title, value, target, trend, status }: MetricCardProps) {
   const trendIcon =
     trend === 'up' || trend === 'improving'
-      ? TrendingUpIcon
+      ? ArrowUpIcon
       : trend === 'down' || trend === 'declining'
-        ? TrendingDownIcon
+        ? ArrowDownIcon
         : MinusIcon;
   
   const badgeTone =
@@ -344,9 +340,9 @@ interface FeatureAdoptionRowProps {
 function FeatureAdoptionRow({ feature, adoptionRate, trend }: FeatureAdoptionRowProps) {
   const trendIcon =
     trend === 'accelerating'
-      ? TrendingUpIcon
+      ? ArrowUpIcon
       : trend === 'slowing'
-        ? TrendingDownIcon
+        ? ArrowDownIcon
         : MinusIcon;
   
   return (
@@ -363,4 +359,3 @@ function FeatureAdoptionRow({ feature, adoptionRate, trend }: FeatureAdoptionRow
     </div>
   );
 }
-

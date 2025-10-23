@@ -4,7 +4,7 @@
  * Provides endpoints for running specialist agents and managing their outputs
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { db } from "~/db.server";
 import { SpecialistAgentOrchestrator } from "~/lib/growth-engine/specialist-agents";
 import { createActionItem } from "~/lib/growth-engine/action-queue";
@@ -29,7 +29,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         [agent]
       );
       
-      return json({
+      return Response.json({
         success: true,
         data: rows
       });
@@ -41,14 +41,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
          LIMIT 50`
       );
       
-      return json({
+      return Response.json({
         success: true,
         data: rows
       });
     }
   } catch (error) {
     console.error('Error fetching specialist agent runs:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to fetch specialist agent runs'
     }, { status: 500 });
@@ -61,7 +61,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
   
   try {
@@ -74,11 +74,11 @@ export async function action({ request }: ActionFunctionArgs) {
       case 'run_all':
         return await runAllSpecialistAgents();
       default:
-        return json({ error: 'Invalid action' }, { status: 400 });
+        return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error processing specialist agent request:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to process request'
     }, { status: 500 });
@@ -126,7 +126,7 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
         [actions.length, runId]
       );
       
-      return json({
+      return Response.json({
         success: true,
         data: {
           runId,
@@ -149,7 +149,7 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
     }
   } catch (error) {
     console.error(`Error running ${agentName} agent:`, error);
-    return json({
+    return Response.json({
       success: false,
       error: `Failed to run ${agentName} agent`
     }, { status: 500 });
@@ -177,19 +177,19 @@ async function runAllSpecialistAgents() {
       );
     }
     
-    return json({
-      success: true,
-      data: {
-        totalActions: allActions.length,
-        agentsRun: ['analytics', 'inventory', 'content-seo-perf', 'risk']
-      },
-      message: 'All specialist agents completed successfully'
-    });
+  return Response.json({
+    success: true,
+    data: {
+      totalActions: allActions.length,
+      agentsRun: ['analytics', 'inventory', 'content-seo-perf', 'risk']
+    },
+    message: 'All specialist agents completed successfully'
+  });
   } catch (error) {
     console.error('Error running all specialist agents:', error);
-    return json({
-      success: false,
-      error: 'Failed to run all specialist agents'
-    }, { status: 500 });
+  return Response.json({
+    success: false,
+    error: 'Failed to run all specialist agents'
+  }, { status: 500 });
   }
 }

@@ -4,7 +4,7 @@
  * Rejects an approval request with reason.
  */
 
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type ActionFunctionArgs } from "react-router";
 import { rejectRequest, getApprovalById } from "~/services/approvals";
 
 export async function action({ params, request }: ActionFunctionArgs) {

@@ -5,7 +5,6 @@
  * Provides data for the Action Attribution Dashboard
  */
 
-import { json } from "react-router";
 import type { LoaderFunctionArgs } from "react-router";
 import { 
   generateAttributionReport, 
@@ -34,7 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         evidenceUrl: request.url
       });
 
-      return json({
+      return Response.json({
         success: true,
         data: attributionData,
         timeframe,
@@ -59,7 +58,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         }
       });
 
-      return json({
+      return Response.json({
         success: true,
         data: report,
         generatedAt: new Date().toISOString()
@@ -80,7 +79,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     });
 
-    return json({
+    return Response.json({
       success: false,
       error: error.message,
       generatedAt: new Date().toISOString()
@@ -109,7 +108,7 @@ export async function action({ request }: LoaderFunctionArgs) {
           evidenceUrl: request.url
         });
 
-        return json({
+        return Response.json({
           success: true,
           message: "Attribution data refreshed successfully",
           data: report,
@@ -135,7 +134,7 @@ export async function action({ request }: LoaderFunctionArgs) {
           }
         });
 
-        return json({
+        return Response.json({
           success: true,
           message: "Insights generated successfully",
           data: insightsReport,
@@ -143,7 +142,7 @@ export async function action({ request }: LoaderFunctionArgs) {
         });
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: "Invalid action type",
           generatedAt: new Date().toISOString()
@@ -164,7 +163,7 @@ export async function action({ request }: LoaderFunctionArgs) {
       }
     });
 
-    return json({
+    return Response.json({
       success: false,
       error: error.message,
       generatedAt: new Date().toISOString()

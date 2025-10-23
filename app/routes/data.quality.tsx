@@ -3,7 +3,7 @@
  * Task: DATA-023
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
 import { Card, Page, Layout, Text, Badge } from "@shopify/polaris";
 import { DataQualityService } from "~/services/data/data-quality.service";
@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     DataQualityService.checkFreshness()
   ]);
   
-  return json({
+  return Response.json({
     validation: validationResults,
     freshness: freshnessResults,
     timestamp: new Date().toISOString()
@@ -62,4 +62,3 @@ export default function DataQualityDashboard() {
     </Page>
   );
 }
-

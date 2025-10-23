@@ -4,7 +4,7 @@
  * Approves an approval request and executes associated actions.
  */
 
-import { json, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type ActionFunctionArgs } from "react-router";
 import { approveRequest, getApprovalById } from "~/services/approvals";
 
 export async function action({ params, request }: ActionFunctionArgs) {

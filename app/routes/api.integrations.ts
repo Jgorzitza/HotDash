@@ -8,7 +8,7 @@
  * - Integration management
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs, ActionFunctionArgs } from 'react-router';
 import { integrationManager } from '~/services/integrations/integration-manager';
 import { shopifyAdapter } from '~/services/integrations/shopify-adapter';
 import { publerAdapter } from '~/services/integrations/publer-adapter';
@@ -37,11 +37,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
         return await handleChatwootHealth();
       
       default:
-        return json({ error: 'Not found' }, { status: 404 });
+        return Response.json({ error: 'Not found' }, { status: 404 });
     }
   } catch (error) {
     console.error('Integration API error:', error);
-    return json(
+    return Response.json(
       { 
         error: 'Internal server error', 
         message: error instanceof Error ? error.message : 'Unknown error' 
@@ -77,11 +77,11 @@ export async function action({ request }: ActionFunctionArgs) {
         break;
       
       default:
-        return json({ error: 'Not found' }, { status: 404 });
+        return Response.json({ error: 'Not found' }, { status: 404 });
     }
   } catch (error) {
     console.error('Integration API action error:', error);
-    return json(
+    return Response.json(
       { 
         error: 'Internal server error', 
         message: error instanceof Error ? error.message : 'Unknown error' 
@@ -95,7 +95,7 @@ export async function action({ request }: ActionFunctionArgs) {
 async function handleHealthCheck() {
   const healthStatus = await integrationManager.getHealthStatus();
   
-  return json({
+  return Response.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     integrations: healthStatus,
@@ -110,7 +110,7 @@ async function handleHealthCheck() {
 async function handleGetMetrics() {
   const metrics = integrationManager.getMetrics();
   
-  return json({
+  return Response.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     metrics,
@@ -120,7 +120,7 @@ async function handleGetMetrics() {
 async function handleShopifyHealth() {
   const health = await shopifyAdapter.getShop();
   
-  return json({
+  return Response.json({
     status: health.success ? 'ok' : 'error',
     timestamp: new Date().toISOString(),
     service: 'shopify',
@@ -132,7 +132,7 @@ async function handleShopifyHealth() {
 async function handlePublerHealth() {
   const health = await publerAdapter.getWorkspaces();
   
-  return json({
+  return Response.json({
     status: health.success ? 'ok' : 'error',
     timestamp: new Date().toISOString(),
     service: 'publer',
@@ -144,7 +144,7 @@ async function handlePublerHealth() {
 async function handleChatwootHealth() {
   const health = await chatwootAdapter.getInboxes();
   
-  return json({
+  return Response.json({
     status: health.success ? 'ok' : 'error',
     timestamp: new Date().toISOString(),
     service: 'chatwoot',
@@ -159,12 +159,12 @@ async function handleBulkOperation(request: Request) {
   const { operations } = body;
 
   if (!Array.isArray(operations)) {
-    return json({ error: 'Operations must be an array' }, { status: 400 });
+    return Response.json({ error: 'Operations must be an array' }, { status: 400 });
   }
 
   const results = await integrationManager.executeBulkOperation(operations);
   
-  return json({
+  return Response.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     results,
@@ -177,14 +177,14 @@ async function handleResetMetrics(request: Request) {
 
   if (integrationName) {
     integrationManager.resetMetrics(integrationName);
-    return json({
+    return Response.json({
       status: 'ok',
       message: `Metrics reset for ${integrationName}`,
       timestamp: new Date().toISOString(),
     });
   } else {
     integrationManager.resetMetrics();
-    return json({
+    return Response.json({
       status: 'ok',
       message: 'All metrics reset',
       timestamp: new Date().toISOString(),
@@ -197,12 +197,12 @@ async function handleResetCircuitBreaker(request: Request) {
   const { integrationName } = body;
 
   if (!integrationName) {
-    return json({ error: 'Integration name is required' }, { status: 400 });
+    return Response.json({ error: 'Integration name is required' }, { status: 400 });
   }
 
   integrationManager.resetCircuitBreaker(integrationName);
   
-  return json({
+  return Response.json({
     status: 'ok',
     message: `Circuit breaker reset for ${integrationName}`,
     timestamp: new Date().toISOString(),

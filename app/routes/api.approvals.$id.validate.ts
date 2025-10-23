@@ -5,7 +5,7 @@
  * Checks evidence, rollback, and other requirements.
  */
 
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { json, type LoaderFunctionArgs } from "react-router";
 import { getApprovalById } from "~/services/approvals";
 
 export async function loader({ params }: LoaderFunctionArgs) {

@@ -8,7 +8,7 @@
  * @see app/services/ai-customer/growth-engine-ai.ts
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
+import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { growthEngineAIService } from "~/services/ai-customer/growth-engine-ai";
 import { logDecision } from "~/services/decisions.server";
 
