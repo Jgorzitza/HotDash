@@ -226,7 +226,10 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts support
 ## 3) Tools & Env (60–90 sec)
 
 - [ ] MCP tools resolve and respond (role-specific): Shopify Admin, Supabase, Chatwoot, etc.
-- [ ] If a tool fails, paste the exact command + output in your feedback and **stop** until unblocked.
+- [ ] If a tool fails, log blocker via database and **stop** until unblocked:
+  ```bash
+  npx tsx --env-file=.env scripts/agent/log-blocked.ts <agent> <task-id> "MCP tool failure" "Tool X failed with error Y" "command output" "Waiting for DevOps to fix"
+  ```
 
 ## 4) Sandbox (30 sec)
 
@@ -420,8 +423,11 @@ await logDecision({
 
 ## 10) Escalation
 
-- [ ] If blocked > 10 minutes after tool attempts, log the blocker with exact error/output
-      in your feedback file and @mention the manager in the **Issue** with a proposed next step.
+- [ ] If blocked > 10 minutes after tool attempts, log the blocker via database (Manager sees immediately):
+  ```bash
+  npx tsx --env-file=.env scripts/agent/log-blocked.ts <agent> <task-id> "<blocker>" "<rationale>" "<evidence-url>" "<proposed-next-step>"
+  ```
+  Manager will see this immediately via `query-blocked-tasks.ts` and unblock you within 1 hour.
 
 ---
 
@@ -435,15 +441,23 @@ await logDecision({
 - [ ] **TypeScript patterns?** → Pull `/microsoft/TypeScript` and verify type usage
 - [ ] **API integrations?** → Pull relevant library docs and verify implementation
 
-**Evidence Format in QA Feedback**:
+**Evidence Format in QA Progress Logs** (via database):
 
-```md
-## Code Review: [Feature/File]
-
-- Verified using: Context7 `/library/path` - topic: [what I checked]
-- Official docs say: [key requirement from docs]
-- Code matches: ✅ / ❌ [explain if mismatch]
-- Recommendation: [pass / request changes]
+```typescript
+await logDecision({
+  scope: "build",
+  actor: "qa",
+  taskId: "QA-XXX",
+  action: "code_review_complete",
+  rationale: "Code review complete for [Feature/File]",
+  payload: {
+    verifiedUsing: "Context7 /library/path - topic: [what I checked]",
+    officialDocsSay: "[key requirement from docs]",
+    codeMatches: true, // or false
+    explanation: "[explain if mismatch]",
+    recommendation: "[pass / request changes]"
+  }
+});
 ```
 
-**Why**: Training data is outdated. QA must verify code against current library documentation, not rely on LLM knowledge alone.
+**Why**: Training data is outdated. QA must verify code against current library documentation, not rely on LLM knowledge alone. All evidence goes to database, not markdown files.
