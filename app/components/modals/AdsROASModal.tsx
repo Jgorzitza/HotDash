@@ -7,13 +7,17 @@
  * - Campaign comparison table
  */
 
-import {
-  LineChart,
-  DoughnutChart,
-  OCC_CHART_COLORS,
-  OCC_CHART_COLORS_TRANSPARENT,
-} from "../charts";
+import { OCC_CHART_COLORS, OCC_CHART_COLORS_TRANSPARENT } from "../charts";
 import type { ChartData } from "chart.js";
+import { lazy, Suspense } from "react";
+
+// Lazy-load heavy chart components to reduce initial bundle size
+const LineChart = lazy(() =>
+  import("../charts/LineChart").then((m) => ({ default: m.LineChart })),
+);
+const DoughnutChart = lazy(() =>
+  import("../charts/DoughnutChart").then((m) => ({ default: m.DoughnutChart })),
+);
 
 interface Campaign {
   name: string;
@@ -153,7 +157,8 @@ export function AdsROASModal({ data, onClose }: AdsROASModalProps) {
             >
               ROAS & Spend Trend
             </h3>
-            <LineChart
+            <Suspense fallback={<div style={{ height: 300 }}>Loading chart…</div>}>
+              <LineChart
               data={trendChartData}
               height={300}
               options={{
@@ -171,7 +176,8 @@ export function AdsROASModal({ data, onClose }: AdsROASModalProps) {
                   },
                 },
               }}
-            />
+              />
+            </Suspense>
           </div>
           <div>
             <h3
@@ -183,7 +189,9 @@ export function AdsROASModal({ data, onClose }: AdsROASModalProps) {
             >
               Spend Distribution
             </h3>
-            <DoughnutChart data={distributionChartData} height={280} />
+            <Suspense fallback={<div style={{ height: 280 }}>Loading chart…</div>}>
+              <DoughnutChart data={distributionChartData} height={280} />
+            </Suspense>
           </div>
         </div>
 
