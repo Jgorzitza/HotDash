@@ -1,5 +1,51 @@
 # Content Services
 
+## AI Content Generation Service
+
+**File**: `ai-content-generator.ts`
+
+### Purpose
+
+Provides AI-powered content generation using OpenAI for product descriptions, blog posts, and content quality assessment. Supports multiple tones, lengths, and automatic quality scoring.
+
+### Features
+
+- **Product Description Generation**: Create compelling product descriptions with customizable tone and length
+- **Blog Post Generation**: Generate engaging blog posts with keyword optimization
+- **Content Variations**: Generate multiple versions with different tones for A/B testing
+- **Quality Assessment**: Automated scoring for readability, SEO, engagement, and brand alignment
+
+### Usage
+
+```typescript
+import { aiContentGenerator } from '~/services/content/ai-content-generator';
+
+// Generate product description
+const result = await aiContentGenerator.generateProductDescription({
+  productTitle: 'Carbon Fiber Roof Rack',
+  features: ['Lightweight', 'Aerodynamic', 'Easy installation'],
+  tone: 'professional',
+  length: 'medium',
+  includeKeywords: ['carbon fiber', 'roof rack']
+});
+
+console.log(result.content);
+console.log(result.qualityScore);
+```
+
+### API Routes
+
+- `POST /api/content/generate-product-description` - Generate product descriptions
+- `POST /api/content/generate-blog-post` - Generate blog posts
+- `POST /api/content/generate-variations` - Generate content variations
+- `POST /api/content/assess-quality` - Assess content quality
+
+### Documentation
+
+See `AI_CONTENT_GENERATION.md` for complete documentation.
+
+---
+
 ## CX Content Implementation Service
 
 **File**: `cx-content-implementation.ts`
