@@ -3,6 +3,7 @@ import prisma from "../db.server";
 import { getSupabaseConfig } from "../config/supabase.server";
 import { supabaseMemory } from "../../packages/memory/supabase";
 import type { DecisionLog as MemoryDecision } from "../../packages/memory";
+import { createSecureDecisionService } from './security/database-security';
 
 // Standard payload structures for consistency
 export interface TaskCompletionPayload {

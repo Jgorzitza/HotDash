@@ -1,0 +1,41 @@
+generator clientDevKb {
+  provider = "prisma-client-js"
+  output   = "../../packages/dev-kb-prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("SUPABASE_DEV_KB_DATABASE_URL")
+  directUrl = env("SUPABASE_DEV_KB_DIRECT_URL")
+}
+
+model KnowledgeBaseDocument {
+  id                 String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain         String                  @map("shop_domain")
+  documentKey        String                  @map("document_key")
+  documentType       String                  @map("document_type")
+  title              String
+  content            String
+  embedding          Unsupported("vector")?  @map("embedding")
+  sourceUrl          String?                 @map("source_url")
+  tags               String[]
+  category           String?
+  version            Int                     @default(1)
+  isCurrent          Boolean                 @default(true) @map("is_current")
+  previousVersionId  String?                 @map("previous_version_id") @db.Uuid
+  createdBy          String                  @map("created_by")
+  createdAt          DateTime?               @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime?               @default(now()) @map("updated_at") @db.Timestamptz(6)
+  lastIndexedAt      DateTime?               @map("last_indexed_at") @db.Timestamptz(6)
+  metadata           Json?                   @default("{}")
+  project            String                  @default("dev_kb")
+  previousVersion    KnowledgeBaseDocument?  @relation("KnowledgeBaseVersioning", fields: [previousVersionId], references: [id])
+  nextVersions       KnowledgeBaseDocument[] @relation("KnowledgeBaseVersioning")
+
+  @@map("knowledge_base")
+  @@unique([shopDomain, documentKey, version], map: "knowledge_base_shop_doc_version_key")
+  @@index([project], map: "idx_knowledge_base_project")
+  @@index([shopDomain, documentType], map: "idx_knowledge_base_shop_type")
+  @@index([isCurrent], map: "idx_knowledge_base_current")
+  @@index([tags], map: "idx_knowledge_base_tags", type: Gin)
+}

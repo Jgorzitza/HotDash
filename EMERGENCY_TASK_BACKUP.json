@@ -1,0 +1,558 @@
+{
+  "backup_date": "2025-10-22T18:15:00Z",
+  "total_tasks": 40,
+  "tasks": [
+    {
+      "taskId": "ENG-025",
+      "assignedTo": "engineer",
+      "title": "Growth Engine Advanced Dashboard Features",
+      "description": "Implement growth engine advanced dashboard features for Growth Engine phases 9-12, including real-time data visualization, customizable widgets, and interactive drill-down capabilities. Focus on performance and scalability.",
+      "acceptanceCriteria": [
+        "Real-time data widgets implemented",
+        "Customizable dashboard layouts",
+        "Interactive drill-down functionality",
+        "Performance benchmarks met"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P0",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "ENG-026",
+      "assignedTo": "engineer",
+      "title": "Growth Engine System Integration",
+      "description": "Implement comprehensive system integration for Growth Engine features, ensuring seamless data flow between all components and services.",
+      "acceptanceCriteria": [
+        "All Growth Engine components integrated",
+        "Data flow validated",
+        "Integration tests passing",
+        "Performance requirements met"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["ENG-025"]
+    },
+    {
+      "taskId": "DESIGNER-596",
+      "assignedTo": "designer",
+      "title": "Growth Engine UI Components",
+      "description": "Design and implement advanced UI components for Growth Engine features, including interactive dashboards, data visualization components, and user experience enhancements.",
+      "acceptanceCriteria": [
+        "Advanced UI components designed",
+        "Interactive dashboards implemented",
+        "Data visualization components created",
+        "User experience enhanced"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "DESIGNER-COMPLETION-643",
+      "assignedTo": "designer",
+      "title": "Growth Engine Final Implementation",
+      "description": "Perform final implementation, testing, and documentation for designer's Growth Engine components. Ensure all acceptance criteria are met for production readiness.",
+      "acceptanceCriteria": [
+        "All features implemented",
+        "Unit and integration tests pass",
+        "Documentation updated",
+        "Ready for production deployment"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "DATA-110",
+      "assignedTo": "data",
+      "title": "Apply All Phase 7-13 Migrations",
+      "description": "Apply all pending database migrations for Growth Engine phases 7-13. This includes schemas for Approvals, Vendors, Inventory, Product Suggestions, CX, Action Cards, Social, SEO, and Ads.",
+      "acceptanceCriteria": [
+        "All 33 migrations applied successfully",
+        "Database schema matches latest prisma/schema.prisma",
+        "No data loss on existing tables"
+      ],
+      "allowedPaths": ["supabase/migrations/**", "prisma/schema.prisma"],
+      "priority": "P0",
+      "estimatedHours": 4,
+      "dependencies": []
+    },
+    {
+      "taskId": "QA-REVIEW-DATA-001",
+      "assignedTo": "data",
+      "title": "Data System Review & Testing",
+      "description": "Conduct a comprehensive QA review of the data's Growth Engine components. Verify functionality, performance, security, and adherence to design specifications.",
+      "acceptanceCriteria": [
+        "All test cases passed",
+        "No critical bugs found",
+        "Performance benchmarks met",
+        "Security vulnerabilities addressed"
+      ],
+      "allowedPaths": ["app/**", "tests/**", "docs/reviews/**"],
+      "priority": "P0",
+      "estimatedHours": 1,
+      "dependencies": []
+    },
+    {
+      "taskId": "DEVOPS-748",
+      "assignedTo": "devops",
+      "title": "Growth Engine Infrastructure",
+      "description": "Implement and configure infrastructure for Growth Engine features, including deployment pipelines, monitoring, and scaling capabilities.",
+      "acceptanceCriteria": [
+        "Infrastructure implemented",
+        "Deployment pipelines configured",
+        "Monitoring setup",
+        "Scaling capabilities verified"
+      ],
+      "allowedPaths": ["infra/**", "scripts/devops/**", "docs/devops/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "DEVOPS-COMPLETION-622",
+      "assignedTo": "devops",
+      "title": "Growth Engine Final Implementation",
+      "description": "Perform final implementation, testing, and documentation for devops's Growth Engine components. Ensure all acceptance criteria are met for production readiness.",
+      "acceptanceCriteria": [
+        "All features implemented",
+        "Unit and integration tests pass",
+        "Documentation updated",
+        "Ready for production deployment"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "INTEGRATIONS-101",
+      "assignedTo": "integrations",
+      "title": "Growth Engine API Integration",
+      "description": "Implement comprehensive API integrations for Growth Engine features, including third-party service connections and data synchronization.",
+      "acceptanceCriteria": [
+        "API integrations implemented",
+        "Third-party services connected",
+        "Data synchronization working",
+        "Integration tests passing"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "INTEGRATIONS-501",
+      "assignedTo": "integrations",
+      "title": "Growth Engine Service Integration",
+      "description": "Implement service-level integrations for Growth Engine features, ensuring seamless communication between all internal services.",
+      "acceptanceCriteria": [
+        "Service integrations implemented",
+        "Internal service communication working",
+        "Integration tests passing",
+        "Performance requirements met"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["INTEGRATIONS-101"]
+    },
+    {
+      "taskId": "ANALYTICS-274",
+      "assignedTo": "analytics",
+      "title": "Growth Engine Analytics Dashboard",
+      "description": "Implement comprehensive analytics dashboard for Growth Engine features, including real-time metrics, reporting, and data visualization.",
+      "acceptanceCriteria": [
+        "Analytics dashboard implemented",
+        "Real-time metrics working",
+        "Reporting functionality complete",
+        "Data visualization enhanced"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "ANALYTICS-COMPLETION-831",
+      "assignedTo": "analytics",
+      "title": "Growth Engine Final Implementation",
+      "description": "Perform final implementation, testing, and documentation for analytics's Growth Engine components. Ensure all acceptance criteria are met for production readiness.",
+      "acceptanceCriteria": [
+        "All features implemented",
+        "Unit and integration tests pass",
+        "Documentation updated",
+        "Ready for production deployment"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "INVENTORY-534",
+      "assignedTo": "inventory",
+      "title": "Growth Engine Inventory Management",
+      "description": "Implement advanced inventory management features for Growth Engine, including real-time tracking, automated reordering, and demand forecasting.",
+      "acceptanceCriteria": [
+        "Inventory management features implemented",
+        "Real-time tracking working",
+        "Automated reordering configured",
+        "Demand forecasting operational"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "INVENTORY-056",
+      "assignedTo": "inventory",
+      "title": "Growth Engine Inventory Optimization",
+      "description": "Implement inventory optimization algorithms for Growth Engine, including cost optimization, space utilization, and turnover analysis.",
+      "acceptanceCriteria": [
+        "Optimization algorithms implemented",
+        "Cost optimization working",
+        "Space utilization analyzed",
+        "Turnover analysis complete"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["INVENTORY-534"]
+    },
+    {
+      "taskId": "ADS-100",
+      "assignedTo": "ads",
+      "title": "Growth Engine Ad Campaign Management",
+      "description": "Implement comprehensive ad campaign management for Growth Engine, including campaign creation, optimization, and performance tracking.",
+      "acceptanceCriteria": [
+        "Campaign management implemented",
+        "Campaign creation working",
+        "Optimization features complete",
+        "Performance tracking operational"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "ADS-303",
+      "assignedTo": "ads",
+      "title": "Growth Engine Ad Performance Analytics",
+      "description": "Implement advanced ad performance analytics for Growth Engine, including ROI analysis, conversion tracking, and attribution modeling.",
+      "acceptanceCriteria": [
+        "Performance analytics implemented",
+        "ROI analysis working",
+        "Conversion tracking operational",
+        "Attribution modeling complete"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["ADS-100"]
+    },
+    {
+      "taskId": "CONTENT-670",
+      "assignedTo": "content",
+      "title": "Growth Engine Content Strategy",
+      "description": "Develop content strategy for Growth Engine features, including microcopy, help docs, and marketing copy.",
+      "acceptanceCriteria": [
+        "Content strategy document created",
+        "Microcopy guidelines defined",
+        "Help docs outline"
+      ],
+      "allowedPaths": ["docs/content/**", "docs/design/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "CONTENT-199",
+      "assignedTo": "content",
+      "title": "Growth Engine Content Management",
+      "description": "Implement content management system for Growth Engine, including content creation, editing, and publishing workflows.",
+      "acceptanceCriteria": [
+        "Content management system implemented",
+        "Content creation workflows working",
+        "Editing capabilities complete",
+        "Publishing workflows operational"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["CONTENT-670"]
+    },
+    {
+      "taskId": "PILOT-021",
+      "assignedTo": "pilot",
+      "title": "Growth Engine Testing Framework",
+      "description": "Develop comprehensive testing framework for Growth Engine features, including test plans, test cases, and automation strategy.",
+      "acceptanceCriteria": [
+        "Testing framework document created",
+        "Test plans outlined",
+        "Automation strategy defined"
+      ],
+      "allowedPaths": ["docs/qa/**", "docs/runbooks/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "PILOT-100",
+      "assignedTo": "pilot",
+      "title": "Growth Engine Pilot Testing",
+      "description": "Conduct comprehensive pilot testing for Growth Engine features, including user acceptance testing, performance testing, and security testing.",
+      "acceptanceCriteria": [
+        "User acceptance testing complete",
+        "Performance testing passed",
+        "Security testing passed",
+        "All test cases executed"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["PILOT-021"]
+    },
+    {
+      "taskId": "AI-CUSTOMER-100",
+      "assignedTo": "ai-customer",
+      "title": "Growth Engine Customer AI Features",
+      "description": "Implement advanced AI features for customer-facing Growth Engine components, including personalization, recommendations, and automated responses.",
+      "acceptanceCriteria": [
+        "AI features implemented",
+        "Personalization working",
+        "Recommendations operational",
+        "Automated responses configured"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "AI-CUSTOMER-101",
+      "assignedTo": "ai-customer",
+      "title": "Growth Engine Customer AI Integration",
+      "description": "Integrate customer AI features with Growth Engine systems, ensuring seamless data flow and real-time processing.",
+      "acceptanceCriteria": [
+        "AI integration complete",
+        "Data flow validated",
+        "Real-time processing working",
+        "Integration tests passing"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["AI-CUSTOMER-100"]
+    },
+    {
+      "taskId": "AI-KNOWLEDGE-138",
+      "assignedTo": "ai-knowledge",
+      "title": "Growth Engine Knowledge Base",
+      "description": "Implement comprehensive knowledge base for Growth Engine, including document management, search capabilities, and AI-powered insights.",
+      "acceptanceCriteria": [
+        "Knowledge base implemented",
+        "Document management working",
+        "Search capabilities operational",
+        "AI insights functional"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "AI-KNOWLEDGE-COMPLETION-572",
+      "assignedTo": "ai-knowledge",
+      "title": "Growth Engine Final Implementation",
+      "description": "Perform final implementation, testing, and documentation for ai-knowledge's Growth Engine components. Ensure all acceptance criteria are met for production readiness.",
+      "acceptanceCriteria": [
+        "All features implemented",
+        "Unit and integration tests pass",
+        "Documentation updated",
+        "Ready for production deployment"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "SUPPORT-901",
+      "assignedTo": "support",
+      "title": "Growth Engine Support Framework",
+      "description": "Establish support framework for new Growth Engine features, including FAQs, troubleshooting guides, and agent training.",
+      "acceptanceCriteria": [
+        "Support framework document created",
+        "FAQs drafted",
+        "Troubleshooting guides outlined"
+      ],
+      "allowedPaths": ["docs/support/**", "docs/runbooks/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "SUPPORT-COMPLETION-362",
+      "assignedTo": "support",
+      "title": "Growth Engine Final Implementation",
+      "description": "Perform final implementation, testing, and documentation for support's Growth Engine components. Ensure all acceptance criteria are met for production readiness.",
+      "acceptanceCriteria": [
+        "All features implemented",
+        "Unit and integration tests pass",
+        "Documentation updated",
+        "Ready for production deployment"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "PRODUCT-COMPLETION-001",
+      "assignedTo": "product",
+      "title": "Growth Engine Product Finalization",
+      "description": "Finalize product strategy, review all implemented features, and prepare for production launch. Address any remaining blockers or open questions.",
+      "acceptanceCriteria": [
+        "Product strategy document updated",
+        "All features reviewed",
+        "Ready for launch"
+      ],
+      "allowedPaths": ["docs/product/**", "docs/PROJECT_PLAN.md"],
+      "priority": "P0",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "PRODUCT-019",
+      "assignedTo": "product",
+      "title": "Growth Engine Product Strategy",
+      "description": "Develop comprehensive product strategy for Growth Engine features, including roadmap, feature prioritization, and market positioning.",
+      "acceptanceCriteria": [
+        "Product strategy document created",
+        "Roadmap defined",
+        "Feature prioritization complete",
+        "Market positioning established"
+      ],
+      "allowedPaths": ["docs/product/**", "docs/PROJECT_PLAN.md"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "QA-101",
+      "assignedTo": "qa",
+      "title": "Growth Engine Quality Assurance",
+      "description": "Implement comprehensive quality assurance processes for Growth Engine features, including testing strategies, quality metrics, and continuous improvement.",
+      "acceptanceCriteria": [
+        "QA processes implemented",
+        "Testing strategies defined",
+        "Quality metrics established",
+        "Continuous improvement processes operational"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "QA-100",
+      "assignedTo": "qa",
+      "title": "Growth Engine Testing & Validation",
+      "description": "Conduct comprehensive testing and validation for Growth Engine features, including functional testing, performance testing, and security testing.",
+      "acceptanceCriteria": [
+        "Functional testing complete",
+        "Performance testing passed",
+        "Security testing passed",
+        "All validation criteria met"
+      ],
+      "allowedPaths": ["app/**", "docs/**", "tests/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["QA-101"]
+    },
+    {
+      "taskId": "SEO-007",
+      "assignedTo": "seo",
+      "title": "Growth Engine SEO Optimization",
+      "description": "Implement SEO optimization strategies for Growth Engine features, including technical SEO, content optimization, and performance monitoring.",
+      "acceptanceCriteria": [
+        "SEO strategies implemented",
+        "Technical SEO optimized",
+        "Content optimization complete",
+        "Performance monitoring operational"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 3,
+      "dependencies": []
+    },
+    {
+      "taskId": "SEO-008",
+      "assignedTo": "seo",
+      "title": "Growth Engine SEO Analytics",
+      "description": "Implement comprehensive SEO analytics for Growth Engine features, including keyword tracking, ranking monitoring, and performance analysis.",
+      "acceptanceCriteria": [
+        "SEO analytics implemented",
+        "Keyword tracking operational",
+        "Ranking monitoring working",
+        "Performance analysis complete"
+      ],
+      "allowedPaths": ["app/**", "docs/**"],
+      "priority": "P1",
+      "estimatedHours": 2,
+      "dependencies": ["SEO-007"]
+    },
+    {
+      "taskId": "INTEGRATION-FINAL-001",
+      "assignedTo": "engineer",
+      "title": "Final System Integration",
+      "description": "Perform final integration testing across all Growth Engine components. Ensure seamless data flow, API interactions, and UI/UX consistency.",
+      "acceptanceCriteria": [
+        "All integration tests pass",
+        "End-to-end workflows validated",
+        "No integration conflicts"
+      ],
+      "allowedPaths": ["app/**", "tests/**", "docs/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "INTEGRATION-FINAL-002",
+      "assignedTo": "data",
+      "title": "Final Data Integration",
+      "description": "Verify data consistency and integrity across all Growth Engine databases and external services. Ensure all data pipelines are operational and secure.",
+      "acceptanceCriteria": [
+        "Data integrity checks pass",
+        "All data pipelines operational",
+        "Security policies enforced"
+      ],
+      "allowedPaths": ["supabase/**", "prisma/**", "app/services/data/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    },
+    {
+      "taskId": "INTEGRATION-FINAL-003",
+      "assignedTo": "devops",
+      "title": "Final Deployment Integration",
+      "description": "Prepare and execute final deployment procedures for the Growth Engine. Ensure all infrastructure is configured correctly, monitoring is active, and rollback plans are in place.",
+      "acceptanceCriteria": [
+        "Deployment successful",
+        "Monitoring active",
+        "Rollback plan verified"
+      ],
+      "allowedPaths": ["infra/**", "scripts/devops/**", "docs/devops/**"],
+      "priority": "P0",
+      "estimatedHours": 2,
+      "dependencies": []
+    }
+  ]
+}

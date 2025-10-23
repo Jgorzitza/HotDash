@@ -122,6 +122,44 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
 
 **Time Savings**: No git pull for direction updates, instant task visibility
 
+## 2.1) KB Search Before Task Execution (MANDATORY - 60 sec) [NEW 2025-10-25]
+
+**⚠️ CRITICAL: Before starting ANY task, search KB for existing solutions to prevent redoing work.**
+
+- [ ] **KB Search for Next Task**:
+  ```bash
+  # Search KB for context before starting task
+  npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+  
+  # Example:
+  npx tsx scripts/agent/kb-search.ts ENG-052 "Approval Queue Route Implementation" engineer
+  ```
+
+- [ ] **Review KB Results**:
+  - Check for existing solutions or similar implementations
+  - Look for common issues and their solutions
+  - Identify security considerations
+  - Note integration points with other systems
+  - Review recommendations before proceeding
+
+- [ ] **Log KB Search Results**:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "<your-agent>",
+    action: "kb_search_completed",
+    rationale: "KB search completed before starting task",
+    taskId: "<TASK-ID>",
+    payload: {
+      searchResults: "Found existing solutions",
+      recommendations: ["Review security considerations", "Check integration points"],
+      sources: ["docs/example.md", "docs/patterns.md"]
+    }
+  });
+  ```
+
+**Why This Matters**: Database was wiped and we lost context. KB search prevents redoing work and ensures you have full context before starting tasks.
+
 ## 2.1) Growth Engine Evidence Setup (NEW - Effective 2025-10-21) (30 sec)
 
 - [ ] **Create Evidence Directories**:

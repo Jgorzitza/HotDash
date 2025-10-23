@@ -14,14 +14,15 @@ async function queryBlockedTasks() {
   console.log("🚨 Querying Blocked Tasks Across All Agents\n");
   console.log("=".repeat(80));
 
-  // Query for blocked tasks
-  // NOTE: This will work AFTER schema enhancement with 'status' and 'taskId' fields
+  // Query for blocked tasks (ONLY RECENT - last 48 hours)
+  // Filter out historical entries from markdown import
+  const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+  
   const blocked = await prisma.decisionLog.findMany({
     where: {
-      // @ts-expect-error - These fields will exist after schema migration
       status: "blocked",
-      // @ts-expect-error
       taskId: { not: null },
+      createdAt: { gte: fortyEightHoursAgo }, // CRITICAL: Only show recent blockers
     },
     orderBy: { createdAt: "desc" },
     take: 20,
@@ -36,15 +37,11 @@ async function queryBlockedTasks() {
 
   blocked.forEach((task, i) => {
     console.log(`${i + 1}. 🚧 ${task.actor.toUpperCase()}`);
-    // @ts-expect-error - Field will exist after migration
     console.log(`   Task: ${task.taskId || "Unknown"}`);
-    // @ts-expect-error
     console.log(`   Blocked By: ${task.blockedBy || "Not specified"}`);
-    // @ts-expect-error
     console.log(`   Details: ${task.blockerDetails || task.rationale}`);
-    // @ts-expect-error
     console.log(`   Progress: ${task.progressPct || 0}%`);
-    console.log(`   Blocked Since: ${task.createdAt.toISOString()}`);
+    console.log(`   Blocked Since: ${task.createdAt?.toISOString() || "Unknown"}`);
     console.log(`   Evidence: ${task.evidenceUrl || "N/A"}`);
     console.log("");
   });
@@ -54,7 +51,6 @@ async function queryBlockedTasks() {
   // Group blockers by what they're blocked on
   const blockerSummary: Record<string, number> = {};
   blocked.forEach((task) => {
-    // @ts-expect-error
     const blocker = task.blockedBy || "Unknown";
     blockerSummary[blocker] = (blockerSummary[blocker] || 0) + 1;
   });

@@ -15,6 +15,10 @@
 
 import { getCached, setCached } from "../cache.server";
 import { appMetrics } from "../../utils/metrics.server";
+import { PrismaClient } from "@prisma/client";
+import { logDecision } from "../decisions.server";
+
+const prisma = new PrismaClient();
 
 // ============================================================================
 // Types
@@ -287,6 +291,11 @@ export async function detectKeywordCannibalization(
     // Analyze for cannibalization
     const issues = analyzeCannibalization(keywordRankings);
 
+    // Store results in database
+    if (issues.length > 0) {
+      await storeCannibalizationResults(shopDomain, issues);
+    }
+
     // Generate summary
     const criticalIssues = issues.filter(
       (i) => i.severity === "critical",
@@ -380,4 +389,167 @@ export async function getKeywordCannibalizationDetails(
 ): Promise<CannibalizationIssue | null> {
   const report = await detectKeywordCannibalization(shopDomain);
   return report.issues.find((issue) => issue.keyword === keyword) || null;
+}
+
+/**
+ * Store cannibalization results in database
+ */
+async function storeCannibalizationResults(
+  shopDomain: string,
+  issues: CannibalizationIssue[],
+): Promise<void> {
+  for (const issue of issues) {
+    // Check if this cannibalization already exists
+    const existing = await prisma.seoCannibalization.findFirst({
+      where: {
+        shopDomain,
+        keyword: issue.keyword,
+        status: "active",
+      },
+    });
+
+    if (existing) {
+      // Update existing record
+      await prisma.seoCannibalization.update({
+        where: { id: existing.id },
+        data: {
+          severity: issue.severity,
+          totalClicks: issue.totalClicks,
+          totalImpressions: issue.totalImpressions,
+          potentialClicksLost: issue.potentialClicksLost,
+          action: issue.recommendation.action,
+          primaryUrl: issue.recommendation.primaryUrl,
+          secondaryUrls: issue.recommendation.secondaryUrls,
+          rationale: issue.recommendation.rationale,
+          detectedAt: new Date(issue.detectedAt),
+          updatedAt: new Date(),
+        },
+      });
+
+      // Update URLs
+      await prisma.seoCannibalizationUrl.deleteMany({
+        where: { cannibalizationId: existing.id },
+      });
+
+      for (const urlData of issue.affectedUrls) {
+        await prisma.seoCannibalizationUrl.create({
+          data: {
+            cannibalizationId: existing.id,
+            url: urlData.url,
+            position: urlData.position,
+            clicks: urlData.clicks,
+            impressions: urlData.impressions,
+            ctr: urlData.ctr,
+            isPrimary: urlData.url === issue.recommendation.primaryUrl,
+          },
+        });
+      }
+    } else {
+      // Create new record
+      const cannibalization = await prisma.seoCannibalization.create({
+        data: {
+          shopDomain,
+          keyword: issue.keyword,
+          severity: issue.severity,
+          totalClicks: issue.totalClicks,
+          totalImpressions: issue.totalImpressions,
+          potentialClicksLost: issue.potentialClicksLost,
+          action: issue.recommendation.action,
+          primaryUrl: issue.recommendation.primaryUrl,
+          secondaryUrls: issue.recommendation.secondaryUrls,
+          rationale: issue.recommendation.rationale,
+          detectedAt: new Date(issue.detectedAt),
+        },
+      });
+
+      // Create URL records
+      for (const urlData of issue.affectedUrls) {
+        await prisma.seoCannibalizationUrl.create({
+          data: {
+            cannibalizationId: cannibalization.id,
+            url: urlData.url,
+            position: urlData.position,
+            clicks: urlData.clicks,
+            impressions: urlData.impressions,
+            ctr: urlData.ctr,
+            isPrimary: urlData.url === issue.recommendation.primaryUrl,
+          },
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Get stored cannibalization conflicts from database
+ */
+export async function getStoredCannibalizationConflicts(
+  shopDomain: string,
+  status: "active" | "resolved" | "ignored" = "active",
+): Promise<CannibalizationIssue[]> {
+  const conflicts = await prisma.seoCannibalization.findMany({
+    where: {
+      shopDomain,
+      status,
+    },
+    include: {
+      urls: true,
+    },
+    orderBy: [
+      { severity: "asc" }, // critical, warning, info
+      { potentialClicksLost: "desc" },
+    ],
+  });
+
+  return conflicts.map((conflict) => ({
+    keyword: conflict.keyword,
+    severity: conflict.severity as "critical" | "warning" | "info",
+    affectedUrls: conflict.urls.map((url) => ({
+      url: url.url,
+      position: url.position,
+      clicks: url.clicks,
+      impressions: url.impressions,
+      ctr: Number(url.ctr),
+    })),
+    totalClicks: conflict.totalClicks,
+    totalImpressions: conflict.totalImpressions,
+    potentialClicksLost: conflict.potentialClicksLost,
+    recommendation: {
+      action: conflict.action as "consolidate" | "differentiate" | "canonical" | "redirect",
+      primaryUrl: conflict.primaryUrl,
+      secondaryUrls: conflict.secondaryUrls,
+      rationale: conflict.rationale,
+    },
+    detectedAt: conflict.detectedAt.toISOString(),
+  }));
+}
+
+/**
+ * Mark cannibalization as resolved
+ */
+export async function resolveCannibalizationConflict(
+  id: number,
+  resolution: string,
+): Promise<void> {
+  await prisma.seoCannibalization.update({
+    where: { id },
+    data: {
+      status: "resolved",
+      resolvedAt: new Date(),
+      rationale: `${resolution}\n\nOriginal: ${prisma.seoCannibalization.findUnique({ where: { id } }).then(r => r?.rationale)}`,
+    },
+  });
+
+  await logDecision({
+    scope: "build",
+    actor: "seo",
+    action: "cannibalization_resolved",
+    rationale: `Resolved cannibalization conflict #${id}: ${resolution}`,
+    evidenceUrl: `artifacts/seo/2025-10-22/cannibalization-resolved-${id}.json`,
+    payload: {
+      conflictId: id,
+      resolution,
+      timestamp: new Date().toISOString(),
+    },
+  });
 }

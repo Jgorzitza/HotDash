@@ -73,16 +73,16 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // Days saved = 14 - 3 = 11 days
-      expect(result.analysis.daysSaved).toBe(11);
+      expect(result.opportunityCost.primaryLeadTimeDays).toBe(14);
 
-      // Feasible sales = 5 bundles/day × 11 days = 55 bundles
-      expect(result.analysis.feasibleSalesDuringSavedTime).toBe(55);
+      // Feasible sales = 5 bundles/day × 14 days = 70 bundles
+      expect(result.opportunityCost.feasibleSalesDuringLeadTime).toBe(70);
 
-      // ELP = 55 bundles × $15 margin = $825
-      expect(result.analysis.expectedLostProfit).toBe(825);
+      // ELP = 70 bundles × $15 margin = $1050
+      expect(result.opportunityCost.expectedLostProfit).toBe(1050);
     });
   });
 
@@ -125,11 +125,11 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // IC = (local_cost - primary_cost) × qty_needed
       // IC = ($13 - $10) × 100 = $300
-      expect(result.analysis.incrementalCost).toBe(300);
+      expect(result.emergencyOptions[0].incrementalCost).toBe(300);
     });
   });
 
@@ -172,7 +172,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // Net benefit = ELP - IC = $825 - $300 = $525 > 0 ✅
       expect(result.analysis.netBenefit).toBe(525);
@@ -227,7 +227,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // ELP = 5 × 11 × $15 = $825
       // IC = ($25 - $10) × 100 = $1500
@@ -280,7 +280,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // ELP = 8 × 11 × $15 = $1320
       // IC = ($23 - $10) × 100 = $1300
@@ -336,7 +336,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // Resulting margin = 80% (well above 20%)
       expect(result.shouldUseFastVendor).toBe(true);
@@ -393,7 +393,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 50,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // Primary should be the one with highest reliability (Vendor B - 98%)
       expect(result.primaryVendor.vendorName).toBe("Vendor B");
@@ -436,7 +436,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         mockVendors,
       );
 
-      const result = await emergencySourcing.generateEmergencySourcingAction(
+      const result = await emergencySourcing.createApprovalCard(
         "variant-123",
         "bundle-456",
       );
@@ -481,7 +481,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         mockVendors,
       );
 
-      const result = await emergencySourcing.generateEmergencySourcingAction(
+      const result = await emergencySourcing.createApprovalCard(
         "variant-123",
         "bundle-456",
       );
@@ -516,7 +516,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
       };
 
       await expect(
-        emergencySourcing.analyzeEmergencySourcing(input),
+        emergencySourcing.calculateEmergencySourcing(input),
       ).rejects.toThrow("Need at least 2 vendors for comparison");
     });
 
@@ -558,7 +558,7 @@ describe("Emergency Sourcing Service - INVENTORY-019", () => {
         qtyNeeded: 100,
       };
 
-      const result = await emergencySourcing.analyzeEmergencySourcing(input);
+      const result = await emergencySourcing.calculateEmergencySourcing(input);
 
       // Days saved = 7 - 7 = 0 (same lead time)
       expect(result.analysis.daysSaved).toBe(0);

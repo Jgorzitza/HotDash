@@ -123,6 +123,47 @@ For each **active agent**:
 
 _Notes:_ Agents report via `logDecision()` (database) with structured fields (taskId, status, progressPct).
 
+## 4.1) KB Integration Audit (NEW - Effective 2025-10-25)
+
+**Verify KB search compliance** (< 30 seconds):
+
+```bash
+# Check KB search compliance
+npx tsx --env-file=.env scripts/manager/query-kb-search-compliance.ts
+```
+
+For each **active agent**:
+
+- [ ] **Verify KB searches completed** before task execution
+- [ ] **Check KB search results** for quality and relevance
+- [ ] **Review recommendations** from KB searches
+- [ ] **Identify agents** who skipped KB search (violations)
+- [ ] **Log KB compliance** via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "kb_compliance_audit",
+    rationale: "KB search compliance audit completed",
+    payload: {
+      agentsAudited: ["engineer", "data", "analytics"],
+      complianceRate: "95%",
+      violations: ["agent-name: task-id"],
+      recommendations: ["Improve KB search quality", "Review search queries"]
+    }
+  });
+  ```
+
+**KB Integration Benefits**:
+
+- **Prevents Redoing Work**: Agents find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+**Enforcement**: KB search is MANDATORY before task execution. No exceptions.
+
 ---
 
 ## 5) Planning TTL & Drift Sweep

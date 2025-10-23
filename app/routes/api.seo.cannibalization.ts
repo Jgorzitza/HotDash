@@ -17,7 +17,10 @@ import { json } from "~/utils/http.server";
 import {
   detectKeywordCannibalization,
   getKeywordCannibalizationDetails,
+  getStoredCannibalizationConflicts,
+  resolveCannibalizationConflict,
 } from "../services/seo/cannibalization";
+import { logDecision } from "../services/decisions.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -25,6 +28,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const shopDomain =
       url.searchParams.get("shop") || "default-shop.myshopify.com";
     const keyword = url.searchParams.get("keyword");
+    const list = url.searchParams.get("list"); // 'active', 'resolved', 'ignored'
+    const conflicts = url.searchParams.get("conflicts"); // 'true' to list stored conflicts
+
+    // List stored conflicts
+    if (conflicts === "true") {
+      const status = (list as "active" | "resolved" | "ignored") || "active";
+      const storedConflicts = await getStoredCannibalizationConflicts(shopDomain, status);
+      
+      return Response.json({
+        success: true,
+        data: {
+          conflicts: storedConflicts,
+          count: storedConflicts.length,
+          status,
+        },
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     // If keyword specified, return details for that keyword
     if (keyword) {
@@ -66,6 +87,46 @@ export async function loader({ request }: LoaderFunctionArgs) {
       {
         success: false,
         error: error.message || "Failed to detect keyword cannibalization",
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 },
+    );
+  }
+}
+
+/**
+ * POST endpoint to resolve cannibalization conflicts
+ */
+export async function action({ request }: LoaderFunctionArgs) {
+  try {
+    const body = await request.json();
+    const { conflictId, resolution } = body;
+
+    if (!conflictId || !resolution) {
+      return Response.json(
+        {
+          success: false,
+          error: "conflictId and resolution are required",
+          timestamp: new Date().toISOString(),
+        },
+        { status: 400 }
+      );
+    }
+
+    await resolveCannibalizationConflict(conflictId, resolution);
+
+    return Response.json({
+      success: true,
+      message: `Cannibalization conflict #${conflictId} resolved`,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error: any) {
+    console.error("[API] Cannibalization resolution error:", error);
+
+    return Response.json(
+      {
+        success: false,
+        error: error.message || "Failed to resolve cannibalization conflict",
         timestamp: new Date().toISOString(),
       },
       { status: 500 },

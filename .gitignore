@@ -43,6 +43,7 @@ yarn.lock
 pnpm-lock.yaml
 
 /extensions/*/dist
+packages/dev-kb-prisma/
 
 # Secrets and evidence archives
 vault/

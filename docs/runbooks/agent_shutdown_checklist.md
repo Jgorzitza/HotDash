@@ -8,6 +8,21 @@
 ## 0) Save State (≤ 1 min) [DATABASE-DRIVEN]
 
 - [ ] Do NOT commit/push. Manager will handle git operations.
+- [ ] **Log KB search compliance** (if task was started today):
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "<your-agent>",
+    action: "kb_search_completed",
+    rationale: "KB search completed before task execution",
+    taskId: "{TASK-ID}",
+    payload: {
+      searchResults: "Found existing solutions",
+      recommendations: ["Review security considerations", "Check integration points"],
+      sources: ["docs/example.md", "docs/patterns.md"]
+    }
+  });
+  ```
 - [ ] Log final status via `logDecision()`:
   ```typescript
   await logDecision({

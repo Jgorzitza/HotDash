@@ -1,0 +1,37 @@
+agent,task_id,title,status,priority,dependencies,notes,source_file,evidence
+ADS,ADS-303,Growth Engine Ads Advanced Features,assigned,P1,,Pending; do not start until persistence issue fixed,cursor_ads.md,fileciteturn1file19
+ADS,ADS-001,Google Ads API Integration,completed,,,"API client, routes, docs; progress logs 1981/1984",cursor_ads.md,fileciteturn1file19
+ADS,ADS-002,Ad Performance Dashboard,completed,,,Multi-chart dashboard; logs 2001/2004,cursor_ads.md,fileciteturn1file19
+ADS,ADS-100,Campaign Performance Tracking,completed,,,Daily sync & alert system; logs 2380/2381,cursor_ads.md,fileciteturn1file19
+ADS,ADS-104,Growth Engine Advanced Advertising,completed,P0,,Advanced attribution & optimization; logs 2103/2104,cursor_ads.md,fileciteturn1file19
+ADS,QA-REVIEW-ADS-001,Advertising System Review & Testing,completed,,,QA review complete (ID 2635),cursor_ads.md,fileciteturn1file19
+CONTENT,QA-REVIEW-CONTENT-001,Content System Review & Testing,assigned,,,Comprehensive review started,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-005,Social Post Templates (Brand Voice),completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-006,SEO Content Guidelines,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-007,Ad Copy Best Practices,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-008,Phase 6 Microcopy Review,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-021,Vendor Management Help Text,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-022,CI Guards Documentation Copy,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-023,Growth Engine Content Strategy (Comprehensive),completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-025,Growth Engine Content Strategy (Advanced),completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-100,Social Post Templates & Content Library,completed,,,,cursor_content.md,fileciteturn2file11
+CONTENT,CONTENT-670,Growth Engine content Task (Advanced Features),completed,,,,cursor_content.md,fileciteturn2file11
+INTEGRATIONS,QA-REVIEW-INT-001,Integration Review & Testing,assigned,,,Comprehensive review in progress,cursor_integrations.md,fileciteturn1file8
+INTEGRATIONS,INTEGRATIONS-001,Publer API Client,completed,P1,,"Auth, scheduling, rate limiting, error handling",cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-002,Publer Adapter (HITL),completed,,,Approval flow integration,cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-003,Social Post Queue,completed,,,"Priority, retry, cleanup",cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-004,API Rate Limiting,completed,,,Global strategy across APIs,cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-018,Inventory Emergency Sourcing,completed,,,Vendor endpoints & action cards,cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-100,Shopify Admin GraphQL Approval Actions,completed,,,Approval-gated mutations & receipts,cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-101,Publer API Integration,completed,,,End-to-end Publer integration,cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-102,Bing Webmaster Tools Integration,completed,,,"Verification, sitemap, search metrics",cursor_integrations.md,fileciteturn1file6
+INTEGRATIONS,INTEGRATIONS-103,Growth Engine Advanced Integrations,completed,,,Advanced integrations delivered,cursor_integrations.md,fileciteturn1file6
+INVENTORY,INVENTORY-006,API routes for modals,completed,,,Product detail & chart data routes; tests passing,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-007,Real-time tile data,completed,,,Status buckets & top risks; tests passing,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-008,Kits & bundles support,completed,,,Metafield parsing fixed; tests passing,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-100,ROP Calculation Engine,completed,,"DATA-101, DATA-103",ROP suggestions table; 20/20 tests,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-101,Emergency Sourcing Logic,completed,,"DATA-101, DATA-102, INVENTORY-100",ELP vs IC decisioning; 23/23 tests,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-102,Nightly Warehouse Reconciliation Job,completed,,"DATA-102, INTEGRATIONS-100",Nightly cron; Shopify sync; alerts; 20/20 tests,cursor_inventory.md,fileciteturn2file7
+INVENTORY,INVENTORY-104,Growth Engine Inventory Optimization,completed,,,"Advanced ROP, emergency sourcing, virtual bundle stock; tests passing",cursor_inventory.md,fileciteturn2file7
+SEO,SEO-008,Keyword Cannibalization Detection,in_progress,,,Conflicts listing; models & APIs in progress,cursor_seo.md,fileciteturn2file9
+SEO,SEO-007,Automated SEO Audits,completed,P?,,"Daily crawl + anomaly reporting; cron, DB, GH Actions",cursor_seo.md,fileciteturn2file19

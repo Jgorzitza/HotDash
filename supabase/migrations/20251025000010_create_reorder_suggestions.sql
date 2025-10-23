@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS reorder_suggestions (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   
   -- Ensure unique suggestion per variant per calculation date
-  UNIQUE(shopify_variant_id, shop_domain, calculation_date::DATE)
+  UNIQUE(shopify_variant_id, shop_domain, DATE(calculation_date))
 );
 
 -- Indexes for reorder_suggestions table

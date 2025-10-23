@@ -150,6 +150,49 @@
 - [ ] **CI** green on active PRs (Docs Policy, Danger, Gitleaks, AI Config)
 - [ ] **Main** releasable (build/smoke pass)
 
+### 5.1.1 KB Integration Check (MANDATORY - 30 sec) [NEW 2025-10-25]
+
+**⚠️ CRITICAL: Before assigning any task, search KB for existing solutions to prevent redoing work.**
+
+- [ ] **Test KB Tool**:
+  ```bash
+  # Verify KB tool is working
+  set -a && source vault/dev-kb/supabase.env && source vault/occ/openai/api_key_staging.env && set +a
+  npm run dev-kb:query -- "What are the current project tasks and their status?"
+  ```
+
+- [ ] **KB Search for Each Task Assignment**:
+  ```bash
+  # For each task being assigned, search KB first
+  npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
+  
+  # Example:
+  npx tsx scripts/agent/kb-search.ts ENG-052 "Approval Queue Route Implementation" engineer
+  ```
+
+- [ ] **Review KB Results**:
+  - Check for existing solutions or similar implementations
+  - Look for common issues and their solutions
+  - Identify security considerations
+  - Note integration points with other systems
+
+- [ ] **Log KB Search Results**:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "kb_search_completed",
+    rationale: "KB search completed for task assignment",
+    taskId: "TASK-ID",
+    payload: {
+      searchResults: "Found existing solutions",
+      recommendations: ["Review security considerations", "Check integration points"]
+    }
+  });
+  ```
+
+**Why This Matters**: Database was wiped and we lost context. KB search prevents redoing work and ensures agents have full context before starting tasks.
+
 ### 5.2 Feedback sweep **first** (10–30 sec) [DATABASE-DRIVEN]
 
 **NEW (2025-10-22)**: Query database instead of reading 17 markdown files

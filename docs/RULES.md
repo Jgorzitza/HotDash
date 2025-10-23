@@ -80,6 +80,66 @@ Before creating ANY new .md file:
 - Manager owns NORTH_STAR, RULES, Operating Model, and PROJECT_PLAN.
 - **Direction files archived** (2025-10-22) - markdown too slow for hourly updates.
 
+## KB Integration (MANDATORY - Effective 2025-10-25)
+
+**Problem**: Database was wiped and we lost context. Agents were redoing work and fixing problems we already had solutions for.
+
+**Solution**: KB search integration into ALL agent processes.
+
+### KB Search Workflow (MANDATORY before ANY task execution)
+
+**Manager Process**:
+1. Search KB before assigning tasks
+2. Review existing solutions and common issues
+3. Log search results with recommendations
+
+**Agent Process**:
+1. Search KB before starting any task
+2. Review results for existing solutions, issues, security considerations
+3. Log search results with recommendations
+
+### KB Search Commands
+
+```bash
+# Manager: Search before assigning task
+npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
+
+# Agent: Search before starting task
+npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+```
+
+### KB Search Logging
+
+```typescript
+await logDecision({
+  scope: "build",
+  actor: "<agent>",
+  action: "kb_search_completed",
+  rationale: "KB search completed before task execution",
+  taskId: "<TASK-ID>",
+  payload: {
+    searchResults: "Found existing solutions",
+    recommendations: ["Review security considerations", "Check integration points"],
+    sources: ["docs/example.md", "docs/patterns.md"]
+  }
+});
+```
+
+### KB Integration Benefits
+
+- **Prevents Redoing Work**: Find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+### Enforcement
+
+- **KB search is MANDATORY** before task execution
+- **No exceptions** - all agents must search KB before starting work
+- **Manager audits** KB search compliance
+- **Violations result in task reassignment**
+
 ## Security
 
 - Enable GitHub **push protection** & secret scanning.

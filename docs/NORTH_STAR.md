@@ -187,6 +187,38 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 
 **Enforcement**: Daily audit, markdown direction files archived to feedback/archive/
 
+### KB Integration for Context Recovery (2025-10-25)
+
+**Problem**: Database was wiped and we lost context. Agents were redoing work and fixing problems we already had solutions for.
+
+**Solution**: KB search integration into ALL agent processes.
+
+**KB Search Workflow** (MANDATORY before ANY task execution):
+
+1. **Manager**: Search KB before assigning tasks
+   ```bash
+   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
+   ```
+
+2. **Agents**: Search KB before starting any task
+   ```bash
+   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+   ```
+
+3. **Review Results**: Check for existing solutions, common issues, security considerations, integration points
+
+4. **Log Search**: All KB searches logged to DecisionLog with recommendations
+
+**KB Integration Benefits**:
+
+- **Prevents Redoing Work**: Find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+**Enforcement**: KB search is MANDATORY before task execution. No exceptions.
+
 ---
 
 ## MCP-First Development (MANDATORY - Effective 2025-10-19)

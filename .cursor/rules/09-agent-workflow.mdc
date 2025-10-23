@@ -12,6 +12,54 @@ alwaysApply: true
 - **Benefits**: Instant visibility, automatic unblocking when dependencies clear, zero idle time
 - **Markdown direction files**: ARCHIVED (too slow for hourly updates)
 
+## KB Integration (MANDATORY - Effective 2025-10-25)
+
+**CRITICAL**: Before starting ANY task, search KB for existing solutions to prevent redoing work.
+
+### KB Search Process (MANDATORY)
+
+1. **Search KB before starting task**:
+   ```bash
+   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+   ```
+
+2. **Review KB results**:
+   - Check for existing solutions or similar implementations
+   - Look for common issues and their solutions
+   - Identify security considerations
+   - Note integration points with other systems
+
+3. **Log KB search results**:
+   ```typescript
+   await logDecision({
+     scope: 'build',
+     actor: '<your-agent>',
+     action: 'kb_search_completed',
+     rationale: 'KB search completed before starting task',
+     taskId: '<TASK-ID>',
+     payload: {
+       searchResults: 'Found existing solutions',
+       recommendations: ['Review security considerations', 'Check integration points'],
+       sources: ['docs/example.md', 'docs/patterns.md']
+     }
+   });
+   ```
+
+### Why KB Search Matters
+
+- **Prevents Redoing Work**: Find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+### Enforcement
+
+- **KB search is MANDATORY** before task execution
+- **No exceptions** - all agents must search KB before starting work
+- **Manager audits** KB search compliance
+- **Violations result in task reassignment**
+
 ## Feedback (Agents Report Progress, Manager QUERIES)
 - **ONLY Method**: Database via `logDecision()` (MANDATORY - no markdown backup)
 - **Manager Access**: Query scripts (instant filtered results, real-time visibility)
@@ -84,22 +132,24 @@ await logDecision({
 ```
 
 ## MUST DO
-1. ✅ Query tasks from database: `getMyTasks(agent)` or `scripts/agent/get-my-tasks.ts`
-2. ✅ Start tasks via: `scripts/agent/start-task.ts <TASK-ID>` (logs automatically)
-3. ✅ Log progress via `logDecision()` - IMMEDIATE on status changes, every 2h if in-progress
-4. ✅ Include `taskId`, `status`, `progressPct` in EVERY log
-5. ✅ Use `status: 'blocked'` + `blockerDetails` when blocked, then query next available task
-6. ✅ Complete tasks via: `scripts/agent/complete-task.ts <TASK-ID> "context notes"`
-7. ✅ Include rich metadata in `payload` (commits, files, tests, MCP evidence)
-8. ✅ Self-grade at shutdown (payload.selfGrade + payload.retrospective)
+1. ✅ **Search KB before starting ANY task**: `npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>`
+2. ✅ Query tasks from database: `getMyTasks(agent)` or `scripts/agent/get-my-tasks.ts`
+3. ✅ Start tasks via: `scripts/agent/start-task.ts <TASK-ID>` (logs automatically)
+4. ✅ Log progress via `logDecision()` - IMMEDIATE on status changes, every 2h if in-progress
+5. ✅ Include `taskId`, `status`, `progressPct` in EVERY log
+6. ✅ Use `status: 'blocked'` + `blockerDetails` when blocked, then query next available task
+7. ✅ Complete tasks via: `scripts/agent/complete-task.ts <TASK-ID> "context notes"`
+8. ✅ Include rich metadata in `payload` (commits, files, tests, MCP evidence)
+9. ✅ Self-grade at shutdown (payload.selfGrade + payload.retrospective)
 
 ## MUST NOT
-1. ❌ Read markdown direction files (archived - use database queries)
-2. ❌ Self-assign tasks (all tasks from Manager via `assignTask()`)
-3. ❌ Skip `logDecision()` calls (database logging MANDATORY)
-4. ❌ Use vague status values (use the 5 standard statuses only)
-5. ❌ Forget `taskId` field (required for manager queries)
-6. ❌ Wait to report status changes (IMMEDIATE logging on complete/blocked/unblocked)
+1. ❌ **Start tasks without KB search** (MANDATORY - search KB before ANY task execution)
+2. ❌ Read markdown direction files (archived - use database queries)
+3. ❌ Self-assign tasks (all tasks from Manager via `assignTask()`)
+4. ❌ Skip `logDecision()` calls (database logging MANDATORY)
+5. ❌ Use vague status values (use the 5 standard statuses only)
+6. ❌ Forget `taskId` field (required for manager queries)
+7. ❌ Wait to report status changes (IMMEDIATE logging on complete/blocked/unblocked)
 
 ## Manager Queries (How Manager Sees Your Progress)
 

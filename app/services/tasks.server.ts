@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../db.server";
+import { createSecureTaskService } from './security/database-security';
 
 // ============================================================================
 // TASK ASSIGNMENT SERVICE (Database-Driven Direction)
