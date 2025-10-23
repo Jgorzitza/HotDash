@@ -38,8 +38,8 @@
 
 - [ ] **Review File Ownership** (see `docs/RULES.md` "File Ownership" table):
   - Check which directories you own
-  - If you need a file owned by another agent → Report to Manager in feedback
-  - **Example**: "Need `app/routes/dashboard.tsx` owned by Engineer - awaiting coordination"
+  - If you need a file owned by another agent → Log blocker via database
+  - **Example**: `npx tsx --env-file=.env scripts/agent/log-blocked.ts <agent> <task-id> "Need file owned by Engineer" "Awaiting coordination for app/routes/dashboard.tsx"`
 
 **Commit Style** (when you make changes):
 
@@ -74,14 +74,21 @@ git push origin agent-launch-20251023
   - About to use OpenAI SDK? → `mcp_context7_get-library-docs("/openai/openai-node", "your-topic")`
   - About to use LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "your-topic")`
 
-- [ ] **Log Tool Usage in Feedback**:
+- [ ] **Log Tool Usage in Database** (optional, for tracking):
 
-  ```md
-  ## HH:MM - Shopify Dev MCP: Polaris Card component
-
-  - Topic: [what I need to learn]
-  - Key Learning: [specific pattern/requirement discovered]
-  - Applied to: [files I'll change]
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "<your-agent>",
+    action: "mcp_tool_used",
+    rationale: "Used Shopify Dev MCP for Polaris Card component",
+    payload: {
+      tool: "Shopify Dev MCP",
+      topic: "Polaris Card component",
+      keyLearning: "Card requires title and children props",
+      appliedTo: "app/components/MyCard.tsx"
+    }
+  });
   ```
 
 - [ ] **Web Search** (LAST RESORT ONLY): If neither MCP has the library
