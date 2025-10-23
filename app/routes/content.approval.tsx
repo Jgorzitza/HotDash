@@ -5,7 +5,7 @@
  */
 
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
-import { useLoaderData, useActionData, useSubmit, useRevalidator } from "@react-router/react";
+import { useLoaderData, useActionData, useSubmit, useRevalidator } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, EmptyState, Layout } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { ContentApprovalWorkflowService } from "~/services/content/approval-workflow.service";
@@ -312,4 +312,3 @@ export default function ContentApprovalPage() {
     </Page>
   );
 }
-

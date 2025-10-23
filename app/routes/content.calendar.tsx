@@ -11,7 +11,7 @@
  */
 
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
-import { useLoaderData, useActionData, useSubmit, useNavigation } from "@react-router/react";
+import { useLoaderData, useActionData, useSubmit, useNavigation } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, Modal, TextField, Select } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { SchedulingService } from "~/services/content/scheduling.service";
@@ -282,5 +282,4 @@ function generateCalendar(
 
   return weeks;
 }
-
 

@@ -5,7 +5,7 @@ import { ServerRouter } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import { type EntryContext } from "react-router";
 import { isbot } from "isbot";
-import { addDocumentResponseHeaders } from "./shopify.server";
+// Shopify headers are optional in test/mock; load dynamically to avoid SSR failures
 
 export const streamTimeout = 5000;
 
@@ -15,7 +15,15 @@ export default async function handleRequest(
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
 ) {
-  addDocumentResponseHeaders(request, responseHeaders);
+  try {
+    if (process.env.DASHBOARD_USE_MOCK !== "1") {
+      const mod = await import("./shopify.server");
+      mod.addDocumentResponseHeaders(request, responseHeaders);
+    }
+  } catch (err) {
+    // In test/mock environments, skip Shopify header augmentation
+    console.warn("Shopify header augmentation skipped:", (err as Error)?.message);
+  }
   const userAgent = request.headers.get("user-agent");
   const callbackName = isbot(userAgent ?? "") ? "onAllReady" : "onShellReady";
 
