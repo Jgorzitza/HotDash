@@ -127,17 +127,19 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts support
 - [ ] **Note next task** to start (highest priority, no unmet dependencies)
 - [ ] **Review acceptance criteria** and allowed paths
 - [ ] **Log startup completion**:
-  ```typescript
-  await logDecision({
-    scope: "build",
-    actor: "<your-agent>",
-    action: "startup_complete",
-    rationale: "Agent startup complete, found X active tasks, starting TASK-ID",
-    evidenceUrl: "scripts/agent/get-my-tasks.ts",
-  });
+  ```bash
+  # Log startup with task count and next task
+  npx tsx --env-file=.env scripts/agent/log-startup.ts <your-agent> <task-count> [next-task-id]
+
+  # Examples:
+  npx tsx --env-file=.env scripts/agent/log-startup.ts engineer 5 ENG-060
+  npx tsx --env-file=.env scripts/agent/log-startup.ts qa-helper 2 QA-UI-002
+  npx tsx --env-file=.env scripts/agent/log-startup.ts data 0
   ```
 
 **Time Savings**: No git pull for direction updates, instant task visibility
+
+**Database Safety**: This script only READS from database (TaskAssignment table) - safe to run
 
 ## 2.1) KB Search Before Task Execution (MANDATORY - 60 sec) [NEW 2025-10-25]
 
@@ -226,17 +228,40 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts support
 
 ## 5) Progress Reporting (throughout) [DATABASE ONLY]
 
-**ONLY METHOD**: Call `logDecision()` - IMMEDIATE on status changes, every 2 hours if in-progress
+**ONLY METHOD**: Use provided scripts or call `logDecision()` directly - IMMEDIATE on status changes
 
 **When to log** (don't wait for 2-hour interval):
 
-- ✅ Task started (status: 'in_progress')
-- ✅ Task completed (status: 'completed') - IMMEDIATE
-- ✅ Task blocked (status: 'blocked') - IMMEDIATE
-- ✅ Blocker cleared (status: 'in_progress') - IMMEDIATE
-- ✅ Every 2 hours if still working on same task
+- ✅ Task started (status: 'in_progress') - use `start-task.ts`
+- ✅ Task progress (every 2 hours) - use `log-progress.ts`
+- ✅ Task blocked (status: 'blocked') - IMMEDIATE - use `log-blocked.ts`
+- ✅ Task completed (status: 'completed') - IMMEDIATE - use `complete-task.ts`
 
 **Why immediate logging matters**: Manager and other agents can see blockers cleared in real-time without waiting for next direction update
+
+### Using Progress Scripts (Recommended)
+
+```bash
+# Log task progress (every 2 hours while working)
+npx tsx --env-file=.env scripts/agent/log-progress.ts <agent> <task-id> <progress-pct> "<rationale>" "<evidence-url>" "<next-action>"
+
+# Example:
+npx tsx --env-file=.env scripts/agent/log-progress.ts engineer ENG-060 50 "Implemented PII redaction, working on ABAC validation" "app/services/security/pii.ts" "Next: ABAC validation tests"
+
+# Log task blocked (IMMEDIATE when blocked)
+npx tsx --env-file=.env scripts/agent/log-blocked.ts <agent> <task-id> "<blocked-by>" "<rationale>" "<evidence-url>" "<next-action>"
+
+# Example:
+npx tsx --env-file=.env scripts/agent/log-blocked.ts qa-helper QA-UI-002 "duplicate exports in analytics.ts" "Cannot run tests due to import errors" "tests/unit/Card.spec.tsx" "Waiting for Engineer to fix analytics.ts"
+
+# Complete task (IMMEDIATE when done)
+npx tsx --env-file=.env scripts/agent/complete-task.ts <task-id> "<completion notes>"
+
+# Example:
+npx tsx --env-file=.env scripts/agent/complete-task.ts ENG-060 "Security hardening complete: PII redaction, ABAC validation, all tests passing 45/45"
+```
+
+### Using logDecision() Directly (Advanced)
 
 ```typescript
 import { logDecision } from "~/services/decisions.server";
@@ -263,30 +288,64 @@ await logDecision({
 
 **NO MARKDOWN FILES**: All progress goes to database via `logDecision()`
 
-**See**: Your direction file has complete `logDecision()` examples with payload patterns
+**Database Safety**: Progress logging scripts are SAFE - they only INSERT into decision_log table (no schema changes, no data deletion)
 
 ## 6) Work Protocol
 
 - [ ] **MCP-first / server adapters only.** No freehand HTTP or secrets in logs.
 - [ ] **Tool-First Rule**: NEVER write code before pulling docs via Context7/web_search
-- [ ] **Database Safety**: NEVER add migration/db push commands to deployment paths
-  - fly.toml release_command = `npx prisma generate` ONLY (no migrations)
-  - package.json setup = `prisma generate` ONLY (no db modifications)
-  - Schema changes require CEO approval + manual application via Manager
-  - See RULES.md "Database Safety" section for full policy
-- [ ] **DO NOT FUCK UP THE DATABASE**: 
-  - ❌ NO `prisma db push` commands
-  - ❌ NO `prisma migrate deploy` commands  
-  - ❌ NO direct database modifications
-  - ✅ ONLY `prisma generate` for client updates
-  - ✅ Schema changes via Manager approval only
+
+### 🚨 DATABASE SAFETY - CRITICAL RULES 🚨
+
+**⚠️ VIOLATION OF THESE RULES = IMMEDIATE STOP THE LINE**
+
+- [ ] **NEVER run database modification commands**:
+  - ❌ **FORBIDDEN**: `prisma db push` (destroys data)
+  - ❌ **FORBIDDEN**: `prisma migrate deploy` (applies migrations)
+  - ❌ **FORBIDDEN**: `prisma migrate dev` (creates migrations)
+  - ❌ **FORBIDDEN**: Direct SQL modifications via psql/Supabase UI
+  - ❌ **FORBIDDEN**: Adding migration commands to fly.toml or package.json
+
+- [ ] **ONLY ALLOWED database commands**:
+  - ✅ **SAFE**: `npx prisma generate` (updates Prisma client only)
+  - ✅ **SAFE**: Reading from database via Prisma queries
+  - ✅ **SAFE**: Using `logDecision()` to write to decision_log table
+  - ✅ **SAFE**: Using task scripts (get-my-tasks, start-task, complete-task)
+
+- [ ] **Schema changes process**:
+  1. Create schema change proposal in your task notes
+  2. Log blocker: "Need schema change - awaiting Manager approval"
+  3. Manager coordinates with Data agent
+  4. Data agent creates migration
+  5. CEO approves migration
+  6. Manager applies migration manually
+  7. You run `npx prisma generate` to update client
+
+- [ ] **Deployment safety**:
+  - fly.toml `release_command` = `npx prisma generate` ONLY
+  - package.json `setup` script = `prisma generate` ONLY
+  - NO migration commands in automated deployment paths
+
+**Why this matters**: Database is shared across all agents. One wrong command can wipe all task assignments, decision logs, and agent progress. There is NO undo.
+
+**If you need a schema change**: Log it as a blocker and wait for Manager coordination. Do NOT attempt to modify the schema yourself.
+
 - [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference:
       `Refs #<issue>` → final slice uses `Fixes #<issue>`.
 
 ## 7) Completion Protocol (when you finish a slice)
 
 - [ ] Do NOT open a PR yourself; Manager will.
-- [ ] Log completion via `logDecision()`:
+- [ ] **Complete task via script** (RECOMMENDED):
+  ```bash
+  # Complete task with notes (preserves context)
+  npx tsx --env-file=.env scripts/agent/complete-task.ts <TASK-ID> "<completion notes>"
+
+  # Example:
+  npx tsx --env-file=.env scripts/agent/complete-task.ts ENG-060 "Security hardening complete: PII redaction enforced, ABAC validation working, store switch safety checks implemented, dev MCP ban verified. All tests passing 45/45. Evidence in artifacts/engineer/2025-10-23/security-hardening.md"
+  ```
+
+- [ ] **OR log completion via `logDecision()` directly**:
   ```typescript
   await logDecision({
     scope: "build",
@@ -309,6 +368,9 @@ await logDecision({
   });
   ```
 - [ ] Ensure diffs stay within **Allowed paths**; include tests and evidence in payload.
+- [ ] **Move to next task immediately** - run `get-my-tasks.ts` again to see next task
+
+**Database Safety**: Task completion scripts are SAFE - they UPDATE TaskAssignment.status and INSERT into decision_log (no schema changes, no data deletion)
 
 ## 8) Build/Dev Mode Safety
 
