@@ -7,8 +7,17 @@
  * - Weekly growth report
  */
 
-import { LineChart, BarChart, OCC_CHART_COLORS } from "../charts";
+import { OCC_CHART_COLORS } from "../charts";
 import type { ChartData } from "chart.js";
+import { lazy, Suspense } from "react";
+
+// Lazy-load heavy chart components to reduce initial bundle size
+const LineChart = lazy(() =>
+  import("../charts/LineChart").then((m) => ({ default: m.LineChart })),
+);
+const BarChart = lazy(() =>
+  import("../charts/BarChart").then((m) => ({ default: m.BarChart })),
+);
 
 interface ChannelData {
   channel: string;
@@ -159,7 +168,9 @@ export function GrowthMetricsModal({ data, onClose }: GrowthMetricsModalProps) {
           >
             Multi-Channel Trends
           </h3>
-          <LineChart data={trendChartData} height={320} />
+          <Suspense fallback={<div style={{ height: 320 }}>Loading chart…</div>}>
+            <LineChart data={trendChartData} height={320} />
+          </Suspense>
         </div>
 
         <div style={{ marginBottom: "var(--occ-space-6)" }}>
@@ -172,7 +183,9 @@ export function GrowthMetricsModal({ data, onClose }: GrowthMetricsModalProps) {
           >
             Channel Comparison
           </h3>
-          <BarChart data={comparisonChartData} height={250} />
+          <Suspense fallback={<div style={{ height: 250 }}>Loading chart…</div>}>
+            <BarChart data={comparisonChartData} height={250} />
+          </Suspense>
         </div>
 
         <div

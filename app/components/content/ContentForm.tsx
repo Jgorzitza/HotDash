@@ -1,11 +1,20 @@
 /**
  * Content Form Component
- * 
+ *
  * Provides form interface for creating and editing content entries
  */
 
 import { useState } from "react";
-import { Card, Text, Button, TextField, Select, Checkbox, InlineStack, Banner } from "@shopify/polaris";
+import {
+  Card,
+  Text,
+  Button,
+  TextField,
+  Select,
+  Checkbox,
+  InlineStack,
+  Banner,
+} from "@shopify/polaris";
 
 interface ContentFormProps {
   contentType: {
@@ -34,57 +43,57 @@ interface ContentFormProps {
   isLoading?: boolean;
 }
 
-export function ContentForm({ 
-  contentType, 
-  initialData, 
-  onSubmit, 
-  onCancel, 
-  isLoading = false 
+export function ContentForm({
+  contentType,
+  initialData,
+  onSubmit,
+  onCancel,
+  isLoading = false,
 }: ContentFormProps) {
   const [formData, setFormData] = useState({
-    title: initialData?.title || '',
-    slug: initialData?.slug || '',
-    fields: initialData?.fields || {}
+    title: initialData?.title || "",
+    slug: initialData?.slug || "",
+    fields: initialData?.fields || {},
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleFieldChange = (fieldId: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       fields: {
         ...prev.fields,
-        [fieldId]: value
-      }
+        [fieldId]: value,
+      },
     }));
 
     // Clear error when user starts typing
     if (errors[fieldId]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [fieldId]: ''
+        [fieldId]: "",
       }));
     }
   };
 
   const handleTitleChange = (value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      title: value
+      title: value,
     }));
 
     // Auto-generate slug from title
     if (!initialData?.slug) {
       const slug = value
         .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-")
         .trim();
-      
-      setFormData(prev => ({
+
+      setFormData((prev) => ({
         ...prev,
-        slug
+        slug,
       }));
     }
   };
@@ -94,21 +103,22 @@ export function ContentForm({
 
     // Validate title
     if (!formData.title.trim()) {
-      newErrors.title = 'Title is required';
+      newErrors.title = "Title is required";
     }
 
     // Validate slug
     if (!formData.slug.trim()) {
-      newErrors.slug = 'Slug is required';
+      newErrors.slug = "Slug is required";
     } else if (!/^[a-z0-9-]+$/.test(formData.slug)) {
-      newErrors.slug = 'Slug can only contain lowercase letters, numbers, and hyphens';
+      newErrors.slug =
+        "Slug can only contain lowercase letters, numbers, and hyphens";
     }
 
     // Validate required fields
-    contentType.fields.forEach(field => {
+    contentType.fields.forEach((field) => {
       if (field.required) {
         const value = formData.fields[field.id];
-        if (!value || (typeof value === 'string' && !value.trim())) {
+        if (!value || (typeof value === "string" && !value.trim())) {
           newErrors[field.id] = `${field.name} is required`;
         }
       }
@@ -117,13 +127,27 @@ export function ContentForm({
       if (field.validation) {
         const value = formData.fields[field.id];
         if (value) {
-          if (field.validation.min && typeof value === 'number' && value < field.validation.min) {
-            newErrors[field.id] = `${field.name} must be at least ${field.validation.min}`;
+          if (
+            field.validation.min &&
+            typeof value === "number" &&
+            value < field.validation.min
+          ) {
+            newErrors[field.id] =
+              `${field.name} must be at least ${field.validation.min}`;
           }
-          if (field.validation.max && typeof value === 'number' && value > field.validation.max) {
-            newErrors[field.id] = `${field.name} must be at most ${field.validation.max}`;
+          if (
+            field.validation.max &&
+            typeof value === "number" &&
+            value > field.validation.max
+          ) {
+            newErrors[field.id] =
+              `${field.name} must be at most ${field.validation.max}`;
           }
-          if (field.validation.pattern && typeof value === 'string' && !new RegExp(field.validation.pattern).test(value)) {
+          if (
+            field.validation.pattern &&
+            typeof value === "string" &&
+            !new RegExp(field.validation.pattern).test(value)
+          ) {
             newErrors[field.id] = `${field.name} format is invalid`;
           }
         }
@@ -141,17 +165,17 @@ export function ContentForm({
         title: formData.title,
         slug: formData.slug,
         fields: formData.fields,
-        created_by: 'content-agent' // Replace with actual user ID
+        created_by: "content-agent", // Replace with actual user ID
       });
     }
   };
 
   const renderField = (field: any) => {
-    const value = formData.fields[field.id] || '';
+    const value = formData.fields[field.id] || "";
     const hasError = !!errors[field.id];
 
     switch (field.type) {
-      case 'text':
+      case "text":
         return (
           <TextField
             key={field.id}
@@ -160,11 +184,15 @@ export function ContentForm({
             onChange={(newValue) => handleFieldChange(field.id, newValue)}
             error={hasError ? errors[field.id] : undefined}
             required={field.required}
-            helpText={field.validation?.max ? `Maximum ${field.validation.max} characters` : undefined}
+            helpText={
+              field.validation?.max
+                ? `Maximum ${field.validation.max} characters`
+                : undefined
+            }
           />
         );
 
-      case 'textarea':
+      case "textarea":
         return (
           <TextField
             key={field.id}
@@ -174,18 +202,24 @@ export function ContentForm({
             error={hasError ? errors[field.id] : undefined}
             required={field.required}
             multiline={4}
-            helpText={field.validation?.max ? `Maximum ${field.validation.max} characters` : undefined}
+            helpText={
+              field.validation?.max
+                ? `Maximum ${field.validation.max} characters`
+                : undefined
+            }
           />
         );
 
-      case 'number':
+      case "number":
         return (
           <TextField
             key={field.id}
             label={field.name}
             type="number"
             value={value.toString()}
-            onChange={(newValue) => handleFieldChange(field.id, parseFloat(newValue) || 0)}
+            onChange={(newValue) =>
+              handleFieldChange(field.id, parseFloat(newValue) || 0)
+            }
             error={hasError ? errors[field.id] : undefined}
             required={field.required}
             min={field.validation?.min}
@@ -193,9 +227,9 @@ export function ContentForm({
           />
         );
 
-      case 'boolean':
+      case "boolean":
         return (
-          <div key={field.id} style={{ marginBottom: '16px' }}>
+          <div key={field.id} style={{ marginBottom: "16px" }}>
             <Checkbox
               label={field.name}
               checked={value}
@@ -204,7 +238,7 @@ export function ContentForm({
           </div>
         );
 
-      case 'date':
+      case "date":
         return (
           <TextField
             key={field.id}
@@ -217,7 +251,7 @@ export function ContentForm({
           />
         );
 
-      case 'rich_text':
+      case "rich_text":
         return (
           <TextField
             key={field.id}
@@ -247,14 +281,16 @@ export function ContentForm({
 
   return (
     <Card>
-      <div style={{ padding: '20px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ padding: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <Text as="h3" variant="headingMd">
-            {initialData ? 'Edit' : 'Create'} {contentType.name}
+            {initialData ? "Edit" : "Create"} {contentType.name}
           </Text>
 
           {/* Title and Slug */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
             <TextField
               label="Title"
               value={formData.title}
@@ -267,7 +303,9 @@ export function ContentForm({
             <TextField
               label="Slug"
               value={formData.slug}
-              onChange={(value) => setFormData(prev => ({ ...prev, slug: value }))}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, slug: value }))
+              }
               error={errors.slug}
               required
               placeholder="content-slug"
@@ -276,21 +314,25 @@ export function ContentForm({
           </div>
 
           {/* Dynamic Fields */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {contentType.fields.map(field => renderField(field))}
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
+            {contentType.fields.map((field) => renderField(field))}
           </div>
 
           {/* Actions */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+          <div
+            style={{ display: "flex", justifyContent: "flex-end", gap: "12px" }}
+          >
             <Button onClick={onCancel} disabled={isLoading}>
               Cancel
             </Button>
-            <Button 
-              variant="primary" 
+            <Button
+              variant="primary"
               onClick={handleSubmit}
               loading={isLoading}
             >
-              {initialData ? 'Update' : 'Create'} Content
+              {initialData ? "Update" : "Create"} Content
             </Button>
           </div>
         </div>

@@ -111,22 +111,28 @@ export function ApprovalsDrawer({
   const [editingImpact, setEditingImpact] = useState(false);
   const [editingRollback, setEditingRollback] = useState(false);
   const [editedImpact, setEditedImpact] = useState(approval?.impact || {});
-  const [editedRollback, setEditedRollback] = useState(approval?.rollback || {});
+  const [editedRollback, setEditedRollback] = useState(
+    approval?.rollback || {},
+  );
 
   if (!approval) return null;
 
   // Keyboard shortcut: Cmd+Enter to approve
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter' && canApprove) {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.key === "Enter" &&
+        canApprove
+      ) {
         event.preventDefault();
         handleApprove();
       }
     };
 
     if (open) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
     }
   }, [open, canApprove]);
 
@@ -282,7 +288,10 @@ export function ApprovalsDrawer({
                         label="Expected Outcome"
                         value={editedImpact.expected_outcome || ""}
                         onChange={(value) =>
-                          setEditedImpact({ ...editedImpact, expected_outcome: value })
+                          setEditedImpact({
+                            ...editedImpact,
+                            expected_outcome: value,
+                          })
                         }
                         multiline={3}
                       />
@@ -318,7 +327,7 @@ export function ApprovalsDrawer({
                         />
                         <TextField
                           label="Rollback Steps (one per line)"
-                          value={approval.rollback.steps?.join('\n') || ""}
+                          value={approval.rollback.steps?.join("\n") || ""}
                           onChange={(value) => {
                             // Note: This would need to be connected to a state update function
                           }}
@@ -328,7 +337,9 @@ export function ApprovalsDrawer({
                     ) : (
                       <BlockStack gap="200">
                         {approval.risk.what_could_go_wrong && (
-                          <Text as="p">{approval.risk.what_could_go_wrong}</Text>
+                          <Text as="p">
+                            {approval.risk.what_could_go_wrong}
+                          </Text>
                         )}
                         {approval.rollback.steps &&
                           approval.rollback.steps.length > 0 && (
@@ -361,7 +372,15 @@ export function ApprovalsDrawer({
                       <Text as="p" variant="bodySm" tone="subdued">
                         Dry-run status: {action.dry_run_status || "Not tested"}
                       </Text>
-                      <pre style={{ fontSize: "12px", overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
+                      <pre
+                        style={{
+                          fontSize: "12px",
+                          overflow: "auto",
+                          background: "#f6f6f7",
+                          padding: "8px",
+                          borderRadius: "4px",
+                        }}
+                      >
                         {JSON.stringify(action.payload, null, 2)}
                       </pre>
                     </BlockStack>
@@ -388,7 +407,15 @@ export function ApprovalsDrawer({
                           </Text>
                         </InlineStack>
                         {receipt.metrics && (
-                          <pre style={{ fontSize: "12px", overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
+                          <pre
+                            style={{
+                              fontSize: "12px",
+                              overflow: "auto",
+                              background: "#f6f6f7",
+                              padding: "8px",
+                              borderRadius: "4px",
+                            }}
+                          >
                             {JSON.stringify(receipt.metrics, null, 2)}
                           </pre>
                         )}
@@ -396,7 +423,8 @@ export function ApprovalsDrawer({
                     ))
                   ) : (
                     <Text as="p" tone="subdued">
-                      No audit records yet. Audit trail will appear after actions are applied.
+                      No audit records yet. Audit trail will appear after
+                      actions are applied.
                     </Text>
                   )}
                 </BlockStack>

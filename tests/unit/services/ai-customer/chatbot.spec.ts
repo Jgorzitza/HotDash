@@ -17,7 +17,16 @@ vi.mock('openai', () => ({
         create: vi.fn().mockResolvedValue({
           choices: [{
             message: {
-              content: 'Thank you for contacting us. I can help you with that.'
+              content: JSON.stringify({
+                intent: 'order_status',
+                sentiment: 'neutral',
+                urgency: 0.5,
+                confidence: 0.85,
+                suggestedTags: ['orders', 'tracking'],
+                requiresEscalation: false,
+                approvalReason: null,
+                mcpToolsNeeded: ['storefront-mcp']
+              })
             }
           }]
         })

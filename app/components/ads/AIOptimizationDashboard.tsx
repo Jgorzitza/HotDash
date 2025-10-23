@@ -1,18 +1,27 @@
 /**
  * AI Optimization Dashboard Component
- * 
+ *
  * ADS-005: Dashboard for viewing and managing AI-powered ad optimizations
  * Displays bid adjustments, audience targeting, budget allocation, and ROI tracking
  */
 
-import { useState } from 'react';
-import { Card, Text, Button, Badge, Stack, InlineStack, BlockStack, Box } from '@shopify/polaris';
+import { useState } from "react";
+import {
+  Card,
+  Text,
+  Button,
+  Badge,
+  Stack,
+  InlineStack,
+  BlockStack,
+  Box,
+} from "@shopify/polaris";
 import type {
   BidAdjustmentRecommendation,
   AudienceTargetingRecommendation,
   BudgetAllocationRecommendation,
-} from '~/lib/ads/ai-optimizer';
-import type { ROITrackingSummary } from '~/services/ads/roi-tracker';
+} from "~/lib/ads/ai-optimizer";
+import type { ROITrackingSummary } from "~/services/ads/roi-tracker";
 
 interface AIOptimizationDashboardProps {
   bidAdjustments: BidAdjustmentRecommendation[];
@@ -31,7 +40,9 @@ export function AIOptimizationDashboard({
   onApplyRecommendation,
   loading = false,
 }: AIOptimizationDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'bids' | 'audience' | 'budget' | 'roi'>('bids');
+  const [activeTab, setActiveTab] = useState<
+    "bids" | "audience" | "budget" | "roi"
+  >("bids");
 
   return (
     <BlockStack gap="400">
@@ -42,7 +53,8 @@ export function AIOptimizationDashboard({
             AI-Powered Ad Optimization
           </Text>
           <Text variant="bodyMd" as="p" tone="subdued">
-            Intelligent recommendations to improve campaign performance and maximize ROI
+            Intelligent recommendations to improve campaign performance and
+            maximize ROI
           </Text>
         </BlockStack>
       </Card>
@@ -55,7 +67,9 @@ export function AIOptimizationDashboard({
               Total Recommendations
             </Text>
             <Text variant="heading2xl" as="p">
-              {bidAdjustments.length + audienceTargeting.length + budgetAllocation.allocations.length}
+              {bidAdjustments.length +
+                audienceTargeting.length +
+                budgetAllocation.allocations.length}
             </Text>
           </BlockStack>
         </Card>
@@ -66,7 +80,7 @@ export function AIOptimizationDashboard({
               High Priority
             </Text>
             <Text variant="heading2xl" as="p">
-              {bidAdjustments.filter(r => r.confidence > 0.85).length}
+              {bidAdjustments.filter((r) => r.confidence > 0.85).length}
             </Text>
           </BlockStack>
         </Card>
@@ -88,7 +102,12 @@ export function AIOptimizationDashboard({
               Projected Improvement
             </Text>
             <Text variant="heading2xl" as="p" tone="success">
-              +{((budgetAllocation.projectedTotalROAS - roiSummary.overallROAS) * 100).toFixed(1)}%
+              +
+              {(
+                (budgetAllocation.projectedTotalROAS - roiSummary.overallROAS) *
+                100
+              ).toFixed(1)}
+              %
             </Text>
           </BlockStack>
         </Card>
@@ -98,26 +117,26 @@ export function AIOptimizationDashboard({
       <Card>
         <InlineStack gap="200">
           <Button
-            pressed={activeTab === 'bids'}
-            onClick={() => setActiveTab('bids')}
+            pressed={activeTab === "bids"}
+            onClick={() => setActiveTab("bids")}
           >
             Bid Adjustments ({bidAdjustments.length})
           </Button>
           <Button
-            pressed={activeTab === 'audience'}
-            onClick={() => setActiveTab('audience')}
+            pressed={activeTab === "audience"}
+            onClick={() => setActiveTab("audience")}
           >
             Audience Targeting ({audienceTargeting.length})
           </Button>
           <Button
-            pressed={activeTab === 'budget'}
-            onClick={() => setActiveTab('budget')}
+            pressed={activeTab === "budget"}
+            onClick={() => setActiveTab("budget")}
           >
             Budget Allocation ({budgetAllocation.allocations.length})
           </Button>
           <Button
-            pressed={activeTab === 'roi'}
-            onClick={() => setActiveTab('roi')}
+            pressed={activeTab === "roi"}
+            onClick={() => setActiveTab("roi")}
           >
             ROI Tracking
           </Button>
@@ -125,7 +144,7 @@ export function AIOptimizationDashboard({
       </Card>
 
       {/* Tab Content */}
-      {activeTab === 'bids' && (
+      {activeTab === "bids" && (
         <BidAdjustmentsTab
           recommendations={bidAdjustments}
           onApply={onApplyRecommendation}
@@ -133,7 +152,7 @@ export function AIOptimizationDashboard({
         />
       )}
 
-      {activeTab === 'audience' && (
+      {activeTab === "audience" && (
         <AudienceTargetingTab
           recommendations={audienceTargeting}
           onApply={onApplyRecommendation}
@@ -141,7 +160,7 @@ export function AIOptimizationDashboard({
         />
       )}
 
-      {activeTab === 'budget' && (
+      {activeTab === "budget" && (
         <BudgetAllocationTab
           recommendation={budgetAllocation}
           onApply={onApplyRecommendation}
@@ -149,9 +168,7 @@ export function AIOptimizationDashboard({
         />
       )}
 
-      {activeTab === 'roi' && (
-        <ROITrackingTab summary={roiSummary} />
-      )}
+      {activeTab === "roi" && <ROITrackingTab summary={roiSummary} />}
     </BlockStack>
   );
 }
@@ -175,7 +192,15 @@ function BidAdjustmentsTab({
               <Text variant="headingMd" as="h3">
                 {rec.campaignName}
               </Text>
-              <Badge tone={rec.confidence > 0.85 ? 'success' : rec.confidence > 0.7 ? 'info' : 'warning'}>
+              <Badge
+                tone={
+                  rec.confidence > 0.85
+                    ? "success"
+                    : rec.confidence > 0.7
+                      ? "info"
+                      : "warning"
+                }
+              >
                 {(rec.confidence * 100).toFixed(0)}% confidence
               </Badge>
             </InlineStack>
@@ -194,8 +219,14 @@ function BidAdjustmentsTab({
                   <Text variant="bodySm" as="p" tone="subdued">
                     Recommended Bid
                   </Text>
-                  <Text variant="bodyLg" as="p" tone={rec.adjustment > 0 ? 'success' : 'critical'}>
-                    ${(rec.recommendedBid / 100).toFixed(2)} ({rec.adjustment > 0 ? '+' : ''}{rec.adjustment.toFixed(1)}%)
+                  <Text
+                    variant="bodyLg"
+                    as="p"
+                    tone={rec.adjustment > 0 ? "success" : "critical"}
+                  >
+                    ${(rec.recommendedBid / 100).toFixed(2)} (
+                    {rec.adjustment > 0 ? "+" : ""}
+                    {rec.adjustment.toFixed(1)}%)
                   </Text>
                 </Box>
               </InlineStack>
@@ -209,14 +240,16 @@ function BidAdjustmentsTab({
                   Expected Impact:
                 </Text>
                 <Text variant="bodySm" as="p">
-                  Clicks: {rec.expectedImpact.clicks} | Conversions: {rec.expectedImpact.conversions} | ROAS: {rec.expectedImpact.roas.toFixed(2)}x
+                  Clicks: {rec.expectedImpact.clicks} | Conversions:{" "}
+                  {rec.expectedImpact.conversions} | ROAS:{" "}
+                  {rec.expectedImpact.roas.toFixed(2)}x
                 </Text>
               </Box>
             </BlockStack>
 
             <InlineStack align="end">
               <Button
-                onClick={() => onApply?.('bid_adjustment', rec.campaignId)}
+                onClick={() => onApply?.("bid_adjustment", rec.campaignId)}
                 loading={loading}
                 tone="success"
               >
@@ -230,7 +263,8 @@ function BidAdjustmentsTab({
       {recommendations.length === 0 && (
         <Card>
           <Text variant="bodyMd" as="p" tone="subdued">
-            No bid adjustment recommendations at this time. Your campaigns are performing optimally.
+            No bid adjustment recommendations at this time. Your campaigns are
+            performing optimally.
           </Text>
         </Card>
       )}
@@ -278,11 +312,12 @@ function AudienceTargetingTab({
                 )}
                 {rec.audienceSegment.demographics.location && (
                   <Text variant="bodySm" as="p">
-                    Locations: {rec.audienceSegment.demographics.location.join(', ')}
+                    Locations:{" "}
+                    {rec.audienceSegment.demographics.location.join(", ")}
                   </Text>
                 )}
                 <Text variant="bodySm" as="p">
-                  Interests: {rec.audienceSegment.interests.join(', ')}
+                  Interests: {rec.audienceSegment.interests.join(", ")}
                 </Text>
               </Box>
 
@@ -291,16 +326,19 @@ function AudienceTargetingTab({
                   Expected Performance:
                 </Text>
                 <Text variant="bodySm" as="p">
-                  CTR: {(rec.expectedPerformance.estimatedCTR * 100).toFixed(2)}% | 
-                  Conv Rate: {(rec.expectedPerformance.estimatedConversionRate * 100).toFixed(2)}% | 
-                  ROAS: {rec.expectedPerformance.estimatedROAS.toFixed(2)}x
+                  CTR: {(rec.expectedPerformance.estimatedCTR * 100).toFixed(2)}
+                  % | Conv Rate:{" "}
+                  {(
+                    rec.expectedPerformance.estimatedConversionRate * 100
+                  ).toFixed(2)}
+                  % | ROAS: {rec.expectedPerformance.estimatedROAS.toFixed(2)}x
                 </Text>
               </Box>
             </BlockStack>
 
             <InlineStack align="end">
               <Button
-                onClick={() => onApply?.('audience_targeting', rec.campaignId)}
+                onClick={() => onApply?.("audience_targeting", rec.campaignId)}
                 loading={loading}
                 tone="success"
               >
@@ -386,8 +424,20 @@ function BudgetAllocationTab({
                 <Text variant="bodySm" as="p" tone="subdued">
                   Recommended Budget
                 </Text>
-                <Text variant="bodyLg" as="p" tone={alloc.change > 0 ? 'success' : alloc.change < 0 ? 'critical' : undefined}>
-                  ${(alloc.recommendedBudget / 100).toFixed(2)} ({alloc.change > 0 ? '+' : ''}{alloc.change.toFixed(1)}%)
+                <Text
+                  variant="bodyLg"
+                  as="p"
+                  tone={
+                    alloc.change > 0
+                      ? "success"
+                      : alloc.change < 0
+                        ? "critical"
+                        : undefined
+                  }
+                >
+                  ${(alloc.recommendedBudget / 100).toFixed(2)} (
+                  {alloc.change > 0 ? "+" : ""}
+                  {alloc.change.toFixed(1)}%)
                 </Text>
               </Box>
               <Box>
@@ -410,7 +460,7 @@ function BudgetAllocationTab({
       <Card>
         <InlineStack align="end">
           <Button
-            onClick={() => onApply?.('budget_allocation', 'all')}
+            onClick={() => onApply?.("budget_allocation", "all")}
             loading={loading}
             tone="success"
           >
@@ -486,7 +536,11 @@ function ROITrackingTab({ summary }: { summary: ROITrackingSummary }) {
           </Text>
 
           {summary.topPerformingCampaigns.map((campaign) => (
-            <InlineStack key={campaign.campaignId} align="space-between" blockAlign="center">
+            <InlineStack
+              key={campaign.campaignId}
+              align="space-between"
+              blockAlign="center"
+            >
               <Box>
                 <Text variant="bodyMd" as="p" fontWeight="semibold">
                   {campaign.campaignName}
@@ -495,9 +549,7 @@ function ROITrackingTab({ summary }: { summary: ROITrackingSummary }) {
                   Revenue: ${(campaign.revenueCents / 100).toFixed(2)}
                 </Text>
               </Box>
-              <Badge tone="success">
-                {campaign.roas.toFixed(2)}x ROAS
-              </Badge>
+              <Badge tone="success">{campaign.roas.toFixed(2)}x ROAS</Badge>
             </InlineStack>
           ))}
         </BlockStack>
@@ -550,4 +602,3 @@ function ROITrackingTab({ summary }: { summary: ROITrackingSummary }) {
     </BlockStack>
   );
 }
-

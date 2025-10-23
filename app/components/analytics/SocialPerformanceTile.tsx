@@ -19,7 +19,10 @@ interface SocialPerformanceTileProps {
   loading?: boolean;
 }
 
-export function SocialPerformanceTile({ data, loading = false }: SocialPerformanceTileProps) {
+export function SocialPerformanceTile({
+  data,
+  loading = false,
+}: SocialPerformanceTileProps) {
   if (loading) {
     return (
       <Card>
@@ -37,16 +40,16 @@ export function SocialPerformanceTile({ data, loading = false }: SocialPerforman
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
+      return (num / 1000000).toFixed(1) + "M";
     }
     if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
+      return (num / 1000).toFixed(1) + "K";
     }
     return num.toString();
   };
 
   const formatPercentage = (num: number) => {
-    return Math.round(num * 100) / 100 + '%';
+    return Math.round(num * 100) / 100 + "%";
   };
 
   return (
@@ -78,7 +81,7 @@ export function SocialPerformanceTile({ data, loading = false }: SocialPerforman
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="bg-purple-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${Math.min(data.averageEngagementRate, 100)}%` }}
             ></div>
@@ -87,26 +90,38 @@ export function SocialPerformanceTile({ data, loading = false }: SocialPerforman
 
         {data.topPerformingPost && (
           <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-            <div className="text-sm font-medium text-gray-700 mb-2">Top Performing Post</div>
+            <div className="text-sm font-medium text-gray-700 mb-2">
+              Top Performing Post
+            </div>
             <div className="text-sm text-gray-600 mb-2">
               {data.topPerformingPost.content.substring(0, 100)}
-              {data.topPerformingPost.content.length > 100 && '...'}
+              {data.topPerformingPost.content.length > 100 && "..."}
             </div>
             <div className="flex justify-between text-xs text-gray-500">
               <span>{data.topPerformingPost.platform}</span>
-              <span>{formatNumber(data.topPerformingPost.metrics.engagement)} engagement</span>
+              <span>
+                {formatNumber(data.topPerformingPost.metrics.engagement)}{" "}
+                engagement
+              </span>
             </div>
           </div>
         )}
 
         <div>
-          <div className="text-sm font-medium text-gray-700 mb-3">Platform Breakdown</div>
+          <div className="text-sm font-medium text-gray-700 mb-3">
+            Platform Breakdown
+          </div>
           <div className="space-y-2">
             {data.platformBreakdown.map((platform) => (
-              <div key={platform.platform} className="flex justify-between items-center">
+              <div
+                key={platform.platform}
+                className="flex justify-between items-center"
+              >
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                  <span className="text-sm capitalize">{platform.platform}</span>
+                  <span className="text-sm capitalize">
+                    {platform.platform}
+                  </span>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-medium">
@@ -133,7 +148,7 @@ export function SocialPerformanceTile({ data, loading = false }: SocialPerforman
 
 /**
  * Social Performance Tile Loader
- * 
+ *
  * ANALYTICS-006: Load social performance data for the tile
  */
 export async function socialPerformanceLoader() {
@@ -145,10 +160,11 @@ export async function socialPerformanceLoader() {
     totalEngagement: 2340,
     averageEngagementRate: 5.13,
     topPerformingPost: {
-      postId: 'post-123',
-      platform: 'instagram',
-      content: 'Check out our new powder board collection! Perfect for winter adventures. #powderboard #winter #snowboarding',
-      publishedAt: '2025-10-21T10:00:00Z',
+      postId: "post-123",
+      platform: "instagram",
+      content:
+        "Check out our new powder board collection! Perfect for winter adventures. #powderboard #winter #snowboarding",
+      publishedAt: "2025-10-21T10:00:00Z",
       metrics: {
         likes: 156,
         shares: 23,
@@ -171,21 +187,21 @@ export async function socialPerformanceLoader() {
     },
     platformBreakdown: [
       {
-        platform: 'instagram',
+        platform: "instagram",
         posts: 5,
         reach: 23400,
         engagement: 1200,
         avgEngagementRate: 5.13,
       },
       {
-        platform: 'facebook',
+        platform: "facebook",
         posts: 4,
         reach: 15600,
         engagement: 780,
-        avgEngagementRate: 5.00,
+        avgEngagementRate: 5.0,
       },
       {
-        platform: 'twitter',
+        platform: "twitter",
         posts: 3,
         reach: 6600,
         engagement: 360,
@@ -193,8 +209,8 @@ export async function socialPerformanceLoader() {
       },
     ],
     period: {
-      start: '2025-10-15',
-      end: '2025-10-22',
+      start: "2025-10-15",
+      end: "2025-10-22",
     },
   };
 

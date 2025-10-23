@@ -1,6 +1,6 @@
 /**
  * AI Content Generator Component
- * 
+ *
  * Provides UI for generating AI-powered content including:
  * - Product descriptions
  * - Blog posts
@@ -8,7 +8,7 @@
  * - Quality assessment
  */
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Card,
   FormLayout,
@@ -23,11 +23,11 @@ import {
   Divider,
   BlockStack,
   InlineStack,
-} from '@shopify/polaris';
-import type { ContentTone } from '~/services/content/ai-content-generator';
+} from "@shopify/polaris";
+import type { ContentTone } from "~/services/content/ai-content-generator";
 
 export interface AIContentGeneratorProps {
-  contentType: 'product_description' | 'blog_post';
+  contentType: "product_description" | "blog_post";
   onGenerate: (content: string) => void;
   initialData?: {
     productTitle?: string;
@@ -42,71 +42,86 @@ export function AIContentGenerator({
   initialData,
 }: AIContentGeneratorProps) {
   const [loading, setLoading] = useState(false);
-  const [generatedContent, setGeneratedContent] = useState<string>('');
+  const [generatedContent, setGeneratedContent] = useState<string>("");
   const [qualityScore, setQualityScore] = useState<any>(null);
   const [variations, setVariations] = useState<any[]>([]);
   const [showVariations, setShowVariations] = useState(false);
 
   // Form state
-  const [productTitle, setProductTitle] = useState(initialData?.productTitle || '');
-  const [topic, setTopic] = useState(initialData?.topic || '');
-  const [keywords, setKeywords] = useState(initialData?.keywords?.join(', ') || '');
-  const [tone, setTone] = useState<ContentTone>('professional');
-  const [length, setLength] = useState<string>('medium');
-  const [features, setFeatures] = useState('');
-  const [targetAudience, setTargetAudience] = useState('');
+  const [productTitle, setProductTitle] = useState(
+    initialData?.productTitle || "",
+  );
+  const [topic, setTopic] = useState(initialData?.topic || "");
+  const [keywords, setKeywords] = useState(
+    initialData?.keywords?.join(", ") || "",
+  );
+  const [tone, setTone] = useState<ContentTone>("professional");
+  const [length, setLength] = useState<string>("medium");
+  const [features, setFeatures] = useState("");
+  const [targetAudience, setTargetAudience] = useState("");
 
   const toneOptions = [
-    { label: 'Professional', value: 'professional' },
-    { label: 'Casual', value: 'casual' },
-    { label: 'Playful', value: 'playful' },
-    { label: 'Technical', value: 'technical' },
-    { label: 'Enthusiastic', value: 'enthusiastic' },
+    { label: "Professional", value: "professional" },
+    { label: "Casual", value: "casual" },
+    { label: "Playful", value: "playful" },
+    { label: "Technical", value: "technical" },
+    { label: "Enthusiastic", value: "enthusiastic" },
   ];
 
   const lengthOptions = [
-    { label: 'Short (50-100 words)', value: 'short' },
-    { label: 'Medium (100-200 words)', value: 'medium' },
-    { label: 'Long (200-300 words)', value: 'long' },
+    { label: "Short (50-100 words)", value: "short" },
+    { label: "Medium (100-200 words)", value: "medium" },
+    { label: "Long (200-300 words)", value: "long" },
   ];
 
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const endpoint = contentType === 'product_description' 
-        ? '/api/content/generate-product-description'
-        : '/api/content/generate-blog-post';
+      const endpoint =
+        contentType === "product_description"
+          ? "/api/content/generate-product-description"
+          : "/api/content/generate-blog-post";
 
-      const payload = contentType === 'product_description' ? {
-        productTitle,
-        features: features.split('\n').filter(f => f.trim()),
-        targetAudience,
-        tone,
-        length,
-        includeKeywords: keywords.split(',').map(k => k.trim()).filter(k => k),
-      } : {
-        topic,
-        keywords: keywords.split(',').map(k => k.trim()).filter(k => k),
-        targetAudience,
-        tone,
-        length: length === 'short' ? 400 : length === 'medium' ? 800 : 1200,
-      };
+      const payload =
+        contentType === "product_description"
+          ? {
+              productTitle,
+              features: features.split("\n").filter((f) => f.trim()),
+              targetAudience,
+              tone,
+              length,
+              includeKeywords: keywords
+                .split(",")
+                .map((k) => k.trim())
+                .filter((k) => k),
+            }
+          : {
+              topic,
+              keywords: keywords
+                .split(",")
+                .map((k) => k.trim())
+                .filter((k) => k),
+              targetAudience,
+              tone,
+              length:
+                length === "short" ? 400 : length === "medium" ? 800 : 1200,
+            };
 
       const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate content');
+        throw new Error("Failed to generate content");
       }
 
       const result = await response.json();
       setGeneratedContent(result.content);
       setQualityScore(result.qualityScore);
     } catch (error) {
-      console.error('Error generating content:', error);
+      console.error("Error generating content:", error);
     } finally {
       setLoading(false);
     }
@@ -115,44 +130,54 @@ export function AIContentGenerator({
   const handleGenerateVariations = async () => {
     setLoading(true);
     try {
-      const endpoint = '/api/content/generate-variations';
-      
-      const payload = contentType === 'product_description' ? {
-        type: 'product_description',
-        request: {
-          productTitle,
-          features: features.split('\n').filter(f => f.trim()),
-          targetAudience,
-          length,
-          includeKeywords: keywords.split(',').map(k => k.trim()).filter(k => k),
-        },
-        count: 3,
-      } : {
-        type: 'blog_post',
-        request: {
-          topic,
-          keywords: keywords.split(',').map(k => k.trim()).filter(k => k),
-          targetAudience,
-          length: length === 'short' ? 400 : length === 'medium' ? 800 : 1200,
-        },
-        count: 3,
-      };
+      const endpoint = "/api/content/generate-variations";
+
+      const payload =
+        contentType === "product_description"
+          ? {
+              type: "product_description",
+              request: {
+                productTitle,
+                features: features.split("\n").filter((f) => f.trim()),
+                targetAudience,
+                length,
+                includeKeywords: keywords
+                  .split(",")
+                  .map((k) => k.trim())
+                  .filter((k) => k),
+              },
+              count: 3,
+            }
+          : {
+              type: "blog_post",
+              request: {
+                topic,
+                keywords: keywords
+                  .split(",")
+                  .map((k) => k.trim())
+                  .filter((k) => k),
+                targetAudience,
+                length:
+                  length === "short" ? 400 : length === "medium" ? 800 : 1200,
+              },
+              count: 3,
+            };
 
       const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate variations');
+        throw new Error("Failed to generate variations");
       }
 
       const result = await response.json();
       setVariations(result.variations);
       setShowVariations(true);
     } catch (error) {
-      console.error('Error generating variations:', error);
+      console.error("Error generating variations:", error);
     } finally {
       setLoading(false);
     }
@@ -183,7 +208,7 @@ export function AIContentGenerator({
           </Text>
 
           <FormLayout>
-            {contentType === 'product_description' ? (
+            {contentType === "product_description" ? (
               <>
                 <TextField
                   label="Product Title"
@@ -247,14 +272,18 @@ export function AIContentGenerator({
               onClick={handleGenerate}
               loading={loading}
               variant="primary"
-              disabled={contentType === 'product_description' ? !productTitle : !topic}
+              disabled={
+                contentType === "product_description" ? !productTitle : !topic
+              }
             >
               Generate Content
             </Button>
             <Button
               onClick={handleGenerateVariations}
               loading={loading}
-              disabled={contentType === 'product_description' ? !productTitle : !topic}
+              disabled={
+                contentType === "product_description" ? !productTitle : !topic
+              }
             >
               Generate Variations
             </Button>
@@ -279,12 +308,14 @@ export function AIContentGenerator({
               )}
             </InlineStack>
 
-            <div style={{ 
-              padding: '16px', 
-              backgroundColor: '#f6f6f7', 
-              borderRadius: '8px',
-              whiteSpace: 'pre-wrap',
-            }}>
+            <div
+              style={{
+                padding: "16px",
+                backgroundColor: "#f6f6f7",
+                borderRadius: "8px",
+                whiteSpace: "pre-wrap",
+              }}
+            >
               {generatedContent}
             </div>
 
@@ -312,9 +343,11 @@ export function AIContentGenerator({
                       Recommendations:
                     </Text>
                     <List>
-                      {qualityScore.recommendations.slice(0, 3).map((rec: string, i: number) => (
-                        <List.Item key={i}>{rec}</List.Item>
-                      ))}
+                      {qualityScore.recommendations
+                        .slice(0, 3)
+                        .map((rec: string, i: number) => (
+                          <List.Item key={i}>{rec}</List.Item>
+                        ))}
                     </List>
                   </Banner>
                 )}
@@ -342,20 +375,26 @@ export function AIContentGenerator({
                     <Text as="h4" variant="headingSm">
                       Variation {index + 1} ({variation.metadata.tone})
                     </Text>
-                    {variation.qualityScore && getQualityBadge(variation.qualityScore.overall)}
+                    {variation.qualityScore &&
+                      getQualityBadge(variation.qualityScore.overall)}
                   </InlineStack>
 
-                  <div style={{ 
-                    padding: '12px', 
-                    backgroundColor: '#f6f6f7', 
-                    borderRadius: '8px',
-                    whiteSpace: 'pre-wrap',
-                    fontSize: '14px',
-                  }}>
+                  <div
+                    style={{
+                      padding: "12px",
+                      backgroundColor: "#f6f6f7",
+                      borderRadius: "8px",
+                      whiteSpace: "pre-wrap",
+                      fontSize: "14px",
+                    }}
+                  >
                     {variation.content}
                   </div>
 
-                  <Button onClick={() => handleUseVariation(variation.content)} size="slim">
+                  <Button
+                    onClick={() => handleUseVariation(variation.content)}
+                    size="slim"
+                  >
                     Use This Variation
                   </Button>
                 </BlockStack>
@@ -367,4 +406,3 @@ export function AIContentGenerator({
     </BlockStack>
   );
 }
-

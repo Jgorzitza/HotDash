@@ -7,8 +7,14 @@
  * - Date range filter (future enhancement)
  */
 
-import { LineChart, OCC_CHART_COLORS } from "../charts";
+import { OCC_CHART_COLORS } from "../charts";
 import type { ChartData } from "chart.js";
+import { lazy, Suspense } from "react";
+
+// Lazy-load heavy chart components to reduce initial bundle size
+const LineChart = lazy(() =>
+  import("../charts/LineChart").then((m) => ({ default: m.LineChart })),
+);
 
 interface SocialPost {
   postId: string;
@@ -133,7 +139,9 @@ export function SocialPerformanceModal({
           >
             Engagement Trends (Last 7 Days)
           </h3>
-          <LineChart data={chartData} height={300} />
+          <Suspense fallback={<div style={{ height: 300 }}>Loading chart…</div>}>
+            <LineChart data={chartData} height={300} />
+          </Suspense>
         </div>
 
         {/* Top Posts Table */}

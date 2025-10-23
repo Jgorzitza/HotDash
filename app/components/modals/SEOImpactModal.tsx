@@ -7,8 +7,17 @@
  * - Content correlation table
  */
 
-import { LineChart, BarChart, OCC_CHART_COLORS } from "../charts";
+import { OCC_CHART_COLORS } from "../charts";
 import type { ChartData } from "chart.js";
+import { lazy, Suspense } from "react";
+
+// Lazy-load heavy chart components to reduce initial bundle size
+const LineChart = lazy(() =>
+  import("../charts/LineChart").then((m) => ({ default: m.LineChart })),
+);
+const BarChart = lazy(() =>
+  import("../charts/BarChart").then((m) => ({ default: m.BarChart })),
+);
 
 interface SEOImpactModalProps {
   data: {
@@ -120,7 +129,9 @@ export function SEOImpactModal({ data, onClose }: SEOImpactModalProps) {
           >
             Position Trend
           </h3>
-          <LineChart data={trendChartData} height={250} />
+          <Suspense fallback={<div style={{ height: 250 }}>Loading chart…</div>}>
+            <LineChart data={trendChartData} height={250} />
+          </Suspense>
         </div>
 
         <div style={{ marginBottom: "var(--occ-space-6)" }}>
@@ -133,7 +144,9 @@ export function SEOImpactModal({ data, onClose }: SEOImpactModalProps) {
           >
             Top Movers
           </h3>
-          <BarChart data={moversChartData} height={200} horizontal />
+          <Suspense fallback={<div style={{ height: 200 }}>Loading chart…</div>}>
+            <BarChart data={moversChartData} height={200} horizontal />
+          </Suspense>
         </div>
 
         <div>

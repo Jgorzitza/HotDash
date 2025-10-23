@@ -13,7 +13,7 @@ type Evidence = {
 
 export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
   const [selectedTab, setSelectedTab] = useState(0);
-  
+
   if (!evidence) return null;
 
   // Summary section (always visible)
@@ -25,9 +25,7 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
         {evidence.what_changes && (
           <Text as="p">What changes: {evidence.what_changes}</Text>
         )}
-        {evidence.why_now && (
-          <Text as="p">Why now: {evidence.why_now}</Text>
-        )}
+        {evidence.why_now && <Text as="p">Why now: {evidence.why_now}</Text>}
         {evidence.impact_forecast && (
           <Text as="p">Impact forecast: {evidence.impact_forecast}</Text>
         )}
@@ -49,14 +47,38 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
               <Text as="p" variant="bodySm" fontWeight="semibold">
                 {d.path}
               </Text>
-              <Text as="p" variant="bodySm" tone="subdued">Before:</Text>
-              <pre style={{ fontSize: 12, overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>{d.before}</pre>
-              <Text as="p" variant="bodySm" tone="subdued">After:</Text>
-              <pre style={{ fontSize: 12, overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>{d.after}</pre>
+              <Text as="p" variant="bodySm" tone="subdued">
+                Before:
+              </Text>
+              <pre
+                style={{
+                  fontSize: 12,
+                  overflow: "auto",
+                  background: "#f6f6f7",
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
+                {d.before}
+              </pre>
+              <Text as="p" variant="bodySm" tone="subdued">
+                After:
+              </Text>
+              <pre
+                style={{
+                  fontSize: 12,
+                  overflow: "auto",
+                  background: "#f6f6f7",
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
+                {d.after}
+              </pre>
             </BlockStack>
           ))}
         </BlockStack>
-      </Card>
+      </Card>,
     );
   }
 
@@ -70,13 +92,21 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
               <Text as="p" variant="bodySm" fontWeight="semibold">
                 {s.label}
               </Text>
-              <pre style={{ fontSize: 12, overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
+              <pre
+                style={{
+                  fontSize: 12,
+                  overflow: "auto",
+                  background: "#f6f6f7",
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
                 {s.content}
               </pre>
             </BlockStack>
           ))}
         </BlockStack>
-      </Card>
+      </Card>,
     );
   }
 
@@ -90,12 +120,34 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
               <Text as="p" variant="bodySm" fontWeight="semibold">
                 {q.label}
               </Text>
-              <Text as="p" variant="bodySm" tone="subdued">Query:</Text>
-              <pre style={{ fontSize: 12, overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>{q.query}</pre>
+              <Text as="p" variant="bodySm" tone="subdued">
+                Query:
+              </Text>
+              <pre
+                style={{
+                  fontSize: 12,
+                  overflow: "auto",
+                  background: "#f6f6f7",
+                  padding: "8px",
+                  borderRadius: "4px",
+                }}
+              >
+                {q.query}
+              </pre>
               {q.result && (
                 <>
-                  <Text as="p" variant="bodySm" tone="subdued">Result:</Text>
-                  <pre style={{ fontSize: 12, overflow: "auto", background: "#f6f6f7", padding: "8px", borderRadius: "4px" }}>
+                  <Text as="p" variant="bodySm" tone="subdued">
+                    Result:
+                  </Text>
+                  <pre
+                    style={{
+                      fontSize: 12,
+                      overflow: "auto",
+                      background: "#f6f6f7",
+                      padding: "8px",
+                      borderRadius: "4px",
+                    }}
+                  >
                     {q.result}
                   </pre>
                 </>
@@ -103,12 +155,16 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
             </BlockStack>
           ))}
         </BlockStack>
-      </Card>
+      </Card>,
     );
   }
 
   if (Array.isArray(evidence.screenshots) && evidence.screenshots.length > 0) {
-    tabs.push({ id: "screenshots", content: "Screenshots", panelID: "screenshots-panel" });
+    tabs.push({
+      id: "screenshots",
+      content: "Screenshots",
+      panelID: "screenshots-panel",
+    });
     tabContents.push(
       <Card key="screenshots">
         <BlockStack gap="200">
@@ -125,7 +181,7 @@ export function ApprovalEvidenceSection({ evidence }: { evidence: Evidence }) {
             </BlockStack>
           ))}
         </BlockStack>
-      </Card>
+      </Card>,
     );
   }
 
