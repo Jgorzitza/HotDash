@@ -322,3 +322,232 @@ function AudienceTargetingTab({
   );
 }
 
+// Budget Allocation Tab
+function BudgetAllocationTab({
+  recommendation,
+  onApply,
+  loading,
+}: {
+  recommendation: BudgetAllocationRecommendation;
+  onApply?: (type: string, campaignId: string) => void;
+  loading: boolean;
+}) {
+  return (
+    <BlockStack gap="400">
+      <Card>
+        <BlockStack gap="300">
+          <InlineStack align="space-between" blockAlign="center">
+            <Text variant="headingMd" as="h3">
+              Optimized Budget Allocation
+            </Text>
+            <Badge tone="success">
+              {(recommendation.confidence * 100).toFixed(0)}% confidence
+            </Badge>
+          </InlineStack>
+
+          <InlineStack gap="400">
+            <Box>
+              <Text variant="bodySm" as="p" tone="subdued">
+                Total Budget
+              </Text>
+              <Text variant="bodyLg" as="p">
+                ${(recommendation.totalBudget / 100).toFixed(2)}
+              </Text>
+            </Box>
+            <Box>
+              <Text variant="bodySm" as="p" tone="subdued">
+                Projected ROAS
+              </Text>
+              <Text variant="bodyLg" as="p" tone="success">
+                {recommendation.projectedTotalROAS.toFixed(2)}x
+              </Text>
+            </Box>
+          </InlineStack>
+        </BlockStack>
+      </Card>
+
+      {recommendation.allocations.map((alloc) => (
+        <Card key={alloc.campaignId}>
+          <BlockStack gap="300">
+            <Text variant="headingMd" as="h3">
+              {alloc.campaignName}
+            </Text>
+
+            <InlineStack gap="400">
+              <Box>
+                <Text variant="bodySm" as="p" tone="subdued">
+                  Current Budget
+                </Text>
+                <Text variant="bodyLg" as="p">
+                  ${(alloc.currentBudget / 100).toFixed(2)}
+                </Text>
+              </Box>
+              <Box>
+                <Text variant="bodySm" as="p" tone="subdued">
+                  Recommended Budget
+                </Text>
+                <Text variant="bodyLg" as="p" tone={alloc.change > 0 ? 'success' : alloc.change < 0 ? 'critical' : undefined}>
+                  ${(alloc.recommendedBudget / 100).toFixed(2)} ({alloc.change > 0 ? '+' : ''}{alloc.change.toFixed(1)}%)
+                </Text>
+              </Box>
+              <Box>
+                <Text variant="bodySm" as="p" tone="subdued">
+                  Expected ROAS
+                </Text>
+                <Text variant="bodyLg" as="p">
+                  {alloc.expectedROAS.toFixed(2)}x
+                </Text>
+              </Box>
+            </InlineStack>
+
+            <Text variant="bodySm" as="p">
+              {alloc.reasoning}
+            </Text>
+          </BlockStack>
+        </Card>
+      ))}
+
+      <Card>
+        <InlineStack align="end">
+          <Button
+            onClick={() => onApply?.('budget_allocation', 'all')}
+            loading={loading}
+            tone="success"
+          >
+            Apply All Budget Changes
+          </Button>
+        </InlineStack>
+      </Card>
+    </BlockStack>
+  );
+}
+
+// ROI Tracking Tab
+function ROITrackingTab({ summary }: { summary: ROITrackingSummary }) {
+  return (
+    <BlockStack gap="400">
+      {/* Summary Card */}
+      <Card>
+        <BlockStack gap="300">
+          <Text variant="headingMd" as="h3">
+            ROI Summary
+          </Text>
+
+          <InlineStack gap="400">
+            <Box>
+              <Text variant="bodySm" as="p" tone="subdued">
+                Total Revenue
+              </Text>
+              <Text variant="bodyLg" as="p">
+                ${(summary.totalRevenueCents / 100).toFixed(2)}
+              </Text>
+            </Box>
+            <Box>
+              <Text variant="bodySm" as="p" tone="subdued">
+                Total Cost
+              </Text>
+              <Text variant="bodyLg" as="p">
+                ${(summary.totalCostCents / 100).toFixed(2)}
+              </Text>
+            </Box>
+            <Box>
+              <Text variant="bodySm" as="p" tone="subdued">
+                Overall ROAS
+              </Text>
+              <Text variant="bodyLg" as="p" tone="success">
+                {summary.overallROAS.toFixed(2)}x
+              </Text>
+            </Box>
+          </InlineStack>
+        </BlockStack>
+      </Card>
+
+      {/* Insights */}
+      {summary.insights.length > 0 && (
+        <Card>
+          <BlockStack gap="200">
+            <Text variant="headingMd" as="h3">
+              Key Insights
+            </Text>
+            {summary.insights.map((insight, index) => (
+              <Text key={index} variant="bodySm" as="p">
+                • {insight}
+              </Text>
+            ))}
+          </BlockStack>
+        </Card>
+      )}
+
+      {/* Top Performing Campaigns */}
+      <Card>
+        <BlockStack gap="300">
+          <Text variant="headingMd" as="h3">
+            Top Performing Campaigns
+          </Text>
+
+          {summary.topPerformingCampaigns.map((campaign) => (
+            <InlineStack key={campaign.campaignId} align="space-between" blockAlign="center">
+              <Box>
+                <Text variant="bodyMd" as="p" fontWeight="semibold">
+                  {campaign.campaignName}
+                </Text>
+                <Text variant="bodySm" as="p" tone="subdued">
+                  Revenue: ${(campaign.revenueCents / 100).toFixed(2)}
+                </Text>
+              </Box>
+              <Badge tone="success">
+                {campaign.roas.toFixed(2)}x ROAS
+              </Badge>
+            </InlineStack>
+          ))}
+        </BlockStack>
+      </Card>
+
+      {/* CLV Metrics */}
+      {summary.clvMetrics.length > 0 && (
+        <Card>
+          <BlockStack gap="300">
+            <Text variant="headingMd" as="h3">
+              Customer Lifetime Value
+            </Text>
+
+            {summary.clvMetrics.slice(0, 5).map((clv) => (
+              <BlockStack key={clv.campaignId} gap="200">
+                <Text variant="bodyMd" as="p" fontWeight="semibold">
+                  {clv.campaignName}
+                </Text>
+                <InlineStack gap="400">
+                  <Box>
+                    <Text variant="bodySm" as="p" tone="subdued">
+                      Avg CLV
+                    </Text>
+                    <Text variant="bodySm" as="p">
+                      ${(clv.averageCLV / 100).toFixed(2)}
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text variant="bodySm" as="p" tone="subdued">
+                      Repeat Rate
+                    </Text>
+                    <Text variant="bodySm" as="p">
+                      {(clv.repeatPurchaseRate * 100).toFixed(1)}%
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text variant="bodySm" as="p" tone="subdued">
+                      Projected LTV
+                    </Text>
+                    <Text variant="bodySm" as="p">
+                      ${(clv.projectedLTV / 100).toFixed(2)}
+                    </Text>
+                  </Box>
+                </InlineStack>
+              </BlockStack>
+            ))}
+          </BlockStack>
+        </Card>
+      )}
+    </BlockStack>
+  );
+}
+
