@@ -1,0 +1,171 @@
+name: Production Monitoring
+
+# Run health checks every 15 minutes
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  health-check:
+    name: Production Health Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run health check
+        id: health
+        run: |
+          chmod +x scripts/ops/check-production-health.sh
+          ./scripts/ops/check-production-health.sh
+        env:
+          APP_URL: https://hotdash-staging.fly.dev
+        continue-on-error: true
+
+      - name: Check health status
+        run: |
+          # Parse health check output for failures
+          if grep -q "UNHEALTHY" health-check.log 2>/dev/null; then
+            echo "::error::Production health check failed"
+            exit 1
+          elif grep -q "DEGRADED" health-check.log 2>/dev/null; then
+            echo "::warning::Production health is degraded"
+          else
+            echo "::notice::Production health check passed"
+          fi
+
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Production Health Check Failed';
+            const body = `
+            ## Production Health Check Alert
+            
+            **Status:** Failed
+            **Timestamp:** ${new Date().toISOString()}
+            **Workflow:** ${context.workflow}
+            **Run:** ${context.runNumber}
+            
+            ### Details
+            
+            The automated production health check has detected issues.
+            
+            ### Actions Required
+            
+            1. Review the workflow logs: ${context.payload.repository.html_url}/actions/runs/${context.runId}
+            2. Check the monitoring dashboard: /api/monitoring/dashboard
+            3. Review active alerts: /api/monitoring/alerts
+            4. Investigate and resolve issues
+            5. Close this issue once resolved
+            
+            ### Links
+            
+            - [Workflow Run](${context.payload.repository.html_url}/actions/runs/${context.runId})
+            - [Monitoring Dashboard](https://hotdash-staging.fly.dev/api/monitoring/dashboard)
+            - [Health Endpoint](https://hotdash-staging.fly.dev/api/monitoring/health)
+            
+            ---
+            
+            *This issue was automatically created by the production monitoring workflow.*
+            `;
+            
+            // Check if there's already an open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'production,monitoring,automated'
+            });
+            
+            const existingIssue = issues.data.find(issue => 
+              issue.title.includes('Production Health Check Failed')
+            );
+            
+            if (existingIssue) {
+              // Add comment to existing issue
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `Health check failed again at ${new Date().toISOString()}\n\nWorkflow run: ${context.payload.repository.html_url}/actions/runs/${context.runId}`
+              });
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['production', 'monitoring', 'automated', 'priority:high']
+              });
+            }
+
+  uptime-check:
+    name: Uptime Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check application availability
+        run: |
+          echo "Checking application availability..."
+          
+          # Check main application
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health || echo "000")
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ Application is available (HTTP $RESPONSE)"
+          else
+            echo "❌ Application is unavailable (HTTP $RESPONSE)"
+            exit 1
+          fi
+          
+          # Check monitoring endpoint
+          MONITOR_RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/api/monitoring/health || echo "000")
+          
+          if [ "$MONITOR_RESPONSE" = "200" ]; then
+            echo "✅ Monitoring endpoint is available (HTTP $MONITOR_RESPONSE)"
+          else
+            echo "⚠️ Monitoring endpoint returned HTTP $MONITOR_RESPONSE"
+          fi
+
+      - name: Create downtime alert
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Production Application Downtime Detected',
+              body: `
+              ## Downtime Alert
+              
+              **Status:** Application Unavailable
+              **Timestamp:** ${new Date().toISOString()}
+              **Workflow:** ${context.workflow}
+              
+              The production application is not responding to health checks.
+              
+              ### Immediate Actions
+              
+              1. Check Fly.io status: https://fly.io/dashboard
+              2. Review application logs: \`flyctl logs --app hotdash-staging\`
+              3. Check machine status: \`flyctl status --app hotdash-staging\`
+              4. Restart if necessary: \`flyctl apps restart hotdash-staging\`
+              
+              ### Links
+              
+              - [Workflow Run](${context.payload.repository.html_url}/actions/runs/${context.runId})
+              - [Fly.io Dashboard](https://fly.io/dashboard)
+              
+              ---
+              
+              *This issue was automatically created by the uptime monitoring workflow.*
+              `,
+              labels: ['production', 'downtime', 'critical', 'automated']
+            });
+

@@ -1,12 +1,59 @@
 /**
  * Analytics Utilities
- * 
+ *
  * ANALYTICS-002: Utility functions for action attribution and ROI measurement
  * Provides helper functions for analytics calculations and data processing
  */
 
 import type { ActionAttributionResult } from '~/services/analytics/action-attribution';
 import type { EnhancedActionAttributionResult } from '~/services/analytics/action-attribution-enhanced';
+
+// ============================================================================
+// Action Key Management Utilities
+// ============================================================================
+
+/**
+ * Set action key in session storage with timestamp
+ * Used for GA4 attribution tracking
+ */
+export function setActionKey(actionKey: string): void {
+  if (typeof window === 'undefined') return;
+  sessionStorage.setItem('hd_current_action', actionKey);
+  sessionStorage.setItem('hd_action_timestamp', Date.now().toString());
+}
+
+/**
+ * Get current action key from session storage
+ */
+export function getCurrentActionKey(): string | null {
+  if (typeof window === 'undefined') return null;
+  return sessionStorage.getItem('hd_current_action');
+}
+
+/**
+ * Clear action key and timestamp from session storage
+ */
+export function clearActionKey(): void {
+  if (typeof window === 'undefined') return;
+  sessionStorage.removeItem('hd_current_action');
+  sessionStorage.removeItem('hd_action_timestamp');
+}
+
+/**
+ * Check if action key is expired (>24 hours)
+ */
+export function isActionKeyExpired(): boolean {
+  if (typeof window === 'undefined') return true;
+
+  const timestamp = sessionStorage.getItem('hd_action_timestamp');
+  if (!timestamp) return true;
+
+  const timestampMs = parseInt(timestamp, 10);
+  const ageMs = Date.now() - timestampMs;
+  const twentyFourHoursMs = 24 * 60 * 60 * 1000;
+
+  return ageMs > twentyFourHoursMs;
+}
 
 // ============================================================================
 // ROI Calculation Utilities

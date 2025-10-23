@@ -23,6 +23,21 @@ primary_region = 'ord'
   min_machines_running = 1
   processes = ['app']
 
+  # Health checks for monitoring
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "60s"
+    method = "GET"
+    timeout = "10s"
+    path = "/api/monitoring/health"
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
