@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { json } from "react-router";
-import { seoAuditor, type SEOAuditResult } from "../../lib/seo/seo-audit";
-import { seoOptimizer, type PageSEOData } from "../../lib/seo/seo-optimization";
+import { seoAuditor, type SEOAuditResult } from "~/lib/seo/seo-audit";
+import { seoOptimizer, type PageSEOData } from "~/lib/seo/seo-optimization";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
