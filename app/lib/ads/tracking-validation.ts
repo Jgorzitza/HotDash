@@ -60,26 +60,20 @@ export function validateUTMParameters(params: Partial<UTMParameters>): Validatio
   const warnings: string[] = [];
 
   // Required parameters
-  if (!params.utm_source) {
-    errors.push('utm_source is required');
-  } else if (params.utm_source.length === 0) {
-    errors.push('utm_source cannot be empty');
+  if (!params.utm_source || params.utm_source.length === 0) {
+    errors.push(params.utm_source === '' ? 'utm_source cannot be empty' : 'utm_source is required');
   } else if (params.utm_source.length > 100) {
     warnings.push('utm_source is longer than 100 characters');
   }
 
-  if (!params.utm_medium) {
-    errors.push('utm_medium is required');
-  } else if (params.utm_medium.length === 0) {
-    errors.push('utm_medium cannot be empty');
+  if (!params.utm_medium || params.utm_medium.length === 0) {
+    errors.push(params.utm_medium === '' ? 'utm_medium cannot be empty' : 'utm_medium is required');
   } else if (params.utm_medium.length > 100) {
     warnings.push('utm_medium is longer than 100 characters');
   }
 
-  if (!params.utm_campaign) {
-    errors.push('utm_campaign is required');
-  } else if (params.utm_campaign.length === 0) {
-    errors.push('utm_campaign cannot be empty');
+  if (!params.utm_campaign || params.utm_campaign.length === 0) {
+    errors.push(params.utm_campaign === '' ? 'utm_campaign cannot be empty' : 'utm_campaign is required');
   } else if (params.utm_campaign.length > 100) {
     warnings.push('utm_campaign is longer than 100 characters');
   }
