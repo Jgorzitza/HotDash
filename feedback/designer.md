@@ -45,10 +45,5 @@ Manager can see your progress via:
 
 ## Feedback Log
 
-*This section is for reference only. Actual progress is logged to the database.*
-
-### 2025-10-23
-
-**Status**: Ready to work
-**Next Task**: Use `npx tsx --env-file=.env scripts/agent/get-my-tasks.ts designer` to get your tasks
-**Database Status**: All feedback goes to database via `logDecision()`
+*All feedback is logged to the database via `logDecision()` or progress scripts.*
+*This file is for reference only - do not add content here.*
