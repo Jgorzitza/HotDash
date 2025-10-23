@@ -1,5 +1,4 @@
 import { Link } from "react-router";
-import { getApprovalCounts, getPendingApprovals } from "~/services/approvals";
 import { useEffect, useState } from "react";
 
 interface ApprovalsQueueTileProps {
@@ -24,34 +23,25 @@ export function ApprovalsQueueTile({
     const loadData = async () => {
       try {
         setLoading(true);
-
-        // Get pending approvals to find oldest
-        const pendingApprovals = await getPendingApprovals();
-        const counts = await getApprovalCounts();
+        // Fetch summary via API to avoid server-only imports on client
+        const res = await fetch("/api/approvals/summary");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        const counts = json?.data?.counts ?? {};
+        const oldestISO: string | null = json?.data?.oldestPendingISO ?? null;
 
         setPendingCount(counts.pending_review || 0);
 
-        if (pendingApprovals.length > 0) {
-          // Find the oldest pending approval
-          const oldest = pendingApprovals.reduce((oldest, current) => {
-            const oldestDate = new Date(oldest.created_at);
-            const currentDate = new Date(current.created_at);
-            return currentDate < oldestDate ? current : oldest;
-          });
-
-          const oldestDate = new Date(oldest.created_at);
+        if (oldestISO) {
+          const oldestDate = new Date(oldestISO);
           const now = new Date();
           const diffMs = now.getTime() - oldestDate.getTime();
           const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
           const diffDays = Math.floor(diffHours / 24);
 
-          if (diffDays > 0) {
-            setOldestPendingTime(`${diffDays}d ago`);
-          } else if (diffHours > 0) {
-            setOldestPendingTime(`${diffHours}h ago`);
-          } else {
-            setOldestPendingTime("Just now");
-          }
+          if (diffDays > 0) setOldestPendingTime(`${diffDays}d ago`);
+          else if (diffHours > 0) setOldestPendingTime(`${diffHours}h ago`);
+          else setOldestPendingTime("Just now");
         } else {
           setOldestPendingTime("None");
         }
