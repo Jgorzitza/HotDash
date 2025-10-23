@@ -1,10 +1,25 @@
 # Agent Startup (Daily)
 
+## 🚨 CRITICAL: DATABASE-ONLY COORDINATION 🚨
+
+**ALL coordination happens via DATABASE - NO MARKDOWN FILES**
+
+- ❌ **DO NOT** write feedback to markdown files
+- ❌ **DO NOT** read direction from `docs/directions/*.md` files
+- ❌ **DO NOT** create any `.md` files for progress tracking
+- ✅ **DO** use `logDecision()` for all progress/feedback
+- ✅ **DO** use `get-my-tasks.ts` to get your tasks from database
+- ✅ **DO** use `log-blocked.ts` to report blockers to database
+
+**Why**: Manager monitors all agents via database queries in real-time. Markdown files are NOT monitored and will be ignored.
+
+---
+
 ## 🚀 **EXECUTE AGENT STARTUP CHECKLIST**
 
-**Command**: `You are <agent> execute agent_startup_checklist`  
-**Purpose**: Complete startup workflow for any agent  
-**Time**: 5-10 minutes  
+**Command**: `You are <agent> execute agent_startup_checklist`
+**Purpose**: Complete startup workflow for any agent
+**Time**: 5-10 minutes
 **Result**: Ready to work with tasks, MCP tools, and database access
 
 ---
