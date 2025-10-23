@@ -1,8 +1,10 @@
 /**
  * Growth Engine Action Queue Infrastructure
- * 
+ *
  * Implements the unified Action Queue system for Growth Engine phases 9-12
  * Provides standardized contract for all specialist agents to emit actions
+ *
+ * Updated: DATA-002 - Added attribution tracking and ML-based ranking
  */
 
 export interface ActionQueueItem {
@@ -28,23 +30,39 @@ export interface ActionQueueItem {
   freshness_label: string; // "GSC 48-72h lag", "Real-time", etc.
   created_at: string; // ISO timestamp
   agent: string; // which agent created this action
+  // Attribution tracking (DATA-002)
+  action_key?: string; // GA4 tracking key
+  expected_revenue?: number; // Expected revenue
+  realized_revenue_7d?: number; // Actual revenue (7d window)
+  realized_revenue_14d?: number; // Actual revenue (14d window)
+  realized_revenue_28d?: number; // Actual revenue (28d window)
+  conversion_rate?: number; // Conversion rate from GA4
+  execution_count?: number; // Historical execution count
+  success_count?: number; // Historical success count
+  avg_realized_roi?: number; // Average realized ROI
+  ml_score?: number; // ML-based ranking score
+  ranking_version?: string; // Ranking algorithm version
 }
 
 /**
- * Ranking algorithm for Action Queue
+ * Ranking algorithm for Action Queue (v1_basic)
  * Primary: Expected Revenue × Confidence × Ease
  * Tie-breaker 1: Freshness (newer data ranks higher)
  * Tie-breaker 2: Risk tier (lower risk ranks higher)
+ *
+ * NOTE: This is the basic v1 algorithm. For optimized ML-based ranking,
+ * use ActionQueueOptimizer from app/services/analytics/action-queue-optimizer.ts
+ * which implements v2_hybrid and v3_ml algorithms with historical performance data.
  */
 export function calculateActionScore(action: ActionQueueItem): number {
   const baseScore = action.expected_impact.delta * action.confidence * getEaseMultiplier(action.ease);
-  
+
   // Freshness bonus (newer = higher score)
   const freshnessBonus = getFreshnessBonus(action.freshness_label);
-  
+
   // Risk penalty (lower risk = higher score)
   const riskPenalty = getRiskPenalty(action.risk_tier);
-  
+
   return baseScore + freshnessBonus - riskPenalty;
 }
 

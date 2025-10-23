@@ -142,34 +142,75 @@ model MCPCommandProtection {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model action_queue {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  type             String
-  target           String
-  draft            String
-  evidence         Json
-  expected_impact  Json
-  confidence       Decimal   @db.Decimal(3, 2)
-  ease             String
-  risk_tier        String
-  can_execute      Boolean   @default(true)
-  rollback_plan    String
-  freshness_label  String
-  agent            String
-  score            Decimal?  @default(dbgenerated("((((expected_impact ->> 'delta'::text))::numeric * confidence) *\nCASE ease\n    WHEN 'simple'::text THEN 1.0\n    WHEN 'medium'::text THEN 0.7\n    WHEN 'hard'::text THEN 0.4\n    ELSE NULL::numeric\nEND)")) @db.Decimal(10, 2)
-  status           String    @default("pending")
-  created_at       DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at       DateTime  @default(now()) @db.Timestamptz(6)
-  approved_at      DateTime? @db.Timestamptz(6)
-  executed_at      DateTime? @db.Timestamptz(6)
-  approved_by      String?
-  executed_by      String?
-  execution_result Json?
+  id                    String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type                  String
+  target                String
+  draft                 String
+  evidence              Json
+  expected_impact       Json
+  confidence            Decimal               @db.Decimal(3, 2)
+  ease                  String
+  risk_tier             String
+  can_execute           Boolean               @default(true)
+  rollback_plan         String
+  freshness_label       String
+  agent                 String
+  score                 Decimal?              @default(dbgenerated("((((expected_impact ->> 'delta'::text))::numeric * confidence) *\nCASE ease\n    WHEN 'simple'::text THEN 1.0\n    WHEN 'medium'::text THEN 0.7\n    WHEN 'hard'::text THEN 0.4\n    ELSE NULL::numeric\nEND)")) @db.Decimal(10, 2)
+  status                String                @default("pending")
+  created_at            DateTime              @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime              @default(now()) @db.Timestamptz(6)
+  approved_at           DateTime?             @db.Timestamptz(6)
+  executed_at           DateTime?             @db.Timestamptz(6)
+  approved_by           String?
+  executed_by           String?
+  execution_result      Json?
+  // Attribution tracking fields (DATA-002)
+  action_key            String?
+  expected_revenue      Decimal?              @db.Decimal(12, 2)
+  realized_revenue_7d   Decimal?              @default(0) @db.Decimal(12, 2)
+  realized_revenue_14d  Decimal?              @default(0) @db.Decimal(12, 2)
+  realized_revenue_28d  Decimal?              @default(0) @db.Decimal(12, 2)
+  conversion_rate       Decimal?              @db.Decimal(5, 2)
+  last_attribution_check DateTime?            @db.Timestamptz(6)
+  execution_count       Int?                  @default(0)
+  success_count         Int?                  @default(0)
+  avg_realized_roi      Decimal?              @default(0) @db.Decimal(12, 2)
+  ml_score              Decimal?              @db.Decimal(10, 2)
+  ranking_version       String?               @default("v1_basic")
+  // Relations
+  action_attributions   action_attribution[]
 
   @@index([agent], map: "idx_action_queue_agent")
   @@index([created_at], map: "idx_action_queue_created_at")
   @@index([score(sort: Desc)], map: "idx_action_queue_score")
   @@index([status], map: "idx_action_queue_status")
   @@index([type], map: "idx_action_queue_type")
+  @@index([action_key], map: "idx_action_queue_action_key")
+  @@index([realized_revenue_28d(sort: Desc)], map: "idx_action_queue_realized_revenue_28d")
+  @@index([ml_score(sort: Desc)], map: "idx_action_queue_ml_score")
+  @@schema("public")
+}
+
+model action_attribution {
+  id                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action_id           String       @db.Uuid
+  action_key          String
+  period_days         Int
+  sessions            Int          @default(0)
+  pageviews           Int          @default(0)
+  add_to_carts        Int          @default(0)
+  purchases           Int          @default(0)
+  revenue             Decimal      @default(0) @db.Decimal(12, 2)
+  conversion_rate     Decimal?     @db.Decimal(5, 2)
+  average_order_value Decimal?     @db.Decimal(12, 2)
+  recorded_at         DateTime     @default(now()) @db.Timestamptz(6)
+  created_at          DateTime     @default(now()) @db.Timestamptz(6)
+  // Relations
+  action_queue        action_queue @relation(fields: [action_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([action_id], map: "idx_action_attribution_action_id")
+  @@index([action_key], map: "idx_action_attribution_action_key")
+  @@index([period_days, recorded_at(sort: Desc)], map: "idx_action_attribution_period")
   @@schema("public")
 }
 
