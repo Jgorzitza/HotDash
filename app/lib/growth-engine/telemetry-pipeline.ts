@@ -118,35 +118,62 @@ export class GSCBulkExport {
 }
 
 // ============================================================================
-// GA4 Data API Integration
+// GA4 Data API Integration (REAL DATA)
 // ============================================================================
 
 export class GA4DataAPI {
   private propertyId: string;
-  
+  private client: any;
+
   constructor(propertyId: string) {
     this.propertyId = propertyId;
+    const config = getGaConfig();
+    this.client = config.mode === 'direct' ? createDirectGaClient(propertyId) : null;
   }
-  
+
   /**
    * Get GA4 data for landing pages
+   * Uses real production data from GA4 Data API
    */
   async getGA4Data(startDate: string, endDate: string): Promise<GA4Data[]> {
-    // This would call GA4 Data API
-    // For now, return mock data structure
-    return [
-      {
-        page: '/products/powder-board-xl',
-        sessions: 1200,
-        revenue: 8500,
-        conversions: 45,
-        bounceRate: 0.35,
-        avgSessionDuration: 180,
+    console.log(`[Telemetry Pipeline] Fetching GA4 data from ${startDate} to ${endDate}`);
+
+    if (!this.client) {
+      console.warn('[Telemetry Pipeline] GA4 client not available (mode not set to direct), using empty data');
+      return [];
+    }
+
+    try {
+      // Fetch landing page sessions from GA4
+      const sessions = await this.client.fetchLandingPageSessions({
+        start: startDate,
+        end: endDate
+      });
+
+      console.log(`[Telemetry Pipeline] Fetched ${sessions.length} landing pages from GA4`);
+
+      // Transform to GA4Data format
+      // Note: GA4 API doesn't provide all metrics in one call, so we'll use what's available
+      const ga4Data: GA4Data[] = sessions.map(session => ({
+        page: session.landingPage,
+        sessions: session.sessions,
+        revenue: 0, // Would need separate revenue query
+        conversions: 0, // Would need separate conversions query
+        bounceRate: 0, // Would need separate bounce rate query
+        avgSessionDuration: 0, // Would need separate duration query
         date: startDate
-      }
-    ];
+      }));
+
+      console.log(`[Telemetry Pipeline] Transformed ${ga4Data.length} GA4 records`);
+
+      return ga4Data;
+    } catch (error: any) {
+      console.error('[Telemetry Pipeline] GA4 fetch error:', error.message);
+      // Return empty array on error to allow pipeline to continue
+      return [];
+    }
   }
-  
+
   /**
    * Get freshness label for GA4 data
    */
