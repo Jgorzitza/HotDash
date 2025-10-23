@@ -4,8 +4,8 @@
  * ANALYTICS-004: Real-time monitoring dashboard
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useRevalidator } from '@remix-run/react';
+import type { LoaderFunctionArgs } from 'react-router';
+import { useLoaderData, useRevalidator } from 'react-router';
 import { useEffect } from 'react';
 import { ProductionMonitoringService } from '~/services/analytics/production-monitoring';
 import { logDecision } from '~/services/decisions.server';
@@ -23,10 +23,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       evidenceUrl: 'app/routes/analytics.monitoring.tsx'
     });
     
-    return json({ report, error: null });
+    return Response.json({ report, error: null });
   } catch (error) {
     console.error('Monitoring dashboard error:', error);
-    return json({
+    return Response.json({
       report: null,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
@@ -366,4 +366,3 @@ function RecommendationCard({ recommendation }: { recommendation: any }) {
     </div>
   );
 }
-

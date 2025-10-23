@@ -18,7 +18,6 @@ docs/manager/{PROJECT_PLAN.md,IMPLEMENTATION_PLAYBOOK.md}
 docs/planning/<agent>-<task>-<YYYYMMDD>.md  # TTL 2 days
 docs/specs/**
 docs/integrations/**
-feedback/<agent>/<YYYY-MM-DD>.md
 docs/_archive/**
 mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ```
@@ -31,8 +30,8 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 
 Before creating ANY new .md file:
 
-1. **Can this go in my feedback/database?**
-   - YES → Use `logDecision()` or `feedback/{agent}.md` and STOP
+1. **Can this go in the database?**
+   - YES → Use `logDecision()` and STOP
    - NO → Continue to Q2
 
 2. **Is this in DOCS_INDEX.md Tier 1-3?**
@@ -200,7 +199,7 @@ git log daily/2025-10-20 --oneline
 | Inventory                | `app/lib/inventory/`                                                     |
 | QA                       | `tests/`, review comments                                                |
 | Pilot                    | `tests/e2e/`, smoke tests                                                |
-| Manager                  | `docs/directions/`, `feedback/`, git coordination                        |
+| Manager                  | `docs/directions/`, database coordination, git coordination              |
 
 **If Conflict**: Report via `logDecision()` with `status: 'blocked'` and `blockedBy: 'Agent Y'` → Manager sees instantly
 

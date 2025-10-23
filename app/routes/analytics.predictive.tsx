@@ -4,8 +4,8 @@
  * ANALYTICS-003: Dashboard for predictive analytics insights
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useRevalidator } from '@remix-run/react';
+import type { LoaderFunctionArgs } from 'react-router';
+import { useLoaderData, useRevalidator } from 'react-router';
 import { useEffect } from 'react';
 import { generatePredictiveInsights } from '~/services/analytics/predictive-analytics';
 import { logDecision } from '~/services/decisions.server';
@@ -22,10 +22,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       evidenceUrl: 'app/routes/analytics.predictive.tsx'
     });
     
-    return json({ insights, error: null });
+    return Response.json({ insights, error: null });
   } catch (error) {
     console.error('Predictive dashboard error:', error);
-    return json({
+    return Response.json({
       insights: null,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
@@ -306,4 +306,3 @@ function ActionCard({ recommendation }: { recommendation: any }) {
     </div>
   );
 }
-

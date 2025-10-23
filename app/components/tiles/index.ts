@@ -10,6 +10,8 @@ export { IdeaPoolTile } from "./IdeaPoolTile";
 export { ApprovalsQueueTile } from "./ApprovalsQueueTile";
 export { CEOAgentTile } from "./CEOAgentTile";
 export { UnreadMessagesTile } from "./UnreadMessagesTile";
+export { SmokeTestResultsTile } from "./SmokeTestResultsTile";
+export type { SmokeTestData, SmokeTestResult } from "./SmokeTestResultsTile";
 // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
 export { SocialPerformanceTile } from "./SocialPerformanceTile";
 export { SEOImpactTile } from "./SEOImpactTile";

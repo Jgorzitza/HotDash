@@ -1,5 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
+import {
+  Modal,
+  TextField,
+  Select,
+  Banner,
+  Card,
+  Text,
+  BlockStack,
+  InlineStack,
+  Divider,
+  Badge,
+  List,
+  SkeletonBodyText,
+} from "@shopify/polaris";
 
 import type { OrderSummary } from "../../services/shopify/types";
 import type { WoWVariance } from "../../services/analytics/wow-variance";
@@ -151,123 +165,87 @@ export function SalesPulseModal({
     });
   };
 
-  if (!open) {
-    return null;
-  }
+  const actionOptions = [
+    { label: "Log follow-up", value: "acknowledge" },
+    { label: "Escalate to ops", value: "escalate" },
+    { label: "No action", value: "no_action" },
+  ];
 
   return (
-    <div className="occ-modal-backdrop" role="presentation">
-      <dialog
-        open
-        className="occ-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="sales-pulse-modal-title"
-        data-testid="sales-pulse-dialog"
-      >
-        <div className="occ-modal__header">
-          <div>
-            <h2 id="sales-pulse-modal-title">Sales Pulse — Details</h2>
-            <p className="occ-text-meta" style={{ margin: 0 }}>
-              Revenue today: {summary.currency}{" "}
-              {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            aria-label="Close sales pulse modal"
-          >
-            Close
-          </button>
-        </div>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title="Sales Pulse — Details"
+      primaryAction={{
+        content: ACTION_LABELS[selectedAction],
+        onAction: handleSubmit,
+        disabled: isSubmitting,
+        loading: isSubmitting,
+      }}
+    >
+      <Modal.Section>
+        <BlockStack gap="400">
+          <TextContainer>
+            <Text as="p" variant="bodySm" tone="subdued">
+              Revenue today: {summary.currency} {summary.totalRevenue.toFixed(2)} · Orders: {summary.orderCount}
+            </Text>
+          </TextContainer>
 
-        <div className="occ-modal__body">
-          <section className="occ-modal__section">
-            <h3>Snapshot (Last 24h)</h3>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <p style={{ margin: 0 }}>
-                <strong>Revenue:</strong> {summary.currency}{" "}
-                {summary.totalRevenue.toFixed(2)}
-                {revenueVariance ? (
-                  <span
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: revenueVariance.trend === "up" ? "var(--occ-color-success)" : 
-                             revenueVariance.trend === "down" ? "var(--occ-color-error)" : 
-                             "var(--occ-text-secondary)",
-                      fontSize: "0.875rem",
-                      fontWeight: "500",
-                    }}
-                  >
-                    (WoW: {revenueVariance.variance > 0 ? "+" : ""}{revenueVariance.variance}% {revenueVariance.trend === "up" ? "↗" : revenueVariance.trend === "down" ? "↘" : "→"})
-                  </span>
-                ) : varianceLoading ? (
-                  <span
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: "var(--occ-text-secondary)",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    (Loading variance...)
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: "var(--occ-text-secondary)",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    (WoW variance: unavailable)
-                  </span>
-                )}
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong>Orders:</strong> {summary.orderCount}
-                {ordersVariance ? (
-                  <span
-                    style={{
-                      marginLeft: "0.5rem",
-                      color: ordersVariance.trend === "up" ? "var(--occ-color-success)" : 
-                             ordersVariance.trend === "down" ? "var(--occ-color-error)" : 
-                             "var(--occ-text-secondary)",
-                      fontSize: "0.875rem",
-                      fontWeight: "500",
-                    }}
-                  >
-                    (WoW: {ordersVariance.variance > 0 ? "+" : ""}{ordersVariance.variance}% {ordersVariance.trend === "up" ? "↗" : ordersVariance.trend === "down" ? "↘" : "→"})
-                  </span>
-                ) : null}
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong>Avg order:</strong> {summary.currency}{" "}
-                {summary.orderCount > 0
-                  ? (summary.totalRevenue / summary.orderCount).toFixed(2)
-                  : "0.00"}
-              </p>
-            </div>
+          {fetcher.data?.error && (
+            <Banner tone="critical">
+              <p>{fetcher.data.error}</p>
+            </Banner>
+          )}
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Snapshot (Last 24h)
+            </Text>
+            <Card>
+              <BlockStack gap="200">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Revenue:</Text>
+                  <InlineStack gap="200" blockAlign="center">
+                    <Text as="span">{summary.currency} {summary.totalRevenue.toFixed(2)}</Text>
+                    {varianceLoading ? (
+                      <SkeletonBodyText lines={1} />
+                    ) : revenueVariance ? (
+                      <Badge tone={revenueVariance.trend === "up" ? "success" : revenueVariance.trend === "down" ? "critical" : "info"}>
+                        WoW: {revenueVariance.variance > 0 ? "+" : ""}{revenueVariance.variance}% {revenueVariance.trend === "up" ? "↗" : revenueVariance.trend === "down" ? "↘" : "→"}
+                      </Badge>
+                    ) : (
+                      <Text as="span" tone="subdued" variant="bodySm">(WoW unavailable)</Text>
+                    )}
+                  </InlineStack>
+                </InlineStack>
+
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Orders:</Text>
+                  <InlineStack gap="200" blockAlign="center">
+                    <Text as="span">{summary.orderCount}</Text>
+                    {ordersVariance && (
+                      <Badge tone={ordersVariance.trend === "up" ? "success" : ordersVariance.trend === "down" ? "critical" : "info"}>
+                        WoW: {ordersVariance.variance > 0 ? "+" : ""}{ordersVariance.variance}% {ordersVariance.trend === "up" ? "↗" : ordersVariance.trend === "down" ? "↘" : "→"}
+                      </Badge>
+                    )}
+                  </InlineStack>
+                </InlineStack>
+
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Avg order:</Text>
+                  <Text as="span">
+                    {summary.currency} {summary.orderCount > 0 ? (summary.totalRevenue / summary.orderCount).toFixed(2) : "0.00"}
+                  </Text>
+                </InlineStack>
+              </BlockStack>
+            </Card>
             {revenueVariance && (
-              <p
-                style={{
-                  fontSize: "0.75rem",
-                  color: "var(--occ-text-secondary)",
-                  margin: "0.5rem 0 0 0",
-                  fontStyle: "italic",
-                }}
-              >
+              <Text as="p" variant="bodySm" tone="subdued">
                 WoW variance: Current week vs previous week comparison
-              </p>
+              </Text>
             )}
-          </section>
+          </BlockStack>
+
+          <Divider />
 
           <section className="occ-modal__section">
             <h3>Top SKUs</h3>

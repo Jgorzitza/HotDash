@@ -5,8 +5,8 @@
  * Displays real-time performance metrics, insights, and optimization recommendations
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useRevalidator } from '@remix-run/react';
+import type { LoaderFunctionArgs } from 'react-router';
+import { useLoaderData, useRevalidator } from 'react-router';
 import { useEffect } from 'react';
 import { PerformanceOptimizationDashboard } from '~/components/analytics/PerformanceOptimizationDashboard';
 import { GrowthEnginePerformanceAnalyzer } from '~/lib/growth-engine/performance-analysis';
@@ -59,7 +59,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     });
     
-    return json({
+    return Response.json({
       analysis,
       optimization,
       timestamp: new Date().toISOString()
@@ -75,7 +75,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       evidenceUrl: 'app/routes/analytics.performance.tsx'
     });
     
-    return json({
+    return Response.json({
       analysis: null,
       optimization: null,
       error: error instanceof Error ? error.message : 'Unknown error',
@@ -160,4 +160,3 @@ export default function PerformanceAnalytics() {
     </div>
   );
 }
-

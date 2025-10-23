@@ -60,6 +60,11 @@ artifacts/
 *.deb
 feedback/img/
 
+# Feedback is database-only - no markdown files allowed
+feedback/**/*.md
+!feedback/README.md
+!feedback/archive/**
+
 # OS junk
 .DS_Store
 Thumbs.db

@@ -5,8 +5,8 @@
  * Real-time ROAS tracking, alerts, and optimization recommendations
  */
 
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useRevalidator } from '@remix-run/react';
+import type { LoaderFunctionArgs } from 'react-router';
+import { useLoaderData, useRevalidator } from 'react-router';
 import { useEffect } from 'react';
 import {
   Page,
@@ -99,7 +99,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     DEFAULT_MONITORING_CONFIG
   );
 
-  return json({ dashboard });
+  return Response.json({ dashboard });
 }
 
 export default function AdsDashboard() {
@@ -302,4 +302,3 @@ export default function AdsDashboard() {
     </Page>
   );
 }
-
