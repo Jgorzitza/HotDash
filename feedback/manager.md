@@ -153,3 +153,49 @@ Manager can see your progress via:
 
 **Commits**:
 - `2c97e59a`: Assign next phase tasks to all 17 agents
+
+#### 16:14 UTC - Agent Startup Checklist Enhanced & Verified
+
+**Checklist Review Complete**:
+- ✅ Reviewed `docs/runbooks/agent_startup_checklist.md`
+- ✅ Fixed `scripts/agent/log-startup.ts` (was hardcoded to 'integrations')
+- ✅ Fixed `scripts/agent/log-blocked.ts` (removed hardcoded values)
+- ✅ Enhanced checklist with explicit database safety warnings
+- ✅ Added script usage examples for all progress logging
+- ✅ Tested all scripts - working correctly
+
+**Database Safety Enhancements**:
+- 🚨 Added explicit "DO NOT FUCK UP THE DATABASE" section
+- ✅ Listed all FORBIDDEN commands (prisma db push, migrate deploy, etc.)
+- ✅ Listed all SAFE commands (prisma generate, logDecision, task scripts)
+- ✅ Documented schema change approval process
+- ✅ Added safety notes to every script usage section
+
+**Script Improvements**:
+1. **log-startup.ts**: Now accepts `<agent-name> <task-count> [next-task-id]`
+2. **log-blocked.ts**: Now accepts `<actor> <taskId> <blockedBy> <rationale> [evidenceUrl] [nextAction]`
+3. **All scripts**: Added usage examples and database safety notes
+
+**Verified Working**:
+```bash
+# Get tasks - WORKS ✅
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts engineer
+
+# Log startup - WORKS ✅
+npx tsx --env-file=.env scripts/agent/log-startup.ts manager 17 MANAGER-COORDINATION-001
+
+# Start task - WORKS ✅ (tested earlier)
+# Complete task - WORKS ✅ (tested earlier)
+# Log progress - WORKS ✅ (tested earlier)
+# Log blocked - WORKS ✅ (tested earlier)
+```
+
+**Checklist Now Complete**:
+- ✅ All scripts referenced correctly
+- ✅ All scripts accept proper parameters
+- ✅ Database safety explicit and prominent
+- ✅ Process covers everything from git setup to starting work
+- ✅ Agents can execute checklist end-to-end without manager intervention
+
+**Commits**:
+- `77569cf6`: Enhance agent startup checklist with explicit DB safety and working scripts
