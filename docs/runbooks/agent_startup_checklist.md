@@ -1,5 +1,14 @@
 # Agent Startup (Daily)
 
+## 🚀 **EXECUTE AGENT STARTUP CHECKLIST**
+
+**Command**: `You are <agent> execute agent_startup_checklist`  
+**Purpose**: Complete startup workflow for any agent  
+**Time**: 5-10 minutes  
+**Result**: Ready to work with tasks, MCP tools, and database access
+
+---
+
 ## PATH
 
 - [ ] Navigate to repo root ~/HotDash/hot-dash/ or /home/justin/HotDash/hot-dash/
@@ -97,19 +106,27 @@ git push origin agent-launch-20251023
       "Direction misaligned with North Star/Operating Model — please confirm or revise."
       (Agents hold Manager accountable for alignment.)
 
-## 2) Tasks & Direction (30 sec) [DATABASE-DRIVEN]
+## 2) Get Your Tasks (30 sec) [DATABASE-DRIVEN]
 
-**NEW (2025-10-22)**: Query database for your tasks instead of reading markdown files
+**⚠️ CRITICAL: Get your tasks from database, not markdown files**
 
 ```bash
 # Get all your tasks (shows next unblocked task automatically)
 npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <your-agent>
+
+# Examples:
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts engineer
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts qa-helper
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts data
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts pilot
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts analytics
+npx tsx --env-file=.env scripts/agent/get-my-tasks.ts support
 ```
 
-- [ ] Query your tasks from database
-- [ ] Note **next task** to start (highest priority, no unmet dependencies)
-- [ ] Review acceptance criteria and allowed paths
-- [ ] Log startup via `logDecision()`:
+- [ ] **Query your tasks** from database
+- [ ] **Note next task** to start (highest priority, no unmet dependencies)
+- [ ] **Review acceptance criteria** and allowed paths
+- [ ] **Log startup completion**:
   ```typescript
   await logDecision({
     scope: "build",
@@ -257,6 +274,12 @@ await logDecision({
   - package.json setup = `prisma generate` ONLY (no db modifications)
   - Schema changes require CEO approval + manual application via Manager
   - See RULES.md "Database Safety" section for full policy
+- [ ] **DO NOT FUCK UP THE DATABASE**: 
+  - ❌ NO `prisma db push` commands
+  - ❌ NO `prisma migrate deploy` commands  
+  - ❌ NO direct database modifications
+  - ✅ ONLY `prisma generate` for client updates
+  - ✅ Schema changes via Manager approval only
 - [ ] Keep changes molecule-sized (≤ 2 days); commit early with Issue reference:
       `Refs #<issue>` → final slice uses `Fixes #<issue>`.
 
@@ -300,6 +323,14 @@ await logDecision({
 - [ ] **Start your next task** (from step 2):
   ```bash
   npx tsx --env-file=.env scripts/agent/start-task.ts <TASK-ID>
+  
+  # Examples:
+  npx tsx --env-file=.env scripts/agent/start-task.ts ENG-052
+  npx tsx --env-file=.env scripts/agent/start-task.ts QA-001
+  npx tsx --env-file=.env scripts/agent/start-task.ts SECURITY-AUDIT-001
+  npx tsx --env-file=.env scripts/agent/start-task.ts PILOT-001
+  npx tsx --env-file=.env scripts/agent/start-task.ts ANALYTICS-001
+  npx tsx --env-file=.env scripts/agent/start-task.ts SUPPORT-001
   ```
 
 - [ ] **Begin implementation** - Do not report "ready to start"
