@@ -10,8 +10,8 @@
  */
 
 import { type ActionFunctionArgs } from "@remix-run/node";
-import { detectKeywordCannibalization } from "../../services/seo/cannibalization";
-import { logDecision } from "../../services/decisions.server";
+import { detectKeywordCannibalization } from "~/services/seo/cannibalization";
+import { logDecision } from "~/services/tasks.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   const startTime = Date.now();
