@@ -32,9 +32,18 @@ env:
   FLY_REGION: ord
 
 jobs:
+  deployment-gate:
+    name: Deployment Quality Gate
+    uses: ./.github/workflows/production-deployment-gate.yml
+    with:
+      deployment_reason: ${{ inputs.reason }}
+    secrets: inherit
+
   pre-deploy:
     name: Pre-deployment validation
     runs-on: ubuntu-latest
+    needs: deployment-gate
+    if: needs.deployment-gate.outputs.gate_passed == 'true'
     outputs:
       should_deploy: ${{ steps.validate.outputs.should_deploy }}
       commit_sha: ${{ steps.validate.outputs.commit_sha }}

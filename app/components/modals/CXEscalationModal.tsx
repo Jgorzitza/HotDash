@@ -145,236 +145,166 @@ export function CXEscalationModal({
     submit("mark_resolved");
   };
 
-  if (!open) {
-    return null;
-  }
-
   return (
-    <div className="occ-modal-backdrop" role="presentation">
-      <dialog
-        open
-        className="occ-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={`cx-escalation-${conversation.id}-title`}
-        data-testid="cx-escalation-dialog"
-      >
-        <div className="occ-modal__header">
-          <div>
-            <h2 id={`cx-escalation-${conversation.id}-title`}>
-              CX Escalation — {conversation.customerName}
-            </h2>
-            <p className="occ-text-meta" style={{ margin: 0 }}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`CX Escalation — ${conversation.customerName}`}
+      primaryAction={{
+        content: "Approve & send",
+        onAction: handleApprove,
+        disabled: !hasSuggestion || !reply.trim() || isSubmitting,
+        loading: isSubmitting,
+      }}
+      secondaryActions={[
+        {
+          content: "Edit",
+          onAction: handleEdit,
+          disabled: isSubmitting,
+        },
+        {
+          content: "Escalate",
+          onAction: handleEscalate,
+          disabled: isSubmitting,
+        },
+        {
+          content: "Mark resolved",
+          onAction: handleResolve,
+          disabled: isSubmitting,
+        },
+      ]}
+    >
+      <Modal.Section>
+        <BlockStack gap="400">
+          <TextContainer>
+            <Text as="p" variant="bodySm" tone="subdued">
               Conversation #{conversation.id} · Status: {conversation.status}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            aria-label="Close escalation modal"
-          >
-            Close
-          </button>
-        </div>
+            </Text>
+          </TextContainer>
 
-        <div className="occ-modal__body">
-          <section className="occ-modal__section">
-            <h3>Conversation history</h3>
-            <div className="occ-modal__messages" role="log" aria-live="polite">
-              {messageHistory.length === 0 ? (
-                <p className="occ-text-secondary">
-                  No recent messages available.
-                </p>
-              ) : (
-                messageHistory.map((message) => (
-                  <article
-                    key={message.id}
-                    className="occ-modal__message"
-                    data-author={message.author}
-                  >
-                    <header>
-                      <strong>{message.displayAuthor}</strong>
-                      <span>
-                        {new Date(message.createdAt).toLocaleString()}
-                      </span>
-                    </header>
-                    <p>{message.content}</p>
-                  </article>
-                ))
-              )}
-            </div>
-          </section>
+          {fetcher.data?.error && (
+            <Banner tone="critical" onDismiss={() => {}}>
+              <p>{fetcher.data.error}</p>
+            </Banner>
+          )}
 
-          <section className="occ-modal__section">
-            <h3>Suggested reply</h3>
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Conversation history
+            </Text>
+            <Card>
+              <Scrollable shadow style={{ maxHeight: "300px" }}>
+                <BlockStack gap="200">
+                  {messageHistory.length === 0 ? (
+                    <Text as="p" tone="subdued">
+                      No recent messages available.
+                    </Text>
+                  ) : (
+                    messageHistory.map((message) => (
+                      <Card key={message.id}>
+                        <BlockStack gap="100">
+                          <InlineStack align="space-between">
+                            <Text as="span" variant="bodyMd" fontWeight="semibold">
+                              {message.displayAuthor}
+                            </Text>
+                            <Text as="span" variant="bodySm" tone="subdued">
+                              {new Date(message.createdAt).toLocaleString()}
+                            </Text>
+                          </InlineStack>
+                          <Text as="p">{message.content}</Text>
+                        </BlockStack>
+                      </Card>
+                    ))
+                  )}
+                </BlockStack>
+              </Scrollable>
+            </Card>
+          </BlockStack>
+
+          <Divider />
+
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Suggested reply
+            </Text>
             {hasSuggestion ? (
-              <textarea
-                className="occ-textarea"
-                rows={6}
+              <TextField
+                label=""
                 value={reply}
-                onChange={(event) => setReply(event.currentTarget.value)}
-                aria-label="Reply text"
+                onChange={setReply}
+                multiline={6}
+                autoComplete="off"
                 disabled={isSubmitting}
+                helpText="Edit the AI-suggested reply before sending"
               />
             ) : (
-              <p className="occ-text-secondary">
-                No template available. Draft response manually or escalate.
-              </p>
+              <Banner tone="info">
+                <p>No template available. Draft response manually or escalate.</p>
+              </Banner>
             )}
-          </section>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>Internal note</h3>
-            <textarea
-              className="occ-textarea"
-              rows={3}
+          <Divider />
+
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Internal note
+            </Text>
+            <TextField
+              label=""
               value={note}
-              onChange={(event) => setNote(event.currentTarget.value)}
+              onChange={setNote}
+              multiline={3}
               placeholder="Add context for audit trail"
+              autoComplete="off"
               disabled={isSubmitting}
             />
-          </section>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>Grade AI Response (1-5 scale)</h3>
-            <div
-              className="occ-modal__grading"
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-            >
-              <div className="occ-grade-control">
-                <label
-                  htmlFor={`tone-grade-${conversation.id}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <span>Tone</span>
-                  <span aria-live="polite">{toneGrade}/5</span>
-                </label>
-                <input
-                  type="range"
-                  id={`tone-grade-${conversation.id}`}
-                  min="1"
-                  max="5"
-                  step="1"
-                  value={toneGrade}
-                  onChange={(e) => setToneGrade(Number(e.target.value))}
-                  aria-label="Grade response tone from 1 (poor) to 5 (excellent)"
-                  disabled={isSubmitting}
-                  style={{ width: "100%" }}
-                />
-              </div>
+          <Divider />
 
-              <div className="occ-grade-control">
-                <label
-                  htmlFor={`accuracy-grade-${conversation.id}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <span>Accuracy</span>
-                  <span aria-live="polite">{accuracyGrade}/5</span>
-                </label>
-                <input
-                  type="range"
-                  id={`accuracy-grade-${conversation.id}`}
-                  min="1"
-                  max="5"
-                  step="1"
-                  value={accuracyGrade}
-                  onChange={(e) => setAccuracyGrade(Number(e.target.value))}
-                  aria-label="Grade response accuracy from 1 (poor) to 5 (excellent)"
-                  disabled={isSubmitting}
-                  style={{ width: "100%" }}
-                />
-              </div>
-
-              <div className="occ-grade-control">
-                <label
-                  htmlFor={`policy-grade-${conversation.id}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  <span>Policy Compliance</span>
-                  <span aria-live="polite">{policyGrade}/5</span>
-                </label>
-                <input
-                  type="range"
-                  id={`policy-grade-${conversation.id}`}
-                  min="1"
-                  max="5"
-                  step="1"
-                  value={policyGrade}
-                  onChange={(e) => setPolicyGrade(Number(e.target.value))}
-                  aria-label="Grade policy compliance from 1 (poor) to 5 (excellent)"
-                  disabled={isSubmitting}
-                  style={{ width: "100%" }}
-                />
-              </div>
-            </div>
-          </section>
-
-          {fetcher.data?.error ? (
-            <p className="occ-feedback occ-feedback--error" role="alert">
-              {fetcher.data.error}
-            </p>
-          ) : null}
-        </div>
-
-        <div className="occ-modal__footer">
-          <div className="occ-modal__footer-actions">
-            <button
-              type="button"
-              className="occ-button occ-button--primary"
-              onClick={handleApprove}
-              disabled={!hasSuggestion || !reply.trim() || isSubmitting}
-            >
-              Approve &amp; send
-            </button>
-            <button
-              type="button"
-              className="occ-button occ-button--secondary"
-              onClick={handleEdit}
-              disabled={isSubmitting}
-              aria-label="Edit suggested reply before approval"
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              className="occ-button occ-button--secondary"
-              onClick={handleEscalate}
-              disabled={isSubmitting}
-            >
-              Escalate
-            </button>
-            <button
-              type="button"
-              className="occ-button occ-button--secondary"
-              onClick={handleResolve}
-              disabled={isSubmitting}
-            >
-              Mark resolved
-            </button>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </button>
-        </div>
-      </dialog>
-    </div>
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Grade AI Response (1-5 scale)
+            </Text>
+            <BlockStack gap="400">
+              <RangeSlider
+                label="Tone"
+                value={toneGrade}
+                onChange={setToneGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade response tone from 1 (poor) to 5 (excellent)"
+              />
+              <RangeSlider
+                label="Accuracy"
+                value={accuracyGrade}
+                onChange={setAccuracyGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade response accuracy from 1 (poor) to 5 (excellent)"
+              />
+              <RangeSlider
+                label="Policy Compliance"
+                value={policyGrade}
+                onChange={setPolicyGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade policy compliance from 1 (poor) to 5 (excellent)"
+              />
+            </BlockStack>
+          </BlockStack>
+        </BlockStack>
+      </Modal.Section>
+    </Modal>
   );
 }

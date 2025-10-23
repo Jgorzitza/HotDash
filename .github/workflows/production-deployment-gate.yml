@@ -1,0 +1,258 @@
+name: Production Deployment Gate
+
+# This workflow enforces quality gates before production deployment
+# All checks must pass before deployment can proceed
+
+on:
+  workflow_call:
+    inputs:
+      deployment_reason:
+        description: 'Reason for deployment'
+        required: true
+        type: string
+    outputs:
+      gate_passed:
+        description: 'Whether all gates passed'
+        value: ${{ jobs.summary.outputs.all_passed }}
+      test_results:
+        description: 'Test results summary'
+        value: ${{ jobs.summary.outputs.test_summary }}
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  statuses: write
+
+jobs:
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.result.outputs.passed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: >-
+            detect
+            --source .
+            --config .gitleaks.toml
+            --baseline-path security/gitleaks-baseline.json
+            --redact
+            --report-format sarif
+            --report-path results.sarif
+
+      - name: Upload SARIF results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
+
+      - name: Check for vulnerabilities
+        run: npm audit --audit-level=high
+
+      - name: Set result
+        id: result
+        if: success()
+        run: echo "passed=true" >> $GITHUB_OUTPUT
+
+  automated-tests:
+    name: Automated Test Suite
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.result.outputs.passed }}
+      test_count: ${{ steps.tests.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run full CI suite
+        id: tests
+        run: |
+          npm run ci
+          echo "count=$(npm run test:unit -- --reporter=json | jq '.numTotalTests')" >> $GITHUB_OUTPUT
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: artifacts/**/*.xml
+          if-no-files-found: ignore
+
+      - name: Set result
+        id: result
+        if: success()
+        run: echo "passed=true" >> $GITHUB_OUTPUT
+
+  performance-test:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.result.outputs.passed }}
+      lighthouse_score: ${{ steps.lighthouse.outputs.score }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Run Lighthouse tests
+        id: lighthouse
+        run: |
+          npm run test:lighthouse
+          SCORE=$(cat artifacts/lighthouse/*.json | jq '.categories.performance.score * 100' | head -1)
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+
+      - name: Check performance threshold
+        run: |
+          SCORE=${{ steps.lighthouse.outputs.score }}
+          if (( $(echo "$SCORE < 80" | bc -l) )); then
+            echo "::error::Lighthouse performance score ($SCORE) below threshold (80)"
+            exit 1
+          fi
+
+      - name: Set result
+        id: result
+        if: success()
+        run: echo "passed=true" >> $GITHUB_OUTPUT
+
+  staging-health:
+    name: Staging Health Check
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.result.outputs.passed }}
+      health_status: ${{ steps.health.outputs.status }}
+    steps:
+      - name: Check staging health
+        id: health
+        run: |
+          HEALTH_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/health || echo "000")
+          
+          if [ "$HEALTH_CODE" = "200" ] || [ "$HEALTH_CODE" = "302" ]; then
+            echo "status=healthy" >> $GITHUB_OUTPUT
+            echo "✅ Staging is healthy (HTTP $HEALTH_CODE)"
+          else
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+            echo "::error::Staging is unhealthy (HTTP $HEALTH_CODE)"
+            exit 1
+          fi
+
+      - name: Check staging monitoring
+        run: |
+          MON_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://hotdash-staging.fly.dev/api/monitoring/health || echo "000")
+          
+          if [ "$MON_CODE" = "200" ]; then
+            echo "✅ Staging monitoring healthy"
+          else
+            echo "::warning::Staging monitoring returned HTTP $MON_CODE"
+          fi
+
+      - name: Set result
+        id: result
+        if: success()
+        run: echo "passed=true" >> $GITHUB_OUTPUT
+
+  ci-guards:
+    name: CI Guards Validation
+    runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.result.outputs.passed }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Dev MCP Ban Check
+        run: node scripts/ci/verify-dev-mcp-ban.cjs
+
+      - name: Docs Policy Check
+        run: node scripts/policy/check-docs.mjs
+
+      - name: Set result
+        id: result
+        if: success()
+        run: echo "passed=true" >> $GITHUB_OUTPUT
+
+  summary:
+    name: Gate Summary
+    runs-on: ubuntu-latest
+    needs: [security-scan, automated-tests, performance-test, staging-health, ci-guards]
+    if: always()
+    outputs:
+      all_passed: ${{ steps.check.outputs.all_passed }}
+      test_summary: ${{ steps.summary.outputs.summary }}
+    steps:
+      - name: Check all gates
+        id: check
+        run: |
+          SECURITY="${{ needs.security-scan.outputs.passed }}"
+          TESTS="${{ needs.automated-tests.outputs.passed }}"
+          PERFORMANCE="${{ needs.performance-test.outputs.passed }}"
+          STAGING="${{ needs.staging-health.outputs.passed }}"
+          CI_GUARDS="${{ needs.ci-guards.outputs.passed }}"
+          
+          echo "Security Scan: $SECURITY"
+          echo "Automated Tests: $TESTS"
+          echo "Performance Test: $PERFORMANCE"
+          echo "Staging Health: $STAGING"
+          echo "CI Guards: $CI_GUARDS"
+          
+          if [[ "$SECURITY" == "true" && "$TESTS" == "true" && "$PERFORMANCE" == "true" && "$STAGING" == "true" && "$CI_GUARDS" == "true" ]]; then
+            echo "all_passed=true" >> $GITHUB_OUTPUT
+            echo "✅ All deployment gates passed"
+          else
+            echo "all_passed=false" >> $GITHUB_OUTPUT
+            echo "::error::One or more deployment gates failed"
+            exit 1
+          fi
+
+      - name: Generate summary
+        id: summary
+        run: |
+          SUMMARY="Security: ${{ needs.security-scan.outputs.passed }}, Tests: ${{ needs.automated-tests.outputs.test_count }}, Lighthouse: ${{ needs.performance-test.outputs.lighthouse_score }}, Staging: ${{ needs.staging-health.outputs.health_status }}"
+          echo "summary=$SUMMARY" >> $GITHUB_OUTPUT
+          
+          echo "### Deployment Gate Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Gate | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Scan | ${{ needs.security-scan.outputs.passed == 'true' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Automated Tests | ${{ needs.automated-tests.outputs.passed == 'true' && '✅ Passed' || '❌ Failed' }} (${{ needs.automated-tests.outputs.test_count }} tests) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Performance Test | ${{ needs.performance-test.outputs.passed == 'true' && '✅ Passed' || '❌ Failed' }} (Lighthouse: ${{ needs.performance-test.outputs.lighthouse_score }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Staging Health | ${{ needs.staging-health.outputs.passed == 'true' && '✅ Passed' || '❌ Failed' }} (${{ needs.staging-health.outputs.health_status }}) |" >> $GITHUB_STEP_SUMMARY
+          echo "| CI Guards | ${{ needs.ci-guards.outputs.passed == 'true' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deployment Reason:** ${{ inputs.deployment_reason }}" >> $GITHUB_STEP_SUMMARY
+

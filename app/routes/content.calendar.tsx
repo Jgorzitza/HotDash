@@ -140,108 +140,81 @@ export async function action({ request }: ActionFunctionArgs) {
 // Component
 // ============================================================================
 
-export default function ContentCalendar() {
-  const { calendar, month, year, stats } = useLoaderData<typeof loader>();
+export default function ContentCalendarPage() {
+  const { calendar, month, year, stats, error } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const submit = useSubmit();
+
+  const handleNavigate = (newMonth: number, newYear: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('month', newMonth.toString());
+    url.searchParams.set('year', newYear.toString());
+    window.location.href = url.toString();
+  };
+
+  const handleSchedule = (data: any) => {
+    const formData = new FormData();
+    formData.append('_action', 'schedule');
+    Object.keys(data).forEach(key => {
+      formData.append(key, typeof data[key] === 'object' ? JSON.stringify(data[key]) : data[key]);
+    });
+    submit(formData, { method: 'post' });
+  };
+
+  const handleCancel = (id: string) => {
+    const formData = new FormData();
+    formData.append('_action', 'cancel');
+    formData.append('id', id);
+    submit(formData, { method: 'post' });
+  };
+
+  const handleReschedule = (id: string, newTime: string) => {
+    const formData = new FormData();
+    formData.append('_action', 'reschedule');
+    formData.append('id', id);
+    formData.append('scheduled_for', newTime);
+    submit(formData, { method: 'post' });
+  };
 
   return (
-    <div className="content-calendar">
-      <div className="calendar-header">
-        <h1>Content Calendar</h1>
-        <div className="calendar-nav">
-          <button>← Previous Month</button>
-          <span>
-            {getMonthName(month)} {year}
-          </span>
-          <button>Next Month →</button>
-        </div>
-      </div>
-
-      <div className="calendar-stats">
-        <div className="stat">
-          <span className="stat-label">Scheduled</span>
-          <span className="stat-value">{stats.totalScheduled}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">Drafts</span>
-          <span className="stat-value">{stats.totalDrafts}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">Published</span>
-          <span className="stat-value">{stats.totalPublished}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">Failed</span>
-          <span className="stat-value">{stats.totalFailed}</span>
-        </div>
-      </div>
-
-      <div className="calendar-grid">
-        <div className="calendar-weekdays">
-          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-            <div key={day} className="weekday">
-              {day}
-            </div>
-          ))}
-        </div>
-
-        {calendar.map((week, weekIdx) => (
-          <div key={weekIdx} className="calendar-week">
-            {week.days.map((day, dayIdx) => (
-              <CalendarDayCell key={dayIdx} day={day} />
-            ))}
-          </div>
-        ))}
-      </div>
-
-      <div className="calendar-legend">
-        <div className="legend-item">
-          <span className="badge badge-draft">Draft</span>
-          <span className="badge badge-scheduled">Scheduled</span>
-          <span className="badge badge-published">Published</span>
-          <span className="badge badge-failed">Failed</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============================================================================
-// Sub-components
-// ============================================================================
-
-function CalendarDayCell({ day }: { day: CalendarDay }) {
-  return (
-    <div
-      className={`calendar-day ${day.isToday ? "today" : ""} ${day.isPast ? "past" : ""}`}
-      data-date={day.date}
-    >
-      <div className="day-header">
-        <span className="day-number">{new Date(day.date).getDate()}</span>
-        {day.posts.length > 0 && (
-          <span className="post-count">{day.posts.length}</span>
+    <Page title="Content Calendar">
+      <BlockStack gap="400">
+        {error && (
+          <Banner tone="critical">
+            <Text as="p">{error}</Text>
+          </Banner>
         )}
-      </div>
 
-      <div className="day-posts">
-        {day.posts.slice(0, 3).map((post, idx) => (
-          <PostPreview key={idx} post={post} />
-        ))}
-        {day.posts.length > 3 && (
-          <div className="more-posts">+{day.posts.length - 3} more</div>
+        {actionData?.success && (
+          <Banner tone="success">
+            <Text as="p">{actionData.message}</Text>
+          </Banner>
         )}
-      </div>
-    </div>
+
+        {actionData?.error && (
+          <Banner tone="critical">
+            <Text as="p">{actionData.error}</Text>
+          </Banner>
+        )}
+
+        <ContentCalendar
+          calendar={calendar}
+          month={month}
+          year={year}
+          stats={stats}
+          onNavigate={handleNavigate}
+          onSchedule={handleSchedule}
+          onCancel={handleCancel}
+          onReschedule={handleReschedule}
+        />
+      </BlockStack>
+    </Page>
   );
 }
 
-function PostPreview({ post }: { post: CalendarPost }) {
-  return (
-    <div className={`post-preview status-${post.status}`}>
-      <span className="platform-icon">{getPlatformIcon(post.platform)}</span>
-      <span className="post-snippet">{post.content.slice(0, 30)}...</span>
-    </div>
-  );
-}
+import { ContentCalendar } from "~/components/content/ContentCalendar";
+
+
 
 // ============================================================================
 // Helper Functions
@@ -250,7 +223,7 @@ function PostPreview({ post }: { post: CalendarPost }) {
 function generateCalendar(
   year: number,
   month: number,
-  posts: CalendarPost[],
+  items: any[],
 ): CalendarWeek[] {
   const weeks: CalendarWeek[] = [];
   const firstDay = new Date(year, month, 1);
@@ -267,7 +240,7 @@ function generateCalendar(
     const date = new Date(year, month, 1 - (firstDayOfWeek - i));
     currentWeek.push({
       date: date.toISOString().split("T")[0],
-      posts: [],
+      items: [],
       isToday: false,
       isPast: date < today,
     });
@@ -280,7 +253,7 @@ function generateCalendar(
 
     currentWeek.push({
       date: dateStr,
-      posts: posts.filter((p) => p.scheduledFor?.startsWith(dateStr)),
+      items: items.filter((item) => item.scheduled_for?.startsWith(dateStr)),
       isToday: dateStr === today.toISOString().split("T")[0],
       isPast: date < today,
     });
