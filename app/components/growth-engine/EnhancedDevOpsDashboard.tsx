@@ -6,7 +6,7 @@
  */
 
 import { Card, Text, Button, Box, InlineStack, Badge, Spinner, EmptyState, List, Tabs, ProgressBar } from "@shopify/polaris";
-import { useFetcher } from "@remix-run/react";
+import { useFetcher } from "react-router";
 import { useState, useEffect } from "react";
 
 interface EnhancedDevOpsStatus {

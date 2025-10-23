@@ -1,5 +1,19 @@
 import { useEffect, useState } from "react";
 import { useFetcher } from "react-router";
+import {
+  Modal,
+  TextField,
+  Select,
+  Banner,
+  Card,
+  Text,
+  BlockStack,
+  InlineStack,
+  Divider,
+  Badge,
+  ProgressBar,
+  TextContainer,
+} from "@shopify/polaris";
 
 import type { InventoryAlert } from "../../services/shopify/types";
 import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
@@ -94,274 +108,157 @@ export function InventoryModal({ alert, open, onClose }: InventoryModalProps) {
     });
   };
 
-  if (!open) {
-    return null;
-  }
-
   // Calculate simple velocity metrics from available data
   const avgDailySales =
     alert.daysOfCover && alert.daysOfCover > 0
       ? (alert.quantityAvailable / alert.daysOfCover).toFixed(1)
       : "N/A";
 
+  const vendorOptions = [
+    { label: "Acme Distribution", value: "acme_distribution" },
+    { label: "Primary Supplier", value: "primary_supplier" },
+    { label: "Backup Vendor", value: "backup_vendor" },
+  ];
+
+  const actionOptions = Object.entries(ACTION_LABELS).map(([value, label]) => ({
+    label,
+    value,
+  }));
+
+  // Calculate stock level percentage for progress bar
+  const stockPercentage = alert.threshold > 0
+    ? Math.min(100, (alert.quantityAvailable / alert.threshold) * 100)
+    : 0;
+
   return (
-    <div className="occ-modal-backdrop" role="presentation">
-      <dialog
-        open
-        className="occ-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={`inventory-alert-${alert.variantId}-title`}
-        data-testid="inventory-alert-dialog"
-      >
-        <div className="occ-modal__header">
-          <div>
-            <h2 id={`inventory-alert-${alert.variantId}-title`}>
-              Inventory Alert — {alert.title}
-            </h2>
-            <p className="occ-text-meta" style={{ margin: 0 }}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`Inventory Alert — ${alert.title}`}
+      primaryAction={{
+        content: ACTION_LABELS[selectedAction],
+        onAction: submit,
+        disabled: isSubmitting,
+        loading: isSubmitting,
+      }}
+    >
+      <Modal.Section>
+        <BlockStack gap="400">
+          <TextContainer>
+            <Text as="p" variant="bodySm" tone="subdued">
               SKU: {alert.sku} · Variant ID: {alert.variantId}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            aria-label="Close inventory alert modal"
-          >
-            Close
-          </button>
-        </div>
+            </Text>
+          </TextContainer>
 
-        <div className="occ-modal__body">
-          <section className="occ-modal__section">
-            <h3>Current Status</h3>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.5rem",
-              }}
-            >
-              <p style={{ margin: 0 }}>
-                <strong>Current Stock:</strong> {alert.quantityAvailable} units
-              </p>
-              <p style={{ margin: 0 }}>
-                <strong>Threshold:</strong> {alert.threshold} units
-              </p>
-              {alert.daysOfCover != null && (
-                <p style={{ margin: 0 }}>
-                  <strong>Days of Cover:</strong> {alert.daysOfCover.toFixed(1)}{" "}
-                  days
-                </p>
-              )}
-            </div>
-          </section>
+          {fetcher.data?.error && (
+            <Banner tone="critical">
+              <p>{fetcher.data.error}</p>
+            </Banner>
+          )}
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Current Status
+            </Text>
+            <Card>
+              <BlockStack gap="300">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Current Stock:</Text>
+                  <Badge tone={stockPercentage < 50 ? "critical" : stockPercentage < 80 ? "warning" : "success"}>
+                    {alert.quantityAvailable} units
+                  </Badge>
+                </InlineStack>
+                <ProgressBar progress={stockPercentage} size="small" tone={stockPercentage < 50 ? "critical" : stockPercentage < 80 ? "primary" : "success"} />
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Threshold:</Text>
+                  <Text as="span">{alert.threshold} units</Text>
+                </InlineStack>
+                {alert.daysOfCover != null && (
+                  <InlineStack align="space-between" blockAlign="center">
+                    <Text as="span" fontWeight="semibold">Days of Cover:</Text>
+                    <Text as="span">{alert.daysOfCover.toFixed(1)} days</Text>
+                  </InlineStack>
+                )}
+              </BlockStack>
+            </Card>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>14-Day Velocity Analysis</h3>
-            <div
-              style={{
-                padding: "1rem",
-                background: "var(--occ-surface-subdued)",
-                borderRadius: "var(--occ-border-radius)",
-              }}
-            >
-              <p style={{ margin: "0 0 1rem 0" }}>
-                <strong>Avg daily sales:</strong> {avgDailySales} units
-              </p>
+          <Divider />
 
-              {/* Visual chart: Simple bar representation of 14-day trend */}
-              <div style={{ marginBottom: "1rem" }}>
-                <p
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "var(--occ-text-secondary)",
-                    margin: "0 0 0.5rem 0",
-                  }}
-                >
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              14-Day Velocity Analysis
+            </Text>
+            <Card>
+              <BlockStack gap="300">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="span" fontWeight="semibold">Avg daily sales:</Text>
+                  <Text as="span">{avgDailySales} units</Text>
+                </InlineStack>
+                <Text as="p" variant="bodySm" tone="subdued">
                   14-Day Trend (simplified visual - full charts in Phase 7-8)
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "2px",
-                    alignItems: "flex-end",
-                    height: "60px",
-                  }}
-                >
-                  {/* Generate simple bars for last 14 days - placeholder data */}
-                  {[
-                    3,
-                    2,
-                    4,
-                    2,
-                    5,
-                    3,
-                    2,
-                    4,
-                    3,
-                    5,
-                    4,
-                    2,
-                    3,
-                    Number(avgDailySales) || 2,
-                  ].map((value, index) => {
-                    const height = (value / 5) * 100; // Scale to percentage
-                    return (
-                      <div
-                        key={index}
-                        style={{
-                          flex: 1,
-                          height: `${height}%`,
-                          background: index === 13 ? "#008060" : "#CCCCCC",
-                          minHeight: "4px",
-                          borderRadius: "2px 2px 0 0",
-                          transition: "height 0.3s ease",
-                        }}
-                        title={`Day ${index + 1}: ${value} units`}
-                        aria-label={`Day ${index + 1}: ${value} units sold`}
-                      />
-                    );
-                  })}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: "0.625rem",
-                    color: "var(--occ-text-secondary)",
-                    marginTop: "0.25rem",
-                  }}
-                >
-                  <span>14 days ago</span>
-                  <span>Today</span>
-                </div>
-              </div>
+                </Text>
+                <Banner tone="info">
+                  <p>Full interactive charts with demand-forecast integration coming in Phase 7-8 (polaris-viz)</p>
+                </Banner>
+              </BlockStack>
+            </Card>
+          </BlockStack>
 
-              <p
-                style={{
-                  margin: 0,
-                  color: "var(--occ-text-secondary)",
-                  fontSize: "0.75rem",
-                  fontStyle: "italic",
-                }}
-              >
-                Note: Simplified visualization. Full interactive charts with
-                demand-forecast integration coming in Phase 7-8 (polaris-viz)
-              </p>
-            </div>
-          </section>
+          <Divider />
 
-          <section className="occ-modal__section">
-            <h3>Reorder Recommendation</h3>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-            >
-              <label className="occ-field">
-                <span className="occ-field__label">Reorder Quantity</span>
-                <input
-                  type="number"
-                  className="occ-input"
-                  min="1"
-                  step="1"
-                  value={reorderQuantity}
-                  onChange={(e) => setReorderQuantity(Number(e.target.value))}
-                  disabled={isSubmitting}
-                  aria-label="Enter reorder quantity in units"
-                />
-              </label>
-
-              <label className="occ-field">
-                <span className="occ-field__label">Vendor</span>
-                <select
-                  className="occ-select"
-                  value={vendor}
-                  onChange={(e) => setVendor(e.target.value)}
-                  disabled={isSubmitting}
-                  aria-label="Select vendor for purchase order"
-                >
-                  <option value="acme_distribution">Acme Distribution</option>
-                  <option value="primary_supplier">Primary Supplier</option>
-                  <option value="backup_vendor">Backup Vendor</option>
-                </select>
-              </label>
-
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "0.875rem",
-                  color: "var(--occ-text-secondary)",
-                }}
-              >
-                Lead Time: 7 days (estimated)
-              </p>
-            </div>
-          </section>
-
-          <section className="occ-modal__section">
-            <h3>Action</h3>
-            <label className="occ-field">
-              <span className="occ-field__label">What do you want to do?</span>
-              <select
-                className="occ-select"
-                value={selectedAction}
-                onChange={(e) =>
-                  setSelectedAction(e.target.value as InventoryAction)
-                }
-                disabled={isSubmitting}
-                aria-label="Select inventory action"
-              >
-                {Object.entries(ACTION_LABELS).map(([action, label]) => (
-                  <option key={action} value={action}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="occ-field">
-              <span className="occ-field__label">Notes (audit trail)</span>
-              <textarea
-                className="occ-textarea"
-                rows={3}
-                placeholder="Add context for the decision log"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                disabled={isSubmitting}
-                aria-label="Add notes for audit trail"
-              />
-            </label>
-
-            {fetcher.data?.error ? (
-              <p className="occ-feedback occ-feedback--error" role="alert">
-                {fetcher.data.error}
-              </p>
-            ) : null}
-          </section>
-        </div>
-
-        <div className="occ-modal__footer">
-          <div className="occ-modal__footer-actions">
-            <button
-              type="button"
-              className="occ-button occ-button--primary"
-              onClick={submit}
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Reorder Recommendation
+            </Text>
+            <TextField
+              label="Reorder Quantity"
+              type="number"
+              value={String(reorderQuantity)}
+              onChange={(value) => setReorderQuantity(Number(value))}
+              min={1}
+              step={1}
               disabled={isSubmitting}
-            >
-              {ACTION_LABELS[selectedAction]}
-            </button>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </button>
-        </div>
-      </dialog>
-    </div>
+              autoComplete="off"
+              helpText="Enter quantity in units"
+            />
+            <Select
+              label="Vendor"
+              options={vendorOptions}
+              value={vendor}
+              onChange={setVendor}
+              disabled={isSubmitting}
+              helpText="Select vendor for purchase order"
+            />
+            <Text as="p" variant="bodySm" tone="subdued">
+              Lead Time: 7 days (estimated)
+            </Text>
+          </BlockStack>
+
+          <Divider />
+
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Action
+            </Text>
+            <Select
+              label="What do you want to do?"
+              options={actionOptions}
+              value={selectedAction}
+              onChange={(value) => setSelectedAction(value as InventoryAction)}
+              disabled={isSubmitting}
+            />
+            <TextField
+              label="Notes (audit trail)"
+              value={note}
+              onChange={setNote}
+              multiline={3}
+              placeholder="Add context for the decision log"
+              autoComplete="off"
+              disabled={isSubmitting}
+            />
+          </BlockStack>
+        </BlockStack>
+      </Modal.Section>
+    </Modal>
   );
 }
