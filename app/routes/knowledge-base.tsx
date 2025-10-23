@@ -10,8 +10,8 @@
  * Growth Engine: HITL Learning System
  */
 
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import {
   Page,
   Layout,
@@ -47,7 +47,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Get recent articles
     const articles = await listArticles({ limit: 20 });
 
-    return json({
+    return Response.json({
       stats,
       health,
       articles,
@@ -55,7 +55,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("[KB Route] Error loading data:", error);
-    return json({
+    return Response.json({
       stats: {
         totalArticles: 0,
         articlesByCategory: {},
@@ -73,8 +73,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
       },
       articles: [],
       timestamp: new Date().toISOString(),
-      error: error.message,
-    });
+      error: (error as Error).message,
+    }, { status: 500 });
   }
 }
 
@@ -266,4 +266,3 @@ export default function KnowledgeBasePage() {
     </Page>
   );
 }
-

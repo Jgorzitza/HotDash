@@ -144,7 +144,7 @@ export function SalesPulseModal({
     formData.set("currency", summary.currency);
     formData.set("totalRevenue", String(summary.totalRevenue));
     formData.set("orderCount", String(summary.orderCount));
-    
+
     // Add WoW variance data for audit trail
     if (revenueVariance) {
       formData.set("revenueVariance", JSON.stringify(revenueVariance));
@@ -152,7 +152,7 @@ export function SalesPulseModal({
     if (ordersVariance) {
       formData.set("ordersVariance", JSON.stringify(ordersVariance));
     }
-    
+
     // Add timestamp and action metadata
     formData.set("timestamp", new Date().toISOString());
     formData.set("actionType", "sales_pulse_review");
@@ -163,6 +163,10 @@ export function SalesPulseModal({
       action: "/actions/sales-pulse/decide",
       encType: "application/x-www-form-urlencoded",
     });
+  };
+
+  const handleSubmit = () => {
+    submit(selectedAction);
   };
 
   const actionOptions = [
