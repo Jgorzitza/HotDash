@@ -272,7 +272,7 @@ function generateCalendar(
       const date = new Date(year, month + 1, i);
       currentWeek.push({
         date: date.toISOString().split("T")[0],
-        posts: [],
+        items: [],
         isToday: false,
         isPast: date < today,
       });
@@ -283,29 +283,4 @@ function generateCalendar(
   return weeks;
 }
 
-function getMonthName(month: number): string {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  return months[month] || "Unknown";
-}
 
-function getPlatformIcon(platform: SocialPlatform): string {
-  const icons = {
-    instagram: "📷",
-    facebook: "👥",
-    tiktok: "🎵",
-  };
-  return icons[platform] || "📱";
-}
