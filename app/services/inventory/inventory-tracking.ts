@@ -1,4 +1,4 @@
-import { prisma } from "~/db.server";
+import prisma from "~/db.server";
 import { logDecision } from "~/services/decisions.server";
 import { Server as SocketIOServer } from "socket.io";
 import { createServer } from "http";

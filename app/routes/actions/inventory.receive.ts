@@ -4,7 +4,7 @@ import { processReceipt } from "~/services/inventory/alc";
 import { updateVendorReliability } from "~/services/inventory/vendor-service";
 import { syncInventoryCostToShopify } from "~/services/shopify/inventory-sync";
 import { logDecision } from "~/services/decisions.server";
-import { prisma } from "~/db.server";
+import prisma from "~/db.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();

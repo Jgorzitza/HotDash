@@ -10,7 +10,7 @@
  * Growth Engine: HITL Learning System
  */
 
-import { prisma } from "~/db.server";
+import prisma from "~/db.server";
 import { semanticSearch } from "./search";
 import type { KBArticle, KBCategory } from "./types";
 
