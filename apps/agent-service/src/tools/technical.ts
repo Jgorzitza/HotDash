@@ -82,8 +82,8 @@ export const searchTroubleshooting = tool({
       // Filter by product type if provided
       let filtered = guides;
       if (productType) {
-        filtered = guides.filter(g => 
-          g.applicableProducts.some(p => 
+        filtered = guides.filter((g: any) =>
+          g.applicableProducts.some((p: string) =>
             p.toLowerCase().includes(productType.toLowerCase())
           )
         );

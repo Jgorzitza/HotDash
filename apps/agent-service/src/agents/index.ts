@@ -15,6 +15,13 @@ import {
   createRepairTicket,
   getSetupGuide
 } from '../tools/technical.js';
+import {
+  getCustomerOrders,
+  getOrderDetails,
+  getAccountInfo,
+  updatePreferences,
+  getAccountsMetrics
+} from '../tools/accounts.js';
 
 /**
  * Intent classification tool for the triage agent.
@@ -173,6 +180,54 @@ export const technicalSupportAgent = new Agent({
 });
 
 /**
+ * Customer Accounts Agent
+ *
+ * Handles authenticated customer account requests using Customer Accounts MCP.
+ * This is the ONLY agent allowed to call Customer Accounts MCP with OAuth tokens.
+ * Implements ABAC security for PII access.
+ *
+ * SECURITY:
+ * - Requires OAuth token from authenticated customer session
+ * - ABAC policy enforcement for all operations
+ * - PII redaction in audit logs
+ * - Never sends public replies without approval
+ */
+export const customerAccountsAgent = new Agent({
+  name: 'Customer Accounts',
+  instructions: [
+    'You help authenticated customers with their account and order information.',
+    'You have access to Customer Accounts MCP with OAuth tokens.',
+    'SECURITY REQUIREMENTS:',
+    '- Always verify OAuth token is present before calling account tools',
+    '- All operations are logged with ABAC approval',
+    '- PII access is audited (email, phone, addresses)',
+    '- Never expose raw OAuth tokens in responses',
+    'CAPABILITIES:',
+    '- Get customer order history (get_customer_orders)',
+    '- Get specific order details (get_order_details)',
+    '- Get account information (get_account_info) - PII WARNING',
+    '- Update customer preferences (update_preferences) - requires approval',
+    'WORKFLOW:',
+    '1. Verify customer is authenticated (OAuth token present)',
+    '2. Use appropriate tool for the request',
+    '3. Create private note with results',
+    '4. Wait for approval before sending to customer',
+    'Do NOT send anything to the customer directly; use private notes and wait for approval.',
+    'Reference account policies from answer_from_docs when needed.',
+  ].join('\n'),
+  tools: [
+    answerFromDocs,
+    getCustomerOrders,
+    getOrderDetails,
+    getAccountInfo,
+    updatePreferences,
+    getAccountsMetrics,
+    cwCreatePrivateNote,
+    cwSendPublicReply,
+  ],
+});
+
+/**
  * Triage Agent
  *
  * First point of contact - classifies intent and routes to specialist agents.
@@ -189,10 +244,11 @@ export const triageAgent = new Agent({
     '- Shipping-related (tracking, delivery, methods) → Shipping Support',
     '- Product questions (features, specs, compatibility) → Product Q&A',
     '- Technical issues (setup, troubleshooting, warranty) → Technical Support',
+    '- Account management (authenticated customers) → Customer Accounts',
     'If confidence < 0.7 or unclear, create a private note requesting clarification.',
     'Include intent and confidence in your handoff message.',
   ].join('\n'),
   tools: [setIntent, cwCreatePrivateNote],
-  handoffs: [orderSupportAgent, shippingSupportAgent, productQAAgent, technicalSupportAgent],
+  handoffs: [orderSupportAgent, shippingSupportAgent, productQAAgent, technicalSupportAgent, customerAccountsAgent],
 });
 

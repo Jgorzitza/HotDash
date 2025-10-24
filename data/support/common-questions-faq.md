@@ -122,14 +122,19 @@ We don't carry push-on fittings as they're not compatible with PTFE hose.
 
 Many customers successfully install with just the cutting shears and standard wrenches.
 
+Tips:
+- Use aluminum vice jaws to avoid marring
+- Ensure the PTFE liner seats fully under the ferrule/olive before tightening
+
 ---
 
 ### Q13: Do I use thread sealant on AN fittings?
 **A:** **NO!** Never use thread sealant (Teflon tape, pipe dope, etc.) on AN fittings. They use a **flare seal** design, not a thread seal. Using sealant can cause leaks and damage.
 
-**DO use sealant on:**
-- NPT fittings (tapered pipe threads)
-- Not on AN (straight threads with flare)
+Guidance by thread type:
+- **NPT (tapered pipe threads):** Use a fuel-safe PTFE paste (no tape)
+- **ORB (O-ring boss):** No sealant; ensure the O-ring is present and lightly lubricated
+- **AN (37° flare):** No sealant
 
 ---
 
@@ -139,7 +144,7 @@ Many customers successfully install with just the cutting shears and standard wr
 - **AN-8:** 30-35 ft-lbs
 - **AN-10:** 35-40 ft-lbs
 
-Assembly tip: Hand-tighten until snug, then use wrench to turn an additional 1/4 to 1/2 turn. Do NOT over-tighten!
+Assembly tip: Hand-tighten until snug, then use wrench to turn an additional 1/4 to 1/2 turn. Do NOT over-tighten! Use aluminum AN wrenches where possible and apply a light anti-seize to aluminum threads to reduce galling.
 
 ---
 
@@ -150,6 +155,8 @@ Assembly tip: Hand-tighten until snug, then use wrench to turn an additional 1/4
 3. **Cross-threaded:** Disassemble, start threads by hand carefully
 4. **Missing O-ring:** For ORB fittings, check O-ring is present and lubricated
 5. **Damaged flare:** Inspect hose end for damage
+6. **Contaminated or scratched 37° seats:** Clean both the male cone and female flare contact surfaces
+7. **Ferrule/olive not seated on PTFE liner:** Reassemble ensuring the liner is fully flush under the ferrule
 
 See our [Product Troubleshooting Guide](product-troubleshooting.md) for detailed help.
 
@@ -267,19 +274,12 @@ Contact us if you have a specific non-fuel application question.
 ---
 
 ### Q26: What payment methods do you accept?
-**A:**
-- Credit cards (Visa, Mastercard, Discover, American Express)
-- PayPal
-- Apple Pay
-- Google Pay
-- Amazon Pay
-
-All transactions are secure and encrypted.
+**A:** We use Shop Pay for all payments. You can pay with major debit and credit cards securely through Shop Pay at checkout. Shop Pay Installments are available, subject to eligibility and terms. We do not accept PayPal or Amazon Pay.
 
 ---
 
 ### Q27: When will I be charged?
-**A:** You're charged immediately when you place your order. Authorization happens at checkout, and the charge processes within 24 hours.
+**A:** You’re charged at checkout through Shop Pay. For Shop Pay Installments, the first payment may be due at checkout with subsequent payments per Shop Pay terms.
 
 ---
 

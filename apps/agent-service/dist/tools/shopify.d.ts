@@ -20,14 +20,14 @@ export declare const shopifyFindOrders: import("@openai/agents").FunctionTool<un
 export declare const shopifyCancelOrder: import("@openai/agents").FunctionTool<unknown, z.ZodObject<{
     orderId: z.ZodString;
     notify: z.ZodDefault<z.ZodBoolean>;
-    reason: z.ZodOptional<z.ZodEnum<["CUSTOMER", "DECLINED", "FRAUD", "INVENTORY", "OTHER"]>>;
+    reason: z.ZodDefault<z.ZodNullable<z.ZodEnum<["CUSTOMER", "DECLINED", "FRAUD", "INVENTORY", "OTHER"]>>>;
 }, "strip", z.ZodTypeAny, {
     orderId: string;
     notify: boolean;
-    reason?: "CUSTOMER" | "DECLINED" | "FRAUD" | "INVENTORY" | "OTHER" | undefined;
+    reason: "CUSTOMER" | "DECLINED" | "FRAUD" | "INVENTORY" | "OTHER" | null;
 }, {
     orderId: string;
     notify?: boolean | undefined;
-    reason?: "CUSTOMER" | "DECLINED" | "FRAUD" | "INVENTORY" | "OTHER" | undefined;
+    reason?: "CUSTOMER" | "DECLINED" | "FRAUD" | "INVENTORY" | "OTHER" | null | undefined;
 }>, string>;
 //# sourceMappingURL=shopify.d.ts.map

@@ -31,7 +31,7 @@ ENV PATH="/opt/litellm/bin:${PATH}"
 RUN pip install --no-cache-dir \
       "litellm[proxy]==1.41.6" \
       "redis[async]==5.0.1" \
-      "uvicorn[standard]==0.31.0" \
+      "uvicorn[standard]==0.22.0" \
       "gunicorn==22.0.0"
 
 # Copy the Langfuse worker artefacts so we can run it as an additional Fly process

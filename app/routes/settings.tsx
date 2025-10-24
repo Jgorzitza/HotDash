@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { useLoaderData, useFetcher } from "react-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Page, Card, Tabs, BlockStack, Checkbox, Toast, Frame } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
@@ -155,6 +155,59 @@ export default function SettingsPage() {
   const [visibleTiles, setVisibleTiles] = useState<string[]>(data.preferences.visibleTiles);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  // ENG-083: Dark mode state with real-time switching
+  const [theme, setTheme] = useState<"light" | "dark" | "auto">(data.preferences.theme);
+
+  // ENG-083: Apply theme on mount and when changed
+  React.useEffect(() => {
+    const applyTheme = (selectedTheme: "light" | "dark" | "auto") => {
+      if (selectedTheme === "auto") {
+        // Use system preference
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
+      } else {
+        document.documentElement.setAttribute("data-theme", selectedTheme);
+      }
+    };
+
+    applyTheme(theme);
+
+    // Listen for system preference changes if auto mode
+    if (theme === "auto") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = (e: MediaQueryListEvent) => {
+        document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+      };
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [theme]);
+
+  // ENG-083: Handle theme change with real-time switching
+  const handleThemeChange = async (newTheme: "light" | "dark" | "auto") => {
+    // Update state immediately (real-time switching)
+    setTheme(newTheme);
+
+    // Save to database
+    const formData = new FormData();
+    formData.append("action", "save-preferences");
+    formData.append("visible_tiles", JSON.stringify(visibleTiles));
+    formData.append("theme", newTheme);
+    formData.append("default_view", data.preferences.defaultView);
+    formData.append("auto_refresh", "true");
+    formData.append("refresh_interval", "60");
+    formData.append("desktop_notifications", "true");
+    formData.append("notification_sound", "true");
+    formData.append("toast_notifications", "true");
+
+    fetcher.submit(formData, { method: "post" });
+
+    // Show success toast
+    setToastMessage(`Theme changed to ${newTheme}`);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
 
   // ENG-073: Handle tile visibility change with real-time update
   const handleTileVisibilityChange = async (tileId: string, checked: boolean) => {
@@ -338,37 +391,39 @@ export default function SettingsPage() {
               Choose your preferred theme
             </p>
 
-            {/* Theme selector (ENG-016) */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--occ-space-3)",
-              }}
-            >
+            {/* Theme selector - ENG-083: Dark Mode with real-time switching */}
+            <BlockStack gap="300">
               {[
-                { value: "light", label: "Light" },
-                { value: "dark", label: "Dark" },
-                { value: "auto", label: "Auto (system preference)" },
-              ].map((theme) => (
+                { value: "light" as const, label: "Light", helpText: "Always use light theme" },
+                { value: "dark" as const, label: "Dark", helpText: "Always use dark theme" },
+                { value: "auto" as const, label: "Auto", helpText: "Match system preference" },
+              ].map((themeOption) => (
                 <label
-                  key={theme.value}
+                  key={themeOption.value}
                   style={{
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     gap: "var(--occ-space-2)",
+                    cursor: "pointer",
                   }}
                 >
                   <input
                     type="radio"
                     name="theme"
-                    value={theme.value}
-                    defaultChecked={data.preferences.theme === theme.value}
+                    value={themeOption.value}
+                    checked={theme === themeOption.value}
+                    onChange={() => handleThemeChange(themeOption.value)}
+                    style={{ marginTop: "4px" }}
                   />
-                  <span>{theme.label}</span>
+                  <div>
+                    <div style={{ fontWeight: 500 }}>{themeOption.label}</div>
+                    <div style={{ fontSize: "0.875rem", color: "var(--occ-text-secondary)" }}>
+                      {themeOption.helpText}
+                    </div>
+                  </div>
                 </label>
               ))}
-            </div>
+            </BlockStack>
           </div>
 
           <div>

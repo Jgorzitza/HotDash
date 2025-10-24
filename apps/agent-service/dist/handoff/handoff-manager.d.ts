@@ -14,12 +14,33 @@ export interface HandoffRule {
     targetAgent: string;
     /** Reason for handoff (for logging) */
     reason: string;
+    /** Optional confidence calculator */
+    confidenceCalculator?: (context: ConversationContext) => number;
+    /** Optional fallback agent */
+    fallbackAgent?: string;
+    /** Optional human review requirement */
+    requiresHumanReview?: (context: ConversationContext) => boolean;
 }
 export interface HandoffDecision {
     shouldHandoff: boolean;
     targetAgent?: string;
     reason?: string;
     confidence: number;
+    intentClassification?: {
+        intent: string;
+        confidence: number;
+    };
+    alternativeAgents?: Array<{
+        agent: string;
+        confidence: number;
+    }>;
+    requiresHumanReview: boolean;
+    escalationReason?: string;
+    metadata: {
+        processingTimeMs: number;
+        rulesEvaluated: number;
+        contextFactors: string[];
+    };
 }
 /**
  * Manages smart handoff decisions between agents

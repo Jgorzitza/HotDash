@@ -29,9 +29,6 @@ export declare const FeedbackSchema: z.ZodObject<{
     meta: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodAny>>;
 }, "strip", z.ZodTypeAny, {
     conversationId: number;
-    inputText: string;
-    modelDraft: string;
-    safeToSend: boolean;
     labels: string[];
     rubric: {
         factuality?: number | undefined;
@@ -40,14 +37,16 @@ export declare const FeedbackSchema: z.ZodObject<{
         policyAlignment?: number | undefined;
         firstTimeResolution?: number | undefined;
     };
+    inputText: string;
+    modelDraft: string;
+    safeToSend: boolean;
+    meta?: Record<string, any> | undefined;
     annotator?: string | undefined;
     notes?: string | undefined;
-    meta?: Record<string, any> | undefined;
 }, {
     conversationId: number;
     inputText: string;
-    modelDraft?: string | undefined;
-    safeToSend?: boolean | undefined;
+    meta?: Record<string, any> | undefined;
     labels?: string[] | undefined;
     rubric?: {
         factuality?: number | undefined;
@@ -58,7 +57,8 @@ export declare const FeedbackSchema: z.ZodObject<{
     } | undefined;
     annotator?: string | undefined;
     notes?: string | undefined;
-    meta?: Record<string, any> | undefined;
+    modelDraft?: string | undefined;
+    safeToSend?: boolean | undefined;
 }>;
 export type Feedback = z.infer<typeof FeedbackSchema>;
 export type ApprovalRow = {

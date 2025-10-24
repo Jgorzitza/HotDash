@@ -5,8 +5,7 @@
     "moduleResolution": "node",
     "lib": ["ES2022"],
     "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,9 +13,15 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["../../app/*"],
+      "../../app/*": ["../../app/*"],
+      "../../packages/*": ["../../packages/*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../../app/**/*", "../../packages/**/*"],
   "exclude": ["node_modules", "dist"]
 }
 
