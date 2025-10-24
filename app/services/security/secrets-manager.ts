@@ -64,9 +64,6 @@ const chatwootSecretsSchema = z.object({
 });
 
 const analyticsSecretsSchema = z.object({
-  GA_MCP_HOST: z.string().url().optional(),
-  GA_MCP_PROJECT_ID: z.string().optional(),
-  GA_MCP_PROPERTY_ID: z.string().optional(),
   GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
 });
 
@@ -393,4 +390,3 @@ export function getSecret(name: string): string | undefined {
 export function getRequiredSecret(name: string): string {
   return getSecretsManager().getRequiredSecret(name);
 }
-

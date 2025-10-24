@@ -1,9 +1,8 @@
-export type GaMode = "mock" | "direct" | "mcp";
+export type GaMode = "mock" | "direct";
 
 export interface GaConfig {
   propertyId: string;
   mode: GaMode;
-  mcpHost?: string;
 }
 
 /**
@@ -12,7 +11,6 @@ export interface GaConfig {
  * Modes:
  * - 'mock': Use mock data for development (GA_USE_MOCK=1 or GA_MODE=mock)
  * - 'direct': Use direct Google Analytics Data API (GA_MODE=direct)
- * - 'mcp': Use MCP server (GA_MODE=mcp, requires GA_MCP_HOST)
  *
  * Default behavior:
  * - If GA_USE_MOCK=1 or no mode specified: mock mode
@@ -24,14 +22,11 @@ export function getGaConfig(): GaConfig {
   const propertyId = process.env.GA_PROPERTY_ID ?? "mock-property";
   const useMockLegacy = (process.env.GA_USE_MOCK ?? "1") === "1";
   const modeEnv = (process.env.GA_MODE || "").toLowerCase();
-  const mcpHost = process.env.GA_MCP_HOST;
 
   // Determine mode
   let mode: GaMode;
   if (modeEnv === "direct") {
     mode = "direct";
-  } else if (modeEnv === "mcp") {
-    mode = "mcp";
   } else if (modeEnv === "mock" || useMockLegacy) {
     mode = "mock";
   } else {
@@ -42,6 +37,5 @@ export function getGaConfig(): GaConfig {
   return {
     propertyId,
     mode,
-    mcpHost,
   };
 }

@@ -187,8 +187,7 @@ export const ApprovalActionSchema = z.object({
  */
 export const GaConfigSchema = z.object({
   propertyId: z.string().min(1),
-  mode: z.enum(["mock", "direct", "mcp"]),
-  mcpHost: z.string().url().optional(),
+  mode: z.enum(["mock", "direct"]),
 });
 
 export const ShopifyConfigSchema = z.object({

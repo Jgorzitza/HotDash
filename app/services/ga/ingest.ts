@@ -5,7 +5,6 @@ import { toInputJson } from "../json";
 import { ServiceError, type ServiceResult } from "../types";
 import type { DateRange, GaSession } from "./client";
 import { createMockGaClient } from "./mockClient";
-import { createMcpGaClient } from "./mcpClient";
 import { createDirectGaClient } from "./directClient";
 
 export interface LandingPageAnomaly extends GaSession {
@@ -36,13 +35,6 @@ function selectClient() {
     case "direct":
       console.log("[GA] Using direct API client");
       return { client: createDirectGaClient(config.propertyId), config };
-
-    case "mcp":
-      if (!config.mcpHost) {
-        throw new Error("GA_MCP_HOST required when GA_MODE=mcp");
-      }
-      console.log("[GA] Using MCP client");
-      return { client: createMcpGaClient(config.mcpHost), config };
 
     case "mock":
     default:
