@@ -388,6 +388,7 @@ curl https://gateway.hotrodan.com/v1/chat/completions \
 - ❌ **DO NOT change OPENAI_BASE_URL** for any agent
 - ❌ **DO NOT deploy agent changes**
 - ✅ **ONLY build infrastructure** - cutover is Phase 2 (regular dev team)
+- ℹ️ **NOTE:** Regular dev team is building agents in parallel - this is expected and correct
 
 ### Secrets Management
 - ✅ **ALWAYS** store secrets in vault first

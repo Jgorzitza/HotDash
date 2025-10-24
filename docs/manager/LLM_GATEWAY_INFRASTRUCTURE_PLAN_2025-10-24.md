@@ -202,29 +202,31 @@ admin_key:             # CEO testing, emergency
 
 **Estimated:** 4-6 hours (AFTER Phase 1 complete)
 
+**IMPORTANT:** Regular dev team should **CONTINUE BUILDING AGENTS NORMALLY** during Phase 1. This is just a simple env var change - no code changes needed.
+
 **Tasks:**
-1. Update production agent env vars:
+1. Update production agent env vars (2 lines per agent group):
    ```bash
    OPENAI_BASE_URL=https://gateway.hotrodan.com
-   OPENAI_API_KEY=<prod_customer_key or prod_ceo_key>
+   OPENAI_API_KEY=<prod_customer_key or prod_ceo_key or prod_background_key>
    ```
 
-2. Deploy updated agents
+2. Deploy updated agents (no code changes)
 
 3. Monitor Langfuse for traffic
 
 4. Verify cache hits, quotas, costs
 
 **Agents to Cut Over:**
-- ai-customer (prod_customer_key)
-- support (prod_customer_key)
-- ceo-insights (prod_ceo_key)
-- ai-knowledge (prod_ceo_key)
-- analytics (prod_background_key)
-- inventory (prod_background_key)
-- seo (prod_background_key)
-- ads (prod_background_key)
-- content (prod_background_key)
+- ai-customer, support → `prod_customer_key`
+- ceo-insights, ai-knowledge → `prod_ceo_key`
+- analytics, inventory, seo, ads, content → `prod_background_key`
+
+**What Changes:**
+- ✅ Env vars only (2 lines)
+- ❌ NO code changes
+- ❌ NO architecture changes
+- ❌ NO API changes (OpenAI SDK works the same)
 
 ---
 
@@ -397,20 +399,21 @@ admin_key:             # CEO testing, emergency
 
 ## Summary
 
-**Infrastructure:** Single Fly app (LiteLLM + Langfuse + Fly Redis)  
-**Purpose:** Production LLM gateway for ai-customer, ceo-insights, background agents  
-**Agent:** specialagent001 (new)  
-**Timeline:** 3-4 days  
-**Cost:** ~$2/month (Fly Redis) + OpenAI usage  
+**Infrastructure:** Single Fly app (LiteLLM + Langfuse + Fly Redis)
+**Purpose:** Production LLM gateway for ai-customer, ceo-insights, background agents
+**Agent:** specialagent001 (new)
+**Timeline:** 3-4 days
+**Cost:** ~$2/month (Fly Redis) + OpenAI usage
 **Benefits:** Caching (30-50% savings), quotas, observability, cost tracking
 
 **Next Steps:**
-1. specialagent001: Start SPECIALAGENT001-INFRA-001
-2. Manager: Monitor progress via decision_log
-3. Regular dev team: Wait for Phase 1 completion
-4. CEO: Review Langfuse dashboard after cutover
+1. specialagent001: Start SPECIALAGENT001-INFRA-001 (build infrastructure)
+2. Regular dev team: **CONTINUE BUILDING AGENTS NORMALLY** (work in parallel)
+3. Manager: Monitor progress via decision_log
+4. Phase 2 (after infrastructure ready): Simple env var cutover (4-6 hours)
+5. CEO: Review Langfuse dashboard after cutover
 
 ---
 
-**Infrastructure build starts now. Production agents untouched until ready.**
+**Infrastructure build starts now. Regular dev team: KEEP BUILDING AGENTS - this is just infrastructure work in parallel.**
 

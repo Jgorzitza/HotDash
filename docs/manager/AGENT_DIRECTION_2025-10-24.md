@@ -8,6 +8,22 @@
 
 ---
 
+## 🚨 IMPORTANT: Regular Dev Team - Keep Building Agents
+
+**NEW (2025-10-24):** specialagent001 is building LLM Gateway infrastructure in parallel.
+
+**✅ CONTINUE BUILDING AGENTS NORMALLY:**
+- ai-customer, ceo-insights, ai-knowledge, background agents
+- Deploy changes to production as usual
+- Use direct OpenAI API (current setup)
+- **DO NOT WAIT** for infrastructure
+
+**📖 Full Instructions:** `docs/manager/REGULAR_DEV_TEAM_INSTRUCTIONS_2025-10-24.md`
+
+**Why?** Infrastructure is transparent. Simple env var change later (Phase 2). No code changes needed.
+
+---
+
 ## 🎯 Current System State
 
 **Last Updated:** 2025-10-24  
