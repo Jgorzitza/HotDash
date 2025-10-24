@@ -5,47 +5,52 @@
  */
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import prisma from "~/db.server";
-// Create a lightweight db shim to satisfy existing `prisma.query` calls during SSR/build.
-const db = {
-  query: async (sql: string, params?: any[]) => {
-    const result = await (prisma as any).$queryRawUnsafe(sql, ...(params ?? []));
-    const rows = Array.isArray(result) ? result : [];
-    return { rows } as { rows: any[] };
-  },
-};
 import { SpecialistAgentOrchestrator } from "~/lib/growth-engine/specialist-agents";
 import { createActionItem } from "~/lib/growth-engine/action-queue";
+
+// Helper to create db shim for prisma.query calls
+function createDbShim(prisma: any) {
+  return {
+    query: async (sql: string, params?: any[]) => {
+      const result = await prisma.$queryRawUnsafe(sql, ...(params ?? []));
+      const rows = Array.isArray(result) ? result : [];
+      return { rows } as { rows: any[] };
+    },
+  };
+}
 
 // ============================================================================
 // GET /api/growth-engine/specialist-agents
 // ============================================================================
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const prisma = (await import("~/db.server")).default;
+  const db = createDbShim(prisma);
+
   const url = new URL(request.url);
   const agent = url.searchParams.get('agent');
   const status = url.searchParams.get('status') || 'all';
-  
+
   try {
     if (agent) {
       // Get specific agent runs
-      const { rows } = await prisma.query(
-        `SELECT * FROM specialist_agent_runs 
-         WHERE agent_name = $1 
-         ORDER BY start_time DESC 
+      const { rows } = await db.query(
+        `SELECT * FROM specialist_agent_runs
+         WHERE agent_name = $1
+         ORDER BY start_time DESC
          LIMIT 10`,
         [agent]
       );
-      
+
       return Response.json({
         success: true,
         data: rows
       });
     } else {
       // Get all agent runs
-      const { rows } = await prisma.query(
-        `SELECT * FROM specialist_agent_runs 
-         ORDER BY start_time DESC 
+      const { rows } = await db.query(
+        `SELECT * FROM specialist_agent_runs
+         ORDER BY start_time DESC
          LIMIT 50`
       );
       
@@ -68,19 +73,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
 // ============================================================================
 
 export async function action({ request }: ActionFunctionArgs) {
+  const prisma = (await import("~/db.server")).default;
+  const db = createDbShim(prisma);
+
   if (request.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
   }
-  
+
   try {
     const body = await request.json();
     const { action, agent, runType } = body;
-    
+
     switch (action) {
       case 'run':
-        return await runSpecialistAgent(agent, runType);
+        return await runSpecialistAgent(db, agent, runType);
       case 'run_all':
-        return await runAllSpecialistAgents();
+        return await runAllSpecialistAgents(db);
       default:
         return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
@@ -93,10 +101,10 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
-async function runSpecialistAgent(agentName: string, runType: string = 'manual') {
+async function runSpecialistAgent(db: any, agentName: string, runType: string = 'manual') {
   try {
     // Start agent run
-    const { rows: runRows } = await prisma.query(
+    const { rows: runRows } = await db.query(
       `INSERT INTO specialist_agent_runs (agent_name, run_type, status, start_time)
        VALUES ($1, $2, 'running', NOW())
        RETURNING *`,
@@ -112,9 +120,9 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
       
       // Store actions in action_queue
       for (const action of actions) {
-        await prisma.query(
+        await db.query(
           `INSERT INTO action_queue (
-            type, target, draft, evidence, expected_impact, confidence, 
+            type, target, draft, evidence, expected_impact, confidence,
             ease, risk_tier, can_execute, rollback_plan, freshness_label, agent
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
           [
@@ -125,15 +133,15 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
           ]
         );
       }
-      
+
       // Update run status
-      await prisma.query(
-        `UPDATE specialist_agent_runs 
+      await db.query(
+        `UPDATE specialist_agent_runs
          SET status = 'completed', end_time = NOW(), actions_emitted = $1
          WHERE id = $2`,
         [actions.length, runId]
       );
-      
+
       return Response.json({
         success: true,
         data: {
@@ -146,8 +154,8 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
       });
     } catch (error) {
       // Update run status to failed
-      await prisma.query(
-        `UPDATE specialist_agent_runs 
+      await db.query(
+        `UPDATE specialist_agent_runs
          SET status = 'failed', end_time = NOW(), error_message = $1
          WHERE id = $2`,
         [error instanceof Error ? error.message : 'Unknown error', runId]
@@ -164,16 +172,16 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
   }
 }
 
-async function runAllSpecialistAgents() {
+async function runAllSpecialistAgents(db: any) {
   try {
     const orchestrator = new SpecialistAgentOrchestrator();
     const allActions = await orchestrator.runAllAgents();
-    
+
     // Store all actions in action_queue
     for (const action of allActions) {
-      await prisma.query(
+      await db.query(
         `INSERT INTO action_queue (
-          type, target, draft, evidence, expected_impact, confidence, 
+          type, target, draft, evidence, expected_impact, confidence,
           ease, risk_tier, can_execute, rollback_plan, freshness_label, agent
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
         [
