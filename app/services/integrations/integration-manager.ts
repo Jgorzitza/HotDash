@@ -60,35 +60,38 @@ export class IntegrationManager {
 
   private initializeDefaultIntegrations(): void {
     // Initialize with existing integrations
-    this.registerIntegration({
-      name: 'shopify',
-      client: this.createShopifyClient(),
-      circuitBreaker: {
-        failureThreshold: 5,
-        recoveryTimeout: 30000,
-        monitoringPeriod: 60000,
-      },
-    });
+    // Note: Shopify integration is NOT initialized here because this is an embedded app
+    // that uses App Bridge authentication, not static access tokens.
+    // Shopify API calls should use the authenticated session from shopify.server.ts
 
-    this.registerIntegration({
-      name: 'publer',
-      client: this.createPublerClient(),
-      circuitBreaker: {
-        failureThreshold: 3,
-        recoveryTimeout: 60000,
-        monitoringPeriod: 120000,
-      },
-    });
+    // Only initialize integrations that use static API keys
+    try {
+      this.registerIntegration({
+        name: 'publer',
+        client: this.createPublerClient(),
+        circuitBreaker: {
+          failureThreshold: 3,
+          recoveryTimeout: 60000,
+          monitoringPeriod: 120000,
+        },
+      });
+    } catch (error) {
+      console.warn('Publer integration not available:', error instanceof Error ? error.message : 'Unknown error');
+    }
 
-    this.registerIntegration({
-      name: 'chatwoot',
-      client: this.createChatwootClient(),
-      circuitBreaker: {
-        failureThreshold: 5,
-        recoveryTimeout: 30000,
-        monitoringPeriod: 60000,
-      },
-    });
+    try {
+      this.registerIntegration({
+        name: 'chatwoot',
+        client: this.createChatwootClient(),
+        circuitBreaker: {
+          failureThreshold: 5,
+          recoveryTimeout: 30000,
+          monitoringPeriod: 60000,
+        },
+      });
+    } catch (error) {
+      console.warn('Chatwoot integration not available:', error instanceof Error ? error.message : 'Unknown error');
+    }
   }
 
   private createShopifyClient(): APIClient {
