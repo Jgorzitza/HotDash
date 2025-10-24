@@ -193,11 +193,11 @@ export async function searchCreativesByText(
 
 /**
  * Get top performing creatives across all campaigns
- * 
+ *
  * @param filters - Performance filters
  * @param limit - Maximum results to return
  * @returns Array of top performing creatives
- * 
+ *
  * @example
  * ```typescript
  * const topCreatives = await getTopPerformingCreatives(
@@ -210,11 +210,10 @@ export async function getTopPerformingCreatives(
   filters: CreativeSearchFilters,
   limit: number = 20
 ): Promise<SimilarCreative[]> {
-  // TODO: Implement when ENG-IMAGE-SEARCH-003 completes
-  // Query database directly for top performers
-  // ORDER BY roas DESC, ctr DESC
-  
-  throw new Error('Not implemented - waiting on ENG-IMAGE-SEARCH-003');
+  // Note: This would query the database directly for top performers
+  // For now, return empty array as placeholder
+  console.warn('[Creative Search] Top performers query not yet implemented - requires database query');
+  return [];
 }
 
 /**
@@ -263,7 +262,7 @@ function filterByPerformance(
 
 /**
  * Compare two creatives for A/B testing insights
- * 
+ *
  * @param imageIdA - First creative image ID
  * @param imageIdB - Second creative image ID
  * @returns Comparison insights
@@ -277,11 +276,8 @@ export async function compareCreatives(
   winner: 'A' | 'B' | 'tie';
   insights: string[];
 }> {
-  // TODO: Implement when ENG-IMAGE-SEARCH-003 completes
-  // 1. Fetch both creatives
-  // 2. Compare performance metrics
-  // 3. Generate insights
-  
-  throw new Error('Not implemented - waiting on ENG-IMAGE-SEARCH-003');
+  // Note: This would fetch both creatives and compare their performance
+  // For now, throw error as placeholder
+  throw new Error('Creative comparison not yet implemented - requires database query for creative metadata');
 }
 

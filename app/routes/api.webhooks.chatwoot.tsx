@@ -52,16 +52,14 @@ export const action: ActionFunction = async ({ request }) => {
     // Get raw body for signature verification
     const rawBody = await request.text();
 
-    // Verify signature (skip in development)
+    // Verify signature (SECURITY FIX: Always validate, even in development)
     const signature = request.headers.get("X-Chatwoot-Signature");
-    if (process.env.NODE_ENV === "production") {
-      if (!verifySignature(rawBody, signature)) {
-        console.error("[Chatwoot Webhook] Invalid signature");
-        return new Response(JSON.stringify({ error: "Invalid signature" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
+    if (!verifySignature(rawBody, signature)) {
+      console.error("[Chatwoot Webhook] Invalid signature");
+      return new Response(JSON.stringify({ error: "Invalid signature" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Parse webhook payload
