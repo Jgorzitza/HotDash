@@ -63,6 +63,8 @@ export class SEOOptimizer {
       publishedTime,
       modifiedTime,
       author,
+      section,
+      tags,
       noindex,
       nofollow
     } = pageData;
