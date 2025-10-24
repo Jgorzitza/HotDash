@@ -10,7 +10,7 @@
  * - Approval workflow integration
  */
 
-import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
+import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { useLoaderData, useActionData, useSubmit, useNavigation } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, Modal, TextField, Select } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";

@@ -4,7 +4,7 @@
  * Review and approve content before publishing
  */
 
-import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
+import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { useLoaderData, useActionData, useSubmit, useRevalidator } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, EmptyState, Layout } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
