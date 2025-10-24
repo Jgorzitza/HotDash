@@ -116,7 +116,7 @@
   - Target: 1000 concurrent users
   - Duration: 19 minutes
   - Runner: `scripts/deploy/run-load-test.sh` (Node fallback when k6 unavailable)
-  - Latest: 2025-10-24 baseline failed (`errorRate=89.8%`, `p95=6.8s`)
+  - Latest: 2025-10-24 baseline failed (`errorRate=91.9%`, `p95=7.3s`) → `artifacts/devops/2025-10-24/load-test-results-20251024T233927.json`
   - Status: Needs remediation + re-run
 
 - [x] **Load Test Preparation**
