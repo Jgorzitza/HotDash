@@ -5,7 +5,7 @@
  */
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import { db } from "~/db.server";
+import prisma from "~/db.server";
 import { SpecialistAgentOrchestrator } from "~/lib/growth-engine/specialist-agents";
 import { createActionItem } from "~/lib/growth-engine/action-queue";
 
