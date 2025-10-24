@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { useLoaderData, useFetcher } from "react-router";
 import { useState } from "react";
+import { Page, Card, Tabs, BlockStack, Checkbox, Toast, Frame } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 import { isMockMode } from "../utils/env.server";
 import { useBrowserNotifications } from "../hooks/useBrowserNotifications";
@@ -150,12 +151,36 @@ export default function SettingsPage() {
   const fetcher = useFetcher();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSavePreferences = async () => {
-    setIsSubmitting(true);
-    
+  // ENG-073: Tile visibility state with real-time updates
+  const [visibleTiles, setVisibleTiles] = useState<string[]>(data.preferences.visibleTiles);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  // ENG-073: Handle tile visibility change with real-time update
+  const handleTileVisibilityChange = async (tileId: string, checked: boolean) => {
+    let newVisibleTiles: string[];
+
+    if (checked) {
+      // Add tile
+      newVisibleTiles = [...visibleTiles, tileId];
+    } else {
+      // Remove tile (enforce minimum 2 tiles)
+      if (visibleTiles.length <= 2) {
+        setToastMessage("Minimum 2 tiles required");
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        return;
+      }
+      newVisibleTiles = visibleTiles.filter(id => id !== tileId);
+    }
+
+    // Update state immediately (real-time update)
+    setVisibleTiles(newVisibleTiles);
+
+    // Save to database
     const formData = new FormData();
     formData.append("action", "save-preferences");
-    formData.append("visible_tiles", JSON.stringify(data.preferences.visibleTiles));
+    formData.append("visible_tiles", JSON.stringify(newVisibleTiles));
     formData.append("theme", data.preferences.theme);
     formData.append("default_view", data.preferences.defaultView);
     formData.append("auto_refresh", "true");
@@ -165,7 +190,29 @@ export default function SettingsPage() {
     formData.append("toast_notifications", "true");
 
     fetcher.submit(formData, { method: "post" });
-    
+
+    // Show success toast
+    setToastMessage("Tile visibility updated");
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
+  const handleSavePreferences = async () => {
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+    formData.append("action", "save-preferences");
+    formData.append("visible_tiles", JSON.stringify(visibleTiles));
+    formData.append("theme", data.preferences.theme);
+    formData.append("default_view", data.preferences.defaultView);
+    formData.append("auto_refresh", "true");
+    formData.append("refresh_interval", "60");
+    formData.append("desktop_notifications", "true");
+    formData.append("notification_sound", "true");
+    formData.append("toast_notifications", "true");
+
+    fetcher.submit(formData, { method: "post" });
+
     setTimeout(() => setIsSubmitting(false), 1000);
   };
 
@@ -238,14 +285,8 @@ export default function SettingsPage() {
               Choose which tiles to display on your dashboard
             </p>
 
-            {/* Tile visibility checkboxes */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--occ-space-3)",
-              }}
-            >
+            {/* Tile visibility toggles - ENG-073 */}
+            <BlockStack gap="300">
               {[
                 { id: "ops-metrics", label: "Ops Pulse" },
                 { id: "sales-pulse", label: "Sales Pulse" },
@@ -254,28 +295,31 @@ export default function SettingsPage() {
                 { id: "cx-escalations", label: "CX Escalations" },
                 { id: "seo-content", label: "SEO & Content Watch" },
                 { id: "idea-pool", label: "Idea Pool" },
+                { id: "approvals-queue", label: "Approvals Queue" },
                 { id: "ceo-agent", label: "CEO Agent" },
                 { id: "unread-messages", label: "Unread Messages" },
-              ].map((tile) => (
-                <label
-                  key={tile.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "var(--occ-space-2)",
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    defaultChecked={data.preferences.visibleTiles.includes(
-                      tile.id,
-                    )}
-                    name={`tile-${tile.id}`}
+                { id: "social-performance", label: "Social Performance" },
+                { id: "seo-impact", label: "SEO Impact" },
+                { id: "ads-roas", label: "Ads ROAS" },
+                { id: "growth-metrics", label: "Growth Metrics" },
+                { id: "growth-engine-analytics", label: "Growth Engine Analytics" },
+              ].map((tile) => {
+                const isChecked = visibleTiles.includes(tile.id);
+                const visibleCount = visibleTiles.length;
+                const isDisabled = isChecked && visibleCount <= 2;
+
+                return (
+                  <Checkbox
+                    key={tile.id}
+                    label={tile.label}
+                    checked={isChecked}
+                    disabled={isDisabled}
+                    helpText={isDisabled ? "Minimum 2 tiles required" : undefined}
+                    onChange={(checked) => handleTileVisibilityChange(tile.id, checked)}
                   />
-                  <span>{tile.label}</span>
-                </label>
-              ))}
-            </div>
+                );
+              })}
+            </BlockStack>
           </div>
         </div>
       )}
@@ -572,6 +616,14 @@ export default function SettingsPage() {
           {isSubmitting ? "Saving..." : "Save Settings"}
         </button>
       </div>
+
+      {/* ENG-073: Toast for real-time feedback */}
+      {showToast && (
+        <Toast
+          content={toastMessage}
+          onDismiss={() => setShowToast(false)}
+        />
+      )}
     </s-page>
   );
 }
