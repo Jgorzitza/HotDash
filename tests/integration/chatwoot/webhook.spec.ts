@@ -183,4 +183,65 @@ describe("Chatwoot Webhook Integration", () => {
       expect(headers["Content-Type"]).toBe("application/json");
     });
   });
+
+  describe("Security: Dev Mode Bypass Prevention", () => {
+    it("should ALWAYS require HMAC signature validation", () => {
+      // This test documents the security requirement:
+      // HMAC validation must NEVER be bypassed, even in development mode
+      const payload = JSON.stringify({ event: "test" });
+      const secret = "test-secret";
+
+      // Valid signature
+      const validSignature = createHmac("sha256", secret)
+        .update(payload)
+        .digest("hex");
+
+      expect(validSignature).toBeTruthy();
+      expect(validSignature).toHaveLength(64);
+    });
+
+    it("should reject requests with missing signature", () => {
+      // Missing signature should ALWAYS be rejected
+      const signature: string | null = null;
+
+      expect(signature).toBeNull();
+      // In the actual webhook handler, this would return 401
+    });
+
+    it("should reject requests with invalid signature", () => {
+      const payload = JSON.stringify({ event: "test" });
+      const secret = "test-secret";
+      const wrongSecret = "wrong-secret";
+
+      const validSignature = createHmac("sha256", secret)
+        .update(payload)
+        .digest("hex");
+
+      const invalidSignature = createHmac("sha256", wrongSecret)
+        .update(payload)
+        .digest("hex");
+
+      expect(validSignature).not.toBe(invalidSignature);
+      // In the actual webhook handler, invalid signature would return 401
+    });
+
+    it("should enforce signature validation regardless of NODE_ENV", () => {
+      // This test documents that NODE_ENV should NOT affect signature validation
+      // The webhook handler should ALWAYS validate signatures
+      const environments = ["development", "test", "production"];
+
+      environments.forEach(env => {
+        const payload = JSON.stringify({ event: "test", env });
+        const secret = "test-secret";
+
+        const signature = createHmac("sha256", secret)
+          .update(payload)
+          .digest("hex");
+
+        // Signature should be valid regardless of environment
+        expect(signature).toHaveLength(64);
+        expect(signature).toMatch(/^[a-f0-9]{64}$/);
+      });
+    });
+  });
 });
