@@ -6,7 +6,7 @@
  * Assesses the quality of provided content
  */
 
-import { json, type ActionFunctionArgs } from '@react-router/node';
+import { json, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 import type { ContentGenerationType } from '~/services/content/ai-content-generator';
 

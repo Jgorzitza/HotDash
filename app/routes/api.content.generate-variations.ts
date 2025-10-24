@@ -6,7 +6,7 @@
  * Generates multiple variations of content with different tones
  */
 
-import { json, type ActionFunctionArgs } from '@react-router/node';
+import { json, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 
 export async function action({ request }: ActionFunctionArgs) {

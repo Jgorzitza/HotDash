@@ -6,7 +6,7 @@
  * Generates AI-powered product descriptions using OpenAI
  */
 
-import { json, type ActionFunctionArgs } from '@react-router/node';
+import { json, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 import type { ProductDescriptionRequest } from '~/services/content/ai-content-generator';
 

@@ -6,7 +6,7 @@
  * Generates AI-powered blog posts using OpenAI
  */
 
-import { json, type ActionFunctionArgs } from '@react-router/node';
+import { json, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 import type { BlogPostRequest } from '~/services/content/ai-content-generator';
 
