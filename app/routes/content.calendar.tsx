@@ -112,12 +112,12 @@ export async function action({ request }: ActionFunctionArgs) {
         };
 
         const scheduled = await SchedulingService.scheduleContent(scheduleData);
-        return { success: true, message: "Content scheduled successfully!", data: scheduled });
+        return { success: true, message: "Content scheduled successfully!", data: scheduled };
 
       case "cancel":
         const cancelId = formData.get("id") as string;
         await SchedulingService.cancelScheduledContent(cancelId);
-        return { success: true, message: "Scheduled content cancelled" });
+        return { success: true, message: "Scheduled content cancelled" };
 
       case "reschedule":
         const rescheduleId = formData.get("id") as string;
@@ -125,7 +125,7 @@ export async function action({ request }: ActionFunctionArgs) {
         await SchedulingService.updateScheduledContent(rescheduleId, {
           scheduled_for: newTime
         });
-        return { success: true, message: "Content rescheduled successfully!" });
+        return { success: true, message: "Content rescheduled successfully!" };
 
       default:
         return data({ success: false, error: "Invalid action" }, { status: 400 });

@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       approvals: items,
       total,
       stats
-    });
+    };
   } catch (error: any) {
     console.error("Error loading content approvals:", error);
     return {
