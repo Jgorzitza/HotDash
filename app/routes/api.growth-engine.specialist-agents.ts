@@ -5,7 +5,7 @@
  */
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 // Create a lightweight db shim to satisfy existing `prisma.query` calls during SSR/build.
 const db = {
   query: async (sql: string, params?: any[]) => {
