@@ -258,7 +258,7 @@ export const getShippingMethods = tool({
   description: 'Get available shipping methods and estimated costs. Read-only.',
   parameters: z.object({
     country: z.string().describe('Destination country code (e.g., US, CA)'),
-    province: z.string().optional().describe('Destination state/province'),
+    province: z.string().nullable().default(null).describe('Destination state/province'),
   }),
   async execute({ country, province }) {
     try {

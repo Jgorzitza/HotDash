@@ -5,10 +5,13 @@ OpenAI Agent SDK service for automated customer support with human-in-the-loop a
 ## Overview
 
 This service provides AI-powered customer support automation using OpenAI's Agent SDK, with:
-- **3 Specialist Agents**: Triage, Order Support, Product Q&A
+- **5 Specialist Agents**: Triage, Order Support, Shipping Support, Product Q&A, Technical Support
+- **Enhanced Intent Classification**: 26 granular intents with confidence scoring
 - **RAG Integration**: Queries LlamaIndex MCP for knowledge base
-- **Shopify Integration**: Order lookups and actions
+- **Shopify Integration**: Order lookups, tracking, and actions
 - **Chatwoot Integration**: Message handling with approval gates
+- **Metrics Tracking**: Handoff accuracy, confidence, and performance monitoring
+- **Human Fallback**: Intelligent escalation for low-confidence scenarios
 - **Training Data Collection**: Captures feedback for model improvement
 
 ## Architecture
@@ -19,7 +22,142 @@ Chatwoot Webhook → Agent Service → [Triage → Specialist Agents] → Approv
                               LlamaIndex MCP (RAG)
                               Shopify Admin API
                               Chatwoot API
+                              Handoff Metrics
+                              Fallback Handler
 ```
+
+## Specialist Agents
+
+### 1. Triage Agent
+**Purpose:** First point of contact - classifies intent and routes to specialists
+
+**Capabilities:**
+- Intent classification (26 intents with confidence scoring)
+- Intelligent routing based on context
+- Human fallback for low-confidence scenarios
+
+**Handoffs to:**
+- Order Support
+- Shipping Support
+- Product Q&A
+- Technical Support
+
+### 2. Order Support Agent
+**Purpose:** Handles order-related requests
+
+**Capabilities:**
+- Order status checks
+- Order cancellations (requires approval)
+- Refunds and exchanges
+- Order modifications
+
+**Tools:**
+- `shopify_find_orders` - Order lookup
+- `shopify_cancel_order` - Order cancellation (HITL)
+- `answer_from_docs` - Policy reference
+
+### 3. Shipping Support Agent (NEW)
+**Purpose:** Handles all shipping-related inquiries
+
+**Capabilities:**
+- Tracking information
+- Delivery estimates
+- Shipping methods and costs
+- Address validation
+
+**Tools:**
+- `track_shipment` - Get tracking details
+- `estimate_delivery` - Delivery time estimates
+- `validate_address` - Address validation
+- `get_shipping_methods` - Available shipping options
+
+### 4. Product Q&A Agent
+**Purpose:** Answers product questions
+
+**Capabilities:**
+- Product information
+- Specifications
+- Compatibility
+- Availability
+
+**Tools:**
+- `answer_from_docs` - Knowledge base queries
+
+### 5. Technical Support Agent (NEW)
+**Purpose:** Handles product setup, troubleshooting, and warranty
+
+**Capabilities:**
+- Product setup guidance
+- Troubleshooting assistance
+- Warranty status checks
+- Repair ticket creation (requires approval)
+
+**Tools:**
+- `search_troubleshooting` - Find troubleshooting guides
+- `check_warranty` - Warranty status lookup
+- `create_repair_ticket` - Create repair tickets (HITL)
+- `get_setup_guide` - Setup instructions
+
+## Intent Classification
+
+### Enhanced Intent Taxonomy (26 Intents)
+
+**Order Category:**
+- `order_status`, `order_cancel`, `order_refund`, `order_exchange`, `order_modify`
+
+**Shipping Category:**
+- `shipping_tracking`, `shipping_delay`, `shipping_methods`, `shipping_cost`, `shipping_address`
+
+**Product Category:**
+- `product_info`, `product_specs`, `product_compatibility`, `product_availability`
+
+**Technical Category:**
+- `technical_setup`, `technical_troubleshoot`, `technical_warranty`, `technical_repair`
+
+**General Category:**
+- `account_management`, `billing_inquiry`, `feedback`, `complaint`, `other`
+
+### Confidence Scoring
+
+- **High confidence (≥ 0.8):** Auto-route to specialist
+- **Medium confidence (0.5-0.8):** Route with monitoring
+- **Low confidence (< 0.5):** Human fallback
+
+## Human Fallback Logic
+
+### Fallback Conditions
+
+1. **Low Confidence:** Confidence < 0.5
+2. **Negative Sentiment + Low Confidence:** Sentiment = negative AND confidence < 0.7
+3. **Escalation Keywords:** "speak to manager", "escalate", "supervisor", etc.
+4. **Multiple Failed Handoffs:** > 2 handoffs without resolution
+5. **High Urgency + Low Confidence:** Urgency = high AND confidence < 0.8
+6. **Warranty Claims:** All warranty claims require human approval
+
+### Fallback Actions
+
+1. Create private note for human review
+2. Tag conversation (needs-human-review, priority, urgent)
+3. Log to metrics
+4. Notify via Slack (if configured)
+
+## Metrics Tracking
+
+### Handoff Metrics
+
+- **Accuracy:** % of correct agent routing
+- **Confidence:** Average confidence score
+- **Fallback Rate:** % of conversations requiring human review
+- **Latency:** Handoff decision time (avg, p50, p95, p99)
+- **Agent Utilization:** Distribution of work across agents
+
+### Target Metrics
+
+- Handoff accuracy: ≥ 90%
+- Average confidence: ≥ 0.80
+- Fallback rate: ≤ 10%
+- Average latency: ≤ 100ms
+- Human review resolution: ≤ 15 minutes
 
 ## Local Development
 

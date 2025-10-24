@@ -31,7 +31,7 @@ export const searchTroubleshooting = tool({
   description: 'Search troubleshooting guides for technical issues. Read-only.',
   parameters: z.object({
     query: z.string().describe('Search query for troubleshooting guides'),
-    productType: z.string().optional().describe('Product type to filter results'),
+    productType: z.string().nullable().default(null).describe('Product type to filter results'),
   }),
   async execute({ query, productType }) {
     try {
@@ -119,7 +119,7 @@ export const checkWarranty = tool({
   description: 'Check warranty status for a product based on order information. Read-only.',
   parameters: z.object({
     orderId: z.string().describe('GraphQL ID, e.g. "gid://shopify/Order/1234567890"'),
-    productId: z.string().optional().describe('Specific product ID to check'),
+    productId: z.string().nullable().default(null).describe('Specific product ID to check'),
   }),
   async execute({ orderId, productId }) {
     try {
@@ -259,7 +259,7 @@ export const getSetupGuide = tool({
   description: 'Get setup instructions for a product. Read-only.',
   parameters: z.object({
     productType: z.string().describe('Product type or category'),
-    productName: z.string().optional().describe('Specific product name'),
+    productName: z.string().nullable().default(null).describe('Specific product name'),
   }),
   async execute({ productType, productName }) {
     try {

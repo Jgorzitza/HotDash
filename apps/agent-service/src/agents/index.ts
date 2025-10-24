@@ -54,7 +54,7 @@ const setIntent = tool({
       'complaint',
       'other',
     ]).describe('The classified intent of the customer message'),
-    confidence: z.number().min(0).max(1).optional().describe('Confidence score 0-1'),
+    confidence: z.number().min(0).max(1).nullable().default(null).describe('Confidence score 0-1'),
   }),
   async execute({ intent, confidence }) {
     return {
