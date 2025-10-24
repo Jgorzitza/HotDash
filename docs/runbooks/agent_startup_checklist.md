@@ -76,6 +76,22 @@ git push origin agent-launch-20251023
 2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
 3. **Web Search** → LAST RESORT ONLY
 
+- [ ] **Create MCP Evidence Directory** (FIRST - before any MCP usage):
+
+  ```bash
+  # Create directory structure for today's MCP evidence
+  mkdir -p artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp
+
+  # Create evidence file for your task (replace <task-name> with actual task ID)
+  touch artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp/<task-name>.jsonl
+
+  # Example for analytics agent working on ANA-018:
+  # mkdir -p artifacts/analytics/$(date +%Y-%m-%d)/mcp
+  # touch artifacts/analytics/$(date +%Y-%m-%d)/mcp/ANA-018.jsonl
+  ```
+
+  **Why**: Evidence file must exist BEFORE logging MCP usage. Prevents "file not found" errors.
+
 - [ ] **Shopify Dev MCP** (FIRST for Polaris/Shopify):
   - About to use Polaris components? → `mcp_shopify_learn_shopify_api(api: "polaris-app-home")` then `search_docs_chunks`
   - About to use Shopify Admin API? → `mcp_shopify_learn_shopify_api(api: "admin")` then `validate_graphql_codeblocks`

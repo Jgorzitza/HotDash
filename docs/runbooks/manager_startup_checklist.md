@@ -205,6 +205,8 @@ npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting 
 For each **Issue (label: task)** and its linked PR:
 
 - [ ] **🚨 MCP ENFORCEMENT (CRITICAL - Check FIRST)**:
+  - [ ] MCP Evidence JSONL files exist in `artifacts/<agent>/<date>/mcp/` directory
+  - [ ] Evidence files created BEFORE MCP usage (not after)
   - [ ] MCP Evidence JSONL present OR "non-code change" stated
   - [ ] Codebase-retrieval used to understand current state (for code changes)
   - [ ] View tool used to read existing files (for code changes)

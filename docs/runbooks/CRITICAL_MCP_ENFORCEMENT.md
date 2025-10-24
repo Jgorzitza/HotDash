@@ -183,6 +183,24 @@ mcp_context7_get-library-docs("/react-router/react-router", "topic")
 
 ## Evidence Requirements (MANDATORY)
 
+### Setup: Create Evidence Directory FIRST
+
+**Before ANY MCP usage, create the directory structure**:
+
+```bash
+# Create directory for today's MCP evidence
+mkdir -p artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp
+
+# Create evidence file for your task
+touch artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp/<task-id>.jsonl
+
+# Example for engineer working on ENG-052:
+# mkdir -p artifacts/engineer/$(date +%Y-%m-%d)/mcp
+# touch artifacts/engineer/$(date +%Y-%m-%d)/mcp/ENG-052.jsonl
+```
+
+**Why**: Evidence file must exist BEFORE logging MCP usage. Prevents "file not found" errors.
+
 ### Every Code Change MUST Include
 
 **In PR description**:
