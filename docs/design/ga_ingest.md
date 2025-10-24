@@ -7,39 +7,39 @@ doc_hash: TBD
 expires: 2025-10-18
 ---
 
-# Technical Design — GA Sessions Ingest (MCP Pending)
+# Technical Design — GA Sessions Ingest (Direct API)
 
 ## Goal
 
-Provide the SEO & Content Watch tile with week-over-week session trends and landing-page anomalies. While the Google Analytics MCP is not yet available, we will build the ingest pipeline with a mock adapter to unblock downstream development.
+Provide the SEO & Content Watch tile with week-over-week session trends and landing-page anomalies. We use the Google Analytics Data API directly (service account credentials) for application data fetching. A mock adapter remains available to unblock development and tests when credentials are not present.
 
 ## Approach
 
-- Define a service contract that abstracts GA data retrieval so we can swap the MCP-backed implementation once credentials arrive.
+- Define a service contract that abstracts GA data retrieval, with a direct API client for production and a mock client for development/tests.
 - Persist normalized facts in Prisma to enable historical comparisons and evidence capture.
 
 ## Components
 
 1. `app/services/ga/` directory
    - `client.ts`: interface `GaClient { fetchLandingPageSessions(range: DateRange): Promise<GaSession[]> }`.
-   - `mcpClient.ts`: placeholder returning `Promise.reject` until MCP configured.
+   - `directClient.ts`: Google Analytics Data API (BetaAnalyticsDataClient) implementation.
    - `mockClient.ts`: deterministic fixture returning sample data for development/tests (guarded by env `GA_USE_MOCK=1`).
-   - `ingest.ts`: orchestrates fetch, computes deltas, writes to `DashboardFact`.
+   - `ingest.ts`: selects direct vs mock client, orchestrates fetch, computes deltas, writes to `DashboardFact`.
 2. Prisma tables (shared `DashboardFact`). Add `fact_type = 'ga.sessions'` records storing `landing_page`, `sessions`, `wow_delta`, `created_at`.
 3. Loader integration in dashboard tile reading facts and flagging drops >20%.
 
 ## Configuration
 
-- Environment vars: `GA_MCP_HOST` (future), `GA_PROPERTY_ID`, `GA_USE_MOCK` (default true until MCP ready).
-- Provide config helper that throws if MCP required but host missing, instructing ops to keep mock mode.
+- Environment vars: `GA_PROPERTY_ID`, `GA_MODE` (`direct|mock`), `GA_USE_MOCK` (legacy, defaults true), `GOOGLE_APPLICATION_CREDENTIALS` (path to service account JSON).
+- The system defaults to `mock` unless `GA_MODE=direct` or `GOOGLE_APPLICATION_CREDENTIALS` is set. No GA MCP is used.
 
 ## Workflow
 
 1. Dashboard loader triggers `getLandingPageAnomalies(range)`; passes `DateRange` (today vs previous 7 days).
-2. Service selects client (mock vs MCP).
+2. Service selects client (mock vs direct).
 3. Client returns array of `{ landingPage, sessions, wowDelta, evidenceUrl? }`.
 4. Service writes facts and returns data for tile rendering.
-5. Once MCP ready, implement `mcpClient` using HTTP calls defined in `packages/integrations/ga-mcp.md` (sessions, sources, landing pages) and disable mock in production.
+5. N/A — GA MCP removed from scope. Direct API is the supported integration.
 
 ## Testing
 
@@ -49,11 +49,11 @@ Provide the SEO & Content Watch tile with week-over-week session trends and land
 
 ## Risks
 
-- MCP contract changes; mitigate by centralizing request builder in `mcpClient` and versioning the schema.
+- GA API changes; mitigate by centralizing request builder in `directClient` and versioning request helpers.
 - Data latency: schedule periodic refresh (cron) when MCP live; for now manual refresh via loader.
 
 ## Deliverables
 
-1. Service scaffolding with mock implementation + TODO for MCP handshake.
+1. Service scaffolding with direct API + mock implementation.
 2. Tests verifying mock pathway and ingestion math.
-3. Documentation updates once MCP endpoint ready.
+3. Documentation: GA uses direct API; no GA MCP.

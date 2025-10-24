@@ -68,7 +68,8 @@
 - **Action Required:**
   - Check Google Analytics API credentials
   - Verify `GA_PROPERTY_ID` environment variable
-  - Check if Google Analytics MCP is configured
+  - Ensure Google service account path is set: `GOOGLE_APPLICATION_CREDENTIALS`
+  - Ensure GA mode is correct: `GA_MODE=direct` (or use mock for development)
   - Test GA API connection manually
   - Add fallback to mock data if API unavailable
 
@@ -293,4 +294,3 @@ fly secrets list -a hotdash-production
 | Approvals Queue 404 | Approvals | 🔴 Open | - | - |
 | Transparent Flyover | Growth | 🔴 Open | - | - |
 | Menu Cleanup | UI/UX | 🔴 Open | - | - |
-
