@@ -289,31 +289,52 @@ const LlamaIndexSchema = z.object({
   filters: z.record(z.string()).optional(), // Metadata filters
 });
 
+// LlamaIndex MCP Server URL (deployed on Fly.io)
+const LLAMAINDEX_MCP_URL = process.env.LLAMAINDEX_MCP_URL ||
+  'https://hotdash-llamaindex-mcp.fly.dev/mcp';
+
 const llamaIndexQuery = tool({
   name: "llamaindex.query",
   description:
-    "Search knowledge base using LlamaIndex - query indexed documents, product documentation, policies",
+    "Search knowledge base using LlamaIndex MCP - query indexed documents, product documentation, policies",
   inputSchema: zodToJsonSchema(LlamaIndexSchema, "LlamaIndexSchema") as any,
   async handler({ query, topK, filters }) {
-    const body = {
-      query,
-      topK,
-      filters,
-    };
-
     try {
-      const response = await fetch("/api/ceo-agent/llamaindex/query", {
+      // Call LlamaIndex MCP server (same pattern as customer agents)
+      const response = await fetch(`${LLAMAINDEX_MCP_URL}/tools/call`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          name: "query_support",
+          arguments: {
+            q: query,
+            topK: topK || 5,
+            // Note: MCP server doesn't support filters yet, but we keep the interface
+            // for future compatibility
+          },
+        }),
       });
 
       if (!response.ok) {
-        throw new Error(`LlamaIndex API error: ${response.statusText}`);
+        throw new Error(`LlamaIndex MCP error: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      return data;
+      const result = await response.json();
+
+      // MCP returns { content: [{ type: 'text', text: '...' }] }
+      if (result.content && result.content[0]) {
+        return {
+          answer: result.content[0].text,
+          query,
+          topK,
+        };
+      }
+
+      return {
+        answer: "No answer found in knowledge base.",
+        query,
+        topK,
+      };
     } catch (error) {
       return {
         error: error instanceof Error ? error.message : "Unknown error",

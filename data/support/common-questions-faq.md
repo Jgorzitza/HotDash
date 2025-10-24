@@ -18,18 +18,16 @@ Quick answers to the most frequently asked questions about PTFE hose, AN fitting
 ## Ordering & Shipping
 
 ### Q1: Do you offer free shipping?
-**A:** Yes! Free standard shipping on all domestic orders $75 and above. Orders under $75 have a flat $8.95 shipping fee. Alaska, Hawaii, and U.S. territories have a $15 surcharge and $150 free shipping threshold.
+**A:** Yes. Free standard shipping on orders over $99.00 within the USA and Canada. Some oversized or vendor-direct products are excluded from free shipping. Eligibility is shown at checkout.
 
 ---
 
 ### Q2: How fast will my order ship?
-**A:** 
-- **Orders placed before 2PM EST:** Ship same business day
-- **Orders placed after 2PM EST:** Ship next business day  
-- **Weekend orders:** Ship Monday  
-- **Standard shipping:** 3-7 business days after shipment
-- **Expedited (2-day):** 2 business days after shipment
-- **Express (next day):** 1 business day after shipment
+**A:**
+- Orders process in 1 business day
+- Default carriers: USA — USPS Ground Advantage or UPS Ground; Canada — UPS Ground or Purolator
+- For rush delivery, choose upgraded, calculated shipping at checkout
+- Delivery times vary; see hotrodan.com for current estimates
 
 ---
 
@@ -42,7 +40,7 @@ Quick answers to the most frequently asked questions about PTFE hose, AN fitting
 ---
 
 ### Q4: Do you ship internationally?
-**A:** Yes! We ship to Canada ($24.95 flat rate) and most international destinations. International shipping takes 10-21 business days. Customs duties and taxes are the buyer's responsibility.
+**A:** Yes. We ship to countries outside the USA and Canada with carrier‑calculated rates shown at checkout. Delivery times vary by destination; see hotrodan.com for current estimates. Customs duties and taxes are the buyer's responsibility.
 
 ---
 
