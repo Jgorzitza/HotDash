@@ -549,7 +549,9 @@ fi
 
 **Real Impact** (2025-10-20): Tool-first saved 30 minutes across 3 P0 issues.
 
-### Real-World Examples (2025-10-20 P0 Fixes)
+**Real Impact** (2025-10-24): Tool-first prevented CRITICAL security false positive that would have broken Shopify app authentication.
+
+### Real-World Examples (2025-10-20 & 2025-10-24)
 
 **Example 1: Prisma Multi-Schema**
 
@@ -613,7 +615,37 @@ web_search("Supabase direct connection vs pooler official docs")
 
 ---
 
-**Total Impact Today**: 13 failed deploys (39 min) → 3 successful (9 min) = **30 minutes saved**
+**Example 4: Shopify API Key "Security Issue" (2025-10-24)**
+
+❌ **Training Data Approach**: CRITICAL FALSE POSITIVE
+
+- Agent saw Shopify API Key exposed to client
+- Training data said: "Never expose API keys to client"
+- Flagged as critical security vulnerability
+- Recommended removing/hiding the API key
+- **Would have broken App Bridge initialization**
+- **Would have broken entire Shopify app authentication**
+
+✅ **Tool-First Approach**: CORRECT UNDERSTANDING
+
+```bash
+mcp_shopify_learn_shopify_api(api: "admin")
+mcp_shopify_search_docs_chunks(conversationId, "App Bridge initialization API key")
+# Learned: Shopify App Bridge REQUIRES API key on client side
+# Learned: API Key (public) ≠ API Secret (private)
+# Learned: This is DOCUMENTED and CORRECT
+# Result: No false security flag, no breaking changes
+```
+
+**Impact**: Prevented breaking entire Shopify app authentication based on incorrect security assumption from training data.
+
+**Critical Lesson**: Training data can be DANGEROUSLY WRONG about security, not just outdated about syntax. MCP tools prevent catastrophic mistakes.
+
+**Savings**: Prevented production-breaking change, prevented false security incident
+
+---
+
+**Total Impact**: 13 failed deploys (39 min) → 3 successful (9 min) = **30 minutes saved** + **1 critical security false positive prevented**
 
 **Quick Reference: Required Libraries**
 

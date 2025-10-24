@@ -44,9 +44,11 @@
 
 ---
 
-## Real Example: What Almost Happened (2025-10-24)
+## Real Examples: What Almost Happened (2025-10-24)
 
-### ❌ WRONG Approach (What Engineer Almost Did)
+### Example 1: JSON/Build Configuration ❌
+
+**❌ WRONG Approach (What Engineer Almost Did)**:
 
 ```
 1. See error about JSON/build issue
@@ -58,7 +60,7 @@
 
 **Result**: Would have undone critical fixes, broken production
 
-### ✅ CORRECT Approach (What Should Happen)
+**✅ CORRECT Approach (What Should Happen)**:
 
 ```
 1. See error about JSON/build issue
@@ -71,6 +73,51 @@
 ```
 
 **Result**: Fix the actual issue without breaking working code
+
+---
+
+### Example 2: Shopify API Key "Security Issue" ❌
+
+**❌ WRONG Approach (What Agent Actually Did)**:
+
+```
+1. See Shopify API Key exposed to client in code
+2. Think "This is a security issue based on my training"
+3. Flag as critical security vulnerability
+4. Recommend removing/hiding the API key
+5. Would break App Bridge initialization
+6. Would break entire Shopify app authentication
+```
+
+**Agent's Quote**:
+> "My previous training-data-based assessment was WRONG. The Shopify API Key
+> being exposed to the client is NOT a security issue - it's a REQUIRED part
+> of App Bridge initialization according to Shopify's official documentation.
+> This demonstrates exactly why MCP-first is mandatory."
+
+**Result**: Would have broken Shopify app authentication, prevented app from loading
+
+**✅ CORRECT Approach (What Should Have Happened)**:
+
+```
+1. See Shopify API Key exposed to client in code
+2. FIRST: Use Shopify Dev MCP to verify App Bridge requirements
+3. SECOND: Search docs: "App Bridge initialization API key client"
+4. THIRD: Learn from official docs: API key MUST be client-accessible
+5. FOURTH: Understand: This is NOT the API Secret (which must be private)
+6. FIFTH: Verify current implementation is correct
+7. SIXTH: Document why this is correct (not a security issue)
+```
+
+**What MCP Would Have Revealed**:
+- Shopify App Bridge REQUIRES API key on client side
+- API Key (public) ≠ API Secret (private)
+- This is documented in official Shopify App Bridge docs
+- Current implementation is CORRECT
+
+**Result**: No false security flag, no breaking changes, correct understanding
+
+**Impact**: This demonstrates that training data can be DANGEROUSLY WRONG about security, not just outdated about syntax
 
 ---
 
@@ -99,9 +146,9 @@
 
 ---
 
-## Training Data is OUTDATED
+## Training Data is OUTDATED and DANGEROUS
 
-**Your training data is 6-12 months old**
+**Your training data is 6-12 months old AND CAN BE WRONG ABOUT SECURITY**
 
 This means:
 
@@ -110,8 +157,21 @@ This means:
 - ❌ Prisma patterns you "learned" might be old syntax
 - ❌ TypeScript you "understand" might be outdated
 - ❌ Build configs you "know" might not match current setup
+- ❌ **Security assumptions you "learned" might be DANGEROUSLY WRONG**
 
-**ALWAYS verify with MCP tools - NEVER trust training data**
+**CRITICAL EXAMPLE (2025-10-24)**:
+
+Agent flagged Shopify API Key in client code as "security issue" based on training data.
+
+**Training data said**: "Never expose API keys to client"
+
+**Reality (from Shopify MCP)**: Shopify App Bridge REQUIRES API key on client side. API Key (public) ≠ API Secret (private). This is CORRECT and DOCUMENTED.
+
+**Impact if not caught**: Would have broken entire Shopify app authentication.
+
+**Lesson**: Training data can be wrong about SECURITY, not just syntax. MCP tools prevent dangerous mistakes.
+
+**ALWAYS verify with MCP tools - NEVER trust training data - ESPECIALLY for security**
 
 ---
 
