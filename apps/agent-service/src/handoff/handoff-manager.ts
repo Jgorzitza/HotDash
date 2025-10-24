@@ -17,6 +17,12 @@ export interface HandoffRule {
   targetAgent: string;
   /** Reason for handoff (for logging) */
   reason: string;
+  /** Optional confidence calculator */
+  confidenceCalculator?: (context: ConversationContext) => number;
+  /** Optional fallback agent */
+  fallbackAgent?: string;
+  /** Optional human review requirement */
+  requiresHumanReview?: (context: ConversationContext) => boolean;
 }
 
 export interface HandoffDecision {
@@ -24,6 +30,22 @@ export interface HandoffDecision {
   targetAgent?: string;
   reason?: string;
   confidence: number;
+  // Enhanced decision metadata
+  intentClassification?: {
+    intent: string;
+    confidence: number;
+  };
+  alternativeAgents?: Array<{
+    agent: string;
+    confidence: number;
+  }>;
+  requiresHumanReview: boolean;
+  escalationReason?: string;
+  metadata: {
+    processingTimeMs: number;
+    rulesEvaluated: number;
+    contextFactors: string[];
+  };
 }
 
 /**
@@ -45,23 +67,61 @@ export class HandoffManager {
    * Decide if handoff is needed based on context
    */
   decideHandoff(context: ConversationContext): HandoffDecision {
+    const startTime = Date.now();
+    let rulesEvaluated = 0;
+    const contextFactors: string[] = [];
+
+    // Track context factors
+    if (context.intent) contextFactors.push(`intent:${context.intent}`);
+    if (context.sentiment) contextFactors.push(`sentiment:${context.sentiment}`);
+    if (context.urgency) contextFactors.push(`urgency:${context.urgency}`);
+    if (context.customer.orderId) contextFactors.push('has_order_id');
+
     // Check each rule in priority order
     for (const rule of this.rules) {
+      rulesEvaluated++;
       if (rule.condition(context)) {
         console.log(`[Handoff] Rule triggered: ${rule.reason} -> ${rule.targetAgent}`);
+
+        // Calculate confidence
+        const confidence = rule.confidenceCalculator
+          ? rule.confidenceCalculator(context)
+          : 0.9;
+
+        // Check if human review required
+        const requiresHumanReview = rule.requiresHumanReview
+          ? rule.requiresHumanReview(context)
+          : confidence < 0.5;
+
+        const processingTimeMs = Date.now() - startTime;
+
         return {
           shouldHandoff: true,
           targetAgent: rule.targetAgent,
           reason: rule.reason,
-          confidence: 0.9,
+          confidence,
+          requiresHumanReview,
+          escalationReason: requiresHumanReview ? 'Low confidence or policy requirement' : undefined,
+          metadata: {
+            processingTimeMs,
+            rulesEvaluated,
+            contextFactors,
+          },
         };
       }
     }
 
     // No handoff needed
+    const processingTimeMs = Date.now() - startTime;
     return {
       shouldHandoff: false,
       confidence: 1.0,
+      requiresHumanReview: false,
+      metadata: {
+        processingTimeMs,
+        rulesEvaluated,
+        contextFactors,
+      },
     };
   }
 
@@ -70,15 +130,33 @@ export class HandoffManager {
    */
   getRecommendedAgent(intent: string): string | null {
     const intentToAgent: Record<string, string> = {
+      // Order-related
       'order_status': 'Order Support',
-      'refund': 'Order Support',
-      'cancel': 'Order Support',
-      'exchange': 'Order Support',
-      'product_question': 'Product Q&A',
-      'shipping': 'Order Support',
-      'tracking': 'Order Support',
+      'order_cancel': 'Order Support',
+      'order_refund': 'Order Support',
+      'order_exchange': 'Order Support',
+      'order_modify': 'Order Support',
+      // Shipping-related
+      'shipping_tracking': 'Shipping Support',
+      'shipping_delay': 'Shipping Support',
+      'shipping_methods': 'Shipping Support',
+      'shipping_cost': 'Shipping Support',
+      'shipping_address': 'Shipping Support',
+      // Product-related
       'product_info': 'Product Q&A',
       'product_specs': 'Product Q&A',
+      'product_compatibility': 'Product Q&A',
+      'product_availability': 'Product Q&A',
+      // Technical support
+      'technical_setup': 'Technical Support',
+      'technical_troubleshoot': 'Technical Support',
+      'technical_warranty': 'Technical Support',
+      'technical_repair': 'Technical Support',
+      // General
+      'account_management': 'Order Support',
+      'billing_inquiry': 'Order Support',
+      'feedback': 'Triage',
+      'complaint': 'Triage',
       'other': 'Triage',
     };
 
