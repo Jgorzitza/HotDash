@@ -5,14 +5,14 @@
  * Checks evidence, rollback, and other requirements.
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
-import { getApprovalById } from "~/services/approvals";
+import { type LoaderFunctionArgs} from "react-router";
+import { getApprovalById} from "~/services/approvals";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json(
+    return (
       { valid: false, errors: ["Missing approval ID"] },
       { status: 400 },
     );
@@ -22,7 +22,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     const approval = await getApprovalById(id);
 
     if (!approval) {
-      return json(
+      return (
         { valid: false, errors: ["Approval not found"] },
         { status: 404 },
       );
@@ -78,7 +78,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
     const valid = errors.length === 0;
 
-    return json({
+    return Response.json({
       valid,
       errors,
       warnings,
@@ -86,7 +86,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error("Error validating approval:", error);
-    return json(
+    return (
       { valid: false, errors: ["Internal server error"] },
       { status: 500 },
     );

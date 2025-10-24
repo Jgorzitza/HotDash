@@ -5,9 +5,9 @@
  * Provides automation, performance optimization, security monitoring, and testing capabilities
  */
 
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
-import { createDevOpsOrchestrator, DevOpsOrchestratorConfig } from "~/lib/growth-engine/devops-orchestrator";
+import type { ActionFunctionArgs, LoaderFunctionArgs} from "react-router";
+
+import { createDevOpsOrchestrator, DevOpsOrchestratorConfig} from "~/lib/growth-engine/devops-orchestrator";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -21,7 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     case 'metrics':
       return await getDevOpsMetrics();
     default:
-      return json({ error: 'Invalid action' }, { status: 400 });
+      return Response.json({ error: 'Invalid action' }, { status: 400 });
   }
 }
 
@@ -43,7 +43,7 @@ export async function action({ request }: ActionFunctionArgs) {
     case 'cleanup':
       return await cleanupDevOps(params);
     default:
-      return json({ error: 'Invalid action' }, { status: 400 });
+      return Response.json({ error: 'Invalid action' }, { status: 400 });
   }
 }
 
@@ -52,7 +52,7 @@ export async function action({ request }: ActionFunctionArgs) {
  */
 async function getDevOpsStatus() {
   // Mock implementation - in production, this would get real status
-  return json({
+  return Response.json({
     timestamp: new Date().toISOString(),
     automation: {
       status: 'idle',
@@ -85,7 +85,7 @@ async function getDevOpsStatus() {
  */
 async function getDevOpsRecommendations() {
   // Mock implementation - in production, this would generate real recommendations
-  return json({
+  return Response.json({
     automation: [
       {
         type: 'deployment',
@@ -130,7 +130,7 @@ async function getDevOpsRecommendations() {
  */
 async function getDevOpsMetrics() {
   // Mock implementation - in production, this would get real metrics
-  return json({
+  return Response.json({
     performance: {
       p95Latency: 250,
       p99Latency: 450,
@@ -194,13 +194,13 @@ async function initializeDevOps(params: any) {
     const orchestrator = createDevOpsOrchestrator(config);
     await orchestrator.initialize();
     
-    return json({ 
+    return Response.json({ 
       success: true, 
       message: 'DevOps orchestrator initialized successfully',
       config 
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 
     }, { status: 500 });
@@ -222,7 +222,7 @@ async function executeDeployment(params: any) {
     const endTime = new Date().toISOString();
     const duration = new Date(endTime).getTime() - new Date(startTime).getTime();
     
-    return json({
+    return Response.json({
       success: true,
       deployment: {
         id: deploymentId,
@@ -241,7 +241,7 @@ async function executeDeployment(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Deployment failed' 
     }, { status: 500 });
@@ -259,7 +259,7 @@ async function executePerformanceOptimization(params: any) {
     // Simulate optimization process
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    return json({
+    return Response.json({
       success: true,
       optimization: {
         id: optimizationId,
@@ -288,7 +288,7 @@ async function executePerformanceOptimization(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Performance optimization failed' 
     }, { status: 500 });
@@ -306,7 +306,7 @@ async function executeSecurityMonitoring(params: any) {
     // Simulate security monitoring process
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    return json({
+    return Response.json({
       success: true,
       monitoring: {
         id: monitoringId,
@@ -339,7 +339,7 @@ async function executeSecurityMonitoring(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Security monitoring failed' 
     }, { status: 500 });
@@ -357,7 +357,7 @@ async function executeTesting(params: any) {
     // Simulate test execution
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    return json({
+    return Response.json({
       success: true,
       testing: {
         id: testId,
@@ -383,7 +383,7 @@ async function executeTesting(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Testing failed' 
     }, { status: 500 });
@@ -398,12 +398,12 @@ async function cleanupDevOps(params: any) {
     // Mock cleanup process
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    return json({
+    return Response.json({
       success: true,
       message: 'DevOps resources cleaned up successfully'
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Cleanup failed' 
     }, { status: 500 });

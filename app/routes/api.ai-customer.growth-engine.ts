@@ -8,9 +8,9 @@
  * @see app/services/ai-customer/growth-engine-ai.ts
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
-import { growthEngineAIService } from "~/services/ai-customer/growth-engine-ai";
-import { logDecision } from "~/services/decisions.server";
+import { type LoaderFunctionArgs, type ActionFunctionArgs} from "react-router";
+import { growthEngineAIService} from "~/services/ai-customer/growth-engine-ai";
+import { logDecision} from "~/services/decisions.server";
 
 /**
  * GET /api/ai-customer/growth-engine
@@ -23,19 +23,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     switch (action) {
       case "status":
-        return json({
+        return Response.json({
           success: true,
           data: growthEngineAIService.getStatus(),
         });
 
       case "config":
-        return json({
+        return Response.json({
           success: true,
           data: growthEngineAIService.getConfig(),
         });
 
       default:
-        return json({
+        return Response.json({
           success: true,
           data: {
             status: growthEngineAIService.getStatus(),
@@ -45,7 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   } catch (error) {
     console.error("Growth Engine API error:", error);
-    return json(
+    return (
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
@@ -76,7 +76,7 @@ export async function action({ request }: ActionFunctionArgs) {
           evidenceUrl: "app/routes/api.ai-customer.growth-engine.ts",
         });
 
-        return json({
+        return Response.json({
           success: true,
           message: "Growth Engine AI initialized successfully",
         });
@@ -92,7 +92,7 @@ export async function action({ request }: ActionFunctionArgs) {
           evidenceUrl: "app/routes/api.ai-customer.growth-engine.ts",
         });
 
-        return json({
+        return Response.json({
           success: true,
           data: results,
         });
@@ -109,14 +109,14 @@ export async function action({ request }: ActionFunctionArgs) {
           evidenceUrl: "app/routes/api.ai-customer.growth-engine.ts",
         });
 
-        return json({
+        return Response.json({
           success: true,
           message: "Configuration updated successfully",
           data: growthEngineAIService.getConfig(),
         });
 
       default:
-        return json(
+        return (
           {
             success: false,
             error: `Unknown operation: ${operation}`,
@@ -126,7 +126,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   } catch (error) {
     console.error("Growth Engine API error:", error);
-    return json(
+    return (
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",

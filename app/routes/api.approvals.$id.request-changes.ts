@@ -4,9 +4,9 @@
  * Requests changes to an approval request.
  */
 
-import { json, type ActionFunctionArgs } from "react-router";
-import { getApprovalById } from "~/services/approvals";
-import { PrismaClient } from "@prisma/client";
+import { type ActionFunctionArgs} from "react-router";
+import { getApprovalById} from "~/services/approvals";
+import { PrismaClient} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +14,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json(
+    return (
       { success: false, error: "Missing approval ID" },
       { status: 400 },
     );
@@ -25,7 +25,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     const note = formData.get("note") as string;
 
     if (!note || note.trim().length === 0) {
-      return json(
+      return (
         { success: false, error: "Change request note is required" },
         { status: 400 },
       );
@@ -34,14 +34,14 @@ export async function action({ params, request }: ActionFunctionArgs) {
     // Validate approval exists and is in correct state
     const approval = await getApprovalById(id);
     if (!approval) {
-      return json(
+      return (
         { success: false, error: "Approval not found" },
         { status: 404 },
       );
     }
 
     if (approval.state !== "pending_review") {
-      return json(
+      return (
         {
           success: false,
           error: `Cannot request changes for approval in state: ${approval.state}`,
@@ -65,14 +65,14 @@ export async function action({ params, request }: ActionFunctionArgs) {
       VALUES (${id}, 'approval', 'request_changes', 'system', ${JSON.stringify({ note: note.trim() })}, 'occ')
     `;
 
-    return json({
+    return Response.json({
       success: true,
       message: "Change request submitted successfully",
       note: note.trim(),
     });
   } catch (error) {
     console.error("Error requesting changes:", error);
-    return json(
+    return (
       { success: false, error: "Internal server error" },
       { status: 500 },
     );

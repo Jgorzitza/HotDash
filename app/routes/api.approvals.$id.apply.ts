@@ -4,9 +4,9 @@
  * Applies an approved request (moves from approved to applied state).
  */
 
-import { json, type ActionFunctionArgs } from "react-router";
-import { getApprovalById } from "~/services/approvals";
-import { PrismaClient } from "@prisma/client";
+import { type ActionFunctionArgs} from "react-router";
+import { getApprovalById} from "~/services/approvals";
+import { PrismaClient} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +14,7 @@ export async function action({ params }: ActionFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json(
+    return (
       { success: false, error: "Missing approval ID" },
       { status: 400 },
     );
@@ -24,14 +24,14 @@ export async function action({ params }: ActionFunctionArgs) {
     // Validate approval exists and is in correct state
     const approval = await getApprovalById(id);
     if (!approval) {
-      return json(
+      return (
         { success: false, error: "Approval not found" },
         { status: 404 },
       );
     }
 
     if (approval.state !== "approved") {
-      return json(
+      return (
         {
           success: false,
           error: `Cannot apply approval in state: ${approval.state}`,
@@ -56,13 +56,13 @@ export async function action({ params }: ActionFunctionArgs) {
       VALUES (${id}, 'approval', 'applied', 'system', ${JSON.stringify({ applied_at: new Date().toISOString() })}, 'occ')
     `;
 
-    return json({
+    return Response.json({
       success: true,
       message: "Approval applied successfully",
     });
   } catch (error) {
     console.error("Error applying approval:", error);
-    return json(
+    return (
       { success: false, error: "Internal server error" },
       { status: 500 },
     );

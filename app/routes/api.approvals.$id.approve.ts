@@ -4,14 +4,14 @@
  * Approves an approval request and executes associated actions.
  */
 
-import { json, type ActionFunctionArgs } from "react-router";
-import { approveRequest, getApprovalById } from "~/services/approvals";
+import { type ActionFunctionArgs} from "react-router";
+import { approveRequest, getApprovalById} from "~/services/approvals";
 
 export async function action({ params, request }: ActionFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json(
+    return (
       { success: false, error: "Missing approval ID" },
       { status: 400 },
     );
@@ -28,14 +28,14 @@ export async function action({ params, request }: ActionFunctionArgs) {
     // Validate approval exists and is in correct state
     const approval = await getApprovalById(id);
     if (!approval) {
-      return json(
+      return (
         { success: false, error: "Approval not found" },
         { status: 404 },
       );
     }
 
     if (approval.state !== "pending_review") {
-      return json(
+      return (
         {
           success: false,
           error: `Cannot approve approval in state: ${approval.state}`,
@@ -51,7 +51,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     );
 
     if (!result.success) {
-      return json(
+      return (
         { success: false, error: "Failed to approve request" },
         { status: 500 },
       );
@@ -64,7 +64,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
           // Execute the action endpoint
           const response = await fetch(action.endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/ " },
             body: JSON.stringify(action.payload),
           });
 
@@ -80,7 +80,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
       }
     }
 
-    return json({
+    return Response.json({
       success: true,
       message: "Approval successful",
       grades:
@@ -88,7 +88,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     });
   } catch (error) {
     console.error("Error approving request:", error);
-    return json(
+    return (
       { success: false, error: "Internal server error" },
       { status: 500 },
     );

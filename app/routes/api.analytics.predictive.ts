@@ -4,13 +4,13 @@
  * ANALYTICS-003: API endpoints for predictive analytics
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
+import { type LoaderFunctionArgs} from 'react-router';
 import { 
   generatePredictiveInsights,
   predictCustomerBehavior,
   generateSalesForecast
 } from '~/services/analytics/predictive-analytics';
-import { logDecision } from '~/services/decisions.server';
+import { logDecision} from '~/services/decisions.server';
 
 /**
  * GET /api/analytics/predictive
@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     switch (type) {
       case 'insights': {
         const insights = await generatePredictiveInsights();
-        return json({
+        return Response.json({
           success: true,
           data: insights
         });
@@ -47,7 +47,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           evidenceUrl: 'app/routes/api.analytics.predictive.ts'
         });
         
-        return json({
+        return Response.json({
           success: true,
           data: predictions,
           count: predictions.length
@@ -57,7 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       case 'sales': {
         const forecast = await generateSalesForecast(days);
         
-        return json({
+        return Response.json({
           success: true,
           data: forecast
         });
@@ -66,14 +66,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
       case 'all': {
         const insights = await generatePredictiveInsights();
         
-        return json({
+        return Response.json({
           success: true,
           data: insights
         });
       }
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: `Unknown type: ${type}`,
           validTypes: ['insights', 'customers', 'sales', 'all']
@@ -94,7 +94,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     });
     
-    return json({
+    return Response.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });

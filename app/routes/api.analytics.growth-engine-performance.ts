@@ -5,9 +5,9 @@
  * Provides real-time performance metrics, insights, and optimization recommendations
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
-import { GrowthEnginePerformanceAnalysisService } from '~/services/analytics/growth-engine-performance-analysis';
-import { logDecision } from '~/services/tasks.server';
+import { type LoaderFunctionArgs} from 'react-router';
+import { GrowthEnginePerformanceAnalysisService} from '~/services/analytics/growth-engine-performance-analysis';
+import { logDecision} from '~/services/tasks.server';
 
 // Singleton instance for continuous monitoring
 let performanceService: GrowthEnginePerformanceAnalysisService | null = null;
@@ -29,12 +29,12 @@ function getPerformanceService(): GrowthEnginePerformanceAnalysisService {
  * 
  * Query parameters:
  * - action: 'report' | 'insights' | 'plans' | 'metrics' | 'trends'
- * - format: 'json' | 'summary'
+ * - format: ' ' | 'summary'
  */
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const action = url.searchParams.get('action') || 'report';
-  const format = url.searchParams.get('format') || 'json';
+  const format = url.searchParams.get('format') || ' ';
 
   const service = getPerformanceService();
 
@@ -44,7 +44,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         const report = await service.generatePerformanceReport();
         
         if (format === 'summary') {
-          return json({
+          return Response.json({
             success: true,
             summary: report.summary,
             insightsCount: report.insights.length,
@@ -53,7 +53,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           });
         }
         
-        return json({
+        return Response.json({
           success: true,
           data: report
         });
@@ -70,7 +70,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
           evidenceUrl: 'app/routes/api.analytics.growth-engine-performance.ts'
         });
         
-        return json({
+        return Response.json({
           success: true,
           data: insights,
           count: insights.length
@@ -80,7 +80,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       case 'plans': {
         const plans = await service.generateOptimizationPlans();
         
-        return json({
+        return Response.json({
           success: true,
           data: plans,
           count: plans.length
@@ -91,7 +91,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         const metrics = service.getMetricsHistory();
         const limit = parseInt(url.searchParams.get('limit') || '100');
         
-        return json({
+        return Response.json({
           success: true,
           data: metrics.slice(-limit),
           count: metrics.length,
@@ -102,14 +102,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
       case 'trends': {
         const report = await service.generatePerformanceReport();
         
-        return json({
+        return Response.json({
           success: true,
           data: report.trends
         });
       }
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: `Unknown action: ${action}`,
           validActions: ['report', 'insights', 'plans', 'metrics', 'trends']
@@ -130,7 +130,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     });
     
-    return json({
+    return Response.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
@@ -157,7 +157,7 @@ export async function action({ request }: LoaderFunctionArgs) {
         const interval = parseInt(formData.get('interval') as string || '30000');
         await service.startMonitoring(interval);
         
-        return json({
+        return Response.json({
           success: true,
           message: `Performance monitoring started with ${interval}ms interval`
         });
@@ -166,7 +166,7 @@ export async function action({ request }: LoaderFunctionArgs) {
       case 'stop-monitoring': {
         service.stopMonitoring();
         
-        return json({
+        return Response.json({
           success: true,
           message: 'Performance monitoring stopped'
         });
@@ -175,7 +175,7 @@ export async function action({ request }: LoaderFunctionArgs) {
       case 'generate-plans': {
         const plans = await service.generateOptimizationPlans();
         
-        return json({
+        return Response.json({
           success: true,
           data: plans,
           count: plans.length
@@ -183,7 +183,7 @@ export async function action({ request }: LoaderFunctionArgs) {
       }
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: `Unknown action: ${actionType}`,
           validActions: ['start-monitoring', 'stop-monitoring', 'generate-plans']
@@ -192,7 +192,7 @@ export async function action({ request }: LoaderFunctionArgs) {
   } catch (error) {
     console.error('Performance analysis action error:', error);
     
-    return json({
+    return Response.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });

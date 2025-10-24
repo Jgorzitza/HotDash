@@ -4,8 +4,8 @@
  * Provides REST API endpoints for individual content entry operations
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
-import { ContentService } from "~/services/content";
+import { type LoaderFunctionArgs, type ActionFunctionArgs} from "react-router";
+import { ContentService} from "~/services/content";
 
 // ============================================================================
 // GET /api/content/:id - Get specific content entry
@@ -15,7 +15,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json({
+    return Response.json({
       success: false,
       error: 'Content entry ID is required'
     }, { status: 400 });
@@ -25,19 +25,19 @@ export async function loader({ params }: LoaderFunctionArgs) {
     const entry = await ContentService.getContentEntryById(id);
 
     if (!entry) {
-      return json({
+      return Response.json({
         success: false,
         error: 'Content entry not found'
       }, { status: 404 });
     }
 
-    return json({
+    return Response.json({
       success: true,
       data: entry
     });
   } catch (error) {
     console.error('Error fetching content entry:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to fetch content entry'
     }, { status: 500 });
@@ -53,7 +53,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const { id } = params;
 
   if (!id) {
-    return json({
+    return Response.json({
       success: false,
       error: 'Content entry ID is required'
     }, { status: 400 });
@@ -67,12 +67,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
       case 'PUT':
         if (actionType === 'update_entry') {
           return await ContentService.updateContentEntry(id, data)
-            .then(result => json({
+            .then(result => ({
               success: true,
               data: result,
               message: 'Content entry updated successfully'
             }))
-            .catch(error => json({
+            .catch(error => ({
               success: false,
               error: error.message
             }, { status: 400 }));
@@ -81,19 +81,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
       case 'DELETE':
         await ContentService.deleteContentEntry(id);
-        return json({
+        return Response.json({
           success: true,
           message: 'Content entry deleted successfully'
         });
 
       default:
-        return json({ error: 'Method not allowed' }, { status: 405 });
+        return Response.json({ error: 'Method not allowed' }, { status: 405 });
     }
 
-    return json({ error: 'Invalid action' }, { status: 400 });
+    return Response.json({ error: 'Invalid action' }, { status: 400 });
   } catch (error) {
     console.error('Error processing content entry request:', error);
-    return json({
+    return Response.json({
       success: false,
       error: 'Failed to process request'
     }, { status: 500 });

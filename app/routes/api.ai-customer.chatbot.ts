@@ -6,14 +6,14 @@
  * @route /api/ai-customer/chatbot
  */
 
-import { json, type ActionFunctionArgs, type LoaderFunctionArgs } from 'react-router';
-import { aiChatbot } from '~/services/ai-customer/chatbot.service.js';
-import { ticketRoutingService } from '~/services/ai-customer/ticket-routing.service.js';
-import { responseAutomationService } from '~/services/ai-customer/response-automation.service.js';
-import { satisfactionTrackingService } from '~/services/ai-customer/satisfaction-tracking.service.js';
-import { storefrontSubAgent } from '~/services/ai-customer/storefront-sub-agent.service.js';
-import { accountsSubAgent } from '~/services/ai-customer/accounts-sub-agent.service.js';
-import { logDecision } from '~/services/decisions.server.js';
+import { type ActionFunctionArgs, type LoaderFunctionArgs} from 'react-router';
+import { aiChatbot} from '~/services/ai-customer/chatbot.service.js';
+import { ticketRoutingService} from '~/services/ai-customer/ticket-routing.service.js';
+import { responseAutomationService} from '~/services/ai-customer/response-automation.service.js';
+import { satisfactionTrackingService} from '~/services/ai-customer/satisfaction-tracking.service.js';
+import { storefrontSubAgent} from '~/services/ai-customer/storefront-sub-agent.service.js';
+import { accountsSubAgent} from '~/services/ai-customer/accounts-sub-agent.service.js';
+import { logDecision} from '~/services/decisions.server.js';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -23,42 +23,42 @@ export async function loader({ request }: LoaderFunctionArgs) {
     switch (action) {
       case 'pending-responses':
         const pendingResponses = await aiChatbot.getPendingResponses();
-        return json({ success: true, data: pendingResponses });
+        return Response.json({ success: true, data: pendingResponses });
 
       case 'performance-metrics':
         const metrics = await aiChatbot.getPerformanceMetrics();
-        return json({ success: true, data: metrics });
+        return Response.json({ success: true, data: metrics });
 
       case 'routing-stats':
         await ticketRoutingService.initialize();
         const routingStats = await ticketRoutingService.getRoutingStats();
-        return json({ success: true, data: routingStats });
+        return Response.json({ success: true, data: routingStats });
 
       case 'automation-metrics':
         await responseAutomationService.initialize();
         const automationMetrics = await responseAutomationService.getAutomationMetrics();
-        return json({ success: true, data: automationMetrics });
+        return Response.json({ success: true, data: automationMetrics });
 
       case 'satisfaction-metrics':
         const endDate = new Date().toISOString();
         const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ago
         const satisfactionMetrics = await satisfactionTrackingService.getSatisfactionMetrics(startDate, endDate);
-        return json({ success: true, data: satisfactionMetrics });
+        return Response.json({ success: true, data: satisfactionMetrics });
 
       case 'storefront-metrics':
         const storefrontMetrics = await storefrontSubAgent.getPerformanceMetrics();
-        return json({ success: true, data: storefrontMetrics });
+        return Response.json({ success: true, data: storefrontMetrics });
 
       case 'accounts-metrics':
         const accountsMetrics = await accountsSubAgent.getPerformanceMetrics();
-        return json({ success: true, data: accountsMetrics });
+        return Response.json({ success: true, data: accountsMetrics });
 
       default:
-        return json({ success: false, error: 'Invalid action' }, { status: 400 });
+        return Response.json({ success: false, error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error in AI customer chatbot loader:', error);
-    return json({ success: false, error: 'Internal server error' }, { status: 500 });
+    return Response.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -94,7 +94,7 @@ export async function action({ request }: ActionFunctionArgs) {
           { confidence: aiResponse.confidence, inquiryType: 'general' }
         );
 
-        return json({
+        return Response.json({
           success: true,
           data: {
             aiResponse,
@@ -120,7 +120,7 @@ export async function action({ request }: ActionFunctionArgs) {
           responseId
         );
 
-        return json({ success: true, message: 'Response approved and sent' });
+        return Response.json({ success: true, message: 'Response approved and sent' });
       }
 
       case 'reject-response': {
@@ -130,7 +130,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         await responseAutomationService.rejectResponse(responseId, approverId, rejectionReason);
 
-        return json({ success: true, message: 'Response rejected' });
+        return Response.json({ success: true, message: 'Response rejected' });
       }
 
       case 'record-feedback': {
@@ -154,7 +154,7 @@ export async function action({ request }: ActionFunctionArgs) {
           }
         );
 
-        return json({ success: true, data: feedback });
+        return Response.json({ success: true, data: feedback });
       }
 
       case 'generate-report': {
@@ -163,7 +163,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const report = await satisfactionTrackingService.generateSatisfactionReport(startDate, endDate);
 
-        return json({ success: true, data: report });
+        return Response.json({ success: true, data: report });
       }
 
       case 'search-products': {
@@ -175,7 +175,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await storefrontSubAgent.searchProducts(customerId, query, filters, sortBy, limit);
 
-        return json({ success: true, data: result });
+        return Response.json({ success: true, data: result });
       }
 
       case 'check-availability': {
@@ -186,7 +186,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await storefrontSubAgent.checkAvailability(customerId, productId, variantId, location);
 
-        return json({ success: true, data: result });
+        return Response.json({ success: true, data: result });
       }
 
       case 'get-customer-orders': {
@@ -196,7 +196,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await accountsSubAgent.getCustomerOrders(customerId, token, limit);
 
-        return json({ success: true, data: result });
+        return Response.json({ success: true, data: result });
       }
 
       case 'get-order-details': {
@@ -206,7 +206,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await accountsSubAgent.getOrderDetails(customerId, orderId, token);
 
-        return json({ success: true, data: result });
+        return Response.json({ success: true, data: result });
       }
 
       case 'get-account-info': {
@@ -215,7 +215,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await accountsSubAgent.getCustomerAccountInfo(customerId, token);
 
-        return json({ success: true, data: result });
+        return Response.json({ success: true, data: result });
       }
 
       case 'update-preferences': {
@@ -225,14 +225,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
         const result = await accountsSubAgent.updateCustomerPreferences(customerId, token, preferences);
 
-        return json({ success: true, data: { updated: result } });
+        return Response.json({ success: true, data: { updated: result } });
       }
 
       default:
-        return json({ success: false, error: 'Invalid action' }, { status: 400 });
+        return Response.json({ success: false, error: 'Invalid action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Error in AI customer chatbot action:', error);
-    return json({ success: false, error: 'Internal server error' }, { status: 500 });
+    return Response.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

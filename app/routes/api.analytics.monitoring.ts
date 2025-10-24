@@ -4,7 +4,7 @@
  * ANALYTICS-004: API endpoints for production monitoring
  */
 
-import { json, type LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs } from 'react-router';
 import { ProductionMonitoringService } from '~/services/analytics/production-monitoring';
 import { logDecision } from '~/services/decisions.server';
 
@@ -37,7 +37,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     switch (action) {
       case 'health': {
         const report = await service.generateHealthReport();
-        return json({
+        return Response.json({
           success: true,
           data: report
         });
@@ -47,7 +47,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         const history = service.getMetricsHistory();
         const latest = history[history.length - 1];
         
-        return json({
+        return Response.json({
           success: true,
           data: latest,
           count: history.length
@@ -57,7 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       case 'history': {
         const history = service.getMetricsHistory();
         
-        return json({
+        return Response.json({
           success: true,
           data: history.slice(-limit),
           count: history.length,
@@ -66,7 +66,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: `Unknown action: ${action}`,
           validActions: ['health', 'metrics', 'history']
@@ -83,7 +83,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       evidenceUrl: 'app/routes/api.analytics.monitoring.ts'
     });
     
-    return json({
+    return Response.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
@@ -109,7 +109,7 @@ export async function action({ request }: LoaderFunctionArgs) {
         const interval = parseInt(formData.get('interval') as string || '60000');
         await service.startMonitoring(interval);
         
-        return json({
+        return Response.json({
           success: true,
           message: `Monitoring started with ${interval}ms interval`
         });
@@ -118,14 +118,14 @@ export async function action({ request }: LoaderFunctionArgs) {
       case 'stop': {
         service.stopMonitoring();
         
-        return json({
+        return Response.json({
           success: true,
           message: 'Monitoring stopped'
         });
       }
 
       default:
-        return json({
+        return Response.json({
           success: false,
           error: `Unknown action: ${actionType}`,
           validActions: ['start', 'stop']
@@ -134,10 +134,9 @@ export async function action({ request }: LoaderFunctionArgs) {
   } catch (error) {
     console.error('Monitoring action error:', error);
     
-    return json({
+    return Response.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
-

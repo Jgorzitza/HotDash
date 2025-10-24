@@ -5,9 +5,9 @@
  * Provides automation, performance, security, testing, monitoring, cost optimization, and disaster recovery
  */
 
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
-import { json } from "react-router";
-import { createEnhancedDevOpsOrchestrator, EnhancedDevOpsConfig } from "~/lib/growth-engine/enhanced-devops-orchestrator";
+import type { ActionFunctionArgs, LoaderFunctionArgs} from "react-router";
+
+import { createEnhancedDevOpsOrchestrator, EnhancedDevOpsConfig} from "~/lib/growth-engine/enhanced-devops-orchestrator";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -27,7 +27,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     case 'backups':
       return await getBackupStatus();
     default:
-      return json({ error: 'Invalid action' }, { status: 400 });
+      return Response.json({ error: 'Invalid action' }, { status: 400 });
   }
 }
 
@@ -55,7 +55,7 @@ export async function action({ request }: ActionFunctionArgs) {
     case 'cleanup':
       return await cleanupEnhancedDevOps(params);
     default:
-      return json({ error: 'Invalid action' }, { status: 400 });
+      return Response.json({ error: 'Invalid action' }, { status: 400 });
   }
 }
 
@@ -64,7 +64,7 @@ export async function action({ request }: ActionFunctionArgs) {
  */
 async function getEnhancedDevOpsStatus() {
   // Mock implementation - in production, this would get real status
-  return json({
+  return Response.json({
     timestamp: new Date().toISOString(),
     automation: {
       status: 'idle',
@@ -114,7 +114,7 @@ async function getEnhancedDevOpsStatus() {
  */
 async function getEnhancedDevOpsRecommendations() {
   // Mock implementation - in production, this would generate real recommendations
-  return json({
+  return Response.json({
     automation: [
       {
         type: 'deployment',
@@ -186,7 +186,7 @@ async function getEnhancedDevOpsRecommendations() {
  */
 async function getEnhancedDevOpsMetrics() {
   // Mock implementation - in production, this would get real metrics
-  return json({
+  return Response.json({
     performance: {
       p95Latency: 250,
       p99Latency: 450,
@@ -233,7 +233,7 @@ async function getEnhancedDevOpsMetrics() {
  */
 async function getActiveAlerts() {
   // Mock implementation - in production, this would get real alerts
-  return json({
+  return Response.json({
     alerts: [
       {
         id: 'alert-001',
@@ -252,7 +252,7 @@ async function getActiveAlerts() {
  */
 async function getCostMetrics() {
   // Mock implementation - in production, this would get real cost data
-  return json({
+  return Response.json({
     daily: 150,
     monthly: 4500,
     yearly: 54750,
@@ -275,7 +275,7 @@ async function getCostMetrics() {
  */
 async function getBackupStatus() {
   // Mock implementation - in production, this would get real backup status
-  return json({
+  return Response.json({
     backups: [
       {
         id: 'backup-001',
@@ -339,13 +339,13 @@ async function initializeEnhancedDevOps(params: any) {
     const orchestrator = createEnhancedDevOpsOrchestrator(config);
     await orchestrator.initialize();
     
-    return json({ 
+    return Response.json({ 
       success: true, 
       message: 'Enhanced DevOps orchestrator initialized successfully',
       config 
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error' 
     }, { status: 500 });
@@ -371,7 +371,7 @@ async function executeComprehensiveOperations(params: any) {
     // Simulate operations execution
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    return json({
+    return Response.json({
       success: true,
       operations: operations.map(op => ({
         name: op,
@@ -389,7 +389,7 @@ async function executeComprehensiveOperations(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Operations failed' 
     }, { status: 500 });
@@ -410,7 +410,7 @@ async function executeDeployment(params: any) {
     const endTime = new Date().toISOString();
     const duration = new Date(endTime).getTime() - new Date(startTime).getTime();
     
-    return json({
+    return Response.json({
       success: true,
       deployment: {
         id: deploymentId,
@@ -428,7 +428,7 @@ async function executeDeployment(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Deployment failed' 
     }, { status: 500 });
@@ -445,7 +445,7 @@ async function executePerformanceOptimization(params: any) {
     // Simulate optimization process
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    return json({
+    return Response.json({
       success: true,
       optimization: {
         id: optimizationId,
@@ -474,7 +474,7 @@ async function executePerformanceOptimization(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Performance optimization failed' 
     }, { status: 500 });
@@ -491,7 +491,7 @@ async function executeSecurityMonitoring(params: any) {
     // Simulate security monitoring process
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    return json({
+    return Response.json({
       success: true,
       monitoring: {
         id: monitoringId,
@@ -524,7 +524,7 @@ async function executeSecurityMonitoring(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Security monitoring failed' 
     }, { status: 500 });
@@ -542,7 +542,7 @@ async function executeTesting(params: any) {
     // Simulate test execution
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    return json({
+    return Response.json({
       success: true,
       testing: {
         id: testId,
@@ -568,7 +568,7 @@ async function executeTesting(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Testing failed' 
     }, { status: 500 });
@@ -585,7 +585,7 @@ async function executeCostOptimization(params: any) {
     // Simulate cost optimization process
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    return json({
+    return Response.json({
       success: true,
       optimization: {
         id: optimizationId,
@@ -614,7 +614,7 @@ async function executeCostOptimization(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Cost optimization failed' 
     }, { status: 500 });
@@ -631,7 +631,7 @@ async function executeDisasterRecoveryTest(params: any) {
     // Simulate disaster recovery test
     await new Promise(resolve => setTimeout(resolve, 5000));
     
-    return json({
+    return Response.json({
       success: true,
       test: {
         id: testId,
@@ -652,7 +652,7 @@ async function executeDisasterRecoveryTest(params: any) {
       }
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Disaster recovery test failed' 
     }, { status: 500 });
@@ -667,12 +667,12 @@ async function cleanupEnhancedDevOps(params: any) {
     // Simulate cleanup process
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    return json({
+    return Response.json({
       success: true,
       message: 'Enhanced DevOps resources cleaned up successfully'
     });
   } catch (error) {
-    return json({ 
+    return Response.json({ 
       success: false, 
       error: error instanceof Error ? error.message : 'Cleanup failed' 
     }, { status: 500 });
