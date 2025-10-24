@@ -34,37 +34,31 @@
 - **Feedback** logged via `logDecision()` to database (instant queries, no markdown files)
 - **Direction** (markdown files) archived - all task management now in database for 10+ updates/day efficiency
 
-## 2.1) KB Integration for Context Recovery (NEW - Effective 2025-10-25)
+## 2.1) KB Integration for Context Recovery (OPTIONAL)
 
-**Problem**: Database was wiped and we lost context. Agents were redoing work and fixing problems we already had solutions for.
+**KB tool is available for searching existing solutions and documentation when needed.**
 
-**Solution**: KB search integration into ALL agent processes.
+**KB Search Workflow** (Optional - use when context needed):
 
-**KB Search Workflow** (MANDATORY before ANY task execution):
-
-1. **Manager**: Search KB before assigning tasks
+1. **Manager or Agent**: Search KB when looking for existing solutions
    ```bash
    npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
    ```
 
-2. **Agents**: Search KB before starting any task
+2. **Quick Query**: Use for general questions
    ```bash
-   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+   npm run dev-kb:query -- "Your question here"
    ```
-
-3. **Review Results**: Check for existing solutions, common issues, security considerations, integration points
-
-4. **Log Search**: All KB searches logged to DecisionLog with recommendations
 
 **KB Integration Benefits**:
 
 - **Prevents Redoing Work**: Find existing solutions before implementing
-- **Context Recovery**: Access lost knowledge from documentation
+- **Context Recovery**: Access documentation and past decisions
 - **Issue Prevention**: Identify common problems and their solutions
-- **Security Awareness**: Review security considerations before implementation
-- **Integration Planning**: Understand system connections before building
+- **Security Awareness**: Review security considerations
+- **Integration Planning**: Understand system connections
 
-**Enforcement**: KB search is MANDATORY before task execution. No exceptions.
+**When to use**: When you need additional context, looking for existing solutions, or want to understand past decisions.
 
 ---
 

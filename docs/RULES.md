@@ -79,42 +79,36 @@ Before creating ANY new .md file:
 - Manager owns NORTH_STAR, RULES, Operating Model, and PROJECT_PLAN.
 - **Direction files archived** (2025-10-22) - markdown too slow for hourly updates.
 
-## KB Integration (MANDATORY - Effective 2025-10-25)
+## KB Integration (OPTIONAL - Available When Needed)
 
-**Problem**: Database was wiped and we lost context. Agents were redoing work and fixing problems we already had solutions for.
+**KB tool is available for searching existing solutions and documentation.**
 
-**Solution**: KB search integration into ALL agent processes.
+### KB Search Workflow (Optional)
 
-### KB Search Workflow (MANDATORY before ANY task execution)
-
-**Manager Process**:
-1. Search KB before assigning tasks
-2. Review existing solutions and common issues
-3. Log search results with recommendations
-
-**Agent Process**:
-1. Search KB before starting any task
-2. Review results for existing solutions, issues, security considerations
-3. Log search results with recommendations
+**When to use KB**:
+- Looking for existing solutions or similar implementations
+- Need context on common issues and their solutions
+- Want to review security considerations
+- Understanding integration points with other systems
 
 ### KB Search Commands
 
 ```bash
-# Manager: Search before assigning task
+# Manager or Agent: Search when context needed
 npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
 
-# Agent: Search before starting task
-npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+# Quick query
+npm run dev-kb:query -- "Your question here"
 ```
 
-### KB Search Logging
+### KB Search Logging (Optional)
 
 ```typescript
 await logDecision({
   scope: "build",
   actor: "<agent>",
   action: "kb_search_completed",
-  rationale: "KB search completed before task execution",
+  rationale: "KB search completed for additional context",
   taskId: "<TASK-ID>",
   payload: {
     searchResults: "Found existing solutions",
@@ -127,17 +121,16 @@ await logDecision({
 ### KB Integration Benefits
 
 - **Prevents Redoing Work**: Find existing solutions before implementing
-- **Context Recovery**: Access lost knowledge from documentation
+- **Context Recovery**: Access documentation and past decisions
 - **Issue Prevention**: Identify common problems and their solutions
-- **Security Awareness**: Review security considerations before implementation
-- **Integration Planning**: Understand system connections before building
+- **Security Awareness**: Review security considerations
+- **Integration Planning**: Understand system connections
 
-### Enforcement
+### Usage
 
-- **KB search is MANDATORY** before task execution
-- **No exceptions** - all agents must search KB before starting work
-- **Manager audits** KB search compliance
-- **Violations result in task reassignment**
+- **KB search is OPTIONAL** - use when you need additional context
+- **Available to all agents** for searching documentation and solutions
+- **Helpful when**: Looking for existing patterns, understanding past decisions, or needing security context
 
 ## Security
 

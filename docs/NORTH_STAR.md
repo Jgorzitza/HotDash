@@ -187,37 +187,29 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 
 **Enforcement**: Daily audit, markdown direction files archived to feedback/archive/
 
-### KB Integration for Context Recovery (2025-10-25)
+### KB Integration for Context Recovery (OPTIONAL)
 
-**Problem**: Database was wiped and we lost context. Agents were redoing work and fixing problems we already had solutions for.
+**KB tool is available for searching existing solutions and documentation when needed.**
 
-**Solution**: KB search integration into ALL agent processes.
+**KB Search** (Optional - use when context needed):
 
-**KB Search Workflow** (MANDATORY before ANY task execution):
+```bash
+# Search for existing solutions or context
+npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
 
-1. **Manager**: Search KB before assigning tasks
-   ```bash
-   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
-   ```
-
-2. **Agents**: Search KB before starting any task
-   ```bash
-   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
-   ```
-
-3. **Review Results**: Check for existing solutions, common issues, security considerations, integration points
-
-4. **Log Search**: All KB searches logged to DecisionLog with recommendations
+# Quick query
+npm run dev-kb:query -- "Your question here"
+```
 
 **KB Integration Benefits**:
 
 - **Prevents Redoing Work**: Find existing solutions before implementing
-- **Context Recovery**: Access lost knowledge from documentation
+- **Context Recovery**: Access documentation and past decisions
 - **Issue Prevention**: Identify common problems and their solutions
-- **Security Awareness**: Review security considerations before implementation
-- **Integration Planning**: Understand system connections before building
+- **Security Awareness**: Review security considerations
+- **Integration Planning**: Understand system connections
 
-**Enforcement**: KB search is MANDATORY before task execution. No exceptions.
+**When to use**: When you need additional context, looking for existing solutions, or want to understand past decisions.
 
 ---
 
